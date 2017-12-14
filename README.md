@@ -22,14 +22,16 @@ Valid game folders are:
 - hgss
 - bw
 - b2w2
+- xy
+- oras
 - sm
 - usum
 - tport
 - gales
 - colo
-- channel
-- wshmkr
-- ageto
+- bonus
+
+`bonus` is used for Ageto, Channel, and Wishmaker RNG
 
 Languages should be two letter language codes
 - eg: en, fr, it

@@ -17,15 +17,13 @@ _Easy shinies in apricorn balls_
 Note: You can get the "honey" item in any store after clearing three trials.
 ```
 
-### Calibrate PCalc
+### Setup PCalc
 
 To start, make sure PCalc's wild view and game view are open.
 
 ```
 In PCalc, "start + left" will open the wild view, and "start + up" will open the game view.
 ```
-
-![](http://i.imgur.com/n9Qk8GI.png)
 
 ### Setup 3DSRNGTool
 

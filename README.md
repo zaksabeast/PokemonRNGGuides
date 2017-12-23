@@ -8,9 +8,10 @@ All of the guides will be in markdown.  Please refer to [the example guide](Exam
 
 ```
 <repo>/
-  - <game>/
-    - <language>/
-      - <type>.md
+  - guides/
+    - <game>/
+      - <language>/
+        - <type>.md
 ```
 
 All folders and files should be lowercase.

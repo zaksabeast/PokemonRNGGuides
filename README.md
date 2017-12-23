@@ -31,7 +31,7 @@ Valid game folders are:
 - colo
 - bonus
 
-`bonus` is used for Ageto, Channel, and Wishmaker RNG
+`bonus` is used for Ageto, Channel, Wishmaker, and Dream Radar RNG
 
 Languages should be two letter language codes
 - eg: en, fr, it

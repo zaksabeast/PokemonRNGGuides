@@ -48,7 +48,7 @@ Note: You can find your TSV in PCalc by going into the party view with "start + 
 
 #### On the right of 3DSRNGTool
 
-1. Follow the [timeline calibration guide](https://github.com/wwwwwwzx/3DSRNGTool/wiki/Gen7-Timeline-Calibration-(PokeCalcNTR-Only) using the `NPC Count` PCalc shows for the number of NPCs
+1. Follow the [timeline calibration guide](https://github.com/wwwwwwzx/3DSRNGTool/wiki/Gen7-Timeline-Calibration-(PokeCalcNTR-Only)) using the `NPC Count` PCalc shows for the number of NPCs
 2. You should now have a target frame you wish to hit
 
 

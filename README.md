@@ -8,9 +8,10 @@ All of the guides will be in markdown.  Please refer to [the example guide](Exam
 
 ```
 <repo>/
-  - <game>/
-    - <language>/
-      - <type>.md
+  - guides/
+    - <game>/
+      - <language>/
+        - <type>.md
 ```
 
 All folders and files should be lowercase.
@@ -40,7 +41,7 @@ The type of RNG should be as few words as possible
 - eg: egg, ultra beast, stationary
 
 ### If you have write access to the repository
-Please make a new branch titled `<game>-<language>-<type>` and add your guide there before doing a pull request to the master branch.  **NEVER WRITE TO THE MASTER BRANCH DIRECTLY**.
+Please make a new branch titled `<game>/<language>/<type>` and add your guide there before doing a pull request to the master branch.  **NEVER WRITE TO THE MASTER BRANCH DIRECTLY**.
 
 When a pull request is made, this allows other people to review the guide, make sure it looks clean and is clear to understand.  **At least one person needs to approve the guide before the pull request is merged**.
 

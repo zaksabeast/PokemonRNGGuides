@@ -6,7 +6,7 @@ _Get your own perfect Legendary Pokemon!_
 ### Make sure you have the following
 - Console with CFW
 - [3DSRNGTool](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts)
- - Github link: https://github.com/wwwwwwzx/3DSRNGTool
+	- Github link: https://github.com/wwwwwwzx/3DSRNGTool
 - [PokeCalcNTR](https://pokemonrng.com/downloads/pcalc/usum)
 - [BootNTR Selector](https://gbatemp.net/threads/release-bootntr-selector.432911/)
     - Mode 3 for o3ds/2ds

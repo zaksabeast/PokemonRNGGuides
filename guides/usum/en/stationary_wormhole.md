@@ -20,6 +20,7 @@ Below we will go through the RNG process required for wormhole UBs/Legendary Pok
 
 ### Finding your seed
 1. This one is easy as all you need to do is load in to the game. The seed is shown at the top of the overlay with the label of "Init Seed:". In the following image the seed is 5DA5CA91.
+
 ![](https://i.imgur.com/FXtylJx.png)
 
 ### Calibrating a timeline

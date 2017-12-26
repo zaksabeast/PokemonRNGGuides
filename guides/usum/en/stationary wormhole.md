@@ -118,4 +118,4 @@ Note: I did this as an example, wait until you have found a common delay until y
 
 ![](https://i.imgur.com/SnhyISc.png)
 
- * Imgur library of all images including another set of images of getting to Groudon - https://imgur.com/a/3ctOj
+ * Imgur library of all images including another set of images of getting to Groudon - [https://imgur.com/a/3ctOj](https://imgur.com/a/3ctOj)

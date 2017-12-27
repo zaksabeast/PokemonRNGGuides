@@ -30,9 +30,10 @@ Valid game folders are:
 - tport
 - gales
 - colo
-- bonus
+- misc
+- tools
 
-`bonus` is used for Ageto, Channel, Wishmaker, and Dream Radar RNG
+`misc` is used for Ageto, Channel, Wishmaker, Dream Radar, and other miscellaneous types of RNG.
 
 Languages should be two letter language codes
 - eg: en, fr, it

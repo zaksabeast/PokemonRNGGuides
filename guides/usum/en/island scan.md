@@ -10,8 +10,7 @@ _Easy shinies in apricorn balls_
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - The `honey` item
 - Have started an `Island Scan` and know the Pokemon you've scanned for
-  - [List of Island Scan islands and days for SM](http://www.ign.com/wikis/pokemon-sun-pokemon-moon/Island_Scan_QR_Code_Pokemon_%28Sun/Moon%29)
-  - [List of Island Scan islands and days for USUM](http://www.ign.com/wikis/pokemon-sun-pokemon-moon/Island_Scan_QR_Code_Pokemon_%28Ultra%29)
+  - [List of Island Scan islands and days for USUM](/tools/en/island%20scan%20pokemon%20-%20usum.md)
 
 ```
 Note: You can get the "honey" item in any store after clearing three trials.

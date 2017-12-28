@@ -15,7 +15,7 @@ This is the basic setupd in order to RNG simple wild Pokemon in Fire Red / Leaf 
 
 First of all, open RNG Reporter. You'll need first to change a few settings :
 - Put your own TID / SID (Pkhex is the best way to find it since on emulator)
-- Change the method from "Method 1" to "Method H-1" : The first is for gift / stationnary Pokemon while the second is for Wild Pokemon
+- Change the method from "Method 1" to "Method H-1" : The first is for gift / stationary Pokemon while the second is for Wild Pokemon
 
 After that you'll need to open your emulator. You should have a save in the place you want to RNG the Pokemon in order to save time and avoid to miss any target frame. Load your Lua Script too. This can vary, but for vba-rr 23.6, you'll find everything in "Tools" => "Lua Scripting" => "New Lua Script". A box will pop-up where you'll be able to select the lua you just created.
 

@@ -2,8 +2,8 @@
 _aka how to get a Shiny Mewtwo 101_
 
 ## Requirements ?
-You'll need the same stuff as for Wild RNG :
-- VBA-rr 
+You'll need the same stuff as for Wild RNG:
+- VBA-rr
 - Lua scripts for FRLG (available [here](https://projectpokemon.org/home/forums/topic/15187-gen-3-lua-scripts/?tab=comments#comment-127239) you'll need to copy the code, paste it to a notepad and rename the file into 'whatyouwant.lua')
 - Knowledge of how to deal with the Memory Viewer
 - RNG Reporter
@@ -39,7 +39,7 @@ Now the tool is ALMOST set up. Enter in your target settings for the Pokemon you
 
 If your tool is well setup, it'll look like that. In my case, I just searched for BASIC Shiny. Now it's time to find and try to hit your target frame. Select one of your choice and unpause your game.
 
-#### RNG process 
+#### RNG process
 
 Your player should be in front of the right legendary, NPC or Pokeball. As soon as possible create a save state in case you'd mess up something later.
 ```
@@ -51,7 +51,7 @@ Advance to the final screen. For example, if a Pokemon has a dialog (like a cry)
 Now it's time for the calibration. In Gen 3, you'll never hit what you want at the first try. Calibration is always necessary. Here's a little set up of how to do it fast for stationary/gift Pokemon:
 - Create a save state. Write the actual frame to the notpad.
 - Hold the A button and unpause the game. It'll trigger the battle or finish the dialog for a gift on the actual frame. It's really important for precision.
-- Check the stats of the Pokemon you've found. There are two cases. If it's a stationary, the lua will show all the IVs without doing anything. If it's a gift, you need to save your game and load it with Pkhex. 
+- Check the stats of the Pokemon you've found. There are two cases. If it's a stationary, the lua will show all the IVs without doing anything. If it's a gift, you need to save your game and load it with Pkhex.
 - Reload the save state you made before in case you need to attempt the RNG again.  In this way, if you have to save the game to check your Pokemon's stats, the calibration will not be messed up.
 - Enter the Pokemon's stats into RNG Reporter and find the frame of the Pokemon.
 - Maths time!  Find the amount of frames you were off by: 'Frame you pressed A' - 'Frame you got from reporter' it'll be a negative result around 90% of the time. It's alright.

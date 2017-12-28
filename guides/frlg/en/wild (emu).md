@@ -2,7 +2,7 @@
 _The most basic RNG in Gen 3_
 
 ## Requirements ?
-This is the basic setupd in order to RNG simple wild Pokemon in Fire Red / Leaf Green :
+This is the basic setup in order to RNG simple wild Pokemon in Fire Red / Leaf Green:
 - VBA-rr
 - Lua scripts for FRLG (available [here](https://projectpokemon.org/home/forums/topic/15187-gen-3-lua-scripts/?tab=comments#comment-127239) you'll need to copy the code, paste it to a notepad and rename the file into 'whatyouwant.lua')
 - Knowledge of how to deal with the Memory Viewer
@@ -13,9 +13,9 @@ This is the basic setupd in order to RNG simple wild Pokemon in Fire Red / Leaf 
 
 ### Setting up everything before doing any RNG.
 
-First of all, open RNG Reporter. You'll need first to change a few settings :
+First of all, open RNG Reporter. You'll need first to change a few settings:
 - Put your own TID / SID (Pkhex is the best way to find it since on emulator)
-- Change the method from "Method 1" to "Method H-1" : The first is for gift / stationary Pokemon while the second is for Wild Pokemon
+- Change the method from "Method 1" to "Method H-1": The first is for gift / stationary Pokemon while the second is for Wild Pokemon
 
 After that you'll need to open your emulator. You should have a save in the place you want to RNG the Pokemon in order to save time and avoid to miss any target frame. Load your Lua Script.  For vba-rr 23.6, go to "Tools" => "Lua Scripting" => "New Lua Script".  A box will pop-up where you'll be able to select the lua you saved earlier.
 
@@ -35,11 +35,11 @@ Now the tool is ALMOST set up. Enter in your target settings for the Pokemon you
 
 If your tool is well setup, it'll look like that. In my case, I just searched for BASIC Shiny. Now it's time to find and try to hit your target frame. Select one of your choice and unpause your game.
 
-#### RNG process 
+#### RNG process
 
 You'll have to go as fast as possible to the menu, choose the Pokemon w/ Sweet Scent, and pause again with the cursor on the move.
 ```
-Don't hesitate to overuse save states ! It's really important ! This way you can go back to lower frames, and adjust correctly since calibration will be necessary EVERY TIME !
+Don't hesitate to overuse save states! It's really important! This way you can go back to lower frames, and adjust correctly since calibration will be necessary EVERY TIME!
 ```
 Now it's time for the calibration. In Gen 3, you'll never hit what you want at the first try. Calibration is always necessary. Here's a little set up of how to do it fast for wild Pokemon:
 - Create a save state. Write the actual frame to the notpad.
@@ -54,4 +54,4 @@ You can calibrate when you want. For fast targets (aka not going for millions fr
 ```
 If you didn't hit what you wanted after calibration, just re-try the calibration part, use save-states done before to avoid any problem, it can be some basic error. After a few tries, if you still can't hit anything, check twice all your setup.
 
-If you followed all steps, the Pokemon will be what you wanted after calibration. Tada, you did your first Gen 3 Wild RNG !
+If you followed all steps, the Pokemon will be what you wanted after calibration. Tada, you did your first Gen 3 Wild RNG!

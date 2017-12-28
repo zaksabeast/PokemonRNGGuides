@@ -4,7 +4,7 @@ _The most basic RNG in Gen 3_
 ## Requirements ?
 This is the basic setupd in order to RNG simple wild Pokemon in Fire Red / Leaf Green :
 - VBA-rr (the 23.6 is really the best in order to use it with Gen 1 or 2 scripts but any rr supporting lua scripts will do the job)
-- Lua scripts for FRLG (available [here](https://projectpokemon.org/home/forums/topic/15187-gen-3-lua-scripts/?tab=comments#comment-127239) you'll need to copy the code, paste it to a notepad and rename the file into 'hatyouwant.lua')
+- Lua scripts for FRLG (available [here](https://projectpokemon.org/home/forums/topic/15187-gen-3-lua-scripts/?tab=comments#comment-127239) you'll need to copy the code, paste it to a notepad and rename the file into 'whatyouwant.lua')
 - How to deal with Memory Viewer
 - RNG Reporter
 - Your TID / SID

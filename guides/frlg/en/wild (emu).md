@@ -11,7 +11,7 @@ This is the basic setupd in order to RNG simple wild Pokemon in Fire Red / Leaf 
 - A Sweet Scenter
 - A Calculator and a notepad
 
-### etting up everything before doing any RNG.
+### Setting up everything before doing any RNG.
 
 First of all, open RNG Reporter. You'll need first to change a few settings :
 - Put your own TID / SID (Pkhex is the best way to find it since on emulator)
@@ -34,6 +34,8 @@ Now the tool is ALMOST set up. You just need to search your target settings (Shi
 ![](https://i.imgur.com/LiBe4F2.png)
 
 If your tool is well setup, it'll look like that. In my case, I just searched for BASIC Shiny. Now it's time to find and try to hit your target frame. Select one of your choice and unpause your game.
+
+#### RNG process 
 
 You'll have to go as fast as possible to the menu, choose the Pokemon w/ Sweet Scent, and pause again with the cursor on the move.
 

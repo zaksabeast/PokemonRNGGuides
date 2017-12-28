@@ -24,6 +24,7 @@ Once the game is loading just enter into the "continue" menu. Here you should pa
 To find your seed, you must open the Memory Viewer. A lot of information will show up. You need to search the address at 0x02020000. In order to find it just put "02020000" in the box in the upper-right. Hit Go and you'll be done !
 
 ![](https://i.imgur.com/Vk4zYMm.png)
+
 The "1330" is my seed for this run of FRLG. It changes after pressing A / Start in the main screen. There's no real way to manipulate it for the moment. So you must deal with it.
 
 After, with this seed, you'll finally be able to search spreads. You must enter it in the "Seed (Hex)" box in RNG Reporter.
@@ -31,6 +32,7 @@ After, with this seed, you'll finally be able to search spreads. You must enter 
 Now the tool is ALMOST set up. You just need to search your target settings (Shiny, IVs, nature, encounter slots etc) and once it's done just hit "Generate" 
 
 ![](https://i.imgur.com/LiBe4F2.png)
+
 If your tool is well setup, it'll look like that. In my case, I just searched for BASIC Shiny. Now it's time to find and try to hit your target frame. Select one of your choice and unpause your game.
 
 You'll have to go as fast as possible to the menu, choose the Pokemon w/ Sweet Scent, and pause again with the cursor on the move.

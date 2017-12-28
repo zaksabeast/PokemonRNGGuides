@@ -62,4 +62,4 @@ You can calibrate when you want. For fast targets (aka not going for millions fr
 
 If you didn't hit what you wanted after calibration, just re-try the calibration part, use save-states done before to avoid any problem, it can be some basic error. After a few tries, if you still can't hit anything, check twice all your setup.
 
-If everything went well, you just RNG'd your first Stationary / Gift Pokemon in FRLG !
+If everything went well, you just RNG'd your first Stationary / Gift Pokemon in FRLG!

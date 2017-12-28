@@ -51,6 +51,7 @@ Now it'll time to make the calibration. In Gen 3, you'll never hit what you want
 - Enter these datas into the RNG Reporter. Check the good frame.
 - Maths time ! Just do some basic maths like this : 'Frame you pressed A' - 'Frame you got from reporter' it'll be a negative result around 90% of the time. It's alright.
 - Apply it to your Shiny Frame. You know when to press A.
+- Reload your state you did before in order to be able to continue your RNG.
 
 ```
 You can calibrate when you want. For fast targets (aka not going for millions frames) doing it NEAR your Shiny frame will help to have a good delay. Doing it too early could give you a delay too low around your frame, and so having to recalibrate another time.

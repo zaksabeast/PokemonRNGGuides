@@ -17,7 +17,7 @@ First of all, open RNG Reporter. You'll need first to change a few settings:
 - Put your own TID / SID (Pkhex is the best way to find it since on emulator)
 - Change the method from "Method 1" to "Method H-1": The first is for gift / stationary Pokemon while the second is for Wild Pokemon
 
-After that you'll need to open your emulator. You should have a save in the place you want to RNG the Pokemon in order to save time and avoid to miss any target frame. Load your Lua Script.  For vba-rr 23.6, go to "Tools" => "Lua Scripting" => "New Lua Script".  A box will pop-up where you'll be able to select the lua you saved earlier.
+After that, you'll need to open your emulator. You should have a save in the place you want to RNG the Pokemon in order to save time and avoid to miss any target frame. Load your Lua Script.  For vba-rr 23.6, go to "Tools" => "Lua Scripting" => "New Lua Script".  A box will pop-up where you'll be able to select the lua you saved earlier.
 
 Once the game is loading just enter into the "continue" menu. Here you should pause the game to find your Seed. FRLG uses the continue screen to help generate different spreads every time the game loads to avoid repeating spreads like in dry battery Ruby and Sapphire. This has the big advantage to give you new results every time you load your game.
 

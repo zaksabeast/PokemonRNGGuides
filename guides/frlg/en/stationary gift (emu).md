@@ -23,7 +23,7 @@ Bulbasaur, Charmander, Squirtle, Clefairy, Abra, Hypno, Voltorb, Electrode, Hitm
 Of course some of them are available in wild too.
 ```
 
-- After that, you'll need to open your emulator. You should have a save in front of the stationary pokemon or the NPC that gives you the Pokemon. This way you'll save time and have more possible target frames.
+- After that, you'll need to open your emulator. You should have a save in front of the stationary Pokemon or the NPC that gives you the Pokemon. This way you'll save time and have more possible target frames.
 
 - Load your Lua Script.  
   - For vba-rr 23.6, go to "Tools" => "Lua Scripting" => "New Lua Script".  A box will pop-up where you'll be able to select the lua you saved earlier.
@@ -70,7 +70,7 @@ Now it's time for the calibration. In Gen 3, you'll never hit what you want at t
 
 - Check the stats of the Pokemon you've found. There are two cases.
   - If it's a stationary, the lua will show all the IVs without doing anything.
-  - If it's a gift, you need to save your game and load it with Pkhex.
+  - If it's a gift, you need to save your game and load it with PKHeX.
 
 
 - Reload the save state you made before in case you need to attempt the RNG again.  In this way, if you have to save the game to check your Pokemon's stats, the calibration will not be messed up.
@@ -92,7 +92,6 @@ You can calibrate when you want. For fast targets (aka not going for millions fr
 - If you didn't hit what you wanted after calibration, just retry the calibration part.
   - You can use save-states done before to avoid any problems.
 
-
-- After a few tries, if you still can't hit anything, check twice all your setup.
+- After a few tries if you still can't hit anything double check your setup.
 
 If everything went well, you just RNG'd your first Stationary / Gift Pokemon in FRLG!

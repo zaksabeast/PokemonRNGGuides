@@ -2,7 +2,7 @@
 _Original Guide by /u/Zapdos44_
 
 Things You Will Need:
-- [Latest Build of RNG Reporter](https://goo.gl/jhz9M)
+- [Latest Build of RNG Reporter](https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
 - [DeSmuMe dev build](https://sourceforge.net/projects/desmume/files/desmume/0.9.11/desmume-0.9.11-win32-dev.zip/download)
 - The lua .dlls for DeSmuMe
 - Pokemon Black or White (You will need to dump this yourself)
@@ -12,25 +12,32 @@ Things You Will Need:
 - [Suloku's Gen V Save Tool](https://projectpokemon.org/home/forums/topic/37801-gen-5-generation-5-save-tool-entralink-medals-join-avenue-and-others-not-in-pokegen/)
 
 ```
-Note: /r/ PokemonTrades doesn't allow injection of Entralink Pokemon. Please make sure you are aware of trading policies in the community that you are in.*
+Note: /r/ PokemonTrades doesn't allow injection of Entralink Pokemon. Please make sure you are aware of trading policies in the community that you are in.
 ```
 
 ## The RNG
 
 ### Choose an RNG Target
 1. Open Suloku's Gen V Save Tool
+
 2. Add the Pokemon you want to RNG
 
-### Finding a Frame/Target Seed/IVS
-1. Open RNG Reporter and go to Generation 5 Time
+### Finding a Frame/Target Seed/IVs
+1. Open RNG Reporter and go to Generation 5 Time Finder
+
 2. Set up Time Finder like [so.](https://snag.gy/ne0CK3.jpg)
+
 3. Change Delay/Frame as you see fit
-4. Make sure that you at the very least set the minimum frame to 21, as its not possible to hit anything lower
+
+4. Set minimum frame to at least 21. It is not possible to hit anything lower.
 
 ### Finding the Delay you need to hit
 1. You may notice that the seed listed is significantly shorter than normal Generation 5 seeds. Unfortunately, you still need to hit the Initial Seed (The 32 Digit one)
+
 2. Right Click your selected spread and hit `Generate Entralink Nature Seeds`
+
 3. Choose a list of natures that you desire
+
 4. Hit Generate
 
 ### Hitting C-Gear Seed and Initial Seed
@@ -46,27 +53,38 @@ don't worry about the initial seed being different. It is because you loaded it 
 hit your initial seed.
 
 1. Go to the text where it says `[Player] warped to the Entralink!` and make a save state. Pause the game and note the delay.
-We will be finding out how long it takes for the C-Gear Seed to generate after pressing A. Press "A" and in the output, the lua
-will tell us what the C-Geaer Seed we hit was.
+  - We will be finding out how long it takes for the C-Gear Seed to generate after pressing A. Press "A" and in the output, the lua will tell us what the C-Gear Seed we hit was.
+
+
 2. Go back to RNG Reporter and go to Generation 5 Tools > Seed To Time
 3. Type in the C-Gear Seed you got.
+
 4. Subtract the Delay where you pressed A from the Delay you hit when the C-Gear Seed was generated.
+
 5. Now take the result and subtract the result from your target delay. For example, if my target delay was 4288 and the
 difference was 200, I would hit delay 4088.
+
 6. Hit your Initial Seed again and do Delay advances. You can inch closer by pressing N, which will add 1 to the delay.
+
 7. If you failed, just try again. Sometimes you think you hit it, but there was a small gap between when you unpause the emulator and press A.
 
 ### Advancing the Frames
 1. Make sure to pay attention to the **IVRNG Frame**!
-2. Subtract **13** from your target frame. You will be advancing Frames until you hit that.
+
+2. Subtract **13** from your target frame. You will be advancing frames until you hit that.
+
 3. You advance frames by walking around. Make sure to only have 1 Pokemon in your party, or else it will advance too many frames
 at once.
+
 4. When you hit your IVRNG Frame, interact with your target Pokemon immediately. Make a save state and enter the battle.
-5.  If you did it correctly, you will get the correct IVS on your target. Yay! ^-^
+
+5.  If you did it correctly, you will get the correct IVs on your target. Yay!
+
 6. To get your Nature, you can either move onto Step 6 or reload the Save State and re-catch the Pokemon. **Make sure to hit a different PIDRNG Frame each time or you will end up getting the same nature**
 
 ### Getting a good Nature
 1. Go back to RNG Reporter and go to Entralink Seed Search. Notice the Frame. That is the PIDRNG Frame you need to hit.
+
 2. Go back to your save state and wait until you are 6 before the frame listed in RNG Reporter. Then enter the battle again and catch the
 Pokemon.
 
@@ -74,5 +92,5 @@ Pokemon.
 Note: Make sure to have the correct Gender ratio set up!
 ```
 
-### Congrat!
+### Congrats!
 YOU HAVE JUST COMPLETED YOUR FIRST ENTRALINK RNG ABUSE! :D

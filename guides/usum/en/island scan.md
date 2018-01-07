@@ -76,14 +76,14 @@ If one of these is not true right now, you need to start the guide over.  Moving
 1. Press `X` to open up the in game menu.
 2. Hold your game's cursor on the `bag` option.
 3. Watch the `Frame` counter on PCalc.
-  - When the `Frame` counter is close to your target frame, press `Start + Select` to pause the game.
-  - Press `Select` multiple times to slowly advance the frames to your target frame.
+    - When the `Frame` counter is close to your target frame, press `Start + Select` to pause the game.
+    - Press `Select` multiple times to slowly advance the frames to your target frame.
 4. Once you have reached your target frame, press and hold `A` to have PCalc unpause the game while you enter the bag.
 5. Find and use the `honey` item to start a wild encounter.
 6. If the Pokemon you ran into was not the Island Scan Pokemon, see how many frames off you were and adjust.
-  - You can do this by searching all frames for the Pokemon's IVs you did get. Check the frame range instead of timeline and search using the IVs of the Pokemon you got.
-  - After finding what frame you actually landed on, subtract or add as necessary from the delay and restart from the beginning.
-  - This should not happen too many times.
+    - You can do this by searching all frames for the Pokemon's IVs you did get. Check the frame range instead of timeline and search using the IVs of the Pokemon you got.
+    - After finding what frame you actually landed on, subtract or add as necessary from the delay and restart from the beginning.
+    - This should not happen too many times.
 
 ```
 Note: If you paused the game too early, you can press "Start" to unpause the game.

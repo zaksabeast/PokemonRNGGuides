@@ -71,19 +71,19 @@ Here's a little set up of how to do it fast for wild Pokemon:
 4. Enter the Pokemon's stats into RNG Reporter and find the frame of the Pokemon you encountered.
 
 5. Math time! Find the amount of frames you were off by:
-  - (Frame you pressed A) - (Frame you got from reporter)
-  - It'll be a negative result around 90% of the time, but that's normal.
+    - (Frame you pressed A) - (Frame you got from reporter)
+    - It'll be a negative result around 90% of the time, but that's normal.
 
 6. Add the number of frames you were off to your original frame.  
-  - If you had a negative number, subtract it from your original frame.  
-  - This new number is the new frame you should press 'A' on.
+    - If you had a negative number, subtract it from your original frame.  
+    - This new number is the new frame you should press 'A' on.
 
 7. Reload your state you did before in order to be able to continue your RNG.
 ```
 You can calibrate when you want. For fast targets (aka not going for millions frames) doing it NEAR your Shiny frame will help to have a good delay. Doing it too early could give you a delay too low around your frame, and cause you to calibrate again.
 ```
 8. If you didn't hit what you wanted after calibration, just retry the calibration part.
-  - You can use save-states done before to avoid any problems.
+    - You can use save-states done before to avoid any problems.
 
 9. After a few tries if you still can't hit anything double check your setup.
 

@@ -5,8 +5,8 @@ _Easy shinies in apricorn balls_
 
 ### Make sure you have the following
 - PCalc for your desired game
-  - [PCalc-sm](https://pokemonrng.com/downloads/pcalc/sm) (Sun/Moon)
-  - [PCalc-usum](https://pokemonrng.com/downloads/pcalc/usum) (Ultra Sun/Ultra Moon)
+  - [PCalc-SM](https://pokemonrng.com/downloads/pcalc/sm) (Sun/Moon)
+  - [PCalc-USUM](https://pokemonrng.com/downloads/pcalc/usum) (Ultra Sun/Ultra Moon)
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - The `honey` item
 - Have started an `Island Scan` and know the Pokemon you've scanned for
@@ -30,30 +30,30 @@ Open up 3DSRNGTool, then follow these instructions to set it up properly:
 
 #### In the upper right of 3DSRNGTool
 
-1. Type the `Init Seed` PCalc shows into the `Seed` box in 3DSRNGTool
-2. Change the `Game Version` dropdown to be the game you're currently playing
-3. Change `TSV` to be your game's TSV
-4. If you have the shiny charm, make sure the `Shiny Charm` box is checked
+1. Type the `Init Seed` PCalc shows into the `Seed` box in 3DSRNGTool.
+2. Change the `Game Version` dropdown to be the game you're currently playing.
+3. Change `TSV` to be your game's TSV.
+4. If you have the shiny charm, make sure the `Shiny Charm` box is checked.
 
 ```
-Note: You can find your TSV in PCalc by going into the party view with "start + right", then press "select + right" until you get to the screen that says "YOUR TSV".  That value is your TSV.
+Note: You can find your TSV in PCalc in the Game Info window. Press "Start + Up" to bring up the menu if it isn't already up. The TSV is where it says "YOUR TSV".
 ```
 
 #### On the left of 3DSRNGTool
 
-1. Click the `Wild RNG` tab
-2. Change the `Category` dropdown to say `Island Scan`
-3. Change the `Pokemon` dropdown to be the Pokemon you are targeting
+1. Click the `Wild RNG` tab.
+2. Change the `Category` dropdown to say `Island Scan`.
+3. Change the `Pokemon` dropdown to be the Pokemon you are targeting.
 
 #### On the right of 3DSRNGTool
 
-1. Follow the [timeline calibration guide](https://github.com/wwwwwwzx/3DSRNGTool/wiki/Gen7-Timeline-Calibration-(PokeCalcNTR-Only)) using the `NPC Count` PCalc shows for the number of NPCs
-2. You should now have a target frame you wish to hit
+1. Follow the [timeline calibration guide](https://github.com/wwwwwwzx/3DSRNGTool/wiki/Gen7-Timeline-Calibration-(PokeCalcNTR-Only)) using the `NPC Count` PCalc shows for the number of NPCs. Wait at least 30 seconds after bringing up the window to allow for the NPC counter to calibrate correctly.
+2. You should now have a target frame you wish to hit.
 
 
 #### In the middle of 3DSRNGTool
-1. Change the IVs to be the the Pokemon you want to RNG for
-2. If you want a shiny Pokemon, make sure the `Shiny Only` box is checked
+1. Change the IVs to be what you want for the Pokemon.
+2. If you want a shiny Pokemon, make sure the `Shiny Only` box is checked.
 
 ```
 Note: If you don't care about IVs, leave all of the ranges to be from 0-31.
@@ -73,16 +73,18 @@ If one of these is not true right now, you need to start the guide over.  Moving
 
 #### Hitting your target frame
 
-1. Press `X` to open up the in game menu
-2. Hold your game's cursor on the `bag` option
-3. Watch the `Frame` counter on PCalc
-  - When the `Frame` counter is close to your target frame, press `start + select` to pause the game
-  - Press `select` to slowly advance the frames to your target frame
-4. Once you have reached your target frame, press and hold `A` to have PCalc unpause the game while you enter the bag
-5. Find and use the `honey` item to start a wild encounter
-6. If the Pokemon you ran into was not the Island Scan Pokemon, try again
-  - This should not happen too many times
+1. Press `X` to open up the in game menu.
+2. Hold your game's cursor on the `bag` option.
+3. Watch the `Frame` counter on PCalc.
+  - When the `Frame` counter is close to your target frame, press `Start + Select` to pause the game.
+  - Press `Select` multiple times to slowly advance the frames to your target frame.
+4. Once you have reached your target frame, press and hold `A` to have PCalc unpause the game while you enter the bag.
+5. Find and use the `honey` item to start a wild encounter.
+6. If the Pokemon you ran into was not the Island Scan Pokemon, see how many frames off you were and adjust.
+  - You can do this by searching all frames for the Pokemon's IVs you did get. Check the frame range instead of timeline and search using the IVs of the Pokemon you got.
+  - After finding what frame you actually landed on, subtract or add as necessary from the delay and restart from the beginning.
+  - This should not happen too many times.
 
 ```
-Note: If you paused the game too early, you can press "start" to unpause the game.
+Note: If you paused the game too early, you can press "Start" to unpause the game.
 ```

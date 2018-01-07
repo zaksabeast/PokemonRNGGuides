@@ -43,6 +43,7 @@ If using a Ditto and genderless Pokemon, the Ditto will be the female.
 
 
 Note about breeding for Rockruff:
+
     - If its ability is Own Tempo, then the ability can either be 1, 2, or H, it won’t make a difference.
     - If its ability is not Own Tempo then its abilities are [1] Keen Eye, [2] Vital Spirit, or [H] Steadfast.
 

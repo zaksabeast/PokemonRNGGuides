@@ -49,14 +49,14 @@ The "1330" is my seed for this run of FRLG. It changes after pressing A / Start 
 
 - Now it's time to find and try to hit your target frame. Select one of the frames and unpause your game.
 
-#### RNG process
+### RNG process
 
 You'll have to get to the menu as fast as possible and choose the Pokemon with Sweet Scent. Then pause again with the cursor hovering over the move.
 ```
 Don't hesitate to overuse save states! It's really important! This way you can go back to lower frames, and adjust correctly since calibration will be necessary EVERY TIME!
 ```
 
-##### Calibration
+#### Calibration
 
 Now it's time for the calibration. In Gen 3, you'll never hit what you want at the first try. Calibration is always necessary.
 

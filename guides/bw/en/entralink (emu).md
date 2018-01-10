@@ -5,6 +5,8 @@ Things You Will Need:
 - [Latest Build of RNG Reporter](https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
 - [DeSmuMe dev build](https://sourceforge.net/projects/desmume/files/desmume/0.9.11/desmume-0.9.11-win32-dev.zip/download)
 - The lua .dlls for DeSmuMe
+    - [x86 .dll](https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
+    - [x64 .dll](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
 - Pokemon Black or White (You will need to dump this yourself)
 - [The BW Entralink Scripts for your language](http://pokerng.forumcommunity.net/?t=56443955)
 - [runasdate](https://runasdate.en.softonic.com/)
@@ -25,7 +27,8 @@ Note: /r/ PokemonTrades doesn't allow injection of Entralink Pokemon. Please mak
 ### Finding a Frame/Target Seed/IVs
 1. Open RNG Reporter and go to Generation 5 Time Finder
 
-2. Set up Time Finder like [so.](https://snag.gy/ne0CK3.jpg)
+2. Set up Time Finder like this
+![](https://i.snag.gy/ne0CK3.jpg)
 
 3. Change Delay/Frame as you see fit
 
@@ -78,7 +81,7 @@ at once.
 
 4. When you hit your IVRNG Frame, interact with your target Pokemon immediately. Make a save state and enter the battle.
 
-5.  If you did it correctly, you will get the correct IVs on your target. Yay!
+5. If you did it correctly, you will get the correct IVs on your target. Yay!
 
 6. To get your Nature, you can either move onto Step 6 or reload the Save State and re-catch the Pokemon. **Make sure to hit a different PIDRNG Frame each time or you will end up getting the same nature**
 

@@ -7,7 +7,6 @@ _Original guide by /u/OPBreloom_
   - [VBA-RR v23.6 (svn 480)](https://code.google.com/archive/p/vba-rerecording/downloads)
   - [GBA bios file](https://encrypted.google.com/search?hl=en&q=gba%20bios)
   - [Latest Version of RNGReporter](https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
-  - [Runasdate x32](http://www.nirsoft.net/utils/run_as_date.html)
   - A Ruby or Sapphire ROM with a new game
   - [Ruby/Sapphire Lua Scripts](https://projectpokemon.org/home/forums/topic/15187-gen-3-lua-scripts/)
 
@@ -20,9 +19,8 @@ Before attempting this make sure VBA has:
 
 You can find a specific PID and then TID/SID RNG to make that PID always be shiny. This is useful for making a specific frame and IV spread to always be shiny instead of having to manually search and possibly wait a very long time to find one.
 
-This guide will be focusing on making the eggs received from Pokemon Box hatch shiny for an example, but choosing any PID will do.
-
-1. To find the PID of the egg you want to make shiny, open up PkHeX, load the save on there and click on the egg to check the PID.
+1. Find a PID that you would like to make shiny.
+    - To find the PID of the egg you want to make shiny, open up PkHeX, load the save on there and click on the egg to check the PID.
     - To find a specific PID to make shiny, search for a frame for the Pokemon you want to be shiny instead. Do not search for shiny only frames, just the IVs and/or nature wanted.
 
 2. Open Pandora's Box within RNG Reporter. This can be found under Gen 3 Tools in the upper left.
@@ -56,11 +54,3 @@ Note: It is not suggested to RNG both for TID and SID as this is more difficult 
     - (target frame) - (delay) = frame to hold A and unpause on
 
 8. Reload your game's savestate and repeat this process with your new target frame until the TID/SID combo is correct.
-
-## Hatching the Shiny Pokemon Box Egg (Optional)
-
-1. Play the game until you get to where you can trade between the two saves.
-
-2. Trade the egg from the original save to the save you TID/SID RNG'd, and hatch the egg.
-
-Congratulations!  Your egg should now be shiny!

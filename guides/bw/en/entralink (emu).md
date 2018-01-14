@@ -13,10 +13,6 @@ Things You Will Need:
 - A save with access to the C-Gear (And with the profile/calibration set up)
 - [Suloku's Gen V Save Tool](https://projectpokemon.org/home/forums/topic/37801-gen-5-generation-5-save-tool-entralink-medals-join-avenue-and-others-not-in-pokegen/)
 
-```
-Note: /r/ PokemonTrades doesn't allow injection of Entralink Pokemon. Please make sure you are aware of trading policies in the community that you are in.
-```
-
 ## The RNG
 
 ### Choose an RNG Target

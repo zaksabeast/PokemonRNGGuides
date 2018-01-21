@@ -10,7 +10,7 @@ Things You Will Need:
 - Pokemon Black or White (You will need to dump this yourself)
 - [The BW Entralink Scripts for your language](http://pokerng.forumcommunity.net/?t=56443955)
 - A save with access to the C-Gear (And with the profile/calibration set up)
-- [Suloku's Gen V Save Tool](https://projectpokemon.org/home/forums/topic/37801-gen-5-generation-5-save-tool-entralink-medals-join-avenue-and-others-not-in-pokegen/)
+- [Suloku's Gen V Save Tool (optional)](https://projectpokemon.org/home/forums/topic/37801-gen-5-generation-5-save-tool-entralink-medals-join-avenue-and-others-not-in-pokegen/)
 - [runasdate (optional)](https://runasdate.en.softonic.com/)
 
 ## The RNG

@@ -15,7 +15,7 @@ Things You Will Need:
 
 ## The RNG
 
-### Choose an RNG Target
+### Choose an RNG Target (Optional)
 1. Open Suloku's Gen V Save Tool
 
 2. Add the Pokemon you want to RNG

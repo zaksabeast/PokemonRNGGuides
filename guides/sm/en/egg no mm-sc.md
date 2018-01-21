@@ -124,7 +124,7 @@ With PCalc you can check which frame you are on by looking at your egg seeds ing
 
 1. Once you have determined the number of NPCs, the next step is to RNG the egg to match the TSV you are wanting.
 
-2. Check Shiny Only box. Then click Calculate and choose any one of the results. First one is preferred.
+2. Check Shiny Only box, then click Calculate and choose any one of the results. The first frame is usually preferred due to less waiting time.
 
 3. Advance to that frame and when you land on it, Press A to accept egg.
 

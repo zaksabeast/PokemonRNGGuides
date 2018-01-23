@@ -8,7 +8,9 @@ Note: This method is different than using no Masuda or without having the Shiny 
 
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
     - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
-- [PCalc for Gen 6](https://gbatemp.net/threads/pokecalcntr-for-gen-6-the-rng-tool-suite-for-the-3ds.473221/)
+- PCalc for Gen 6
+    - [PCalc-oras](https://pokemonrng.com/downloads/pcalc/oras)
+    - [PCalc-xy](https://pokemonrng.com/downloads/pcalc/xy)
 
 ## Step 1: Set Up 3DSRNGTool
 
@@ -81,7 +83,7 @@ Note that the Consider Delay counter will change to 0 for rejecting the egg.
 
 ### For Target Frame:
 
-  - Ingame, talk to the daycare man until you get to a specific dialogue.
+  - In game, talk to the daycare man until you get to a specific dialogue.
     - For accepting the egg: “You’ll be wanting it, won’t you?” (ORAS) or “You do want it, don’t you?” (XY) with the selection of Yes or No.  
       - Make sure pointer is on Yes and wait to reach your target frame.
     - For rejecting the first egg: “Well then, I'll hang on to it. Thank you!” (XY/ORAS) after selecting No from previous dialogue.

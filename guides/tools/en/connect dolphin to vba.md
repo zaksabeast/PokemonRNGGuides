@@ -3,7 +3,7 @@ First, be aware that this link is very unstable. It *does* work but not 100% of 
 ## Here's what you need
 
 * [VBA-M](https://sourceforge.net/projects/vbam/)
-* Dolphin 4.0-7010 (other versions *may* work, dolphin comes out with new versions multiple times a week. The stable version 4.0.2 does **not** work)
+* Dolphin 5 (other versions *may* work, dolphin comes out with new versions multiple times a week)
 * GBA bios ([responsible for the nintendo logo on startup screen](http://imgur.com/byn7Kfb))
 * Obviously a GBA and GC game that can connect
 Here are the settings you'll need to change in VBA-M.

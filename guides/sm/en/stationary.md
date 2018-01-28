@@ -22,6 +22,10 @@
   - Starters: SM - "Having accepted one another, you'll surely be friends for life."
     - USUM - "You chose xxx!"
 
+![](https://imgur.com/wmpzsKN)
+
+Make sure to stand exactly like the image above or the timeline may be off resulting in missing your target frame.    
+
 ## Step 1: Set Up 3DSRNGTool
 
 ### In the upper right of 3DSRNGTool:

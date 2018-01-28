@@ -31,7 +31,7 @@ Do not input the TSV in the upper right. YOUR TSV must be used in the upper righ
 ```
 ### For Parents Information:
 - Fill it out according to the parents you are using.
-    - Make sure the Masuda box is not checked. If the parents are of different languages you cannot use this method.
+    - Make sure the Masuda Method box is not checked. If the parents are of different languages you cannot use this method.
 
 ```
 Note: The region of the Pokemon does not affect anything, it is only the language of the Pokemon that matters for Masuda Method.
@@ -56,14 +56,14 @@ Note about breeding for Rockruff:
 
 5. Input 0 as starting frame.
 
-6. Then click Calculate.
+6. Then click "Calculate".
 
 ## Step 2: Finding a Target Frame
 You can choose any of the given frames, but lower frames are generally better due to less egg accepts/rejects.
 
-1. Right click on the row for the one you want and click Set as Target Frame.
+1. Right click on the row for the one you want and click "Set as Target Frame".
 
-2. Then click on Shortest Path and Calculate.
+2. Then click on "Shortest Path" and "Calculate".
     - This will automatically calculate the shortest path for least number of accepts and rejects for your target egg.
 
 3. The very last egg you are going to accept will be your target egg. Do NOT accept this egg!
@@ -106,7 +106,7 @@ With PCalc you can check which frame you are on by looking at your egg seeds ing
 
 6. Input the frame you are currently on in the frame range. You can find this in the PCalc Game Info window (`Start + Up`) and then press `Start + Select` to pause the game.
 
-7. Click Calculate, and then advance to any of the frames that are listed that have a "-" in the Mark column.
+7. Click "Calculate", and then advance to any of the frames that are listed that have a "-" in the Mark column.
     - These frames are considered Safe Frames and can be used to accurately predict the frames you can land on.
 
 8. You can advance frames by pressing `Start` to unpause the game, then pausing again with `Start + Select` when close and slowly advance by pressing Select while paused.
@@ -114,7 +114,7 @@ With PCalc you can check which frame you are on by looking at your egg seeds ing
 
 ## Step 3(b): Verifying Timeline
 
-1. Input your current frame after reaching a safe frame and then check “Create Timeline” and Calculate.
+1. Input your current frame after reaching a safe frame and then check “Create Timeline” and "Calculate".
   - Once you have landed on a safe frame and have used that frame to create a Timeline, do not change it. Otherwise the Timeline will be off and you'll have to restart from Step 3(a).
 
 2. Press `Select` on your 3DS to advance several times and compare to what the next frames are given in 3DSRNGTool.
@@ -125,7 +125,7 @@ With PCalc you can check which frame you are on by looking at your egg seeds ing
 
 1. Once you have determined the number of NPCs, the next step is to RNG the egg to match the TSV you are wanting.
 
-2. Check Shiny Only box, then click Calculate and choose any one of the results. The first frame is usually preferred due to less waiting time.
+2. Check Shiny Only box, then click "Calculate" and choose any one of the results. The first frame is usually preferred due to less waiting time.
 
 3. Advance to that frame and when you land on it, Press A to accept egg.
 

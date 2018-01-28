@@ -15,12 +15,12 @@
   - Starters - USUM is much more stable
 
 ## Final Screens
-  - Tapus: Tapu ko-ko-ko-kooo!!! / Ta-pu-leeeh! / Ta-pu-loooo! / Ta-pu-fiiieee!
-  - In-game gifts/Fossils/Cosmog/Mystery Gift: You received xxx!
+  - Tapus: _Tapu ko-ko-ko-kooo!!!_ / _Ta-pu-leeeh!_ / _Ta-pu-looooo_ / _Ta-pu-fiiieee!_
+  - In-game gifts/Fossils/Cosmog/Mystery Gift: "You received xxx!""
     - For Mystery Gift, NPCs should be 6 if standing directly in front of the delivery man. NPCs are 4 if standing behind him.
-  - Necrozma: Linooo!
-  - Starters: SM - Having accepted one another, you'll surely be friends for life.
-    - USUM - You chose xxx!
+  - Necrozma: _Linooo!_
+  - Starters: SM - "Having accepted one another, you'll surely be friends for life."
+    - USUM - "You chose xxx!"
 
 ## Step 1: Set Up 3DSRNGTool
 
@@ -47,7 +47,7 @@
 
 5. In the game, advance to the final screen for the Pokemon you are RNGing for. Input the frame you are currently on in the frame range. You can find this in the PCalc Game Info window (`Start + Up`) and then press `Start + Select` to pause the game.
 
-6. Click Calculate, and then advance to any of the frames that are listed that have a "-" in the Mark column.
+6. Click "Calculate", and then advance to any of the frames that are listed that have a "-" in the Mark column.
     - These frames are considered Safe Frames and can be used to accurately predict the frames you can land on.
 
 7. You can advance frames by pressing `Start` to unpause the game. You can then pause again when close to the frames given earlier with `Start + Select` and then slowly advance by pressing `Select` while paused.
@@ -55,7 +55,7 @@
 
 ## Step 2(b): Verifying frame advancements
 
-1. Input your current frame after reaching a safe frame and then check “Create Timeline” and Calculate.
+1. Input your current frame after reaching a safe frame and then check “Create Timeline” and "Calculate".
   - Once you have landed on a safe frame and have used that frame to create a Timeline, do not change it. Otherwise the Timeline will be off and you'll have to restart from Step 2.
 
 2. Press `Select` on your 3DS to advance several times and compare to what the next frames are given in 3DSRNGTool.
@@ -66,7 +66,7 @@
 
 1. Once you have determined the number of NPCs and have a correct timeline, the next step is to actually RNG the Pokemon.
 
-2. Adjust filters to what you are wanting, then click Calculate and choose any one of the results you want. If there are no results, increase the time in Create Timeline.
+2. Adjust filters to what you are wanting, then click "Calculate" and choose any one of the results you want. If there are no results, increase the time in "Create Timeline".
 
 3. Advance to that frame and when you land on it, Press A to obtain the Pokemon.
 
@@ -76,7 +76,7 @@ Congrats! You should now have the Pokemon you wanted. If not, you can reset the 
 
 1. Find out what frame you actually landed on.
   - Click the reset button in Filters and then input the IVs of the Pokemon you got.
-  - Click on Frame Range then Calculate.
+  - Click on Frame Range then "Calculate".
   - If there are no results double check that all info, including Initial Seed, is correct.
 
 2. Adjust delay as necessary.

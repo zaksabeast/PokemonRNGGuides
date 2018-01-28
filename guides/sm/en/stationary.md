@@ -24,7 +24,7 @@
 
 ![](https://imgur.com/wmpzsKN)
 
-Make sure to stand exactly like the image above or the timeline may be off resulting in missing your target frame.    
+For Mystery Gift Pokemon, make sure to stand exactly like the image above or the timeline may be off resulting in missing your target frame.    
 
 ## Step 1: Set Up 3DSRNGTool
 

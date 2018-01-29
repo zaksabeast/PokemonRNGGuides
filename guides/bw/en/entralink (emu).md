@@ -1,5 +1,4 @@
 # Entralink (Emulator)
-_Original Guide by /u/Zapdos44_
 
 Things You Will Need:
 - [Latest Build of RNG Reporter](https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)

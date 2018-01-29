@@ -17,3 +17,7 @@ Describe the RNG - stationary, shadow, wild, egg, etc.
 ## Language
 
 Please list the language your guide is written in.
+
+## Notes
+
+If needed, please make small notes here for extra details.

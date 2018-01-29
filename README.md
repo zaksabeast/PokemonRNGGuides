@@ -47,3 +47,7 @@ Please make a new branch titled `<game>/<language>/<type>` and add your guide th
 When a pull request is made, this allows other people to review the guide, make sure it looks clean and is clear to understand.  **At least one person needs to approve the guide before the pull request is merged**.
 
 Do not be afraid of comments or critiques on your guide.  We all want the best possible guides for our community. :)
+
+### Credits:
+- PCalc mod team - Shiny_Sylveon, CptnObvious, wwwwwwzx, Admiral_Fish, Subject21_J, Vovvy, Vladcik, Bumba, Real.96 FrostByte_Manuel
+- /u/Zapdos44, /u/OPBreloom, and /u/Upper90175 for being the first to give guides to this repo to help get it off the ground

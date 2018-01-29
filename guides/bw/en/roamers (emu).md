@@ -1,5 +1,4 @@
 # Gen 5 Roamers (Emulator)
-_Original Guide by /u/Zapdos44_
 
 ## Preparation
 

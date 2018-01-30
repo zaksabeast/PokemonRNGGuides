@@ -49,5 +49,5 @@ When a pull request is made, this allows other people to review the guide, make 
 Do not be afraid of comments or critiques on your guide.  We all want the best possible guides for our community. :)
 
 ### Credits:
-- PCalc mod team - Shiny_Sylveon, CptnObvious, wwwwwwzx, Admiral_Fish, Subject21_J, Vovvy, Vladcik, Bumba, Real.96 FrostByte_Manuel
+- PCalc mod team - Shiny_Sylveon, CptnObvious, wwwwwwzx, Admiral_Fish, Subject21_J, Vovvy, Vladcik, Bumba, Real.96, FrostByte_Manuel, and EzPzStreamz
 - /u/Zapdos44, /u/OPBreloom, and /u/Upper90175 for being the first to give guides to this repo to help get it off the ground

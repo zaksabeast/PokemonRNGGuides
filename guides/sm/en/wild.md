@@ -13,11 +13,10 @@ In the game you'll want to have "honey" to initiate the wild encounter.
 Note: You can get the "honey" item in any store after clearing three trials.
 ```
 
-```
 Before continuing with the guide it is recommended to be in the place you wish to RNG.
 
 For Sun/Moon games, here is a list of [encounter slots and 0 NPC spots](http://pokerng.forumcommunity.net/?t=59613020).
-```
+
 
 ## Step 1: Set Up 3DSRNGTool
 
@@ -66,7 +65,7 @@ Note: If you are in an area with 0 NPCs, there will not be a "Safe F Only" optio
 ## Step 2(b): Verifying frame advancements
 
 1. Input your current frame after reaching a safe frame and then check “Create Timeline” and "Calculate".
-  - Once you have landed on a safe frame and have used that frame to create a Timeline, do not change it. Otherwise the Timeline will be off and you'll have to restart from Step 2.
+    - Once you have landed on a safe frame and have used that frame to create a Timeline, do not change it. Otherwise the Timeline will be off and you'll have to restart from Step 2.
 
 2. Press `Select` on your 3DS to advance several times and compare to what the next frames are given in 3DSRNGTool.
     - If they match then you have the correct number of NPCs.
@@ -80,7 +79,11 @@ Note: If you are in an area with 0 NPCs, there will not be a "Safe F Only" optio
 
 3. Advance to that frame and when you land on it, Press A to open the bag. Choose to use "Honey" and then wait for the animation to finish and initiate the battle.
 
-Congrats! You should now have the Pokemon you wanted. If not, you can reset the game and try again.
+Congrats! You should now have the Pokemon you wanted. If not, you can reset the game or run away from the battle, and try again.
+
+```
+Note: You can view the wild Pokemon's info using PCalc. Press `Start + Left` to bring up the Wild View window.
+```
 
 ## If you did not obtain the Pokemon you wanted
 

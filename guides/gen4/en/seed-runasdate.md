@@ -10,7 +10,7 @@ runasdate is a tool developped by nirsoft that allows to load any program with a
 
 You can download it [here](https://www.nirsoft.net/utils/run_as_date.html), but take care to choose the right version: If you have a desmume 64-bits or 32-bits, you'll have to download the matching runasdate. It's really important.
 
-### How to setup runasdate?
+## How to setup runasdate?
 
 Once downloaded and launched, you should have this windows : 
 ![](https://i.imgur.com/HeUoPmv.png)
@@ -22,7 +22,7 @@ After that, just hit "Run" and your desmume should be launched.
 
 Congratulations, you've controled the time ! Now it's time to hit the wanted Seed.
 
-#### Hitting the target seed
+### Hitting the target seed
 
 On your desmume you just faked date and time, load your script.
 ```

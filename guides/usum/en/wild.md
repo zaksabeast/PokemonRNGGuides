@@ -29,13 +29,21 @@ For Sun/Moon games, here is a list of [encounter slots and 0 NPC or the least nu
 
 4. Choose the "Wild" tab then the Category "Normal Wilds" or "UBs" if going for an Ultra Beast. You can choose "Location" and then from the "Slot" dropdown the Pokemon you are wanting to RNG to have its info automatically filled in for you.
 
-```
-If you are using a Pokemon with Synchronize in the first slot of your party, choose its nature from the dropdown list for "Synch Nature". Failure to do this if the lead Pokemon has Synchronize will result in frames not being correct.
+5. If you are using a Pokemon with Synchronize in the first slot of your party, choose its nature from the dropdown list for "Synch Nature". Failure to do this if the lead Pokemon has Synchronize will result in frames not being correct.
 
-For wild Pokemon, Synchronize has a 50% chance of having the Pokemon you encounter be the same nature as the lead Pokemon with Synchronize. If you are aiming for a specific nature, having a Pokemon with Synchronize in the first slot of your party will greatly improve your chances of finding frames.
+```
+For wild Pokemon, Synchronize has a 50% chance of having the Pokemon you encounter be the same nature as the lead Pokemon with Synchronize. If you are aiming for a specific nature, having a Pokemon with Synchronize in the first slot of your party will greatly improve your chances of finding target frames.
 ```
 
-5. Check "Day" or "Night" depending on which it is in your game. If it is raining in the game, also check the "Raining" box. Not doing so will result in timeline always being off.
+6. Check "Day" or "Night" depending on which it is in your game. If it is raining in the game, also check the "Raining" box. Not checking the "Raining" box when it is raining will result in timeline always being off because rain affects the RNG.
+
+## Regarding Timeline and NPCs
+
+If you are in an area with an NPC count of one or more, please follow the "Step 2 (with NPCs) Create a Timeline" to be able to accurately predict what frames you can actually land on.
+
+If you are in an area with 0 NPCs, please skip to "Step 2 (With 0 NPCs):" because the RNG procedures are different, and no timeline is needed.
+
+In the Gen 7 games each NPC has an affect on the RNG frames. This is why the frames will not always advance by a constant number. In general, each NPC advances the frames by one, so an area with four NPCs will generally advance five frames each time. There is also Rotom and your character blinks that affect the frames advanced. 3DSRNGTool can accurately predict all of this if the timeline is created properly and allow you to land on your target frame without skipping over it due to NPCs.
 
 ## Step 2 (with NPCs) Create a Timeline:
 
@@ -70,6 +78,10 @@ Note: If you are in an area with 0 NPCs, there will not be a "Safe F Only" optio
 ## Step 3: Obtaining the wanted Pokemon
 
 1. Once you have determined the number of NPCs and have a correct timeline, the next step is to actually RNG the Pokemon.
+
+```
+Note: Do not mess with filters while creating a timeline. You should not have touched anything in filters (except to check the "Safe F Only" box) up to this point. Otherwise if you have messed with filters, restart from the beginning.
+```
 
 2. Adjust filters to what you are wanting, then click "Calculate" and choose any one of the results you want. If there are no results, increase the time in "Create Timeline". You can also restart the game to obtain a new initial seed. (Make sure to restart from the beginning of the guide if you do restart the game.)
 

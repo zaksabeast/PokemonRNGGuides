@@ -1,6 +1,7 @@
 # Transporter EXP to Nature Conversion Table
+Nature values based on last two digits of EXP
 
-| Nature    | EXP Last two digits |
+| Nature    |||||
 | :-------- | :- | :- | :- | :- |
 | Hardy		| 00 | 25 | 50 | 75 |
 | Lonely	| 01 | 26 | 51 | 76 |

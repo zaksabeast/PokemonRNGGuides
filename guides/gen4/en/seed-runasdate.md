@@ -14,6 +14,7 @@ You can download it [here](https://www.nirsoft.net/utils/run_as_date.html), but 
 
 Once downloaded and launched, you should have this windows : 
 ![](https://i.imgur.com/HeUoPmv.png)
+
 This screenshot show runsadate once well configured. This means you'll have to uncheck ANY box, and to set to Absolute day/time (but should be set by default).
 
 You'll never have to change that after. This is the universal runasdate configuration for RNG (Gen 3, 4 or 5), so you're almost done ! Now you just have to select the program you want to fake the date/time, with the "Browse..." button, and to set the day/time you've got in order to hit your seed.

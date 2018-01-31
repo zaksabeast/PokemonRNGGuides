@@ -1,5 +1,6 @@
-# Transporter EXP to Nature Conversion Table
-Nature values based on last two digits of EXP
+# Transporter EXP to Nature Conversion Table(VC)
+
+* This only affects VC games for the 3ds(RBY/GSC)
 
 | Nature    |||||
 | :-------- | :- | :- | :- | :- |

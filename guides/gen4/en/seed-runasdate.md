@@ -27,7 +27,7 @@ Congratulations, you've controled the time ! Now it's time to hit the wanted See
 
 On your desmume you just faked date and time, load your script.
 ```
-Note : You'll have to use the script that shows the delay and the seeds (initial + current). You can find it [here](http://pokerng.forumcommunity.net/?t=56443955&p=396434984) and take care to download the Lua Script and not the Ram Watch !
+Note : You'll have to use the script that shows the delay and both seeds (initial + current). You can find it [here](http://pokerng.forumcommunity.net/?t=56443955&p=396434984) and take care to download the Lua Script and not the Ram Watch !
 ```
 Go as fast as possible to the "Continue" screen and pause your emulator (Ctrl + P). Before continuing, you should do the maximum save states as possible in order to have safe backup in case you miss your delay. After, you can un-pause your game and let the game run in order to get close as possible to your target seed. 
 

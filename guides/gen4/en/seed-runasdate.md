@@ -1,27 +1,27 @@
-# Seed RNG (runasdate edition)
+# Seed RNG (RunAsDate edition)
 _How to control the time without any difficulty_
 ```
-Important note : This guide assumes that you have found your Target Seed, and that you know how to do it. This guide is just explaining how to hit your Seed. Write it somewhere with the delay necessary.
+Important note : This guide assumes that you have found your Target Seed, and that you know how to search for the wanted Seed. This guide is just explaining how to hit your Seed. It is necessary to have your target seed and delay before following this guide.
 ```
 
-## What is runasdate?
+## What is RunAsDate?
 
-runasdate is a tool developped by nirsoft that allows to load any program with a specified fake time. This tool is really usefull for Gen 4 RNG, and can be your best ally in order to hit your Seed without too much difficulty. Of course there are other ways, but this guide will only focus on runasdate.
+RunAsDate is a tool developed by nirsoft that allows any program to load with a set time specified by the user. This tool is really usefull for Gen 4 RNG, and can be your best ally in order to hit your Seed without too much difficulty. Of course there are other ways, but this guide will only focus on RunAsDate.
 
-You can download it [here](https://www.nirsoft.net/utils/run_as_date.html), but take care to choose the right version: If you have a desmume 64-bits or 32-bits, you'll have to download the matching runasdate. It's really important.
+You can download it [here](https://www.nirsoft.net/utils/run_as_date.html), but take care to choose the right version: If you have a desmume 64-bits or 32-bits, you'll have to download the matching RunAsDate. It's really important.
 
-## How to setup runasdate?
+## How to setup RunAsDate?
 
-Once downloaded and launched, you should have this windows : 
+Once downloaded and launched, you should have this window: 
 ![](https://i.imgur.com/HeUoPmv.png)
 
-This screenshot show runsadate once well configured. This means you'll have to uncheck ANY box, and to set to Absolute day/time (but should be set by default).
+This screenshot shows runsadate once well configured. This means you'll have to uncheck ANY box, and to set to Absolute day/time (but should be set by default). Selecting 'Relative day/time' will not freeze the time and so you'll have no advantage to use RunAsDate.
 
-You'll never have to change that after. This is the universal runasdate configuration for RNG (Gen 3, 4 or 5), so you're almost done ! Now you just have to select the program you want to fake the date/time, with the "Browse..." button, and to set the day/time you've got in order to hit your seed.
+You'll never have to change that after. This is the universal RunAsDate configuration for RNG (Gen 3, 4 or 5), so you're almost done ! Now you just have to select the program you want to fake the date/time, with the "Browse..." button, and to set the day/time you've got in order to hit your seed.
 
 After that, just hit "Run" and your desmume should be launched.
 
-Congratulations, you've controled the time ! Now it's time to hit the wanted Seed.
+Congratulations, you've controlled the time! Now it's time to hit the wanted Seed.
 
 ### Hitting the target seed
 
@@ -42,5 +42,6 @@ Really often, even if you hit the RIGHT delay, you'll find that your delay is no
 
 It's not an error from your part, and is related to odd / even numbers. Nothing too hard to fix ! You have two solutions in order to hit your right seed :
 
-* Changing the year : This is a simple method with runasdate. You just have to close your emulator (assuming you did enough saves states, and that's why it was important to do a LOT of them), and change the year in runasdate from +/- 1 year. Take care through, because the delay will of course change to +/-1 from your original delay ! You can verify the new delay with RNG Reporter in the "seed to time" tab. Once you've adjusted everything, relaunch your desmume with runasdate and load a state, and redo the process.
-* Load a GBA game : Doing that will just switch odd / even seed and so will correct this problem, making it easier since it's just a simple configuration and no new delay to hit again.
+  * Changing the year : This is a simple method with RunAsDate. You just have to close your emulator (assuming you did enough saves states, and that's why it was important to do a LOT of them), and change the year in RunAsDate from +/- 1 year. Take care through, because the delay will of course change to +/-1 from your original delay ! You can verify the new delay with RNG Reporter in the "seed to time" tab. Once you've adjusted everything, relaunch your desmume with RunAsDate and load a state, and redo the process.
+
+  * Load a GBA game : Doing that will just switch odd / even seed and so will correct this problem, making it easier since it's just a simple configuration and no new delay to hit again.

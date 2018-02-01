@@ -1,7 +1,6 @@
 # Transporter EXP to Nature Conversion Table(VC)
 
-* This only affects VC games for the 3ds(RBY/GSC)
-* Nature values based on last two digits of EXP
+When transporting pokemon from VC games for the 3ds(RBY/GSC) up to bank, the nature is based on last two digits of each Pokemon's EXP. The following table has each nature and the corresponding values.
 
 | Nature    |||||
 | :-------- | :- | :- | :- | :- |

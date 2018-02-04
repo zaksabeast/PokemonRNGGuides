@@ -41,7 +41,7 @@ If you are wanting to RNG a Mystery Gift (or Event) Pokemon instead, follow the 
 ```
 For gift Pokemon, Synchronize has a 100% chance of having the Pokemon obtained be the same nature as the lead Pokemon with Synchronize. If you are aiming for a specific nature, having a Pokemon with Synchronize in the first slot of your party will greatly improve your chances of finding target frames since every frame will have the nature you are wanting.
 
-The gift Eevee egg is an exception and Synchronize has no effect on its nature.
+The gift Eevee egg and the move Pikachu gift are exceptions. Synchronize has no effect on their natures.
 ```
 
 ## Regarding Timeline and NPCs
@@ -90,7 +90,7 @@ Note: Do not mess with filters while creating a timeline. You should not have to
 
 2. Adjust filters to what you are wanting, then click "Calculate" and choose any one of the results you want. If there are no results, increase the time in "Create Timeline".
 
-3. Advance to that frame and when you land on it, Press A to obtain the Pokemon (or interact if that's the final screen).
+3. Advance to that frame and when you land on it, Press A to obtain the Pokemon or begin a battle with the Pokemon.
 
 Congrats! You should now have the Pokemon you wanted. If not, you can reset the game and try again.
 
@@ -116,7 +116,7 @@ Make sure to exit Festival Plaza approximately a thousand frames before your tar
 ```
 
 
-5. Advance to your target frame and when you land on it, Press A to obtain the Pokemon (or interact if that's the final screen).
+5. Advance to your target frame and when you land on it, Press A to obtain the Pokemon or begin a battle with the Pokemon.
 
 Congrats! You should now have the Pokemon you wanted. If not, you can reset the game and try again.
 

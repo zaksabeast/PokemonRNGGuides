@@ -58,3 +58,5 @@ In the Gen 7 games each NPC has an affect on the RNG frames. This is why the fra
 ```
 Note: Do not mess with filters while creating a timeline. You should not have touched anything in filters (except to check the "Safe F Only" box) up to this point. Otherwise if you have messed with filters, restart from the beginning.
 ```
+
+If you are going for a target frame with a long wait time, it is advised to recheck the timeline every once in awhile to make sure that the number of NPCs did not change. Not all NPCs will influence the RNG at once, which is why waiting 30 seconds to a minute or longer for PCalc to calibrate the number of NPCs correctly is necessary. Checking that the timeline still matches a couple minutes later makes sure that time was not wasted waiting for a frame that could not be landed on due to fluctuating NPCs.

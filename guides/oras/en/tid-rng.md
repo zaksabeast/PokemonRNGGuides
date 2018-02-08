@@ -11,7 +11,7 @@ This will delete the current save file and begin the game at the language select
  
 ### Tools
 - [PCalc](https://gbatemp.net/threads/pokecalcntr-for-gen-6-the-rng-tool-suite-for-the-3ds.473221/) for your version of the game
-    - Make sure your game is updated to 1.4 for Pcalc to work
+    - Make sure your game is updated to 1.4 for PCalc to work
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases).
     - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
  - (Optional) A network connection

@@ -54,7 +54,7 @@ Every time `no` is selected when confirming name, one frame advancement happens.
 - If the target frame is too high or the TID/SID/TSV combination is not possible on your seed then reboot the system to start over with a different seed
 	- Rosalina can quickly reboot the system by pressing `L+down+select` and selecting the reboot option
 
-``` Note: Soft reseting the game will hard lock the system!```
+``` Note: Soft resetting the game will hard lock the system!```
 
 In RNG Helper window fill in the starting and ending frame. The speed of the bot will be dependent on the stability of the 3ds to your computer. Increase or decrease the speed of the bot to your liking. At this point you can use the bot to advance the frames, or do it manually. The bot will stop at 1 frame before the target frame. From there just name your character and confirm the selection. Wait until you can control your character to check if you got your tid/sid/tsv correct.
 

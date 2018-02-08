@@ -22,7 +22,7 @@ This will delete the current save file and begin the game at the language select
     - Seed and TSV can be blank 
 - In the ID tab fill in your desired TID,SID or TSV.
 - 3DSRNGTOOL can search for multiple numbers in part or in full.
-	- Finding a specific TID/SID/TSV combintation will be very rare. It is advise to only RNG for one or the other.
+	- Finding a specific TID/SID/TSV combination will be very rare. It is advise to only RNG for one or the other.
 	
 ![](https://i.imgur.com/ZchDZmq.png)
 
@@ -51,7 +51,7 @@ Every time `no` is selected when confirming name, one frame advancement happens.
   - This information can be manually imputed
 - Press "Calculate" in the main window to receive a list of possible frames that you can RNG for.
 - Increase or decrease range as needed.
-- If the target frame is too high or the tid/sid/tsv combo is not possible on your seed then reboot the system to start over with a different seed
+- If the target frame is too high or the TID/SID/TSV combination is not possible on your seed then reboot the system to start over with a different seed
 	- Rosalina can quickly reboot the system by pressing `L+down+select` and selecting the reboot option
 
 ``` Note: Soft reseting the game will hard lock the system!```

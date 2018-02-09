@@ -3,7 +3,7 @@
 
 ## Installing NTR
 
-The first step is to install NTR. We will do this by installing [BootNTR Selector](https://github.com/Nanquitas/BootNTR/releases).
+The first step is to install NTR, do this by installing [BootNTR Selector](https://github.com/Nanquitas/BootNTR/releases).
   - **N3DS and N2DSXL:** Download and install BootNTR Selector.
     - Download either of the CIAs that are _not_ Mode 3. (Difference is Banner when loading BootNTR Selector, so you can choose either one.) Then copy CIA to SD card and install using FBI.
 
@@ -37,7 +37,7 @@ After NTR is installed, the next step is to install the PCalc plugin.
 
 Launch BootNTR Selector and then the game of your choice.
   - **O3DS and O2DS Only:** Launch BootNTR Selector Mode 3 instead for Ultra Sun/Ultra Moon and Sun/Moon ONLY.
-  - Afterwards, exit to the home menu, then launch Ultra Sun/Ultra Moon or Sun/Moon.
+  - Afterwards, press the home button to view the home screen and then launch Ultra Sun/Ultra Moon or Sun/Moon.
     - Mode 3 should be closed ONLY when asked to launch game.
 
 If screen flashes green, congrats you did it!

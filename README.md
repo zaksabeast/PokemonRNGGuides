@@ -48,6 +48,25 @@ When a pull request is made, this allows other people to review the guide, make 
 
 Do not be afraid of comments or critiques on your guide.  We all want the best possible guides for our community. :)
 
+### Regarding Labels for Pull Requests and Issues
+
+To keep everything organized there are labels for both Pull Requests and Issues.
+
+## Issues
+
+If you are planning on writing or editing a guide, please open an issue detailing what guide you are going to write or edit. This way others will know not to duplicate.
+
+- **Create Guide:** Use this if adding a guide.
+- **Edit Guide:** Use this if editing a guide that is already in the repository.
+
+## Pull Requests
+
+There are labels depending on what stage PRs are in. Please edit the labels appropriately as needed.
+
+- **Pending Review:** Needs someone to review and request changes if needed.
+- **Changes Requested:** Has been reviewed and is waiting for requested changes to be made.
+- **Awaiting Review:** Changes have been made and is now waiting to be reviewed again, and merged if adequate.
+
 ### Credits:
 - PCalc mod team - Shiny_Sylveon, CptnObvious, wwwwwwzx, Admiral_Fish, Subject21_J, Vovvy, Vladcik, Bumba, Real.96, FrostByte_Manuel, and EzPzStreamz
 - /u/Zapdos44, /u/OPBreloom, and /u/Upper90175 for being the first to give guides to this repo to help get it off the ground

@@ -33,7 +33,7 @@ In the Gen 7 games each NPC has an affect on the RNG frames. This is why the fra
 
 2. Check “Safe F Only”.
 
-3. You can find the number of NPCS using PCalc.
+3. Enter the number of NPCs for the area. 3DSRNGTool should automatically fill in this number, but it can be confirmed with PCalc.
     - After getting to the final screen for your Pokemon press `Start + Up` to bring up the window with the NPC counter.
     - If you already have it up, close it by pressing `Start + Up`, and then bring it back up again to reset the NPC counter.
     - Let the game run for approximately 30 seconds to a minute to calibrate correctly.
@@ -55,8 +55,14 @@ In the Gen 7 games each NPC has an affect on the RNG frames. This is why the fra
     - If they match then you have the correct number of NPCs.
     - If they do not match, restart from beginning of Step 2.
 
+Usually, this is when mistakes making the timeline are found. Double check that initial seed is correct, and that PCalc's NPC counter hasn't changed while making a timeline.
+
 ```
 Note: Do not mess with filters while creating a timeline. You should not have touched anything in filters (except to check the "Safe F Only" box) up to this point. Otherwise if you have messed with filters, restart from the beginning.
 ```
 
 If you are going for a target frame with a long wait time, it is advised to recheck the timeline every once in awhile to make sure that the number of NPCs did not change. Not all NPCs will influence the RNG at once, which is why waiting 30 seconds to a minute or longer for PCalc to calibrate the number of NPCs correctly is necessary. Checking that the timeline still matches a couple minutes later makes sure that time was not wasted waiting for a frame that could not be landed on due to fluctuating NPCs.
+
+```
+Note: To check that the target frame you want is still within the timeline, redo the timeline using the current frame you are on and then search for the target frame you wanted. If it is not appearing in results, then your timeline shifted.
+```

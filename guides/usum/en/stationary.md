@@ -88,9 +88,9 @@ In the Gen 7 games each NPC has an affect on the RNG frames. This is why the fra
 Note: Do not mess with filters while creating a timeline. You should not have touched anything in filters (except to check the "Safe F Only" box) up to this point. Otherwise if you have messed with filters, restart from the beginning.
 ```
 
-2. Adjust filters to what you are wanting, then click "Calculate" and choose any one of the results you want. If there are no results, increase the time in "Create Timeline".
+2. Adjust filters to what you are wanting, then click "Calculate" and choose any one of the results to be your target frame.  If there are no results, increase the time in "Create Timeline".
 
-3. Advance to that frame and when you land on it, Press A to obtain the Pokemon or begin a battle with the Pokemon.
+3. Advance to your target frame. When you land on it, press `A` to obtain the Pokemon or begin a battle with the Pokemon.
 
 Congrats! You should now have the Pokemon you wanted. If not, you can reset the game and try again.
 
@@ -105,7 +105,7 @@ Note: You can view the Pokemon's info using PCalc. Press `Start + Left` to bring
 2. Advance to the final screen for the Pokemon you are wanting to RNG. Input the frame you are currently on in the frame range.
     - You can find this in the PCalc Game Info window (`Start + Up`) and then press `Start + Select` to pause the game.
 
-3. Adjust filters to what you are wanting, then click "Calculate" and choose any one of the results you want. If there are no results, increase the Frame Range or restart the game to obtain a new initial seed. (Make sure to restart from the beginning of the guide if you do restart the game.)
+3. Adjust filters to what you are wanting, then click "Calculate" and choose any one of the results to be your target frame.  If there are no results, increase the Frame Range or restart the game to obtain a new initial seed. (Make sure to restart from the beginning of the guide if you do restart the game.)
 
 4. You can advance frames by pressing `Start` to unpause the game. You can then pause again when close to the frame you want with `Start + Select` and then slowly advance by pressing `Select` while paused.
 
@@ -116,7 +116,7 @@ Make sure to exit Festival Plaza approximately a thousand frames before your tar
 ```
 
 
-5. Advance to your target frame and when you land on it, Press A to obtain the Pokemon or begin a battle with the Pokemon.
+5. Advance to your target frame. When you land on it, press `A` to obtain the Pokemon or begin a battle with the Pokemon.
 
 Congrats! You should now have the Pokemon you wanted. If not, you can reset the game and try again.
 

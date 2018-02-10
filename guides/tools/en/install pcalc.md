@@ -7,7 +7,7 @@ The first step is to install NTR, do this by installing [BootNTR Selector](https
   - **N3DS and N2DSXL:** Download and install BootNTR Selector.
     - Download either of the CIAs that are _not_ Mode 3. (Difference is Banner when loading BootNTR Selector, so you can choose either one.) Then copy CIA to SD card and install using FBI.
 
-  - **O3DS and O2DS:** Download and install _BOTH_ BootNTR Selector and BootNTR Selector Mode 3. (Mode 3 is for Ultra Sun/Ultra Moon and Sun/Moon ONLY. ORAS,XY, and Transporter do not use mode 3.)
+  - **O3DS and O2DS:** Download and install _BOTH_ BootNTR Selector and BootNTR Selector Mode 3. (Mode 3 is for Ultra Sun/Ultra Moon and Sun/Moon ONLY. ORAS, XY, and Transporter do not use mode 3.)
     - Download one of the Mode 3 CIA and one of the regular CIA. (Difference is Banner when loading BootNTR Selector, so you can choose either one.) Then copy both of the CIAs to SD card and install using FBI.
 
 ```

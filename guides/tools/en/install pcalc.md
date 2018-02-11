@@ -7,7 +7,7 @@ The first step is to install NTR, do this by installing [BootNTR Selector](https
   - **N3DS and N2DSXL:** Download and install BootNTR Selector.
     - Download either of the CIAs that are _not_ Mode 3. (Difference is Banner when loading BootNTR Selector, so you can choose either one.) Then copy CIA to SD card and install using FBI.
 
-  - **O3DS and O2DS:** Download and install _BOTH_ BootNTR Selector and BootNTR Selector Mode 3. (Mode 3 is for Ultra Sun/Ultra Moon and Sun/Moon ONLY, ORAS and XY do not use mode 3.)
+  - **O3DS and O2DS:** Download and install _BOTH_ BootNTR Selector and BootNTR Selector Mode 3. (Mode 3 is for Ultra Sun/Ultra Moon and Sun/Moon ONLY. ORAS, XY, and Transporter do not use mode 3.)
     - Download one of the Mode 3 CIA and one of the regular CIA. (Difference is Banner when loading BootNTR Selector, so you can choose either one.) Then copy both of the CIAs to SD card and install using FBI.
 
 ```
@@ -22,9 +22,11 @@ Launch BootNTR Selector and choose default for settings.
 
 After NTR is installed, the next step is to install the PCalc plugin.
 
-- [Ultra Sun/Ultra Moon](https://gbatemp.net/threads/pcalc-usum-the-rng-plugin-for-ultra-sun-and-ultra-moon.489643/)
-- [Sun/Moon](https://gbatemp.net/threads/wip-pokecalcntr-iv-and-nature-overlay-plugin-for-sun-and-moon.460524/)
-- [ORAS/XY](https://gbatemp.net/threads/pokecalcntr-for-gen-6-the-rng-tool-suite-for-the-3ds.473221/ )
+- [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
+- [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
+- [OR/AS](https://pokemonrng.com/downloads/pcalc/oras)
+- [X/Y](https://pokemonrng.com/downloads/pcalc/xy)
+- [Transporter](https://pokemonrng.com/downloads/pcalc/tport)
 
 
 1. Download .zip for the version you are wanting and unzip contents.
@@ -35,7 +37,7 @@ After NTR is installed, the next step is to install the PCalc plugin.
 
 ## Launching PCalc
 
-Launch BootNTR Selector and then the game of your choice.
+Launch BootNTR Selector and then the application of your choice.
   - **O3DS and O2DS Only:** Launch BootNTR Selector Mode 3 instead for Ultra Sun/Ultra Moon and Sun/Moon ONLY.
   - Afterwards, press the home button to view the home screen and then launch Ultra Sun/Ultra Moon or Sun/Moon.
     - Mode 3 should be closed ONLY when asked to launch game.

@@ -14,7 +14,7 @@ Each time you boot up your game, an _initial seed_ (also called _seed_ throughou
 
 At the "Continue" screen of the game, before your character picture loads, you can see a clock. Thanks to the clock needles position, we are going to be able to find our _initial seed_. The idea is to check a certain number of clocks (between 8 and 10), without restarting the game, in order to get the seed value.
 
-Since each seed is generated when you launch the game, checking the clocks needs to be done without restarting the game. You can simple leave the "Continue" screen by pressing **B**.
+Since each seed is generated when you launch the game, checking the clocks needs to be done without restarting the game. You can simply leave the "Continue" screen by pressing **B**.
 
 ![](https://i.imgur.com/2Nh45HB.gif)
 

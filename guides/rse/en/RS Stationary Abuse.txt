@@ -1,6 +1,6 @@
-How To Do Live Battery Stationary RNG Abuse (Ruby & Sapphire EmuAbuse)
+# How To Do Live Battery Stationary RNG Abuse (Ruby & Sapphire EmuAbuse)
 ---------------------------------------------------------------------------------------------------------------------------------------
-**Things You Will Need**
+## Things You Will Need 
     - [VBA-RR] (https://github.com/TASVideos/vba-rerecording/releases)
     - Lua .dll files
         - [x86 lua.dll] (https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
@@ -10,14 +10,14 @@ How To Do Live Battery Stationary RNG Abuse (Ruby & Sapphire EmuAbuse)
     - [runasdate (Optional)] (https://runasdate.en.softonic.com/)
     - A Save File (ID Abused)
 ---------------------------------------------------------------------------------------------------------------------------------------
-Why Bother?
+## Why Bother?
     With the advent of Ultra Sun & Ultra Moon RNG, you are able to get many Shiny Legendary Pokemon with almost any good spread. However, the spreads take a very large amount of time to obtain. Generation 3 RNG saves more time thanks to VBA having the ability to speed up to 1000%. 
     In addition, certain Pokemon have access to tutor moves not available in future Generations, such as Mimic, Seismic Toss and Counter.
 ---------------------------------------------------------------------------------------------------------------------------------------
-Things To Know
+## Things To Know
     This guide only applies to Ruby and Sapphire RNG. Fire Red and Leaf Green have random seeding and Emerald will always have the initial seed of 0 unless you didn't Soft Reset or turn off the game. Also, spreads are liimted. 
 ---------------------------------------------------------------------------------------------------------------------------------------
-Good Spreads for Method 1 (There are more, but these are some of the good ones)
+## Good Spreads for Method 1 (There are more, but these are some of the good ones)
 Adamant 31/31/31/7/31/31
 Bold 31/0/31/31/31/30
 Brave 31/31/31/6/31/0
@@ -38,31 +38,31 @@ Sassy 31/1/31/31/31/0
 Timid 31/0/31/31/30/31
 Now onto the RNG Process!!
 ---------------------------------------------------------------------------------------------------------------------------------------
-How To Do RS Stationary Live Battery RNG Abuse
-        **Step 1: Find your spread**
-            Select a spread from above or search for it in RNG Reporter. Go to 4th Gen Tools and select "Calculate PID From IVS." You will open a screen that looks like this: ![PID From IVS](https://snag.gy/yfYPqv.jpg)
-            Input your chosen spread to get the seed and PID. Make sure it says Method 1!
-       ** Step 2: Getting your Initial Seed**
-            The seed you got from that screen was simply the seed you must hit when you press A on encounter. To get your initial seed, go to 3rd Gen Tools and hit Seed To Time. Copy and paste the seed into the highlighted bar. 
+## How To Do RS Stationary Live Battery RNG Abuse
+        1. Find your spread
+           - Select a spread from above or search for it in RNG Reporter. Go to 4th Gen Tools and select "Calculate PID From IVS." You will open a screen that looks like this: ![PID From IVS](https://snag.gy/yfYPqv.jpg)
+           - Input your chosen spread to get the seed and PID. Make sure it says Method 1!
+       2. Getting your Initial Seed
+          - The seed you got from that screen was simply the seed you must hit when you press A on encounter. To get your initial seed, go to 3rd Gen Tools and hit Seed To Time. Copy and paste the seed into the highlighted bar. 
             ![Seed To Time](https://snag.gy/XGisIK.jpg)
             - This will give you your initial seed and the date you need to run the Ruby and Sapphire game on.
-       ** Step 3: Finding the Frame to hit**
-            On the main screen of reporter, enter your initial seed, spread and make sure that it is set to search Method 1. It should look something like this:
+       3. Finding the Frame to hit
+            - On the main screen of reporter, enter your initial seed, spread and make sure that it is set to search Method 1. It should look something like this:
             ![M1](https://snag.gy/KMdX3I.jpg)
-            Hit Generate and get results. If you don't get a result, try extending the max results.
-        **Step 4: Hitting the Initial Seed**
-            Open runasdate (or change your computer clock) and set the date to one listed in Seed To Time. Set up the screen just like how it is shown below: 
+            - Hit Generate and get results. If you don't get a result, try extending the max results.
+       4. Hitting the Initial Seed
+            - Open runasdate (or change your computer clock) and set the date to one listed in Seed To Time. Set up the screen just like how it is shown below: 
             ![runasdate](https://snag.gy/Fw7Xk9.jpg)
-            Hit run and you will open VBA-RR.
-       ** Step 5: Finding Delay**
-            Go to the final screen before encountering the target Pokemon. Now, make a save state and note what frame you are on. Hit A and enter the encounter. Run the lua script, and get the IVs of the Pokemon. 
+            - Hit run and you will open VBA-RR.
+       5. Finding Delay
+            - Go to the final screen before encountering the target Pokemon. Now, make a save state and note what frame you are on. Hit A and enter the encounter. Run the lua script, and get the IVs of the Pokemon. 
             ![IVS](https://snag.gy/wpUMTv.jpg)
-            Now, open a new RNG Reporter and insert your initial seed and IVS. 
+            - Now, open a new RNG Reporter and insert your initial seed and IVS. 
             ![Reporter](https://snag.gy/TGBKU4.jpg)
-            Since I hit A on Frame 89016, that means 54 Frames went by between my last input (hitting A) and the IVs and PID being generated. 
-            Therefore, to hit my 31/2/31/31/31/31 Modest spread, I must hit 180124.
-      **  Step 6: Advance Frames**
-            Advance frames, paying attention to the frame counts. I recommend making a save state every 20000 frames or so, just in case. 
-        **Step 7: Enjoy your new Pokemon!**
+            - Since I hit A on Frame 89016, that means 54 Frames went by between my last input (hitting A) and the IVs and PID being generated. 
+            - Therefore, to hit my 31/2/31/31/31/31 Modest spread, I must hit 180124.
+       6. Advance Frames
+            - Advance frames, paying attention to the frame counts. I recommend making a save state every 20000 frames or so, just in case. 
+        7.  Enjoy your new Pokemon!
             Catch your Pokemon! (Make sure to make a save state) If this Pokemon is for trade, ensure that you make documentation if required by your community. Be wary, as giving the wrong information may lead to clones being generated without you knowing.
             ![Regice](https://snag.gy/Rs2qYH.jpg)

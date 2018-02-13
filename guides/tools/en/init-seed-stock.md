@@ -56,7 +56,3 @@ Once you have recorded the 10 clock movements we need to list them in the tool t
 
 Your seed should appear in the `Results` field if you did everything correctly.
 
-## Credits
-
-* [Gen 7 Stationary RNG guide by Blastoise\_X](http://blastoise-x.hatenablog.com/entry/SM-RNG-Guide-forEnglish)
-

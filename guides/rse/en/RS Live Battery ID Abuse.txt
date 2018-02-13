@@ -42,6 +42,5 @@
     4. Delay
         - Frames pass by between when you hit A and when the TID/SID is generated. You will need to find how many frames pass by. Go to 3rd Generation Tools (In RNGReporter) and find Pandora's Box. Put your Initial seed in and Find what frame you hit. Now adjust accordingly. For example, if I wanted to hit frame 89103 but hit Frame 89175, my delay was 72, which means I need to hit A 72 Frames early. 
     5. Enjoy your new TID!
-        Enjoy your new TID! 
-        ![TID](https://snag.gy/yfJlxs.jpg)
+       ![TID](https://snag.gy/yfJlxs.jpg)
         An example of a successful ID Abuse ^

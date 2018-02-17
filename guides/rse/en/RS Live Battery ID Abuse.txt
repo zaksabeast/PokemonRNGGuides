@@ -5,16 +5,15 @@
     - Lua .dll files
         - [x86 lua.dll] (https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
         - [x64 lua.dll] (https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
-    - [RNGReporter] (https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
+    - [RNGReporter (Make sure to grab the latest build)] (https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
     - [The Ruby/Sapphire Lua Scripts for your language] (http://pokerng.forumcommunity.net/?t=56443955)
     - [runasdate (Optional)] (https://runasdate.en.softonic.com/)
-    - [FindFrame.exe] (https://www.reddit.com/r/pokemonrng/comments/1v0ihy/some_specialty_rng_tools_ive_made/)
 ------------------------------------------------------------------------------------
 ## Why Bother?
-    This guide will help you obtain cool TIDs for your RNG purposes. If you do not care about TID, I recommend that you do [Dead Battery TID/SID Abuse](https://pokemonrng.com/guides/rse/en/Ruby-Sapphire%20Dead%20Battery%20TID%20RNG.md), as it has fewer steps.
+    This guide will help you obtain cool TIDs for your RNG purposes. If you do not care about TID, I recommend that you do [Dead Battery TID/SID Abuse](https://pokemonrng.com/guides/rse/en/Ruby-Sapphire%20Dead%20Battery%20TID%20RNG.md), as it has far fewer steps and is much simpler.
 -----------------------------------------------------------------------------------
 ## Things To Know
-    Certain TID/SID combos are not possible, but there are 8 SIDs you can use to obtain a Shiny. As such, this isn't an issue.
+    Certain TID/SID combos are not possible, but there are 8 SIDs you can use to obtain a Shiny. As such, this shouldn't be an issue.
     Onto the RNG Proccess!
 -------------------------------------------------------------------------------
 ## How To RNG TID in Ruby & Sapphire
@@ -24,23 +23,19 @@
         [PID From IVS](https://snag.gy/yfYPqv.jpg)
         - Put your desired TID in the ID box and your target spread in the above boxes. Note the SID that you have.
     2. Finding your Initial Seed
-        - Typically, in ID Abuse, you would go to Pandora's Box in RNGReporter. However, Pandora's Box for Generation 3 only allows you to search one date at a time. To save time, we will use FindFrame and a website. Go to this ![website](https://www.binaryhexconverter.com/decimal-to-hex-converter) and open FindFrame.exe. 
+        - Typically, in ID Abuse, you would go to Pandora's Box in RNGReporter. However, Pandora's Box for Generation 3 only allows you to search one date at a time. To save time, we will use Generation 3 Tools built into RNGReporter and a website. Go to this ![website](https://www.binaryhexconverter.com/decimal-to-hex-converter) and open RNGReporter. 
         - On the website, input your TID that you want. I want 02332, so I put in 02332 and get 91C. Put that in FindFrame. Now take the SID listed in PID From IVs and convert it as well. Since I want 46392, I input that and get B538. 
        [Hex](https://snag.gy/EZkURB.jpg)
-        - Put the other Hexadecimal Value into FindFrame. It will look like this:
-       [FindFrame](https://snag.gy/NlSofC.jpg)
-        - Hit Enter and you will either get an Error or results. If you got an error, add 1 to the SID and reconvert it until you get results. 
-       [Results](https://snag.gy/8sl4PX.jpg)
-       What you are hoping for ^
-       [Fail](https://snag.gy/5hrYAe.jpg)
-        Try again if you see this screen ^
+        - Go into RNGReporter's Generation 3 Tools tab and enter PID to IVs. Put the two hexadecimal combos into PID to IVs. If you get a Method 1 Spread, you have a valid ID combo. If you get a non-method 1 spread, just add 1 to your SID and reconvert it to hex until you get a valid one.
+        - Now take the seed it gives and go to Generation 3 Tools ----> 16-Bit Seed To Time. Enter the seed in the box and make sure the year is set to 2000. Hit search and you will get some dates. 
     3. Hitting your Initial Seed
-        - Your initial seed is on FindFrame. Open RNGReporter and find Generation 3 Seed To Time. Input the seed and hit Generate. You will get a list of dates. Choose one and load it in runasdate. (Or change your computer clock)
-        - Now hit Run and enter the game. Get to the screen where the Prof. Birch tells you he'll see you later. Advance to the Frame listed in FindFrame and hit A. Don't worry if you fail to hit your ID combo, that is normal.
+        - Open runasdate and enter the time in 16-Bit Seed to Time. (Any of the results will work) Make sure you set Immediate Mode.
+        - Once loaded, pause the game and go to RNGReporter's main screen. Search for the IVs you got in the PID to IVs tool. The resulting frame is the frame you are aiming to hit.
+        - Now hit Run and enter the game. Get to the screen where the Prof. Birch tells you he'll see you later. Advance to the Frame listed in RNGReporter and make save states along the way. You will miss your frame most likely. 
         [Frame](https://snag.gy/lte3bH.jpg)
         Advance Frames on this screen ^
     4. Delay
-        - Frames pass by between when you hit A and when the TID/SID is generated. You will need to find how many frames pass by. Go to 3rd Generation Tools (In RNGReporter) and find Pandora's Box. Put your Initial seed and TID that you recieved in and find what frame you hit. Now adjust accordingly. For example, if I wanted to hit frame 89103 but hit Frame 89175, my delay was 72, which means I need to hit A 72 Frames early. 
+        - Frames pass by between when you hit A and when the TID/SID is generated. You will need to find how many frames pass by. Go to 3rd Generation Tools (In RNGReporter) and find Pandora's Box. Put your Initial seed and TID that you recieved in and find what frame you hit. Now adjust accordingly. For example, if I wanted to hit frame 89103 but hit Frame 89175, my delay was 72, which means I need to hit A 72 Frames early. (If your TID / SID are swapped, go one frame earlier)
         [Calibrate](https://snag.gy/sze7Cb.jpg)
     5. Enjoy your new TID!
        [TID](https://snag.gy/yfJlxs.jpg)

@@ -9,9 +9,7 @@ A new save file is needed to RNG the Trainer ID, Secret ID, or Trainer Shiny Val
 
 
 ### Tools
--PCalc for the version of game you have
-  - [OR/AS](https://pokemonrng.com/downloads/pcalc/oras)
-  - [X/Y](https://pokemonrng.com/downloads/pcalc/xy)
+- [PCalc for OR/AS](https://pokemonrng.com/downloads/pcalc/oras)
     - Make sure your game is updated to 1.4 for PCalc to work
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
     - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts)

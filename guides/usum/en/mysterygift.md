@@ -7,7 +7,7 @@
     - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
     - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
 
-Before continuing with the guide it is recommended to be in the first PokeCenter and standing directly in front of the Delivery Man.
+Before continuing with the guide it is recommended to be in the first PokeCenter (the one by the Pokemon School) and standing directly in front of the Delivery Man.
 
 ## Final Screen
   - "You received xxx!"
@@ -28,7 +28,7 @@ Make sure to stand exactly like the image above or the timeline may be off resul
 4. Make sure you are on the "Event RNG" tab in 3DSRNGTool.
 
 5. If you have the WonderCard file (a .wc7) for the event you are RNGing, you can import that directly into 3DSRNGTool and have it automatically update the "Event Setting" area for you.
-    - WonderCard files can be found [here](https://projectpokemon.org/home/forums/topic/39400-gen-vii-events-contribution-thread/).
+    - WonderCard files can be found [here](https://github.com/projectpokemon/EventsGallery).
     - Alternatively you can change the data yourself, but make sure it is correct for the event you are RNGing.
 
 

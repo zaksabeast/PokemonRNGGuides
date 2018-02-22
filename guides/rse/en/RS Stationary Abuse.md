@@ -15,7 +15,8 @@
     In addition, certain Pokemon have access to tutor moves not available in future Generations, such as Mimic, Seismic Toss and Counter.
 ---------------------------------------------------------------------------------------------------------------------------------------
 ## Things To Know
-    This guide only applies to Ruby and Sapphire RNG. Fire Red and Leaf Green have random seeding and Emerald will always have the initial seed of 0 unless you didn't Soft Reset or turn off the game. Also, spreads are limted due to how IVs and PID are generated in this generation.
+    This guide only applies to Ruby and Sapphire RNG. Fire Red and Leaf Green have random seeding and Emerald will always have the initial seed of 0 unless you didn't Soft Reset or turn off the game. Also, spreads are limited due to the limited amount of valid PID/IV combos. You can read about PID generation more in-depth [here](https://www.smogon.com/ingame/rng/pid_iv_creation)
+    Because of the limited amount of PIDs that are linked with a good IV spread, it is recommended that you attempt an ID abuse before attempting to get a Shiny 5IV Pokemon. (Or any specific Shiny/IV combo)
 ---------------------------------------------------------------------------------------------------------------------------------------
 ## Good Spreads for Method 1 (There are more, but these are some of the good ones)
 Adamant 31/31/31/7/31/31

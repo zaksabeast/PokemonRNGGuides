@@ -1,13 +1,13 @@
 # How To Do Pokemon Ruby & Sapphire ID Abuse (Live Battery)
 -
 ## Things You Will Need
-    - [VBA-RR] (https://github.com/TASVideos/vba-rerecording/releases)
-    - Lua .dll files
-        - [x86 lua.dll] (https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
-        - [x64 lua.dll] (https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
-    - [RNGReporter (Make sure to grab the latest build)] (https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
-    - [The Ruby/Sapphire Lua Scripts for your language] (http://pokerng.forumcommunity.net/?t=56443955)
-    - [runasdate (Optional)] (https://runasdate.en.softonic.com/)
+    [VBA-RR](https://github.com/TASVideos/vba-rerecording/releases)
+    Lua .dll files
+        [x86 lua.dll](https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
+        [x64 lua.dll](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
+    [RNGReporter (Make sure to grab the latest build)](https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
+    [The Ruby/Sapphire Lua Scripts for your language](http://pokerng.forumcommunity.net/?t=56443955)
+    [runasdate (Optional)](https://runasdate.en.softonic.com/)
 ------------------------------------------------------------------------------------
 ## Why Bother?
     This guide will help you obtain cool TIDs for your RNG purposes. If you do not care about TID, I recommend that you do [Dead Battery TID/SID Abuse](https://pokemonrng.com/guides/rse/en/Ruby-Sapphire%20Dead%20Battery%20TID%20RNG.md), as it has far fewer steps and is much simpler.

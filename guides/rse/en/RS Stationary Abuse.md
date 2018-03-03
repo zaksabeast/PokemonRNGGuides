@@ -1,14 +1,14 @@
 # How To Do Live Battery Stationary RNG Abuse (Ruby & Sapphire EmuAbuse)
 ---------------------------------------------------------------------------------------------------------------------------------------
 ## Things You Will Need 
-    - [VBA-RR] (https://github.com/TASVideos/vba-rerecording/releases)
-    - Lua .dll files
-        - [x86 lua.dll] (https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
-        - [x64 lua.dll] (https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
-    - [RNGReporter] (https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
-    - [The Ruby/Sapphire Lua Scripts for your language] (http://pokerng.forumcommunity.net/?t=56443955)
-    - [runasdate (Optional)] (https://runasdate.en.softonic.com/)
-    - A Save File (ID Abused)
+     [VBA-RR] (https://github.com/TASVideos/vba-rerecording/releases)
+     Lua .dll files
+         [x86 lua.dll] (https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
+         [x64 lua.dll] (https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
+    [RNGReporter] (https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
+    [The Ruby/Sapphire Lua Scripts for your language] (http://pokerng.forumcommunity.net/?t=56443955)
+    [runasdate (Optional)] (https://runasdate.en.softonic.com/)
+    A Save File (ID Abused)
 ---------------------------------------------------------------------------------------------------------------------------------------
 ## Why Bother?
     With the advent of Ultra Sun & Ultra Moon RNG, you are able to get many Shiny Legendary Pokemon with almost any good spread. However, the spreads take a very large amount of time to obtain. Generation 3 RNG saves more time thanks to VBA having the ability to speed up to 1000%. 

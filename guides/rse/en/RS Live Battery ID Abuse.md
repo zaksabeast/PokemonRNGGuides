@@ -8,14 +8,14 @@
     [RNGReporter (Make sure to grab the latest build)](https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
     [The Ruby/Sapphire Lua Scripts for your language](http://pokerng.forumcommunity.net/?t=56443955)
     [runasdate (Optional)](https://runasdate.en.softonic.com/)
-------------------------------------------------------------------------------------
+
 ## Why Bother?
     This guide will help you obtain cool TIDs for your RNG purposes. If you do not care about TID, I recommend that you do [Dead Battery TID/SID Abuse](https://pokemonrng.com/guides/rse/en/Ruby-Sapphire%20Dead%20Battery%20TID%20RNG.md), as it has far fewer steps and is much simpler.
------------------------------------------------------------------------------------
+
 ## Things To Know
     Certain TID/SID combos are not possible, but there are 8 SIDs you can use to obtain a Shiny. As such, this shouldn't be an issue.
     Onto the RNG Proccess!
--------------------------------------------------------------------------------
+
 ## How To RNG TID in Ruby & Sapphire
     1. Decide on a Shiny Spread
         - If you have no intent on getting a Shiny Pokemon and/or don't care about IVs on the given Shiny, you may skip this step.

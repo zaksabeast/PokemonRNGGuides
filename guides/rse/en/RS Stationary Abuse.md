@@ -1,5 +1,5 @@
 # How To Do Live Battery Stationary RNG Abuse (Ruby & Sapphire EmuAbuse)
----------------------------------------------------------------------------------------------------------------------------------------
+
 ## Things You Will Need 
      [VBA-RR](https://github.com/TASVideos/vba-rerecording/releases)
      Lua .dll files
@@ -9,15 +9,15 @@
     [The Ruby/Sapphire Lua Scripts for your language](http://pokerng.forumcommunity.net/?t=56443955)
     [runasdate (Optional)](https://runasdate.en.softonic.com/)
     A Save File (ID Abused)
----------------------------------------------------------------------------------------------------------------------------------------
+
 ## Why Bother?
     With the advent of Ultra Sun & Ultra Moon RNG, you are able to get many Shiny Legendary Pokemon with almost any good spread. However, the spreads take a very large amount of time to obtain. Generation 3 RNG saves more time thanks to VBA having the ability to speed up to 1000%. 
     In addition, certain Pokemon have access to tutor moves not available in future Generations, such as Mimic, Seismic Toss and Counter.
----------------------------------------------------------------------------------------------------------------------------------------
+
 ## Things To Know
     This guide only applies to Ruby and Sapphire RNG. Fire Red and Leaf Green have random seeding and Emerald will always have the initial seed of 0 unless you didn't Soft Reset or turn off the game. Also, spreads are limited due to the limited amount of valid PID/IV combos. You can read about PID generation more in-depth [here](https://www.smogon.com/ingame/rng/pid_iv_creation)
     Because of the limited amount of PIDs that are linked with a good IV spread, it is recommended that you attempt an ID abuse before attempting to get a Shiny 5IV Pokemon. (Or any specific Shiny/IV combo)
----------------------------------------------------------------------------------------------------------------------------------------
+
 ## Good Spreads for Method 1 (There are more, but these are some of the good ones)
 Adamant 31/31/31/7/31/31
 Bold 31/0/31/31/31/30
@@ -38,7 +38,7 @@ Relaxed 31/8/31/31/31/0
 Sassy 31/1/31/31/31/0
 Timid 31/0/31/31/30/31
 Now onto the RNG Process!!
----------------------------------------------------------------------------------------------------------------------------------------
+
 ## How To Do RS Stationary Live Battery RNG Abuse
         1. Find your spread
            - Select a spread from above or search for it in RNG Reporter. Go to 4th Gen Tools and select "Calculate PID From IVS." You will open a screen that looks like this: ![PID From IVS](https://snag.gy/yfYPqv.jpg)

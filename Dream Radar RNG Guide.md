@@ -32,12 +32,15 @@ If you are going for a Generation 4 Legendary or a random Pokemon, target even I
     Therian Trio
     `(Your IVFrame (The one in Time Finder) - 21) / 2 = Number of required Advancements`
     `Initial PIDRNG Frame + 7 + Advances required = PIDFrame you will hit`
+    
     G4 Box Legends and Gendered Pokemon
     `(Your IVFrame - 8) / 2 = Number of required advancements`
     `Initial PIDRNG Frame + 2 + (2 * advances required) = PIDFrame you will hit`
+    
     Genderless Pokemon
     `(Your IVFrame - 8) / 2 = Number of required advancements`
     `Initial PIDRNG Frame + 1 + (2 * advances required) = PIDFrame you will hit`
+
 3. RNGing the Pokemon
 - My IVRNG Frame is 21, so I won't need to make any Frame Advancements. However, to make advancements, you should use Key System's "Send and Recieve Keys" function. It will advance both the PIDRNG and IVRNG Frames by 2. 
 - Fortunately, a Rash HP Ice Landorus-T is fairly usable, so I will make the needed advancements (in this case, none) and collect the Landorus. 

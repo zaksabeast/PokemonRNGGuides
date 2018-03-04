@@ -1,5 +1,5 @@
 # How To Do Dream Radar RNG Abuse in Generation 5 (EmuAbuse)
----
+
 ###### Things To Download
 - [Latest Build of RNG Reporter](https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
 - [DeSmuMe Dev Build](https://sourceforge.net/projects/desmume/files/desmume/0.9.11/desmume-0.9.11-win32-dev.zip/download)
@@ -10,15 +10,15 @@
 - [The Lua Scripts corresponding to your rom's language](http://pokerng.forumcommunity.net/?t=56443955)
 - [Suloku's Gen V Save Tool](https://github.com/suloku/BW_tool/releases) (Alternately, you could dump your BW2 Save if your community frowns upon injections)
 - [RunAsDate (Optional)](https://runasdate.en.softonic.com/)
----
+
 ###### Things To Know
 Dream Radar RNG can be used to obtain DBHA Legendaries and several other Pokemon. Pokemon here are Shiny-Locked, but other than that, there are no limitations. You will be advancing both types of frames present in Generation 5 (IVRNG and PIDRNG Frames) at the same time and by two each advance. Frames for this RNG are advanced using the key system. ![system](https://snag.gy/JN9Wu5.jpg)
 
----
+
 ###### Prepwork
 Ensure that you have exported your BW2 Save File with the Dream Radar Pokemon to DeSmuMe **OR** inject it using Suloku's Gen V Tool. (Note: Some trading sites do not allow the latter method.) If you have done so, move onto the RNG Process.
 
----
+
 ###### The RNG Process
 1. Finding a spread
 - Open RNG Reporter and go to G5 Time Finder. Stay on the "Capture" tab and set the settings accordingly. Set the IVs you want, Encounter Type is "Wild Pokemon" and method is "IVs (Standard Seed). You set your Frame range depending on your target. For the Therian Trio (Tornadus, Thundurus, Landorus), set the minimum frame to 21. For other Pokemon, the minimum frame must be at least 8. The maximum frame is personal preference. Hit search and wait for some results.

@@ -52,4 +52,4 @@ If you are going for a Generation 4 Legendary or a random Pokemon, target even I
 - Fortunately, a Rash HP Ice Landorus-T is fairly usable, so I will make the needed advancements (in this case, none) and collect the Landorus. 
 
 And there we have it! A DBHA Landorus! 
-- ![tada](https://snag.gy/pBY8Hc.jpg)
+ ![tada](https://snag.gy/pBY8Hc.jpg)

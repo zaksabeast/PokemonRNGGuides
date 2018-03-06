@@ -66,3 +66,29 @@ If you are going for a target frame with a long wait time, it is advised to rech
 ```
 Note: To check that the target frame you want is still within the timeline, redo the timeline using the current frame you are on and then search for the target frame you wanted. If it is not appearing in results, then your timeline shifted.
 ```
+
+### Timeline Leap (Mystery Gifts Only)
+
+This is a variation of the timeline method in which you can manipulate the timeline to land on any frame of your choosing. Recommended for those who already understand the normal timeline method since it is assumed you already have the knowledge of how to do a timeline.
+
+1. In "Filters" set it to search for the Pokemon you are wanting.
+    - Do not check "Safe F Only".
+
+2. Search using "Frame Range" to find a frame you want to land on. Right click on the frame and "Set as Target Frame".
+    - Any frame that shows up can be landed on with this method, so if the frame isn't a safe frame you can still use it as a target frame.
+
+3. Use Festival Plaza or Hau'Oli shopping mall to advance frames. When you are getting close to your target frame, either leave Festival Plaza or fly to the first PokeCenter (the one by the school).
+    - Ideally you'll want to be within 10,000 frames of your target frame when you're at the first PokeCenter.
+
+4. Position your character so you're standing behind the delivery man and as close to the counter as possible. Talk to him until you get to the Yes/No dialogue.
+
+5. Input the number of NPCs and the frame you are currently on as the starting frame in "Frame Range". Check "Safe F Only".
+
+6. Advance to a safe frame and input that as the starting frame.
+
+7. Choose "Timeline Leap" and then "Calculate". A window will pop up with the frame you will press `A` on for "Yes" to accept the Pokemon.
+    - If you click on "Yes" within the window you can then search for your target frame within the timeline created to make sure it is correct.
+
+8. Advance to the frame shown, and when you land on it, press `A` to advance the dialogue to "You received xxx!".
+
+9. Press `A` on your target frame to obtain the Pokemon you wanted. Congratulations!   

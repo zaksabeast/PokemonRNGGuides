@@ -6,7 +6,7 @@
 - Lua .dlls
   - [x86 .dlls](https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
   - [x64 .dlls](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
-- Pokemon Black and White2 .nds Files (You will need to dump this yourself via GM9)
+- Pokemon Black 2 or White 2 .nds files (You can dump the carts yourself using a CFW 3DS with Godmode9)
 - [The Lua Scripts corresponding to your rom's language](http://pokerng.forumcommunity.net/?t=56443955)
 - [Suloku's Gen V Save Tool](https://github.com/suloku/BW_tool/releases) (Alternately, you could dump your BW2 Save if your community frowns upon injections)
 - [RunAsDate (Optional)](https://runasdate.en.softonic.com/)

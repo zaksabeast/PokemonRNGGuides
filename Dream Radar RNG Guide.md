@@ -21,8 +21,11 @@ Ensure that you have exported your BW2 Save File with the Dream Radar Pokemon to
 
 ###### The RNG Process
 1. Finding a spread
-- Open RNG Reporter and go to G5 Time Finder. Stay on the "Capture" tab and set the settings accordingly. Set the IVs you want, Encounter Type is "Wild Pokemon" and method is "IVs (Standard Seed). You set your Frame range depending on your target. For the Therian Trio (Tornadus, Thundurus, Landorus), set the minimum frame to 21. For other Pokemon, the minimum frame must be at least 8. The maximum frame is personal preference. Hit search and wait for some results.
-  ![example](https://snag.gy/iTgKX3.jpg)
+-Open RNG reporter and go to Gen 5 Time Finder. Stay on the "Capture" tab and adjust the settings accordingly.
+- Set IVs to what you want, Encounter Type is "Wild Pokemon", and the method is "IVs (Standard Seed)".
+- The IVs frame range depends on what Pokemon you are RNGing. For the Therian Trio (Tornadus, Thundurus, Landorus) set the minimum IV frame to 21. For the other Pokemon the minimum IV frame is 8. Maximum frame can be whatever you prefer.
+Hit search and wait for results to show.
+![example](https://snag.gy/iTgKX3.jpg)
 If you are going for a Generation 4 Legendary or a random Pokemon, target even IV frames, but if you are going for a Therian-Forme, target odd IV frames.
 2. Getting a good nature
  - You may notice that Time Finder has not listed nature for Dream Radar. To get the nature we will hit by using a frame, we will go to the main RNGReporter screen and select Gen 5 PIDRNG. Unfortunately, you cannot control Dream Radar nature, only predict it. To find the nature we will get, we use a formula.

@@ -8,6 +8,7 @@ _Easy shinies in apricorn balls_
   - [PCalc-SM](https://pokemonrng.com/downloads/pcalc/sm) (Sun/Moon)
   - [PCalc-USUM](https://pokemonrng.com/downloads/pcalc/usum) (Ultra Sun/Ultra Moon)
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+  - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - The `honey` item
 - Have started an `Island Scan` and know the Pokemon you've scanned for
   - [List of Island Scan islands and days for USUM](/tools/en/island%20scan%20pokemon%20-%20usum.md)
@@ -47,7 +48,7 @@ Note: You can find your TSV in PCalc in the Game Info window. Press "Start + Up"
 
 #### On the right of 3DSRNGTool
 
-1. Follow the [timeline calibration guide](https://github.com/wwwwwwzx/3DSRNGTool/wiki/Gen7-Timeline-Calibration-(PokeCalcNTR-Only)) using the `NPC Count` PCalc shows for the number of NPCs. Wait at least 30 seconds after bringing up the window to allow for the NPC counter to calibrate correctly.
+1. Follow the [timeline guide](https://pokemonrng.com/guides/sm/en/timeline.md) using the `NPC Count` PCalc shows for the number of NPCs. Wait at least 30 seconds after bringing up the window to allow for the NPC counter to calibrate correctly.
 2. You should now have a target frame you wish to hit.
 
 

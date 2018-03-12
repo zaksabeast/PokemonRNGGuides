@@ -12,7 +12,7 @@ Before continuing with the guide it is recommended to be in the first PokeCenter
 ## Final Screen
   - "You received xxx!"
 
-![](https://imgur.com/wmpzsKN)
+![](https://i.imgur.com/wmpzsKN.png)
 
 Make sure to stand exactly like the image above or the timeline may be off resulting in missing your target frame.    
 

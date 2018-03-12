@@ -8,7 +8,8 @@
   - [x64 .dlls](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
 - Pokemon Black 2 or White 2 .nds files (You can dump the carts yourself using a CFW 3DS with Godmode9)
 - [The Lua Scripts corresponding to your rom's language](http://pokerng.forumcommunity.net/?t=56443955)
-- [Suloku's Gen V Save Tool](https://github.com/suloku/BW_tool/releases) (Alternately, you could dump your BW2 Save if your community frowns upon injections)
+- [Suloku's Gen V Save Tool](https://github.com/suloku/BW_tool/releases) 
+  - Alternatively, you can extract your BW2 save file after obtaining the Pokemon you wish to RNG from the Dream Radar if you rather not inject.
 - [RunAsDate (Optional)](https://runasdate.en.softonic.com/)
 
 ###### Things To Know

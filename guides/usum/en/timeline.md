@@ -4,8 +4,8 @@
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
     - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - PCalc
-    - [Sun/Moon](https://gbatemp.net/threads/wip-pokecalcntr-iv-and-nature-overlay-plugin-for-sun-and-moon.460524/)
-    - [Ultra Sun/Ultra Moon](https://gbatemp.net/threads/pcalc-usum-the-rng-plugin-for-ultra-sun-and-ultra-moon.489643/)
+    - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
+    - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
 
 Before continuing with the guide it is recommended to be in the place you wish to RNG.
 
@@ -69,7 +69,7 @@ Note: To check that the target frame you want is still within the timeline, redo
 
 ### Timeline Leap (Mystery Gifts Only)
 
-This is a variation of the timeline method in which you can manipulate the timeline to land on any frame of your choosing. Recommended for those who already understand the normal timeline method since it is assumed you already have the knowledge of how to do a timeline.
+This is a variation of the timeline method for Mystery Gift Pokemon in which you can manipulate the timeline to land on any frame of your choosing. Recommended for those who already understand the normal timeline method since it is assumed you already have the knowledge of how to do a timeline.
 
 1. In "Filters" set it to search for the Pokemon you are wanting.
     - Do not check "Safe F Only".
@@ -104,8 +104,29 @@ This is a variation of the timeline method in which you can manipulate the timel
 
 10. Press `A` on Frame 2 to obtain the Pokemon you wanted. Congratulations!
 
+### Timeline Leap (Ultra Wormhole Only)
 
+This is a variation of the timeline method for Ultra Beasts that are found in Wormholes. With this method you can manipulate the timeline to land on any frame of your choosing. Recommended for those who already understand the normal timeline method since it is assumed you already have the knowledge of how to do a timeline.
 
-//Ignore this - it's notes for UBs timeline section
-Menu method you can change the time interval between frame 1 and frame 2. that's the only difference
-Oh and X+A to unpause quit menu while you should have fingers on select and start
+1. Position your character so you're standing behind Xurkitree.
+    - This is so there is a longer time window for having 1 NPC due to the wandering Xurkitree in the background.
+
+2. In "Filters" set it to search for the Pokemon you are wanting.
+    - Do not check "Safe F Only".
+
+3. Search using "Frame Range" to find a frame you want to land on. Right click on the frame and "Set as Target Frame". This frame will be referred to as Frame 2 from here on.
+    - Any frame that shows up can be landed on with this method, so if the frame isn't a safe frame you can still use it as a target frame.    
+
+4. Use Festival Plaza to advance frames. When you are getting close to Frame 2 leave Festival Plaza.
+    - Ideally you'll want to be within 10,000 frames of Frame 2 when you're back in front of Xurkitree.
+
+5. Press `X` to open the menu as soon as the NPC counter in PCalc changes from 2 to 1.
+
+6. Advance to a safe frame if you are not already on one and input that as the starting frame in Frame Range.
+
+7. Check the "Menu" box. This can be found to the left under "Stationary Setting".
+
+8. A window will pop up with the frame to close the menu on and initiate the battle.
+    - Hold `X` and then `A` to both unpause the game and close the menu, then immediately press `Start + Select` to pause the game again, but this time with the menu closed.
+    - There is about a 3 second delay between Frames 1 and 2, so be prepared.
+    - Advance to target frame and press `A` to unpause the game and initiate the battle.

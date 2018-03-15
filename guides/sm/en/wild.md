@@ -4,8 +4,8 @@
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
     - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - PCalc
-    - [Sun/Moon](https://gbatemp.net/threads/wip-pokecalcntr-iv-and-nature-overlay-plugin-for-sun-and-moon.460524/)
-    - [Ultra Sun/Ultra Moon](https://gbatemp.net/threads/pcalc-usum-the-rng-plugin-for-ultra-sun-and-ultra-moon.489643/)
+    - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
+    - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
 
 ```
 In the game you will have to use "honey" to initiate the wild encounter.
@@ -25,7 +25,7 @@ For Sun/Moon games, here is a list of [encounter slots and 0 NPC or the least nu
 
 2. Also in the upper right, input the initial seed. You can find this by pressing `Start + Up` to bring up the Game View window. The initial seed is found where it says `Init Seed:`.
 
-3. If you have the Shiny Charm check the Shiny Charm box.
+3. If you have the Shiny Charm check the "Shiny Charm" box.
 
 4. Choose the "Wild" tab then the Category "Normal Wilds" or "UBs" if going for an Ultra Beast. You can choose "Location" and then from the "Slot" dropdown the Pokemon you are wanting to RNG to have its info automatically filled in for you.
 
@@ -51,46 +51,19 @@ In the Gen 7 games each NPC has an affect on the RNG frames. This is why the fra
 Note: If you are in an area with 0 NPCs, there will not be a "Safe F Only" option. Do not check the "Blink F Only" box. Skip to the 0 NPC section instead. If there are NPCs, make sure to follow the rest of this section.
 ```
 
-1. Check “Safe F Only”.
-
-2. You can find the number of NPCS using PCalc.
-    - Open the in game menu with `X` and have the cursor hover over the bag, then press `Start + Up` to bring up the window with the NPC counter.
-    - If you already have it up, close it by pressing `Start + Up`, and then bring it back up again to reset the NPC counter.
-    - Let the game run for approximately 30 seconds to a minute to calibrate the NPC counter correctly.
-
-3. Input the frame you are currently on in the frame range. You can find this in the PCalc Game Info window (`Start + Up`) and then press `Start + Select` to pause the game.
-
-4. Click "Calculate", and then advance to any of the frames that are listed that have a "-" in the Mark column.
-    - These frames are considered Safe Frames and can be used to accurately predict the frames you can land on.
-
-5. You can advance frames by pressing `Start` to unpause the game. You can then pause again when close to the frames given earlier with `Start + Select` and then slowly advance by pressing `Select` while paused.
-    - Which frame you land on does not matter, just as long as it is one listed.
-
-## Step 2(b): Verifying Timeline and Number of NPCs
-
-1. Input your current frame after reaching a safe frame and then check “Create Timeline” and "Calculate".
-    - Once you have landed on a safe frame and have used that frame to create a Timeline, do not change it. Otherwise the Timeline will be off and you'll have to restart from Step 2.
-
-2. Press `Select` on your 3DS to advance several times and compare to what the next frames are given in 3DSRNGTool.
-    - If they match then you have the correct number of NPCs.
-    - If they do not match, restart from beginning of Step 2.
+1. Follow the [timeline guide](https://pokemonrng.com/guides/sm/en/timeline.md) to create a timeline and find a target frame.
+    - Before making the timeline, open the in game menu with `X` and have the cursor hover over the bag.
 
 ## Step 3: Obtaining the wanted Pokemon
 
-1. Once you have determined the number of NPCs and have a correct timeline, the next step is to actually RNG the Pokemon.
+1. Once you have a correct timeline and a target frame, the next step is to actually RNG the Pokemon.
 
-```
-Note: Do not mess with filters while creating a timeline. You should not have touched anything in filters (except to check the "Safe F Only" box) up to this point. Otherwise if you have messed with filters, restart from the beginning.
-```
-
-2. Adjust filters to what you are wanting, then click "Calculate" and choose any one of the results you want. If there are no results, increase the time in "Create Timeline". You can also restart the game to obtain a new initial seed. (Make sure to restart from the beginning of the guide if you do restart the game.)
-
-3. Advance to that frame and when you land on it, Press A to open the bag. Choose to use "Honey" and then wait for the animation to finish and initiate the battle.
+2. Advance to that frame and when you land on it, Press `A` to open the bag. Choose to use "Honey" and then wait for the animation to finish and initiate the battle.
 
 Congrats! You should now have the Pokemon you wanted. If not, you can reset the game or run away from the battle, and try again.
 
 ```
-Note: You can view the wild Pokemon's info using PCalc. Press `Start + Left` to bring up the Wild View window.
+Note: You can view the wild Pokemon's info using PCalc. Press Start + Left to bring up the Wild View window.
 ```
 
 ## Step 2 (with 0 NPCs):
@@ -111,12 +84,12 @@ Make sure to exit Festival Plaza approximately a thousand frames before your tar
 ```
 
 
-5. Advance to that frame and when you land on it, Press A to open the bag. Choose to use "Honey" and then wait for the animation to finish and initiate the battle.
+5. Advance to that frame and when you land on it, Press `A` to open the bag. Choose to use "Honey" and then wait for the animation to finish and initiate the battle.
 
 Congrats! You should now have the Pokemon you wanted. If not, you can reset the game or run away from the battle, and try again.
 
 ```
-Note: You can view the wild Pokemon's info using PCalc. Press `Start + Left` to bring up the Wild View window.
+Note: You can view the wild Pokemon's info using PCalc. Press Start + Left to bring up the Wild View window.
 ```
 
 ## If you did not obtain the Pokemon you wanted

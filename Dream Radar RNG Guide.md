@@ -14,10 +14,11 @@
 
 ###### Things To Know
 Dream Radar RNG can be used to obtain DBHA Legendaries and several other Pokemon. Pokemon here are Shiny-Locked, but other than that, there are no limitations. You will be advancing both types of frames present in Generation 5 (IVRNG and PIDRNG Frames) at the same time and by two each advance. Frames for this RNG are advanced using the key system. ![system](https://snag.gy/JN9Wu5.jpg)
+In addition, you may have noticed a "Dream Radar" tab in RNG Reporter. During the time of this guide being written, that tab does not work. Therefore, the guide will explain an alternate method of finding seeds and desired IV/Nature combonations.
 
 
 ###### Prepwork
-Ensure that you have exported your BW2 Save File with the Dream Radar Pokemon to DeSmuMe **OR** inject it using Suloku's Gen V Tool. (Note: Some trading sites do not allow the latter method.) If you have done so, move onto the RNG Process.
+Ensure that you have exported your BW2 Save File with the Dream Radar Pokemon to DeSmuMe **OR** inject it using Suloku's Gen V Tool. If you have done so, move onto the RNG Process.
 
 
 ###### The RNG Process

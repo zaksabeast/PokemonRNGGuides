@@ -14,7 +14,7 @@ RunAsDate is a tool developed by nirsoft that allows any program to load with a 
 
 ## How to setup RunAsDate?
 
-Once downloaded and launched, you should have this window: 
+Once downloaded and launched, you should have this window:
 ![](https://i.imgur.com/HeUoPmv.png)
 
 This screenshot shows runsadate after it has been configured. This means you'll have to uncheck ANY box, and to set to "Absolute day/time" (but should be set by default). Selecting 'Relative day/time' will not freeze the time and so you'll have no advantage to use RunAsDate.
@@ -29,7 +29,7 @@ Congratulations, you've controlled the time! Now it's time to hit the wanted See
 
 Now that you've just faked the date and time on desmume, load the lua script.
 
-Go as fast as possible to the "Continue" screen and pause your emulator (Ctrl + P). Before continuing, you should do the maximum save states as possible in order to have safe backup in case you miss your delay. After, you can un-pause your game and let the game run in order to get close as possible to your target seed. 
+Go as fast as possible to the "Continue" screen and pause your emulator (Ctrl + P). Before continuing, you should do the maximum save states as possible in order to have safe backup in case you miss your delay. After, you can un-pause your game and let the game run in order to get close as possible to your target seed.
 
 1. Click `A` to get to the "Continue" screen as fast as possible.
 2. Pause your emulator `Ctrl + P`.
@@ -41,7 +41,7 @@ Go as fast as possible to the "Continue" screen and pause your emulator (Ctrl + 
 8. Once you're close to the target delay, hold `A` while unpausing your game.
 
 ##### Troubleshoot
-_or 'I'm hitting +/-1 Initial seed part_
+_or the `I'm hitting +/-1 Initial seed part`_
 
 Sometimes you'll find that even though you're pressing A on the right delay, the actual delay you hit is +/-1 of what you wanted. This is to be expected because of how Gen 4 delays can either be always odd or always even. There are two methods to switch delays from even to odd or vice versa listed below:
 

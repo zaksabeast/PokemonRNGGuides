@@ -1,6 +1,7 @@
 # Gen7 main RNG Abuse without using Custom Firmware
 
 This guide will help you get shinies or Pokemon with perfect IVs if you don't want to hack your console. The only few things you need is a calculator, a timer and your eyes!
+
 The following generated Pokemon can use this method:
 - All stationary Pokemon, including in-game gifts such as Poipole, Type:Null, wormhole legends, UBs, etc.
 - All event Pokemon received via Mystery Gift.
@@ -25,6 +26,7 @@ The following generated Pokemon can use this method:
 ### "Frame" and "F"
 
 In this guide, let's call a row of 3DSRNGTool results "Frame". If you trigger the battle or receive the Pokemon at one frame number, we say we hit the frame.
+
 And "F" refers to real time: 1F = 1/60 second, which is the notation in Gen3 and in Emtimer.
 
 ### How the game use the RNG values
@@ -47,6 +49,7 @@ You can use any timer which can set two stages independently. The total time spa
 #### Set Up EonTimer
 
 ![](https://i.imgur.com/UiEVm7w.png)
+
 We are using Gen3 Mode of EonTimer
 
 - Pre-Timer: in milliseconds. For example, 2133 means 2.133 seconds. 
@@ -105,6 +108,7 @@ In summary, the total time span in seconds = (Pre-Timer + Lag) / 1000 + (Target 
 ### Step 3: Calculate waiting time, set up timer
 
 Go back to Gen Main RNG Tool. In the bottom right, everything should be updated. Hit the Calculate.
+
 A message box will pop up with "Set EonTimer for XXXXF. (YY.YYs)\<ZF>". Set XXXX as Target Frame of EonTimer.
 
 - Z is how long this target frame will exist. For Blink Frame, it should be above 30.
@@ -127,8 +131,11 @@ Wait at the final screen until timer ends. **Be focused!**
 ### Step 6: If the Pokemon is the one you wanted. Congratulations! If not, adjust the Pre-Timer, restart from step 0
 
 Check `Using Stats`, put the stats of the Pokemon you got. Check `+-100 frames` in `RNG Info`, hit Calculate again, you will see the frames which have the spread you hit. If you can't find the Pokemon you hit, please make sure you got the initial seed correctly.
-Let's check your pre-timer. Look at the `Shift/F` Column. 
+
+Let's check your pre-timer. Look at the `Shift/F` Column.
+
 If the number is between -4F and 4F, you are doing good and just because of the luck. Start over again and try to find a good seed and hit frame clusters with the same spread.
+
 If the number is way off like +12 for example. This means you hit the frame too late. There are two ways you can adjust the timer:
 - Decrease your pre-timer. `+ 12 / 60 * (-1000) = -200`, add that to you current Pre-Timer.
 - Put `Taget Frame + 12` into Frame Hit, Click Update, EonTimer will do the math and subtract 200 from lag.
@@ -141,10 +148,15 @@ You may need to recalibrate the Pre-Timer when you change the RNG target.
 ## QR method
 
 This is a variant of above basic steps. Sometimes, we might want to hit a high frame number for perfect IVs and shiny. We can first consume tons of frames in Festival Plaza or Hau'Oli Shopping Mall.
+
 And then check what frame you are on via the QR Scanner, since QR scanner needles also use the numbers generated from main RNG.
+
 ![](https://i.imgur.com/K8YKtQB.png)
+
 Go to `Gen7 Main RNG Tool`, check `Locate Current Frame via QR`, put the estimated current frame range below, input the needle sequence, until you get one result.
+
 The Starting Frame of Time Calculator will also be updated.
+
 So Step 4 will be press B to quit QR Scanner and start the timer at same time.
 
 ```
@@ -154,5 +166,19 @@ Note: This method is also reducing the system error of timer with long time peri
 ## Measuring NPC count
 
 Sometimes, the results might be far away from your target, then might it's due to the NPC count required changes. Especially for Xurkitree, Magearna and standing spots of wilds.
+
 The idea is simple, change the NPC count of Time Calculator and see what number of NPCs is giving the closet actual time you was waiting.
+
 Or you can waiting a fixed amount of time and using QR method to check how many frames are used.
+
+## Xurkitree
+
+The NPC number changes between 1 and 2 in a period of 10.7 seconds due to the wandering Xurkitree in the background. So we have to use X menu to freeze the varying NPC count. Here's the mindset:
+
+- Save while you're standing behind it
+  - Which will allow you have long time window for 1 NPC (~7 seconds)
+- Find the initial seed, load the game and open the X menu as soon as possible.
+- Use QR needles measure NPC count to make sure there is 1 NPC.
+  - Close X menu, wait several seconds and reopen it again to refresh background situation.
+- Wait with X menu opened to advance close to your target frame
+- Quit X menu and trigger the battle as fast as you can to avoid NPC changes.

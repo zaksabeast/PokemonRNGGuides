@@ -11,7 +11,7 @@ _Easy shinies in apricorn balls_
   - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - The `honey` item
 - Have started an `Island Scan` and know the Pokemon you've scanned for
-  - [List of Island Scan islands and days for USUM](/tools/en/island%20scan%20pokemon%20-%20usum.md)
+  - [List of Island Scan islands and days for USUM](https://pokemonrng.com/guides/tools/en/island%20scan%20pokemon%20-%20usum.md)
 
 ```
 Note: You can get the "honey" item in any store after clearing three trials.

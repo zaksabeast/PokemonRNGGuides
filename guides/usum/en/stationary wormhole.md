@@ -3,15 +3,13 @@ _Get your own perfect Legendary Pokemon!_
 
 ## Preparation
 
-### Make sure you have the following
-- Console with CFW
+### Tools Needed
 - [3DSRNGTool](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts)
 	- Github link: https://github.com/wwwwwwzx/3DSRNGTool
-- [PCalcNTR](https://pokemonrng.com/downloads/pcalc/usum)
-- [BootNTR Selector](https://gbatemp.net/threads/release-bootntr-selector.432911/)
-    - Mode 3 for o3ds/2ds
+- [PCalc-usum](https://pokemonrng.com/downloads/pcalc/usum)
 
 ### Recommended reading/references
+- [Timeline Guide](https://pokemonrng.com/guides/sm/en/timeline.md)
 - [Timeline and Timeline 2.0 Guide by](https://github.com/wwwwwwzx/3DSRNGTool/wiki/Gen7-Timeline-Calibration-%28PokeCalcNTR-Only%29) /u/wwwwwwzx as we will be referencing concepts explained in this guide.
 - [3DSRNGTool README](https://github.com/wwwwwwzx/3DSRNGTool/blob/master/README.md) - list of final screens before the Pokemon is generated
 

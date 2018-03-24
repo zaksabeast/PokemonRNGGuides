@@ -4,8 +4,8 @@
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
     - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - PCalc
-    - [Sun/Moon](https://gbatemp.net/threads/wip-pokecalcntr-iv-and-nature-overlay-plugin-for-sun-and-moon.460524/)
-    - [Ultra Sun/Ultra Moon](https://gbatemp.net/threads/pcalc-usum-the-rng-plugin-for-ultra-sun-and-ultra-moon.489643/)
+    - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
+    - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
 
 Before continuing with the guide it is recommended to be in the place you wish to RNG.
 

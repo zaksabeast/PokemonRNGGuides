@@ -20,6 +20,7 @@ The gift Eevee egg from the nursery does not count!
 ```
 
 1. You will need two Magikarp, one female one male, of different natures. Make a note of which gender has which nature.
+    - For faster egg generation, have the Magikarps be of different languages and different OT/TIDs. Also, the Oval Charm helps eggs generate faster.
 
 2. You will also need 2 everstones for both Magikarp to hold.
 
@@ -37,12 +38,11 @@ The gift Eevee egg from the nursery does not count!
 
 5. Soft reset the game with `L + R + Start` to when the egg was ready to be picked up.
 
-6. Reject the egg this time. Repeat from Step 2 until you have 127 `0` or `1` noted down in order. Soft reset so you're back to your last egg again ready to be picked up.
+6. Reject the egg this time. Repeat from #2 in this section (run around until egg is ready to pick up) until you have 127 `0` or `1` noted down in order. Soft reset so you're back to your last egg again ready to be picked up.
 
-7. Open 3DSRNGTool and in the upper left click on "Tools" then "Gen7 Egg Seed Finder". Copy/paste or type in your list of 0's and 1's. Check the "Shiny Charm" box if you have the Shiny Charm.
+7. Open 3DSRNGTool and in the upper left click on "Tools" then "Gen7 Egg Seed Finder". Copy/paste or type in your list of 0's and 1's.
 
-8. Click on "Go!" and wait for the search to finish. Hopefully it will be able to find a result if you have done everything correctly.
-    - If there is no result then you probably messed up somewhere along the way. Unfortunately that means you must start over with the 127 eggs.
+8. Click on "Go!" and wait for the search to finish. It shouldn't take long and you will get one result.
 
 ## Step 3: Verifying Egg Seeds (127 Magikarp Method)
 

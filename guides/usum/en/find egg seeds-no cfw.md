@@ -64,7 +64,7 @@ The gift Eevee egg from the nursery does not count!
 
 8. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/sm/en/egg%20masuda%20method-shiny%20charm.md).  
 
-## Setup for 8 Magikarp method
+## Setup for 8 Egg Method
 
 ```
 Note: For this method you must not have rejected or accepted an egg from the nursery.
@@ -86,19 +86,15 @@ The gift Eevee egg does not count!
 
 4. Click "Search" and when it's done you will have your egg seeds.
 
-## Step 3: Verifying Egg Seeds (127 Magikarp Method)
+## Step 3: Verifying Egg Seeds (8 Egg Method)
 
 1. The egg seeds given are the ones from *before* you started collecting the 8 eggs. Now you need to verify that the egg seed you got is the correct one.
 
 2. Back in 3DSRNGTool input your egg seeds into the "Current Status" area in order. Under "Parents Information" fill it out according to the Magikarp and Ditto you used.
 
-3. Click on "Frame Range", make sure the initial frame is 0, then click "Calculate".
+3. Click on "Egg Number Range", make sure the initial number is 1, then click "Calculate".
 
-4. To double check that frame 0 is the frame you are on now, soft reset the game (`L + R + Start`) then deposit both parents back into the nursery.
+4. Check the 8 eggs you hatched against the 8 eggs info in the output. If the natures and genders match for all 8 eggs then you have the correct egg seeds.
+    - If they do not match then you will have to redo the 8 eggs again. Double check that the correct natures are entered in the order you accepted the eggs.
 
-5.  Run around until an egg is ready and accept it.
-
-6. Hatch the egg and check if the nature matches frame 0. If it does then congrats! You now know what your egg seeds are and can continue with egg RNG.
-    - If the nature does not match, then your egg seeds were not correct. You will have to redo the 8 eggs again to get correct egg seeds. Make sure that the natures you input are in the order of the eggs you accepted.
-
-8. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/sm/en/egg%20masuda%20method-shiny%20charm.md).  
+5. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/sm/en/egg%20masuda%20method-shiny%20charm.md).  

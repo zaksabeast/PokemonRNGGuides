@@ -23,22 +23,6 @@ Because of the limited amount of PIDs that are linked with a good IV spread, it 
 | :----: | :----: |
 | Adamant | 31/31/31/7/31/31 |
 | Bold | 31/0/31/31/31/30 |
-| Brave | 31/31/31/6/31/0 |
-| Calm | 31/0/31/31/31/31 |
-| Careful | 31/31/31/2/31/31 |
-| Hasty | 31/31/30/31/31/31 |
-| Impish | 31/31/31/1/31/31 |
-| Jolly | 31/31/31/0/31/31 |
-| Lonely | 30/31/30/31/31/31 |
-| Mild | 31/31/31/31/30/31 |
-| Modest | 31/2/31/31/31/31 |
-| Naive | 30/31/31/31/31/31 |
-| Naughty | 31/30/30/31/31/31 |
-| Quiet | 31/1/31/31/31/0 |
-| Rash | 31/30/30/31/31/31 |
-| Relaxed | 31/8/31/31/31/0 |
-| Sassy | 31/1/31/31/31/0 |
-| Timid | 31/0/31/31/30/31 |
 
 ## How To Do RS Stationary Live Battery RNG Abuse
 1.Find your spread

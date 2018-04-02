@@ -11,11 +11,8 @@
 - [Decimal to Hex Converter](https://www.binaryhexconverter.com/decimal-to-hex-converter)
 - [runasdate (Optional)](https://runasdate.en.softonic.com/)
 
-## Why Bother?
-This guide will help you obtain cool TIDs for your RNG purposes. If you do not care about TID, I recommend that you do [Dead Battery TID/SID Abuse](https://pokemonrng.com/guides/rse/en/Ruby-Sapphire%20Dead%20Battery%20TID%20RNG.md), as it has far fewer steps and is much simpler.
-
-## Things To Know
-Certain TID/SID combos are not possible, but there are 8 SIDs you can use to obtain a Shiny. As such, this shouldn't be an issue.
+## Reasons to RNG Your ID
+This guide will help you obtain cool TIDs for your RNG purposes. If you do not care about TID, I recommend that you do [Dead Battery TID/SID Abuse](https://pokemonrng.com/guides/rse/en/Ruby-Sapphire%20Dead%20Battery%20TID%20RNG.md), as it has far fewer steps and is much simpler. ```Certain TID/SID combos are not possible, but there are 8 SIDs you can use to obtain a Shiny. As such, this shouldn't be an issue.```
 Onto the RNG Proccess!
 
 ## How To RNG TID in Ruby & Sapphire

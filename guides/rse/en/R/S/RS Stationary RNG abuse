@@ -65,7 +65,7 @@ Before attempting this:
 6. When you are nearing your target frame (let's say 500-1000 frames off), create a new save state and pause the emulator.
 
 7. There is a frame drift that occures between the moment you initiate combat and the moment the Pokémon is generated. In order to compensate for this drift, we will have to manually calculate it.
-  - To calculate this drift, I recommend pausing the emulator on a closed number (ex: 110000 frames), then press A to trigger the     encounter and find the frame you hit. After this, subtract the visual frame - frame shown in RNG Reporter. The difference should be the   frame drift advanced before the encounter.
+  - To calculate this drift, I recommend pausing the emulator on a closed number (ex: 110000 frames), then press A to trigger the encounter and find the frame you hit. After this, subtract the visual frame - frame shown in RNG Reporter. The difference should be the frame drift advanced before the encounter.
 
 On Latios case, the drift is of 160 frames, so all what I have to do is subtract 174039 - 160 = 173879.
 

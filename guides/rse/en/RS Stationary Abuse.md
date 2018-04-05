@@ -15,14 +15,8 @@ With the advent of Ultra Sun & Ultra Moon RNG, you are able to get many Shiny Le
 In addition, certain Pokemon have access to tutor moves not available in future Generations, such as Mimic, Seismic Toss and Counter.
 
 ## Things To Know
-This guide only applies to Ruby and Sapphire RNG. Fire Red and Leaf Green have random seeding and Emerald will always have the initial seed of 0 unless you didn't Soft Reset or turn off the game. Also, spreads are limited due to the limited amount of valid PID/IV combos. You can read about PID generation more in-depth [here](https://www.smogon.com/ingame/rng/pid_iv_creation)
+This guide only applies to Ruby and Sapphire RNG. Fire Red and Leaf Green have random seeding and Emerald will always have the initial seed of 0 unless you didn't Soft Reset or turn off the game. Also, spreads are limited due to the limited amount of valid PID/IV combos. You can read about PID generation more in-depth [here](https://www.smogon.com/ingame/rng/pid_iv_creation).
 Because of the limited amount of PIDs that are linked with a good IV spread, it is recommended that you attempt an ID abuse before attempting to get a Shiny 5IV Pokemon. (Or any specific Shiny/IV combo)
-
-## Example Spreads for Method 1
-| Nature | Spread |
-| :----: | :----: |
-| Adamant | 31/31/31/7/31/31 |
-| Bold | 31/0/31/31/31/30 |
 
 ## How To Do RS Stationary Live Battery RNG Abuse
 1.Find your spread
@@ -51,5 +45,5 @@ Because of the limited amount of PIDs that are linked with a good IV spread, it 
 6.Advance Frames
             - Advance frames, paying attention to the frame counts. I recommend making a save state every 20000 frames or so, just in case. 
 7.Enjoy your new Pokemon!
-            Catch your Pokemon! (Make sure to make a save state) If this Pokemon is for trade, ensure that you make documentation if required by your community. Be wary, as giving the wrong information may lead to clones being generated without you knowing.
+            Catch your Pokemon! (Make sure to make a save state)
             ![Regice](https://snag.gy/Rs2qYH.jpg)

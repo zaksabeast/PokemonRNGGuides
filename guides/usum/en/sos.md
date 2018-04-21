@@ -130,8 +130,6 @@ Note: If you are going for a hard target such as a 1% encounter you can try to p
 
 7. When you get close to your target pause and advance your frames until you are in the middle of the bunch of frames and enter the final input.
 
-![](https://imgur.com/CPGbpbp.png)
-
 Congrats! You should now have the Pokemon you wanted. If not, knock it out figure out why and try again.
 
 ![](https://imgur.com/m6kHHrr.png)

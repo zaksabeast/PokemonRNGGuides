@@ -80,27 +80,27 @@ At this point you would be best off waiting until you have a longer SOS chain fo
 
 2. As you are going through this process make sure to keep the Length and Frame updated as well as any of the rest of the relevant options on the main window and the Misc. RNG tool window
 
-![](https://imgur.com/lCImw6r)
+![](https://imgur.com/lCImw6r.png)
 
 3. Find what frame you are currently using the Extended Game View window of PCalc
 
 4. Once you've found your frame you can figure out if your call will be successful if the first two values shown are 'O'. If not you can tell which value you will land on next by looking at the Adv. field. If your call fails make sure to check the `Last Call Failed` field before searching
 
-![](https://imgur.com/nmVQdYA)
+![](https://imgur.com/nmVQdYA.png)
 
 5. Once you've found a frame that will trigger an encounter you will want to find the frame on the main RNG that you want to hit. So switch to the main 3DSRNGTool window and put in your current frame as the starting frame and put in a valid range.
 
-![](https://imgur.com/4mFk9bh)
+![](https://imgur.com/4mFk9bh.png)
 
 6. Choose a random target or just any frame you are one as individual frames could be hard to hit as the frames advance inconsistently in battle. At this point trigger the last input for the turn.
 	- If two Pokemon are on the field the delay will be longer and the final input will be hitting `A` while targeting a Pokemon
 	- If no Pokemon is on the field the delay will be shorter and the final input will be hitting `A` while hovering over `Use`
 
-![](https://imgur.com/F30gSrn)
+![](https://imgur.com/F30gSrn.png)
 
 7. Once the Pokemon appears you will need to find out the frame you actually hit by using the stats of the Pokemon that appeared. I did this by setting the delay to 0 and searching for the frame I actually hit and adjusting based on the Shift/f value from the frame you hit. Then adjusting from there to get the frame I actually hit to match the frame I pressed `A` on. 
 
-![](https://imgur.com/EW0NzcZ)
+![](https://imgur.com/EW0NzcZ.png)
 
 8. Do steps 3-7 a number of times and keep track of your results and once you get to a point where you are getting more shiny frames in a block you can try for your actual target(might as well max IVs and PID rolls out at 31 chain)
 	- I hit 56, 58, 62 so I was comfortable using 58 as my delay for the item path
@@ -115,26 +115,26 @@ At this point you would be best off waiting until you have a longer SOS chain fo
 ```
 Note: If you are going for a hard target such as a 1% encounter you can try to play with some frames as you get close to manipulate success by using Intimidate or Super Effective moves. 
 ```
-![](https://imgur.com/XlDbzIh)
+![](https://imgur.com/XlDbzIh.png)
 
 4. When you've landed on your target SOS frame it is now time to find your target. You will want to make sure you have all the relevant info filled out in the 3DSRNGTool main window. **Don't forget to set the delay for the right SOS call type!**
 
 5. Then set up the filter for your target
 	- Be cognizant of the IVs you can set for this based on the seventh field(should look something like VVXVVX)
 
-![](https://imgur.com/nS0Mp4n)
+![](https://imgur.com/nS0Mp4n.png)
 
 6. Set up your game to the point that it is ready for the final input
 
-![](https://imgur.com/9zlYM9B)
+![](https://imgur.com/9zlYM9B.png)
 
 7. When you get close to your target pause and advance your frames until you are in the middle of the bunch of frames and enter the final input.
 
-![](https://imgur.com/CPGbpbp)
+![](https://imgur.com/CPGbpbp.png)
 
 Congrats! You should now have the Pokemon you wanted. If not, knock it out figure out why and try again.
 
-![](https://imgur.com/m6kHHrr(
+![](https://imgur.com/m6kHHrr.png)
 
 ## If you did not obtain the Pokemon you wanted
 

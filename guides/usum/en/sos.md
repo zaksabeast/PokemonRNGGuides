@@ -17,13 +17,13 @@
 
 ## Regarding SOS RNG
 SOS RNG consists of calls to two different processes:
-	- Main RNG - IV spread, nature, gender and PID(shininess).
-	- G7 SFMT (32bit) - Encounter slot, call success, level
-		- This is the RNG that will allow you to RNG that 1% Salamence
+- Main RNG - IV spread, nature, gender and PID(shininess).
+- G7 SFMT (32bit) - Encounter slot, call success, level
+	- This is the RNG that will allow you to RNG that 1% Salamence
 		
 There are also two "types" of calls for help to consider:
-	- Two Pokemon on the field and one is KO'd
-	- Last call failed and you need to use an item to get them to call for help
+- Two Pokemon on the field and one is KO'd
+- Last call failed and you need to use an item to get them to call for help
 	
 This RNG is best used to get shiny Pokemon since a chain of 31 will allow you to shoot for PID re-roll blocks of 13-15 depending on whether you have the `Shiny Charm`. The SOS chain length has an effect on being able to get Hidden Abilities as well. You can shoot for individual frames but will not be likely to hit them. 
 
@@ -82,7 +82,7 @@ At this point you would be best off waiting until you have a longer SOS chain fo
 
 ![](https://imgur.com/lCImw6r.png)
 
-3. Find what frame you are currently using the Extended Game View window of PCalc
+3. Find what SOS frame you are currently on using the Extended Game View window of PCalc
 
 4. Once you've found your frame you can figure out if your call will be successful if the first two values shown are 'O'. If not you can tell which value you will land on next by looking at the Adv. field. If your call fails make sure to check the `Last Call Failed` field before searching
 
@@ -126,11 +126,11 @@ Note: If you are going for a hard target such as a 1% encounter you can try to p
 
 6. Set up your game to the point that it is ready for the final input
 
-![](https://imgur.com/9zlYM9B.png)
-
 7. When you get close to your target pause and advance your frames until you are in the middle of the bunch of frames and enter the final input.
 
-Congrats! You should now have the Pokemon you wanted. If not, knock it out figure out why and try again.
+![](https://i.imgur.com/OUKPvlC.png)
+
+Congrats! You should now have the Pokemon you wanted. 
 
 ![](https://imgur.com/m6kHHrr.png)
 

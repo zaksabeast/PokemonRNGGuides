@@ -5,7 +5,7 @@
 - Lua .dll files
      - [x86 lua.dll](https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
      - [x64 lua.dll](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
-- [RNGReporter](https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
 - [The Ruby/Sapphire Lua Scripts for your language](http://pokerng.forumcommunity.net/?t=56443955)
 - [runasdate (Optional)](https://runasdate.en.softonic.com/)
 - A Save File (ID Abused)
@@ -20,15 +20,15 @@ Because of the limited amount of PIDs that are linked with a good IV spread, it 
 
 ## How To Do RS Stationary Live Battery RNG Abuse
 1.Find your spread
-           - Select a spread from above or search for it in RNG Reporter. Go to 4th Gen Tools and select "Calculate PID From IVS." You will open a screen that looks like this: ![PID From IVS](https://snag.gy/yfYPqv.jpg)
+           - Select a spread from above or search for it in PokeFinder. Go to 4th Gen Tools and select "Calculate PID From IVS." You will open a screen that looks like this: ![PID From IVS](https://snag.gy/JGDTmB.jpg)
            - Input your chosen spread to get the seed and PID. Make sure it says Method 1!
 2.Getting your Initial Seed
           - The seed you got from that screen was simply the seed you must hit when you press A on encounter. To get your initial seed, go to 3rd Gen Tools and hit Seed To Time. Copy and paste the seed into the highlighted bar. 
-            ![Seed To Time](https://snag.gy/XGisIK.jpg)
+            ![Seed To Time](https://snag.gy/vU9l26.jpg)
             - This will give you your initial seed and the date you need to run the Ruby and Sapphire game on.
 3.Finding the Frame to hit
-            - On the main screen of reporter enter your initial seed and spread. Make sure that it is set to search Method 1. It should look something like this:
-            ![M1](https://snag.gy/KMdX3I.jpg)
+            - On the screen of PokeFinder below, enter your initial seed and spread. Make sure that it is set to search Method 1. It should look something like this:
+            ![M1](https://snag.gy/mQuEG8.jpg)
             - Hit Generate and get results. If you don't get a result, try extending the max results.
 4.Hitting the Initial Seed
             - Open runasdate (or change your computer clock) and set the date to one listed in Seed To Time. Set up the screen just like how it is shown below: 
@@ -38,8 +38,8 @@ Because of the limited amount of PIDs that are linked with a good IV spread, it 
 5.Finding Delay
             - Go to the final screen before encountering the target Pokemon. Now, make a save state and note what frame you are on. Hit A and enter the encounter. Run the lua script, and get the IVs of the Pokemon. 
             ![IVS](https://snag.gy/wpUMTv.jpg)
-            - Now, open a new RNG Reporter and insert your initial seed and IVS. 
-            ![Reporter](https://snag.gy/TGBKU4.jpg)
+            - Now, open a new PokeFinder and insert your initial seed and IVS. 
+            ![Finder](https://snag.gy/dVAqKe.jpg)
             - Since I hit A on Frame 89016, that means 54 Frames went by between my last input (hitting A) and the IVs and PID being generated. 
             - Therefore, to hit my 31/2/31/31/31/31 Modest spread, I must hit 180124.
 6.Advance Frames

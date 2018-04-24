@@ -22,7 +22,7 @@ Onto the RNG Proccess!
 ![IV To PID](https://snag.gy/bTkeXi.jpg)
 - Put your desired TID in the ID box and note the SID it also gives.
 2. Finding your Initial Seed
-- Typically, in ID Abuse, you would go to IDs tab in PokeFinder. However, IDs for Generation 3 only allows you to search one date at a time. To save time, we will use Generation 3 Tools built into PokeFinder and a website. Go to this ![website](https://www.binaryhexconverter.com/decimal-to-hex-converter) and open PokeFinder. 
+- Typically, in ID Abuse, you would go to IDs tab in PokeFinder. However, IDs for Generation 3 only allows you to search one date at a time. To save time, we will use Generation 3 Tools built into PokeFinder and a website. Go to this [website]https://www.binaryhexconverter.com/decimal-to-hex-converter) and open PokeFinder. 
 - On the website, input your TID that you want. I want 02332, so I put in 02332 and get 91C. Put that in the PID to IVs option under Generation 3 tools. Now take the SID listed in PID From IVs and convert it as well. Since I want 46392, I input that and get B538. 
        ![Hex](https://snag.gy/EZkURB.jpg)
 - Go into PokeFinder's Generation 3 Tools tab and enter PID to IVs. Put the two hexadecimal combos into PID to IVs. (Make sure to put TID first, then SID) If you get a Method 1 Spread, you have a valid ID combo. If you get a non-method 1 spread, just add 1 to your SID and reconvert it to hex until you get a valid one.

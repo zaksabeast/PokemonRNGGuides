@@ -57,4 +57,5 @@ Because of the limited amount of PIDs that are linked with a good IV spread, it 
             - Advance frames, paying attention to the frame counts. I recommend making a save state every 20000 frames or so, just in case. 
 7.Enjoy your new Pokemon!
             Catch your Pokemon! (Make sure to make a save state)
-            ![Regice](https://snag.gy/Rs2qYH.jpg)
+            
+ ![Regice](https://snag.gy/Rs2qYH.jpg)

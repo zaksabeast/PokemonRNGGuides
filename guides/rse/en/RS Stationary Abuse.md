@@ -20,11 +20,11 @@ Because of the limited amount of PIDs that are linked with a good IV spread, it 
 
 ## How To Do RS Stationary Live Battery RNG Abuse
 1.Find your spread
-           - Select a spread from above or search for it in PokeFinder. Go to 4th Gen Tools and select "Calculate PID From IVS." You will open a screen that looks like this: ![PID From IVS](https://snag.gy/JGDTmB.jpg)
+           - Select a spread in PokeFinder. Go to Gen 3 Stationary and click the searcher tab. Insert your desired spread and see what shows up. ![search](https://snag.gy/ec6wP4.jpg)
            - Input your chosen spread to get the seed and PID. Make sure it says Method 1!
 2.Getting your Initial Seed
           - The seed you got from that screen was simply the seed you must hit when you press A on encounter. To get your initial seed, go to 3rd Gen Tools and hit Seed To Time. Copy and paste the seed into the highlighted bar. 
-            ![Seed To Time](https://snag.gy/vU9l26.jpg)
+            ![Seed To Time](https://snag.gy/N6RZkM.jpg)
             - This will give you your initial seed and the date you need to run the Ruby and Sapphire game on.
 3.Finding the Frame to hit
             - On the screen of PokeFinder below, enter your initial seed and spread. Make sure that it is set to search Method 1. It should look something like this:

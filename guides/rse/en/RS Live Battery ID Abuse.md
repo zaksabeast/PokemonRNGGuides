@@ -38,7 +38,7 @@ Onto the RNG Proccess!
 
 ![Frame](https://snag.gy/lte3bH.jpg)
  
-Advance Frames on this screen ^
+Advance Frames on the screen above
 
 4. Delay
 - Frames pass by between when you hit A and when the TID/SID is generated. You will need to find how many frames pass by. Go to the IDs function in PokeFinder. Put your Initial seed and TID that you recieved in and find what frame you hit. Now adjust accordingly. For example, if I wanted to hit frame 89103 but hit Frame 89175, my delay was 72, which means I need to hit A 72 Frames early. (If your TID / SID are swapped, go one frame earlier)

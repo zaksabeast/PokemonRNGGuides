@@ -16,8 +16,11 @@ Finding your DS Parameters is **MANDITORY**. There are no RNGs you can do withou
 #### The RNG Process
 1. DS Parameters Search
 - Open RNG reporter and click the "DS Parameters Search."
-- Set Seed Encryption Variables as seen here: ![DS](https://snag.gy/QF6Rfk.jpg)
-- Unlike on consoles, DeSmuMe's DS MAC Address is always 0009BF123456. 
+- Set Seed Encryption Variables as seen here: 
+
+![DS](https://snag.gy/QF6Rfk.jpg)
+
+- Unlike on consoles, DeSmuMe's DS MAC Address is always 0009BF123456.
 
 2. The Seed
  - Open runasdate and type in any time. Make sure to check Immediate Mode. Put that time in DS Parameter Finder. Now hit "Run" on runasdate and load your rom.

@@ -25,19 +25,22 @@ When using Masuda Method and/or Shiny Charm, the ESVs (and PIDs) of every egg ar
 3. The "Shiny Charm" box must be unchecked. If you have the Shiny Charm you cannot use this method.
 
 ```
-If you are wanting to RNG the egg to have a specific ESV that is not yours, click on "Edit TSV List" and input TSV(s). Then check the "Other TSVs Shiny" box.
+If you are wanting to RNG the egg to have a specific ESV that is not yours, click on "Edit TSV List" and input TSV(s).
 
 Do not input the TSV in the upper right. YOUR TSV must be used in the upper right or else the RNG will be incorrect.
 ```
+
 ### For Parents Information:
 - Fill it out according to the parents you are using.
     - Make sure the "Masuda Method" box is not checked. If the parents are of different languages you cannot use this method.
+    - Double check that the parents are indeed of the same language. Checking this now will save you from wasting time later.
 
 ```
 Note: The region of the Pokemon does not affect anything, it is only the language of the Pokemon that matters for Masuda Method.
 ```
 
 If using a Ditto and genderless Pokemon, the Ditto will be the female.
+Otherwise the Ditto will be the opposite gender of the other parent.
 
 
 Note about breeding for Rockruff:
@@ -48,7 +51,7 @@ Note about breeding for Rockruff:
 1. For the "Current Status" input the current egg seeds of your game.
     - Using PCalc, press `Start + Down` ingame to bring up the egg seed window and input them into 3DSRNGTool.
 
-2. Do not check the "Main RNG Egg (PID)"" box. We will be doing this later.
+2. Do not check the "Main RNG Egg (PID)" box. We will be doing this later.
 
 3. For "Filters", input the info for the egg you are wanting.
 
@@ -75,6 +78,7 @@ Note: Make sure you go in order from top to bottom for accepting and rejecting e
 
 Doing it out of order will mess you up.
 ```
+
 ```
 With PCalc you can check which frame you are on by looking at your egg seeds ingame (Start + Down to bring up menu).
 ```
@@ -83,15 +87,20 @@ With PCalc you can check which frame you are on by looking at your egg seeds ing
 
 1. Once you have the egg you want to be shiny ready to pick up from the daycare helper, save the game in case you mess up and need to start over for the next part.
 
-2. Stand directly in front of the helper and start the dialogue to accept the egg. Then press `Start + Up` to bring up the Game View window ingame.
+2. Stand directly in front of the helper and start the dialogue to accept the egg. 
 
-3. When you get to the choice of “Yes” or “No”, pause the game (`Start + Select`).
+3. When you get to the choice of “Yes” or “No”, press `Start + Up` to bring up the Game View window ingame, and then pause the game (`Start + Select`).
+    - If the Game View window is already open, close and open it again when at the "Yes" or "No" selection to reset NPC counter.
 
-4. Follow the [timeline guide](https://pokemonrng.com/guides/sm/en/timeline.md) to create a timeline and find a target frame.
+4. Check the "Main RNG Egg (PID)" box in 3DSRNGTool under "Current Status". Afterwards reset "Filters" by clicking on the gear icon.
+    - Then follow the [timeline guide](https://pokemonrng.com/guides/sm/en/timeline.md) to create a timeline.
+    - Creating a timeline is necessary to know what frames you can actually land on due to NPC influence on frames.
+
+5. After making a timeline you can now search for a target frame that you are able to land on.
     - If you are wanting to RNG the egg to have a specific ESV that is not yours, click on "Edit TSV List" and input TSV(s). Then check the "Other TSVs Shiny" box.
-    - Make sure that the "Main RNG Egg (PID)" box is checked to RNG your egg.
-
-5. After making a timeline you should now have a target frame that you are able to land on.
+    - Check the "Shiny Only" box.
+    - Then "Calculate" to find frames that will give the ESV(s) you want.
+    - Choose any of the blue highlighted frames (lower frames are better because less waiting time).
 
 6. Advance to that frame and when you land on it, Press `A` to accept egg.
 

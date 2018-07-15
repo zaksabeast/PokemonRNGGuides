@@ -92,12 +92,14 @@ With PCalc you can check which frame you are on by looking at your egg seeds ing
 3. When you get to the choice of “Yes” or “No”, press `Start + Up` to bring up the Game View window ingame, and then pause the game (`Start + Select`).
     - If the Game View window is already open, close and open it again when at the "Yes" or "No" selection to reset NPC counter.
 
-4. Check the "Main RNG Egg (PID)" box in 3DSRNGTool under "Current Status". Afterwards reset "Filters" by clicking on the gear icon.
+4. Follow the steps below to create a timeline to obtain the ESV you want.
+    - Check the "Main RNG Egg (PID)" box in 3DSRNGTool under "Current Status". 
+    - Afterwards reset "Filters" by clicking on the gear icon.
     - Then follow the [timeline guide](https://pokemonrng.com/guides/sm/en/timeline.md) to create a timeline.
     - Creating a timeline is necessary to know what frames you can actually land on due to NPC influence on frames.
 
 5. After making a timeline you can now search for a target frame that you are able to land on.
-    - If you are wanting to RNG the egg to have a specific ESV that is not yours, click on "Edit TSV List" and input TSV(s). Then check the "Other TSVs Shiny" box.
+    - If you are wanting to RNG the egg to have a specific ESV that is not yours, click on "Edit TSV List", input TSV(s), and check the "Other TSVs Shiny" box.
     - Check the "Shiny Only" box.
     - Then "Calculate" to find frames that will give the ESV(s) you want.
     - Choose any of the blue highlighted frames (lower frames are better because less waiting time).

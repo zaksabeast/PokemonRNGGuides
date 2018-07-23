@@ -11,7 +11,7 @@
 - [RunAsDate (Optional)](https://runasdate.en.softonic.com/)
 
 #### Things To Know
-Finding your DS Parameters is **MANDITORY**. There are no RNGs you can do without finding these parameters. As such, you should get comfortable with doing this procedure. 
+Finding your DS Parameters is **MANDATORY**. There are no RNGs you can do without finding these parameters. As such, you should get comfortable with doing this procedure. (Though you only have to do it once per save/console/emulator)
 
 #### The RNG Process
 1. DS Parameters Search

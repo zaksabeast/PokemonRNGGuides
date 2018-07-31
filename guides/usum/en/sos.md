@@ -4,33 +4,36 @@
 
 - Console with CFW
 - [3DSRNGTool](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts)
-	- [Github link](https://github.com/wwwwwwzx/3DSRNGTool)
+  - [Github link](https://github.com/wwwwwwzx/3DSRNGTool)
 - PCalc
-    - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
-    - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
-	- [Guide for installing PCalc](https://pokemonrng.com/guides/tools/en/install%20pcalc.md)
+  - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
+  - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
+  - [Guide for installing PCalc](https://pokemonrng.com/guides/tools/en/install%20pcalc.md)
 
 ## Recommended reading/references
 
 - [SOS call rates](https://pastebin.com/W59vsi0H)
-	- Can Ctrl + F for Pokemon wanting to SOS
+  - Can Ctrl + F for Pokemon wanting to SOS.
 - [Encounter slots](https://gist.github.com/SciresM/a539739085e24af55dffdf443cb70eb2)
-	- Can Ctrl + F for Pokemon wanting to SOS
+  - Can Ctrl + F for Pokemon wanting to SOS.
 
 ## Regarding SOS RNG
 
 SOS RNG consists of calls to two different processes:
-- Main RNG - IV spread, nature, gender and PID (shininess).
-- G7 SFMT (32bit) (the SOS RNG) - Encounter slot, call success, level
-	- This is the RNG that will allow you to RNG that 1% Salamence
-		
-There are also two "types" of calls for help to consider within the SOS RNG:
-- Two Pokemon on the field and one is KO'd
-- Last call failed and you need to use an item to get them to call for help
-	
-This RNG is best used to get shiny Pokemon since a chain of 31 will allow you to shoot for PID re-roll blocks of up to 13-15 frames if you have the `Shiny Charm`. The SOS chain length has an affect on being able to get Hidden Abilities as well. You can shoot for individual frames but will not be likely to hit them. 
 
-With that noted, the two types of SOS calls will result in different delays and you will need to calculate both. While progressing up to the desired chain length you can try to find the delay that is most consistent for each call type. 
+- Main RNG - IV spread, nature, gender and PID (shininess).
+- G7 SFMT (32bit) (the SOS RNG) - Encounter slot, call success, level.
+  - This is the RNG that will allow you to RNG that 1% Salamence.
+
+There are also two "types" of calls for help to consider within the SOS RNG:
+
+- Two Pokemon on the field and one is KO'd.
+- Last call failed and you need to use an item to get them to call for help.
+  - This type of call is the more stable one for delays and the recommended one to use for RNG.
+
+This RNG is best used to get shiny Pokemon since a chain of 31 will allow you to shoot for PID re-roll blocks of up to 13-15 frames if you have the `Shiny Charm`. The SOS chain length has an affect on being able to get Hidden Abilities as well. You can shoot for individual frames but will not be likely to hit them.
+
+With that noted, the two types of SOS calls will result in different delays. While progressing up to the desired chain length you can try to find the delay that is most consistent for each call type.
 
 ## Step 1: Set Up 3DSRNGTool
 
@@ -44,26 +47,29 @@ With that noted, the two types of SOS calls will result in different delays and 
 ## Step 2: Find the SOS Pokemon and setup Misc. RNG Tool
 
 1. You can either wander around until you find the correct Pokemon to SOS or you can RNG it.
-	- Guide to Gen 7 wild RNG can be found [here](https://pokemonrng.com/guides/usum/en/wild.md).
+  - Guide to Gen 7 wild RNG can be found [here](https://pokemonrng.com/guides/usum/en/wild.md).
 
 2. Once in the encounter open the "Tools" menu on 3DSRNGTool and select "Misc. RNG Tool". Switch the RNG type to "G7 SFMT (32bit)" and choose the "SOS" tab.
 
 ![](https://cdn.discordapp.com/attachments/453736908854394902/471784402154946561/unknown.png)
 
-3. Within PCalc, you can open the Extended Game View by using `B + Up` while the Game View window is open. In the bottom right of the window you will find the `SOS Init seed`.
+3. Within PCalc, you can open the Extended Game View by using `B + Up` while the Game View window is open. Press `Down + B` to reset the SOS information within PCalc.
+   
+
+4. In the bottom right of the PCalc window you will find the `SOS Init seed`.
 	- `SOS Init seed` - This goes in the box for "Seed" within the Misc. RNG Tool on 3DSRNGTool.
 
-4. You will also want to find the info on "Call Rate" and enter that in for the Pokemon you are SOSing.
+5. You will also want to find the info on "Call Rate" and enter that in for the Pokemon you are SOSing.
 	- This info can be found [here](https://pastebin.com/W59vsi0H).
 
-5. Fill in rest of the info in the SOS tab as needed.
+6. Fill in rest of the info in the SOS tab as needed.
 	- HP should be set to what the current caller's HP level is.
 	- Check `Adrenaline Orb` if you have used an Adrenaline Orb.
 	- If there is weather effects such as rain check the `Weather` box.
 	- If your Pokemon currently out has the Intimidate, Unnerve, or Pressure ability check the `Intimidate` box.
 	- If the ally Pokemon that was called was hit with a super-effective attack on the first turn it appeared, then check the `Super Effective` box.
 
-5. Press "Search" button to see results and let's examine what we see. 
+7. Press "Search" button to see results and let's examine what we see. 
 	- On the Misc RNG Tool results window you will see a few different fields and the meaning of each will follow:
 
 ![](https://my.mixtape.moe/yqjfkk.png)
@@ -102,7 +108,7 @@ With that noted, the two types of SOS calls will result in different delays and 
 Note: Some of these fields will be used in the guide and some will not but they should be self-explanatory.
 ```
 
-## Step 3: Finding the SOS Call delay
+## Step 3: Advancing SOS Frames
 
 At this point you would be best off waiting until you have a longer SOS chain for better odds and increased IVs before trying your ideal target. This is a good opportunity to work on finding the delay for the two different "types" of SOS calls.
 
@@ -110,9 +116,9 @@ At this point you would be best off waiting until you have a longer SOS chain fo
 
 2. You can find what SOS frame you are currently on using the Extended Game View window of PCalc.
 
-3. After each battle turn, make sure to update all the relevant info in 3DSRNGTool.
+3. After each battle turn, make sure to update all the relevant info in 3DSRNGTool based on what happened the turn before.
 	- In Misc. RNG Tool: SOS "Length", SOS "Frame", "Last Call Failed", "Super Effective"
-	- In main window: "Frame" (for current SOS frame), "Chain Length"
+	- In main window: "Frame" (for current SOS frame), "Chain Length" (How to fill out the main window in 3DSRNGTool will be explained further in this guide)
 
 ![](https://imgur.com/lCImw6r.png)
 
@@ -129,10 +135,20 @@ At this point you would be best off waiting until you have a longer SOS chain fo
 
 ## Step 4: Finding the Main RNG delay
 
-1. So now you will want to find the frame on the main RNG for the Pokemon stats (IVs, shiny, etc) that you want to hit. 
-	- Switch to the main 3DSRNGTool window and input your current main RNG frame as the starting frame.
-	- The current main RNG frame can be found by pressing `Start + Up` to bring up the Game View window in PCalc if it is not already up.
-	- Then press `Start + Select` to pause the game and use the number after `Frame:`.
+You will now want to fill out the main window of 3DSRNGTool for your SOS RNG.
+
+- Choose the "Wild RNG" tab and check the "SOS Call" box. Choose the correct "Location".
+- Make sure to select "Day" or "Night" depending on the time in your game.
+- In "Wild Encounter Setting" the "Seed" box is for the Initial SOS seed. This should be the same seed as the SOS Initial seed in Misc. RNG Tool.
+- In "Wild Encounter Setting" the "Frame" box is for your current SOS frame. This should be the same seed as the SOS Initial seed in Misc. RNG Tool.
+- Choose the correct dropdown for the "Lead" box if you have one of those Pokemon as your lead Pokemon.
+- "Chain Length" is for your current SOS chain length. This should be the same seed as the SOS Initial seed in Misc. RNG Tool.
+- Choose the correct dropdown for "Weather" if there are weather affects in play for the battle.
+
+1. So now you will want to find the frame on the main RNG for the Pokemon stats (IVs, shiny, etc) that you want to hit.
+  - Switch to the main 3DSRNGTool window and input your current main RNG frame as the starting frame.
+  - The current main RNG frame can be found by pressing `Start + Up` to bring up the Game View window in PCalc if it is not already up.
+  - Then press `Start + Select` to pause the game and use the number after `Frame:`.
 
 ![](https://imgur.com/4mFk9bh.png)
 
@@ -144,9 +160,13 @@ At this point you would be best off waiting until you have a longer SOS chain fo
 
 ![](https://imgur.com/F30gSrn.png)
 
-3. Once the Pokemon appears you will need to find out the frame you actually hit by using the stats of the Pokemon that appeared. 
-	- You can do this by setting the delay to 0 and searching for the frame that was actually hit and adjusting based on the Shift/F value from the target frame. 
-	- Then adjust the number in the `Consider Delay` box to get the frame you actually hit to match the frame you pressed `A` on. 
+3. Once the Pokemon appears you will need to find out the frame you actually hit by using the stats of the Pokemon that appeared.
+	- You can do this by setting the delay to 0 and searching for the frame that was actually hit and adjusting based on the Shift/F value from the target frame.
+	- Then adjust the number in the `Consider Delay` box to get the frame you actually hit to match the frame you pressed `A` on.
+
+```
+Note: If you are not finding the IVs for the Pokemon you got, double check that SOS frame was correct. Not having the correct SOS frame in the main window will not show the correct results for the Pokemon you got.
+```
 
 ` Frame from Pokemon's stats - Target Frame = Delay `
 
@@ -161,16 +181,16 @@ Note: You can find out what the Pokemon's stats are by pressing Start + Left to 
 - Repeat steps 3 and 4 a number of times and keep track of your results.
 	- Once you get to a point where you are getting more shiny frames in a block you can try for your actual target (might as well max IVs and PID rolls out at 31 chain)
 	- You can either go for your most common delay, or choose the middle of them if they're consistent.
-	- For example if the delays are `56, 58, 62` 58 would be safe to use since in a block of frames there's a good chance will hit one of them. 
+	- For example if the delays are `56, 58, 62` 58 would be safe to use since in a block of frames there's a good chance will hit one of them.
 
 ## Step 6: Getting your SOS target
 
 1. To find the desired SOS target you will want to make sure you can hit your desired Encounter Slot, Sync and/or HA. To do this you will want to navigate to the "SOS2" tab and select the encounter slot of the Pokemon you are wanting, whether you want sync to be successful or not, and if you want HA.
 
-2. Enter in all the relevant info on the "SOS" tab to determine what SOS frames will be successful. 
+2. Enter in all the relevant info on the "SOS" tab to determine what SOS frames will be successful.
 	- You can filter for successful SOS frames by checking the `Success Only` box.
 
-3. Now you can search for your target by entering what you are looking for in the filters and hitting "Calculate". 
+3. Now you can search for your target by entering what you are looking for in the filters and hitting "Calculate".
 	- You will want `OO` as the first two values for the SOS call to be successful.
 
 ```

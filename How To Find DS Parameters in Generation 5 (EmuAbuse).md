@@ -27,3 +27,6 @@ Finding your DS Parameters is **MANDATORY**. There are no RNGs you can do withou
  - Open your lua script and do not do any keypresses. Copy the seed you get and paste it into the DS Parameters finder. Hit Search and wait.
  ![DS](https://snag.gy/hTDiae.jpg)
  - When you get a result, hit "Send Results to Profile." Good luck on your future RNGS!
+
+
+- **Note: You may have to redo this process if you change emulation settings, saves or redownload the emulator.**

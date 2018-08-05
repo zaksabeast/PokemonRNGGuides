@@ -22,7 +22,7 @@ When saved at the time provided by wishmaker-calc, if that save file is used to 
 
 Sometimes, when the player is standing still, certain bytes of game data can change that will cause the program to not work correctly. It may take many tries to obtain your Jirachi.
 
-It is not possible to target a single Jirachi spread with this method.
+It is not possible to RNG for a specific Jirachi spread with this method.
 
 ### Before you begin
 
@@ -32,11 +32,19 @@ Open up the save menu and pause the game at the last line of dialogue over "YES"
 
 Next, hold down the a button, unpause the game while still holding down a, and watch the current time. When the current time on the lua script freezes, pause the game and write that time down.
 
+```
+Here is an example of the time freezing while I save.
+```
+
+![](https://i.imgur.com/dVM5jnp.gif)
+
 Your save delay will be the time when it froze minus the time when you paused the game before saving. Open up the lua script in wordpad. Put your save delay second and frame in the variables "savedelaySecond" and "savedelayFrame".
 
 ```
 Make sure not to modify anything in the lua script below the "DON'T EDIT ANYTHING BEYONG HERE" comment!
 ```
+
+![](https://i.imgur.com/SfM5d39.png)
 
 ## Steps to obtain your Jirachi
 

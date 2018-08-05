@@ -2,9 +2,9 @@
 
 ### Things you will need
 - [VBA-RR](https://github.com/TASVideos/vba-rerecording/releases)
-- Lua .dll files
- - [x86.dll](https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
- - [x64.dll](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
+- Lua .dll files:
+[x86.dll](https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
+[x64.dll](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
 - [wishmaker-calc](https://zaksabeast.github.io/wishmaker-calc/build/)
 - [wishmaker lua script](https://github.com/beatlynx/lua-stuff/blob/master/scripts/wishmakerlua.lua)
 
@@ -52,9 +52,13 @@ After obtaining your Pokedex, save your game. In VBA-RR, export your battery fil
 
 If the website tells you to save the game again, do it and reupload it to the website. This may occur multiple times.
 
+![](https://i.imgur.com/vDfWBpb.png)
+
 If the website tells you No Results, you have a few options. One option is to restart your save and play to the Pokedex again. Another option is to move to a different location, save, and check for a Jirachi again (this doesn't always work).
 
 If you get a time to save, you have found a Jirachi. Check the spread to see if it is one you want. If it isn't, repeat the above steps.
+
+![](https://i.imgur.com/5gZ1w80.png)
 
 ### Once you have found a Jirachi you want
 
@@ -68,7 +72,9 @@ Once you have your real save time, get to the last dialogue screen of the save m
 
 Now you need to wait for the time on your screen to match the real save time displayed on your screen. Unpause the game and begin waiting.
 
-Once you get close to your target time, pause the game and advance frames manually. Once you reach your target save time, hold down a, and while still holding it down, unpause the game.
+Once you get close to your real save time, pause the game and advance frames manually. Once you reach your real save time, hold down a, and while still holding it down, unpause the game.
+
+![](https://i.imgur.com/Sl0KWy1.png)
 
 After saving, export your battery file.
 
@@ -78,11 +84,13 @@ To check if the save you made will redeem to a shiny Jirachi, upload your save t
 
 Next to the save your game message, there should be some text that says "Current checksum:". If the seed next to it matches any of the [shiny jirachi seeds](https://www.irccloud.com/pastebin/rdxEbTm4/), congrats, your save will redeem to a shiny Jirachi!
 
+![](https://i.imgur.com/vDfWBpb.png)
+
 ### If it didn't work
 
 If your block 0 checksum does not match one of the shiny jirachi seeds, you will need to restart the process from a new save. As I mentioned in the caveats section, some bytes of game data that wishmaker calc does not account for might have caused the method to fail.
 
-Alternatively, you might have saved at the wrong time or calculated your save delay incorrectly.
+Alternatively, you might have saved at the wrong time or obtained your save delay incorrectly.
 
 ## Notes
 
@@ -95,5 +103,5 @@ You can redeem your Jirachi by moving your save file to a real cartridge and usi
 
 A guide on connecting VBA to Dolphin can be found [here](https://pokemonrng.com/guides/tools/en/connect%20dolphin%20to%20vba.md).
 
-##Credits
+## Credits
 - Zaksabeast for making this great tool

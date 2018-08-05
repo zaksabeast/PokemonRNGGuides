@@ -96,6 +96,13 @@ Alternatively, you might have saved at the wrong time or obtained your save dela
 
 - Make sure to not change your text speed, this will change your save delay
 - Speeding up your emulator might cause this method to fail
+- An alternative to starting a new file is waiting 30 minutes in-game
+
+## Tips
+
+- Don't choose the same name or starter every time
+- Try the male and female character
+- This can be a tedious process, take a break!
 
 ## Methods to redeem your Jirachi
 

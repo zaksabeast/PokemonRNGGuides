@@ -63,6 +63,10 @@ With that noted, the two types of SOS calls will result in different delays and 
 	- If your Pokemon currently out has the Intimidate, Unnerve, or Pressure ability check the `Intimidate` box.
 	- If the ally Pokemon that was called was hit with a super-effective attack on the first turn it appeared, then check the `Super Effective` box.
 
+```
+Note: The "Same Caller" box should be checked as long as the Pokemon that does the SOS call is the same as last turn. If it faints and the other Pokemon calls for help, then uncheck the box.
+```	
+
 5. Press "Search" button to see results and let's examine what we see. 
 	- On the Misc RNG Tool results window you will see a few different fields and the meaning of each will follow:
 
@@ -82,7 +86,7 @@ With that noted, the two types of SOS calls will result in different delays and 
 	- The second value is for the new Pokemon to appear.
 		- A `O` means a new Pokemon will appear.
 		- A `X` means a new Pokemon will not appear.
-	- The third value is for the lead(Synchronize/Static/Magnetic/Pressure/Hustle/Vital Spirit/Cute Charm)
+	- The third value is for the lead (Synchronize/Static/Magnetic/Pressure/Hustle/Vital Spirit/Cute Charm)
 		- `O` means ability for lead Pokemon will be a success.
 		- `X` means failure for ability of lead Pokemon to work.
 	- The fourth value is for Encounter slots
@@ -110,8 +114,8 @@ At this point you would be best off waiting until you have a longer SOS chain fo
 
 2. You can find what SOS frame you are currently on using the Extended Game View window of PCalc.
 
-3. After each battle turn, make sure to update all the relevant info in 3DSRNGTool.
-	- In Misc. RNG Tool: SOS "Length", SOS "Frame", "Last Call Failed", "Super Effective"
+3. After each battle turn, make sure to update all the relevant info in 3DSRNGTool based on what occured that turn.
+	- In Misc. RNG Tool: SOS "Length", SOS "Frame", "Last Call Failed", "Super Effective", "Same Caller"
 	- In main window: "Frame" (for current SOS frame), "Chain Length"
 
 ![](https://imgur.com/lCImw6r.png)
@@ -126,6 +130,12 @@ At this point you would be best off waiting until you have a longer SOS chain fo
 
 5. Once your current SOS frame will trigger an encounter on the next SOS call (has `O` for first two values) you will want to use it to calibrate for the main RNG delay.
 	- You can advance SOS frames by using an Adrenaline Orb (this has no effect if already used one and item will not be consumed) or by knocking out the non-caller Pokemon.
+
+```
+Note: Pay attention to the SOS Current Seed shown in PCalc and compare to what it should be in the Misc. RNG Tool window (Rand#) for the SOS frame you are on.
+
+Sometimes SOS frames do not advance as predicted and will throw off results if not corrected. If the SOS Current Seed does not match, then find the SOS frame in Misc. RNG Tool that matches the SOS Current Seed that PCalc shows. Adjust the SOS frame as needed in both Misc. RNG Tool and the main window.
+```
 
 ## Step 4: Finding the Main RNG delay
 
@@ -147,6 +157,7 @@ At this point you would be best off waiting until you have a longer SOS chain fo
 3. Once the Pokemon appears you will need to find out the frame you actually hit by using the stats of the Pokemon that appeared. 
 	- You can do this by setting the delay to 0 and searching for the frame that was actually hit and adjusting based on the Shift/F value from the target frame. 
 	- Then adjust the number in the `Consider Delay` box to get the frame you actually hit to match the frame you pressed `A` on. 
+	- If there are no results, then the SOS frame inputted was not correct. Double check that everything matches between 3DSRNGTool (especially SOS frame and Rand#) and PCalc before trying again. 
 
 ` Frame from Pokemon's stats - Target Frame = Delay `
 

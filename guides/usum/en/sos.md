@@ -47,7 +47,7 @@ With that noted, the two types of SOS calls will result in different delays. Whi
 ## Step 2: Find the SOS Pokemon and setup Misc. RNG Tool
 
 1. You can either wander around until you find the correct Pokemon to SOS or you can RNG it.
-  - Guide to Gen 7 wild RNG can be found [here](https://pokemonrng.com/guides/usum/en/wild.md).
+  	- Guide to Gen 7 wild RNG can be found [here](https://pokemonrng.com/guides/usum/en/wild.md).
 
 2. Once in the encounter open the "Tools" menu on 3DSRNGTool and select "Misc. RNG Tool". Switch the RNG type to "G7 SFMT (32bit)" and choose the "SOS" tab.
 
@@ -127,10 +127,10 @@ At this point you would be best off waiting until you have a longer SOS chain fo
 ![](https://imgur.com/lCImw6r.png)
 
 4. After inputting all of the needed info you can now figure out if the SOS call will be successful or not for the upcoming SOS frames.
- - If the first two values shown in the SOS column are `O` then the call will be successful. 
- - If not, then you can tell which value you will land on next by looking at the Adv. field. 
- - If your previous call failed make sure to check the `Last Call Failed` field before searching again.
- - To filter for what frames will be a successful call, you can check the `Success Only` box and then "Calculate".
+	- If the first two values shown in the SOS column are `O` then the call will be successful. 
+	- If not, then you can tell which value you will land on next by looking at the Adv. field. 
+	- If your previous call failed make sure to check the `Last Call Failed` field before searching again.
+	- To filter for what frames will be a successful call, you can check the `Success Only` box and then "Calculate".
 
 ![](https://imgur.com/nmVQdYA.png)
 
@@ -147,18 +147,18 @@ Sometimes SOS frames do not advance as predicted and will throw off results if n
 
 You will now want to fill out the main window of 3DSRNGTool for your SOS RNG.
 
-- Choose the "Wild RNG" tab and check the "SOS Call" box. Choose the correct "Location".
-- Make sure to select "Day" or "Night" depending on the time in your game.
-- In "Wild Encounter Setting" the "Seed" box is for the Initial SOS seed. This should be the same seed as the SOS Initial seed in Misc. RNG Tool.
-- In "Wild Encounter Setting" the "Frame" box is for your current SOS frame. This should be the same seed as the SOS Initial seed in Misc. RNG Tool.
-- Choose the correct dropdown for the "Lead" box if you have one of those Pokemon as your lead Pokemon.
-- "Chain Length" is for your current SOS chain length. This should be the same seed as the SOS Initial seed in Misc. RNG Tool.
-- Choose the correct dropdown for "Weather" if there are weather affects in play for the battle.
+	- Choose the "Wild RNG" tab and check the "SOS Call" box. Choose the correct "Location".
+	- Make sure to select "Day" or "Night" depending on the time in your game.
+	- In "Wild Encounter Setting" the "Seed" box is for the Initial SOS seed. This should be the same seed as the SOS Initial seed in Misc. RNG Tool.
+	- In "Wild Encounter Setting" the "Frame" box is for your current SOS frame. This should be the same frame as the SOS "Starting Frame" in Misc. RNG Tool.
+	- Choose the correct dropdown for the "Lead" box if you have a Pokemon in the lead with one of those abilities.
+	- "Chain Length" is for your current SOS chain length. This should be the same number as the SOS "Length" in Misc. RNG Tool.
+	- Choose the correct dropdown for "Weather" if there are weather affects in play for the battle.
 
 1. So now you will want to find the frame on the main RNG for the Pokemon stats (IVs, shiny, etc) that you want to hit.
-  - Switch to the main 3DSRNGTool window and input your current main RNG frame as the starting frame.
-  - The current main RNG frame can be found by pressing `Start + Up` to bring up the Game View window in PCalc if it is not already up.
-  - Then press `Start + Select` to pause the game and use the number after `Frame:`.
+	- Switch to the main 3DSRNGTool window and input your current main RNG frame as the starting frame.
+	- The current main RNG frame can be found by pressing `Start + Up` to bring up the Game View window in PCalc if it is not already up.
+	- Then press `Start + Select` to pause the game and use the number after `Frame:`.
 
 ![](https://imgur.com/4mFk9bh.png)
 
@@ -173,7 +173,7 @@ You will now want to fill out the main window of 3DSRNGTool for your SOS RNG.
 3. Once the Pokemon appears you will need to find out the frame you actually hit by using the stats of the Pokemon that appeared. 
 	- You can do this by setting the delay to 0 and searching for the frame that was actually hit and adjusting based on the Shift/F value from the target frame. 
 	- Then adjust the number in the `Consider Delay` box to get the frame you actually hit to match the frame you pressed `A` on. 
-	- If there are no results, then the SOS frame inputted was not correct. Double check that everything matches between 3DSRNGTool (especially SOS frame and Rand#) and PCalc before trying again. 
+	- If there are no results, then the SOS frame inputted was not correct. Double check that everything matches between 3DSRNGTool and PCalc (especially SOS frame and Rand#) before trying again. 
 
 ```
 Note: If you are not finding the IVs for the Pokemon you got, double check that SOS frame was correct. Not having the correct SOS frame in the main window will not show the correct results for the Pokemon you got.
@@ -231,7 +231,7 @@ Congrats! You should now have the Pokemon you wanted.
 
 ## If you did not obtain the Pokemon you wanted
 
-1. Double check that all info is correct on the two windows especially the Init and SOS seeds.
+1. Double check that all info is correct on the two windows. Sometimes the Initial Seed is not typed in correctly, or SOS Frame is not correct.
 
 2. Restart the guide from the beginning and make sure to follow _all_ instructions given. Not getting the correct Pokemon is usually a result of user error.
 

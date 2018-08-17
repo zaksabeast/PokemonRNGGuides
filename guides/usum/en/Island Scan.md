@@ -48,7 +48,7 @@ Note: You can find your TSV in PCalc in the Game Info window. Press "Start + Up"
 
 #### On the right of 3DSRNGTool
 
-1. Follow the [timeline guide](https://pokemonrng.com/guides/sm/en/Timeline%20Guide.md) using the `NPC Count` PCalc shows for the number of NPCs. Wait at least 30 seconds after bringing up the window to allow for the NPC counter to calibrate correctly.
+1. Follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md) using the `NPC Count` PCalc shows for the number of NPCs. Wait at least 30 seconds after bringing up the window to allow for the NPC counter to calibrate correctly.
 2. You should now have a target frame you wish to hit.
 
 

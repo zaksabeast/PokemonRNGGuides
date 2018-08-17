@@ -9,9 +9,9 @@
 
 Before continuing with the guide it is recommended to be in the place you wish to RNG.
 
-If you are wanting to RNG a Mystery Gift (or Event) Pokemon instead, follow the [Gen 7 Mystery Gift RNG guide](https://pokemonrng.com/guides/sm/en/mysterygift.md) instead.
+If you are wanting to RNG a Mystery Gift (or Event) Pokemon instead, follow the [Gen 7 Mystery Gift RNG guide](https://pokemonrng.com/guides/usum/en/Mystery%20Gift%20(Event)%20RNG.md) instead.
 
-If you are wanting to RNG a Pokemon in a Wormhole, follow the [USUM Wormhole RNG guide](https://pokemonrng.com/guides/usum/en/stationary%20wormhole.md) instead.
+If you are wanting to RNG a Pokemon in a Wormhole, follow the [USUM Wormhole RNG guide](https://pokemonrng.com/guides/usum/en/Stationary%20Wormhole%20RNG.md) instead.
 
 ## Stationary Pokemon
   - Tapus: Tapu Koko, Tapu Lele, Tapu Bulu, Tapu Fini
@@ -56,7 +56,7 @@ In the Gen 7 games each NPC has an affect on the RNG frames. This is why the fra
 
 ## Step 2 (with NPCs): Create a Timeline
 
-1. Follow the [timeline guide](https://pokemonrng.com/guides/sm/en/timeline.md) to create a timeline and find a target frame.
+1. Follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md) to create a timeline and find a target frame.
 
 ## Step 3: Obtaining the wanted Pokemon
 

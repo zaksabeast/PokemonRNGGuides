@@ -9,7 +9,7 @@ _Get your own perfect Legendary Pokemon!_
 - [PCalc-usum](https://pokemonrng.com/downloads/pcalc/usum)
 
 ### Recommended reading/references
-- [Timeline Guide](https://pokemonrng.com/guides/sm/en/timeline.md)
+- [Timeline Guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md)
 - [Timeline and Timeline 2.0 Guide by](https://github.com/wwwwwwzx/3DSRNGTool/wiki/Gen7-Timeline-Calibration-%28PokeCalcNTR-Only%29) /u/wwwwwwzx as we will be referencing concepts explained in this guide.
 - [3DSRNGTool README](https://github.com/wwwwwwzx/3DSRNGTool/blob/master/README.md) - list of final screens before the Pokemon is generated
 

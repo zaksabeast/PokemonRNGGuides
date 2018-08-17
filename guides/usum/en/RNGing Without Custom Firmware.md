@@ -92,7 +92,7 @@ In summary, the total time span in seconds = (Pre-Timer + Lag) / 1000 + (Target 
 
 ### Step 1: Find initial seed via continue screen clock needles
 
-- Check [here](https://pokemonrng.com/guides/tools/en/init-seed-stock.md)
+- Check [here](https://pokemonrng.com/guides/tools/en/Finding%20Initial%20Seed%20with%20Clocks%20(no%20Custom%20Firmware%20RNG).md)
 - Once you get only one seed result, the tool will update it to main window. The starting frame in Time Calculator is updated as well. (417/477 + the number of frames you saw for clocks)
 - Be sure to double check your seed, most of failures are from the wrong seed ;)
 - Do not enter your save yet.

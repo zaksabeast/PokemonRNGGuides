@@ -62,7 +62,7 @@ The gift Eevee egg from the nursery does not count!
     - If the nature does not match, then your egg seeds were not correct. You will have to redo the 127 eggs again to get correct egg seeds.
     - You can right click on the frame that matched and choose "Set as Current Status" to update the "Current Status" with your egg seeds.
 
-8. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/sm/en/egg%20masuda%20method-shiny%20charm.md).  
+8. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/sm/en/Egg%20RNG%20With%20Masuda%20Method%20or%20Shiny%20Charm.md).  
 
 ## Setup for 8 Egg Method
 
@@ -97,4 +97,4 @@ The gift Eevee egg does not count!
 4. Check the 8 eggs you hatched against the 8 eggs info in the output. If the natures and genders match for all 8 eggs then you have the correct egg seeds.
     - If they do not match then you will have to redo the 8 eggs again. Double check that the correct natures are entered in the order you accepted the eggs.
 
-5. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/sm/en/egg%20masuda%20method-shiny%20charm.md).  
+5. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/sm/en/Egg%20RNG%20With%20Masuda%20Method%20or%20Shiny%20Charm.md).  

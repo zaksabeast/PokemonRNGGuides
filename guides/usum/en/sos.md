@@ -8,7 +8,7 @@
 - PCalc
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
   - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
-  - [Guide for installing PCalc](https://pokemonrng.com/guides/tools/en/install%20pcalc.md)
+  - [Guide for installing PCalc](https://pokemonrng.com/guides/tools/en/How%20to%20Install%20PCalc.md)
 
 ## Recommended reading/references
 
@@ -47,7 +47,7 @@ With that noted, the two types of SOS calls will result in different delays. Whi
 ## Step 2: Find the SOS Pokemon and setup Misc. RNG Tool
 
 1. You can either wander around until you find the correct Pokemon to SOS or you can RNG it.
-  	- Guide to Gen 7 wild RNG can be found [here](https://pokemonrng.com/guides/usum/en/wild.md).
+  	- Guide to Gen 7 wild RNG can be found [here](https://pokemonrng.com/guides/usum/en/Wild%20RNG.md).
 
 2. Once in the encounter open the "Tools" menu on 3DSRNGTool and select "Misc. RNG Tool". Switch the RNG type to "G7 SFMT (32bit)" and choose the "SOS" tab.
 

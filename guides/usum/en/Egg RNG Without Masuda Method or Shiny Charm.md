@@ -95,7 +95,7 @@ With PCalc you can check which frame you are on by looking at your egg seeds ing
 4. Follow the steps below to create a timeline to obtain the ESV you want.
     - Check the "Main RNG Egg (PID)" box in 3DSRNGTool under "Current Status". 
     - Afterwards reset "Filters" by clicking on the gear icon.
-    - Then follow the [timeline guide](https://pokemonrng.com/guides/sm/en/timeline.md) to create a timeline.
+    - Then follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md) to create a timeline.
     - Creating a timeline is necessary to know what frames you can actually land on due to NPC influence on frames.
 
 5. After making a timeline you can now search for a target frame that you are able to land on.

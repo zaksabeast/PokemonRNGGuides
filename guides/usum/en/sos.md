@@ -21,9 +21,9 @@
 
 SOS RNG consists of calls to two different processes:
 
-- Main RNG - IV spread, nature, gender and PID (shininess).
 - G7 SFMT (32bit) (the SOS RNG) - Encounter slot, call success, level.
   - This is the RNG that will allow you to RNG that 1% Salamence.
+- Main RNG - IV spread, nature, gender and PID (shininess).  
 
 There are also two "types" of calls for help to consider within the SOS RNG:
 
@@ -34,6 +34,10 @@ There are also two "types" of calls for help to consider within the SOS RNG:
 This RNG is best used to get shiny Pokemon since a chain of 31 will allow you to shoot for PID re-roll blocks of up to 13-15 frames if you have the `Shiny Charm`. The SOS chain length has an affect on being able to get Hidden Abilities as well. You can shoot for individual frames but will not be likely to hit them.
 
 With that noted, the two types of SOS calls will result in different delays. While progressing up to the desired chain length you can try to find the delay that is most consistent for each call type.
+
+```
+Note: It is recommended to set up for the SOS chaining first before starting the RNG process. Having the Pokemon on low health and the Adrenaline Orb used will increase the chances of an SOS call being successful.
+```
 
 ## Step 1: Set Up 3DSRNGTool
 
@@ -141,6 +145,8 @@ At this point you would be best off waiting until you have a longer SOS chain fo
 Note: Pay attention to the SOS Current Seed shown in PCalc and compare to what it should be in the Misc. RNG Tool window (Rand#) for the SOS frame you are on.
 
 Sometimes SOS frames do not advance as predicted and will throw off results if not corrected. If the SOS Current Seed does not match, then find the SOS frame in Misc. RNG Tool that matches the SOS Current Seed that PCalc shows. Adjust the SOS frame as needed in both Misc. RNG Tool and the main window.
+
+As of this time, fishing SOS RNG is not as accurate as wild SOS RNG and may result in SOS frame advances not being predictable.
 ```
 
 ## Step 4: Finding the Main RNG delay
@@ -235,4 +241,5 @@ Congrats! You should now have the Pokemon you wanted.
 
 2. Restart the guide from the beginning and make sure to follow _all_ instructions given. Not getting the correct Pokemon is usually a result of user error.
 
-3. Make sure you are using the correct delay based on the type of SOS call.
+3. Make sure you are using the correct delay based on the type of SOS call. Additionally, each type of SOS call may have multiple delays associated with it. As mentioned previously in the guide, you can either go for your most common delay, or choose the middle of them if they're consistent.
+	- For example if the delays are `56, 58, 62` 58 would be safe to use since in a block of frames there's a good chance will hit one of them.

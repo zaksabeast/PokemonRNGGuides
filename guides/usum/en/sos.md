@@ -147,7 +147,7 @@ Note: Pay attention to the SOS Current Seed shown in PCalc and compare to what i
 
 Sometimes SOS frames do not advance as predicted and will throw off results if not corrected. If the SOS Current Seed does not match, then find the SOS frame in Misc. RNG Tool that matches the SOS Current Seed that PCalc shows. Adjust the SOS frame as needed in both Misc. RNG Tool and the main window.
 
-As of this time, fishing SOS RNG is not as accurate as wild SOS RNG and may result in SOS frame advances not being predictable.
+As of this time, fishing SOS RNG is not as accurate as wild SOS RNG and almost every time will result in SOS frame advances not being predictable.
 ```
 
 ## Step 4: Finding the Main RNG delay

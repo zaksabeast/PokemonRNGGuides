@@ -58,6 +58,7 @@ Note: It is recommended to set up for the SOS chaining first before starting the
 ![](https://cdn.discordapp.com/attachments/453736908854394902/471784402154946561/unknown.png)
 
 3. Within PCalc, you can open the Extended Game View by using `B + Up` while the Game View window is open. Press `Down + B` to reset the SOS information within PCalc.
+	- If the SOS Init Seed is all 0's, you must press `Down + B` during the first turn of battle to have the SOS information show correctly.
    
 
 4. In the bottom right of the PCalc window you will find the `SOS Init seed`.

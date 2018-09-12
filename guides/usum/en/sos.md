@@ -7,14 +7,14 @@
   - [Github link](https://github.com/wwwwwwzx/3DSRNGTool)
 - PCalc
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
-  - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
   - [Guide for installing PCalc](https://pokemonrng.com/guides/tools/en/How%20to%20Install%20PCalc.md)
 
 ## Recommended reading/references
 
 - [SOS call rates](https://pastebin.com/W59vsi0H)
   - Can Ctrl + F for Pokemon wanting to SOS.
-- [Encounter slots](https://gist.github.com/SciresM/a539739085e24af55dffdf443cb70eb2)
+- [Encounter slots Ultra Sun](https://gist.github.com/SciresM/a539739085e24af55dffdf443cb70eb2)
+- [Encounter slots Ultra Moon](https://gist.github.com/SciresM/deecdcf5fc49fc8191a29d111643c6b6)
   - Can Ctrl + F for Pokemon wanting to SOS.
 
 ## Regarding SOS RNG

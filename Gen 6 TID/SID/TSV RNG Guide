@@ -1,0 +1,80 @@
+# Trainer ID RNG
+_RNG for that special TID/SID/TSV_
+
+## Requirements
+A new save file is needed to RNG the Trainer ID, Secret ID, or Trainer Shiny Value. If a save file is already present then it can be deleted by pressing `B+X+Up` on the d-pad while at the title screen. This will delete the current save file and begin the game at the language select screen. Make sure to back up your save file using a save file manager such as [JKSM](https://github.com/J-D-K/JKSM) or [Checkpoint](https://github.com/BernardoGiordano/Checkpoint) if you ever want to return to your previous save file.
+
+```Note: A CFW 3DS is needed for this RNG. Luma3DS and B9S is the recommended setup.```
+
+
+
+### Tools
+- [PCalc for OR/AS](https://pokemonrng.com/downloads/pcalc/oras)
+    - Make sure your game is updated to 1.4 for PCalc to work
+    - [PCalc for X/Y](https://pokemonrng.com/downloads/pcalc/xy)
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+    - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts)
+- [NTR Boot Selector](https://github.com/Nanquitas/BootNTR/releases)
+- (Optional) A network connection & IP Address
+
+
+### 3DSRNGTool Setup
+- In the upper right hand corner select your game version and click the "Advance" option.
+    - Seed and TSV can be blank.
+- In the ID tab fill in your desired TID, SID, or TSV.
+- 3DSRNGTool can search for multiple numbers in part or in full.
+	- Finding a specific TID/SID/TSV combination will be very rare. It is advised to only RNG for one or the other.
+
+![](https://i.imgur.com/ZchDZmq.png)
+
+In this example we will be getting the highlighted TID.
+
+
+
+## Game setup
+- ``` Note: Soft resetting the game will hard lock the system!```
+- Load BootNTR Selector (Choose 3.6)
+``` Note: Make sure PC and 3ds are on the same Connection ```
+- Hold Left while starting game up. (you'll see blue screen flash twice followed by a green screen. The game will then freeze)
+- In 3DSRNGTool go to the Tools tab -> NTR Helper.
+- Fill in IP address.
+    - The IP address can be found on the Rosalina screen once Input Redirection is enabled.
+- Open the Rosalina menu by pressing `L+down+select` -> miscellaneous options and enable Input Redirection on the 3DS. 
+- Click "One Click" to connect in RNG Helper window within 3DSRNGTool. (Your game will now start up if connection was established.)
+-This will also fill in the Initial Seed and Initial Tiny State. (If you don't have a connection, you're able to fill in the Seed and Tiny State in manually)
+
+![](https://i.imgur.com/q3iJXsU.png)
+
+- Select game language.
+	 - The bot used later on can be used for this part by selecting "Mash A" option if setup early. (Input-redirection needs to be enabled for this)
+- Continue to play the game until this screen appears. ``` The frame counter is irrelevant and does not correlate with the frame number under ID RNG ```
+- 
+![](https://i.imgur.com/FTlLDkp.png)
+
+
+
+### Advancing to desired Tiny State
+Every time "No" is selected when confirming name, one Tiny State advancement happens. This can be a tedious task to complete manually, especially the higher the target Tiny State is. A bot can be used to automatically do the Tiny State advancement.
+- It is recommended to find a Tiny State Frame that is under 400 for OR/AS. 
+- XY automatically advances Tiny States without any input. So as long as you're willing to wait a few minutes or hours for desired TID/SID/TSV you can Calculate for higher Tiny State Frames.
+```Note: If having a network connection is not possible then manually fill in the tiny seeds.
+```
+![](https://imgur.com/a/prpiJkj)
+- Press "Calculate" in the main window to receive a list of possible Tiny State frames that you can RNG for.
+- Increase or decrease range as needed.
+- If the target frame is too high or the TID/SID/TSV combination is not possible on your seed then reboot the system to start over with a different seed.
+	- Rosalina can quickly reboot the system by pressing `L+Down+Select` and selecting the reboot option.
+
+``` Note: Soft resetting the game will hard lock the system!```
+
+In RNG Helper window fill in the starting and ending frame. The speed of the bot will be dependent on the stability of the 3DS to your computer. Increase or decrease the speed of the bot to your liking. At this point you can use the bot to advance the frames, or do it manually. The bot will stop at 1 frame before the target frame. From there just name your character and confirm the selection. Wait until you can control your character to check if you got your TID/SID/TSV correct.
+-OR/AS Since it doesn't automatically advance Tiny States, you're able to advance one at a time by simply hitting no to the Name Confirmation screen. Once you've hit your target Tiny State you want to enter you desired Name and confirm. OR/AS TSV will be shown as soon as you're able to move in game.
+
+-X/Y Since this one automatically advances you want to be a few tiny state frames behind your target. I recommend 5-8 Tiny State Frames to be behind when getting to the name confirmation. Once you've done that you want to pause and unpause until you have your desired Tiny State. Once it's hit (while paused.) Hit select to advance the frames until the screen is completely black. After that just unpause by hitting start and you should get your desired TID/SID/TSV. 
+You're always able to pause by hitting start and select at the same time. Then hitting one click followed by the Calculate button allows you to see how close you are to your target Tiny State.
+
+```Press Start + Right then Select + Left to view TSV in the seventh party slot.```
+
+![](https://i.imgur.com/ZDdZ4VN.png)
+![](https://i.imgur.com/fBzZhqg.png)
+

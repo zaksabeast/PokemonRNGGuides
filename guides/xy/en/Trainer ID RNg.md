@@ -18,13 +18,13 @@ A new save file is needed to RNG the Trainer ID, Secret ID, or Trainer Shiny Val
 - In the upper right hand corner select your game version and click the "Advance" option.
     - Seed and TSV can be blank.
 - In the ID tab fill in your desired TID, SID, or TSV.
-- Under Frame Range start from 0
+- Under Frame Range start from 0.
 - 3DSRNGTool can search for multiple numbers in part or in full.
 	- Finding a specific TID/SID/TSV combination will be very rare. It is advised to only RNG for one or the other.	
 ### Game Setup
 - Load BootNTR Selector, then the game.
 - Select game language.
-	- N3DS users can run the game at N3DS speeds using L2+ clock in the Rosalina menu options. This will speed up the game while PCalc is running.
+	- N3DS users can run the game at N3DS speeds by enabling L2 cache + 804 MHz  in the Rosalina menu options under N3DS menu. This will speed up the game while PCalc is running.
 - Play the game until this screen appears.
 - Pause the game by pressing `Start+Select`
 
@@ -79,7 +79,7 @@ _In this example we will be getting the highlighted trainer data_
 - Advance the frames and tiny seeds by press 'Select' while the game is paused.
 	- Sometimes the seeds won't change on every input, so just continue pressing the button until they do.
 		- This may take a while to do.
-	- Stopping closer to the frame is ideal but due to the inconstant pace at which the frames advances it may be possible to miss the target frame.
+	- Stopping closer to the frame is ideal but due to the inconsistent pace at which the frames advances it may be possible to miss the target frame.
 - When on the correct frame, hold `A` to make sure you un-pause at that exact frame to hit the right tiny seed.
 	- There is a delay that needs to be accounted for here, it is covered in the next section.
 - Wait until you can control your character to check your trainer data. 
@@ -90,6 +90,6 @@ _In this example we will be getting the highlighted trainer data_
 	
 
 ## Cut Scene Delay
-As stated earlier the actual trainer data is gene during a cut scene while the tiny seeds are still advancing. This causes a delay, about 5-10 frames from the target. This delay is unique for every game and system. So stopping several frames before the actual seed may be required to reach the right TID/SID/TSV. To find the delay for your game subtract the target frame from the real frame gotten, this is how many frames you have to stop before the real target. Do multiple dry runs on low seed advancements to find a common delay. Once there is a constant delay then use that for actual TID/SID/TSV RNG. In example given here the delay was 7 frames as shown below.
+As stated earlier the actual trainer data is generated during a cut scene while the tiny seeds are still advancing. This causes a delay, about 5-10 frames from the target. This delay is unique for every game and system. So stopping several frames before the actual seed may be required to reach the right TID/SID/TSV. To find the delay for your game subtract the target frame from the real frame gotten, this is how many frames you have to stop before the real target. Do multiple dry runs on low seed advancements to find a common delay. Once there is a constant delay then use that for actual TID/SID/TSV RNG. In example given here the delay was 7 frames as shown below.
 
 ![](https://i.imgur.com/bHa18Rr.png) 

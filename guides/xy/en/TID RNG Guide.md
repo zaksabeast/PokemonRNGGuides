@@ -50,7 +50,7 @@ Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup
   - If the target frame is too high or the TID/SID/TSV combination is not possible on your seed then reboot the system to start over with a different seed.
 - Once you find something you want, update your maximum frame range with your target frame.
   - **Leave minimum frame range at 0-- this is your current frame!!**
-  - Note: In order to land on your target fram, you will need to find your delay. This requires a dry run or two.
+  - Note: In order to land on your target frame, you will need to find your delay. This requires a dry run or two.
 
 
 ### Advancing Frames

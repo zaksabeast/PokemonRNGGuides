@@ -12,6 +12,8 @@ Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup
 ### Tools
 - [PCalc for X/Y](https://pokemonrng.com/downloads/pcalc/xy)
     - Make sure your game is updated to 1.4 for PCalc to work
+    - **old 3ds requires NTR Boot Selector 3**
+    - **new 3ds can be overclocked to help reduce delay**
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
     - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts)
     - (Reccommended) A network connection + NTR Helper

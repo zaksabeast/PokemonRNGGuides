@@ -19,7 +19,7 @@ Note : to have a dry ruby / sapphire just uncheck the real time clock in vba opt
 
 Find a target, go to the place and save.
 
-With PokeFinder, just select the route and hit the criterias you want. For Ruby / Sapphire it's method H-1, for Emerald, it's method H-2 (you can still hit alternate spreads) once you've your target
+With PokeFinder (Gen 3 => Wild), just select the route and hit the criterias you want. For Ruby / Sapphire it's method H-1, for Emerald, it's method H-2 (you can still hit alternate spreads) once you've your target
 
 Launch vba, do REGULAR save states. Once close to your frame do a calibration :
 

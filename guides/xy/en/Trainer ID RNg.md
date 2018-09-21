@@ -18,26 +18,21 @@ A new save file is needed to RNG the Trainer ID, Secret ID, or Trainer Shiny Val
 - In the upper right hand corner select your game version and click the "Advance" option.
     - Seed and TSV can be blank.
 - In the ID tab fill in your desired TID, SID, or TSV.
+- Under Frame Range start from 0
 - 3DSRNGTool can search for multiple numbers in part or in full.
-	- Finding a specific TID/SID/TSV combination will be very rare. It is advised to only RNG for one or the other.
-	
-[](pic of 3dsrngtool)
-
-In this example we will be getting the highlighted TID.
-
-## Game Setup
+	- Finding a specific TID/SID/TSV combination will be very rare. It is advised to only RNG for one or the other.	
+### Game Setup
 - Load BootNTR Selector, then the game.
 - Select game language.
-	- N3DS users can run the game at N3DS speeds using L2+ clock in the Rosalina menu options. This will speed up the game while pcalc is running.
+	- N3DS users can run the game at N3DS speeds using L2+ clock in the Rosalina menu options. This will speed up the game while PCalc is running.
 - Play the game until this screen appears.
-- Pause the game by pressing `Start+Select` while hovering over "no"
- - This is to get stop the tiny seeds from advancing and to make sure yes isn't selected.
- 
-[](pic of final game selection)
+- Pause the game by pressing `Start+Select`
 
-this is the final screen to change character selection.
+![](https://i.imgur.com/NicDf1v.png)
 
-### Tiny Seeds
+This is the final screen to change character selection.
+
+## Tiny Seeds
 In order to RNG our TID/SID/TSV we must look at the tiny seeds instead of frames passed. Each time the tiny seeds advance to the next set of tiny seeds a TID/SID/TSV frame advancement happens. 
 In X/Y the tiny seeds will constantly advance throughout the introduction. They will advance at a random pace but will be in a consistent order that 3DSRNGTool can predict.
 Due to this constant advancement it is possible to miss your wanted tiny seeds. To minimize the possibility of missing the required tiny seed, it useful to use PCalc's pause and single frame advancement options. 
@@ -55,34 +50,46 @@ If having a network connection is not possible then manually fill in the tiny se
 	- Fill in IP address.
 		- The IP address can be found on the Rosalina menu screen if Input Redirection is enabled. Input Redirection is not needed but it's a quick way to see the IP address. To open the Rosalina menu screen press `L+down+select` on the 3DS.
 	- Click "One Click" to connect in RNG Helper window within 3DSRNGTool.
-	[](pic of ntr helper)
 	- This will fill in the tiny seeds.		
 - Press "Calculate" in the main window to receive a list of possible frames that you can RNG for.
 - Increase or decrease range as needed.
+
+![](https://i.imgur.com/WM2yGP1.png)
+
+_In this example we will be getting the highlighted trainer data_
+
 - If the target frame is too high or the TID/SID/TSV combination is not possible on your initial seed then reboot the system to start over with a different initial seed.
 	- The Rosalina menu can be used to quickly reboot the system by pressing `L+Down+Select` and selecting the reboot option.
 
 ``` Note: Soft resetting the game will hard lock the system!```
 
 ## Tiny Seed Advancement
-- Unpause the game by pressing `Start`
-- Let the tiny seeds advance while on the final screen.
+- Un-pause the game by pressing `Start`.
+- After confirming you character selection, advance to this screen.
 
-[!](final screen pic)
+![](https://i.imgur.com/irA94KM.png)
 
+- This is the last screen for user input before the trainer data is generated. 
+- Let the tiny seeds advance while on this final screen.
 - Pause the game using `Start+Select` to compare the tiny seeds in 3DSRNGTool every few minutes. 
-- To keep track how far a long the tiny seeds have advanced. Fill in the tiny seeds in 3DSRNGTool and press "Calculate to update the 3DSRNGtool list.
-	- If NTR Helper is still running then pressing blah will automatically fill in the current tiny seeds in 3DSRNgTool.
-- Once the wanted TID/SID/TSV is about 15 frames away from the current seed pause the game using `Start+Select`while .
+- To keep track how far along the tiny seeds have advanced. Fill in the tiny seeds in 3DSRNGTool and press "Calculate to update the 3DSRNGtool list.
+	- If NTR Helper is still running then pressing "Disconnect" and then "Connect" will automatically fill in the current tiny seeds in 3DSRNgTool.
+	- Disable filters once the target frame is about 30 frames way to keep a more accurate count of frame advancements.
+- Once the wanted TID/SID/TSV is about 12 frames away from the current seed pause the game using `Start+Select`.
 - Advance the frames and tiny seeds by press 'Select' while the game is paused.
 	- Sometimes the seeds won't change on every input, so just continue pressing the button until they do.
-- When on the correct seed, hold `A` to make sure you un pause at that extact frame to hit the right tiny seed.
+		- This may take a while to do.
+	- Stopping closer to the frame is ideal but due to the inconstant pace at which the frames advances it may be possible to miss the target frame.
+- When on the correct frame, hold `A` to make sure you un-pause at that exact frame to hit the right tiny seed.
 	- There is a delay that needs to be accounted for here, it is covered in the next section.
 - Wait until you can control your character to check your trainer data. 
-[](pic of trainer card/tsv)
+
+![](https://i.imgur.com/aqh4RL4.png) 
 
 ```Note: PCalc can display TSV information by pressing `Start+Right` and then `Select+Left` ```
 	
 
 ## Cut Scene Delay
-As stated earlier the actual trainer data is gene during a cut scene while the tiny seeds are still advancing. This causes a delay, about 7-10 frames from the target. This delay is unique for every game and system. So stopping several frames before the actual seed may be required to reach the right TID/SID/TSV. To find the delay for your game and system do multiple dry runs on low seed advancements. If there is a constant delay then use that for actual TID/SID/TSV RNG.
+As stated earlier the actual trainer data is gene during a cut scene while the tiny seeds are still advancing. This causes a delay, about 5-10 frames from the target. This delay is unique for every game and system. So stopping several frames before the actual seed may be required to reach the right TID/SID/TSV. To find the delay for your game subtract the target frame from the real frame gotten, this is how many frames you have to stop before the real target. Do multiple dry runs on low seed advancements to find a common delay. Once there is a constant delay then use that for actual TID/SID/TSV RNG. In example given here the delay was 7 frames as shown below.
+
+![](https://i.imgur.com/bHa18Rr.png) 

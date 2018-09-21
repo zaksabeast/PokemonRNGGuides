@@ -11,7 +11,6 @@ A new save file is needed to RNG the Trainer ID, Secret ID, or Trainer Shiny Val
     - Make sure your game is updated to 1.5 for PCalc to work
      - [Here](https://pokemonrng.com/guides/tools/en/How%20to%20Install%20PCalc.md) is guide on how to install PCalc for all 3DS games
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-    - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts)
  - (Optional) A network connection
 
 ### 3DSRNGTool Setup

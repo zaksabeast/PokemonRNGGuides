@@ -34,7 +34,7 @@ Note: A CFW 3DS is needed for this RNG. Luma3DS and B9S is the recommended setup
 	 - The bot used later on can be used for this part by selecting "Mash A" option if setup early.
 - Continue to play the game until this screen appears and pause (Start+Select)
 
-![](https://i.imgur.com/FTlLDkp.png)
+![]()
 
 ```Note: It is highly reccommended you have an internet connection, as it is not possible to automatically update tiny states using NTR Helper without one.
 ```

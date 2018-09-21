@@ -22,8 +22,8 @@ Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup
 ### 3DSRNGTool Setup
 - In the upper right hand corner, select your game version (X/Y)
 - In the ID tab, fill in your desired TID, SID, or TSV. **In this example we will be getting the highlighted TID.**
-    - Seed can be blank.
-    - 3DSRNGTool can search for multiple numbers in part or in full.
+    - Seed can be blank
+    - 3DSRNGTool can search for multiple numbers in part or in full
 - In the RNG info section, **leave minimum frame range at 0** and adjust your maximum frame range as desired
 
 ![]()
@@ -31,15 +31,15 @@ Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup
 ## Game Setup
 - Load BootNTR Selector, then the game
   - *If you are using an old 3ds+NTR Boot Selector 3, don't forget to `Enable Debugger` in NTR Menu by pressing `X+Y`*
-- Select game language.
+- Select game language
 - Continue to play the game until this screen appears and pause (Start+Select)
 
 ![]()
 
 - Open NTR Helper & connect your 3ds
   - In the top left of 3DSRNGTool, go to Tools -> NTR Helper
-  - Fill in IP address.
-    - The IP address can be found on the Rosalina screen once Input Redirection is enabled (Note: recommended to disable this after your IP address of your 3ds has been found).
+  - Fill in IP address
+    - The IP address for your 3ds can be found on the Rosalina screen once Input Redirection is enabled (Note: if you have no plans to futher utilize this feature, it is recommended you disable it after you have found your IP address).
   - Click "One Click" to connect in the RNG Helper window. **This will fill in (or update) your tiny states.**
     - Optional: this information can be manually filled in instead
 
@@ -50,11 +50,11 @@ Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup
   - If the target frame is too high or the TID/SID/TSV combination is not possible on your seed then reboot the system to start over with a different seed.
 - Once you find something you want, update your maximum frame range with your target frame.
   - **Leave minimum frame range at 0-- this is your current frame!!**
-  - Note: You will need to find your delay, which requires a dry run or two.
+  - Note: In order to land on your target fram, you will need to find your delay. This requires a dry run or two.
 
 
 ### Advancing Frames
-Everytime your tiny states change, your frames advance by +1. This seemingly happens randomly-- about 1-2 times per second or roughly 2-3k frames per hour, so **you must frequently check and update your tiny states** once you are approaching your target frame.
+Everytime your tiny states change, your frames advance by +1. This seemingly happens randomly over intervals of time-- about 1-2 times per second or roughly 2-3k frames per hour, so **you must frequently check and update your tiny states** once you are approaching your target frame.
 
 ### Checking & Updating Your Current Frame (w/ tiny states)
 - Pause the game
@@ -63,10 +63,10 @@ Everytime your tiny states change, your frames advance by +1. This seemingly hap
 
 ### Hitting Your Target Frame
 - Once you are approaching your target frame, pause the game
-- Check the `[x] Disable filters` checkbox and start advancing manually towards your target frame
+- Check off the `[x] Disable filters` checkbox and start advancing manually towards your target frame
   - Check tiny states (on both RNG Tool and PokeCalc NTR) to confirm your frame advancements
 - Land on target frame and firmly press A
-- Check if you got your TID/SID/TSV correct.
+- Check if your TID/SID/TSV is correct
   - Press `Start + Right` then `Select + Left` to view TSV in the seventh party slot.
 
 ![]()
@@ -74,12 +74,12 @@ Everytime your tiny states change, your frames advance by +1. This seemingly hap
 
 
 ### Finding Your Delay
-Unless you read ahead, you likely missed your target frame due to your delay. This delay typically offsets your RNG Tool by about 6-12 frames. To find your delay:
+Unless you read ahead, you likely missed your target frame by failing to account for your delay. This delay typically offsets your RNG Tool by about ~5-8 frames. To find your delay:
 
-  - Increase your maximum frame range by 12
+  - Increase your maximum frame range by ~16
   - Find which frame you actually hit
     - Look at the TID, SID, and/or TSVs to confirm
-    - Make sure to check the `[x] Disable filters` checkbox
+    - Make sure the `[x] Disable filters` checkbox is checked off
   - Subtract your target frame from the frame you ended up with to find your delay
   - Rinse and repeat (set up your game+RNG Tool) then add your delay to your new target seed
     - Example: My target frame is 1263, my delay is +6. Therefore, I should press A on frame 1269.

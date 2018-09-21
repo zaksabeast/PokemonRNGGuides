@@ -60,7 +60,6 @@ Everytime your tiny states change, your frames advance by +1. This seemingly hap
 
 ### Checking & Updating Your Current Frame (w/ tiny states)
 - Pause the game
-- Check the `[x] Disable filters` checkbox
 - Manually update your tiny states or press the "One Click" button in the RNG Helper window to automatically update them
 - Press "Calculate" in the main window to update your target frame
 
@@ -80,8 +79,9 @@ Everytime your tiny states change, your frames advance by +1. This seemingly hap
 Unless you read ahead, you likely missed your target frame due to your delay. This delay typically offsets your RNG Tool by about 6-12 frames. To find your delay:
 
   - Increase your maximum frame range by 12
-  - Check the `[x] Disable filters` checkbox and find which frame you actually hit
+  - Find which frame you actually hit
     - Look at the TID, SID, and/or TSVs to confirm
+    - Make sure to check the `[x] Disable filters` checkbox
   - Subtract your target frame from the frame you ended up with to find your delay
   - Rinse and repeat (set up your game+RNG Tool) then add your delay to your new target seed
     - Example: My target frame is 1263, my delay is +6. Therefore, I should press A on frame 1269.

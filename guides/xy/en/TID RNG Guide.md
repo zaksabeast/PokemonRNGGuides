@@ -16,6 +16,7 @@ Note: A CFW 3DS is needed for this RNG. Luma3DS and B9S is the recommended setup
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
     - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts)
     - (Reccommended) A network connection + NTR Helper
+      - Note: It is highly reccommended you have an internet connection, as it is not possible to automatically update tiny states using NTR Helper without one.
 
 
 ### 3DSRNGTool Setup
@@ -36,8 +37,6 @@ Note: A CFW 3DS is needed for this RNG. Luma3DS and B9S is the recommended setup
 
 ![]()
 
-```Note: It is highly reccommended you have an internet connection, as it is not possible to automatically update tiny states using NTR Helper without one.
-```
 - Open NTR Helper & connect your 3ds
   - In the top left of 3DSRNGTool, go to Tools -> NTR Helper.
   - Fill in IP address.

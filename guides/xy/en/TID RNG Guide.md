@@ -6,7 +6,7 @@ Luckily, Gen 6 provides a fix-all solution to these issues with automatic frame 
 ## Requirements
 A new save file is needed to RNG the Trainer ID, Secret ID, or Trainer Shiny Value. If a save file is already present then it can be deleted by pressing `X+B+Up` on the d-pad while at the title screen. This will delete the current save file and begin the game at the language select screen. Make sure to back up your save file using a save file manager such as [JKSM](https://github.com/J-D-K/JKSM) or [Checkpoint](https://github.com/BernardoGiordano/Checkpoint) if you ever want to return to your previous save file.
 
-Note: A CFW 3DS is needed for this RNG. Luma3DS and B9S is the recommended setup.
+Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup.
 
 
 ### Tools

@@ -23,7 +23,7 @@ Open your menu with X. From that you've some ways to advance PIDRNG Frames :
 
 - Chatot (x2 prefered) with chatter activated. If it's not working just use the record of desmume to get it working, it'll advance frames.
 - NPC (advance them random)
-- Journal (advance by 2 if you have a "[pokemon] was caught!"
+- Journal (advance by 2 if you have a "[pokemon] was caught!" every time you flip pages)
 
 Once on the right frame, just use your Sweet Scenter and tada you're good to go !
 

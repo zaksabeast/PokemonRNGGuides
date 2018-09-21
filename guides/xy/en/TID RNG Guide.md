@@ -20,36 +20,36 @@ Note: A CFW 3DS is needed for this RNG. Luma3DS and B9S is the recommended setup
 
 
 ### 3DSRNGTool Setup
-- In the upper right hand corner, select your game version (X/Y).
+- In the upper right hand corner, select your game version (X/Y)
 - In the ID tab, fill in your desired TID, SID, or TSV. **In this example we will be getting the highlighted TID.**
     - Seed can be blank.
     - 3DSRNGTool can search for multiple numbers in part or in full.
-- In the RNG info section, **leave minimum frame range at 0** and adjust your maximum frame range as desired.
+- In the RNG info section, **leave minimum frame range at 0** and adjust your maximum frame range as desired
 
 ![]()
 
 ## Game Setup
-- Load BootNTR Selector, then the game.
+- Load BootNTR Selector, then the game
   - *If you are using an old 3ds+NTR Boot Selector 3, don't forget to `Enable Debugger` in NTR Menu by pressing `X+Y`*
 - Select game language.
-	 - The bot used later on can be used for this part by selecting "Mash A" option if setup early.
+	 - The bot used later on can be used for this part by selecting "Mash A" option if setup early
 - Continue to play the game until this screen appears and pause (Start+Select)
 
 ![]()
 
 - Open NTR Helper & connect your 3ds
-  - In the top left of 3DSRNGTool, go to Tools -> NTR Helper.
+  - In the top left of 3DSRNGTool, go to Tools -> NTR Helper
   - Fill in IP address.
     - The IP address can be found on the Rosalina screen once Input Redirection is enabled (Note: recommended to disable this after your IP address of your 3ds has been found).
   - Click "One Click" to connect in the RNG Helper window. **This will fill in (or update) your tiny states.**
-    - Optional: this information can be manually filled in instead.
+    - Optional: this information can be manually filled in instead
 
   ![]()
 
 ### Searching For Your Target Frame
-- Press "Calculate" in the main window to **receive a list of possible target frames** that you can RNG for.
+- Press "Calculate" in the main window to **receive a list of possible target frames** that you can RNG
   - If the target frame is too high or the TID/SID/TSV combination is not possible on your seed then reboot the system to start over with a different seed.
--Once you find something you want, update your maximum frame range with your target frame.
+- Once you find something you want, update your maximum frame range with your target frame.
   - **Leave minimum frame range at 0-- this is your current frame!!**
   - Note: You will need to find your delay, which requires a dry run or two.
 

@@ -32,7 +32,6 @@ Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup
 - Load BootNTR Selector, then the game
   - *If you are using an old 3ds+NTR Boot Selector 3, don't forget to `Enable Debugger` in NTR Menu by pressing `X+Y`*
 - Select game language.
-	 - The bot used later on can be used for this part by selecting "Mash A" option if setup early
 - Continue to play the game until this screen appears and pause (Start+Select)
 
 ![]()

@@ -68,7 +68,7 @@ The NTR Overlay frame counter, on the other hand, is based off the main PsuedoRa
 - Update your maximum frame range with your new target frame
   
   ![](https://i.imgur.com/xdIL25m.png)
-  
+- Repeat this process-- continue to update your target frame periodically
 - Carefully approach a target frame less-than or equal-to 20
 
 ## Hitting Your Target Frame

@@ -30,7 +30,7 @@ Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup
 
 ## Game Setup
 - Load BootNTR Selector, then the game
-  - *If you are using an old 3ds+NTR Boot Selector 3, don't forget to `Enable Debugger` in NTR Menu by pressing `X+Y`*
+  - *If you are using an old 3ds, don't forget to `Enable Debugger` in NTR Menu by pressing `X+Y`*
 - Select game language
 - Continue to play the game until this screen appears and pause (Start+Select)
 
@@ -47,23 +47,29 @@ Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup
 
 ### Searching For Your Target Frame
 - Press "Calculate" in the main window to **receive a list of possible target frames** that you can RNG
-  - If the target frame is too high or the TID/SID/TSV combination is not possible on your seed then reboot the system to start over with a different seed.
-- Once you find something you want, update your maximum frame range with your target frame.
+  - If the target frame is too high or the TID/SID/TSV combination is not possible on your seed then reboot the system to start over with sequentially different intial seeds.
+- Once you find something you want, write it down your target frame and update your maximum frame range with it
   - **Leave minimum frame range at 0-- this is your current frame!!**
   - Note: In order to land on your target frame, you will need to find your delay. This requires a dry run or two.
 
+    ![]()
 
 ### Advancing Frames
-Everytime your tiny states change, your frames advance by +1. This seemingly happens randomly over intervals of time-- about 1-2 times per second or roughly 2-3k frames per hour, so **you must frequently check and update your tiny states** once you are approaching your target frame.
+The "frames" in 3DS RNG Tool keep track of 4 values known as "tiny states". In the context of TID RNG, X/Y uses a 128-bit PsuedoRandom Number Generator(PRNG) known as TinyMT. **Tiny states are intial values which the game uses to generate trainer info such as TID, SID, and TSV.** With these 4 values, RNG Tool is able to predict sequential states, as well as their expected results from the TinyMT PRNG.
 
-### Checking & Updating Your Current Frame (w/ tiny states)
-- Pause the game
+**Everytime your tiny states change your game advances +1 frame**. This results in the potential generation of another TID, SID, and TSV combination. As tiny states change over time, 3DS RNG Tool tracks these sequential changes using a frame counter.
+
+The NTR Overlay frame counter, on the other hand, is based off the main PsuedoRandom Number Generator (PRNG) used in Gen 6. When paused and manually advancing frames, pay attention to this counter. They increase consistently at 2 frames per advance. This can help you stay on track with your tiny seeds.
+
+### Checking & Updating Your Target Frame
 - Manually update your tiny states or press the "One Click" button in the RNG Helper window to automatically update them
 - Press "Calculate" in the main window to update your target frame
+  - Make sure the `[x] Disable filters` checkbox is checked off!
 
 ### Hitting Your Target Frame
-- Once you are approaching your target frame, pause the game
-- Check off the `[x] Disable filters` checkbox and start advancing manually towards your target frame
+- Once you are approaching your target frame, pause the game (`Start+Select`), check your current frame, and update maximum frame range
+- Carefully approach ~
+- Uncheck the `[] Disable filters` checkbox so you can see everything and start advancing manually towards your target frame
   - Check tiny states (on both RNG Tool and PokeCalc NTR) to confirm your frame advancements
 - Land on target frame and firmly press A
 - Check if your TID/SID/TSV is correct
@@ -74,12 +80,13 @@ Everytime your tiny states change, your frames advance by +1. This seemingly hap
 
 
 ### Finding Your Delay
-Unless you read ahead, you likely missed your target frame by failing to account for your delay. This delay typically offsets your RNG Tool by about ~5-8 frames. To find your delay:
+There is a brief loading screen between the bird-in-the-bed custscene and the generation of your trainer info which results in a delay. Depending on which DS model you have, your delay will vary. It is typically ~4-8 frames. 
+
+To find your delay:
 
   - Increase your maximum frame range by ~16
   - Find which frame you actually hit
     - Look at the TID, SID, and/or TSVs to confirm
-    - Make sure the `[x] Disable filters` checkbox is checked off
+    - Make sure the `[x] Disable filters` checkbox is checked off!
   - Subtract your target frame from the frame you ended up with to find your delay
   - Rinse and repeat (set up your game+RNG Tool) then add your delay to your new target seed
-    - Example: My target frame is 1263, my delay is +6. Therefore, I should press A on frame 1269.

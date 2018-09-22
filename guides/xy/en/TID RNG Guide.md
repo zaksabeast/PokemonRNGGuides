@@ -24,9 +24,10 @@ A new save file is needed to RNG the Trainer ID, Secret ID, or Trainer Shiny Val
 - In the ID tab, fill in your desired TID, SID, or TSV. **In this example we will be getting the highlighted TID.**
     - Seed can be blank
     - 3DSRNGTool can search for multiple numbers in part or in full
+    
+    ![](https://i.imgur.com/pZ3brMs.png)
+    
 - In the RNG info section, **leave minimum frame range at 0** and adjust your maximum frame range as desired
-
-![](https://i.imgur.com/pZ3brMs.png)
 
 ## Game Setup
 - Load BootNTR Selector, then the game
@@ -101,7 +102,7 @@ To find your delay:
     - Look at the TID, SID, and/or TSVs to confirm
     - Make sure the `[x] Disable filters` checkbox is checked off!
   - Subtract your target frame from the frame you ended up with to find your delay
-  - Rinse and repeat (set up your game+RNG Tool) then add your delay to your new target seed
+  - Rinse and repeat about 2-3 times
 
 ![](https://i.imgur.com/A7Heu3c.png)
     - My delay was +7

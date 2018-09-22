@@ -85,7 +85,7 @@ Through empirical analysis, tiny states seemingly appear to advance ~2100-2700 t
   - **You must press A on the first main PRNG frame of your target (TinyMT) frame**
 - Check if your TID/SID/TSV is correct
   - Open your trainer card to view your TID or press `Start + Right` then `Select + Left` to view your TSV
-![](https://i.imgur.com/qsWPhFv.png)
+![](https://i.imgur.com/WdIrusK.png)
 
 - If you missed your frame, adjust your delay accordingly. Otherwise, nice job!
   
@@ -94,7 +94,7 @@ There is a brief loading screen between the bird-in-the-bed custscene and the ge
 
 To find your delay:
 
-  - Increase your maximum frame range by ~16
+  - Increase your maximum frame range to ~20
   - Find which frame you actually hit
     - Look at the TID, SID, and/or TSVs to confirm
     - Make sure the `[x] Disable filters` checkbox is checked off!

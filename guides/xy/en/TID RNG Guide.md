@@ -6,7 +6,7 @@ Luckily, Gen 6 provides a fix-all solution to these issues with automatic frame 
 ## Requirements
 A new save file is needed to RNG the Trainer ID, Secret ID, or Trainer Shiny Value. If a save file is already present then it can be deleted by pressing `X+B+Up` on the d-pad while at the title screen. This will delete the current save file and begin the game at the language select screen. Make sure to back up your save file using a save file manager such as [JKSM](https://github.com/J-D-K/JKSM) or [Checkpoint](https://github.com/BernardoGiordano/Checkpoint) if you ever want to return to your previous save file.
 
-Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup.
+*Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup.*
 
 
 ### Tools
@@ -26,11 +26,11 @@ Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup
     - 3DSRNGTool can search for multiple numbers in part or in full
 - In the RNG info section, **leave minimum frame range at 0** and adjust your maximum frame range as desired
 
-![]()
+![](https://i.imgur.com/ygBI2sK.png)
 
 ## Game Setup
 - Load BootNTR Selector, then the game
-  - *If you are using an old 3ds, don't forget to `Enable Debugger` in NTR Menu by pressing `X+Y`*
+  - *Note: If you are using an old 3ds, don't forget to `Enable Debugger` in NTR Menu by pressing `X+Y`*
 - Select game language
 - Continue to play the game until this screen appears and pause (Start+Select)
 
@@ -43,7 +43,7 @@ Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup
   - Click "One Click" to connect in the RNG Helper window. **This will fill in (or update) your tiny states.**
     - Optional: this information can be manually filled in instead
 
-  ![]()
+  ![](https://i.imgur.com/I1OAGLL.png)
 
 ## Searching For Your Target Frame
 - Press "Calculate" in the main window to **receive a list of possible target frames** that you can RNG
@@ -52,7 +52,7 @@ Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup
   - **Leave minimum frame range at 0-- this is your current frame!!**
   - Note: In order to land on your target frame, you will need to find your delay. This requires a dry run or two.
 
-    ![]()
+    ![](https://i.imgur.com/UrWYibN.png)
 
 ## Advancing Frames
 The "frames" in 3DS RNG Tool keep track of 4 values known as "tiny states". In the context of TID RNG, X/Y uses a 128-bit PsuedoRandom Number Generator(PRNG) known as TinyMT. **Tiny states are intial values which the game uses to generate trainer info such as TID, SID, and TSV.** With these 4 values, RNG Tool is able to predict sequential states, as well as their expected results from the TinyMT PRNG.
@@ -64,14 +64,20 @@ The NTR Overlay frame counter, on the other hand, is based off the main PsuedoRa
 ## Checking & Updating Your Target Frame+Tiny States
 - Manually update your tiny states or press the "One Click" button in the RNG Helper window to automatically update them
 - Press "Calculate" in the main window to check your target frame
-  - Make sure the `[x] Disable filters` checkbox is checked off!
+  - Make sure the `[] Disable filters` checkbox is unchecked!
 - Update your maximum frame range with your new target frame
+  
+  ![](https://i.imgur.com/xdIL25m.png)
+  
 - Carefully approach a target frame less-than or equal-to 20
 
 ## Hitting Your Target Frame
 - Once you've gradually neared your target frame, pause the game (`Start+Select`), check your target frame, and update your target frame+tiny states
-- Uncheck the `[] Disable filters` checkbox so you can see everything and start advancing manually towards your target frame
+- Check the `[x] Disable filters` checkbox so you can see everything and start advancing manually towards your target frame
   - Check tiny states (on both RNG Tool and PokeCalc NTR) to confirm your frame advancements
+  
+  ![]()
+  
 - Land on target frame and firmly press A
 - Check if your TID/SID/TSV is correct
   - Press `Start + Right` then `Select + Left` to view TSV in the seventh party slot.

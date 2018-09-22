@@ -52,7 +52,7 @@ A new save file is needed to RNG the Trainer ID, Secret ID, or Trainer Shiny Val
   - **Leave minimum frame range at 0-- this is your current frame!!**
   - Note: In order to land on your target frame, you will need to find your delay. This requires a dry run or two.
 
-    ![](https://i.imgur.com/UrWYibN.png)
+    ![]()
 
 ## Advancing Frames
 The "frames" in 3DS RNG Tool keep track of 4 values known as "tiny states". In the context of TID RNG, X/Y uses a 128-bit PsuedoRandom Number Generator(PRNG) known as TinyMT. **Tiny states are intial values which the game uses to generate trainer info such as TID, SID, and TSV.** With these 4 values, RNG Tool is able to predict sequential states, as well as their expected results from the TinyMT PRNG.
@@ -67,7 +67,7 @@ The NTR Overlay frame counter, on the other hand, is based off the main PsuedoRa
   - Make sure the `[] Disable filters` checkbox is unchecked!
 - Update your maximum frame range with your new target frame
   
-  ![](https://i.imgur.com/xdIL25m.png)
+  ![]()
 - Repeat this process-- continue to update your target frame periodically
 - Carefully approach a target frame less-than or equal-to 20
 

@@ -1,5 +1,5 @@
 # Trainer ID RNG
-TID RNG for Gen 6-7 can be mind-numbing and tedious. You are required to manually advance 1 frame at a time with name entry and rejection. This demands alot of patience and requires your close attention. Meanwhile automation can provide you with a bit of relief when advancing frames, but searching for TID+TSV combos is almost impossible and finding a reasonably close spread can also take a while.
+TID RNG for Gen 6-7 can be mind-numbing and tedious. It requires you to manually advance 1 frame at a time with name entry and rejection. This demands alot of patience and requires your close attention. Automation can provide you with a bit of relief when it comes to advancing frames, howevever finding a reasonably close TID/SID/TSV frame can often be very time consuming.
 
 Luckily, Gen 6 provides a fix-all solution to these issues with automatic frame advancement. Yes, that is right. In Pokemon X/Y, frames advance automatically. This means instead of manually advancing to your target frame you can search for your TID (or TSV/SID-- whatever), you can wait for it to come to you!
 

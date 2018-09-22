@@ -73,19 +73,18 @@ Through empirical analysis, tiny states seemingly appear to advance ~2100-2700 t
 - Repeat this process-- continue to update your target frame periodically
 - Carefully approach a target frame less-than or equal-to 20
 
+  ![](https://i.imgur.com/A7Heu3c.png)
+
 ## Hitting Your Target Frame
 - Once you've arrived close enough to your target frame, pause the game (`Start+Select`)
 - Check your target frame and update your target frame+tiny states
 - Check the `[x] Disable filters` checkbox to sequentially view all up-coming frames and start advancing manually towards your target frame
-  
-  ![](https://i.imgur.com/A7Heu3c.png)
-    - My delay was +7
-  
 - Land on target frame and firmly press A
   - **You must press A on the first main PRNG frame of your target (TinyMT) frame**
 - Check if your TID/SID/TSV is correct
   - Open your trainer card to view your TID or press `Start + Right` then `Select + Left` to view your TSV
-![](https://i.imgur.com/WdIrusK.png)
+  
+  ![](https://i.imgur.com/qsWPhFv.png)
 
 - If you missed your frame, adjust your delay accordingly. Otherwise, nice job!
   
@@ -102,3 +101,4 @@ To find your delay:
   - Rinse and repeat (set up your game+RNG Tool) then add your delay to your new target seed
 
 ![](https://i.imgur.com/A7Heu3c.png)
+    - My delay was +7

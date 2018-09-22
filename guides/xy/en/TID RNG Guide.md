@@ -28,7 +28,7 @@ Note: A CFW 3ds is needed for this RNG. Luma3DS and B9S is the recommended setup
 
 ![]()
 
-### Game Setup
+## Game Setup
 - Load BootNTR Selector, then the game
   - *If you are using an old 3ds, don't forget to `Enable Debugger` in NTR Menu by pressing `X+Y`*
 - Select game language
@@ -80,7 +80,7 @@ The NTR Overlay frame counter, on the other hand, is based off the main PsuedoRa
 ![]()
 
 
-### Finding Your Delay
+## Finding Your Delay
 There is a brief loading screen between the bird-in-the-bed custscene and the generation of your trainer info which results in a delay. Depending on which DS model you have, your delay will vary. It is typically ~4-8 frames. 
 
 To find your delay:

@@ -4,6 +4,7 @@
 - [VBA-RR](https://github.com/TASVideos/vba-rerecording/releases)
 - [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
 - [The Ruby/Sapphire Lua Scripts for your language](http://pokerng.forumcommunity.net/?t=56443955)
+    - Password for the lua script archive is `allyouneedisnoob`
 - [runasdate (Optional)](https://www.nirsoft.net/utils/run_as_date.html)
 - A Save File that has been ID abused 
     - Optional but recommended if going for shiny spreads with good IVs.

@@ -30,7 +30,7 @@ Finding your DS Parameters is **MANDATORY**. There are no RNGs you can do withou
 ```
 DS Type: Lite/Original
 DS Mac Address: 0009BF123456
-VCount: 10-70
+VCount: 0-70
 Timer0: 300-1200
 GxStat: 6-6
 VFrame: 0-15

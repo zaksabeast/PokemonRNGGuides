@@ -30,7 +30,7 @@ Finding your DS Parameters is **MANDATORY**. There are no RNGs you can do withou
 ```
 DS Type: Lite/Original
 DS Mac Address: 0009BF123456
-VCount: 10-70
+VCount: 0-70
 Timer0: 300-1200
 GxStat: 6-6
 VFrame: 0-15
@@ -51,7 +51,7 @@ VFrame: 0-15
  - Open your lua script and do not do any keypresses. Copy the seed you get and paste it into the DS Parameters finder. Hit Search and wait.
 
  ![DS](https://snag.gy/hTDiae.jpg)
- 
+
  - When you get a result, hit "Send Results to Profile." Good luck on your future RNGS!
 
 

@@ -24,7 +24,7 @@ Finding your DS Parameters is **MANDATORY**. There are no RNGs you can do withou
 - Open RNG reporter and click the "DS Parameters Search."
 - Set Seed Encryption Variables as seen here: 
 
-![DS](https://i.imgur.com/VpwKrLW.png)
+![](https://github.com/zaksabeast/PokemonRNGGuides/blob/edit/en/gen5/DSparameters/pictures/bw/DS%20Parameters%20Guide/DSParameters.png?raw=true)
 
 - Unlike on consoles, DeSmuMe's DS MAC Address is always 0009BF123456.
 
@@ -62,5 +62,7 @@ VFrame: 0-15
 
 
 ```
-Note: You may have to redo this process if you change emulation settings, saves, or redownload the emulator.
+Note: You may have to redo this process if you change emulation settings, games, or redownload the emulator.
+
+However you can switch saves or create a new save without having to find new parameters if you didn't touch anything else.
 ```

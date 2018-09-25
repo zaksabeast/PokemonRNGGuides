@@ -14,11 +14,12 @@
 
 #### Things To Know
 
-Finding your DS Parameters is **MANDATORY**. There are no RNGs you can do without finding these parameters. As such, you should get comfortable with doing this procedure. (Though you only have to do it once per save/console/emulator)
+Finding your DS Parameters is **MANDATORY**. There are no RNGs you can do without finding these parameters. As such, you should get comfortable with doing this procedure.
+  
 
 #### The RNG Process
 
-1. DS Parameters Search
+1. Setting up DS Parameters Search
 
 - Open RNG reporter and click the "DS Parameters Search."
 - Set Seed Encryption Variables as seen here: 
@@ -45,14 +46,19 @@ GxStat: 6-6
 VFrame: 0-15
 ```
 
-2. The Seed
+2. Finding the Timer0
 
- - Open runasdate and type in any time. Make sure to check Immediate Mode. Put that time in DS Parameter Finder. Now hit "Run" on runasdate and load your rom.
- - Open your lua script and do not do any keypresses. Copy the seed you get and paste it into the DS Parameters finder. Hit Search and wait.
+ - Open runasdate and type in any time and date. 
+  - Make sure to check "Immediate Mode". 
+  - Put the same date and time from runasdate into the "DS Parameter Finder" window. 
+  - Now hit "Run" on runasdate and load the game in Desmume.
+ - Open the lua script and do not press any keys. 
+  - Copy the seed you get and paste it into the "DS Parameter Finder" window in the box above the date and time settings. 
+  - Hit "Search" and wait.
 
- ![DS](https://snag.gy/hTDiae.jpg)
-
- - When you get a result, hit "Send Results to Profile." Good luck on your future RNGS!
+ - When you get a result, hit "Send Results to Profile." 
+ 
+ Good luck on your future RNGS!
 
 
 - **Note: You may have to redo this process if you change emulation settings, saves or redownload the emulator.**

@@ -61,4 +61,6 @@ VFrame: 0-15
  Good luck on your future RNGS!
 
 
-- **Note: You may have to redo this process if you change emulation settings, saves or redownload the emulator.**
+```
+Note: You may have to redo this process if you change emulation settings, saves, or redownload the emulator.
+```

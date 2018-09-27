@@ -37,4 +37,5 @@ Headbutt :
 Encounter slots are not really known at all. You can follow serebii ONLY to have an idea of species present in the tree. Every tree seems to change of encounter slots every day. Same for special trees (like Combee or Slakoth in the north of Cerulean).
 After saving in front of the tree, reload your stuff with any initial seed. Use the main windows of RNG reporter (MEthod K => Encounter Type : Headbutt tree w/ initial seed) and creating your own encounter table. Once you've checked that, you can search for a target frame.
 Unlike BCC or Safari Zone, no restriction on the lead, it's really like a regular wild.
-But the main thing is that you need to substract -1 from your target frame in order to hit it. For example, if your target frame is 130, you'll have to up your PIDRNGFrame to 129 and use headbutt.
+
+/!\ However, you MAY need to substract -1 from your target frame in order to hit it. For example, if your target frame is 130, you'll have to up your PIDRNGFrame to 129 and use headbutt. I suggest you to do a save state to try the -1 AND the target frame. During my tests, in some case hitting the right frame was enoughn, in some case it wasn't/!\

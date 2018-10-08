@@ -40,4 +40,4 @@ From the tests i did, PUT A SYNCR AS LEAD. I'm getting 100% of encounters with t
 
 /!\ However, you MAY need to substract -1 from your target frame in order to hit it. For example, if your target frame is 130, you'll have to up your PIDRNGFrame to 129 and use headbutt. I suggest you to do a save state to try the -1 AND the target frame. During my tests, in some case hitting the right frame was enoughn, in some case it wasn't.
 
-Update 2 : Seems to be linked to the lead. Sync doesn't give me a -1 thing, but still thinking it's Seed related. ANY WAY JUST TRY BOTH FRAMES EASIER.
+Update 3 : Seems to be seed random. Sometimes you'll have do to the -1 frame sometimes not.

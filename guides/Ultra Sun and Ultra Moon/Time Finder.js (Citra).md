@@ -35,4 +35,4 @@ Save the settings.
 
 Open your game, load the save and load CitraRNG. If you have the right initial seed, congratulations.
 
-///////!!!!!!!!!!!!!!!!!!!!\\\\\\\\\\ Before asking for help with wrong settings, if your initial seed is wrong, just close AND ADD ONE HOUR. It can happen and it's COMMON, since Citra does daylight savings. It'll fix almost all the issues with Initial Seed /////////////////!!!!!!!!!!!!!!!!!\\\\\\\\\\\\\
+///////!!!!!!!!!!!!!!!!!!!!\\\\\\\\\\ Before asking for help with wrong settings, if your initial seed is wrong, just close AND ADD / REMOVE ONE HOUR. It can happen and it's COMMON, since Citra does daylight savings. It'll fix almost all the issues with Initial Seed /////////////////!!!!!!!!!!!!!!!!!\\\\\\\\\\\\\

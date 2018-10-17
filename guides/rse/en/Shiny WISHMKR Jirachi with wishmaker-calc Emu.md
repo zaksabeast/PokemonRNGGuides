@@ -12,11 +12,11 @@
 
 ### Basic info
 
-WISHMKR Jirachi are generated using the block 0 checksum of your save file. wishmaker-calc is a program made by Zaksabeast which reads a Ruby or Sapphire save file and calculates a time for the user to save at.
+WISHMKR Jirachi are generated using the block 0 checksum of your save file. Wishmaker-calc is a program made by Zaksabeast which reads a Ruby or Sapphire save file and calculates a time for the user to save at.
 
 When saved at the time provided by wishmaker-calc, if that save file is used to redeem a bonus disc Jirachi, it will be the spread given by the program. This is because saving at that time will make the game's block 0 checksum match the one required for the specified Jirachi.
 
-[Here is a list of the 9 possible wishmaker jirachi.](https://www.irccloud.com/pastebin/rdxEbTm4/)
+[Here is a list of the 9 possible shiny Wishmaker Jirachi.](https://www.irccloud.com/pastebin/rdxEbTm4/)
 
 ### Caveats to this method
 
@@ -62,7 +62,15 @@ If the website tells you to save the game again, do it and reupload it to the we
 
 ![](https://i.imgur.com/vDfWBpb.png)
 
-If the website tells you No Results, you have a few options. One option is to restart your save and play to the Pokedex again. Another option is to move to a different location, save, and check for a Jirachi again (this doesn't always work).
+If the website tells you No Results, you have a few options.
+
+  You can move to a different location, save, and check for a Jirachi again.
+  Collecting the Running Shoes, or doing wild battles may also work.
+  If you're still getting No Results, then you'll have to either wait 30 minutes ingame, or restart the game with a new save.
+  
+  ```
+  Note: The program searches through the next 30 minutes only for a match which is why waiting 30 minutes ingame may allow for new results to be found.
+  ```
 
 If you get a time to save, you have found a Jirachi. Check the spread to see if it is one you want. If it isn't, repeat the above steps.
 
@@ -116,7 +124,7 @@ Alternatively, you might have saved at the wrong time or obtained your save dela
 
 You can redeem your Jirachi by moving your save file to a real cartridge and using a real bonus disc, or by emulating the bonus disc with dolphin.
 
-A guide on connecting VBA to Dolphin can be found [here](https://pokemonrng.com/guides/tools/en/connect%20dolphin%20to%20vba.md).
+A guide on connecting VBA to Dolphin can be found [here](https://pokemonrng.com/guides/tools/en/How%20to%20Connect%20Dolphin%20to%20VBA.md).
 
 ## Credits
 - Zaksabeast for making this great tool

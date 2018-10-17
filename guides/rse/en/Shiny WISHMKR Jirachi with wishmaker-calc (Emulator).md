@@ -28,7 +28,7 @@ When saved at the time provided by wishmaker-calc, the save file can then be use
 
 Sometimes, when the player is standing still certain bytes of game data can change that will cause the program to not work correctly. It may take many tries to obtain your Jirachi because of this.
 
-It is not possible to RNG for a specific shiny Jirachi spread with this method. Manipulating the block 0 checksum for a specific Jirachi spread is a complex process and is not covered in this guide.
+It is not possible to RNG for a specific Jirachi spread with this method. This guide is only for RNGing a shiny Jirachi and you cannot choose a specific spread. Manipulating the block 0 checksum for a specific Jirachi spread is a complex process and is not covered in this guide.
 
 ---
 ### Before you begin

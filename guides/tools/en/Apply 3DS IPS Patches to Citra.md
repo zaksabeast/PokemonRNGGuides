@@ -29,10 +29,14 @@ SYSNAND SD -> title -> 0004000E -> 001B5100 -> content -> 00000001.app -> NCCH i
 1. Download any IPS files you want to apply
 2. Go to [the IPSPatcher.js site](https://zaksabeast.github.io/ipspatcher.js/build/)
 3. Click the "Patch" button
-4. Select your `.code` file and every IPS patch you to to apply
+4. Select your `.code` file and every IPS patch you want to apply
 5. Click "Open" or "Upload" (depending on your browser)
     - A file called `patched.bin` will be downloaded
 6. Rename the downloaded `patched.bin` to `code.bin`
+
+```
+Note: Many patches are game and version specific, make sure to only use patches for your specific game and version!
+```
 
 ---
 ## Using the patched code.bin

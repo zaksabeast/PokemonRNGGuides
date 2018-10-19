@@ -1,9 +1,7 @@
----
 # How to RNG Shiny WISHMKR Jirachi using wishmaker-calc
----
 
 ---
-### Things you will need
+## Things you will need
 ---
 - [VBA-RR](https://github.com/TASVideos/vba-rerecording/releases)
 - Lua .dll files:
@@ -13,7 +11,7 @@
 - [wishmaker lua script](https://github.com/beatlynx/lua-stuff/blob/master/scripts/wishmakerlua.lua)
 
 ---
-### Basic info
+## Basic info
 ---
 
 WISHMKR Jirachi are generated using the block 0 checksum of your save file. Wishmaker-calc is a program made by Zaksabeast that can read a Ruby or Sapphire save file and calculate a time for the user to save at to obtain the Jirachi they are wanting.
@@ -23,7 +21,7 @@ When saved at the time provided by wishmaker-calc, the save file can then be use
 [Here is a list of the 9 possible shiny Wishmaker Jirachi.](https://www.irccloud.com/pastebin/rdxEbTm4/)
 
 ---
-### Caveats to this method
+## Caveats to this method
 ---
 
 Sometimes, when the player is standing still certain bytes of game data can change that will cause the program to not work correctly. It may take many tries to obtain your Jirachi because of this.
@@ -31,7 +29,7 @@ Sometimes, when the player is standing still certain bytes of game data can chan
 It is not possible to RNG for a specific Jirachi spread with this method. This guide is only for RNGing a shiny Jirachi and you cannot choose a specific spread. Manipulating the block 0 checksum for a specific Jirachi spread is a complex process and is not covered in this guide.
 
 ---
-### Before you begin
+## Before you begin
 ---
 
 1. Find your save delay

@@ -4,20 +4,20 @@
 ## Getting your game's code.bin
 ---
 
-1. Boot your 3DS into GodMode9
-2. Click "SYSNAND SD"
-3. Click "title"
-4. Click the first half of your game's title ID
-5. Click the second half of your game's title ID
-6. Click the `content` folder
-7. On the top screen, click on the `.app` file
-8. On the bottom screen, click `NCCH image options...`
-9. Click `Extract .code`
+1. Boot your 3DS into GodMode9 by holding `Start` while powering on the 3DS
+2. Choose "SYSNAND SD"
+3. Choose "title"
+4. Choose the first half of your game's title ID
+5. Choose the second half of your game's title ID
+6. Choose the `content` folder
+7. On the top screen, choose on the `.app` file
+8. On the bottom screen, choose `NCCH image options...`
+9. Choose `Extract .code`
     - Your `.code` file is in `gm9/out/titleID.code`
     - For example, Ultra Moon's update would be `0004000E001B5100.code`
-10. Get the `.code` file to your computer using an SD reader or FTP
+10. Transfer the `.code` file to your computer using an SD reader or FTP
 
-Here is an example of what to click for Ultra Moon's update (title ID `0004000E001B5100`):
+Here is an example of what to choose for Ultra Moon's update (title ID `0004000E001B5100`):
 ```
 SYSNAND SD -> title -> 0004000E -> 001B5100 -> content -> 00000001.app -> NCCH image options... -> Extract .code
 ```

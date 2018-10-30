@@ -5,8 +5,8 @@ _Easy shinies in apricorn balls_
 
 ### Make sure you have the following
 - PCalc for your desired game
-  - [PCalc-SM](https://pokemonrng.com/downloads/pcalc/sm) (Sun/Moon)
-  - [PCalc-USUM](https://pokemonrng.com/downloads/pcalc/usum) (Ultra Sun/Ultra Moon)
+  - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
+  - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
   - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - The `honey` item

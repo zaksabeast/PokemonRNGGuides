@@ -6,7 +6,7 @@ _Get your own perfect Legendary Pokemon!_
 ### Tools Needed
 - [3DSRNGTool](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts)
 	- Github link: https://github.com/wwwwwwzx/3DSRNGTool
-- [PCalc-usum](https://pokemonrng.com/downloads/pcalc/usum)
+- [PCalc-usum](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
 
 ### Recommended reading/references
 - [Timeline Guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md)

@@ -12,8 +12,8 @@ When using Masuda Method and/or Shiny Charm, the ESVs (and PIDs) of every egg ar
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
     - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - PCalc
-    - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
-    - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
+    - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
+    - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
 
 ## Step 1: Set Up 3DSRNGTool
 

@@ -22,11 +22,11 @@ Launch BootNTR Selector and choose default for settings.
 
 After NTR is installed, the next step is to install the PCalc plugin.
 
-- [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
-- [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
-- [OR/AS](https://pokemonrng.com/downloads/pcalc/oras)
-- [X/Y](https://pokemonrng.com/downloads/pcalc/xy)
-- [Transporter](https://pokemonrng.com/downloads/pcalc/tport)
+- [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
+- [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
+- [OR/AS](https://pokemonrng.com/downloads/pcalc/pcalc-oras.zip)
+- [X/Y](https://pokemonrng.com/downloads/pcalc/pcalc-xy.zip)
+- [Transporter](https://pokemonrng.com/downloads/pcalc/pcalc-tport.zip)
 
 
 1. Download .zip for the version you are wanting and unzip contents.

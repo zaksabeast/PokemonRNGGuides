@@ -12,7 +12,7 @@ Before continuing with the guide it is recommended to be in the first PokeCenter
 ## Final Screen
   - "You received xxx!"
 
-![](https://github.com/zaksabeast/PokemonRNGGuides/blob/master/pictures/usum/en/mystery%20gift%20rng.png?raw=true)
+![](https://i.imgur.com/wmpzsKN.png)
 
 Make sure to stand exactly like the image above or the timeline may be off resulting in missing your target frame.    
 

@@ -4,8 +4,8 @@
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
     - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - PCalc
-    - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
-    - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
+    - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
+    - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
 
 Before continuing with the guide it is recommended to be in the first PokeCenter (the one by the Pokemon School) and standing directly in front of the Delivery Man.
 

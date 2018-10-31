@@ -9,8 +9,8 @@ Note: This method is different than using Masuda or with having the Shiny Charm.
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
     - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - PCalc for Gen 6
-  - [PCalc-oras](https://pokemonrng.com/downloads/pcalc/oras)
-  - [PCalc-xy](https://pokemonrng.com/downloads/pcalc/xy)
+  - [PCalc-oras](https://pokemonrng.com/downloads/pcalc/pcalc-oras.zip)
+  - [PCalc-xy](https://pokemonrng.com/downloads/pcalc/pcalc-xy.zip)
 
 ## Step 1: Set Up 3DSRNGTool
 

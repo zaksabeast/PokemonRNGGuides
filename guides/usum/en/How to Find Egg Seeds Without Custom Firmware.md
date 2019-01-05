@@ -1,15 +1,17 @@
-# Gen 7 Finding Egg Seeds Without CFW/Homebrew
+# Finding Egg Seeds Without CFW/Homebrew
+
+_Find your egg seeds for Egg RNG using the Magikarp Method_
 
 ```
 Note: This guide is for those who do not have access to CFW or homebrew. If you have CFW or homebrew, then you can go ahead and start RNGing right away! Refer to the appropriate guide for the method you want to use.
 ```
 
 ## Tools
+
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-    - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
+  - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 
 There are two ways of finding the egg seeds. If you have never collected or rejected an egg at the nursery then you can do the 8 Magikarp method. The Eevee gift egg does not count. Otherwise, the only other way is the 127 Magikarp method.
-
 
 ## Step 1: Setup for 127 Magikarp method
 
@@ -20,7 +22,8 @@ The gift Eevee egg from the nursery does not count!
 ```
 
 1. You will need two Magikarp, one female one male, of different natures. Make a note of which gender has which nature.
-    - For faster egg generation, have the Magikarps be of different languages and different OT/TIDs. Also, the Oval Charm helps eggs generate faster.
+
+   - For faster egg generation, have the Magikarps be of different languages and different OT/TIDs. Also, the Oval Charm helps eggs generate faster.
 
 2. You will also need 2 everstones for both Magikarp to hold.
 
@@ -30,11 +33,12 @@ The gift Eevee egg from the nursery does not count!
 
 2. Run around until there is an egg ready to pick up.
 
-3. Save the game *before* picking up the egg. (This step is very important!)
+3. Save the game _before_ picking up the egg. (This step is very important!)
 
 4. Accept the egg and hatch it. Next, check its nature and compare to the parents' natures.
-    - If it matches the male Magikarp then make a note of `0`.
-    - If instead it matches the female Magikarp make a note of `1`.   
+
+   - If it matches the male Magikarp then make a note of `0`.
+   - If instead it matches the female Magikarp make a note of `1`.
 
 5. Soft reset the game with `L + R + Start` to when the egg was ready to be picked up.
 
@@ -46,7 +50,7 @@ The gift Eevee egg from the nursery does not count!
 
 ## Step 3: Verifying Egg Seeds (127 Magikarp Method)
 
-1. The egg seeds given are the ones from *before* you started collecting/rejecting the 127 eggs. Now you need to find what egg seed you are on currently.
+1. The egg seeds given are the ones from _before_ you started collecting/rejecting the 127 eggs. Now you need to find what egg seed you are on currently.
 
 2. Back in 3DSRNGTool input your egg seeds into the "Current Status" area in order. Under "Parents Information" fill it out according to the Magikarp you used.
 
@@ -56,15 +60,16 @@ The gift Eevee egg from the nursery does not count!
 
 5. Replace both Magikarp back into the nursery but make sure neither are holding anything.
 
-6.  Run around until an egg is ready and accept it.
+6. Run around until an egg is ready and accept it.
 
 7. Hatch the egg and check if the nature matches frame 123 or 124. If it does then congrats! You now know what your egg seeds are and can continue with egg RNG.
-    - If the nature does not match, then your egg seeds were not correct. You will have to redo the 127 eggs again to get correct egg seeds.
-    - You can right click on the frame that matched and choose "Set as Current Status" to update the "Current Status" with your egg seeds.
 
-8. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/usum/en/Egg%20RNG%20With%20Masuda%20Method%20or%20Shiny%20Charm.md).  
+   - If the nature does not match, then your egg seeds were not correct. You will have to redo the 127 eggs again to get correct egg seeds.
+   - You can right click on the frame that matched and choose "Set as Current Status" to update the "Current Status" with your egg seeds.
 
-## Setup for 8 Egg Method
+8. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/usum/en/Egg%20RNG%20With%20Masuda%20Method%20or%20Shiny%20Charm.md).
+
+## Step 1: Setup for 8 Egg Method
 
 ```
 Note: For this method you must not have rejected or accepted an egg from the nursery.
@@ -88,13 +93,14 @@ The gift Eevee egg does not count!
 
 ## Step 3: Verifying Egg Seeds (8 Egg Method)
 
-1. The egg seeds given are the ones from *before* you started collecting the 8 eggs. Now you need to verify that the egg seed you got is the correct one.
+1. The egg seeds given are the ones from _before_ you started collecting the 8 eggs. Now you need to verify that the egg seed you got is the correct one.
 
 2. Back in 3DSRNGTool input your egg seeds into the "Current Status" area in order. Under "Parents Information" fill it out according to the Magikarp and Ditto you used.
 
 3. Click on "Egg Number Range", make sure the initial number is 1, then click "Calculate".
 
 4. Check the 8 eggs you hatched against the 8 eggs info in the output. If the natures and genders match for all 8 eggs then you have the correct egg seeds.
-    - If they do not match then you will have to redo the 8 eggs again. Double check that the correct natures are entered in the order you accepted the eggs.
 
-5. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/usum/en/Egg%20RNG%20With%20Masuda%20Method%20or%20Shiny%20Charm.md).  
+   - If they do not match then you will have to redo the 8 eggs again. Double check that the correct natures are entered in the order you accepted the eggs.
+
+5. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/usum/en/Egg%20RNG%20With%20Masuda%20Method%20or%20Shiny%20Charm.md).

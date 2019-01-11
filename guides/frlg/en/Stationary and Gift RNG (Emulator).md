@@ -1,8 +1,9 @@
 # FRLG Stationary/Gift RNG
-_aka how to get a Shiny Mewtwo 101_
 
-## Requirements
-You'll need the same stuff as for Wild RNG:
+_Get shiny 6 IV stationaries from FRLG_
+
+## Tools
+
 - VBA-rr
 - Lua scripts for FRLG (available [here](https://projectpokemon.org/home/forums/topic/15187-gen-3-lua-scripts/?tab=comments#comment-127239) - you'll need to copy the code, paste it to a notepad, and rename the file into 'whatyouwant.lua')
 - Knowledge of how to deal with the Memory Viewer
@@ -11,87 +12,89 @@ You'll need the same stuff as for Wild RNG:
 - A Calculator and a notepad
 - A way to read your save - PKHeX is recommended
 
-### Setting up all the tools
+## Step 1: Setup RNG Reporter
 
-- First, open RNG Reporter. You'll just need to set up your TID/SID. For stationary gifts, the method is the Method 1.
+1. Open RNG Reporter.
+2. Enter your TID/SID.
+3. Use Method 1.
 
 ```
-Pokemon that are Method 1 in FRLG:
+Note: Pokemon that are Method 1 in FRLG:
 
 Bulbasaur, Charmander, Squirtle, Clefairy, Abra, Hypno, Voltorb, Electrode, Hitmonlee, Hitmonchan, Scyther, Pinsir, Magikarp, Lapras, Eevee, Porygon, Omanyte, Kabuto, Aerodactyl, Snorlax, Articuno, Zapdos, Moltres, Dratini, Mewtwo, Togepi, Lugia, Ho-Oh, Deoxys.
-
-Of course some of them are available in wild too.
 ```
 
-- After that, you'll need to open your emulator. You should have a save in front of the stationary Pokemon or the NPC that gives you the Pokemon. This way you'll save time and have more possible target frames.
+## Step 2: Setup VBA
 
-- Load your Lua Script.  
-  - For vba-rr 23.6, go to "Tools" => "Lua Scripting" => "New Lua Script".  A box will pop-up where you'll be able to select the lua you saved earlier.
+1.Open your emulator.
 
+2. You should have a save in front of the stationary Pokemon or the NPC that gives you the Pokemon.
+3. Load your Lua Script by going to "Tools" => "Lua Scripting" => "New Lua Script".
+   - A box will pop-up where you'll be able to select the lua you saved earlier.
 
-- Once the game is loaded enter into the "continue" menu. Here you should pause the game to find your Seed.
-  - FRLG uses the continue screen to generate different spreads every time the game loads to avoid repeating spreads like in dry battery Ruby and Sapphire. This has the big advantage to give you new results every time you load your game.
+## Step 3: Setup the initial seed
 
+4. Load the game
+5. Enter into the "Continue" menu of the game.
+6. Pause the emulator to find your initial seed.
 
-- To find your seed, you must open the Memory Viewer. You need to search the address at 0x02020000. In order to find it just put "02020000" in the box in the upper-right. Hit Go and you'll be done!
+   - FRLG uses the continue screen to generate different spreads every time the game loads to avoid repeating spreads like in dry battery Ruby and Sapphire. This has the big advantage to give you new results every time you load your game.
+
+7. To find your seed, you must open the Memory Viewer, and search the address at 0x02020000.
 
 ![](https://i.imgur.com/Vk4zYMm.png)
 
-- The "1330" is my seed for this run of FRLG. It changes after pressing A / Start in the main screen. There's no real way to manipulate it for the moment, so you must go with what you have.
+The "1330" is my seed for this run of FRLG. It changes after pressing A / Start in the main screen. There's no real way to manipulate it for the moment, so you must go with what you have.
 
-- After, with this seed, you'll finally be able to search spreads. You must enter it in the "Seed (Hex)" box in RNG Reporter.
-
-- Now the tool is ALMOST set up. Enter in your target settings for the Pokemon you wish to search for (shiny, IVs, nature, encounter slots, etc) and once it's done, hit "Generate".
+8. Enter it in the "Seed (Hex)" box in RNG Reporter.
+   - Now the tool is ALMOST set up. Enter in your target settings for the Pokemon you wish to search for (shiny, IVs, nature, encounter slots, etc) and once it's done, hit "Generate".
 
 ![](https://i.imgur.com/PIkK5i4.png)
 
-- If your RNG Reporter is setup correctly, it'll look similar to the above. In my case, I just searched for Shiny Only.
+## Step 4: RNG process
 
-- Now it's time to find and try to hit your target frame. Select one of the frames and unpause your game.
+1. Pick a frame you want to hit in RNG Reporter.
+2. Your player should be in front of the right legendary, NPC or Pokeball.
+3. Create a save state in case you mess up something later.
 
-#### RNG process
-
-- Your player should be in front of the right legendary, NPC or Pokeball. As soon as possible create a save state in case you mess up something later.
 ```
-Don't hesitate to overuse save states! It's really important! This way you can go back to lower frames, and adjust correctly since calibration will be necessary EVERY TIME!
-```
-
-- Advance to the final screen.
-  - For example, if a Pokemon has a dialog (like a cry) before launching the battle it's the last screen you have before the Pokemon is generated (aka the moment the battle triggers, and the stats will be generated). To compare, the final screen for Wild Pokemon is the cursor on "Sweet Scent".
-  - This can change from case to case.
-
-#### Calibration
-
-Now it's time for the calibration. In Gen 3, you'll never hit what you want at the first try. Calibration is always necessary. Here's a little set up of how to do it fast for stationary/gift Pokemon:
-
-- Create a save state. Take note of the frame you're on.
-
-- Hold the A button and unpause the game. It'll trigger the battle or finish the dialog for a gift on the final screen.
-
-- Check the stats of the Pokemon you've found. There are two cases.
-  - If it's a stationary, the lua will show all the IVs without doing anything.
-  - If it's a gift, you need to save your game and load it with PKHeX.
-
-
-- Reload the save state you made before in case you need to attempt the RNG again.  In this way, if you have to save the game to check your Pokemon's stats, the calibration will not be messed up.
-
-- Enter the Pokemon's stats into RNG Reporter and find the frame of the Pokemon.
-
-- Math time! Find the amount of frames you were off by:
-  - (Frame you pressed A) - (Frame you got from reporter)
-  - It'll be a negative result around 90% of the time, but that's normal.
-
-- Add the number of frames you were off to your original frame.  
-  - If you had a negative number, subtract it from your original frame.  
-
-- This new number is the new frame you should press 'A' on.
-```
-You can calibrate when you want. For fast targets (aka not going for millions frames) doing it NEAR your Shiny frame will help to have a good delay. Doing it too early could give you a delay too low around your frame, and cause you to calibrate again.
+Note: Don't hesitate to overuse save states! It's really important! This way you can go back to lower frames, and adjust correctly since calibration will be necessary EVERY TIME!
 ```
 
-- If you didn't hit what you wanted after calibration, just retry the calibration part.
-  - You can use save-states done before to avoid any problems.
+4. Advance to the final screen.
+   - For example, if a Pokemon has a dialog (like a cry) before launching the battle it's the last screen you have before the Pokemon is generated (aka the moment the battle triggers, and the stats will be generated). To compare, the final screen for Wild Pokemon is the cursor on "Sweet Scent".
+   - This can change from case to case.
 
-- After a few tries if you still can't hit anything double check your setup.
+## Step 5: Calibration
 
-If everything went well, you just RNG'd your first Stationary / Gift Pokemon in FRLG!
+1. Create a save state.
+2. Write the current frame down.
+3. Hold the A button and unpause the game.
+   - This will trigger the battle or finish the dialog for a gift on the final screen.
+4. Check the stats of the Pokemon you've found. There are two cases.
+   - If it's a stationary, the lua will show all the IVs without doing anything.
+   - If it's a gift, you need to save your game and load it with PKHeX.
+5. Reload the save state you made before in case you need to attempt the RNG again.
+   - In this way, if you have to save the game to check your Pokemon's stats, the calibration will not be messed up.
+6. Enter the Pokemon's stats into RNG Reporter and find the frame of the Pokemon.
+7. Find the amount of frames you were off by:
+   - (Frame you pressed A) - (Frame you got from reporter)
+   - It'll be a negative result around 90% of the time, but that's normal.
+   - For example if someone pressed A on frame 100 and the hit Pokemon was frame 103, you were off by -3 frames.
+8. Add the number of frames you were off to your original frame.
+   - If you had a negative number, subtract it from your original frame.
+   - This new number is the new frame you should press 'A' on.
+
+```
+Note: You can calibrate when you want. For fast targets (aka not going for millions frames) doing it NEAR your Shiny frame will help to have a good delay. Doing it too early could give you a delay too low around your frame, and cause you to calibrate again.
+```
+
+## Troubleshooting
+
+If you didn't hit what you wanted after calibration, just retry the calibration part.
+
+- You can use save-states done before to avoid any problems.
+
+After a few tries if you still can't hit anything double check your setup.
+
+If you followed all steps, the Pokemon will be what you wanted after calibration. Tada, you did your Gen 3 Wild RNG!

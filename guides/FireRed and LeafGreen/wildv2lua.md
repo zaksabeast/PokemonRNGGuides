@@ -38,4 +38,6 @@ Once the card flip done, go to menu, select the Pokemon with Sweet Scent and put
 Once close to the target frame, pause the emulator (ctrl + p), and advance frame by frame (ctrl + n) to the one shown by 
 PokeFinder. PRess A and unpause at the same time.
 
-Done !
+Done.
+
+Last thing : If you don't get the target, double check your OWN delay, and be sure to do the Trainer Flip.

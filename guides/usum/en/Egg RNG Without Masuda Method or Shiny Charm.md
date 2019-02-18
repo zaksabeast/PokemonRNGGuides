@@ -1,20 +1,22 @@
-# Egg RNG without Masuda Method or Shiny Charm
+# Gen 7 Egg RNG Guide without Masuda and/or Shiny Charm
 
-_A relaxed RNG to get the perfect egg quickly_
+_RNG for eggs without using Masuda Method and without the Shiny Charm_
 
-```
-Note: With the Shiny Charm or Masuda Method, the shininess of Eggs are predetermined, so not every egg can be shiny.
+## How is this different than using Masuda Method and/or Shiny Charm?
 
-Without Shiny Charm or Masuda Method, PIDs are not generated until the egg is picked up, so every egg can be shiny.
+When using Masuda Method and/or Shiny Charm, the ESVs of every egg are already set in a predetermined order that will not change. The only way to reach the frames you want is to accept and/or reject however many eggs it takes to reach those frames. However, without using Masuda Method and without having the Shiny Charm, the ESVs are not generated until the moment you accept the egg. This means ANY egg frame can be ANY ESV you want it to be.
+
+```Note: ESV is short for Egg Shiny Value. This is what determines if an egg will hatch shiny or not.
+If an ESV matches a TSV (Trainer Shiny Value) then the egg will hatch shiny.
 ```
 
 ## Tools
 
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-  - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
+
 - PCalc
-  - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
-  - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
+  - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
+  - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
 
 ## Step 1: Set Up 3DSRNGTool
 
@@ -28,12 +30,12 @@ Without Shiny Charm or Masuda Method, PIDs are not generated until the egg is pi
 3. The "Shiny Charm" box must be unchecked. If you have the Shiny Charm you cannot use this method.
 
 ```
-If you are wanting to RNG the egg to have a specific ESV that is not yours, click on "Edit TSV List" and input TSV(s).
+If you are wanting to RNG the egg to have a specific ESV that is not yours, click on "Edit TSV List" and input the TSV(s).
 
 Do not input the TSV in the upper right. YOUR TSV must be used in the upper right or else the RNG will be incorrect.
 ```
 
-### For Parents Information:
+### For parents information:
 
 - Fill it out according to the parents you are using.
   - Make sure the "Masuda Method" box is not checked. If the parents are of different languages you cannot use this method.
@@ -51,9 +53,9 @@ Note about breeding for Rockruff:
 - If its ability is Own Tempo, then the ability can either be 1, 2, or H, it won’t make a difference.
 - If its ability is not Own Tempo then its abilities are [1] Keen Eye, [2] Vital Spirit, or [H] Steadfast.
 
-### For Current Status
+### For current status
 
-1. For the "Current Status" input the current egg seeds of your game.
+1. For the "Current Status" section in 3DSRNGTool input the current egg seeds of your game.
 
    - Using PCalc, press `Start + Down` ingame to bring up the egg seed window and input them into 3DSRNGTool.
 
@@ -63,7 +65,7 @@ Note about breeding for Rockruff:
 
 4. Do not check the "Shiny Only" box even if you are wanting a shiny egg. Shininess will be RNG'd separately.
 
-5. Input 0 as starting frame.
+5. Input "0" as the starting frame.
 
 6. Then click "Calculate".
 
@@ -75,27 +77,25 @@ You can choose any of the given frames, but lower frames are generally better du
 
 2. Then click on "Shortest Path" and "Calculate".
 
-   - This will automatically calculate the shortest path for least number of accepts and rejects for your target egg.
+   - This will automatically calculate the shortest path for the least number of accepts and rejects for your target egg.
 
-3. The very last egg you are going to accept will be your target egg. Do NOT accept this egg!
+3. Accept and/or reject the eggs in the order given from top to bottom. Doing the accepts and/or rejects out of order will result in the wrong egg seeds.
 
-4. Once you are to your target egg seeds, continue with the rest of the guide.
+4. The very last egg you are going to accept will be your target egg. Do NOT accept this egg!
 
-```
-Note: Make sure you go in order from top to bottom for accepting and rejecting eggs.
-
-Doing it out of order will mess you up.
-```
+5. Once you are to your target egg seeds, continue with the rest of the guide.
 
 ```
-With PCalc you can check which frame you are on by looking at your egg seeds ingame (Start + Down to bring up menu).
+With PCalc you can check which egg frame you are on by looking at your egg seeds ingame (Start + Down to bring up menu).
 ```
 
-## Step 3: RNGing the ESV (or PID) of the egg
+## Step 3: RNGing the ESV of the Egg
 
 1. Once you have the egg you want to be shiny ready to pick up from the daycare helper, save the game in case you mess up and need to start over for the next part.
 
-2. Stand directly in front of the helper and start the dialogue to accept the egg.
+2. Stand directly in front of the daycare helper and start the dialogue to accept the egg.
+
+   - Standing off to the side may cause NPCs to flucuate when making a timeline.
 
 3. When you get to the choice of “Yes” or “No”, press `Start + Up` to bring up the Game View window ingame, and then pause the game (`Start + Select`).
 

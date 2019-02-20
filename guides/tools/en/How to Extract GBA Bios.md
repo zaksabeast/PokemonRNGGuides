@@ -1,8 +1,14 @@
 # How to extract GBA BIOS
 
+_Guide to extracting the GBA BIOS file for use on emulators_
+
+Some games need a GBA BIOS file to be able to load on emulators. If you are encountering an error message about a problem related to the BIOS then you will need a GBA BIOS to load that game. This guide has two different methods for extracting the GBA BIOS file yourself. 
+
 ## Tools
 
-- A CFW 3DS or Hacked Wii/Wii U
+- A CFW 3DS or...
+- A hacked Wii/Wii U with a GBA to GameCube Link Cable, and a GameBoy Advance or GameBoy Advance SP.
+- For Wii U you will need a GameCube controller adapter as well
 
 ## Using a NES/GB/GBC VC game with a CFW 3DS
 
@@ -16,10 +22,22 @@
 7. Press `A` on "0000.00000002", and then press `A` on "romfs".
 8. There should be an "agb.bin".
    - Press `A` on it and select "Copy to 0:/gm9/out"
-9. Now the GBA BIOS should be in `/gm9/out`.
-   - Copy this file to the computer and place it in the same folder as the emulator.
-10. Enjoy the GBA BIOS!!
+9. Now the GBA BIOS file should be in `/gm9/out`.
+   - Copy this file to the computer, rename it to `GBA.BIOS`, and place it in the same folder as the emulator.
 
 ## Using a hacked Wii/Wii U
 
-- To be added
+- For hacking your Wii/Wii U refer to the correct guide:
+   - **Wii**: https://wii.guide/
+   - **Wii U**: https://wiiu.hacks.guide/
+   
+1. Download the latest [GBA Link Cable Dumper](https://github.com/FIX94/gba-link-cable-dumper/releases).
+   - Unzip the folder into the `apps` folder on the console's SD card.
+   - Afterwards you should have `apps/gba-gc-link-dumper/boot.dol`.
+2. Boot the console into the Homebrew Launcher and load the GBA Link Cable Dumper.
+3. When prompted, insert the GBA to GameCube Link Cable into the second slot of the Wii or Wii U GameCube adapter.
+4. Connect the GameBoy Advance/GameBoy Advance SP and turn it on.
+5. Wait for the program to load, then press `Y` to dump the GBA BIOS.
+6. Once that is finished, turn off the console and remove the SD card.
+7. The GBA BIOS file can be found at `/dumps/gba_bios.bin`
+7. Copy this file to the computer, rename it to `GBA.BIOS`, and place it in the same folder as the emulator.

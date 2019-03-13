@@ -3,15 +3,27 @@
 ## Tools
 
     - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-
-    - [PCalc for XY](https://pokemonrng.com/downloads/pcalc/pcalc-xy)
+    - [PCalc for XY](https://pokemonrng.com/downloads/pcalc/pcalc-xy.zip)
 
 ## Required Reading
 
     - [TinyMT Timeline](https://github.com/wwwwwwzx/3DSRNGTool/wiki/Gen6-TinyMT-Timeline-Calibration)
     - [NTR Helper Usage](https://github.com/wwwwwwzx/3DSRNGTool/wiki/NTR-Helper-Usage)
 
-## Set up
+## Explanation of TinyMT frames within Tiny Timeline Tool
+
+    - **Main RNG Frame**: The main RNG frame ranges that correspond to each TinyMT frame that is listed.
+        - Through manipulation of the TinyMT timeline, you can make the TinyMT frames overlap with different main RNG frames.
+    - **Enctr?**: Determines if there will be an encounter or not if the character turns or walks into the grass during those TinyMT seeds.
+        - Encounter of less than 5 is best since this will guarantee an encounter every time.
+    - **Sync?**: Determines if nature will be Synchronized or not.
+        - `X` = No `O` = Yes
+    - **Slot**: Determines which slot of Friend Safari will be chosen for the Pokemon that appears.
+        - Order is same order as shown in Friend Safari Pokemon screen from left to right before entering the specific safari.
+    - **HA**: Determines if Pokemon will have HA or not.
+        - `X` = No `O` = Yes
+
+## Step 1: Set up
 
 1. Load up XY and connect to NTR Helper within 3DSRNGTool.
 
@@ -27,20 +39,7 @@
 Note: This guide assumes you already have basic knowledge of how to do Gen 6 RNG. Otherwise it is recommended to first familiarize yourself with Gen 6 RNG mechanics by RNGing something simple like eggs.
 ```
 
-## Explanation of TinyMT frames within Tiny Timeline Tool
-
-    - **Main RNG Frame**: The main RNG frame ranges that correspond to each TinyMT frame that is listed.
-        - Through manipulation of the TinyMT timeline, you can make the TinyMT frames overlap with different main RNG frames.
-    - **Enctr?**: Determines if there will be an encounter or not if the character turns or walks into the grass during those TinyMT seeds.
-        - Encounter of less than 5 is best since this will guarantee an encounter every time.
-    - **Sync?**: Determines if nature will be Synchronized or not.
-        - `X` = No `O` = Yes
-    - **Slot**: Determines which slot of Friend Safari will be chosen for the Pokemon that appears.
-        - Order is same order as shown in Friend Safari Pokemon screen from left to right before entering the specific safari.
-    - **HA**: Determines if Pokemon will have HA or not.
-        - `X` = No `O` = Yes
-
-## Manipulating TinyMT
+## Step 2: Manipulating TinyMT
 
 The key to successfully causing an encounter on your target frame is manipulating the TinyMT using the method below. It is suggested to practice manipulating the TinyMT first for test frames to get an idea for how it all works.
 
@@ -76,9 +75,9 @@ The key to successfully causing an encounter on your target frame is manipulatin
    - Advance frame by frame by pressing `Select` until you are on your target frame.
    - Make sure you are standing in a grass tile while doing this.
 
-2. At the same time, both unpause with `A` and turn in any direction with the D-Pad to trigger the encounter.
+2. At the same time, unpause with `A` and turn in any direction with the D-Pad to trigger the encounter.
 
-3. Calibrate delay if needed, although delay of 6 should work for Friend Safari.
+3. Calibrate a delay if needed, although delay of 6 should work for Friend Safari.
 
 ## Reseeding Method
 

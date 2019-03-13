@@ -83,20 +83,21 @@ The key to successfully causing an encounter on your target frame is manipulatin
 
 Once you have the hang of manipulating the TinyMT to correspond to a target frame, then you can go for higher frames. Using NTR Helper and reseeding you can search for a target frame faster.
 
-1. Load up XY while holding the `Left` D-pad. The screen should flash 3 times.
+1. Load up XY and connect to NTR Helper within 3DSRNGTool.
 
-2. Press `One Click` in NTR Helper to connect and grab the initial seed.
+   - Press `One Click` in NTR Helper to connect and grab the initial seed.
+   - Directions for how to do this can be found in the NTR Helper Usage link above.
 
-3. Press `A` to get to the continue screen. This is when the seed is determined.
+2. Press `A` to get to the continue screen. This is when the seed is determined.
 
-4. Search for frames using that seed, and if nothing you like comes up then reseed.
+3. Search for frames using that seed, and if nothing you like comes up then reseed.
 
    - You can do this by pressing `B` then `A` to back out of the continue menu and go back into it.
    - This gives a new initial seed each time.
 
-5. Repeat the process until you find a frame you like.
+4. Repeat the process until you find a frame you like.
 
-6. Choose to continue the save, manipulate the TinyMT, and trigger the encounter on the target frame to get the Pokemon you wanted.
+5. Choose to continue the save, manipulate the TinyMT, and trigger the encounter on the target frame to get the Pokemon you wanted.
 
 ```
 Note: Frames advance twice as fast in a battle, so you can use a battle to advance a lot of frames and then manipulate the TinyMT. Be careful to allow a lot of time to do so in case you miss your target frame while trying to line up the TinyMT frames.

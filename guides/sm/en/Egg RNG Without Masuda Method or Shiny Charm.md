@@ -1,4 +1,4 @@
-# Gen 7 Egg RNG Guide without Masuda and/or Shiny Charm
+# Egg RNG Guide without Masuda and/or Shiny Charm
 
 _RNG for eggs without using Masuda Method and without the Shiny Charm_
 
@@ -13,10 +13,9 @@ If an ESV matches a TSV (Trainer Shiny Value) then the egg will hatch shiny.
 ## Tools
 
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-
 - PCalc
-  - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/usum)
-  - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/sm)
+  - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
+  - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
 
 ## Step 1: Set Up 3DSRNGTool
 
@@ -67,7 +66,7 @@ Note about breeding for Rockruff:
 
 5. Input "0" as the starting frame.
 
-6. Then click "Calculate".
+6. Click "Calculate".
 
 ## Step 2: Finding a Target Frame
 
@@ -75,15 +74,15 @@ You can choose any of the given frames, but lower frames are generally better du
 
 1. Right click on the row for the one you want and click "Set as Target Frame".
 
-2. Then click on "Shortest Path" and "Calculate".
+2. Click on "Shortest Path" and "Calculate".
 
    - This will automatically calculate the shortest path for the least number of accepts and rejects for your target egg.
 
 3. Accept and/or reject the eggs in the order given from top to bottom. Doing the accepts and/or rejects out of order will result in the wrong egg seeds.
 
-4. The very last egg you are going to accept will be your target egg. Do NOT accept this egg!
+   - The very last egg you are going to accept will be your target egg. Do NOT accept this egg!
 
-5. Once you are to your target egg seeds, continue with the rest of the guide.
+4. Once you are to your target egg seeds, continue with the rest of the guide.
 
 ```
 With PCalc you can check which egg frame you are on by looking at your egg seeds ingame (Start + Down to bring up menu).

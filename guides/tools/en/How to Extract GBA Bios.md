@@ -7,8 +7,7 @@ Some games need a GBA BIOS file to be able to load on emulators. If you are enco
 ## Tools
 
 - A CFW 3DS or...
-- A hacked Wii/Wii U with a GBA to GameCube Link Cable, and a GameBoy Advance or GameBoy Advance SP.
-- For Wii U you will need a GameCube controller adapter as well
+- A hacked Wii with a GBA to GameCube Link Cable, and a GameBoy Advance or GameBoy Advance SP.
 
 ## Using a NES/GB/GBC VC game with a CFW 3DS
 
@@ -25,17 +24,15 @@ Some games need a GBA BIOS file to be able to load on emulators. If you are enco
 9. Now the GBA BIOS file should be in `/gm9/out`.
    - Copy this file to the computer, rename it to `GBA.BIOS`, and place it in the same folder as the emulator.
 
-## Using a hacked Wii/Wii U
+## Using a hacked Wii
 
-- For hacking your Wii/Wii U refer to the correct guide:
-   - **Wii**: https://wii.guide/
-   - **Wii U**: https://wiiu.hacks.guide/
+- For hacking your Wii refer to the following guide: https://wii.guide/
    
 1. Download the latest [GBA Link Cable Dumper](https://github.com/FIX94/gba-link-cable-dumper/releases).
    - Unzip the folder into the `apps` folder on the console's SD card.
    - Afterwards you should have `apps/gba-gc-link-dumper/boot.dol`.
 2. Boot the console into the Homebrew Launcher and load the GBA Link Cable Dumper.
-3. When prompted, insert the GBA to GameCube Link Cable into the second slot of the Wii or Wii U GameCube adapter.
+3. When prompted, insert the GBA to GameCube Link Cable into one of the GameCube controller slots of the Wii.
 4. Connect the GameBoy Advance/GameBoy Advance SP and turn it on.
 5. Wait for the program to load, then press `Y` to dump the GBA BIOS.
 6. Once that is finished, turn off the console and remove the SD card.

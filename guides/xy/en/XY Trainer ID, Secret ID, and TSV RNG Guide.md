@@ -4,7 +4,7 @@ _RNG for a specific Trainer ID, SID, or TSV_
 
 ## Requirements
 
-A new save file is needed to RNG the Trainer ID, Secret ID, or Trainer Shiny Value. If a save file is already present then it can be deleted by pressing `X + Y + Down` on the d-pad while at the title screen. This will delete the current save file and begin the game at the language select screen.
+A new save file is needed to RNG the Trainer ID, Secret ID, or Trainer Shiny Value. If a save file is already present then it can be deleted by pressing `X + B + Up` on the d-pad while at the title screen. This will delete the current save file and begin the game at the language select screen.
 
 Make sure to back up your save file using a save file manager such as [Checkpoint](https://github.com/FlagBrew/Checkpoint/releases) if you ever want to return to your previous save file.
 

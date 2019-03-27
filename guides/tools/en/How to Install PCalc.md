@@ -2,6 +2,11 @@
 
 _Installing a tool to help RNG your Pokemon_
 
+## Tools
+
+- A 3DS with CFW (Custom Firmware)
+   - https://3ds.hacks.guide/ has instructions for installing CFW
+
 ## Step 1: Installing NTR
 
 The first step is to install NTR, do this by installing [BootNTR Selector](https://github.com/Nanquitas/BootNTR/releases).

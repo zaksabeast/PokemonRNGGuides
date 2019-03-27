@@ -6,8 +6,11 @@ Some games need a GBA BIOS file to be able to load on emulators. If you are enco
 
 ## Tools
 
-- A CFW 3DS or...
-- A hacked Wii with a GBA to GameCube Link Cable, and a GameBoy Advance or GameBoy Advance SP.
+- Either a 3DS with CFW (Custom Firmware)
+   - https://3ds.hacks.guide/ has instructions for installing CFW
+
+- Or a hacked Wii with a GBA to GameCube Link Cable, and a GameBoy Advance or GameBoy Advance SP
+   - https://wii.guide/ has instructions for hacking a Wii
 
 ## Using a NES/GB/GBC VC game with a CFW 3DS
 
@@ -26,8 +29,6 @@ Some games need a GBA BIOS file to be able to load on emulators. If you are enco
 
 ## Using a hacked Wii
 
-- For hacking your Wii refer to the following guide: https://wii.guide/
-   
 1. Download the latest [GBA Link Cable Dumper](https://github.com/FIX94/gba-link-cable-dumper/releases).
    - Unzip the folder into the `apps` folder on the console's SD card.
    - Afterwards you should have `apps/gba-gc-link-dumper/boot.dol`.

@@ -4,11 +4,12 @@ _Easy shinies in apricorn balls_
 
 ## Tools
 
+- A 3DS with CFW (Custom Firmware)
+   - https://3ds.hacks.guide/ has instructions for installing CFW
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - PCalc
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
   - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
-- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-  - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - The `honey` item
 - Have started an Island Scan and know the Pokemon you've scanned for
   - [List of Island Scan islands and days for USUM](https://pokemonrng.com/guides/tools/en/Island%20Scan%20Pokemon%20-%20USUM.md)

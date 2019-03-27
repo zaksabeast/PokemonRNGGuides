@@ -2,6 +2,15 @@
 
 _A timeline can predict Pokemon a player can obtain - Timeline leap allows a player to 'leap' onto specific timelines_
 
+## Tools
+
+- A 3DS with CFW (Custom Firmware)
+   - https://3ds.hacks.guide/ has instructions for installing CFW
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+- PCalc
+  - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
+  - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
+
 ## Step 1: Find your target frame
 
 1. In "Filters" set it to search for the Pokemon you are wanting.

@@ -10,11 +10,12 @@ Without Shiny Charm or Masuda Method, PIDs are not generated until the egg is pi
 
 ## Tools
 
+- A 3DS with CFW (Custom Firmware) (Optional)
+   - https://3ds.hacks.guide/ has instructions for installing CFW
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-  - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - PCalc (Optional)
-  - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
+  - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
 
 ## Step 1: Set Up 3DSRNGTool
 

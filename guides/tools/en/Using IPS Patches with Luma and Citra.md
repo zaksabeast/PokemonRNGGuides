@@ -4,7 +4,8 @@ _Use game patches for instant text, no outlines, and extra fun_
 
 ## Using IPS files with Luma
 
-You will need Luma3DS installed on your 3DS for this. Instructions to install Luma3D can be found here : https://3ds.hacks.guide/
+- You will need Luma3DS installed on your 3DS for this. 
+   - Instructions for installing Luma3DS: https://3ds.hacks.guide/
 
 1. Find your game's title ID [using 3dsdb](http://www.3dsdb.com/)
 2. Put your code.ips patch at `/luma/titles/<title ID>/code.ips`

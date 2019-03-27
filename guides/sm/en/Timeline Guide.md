@@ -11,7 +11,6 @@ _The most needed skill to do Gen 7 RNG with custom firmware_
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
   - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
 
-
 Before continuing with the guide it is recommended to be in the place you wish to RNG.
 
 ## Step 1: Set Up 3DSRNGTool

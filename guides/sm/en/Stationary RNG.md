@@ -11,7 +11,6 @@ _RNG the overworld Pokemon to have 6 IVs_
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
   - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
 
-
 ### Recomended reading
 
 If you are wanting to RNG a Mystery Gift (or Event) Pokemon instead, follow the [Gen 7 Mystery Gift RNG guide](<https://pokemonrng.com/guides/usum/en/Mystery%20Gift%20(Event)%20RNG.md>) instead.

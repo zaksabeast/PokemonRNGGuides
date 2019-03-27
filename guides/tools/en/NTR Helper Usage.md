@@ -1,5 +1,7 @@
 # NTR Helper Usage
 
+_How to Use NTR Helper with 3DSRNGTool_
+
 NTR Helper can be used to connect to a CFW 3DS for automatically grabbing information from PCalc, such as the initial seed or the TinyMT seeds. This reduces time from having to manually input the information, and 3DSRNGTool will automatically update the initial seed or TinyMT seeds when needed.
 
 [](https://i.imgur.com/9hpIEjC.png)

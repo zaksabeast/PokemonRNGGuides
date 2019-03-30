@@ -9,7 +9,6 @@ _One of the most challenging Gen 7 RNGs with fun rewards_
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - PCalc
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
-  - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
 
 ## Recommended reading/references
 

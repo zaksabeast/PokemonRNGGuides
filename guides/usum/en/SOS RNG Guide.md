@@ -4,12 +4,11 @@ _One of the most challenging Gen 7 RNGs with fun rewards_
 
 ## Tools
 
-- Console with CFW
-- [3DSRNGTool](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts)
-  - [Github link](https://github.com/wwwwwwzx/3DSRNGTool)
+- A 3DS with CFW (Custom Firmware)
+   - https://3ds.hacks.guide/ has instructions for installing CFW
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - PCalc
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
-  - [Guide for installing PCalc](https://pokemonrng.com/guides/tools/en/How%20to%20Install%20PCalc.md)
 
 ## Recommended reading/references
 

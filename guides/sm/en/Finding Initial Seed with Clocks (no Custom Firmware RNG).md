@@ -7,7 +7,6 @@ _This guide allows you to find your initial seed without using Custom Firmware_
 - Video camera (your phone's camera should do)
   - Optional but it is very handy.
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-  - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 
 ## General principle
 

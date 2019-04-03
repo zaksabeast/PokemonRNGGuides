@@ -8,6 +8,8 @@ Note: This method is different than using no Masuda or without having the Shiny 
 
 ## Tools
 
+- A 3DS with CFW (Custom Firmware)
+   - https://3ds.hacks.guide/ has instructions for installing CFW
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - PCalc for Gen 6
   - [PCalc-oras](https://pokemonrng.com/downloads/pcalc/pcalc-oras.zip)

@@ -9,7 +9,6 @@ Note: This guide is for those who do not have access to CFW or homebrew. If you 
 ## Tools
 
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-  - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 
 There are two ways of finding the egg seeds. If you have never collected or rejected an egg at the nursery then you can do the 8 Magikarp method. The Eevee gift egg does not count. Otherwise, the only other way is the 127 Magikarp method.
 

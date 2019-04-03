@@ -4,10 +4,13 @@ _Use game patches for instant text, no outlines, and extra fun_
 
 ## Using IPS files with Luma
 
-1. Find your game's title ID [using 3dsdb](http://www.3dsdb.com/)
-2. Put your code.ips patch at `/luma/titles/<first half of title ID>/<second half of title ID>/code.ips`
+- You will need Luma3DS installed on your 3DS for this. 
+   - Instructions for installing Luma3DS: https://3ds.hacks.guide/
 
-For example, Ultra Moon would be `/luma/title/00040000/001B5100/code.ips`
+1. Find your game's title ID [using 3dsdb](http://www.3dsdb.com/)
+2. Put your code.ips patch at `/luma/titles/<title ID>/code.ips`
+
+For example, Ultra Moon would be `/luma/title/00040000001B5100/code.ips`
 
 ## Using IPS files with Citra
 

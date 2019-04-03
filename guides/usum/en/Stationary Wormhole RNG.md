@@ -4,8 +4,11 @@ _Get your own perfect Legendary Pokemon!_
 
 ## Tools
 
-- [3DSRNGTool](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts) - Github link: https://github.com/wwwwwwzx/3DSRNGTool
-- [PCalc-usum](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
+- A 3DS with CFW (Custom Firmware)
+   - https://3ds.hacks.guide/ has instructions for installing CFW
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+- PCalc
+  - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
 
 ### Recommended reading/references
 

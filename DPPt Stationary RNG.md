@@ -73,6 +73,7 @@ The guide [here] (https://github.com/zaksabeast/PokemonRNGGuides/blob/master/gui
 4. Make sure everything is set like the screenshot below:
 	
 	![](https://i.imgur.com/qihLj76.png)
+  
    And then Press A to start the encounter.
 	
 5. Enjoy!

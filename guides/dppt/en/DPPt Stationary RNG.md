@@ -41,7 +41,7 @@ Method J:
 ## Step 2: Hitting your Initial Seed
 
 Before you do this, you need to save your game in front of the stationary you want. This is important.
-The guide [here](https://github.com/zaksabeast/PokemonRNGGuides/blob/master/guides/hgss/en/Using%20Runasdate%20to%20RNG%20Initial%20Seed.md) shows how to hit your initial seed in detail. Refer to that guide and the proceed to Step 3.
+The guide [here](https://github.com/zaksabeast/PokemonRNGGuides/blob/master/guides/hgss/en/Using%20Runasdate%20to%20RNG%20Initial%20Seed.md) shows how to hit your initial seed in detail. Refer to that guide and then proceed to Step 3.
 
 ## Step 3: Hitting your desired Pokemon
 
@@ -94,9 +94,9 @@ Note: Ignore IVRNG frame. It serves no purpose whatsoever for Gen 4 RNG.
 4. Manaphy Egg: The Manaphy Egg is received like a Wondercard Pokemon, but it uses the Method 1 generation. The Wondercard follows the usual initial frames. It has a shiny check on it that prevents the hatched Manaphy from being shiny normally, but there is a way to bypass this check and get a shiny Manaphy. You'll need to know the PID of the IV spread you're going for. Once you have it, you'll need a save file that isn't the one your Manaphy Wondercard is on, and has this PID shiny. Do the RNG manipulation and receive the Egg, and trade it to this game. Hatch it in the other game and if you did it correctly, you should now have a shiny Manaphy. To summarize, if you want a shiny Manaphy in game A:
 
 	- Find out what shiny PID you have in game A.
-    	- Get the Egg with the same PID in game B.
-    	- Trade the Egg from game B to game A.
-    	- Hatch the Egg in game A.
-    	- Congratulations, you now have a shiny Manaphy!
+	- Get the Egg with the same PID in game B.
+	- Trade the Egg from game B to game A.
+	- Hatch the Egg in game A.
+	- Congratulations, you now have a shiny Manaphy!
 
 5. Other Method 1 Pokemon: All of them have starting frame of 1 but there are random NPCs who interfere with the process. It is suggested to freeze all the NPCs by opening menu, doing the advances and closing the menu a little before your target frame so you can compensate the difference with NPC movements. Starters are more difficult to do since you don't have any other method to advance your frames and have to purely rely on random NPC movements.

@@ -43,7 +43,7 @@ Note: Fixed Gender/Genderless Pokemon won't be affected by Cute Charm lead.
 ## Step 2: Hitting your Initial Seed
 
 Before you do this, you need to save your game in front of the stationary you want. This is important.
-The guide [here] (https://github.com/zaksabeast/PokemonRNGGuides/blob/master/guides/hgss/en/Using%20Runasdate%20to%20RNG%20Initial%20Seed.md) shows how to hit your initial seed in details. Refer that guide and the proceed to Step 3.
+The guide [here](https://github.com/zaksabeast/PokemonRNGGuides/blob/master/guides/hgss/en/Using%20Runasdate%20to%20RNG%20Initial%20Seed.md) shows how to hit your initial seed in details. Refer that guide and the proceed to Step 3.
 
 ## Step 3: Hitting your desired Pokemon
 

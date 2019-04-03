@@ -40,15 +40,14 @@ Method J:
 
 ## Step 2: Hitting your Initial Seed
 
-Before you do this, you need to save your game in front of the stationary you want. This is important.
-The guide [here](https://github.com/zaksabeast/PokemonRNGGuides/blob/master/guides/hgss/en/Using%20Runasdate%20to%20RNG%20Initial%20Seed.md) shows how to hit your initial seed in detail. Refer to that guide and then proceed to Step 3.
+Before you do this, you need to save your game in front of the stationary you want. This is important. Right click on the seed given in PokeFinder and click "Generate times for seed". Note the Date, Time and Delay and then proceed to follow this guide [here](https://github.com/zaksabeast/PokemonRNGGuides/blob/master/guides/hgss/en/Using%20Runasdate%20to%20RNG%20Initial%20Seed.md) which shows how to hit your initial seed in detail. Refer to that guide and then proceed to Step 3.
 
 ## Step 3: Hitting your desired Pokemon
 
 1. Once you are inside your game, the lua will show you what your PIDRNG frame is.
 
 ```
-Note: Ignore IVRNG frame. It serves no purpose whatsoever for Gen 4 RNG.
+Note: Ignore IVRNG frame. It serves no purpose whatsoever for DPPt Stationary RNG.
 ```
 
 2. You need to advance your PIDRNG frame and match it with the number which is present in Frame column. Since I am hitting the following spread, it's 9 for me.

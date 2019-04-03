@@ -43,13 +43,14 @@ Note: Fixed Gender/Genderless Pokemon won't be affected by Cute Charm lead.
 ## Step 2: Hitting your Initial Seed
 
 Before you do this, you need to save your game in front of the stationary you want. This is important.
-The guide [here] (https://github.com/zaksabeast/PokemonRNGGuides/blob/master/guides/hgss/en/Using%20Runasdate%20to%20RNG%20Initial%20Seed.md) shows how to hit your initial seed in details. Refer that guide and the proceed to Step 3.
+The guide [here](https://github.com/zaksabeast/PokemonRNGGuides/blob/master/guides/hgss/en/Using%20Runasdate%20to%20RNG%20Initial%20Seed.md) shows how to hit your initial seed in details. Refer that guide and the proceed to Step 3.
 
 ## Step 3: Hitting your desired Pokemon
 
 1. Once you are inside your game, the lua will show you what is your PIDRNG frame.
 
 2. You need to advance your PIDRNG frame and match it with the number which is present in Frame column. Since I am hitting the following spread, its 9 for me.
+
 	![](https://i.imgur.com/eOHppkM.png)
 	
 3. There are various ways you can advance your frames. 
@@ -70,8 +71,17 @@ The guide [here] (https://github.com/zaksabeast/PokemonRNGGuides/blob/master/gui
 	I personally use Journal Flips to do the advances but the issue with this method is your frames will be either even or odd if there is no other interference. To avoid this, carry a Chatot as well and just use Chatter once which advances frame by 1.
 	
 4. Make sure everything is set like the screenshot below:
+
 	![](https://i.imgur.com/qihLj76.png)
-	And then Press A to start the encounter.
+	
+   And then Press A to start the encounter.
 	
 5. Enjoy!
+
 	![](https://i.imgur.com/84AzXqx.png)
+
+### Distortion World Giratina
+
+Giratina is a special case. Giratina is a Method J Pokemon. Every time the Distortion World is loaded the frame advances by 11. If you're doing advances through the Journal or Chatter your starting frame will be 23 (It will be 12 if you're advancing the frame through the Journal without accessing it from the menu, i.e. when it first appears when starting the game).
+
+The recommended procedure would be to start the game (loading the Distortion World map once), open the menu, and do either Chatters or Journal flips as if the starting frame is 23, then engage in battle (loading the Distortion World map a second time).

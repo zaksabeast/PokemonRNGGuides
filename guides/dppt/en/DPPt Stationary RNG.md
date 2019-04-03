@@ -26,7 +26,7 @@ Method 1:
     Eevee from Bebe
     Porygon from Veilstone
     Cresselia, Mesprit, Articuno, Zapdos, and Moltres
-	Pokemon Ranger Manaphy Egg
+    Pokemon Ranger Manaphy Egg
 
 Method J:
 	Every other stationary which is not mentioned above like Box Art legendaries, Heatran, Regigigas, etc

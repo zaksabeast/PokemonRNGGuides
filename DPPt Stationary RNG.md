@@ -80,8 +80,7 @@ The guide [here](https://github.com/zaksabeast/PokemonRNGGuides/blob/master/guid
 	
 	![](https://i.imgur.com/84AzXqx.png)
 
-```
+### Distortion World Giratina
 Note: Distortion world Giratina is a special case. Giratina is a Method J Pokemon. Every time the Distortion World is loaded the frame advances by 11. If you're doing advances through the Journal or Chatter your starting frame will be 23 (It will be 12 if you're advancing the frame through the Journal without accessing it from the menu, i.e. when it first appears when starting the game).
 
 The recommended procedure would be to start the game (loading the Distortion World map once), open the menu, and do either Chatters or Journal flips as if the starting frame is 23, then engage in battle (loading the Distortion World map a second time).
-```

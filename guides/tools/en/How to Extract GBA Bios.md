@@ -6,11 +6,12 @@ Some games need a GBA BIOS file to be able to load on emulators. If you are enco
 
 ## Tools
 
-- Either a 3DS with CFW (Custom Firmware)
+- Either a 3DS with CFW (Custom Firmware) and at least 1 VC game from eShop (GB, GBC or NES)
    - https://3ds.hacks.guide/ has instructions for installing CFW
 
 - Or a hacked Wii with a GBA to GameCube Link Cable, and a GameBoy Advance or GameBoy Advance SP
-   - https://wii.guide/ has instructions for hacking a Wii
+   - https://sites.google.com/site/completesg/ has instructions for hacking a Wii
+   - For windows users, you can find an easy to use tool for Wii hacking at https://gbatemp.net/threads/setmiiup-from-stock-to-latest-softmod-in-less-then-5-10-minutes.459416/
 
 ## Using a NES/GB/GBC VC game with a CFW 3DS
 

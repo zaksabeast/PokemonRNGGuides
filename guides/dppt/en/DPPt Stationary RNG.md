@@ -66,6 +66,7 @@ The guide [here](https://github.com/zaksabeast/PokemonRNGGuides/blob/master/guid
 	- Having an active roamer in your game advances your initial frame by a different value depending on the seed.
 
 	- Journal Flips: Whenever your Journal is on a page that displays (insert Pokemon's name) was caught (Time) like the one below, frames are advanced by 2. Flipping your Journal to another page with a similar entry will also advance it by 2. It doesn't matter how many entries there are, as long it has at least one (Pokemon) was caught (Time) entry, the frame advances by 2.
+	
 		![](https://www.smogon.com/ingame/rng/dpphgss_capture_28.png)
 
 	I personally use Journal Flips to do the advances but the issue with this method is your frames will be either even or odd if there is no other interference. To avoid this, carry a Chatot as well and just use Chatter once which advances frame by 1.

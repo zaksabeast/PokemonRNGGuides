@@ -32,7 +32,7 @@ _Guide for RNGing stationary Pokemon in Diamond, Pearl, and Platinum_
 	    - Pokemon Ranger Manaphy Egg
 
 	- Method J:
-    	    - Every other stationary which is not mentioned above like Box Art legendaries, Heatran, Regigigas, etc
+		- Every other stationary which is not mentioned above like Box Art legendaries, Heatran, Regigigas, etc
 
 
 5. Choose any applicable leads if you have any like Synchronize or Cute Charm (Not applicable for Method 1).

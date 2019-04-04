@@ -1,84 +1,114 @@
 # DPPt Stationary RNG Guide Emulator
 
-_For RNGing stationary legendaries in DPPt_
+_Guide for RNGing stationary Pokemon in Diamond, Pearl, and Platinum_
 
 ## Tools
 
-- Desmume (any version even if 9.11 is more stable)
-- Lua Scripts ([Link](https://pokerng.forumcommunity.net/?t=56443955#entry396434991))
-- PokeFinder ([Link](https://github.com/Admiral-Fish/PokeFinder/releases)) 
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
+- [Desmume](http://desmume.org/download/)
+- [Gen 4 Lua Scripts for your game language](https://pokerng.forumcommunity.net/?t=56443955#entry396434991)
+	- Password for the lua script archive is `allyouneedisnoob`.
 
-## Step 1: Finding your desired Spreads
 
-1. Open PokeFinder and click on Stationary in Gen 4 column.
+## Step 1: Finding your Target Frame
 
-2. A new window will open then click on Manager in the Profile section, click on New and fill in your details like TID, SID and the version you are using.
+1. Open PokeFinder and click on the "Stationary" button in the Gen 4 column.
 
-3. Then select that Profile and then we can search for spreads.
+2.  Click on "Manager" in the Profile section, then click on "New" and fill in your details like TID, SID, and the game version you are using.
+	- This will only have to be done once for each profile you set up.
 
-4. Navigate to Searcher tab and select the Method based on what you are trying to RNG.
-```
-Method 1: 
-    Starter Pokemon
-    Cynthia's Togepi Egg
-    Fossil Pokemon from Mining Museum
-    Riolu Egg from Riley
-    Eevee from Bebe
-    Porygon from Veilstone
-    Cresselia, Mesprit, Articuno, Zapdos, and Moltres
-    Pokemon Ranger Manaphy Egg
+3. Select the profile you will be using through the dropdown besides profile. If you only have one profile set up then it will be chosen by default.
 
-Method J:
-    Every other stationary which is not mentioned above like Box Art legendaries, Heatran, Regigigas, etc
-```
+4. Navigate to the "Searcher" tab and select the correct method based on what you are RNGing.
+
+	- Method 1: 
+	    -Starter Pokemon
+	    -Cynthia's Togepi Egg
+	    -Fossil Pokemon from Mining Museum
+	    -Riolu Egg from Riley
+	    -Eevee from Bebe
+	    -Porygon from Veilstone
+	    -Cresselia, Mesprit, Articuno, Zapdos, and Moltres
+	    -Pokemon Ranger Manaphy Egg
+
+	- Method J:
+    	    -Every other stationary which is not mentioned above like Box Art legendaries, Heatran, Regigigas, etc
+
 
 5. Choose any applicable leads if you have any like Synchronize or Cute Charm (Not applicable for Method 1).
 	- If you are not RNGing a genderless or gender fixed Pokemon and want to use Cute Charm, then follow the [Cute Charm guide](https://www.smogon.com/ingame/rng/dpphgss_rng_part5)
 
-6. The aim here is to RNG a shiny Azelf in Platinum. Your PokeFinder should be set up like this.
-	![](https://i.imgur.com/v5V4TUJ.png)
+6. Adjust the filters for the Pokemon you are wanting. 
+![](https://i.imgur.com/v5V4TUJ.png)
+```
+The frame is something which you will be hitting inside the game and delay will be used to hit the initial seed. It is recommended that you don't choose a frame at an higher range, try to keep it below 500 as advances can be really tough. If you are unable to find any frames then you can try to increase the delay and search. The delay is the time you will be waiting at "Continue" screen while trying to hit the initial seed, this can be extended till 10k but you would need to be careful about not crossing your delay.
+```
+7. Click "Search" and wait for PokeFinder to finish searching.
+
+8. Choose one of the results to be your target frame.
+	- If there are multiple results with the same seed then you can choose any of those.
 
 ## Step 2: Hitting your Initial Seed
 
-Before you do this, you need to save your game in front of the stationary you want. This is important. Right click on the seed given in PokeFinder and click "Generate times for seed". Note the Date, Time and Delay and then proceed to follow this guide [here](https://github.com/zaksabeast/PokemonRNGGuides/blob/master/guides/hgss/en/Using%20Runasdate%20to%20RNG%20Initial%20Seed.md) which shows how to hit your initial seed in detail. Refer to that guide and then proceed to Step 3.
+1. Save the game in front of the Pokemon you want.  
 
-## Step 3: Hitting your desired Pokemon
+2. Right click on the seed you want in PokeFinder and click "Generate times for seed". 
 
-1. Once you are inside your game, the lua will show you what your PIDRNG frame is.
+3. Note the date, time and delay and then proceed to follow [this guide](https://pokemonrng.com/guides/dppt/en/Using%20Runasdate%20to%20RNG%20Initial%20Seed/) which explains how to hit your initial seed in detail.
+
+4. After hitting your desired seed continue on to next step.
+
+## Step 3: Advancing the PIDRNG Frame
+
+1. The lua script should show what your PIDRNG frame is.
 
 ```
-Note: Ignore IVRNG frame. It serves no purpose whatsoever for DPPt Stationary RNG.
+Note: You can ignore the IVRNG frame. It is not relevant for Diamond/Pearl/Platinum stationary RNG.
 ```
 
-2. You need to advance your PIDRNG frame and match it with the number which is present in Frame column. Since I am hitting the following spread, it's 9 for me.
+2. You will need to advance the PIDRNG frame until it matches with the number in the "Frame" column. 
+	- In the below screenshot the target PIDRNG frame is 9.
 
-	![](https://i.imgur.com/eOHppkM.png)
+![](https://i.imgur.com/eOHppkM.png)
 	
-3. There are various ways you can advance your frames. 
+3. There are various ways to advance the PIDRNG frame. The next section has more details on how you can advance the PIDRNG frame.
 
-	- Any NPC that randomly moves will advance frames by 1 for each random movement. This can include turning or walking. If an NPC does both at once, then the frame advances by 2. Note that NPCs who are off-screen can still advance the frame, as long as they are within the same area. Because of this, it is advisable to attempt your captures in areas with little or no NPCs. In DPPt you can stop some NPCs from randomly moving through the Vs Seeker. If this cannot be avoided you must press X to bring up the menu the moment you enter the in-game world. This freezes all NPCs in place and stops them from making any unnecessary advancements.
+	- **NPC Movement**:
+  		- Any NPC that randomly moves, by either turning or walking, will advance the PIDRNG frame by 1 for each random movement. If an NPC does both, then the PIDRNG frame advances by 2.
+ 		- NPCs offscreen can still advance the PIDRNG frame as long as they are within the same area. Because of this, it is advised to attempt your captures in areas with little or no NPCs.
+  		- You can stop some NPCs from randomly moving by using the VS Seeker.
+  		- If NPC movement cannot be avoided you must press `X` to bring up the menu the moment you enter the ingame world. This freezes all NPCs in place and stops them from making any unnecessary advancements.
+	- **Chatot Chatter**:
+  		- For this method you must have a Chatot with the move Chatter and you must have recorded a custom Chatter to advance PIDRNG frames with this method. Afterwards, accessing Chatot's summary page will advance the PDIRNG frame by 1.
+  		- You do not have to listen to the whole Chatter sound, simply viewing their summary is enough.
+  		- To make things quicker you can have two Chatots next to each other in your party and flip between their summaries by pressing `Up` and `Down`.
+  
+	- **Character Movement**:
+  		- Taking a step or turning in areas where you can encounter wild Pokemon (grass, water, or caves) advances the PIDRNG frame by 1 for each step or turn made.
+ 		 - Walking at least 128 steps will advance the PIDRNG frame by the number of Pokemon in your party. 
+  		- There is an internal step counter that starts at 0 and increases up to 128 before resetting back to 0. The step counter is always saved, therefore if you load your game and the step counter is at 127, taking one step will advance the PIDRNG frame by the number of Pokemon in your party. 
+  		- It is recommended to not use this method unless none of the other methods are an option.
+		
+	- **Active Roamer**:
+  		- Having an active roamer in your game advances the initial PIDRNG frame by a different value depending on the seed.
+		
+	- **Journal Flips**: 
+   		 - When the journal is on a page that displays `(Pokemon) was caught (Time)` like the picture below, the PIDRNG frame is advanced by 2. 
+    		- Flipping the journal to another page with a similar entry will also advance the PIDRNG frame by 2. 
+    		- As long as the journal has at least one `(Pokemon) was caught (Time)` entry, the PIDRNG frame advances by 2 regardless of how many journal entries there are.
+		
+![](https://www.smogon.com/ingame/rng/dpphgss_capture_28.png)
 
-	- Chatter: to do this you must have a Chatot with the move and you MUST record a custom Chatter to advance frames with this method. Once you do, accessing Chatot's summary window like the one below will advance the frame by 1. To make things quicker, you can have two Chatots next to each other in your party and just keep flipping between their summaries. You do not have to listen to the whole Chatter sound, simply accessing their summary is enough.
-
-	- Taking a step or turning in areas where you can encounter wild Pokemon (grass, water, or caves) advances the frame by 1 for each step/turn made.
-
-	- Walking at least 128 steps will advance the frames by the number of Pokemon in your party. Do know that the games have an internal step counter that starts at 0 and resets to 0 when it reaches 128 and is always saved. This means that if you load your game and the step counter is at 127, taking one step will advance your frames. As a result, don't resort to this method unless it's absolutely necessary, which it won't be a majority of the time.
-
-	- Having an active roamer in your game advances your initial frame by a different value depending on the seed.
-
-	- Journal Flips: Whenever your Journal is on a page that displays (insert Pokemon's name) was caught (Time) like the one below, frames are advanced by 2. Flipping your Journal to another page with a similar entry will also advance it by 2. It doesn't matter how many entries there are, as long it has at least one (Pokemon) was caught (Time) entry, the frame advances by 2.
+## Step 4: Obtaining the desired Pokemon
 	
-		![](https://www.smogon.com/ingame/rng/dpphgss_capture_28.png)
-	
-4. Make sure everything is set like the screenshot below:
+1. Once the PIDRNG frame from the lua script matches the target PIDRNG frame in PokeFinder, press `A` to start the encounter.
 
-	![](https://i.imgur.com/qihLj76.png)
+![](https://i.imgur.com/qihLj76.png)
 	
-   And then Press A to start the encounter.
 	
 5. Enjoy!
 
-	![](https://i.imgur.com/84AzXqx.png)
+![](https://i.imgur.com/84AzXqx.png)
 
 ### Special Cases
 

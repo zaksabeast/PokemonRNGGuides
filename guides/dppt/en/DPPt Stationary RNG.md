@@ -22,17 +22,17 @@ _Guide for RNGing stationary Pokemon in Diamond, Pearl, and Platinum_
 4. Navigate to the "Searcher" tab and select the correct method based on what you are RNGing.
 
 	- Method 1: 
-	    -Starter Pokemon
-	    -Cynthia's Togepi Egg
-	    -Fossil Pokemon from Mining Museum
-	    -Riolu Egg from Riley
-	    -Eevee from Bebe
-	    -Porygon from Veilstone
-	    -Cresselia, Mesprit, Articuno, Zapdos, and Moltres
-	    -Pokemon Ranger Manaphy Egg
+	    - Starter Pokemon
+	    - Cynthia's Togepi Egg
+	    - Fossil Pokemon from Mining Museum
+	    - Riolu Egg from Riley
+	    - Eevee from Bebe
+	    - Porygon from Veilstone
+	    - Cresselia, Mesprit, Articuno, Zapdos, and Moltres
+	    - Pokemon Ranger Manaphy Egg
 
 	- Method J:
-    	    -Every other stationary which is not mentioned above like Box Art legendaries, Heatran, Regigigas, etc
+    	    - Every other stationary which is not mentioned above like Box Art legendaries, Heatran, Regigigas, etc
 
 
 5. Choose any applicable leads if you have any like Synchronize or Cute Charm (Not applicable for Method 1).

@@ -40,9 +40,9 @@ _Guide for RNGing stationary Pokemon in Diamond, Pearl, and Platinum_
 
 6. Adjust the filters for the Pokemon you are wanting. 
 ![](https://i.imgur.com/v5V4TUJ.png)
-```
+
 The frame is something which you will be hitting inside the game and delay will be used to hit the initial seed. It is recommended that you don't choose a frame at an higher range, try to keep it below 500 as advances can be really tough. If you are unable to find any frames then you can try to increase the delay and search. The delay is the time you will be waiting at "Continue" screen while trying to hit the initial seed, this can be extended till 10k but you would need to be careful about not crossing your delay.
-```
+
 7. Click "Search" and wait for PokeFinder to finish searching.
 
 8. Choose one of the results to be your target frame.
@@ -94,8 +94,8 @@ Note: You can ignore the IVRNG frame. It is not relevant for Diamond/Pearl/Plati
 		
 	- **Journal Flips**: 
    		 - When the journal is on a page that displays `(Pokemon) was caught (Time)` like the picture below, the PIDRNG frame is advanced by 2. 
-    		- Flipping the journal to another page with a similar entry will also advance the PIDRNG frame by 2. 
-    		- As long as the journal has at least one `(Pokemon) was caught (Time)` entry, the PIDRNG frame advances by 2 regardless of how many journal entries there are.
+		 - Flipping the journal to another page with a similar entry will also advance the PIDRNG frame by 2. 
+		 - As long as the journal has at least one `(Pokemon) was caught (Time)` entry, the PIDRNG frame advances by 2 regardless of how many journal entries there are.
 		
 ![](https://www.smogon.com/ingame/rng/dpphgss_capture_28.png)
 

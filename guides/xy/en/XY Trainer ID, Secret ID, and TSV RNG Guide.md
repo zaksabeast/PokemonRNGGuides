@@ -12,7 +12,7 @@ Make sure to back up your save file using a save file manager such as [Checkpoin
 
 - A 3DS with CFW (Custom Firmware)
   - https://3ds.hacks.guide/ has instructions for installing CFW
-- [PCalc for X/Y](https://pokemonrng.com/downloads/pcalc/xy.zip)
+- [PCalc for X/Y](https://pokemonrng.com/downloads/pcalc/pcalc-xy.zip)
   - [Here](https://pokemonrng.com/guides/tools/en/How%20to%20Install%20PCalc.md) is a guide on how to install PCalc
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - (Optional) A network connection

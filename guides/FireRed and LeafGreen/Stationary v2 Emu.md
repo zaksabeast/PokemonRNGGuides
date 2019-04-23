@@ -25,6 +25,8 @@ Trainer Card Flip near your target frame to refresh this and get the basic delay
 For that. Open the menu, go in your trainer Card, press A. It'll flip. It's done.
 Do that around 2/3k before your target frame. 
 
+Important : You can advance a LOT of frames (talking about 1 Million every 10 seconds with the Teachy TV)
+
 Once the card flip done, go to the last input, once close to the target frame, pause the emulator (ctrl + p), and advance frame by
 frame (ctrl + n) to the one shown by PokeFinder. PRess A and unpause at the same time.
 

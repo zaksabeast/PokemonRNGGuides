@@ -39,7 +39,7 @@ You should see the text: "You received xxx!"
 
 ## Step 3: RNGing the Pokemon
 
-1. Create a timeline following this guide: [Gen 7 Timeline Guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md)
+1. Create a timeline following this guide: [Gen 7 Timeline Guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide/)
 
 2. Advance to your target frame and when you land on it, press A to unpause the game and obtain the Pokemon.
 

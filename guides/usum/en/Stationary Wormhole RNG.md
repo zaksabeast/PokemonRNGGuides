@@ -12,7 +12,7 @@ _Get your own perfect Legendary Pokemon!_
 
 ### Recommended reading/references
 
-- [Timeline Guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md)
+- [Timeline Guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide/)
 - [Timeline and Timeline 2.0 Guide](https://github.com/wwwwwwzx/3DSRNGTool/wiki/Gen7-Timeline-Calibration-%28PokeCalcNTR-Only%29)
 - [3DSRNGTool README](https://github.com/wwwwwwzx/3DSRNGTool/blob/master/README.md) - list of final screens before the Pokemon is generated
 
@@ -24,7 +24,7 @@ The seed is shown at the top of the overlay with the label of "Init Seed:". In t
 
 ## Step 2: Calibrating a basic timeline
 
-Follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md) to create a timeline and find a target frame.
+Follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide/) to create a timeline and find a target frame.
 
 ## Step 3: Timeline 2.0
 

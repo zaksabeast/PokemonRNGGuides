@@ -47,7 +47,7 @@ Note: For wild Pokemon, Synchronize has a 50% chance of having the Pokemon you e
 Note: If you are in an area with 0 NPCs, there will not be a "Safe F Only" option. Do not check the "Blink F Only" box. Skip to the 0 NPC section instead. If there are NPCs, make sure to follow the rest of this section.
 ```
 
-1. Follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md) to create a timeline and find a target frame.
+1. Follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide/) to create a timeline and find a target frame.
    - Before making the timeline, open the in game menu with `X` and have the cursor hover over the bag.
 
 ## Step 3: Obtaining the wanted Pokemon

@@ -135,4 +135,4 @@ Alternatively, you might have saved at the wrong time or obtained your save dela
 
 You can redeem your Jirachi by moving your save file to a real cartridge and using a real bonus disc, or by emulating the bonus disc with dolphin.
 
-A guide on connecting VBA to Dolphin can be found [here](https://pokemonrng.com/guides/tools/en/How%20to%20Connect%20Dolphin%20to%20VBA.md).
+A guide on connecting VBA to Dolphin can be found [here](https://pokemonrng.com/guides/tools/en/How%20to%20Connect%20Dolphin%20to%20VBA/).

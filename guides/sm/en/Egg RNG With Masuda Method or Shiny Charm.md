@@ -2,7 +2,7 @@
 
 _RNG for eggs using Masuda Method and/or with the Shiny Charm_
 
-## How is this different than using Masuda Method and/or Shiny Charm?
+## How is this different than not using Masuda Method and/or Shiny Charm?
 
 When using Masuda Method and/or Shiny Charm, the ESVs of every egg are already set in a predetermined order that will not change. The only way to reach the frames you want is to accept and/or reject however many eggs it takes to reach those frames. However, without using Masuda Method and without having the Shiny Charm, the ESVs are not generated until the moment you accept the egg. This means ANY egg frame can be ANY ESV you want it to be.
 

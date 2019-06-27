@@ -2,9 +2,9 @@
 
 _RNG for eggs using Masuda Method and/or with the Shiny Charm_
 
-## How is this different than not using Masuda Method and/or Shiny Charm?
+## How is this different than not using the Masuda Method and/or Shiny Charm?
 
-When using Masuda Method and/or Shiny Charm, the ESVs of every egg are already set in a predetermined order that will not change. The only way to reach the frames you want is to accept and/or reject however many eggs it takes to reach those frames. However, without using Masuda Method and without having the Shiny Charm, the ESVs are not generated until the moment you accept the egg. This means ANY egg frame can be ANY ESV you want it to be.
+When using the Masuda Method and/or Shiny Charm, the ESVs of every egg are already set in a predetermined order that will not change. The only way to reach the frames you want is to accept and/or reject however many eggs it takes to reach those frames. However, without using the Masuda Method and without having the Shiny Charm, the ESVs are not generated until the moment you accept the egg. This means ANY egg frame can be ANY ESV you want it to be.
 
 ```Note: ESV is short for Egg Shiny Value. This is what determines if an egg will hatch shiny or not.
 If an ESV matches a TSV (Trainer Shiny Value) then the egg will hatch shiny.
@@ -26,7 +26,7 @@ If an ESV matches a TSV (Trainer Shiny Value) then the egg will hatch shiny.
    - If you are using PCalc, you can find your TSV by pressing `Start + Up` to bring up the Game View window. Your TSV is listed by where it says YOUR TSV.
    - If you are not using PCalc, there are other ways to find your TSV. Additional Notes at the end has alternative ways of finding your TSV.
 
-2. Initial seed does not matter as that will not be used.
+2. The initial seed does not matter as that will not be used.
 
 3. Check the "Shiny Charm" box if you have the Shiny Charm.
 
@@ -46,7 +46,7 @@ Note: The region of the Pokemon does not affect anything, it is only the languag
 ```
 
 If using a Ditto and genderless Pokemon, the Ditto will be the female.
-Otherwise the Ditto will be the opposite gender of the other parent.
+Otherwise, the Ditto will be the opposite gender of the other parent.
 
 Note about breeding for Rockruff:
 
@@ -57,7 +57,7 @@ Note about breeding for Rockruff:
 
 1. For the "Current Status" section in 3DSRNGTool input the current egg seeds of your game.
 
-   - If you are using PCalc, press `Start + Down` ingame to bring up the egg seed window and input them into 3DSRNGTool.
+   - If you are using PCalc, press `Start + Down` in-game to bring up the egg seed window and input them into 3DSRNGTool.
    - If you are not using PCalc, see the Additional Notes at the end for ways to find your egg seeds if you do not already know them.
 
 2. Do not check the "Main RNG Egg (PID)" box.
@@ -66,7 +66,7 @@ Note about breeding for Rockruff:
 
 4. Check the "Shiny Only" box if you are wanting a shiny egg.
 
-5. Input "0" as starting frame.
+5. Input "0" as the starting frame.
 
 6. Click "Calculate".
 
@@ -84,11 +84,11 @@ You can choose any of the given frames, but lower frames are generally better du
 
 4. The very last egg you accept will be your target egg.
 
-- If you are using PCalc you can check which egg frame you are on by looking at your egg seeds ingame (`Start + Down` to bring up menu).
+- If you are using PCalc you can check which egg frame you are on by looking at your egg seeds in-game (`Start + Down` to bring up the menu).
 
 - If you are wanting a specific shiny egg the frames will more than likely be very high and require accepting/rejecting a lot of eggs.
   - This is due to the ESVs of the eggs being predetermined.
-  - The only way to change this is to not have the Shiny Charm and to not use Masuda Method.
+  - The only way to change this is to not have the Shiny Charm and to not use the Masuda Method.
 
 ## Additional Notes
 
@@ -100,7 +100,7 @@ You can choose any of the given frames, but lower frames are generally better du
 - You can also check if you have the Shiny Charm and/or are using Masuda Method with PCalc.
 
   - Press `Start + Down` to bring up the Egg Info window.
-  - All info for the parents are located there along with whether or not you have the Shiny Charm.
+  - All info for the parents is located there along with whether or not you have the Shiny Charm.
 
 - If you are not using PCalc there are other ways to find your TSV.
 

@@ -2,9 +2,9 @@
 
 _RNG for eggs without using Masuda Method and without the Shiny Charm_
 
-## How is this different than using Masuda Method and/or Shiny Charm?
+## How is this different than using the Masuda Method and/or Shiny Charm?
 
-When using Masuda Method and/or Shiny Charm, the ESVs of every egg are already set in a predetermined order that will not change. The only way to reach the frames you want is to accept and/or reject however many eggs it takes to reach those frames. However, without using Masuda Method and without having the Shiny Charm, the ESVs are not generated until the moment you accept the egg. This means ANY egg frame can be ANY ESV you want it to be.
+When using the Masuda Method and/or Shiny Charm, the ESVs of every egg are already set in a predetermined order that will not change. The only way to reach the frames you want is to accept and/or reject however many eggs it takes to reach those frames. However, without using the Masuda Method and without having the Shiny Charm, the ESVs are not generated until the moment you accept the egg. This means ANY egg frame can be ANY ESV you want it to be.
 
 ```Note: ESV is short for Egg Shiny Value. This is what determines if an egg will hatch shiny or not.
 If an ESV matches a TSV (Trainer Shiny Value) then the egg will hatch shiny.
@@ -38,14 +38,14 @@ Do not input the TSV in the upper right. YOUR TSV must be used in the upper righ
 
 - Fill it out according to the parents you are using.
   - Make sure the "Masuda Method" box is not checked. If the parents are of different languages you cannot use this method.
-  - Double check that the parents are indeed of the same language. Checking this now will save you from wasting time later.
+  - Double check that the parents are of the same language. Checking this now will save you from wasting time later.
 
 ```
 Note: The region of the Pokemon does not affect anything, it is only the language of the Pokemon that matters for Masuda Method.
 ```
 
 If using a Ditto and genderless Pokemon, the Ditto will be the female.
-Otherwise the Ditto will be the opposite gender of the other parent.
+Otherwise, the Ditto will be the opposite gender of the other parent.
 
 Note about breeding for Rockruff:
 
@@ -56,13 +56,13 @@ Note about breeding for Rockruff:
 
 1. For the "Current Status" section in 3DSRNGTool input the current egg seeds of your game.
 
-   - Using PCalc, press `Start + Down` ingame to bring up the egg seed window and input them into 3DSRNGTool.
+   - Using PCalc, press `Start + Down` in-game to bring up the egg seed window and input them into 3DSRNGTool.
 
 2. Do not check the "Main RNG Egg (PID)" box. We will be doing this later.
 
 3. For "Filters", input the info for the egg you are wanting.
 
-4. Do not check the "Shiny Only" box even if you are wanting a shiny egg. Shininess will be RNG'd separately.
+4. Do not check the "Shiny Only" box even if you are wanting a shiny egg. The ESV of the egg will be RNG'd separately.
 
 5. Input "0" as the starting frame.
 
@@ -85,7 +85,7 @@ You can choose any of the given frames, but lower frames are generally better du
 4. Once you are to your target egg seeds, continue with the rest of the guide.
 
 ```
-With PCalc you can check which egg frame you are on by looking at your egg seeds ingame (Start + Down to bring up menu).
+With PCalc you can check which egg frame you are on by looking at your egg seeds in-game (Start + Down to bring up the menu).
 ```
 
 ## Step 3: RNGing the ESV of the Egg
@@ -94,16 +94,16 @@ With PCalc you can check which egg frame you are on by looking at your egg seeds
 
 2. Stand directly in front of the daycare helper and start the dialogue to accept the egg.
 
-   - Standing off to the side may cause NPCs to flucuate when making a timeline.
+   - Standing off to the side may cause NPCs to fluctuate when making a timeline.
 
-3. When you get to the choice of “Yes” or “No”, press `Start + Up` to bring up the Game View window ingame, and then pause the game (`Start + Select`).
+3. When you get to the choice of “Yes” or “No”, press `Start + Up` to bring up the Game View window in-game, and then pause the game (`Start + Select`).
 
    - If the Game View window is already open, close and open it again when at the "Yes" or "No" selection to reset NPC counter.
 
 4. Follow the steps below to create a timeline to obtain the ESV you want.
 
    - Check the "Main RNG Egg (PID)" box in 3DSRNGTool under "Current Status".
-   - Afterwards reset "Filters" by clicking on the gear icon.
+   - Afterward, reset "Filters" by clicking on the gear icon.
    - Then follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md) to create a timeline.
    - Creating a timeline is necessary to know what frames you can actually land on due to NPC influence on frames.
 
@@ -112,7 +112,7 @@ With PCalc you can check which egg frame you are on by looking at your egg seeds
    - If you are wanting to RNG the egg to have a specific ESV that is not yours, click on "Edit TSV List", input TSV(s), and check the "Other TSVs Shiny" box.
    - Check the "Shiny Only" box.
    - Then "Calculate" to find frames that will give the ESV(s) you want.
-   - Choose any of the blue highlighted frames (lower frames are better because less waiting time).
+   - Choose any of the blue highlighted frames (lower frames are better because of less waiting time).
 
 6. Advance to that frame and when you land on it, Press `A` to accept egg.
 

@@ -4,6 +4,8 @@ _RNG the overworld Pokemon to have 6 IVs_
 
 ## Tools
 
+- A 3DS with CFW (Custom Firmware)
+   - https://3ds.hacks.guide/ has instructions for installing CFW
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - PCalc
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
@@ -11,9 +13,9 @@ _RNG the overworld Pokemon to have 6 IVs_
 
 ### Recomended reading
 
-If you are wanting to RNG a Mystery Gift (or Event) Pokemon instead, follow the [Gen 7 Mystery Gift RNG guide](<https://pokemonrng.com/guides/usum/en/Mystery%20Gift%20(Event)%20RNG.md>) instead.
+If you are wanting to RNG a Mystery Gift (or Event) Pokemon instead, follow the [Gen 7 Mystery Gift RNG guide](https://pokemonrng.com/guides/usum/en/Mystery%20Gift%20(Event)%20RNG/) instead.
 
-If you are wanting to RNG a Pokemon in a Wormhole, follow the [USUM Wormhole RNG guide](https://pokemonrng.com/guides/usum/en/Stationary%20Wormhole%20RNG.md) instead.
+If you are wanting to RNG a Pokemon in a Wormhole, follow the [USUM Wormhole RNG guide](https://pokemonrng.com/guides/usum/en/Stationary%20Wormhole%20RNG/) instead.
 
 ## Final Screens
 
@@ -45,7 +47,7 @@ The gift Eevee egg and the move Pikachu gift are exceptions. Synchronize has no 
 
 ## Step 2 (with NPCs): Create a Timeline
 
-Follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md) to create a timeline and find a target frame.
+Follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide/) to create a timeline and find a target frame.
 
 ## Step 3: Obtaining the wanted Pokemon
 

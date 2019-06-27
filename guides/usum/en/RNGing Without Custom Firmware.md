@@ -5,7 +5,6 @@ _Get your perfect Pokemon without custom firmware_
 ## Tools
 
 - Calculator: [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-  - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - Timer: Any two-stage timer
   - [EonTimer 1.6](https://www.dropbox.com/s/tqf13ht2f4bxt66/EonTimer-1_6.zip?dl=0#download)
   - [Emtimer](https://emtimer.mizdra.net/SimpleTimer)
@@ -73,7 +72,7 @@ In summary, the total time span in seconds = (Pre-Timer + Lag) / 1000 + (Target 
 
 ## Step 5: Find initial seed via continue screen clock needles
 
-1. Check [here](<https://pokemonrng.com/guides/tools/en/Finding%20Initial%20Seed%20with%20Clocks%20(no%20Custom%20Firmware%20RNG).md>)
+1. Check [here](https://pokemonrng.com/guides/usum/en/Finding%20Initial%20Seed%20with%20Clocks%20(no%20Custom%20Firmware%20RNG)/)
 2. Once you get only one seed result, the tool will update it to main window. The starting frame in Time Calculator is updated as well. (417/477 + the number of frames you saw for clocks)
 3. Be sure to double check your seed, most of failures are from the wrong seed ;)
 4. Do not enter your save yet.

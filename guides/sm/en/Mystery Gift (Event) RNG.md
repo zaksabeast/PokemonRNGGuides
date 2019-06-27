@@ -4,8 +4,9 @@ _RNG your events to have 6 IVs_
 
 ## Tools
 
+- A 3DS with CFW (Custom Firmware)
+   - https://3ds.hacks.guide/ has instructions for installing CFW
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-  - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - PCalc
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
   - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
@@ -38,7 +39,7 @@ You should see the text: "You received xxx!"
 
 ## Step 3: RNGing the Pokemon
 
-1. Create a timeline following this guide: [Gen 7 Timeline Guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md)
+1. Create a timeline following this guide: [Gen 7 Timeline Guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide/)
 
 2. Advance to your target frame and when you land on it, press A to unpause the game and obtain the Pokemon.
 

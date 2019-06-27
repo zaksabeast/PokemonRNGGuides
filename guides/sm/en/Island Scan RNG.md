@@ -4,14 +4,15 @@ _Easy shinies in apricorn balls_
 
 ## Tools
 
+- A 3DS with CFW (Custom Firmware)
+   - https://3ds.hacks.guide/ has instructions for installing CFW
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - PCalc
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
   - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
-- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-  - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 - The `honey` item
 - Have started an Island Scan and know the Pokemon you've scanned for
-  - [List of Island Scan islands and days for USUM](https://pokemonrng.com/guides/tools/en/Island%20Scan%20Pokemon%20-%20USUM.md)
+  - [List of Island Scan islands and days for SM](https://pokemonrng.com/guides/tools/en/Island%20Scan%20Pokemon%20-%20SM/)
 
 ```
 Note: You can get the "honey" item in any store after clearing three trials.
@@ -48,7 +49,7 @@ Note: You can find your TSV in PCalc in the Game Info window. Press "Start + Up"
 
 ### On the right of 3DSRNGTool
 
-1. Follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide.md) using the `NPC Count` PCalc shows for the number of NPCs. Wait at least 30 seconds after bringing up the window to allow for the NPC counter to calibrate correctly.
+1. Follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide/) using the `NPC Count` PCalc shows for the number of NPCs. Wait at least 30 seconds after bringing up the window to allow for the NPC counter to calibrate correctly.
 2. You should now have a target frame you wish to hit.
 
 ### In the middle of 3DSRNGTool

@@ -9,7 +9,6 @@ Note: This guide is for those who do not have access to CFW or homebrew. If you 
 ## Tools
 
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-  - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts).
 
 There are two ways of finding the egg seeds. If you have never collected or rejected an egg at the nursery then you can do the 8 Magikarp method. The Eevee gift egg does not count. Otherwise, the only other way is the 127 Magikarp method.
 
@@ -67,7 +66,7 @@ The gift Eevee egg from the nursery does not count!
    - If the nature does not match, then your egg seeds were not correct. You will have to redo the 127 eggs again to get correct egg seeds.
    - You can right click on the frame that matched and choose "Set as Current Status" to update the "Current Status" with your egg seeds.
 
-8. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/usum/en/Egg%20RNG%20With%20Masuda%20Method%20or%20Shiny%20Charm.md).
+8. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/usum/en/Egg%20RNG%20With%20Masuda%20Method%20or%20Shiny%20Charm/).
 
 ## Step 1: Setup for 8 Egg Method
 
@@ -103,4 +102,4 @@ The gift Eevee egg does not count!
 
    - If they do not match then you will have to redo the 8 eggs again. Double check that the correct natures are entered in the order you accepted the eggs.
 
-5. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/usum/en/Egg%20RNG%20With%20Masuda%20Method%20or%20Shiny%20Charm.md).
+5. Soft reset and you can then egg RNG following the [Masuda Method/Shiny Charm Egg RNG Guide](https://pokemonrng.com/guides/usum/en/Egg%20RNG%20With%20Masuda%20Method%20or%20Shiny%20Charm/).

@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+}
+
+pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+a {
+  color: #004ba0;
+}

@@ -20,9 +20,6 @@ const useStyles = makeStyles(theme => ({
   },
   body: {
     padding: "0 5% 5% 5%",
-    "& p > img": {
-      maxWidth: 800,
-    },
   },
   paper: {
     marginLeft: "10%",

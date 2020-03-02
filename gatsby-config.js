@@ -14,6 +14,12 @@ module.exports = {
         path: `${__dirname}/src/`,
       },
     },
+    {
+      resolve: "gatsby-plugin-html-attributes",
+      options: {
+        lang: "en",
+      },
+    },
     "gatsby-transformer-remark",
     "gatsby-theme-material-ui",
   ],

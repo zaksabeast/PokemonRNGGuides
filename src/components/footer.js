@@ -42,6 +42,7 @@ export const Footer = () => {
         <div className={classes.buttons}>
           <IconButton
             color="inherit"
+            aria-label="Contribute to Github"
             className={classes.iconButton}
             onClick={() => redirectUser(GITHUB_URL)}
           >
@@ -49,6 +50,7 @@ export const Footer = () => {
           </IconButton>
           <IconButton
             color="inherit"
+            aria-label="Join the Discord"
             className={classes.iconButton}
             onClick={() => redirectUser(DISCORD_URL)}
           >

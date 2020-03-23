@@ -60,7 +60,7 @@ export const Footer = () => {
       </div>
       <div className={classes.bottom}>
         <Typography align="center" variant="body2">
-          2020 @ PokemonRNG.com
+          © 2020 PokemonRNG.com
         </Typography>
       </div>
     </div>

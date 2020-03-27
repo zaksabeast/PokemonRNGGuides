@@ -18,4 +18,13 @@ img {
 
 ul {
   list-style-type: disc;
+  margin: 0.3rem 0 0 0;
+}
+
+li > p {
+  margin: 0;
+}
+
+li {
+  margin: 0 0 0.3rem 0;
 }

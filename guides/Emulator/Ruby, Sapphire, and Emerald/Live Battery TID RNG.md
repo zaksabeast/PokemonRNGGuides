@@ -1,7 +1,7 @@
 ---
 title: "Live battery TID Abuse"
 description: "The harder way to get that special TID/SID combo with more options"
-slug: "retail-rse-live-battery-tid"
+slug: "emulator-rse-live-battery-tid"
 ---
 
 ```

@@ -6,7 +6,7 @@ slug: "emulator-rse-stationary"
 
 ## Tools
 
-- [VBA-RR](https://github.com/TASVideos/vba-rerecording/releases)
+- [VBA-RR](https://code.google.com/archive/p/vba-rerecording/downloads)
 - [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
 - [The Ruby/Sapphire Lua Scripts for your language](http://pokerng.forumcommunity.net/?t=56443955)
   - Password for the lua script archive is `allyouneedisnoob`.

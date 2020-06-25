@@ -10,7 +10,7 @@ Note: This guide will help you obtain cool TIDs for your RNG purposes. If you do
 
 ## Tools
 
-- [VBA-RR](https://github.com/TASVideos/vba-rerecording/releases)
+- [VBA-RR](https://code.google.com/archive/p/vba-rerecording/downloads)
 - Lua .dll files
   - [x86 lua.dll](https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
   - [x64 lua.dll](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)

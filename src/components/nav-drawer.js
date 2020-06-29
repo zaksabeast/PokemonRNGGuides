@@ -8,7 +8,7 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import List from "@material-ui/core/List"
 import { Link } from "gatsby"
-import { useMenuLinks } from "../utils/use-menu-links"
+import { GITHUB_URL, DISCORD_URL } from "../constants"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,36 +21,16 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
   },
-  link: {
-    textDecoration: "none",
-    color: "inherit",
-  },
 }))
-
-const DrawerItem = ({ to, children }) => {
-  const classes = useStyles()
-  return (
-    <Link to={to} className={classes.link}>
-      <ListItem button>
-        <ListItemText>{children}</ListItemText>
-      </ListItem>
-    </Link>
-  )
-}
 
 export const NavDrawer = ({ isOpen, onClose }) => {
   const classes = useStyles()
-  const navigationItems = useMenuLinks().map(({ pageName, slug }) => (
-    <DrawerItem to={slug} key={pageName}>
-      {pageName}
-    </DrawerItem>
-  ))
 
   return (
     <Drawer
       className={classes.root}
       variant="temporary"
-      anchor="right"
+      anchor="left"
       open={isOpen}
       onClose={onClose}
       classes={{ paper: classes.root }}
@@ -61,7 +41,20 @@ export const NavDrawer = ({ isOpen, onClose }) => {
         </IconButton>
       </div>
       <Divider />
-      <List>{navigationItems}</List>
+      <List>
+        <ListItem component="a" href={GITHUB_URL} button>
+          <ListItemText>Contribute</ListItemText>
+        </ListItem>
+        <ListItem component="a" href={DISCORD_URL} button>
+          <ListItemText>Discord</ListItemText>
+        </ListItem>
+        <ListItem component={Link} to="guides" button>
+          <ListItemText>Guides</ListItemText>
+        </ListItem>
+        <ListItem component={Link} to="/" button>
+          <ListItemText>Home</ListItemText>
+        </ListItem>
+      </List>
     </Drawer>
   )
 }

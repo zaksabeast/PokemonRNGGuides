@@ -12,12 +12,12 @@ const useStyles = makeStyles(theme => ({
   appBar: {
     zIndex: theme.zIndex.modal + 1,
   },
+  toolbar: {
+    paddingLeft: "0.75rem",
+    paddingRight: "0.5rem",
+  },
   menuButton: {
-    display: "none",
-    marginLeft: "auto",
-    [theme.breakpoints.down("sm")]: {
-      display: "block",
-    },
+    marginRight: "0.75rem",
   },
 }))
 
@@ -36,25 +36,22 @@ function ElevationScroll(props) {
 export const AppBar = ({ toggleDrawer, ...props }) => {
   const classes = useStyles()
   return (
-    <div>
-      <ElevationScroll {...props}>
-        <MUIAppBar color="primary" className={classes.appBar}>
-          <Toolbar>
-            <Typography variant="h6" color="inherit">
-              PokemonRNG.com
-            </Typography>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={toggleDrawer}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu />
-          </Toolbar>
-        </MUIAppBar>
-      </ElevationScroll>
-    </div>
+    <ElevationScroll {...props}>
+      <MUIAppBar color="primary" className={classes.appBar}>
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="Open drawer"
+            onClick={toggleDrawer}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" color="inherit">
+            PokemonRNG.com
+          </Typography>
+        </Toolbar>
+      </MUIAppBar>
+    </ElevationScroll>
   )
 }

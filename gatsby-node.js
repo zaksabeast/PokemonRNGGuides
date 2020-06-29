@@ -1,3 +1,4 @@
+const kebabCase = require("lodash/kebabCase")
 const path = require("path")
 const { createFilePath } = require("gatsby-source-filesystem")
 
@@ -21,6 +22,9 @@ exports.createPages = async ({ graphql, actions }) => {
       allMarkdownRemark {
         edges {
           node {
+            fields {
+              pagePath
+            }
             frontmatter {
               slug
             }
@@ -30,6 +34,20 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   `)
 
+  // Category pages
+  result.data.allMarkdownRemark.edges.forEach(({ node }) => {
+    const category = node.fields.pagePath.split("/")[1] || ""
+
+    if (category.length > 0) {
+      createPage({
+        path: kebabCase(category),
+        component: path.resolve("./src/templates/category.js"),
+        context: { categoryRegex: `/${category}/`, category },
+      })
+    }
+  })
+
+  // Guide pages
   result.data.allMarkdownRemark.edges.forEach(({ node }) => {
     createPage({
       path: node.frontmatter.slug,

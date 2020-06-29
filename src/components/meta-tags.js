@@ -7,15 +7,10 @@ export const MetaTags = ({ title, description }) => {
     <Helmet>
       <title>{title}</title>
       <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta name="description" content={description} />
+      {description && <meta property="og:description" content={description} />}
+      {description && <meta name="description" content={description} />}
       <meta property="og:image" content={JIRACHI_PNG} />
-      <link
-        rel="icon"
-        type="image/png"
-        href={JIRACHI_PNG}
-        class="jsx-2872336278 next-head"
-      ></link>
+      <link rel="icon" type="image/png" href={JIRACHI_PNG}></link>
     </Helmet>
   )
 }

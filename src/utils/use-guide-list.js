@@ -17,16 +17,23 @@ export const useGuideList = () => {
       }
     }
   `
-  return useStaticQuery(getPages).allMarkdownRemark.nodes.map(
-    ({ fields, frontmatter }) => {
+  return useStaticQuery(getPages).allMarkdownRemark.nodes.reduce(
+    (result, { fields, frontmatter }) => {
       const splitPagePath = fields.pagePath.split("/")
-      return {
+      const category = splitPagePath[1] || ""
+      const bundledGuides = result[category] || []
+      const guide = {
         slug: frontmatter.slug,
         title: frontmatter.title,
         description: frontmatter.description,
-        category: splitPagePath[1] || "",
-        subcategory: splitPagePath[2] || "",
+        category,
       }
-    }
+
+      bundledGuides.push(guide)
+      result[category] = bundledGuides
+
+      return result
+    },
+    {}
   )
 }

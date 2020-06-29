@@ -6,7 +6,6 @@ import Typography from "@material-ui/core/Typography"
 import MenuIcon from "@material-ui/icons/Menu"
 import IconButton from "@material-ui/core/IconButton"
 import useScrollTrigger from "@material-ui/core/useScrollTrigger"
-import { Menu } from "./menu"
 
 const useStyles = makeStyles(theme => ({
   appBar: {

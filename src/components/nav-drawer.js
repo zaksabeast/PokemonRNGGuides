@@ -1,4 +1,5 @@
 import React from "react"
+import kebabCase from "lodash/kebabCase"
 import { makeStyles } from "@material-ui/core/styles"
 import Drawer from "@material-ui/core/Drawer"
 import Divider from "@material-ui/core/Divider"
@@ -9,6 +10,7 @@ import ListItemText from "@material-ui/core/ListItemText"
 import List from "@material-ui/core/List"
 import { Link } from "gatsby"
 import { GITHUB_URL, DISCORD_URL } from "../constants"
+import { useGuideList } from "../utils/use-guide-list"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,10 +23,25 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
   },
+  divider: {
+    marginTop: "0.5rem",
+    marginBottom: "0.5rem",
+  },
 }))
 
 export const NavDrawer = ({ isOpen, onClose }) => {
   const classes = useStyles()
+  const guides = useGuideList()
+  const guideCategories = Object.keys(guides)
+    .sort()
+    .map(category => {
+      const toUrl = `/${kebabCase(category)}`
+      return (
+        <ListItem component={Link} to={toUrl} key={category} button>
+          <ListItemText>{category}</ListItemText>
+        </ListItem>
+      )
+    })
 
   return (
     <Drawer
@@ -40,20 +57,18 @@ export const NavDrawer = ({ isOpen, onClose }) => {
           <ChevronLeftIcon />
         </IconButton>
       </div>
-      <Divider />
       <List>
+        <ListItem component={Link} to="/" button>
+          <ListItemText>Home</ListItemText>
+        </ListItem>
         <ListItem component="a" href={GITHUB_URL} button>
           <ListItemText>Contribute</ListItemText>
         </ListItem>
         <ListItem component="a" href={DISCORD_URL} button>
           <ListItemText>Discord</ListItemText>
         </ListItem>
-        <ListItem component={Link} to="guides" button>
-          <ListItemText>Guides</ListItemText>
-        </ListItem>
-        <ListItem component={Link} to="/" button>
-          <ListItemText>Home</ListItemText>
-        </ListItem>
+        <Divider className={classes.divider} />
+        {guideCategories}
       </List>
     </Drawer>
   )

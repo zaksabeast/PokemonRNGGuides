@@ -1,5 +1,5 @@
 ---
-title: "Welcome to RNG"
+title: "Welcome to Pokemon RNG"
 slug: "/"
 ---
 

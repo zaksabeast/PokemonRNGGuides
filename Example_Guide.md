@@ -1,6 +1,8 @@
-# Title
-
-_A description of the guide_
+---
+title: 'Your guide title'
+description: 'Your guide description'
+slug: 'hyphenated-guide-title'
+---
 
 ## Tools
 

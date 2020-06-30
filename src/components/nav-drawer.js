@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export const NavDrawer = ({ isOpen, onClose }) => {
+export const NavDrawer = ({ isOpen, onClose, isLargerScreen }) => {
   const classes = useStyles()
   const guides = useGuideList()
   const guideCategories = Object.keys(guides)
@@ -46,7 +46,7 @@ export const NavDrawer = ({ isOpen, onClose }) => {
   return (
     <Drawer
       className={classes.root}
-      variant="temporary"
+      variant={isLargerScreen ? "persistent" : "temporary"}
       anchor="left"
       open={isOpen}
       onClose={onClose}

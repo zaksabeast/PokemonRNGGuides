@@ -27,11 +27,16 @@ const CategoryTemplate = ({ data, pageContext }) => {
   const { category } = pageContext
   const guideList = guides.map((guide, index) => {
     const { title, slug, description } = guide.frontmatter
+    const toUrl = `/${slug}`
     return (
       <React.Fragment key={title}>
         {index > 0 && <Divider className={classes.divider} />}
         <div className={classes.guideInfo}>
-          <IconButton component={Link} className={classes.viewButton} to={slug}>
+          <IconButton
+            component={Link}
+            className={classes.viewButton}
+            to={toUrl}
+          >
             <VisibilityIcon />
           </IconButton>
           <div>

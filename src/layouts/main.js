@@ -1,5 +1,4 @@
 import React from "react"
-import Grid from "@material-ui/core/Grid"
 import { makeStyles, useTheme } from "@material-ui/core/styles"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { NavDrawer } from "../components/nav-drawer"
@@ -12,9 +11,13 @@ import "../styles/global.css"
 const DRAWER_WIDTH = 240
 
 const useStyles = makeStyles(theme => ({
-  grid: {
+  root: {
     overflowX: "hidden",
     minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "stretch",
   },
   content: {
     flexGrow: 1,
@@ -61,14 +64,7 @@ export const MainLayout = ({ children, title, description }) => {
   return (
     <React.Fragment>
       <MetaTags title={title} description={description} />
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        justify="center"
-        alignItems="stretch"
-        className={classes.grid}
-      >
+      <div className={classes.root}>
         <AppBar toggleDrawer={() => setIsNavDrawerOpen(!isNavDrawerOpen)} />
         <NavDrawer
           isOpen={isNavDrawerOpen}
@@ -85,7 +81,7 @@ export const MainLayout = ({ children, title, description }) => {
           {children}
         </div>
         <Footer />
-      </Grid>
+      </div>
     </React.Fragment>
   )
 }

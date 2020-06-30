@@ -1,7 +1,7 @@
 ---
-title: "Egg RNG Guide Without Masuda or Shiny Charm"
-description: "RNG your perfect Pokemon at the daycare"
-slug: "retail-oras-egg-no-mmsc"
+title: 'Egg RNG Guide Without Masuda or Shiny Charm'
+description: 'RNG your perfect Pokemon at the daycare'
+slug: 'retail-oras-egg-no-mmsc'
 ---
 
 ```

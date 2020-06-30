@@ -1,4 +1,4 @@
-import { graphql, useStaticQuery } from "gatsby"
+import { graphql, useStaticQuery } from 'gatsby';
 
 export const useGuideList = () => {
   const getPages = graphql`
@@ -16,24 +16,24 @@ export const useGuideList = () => {
         }
       }
     }
-  `
+  `;
   return useStaticQuery(getPages).allMarkdownRemark.nodes.reduce(
     (result, { fields, frontmatter }) => {
-      const splitPagePath = fields.pagePath.split("/")
-      const category = splitPagePath[1] || ""
-      const bundledGuides = result[category] || []
+      const splitPagePath = fields.pagePath.split('/');
+      const category = splitPagePath[1] || '';
+      const bundledGuides = result[category] || [];
       const guide = {
         slug: frontmatter.slug,
         title: frontmatter.title,
         description: frontmatter.description,
         category,
-      }
+      };
 
-      bundledGuides.push(guide)
-      result[category] = bundledGuides
+      bundledGuides.push(guide);
+      result[category] = bundledGuides;
 
-      return result
+      return result;
     },
-    {}
-  )
-}
+    {},
+  );
+};

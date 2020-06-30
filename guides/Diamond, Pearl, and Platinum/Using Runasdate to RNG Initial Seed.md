@@ -1,7 +1,7 @@
 ---
-title: "Initial Seed RNG (RunAsDate edition)"
-description: "How to control Gen 4 initial seeds without any difficulty"
-slug: "emulator-dppt-runasdate-initial-seed"
+title: 'Initial Seed RNG (RunAsDate edition)'
+description: 'How to control Gen 4 initial seeds without any difficulty'
+slug: 'emulator-dppt-runasdate-initial-seed'
 ---
 
 ```

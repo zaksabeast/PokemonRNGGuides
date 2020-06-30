@@ -1,7 +1,7 @@
 ---
-title: "Dream Radar RNG in Generation 5"
-description: "RNG Level 5 Dream Ball HA Legends"
-slug: "emulator-b2w2-dream-radar"
+title: 'Dream Radar RNG in Generation 5'
+description: 'RNG Level 5 Dream Ball HA Legends'
+slug: 'emulator-b2w2-dream-radar'
 ---
 
 ## Tools

@@ -1,7 +1,7 @@
 ---
-title: "Timeline Leap"
+title: 'Timeline Leap'
 description: "A timeline can predict Pokemon a player can obtain - Timeline leap allows a player to 'leap' onto specific timelines"
-slug: "retail-sm-timeleap"
+slug: 'retail-sm-timeleap'
 ---
 
 ## Tools

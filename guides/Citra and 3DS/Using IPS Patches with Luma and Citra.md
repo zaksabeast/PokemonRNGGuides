@@ -1,7 +1,7 @@
 ---
-title: "Using IPS Patches with Luma and Citra"
-description: "Use game patches for instant text, no outlines, and extra fun"
-slug: "misc-3ds-ips-luma-citra"
+title: 'Using IPS Patches with Luma and Citra'
+description: 'Use game patches for instant text, no outlines, and extra fun'
+slug: 'misc-3ds-ips-luma-citra'
 ---
 
 ## Using IPS files with Luma

@@ -1,7 +1,7 @@
 ---
-title: "Wormhole Stationary RNG"
-description: "Get your own perfect Legendary Pokemon!"
-slug: "retail-usum-wormhole"
+title: 'Wormhole Stationary RNG'
+description: 'Get your own perfect Legendary Pokemon!'
+slug: 'retail-usum-wormhole'
 ---
 
 ## Tools

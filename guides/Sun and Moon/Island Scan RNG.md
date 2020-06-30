@@ -1,7 +1,7 @@
 ---
-title: "Island Scan"
-description: "Easy shinies in apricorn balls"
-slug: "retail-sm-island-scan"
+title: 'Island Scan'
+description: 'Easy shinies in apricorn balls'
+slug: 'retail-sm-island-scan'
 ---
 
 ## Tools

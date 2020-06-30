@@ -1,6 +1,6 @@
 ---
-title: "Welcome to Pokemon RNG"
-slug: "/"
+title: 'Welcome to Pokemon RNG'
+slug: '/'
 ---
 
 In Pokemon, there are lots of random events that occur:

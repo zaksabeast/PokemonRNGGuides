@@ -1,22 +1,22 @@
-const kebabCase = require("lodash/kebabCase")
-const path = require("path")
-const { createFilePath } = require("gatsby-source-filesystem")
+const kebabCase = require('lodash/kebabCase');
+const path = require('path');
+const { createFilePath } = require('gatsby-source-filesystem');
 
 exports.onCreateNode = ({ node, getNode, actions }) => {
-  const { createNodeField } = actions
-  if (node.internal.type === "MarkdownRemark") {
-    const pagePath = createFilePath({ node, getNode, basePath: "pages" })
+  const { createNodeField } = actions;
+  if (node.internal.type === 'MarkdownRemark') {
+    const pagePath = createFilePath({ node, getNode, basePath: 'pages' });
 
     createNodeField({
       node,
-      name: "pagePath",
+      name: 'pagePath',
       value: pagePath,
-    })
+    });
   }
-}
+};
 
 exports.createPages = async ({ graphql, actions }) => {
-  const { createPage } = actions
+  const { createPage } = actions;
   const result = await graphql(`
     query {
       allMarkdownRemark {
@@ -32,20 +32,20 @@ exports.createPages = async ({ graphql, actions }) => {
         }
       }
     }
-  `)
+  `);
 
   // Category pages
   result.data.allMarkdownRemark.edges.forEach(({ node }) => {
-    const category = node.fields.pagePath.split("/")[1] || ""
+    const category = node.fields.pagePath.split('/')[1] || '';
 
     if (category.length > 0) {
       createPage({
         path: kebabCase(category),
-        component: path.resolve("./src/templates/category.js"),
+        component: path.resolve('./src/templates/category.js'),
         context: { categoryRegex: `/${category}/`, category },
-      })
+      });
     }
-  })
+  });
 
   // Guide pages
   result.data.allMarkdownRemark.edges.forEach(({ node }) => {
@@ -57,6 +57,6 @@ exports.createPages = async ({ graphql, actions }) => {
         // in page queries as GraphQL variables.
         slug: node.frontmatter.slug,
       },
-    })
-  })
-}
+    });
+  });
+};

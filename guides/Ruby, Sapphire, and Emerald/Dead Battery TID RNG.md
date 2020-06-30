@@ -1,7 +1,7 @@
 ---
-title: "Dead Battery TID RNG"
-description: "Get that special TID/SID combo"
-slug: "emulator-rse-dead-battery-tid"
+title: 'Dead Battery TID RNG'
+description: 'Get that special TID/SID combo'
+slug: 'emulator-rse-dead-battery-tid'
 ---
 
 ## Tools

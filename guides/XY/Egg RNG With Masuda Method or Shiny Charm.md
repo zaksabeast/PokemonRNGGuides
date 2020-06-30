@@ -1,7 +1,7 @@
 ---
-title: "Egg RNG Guide with Masuda Method or Shiny Charm"
-description: "RNG your perfect Pokemon at the daycare"
-slug: "retail-xy-egg-mmsc"
+title: 'Egg RNG Guide with Masuda Method or Shiny Charm'
+description: 'RNG your perfect Pokemon at the daycare'
+slug: 'retail-xy-egg-mmsc'
 ---
 
 ```

@@ -1,7 +1,7 @@
 ---
-title: "Initial Seed RNG (RunAsDate edition)"
-description: "How to control Gen 5 initial seeds without any difficulty"
-slug: "emulator-b2w2-runasdate-inital-seed"
+title: 'Initial Seed RNG (RunAsDate edition)'
+description: 'How to control Gen 5 initial seeds without any difficulty'
+slug: 'emulator-b2w2-runasdate-inital-seed'
 ---
 
 ```

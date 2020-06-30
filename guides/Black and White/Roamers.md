@@ -1,7 +1,7 @@
 ---
-title: "Gen 5 Roamers"
-description: "RNG Gen 5 Roamers with an Emulator"
-slug: "emulator-bw-roamers"
+title: 'Gen 5 Roamers'
+description: 'RNG Gen 5 Roamers with an Emulator'
+slug: 'emulator-bw-roamers'
 ---
 
 ## Tools

@@ -1,7 +1,7 @@
 ---
-title: "Wild RNG"
-description: "For those times when egg RNG is too boring for you"
-slug: "retail-sm-wild"
+title: 'Wild RNG'
+description: 'For those times when egg RNG is too boring for you'
+slug: 'retail-sm-wild'
 ---
 
 ## Tools

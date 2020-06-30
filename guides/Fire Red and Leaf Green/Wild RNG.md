@@ -1,7 +1,7 @@
 ---
-title: "FRLG Wild RNG"
-description: "The most basic RNG in Gen 3"
-slug: "emulator-frlg-wild"
+title: 'FRLG Wild RNG'
+description: 'The most basic RNG in Gen 3'
+slug: 'emulator-frlg-wild'
 ---
 
 ## Tools

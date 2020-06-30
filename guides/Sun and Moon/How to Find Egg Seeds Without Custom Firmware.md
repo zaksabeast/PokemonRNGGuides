@@ -1,7 +1,7 @@
 ---
-title: "Finding Egg Seeds Without CFW/Homebrew"
-description: "Find your egg seeds for Egg RNG using the Magikarp Method"
-slug: "retail-sm-egg-seed-no-cfw"
+title: 'Finding Egg Seeds Without CFW/Homebrew'
+description: 'Find your egg seeds for Egg RNG using the Magikarp Method'
+slug: 'retail-sm-egg-seed-no-cfw'
 ---
 
 ```

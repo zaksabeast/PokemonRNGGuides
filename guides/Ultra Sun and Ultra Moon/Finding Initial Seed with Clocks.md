@@ -1,7 +1,7 @@
 ---
-title: "Finding your initial seed in Gen 7 with clocks"
-description: "This guide allows you to find your initial seed without using Custom Firmware"
-slug: "retail-usum-initial-seed-clocks"
+title: 'Finding your initial seed in Gen 7 with clocks'
+description: 'This guide allows you to find your initial seed without using Custom Firmware'
+slug: 'retail-usum-initial-seed-clocks'
 ---
 
 ## Tools

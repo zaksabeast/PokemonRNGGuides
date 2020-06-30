@@ -1,6 +1,6 @@
-import React from "react"
-import { Helmet } from "react-helmet"
-import { JIRACHI_PNG } from "../constants"
+import React from 'react';
+import { Helmet } from 'react-helmet';
+import { JIRACHI_PNG } from '../constants';
 
 export const MetaTags = ({ title, description }) => {
   return (
@@ -12,5 +12,5 @@ export const MetaTags = ({ title, description }) => {
       <meta property="og:image" content={JIRACHI_PNG} />
       <link rel="icon" type="image/png" href={JIRACHI_PNG}></link>
     </Helmet>
-  )
-}
+  );
+};

@@ -1,41 +1,41 @@
-import React from "react"
-import makeStyles from "@material-ui/core/styles/makeStyles"
-import Typography from "@material-ui/core/Typography"
-import IconButton from "@material-ui/core/IconButton"
-import GithubCircleIcon from "mdi-material-ui/GithubCircle"
-import DiscordIcon from "mdi-material-ui/Discord"
-import { DISCORD_URL, GITHUB_URL } from "../constants"
-import { redirectUser } from "../utils/redirect-user"
+import React from 'react';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import GithubCircleIcon from 'mdi-material-ui/GithubCircle';
+import DiscordIcon from 'mdi-material-ui/Discord';
+import { DISCORD_URL, GITHUB_URL } from '../constants';
+import { redirectUser } from '../utils/redirect-user';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%",
+    width: '100%',
   },
   bottom: {
-    height: "53px",
+    height: '53px',
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   content: {
     backgroundColor: theme.palette.primary.light,
     color: theme.palette.primary.contrastText,
-    marginTop: "10px",
-    padding: "10px",
+    marginTop: '10px',
+    padding: '10px',
   },
   iconButton: {
     backgroundColor: theme.palette.primary.main,
-    margin: "5px",
+    margin: '5px',
   },
   buttons: {
-    textAlign: "center",
+    textAlign: 'center',
   },
-}))
+}));
 
 export const Footer = () => {
-  const classes = useStyles()
+  const classes = useStyles();
   return (
     <div className={classes.root}>
       <div className={classes.content}>
@@ -64,5 +64,5 @@ export const Footer = () => {
         </Typography>
       </div>
     </div>
-  )
-}
+  );
+};

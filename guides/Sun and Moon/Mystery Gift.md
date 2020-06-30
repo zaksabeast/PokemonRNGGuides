@@ -1,7 +1,7 @@
 ---
-title: "Mystery Gift (Event) RNG"
-description: "RNG your events to have 6 IVs"
-slug: "retail-sm-myster-gift"
+title: 'Mystery Gift (Event) RNG'
+description: 'RNG your events to have 6 IVs'
+slug: 'retail-sm-myster-gift'
 ---
 
 ## Tools
@@ -36,9 +36,10 @@ You should see the text: "You received xxx!"
 4. Make sure you are on the "Event RNG" tab in 3DSRNGTool.
 
 5. If you have the WonderCard file (a .wc7) for the event you are RNGing, you can import that directly into 3DSRNGTool and have it automatically update the "Event Setting" area for you.
+
    - WonderCard files can be found [here](https://github.com/projectpokemon/EventsGallery).
    - Alternatively you can change the data yourself, but make sure it is correct for the event you are RNGing.
-   
+
 ```
 Note: With some events, the game will trigger a Pokedex registration animation (the same as you would catch a new Pokemon). This influences the RNG itself by changing the delay from 0 frame to 42 Frames. You can check the 'No Dex Entry' in the RNG Info in order to calibrate everything well.
 ```

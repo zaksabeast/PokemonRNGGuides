@@ -1,7 +1,7 @@
 ---
-title: "SOS RNG"
-description: "One of the most challenging Gen 7 RNGs with fun rewards"
-slug: "retail-usum-sos"
+title: 'SOS RNG'
+description: 'One of the most challenging Gen 7 RNGs with fun rewards'
+slug: 'retail-usum-sos'
 ---
 
 ## Tools

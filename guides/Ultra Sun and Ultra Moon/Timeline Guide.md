@@ -1,7 +1,7 @@
 ---
-title: "Timeline Guide"
-description: "The most needed skill to do Gen 7 RNG with custom firmware"
-slug: "retail-usum-timeline"
+title: 'Timeline Guide'
+description: 'The most needed skill to do Gen 7 RNG with custom firmware'
+slug: 'retail-usum-timeline'
 ---
 
 ## Tools

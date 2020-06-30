@@ -1,7 +1,7 @@
 ---
-title: "Trainer ID RNG"
-description: "RNG for that special TID/SID/TSV"
-slug: "retail-oras-tid"
+title: 'Trainer ID RNG'
+description: 'RNG for that special TID/SID/TSV'
+slug: 'retail-oras-tid'
 ---
 
 ```

@@ -1,7 +1,7 @@
 ---
-title: "How to Install PCalc"
-description: "Installing a tool to help RNG your Pokemon"
-slug: "misc-3ds-installing-pcalc"
+title: 'How to Install PCalc'
+description: 'Installing a tool to help RNG your Pokemon'
+slug: 'misc-3ds-installing-pcalc'
 ---
 
 ## Tools

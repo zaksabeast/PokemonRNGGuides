@@ -8,6 +8,7 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "lint": "eslint src",
     "start": "yarn develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
@@ -29,6 +30,10 @@
     "react-helmet": "^5.2.1"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.3.1",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-react": "^7.20.2",
     "prettier": "^1.19.1"
   },
   "repository": {

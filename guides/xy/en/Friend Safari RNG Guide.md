@@ -14,7 +14,7 @@
 
     - **Main RNG Frame**: The main RNG frame ranges that correspond to each TinyMT frame that is listed.
         - Through manipulation of the TinyMT timeline, you can make the TinyMT frames overlap with different main RNG frames.
-    - **Enctr?**: Determines if there will be an encounter or not if the character turns or walks into the grass during those TinyMT seeds.
+    - **Enctr?**: Determines if there will be an encounter or not if the character turns or walks into the grass during those TinyMT seeds. It's the most important factor for this RNG.
         - Encounter of less than 5 is best since this will guarantee an encounter every time.
     - **Sync?**: Determines if nature will be Synchronized or not.
         - `X` = No `O` = Yes
@@ -66,18 +66,18 @@ The key to successfully causing an encounter on your target frame is manipulatin
    - Repeat as needed until the TinyMT frames you want line up with the target frame.
    - To advance the TinyMT frames a smaller amount you can just turn in place once instead of taking steps.
    - To advance frames faster you can walk up and down the left side of the area since steps advance TinyMT frames the fastest.
-   - If you accidentally trigger an encounter, afterwards walk at least 3 steps or else you won't be able to trigger another encounter when you want to.
+   - If you accidentally trigger an encounter, afterwards walk at least 5 steps or else you won't be able to trigger another encounter when you want to. Don't forget to do that even if you did a successful RNG and that you want to do another one right after.
 
 ## Hitting the Target Frame
 
-1. When you are getting close to your target frame, close the menu, and then pause the game with `Start + Select`.
+1. To avoid a random TinyMT index advancement (+2), you must close the menu during your target's index. Once done, pause the game with `Start + Select`.
 
    - Advance frame by frame by pressing `Select` until you are on your target frame.
    - Make sure you are standing in a grass tile while doing this.
 
 2. At the same time, unpause with `A` and turn in any direction with the D-Pad to trigger the encounter.
 
-3. Calibrate a delay if needed, although delay of 6 should work for Friend Safari.
+3. Calibrate a delay if needed, although delay of 6 should work for Friend Safari if you do a turn, and 14 if you do a step.
 
 ## Reseeding Method
 

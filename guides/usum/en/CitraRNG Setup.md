@@ -8,7 +8,7 @@ This guide is for setting up CitraRng on a PC. An updated CFW console is require
 ## Tools
 ---
 
-- Canary version of [Citra](https://github.com/citra-emu/citra-canary/releases)
+- Nightly version of [Citra](https://github.com/citra-emu/citra-nightly/releases)
 - [CitraRNG](https://github.com/Admiral-Fish/CitraRNG)
     - Clone or download the entire repository
 - [Python 3.7](https://www.python.org/downloads/)

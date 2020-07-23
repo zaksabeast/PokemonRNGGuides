@@ -9,7 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
 import { Link } from 'gatsby';
-import { GITHUB_URL, DISCORD_URL } from '../constants';
+import { DISCORD_URL, CONTRIBUTING_URL } from '../constants';
 import { useGuideList } from '../utils/use-guide-list';
 
 const useStyles = makeStyles(theme => ({
@@ -61,7 +61,7 @@ export const NavDrawer = ({ isOpen, onClose, isLargerScreen }) => {
         <ListItem component={Link} to="/" button>
           <ListItemText>Home</ListItemText>
         </ListItem>
-        <ListItem component="a" href={GITHUB_URL} button>
+        <ListItem component={Link} to={CONTRIBUTING_URL} button>
           <ListItemText>Contribute</ListItemText>
         </ListItem>
         <ListItem component="a" href={DISCORD_URL} button>

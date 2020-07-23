@@ -42,7 +42,7 @@ export const Footer = () => {
         <div className={classes.buttons}>
           <IconButton
             color="inherit"
-            aria-label="Contribute to Github"
+            aria-label="Contribute to GitHub"
             className={classes.iconButton}
             onClick={() => redirectUser(GITHUB_URL)}
           >

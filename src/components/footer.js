@@ -5,7 +5,6 @@ import IconButton from '@material-ui/core/IconButton';
 import GithubCircleIcon from 'mdi-material-ui/GithubCircle';
 import DiscordIcon from 'mdi-material-ui/Discord';
 import { DISCORD_URL, GITHUB_URL } from '../constants';
-import { redirectUser } from '../utils/redirect-user';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,7 +43,8 @@ export const Footer = () => {
             color="inherit"
             aria-label="Contribute to GitHub"
             className={classes.iconButton}
-            onClick={() => redirectUser(GITHUB_URL)}
+            component="a"
+            href={GITHUB_URL}
           >
             <GithubCircleIcon fontSize="small" />
           </IconButton>
@@ -52,7 +52,8 @@ export const Footer = () => {
             color="inherit"
             aria-label="Join the Discord"
             className={classes.iconButton}
-            onClick={() => redirectUser(DISCORD_URL)}
+            component="a"
+            href={DISCORD_URL}
           >
             <DiscordIcon fontSize="small" />
           </IconButton>

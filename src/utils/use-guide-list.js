@@ -3,7 +3,12 @@ import { graphql, useStaticQuery } from 'gatsby';
 export const useGuideList = () => {
   const getPages = graphql`
     query {
-      allMarkdownRemark(filter: { frontmatter: { slug: { ne: "/" } } }) {
+      allMarkdownRemark(
+        filter: {
+          fileAbsolutePath: { regex: "/guides/" }
+          frontmatter: { slug: { ne: "/" } }
+        }
+      ) {
         nodes {
           fields {
             pagePath

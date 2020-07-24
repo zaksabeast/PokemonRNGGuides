@@ -10,11 +10,8 @@ import IconButton from '@material-ui/core/IconButton';
 const useStyles = makeStyles({
   guideInfo: {
     display: 'flex',
-    padding: '3rem 2rem',
-  },
-  divider: {
-    marginLeft: '2rem',
-    marginRight: '2rem',
+    paddingTop: '3rem',
+    paddingBottom: '3rem',
   },
   viewButton: {
     marginRight: '2rem',

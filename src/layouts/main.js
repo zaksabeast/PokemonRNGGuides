@@ -22,8 +22,11 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     marginTop: theme.mixins.toolbar.minHeight,
+    marginBottom: '2.5rem',
+    marginLeft: '2rem',
+    marginRight: '2rem',
     [theme.breakpoints.up('md')]: {
-      maxWidth: 800,
+      maxWidth: 720,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -40,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   contentNavDrawerShift: {
     [theme.breakpoints.up('md')]: {
       marginLeft: 'auto',
-      width: `calc(75% - ${DRAWER_WIDTH}px)`,
+      width: `calc(75% - 4rem - ${DRAWER_WIDTH}px)`,
       transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
@@ -48,7 +51,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   title: {
-    padding: '4rem 2.5rem 0.5rem 2.5rem',
+    paddingTop: '4rem',
+    paddingBottom: '0.5rem',
   },
 }));
 

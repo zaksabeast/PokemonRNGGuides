@@ -6,7 +6,6 @@ import { MainLayout } from '../layouts/main';
 
 const useStyles = makeStyles({
   body: {
-    padding: '0 2.5rem 2.5rem 2.5rem',
     '& h2': {
       fontSize: '2rem',
       marginTop: '3rem',

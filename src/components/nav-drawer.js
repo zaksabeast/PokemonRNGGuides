@@ -1,27 +1,22 @@
 import React from 'react';
 import kebabCase from 'lodash/kebabCase';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ListItem from '@material-ui/core/ListItem';
+import MUIListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
 import { Link } from 'gatsby';
 import { DISCORD_URL, CONTRIBUTING_URL } from '../constants';
 import { useGuideList } from '../utils/use-guide-list';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: 250,
   },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
+  toolbarSpace: {
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
   },
   divider: {
     marginTop: '0.5rem',
@@ -29,7 +24,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const NavDrawer = ({ isOpen, onClose, isLargerScreen }) => {
+const ListItem = props => {
+  return (
+    <li>
+      <MUIListItem component={Link} {...props} />
+    </li>
+  );
+};
+
+export const NavDrawer = ({ isOpen, onClose }) => {
+  const theme = useTheme();
+  const isLargerScreen = useMediaQuery(theme.breakpoints.up('md'));
   const classes = useStyles();
   const guides = useGuideList();
   const guideCategories = Object.keys(guides)
@@ -37,7 +42,7 @@ export const NavDrawer = ({ isOpen, onClose, isLargerScreen }) => {
     .map(category => {
       const toUrl = `/${kebabCase(category)}`;
       return (
-        <ListItem component={Link} to={toUrl} key={category} button>
+        <ListItem to={toUrl} key={category} role="link" button>
           <ListItemText>{category}</ListItemText>
         </ListItem>
       );
@@ -52,24 +57,27 @@ export const NavDrawer = ({ isOpen, onClose, isLargerScreen }) => {
       onClose={onClose}
       classes={{ paper: classes.root }}
     >
-      <div className={classes.header}>
-        <IconButton onClick={onClose}>
-          <ChevronLeftIcon />
-        </IconButton>
-      </div>
-      <List>
-        <ListItem component={Link} to="/" button>
-          <ListItemText>Home</ListItemText>
-        </ListItem>
-        <ListItem component={Link} to={CONTRIBUTING_URL} button>
-          <ListItemText>Contribute</ListItemText>
-        </ListItem>
-        <ListItem component="a" href={DISCORD_URL} button>
-          <ListItemText>Discord</ListItemText>
-        </ListItem>
-        <Divider className={classes.divider} />
-        {guideCategories}
-      </List>
+      {/* 
+          This is a hacky workaround, but allows using MUI's theme styles to create a space.
+          This will be good in the event MUI changes the toolbar size
+          or adds new sizes for different screen sizes
+      */}
+      <div className={classes.toolbarSpace} />
+      <nav>
+        <List>
+          <ListItem component={Link} to="/" role="link" button>
+            <ListItemText>Home</ListItemText>
+          </ListItem>
+          <ListItem component={Link} to={CONTRIBUTING_URL} role="link" button>
+            <ListItemText>Contribute</ListItemText>
+          </ListItem>
+          <ListItem component="a" href={DISCORD_URL} button>
+            <ListItemText>Discord</ListItemText>
+          </ListItem>
+          <Divider className={classes.divider} />
+          {guideCategories}
+        </List>
+      </nav>
     </Drawer>
   );
 };

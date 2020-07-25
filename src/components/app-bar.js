@@ -46,7 +46,7 @@ export const AppBar = ({ toggleDrawer, ...props }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" color="inherit">
+          <Typography variant="h6" component="h1" color="inherit">
             PokemonRNG.com
           </Typography>
         </Toolbar>

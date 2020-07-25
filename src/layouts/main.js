@@ -1,6 +1,5 @@
 import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { makeStyles } from '@material-ui/core/styles';
 import { NavDrawer } from '../components/nav-drawer';
 import { AppBar } from '../components/app-bar';
 import { Footer } from '../components/footer';
@@ -57,10 +56,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const MainLayout = ({ children, title, description }) => {
-  const theme = useTheme();
-  const isLargerScreen = useMediaQuery(theme.breakpoints.up('md'));
   const [isNavDrawerOpen, setIsNavDrawerOpen] = React.useState(false);
   const classes = useStyles();
+  const toggleNavDrawer = () => setIsNavDrawerOpen(!isNavDrawerOpen);
+  const closeNavDrawer = () => setIsNavDrawerOpen(false);
   const contentClassNames = isNavDrawerOpen
     ? `${classes.content} ${classes.contentNavDrawerShift}`
     : `${classes.content} ${classes.contentNavDrawerUnshift}`;
@@ -69,13 +68,9 @@ export const MainLayout = ({ children, title, description }) => {
     <React.Fragment>
       <MetaTags title={title} description={description} />
       <div className={classes.root}>
-        <AppBar toggleDrawer={() => setIsNavDrawerOpen(!isNavDrawerOpen)} />
-        <NavDrawer
-          isOpen={isNavDrawerOpen}
-          isLargerScreen={isLargerScreen}
-          onClose={() => setIsNavDrawerOpen(false)}
-        />
-        <div className={contentClassNames}>
+        <AppBar toggleDrawer={toggleNavDrawer} />
+        <NavDrawer isOpen={isNavDrawerOpen} onClose={closeNavDrawer} />
+        <main className={contentClassNames}>
           <div className={classes.title}>
             <Typography variant="h3" component="h1">
               {title}
@@ -83,7 +78,7 @@ export const MainLayout = ({ children, title, description }) => {
             <Typography variant="subtitle1">{description}</Typography>
           </div>
           {children}
-        </div>
+        </main>
         <Footer />
       </div>
     </React.Fragment>

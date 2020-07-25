@@ -22,8 +22,8 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     marginTop: theme.mixins.toolbar.minHeight,
     marginBottom: '2.5rem',
-    marginLeft: '2rem',
-    marginRight: '2rem',
+    marginLeft: '1.5rem',
+    marginRight: '1.5rem',
     [theme.breakpoints.up('md')]: {
       maxWidth: 720,
       marginLeft: 'auto',
@@ -49,9 +49,13 @@ const useStyles = makeStyles(theme => ({
       }),
     },
   },
+  titleContainer: {
+    marginTop: '4rem',
+    marginBottom: '0.5rem',
+  },
   title: {
-    paddingTop: '4rem',
-    paddingBottom: '0.5rem',
+    fontSize: '3rem',
+    marginBottom: '1rem',
   },
 }));
 
@@ -71,11 +75,13 @@ export const MainLayout = ({ children, title, description }) => {
         <AppBar toggleDrawer={toggleNavDrawer} />
         <NavDrawer isOpen={isNavDrawerOpen} onClose={closeNavDrawer} />
         <main className={contentClassNames}>
-          <div className={classes.title}>
-            <Typography variant="h3" component="h1">
+          <div className={classes.titleContainer}>
+            <Typography variant="h1" className={classes.title}>
               {title}
             </Typography>
-            <Typography variant="subtitle1">{description}</Typography>
+            {description && (
+              <Typography variant="subtitle1">{description}</Typography>
+            )}
           </div>
           {children}
         </main>

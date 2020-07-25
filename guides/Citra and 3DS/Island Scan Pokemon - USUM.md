@@ -2,6 +2,7 @@
 title: 'Ultra Sun and Ultra Moon Island Scan Pokemon'
 description: "Check today's Island Scan Pokemon for Ultra Sun and Ultra Moon!"
 slug: 'misc-3ds-island-scan-usum'
+subCategory: 'General'
 ---
 
 ## Monday

@@ -2,6 +2,7 @@
 title: 'Raid RNG'
 description: 'RNG raid Pokemon (Even G-max!) found in Dens!  Use this after getting your den seed.'
 slug: 'retail-swsh-raid'
+subCategory: 'General'
 ---
 
 ## Introduction

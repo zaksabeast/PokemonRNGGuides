@@ -2,6 +2,7 @@
 title: 'How to RNG Shiny WISHMKR Jirachi using wishmaker-calc'
 description: 'Unlimited Shiny Jirachis'
 slug: 'emulator-rse-wishmaker'
+subCategory: 'Emulator'
 ---
 
 ## Tools

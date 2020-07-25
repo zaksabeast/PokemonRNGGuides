@@ -2,6 +2,7 @@
 title: 'FRLG Stationary/Gift RNG'
 description: 'Get shiny 6 IV stationaries from FRLG'
 slug: 'emulator-flrg-stationary-and-gift'
+subCategory: 'Emulator'
 ---
 
 ## Tools

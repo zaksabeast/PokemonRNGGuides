@@ -2,6 +2,7 @@
 title: 'Egg RNG Guide without Masuda and/or Shiny Charm'
 description: 'RNG for eggs without using Masuda Method and without the Shiny Charm'
 slug: 'retail-sm-egg-no-mmsc'
+subCategory: 'Custom Firmware'
 ---
 
 ## How is this different than using the Masuda Method and/or Shiny Charm?

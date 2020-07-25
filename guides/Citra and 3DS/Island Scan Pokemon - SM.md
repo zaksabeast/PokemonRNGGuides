@@ -2,6 +2,7 @@
 title: 'Sun and Moon Island Scan Pokemon'
 description: "Check today's Island Scan Pokemon for Sun and Moon!"
 slug: 'misc-3ds-island-scan-sm'
+subCategory: 'General'
 ---
 
 ## Monday

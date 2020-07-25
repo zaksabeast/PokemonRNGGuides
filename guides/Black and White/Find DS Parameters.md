@@ -2,6 +2,7 @@
 title: 'How To Find DS Parameters in Generation 5'
 description: 'Get your DS Parameters for Generation 5 RNG'
 slug: 'emulator-bw-find-ds-parameters'
+subCategory: 'Emulator'
 ---
 
 ## Tools

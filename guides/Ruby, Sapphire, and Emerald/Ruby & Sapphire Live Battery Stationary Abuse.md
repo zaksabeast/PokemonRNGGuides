@@ -2,6 +2,7 @@
 title: 'Live Battery Stationary Abuse (Ruby/Sapphire)'
 description: 'Enjoy shiny 6 IV legends from Gen 3'
 slug: 'emulator-rse-stationary'
+subCategory: 'Emulator'
 ---
 
 ## Tools

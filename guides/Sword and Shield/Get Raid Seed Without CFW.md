@@ -2,6 +2,7 @@
 title: 'Get raid seed without custom firmware'
 description: 'Use this if you do not have a switch with custom firmware'
 slug: 'retail-swsh-get-seed-without-cfw'
+subCategory: 'Retail'
 ---
 
 ## Tools

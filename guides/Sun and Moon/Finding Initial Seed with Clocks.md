@@ -2,6 +2,7 @@
 title: 'Finding your initial seed in Gen 7 with clocks'
 description: 'This guide allows you to find your initial seed without using Custom Firmware'
 slug: 'retail-sm-initial-seed-clocks'
+subCategory: 'Retail'
 ---
 
 ## Tools

@@ -2,6 +2,7 @@
 title: 'Egg RNG Guide with Masuda and/or Shiny Charm'
 description: 'RNG for eggs using Masuda Method and/or with the Shiny Charm'
 slug: 'retail-usum-egg-mmsc'
+subCategory: 'General'
 ---
 
 ## How is this different than not using the Masuda Method and/or Shiny Charm?

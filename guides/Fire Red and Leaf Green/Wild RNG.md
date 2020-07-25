@@ -2,6 +2,7 @@
 title: 'FRLG Wild RNG'
 description: 'The most basic RNG in Gen 3'
 slug: 'emulator-frlg-wild'
+subCategory: 'Emulator'
 ---
 
 ## Tools

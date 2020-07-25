@@ -2,6 +2,7 @@
 title: 'RNGing without Custom Firmware'
 description: 'Get your perfect Pokemon without custom firmware'
 slug: 'retail-usum-no-cfw'
+subCategory: 'Retail'
 ---
 
 ## Tools

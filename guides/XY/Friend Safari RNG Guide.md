@@ -2,6 +2,7 @@
 title: 'Friend Safari RNG'
 description: 'Get shiny 6IV friend safari Pokemon, like Ditto!'
 slug: 'pcalc-xy-friend-safari'
+subCategory: 'Custom Firmware'
 ---
 
 ## Tools

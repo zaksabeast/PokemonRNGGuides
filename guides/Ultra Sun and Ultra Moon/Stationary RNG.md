@@ -2,6 +2,7 @@
 title: 'Stationary RNG'
 description: 'RNG the overworld Pokemon to have 6 IVs'
 slug: 'retail-usum-stationary'
+subCategory: 'Custom Firmware'
 ---
 
 ## Tools

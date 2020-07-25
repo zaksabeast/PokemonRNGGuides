@@ -2,6 +2,7 @@
 title: 'How to extract GBA BIOS'
 description: 'Guide to extracting the GBA BIOS file for use on emulators'
 slug: 'misc-dolphin-gba-bios'
+subCategory: 'Emulator'
 ---
 
 Some games need a GBA BIOS file to be able to load on emulators. If you are encountering an error message about a problem related to the BIOS then you will need a GBA BIOS to load that game. This guide has two different methods for extracting the GBA BIOS file yourself.

@@ -2,6 +2,7 @@
 title: 'Island Scan'
 description: 'Easy shinies in apricorn balls'
 slug: 'retail-sm-island-scan'
+subCategory: 'Custom Firmware'
 ---
 
 ## Tools

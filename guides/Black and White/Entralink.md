@@ -2,6 +2,7 @@
 title: 'Entralink'
 description: 'How to RNG cool Pokemon with Entralink RNG'
 slug: 'emulator-bw-entralink'
+subCategory: 'Emulator'
 ---
 
 ## Tools

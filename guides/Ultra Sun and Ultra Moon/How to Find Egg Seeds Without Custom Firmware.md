@@ -2,6 +2,7 @@
 title: 'Finding Egg Seeds Without CFW/Homebrew'
 description: 'Find your egg seeds for Egg RNG using the Magikarp Method'
 slug: 'retail-usum-egg-seed-no-cfw'
+subCategory: 'Retail'
 ---
 
 ```

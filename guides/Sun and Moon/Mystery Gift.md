@@ -2,6 +2,7 @@
 title: 'Mystery Gift (Event) RNG'
 description: 'RNG your events to have 6 IVs'
 slug: 'retail-sm-myster-gift'
+subCategory: 'Custom Firmware'
 ---
 
 ## Tools

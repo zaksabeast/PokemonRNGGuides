@@ -19,6 +19,8 @@ jobs:
 
       - name: Build
         run: yarn build
+        env:
+          GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }} # It's really not much of a secret
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@3.5.8

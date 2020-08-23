@@ -1,6 +1,9 @@
-# XY Trainer ID, Secret ID, and/or TSV RNG
-
-_RNG for a specific Trainer ID, SID, or TSV_
+---
+title: 'Trainer ID, Secret ID, and/or TSV RNG'
+description: 'RNG for a specific Trainer ID, SID, or TSV'
+slug: 'pcalc-xy-tid'
+subCategory: 'Custom Firmware'
+---
 
 ## Requirements
 
@@ -17,7 +20,7 @@ Make sure to back up your save file using a save file manager such as [Checkpoin
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - (Optional) A network connection
 
-## 3DSRNGTool Setup
+## Step 1: 3DSRNGTool Setup
 
 - In the upper right hand corner select your game version and click the "Advanced" option.
   - Seed and TSV can be blank.
@@ -28,7 +31,7 @@ Make sure to back up your save file using a save file manager such as [Checkpoin
 
 ![](https://i.imgur.com/pZ3brMs.png)
 
-## Game Setup
+## Step 2: Game Setup
 
 ```
 Note: If you are using a N3DS or N2DSXL you can speed up the game when the PCalc overlay is active by enabling L2 cache + 804 MHz in the Rosalina menu options (Select + L + Down to bring up menu).
@@ -49,7 +52,7 @@ Note: If you are using a N3DS or N2DSXL you can speed up the game when the PCalc
 
 This is the final screen to change character selection.
 
-## Finding a Target Frame
+## Step 3: Finding a Target Frame
 
 The "frames" in 3DSRNGTool keep track of 4 values known as "tiny seeds". The tiny seeds are used to generate trainer info such as TID, SID, and TSV. Each time the tiny seeds advance to the next set of tiny seeds a frame advancement happens. These frames are different from the frames shown in PCalc, as those frames are for a different RNG.
 
@@ -72,7 +75,7 @@ _In this example we will be getting the highlighted trainer data_
 Note: Soft resetting the game will hard lock the system due to NTR! You must do a hard reset of the console.
 ```
 
-## Advancing the Tiny Seeds
+## Step 4: Advancing the Tiny Seeds
 
 1. Unpause the game by pressing `Start`.
 

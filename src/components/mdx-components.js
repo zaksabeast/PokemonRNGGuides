@@ -22,6 +22,19 @@ const useStyles = makeStyles(theme => ({
   pixelImage: {
     imageRendering: 'pixelated',
   },
+  ul: {
+    listStyleType: 'disc',
+    marginTop: theme.spacing(0.6),
+    marginBottom: 0,
+    marginLeft: 0,
+    marginRight: 0,
+  },
+  li: {
+    marginTop: 0,
+    marginBottom: theme.spacing(0.6),
+    marginLeft: 0,
+    marginRight: 0,
+  },
 }));
 
 const H1 = props => <Typography variant="h1" {...props} />;
@@ -57,7 +70,15 @@ const Pre = props => {
   return <Paper className={classes.pre} variant="outlined" {...props} />;
 };
 
-const ListItem = props => <Typography component="li" {...props} />;
+const UnorderedList = props => {
+  const classes = useStyles();
+  return <Typography component="ul" className={classes.ul} {...props} />;
+};
+
+const ListItem = props => {
+  const classes = useStyles();
+  return <Typography component="li" className={classes.li} {...props} />;
+};
 
 const TableHead = props => <TableCell variant="head" {...props} />;
 
@@ -80,4 +101,5 @@ export const mdxComponents = {
   tr: TableRow,
   td: TableCell,
   th: TableHead,
+  ul: UnorderedList,
 };

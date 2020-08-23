@@ -1,25 +1,40 @@
-# Example RNG Guide Name
-_Awesome subtitle_
+---
+title: 'Your guide title'
+description: 'Your guide description'
+slug: 'hyphenated-guide-title'
+---
 
-## Organize new thoughts with headers
+## Tools
 
-### What is required for this?
-- List of requirements here
-- Each item should have a capital letter
-- None of them should end in a period
+- Have a list of tools here
+- Links to tools are also great
 
-### Walk the RNGer through the steps
+## Step 1: Name of the step
+
+### Using subtitles is great to break a step into smaller pieces
+
+Make sure button presses like `Start + Up` and `A` have back ticks around themm.
 
 ```
-Code blocks make great side notes
+Note: If you need to leave a larger side note, use three back ticks.
+
+Make sure there is a new line before and after the three back ticks.
 ```
 
-#### Include images when necessary
+## Step 2: Make as many steps as you need
 
-![](https://cdn.discordapp.com/attachments/285269956168253441/384880862157733888/CYMERA_20171127_193706.jpg)
+### Different types of lists
 
-**Large text should be broken up**
+Use bullets to:
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+- Make an unordered list
+- Provide a few pieces of info for something
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+Use numbered lists to:
+
+1. Describe an ordered process
+2. If you use words like 'first', 'then', and 'finally', use a numbered list
+
+## Additional notes
+
+This is a great place to have additional notes

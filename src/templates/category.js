@@ -4,7 +4,7 @@ import { MainLayout } from '../layouts/main';
 import { GuideList } from '../components/guide-list';
 
 const CategoryTemplate = ({ data, pageContext }) => {
-  const guides = data.allMarkdownRemark.nodes;
+  const guides = data.allMdx.nodes;
   const { category } = pageContext;
 
   const organizedGuides = guides.reduce((result, guide) => {
@@ -35,9 +35,7 @@ export default CategoryTemplate;
 
 export const query = graphql`
   query($categoryRegex: String!) {
-    allMarkdownRemark(
-      filter: { fields: { pagePath: { regex: $categoryRegex } } }
-    ) {
+    allMdx(filter: { fields: { pagePath: { regex: $categoryRegex } } }) {
       nodes {
         frontmatter {
           title

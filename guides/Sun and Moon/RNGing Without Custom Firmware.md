@@ -75,7 +75,7 @@ In summary, the total time span in seconds = (Pre-Timer + Lag) / 1000 + (Target 
 
 ## Step 5: Find initial seed via continue screen clock needles
 
-1. Check [here](<https://pokemonrng.com/guides/sm/en/Finding%20Initial%20Seed%20with%20Clocks%20(no%20Custom%20Firmware%20RNG)/>)
+1. Check [here](https://www.pokemonrng.com/retail-sm-egg-seed-no-cfw)
 2. Once you get only one seed result, the tool will update it to main window. The starting frame in Time Calculator is updated as well. (417/477 + the number of frames you saw for clocks)
 3. Be sure to double check your seed, most of failures are from the wrong seed ;)
 4. Do not enter your save yet.
@@ -94,7 +94,7 @@ In summary, the total time span in seconds = (Pre-Timer + Lag) / 1000 + (Target 
 
 1. Go back to Gen Main RNG Tool. In the bottom right, everything should be updated. Hit the Calculate.
 
-2. A message box will pop up with "Set EonTimer for XXXXF. (YY.YYs)\<ZF>". Set XXXX as Target Frame of EonTimer. - `Z` is how long this target frame will exist. For Blink Frame, it should be above 30.
+2. A message box will pop up with "Set EonTimer for XXXXF. (YY.YYs)\&lt;ZF&rt;". Set XXXX as Target Frame of EonTimer. - `Z` is how long this target frame will exist. For Blink Frame, it should be above 30.
 
 ## Step 8: Press A at continue screen, start the timer at the same time
 

@@ -30,7 +30,15 @@ module.exports = {
         lang: 'en',
       },
     },
-    'gatsby-transformer-remark',
+    {
+      resolve: 'gatsby-plugin-mdx',
+      options: {
+        extensions: ['.md', '.mdx'],
+        defaultLayouts: {
+          default: require.resolve('./src/templates/post.js'),
+        },
+      },
+    },
     'gatsby-plugin-material-ui',
     'gatsby-plugin-react-helmet',
   ],

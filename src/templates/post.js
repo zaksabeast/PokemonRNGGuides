@@ -1,32 +1,24 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { MDXProvider } from '@mdx-js/react';
+import { MDXRenderer } from 'gatsby-plugin-mdx';
 import { MainLayout } from '../layouts/main';
+import { mdxComponents } from '../components/mdx-components';
 
-const useStyles = makeStyles({
-  body: {
-    '& h2': {
-      fontSize: '2rem',
-      marginTop: '3rem',
-    },
-  },
-});
-
-const PostTemplate = ({ data }) => {
-  const classes = useStyles();
-  const post = data.markdownRemark;
+const PostTemplate = ({ children, pageResources, data }) => {
+  const frontmatter =
+    // .mdx files
+    data?.mdx?.frontmatter ||
+    // .md files
+    pageResources?.json?.pageContext?.frontmatter ||
+    {};
 
   return (
-    <MainLayout
-      title={post.frontmatter.title}
-      description={post.frontmatter.description}
-    >
-      <Typography
-        component="div"
-        className={classes.body}
-        dangerouslySetInnerHTML={{ __html: post.html }}
-      />
+    <MainLayout title={frontmatter.title} description={frontmatter.description}>
+      <MDXProvider components={mdxComponents}>
+        {/* children is for .mdx files and data.mdx.body is for .md files */}
+        {children || <MDXRenderer>{data?.mdx?.body}</MDXRenderer>}
+      </MDXProvider>
     </MainLayout>
   );
 };
@@ -35,12 +27,12 @@ export default PostTemplate;
 
 export const query = graphql`
   query($slug: String!) {
-    markdownRemark(frontmatter: { slug: { eq: $slug } }) {
-      html
+    mdx(frontmatter: { slug: { eq: $slug } }) {
       frontmatter {
         title
         description
       }
+      body
     }
   }
 `;

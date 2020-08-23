@@ -11,7 +11,7 @@ subCategory: 'General'
   - Instructions for installing Luma3DS: https://3ds.hacks.guide/
 
 1. Find your game's title ID [using 3dsdb](http://www.3dsdb.com/)
-2. Put your code.ips patch at `/luma/titles/<title ID>/code.ips`
+2. Put your code.ips patch at `/luma/titles/_title ID_/code.ips`
 
 For example, Ultra Moon would be `/luma/title/00040000001B5100/code.ips`
 
@@ -19,7 +19,7 @@ For example, Ultra Moon would be `/luma/title/00040000001B5100/code.ips`
 
 1. Right click on your game in Citra
 2. Open the update directory
-3. Make a new folder called `<.app file>.exefsdir`
+3. Make a new folder called `_your .app file_.exefsdir`
    - For example, Ultra Moon's update would be `00000001.app.exefsdir`
 4. Put the `code.ips` in the new folder
 

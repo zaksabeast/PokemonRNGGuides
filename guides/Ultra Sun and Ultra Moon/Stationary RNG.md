@@ -16,7 +16,7 @@ subCategory: 'Custom Firmware'
 
 ### Recomended reading
 
-If you are wanting to RNG a Mystery Gift (or Event) Pokemon instead, follow the [Gen 7 Mystery Gift RNG guide](<https://pokemonrng.com/guides/usum/en/Mystery%20Gift%20(Event)%20RNG/>) instead.
+If you are wanting to RNG a Mystery Gift (or Event) Pokemon instead, follow the [Gen 7 Mystery Gift RNG guide](https://www.pokemonrng.com/retail-usum-mystery-gift) instead.
 
 If you are wanting to RNG a Pokemon in a Wormhole, follow the [USUM Wormhole RNG guide](https://pokemonrng.com/guides/usum/en/Stationary%20Wormhole%20RNG/) instead.
 

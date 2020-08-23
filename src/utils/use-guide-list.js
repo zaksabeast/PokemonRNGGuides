@@ -3,7 +3,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 export const useGuideList = () => {
   const getPages = graphql`
     query {
-      allMarkdownRemark(
+      allMdx(
         filter: {
           fileAbsolutePath: { regex: "/guides/" }
           frontmatter: { slug: { ne: "/" } }
@@ -22,7 +22,7 @@ export const useGuideList = () => {
       }
     }
   `;
-  return useStaticQuery(getPages).allMarkdownRemark.nodes.reduce(
+  return useStaticQuery(getPages).allMdx.nodes.reduce(
     (result, { fields, frontmatter }) => {
       const splitPagePath = fields.pagePath.split('/');
       const category = splitPagePath[1] || '';

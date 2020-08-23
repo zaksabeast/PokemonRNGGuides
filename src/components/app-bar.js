@@ -12,11 +12,11 @@ const useStyles = makeStyles(theme => ({
     zIndex: theme.zIndex.modal + 1,
   },
   toolbar: {
-    paddingLeft: '0.75rem',
-    paddingRight: '0.5rem',
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1),
   },
   menuButton: {
-    marginRight: '0.75rem',
+    marginRight: theme.spacing(1.5),
   },
 }));
 

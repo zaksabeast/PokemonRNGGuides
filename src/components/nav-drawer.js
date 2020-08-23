@@ -19,8 +19,8 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
   },
   divider: {
-    marginTop: '0.5rem',
-    marginBottom: '0.5rem',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
 }));
 

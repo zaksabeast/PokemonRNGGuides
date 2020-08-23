@@ -11,7 +11,6 @@ const DRAWER_WIDTH = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    overflowX: 'hidden',
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
@@ -21,9 +20,9 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     marginTop: theme.mixins.toolbar.minHeight,
-    marginBottom: '2.5rem',
-    marginLeft: '1.5rem',
-    marginRight: '1.5rem',
+    marginBottom: theme.spacing(5),
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
     [theme.breakpoints.up('md')]: {
       maxWidth: 720,
       marginLeft: 'auto',
@@ -50,12 +49,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   titleContainer: {
-    marginTop: '4rem',
-    marginBottom: '0.5rem',
-  },
-  title: {
-    fontSize: '3rem',
-    marginBottom: '1rem',
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -76,7 +71,7 @@ export const MainLayout = ({ children, title, description }) => {
         <NavDrawer isOpen={isNavDrawerOpen} onClose={closeNavDrawer} />
         <main className={contentClassNames}>
           <div className={classes.titleContainer}>
-            <Typography variant="h1" className={classes.title}>
+            <Typography variant="h3" component="h1" gutterBottom>
               {title}
             </Typography>
             {description && (

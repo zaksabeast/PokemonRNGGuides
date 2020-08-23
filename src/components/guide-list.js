@@ -11,15 +11,15 @@ import IconButton from '@material-ui/core/IconButton';
 const useStyles = makeStyles(theme => ({
   guideInfo: {
     display: 'flex',
-    paddingTop: '3rem',
-    paddingBottom: '3rem',
+    paddingTop: theme.spacing(6),
+    paddingBottom: theme.spacing(6),
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
   viewButton: {
-    marginRight: '2rem',
+    marginRight: theme.spacing(4),
   },
   subCategoryTitle: {
-    marginTop: '3rem',
+    marginTop: theme.spacing(6),
   },
 }));
 

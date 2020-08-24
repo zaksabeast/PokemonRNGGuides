@@ -13,6 +13,10 @@ Examples include:
 - Feature requests
 - Anything else you'd like to contribute!
 
+### Needing ideas?
+
+[Click here for a list of missing guides!](https://github.com/zaksabeast/PokemonRNGGuides/projects/3)
+
 ## How to contribute?
 
 ### Discord

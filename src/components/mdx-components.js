@@ -35,6 +35,9 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 0,
     marginRight: 0,
   },
+  p: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 const H1 = props => <Typography variant="h1" {...props} />;
@@ -87,12 +90,17 @@ const PixelImage = props => {
   return <img className={classes.pixelImage} {...props} />;
 };
 
+const Paragraph = props => {
+  const classes = useStyles();
+  return <Typography className={classes.p} {...props} />;
+};
+
 export const mdxComponents = {
   PixelImage,
   h1: H1,
   h2: H2,
   h3: H3,
-  p: Typography,
+  p: Paragraph,
   a: Link,
   pre: Pre,
   code: Typography,

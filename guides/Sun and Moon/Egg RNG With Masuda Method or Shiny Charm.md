@@ -113,6 +113,6 @@ You can choose any of the given frames, but lower frames are generally better du
   - Ask someone else to find it for you. /r/SVEXchange is one place this can be done.
 
 - If you are not using PCalc and do not know your egg seeds there are methods to find them.
-  - If you have already used the daycare by having accepted or rejected eggs, and do not wish to use Homebrew or CFW, then you will have to do the [127 Magikarp method](https://pokemonrng.com/guides/usum/en/How%20to%20Find%20Egg%20Seeds%20Without%20Custom%20Firmware/) to find your egg seeds.
-  - If you have not used the daycare and do not wish to use Homebrew or CFW, you can use the [8 egg method](https://pokemonrng.com/guides/usum/en/How%20to%20Find%20Egg%20Seeds%20Without%20Custom%20Firmware/) to find your egg seeds.
+  - If you have already used the daycare by having accepted or rejected eggs, and do not wish to use Homebrew or CFW, then you will have to do the [127 Magikarp method](https://www.pokemonrng.com/retail-sm-egg-seed-no-cfw) to find your egg seeds.
+  - If you have not used the daycare and do not wish to use Homebrew or CFW, you can use the [8 egg method](https://www.pokemonrng.com/retail-sm-egg-seed-no-cfw) to find your egg seeds.
   - If you have access to Homebrew or CFW you can use PKHeX to view your egg seeds after using a save manager such as Checkpoint to extract the save file.

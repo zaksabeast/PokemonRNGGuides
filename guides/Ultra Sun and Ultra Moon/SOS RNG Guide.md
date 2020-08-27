@@ -57,7 +57,7 @@ Note: It is recommended to set up for the SOS chaining first before starting the
 
 1. You can either wander around until you find the correct Pokemon to SOS or you can RNG it.
 
-   - A guide to Gen 7 wild RNG can be found [here](https://pokemonrng.com/guides/usum/en/Wild%20RNG/).
+   - A guide to Gen 7 wild RNG can be found [here](https://www.pokemonrng.com/retail-usum-wild).
 
 2. Once in the encounter open the "Tools" menu on 3DSRNGTool and select "Misc. RNG Tool". Switch the RNG type to "G7 SFMT (32bit)" and choose the "SOS" tab.
 

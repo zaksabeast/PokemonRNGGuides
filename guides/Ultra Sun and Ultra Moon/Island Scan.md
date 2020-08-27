@@ -15,7 +15,7 @@ subCategory: 'Custom Firmware'
   - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
 - The `honey` item
 - Have started an Island Scan and know the Pokemon you've scanned for
-  - [List of Island Scan islands and days for USUM](https://pokemonrng.com/guides/tools/en/Island%20Scan%20Pokemon%20-%20USUM/)
+  - [List of Island Scan islands and days for USUM](https://www.pokemonrng.com/misc-3ds-island-scan-usum)
 
 ```
 Note: You can get the "honey" item in any store after clearing three trials.
@@ -52,7 +52,7 @@ Note: You can find your TSV in PCalc in the Game Info window. Press "Start + Up"
 
 ### On the right of 3DSRNGTool
 
-1. Follow the [timeline guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide/) using the `NPC Count` PCalc shows for the number of NPCs. Wait at least 30 seconds after bringing up the window to allow for the NPC counter to calibrate correctly.
+1. Follow the [timeline guide](https://www.pokemonrng.com/retail-usum-timeline) using the `NPC Count` PCalc shows for the number of NPCs. Wait at least 30 seconds after bringing up the window to allow for the NPC counter to calibrate correctly.
 2. You should now have a target frame you wish to hit.
 
 ### In the middle of 3DSRNGTool

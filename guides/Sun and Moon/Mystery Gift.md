@@ -47,7 +47,7 @@ Note: With some events, the game will trigger a Pokedex registration animation (
 
 ## Step 3: RNGing the Pokemon
 
-1. Create a timeline following this guide: [Gen 7 Timeline Guide](https://pokemonrng.com/guides/usum/en/Timeline%20Guide/)
+1. Create a timeline following this guide: [Gen 7 Timeline Guide](https://www.pokemonrng.com/retail-usum-timeline)
 
 2. Advance to your target frame and when you land on it, press A to unpause the game and obtain the Pokemon.
 

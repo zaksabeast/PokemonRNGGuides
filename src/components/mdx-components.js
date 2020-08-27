@@ -6,6 +6,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
+import { PixelImage } from './pixel-image';
 
 const useStyles = makeStyles(theme => ({
   h2: {
@@ -18,9 +19,6 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
     padding: theme.spacing(2),
-  },
-  pixelImage: {
-    imageRendering: 'pixelated',
   },
   ul: {
     listStyleType: 'disc',
@@ -84,11 +82,6 @@ const ListItem = props => {
 };
 
 const TableHead = props => <TableCell variant="head" {...props} />;
-
-const PixelImage = props => {
-  const classes = useStyles();
-  return <img className={classes.pixelImage} {...props} />;
-};
 
 const Paragraph = props => {
   const classes = useStyles();

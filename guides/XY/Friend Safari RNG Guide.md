@@ -20,7 +20,7 @@ subCategory: 'Custom Firmware'
 - **Main RNG Frame**: The main RNG frame ranges that correspond to each TinyMT frame that is listed.
   - Through manipulation of the TinyMT timeline, you can make the TinyMT frames overlap with different main RNG frames.
 - **Enctr?**: Determines if there will be an encounter or not if the character turns or walks into the grass during those TinyMT seeds. It's the most important factor for this RNG.
-  - Encounter of less than 5 is best since this will guarantee an encounter every time.
+  - Encounter must be under 5 since this will guarantee an encounter every time.
 - **Sync?**: Determines if nature will be Synchronized or not.
   - `X` = No `O` = Yes
 - **Slot**: Determines which slot of Friend Safari will be chosen for the Pokemon that appears.

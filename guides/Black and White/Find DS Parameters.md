@@ -38,7 +38,7 @@ Finding your DS Parameters is **MANDATORY**. There are no RNGs you can do withou
   
 - Unlike on consoles, DeSmuMe's DS MAC Address is always 0009BF123456.
   
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_1.png?raw=true)
+![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_4.png?raw=true)
      
 If you cannot find a seed using the above values, double check that everything is correct. If so then you can extend the values to the below:
 

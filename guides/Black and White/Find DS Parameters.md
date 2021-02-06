@@ -15,7 +15,7 @@ subCategory: 'Emulator'
 - Pokemon BW or BW2 .nds files (You can dump the carts yourself using a CFW 3DS with Godmode9)
 - [The Lua Scripts corresponding to your rom's language](http://pokerng.forumcommunity.net/?t=56443955)
      - Password is `allyouneedisnoob`.
-- [RunAsDate (Optional)](https://runasdate.en.softonic.com/)
+- [RunAsDate](https://runasdate.en.softonic.com/)
 
 ## Things To Know
 

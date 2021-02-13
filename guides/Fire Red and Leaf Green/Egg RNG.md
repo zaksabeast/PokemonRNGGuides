@@ -24,7 +24,7 @@ The PID for the egg in FRLG is generated in two parts. You'll rng the first part
     - Order of deposit for the parents does not matter.
 
 2. Stay inside the daycare and take steps until the lua script displays `FE` for the step counter.
-    - Doing the steps outside the daycare will result in inconsistent delays due to NPCs moving.
+    - Make sure to do the steps inside the daycare and not outside of it.
     
 ![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_5.png?raw=true)
 

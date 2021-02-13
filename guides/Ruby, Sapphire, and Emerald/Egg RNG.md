@@ -18,6 +18,8 @@ subCategory: 'Emulator'
 
 The PID for the egg in Ruby/Sapphire is generated in two parts. You'll rng the first part when the egg is generated, and you'll rng the second part when picking up the egg.
 
+Egg RNG in Ruby/Sapphire can be done with both live and dead battery. 
+
 ### Setup
 
 1. First deposit the Pokemon at the daycare.

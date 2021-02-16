@@ -52,4 +52,4 @@ My character mid fidget:
 
 ![](https://i.imgur.com/VtG9yur.jpg) ![](https://i.imgur.com/09VjphH.jpg)
 
-Now the timeline will take character fidgetting into account for future advancements.
+Now the timeline will take character fidgetting into account for future advancements. Do not move your character and do not open the menu while advancing to your target frame.

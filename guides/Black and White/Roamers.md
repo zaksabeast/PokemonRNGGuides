@@ -17,10 +17,6 @@ subCategory: 'Emulator'
 - runasdate (optional)
 - a few hours
 
-```
-Note: Do NOT have a save ready for this unless its TID Abuse'd already
-```
-
 ![](https://i.imgur.com/kDti9qn.png?1)
 
 ## Step 1: Finding a spread

@@ -17,7 +17,7 @@ subCategory: 'Custom Firmware'
 
 - Follow the [timeline guide](https://www.pokemonrng.com/retail-usum-timeline) to create a timeline and find a target frame.
 
-## Step 2: Account for character fidgetting
+## Step 2: Account for character fidgeting
 
 ```
 Note: This process doesn't work with Xurkitree and Nihilego as there appears to be some extra noise that makes some RNG calls. There is work being done to make a process for those.
@@ -52,4 +52,4 @@ My character mid fidget:
 
 ![](https://i.imgur.com/VtG9yur.jpg) ![](https://i.imgur.com/09VjphH.jpg)
 
-Now the timeline will take character fidgetting into account for future advancements. Do not move your character and do not open the menu while advancing to your target frame.
+Now the timeline will take character fidgeting into account for future advancements. Do not move your character and do not open the menu while advancing to your target frame.

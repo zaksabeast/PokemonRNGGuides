@@ -20,7 +20,7 @@ subCategory: 'Custom Firmware'
 ## Step 2: Account for character fidgeting
 
 ```
-Note: This process doesn't work with Xurkitree and Nihilego as there appears to be some extra noise that makes some RNG calls. There is work being done to make a process for those.
+Note: This process isn't used often in Sun and Moon as it's only viable for Lunala and Solgaleo.
 ```
 
 1. After calibrating a basic timeline you need to watch for your character to "fidget" and pause there.

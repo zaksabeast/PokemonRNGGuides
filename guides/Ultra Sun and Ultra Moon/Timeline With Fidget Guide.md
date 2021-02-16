@@ -20,7 +20,9 @@ subCategory: 'Custom Firmware'
 ## Step 2: Account for character fidgeting
 
 ```
-Note: This process doesn't work with Xurkitree and Nihilego as there appears to be some extra noise that makes some RNG calls. There is work being done to make a process for those.
+Note: Creating a timeline with character fidgeting is easier to do, however it is more limited than timeline leap due to not being able to land on any frame.
+
+The main use of this method is for Lunala and Solgaleo since the regular timeline method and timeline leap does not work for them. For wormhole Pokemon, timeline leap is recommended instead of this method.  
 ```
 
 1. After calibrating a basic timeline you need to watch for your character to "fidget" and pause there.

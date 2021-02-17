@@ -22,10 +22,11 @@ Eggs in Emerald are generated in two parts. The PID of the Pokemon is generated 
 
 1. Deposit both Pokemon into the daycare.
     - Take note of the order you deposit them in.
+    - First parent deposited will be Parent A, and second parent deposited will be Parent B.
 
 2. Talk to the daycare man to determine their compatibility.
 
-3. Stay inside the daycare and take steps until the lua script displays `FE` for the step counter.
+3. Go back inside the daycare and take steps until the lua script displays `FE` for the step counter.
     - Make sure to do the steps inside the daycare and not outside of it.
 
 ![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_13.png?raw=true)
@@ -55,7 +56,7 @@ For PokeFinder you can set the redraws to be whatever you would like, though kee
 
 ### Calibration
 
-Before RNGing for your desired egg, calibration is needed for determining your specific calibration.
+Before RNGing for your desired egg, a calibration must be done.
 
 1. Restart the emulator and pause when ready to take a step in-game. 
     - Take note of what frame you are on and create a save state.
@@ -115,7 +116,7 @@ Go back to the previous save state, and then take a step on the frame calculated
 
 ![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_15.png?raw=true)
 
-```If the PID does not match the desired PID, check that everything is correct in PokeFinder, and that the correct number of redraws have been done before taking a step.```
+```Note: If the PID does not match the desired PID, check that everything is correct in PokeFinder, and that the correct number of redraws have been done before taking a step.```
 
 ### Part 2: RNGing for IVs
 

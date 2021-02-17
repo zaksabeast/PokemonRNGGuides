@@ -58,7 +58,7 @@ The seed you got from that screen was simply the seed you must hit when you pres
 
 4. Hit "Generate" and look for results. If you don't get a result, try extending the max results to a higher number.
 
-## Step 3: Hitting the Desired Seed and Frame
+## Step 4: Hitting the Desired Seed and Frame
 
 1.  Open runasdate (or change your computer clock) and set the date to one listed in "16-Bit Seed To Time".
 2.  If you are using runasdate set up the screen just like how it is shown below:
@@ -72,7 +72,7 @@ Note: Unlike Generations 4 and 5, only the hours and minutes matter for hitting 
 3. Hit run and you will open VBA-RR.
 4. Load the lua script for your game.
 
-## Step 4: Finding the delay
+## Step 5: Finding the delay
 
 1. Advance to the final screen before encountering the target Pokemon making save states along the way.
 2. When you land on your target frame press `A` and enter the encounter.
@@ -80,15 +80,15 @@ Note: Unlike Generations 4 and 5, only the hours and minutes matter for hitting 
 
 ![](https://snag.gy/wpUMTv.jpg)
 
-4. pen a new PokeFinder and input your initial seed and the IVs of the Pokemon encountered.
+4. Open a new PokeFinder and input your initial seed and the IVs of the Pokemon encountered.
 
 ![](https://snag.gy/dVAqKe.jpg)
 
-    - Since I hit `A` on Frame 89016 that means 54 Frames went by between my last input (hitting `A`) and the IVs and PID being generated.
-    - Therefore, to hit my 31/2/31/31/31/31 Modest spread, I must hit frame 180124.
-    - Target Frame = Desired Frame - Delay
+   - Since I hit `A` on Frame 89016 that means 54 Frames went by between my last input (hitting `A`) and the IVs and PID being generated.
+   - Therefore, to hit my 31/2/31/31/31/31 Modest spread, I must hit frame 180124.
+   - Target Frame = Desired Frame - Delay
 
-## Step 5: Advancing frames
+## Step 6: Advancing frames
 
 1. Advance frames paying attention to the frame count so you don't miss your target frame.
 2. Advance until you reach your new target frame, pause the emulator again and hold the `A` button.

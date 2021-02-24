@@ -34,9 +34,9 @@ This guide is for setting up CitraRng on a PC. An updated CFW console is require
     - Select `Open title manager...`
     - Press `A` on the game you want to dump
     - Select `Manage Title...`
-    - select `Build CIA (standard)`
+    - Select `Build CIA (standard)`
 6. To dump a game from a cart do the following
-    - select `[C:] GAMECART`
+    - Select `[C:] GAMECART`
     - Select the `trim.3ds` file
     - Select `NCSD image options...`
     - Select `Build CIA from file`
@@ -60,9 +60,9 @@ Python 3.9 needs to be installed for CitraRNG to work. Python also needs to be a
 
 1. Open a command prompt anywhere and type `pip install pyside2`.
     - This may need administration privileges 
-2. Copy all the .py files in the CitraRNG folder into <your Citra directory>/scripting.
+2. Copy all the .py files in the CitraRNG folder into `<your Citra directory>/scripting`.
 3. Open Citra and your Gen 7 Pokémon game, and load your save file
-    - [This] has instructions for dumping and loading your save file from the 3DS
+    - [This](https://citra-emu.org/wiki/dumping-save-data-from-a-3ds-console/) has instructions for dumping and loading your save file from the 3DS
 4. Double-click the citrarng.py file to run the script.
 
 ``` 
@@ -75,6 +75,8 @@ Alternatively, run the script using a command prompt opened in the scripting fol
     - CitraRNG will update with information from the game such as initial seed, frames, ivs etc...
     - The tool has an auto refresher to allow frames to be updated periodically, this may make the program crash if left on long enough
 
-```Note: The higher the delay for the refresh rate the less often the program will crash, 2000 is max. Pause and reconnect CitraRNG every once in a while, to keep it from crashing.```
+```
+Note: The higher the delay for the refresh rate the less often the program will crash, 2000 is max. Pause and reconnect CitraRNG every once in a while, to keep it from crashing.
+```
 
 The [Citra wiki](https://citra-emu.org/wiki/home/) has more information on how to run Citra and how to troubleshoot issues.

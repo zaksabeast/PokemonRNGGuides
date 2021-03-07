@@ -9,7 +9,7 @@ import List from '@material-ui/core/List';
 import { Link } from 'gatsby';
 import { DISCORD_URL, CONTRIBUTING_URL } from '../constants';
 import { useGuideList } from '../utils/use-guide-list';
-import { sortCategories } from '../utils/sort-guide-list';
+import { sortCategories } from '../utils/sort-categories';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles(theme => ({

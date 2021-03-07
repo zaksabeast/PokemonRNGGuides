@@ -9,7 +9,7 @@ import List from '@material-ui/core/List';
 import { Link } from 'gatsby';
 import { DISCORD_URL, CONTRIBUTING_URL } from '../constants';
 import { useGuideList } from '../utils/use-guide-list';
-import { sortList } from '../utils/sort-guide-list';
+import { sortCategories } from '../utils/sort-guide-list';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles(theme => ({
@@ -38,7 +38,7 @@ export const NavDrawer = ({ isOpen, onClose }) => {
   const isLargerScreen = useMediaQuery(theme.breakpoints.up('md'));
   const classes = useStyles();
   const guides = useGuideList();
-  const sortedGuideList = Object.keys(guides).sort(sortList);
+  const sortedGuideList = Object.keys(guides).sort(sortCategories);
   const guideCategories = sortedGuideList.map(category => {
     const toUrl = `/${kebabCase(category)}`;
     return (

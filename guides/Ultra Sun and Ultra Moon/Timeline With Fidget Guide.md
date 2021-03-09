@@ -22,7 +22,7 @@ subCategory: 'Custom Firmware'
 ```
 Note: Creating a timeline with character fidgeting is easier to do, however it is more limited than timeline leap due to not being able to land on any frame.
 
-The main use of this method is for Lunala and Solgaleo since the regular timeline method and timeline leap does not work for them. For wormhole Pokemon, timeline leap is recommended instead of this method.  
+The main use of this method is for Lunala and Solgaleo since the regular timeline method and timeline leap does not work for them. For wormhole Pokemon, timeline leap is recommended instead of this method.
 ```
 
 1. After calibrating a basic timeline you need to watch for your character to "fidget" and pause the game.
@@ -46,6 +46,7 @@ Character mid fidget:
 ![](https://i.imgur.com/lhAMvJk.png)
 
 2. Advance through the fidget using select until you notice a jump in frames that doesn't show on your timeline.
+
    - This will usually be 3-4 frames in the case of wormholes, as they all have 1 NPC.
    - In the example below, the frames jumped from 1320-1324, which means 1320 should be used for the fidget setting (Check the box and put it in).
 

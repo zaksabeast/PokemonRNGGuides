@@ -84,9 +84,9 @@ Note: Unlike Generations 4 and 5, only the hours and minutes matter for hitting 
 
 ![](https://snag.gy/dVAqKe.jpg)
 
-   - Since I hit `A` on Frame 89016 that means 54 Frames went by between my last input (hitting `A`) and the IVs and PID being generated.
-   - Therefore, to hit my 31/2/31/31/31/31 Modest spread, I must hit frame 180124.
-   - Target Frame = Desired Frame - Delay
+- Since I hit `A` on Frame 89016 that means 54 Frames went by between my last input (hitting `A`) and the IVs and PID being generated.
+- Therefore, to hit my 31/2/31/31/31/31 Modest spread, I must hit frame 180124.
+- Target Frame = Desired Frame - Delay
 
 ## Step 6: Advancing frames
 

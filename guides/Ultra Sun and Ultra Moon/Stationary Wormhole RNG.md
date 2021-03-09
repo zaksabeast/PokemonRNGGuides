@@ -12,12 +12,7 @@ subCategory: 'Custom Firmware'
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - PCalc
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
-
-### Recommended reading/references
-
-- [Timeline Guide](https://www.pokemonrng.com/retail-usum-timeline)
-- [Timeline Leap Guide](https://www.pokemonrng.com/retail-usum-timeleap)
-- [3DSRNGTool README](https://github.com/wwwwwwzx/3DSRNGTool/blob/master/README.md) - list of final screens before the Pokemon is generated
+- [3DSRNGTool README](https://github.com/wwwwwwzx/3DSRNGTool/blob/master/README.md#final-screen) - list of final screens before the Pokemon is generated
 
 ## Step 1: Finding your seed
 
@@ -33,7 +28,7 @@ There are two methods that can be used for RNGing Pokemon in wormholes.
 
 This method involves creating a timeline and accounting for character fidgets that occur within the timeline. The disadvatage to this method is the limited amount of frames that can be landed on due to being on a set timeline.
 
-- For this method, follow the [timeline with fidget guide]() to create a timeline and find a target frame.
+- For this method, follow the [timeline with fidget guide](https://www.pokemonrng.com/retail-usum-fidget) to create a timeline and find a target frame.
 
 ### Timeline leap
 

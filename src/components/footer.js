@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import GithubCircleIcon from 'mdi-material-ui/GithubCircle';
+import GithubIcon from 'mdi-material-ui/Github';
 import DiscordIcon from 'mdi-material-ui/Discord';
 import { DISCORD_URL, GITHUB_URL } from '../constants';
 
@@ -47,7 +47,7 @@ export const Footer = () => {
               component="a"
               href={GITHUB_URL}
             >
-              <GithubCircleIcon fontSize="small" />
+              <GithubIcon fontSize="small" />
             </IconButton>
           </ListItem>
           <ListItem className={classes.navLinkItem}>

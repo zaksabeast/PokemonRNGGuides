@@ -1,6 +1,6 @@
 ---
 title: 'Contributing'
-slug: '/contributing'
+slug: 'contributing'
 ---
 
 ## All contributions are welcome!

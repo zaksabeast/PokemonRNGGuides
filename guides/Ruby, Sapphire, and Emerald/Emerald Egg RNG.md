@@ -39,20 +39,20 @@ Eggs in Emerald are generated in two parts. The PID of the Pokemon is generated 
 1. Open PokeFinder and click on "Gen 3 Egg". Make sure to be on the Emerald tab.
 
 2. You can set "Max Results" to however high you are willing to wait.
-    - For a shiny PID frame, it shouldn't be too hard to find a frame within a few minutes wait though.
+    - For a shiny PID it shouldn't be too hard to find a result within a few minutes wait though.
 
 3. Set "Method" to PID, since the PID of the egg will be RNG'd first.
 
 ### Redraws
 
-For Emerald egg RNG, redraws of the game's graphics can be done to hit specific frames.
+For Emerald egg RNG, redraws of the game's graphics can be done to hit specific PIDs.
 
 To do a single redraw:
 1. Open the menu
 2. Open the Pokedex
 3. Back out of the Pokedex into the menu
 
-Open and close the Pokedex for as many redraws as needed for the target frame.
+Open and close the Pokedex for as many redraws as needed for the target PID.
 
 ### Calibration
 
@@ -60,24 +60,24 @@ Before RNGing for your desired egg, a calibration must be done.
 
 1. Restart the emulator and pause when the save has loaded. 
     
-2. Take note of what frame you are on and create a save state.
+2. Take note of the RNG Frame displayed by the lua script and create a save state.
 
 3. Hold down the directional button to take a step while unpausing the emulator.
     - If an egg is generated, continue to the next step.
-    - If no egg is generated, reload the previous save state and advance a frame. Take another step to try to generate an egg. Repeat as needed.
+    - If no egg is generated, reload the previous save state and advance a frame (CTRL + N). Take another step to try to generate an egg. Repeat as needed.
 
 4. Choose the nature of the egg generated in the dropdown for Nature. 
 
 5. Set redraws to 0 in PokeFinder.
 
-6. Click "Generate" in PokeFinder and find the PID of the generated egg by looking around the frame you took a step on.
+6. Click "Generate" in PokeFinder and find the PID of the generated egg in the Advances column by looking around the RNG Frame you took a step on.
     - If the PID cannot be found, change the calibration by 1 and generate new results.
     - Repeat as needed until a match is found.
     - Calibration will be between 17 and 21.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_14.png?raw=true)
+![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_16.png?raw=true)
 
-In the example above, the calibration is 20. The frame was found after selecting Mild from the nature dropdown and searching for the PID of the egg.
+In the example above, the calibration is 20. The frame was found after selecting Timid from the nature dropdown and searching for the PID of the egg.
 
 The calibration will always be the same for this save, so you can use the same calibration for future egg RNGs.
 
@@ -89,35 +89,36 @@ Now that you have found your calibration, it is time to RNG an egg.
     - For this part only Ability, Gender, Nature, and Shiny can be RNG'd.
     - Make sure the Gender Ratio is set correctly for the Pokemon you are RNGing.
 
-2. Set the redraws to what you want as well. (Doing redraws can give different frame results for more possibilities.)
+2. Set the redraws to what you want as well.
+    - Adjusting redraws can give different results for more possibilities if needed.
 
-3. Generate results and look for a target frame.
-    - You can adjust redraws and the filters as needed to find a target frame.
+3. Generate results and look for a target advance.
+    - You can adjust redraws and the filters as needed to find a target advance.
 
 4. Reset the emulator and do the redraws as needed. 
 
-5. Create a save state when you get close to the target frame.
+5. Create a save state when you get close to the target advance.
 
-To be able to hit your target frame, the delay must be taken into account. The next section explains how to do this.
+To be able to hit your target advance, the delay must be taken into account. The next section explains how to do this.
 
 #### Finding your delay for PID
 
-1. Take a step on your target frame.
+1. Take a step on your target advance.
     - If no egg is generated, go back to the previous save state, advance one frame, and take another step. Repeat as needed.
 
-2. Find what frame you hit in PokeFinder. You can do this by setting the filters to the egg you got and then looking for the PID of the egg.
+2. Find what advance you hit in PokeFinder. You can do this by setting the filters to the egg you got and then looking for the PID of the egg.
 
-3. Find your delay using `Target Frame - Frame Hit = Delay`.
+3. Find your delay using `Target Advance - Advance Hit = Delay`.
 
-4. Add the delay to your target frame to get the frame you need to take a step on (`Target Frame + Delay = Frame to take a step on`).
+4. Add the delay to your target advance to get the RNG Frame you need to take a step on (`Target Advance + Delay = RNG Frame to take a step on`).
 
 5. Go back to the previous save state.
  
-6. Take a step on the frame calculated from the above steps.
+6. Take a step on the RNG Frame calculated from the above steps.
 
 You should now have the desired PID.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_15.png?raw=true)
+![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_17.png?raw=true)
 
 ```Note: If the PID does not match the desired PID, check that everything is correct in PokeFinder, and follow the steps in the last section to create a new save state.```
 
@@ -132,7 +133,7 @@ You should now have the desired PID.
 
 4. Set the IVs to be what you want.
 
-5. Generate frames and look for a target frame.
+5. Generate results and look for a target advance.
 
 6. Restart the emulator.
 
@@ -144,20 +145,18 @@ Again, delay will have to be taken into account.
 
 #### Finding your delay for IVs
 
-1. Advance to the target frame, pause, hold A, and unpause.
+1. Advance to the target advance, pause, hold A, and unpause.
 
-2. Find what frame you hit in PokeFinder. You can do this by setting the IV filters for the egg you got and then looking for the matching frame.
+2. Find what advance you hit in PokeFinder. You can do this by setting the IV filters for the egg you got and then looking for the advance with matching IVs.
 
-3. Find your delay using `Target Frame - Frame Hit = Delay`.
+3. Find your delay using `Target Advance - Advance Hit = Delay`.
  
-4. Subtract the delay from your target frame to know what frame to press A. (`Target Frame - Delay = Frame to press A on`)
+4. Subtract the delay from your target advance to know what RNG Frame to press A. (`Target Advance - Delay = RNG Frame to press A on`)
 
 5. Go back to the previous save state.
 
-6. Take a step on the frame calculated from the above steps.
+6. Take a step on the RNG Frame calculated from the above steps.
 
 You should now have the desired IVs.
-
-You should now have your desired egg, congrats!
 
 If you do not have the desired IVs, check that everything is correct in PokeFinder and that the order of parents is not swapped.

@@ -9,7 +9,7 @@ subCategory: 'Emulator'
 
 - [VBA-rr v23.6](https://code.google.com/archive/p/vba-rerecording/downloads)
 - [Lua scripts for FireRed/LeafGreen](https://pokerng.forumcommunity.net/?t=56443955)
-   - Password is `allyouneedisnoob`
+  - Password is `allyouneedisnoob`
 - [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
 - TID and SID (if going for shiny)
 
@@ -24,11 +24,13 @@ Note: If you are doing this RNG for a shiny, make sure to have set up a profile 
 2. Have "Method" set to Method H-1.
 
 3. Set the "Location" to the location where the RNG will take place.
+
    - If you want a specific Pokemon you can select it in "Pokemon" after selecting its location.
 
-4. "Encounter" should be set to "Grass" since this guide is focusing on wild Pokemon found in grass or caves.
+4. "Encounter" should be set to "Grass" or "Surfing" since this guide is focusing on using Sweet Scent to start an encounter.
 
 5. If using a lead Pokemon with Synchronize or Cute Charm set these as well.
+
    - To set a Cute Charm lead click on Synchronize to switch to Cute Charm.
 
 6. Check the "Use Delay" box and input the delay for the Pokemon you are RNGing.
@@ -46,7 +48,7 @@ Note: If you are doing this RNG for a shiny, make sure to have set up a profile 
 4. Pause the game to find your seed.
 
 ```
-Note: FRLG uses the continue screen to generate different spreads every time the game loads to avoid repeating spreads like in dry battery Ruby and Sapphire, and Emerald. This can be used to reset for different seeds if wanted.
+Note: FireRed/LeafGreen will generate different seeds every time the game loads unlike repeating seeds in dry battery Ruby and Sapphire, and Emerald. This can be used to reset for different seeds if wanted.
 ```
 
 5. The initial seed will be displayed on the screen from the lua script.
@@ -58,6 +60,7 @@ Note: FRLG uses the continue screen to generate different spreads every time the
 1. Enter the initial seed into "Seed".
 
 2. Enter in your target settings for the Pokemon you wish to search for (shiny, IVs, nature, etc).
+
    - Keep in mind that finding a shiny perfect Pokemon may take awhile to find a seed for, and then will probably have very high advances.
    - If no results are showing up, try lowering the filters.
 
@@ -78,10 +81,11 @@ Note: The initial seed can be changed by pressing B on the continue screen to pl
 2. Advance to within a few thousand advances of the target advance.
 
 ```
-Note: Teachy TV can be used to advance much, much faster. Open the Teachy TV in Key Items and then close it when a few thousand away from your target advance. 
+Note: Teachy TV can be used to advance much, much faster. Open the Teachy TV in Key Items and then close it when a few thousand away from your target advance.
 ```
 
 3. Open your Trainer Card and press `A` to flip it.
+
    - This resets your delay for more consistent delays since delays can be off after many advances.
 
 4. Select the Pokemon in your party with Sweet Scent and hover over the move.
@@ -89,7 +93,7 @@ Note: Teachy TV can be used to advance much, much faster. Open the Teachy TV in 
 5. When close to your target advance, pause the emulator and create a save state, and then advance a frame at a time to the target advance.
 
 6. Hold `A` and unpause the emulator at the same time on your target advance.
-   - If the Pokemon is not the one wanted, load the previous save state and try one advanve before and/or one advance after.
+   - If the Pokemon is not the one wanted, load the previous save state and try one advance before and/or one advance after.
 
 If you followed all the above steps, the Pokemon should be what you wanted. Tada, you did your Gen 3 Wild RNG!
 
@@ -97,6 +101,6 @@ If you followed all the above steps, the Pokemon should be what you wanted. Tada
 
 ## Troubleshooting
 
-If after trying the one advance difference above and it didn't work, you'll have to adjust for your own delay. 
+If after trying the one advance difference above and it didn't work, you'll have to adjust for your own delay.
 
 Find what advance you are hitting and adjust as needed.

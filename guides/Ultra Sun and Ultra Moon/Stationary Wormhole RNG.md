@@ -12,7 +12,7 @@ subCategory: 'Custom Firmware'
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - PCalc
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
-- [3DSRNGTool README](https://github.com/wwwwwwzx/3DSRNGTool/blob/master/README.md#final-screen) - list of final screens before the Pokemon is generated
+- [3DSRNGTool README](https://github.com/wwwwwwzx/3DSRNGTool/blob/master/README.md#final-screen) - list of final screens before Pokemon are generated
 
 ## Step 1: Finding your seed
 

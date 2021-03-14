@@ -1,7 +1,7 @@
 ---
 title: 'Timeline Leap'
 description: "A timeline can predict Pokemon a player can obtain. Timeline leap allows a player to 'leap' onto specific timelines"
-slug: 'retail-usum-timeleap'
+slug: 'retail-sm-timeleap'
 subCategory: 'Custom Firmware'
 ---
 
@@ -60,9 +60,9 @@ You can use "Safe F Only" filter to find safe frames. You'll have to reset filte
 
 ## Step 6: Calculate the timeline leap frame
 
-1. Input the current frame you are on after confirming it is a safe frame into the starting frame in "Frame Range".
+1. After confirming your current frame is a safe frame, input it into the "Frame Range" starting frame.
 
-2. Then choose "Timeline Leap" and click on "Calculate".
+2. Choose "Timeline Leap" and click on "Calculate".
 
 3. A window will pop up with the frame you will press `A` on. This is Frame 1.
    - For Mystery Gifts this is when you press `A` on "Yes" to accept the Pokemon
@@ -75,7 +75,7 @@ Due to the inaccurate assumption of 3DSRNGTool "Frame Range" mode, Frame 2 may o
 
 1. Within the window that popped up, choosing "Yes" will allow you to check that Frame 2 still has the spread you wanted.
 
-   - Choose "No" will allow you to check if there are any other Frame 1 that can make Frame 2 have the spread you wanted.
+   - Choosing "No" will allow you to check if there are any other Frame 1 that can make Frame 2 have the spread you wanted.
 
 2. If Frame 2 does not have the spread you wanted, search for your target spread within the timeline created. (Choose "Yes" when the window pops up.)
 

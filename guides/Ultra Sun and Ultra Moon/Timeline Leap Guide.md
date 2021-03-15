@@ -50,6 +50,12 @@ Get to the screen which will trigger the timeline leap.
 - For in-game gifts and other stationary, the last dialogue will advance 1 frame.
   - If the final screen is "You received xxx", the leap screen is the 3rd or 4th to last A pressing.
 
+```
+Note: Timeline leap is not viable for wild Pokemon since there is not a way to jump between timelines when using Honey.
+
+Also, this method is not guaranteed to work with Poipole since it is unstable to RNG because of NPCs.
+```
+
 ## Step 5: Pause at a safe frame
 
 You can use "Safe F Only" filter to find safe frames. You'll have to reset filters before searching for a safe frame for results to show up.

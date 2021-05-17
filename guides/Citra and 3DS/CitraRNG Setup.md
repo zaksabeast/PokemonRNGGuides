@@ -22,7 +22,7 @@ This guide is for setting up CitraRNG on a PC. An updated CFW (Custom Firmware) 
 
 ## 3DS Preparation
 
-1. Place the `Dump_PKMN_Update.gm9` script in your 3DS sd card in sdmc:\gm9\scripts.
+1. Place the `Dump_PKMN_Update.gm9` script on your 3DS SD card in sdmc:\gm9\scripts.
 
 2. Update Godmode9 if needed by copying the `gm9` folder to your SD card.
 
@@ -82,11 +82,19 @@ Exit GodMode9 and transfer the files from sdmc:\gm9\out to your PC.
    - For macOS and Linux, the path is `~/.local/share/citra-emu/nand`
      - The folder .local is hidden on most machines, so you need to change the configuration to view it
 
+### Setting up for Gen 6 RNG
+
+In order to RNG in Gen 6 on Citra, a game patch is needed to be able to read the initial seed. This does not modify the gamecode in anyway that would result in illegal Pokemon. All the patch does is write the initial seed of the game to an unused part of memory that the script has access to later.
+
+1. You can follow [this guide](https://www.pokemonrng.com/misc-3ds-ips-luma-citra) for installing the game patch on Citra.
+
+- The patch needed is included in the CitraRNG download, within the `oras` and `xy` folders.
+
 ### Setting up CitraRNG
 
 Python 3.9 needs to be installed for CitraRNG to work. Python also needs to be added to your `PATH` or else the command will not be recognized. To add Python to your `PATH` make sure to check the box in the installer.
 
-1. Open a command prompt anywhere and type `pip install pyside2`.
+1. Open a command prompt anywhere and type `pip install pyside6`.
 
    - This may need administration privileges
 

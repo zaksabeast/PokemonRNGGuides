@@ -46,7 +46,7 @@ This method involves finding a target frame and then "leaping" onto the timeline
 
 ![](https://i.imgur.com/ro0o8yq.png)
 
-3. When you get to your frame it is time to initiate the encounter. For UBs this will be simply done by pressing "A" and for Legends you will want to hold forward and then press "A". You will want to save as close as possible to the spot that triggers the encounter (I am holding forward here when I press A to unpause).
+3. When you get to your frame it is time to initiate the encounter. For UBs this will be simply done by pressing "A" and for Legends you will want to hold forward and then press "A". You will want to save as close as possible to the spot that triggers the encounter.
 
 ![](https://i.imgur.com/TJBM800.png)
 

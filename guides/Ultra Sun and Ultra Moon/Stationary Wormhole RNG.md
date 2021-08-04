@@ -14,6 +14,10 @@ subCategory: 'Custom Firmware'
   - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
 - [3DSRNGTool README](https://github.com/wwwwwwzx/3DSRNGTool/blob/master/README.md#final-screen) - list of final screens before Pokemon are generated
 
+```
+Note: This method works for all Pokemon found within the wormholes, including Ultra Beasts.
+```
+
 ## Step 1: Finding your seed
 
 The seed is shown at the top of the overlay with the label of "Init Seed:". In the following image the seed is `5DA5CA91`.
@@ -21,6 +25,10 @@ The seed is shown at the top of the overlay with the label of "Init Seed:". In t
 ![](https://i.imgur.com/FXtylJx.png)
 
 ## Step 2: Creating a timeline and finding a target frame
+
+```
+Note: When moving forwards to initiate the encounter, it is important to be precise in how you move the joystick forwards. Try to always move it in the same direction each time for more consistent results.
+```
 
 There are two methods that can be used for RNGing Pokemon in wormholes.
 

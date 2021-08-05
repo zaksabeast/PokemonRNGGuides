@@ -1,8 +1,9 @@
 const sortedCategories = [
   'Citra and 3DS',
   'Dolphin',
-  'Ruby, Sapphire, and Emerald',
+  'Ruby and Sapphire',
   'FireRed and LeafGreen',
+  'Emerald',
   'Diamond, Pearl, and Platinum',
   'HeartGold and SoulSilver',
   'Black and White',

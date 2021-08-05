@@ -9,7 +9,7 @@ Introduction :
 
 DexNav has been for a long time been seen as a no-way RNG. But for a few months ago, a basic method has been found. After some researches and some fixes, this guide will explain how to do DexNav RNG without any TinyMT setup. 
 
-This RNG could be done in theory on a 3DS with PCalc, but I'd not recommand it at all since it relies for some luck factors like triggering an encounter or even getting the right delay. So for this guide, it'll be applied to Citra, but you still can try and apply that method with PCalc. You'll most likely need to redo it many times.
+This RNG could be done in theory on a 3DS with PCalc, but I'd not recommand it at all since it relies for some luck factors like triggering an encounter or even getting the right delay. So for this guide, it'll be applied to Citra, but you still can try and apply that method with PCalc. You'll most likely need to redo it many times. The 20 steps method is the way to go for PCalc, but it'll imply some TinyMT manipulation.
 
 Setup : 
 

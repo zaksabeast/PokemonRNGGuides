@@ -25,6 +25,10 @@ Eggs in Emerald are generated in two parts. The PID of the Pokemon is generated 
    - Take note of the order you deposit them in.
    - The first parent deposited will be Parent A, and the second parent deposited will be Parent B
 
+```
+Note: Do not give an Everstone to either parent. Everstone does not work in Emerald for breeding and will give incorrect results.
+```
+
 2. Talk to the daycare man to determine their compatibility.
 
    - This will be needed later to input into PokeFinder.
@@ -111,26 +115,21 @@ To be able to hit your target advance, the delay must be taken into account. The
 
 ### Finding your delay for PID
 
-1. Take a step on your target advance.
+1. Take a step 18 advances before your target advance.
 
-   - If no egg is generated, go back to the previous save state, advance one frame, and take another step. Repeat as needed.
+   - If no egg is generated, go back to the previous save state, and advance the game to 17 advances before your target, then take a step.
+   - If still no egg, take a step 19 advances before your target advance.
 
-2. Find what advance you hit in PokeFinder. You can do this by setting the filters to the egg you got and then looking for the PID of the egg.
-
-3. Find your delay using `Target Advance - Advance Hit = Delay`.
-
-4. Add the delay to your target advance to get the RNG Frame you need to take a step on (`Target Advance + Delay = RNG Frame to take a step on`).
-
-5. Go back to the previous save state.
-
-6. Take a step on the RNG Frame calculated from the above steps.
+```
+Note: The number from the above delay should be the same for future RNG attempts on the same save when done inside the daycare.
+```
 
 You should now have the desired PID.
 
 ![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_17.png?raw=true)
 
 ```
-Note: If the PID does not match the desired PID, check that everything is correct in PokeFinder, and follow the steps in the last section to create a new save state.
+Note: If the PID does not match the desired PID, check that everything is correct in PokeFinder. Common issues are not having all of the info correct, and not doing the steps inside the daycare.
 ```
 
 ## Part 2: RNGing for IVs
@@ -157,9 +156,9 @@ Again, delay will have to be taken into account.
 
 ### Finding your delay for IVs
 
-1. Advance to the target advance, pause, hold A, and unpause.
+1. Advance to 3 before the target advance, pause, hold A, and unpause.
 
-2. Find what advance you hit in PokeFinder. You can do this by setting the IV filters for the egg you got and then looking for the advance with matching IVs.
+2. If the IVs are not the desired ones, you can find what advance you hit in PokeFinder. You can do this by setting the IV filters for the egg you got and then looking for the advance with matching IVs.
 
 3. Find your delay using `Target Advance - Advance Hit = Delay`.
 

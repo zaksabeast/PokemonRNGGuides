@@ -14,7 +14,7 @@ subCategory: 'Emulator'
   - [x64 .dlls](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
 - Pokemon BW or BW2 .nds files (You can dump the carts yourself using a CFW 3DS with Godmode9)
 - [The Lua Scripts corresponding to your rom's language](http://pokerng.forumcommunity.net/?t=56443955)
-     - Password is `allyouneedisnoob`.
+  - Password is `allyouneedisnoob`.
 - [RunAsDate](https://runasdate.en.softonic.com/)
 
 ## Things To Know
@@ -35,33 +35,33 @@ Finding your DS Parameters is **MANDATORY**. There are no RNGs you can do withou
   - Timer0: 300-1200
   - GxStat: 6-6
   - VFrame: 0-15
-  
+
 - Unlike on consoles, DeSmuMe's DS MAC Address is always 0009BF123456.
-  
+
 ![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_4.png?raw=true)
-     
+  
 If you cannot find a seed using the above values, double check that everything is correct. If so then you can extend the values to the below:
 
-  - VCount: 0-FF
-  - Timer0: 0-FFFF
+- VCount: 0-FF
+- Timer0: 0-FFFF
 
 - As a note, using the above extended values will take a long time to search through.
 
 2. The Seed
 
-- Open runasdate and type in any time. Make sure to check the Immediate Mode. 
-- Input the same time in the DS Parameter Finder. 
+- Open runasdate and type in any time. Make sure to check the Immediate Mode.
+- Input the same time in the DS Parameter Finder.
 
 ![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_2.png?raw=true)
 
 - Now hit "Run" on runasdate and load your rom.
-- Open your lua script and do not do any keypresses. Copy the seed you get and paste it into the DS Parameters finder. 
+- Open your lua script and do not do any keypresses. Copy the seed you get and paste it into the DS Parameters finder.
 
 ![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_3.png?raw=true)
 
 - Click Search and wait for the search to finish.
-- When you get a result, click on "Send Results to Profile". 
+- When you get a result, click on "Send Results to Profile".
 
 Good luck on your future RNGS!
 
-* **Note: You may have to redo this process if you change emulation settings, saves, or redownload the emulator.**
+- **Note: You may have to redo this process if you change emulation settings, saves, or redownload the emulator.**

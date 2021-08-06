@@ -117,12 +117,17 @@ To be able to hit your target advance, the delay must be taken into account. The
 
 1. Take a step 18 advances before your target advance.
 
-   - If no egg is generated, go back to the previous save state, and advance the game to 17 advances before your target, then take a step.
-   - If still no egg, take a step 19 advances before your target advance.
+   - If no egg is generated, continue on to find your delay.
 
-```
-Note: The number from the above delay should be the same for future RNG attempts on the same save when done inside the daycare.
-```
+2. Find what advance you hit in PokeFinder. You can do this by setting the filters to the egg you got and then looking for the PID of the egg.
+
+3. Find your delay using `Target Advance - Advance Hit = Delay`.
+
+4. Add the delay to your target advance to get the RNG Frame you need to take a step on (`Target Advance + Delay = RNG Frame to take a step on`).
+
+5. Go back to the previous save state.
+
+6. Take a step on the RNG Frame calculated from the above steps.
 
 You should now have the desired PID.
 

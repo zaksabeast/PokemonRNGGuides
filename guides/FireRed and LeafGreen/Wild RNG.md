@@ -1,6 +1,6 @@
 ---
 title: 'Wild RNG'
-description: 'RNG for Pokemon encountered in the wild in FireRed/LeafGreen'
+description: 'RNG for Pokemon encountered in the wild using Sweet Scent in FireRed/LeafGreen'
 slug: 'emulator-frlg-wild'
 subCategory: 'Emulator'
 ---
@@ -23,19 +23,25 @@ Note: If you are doing this RNG for a shiny, make sure to have set up a profile 
 
 2. Have "Method" set to Method H-1.
 
+```
+Note: While there are other methods in FireRed/LeafGreen, H-1 is the most common and is the one recommended to use. The other methods rely on v-blank and rarely occur.
+```
+
 3. Set the "Location" to the location where the RNG will take place.
+   
+4. If you want a specific Pokemon you can select it in "Pokemon" after selecting its location.
+   - If the Pokemon you are wanting is not in the list, or you are going for a specific encounter slot, you can instead choose the number in the "Encounter Slot" box and leave "Pokemon" at the default.
+   - You can use [this site](https://sites.google.com/site/pokemonslots/gen-iii/emerald) to find a specific encounter slot.
 
-   - If you want a specific Pokemon you can select it in "Pokemon" after selecting its location.
+5. "Encounter" should be set to "Grass" or "Surfing" since this guide is focusing on using Sweet Scent to start an encounter.
 
-4. "Encounter" should be set to "Grass" or "Surfing" since this guide is focusing on using Sweet Scent to start an encounter.
-
-5. If using a lead Pokemon with Synchronize or Cute Charm set these as well.
-
-   - To set a Cute Charm lead click on Synchronize to switch to Cute Charm.
+```
+Note: For "Lead" leave it as "Any" since Cute Charm and Synchronize do not work in FireRed/LeafGreen.
+```
 
 6. Check the "Use Delay" box and input the delay for the Pokemon you are RNGing.
-   - For routes, the delay is 256.
-   - For caves, the delay is 263.
+   - This [Google Doc](https://docs.google.com/spreadsheets/d/1cVweVvJXCXeTZOBVKVCBbcSI46rqBXV3ahbuoSGOnzk/edit#gid=1091733147) has the delays for each area.
+   - Keep in mind there could still be a variation of +/- 1 delay. 
 
 ## Step 3: Finding the initial seed
 
@@ -81,12 +87,14 @@ Note: The initial seed can be changed by pressing B on the continue screen to pl
 2. Advance to within a few thousand advances of the target advance.
 
 ```
-Note: Teachy TV can be used to advance much, much faster. Open the Teachy TV in Key Items and then close it when a few thousand away from your target advance.
+Note: Teachy TV can be used to advance much, much faster. The RNG advances 318 times faster, and so you can advance millions of frames in a few minutes.
+
+You can advance the RNG by opening the Teachy TV in Key Items and then closing it when a few thousand away from your target advance.
 ```
 
 3. Open your Trainer Card and press `A` to flip it.
 
-   - This resets your delay for more consistent delays since delays can be off after many advances.
+   - The use of flipping the Trainer Card is to reset the delay, which becomes more off the more advances that have been done.
 
 4. Select the Pokemon in your party with Sweet Scent and hover over the move.
 

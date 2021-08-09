@@ -87,7 +87,7 @@ Note: The initial seed can be changed by pressing B on the continue screen to pl
 2. Advance to within a few thousand advances of the target advance.
 
 ```
-Note: Teachy TV can be used to advance much, much faster. The RNG advances over 300 times faster, and so you can advance millions of frames in a few minutes.
+Note: Teachy TV can be used to advance much, much faster. The RNG advances 318 times faster, and so you can advance millions of frames in a few minutes.
 
 You can advance the RNG by opening the Teachy TV in Key Items and then closing it when a few thousand away from your target advance.
 ```

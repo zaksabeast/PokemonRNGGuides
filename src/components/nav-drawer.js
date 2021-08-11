@@ -12,7 +12,7 @@ import { useGuideList } from '../utils/use-guide-list';
 import { sortCategories } from '../utils/sort-categories';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: 250,
   },
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ListItem = props => {
+const ListItem = (props) => {
   return (
     <li>
       <MUIListItem component={Link} {...props} />
@@ -39,7 +39,7 @@ export const NavDrawer = ({ isOpen, onClose }) => {
   const classes = useStyles();
   const guides = useGuideList();
   const sortedGuideList = Object.keys(guides).sort(sortCategories);
-  const guideCategories = sortedGuideList.map(category => {
+  const guideCategories = sortedGuideList.map((category) => {
     const toUrl = `/${kebabCase(category)}`;
     return (
       <ListItem to={toUrl} key={category} role="link" button>

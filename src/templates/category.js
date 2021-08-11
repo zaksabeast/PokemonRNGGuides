@@ -20,7 +20,7 @@ const CategoryTemplate = ({ data, pageContext }) => {
 
   const content = Object.keys(organizedGuides)
     .sort()
-    .map(subCategory => (
+    .map((subCategory) => (
       <GuideList
         key={subCategory}
         subCategoryTitle={subCategory}
@@ -34,7 +34,7 @@ const CategoryTemplate = ({ data, pageContext }) => {
 export default CategoryTemplate;
 
 export const query = graphql`
-  query($categoryRegex: String!) {
+  query ($categoryRegex: String!) {
     allMdx(filter: { fields: { pagePath: { regex: $categoryRegex } } }) {
       nodes {
         frontmatter {

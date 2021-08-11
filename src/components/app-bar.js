@@ -7,7 +7,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.modal + 1,
   },

@@ -8,7 +8,7 @@ import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import { PixelImage } from './pixel-image';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   h2: {
     marginTop: theme.spacing(7),
   },
@@ -38,9 +38,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const H1 = props => <Typography variant="h1" {...props} />;
+const H1 = (props) => <Typography variant="h1" {...props} />;
 
-const H2 = props => {
+const H2 = (props) => {
   const classes = useStyles();
   return (
     <Typography
@@ -53,7 +53,7 @@ const H2 = props => {
   );
 };
 
-const H3 = props => {
+const H3 = (props) => {
   const classes = useStyles();
   return (
     <Typography
@@ -66,24 +66,24 @@ const H3 = props => {
   );
 };
 
-const Pre = props => {
+const Pre = (props) => {
   const classes = useStyles();
   return <Paper className={classes.pre} variant="outlined" {...props} />;
 };
 
-const UnorderedList = props => {
+const UnorderedList = (props) => {
   const classes = useStyles();
   return <Typography component="ul" className={classes.ul} {...props} />;
 };
 
-const ListItem = props => {
+const ListItem = (props) => {
   const classes = useStyles();
   return <Typography component="li" className={classes.li} {...props} />;
 };
 
-const TableHead = props => <TableCell variant="head" {...props} />;
+const TableHead = (props) => <TableCell variant="head" {...props} />;
 
-const Paragraph = props => {
+const Paragraph = (props) => {
   const classes = useStyles();
   return <Typography className={classes.p} {...props} />;
 };

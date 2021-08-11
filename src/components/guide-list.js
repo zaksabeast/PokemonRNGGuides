@@ -8,7 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import IconButton from '@material-ui/core/IconButton';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   guideInfo: {
     display: 'flex',
     paddingTop: theme.spacing(6),
@@ -23,13 +23,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const getGuideTitleId = slug => `guide-${slug}-title`;
-const getGuideDescriptionId = slug => `guide-${slug}-description`;
+const getGuideTitleId = (slug) => `guide-${slug}-title`;
+const getGuideDescriptionId = (slug) => `guide-${slug}-description`;
 
 export const GuideList = ({ subCategoryTitle, guides }) => {
   const classes = useStyles();
 
-  const guideList = guides.map(guide => {
+  const guideList = guides.map((guide) => {
     const { title, slug, description } = guide.frontmatter;
     const guideTitleId = getGuideTitleId(slug);
     const guideDescriptionId = getGuideDescriptionId(slug);

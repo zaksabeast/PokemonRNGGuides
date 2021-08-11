@@ -8,7 +8,7 @@ import GithubIcon from 'mdi-material-ui/Github';
 import DiscordIcon from 'mdi-material-ui/Discord';
 import { DISCORD_URL, GITHUB_URL } from '../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   copyrightText: {
     height: '3rem',
     backgroundColor: theme.palette.primary.main,

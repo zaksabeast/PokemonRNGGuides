@@ -21,7 +21,7 @@
     "@mdx-js/mdx": "^1.6.16",
     "@mdx-js/react": "^1.6.16",
     "gatsby": "^3.0.0",
-    "gatsby-plugin-google-analytics": "^3.0.0",
+    "gatsby-plugin-gtag": "^1.0.13",
     "gatsby-plugin-html-attributes": "^1.0.5",
     "gatsby-plugin-material-ui": "^3.0.0",
     "gatsby-plugin-mdx": "^2.0.0",

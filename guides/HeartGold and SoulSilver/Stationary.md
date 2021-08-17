@@ -1,7 +1,7 @@
 ---
 title: 'Stationary'
 description: 'Specificities of Stationary in HGSS' 
-slug: 'hgss-stationary
+slug: 'hgss-stationary'
 subCategory: 'RNG Knowledge'
 ---
 

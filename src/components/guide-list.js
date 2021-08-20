@@ -7,6 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import IconButton from '@material-ui/core/IconButton';
+import orderBy from 'lodash/orderBy';
 
 const useStyles = makeStyles(theme => ({
   guideInfo: {
@@ -29,7 +30,9 @@ const getGuideDescriptionId = slug => `guide-${slug}-description`;
 export const GuideList = ({ subCategoryTitle, guides }) => {
   const classes = useStyles();
 
-  const guideList = guides.map(guide => {
+  const orderedGuides = orderBy(guides, guide => guide.frontmatter.title);
+
+  const guideList = orderedGuides.map(guide => {
     const { title, slug, description } = guide.frontmatter;
     const guideTitleId = getGuideTitleId(slug);
     const guideDescriptionId = getGuideDescriptionId(slug);

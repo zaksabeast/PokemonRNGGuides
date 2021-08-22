@@ -9,7 +9,7 @@ import '../styles/global.css';
 
 const DRAWER_WIDTH = 240;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     minHeight: '100vh',
     display: 'flex',

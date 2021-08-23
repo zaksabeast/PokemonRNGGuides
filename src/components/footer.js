@@ -7,15 +7,17 @@ import ListItem from '@material-ui/core/ListItem';
 import GithubIcon from 'mdi-material-ui/Github';
 import DiscordIcon from 'mdi-material-ui/Discord';
 import { DISCORD_URL, GITHUB_URL } from '../constants';
+import { useStaticQuery, graphql } from 'gatsby';
 
 const useStyles = makeStyles(theme => ({
   copyrightText: {
-    height: '3rem',
+    height: '2rem',
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: '5px'
   },
   navigation: {
     backgroundColor: theme.palette.primary.light,
@@ -35,6 +37,14 @@ const useStyles = makeStyles(theme => ({
 
 export const Footer = () => {
   const classes = useStyles();
+  const data = useStaticQuery(graphql`
+    query {
+      gitCommit(latest: { eq: true }) {
+      hash
+      date
+  }
+}
+  `)
   return (
     <footer>
       <nav className={classes.navigation}>
@@ -64,8 +74,9 @@ export const Footer = () => {
         </List>
       </nav>
       <div className={classes.copyrightText}>
-        <Typography align="center" variant="body2">
-          © 2020 PokemonRNG.com
+        <Typography align="center" variant="caption">
+          © 2021, PokemonRNG.com {" "}| Build: {data.gitCommit.hash.substring(0, 8)}{" "}
+            ({new Date(data.gitCommit.date).toLocaleDateString()})
         </Typography>
       </div>
     </footer>

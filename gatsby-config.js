@@ -41,5 +41,6 @@ module.exports = {
     },
     'gatsby-plugin-material-ui',
     'gatsby-plugin-react-helmet',
+    'gatsby-source-local-git'
   ],
 };

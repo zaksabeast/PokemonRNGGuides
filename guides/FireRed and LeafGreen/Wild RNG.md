@@ -28,8 +28,8 @@ Note: While there are other methods in FireRed/LeafGreen, H-1 is the most common
 ```
 
 3. Set the "Location" to the location where the RNG will take place.
-   
 4. If you want a specific Pokemon you can select it in "Pokemon" after selecting its location.
+
    - If the Pokemon you are wanting is not in the list, or you are going for a specific encounter slot, you can instead choose the number in the "Encounter Slot" box and leave "Pokemon" at the default.
    - You can use [this site](https://sites.google.com/site/pokemonslots/gen-iii/emerald) to find a specific encounter slot.
 
@@ -41,7 +41,7 @@ Note: For "Lead" leave it as "Any" since Cute Charm and Synchronize do not work 
 
 6. Check the "Use Delay" box and input the delay for the Pokemon you are RNGing.
    - This [Google Doc](https://docs.google.com/spreadsheets/d/1cVweVvJXCXeTZOBVKVCBbcSI46rqBXV3ahbuoSGOnzk/edit#gid=1091733147) has the delays for each area.
-   - Keep in mind there could still be a variation of +/- 1 delay. 
+   - Keep in mind there could still be a variation of +/- 1 delay.
 
 ## Step 3: Finding the initial seed
 

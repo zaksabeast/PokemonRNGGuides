@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '5px'
+    padding: '5px',
   },
   navigation: {
     backgroundColor: theme.palette.primary.light,
@@ -40,11 +40,11 @@ export const Footer = () => {
   const data = useStaticQuery(graphql`
     query {
       gitCommit(latest: { eq: true }) {
-      hash
-      date
-  }
-}
-  `)
+        hash
+        date
+      }
+    }
+  `);
   return (
     <footer>
       <nav className={classes.navigation}>
@@ -75,8 +75,8 @@ export const Footer = () => {
       </nav>
       <div className={classes.copyrightText}>
         <Typography align="center" variant="caption">
-          © 2021, PokemonRNG.com {" "}| Build: {data.gitCommit.hash.substring(0, 8)}{" "}
-            ({new Date(data.gitCommit.date).toLocaleDateString()})
+          © 2021, PokemonRNG.com | Build: {data.gitCommit.hash.substring(0, 8)}{' '}
+          ({new Date(data.gitCommit.date).toLocaleDateString()})
         </Typography>
       </div>
     </footer>

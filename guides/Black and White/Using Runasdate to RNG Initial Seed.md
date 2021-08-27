@@ -32,7 +32,8 @@ Note: You'll never have to change that after. This is the universal RunAsDate co
 3. Select the program you want to fake the date/time, with the "Browse..." button.
 4. Set the date and time to one of the given dates and times in PokeFinder to hit your seed.
 5. After that, just hit "Run" and your desmume should be launched.
-6. Desmume should now be running with the date and time you chose.
+
+Desmume should now be running with the date and time you chose.
 
 ## Step 2: Hitting the target seed
 

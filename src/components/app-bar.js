@@ -5,9 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import Badge from '@material-ui/core/Badge';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import { Notifications } from './notifications';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -51,7 +50,7 @@ export const AppBar = ({ toggleDrawer, ...props }) => {
           <Typography variant="h6" className={classes.title}>
             Pokemon RNG
           </Typography>
-          <IconButton color="inherit"><Badge badgeContent={1} color="secondary"><NotificationsIcon /></Badge></IconButton>
+          <Notifications />
         </Toolbar>
       </MUIAppBar>
     </ElevationScroll>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Badge from '@material-ui/core/Badge';
@@ -47,12 +47,24 @@ export const Notifications = () => {
   const [open, setOpen] = React.useState(false);
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
+  const [badgeCount, setBadgeCount] = React.useState(0);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
     setTooltipOpen(false);
     document.cookie = `lastSeenNotification=${messageList[0].id};path=/;max-age=31536000`;
+    setBadgeCount(0);
   };
+
+  useEffect(() => {
+    const count = messageList.reduce(
+      (count, message) =>
+        message.id > lastSeenNotification ? count + 1 : count,
+      0,
+    );
+
+    setBadgeCount(count);
+  }, []);
 
   return (
     <React.Fragment>
@@ -75,14 +87,7 @@ export const Notifications = () => {
           aria-haspopup="true"
           aria-label={'toggleNotifications'}
         >
-          <Badge
-            badgeContent={messageList.reduce(
-              (count, message) =>
-                message.id > lastSeenNotification ? count + 1 : count,
-              0,
-            )}
-            color="secondary"
-          >
+          <Badge badgeContent={badgeCount} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>

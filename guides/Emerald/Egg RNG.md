@@ -1,6 +1,6 @@
 ---
-title: 'Emerald Egg RNG'
-description: 'RNG Eggs in Emerald'
+title: 'Egg RNG'
+description: 'Guide for RNGing Eggs from the Daycare'
 slug: 'emulator-emerald-egg'
 subCategory: 'Emulator'
 ---

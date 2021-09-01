@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Badge from '@material-ui/core/Badge';
@@ -13,6 +13,8 @@ import Grow from '@material-ui/core/Grow';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import messages from '../../notifications.json';
+import orderBy from 'lodash/orderBy';
+import filter from 'lodash/filter';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,39 +34,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getCookie(name) {
-  const regex = new RegExp(`(?:(?:^|.*;*)${name}*=*([^;]*).*$)|^.*$`);
-  return document.cookie.replace(regex, '$1');
-}
-
-const lastSeen = getCookie('lastSeenNotification');
-const lastSeenNotification = lastSeen === '' ? 0 : parseInt(lastSeen, 10);
-const messageList = messages.reverse();
+const isBrowser = typeof window !== 'undefined';
+const storageItem = isBrowser
+  ? localStorage.getItem('lastSeenNotification')
+  : null;
+const lastSeenNotification = storageItem ?? '2000-1-1';
+const messageList = orderBy(messages, ['date'], ['desc']);
+const count = filter(messageList, (message) => {
+  return message.date > lastSeenNotification;
+}).length;
 
 export const Notifications = () => {
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(false);
+  const [openPopper, setOpenPopper] = React.useState(false);
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const [badgeCount, setBadgeCount] = React.useState(0);
+  const [badgeCount, setBadgeCount] = React.useState(count);
 
   const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
+    setOpenPopper((prevOpenPopper) => !prevOpenPopper);
     setTooltipOpen(false);
-    document.cookie = `lastSeenNotification=${messageList[0].id};path=/;max-age=31536000`;
+    localStorage.setItem('lastSeenNotification', messageList[0].date);
     setBadgeCount(0);
   };
-
-  useEffect(() => {
-    const count = messageList.reduce(
-      (count, message) =>
-        message.id > lastSeenNotification ? count + 1 : count,
-      0,
-    );
-
-    setBadgeCount(count);
-  }, []);
 
   return (
     <React.Fragment>
@@ -83,7 +76,7 @@ export const Notifications = () => {
           color="inherit"
           onClick={handleToggle}
           ref={anchorRef}
-          aria-controls={open ? 'notifications-popup' : undefined}
+          aria-controls={openPopper ? 'notifications-popup' : undefined}
           aria-haspopup="true"
           aria-label={'toggleNotifications'}
         >
@@ -94,7 +87,7 @@ export const Notifications = () => {
       </Tooltip>
       <Popper
         id="notifications-popup"
-        open={open}
+        open={openPopper}
         placement="bottom-start"
         transition
         anchorEl={anchorRef.current}
@@ -103,14 +96,14 @@ export const Notifications = () => {
         {({ TransitionProps }) => (
           <ClickAwayListener
             onClickAway={() => {
-              setOpen(false);
+              setOpenPopper(false);
             }}
           >
-            <Grow in={open} {...TransitionProps}>
+            <Grow in={openPopper} {...TransitionProps}>
               <Paper className={classes.paper}>
                 <List className={classes.list}>
                   {messageList.map((message, index) => (
-                    <React.Fragment key={message.id}>
+                    <React.Fragment key={message.title}>
                       <ListItem
                         alignItems="flex-start"
                         className={classes.listItem}

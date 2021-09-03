@@ -1,5 +1,5 @@
 ---
-title: 'Dead Battery TID RNG'
+title: 'Dead Battery TID/SID RNG'
 description: 'Get that special TID/SID combo'
 slug: 'emulator-rs-dead-battery-tid'
 subCategory: 'Emulator'

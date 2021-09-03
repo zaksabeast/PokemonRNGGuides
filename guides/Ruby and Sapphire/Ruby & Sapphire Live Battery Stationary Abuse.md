@@ -1,6 +1,6 @@
 ---
-title: 'Live Battery Stationary Abuse (Ruby/Sapphire)'
-description: 'Enjoy shiny 6 IV legends from Gen 3'
+title: 'Live Battery Stationary RNG'
+description: 'RNG shiny 6IV legends with more options'
 slug: 'emulator-rs-stationary'
 subCategory: 'Emulator'
 ---

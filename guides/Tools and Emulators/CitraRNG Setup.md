@@ -2,7 +2,7 @@
 title: 'CitraRNG Setup'
 description: 'Setup Citra for RNG'
 slug: 'citrarng-setup'
-subCategory: 'Emulator'
+subCategory: '3DS'
 ---
 
 This guide is for setting up CitraRNG on a PC. An updated CFW (Custom Firmware) console is required to be able to dump system specific information and game data. The console also needs to have the latest game update installed to be dumped.

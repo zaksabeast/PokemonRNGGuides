@@ -1,6 +1,6 @@
 ---
 title: 'Live Battery Stationary RNG'
-description: 'RNG stationary Pokemon with more options by changing the date and time'
+description: 'RNG stationary Pokemon with more options than dead battery'
 slug: 'emulator-rs-stationary'
 subCategory: 'Emulator'
 ---

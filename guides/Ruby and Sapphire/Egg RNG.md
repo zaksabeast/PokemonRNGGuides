@@ -1,6 +1,6 @@
 ---
 title: 'Egg RNG'
-description: 'RNG Eggs from the daycare'
+description: 'RNG Eggs from the Daycare'
 slug: 'emulator-rs-egg'
 subCategory: 'Emulator'
 ---

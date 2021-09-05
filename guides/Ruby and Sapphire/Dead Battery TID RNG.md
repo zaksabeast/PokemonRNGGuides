@@ -1,6 +1,6 @@
 ---
 title: 'Dead Battery TID/SID RNG'
-description: 'RNG for a specific TID/SID combination with less options by not changing the date and time'
+description: 'RNG for a specific TID/SID combination with less options than live battery'
 slug: 'emulator-rs-dead-battery-tid'
 subCategory: 'Emulator'
 ---

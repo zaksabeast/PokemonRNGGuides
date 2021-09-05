@@ -2,7 +2,7 @@
 title: 'Connecting Dolphin to VBA'
 description: 'RNG a Jirachi or transfer your RNGs to a GBA game'
 slug: 'misc-dolphin-connect-vba'
-subCategory: 'Emulator'
+subCategory: 'Gamecube'
 ---
 
 ```

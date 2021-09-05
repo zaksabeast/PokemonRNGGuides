@@ -1,6 +1,6 @@
 const sortedCategories = [
-  'Citra and 3DS',
-  'Dolphin',
+  'Tools and Emulators',
+  'Transporter',
   'Ruby and Sapphire',
   'FireRed and LeafGreen',
   'Emerald',

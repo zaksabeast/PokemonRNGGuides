@@ -12,7 +12,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
-import messages from '../../notifications.json';
+import messages from '../notifications.json';
 import orderBy from 'lodash/orderBy';
 import filter from 'lodash/filter';
 

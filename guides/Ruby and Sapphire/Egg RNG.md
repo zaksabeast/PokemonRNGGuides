@@ -1,6 +1,6 @@
 ---
-title: 'Ruby/Sapphire Egg RNG'
-description: 'RNG Eggs in Ruby/Sapphire'
+title: 'Egg RNG'
+description: 'RNG Eggs from the daycare'
 slug: 'emulator-rs-egg'
 subCategory: 'Emulator'
 ---

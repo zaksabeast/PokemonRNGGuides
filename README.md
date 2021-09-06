@@ -8,7 +8,7 @@ Please contribute all guides to the `guides` directory.
 
 You'll need to have node and yarn installed.
 
-Run `yarn` to install the dependencies and `yarn start` to have a devlopment server start.
+Run `yarn` to install the dependencies and `yarn start` to have a development server start.
 
 To build a production version of the site, use `yarn build`. To serve the production build, run `yarn serve`.
 

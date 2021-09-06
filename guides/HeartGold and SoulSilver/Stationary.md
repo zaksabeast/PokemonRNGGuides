@@ -1,5 +1,5 @@
 ---
-title: 'Stationary'
+title: 'a) Stationary'
 description: 'Specificities of Stationary in HGSS' 
 slug: 'hgss-stationary'
 subCategory: 'RNG Knowledge'

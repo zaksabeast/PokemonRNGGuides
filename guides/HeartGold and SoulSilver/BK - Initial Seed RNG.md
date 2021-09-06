@@ -1,7 +1,7 @@
 ---
 title: '3) Initial Seed RNG'
 description: 'How to control Gen 4 initial seeds without any difficulty with Runasdate or the Record video option'
-slug: 'emulator-hgss-initial-seed'
+slug: 'hgss-initial-seed'
 subCategory: 'Basic Knowledge'
 ---
 

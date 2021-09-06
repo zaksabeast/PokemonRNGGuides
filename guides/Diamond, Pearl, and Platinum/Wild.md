@@ -1,7 +1,7 @@
 ---
 title: 'b) Wild'
 description: 'Specificities about Wild Pokemon in HGSS'
-slug: 'hgss-wild'
+slug: 'dppt-wild'
 subCategory: 'RNG Knowledge'
 ---
 
@@ -11,9 +11,5 @@ Going for details on wild. Maybe adding the tables in case.
 
 Explaining leads
 Explaining Fishing
-Explaining Rock Smash
-Explaining Bug Contest / Safari Zone (1IVs rule)
-
-Explaining Sweet Scent Less ?
-
-And we're pretty much good ?
+Explaining Honey
+Explaining Great Marsh

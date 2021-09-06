@@ -1,5 +1,5 @@
 ---
-title: 'Egg RNG Guide'
+title: 'c) Egg RNG Guide'
 description: 'How to RNG eggs from the daycare'
 slug: 'hgss-egg'
 subCategory: 'Emulator'

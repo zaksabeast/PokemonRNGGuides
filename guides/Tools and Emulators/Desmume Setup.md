@@ -10,7 +10,9 @@ This guide is for setting up Desmume on a PC. An updated CFW (Custom Firmware) c
 ## Tools
 
 - [Desmume v0.9.11](https://sourceforge.net/projects/desmume/files/desmume/0.9.11/)
-- [Lua dlls](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0#)
+- Lua dlls
+  - [64-bit](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0#)
+  - [32-bit](https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
 - [Lua Scripts](https://github.com/DevonStudios/LuaScripts)
 - A 3DS with CFW (Custom Firmware)
   - https://3ds.hacks.guide/ has instructions for installing CFW
@@ -33,6 +35,7 @@ This guide is for setting up Desmume on a PC. An updated CFW (Custom Firmware) c
 ## Setting up Desmume
 
 1. Download both Desmume and the lua dlls.
+   - You'll need either the 32-bit or the 64-bit dlls depending on which Desmume version you have (win32 or win64).
 2. Place both dlls into the same folder as the Desmume executable.
 3. Download the lua script for your game version.
 4. Open Desmume, then under `File` choose `Open ROM`.

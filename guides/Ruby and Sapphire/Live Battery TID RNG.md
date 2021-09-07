@@ -1,7 +1,7 @@
 ---
-title: 'Live battery TID Abuse'
-description: 'The harder way to get that special TID/SID combo with more options'
-slug: 'emulator-rse-live-battery-tid'
+title: 'Live Battery TID/SID RNG'
+description: 'RNG for a specific TID/SID combination with more options than dead battery'
+slug: 'emulator-rs-live-battery-tid'
 subCategory: 'Emulator'
 ---
 

@@ -6,44 +6,41 @@ subCategory: 'Emulator'
 ---
 
 ```
-Note: Important note: This guide assumes that you have found your Target Seed, and that you know how to search for the wanted Seed. This guide is just explaining how to hit your Seed. It is necessary to have your target seed before following this guide.
+Note: This guide assumes that you have found your target seed. It is necessary to have your target seed before following this guide.
 ```
 
 ## Tools
 
-- [RunAsDate](https://www.nirsoft.net/utils/run_as_date.html) : Take care to choose the right version (32 or 64 bits) for your computer.
-- [Lua Scripts for Gen 5](http://pokerng.forumcommunity.net/?t=56443955&p=396434991)
-
-```
-Note: This guide assumes you have an initial seed you'd like to hit already.
-```
+- [RunAsDate](https://www.nirsoft.net/utils/run_as_date.html)
+  - Take care to choose the right version (32 or 64 bits) for your computer.
+- [Lua Scripts for Gen 5](https://pokerng.forumcommunity.net/?t=56394378)
 
 ### What is RunAsDate?
 
-RunAsDate is a tool developed by nirsoft that allows any program to load with a set time specified by the user. This tool is really usefull for Gen 4 RNG, and can be your best ally in order to hit your Seed without too much difficulty. Of course there are other ways, but this guide will only focus on RunAsDate.
+RunAsDate is a tool developed by nirsoft that allows any program to load with a set time specified by the user. This tool is really useful for Gen 5 RNG, and can be your best ally in order to hit your Seed without too much difficulty. Of course there are other ways, but this guide will only focus on RunAsDate.
 
 ## Step 1: Setup RunAsDate
 
-1. Launch RunAsDate
-2. Configure RunAsDate to look like the image below
+1. Launch RunAsDate.
+2. Configure RunAsDate to look like the image below.
    ![](https://i.imgur.com/HeUoPmv.png)
 
 ```
 Note: You'll never have to change that after. This is the universal RunAsDate configuration for RNG (Gen 3, 4 or 5), so you're almost done!
 ```
 
-3. Select the program you want to fake the date/time, with the "Browse..." button
-4. Set the day/time you've got in order to hit your seed
+3. Select the program you want to fake the date/time, with the "Browse..." button.
+4. Set the date and time to one of the given dates and times in PokeFinder to hit your seed.
 5. After that, just hit "Run" and your desmume should be launched.
+
+Desmume should now be running with the date and time you chose.
 
 ## Step 2: Hitting the target seed
 
-Desmume is now running with the faked time.
-
 1. Load the lua script.
-2. Load your gaem.
+2. Load your game.
 3. Do any necessary keypress(es) required to hit your target seed.
-4. There's nothing more to do, you can just continue as any basic any RNG!
+4. There's nothing more to do, you can just continue as any basic RNG!
 
 ## Troubleshooting
 

@@ -1,7 +1,7 @@
 ---
-title: 'How to RNG Shiny WISHMKR Jirachi using wishmaker-calc'
-description: 'Unlimited Shiny Jirachis'
-slug: 'emulator-rse-wishmaker'
+title: 'Shiny WISHMKR Jirachi RNG using wishmaker-calc'
+description: 'RNG Jirachi from the Colosseum bonus disc'
+slug: 'emulator-rs-wishmaker'
 subCategory: 'Emulator'
 ---
 

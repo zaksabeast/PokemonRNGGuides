@@ -2,7 +2,7 @@
 title: 'NTR Helper Usage'
 description: 'How to use the NTR Helper Tool in 3DSRNGTool'
 slug: 'ntr-helper-usage'
-subCategory: 'Custom Firmware'
+subCategory: '3DS'
 ---
 
 ```

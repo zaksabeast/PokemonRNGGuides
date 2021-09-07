@@ -1,7 +1,7 @@
 ---
 title: 'Transporter with PCalc'
 description: 'Transfer your Gen 1/2 Pokemon to always be 6IV'
-slug: 'transporter'
+slug: 'transporter-rng'
 subCategory: 'Custom Firmware'
 ---
 

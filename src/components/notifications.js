@@ -2,7 +2,6 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Badge from '@material-ui/core/Badge';
-import Tooltip from '@material-ui/core/Tooltip';
 import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
@@ -24,30 +23,17 @@ const count = filter(messageList, (message) => {
 export const Notifications = () => {
 
   const [openPopper, setOpenPopper] = React.useState(false);
-  const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [badgeCount, setBadgeCount] = React.useState(count);
 
   const handleToggle = () => {
     setOpenPopper((prevOpenPopper) => !prevOpenPopper);
-    setTooltipOpen(false);
     localStorage.setItem('lastSeenNotification', messageList[0].date);
     setBadgeCount(0);
   };
 
   return (
     <React.Fragment>
-      <Tooltip
-        open={tooltipOpen}
-        onOpen={() => {
-          setTooltipOpen(!open);
-        }}
-        onClose={() => {
-          setTooltipOpen(false);
-        }}
-        title={'Toggle Notifications'}
-        enterDelay={300}
-      >
         <IconButton
           color="inherit"
           onClick={handleToggle}
@@ -60,7 +46,6 @@ export const Notifications = () => {
             <NotificationsIcon />
           </Badge>
         </IconButton>
-      </Tooltip>
       <Popper
         id="notifications-popup"
         open={openPopper}

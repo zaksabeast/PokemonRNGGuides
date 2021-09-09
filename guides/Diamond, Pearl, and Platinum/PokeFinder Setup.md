@@ -38,6 +38,8 @@ Here you can also select the profile you will be using through the dropdown besi
 
 For most RNG processes, you will begin with the "Searcher" tab to find an initial seed, and then use the "Generator" tab with the initial seed found to RNG the Pokemon.
 
+![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_26.png?raw=true)
+
 ### Searcher
 
 1. Navigate to the "Searcher" tab and select the correct method or encounter based on what you are RNGing.

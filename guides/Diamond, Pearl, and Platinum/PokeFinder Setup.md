@@ -17,6 +17,8 @@ PokeFinder has the ability to set up profiles for each of your individual saves.
 2. Click on "New" in the Profile section, then fill in your details like TID, SID, and the game version you are using.
    - This will only have to be done once for each profile you set up.
 
+![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_25.png?raw=true)
+
 ## Menu Options
 
 In the opening screen of PokeFinder there are options for which type of RNG you are doing. You will want to pick the correct one for the Pokemon you are going to RNG.
@@ -25,6 +27,8 @@ In the opening screen of PokeFinder there are options for which type of RNG you 
 - [Wild] - for Pokemon found in the wild, such as grass, surfing, etc
 - [Egg] - for Pokemon eggs collected from the daycare
 - [TID/SID] - for finding a specific TID/SID to RNG
+
+![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_23.png?raw=true)
 
 ## Generator and Searcher
 
@@ -47,6 +51,8 @@ For most RNG processes, you will begin with the "Searcher" tab to find an initia
 6. Right click on the seed and choose "Generate times for seed".
 
 The "Gen 4 Seed to Time" window should open and display the dates, times, and delays needed to RNG the initial seed. These will be used with the [Initial Seed RNG Guide].
+
+![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_24.png?raw=true)
 
 ### Generator
 

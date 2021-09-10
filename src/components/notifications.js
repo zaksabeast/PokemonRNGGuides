@@ -22,33 +22,33 @@ const count = filter(messageList, (message) => {
 
 export const Notifications = () => {
 
-  const [openPopper, setOpenPopper] = React.useState(false);
+  const [isPopperOpen, setPopperOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [badgeCount, setBadgeCount] = React.useState(count);
 
   const handleToggle = () => {
-    setOpenPopper((prevOpenPopper) => !prevOpenPopper);
+    setPopperOpen((prevPopperOpen) => !prevPopperOpen);
     localStorage.setItem('lastSeenNotification', messageList[0].date);
     setBadgeCount(0);
   };
 
   return (
     <React.Fragment>
-        <IconButton
-          color="inherit"
-          onClick={handleToggle}
-          ref={anchorRef}
-          aria-controls={openPopper ? 'notifications-popup' : undefined}
-          aria-haspopup="true"
-          aria-label={'toggleNotifications'}
-        >
-          <Badge badgeContent={badgeCount} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
+      <IconButton
+        color="inherit"
+        onClick={handleToggle}
+        ref={anchorRef}
+        aria-controls={isPopperOpen ? 'notifications-popup' : undefined}
+        aria-haspopup="true"
+        aria-label="toggleNotifications"
+      >
+        <Badge badgeContent={badgeCount} color="secondary">
+          <NotificationsIcon />
+        </Badge>
+      </IconButton>
       <Popper
         id="notifications-popup"
-        open={openPopper}
+        open={isPopperOpen}
         placement="bottom-start"
         transition
         anchorEl={anchorRef.current}
@@ -57,10 +57,10 @@ export const Notifications = () => {
         {({ TransitionProps }) => (
           <ClickAwayListener
             onClickAway={() => {
-              setOpenPopper(false);
+              setPopperOpen(false);
             }}
           >
-            <Grow in={openPopper} {...TransitionProps}>
+            <Grow in={isPopperOpen} {...TransitionProps}>
               <NotificationList messageList={messageList} />
             </Grow>
           </ClickAwayListener>

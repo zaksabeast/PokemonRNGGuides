@@ -16,9 +16,13 @@ Chatot / Radio / Walking etc you get the idea ?
 
 ## Radio
 
-Switching channels advances the RNG. Oak's channel advances between 14-18, other channel 0-1. Helps for larger advances for both emulator and retail.
+Switching between a specific channel and no channel advances the RNG. Pokemon Talk channel advances between 14-18. Silver Drama advances by 1, unless Bueno's Password is playing then it does not advance. Helps for larger advances for both emulator and retail.
 
 Can be combined with other ways of advancing the RNG for more precision when near target advance.
+
+![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_28.png?raw=true)
+
+![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_29.png?raw=true)
 
 ## Character Movement
 

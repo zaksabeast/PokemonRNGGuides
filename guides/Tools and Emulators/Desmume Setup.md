@@ -2,10 +2,10 @@
 title: 'Desmume Setup'
 description: 'Setup Desmume for RNG'
 slug: 'desmume-setup'
-subCategory: 'Emulator'
+subCategory: 'DS'
 ---
 
-This guide is for setting up Desmume on a PC. An updated CFW (Custom Firmware) console is required to be able to dump DS game data.
+This guide is for setting up Desmume on a Windows PC. Mac and Linux users can try to use Wine to run the Desmume.exe, but this is not guaranteed to work. An updated CFW (Custom Firmware) 3DS console is required to be able to dump DS game data if following this guide. There are other methods for dumping DS games, but this guide will not cover those.
 
 ## Tools
 
@@ -22,9 +22,9 @@ This guide is for setting up Desmume on a PC. An updated CFW (Custom Firmware) c
 ## Dumping game data
 
 1. Select `[C:] GAMECART`.
-2. Select the `trim.nds` file.
+2. Select the `.nds` file.
 3. Select `Copy to 0:/gm9/out`.
-4. Exit GodMode9 and transfer the files from `sdmc:\gm9\out` to your PC.
+4. Exit GodMode9 and transfer the `.nds` file from `sdmc:\gm9\out` to your PC.
 
 ## Extracting save
 
@@ -49,3 +49,16 @@ Desmume should now be running with the game of your choosing, with an overlay di
 
 1. Under `File` choose `Import Backup Memory...`.
 2. Load the `.sav` extracted from the DS cart.
+
+## Exporting a save
+
+1. Under `File` choose `Export Backup Memory...`.
+2. The `.sav` can be named and saved where you want it.
+
+## Troubleshooting
+
+### lua 51.dll was not found.
+
+![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_30.png?raw=true)
+
+If you receive a similar error to the one above, the lua dlls are missing. Redownload the dlls and make sure they are placed into the same folder as the Desmume executable. Also, verify that the dlls match the version of Desmume you are using (32-bit or 64-bit).

@@ -1,3 +1,10 @@
+---
+title: 'Ageto Celebi RNG'
+description: 'RNG Ageto Celebi from Colosseum'
+slug: 'emulator-ageto-celebi'
+subCategory: 'Emulator'
+---
+
 **Guide to RNGing your Own Ageto Celebi**
 Guide to RNGing your Own Ageto Celebi
 

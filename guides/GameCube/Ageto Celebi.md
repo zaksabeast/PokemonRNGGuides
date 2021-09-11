@@ -17,6 +17,7 @@ Guide to RNGing your Own Ageto Celebi
 * A Pokemon Colosseum (JPN) save file with all 48 Pokemon obtained and purified (100% Story completion)
 * Redeemed Celebi to your Colosseum Save for the First Time Already
 * An empty Slot in your Party (6th Party Slot)
+* Be sure you are saved inside a PokeCenter in your Gen 3 Game
 * [The Dolphin Lua Core](https://github.com/DevonStudios/Dolphin-Lua-Core/releases/tag/5.0)
 * [Run-As-Date](https://www.nirsoft.net/utils/run_as_date.html)
 * [Unofficial Pokefinder](https://ci.appveyor.com/api/buildjobs/p38blw2ns0kbh254/artifacts/PokeFinder-win.zip) 
@@ -92,6 +93,11 @@ Note: Be sure to have your Japanese Gen 3 Game completed (Have Hall of Fame Flag
 Here is what GBA Bios Screen Look like upon Resetting the Emulator:
 
 ![image](https://user-images.githubusercontent.com/22829692/132891039-35490fe1-2207-45e5-bda8-f6a3b063ac3f.png)
+
+
+**Be sure you are saved in a Pokecenter!!**
+
+![image](https://user-images.githubusercontent.com/22829692/132948632-71646531-62de-4d27-8b18-8ca2b25a0eb5.png)
 
 
 Here is how you Import Battery File Via  **File > Import > Battery File**

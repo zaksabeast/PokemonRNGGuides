@@ -15,7 +15,7 @@ This is an explanantion of the different methods to advance the RNG in HGSS. The
 
 ## Radio
 
-Switching between a specific channel and no channel advances the RNG. Pokemon Talk channel advances between 14-18. Silver Drama advances by 1, unless Bueno's Password is playing then it does not advance. This helps with making larger advances for both emulator and retail.
+Switching between a specific channel and no channel advances the RNG. Pokemon Talk channel advances between 14-18. Serial Radio Drama advances by 1, unless Bueno's Password is playing then it does not advance. This helps with making larger advances for both emulator and retail.
 
 This method can be combined with other methods of advancing the RNG for more precision when near the target advance.
 

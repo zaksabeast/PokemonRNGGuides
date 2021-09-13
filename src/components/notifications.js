@@ -26,7 +26,7 @@ export const Notifications = () => {
   const [badgeCount, setBadgeCount] = React.useState(count);
 
   const handleToggle = () => {
-    setPopperOpen((prevPopperOpen) => !prevPopperOpen);
+    setPopperOpen(prevPopperOpen => !prevPopperOpen);
     localStorage.setItem('lastSeenNotification', messageList[0].date);
     setBadgeCount(0);
   };

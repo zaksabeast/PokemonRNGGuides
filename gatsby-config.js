@@ -39,8 +39,15 @@ module.exports = {
         },
       },
     },
+    {
+  resolve: `gatsby-plugin-offline`,
+  options: {
+    precachePages: [`/*`],
+  },
+},
     'gatsby-plugin-material-ui',
     'gatsby-plugin-react-helmet',
     'gatsby-source-local-git',
+    'gatsby-plugin-offline'
   ],
 };

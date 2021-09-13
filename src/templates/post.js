@@ -26,7 +26,7 @@ const PostTemplate = ({ children, pageResources, data }) => {
 export default PostTemplate;
 
 export const query = graphql`
-  query($slug: String!) {
+  query ($slug: String!) {
     mdx(frontmatter: { slug: { eq: $slug } }) {
       frontmatter {
         title

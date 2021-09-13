@@ -34,7 +34,7 @@ const CategoryTemplate = ({ data, pageContext }) => {
 export default CategoryTemplate;
 
 export const query = graphql`
-  query($categoryRegex: String!) {
+  query ($categoryRegex: String!) {
     allMdx(filter: { fields: { pagePath: { regex: $categoryRegex } } }) {
       nodes {
         frontmatter {

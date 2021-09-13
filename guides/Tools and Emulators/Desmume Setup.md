@@ -5,7 +5,7 @@ slug: 'desmume-setup'
 subCategory: 'DS'
 ---
 
-This guide is for setting up Desmume on a Windows PC. Mac and Linux users can try to use Wine to run the Desmume.exe, but this is not guaranteed to work. An updated CFW (Custom Firmware) 3DS console is required to be able to dump DS game data if following this guide. There are other methods for dumping DS games, but this guide will not cover those.
+This guide is for setting up Desmume on a Windows PC. Mac and Linux users can try to use Wine to run the Desmume.exe, but this is not guaranteed to work. An updated CFW (Custom Firmware) 3DS console is required to be able to dump DS game data. There are other methods for dumping DS games, but this guide will not cover those.
 
 ## Tools
 

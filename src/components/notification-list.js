@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     transformOrigin: 'top right',
   },
@@ -18,49 +18,44 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   divider: {
     margin: theme.spacing(1, 0),
   },
 }));
 
-export const NotificationList = ({messageList}) => {
-    const classes = useStyles();
-    return (
-        <Paper className={classes.paper}>
-                <List className={classes.list}>
-                  {messageList.map((message, index) => (
-                    <React.Fragment key={message.title}>
-                      <ListItem
-                        alignItems="flex-start"
-                        className={classes.listItem}
-                      >
-                        <Typography gutterBottom>{message.title}</Typography>
-                        <Typography gutterBottom variant="body2">
-                          <span
-                            id="notification-message"
-                            dangerouslySetInnerHTML={{ __html: message.text }}
-                          />
-                        </Typography>
-                        {message.date && (
-                          <Typography variant="caption" color="textSecondary">
-                            {new Date(message.date).toLocaleDateString(
-                              'en-US',
-                              {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                              },
-                            )}
-                          </Typography>
-                        )}
-                      </ListItem>
-                      {index < messageList.length - 1 ? (
-                        <Divider className={classes.divider} />
-                      ) : null}
-                    </React.Fragment>
-                  ))}
-                </List>
-              </Paper>
-    )
-}
+export const NotificationList = ({ messageList }) => {
+  const classes = useStyles();
+  const notificationDate = date => {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
+  return (
+    <Paper className={classes.paper}>
+      <List className={classes.list}>
+        {messageList.map((message, index) => (
+          <React.Fragment key={message.title}>
+            <ListItem className={classes.listItem}>
+              <Typography gutterBottom>{message.title}</Typography>
+              <Typography gutterBottom variant="body2">
+                <span dangerouslySetInnerHTML={{ __html: message.text }} />
+              </Typography>
+              {message.date && (
+                <Typography variant="caption" color="textSecondary">
+                  {notificationDate(message.date)}
+                </Typography>
+              )}
+            </ListItem>
+            {index < messageList.length - 1 && (
+              <Divider className={classes.divider} />
+            )}
+          </React.Fragment>
+        ))}
+      </List>
+    </Paper>
+  );
+};

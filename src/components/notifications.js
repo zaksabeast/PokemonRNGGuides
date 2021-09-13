@@ -15,37 +15,36 @@ const storageItem = isBrowser
   ? localStorage.getItem('lastSeenNotification')
   : null;
 const lastSeenNotification = storageItem ?? '2000-1-1';
-const messageList = orderBy(messages, ['date'], ['desc']);
-const count = filter(messageList, (message) => {
+const messageList = orderBy(messages, 'date', 'desc');
+const count = filter(messageList, message => {
   return message.date > lastSeenNotification;
 }).length;
 
 export const Notifications = () => {
-
   const [openPopper, setOpenPopper] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [badgeCount, setBadgeCount] = React.useState(count);
 
   const handleToggle = () => {
-    setOpenPopper((prevOpenPopper) => !prevOpenPopper);
+    setOpenPopper(prevOpenPopper => !prevOpenPopper);
     localStorage.setItem('lastSeenNotification', messageList[0].date);
     setBadgeCount(0);
   };
 
   return (
     <React.Fragment>
-        <IconButton
-          color="inherit"
-          onClick={handleToggle}
-          ref={anchorRef}
-          aria-controls={openPopper ? 'notifications-popup' : undefined}
-          aria-haspopup="true"
-          aria-label={'toggleNotifications'}
-        >
-          <Badge badgeContent={badgeCount} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
+      <IconButton
+        color="inherit"
+        onClick={handleToggle}
+        ref={anchorRef}
+        aria-controls={openPopper ? 'notifications-popup' : undefined}
+        aria-haspopup="true"
+        aria-label={'toggleNotifications'}
+      >
+        <Badge badgeContent={badgeCount} color="secondary">
+          <NotificationsIcon />
+        </Badge>
+      </IconButton>
       <Popper
         id="notifications-popup"
         open={openPopper}
@@ -55,11 +54,7 @@ export const Notifications = () => {
         disablePortal
       >
         {({ TransitionProps }) => (
-          <ClickAwayListener
-            onClickAway={() => {
-              setOpenPopper(false);
-            }}
-          >
+          <ClickAwayListener onClickAway={() => setPopperOpen(false)}>
             <Grow in={openPopper} {...TransitionProps}>
               <NotificationList messageList={messageList} />
             </Grow>

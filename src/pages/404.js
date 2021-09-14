@@ -8,7 +8,7 @@ const ErrorPage = () => {
     <MainLayout>
       <Typography variant="h3" gutterBottom>Page not found</Typography>
       <Typography variant="body1" gutterBottom>Oops! The page you are looking for has been removed or relocated.</Typography>
-      <Typography variant="body2"><Link to="/">To Home</Link></Typography>
+      <Typography variant="h4"><Link to="/">To Home</Link></Typography>
   </MainLayout>
   )
 }

@@ -1,11 +1,11 @@
 ---
-title: '4) How to advance Frames'
-description: 'Available tools to advance PID Frame in order to hit your targets'
-slug: 'hgss-frames'
+title: 'Advancing the RNG'
+description: 'The different methods the RNG can be advanced and events that influence the RNG'
+slug: 'hgss-rng-advance'
 subCategory: 'Basic Knowledge'
 ---
 
-This is an explanantion of the different methods to advance the RNG in HGSS. The preferred method to advance the RNG is using Chatot or the Radio, though there are other methods should Chatot or the Radio not be available.
+This is an explanantion of the different ways the RNG can be advanced and influenced in HeartGold and SoulSilver. The preferred method to advance the RNG is using Chatot or the Radio, though there are other methods should Chatot or the Radio not be available.
 
 ## Chatot Chatter
 
@@ -38,4 +38,5 @@ This method can be combined with other methods of advancing the RNG for more pre
 
 ## Active Roamer
 
-- Having an active roamer in your game advances the initial RNG by one or two advances.
+- Having an active roamer in your game advances the initial RNG by one or two advances for each active roamer.
+- These advances will need to be accounted for in determining how much to advance the RNG to reach a target advance.

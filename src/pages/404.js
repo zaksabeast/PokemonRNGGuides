@@ -5,14 +5,11 @@ import { MainLayout } from '../layouts/main';
 
 const ErrorPage = () => {
   return (
-    <MainLayout>
-      <Typography variant="h3" gutterBottom>
-        Page not found
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        Oops! The page you are looking for has been removed or relocated.
-      </Typography>
-      <Typography variant="h4">
+    <MainLayout
+      title="Page not found"
+      description="Oops! The page you are looking for has been removed or relocated."
+    >
+      <Typography variant="h5">
         <Link to="/">To Home</Link>
       </Typography>
     </MainLayout>

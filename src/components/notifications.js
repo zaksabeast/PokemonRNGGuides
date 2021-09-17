@@ -54,11 +54,7 @@ export const Notifications = () => {
         disablePortal
       >
         {({ TransitionProps }) => (
-          <ClickAwayListener
-            onClickAway={() => {
-              setPopperOpen(false);
-            }}
-          >
+          <ClickAwayListener onClickAway={() => setPopperOpen(false)}>
             <Grow in={isPopperOpen} {...TransitionProps}>
               <NotificationList messageList={messageList} />
             </Grow>

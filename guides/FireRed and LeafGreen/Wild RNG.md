@@ -59,7 +59,7 @@ Note: FireRed/LeafGreen will generate different seeds every time the game loads 
 
 5. The initial seed will be displayed on the screen from the lua script.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_18.png?raw=true)
+![Initial Seed](../../images/FireRed-LeafGreen/Wild/Initial-Seed.png)
 
 ## Step 4: Find a target advance
 
@@ -72,7 +72,7 @@ Note: FireRed/LeafGreen will generate different seeds every time the game loads 
 
 3. Click "Generate".
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_20.png?raw=true)
+![Setup](../../images/FireRed-LeafGreen/Wild/Setup.png)
 
 In the example above, the filters are set for any shiny on Route 5.
 
@@ -105,7 +105,7 @@ You can advance the RNG by opening the Teachy TV in Key Items and then closing i
 
 If you followed all the above steps, the Pokemon should be what you wanted. Tada, you did your Gen 3 Wild RNG!
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_21.png?raw=true)
+![Success](../../images/FireRed-LeafGreen/Wild/Success.png)
 
 ## Troubleshooting
 

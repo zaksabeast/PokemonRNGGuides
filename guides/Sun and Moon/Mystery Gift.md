@@ -22,7 +22,7 @@ Make sure to stand exactly like the image below or the timeline may be off resul
 
 You should see the text: "You received xxx!"
 
-![](https://i.imgur.com/wmpzsKN.png)
+![Final Screen](../../images/Sun-Moon/Mystery-Gift.png)
 
 ## Step 2: Set Up 3DSRNGTool
 

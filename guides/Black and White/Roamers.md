@@ -17,13 +17,13 @@ subCategory: 'Emulator'
 - runasdate (optional)
 - a few hours
 
-![](https://i.imgur.com/kDti9qn.png?1)
-
 ## Step 1: Finding a spread
 
 1. In RNG Reporter, set the Month to 2 and 11
 2. Set the Encounter Type to Roaming Pokemon and Method as IVs (Standard Seed)
 3. Make sure to set a nice IV Spread and do NOT worry about Shininess right now
+
+![Setup](../../images/Black-and-White/Roamer/Setup.png)
 
 ```
 Note: If you choose a different month, your Frames will be way more unstable/random and thus more luck-based.
@@ -33,7 +33,7 @@ Note: If you choose a different month, your Frames will be way more unstable/ran
 Note: This should take a while.
 ```
 
-![](https://i.imgur.com/InQlEBM.png)
+![Target Seed](../../images/Black-and-White/Roamer/Target.png)
 
 ## Step 2: Getting the target PID and Nature
 
@@ -45,7 +45,7 @@ If you only want IVs or Shininess and not both, feel free to skip this and the n
 
 Choose a Frame (recommended: at least 1500 Frames, perhaps 2000 if you are using a month other than 2 or 11.) Note the PID and of course, the Frame.
 
-![](https://i.imgur.com/PWl8qrW.png)
+![Pandora's Box](../../images/Black-and-White/Roamer/Pandora.png)
 
 ## Step 3: Save preperation
 
@@ -58,11 +58,11 @@ Similar to Generation 3 or 4 RNG Abuse, it is recommended that you TID/SID Abuse
 
 This is where you should save (The house on Route 7):
 
-![](https://i.snag.gy/6cQl9D.jpg)
+![Where to save](../../images/Black-and-White/Roamer/Save.png)
 
 ## Step 4: Calibration
 
-![](https://i.imgur.com/EyQ5Erw.png?1)
+![Final Screen](../../images/Black-and-White/Roamer/Final-Screen.png)
 
 On the original RNG Reporter Screen, you got a Frame Number, most likely between 1-6.
 
@@ -78,7 +78,7 @@ Note: It will most likely not have hit your Frame. You can check your PokeDex to
 
 5. Run into the Roamer and note the PID. You can use a Lua Script to see the PID or catch it and use PkHeX to view the stats.
 
-![](https://i.imgur.com/gKTHVxW.png)
+![Calibration](../../images/Black-and-White/Roamer/Calibration.png)
 
 ## Step 5: Getting the target
 
@@ -98,7 +98,7 @@ Note: Exporting the results to .txt makes this easier, so you can use Ctrl + F t
 6. You will need to repeat this multiple times, but you will prevail eventually.
 7. Keep track of what Frames you have hit and what Frame you have pressed `A` on before in Notepad or Google Docs.
 
-![](https://i.imgur.com/WsjzEDQ.png)
+![Success](../../images/Black-and-White/Roamer/Success.png)
 
 ## Celebrate!
 

@@ -31,7 +31,7 @@ Note: You may have noticed a "Dream Radar" tab in RNG Reporter. During the time 
 3. The IVs frame range depends on what Pokemon you are RNGing. For the Therian Trio (Tornadus, Thundurus, Landorus) set the minimum IV frame to 21. For the other Pokemon the minimum IV frame is 8. Maximum frame can be whatever you prefer.
 4. Hit search and wait for results to show.
 
-![](https://snag.gy/iTgKX3.jpg)
+![Timefinder](../../images/Black2-and-White2/Dream-Radar/Timefinder.png)
 
 If you are going for a Generation 4 Legendary or a random Pokemon, target even IV frames, but if you are going for a Therian-Forme, target odd IV frames.
 
@@ -43,7 +43,7 @@ Unfortunately, you cannot control Dream Radar nature, only predict it. To find t
 
 For example, if I want this:
 
-![](https://snag.gy/JpIxYQ.jpg)
+![Nature](../../images/Black2-and-White2/Dream-Radar/Nature.png)
 
 I will take the seed and get the initial PIDRNG Frame for it using the button on RNGReporter.
 
@@ -75,4 +75,4 @@ I will take the seed and get the initial PIDRNG Frame for it using the button on
 
 In the example below, we have a dream ball hidden ability Landorus!
 
-![](https://snag.gy/pBY8Hc.jpg)
+![Result](../../images/Black2-and-White2/Dream-Radar/Result.png)

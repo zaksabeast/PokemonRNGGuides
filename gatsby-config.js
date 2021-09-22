@@ -25,6 +25,13 @@ module.exports = {
       },
     },
     {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'images',
+        path: `${__dirname}/images/`,
+      },
+    },
+    {
       resolve: 'gatsby-plugin-html-attributes',
       options: {
         lang: 'en',
@@ -33,6 +40,14 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-mdx',
       options: {
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 1000,
+            },
+          },
+        ],
         extensions: ['.md', '.mdx'],
         defaultLayouts: {
           default: require.resolve('./src/templates/post.js'),
@@ -49,5 +64,7 @@ module.exports = {
     'gatsby-plugin-react-helmet',
     'gatsby-source-local-git',
     'gatsby-plugin-offline',
+    'gatsby-remark-images',
+    'gatsby-plugin-sharp'
   ],
 };

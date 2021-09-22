@@ -45,14 +45,14 @@ Bulbasaur, Charmander, Squirtle, Clefairy, Abra, Hypno, Voltorb, Electrode, Hitm
 
 7. To find your seed, you must open the Memory Viewer, and search the address at 0x02020000.
 
-![](https://i.imgur.com/Vk4zYMm.png)
+![Memory Viewer](../../images/FireRed-LeafGreen/Stationary/Memory-Viewer.png)
 
 The "1330" is my seed for this run of FRLG. It changes after pressing A / Start in the main screen. There's no real way to manipulate it for the moment, so you must go with what you have.
 
 8. Enter it in the "Seed (Hex)" box in RNG Reporter.
    - Now the tool is ALMOST set up. Enter in your target settings for the Pokemon you wish to search for (shiny, IVs, nature, encounter slots, etc) and once it's done, hit "Generate".
 
-![](https://i.imgur.com/PIkK5i4.png)
+![Setup](../../images/FireRed-LeafGreen/Stationary/Setup.png)
 
 ## Step 4: RNG process
 

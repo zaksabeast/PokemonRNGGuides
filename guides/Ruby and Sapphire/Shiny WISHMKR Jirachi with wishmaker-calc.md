@@ -57,7 +57,7 @@ Your save delay will be the time when it froze minus the time when you paused th
 Note: Make sure not to modify anything in the lua script below the "DON'T EDIT ANYTHING BEYONG HERE" comment!
 ```
 
-![](https://i.imgur.com/SfM5d39.png)
+![Lua Script](../../images/Ruby-Sapphire/Wishmaker/Lua.png)
 
 ## Step 2: Finding a Jirachi seed
 
@@ -70,7 +70,7 @@ Note: Make sure not to modify anything in the lua script below the "DON'T EDIT A
 2. If the website tells you to save the game again, do so and reupload the save to the website.
    - This may happen multiple times.
 
-![](https://i.imgur.com/vDfWBpb.png)
+![JirachiCalc](../../images/Ruby-Sapphire/Wishmaker/JirachiCalc.png)
 
 3. If the website displays "No Results" you have a few options.
    - You can move to a different location, save, and check for a Jirachi again.
@@ -84,7 +84,7 @@ Note: The program searches through the next 30 minutes only for a match which is
 4. If you get a time to save, you have found a Jirachi.
    - Check the spread to see if it is one you want. If it isn't, repeat the above steps.
 
-![](https://i.imgur.com/5gZ1w80.png)
+![Jirachi Spread](../../images/Ruby-Sapphire/Wishmaker/Jirachi.png)
 
 ## Step 3: Hitting the Target Seed
 
@@ -111,7 +111,7 @@ Note: Target save time = Real save time + delay while saving
 8. The default key for advancing frames while paused is `Ctrl + N` for Windows.
 9. When you are on your real save time, hold down `A` and unpause the game at the same time.
 
-![](https://i.imgur.com/Sl0KWy1.png)
+![Final Screen](../../images/Ruby-Sapphire/Wishmaker/Final-Screen.png)
 
 10. After saving the game, export your battery file.
 
@@ -124,7 +124,7 @@ Note: Target save time = Real save time + delay while saving
 2. Next to the save your game message there should be text that says "Current checksum:".
    - If the seed next to it matches any of the [shiny Jirachi seeds](https://www.irccloud.com/pastebin/rdxEbTm4/) then congrats! Your save will redeem to a shiny Jirachi!
 
-![](https://i.imgur.com/vDfWBpb.png)
+![Save](../../images/Ruby-Sapphire/Wishmaker/Save.png)
 
 ## Troubleshooting
 

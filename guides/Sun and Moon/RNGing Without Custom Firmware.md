@@ -35,7 +35,7 @@ You can use any timer which can set two stages independently. The total time spa
 
 ## Step 1: Set Up EonTimer
 
-![](https://i.imgur.com/UiEVm7w.png)
+![Setup](../../images/Sun-Moon/No-CFW/Setup.png)
 
 We are using Gen 3 Mode of EonTimer
 
@@ -75,7 +75,7 @@ In summary, the total time span in seconds = (Pre-Timer + Lag) / 1000 + (Target 
 
 ## Step 5: Find initial seed via continue screen clock needles
 
-1. Check [here](https://www.pokemonrng.com/retail-sm-egg-seed-no-cfw)
+1. Check [here](https://www.pokemonrng.com/retail-sm-initial-seed-clocks)
 2. Once you get only one seed result, the tool will update it to main window. The starting frame in Time Calculator is updated as well. (417/477 + the number of frames you saw for clocks)
 3. Be sure to double check your seed, most of failures are from the wrong seed ;)
 4. Do not enter your save yet.
@@ -94,7 +94,7 @@ In summary, the total time span in seconds = (Pre-Timer + Lag) / 1000 + (Target 
 
 1. Go back to Gen Main RNG Tool. In the bottom right, everything should be updated. Hit the Calculate.
 
-2. A message box will pop up with "Set EonTimer for XXXXF. (YY.YYs)\&lt;ZF&rt;". Set XXXX as Target Frame of EonTimer. - `Z` is how long this target frame will exist. For Blink Frame, it should be above 30.
+2. A message box will pop up with "Set EonTimer for XXXXF. (YY.YYs) Z". Set XXXX as Target Frame of EonTimer. - `Z` is how long this target frame will exist. For Blink Frame, it should be above 30.
 
 ## Step 8: Press A at continue screen, start the timer at the same time
 
@@ -134,7 +134,7 @@ This is a variant of above basic steps. Sometimes, we might want to hit a high f
 
 And then check what frame you are on via the QR Scanner, since QR scanner needles also use the numbers generated from main RNG.
 
-![](https://i.imgur.com/K8YKtQB.png)
+![QR Scanner](../../images/Sun-Moon/No-CFW/QR-Scanner.png)
 
 Go to `Gen7 Main RNG Tool`, check `Locate Current Frame via QR`, put the estimated current frame range below, input the needle sequence, until you get one result.
 

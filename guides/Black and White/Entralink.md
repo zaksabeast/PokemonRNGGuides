@@ -27,7 +27,9 @@ subCategory: 'Emulator'
 
 1. Open RNG Reporter and go to Generation 5 Time Finder
 2. Set up Time Finder like this
-   ![](https://i.snag.gy/ne0CK3.jpg)
+
+![Setup](../../images/Black-and-White/Entralink/Setup.png)
+
 3. Change Delay/Frame as you see fit
 4. Set minimum frame to at least 21. It is not possible to hit anything lower.
 

@@ -7,6 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import IconButton from '@material-ui/core/IconButton';
+import Divider from '@material-ui/core/Divider';
 import orderBy from 'lodash/orderBy';
 
 const useStyles = makeStyles(theme => ({
@@ -14,13 +15,15 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     paddingTop: theme.spacing(6),
     paddingBottom: theme.spacing(6),
-    borderBottom: `1px solid ${theme.palette.divider}`,
   },
   viewButton: {
     marginRight: theme.spacing(4),
   },
   subCategoryTitle: {
     marginTop: theme.spacing(6),
+  },
+  divider: {
+    margin: theme.spacing(1, 0),
   },
 }));
 
@@ -32,31 +35,36 @@ export const GuideList = ({ subCategoryTitle, guides }) => {
 
   const orderedGuides = orderBy(guides, guide => guide.frontmatter.title);
 
-  const guideList = orderedGuides.map(guide => {
+  const guideList = orderedGuides.map((guide, index) => {
     const { title, slug, description } = guide.frontmatter;
     const guideTitleId = getGuideTitleId(slug);
     const guideDescriptionId = getGuideDescriptionId(slug);
 
     return (
-      <ListItem className={classes.guideInfo} key={title} disableGutters>
-        <IconButton
-          component={Link}
-          className={classes.viewButton}
-          to={`/${slug}`}
-          role="link"
-          aria-labelledby={`${guideTitleId} ${guideDescriptionId}`}
-        >
-          <VisibilityIcon />
-        </IconButton>
-        <ListItemText>
-          <Typography variant="h5" component="p" id={guideTitleId}>
-            {title}
-          </Typography>
-          <Typography variant="body2" id={guideDescriptionId}>
-            {description}
-          </Typography>
-        </ListItemText>
-      </ListItem>
+      <React.Fragment key={index}>
+        <ListItem className={classes.guideInfo} key={title} disableGutters>
+          <IconButton
+            component={Link}
+            className={classes.viewButton}
+            to={`/${slug}`}
+            role="link"
+            aria-labelledby={`${guideTitleId} ${guideDescriptionId}`}
+          >
+            <VisibilityIcon />
+          </IconButton>
+          <ListItemText>
+            <Typography variant="h5" component="p" id={guideTitleId}>
+              {title}
+            </Typography>
+            <Typography variant="body2" id={guideDescriptionId}>
+              {description}
+            </Typography>
+          </ListItemText>
+        </ListItem>
+        {index < orderedGuides.length - 1 && (
+          <Divider className={classes.divider} />
+        )}
+      </React.Fragment>
     );
   });
 

@@ -7,15 +7,9 @@ subCategory: 'Emulator'
 
 ## Tools
 
-- RNGReporter
-- Generation 5 Lua Scripts
-- Generation 5 RNG Experience
-- Generation 5 TID/SID
-- DeSmuMe dev build
-- Lua .dlls
-- Pokemon BW
-- runasdate (optional)
-- a few hours
+- Desmume
+  - [Setup Desmume for RNG](https://www.pokemonrng.com/desmume-setup)
+- [RNG Reporter](https://github.com/Admiral-Fish/RNGReporter/releases)
 
 ![](https://i.imgur.com/kDti9qn.png?1)
 

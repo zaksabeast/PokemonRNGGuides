@@ -8,9 +8,8 @@ subCategory: 'Emulator'
 ## Tools
 
 - [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
-- [Desmume](http://desmume.org/download/)
-- [Gen 4 Lua Scripts for your game language](https://pokerng.forumcommunity.net/?t=56443955#entry396434991)
-  - The password for the lua script archive is `allyouneedisnoob`
+- Desmume
+  - [Setup Desmume for RNG](https://www.pokemonrng.com/desmume-setup)
 
 ## Step 1: Finding your Target Frame
 

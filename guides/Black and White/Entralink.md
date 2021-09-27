@@ -7,16 +7,11 @@ subCategory: 'Emulator'
 
 ## Tools
 
-- [Latest Build of RNG Reporter](https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
-- [DeSmuMe dev build](https://sourceforge.net/projects/desmume/files/desmume/0.9.11/desmume-0.9.11-win32-dev.zip/download)
-- The lua .dlls for DeSmuMe
-  - [x86 .dll](https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
-  - [x64 .dll](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
-- Pokemon Black or White (You will need to dump this yourself)
-- [The BW Entralink Scripts for your language](http://pokerng.forumcommunity.net/?t=56443955)
+- Desmume
+  - [Setup Desmume for RNG](https://www.pokemonrng.com/desmume-setup)
+- [RNG Reporter](https://github.com/Admiral-Fish/RNGReporter/releases)
 - A save with access to the C-Gear (And with the profile/calibration set up)
 - [Suloku's Gen V Save Tool (optional)](https://projectpokemon.org/home/forums/topic/37801-gen-5-generation-5-save-tool-entralink-medals-join-avenue-and-others-not-in-pokegen/)
-- [runasdate (optional)](https://runasdate.en.softonic.com/)
 
 ## Step 1: Inject an RNG Target (Optional)
 

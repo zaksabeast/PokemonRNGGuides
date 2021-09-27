@@ -11,9 +11,10 @@ Note: This guide assumes that you have found your target seed. It is necessary t
 
 ## Tools
 
+- Desmume
+  - [Setup Desmume for RNG](https://www.pokemonrng.com/desmume-setup)
 - [RunAsDate](https://www.nirsoft.net/utils/run_as_date.html)
   - Take care to choose the right version (32 or 64 bits) for your computer.
-- [Lua Scripts for Gen 5](https://pokerng.forumcommunity.net/?t=56394378)
 
 ### What is RunAsDate?
 

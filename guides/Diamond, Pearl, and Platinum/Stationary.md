@@ -44,7 +44,7 @@ subCategory: 'Emulator'
 
 6) Adjust the filters for the Pokemon you are wanting.
 
-![Filters](../../images/Diamond-Pearl-Platinum/Statonary/Filters.png)
+![Filters](../../images/Diamond-Pearl-Platinum/Stationary/Filters.png)
 
 The frame is something which you will be hitting inside the game and delay will be used to hit the initial seed. It is recommended that you don't choose a frame at an higher range, try to keep it below 500 as advances can be really tough. If you are unable to find any frames then you can try to increase the delay and search. The delay is the time you will be waiting at "Continue" screen while trying to hit the initial seed, this can be extended till 10k but you would need to be careful about not crossing your delay.
 

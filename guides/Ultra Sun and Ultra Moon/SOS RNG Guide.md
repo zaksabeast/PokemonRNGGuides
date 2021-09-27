@@ -102,7 +102,7 @@ Note: The "Same Caller" box should be checked as long as the Pokemon that does t
   - The second value is for the new Pokemon to appear.
     - A `O` means a new Pokemon will appear.
     - A `X` means a new Pokemon will not appear.
-  - The third value is for the lead (Synchronize/Static/Magnetic/Pressure/Hustle/Vital Spirit/Cute Charm)
+  - The third value is for the lead (Synchronize / Static / Magnetic / Pressure / Hustle / Vital Spirit / Cute Charm)
     - `O` means ability for lead Pokemon will be a success.
     - `X` means failure for ability of lead Pokemon to work.
   - The fourth value is for Encounter slots

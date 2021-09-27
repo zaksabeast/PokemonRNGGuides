@@ -42,7 +42,7 @@ The PID for the egg in FRLG is generated in two parts. You'll rng the first part
 
 4. Once done, find your initial seed shown by the lua. Enter it and search for a spread.
 
-![Initial Seed](../../images/FireRed-LeafGreen/Egg/Inital-Seed.png)
+![Initial Seed](../../images/FireRed-LeafGreen/Egg/Initial-Seed.png)
 
 5. Once you have a target frame, you'll see that you need to hit TWO different frames.
 

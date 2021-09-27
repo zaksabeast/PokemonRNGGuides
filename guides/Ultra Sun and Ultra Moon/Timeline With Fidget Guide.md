@@ -52,8 +52,8 @@ Character mid fidget:
 
 3. Once entered, hit Calculate and you can see the frame jump accounted for in your timeline.
 
-![Before Fidget](../../images/UltraSun-UltraMoon/Fidget-Timeline/Before.png)
+![Before Fidget](../../images/UltraSun-UltraMoon/Fidget-Timeline/Before.jpg)
 
-![After Fidget](../../images/UltraSun-UltraMoon/Fidget-Timeline/After.png)
+![After Fidget](../../images/UltraSun-UltraMoon/Fidget-Timeline/After.jpg)
 
 Now the timeline will take character fidgeting into account for future advancements. Do not move your character and do not open the menu while advancing to your target frame.

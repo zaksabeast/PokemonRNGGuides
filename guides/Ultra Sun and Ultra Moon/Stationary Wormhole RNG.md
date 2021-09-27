@@ -48,7 +48,7 @@ This method involves finding a target frame and then "leaping" onto the timeline
 
 1. Now you can search for your target by entering what you are looking for in the filters and hitting calculate.
 
-![Target](../../images/UltraSun-UltraMoon/Wormhole/Target.png)
+![Target](../../images/UltraSun-UltraMoon/Wormhole/Target.jpg)
 
 2. Advance near your frame and pause.
 
@@ -71,7 +71,7 @@ This is okay and normal as each 3DS/save has its own delay that you will need to
 
 1. We can use the IVs, nature and PSV of the Pokemon we got to see what frame we actually hit. My target was 4973 and I hit 4969 (-4). So the delay I hit vs the default setting of the 3DSRNGTool is -4 or 152.
 
-![Result](../../images/UltraSun-UltraMoon/Wormhole/Result.png)
+![Result](../../images/UltraSun-UltraMoon/Wormhole/Result.jpg)
 
 2. You will want to do this process a number of times with random targets and see what frame you hit relative to the default to find the delay you hit most often. You would then put that into the field after "Consider Delay". I adjusted the delay here to show how it would change the result.
 
@@ -79,7 +79,7 @@ This is okay and normal as each 3DS/save has its own delay that you will need to
 Note: I did this as an example, wait until you have found a common delay until you change your delay. This can take 10-20 times or more depending on your results.
 ```
 
-![Delay](../../images/UltraSun-UltraMoon/Wormhole/Delay.png)
+![Delay](../../images/UltraSun-UltraMoon/Wormhole/Delay.jpg)
 
 3. Once you find which delay is most consistent for you and enter it in to the field try for some harder targets! Here is the shiny Groudon I hit after finding my consistent delay of 152. Be aware that Legendary Pokemon can be a bit more inconsistent than UBs. This is because you have to take a step before the animation occurs adding more variables that could affect the delay.
 

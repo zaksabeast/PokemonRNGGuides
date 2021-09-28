@@ -29,7 +29,7 @@ Make sure to back up your save file using a save file manager such as [Checkpoin
   - Finding a specific TID/SID/TSV combination will be very rare. It is advised to only RNG for one or the other.
 - Under "Frame Range" start from "0".
 
-![](https://i.imgur.com/pZ3brMs.png)
+![Setup](../../images/X-Y/TID/Setup.png)
 
 ## Step 2: Game Setup
 
@@ -48,7 +48,7 @@ Note: If you are using a N3DS or N2DSXL you can speed up the game when the PCalc
 
 4. Pause the game by pressing `Start + Select` at that screen.
 
-![](https://i.imgur.com/NicDf1v.png)
+![Final Screen](../../images/X-Y/TID/Final-Screen.png)
 
 This is the final screen to change character selection.
 
@@ -58,13 +58,13 @@ The "frames" in 3DSRNGTool keep track of 4 values known as "tiny seeds". The tin
 
 In X/Y the tiny seeds will constantly advance throughout the introduction. They will advance at a seemingly random pace but will be in a consistent order that 3DSRNGTool can predict.
 
-![](https://i.imgur.com/I1OAGLL.png)
+![NTR Helper](../../images/X-Y/TID/NTR-Helper.png)
 
 1. Press "Calculate" in the main window to receive a list of possible frames that you can RNG for.
 
 2. Increase or decrease range as needed. The higher the frames, the longer it will take to obtain the desired TID/SID/TSV.
 
-![](https://i.imgur.com/WM2yGP1.png)
+![Target](../../images/X-Y/TID/Target.png)
 
 _In this example we will be getting the highlighted trainer data_
 
@@ -81,7 +81,7 @@ Note: Soft resetting the game will hard lock the system due to NTR! You must do 
 
 2. After confirming you character selection, advance to this screen.
 
-![](https://i.imgur.com/irA94KM.png)
+![Advance Screen](../../images/X-Y/TID/Advance.png)
 
 - This is the last screen for user input before the trainer data is generated.
 
@@ -104,7 +104,7 @@ Note: Soft resetting the game will hard lock the system due to NTR! You must do 
 
 7. Once you can control your character you can check your TID by viewing the trainer card.
 
-![](https://i.imgur.com/aqh4RL4.png)
+![Success](../../images/X-Y/TID/Success.png)
 
 ```
 Note: PCalc can display TSV information by pressing Start + Right and then Select + Left

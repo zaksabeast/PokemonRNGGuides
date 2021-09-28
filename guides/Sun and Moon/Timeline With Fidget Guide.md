@@ -41,7 +41,7 @@ Girl:
 
 Character mid fidget:
 
-![](https://i.imgur.com/lhAMvJk.png)
+![Fidget](../../images/Sun-Moon/Fidget-Timeline/Fidget.png)
 
 2. Advance through the fidget using select until you notice a jump in frames that doesn't show on your timeline.
 
@@ -50,6 +50,8 @@ Character mid fidget:
 
 3. Once entered hit Calculate and you can see the frame jump accounted for in your timeline.
 
-![](https://i.imgur.com/VtG9yur.jpg) ![](https://i.imgur.com/09VjphH.jpg)
+![Before Fidget](../../images/Sun-Moon/Fidget-Timeline/Before.jpg)
+
+![After Fidget](../../images/Sun-Moon/Fidget-Timeline/After.jpg)
 
 Now the timeline will take character fidgeting into account for future advancements. Do not move your character and do not open the menu while advancing to your target frame.

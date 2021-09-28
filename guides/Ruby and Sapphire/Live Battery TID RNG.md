@@ -26,7 +26,7 @@ If you have no intent on getting a Shiny Pokemon and/or don't care about IVs on 
 
 1. Open to PokeFinder and go to Gen 3 Tools. Go to the "IV to PID" and select your desired IVs and nature combo. Make sure that the correct Method for your target exists. You should have a screen like this:
 
-![IV To PID](https://snag.gy/bTkeXi.jpg)
+![Setup](../../images/Ruby-Sapphire/Live-Battery-TID/Setup.png)
 
 2. Put your desired TID in the ID box and note the SID it also gives.
 
@@ -40,7 +40,7 @@ If you have no intent on getting a Shiny Pokemon and/or don't care about IVs on 
 5. Take the SID listed in PID From IVs and convert it as well
    - Since I want 46392, I input that and get B538
 
-![Hex](https://snag.gy/EZkURB.jpg)
+![Hex](../../images/Ruby-Sapphire/Live-Battery-TID/Hex.png)
 
 6. Go into PokeFinder's Generation 3 Tools tab and enter PID to IVs. Put the two hexadecimal combos into PID to IVs. (Make sure to put TID first, then SID) If you get a Method 1 Spread, you have a valid ID combo. If you get a non-method 1 spread, just add 1 to your SID and reconvert it to hex until you get a valid one.
 7. Now take the seed it gives and go to Generation 3 Tools ----> 16-Bit Seed To Time. Enter the seed in the box and make sure the year is set to 2000. Hit search and you will get some dates. The seed will change to a 4-digit/lettered seed, which is your initial seed.
@@ -51,7 +51,7 @@ If you have no intent on getting a Shiny Pokemon and/or don't care about IVs on 
 2. Once loaded, pause the game and go to PokeFinder's Stationary screen. Search for the IVs you got in the PID to IVs tool. The resulting frame is the frame you are aiming to hit.
 3. Now hit Run and enter the game. Get to the screen where the Prof. Birch tells you he'll see you later. Advance to the Frame listed in RNGReporter and make save states along the way. You will miss your frame most likely.
 
-![Frame](https://snag.gy/lte3bH.jpg)
+![Final Screen](../../images/Ruby-Sapphire/Live-Battery-TID/Final-Screen.png)
 
 Advance Frames on the screen above
 
@@ -73,4 +73,4 @@ Enjoy your new TID!
 
 Here is an example of a successful ID RNG:
 
-![TID](https://snag.gy/yfJlxs.jpg)
+![Success](../../images/Ruby-Sapphire/Live-Battery-TID/Success.png)

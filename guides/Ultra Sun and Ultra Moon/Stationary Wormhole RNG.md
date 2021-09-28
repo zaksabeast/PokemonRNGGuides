@@ -22,7 +22,7 @@ Note: This method works for all Pokemon found within the wormholes, including Ul
 
 The seed is shown at the top of the overlay with the label of "Init Seed:". In the following image the seed is `5DA5CA91`.
 
-![](https://i.imgur.com/FXtylJx.png)
+![Setup](../../images/UltraSun-UltraMoon/Wormhole/Setup.png)
 
 ## Step 2: Creating a timeline and finding a target frame
 
@@ -48,20 +48,20 @@ This method involves finding a target frame and then "leaping" onto the timeline
 
 1. Now you can search for your target by entering what you are looking for in the filters and hitting calculate.
 
-![](https://i.imgur.com/XMni0tq.jpg)
+![Target](../../images/UltraSun-UltraMoon/Wormhole/Target.jpg)
 
 2. Advance near your frame and pause.
 
-![](https://i.imgur.com/ro0o8yq.png)
+![Final screen](../../images/UltraSun-UltraMoon/Wormhole/Final-Screen.png)
 
 3. When you get to your frame it is time to initiate the encounter. For UBs this will be simply done by pressing "A" and for Legends you will want to hold forward and then press "A". You will want to save as close as possible to the spot that triggers the encounter.
 
-![](https://i.imgur.com/TJBM800.png)
+![Final Screen 2](../../images/UltraSun-UltraMoon/Wormhole/Final-Screen-2.png)
 
 4. Profit???
    - Not so much
 
-![](https://i.imgur.com/z3vbvfe.png)
+![Calibration](../../images/UltraSun-UltraMoon/Wormhole/Calibration.png)
 
 So what happened?
 
@@ -71,7 +71,7 @@ This is okay and normal as each 3DS/save has its own delay that you will need to
 
 1. We can use the IVs, nature and PSV of the Pokemon we got to see what frame we actually hit. My target was 4973 and I hit 4969 (-4). So the delay I hit vs the default setting of the 3DSRNGTool is -4 or 152.
 
-![](https://i.imgur.com/3arvrHP.jpg)
+![Result](../../images/UltraSun-UltraMoon/Wormhole/Result.jpg)
 
 2. You will want to do this process a number of times with random targets and see what frame you hit relative to the default to find the delay you hit most often. You would then put that into the field after "Consider Delay". I adjusted the delay here to show how it would change the result.
 
@@ -79,10 +79,8 @@ This is okay and normal as each 3DS/save has its own delay that you will need to
 Note: I did this as an example, wait until you have found a common delay until you change your delay. This can take 10-20 times or more depending on your results.
 ```
 
-![](https://i.imgur.com/THTHPpK.jpg)
+![Delay](../../images/UltraSun-UltraMoon/Wormhole/Delay.jpg)
 
 3. Once you find which delay is most consistent for you and enter it in to the field try for some harder targets! Here is the shiny Groudon I hit after finding my consistent delay of 152. Be aware that Legendary Pokemon can be a bit more inconsistent than UBs. This is because you have to take a step before the animation occurs adding more variables that could affect the delay.
 
-![](https://i.imgur.com/SnhyISc.png)
-
-- Imgur library of all images including another set of images of getting to Groudon - [https://imgur.com/a/3ctOj](https://imgur.com/a/3ctOj)
+![Success](../../images/UltraSun-UltraMoon/Wormhole/Success.png)

@@ -28,7 +28,7 @@ The PID for the egg in FRLG is generated in two parts. You'll rng the first part
 
    - Make sure to do the steps inside the daycare and not outside of it.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_5.png?raw=true)
+![Setup](../../images/FireRed-LeafGreen/Egg/Setup.png)
 
 3. Create a savestate here before continuining on.
 
@@ -42,7 +42,7 @@ The PID for the egg in FRLG is generated in two parts. You'll rng the first part
 
 4. Once done, find your initial seed shown by the lua. Enter it and search for a spread.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_6.png?raw=true)
+![Initial Seed](../../images/FireRed-LeafGreen/Egg/Initial-Seed.png)
 
 5. Once you have a target frame, you'll see that you need to hit TWO different frames.
 
@@ -59,7 +59,7 @@ The PID for the egg in FRLG is generated in two parts. You'll rng the first part
 
    - If it matches, continue the process. If it does not match, either restart the emulator and restart the process, or continue to the next Frame Held and try again.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_7.png?raw=true)
+![Held Frame](../../images/FireRed-LeafGreen/Egg/Held.png)
 
 3. You did the Held Frame RNG. Now it's time for the Pickup Frame RNG.
 
@@ -75,6 +75,6 @@ The PID for the egg in FRLG is generated in two parts. You'll rng the first part
 
 You should have the second half of the PID for your egg, and so a successful RNG.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_8.png?raw=true)
+![Success](../../images/FireRed-LeafGreen/Egg/Success.png)
 
 If it's not matching, recheck the whole process. Don't hesitate to do save states.

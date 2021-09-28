@@ -26,7 +26,9 @@ Since each seed is generated when you launch the game, checking the clocks needs
 1. Open the 3DSRNGTool you downloaded.
 2. Select your game version on the top right. ("Sun", "Moon", "Ultra Sun" or "Ultra Moon").
 3. Go to "Tools" > "Gen 7 Main RNG Tool". It looks like the following picture.
-   ![](https://i.imgur.com/YZiTi7s.png)
+
+![Setup](../../images/UltraSun-UltraMoon/Initial-Seed/Setup.png)
+
 4. Make sure that in the `InputBox` you have the option `End Position` selected with the number `4`.
 5. Select the `Find Initial Seed via clock hands` option as well.
 
@@ -55,7 +57,8 @@ Once you have recorded the 10 clock movements we need to list them in the tool t
    - You will see a number appear in the `Needle List` of the tool (12 for the gif demo).
 
 2. The tool will try to find your seed after you have input 8 Needle positions.
-   ![](https://i.imgur.com/X4Tekx5.png)
+
+![Result](../../images/UltraSun-UltraMoon/Initial-Seed/Result.png)
 
 - Sometimes you will get various results with only 8 Needles, that is why we checked 10 clocks. Enter the remaining 2 until you see a single seed.
   - The last 2 Needle positions are also useful to confirm your seed.

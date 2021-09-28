@@ -61,7 +61,7 @@ Note: It is recommended to set up for the SOS chaining first before starting the
 
 2. Once in the encounter open the "Tools" menu on 3DSRNGTool and select "Misc. RNG Tool". Switch the RNG type to "G7 SFMT (32bit)" and choose the "SOS" tab.
 
-![](https://cdn.discordapp.com/attachments/453736908854394902/471784402154946561/unknown.png)
+![Setup](../../images/UltraSun-UltraMoon/SOS/Setup.png)
 
 3. Within PCalc, you can open the Extended Game View by using `B + Up` while the Game View window is open. Press `Down + B` to reset the SOS information within PCalc.
 
@@ -89,8 +89,6 @@ Note: The "Same Caller" box should be checked as long as the Pokemon that does t
 5. Press "Search" button to see results and let's examine what we see.
    - On the Misc RNG Tool results window you will see a few different fields and the meaning of each will follow:
 
-![](https://my.mixtape.moe/yqjfkk.png)
-
 `Frame | Adv. | SOS | Rand#`
 
 `SOS: call? new Pokemon? / lead / encounter slot / level / held item / IVs at 31 / Ability`
@@ -104,7 +102,7 @@ Note: The "Same Caller" box should be checked as long as the Pokemon that does t
   - The second value is for the new Pokemon to appear.
     - A `O` means a new Pokemon will appear.
     - A `X` means a new Pokemon will not appear.
-  - The third value is for the lead (Synchronize/Static/Magnetic/Pressure/Hustle/Vital Spirit/Cute Charm)
+  - The third value is for the lead (Synchronize / Static / Magnetic / Pressure / Hustle / Vital Spirit / Cute Charm)
     - `O` means ability for lead Pokemon will be a success.
     - `X` means failure for ability of lead Pokemon to work.
   - The fourth value is for Encounter slots
@@ -136,7 +134,7 @@ At this point you would be best off waiting until you have a longer SOS chain fo
    - In Misc. RNG Tool: SOS "Length", SOS "Frame", "Last Call Failed", "Super Effective", "Same Caller"
    - In main window: "Frame" (for current SOS frame), "Chain Length"
 
-![](https://imgur.com/lCImw6r.png)
+![Results](../../images/UltraSun-UltraMoon/SOS/Results.png)
 
 4. After inputting all of the needed info you can now figure out if the SOS call will be successful or not for the upcoming SOS frames.
    - If the first two values shown in the SOS column are `O` then the call will be successful.
@@ -144,7 +142,7 @@ At this point you would be best off waiting until you have a longer SOS chain fo
    - If your previous call failed make sure to check the `Last Call Failed` field before searching again.
    - To filter for what frames will be a successful call, you can check the `Success Only` box and then "Calculate".
 
-![](https://imgur.com/nmVQdYA.png)
+![Adjusting](../../images/UltraSun-UltraMoon/SOS/Adjusting.png)
 
 5. Once your current SOS frame will trigger an encounter on the next SOS call (has `O` for first two values) you will want to use it to calibrate for the main RNG delay.
    - You can advance SOS frames by using an Adrenaline Orb (this has no effect if already used one and item will not be consumed) or by knocking out the non-caller Pokemon.
@@ -175,14 +173,14 @@ As of this time, fishing SOS RNG is not as accurate as wild SOS RNG and almost e
 2. The current main RNG frame can be found by pressing `Start + Up` to bring up the Game View window in PCalc if it is not already up.
 3. Then press `Start + Select` to pause the game and use the number after `Frame:`.
 
-![](https://imgur.com/4mFk9bh.png)
+![Main RNG Setup](../../images/UltraSun-UltraMoon/SOS/MainRNG-Setup.png)
 
 ### Choose a random main RNG frame to attempt to hit for calibration
 
 1. Right click on your chosen frame and choose "Set as Target Frame".
 2. After that you can then trigger the last input for the turn on that frame. - If two Pokemon are on the field the delay will be longer and the final input will be hitting `A` while targeting a Pokemon. - If only one Pokemon is on the field the delay will be shorter and the final input will be hitting `A` while hovering over `Use` on the Adrenaline Orb.
 
-![](https://imgur.com/F30gSrn.png)
+![Final Screen](../../images/UltraSun-UltraMoon/SOS/Final-Screen.png)
 
 ### Finding your hit frame
 
@@ -204,7 +202,7 @@ Note: Frame from Pokemon's stats - Target Frame = Delay
 Note: You can find out what the Pokemon's stats are by pressing Start + Left to bring up the Wild Pokemon view and then switch which Pokemon to view with Select + Right.
 ```
 
-![](https://imgur.com/EW0NzcZ.png)
+![Delay](../../images/UltraSun-UltraMoon/SOS/Delay.png)
 
 ## Step 5: Repeat to find consistent delay
 
@@ -228,7 +226,7 @@ Note: You can find out what the Pokemon's stats are by pressing Start + Left to 
 Note: If you are going for a hard target such as a 1% encounter you can try to play with some frames as you get close to manipulate success by using Intimidate or Super Effective moves.
 ```
 
-![](https://imgur.com/XlDbzIh.png)
+![Target](../../images/UltraSun-UltraMoon/SOS/Target.png)
 
 4. When you've landed on your target SOS frame it is now time to find your main RNG target frame.
 
@@ -238,17 +236,17 @@ Note: If you are going for a hard target such as a 1% encounter you can try to p
 5. Then set up the filters for your target Pokemon.
    - Be aware of the IVs you can set for this based on the seventh value in the Misc. RNG Tool (should look something like VVXVVX).
 
-![](https://imgur.com/nS0Mp4n.png)
+![Filters](../../images/UltraSun-UltraMoon/SOS/Filters.png)
 
 6. Set up your game to the point that it is ready for the final input.
 
 7. When you get close to your target pause and advance your frames until you are in the middle of the bunch of frames and enter the final input.
 
-![](https://i.imgur.com/OUKPvlC.png)
+![Final Input](../../images/UltraSun-UltraMoon/SOS/Final-Input.png)
 
 Congrats! You should now have the Pokemon you wanted.
 
-![](https://imgur.com/m6kHHrr.png)
+![Success](../../images/UltraSun-UltraMoon/SOS/Success.png)
 
 ## If you did not obtain the Pokemon you wanted
 

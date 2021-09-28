@@ -42,7 +42,8 @@ subCategory: 'Emulator'
    - If you are not RNGing a genderless or gender fixed Pokemon and want to use Cute Charm, then follow the [Cute Charm guide](https://www.smogon.com/ingame/rng/dpphgss_rng_part5)
 
 6) Adjust the filters for the Pokemon you are wanting.
-   ![](https://i.imgur.com/sDQinrC.png)
+
+![Filters](../../images/Diamond-Pearl-Platinum/Stationary/Filters.png)
 
 The frame is something which you will be hitting inside the game and delay will be used to hit the initial seed. It is recommended that you don't choose a frame at an higher range, try to keep it below 500 as advances can be really tough. If you are unable to find any frames then you can try to increase the delay and search. The delay is the time you will be waiting at "Continue" screen while trying to hit the initial seed, this can be extended till 10k but you would need to be careful about not crossing your delay.
 
@@ -72,7 +73,7 @@ Note: You can ignore the IVRNG frame. It is not relevant for Diamond/Pearl/Plati
 2. You will need to advance the PIDRNG frame until it matches with the number in the "Frame" column.
    - In the below screenshot the target PIDRNG frame is 9.
 
-![](https://i.imgur.com/eOHppkM.png)
+![Target](../../images/Diamond-Pearl-Platinum/Stationary/Target.png)
 
 3. There are various ways to advance the PIDRNG frame. The next section has more details on how you can advance the PIDRNG frame.
 
@@ -108,17 +109,17 @@ Note: You can ignore the IVRNG frame. It is not relevant for Diamond/Pearl/Plati
 - Flipping the journal to another page with a similar entry will also advance the PIDRNG frame by 2.
 - As long as the journal has at least one `(Pokemon) was caught (Time)` entry, the PIDRNG frame advances by 2 regardless of how many journal entries there are.
 
-![](https://www.smogon.com/ingame/rng/dpphgss_capture_28.png)
+![Journal](../../images/Diamond-Pearl-Platinum/Stationary/Journal.png)
 
 ## Step 4: Obtaining the desired Pokemon
 
 1. Once the PIDRNG frame from the lua script matches the target PIDRNG frame in PokeFinder, press `A` to start the encounter.
 
-![](https://i.imgur.com/qihLj76.png)
+![Encounter](../../images/Diamond-Pearl-Platinum/Stationary/Encounter.png)
 
 5. Enjoy!
 
-![](https://i.imgur.com/84AzXqx.png)
+![Success](../../images/Diamond-Pearl-Platinum/Stationary/Success.png)
 
 ### Special Cases
 

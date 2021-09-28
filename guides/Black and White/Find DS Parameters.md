@@ -33,7 +33,7 @@ Finding your DS Parameters is **MANDATORY**. There are no RNGs you can do withou
 
 - Unlike on consoles, DeSmuMe's DS MAC Address is always 0009BF123456.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_4.png?raw=true)
+![Seed Encryption Variables](../../images/Black-and-White/Parameters/Setup.png)
 
 If you cannot find a seed using the above values, double check that everything is correct. If so then you can extend the values to the below:
 
@@ -47,12 +47,12 @@ If you cannot find a seed using the above values, double check that everything i
 - Open runasdate and type in any time. Make sure to check the Immediate Mode.
 - Input the same time in the DS Parameter Finder.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_2.png?raw=true)
+![Time Input](../../images/Black-and-White/Parameters/Time.png)
 
 - Now hit "Run" on runasdate and load your rom.
 - Open your lua script and do not do any keypresses. Copy the seed you get and paste it into the DS Parameters finder.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_3.png?raw=true)
+![Initial Seed](../../images/Black-and-White/Parameters/Seed.png)
 
 - Click Search and wait for the search to finish.
 - When you get a result, click on "Send Results to Profile".

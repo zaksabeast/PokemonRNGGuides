@@ -59,6 +59,6 @@ Desmume should now be running with the game of your choosing, with an overlay di
 
 ### lua 51.dll was not found.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_30.png?raw=true)
+![Lua Error](../../images/Tools-and-Emulators/Desmume/Lua.png)
 
 If you receive a similar error to the one above, the lua dlls are missing. Redownload the dlls and make sure they are placed into the same folder as the Desmume executable. Also, verify that the dlls match the version of Desmume you are using (32-bit or 64-bit).

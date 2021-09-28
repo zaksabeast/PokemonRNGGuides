@@ -36,7 +36,7 @@ Note: Do not give an Everstone to either parent. Everstone does not work in Emer
 3. Go back inside the daycare and take steps until the lua script displays `FE` for the step counter.
    - Make sure to do the steps inside the daycare and not outside of it.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_13.png?raw=true)
+![Setup](../../images/Emerald/Egg/Setup.png)
 
 3. Create a savestate here before continuining on.
 
@@ -84,7 +84,7 @@ Before RNGing for your desired egg, a calibration must be done.
    - Repeat as needed until a match is found.
    - Calibration will be between 17 and 21.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_16.png?raw=true)
+![Calibration](../../images/Emerald/Egg/Calibration.png)
 
 In the example above, the calibration is 20. The frame was found after selecting Timid from the nature dropdown and searching for the PID of the egg.
 
@@ -131,7 +131,7 @@ To be able to hit your target advance, the delay must be taken into account. The
 
 You should now have the desired PID.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_17.png?raw=true)
+![PID](../../images/Emerald/Egg/PID.png)
 
 ```
 Note: If the PID does not match the desired PID, check that everything is correct in PokeFinder. Common issues are not having all of the info correct, and not doing the steps inside the daycare.

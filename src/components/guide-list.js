@@ -41,8 +41,8 @@ export const GuideList = ({ subCategoryTitle, guides }) => {
     const guideDescriptionId = getGuideDescriptionId(slug);
 
     return (
-      <React.Fragment key={index}>
-        <ListItem className={classes.guideInfo} key={title} disableGutters>
+      <React.Fragment key={title}>
+        <ListItem className={classes.guideInfo} disableGutters>
           <IconButton
             component={Link}
             className={classes.viewButton}

@@ -7,14 +7,9 @@ subCategory: 'Emulator'
 
 ## Tools
 
-- [Latest Build of RNG Reporter](https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
-- [DeSmuMe Dev Build](https://sourceforge.net/projects/desmume/files/desmume/0.9.11/desmume-0.9.11-win32-dev.zip/download)
-- Lua .dlls
-  - [x86 .dlls](https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
-  - [x64 .dlls](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
-- Pokemon BW or BW2 .nds files (You can dump the carts yourself using a CFW 3DS with Godmode9)
-- [The Lua Scripts corresponding to your rom's language](http://pokerng.forumcommunity.net/?t=56443955)
-  - Password is `allyouneedisnoob`.
+- Desmume
+  - [Setup Desmume for RNG](https://www.pokemonrng.com/desmume-setup)
+- [RNG Reporter](https://github.com/Admiral-Fish/RNGReporter/releases)
 - [RunAsDate](https://runasdate.en.softonic.com/)
 
 ## Things To Know

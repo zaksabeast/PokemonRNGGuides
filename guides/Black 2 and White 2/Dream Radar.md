@@ -7,18 +7,11 @@ subCategory: 'Emulator'
 
 ## Tools
 
-- [Latest Build of RNG Reporter](https://ci.appveyor.com/project/Admiral-Fish/rngreporter/build/artifacts)
-- [DeSmuMe Dev Build](https://sourceforge.net/projects/desmume/files/desmume/0.9.11/desmume-0.9.11-win32-dev.zip/download)
-- Lua .dlls
-  - [x86 .dlls](https://www.dropbox.com/s/2o4hdphn7j9z349/lua-dll-x86.zip?dl=0)
-  - [x64 .dlls](https://www.dropbox.com/s/t8yttukleqserzp/lua-dll-x64.rar?dl=0)
-    - If using x64 version of DeSmuMe, download the x64 .dlls. Otherwise, download the x86 .dlls.
-    - Place the .dlls in the same folder as the DeSmuMe executable.
-- Pokemon Black 2 or White 2 .nds files (You can dump the carts yourself using a CFW 3DS with Godmode9)
-- [The Lua Scripts corresponding to your rom's language](http://pokerng.forumcommunity.net/?t=56443955)
+- Desmume
+  - [Setup Desmume for RNG](https://www.pokemonrng.com/desmume-setup)
+- [RNG Reporter](https://github.com/Admiral-Fish/RNGReporter/releases)
 - [Suloku's Gen V Save Tool (Optional)](https://github.com/suloku/BW_tool/releases)
   - Alternatively, you can extract your BW2 save file after obtaining the Pokemon you wish to RNG from the Dream Radar if you rather not inject.
-- [RunAsDate (Optional)](https://runasdate.en.softonic.com/)
 
 ```
 Note: You may have noticed a "Dream Radar" tab in RNG Reporter. During the time of this guide being written, that tab does not work. Therefore, this guide will explain an alternate method of finding seeds and desired IV/Nature combinations.

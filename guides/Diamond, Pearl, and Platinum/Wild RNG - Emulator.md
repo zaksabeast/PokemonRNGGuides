@@ -1,30 +1,28 @@
-So first the basics, you'll need :
+This guide will assume that you know how to hit use PokeFinder, hit an initial seed and how to advance frames. The guide will cover more the specific cases where you can encounter wild Pokémon in Diamond, Pearl and Platinum.
 
-- Desmume (any version even if 9.11 is more stable)
-- Lua Scripts (Noob forums is the best for that here)
-- PokeFinder
-- A Sweet Scenter
-Optionnal : A lead.
+Except PokeRadar RNG, everything is Method J
 
-Before, you must know how to hit an initial seed. You can check the right guide for that
+## Basic Wild RNG (Sweet Scent) ##
 
-So first, find your target. Save on the area. 
+Nothing special here, get a Pokémon with Sweet Scent, go on the route you want, set up your tool, advances frames and hit your target.
+You'll not be able to use 
 
-Open PokeFinder : Gen 4 => Wild. Go on Searcher tab (important /!\) select or create your profile. After select the route and enters the wanted parameters.
-Since it's DPPt, it's method J and not method L. Take care of this !
-Don't hesitate to use leads to give more possible frames.
-/!\  The delay can be high same with the frames /!\
+## Sweet Scentless RNG ##
 
-Once you have a target frame, right click on it and "Generate times for seed"
+![image](https://user-images.githubusercontent.com/25870563/135149243-d3a7d0de-4f57-4c35-beab-858fdfd5172d.png)
 
-Open your emulator and load your lua script. Hit the initial seed.
+## Fishing ##
 
-Open your menu with X. From that you've some ways to advance PIDRNG Frames :
+Important : any lead that allows to boost the fishing rate DOESN'T work. So you'll have to do without it on DPPt.
 
-- Chatot (x2 prefered) with chatter activated. If it's not working just use the record of desmume to get it working, it'll advance frames.
-- NPC (advance them random)
-- Journal (advance by 2 if you have a "[pokemon] was caught!" every time you flip pages)
+For Feebas, the idea is to have two consecutive frames to give a bite in order to have it working. 
 
-Once on the right frame, just use your Sweet Scenter and tada you're good to go !
+## Honey ##
 
+The idea is more how to explain how the generation works, how to make a specific Pokémon to spawn, and also to figure out the TID / SID for special trees, hi Munchlax.
+https://www.smogon.com/forums/threads/most-generation-prng-help-information.52180/#post-1822052
+Documentation here 
 
+## PokéRadar ##
+
+We'll see Real's method

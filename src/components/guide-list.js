@@ -22,9 +22,6 @@ const useStyles = makeStyles(theme => ({
   subCategoryTitle: {
     marginTop: theme.spacing(6),
   },
-  divider: {
-    margin: theme.spacing(1, 0),
-  },
 }));
 
 const getGuideTitleId = slug => `guide-${slug}-title`;
@@ -62,7 +59,7 @@ export const GuideList = ({ subCategoryTitle, guides }) => {
           </ListItemText>
         </ListItem>
         {index < orderedGuides.length - 1 && (
-          <Divider className={classes.divider} />
+          <Divider/>
         )}
       </React.Fragment>
     );

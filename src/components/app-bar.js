@@ -6,17 +6,17 @@ import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import { Notifications } from './notifications';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
     zIndex: theme.zIndex.modal + 1,
   },
-  toolbar: {
-    paddingLeft: theme.spacing(1.5),
-    paddingRight: theme.spacing(1),
-  },
   menuButton: {
-    marginRight: theme.spacing(1.5),
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
   },
 }));
 
@@ -37,18 +37,20 @@ export const AppBar = ({ toggleDrawer, ...props }) => {
   return (
     <ElevationScroll {...props}>
       <MUIAppBar color="primary" className={classes.appBar}>
-        <Toolbar className={classes.toolbar}>
+        <Toolbar>
           <IconButton
             className={classes.menuButton}
             color="inherit"
             aria-label="Open drawer"
             onClick={toggleDrawer}
+            edge="start"
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="h1" color="inherit">
-            PokemonRNG.com
+          <Typography variant="h6" className={classes.title}>
+            Pokemon RNG
           </Typography>
+          <Notifications />
         </Toolbar>
       </MUIAppBar>
     </ElevationScroll>

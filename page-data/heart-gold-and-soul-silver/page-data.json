@@ -1,1 +1,5 @@
-{"componentChunkName":"component---src-templates-category-js","path":"/heart-gold-and-soul-silver","result":{"data":{"allMdx":{"nodes":[{"frontmatter":{"title":"Initial Seed RNG (RunAsDate edition)","description":"How to control Gen 4 initial seeds without any difficulty","slug":"emulator-hgss-runasdate-initial-seed","subCategory":"Emulator"}}]}},"pageContext":{"categoryRegex":"/HeartGold and SoulSilver/","category":"HeartGold and SoulSilver"}},"staticQueryHashes":["3733757939","4168079547"]}
+{
+    "componentChunkName": "component---src-templates-category-js",
+    "path": "/heart-gold-and-soul-silver",
+    "result": {"data":{"allMdx":{"nodes":[{"frontmatter":{"title":"Initial Seed RNG (RunAsDate edition)","description":"How to control Gen 4 initial seeds without any difficulty","slug":"emulator-hgss-runasdate-initial-seed","subCategory":"Emulator"}}]}},"pageContext":{"categoryRegex":"/HeartGold and SoulSilver/","category":"HeartGold and SoulSilver"}},
+    "staticQueryHashes": ["3733757939","4168079547"]}

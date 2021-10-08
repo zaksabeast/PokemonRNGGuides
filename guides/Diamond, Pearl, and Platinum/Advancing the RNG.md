@@ -33,9 +33,10 @@ This is an explanantion of the different ways the RNG can be advanced and influe
 - Flipping the journal to another page with a similar entry will also advance the RNG by 2.
 - As long as the journal has at least one `(Pokemon) was caught (Time)` entry, the RNG advances by 2 regardless of how many journal entries there are.
 
-![](https://camo.githubusercontent.com/385edafdbf670f34956f00190dfd86e5cb0862c7f1956ad24d87bac6d567c164/68747470733a2f2f7777772e736d6f676f6e2e636f6d2f696e67616d652f726e672f647070686773735f636170747572655f32382e706e67)
+![Journal](../../images/Diamond-Pearl-Platinum/Advance-RNG/Journal.png)
 
 ## Active Roamer
 
 - Having an active roamer in your game advances the initial RNG by one or two advances for each active roamer.
 - These advances will need to be accounted for in determining how much to advance the RNG to reach a target advance.
+- Based on the number of active roamers you have, you will want to aim for a higher minimum initial advance. Otherwise the target advance may be skipped by active roamers advancing the RNG past it.

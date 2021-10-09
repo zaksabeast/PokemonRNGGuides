@@ -19,9 +19,9 @@ Switching between a specific channel and no channel advances the RNG. Pokemon Ta
 
 This method can be combined with other methods of advancing the RNG for more precision when near the target advance.
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_28.png?raw=true)
+![Radio Station](../.../images/HeartGold-SoulSilver/Advance-RNG/Radio.png)
 
-![](https://github.com/ShinySylveon04/PokemonRNGGuidesPics/blob/main/Screenshot_29.png?raw=true)
+![Radio Station](../.../images/HeartGold-SoulSilver/Advance-RNG/Radio-2.png)
 
 ## Character Movement
 
@@ -40,3 +40,4 @@ This method can be combined with other methods of advancing the RNG for more pre
 
 - Having an active roamer in your game advances the initial RNG by one or two advances for each active roamer.
 - These advances will need to be accounted for in determining how much to advance the RNG to reach a target advance.
+- Based on the number of active roamers you have, you will want to aim for a higher minimum initial advance. Otherwise the target advance may be skipped by active roamers advancing the RNG past it.

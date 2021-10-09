@@ -22,8 +22,8 @@ RunAsDate is a tool developed by nirsoft that allows any program to load with a 
 
 ## Setup RunAsDate
 
-1. Launch RunAsDate
-2. Configure RunAsDate to look like the image below
+1. Launch RunAsDate.
+2. Configure RunAsDate to look like the image below.
 
 ![Setup](../../images/HeartGold-SoulSilver/Initial-Seed/Setup.png)
 
@@ -31,7 +31,7 @@ RunAsDate is a tool developed by nirsoft that allows any program to load with a 
 Note: You'll never have to change that after. This is the universal RunAsDate configuration for RNG (Gen 3, 4 or 5), so you're almost done!
 ```
 
-3. Select the program you want to fake the date/time, with the "Browse..." button
+3. Select the program you want to fake the date/time, with the "Browse..." button.
 4. Set the date and time to one of the given dates and times in PokeFinder to hit your seed.
 5. After that, just hit "Run" and your desmume should be launched.
 

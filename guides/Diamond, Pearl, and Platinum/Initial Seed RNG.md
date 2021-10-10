@@ -48,7 +48,7 @@ Note: Make save states often during this process.
 5. Unpause your game, and let it run until you get close to your target delay.
 6. Once you are close, pause your emulator.
 7. Create another save state (you never know what might happen!).
-8. Press `N` to advance the game one frame to increase the delay one time.
+8. Press `N` to advance the game one video frame to increase the delay one time.
 9. Once you are on the target delay, hold `A` while unpausing your game.
 
 ## Troubleshooting

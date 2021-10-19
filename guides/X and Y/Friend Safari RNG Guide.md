@@ -7,8 +7,9 @@ subCategory: 'Custom Firmware'
 
 ## Tools
 
+- A 3DS with PCalc installed
+  - [PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc)
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-- [PCalc for XY](https://pokemonrng.com/downloads/pcalc/pcalc-xy.zip)
 
 ## Required Reading
 

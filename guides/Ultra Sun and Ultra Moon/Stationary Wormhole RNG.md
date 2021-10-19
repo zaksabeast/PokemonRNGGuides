@@ -7,11 +7,9 @@ subCategory: 'Custom Firmware'
 
 ## Tools
 
-- A 3DS with CFW (Custom Firmware)
-  - https://3ds.hacks.guide/ has instructions for installing CFW
+- A 3DS with PCalc installed
+  - [PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc)
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-- PCalc
-  - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
 - [3DSRNGTool README](https://github.com/wwwwwwzx/3DSRNGTool/blob/master/README.md#final-screen) - list of final screens before Pokemon are generated
 
 ```

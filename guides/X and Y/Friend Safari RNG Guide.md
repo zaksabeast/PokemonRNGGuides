@@ -14,7 +14,7 @@ subCategory: 'Custom Firmware'
 ## Required Reading
 
 - [TinyMT Timeline](https://github.com/wwwwwwzx/3DSRNGTool/wiki/Gen6-TinyMT-Timeline-Calibration)
-- [NTR Helper Usage](https://github.com/wwwwwwzx/3DSRNGTool/wiki/NTR-Helper-Usage)
+- [NTR Helper Usage](https://www.pokemonrng.com/ntr-helper-usage)
 
 ## Explanation of TinyMT frames within Tiny Timeline Tool
 

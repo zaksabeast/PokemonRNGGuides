@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Table from '@material-ui/core/Table';
+import MuiTable from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Link from '@material-ui/core/Link';
@@ -36,6 +36,9 @@ const useStyles = makeStyles(theme => ({
   p: {
     marginBottom: theme.spacing(2),
   },
+  table: {
+    marginBottom: theme.spacing(4),
+  }
 }));
 
 const H1 = props => <Typography variant="h1" {...props} />;
@@ -87,6 +90,11 @@ const Paragraph = props => {
   const classes = useStyles();
   return <Typography className={classes.p} {...props} />;
 };
+
+const Table = props => {
+  const classes = useStyles();
+  return <MuiTable className={classes.table} {...props} />
+}
 
 export const mdxComponents = {
   PixelImage,

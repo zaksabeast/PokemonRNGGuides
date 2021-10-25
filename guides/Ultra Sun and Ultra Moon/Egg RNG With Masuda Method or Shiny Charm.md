@@ -16,8 +16,7 @@ If an ESV matches a TSV (Trainer Shiny Value) then the egg will hatch shiny.
 ## Tools
 
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-- A 3DS with PCalc installed (Optional)
-  - [PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc)
+- Optional: A 3DS with PCalc ([PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc))
 
 ## Step 1: Set Up 3DSRNGTool
 

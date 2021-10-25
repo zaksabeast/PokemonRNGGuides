@@ -13,8 +13,7 @@ Make sure to back up your save file using a save file manager such as [Checkpoin
 
 ## Tools
 
-- A 3DS with PCalc installed
-  - [PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc)
+- A 3DS with PCalc ([PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc))
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - (Optional) A network connection
 

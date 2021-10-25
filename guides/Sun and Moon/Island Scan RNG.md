@@ -7,8 +7,7 @@ subCategory: 'Custom Firmware'
 
 ## Tools
 
-- A 3DS with PCalc installed
-  - [PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc)
+- A 3DS with PCalc ([PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc))
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - The `honey` item
 - Have started an Island Scan and know the Pokemon you've scanned for

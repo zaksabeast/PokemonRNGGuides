@@ -7,13 +7,13 @@ subCategory: 'Custom Firmware'
 
 ## Tools
 
+- A 3DS with PCalc ([PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc))
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-- [PCalc for XY](https://pokemonrng.com/downloads/pcalc/pcalc-xy.zip)
 
 ## Required Reading
 
 - [TinyMT Timeline](https://github.com/wwwwwwzx/3DSRNGTool/wiki/Gen6-TinyMT-Timeline-Calibration)
-- [NTR Helper Usage](https://github.com/wwwwwwzx/3DSRNGTool/wiki/NTR-Helper-Usage)
+- [NTR Helper Usage](https://www.pokemonrng.com/ntr-helper-usage)
 
 ## Explanation of TinyMT frames within Tiny Timeline Tool
 

@@ -16,11 +16,7 @@ If an ESV matches a TSV (Trainer Shiny Value) then the egg will hatch shiny.
 ## Tools
 
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-- A 3DS with CFW (Custom Firmware) (Optional)
-  - https://3ds.hacks.guide/ has instructions for installing CFW
-- PCalc (Optional)
-  - [Ultra Sun/Ultra Moon](https://pokemonrng.com/downloads/pcalc/pcalc-usum.zip)
-  - [Sun/Moon](https://pokemonrng.com/downloads/pcalc/pcalc-sm.zip)
+- Optional: A 3DS with PCalc ([PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc))
 
 ## Step 1: Set Up 3DSRNGTool
 

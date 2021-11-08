@@ -11,10 +11,8 @@ Note: If a save file is already present then it can be deleted by pressing `X+Y+
 
 ## Tools
 
-- [PCalc-oras](https://pokemonrng.com/downloads/pcalc/pcalc-oras.zip)
-  - Make sure your game is updated to 1.4 for PCalc to work
+- A 3DS with PCalc ([PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc))
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-  - Latest compiled version including latest commits can be found [here](https://ci.appveyor.com/project/wwwwwwzx/3dsrngtool/build/artifacts)
 - (Optional) A network connection
 
 ## Step 1: Setup 3DSRNGTool

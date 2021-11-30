@@ -1,0 +1,5 @@
+So the idea here will be to present Shiny's site.
+To explain how to combine CaptureSight with that. For example you need to write the 4 Seeds in the title screen in order to avoid any issue with delay, fixing frames etc.
+
+Then inputting all the values, looking for the right method.
+And that's all.

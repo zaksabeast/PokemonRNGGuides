@@ -1,3 +1,12 @@
+---
+title: 'How to use Chatot'
+description: 'How to use the chatot.pokemonrng.com website in order to RNG in bdsp'
+slug: 'bk-bdsp-chatot'
+subCategory: 'Basic Knowledge'
+---
+
+
+https://chatot.pokemonrng.com/#/bdsp
 So the idea here will be to present Shiny's site.
 To explain how to combine CaptureSight with that. For example you need to write the 4 Seeds in the title screen in order to avoid any issue with delay, fixing frames etc.
 

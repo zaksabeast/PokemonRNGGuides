@@ -7,7 +7,7 @@ subCategory: 'CFW'
 
 Important note : we're looking for more delays and Last screen (aka last input before the game generates a spread) for these Pokemon. Don't hesitate to open an issue here, or send a message on the discord with any Delay / informations based on the Chatot site.
 
-For this guide, we'll assume that you know how to use CaptureSight and Chatot site to setup everything. We'll assume you know how to advance your states and understand how the noise works and how to deal with it. For these, you'll have to use the Stationary tab of the Chatot site. 
+For this guide, we'll assume that you know how to use CaptureSight and Chatot site to setup everything. We'll assume you know how to advance your states and understand how the noise works and how to deal with it. For these, you'll have to use the Stationary tab of the Chatot site. Don't forget to check "Set IVs" if the Pokemon has 3IVs guaranteed. In this guide, it'll be stated next to the Pokémon.
 
 The goal of that guide is more to provide basic informations about delays, any specific setup etc. Everything else has been covered with the basic knowledge guides.
 

@@ -1,6 +1,6 @@
 ---
 title: 'Stationary RNG'
-description: 'Informations in order to RNG Stationary Pokemon'
+description: 'Informations in order to RNG Stationary Pokemon (Mystery Gift included)'
 slug: 'cfw-bdsp-stationary'
 subCategory: 'CFW'
 ---
@@ -20,10 +20,15 @@ Starters :
 - Generation : "Yes" when you chose the starter in the bag
 - Notes : Save before entering in the Lake. It takes around 300 frames to do the cutscene and being able to select your starter with the fast speed. Adjust if you have another setup. But the noise before the Lake will help you to hit the frame in a easy way since no Pokedex
 
-Giratina :
+Giratina (3IVs) :
 - Delay : 84 
 - Generation : "Bishaaan!"
 
 Rotom :
 - Delay : 90
 - Generation : "You thumped the TV Set"
+
+Mystery Gift (Can be 3IVs) :
+- Delay : 0
+- Generation : The moment when you SELECT the event in the menu where you can chose what to claim.
+- Notes : Similar to egg RNG, where you claim it is important. So the best place to do that is in the player's room, where everything is quiet.

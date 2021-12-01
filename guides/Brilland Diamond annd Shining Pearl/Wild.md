@@ -26,7 +26,7 @@ It's in french, but they are trustable. If the site doesn't work : https://www.p
 
 ### Fishing
 
-- Delay : ??? (same here)
-- Notes : Just press A when the player has a bite.
+- Delay : 1 (double check is appreciated) 
+- Notes : Press A on the "Landed a Pokémon!" message
 
 Little reminder, for Feebas, you can use this tool : https://lincoln-lm.github.io/JS-Finder/Tools/BDSPFeebas.html in order to find your tiles.

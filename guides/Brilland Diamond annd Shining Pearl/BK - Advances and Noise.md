@@ -25,4 +25,4 @@ One is linked to the other. Maybe we've missed some ways but here're some method
 
 - Going to a noisy area. Not the best since you'll have to go back to your target location etc once close to your target. But if you're next to one, this is a solution
 - Using the Trainer Card. Does some fast advances once every 100 / 200 frames. Take care of closing way earlier.
-- The most effective one : The Pokdex. Switching between Pokemon will increases the advances by huge numbers. Also going in the Azelf's page since to increase frames by a lot. Usable anywhere. Really advised.
+- The most effective one : The Pokdex. Switching between Pokemon will increases the advances by huge numbers. Also staying in front of Aipom / Azelf's info increase advances by a lot. Usable anywhere. Really advised.

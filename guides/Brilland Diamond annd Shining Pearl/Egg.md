@@ -28,8 +28,8 @@ Once the Step Counter is at 1, save your game here and close it
 Reload your game. With CaptureSight, get the states on the title screen, and input them on PokeFinder. Then take the control of your game again
 
 Note : PokeFinder states doesn't work the same as CaptureSight because we like to make things difficult. So you'll have to enter them in this order : 
-1st state of PokeFinder : 2nd state of CaptureSight / 1st state of CaptureSight
-2nd state of PokeFinder : 4th state of CaptureSight / 3rd state of CaptureSight
+- 1st state of PokeFinder : 2nd state of CaptureSight / 1st state of CaptureSight
+- 2nd state of PokeFinder : 4th state of CaptureSight / 3rd state of CaptureSight
 
 Generate the results. Find your target advance, and use all the methods to get close to hit.
 Once at the right advance, move your character. Some tips to be accurate : Move your character in the opposite direction of where they're standing, and use the stick and not the pad. 

@@ -17,7 +17,7 @@ Also it's important to set up a gender rate if you don't aim for a Genderless Po
 - Notes : It's important to use Honey. Sweet Scent could lend for something less stable. Just press A on the "Use" message at the right frame. 
 
 For the encounter slots, you can find them here at the moment : https://www.pokemon-element-sh.fr/encounters-slots
-It's in french, but they are trustable.
+It's in french, but they are trustable. If the site doesn't work : https://www.pokebip.com/page/jeuxvideo/dossier_shasse/encounter_slot
 
 ### Honey Tree 
 

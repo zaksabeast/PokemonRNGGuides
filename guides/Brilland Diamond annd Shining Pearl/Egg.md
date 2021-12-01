@@ -10,7 +10,7 @@ For this guide, we'll go more in detail, but it still requires to have the Basic
 Requirement :
 - PokeFinder Builds : https://ci.appveyor.com/project/Admiral-Fish/pokefinder
 - CaptureSight
-- Shining Charm OR Masuda. (RIP Masuada)
+- Shining Charm AND/OR Masuda.
 - Fly
 
 As said in the requirements, Shiny Charm or Masuda will be a MUST HAVE in order to make this RNG. To explain why, egg is generated when you pick it from the old man if you don't have either the SC or Masuda. So you'll have to do a RNG on a really noisy place. You don't want that. Using Masuda or SC makes that the egg is generated when it's held and so only based on the step counter. That way you can RNG it on a quiet place like we'll explain on that guide.

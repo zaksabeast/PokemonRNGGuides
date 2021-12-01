@@ -16,14 +16,14 @@ Also it's important to set up a gender rate if you don't aim for a Genderless Po
 # List of Stationary
 
 Starters :
-Delay : 64
-Generation : "Yes" when you chose the starter in the bag
-Notes : Save before entering in the Lake. It takes around 300 frames to do the cutscene and being able to select your starter with the fast speed. Adjust if you have another setup. But the noise before the Lake will help you to hit the frame in a easy way since no Pokedex
+- Delay : 64
+- Generation : "Yes" when you chose the starter in the bag
+- Notes : Save before entering in the Lake. It takes around 300 frames to do the cutscene and being able to select your starter with the fast speed. Adjust if you have another setup. But the noise before the Lake will help you to hit the frame in a easy way since no Pokedex
 
 Giratina :
-Delay : 84 
-Generation : "Bishaaan!"
+- Delay : 84 
+- Generation : "Bishaaan!"
 
 Rotom :
-Delay : 90
-Generation : "You thumped the TV Set"
+- Delay : 90
+- Generation : "You thumped the TV Set"

@@ -16,8 +16,8 @@ Requirement :
 Open your game. With CaptureSight, get the states. Open PokeFinder, go to Gen 8 tab and click on TID / SID. 
 
 Note : PokeFinder states doesn't work the same as CaptureSight because we like to make things difficult. So you'll have to enter them in this order : 
-1st state of PokeFinder : 2nd state of CaptureSight / 1st state of CaptureSight
-2nd state of PokeFinder : 4th state of CaptureSight / 3rd state of CaptureSight
+- 1st state of PokeFinder : 2nd state of CaptureSight / 1st state of CaptureSight
+- 2nd state of PokeFinder : 4th state of CaptureSight / 3rd state of CaptureSight
 
 Generate the results. Take care that it's a really slow RNG. So you'll try to avoid to go for too high frames. No delay is necessary on that RNG.
 

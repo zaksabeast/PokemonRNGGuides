@@ -5,33 +5,49 @@ slug: 'cfw-bdsp-egg'
 subCategory: 'CFW'
 ---
 
-For this guide, we'll go more in detail, but it still requires to have the Basic Knowledge guides. Same as for TID / SID guide, we'll use PokeFinder's builds in order to have these done.
+For this guide, we'll go more in detail, but it still requires to have the Basic Knowledge guides. Just as in the TID / SID guide, we'll use PokeFinder's builds in order to do Egg RNG. 
 
 Requirement :
 - PokeFinder Builds : https://ci.appveyor.com/project/Admiral-Fish/pokefinder
 - CaptureSight
-- Shining Charm OR Masuda. (RIP Masuada)
+- Shiny Charm OR Masuda. (RIP Masuda)
 - Fly
 
-As said in the requirements, Shiny Charm or Masuda will be a MUST HAVE in order to make this RNG. To explain why, egg is generated when you pick it from the old man if you don't have either the SC or Masuda. So you'll have to do a RNG on a really noisy place. You don't want that. Using Masuda or SC makes that the egg is generated when it's held and so only based on the step counter. That way you can RNG it on a quiet place like we'll explain on that guide.
+Shiny Charm or Masuda will be a MUST HAVE in order to perform egg RNG. This is because if you don't have either the SC or Masuda, egg is generated when you pick it from the old man. Since Solaceon Town is a very noisy place, it is very difficult to do RNG in front of the old man. Using Masuda or SC changes generation to the moment it is available to pick up, after a set amount of steps. This allows you to fly to a quiet and stable place to advance frames, and take the step to generate the egg while at the quiet place.
 
-Note : It's not necessary to put any delay if you go in the right place
+Note : You will not need any delay as long as you advance at the right place
 
-Note : Egg is the only RNG atm where TID / SID is necessary. So you'll have to do a profile on the PokeFinder profile tab, with your TID / SID being known. You can use Pkhex or any other method to get these informations.
+Important: Before starting the RNG, you will need to add your TID/SID to a profile within PokeFinder. Egg requires a profile with your TID/SID to work. Make sure you input your actual TID/SID not your G8TID etc. You may use any method to get these details, such as looking at the data of a self-obtained mon through a save editor like PKHex. While you are creating your profile, you should also check the Shiny Charm box if you have it.
 
-Go to the Gen 8 tab of PokeFinder => Egg.
+1. Open Pokefinder, go to the Gen 8 tab, and click Egg. If you cannot find this, check that you are using the correct build of Pokefinder.
 
-Input your parent's IVs, the nature, and the gender (or Ditto if used). Don't forget to check the Masuda button if you go for it. Shining Charm is in the profile options. Deposite your parents in the daycare, open CaptureSight, and go to the "Daycare" part. You'll have a Step Counter at 180. It'll reset to that value every time you deposite any parent. This means that in 180 steps, an egg will be generated OR not. So the goal, is to go to your room (not your irl room boi, the player's room in the first town) and do the steps there. 
+2. Input the data for each of the parents. This includes IVs, Nature, Item(such as Destiny Knot or Everstone), and gender(you can select if you are using ditto here). Check the Masuda box if you are using Masuda. Don't forget to check Shiny Charm in your profile if you have it.
 
-Once the Step Counter is at 1, save your game here and close it
+3. In game, deposit your parents in the daycare. You can now open CaptureSight and go to the Daycare tab. You will see a step counter that counts down from 180 every time you take a step. When this counter hits 0, an egg will generate. The goal is to advance to your target advance while the counter is at 1, and take the final step as you hit your target.
 
-Reload your game. With CaptureSight, get the states on the title screen, and input them on PokeFinder. Then take the control of your game again
+4.The most common method to advance to your target is to fly to your home in Twinleaf Town, and go upstairs to your room. Here, advances increase at a stable rate of +1. This makes it easy to hit your target without missing it. Here, you can take steps until the step counter is at 1. Here, you can save your game and restart, so you can return easily if you mess up. If you want to use another method to advance, you may use that.
 
-Note : PokeFinder states doesn't work the same as CaptureSight because we like to make things difficult. So you'll have to enter them in this order : 
-- 1st state of PokeFinder : 2nd state of CaptureSight / 1st state of CaptureSight
-- 2nd state of PokeFinder : 4th state of CaptureSight / 3rd state of CaptureSight
+5. After you load your game back up, open up CaptureSight and go to the Main RNG screen this time. Press A immediately here to pause updates, so that your seeds do not change while you input. Make sure your advances is still at 0 as well. Here, there's a list of 4 seeds, seed 0, 1, 2, and 3 in order, each being 8 characters. However, there are only 2 seeds, seed 0 and seed 1. CaptureSight seeds and Pokefinder seeds are listed differently, so you will have to use the following way to convert the CaptureSight seeds into Pokefinder seeds:
 
-Generate the results. Find your target advance, and use all the methods to get close to hit.
-Once at the right advance, move your character. Some tips to be accurate : Move your character in the opposite direction of where they're standing, and use the stick and not the pad. 
+- PokeFinder Seed 0 : CaptureSight Seed 1 / CaptureSight Seed 0
+- Pokefinder Seed 1 : CaptureSight Seed 3 / CaptureSight Seed 2
 
-Then you can use CaptureSight to check the Egg Seed in the Daycare Menu. It should match the one in PokeFinder. If so you can take your egg, the RNG is done. Otherwise you'd have to try again.
+Example:
+CaptureSight shows the following 4 seeds:
+11111111
+22222222
+33333333
+44444444
+
+Pokefinder Seed 0: 2222222211111111
+Pokefinder Seed 1: 3333333344444444
+
+6. Once you input your seeds into Pokefinder, you can click generate, and use the filters to filter out the exact target you want to hit. Once you decide on an advance, you can start advancing towards it.
+
+
+7. Make sure to unpause updates on CaptureSight if you haven't already, so that you can see your advances incrementing. At this point, you can press D-Pad Up so that you can control your game. Make sure to NOT move, otherwise you will generate your egg before you hit your target. If your target is fairly far away, you can use the Pokedex to advance quickly. Press X to open menu, and go to pokedex. You can hold left and right on your joystick to quickly scroll through the Pokedex, which advances your frames very quickly. You can also scroll down the Pokedex normally to advance at a slightly slower rate. Make sure not to overshoot your advances. 
+
+
+8. Once you are close to your target, exit from the Pokedex and menu, and get ready to take a step. When CaptureSight displays your target advance, take a step. To make sure you actually take a step, use your left joystick instead of the DPad.
+
+9. Once you take your step, you can check if you have hit your advance successfully by going back to the Daycare tab of CaptureSight, and check that the Egg Seed is the same as your target. You can now freely go back to the Daycare and accept your egg. You can check again that you have hit your target successfully by checking the PID of the egg using the Party tab of CaptureSight to see if it matches with your target. 

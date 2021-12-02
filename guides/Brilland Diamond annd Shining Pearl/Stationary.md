@@ -39,6 +39,8 @@ Ramanas Park (3IVs) :
 - Delay : 84
 - Generation : Dialog Box
 
+/!\ Warning : The following method doesn't work at 100% with the actual tools. It doesn't change the how to RNG it, but could lead to wrong results. /!\
+
 Mystery Gift (Can be 3IVs) :
 - Delay : 0
 - Generation : The moment when you SELECT the event in the menu where you can chose what to claim.

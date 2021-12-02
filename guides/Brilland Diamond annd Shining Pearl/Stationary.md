@@ -20,13 +20,17 @@ Starters :
 - Generation : "Yes" when you chose the starter in the bag
 - Notes : Save before entering in the Lake. It takes around 300 frames to do the cutscene and being able to select your starter with the fast speed. Adjust if you have another setup. But the noise before the Lake will help you to hit the frame in a easy way since no Pokedex
 
+Rotom :
+- Delay : 90
+- Generation : "You thumped the TV Set"
+
 Giratina (3IVs) :
 - Delay : 84 
 - Generation : "Bishaaan!"
 
-Rotom :
-- Delay : 90
-- Generation : "You thumped the TV Set"
+Ramanas Park (3IVs) : 
+- Delay : 84
+- Generation : Dialog Box
 
 Mystery Gift (Can be 3IVs) :
 - Delay : 0

@@ -8,7 +8,7 @@ subCategory: 'Basic Knowledge'
 ## Requirements
 * Installed [Cheat Engine](https://www.cheatengine.org/downloads.php)
 * Installed [Yuzu](https://yuzu-emu.org/downloads/)/[Ryujinx](https://ryujinx.org/download)
-* Updated game to version 1.1.1
+* Updated game to version 1.1.2
 
 ## Usage
 * Open Yuzu/Ryujinx, run the game and pause it at the title screen

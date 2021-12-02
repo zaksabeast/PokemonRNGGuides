@@ -24,6 +24,13 @@ Rotom :
 - Delay : 90
 - Generation : "You thumped the TV Set"
 
+Dialga / Palkia (3IVs) : 
+- Delay : 84
+- Generation : After text
+
+![image](https://user-images.githubusercontent.com/25870563/144486236-9911d1ad-1d62-4303-97ff-67dc1fedb2ab.png)
+
+
 Giratina (3IVs) :
 - Delay : 84 
 - Generation : "Bishaaan!"

@@ -18,6 +18,3 @@ subCategory: 'Basic Knowledge'
 * Open [BDSP_RNG.lua](https://github.com/Real96/BDSP-CheatEngine-Lua) with a text editor, copy all its content and paste it in the window opened before.
 * Click `Execute Script`. It will freeze for a bit, just wait until it will print all the rng info in a new window
 * If you want to stop the script press 0 or NumPad 0. It won't stop otherwhise
-
-## Note
-In noisy areas advances will be too fast for Cheat Engine. So, in case it will freeze, just pause Yuzu/Ryujinx and wait until Cheat Engine unfreezes to unpause the emulator

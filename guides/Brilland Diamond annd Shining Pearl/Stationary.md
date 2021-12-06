@@ -44,7 +44,7 @@ Ramanas Park (3IVs) :
 - Delay : 84
 - Generation : Dialog Box
 
-**Warning : For the following Pokémon, you'll need to use this generator : https://leanny.github.io/bdsp_roamers.html, it's an early working WIP, thanks to Leanny once again**
+**Warning : For the following Pokémon, you'll need to use this generator : https://leanny.github.io/bdsp_roamers.html, it's an early bht 100% working tool, thanks to Leanny once again**
 
 Mesprit : 
 - Delay : 84

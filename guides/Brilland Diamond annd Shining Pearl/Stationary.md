@@ -44,6 +44,17 @@ Ramanas Park (3IVs) :
 - Delay : 84
 - Generation : Dialog Box
 
+**Warning : For the following Pokémon, you'll need to use this generator : https://leanny.github.io/bdsp_roamers.html, it's an early working WIP, thanks to Leanny once again**
+
+Mesprit : 
+- Delay : 84
+- Generation : "Kyauun."
+
+Cresselia : 
+- Delay : 104 / 105
+- Generation : Press A in front of her
+- Notes : Advances can go off, try to check for some pattern and see how it goes
+
 **Warning : The following method doesn't work at 100% with the actual tools. It doesn't change the how to RNG it, but could lead to wrong results.**
 
 Mystery Gift (Can be 3IVs) :

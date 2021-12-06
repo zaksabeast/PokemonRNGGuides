@@ -35,6 +35,11 @@ Giratina (3IVs) :
 - Delay : 84 
 - Generation : "Bishaaan!"
 
+Regigigas (3IVs) :
+- Delay : 84 
+- Generation : "Zut Zutt!"
+- Notes : Advances can go off, try to check for some pattern and see how it goes.
+
 Ramanas Park (3IVs) : 
 - Delay : 84
 - Generation : Dialog Box

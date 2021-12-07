@@ -24,6 +24,10 @@ Rotom :
 - Delay : 90
 - Generation : "You thumped the TV Set"
 
+Eevee :
+- Delay : 0
+- Generation : "You obtained an Eevee!"
+
 Dialga / Palkia (3IVs) : 
 - Delay : 84
 - Generation : After text

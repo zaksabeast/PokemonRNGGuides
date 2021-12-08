@@ -39,7 +39,7 @@ Giratina (3IVs) :
 - Delay : 84 
 - Generation : "Bishaaan!"
 
-- Heatran (3IVs) :
+Heatran (3IVs) :
 - Delay : 84
 - Generation : "Gwogbogogo..."
 

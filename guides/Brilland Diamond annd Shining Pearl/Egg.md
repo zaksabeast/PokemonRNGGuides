@@ -8,7 +8,7 @@ subCategory: 'CFW'
 For this guide, we'll go more in detail, but it still requires to have the Basic Knowledge guides, especially the PokeFinder's one since it'll be the tool used here.
 
 Requirement :
-- PokeFinder Builds : https://ci.appveyor.com/project/Admiral-Fish/pokefinder
+- PokeFinder Builds
 - CaptureSight
 - Shining Charm AND/OR Masuda.
 - Fly

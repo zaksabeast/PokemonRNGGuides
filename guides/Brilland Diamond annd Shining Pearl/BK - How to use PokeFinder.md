@@ -16,7 +16,7 @@ Even if it's useful for Eggs, it's important to set up your profile. For that on
 
 **An important note about how States works with PokeFinder and how to fill them :**
 
-**PokeFinder uses only 2 states. If you use the luas for Yuzu / Ryujinx, you can just input Seed 0 & Seed 1 the same way.**
+**PokeFinder uses only 2 states. If you use the luas for Yuzu / Ryujinx, 4 states will be displayed by default. You can just press 6 with your keyboard to switch to u32 State display. That way, you can just put the values from the Initial Seed part in the same order**
 
 **However CaptureSight uses 4 states. To not make things too confusing, you'll just have to input the Seeds in order. It means :**
 - **Seed 0 of PokeFinder = Seed 0 and Seed 1 of CaptureSight**

@@ -19,8 +19,8 @@ PokeFinder uses only 2 states. If you use the luas for Yuzu / Ryujinx, you can j
 However CaptureSight uses 4 states. To not make things too confusing, you'll just have to input the Seeds in order. It means :**
 
 **However CaptureSight uses 4 states. To not make things too confusing, you'll just have to input the Seeds in order. It means :**
-**- Seed 0 of PokeFinder = Seed 0 and Seed 1 of CaptureSight**
-**- Seed 1 of PokeFinder = Seed 2 and Seed 3 of CaptureSight**
+- **Seed 0 of PokeFinder = Seed 0 and Seed 1 of CaptureSight**
+- **Seed 1 of PokeFinder = Seed 2 and Seed 3 of CaptureSight**
 
 Once the tab opened for your desired RNG, don't forget to check the "Use Delay" and input the delay matching the values shown in our guides.
 

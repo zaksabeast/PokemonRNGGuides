@@ -15,8 +15,9 @@ PokeFinder is the universal RNG Tool. For that guide we'll focus on the Gen 8 Ta
 Even if it's useful for Eggs, it's important to set up your profile. For that on the main menu. Click on "Gen 8 Tools" and then Profile Manager. Create your profiles for BDSP. The TID / SID wanted is not the G7/G8TID one. So for example, with Pkhex, you'll have to hover on the TID/SID infos to have the valid numbers.
 
 An important note about how States works with PokeFinder and how to fill them :
-PokeFinder uses only 2 states. If you use the luas for Yuzu / Ryujinx, you can just input Seed 0 & Seed 1 the same way.
-However CaptureSight uses 4 states. To not make things too confusing, you'll just have to input the Seeds in order. It means :
+
+- PokeFinder uses only 2 states. If you use the luas for Yuzu / Ryujinx, you can just input Seed 0 & Seed 1 the same way.
+- However CaptureSight uses 4 states. To not make things too confusing, you'll just have to input the Seeds in order. It means :
 
 - Seed 0 of PokeFinder = Seed 0 and Seed 1 of CaptureSight
 - Seed 1 of PokeFinder = Seed 2 and Seed 3 of CaptureSight

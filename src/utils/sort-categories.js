@@ -13,6 +13,7 @@ const sortedCategories = [
   'Sun and Moon',
   'Ultra Sun and Ultra Moon',
   'Sword and Shield',
+  'Brilliant Diamond and Shining Pearl',
 ];
 
 export const sortCategories = (first, second) => {

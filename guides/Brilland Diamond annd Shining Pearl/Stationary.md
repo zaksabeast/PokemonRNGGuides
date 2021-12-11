@@ -52,6 +52,10 @@ Ramanas Park (3IVs) :
 - Delay : 84
 - Generation : Dialog Box
 
+Darkrai (3IVs) : 
+- Delay : 84
+- Generation : Dialog Box (it just shows "...")
+
 Uxie (3IVs) :
 - Delay : 85 
 - Generation : Dialog box

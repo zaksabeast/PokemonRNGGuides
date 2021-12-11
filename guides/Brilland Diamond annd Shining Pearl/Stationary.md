@@ -34,7 +34,6 @@ Dialga / Palkia (3IVs) :
 
 ![image](https://user-images.githubusercontent.com/25870563/144486236-9911d1ad-1d62-4303-97ff-67dc1fedb2ab.png)
 
-
 Giratina (3IVs) :
 - Delay : 84 
 - Generation : "Bishaaan!"
@@ -44,13 +43,22 @@ Heatran (3IVs) :
 - Generation : "Gwogbogogo..."
 
 Regigigas (3IVs) :
-- Delay : 84 
+- Delay : 75 
 - Generation : "Zut Zutt!"
 - Notes : Advances can go off, try to check for some pattern and see how it goes.
+- **Important note**: you have to stop 11 frames **before** your target
 
 Ramanas Park (3IVs) : 
 - Delay : 84
 - Generation : Dialog Box
+
+Uxie (3IVs) :
+- Delay : 85 
+- Generation : Dialog box
+
+Azelf (3IVs) :
+- Delay : 85 
+- Generation : Dialog box
 
 **Warning : For the following Pokémon, you'll need to use this generator : https://leanny.github.io/bdsp_roamers.html, it's an early but 100% working tool, thanks to Leanny once again**
 

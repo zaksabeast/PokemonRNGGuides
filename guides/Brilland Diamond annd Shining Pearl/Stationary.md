@@ -67,8 +67,9 @@ Azelf (3IVs) :
 **Warning : For the following Pokémon, you'll need to use this generator : https://leanny.github.io/bdsp_roamers.html, it's an early but 100% working tool, thanks to Leanny once again**
 
 Mesprit : 
-- Delay : 84
+- Delay : 84 / 85 / 86
 - Generation : "Kyauun."
+- **Important note**: currently, some people got Mesprit with different delays. Try those three and see which one works for you
 
 Cresselia : 
 - Delay : 104 / 105

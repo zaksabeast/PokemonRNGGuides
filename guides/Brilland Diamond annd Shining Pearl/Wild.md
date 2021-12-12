@@ -13,11 +13,13 @@ Also it's important to set up a gender rate if you don't aim for a Genderless Po
 
 ### Pure Wild (Honey)
 
-- Delay : 1
+- Delay : 1 (2 for Unown)
 - Notes : It's important to use Honey. Sweet Scent could lend for something less stable. Just press A on the "Use" message at the right frame. 
 
 For the encounter slots, you can find them here at the moment : https://www.pokemon-element-sh.fr/encounters-slots
-It's in french, but they are trustable.
+It's in french, but they are trustable. If the site doesn't work : https://www.pokebip.com/page/jeuxvideo/dossier_shasse/encounter_slot
+
+If you are a PokeFinder user (Gen 8 Tab => Wild), the Encounter Tables are available, so you can check what Pokemon are available only with the tool by filling all the informations necessary (like the route). Don't forget to edit your profile if you have a swarm or something like that.
 
 ### Honey Tree 
 
@@ -26,7 +28,7 @@ It's in french, but they are trustable.
 
 ### Fishing
 
-- Delay : ??? (same here)
-- Notes : Just press A when the player has a bite.
+- Delay : 1 (double check is appreciated) 
+- Notes : Press A on the "Landed a Pokémon!" message
 
 Little reminder, for Feebas, you can use this tool : https://lincoln-lm.github.io/JS-Finder/Tools/BDSPFeebas.html in order to find your tiles.

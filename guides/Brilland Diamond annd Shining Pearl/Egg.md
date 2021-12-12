@@ -5,12 +5,12 @@ slug: 'cfw-bdsp-egg'
 subCategory: 'CFW'
 ---
 
-For this guide, we'll go more in detail, but it still requires to have the Basic Knowledge guides. Just as in the TID / SID guide, we'll use PokeFinder's builds in order to do Egg RNG. 
+For this guide, we'll go more in detail, but it still requires to have the Basic Knowledge guides, especially the PokeFinder's one since it'll be the tool used here.
 
 Requirement :
-- PokeFinder Builds : https://ci.appveyor.com/project/Admiral-Fish/pokefinder
+- PokeFinder Builds
 - CaptureSight
-- Shiny Charm OR Masuda. (RIP Masuda)
+- Shining Charm AND/OR Masuda.
 - Fly
 
 Shiny Charm or Masuda will be a MUST HAVE in order to perform egg RNG. This is because if you don't have either the SC or Masuda, egg is generated when you pick it from the old man. Since Solaceon Town is a very noisy place, it is very difficult to do RNG in front of the old man. Using Masuda or SC changes generation to the moment it is available to pick up, after a set amount of steps. This allows you to fly to a quiet and stable place to advance frames, and take the step to generate the egg while at the quiet place.
@@ -29,18 +29,11 @@ Important: Before starting the RNG, you will need to add your TID/SID to a profi
 
 5. After you load your game back up, open up CaptureSight and go to the Main RNG screen this time. Press A immediately here to pause updates, so that your seeds do not change while you input. Make sure your advances is still at 0 as well. Here, there's a list of 4 seeds, seed 0, 1, 2, and 3 in order, each being 8 characters. However, there are only 2 seeds, seed 0 and seed 1. CaptureSight seeds and Pokefinder seeds are listed differently, so you will have to use the following way to convert the CaptureSight seeds into Pokefinder seeds:
 
-- PokeFinder Seed 0 : CaptureSight Seed 1 / CaptureSight Seed 0
-- Pokefinder Seed 1 : CaptureSight Seed 3 / CaptureSight Seed 2
+- PokeFinder Seed 0 : CaptureSight Seed 0 / CaptureSight Seed 1
+- Pokefinder Seed 1 : CaptureSight Seed 2 / CaptureSight Seed 3
 
-Example:
-CaptureSight shows the following 4 seeds:
-11111111
-22222222
-33333333
-44444444
-
-Pokefinder Seed 0: 2222222211111111
-Pokefinder Seed 1: 3333333344444444
+Generate the results. Find your target advance, and use all the methods to get close to hit.
+Once at the right advance, move your character. Some tips to be accurate : Move your character in the opposite direction of where they're standing, and use the stick and not the pad. 
 
 6. Once you input your seeds into Pokefinder, you can click generate, and use the filters to filter out the exact target you want to hit. Once you decide on an advance, you can start advancing towards it.
 

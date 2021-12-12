@@ -19,3 +19,5 @@ The TID / SID gets generated once pressing Yes when you validate your name. Howe
 
 To advance states, you'll have the Munchlax of the intro blinking, allowing to +1.
 
+However, you can advance your states by +5 or +6 by retruning to the Hat menu after selecting your Name. It'll allow to get to your target faster.
+

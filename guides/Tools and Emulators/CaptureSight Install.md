@@ -7,7 +7,7 @@ subCategory: 'Switch'
 
 ## Tools
 
-- A Switch with Atmosphere CFW (Custom Firmware) ([CFW Install Guide](https://switchgui.de/switch-guide/))
+- A Switch with Atmosphere Custom Firmware ([CFW Install Guide](https://switchgui.de/switch-guide/))
 
 ## Step 1: Installing Tesla Overlay
 
@@ -44,7 +44,7 @@ subCategory: 'Switch'
 - Updating the game to the latest version should fix this error.
 - This error can also show if CaptureSight has not been updated for the latest game version.
 
-### Unsupported game! Title Id: <titld_id>
+### Unsupported game! Title Id: <title_id>
 
 - You are not using a game that CaptureSight supports. The list of supported games are:
   - Sword & Shield

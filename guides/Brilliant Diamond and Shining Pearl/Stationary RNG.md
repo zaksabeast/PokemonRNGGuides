@@ -54,17 +54,53 @@ Note: Make sure to save before entering the lake area. There is a cutscene that 
 - Final Screen: "You thumped the TV Set."
 - Genderless
 
+### Eevee
+
+- Delay: 0
+- Generation: "You obtained an Eevee!"
+
+### Dialga / Palkia (3IVs)
+
+- Delay: 84
+- Generation: After text
+
+![image](https://user-images.githubusercontent.com/25870563/144486236-9911d1ad-1d62-4303-97ff-67dc1fedb2ab.png)
+
 ### Giratina
 
 - Delay: 84
 - Final Screen: "Bishaaan!"
 - Genderless and 3 set IVs
 
+### Heatran (3IVs)
+
+- Delay: 84
+- Generation: "Gwogbogogo..."
+
+### Regigigas (3IVs)
+
+- Delay: 84
+- Generation: "Zut Zutt!"
+- Notes: Advances can go off, try to check for some pattern and see how it goes.
+
 ### Ramanas Park
 
 - Delay: 84
 - Final Screen: Dialog Box
 - Some will be Genderless, all have 3 set IVs
+
+### Mesprit
+
+- Delay: 84
+- Generation: "Kyauun."
+
+### Cresselia
+
+- Delay: 104 / 105
+- Generation: Press A in front of her
+- Notes: Advances can go off, try to check for some pattern and see how it goes
+
+**Warning: The following method doesn't work at 100% with the actual tools. It doesn't change the how to RNG it, but could lead to wrong results.**
 
 ### Mystery Gift
 

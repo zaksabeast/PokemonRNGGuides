@@ -7,7 +7,7 @@ subCategory: 'Custom Firmware'
 
 ## Tools
 
-- A Switch with CaptureSight ([CaptureSight Install Guide]())
+- A Switch with CaptureSight ([CaptureSight Install Guide](https://www.pokemonrng.com/install-capturesight))
 - [Chatot](https://chatot.pokemonrng.com/#/bdsp)
 
 ## Step 1: Set Up the Tool

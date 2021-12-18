@@ -79,15 +79,32 @@ Note: Make sure to save before entering the lake area. There is a cutscene that 
 
 ### Regigigas (3IVs)
 
-- Delay: 84
+- Delay: 75
 - Generation: "Zut Zutt!"
 - Notes: Advances can go off, try to check for some pattern and see how it goes.
+
+**Important note**: you have to stop 11 frames **before** your target
 
 ### Ramanas Park
 
 - Delay: 84
 - Final Screen: Dialog Box
 - Some will be Genderless, all have 3 set IVs
+
+### Darkrai (3IVs)
+
+- Delay: 84
+- Generation: Dialog Box (it just shows "...")
+
+### Uxie (3IVs)
+
+- Delay: 85
+- Generation: Dialog box
+
+### Azelf (3IVs)
+
+- Delay: 85
+- Generation: Dialog box
 
 ### Mesprit
 

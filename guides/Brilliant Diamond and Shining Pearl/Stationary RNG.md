@@ -19,7 +19,7 @@ subCategory: 'Custom Firmware'
    - See below for the delays needed.
 4. Check the "Set IVs" box if going for a Pokemon with 3 set IVs.
 5. Adjust the filters to the Pokemon wanted.
-   -If going for a genderless Pokemon make sure to choose "Genderless" in the "Gender" box.
+   - If going for a genderless Pokemon make sure to choose "Genderless" in the "Gender" box.
 6. Generate results and find a target advance.
    - If there are no results, try lowering the filters, or increasing the max advances.
    - Keep in mind that the higher the advance is, the longer the wait to reach the target advance.
@@ -31,6 +31,7 @@ Note: CaptureSight keeps track of how many times the RNG has advanced since open
 ## Step 2: Obtaining the wanted Pokemon
 
 1. If going for a high advance, you can advance the RNG faster before entering the final screen.
+   - See the [Advancing the RNG guide](https://www.pokemonrng.com/bdsp-advance-rng) for the different ways the RNG can be advanced to reach a target advance.
 2. When nearing the target advance, enter into the final screen or final input.
    - See below for the final screens and delays needed.
 3. Wait for the target advance to show, then press `A` to obtain Pokemon or begin the battle on the target advance.
@@ -59,10 +60,11 @@ Note: Make sure to save before entering the lake area. There is a cutscene that 
 - Delay: 0
 - Generation: "You obtained an Eevee!"
 
-### Dialga / Palkia (3IVs)
+### Dialga / Palkia
 
 - Delay: 84
 - Generation: After text
+- Genderless and 3 set IVs
 
 ![image](https://user-images.githubusercontent.com/25870563/144486236-9911d1ad-1d62-4303-97ff-67dc1fedb2ab.png)
 
@@ -72,15 +74,17 @@ Note: Make sure to save before entering the lake area. There is a cutscene that 
 - Final Screen: "Bishaaan!"
 - Genderless and 3 set IVs
 
-### Heatran (3IVs)
+### Heatran
 
 - Delay: 84
 - Generation: "Gwogbogogo..."
+- Set gender and 3 set IVs
 
-### Regigigas (3IVs)
+### Regigigas
 
-- Delay: 75
+- Delay: 84
 - Generation: "Zut Zutt!"
+- Genderless and 3 set IVs
 - Notes: Advances can go off, try to check for some pattern and see how it goes.
 
 **Important note**: you have to stop 11 frames **before** your target
@@ -91,20 +95,23 @@ Note: Make sure to save before entering the lake area. There is a cutscene that 
 - Final Screen: Dialog Box
 - Some will be Genderless, all have 3 set IVs
 
-### Darkrai (3IVs)
+### Darkrai
 
 - Delay: 84
 - Generation: Dialog Box (it just shows "...")
+- Genderless and 3 set IVs
 
-### Uxie (3IVs)
-
-- Delay: 85
-- Generation: Dialog box
-
-### Azelf (3IVs)
+### Uxie
 
 - Delay: 85
 - Generation: Dialog box
+- Genderless and 3 set IVs
+
+### Azelf
+
+- Delay: 85
+- Generation: Dialog box
+- Genderless and 3 set IVs
 
 ### Mesprit
 

@@ -3,5 +3,10 @@
     "title": "Notifications are now here!",
     "text": "Now when you visit the site you can see what's changed since your last visit.",
     "date": "2021-10-4"
+  },
+  {
+    "title": "PokeFinder 4.0.0 Release",
+    "text": "There is a new PokeFinder release with initial Gen 8 support! <br /> <a target=\"_blank\" rel=\"noopener\" href=\"https://github.com/Admiral-Fish/PokeFinder/releases/tag/v4.0.0\">PokeFinder 4.0.0 Release</a>",
+    "date": "2022-1-7"
   }
 ]

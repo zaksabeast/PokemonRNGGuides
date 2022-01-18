@@ -29,9 +29,9 @@ If you are a PokeFinder user (Gen 8 Tab => Wild), the Encounter Tables are avail
 
 ~~Little reminder, for Feebas, you can use this tool : https://lincoln-lm.github.io/JS-Finder/Tools/BDSPFeebas.html in order to find your tiles.~~.
 
-Whole generation is wrong, being worked on. ES and some factors are generated when using the rod, while PID and everything is generated once hooking. Will help a LOT to hunt rare Encounter Slots 
+Whole generation is wrong, being worked on. ES and some factors are generated when using the rod, while PID and everything is generated once hooking. Will help a LOT to hunt rare Encounter Slots
 
-## Surfing 
+## Surfing
 
 - Delay : 2
 - Note : Same as basic wild, use a honey rather than Sweet Scent.

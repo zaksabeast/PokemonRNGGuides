@@ -58,9 +58,7 @@ export const GuideList = ({ subCategoryTitle, guides }) => {
             </Typography>
           </ListItemText>
         </ListItem>
-        {index < orderedGuides.length - 1 && (
-          <Divider aria-hidden="true" />
-        )}
+        {index < orderedGuides.length - 1 && <Divider aria-hidden="true" />}
       </React.Fragment>
     );
   });

@@ -10,7 +10,7 @@ isRoughDraft: true
 
 - Installed [Cheat Engine](https://www.cheatengine.org/downloads.php)
 - Installed [Yuzu](https://yuzu-emu.org/downloads/)/[Ryujinx](https://ryujinx.org/download)
-- Updated game to version 1.1.2
+- Updated game to any version after 1.1.0
 
 ## Usage
 

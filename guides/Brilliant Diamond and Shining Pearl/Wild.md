@@ -22,14 +22,16 @@ It's in french, but they are trustable. If the site doesn't work : https://www.p
 
 If you are a PokeFinder user (Gen 8 Tab => Wild), the Encounter Tables are available, so you can check what Pokemon are available only with the tool by filling all the informations necessary (like the route). Don't forget to edit your profile if you have a swarm or something like that.
 
-### Honey Tree
-
-- Delay : ??? (not really sure would need numbers here)
-- Notes : Just press A in front of the tree. It's suggested to do that RNG with the first tree in Floaroma town where you get the Honey. The area is quiet to make this RNG easy. As for Gen 4, the Pokemon species will be set when putting the honey, but the Pokemon's informations will be generated once encountering it. So you can't go for a specific Pokemon, but you can get the Pokémon attracted the caratecristics you want.
-
 ### Fishing
 
-- Delay : 1 (double check is appreciated)
-- Notes : Press A on the "Landed a Pokémon!" message
+~~- Delay : 1 (double check is appreciated) ~~~~
+~~- Notes : Press A on the "Landed a Pokémon!" message~~
 
-Little reminder, for Feebas, you can use this tool : https://lincoln-lm.github.io/JS-Finder/Tools/BDSPFeebas.html in order to find your tiles.
+~~Little reminder, for Feebas, you can use this tool : https://lincoln-lm.github.io/JS-Finder/Tools/BDSPFeebas.html in order to find your tiles.~~.
+
+Whole generation is wrong, being worked on. ES and some factors are generated when using the rod, while PID and everything is generated once hooking. Will help a LOT to hunt rare Encounter Slots
+
+## Surfing
+
+- Delay : 2
+- Note : Same as basic wild, use a honey rather than Sweet Scent.

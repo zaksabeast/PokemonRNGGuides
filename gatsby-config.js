@@ -65,6 +65,6 @@ module.exports = {
     'gatsby-source-local-git',
     'gatsby-plugin-offline',
     'gatsby-remark-images',
-    'gatsby-plugin-sharp'
+    'gatsby-plugin-sharp',
   ],
 };

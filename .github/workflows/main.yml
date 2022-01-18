@@ -1,8 +1,9 @@
-name: CICD
+name: Main checks
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   lint-build-deploy:
@@ -16,6 +17,9 @@ jobs:
 
       - name: Lint
         run: yarn lint
+
+      - name: Check formatting
+        run: yarn format:check
 
       - name: Build
         run: yarn build

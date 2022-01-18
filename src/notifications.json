@@ -8,5 +8,10 @@
     "title": "PokeFinder 4.0.0 Release",
     "text": "There is a new PokeFinder release with initial Gen 8 support! <br /> <a target=\"_blank\" rel=\"noopener\" href=\"https://github.com/Admiral-Fish/PokeFinder/releases/tag/v4.0.0\">PokeFinder 4.0.0 Release</a>",
     "date": "2022-1-7"
+  },
+  {
+    "title": "New \"Rough Drafts\" category!",
+    "text": "Lots of people love viewing rough drafts while they're being written.  Now rough drafts can be viewed on the site instead of on GitHub! <br /> <a href=\"/rough-drafts\">Click here to view the rough drafts!</a>",
+    "date": "2022-1-17"
   }
 ]

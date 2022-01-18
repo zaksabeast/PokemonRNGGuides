@@ -2,6 +2,7 @@ const sortedCategories = [
   'Tools and Emulators',
   'Transporter',
   'Ruby and Sapphire',
+  'Colosseum and XD',
   'FireRed and LeafGreen',
   'Emerald',
   'Diamond, Pearl, and Platinum',

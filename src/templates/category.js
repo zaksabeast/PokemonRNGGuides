@@ -12,7 +12,6 @@ const CategoryTemplate = ({ data, pageContext }) => {
     const subCategoryGuides = result[subCategory] || [];
 
     subCategoryGuides.push(guide);
-
     result[subCategory] = subCategoryGuides;
 
     return result;
@@ -35,7 +34,12 @@ export default CategoryTemplate;
 
 export const query = graphql`
   query ($categoryRegex: String!) {
-    allMdx(filter: { fields: { pagePath: { regex: $categoryRegex } } }) {
+    allMdx(
+      filter: {
+        frontmatter: { isRoughDraft: { ne: true } }
+        fields: { pagePath: { regex: $categoryRegex } }
+      }
+    ) {
       nodes {
         frontmatter {
           title

@@ -1,8 +1,9 @@
 ---
-title: 'c) Egg RNG Guide'
+title: 'Egg RNG'
 description: 'How to RNG eggs from the daycare'
-slug: 'hgss-egg'
+slug: 'emulator-hgss-egg'
 subCategory: 'Emulator'
+isRoughDraft: true
 ---
 
 ## Tools

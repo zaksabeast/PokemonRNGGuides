@@ -1,8 +1,9 @@
 ---
-title: 'c) Egg RNG Guide'
+title: 'Egg RNG'
 description: 'How to RNG eggs from the daycare'
-slug: 'dppt-egg'
+slug: 'emulator-dppt-egg'
 subCategory: 'Emulator'
+isRoughDraft: true
 ---
 
 quite different from HGSS even if the idea is the same

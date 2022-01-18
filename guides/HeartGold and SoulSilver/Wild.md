@@ -1,8 +1,9 @@
 ---
-title: 'b) Wild'
-description: 'Specificities about Wild Pokemon in HGSS'
-slug: 'hgss-wild'
-subCategory: 'RNG Knowledge'
+title: 'Wild RNG'
+description: 'How to RNG wild Pokemon in HeartGold and SoulSilver'
+slug: 'emulator-hgss-wild'
+subCategory: 'Emulator'
+isRoughDraft: true
 ---
 
 Same as for stationary, the intro would be the how to RNG it but would be only a few line since the user MUST have the Basic Knowledge. Maybe a reminder to read this if they don't know.

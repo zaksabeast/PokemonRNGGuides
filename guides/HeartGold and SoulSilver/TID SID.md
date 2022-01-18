@@ -1,13 +1,12 @@
 ---
-title: 'e) TID / SID RNG'
-description: 'How to get a desired TID / SID combo' 
-slug: 'hgss-tid-sid'
-subCategory: 'RNG Knowledge'
+title: 'TID / SID RNG'
+description: 'How to get a desired TID / SID combo'
+slug: 'emulator-hgss-tid-sid'
+subCategory: 'Emulator'
 ---
 
 Okay so first explaining the basic with any wanted PID.
 The uppercase/lowercase for the delay issues.
-
 
 Also the special case that I lack of knowledge atm because i'm tired :
 

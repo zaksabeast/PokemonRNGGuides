@@ -2,4 +2,4 @@
     "componentChunkName": "component---src-templates-category-js",
     "path": "/heart-gold-and-soul-silver",
     "result": {"data":{"allMdx":{"nodes":[{"frontmatter":{"title":"Advancing the RNG","description":"The different methods the RNG can be advanced and events that influence the RNG","slug":"hgss-rng-advance","subCategory":"Basic Knowledge"}},{"frontmatter":{"title":"Initial Seed RNG","description":"How to RNG an initial seed in HeartGold/SoulSilver","slug":"hgss-initial-seed","subCategory":"Basic Knowledge"}}]}},"pageContext":{"categoryRegex":"/HeartGold and SoulSilver/","category":"HeartGold and SoulSilver"}},
-    "staticQueryHashes": ["3733757939","4168079547"]}
+    "staticQueryHashes": ["4168079547","884883011"]}

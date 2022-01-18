@@ -2,4 +2,4 @@
     "componentChunkName": "component---src-templates-category-js",
     "path": "/emerald",
     "result": {"data":{"allMdx":{"nodes":[{"frontmatter":{"title":"Egg RNG","description":"RNG Eggs from the Daycare","slug":"emulator-emerald-egg","subCategory":"Emulator"}}]}},"pageContext":{"categoryRegex":"/Emerald/","category":"Emerald"}},
-    "staticQueryHashes": ["3733757939","4168079547"]}
+    "staticQueryHashes": ["4168079547","884883011"]}

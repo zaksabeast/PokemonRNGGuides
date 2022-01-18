@@ -2,4 +2,4 @@
     "componentChunkName": "component---src-templates-category-js",
     "path": "/transporter",
     "result": {"data":{"allMdx":{"nodes":[{"frontmatter":{"title":"Transporter EXP to Nature Conversion Table (VC)","description":"A quick way to check the nature your VC Pokemon will be","slug":"misc-3ds-transporter-nature-tables","subCategory":"General"}},{"frontmatter":{"title":"Transporter with PCalc","description":"Transfer your Gen 1/2 Pokemon to always be 6IV","slug":"transporter-rng","subCategory":"Custom Firmware"}}]}},"pageContext":{"categoryRegex":"/Transporter/","category":"Transporter"}},
-    "staticQueryHashes": ["3733757939","4168079547"]}
+    "staticQueryHashes": ["4168079547","884883011"]}

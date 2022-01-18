@@ -2,4 +2,4 @@
     "componentChunkName": "component---src-templates-category-js",
     "path": "/diamond-pearl-and-platinum",
     "result": {"data":{"allMdx":{"nodes":[{"frontmatter":{"title":"Advancing the RNG","description":"The different methods the RNG can be advanced and events that influence the RNG","slug":"dppt-advance-rng","subCategory":"Basic Knowledge"}},{"frontmatter":{"title":"Initial Seed RNG","description":"How to RNG an initial seed in Diamond, Pearl, and Platinum","slug":"dppt-initial-seed","subCategory":"Basic Knowledge"}},{"frontmatter":{"title":"Stationary RNG","description":"RNG stationary Pokemon in Diamond, Pearl, and Platinum","slug":"emulator-dppt-stationary","subCategory":"Emulator"}}]}},"pageContext":{"categoryRegex":"/Diamond, Pearl, and Platinum/","category":"Diamond, Pearl, and Platinum"}},
-    "staticQueryHashes": ["3733757939","4168079547"]}
+    "staticQueryHashes": ["4168079547","884883011"]}

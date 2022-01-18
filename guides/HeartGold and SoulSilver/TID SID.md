@@ -3,6 +3,7 @@ title: 'TID / SID RNG'
 description: 'How to get a desired TID / SID combo'
 slug: 'emulator-hgss-tid-sid'
 subCategory: 'Emulator'
+isRoughDraft: true
 ---
 
 Okay so first explaining the basic with any wanted PID.

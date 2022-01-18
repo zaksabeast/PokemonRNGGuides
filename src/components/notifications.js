@@ -11,19 +11,38 @@ import filter from 'lodash/filter';
 import { NotificationList } from './notification-list';
 
 const isBrowser = typeof window !== 'undefined';
-const storageItem = isBrowser
-  ? localStorage.getItem('lastSeenNotification')
-  : null;
-const lastSeenNotification = storageItem ?? '2000-1-1';
-const messageList = orderBy(messages, 'date', 'desc');
-const count = filter(messageList, message => {
-  return message.date > lastSeenNotification;
-}).length;
+
+const getCountAndMessageList = () => {
+  const storageItem = isBrowser
+    ? localStorage.getItem('lastSeenNotification')
+    : null;
+  const lastSeenNotification = new Date(storageItem ?? '2000-1-1');
+  const messagesWithParsedDate = messages.map(message => ({
+    ...message,
+    date: new Date(message.date),
+  }));
+  const messageList = orderBy(messagesWithParsedDate, 'date', 'desc');
+  const count = filter(messageList, message => {
+    return message.date > lastSeenNotification;
+  }).length;
+
+  return {
+    count,
+    messageList,
+  };
+};
 
 export const Notifications = () => {
   const [isPopperOpen, setPopperOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const [badgeCount, setBadgeCount] = React.useState(count);
+  const [messageList, setMessageList] = React.useState([]);
+  const [badgeCount, setBadgeCount] = React.useState(0);
+
+  React.useEffect(() => {
+    const { count, messageList } = getCountAndMessageList();
+    setMessageList(messageList);
+    setBadgeCount(count);
+  }, []);
 
   const handleToggle = () => {
     setPopperOpen(prevPopperOpen => !prevPopperOpen);

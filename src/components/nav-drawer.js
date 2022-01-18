@@ -74,6 +74,9 @@ export const NavDrawer = ({ isOpen, onClose }) => {
           <ListItem component="a" href={DISCORD_URL} button>
             <ListItemText>Discord</ListItemText>
           </ListItem>
+          <ListItem to="/rough-drafts" role="link" button>
+            <ListItemText>Rough Drafts</ListItemText>
+          </ListItem>
           <Divider className={classes.divider} />
           {guideCategories}
         </List>

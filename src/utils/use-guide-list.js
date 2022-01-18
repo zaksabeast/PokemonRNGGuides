@@ -17,6 +17,7 @@ export const useGuideList = () => {
             title
             description
             slug
+            isRoughDraft
           }
         }
       }
@@ -24,6 +25,10 @@ export const useGuideList = () => {
   `;
   return useStaticQuery(getPages).allMdx.nodes.reduce(
     (result, { fields, frontmatter }) => {
+      if (frontmatter.isRoughDraft) {
+        return result;
+      }
+
       const splitPagePath = fields.pagePath.split('/');
       const category = splitPagePath[1] || '';
       const bundledGuides = result[category] || [];

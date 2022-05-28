@@ -102,6 +102,4 @@ If you did not hit your target frame, use `Start + Left` to view the details of 
 
 ## Additional Notes
 
-[Video Tutorial](https://youtu.be/vAMzPPjTMSw) showing the process in-game by [im a blisy ._.](https://www.youtube.com/c/imablisy)
-
 [PCalc Key Combos](https://gbatemp.net/threads/pcalc-usum-the-rng-plugin-for-ultra-sun-and-ultra-moon.489643/)

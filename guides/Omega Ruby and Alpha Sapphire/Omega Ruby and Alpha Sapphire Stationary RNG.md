@@ -13,6 +13,8 @@ slug: 'pcalc-oras-stationary'
 
 Save the game near the Legendary Pokémon you want to capture, such as in front of a mysterious ring, or in a town near black clouds or the huge gap in the sky.
 
+Skip Step 2 if you are not connecting your 3DS to 3DSRNGTool.
+
 ## Step 2: Obtaining the IP address of the 3DS
 
 1. Open FBI, then select `Remote Install`.
@@ -27,7 +29,7 @@ Save the game near the Legendary Pokémon you want to capture, such as in front 
 
 ![Viewing the IP address](../../images/OmegaRuby-AlphaSapphire/Stationary/fbi-3.png)
 
-## Step 2: Launch BootNTR Selector
+## Step 3: Launch BootNTR Selector
 
 1. Launch the non-Mode 3 version.
 
@@ -37,12 +39,14 @@ Save the game near the Legendary Pokémon you want to capture, such as in front 
 
 ## Step 4: Launch the Game
 
-Hover over the game icon, then press `X + Y`. You should see a menu. Choose `Enable Debugger`. Usually the game will then automatically boot, if that does not happen, press `A` to boot the game. Immediately, hold `Left` and the screen will flash 3 times and wait at the loading screen.
+Hover over the game icon, then press `X + Y`. You should see a menu. Choose `Enable Debugger`. Usually the game will then automatically boot, if that does not happen, press `A` to boot the game.
+
+If you are connecting your 3DS to 3DSRNGTool, immediately hold `Left` and the screen will flash 3 times and wait at the loading screen.
 
 
 Note: if the screen does not flash 3 times and instead boots into the game, turn off the console and on again (or use the [Rosalina menu](https://github.com/LumaTeam/Luma3DS/wiki/Rosalina) to reboot) and try again.
 
-## Step 3: Set Up 3DSRNGTool
+## Step 5: Set Up 3DSRNGTool
 
 1. In the upper right, choose your game version.
 
@@ -50,11 +54,17 @@ Note: if the screen does not flash 3 times and instead boots into the game, turn
 
 3. Make sure you are on the `Stationary RNG` tab in 3DSRNGTool.
 
+If you are not connecting your 3DS to 3DSRNGTool, follow the next step.
+
+4. Input the initial seed in the upper right. You can find this by pressing `Start + Up` to bring up the Game View window. The initial seed is found where it says `Init Seed:`.
+
+If you are connecting your 3DS to 3DSRNGTool, follow the next two steps.
+
 4. Click on `Tools`, then `NTR Helper`.
 
 5. Enter the IP address of the 3DS in the `IP` field, then click `One Click`. The text will say "Console Connected" and the game will load.
 
-## Step 4: Finding a Seed
+## Step 6: Finding a Seed
 
 1. Load into the game and pause the game using `Start + Select` when you could move your character.
 
@@ -66,23 +76,23 @@ Note: if the screen does not flash 3 times and instead boots into the game, turn
 
 - If the Frame number you chose in the 3DSRNGTool is an even number while the Frame number shown on the 3DS is an odd number, you need to unpause the game using `Start` and save the game, making the frame advances in the game to be odd numbers.
 
-## Step 4: Reach the Final Screen
+## Step 7: Reach the Final Screen
 
 The final screen is the last screen or dialogue box before a battle with the desired Pokemon starts. A list of all the final screens can be found [here](https://github.com/wwwwwwzx/3DSRNGTool#final-screen).
 
 For example, you should see the text "Would you like to put your hand deep in the hole?" / "Would you like to examine it? Yes/No" when interacting with the rings or "Despite that, do you want to fly into the clouds?" / "Do you want to fly into the gap? Yes/No" when Soaring in the Sky.
 
-## Step 5: Wait for the Target Frame
+## Step 8: Wait for the Target Frame
 
 1. Wait for the target Frame, and use `Start + Select` to pause the game when the frame shown on the 3DS is very close to the target Frame.
 
 2. Use `Select` to advance 2 Frames at a time, until the Frame shown on the 3DS is the target Frame.
 
-## Step 6: Encounter the Pokémon
+## Step 9: Encounter the Pokémon
 
 Press and hold `A` to trigger the battle. Once the battle starts, you can use `Start + Left` to view the stats of the opposing Wild Pokémon to see if it matches the target Frame. Use `Start + Left` to close the window when you are done.
 
-## Step 7: Turning Off the Console
+## Step 10: Turning Off the Console
 
 1. After you have captured the Pokémon, save the game.
 

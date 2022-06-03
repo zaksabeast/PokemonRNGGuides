@@ -116,21 +116,12 @@
     eslint-visitor-keys "^2.1.0"
     semver "^6.3.0"
 
-"@babel/generator@^7.10.5", "@babel/generator@^7.15.4", "@babel/generator@^7.15.8":
+"@babel/generator@^7.10.5", "@babel/generator@^7.12.5", "@babel/generator@^7.13.0", "@babel/generator@^7.15.4", "@babel/generator@^7.15.8":
   version "7.15.8"
   resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.15.8.tgz#fa56be6b596952ceb231048cf84ee499a19c0cd1"
   integrity sha512-ECmAKstXbp1cvpTTZciZCgfOt6iN64lR0d+euv3UZisU5awfRawOvg07Utn/qBGuH4bRIEZKrA/4LzZyXhZr8g==
   dependencies:
     "@babel/types" "^7.15.6"
-    jsesc "^2.5.1"
-    source-map "^0.5.0"
-
-"@babel/generator@^7.12.5", "@babel/generator@^7.13.0":
-  version "7.15.0"
-  resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.15.0.tgz#a7d0c172e0d814974bad5aa77ace543b97917f15"
-  integrity sha512-eKl4XdMrbpYvuB505KTta4AV9g+wWzmVBW69tX0H2NwKVKd2YJbKgyK6M8j/rgLbmHOYJn6rUklV677nOyJrEQ==
-  dependencies:
-    "@babel/types" "^7.15.0"
     jsesc "^2.5.1"
     source-map "^0.5.0"
 
@@ -1137,17 +1128,10 @@
     core-js-pure "^3.16.0"
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.10.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.15.4", "@babel/runtime@^7.3.4", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.10.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.15.4", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
   version "7.15.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.15.4.tgz#fd17d16bfdf878e6dd02d19753a39fa8a8d9c84a"
   integrity sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
-"@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.7":
-  version "7.14.8"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.8.tgz#7119a56f421018852694290b9f9148097391b446"
-  integrity sha512-twj3L8Og5SaCRCErB4x4ajbvBIVV77CGeFglHpeg5WC5FF8TZzBWXtTJ4MqaD9QszLYTtr+IsaAL2rEUevb+eg==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -1213,29 +1197,12 @@
     globals "^11.1.0"
     lodash "^4.17.19"
 
-"@babel/types@^7.0.0-beta.49", "@babel/types@^7.10.5", "@babel/types@^7.14.5", "@babel/types@^7.14.8", "@babel/types@^7.14.9", "@babel/types@^7.15.0", "@babel/types@^7.15.4", "@babel/types@^7.15.6", "@babel/types@^7.4.4":
+"@babel/types@^7.0.0-beta.49", "@babel/types@^7.10.5", "@babel/types@^7.12.13", "@babel/types@^7.12.7", "@babel/types@^7.13.0", "@babel/types@^7.14.5", "@babel/types@^7.14.8", "@babel/types@^7.14.9", "@babel/types@^7.15.0", "@babel/types@^7.15.4", "@babel/types@^7.15.6", "@babel/types@^7.4.4", "@babel/types@^7.7.0":
   version "7.15.6"
   resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.15.6.tgz#99abdc48218b2881c058dd0a7ab05b99c9be758f"
   integrity sha512-BPU+7QhqNjmWyDO0/vitH/CuhpV8ZmK1wpKva8nuyNF5MJfuRNWMc+hc14+u9xT93kvykMdncrJT19h74uB1Ig==
   dependencies:
     "@babel/helper-validator-identifier" "^7.14.9"
-    to-fast-properties "^2.0.0"
-
-"@babel/types@^7.12.13", "@babel/types@^7.13.0":
-  version "7.15.0"
-  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.15.0.tgz#61af11f2286c4e9c69ca8deb5f4375a73c72dcbd"
-  integrity sha512-OBvfqnllOIdX4ojTHpwZbpvz4j3EWyjkZEdmjH0/cgsd6QOdSgU8rLSk6ard/pcW7rlmjdVSX/AWOaORR1uNOQ==
-  dependencies:
-    "@babel/helper-validator-identifier" "^7.14.9"
-    to-fast-properties "^2.0.0"
-
-"@babel/types@^7.12.7", "@babel/types@^7.7.0":
-  version "7.13.0"
-  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.13.0.tgz#74424d2816f0171b4100f0ab34e9a374efdf7f80"
-  integrity sha512-hE+HE8rnG1Z6Wzo+MhaKE5lM5eMx71T4EHJgku2E3xIfaULhDcxiiRxUYgwX8qwP1BBSlag+TdGOt6JAidIZTA==
-  dependencies:
-    "@babel/helper-validator-identifier" "^7.12.11"
-    lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
 "@emotion/hash@^0.8.0":
@@ -5746,10 +5713,10 @@ gatsby-plugin-material-ui@^3.0.0:
     clean-css "^5.1.1"
     postcss "^8.0.5"
 
-gatsby-plugin-mdx@^2.0.0:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-mdx/-/gatsby-plugin-mdx-2.14.0.tgz#adbbe14820de493eb926ee490019c43df4c7d3f3"
-  integrity sha512-aEAx4KrfSL/A4LFhh5nlOWUZZ2FA70X5xl+j5PiBRFEVTCgSOb8D0XPrHvtwNFYlAhdl/cuH3NcqlbRPJkX+Uw==
+gatsby-plugin-mdx@^2.14.1:
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-mdx/-/gatsby-plugin-mdx-2.14.1.tgz#2f9c18b2f0020cde4c323c734532575b15315ff6"
+  integrity sha512-5F5Quv3kp9jdoTM3xZlpSPTeWJd+BbuLxf9VAlBXnXpItT1ANy3d3clPj8mMVe10ttQQ0OTZ7F+TIk293+t2GA==
   dependencies:
     "@babel/core" "^7.15.5"
     "@babel/generator" "^7.15.4"

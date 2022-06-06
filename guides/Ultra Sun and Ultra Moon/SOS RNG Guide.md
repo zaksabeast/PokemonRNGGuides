@@ -128,7 +128,7 @@ At this point you would be best off waiting until you have a longer SOS chain fo
 2. You can find what SOS frame you are currently on using the Extended Game View window of PCalc.
 
 3. After each battle turn, make sure to update all the relevant info in 3DSRNGTool based on what occured that turn.
-   - In Misc. RNG Tool: SOS "Length", SOS "Frame", "Last Call Failed", "Super Effective", "Same Caller"
+   - In Misc. RNG Tool: SOS "Length", SOS "Frame", "Last Call Failed", "Same Caller"
    - In main window: "Frame" (for current SOS frame), "Chain Length"
 
 ![Results](../../images/UltraSun-UltraMoon/SOS/Results.png)
@@ -220,7 +220,7 @@ Note: You can find out what the Pokemon's stats are by pressing Start + Left to 
    - You will want `OO` as the first two values for the SOS call to be successful.
 
 ```
-Note: If you are going for a hard target such as a 1% encounter you can try to play with some frames as you get close to manipulate success by using Intimidate or Super Effective moves.
+Note: If you are going for a hard target such as a 1% encounter you can try to play with some frames as you get close to manipulate success by using Intimidate.
 ```
 
 ![Target](../../images/UltraSun-UltraMoon/SOS/Target.png)

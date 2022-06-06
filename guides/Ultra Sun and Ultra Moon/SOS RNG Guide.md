@@ -77,7 +77,7 @@ Note: It is recommended to set up for the SOS chaining first before starting the
    - Check `Adrenaline Orb` if you have used an Adrenaline Orb.
    - If there is weather effects such as rain check the `Weather` box.
    - If your Pokemon currently out has the Intimidate, Unnerve, or Pressure ability check the `Intimidate` box.
-   - If the ally Pokemon that was called was hit with a super-effective attack on the first turn it appeared, then check the `Super Effective` box.
+   - Ignore the Super Effective checkbox. Based on recent discoveries, its effect could be more specific / less effective than what was figured out years ago.
 
 ```
 Note: The "Same Caller" box should be checked as long as the Pokemon that does the SOS call is the same as last turn. If it faints and the other Pokemon calls for help, then uncheck the box.

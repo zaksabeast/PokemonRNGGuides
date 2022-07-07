@@ -71,7 +71,7 @@ Mesprit :
 
 Cresselia :
 
-- Delay : 104 / 105
+- Delay : 103/104
 - Generation : Press A in front of her
 - Notes : Due to player blinking, the delay can be off. In general you'll have a +1 or +2 delay. It's really important to test and see how it goes. These delays are based on breakpoints values, so user experience might be a little different. Practice to see how your delay goes.
 

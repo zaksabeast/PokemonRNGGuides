@@ -1,7 +1,7 @@
 ---
 title: 'Stationary RNG'
 description: 'RNG Stationary Pokemon such as your starter Pokemon'
-slug: 'retail-bdsp-stationary'
+slug: 'bdsp-stationary'
 subCategory: 'Custom Firmware'
 ---
 
@@ -9,6 +9,7 @@ subCategory: 'Custom Firmware'
 
 - A Switch with CaptureSight ([CaptureSight Install Guide](https://www.pokemonrng.com/install-capturesight))
 - [Chatot](https://chatot.pokemonrng.com/#/bdsp)
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
 
 ## Step 1: Set Up the Tool
 
@@ -38,21 +39,25 @@ Note: CaptureSight keeps track of how many times the RNG has advanced since open
 
 Congrats! You should now have the Pokemon you wanted. If not, you can reset the game and try again.
 
+```
+Note: We're looking for more delays and the last screen (or the last input before the game generates a spread) for these Pokemon. Don't hesitate to open an issue on Github, or send a message on the Discord with any delay and information based on the Chatot site.
+```
+
 ## Delays and Final Screens
 
 ### Starters
 
 - Delay: 64
-- Final Screen: "Yes" when selecting the Pokemon from the briefcase.
+- Generation: "Yes" when selecting the Pokemon from the briefcase.
 
 ```
-Note: Make sure to save before entering the lake area. There is a cutscene that will advance the RNG so keep that in mind when waiting for a target advance.
+Note: Make sure to save before entering the lake area. There is a cutscene that will advance the RNG around 300 times, so keep that in mind when waiting for a target advance.
 ```
 
 ### Rotom
 
 - Delay: 90
-- Final Screen: "You thumped the TV Set."
+- Generation: "You thumped the TV Set."
 - Genderless
 
 ### Eevee
@@ -63,10 +68,14 @@ Note: Make sure to save before entering the lake area. There is a cutscene that 
 ### Dialga / Palkia
 
 - Delay: 84
-- Generation: After text
+- Generation: After text, on the second `A` press to start the battle.
 - Genderless and 3 set IVs
 
-![image](https://user-images.githubusercontent.com/25870563/144486236-9911d1ad-1d62-4303-97ff-67dc1fedb2ab.png)
+![Palkia](../../images/Brilliant-Diamond-Shining-Pearl/Stationary/palkia.png)
+
+```
+Note: Doing this RNG post E4 is easier because it is quieter. For that, knock out Dialga/Palkia the first time you encounter them, and then beat the Elite 4 to have them respawn.
+```
 
 ### Giratina
 
@@ -85,9 +94,10 @@ Note: Make sure to save before entering the lake area. There is a cutscene that 
 - Delay: 84
 - Generation: "Zut Zutt!"
 - Genderless and 3 set IVs
-- Notes: Advances can go off, try to check for some pattern and see how it goes.
 
-**Important note**: you have to stop 11 frames **before** your target
+```
+Note: Due to player blinking, the delay can be off. In general you'll have a +1 or +2 delay. It's really important to test and see how it goes. These delays are based on breakpoints values, so user experience might be a little different. Practice to see how your delay goes.
+```
 
 ### Ramanas Park
 
@@ -95,36 +105,27 @@ Note: Make sure to save before entering the lake area. There is a cutscene that 
 - Final Screen: Dialog Box
 - Some will be Genderless, all have 3 set IVs
 
-### Darkrai
-
-- Delay: 84
-- Generation: Dialog Box (it just shows "...")
-- Genderless and 3 set IVs
-
-### Uxie
-
-- Delay: 85
-- Generation: Dialog box
-- Genderless and 3 set IVs
-
-### Azelf
-
-- Delay: 85
-- Generation: Dialog box
-- Genderless and 3 set IVs
+**Warning: Don't forget to select the Roamers method for Mesprit and Cresselia**
 
 ### Mesprit
 
 - Delay: 84
 - Generation: "Kyauun."
 
+```
+Note: Due to player blinking, the delay can be off. In general you'll have a +1 or +2 delay. It's really important to test and see how it goes. These delays are based on breakpoints values, so user experience might be a little different. Practice to see how your delay goes.
+```
+
 ### Cresselia
 
-- Delay: 104 / 105
+- Delay: 103 / 104
 - Generation: Press A in front of her
-- Notes: Advances can go off, try to check for some pattern and see how it goes
 
-**Warning: The following method doesn't work at 100% with the actual tools. It doesn't change the how to RNG it, but could lead to wrong results.**
+```
+Note: Due to player blinking, the delay can be off. In general you'll have a +1 or +2 delay. It's really important to test and see how it goes. These delays are based on breakpoints values, so user experience might be a little different. Practice to see how your delay goes.
+```
+
+PokeFinder supports Mystery Gift Generation. Download the right event information [here](https://projectpokemon.org/home/files/category/203-generation-8/) and load it with PokeFinder to have accurate results.
 
 ### Mystery Gift
 

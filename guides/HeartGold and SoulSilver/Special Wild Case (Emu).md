@@ -39,7 +39,7 @@ For that, after saving in front of the guy which allows you to enter, you just n
 
 Headbutt :
 
-Encounter slots are not really known at all. You can follow serebii ONLY to have an idea of species present in the tree. Every tree seems to change of encounter slots every day. Same for special trees (like Combee or Slakoth in the north of Cerulean).
+Encounter slots are not really known at all. You can follow any site with encounters slots in order to ONLY have an idea of species present in the tree. Every tree seems to change of encounter slots every day. Same for special trees (like Combee or Slakoth in the north of Cerulean).
 After saving in front of the tree, reload your stuff with any initial seed. Use the main windows of RNG reporter (MEthod K => Encounter Type : Headbutt tree w/ initial seed) and creating your own encounter table. Once you've checked that, you can search for a target frame.
 From the tests i did, PUT A SYNCR AS LEAD. I'm getting 100% of encounters with that. Without lead i'm almost failing all my target frames
 

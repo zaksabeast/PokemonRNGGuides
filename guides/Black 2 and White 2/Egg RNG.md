@@ -8,7 +8,7 @@ isRoughDraft: true
 
 **Note : This is a rough draft, like I always do. So to make things interesting, I'll assume that the reader has the basic knowledge in Gen 5 RNG. It implies to know how to calibrate a profile, hit an initial seed and to use PokeFinder. This guide can be used for Retail without any issue even if the setup is based on emu**
 
-## Requirement 
+## Requirements
 * PokeFinder 
 * All the tools necessary based on your method (EonTimer, Luas)
 * Access to the Daycare 

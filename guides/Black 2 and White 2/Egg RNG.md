@@ -42,6 +42,6 @@ Come back to PokeFinder. Remove all the IVs filters (0-31 back) and now put filt
 
 Once done, hit the Initial Seed, advance the frames, and talk to the man to take the egg.
 
-**/!\ With PokeFinder and PID part, you'll need to talk to the man one advance earlier than your target. If your target is at 100 Advances, talk to him at 99 /!\**
+**! With PokeFinder and PID part, you'll need to talk to the man one advance earlier than your target. If your target is at 100 Advances, talk to him at 99 !**
 
 You should now have the egg with everything you wanted !

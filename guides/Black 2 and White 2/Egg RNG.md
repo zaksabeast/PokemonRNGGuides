@@ -9,10 +9,11 @@ isRoughDraft: true
 **Note : This is a rough draft, like I always do. So to make things interesting, I'll assume that the reader has the basic knowledge in Gen 5 RNG. It implies to know how to calibrate a profile, hit an initial seed and to use PokeFinder. This guide can be used for Retail without any issue even if the setup is based on emu**
 
 ## Requirements
-* PokeFinder 
-* All the tools necessary based on your method (EonTimer, Luas)
-* Access to the Daycare 
-* IVs of your Parents
+
+- PokeFinder
+- All the tools necessary based on your method (EonTimer, Luas)
+- Access to the Daycare
+- IVs of your Parents
 
 ## Part 1 : Setup
 
@@ -30,13 +31,13 @@ So back to PokeFinder, input the IVs you'd like. **No need to search for Shiny, 
 
 Find an Initial Seed and hit it. Once you're sure to have hit the right initial Seed, you can talk to the Old Man and **reject the egg** ! It's really important.
 
-Once done, walk again. And once you have an egg ready. Save next to the old man. 
+Once done, walk again. And once you have an egg ready. Save next to the old man.
 
 If you just wanted IVs, you can grab the egg. The RNG is done. Otherwise let's heads up to the next part.
 
 ## Part 3 : PID RNG
 
-Finally, the PID RNG part. In fact, this works the same as BW Egg RNG. 
+Finally, the PID RNG part. In fact, this works the same as BW Egg RNG.
 
 Come back to PokeFinder. Remove all the IVs filters (0-31 back) and now put filters for the PID part (Natures, Ability, Gender, Shininess) and then search for a target.
 

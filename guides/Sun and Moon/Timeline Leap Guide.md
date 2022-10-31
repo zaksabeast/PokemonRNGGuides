@@ -13,11 +13,8 @@ subCategory: 'Custom Firmware'
 ## Step 1: Find your target frame
 
 1. In "Filters" set it to search for the Pokemon you are wanting.
-
    - Do not check "Safe F Only".
-
 2. Search using "Frame Range" to find a frame you want to land on.
-
 3. Right click on the frame and "Set as Target Frame".
    - This frame will be referred to as Frame 2 from here on.
    - Any frame that shows up can be landed on with this method, so if the frame isn't a safe frame you can still use it as a target frame.
@@ -62,9 +59,7 @@ You can use "Safe F Only" filter to find safe frames. You'll have to reset filte
 ## Step 6: Calculate the timeline leap frame
 
 1. After confirming your current frame is a safe frame, input it into the "Frame Range" starting frame.
-
 2. Choose "Timeline Leap" and click on "Calculate".
-
 3. A window will pop up with the frame you will press `A` on. This is Frame 1.
    - For Mystery Gifts this is when you press `A` on "Yes" to accept the Pokemon
    - For menu method, this is the frame to close the menu on.
@@ -75,36 +70,26 @@ You can use "Safe F Only" filter to find safe frames. You'll have to reset filte
 Due to the inaccurate assumption of 3DSRNGTool "Frame Range" mode, Frame 2 may or may not always have the same spread. Checking it before advancing to the next step is advised, especially for the varying NPC count case.
 
 1. Within the window that popped up, choosing "Yes" will allow you to check that Frame 2 still has the spread you wanted.
-
    - Choosing "No" will allow you to check if there are any other Frame 1 that can make Frame 2 have the spread you wanted.
-
 2. If Frame 2 does not have the spread you wanted, search for your target spread within the timeline created. (Choose "Yes" when the window pops up.)
-
    - If you did not mess with filters after finding your target frame, it will be easy to find.
    - Right click and "Set as Target Frame" on the desired spread. This is now your new Frame 2.
-
 3. If Frame 2 is not on the timeline, then you'll have to find the new frame the spread is on. Choose "Frame Range" and see what frame the spread is now on and then redo the "Timeline Leap" to find the new Frame 1.
 
 ## Step 8: Profit
 
 1. Advance to Frame 1, when you land on it, press `A` to advance the dialogue to final screen
-
    - For menu method, Hold `X` and then `A` to both unpause the game and close the menu, then immediately press `Start + Select` to pause the game again, but this time with the menu closed.
    - Be prepared to press `A` for Frame 2 afterwards as there is about a 1~10 second interval in between the frames.
    - The time interval range can be found above the "Calculate" button.
-
 2. Press `A` or make a step forward on Frame 2 to obtain the Pokemon you wanted. Congratulations!
 
 ### The following are possible ways of leaping for now:
 
 1. Dialogue
-
    - The game will use 1 RNG call while loading the next line of text.
-
 2. Closing the X menu
-
    - The game will use 2 RNG calls for the next timing of the character fidgets.
-
 3. Press `A` at YES/NO screen (Mystery Gifts)
    - The game will use around 10 RNG calls to generate 1 Pokemon for testing.
 

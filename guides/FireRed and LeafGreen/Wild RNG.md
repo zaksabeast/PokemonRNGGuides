@@ -20,7 +20,6 @@ Note: If you are doing this RNG for a shiny, make sure to have set up a profile 
 ## Step 1: Set up PokeFinder
 
 1. Open PokeFinder and select "Wild" for Gen 3. Make sure to be on the "Generator" tab.
-
 2. Have "Method" set to Method H-1.
 
 ```
@@ -29,10 +28,8 @@ Note: While there are other methods in FireRed/LeafGreen, H-1 is the most common
 
 3. Set the "Location" to the location where the RNG will take place.
 4. If you want a specific Pokemon you can select it in "Pokemon" after selecting its location.
-
    - If the Pokemon you are wanting is not in the list, or you are going for a specific encounter slot, you can instead choose the number in the "Encounter Slot" box and leave "Pokemon" at the default.
    - You can use [this site](https://sites.google.com/site/pokemonslots/gen-iii/emerald) to find a specific encounter slot.
-
 5. "Encounter" should be set to "Grass" or "Surfing" since this guide is focusing on using Sweet Scent to start an encounter.
 
 ```
@@ -46,11 +43,8 @@ Note: For "Lead" leave it as "Any" since Cute Charm and Synchronize do not work 
 ## Step 3: Finding the initial seed
 
 1. Save the game in the location where you will RNG the Pokemon.
-
 2. Restart the emulator.
-
 3. Once the game is loaded, enter into the continue screen.
-
 4. Pause the game to find your seed.
 
 ```
@@ -64,12 +58,9 @@ Note: FireRed/LeafGreen will generate different seeds every time the game loads 
 ## Step 4: Find a target advance
 
 1. Enter the initial seed into "Seed".
-
 2. Enter in your target settings for the Pokemon you wish to search for (shiny, IVs, nature, etc).
-
    - Keep in mind that finding a shiny perfect Pokemon may take awhile to find a seed for, and then will probably have very high advances.
    - If no results are showing up, try lowering the filters.
-
 3. Click "Generate".
 
 ![Setup](../../images/FireRed-LeafGreen/Wild/Setup.png)
@@ -83,7 +74,6 @@ Note: The initial seed can be changed by pressing B on the continue screen to pl
 ## Step 5: RNG for the Pokemon
 
 1. Once you have a target advance, continue into the game.
-
 2. Advance to within a few thousand advances of the target advance.
 
 ```
@@ -93,13 +83,9 @@ You can advance the RNG by opening the Teachy TV in Key Items and then closing i
 ```
 
 3. Open your Trainer Card and press `A` to flip it.
-
    - The use of flipping the Trainer Card is to reset the delay, which becomes more off the more advances that have been done.
-
 4. Select the Pokemon in your party with Sweet Scent and hover over the move.
-
 5. When close to your target advance, pause the emulator and create a save state, and then advance a frame at a time to the target advance.
-
 6. Hold `A` and unpause the emulator at the same time on your target advance.
    - If the Pokemon is not the one wanted, load the previous save state and try one advance before and/or one advance after.
 

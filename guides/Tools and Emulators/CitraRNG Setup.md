@@ -71,8 +71,7 @@ This guide is for setting up CitraRNG on a PC. An updated CFW (Custom Firmware) 
 In order to RNG in Gen 6 on Citra, a game patch is needed to be able to read the initial seed. This does not modify the gamecode in anyway that would result in illegal Pokemon. All the patch does is write the initial seed of the game to an unused part of memory that the script has access to later.
 
 1. You can follow [this guide](https://www.pokemonrng.com/misc-3ds-ips-luma-citra) for installing the game patch on Citra.
-
-- The patch needed is included in the CitraRNG download, within the `oras` and `xy` folders.
+   - The patch needed is included in the CitraRNG download, within the `oras` and `xy` folders.
 
 ## Setting up CitraRNG
 

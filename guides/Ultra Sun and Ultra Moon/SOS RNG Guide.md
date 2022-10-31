@@ -43,35 +43,24 @@ Note: It is recommended to set up for the SOS chaining first before starting the
 ## Step 1: Set Up 3DSRNGTool
 
 1. In the upper right, input your game version and your TSV.
-
    - With PCalc, you can find your TSV by pressing `Start + Up` to bring up the Game View window. Your TSV is listed by where it says `YOUR TSV`.
-
 2. Also in the upper right, input the initial seed. You can find this by pressing `Start + Up` to bring up the Game View window. The initial seed is found where it says `Init Seed:`.
-
 3. If you have the Shiny Charm check the `Shiny Charm` box.
 
 ## Step 2: Find the SOS Pokemon and setup Misc. RNG Tool
 
 1. You can either wander around until you find the correct Pokemon to SOS or you can RNG it.
-
    - A guide to Gen 7 wild RNG can be found [here](https://www.pokemonrng.com/retail-usum-wild).
-
 2. Once in the encounter open the "Tools" menu on 3DSRNGTool and select "Misc. RNG Tool". Switch the RNG type to "G7 SFMT (32bit)" and choose the "SOS" tab.
 
 ![Setup](../../images/UltraSun-UltraMoon/SOS/Setup.png)
 
 3. Within PCalc, you can open the Extended Game View by using `B + Up` while the Game View window is open. Press `Down + B` to reset the SOS information within PCalc.
-
    - If the SOS Init Seed is all 0's, you must press `Down + B` during the first turn of battle to have the SOS information show correctly.
-
 4. In the bottom right of the PCalc window you will find the `SOS Init seed`.
-
    - `SOS Init seed` - This goes in the box for "Seed" within the Misc. RNG Tool on 3DSRNGTool.
-
 5. You will also want to find the info on "Call Rate" and enter that in for the Pokemon you are SOSing.
-
    - This info can be found [here](https://pastebin.com/W59vsi0H).
-
 6. Fill in rest of the info in the SOS tab as needed.
    - HP should be set to what the current caller's HP level is.
    - Check `Adrenaline Orb` if you have used an Adrenaline Orb.
@@ -124,9 +113,7 @@ Note: Some of these fields will be used in the guide and some will not but they 
 At this point you would be best off waiting until you have a longer SOS chain for better odds and increased IVs before trying your ideal target. This is a good opportunity to work on finding the delay for the two different "types" of SOS calls.
 
 1. First we will want to go ahead and get everything set up for your SOS such as Leppa Berry and Harvest, Adrenaline Orb, Sync, etc.
-
 2. You can find what SOS frame you are currently on using the Extended Game View window of PCalc.
-
 3. After each battle turn, make sure to update all the relevant info in 3DSRNGTool based on what occured that turn.
    - In Misc. RNG Tool: SOS "Length", SOS "Frame", "Last Call Failed", "Same Caller"
    - In main window: "Frame" (for current SOS frame), "Chain Length"
@@ -211,11 +198,8 @@ Note: You can find out what the Pokemon's stats are by pressing Start + Left to 
 ## Step 6: Getting your SOS target
 
 1. To find the desired SOS target you will want to make sure you can hit your desired Encounter Slot, Sync and/or HA. To do this you will want to navigate to the "SOS2" tab and select the encounter slot of the Pokemon you are wanting, whether you want sync to be successful or not, and if you want HA.
-
 2. Enter in all the relevant info on the "SOS" tab to determine what SOS frames will be successful.
-
    - You can filter for successful SOS frames by checking the `Success Only` box.
-
 3. Now you can search for your target by entering what you are looking for in the filters and hitting "Calculate".
    - You will want `OO` as the first two values for the SOS call to be successful.
 
@@ -226,17 +210,14 @@ Note: If you are going for a hard target such as a 1% encounter you can try to p
 ![Target](../../images/UltraSun-UltraMoon/SOS/Target.png)
 
 4. When you've landed on your target SOS frame it is now time to find your main RNG target frame.
-
    - You will want to make sure you have all the relevant info filled out in the 3DSRNGTool main window.
    - **Don't forget to set the delay for the right SOS call type!**
-
 5. Then set up the filters for your target Pokemon.
    - Be aware of the IVs you can set for this based on the seventh value in the Misc. RNG Tool (should look something like VVXVVX).
 
 ![Filters](../../images/UltraSun-UltraMoon/SOS/Filters.png)
 
 6. Set up your game to the point that it is ready for the final input.
-
 7. When you get close to your target pause and advance your frames until you are in the middle of the bunch of frames and enter the final input.
 
 ![Final Input](../../images/UltraSun-UltraMoon/SOS/Final-Input.png)
@@ -248,8 +229,6 @@ Congrats! You should now have the Pokemon you wanted.
 ## If you did not obtain the Pokemon you wanted
 
 1. Double check that all info is correct on the two windows. Sometimes the Initial Seed is not typed in correctly, or SOS Frame is not correct.
-
 2. Restart the guide from the beginning and make sure to follow _all_ instructions given. Not getting the correct Pokemon is usually a result of user error.
-
 3. Make sure you are using the correct delay based on the type of SOS call. Additionally, each type of SOS call may have multiple delays associated with it. As mentioned previously in the guide, you can either go for your most common delay, or choose the middle of them if they're consistent.
    - For example if the delays are `56, 58, 62` 58 would be safe to use since in a block of frames there's a good chance will hit one of them.

@@ -41,10 +41,8 @@ Character mid fidget:
 ![Fidget](../../images/Sun-Moon/Fidget-Timeline/Fidget.png)
 
 2. Advance through the fidget using select until you notice a jump in frames that doesn't show on your timeline.
-
    - This will usually be 3-4 frames in the case of wormholes, as they all have 1 NPC.
    - In the example below, the frames jumped from 1320-1324, which means 1320 should be used for the fidget setting (Check the box and put it in).
-
 3. Once entered hit Calculate and you can see the frame jump accounted for in your timeline.
 
 ![Before Fidget](../../images/Sun-Moon/Fidget-Timeline/Before.jpg)

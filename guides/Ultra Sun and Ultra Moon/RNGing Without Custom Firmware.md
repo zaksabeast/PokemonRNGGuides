@@ -57,16 +57,12 @@ In summary, the total time span in seconds = (Pre-Timer + Lag) / 1000 + (Target 
 ## Step 3: Set up 3DSRNGTool
 
 1. In the upper right, input your game version and TSV. If you have the Shiny Charm, check the Shiny Charm box.
-
 2. Set the Pokemon you are RNGing for.
-
-- For Stationary or Wild encounters, choose the "Category", select the "Pokemon"
-
-  - For most of cases, you don't have to change other settings, like delay. Some RNG noise can be absorbed in Pre-Timer, don't worry.
-  - If you are battling the UBs in Ultra Wormholes for the first time, choose "UB(first Encounter)". But it's not recommended because of the inconsistent delay.
-
-- For Mystery Gifts, change the "Event Setting" area yourself according the event you are RNGing.
-  - You can find the WonderCard files (a .wc7) [here](https://github.com/projectpokemon/EventsGallery) for the event you are RNGing. Simply drag-and-drop that directly into 3DSRNGTool and have it automatically populate the settings.
+   - For Stationary or Wild encounters, choose the "Category", select the "Pokemon"
+     - For most of cases, you don't have to change other settings, like delay. Some RNG noise can be absorbed in Pre-Timer, don't worry.
+     - If you are battling the UBs in Ultra Wormholes for the first time, choose "UB(first Encounter)". But it's not recommended because of the inconsistent delay.
+   - For Mystery Gifts, change the "Event Setting" area yourself according the event you are RNGing.
+     - You can find the WonderCard files (a .wc7) [here](https://github.com/projectpokemon/EventsGallery) for the event you are RNGing. Simply drag-and-drop that directly into 3DSRNGTool and have it automatically populate the settings.
 
 ## Step 4: Load your game or soft-resetting
 
@@ -83,17 +79,14 @@ In summary, the total time span in seconds = (Pre-Timer + Lag) / 1000 + (Target 
 ## Step 6: Find the target frame you would like to hit
 
 1. Set up the filters of your choosing
-
    - "Safe Frame Only": This box will appear for non-zero NPC case. Recommended for the initial pre-timer calibration purpose.
    - "Blink Frame Only": This box will appear for zero NPC case. Those frames can survive for around 1 seconds and super easy to hit, but they are rare.
-
 2. Set a reasonable Frame Range, right-click on the frame you would like to hit, and Set as Target Frame.
    - Gen7 Main RNG Tool will update this simultaneously.
 
 ## Step 7: Calculate waiting time, set up timer
 
 1. Go back to Gen Main RNG Tool. In the bottom right, everything should be updated. Hit the Calculate.
-
 2. A message box will pop up with "Set EonTimer for XXXXF. (YY.YYs) Z;". Set XXXX as Target Frame of EonTimer. - `Z` is how long this target frame will exist. For Blink Frame, it should be above 30.
 
 ## Step 8: Press A at continue screen, start the timer at the same time

@@ -62,7 +62,6 @@ Frames pass by between when you hit A and when the TID/SID is generated. You wil
 1. Go to the IDs function in PokeFinder
 2. Put your Initial seed and TID that you recieved in and find what frame you hit
 3. Now adjust accordingly
-
    - For example, if I wanted to hit frame 89103 but hit Frame 89175, my delay was 72, which means I need to hit A 72 Frames early
 
 ```

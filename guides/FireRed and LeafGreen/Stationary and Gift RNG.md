@@ -40,9 +40,7 @@ Bulbasaur, Charmander, Squirtle, Clefairy, Abra, Hypno, Voltorb, Electrode, Hitm
 4. Load the game
 5. Enter into the "Continue" menu of the game.
 6. Pause the emulator to find your initial seed.
-
    - FRLG uses the continue screen to generate different spreads every time the game loads to avoid repeating spreads like in dry battery Ruby and Sapphire. This has the big advantage to give you new results every time you load your game.
-
 7. To find your seed, you must open the Memory Viewer, and search the address at 0x02020000.
 
 ![Memory Viewer](../../images/FireRed-LeafGreen/Stationary/Memory-Viewer.png)

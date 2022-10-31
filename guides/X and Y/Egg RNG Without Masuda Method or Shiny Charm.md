@@ -43,17 +43,11 @@ If breeding with a Genderless Pokemon and Ditto, Ditto will always be female.
 ## Step 3: Egg Seeds, Filters, and Target Frame
 
 1. For the Egg Seeds input the current egg seeds of your game.
-
    - Using PCalc press `Start + Down` ingame to bring up the egg seed window and input them into 3DSRNGTool.
-
 2. For Filters, input the info for the egg you are wanting.
-
 3. Do not check the Shiny Only box, even if you are wanting a shiny. Shininess will be RNG'd separately later in the guide.
-
 4. Press `Start + Up` to bring up Game Info screen for PCalc. Then press `Start + Select` to pause the game.
-
 5. Input your current frame and increase frame range. The higher the frame range, the more frames will be searched.
-
 6. Click "To Accept" if you are going to be accepting the first egg.
    - If instead, you want to reject the first egg, click "To Reject".
    - However, it is advised to accept the first egg so you can verify that it matches frame -1.
@@ -82,56 +76,39 @@ Keep in mind:
   - This is the first egg you will be collecting when you press A for Yes (or rejecting if you chose to reject).
 
 1. Pick your target frame that you are wanting.
-
 2. If you are currently on an even frame and want an odd frame, or vice versa, unpause by pressing `Start` and save the game once.
    - This will switch from even to odd frames, or vice versa.
 
 ## Step 5: Hit the Target Frame
 
 1. In game, talk to the daycare man until you get to a specific dialogue.
-
-- For accepting the egg: “You’ll be wanting it, won’t you?” (ORAS) or “You do want it, don’t you?” (XY) with the selection of Yes or No.
-  - Make sure pointer is on Yes and wait to reach your target frame.
-- For rejecting the first egg: “Well then, I'll hang on to it. Thank you!” (XY/ORAS) after selecting No from previous dialogue.
-
+   - For accepting the egg: “You’ll be wanting it, won’t you?” (ORAS) or “You do want it, don’t you?” (XY) with the selection of Yes or No.
+     - Make sure pointer is on Yes and wait to reach your target frame.
+   - For rejecting the first egg: “Well then, I'll hang on to it. Thank you!” (XY/ORAS) after selecting No from previous dialogue.
 2. When you are close to your target frame, you can press `Start + Select` to pause the game, and then press `Select` repeatedly to advance frame by frame.
-
 3. Advance to your target frame and then hold A (don’t just press it, hold down A) to both unpause the game and receive/reject the egg.
-
 4. As mentioned before, this egg is NOT the one you RNG’d for. It should match the frame -1 from the 3DSRNGTool.
-
-- You can use PCalc to view the egg's info without having to hatch it. Press `Start + Right` for Party View then press `Select + Right` to cycle through the party slots.
-
+   - You can use PCalc to view the egg's info without having to hatch it. Press `Start + Right` for Party View then press `Select + Right` to cycle through the party slots.
 5. The egg seeds ingame (`Start + Down` to bring up menu) should match the egg seeds for the target frame you chose in 3DSRNGTool.
 
 ## Step 6: RNGing the ESV of the Egg
 
 1. Right click on the target frame you chose earlier, and click on "Set as Current Status".
-
 2. Click Reset in Filters and then check Shiny Only box.
-
-- Do not mess with anything else in Filters. You have already RNG'd the traits you wanted earlier.
-
+   - Do not mess with anything else in Filters. You have already RNG'd the traits you wanted earlier.
 3. Same as before, input current frame and a frame range to search. The higher the frame range, the more frames will be searched.
-
 4. Click Calculate and you should get an output of frames with the ESV you want.
-
 5. Chose a target frame like before.
-
-- IVs listed are for the NEXT egg that is generated, not the current egg that you will be picking up. Current egg traits are Frame -1.
-
-- If you are currently on an even frame and want an odd frame, or vice versa, unpause and save the game once. This will switch from even to odd frames, or vice versa.
+   - IVs listed are for the NEXT egg that is generated, not the current egg that you will be picking up. Current egg traits are Frame -1.
+   - If you are currently on an even frame and want an odd frame, or vice versa, unpause and save the game once. This will switch from even to odd frames, or vice versa.
 
 ## Step 7: Hit the Target Frame (Repeat from before)
 
 1. In game, talk to the daycare man until you get to a specific dialogue.
-
-- For accepting the egg: “You’ll be wanting it, won’t you?” (ORAS) or “You do want it, don’t you?” (XY) with the selection of Yes or No.
-  - Make sure pointer is on Yes and wait to reach your target frame.
-- For rejecting the first egg: “Well then, I'll hang on to it. Thank you!” (XY/ORAS) after selecting No from previous dialogue.
-
+   - For accepting the egg: “You’ll be wanting it, won’t you?” (ORAS) or “You do want it, don’t you?” (XY) with the selection of Yes or No.
+     - Make sure pointer is on Yes and wait to reach your target frame.
+   - For rejecting the first egg: “Well then, I'll hang on to it. Thank you!” (XY/ORAS) after selecting No from previous dialogue.
 2. When you are close to your target frame, you can press `Start + Select` to pause the game, and then press `Select` repeatedly to advance frame by frame.
-
 3. Advance to your target frame and then hold A (don’t just press it, hold down A) to both unpause the game and receive/reject the egg.
 
 The egg should now have the traits and ESV you wanted. Congrats!

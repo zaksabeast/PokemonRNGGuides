@@ -26,10 +26,13 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 0,
     marginLeft: 0,
     marginRight: 0,
+    '& > li': {
+      marginBottom: theme.spacing(0.6),
+    },
   },
   li: {
     marginTop: 0,
-    marginBottom: theme.spacing(0.6),
+    marginBottom: theme.spacing(1.5),
     marginLeft: 0,
     marginRight: 0,
   },

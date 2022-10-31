@@ -23,12 +23,9 @@ If an ESV matches a TSV (Trainer Shiny Value) then the egg will hatch shiny.
 ### In the upper right of 3DSRNGTool:
 
 1. Input your game version and your TSV.
-
    - If you are using PCalc, you can find your TSV by pressing `Start + Up` to bring up the Game View window. Your TSV is listed by where it says YOUR TSV.
    - If you are not using PCalc, there are other ways to find your TSV. Additional Notes at the end has alternative ways of finding your TSV.
-
 2. The initial seed does not matter as that will not be used.
-
 3. Check the "Shiny Charm" box if you have the Shiny Charm.
 
 ```
@@ -57,18 +54,12 @@ Note about breeding for Rockruff:
 ### For current status
 
 1. For the "Current Status" section in 3DSRNGTool input the current egg seeds of your game.
-
    - If you are using PCalc, press `Start + Down` in-game to bring up the egg seed window and input them into 3DSRNGTool.
    - If you are not using PCalc, see the Additional Notes at the end for ways to find your egg seeds if you do not already know them.
-
 2. Do not check the "Main RNG Egg (PID)" box.
-
 3. For "Filters", input the info for the egg you are wanting.
-
 4. Check the "Shiny Only" box if you are wanting a shiny egg.
-
 5. Input "0" as the starting frame.
-
 6. Click "Calculate".
 
 ## Step 2: Finding a Target Frame
@@ -76,38 +67,26 @@ Note about breeding for Rockruff:
 You can choose any of the given frames, but lower frames are generally better due to less egg accepts/rejects.
 
 1. Right click on the row for the one you want and click "Set as Target Frame".
-
 2. Click on "Shortest Path" and "Calculate".
-
    - This will automatically calculate the shortest path for least number of accepts and rejects for your target egg.
-
 3. Accept and/or reject the eggs in the order given from top to bottom. Doing the accepts and/or rejects out of order will result in the wrong egg seeds.
-
 4. The very last egg you accept will be your target egg.
-
-- If you are using PCalc you can check which egg frame you are on by looking at your egg seeds in-game (`Start + Down` to bring up the menu).
-
-- If you are wanting a specific shiny egg the frames will more than likely be very high and require accepting/rejecting a lot of eggs.
-  - This is due to the ESVs of the eggs being predetermined.
-  - The only way to change this is to not have the Shiny Charm and to not use the Masuda Method.
+   - If you are using PCalc you can check which egg frame you are on by looking at your egg seeds in-game (`Start + Down` to bring up the menu).
+   - If you are wanting a specific shiny egg the frames will more than likely be very high and require accepting/rejecting a lot of eggs.
+     - This is due to the ESVs of the eggs being predetermined.
+     - The only way to change this is to not have the Shiny Charm and to not use the Masuda Method.
 
 ## Additional Notes
 
 - To find your TSV, you can easily check it with PCalc.
-
   - Press `Start + Up` to bring up the Game View window.
   - Your TSV is where it says `YOUR TSV`.
-
 - You can also check if you have the Shiny Charm and/or are using Masuda Method with PCalc.
-
   - Press `Start + Down` to bring up the Egg Info window.
   - All info for the parents is located there along with whether or not you have the Shiny Charm.
-
 - If you are not using PCalc there are other ways to find your TSV.
-
   - Use Homebrew or CFW with a save manager such as Checkpoint to extract the save file. You can then view the save file in PKHeX and hover over TID and SID to find your TSV.
   - Ask someone else to find it for you. /r/SVEXchange is one place this can be done.
-
 - If you are not using PCalc and do not know your egg seeds there are methods to find them.
   - If you have already used the daycare by having accepted or rejected eggs, and do not wish to use Homebrew or CFW, then you will have to do the [127 Magikarp method](https://www.pokemonrng.com/retail-usum-egg-seed-no-cfw) to find your egg seeds.
   - If you have not used the daycare and do not wish to use Homebrew or CFW, you can use the [8 egg method](https://www.pokemonrng.com/retail-usum-egg-seed-no-cfw) to find your egg seeds.

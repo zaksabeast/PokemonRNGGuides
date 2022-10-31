@@ -65,7 +65,6 @@ I will take the seed and get the initial PIDRNG Frame for it using the button on
 1. Use Key System's "Send and Receive Keys" function to frame advance
    - Each time you start the "Send and Receive Keys" search, it will advance both the PIDRNG and IVRNG Frames by 2.
 2. Obtain your Pokemon
-
-In the example below, we have a dream ball hidden ability Landorus!
+   In the example below, we have a dream ball hidden ability Landorus!
 
 ![Result](../../images/Black2-and-White2/Dream-Radar/Result.png)

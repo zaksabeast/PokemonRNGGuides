@@ -31,14 +31,10 @@ It is not possible to RNG for a specific Jirachi spread with this method. This g
 ## Step 1: Setting up
 
 1. Find your save delay
-
    - Before beginning this process you need to find your save delay.
    - Start by opening up Ruby/Sapphire on VBA-RR and load the wishmaker lua script.
-
 2. Open up the save menu and pause the game at the last line of dialogue over "YES".
-
    - Make note of the current time displayed by the lua script.
-
 3. Next, hold down the `A` button and unpause the game at the same time.
    - Watch the current time. When the current time on the lua script freezes, pause the game and write that time down.
 
@@ -62,11 +58,9 @@ Note: Make sure not to modify anything in the lua script below the "DON'T EDIT A
 ## Step 2: Finding a Jirachi seed
 
 1. Prepare the save
-
    - You must use a save that has already obtained the Pokedex.
    - After obtaining the Pokedex, save your game.
    - In VBA-RR, export your battery file and upload it to wishmaker-calc by clicking the Jirachi.
-
 2. If the website tells you to save the game again, do so and reupload the save to the website.
    - This may happen multiple times.
 
@@ -90,9 +84,7 @@ Note: The program searches through the next 30 minutes only for a match which is
 
 1. Open the lua script in wordpad (or your favorite text editor).
 2. Input the time given by wishmaker-calc under targetSaveHour, Minute, Second, and sixtiethSecond.
-
    - Optionally, you can add your target Jirachi seed as well (for rng proofs/personal preference).
-
 3. Restart the lua script.
    - You will notice that there are now two different times displayed in the lua script.
    - The target save time is the time to save at to obtain the desired Jirachi.
@@ -102,25 +94,23 @@ Note: The program searches through the next 30 minutes only for a match which is
 Note: Target save time = Real save time + delay while saving
 ```
 
-3. Advance to the last dialogue of the save menu and hover over "YES".
+4. Advance to the last dialogue of the save menu and hover over "YES".
 
-4. Pause the game here.
-5. Wait for the ingame time to match the real save time displayed.
-6. Unpause the game and wait until you are close to the time needed.
-7. Once you are close to your real save time, pause the game and advance frames manually.
-8. The default key for advancing frames while paused is `Ctrl + N` for Windows.
-9. When you are on your real save time, hold down `A` and unpause the game at the same time.
+5. Pause the game here.
+6. Wait for the ingame time to match the real save time displayed.
+7. Unpause the game and wait until you are close to the time needed.
+8. Once you are close to your real save time, pause the game and advance frames manually.
+9. The default key for advancing frames while paused is `Ctrl + N` for Windows.
+10. When you are on your real save time, hold down `A` and unpause the game at the same time.
 
 ![Final Screen](../../images/Ruby-Sapphire/Wishmaker/Final-Screen.png)
 
-10. After saving the game, export your battery file.
+11. After saving the game, export your battery file.
 
 ## Step 4: Verifying Target Seed
 
 1. Upload your save to wishmaker-calc.
-
    - It should display a message to save your game again, but you can disregard it.
-
 2. Next to the save your game message there should be text that says "Current checksum:".
    - If the seed next to it matches any of the [shiny Jirachi seeds](https://www.irccloud.com/pastebin/rdxEbTm4/) then congrats! Your save will redeem to a shiny Jirachi!
 

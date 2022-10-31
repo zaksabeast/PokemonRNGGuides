@@ -42,17 +42,11 @@ If using a Ditto and genderless Pokemon, the Ditto will be the female.
 ## Step 3: Egg Seeds, Filters, and Target Frame
 
 1. For the Egg Seeds input the current egg seeds of your game.
-
    - Using PCalc press `Start + Down` ingame to bring up the egg seed window and input them into 3DSRNGTool.
-
 2. For Filters, input the info for the egg you are wanting.
-
 3. Check the Shiny Only box if you are wanting a shiny egg.
-
 4. Press `Start + Up` to bring up Game Info screen for PCalc. Then press `Start + Select` to pause the game.
-
 5. Input your current frame and increase frame range. The higher the frame range, the more frames will be searched.
-
 6. Click "To Accept" if you are going to be accepting the first egg.
    - If instead, you want to reject the first egg, click "To Reject".
    - However, it is advised to accept the first egg so you can verify that it matches frame -1.
@@ -78,23 +72,17 @@ Keep in mind:
   - This is the egg you will be collecting when you press A for Yes (or rejecting if you chose to reject).
 
 1. Pick your target frame that you are wanting.
-
 2. If you are currently on an even frame and want an odd frame, or vice versa, unpause by pressing `Start` and save the game once.
-
-- This will switch from even to odd frames, or vice versa.
+   - This will switch from even to odd frames, or vice versa.
 
 ## Step 5: Hit the Target Frame
 
 1. In game, talk to the daycare man until you get to a specific dialogue.
-
    - For accepting the egg: “You’ll be wanting it, won’t you?” (ORAS) or “You do want it, don’t you?” (XY) with the selection of Yes or No.
      - Make sure pointer is on Yes and wait to reach your target frame.
    - For rejecting the first egg: “Well then, I'll hang on to it. Thank you!” (XY/ORAS) after selecting No from previous dialogue.
-
 2. When you are close to your target frame, you can press `Start + Select` to pause the game, and then press `Select` repeatedly to advance frame by frame.
-
 3. Advance to your target frame and then hold A (don’t just press it, hold down A) to both unpause the game and receive/reject the egg.
-
 4. As mentioned before, this egg is NOT the one you RNG’d for. It should match the frame -1 from the 3DSRNGTool.
    - You can use PCalc to view the egg's info without having to hatch it. Press `Start + Right` for Party View then press `Select + Right` to cycle through the party slots.
 

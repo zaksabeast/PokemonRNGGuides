@@ -90,5 +90,3 @@ Note: If one of these is not true right now, you need to start the guide over.  
 ```
 Note: If you paused the game too early, you can press "Start" to unpause the game.
 ```
-
-s

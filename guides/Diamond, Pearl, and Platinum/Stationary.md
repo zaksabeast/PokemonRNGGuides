@@ -22,9 +22,7 @@ subCategory: 'Emulator'
 ## Step 2: Finding your Target Advance
 
 1. Navigate to the "Searcher" tab and select the correct method based on what you are RNGing.
-
    - Method 1:
-
      - Starter Pokemon
      - Cynthia's Togepi Egg
      - Fossil Pokemon from Mining Museum
@@ -33,10 +31,8 @@ subCategory: 'Emulator'
      - Porygon from Veilstone
      - Cresselia, Mesprit, Articuno, Zapdos, and Moltres
      - Pokemon Ranger Manaphy Egg
-
    - Method J:
      - Every other stationary which is not mentioned above like Box Art legendaries, Heatran, Regigigas, etc
-
 2. Choose any applicable leads if you have any like Synchronize or Cute Charm.
    - Leads are not applicable for Method 1 Pokemon.
    - If you are not RNGing a genderless or gender fixed Pokemon and want to use Cute Charm, then follow the [Cute Charm guide](https://www.smogon.com/ingame/rng/dpphgss_rng_part5).
@@ -114,15 +110,12 @@ Enjoy!
 
 - The Manaphy Egg is received like a Wondercard Pokemon, but it uses the Method 1 generation. The Wondercard follows the usual RNG. It has a shiny check on it that prevents the hatched Manaphy from being shiny normally, but there is a way to bypass this check and get a shiny Manaphy. You'll need to know the PID of the IV spread you're going for. Once you have it, you'll need a save file that isn't the one your Manaphy Wondercard is on, and has this PID shiny. Do the RNG manipulation and receive the Egg, and trade it to this game. Hatch it in the other game and if you did it correctly, you should now have a shiny Manaphy. To summarize, if you want a shiny Manaphy in game A:
 
-- Find out what shiny PID you have in game A.
+1. Find out what shiny PID you have in game A.
+2. Get the Egg with the same PID in game B.
+3. Trade the Egg from game B to game A.
+4. Hatch the Egg in game A.
 
-- Get the Egg with the same PID in game B.
-
-- Trade the Egg from game B to game A.
-
-- Hatch the Egg in game A.
-
-- Congratulations, you now have a shiny Manaphy!
+Congratulations, you now have a shiny Manaphy!
 
 **Other Method 1 Pokemon**
 

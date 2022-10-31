@@ -23,9 +23,7 @@ If an ESV matches a TSV (Trainer Shiny Value) then the egg will hatch shiny.
 ### In the upper right of 3DSRNGTool:
 
 1. Input your game version and your TSV.
-
    - With PCalc, you can find your TSV by pressing `Start + Up` to bring up the Game View window. Your TSV is listed by where it says `YOUR TSV`.
-
 2. Input the initial seed. You can find this by pressing `Start + Up` to bring up the Game View window. The initial seed is found where it says `Init Seed:`.
 3. The "Shiny Charm" box must be unchecked. If you have the Shiny Charm you cannot use this method.
 
@@ -56,17 +54,11 @@ Note about breeding for Rockruff:
 ### For current status
 
 1. For the "Current Status" section in 3DSRNGTool input the current egg seeds of your game.
-
    - Using PCalc, press `Start + Down` in-game to bring up the egg seed window and input them into 3DSRNGTool.
-
 2. Do not check the "Main RNG Egg (PID)" box. We will be doing this later.
-
 3. For "Filters", input the info for the egg you are wanting.
-
 4. Do not check the "Shiny Only" box even if you are wanting a shiny egg. The ESV of the egg will be RNG'd separately.
-
 5. Input "0" as the starting frame.
-
 6. Click "Calculate".
 
 ## Step 2: Finding a Target Frame
@@ -74,15 +66,10 @@ Note about breeding for Rockruff:
 You can choose any of the given frames, but lower frames are generally better due to less egg accepts/rejects.
 
 1. Right click on the row for the one you want and click "Set as Target Frame".
-
 2. Click on "Shortest Path" and "Calculate".
-
    - This will automatically calculate the shortest path for the least number of accepts and rejects for your target egg.
-
 3. Accept and/or reject the eggs in the order given from top to bottom. Doing the accepts and/or rejects out of order will result in the wrong egg seeds.
-
    - The very last egg you are going to accept will be your target egg. Do NOT accept this egg!
-
 4. Once you are to your target egg seeds, continue with the rest of the guide.
 
 ```
@@ -92,29 +79,20 @@ With PCalc you can check which egg frame you are on by looking at your egg seeds
 ## Step 3: RNGing the ESV of the Egg
 
 1. Once you have the egg you want to be shiny ready to pick up from the daycare helper, save the game in case you mess up and need to start over for the next part.
-
 2. Stand directly in front of the daycare helper and start the dialogue to accept the egg.
-
    - Standing off to the side may cause NPCs to fluctuate when making a timeline.
-
 3. When you get to the choice of “Yes” or “No”, press `Start + Up` to bring up the Game View window in-game, and then pause the game (`Start + Select`).
-
    - If the Game View window is already open, close and open it again when at the "Yes" or "No" selection to reset NPC counter.
-
 4. Follow the steps below to create a timeline to obtain the ESV you want.
-
    - Check the "Main RNG Egg (PID)" box in 3DSRNGTool under "Current Status".
    - Afterward, reset "Filters" by clicking on the gear icon.
    - Then follow the [timeline guide](https://www.pokemonrng.com/retail-usum-timeline) to create a timeline.
    - Creating a timeline is necessary to know what frames you can actually land on due to NPC influence on frames.
-
 5. After making a timeline you can now search for a target frame that you are able to land on.
-
    - If you are wanting to RNG the egg to have a specific ESV that is not yours, click on "Edit TSV List", input TSV(s), and check the "Other TSVs Shiny" box.
    - Check the "Shiny Only" box.
    - Then "Calculate" to find frames that will give the ESV(s) you want.
    - Choose any of the blue highlighted frames (lower frames are better because of less waiting time).
-
 6. Advance to that frame and when you land on it, Press `A` to accept egg.
 
 Congrats! You should now have the egg you wanted with the TSV you RNG’d for. If not, you can reset the game if you saved before picking up the egg and try again.

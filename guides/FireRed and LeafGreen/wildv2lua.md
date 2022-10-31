@@ -1,7 +1,7 @@
 ---
 title: 'Wild v2 RNG'
 description: 'Wild v2 RNG'
-slug: 'emulator-frlg-wild'
+slug: 'emulator-frlg-wild-v2'
 subCategory: 'Emulator'
 isRoughDraft: true
 ---

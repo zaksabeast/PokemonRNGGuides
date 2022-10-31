@@ -34,6 +34,20 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   `);
 
+  const slugs = result.data.allMdx.edges.map(
+    ({ node }) => node.frontmatter.slug,
+  );
+
+  const unique = new Set();
+  const duplicateSlug = slugs.find(
+    item => unique.size === unique.add(item).size,
+  );
+  if (duplicateSlug != null) {
+    throw new Error(
+      `Found duplicate slug: ${duplicateSlug}.  Please update the slug to be unique.`,
+    );
+  }
+
   // Category pages
   result.data.allMdx.edges.forEach(({ node }) => {
     const category = node.fields.pagePath.split('/')[1] || '';

@@ -3,7 +3,7 @@ title: "Egg RNG"
 description: "How to RNG egg in BW2 based on the recent discoveries"
 slug: "bw2-egg"
 subCategory: "RNG"
-isRoughDraft: true
+isRoughDraft: false
 ---
 
 ```

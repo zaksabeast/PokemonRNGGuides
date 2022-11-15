@@ -3,7 +3,7 @@ title: 'Difference between Live and Dry Battery'
 description: 'Discover the two way to RNG on Ruby / Sapphire and learn their differences'
 slug: 'rs-battery'
 subCategory: 'Basic Knowledge'
-isRoughDraft: true
+isRoughDraft: false
 ---
 
 For once, this guide will not imply to do any manip, open anything. Let's see this guide more as an introduction to Ruby / Sapphire RNG. This applies to any RNGer : Emu, Retail, the idea is to answer to all the question you can have if you're new to RNG Abuse and interested by Ruby / Sapphire RNG.

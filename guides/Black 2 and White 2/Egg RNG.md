@@ -30,11 +30,11 @@ Note : This is a rough draft, like I always do. So to make things interesting, I
 Note: Egg RNG in BW2 is different than in BW1. The main difference is that IVs are generated first, then the PID.  If you're interested in only one of the parts, you can skip directly to the right that interests you.
 ```
 
-## Part 2: IV RNG
+## Part 2: IV + Nature RNG
 
 So we could compare that to Gen 6 Egg RNG, where you'll RNG a seed and IVs for the next egg. The good part is because how BW2 egg RNG is done, you'll not need to hit a specific advance. **Only hitting the Initial Seed will matter**.
 
-1. Input the IVs you want in PokeFinder (don't add other filters just yet)
+1. Input the IVs and the nature you want in PokeFinder (don't add other filters just yet)
 2. Search for an initital seed
 3. Start the game and hit the initial seed
 4. Talk to the old man and **reject the egg**
@@ -47,14 +47,14 @@ Note: If you only want IVs and not a PID, you can grab the egg. The RNG is done.
 
 ## Part 3: PID RNG
 
-1. Remove all the IV filters and input the PID filters (natures, ability, gender, shininess)
+1. Remove all the IV filters and input the PID filters (ability, gender, shininess)
 2. Search for an initial seed that gives your PID
 3. Start the game and hit the initial seed
 4. Advance the RNG until you're at your PID spread
 5. Talk to the old man and accept the egg
 
 ```
-Note: With PokeFinder, you'll need to talk to the man one advance earlier than your target. If your target is at 100 advances, talk to him at 99!
+Note: Sometimes With PokeFinder, you'll need to talk to the man one advance earlier than your target. If your target is at 100 advances, talk to him at 99.
 ```
 
 You should now have the egg with everything you wanted!

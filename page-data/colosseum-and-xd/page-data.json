@@ -1,5 +1,5 @@
 {
     "componentChunkName": "component---src-templates-category-js",
     "path": "/colosseum-and-xd",
-    "result": {"data":{"allMdx":{"nodes":[]}},"pageContext":{"categoryRegex":"/Colosseum and XD/","category":"Colosseum and XD"}},
+    "result": {"data":{"allMdx":{"nodes":[{"frontmatter":{"title":"(XD) Eevee PAL RNG","description":"How to RNG the starter Eevee with a PAL Pokemon XD","slug":"pal-xd-eevee","subCategory":"RNG"}},{"frontmatter":{"title":"Initial Seed RNG","description":"How to use Dolphin to set up Initial Seed RNG for all the Gamecube Games","slug":"gc-initial","subCategory":"Basic Knowledge"}}]}},"pageContext":{"categoryRegex":"/Colosseum and XD/","category":"Colosseum and XD"}},
     "staticQueryHashes": ["4168079547","884883011"]}

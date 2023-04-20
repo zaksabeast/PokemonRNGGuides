@@ -1,8 +1,8 @@
 ---
-title: "White Forest RNG"
-description: "White Forest RNG"
-slug: "emulator-bw-white-forest"
-subCategory: "Emulator"
+title: 'White Forest RNG'
+description: 'White Forest RNG'
+slug: 'emulator-bw-white-forest'
+subCategory: 'Emulator'
 isRoughDraft: false
 ---
 

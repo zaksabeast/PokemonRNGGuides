@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     marginBottom: theme.spacing(4),
-  }
+  },
 }));
 
 const H1 = props => <Typography variant="h1" {...props} />;
@@ -96,8 +96,8 @@ const Paragraph = props => {
 
 const Table = props => {
   const classes = useStyles();
-  return <MuiTable className={classes.table} {...props} />
-}
+  return <MuiTable className={classes.table} {...props} />;
+};
 
 export const mdxComponents = {
   PixelImage,

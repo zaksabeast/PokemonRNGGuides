@@ -1,8 +1,8 @@
 ---
-title: "(XD) Eevee PAL RNG"
-description: "How to RNG the starter Eevee with a PAL Pokemon XD"
-slug: "pal-xd-eevee"
-subCategory: "RNG"
+title: '(XD) Eevee PAL RNG'
+description: 'How to RNG the starter Eevee with a PAL Pokemon XD'
+slug: 'pal-xd-eevee'
+subCategory: 'RNG'
 isRoughDraft: false
 ---
 

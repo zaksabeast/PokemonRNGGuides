@@ -1,8 +1,8 @@
 ---
-title: "Initial Seed RNG"
-description: "How to use Dolphin to set up Initial Seed RNG for all the Gamecube Games"
-slug: "gc-initial"
-subCategory: "Basic Knowledge"
+title: 'Initial Seed RNG'
+description: 'How to use Dolphin to set up Initial Seed RNG for all the Gamecube Games'
+slug: 'gc-initial'
+subCategory: 'Basic Knowledge'
 isRoughDraft: false
 ---
 

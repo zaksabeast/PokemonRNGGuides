@@ -18,9 +18,10 @@ Exactly like Emerald, having a dead battery means that everything related to the
 
 **So once your battery is dead, you end up with only one Initial Seed : 5A0**
 
-This is in general a huge advantage for Retail RNGers, allowing you to just go for hitting your frame like you would do on Emerald. In the end, everything works the same. 
+This is in general a huge advantage for Retail RNGers, allowing you to just go for hitting your frame like you would do on Emerald. In the end, everything works the same.
 
 Only two major differences exist between RS Dry Battery and Emerald :
+
 - The Initial Seed is not set to 0 but 5A0 as seen before.
 - Battle Video isn't a thing.
 
@@ -28,7 +29,7 @@ However, because of recent discoveries, even the initial seed can be changed wit
 
 As a little note, Dry Battery is necessary for Wishmaker Jirachi RNG
 
-## Live Battery 
+## Live Battery
 
 Live Battery is more emulator oriented. To make it simple, one minute (based on the clock of the game) = one initial seed. So during a timeframe of a specific minute, you'll always hit the same Initial Seed. Using PokeFinder, it's really easy to know which one you did it... Assuming that you know exactly the time of your clock in your game.
 
@@ -40,4 +41,4 @@ How Live Battery would work for Retail ? Well it's simple. You'd either have to 
 
 If you're able to control the RTC easily, you'll want to go for the Live Battery. If you can't you'll go for the Dry Battery, and if you have enough skill, you'll want to try the Painting method in order to have a desired Initial Seed.
 
-Outside that, the RNG doesn't change between the two. As it'll be covered in all the guides, you'll just have to follow the steps the same way, and just adjust the Initial Seed based on the method. 
+Outside that, the RNG doesn't change between the two. As it'll be covered in all the guides, you'll just have to follow the steps the same way, and just adjust the Initial Seed based on the method.

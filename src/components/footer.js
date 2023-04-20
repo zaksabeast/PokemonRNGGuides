@@ -5,8 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import GithubIcon from 'mdi-material-ui/Github';
-import DiscordIcon from 'mdi-material-ui/Discord';
-import { DISCORD_URL, GITHUB_URL } from '../constants';
+import { GITHUB_URL } from '../constants';
 import { useStaticQuery, graphql } from 'gatsby';
 
 const useStyles = makeStyles(theme => ({
@@ -58,17 +57,6 @@ export const Footer = () => {
               href={GITHUB_URL}
             >
               <GithubIcon fontSize="small" />
-            </IconButton>
-          </ListItem>
-          <ListItem className={classes.navLinkItem}>
-            <IconButton
-              color="inherit"
-              aria-label="Join the Discord"
-              className={classes.iconButton}
-              component="a"
-              href={DISCORD_URL}
-            >
-              <DiscordIcon fontSize="small" />
             </IconButton>
           </ListItem>
         </List>

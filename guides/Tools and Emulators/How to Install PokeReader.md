@@ -12,9 +12,12 @@ PokeReader is a Plug n' Play plugin, and is a replacement for PokeCalc. Unlike w
 - A 3DS with CFW (Custom Firmware)
   - https://3ds.hacks.guide/ has instructions for installing CFW
 
-## Check Luma Version
+## Update Luma Settings
 
-Luma version 12.0.0 or higher is required to run PokeReader. The Luma setting for "Enable loading external FIRMs and modules" must be enabled. You can enable this option by holding `Select` while booting on the console and selecting "Enable loading external FIRMs and modules". You can check the Luma version when updating settings.
+1. Boot the console while holding `Select`.
+2. Select the "Enable loading external FIRMs and modules" option.
+
+If you do not have this option, update Luma to version 12.0.0 or higher.
 
 ## Install Plug n' Play
 
@@ -38,11 +41,11 @@ Note: To install a CIA, launch FBI on the 3ds and click 'A' on the file.
 
 ## Launching PokeReader
 
-1. First launch the Plug n' Play app from the home menu.
-2. Then simply open a compatible Pokemon game.
+1. Launch the Plug n' Play app from the home menu.
+2. Open a compatible Pokemon game.
 
 This must be done every time the console is turned off and back on to reload Plug n' Play.
 
 ```
-Note: Plug n' Play support for Gen 7 games on O3DS/2DS is still in development and being worked on.
+Note: Plug n' Play support for Gen 7 games on O3DS/2DS is still in development.
 ```

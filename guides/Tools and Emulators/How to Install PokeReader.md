@@ -11,6 +11,8 @@ PokeReader is a Plug n' Play plugin, and is a replacement for PokeCalc. Unlike w
 
 - A 3DS with CFW (Custom Firmware)
   - https://3ds.hacks.guide/ has instructions for installing CFW
+- [Luma version 12.0.0 or higher](https://github.com/LumaTeam/Luma3DS/releases)
+  - Other Luma versions, including those used for NTR and PCalc, are not compatible.
 
 ## Update Luma Settings
 

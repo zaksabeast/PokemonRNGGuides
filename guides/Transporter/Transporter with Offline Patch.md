@@ -1,0 +1,51 @@
+---
+title: 'Transporter RNG using the Offline Patch'
+description: 'Ensure a stable delay for easier RNG'
+slug: 'transporter-rng'
+subCategory: 'Custom Firmware'
+---
+
+## Tools
+
+- A 3DS with PokeReader ([PokeReader Install Guide](https://www.pokemonrng.com/install-pokereader))
+- [Chatot](https://chatot.pokemonrng.com/#/gen6/transporter) or [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+
+## 3DSRNGTool Info
+
+If using 3DSRNGTool, choose "Transporter" for the game version and select the "Stationary" tab.
+
+You can utilize the index feature to check the spreads for all the generated Pokémon, enabling you to perform multiple RNGs simultaneously.
+
+## Step 1: Ensure a Stable Delay
+
+Set up the offline Transporter patch to ensure a stable delay by following the instructions [here](https://www.pokemonrng.com/transporter-patches).
+
+## Step 2: Find a target advance
+
+1. Make sure you have a Pokemon in Box 1, Slot 1 of your Gen 1/2 game.
+1. Load Pokemon Transporter with PokeReader on your 3DS.
+1. Open Chatot or 3DSRNGTool and enter the initial seed displayed by PokeReader.
+1. Set the delay to 28.
+1. In Transporter, press `Start` to select the game you would like to use with Transporter.
+   - This is the final `A` press before Pokemon are generated.
+1. Press `Start + Select` to pause the game.
+1. Adjust the IV filters to find a desired spread.
+   - Nature, ability, and shininess are determined in the Gen 1/2 game before Transporter.
+1. Set the minimum advance to your current advance.
+1. Set the maximum advance to the highest advance you want to search for spreads.
+1. Click "Search".
+
+All the displayed results are potential target advances. Choose your preferred one.
+
+## Step 2: Hit the target
+
+1. Unpause the game by pressing `Start`.
+1. Wait at the game selection screen until you are close to the target advance.
+1. When you are close, press `Start + Select` to pause the game.
+1. Use `Select` to advance one by one until you reach the target advance.
+1. Once you reach the target advance, press and hold `A`.
+1. Check if you obtained the desired Pokemon. If not, do not transfer the Pokemon and try again.
+
+```
+Note: When asked if you want to transfer your Pokemon, clicking "No" will cause the Pokemon to be generated again. This allows for infinite retries in case you miss the RNG.
+```

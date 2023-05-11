@@ -8,7 +8,7 @@ subCategory: 'Custom Firmware'
 ## Tools
 
 - A 3DS with PokeReader ([PokeReader Install Guide](https://www.pokemonrng.com/install-pokereader))
-- [Chatot](https://chatot.pokemonrng.com/#/gen6/transporter) or [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+- [Chatot](https://chatot.pokemonrng.com/#/gen6/transporter) or [3DSRNGTool](https://ci.appveyor.com/project/Bambo-Rambo/3dsrngtool/build/artifacts)
 
 ## Useful note
 

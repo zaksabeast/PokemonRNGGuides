@@ -1,12 +1,12 @@
 ---
 title: 'Egg RNG'
 description: 'How to RNG eggs from the daycare'
-slug: 'emulator-dppt-egg'
+slug: 'emulator-hgss-egg'
 subCategory: 'Emulator'
 ---
 
 ```
-Introduction : Egg RNG on DPPt is a little harder than HGSS because of the noise. Nothing too much to worry however. In this guide, we'll see how to advance the Egg Frame, which is used for PID, and then how to get the desired IV Spread. As always, this guide will assume that the basics of Gen 4 RNG are known. How to hit an initial Seed, how to advances frames etc.
+Introduction : In this guide, we'll see how to advance the Egg Frame, which is used for PID, and then how to get the desired IV Spread. As always, this guide will assume that the basics of Gen 4 RNG are known. How to hit an initial Seed, how to advances frames etc.
 ```
 
 ## Requirements
@@ -34,8 +34,7 @@ Be sure you hit the right initial seed, generate an egg. Congratulations, you di
 
 However, if for some reason, you went for a target where the advances is not equal to 0, you'll need to advance the Egg Frame before generating the egg. Here's a list of method in how to do it : 
 * Using the Magikarp Coin advances by 1
-* Going to the Hapiness App, having it loaded or using it : 2 * (Amount of Pokémon in your team)
-* Rejecting an egg advances by 1.
+* Calling Youngster Joey (available Route 30) : 2
 
 Just advances using this and then generate an egg. Save in front of the old man.
 
@@ -44,6 +43,6 @@ Just advances using this and then generate an egg. Save in front of the old man.
 
 The second part is more classic. Swap to the Method 'IVs' on PokeFinder. Then input search Filters for IVs. Take care of the Inheritance of your parents for the IVs but don't forget that it'll be not difficult to hit multiple 31 IVs. 
 
-You just have to generate a result, hit a target frame and then advance the frames like any basic RNG. However don't forget that the noise in that area is quite high and it'll may require some focus in order to trigger the dialogue at the right timming.
+You just have to generate a result, hit a target frame and then advance the frames like any basic RNG. The noise there is not the worse, and you shouldn't have too much trouble to hit them.
 
 Once you've done it right, just pickup your egg. It'll have everything desired.

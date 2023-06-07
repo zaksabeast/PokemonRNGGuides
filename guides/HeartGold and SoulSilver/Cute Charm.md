@@ -5,6 +5,10 @@ slug: 'emulator-hgss-cute-charm'
 subCategory: 'Emulator'
 ---
 
+```
+Introduction : This guide will be a simple summary of the advantages of Cute Charm in Gen 4, how to execute it and how to RNG with it. This guide will assume you're used with a lot of knowledge with Gen 4 RNG, including how to hit an initial seed, how to do a TID / SID RNG.
+```
+
 ## Requirements
 
 - PokeFinder

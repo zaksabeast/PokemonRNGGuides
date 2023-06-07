@@ -3,44 +3,61 @@ title: 'Time Finder (Citra)'
 description: 'Time Finder (Citra)'
 slug: 'emulator-usum-time-finder'
 subCategory: 'Emulator'
-isRoughDraft: true
 ---
 
-This will allow to search for specific seeds and hit them as much as you want with Citra's RTC Mode.
+```
+Introduction : This guide will focus on the most power tool of CitraRNG : TimeFinder. Like for Gen 3, Gen 4, Gen 5 and Gen 6, there's a way to use the time at our advantage and be able to hit any desired Initial Seed for better targets without SRing, and being able to re-do any RNG if failed. This guide will assume that CitraRNG is setup, and some basic knowledge of Citra RNG even if not really necessary.
+```
 
-Requirement :
+## Requirements
 
-- Citra + CitraRNG (Need to be configured well. Check the other guide for that)
-- Zaksabeast's Time Finder (http://zaksabeast.github.io/Gen7TimeFinder.js/build/)
-- Knowing your parameters
+- Citra and CitraRNG
+- 3DSTimeFinder
 
-So first, this tool allows ONLY for Stationary Pokemon (Gift / Fossils / Legendaries are included ofc) but allows to search for ANY Spread w/ TSV
+## Setup
 
-Open the tool and let's do a summary of every options :
+* Open Citra and set your RTC to any date you want. Write it down somewhere since you'll need it.
+* Launch your game and CitraRNG. Go to Gen 7 Tab, update the initial seed and write it down too.
 
-- Time offset : It's something Set by citra when you start your game. For almost everybody, the time offset is 17017.
-  /!\ If your time offset is different, come to the discord for some support about this, since no "user" method has been done to verify it atm /!\
-- System Ticks : This means for how long the system has been on. Same as Time offset, it SHOULD BE 0x383E329
-  /!\ Same if your System Ticks is different, come to the discord for some support /!\
-- Start / End Time : Select the time you want to be checked for your spreads. Adjust it by the "difficulty" to get a seed. You'll get a LOT of results. But if you go for ONE spread of a FEW spreads, don't hesitate to take more than one day; YY/MM/DD format.
-- Upper / Lower IVs limit : the tool will search for any spread inside this criterias. if you set it by 6IVs at Upper and 5IVs at Lower, it'll search for any 5IVs (minus the IVs undesired) spread to any 6IVs spread
-- TSV : Your Trainer Shiny Value if you want it to be Shiny.
+## Calibrationa and Profile Generation.
 
-/!\ A Support for nature will be added. BUT will ignore ANY lead team /!\
+* Open 3DSTimeFinder and go to Tools => Gen 7 Profile Calibrator.
+* Select the game you're trying to calibrate (SM or USUM)
 
-Check if "Guaranteed 3IVs" if it's the case and hit "Generate"
+```
+Note : The offset / tick value by default will not match. It has been found on specific old Citra builds that change all the time. They are suggestions. If you want to save some time, you can use these values for Citra Nightly 1543 only, my personal Citra for the past 3years+ which is quite flawless : 4470937 (Offset) / 56 (Tick)
+```
 
-The script will take a few moments to find all your spreads.
+* In the Tick Range, put something like 10, no need of more.
+* In the Offset Range, put a big number. I suggest 50 000 000. It should help to find a value.
+* It'll take some time but you'll find a result. It's your result. You can now create a profile based on these values.
 
-You can check their frame by inputting the initial seed in 3DSRNGTool.
+```
+Note : Because of daylight saving, the chances that you don't find any result on the actual hour is important. However it doesn't mean you're doing it wrong. You'll need to adjust by one hour (+ or - 1) and retry until getting a result.
+```
 
-Once you have your selected frame, open Citra. You'll have to change the time of Citra to a FIXED and SET time.
-For that you'll need to do on the main windows of Citra :
-"Emulation" => "Configure" => "System" => Change Clock from "System Clock" to "Fixed Time"
-You'll have to input the date / time given by the Time Finder.
+```
+Note : Note that if you find a result for Ultra-Sun, Ultra-Moon will have the same profile. So you can just copy it and duplicate it for Moon without searching.
+```
 
-Save the settings.
 
-Open your game, load the save and load CitraRNG. If you have the right initial seed, congratulations.
+## How to use Gen7TimeFinder
 
-///////!!!!!!!!!!!!!!!!!!!!\\\\\\\\\\ Before asking for help with wrong settings, if your initial seed is wrong, just close AND ADD / REMOVE ONE HOUR. It can happen and it's COMMON, since Citra does daylight savings. It'll fix almost all the issues with Initial Seed /////////////////!!!!!!!!!!!!!!!!!\\\\\\\\\\\\\
+This part will be shorter. If you're used to TimeFinder, it works the same. You select the right category in the main tab (Wild, Stationary, Event or TID / SID) and then input all the criterias you want in order to find results in game. **Be sure to have selected the right profile**, and then just search for spreads.
+
+You'll have to adjust the time range to find rarer spreads, but it should help you a lot to find what you want in an easy way. 
+
+```
+Note : If you want to use that for SOS, you'll need to search with the Stationary tab by taking care of the long frame waste during setting up everything
+```
+
+Once a result is found, write the date / time down.
+
+
+## How to hit any Initial Seed
+
+Now you have found your target's Initial Seed, just open Citra and put the desired RTC in the RTC box. Then save and just run the game. It should have the desired Initial Seed !
+
+```
+Note : Once again, because of daylight saving, you might have not the right initial seed. You'll need to adjust by one hour (+ or - 1) and relaunch the game and CitraRNG to see if it worked.
+```

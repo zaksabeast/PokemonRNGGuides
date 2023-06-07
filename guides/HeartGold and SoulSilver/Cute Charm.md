@@ -100,7 +100,7 @@ Example : I want a Shiny Male Adamant Machop. Machop is 75% Male, so I'll look a
 * Then open PokeFinder and Pandora's Box. Input all the necessary informations with the correct PID.
 * RNG the TID / SID on a fresh save.
 * Progress enough to get a cute charm / get one as early as possible
-* Go to an area with a Machop and search for a Shiny. It's important to search with the right lead on PokeFinder !
+* Go to an area with a Machop and search for a Shiny. It's important to search with the Cute Charm lead on PokeFinder !
 * RNG it.
 
 ```

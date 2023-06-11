@@ -24,13 +24,3 @@ You'll not be able to use
 Important : any lead that allows to boost the fishing rate DOESN'T work. So you'll have to do without it on DPPt.
 
 For Feebas, the idea is to have two consecutive frames to give a bite in order to have it working.
-
-## Honey
-
-The idea is more how to explain how the generation works, how to make a specific Pokémon to spawn, and also to figure out the TID / SID for special trees, hi Munchlax.
-https://www.smogon.com/forums/threads/most-generation-prng-help-information.52180/#post-1822052
-Documentation here
-
-## PokéRadar
-
-We'll see Real's method

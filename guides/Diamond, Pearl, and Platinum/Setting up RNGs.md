@@ -27,7 +27,7 @@ Now the question is : How to know what you can get :
 
 For example, I'm at advance 10. Advance 11 will set the Column and frame 12 will set the row. To know EXACTLY what you'll get, you need to take the PID of these two following advances, keep the second half part of it, then convert it in decimal value and finally divide by 656. Compare these values to the numbers in the following table to know what you'll get :
 
-### Diamand / Pearl
+### Diamond / Pearl
 
 | Row         | Column 1 (30-99)  | Column 2 (10-29) | Column 3 (0-9 or 1-9 if Munchlax tree) | Column 4 (0 if Munchlax tree)    |
 | ----------- | ----------------- | ---------------- | -------- | -------- |

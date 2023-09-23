@@ -32,6 +32,10 @@ Note: Egg RNG in BW2 is different than in BW1. The main difference is that IVs a
 
 ## Part 2: IV + Nature RNG
 
+```
+Important : If you are going for Nidoran or Volbeat / Illumise this step will determine which species you get. Enter the right egg species, and you'll have a confirmation with the gender of the egg (male for Nidoran M / Volbeat and female for Nidoran F / Illumise
+```
+
 So we could compare that to Gen 6 Egg RNG, where you'll RNG a seed and IVs for the next egg. The good part is because how BW2 egg RNG is done, you'll not need to hit a specific advance. **Only hitting the Initial Seed will matter**.
 
 1. Input the IVs, the nature and the ability you want in PokeFinder (don't add other filters just yet)

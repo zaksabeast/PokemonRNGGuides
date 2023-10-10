@@ -12,9 +12,8 @@ subCategory: '3DS'
 
 ## Update Luma
 
-The latest official Luma version is not compatible with NTR. You will need to use a fork of Luma that is compatible with NTR to be able to use NTR, and NTR plugins such as PCalc, on the latest firmware version.
-
-- [NTR compatiable Luma](https://github.com/Nanquitas/Luma3DS/releases)
+You will need to ensure that your installed version of Luma3ds is 13.0 or later. Older versions are not compatible with NTR.
+- [Download Luma3ds](https://github.com/LumaTeam/Luma3DS/releases)
   - Download the `boot.firm` and overwrite the current `boot.firm` on the root of the SD card.
 
 ## Step 1: Installing NTR

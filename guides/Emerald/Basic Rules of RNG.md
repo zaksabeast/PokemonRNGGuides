@@ -1,47 +1,44 @@
 ---
 title: 'Basic rules of Gen 3 RNG'
-description: 'How to advance the RNG, a list of useful tools and tips to make everything more stable'
+description: 'How to advance the RNG and tips to make everything more stable'
 slug: 'e-tips-rng'
 subCategory: 'Basic Knowledge'
 isRoughDraft: true
 ---
 
-```
-Introduction : This guide is more a fitting guide that is really important to make your life easier. You'll find some stuff not really related, some little points but they all will help you to make your life easier.
-```
+## Intro
 
-Emerald has some nice things to make the RNG enjoyable seeding wise. However, vblank just pretty much kills the game.
+Emerald offers some useful features for seeding in RNG. However, vblank issues can be quite frustrating.
 
-### Methods
+## RNG Methods
 
-* Stationary : Method 1
-* Wild : Method H-2
+- For stationary Pokémon: Method 1
+- For wild encounters: Method H-2
 
 ```
-Note : For wild it's really a default method. You could hit up to like 80% of vblank and never know which method you'll hit. And there's no real solution except trying, trying again and losing a stupid amount of time for nothing.
+Note: When dealing with wild encounters, it's often a hit-or-miss situation. You might encounter a high vblank rate, and it's challenging to predict which method you'll hit. Unfortunately, there's no surefire solution, and you may end up trying repeatedly, wasting a lot of time for uncertain results.
 ```
 
-### Trainer Card Flip
+## Trainer Card Flip
 
-Doing a Trainer Card Flip in Gen 3 will always allow the game to reset the noise that created delay issues, making the user just to focus on the default delay. For that, you need to go to your trainer Card and press A. **It's a major thing that you should do by reflex.** To make it simple, just do it between 10k - 5k before your target frame. And with that, you'll save you a lot of trouble.
+In Gen 3, performing a Trainer Card Flip resets the noise-related delays, allowing you to focus on the default delay. It's a crucial step you should do almost reflexively. Simply access your Trainer Card and press A. To keep it simple, do this between 10k-5k advances before your target advance. This can save you a lot of trouble.
 
+## Minimizing Noise
 
-### How to avoid noise as much as possible
+Building on the previous tip, a way to minimize vblank and noise issues is to open your Trainer Card when starting your RNG, perform a flip, close it, and advance to your target advance. This might sound simple, but it's an effective strategy to shield yourself from unexpected surprises.
 
-Based on the previous tip, a way to avoid vblank and noise as much as possible is just to be open your trainer card when you start your rng, do a flip, close it and advance to your target frame. It might seems simple, but it'll be an effective way to protect you from any bad surprise.
+## Speeding Up RNG Advances (Including Seeding Help)
 
-### How to advance frames faster (Seeding help included)
+### Battle Video
 
-#### Battle Video 
+This method serves as the foundation for seeding. It allows you to preserve the RNG's current state as an initial seed. Simply engage in a battle in the Battle Frontier and save it as a video. This video retains the seed when the battle occurred, and you can set it as the initial seed when loading it. For instance, if your target is 1 million advances away, you can go up to 950k, save a battle video, and upon loading it, you'll start at 950k advances.
 
-The origins of solutions for Seeding. With that method, you can save any frame (aka any seed) to be an initial Seed. For that you just have to do a battle in the Battle Frontier and save it as a video. It'll keep in memory the Seed when it was done and will allow you to set it up as initial Seed when loading it. For example if your target is at 1M of frames away, you could just go up to 950k, save a battle video. Once loading it you'd start at 950k frames. 
+Although this method has its uses, it has become somewhat outdated compared to Painting RNG. Nonetheless, it can be valuable when you need to hit a specific advance multiple times.
 
-This method was core but it ended up being quite outdated compared to Painting RNG. It still can be usefull if you want to hit a specific frame multiple times.
+### In-Battle
 
-#### In Battle 
+As in any Gen 3 game, being in battle accelerates RNG advancement by a factor of two. This is particularly helpful for wild Pokémon RNG.
 
-However, like in any  Gen 3 game, being in battle advances the frame two times faster. Always helpful especially for wild RNG.
+### Painting RNG
 
-#### Painting RNG
-
-Just a reminder that this is a thing and will allow you to have any wanted Initial Seed. But since it's more advanced, it's covered on its own guide.
+Lastly, it's essential to note that Painting RNG is a viable method for obtaining any desired initial seed. Since it's a more advanced technique, it will be covered in a separate guide.

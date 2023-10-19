@@ -5,44 +5,48 @@ slug: 'emulator-hgss-egg'
 subCategory: 'Emulator'
 ---
 
-```
-Introduction : In this guide, we'll see how to advance the Egg Frame, which is used for PID, and then how to get the desired IV Spread. As always, this guide will assume that the basics of Gen 4 RNG are known. How to hit an initial Seed, how to advances frames etc.
-```
-
 ## Requirements
 
 - PokeFinder
 - All the tools necessary to RNG Abuse with DesMuMe
 - Access to the Daycare and the informations about your parents.
 
-```
-Note : Masuda has been introduced with this generation. It's supported and will not be an issue. Is it important to use it ? Not really.
-```
+## Intro
 
-## Setup 
+In this guide, we'll show you how to advance the RNG to get the Pokémon you want. This guide assumes you already know some basics about Gen 4 RNG, like how to start things off and advance the RNG.
 
-Only a few steps here :
-* Open PokeFinder, Gen 4 => Eggs => Searcher. Select your profile, input the infos of your parents. **Parent A and B means in what order you've put them in the daycare, so take note of the order**
-* Put the parents in the daycare and save the game
+The Masuda Method was introduced in this generation, but it's not super important to use it.
 
+## Setup
 
-## Hitting the PID using Egg Frames
+Getting things ready is not too hard:
 
-So the introduction will be simple : **Based on how easy is it to find target frames, it's always suggested to search for a Egg Frame = 0**. So in PokeFinder, you'd just search for 0 - 0 in Advance Range, input your filters for PID (Shininess, Nature, Gender, Ability etc. Nothing related to IVs pretty much), generate results and select a target one. Then it'll just be about hitting an Initial Seed which is something you have already the knowledge of. 
+1. Open PokeFinder and go to Gen 4 => Eggs => Searcher.
+1. Choose your profile and type in your parents' info. The Pokémon that went into the daycare first is Parent A, and the other is Parent B.
+1. Drop off your parents at the daycare and save your game.
 
-Be sure you hit the right initial seed, generate an egg. Congratulations, you did the PID part.
+## Hitting the PID using Egg Advances
 
-However, if for some reason, you went for a target where the advances is not equal to 0, you'll need to advance the Egg Frame before generating the egg. Here's a list of method in how to do it : 
-* Using the Magikarp Coin advances by 1
-* Calling Youngster Joey (available Route 30) : 2
+Aim for an egg that does need need to advance the RNG. It's the easiest way to go:
 
-Just advances using this and then generate an egg. Save in front of the old man.
+1. In PokeFinder, set your Advance Range to 0-0.
+1. Choose the specific traits you want for your Pokémon, like Shininess, Nature, Gender, Ability, and so on.
+1. Generate the results based on your criteria.
+1. Select your target RNG advance.
+1. RNG your Initial Seed.
 
+If for some reason you're advancing the RNG beyond 0, you'll need to bump up the egg advance before making your egg. Here are a few ways to do it:
+
+- Use the Magikarp Coin to advance the RNG by 1.
+- Fire up the Happiness App (whether it's loaded or used) – it advances the RNG 2 times the number of Pokémon on your team.
+- Calling Youngster Joey (available Route 30) advances the RNG by 2.
+
+Don't forget to save your game in front of the old man.
 
 ## Hitting the IVs
 
-The second part is more classic. Swap to the Method 'IVs' on PokeFinder. Then input search Filters for IVs. Take care of the Inheritance of your parents for the IVs but don't forget that it'll be not difficult to hit multiple 31 IVs. 
+The second part of the RNG is more standard. Switch over to the 'IVs' Method on PokeFinder and set your IV filters. Take into account the IVs from your parents, but keep in mind that getting some 31 IVs is not too hard.
 
-You just have to generate a result, hit a target frame and then advance the frames like any basic RNG. The noise there is not the worse, and you shouldn't have too much trouble to hit them.
+Get a result, hit your target advance, and advance the RNG like any other RNG.
 
-Once you've done it right, just pickup your egg. It'll have everything desired.
+Once you've done all this right, grab your egg, and it'll be your desired Pokémon.

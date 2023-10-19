@@ -5,34 +5,33 @@ slug: 'frlg-seeding-bot'
 subCategory: 'Emulator'
 ---
 
-```
-Introduction : This guide will show you a different way to RNG on FRLG. Using that, you should be closer to a RS (Live Battery) / Gen 4 / Gen 5 / Gen 6 / Gen 7 experience with some Time Finder-like experience. It requires a bot that is included in the recent versions of the luas scripts.
-```
-
 ### Requirements:
 
 - Last versions of the Lua Script
 - PokeFinder
 - [FRLGRSEInitialSeedsFinder](https://github.com/Real96/FRLGRSEInitialSeedsFinder) by Real96
 
+## Intro
+
+This guide introduces an alternative RNG method for Fire Red and Leaf Green that gives more control over the initial seed using a lua bot.
+
 ### Setup:
 
-* First, you'll need to have a target in mind. Open PokeFinder, Gen 3 => Stationary or Wild (both will work the same in general)
-* Go to the "Searcher" tab and input all the wanted filters.
-* Generate Results and write down the seed somewhere. 
-* Run FRLGRSEInitialSeedsFinder it'll ask you for a seed. Input it.
-* It'll then ask for an amount of results. Put a huge number like 100. The only specific case would be starters where Teachy TV is not available. In that situation you should generate 100 results but ONLY take the lowest frame range possible
-* Wait for the tool to generate results. It'll generate a text files with all the initial seed possible. Open it and copy the content.
-* Open the FRLG lua script and search for that line : 'local botTargetInitSeeds =' input all the seed (be sure they are surrounded by '{}')
-* Save the lua
-
+1. First, determine your target. Open PokeFinder, go to Gen 3 => Stationary or Wild (both work similarly).
+2. In the "Searcher" tab, apply the desired filters.
+3. Generate results and record the seed.
+4. Run FRLGRSEInitialSeedsFinder. It will prompt you for a seed; enter the one you recorded.
+5. When asked for the number of results, input a large number, like 100. Note: In specific cases, such as starters where Teachy TV is unavailable, generate 100 results, but only consider the lowest advance range possible.
+6. Wait for the tool to generate results. It will create a text file with all possible initial seeds. Open the file and copy its content.
+7. In the FRLG Lua script, locate this line: 'local botTargetInitSeeds ='. Input all the seeds (ensure they are enclosed by '{}').
+8. Save the Lua script.
 
 ### Botting:
 
-* Run the lua, advance to the initial seed bot mode by pressing '2'
-* Pause the emulator
-* Reset the emulator 
-* Advance a single frame (Ctrl + N) while holding Select
-* Unpause
+1. Run the Lua script and enter the initial seed bot mode by pressing '2'.
+2. Pause the emulator.
+3. Reset the emulator.
+4. Advance a single time (Ctrl + N) while holding the Select button.
+5. Unpause the emulator.
 
-That way the game should bot and try to hit one of the initial seed selected before. Once done the game will pause. You just have to keep track of the Initial Seed, put it in Generator and now do your RNG in a classic way knowing that your target Frame is now available.
+This setup allows the game to be controlled by the bot, attempting to hit one of the selected initial seeds. Once it completes, the game will pause. Keep track of the Initial Seed, input it into the Generator, and proceed with your RNG process in the standard manner, knowing that your target advance is now accessible.

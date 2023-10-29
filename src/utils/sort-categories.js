@@ -2,7 +2,7 @@ const sortedCategories = [
   'Tools and Emulators',
   'Transporter',
   'Ruby and Sapphire',
-  'Colosseum and XD',
+  'Gamecube',
   'FireRed and LeafGreen',
   'Emerald',
   'Diamond, Pearl, and Platinum',
@@ -15,6 +15,7 @@ const sortedCategories = [
   'Ultra Sun and Ultra Moon',
   'Sword and Shield',
   'Brilliant Diamond and Shining Pearl',
+  'Legends Arceus',
 ];
 
 export const sortCategories = (first, second) => {

@@ -1,35 +1,58 @@
 ---
 title: 'Stationary RNG'
-description: 'Stationary RNG'
+description: 'RNG Stationary Pokémon'
 slug: 'emulator-hgss-stationary'
 subCategory: 'Emulator'
-isRoughDraft: true
 ---
 
-Necessary :
+## Requirements
 
-- Desmume (any version even if 9.11 is more stable)
-- Lua Scripts (Noob forums is the best for that here)
 - PokeFinder
-  Before, you must know how to hit an initial seed. You can check the right guide for that
-  So first, find your target. Save in front of the Pokemon OR the NPC
-  Open PokeFinder : Gen 4 => Stationary. Go on Searcher tab (important /!\) select or create your profile. After enter the wanted parameters.
-  /!\ Unlike the Gen 3, not EVERY Pokemon is method 1. here's a list of Method 1 Pokemon in HGSS /!\ :
-  Starters
-  Togepi's egg
-  Eevee from Bill
-  Roaming Pokemon
-  Tyrogue
-  Dratini gift in dragon's den
-  Game Corner
-  Fossils
-  Dialga / Palkia / Giratina from Arceus event
-  /!\ The delay can be high same with the frames /!\
-  Once you have a target frame, right click on it and "Generate times for seed"
-  Open your emulator and load your lua script. Hit the initial seed.
-  Open your menu with X. From that you've some ways to advance PIDRNG Frames. It's better to do a save state here :
-- Chatot (x2 prefered) with chatter activated. If it's not working just use the record of desmume to get it working, it'll advance frames.
-- NPC (advance them random)
-- Radio (the bottom right one advance one by one and the oak around 14-18 frames, the rest is more random)
-  Once on the right frame, just launch the battle / talk to the NPC.
-  If you're in a place with NPC (aka advancing NPC by theirself) try to press A as fast as possible. If not, just reload the state done before to adjust and anticipate this advancement. If a NPC advances the frame by 2, just do target frame - 2
+- Be in front of your target
+- All the tools necessary to RNG Abuse with DesMuMe
+
+## Intro
+
+In this guide, our focus is to provide a list of Pokémon and point out any unique characteristics they may have. The RNG process remains constant, and once you've reviewed both the Initial Seed Guide and the Advancing guide, you'll have the fundamentals in place.
+
+Please make sure that PokeFinder is opened under Gen 4 => Static.
+
+## Method K List
+
+- Lapras
+- Electrode (\*3)
+- Snorlax
+- Articuno, Zapdos, Moltres
+- Mewtwo
+- Sudowoodo
+- Suicune
+- Lugia, Ho-oh
+- Eon Event Latios/Latias (not roamers)
+- Groudon, Kyogre, Rayquaza
+
+## Method 1 List
+
+- Chikorita (initial advance of 1)
+- Cyndaquil (initial advance of 5)
+- Totodile (initial advance of 9)
+- Kanto Starter (initial advance of 5)
+- Hoenn Starter
+- Egg of Togepi
+- Eevee from Bill
+- Roamers
+- Game Corner
+- Fossils
+- Dratini (Extreme Speed or not)
+- Dialga/Palkia/Giratina from the Arceus Event
+- Primo's Egg
+- Tentacool from softlock protection
+- Shuckle
+- Tyrogue
+
+```
+Note: To efficiently RNG the roamers, it's recommended to use the E4 Method. This involves encountering the roamer you wish to RNG, defeating it, and then performing the RNG before battling Lance. If not, you'll be dealing with an initial advance of 1 for Entei and 6 for Raikou. As for Latios and Latias, you should RNG them immediately after exiting the fan club's door.
+```
+
+## Chained Spread
+
+- Red Gyarados

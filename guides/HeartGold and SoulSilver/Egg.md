@@ -1,7 +1,7 @@
 ---
 title: 'Egg RNG'
 description: 'How to RNG eggs from the daycare'
-slug: 'emulator-dppt-egg'
+slug: 'emulator-hgss-egg'
 subCategory: 'Emulator'
 ---
 
@@ -13,7 +13,7 @@ subCategory: 'Emulator'
 
 ## Intro
 
-In this guide, we'll show you how to advance the RNG to get the Pokémon you want. This guide assumes you already know some basics about Gen 4 RNG, like how to start things off and advance the RNG. Egg RNG in DPPt can be a bit tricky because of some background noise.
+In this guide, we'll show you how to advance the RNG to get the Pokémon you want. This guide assumes you already know some basics about Gen 4 RNG, like how to start things off and advance the RNG.
 
 The Masuda Method was introduced in this generation, but it's not super important to use it.
 
@@ -39,7 +39,7 @@ If for some reason you're advancing the RNG beyond 0, you'll need to bump up the
 
 - Use the Magikarp Coin to advance the RNG by 1.
 - Fire up the Happiness App (whether it's loaded or used) – it advances the RNG 2 times the number of Pokémon on your team.
-- Rejecting the collection of the egg advances the RNG by 1.
+- Calling Youngster Joey (available Route 30) advances the RNG by 2.
 
 Don't forget to save your game in front of the old man.
 
@@ -47,6 +47,6 @@ Don't forget to save your game in front of the old man.
 
 The second part of the RNG is more standard. Switch over to the 'IVs' Method on PokeFinder and set your IV filters. Take into account the IVs from your parents, but keep in mind that getting some 31 IVs is not too hard.
 
-Get a result, hit your target advance, and advance the RNG like any other RNG. But be aware, there's some messiness in this area, so you might need to stay sharp to get the dialogue at the right time.
+Get a result, hit your target advance, and advance the RNG like any other RNG.
 
 Once you've done all this right, grab your egg, and it'll be your desired Pokémon.

@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-templates-category-js",
+    "path": "/legends-arceus",
+    "result": {"data":{"allMdx":{"nodes":[{"frontmatter":{"title":"MMO RNG","description":"How to RNG MMOs using Sysbot and PermuteMMO","slug":"sysbot-lpa-mmo","subCategory":"Sysbot"}}]}},"pageContext":{"categoryRegex":"/Legends Arceus/","category":"Legends Arceus"}},
+    "staticQueryHashes": ["4168079547","884883011"]}

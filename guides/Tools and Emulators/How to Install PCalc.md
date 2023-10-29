@@ -13,6 +13,7 @@ subCategory: '3DS'
 ## Update Luma
 
 You will need to ensure that your installed version of Luma3ds is 13.0 or later. Older versions are not compatible with NTR.
+
 - [Download Luma3ds](https://github.com/LumaTeam/Luma3DS/releases)
   - Download the `boot.firm` and overwrite the current `boot.firm` on the root of the SD card.
 

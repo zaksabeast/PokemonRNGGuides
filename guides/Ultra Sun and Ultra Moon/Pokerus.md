@@ -97,4 +97,4 @@ Warning: If you are only missing your Frame 2 by 1 or 2 frames, there is no need
 
 ![Infected](../../images/UltraSun-UltraMoon/Pokerus/Infected.jpg)
 
-![Infected Pokecenter](../../images/UltraSun-UltraMoon/Pokerus/Infected.jpg)
+![Infected Pokecenter](../../images/UltraSun-UltraMoon/Pokerus/Infected2.jpg)

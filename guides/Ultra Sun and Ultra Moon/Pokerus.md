@@ -7,12 +7,12 @@ subCategory: 'Custom Firmware'
 
 ## Introduction
 
-Pokerus RNG, while not as tough as SOS RNG, still does require some trial and error to actualy get right, as the delay between running from a battle and actually hitting the target frame is not stable. It can take several tries or calibrations to actually hit the frame. The tradeoff, however, is access to one of the rarest and most beneficial mechanics in the Pokemon franchise.
+Pokerus RNG, while not as tough as SOS RNG, still does require some trial and error to actually get right, as the delay between running from a battle and actually hitting the target frame is not stable. It can take several tries or calibrations to actually hit the frame. The tradeoff, however, is access to one of the rarest and most beneficial mechanics in the Pokemon franchise.
 
 ## Tools
 
 - Pokereader ([Install Guide](https://www.pokemonrng.com/install-pokereader))
-  - This is the recommened tool over PCalc due to the trial and error involved. Pokereader allows for soft-resetting the game if needs be, PCalc does not.
+  - This is the recommended tool over PCalc due to the trial and error involved. Pokereader allows for soft-resetting the game if needs be, PCalc does not.
   - [PCalc](https://www.pokemonrng.com/misc-3ds-installing-pcalc) can also be used if Pokereader is not an option for whatever reason
 - [3dsrngtool](https://ci.appveyor.com/project/Bambo-Rambo/3dsrngtool/build/artifacts)
 
@@ -67,7 +67,7 @@ Your screen should now look something like this:
 
 ![Run Button](../../images/UltraSun-UltraMoon/Pokerus/Encounter_Bottom.jpg)
 
-11. Advance to Frame 1. Press A. Pay close attnetion to what happens next.
+11. Advance to Frame 1. Press A. Pay close attention to what happens next.
 
 ```
 Note: Because Timelines cannot be predicted while in Pokemon battles, it is possible that your Frame 1 will be skipped over. You should continue the attempt anyways.
@@ -77,7 +77,7 @@ Note for Pokereader users: A must be pressed down for longer than on PCalc. If y
 
 12. As soon as the screen fades to black and the Frame Counter ("Advances" in pokereader) stops advancing, take note of the frame that the RNG stops advancing on
  - This will now be known as your "Hit Frame"
- - If your Hit Frame is equivilant to your Frame 2, you now have Pokerus. Check your party members to see which one has it (chosen at random).
+ - If your Hit Frame is equivalent to your Frame 2, you now have Pokerus. Check your party members to see which one has it (chosen at random).
  - Otherwise, see the next section. Consider soft-resetting for your next attempt, instead of just triggering another encounter.
  
 ## Calibration

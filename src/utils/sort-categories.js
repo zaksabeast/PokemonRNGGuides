@@ -5,6 +5,7 @@ const sortedCategories = [
   'Gamecube',
   'FireRed and LeafGreen',
   'Emerald',
+  'GameCube',
   'Diamond, Pearl, and Platinum',
   'HeartGold and SoulSilver',
   'Black and White',

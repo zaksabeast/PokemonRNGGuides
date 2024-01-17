@@ -11,18 +11,7 @@ slug: 'dppt-pokeradar-rng'
 
 ## Intro
 
-This guide explains how to do PokeRadar RNG in two parts: the "0-Chain case" for simple RNG and the "1-Chain case" for more advanced results. This guide assumes you know the basics of Gen 4 RNG and guide works for both emulated and retail play.
-
-## 0-Chain Case
-
-In this case, we don't mess with Shiny Patches. It's more like regular wild encounters but easier to set up quickly.
-
-1. Launch PokeFinder, assuming profile setup is done, and open Gen 4 => Wild => Searcher.
-1. On the "Settings" tab, set PokeRadar, route, and Pokémon. **Don't check the PokeRadar Shiny or Shiny Patch boxes.**
-1. Input filters and find a result, selecting one encounter slot.
-1. In the game, hit your initial seed.
-1. Start the PokeRadar and get near your patch.
-1. Advance a bit (it might not be perfect), then close the menu and go to your patch. Your RNG done.
+This guide explains how to do PokeRadar RNG based on a chain at 1. This guide assumes you know the basics of Gen 4 RNG and guide works for both emulated and retail play.
 
 ## 1-Chain Case
 

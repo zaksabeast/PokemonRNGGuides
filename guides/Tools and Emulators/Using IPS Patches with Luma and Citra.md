@@ -17,11 +17,7 @@ For example, Ultra Moon would be `/luma/title/00040000001B5100/code.ips`
 
 ## Using IPS files with Citra
 
-1. Right click on your game in Citra
-2. Open the update directory
-3. Make a new folder called `_your .app file_.exefsdir`
-   - For example, Ultra Moon's update would be `00000001.app.exefsdir`
-4. Put the `code.ips` in the new folder
+See Luma instructios, and the SDMC folder is the SD card.
 
 ## Merging patches with IPSPatcher.js
 

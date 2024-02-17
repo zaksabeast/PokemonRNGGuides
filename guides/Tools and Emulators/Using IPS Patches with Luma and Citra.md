@@ -19,7 +19,7 @@ For example, Ultra Moon would be `/luma/title/00040000001B5100/code.ips`
 
 1. Right click your game in Citra
 2. Select "Open Mods Location" to open the mods folder
-3. Copy your `code.ips` into the mods folder 
+3. Copy your `code.ips` into the mods folder
 
 ## Merging patches with IPSPatcher.js
 

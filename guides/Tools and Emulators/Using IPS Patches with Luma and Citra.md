@@ -17,11 +17,9 @@ For example, Ultra Moon would be `/luma/title/00040000001B5100/code.ips`
 
 ## Using IPS files with Citra
 
-1. Right click on your game in Citra
-2. Open the update directory
-3. Make a new folder called `_your .app file_.exefsdir`
-   - For example, Ultra Moon's update would be `00000001.app.exefsdir`
-4. Put the `code.ips` in the new folder
+1. Right click your game in Citra
+2. Select "Open Mods Location" to open the mods folder
+3. Copy your `code.ips` into the mods folder 
 
 ## Merging patches with IPSPatcher.js
 

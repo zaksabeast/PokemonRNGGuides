@@ -17,7 +17,9 @@ For example, Ultra Moon would be `/luma/title/00040000001B5100/code.ips`
 
 ## Using IPS files with Citra
 
-See Luma instructios, and the SDMC folder is the SD card.
+1. Right-click your game in Citra
+2. Select "Open Mod Location".
+3. Copy your code.ips into that folder. 
 
 ## Merging patches with IPSPatcher.js
 

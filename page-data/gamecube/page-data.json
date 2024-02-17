@@ -1,5 +1,5 @@
 {
     "componentChunkName": "component---src-templates-category-js",
     "path": "/gamecube",
-    "result": {"data":{"allMdx":{"nodes":[{"frontmatter":{"title":"(PAL) Channel RNG","description":"How to RNG the gift Jirachi on Channel","slug":"channel-jirachi","subCategory":"Emulator"}},{"frontmatter":{"title":"(XD) Eevee PAL RNG","description":"How to RNG the starter Eevee with a PAL Pokemon XD","slug":"pal-xd-eevee","subCategory":"Emulator"}},{"frontmatter":{"title":"Initial Seed RNG","description":"How to use Dolphin to set up Initial Seed RNG for all the Gamecube Games","slug":"gc-initial","subCategory":"Emulator"}}]}},"pageContext":{"categoryRegex":"/Gamecube/","category":"Gamecube"}},
+    "result": {"data":{"allMdx":{"nodes":[{"frontmatter":{"title":"(XD) Eevee PAL RNG","description":"How to RNG the starter Eevee with a PAL Pokemon XD","slug":"pal-xd-eevee","subCategory":"Emulator"}},{"frontmatter":{"title":"(PAL) Channel RNG","description":"How to RNG the gift Jirachi on Channel","slug":"channel-jirachi","subCategory":"Emulator"}},{"frontmatter":{"title":"Initial Seed RNG","description":"How to use Dolphin to set up Initial Seed RNG for all the Gamecube Games","slug":"gc-initial","subCategory":"Emulator"}}]}},"pageContext":{"categoryRegex":"/Gamecube/","category":"Gamecube"}},
     "staticQueryHashes": ["4168079547","884883011"]}

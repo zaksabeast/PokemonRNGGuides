@@ -22,12 +22,12 @@ This guide shows how to use TimeFinder.js with CitraRNG. You can harness time to
 
 ## Calibration and Profile Generation
 
-The default offset and tick values won't match. These values change depending on the version of Citra you're using and are only suggestions. For example, Citra Nightly 1543 has an offset of 4470937 and tick of 56.
+The default offset and tick values won't match. These values change depending on the version of Citra you're using and are only suggestions. For example, Citra Nightly 1543 has a tick of 4470937 and and offset of 56.
 
 1. Open 3DSTimeFinder and go to Tools => Gen 7 Profile Calibrator.
 1. Select the game you're trying to calibrate (SM or USUM).
-1. In the Tick Range, put a small number like 10.
-1. In the Offset Range, put a big number, such as 50,000,000.
+1. In the Offset Range, put a small number like 10.
+1. In the Tick Range, put a big number, such as 50,000,000.
 1. It'll take some time but you'll find a result. Once you find the result, create a profile based on these values.
 
 ```

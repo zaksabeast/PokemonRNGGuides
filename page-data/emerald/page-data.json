@@ -1,5 +1,0 @@
-{
-    "componentChunkName": "component---src-templates-category-js",
-    "path": "/emerald",
-    "result": {"data":{"allMdx":{"nodes":[{"frontmatter":{"title":"Reseed using paintings","description":"Reseed the RNG using paintings to obtain the Pokemon wanted without the long wait","slug":"emerald-painting-rng","subCategory":"Emulator"}},{"frontmatter":{"title":"Egg RNG","description":"RNG Eggs from the Daycare","slug":"emulator-emerald-egg","subCategory":"Emulator"}}]}},"pageContext":{"categoryRegex":"/Emerald/","category":"Emerald"}},
-    "staticQueryHashes": ["4168079547","884883011"]}

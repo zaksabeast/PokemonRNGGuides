@@ -8,12 +8,6 @@ export const MetaTags = () => {
   const title = guide?.title ?? "PokemonRNG.com";
   const description = guide?.description ?? "Guaranteed perfect shinies";
 
-  // It's undefined behavior if these meta tags will replace the ones in index.html.
-  // If they do, great.
-  // If not, no worries.
-
-  // At some point I should probably build static pages for better SEO.
-
   return (
     <>
       <title>{title}</title>

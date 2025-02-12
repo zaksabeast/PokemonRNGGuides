@@ -7,7 +7,7 @@
     "dev": "bunx --bun vite",
     "format": "bun prettier . --write",
     "format:check": "bun prettier . --check",
-    "build": "tsc -b && bunx --bun vite build && cp dist/index.html dist/404.html",
+    "build": "tsc -b && bunx --bun vite build && cp dist/index.html dist/404.html && bun run build-seo.ts",
     "build:guides": "bun run build-guides.ts",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -37,6 +37,7 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "cheerio": "^1.0.0",
     "eslint": "^9.19.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",

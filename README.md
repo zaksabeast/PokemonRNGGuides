@@ -6,11 +6,11 @@ Please contribute all guides to the `guides` directory.
 
 ## Contribute to the website
 
-You'll need to have node and yarn installed.
+You'll need to have bun installed.
 
-Run `yarn` to install the dependencies and `yarn start` to have a development server start.
+Run `bun i` to install the dependencies and `bun run dev` to have a development server start.
 
-To build a production version of the site, use `yarn build`. To serve the production build, run `yarn serve`.
+To build a production version of the site, use `bun run build`.
 
 ## Special Thanks
 

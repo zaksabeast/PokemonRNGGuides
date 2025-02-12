@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy_app:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    environment: "prod"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.0
+
+      - name: Get Git Commit Info
+        id: commit_info
+        run: |
+          echo "ISO_BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_ENV
+          echo "GIT_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Format check
+        run: bun run format:check
+        continue-on-error: false
+
+      - name: Lint and type check
+        run: bun run lint --max-warnings=0 && bun run tsc -b
+        continue-on-error: false
+
+      - name: Build
+        run: bun run build
+        env:
+          CI: true
+          VITE_GIT_COMMIT: ${{ env.GIT_COMMIT }}
+          VITE_ISO_BUILD_DATE: ${{ env.ISO_BUILD_DATE }}
+          VITE_AMPLITUDE_API_KEY: ${{ vars.VITE_AMPLITUDE_API_KEY }}
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist

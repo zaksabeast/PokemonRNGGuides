@@ -9,6 +9,9 @@ import { antdTheme } from "~/theme";
 import { MDXProvider } from "@mdx-js/react";
 import { markdownComponents } from "~/components/markdown";
 import { MetaTags } from "~/components";
+import { registerSW } from "virtual:pwa-register";
+
+registerSW({ immediate: true });
 
 if (!settings.isDev) {
   initAmplitude(settings.amplitudeApiKey, {

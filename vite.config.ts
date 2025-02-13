@@ -21,8 +21,8 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 4000000,
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => url.pathname.startsWith("/downloads/"),
-            handler: "NetworkOnly",
+            urlPattern: ({ url }) => url.pathname.endsWith(".zip"),
+            handler: "NetworkFirst",
           },
         ],
       },

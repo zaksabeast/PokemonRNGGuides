@@ -19,6 +19,12 @@ export default defineConfig({
       registerType: "autoUpdate",
       workbox: {
         maximumFileSizeToCacheInBytes: 4000000,
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname.startsWith("/downloads/"),
+            handler: "NetworkOnly",
+          },
+        ],
       },
       manifest: {
         name: "PokemonRNG.com",

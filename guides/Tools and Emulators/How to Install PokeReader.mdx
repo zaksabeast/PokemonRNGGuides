@@ -5,26 +5,28 @@ slug: "install-pokereader"
 subCategory: "3DS"
 ---
 
-PokeReader is a 3gx plugin that replaces PokeCalc. It has more features for RNG purposes.
+PokeReader is a 3gx plugin that replaces PCalc. It has more features for RNG purposes.
 
 ## Tools
 
-- A 3DS with CFW (Custom Firmware). Instructions for installing CFW can be found at [3ds.hacks.guide](https://3ds.hacks.guide/).
-- [Luma version 13.0.0 or higher](https://github.com/LumaTeam/Luma3DS/releases).
+- [A 3DS with CFW (Custom Firmware)](https://3ds.hacks.guide/)
+- [Luma version 13.0.0 or higher](https://github.com/LumaTeam/Luma3DS/releases)
 
 ## Install PokeReader on 3DS
 
 1. Download the [latest release of PokeReader](https://github.com/zaksabeast/PokeReader/releases/latest).
-2. Copy `pokereader.3gx` to `/luma/plugins/default.3gx` on your SD card, or to `/luma/plugins/<title_id>/plugin.3gx` for each Pokémon game. Create the directory if it does not exist.
-3. Open Rosalina and enable the "Plugin Loader".
+2. Rename `pokereader.3gx` to `default.3gx`.
+3. Copy `default.3gx` to `/luma/plugins/` on your SD card. Create the directory if it does not exist.
+4. Open Rosalina (`L` + `Down` + `Select`) and enable the "Plugin Loader".
 
-If you are migrating from the Plug n' Play version of PokeReader, follow the [Plug n' Play uninstallation guide](https://github.com/zaksabeast/3ds-Plug-n-play#uninstalling).
-
-## Install PokeReader on Citra
+## Install PokeReader on Azahar/Lime3DS/Citra
 
 1. Download the [latest release of PokeReader](https://github.com/zaksabeast/PokeReader/releases/latest).
-2. Follow the "Using 3gx Plugins" section in [Citra's game modding guide](https://citra-emu.org/help/feature/game-modding/).
+2. Rename `pokereader.3gx` to `default.3gx`.
+3. Open the emulator's preferences.
+4. Navigate to `System` settings.
+5. Go to the `Storage` tab.
+6. Click `Open` next to `SDMC Directory`.
+7. Copy `default.3gx` to `/luma/plugins/` in the directory. Create the directory if it does not exist.
 
-```
-This guide should make installation clear and straightforward.
-```
+**Will update with more instructions once Azahar is released.**

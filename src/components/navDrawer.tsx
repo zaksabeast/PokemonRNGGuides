@@ -54,6 +54,8 @@ const getMenuInCategory = (categories: Category[]) => {
   );
 };
 
+const roughDraftPrefix = "roughDraft-";
+
 const topLevelMenu = [
   getMenuInCategory(["Tools and Emulators"])[0],
   {
@@ -99,7 +101,7 @@ const topLevelMenu = [
   {
     key: "Rough Drafts",
     label: "Rough Drafts",
-    children: getGuideMenu(roughDraftGuides, "roughDraft-"),
+    children: getGuideMenu(roughDraftGuides, roughDraftPrefix),
   },
 ] satisfies MenuItem[];
 
@@ -107,7 +109,13 @@ const NavDrawerContent = () => {
   const [route, setRoute] = useActiveRoute();
   const [, setMobileNavDrawerOpen] = useMobileNavDrawerOpen();
   const [openKeys, setOpenedKeys] = React.useState<string[]>(() => {
-    const openCategory = route === "/" ? null : getGuide(route)?.meta?.category;
+    const guideMeta = getGuide(route)?.meta;
+    if (route === "/" || guideMeta == null) {
+      return [];
+    }
+    const openCategory = guideMeta.isRoughDraft
+      ? `${roughDraftPrefix}${guideMeta.category}`
+      : guideMeta.category;
     const openTopLevelItem = topLevelMenu.find((item) =>
       item.children.some((child) => child.key === openCategory),
     );

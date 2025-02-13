@@ -1,44 +1,50 @@
 ---
 title: "Difference between Live and Dry Battery"
-description: "Discover the two way to RNG on Ruby / Sapphire and learn their differences"
+description: "Discover the two ways to RNG on Ruby/Sapphire and learn their differences"
 slug: "rs-battery"
 subCategory: "Basic Knowledge"
-isRoughDraft: false
 ---
 
-For once, this guide will not imply to do any manip, open anything. Let's see this guide more as an introduction to Ruby / Sapphire RNG. This applies to any RNGer : Emu, Retail, the idea is to answer to all the question you can have if you're new to RNG Abuse and interested by Ruby / Sapphire RNG.
+This guide introduces Ruby/Sapphire RNG. It applies to all RNGers: Emu and Retail. It answers common questions for those new to RNG abuse.
 
-I'll just take each case, explain how it works, what you can do and can't do with it, and in the end a little conclusion to help you decide which one to go for.
+We'll look at each method, explain how it works, and offer a conclusion to help you decide which to use.
 
 ## Dry Battery
 
-The Dry Battery will sounds really familiar to you if you know how Emerald works.
+The Dry Battery will feel familiar if you know how Emerald works.
 
-Exactly like Emerald, having a dead battery means that everything related to the RTC (Real Time Clock) is now impossible. So everything implying time (like Berry growth) is quite frozen in the time. And, bad luck (or good ?), seeding and RNGing is based on the time.
+A dead battery means the RTC (Real Time Clock) is no longer active. This means that time-dependent actions, like berry growth, are frozen. Without an active RTC, seeding and RNGing are also based on the time.
 
-**So once your battery is dead, you end up with only one Initial Seed : 5A0**
+**With a dead battery, you have only one Initial Seed: 5A0.**
 
-This is in general a huge advantage for Retail RNGers, allowing you to just go for hitting your frame like you would do on Emerald. In the end, everything works the same.
+This is a huge advantage for Retail RNGers, allowing you to hit your frame like you would on Emerald. It all works the same way.
 
-Only two major differences exist between RS Dry Battery and Emerald :
+Two major differences between RS Dry Battery and Emerald are:
 
-- The Initial Seed is not set to 0 but 5A0 as seen before.
-- Battle Video isn't a thing.
+- The Initial Seed is 5A0, not 0.
+- Battle Video isn't available.
 
-However, because of recent discoveries, even the initial seed can be changed with the Painting Seed method. It implies to do a little manip before going for your target, but opens the possibilities of hitting any Initial Seed without any issue, making it really close to Live Battery.
+Recent discoveries show that the Initial Seed can be changed using the Painting Seed method. This involves a small setup before aiming for your target, allowing you to hit any Initial Seed, which makes it similar to Live Battery.
 
-As a little note, Dry Battery is necessary for Wishmaker Jirachi RNG
+```
+Note: Dry Battery is necessary for Wishmaker Jirachi RNG.
+```
 
 ## Live Battery
 
-Live Battery is more emulator oriented. To make it simple, one minute (based on the clock of the game) = one initial seed. So during a timeframe of a specific minute, you'll always hit the same Initial Seed. Using PokeFinder, it's really easy to know which one you did it... Assuming that you know exactly the time of your clock in your game.
+Live Battery is more emulator-focused. To simplify, one minute (based on the in-game clock) equals one Initial Seed. In a specific minute, you'll always hit the same Initial Seed. Using PokeFinder makes it easy to know which Initial Seed you have, provided you know the exact time on your game clock.
 
-In the past, Live Battery used to more interesting because you could go for any Initial Seed easily and hit really many spreads, avoiding the bad parts of a fix Initial Seed. But Painting changing quite the landscape and now the idea is that going for Live Battery will just skip the Painting Part. Find the Initial Seed you want, the corresponding time and use it at your advantage, so still important for users who can control the RTC of the game easily like on Emulator.
+Live Battery was previously more interesting as you could target any Initial Seed easily. However, with the Painting Seed method, Live Battery is less versatile because now you can easily find the Initial Seed you want and use it to your advantage—still important for users who control the RTC on an emulator.
 
-How Live Battery would work for Retail ? Well it's simple. You'd either have to remove the Battery, put it back in order to reset the clock, and then wait the right time, at the right date to go for your RNG. You'd pretty much have one try to do your RNG since only one minute to be on the right Initial Seed. Seems tedious right ? To avoid that hassle, there's a tool that allows you to fix / set an RTC : https://github.com/megaboyexe/GBA_RTCRead With that you can easily set any RTC to a working battery game and then do your Live Battery RNG. The method is up to you if you want to go for that method.
+How does Live Battery work for Retail?
 
-## In the end, what's the better method ?
+1. Remove the battery and put it back to reset the clock.
+2. Wait for the right time and date to perform your RNG.
 
-If you're able to control the RTC easily, you'll want to go for the Live Battery. If you can't you'll go for the Dry Battery, and if you have enough skill, you'll want to try the Painting method in order to have a desired Initial Seed.
+You typically have one shot for RNG since you only have one minute to hit the correct Initial Seed. To avoid this hassle, you can use this tool to set an RTC: https://github.com/megaboyexe/GBA_RTCRead. This allows you to set any RTC in a working battery game and then do your Live Battery RNG.
 
-Outside that, the RNG doesn't change between the two. As it'll be covered in all the guides, you'll just have to follow the steps the same way, and just adjust the Initial Seed based on the method.
+## In the end, what's the better method?
+
+Choose Live Battery if you can control the RTC easily. Choose Dry Battery if you can't. If you're skilled enough, try the Painting method for any desired Initial Seed.
+
+Apart from that, RNG does not change between the two methods. Follow the steps in the guides and adjust the Initial Seed based on your method.

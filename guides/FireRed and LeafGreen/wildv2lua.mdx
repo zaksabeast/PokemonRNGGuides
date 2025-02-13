@@ -6,49 +6,61 @@ subCategory: "Emulator"
 isRoughDraft: true
 ---
 
-/!\ This guide uses the NEW lua scripts from noob /!\
+```
+This guide uses the new lua scripts from noob.
+```
 
-Necessary :
+## Tools
 
 - Vba
-- Lua Scripts v2 on noob : https://pokerng.forumcommunity.net/?t=56443955
+- Lua Scripts v2 on noob: https://pokerng.forumcommunity.net/?t=56443955
 - PokeFinder
-- My doc for delays : https://docs.google.com/spreadsheets/d/1cVweVvJXCXeTZOBVKVCBbcSI46rqBXV3ahbuoSGOnzk/edit#gid=1091733147
+- Vlad's doc for delays: https://docs.google.com/spreadsheets/d/1cVweVvJXCXeTZOBVKVCBbcSI46rqBXV3ahbuoSGOnzk/edit#gid=1091733147
 
-Okay so little notes :
+## Step 1: Understanding the Scripts
 
-First these scripts allow a better frame count, and less mistakes. This allows with a little technique to hit any frame without
-any calibration. But you need to know the basic delay of the zone. I've provided as much data as possible. Important notes. On
-Fire Red / Leaf Green delay are REALLY stables. So you can follow the ones i've wrote here. There can be a difference of +1 (aka
-264 rather than 263 for example) but this applies everywhere, and is pretty rare. Got it once. If you want to do any check, just do a
-calibration once. It'll work 100% after on that zone.
+These scripts provide better frame counting and fewer mistakes. With some technique, you can hit any frame without calibration. You need to know the basic delay of the zone. I've included as much data as possible.
 
-Second thing, routes will be always the same. 256 Frames applies on every "Route" zone, 263 for Caves etc etc. Surfing matches the
-frames of the zone. For example in a cave, it'll be 263 Frames.
+1. On Fire Red/Leaf Green, delays are stable. Follow the delays I've provided.
+2. There can be a difference of +1 (e.g., 264 instead of 263), but this is rare.
+3. If you want to check, do one calibration, and it'll work 100% after that.
 
-Finally, if you find anything wrong (a HUGE difference, not the +1 frame thing i've said earlier) just pm / ping me to see with me
-and correct that.
+Routes are always the same.
 
-Okay so now it's really similar to the v1.
+1. 256 frames apply to every "Route" zone.
+2. 263 frames apply to caves.
+3. Surfing matches the frames of the zone (e.g., 263 frames in caves).
 
-Open your emulator, save in the area you want to.
+If you find anything wrong (like a huge difference), PM or ping me to correct it.
 
-Open PokeFinder, select "Gen 3" => "Wild it'll be Method H-1. Select your profile.
-Select the Zone and the Pokemon targeted (if you have one in mind)
-/!\ In the delay box, check it and add the delay corresponding to your target /!\
-Search for a target frame.
+## Step 2: Setting Up
 
-IMPORTANT : More you advance in frames, more you'll be likely have a higher and wrong delay. To avoid that, you need to do a
-Trainer Card Flip near your target frame to refresh this and get the basic delay.
-For that. Open the menu, go in your trainer Card, press A. It'll flip. It's done.
-Do that around 2/3k before your target frame.
+Open your emulator and save in the area you want.
 
-Important : You can advance a LOT of frames (talking about 1 Million every 10 seconds with the Teachy TV)
+1. Open PokeFinder, select "Gen 3" => "Wild" (Method H-1).
+2. Select your profile.
+3. Choose the zone and the Pokémon you want (if you have one in mind).
+4. In the delay box, add the delay for your target.
+5. Search for a target frame.
 
-Once the card flip done, go to menu, select the Pokemon with Sweet Scent and put your cursor on the move.
-Once close to the target frame, pause the emulator (ctrl + p), and advance frame by frame (ctrl + n) to the one shown by
-PokeFinder. PRess A and unpause at the same time.
+**Important:** The more you advance in frames, the more likely you will have a higher and incorrect delay. To avoid this, do a Trainer Card Flip near your target frame to refresh and get the basic delay.
+
+1. Open the menu.
+2. Go to your Trainer Card and press `A` to flip it.
+3. Do this about 2-3k frames before your target frame.
+
+You can advance a lot of frames (up to 1 million every 10 seconds with Teachy TV).
+
+## Step 3: Finding the Pokémon
+
+After the card flip is done:
+
+1. Open the menu and select the Pokémon with Sweet Scent.
+2. Put your cursor on the move.
+3. Once close to the target frame, pause the emulator (`ctrl + p`).
+4. Advance frame by frame (`ctrl + n`) to the frame shown by PokeFinder.
+5. Press `A` and unpause at the same time.
 
 Done.
 
-Last thing : If you don't get the target, double check your OWN delay, and be sure to do the Trainer Flip.
+**Last thing:** If you don't get the target, double-check your own delay and make sure to do the Trainer Flip.

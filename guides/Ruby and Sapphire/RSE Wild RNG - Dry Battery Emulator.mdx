@@ -6,34 +6,47 @@ subCategory: "Emulator"
 isRoughDraft: true
 ---
 
-You can copy on my FRLG guide for 90% of the part.
-This guide is BEFORE the update with Real's scripts
+This guide covers Fixed Initial Seed in Gen 3, specifically for RS dry and Emerald.
 
-This guide is to cover Fixed Initial Seed in Gen 3 aka RS dry and Emerald.
+## Tools
 
-You need :
+- VBA
+- Lua scripts (noob or project Pokémon one)
+- PokeFinder
 
-vba
-Lua scripts (noob or project pokemon one)
-PokeFinder
+## Step 1: Set Up PokeFinder
 
-Open PokeFinder with the right profile and put the initial seed :
+Open PokeFinder with the correct profile and input the initial seed:
 
-- 0 for Emerald
-- 5A0 for Ruby / Sapphire dry.
+- `0` for Emerald.
+- `5A0` for Ruby/Sapphire dry.
 
-Note : to have a dry ruby / sapphire just uncheck the real time clock in vba options.
+```
+Note: To achieve dry Ruby/Sapphire, uncheck the real-time clock in VBA options.
+```
 
-Find a target, go to the place and save.
+## Step 2: Find Your Target
 
-With PokeFinder (Gen 3 => Wild), just select the route and hit the criterias you want. For Ruby / Sapphire it's method H-1, for Emerald, it's method H-2 (you can still hit alternate spreads) once you've your target
+1. Find a target and go to the location.
+2. Save your game.
+3. In PokeFinder (Gen 3 => Wild), select the route and hit the criteria you want. For Ruby/Sapphire, use Method H-1; for Emerald, use Method H-2 (you can hit alternate spreads as well) once you've selected your target.
 
-Launch vba, do REGULAR save states. Once close to your frame do a calibration :
+## Step 3: Calibrate
 
-save state => note the frame you're on => encounter a pokemon with sweet scent => search that spread with pokefinder => do the math to find the delay and enter it in "delay box" => regenerate your target to have your new frame.
+1. Launch VBA and create regular save states.
+2. When close to your frame, do a calibration:
+   - Save state.
+   - Note the frame you're on.
+   - Encounter a Pokémon using Sweet Scent.
+   - Search that spread with PokeFinder.
+   - Calculate the delay and enter it into the "delay box."
+   - Regenerate your target to get your new frame.
 
-Once done go to your target frame; you'll hit what you want.
+## Step 4: Capture Your Pokémon
 
-If not, just redo the calibration.
+1. Go to your target frame to catch what you want.
+2. If it doesn’t work, redo the calibration.
 
-/!\ Example of a more short rough draft i'm planning to do /!\
+```
+You can copy from my FRLG guide for 90% of this information. This guide is before the update with Real's scripts.
+```

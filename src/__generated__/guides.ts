@@ -42,7 +42,7 @@ export const guides = {
     meta: {
       title: "Reseed using paintings",
       description:
-        "Reseed the RNG using paintings to obtain the Pokemon wanted without the long wait",
+        "Reseed the RNG using paintings to obtain the Pokémon wanted without the long wait",
       slug: "/emerald-painting-rng",
       isRoughDraft: false,
       file: "guides/Emerald/Reseed RNG.mdx",
@@ -67,8 +67,8 @@ export const guides = {
   },
   "/emulator-hgss-tid-sid": {
     meta: {
-      title: "TID / SID RNG",
-      description: "How to get a desired TID / SID combo",
+      title: "TID/SID RNG",
+      description: "How to get a desired TID/SID combo",
       slug: "/emulator-hgss-tid-sid",
       isRoughDraft: true,
       file: "guides/HeartGold and SoulSilver/TID SID.mdx",
@@ -177,7 +177,7 @@ export const guides = {
   "/emulator-hgss-stationary": {
     meta: {
       title: "Stationary RNG",
-      description: "RNG Stationary Pokémon",
+      description: "RNG for stationary Pokémon",
       slug: "/emulator-hgss-stationary",
       isRoughDraft: false,
       file: "guides/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
@@ -191,7 +191,7 @@ export const guides = {
   "/emulator-frlg-egg": {
     meta: {
       title: "FRLG Egg RNG",
-      description: "RNG Eggs in FRLG",
+      description: "RNG eggs in FRLG",
       slug: "/emulator-frlg-egg",
       isRoughDraft: false,
       file: "guides/FireRed and LeafGreen/Egg RNG.mdx",
@@ -232,7 +232,7 @@ export const guides = {
     meta: {
       title: "Initial Seed Botting",
       description:
-        "How to use the Initial Seed Bot in order to have even more control in your RNGs",
+        "How to use the Initial Seed Bot for more control in your RNGs",
       slug: "/frlg-seeding-bot",
       isRoughDraft: false,
       file: "guides/FireRed and LeafGreen/Initial Seed Botting.mdx",
@@ -247,7 +247,7 @@ export const guides = {
     meta: {
       title: "Wild RNG",
       description:
-        "RNG for Pokemon encountered in the wild using Sweet Scent in FireRed/LeafGreen",
+        "RNG for Pokémon encountered in the wild using Sweet Scent in FireRed/LeafGreen",
       slug: "/emulator-frlg-wild",
       isRoughDraft: false,
       file: "guides/FireRed and LeafGreen/Wild RNG.mdx",
@@ -287,7 +287,7 @@ export const guides = {
   "/retail-usum-timeline": {
     meta: {
       title: "Timeline Guide",
-      description: "The most needed skill to do Gen 7 RNG with custom firmware",
+      description: "Key skill for Gen 7 RNG with custom firmware",
       slug: "/retail-usum-timeline",
       isRoughDraft: false,
       file: "guides/Ultra Sun and Ultra Moon/Timeline Guide.mdx",
@@ -300,7 +300,8 @@ export const guides = {
   "/retail-usum-sos": {
     meta: {
       title: "SOS RNG",
-      description: "One of the most challenging Gen 7 RNGs with fun rewards",
+      description:
+        "Master one of the most challenging Gen 7 RNGs for fun rewards",
       slug: "/retail-usum-sos",
       isRoughDraft: false,
       file: "guides/Ultra Sun and Ultra Moon/SOS RNG Guide.mdx",
@@ -330,8 +331,7 @@ export const guides = {
   "/retail-usum-timeleap": {
     meta: {
       title: "Timeline Leap",
-      description:
-        "A timeline can predict Pokemon a player can obtain. Timeline leap allows a player to leap onto specific timelines",
+      description: "Predict and jump onto specific Pokemon timelines",
       slug: "/retail-usum-timeleap",
       isRoughDraft: false,
       file: "guides/Ultra Sun and Ultra Moon/Timeline Leap Guide.mdx",
@@ -345,7 +345,7 @@ export const guides = {
   "/retail-usum-stationary": {
     meta: {
       title: "Stationary RNG",
-      description: "RNG the overworld Pokemon to have 6 IVs",
+      description: "RNG the overworld Pokémon to have 6 IVs.",
       slug: "/retail-usum-stationary",
       isRoughDraft: false,
       file: "guides/Ultra Sun and Ultra Moon/Stationary RNG.mdx",
@@ -388,8 +388,7 @@ export const guides = {
   "/retail-usum-wild": {
     meta: {
       title: "Wild RNG",
-      description:
-        "RNG for wild Pokemon using Honey in Ultra Sun and Ultra Moon",
+      description: "RNG for wild Pokémon using honey in Sun and Moon",
       slug: "/retail-usum-wild",
       isRoughDraft: false,
       file: "guides/Ultra Sun and Ultra Moon/Wild RNG.mdx",
@@ -431,7 +430,7 @@ export const guides = {
   "/retail-usum-no-cfw": {
     meta: {
       title: "RNGing without Custom Firmware",
-      description: "Get your perfect Pokemon without custom firmware",
+      description: "Get your perfect Pokémon without custom firmware",
       slug: "/retail-usum-no-cfw",
       isRoughDraft: false,
       file: "guides/Ultra Sun and Ultra Moon/RNGing Without Custom Firmware.mdx",
@@ -461,7 +460,7 @@ export const guides = {
     meta: {
       title: "Finding your initial seed in Gen 7 with clocks",
       description:
-        "This guide allows you to find your initial seed without using Custom Firmware",
+        "This guide allows you to find your initial seed without using custom firmware.",
       slug: "/retail-usum-initial-seed-clocks",
       isRoughDraft: false,
       file: "guides/Ultra Sun and Ultra Moon/Finding Initial Seed with Clocks.mdx",
@@ -510,7 +509,7 @@ export const guides = {
   "/retail-usum-wormhole": {
     meta: {
       title: "Wormhole Stationary RNG",
-      description: "Get your own perfect Legendary Pokemon!",
+      description: "Get your own perfect legendary Pokémon!",
       slug: "/retail-usum-wormhole",
       isRoughDraft: false,
       file: "guides/Ultra Sun and Ultra Moon/Stationary Wormhole RNG.mdx",
@@ -544,7 +543,7 @@ export const guides = {
     meta: {
       title: "Set up Yuzu/Ryujinx & CheatEngine",
       description:
-        "How to set up Yuzu/Ryujinx and Cheat Engine in order to RNG in BDSP using lua scripts",
+        "How to set up Yuzu/Ryujinx and Cheat Engine to RNG in BDSP using Lua scripts",
       slug: "/bdsp-emulator-setup",
       isRoughDraft: true,
       file: "guides/Brilliant Diamond and Shining Pearl/BK - Emulator Setup.mdx",
@@ -561,7 +560,7 @@ export const guides = {
     meta: {
       title: "Stationary RNG",
       description:
-        "Informations in order to RNG Stationary Pokemon (Mystery Gift included)",
+        "Information to RNG Stationary Pokémon (Mystery Gift included)",
       slug: "/cfw-bdsp-stationary",
       isRoughDraft: true,
       file: "guides/Brilliant Diamond and Shining Pearl/Stationary.mdx",
@@ -577,7 +576,7 @@ export const guides = {
   "/bdsp-pokefinder": {
     meta: {
       title: "How to use PokeFinder",
-      description: "How to set up and use PokeFinder in order to RNG on BDSP",
+      description: "How to set up and use PokeFinder for RNG on BDSP",
       slug: "/bdsp-pokefinder",
       isRoughDraft: true,
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx",
@@ -606,7 +605,7 @@ export const guides = {
   "/cfw-bdsp-wild": {
     meta: {
       title: "Wild RNG",
-      description: "Informations in order to RNG wild Pokemon",
+      description: "Information for RNG wild Pokémon",
       slug: "/cfw-bdsp-wild",
       isRoughDraft: true,
       file: "guides/Brilliant Diamond and Shining Pearl/Wild.mdx",
@@ -618,9 +617,9 @@ export const guides = {
   },
   "/bdsp-chatot": {
     meta: {
-      title: "How to use Chatot",
+      title: "How to Use Chatot",
       description:
-        "How to use the chatot.pokemonrng.com website in order to RNG in bdsp",
+        "How to use the chatot.pokemonrng.com website for RNG in BDSP",
       slug: "/bdsp-chatot",
       isRoughDraft: true,
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use Shiny's site.mdx",
@@ -636,7 +635,7 @@ export const guides = {
   "/cfw-bdsp-tidandsid": {
     meta: {
       title: "TID/SID RNG",
-      description: "How to RNG your TID / SID with CaptureSight",
+      description: "How to RNG your TID/SID with CaptureSight",
       slug: "/cfw-bdsp-tidandsid",
       isRoughDraft: true,
       file: "guides/Brilliant Diamond and Shining Pearl/TID SID RNG.mdx",
@@ -652,7 +651,7 @@ export const guides = {
   "/retail-swsh-get-seed-with-cfw": {
     meta: {
       title: "Get raid seed with custom firmware",
-      description: "Use this if you have a switch with custom firmware",
+      description: "Use this if you have a switch with custom firmware.",
       slug: "/retail-swsh-get-seed-with-cfw",
       isRoughDraft: false,
       file: "guides/Sword and Shield/Get Raid Seed With CFW.mdx",
@@ -666,7 +665,7 @@ export const guides = {
     meta: {
       title: "Raid RNG",
       description:
-        "RNG raid Pokemon (Even G-max!) found in Dens!  Use this after getting your den seed.",
+        "RNG raid Pokémon (even G-max!) found in Dens! Use this after getting your den seed.",
       slug: "/retail-swsh-raid",
       isRoughDraft: false,
       file: "guides/Sword and Shield/Raid RNG.mdx",
@@ -709,7 +708,7 @@ export const guides = {
   "/emulator-oras-dexnav": {
     meta: {
       title: "DexNav RNG",
-      description: "DexNav RNG for ORAS. Citra is 100% recommanded.",
+      description: "DexNav RNG for ORAS. Citra is 100% recommended.",
       slug: "/emulator-oras-dexnav",
       isRoughDraft: true,
       file: "guides/Omega Ruby and Alpha Sapphire/DexNav RNG.mdx",
@@ -752,7 +751,7 @@ export const guides = {
   "/misc-3ds-transporter-nature-tables": {
     meta: {
       title: "Transporter EXP to Nature Conversion Table (VC)",
-      description: "A quick way to check the nature your VC Pokemon will be",
+      description: "A quick way to check the nature your VC Pokémon will be",
       slug: "/misc-3ds-transporter-nature-tables",
       isRoughDraft: false,
       file: "guides/Transporter/Nature Table.mdx",
@@ -763,7 +762,7 @@ export const guides = {
   "/transporter-rng": {
     meta: {
       title: "Transporter with PCalc",
-      description: "Transfer your Gen 1/2 Pokemon to always be 6IV",
+      description: "Transfer your Gen 1/2 Pokémon to always be 6IV.",
       slug: "/transporter-rng",
       isRoughDraft: false,
       file: "guides/Transporter/Transporter.mdx",
@@ -790,7 +789,7 @@ export const guides = {
   "/pcalc-xy-friend-safari": {
     meta: {
       title: "Friend Safari RNG",
-      description: "Get shiny 6IV friend safari Pokemon, like Ditto!",
+      description: "Get shiny 6IV friend safari Pokémon, like Ditto!",
       slug: "/pcalc-xy-friend-safari",
       isRoughDraft: false,
       file: "guides/X and Y/Friend Safari RNG Guide.mdx",
@@ -835,7 +834,7 @@ export const guides = {
   "/retail-sm-timeline": {
     meta: {
       title: "Timeline Guide",
-      description: "The most needed skill to do Gen 7 RNG with custom firmware",
+      description: "Key skill for Gen 7 RNG with custom firmware",
       slug: "/retail-sm-timeline",
       isRoughDraft: false,
       file: "guides/Sun and Moon/Timeline Guide.mdx",
@@ -847,9 +846,9 @@ export const guides = {
   },
   "/misc-sm-wild-spots": {
     meta: {
-      title: "Wild Pokemon Locations",
+      title: "Wild Pokémon Locations",
       description:
-        "Where to place your character and the correction needed for each area to RNG wild Pokemon in Sun and Moon",
+        "Where to place your character and the correction needed for each area to RNG wild Pokémon in Sun and Moon",
       slug: "/misc-sm-wild-spots",
       isRoughDraft: false,
       file: "guides/Sun and Moon/Wild Spots.mdx",
@@ -877,8 +876,7 @@ export const guides = {
   "/retail-sm-timeleap": {
     meta: {
       title: "Timeline Leap",
-      description:
-        "A timeline can predict Pokemon a player can obtain. Timeline leap allows a player to leap onto specific timelines",
+      description: "Predict and jump onto specific Pokemon timelines",
       slug: "/retail-sm-timeleap",
       isRoughDraft: false,
       file: "guides/Sun and Moon/Timeline Leap Guide.mdx",
@@ -891,7 +889,7 @@ export const guides = {
   "/retail-sm-stationary": {
     meta: {
       title: "Stationary RNG",
-      description: "RNG the overworld Pokemon to have 6 IVs",
+      description: "RNG the overworld Pokémon to have 6 IVs.",
       slug: "/retail-sm-stationary",
       isRoughDraft: false,
       file: "guides/Sun and Moon/Stationary RNG.mdx",
@@ -930,7 +928,7 @@ export const guides = {
   "/retail-sm-wild": {
     meta: {
       title: "Wild RNG",
-      description: "RNG for wild Pokemon using Honey in Sun and Moon",
+      description: "RNG for wild Pokémon using honey in Sun and Moon",
       slug: "/retail-sm-wild",
       isRoughDraft: false,
       file: "guides/Sun and Moon/Wild RNG.mdx",
@@ -941,7 +939,8 @@ export const guides = {
   "/retail-sm-sos": {
     meta: {
       title: "SOS RNG",
-      description: "One of the most challenging Gen 7 RNGs with fun rewards",
+      description:
+        "Master one of the most challenging Gen 7 RNGs for fun rewards",
       slug: "/retail-sm-sos",
       isRoughDraft: false,
       file: "guides/Sun and Moon/SOS RNG.mdx",
@@ -968,7 +967,7 @@ export const guides = {
   "/retail-sm-no-cfw": {
     meta: {
       title: "RNGing without Custom Firmware",
-      description: "Get your perfect Pokemon without custom firmware",
+      description: "Get your perfect Pokémon without custom firmware",
       slug: "/retail-sm-no-cfw",
       isRoughDraft: false,
       file: "guides/Sun and Moon/RNGing Without Custom Firmware.mdx",
@@ -996,7 +995,7 @@ export const guides = {
     meta: {
       title: "Finding your initial seed in Gen 7 with clocks",
       description:
-        "This guide allows you to find your initial seed without using Custom Firmware",
+        "This guide allows you to find your initial seed without using custom firmware.",
       slug: "/retail-sm-initial-seed-clocks",
       isRoughDraft: false,
       file: "guides/Sun and Moon/Finding Initial Seed with Clocks.mdx",
@@ -1091,7 +1090,7 @@ export const guides = {
   "/install-pokereader": {
     meta: {
       title: "How to Install PokeReader",
-      description: "Installing a tool on your 3DS or Citra to help RNG Pokemon",
+      description: "Installing a tool on your 3DS or Citra to help RNG Pokémon",
       slug: "/install-pokereader",
       isRoughDraft: false,
       file: "guides/Tools and Emulators/How to Install PokeReader.mdx",
@@ -1333,7 +1332,7 @@ export const guides = {
   "/emulator-rs-stationary": {
     meta: {
       title: "Live Battery Stationary RNG",
-      description: "RNG stationary Pokemon with more options than dead battery",
+      description: "RNG stationary Pokémon with more options than dead battery",
       slug: "/emulator-rs-stationary",
       isRoughDraft: false,
       file: "guides/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx",
@@ -1350,7 +1349,7 @@ export const guides = {
     meta: {
       title: "Difference between Live and Dry Battery",
       description:
-        "Discover the two way to RNG on Ruby / Sapphire and learn their differences",
+        "Discover the two ways to RNG on Ruby/Sapphire and learn their differences",
       slug: "/rs-battery",
       isRoughDraft: false,
       file: "guides/Ruby and Sapphire/Live and Dry Battery.mdx",
@@ -1390,7 +1389,7 @@ export const guides = {
   "/rs-pokefinder-setup": {
     meta: {
       title: "PokeFinder Setup",
-      description: "How to setup PokeFinder",
+      description: "How to set up PokeFinder",
       slug: "/rs-pokefinder-setup",
       isRoughDraft: true,
       file: "guides/Ruby and Sapphire/PokeFinder Setup.mdx",
@@ -1430,7 +1429,7 @@ export const guides = {
     meta: {
       title: "Initial Seed RNG",
       description:
-        "How to use Dolphin to set up Initial Seed RNG for all the Gamecube Games",
+        "How to use Dolphin to set up Initial Seed RNG for all GameCube games",
       slug: "/gc-initial",
       isRoughDraft: false,
       file: "guides/Gamecube/Initial Seed RNG.mdx",
@@ -1470,8 +1469,8 @@ export const guides = {
   },
   "/emulator-dppt-tid-sid": {
     meta: {
-      title: "TID / SID RNG",
-      description: "How to get a desired TID / SID combo",
+      title: "TID/SID RNG",
+      description: "How to get a desired TID/SID combo",
       slug: "/emulator-dppt-tid-sid",
       isRoughDraft: true,
       file: "guides/Diamond, Pearl, and Platinum/TID SID.mdx",
@@ -1510,7 +1509,7 @@ export const guides = {
   "/emulator-dppt-stationary": {
     meta: {
       title: "Stationary RNG",
-      description: "RNG stationary Pokemon in Diamond, Pearl, and Platinum",
+      description: "RNG stationary Pokémon in Diamond, Pearl, and Platinum",
       slug: "/emulator-dppt-stationary",
       isRoughDraft: false,
       file: "guides/Diamond, Pearl, and Platinum/Stationary.mdx",
@@ -1576,7 +1575,7 @@ export const guides = {
   "/emulator-bw-roamers": {
     meta: {
       title: "Gen 5 Roamers",
-      description: "RNG Gen 5 Roamers with an Emulator",
+      description: "RNG Gen 5 Roamers with an emulator",
       slug: "/emulator-bw-roamers",
       isRoughDraft: false,
       file: "guides/Black and White/Roamers.mdx",
@@ -1600,7 +1599,7 @@ export const guides = {
   "/emulator-bw-find-ds-parameters": {
     meta: {
       title: "How To Find DS Parameters in Generation 5",
-      description: "Get your DS Parameters for Generation 5 RNG",
+      description: "Get your DS Parameters for Generation 5 RNG.",
       slug: "/emulator-bw-find-ds-parameters",
       isRoughDraft: false,
       file: "guides/Black and White/Find DS Parameters.mdx",
@@ -1626,7 +1625,7 @@ export const guides = {
   "/emulator-bw-entralink": {
     meta: {
       title: "Entralink",
-      description: "How to RNG cool Pokemon with Entralink RNG",
+      description: "How to RNG cool Pokémon with Entralink RNG",
       slug: "/emulator-bw-entralink",
       isRoughDraft: false,
       file: "guides/Black and White/Entralink.mdx",

@@ -8,7 +8,7 @@
     "format": "bun prettier . --write",
     "format:check": "bun prettier . --check",
     "build": "tsc -b && bunx --bun vite build && cp dist/index.html dist/404.html && bun run build-seo.ts",
-    "build:guides": "bun run build-guides.ts",
+    "build:guides": "bun run build-guides.ts && bun run format",
     "lint": "eslint .",
     "preview": "vite preview"
   },

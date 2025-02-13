@@ -6,43 +6,42 @@ subCategory: "Emulator"
 isRoughDraft: true
 ---
 
-So this covers :
+This covers:
 
-- Bug Catching Contest (BCC) with and without cute charm
-- Safari Zone with and without cute charm
-- Headbutt
+- Bug Catching Contest (BCC) with and without cute charm.
+- Safari Zone with and without cute charm.
+- Headbutt.
 
-You'll need :
+You'll need:
 
-- Desmume
-- Lua Scripts
-- RNG Reporter
+- Desmume.
+- Lua scripts.
+- RNG Reporter.
 
-Ofc you have to know how to do Wild RNG without any problem.
+You should already know how to do Wild RNG.
 
-Bug Catching Contest :
+## Bug Catching Contest
 
-Encounter Slots are restricted to 10. So you'll have to search between 0 and 9 for Encounter Slots. You can follow Serebii's pokearth data, it matches without any problem.
-Save in front of the guy the right day so you'll have to anticipate the fact you'll have to walk TO a grass patch.
+Encounter slots are limited to 10. Search between 0 and 9 for Encounter Slots. Refer to Serebii's Pokearth data for accurate information. Save in front of the guy on the right day, as you need to walk to a grass patch.
 
-1. If you have cute charm, just open the 4gen Time Finder, select the Bug Catching Contest in Encounter Type and search for ANY frame.
-2. If you don't have cute charm, select your lead (any or sync) but the game does some frame skips if it doesn't match some conditions. A way to avoid that is just to go for a target frame with at least ONE IV = 31 on ANY stat. Nothing else.
+1. If you have cute charm, open the 4gen Time Finder, select Bug Catching Contest in Encounter Type, and search for ANY frame.
+2. If you don't have cute charm, select your lead (any or sync). The game may skip frames if it doesn't meet certain conditions. Avoid this by choosing a target frame with at least ONE IV = 31 on ANY stat. Nothing else.
 
-Safari Zone :
+## Safari Zone
 
-Encounter Slots are restricted to 10 AND are influenced by items / days. You can follow Serebii's Pokearth to know which conditions you need and what you can find.
-BUT. Encounter Slots are not always the same. So you'll have to figure YOURSELF which encounter slot = which pokemon.
-For that, after saving in front of the guy which allows you to enter, you just need to enter in the safari with any given initial seed, going to the main tab of RNG Reporter (Method K => Encounter Type : Safari Zone w/ the initial seed) and create your own encounter table by checking the slots. Once you have the slot of your target you can search for a Target frame
+Encounter slots are limited to 10 and influenced by items/days. Use Serebii's Pokearth to know the conditions and available Pokémon. Encounter slots vary, so you must determine which slot corresponds to which Pokémon. After saving in front of the entry guy, enter the safari with any initial seed, go to the main tab of RNG Reporter (Method K => Encounter Type: Safari Zone with the initial seed), and create your own encounter table by checking the slots. Once you find your target's slot, search for a target frame.
 
-1. If you have cute charm, it's the same as BCC, and you can go on ANY given frame.
-2. If you don't have cute charm, it's the same as BCC, the game does some frame skips if it doesn't match some conditions. A way to avoid that is just to go for a target frame with at least ONE IV = 31 on ANY stat. Nothing else.
+1. If you have cute charm, it's the same as BCC, and you can go for ANY given frame.
+2. If you don't have cute charm, it's the same as BCC. The game may skip frames under certain conditions. Avoid this by choosing a target frame with at least ONE IV = 31 on ANY stat. Nothing else.
 
-Headbutt :
+## Headbutt
 
-Encounter slots are not really known at all. You can follow any site with encounters slots in order to ONLY have an idea of species present in the tree. Every tree seems to change of encounter slots every day. Same for special trees (like Combee or Slakoth in the north of Cerulean).
-After saving in front of the tree, reload your stuff with any initial seed. Use the main windows of RNG reporter (MEthod K => Encounter Type : Headbutt tree w/ initial seed) and creating your own encounter table. Once you've checked that, you can search for a target frame.
-From the tests i did, PUT A SYNCR AS LEAD. I'm getting 100% of encounters with that. Without lead i'm almost failing all my target frames
+Encounter slots are not well-known. Refer to any site with encounter slots to get an idea of the species in the trees. Every tree seems to change encounter slots daily, including special trees (like Combee or Slakoth in the north of Cerulean). After saving in front of the tree, reload with any initial seed. Use the main window of RNG Reporter (Method K => Encounter Type: Headbutt tree with initial seed) to create your own encounter table. Once verified, you can search for a target frame.
 
-/!\ However, you MAY need to substract -1 from your target frame in order to hit it. For example, if your target frame is 130, you'll have to up your PIDRNGFrame to 129 and use headbutt. I suggest you to do a save state to try the -1 AND the target frame. During my tests, in some case hitting the right frame was enoughn, in some case it wasn't.
+Put a sync as the lead for better results.
 
-Update 3 : Seems to be seed random. Sometimes you'll have do to the -1 frame sometimes not.
+```
+You might need to subtract -1 from your target frame to hit it. For example, if your target frame is 130, adjust your PIDRNGFrame to 129 and use headbutt. It's a good idea to create a save state to test both -1 and the target frame. In some cases, hitting the right frame works, and sometimes it doesn't.
+```
+
+Update 3: The seed seems random. Sometimes you'll have to do the -1 frame, and sometimes you won't.

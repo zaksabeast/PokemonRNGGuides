@@ -6,9 +6,9 @@ subCategory: "Emulator"
 isRoughDraft: true
 ---
 
-You can copy on my FRLG guide for 90% of the part. This guide is BEFORE the update with Real's scripts
+You can refer to my FRLG guide for most of the content. This guide is BEFORE the update with Real's scripts.
 
-This guide is to cover Fixed Initial Seed in Gen 3 aka RS dry and Emerald.
+This guide covers Fixed Initial Seed in Gen 3, specifically RS dry and Emerald.
 
 Edited Rick's guide, not yet complete. -Subject
 
@@ -18,41 +18,34 @@ Edited Rick's guide, not yet complete. -Subject
 
 ---
 
----
-
 ## Tools
 
----
-
-- [VBA-RR](https://github.com/TASVideos/vba-rerecording/releases)
-- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
-- [The Ruby/Sapphire Lua Scripts for your language](https://pokerng.forumcommunity.net/?t=56443955&p=396434940)
-  - Password for the lua script archive is `allyouneedisnoob`
+- [VBA-RR](https://github.com/TASVideos/vba-rerecording/releases).
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases).
+- [The Ruby/Sapphire Lua Scripts for your language](https://pokerng.forumcommunity.net/?t=56443955&p=396434940), password is `allyouneedisnoob`.
 
 ---
 
 ## Settings
 
----
+### VBA-RR Setup
 
-### VBA-RR setup
+1. Set the save mode correctly.
+2. Go to `Options > Emulation > Save Type > Automatic & Flash 128K`.
+3. Disable Real Time Clock to obtain dead battery seeds.
+4. Go to `Options > Emulation > Real Time Clock`.
+5. Restart VBA if there are loading errors, like a corrupted save or dead battery message.
+6. Load the Lua script.
 
-    - Make sure the save mode is set correctly.
-        - Options > Emulation > Save Type > Automatic & Flash 128K
-    - Real Time Clock must be disbled in order to obtain dead battery seeds.
-        - Options > Emulation > Real Time Clock
-        - If there are errors when loading past the title screen, such as corrupted save or dead battery message, restart VBA for the changes to take effect.
-    - Load the lua script.
+### PokeFinder Setup
 
-### PokeFinder setup
-
-    - Launch PokeFinder and select Gen 3 Stationary.
-    - Select profile or input TID/SID information.
-    - Input the correct initial seeds into PokeFinder.
-        - "0" for Emerald.
-        - "5A0" for Ruby/Sapphire.
-    - All non-wild pokemon for Generation 3 Pokemon are Method 1.
-    - Search for a spread and find a target frame.
+1. Launch PokeFinder and select Gen 3 Stationary.
+2. Select a profile or input TID/SID information.
+3. Input the correct initial seeds into PokeFinder:
+   - "0" for Emerald.
+   - "5A0" for Ruby/Sapphire.
+4. Non-wild Pokémon for Generation 3 are Method 1.
+5. Search for a spread and find a target frame.
 
 ![](pic of pokefinder example)
 
@@ -60,31 +53,25 @@ Edited Rick's guide, not yet complete. -Subject
 
 ## Hitting the Desired Frame
 
----
-
-1. Finding Delay
-   - Advance to the final screen before encountering the target Pokemon.
-   - Make a save state ~100 frames before the encouter.
+1. **Finding Delay**
+   - Advance to the final screen before encountering the target Pokémon.
+   - Make a save state ~100 frames before the encounter.
 
 ![](pic of wait screen)
 
-    - When you land on your target frame press `A` and enter the encounter.
-    - The period `.` key can be used to advance by one frame when paused.
-    - Take note of the IVs of the Pokemon you encounterd, they won't be the target pokemon's IVs.
-    - We will need to find a new target frame to get the correct Pokemon.
-
-![](Pic of ivs)
-
-    - Open a new PokeFinder window and input IVs of the Pokemon encountered.
-    - To find the delay subtract the frame hit from the desired frame.
+2. Press `A` when you land on your target frame to enter the encounter.
+3. Use the period `.` key to advance by one frame when paused.
+4. Take note of the IVs of the encountered Pokémon; they won't match the target Pokémon's IVs.
+5. Open a new PokeFinder window and input the IVs of the encountered Pokémon.
+6. To find the delay, subtract the frame hit from the desired frame.
 
 `Delay = Frame Hit - Target Frame`
 
 `Your new Target Frame = Desired Frame - Delay`
 
-2. Encountering the Pokemon
+2. **Encountering the Pokémon**
    - Reload the previous save state before the encounter.
    - Advance to the new target frame.
-   - If the Pokemon is not the desired Pokemon then find the new delay.
+   - If the Pokémon is not the desired one, find the new delay.
 
 ![](pic of the pokemon)

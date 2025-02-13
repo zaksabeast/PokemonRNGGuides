@@ -5,6 +5,8 @@ import { evaluate } from "@mdx-js/mdx";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import z from "zod";
+import { difference } from "lodash-es";
+import { guides as existingGuides } from "./src/__generated__/guides";
 
 // Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, and ,
 const titleAndDescriptionChars = /^[A-Za-z0-9 –.\-—é&/()!%,]+$/;
@@ -64,6 +66,14 @@ const main = async () => {
     }
 
     guides.push({ ...metadata, slug: `/${metadata.slug}`, file, category });
+  }
+
+  const existingSlugs = Object.keys(existingGuides);
+  const newSlugs = guides.map((guide) => guide.slug);
+  const removedSlugs = difference(existingSlugs, newSlugs);
+
+  if (removedSlugs.length > 0) {
+    throw new Error("Removed slugs: " + removedSlugs.join(", "));
   }
 
   const compiledGuides = `

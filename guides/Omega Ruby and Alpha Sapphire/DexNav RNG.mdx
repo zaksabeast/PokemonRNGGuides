@@ -1,51 +1,55 @@
 ---
 title: "DexNav RNG"
-description: "DexNav RNG for ORAS. Citra is 100% recommanded."
+description: "DexNav RNG for ORAS. Citra is 100% recommended."
 slug: "emulator-oras-dexnav"
 subCategory: "Emulator"
 isRoughDraft: true
 ---
 
-Introduction :
-
-DexNav has been for a long time been seen as a no-way RNG. But for a few months ago, a basic method has been found. After some researches and some fixes, this guide will explain how to do DexNav RNG without any TinyMT setup.
-
-This RNG could be done in theory on a 3DS with PCalc, but I'd not recommand it at all since it relies for some luck factors like triggering an encounter or even getting the right delay. So for this guide, it'll be applied to Citra, but you still can try and apply that method with PCalc. You'll most likely need to redo it many times. The 20 steps method is the way to go for PCalc, but it'll imply some TinyMT manipulation.
-
-Setup :
+## Tools
 
 - Citra (save-state builds) w/ CitraRNG
-- 3DSRNGTool (Real96's fork if you want to use TimeFinder)
-  Optional : - TimeFinder if you want a specific target.
+- 3DSRNGTool (Real96's fork for TimeFinder)
+- Optional: TimeFinder for a specific target
 
-First, let's setup the game itself : Go to the place you want to do this RNG with your target Pokémon, and activate some repel, you'll need it. Not really RNG related, but having a high total encounters will allow you to have more possibilities with Egg Moves, IVs etc.
+## Step 1: Setup
 
-Next, you'll have to find a target frame. You can either use TimeFinder for that (link will be necessary once the guide will be done) or you can do the good old way with SRing for some initial seed. 3DSRNGTool doesn't have any working DexNav RNG method. So you'll go to the "Normal Wild" section, and put 217 as delay. This delay is the default longer delay for DexNav RNG. So putting that will allow you to not skip your frame by accident if the delay is shorter than this. (It'll be explained at the right time)
+Go to the location where you want to do the RNG with your target Pokémon, and use a repel. This helps increase total encounters and gives you better chances for Egg Moves and IVs.
 
-Note : It's important to setup a high minimal frame for the frame range. You'll need to setup a DexNav encounter before, and so this need so time. I'd suggest you to not put under 5000 frames for the minimal. Also if the area is small / hard to DexNav, don't hesitate to put an even higher Minimal Frame.
+Next, find a target frame. Use TimeFinder (link will be provided later), or use the old method of SRing for an initial seed. 3DSRNGTool doesn’t have a DexNav RNG method, so go to the "Normal Wild" section and set the delay to `217`. This is the longer default delay for DexNav RNG, helping you avoid skipping your frame.
 
-Process :
+```
+It's important to set a high minimum frame for the frame range. Set a DexNav encounter before, and this takes time. I recommend setting the minimum frame to at least `5000`. If the area is small or difficult for DexNav, consider a higher minimum frame.
+```
 
-Once you have your target frame, don't forget it to set it up as your Target Frame. It'll be important in the following step to keep track of it since the delay is random. (but not unstable)
+## Step 2: Process
 
-Enter in the game, and as fast as possible, enter to the bag. Here create a save state. This save state will be used for the first part of the RNG, which consists to trigger an encounter. Once done, close the bag and click on "Search". You'll most likely have no encounter. That's logic and alright. Move around and open the bag again. Then create a save state, (or overwrite the one you have done but take care to not skip your Target Frame) close the bag and search. You'll have to repeat that until you get an encounter.
+Once you have your target frame, make sure to set it as your Target Frame, as it’s important to track since the delay is random.
 
-Note : If you want a specific egg move or a specific criteria, you can just check if the Pokémon triggered has what you want since these are independant of the main RNG factor. So you can continue to setup save states until you have the Pokémon with the right egg move / any criteria you want.
+Enter the game, and quickly access the bag. Create a save state; this will be used for the first part of the RNG, which involves triggering an encounter. After saving, close the bag and click on "Search." It’s likely you won’t find an encounter; that’s normal. Move around, open the bag again, create another save state (or overwrite the previous one, but don’t skip your Target Frame), close the bag, and search. Repeat this until you get an encounter.
 
-Once you trigger an encounter, reload the state in the bag. With that setup on a start of a chain, no TinyMT is necessary / implied, so you just have to stay in the bag and advances until you're near your target frame. If you want to avoid any fail, do all the save states you need.
+```
+If you want a specific egg move or criteria, check if the triggered Pokémon meets your needs, since these are independent of the main RNG factors. You can keep creating save states until you have the Pokémon you want.
+```
 
-The next step is to hit the default target frame with the 217 delay. For that you'll have to close your bag only a few hundred frames before your target Frame. I strongly suggest to go for 150 frames. Going for too much frames could mess with the possibility to trigger an encounter and so make you fail your RNG. Once you're back in the main screen, click on the "Search" button, hold it and pause the game.
+After triggering an encounter, reload the save state in the bag. With this setup at the start of a chain, no TinyMT is necessary—just stay in the bag and advance until you’re near your target frame. To avoid failure, create as many save states as needed.
 
-Important : This whole process can be a little tedious if you don't take care, so you can slow down the game or advance everything frame by frame.
+The next step is to reach your target frame with the `217` delay. Close your bag a few hundred frames before your target frame—`150` frames is recommended. Going too far can mess up your chances to trigger an encounter, leading to a failed RNG. Once back at the main screen, click on "Search," hold it, and pause the game.
 
-Now while you're still holding the Search button, advances frame by frame until your target.
+```
+This process can be tedious if you're not careful, so consider slowing down the game or advancing frame by frame.
+```
 
-Note : Your mouse must be clicking on the Search button all the time you advance frames. You can of course stop clicking if the game is paused and you're not advancing frames. It can be confusing but with a little practice it'll be really easy to master.
+While holding the Search button, advance frame by frame until reaching your target.
 
-When you're on your target frame, you can unpause the game and also stop clicking. It'll trigger the encounter at the exact frame. Since you know you had an encounter, you'll get an encounter the same way. You just now have to go to the Pokémon and start the battle.
+```
+Your mouse must keep clicking on the Search button while you advance frames. You can stop clicking if the game is paused and you’re not advancing. It may be confusing at first, but you'll master it with practice.
+```
 
-If the Pokémon matches then congratulations, you did your DexNav RNG.
+When you reach your target frame, unpause the game and stop clicking. This will trigger the encounter at the exact frame. Since you know you triggered an encounter, go to the Pokémon and start the battle.
 
-However, in most of the cases, it'll not give what you want. DexNav RNG has a lot of random delay. They're not unstable. They're just linked to the lengh of the search animation. You'll see that the most commons delays are : 137, 177 and 217. You can of course find other values, but they always will be in the 130-250 frame range.
+If the Pokémon matches, congratulations—you did your DexNav RNG!
 
-If it's the case, just write down the IVs, and compare the delay with what you've got. Adjust the delay, reload the state and repeat. You'll most likely get your encounter. If it's not the case, you'll have to adjust again.
+However, often you may not get what you want. DexNav RNG has varying delays—though they are stable, they relate to the length of the search animation. Common delays are `137`, `177`, and `217`, but other values will typically fall within the `130-250` frame range.
+
+If this happens, write down the IVs and compare the delay with the one you’ve got. Adjust the delay, reload the save state, and repeat. You should eventually get your encounter. If not, keep adjusting.

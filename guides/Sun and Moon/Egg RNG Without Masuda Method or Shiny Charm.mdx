@@ -5,100 +5,90 @@ slug: "retail-sm-egg-no-mmsc"
 subCategory: "Custom Firmware"
 ---
 
-## How is this different than using the Masuda Method and/or Shiny Charm?
+## How is this different from using the Masuda Method and/or Shiny Charm?
 
-When using the Masuda Method and/or Shiny Charm, the ESVs of every egg are already set in a predetermined order that will not change. The only way to reach the frames you want is to accept and/or reject however many eggs it takes to reach those frames. However, without using the Masuda Method and without having the Shiny Charm, the ESVs are not generated until the moment you accept the egg. This means ANY egg frame can be ANY ESV you want it to be.
+Using the Masuda Method and/or Shiny Charm sets the Egg Shiny Values (ESVs) in a fixed pattern, and the only way to reach desired frames is to accept or reject eggs. But without them, ESVs generate at the moment you accept the egg. This allows any egg frame to become any ESV.
 
-```Note: ESV is short for Egg Shiny Value. This is what determines if an egg will hatch shiny or not.
-If an ESV matches a TSV (Trainer Shiny Value) then the egg will hatch shiny.
+```
+Note: An ESV determines if an egg hatches shiny. When an ESV matches a Trainer Shiny Value (TSV), the egg hatches shiny.
 ```
 
 ## Tools
 
-## Tools
-
-- A 3DS with PCalc ([PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc))
+- 3DS with PCalc ([PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc))
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 
-## Step 1: Set Up 3DSRNGTool
+## Step 1: Setting Up 3DSRNGTool
 
 ### In the upper right of 3DSRNGTool:
 
-1. Input your game version and your TSV.
-   - With PCalc, you can find your TSV by pressing `Start + Up` to bring up the Game View window. Your TSV is listed by where it says `YOUR TSV`.
-2. Input the initial seed. You can find this by pressing `Start + Up` to bring up the Game View window. The initial seed is found where it says `Init Seed:`.
-3. The "Shiny Charm" box must be unchecked. If you have the Shiny Charm you cannot use this method.
+1. Enter your game version and TSV (`Start + Up` in PCalc will reveal TSV in the Game View window).
+2. Enter the initial seed (`Start + Up` in PCalc will reveal this in the Game View window).
+3. Make sure the "Shiny Charm" box is unchecked. This method doesn't work if you have the Shiny Charm.
 
 ```
-If you are wanting to RNG the egg to have a specific ESV that is not yours, click on "Edit TSV List" and input the TSV(s).
-
-Do not input the TSV in the upper right. YOUR TSV must be used in the upper right or else the RNG will be incorrect.
+To RNG an egg with a specific ESV that isn't yours, click on "Edit TSV List" and input the TSV(s). Keep YOUR TSV in the upper right or the RNG will be incorrect.
 ```
 
 ### For parents information:
 
-- Fill it out according to the parents you are using.
-  - Make sure the "Masuda Method" box is not checked. If the parents are of different languages you cannot use this method.
-  - Double check that the parents are of the same language. Checking this now will save you from wasting time later.
+Fill it out based on the parents you're using.
+
+- Ensure the "Masuda Method" box is not checked. You can't use this method if parents have different languages.
+- Double-check that parents share the same language to save time later on.
 
 ```
-Note: The region of the Pokemon does not affect anything, it is only the language of the Pokemon that matters for Masuda Method.
+Note: For Masuda Method, only the Pokémon's language matters, not the region.
 ```
 
-If using a Ditto and genderless Pokemon, the Ditto will be the female.
-Otherwise, the Ditto will be the opposite gender of the other parent.
+The Ditto will be the female in a Ditto and genderless Pokemon pair. Otherwise, it'll be the opposite gender of the other parent.
 
-Note about breeding for Rockruff:
+Note about Rockruff breeding:
 
-- If its ability is Own Tempo, then the ability can either be 1, 2, or H, it won’t make a difference.
-- If its ability is not Own Tempo then its abilities are [1] Keen Eye, [2] Vital Spirit, or [H] Steadfast.
+- If its ability is Own Tempo, setting the ability as 1, 2, or H makes no difference.
+- If it isn't Own Tempo, its abilities are [1] Keen Eye, [2] Vital Spirit, or [H] Steadfast.
 
 ### For current status
 
-1. For the "Current Status" section in 3DSRNGTool input the current egg seeds of your game.
-   - Using PCalc, press `Start + Down` in-game to bring up the egg seed window and input them into 3DSRNGTool.
-2. Do not check the "Main RNG Egg (PID)" box. We will be doing this later.
-3. For "Filters", input the info for the egg you are wanting.
-4. Do not check the "Shiny Only" box even if you are wanting a shiny egg. The ESV of the egg will be RNG'd separately.
-5. Input "0" as the starting frame.
+1. For the "Current Status" section in 3DSRNGTool, enter your current egg seeds (`Start + Down` in PCalc will reveal your egg seeds).
+2. Leave the "Main RNG Egg (PID)" box unchecked for now.
+3. For "Filters", enter the details about the egg you want.
+4. Leave the "Shiny Only" box empty, even if you want a shiny egg. We'll RNG the ESV separately.
+5. Set "0" as the starting frame.
 6. Click "Calculate".
 
 ## Step 2: Finding a Target Frame
 
-You can choose any of the given frames, but lower frames are generally better due to less egg accepts/rejects.
+You may choose any of the listed frames. Lower frames usually mean fewer egg acceptances/rejections.
 
-1. Right click on the row for the one you want and click "Set as Target Frame".
-2. Click on "Shortest Path" and "Calculate".
-   - This will automatically calculate the shortest path for the least number of accepts and rejects for your target egg.
-3. Accept and/or reject the eggs in the order given from top to bottom. Doing the accepts and/or rejects out of order will result in the wrong egg seeds.
-   - The very last egg you are going to accept will be your target egg. Do NOT accept this egg!
-4. Once you are to your target egg seeds, continue with the rest of the guide.
+1. Right-click your chosen row and click "Set as Target Frame".
+2. Click on "Shortest Path" and "Calculate". This will determine the shortest path with the fewest accepts and rejects to get your target egg.
+3. Accept and/or reject eggs in the sequence provided. Following a different order will result in incorrect egg seeds. Do NOT accept your target egg, the last egg listed!
+4. Once you have your target egg seeds, proceed with the guide.
 
 ```
-With PCalc you can check which egg frame you are on by looking at your egg seeds in-game (Start + Down to bring up the menu).
+With PCalc, you can check which egg frame you're on by looking at your egg seeds in-game. Use Start + Down to open the menu.
 ```
 
 ## Step 3: RNGing the ESV of the Egg
 
-1. Once you have the egg you want to be shiny ready to pick up from the daycare helper, save the game in case you mess up and need to start over for the next part.
-2. Stand directly in front of the daycare helper and start the dialogue to accept the egg.
-   - Standing off to the side may cause NPCs to fluctuate when making a timeline.
-3. When you get to the choice of “Yes” or “No”, press `Start + Up` to bring up the Game View window in-game, and then pause the game (`Start + Select`).
-   - If the Game View window is already open, close and open it again when at the "Yes" or "No" selection to reset NPC counter.
-4. Follow the steps below to create a timeline to obtain the ESV you want.
-   - Check the "Main RNG Egg (PID)" box in 3DSRNGTool under "Current Status".
-   - Afterward, reset "Filters" by clicking on the gear icon.
-   - Then follow the [timeline guide](https://www.pokemonrng.com/retail-usum-timeline) to create a timeline.
-   - Creating a timeline is necessary to know what frames you can actually land on due to NPC influence on frames.
-5. After making a timeline you can now search for a target frame that you are able to land on.
-   - If you are wanting to RNG the egg to have a specific ESV that is not yours, click on "Edit TSV List", input TSV(s), and check the "Other TSVs Shiny" box.
-   - Check the "Shiny Only" box.
-   - Then "Calculate" to find frames that will give the ESV(s) you want.
-   - Choose any of the blue highlighted frames (lower frames are better because of less waiting time).
-6. Advance to that frame and when you land on it, Press `A` to accept egg.
+1. Save your game while standing in front of the daycare helper before accepting the egg in case of errors.
+2. Begin the dialogue to accept the egg from the daycare helper. Standing off-center might confuse NPCs when creating a timeline.
+3. When the “Yes” or “No” choice appears, press `Start + Up` to open the Game View window, then pause the game (`Start + Select`). If the Game View window is already open, reopen it at the "Yes" or "No" choice to reset the NPC counter.
+4. Create a timeline to achieve your desired ESV by following these steps:
+   - Check the "Main RNG Egg (PID)" box under "Current Status" in the 3DSRNGTool.
+   - Click the gear icon to reset "Filters".
+   - Follow the [timeline guide](https://www.pokemonrng.com/retail-sm-timeline) to create a timeline.
+   - Creating a timeline helps identify feasible frames due to NPC influence.
+5. Search for your target frame once you've created a timeline.
+   - If you want to RNG for a specific ESV that isn't yours, click on "Edit TSV List", input TSV(s), and select the "Other TSVs Shiny" box.
+   - Select the "Shiny Only" box.
+   - Click "Calculate" to find frames for desired ESV(s).
+   - Select any of the highlighted blue frames (lower frames require less waiting).
+6. Advance to that frame, and press `A` to accept the egg once you land on it.
 
-Congrats! You should now have the egg you wanted with the TSV you RNG’d for. If not, you can reset the game if you saved before picking up the egg and try again.
+Congrats! You should now have the desired egg with the RNG’d TSV. If not, you can reset the game (if you saved before picking up the egg) and try again.
 
 ```
-Tip: You can use PCalc to check the egg's info. Press Start + Left to bring up Party View and then Select + Right to cycle through the different slots.
+Tip: Use PCalc to check the egg's info. Press Start + Left for Party View, and Select + Right to cycle through different slots.
 ```

@@ -1,0 +1,3 @@
+import{u as r,j as e}from"./index-CpyEa1Z6.js";const s={title:"Wondercard RNG",description:"How to RNG Wondercards",slug:"emulator-hgss-wondercard",subCategory:"Emulator",isRoughDraft:!0};function o(t){const n={p:"p",...r(),...t.components};return e.jsx(n.p,{children:`Explaining how to import WC with PokeFinder to have EXACT values and avoid any mistake
+explaining the right center to use
+explaining that PID IS NOT DOABLE because of system tics. No way.`})}function i(t={}){const{wrapper:n}={...r(),...t.components};return n?e.jsx(n,{...t,children:e.jsx(o,{...t})}):o(t)}export{i as default,s as frontmatter};

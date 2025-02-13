@@ -1,8 +1,17 @@
+import React from "react";
 import { MainLayout } from "~/layouts/main";
 import { Button, Typography, List, ListItem } from "~/components";
 import { settings } from "~/settings";
+import { useLocation } from "wouter";
+import { track } from "~/analytics";
 
 export const NotFoundScreen = () => {
+  const [location] = useLocation();
+
+  React.useEffect(() => {
+    track("Page not found", { location });
+  }, [location]);
+
   return (
     <MainLayout trackerName="page_not_found">
       <Typography.Title>404 – Wild MissingNo. Appeared!</Typography.Title>

@@ -82,6 +82,7 @@ const _Pre = styled(Typography.Text)({
     backgroundColor: "unset",
     border: "unset",
     fontFamily: "inherit",
+    padding: 0,
   },
 });
 

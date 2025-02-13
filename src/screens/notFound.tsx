@@ -1,16 +1,10 @@
-import React from "react";
 import { MainLayout } from "~/layouts/main";
 import { Button, Typography, List, ListItem } from "~/components";
 import { settings } from "~/settings";
-import { useLocation } from "wouter";
-import { track } from "~/analytics";
+import { useTrackPageNotFound } from "~/hooks/useTrackPageNotFound";
 
 export const NotFoundScreen = () => {
-  const [location] = useLocation();
-
-  React.useEffect(() => {
-    track("Page not found", { location });
-  }, [location]);
+  useTrackPageNotFound();
 
   return (
     <MainLayout trackerName="page_not_found">

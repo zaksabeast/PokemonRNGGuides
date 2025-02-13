@@ -1,0 +1,17 @@
+{
+  "projectBaseUrl": "${workspaceFolder}",
+  "ignorePatterns": [
+    {
+      "pattern": "^http://www.3dsdb.com/"
+    },
+    {
+      "pattern": "^http://3dsdb.com/"
+    }
+  ],
+  "replacementPatterns": [
+    {
+      "pattern": "^/",
+      "replacement": "{{BASEURL}}/dist/"
+    }
+  ]
+}

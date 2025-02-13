@@ -10,6 +10,7 @@
     "build": "tsc -b && bunx --bun vite build && cp dist/index.html dist/404.html && bun run build-seo.ts",
     "build:guides": "bun run build-guides.ts && bun run format",
     "lint": "eslint .",
+    "lint:links": "find guides -name \\*.mdx -print0 | xargs -0 -n1 bun run markdown-link-check -c markdown-link-check.config.json -q",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -42,6 +43,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
+    "markdown-link-check": "3.12.2",
     "prettier": "3.5.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",

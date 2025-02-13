@@ -19,6 +19,7 @@ export default defineConfig({
       registerType: "autoUpdate",
       workbox: {
         maximumFileSizeToCacheInBytes: 4000000,
+        navigateFallbackDenylist: [/\.zip$/],
         runtimeCaching: [
           {
             urlPattern: ({ url }) => url.pathname.endsWith(".zip"),

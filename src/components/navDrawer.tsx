@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "~/routes";
 import { Divider, Drawer } from "antd";
 import { Flex } from "./flex";
 import { Typography } from "./typography";
@@ -8,7 +9,6 @@ import { settings } from "~/settings";
 import { Menu, MenuProps } from "antd";
 import { getGuide, guides, categories, Category } from "~/guides";
 import { partition, groupBy } from "lodash-es";
-import { RouteSchema } from "~/routes/defs";
 import * as tst from "ts-toolbelt";
 import styled from "@emotion/styled";
 import { difference } from "lodash-es";
@@ -40,9 +40,10 @@ const getGuideMenu = (
       children: guidesByCategory[category]
         .map((guide) => ({
           key: guide.meta.slug,
-          label: guide.meta.title,
+          title: guide.meta.title,
+          label: <Link href={guide.meta.slug}>{guide.meta.title}</Link>,
         }))
-        .sort((first, second) => first.label.localeCompare(second.label)),
+        .sort((first, second) => first.title.localeCompare(second.title)),
     })) satisfies MenuItem[];
 };
 
@@ -106,7 +107,7 @@ const topLevelMenu = [
 ] satisfies MenuItem[];
 
 const NavDrawerContent = () => {
-  const [route, setRoute] = useActiveRoute();
+  const [route] = useActiveRoute();
   const [, setMobileNavDrawerOpen] = useMobileNavDrawerOpen();
   const [openKeys, setOpenedKeys] = React.useState<string[]>(() => {
     const guideMeta = getGuide(route)?.meta;
@@ -141,12 +142,7 @@ const NavDrawerContent = () => {
             }
             setOpenedKeys(updatedKeys);
           }}
-          onClick={(event) => {
-            const parsedRoute = RouteSchema.safeParse(event.key);
-            const safeRoute = parsedRoute.success ? parsedRoute.data : "/";
-            setMobileNavDrawerOpen(false);
-            setRoute(safeRoute);
-          }}
+          onClick={() => setMobileNavDrawerOpen(false)}
         />
       </Flex>
       <Divider />

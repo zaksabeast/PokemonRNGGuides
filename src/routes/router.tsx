@@ -1,12 +1,6 @@
-import {
-  Router as WRouter,
-  Route as WRoute,
-  Switch,
-  DefaultParams,
-  RouteProps,
-  Redirect,
-} from "wouter";
-import { type Route, routes } from "./defs";
+import { Router as WRouter, Route as WRoute, Switch, Redirect } from "wouter";
+import { NavRoute } from ".";
+import { routes } from "./defs";
 import { GuideScreen } from "~/screens/guide";
 import { NotFoundScreen } from "~/screens/notFound";
 import { useTrackPageNotFound } from "~/hooks/useTrackPageNotFound";
@@ -35,15 +29,6 @@ const backwardsCompatibleRoutes = [
 const BackwardsCompatiblePage = () => {
   useTrackPageNotFound();
   return <Redirect to="/" />;
-};
-
-const NavRoute = <
-  RoutePath extends "/" | Route,
-  T extends DefaultParams | undefined = undefined,
->(
-  props: RouteProps<T, RoutePath>,
-) => {
-  return <WRoute {...props} />;
 };
 
 export const Router = () => {

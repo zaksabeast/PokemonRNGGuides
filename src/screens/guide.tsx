@@ -3,7 +3,8 @@ import { Alert } from "antd";
 import { MainLayout } from "~/layouts/main";
 import { getGuide } from "~/guides";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { Flex, Typography, Loading } from "~/components";
+import { Flex, Typography, Loading, Button, Icon } from "~/components";
+import { settings } from "~/settings";
 
 export const GuideScreen = () => {
   const [route] = useActiveRoute();
@@ -19,6 +20,19 @@ export const GuideScreen = () => {
         }
       >
         <Typography.Title level={1}>{Guide.meta.title}</Typography.Title>
+
+        <Flex>
+          <Button
+            trackerId="get_help_on_discord"
+            icon={<Icon name="Discord" />}
+            type="primary"
+            size="middle"
+            href={settings.discordUrl}
+          >
+            Get help on Discord
+          </Button>
+        </Flex>
+
         {Guide.meta.isRoughDraft && (
           <Alert
             type="warning"

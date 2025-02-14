@@ -20,6 +20,7 @@ import {
   MarkdownOList,
   MarkdownA,
 } from "./components";
+import { Alert } from "antd";
 import { PixelImage } from "..";
 
 export const markdownComponents = {
@@ -44,4 +45,5 @@ export const markdownComponents = {
   td: MarkdownTd,
   a: MarkdownA,
   PixelImage,
+  Alert,
 };

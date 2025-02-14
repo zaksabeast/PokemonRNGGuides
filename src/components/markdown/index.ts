@@ -18,6 +18,7 @@ import {
   MarkdownTh,
   MarkdownTr,
   MarkdownOList,
+  MarkdownA,
 } from "./components";
 import { PixelImage } from "..";
 
@@ -41,5 +42,6 @@ export const markdownComponents = {
   th: MarkdownTh,
   tr: MarkdownTr,
   td: MarkdownTd,
+  a: MarkdownA,
   PixelImage,
 };

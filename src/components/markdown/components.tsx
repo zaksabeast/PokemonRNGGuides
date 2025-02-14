@@ -3,6 +3,8 @@ import { Typography } from "../typography";
 import styled from "@emotion/styled";
 import { Flex } from "../flex";
 import { Image } from "../image";
+import { Link } from "wouter";
+import { track } from "~/analytics";
 
 type Props = { children: React.ReactNode };
 
@@ -139,3 +141,20 @@ const _Td = styled.td({
 });
 
 export const MarkdownTd = ({ children }: Props) => <_Td>{children}</_Td>;
+
+export const MarkdownA = ({ href, children }: { href: string } & Props) => {
+  try {
+    const url = new URL(href, window.location.origin);
+    if (url.origin === window.location.origin) {
+      // Internal url
+      return <Link href={href}>{children}</Link>;
+    }
+    // External url
+    return <a href={href}>{children}</a>;
+  } catch {
+    track("Invalid href", { href });
+    // Not a valid url
+    // We'll still attempt to render a link and assume its for internal use
+    return <Link href={href}>{children}</Link>;
+  }
+};

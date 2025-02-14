@@ -1624,7 +1624,7 @@ export const guides = {
   },
   "/emulator-bw-entralink": {
     meta: {
-      title: "Entralink",
+      title: "Entralink (Emulator)",
       description: "How to RNG cool Pokémon with Entralink RNG",
       slug: "/emulator-bw-entralink",
       isRoughDraft: false,
@@ -1649,6 +1649,20 @@ export const guides = {
         import(
           "~/../guides/Black and White/Using Runasdate to RNG Initial Seed.mdx"
         ),
+    ),
+  },
+  "/retail-bw-entralink": {
+    meta: {
+      title: "Entralink (Retail)",
+      description:
+        "A step-by-step guide for RNG manipulation using the C-Gear method in Pokémon Black and White.",
+      slug: "/retail-bw-entralink",
+      isRoughDraft: true,
+      file: "guides/Black and White/Retail Entralink.mdx",
+      category: "Black and White",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Black and White/Retail Entralink.mdx"),
     ),
   },
 } as const;
@@ -1772,6 +1786,7 @@ export const guideSlugs = [
   z.literal("/emulator-bw-white-forest"),
   z.literal("/emulator-bw-entralink"),
   z.literal("/emulator-bw-runasdate-initial-seed"),
+  z.literal("/retail-bw-entralink"),
 ] as const;
 
 export const categories = [

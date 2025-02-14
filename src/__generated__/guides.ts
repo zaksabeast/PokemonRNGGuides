@@ -559,10 +559,9 @@ export const guides = {
   "/cfw-bdsp-stationary": {
     meta: {
       title: "Stationary RNG",
-      description:
-        "Information to RNG Stationary Pokémon (Mystery Gift included)",
+      description: "RNG Stationary Pokemon such as your starter Pokemon",
       slug: "/cfw-bdsp-stationary",
-      isRoughDraft: true,
+      isRoughDraft: false,
       file: "guides/Brilliant Diamond and Shining Pearl/Stationary.mdx",
       category: "Brilliant Diamond and Shining Pearl",
     },
@@ -575,8 +574,9 @@ export const guides = {
   },
   "/bdsp-pokefinder": {
     meta: {
-      title: "How to use PokeFinder",
-      description: "How to set up and use PokeFinder for RNG on BDSP",
+      title: "PokeFinder Setup",
+      description:
+        "How to set up PokeFinder to RNG in Brilliant Diamond and Shining Pearl",
       slug: "/bdsp-pokefinder",
       isRoughDraft: true,
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx",
@@ -758,6 +758,20 @@ export const guides = {
       category: "Transporter",
     },
     Guide: React.lazy(() => import("~/../guides/Transporter/Nature Table.mdx")),
+  },
+  "/transporter-rng-offline": {
+    meta: {
+      title: "Transporter RNG using the Offline Patch",
+      description: "Ensure a stable delay for easier RNG",
+      slug: "/transporter-rng-offline",
+      isRoughDraft: false,
+      file: "guides/Transporter/Transporter with Offline Patch.mdx",
+      category: "Transporter",
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Transporter/Transporter with Offline Patch.mdx"),
+    ),
   },
   "/transporter-rng": {
     meta: {
@@ -1559,6 +1573,20 @@ export const guides = {
       () => import("~/../guides/Diamond, Pearl, and Platinum/Wild.mdx"),
     ),
   },
+  "/emulator-dppt-pokefinder-setup": {
+    meta: {
+      title: "PokeFinder Setup",
+      description: "How to setup PokeFinder for Diamond/Pearl/Platinum RNG",
+      slug: "/emulator-dppt-pokefinder-setup",
+      isRoughDraft: false,
+      file: "guides/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx",
+      category: "Diamond, Pearl, and Platinum",
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx"),
+    ),
+  },
   "/dppt-pokeradar-rng": {
     meta: {
       title: "PokeRadar RNG",
@@ -1721,6 +1749,7 @@ export const guideSlugs = [
   z.literal("/retail-oras-egg-mmsc"),
   z.literal("/retail-oras-tid"),
   z.literal("/misc-3ds-transporter-nature-tables"),
+  z.literal("/transporter-rng-offline"),
   z.literal("/transporter-rng"),
   z.literal("/retail-xy-egg-no-mmsc"),
   z.literal("/pcalc-xy-friend-safari"),
@@ -1779,6 +1808,7 @@ export const guideSlugs = [
   z.literal("/dppt-initial-seed"),
   z.literal("/emulator-dppt-egg"),
   z.literal("/dppt-wild"),
+  z.literal("/emulator-dppt-pokefinder-setup"),
   z.literal("/dppt-pokeradar-rng"),
   z.literal("/emulator-bw-roamers"),
   z.literal("/emulator-bw-wild"),

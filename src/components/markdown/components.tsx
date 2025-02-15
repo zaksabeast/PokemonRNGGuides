@@ -145,7 +145,10 @@ export const MarkdownTd = ({ children }: Props) => <_Td>{children}</_Td>;
 export const MarkdownA = ({ href, children }: { href: string } & Props) => {
   try {
     const url = new URL(href, window.location.origin);
-    if (url.origin === window.location.origin) {
+    if (
+      url.origin === window.location.origin &&
+      !url.pathname.startsWith("/downloads")
+    ) {
       // Internal url
       return <Link href={href}>{children}</Link>;
     }

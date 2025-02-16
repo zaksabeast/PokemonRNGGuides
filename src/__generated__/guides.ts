@@ -578,7 +578,7 @@ export const guides = {
       description:
         "How to set up PokeFinder to RNG in Brilliant Diamond and Shining Pearl",
       slug: "/bdsp-pokefinder",
-      isRoughDraft: true,
+      isRoughDraft: false,
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx",
       category: "Brilliant Diamond and Shining Pearl",
     },

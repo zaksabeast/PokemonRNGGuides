@@ -21,7 +21,9 @@ import {
   MarkdownA,
 } from "./components";
 import { Alert } from "antd";
-import { PixelImage } from "..";
+import { YouTubeVideo } from "../youtubeVideo";
+import { PixelImage } from "../pixelImage";
+import { IpsMerger } from "../ipsMerger";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -44,6 +46,8 @@ export const markdownComponents = {
   tr: MarkdownTr,
   td: MarkdownTd,
   a: MarkdownA,
+  YouTubeVideo,
   PixelImage,
   Alert,
+  IpsMerger,
 };

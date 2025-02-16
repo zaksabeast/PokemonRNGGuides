@@ -1198,7 +1198,7 @@ export const guides = {
   },
   "/misc-3ds-ips-luma-citra": {
     meta: {
-      title: "Using IPS Patches with Luma and Citra",
+      title: "Using IPS Patches with Luma and Azahar/Lime3DS/Citra",
       description:
         "Use game patches for instant text, no outlines, and extra fun",
       slug: "/misc-3ds-ips-luma-citra",

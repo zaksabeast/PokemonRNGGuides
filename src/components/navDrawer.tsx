@@ -60,6 +60,11 @@ const roughDraftPrefix = "roughDraft-";
 const topLevelMenu = [
   getMenuInCategory(["Tools and Emulators"])[0],
   {
+    key: "GB",
+    label: "GB",
+    children: getMenuInCategory(["Gold, Silver, Crystal"]),
+  },
+  {
     key: "GBA",
     label: "GBA",
     children: getMenuInCategory([

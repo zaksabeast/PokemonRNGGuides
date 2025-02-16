@@ -24,6 +24,8 @@ import { Alert } from "antd";
 import { YouTubeVideo } from "../youtubeVideo";
 import { PixelImage } from "../pixelImage";
 import { IpsMerger } from "../ipsMerger";
+import { Countdown } from "../countdown";
+import { Flex } from "../flex";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -50,4 +52,6 @@ export const markdownComponents = {
   PixelImage,
   Alert,
   IpsMerger,
+  Countdown,
+  Flex,
 };

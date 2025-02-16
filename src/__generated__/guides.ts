@@ -13,6 +13,19 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Home.mdx")),
   },
+  "/gen2-starters": {
+    meta: {
+      title: "Starter Crystal RNG",
+      description: "Get Shiny Starters in Crystal",
+      slug: "/gen2-starters",
+      isRoughDraft: false,
+      file: "guides/Gold, Silver, Crystal/Starter.mdx",
+      category: "Gold, Silver, Crystal",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gold, Silver, Crystal/Starter.mdx"),
+    ),
+  },
   "/emulator-emerald-egg": {
     meta: {
       title: "Egg RNG",
@@ -1697,6 +1710,7 @@ export const guides = {
 
 export const guideSlugs = [
   z.literal("/"),
+  z.literal("/gen2-starters"),
   z.literal("/emulator-emerald-egg"),
   z.literal("/e-tips-rng"),
   z.literal("/emerald-painting-rng"),
@@ -1821,6 +1835,7 @@ export const guideSlugs = [
 
 export const categories = [
   "Tools and Emulators",
+  "Gold, Silver, Crystal",
   "Transporter",
   "Ruby and Sapphire",
   "Gamecube",

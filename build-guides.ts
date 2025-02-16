@@ -29,6 +29,7 @@ type GuideMetadata = z.infer<typeof GuideMetadataSchema>;
 
 const categories = [
   "Tools and Emulators",
+  "Gold, Silver, Crystal",
   "Transporter",
   "Ruby and Sapphire",
   "Gamecube",

@@ -6,8 +6,8 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkGfm from "remark-gfm";
 import { VitePWA } from "vite-plugin-pwa";
+import wasm from "vite-plugin-wasm";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     mdx({
@@ -15,6 +15,7 @@ export default defineConfig({
       remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkGfm],
     }),
     react(),
+    wasm(),
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
@@ -25,6 +26,17 @@ export default defineConfig({
             urlPattern: ({ url }) =>
               url.pathname.endsWith(".zip") || url.pathname.endsWith(".gm9"),
             handler: "NetworkFirst",
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.endsWith(".wasm"),
+            handler: "CacheFirst",
+            options: {
+              cacheName: "wasm-cache",
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+              },
+            },
           },
         ],
       },
@@ -37,6 +49,11 @@ export default defineConfig({
       },
     }),
   ],
+  esbuild: {
+    supported: {
+      "top-level-await": true, //browsers can handle top-level-await features
+    },
+  },
   resolve: {
     alias: {
       "~": path.resolve(__dirname, "src"),

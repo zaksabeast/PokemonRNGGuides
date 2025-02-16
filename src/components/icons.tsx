@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { withCss } from "./withCss";
-import { MdArrowRightAlt } from "react-icons/md";
+import { MdArrowRightAlt, MdCheckCircle } from "react-icons/md";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaDiscord } from "react-icons/fa";
 
@@ -10,6 +10,7 @@ const icons = {
   ArrowRightAlt: MdArrowRightAlt,
   Discord: FaDiscord,
   Github: FaGithub,
+  CheckCircle: MdCheckCircle,
 } as const;
 
 export type IconName = keyof typeof icons;

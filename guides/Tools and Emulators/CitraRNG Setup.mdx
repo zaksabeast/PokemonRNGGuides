@@ -1,51 +1,34 @@
 ---
-title: "CitraRNG Setup"
-description: "Setup Citra for RNG"
+title: "3DS Emulator Setup (Azahar/Lime3DS/Citra)"
+description: "Setup a 3DS emulator for RNG"
 slug: "citrarng-setup"
 subCategory: "3DS"
 ---
 
-This guide helps you set up CitraRNG on a PC. You need an updated CFW (Custom Firmware) console to dump system info and game data. The console must also have the latest game update installed.
+This guide helps you set up a 3DS emulator to RNG on a PC. You need an updated Custom Firmware 3DS console to dump the game data.
 
 ## Tools
 
-- [Citra](https://citra-emu.org/download/)
-- [CitraRNG](https://github.com/Admiral-Fish/CitraRNG). Clone or download the entire repository
-- [Python 3.9](https://www.python.org/downloads/). Make sure to add Python to your `PATH` during installation
-- [Latest Godmode9](https://github.com/d0k3/GodMode9/releases)
-- [Dump_PKMN_Update.gm9 Script](https://cdn.discordapp.com/attachments/389206049401470976/435566091457134598/Dump_PKMN_Updates.gm9)
-- A 3DS with CFW. Instructions for installing CFW can be found at https://3ds.hacks.guide/
+- [Lime3DS](https://github.com/Lime3DS/lime3ds-archive/releases/)
+- [Latest GodMode9](https://github.com/d0k3/GodMode9/releases)
+- [A 3DS with CFW (Custom Firmware)](https://3ds.hacks.guide/)
 - Latest game update installed on the 3DS
-
-## 3DS Preparation
-
-1. Place the `Dump_PKMN_Update.gm9` script on your 3DS SD card in `sdmc:\gm9\scripts`.
-2. Update Godmode9 if needed by copying the `gm9` folder to your SD card.
-
-## Dumping System Data
-
-1. Boot your 3DS into GodMode9 by holding `Start` while powering on the 3DS.
-2. Press the `Home` button.
-3. Select `scripts...`.
-4. Select `GM9Megascript`.
-5. Select `Dump Options`.
-6. Select `Dump Citra Files` to dump Citra files.
+- (Optional) [Dump_PKMN_Update.gm9 Script](/downloads/Dump_PKMN_Updates.gm9)
 
 ## Dumping Game Data
 
-1. Exit back to the GodMode9 main menu and select `scripts...` again.
-2. Select `Dump_PKMN_Updates` script and follow the on-screen directions.
+Choose one of the methods below to dump your games and game updates.
 
-### To Dump a Game Installed on the 3DS
+### Automatic game and update dump
 
-1. Hover over `[A:] SYSNAND SD`.
-2. Hold `R` and press `A` to open the drive options.
-3. Select `Open title manager...`.
-4. Press `A` on the game you want to dump.
-5. Select `Manage Title...`.
-6. Select `Build CIA (standard)`.
+1. Place the `Dump_PKMN_Update.gm9` script on your 3DS SD card in `sdmc:\gm9\scripts`.
+2. Boot your 3ds while holding `Start` and launch GodMode9.
+3. Press the console's `Home` button to open a new menu.
+4. Select `Scripts...` from the menu.
+5. Select `Dump_PKMN_Updates` script and follow the on-screen directions.
+6. Copy the files in `/gm9/out` to your computer.
 
-### To Dump a Game from a Cart
+### Manually dump a physical cartridge
 
 1. Select `[C:] GAMECART`.
 2. Select the `trim.3ds` file.
@@ -53,36 +36,25 @@ This guide helps you set up CitraRNG on a PC. You need an updated CFW (Custom Fi
 4. Select `Build CIA from file`.
 5. Exit GodMode9 and transfer files from `sdmc:\gm9\out` to your PC.
 
-## Setting Up Citra
-
-1. Open Citra and under the `File` option choose `Install cia...`. Install both the game(s) and update(s) .cia.
-2. Place the `nand` folder from `sdmc:\gm9\out\Citra\user\nand` into your user directory for Citra.
-   - For Windows, the path is `C:\Users\[your-user-name]\AppData\Roaming\Citra\nand`. The AppData folder is hidden by default, so change the configuration to view it.
-   - For macOS and Linux, the path is `~/.local/share/citra-emu/nand`. The `.local` folder is hidden on most machines, so change the configuration to view it.
-
-## Setting Up for Gen 6 RNG
-
-To RNG in Gen 6 on Citra, a game patch is needed to read the initial seed. This does not modify the game code and will not lead to illegal Pokémon. The patch writes the initial seed to unused memory for later access.
-
-1. Follow [this guide](https://www.pokemonrng.com/misc-3ds-ips-luma-citra) to install the game patch on Citra. The needed patch is included in the CitraRNG download, in the `oras` and `xy` folders.
-
-## Setting Up CitraRNG
-
-Python 3.9 must be installed for CitraRNG. Make sure to add Python to your `PATH` during installation.
-
-1. Open a command prompt and type `pip install pyside6`. This may require admin privileges.
-2. Copy all the .py files from the CitraRNG folder into `<your Citra directory>/scripting`.
-3. Open Citra and your Gen 7 Pokémon game, then load your save file. For instructions on dumping and loading your save file from the 3DS, refer to [this link](https://citra-emu.org/wiki/dumping-save-data-from-a-3ds-console/).
-4. Double-click the `citarng.py` file to run the script.
-
 ```
-Note: If it does not work, right-click "citarng.py" and select "Edit with IDLE". Open with Python 3.9 if you have both Python2 and Python3 installed. Then hit `F5` to run it. Alternatively, you can run the script by opening a command prompt in the scripting folder and using the command `py citarng.py`.
+Note: Game updates are only installed digitally.
 ```
 
-5. In the CitraRNG window, select your game and click connect. CitraRNG will update with game info like initial seed, frames, IVs, etc. The tool has an auto refresher to periodically update frames, but it may crash if left on too long.
+### Manually dump a digital game and game update
 
-```
-Note: The higher the refresh rate delay, the less often the program will crash; 2000 is the max. Pause and reconnect CitraRNG occasionally to prevent crashing.
-```
+1. Hover over `[A:] SYSNAND SD`.
+2. Hold `R` and press `A` to open the drive options.
+3. Select `Open title manager...`.
+4. Press `A` on the game or update you want to dump.
+5. Select `Manage Title...`.
+6. Select `Build CIA (standard)`.
 
-The [Citra wiki](https://citra-emu.org/wiki/home/) has more information on running Citra and troubleshooting issues.
+## Installing games on the emulator
+
+1. Run the emulator.
+2. Choose `File`, then `Install cia...`.
+3. Install both the game and update `.cia` files.
+
+## Setting up for RNG
+
+Follow the [install PokeReader guide](https://www.pokemonrng.com/install-pokereader).

@@ -1102,8 +1102,8 @@ export const guides = {
   },
   "/citrarng-setup": {
     meta: {
-      title: "CitraRNG Setup",
-      description: "Setup Citra for RNG",
+      title: "3DS Emulator Setup (Azahar/Lime3DS/Citra)",
+      description: "Setup a 3DS emulator for RNG",
       slug: "/citrarng-setup",
       isRoughDraft: false,
       file: "guides/Tools and Emulators/CitraRNG Setup.mdx",

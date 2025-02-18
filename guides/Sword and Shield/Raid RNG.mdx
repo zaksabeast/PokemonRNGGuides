@@ -5,18 +5,11 @@ slug: "retail-swsh-raid"
 subCategory: "General"
 ---
 
-## Introduction
-
-Thanks to the research team: Leanny (u/LeanYosh), Admiral Fish (u/Admiral_Fish), Zaksabeast (u/Zaksabeast), wwwwwwzx (u/wwwwwwzx), Kaphotics (u/Kaphotics), and Vladcik (u/Aligatueur).
-
-The shiny charm does not affect shiny generation in raids.
-
-**GameFreak can patch this at any time, so wait for confirmation before updating your game.**
-
 ## Tools
 
-- [Admiral Fish's RaidFinder](https://github.com/Admiral-Fish/RaidFinder/releases/) or [Leanny's Mobile Seed Checker](https://leanny.github.io/seedchecker/index.html)
-- [Leanny's PKHeX Raid Plugin](https://github.com/Leanny/PKHeX_Raid_Plugin) or [Zaksabeast’s CaptureSight](https://github.com/zaksabeast/CaptureSight/releases)
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases) or [Leanny's Mobile Seed Checker](https://leanny.github.io/seedchecker/index.html)
+- (Optional) CFW Seed Finding: [Leanny's PKHeX Raid Plugin](https://github.com/Leanny/PKHeX_Raid_Plugin) or [Zaksabeast’s CaptureSight](https://github.com/zaksabeast/CaptureSight/releases)
+- (Optional) CFW Advancing: [Luxray](https://github.com/3096/luxray/releases/tag/0.1.0) 
 
 ## Step 1: Get your raid seed
 
@@ -27,12 +20,15 @@ Follow one of these two guides to get your raid seed:
 
 ## Step 2: Find your desired Pokémon
 
-Use RaidFinder or the Mobile Seed Checker to find your desired Pokémon.
+Once you have the seed for your desired den, you can use PokeFinder or the Mobile Seed Checker to find your desired Pokémon.
 
-Each den has multiple spawns, and each spawn has predetermined properties, like Pokémon species and flawless IV count. The spawn is generated with a cryptographically secure value that cannot be RNG'd, but you can reset the spawn after RNGing your Pokémon to choose any spawn you want to RNG.
 
 ```
-Note: The PKHeX raid plugin shows the current Pokémon in 0 advances, while RaidFinder shows the current Pokémon in 1 advance.
+Note: The PKHeX raid plugin shows the current Pokémon in 0 advances, while PokeFinder shows the current Pokémon in 1 advance.
+```
+
+```
+Note: Shiny charm doesn't increase shiny odds in raids.
 ```
 
 ## Step 3: Advance the RNG
@@ -41,8 +37,8 @@ There are several methods to advance the RNG:
 
 - **Day by day:** use this if you do not have Nintendo online or a friend with a Switch.
 - **VS battle glitch:** use this if you have Nintendo online or a friend with a Switch.
-- **Luxray:** use this if you're okay with software botting and have custom firmware.
-- **Arduino:** use this if you're okay with hardware botting. This method is not covered in this guide, but you can find an example of an RNG advancing tool [here](https://github.com/nnguy132/Switch-Frame-Advancer).
+- **Luxray:** a custom firmware only bot to advance for you.
+- **Arduino:** a hardware bot to advance for you. This method is not covered in this guide, but you can find an example of an RNG advancing tool [here](https://github.com/nnguy132/Switch-Frame-Advancer).
 
 At any point, you can check your seed again using the instructions in Step 1 to confirm you haven't made a mistake.
 
@@ -76,7 +72,8 @@ Make sure to do this method inside a Pokémon center, or your game might crash.
 3. The moment your game finds a player, hold the `Home` button and enable airplane mode (you will see a connection error if done correctly).
 4. Go to "Date and Time" settings in the Switch settings menu.
 5. Edit your day/month/year by one. This advances the RNG one time.
-6. Continue until you reach three advances from your desired Pokémon.
+6. Press `OK`.
+7. Continue with steps 5 & 6 until you reach three advances from your desired Pokémon.
 
 ```
 Note: Some people have issues advancing a specific amount and ending up beyond expected, so check your seed often to make sure you're still on track.
@@ -99,6 +96,7 @@ You can use Luxray to fix your Switch's clock, as it edits the internal server t
 ## Step 4: Reset to get your desired Pokémon
 
 A den's spawns are predetermined for the current raid and the next two advances.
+However the third advance is not predetermined and can be reset to obtain the desired Pokemon.
 
 1. Advance the RNG until you reach three advances from your desired Pokémon.
 2. Save the game.

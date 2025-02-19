@@ -4,7 +4,10 @@ import { track as amplitudeTrack } from "@amplitude/analytics-browser";
 import { settings } from "~/settings";
 
 // eslint-disable-next-line no-restricted-imports
-export { setUserId, init as initAmplitude } from "@amplitude/analytics-browser";
+export {
+  init as initAmplitude,
+  getDeviceId,
+} from "@amplitude/analytics-browser";
 
 export const track = (
   eventName: string,

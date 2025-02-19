@@ -5,9 +5,12 @@ import { getGuide } from "~/guides";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { Flex, Typography, Loading, Button, Icon } from "~/components";
 import { settings } from "~/settings";
+import { useAbCohort } from "~/hooks/useAbTest";
+import { match } from "ts-pattern";
 
 export const GuideScreen = () => {
   const [route] = useActiveRoute();
+  const cohort = useAbCohort("discordButton");
 
   const Guide = getGuide(route);
   return (
@@ -23,13 +26,23 @@ export const GuideScreen = () => {
 
         <Flex>
           <Button
-            trackerId="get_help_on_discord"
+            trackerId={cohort}
             icon={<Icon name="Discord" />}
             type="primary"
             size="middle"
             href={settings.discordUrl}
           >
-            Get help on Discord
+            {match(cohort)
+              .with("get_help_on_discord", () => "Get Help on Discord")
+              .with(
+                "trade_chat_and_rng_on_discord",
+                () => "Trade, Chat, and RNG on Discord",
+              )
+              .with(
+                "stream_play_and_rng_with_us",
+                () => "Stream, Play, and RNG with Us",
+              )
+              .exhaustive()}
           </Button>
         </Flex>
 

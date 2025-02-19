@@ -63,7 +63,7 @@ export const useAbCohort = <T extends AbTestName>(abTestName: T) => {
 
   React.useEffect(() => {
     if (!hasJoined) {
-      track("assigned_cohort", { cohort });
+      track("Assigned Cohort", { cohort });
       setJoined((prev) => ({ ...prev, [abTestName]: true }));
     }
   }, [hasJoined, setJoined, abTestName, cohort]);

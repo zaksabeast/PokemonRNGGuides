@@ -26,7 +26,7 @@ export const GuideScreen = () => {
 
         <Flex>
           <Button
-            trackerId={cohort}
+            trackerId="get_help_on_discord"
             icon={<Icon name="Discord" />}
             type="primary"
             size="middle"

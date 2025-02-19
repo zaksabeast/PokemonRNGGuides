@@ -76,6 +76,17 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
   },
+  "/retail-emerald-wild": {
+    meta: {
+      title: "Wild Retail RNG",
+      description: "RNG wild Pokemon on a retail console",
+      slug: "/retail-emerald-wild",
+      isRoughDraft: false,
+      file: "guides/Emerald/Retail Wild RNG.mdx",
+      category: "Emerald",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Retail Wild RNG.mdx")),
+  },
   "/hgss-rng-advance": {
     meta: {
       title: "Advancing the RNG",
@@ -1728,6 +1739,7 @@ export const guideSlugs = [
   z.literal("/emulator-emerald-egg"),
   z.literal("/e-tips-rng"),
   z.literal("/emerald-painting-rng"),
+  z.literal("/retail-emerald-wild"),
   z.literal("/hgss-rng-advance"),
   z.literal("/emulator-hgss-tid-sid"),
   z.literal("/emulator-hgss-cute-charm"),

@@ -10,8 +10,12 @@ import { MDXProvider } from "@mdx-js/react";
 import { markdownComponents } from "~/components/markdown";
 import { MetaTags } from "~/components";
 import { registerSW } from "virtual:pwa-register";
+import { NeedsUpdateNotification } from "~/swRefresh/notification";
+import { dispatchNeedRefresh } from "~/swRefresh/event";
 
-registerSW({ immediate: true });
+const updateSw = registerSW({
+  onNeedRefresh: dispatchNeedRefresh,
+});
 
 if (!settings.isDev) {
   initAmplitude(settings.amplitudeApiKey, {
@@ -33,6 +37,7 @@ createRoot(document.getElementById("root")!).render(
         <AntdApp>
           <MDXProvider components={markdownComponents}>
             <MetaTags />
+            <NeedsUpdateNotification updateSw={updateSw} />
             <App />
           </MDXProvider>
         </AntdApp>

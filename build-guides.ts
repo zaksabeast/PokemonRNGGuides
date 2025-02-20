@@ -5,7 +5,7 @@ import { evaluate } from "@mdx-js/mdx";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import z from "zod";
-import { difference } from "lodash-es";
+import { difference, isArray } from "lodash-es";
 import { guides as existingGuides } from "./src/__generated__/guides";
 
 // Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, and ,
@@ -14,7 +14,7 @@ const titleAndDescriptionChars = /^[A-Za-z0-9 –.\-—é&/()!%,]+$/;
 // Only lower case letters, numbers, and hyphens
 const slugChars = /^[a-z0-9-]+$/;
 
-const GuideMetadataSchema = z.object({
+const SingleGuideMetadataSchema = z.object({
   title: z.string().refine((value) => titleAndDescriptionChars.test(value)),
   description: z
     .string()
@@ -25,7 +25,12 @@ const GuideMetadataSchema = z.object({
   isRoughDraft: z.boolean().default(false),
 });
 
-type GuideMetadata = z.infer<typeof GuideMetadataSchema>;
+const GuideMetadataSchema = z.union([
+  SingleGuideMetadataSchema,
+  z.array(SingleGuideMetadataSchema),
+]);
+
+type GuideMetadata = z.infer<typeof SingleGuideMetadataSchema>;
 
 const categories = [
   "Tools and Emulators",
@@ -54,19 +59,23 @@ const main = async () => {
 
   // Scans the current working directory and each of its sub-directories recursively
   for await (const file of glob.scan(".")) {
+    const category = file.split("/")[1];
+    if (!categories.includes(category) && !file.includes("Home")) {
+      throw new Error(`Invalid category: ${category}`);
+    }
+
     const compiled = await evaluate(await fs.readFile(file), {
       remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
       Fragment: React.Fragment,
       jsx: React.jsx,
       jsxs: React.jsxs,
     });
-    const metadata = GuideMetadataSchema.parse(compiled.frontmatter);
-    const category = file.split("/")[1];
-    if (!categories.includes(category) && !file.includes("Home")) {
-      throw new Error(`Invalid category: ${category}`);
-    }
+    const parsed = GuideMetadataSchema.parse(compiled.frontmatter);
+    const metadatas = isArray(parsed) ? parsed : [parsed];
 
-    guides.push({ ...metadata, slug: `/${metadata.slug}`, file, category });
+    for (const metadata of metadatas) {
+      guides.push({ ...metadata, slug: `/${metadata.slug}`, file, category });
+    }
   }
 
   const existingSlugs = Object.keys(existingGuides);

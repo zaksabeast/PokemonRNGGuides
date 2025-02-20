@@ -33,14 +33,17 @@ export const GuideScreen = () => {
             href={settings.discordUrl}
           >
             {match(cohort)
-              .with("get_help_on_discord", () => "Get Help on Discord")
               .with(
-                "trade_chat_and_rng_on_discord",
-                () => "Trade, Chat, and RNG on Discord",
+                "play_trade_and_rng_with_friends",
+                () => "Play, Trade, and RNG with Friends!",
               )
               .with(
-                "stream_play_and_rng_with_us",
-                () => "Stream, Play, and RNG with Us",
+                "join_live_events_trades_and_rng",
+                () => "Join Live Events, Trades & RNG!",
+              )
+              .with(
+                "hunt_trade_and_rng_with_us",
+                () => "Hunt, Trade, and RNG with Us!",
               )
               .exhaustive()}
           </Button>

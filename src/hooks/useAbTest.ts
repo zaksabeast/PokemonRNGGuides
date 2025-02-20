@@ -26,11 +26,12 @@ type AbTestConfigs = Record<string, AbTestConfig>;
 const abTests = {
   discordButton: {
     cohorts: [
-      "get_help_on_discord",
-      "trade_chat_and_rng_on_discord",
-      "stream_play_and_rng_with_us",
+      "play_trade_and_rng_with_friends",
+      "join_live_events_trades_and_rng",
+      "hunt_trade_and_rng_with_us",
     ],
-    controlCohort: "get_help_on_discord",
+    // Not a true control anymore, but that's fine
+    controlCohort: "play_trade_and_rng_with_friends",
   },
 } as const satisfies AbTestConfigs;
 
@@ -63,7 +64,7 @@ export const useAbCohort = <T extends AbTestName>(abTestName: T) => {
 
   React.useEffect(() => {
     if (!hasJoined) {
-      track("Assigned Cohort", { cohort });
+      track("Assigned Cohort", { testName: abTestName, cohort });
       setJoined((prev) => ({ ...prev, [abTestName]: true }));
     }
   }, [hasJoined, setJoined, abTestName, cohort]);

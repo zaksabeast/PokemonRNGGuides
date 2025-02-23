@@ -24,10 +24,10 @@ type AbTestConfig = {
 type AbTestConfigs = Record<string, AbTestConfig>;
 
 const abTests = {
-  discordButton: {
+  discordButton2: {
     cohorts: [
       "play_trade_and_rng_with_friends",
-      "join_live_events_trades_and_rng",
+      "stream_play_and_rng_with_us",
       "hunt_trade_and_rng_with_us",
     ],
     // Not a true control anymore, but that's fine
@@ -54,7 +54,7 @@ const getAbCohort = <T extends AbTestName>(
 };
 
 const joinedCohorts = atom<Record<AbTestName, boolean>>({
-  discordButton: false,
+  discordButton2: false,
 });
 
 export const useAbCohort = <T extends AbTestName>(abTestName: T) => {

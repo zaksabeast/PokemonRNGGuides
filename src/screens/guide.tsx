@@ -10,7 +10,7 @@ import { match } from "ts-pattern";
 
 export const GuideScreen = () => {
   const [route] = useActiveRoute();
-  const cohort = useAbCohort("discordButton");
+  const cohort = useAbCohort("discordButton2");
 
   const Guide = getGuide(route);
   return (
@@ -38,8 +38,8 @@ export const GuideScreen = () => {
                 () => "Play, Trade, and RNG with Friends!",
               )
               .with(
-                "join_live_events_trades_and_rng",
-                () => "Join Live Events, Trades & RNG!",
+                "stream_play_and_rng_with_us",
+                () => "Stream, Play, and RNG with Us!",
               )
               .with(
                 "hunt_trade_and_rng_with_us",

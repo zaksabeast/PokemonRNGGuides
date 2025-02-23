@@ -63,7 +63,7 @@ const columns: TableProps<RngState>["columns"] = [
     key: "advance",
   },
   {
-    title: "Rand",
+    title: "State",
     dataIndex: "rand",
     key: "rand",
     render: (rand) => rand.toString(16).padStart(4, "0"),

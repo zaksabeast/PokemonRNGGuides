@@ -1,12 +1,14 @@
 import React from "react";
 import { Flex } from "./flex";
+import { Icon } from "./icons";
 import { Button } from "./button";
-import { Table, TableProps } from "antd";
+import { Table, TableProps, Radio } from "antd";
 import { Input } from "./input";
 import {
-  generate_rng_states,
-  RandOptions as WasmOptions,
-  RngState as WasmRngState,
+  generate_starters,
+  PokeOptions as WasmOptions,
+  Filter,
+  Starter,
 } from "vc_rng";
 import styled from "@emotion/styled";
 import { Formik, Form, useFormikContext } from "formik";
@@ -19,14 +21,8 @@ import {
   toDecimalString,
   toHexString,
 } from "~/utils/number";
-import * as tst from "ts-toolbelt";
 
-type RngState = tst.O.Merge<
-  tst.O.Omit<WasmRngState, "free" | "add_div" | "sub_div">,
-  { div: number }
->;
-
-const StyledTable = styled(Table<RngState>)({
+const StyledTable = styled(Table<Starter>)({
   "&&&": {
     width: "100%",
   },
@@ -40,10 +36,11 @@ type Options = {
   state: number;
   startAdvance: number;
   endAdvance: number;
+  filter: Filter;
 };
 
-const generateRngStates = (opts: Options) => {
-  return generate_rng_states(
+const generateStarters = (opts: Options) => {
+  return generate_starters(
     WasmOptions.new(
       opts.adiv,
       opts.sdiv,
@@ -52,27 +49,36 @@ const generateRngStates = (opts: Options) => {
       opts.state,
       opts.startAdvance,
       opts.endAdvance,
+      opts.filter,
     ),
   );
 };
 
-const columns: TableProps<RngState>["columns"] = [
+const YesIcon = () => <Icon name="CheckCircle" color="Success" size={20} />;
+
+const columns: TableProps<Starter>["columns"] = [
   {
     title: "Advance",
     dataIndex: "advance",
     key: "advance",
   },
   {
-    title: "Rand",
-    dataIndex: "rand",
-    key: "rand",
-    render: (rand) => rand.toString(16).padStart(4, "0"),
+    title: "State",
+    dataIndex: "state",
+    key: "state",
+    render: (state) => state.toString(16),
   },
   {
-    title: "Div",
-    dataIndex: "div",
-    key: "div",
-    render: (div) => div.toString(16).padStart(4, "0"),
+    title: "Shiny",
+    dataIndex: "shiny",
+    key: "shiny",
+    render: (shiny) => (shiny ? <YesIcon /> : null),
+  },
+  {
+    title: "Max DV",
+    dataIndex: "max_dv",
+    key: "max_dv",
+    render: (max_dv) => (max_dv ? <YesIcon /> : null),
   },
 ];
 
@@ -88,6 +94,7 @@ type FormState = {
   state: HexString;
   startAdvance: DecimalString;
   advanceCount: DecimalString;
+  filter: Filter;
 };
 
 const OptionsForm = () => {
@@ -161,6 +168,24 @@ const OptionsForm = () => {
         />
       ),
     },
+    {
+      label: "Filter",
+      input: (
+        <Radio.Group
+          onChange={formik.handleChange}
+          defaultValue={formik.values.filter}
+          optionType="button"
+          name="filter"
+          buttonStyle="solid"
+          block
+          options={[
+            { label: "Shiny", value: Filter.Shiny },
+            { label: "Max DV", value: Filter.MaxDv },
+            { label: "Any", value: Filter.Any },
+          ]}
+        />
+      ),
+    },
   ];
 
   return (
@@ -193,10 +218,11 @@ const initialState: FormState = {
   state: toHexString(0),
   startAdvance: toDecimalString(0),
   advanceCount: toDecimalString(10000),
+  filter: Filter.Shiny,
 };
 
-export const Gen2Rng = () => {
-  const [results, setResults] = React.useState<RngState[]>([]);
+export const Gen2StarterRng = () => {
+  const [results, setResults] = React.useState<Starter[]>([]);
 
   return (
     <Flex vertical gap={16}>
@@ -207,7 +233,7 @@ export const Gen2Rng = () => {
           const startAdvance = fromDecimalString(opts.startAdvance) ?? 0;
           const advanceCount = fromDecimalString(opts.advanceCount) ?? 0;
           setResults(
-            generateRngStates({
+            generateStarters({
               adiv: div >>> 8,
               sdiv: div & 0xff,
               adivIndex: fromDecimalString(opts.adivIndex) ?? 0,
@@ -215,11 +241,8 @@ export const Gen2Rng = () => {
               state: fromHexString(opts.state) ?? 0,
               startAdvance: fromDecimalString(opts.startAdvance) ?? 0,
               endAdvance: startAdvance + advanceCount,
-            }).map(({ add_div, sub_div, advance, rand }) => ({
-              advance,
-              rand,
-              div: (add_div << 8) | sub_div,
-            })),
+              filter: opts.filter,
+            }),
           );
         }}
       >

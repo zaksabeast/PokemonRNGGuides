@@ -20,6 +20,7 @@ import {
   MarkdownOList,
   MarkdownA,
 } from "./components";
+import { Gen2StarterRng } from "../gen2StarterRng";
 import { Gen2Rng } from "../gen2Rng";
 import { Alert } from "antd";
 import { YouTubeVideo } from "../youtubeVideo";
@@ -55,5 +56,6 @@ export const markdownComponents = {
   IpsMerger,
   Countdown,
   Flex,
+  Gen2StarterRng,
   Gen2Rng,
 };

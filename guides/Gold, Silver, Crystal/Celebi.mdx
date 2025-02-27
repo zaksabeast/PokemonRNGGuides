@@ -5,25 +5,33 @@ slug: "gen2-celebi"
 subCategory: "Emulator"
 ---
 
-### Gen 2 Celebi RNG – Live on Twitch!
+<Alert
+  showIcon
+  type="warning"
+  message="Highly experimental!"
+  description="Gen 2 RNG is still in its early days. Expect to need multiple attempts!"
+/>
 
-**Gen 2 Celebi RNG is finally here!**
+## Tools
 
-This is the **initial breakthrough**, and while it works, there’s still room for improvement. We’ll go over what’s been solved, what still needs refining, and how the community can help push it further.
+- [PokeReader](/install-pokereader)
 
-#### When?
+## Written guide
 
-- **Thursday, February 27th**
-- <Flex align="center" gap={16}>
-    **7 PM ET**
-    <Countdown date="2025-02-28T00:00:00Z" />
-  </Flex>
-- **[Watch live on Twitch!](https://www.twitch.tv/zaksabeastdev)**
+1. Save in front of the Celebi shrine, in case you need to reset the game.
+1. Press "A" to interact with the shrine and stop when you see `Player put in the GS Ball.`.
+1. Go into PokeReader's RNG screen and wait until it stops saying `Finding ADIV Index` and `Finding SDIV Index`.
+1. Pause PokeReader with `L + R`.
+1. Type the information on PokeReader into the RNG Tool below and press `Generate`.
+1. Advance the game with `L` until PokeReader's `Advance` number matches one of the generated `Advance` columns below.
+1. (Optional) Create a save state if you're on an emulator, in case you need to reset.
+1. When you land on your desired advance, press `A` to accept the Pokemon. **Do not press anything else until you see Celebi!**
+1. If you got your Pokemon, congrats! If not, keep trying!
 
-#### What’s happening on stream?
+```
+Note: This is less stable than starters!  Expect it to take longer!
+```
 
-- Full walkthrough on how to RNG your shiny Celebi
-- **Live Q&A** – Get help in real time!
-- The current state of Gen 2 RNG – what’s solved, what needs work, and how you can contribute
+## RNG Tool
 
-This has been a huge Pokémon RNG mystery for so long, and now it’s finally within reach. Don’t miss it!
+<Gen2StarterRng type="celebi" />

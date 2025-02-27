@@ -6,9 +6,10 @@ import { Table, TableProps, Radio } from "antd";
 import { Input } from "./input";
 import {
   generate_starters,
+  generate_celebi,
   PokeOptions as WasmOptions,
   Filter,
-  Starter,
+  Spread,
 } from "vc_rng";
 import styled from "@emotion/styled";
 import { Formik, Form, useFormikContext } from "formik";
@@ -22,11 +23,13 @@ import {
   toHexString,
 } from "~/utils/number";
 
-const StyledTable = styled(Table<Starter>)({
+const StyledTable = styled(Table<Spread>)({
   "&&&": {
     width: "100%",
   },
 });
+
+type RngType = "starter" | "celebi";
 
 type Options = {
   adiv: number;
@@ -37,10 +40,13 @@ type Options = {
   startAdvance: number;
   endAdvance: number;
   filter: Filter;
+  type: RngType;
 };
 
-const generateStarters = (opts: Options) => {
-  return generate_starters(
+const generateSpreads = (opts: Options) => {
+  const generator =
+    opts.type === "starter" ? generate_starters : generate_celebi;
+  return generator(
     WasmOptions.new(
       opts.adiv,
       opts.sdiv,
@@ -56,7 +62,7 @@ const generateStarters = (opts: Options) => {
 
 const YesIcon = () => <Icon name="CheckCircle" color="Success" size={20} />;
 
-const columns: TableProps<Starter>["columns"] = [
+const columns: TableProps<Spread>["columns"] = [
   {
     title: "Advance",
     dataIndex: "advance",
@@ -221,8 +227,12 @@ const initialState: FormState = {
   filter: Filter.Shiny,
 };
 
-export const Gen2StarterRng = () => {
-  const [results, setResults] = React.useState<Starter[]>([]);
+type Props = {
+  type: "starter" | "celebi";
+};
+
+export const Gen2StarterRng = ({ type }: Props) => {
+  const [results, setResults] = React.useState<Spread[]>([]);
 
   return (
     <Flex vertical gap={16}>
@@ -233,7 +243,8 @@ export const Gen2StarterRng = () => {
           const startAdvance = fromDecimalString(opts.startAdvance) ?? 0;
           const advanceCount = fromDecimalString(opts.advanceCount) ?? 0;
           setResults(
-            generateStarters({
+            generateSpreads({
+              type,
               adiv: div >>> 8,
               sdiv: div & 0xff,
               adivIndex: fromDecimalString(opts.adivIndex) ?? 0,

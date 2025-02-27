@@ -20,7 +20,7 @@
         "react-icons": "^5.4.0",
         "ts-pattern": "^5.6.2",
         "ts-toolbelt": "^9.6.0",
-        "vc_rng": "https://github.com/zaksabeast/VC-RNG-Tool.git#fc9463",
+        "vc_rng": "https://github.com/zaksabeast/VC-RNG-Tool.git#29aade8",
         "wouter": "^3.5.1",
         "zod": "^3.24.1",
       },
@@ -1570,7 +1570,7 @@
 
     "validator": ["validator@13.12.0", "", {}, "sha512-c1Q0mCiPlgdTVVVIJIrBuxNicYE+t/7oKeI9MWLj3fh/uq2Pxh/3eeWbVZ4OcGW1TUf53At0njHw5SMdA3tmMg=="],
 
-    "vc_rng": ["vc_rng_lib@github:zaksabeast/VC-RNG-Tool#fc94632", {}, "zaksabeast-VC-RNG-Tool-fc94632"],
+    "vc_rng": ["vc_rng_lib@github:zaksabeast/VC-RNG-Tool#29aade8", {}, "zaksabeast-VC-RNG-Tool-29aade8"],
 
     "vfile": ["vfile@6.0.3", "", { "dependencies": { "@types/unist": "^3.0.0", "vfile-message": "^4.0.0" } }, "sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q=="],
 

@@ -89,6 +89,17 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
   },
+  "/gen3-sid": {
+    meta: {
+      title: "Find Gen 3 SID",
+      description: "Various methods to finding an SID in Gen 3",
+      slug: "/gen3-sid",
+      isRoughDraft: true,
+      file: "guides/Emerald/Find SID.mdx",
+      category: "Emerald",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
+  },
   "/retail-emerald-wild": {
     meta: {
       title: "Wild Retail RNG",
@@ -1753,6 +1764,7 @@ export const guideSlugs = [
   z.literal("/emulator-emerald-egg"),
   z.literal("/e-tips-rng"),
   z.literal("/emerald-painting-rng"),
+  z.literal("/gen3-sid"),
   z.literal("/retail-emerald-wild"),
   z.literal("/hgss-rng-advance"),
   z.literal("/emulator-hgss-tid-sid"),

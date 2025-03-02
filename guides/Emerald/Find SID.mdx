@@ -1,86 +1,120 @@
 ---
-title: "Find SID Gen 3"
+title: "Find Gen 3 SID"
 description: "Various methods to finding an SID in Gen 3"
 slug: "gen3-sid"
 subCategory: "Retail"
+isRoughDraft: true
 ---
 
-# Existing Save
+<details>
+  <summary><b>If you're using an emulator or GBA flash cart</b></summary>
 
-## From an already caught shiny
+1. Load your save in [PKHex](https://github.com/kwsch/PKHeX/releases/latest) or [pkmds.app](https://pkmds.app/) and view the SID.
 
-If you have already caught or bred a shiny Pokemon, this Pokemon can be used to deduce what your SID is.
+</details>
 
-## Tools
-
-- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
-
-## Step 1: Find IVs
+<details>
+  <summary><b>If you already have a Shiny</b></summary>
 
 1. Use EV-reducing berries if the Pokémon has battled to reset EVs.
-2. Open PokeFinder and go to Tools > IV Calculator.
+2. Open [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases) and go to Tools > IV Calculator.
 3. Input the Pokémon's info to determine its IVs.
-
-## Step 2: Find SID
-
-1. In PokeFinder, open Gen 3 Tools > IVs to PID.
-2. Enter the Pokémon’s IVs, nature, and your Trainer ID.
-3. Search for results and determine the correct method:
+4. Open Gen 3 Tools > IVs to PID.
+5. Enter the Pokémon’s IVs, nature, and your Trainer ID.
+6. Search for results and determine the correct method:
    - Wild Pokémon: Methods 1-4.
    - Legendaries: Method 1.
-4. If multiple SIDs appear, attempt to RNG a shiny using each until you find the correct one.
+7. If multiple SIDs appear, attempt to RNG a shiny using each until you find the correct one.
 
-## Extracting Save
+</details>
 
-### With a Wii with CFW
+<details>
+  <summary><b>If you have a hacked Wii or Gamecube and a GBA-GC cable</b></summary>
 
-Tools
+1. Dump your save with [FIX94's gba-link-cable-dumper](https://github.com/FIX94/gba-link-cable-dumper/releases/tag/v1.6).
+2. Load your save in [PKHex](https://github.com/kwsch/PKHeX/releases/latest) or [pkmds.app](https://pkmds.app/) and view the SID.
 
-- [A Wii with CFW (Custom Firmware)](https://wii.hacks.guide/)
-- A GBA
-- A GBA to GameCube adapter cable
+</details>
 
-## Transferring up a Pokemon
+<details>
+  <summary><b>If you have an NDS and NDS flashcart</b></summary>
 
-If you do not have a shiny Pokemon, then there are other ways to determine what the SID is. The following methods can be used with any Pokemon from your game.
+1. Dump your save with [Rudolph's GBA Backup Tool](https://projectpokemon.org/home/tutorials/save-editing/managing-gba-saves/using-gba-backup-tool-r55/).
+2. Load your save in [PKHex](https://github.com/kwsch/PKHeX/releases/latest) or [pkmds.app](https://pkmds.app/) and view the SID.
 
-### With CFW 3DS or CFW Switch
+</details>
 
-Tools
+<details>
+  <summary><b>If you can transfer Pokemon to a hacked dsi, 3ds, or switch</b></summary>
 
-- [A 3DS with CFW (Custom Firmware)](https://3ds.hacks.guide/) OR a Switch with Atmosphere Custom Firmware ([CFW Install Guide](https://switchgui.de/switch-guide/))
-- [PkHex](https://projectpokemon.org/home/files/file/1-pkhex/)
-- [JKSM (3DS)](https://github.com/J-D-K/JKSM/releases/tag/05.08.2020) OR [JKSV (Switch)](https://github.com/j-d-k/jksv/releases)
+1. Transfer a Pokemon up to your hacked console.
+2. Dump your hacked console's save
+   - [GodMod9i for dsi](https://github.com/DS-Homebrew/GodMode9i/releases/latest)
+   - [Checkpoint for 3ds](https://github.com/BernardoGiordano/Checkpoint/releases/latest)
+   - [JKSV for switch](https://github.com/J-D-K/JKSV/releases/latest)
+3. Load your save in [PKHex](https://github.com/kwsch/PKHeX/releases/latest) or [pkmds.app](https://pkmds.app/) and view the SID.
 
-Transfer a Pokemon up to a 3DS or Switch game.
-Extract your save using JKSM and open in PkHex to view the SID of the Pokemon.
+</details>
 
-### Having someone else check the Pokemon
+<details>
+  <summary><b>If you can transfer Pokemon to Pokemon Home</b></summary>
 
-After transferring up a Pokemon to Home or a Switch game, you can ask someone in our Discord to help with checking its SID.
+1. Transfer a Pokemon up to Pokemon Home.
+2. Join the [Pokemon RNG Discord](https://www.discord.gg/d8JuAvg).
+3. Ask someone to check the SID of the Pokemon.
 
-- join Discord link
+</details>
 
-## ACE
+<details>
+  <summary><b>If you're okay using ACE and play Emerald</b></summary>
 
-to be filled in later
+1. Set up ACE with [this guide](https://e-sh4rk.github.io/ACE3/emerald/getting-started/introduction/).
+2. Use the "Read SID from Pokémon in box 9 slot 27" code in [this pastebin](https://pastebin.com/kYfBzVE3), which sets your TID to be your SID.
+3. View your Trainer Card, which will now show your SID instead of TID.
+4. Soft reset to avoid saving the changes.
 
-## Using a flashcart
+</details>
 
-- extract save and open in PKHex
+<details>
+  <summary><b>If you're okay starting a new save in Emerald, Fire Red, or Leaf Green</b></summary>
 
-## Gameshark or Action Replay
+<br />
+<Alert
+  showIcon
+  type="warning"
+  message="This section is a work in progress and needs more details!"
+/>
+<br />
 
-- code to view SID
+1. Start eontimer same time as accepting name.
+2. Estimate which SID was hit.
+3. Try to rng a shiny starter for each potential SID until find shiny.
 
-# Starting a new save Ruby/Sapphire
+</details>
 
-- Start new game and find Trainer ID
-- use this to deduce SID
-- RNG shiny starter to confirm right SID
+<details>
+  <summary><b>If you're okay starting a new save in Ruby or Sapphire</b></summary>
 
-# Starting a new save Emerald/FRLG
+<br />
+<Alert
+  showIcon
+  type="warning"
+  message="This section is a work in progress and needs more details!"
+/>
+<br />
 
-Start eontimer same time as accepting name
-estimate which SID was hit
-try to rng a shiny starter for each potential SID until find shiny
+1. Start new game and find Trainer ID.
+2. Use this to deduce SID.
+3. RNG shiny starter to confirm right SID.
+
+</details>
+
+<details>
+  <summary><b>If nothing above applies to you (last resort option)</b></summary>
+
+1. Try to randomly encounter a shiny.
+2. Follow the "If you already have a Shiny" section above.
+
+</details>
+
+Are we missing a method? Join the [Pokemon RNG Discord](https://www.discord.gg/d8JuAvg) and let us know!

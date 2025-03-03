@@ -1293,6 +1293,19 @@ export const guides = {
       () => import("~/../guides/Tools and Emulators/NTR Helper Usage.mdx"),
     ),
   },
+  "/mgba-setup": {
+    meta: {
+      title: "mGBA Setup",
+      description: "Setup mGBA for RNG",
+      slug: "/mgba-setup",
+      isRoughDraft: false,
+      file: "guides/Tools and Emulators/mGBA Setup.mdx",
+      category: "Tools and Emulators",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/mGBA Setup.mdx"),
+    ),
+  },
   "/transporter-patches": {
     meta: {
       title: "Transporter Patches",
@@ -1899,6 +1912,7 @@ export const guideSlugs = [
   z.literal("/misc-dolphin-connect-vba"),
   z.literal("/misc-3ds-installing-pcalc"),
   z.literal("/ntr-helper-usage"),
+  z.literal("/mgba-setup"),
   z.literal("/transporter-patches"),
   z.literal("/misc-3ds-ips-luma-citra"),
   z.literal("/emulator-b2w2-wild"),

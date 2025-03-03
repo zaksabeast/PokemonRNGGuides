@@ -3,6 +3,7 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
+import { message } from "antd";
 
 export default tseslint.config(
   { ignores: ["dist", "src/graphql/__generated__"] },
@@ -42,6 +43,10 @@ export default tseslint.config(
             {
               name: "@amplitude/analytics-browser",
               message: "Import from `~/analytics`",
+            },
+            {
+              name: "rng_tools",
+              message: "Import from `~/rngTools`",
             },
           ],
         },

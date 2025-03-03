@@ -3,7 +3,10 @@ import { Flex } from "./flex";
 import { Button } from "./button";
 import { Table, TableProps } from "antd";
 import { Input } from "./input";
-import { callRngTool } from "~/rngTools";
+import {
+  emerald_sid_from_feebas_seed,
+  rs_sid_from_feebas_seed,
+} from "rng_tools";
 import styled from "@emotion/styled";
 import { Formik, Form, useFormikContext } from "formik";
 import { Typography } from "./typography";
@@ -150,13 +153,12 @@ export const Gen3Sid = ({ game }: Props) => {
             return;
           }
 
-          const func =
+          const generate =
             game === "rs"
-              ? "rs_sid_from_feebas_seed"
-              : "emerald_sid_from_feebas_seed";
+              ? rs_sid_from_feebas_seed
+              : emerald_sid_from_feebas_seed;
 
-          const results = await callRngTool(
-            func,
+          const results = await generate(
             tid,
             feebasSeed,
             minAdvances,

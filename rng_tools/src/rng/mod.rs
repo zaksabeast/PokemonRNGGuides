@@ -1,3 +1,2 @@
-mod lcrng;
-
-pub use lcrng::*;
+pub mod gameboy;
+pub mod lcrng;

@@ -3,11 +3,7 @@ import { Flex } from "./flex";
 import { Button } from "./button";
 import { Table, TableProps } from "antd";
 import { Input } from "./input";
-import {
-  generate_rng_states,
-  RandOptions as WasmOptions,
-  RngState as WasmRngState,
-} from "vc_rng";
+import { gen2_generate_rng_states } from "rng_tools";
 import styled from "@emotion/styled";
 import { Formik, Form, useFormikContext } from "formik";
 import { Typography } from "./typography";
@@ -19,42 +15,18 @@ import {
   toDecimalString,
   toHexString,
 } from "~/utils/number";
-import * as tst from "ts-toolbelt";
 
-type RngState = tst.O.Merge<
-  tst.O.Omit<WasmRngState, "free" | "add_div" | "sub_div">,
-  { div: number }
->;
+type RngState = {
+  advance: number;
+  rand: number;
+  div: number;
+};
 
 const StyledTable = styled(Table<RngState>)({
   "&&&": {
     width: "100%",
   },
 });
-
-type Options = {
-  adiv: number;
-  sdiv: number;
-  adivIndex: number;
-  sdivIndex: number;
-  state: number;
-  startAdvance: number;
-  endAdvance: number;
-};
-
-const generateRngStates = (opts: Options) => {
-  return generate_rng_states(
-    WasmOptions.new(
-      opts.adiv,
-      opts.sdiv,
-      opts.adivIndex,
-      opts.sdivIndex,
-      opts.state,
-      opts.startAdvance,
-      opts.endAdvance,
-    ),
-  );
-};
 
 const columns: TableProps<RngState>["columns"] = [
   {
@@ -206,16 +178,17 @@ export const Gen2Rng = () => {
           const div = fromHexString(opts.div) ?? 0;
           const startAdvance = fromDecimalString(opts.startAdvance) ?? 0;
           const advanceCount = fromDecimalString(opts.advanceCount) ?? 0;
+          const results = gen2_generate_rng_states(
+            div >>> 8,
+            div & 0xff,
+            fromDecimalString(opts.adivIndex) ?? 0,
+            fromDecimalString(opts.sdivIndex) ?? 0,
+            fromHexString(opts.state) ?? 0,
+            startAdvance,
+            startAdvance + advanceCount,
+          );
           setResults(
-            generateRngStates({
-              adiv: div >>> 8,
-              sdiv: div & 0xff,
-              adivIndex: fromDecimalString(opts.adivIndex) ?? 0,
-              sdivIndex: fromDecimalString(opts.sdivIndex) ?? 0,
-              state: fromHexString(opts.state) ?? 0,
-              startAdvance: fromDecimalString(opts.startAdvance) ?? 0,
-              endAdvance: startAdvance + advanceCount,
-            }).map(({ add_div, sub_div, advance, rand }) => ({
+            results.map(({ add_div, sub_div, advance, rand }) => ({
               advance,
               rand,
               div: (add_div << 8) | sub_div,

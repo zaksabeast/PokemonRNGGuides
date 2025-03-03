@@ -5,12 +5,11 @@ import { Button } from "./button";
 import { Table, TableProps, Radio } from "antd";
 import { Input } from "./input";
 import {
-  generate_starters,
-  generate_celebi,
-  PokeOptions as WasmOptions,
-  Filter,
-  Spread,
-} from "vc_rng";
+  Gen2PokeFilter,
+  crystal_generate_celebi,
+  crystal_generate_starters,
+  type Gen2Spread,
+} from "rng_tools";
 import styled from "@emotion/styled";
 import { Formik, Form, useFormikContext } from "formik";
 import { Typography } from "./typography";
@@ -23,46 +22,15 @@ import {
   toHexString,
 } from "~/utils/number";
 
-const StyledTable = styled(Table<Spread>)({
+const StyledTable = styled(Table<Gen2Spread>)({
   "&&&": {
     width: "100%",
   },
 });
 
-type RngType = "starter" | "celebi";
-
-type Options = {
-  adiv: number;
-  sdiv: number;
-  adivIndex: number;
-  sdivIndex: number;
-  state: number;
-  startAdvance: number;
-  endAdvance: number;
-  filter: Filter;
-  type: RngType;
-};
-
-const generateSpreads = (opts: Options) => {
-  const generator =
-    opts.type === "starter" ? generate_starters : generate_celebi;
-  return generator(
-    WasmOptions.new(
-      opts.adiv,
-      opts.sdiv,
-      opts.adivIndex,
-      opts.sdivIndex,
-      opts.state,
-      opts.startAdvance,
-      opts.endAdvance,
-      opts.filter,
-    ),
-  );
-};
-
 const YesIcon = () => <Icon name="CheckCircle" color="Success" size={20} />;
 
-const columns: TableProps<Spread>["columns"] = [
+const columns: TableProps<Gen2Spread>["columns"] = [
   {
     title: "Advance",
     dataIndex: "advance",
@@ -100,7 +68,7 @@ type FormState = {
   state: HexString;
   startAdvance: DecimalString;
   advanceCount: DecimalString;
-  filter: Filter;
+  filter: Gen2PokeFilter;
 };
 
 const OptionsForm = () => {
@@ -139,7 +107,6 @@ const OptionsForm = () => {
         />
       ),
     },
-
     {
       label: "State",
       input: (
@@ -184,11 +151,13 @@ const OptionsForm = () => {
           name="filter"
           buttonStyle="solid"
           block
-          options={[
-            { label: "Shiny", value: Filter.Shiny },
-            { label: "Max DV", value: Filter.MaxDv },
-            { label: "Any", value: Filter.Any },
-          ]}
+          options={
+            [
+              { label: "Shiny", value: "Shiny" },
+              { label: "Max DV", value: "MaxDv" },
+              { label: "Any", value: "Any" },
+            ] satisfies { label: string; value: Gen2PokeFilter }[]
+          }
         />
       ),
     },
@@ -224,7 +193,7 @@ const initialState: FormState = {
   state: toHexString(0),
   startAdvance: toDecimalString(0),
   advanceCount: toDecimalString(10000),
-  filter: Filter.Shiny,
+  filter: "Shiny",
 };
 
 type Props = {
@@ -232,7 +201,7 @@ type Props = {
 };
 
 export const Gen2StarterRng = ({ type }: Props) => {
-  const [results, setResults] = React.useState<Spread[]>([]);
+  const [results, setResults] = React.useState<Gen2Spread[]>([]);
 
   return (
     <Flex vertical gap={16}>
@@ -242,19 +211,23 @@ export const Gen2StarterRng = ({ type }: Props) => {
           const div = fromHexString(opts.div) ?? 0;
           const startAdvance = fromDecimalString(opts.startAdvance) ?? 0;
           const advanceCount = fromDecimalString(opts.advanceCount) ?? 0;
-          setResults(
-            generateSpreads({
-              type,
-              adiv: div >>> 8,
-              sdiv: div & 0xff,
-              adivIndex: fromDecimalString(opts.adivIndex) ?? 0,
-              sdivIndex: fromDecimalString(opts.sdivIndex) ?? 0,
-              state: fromHexString(opts.state) ?? 0,
-              startAdvance: fromDecimalString(opts.startAdvance) ?? 0,
-              endAdvance: startAdvance + advanceCount,
-              filter: opts.filter,
-            }),
+
+          const generator =
+            type === "starter"
+              ? crystal_generate_starters
+              : crystal_generate_celebi;
+
+          const results = generator(
+            div >>> 8,
+            div & 0xff,
+            fromDecimalString(opts.adivIndex) ?? 0,
+            fromDecimalString(opts.sdivIndex) ?? 0,
+            fromHexString(opts.state) ?? 0,
+            fromDecimalString(opts.startAdvance) ?? 0,
+            startAdvance + advanceCount,
+            opts.filter,
           );
+          setResults(results);
         }}
       >
         <OptionsForm />

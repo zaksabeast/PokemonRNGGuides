@@ -1,4 +1,4 @@
-use crate::rng::Prng;
+use crate::rng::lcrng::Prng;
 use wasm_bindgen::prelude::*;
 
 fn generate_feebas_seed(seed: u32) -> u16 {

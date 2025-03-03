@@ -44,10 +44,6 @@ export default tseslint.config(
               name: "@amplitude/analytics-browser",
               message: "Import from `~/analytics`",
             },
-            {
-              name: "rng_tools",
-              message: "Import from `~/rngTools`",
-            },
           ],
         },
       ],

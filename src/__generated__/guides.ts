@@ -9,7 +9,7 @@ export const guides = {
       slug: "/",
       isRoughDraft: false,
       file: "guides/Home.mdx",
-      category: "Home.mdx",
+      category: "Home",
     },
     Guide: React.lazy(() => import("~/../guides/Home.mdx")),
   },
@@ -89,14 +89,63 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
   },
+  "/emerald-sid-feebas": {
+    meta: {
+      title: "Find Emerald SID with Feebas",
+      description: "How to find your Secret ID (SID) in Emerald using Feebas.",
+      category: "Emerald",
+      slug: "/emerald-sid-feebas",
+      isRoughDraft: false,
+      file: "guides/Emerald/Find SID with Feebas.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
+    ),
+  },
+  "/rs-sid-feebas": {
+    meta: {
+      title: "Find Ruby or Sapphire SID with Feebas",
+      description:
+        "How to find your Secret ID (SID) in Ruby or Sapphire using Feebas.",
+      category: "Ruby and Sapphire",
+      slug: "/rs-sid-feebas",
+      isRoughDraft: false,
+      file: "guides/Emerald/Find SID with Feebas.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
+    ),
+  },
   "/gen3-sid": {
     meta: {
       title: "Find Gen 3 SID",
       description: "Various methods to finding an SID in Gen 3",
-      slug: "/gen3-sid",
-      isRoughDraft: true,
-      file: "guides/Emerald/Find SID.mdx",
       category: "Emerald",
+      slug: "/gen3-sid",
+      isRoughDraft: false,
+      file: "guides/Emerald/Find SID.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
+  },
+  "/rs-gen3-sid": {
+    meta: {
+      title: "Find Gen 3 SID",
+      description: "Various methods to finding an SID in Gen 3",
+      category: "Ruby and Sapphire",
+      slug: "/rs-gen3-sid",
+      isRoughDraft: false,
+      file: "guides/Emerald/Find SID.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
+  },
+  "/frlg-gen3-sid": {
+    meta: {
+      title: "Find Gen 3 SID",
+      description: "Various methods to finding an SID in Gen 3",
+      category: "FireRed and LeafGreen",
+      slug: "/frlg-gen3-sid",
+      isRoughDraft: false,
+      file: "guides/Emerald/Find SID.mdx",
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
@@ -1764,7 +1813,11 @@ export const guideSlugs = [
   z.literal("/emulator-emerald-egg"),
   z.literal("/e-tips-rng"),
   z.literal("/emerald-painting-rng"),
+  z.literal("/emerald-sid-feebas"),
+  z.literal("/rs-sid-feebas"),
   z.literal("/gen3-sid"),
+  z.literal("/rs-gen3-sid"),
+  z.literal("/frlg-gen3-sid"),
   z.literal("/retail-emerald-wild"),
   z.literal("/hgss-rng-advance"),
   z.literal("/emulator-hgss-tid-sid"),
@@ -1886,6 +1939,7 @@ export const guideSlugs = [
 ] as const;
 
 export const categories = [
+  "Home",
   "Tools and Emulators",
   "Gold, Silver, Crystal",
   "Transporter",

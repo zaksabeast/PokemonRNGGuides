@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "bunx --bun vite",
+    "dev": "bun run build:rng_tools && bunx --bun vite",
     "format": "bun prettier . --write",
     "format:check": "bun prettier . --check",
     "build": "tsc -b && bunx --bun vite build && cp dist/index.html dist/404.html && bun run build-seo.ts",
     "build:guides": "bun run build-guides.ts && bun run format",
+    "build:rng_tools": "wasm-pack build rng_tools",
     "lint": "eslint .",
     "lint:links": "find guides -name \\*.mdx -print0 | xargs -0 -n1 bun run markdown-link-check -c markdown-link-check.config.json -q",
     "preview": "vite preview"
@@ -28,6 +29,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
+    "rng_tools": "./rng_tools/pkg",
     "ts-pattern": "^5.6.2",
     "ts-toolbelt": "^9.6.0",
     "vc_rng": "https://github.com/zaksabeast/VC-RNG-Tool.git#29aade8",

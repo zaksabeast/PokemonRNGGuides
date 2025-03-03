@@ -7,6 +7,7 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import z from "zod";
 import { difference, isArray } from "lodash-es";
 import { guides as existingGuides } from "./src/__generated__/guides";
+import { match, P } from "ts-pattern";
 
 // Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, and ,
 const titleAndDescriptionChars = /^[A-Za-z0-9 –.\-—é&/()!%,]+$/;
@@ -14,11 +15,38 @@ const titleAndDescriptionChars = /^[A-Za-z0-9 –.\-—é&/()!%,]+$/;
 // Only lower case letters, numbers, and hyphens
 const slugChars = /^[a-z0-9-]+$/;
 
+const categoryDefs = [
+  z.literal("Home"),
+  z.literal("Tools and Emulators"),
+  z.literal("Gold, Silver, Crystal"),
+  z.literal("Transporter"),
+  z.literal("Ruby and Sapphire"),
+  z.literal("Gamecube"),
+  z.literal("FireRed and LeafGreen"),
+  z.literal("Emerald"),
+  z.literal("Diamond, Pearl, and Platinum"),
+  z.literal("HeartGold and SoulSilver"),
+  z.literal("Black and White"),
+  z.literal("Black 2 and White 2"),
+  z.literal("X and Y"),
+  z.literal("Omega Ruby and Alpha Sapphire"),
+  z.literal("Sun and Moon"),
+  z.literal("Ultra Sun and Ultra Moon"),
+  z.literal("Sword and Shield"),
+  z.literal("Brilliant Diamond and Shining Pearl"),
+  z.literal("Legends Arceus"),
+] as const;
+
+const categories = categoryDefs.map((category) => category.value);
+
+const CategorySchema = z.union(categoryDefs);
+
 const SingleGuideMetadataSchema = z.object({
   title: z.string().refine((value) => titleAndDescriptionChars.test(value)),
   description: z
     .string()
     .refine((value) => titleAndDescriptionChars.test(value)),
+  category: CategorySchema.optional(),
   slug: z
     .string()
     .refine((value) => value.length === 0 || slugChars.test(value)),
@@ -32,37 +60,29 @@ const GuideMetadataSchema = z.union([
 
 type GuideMetadata = z.infer<typeof SingleGuideMetadataSchema>;
 
-const categories = [
-  "Tools and Emulators",
-  "Gold, Silver, Crystal",
-  "Transporter",
-  "Ruby and Sapphire",
-  "Gamecube",
-  "FireRed and LeafGreen",
-  "Emerald",
-  "Diamond, Pearl, and Platinum",
-  "HeartGold and SoulSilver",
-  "Black and White",
-  "Black 2 and White 2",
-  "X and Y",
-  "Omega Ruby and Alpha Sapphire",
-  "Sun and Moon",
-  "Ultra Sun and Ultra Moon",
-  "Sword and Shield",
-  "Brilliant Diamond and Shining Pearl",
-  "Legends Arceus",
-];
-
 const main = async () => {
   const glob = new Glob("guides/**/*.mdx");
   const guides: (GuideMetadata & { file: string; category: string })[] = [];
 
   // Scans the current working directory and each of its sub-directories recursively
   for await (const file of glob.scan(".")) {
-    const category = file.split("/")[1];
-    if (!categories.includes(category) && !file.includes("Home")) {
-      throw new Error(`Invalid category: ${category}`);
-    }
+    const unparsedCategory = file.split("/")[1];
+
+    const category = match({
+      unparsedCategory,
+      category: CategorySchema.safeParse(unparsedCategory),
+    })
+      .with(
+        { category: { success: true, data: P.any } },
+        ({ category }) => category.data,
+      )
+      .with(
+        { category: { success: false }, unparsedCategory: "Home.mdx" },
+        () => "Home" as const,
+      )
+      .otherwise(() => {
+        throw new Error(`Invalid category: ${unparsedCategory}`);
+      });
 
     const compiled = await evaluate(await fs.readFile(file), {
       remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
@@ -74,7 +94,12 @@ const main = async () => {
     const metadatas = isArray(parsed) ? parsed : [parsed];
 
     for (const metadata of metadatas) {
-      guides.push({ ...metadata, slug: `/${metadata.slug}`, file, category });
+      guides.push({
+        ...metadata,
+        slug: `/${metadata.slug}`,
+        file,
+        category: metadata.category ?? category,
+      });
     }
   }
 

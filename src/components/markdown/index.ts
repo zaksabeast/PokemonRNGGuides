@@ -22,6 +22,7 @@ import {
 } from "./components";
 import { Gen2StarterRng } from "../gen2StarterRng";
 import { Gen2Rng } from "../gen2Rng";
+import { Gen3Sid } from "../gen3Sid";
 import { Alert } from "antd";
 import { YouTubeVideo } from "../youtubeVideo";
 import { PixelImage } from "../pixelImage";
@@ -58,4 +59,5 @@ export const markdownComponents = {
   Flex,
   Gen2StarterRng,
   Gen2Rng,
+  Gen3Sid,
 };

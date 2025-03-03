@@ -5,12 +5,9 @@ import { getGuide } from "~/guides";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { Flex, Typography, Loading, Button, Icon } from "~/components";
 import { settings } from "~/settings";
-import { useAbCohort } from "~/hooks/useAbTest";
-import { match } from "ts-pattern";
 
 export const GuideScreen = () => {
   const [route] = useActiveRoute();
-  const cohort = useAbCohort("discordButton2");
 
   const Guide = getGuide(route);
   return (
@@ -32,20 +29,7 @@ export const GuideScreen = () => {
             size="middle"
             href={settings.discordUrl}
           >
-            {match(cohort)
-              .with(
-                "play_trade_and_rng_with_friends",
-                () => "Play, Trade, and RNG with Friends!",
-              )
-              .with(
-                "stream_play_and_rng_with_us",
-                () => "Stream, Play, and RNG with Us!",
-              )
-              .with(
-                "hunt_trade_and_rng_with_us",
-                () => "Hunt, Trade, and RNG with Us!",
-              )
-              .exhaustive()}
+            Hunt, Trade, and RNG with Us!
           </Button>
         </Flex>
 

@@ -24,6 +24,8 @@ type AbTestConfig = {
 type AbTestConfigs = Record<string, AbTestConfig>;
 
 const abTests = {
+  // Temporarily keeping this for type purposes
+  // Remove it when we add a new AB test
   discordButton2: {
     cohorts: [
       "play_trade_and_rng_with_friends",

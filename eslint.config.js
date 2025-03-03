@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint";
 import { message } from "antd";
 
 export default tseslint.config(
-  { ignores: ["dist", "src/graphql/__generated__"] },
+  { ignores: ["dist", "src/graphql/__generated__", "rng_tools"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],

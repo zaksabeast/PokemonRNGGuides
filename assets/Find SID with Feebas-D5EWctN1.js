@@ -1,0 +1,25 @@
+import{u as l,j as e}from"./index-CUW7P-dy.js";const d=[{title:"Find Emerald SID with Feebas",description:"How to find your Secret ID (SID) in Emerald using Feebas.",slug:"emerald-sid-feebas",category:"Emerald"},{title:"Find Ruby or Sapphire SID with Feebas",description:"How to find your Secret ID (SID) in Ruby or Sapphire using Feebas.",slug:"rs-sid-feebas",category:"Ruby and Sapphire"}];function t(i){const n={a:"a",h2:"h2",li:"li",ol:"ol",p:"p",ul:"ul",...l(),...i.components},{Gen3Sid:s,YouTubeVideo:o}=n;return s||r("Gen3Sid"),o||r("YouTubeVideo"),e.jsxs(e.Fragment,{children:[e.jsx(n.p,{children:"This method only works if:"}),`
+`,e.jsxs(n.ul,{children:[`
+`,e.jsxs(n.li,{children:["You have a dead battery",window.location.pathname==="/emerald-sid-feebas"?" or have played for less than 1 day":"","."]}),`
+`,e.jsx(n.li,{children:"You haven't changed the Dewford Trend."}),`
+`]}),`
+`,e.jsx(n.h2,{children:"Video Guide"}),`
+`,e.jsx(o,{src:"https://www.youtube.com/embed/nOCbSmMRXLA"}),`
+`,e.jsx(n.h2,{children:"Find your Feebas Tiles"}),`
+`,e.jsxs(n.ol,{children:[`
+`,e.jsx(n.li,{children:"Travel to Dewford."}),`
+`,e.jsx(n.li,{children:"Talk to the NPC directly above the Pokemon Center to get the Dewford Trend."}),`
+`,e.jsxs(n.li,{children:["Use ",e.jsx(n.a,{href:"https://mucksw.github.io/Feebas-Tile-Calculator/",children:"mucksw's Feebas Tile Calculator"})," to get a list of possible Feebas seeds."]}),`
+`,e.jsx(n.li,{children:"Test each seed by fishing in the tiles provided by the calculator."}),`
+`]}),`
+`,e.jsx(n.h2,{children:"Find your SID"}),`
+`,e.jsxs(n.ol,{children:[`
+`,e.jsx(n.li,{children:"Use the Feebas seed with the tool below to find your possible SIDs."}),`
+`,e.jsx(n.li,{children:"Try to RNG a shiny Pokemon to confirm the correct SID."}),`
+`]}),`
+`,e.jsx(s,{game:window.location.pathname==="/rs-sid-feebas"?"rs":"emerald"}),`
+`,e.jsx(n.h2,{children:"Credits"}),`
+`,e.jsxs(n.ul,{children:[`
+`,e.jsxs(n.li,{children:["Lincoln, HappyLappy, and Shao for ",e.jsx(n.a,{href:"https://github.com/HappyLappy1/Lappy-Python-Scripts/tree/main/RSE_Trendy_Saying_2_SID",children:"the Python SID Finder"})," this is based on."]}),`
+`,e.jsxs(n.li,{children:["mucksw for the ",e.jsx(n.a,{href:"https://mucksw.github.io/Feebas-Tile-Calculator",children:"Feebas Tile Calculator"}),"."]}),`
+`]})]})}function h(i={}){const{wrapper:n}={...l(),...i.components};return n?e.jsx(n,{...i,children:e.jsx(t,{...i})}):t(i)}function r(i,n){throw new Error("Expected component `"+i+"` to be defined: you likely forgot to import, pass, or provide it.")}export{h as default,d as frontmatter};

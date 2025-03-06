@@ -52,7 +52,9 @@ const SingleGuideMetadataSchema = z.object({
     .string()
     .refine((value) => value.length === 0 || slugChars.test(value)),
   isRoughDraft: z.boolean().default(false),
-  tag: z.union([z.literal("retail"), z.literal("tar")]).default("retail"),
+  tag: z
+    .union([z.literal("retail"), z.literal("emu"), z.literal("cfw")])
+    .default("emu"),
   addedOn: z
     .string()
     .nullish()

@@ -11,7 +11,7 @@ import { getGuide, guides, categories, Category, GuideMeta } from "~/guides";
 import { partition, groupBy } from "lodash-es";
 import * as tst from "ts-toolbelt";
 import styled from "@emotion/styled";
-import { difference, upperFirst } from "lodash-es";
+import { difference, upperFirst, sortBy } from "lodash-es";
 import { track } from "~/analytics";
 import dayjs from "dayjs";
 import { Tag } from "./tag";
@@ -27,33 +27,33 @@ const StyledMenu = styled(Menu)({
 type GuideTag = "new" | GuideMeta["tag"];
 
 type GuideConfig = {
-  color?: Color;
-  backgroundColor?: Color;
+  color: Color;
+  backgroundColor: Color;
 };
 
-const MenuItemTag = ({ tag }: { tag: GuideTag }) => {
-  const config = match<GuideTag, GuideConfig>(tag)
-    .with("retail", () => ({
-      // color: "White",
-      // backgroundColor: "Info",
-    }))
-    .with("tar", () => ({
-      // color: "White", backgroundColor: "Success"
-    }))
+type MenuItemTagProps = {
+  tag: GuideTag;
+  isNew: boolean;
+};
+
+const MenuItemTag = ({ tag, isNew }: MenuItemTagProps) => {
+  const config = match<GuideTag, GuideConfig | null>(isNew ? "new" : tag)
     .with("new", () => ({ color: "White", backgroundColor: "Primary" }))
-    .otherwise(() => ({ color: "White", backgroundColor: "Primary" }));
+    .otherwise(() => null);
+  const label = match<GuideTag, string>(tag)
+    .with("cfw", () => "CFW")
+    .otherwise(() => upperFirst(tag));
   return (
-    <div>
+    <Flex style={{ position: "relative", left: 0 }}>
       <Tag
         width={47}
         textAlign="center"
-        // bordered={false}
-        color={config.color}
-        backgroundColor={config.backgroundColor}
+        color={config?.color}
+        backgroundColor={config?.backgroundColor}
       >
-        {upperFirst(tag)}
+        {label}
       </Tag>
-    </div>
+    </Flex>
   );
 };
 
@@ -72,29 +72,38 @@ const getGuideMenu = (
   return categories
     .filter((category) => guidesByCategory[category] != null)
     .map((category) => {
-      const guideItems = guidesByCategory[category]
-        .map((guide) => {
-          const isNew = dayjs(guide.meta.addedOn).isAfter(
-            dayjs().subtract(7, "days"),
-          );
-          return {
-            key: guide.meta.slug,
-            title: guide.meta.title,
-            label: <Link href={guide.meta.slug}>{guide.meta.title}</Link>,
-            isNew,
-            icon: <MenuItemTag tag={isNew ? "new" : guide.meta.tag} />,
-          };
-        })
-        .sort((first, second) => first.title.localeCompare(second.title));
+      const guideItems = guidesByCategory[category].map((guide) => {
+        const isNew = dayjs(guide.meta.addedOn).isAfter(
+          dayjs().subtract(7, "days"),
+        );
+        return {
+          key: guide.meta.slug,
+          title: guide.meta.title,
+          label: <Link href={guide.meta.slug}>{guide.meta.title}</Link>,
+          isNew,
+          tag: guide.meta.tag,
+          icon: (
+            <>
+              {/* {isNew && <MenuItemTag tag="new" />} */}
+              <MenuItemTag isNew={isNew} tag={guide.meta.tag} />
+            </>
+          ),
+        };
+      });
+
+      const sortedGuideItems = sortBy(guideItems, (item) => [
+        item.tag,
+        item.title,
+      ]);
 
       const isNew = guideItems.some((item) => item.isNew);
 
       return {
         key: `${keyPrefix}${category}`,
         label: category,
-        children: guideItems,
+        children: sortedGuideItems,
         isNew,
-        icon: isNew ? <MenuItemTag tag="new" /> : null,
+        icon: isNew ? <MenuItemTag tag="new" isNew /> : null,
       };
     }) satisfies MenuItem[];
 };
@@ -128,7 +137,7 @@ const getCategory = ({ key, label, categories, children }: CategoryConfig) => {
     key,
     label,
     children: subCategories,
-    icon: isNew ? <MenuItemTag tag="new" /> : null,
+    icon: isNew ? <MenuItemTag tag="new" isNew /> : null,
   };
 };
 
@@ -206,7 +215,7 @@ const NavDrawerContent = () => {
       <Flex vertical gap={16} flex={1}>
         <StyledMenu
           mode="inline"
-          inlineIndent={16}
+          inlineIndent={10}
           items={topLevelMenu}
           defaultSelectedKeys={[route]}
           openKeys={openKeys}

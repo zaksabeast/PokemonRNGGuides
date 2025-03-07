@@ -8,6 +8,7 @@ import z from "zod";
 import { difference, isArray } from "lodash-es";
 import { guides as existingGuides } from "./src/__generated__/guides";
 import { match, P } from "ts-pattern";
+import dayjs from "dayjs";
 
 // Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, and ,
 const titleAndDescriptionChars = /^[A-Za-z0-9 –.\-—é&/()!%,]+$/;
@@ -51,6 +52,21 @@ const SingleGuideMetadataSchema = z.object({
     .string()
     .refine((value) => value.length === 0 || slugChars.test(value)),
   isRoughDraft: z.boolean().default(false),
+  tag: z.union([
+    z.literal("retail"),
+    z.literal("emu"),
+    z.literal("cfw"),
+    z.literal("info"),
+    z.literal("any"),
+  ]),
+  addedOn: z
+    .string()
+    .nullish()
+    .optional()
+    .default(() => null)
+    .refine((value) => value === null || dayjs(value).isValid(), {
+      message: "Invalid date format",
+    }),
 });
 
 const GuideMetadataSchema = z.union([
@@ -90,7 +106,13 @@ const main = async () => {
       jsx: React.jsx,
       jsxs: React.jsxs,
     });
-    const parsed = GuideMetadataSchema.parse(compiled.frontmatter);
+    let parsed;
+    try {
+      parsed = GuideMetadataSchema.parse(compiled.frontmatter);
+    } catch (error) {
+      throw new Error(`Error on guide ${file}`, { cause: error });
+    }
+
     const metadatas = isArray(parsed) ? parsed : [parsed];
 
     for (const metadata of metadatas) {

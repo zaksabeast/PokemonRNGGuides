@@ -52,9 +52,13 @@ const SingleGuideMetadataSchema = z.object({
     .string()
     .refine((value) => value.length === 0 || slugChars.test(value)),
   isRoughDraft: z.boolean().default(false),
-  tag: z
-    .union([z.literal("retail"), z.literal("emu"), z.literal("cfw")])
-    .default("emu"),
+  tag: z.union([
+    z.literal("retail"),
+    z.literal("emu"),
+    z.literal("cfw"),
+    z.literal("info"),
+    z.literal("any"),
+  ]),
   addedOn: z
     .string()
     .nullish()
@@ -102,7 +106,13 @@ const main = async () => {
       jsx: React.jsx,
       jsxs: React.jsxs,
     });
-    const parsed = GuideMetadataSchema.parse(compiled.frontmatter);
+    let parsed;
+    try {
+      parsed = GuideMetadataSchema.parse(compiled.frontmatter);
+    } catch (error) {
+      throw new Error(`Error on guide ${file}`, { cause: error });
+    }
+
     const metadatas = isArray(parsed) ? parsed : [parsed];
 
     for (const metadata of metadatas) {

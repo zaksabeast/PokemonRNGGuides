@@ -1,34 +1,31 @@
 ---
-title: "Basic rules of Gen 3 RNG"
+title: "RNG Info"
 description: "How to advance the RNG and tips to make everything more stable"
 slug: "e-tips-rng"
 subCategory: "Basic Knowledge"
-isRoughDraft: true
 tag: "any"
 ---
 
-## Intro
-
-Emerald has useful features for RNG seeding, but vblank issues can be frustrating.
-
 ## RNG Methods
 
-- For stationary Pokémon: Method 1.
-- For wild encounters: Method H-2.
+- For stationary Pokémon: Method 1
+- For wild encounters: Method H-2
 
-```
-When dealing with wild encounters, it's often hit-or-miss. You might have a high vblank rate, making it hard to predict which method to use. There's no guaranteed solution, and you might need to try repeatedly, wasting time for uncertain results.
-```
+The different methods for wild encounters are caused by vblank, though H-2 is the most commonly seen.
+
+### Painting RNG
+
+Painting RNG is a great method to obtain any desired initial seed. It's a more advanced technique and is covered in [this guide](/emerald-painting-rng).
 
 ## Trainer Card Flip
 
-In Gen 3, flipping your Trainer Card resets noise-related delays, helping you focus on the default delay. You should do this almost reflexively. Access your Trainer Card and press `A`. Do this between 10k-5k advances before your target advance to save yourself trouble.
+In Gen 3, flipping your Trainer Card resets noise-related delays, helping you focus on the default delay. You should do this almost every RNG.
 
-## Minimizing Noise
+To flip your trainer card, access your Trainer Card and press `A`.
 
-To reduce vblank and noise issues, open your Trainer Card at the start of your RNG, perform a flip, close it, and then advance to your target advance. It's a simple but effective strategy.
+You can do this between 10,000 - 5,000 advances before your target advance.
 
-## Speeding Up RNG Advances (Including Seeding Help)
+## Speeding Up RNG Advances
 
 ### Battle Video
 
@@ -39,7 +36,3 @@ While this method is helpful, it's a bit outdated compared to Painting RNG. Howe
 ### In-Battle
 
 Being in battle advances RNG twice as fast. This is particularly helpful for wild Pokémon RNG.
-
-### Painting RNG
-
-Painting RNG is a great method to obtain any desired initial seed. It's a more advanced technique and will be covered in a separate guide.

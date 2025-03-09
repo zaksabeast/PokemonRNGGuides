@@ -20,6 +20,12 @@ If you make rust changes, run `bun run build:rng_tools`.
 
 To build a production version of the site, use `bun run build`.
 
+## Licensing
+
+- The **website** (`src/`, `guides/`, and top-level files) is licensed under the **MIT License**.
+- The **Rust RNG tools** (`rng_tools/`) are licensed under the **GNU General Public License v3 (GPLv3)**.
+- Contributors must follow the respective licenses when modifying these sections.
+
 ## Special Thanks
 
 Thanks to [PokeSprite](https://github.com/msikma/pokesprite/) and [PKHeX](https://github.com/kwsch/PKHeX) for the box sprites!

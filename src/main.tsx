@@ -19,6 +19,7 @@ const updateSw = registerSW({
 
 if (!settings.isDev) {
   initAmplitude(settings.amplitudeApiKey, {
+    appVersion: settings.gitCommit,
     autocapture: {
       attribution: true,
       elementInteractions: false,

@@ -9,7 +9,7 @@ export { Loading } from "./loading";
 export { Image } from "./image";
 export { MetaTags } from "./metaTags";
 export { List, ListItem } from "./list";
-export { Input } from "./input";
+export { FormikInput } from "./input";
 export { Form } from "./form";
 export { FormFieldTable, type Field } from "./formFieldTable";
 export { ResultTable, type ResultColumn } from "./resultTable";

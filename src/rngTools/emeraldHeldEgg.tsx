@@ -2,7 +2,7 @@ import React from "react";
 import {
   Flex,
   Button,
-  Input,
+  FormikInput,
   Form,
   ResultTable,
   ResultColumn,
@@ -19,7 +19,7 @@ import {
   Species,
   Gender,
 } from "rng_tools";
-import { Formik, useFormikContext } from "formik";
+import { Formik } from "formik";
 import {
   DecimalString,
   fromDecimalString,
@@ -86,37 +86,18 @@ const initialState: FormState = {
 };
 
 const OptionsForm = () => {
-  const formik = useFormikContext<FormState>();
   const fields: Field[] = [
     {
       label: "Initial advances",
-      input: (
-        <Input
-          name="initial_advances"
-          placeholder={initialState.initial_advances}
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="initial_advances" />,
     },
     {
       label: "Max advances",
-      input: (
-        <Input
-          name="max_advances"
-          placeholder={initialState.max_advances}
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="max_advances" />,
     },
     {
       label: "Delay",
-      input: (
-        <Input
-          name="delay"
-          placeholder={initialState.delay}
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="delay" />,
     },
     {
       label: "Female has everstone",
@@ -138,33 +119,15 @@ const OptionsForm = () => {
     },
     {
       label: "Calibration",
-      input: (
-        <Input
-          name="calibration"
-          placeholder={initialState.calibration}
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="calibration" />,
     },
     {
       label: "Min redraw",
-      input: (
-        <Input
-          name="min_redraw"
-          placeholder={initialState.min_redraw}
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="min_redraw" />,
     },
     {
       label: "Max redraw",
-      input: (
-        <Input
-          name="max_redraw"
-          placeholder={initialState.max_redraw}
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="max_redraw" />,
     },
     {
       label: "Compatability",
@@ -190,15 +153,11 @@ const OptionsForm = () => {
     },
     {
       label: "TID",
-      input: (
-        <Input name="tid" placeholder="100" onChange={formik.handleChange} />
-      ),
+      input: <FormikInput<FormState> name="tid" />,
     },
     {
       label: "SID",
-      input: (
-        <Input name="sid" placeholder="100" onChange={formik.handleChange} />
-      ),
+      input: <FormikInput<FormState> name="sid" />,
     },
     {
       label: "Egg species",

@@ -2,7 +2,7 @@ import React from "react";
 import {
   Flex,
   Button,
-  Input,
+  FormikInput,
   Form,
   ResultTable,
   ResultColumn,
@@ -12,7 +12,7 @@ import {
   emerald_sid_from_feebas_seed,
   rs_sid_from_feebas_seed,
 } from "rng_tools";
-import { Formik, useFormikContext } from "formik";
+import { Formik } from "formik";
 import {
   DecimalString,
   fromDecimalString,
@@ -45,44 +45,23 @@ type FormState = {
 };
 
 const OptionsForm = () => {
-  const formik = useFormikContext<FormState>();
   const fields: Field[] = [
     {
       label: "TID",
-      input: (
-        <Input name="tid" placeholder="1234" onChange={formik.handleChange} />
-      ),
+      input: <FormikInput<FormState> name="tid" />,
     },
     {
       label: "Feebas Seed",
-      input: (
-        <Input
-          name="feebasSeed"
-          placeholder="abcd"
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="feebasSeed" />,
     },
     {
       label: "Initial Advances",
-      input: (
-        <Input
-          name="initialAdvances"
-          placeholder="0"
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="initialAdvances" />,
     },
 
     {
       label: "Max Advances",
-      input: (
-        <Input
-          name="maxAdvances"
-          placeholder="10000"
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="maxAdvances" />,
     },
   ];
 
@@ -99,8 +78,8 @@ const OptionsForm = () => {
 };
 
 const initialState: FormState = {
-  tid: toDecimalString(1234),
-  feebasSeed: toHexString(0xabcd),
+  tid: toDecimalString(14223),
+  feebasSeed: toHexString(0xa4fd),
   initialAdvances: toDecimalString(0),
   maxAdvances: toDecimalString(10000),
 };

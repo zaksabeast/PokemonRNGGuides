@@ -2,7 +2,7 @@ import React from "react";
 import {
   Flex,
   Button,
-  Input,
+  FormikInput,
   Form,
   ResultTable,
   ResultColumn,
@@ -12,7 +12,7 @@ import {
   Field,
 } from "~/components";
 import { emerald_egg_pickup_states, Ivs, Gen3PickupMethod } from "rng_tools";
-import { Formik, useFormikContext } from "formik";
+import { Formik } from "formik";
 import {
   HexString,
   DecimalString,
@@ -79,47 +79,22 @@ const initialState: FormState = {
 };
 
 const OptionsForm = () => {
-  const formik = useFormikContext<FormState>();
   const fields: Field[] = [
     {
       label: "Seed",
-      input: (
-        <Input
-          name="seed"
-          placeholder={initialState.seed}
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="seed" />,
     },
     {
       label: "Initial advances",
-      input: (
-        <Input
-          name="initial_advances"
-          placeholder={initialState.initial_advances}
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="initial_advances" />,
     },
     {
       label: "Max advances",
-      input: (
-        <Input
-          name="max_advances"
-          placeholder={initialState.max_advances}
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="max_advances" />,
     },
     {
       label: "Delay",
-      input: (
-        <Input
-          name="delay"
-          placeholder={initialState.delay}
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="delay" />,
     },
     {
       label: "Parent 1 IVs",

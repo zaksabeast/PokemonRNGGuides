@@ -2,7 +2,7 @@ import React from "react";
 import {
   Flex,
   Button,
-  Input,
+  FormikInput,
   Form,
   ResultTable,
   ResultColumn,
@@ -16,7 +16,7 @@ import {
   crystal_generate_starters,
   type Gen2Spread,
 } from "rng_tools";
-import { Formik, useFormikContext } from "formik";
+import { Formik } from "formik";
 import {
   DecimalString,
   fromDecimalString,
@@ -70,60 +70,30 @@ type FormState = {
 };
 
 const OptionsForm = () => {
-  const formik = useFormikContext<FormState>();
   const fields: Field[] = [
     {
       label: "ADiv Index",
-      input: (
-        <Input
-          name="adivIndex"
-          placeholder="100"
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="adivIndex" />,
     },
     {
       label: "SDiv Index",
-      input: (
-        <Input
-          name="sdivIndex"
-          placeholder="100"
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="sdivIndex" />,
     },
     {
       label: "Div",
-      input: (
-        <Input name="div" placeholder="ab" onChange={formik.handleChange} />
-      ),
+      input: <FormikInput<FormState> name="div" />,
     },
     {
       label: "State",
-      input: (
-        <Input name="state" placeholder="cdef" onChange={formik.handleChange} />
-      ),
+      input: <FormikInput<FormState> name="state" />,
     },
     {
       label: "Start Advance",
-      input: (
-        <Input
-          name="startAdvance"
-          placeholder="100"
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="startAdvance" />,
     },
     {
       label: "Advance Count",
-      input: (
-        <Input
-          name="advanceCount"
-          value={formik.values.advanceCount}
-          disabled
-          onChange={formik.handleChange}
-        />
-      ),
+      input: <FormikInput<FormState> name="advanceCount" disabled />,
     },
     {
       label: "Filter",

@@ -1,12 +1,11 @@
 import React from "react";
 import { Flex } from "./flex";
 import { Button } from "./button";
-import { Table, TableProps } from "antd";
+import { TableProps } from "antd";
 import { Input } from "./input";
 import { gen2_generate_rng_states } from "rng_tools";
-import styled from "@emotion/styled";
-import { Formik, Form, useFormikContext } from "formik";
-import { Typography } from "./typography";
+import { Form } from "./form";
+import { Formik, useFormikContext } from "formik";
 import {
   DecimalString,
   fromDecimalString,
@@ -15,6 +14,8 @@ import {
   toDecimalString,
   toHexString,
 } from "~/utils/number";
+import { ResultTable } from "./resultTable";
+import { FormFieldTable } from "./formFieldTable";
 
 type RngState = {
   advance: number;
@@ -22,13 +23,7 @@ type RngState = {
   div: number;
 };
 
-const StyledTable = styled(Table<RngState>)({
-  "&&&": {
-    width: "100%",
-  },
-});
-
-const columns: TableProps<RngState>["columns"] = [
+const columns: TableProps<unknown>["columns"] = [
   {
     title: "Advance",
     dataIndex: "advance",
@@ -69,7 +64,6 @@ const OptionsForm = () => {
       label: "ADiv Index",
       input: (
         <Input
-          autoComplete="off"
           name="adivIndex"
           placeholder="100"
           onChange={formik.handleChange}
@@ -80,7 +74,6 @@ const OptionsForm = () => {
       label: "SDiv Index",
       input: (
         <Input
-          autoComplete="off"
           name="sdivIndex"
           placeholder="100"
           onChange={formik.handleChange}
@@ -90,31 +83,20 @@ const OptionsForm = () => {
     {
       label: "Div",
       input: (
-        <Input
-          autoComplete="off"
-          name="div"
-          placeholder="ab"
-          onChange={formik.handleChange}
-        />
+        <Input name="div" placeholder="ab" onChange={formik.handleChange} />
       ),
     },
 
     {
       label: "State",
       input: (
-        <Input
-          autoComplete="off"
-          name="state"
-          placeholder="cdef"
-          onChange={formik.handleChange}
-        />
+        <Input name="state" placeholder="cdef" onChange={formik.handleChange} />
       ),
     },
     {
       label: "Start Advance",
       input: (
         <Input
-          autoComplete="off"
           name="startAdvance"
           placeholder="100"
           onChange={formik.handleChange}
@@ -125,7 +107,6 @@ const OptionsForm = () => {
       label: "Advance Count",
       input: (
         <Input
-          autoComplete="off"
           name="advanceCount"
           value={formik.values.advanceCount}
           disabled
@@ -138,18 +119,7 @@ const OptionsForm = () => {
   return (
     <Form>
       <Flex vertical gap={8}>
-        <table>
-          <tbody>
-            {fields.map(({ label, input }) => (
-              <tr key={label}>
-                <td>
-                  <Typography.Text strong>{label}</Typography.Text>
-                </td>
-                <td>{input}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <FormFieldTable fields={fields} />
         <Button trackerId="generate_gen2_starters" htmlType="submit">
           Generate
         </Button>
@@ -198,7 +168,7 @@ export const Gen2Rng = () => {
       >
         <OptionsForm />
       </Formik>
-      <StyledTable columns={columns} dataSource={results} />
+      <ResultTable columns={columns} dataSource={results} />
     </Flex>
   );
 };

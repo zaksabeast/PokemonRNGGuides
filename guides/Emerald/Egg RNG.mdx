@@ -4,135 +4,56 @@ description: "RNG Eggs from the Daycare"
 slug: "emulator-emerald-egg"
 subCategory: "Emulator"
 tag: "emu"
+addedOn: "2025-03-09"
 ---
 
 ## Tools:
 
 - [mGBA with lua scripts](/mgba-setup)
-- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
-- The parent Pokémon IVs and their compatibility (talk to the daycare man for compatibility)
-- TID and SID if going for a shiny. These are unnecessary if only wanting IVs/nature
 
 ## Intro
 
-Eggs in Emerald are generated in two parts. The PID of the Pokémon is generated when the player takes a step that creates an egg at the daycare. The IVs are generated when collecting the egg from the daycare man. Therefore, there are two parts to RNGing a perfect shiny egg.
+Eggs in Emerald are generated in two steps: the PID is set when you take a step that creates the egg, and the IVs are set when you pick it up from the daycare man. You'll need to do two RNGs to get a perfect shiny egg.
 
-## Setup
+## Getting a Shiny Pokémon
 
-1. Deposit both Pokémon into the daycare.
-   - Note the order: first parent is Parent A, second is Parent B.
+1. Open the "Pokemon Info" tab in the Lua script to view the IVs and Nature of your parent Pokémon. Write them down for later.
+2. Place both Pokémon in the Daycare. The first parent given to the Daycare is Parent 1, the second is Parent 2. Write this down for later.
+3. Talk to the Daycare Man to check Pokémon compatibility, and input this into the RNG tool below.
+4. Walk inside the Daycare until the Lua script's step counter is 1.
+5. Save the game, restart, and pause after loading the save.
+6. Switch to the Lua script's "Breeding" tab and input the "Calibration", "Initial Seed", "TID", "SID", and "Advances" (as "Initial advances") into the RNG tool. Also, enter the Nature of the non-Ditto or female parent. Optionally, filter for shininess, nature, and gender.
+7. Click "Generate" to get a list of potential PIDs, and choose one to target. If there are no results, increase the "Max Advances."
+8. Unpause your game.
+9. If there are redraws, open the game menu (press `Start`), then open and close the Pokedex for each redraw.
+10. Pause the game near your target advance, then create a save state.
+11. Manually advance the game (`Ctrl + N` for Windows, `Cmd + N` for Mac) until you reach your target advance.
+12. Hold the movement button to make your character walk, then unpause while holding the button. Walk in the same direction your character is facing (e.g., if facing left, hold the `Left` button).
+13. The egg you receive should have your target PID.
 
-```
-Note: Do not give an Everstone to either parent. Everstone does not work in Emerald for breeding and will give incorrect results.
-```
+**Congrats! You now have a shiny egg!**
 
-2. Talk to the daycare man to check their compatibility.
-   - This is needed later for PokeFinder.
-3. Go back inside the daycare and take steps until the lua script shows `FE` for the step counter.
-   - Step inside the daycare, not outside.
+<EmeraldHeldEgg lua />
 
-![Setup](/images/Emerald/Egg/Setup.png)
+## Getting IVs
 
-4. Create a savestate here before continuing.
+1. Walk outside next to the Daycare man, save the game, then restart.
+2. After loading your save, view your Trainer Card, flip it once, and close the menu.
+3. Talk to the Daycare man until you see the text "Take good care of it." Pause the game and make a save state.
+4. Input the current advance into the "Initial advances" field in the RNG tool.
+5. Enter the IVs of your parent Pokémon into the RNG tool.
+6. Click "Generate" to get a list of possible results, and choose a target advance.
+7. Pause the game near your target advance, then create a save state.
+8. Manually advance the game (`Ctrl + N` for Windows, `Cmd + N` for Mac) until you reach the target advance.
+9. Hold "A" and unpause to finish receiving the egg at the target advance.
+10. Use the Lua script's "Pokemon Info" tab to check the received Pokémon's IVs.
+11. If you missed the target, input the IVs in the RNG tool to find the advance you landed on. You might need to change the "Method" field to find a match.
+12. Subtract the advance you hit from your target, and enter the difference in the RNG tool's "Delay" field, then regenerate the results and try again.
 
-## PokeFinder Setup
+**Congrats! Your egg now has fantastic IVs!**
 
-1. Open PokeFinder and select "Gen 3 Egg". Ensure you are on the Emerald tab.
-2. Set "Max Results" to a number you are comfortable waiting for.
-   - For a shiny PID, you should typically find a result within a few minutes.
-3. Set "Method" to PID, as the egg's PID will be RNG'd first.
+<EmeraldPickupEgg lua />
 
-## Redraws
+## Credits
 
-For Emerald egg RNG, you can redraw the game's graphics to target specific PIDs.
-
-To do a single redraw:
-
-1. Open the menu.
-2. Open the Pokédex.
-3. Back out of the Pokédex into the menu.
-
-Open and close the Pokédex as many times as needed to get your target PID.
-
-## Calibration
-
-Before RNGing for your desired egg, you must calibrate.
-
-1. Restart the emulator and pause when the save has loaded.
-2. Note the RNG Frame displayed by the lua script and create a save state.
-3. Hold down a directional button to take a step while unpausing.
-   - If an egg is generated, proceed to the next step.
-   - If no egg is generated, reload the previous save state and advance a frame (`CTRL + N`). Take another step to try to generate an egg. Repeat as needed.
-4. Choose the egg's nature from the dropdown.
-5. Set redraws to 0 in PokeFinder.
-6. Click "Generate" in PokeFinder and find the PID of the generated egg in the Advances column by checking the RNG Frame you stepped on.
-   - If you can't find the PID, adjust the calibration by 1 and generate new results.
-   - Repeat until a match is found.
-   - Calibration will be between 17 and 21.
-
-![Calibration](/images/Emerald/Egg/Calibration.png)
-
-In the example above, the calibration is 20. The frame was found after selecting Timid from the nature dropdown and searching for the PID of the egg.
-
-The calibration remains the same for this save, allowing reuse for future egg RNGs.
-
-## Part 1: RNGing for PID
-
-Now that you have calibrated, it’s time to RNG an egg.
-
-1. Set the filters to your preferences.
-   - For this part, only Ability, Gender, Nature, and Shiny can be RNG'd.
-   - Ensure the Gender Ratio is set correctly.
-2. Set the redraws according to your needs.
-   - Adjusting redraws can create different results for more options.
-3. Generate results and search for a target advance.
-   - Modify redraws and filters as needed to find a target advance.
-4. Reset the emulator and perform the necessary redraws.
-5. Create a save state when nearing the target advance.
-
-To hit your target advance, consider the delay. The next section explains how to find it.
-
-### Finding Your Delay for PID
-
-1. Take a step 18 advances before your target advance.
-   - If no egg is produced, continue to find your delay.
-2. Use PokeFinder to find the advance you hit by setting the filters for the egg obtained and checking for the PID.
-3. Determine your delay using `Target Advance - Advance Hit = Delay`.
-4. Add the delay to your target advance for the RNG Frame you need to step on (`Target Advance + Delay = RNG Frame to take a step on`).
-5. Return to the previous save state.
-6. Step on the RNG Frame calculated from the above steps.
-
-You should now have the desired PID.
-
-![PID](/images/Emerald/Egg/PID.png)
-
-```
-Note: If the PID does not match the desired one, check for accuracy in PokeFinder. Common issues include incorrect info and taking steps outside the daycare.
-```
-
-## Part 2: RNGing for IVs
-
-1. Go outside and stand by the daycare man. Save the game.
-2. Input the parents' IVs into PokeFinder.
-   - Ensure the first Pokémon deposited is Parent A, and the second is Parent B.
-3. Change the Method to Normal.
-4. Set the IVs to your desired values.
-5. Generate results to find a target advance.
-6. Restart the emulator.
-7. Accept the egg from the daycare man, pausing the emulator at the last dialogue ("Take good care of it.").
-8. Create a save state.
-
-Again, you need to consider delay.
-
-### Finding Your Delay for IVs
-
-1. Advance to 3 before the target advance, pause, hold `A`, and unpause.
-2. If the IVs aren’t what you want, find what advance you hit in PokeFinder. Set the IV filters for the egg obtained and check for matching IVs.
-3. Determine your delay using `Target Advance - Advance Hit = Delay`.
-4. Subtract the delay from your target advance to find the RNG Frame to press `A` on (`Target Advance - Delay = RNG Frame to press A on`).
-5. Return to the previous save state.
-6. Step on the RNG Frame calculated from the above steps.
-
-You should now have the desired IVs.
-
-If the IVs are not as desired, ensure you have correctly inputted info in PokeFinder and that the order of parents is not swapped.
+Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, whose work this tool is built upon.

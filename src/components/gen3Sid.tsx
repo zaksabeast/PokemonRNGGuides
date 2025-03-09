@@ -1,15 +1,16 @@
 import React from "react";
 import { Flex } from "./flex";
 import { Button } from "./button";
-import { Table, TableProps } from "antd";
+import { TableProps } from "antd";
 import { Input } from "./input";
 import {
   emerald_sid_from_feebas_seed,
   rs_sid_from_feebas_seed,
 } from "rng_tools";
-import styled from "@emotion/styled";
-import { Formik, Form, useFormikContext } from "formik";
-import { Typography } from "./typography";
+import { Form } from "./form";
+import { ResultTable } from "./resultTable";
+import { FormFieldTable } from "./formFieldTable";
+import { Formik, useFormikContext } from "formik";
 import {
   DecimalString,
   fromDecimalString,
@@ -21,13 +22,7 @@ import {
 
 type GeneratorResult = { sid: number };
 
-const StyledTable = styled(Table<GeneratorResult>)({
-  "&&&": {
-    width: "100%",
-  },
-});
-
-const columns: TableProps<GeneratorResult>["columns"] = [
+const columns: TableProps<unknown>["columns"] = [
   {
     title: "Sid",
     dataIndex: "sid",
@@ -43,7 +38,7 @@ type Field = {
 type FormState = {
   tid: DecimalString;
   feebasSeed: HexString;
-  minAdvances: DecimalString;
+  initialAdvances: DecimalString;
   maxAdvances: DecimalString;
 };
 
@@ -53,19 +48,13 @@ const OptionsForm = () => {
     {
       label: "TID",
       input: (
-        <Input
-          autoComplete="off"
-          name="tid"
-          placeholder="1234"
-          onChange={formik.handleChange}
-        />
+        <Input name="tid" placeholder="1234" onChange={formik.handleChange} />
       ),
     },
     {
       label: "Feebas Seed",
       input: (
         <Input
-          autoComplete="off"
           name="feebasSeed"
           placeholder="abcd"
           onChange={formik.handleChange}
@@ -73,11 +62,10 @@ const OptionsForm = () => {
       ),
     },
     {
-      label: "Min Advances",
+      label: "Initial Advances",
       input: (
         <Input
-          autoComplete="off"
-          name="minAdvances"
+          name="initialAdvances"
           placeholder="0"
           onChange={formik.handleChange}
         />
@@ -88,7 +76,6 @@ const OptionsForm = () => {
       label: "Max Advances",
       input: (
         <Input
-          autoComplete="off"
           name="maxAdvances"
           placeholder="10000"
           onChange={formik.handleChange}
@@ -100,18 +87,7 @@ const OptionsForm = () => {
   return (
     <Form>
       <Flex vertical gap={8}>
-        <table>
-          <tbody>
-            {fields.map(({ label, input }) => (
-              <tr key={label}>
-                <td>
-                  <Typography.Text strong>{label}</Typography.Text>
-                </td>
-                <td>{input}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <FormFieldTable fields={fields} />
         <Button trackerId="generate_gen3_sid" htmlType="submit">
           Generate
         </Button>
@@ -123,7 +99,7 @@ const OptionsForm = () => {
 const initialState: FormState = {
   tid: toDecimalString(1234),
   feebasSeed: toHexString(0xabcd),
-  minAdvances: toDecimalString(0),
+  initialAdvances: toDecimalString(0),
   maxAdvances: toDecimalString(10000),
 };
 
@@ -138,16 +114,16 @@ export const Gen3Sid = ({ game }: Props) => {
     <Flex vertical gap={16}>
       <Formik
         initialValues={initialState}
-        onSubmit={async (opts) => {
+        onSubmit={(opts) => {
           const tid = fromDecimalString(opts.tid);
           const feebasSeed = fromHexString(opts.feebasSeed);
-          const minAdvances = fromDecimalString(opts.minAdvances);
+          const initialAdvances = fromDecimalString(opts.initialAdvances);
           const maxAdvances = fromDecimalString(opts.maxAdvances);
 
           if (
             tid === null ||
             feebasSeed === null ||
-            minAdvances === null ||
+            initialAdvances === null ||
             maxAdvances === null
           ) {
             return;
@@ -158,19 +134,19 @@ export const Gen3Sid = ({ game }: Props) => {
               ? rs_sid_from_feebas_seed
               : emerald_sid_from_feebas_seed;
 
-          const results = await generate(
+          const results = generate(
             tid,
             feebasSeed,
-            minAdvances,
+            initialAdvances,
             maxAdvances,
           );
 
-          setResults([...results].map((sid) => ({ sid })));
+          setResults([...results].map(({ sid }) => ({ sid })));
         }}
       >
         <OptionsForm />
       </Formik>
-      <StyledTable columns={columns} dataSource={results} />
+      <ResultTable columns={columns} dataSource={results} />
     </Flex>
   );
 };

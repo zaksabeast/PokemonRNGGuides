@@ -41,6 +41,11 @@ export default tseslint.config(
               message: 'Use `import { Button } from "~/components";`',
             },
             {
+              name: "formik",
+              importNames: ["Form"],
+              message: 'Use `import { Form } from "~/components";`',
+            },
+            {
               name: "@amplitude/analytics-browser",
               message: "Import from `~/analytics`",
             },

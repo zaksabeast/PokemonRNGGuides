@@ -1,14 +1,11 @@
 import React from "react";
 import {
-  Flex,
-  Button,
   FormikInput,
-  Form,
-  ResultTable,
   ResultColumn,
-  FormFieldTable,
   Icon,
   FormikSelect,
+  RngToolForm,
+  RngToolSubmit,
 } from "~/components";
 import {
   Gen2PokeFilter,
@@ -16,7 +13,6 @@ import {
   crystal_generate_starters,
   type Gen2Spread,
 } from "rng_tools";
-import { Formik } from "formik";
 import {
   DecimalString,
   fromDecimalString,
@@ -69,59 +65,7 @@ type FormState = {
   filter: Gen2PokeFilter;
 };
 
-const OptionsForm = () => {
-  const fields: Field[] = [
-    {
-      label: "ADiv Index",
-      input: <FormikInput<FormState> name="adivIndex" />,
-    },
-    {
-      label: "SDiv Index",
-      input: <FormikInput<FormState> name="sdivIndex" />,
-    },
-    {
-      label: "Div",
-      input: <FormikInput<FormState> name="div" />,
-    },
-    {
-      label: "State",
-      input: <FormikInput<FormState> name="state" />,
-    },
-    {
-      label: "Start Advance",
-      input: <FormikInput<FormState> name="startAdvance" />,
-    },
-    {
-      label: "Advance Count",
-      input: <FormikInput<FormState> name="advanceCount" disabled />,
-    },
-    {
-      label: "Filter",
-      input: (
-        <FormikSelect<FormState, "filter">
-          name="filter"
-          options={["Any", "Shiny", "MaxDv"].map((filter) => ({
-            label: filter,
-            value: filter,
-          }))}
-        />
-      ),
-    },
-  ];
-
-  return (
-    <Form>
-      <Flex vertical gap={8}>
-        <FormFieldTable fields={fields} />
-        <Button trackerId="generate_gen2_starters" htmlType="submit">
-          Generate
-        </Button>
-      </Flex>
-    </Form>
-  );
-};
-
-const initialState: FormState = {
+const initialValues: FormState = {
   div: toHexString(0),
   adivIndex: toDecimalString(0),
   sdivIndex: toDecimalString(0),
@@ -131,6 +75,45 @@ const initialState: FormState = {
   filter: "Shiny",
 };
 
+const fields: Field[] = [
+  {
+    label: "ADiv Index",
+    input: <FormikInput<FormState> name="adivIndex" />,
+  },
+  {
+    label: "SDiv Index",
+    input: <FormikInput<FormState> name="sdivIndex" />,
+  },
+  {
+    label: "Div",
+    input: <FormikInput<FormState> name="div" />,
+  },
+  {
+    label: "State",
+    input: <FormikInput<FormState> name="state" />,
+  },
+  {
+    label: "Start Advance",
+    input: <FormikInput<FormState> name="startAdvance" />,
+  },
+  {
+    label: "Advance Count",
+    input: <FormikInput<FormState> name="advanceCount" disabled />,
+  },
+  {
+    label: "Filter",
+    input: (
+      <FormikSelect<FormState, "filter">
+        name="filter"
+        options={["Any", "Shiny", "MaxDv"].map((filter) => ({
+          label: filter,
+          value: filter,
+        }))}
+      />
+    ),
+  },
+];
+
 type Props = {
   type: "starter" | "celebi";
 };
@@ -138,36 +121,40 @@ type Props = {
 export const Gen2PokemonRng = ({ type }: Props) => {
   const [results, setResults] = React.useState<Gen2Spread[]>([]);
 
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
+    (opts) => {
+      const div = fromHexString(opts.div) ?? 0;
+      const startAdvance = fromDecimalString(opts.startAdvance) ?? 0;
+      const advanceCount = fromDecimalString(opts.advanceCount) ?? 0;
+
+      const generator =
+        type === "starter"
+          ? crystal_generate_starters
+          : crystal_generate_celebi;
+
+      const results = generator(
+        div >>> 8,
+        div & 0xff,
+        fromDecimalString(opts.adivIndex) ?? 0,
+        fromDecimalString(opts.sdivIndex) ?? 0,
+        fromHexString(opts.state) ?? 0,
+        fromDecimalString(opts.startAdvance) ?? 0,
+        startAdvance + advanceCount,
+        opts.filter,
+      );
+      setResults(results);
+    },
+    [type],
+  );
+
   return (
-    <Flex vertical gap={16}>
-      <Formik
-        initialValues={initialState}
-        onSubmit={(opts) => {
-          const div = fromHexString(opts.div) ?? 0;
-          const startAdvance = fromDecimalString(opts.startAdvance) ?? 0;
-          const advanceCount = fromDecimalString(opts.advanceCount) ?? 0;
-
-          const generator =
-            type === "starter"
-              ? crystal_generate_starters
-              : crystal_generate_celebi;
-
-          const results = generator(
-            div >>> 8,
-            div & 0xff,
-            fromDecimalString(opts.adivIndex) ?? 0,
-            fromDecimalString(opts.sdivIndex) ?? 0,
-            fromHexString(opts.state) ?? 0,
-            fromDecimalString(opts.startAdvance) ?? 0,
-            startAdvance + advanceCount,
-            opts.filter,
-          );
-          setResults(results);
-        }}
-      >
-        <OptionsForm />
-      </Formik>
-      <ResultTable columns={columns} dataSource={results} />
-    </Flex>
+    <RngToolForm<FormState, Gen2Spread>
+      fields={fields}
+      columns={columns}
+      results={results}
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      submitTrackerId="generate_gen2_pokemon"
+    />
   );
 };

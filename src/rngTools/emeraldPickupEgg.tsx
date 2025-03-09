@@ -1,18 +1,14 @@
 import React from "react";
 import {
-  Flex,
-  Button,
   FormikInput,
-  Form,
-  ResultTable,
   ResultColumn,
-  FormFieldTable,
   FormikSelect,
   IvInput,
   Field,
+  RngToolForm,
+  RngToolSubmit,
 } from "~/components";
 import { emerald_egg_pickup_states, Ivs, Gen3PickupMethod } from "rng_tools";
-import { Formik } from "formik";
 import {
   HexString,
   DecimalString,
@@ -66,7 +62,7 @@ const maxIvs: Ivs = {
   spe: 31,
 };
 
-const initialState: FormState = {
+const initialValues: FormState = {
   delay: toDecimalString(3),
   seed: toHexString(0),
   initial_advances: toDecimalString(1000),
@@ -78,67 +74,53 @@ const initialState: FormState = {
   filter_max_ivs: maxIvs,
 };
 
-const OptionsForm = () => {
-  const fields: Field[] = [
-    {
-      label: "Seed",
-      input: <FormikInput<FormState> name="seed" />,
-    },
-    {
-      label: "Initial advances",
-      input: <FormikInput<FormState> name="initial_advances" />,
-    },
-    {
-      label: "Max advances",
-      input: <FormikInput<FormState> name="max_advances" />,
-    },
-    {
-      label: "Delay",
-      input: <FormikInput<FormState> name="delay" />,
-    },
-    {
-      label: "Parent 1 IVs",
-      input: <IvInput<FormState> name="parent1_ivs" />,
-    },
-    {
-      label: "Parent 2 IVs",
-      input: <IvInput<FormState> name="parent2_ivs" />,
-    },
-    {
-      label: "Method",
-      input: (
-        <FormikSelect<FormState, "method">
-          name="method"
-          options={[
-            { label: "Normal", value: "EmeraldBred" },
-            { label: "Split", value: "EmeraldBredSplit" },
-            { label: "Alternate", value: "EmeraldBredAlternate" },
-          ]}
-        />
-      ),
-    },
-
-    {
-      label: "Egg min IVs",
-      input: <IvInput<FormState> name="filter_min_ivs" />,
-    },
-    {
-      label: "Egg max IVs",
-      input: <IvInput<FormState> name="filter_max_ivs" />,
-    },
-  ];
-
-  return (
-    <Form>
-      <Flex vertical gap={8}>
-        <FormFieldTable fields={fields} />
-        <Button trackerId="generate_emerald_pickup_egg" htmlType="submit">
-          Generate
-        </Button>
-      </Flex>
-    </Form>
-  );
-};
+const fields: Field[] = [
+  {
+    label: "Seed",
+    input: <FormikInput<FormState> name="seed" />,
+  },
+  {
+    label: "Initial advances",
+    input: <FormikInput<FormState> name="initial_advances" />,
+  },
+  {
+    label: "Max advances",
+    input: <FormikInput<FormState> name="max_advances" />,
+  },
+  {
+    label: "Delay",
+    input: <FormikInput<FormState> name="delay" />,
+  },
+  {
+    label: "Parent 1 IVs",
+    input: <IvInput<FormState> name="parent1_ivs" />,
+  },
+  {
+    label: "Parent 2 IVs",
+    input: <IvInput<FormState> name="parent2_ivs" />,
+  },
+  {
+    label: "Method",
+    input: (
+      <FormikSelect<FormState, "method">
+        name="method"
+        options={[
+          { label: "Normal", value: "EmeraldBred" },
+          { label: "Split", value: "EmeraldBredSplit" },
+          { label: "Alternate", value: "EmeraldBredAlternate" },
+        ]}
+      />
+    ),
+  },
+  {
+    label: "Egg min IVs",
+    input: <IvInput<FormState> name="filter_min_ivs" />,
+  },
+  {
+    label: "Egg max IVs",
+    input: <IvInput<FormState> name="filter_max_ivs" />,
+  },
+];
 
 type Props = {
   lua?: boolean;
@@ -147,50 +129,54 @@ type Props = {
 export const EmeraldPickupEgg = ({ lua = false }: Props) => {
   const [results, setResults] = React.useState<Result[]>([]);
 
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
+    (opts) => {
+      const initialAdvances = fromDecimalString(opts.initial_advances);
+      const maxAdvances = fromDecimalString(opts.max_advances);
+      const seed = fromHexString(opts.seed);
+      const delay = fromDecimalString(opts.delay);
+
+      if (
+        initialAdvances == null ||
+        maxAdvances == null ||
+        seed == null ||
+        delay == null
+      ) {
+        return;
+      }
+
+      const results = emerald_egg_pickup_states({
+        ...opts,
+        seed,
+        delay,
+        initial_advances: initialAdvances,
+        max_advances: maxAdvances,
+        parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
+        lua_adjustment: lua,
+        filter: {
+          max_ivs: opts.filter_max_ivs,
+          min_ivs: opts.filter_min_ivs,
+        },
+      });
+
+      setResults(
+        results.map((result) => ({
+          advance: result.advance,
+          ...result.ivs,
+        })),
+      );
+    },
+    [lua],
+  );
+
   return (
-    <Flex vertical gap={16}>
-      <Formik
-        initialValues={initialState}
-        onSubmit={(opts) => {
-          const initialAdvances = fromDecimalString(opts.initial_advances);
-          const maxAdvances = fromDecimalString(opts.max_advances);
-          const seed = fromHexString(opts.seed);
-          const delay = fromDecimalString(opts.delay);
-
-          if (
-            initialAdvances == null ||
-            maxAdvances == null ||
-            seed == null ||
-            delay == null
-          ) {
-            return;
-          }
-
-          const results = emerald_egg_pickup_states({
-            ...opts,
-            seed,
-            delay,
-            initial_advances: initialAdvances,
-            max_advances: maxAdvances,
-            parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
-            lua_adjustment: lua,
-            filter: {
-              max_ivs: opts.filter_max_ivs,
-              min_ivs: opts.filter_min_ivs,
-            },
-          });
-
-          setResults(
-            results.map((result) => ({
-              advance: result.advance,
-              ...result.ivs,
-            })),
-          );
-        }}
-      >
-        <OptionsForm />
-      </Formik>
-      <ResultTable columns={columns} dataSource={results} />
-    </Flex>
+    <RngToolForm<FormState, Result>
+      fields={fields}
+      columns={columns}
+      results={results}
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      submitTrackerId="generate_emerald_pickup_egg"
+    />
   );
 };

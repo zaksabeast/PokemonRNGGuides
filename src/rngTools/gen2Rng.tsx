@@ -5,9 +5,9 @@ import {
   Input,
   Form,
   ResultTable,
+  ResultColumn,
   FormFieldTable,
 } from "~/components";
-import { TableProps } from "antd";
 import { gen2_generate_rng_states } from "rng_tools";
 import { Formik, useFormikContext } from "formik";
 import {
@@ -25,7 +25,7 @@ type RngState = {
   div: number;
 };
 
-const columns: TableProps<unknown>["columns"] = [
+const columns: ResultColumn<RngState>[] = [
   {
     title: "Advance",
     dataIndex: "advance",

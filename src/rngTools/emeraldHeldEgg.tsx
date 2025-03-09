@@ -5,12 +5,12 @@ import {
   Input,
   Form,
   ResultTable,
+  ResultColumn,
   FormFieldTable,
   FormikSelect,
   Field,
   FormikSwitch,
 } from "~/components";
-import { TableProps } from "antd";
 import {
   emerald_egg_held_states,
   Gen3HeldEgg,
@@ -29,7 +29,7 @@ import { species } from "~/types/species";
 import { nature } from "~/types/nature";
 import { gender } from "~/types/gender";
 
-const columns: TableProps<unknown>["columns"] = [
+const columns: ResultColumn<Gen3HeldEgg>[] = [
   { title: "Advance", dataIndex: "advance", key: "advance" },
   { title: "Redraws", dataIndex: "redraws", key: "redraws" },
   {

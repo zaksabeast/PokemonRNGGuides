@@ -5,12 +5,12 @@ import {
   Input,
   Form,
   ResultTable,
+  ResultColumn,
   FormFieldTable,
   FormikSelect,
   IvInput,
   Field,
 } from "~/components";
-import { TableProps } from "antd";
 import { emerald_egg_pickup_states, Ivs, Gen3PickupMethod } from "rng_tools";
 import { Formik, useFormikContext } from "formik";
 import {
@@ -26,7 +26,7 @@ type Result = {
   advance: number;
 } & Ivs;
 
-const columns: TableProps<unknown>["columns"] = [
+const columns: ResultColumn<Result>[] = [
   { title: "Advance", dataIndex: "advance", key: "advance" },
   { title: "HP", dataIndex: "hp", key: "hp" },
   { title: "Atk", dataIndex: "atk", key: "atk" },

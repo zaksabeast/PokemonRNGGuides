@@ -5,11 +5,11 @@ import {
   Input,
   Form,
   ResultTable,
+  ResultColumn,
   FormFieldTable,
   Icon,
   FormikSelect,
 } from "~/components";
-import { TableProps } from "antd";
 import {
   Gen2PokeFilter,
   crystal_generate_celebi,
@@ -28,7 +28,7 @@ import {
 
 const YesIcon = () => <Icon name="CheckCircle" color="Success" size={20} />;
 
-const columns: TableProps<unknown>["columns"] = [
+const columns: ResultColumn<Gen2Spread>[] = [
   {
     title: "Advance",
     dataIndex: "advance",
@@ -38,7 +38,7 @@ const columns: TableProps<unknown>["columns"] = [
     title: "State",
     dataIndex: "state",
     key: "state",
-    render: (state) => state.toString(16),
+    render: (state) => state.toString(16).padStart(4, "0"),
   },
   {
     title: "Shiny",

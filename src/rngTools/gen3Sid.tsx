@@ -5,9 +5,9 @@ import {
   Input,
   Form,
   ResultTable,
+  ResultColumn,
   FormFieldTable,
 } from "~/components";
-import { TableProps } from "antd";
 import {
   emerald_sid_from_feebas_seed,
   rs_sid_from_feebas_seed,
@@ -24,7 +24,7 @@ import {
 
 type GeneratorResult = { sid: number };
 
-const columns: TableProps<unknown>["columns"] = [
+const columns: ResultColumn<GeneratorResult>[] = [
   {
     title: "Sid",
     dataIndex: "sid",

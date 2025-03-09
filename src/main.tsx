@@ -7,7 +7,7 @@ import { initAmplitude } from "~/analytics";
 import { ThemeProvider } from "@emotion/react";
 import { antdTheme } from "~/theme";
 import { MDXProvider } from "@mdx-js/react";
-import { markdownComponents } from "~/components/markdown";
+import { markdownComponents } from "~/markdownExports";
 import { MetaTags } from "~/components";
 import { registerSW } from "virtual:pwa-register";
 import { NeedsUpdateNotification } from "~/swRefresh/notification";

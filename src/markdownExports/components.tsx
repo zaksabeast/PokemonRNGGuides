@@ -1,8 +1,6 @@
 import { List, Divider } from "antd";
-import { Typography } from "../typography";
+import { Typography, Flex, Image } from "~/components";
 import styled from "@emotion/styled";
-import { Flex } from "../flex";
-import { Image } from "../image";
 import { Link } from "wouter";
 import { track } from "~/analytics";
 

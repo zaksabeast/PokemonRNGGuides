@@ -1,18 +1,21 @@
 import React from "react";
-import { Flex } from "./flex";
-import { Icon } from "./icons";
-import { Button } from "./button";
+import {
+  Flex,
+  Button,
+  Input,
+  Form,
+  ResultTable,
+  FormFieldTable,
+  Icon,
+  FormikSelect,
+} from "~/components";
 import { TableProps } from "antd";
-import { Input } from "./input";
 import {
   Gen2PokeFilter,
   crystal_generate_celebi,
   crystal_generate_starters,
   type Gen2Spread,
 } from "rng_tools";
-import { Form } from "./form";
-import { ResultTable } from "./resultTable";
-import { FormFieldTable } from "./formFieldTable";
 import { Formik, useFormikContext } from "formik";
 import {
   DecimalString,
@@ -22,7 +25,6 @@ import {
   toDecimalString,
   toHexString,
 } from "~/utils/number";
-import { FormikSelect } from "./select";
 
 const YesIcon = () => <Icon name="CheckCircle" color="Success" size={20} />;
 
@@ -163,7 +165,7 @@ type Props = {
   type: "starter" | "celebi";
 };
 
-export const Gen2StarterRng = ({ type }: Props) => {
+export const Gen2PokemonRng = ({ type }: Props) => {
   const [results, setResults] = React.useState<Gen2Spread[]>([]);
 
   return (

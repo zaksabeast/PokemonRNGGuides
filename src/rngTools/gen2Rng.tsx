@@ -1,10 +1,14 @@
 import React from "react";
-import { Flex } from "./flex";
-import { Button } from "./button";
+import {
+  Flex,
+  Button,
+  Input,
+  Form,
+  ResultTable,
+  FormFieldTable,
+} from "~/components";
 import { TableProps } from "antd";
-import { Input } from "./input";
 import { gen2_generate_rng_states } from "rng_tools";
-import { Form } from "./form";
 import { Formik, useFormikContext } from "formik";
 import {
   DecimalString,
@@ -14,8 +18,6 @@ import {
   toDecimalString,
   toHexString,
 } from "~/utils/number";
-import { ResultTable } from "./resultTable";
-import { FormFieldTable } from "./formFieldTable";
 
 type RngState = {
   advance: number;

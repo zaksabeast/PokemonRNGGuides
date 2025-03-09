@@ -20,17 +20,19 @@ import {
   MarkdownOList,
   MarkdownA,
 } from "./components";
-import { Gen2StarterRng } from "../gen2StarterRng";
-import { Gen2Rng } from "../gen2Rng";
-import { Gen3Sid } from "../gen3Sid";
-import { EmeraldHeldEgg } from "../emeraldHeldEgg";
-import { EmeraldPickupEgg } from "../emeraldPickupEgg";
 import { Alert } from "antd";
-import { YouTubeVideo } from "../youtubeVideo";
-import { PixelImage } from "../pixelImage";
-import { IpsMerger } from "../ipsMerger";
-import { Countdown } from "../countdown";
-import { Flex } from "../flex";
+import {
+  Flex,
+  YouTubeVideo,
+  PixelImage,
+  IpsMerger,
+  Countdown,
+} from "~/components";
+import { Gen2PokemonRng } from "~/rngTools/gen2Pokemon";
+import { Gen2Rng } from "~/rngTools/gen2Rng";
+import { Gen3Sid } from "~/rngTools/gen3Sid";
+import { EmeraldHeldEgg } from "~/rngTools/emeraldHeldEgg";
+import { EmeraldPickupEgg } from "~/rngTools/emeraldPickupEgg";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -59,7 +61,7 @@ export const markdownComponents = {
   IpsMerger,
   Countdown,
   Flex,
-  Gen2StarterRng,
+  Gen2PokemonRng,
   Gen2Rng,
   Gen3Sid,
   EmeraldHeldEgg,

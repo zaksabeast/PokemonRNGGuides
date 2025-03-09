@@ -1,15 +1,17 @@
 import React from "react";
-import { Flex } from "./flex";
-import { Button } from "./button";
+import {
+  Flex,
+  Button,
+  Input,
+  Form,
+  ResultTable,
+  FormFieldTable,
+} from "~/components";
 import { TableProps } from "antd";
-import { Input } from "./input";
 import {
   emerald_sid_from_feebas_seed,
   rs_sid_from_feebas_seed,
 } from "rng_tools";
-import { Form } from "./form";
-import { ResultTable } from "./resultTable";
-import { FormFieldTable } from "./formFieldTable";
 import { Formik, useFormikContext } from "formik";
 import {
   DecimalString,

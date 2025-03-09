@@ -1,13 +1,16 @@
 import React from "react";
-import { Flex } from "./flex";
-import { Button } from "./button";
+import {
+  Flex,
+  Button,
+  Input,
+  Form,
+  ResultTable,
+  FormFieldTable,
+  FormikSelect,
+  Field,
+  FormikSwitch,
+} from "~/components";
 import { TableProps } from "antd";
-import { Input } from "./input";
-import { FormikSelect } from "./select";
-import { FormikSwitch } from "./switch";
-import { FormFieldTable, Field } from "./formFieldTable";
-import { ResultTable } from "./resultTable";
-import { Form } from "./form";
 import {
   emerald_egg_held_states,
   Gen3HeldEgg,

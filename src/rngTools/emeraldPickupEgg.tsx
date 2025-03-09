@@ -1,12 +1,16 @@
 import React from "react";
-import { Flex } from "./flex";
-import { Button } from "./button";
+import {
+  Flex,
+  Button,
+  Input,
+  Form,
+  ResultTable,
+  FormFieldTable,
+  FormikSelect,
+  IvInput,
+  Field,
+} from "~/components";
 import { TableProps } from "antd";
-import { Input } from "./input";
-import { FormikSelect } from "./select";
-import { FormFieldTable, Field } from "./formFieldTable";
-import { ResultTable } from "./resultTable";
-import { Form } from "./form";
 import { emerald_egg_pickup_states, Ivs, Gen3PickupMethod } from "rng_tools";
 import { Formik, useFormikContext } from "formik";
 import {
@@ -17,7 +21,6 @@ import {
   toHexString,
   fromHexString,
 } from "~/utils/number";
-import { IvInput } from "./ivInput";
 
 type Result = {
   advance: number;

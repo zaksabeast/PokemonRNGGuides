@@ -21,7 +21,7 @@ import {
   fromDecimalString,
   toDecimalString,
 } from "~/utils/number";
-import { species } from "~/types/species";
+import { gen3Species } from "~/types/species";
 import { nature } from "~/types/nature";
 import { gender } from "~/types/gender";
 
@@ -159,7 +159,9 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "egg_species">
         name="egg_species"
-        options={species.map((spec) => ({ label: spec, value: spec }))}
+        options={gen3Species
+          .sort((first, second) => first.localeCompare(second))
+          .map((spec) => ({ label: spec, value: spec }))}
       />
     ),
   },

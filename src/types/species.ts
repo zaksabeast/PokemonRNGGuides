@@ -1013,3 +1013,5 @@ export const species = [
   "Clodsire",
   "Annihilape",
 ] as const satisfies Species[];
+
+export const gen3Species = species.slice(0, 387);

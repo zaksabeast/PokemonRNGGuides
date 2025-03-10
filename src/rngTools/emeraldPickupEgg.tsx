@@ -65,8 +65,8 @@ const maxIvs: Ivs = {
 const initialValues: FormState = {
   delay: toDecimalString(3),
   seed: toHexString(0),
-  initial_advances: toDecimalString(1000),
-  max_advances: toDecimalString(100),
+  initial_advances: toDecimalString(100),
+  max_advances: toDecimalString(1000),
   method: "EmeraldBred",
   parent1_ivs: maxIvs,
   parent2_ivs: maxIvs,

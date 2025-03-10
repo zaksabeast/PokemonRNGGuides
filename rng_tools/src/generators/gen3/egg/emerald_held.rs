@@ -38,17 +38,24 @@ impl Gen3HeldEgg {
         species: Species,
         tid: u16,
         sid: u16,
-        delay: u32,
+        delay: i16,
         lua_adjustment: bool,
     ) -> Self {
         let pid = egg.pid;
+        let mut advance = egg
+            .advance
+            // Lua scripts are off by 1
+            .saturating_add(lua_adjustment as u32);
+
+        if delay > 0 {
+            advance = advance.saturating_sub(delay as u32);
+        } else {
+            advance = advance.saturating_add(delay.abs() as u32);
+        }
+
         Self {
             pid,
-            advance: egg
-                .advance
-                // Lua scripts are off by 1
-                .saturating_add(lua_adjustment as u32)
-                .saturating_sub(delay),
+            advance,
             redraws: egg.redraws,
             nature: Nature::from_pid(pid),
             gender: species.gender(pid),
@@ -91,7 +98,7 @@ impl Egg3HeldFilters {
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Egg3HeldOptions {
-    pub delay: u32,
+    pub delay: i16,
     pub initial_advances: usize,
     pub max_advances: usize,
     pub female_has_everstone: bool,
@@ -856,7 +863,7 @@ mod test {
     }
 
     #[test]
-    fn delay() {
+    fn positive_delay() {
         let mut opts = Egg3HeldOptions {
             delay: 0,
             compatability: Compatability::GetAlong,
@@ -887,6 +894,42 @@ mod test {
             .zip(second_result.into_iter())
             .for_each(|(first, mut second)| {
                 second.advance = second.advance.saturating_add(10);
+                assert_eq!(first, second);
+            });
+    }
+
+    #[test]
+    fn negative_delay() {
+        let mut opts = Egg3HeldOptions {
+            delay: 0,
+            compatability: Compatability::GetAlong,
+            calibration: 18,
+            initial_advances: 1000,
+            max_advances: 3,
+            min_redraw: 0,
+            max_redraw: 1,
+            female_has_everstone: true,
+            female_nature: Nature::Hardy,
+            tid: 0,
+            sid: 0,
+            lua_adjustment: false,
+            egg_species: Species::Bulbasaur,
+            filters: Egg3HeldFilters {
+                shiny: false,
+                nature: None,
+                gender: None,
+            },
+        };
+
+        let first_result = emerald_egg_held_states(&opts);
+        opts.delay = -10;
+        let second_result = emerald_egg_held_states(&opts);
+
+        first_result
+            .into_iter()
+            .zip(second_result.into_iter())
+            .for_each(|(first, mut second)| {
+                second.advance = second.advance.saturating_sub(10);
                 assert_eq!(first, second);
             });
     }

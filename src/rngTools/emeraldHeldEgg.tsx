@@ -65,8 +65,8 @@ type FormState = {
 
 const initialValues: FormState = {
   delay: toDecimalString(0),
-  initial_advances: toDecimalString(1000),
-  max_advances: toDecimalString(100),
+  initial_advances: toDecimalString(100),
+  max_advances: toDecimalString(1000),
   female_has_everstone: false,
   female_nature: "Adamant",
   calibration: toDecimalString(18),
@@ -82,18 +82,6 @@ const initialValues: FormState = {
 };
 
 const fields: Field[] = [
-  {
-    label: "Initial advances",
-    input: <FormikInput<FormState> name="initial_advances" />,
-  },
-  {
-    label: "Max advances",
-    input: <FormikInput<FormState> name="max_advances" />,
-  },
-  {
-    label: "Delay",
-    input: <FormikInput<FormState> name="delay" />,
-  },
   {
     label: "Female has everstone",
     input: (
@@ -113,17 +101,17 @@ const fields: Field[] = [
     ),
   },
   {
-    label: "Calibration",
-    input: <FormikInput<FormState> name="calibration" />,
+    label: "Egg species",
+    input: (
+      <FormikSelect<FormState, "egg_species">
+        name="egg_species"
+        options={gen3Species
+          .sort((first, second) => first.localeCompare(second))
+          .map((spec) => ({ label: spec, value: spec }))}
+      />
+    ),
   },
-  {
-    label: "Min redraw",
-    input: <FormikInput<FormState> name="min_redraw" />,
-  },
-  {
-    label: "Max redraw",
-    input: <FormikInput<FormState> name="max_redraw" />,
-  },
+
   {
     label: "Compatability",
     input: (
@@ -147,6 +135,10 @@ const fields: Field[] = [
     ),
   },
   {
+    label: "Calibration",
+    input: <FormikInput<FormState> name="calibration" />,
+  },
+  {
     label: "TID",
     input: <FormikInput<FormState> name="tid" />,
   },
@@ -155,15 +147,24 @@ const fields: Field[] = [
     input: <FormikInput<FormState> name="sid" />,
   },
   {
-    label: "Egg species",
-    input: (
-      <FormikSelect<FormState, "egg_species">
-        name="egg_species"
-        options={gen3Species
-          .sort((first, second) => first.localeCompare(second))
-          .map((spec) => ({ label: spec, value: spec }))}
-      />
-    ),
+    label: "Initial advances",
+    input: <FormikInput<FormState> name="initial_advances" />,
+  },
+  {
+    label: "Max advances",
+    input: <FormikInput<FormState> name="max_advances" />,
+  },
+  {
+    label: "Delay",
+    input: <FormikInput<FormState> name="delay" />,
+  },
+  {
+    label: "Min redraw",
+    input: <FormikInput<FormState> name="min_redraw" />,
+  },
+  {
+    label: "Max redraw",
+    input: <FormikInput<FormState> name="max_redraw" />,
   },
   {
     label: "Filter shiny",

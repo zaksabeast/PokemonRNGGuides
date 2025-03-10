@@ -75,11 +75,11 @@ export const guides = {
   },
   "/e-tips-rng": {
     meta: {
-      title: "Basic rules of Gen 3 RNG",
+      title: "RNG Info",
       description:
         "How to advance the RNG and tips to make everything more stable",
       slug: "/e-tips-rng",
-      isRoughDraft: true,
+      isRoughDraft: false,
       tag: "any",
       addedOn: null,
       file: "guides/Emerald/Basic Rules of RNG.mdx",

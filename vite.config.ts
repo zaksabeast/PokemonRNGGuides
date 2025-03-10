@@ -17,7 +17,9 @@ export default defineConfig({
     react(),
     wasm(),
     VitePWA({
-      registerType: "autoUpdate",
+      registerType: "prompt",
+      srcDir: "src",
+      filename: "sw.ts",
       workbox: {
         maximumFileSizeToCacheInBytes: 4000000,
         navigateFallbackDenylist: [/\//],

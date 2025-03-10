@@ -1,4 +1,5 @@
-use crate::rng::lcrng::{Lcrng, Rng, StateIterator};
+use crate::rng::lcrng::Lcrng;
+use crate::rng::{Rng, StateIterator};
 use crate::{
     G3Idx::{self, *},
     Ivs,

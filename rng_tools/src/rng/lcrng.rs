@@ -1,27 +1,5 @@
-use std::{
-    iter::{DoubleEndedIterator, Iterator, Skip},
-    ops::Rem,
-};
-
-pub struct StateIterator<T> {
-    rng: T,
-}
-
-impl<T: Rng + Clone> StateIterator<T> {
-    pub fn new(rng: T) -> Self {
-        Self { rng }
-    }
-}
-
-impl<T: Rng + Clone> Iterator for StateIterator<T> {
-    type Item = T;
-
-    fn next(&mut self) -> Option<T> {
-        let current = Some(self.rng.clone());
-        self.rng.next();
-        current
-    }
-}
+use super::rng_trait::{GetRand, Rng};
+use std::iter::{DoubleEndedIterator, Iterator, Skip};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Lcrng {
@@ -79,10 +57,6 @@ impl DoubleEndedIterator for Lcrng {
     }
 }
 
-pub trait GetRand<T> {
-    fn get(&mut self) -> T;
-}
-
 impl GetRand<u8> for Lcrng {
     fn get(&mut self) -> u8 {
         self.next_u16() as u8
@@ -118,31 +92,6 @@ impl GetRand<u32> for Skip<Lcrng> {
         (GetRand::<u16>::get(self) as u32) << 16 | GetRand::<u16>::get(self) as u32
     }
 }
-
-pub trait Rng: Iterator {
-    fn rand<T>(&mut self) -> T
-    where
-        Self: GetRand<T>,
-    {
-        self.get()
-    }
-
-    fn rand_max<T>(&mut self, max: T) -> T
-    where
-        Self: GetRand<T>,
-        T: Rem<Output = T>,
-    {
-        self.rand::<T>() % max
-    }
-
-    fn advance(&mut self, count: usize) {
-        for _ in 0..count {
-            self.next();
-        }
-    }
-}
-
-impl<T: Iterator> Rng for Skip<T> {}
 
 impl Rng for Lcrng {}
 
@@ -315,21 +264,6 @@ mod test {
     }
 
     #[test]
-    fn demo_state_iterator() {
-        let result: Vec<u32> = StateIterator::new(Lcrng::new_prng(0))
-            .skip(0)
-            .take(3)
-            .map(|rng| {
-                // Use the rng at the current state here
-                // This will return the current rng, just for demo purposes
-                rng.state
-            })
-            .collect();
-
-        assert_eq!(result, [0x00000000, 0x00006073, 0xe97e7b6a]);
-    }
-
-    #[test]
     fn demo_rands() {
         // Get free iteration tools, like advancing and collecting
         let result: Vec<u32> = Lcrng::new_prng(0).skip(0).take(4).collect();
@@ -342,21 +276,5 @@ mod test {
 
         // Custom behavior for different types, such as u32 being u16 << 16 | u16
         assert_eq!(rng.rand::<u32>(), 0x527131b0);
-    }
-
-    #[test]
-    fn test() {
-        // let mut rng = Lcrng::new_prng(0);
-        // rng.advance(1);
-        // let test = rng.rand::<u16>();
-        // assert_eq!(test, 0xe97e);
-
-        // rng.advance(1);
-        // let test = rng.rand::<u16>();
-        // assert_eq!(test, 0x31b0);
-
-        let mut rng = Lcrng::new_prng(0);
-        rng.advance(0);
-        assert_eq!(rng.state, 0)
     }
 }

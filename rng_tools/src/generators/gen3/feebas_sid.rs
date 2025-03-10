@@ -1,4 +1,5 @@
-use crate::rng::lcrng::{Lcrng, Rng, StateIterator};
+use crate::rng::lcrng::Lcrng;
+use crate::rng::{Rng, StateIterator};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;

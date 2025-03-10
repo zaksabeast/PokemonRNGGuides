@@ -17,7 +17,7 @@ export default defineConfig({
     react(),
     wasm(),
     VitePWA({
-      registerType: "prompt",
+      registerType: "autoUpdate",
       srcDir: "src",
       filename: "sw.ts",
       workbox: {

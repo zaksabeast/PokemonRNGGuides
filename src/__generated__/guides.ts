@@ -1385,22 +1385,6 @@ export const guides = {
         import("~/../guides/Tools and Emulators/How to Extract GBA Bios.mdx"),
     ),
   },
-  "/install-pokereader": {
-    meta: {
-      title: "How to Install PokeReader",
-      description: "Installing a tool on your 3DS or Citra to help RNG Pokémon",
-      slug: "/install-pokereader",
-      isRoughDraft: false,
-      tag: "cfw",
-      addedOn: null,
-      file: "guides/Tools and Emulators/How to Install PokeReader.mdx",
-      category: "Tools and Emulators",
-    },
-    Guide: React.lazy(
-      () =>
-        import("~/../guides/Tools and Emulators/How to Install PokeReader.mdx"),
-    ),
-  },
   "/desmume-setup": {
     meta: {
       title: "Desmume Setup",
@@ -1507,6 +1491,37 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Transporter Patches.mdx"),
+    ),
+  },
+  "/install-pokereader": {
+    meta: {
+      title: "PokeReader 3DS",
+      description: "Installing a tool on your 3DS to help RNG Pokémon",
+      slug: "/install-pokereader",
+      isRoughDraft: false,
+      tag: "cfw",
+      addedOn: null,
+      file: "guides/Tools and Emulators/3DS PokeReader.mdx",
+      category: "Tools and Emulators",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
+    ),
+  },
+  "/install-pokereader-emu": {
+    meta: {
+      title: "PokeReader Lime3DS",
+      description:
+        "Installing a tool on a 3DS emulator, such as Azahar, Lime3DS, Citra, to help RNG Pokémon",
+      slug: "/install-pokereader-emu",
+      isRoughDraft: false,
+      tag: "emu",
+      addedOn: null,
+      file: "guides/Tools and Emulators/Emu PokeReader.mdx",
+      category: "Tools and Emulators",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/Emu PokeReader.mdx"),
     ),
   },
   "/misc-3ds-ips-luma-citra": {
@@ -2168,7 +2183,6 @@ export const guideSlugs = [
   z.literal("/sysbot-lpa-mmo"),
   z.literal("/citrarng-setup"),
   z.literal("/misc-dolphin-gba-bios"),
-  z.literal("/install-pokereader"),
   z.literal("/desmume-setup"),
   z.literal("/install-capturesight"),
   z.literal("/misc-dolphin-connect-vba"),
@@ -2176,6 +2190,8 @@ export const guideSlugs = [
   z.literal("/ntr-helper-usage"),
   z.literal("/mgba-setup"),
   z.literal("/transporter-patches"),
+  z.literal("/install-pokereader"),
+  z.literal("/install-pokereader-emu"),
   z.literal("/misc-3ds-ips-luma-citra"),
   z.literal("/emulator-b2w2-wild"),
   z.literal("/bw2-egg"),

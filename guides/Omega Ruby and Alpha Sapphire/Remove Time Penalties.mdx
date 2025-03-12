@@ -1,0 +1,43 @@
+---
+title: "Remove Time Penalties"
+description: "Change your Omega Ruby or Alpha Sapphire time without penalities!"
+slug: "oras-remove-time-penalty"
+tag: "cfw"
+addedOn: "2025-03-14"
+---
+
+The game will lock time based events for 24 hours when any of these happen:
+
+- A save is moved between consoles.
+- A cartridge was saved on one console, then played on another.
+- A save is copied from a physical console to an emulator.
+- A physical console's time is adjusted (emulator is fine).
+
+Adjusting time on emulators is fine because it acts as if real world time has passed, not as if you're changing console settings.
+
+## Emulators (Citra, Lime3DS, Azahar)
+
+1. Set your emulator date to be earlier than your desired date.
+2. Start the game and save.
+
+That's it! You can now set the date to any future date without penalty.
+
+## Physical Consoles
+
+1. Update your Pokemon Game to the latest version.
+2. Set your console date to be earlier than your desired date.
+3. Start the game, save, then close the game.
+4. Enable IPS patching with [our patch guide](/misc-3ds-ips-luma-citra).
+5. Create a Luma patch folder if it doesn't exist:
+   - Omega Ruby: `/luma/titles/000400000011C400/`
+   - Alpha Sapphire: `/luma/titles/000400000011C500/`
+6. Download the `code.ips` for your specific game and copy it to the patch folder
+   - [Omega Ruby code.ips](/downloads/or-remove-time-penalty/code.ips)
+   - [Alpha Sapphire code.ips](/downloads/as-remove-time-penalty/code.ips)
+
+If you run into any issues in the future, remove the patch and follow those steps again.
+
+## Credits
+
+- Zaksabeast for looking into this and making the time penality removal patch.
+- Rebel on Discord for helping test.

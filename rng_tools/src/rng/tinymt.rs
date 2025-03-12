@@ -1,3 +1,6 @@
+use super::GetRand;
+use super::Rng;
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
 pub struct TinyMT {
     state: [u32; 4],
@@ -51,11 +54,27 @@ impl TinyMT {
         t0
     }
 
-    pub fn next(&mut self) -> u32 {
+    fn next_u32(&mut self) -> u32 {
         self.next_state();
         self.temper()
     }
 }
+
+impl Iterator for TinyMT {
+    type Item = u32;
+
+    fn next(&mut self) -> Option<u32> {
+        Some(self.next_u32())
+    }
+}
+
+impl GetRand<u32> for TinyMT {
+    fn get(&mut self) -> u32 {
+        self.next().unwrap()
+    }
+}
+
+impl Rng for TinyMT {}
 
 #[cfg(test)]
 mod test {
@@ -70,7 +89,7 @@ mod test {
             rng.next_state();
         }
 
-        assert_eq!(rng.next(), 0x670e7a39);
+        assert_eq!(rng.rand::<u32>(), 0x670e7a39);
         assert_eq!(rng.get_state(), [
             0x5a385202, 0xd9905227, 0x90ffb4e5, 0x3dc72b8f
         ]);
@@ -81,7 +100,7 @@ mod test {
         let mut rng = TinyMT::new(0);
         rng.state = [0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff];
 
-        assert_eq!(rng.next(), 0x7c78fb);
+        assert_eq!(rng.rand::<u32>(), 0x7c78fb);
         assert_eq!(rng.get_state(), [
             0xffffffff, 0x708fee11, 0x7c78fb1e, 0x00000001
         ]);

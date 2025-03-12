@@ -33,6 +33,7 @@ import { Gen2Rng } from "~/rngTools/gen2Rng";
 import { Gen3Sid } from "~/rngTools/gen3Sid";
 import { EmeraldHeldEgg } from "~/rngTools/emeraldHeldEgg";
 import { EmeraldPickupEgg } from "~/rngTools/emeraldPickupEgg";
+import { OrAsMirageSpot } from "~/rngTools/orasMirageSpot";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -66,4 +67,5 @@ export const markdownComponents = {
   Gen3Sid,
   EmeraldHeldEgg,
   EmeraldPickupEgg,
+  OrAsMirageSpot,
 };

@@ -946,6 +946,22 @@ export const guides = {
       () => import("~/../guides/Omega Ruby and Alpha Sapphire/DexNav RNG.mdx"),
     ),
   },
+  "/oras-mirage-spots": {
+    meta: {
+      title: "Mirage Spot",
+      description:
+        "Easily access any Mirage Spots in Omega Ruby and Alpha Sapphire",
+      slug: "/oras-mirage-spots",
+      isRoughDraft: false,
+      tag: "cfw",
+      addedOn: "2025-03-14",
+      file: "guides/Omega Ruby and Alpha Sapphire/Mirage Spot.mdx",
+      category: "Omega Ruby and Alpha Sapphire",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Omega Ruby and Alpha Sapphire/Mirage Spot.mdx"),
+    ),
+  },
   "/retail-oras-egg-mmsc": {
     meta: {
       title: "Egg RNG Guide with Masuda Method or Shiny Charm",
@@ -961,6 +977,25 @@ export const guides = {
       () =>
         import(
           "~/../guides/Omega Ruby and Alpha Sapphire/Egg RNG With Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+  },
+  "/oras-remove-time-penalty": {
+    meta: {
+      title: "Remove Time Penalties",
+      description:
+        "Change your Omega Ruby or Alpha Sapphire time without penalities!",
+      slug: "/oras-remove-time-penalty",
+      isRoughDraft: false,
+      tag: "cfw",
+      addedOn: "2025-03-14",
+      file: "guides/Omega Ruby and Alpha Sapphire/Remove Time Penalties.mdx",
+      category: "Omega Ruby and Alpha Sapphire",
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Omega Ruby and Alpha Sapphire/Remove Time Penalties.mdx"
         ),
     ),
   },
@@ -2155,7 +2190,9 @@ export const guideSlugs = [
   z.literal("/retail-swsh-get-seed-without-cfw"),
   z.literal("/retail-oras-egg-no-mmsc"),
   z.literal("/emulator-oras-dexnav"),
+  z.literal("/oras-mirage-spots"),
   z.literal("/retail-oras-egg-mmsc"),
+  z.literal("/oras-remove-time-penalty"),
   z.literal("/retail-oras-tid"),
   z.literal("/misc-3ds-transporter-nature-tables"),
   z.literal("/transporter-rng-offline"),

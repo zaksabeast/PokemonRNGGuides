@@ -77,10 +77,10 @@ export const Gen3Sid = ({ game }: Props) => {
       const maxAdvances = fromDecimalString(opts.maxAdvances);
 
       if (
-        tid === null ||
-        feebasSeed === null ||
-        initialAdvances === null ||
-        maxAdvances === null
+        tid == null ||
+        feebasSeed == null ||
+        initialAdvances == null ||
+        maxAdvances == null
       ) {
         return;
       }

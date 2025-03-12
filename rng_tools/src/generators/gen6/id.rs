@@ -1,3 +1,4 @@
+use crate::rng::Rng;
 use crate::rng::tinymt::TinyMT;
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
@@ -32,6 +33,6 @@ pub fn generate_gen6_id(seed: u32, min_advances: u32, max_advances: u32) -> Vec<
     }
 
     (min_advances..max_advances)
-        .map(|advances| Gen6Id::new(rng.next(), advances, rng.get_state()))
+        .map(|advances| Gen6Id::new(rng.rand::<u32>(), advances, rng.get_state()))
         .collect()
 }

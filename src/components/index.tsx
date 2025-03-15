@@ -20,3 +20,5 @@ export { IpsMerger } from "./ipsMerger";
 export { Countdown } from "./countdown";
 export { YouTubeVideo } from "./youtubeVideo";
 export { RngToolForm, type RngToolSubmit } from "./rngToolForm";
+export { ShowIf } from "./showIf";
+export { LanguageButton } from "./languageButton";

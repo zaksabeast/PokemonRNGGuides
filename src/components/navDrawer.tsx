@@ -72,24 +72,26 @@ const getGuideMenu = (
   return categories
     .filter((category) => guidesByCategory[category] != null)
     .map((category) => {
-      const guideItems = guidesByCategory[category].map((guide) => {
-        const isNew = dayjs(guide.meta.addedOn).isAfter(
-          dayjs().subtract(7, "days"),
-        );
-        return {
-          key: guide.meta.slug,
-          title: guide.meta.title,
-          label: <Link href={guide.meta.slug}>{guide.meta.title}</Link>,
-          isNew,
-          tag: guide.meta.tag,
-          icon: (
-            <>
-              {/* {isNew && <MenuItemTag tag="new" />} */}
-              <MenuItemTag isNew={isNew} tag={guide.meta.tag} />
-            </>
-          ),
-        };
-      });
+      const guideItems = guidesByCategory[category]
+        .filter((guide) => !guide.meta.hideFromNavDrawer)
+        .map((guide) => {
+          const isNew = dayjs(guide.meta.addedOn).isAfter(
+            dayjs().subtract(7, "days"),
+          );
+          return {
+            key: guide.meta.slug,
+            title: guide.meta.title,
+            label: <Link href={guide.meta.slug}>{guide.meta.title}</Link>,
+            isNew,
+            tag: guide.meta.tag,
+            icon: (
+              <>
+                {/* {isNew && <MenuItemTag tag="new" />} */}
+                <MenuItemTag isNew={isNew} tag={guide.meta.tag} />
+              </>
+            ),
+          };
+        });
 
       const sortedGuideItems = sortBy(guideItems, (item) => [
         item.tag,

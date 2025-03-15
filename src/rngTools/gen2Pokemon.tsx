@@ -21,34 +21,72 @@ import {
   toDecimalString,
   toHexString,
 } from "~/utils/number";
+import { useTranslator, Translations, Translator } from "~/utils/siteLanguage";
+
+const englishTranslations = {
+  Advance: "Advance",
+  State: "State",
+  Shiny: "Shiny",
+  "Max DV": "Max DV",
+  "ADiv Index": "ADiv Index",
+  "SDiv Index": "SDiv Index",
+  Div: "Div",
+  "Start Advance": "Start Advance",
+  "Advance Count": "Advance Count",
+  Filter: "Filter",
+  Any: "Any",
+  Generate: "Generate",
+} as const;
+
+const translations = {
+  en: englishTranslations,
+  es: {
+    "ADiv Index": "Índice ADiv",
+    "SDiv Index": "Índice SDiv",
+    Div: "Div",
+    State: "Estado",
+    "Start Advance": "Avance pausado",
+    "Advance Count": "Conteo de avances",
+    Filter: "Filtro",
+    Any: "Cualquiera",
+    Shiny: "Brillante",
+    "Max DV": "DV Max",
+    Generate: "Generar",
+    Advance: "Avance",
+  },
+} as const satisfies Translations<typeof englishTranslations>;
 
 const YesIcon = () => <Icon name="CheckCircle" color="Success" size={20} />;
 
-const columns: ResultColumn<Gen2Spread>[] = [
-  {
-    title: "Advance",
-    dataIndex: "advance",
-    key: "advance",
-  },
-  {
-    title: "State",
-    dataIndex: "state",
-    key: "state",
-    render: (state) => state.toString(16).padStart(4, "0"),
-  },
-  {
-    title: "Shiny",
-    dataIndex: "shiny",
-    key: "shiny",
-    render: (shiny) => (shiny ? <YesIcon /> : null),
-  },
-  {
-    title: "Max DV",
-    dataIndex: "max_dv",
-    key: "max_dv",
-    render: (max_dv) => (max_dv ? <YesIcon /> : null),
-  },
-];
+const getColumns = (
+  t: Translator<typeof translations>,
+): ResultColumn<Gen2Spread>[] => {
+  return [
+    {
+      title: t("Advance"),
+      dataIndex: "advance",
+      key: "advance",
+    },
+    {
+      title: t("State"),
+      dataIndex: "state",
+      key: "state",
+      render: (state) => state.toString(16).padStart(4, "0"),
+    },
+    {
+      title: t("Shiny"),
+      dataIndex: "shiny",
+      key: "shiny",
+      render: (shiny) => (shiny ? <YesIcon /> : null),
+    },
+    {
+      title: t("Max DV"),
+      dataIndex: "max_dv",
+      key: "max_dv",
+      render: (max_dv) => (max_dv ? <YesIcon /> : null),
+    },
+  ];
+};
 
 type Field = {
   label: string;
@@ -75,50 +113,66 @@ const initialValues: FormState = {
   filter: "Shiny",
 };
 
-const fields: Field[] = [
-  {
-    label: "ADiv Index",
-    input: <FormikInput<FormState> name="adivIndex" />,
-  },
-  {
-    label: "SDiv Index",
-    input: <FormikInput<FormState> name="sdivIndex" />,
-  },
-  {
-    label: "Div",
-    input: <FormikInput<FormState> name="div" />,
-  },
-  {
-    label: "State",
-    input: <FormikInput<FormState> name="state" />,
-  },
-  {
-    label: "Start Advance",
-    input: <FormikInput<FormState> name="startAdvance" />,
-  },
-  {
-    label: "Advance Count",
-    input: <FormikInput<FormState> name="advanceCount" disabled />,
-  },
-  {
-    label: "Filter",
-    input: (
-      <FormikSelect<FormState, "filter">
-        name="filter"
-        options={["Any", "Shiny", "MaxDv"].map((filter) => ({
-          label: filter,
-          value: filter,
-        }))}
-      />
-    ),
-  },
-];
+const getFields = (t: Translator<typeof translations>): Field[] => {
+  return [
+    {
+      label: t("ADiv Index"),
+      input: <FormikInput<FormState> name="adivIndex" />,
+    },
+    {
+      label: t("SDiv Index"),
+      input: <FormikInput<FormState> name="sdivIndex" />,
+    },
+    {
+      label: t("Div"),
+      input: <FormikInput<FormState> name="div" />,
+    },
+    {
+      label: t("State"),
+      input: <FormikInput<FormState> name="state" />,
+    },
+    {
+      label: t("Start Advance"),
+      input: <FormikInput<FormState> name="startAdvance" />,
+    },
+    {
+      label: t("Advance Count"),
+      input: <FormikInput<FormState> name="advanceCount" disabled />,
+    },
+    {
+      label: t("Filter"),
+      input: (
+        <FormikSelect<FormState, "filter">
+          name="filter"
+          options={[
+            {
+              label: t("Any"),
+              value: "Any",
+            },
+            {
+              label: t("Shiny"),
+              value: "Shiny",
+            },
+            {
+              label: t("Max DV"),
+              value: "MaxDv",
+            },
+          ]}
+        />
+      ),
+    },
+  ];
+};
 
 type Props = {
   type: "starter" | "celebi";
+  language: keyof typeof translations;
 };
 
-export const Gen2PokemonRng = ({ type }: Props) => {
+export const Gen2PokemonRng = ({ type, language }: Props) => {
+  const t = useTranslator(translations, language);
+  const fields = React.useMemo(() => getFields(t), [t]);
+  const columns = React.useMemo(() => getColumns(t), [t]);
   const [results, setResults] = React.useState<Gen2Spread[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(

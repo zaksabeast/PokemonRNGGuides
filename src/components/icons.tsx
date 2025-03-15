@@ -4,6 +4,7 @@ import { withCss } from "./withCss";
 import { MdArrowRightAlt, MdCheckCircle } from "react-icons/md";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaDiscord } from "react-icons/fa";
+import { IoLanguage } from "react-icons/io5";
 
 const icons = {
   Menu: AiOutlineMenu,
@@ -11,6 +12,7 @@ const icons = {
   Discord: FaDiscord,
   Github: FaGithub,
   CheckCircle: MdCheckCircle,
+  Language: IoLanguage,
 } as const;
 
 export type IconName = keyof typeof icons;

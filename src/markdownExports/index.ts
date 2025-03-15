@@ -27,6 +27,8 @@ import {
   PixelImage,
   IpsMerger,
   Countdown,
+  ShowIf,
+  LanguageButton,
 } from "~/components";
 import { Gen2PokemonRng } from "~/rngTools/gen2Pokemon";
 import { Gen2Rng } from "~/rngTools/gen2Rng";
@@ -68,4 +70,6 @@ export const markdownComponents = {
   EmeraldHeldEgg,
   EmeraldPickupEgg,
   OrAsMirageSpot,
+  ShowIf,
+  LanguageButton,
 };

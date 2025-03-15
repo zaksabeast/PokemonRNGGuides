@@ -1,36 +1,45 @@
 ---
-- title: "Find Emerald SID with Feebas"
+- title: "Find SID with Feebas"
   description: "How to find your Secret ID (SID) in Emerald using Feebas."
   slug: "emerald-sid-feebas"
   category: "Emerald"
   tag: "retail"
   addedOn: "2025-03-03"
-- title: "Find Ruby or Sapphire SID with Feebas"
+- title: "Find SID with Feebas"
   description: "How to find your Secret ID (SID) in Ruby or Sapphire using Feebas."
   slug: "rs-sid-feebas"
   category: "Ruby and Sapphire"
   tag: "retail"
 ---
 
-{window.location.pathname === '/rs-sid-feebas' &&
-
-<Alert
-  showIcon
-  type="warning"
-  message="There's an easier method for Ruby and Sapphire!"
-  description={
-    <>
-      Follow the "If you're playing Ruby or Sapphire" section of{" "}
-      <a href="/gen3-sid">this guide</a> instead!
-    </>
-  }
-/>
-}
+<ShowIf slug="/rs-sid-feebas">
+  <Alert
+    showIcon
+    type="warning"
+    message="There's an easier method for Ruby and Sapphire!"
+    description={
+      <>
+        Follow the "If you're playing Ruby or Sapphire" section of{" "}
+        <a href="/gen3-sid">this guide</a> instead!
+      </>
+    }
+  />
 
 This method only works if:
 
-- You have a dead battery{window.location.pathname === '/emerald-sid-feebas' ? ' or have played for less than 1 day' : ''}.
+- You have a dead battery.
 - You haven't changed the Dewford Trend.
+
+</ShowIf>
+
+<ShowIf slug="/emerald-sid-feebas">
+
+This method only works if:
+
+- You have a dead battery or have played for less than 1 day.
+- You haven't changed the Dewford Trend.
+
+</ShowIf>
 
 ## Video Guide
 

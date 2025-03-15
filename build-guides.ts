@@ -59,6 +59,7 @@ const SingleGuideMetadataSchema = z.object({
     z.literal("info"),
     z.literal("any"),
   ]),
+  hideFromNavDrawer: z.boolean().default(false),
   addedOn: z
     .string()
     .nullish()

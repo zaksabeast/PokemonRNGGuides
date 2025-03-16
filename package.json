@@ -7,7 +7,7 @@
     "dev": "bun run build:rng_tools && bunx --bun vite",
     "format": "bun prettier . --write",
     "format:check": "bun prettier . --check",
-    "build": "tsc -b && bunx --bun vite build && cp dist/index.html dist/404.html && bun run build-seo.ts",
+    "build": "tsc -b && bunx --bun vite build && cp dist/index.html dist/404.html && cp dist/sw.js dist/sw.ts && bun run build-seo.ts",
     "build:guides": "bun run build-guides.ts && bun run format",
     "build:rng_tools": "wasm-pack build rng_tools && bun i",
     "lint": "eslint .",

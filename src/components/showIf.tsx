@@ -1,4 +1,4 @@
-import { useLocation } from "wouter";
+import { useActiveRoute } from "~/hooks/useActiveRoute";
 
 type Props = {
   slug: string;
@@ -6,13 +6,9 @@ type Props = {
 };
 
 export const ShowIf = ({ slug, children }: Props) => {
-  const [location] = useLocation();
-  const trimmedLocation =
-    location.endsWith("/") && location !== "/"
-      ? location.slice(0, -1)
-      : location;
+  const [route] = useActiveRoute();
 
-  if (trimmedLocation === slug) {
+  if (route === slug) {
     return <>{children}</>;
   }
   return null;

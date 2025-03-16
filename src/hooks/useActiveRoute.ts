@@ -1,4 +1,7 @@
 import React from "react";
+// We really do want useLocation here, since everything else uses useActiveRoute,
+// but useActiveRoute cannot use itself.
+// eslint-disable-next-line no-restricted-imports
 import { useLocation, matchRoute, useRouter } from "wouter";
 import { Route, routes, RouteSchema } from "~/routes/defs";
 

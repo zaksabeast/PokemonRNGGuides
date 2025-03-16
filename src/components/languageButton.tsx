@@ -2,8 +2,9 @@ import { Dropdown } from "antd";
 import { Flex } from "./flex";
 import { Button } from "./button";
 import { Icon } from "./icons";
-import { useLocation } from "wouter";
 import { match, P } from "ts-pattern";
+import { useActiveRoute } from "~/hooks/useActiveRoute";
+import { Route } from "~/routes/defs";
 
 type LanguageKey = "en" | "es";
 
@@ -27,14 +28,14 @@ const languages: LanguageItem[] = [
 ];
 
 type Props = {
-  enSlug: string;
-  esSlug?: string;
+  enSlug: Route;
+  esSlug?: Route;
 };
 
 export const LanguageButton = ({ enSlug, esSlug }: Props) => {
-  const [location, setLocation] = useLocation();
+  const [route, setLocation] = useActiveRoute();
 
-  const currentLanguageKey = match<string | undefined, LanguageKey>(location)
+  const currentLanguageKey = match<string | undefined, LanguageKey>(route)
     .with(enSlug, () => "en")
     .with(esSlug, () => "es")
     .otherwise(() => "en");

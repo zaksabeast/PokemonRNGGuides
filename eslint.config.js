@@ -31,6 +31,12 @@ export default tseslint.config(
         {
           paths: [
             {
+              name: "wouter",
+              importNames: ["useLocation"],
+              message:
+                'Use `import { useActiveRoute } from "~/hooks/useActiveRoute";`',
+            },
+            {
               name: "antd",
               importNames: ["theme"],
               message: 'Use `import { useTheme } from "@emotion/react";`',

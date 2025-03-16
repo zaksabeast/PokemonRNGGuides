@@ -18,6 +18,7 @@ export default defineConfig({
     wasm(),
     VitePWA({
       registerType: "autoUpdate",
+      selfDestroying: true,
       srcDir: "src",
       filename: "sw.js",
       workbox: {

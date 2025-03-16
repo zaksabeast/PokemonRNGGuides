@@ -58,7 +58,9 @@ This method only works if:
 2. Try to RNG a shiny Pokemon to confirm the correct SID.
 
 <Gen3Sid
-  game={window.location.pathname === "/rs-sid-feebas" ? "rs" : "emerald"}
+  game={
+    window.location.pathname.startsWith("/rs-sid-feebas") ? "rs" : "emerald"
+  }
 />
 
 ## Credits

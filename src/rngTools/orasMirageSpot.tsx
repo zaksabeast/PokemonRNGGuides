@@ -162,7 +162,7 @@ export const OrAsMirageSpot = () => {
       results={results}
       initialValues={initialValues}
       onSubmit={onSubmit}
-      submitTrackerId="generate_gen3_sid"
+      submitTrackerId="generate_mirage_spot"
     />
   );
 };

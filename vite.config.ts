@@ -19,7 +19,7 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       srcDir: "src",
-      filename: "sw.ts",
+      filename: "sw.js",
       workbox: {
         maximumFileSizeToCacheInBytes: 4000000,
         navigateFallbackDenylist: [/\//],

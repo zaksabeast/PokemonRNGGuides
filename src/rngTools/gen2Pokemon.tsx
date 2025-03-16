@@ -208,7 +208,9 @@ export const Gen2PokemonRng = ({ type, language }: Props) => {
       results={results}
       initialValues={initialValues}
       onSubmit={onSubmit}
-      submitTrackerId="generate_gen2_pokemon"
+      submitTrackerId={
+        type === "starter" ? "generate_gen2_starter" : "generate_gen2_celebi"
+      }
     />
   );
 };

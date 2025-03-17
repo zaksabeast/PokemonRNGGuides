@@ -1673,6 +1673,22 @@ export const guides = {
       () => import("~/../guides/Tools and Emulators/Emu PokeReader.mdx"),
     ),
   },
+  "/mystic-timer": {
+    meta: {
+      title: "Mystic Timer",
+      description: "Like Eon Timer, but works on mobile devices!",
+      slug: "/mystic-timer",
+      isRoughDraft: true,
+      tag: "retail",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides/Tools and Emulators/Timer.mdx",
+      category: "Tools and Emulators",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/Timer.mdx"),
+    ),
+  },
   "/misc-3ds-ips-luma-citra": {
     meta: {
       title: "Using IPS Patches with Luma and Azahar/Lime3DS/Citra",
@@ -2380,6 +2396,7 @@ export const guideSlugs = [
   z.literal("/transporter-patches"),
   z.literal("/install-pokereader"),
   z.literal("/install-pokereader-emu"),
+  z.literal("/mystic-timer"),
   z.literal("/misc-3ds-ips-luma-citra"),
   z.literal("/emulator-b2w2-wild"),
   z.literal("/bw2-egg"),

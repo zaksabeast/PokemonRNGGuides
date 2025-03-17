@@ -33,9 +33,11 @@ import {
 import { Gen2PokemonRng } from "~/rngTools/gen2Pokemon";
 import { Gen2Rng } from "~/rngTools/gen2Rng";
 import { Gen3Sid } from "~/rngTools/gen3Sid";
+import { Gen4Timer } from "~/rngTools/timer/gen4";
 import { EmeraldHeldEgg } from "~/rngTools/emeraldHeldEgg";
 import { EmeraldPickupEgg } from "~/rngTools/emeraldPickupEgg";
 import { OrAsMirageSpot } from "~/rngTools/orasMirageSpot";
+import { RngTimer } from "~/rngTools/timer";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -72,4 +74,6 @@ export const markdownComponents = {
   OrAsMirageSpot,
   ShowIf,
   LanguageButton,
+  Gen4Timer,
+  RngTimer,
 };

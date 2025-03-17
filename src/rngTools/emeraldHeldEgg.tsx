@@ -175,7 +175,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "filter_nature">
         name="filter_nature"
-        options={["None", ...nature].map((nat) => ({
+        options={(["None", ...nature] as const).map((nat) => ({
           label: nat,
           value: nat,
         }))}
@@ -187,7 +187,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "filter_gender">
         name="filter_gender"
-        options={["None", ...gender].map((gen) => ({
+        options={(["None", ...gender] as const).map((gen) => ({
           label: gen,
           value: gen,
         }))}

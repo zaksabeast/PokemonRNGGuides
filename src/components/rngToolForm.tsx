@@ -12,10 +12,19 @@ type Props<FormState, Result> = {
   submitTrackerId: string;
   initialValues: FormState;
   fields: Field[];
-  columns: ResultColumn<Result>[];
-  results: Result[];
   onSubmit: RngToolSubmit<FormState>;
-};
+  submitButtonLabel?: string;
+} & (
+  | { columns: ResultColumn<Result>[]; results: Result[] }
+  | {
+      columns?: never;
+      results?: never;
+    }
+) &
+  (
+    | { allowReset: true; resetTrackerId: string; onReset?: () => void }
+    | { allowReset?: false; resetTrackerId?: never; onReset?: never }
+  );
 
 export const RngToolForm = <FormState extends GenericForm, Result>({
   submitTrackerId,
@@ -23,21 +32,36 @@ export const RngToolForm = <FormState extends GenericForm, Result>({
   fields,
   columns,
   onSubmit,
+  onReset,
   results,
+  allowReset = false,
+  resetTrackerId,
+  submitButtonLabel = "Generate",
 }: Props<FormState, Result>) => {
   return (
     <Flex vertical gap={16}>
-      <Formik initialValues={initialValues} onSubmit={onSubmit}>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        onReset={onReset}
+      >
         <Form>
           <Flex vertical gap={8}>
             <FormFieldTable fields={fields} />
             <Button trackerId={submitTrackerId} htmlType="submit">
-              Generate
+              {submitButtonLabel}
             </Button>
+            {allowReset && resetTrackerId != null && (
+              <Button trackerId={resetTrackerId} htmlType="reset">
+                Reset
+              </Button>
+            )}
           </Flex>
         </Form>
       </Formik>
-      <ResultTable columns={columns} dataSource={results} />
+      {columns != null && (
+        <ResultTable columns={columns} dataSource={results} />
+      )}
     </Flex>
   );
 };

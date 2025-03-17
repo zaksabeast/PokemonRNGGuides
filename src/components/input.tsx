@@ -76,7 +76,7 @@ export const FormikInput = <FormState extends GenericForm>(
     <Input
       {...props}
       onChange={formik.handleChange}
-      defaultValue={formik.initialValues[props.name]}
+      value={formik.values[props.name]}
     />
   );
 };

@@ -28,4 +28,6 @@ To build a production version of the site, use `bun run build`.
 
 ## Special Thanks
 
-Thanks to [PokeSprite](https://github.com/msikma/pokesprite/) and [PKHeX](https://github.com/kwsch/PKHeX) for the box sprites!
+- [PokeSprite](https://github.com/msikma/pokesprite/) and [PKHeX](https://github.com/kwsch/PKHeX) for box sprites.
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder), which many of the RNG tools are based on.
+- [Eon Timer](https://github.com/DasAmpharos/EonTimer), which was used as the base for the timer in this repo.

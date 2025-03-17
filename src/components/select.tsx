@@ -4,8 +4,9 @@ import styled from "@emotion/styled";
 import { Select as AntdSelect, SelectProps as AntdSelectProps } from "antd";
 import { useFormikContext } from "formik";
 import { GenericForm } from "~/types/form";
+import { Flex } from "./flex";
 
-const SelectContainer = styled.div({
+const SelectContainer = styled(Flex)({
   ".ant-select": {
     width: "100%",
     outline: "none",
@@ -36,7 +37,7 @@ export const Select = <ValueType,>({
   ...props
 }: SelectProps<ValueType>) => {
   return (
-    <SelectContainer>
+    <SelectContainer flex={fullFlex ? 1 : undefined}>
       <ClassNames>
         {({ css }) => (
           <AntdSelect
@@ -66,7 +67,7 @@ type FormikSelectProps<
 > = tst.O.Merge<
   Omit<
     SelectProps<FormikSelectValue<FormState, FieldKey>>,
-    "onChange" | "defaultValue"
+    "onChange" | "defaultValue" | "options"
   >,
   {
     name: FieldKey;
@@ -87,7 +88,7 @@ export const FormikSelect = <
       {...props}
       onChange={(value) => formik.setFieldValue(String(name), value)}
       // @ts-expect-error -- prop types guarantee this is correct
-      defaultValue={formik.initialValues[name]}
+      value={formik.values[name]}
     />
   );
 };

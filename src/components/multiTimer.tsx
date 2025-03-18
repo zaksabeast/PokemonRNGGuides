@@ -55,7 +55,7 @@ export const MultiTimer = ({
 
   return (
     <Flex vertical gap={24}>
-      {showAllTimers && (
+      {!showAllTimers && (
         <>
           <Flex vertical gap={16} justify="center" align="center">
             <Timer
@@ -77,7 +77,7 @@ export const MultiTimer = ({
         </>
       )}
 
-      {!showAllTimers && (
+      {showAllTimers && (
         <>
           <Flex wrap gap={16} justify="center" align="center">
             {displayTimerMs.map((ms, index) => (

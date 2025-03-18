@@ -2,11 +2,11 @@ import React from "react";
 import { Flex } from "./flex";
 import { Button } from "./button";
 import { Typography } from "./typography";
-import { Audio } from "./audio";
 import { Timer } from "./timer";
 import { RadioGroup } from "./radio";
 import firstBeepMp3 from "~/assets/first-beep.mp3";
 import secondBeepMp3 from "~/assets/second-beep.mp3";
+import { useAudio } from "~/hooks/useAudio";
 
 type Props = {
   minutesBeforeTarget: number;
@@ -15,6 +15,8 @@ type Props = {
   stopButtonTrackerId: string;
 };
 
+const countdownIntervalMs = 500;
+
 export const MultiTimer = ({
   minutesBeforeTarget,
   milliseconds,
@@ -22,19 +24,34 @@ export const MultiTimer = ({
   stopButtonTrackerId,
 }: Props) => {
   const [showAllTimers, setShowAllTimers] = React.useState(true);
-  const firstBeepRef = React.useRef<HTMLAudioElement>(null);
-  const secondBeepRef = React.useRef<HTMLAudioElement>(null);
   const [isRunning, setIsRunning] = React.useState(false);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
+  const firstBeep = useAudio(firstBeepMp3);
+  const secondBeep = useAudio(secondBeepMp3);
+
+  const currentMs = milliseconds[currentTimerIndex] ?? 0;
+  const nextMs = milliseconds[currentTimerIndex + 1] ?? 0;
+  const displayTimerMs = milliseconds.length === 0 ? [0] : milliseconds;
+  const countdownBeeps = Math.min(
+    Math.floor(currentMs / countdownIntervalMs),
+    5,
+  );
+  const countdownMs = currentMs - countdownBeeps * countdownIntervalMs;
+
+  const onCountdown = React.useCallback(
+    () => firstBeep.playBeeps(countdownBeeps),
+    [firstBeep, countdownBeeps],
+  );
+
+  const onExpire = React.useCallback(() => {
+    secondBeep.playBeeps(1);
+    setCurrentTimerIndex((prev) => prev + 1);
+  }, [secondBeep]);
 
   React.useEffect(() => {
     setIsRunning(false);
     setCurrentTimerIndex(0);
   }, [milliseconds]);
-
-  const currentMs = milliseconds[currentTimerIndex] ?? 0;
-  const nextMs = milliseconds[currentTimerIndex + 1] ?? 0;
-  const displayTimerMs = milliseconds.length === 0 ? [0] : milliseconds;
 
   return (
     <Flex vertical gap={24}>
@@ -42,19 +59,11 @@ export const MultiTimer = ({
         <>
           <Flex vertical gap={16} justify="center" align="center">
             <Timer
-              expireMilliseconds={currentMs}
-              run={isRunning}
-              onExpire={() => {
-                secondBeepRef.current?.play();
-                if (currentTimerIndex === milliseconds.length - 1) {
-                  setIsRunning(false);
-                  setCurrentTimerIndex(0);
-                  return;
-                }
-
-                setCurrentTimerIndex(currentTimerIndex + 1);
-              }}
-              onCountdown={() => firstBeepRef.current?.play()}
+              expirationMs={currentMs}
+              countdownMs={countdownMs}
+              run={isRunning && currentTimerIndex < milliseconds.length}
+              onCountdown={onCountdown}
+              onExpire={onExpire}
             />
           </Flex>
           <Flex vertical gap={8}>
@@ -74,22 +83,11 @@ export const MultiTimer = ({
             {displayTimerMs.map((ms, index) => (
               <Timer
                 key={index}
-                expireMilliseconds={ms}
+                expirationMs={ms}
+                countdownMs={countdownMs}
                 run={isRunning && index <= currentTimerIndex}
-                onExpire={() => {
-                  if (index !== currentTimerIndex) {
-                    return;
-                  }
-
-                  secondBeepRef.current?.play();
-                  if (index === milliseconds.length - 1) {
-                    setIsRunning(false);
-                    return;
-                  }
-
-                  setCurrentTimerIndex(index + 1);
-                }}
-                onCountdown={() => firstBeepRef.current?.play()}
+                onCountdown={onCountdown}
+                onExpire={onExpire}
               />
             ))}
           </Flex>
@@ -121,15 +119,17 @@ export const MultiTimer = ({
       <Button
         trackerId={isRunning ? startButtonTrackerId : stopButtonTrackerId}
         onClick={() => {
-          setIsRunning(!isRunning);
+          const newIsRunning = !isRunning;
+          setIsRunning(newIsRunning);
           setCurrentTimerIndex(0);
+          if (!newIsRunning) {
+            firstBeep.stopBeeps();
+            secondBeep.stopBeeps();
+          }
         }}
       >
         {isRunning ? "Stop" : "Start"}
       </Button>
-
-      <Audio ref={firstBeepRef} src={firstBeepMp3} />
-      <Audio ref={secondBeepRef} src={secondBeepMp3} />
     </Flex>
   );
 };

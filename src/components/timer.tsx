@@ -4,14 +4,16 @@ import { Progress } from "antd";
 import { useTimer } from "~/hooks/useTimer";
 
 type Props = {
-  expireMilliseconds: number;
+  expirationMs: number;
+  countdownMs: number;
   run: boolean;
   onExpire?: () => void;
   onCountdown?: () => void;
 };
 
 export const Timer = ({
-  expireMilliseconds,
+  expirationMs,
+  countdownMs,
   run,
   onExpire,
   onCountdown,
@@ -19,8 +21,8 @@ export const Timer = ({
   const { msRemaining, start, stop } = useTimer({
     onExpire,
     onCountdown,
-    updateMs: 10,
-    delayMs: expireMilliseconds,
+    expirationMs,
+    countdownMs,
   });
 
   React.useEffect(() => {
@@ -31,7 +33,7 @@ export const Timer = ({
     }
   }, [run, start, stop]);
 
-  const percent = (msRemaining / expireMilliseconds) * 100;
+  const percent = (msRemaining / expirationMs) * 100;
   const seconds = Math.floor(msRemaining / 1000);
   const milliseconds = msRemaining % 1000;
 

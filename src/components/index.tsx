@@ -24,4 +24,3 @@ export { ShowIf } from "./showIf";
 export { LanguageButton } from "./languageButton";
 export { Timer } from "./timer";
 export { MultiTimer } from "./multiTimer";
-export { Audio } from "./audio";

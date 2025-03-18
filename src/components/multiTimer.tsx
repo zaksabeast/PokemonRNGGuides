@@ -4,9 +4,11 @@ import { Button } from "./button";
 import { Typography } from "./typography";
 import { Timer } from "./timer";
 import { RadioGroup } from "./radio";
+import { Select } from "./select";
 import firstBeepMp3 from "~/assets/first-beep.mp3";
 import secondBeepMp3 from "~/assets/second-beep.mp3";
 import { useAudio } from "~/hooks/useAudio";
+import { FormFieldTable } from "./formFieldTable";
 
 type Props = {
   minutesBeforeTarget: number;
@@ -23,6 +25,7 @@ export const MultiTimer = ({
   startButtonTrackerId,
   stopButtonTrackerId,
 }: Props) => {
+  const [maxBeepCount, setMaxBeepCount] = React.useState(5);
   const [showAllTimers, setShowAllTimers] = React.useState(true);
   const [isRunning, setIsRunning] = React.useState(false);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
@@ -34,7 +37,7 @@ export const MultiTimer = ({
   const displayTimerMs = milliseconds.length === 0 ? [0] : milliseconds;
   const countdownBeeps = Math.min(
     Math.floor(currentMs / countdownIntervalMs),
-    5,
+    maxBeepCount,
   );
   const countdownMs = currentMs - countdownBeeps * countdownIntervalMs;
 
@@ -52,6 +55,43 @@ export const MultiTimer = ({
     setIsRunning(false);
     setCurrentTimerIndex(0);
   }, [milliseconds]);
+
+  const timerSettingFields = React.useMemo(
+    () => [
+      {
+        label: "Display All Timers?",
+        input: (
+          <Flex justify="flex-end">
+            <RadioGroup
+              optionType="button"
+              value={showAllTimers ? "showAllTimers" : "showCurrentTimer"}
+              onChange={({ target }) =>
+                setShowAllTimers(target.value === "showAllTimers")
+              }
+              options={[
+                { label: "Yes", value: "showAllTimers" },
+                { label: "No", value: "showCurrentTimer" },
+              ]}
+            />
+          </Flex>
+        ),
+      },
+      {
+        label: "Countdown beeps",
+        input: (
+          <Select<number>
+            defaultValue={maxBeepCount}
+            onChange={(value) => setMaxBeepCount(value)}
+            options={new Array(11).fill(0).map((_, index) => ({
+              label: index.toString(),
+              value: index,
+            }))}
+          />
+        ),
+      },
+    ],
+    [showAllTimers, maxBeepCount],
+  );
 
   return (
     <Flex vertical gap={24}>
@@ -99,22 +139,7 @@ export const MultiTimer = ({
         </>
       )}
 
-      <Flex flex={1} align="center">
-        <Typography.Text strong flex={1}>
-          Display All Timers?
-        </Typography.Text>
-        <RadioGroup
-          optionType="button"
-          value={showAllTimers ? "showAllTimers" : "showCurrentTimer"}
-          onChange={({ target }) =>
-            setShowAllTimers(target.value === "showAllTimers")
-          }
-          options={[
-            { label: "Yes", value: "showAllTimers" },
-            { label: "No", value: "showCurrentTimer" },
-          ]}
-        />
-      </Flex>
+      <FormFieldTable fields={timerSettingFields} />
 
       <Button
         trackerId={isRunning ? startButtonTrackerId : stopButtonTrackerId}

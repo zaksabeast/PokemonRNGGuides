@@ -1869,7 +1869,8 @@ export const guides = {
   "/emulator-rs-stationary": {
     meta: {
       title: "Live Battery Stationary RNG",
-      description: "RNG stationary Pokémon with more options than dead battery",
+      description:
+        "Easily RNG for perfect shiny legendaries in Ruby and Sapphire",
       slug: "/emulator-rs-stationary",
       isRoughDraft: false,
       tag: "emu",

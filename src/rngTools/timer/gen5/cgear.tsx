@@ -27,6 +27,7 @@ type Result = {
 
 type FormState = {
   console: Console;
+  minTimeMs: DecimalString;
   targetDelay: DecimalString;
   targetSecond: DecimalString;
   calibration: DecimalString;
@@ -35,6 +36,7 @@ type FormState = {
 
 const initialValues: FormState = {
   console: "NDSSLOT1",
+  minTimeMs: toDecimalString(14000),
   targetDelay: toDecimalString(1200),
   targetSecond: toDecimalString(50),
   calibration: toDecimalString(-95),
@@ -54,6 +56,10 @@ const fields: Field[] = [
         ]}
       />
     ),
+  },
+  {
+    label: "Min Time (ms)",
+    input: <FormikInput<FormState> name="minTimeMs" />,
   },
   {
     label: "Target Delay",
@@ -83,6 +89,7 @@ export const Gen5CGearTimer = () => {
     (opts, formik) => {
       let settings = {
         console: opts.console,
+        min_time_ms: fromDecimalString(opts.minTimeMs) ?? 0,
         target_delay: fromDecimalString(opts.targetDelay) ?? 0,
         target_second: fromDecimalString(opts.targetSecond) ?? 0,
         calibration: fromDecimalString(opts.calibration) ?? 0,
@@ -93,12 +100,14 @@ export const Gen5CGearTimer = () => {
         settings = calibrate_gen5_cgear_timer(settings, delayHit);
         settings = {
           console: opts.console,
+          min_time_ms: capPrecision(settings.min_time_ms),
           target_delay: capPrecision(settings.target_delay),
           target_second: capPrecision(settings.target_second),
           calibration: capPrecision(settings.calibration),
         };
         formik.setValues({
           console: settings.console,
+          minTimeMs: toDecimalString(settings.min_time_ms),
           targetDelay: toDecimalString(settings.target_delay),
           targetSecond: toDecimalString(settings.target_second),
           calibration: toDecimalString(settings.calibration),

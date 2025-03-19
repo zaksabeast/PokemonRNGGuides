@@ -21,6 +21,7 @@ fn get_advances_calibration(target_advances: f32, hit_advances: f32) -> f32 {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen5EntralinkPlusTimerSettings {
     pub console: Console,
+    pub min_time_ms: f32,
     pub target_delay: f32,
     pub target_second: f32,
     pub target_advances: f32,
@@ -32,6 +33,7 @@ pub struct Gen5EntralinkPlusTimerSettings {
 fn create(settings: Gen5EntralinkPlusTimerSettings) -> [f32; 3] {
     enhanced_entralink_timer::create(
         settings.console,
+        settings.min_time_ms,
         settings.target_delay,
         settings.target_second,
         settings.target_advances,
@@ -52,7 +54,7 @@ fn calibrate(
     let mut frame_calibration = settings.frame_calibration;
 
     if hit_second != settings.target_second {
-        calibration += get_second_calibration(settings.console, settings.target_delay, hit_second);
+        calibration += get_second_calibration(settings.console, settings.target_second, hit_second);
     }
 
     if hit_delay != settings.target_delay {
@@ -94,31 +96,33 @@ mod test {
     fn test_create() {
         let settings = Gen5EntralinkPlusTimerSettings {
             console: Console::THREEDS,
+            min_time_ms: 14000.0,
             target_delay: 1200.0,
             target_second: 50.0,
             target_advances: 100.0,
-            calibration: 892.0,
+            calibration: -95.0,
             entralink_calibration: 256.0,
             frame_calibration: 0.0,
         };
-        assert_eq!(create(settings), [31283.0, 18910.0, 119453.0]);
+        assert_eq!(create(settings), [30296.0, 19897.0, 119453.0]);
     }
 
     #[test]
     fn test_calibrate() {
         let settings = Gen5EntralinkPlusTimerSettings {
             console: Console::THREEDS,
+            min_time_ms: 14000.0,
             target_delay: 1200.0,
             target_second: 50.0,
             target_advances: 100.0,
-            calibration: 892.0,
+            calibration: -95.0,
             entralink_calibration: 256.0,
             frame_calibration: 0.0,
         };
-        let settings = calibrate(settings, 49.0, 1199.0, 399.0);
-        assert_eq!(settings.calibration, 69721.0);
+        let settings = calibrate(settings, 49.0, 1199.0, 99.0);
+        assert_eq!(settings.calibration, -66.0);
         assert_eq!(settings.entralink_calibration, 255.0);
-        assert_eq!(settings.frame_calibration, -357164.66);
-        assert_eq!(create(settings), [100112.0, -49918.0, -237712.0]);
+        assert_eq!(settings.frame_calibration, 1194.5306);
+        assert_eq!(create(settings), [30325.0, 19869.0, 120647.0]);
     }
 }

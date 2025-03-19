@@ -10,12 +10,19 @@ fn create_entralink(phases: [f32; 2], entralink_calibration: f32) -> [f32; 2] {
 
 pub fn create(
     console: Console,
+    min_time_ms: f32,
     target_delay: f32,
     target_second: f32,
     calibration: f32,
     entralink_calibration: f32,
 ) -> [f32; 2] {
-    let phases = delay_timer::create(console, target_delay, target_second, calibration);
+    let phases = delay_timer::create(
+        console,
+        min_time_ms,
+        target_delay,
+        target_second,
+        calibration,
+    );
     create_entralink(phases, entralink_calibration)
 }
 

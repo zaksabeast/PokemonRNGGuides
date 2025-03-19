@@ -9,25 +9,35 @@ const CLOSE_UPDATE_FACTOR: f32 = 0.75;
 
 pub fn create(
     console: Console,
+    min_time_ms: f32,
     target_delay: f32,
     target_second: f32,
     calibration: f32,
 ) -> [f32; 2] {
     let calibrator = console.to_calibrator();
     [
-        create_phase_1(&calibrator, target_delay, target_second, calibration),
+        create_phase_1(
+            &calibrator,
+            min_time_ms,
+            target_delay,
+            target_second,
+            calibration,
+        ),
         create_phase_2(&calibrator, target_delay, calibration),
     ]
 }
 
 fn create_phase_1(
     calibrator: &Calibrator,
+    min_time_ms: f32,
     target_delay: f32,
     target_second: f32,
     calibration: f32,
 ) -> f32 {
     to_minimum_length(
-        second_timer::create(target_second, calibration) - calibrator.to_ms(target_delay),
+        min_time_ms,
+        second_timer::create(min_time_ms, target_second, calibration)
+            - calibrator.to_ms(target_delay),
     )
 }
 
@@ -51,7 +61,7 @@ mod test {
     #[test]
     fn create() {
         let calibrator = Calibrator::new(1.0);
-        let phase1 = create_phase_1(&calibrator, 600.0, 50.0, 0.0);
+        let phase1 = create_phase_1(&calibrator, 14000.0, 600.0, 50.0, 0.0);
         let phase2 = create_phase_2(&calibrator, 600.0, 0.0);
         let result = [phase1, phase2];
         assert_eq!(result, [49_600.0, 600.0]);

@@ -17,6 +17,7 @@ fn get_entralink_calibration(console: Console, target_delay: f32, hit_delay: f32
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen5EntralinkTimerSettings {
     pub console: Console,
+    pub min_time_ms: f32,
     pub target_delay: f32,
     pub target_second: f32,
     pub calibration: f32,
@@ -26,6 +27,7 @@ pub struct Gen5EntralinkTimerSettings {
 fn create(settings: Gen5EntralinkTimerSettings) -> [f32; 2] {
     entralink_timer::create(
         settings.console,
+        settings.min_time_ms,
         settings.target_delay,
         settings.target_second,
         settings.calibration,
@@ -79,6 +81,7 @@ mod test {
     fn test_create() {
         let settings = Gen5EntralinkTimerSettings {
             console: Console::THREEDS,
+            min_time_ms: 14000.0,
             target_delay: 1200.0,
             target_second: 50.0,
             calibration: 892.0,
@@ -91,6 +94,7 @@ mod test {
     fn test_calibrate() {
         let settings = Gen5EntralinkTimerSettings {
             console: Console::THREEDS,
+            min_time_ms: 14000.0,
             target_delay: 1200.0,
             target_second: 50.0,
             calibration: 892.0,

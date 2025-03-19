@@ -15,6 +15,7 @@ fn create_enhanded_entralink(
 
 pub fn create(
     console: Console,
+    min_time_ms: f32,
     target_delay: f32,
     target_second: f32,
     target_advances: f32,
@@ -24,6 +25,7 @@ pub fn create(
 ) -> [f32; 3] {
     let phases = entralink_timer::create(
         console,
+        min_time_ms,
         target_delay,
         target_second,
         calibration,

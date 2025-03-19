@@ -8,6 +8,7 @@ use wasm_bindgen::prelude::*;
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen4TimerSettings {
     pub console: Console,
+    pub min_time_ms: f32,
     pub target_delay: f32,
     pub target_second: f32,
     pub calibrated_delay: f32,
@@ -23,6 +24,7 @@ fn get_calibration(console: Console, calibrated_delay: f32, calibrated_second: f
 pub fn create(settings: Gen4TimerSettings) -> [f32; 2] {
     let [phase1, phase2] = delay_timer::create(
         settings.console,
+        settings.min_time_ms,
         settings.target_delay,
         settings.target_second,
         get_calibration(
@@ -70,6 +72,7 @@ mod test {
     fn test_create() {
         let settings = Gen4TimerSettings {
             console: Console::NDSSLOT1,
+            min_time_ms: 14000.0,
             calibrated_delay: 500.0,
             calibrated_second: 14.0,
             target_delay: 600.0,
@@ -80,6 +83,7 @@ mod test {
 
         let settings = Gen4TimerSettings {
             console: Console::NDSSLOT1,
+            min_time_ms: 14000.0,
             calibrated_delay: 399.0,
             calibrated_second: 14.0,
             target_delay: 600.0,
@@ -93,14 +97,15 @@ mod test {
     fn test_calibrate() {
         let settings = Gen4TimerSettings {
             console: Console::NDSSLOT1,
+            min_time_ms: 14000.0,
             calibrated_delay: 500.0,
             calibrated_second: 14.0,
             target_delay: 600.0,
             target_second: 50.0,
         };
         let settings = calibrate(settings, 500.0);
-        assert_eq!(settings.calibrated_delay, 399.0);
+        assert_eq!(settings.calibrated_delay, 400.0);
         let result = create(settings);
-        assert_eq!(result, [32849.0, 17350.0]);
+        assert_eq!(result, [32866.0, 17333.0]);
     }
 }

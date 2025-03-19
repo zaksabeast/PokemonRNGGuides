@@ -7,12 +7,17 @@ use wasm_bindgen::prelude::*;
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen5StandardTimerSettings {
     pub console: Console,
+    pub min_time_ms: f32,
     pub target_second: f32,
     pub calibration: f32,
 }
 
 fn create(settings: Gen5StandardTimerSettings) -> f32 {
-    second_timer::create(settings.target_second, settings.calibration)
+    second_timer::create(
+        settings.min_time_ms,
+        settings.target_second,
+        settings.calibration,
+    )
 }
 
 fn calibrate(settings: Gen5StandardTimerSettings, hit_second: f32) -> Gen5StandardTimerSettings {
@@ -48,6 +53,7 @@ mod test {
     fn test_create() {
         let settings = Gen5StandardTimerSettings {
             console: Console::THREEDS,
+            min_time_ms: 14000.0,
             target_second: 50.0,
             calibration: -95.0,
         };
@@ -58,6 +64,7 @@ mod test {
     fn test_calibrate() {
         let settings = Gen5StandardTimerSettings {
             console: Console::THREEDS,
+            min_time_ms: 14000.0,
             target_second: 50.0,
             calibration: -95.0,
         };

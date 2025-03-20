@@ -1,40 +1,10 @@
 use super::calc_seed;
 use crate::rng::Rng;
 use crate::rng::mt::MT;
-use crate::{RngDateTime, gen34_psv, gen34_tsv};
+use crate::{IdFilter, RngDateTime};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
-
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub enum IdFilter {
-    Tid(u16),
-    Sid(u16),
-    Tsv(u16),
-    Pid(u32),
-    TidSid { tid: u16, sid: u16 },
-    TidPid { tid: u16, pid: u32 },
-}
-
-impl IdFilter {
-    pub fn filter(&self, tid: u16, sid: u16) -> bool {
-        match self {
-            IdFilter::Tid(self_tid) => tid == *self_tid,
-            IdFilter::Sid(self_sid) => sid == *self_sid,
-            IdFilter::Tsv(self_tsv) => gen34_tsv(tid, sid) == *self_tsv,
-            IdFilter::Pid(self_pid) => gen34_tsv(tid, sid) == gen34_psv(*self_pid),
-            IdFilter::TidPid {
-                tid: self_tid,
-                pid: self_pid,
-            } => tid == *self_tid && gen34_tsv(tid, sid) == gen34_psv(*self_pid),
-            IdFilter::TidSid {
-                tid: self_tid,
-                sid: self_sid,
-            } => tid == *self_tid && sid == *self_sid,
-        }
-    }
-}
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -76,7 +46,7 @@ pub fn generate_dppt_ids(opts: Id4Options) -> Vec<Id4> {
             let tid = sidtid as u16;
             let sid = (sidtid >> 16) as u16;
 
-            if filter.filter(tid, sid) {
+            if filter.filter_gen3(tid, sid) {
                 results.push(Id4 {
                     seed,
                     delay,
@@ -120,7 +90,7 @@ pub fn search_dppt_ids(opts: Id4SearchOptions) -> Vec<Id4> {
                 let tid = sidtid as u16;
                 let sid = (sidtid >> 16) as u16;
 
-                if opts.filter.filter(tid, sid) {
+                if opts.filter.filter_gen3(tid, sid) {
                     results.push(Id4 {
                         seed,
                         tid,

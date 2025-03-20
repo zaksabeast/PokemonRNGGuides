@@ -38,6 +38,7 @@ import { EmeraldHeldEgg } from "~/rngTools/emeraldHeldEgg";
 import { EmeraldPickupEgg } from "~/rngTools/emeraldPickupEgg";
 import { OrAsMirageSpot } from "~/rngTools/orasMirageSpot";
 import { RngTimer } from "~/rngTools/timer";
+import { OrasId } from "~/rngTools/orasId";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -76,4 +77,5 @@ export const markdownComponents = {
   LanguageButton,
   Gen4Timer,
   RngTimer,
+  OrasId,
 };

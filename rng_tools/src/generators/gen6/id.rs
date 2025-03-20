@@ -1,3 +1,4 @@
+use crate::IdFilter;
 use crate::rng::tinymt::TinyMT;
 use crate::rng::{Rng, StateIterator};
 use serde::{Deserialize, Serialize};
@@ -29,24 +30,32 @@ impl Gen6Id {
     }
 }
 
-#[wasm_bindgen]
-pub fn generate_gen6_id(
-    state: Vec<u32>,
-    initial_advances: usize,
-    max_advances: usize,
-) -> Vec<Gen6Id> {
-    let state: [u32; 4] = match state.try_into() {
-        Ok(state) => state,
-        Err(_) => return vec![],
-    };
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct OrasIdOptions {
+    pub state: [u32; 4],
+    pub initial_advances: usize,
+    pub max_advances: usize,
+    pub filter: Option<IdFilter>,
+}
 
-    StateIterator::new(TinyMT::from_state(state))
+#[wasm_bindgen]
+pub fn generate_oras_id(opts: OrasIdOptions) -> Vec<Gen6Id> {
+    StateIterator::new(TinyMT::from_state(opts.state))
         .enumerate()
-        .skip(initial_advances)
-        .take(max_advances)
-        .map(|(advances, mut rng)| {
+        .skip(opts.initial_advances)
+        .take(opts.max_advances)
+        .filter_map(|(advances, mut rng)| {
             let state = rng.get_state();
-            Gen6Id::new(rng.rand::<u32>(), advances, state)
+            let id = Gen6Id::new(rng.rand::<u32>(), advances, state);
+            let passes_filter = match &opts.filter {
+                Some(filter) => filter.filter_gen6(id.tid, id.sid),
+                None => true,
+            };
+            match passes_filter {
+                true => Some(id),
+                false => None,
+            }
         })
         .collect()
 }
@@ -57,10 +66,13 @@ mod test {
 
     #[test]
     fn test_generate_gen6_id() {
-        let state = vec![0xdddddddd, 0xcccccccc, 0xbbbbbbbb, 0xaaaaaaaa];
-        let min_advances = 0;
-        let max_advances = 20;
-        let result = generate_gen6_id(state, min_advances, max_advances);
+        let opts = OrasIdOptions {
+            state: [0xdddddddd, 0xcccccccc, 0xbbbbbbbb, 0xaaaaaaaa],
+            initial_advances: 0,
+            max_advances: 20,
+            filter: None,
+        };
+        let result = generate_oras_id(opts);
 
         let expected = [
             Gen6Id {

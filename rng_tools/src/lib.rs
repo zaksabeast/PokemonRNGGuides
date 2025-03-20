@@ -1,4 +1,5 @@
 mod generators;
+mod id;
 mod ivs;
 mod pkm;
 mod rng;
@@ -10,6 +11,7 @@ mod timer;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 pub use generators::*;
+pub use id::*;
 pub use ivs::*;
 pub use pkm::*;
 pub use time::*;

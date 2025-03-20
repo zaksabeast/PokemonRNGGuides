@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "bun run build:rng_tools && bunx --bun vite",
+    "dev": "bun run build:rng_tools && bunx --bun vite --force",
     "format": "bun prettier . --write",
     "format:check": "bun prettier . --check",
     "build": "tsc -b && bunx --bun vite build && cp dist/index.html dist/404.html && cp dist/sw.js dist/sw.ts && bun run build-seo.ts",

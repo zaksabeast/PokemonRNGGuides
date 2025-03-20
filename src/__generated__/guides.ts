@@ -1734,6 +1734,23 @@ export const guides = {
         ),
     ),
   },
+  "/no-dolphin-patch": {
+    meta: {
+      title: "No Dolphin Patch",
+      description:
+        "A patch to skip needing Dolphin to obtain Wishmaker Jirachi",
+      slug: "/no-dolphin-patch",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-03",
+      file: "guides/Tools and Emulators/No Dolphin Patch.mdx",
+      category: "Tools and Emulators",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/No Dolphin Patch.mdx"),
+    ),
+  },
   "/misc-3ds-installing-pcalc": {
     meta: {
       title: "How to Install PCalc",
@@ -2627,6 +2644,7 @@ export const guideSlugs = [
   z.literal("/desmume-setup"),
   z.literal("/install-capturesight"),
   z.literal("/misc-dolphin-connect-vba"),
+  z.literal("/no-dolphin-patch"),
   z.literal("/misc-3ds-installing-pcalc"),
   z.literal("/ntr-helper-usage"),
   z.literal("/mgba-setup"),

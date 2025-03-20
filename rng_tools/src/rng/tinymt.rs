@@ -25,6 +25,10 @@ impl TinyMT {
         rng
     }
 
+    pub fn from_state(state: [u32; 4]) -> Self {
+        Self { state }
+    }
+
     pub fn next_state(&mut self) {
         let mut y = self.state[3];
         let mut x = (self.state[0] & 0x7FFFFFFF) ^ self.state[1] ^ self.state[2];

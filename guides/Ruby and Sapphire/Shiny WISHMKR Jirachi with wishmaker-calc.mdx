@@ -10,7 +10,7 @@ tag: "emu"
 
 - [mGBA with lua scripts](/mgba-setup)
 - [wishmaker-calc](https://zaksabeast.github.io/wishmaker-calc/build/)
-- [wishmaker lua script](https://github.com/beatlynx/lua-stuff/blob/master/scripts/wishmakerlua.lua)
+- [wishmaker lua script](https://github.com/Real96/PokeLua/blob/main/Gen%203/mGBA/RS_RNG_Checksums_mGBA.lua)
 
 ### Before beginning
 
@@ -26,10 +26,18 @@ Note: Sometimes, when standing still, certain game data bytes may change and cau
 This method cannot target a specific Jirachi spread. This guide is solely for obtaining a shiny Jirachi without the option to select a spread. Manipulating the block 0 checksum for a specific Jirachi spread is complex and not included here.
 ```
 
+### Lua Script Set up
+
+In line 6 of the lua script edit it to the path where your save is located.
+
+```
+local savePath = "D:\\Desktop\\mGBA\\battery\\Pokemon - Ruby Version (USA, Europe) (Rev 2).sav"  -- Write here the path of your Ruby/Sapphire save file
+```
+
 ## Step 1: Setting up
 
 1. Find your save delay.
-2. Open Ruby/Sapphire on VBA-RR and load the wishmaker lua script.
+2. Open Ruby/Sapphire and load the wishmaker lua script.
 3. Open the save menu and pause the game at the last dialogue option over "YES".
 4. Note the current time displayed by the lua script.
 5. Hold down the `A` button and unpause the game simultaneously.
@@ -52,7 +60,7 @@ Note: Do not modify anything in the lua script below the "DON'T EDIT ANYTHING BE
 
 1. Prepare your save.
 2. Use a save that has already obtained the Pokedex; save your game.
-3. In VBA-RR, export your battery file and upload it to wishmaker-calc by clicking on Jirachi.
+3. In mGBA, export your battery file and upload it to wishmaker-calc by clicking on Jirachi.
 4. If the website asks you to save the game again, do it, then reupload the save to the website. This may happen multiple times.
 
 ![JirachiCalc](/images/Ruby-Sapphire/Wishmaker/JirachiCalc.png)

@@ -2,7 +2,7 @@ use crate::rng::lcrng::Lcrng;
 use crate::rng::{Rng, StateIterator};
 use crate::{
     G3Idx::{self, *},
-    Ivs,
+    IvFilter, Ivs,
 };
 
 use serde::{Deserialize, Serialize};
@@ -45,13 +45,6 @@ impl Gen3PickupMethod {
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Egg3PickupFilter {
-    pub min_ivs: Ivs,
-    pub max_ivs: Ivs,
-}
-
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Egg3PickupOptions {
     pub delay: usize,
     pub seed: u32,
@@ -59,7 +52,7 @@ pub struct Egg3PickupOptions {
     pub max_advances: usize,
     pub parent_ivs: [Ivs; 2],
     pub method: Gen3PickupMethod,
-    pub filter: Egg3PickupFilter,
+    pub filter: IvFilter,
     pub lua_adjustment: bool,
 }
 
@@ -176,7 +169,7 @@ mod test {
             max_advances: 10,
             seed: 0,
             lua_adjustment: false,
-            filter: Egg3PickupFilter {
+            filter: IvFilter {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
             },
@@ -326,7 +319,7 @@ mod test {
             max_advances: 10,
             seed: 0,
             lua_adjustment: false,
-            filter: Egg3PickupFilter {
+            filter: IvFilter {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
             },
@@ -476,7 +469,7 @@ mod test {
             max_advances: 10,
             seed: 0,
             lua_adjustment: false,
-            filter: Egg3PickupFilter {
+            filter: IvFilter {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
             },
@@ -626,7 +619,7 @@ mod test {
             max_advances: 10,
             seed: 0,
             lua_adjustment: false,
-            filter: Egg3PickupFilter {
+            filter: IvFilter {
                 min_ivs: Ivs {
                     hp: 10,
                     atk: 10,
@@ -670,7 +663,7 @@ mod test {
             max_advances: 10,
             seed: 0,
             lua_adjustment: false,
-            filter: Egg3PickupFilter {
+            filter: IvFilter {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
             },
@@ -699,7 +692,7 @@ mod test {
             max_advances: 10,
             seed: 0,
             lua_adjustment: false,
-            filter: Egg3PickupFilter {
+            filter: IvFilter {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
             },

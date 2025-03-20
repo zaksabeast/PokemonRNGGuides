@@ -3,6 +3,13 @@ use serde::{Deserialize, Serialize};
 use std::ops::{Index, IndexMut};
 use tsify_next::Tsify;
 
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct IvFilter {
+    pub min_ivs: Ivs,
+    pub max_ivs: Ivs,
+}
+
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
 pub struct Ivs {
     pub hp: u8,

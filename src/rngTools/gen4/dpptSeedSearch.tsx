@@ -5,6 +5,7 @@ import {
   RngToolForm,
   RngToolSubmit,
   Field,
+  Typography,
 } from "~/components";
 import { dppt_calculate_seedtime, SeedTime4 } from "rng_tools";
 import {
@@ -17,8 +18,11 @@ import {
 import dayjs, { Dayjs } from "dayjs";
 import { fromRngDateTime, toRngDateTime } from "~/utils/time";
 import { FormikDatePicker } from "~/components/datePicker";
+import { uniqueId } from "lodash-es";
 
-const columns: ResultColumn<SeedTime4>[] = [
+type GeneratorResult = SeedTime4 & { id: string };
+
+const columns: ResultColumn<GeneratorResult>[] = [
   {
     title: "Date",
     dataIndex: "datetime",
@@ -34,8 +38,11 @@ const columns: ResultColumn<SeedTime4>[] = [
     title: "Coin Flips",
     dataIndex: "coin_flips",
     key: "coin_flips",
-    render: (coinFlips) =>
-      coinFlips.map((flip) => (flip === "Heads" ? "H" : "T")).join(", "),
+    render: (coinFlips) => (
+      <Typography.Text whiteSpace="nowrap">
+        {coinFlips.map((flip) => (flip === "Heads" ? "H" : "T")).join(", ")}
+      </Typography.Text>
+    ),
   },
 ];
 
@@ -58,7 +65,7 @@ const fields: Field[] = [
   },
   {
     label: "Year/Month",
-    input: <FormikDatePicker<FormState> name="date" />,
+    input: <FormikDatePicker<FormState> name="date" picker="month" />,
   },
   {
     label: "Forced Second",
@@ -66,8 +73,12 @@ const fields: Field[] = [
   },
 ];
 
-export const DpptSeedSearch = () => {
-  const [results, setResults] = React.useState<SeedTime4[]>([]);
+type Props = {
+  onClickResultRow: (record: SeedTime4) => void;
+};
+
+export const DpptSeedSearch = ({ onClickResultRow }: Props) => {
+  const [results, setResults] = React.useState<GeneratorResult[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>((opts) => {
     const seed = fromHexString(opts.seed);
@@ -87,16 +98,18 @@ export const DpptSeedSearch = () => {
       forced_second: forcedSecond ?? undefined,
     });
 
-    setResults(results);
+    setResults(results.map((result) => ({ ...result, id: uniqueId() })));
   }, []);
 
   return (
-    <RngToolForm<FormState, SeedTime4>
+    <RngToolForm<FormState, GeneratorResult>
       fields={fields}
       columns={columns}
       results={results}
       initialValues={initialValues}
       onSubmit={onSubmit}
+      onClickResultRow={onClickResultRow}
+      rowKey="id"
       submitTrackerId="generate_dppt_seed_search"
     />
   );

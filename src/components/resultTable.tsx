@@ -1,5 +1,6 @@
-import { Table } from "antd";
-import styled from "@emotion/styled";
+import { Table, TableProps } from "antd";
+import { ClassNames } from "@emotion/react";
+import * as tst from "ts-toolbelt";
 
 export type ResultColumn<T> = keyof T extends string
   ? {
@@ -12,11 +13,24 @@ export type ResultColumn<T> = keyof T extends string
     }[keyof T]
   : never;
 
-export const ResultTable = styled(Table)({
-  "&&&": {
-    width: "100%",
-    ".ant-table-container": {
-      overflowX: "scroll",
-    },
-  },
-});
+export const ResultTable = <Record extends tst.O.Object>(
+  props: TableProps<Record>,
+) => {
+  return (
+    <ClassNames>
+      {({ css }) => (
+        <Table
+          {...props}
+          className={css({
+            "&&&": {
+              width: "100%",
+              ".ant-table-container": {
+                overflowX: "scroll",
+              },
+            },
+          })}
+        />
+      )}
+    </ClassNames>
+  );
+};

@@ -7,7 +7,7 @@ import {
   Field,
   FormikSelect,
 } from "~/components";
-import { generate_mirage_spots, MirageSpot, RngDate, Species } from "rng_tools";
+import { generate_mirage_spots, MirageSpot, Species } from "rng_tools";
 import {
   DecimalString,
   fromDecimalString,
@@ -17,7 +17,7 @@ import {
   toHexString,
 } from "~/utils/number";
 import dayjs, { Dayjs } from "dayjs";
-import { fromRngDate, toRngDate } from "~/utils/time";
+import { formatRngDate, toRngDate } from "~/utils/time";
 import { FormikDatePicker } from "~/components/datePicker";
 
 const columns: ResultColumn<MirageSpot>[] = [
@@ -25,7 +25,7 @@ const columns: ResultColumn<MirageSpot>[] = [
     title: "Date",
     dataIndex: "date",
     key: "date",
-    render: (date: RngDate) => fromRngDate(date).toDate().toLocaleDateString(),
+    render: (date) => formatRngDate(date),
   },
   {
     title: "Name",
@@ -36,7 +36,7 @@ const columns: ResultColumn<MirageSpot>[] = [
     title: "Pokemon",
     dataIndex: "pokemon",
     key: "pokemon",
-    render: (pokemon: Species[]) => pokemon.join(", "),
+    render: (pokemon) => pokemon.join(", "),
   },
 ];
 

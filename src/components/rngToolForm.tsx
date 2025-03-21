@@ -5,6 +5,7 @@ import { FormFieldTable, Field } from "./formFieldTable";
 import { Button } from "./button";
 import { ResultTable, ResultColumn } from "./resultTable";
 import { GenericForm } from "~/types/form";
+import * as tst from "ts-toolbelt";
 
 export type RngToolSubmit<Values> = FormikConfig<Values>["onSubmit"];
 
@@ -13,6 +14,7 @@ type Props<FormState, Result> = {
   initialValues: FormState;
   fields: Field[];
   onSubmit: RngToolSubmit<FormState>;
+  onClickResultRow?: (record: Result) => void;
   submitButtonLabel?: string;
 } & (
   | { columns: ResultColumn<Result>[]; results: Result[] }
@@ -24,15 +26,30 @@ type Props<FormState, Result> = {
   (
     | { allowReset: true; resetTrackerId: string; onReset?: () => void }
     | { allowReset?: false; resetTrackerId?: never; onReset?: never }
+  ) &
+  (
+    | {
+        rowKey: keyof Result;
+        onClickResultRow: (record: Result) => void;
+      }
+    | {
+        rowKey?: never;
+        onClickResultRow?: never;
+      }
   );
 
-export const RngToolForm = <FormState extends GenericForm, Result>({
+export const RngToolForm = <
+  FormState extends GenericForm,
+  Result extends tst.O.Object,
+>({
   submitTrackerId,
   initialValues,
   fields,
   columns,
   onSubmit,
   onReset,
+  onClickResultRow,
+  rowKey,
   results,
   allowReset = false,
   resetTrackerId,
@@ -41,6 +58,7 @@ export const RngToolForm = <FormState extends GenericForm, Result>({
   return (
     <Flex vertical gap={16}>
       <Formik
+        enableReinitialize
         initialValues={initialValues}
         onSubmit={onSubmit}
         onReset={onReset}
@@ -60,7 +78,19 @@ export const RngToolForm = <FormState extends GenericForm, Result>({
         </Form>
       </Formik>
       {columns != null && (
-        <ResultTable columns={columns} dataSource={results} />
+        <ResultTable<Result>
+          columns={columns}
+          rowKey={rowKey}
+          dataSource={results}
+          rowSelection={
+            onClickResultRow == null
+              ? undefined
+              : {
+                  type: "radio",
+                  onSelect: (record) => onClickResultRow?.(record),
+                }
+          }
+        />
       )}
     </Flex>
   );

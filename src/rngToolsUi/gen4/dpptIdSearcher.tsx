@@ -5,24 +5,22 @@ import {
   RngToolForm,
   RngToolSubmit,
   Field,
+  FormikIdFilter,
 } from "~/components";
-import { generate_dppt_ids, Id4 } from "rng_tools";
+import { rngTools, Id4 } from "~/rngTools";
 import {
   DecimalString,
   fromDecimalString,
   toDecimalString,
 } from "~/utils/number";
-import { denormalizeIdFilter } from "~/types/id";
-import dayjs, { Dayjs } from "dayjs";
-import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
-import { toRngDateTime } from "~/utils/time";
+import { denormalizeIdFilter, IdFilter } from "~/types/id";
 
 const columns: ResultColumn<Id4>[] = [
   {
     title: "Seed",
     dataIndex: "seed",
     key: "seed",
-    render: (seed: number) => seed.toString(16).toUpperCase().padStart(8, "0"),
+    render: (seed) => seed.toString(16).toUpperCase().padStart(8, "0"),
   },
   {
     title: "TID",
@@ -47,33 +45,27 @@ const columns: ResultColumn<Id4>[] = [
 ];
 
 type FormState = {
-  tid: DecimalString;
-  date: Dayjs;
-  time: Dayjs;
+  year: DecimalString;
   minDelay: DecimalString;
   maxDelay: DecimalString;
+  filter: IdFilter;
 };
 
 const initialValues: FormState = {
-  tid: toDecimalString(0),
-  date: dayjs(),
-  time: dayjs(),
+  year: toDecimalString(2000),
   minDelay: toDecimalString(5000),
   maxDelay: toDecimalString(6000),
+  filter: {
+    type: "tid",
+    value0: toDecimalString(0),
+    value1: "",
+  },
 };
 
 const fields: Field[] = [
   {
-    label: "Tid Obtained",
-    input: <FormikInput<FormState> name="tid" />,
-  },
-  {
-    label: "Date",
-    input: <FormikDatePicker<FormState> name="date" />,
-  },
-  {
-    label: "Time",
-    input: <FormikTimePicker<FormState> name="time" />,
+    label: "Year",
+    input: <FormikInput<FormState> name="year" />,
   },
   {
     label: "Min Delay",
@@ -83,35 +75,29 @@ const fields: Field[] = [
     label: "Max Delay",
     input: <FormikInput<FormState> name="maxDelay" />,
   },
+  {
+    label: "Filter",
+    input: <FormikIdFilter<FormState> name="filter" />,
+  },
 ];
 
-export const DpptIdFinder = () => {
+export const DpptIdSearcher = () => {
   const [results, setResults] = React.useState<Id4[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>((opts) => {
-    const tid = fromDecimalString(opts.tid);
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+    const year = fromDecimalString(opts.year);
     const minDelay = fromDecimalString(opts.minDelay);
     const maxDelay = fromDecimalString(opts.maxDelay);
 
-    if (tid == null || minDelay == null || maxDelay == null) {
+    if (year == null || minDelay == null || maxDelay == null) {
       return;
     }
 
-    const datetime = dayjs(opts.date)
-      .set("hour", opts.time.hour())
-      .set("minute", opts.time.minute())
-      .set("second", opts.time.second());
-    const rngDateTime = toRngDateTime(datetime);
-
-    const results = generate_dppt_ids({
-      datetime: rngDateTime,
+    const results = await rngTools.search_dppt_ids({
+      year,
       min_delay: minDelay,
       max_delay: maxDelay,
-      filter: denormalizeIdFilter({
-        type: "tid",
-        value0: opts.tid,
-        value1: "",
-      }),
+      filter: denormalizeIdFilter(opts.filter),
     });
 
     setResults(results);

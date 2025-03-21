@@ -7,7 +7,7 @@ import {
   Field,
   FormikIdFilter,
 } from "~/components";
-import { generate_oras_id, Gen6Id } from "rng_tools";
+import { rngTools, Gen6Id } from "~/rngTools";
 import {
   DecimalString,
   fromDecimalString,
@@ -109,7 +109,7 @@ const fields: Field[] = [
 export const OrasId = () => {
   const [results, setResults] = React.useState<Gen6Id[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>((opts) => {
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
     const state3 = fromHexString(opts.state3);
     const state2 = fromHexString(opts.state2);
     const state1 = fromHexString(opts.state1);
@@ -128,7 +128,7 @@ export const OrasId = () => {
       return;
     }
 
-    const results = generate_oras_id({
+    const results = await rngTools.generate_oras_id({
       state: [state0, state1, state2, state3],
       initial_advances: initialAdvances,
       max_advances: maxAdvances,

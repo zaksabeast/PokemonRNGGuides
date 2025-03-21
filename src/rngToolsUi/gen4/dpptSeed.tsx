@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs, TabsProps } from "antd";
 import { DpptSeedCalibrate } from "./dpptSeedCalibrate";
 import { DpptSeedSearch } from "./dpptSeedSearch";
-import { SeedTime4 } from "rng_tools";
+import { SeedTime4 } from "~/rngTools";
 
 export const DpptSeed = () => {
   const [selectedSeedTime, setSelectedSeedTime] =

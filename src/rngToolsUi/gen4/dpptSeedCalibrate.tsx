@@ -7,11 +7,7 @@ import {
   Field,
   Typography,
 } from "~/components";
-import {
-  dppt_calibrate_seedtime,
-  SeedTime4,
-  SeedTime4Calibrate,
-} from "rng_tools";
+import { rngTools, SeedTime4, SeedTime4Calibrate } from "~/rngTools";
 import {
   DecimalString,
   fromDecimalString,
@@ -116,7 +112,7 @@ export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
     };
   }, [selectedSeedTime]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>((opts) => {
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
     const delay = fromDecimalString(opts.delay);
     const delayCalibration = fromDecimalString(opts.delayCalibration);
     const secondCalibration = fromDecimalString(opts.secondCalibration);
@@ -135,7 +131,7 @@ export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
       .set("second", opts.time.second());
     const rngDateTime = toRngDateTime(datetime);
 
-    const results = dppt_calibrate_seedtime(
+    const results = await rngTools.dppt_calibrate_seedtime(
       {
         datetime: rngDateTime,
         delay,

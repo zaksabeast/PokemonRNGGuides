@@ -7,7 +7,7 @@ import {
   Field,
   FormikSelect,
 } from "~/components";
-import { generate_mirage_spots, MirageSpot, Species } from "rng_tools";
+import { rngTools, MirageSpot, Species } from "~/rngTools";
 import {
   DecimalString,
   fromDecimalString,
@@ -130,7 +130,7 @@ const fields: Field[] = [
 export const OrAsMirageSpot = () => {
   const [results, setResults] = React.useState<MirageSpot[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>((opts) => {
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
     const seed = fromHexString(opts.seed);
     const tid = fromDecimalString(opts.tid);
     const startDate = toRngDate(opts.startDate);
@@ -145,7 +145,7 @@ export const OrAsMirageSpot = () => {
       return;
     }
 
-    const results = generate_mirage_spots({
+    const results = await rngTools.generate_mirage_spots({
       seed,
       tid,
       start_date: startDate,

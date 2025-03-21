@@ -6,7 +6,7 @@ import {
   RngToolSubmit,
   Field,
 } from "~/components";
-import { gen2_generate_rng_states } from "rng_tools";
+import { rngTools } from "~/rngTools";
 import {
   DecimalString,
   fromDecimalString,
@@ -90,11 +90,11 @@ const fields: Field[] = [
 export const Gen2Rng = () => {
   const [results, setResults] = React.useState<RngState[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>((opts) => {
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
     const div = fromHexString(opts.div) ?? 0;
     const startAdvance = fromDecimalString(opts.startAdvance) ?? 0;
     const advanceCount = fromDecimalString(opts.advanceCount) ?? 0;
-    const results = gen2_generate_rng_states(
+    const results = await rngTools.gen2_generate_rng_states(
       div >>> 8,
       div & 0xff,
       fromDecimalString(opts.adivIndex) ?? 0,

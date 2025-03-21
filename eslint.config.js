@@ -31,6 +31,10 @@ export default tseslint.config(
         {
           paths: [
             {
+              name: "rng_tools",
+              message: 'Use `import { rngTools } from "~/rngTools";`',
+            },
+            {
               name: "wouter",
               importNames: ["useLocation"],
               message:

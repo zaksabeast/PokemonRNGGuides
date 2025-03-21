@@ -13,12 +13,7 @@ import {
   capPrecision,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
-import {
-  Console,
-  create_gen3_timer,
-  calibrate_gen3_timer,
-  minutes_before,
-} from "rng_tools";
+import { Console, rngTools } from "~/rngTools";
 
 type Result = {
   milliseconds: number[];
@@ -79,7 +74,7 @@ export const Gen3Timer = () => {
   });
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    (opts, formik) => {
+    async (opts, formik) => {
       let settings = {
         console: opts.console,
         pre_timer: fromDecimalString(opts.preTimer) ?? 0,
@@ -89,7 +84,7 @@ export const Gen3Timer = () => {
 
       if (opts.frameHit !== "") {
         const frameHit = fromDecimalString(opts.frameHit) ?? 0;
-        settings = calibrate_gen3_timer(settings, frameHit);
+        settings = await rngTools.calibrate_gen3_timer(settings, frameHit);
         settings = {
           console: opts.console,
           pre_timer: capPrecision(settings.pre_timer),
@@ -105,10 +100,10 @@ export const Gen3Timer = () => {
         });
       }
 
-      const milliseconds = create_gen3_timer(settings);
+      const milliseconds = await rngTools.create_gen3_timer(settings);
       setTimer({
         milliseconds: [...milliseconds],
-        minutesBeforeTarget: minutes_before(milliseconds),
+        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       });
     },
     [],

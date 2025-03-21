@@ -7,7 +7,7 @@ import {
   Field,
   Typography,
 } from "~/components";
-import { dppt_calculate_seedtime, SeedTime4 } from "rng_tools";
+import { rngTools, SeedTime4 } from "~/rngTools";
 import {
   DecimalString,
   fromDecimalString,
@@ -80,7 +80,7 @@ type Props = {
 export const DpptSeedSearch = ({ onClickResultRow }: Props) => {
   const [results, setResults] = React.useState<GeneratorResult[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>((opts) => {
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
     const seed = fromHexString(opts.seed);
     const forcedSecond =
       opts.forcedSecond === "" ? null : fromDecimalString(opts.forcedSecond);
@@ -91,7 +91,7 @@ export const DpptSeedSearch = ({ onClickResultRow }: Props) => {
 
     const rngDate = toRngDateTime(opts.date);
 
-    const results = dppt_calculate_seedtime({
+    const results = await rngTools.dppt_calculate_seedtime({
       seed,
       year: rngDate.year,
       month: rngDate.month,

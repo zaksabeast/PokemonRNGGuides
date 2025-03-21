@@ -30,17 +30,17 @@ import {
   ShowIf,
   LanguageButton,
 } from "~/components";
-import { Gen2PokemonRng } from "~/rngTools/gen2/crystalPokemon";
-import { Gen2Rng } from "~/rngTools/gen2/gen2Rng";
-import { Gen3Sid } from "~/rngTools/gen3/sid";
-import { Gen4Timer } from "~/rngTools/timer/gen4";
-import { EmeraldHeldEgg } from "~/rngTools/gen3/emeraldHeldEgg";
-import { EmeraldPickupEgg } from "~/rngTools/gen3/emeraldPickupEgg";
-import { OrAsMirageSpot } from "~/rngTools/gen6/orasMirageSpot";
-import { RngTimer } from "~/rngTools/timer";
-import { OrasId } from "~/rngTools/gen6/orasId";
-import { DpptSeed } from "~/rngTools/gen4/dpptSeed";
-import { DpptId } from "~/rngTools/gen4/dpptId";
+import { Gen2PokemonRng } from "~/rngToolsUi/gen2/crystalPokemon";
+import { Gen2Rng } from "~/rngToolsUi/gen2/gen2Rng";
+import { Gen3Sid } from "~/rngToolsUi/gen3/sid";
+import { Gen4Timer } from "~/rngToolsUi/timer/gen4";
+import { EmeraldHeldEgg } from "~/rngToolsUi/gen3/emeraldHeldEgg";
+import { EmeraldPickupEgg } from "~/rngToolsUi/gen3/emeraldPickupEgg";
+import { OrAsMirageSpot } from "~/rngToolsUi/gen6/orasMirageSpot";
+import { RngTimer } from "~/rngToolsUi/timer";
+import { OrasId } from "~/rngToolsUi/gen6/orasId";
+import { DpptSeed } from "~/rngToolsUi/gen4/dpptSeed";
+import { DpptId } from "~/rngToolsUi/gen4/dpptId";
 
 export const markdownComponents = {
   br: MarkdownBreak,

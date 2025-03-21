@@ -13,12 +13,7 @@ import {
   toDecimalString,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
-import {
-  Console,
-  create_gen4_timer,
-  calibrate_gen4_timer,
-  minutes_before,
-} from "rng_tools";
+import { Console, rngTools } from "~/rngTools";
 
 type Result = {
   milliseconds: number[];
@@ -92,7 +87,7 @@ export const Gen4Timer = () => {
   });
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    (opts, formik) => {
+    async (opts, formik) => {
       let settings = {
         console: opts.console,
         min_time_ms: fromDecimalString(opts.minTimeMs) ?? 0,
@@ -104,7 +99,7 @@ export const Gen4Timer = () => {
 
       if (opts.delayHit !== "") {
         const delayHit = fromDecimalString(opts.delayHit) ?? 0;
-        settings = calibrate_gen4_timer(settings, delayHit);
+        settings = await rngTools.calibrate_gen4_timer(settings, delayHit);
         settings = {
           console: opts.console,
           min_time_ms: capPrecision(settings.min_time_ms),
@@ -124,10 +119,10 @@ export const Gen4Timer = () => {
         });
       }
 
-      const milliseconds = create_gen4_timer(settings);
+      const milliseconds = await rngTools.create_gen4_timer(settings);
       setTimer({
         milliseconds: [...milliseconds],
-        minutesBeforeTarget: minutes_before(milliseconds),
+        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       });
     },
     [],

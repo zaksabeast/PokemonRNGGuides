@@ -1,6 +1,7 @@
 import { Table, TableProps } from "antd";
 import { ClassNames } from "@emotion/react";
 import * as tst from "ts-toolbelt";
+import { useFormikContext } from "formik";
 
 export type ResultColumn<T> = keyof T extends string
   ? {
@@ -13,14 +14,16 @@ export type ResultColumn<T> = keyof T extends string
     }[keyof T]
   : never;
 
-export const ResultTable = <Record extends tst.O.Object>(
+export const FormikResultTable = <Record extends tst.O.Object>(
   props: TableProps<Record>,
 ) => {
+  const { isSubmitting } = useFormikContext();
   return (
     <ClassNames>
       {({ css }) => (
         <Table
           {...props}
+          loading={isSubmitting}
           className={css({
             "&&&": {
               width: "100%",

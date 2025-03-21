@@ -6,10 +6,7 @@ import {
   RngToolSubmit,
   Field,
 } from "~/components";
-import {
-  emerald_sid_from_feebas_seed,
-  rs_sid_from_feebas_seed,
-} from "rng_tools";
+import { rngTools } from "~/rngTools";
 import {
   DecimalString,
   fromDecimalString,
@@ -70,7 +67,7 @@ export const Gen3Sid = ({ game }: Props) => {
   const [results, setResults] = React.useState<GeneratorResult[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    (opts) => {
+    async (opts) => {
       const tid = fromDecimalString(opts.tid);
       const feebasSeed = fromHexString(opts.feebasSeed);
       const initialAdvances = fromDecimalString(opts.initialAdvances);
@@ -86,9 +83,16 @@ export const Gen3Sid = ({ game }: Props) => {
       }
 
       const generate =
-        game === "rs" ? rs_sid_from_feebas_seed : emerald_sid_from_feebas_seed;
+        game === "rs"
+          ? rngTools.rs_sid_from_feebas_seed
+          : rngTools.emerald_sid_from_feebas_seed;
 
-      const results = generate(tid, feebasSeed, initialAdvances, maxAdvances);
+      const results = await generate(
+        tid,
+        feebasSeed,
+        initialAdvances,
+        maxAdvances,
+      );
 
       setResults([...results].map(({ sid }) => ({ sid })));
     },

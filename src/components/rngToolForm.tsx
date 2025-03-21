@@ -3,7 +3,7 @@ import { Formik, FormikConfig } from "formik";
 import { Form } from "./form";
 import { FormFieldTable, Field } from "./formFieldTable";
 import { Button } from "./button";
-import { ResultTable, ResultColumn } from "./resultTable";
+import { FormikResultTable, ResultColumn } from "./resultTable";
 import { GenericForm } from "~/types/form";
 import * as tst from "ts-toolbelt";
 
@@ -56,13 +56,13 @@ export const RngToolForm = <
   submitButtonLabel = "Generate",
 }: Props<FormState, Result>) => {
   return (
-    <Flex vertical gap={16}>
-      <Formik
-        enableReinitialize
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        onReset={onReset}
-      >
+    <Formik
+      enableReinitialize
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      onReset={onReset}
+    >
+      <Flex vertical gap={16}>
         <Form>
           <Flex vertical gap={8}>
             <FormFieldTable fields={fields} />
@@ -76,22 +76,23 @@ export const RngToolForm = <
             )}
           </Flex>
         </Form>
-      </Formik>
-      {columns != null && (
-        <ResultTable<Result>
-          columns={columns}
-          rowKey={rowKey}
-          dataSource={results}
-          rowSelection={
-            onClickResultRow == null
-              ? undefined
-              : {
-                  type: "radio",
-                  onSelect: (record) => onClickResultRow?.(record),
-                }
-          }
-        />
-      )}
-    </Flex>
+
+        {columns != null && (
+          <FormikResultTable<Result>
+            columns={columns}
+            rowKey={rowKey}
+            dataSource={results}
+            rowSelection={
+              onClickResultRow == null
+                ? undefined
+                : {
+                    type: "radio",
+                    onSelect: (record) => onClickResultRow?.(record),
+                  }
+            }
+          />
+        )}
+      </Flex>
+    </Formik>
   );
 };

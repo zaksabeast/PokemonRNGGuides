@@ -7,12 +7,7 @@ import {
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import {
-  Gen2PokeFilter,
-  crystal_generate_celebi,
-  crystal_generate_starters,
-  type Gen2Spread,
-} from "rng_tools";
+import { rngTools, Gen2PokeFilter, type Gen2Spread } from "~/rngTools";
 import {
   DecimalString,
   fromDecimalString,
@@ -176,17 +171,17 @@ export const Gen2PokemonRng = ({ type, language }: Props) => {
   const [results, setResults] = React.useState<Gen2Spread[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    (opts) => {
+    async (opts) => {
       const div = fromHexString(opts.div) ?? 0;
       const startAdvance = fromDecimalString(opts.startAdvance) ?? 0;
       const advanceCount = fromDecimalString(opts.advanceCount) ?? 0;
 
       const generator =
         type === "starter"
-          ? crystal_generate_starters
-          : crystal_generate_celebi;
+          ? rngTools.crystal_generate_starters
+          : rngTools.crystal_generate_celebi;
 
-      const results = generator(
+      const results = await generator(
         div >>> 8,
         div & 0xff,
         fromDecimalString(opts.adivIndex) ?? 0,

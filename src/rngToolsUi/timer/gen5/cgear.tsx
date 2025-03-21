@@ -13,12 +13,7 @@ import {
   capPrecision,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
-import {
-  Console,
-  create_gen5_cgear_timer,
-  calibrate_gen5_cgear_timer,
-  minutes_before,
-} from "rng_tools";
+import { Console, rngTools } from "~/rngTools";
 
 type Result = {
   milliseconds: number[];
@@ -86,7 +81,7 @@ export const Gen5CGearTimer = () => {
   });
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    (opts, formik) => {
+    async (opts, formik) => {
       let settings = {
         console: opts.console,
         min_time_ms: fromDecimalString(opts.minTimeMs) ?? 0,
@@ -97,7 +92,10 @@ export const Gen5CGearTimer = () => {
 
       if (opts.delayHit !== "") {
         const delayHit = fromDecimalString(opts.delayHit) ?? 0;
-        settings = calibrate_gen5_cgear_timer(settings, delayHit);
+        settings = await rngTools.calibrate_gen5_cgear_timer(
+          settings,
+          delayHit,
+        );
         settings = {
           console: opts.console,
           min_time_ms: capPrecision(settings.min_time_ms),
@@ -115,10 +113,10 @@ export const Gen5CGearTimer = () => {
         });
       }
 
-      const milliseconds = create_gen5_cgear_timer(settings);
+      const milliseconds = await rngTools.create_gen5_cgear_timer(settings);
       setTimer({
         milliseconds: [...milliseconds],
-        minutesBeforeTarget: minutes_before(milliseconds),
+        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       });
     },
     [],

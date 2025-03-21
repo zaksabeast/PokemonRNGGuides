@@ -8,7 +8,7 @@ import {
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import { emerald_egg_pickup_states, Ivs, Gen3PickupMethod } from "rng_tools";
+import { rngTools, Ivs, Gen3PickupMethod } from "~/rngTools";
 import {
   HexString,
   DecimalString,
@@ -130,7 +130,7 @@ export const EmeraldPickupEgg = ({ lua = false }: Props) => {
   const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    (opts) => {
+    async (opts) => {
       const initialAdvances = fromDecimalString(opts.initial_advances);
       const maxAdvances = fromDecimalString(opts.max_advances);
       const seed = fromHexString(opts.seed);
@@ -145,7 +145,7 @@ export const EmeraldPickupEgg = ({ lua = false }: Props) => {
         return;
       }
 
-      const results = emerald_egg_pickup_states({
+      const results = await rngTools.emerald_egg_pickup_states({
         ...opts,
         seed,
         delay,

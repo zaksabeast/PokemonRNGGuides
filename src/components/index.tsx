@@ -12,7 +12,10 @@ export { List, ListItem } from "./list";
 export { FormikInput } from "./input";
 export { Form } from "./form";
 export { FormFieldTable, type Field } from "./formFieldTable";
-export { ResultTable, type ResultColumn } from "./resultTable";
+export {
+  FormikResultTable as ResultTable,
+  type ResultColumn,
+} from "./resultTable";
 export { Select, FormikSelect } from "./select";
 export { IvInput } from "./ivInput";
 export { FormikSwitch } from "./switch";

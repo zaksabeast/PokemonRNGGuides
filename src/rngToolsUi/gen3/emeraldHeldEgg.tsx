@@ -9,13 +9,13 @@ import {
   RngToolSubmit,
 } from "~/components";
 import {
-  emerald_egg_held_states,
+  rngTools,
   Gen3HeldEgg,
   Nature,
   Compatability,
   Species,
   Gender,
-} from "rng_tools";
+} from "~/rngTools";
 import {
   DecimalString,
   fromDecimalString,
@@ -204,7 +204,7 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
   const [results, setResults] = React.useState<Gen3HeldEgg[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    (opts) => {
+    async (opts) => {
       const initialAdvances = fromDecimalString(opts.initial_advances);
       const maxAdvances = fromDecimalString(opts.max_advances);
       const calibration = fromDecimalString(opts.calibration);
@@ -227,7 +227,7 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
         return;
       }
 
-      const results = emerald_egg_held_states({
+      const results = await rngTools.emerald_egg_held_states({
         ...opts,
         initial_advances: initialAdvances,
         max_advances: maxAdvances,

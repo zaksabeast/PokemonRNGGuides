@@ -1,5 +1,6 @@
 import { GenericForm, GuarnteeFormNameType } from "~/types/form";
 import { Select } from "./select";
+import { Flex } from "./flex";
 import { Input } from "./input";
 import { useFormikContext } from "formik";
 import { IdFilter } from "~/types/id";
@@ -26,7 +27,7 @@ export const FormikIdFilter = <FormState extends GenericForm>({
   const value = formik.values[name];
 
   return (
-    <>
+    <Flex vertical gap={10}>
       <Select<FilterType>
         fullFlex
         options={filterOptions}
@@ -54,6 +55,6 @@ export const FormikIdFilter = <FormState extends GenericForm>({
           }}
         />
       )}
-    </>
+    </Flex>
   );
 };

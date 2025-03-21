@@ -40,6 +40,7 @@ import { OrAsMirageSpot } from "~/rngTools/gen6/orasMirageSpot";
 import { RngTimer } from "~/rngTools/timer";
 import { OrasId } from "~/rngTools/gen6/orasId";
 import { DpptSeed } from "~/rngTools/gen4/dpptSeed";
+import { DpptId } from "~/rngTools/gen4/dpptId";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -80,4 +81,5 @@ export const markdownComponents = {
   RngTimer,
   OrasId,
   DpptSeed,
+  DpptId,
 };

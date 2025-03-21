@@ -30,16 +30,16 @@ import {
   ShowIf,
   LanguageButton,
 } from "~/components";
-import { Gen2PokemonRng } from "~/rngTools/gen2Pokemon";
-import { Gen2Rng } from "~/rngTools/gen2Rng";
-import { Gen3Sid } from "~/rngTools/gen3Sid";
+import { Gen2PokemonRng } from "~/rngTools/gen2/crystalPokemon";
+import { Gen2Rng } from "~/rngTools/gen2/gen2Rng";
+import { Gen3Sid } from "~/rngTools/gen3/sid";
 import { Gen4Timer } from "~/rngTools/timer/gen4";
-import { EmeraldHeldEgg } from "~/rngTools/emeraldHeldEgg";
-import { EmeraldPickupEgg } from "~/rngTools/emeraldPickupEgg";
-import { OrAsMirageSpot } from "~/rngTools/orasMirageSpot";
+import { EmeraldHeldEgg } from "~/rngTools/gen3/emeraldHeldEgg";
+import { EmeraldPickupEgg } from "~/rngTools/gen3/emeraldPickupEgg";
+import { OrAsMirageSpot } from "~/rngTools/gen6/orasMirageSpot";
 import { RngTimer } from "~/rngTools/timer";
-import { OrasId } from "~/rngTools/orasId";
-import { DpptSeedSearch } from "~/rngTools/dpptSeedSearch";
+import { OrasId } from "~/rngTools/gen6/orasId";
+import { DpptSeedSearch } from "~/rngTools/gen4/dpptSeedSearch";
 
 export const markdownComponents = {
   br: MarkdownBreak,

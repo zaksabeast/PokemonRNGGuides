@@ -39,6 +39,7 @@ import { EmeraldPickupEgg } from "~/rngTools/emeraldPickupEgg";
 import { OrAsMirageSpot } from "~/rngTools/orasMirageSpot";
 import { RngTimer } from "~/rngTools/timer";
 import { OrasId } from "~/rngTools/orasId";
+import { DpptSeedSearch } from "~/rngTools/dpptSeedSearch";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -78,4 +79,5 @@ export const markdownComponents = {
   Gen4Timer,
   RngTimer,
   OrasId,
+  DpptSeedSearch,
 };

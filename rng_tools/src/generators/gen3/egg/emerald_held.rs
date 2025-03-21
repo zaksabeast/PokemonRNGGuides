@@ -177,7 +177,7 @@ fn generate_state(
     };
 
     let offset = (redraws as u16).wrapping_mul(3).wrapping_add(calibration) as u32;
-    let held_advance = (advance).wrapping_sub(offset);
+    let held_advance = (advance).wrapping_sub(calibration.into());
     let seed = ((advance).wrapping_add(1).wrapping_sub(offset)) & 0xffff;
     let mut trng = Lcrng::new_prng(seed);
 
@@ -209,6 +209,8 @@ fn generate_state(
 
 #[cfg(test)]
 mod test {
+    use super::Gender::*;
+    use super::Nature::*;
     use super::*;
 
     #[test]
@@ -235,121 +237,121 @@ mod test {
         };
 
         let result = emerald_egg_held_states(&opts);
-        let expected_result = [
-            Gen3HeldEgg {
-                advance: 4294967263,
-                redraws: 5,
-                pid: 0x15A3E97F,
-                shiny: false,
-                nature: Nature::Naughty,
-                ability: 1,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 4294967266,
-                redraws: 4,
-                pid: 0xDAF6E97F,
-                shiny: false,
-                nature: Nature::Rash,
-                ability: 1,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 4294967266,
-                redraws: 5,
-                pid: 0xDAF68E43,
-                shiny: false,
-                nature: Nature::Jolly,
-                ability: 1,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 4294967269,
-                redraws: 3,
-                pid: 0xA049E97F,
-                shiny: false,
-                nature: Nature::Jolly,
-                ability: 1,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 4294967269,
-                redraws: 4,
-                pid: 0xA0498E43,
-                shiny: false,
-                nature: Nature::Relaxed,
-                ability: 1,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 4294967272,
-                redraws: 2,
-                pid: 0x659CE97F,
-                shiny: false,
-                nature: Nature::Relaxed,
-                ability: 1,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 4294967272,
-                redraws: 3,
-                pid: 0x659C8E43,
-                shiny: false,
-                nature: Nature::Lonely,
-                ability: 1,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 4294967275,
-                redraws: 1,
-                pid: 0x2AEFE97F,
-                shiny: false,
-                nature: Nature::Lonely,
-                ability: 1,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 4294967275,
-                redraws: 2,
-                pid: 0x2AEF8E43,
-                shiny: false,
-                nature: Nature::Calm,
-                ability: 1,
-                gender: Gender::Male,
-            },
+        let expected = [
             Gen3HeldEgg {
                 advance: 4294967278,
                 redraws: 0,
-                pid: 0xF042E97F,
+                pid: 0xf042e97f,
+                gender: Male,
                 shiny: false,
-                nature: Nature::Mild,
+                nature: Mild,
                 ability: 1,
-                gender: Gender::Male,
             },
             Gen3HeldEgg {
                 advance: 4294967278,
                 redraws: 1,
-                pid: 0xF0428E43,
+                pid: 0x2aefe97f,
+                gender: Male,
                 shiny: false,
-                nature: Nature::Timid,
+                nature: Lonely,
                 ability: 1,
-                gender: Gender::Male,
+            },
+            Gen3HeldEgg {
+                advance: 4294967278,
+                redraws: 2,
+                pid: 0x659ce97f,
+                gender: Male,
+                shiny: false,
+                nature: Relaxed,
+                ability: 1,
+            },
+            Gen3HeldEgg {
+                advance: 4294967278,
+                redraws: 3,
+                pid: 0xa049e97f,
+                gender: Male,
+                shiny: false,
+                nature: Jolly,
+                ability: 1,
+            },
+            Gen3HeldEgg {
+                advance: 4294967278,
+                redraws: 4,
+                pid: 0xdaf6e97f,
+                gender: Male,
+                shiny: false,
+                nature: Rash,
+                ability: 1,
+            },
+            Gen3HeldEgg {
+                advance: 4294967278,
+                redraws: 5,
+                pid: 0x15a3e97f,
+                gender: Male,
+                shiny: false,
+                nature: Naughty,
+                ability: 1,
             },
             Gen3HeldEgg {
                 advance: 4294967281,
                 redraws: 0,
-                pid: 0xB5958E43,
+                pid: 0xb5958e43,
+                gender: Male,
                 shiny: false,
-                nature: Nature::Naughty,
+                nature: Naughty,
                 ability: 1,
-                gender: Gender::Male,
+            },
+            Gen3HeldEgg {
+                advance: 4294967281,
+                redraws: 1,
+                pid: 0xf0428e43,
+                gender: Male,
+                shiny: false,
+                nature: Timid,
+                ability: 1,
+            },
+            Gen3HeldEgg {
+                advance: 4294967281,
+                redraws: 2,
+                pid: 0x2aef8e43,
+                gender: Male,
+                shiny: false,
+                nature: Calm,
+                ability: 1,
+            },
+            Gen3HeldEgg {
+                advance: 4294967281,
+                redraws: 3,
+                pid: 0x659c8e43,
+                gender: Male,
+                shiny: false,
+                nature: Lonely,
+                ability: 1,
+            },
+            Gen3HeldEgg {
+                advance: 4294967281,
+                redraws: 4,
+                pid: 0xa0498e43,
+                gender: Male,
+                shiny: false,
+                nature: Relaxed,
+                ability: 1,
+            },
+            Gen3HeldEgg {
+                advance: 4294967281,
+                redraws: 5,
+                pid: 0xdaf68e43,
+                gender: Male,
+                shiny: false,
+                nature: Jolly,
+                ability: 1,
             },
         ];
 
-        assert_eq!(result.len(), expected_result.len());
+        assert_eq!(result.len(), expected.len());
         result
             .into_iter()
-            .zip(expected_result.into_iter())
+            .zip(expected.into_iter())
             .enumerate()
             .for_each(|(index, (result, expected))| {
                 assert_eq!(result, expected, "index: {}", index);
@@ -380,175 +382,175 @@ mod test {
         };
 
         let result = emerald_egg_held_states(&opts);
-        let expected_result = [
-            Gen3HeldEgg {
-                advance: 968,
-                redraws: 5,
-                pid: 0xF79F2C1D,
-                shiny: false,
-                nature: Nature::Rash,
-                ability: 1,
-                gender: Gender::Female,
-            },
-            Gen3HeldEgg {
-                advance: 969,
-                redraws: 5,
-                pid: 0x3965AA0A,
-                shiny: false,
-                nature: Nature::Adamant,
-                ability: 0,
-                gender: Gender::Female,
-            },
-            Gen3HeldEgg {
-                advance: 971,
-                redraws: 4,
-                pid: 0xBCF22C1D,
-                shiny: false,
-                nature: Nature::Jolly,
-                ability: 1,
-                gender: Gender::Female,
-            },
-            Gen3HeldEgg {
-                advance: 972,
-                redraws: 4,
-                pid: 0xFEB8AA0A,
-                shiny: false,
-                nature: Nature::Bashful,
-                ability: 0,
-                gender: Gender::Female,
-            },
-            Gen3HeldEgg {
-                advance: 972,
-                redraws: 5,
-                pid: 0xFEB8C6EC,
-                shiny: false,
-                nature: Nature::Serious,
-                ability: 0,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 974,
-                redraws: 3,
-                pid: 0x82452C1D,
-                shiny: false,
-                nature: Nature::Relaxed,
-                ability: 1,
-                gender: Gender::Female,
-            },
-            Gen3HeldEgg {
-                advance: 975,
-                redraws: 3,
-                pid: 0xC40BAA0A,
-                shiny: false,
-                nature: Nature::Serious,
-                ability: 0,
-                gender: Gender::Female,
-            },
-            Gen3HeldEgg {
-                advance: 975,
-                redraws: 4,
-                pid: 0xC40BC6EC,
-                shiny: false,
-                nature: Nature::Docile,
-                ability: 0,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 977,
-                redraws: 2,
-                pid: 0x47972C1D,
-                shiny: false,
-                nature: Nature::Modest,
-                ability: 1,
-                gender: Gender::Female,
-            },
-            Gen3HeldEgg {
-                advance: 978,
-                redraws: 2,
-                pid: 0x895EAA0A,
-                shiny: false,
-                nature: Nature::Docile,
-                ability: 0,
-                gender: Gender::Female,
-            },
-            Gen3HeldEgg {
-                advance: 978,
-                redraws: 3,
-                pid: 0x895EC6EC,
-                shiny: false,
-                nature: Nature::Hardy,
-                ability: 0,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 980,
-                redraws: 1,
-                pid: 0x0CEA2C1D,
-                shiny: false,
-                nature: Nature::Lax,
-                ability: 1,
-                gender: Gender::Female,
-            },
-            Gen3HeldEgg {
-                advance: 981,
-                redraws: 1,
-                pid: 0x4EB1AA0A,
-                shiny: false,
-                nature: Nature::Hardy,
-                ability: 0,
-                gender: Gender::Female,
-            },
-            Gen3HeldEgg {
-                advance: 981,
-                redraws: 2,
-                pid: 0x4EB1C6EC,
-                shiny: false,
-                nature: Nature::Rash,
-                ability: 0,
-                gender: Gender::Male,
-            },
+        let expected = [
             Gen3HeldEgg {
                 advance: 983,
                 redraws: 0,
-                pid: 0xD23D2C1D,
+                pid: 0xd23d2c1d,
+                gender: Female,
                 shiny: false,
-                nature: Nature::Quirky,
+                nature: Quirky,
                 ability: 1,
-                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 983,
+                redraws: 1,
+                pid: 0xcea2c1d,
+                gender: Female,
+                shiny: false,
+                nature: Lax,
+                ability: 1,
+            },
+            Gen3HeldEgg {
+                advance: 983,
+                redraws: 2,
+                pid: 0x47972c1d,
+                gender: Female,
+                shiny: false,
+                nature: Modest,
+                ability: 1,
+            },
+            Gen3HeldEgg {
+                advance: 983,
+                redraws: 3,
+                pid: 0x82452c1d,
+                gender: Female,
+                shiny: false,
+                nature: Relaxed,
+                ability: 1,
+            },
+            Gen3HeldEgg {
+                advance: 983,
+                redraws: 4,
+                pid: 0xbcf22c1d,
+                gender: Female,
+                shiny: false,
+                nature: Jolly,
+                ability: 1,
+            },
+            Gen3HeldEgg {
+                advance: 983,
+                redraws: 5,
+                pid: 0xf79f2c1d,
+                gender: Female,
+                shiny: false,
+                nature: Rash,
+                ability: 1,
             },
             Gen3HeldEgg {
                 advance: 984,
                 redraws: 0,
-                pid: 0x1404AA0A,
+                pid: 0x1404aa0a,
+                gender: Female,
                 shiny: false,
-                nature: Nature::Rash,
+                nature: Rash,
                 ability: 0,
-                gender: Gender::Female,
             },
             Gen3HeldEgg {
                 advance: 984,
                 redraws: 1,
-                pid: 0x1404C6EC,
+                pid: 0x4eb1aa0a,
+                gender: Female,
                 shiny: false,
-                nature: Nature::Jolly,
+                nature: Hardy,
                 ability: 0,
-                gender: Gender::Male,
+            },
+            Gen3HeldEgg {
+                advance: 984,
+                redraws: 2,
+                pid: 0x895eaa0a,
+                gender: Female,
+                shiny: false,
+                nature: Docile,
+                ability: 0,
+            },
+            Gen3HeldEgg {
+                advance: 984,
+                redraws: 3,
+                pid: 0xc40baa0a,
+                gender: Female,
+                shiny: false,
+                nature: Serious,
+                ability: 0,
+            },
+            Gen3HeldEgg {
+                advance: 984,
+                redraws: 4,
+                pid: 0xfeb8aa0a,
+                gender: Female,
+                shiny: false,
+                nature: Bashful,
+                ability: 0,
+            },
+            Gen3HeldEgg {
+                advance: 984,
+                redraws: 5,
+                pid: 0x3965aa0a,
+                gender: Female,
+                shiny: false,
+                nature: Adamant,
+                ability: 0,
             },
             Gen3HeldEgg {
                 advance: 987,
                 redraws: 0,
-                pid: 0xD957C6EC,
+                pid: 0xd957c6ec,
+                gender: Male,
                 shiny: false,
-                nature: Nature::Adamant,
+                nature: Adamant,
                 ability: 0,
-                gender: Gender::Male,
+            },
+            Gen3HeldEgg {
+                advance: 987,
+                redraws: 1,
+                pid: 0x1404c6ec,
+                gender: Male,
+                shiny: false,
+                nature: Jolly,
+                ability: 0,
+            },
+            Gen3HeldEgg {
+                advance: 987,
+                redraws: 2,
+                pid: 0x4eb1c6ec,
+                gender: Male,
+                shiny: false,
+                nature: Rash,
+                ability: 0,
+            },
+            Gen3HeldEgg {
+                advance: 987,
+                redraws: 3,
+                pid: 0x895ec6ec,
+                gender: Male,
+                shiny: false,
+                nature: Hardy,
+                ability: 0,
+            },
+            Gen3HeldEgg {
+                advance: 987,
+                redraws: 4,
+                pid: 0xc40bc6ec,
+                gender: Male,
+                shiny: false,
+                nature: Docile,
+                ability: 0,
+            },
+            Gen3HeldEgg {
+                advance: 987,
+                redraws: 5,
+                pid: 0xfeb8c6ec,
+                gender: Male,
+                shiny: false,
+                nature: Serious,
+                ability: 0,
             },
         ];
 
-        assert_eq!(result.len(), expected_result.len());
+        assert_eq!(result.len(), expected.len());
         result
             .into_iter()
-            .zip(expected_result.into_iter())
+            .zip(expected.into_iter())
             .enumerate()
             .for_each(|(index, (result, expected))| {
                 assert_eq!(result, expected, "index: {}", index);
@@ -579,67 +581,67 @@ mod test {
         };
 
         let result = emerald_egg_held_states(&opts);
-        let expected_result = [
-            Gen3HeldEgg {
-                advance: 979,
-                redraws: 1,
-                pid: 0xCB2410C8,
-                shiny: false,
-                nature: Nature::Modest,
-                ability: 0,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 980,
-                redraws: 1,
-                pid: 0x0CEA2C1D,
-                shiny: false,
-                nature: Nature::Lax,
-                ability: 1,
-                gender: Gender::Female,
-            },
-            Gen3HeldEgg {
-                advance: 981,
-                redraws: 1,
-                pid: 0x4EB1AA0A,
-                shiny: false,
-                nature: Nature::Hardy,
-                ability: 0,
-                gender: Gender::Female,
-            },
+        let expected = [
             Gen3HeldEgg {
                 advance: 982,
                 redraws: 0,
-                pid: 0x907710C8,
+                pid: 0x907710c8,
+                gender: Male,
                 shiny: false,
-                nature: Nature::Lax,
+                nature: Lax,
                 ability: 0,
-                gender: Gender::Male,
+            },
+            Gen3HeldEgg {
+                advance: 982,
+                redraws: 1,
+                pid: 0xcb2410c8,
+                gender: Male,
+                shiny: false,
+                nature: Modest,
+                ability: 0,
             },
             Gen3HeldEgg {
                 advance: 983,
                 redraws: 0,
-                pid: 0xD23D2C1D,
+                pid: 0xd23d2c1d,
+                gender: Female,
                 shiny: false,
-                nature: Nature::Quirky,
+                nature: Quirky,
                 ability: 1,
-                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 983,
+                redraws: 1,
+                pid: 0xcea2c1d,
+                gender: Female,
+                shiny: false,
+                nature: Lax,
+                ability: 1,
             },
             Gen3HeldEgg {
                 advance: 984,
                 redraws: 0,
-                pid: 0x1404AA0A,
+                pid: 0x1404aa0a,
+                gender: Female,
                 shiny: false,
-                nature: Nature::Rash,
+                nature: Rash,
                 ability: 0,
-                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 984,
+                redraws: 1,
+                pid: 0x4eb1aa0a,
+                gender: Female,
+                shiny: false,
+                nature: Hardy,
+                ability: 0,
             },
         ];
 
-        assert_eq!(result.len(), expected_result.len());
+        assert_eq!(result.len(), expected.len());
         result
             .into_iter()
-            .zip(expected_result.into_iter())
+            .zip(expected.into_iter())
             .enumerate()
             .for_each(|(index, (result, expected))| {
                 assert_eq!(result, expected, "index: {}", index);
@@ -670,85 +672,85 @@ mod test {
         };
 
         let result = emerald_egg_held_states(&opts);
-        let expected_result = [
-            Gen3HeldEgg {
-                advance: 979,
-                redraws: 1,
-                pid: 0xCB2410C8,
-                shiny: false,
-                nature: Nature::Modest,
-                ability: 0,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 980,
-                redraws: 1,
-                pid: 0x0CEA2C1D,
-                shiny: false,
-                nature: Nature::Lax,
-                ability: 1,
-                gender: Gender::Female,
-            },
-            Gen3HeldEgg {
-                advance: 981,
-                redraws: 1,
-                pid: 0x4EB1AA0A,
-                shiny: false,
-                nature: Nature::Hardy,
-                ability: 0,
-                gender: Gender::Female,
-            },
+        let expected = [
             Gen3HeldEgg {
                 advance: 982,
                 redraws: 0,
-                pid: 0x907710C8,
+                pid: 0x907710c8,
+                gender: Male,
                 shiny: false,
-                nature: Nature::Lax,
+                nature: Lax,
                 ability: 0,
-                gender: Gender::Male,
             },
             Gen3HeldEgg {
                 advance: 982,
                 redraws: 1,
-                pid: 0x9077E766,
+                pid: 0xcb2410c8,
+                gender: Male,
                 shiny: false,
-                nature: Nature::Lonely,
+                nature: Modest,
                 ability: 0,
-                gender: Gender::Male,
             },
             Gen3HeldEgg {
                 advance: 983,
                 redraws: 0,
-                pid: 0xD23D2C1D,
+                pid: 0xd23d2c1d,
+                gender: Female,
                 shiny: false,
-                nature: Nature::Quirky,
+                nature: Quirky,
                 ability: 1,
-                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 983,
+                redraws: 1,
+                pid: 0xcea2c1d,
+                gender: Female,
+                shiny: false,
+                nature: Lax,
+                ability: 1,
             },
             Gen3HeldEgg {
                 advance: 984,
                 redraws: 0,
-                pid: 0x1404AA0A,
+                pid: 0x1404aa0a,
+                gender: Female,
                 shiny: false,
-                nature: Nature::Rash,
+                nature: Rash,
                 ability: 0,
-                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 984,
+                redraws: 1,
+                pid: 0x4eb1aa0a,
+                gender: Female,
+                shiny: false,
+                nature: Hardy,
+                ability: 0,
             },
             Gen3HeldEgg {
                 advance: 985,
                 redraws: 0,
-                pid: 0x55CAE766,
+                pid: 0x55cae766,
+                gender: Male,
                 shiny: false,
-                nature: Nature::Calm,
+                nature: Calm,
                 ability: 0,
-                gender: Gender::Male,
+            },
+            Gen3HeldEgg {
+                advance: 985,
+                redraws: 1,
+                pid: 0x9077e766,
+                gender: Male,
+                shiny: false,
+                nature: Lonely,
+                ability: 0,
             },
         ];
 
-        assert_eq!(result.len(), expected_result.len());
+        assert_eq!(result.len(), expected.len());
         result
             .into_iter()
-            .zip(expected_result.into_iter())
+            .zip(expected.into_iter())
             .enumerate()
             .for_each(|(index, (result, expected))| {
                 assert_eq!(result, expected, "index: {}", index);
@@ -779,7 +781,7 @@ mod test {
         };
 
         let result = emerald_egg_held_states(&opts);
-        let expected_result = [Gen3HeldEgg {
+        let expected = [Gen3HeldEgg {
             advance: 983,
             redraws: 0,
             pid: 0xD23D2C1D,
@@ -789,10 +791,10 @@ mod test {
             gender: Gender::Female,
         }];
 
-        assert_eq!(result.len(), expected_result.len());
+        assert_eq!(result.len(), expected.len());
         result
             .into_iter()
-            .zip(expected_result.into_iter())
+            .zip(expected.into_iter())
             .enumerate()
             .for_each(|(index, (result, expected))| {
                 assert_eq!(result, expected, "index: {}", index);
@@ -823,40 +825,40 @@ mod test {
         };
 
         let result = emerald_egg_held_states(&opts);
-        let expected_result = [
+        let expected = [
             Gen3HeldEgg {
-                advance: 979,
+                advance: 982,
                 redraws: 1,
-                pid: 0x089C7D6A,
+                pid: 0x89c7d6a,
+                gender: Male,
                 shiny: false,
-                nature: Nature::Hardy,
+                nature: Hardy,
                 ability: 0,
-                gender: Gender::Male,
-            },
-            Gen3HeldEgg {
-                advance: 981,
-                redraws: 1,
-                pid: 0x4EB1E766,
-                shiny: false,
-                nature: Nature::Impish,
-                ability: 0,
-                gender: Gender::Male,
             },
             Gen3HeldEgg {
                 advance: 984,
                 redraws: 0,
-                pid: 0x1404E766,
+                pid: 0x1404e766,
+                gender: Male,
                 shiny: false,
-                nature: Nature::Brave,
+                nature: Brave,
                 ability: 0,
-                gender: Gender::Male,
+            },
+            Gen3HeldEgg {
+                advance: 984,
+                redraws: 1,
+                pid: 0x4eb1e766,
+                gender: Male,
+                shiny: false,
+                nature: Impish,
+                ability: 0,
             },
         ];
 
-        assert_eq!(result.len(), expected_result.len());
+        assert_eq!(result.len(), expected.len());
         result
             .into_iter()
-            .zip(expected_result.into_iter())
+            .zip(expected.into_iter())
             .enumerate()
             .for_each(|(index, (result, expected))| {
                 assert_eq!(result, expected, "index: {}", index);

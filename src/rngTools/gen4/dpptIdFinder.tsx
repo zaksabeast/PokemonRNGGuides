@@ -25,12 +25,12 @@ const columns: ResultColumn<Id4>[] = [
     render: (seed: number) => seed.toString(16).toUpperCase().padStart(8, "0"),
   },
   {
-    title: "Tid",
+    title: "TID",
     dataIndex: "tid",
     key: "tid",
   },
   {
-    title: "Sid",
+    title: "SID",
     dataIndex: "sid",
     key: "sid",
   },

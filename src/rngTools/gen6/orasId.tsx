@@ -25,12 +25,12 @@ const columns: ResultColumn<Gen6Id>[] = [
     key: "advances",
   },
   {
-    title: "Tid",
+    title: "TID",
     dataIndex: "tid",
     key: "tid",
   },
   {
-    title: "Sid",
+    title: "SID",
     dataIndex: "sid",
     key: "sid",
   },

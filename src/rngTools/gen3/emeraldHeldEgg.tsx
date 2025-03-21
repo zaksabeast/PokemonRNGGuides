@@ -29,7 +29,7 @@ const columns: ResultColumn<Gen3HeldEgg>[] = [
   { title: "Advance", dataIndex: "advance", key: "advance" },
   { title: "Redraws", dataIndex: "redraws", key: "redraws" },
   {
-    title: "Pid",
+    title: "PID",
     dataIndex: "pid",
     key: "pid",
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),

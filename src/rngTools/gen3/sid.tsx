@@ -23,7 +23,7 @@ type GeneratorResult = { sid: number };
 
 const columns: ResultColumn<GeneratorResult>[] = [
   {
-    title: "Sid",
+    title: "SID",
     dataIndex: "sid",
     key: "sid",
   },

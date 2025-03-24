@@ -1,10 +1,16 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { withCss } from "./withCss";
-import { MdArrowRightAlt, MdCheckCircle } from "react-icons/md";
+import {
+  MdArrowRightAlt,
+  MdCheckCircle,
+  MdCheck,
+  MdClose,
+} from "react-icons/md";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaDiscord } from "react-icons/fa";
-import { IoLanguage } from "react-icons/io5";
+import { IoLanguage, IoSparkles } from "react-icons/io5";
+import { PiPersonSimpleWalkBold } from "react-icons/pi";
 
 const icons = {
   Menu: AiOutlineMenu,
@@ -12,7 +18,11 @@ const icons = {
   Discord: FaDiscord,
   Github: FaGithub,
   CheckCircle: MdCheckCircle,
+  Check: MdCheck,
   Language: IoLanguage,
+  Close: MdClose,
+  Sparkles: IoSparkles,
+  PersonSimpleWalkBold: PiPersonSimpleWalkBold,
 } as const;
 
 export type IconName = keyof typeof icons;

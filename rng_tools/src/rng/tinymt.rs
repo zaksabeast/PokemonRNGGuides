@@ -1,5 +1,5 @@
-use super::GetRand;
 use super::Rng;
+use super::{GetMaxRand, GetRand};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
 pub struct TinyMT {
@@ -75,6 +75,14 @@ impl Iterator for TinyMT {
 impl GetRand<u32> for TinyMT {
     fn get(&mut self) -> u32 {
         self.next().unwrap()
+    }
+}
+
+impl GetMaxRand<u32> for TinyMT {
+    fn get_max(&mut self, max: u32) -> u32 {
+        (self.next().unwrap() as u64)
+            .wrapping_mul(max as u64)
+            .wrapping_shr(32) as u32
     }
 }
 

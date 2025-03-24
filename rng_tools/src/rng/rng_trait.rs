@@ -5,6 +5,10 @@ pub trait GetRand<T> {
     fn get(&mut self) -> T;
 }
 
+pub trait GetMaxRand<T> {
+    fn get_max(&mut self, max: T) -> T;
+}
+
 pub trait Rng: Iterator {
     fn rand<T>(&mut self) -> T
     where
@@ -15,10 +19,10 @@ pub trait Rng: Iterator {
 
     fn rand_max<T>(&mut self, max: T) -> T
     where
-        Self: GetRand<T>,
+        Self: GetMaxRand<T>,
         T: Rem<Output = T>,
     {
-        self.rand::<T>() % max
+        self.get_max(max)
     }
 
     fn advance(&mut self, count: usize) {

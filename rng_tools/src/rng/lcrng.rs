@@ -1,4 +1,4 @@
-use super::rng_trait::{GetRand, Rng};
+use super::rng_trait::{GetMaxRand, GetRand, Rng};
 use std::iter::{DoubleEndedIterator, Iterator, Skip};
 
 #[derive(Debug, Clone, Copy)]
@@ -66,6 +66,12 @@ impl GetRand<u8> for Lcrng {
 impl GetRand<u16> for Lcrng {
     fn get(&mut self) -> u16 {
         self.next_u16()
+    }
+}
+
+impl GetMaxRand<u16> for Lcrng {
+    fn get_max(&mut self, max: u16) -> u16 {
+        ((self.next().unwrap_or_default() >> 16) as u16) % max
     }
 }
 

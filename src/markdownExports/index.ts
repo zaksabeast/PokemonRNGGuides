@@ -41,6 +41,7 @@ import { RngTimer } from "~/rngToolsUi/timer";
 import { OrasId } from "~/rngToolsUi/gen6/orasId";
 import { DpptSeed } from "~/rngToolsUi/gen4/dpptSeed";
 import { DpptId } from "~/rngToolsUi/gen4/dpptId";
+import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -82,4 +83,5 @@ export const markdownComponents = {
   OrasId,
   DpptSeed,
   DpptId,
+  XyPokeRadar,
 };

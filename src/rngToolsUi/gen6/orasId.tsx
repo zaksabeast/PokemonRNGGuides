@@ -6,6 +6,7 @@ import {
   RngToolSubmit,
   Field,
   FormikIdFilter,
+  Typography,
 } from "~/components";
 import { rngTools, Gen6Id } from "~/rngTools";
 import {
@@ -43,11 +44,14 @@ const columns: ResultColumn<Gen6Id>[] = [
     title: "State",
     dataIndex: "tinymt_state",
     key: "tinymt_state",
-    render: (state: number[]) =>
-      state
-        .map((num) => num.toString(16).padStart(8, "0").toUpperCase())
-        .reverse()
-        .join(", "),
+    render: (state: number[]) => (
+      <Typography.Text whiteSpace="nowrap">
+        {state
+          .map((num) => num.toString(16).padStart(8, "0").toUpperCase())
+          .reverse()
+          .join(", ")}
+      </Typography.Text>
+    ),
   },
 ];
 

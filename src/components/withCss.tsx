@@ -49,6 +49,7 @@ type CustomStyles = {
   boxSizing?: React.CSSProperties["boxSizing"];
 
   whiteSpace?: React.CSSProperties["whiteSpace"];
+  aspectRatio?: React.CSSProperties["aspectRatio"];
 };
 
 const styleProps = [
@@ -87,6 +88,7 @@ const styleProps = [
   "strokeColor",
   "boxSizing",
   "whiteSpace",
+  "aspectRatio",
 ];
 
 function styleConverter({
@@ -125,6 +127,7 @@ function styleConverter({
   strokeColor,
   boxSizing,
   whiteSpace,
+  aspectRatio,
   theme,
 }: CustomStyles & { theme: Theme }) {
   return {
@@ -156,6 +159,7 @@ function styleConverter({
       display,
       boxSizing,
       whiteSpace,
+      aspectRatio,
       strokeColor:
         strokeColor == null ? undefined : theme.token[`color${strokeColor}`],
       color: color == null ? undefined : theme.token[`color${color}`],

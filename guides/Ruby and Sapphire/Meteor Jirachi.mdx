@@ -1,0 +1,52 @@
+---
+title: "Meteor Jirachi RNG"
+description: "RNG a Meteor Jirachi from the Colosseum bonus disc"
+slug: "meteor-jirachi"
+tag: "emu"
+---
+
+## Tools
+
+- [mGBA with lua scripts](/mgba-setup)
+- [wishmaker lua script](https://github.com/Real96/PokeLua/blob/main/Gen%203/mGBA/RS_RNG_Checksums_mGBA.lua)
+
+### Lua Script Set up
+
+In line 6 of the lua script edit it to the path where your save is located.
+
+```
+local savePath = "D:\\Desktop\\mGBA\\battery\\Pokemon - Ruby.sav"  -- Write here the path of your Ruby/Sapphire save file
+```
+
+## Step 1: Setting up
+
+1. Open Ruby or Sapphire and load the wishmaker lua script.
+2. Open the save menu and pause the game at the last dialogue option over "YES".
+3. Note the current time displayed by the lua script.
+4. Hold down the `A` button and unpause the game simultaneously.
+5. When the lua script time freezes, pause the game and write down that time.
+
+Your save delay will be the time when it froze minus the time when you paused the game.
+
+`Save delay = time froze - time paused`
+
+## Step 2: Hitting the Target Seed
+
+1. Open the lua script in WordPad (or a text editor).
+2. Input the time from the target seed under targetHour, targetMinute, targetSecond, and targetSixtiethSecond.
+3. Optionally, add your target Jirachi seed (for rng proofs/personal preference) to targetSeed.
+4. Advance to the last dialogue of the save menu and hover over "YES".
+5. Pause the game.
+6. Wait for the in-game time to match the target save time displayed.
+
+- Target save time = save time + delay while saving.
+
+7. Once near your target save time, pause and advance frames manually.
+
+- The default key for advancing frames is `Ctrl + N` for Windows.
+
+8. When on your target save time, hold down `A` and unpause the game simultaneously.
+
+Checksum should now match.
+
+Load the multiboot rom with patch enabled and redeem Jirachi.

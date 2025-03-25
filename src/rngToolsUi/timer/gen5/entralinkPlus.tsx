@@ -7,32 +7,41 @@ import {
   FormikSelect,
 } from "~/components";
 import {
-  DecimalString,
   toDecimalString,
   fromDecimalString,
   capPrecision,
+  ZodDecimalString,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
-import { Console, Gen5EntralinkPlusTimerSettings, rngTools } from "~/rngTools";
+import {
+  Gen5EntralinkPlusTimerSettings,
+  rngTools,
+  ZodConsole,
+} from "~/rngTools";
+import { atomWithPersistence } from "~/state/localStorage";
+import { useTimerSettings } from "~/state/timerSettings";
+import { z } from "zod";
 
 type Result = {
   milliseconds: number[];
   minutesBeforeTarget: number;
 };
 
-type FormState = {
-  console: Console;
-  minTimeMs: DecimalString;
-  targetDelay: DecimalString;
-  targetSecond: DecimalString;
-  targetAdvance: DecimalString;
-  calibration: DecimalString;
-  entralinkCalibration: DecimalString;
-  frameCalibration: DecimalString;
-  delayHit: DecimalString | "";
-  secondHit: DecimalString | "";
-  advanceHit: DecimalString | "";
-};
+const FormStateSchema = z.object({
+  console: ZodConsole,
+  minTimeMs: ZodDecimalString,
+  targetDelay: ZodDecimalString,
+  targetSecond: ZodDecimalString,
+  targetAdvance: ZodDecimalString,
+  calibration: ZodDecimalString,
+  entralinkCalibration: ZodDecimalString,
+  frameCalibration: ZodDecimalString,
+  delayHit: z.union([ZodDecimalString, z.literal("")]),
+  secondHit: z.union([ZodDecimalString, z.literal("")]),
+  advanceHit: z.union([ZodDecimalString, z.literal("")]),
+});
+
+type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "NDSSLOT1",
@@ -47,6 +56,12 @@ const initialValues: FormState = {
   secondHit: "",
   advanceHit: "",
 };
+
+const timerSettingsAtom = atomWithPersistence(
+  "gen5EntralinkPlusTimerSettings",
+  FormStateSchema,
+  initialValues,
+);
 
 const fields: Field[] = [
   {
@@ -105,6 +120,7 @@ const fields: Field[] = [
 ];
 
 export const Gen5EntralinkPlusTimer = () => {
+  const { initialSettings, onUpdate } = useTimerSettings(timerSettingsAtom);
   const [timer, setTimer] = React.useState<Result>({
     milliseconds: [],
     minutesBeforeTarget: 0,
@@ -184,8 +200,9 @@ export const Gen5EntralinkPlusTimer = () => {
 
       <RngToolForm<FormState, number[]>
         fields={fields}
-        initialValues={initialValues}
+        initialValues={initialSettings}
         onSubmit={onSubmit}
+        onUpdate={onUpdate}
         submitTrackerId="set_gen5_entralink_plus_timer"
         submitButtonLabel="Set Timer"
       />

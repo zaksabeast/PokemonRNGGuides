@@ -9,6 +9,19 @@ import firstBeepMp3 from "~/assets/first-beep.mp3";
 import secondBeepMp3 from "~/assets/second-beep.mp3";
 import { useAudio } from "~/hooks/useAudio";
 import { FormFieldTable } from "./formFieldTable";
+import { atomWithPersistence, useAtom } from "~/state/localStorage";
+import { z } from "zod";
+
+const MultiTimerStateSchema = z.object({
+  showAllTimers: z.boolean(),
+  maxBeepCount: z.number(),
+});
+
+const multiTimerStateAtom = atomWithPersistence(
+  "multiTimerState",
+  MultiTimerStateSchema,
+  { showAllTimers: false, maxBeepCount: 5 },
+);
 
 type Props = {
   minutesBeforeTarget: number;
@@ -25,8 +38,7 @@ export const MultiTimer = ({
   startButtonTrackerId,
   stopButtonTrackerId,
 }: Props) => {
-  const [maxBeepCount, setMaxBeepCount] = React.useState(5);
-  const [showAllTimers, setShowAllTimers] = React.useState(true);
+  const [state, setState] = useAtom(multiTimerStateAtom);
   const [isRunning, setIsRunning] = React.useState(false);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
   const firstBeep = useAudio(firstBeepMp3);
@@ -37,7 +49,7 @@ export const MultiTimer = ({
   const displayTimerMs = milliseconds.length === 0 ? [0] : milliseconds;
   const countdownBeeps = Math.min(
     Math.floor(currentMs / countdownIntervalMs),
-    maxBeepCount,
+    state.maxBeepCount,
   );
   const countdownMs = currentMs - countdownBeeps * countdownIntervalMs;
 
@@ -64,10 +76,13 @@ export const MultiTimer = ({
           <Flex justify="flex-end">
             <RadioGroup
               optionType="button"
-              value={showAllTimers ? "showAllTimers" : "showCurrentTimer"}
-              onChange={({ target }) =>
-                setShowAllTimers(target.value === "showAllTimers")
-              }
+              value={state.showAllTimers ? "showAllTimers" : "showCurrentTimer"}
+              onChange={({ target }) => {
+                setState({
+                  showAllTimers: target.value === "showAllTimers",
+                  maxBeepCount: state.maxBeepCount,
+                });
+              }}
               options={[
                 { label: "Yes", value: "showAllTimers" },
                 { label: "No", value: "showCurrentTimer" },
@@ -80,8 +95,13 @@ export const MultiTimer = ({
         label: "Countdown beeps",
         input: (
           <Select<number>
-            defaultValue={maxBeepCount}
-            onChange={(value) => setMaxBeepCount(value)}
+            value={state.maxBeepCount}
+            onChange={(value) => {
+              setState({
+                maxBeepCount: value,
+                showAllTimers: state.showAllTimers,
+              });
+            }}
             options={new Array(11).fill(0).map((_, index) => ({
               label: index.toString(),
               value: index,
@@ -90,12 +110,12 @@ export const MultiTimer = ({
         ),
       },
     ],
-    [showAllTimers, maxBeepCount],
+    [state.maxBeepCount, state.showAllTimers, setState],
   );
 
   return (
     <Flex vertical gap={24}>
-      {!showAllTimers && (
+      {!state.showAllTimers && (
         <>
           <Flex vertical gap={16} justify="center" align="center">
             <Timer
@@ -117,7 +137,7 @@ export const MultiTimer = ({
         </>
       )}
 
-      {showAllTimers && (
+      {state.showAllTimers && (
         <>
           <Flex wrap gap={16} justify="center" align="center">
             {displayTimerMs.map((ms, index) => (

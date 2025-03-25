@@ -1,5 +1,21 @@
-export type DecimalString = string & { readonly _tag: "DecimalString" };
-export type HexString = string & { readonly _tag: "HexString" };
+import { z } from "zod";
+
+export const ZodDecimalString = z
+  .string()
+  .refine((str) => {
+    return !isNaN(parseFloat(str));
+  }, "DecimalString")
+  .brand("DecimalString");
+
+export const ZodHexString = z
+  .string()
+  .refine((str) => {
+    return !isNaN(parseInt(str, 16));
+  }, "HexString")
+  .brand("HexString");
+
+export type DecimalString = z.infer<typeof ZodDecimalString>;
+export type HexString = z.infer<typeof ZodHexString>;
 
 export const capPrecision = (value: number): number => {
   return parseFloat(value.toFixed(3));

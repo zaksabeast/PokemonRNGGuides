@@ -7,26 +7,31 @@ import {
   FormikSelect,
 } from "~/components";
 import {
-  DecimalString,
   toDecimalString,
   fromDecimalString,
   capPrecision,
+  ZodDecimalString,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
-import { Console, rngTools } from "~/rngTools";
+import { rngTools, ZodConsole } from "~/rngTools";
+import { atomWithPersistence } from "~/state/localStorage";
+import { useTimerSettings } from "~/state/timerSettings";
+import { z } from "zod";
 
 type Result = {
   milliseconds: number[];
   minutesBeforeTarget: number;
 };
 
-type FormState = {
-  console: Console;
-  minTimeMs: DecimalString;
-  targetSecond: DecimalString;
-  calibration: DecimalString;
-  secondHit: DecimalString | "";
-};
+const FormStateSchema = z.object({
+  console: ZodConsole,
+  minTimeMs: ZodDecimalString,
+  targetSecond: ZodDecimalString,
+  calibration: ZodDecimalString,
+  secondHit: z.union([ZodDecimalString, z.literal("")]),
+});
+
+type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "NDSSLOT1",
@@ -35,6 +40,12 @@ const initialValues: FormState = {
   calibration: toDecimalString(-95),
   secondHit: "",
 };
+
+const timerSettingsAtom = atomWithPersistence(
+  "gen5StandardTimerSettings",
+  FormStateSchema,
+  initialValues,
+);
 
 const fields: Field[] = [
   {
@@ -69,6 +80,7 @@ const fields: Field[] = [
 ];
 
 export const Gen5StandardTimer = () => {
+  const { initialSettings, onUpdate } = useTimerSettings(timerSettingsAtom);
   const [timer, setTimer] = React.useState<Result>({
     milliseconds: [],
     minutesBeforeTarget: 0,
@@ -124,8 +136,9 @@ export const Gen5StandardTimer = () => {
 
       <RngToolForm<FormState, number[]>
         fields={fields}
-        initialValues={initialValues}
+        initialValues={initialSettings}
         onSubmit={onSubmit}
+        onUpdate={onUpdate}
         submitTrackerId="set_gen5_standard_timer"
         submitButtonLabel="Set Timer"
       />

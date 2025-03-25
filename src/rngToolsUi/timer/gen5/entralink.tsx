@@ -7,29 +7,34 @@ import {
   FormikSelect,
 } from "~/components";
 import {
-  DecimalString,
   toDecimalString,
   fromDecimalString,
   capPrecision,
+  ZodDecimalString,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
-import { Console, Gen5EntralinkTimerSettings, rngTools } from "~/rngTools";
+import { Gen5EntralinkTimerSettings, rngTools, ZodConsole } from "~/rngTools";
+import { atomWithPersistence } from "~/state/localStorage";
+import { useTimerSettings } from "~/state/timerSettings";
+import { z } from "zod";
 
 type Result = {
   milliseconds: number[];
   minutesBeforeTarget: number;
 };
 
-type FormState = {
-  console: Console;
-  minTimeMs: DecimalString;
-  targetDelay: DecimalString;
-  targetSecond: DecimalString;
-  calibration: DecimalString;
-  entralinkCalibration: DecimalString;
-  delayHit: DecimalString | "";
-  secondHit: DecimalString | "";
-};
+const FormStateSchema = z.object({
+  console: ZodConsole,
+  minTimeMs: ZodDecimalString,
+  targetDelay: ZodDecimalString,
+  targetSecond: ZodDecimalString,
+  calibration: ZodDecimalString,
+  entralinkCalibration: ZodDecimalString,
+  delayHit: z.union([ZodDecimalString, z.literal("")]),
+  secondHit: z.union([ZodDecimalString, z.literal("")]),
+});
+
+type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "NDSSLOT1",
@@ -41,6 +46,12 @@ const initialValues: FormState = {
   delayHit: "",
   secondHit: "",
 };
+
+const timerSettingsAtom = atomWithPersistence(
+  "gen5EntralinkTimerSettings",
+  FormStateSchema,
+  initialValues,
+);
 
 const fields: Field[] = [
   {
@@ -87,6 +98,7 @@ const fields: Field[] = [
 ];
 
 export const Gen5EntralinkTimer = () => {
+  const { initialSettings, onUpdate } = useTimerSettings(timerSettingsAtom);
   const [timer, setTimer] = React.useState<Result>({
     milliseconds: [],
     minutesBeforeTarget: 0,
@@ -152,8 +164,9 @@ export const Gen5EntralinkTimer = () => {
 
       <RngToolForm<FormState, number[]>
         fields={fields}
-        initialValues={initialValues}
+        initialValues={initialSettings}
         onSubmit={onSubmit}
+        onUpdate={onUpdate}
         submitTrackerId="set_gen5_entralink_timer"
         submitButtonLabel="Set Timer"
       />

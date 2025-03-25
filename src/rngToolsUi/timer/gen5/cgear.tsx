@@ -7,27 +7,32 @@ import {
   FormikSelect,
 } from "~/components";
 import {
-  DecimalString,
   toDecimalString,
   fromDecimalString,
   capPrecision,
+  ZodDecimalString,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
-import { Console, rngTools } from "~/rngTools";
+import { rngTools, ZodConsole } from "~/rngTools";
+import { atomWithPersistence } from "~/state/localStorage";
+import { useTimerSettings } from "~/state/timerSettings";
+import { z } from "zod";
 
 type Result = {
   milliseconds: number[];
   minutesBeforeTarget: number;
 };
 
-type FormState = {
-  console: Console;
-  minTimeMs: DecimalString;
-  targetDelay: DecimalString;
-  targetSecond: DecimalString;
-  calibration: DecimalString;
-  delayHit: DecimalString | "";
-};
+const FormStateSchema = z.object({
+  console: ZodConsole,
+  minTimeMs: ZodDecimalString,
+  targetDelay: ZodDecimalString,
+  targetSecond: ZodDecimalString,
+  calibration: ZodDecimalString,
+  delayHit: z.union([ZodDecimalString, z.literal("")]),
+});
+
+type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "NDSSLOT1",
@@ -37,6 +42,12 @@ const initialValues: FormState = {
   calibration: toDecimalString(-95),
   delayHit: "",
 };
+
+const timerSettingsAtom = atomWithPersistence(
+  "gen5CGearTimerSettings",
+  FormStateSchema,
+  initialValues,
+);
 
 const fields: Field[] = [
   {
@@ -75,6 +86,7 @@ const fields: Field[] = [
 ];
 
 export const Gen5CGearTimer = () => {
+  const { initialSettings, onUpdate } = useTimerSettings(timerSettingsAtom);
   const [timer, setTimer] = React.useState<Result>({
     milliseconds: [],
     minutesBeforeTarget: 0,
@@ -133,8 +145,9 @@ export const Gen5CGearTimer = () => {
 
       <RngToolForm<FormState, number[]>
         fields={fields}
-        initialValues={initialValues}
+        initialValues={initialSettings}
         onSubmit={onSubmit}
+        onUpdate={onUpdate}
         submitTrackerId="set_gen5_cgear_timer"
         submitButtonLabel="Set Timer"
       />

@@ -1,15 +1,31 @@
-import React from "react";
 import { Flex, Select, Typography } from "~/components";
 import { match } from "ts-pattern";
 import { Gen5StandardTimer } from "./standard";
 import { Gen5CGearTimer } from "./cgear";
 import { Gen5EntralinkTimer } from "./entralink";
 import { Gen5EntralinkPlusTimer } from "./entralinkPlus";
+import { atomWithPersistence, useAtom } from "~/state/localStorage";
+import { z } from "zod";
 
-type Gen5TimerMode = "standard" | "cgear" | "entralink" | "entralink_plus";
+const Gen5TimerModeSchema = z.union([
+  z.literal("standard"),
+  z.literal("cgear"),
+  z.literal("entralink"),
+  z.literal("entralink_plus"),
+]);
+
+type Gen5TimerMode = z.infer<typeof Gen5TimerModeSchema>;
+
+const gen5TimerModeAtom = atomWithPersistence(
+  "gen5TimerMode",
+  z.object({
+    mode: Gen5TimerModeSchema,
+  }),
+  { mode: "standard" },
+);
 
 export const Gen5Timer = () => {
-  const [mode, setMode] = React.useState<Gen5TimerMode>("standard");
+  const [{ mode }, setMode] = useAtom(gen5TimerModeAtom);
   const timer = match(mode)
     .with("standard", () => <Gen5StandardTimer />)
     .with("cgear", () => <Gen5CGearTimer />)
@@ -24,7 +40,7 @@ export const Gen5Timer = () => {
         <Select<Gen5TimerMode>
           fullFlex
           value={mode}
-          onChange={setMode}
+          onChange={(mode) => setMode({ mode })}
           options={[
             {
               label: "Standard",

@@ -1,11 +1,24 @@
+import React from "react";
 import { Flex } from "./flex";
-import { Formik, FormikConfig } from "formik";
+import { Formik, FormikConfig, useFormikContext } from "formik";
 import { Form } from "./form";
 import { FormFieldTable, Field } from "./formFieldTable";
 import { Button } from "./button";
 import { FormikResultTable, ResultColumn } from "./resultTable";
 import { GenericForm } from "~/types/form";
 import * as tst from "ts-toolbelt";
+
+const CaptureValueUpdate = <FormState extends GenericForm>({
+  onUpdate,
+}: {
+  onUpdate: (values: FormState) => void;
+}) => {
+  const { values } = useFormikContext<FormState>();
+  React.useEffect(() => {
+    onUpdate(values);
+  }, [onUpdate, values]);
+  return null;
+};
 
 export type RngToolSubmit<Values> = FormikConfig<Values>["onSubmit"];
 
@@ -14,7 +27,7 @@ type Props<FormState, Result> = {
   initialValues: FormState;
   fields: Field[];
   onSubmit: RngToolSubmit<FormState>;
-  onClickResultRow?: (record: Result) => void;
+  onUpdate?: (values: FormState) => void;
   submitButtonLabel?: string;
 } & (
   | { columns: ResultColumn<Result>[]; results: Result[] }
@@ -48,6 +61,7 @@ export const RngToolForm = <
   columns,
   onSubmit,
   onReset,
+  onUpdate,
   onClickResultRow,
   rowKey,
   results,
@@ -63,6 +77,7 @@ export const RngToolForm = <
       onReset={onReset}
     >
       <Flex vertical gap={16}>
+        {onUpdate != null && <CaptureValueUpdate onUpdate={onUpdate} />}
         <Form>
           <Flex vertical gap={8}>
             <FormFieldTable fields={fields} />

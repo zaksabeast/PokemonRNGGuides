@@ -8,29 +8,34 @@ import {
 } from "~/components";
 import {
   capPrecision,
-  DecimalString,
   fromDecimalString,
   toDecimalString,
+  ZodDecimalString,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
-import { Console, rngTools } from "~/rngTools";
+import { rngTools, ZodConsole } from "~/rngTools";
+import { atomWithPersistence } from "~/state/localStorage";
+import { useTimerSettings } from "~/state/timerSettings";
+import { z } from "zod";
 
 type Result = {
   milliseconds: number[];
   minutesBeforeTarget: number;
 };
 
-type FormState = {
-  console: Console;
-  minTimeMs: DecimalString;
-  calibratedDelay: DecimalString;
-  calibratedSeconds: DecimalString;
-  targetDelay: DecimalString;
-  targetSeconds: DecimalString;
-  delayHit: DecimalString | "";
-};
+const FormStateSchema = z.object({
+  console: ZodConsole,
+  minTimeMs: ZodDecimalString,
+  calibratedDelay: ZodDecimalString,
+  calibratedSeconds: ZodDecimalString,
+  targetDelay: ZodDecimalString,
+  targetSeconds: ZodDecimalString,
+  delayHit: z.union([ZodDecimalString, z.literal("")]),
+});
 
-const initialValues: FormState = {
+type FormState = z.infer<typeof FormStateSchema>;
+
+const defaultValues: FormState = {
   console: "NDSSLOT1",
   minTimeMs: toDecimalString(14000),
   calibratedDelay: toDecimalString(500),
@@ -39,6 +44,12 @@ const initialValues: FormState = {
   targetSeconds: toDecimalString(50),
   delayHit: "",
 };
+
+const timerSettingsAtom = atomWithPersistence(
+  "gen4TimerSettings",
+  FormStateSchema,
+  defaultValues,
+);
 
 const fields: Field[] = [
   {
@@ -81,6 +92,7 @@ const fields: Field[] = [
 ];
 
 export const Gen4Timer = () => {
+  const { initialSettings, onUpdate } = useTimerSettings(timerSettingsAtom);
   const [timer, setTimer] = React.useState<Result>({
     milliseconds: [],
     minutesBeforeTarget: 0,
@@ -139,8 +151,9 @@ export const Gen4Timer = () => {
 
       <RngToolForm<FormState, number[]>
         fields={fields}
-        initialValues={initialValues}
+        initialValues={initialSettings}
         onSubmit={onSubmit}
+        onUpdate={onUpdate}
         submitTrackerId="set_gen4_timer"
         submitButtonLabel="Set Timer"
       />

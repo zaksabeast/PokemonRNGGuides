@@ -33,7 +33,7 @@ type Props<FormState, Result> = {
         onClickResultRow: (record: Result) => void;
       }
     | {
-        rowKey?: never;
+        rowKey?: keyof Result;
         onClickResultRow?: never;
       }
   );

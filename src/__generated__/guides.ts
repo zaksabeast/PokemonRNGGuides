@@ -1212,6 +1212,20 @@ export const guides = {
         ),
     ),
   },
+  "/xy-pokeradar": {
+    meta: {
+      title: "PokeRadar RNG",
+      description: "Shiny hunt with the PokeRadar in XY!",
+      slug: "/xy-pokeradar",
+      isRoughDraft: false,
+      tag: "cfw",
+      hideFromNavDrawer: false,
+      addedOn: "2025-03-24",
+      file: "guides/X and Y/PokeRadar.mdx",
+      category: "X and Y",
+    },
+    Guide: React.lazy(() => import("~/../guides/X and Y/PokeRadar.mdx")),
+  },
   "/retail-sm-timeline": {
     meta: {
       title: "Timeline Guide",
@@ -2369,6 +2383,7 @@ export const guideSlugs = [
   z.literal("/pcalc-xy-friend-safari"),
   z.literal("/pcalc-xy-tid"),
   z.literal("/retail-xy-egg-mmsc"),
+  z.literal("/xy-pokeradar"),
   z.literal("/retail-sm-timeline"),
   z.literal("/misc-sm-wild-spots"),
   z.literal("/retail-sm-egg-no-mmsc"),

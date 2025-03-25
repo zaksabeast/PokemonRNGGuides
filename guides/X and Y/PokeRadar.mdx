@@ -1,0 +1,70 @@
+---
+title: "PokeRadar RNG"
+description: "Shiny hunt with the PokeRadar in XY!"
+slug: "xy-pokeradar"
+subCategory: "Custom Firmware"
+tag: "cfw"
+addedOn: "2025-03-24"
+---
+
+## Video Guide
+
+<YouTubeVideo src="https://www.youtube.com/embed/5Pkw195YiLQ" />
+
+## Tools
+
+- [PokeReader](/install-pokereader)
+- Lots of repels to avoid wild Pokémon encounters
+
+## Step 1: Setting Up
+
+1. Ensure you have PokeReader installed and running.
+2. Open PokéReader and lock it in place by pressing `X` and `Y`.
+3. Use the PokeRadar and encounter the Pokemon you want to be shiny.
+4. Knock out or catch the Pokémon to start the chain of 1 and lock the species.
+
+`Note:` Avoid using roller skates, running into the wrong species, or stepping into empty patches - these will break your chain.
+
+## Step 2: Inputting Data
+
+1. Open your bag to pause TinyMT advancements.
+2. Enter the following data from PokeReader into the RNG tool at the bottom of this guide:
+   - TinyMT seeds
+   - Current advances
+   - Max advances (e.g., 20,000)
+   - Number of Pokémon in your party
+   - Chain count
+3. Click "Generate" to display possible results.
+
+When you click on a row in the tool you'll see shown below the results:
+
+- **Sparkles**: Shiny Pokémon patches.
+- **Green checkmarks**: Safe patches that continue your chain.
+- **Red crosses**: Dangerous patches that break your chain (wrong species or empty).
+
+## Step 3: Advancing TinyMT
+
+1. Walk around to recharge the PokéRadar if needed.
+2. Use Pokémon Amie to advance TinyMT quickly.
+3. Open your bag to pause advancements when you are close to your target advance.
+4. Advance to your target by
+   - Toggling the Experience Share to advance by 3 for each Pokémon in your party.
+   - Start teaching a Pokémon a TM and quickly exit to advance by 1.
+
+## Step 4: Finding the Shiny Patch
+
+1. Once you've reached your target advance, use PokeRadar.
+2. Walk into the correct patch without breaking the chain.
+3. Catch your shiny Pokémon!
+
+Congrats—you've successfully RNGed a shiny Pokémon!
+
+## RNG Tool
+
+<XyPokeRadar />
+
+## Credits
+
+- wwwwwwzx for reverse engineering this logic, [3DSRNGTool, and TinyTimeline](https://github.com/wwwwwwzx/3DSRNGTool).
+- Bambo_Rambo for [TinyFinder](https://github.com/Bambo-Rambo/TinyFinder), which this tool is based on, and their [DexNav guide](https://github.com/Bambo-Rambo/RNG-Guides/blob/main/DexNavRNG.md), which has help info.
+- Vlad and Shiny_Sylveon for answering questions while this tool was being built.

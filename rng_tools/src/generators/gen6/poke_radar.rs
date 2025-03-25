@@ -52,6 +52,7 @@ pub struct PokeRadarOptions {
     pub chain: u8,
     pub bonus_music: bool,
     pub filter_shiny: bool,
+    pub filter_slot: Option<u8>,
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -222,10 +223,19 @@ pub fn generate_poke_radar_states(opts: PokeRadarOptions) -> PokeRadarResult {
         .take(opts.max_advances)
         .filter_map(|(advance, mut rng)| {
             let radar_state = generate_poke_radar_state(&opts, &mut rng, advance);
-            match !opts.filter_shiny || radar_state.shiny {
-                true => Some(radar_state),
-                false => None,
+
+            if opts.filter_shiny && !radar_state.shiny {
+                return None;
             }
+
+            if opts.chain == 0
+                && opts.filter_slot.is_some()
+                && Some(radar_state.slot) != opts.filter_slot
+            {
+                return None;
+            }
+
+            Some(radar_state)
         });
 
     match opts.chain {
@@ -249,6 +259,7 @@ mod test {
             chain: 0,
             bonus_music: false,
             filter_shiny: false,
+            filter_slot: None,
         };
         let result = generate_poke_radar_states(opts);
         let expected = [
@@ -637,6 +648,7 @@ mod test {
             chain: 0,
             bonus_music: false,
             filter_shiny: false,
+            filter_slot: None,
         };
         let result = generate_poke_radar_states(opts);
         let expected = [
@@ -1025,6 +1037,7 @@ mod test {
             chain: 4,
             bonus_music: false,
             filter_shiny: true,
+            filter_slot: None,
         };
         let result = generate_poke_radar_states(opts);
         let expected = [
@@ -1325,6 +1338,341 @@ mod test {
             chain: 4,
             bonus_music: false,
             filter_shiny: false,
+            filter_slot: None,
+        };
+        let result = generate_poke_radar_states(opts);
+        let expected = [
+            PokeRadarChainState {
+                advance: 15000,
+                shiny: false,
+                music: PokeRadarMusic::M,
+                boosted: false,
+                patches: [
+                    PokeRadarPatch {
+                        x: 3,
+                        y: 5,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 6,
+                        y: 6,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 4,
+                        y: 1,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 8,
+                        y: 0,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 5,
+                        y: 4,
+                        state: Empty,
+                    },
+                ],
+                state: [0x8292558A, 0x026C9D5F, 0x3B3E9D20, 0xE258208E],
+            },
+            PokeRadarChainState {
+                advance: 15001,
+                shiny: false,
+                music: PokeRadarMusic::None,
+                boosted: false,
+                patches: [
+                    PokeRadarPatch {
+                        x: 3,
+                        y: 3,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 6,
+                        y: 6,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 3,
+                        y: 1,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 6,
+                        y: 0,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 7,
+                        y: 3,
+                        state: Empty,
+                    },
+                ],
+                state: [0x026C9D5F, 0x3B3E9D20, 0x9F7BA61F, 0xDF34CED6],
+            },
+            PokeRadarChainState {
+                advance: 15002,
+                shiny: false,
+                music: PokeRadarMusic::None,
+                boosted: false,
+                patches: [
+                    PokeRadarPatch {
+                        x: 5,
+                        y: 3,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 6,
+                        y: 2,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 2,
+                        y: 7,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 2,
+                        y: 8,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 6,
+                        y: 5,
+                        state: Empty,
+                    },
+                ],
+                state: [0x3B3E9D20, 0x100BB7F1, 0x470E61BF, 0x5AD4431D],
+            },
+            PokeRadarChainState {
+                advance: 15003,
+                shiny: false,
+                music: PokeRadarMusic::None,
+                boosted: false,
+                patches: [
+                    PokeRadarPatch {
+                        x: 5,
+                        y: 5,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 4,
+                        y: 2,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 7,
+                        y: 1,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 8,
+                        y: 0,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 6,
+                        y: 6,
+                        state: Empty,
+                    },
+                ],
+                state: [0x100BB7F1, 0xC87E7051, 0x86C9A6AD, 0xC3F3BF21],
+            },
+            PokeRadarChainState {
+                advance: 15004,
+                shiny: false,
+                music: PokeRadarMusic::M,
+                boosted: false,
+                patches: [
+                    PokeRadarPatch {
+                        x: 5,
+                        y: 5,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 3,
+                        y: 2,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 5,
+                        y: 1,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 8,
+                        y: 6,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 2,
+                        y: 2,
+                        state: Empty,
+                    },
+                ],
+                state: [0xC87E7051, 0x86C9A6AD, 0xD8CA3B17, 0x41CEC3A6],
+            },
+            PokeRadarChainState {
+                advance: 15005,
+                shiny: false,
+                music: PokeRadarMusic::M,
+                boosted: false,
+                patches: [
+                    PokeRadarPatch {
+                        x: 5,
+                        y: 3,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 2,
+                        y: 6,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 2,
+                        y: 7,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 8,
+                        y: 0,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 6,
+                        y: 6,
+                        state: Empty,
+                    },
+                ],
+                state: [0x86C9A6AD, 0xD8CA3B17, 0x84D7163D, 0x5BAF9448],
+            },
+        ];
+        if let PokeRadarResult::WithChain(result) = result {
+            assert_eq!(result.len(), expected.len());
+            result
+                .into_iter()
+                .zip(expected.into_iter())
+                .enumerate()
+                .for_each(|(index, (result, expected))| {
+                    assert_eq!(result, expected, "index: {}", index);
+                });
+        } else {
+            panic!("Expected WithChain result");
+        }
+    }
+
+    #[test]
+    fn poke_radar_filter_slot() {
+        let opts = PokeRadarOptions {
+            state: [0x304ACD77, 0x03D159CC, 0x69689233, 0x342C0F10],
+            initial_advances: 0,
+            max_advances: 10,
+            party_count: 1,
+            chain: 0,
+            bonus_music: false,
+            filter_shiny: false,
+            filter_slot: Some(3),
+        };
+        let result = generate_poke_radar_states(opts);
+        let expected = [
+            PokeRadarNoChainState {
+                advance: 8,
+                sync: true,
+                slot: 3,
+                music: PokeRadarMusic::M,
+                shiny: false,
+                boosted: false,
+                patches: [
+                    PokeRadarPatch {
+                        x: 3,
+                        y: 3,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 6,
+                        y: 2,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 7,
+                        y: 6,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 8,
+                        y: 8,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 2,
+                        y: 4,
+                        state: Empty,
+                    },
+                ],
+                state: [0x5D8778C9, 0x7F090EB2, 0x4B125918, 0xBD2A23DB],
+            },
+            PokeRadarNoChainState {
+                advance: 9,
+                sync: true,
+                slot: 3,
+                music: PokeRadarMusic::None,
+                shiny: false,
+                boosted: false,
+                patches: [
+                    PokeRadarPatch {
+                        x: 5,
+                        y: 3,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 2,
+                        y: 2,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 7,
+                        y: 7,
+                        state: Empty,
+                    },
+                    PokeRadarPatch {
+                        x: 8,
+                        y: 7,
+                        state: Good,
+                    },
+                    PokeRadarPatch {
+                        x: 2,
+                        y: 6,
+                        state: Empty,
+                    },
+                ],
+                state: [0x7F090EB2, 0xC46248F6, 0x2BD2C2BA, 0x591B4393],
+            },
+        ];
+        if let PokeRadarResult::NoChain(result) = result {
+            assert_eq!(result.len(), expected.len());
+            result
+                .into_iter()
+                .zip(expected.into_iter())
+                .enumerate()
+                .for_each(|(index, (result, expected))| {
+                    assert_eq!(result, expected, "index: {}", index);
+                });
+        } else {
+            panic!("Expected NoChain result");
+        }
+    }
+
+    #[test]
+    fn do_not_filter_slot_on_chain() {
+        let opts = PokeRadarOptions {
+            state: [0x304ACD77, 0x03D159CC, 0x69689233, 0x342C0F10],
+            initial_advances: 15000,
+            max_advances: 6,
+            party_count: 5,
+            chain: 4,
+            bonus_music: false,
+            filter_shiny: false,
+            filter_slot: Some(10),
         };
         let result = generate_poke_radar_states(opts);
         let expected = [

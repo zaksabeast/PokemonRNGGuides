@@ -1,4 +1,4 @@
-import { Gender } from "rng_tools";
+import { Gender } from "~/rngTools";
 
 export const gender = [
   "Male",

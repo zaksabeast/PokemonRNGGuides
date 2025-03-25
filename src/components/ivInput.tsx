@@ -2,7 +2,7 @@ import { GenericForm, GuarnteeFormNameType } from "~/types/form";
 import { Flex } from "./flex";
 import { Input } from "./input";
 import { useFormikContext } from "formik";
-import { Ivs } from "rng_tools";
+import { Ivs } from "~/rngTools";
 
 type SingleIvFieldProps<FormState extends GenericForm> = {
   parentName: GuarnteeFormNameType<FormState, Ivs>;

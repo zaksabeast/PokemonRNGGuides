@@ -1,4 +1,4 @@
-import { Nature } from "rng_tools";
+import { Nature } from "~/rngTools";
 
 export const nature = [
   "Hardy",

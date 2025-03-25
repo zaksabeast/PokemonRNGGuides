@@ -1,4 +1,4 @@
-import { Species } from "rng_tools";
+import { Species } from "~/rngTools";
 
 export const species = [
   "None",

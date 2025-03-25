@@ -1,4 +1,4 @@
-import type { RngDate, RngDateTime } from "rng_tools";
+import type { RngDate, RngDateTime } from "~/rngTools";
 import dayjs, { Dayjs } from "dayjs";
 
 export const rngChronoFormat = {

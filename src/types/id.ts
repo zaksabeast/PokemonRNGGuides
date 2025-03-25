@@ -1,4 +1,4 @@
-import { IdFilter as RngToolsIdFilter } from "rng_tools";
+import { IdFilter as RngToolsIdFilter } from "~/rngTools";
 import {
   DecimalString,
   fromDecimalString,

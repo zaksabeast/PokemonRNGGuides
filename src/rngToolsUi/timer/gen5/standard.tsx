@@ -14,14 +14,23 @@ import {
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
 import { rngTools, ZodConsole } from "~/rngTools";
-import { atomWithPersistence } from "~/state/localStorage";
+import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { useTimerSettings } from "~/state/timerSettings";
 import { z } from "zod";
 
-type Result = {
-  milliseconds: number[];
-  minutesBeforeTarget: number;
-};
+const TimerStateSchema = z.object({
+  milliseconds: z.array(z.number()),
+  minutesBeforeTarget: z.number(),
+});
+
+const timerStateAtom = atomWithPersistence(
+  "gen5StandardTimer",
+  TimerStateSchema,
+  {
+    milliseconds: [],
+    minutesBeforeTarget: 0,
+  },
+);
 
 const FormStateSchema = z.object({
   console: ZodConsole,
@@ -81,10 +90,7 @@ const fields: Field[] = [
 
 export const Gen5StandardTimer = () => {
   const { initialSettings, onUpdate } = useTimerSettings(timerSettingsAtom);
-  const [timer, setTimer] = React.useState<Result>({
-    milliseconds: [],
-    minutesBeforeTarget: 0,
-  });
+  const [timer, setTimer] = useAtom(timerStateAtom);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts, formik) => {
@@ -121,8 +127,9 @@ export const Gen5StandardTimer = () => {
         milliseconds: [...milliseconds],
         minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       });
+      onUpdate(opts);
     },
-    [],
+    [onUpdate, setTimer],
   );
 
   return (
@@ -138,7 +145,6 @@ export const Gen5StandardTimer = () => {
         fields={fields}
         initialValues={initialSettings}
         onSubmit={onSubmit}
-        onUpdate={onUpdate}
         submitTrackerId="set_gen5_standard_timer"
         submitButtonLabel="Set Timer"
       />

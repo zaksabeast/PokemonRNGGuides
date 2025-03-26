@@ -265,6 +265,26 @@ export const guides = {
         ),
     ),
   },
+  "/dppt-initial-seed-retail": {
+    meta: {
+      title: "Initial Seed RNG",
+      description:
+        "How to RNG an initial seed in Diamond, Pearl, and Platinum on a physical console",
+      category: "Diamond, Pearl, and Platinum",
+      slug: "/dppt-initial-seed-retail",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-08",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx",
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx"
+        ),
+    ),
+  },
   "/dppt-pokeradar-rng": {
     meta: {
       title: "PokeRadar RNG",
@@ -2562,6 +2582,7 @@ export const guideSlugs = [
   z.literal("/desmume-setup"),
   z.literal("/dppt-advance-rng"),
   z.literal("/dppt-initial-seed"),
+  z.literal("/dppt-initial-seed-retail"),
   z.literal("/dppt-pokeradar-rng"),
   z.literal("/dppt-setup-rng"),
   z.literal("/dppt-wild"),

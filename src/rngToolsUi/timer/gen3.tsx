@@ -61,6 +61,9 @@ const fields: Field[] = [
         options={[
           { label: "GBA", value: "GBA" },
           { label: "NDS - Slot 2", value: "NDSSLOT2" },
+          { label: "NDS - Slot 1", value: "NDSSLOT1" },
+          { label: "DSI", value: "DSI" },
+          { label: "3DS", value: "THREEDS" },
         ]}
       />
     ),

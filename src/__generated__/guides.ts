@@ -2065,6 +2065,26 @@ export const guides = {
       () => import("~/../guides/Diamond, Pearl, and Platinum/TID SID.mdx"),
     ),
   },
+  "/dppt-initial-seed-retail": {
+    meta: {
+      title: "Initial Seed RNG",
+      description:
+        "How to RNG an initial seed in Diamond, Pearl, and Platinum on a physical console",
+      slug: "/dppt-initial-seed-retail",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx",
+      category: "Diamond, Pearl, and Platinum",
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx"
+        ),
+    ),
+  },
   "/emulator-dppt-cute-charm": {
     meta: {
       title: "Cute Charm RNG",
@@ -2434,6 +2454,7 @@ export const guideSlugs = [
   z.literal("/channel-jirachi"),
   z.literal("/dppt-advance-rng"),
   z.literal("/emulator-dppt-tid-sid"),
+  z.literal("/dppt-initial-seed-retail"),
   z.literal("/emulator-dppt-cute-charm"),
   z.literal("/dppt-setup-rng"),
   z.literal("/emulator-dppt-stationary"),

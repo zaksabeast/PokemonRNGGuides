@@ -24,16 +24,15 @@ type AbTestConfig = {
 type AbTestConfigs = Record<string, AbTestConfig>;
 
 const abTests = {
-  // Temporarily keeping this for type purposes
-  // Remove it when we add a new AB test
-  discordButton2: {
+  // Temporarily keep at least one for type purposes
+  supportUsButton: {
     cohorts: [
-      "play_trade_and_rng_with_friends",
-      "stream_play_and_rng_with_us",
-      "hunt_trade_and_rng_with_us",
+      "back_new_tools_and_videos",
+      "fuel_rng_join_our_supporters",
+      "support_rng_and_unlock_perks",
     ],
-    // Not a true control anymore, but that's fine
-    controlCohort: "play_trade_and_rng_with_friends",
+    // Not a true control, but that's fine
+    controlCohort: "back_new_tools_and_videos",
   },
 } as const satisfies AbTestConfigs;
 
@@ -56,7 +55,7 @@ const getAbCohort = <T extends AbTestName>(
 };
 
 const joinedCohorts = atom<Record<AbTestName, boolean>>({
-  discordButton2: false,
+  supportUsButton: false,
 });
 
 export const useAbCohort = <T extends AbTestName>(abTestName: T) => {

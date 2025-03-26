@@ -9,6 +9,7 @@ declare module "@emotion/react" {
     token: {
       headerHeight: string;
       footerHeight: string;
+      colorFillSecondaryHover: string;
     };
     mediaQueries: {
       up: (size: ScreenSize) => string;

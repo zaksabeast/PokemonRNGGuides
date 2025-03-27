@@ -48,6 +48,22 @@ export const guides = {
       () => import("~/../guides/Gold, Silver, Crystal/Starter.mdx"),
     ),
   },
+  "/zh-gen2-starters": {
+    meta: {
+      title: "水晶御三家乱数",
+      description: "Get Shiny Starters in Crystal",
+      slug: "/zh-gen2-starters",
+      isRoughDraft: false,
+      tag: "cfw",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Gold, Silver, Crystal/Starter.mdx",
+      category: "Gold, Silver, Crystal",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gold, Silver, Crystal/Starter.mdx"),
+    ),
+  },
   "/gen2-celebi": {
     meta: {
       title: "Celebi",
@@ -57,6 +73,22 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: "2025-03-02",
+      file: "guides/Gold, Silver, Crystal/Celebi.mdx",
+      category: "Gold, Silver, Crystal",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gold, Silver, Crystal/Celebi.mdx"),
+    ),
+  },
+  "/zh-gen2-celebi": {
+    meta: {
+      title: "时拉比",
+      description: "如何获得异色时拉比",
+      slug: "/zh-gen2-celebi",
+      isRoughDraft: false,
+      tag: "cfw",
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-27",
       file: "guides/Gold, Silver, Crystal/Celebi.mdx",
       category: "Gold, Silver, Crystal",
     },
@@ -2049,6 +2081,25 @@ export const guides = {
         ),
     ),
   },
+  "/zh-dppt-advance-rng": {
+    meta: {
+      title: "乱数的帧数推进方法",
+      description: "推进乱数帧数的不同方法及影响帧数的事件机制",
+      slug: "/zh-dppt-advance-rng",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
+      category: "Diamond, Pearl, and Platinum",
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Diamond, Pearl, and Platinum/Advancing the RNG.mdx"
+        ),
+    ),
+  },
   "/emulator-dppt-tid-sid": {
     meta: {
       title: "TID/SID RNG",
@@ -2315,7 +2366,9 @@ export const guideSlugs = [
   z.literal("/"),
   z.literal("/gen2-starters"),
   z.literal("/es-gen2-starters"),
+  z.literal("/zh-gen2-starters"),
   z.literal("/gen2-celebi"),
+  z.literal("/zh-gen2-celebi"),
   z.literal("/gen2-research"),
   z.literal("/emulator-emerald-egg"),
   z.literal("/e-tips-rng"),
@@ -2433,6 +2486,7 @@ export const guideSlugs = [
   z.literal("/gc-initial"),
   z.literal("/channel-jirachi"),
   z.literal("/dppt-advance-rng"),
+  z.literal("/zh-dppt-advance-rng"),
   z.literal("/emulator-dppt-tid-sid"),
   z.literal("/emulator-dppt-cute-charm"),
   z.literal("/dppt-setup-rng"),

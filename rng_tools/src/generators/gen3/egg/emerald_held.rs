@@ -54,12 +54,18 @@ impl Gen3HeldEgg {
             advance = advance.saturating_add(delay.unsigned_abs() as u32);
         }
 
+        let gender = match species {
+            Species::NidoranM => Species::Pikachu.gender_from_pid(pid),
+            Species::Volbeat => Species::Pikachu.gender_from_pid(pid),
+            _ => species.gender_from_pid(pid),
+        };
+
         Self {
             pid,
             advance,
+            gender,
             redraws: egg.redraws,
             nature: Nature::from_pid(pid),
-            gender: species.gender_from_pid(pid),
             shiny: gen3_shiny(pid, tid, sid),
             ability: (pid & 1) as u8,
         }

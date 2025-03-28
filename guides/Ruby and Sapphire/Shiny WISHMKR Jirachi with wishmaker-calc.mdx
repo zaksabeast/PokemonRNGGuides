@@ -1,5 +1,5 @@
 ---
-title: "Shiny WISHMKR Jirachi RNG using wishmaker-calc"
+title: "Shiny WISHMKR Jirachi RNG"
 description: "RNG Jirachi from the Colosseum bonus disc"
 slug: "emulator-rs-wishmaker"
 subCategory: "Emulator"
@@ -8,8 +8,7 @@ tag: "emu"
 
 ## Tools
 
-- [mGBA with lua scripts](/mgba-setup)
-- [wishmaker-calc](https://zaksabeast.github.io/wishmaker-calc/build/)
+- [mGBA](/mgba-setup)
 - [wishmaker lua script](https://github.com/Real96/PokeLua/blob/main/Gen%203/mGBA/RS_RNG_Checksums_mGBA.lua)
 
 ### Before beginning
@@ -31,58 +30,28 @@ This method cannot target a specific Jirachi spread. This guide is solely for ob
 In line 6 of the lua script edit it to the path where your save is located.
 
 ```
-local savePath = "D:\\Desktop\\mGBA\\battery\\Pokemon - Ruby Version (USA, Europe) (Rev 2).sav"  -- Write here the path of your Ruby/Sapphire save file
+local savePath = "D:\\Desktop\\mGBA\\battery\\Pokemon - Ruby.sav"  -- Write here the path of your Ruby/Sapphire save file
 ```
 
-## Step 1: Setting up
+## Step 1: Finding Your Save Delay
 
-1. Find your save delay.
-2. Open Ruby/Sapphire and load the wishmaker lua script.
-3. Open the save menu and pause the game at the last dialogue option over "YES".
-4. Note the current time displayed by the lua script.
-5. Hold down the `A` button and unpause the game simultaneously.
-6. When the lua script time freezes, pause the game and write down that time.
+1. Open Ruby/Sapphire and load the wishmaker lua script.
+2. Open the save menu and pause the game at the last dialogue option over "YES".
+3. Note the current time displayed by the lua script.
+4. Hold down the `A` button and unpause the game simultaneously.
+5. When the lua script time freezes, pause the game and write down that time.
 
 Your save delay will be the time when it froze minus the time when you paused the game.
 
 `Save delay = time froze - time paused`
 
-7. Open the lua script in a text editor, like WordPad.
-8. Input your save delay in the variables "savedelaySecond" and "savedelayFrame".
+6. Open the lua script in a text editor, like WordPad.
+7. Input your save delay in the variables "savedelaySecond" and "savedelayFrame".
 
-```
-Note: Do not modify anything in the lua script below the "DON'T EDIT ANYTHING BEYOND HERE" comment!
-```
-
-![Lua Script](/images/Ruby-Sapphire/Wishmaker/Lua.png)
-
-## Step 2: Finding a Jirachi seed
-
-1. Prepare your save.
-2. Use a save that has already obtained the Pokedex; save your game.
-3. In mGBA, export your battery file and upload it to wishmaker-calc by clicking on Jirachi.
-4. If the website asks you to save the game again, do it, then reupload the save to the website. This may happen multiple times.
-
-![JirachiCalc](/images/Ruby-Sapphire/Wishmaker/JirachiCalc.png)
-
-5. If it shows "No Results", you can:
-6. Move to a different location, save, and check for a Jirachi again.
-7. Collect the Running Shoes or do wild battles.
-8. If you still see "No Results," wait 30 minutes in-game or restart the game with a new save.
-
-```
-Note: The program only searches the next 30 minutes for a match, so waiting 30 minutes in-game may yield new results.
-```
-
-9. If you receive a time to save, you have found a Jirachi.
-10. Check the spread to see if it's one you want; if not, repeat the steps above.
-
-![Jirachi Spread](/images/Ruby-Sapphire/Wishmaker/Jirachi.png)
-
-## Step 3: Hitting the Target Seed
+## Step 2: Hitting the Target Seed
 
 1. Open the lua script in WordPad (or a text editor).
-2. Input the time from wishmaker-calc under targetSaveHour, Minute, Second, and sixtiethSecond.
+2. Input the time under targetSaveHour, Minute, Second, and sixtiethSecond.
 3. Optionally, add your target Jirachi seed (for rng proofs/personal preference).
 4. Restart the lua script. You will see two different times displayed.
 5. The target save time is when you save to get the desired Jirachi.
@@ -106,9 +75,7 @@ Note: Target save time = Real save time + delay while saving.
 
 ## Step 4: Verifying Target Seed
 
-1. Upload your save to wishmaker-calc.
-2. It might ask you to save your game again; you can ignore it.
-3. Next to the save message, there should be "Current checksum:".
+3. There should be "Current checksum:".
 4. If the seed matches any of the [shiny Jirachi seeds](https://www.irccloud.com/pastebin/rdxEbTm4/), congrats! Your save will redeem a shiny Jirachi!
 
 ![Save](/images/Ruby-Sapphire/Wishmaker/Save.png)
@@ -117,7 +84,7 @@ Note: Target save time = Real save time + delay while saving.
 
 If your block 0 checksum does not match a shiny Jirachi seed, restart the process from the beginning.
 
-Some game data bytes not accounted for in wishmaker calc may have caused the failure.
+Some game data bytes not accounted for may have caused the failure.
 
 Alternatively, you might have saved at the wrong time or incorrectly found your save delay.
 

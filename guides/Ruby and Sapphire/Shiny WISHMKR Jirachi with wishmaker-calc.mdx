@@ -11,20 +11,6 @@ tag: "emu"
 - [mGBA](/mgba-setup)
 - [wishmaker lua script](https://github.com/Real96/PokeLua/blob/main/Gen%203/mGBA/RS_RNG_Checksums_mGBA.lua)
 
-### Before beginning
-
-- Do not change your text speed; it will alter your save delay.
-- Speeding up the emulator might cause this method to fail.
-- Instead of starting a new file, you can wait 30 minutes in-game.
-- Change the name or starter each time you try with a new save.
-- Switch between the male and female character.
-
-```
-Note: Sometimes, when standing still, certain game data bytes may change and cause issues with the program. It may take several tries to obtain your Jirachi due to this.
-
-This method cannot target a specific Jirachi spread. This guide is solely for obtaining a shiny Jirachi without the option to select a spread. Manipulating the block 0 checksum for a specific Jirachi spread is complex and not included here.
-```
-
 ### Lua Script Set up
 
 In line 6 of the lua script edit it to the path where your save is located.
@@ -51,7 +37,7 @@ Your save delay will be the time when it froze minus the time when you paused th
 ## Step 2: Hitting the Target Seed
 
 1. Open the lua script in WordPad (or a text editor).
-2. Input the time under targetSaveHour, Minute, Second, and sixtiethSecond.
+2. Input the target time under targetSaveHour, Minute, Second, and sixtiethSecond.
 3. Optionally, add your target Jirachi seed (for rng proofs/personal preference).
 4. Restart the lua script. You will see two different times displayed.
 5. The target save time is when you save to get the desired Jirachi.
@@ -66,17 +52,13 @@ Note: Target save time = Real save time + delay while saving.
 9. Wait for the in-game time to match the real save time displayed.
 10. Unpause the game and stay close to the needed time.
 11. Once near your real save time, pause and advance frames manually.
-12. The default key for advancing frames is `Ctrl + N` for Windows.
-13. When on your real save time, hold down `A` and unpause the game simultaneously.
+    - The default key for advancing frames is `Ctrl + N` for Windows.
+12. When on your real save time, hold down `A` and unpause the game simultaneously.
 
 ![Final Screen](/images/Ruby-Sapphire/Wishmaker/Final-Screen.png)
 
-14. After saving, export your battery file.
-
-## Step 4: Verifying Target Seed
-
-3. There should be "Current checksum:".
-4. If the seed matches any of the [shiny Jirachi seeds](https://www.irccloud.com/pastebin/rdxEbTm4/), congrats! Your save will redeem a shiny Jirachi!
+13. There should be "Current checksum:".
+14. If the seed matches, congrats! Your save will redeem a shiny Jirachi!
 
 ![Save](/images/Ruby-Sapphire/Wishmaker/Save.png)
 

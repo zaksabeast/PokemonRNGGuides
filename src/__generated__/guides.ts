@@ -1702,6 +1702,22 @@ export const guides = {
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
     ),
   },
+  "/zh-install-pokereader": {
+    meta: {
+      title: "3DS安装PokeReader",
+      description: "在3DS上安装工具来帮助乱数宝可梦",
+      slug: "/zh-install-pokereader",
+      isRoughDraft: false,
+      tag: "cfw",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Tools and Emulators/3DS PokeReader.mdx",
+      category: "Tools and Emulators",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
+    ),
+  },
   "/install-pokereader-emu": {
     meta: {
       title: "PokeReader Lime3DS",
@@ -2464,6 +2480,7 @@ export const guideSlugs = [
   z.literal("/mgba-setup"),
   z.literal("/transporter-patches"),
   z.literal("/install-pokereader"),
+  z.literal("/zh-install-pokereader"),
   z.literal("/install-pokereader-emu"),
   z.literal("/mystic-timer"),
   z.literal("/misc-3ds-ips-luma-citra"),

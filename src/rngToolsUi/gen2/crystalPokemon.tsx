@@ -49,6 +49,20 @@ const translations = {
     Generate: "Generar",
     Advance: "Avance",
   },
+  zh: {
+    Advance: "帧数",
+    State: "State",
+    Shiny: "异色",
+    "Max DV": "Max DV",
+    "ADiv Index": "ADiv Index",
+    "SDiv Index": "SDiv Index",
+    Div: "Div",
+    "Start Advance": "起始帧数",
+    "Advance Count": "最大帧数",
+    Filter: "筛选",
+    Any: "任意",
+    Generate: "计算",
+  },
 } as const satisfies Translations<typeof englishTranslations>;
 
 const YesIcon = () => <Icon name="CheckCircle" color="Success" size={20} />;

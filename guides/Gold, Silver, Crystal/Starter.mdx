@@ -8,9 +8,14 @@
   slug: "es-gen2-starters"
   tag: "cfw"
   hideFromNavDrawer: true
+- title: "水晶初始宝可梦乱数"
+  description: "在水晶里获得异色初始宝可梦"
+  slug: "zh-gen2-starters"
+  tag: "cfw"
+  hideFromNavDrawer: true
 ---
 
-<LanguageButton enSlug="/gen2-starters" esSlug="/es-gen2-starters" />
+<LanguageButton enSlug="/gen2-starters" esSlug="/es-gen2-starters" zhSlug="/zh-gen2-starters"/>
 
 <ShowIf slug="/gen2-starters">
 
@@ -86,5 +91,41 @@
 - Zaksabeast por elaborar el método actual de rng y construir la herramienta.
 - Shiny_Sylveon, El Terapagos Mexicano, y Lord Timothy en Discord por ayudar realizando pruebas.
 - El Terapagos Mexicano por ayudar con la traducción al español.
+
+</ShowIf>
+
+<ShowIf slug="/zh-gen2-starters">
+
+## 所需工具
+
+- [PokeReader](/install-pokereader)
+
+## 视频教程
+
+<YouTubeVideo src="https://www.youtube.com/embed/1PFQv-S8a48?si=7N6RoITaJg0lyrPR" />
+
+## 文字教程
+
+1. 在你想要选择的初始宝可梦前存档，以防需要复位游戏。
+2. 选择初始宝可梦后继续对话，直到在 `玩家名 received 选择的宝可梦名` 这段文本下等待。
+3. 进入PokeReader的RNG界面，等待直到停止显示 `Finding ADIV Index` 和 `Finding SDIV Index` 。
+4. 按住 `L + R` 键暂停PokeReader。
+5. 将PokeReader上的信息输入下方的乱数工具中，然后点击 `计算`。
+6. 持续按 `L` 键推进帧数，直到PokeReader显示的`帧数`与下方计算的某一列`帧数`匹配。
+7. （可选）如果你使用的是模拟器，可以使用即时存档以防失败复位。
+8. 当推进到目标帧数时，按 `A` 键确认选择宝可梦。
+9. 如果获得目标宝可梦，恭喜你成功了！如果没有，继续多次尝试！很快就能成功。
+
+## 乱数工具
+
+<Gen2PokemonRng type="starter" language="zh" />
+
+## 特别鸣谢
+
+- Todas las personas que han investigado a lo largo de los años la Gen 2: Admiral Fish, EzPzStreamz, Zep, Real, Amab, wwwwwwzx, Vlad, Bambo_Rambo, Lincoln, Shiny_Sylveon, and Zaksabeast.
+- Zaksabeast por elaborar el método actual de rng y construir la herramienta.
+- Shiny_Sylveon, El Terapagos Mexicano, y Lord Timothy en Discord por ayudar realizando pruebas.
+- El Terapagos Mexicano por ayudar con la traducción al español.
+- 中文翻译：Hakuhiro/白白不是公主。
 
 </ShowIf>

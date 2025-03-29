@@ -2,7 +2,6 @@
 title: "Reseed using paintings"
 description: "Reseed the RNG using paintings to obtain the Pokémon wanted without the long wait"
 slug: "emerald-painting-rng"
-subCategory: "Emulator"
 tag: "any"
 ---
 
@@ -13,9 +12,9 @@ tag: "any"
 
 ## Intro
 
-By viewing a painting in the game, like the ones in Lilycove Contest Hall, the RNG is reseeded using the video frame counter.
-
 Reseeding the RNG by viewing paintings allows you to avoid waiting for higher advances. Normally, the RNG starts with a predetermined number and generates the same random numbers each time.
+
+By viewing a painting in the game, like the ones in Lilycove Contest Hall, the RNG is reseeded using the video frame counter.
 
 This method can be combined with battle videos to save the new RNG state after viewing the painting.
 
@@ -28,7 +27,9 @@ You can also use this method for Ruby and Sapphire, whether live or for a dry ba
 
 ## Painting RNG
 
-1. Subtract 0x1E (or 30 in decimal) from the seed shown in PokeFinder. This can be done using Google or the built-in Windows calculator. Adjust this number based on your emulator setup; if the desired seed does not match the seed shown in the Lua script, adjust the subtraction by 1 and try again.
-2. In the game, wait for the painting timer shown by the Lua script to equal the calculated number. View the party menu to prevent NPCs from affecting the RNG.
+<PaintingReseed />
+
+1. Type your target seed in the tool above to find your Target Painting Timer.
+2. In the game, wait for the painting timer shown by the Lua script to equal the Target Painting Timer. View the party menu to prevent NPCs from affecting the RNG.
 3. View the painting at this number to reseed the RNG to the desired seed.
 4. Use the number of advances shown in "Seed to Time" of PokeFinder to finish the RNG as normal.

@@ -50,6 +50,7 @@ import { ShinyHoennStarter } from "~/rngToolsUi/gen3/shinyStarter";
 import { GenerateHoennTidSid } from "~/rngToolsUi/gen3/shinyStarter/generateTidSid";
 import { ChallengePageComponent } from "~/pageComponents/challenge";
 import { ExperimentsPageComponent } from "~/pageComponents/experiments";
+import { PaintingReseed } from "~/rngToolsUi/gen3/paintingReseed";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -101,4 +102,5 @@ export const markdownComponents = {
   MultibootJirachi,
   ChallengePageComponent,
   ExperimentsPageComponent,
+  PaintingReseed,
 };

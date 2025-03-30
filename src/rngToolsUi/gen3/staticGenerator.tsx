@@ -250,9 +250,9 @@ const fields: Field[] = [
         name="filter_ability"
         options={(
           ["None", toDecimalString(0), toDecimalString(1)] as const
-        ).map((nat) => ({
-          label: nat,
-          value: nat,
+        ).map((ability) => ({
+          label: ability,
+          value: ability,
         }))}
       />
     ),

@@ -12,7 +12,7 @@ import {
   fromDecimalString,
   toDecimalString,
 } from "~/utils/number";
-import { denormalizeIdFilter } from "~/types/id";
+import { denormalizeIdFilterOrDefault } from "~/types/id";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 import { toRngDateTime } from "~/utils/time";
@@ -107,7 +107,7 @@ export const DpptIdFinder = () => {
       datetime: rngDateTime,
       min_delay: minDelay,
       max_delay: maxDelay,
-      filter: denormalizeIdFilter({
+      filter: denormalizeIdFilterOrDefault({
         type: "tid",
         value0: opts.tid,
         value1: "",

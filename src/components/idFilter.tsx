@@ -9,6 +9,7 @@ type FilterType = IdFilter["type"];
 
 type Props<FormState extends GenericForm> = {
   name: GuarnteeFormNameType<FormState, IdFilter>;
+  optional?: boolean;
 };
 
 const filterOptions = [
@@ -20,8 +21,14 @@ const filterOptions = [
   { label: "TID/PID", value: "tidpid" },
 ] as const satisfies { label: string; value: FilterType }[];
 
+const optionalFilterOptions = [
+  { label: "None", value: "none" },
+  ...filterOptions,
+] as const satisfies { label: string; value: FilterType }[];
+
 export const FormikIdFilter = <FormState extends GenericForm>({
   name,
+  optional = false,
 }: Props<FormState>) => {
   const formik = useFormikContext<Record<typeof name, IdFilter>>();
   const value = formik.values[name];
@@ -30,19 +37,24 @@ export const FormikIdFilter = <FormState extends GenericForm>({
     <Flex vertical gap={10}>
       <Select<FilterType>
         fullFlex
-        options={filterOptions}
+        options={optional ? optionalFilterOptions : filterOptions}
         value={value.type}
         onChange={(value) => {
           formik.setFieldValue(name, { type: value, value0: "", value1: "" });
         }}
       />
-      <Input
-        fullFlex
-        value={value.value0}
-        onChange={(event) => {
-          formik.setFieldValue(name, { ...value, value0: event.target.value });
-        }}
-      />
+      {value.type !== "none" && (
+        <Input
+          fullFlex
+          value={value.value0}
+          onChange={(event) => {
+            formik.setFieldValue(name, {
+              ...value,
+              value0: event.target.value,
+            });
+          }}
+        />
+      )}
       {(value.type === "tidpid" || value.type === "tidsid") && (
         <Input
           fullFlex

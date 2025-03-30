@@ -13,7 +13,7 @@ import {
   fromDecimalString,
   toDecimalString,
 } from "~/utils/number";
-import { denormalizeIdFilter, IdFilter } from "~/types/id";
+import { denormalizeIdFilterOrDefault, IdFilter } from "~/types/id";
 
 const columns: ResultColumn<Id4>[] = [
   {
@@ -97,7 +97,7 @@ export const DpptIdSearcher = () => {
       year,
       min_delay: minDelay,
       max_delay: maxDelay,
-      filter: denormalizeIdFilter(opts.filter),
+      filter: denormalizeIdFilterOrDefault(opts.filter),
     });
 
     setResults(results);

@@ -1,4 +1,11 @@
-import { rngTools, Static3Result, Species, Gender, Nature, Ivs } from "~/rngTools";
+import {
+  rngTools,
+  Static3Result,
+  Species,
+  Gender,
+  Nature,
+  Ivs,
+} from "~/rngTools";
 import {
   Field,
   FormikInput,
@@ -7,7 +14,7 @@ import {
   IvInput,
   ResultColumn,
   RngToolForm,
-  RngToolSubmit
+  RngToolSubmit,
 } from "~/components";
 import {
   DecimalString,
@@ -15,7 +22,7 @@ import {
   fromHexString,
   HexString,
   toDecimalString,
-  toHexString
+  toHexString,
 } from "~/utils/number";
 import { nature } from "~/types/nature.ts";
 import { gender } from "~/types/gender.ts";
@@ -58,21 +65,21 @@ const columns: ResultColumn<Static3Result>[] = [
 ];
 
 type FormState = {
-  offset: DecimalString,
-  seed: HexString,
-  initial_advances: DecimalString,
-  max_advances: DecimalString,
-  tid: DecimalString,
-  sid: DecimalString,
-  species: Species,
-  roamer: boolean,
-  method4: boolean,
-  filter_shiny: boolean,
-  filter_min_ivs: Ivs,
-  filter_max_ivs: Ivs,
-  filter_nature: Nature | "None",
-  filter_gender: Gender | "None",
-  filter_ability: DecimalString | "None"
+  offset: DecimalString;
+  seed: HexString;
+  initial_advances: DecimalString;
+  max_advances: DecimalString;
+  tid: DecimalString;
+  sid: DecimalString;
+  species: Species;
+  roamer: boolean;
+  method4: boolean;
+  filter_shiny: boolean;
+  filter_min_ivs: Ivs;
+  filter_max_ivs: Ivs;
+  filter_nature: Nature | "None";
+  filter_gender: Gender | "None";
+  filter_ability: DecimalString | "None";
 };
 
 const minIvs: Ivs = {
@@ -147,7 +154,7 @@ const staticSpecies: Species[] = [
   "HoOh",
   "Raikou",
   "Entei",
-  "Suicune"
+  "Suicune",
 ];
 
 const initialValues: FormState = {
@@ -165,13 +172,13 @@ const initialValues: FormState = {
   filter_max_ivs: maxIvs,
   filter_nature: "None",
   filter_gender: "None",
-  filter_ability: "None"
-}
+  filter_ability: "None",
+};
 
 const fields: Field[] = [
   {
     label: "Seed",
-    input: <FormikInput<FormState> name="seed"/>
+    input: <FormikInput<FormState> name="seed" />,
   },
   {
     label: "TID",
@@ -241,7 +248,9 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "filter_ability">
         name="filter_ability"
-        options={(["None", toDecimalString(0), toDecimalString(1)] as const).map((nat) => ({
+        options={(
+          ["None", toDecimalString(0), toDecimalString(1)] as const
+        ).map((nat) => ({
           label: nat,
           value: nat,
         }))}
@@ -266,7 +275,7 @@ type Props = {
   emerald?: boolean;
 };
 
-export const Static3Generator = ({emerald = false }: Props) => {
+export const Static3Generator = ({ emerald = false }: Props) => {
   const [results, setResults] = React.useState<Static3Result[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
@@ -300,19 +309,24 @@ export const Static3Generator = ({emerald = false }: Props) => {
         bugged_roamer: emerald && opts.roamer,
         filter: {
           shiny: opts.filter_shiny,
-          nature: opts.filter_nature === "None" ? undefined : opts.filter_nature,
-          gender: opts.filter_gender === "None" ? undefined : opts.filter_gender,
-          ability: opts.filter_ability === "None" ? undefined : fromDecimalString(opts.filter_ability) ?? undefined,
+          nature:
+            opts.filter_nature === "None" ? undefined : opts.filter_nature,
+          gender:
+            opts.filter_gender === "None" ? undefined : opts.filter_gender,
+          ability:
+            opts.filter_ability === "None"
+              ? undefined
+              : (fromDecimalString(opts.filter_ability) ?? undefined),
           ivs: {
             min_ivs: opts.filter_min_ivs,
             max_ivs: opts.filter_max_ivs,
-          }
-        }
+          },
+        },
       });
 
       setResults(results);
     },
-    [emerald]
+    [emerald],
   );
 
   return (
@@ -324,5 +338,5 @@ export const Static3Generator = ({emerald = false }: Props) => {
       onSubmit={onSubmit}
       submitTrackerId="generate_gen3_static"
     />
-  )
-}
+  );
+};

@@ -201,6 +201,54 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
+  "/emerald-static-generator": {
+    meta: {
+      title: "Emerald Static3 Generator",
+      description: "Generator for Static encounters in Emerald",
+      category: "Emerald",
+      slug: "/emerald-static-generator",
+      isRoughDraft: true,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-03-29",
+      file: "guides/Emerald/Gen 3 Static Generator.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Gen 3 Static Generator.mdx"),
+    ),
+  },
+  "/rs-static-generator": {
+    meta: {
+      title: "Ruby and Sapphire Static3 Generator",
+      description: "Generator for Static encounters in Ruby and Sapphire",
+      category: "Ruby and Sapphire",
+      slug: "/rs-static-generator",
+      isRoughDraft: true,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-03-29",
+      file: "guides/Emerald/Gen 3 Static Generator.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Gen 3 Static Generator.mdx"),
+    ),
+  },
+  "/frlg-static-generator": {
+    meta: {
+      title: "FireRed and LeafGreen Static3 Generator",
+      description: "Generator for Static encounters in FireRed and LeafGreen",
+      category: "FireRed and LeafGreen",
+      slug: "/frlg-static-generator",
+      isRoughDraft: true,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-03-29",
+      file: "guides/Emerald/Gen 3 Static Generator.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Gen 3 Static Generator.mdx"),
+    ),
+  },
   "/retail-emerald-wild": {
     meta: {
       title: "Wild Retail RNG",
@@ -2325,6 +2373,9 @@ export const guideSlugs = [
   z.literal("/gen3-sid"),
   z.literal("/rs-gen3-sid"),
   z.literal("/frlg-gen3-sid"),
+  z.literal("/emerald-static-generator"),
+  z.literal("/rs-static-generator"),
+  z.literal("/frlg-static-generator"),
   z.literal("/retail-emerald-wild"),
   z.literal("/hgss-rng-advance"),
   z.literal("/emulator-hgss-tid-sid"),

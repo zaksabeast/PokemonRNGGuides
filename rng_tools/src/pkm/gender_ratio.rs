@@ -1,5 +1,10 @@
-use super::Species;
+use super::{Gender, Species};
+use serde::{Deserialize, Serialize};
+use tsify_next::Tsify;
+use wasm_bindgen::prelude::*;
 
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 #[repr(u8)]
 pub enum GenderRatio {
     Genderless = 255,
@@ -1025,5 +1030,22 @@ pub fn get_species_gender_ratio(species: &Species) -> GenderRatio {
         Species::Kingambit => GenderRatio::OneToOne,
         Species::Clodsire => GenderRatio::OneToOne,
         Species::Annihilape => GenderRatio::OneToOne,
+    }
+}
+
+impl GenderRatio {
+    pub fn gender(&self, rate: u8) -> Gender {
+        match self {
+            GenderRatio::Genderless => Gender::Genderless,
+            GenderRatio::MaleOnly => Gender::Male,
+            GenderRatio::FemaleOnly => Gender::Female,
+            &ratio => {
+                if (rate as u8) < (ratio as u8) {
+                    Gender::Female
+                } else {
+                    Gender::Male
+                }
+            }
+        }
     }
 }

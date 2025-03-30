@@ -335,7 +335,14 @@ mod test {
             },
         ];
 
-        assert_eq!(results, expected);
+        assert_eq!(results.len(), expected.len());
+        results
+            .into_iter()
+            .zip(expected.into_iter())
+            .enumerate()
+            .for_each(|(index, (result, expected))| {
+                assert_eq!(result, expected, "index: {}", index);
+            });
     }
 
     #[test]
@@ -526,7 +533,14 @@ mod test {
             },
         ];
 
-        assert_eq!(results, expected);
+        assert_eq!(results.len(), expected.len());
+        results
+            .into_iter()
+            .zip(expected.into_iter())
+            .enumerate()
+            .for_each(|(index, (result, expected))| {
+                assert_eq!(result, expected, "index: {}", index);
+            });
     }
 
     #[test]
@@ -717,7 +731,14 @@ mod test {
             },
         ];
 
-        assert_eq!(results, expected);
+        assert_eq!(results.len(), expected.len());
+        results
+            .into_iter()
+            .zip(expected.into_iter())
+            .enumerate()
+            .for_each(|(index, (result, expected))| {
+                assert_eq!(result, expected, "index: {}", index);
+            });
     }
 
     #[test]
@@ -828,6 +849,13 @@ mod test {
             },
         ];
 
-        assert_eq!(results, expected);
+        assert_eq!(results.len(), expected.len());
+        results
+            .into_iter()
+            .zip(expected.into_iter())
+            .enumerate()
+            .for_each(|(index, (result, expected))| {
+                assert_eq!(result, expected, "index: {}", index);
+            });
     }
 }

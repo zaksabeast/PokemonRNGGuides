@@ -47,29 +47,19 @@ export const LanguageButton = ({ enSlug, esSlug ,zhSlug}: Props) => {
     .with(zhSlug, () => "zh")
     .otherwise(() => "en");
 
-  const setLanguageKey = (key: string) => {
-    const slug = match({ key, enSlug, esSlug ,zhSlug })
-      .with(
-        { key: "en", enSlug: P.not(P.nullish) },
-        (matched) => matched.enSlug,
-      )
-      .with(
-        { key: "es", esSlug: P.not(P.nullish) },
-        (matched) => matched.esSlug,
-      )
-      .with(
-        { key: "zh", zhSlug: P.not(P.nullish) },
-        (matched) => matched.zhSlug,
-      )
-      .otherwise(() => enSlug);
-    setLocation(slug);
-  };
-
-  return (
-    <Flex>
-      <Dropdown
-        menu={{
-          items: languages,
+    const availableLanguages = languages.filter((lang) => {
+      return match(lang.key)
+        .with("en", () => true)
+        .with("es", () => esSlug != null)
+        .with("zh", () => zhSlug != null)
+        .otherwise(() => false);
+    });
+  
+    return (
+      <Flex>
+        <Dropdown
+          menu={{
+            items: availableLanguages,
           onClick: (item) => setLanguageKey(item.key),
         }}
         placement="bottom"

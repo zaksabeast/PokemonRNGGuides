@@ -77,9 +77,10 @@ pub struct Static3Options {
 #[wasm_bindgen]
 pub fn gen3_static_states(opts: &Static3Options) -> Vec<Static3Result> {
     StateIterator::new(Lcrng::new_prng(opts.seed))
-        .skip(opts.initial_advances + opts.offset)
-        .take(opts.max_advances.saturating_add(1))
+        .skip(opts.offset)
         .enumerate()
+        .skip(opts.initial_advances)
+        .take(opts.max_advances.saturating_add(1))
         .filter_map(|(advance, rng)| {
             let state = generate_gen3_static_state(rng, opts, advance);
             if opts.filter.pass_filter(&state) {
@@ -713,6 +714,117 @@ mod test {
                 gender: Gender::Female,
                 nature: Nature::Rash,
                 shiny: false,
+            },
+        ];
+
+        assert_eq!(results, expected);
+    }
+
+    #[test]
+    fn generate_method1_with_initial_advances() {
+        let opts = Static3Options {
+            offset: 0,
+            initial_advances: 10,
+            max_advances: 4,
+            seed: 0x55555555,
+            species: Species::Totodile,
+            bugged_roamer: false,
+            method4: false,
+            tid: 12345,
+            sid: 54321,
+            filter: Static3Filter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                ivs: IvFilter {
+                    min_ivs: ZERO_IVS,
+                    max_ivs: PERFECT_IVS,
+                },
+                ability: None,
+            },
+        };
+
+        let results = gen3_static_states(&opts);
+        let expected = vec![
+            Static3Result {
+                advance: 10,
+                pid: 0x880A88C1,
+                shiny: false,
+                nature: Nature::Calm,
+                ability: 1,
+                ivs: Ivs {
+                    hp: 1,
+                    atk: 27,
+                    def: 25,
+                    spa: 28,
+                    spd: 26,
+                    spe: 19,
+                },
+                gender: Gender::Male,
+            },
+            Static3Result {
+                advance: 11,
+                pid: 0x6761880A,
+                shiny: false,
+                nature: Nature::Mild,
+                ability: 0,
+                ivs: Ivs {
+                    hp: 19,
+                    atk: 28,
+                    def: 26,
+                    spa: 12,
+                    spd: 16,
+                    spe: 17,
+                },
+                gender: Gender::Female,
+            },
+            Static3Result {
+                advance: 12,
+                pid: 0x6B936761,
+                shiny: false,
+                nature: Nature::Rash,
+                ability: 1,
+                ivs: Ivs {
+                    hp: 17,
+                    atk: 12,
+                    def: 16,
+                    spa: 9,
+                    spd: 0,
+                    spe: 10,
+                },
+                gender: Gender::Male,
+            },
+            Static3Result {
+                advance: 13,
+                pid: 0xC1916B93,
+                shiny: false,
+                nature: Nature::Sassy,
+                ability: 1,
+                ivs: Ivs {
+                    hp: 10,
+                    atk: 9,
+                    def: 0,
+                    spa: 15,
+                    spd: 4,
+                    spe: 26,
+                },
+                gender: Gender::Male,
+            },
+            Static3Result {
+                advance: 14,
+                pid: 0x012AC191,
+                shiny: false,
+                nature: Nature::Docile,
+                ability: 1,
+                ivs: Ivs {
+                    hp: 26,
+                    atk: 15,
+                    def: 4,
+                    spa: 21,
+                    spd: 16,
+                    spe: 22,
+                },
+                gender: Gender::Male,
             },
         ];
 

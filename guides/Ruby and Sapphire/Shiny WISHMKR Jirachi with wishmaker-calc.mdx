@@ -1,9 +1,13 @@
 ---
-title: "Shiny WISHMKR Jirachi RNG"
-description: "RNG Jirachi from the Colosseum bonus disc"
-slug: "emulator-rs-wishmaker"
-subCategory: "Emulator"
-tag: "emu"
+- title: "Shiny Wishmaker Jirachi RNG"
+  description: "RNG Jirachi from the Colosseum bonus disc"
+  slug: "emulator-rs-wishmaker"
+  subCategory: "Emulator"
+  tag: "emu"
+- title: "Meteor Jirachi RNG"
+  description: "RNG a Meteor Jirachi with different shinies than Wishmaker"
+  slug: "meteor-jirachi"
+  tag: "emu"
 ---
 
 ## Tools
@@ -36,37 +40,38 @@ Your save delay will be the time when it froze minus the time when you paused th
 
 ## Step 2: Hitting the Target Seed
 
-1. Open the lua script in WordPad (or a text editor).
-2. Input the target time under targetSaveHour, Minute, Second, and sixtiethSecond.
-3. Optionally, add your target Jirachi seed (for rng proofs/personal preference).
-4. Restart the lua script. You will see two different times displayed.
-5. The target save time is when you save to get the desired Jirachi.
-6. The real save time is when you save, calculated using your save delay.
+1. Make sure RTC is disabled in emulator settings.
+2. Open the lua script in WordPad (or a text editor).
+3. Input the target time under targetSaveHour, Minute, Second, and sixtiethSecond.
+4. Optionally, add your target Jirachi seed (for rng proofs/personal preference).
+5. Restart the lua script. You will see two different times displayed.
+6. The target save time is when you save to get the desired Jirachi.
+7. The real save time is when you save, calculated using your save delay.
 
 ```
 Note: Target save time = Real save time + delay while saving.
 ```
 
-7. Advance to the last dialogue of the save menu and hover over "YES".
-8. Pause the game.
-9. Wait for the in-game time to match the real save time displayed.
-10. Unpause the game and stay close to the needed time.
-11. Once near your real save time, pause and advance frames manually.
+8. Advance to the last dialogue of the save menu and hover over "YES".
+9. Pause the game.
+10. Wait for the in-game time to match the real save time displayed.
+11. Unpause the game and stay close to the needed time.
+12. Once near your real save time, pause and advance frames manually.
     - The default key for advancing frames is `Ctrl + N` for Windows.
-12. When on your real save time, hold down `A` and unpause the game simultaneously.
+13. When on your real save time, hold down `A` and unpause the game simultaneously.
 
 ![Final Screen](/images/Ruby-Sapphire/Wishmaker/Final-Screen.png)
 
-13. There should be "Current checksum:".
-14. If the seed matches, congrats! Your save will redeem a shiny Jirachi!
+14. There should be "Current checksum:".
+15. If the seed matches, congrats! Your save will redeem a shiny Jirachi!
 
 ![Save](/images/Ruby-Sapphire/Wishmaker/Save.png)
 
 ## Troubleshooting
 
-If your block 0 checksum does not match a shiny Jirachi seed, restart the process from the beginning.
+Double check and confirm RTC is disabled.
 
-Some game data bytes not accounted for may have caused the failure.
+If your block 0 checksum does not match a shiny Jirachi seed, restart the process from the beginning.
 
 Alternatively, you might have saved at the wrong time or incorrectly found your save delay.
 
@@ -75,3 +80,80 @@ Alternatively, you might have saved at the wrong time or incorrectly found your 
 You can redeem your Jirachi by moving your save file to a real cartridge and using a real bonus disc, or by emulating the bonus disc with Dolphin.
 
 A guide on connecting VBA to Dolphin can be found [here](/misc-dolphin-connect-vba).
+
+## Target Spreads
+
+<ShowIf slug="/meteor-jirachi">
+
+### Shiny Meteor spreads
+
+| Seed | PID      | IVs               | Shiny |
+| ---- | -------- | ----------------- | ----- |
+| 0313 | 34a3435f | 28/07/21/29/27/09 | true  |
+| 49d7 | c9e9be16 | 26/22/05/27/28/01 | true  |
+| 4c8c | d7bba042 | 26/25/26/23/18/23 | true  |
+| 4e26 | 2f5558ad | 26/04/13/10/00/30 | true  |
+| 5979 | 07ff7007 | 26/03/17/07/29/15 | true  |
+| 9350 | 6d011af9 | 24/08/11/21/19/15 | true  |
+| 9ea3 | 45ab3253 | 24/07/15/18/16/00 | true  |
+| a03d | 9d45eabe | 24/18/01/05/30/07 | true  |
+| e567 | daf1ad0a | 22/22/31/15/17/24 | true  |
+| f0ba | b39bc465 | 22/21/03/12/14/09 | true  |
+
+### Meteor spreads with all IVs 25+
+
+| Seed | PID      | IVs               | Shiny |
+| ---- | -------- | ----------------- | ----- |
+| 0a79 | d5cb4261 | 30/25/29/29/28/25 | false |
+| 1ad4 | 9c309bd5 | 27/29/31/31/29/25 | false |
+| 9df6 | d2a8aa71 | 31/31/25/30/25/28 | false |
+| bd9d | be845336 | 31/30/28/27/29/28 | false |
+| d517 | e812b093 | 31/29/30/31/30/31 | false |
+
+### Meteor spreads with the highest 0 IV count
+
+| Seed | PID      | IVs               | Shiny |
+| ---- | -------- | ----------------- | ----- |
+| 0f71 | a7215a50 | 00/00/26/00/09/00 | false |
+| 1dea | 96263d9d | 00/30/00/00/00/05 | false |
+| a64d | 5f80e487 | 00/05/00/00/00/10 | false |
+| a738 | c08a8fca | 12/00/29/00/00/00 | false |
+
+</ShowIf>
+
+<ShowIf slug="/emulator-rs-wishmaker">
+
+### Shiny Wishmaker spreads
+
+| Seed | PID      | IVs               | Shiny |
+| ---- | -------- | ----------------- | ----- |
+| 353d | ba7df435 | 24/03/30/12/16/11 | true  |
+| 3d60 | eb0da543 | 15/28/29/03/00/07 | true  |
+| 7236 | 2ec1608d | 31/23/26/29/18/05 | true  |
+| 7360 | bf98f1d5 | 29/10/31/25/23/21 | true  |
+| 9359 | bcfaf2b0 | 03/12/12/07/11/09 | true  |
+| a030 | 4633087d | 21/31/31/18/24/19 | true  |
+| cf37 | 7b053548 | 11/08/06/14/05/20 | true  |
+| ecdd | 987ed636 | 19/07/10/19/10/16 | true  |
+| f500 | c90e8744 | 10/00/10/10/26/12 | true  |
+
+### Wishmaker spreads with all IVs 25+
+
+| Seed | PID      | IVs               | Shiny |
+| ---- | -------- | ----------------- | ----- |
+| 0a79 | d5cb4261 | 30/25/29/29/28/25 | false |
+| 1ad4 | 9c309bd5 | 27/29/31/31/29/25 | false |
+| 9df6 | d2a8aa71 | 31/31/25/30/25/28 | false |
+| bd9d | be845336 | 31/30/28/27/29/28 | false |
+| d517 | e812b093 | 31/29/30/31/30/31 | false |
+
+### Wishmaker spreads with the highest 0 IV count
+
+| Seed | PID      | IVs               | Shiny |
+| ---- | -------- | ----------------- | ----- |
+| 0f71 | a7215a50 | 00/00/26/00/09/00 | false |
+| 1dea | 96263d9d | 00/30/00/00/00/05 | false |
+| a64d | 5f80e487 | 00/05/00/00/00/10 | false |
+| a738 | c08a8fca | 12/00/29/00/00/00 | false |
+
+</ShowIf>

@@ -1830,9 +1830,28 @@ export const guides = {
   },
   "/emulator-rs-wishmaker": {
     meta: {
-      title: "Shiny WISHMKR Jirachi RNG using wishmaker-calc",
+      title: "Shiny Wishmaker Jirachi RNG",
       description: "RNG Jirachi from the Colosseum bonus disc",
       slug: "/emulator-rs-wishmaker",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
+      category: "Ruby and Sapphire",
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
+        ),
+    ),
+  },
+  "/meteor-jirachi": {
+    meta: {
+      title: "Meteor Jirachi RNG",
+      description: "RNG a Meteor Jirachi with different shinies than Wishmaker",
+      slug: "/meteor-jirachi",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
@@ -1950,6 +1969,23 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Ruby and Sapphire/PokeFinder Setup.mdx"),
+    ),
+  },
+  "/wishing-star-jirachi": {
+    meta: {
+      title: "Wishing Star Jirachi RNG",
+      description:
+        "RNG a Wishing Star Jirachi with different IVs than Wishmaker",
+      slug: "/wishing-star-jirachi",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides/Ruby and Sapphire/Wishing Star Jirachi.mdx",
+      category: "Ruby and Sapphire",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Ruby and Sapphire/Wishing Star Jirachi.mdx"),
     ),
   },
   "/pal-xd-eevee": {
@@ -2407,12 +2443,14 @@ export const guideSlugs = [
   z.literal("/rs-tips-rng"),
   z.literal("/emulator-rs-dead-battery-stationary"),
   z.literal("/emulator-rs-wishmaker"),
+  z.literal("/meteor-jirachi"),
   z.literal("/emulator-rs-wild"),
   z.literal("/emulator-rs-stationary"),
   z.literal("/rs-battery"),
   z.literal("/emulator-rs-live-battery-tid"),
   z.literal("/rs-initial-seed"),
   z.literal("/rs-pokefinder-setup"),
+  z.literal("/wishing-star-jirachi"),
   z.literal("/pal-xd-eevee"),
   z.literal("/emulator-colosseum-general"),
   z.literal("/gc-initial"),

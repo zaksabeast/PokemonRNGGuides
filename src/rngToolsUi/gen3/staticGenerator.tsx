@@ -27,6 +27,7 @@ import {
 import { nature } from "~/types/nature.ts";
 import { gender } from "~/types/gender.ts";
 import React from "react";
+import { match } from "ts-pattern";
 
 const columns: ResultColumn<Static3Result>[] = [
   { title: "Advance", dataIndex: "advance", key: "advance" },
@@ -62,6 +63,94 @@ const columns: ResultColumn<Static3Result>[] = [
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
   { title: "Gender", dataIndex: "gender", key: "gender" },
+];
+
+type Game = "emerald" | "rs" | "frlg";
+
+const emeraldSpecies: Species[] = [
+  "Chikorita",
+  "Totodile",
+  "Cyndaquil",
+  "Treecko",
+  "Mudkip",
+  "Torchic",
+  "Lileep",
+  "Anorith",
+  "Castform",
+  "Beldum",
+  "Wynaut",
+  "Kecleon",
+  "Voltorb",
+  "Electrode",
+  "Sudowoodo",
+  "Regirock",
+  "Regice",
+  "Registeel",
+  "Latias",
+  "Latios",
+  "Kyogre",
+  "Groudon",
+  "Rayquaza",
+  "Mew",
+  "Deoxys",
+  "Lugia",
+  "HoOh",
+];
+
+const rsSpecies: Species[] = [
+  "Treecko",
+  "Mudkip",
+  "Torchic",
+  "Lileep",
+  "Anorith",
+  "Castform",
+  "Beldum",
+  "Wynaut",
+  "Kecleon",
+  "Voltorb",
+  "Electrode",
+  "Regirock",
+  "Regice",
+  "Registeel",
+  "Latias",
+  "Latios",
+  "Kyogre",
+  "Groudon",
+  "Rayquaza",
+];
+
+const frlgSpecies: Species[] = [
+  "Bulbasaur",
+  "Squirtle",
+  "Charmander",
+  "Omanyte",
+  "Kabuto",
+  "Aerodactyl",
+  "Hitmonlee",
+  "Hitmonchan",
+  "Magikarp",
+  "Lapras",
+  "Eevee",
+  "Togepi",
+  "Abra",
+  "Clefairy",
+  "Scyther",
+  "Dratini",
+  "Porygon",
+  "Pinsir",
+  "Snorlax",
+  "Electrode",
+  "Hypno",
+  "Articuno",
+  "Zapdos",
+  "Moltres",
+  "Mewtwo",
+  "Deoxys",
+  "Lugia",
+  "HoOh",
+  "Raikou",
+  "Entei",
+  "Suicune",
 ];
 
 type FormState = {
@@ -100,182 +189,138 @@ const maxIvs: Ivs = {
   spe: 31,
 };
 
-const staticSpecies: Species[] = [
-  "Chikorita",
-  "Totodile",
-  "Cyndaquil",
-  "Treecko",
-  "Mudkip",
-  "Torchic",
-  "Bulbasaur",
-  "Squirtle",
-  "Charmander",
-  "Lileep",
-  "Anorith",
-  "Omanyte",
-  "Kabuto",
-  "Aerodactyl",
-  "Castform",
-  "Beldum",
-  "Wynaut",
-  "Hitmonlee",
-  "Hitmonchan",
-  "Magikarp",
-  "Lapras",
-  "Eevee",
-  "Togepi",
-  "Abra",
-  "Clefairy",
-  "Scyther",
-  "Dratini",
-  "Porygon",
-  "Pinsir",
-  "Kecleon",
-  "Voltorb",
-  "Electrode",
-  "Sudowoodo",
-  "Snorlax",
-  "Hypno",
-  "Regirock",
-  "Regice",
-  "Registeel",
-  "Latios",
-  "Latias",
-  "Kyogre",
-  "Groudon",
-  "Rayquaza",
-  "Articuno",
-  "Moltres",
-  "Zapdos",
-  "Mewtwo",
-  "Mew",
-  "Deoxys",
-  "Lugia",
-  "HoOh",
-  "Raikou",
-  "Entei",
-  "Suicune",
-];
-
-const initialValues: FormState = {
-  offset: toDecimalString(0),
-  seed: toHexString(0),
-  initial_advances: toDecimalString(100),
-  max_advances: toDecimalString(1000),
-  tid: toDecimalString(0),
-  sid: toDecimalString(0),
-  species: staticSpecies[0],
-  roamer: false,
-  method4: false,
-  filter_shiny: false,
-  filter_min_ivs: minIvs,
-  filter_max_ivs: maxIvs,
-  filter_nature: "None",
-  filter_gender: "None",
-  filter_ability: "None",
+const getGameSpecies = (game: Game) => {
+  return match(game)
+    .with("emerald", () => emeraldSpecies)
+    .with("rs", () => rsSpecies)
+    .with("frlg", () => frlgSpecies)
+    .exhaustive();
 };
 
-const fields: Field[] = [
-  {
-    label: "Seed",
-    input: <FormikInput<FormState> name="seed" />,
-  },
-  {
-    label: "TID",
-    input: <FormikInput<FormState> name="tid" />,
-  },
-  {
-    label: "SID",
-    input: <FormikInput<FormState> name="sid" />,
-  },
-  {
-    label: "Species",
-    input: (
-      <FormikSelect<FormState, "species">
-        name="species"
-        options={staticSpecies
-          .sort((first, second) => first.localeCompare(second))
-          .map((spec) => ({ label: spec, value: spec }))}
-      />
-    ),
-  },
-  {
-    label: "Roamer",
-    input: <FormikSwitch<FormState, "roamer"> name="roamer" />,
-  },
-  {
-    label: "Method 4",
-    input: <FormikSwitch<FormState, "method4"> name="method4" />,
-  },
-  {
-    label: "Initial advances",
-    input: <FormikInput<FormState> name="initial_advances" />,
-  },
-  {
-    label: "Max advances",
-    input: <FormikInput<FormState> name="max_advances" />,
-  },
-  {
-    label: "Offset",
-    input: <FormikInput<FormState> name="offset" />,
-  },
-  {
-    label: "Min IVs",
-    input: <IvInput<FormState> name="filter_min_ivs" />,
-  },
-  {
-    label: "Max IVs",
-    input: <IvInput<FormState> name="filter_max_ivs" />,
-  },
-  {
-    label: "Filter shiny",
-    input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
-  },
-  {
-    label: "Filter nature",
-    input: (
-      <FormikSelect<FormState, "filter_nature">
-        name="filter_nature"
-        options={(["None", ...nature] as const).map((nat) => ({
-          label: nat,
-          value: nat,
-        }))}
-      />
-    ),
-  },
-  {
-    label: "Filter ability",
-    input: (
-      <FormikSelect<FormState, "filter_ability">
-        name="filter_ability"
-        options={(
-          ["None", toDecimalString(0), toDecimalString(1)] as const
-        ).map((ability) => ({
-          label: ability,
-          value: ability,
-        }))}
-      />
-    ),
-  },
-  {
-    label: "Filter gender",
-    input: (
-      <FormikSelect<FormState, "filter_gender">
-        name="filter_gender"
-        options={(["None", ...gender] as const).map((gen) => ({
-          label: gen,
-          value: gen,
-        }))}
-      />
-    ),
-  },
-];
+const getInitialValues = (game: Game): FormState => {
+  return {
+    offset: toDecimalString(0),
+    seed: toHexString(0),
+    initial_advances: toDecimalString(100),
+    max_advances: toDecimalString(1000),
+    tid: toDecimalString(0),
+    sid: toDecimalString(0),
+    species: getGameSpecies(game)[0],
+    roamer: false,
+    method4: false,
+    filter_shiny: false,
+    filter_min_ivs: minIvs,
+    filter_max_ivs: maxIvs,
+    filter_nature: "None",
+    filter_gender: "None",
+    filter_ability: "None",
+  };
+};
+
+const getFields = (game: Game): Field[] => {
+  const staticSpecies = getGameSpecies(game);
+  return [
+    {
+      label: "Seed",
+      input: <FormikInput<FormState> name="seed" />,
+    },
+    {
+      label: "TID",
+      input: <FormikInput<FormState> name="tid" />,
+    },
+    {
+      label: "SID",
+      input: <FormikInput<FormState> name="sid" />,
+    },
+    {
+      label: "Species",
+      input: (
+        <FormikSelect<FormState, "species">
+          name="species"
+          options={staticSpecies
+            .sort((first, second) => first.localeCompare(second))
+            .map((spec) => ({ label: spec, value: spec }))}
+        />
+      ),
+    },
+    {
+      label: "Roamer",
+      input: <FormikSwitch<FormState, "roamer"> name="roamer" />,
+    },
+    {
+      label: "Method 4",
+      input: <FormikSwitch<FormState, "method4"> name="method4" />,
+    },
+    {
+      label: "Initial advances",
+      input: <FormikInput<FormState> name="initial_advances" />,
+    },
+    {
+      label: "Max advances",
+      input: <FormikInput<FormState> name="max_advances" />,
+    },
+    {
+      label: "Offset",
+      input: <FormikInput<FormState> name="offset" />,
+    },
+    {
+      label: "Min IVs",
+      input: <IvInput<FormState> name="filter_min_ivs" />,
+    },
+    {
+      label: "Max IVs",
+      input: <IvInput<FormState> name="filter_max_ivs" />,
+    },
+    {
+      label: "Filter shiny",
+      input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
+    },
+    {
+      label: "Filter nature",
+      input: (
+        <FormikSelect<FormState, "filter_nature">
+          name="filter_nature"
+          options={(["None", ...nature] as const).map((nat) => ({
+            label: nat,
+            value: nat,
+          }))}
+        />
+      ),
+    },
+    {
+      label: "Filter ability",
+      input: (
+        <FormikSelect<FormState, "filter_ability">
+          name="filter_ability"
+          options={(
+            ["None", toDecimalString(0), toDecimalString(1)] as const
+          ).map((ability) => ({
+            label: ability,
+            value: ability,
+          }))}
+        />
+      ),
+    },
+    {
+      label: "Filter gender",
+      input: (
+        <FormikSelect<FormState, "filter_gender">
+          name="filter_gender"
+          options={(["None", ...gender] as const).map((gen) => ({
+            label: gen,
+            value: gen,
+          }))}
+        />
+      ),
+    },
+  ];
+};
 
 type Props = {
-  emerald?: boolean;
+  game?: Game;
 };
 
-export const Static3Generator = ({ emerald = false }: Props) => {
+export const Static3Generator = ({ game = "emerald" }: Props) => {
   const [results, setResults] = React.useState<Static3Result[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
@@ -306,7 +351,7 @@ export const Static3Generator = ({ emerald = false }: Props) => {
         offset,
         tid,
         sid,
-        bugged_roamer: emerald && opts.roamer,
+        bugged_roamer: game !== "emerald" && opts.roamer,
         filter: {
           shiny: opts.filter_shiny,
           nature:
@@ -326,15 +371,15 @@ export const Static3Generator = ({ emerald = false }: Props) => {
 
       setResults(results);
     },
-    [emerald],
+    [game],
   );
 
   return (
     <RngToolForm<FormState, Static3Result>
-      fields={fields}
+      fields={getFields(game)}
       columns={columns}
       results={results}
-      initialValues={initialValues}
+      initialValues={getInitialValues(game)}
       onSubmit={onSubmit}
       submitTrackerId="generate_gen3_static"
     />

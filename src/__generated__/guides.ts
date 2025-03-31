@@ -210,7 +210,7 @@ export const guides = {
       isRoughDraft: true,
       tag: "any",
       hideFromNavDrawer: false,
-      addedOn: "2025-03-29",
+      addedOn: null,
       file: "guides/Emerald/Gen 3 Static Generator.mdx",
     },
     Guide: React.lazy(
@@ -226,7 +226,7 @@ export const guides = {
       isRoughDraft: true,
       tag: "any",
       hideFromNavDrawer: false,
-      addedOn: "2025-03-29",
+      addedOn: null,
       file: "guides/Emerald/Gen 3 Static Generator.mdx",
     },
     Guide: React.lazy(
@@ -242,7 +242,7 @@ export const guides = {
       isRoughDraft: true,
       tag: "any",
       hideFromNavDrawer: false,
-      addedOn: "2025-03-29",
+      addedOn: null,
       file: "guides/Emerald/Gen 3 Static Generator.mdx",
     },
     Guide: React.lazy(

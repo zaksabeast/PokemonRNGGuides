@@ -1,4 +1,4 @@
-use crate::rng::lcrng::Lcrng;
+use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
 use crate::{
     G3Idx::{self, *},
@@ -65,7 +65,7 @@ pub struct Egg3PickupState {
 
 #[wasm_bindgen]
 pub fn emerald_egg_pickup_states(opts: &Egg3PickupOptions) -> Vec<Egg3PickupState> {
-    StateIterator::new(Lcrng::new_prng(opts.seed))
+    StateIterator::new(Pokerng::new(opts.seed))
         .enumerate()
         .skip(opts.initial_advances)
         .take(opts.max_advances.saturating_add(1))
@@ -86,7 +86,7 @@ pub fn emerald_egg_pickup_states(opts: &Egg3PickupOptions) -> Vec<Egg3PickupStat
         .collect()
 }
 
-fn generate_pickup_ivs(opts: &Egg3PickupOptions, mut rng: Lcrng) -> Ivs {
+fn generate_pickup_ivs(opts: &Egg3PickupOptions, mut rng: Pokerng) -> Ivs {
     rng.advance(opts.method.iv1_advance());
     let iv1 = rng.rand::<u16>();
     rng.advance(opts.method.iv2_advance());
@@ -640,17 +640,20 @@ mod test {
         };
 
         let result = emerald_egg_pickup_states(&opts);
-        assert_eq!(result, [Egg3PickupState {
-            advance: 5,
-            ivs: Ivs {
-                hp: 12,
-                atk: 22,
-                def: 24,
-                spa: 10,
-                spd: 11,
-                spe: 12
-            }
-        }]);
+        assert_eq!(
+            result,
+            [Egg3PickupState {
+                advance: 5,
+                ivs: Ivs {
+                    hp: 12,
+                    atk: 22,
+                    def: 24,
+                    spa: 10,
+                    spd: 11,
+                    spe: 12
+                }
+            }]
+        );
     }
 
     #[test]

@@ -1,4 +1,4 @@
-use crate::rng::lcrng::Lcrng;
+use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
 use crate::{Gender, IvFilter, Ivs, Nature, Species, gen3_shiny};
 use serde::{Deserialize, Serialize};
@@ -76,7 +76,7 @@ pub struct Static3Options {
 
 #[wasm_bindgen]
 pub fn gen3_static_states(opts: &Static3Options) -> Vec<Static3Result> {
-    StateIterator::new(Lcrng::new_prng(opts.seed))
+    StateIterator::new(Pokerng::new(opts.seed))
         .skip(opts.offset)
         .enumerate()
         .skip(opts.initial_advances)
@@ -93,7 +93,7 @@ pub fn gen3_static_states(opts: &Static3Options) -> Vec<Static3Result> {
 }
 
 fn generate_gen3_static_state(
-    mut rng: Lcrng,
+    mut rng: Pokerng,
     opts: &Static3Options,
     advance: usize,
 ) -> Static3Result {

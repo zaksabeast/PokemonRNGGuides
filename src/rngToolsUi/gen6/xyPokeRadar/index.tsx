@@ -213,7 +213,11 @@ export const XyPokeRadar = () => {
         results={results.NoChain == null ? results.WithChain : results.NoChain}
         initialValues={initialValues}
         onSubmit={onSubmit}
-        onClickResultRow={(row) => setSelectedPatches(row.patches ?? [])}
+        onClickResultRow={
+          results.NoChain == null
+            ? (row) => setSelectedPatches(row.patches ?? [])
+            : undefined
+        }
         rowKey="advance"
         submitTrackerId="generate_xy_poke_radar"
       />

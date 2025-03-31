@@ -1,40 +1,25 @@
 use super::rng_trait::{GetMaxRand, GetRand, Rng};
-use std::iter::{DoubleEndedIterator, Iterator, Skip};
+use std::iter::{DoubleEndedIterator, Iterator, Rev, Skip};
+
+pub type Pokerng = Lcrng<0x6073, 0x41c64e6d, 0xa3561a1, 0xeeb9eb65>;
 
 #[derive(Debug, Clone, Copy)]
-pub struct Lcrng {
+pub struct Lcrng<const ADD: u32, const MUL: u32, const P_ADD: u32, const P_MUL: u32> {
     state: u32,
-    add: u32,
-    mul: u32,
-    prev_add: u32,
-    prev_mul: u32,
 }
 
-impl Lcrng {
-    fn new(seed: u32, add: u32, mul: u32, prev_add: u32, prev_mul: u32) -> Self {
-        Self {
-            state: seed,
-            add,
-            mul,
-            prev_mul,
-            prev_add,
-        }
-    }
-
-    pub fn new_prng(seed: u32) -> Self {
-        Self::new(seed, 0x6073, 0x41c64e6d, 0xa3561a1, 0xeeb9eb65)
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Lcrng<A, M, PA, PM> {
+    pub fn new(seed: u32) -> Self {
+        Self { state: seed }
     }
 
     fn prev_state(&mut self) -> u32 {
-        self.state = self
-            .state
-            .wrapping_mul(self.prev_mul)
-            .wrapping_add(self.prev_add);
+        self.state = self.state.wrapping_mul(PM).wrapping_add(PA);
         self.state
     }
 
     fn next_state(&mut self) -> u32 {
-        self.state = self.state.wrapping_mul(self.mul).wrapping_add(self.add);
+        self.state = self.state.wrapping_mul(M).wrapping_add(A);
         self.state
     }
 
@@ -43,7 +28,7 @@ impl Lcrng {
     }
 }
 
-impl Iterator for Lcrng {
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Iterator for Lcrng<A, M, PA, PM> {
     type Item = u32;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -51,55 +36,93 @@ impl Iterator for Lcrng {
     }
 }
 
-impl DoubleEndedIterator for Lcrng {
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> DoubleEndedIterator
+    for Lcrng<A, M, PA, PM>
+{
     fn next_back(&mut self) -> Option<Self::Item> {
         Some(self.prev_state())
     }
 }
 
-impl GetRand<u8> for Lcrng {
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u8> for Lcrng<A, M, PA, PM> {
     fn get(&mut self) -> u8 {
         self.next_u16() as u8
     }
 }
 
-impl GetRand<u16> for Lcrng {
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u16>
+    for Lcrng<A, M, PA, PM>
+{
     fn get(&mut self) -> u16 {
         self.next_u16()
     }
 }
 
-impl GetMaxRand<u16> for Lcrng {
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetMaxRand<u16>
+    for Lcrng<A, M, PA, PM>
+{
     fn get_max(&mut self, max: u16) -> u16 {
         ((self.next().unwrap_or_default() >> 16) as u16) % max
     }
 }
 
-impl GetRand<u32> for Lcrng {
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u32>
+    for Lcrng<A, M, PA, PM>
+{
     fn get(&mut self) -> u32 {
-        (self.next_u16() as u32) << 16 | self.next_u16() as u32
+        self.next_state()
     }
 }
 
-impl GetRand<u8> for Skip<Lcrng> {
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u8>
+    for Skip<Lcrng<A, M, PA, PM>>
+{
     fn get(&mut self) -> u8 {
         GetRand::<u16>::get(self) as u8
     }
 }
 
-impl GetRand<u16> for Skip<Lcrng> {
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u16>
+    for Skip<Lcrng<A, M, PA, PM>>
+{
     fn get(&mut self) -> u16 {
         (self.next().unwrap_or_default() >> 16) as u16
     }
 }
 
-impl GetRand<u32> for Skip<Lcrng> {
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u32>
+    for Skip<Lcrng<A, M, PA, PM>>
+{
     fn get(&mut self) -> u32 {
-        (GetRand::<u16>::get(self) as u32) << 16 | GetRand::<u16>::get(self) as u32
+        self.next().unwrap_or_default()
     }
 }
 
-impl Rng for Lcrng {}
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u8>
+    for Rev<Lcrng<A, M, PA, PM>>
+{
+    fn get(&mut self) -> u8 {
+        GetRand::<u16>::get(self) as u8
+    }
+}
+
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u16>
+    for Rev<Lcrng<A, M, PA, PM>>
+{
+    fn get(&mut self) -> u16 {
+        (self.next().unwrap_or_default() >> 16) as u16
+    }
+}
+
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> GetRand<u32>
+    for Rev<Lcrng<A, M, PA, PM>>
+{
+    fn get(&mut self) -> u32 {
+        self.next().unwrap()
+    }
+}
+
+impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Rng for Lcrng<A, M, PA, PM> {}
 
 #[cfg(test)]
 mod test {
@@ -253,7 +276,7 @@ mod test {
             0xa6a8fff5, 0xa07001c4, 0x91d2d8e7, 0xbe871cce, 0xdfa26829, 0xac9937e8,
         ];
 
-        let rng = Lcrng::new_prng(0);
+        let rng = Pokerng::new(0);
 
         expected_results.into_iter().zip(rng).enumerate().for_each(
             |(advances, (expected, actual))| {
@@ -264,23 +287,30 @@ mod test {
 
     #[test]
     fn can_reverse() {
-        let mut rng = Lcrng::new_prng(0);
+        let mut rng = Pokerng::new(0);
         assert_eq!(rng.nth(100), Some(0x172ebb67));
         assert_eq!(rng.nth_back(100), Some(0));
     }
 
     #[test]
+    fn can_rev_iterator() {
+        let mut rng = Pokerng::new(0xe97e7b6a).rev();
+        assert_eq!(rng.next(), Some(0x00006073));
+        assert_eq!(rng.rand::<u32>(), 0);
+    }
+
+    #[test]
     fn demo_rands() {
         // Get free iteration tools, like advancing and collecting
-        let result: Vec<u32> = Lcrng::new_prng(0).skip(0).take(4).collect();
+        let result: Vec<u32> = Pokerng::new(0).skip(0).take(4).collect();
         assert_eq!(result, [0x00006073, 0xe97e7b6a, 0x52713895, 0x31b0dde4]);
 
         // Advance without chaining
-        let mut rng = Lcrng::new_prng(0);
+        let mut rng = Pokerng::new(0);
         rng.advance(1);
         assert_eq!(rng.rand::<u16>(), 0xe97e);
 
         // Custom behavior for different types, such as u32 being u16 << 16 | u16
-        assert_eq!(rng.rand::<u32>(), 0x527131b0);
+        assert_eq!(rng.rand::<u32>(), 0x52713895);
     }
 }

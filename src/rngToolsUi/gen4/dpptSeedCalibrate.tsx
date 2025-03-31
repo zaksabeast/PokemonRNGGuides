@@ -5,7 +5,6 @@ import {
   RngToolForm,
   RngToolSubmit,
   Field,
-  Typography,
 } from "~/components";
 import { rngTools, SeedTime4, SeedTime4Calibrate } from "~/rngTools";
 import {
@@ -43,11 +42,8 @@ const columns: ResultColumn<SeedTime4Calibrate>[] = [
     title: "Coin Flips",
     dataIndex: "coin_flips",
     key: "coin_flips",
-    render: (coinFlips) => (
-      <Typography.Text whiteSpace="nowrap">
-        {coinFlips.map((flip) => (flip === "Heads" ? "H" : "T")).join(", ")}
-      </Typography.Text>
-    ),
+    render: (coinFlips) =>
+      coinFlips.map((flip) => (flip === "Heads" ? "H" : "T")).join(", "),
   },
 ];
 

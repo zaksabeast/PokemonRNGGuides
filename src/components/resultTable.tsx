@@ -30,6 +30,9 @@ export const FormikResultTable = <Record extends tst.O.Object>(
               ".ant-table-container": {
                 overflowX: "scroll",
               },
+              ".ant-table-cell": {
+                whiteSpace: "nowrap",
+              },
             },
           })}
         />

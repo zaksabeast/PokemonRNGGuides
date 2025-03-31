@@ -27,6 +27,7 @@ const columns: ResultColumn<Gen6Id>[] = [
     title: "Seed",
     dataIndex: "seed",
     key: "seed",
+    monospace: true,
     render: (seed) => seed.toString(16).toUpperCase().padStart(8, "0"),
   },
   {
@@ -59,6 +60,7 @@ const columns: ResultColumn<Gen6Id>[] = [
     title: "State",
     dataIndex: "tinymt_state",
     key: "tinymt_state",
+    monospace: true,
     render: (state: number[]) =>
       state
         .map((num) => num.toString(16).padStart(8, "0").toUpperCase())

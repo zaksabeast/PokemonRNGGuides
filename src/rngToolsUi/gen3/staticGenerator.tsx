@@ -35,6 +35,7 @@ const columns: ResultColumn<Static3Result>[] = [
     title: "PID",
     dataIndex: "pid",
     key: "pid",
+    monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
   { title: "Nature", dataIndex: "nature", key: "nature" },

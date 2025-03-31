@@ -20,6 +20,7 @@ const columns: ResultColumn<Id4>[] = [
     title: "Seed",
     dataIndex: "seed",
     key: "seed",
+    monospace: true,
     render: (seed) => seed.toString(16).toUpperCase().padStart(8, "0"),
   },
   {

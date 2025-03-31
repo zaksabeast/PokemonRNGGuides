@@ -53,6 +53,7 @@ const withChainColumns: ResultColumn<LooseColumns>[] = [
     title: "State",
     dataIndex: "state",
     key: "state",
+    monospace: true,
     render: (state) =>
       state
         ?.map((num) => num.toString(16).padStart(8, "0").toUpperCase())

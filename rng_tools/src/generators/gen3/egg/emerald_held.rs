@@ -59,7 +59,7 @@ impl Gen3HeldEgg {
             advance,
             redraws: egg.redraws,
             nature: Nature::from_pid(pid),
-            gender: species.gender_from_pid(pid),
+            gender: species.gender(pid),
             shiny: gen3_shiny(pid, tid, sid),
             ability: (pid & 1) as u8,
         }

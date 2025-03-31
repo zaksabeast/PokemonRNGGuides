@@ -1028,7 +1028,7 @@ impl Species {
         get_species_gender_ratio(self)
     }
 
-    pub fn gender_from_pid(&self, pid: u32) -> Gender {
+    pub fn gender(&self, pid: u32) -> Gender {
         self.gender_ratio().gender(pid as u8)
     }
 }

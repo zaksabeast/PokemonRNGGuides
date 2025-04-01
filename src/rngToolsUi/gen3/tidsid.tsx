@@ -212,10 +212,11 @@ export const Gen3TidSidGenerator = ({ game = "rs" }: Props) => {
     },
     [game],
   );
+  const fields = React.useMemo(() => getFields(game), [game]);
 
   return (
     <RngToolForm<FormState, Gen3TidSidResult>
-      fields={getFields(game)}
+      fields={fields}
       columns={columns}
       results={results}
       initialValues={initialValues}

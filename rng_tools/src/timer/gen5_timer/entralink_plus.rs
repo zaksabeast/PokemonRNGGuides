@@ -95,7 +95,7 @@ mod test {
     #[test]
     fn test_create() {
         let settings = Gen5EntralinkPlusTimerSettings {
-            console: Console::THREEDS,
+            console: Console::ThreeDs,
             min_time_ms: 14000.0,
             target_delay: 1200.0,
             target_second: 50.0,
@@ -110,7 +110,7 @@ mod test {
     #[test]
     fn test_calibrate() {
         let settings = Gen5EntralinkPlusTimerSettings {
-            console: Console::THREEDS,
+            console: Console::ThreeDs,
             min_time_ms: 14000.0,
             target_delay: 1200.0,
             target_second: 50.0,

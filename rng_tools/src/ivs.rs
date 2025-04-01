@@ -64,7 +64,7 @@ impl Index<G3Idx> for Ivs {
     type Output = u8;
 
     fn index(&self, index: G3Idx) -> &u8 {
-        match index.into() {
+        match index {
             G3Idx::Hp => &self.hp,
             G3Idx::Atk => &self.atk,
             G3Idx::Def => &self.def,
@@ -77,7 +77,7 @@ impl Index<G3Idx> for Ivs {
 
 impl IndexMut<G3Idx> for Ivs {
     fn index_mut(&mut self, index: G3Idx) -> &mut u8 {
-        match index.into() {
+        match index {
             G3Idx::Hp => &mut self.hp,
             G3Idx::Atk => &mut self.atk,
             G3Idx::Def => &mut self.def,
@@ -104,7 +104,7 @@ impl Index<G6Idx> for Ivs {
     type Output = u8;
 
     fn index(&self, index: G6Idx) -> &u8 {
-        match index.into() {
+        match index {
             G6Idx::Hp => &self.hp,
             G6Idx::Atk => &self.atk,
             G6Idx::Def => &self.def,
@@ -117,7 +117,7 @@ impl Index<G6Idx> for Ivs {
 
 impl IndexMut<G6Idx> for Ivs {
     fn index_mut(&mut self, index: G6Idx) -> &mut u8 {
-        match index.into() {
+        match index {
             G6Idx::Hp => &mut self.hp,
             G6Idx::Atk => &mut self.atk,
             G6Idx::Def => &mut self.def,

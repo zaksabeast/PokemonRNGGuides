@@ -6,9 +6,6 @@ edition = "2024"
 [lib]
 crate-type = ["cdylib"]
 
-[features]
-default = ["wee_alloc"]
-
 [dependencies]
 chrono = { version = "0.4.40", features = ["wasmbind", "std"], default-features = false }
 num_enum = "0.7.3"
@@ -16,4 +13,3 @@ serde = { version = "1.0", features = ["derive"] }
 serde-wasm-bindgen = "0.6.5"
 tsify-next = { version = "0.5.5", features = ["js"] }
 wasm-bindgen = "0.2.100"
-wee_alloc = { version = "0.4.5", optional = true }

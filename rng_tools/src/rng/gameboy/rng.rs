@@ -113,6 +113,7 @@ impl GameboyRng {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn advances_the_rng() {
@@ -120,6 +121,7 @@ mod test {
         let adiv = Div::new(468, 0x78);
         let sdiv = Div::new(16139, 0x78);
         let mut rng = GameboyRng::new(state, adiv, sdiv);
+        let results = (0..100).map(|_| rng.next_u16()).collect::<Vec<_>>();
         let expected: Vec<u16> = vec![
             0x2958, 0xc5bb, 0x740b, 0x3549, 0x0874, 0xee8e, 0xe695, 0xf08b, 0x0d6d, 0x3c3e, 0x7dfd,
             0xd1a9, 0x3742, 0xafca, 0x393e, 0xd6a1, 0x85f1, 0x462e, 0x1a59, 0x0072, 0xf879, 0x036d,
@@ -133,8 +135,6 @@ mod test {
             0xa795,
         ];
 
-        for (index, item) in expected.iter().enumerate() {
-            assert_eq!(rng.next_u16(), *item, "Failed at {}", index);
-        }
+        assert_list_eq!(results, expected);
     }
 }

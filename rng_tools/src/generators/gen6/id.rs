@@ -94,6 +94,7 @@ pub fn generate_oras_id(opts: OrasIdOptions) -> Vec<Gen6Id> {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn test_generate_gen6_id() {
@@ -105,7 +106,7 @@ mod test {
             max_advances: 20,
             filter_id: Some(IdFilter::Tid(12345)),
         };
-        let result = generate_oras_id(opts);
+        let results = generate_oras_id(opts);
 
         let expected = [
             Gen6Id {
@@ -182,13 +183,6 @@ mod test {
             },
         ];
 
-        assert_eq!(result.len(), 8);
-        result
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 }

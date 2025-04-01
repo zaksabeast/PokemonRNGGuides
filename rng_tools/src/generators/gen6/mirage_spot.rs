@@ -149,10 +149,11 @@ pub fn generate_mirage_spots(opts: MirageSpotOptions) -> Vec<MirageSpot> {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn generates() {
-        let result = generate_mirage_spots(MirageSpotOptions {
+        let results = generate_mirage_spots(MirageSpotOptions {
             seed: 0xbb286561,
             tid: 1234,
             start_date: NaiveDate::from_ymd_opt(2024, 01, 01).unwrap().into(),
@@ -261,13 +262,6 @@ mod test {
             },
         ];
 
-        assert_eq!(result.len(), expected.len());
-        result
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 }

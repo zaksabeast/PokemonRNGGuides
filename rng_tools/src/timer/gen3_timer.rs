@@ -52,7 +52,7 @@ mod test {
     #[test]
     fn double_calibrate() {
         let settings = Gen3TimerSettings {
-            console: Console::GBA,
+            console: Console::Gba,
             pre_timer: 5000.0,
             target_frame: 1000.0,
             calibration: 0.0,

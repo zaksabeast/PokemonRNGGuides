@@ -71,7 +71,7 @@ mod test {
     #[test]
     fn test_create() {
         let settings = Gen4TimerSettings {
-            console: Console::NDSSLOT1,
+            console: Console::NdsSlot1,
             min_time_ms: 14000.0,
             calibrated_delay: 500.0,
             calibrated_second: 14.0,
@@ -82,7 +82,7 @@ mod test {
         assert_eq!(result, [34537.0, 15662.0]);
 
         let settings = Gen4TimerSettings {
-            console: Console::NDSSLOT1,
+            console: Console::NdsSlot1,
             min_time_ms: 14000.0,
             calibrated_delay: 399.0,
             calibrated_second: 14.0,
@@ -96,7 +96,7 @@ mod test {
     #[test]
     fn test_calibrate() {
         let settings = Gen4TimerSettings {
-            console: Console::NDSSLOT1,
+            console: Console::NdsSlot1,
             min_time_ms: 14000.0,
             calibrated_delay: 500.0,
             calibrated_second: 14.0,

@@ -1,7 +1,6 @@
 mod id;
-mod seed;
+pub mod seed4;
 mod seed_time;
 
 pub use id::*;
-pub use seed::*;
 pub use seed_time::*;

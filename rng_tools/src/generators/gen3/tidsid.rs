@@ -1,6 +1,7 @@
+use crate::generators::gen3::seed3::calc_seed;
 use crate::rng::lcrng::{Pokerng, Xdrng};
 use crate::rng::{Rng, StateIterator};
-use crate::{gen3_tsv, IdFilter, RngDateTime};
+use crate::{IdFilter, RngDateTime, gen3_tsv};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -75,9 +76,7 @@ pub fn gen3_tidsid_states(opts: &Gen3TidSidOptions) -> Vec<Gen3TidSidResult> {
             let seed = match ver_opts {
                 RsTidSidOptions::Seed(seed) => *seed,
                 RsTidSidOptions::DeadBattery => 0x5a6,
-                RsTidSidOptions::DateTime(datetime) => {
-                    datetime.calc_gen3_seed().unwrap_or_default()
-                }
+                RsTidSidOptions::DateTime(datetime) => calc_seed(datetime).unwrap_or_default(),
             };
             StateIterator::new(Pokerng::new(seed as u32))
                 .skip(opts.offset)
@@ -111,11 +110,7 @@ pub fn gen3_tidsid_states(opts: &Gen3TidSidOptions) -> Vec<Gen3TidSidResult> {
     }
 }
 
-fn generate_frlge_tidsid(
-    mut rng: Pokerng,
-    advance: usize,
-    tid: u16,
-) -> Gen3TidSidResult {
+fn generate_frlge_tidsid(mut rng: Pokerng, advance: usize, tid: u16) -> Gen3TidSidResult {
     let sid = rng.rand::<u16>();
     let tsv = gen3_tsv(tid, sid);
     Gen3TidSidResult {

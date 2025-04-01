@@ -39,7 +39,7 @@ const FormStateSchema = z.object({
 type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
-  console: "GBA",
+  console: "Gba",
   preTimer: toDecimalString(5000),
   targetFrame: toDecimalString(1000),
   calibration: toDecimalString(0.0),
@@ -59,11 +59,11 @@ const fields: Field[] = [
       <FormikSelect<FormState, "console">
         name="console"
         options={[
-          { label: "GBA", value: "GBA" },
-          { label: "NDS - Slot 2", value: "NDSSLOT2" },
-          { label: "NDS - Slot 1", value: "NDSSLOT1" },
-          { label: "DSI", value: "DSI" },
-          { label: "3DS", value: "THREEDS" },
+          { label: "GBA", value: "Gba" },
+          { label: "NDS - Slot 2", value: "NdsSlot2" },
+          { label: "NDS - Slot 1", value: "NdsSlot1" },
+          { label: "DSI", value: "Dsi" },
+          { label: "3DS", value: "ThreeDs" },
         ]}
       />
     ),

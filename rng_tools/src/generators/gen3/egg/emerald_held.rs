@@ -51,7 +51,7 @@ impl Gen3HeldEgg {
         if delay > 0 {
             advance = advance.saturating_sub(delay as u32);
         } else {
-            advance = advance.saturating_add(delay.abs() as u32);
+            advance = advance.saturating_add(delay.unsigned_abs() as u32);
         }
 
         Self {

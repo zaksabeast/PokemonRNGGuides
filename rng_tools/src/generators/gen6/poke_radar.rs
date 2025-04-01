@@ -55,7 +55,7 @@ pub struct PokeRadarOptions {
     pub filter_slot: Option<u8>,
 }
 
-#[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum PokeRadarMusic {
     A,
@@ -88,7 +88,7 @@ struct PokeRadarConsolidatedState {
 }
 
 impl PokeRadarConsolidatedState {
-    fn to_no_chain(self) -> PokeRadarNoChainState {
+    fn to_no_chain(&self) -> PokeRadarNoChainState {
         PokeRadarNoChainState {
             advance: self.advance,
             state: self.state,
@@ -101,7 +101,7 @@ impl PokeRadarConsolidatedState {
         }
     }
 
-    fn to_chain(self) -> PokeRadarChainState {
+    fn to_chain(&self) -> PokeRadarChainState {
         PokeRadarChainState {
             advance: self.advance,
             state: self.state,
@@ -151,9 +151,11 @@ fn generate_poke_radar_state(
     rng: &mut TinyMT,
     advance: usize,
 ) -> PokeRadarConsolidatedState {
-    let mut result = PokeRadarConsolidatedState::default();
-    result.state = rng.get_state();
-    result.advance = advance;
+    let mut result = PokeRadarConsolidatedState {
+        advance,
+        state: rng.get_state(),
+        ..Default::default()
+    };
 
     let rand100 = rng.rand_max(100);
     if opts.chain == 0 {

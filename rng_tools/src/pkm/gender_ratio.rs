@@ -1040,7 +1040,7 @@ impl GenderRatio {
             GenderRatio::MaleOnly => Gender::Male,
             GenderRatio::FemaleOnly => Gender::Female,
             &ratio => {
-                if (rate as u8) < (ratio as u8) {
+                if rate < (ratio as u8) {
                     Gender::Female
                 } else {
                     Gender::Male

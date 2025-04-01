@@ -85,9 +85,11 @@ fn quick_generate_bank_mon(rng: &mut MT, iv3: bool, gender_type: &BankGenderType
 }
 
 fn generate(rng: &mut MT, advance: usize, opts: &Stationary6Opts) -> Stationary6State {
-    let mut result = Stationary6State::default();
-    result.advance = advance;
-    result.rng_state = rng.current_state();
+    let mut result = Stationary6State {
+        advance,
+        rng_state: rng.current_state(),
+        ..Default::default()
+    };
 
     // https://github.com/wwwwwwzx/3DSRNGTool/blob/4c0c9a5ad957c03bc4b180084dc711f77a28e332/3DSRNGTool/Core/RNGPool.cs#L100
     rng.rand::<u32>();
@@ -151,9 +153,9 @@ fn generate(rng: &mut MT, advance: usize, opts: &Stationary6Opts) -> Stationary6
         }
     }
 
-    for i in 0..6_usize {
+    for (i, is_iv_set) in set_ivs.iter().enumerate() {
         let idx = G6Idx::from(i as u8);
-        if !set_ivs[i] {
+        if !is_iv_set {
             result.ivs[idx] = (rng.rand::<u32>() >> 27) as u8;
         }
     }

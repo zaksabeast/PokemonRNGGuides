@@ -1,7 +1,7 @@
 use super::console::Console;
 use super::entralink_timer;
 
-const ENTRALINK_FRAME_RATE: f32 = 0.837148929;
+const ENTRALINK_FRAME_RATE: f32 = 0.837_148_9;
 
 fn create_enhanded_entralink(
     phases: [f32; 2],

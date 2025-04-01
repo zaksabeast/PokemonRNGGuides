@@ -1,6 +1,6 @@
-use crate::RngDateTime;
 use crate::rng::lcrng::{Pokerng, Xdrng};
 use crate::rng::{Rng, StateIterator};
+use crate::{gen3_tsv, IdFilter, RngDateTime};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -12,7 +12,7 @@ pub struct Gen3TidSidOptions {
     offset: usize,
     initial_advances: usize,
     max_advances: usize,
-    filter: Gen3TidSidFilter,
+    filter: Option<IdFilter>,
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -52,26 +52,6 @@ pub struct Gen3TidSidResult {
     pub tsv: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub enum Gen3TidSidFilter {
-    None,
-    Tid(u16),
-    Sid(u16),
-    Tsv(u16),
-}
-
-impl Gen3TidSidFilter {
-    fn pass_filter(&self, val: &Gen3TidSidResult) -> bool {
-        match self {
-            Self::Tid(i) => i == &val.tid,
-            Self::Sid(i) => i == &val.sid,
-            Self::Tsv(i) => i == &val.tsv,
-            _ => true,
-        }
-    }
-}
-
 #[wasm_bindgen]
 pub fn gen3_tidsid_states(opts: &Gen3TidSidOptions) -> Vec<Gen3TidSidResult> {
     match &opts.version_options {
@@ -82,12 +62,12 @@ pub fn gen3_tidsid_states(opts: &Gen3TidSidOptions) -> Vec<Gen3TidSidResult> {
                 .skip(opts.initial_advances)
                 .take(opts.max_advances.wrapping_add(1))
                 .filter_map(|(i, rng)| {
-                    let state = generate_frlge_tidsid(rng, i, ver_opts);
-                    if opts.filter.pass_filter(&state) {
-                        Some(state)
-                    } else {
-                        None
-                    }
+                    let state = generate_frlge_tidsid(rng, i, ver_opts.tid);
+                    let passes_filter = match &opts.filter {
+                        Some(filter) => filter.filter_gen3(state.tid, state.sid),
+                        None => true,
+                    };
+                    if passes_filter { Some(state) } else { None }
                 })
                 .collect()
         }
@@ -106,11 +86,11 @@ pub fn gen3_tidsid_states(opts: &Gen3TidSidOptions) -> Vec<Gen3TidSidResult> {
                 .take(opts.max_advances.wrapping_add(1))
                 .filter_map(|(i, rng)| {
                     let state = generate_rs_tidsid(rng, i);
-                    if opts.filter.pass_filter(&state) {
-                        Some(state)
-                    } else {
-                        None
-                    }
+                    let passes_filter = match &opts.filter {
+                        Some(filter) => filter.filter_gen3(state.tid, state.sid),
+                        None => true,
+                    };
+                    if passes_filter { Some(state) } else { None }
                 })
                 .collect()
         }
@@ -121,11 +101,11 @@ pub fn gen3_tidsid_states(opts: &Gen3TidSidOptions) -> Vec<Gen3TidSidResult> {
             .take(opts.max_advances.wrapping_add(1))
             .filter_map(|(i, rng)| {
                 let state = generate_xdcolo_tidsid(rng, i);
-                if opts.filter.pass_filter(&state) {
-                    Some(state)
-                } else {
-                    None
-                }
+                let passes_filter = match &opts.filter {
+                    Some(filter) => filter.filter_gen3(state.tid, state.sid),
+                    None => true,
+                };
+                if passes_filter { Some(state) } else { None }
             })
             .collect(),
     }
@@ -134,13 +114,13 @@ pub fn gen3_tidsid_states(opts: &Gen3TidSidOptions) -> Vec<Gen3TidSidResult> {
 fn generate_frlge_tidsid(
     mut rng: Pokerng,
     advance: usize,
-    opts: &FrlgeTidSidOptions,
+    tid: u16,
 ) -> Gen3TidSidResult {
     let sid = rng.rand::<u16>();
-    let tsv = (opts.tid ^ sid) >> 3;
+    let tsv = gen3_tsv(tid, sid);
     Gen3TidSidResult {
         advance,
-        tid: opts.tid,
+        tid,
         sid,
         tsv,
     }
@@ -149,7 +129,7 @@ fn generate_frlge_tidsid(
 fn generate_rs_tidsid(mut rng: Pokerng, advance: usize) -> Gen3TidSidResult {
     let sid = rng.rand::<u16>();
     let tid = rng.rand::<u16>();
-    let tsv = (tid ^ sid) >> 3;
+    let tsv = gen3_tsv(tid, sid);
 
     Gen3TidSidResult {
         advance,
@@ -162,7 +142,7 @@ fn generate_rs_tidsid(mut rng: Pokerng, advance: usize) -> Gen3TidSidResult {
 fn generate_xdcolo_tidsid(mut rng: Xdrng, advance: usize) -> Gen3TidSidResult {
     let tid = rng.rand::<u16>();
     let sid = rng.rand::<u16>();
-    let tsv = (tid ^ sid) >> 3;
+    let tsv = gen3_tsv(tid, sid);
 
     Gen3TidSidResult {
         advance,
@@ -175,8 +155,8 @@ fn generate_xdcolo_tidsid(mut rng: Xdrng, advance: usize) -> Gen3TidSidResult {
 #[cfg(test)]
 mod test {
     use crate::{
-        FrlgeTidSidOptions, Gen3TidSidFilter, Gen3TidSidOptions, Gen3TidSidResult,
-        Gen3TidSidVersionOptions, RsTidSidOptions, XdColoTidSidOptions, gen3_tidsid_states,
+        FrlgeTidSidOptions, Gen3TidSidOptions, Gen3TidSidResult, Gen3TidSidVersionOptions,
+        RsTidSidOptions, XdColoTidSidOptions, assert_list_eq, gen3_tidsid_states,
     };
 
     #[test]
@@ -186,7 +166,7 @@ mod test {
             offset: 0,
             initial_advances: 0,
             max_advances: 9,
-            filter: Gen3TidSidFilter::None,
+            filter: None,
         };
         let results = gen3_tidsid_states(&opts);
         let expected = vec![
@@ -252,14 +232,7 @@ mod test {
             },
         ];
 
-        assert_eq!(expected.len(), results.len());
-        results
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -269,7 +242,7 @@ mod test {
             offset: 0,
             initial_advances: 0,
             max_advances: 9,
-            filter: Gen3TidSidFilter::None,
+            filter: None,
         };
         let results = gen3_tidsid_states(&opts);
         let expected = vec![
@@ -335,14 +308,7 @@ mod test {
             },
         ];
 
-        assert_eq!(expected.len(), results.len());
-        results
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -352,7 +318,7 @@ mod test {
             offset: 0,
             initial_advances: 0,
             max_advances: 9,
-            filter: Gen3TidSidFilter::None,
+            filter: None,
         };
         let results = gen3_tidsid_states(&opts);
         let expected = vec![
@@ -418,13 +384,6 @@ mod test {
             },
         ];
 
-        assert_eq!(expected.len(), results.len());
-        results
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 }

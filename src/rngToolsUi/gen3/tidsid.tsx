@@ -1,6 +1,11 @@
-import { Gen3TidSidResult, rngTools } from "~/rngTools";
+import {
+  Gen3TidSidResult,
+  rngTools,
+  Gen3TidSidVersionOptions,
+} from "~/rngTools";
 import {
   Field,
+  FormikIdFilter,
   FormikInput,
   FormikSelect,
   ResultColumn,
@@ -17,13 +22,10 @@ import { match } from "ts-pattern";
 import {
   FormikDatePicker,
   FormikTimePicker,
-} from "~/components/datePicker.tsx";
+} from "~/components/datePicker";
 import React from "react";
-import {
-  Gen3TidSidFilter,
-  Gen3TidSidVersionOptions,
-} from "../../../rng_tools/pkg";
-import { toRngDateTime } from "~/utils/time.ts";
+import { toRngDateTime } from "~/utils/time";
+import { denormalizeIdFilter, IdFilter } from "~/types/id";
 
 const columns: ResultColumn<Gen3TidSidResult>[] = [
   { title: "Advance", dataIndex: "advance", key: "advance" },
@@ -43,8 +45,7 @@ type FormState = {
   date: Dayjs;
   time: Dayjs;
   tid: DecimalString;
-  filter_val: DecimalString;
-  filter_type: "None" | "TID" | "SID" | "TSV";
+  filter: IdFilter;
 };
 
 const initialValues: FormState = {
@@ -56,8 +57,11 @@ const initialValues: FormState = {
   date: dayjs(),
   time: dayjs(),
   tid: toDecimalString(0),
-  filter_val: toDecimalString(0),
-  filter_type: "None",
+  filter: {
+    type: "tid",
+    value0: toDecimalString(0),
+    value1: "",
+  },
 };
 
 const getFields = (game: Game) => {
@@ -119,23 +123,8 @@ const getFields = (game: Game) => {
     },
     ...dynamic,
     {
-      label: "Filter By",
-      input: (
-        <FormikSelect<FormState, "filter_type">
-          name="filter_type"
-          options={(game !== "frlge"
-            ? (["None", "TID", "SID", "TSV"] as const)
-            : (["None", "SID", "TSV"] as const)
-          ).map((ty) => ({
-            label: ty,
-            value: ty,
-          }))}
-        />
-      ),
-    },
-    {
-      label: "Filter Value",
-      input: <FormikInput<FormState> name="filter_val" />,
+      label: "Filter",
+      input: <FormikIdFilter<FormState> name="filter" optional={true} />,
     },
   ];
 };
@@ -155,19 +144,6 @@ export const Gen3TidSidGenerator = ({ game = "rs" }: Props) => {
 
       if (offset == null || initialAdvances == null || maxAdvances == null) {
         return;
-      }
-
-      let filter: Gen3TidSidFilter = "None";
-      if (opts.filter_type !== "None") {
-        const filter_val = fromDecimalString(opts.filter_val);
-        if (filter_val == null) {
-          return;
-        }
-        filter = match(opts.filter_type)
-          .with("TSV", () => ({ Tsv: filter_val }))
-          .with("TID", () => ({ Tid: filter_val }))
-          .with("SID", () => ({ Sid: filter_val }))
-          .exhaustive();
       }
 
       const versionOpts: Gen3TidSidVersionOptions = match(game)
@@ -205,13 +181,14 @@ export const Gen3TidSidGenerator = ({ game = "rs" }: Props) => {
         initial_advances: initialAdvances,
         max_advances: maxAdvances,
         version_options: versionOpts,
-        filter,
+        filter: denormalizeIdFilter(opts.filter) ?? undefined,
       });
 
       setResults(results);
     },
     [game],
   );
+
   const fields = React.useMemo(() => getFields(game), [game]);
 
   return (

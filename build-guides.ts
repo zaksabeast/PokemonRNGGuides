@@ -36,6 +36,7 @@ const categoryDefs = [
   z.literal("Sword and Shield"),
   z.literal("Brilliant Diamond and Shining Pearl"),
   z.literal("Legends Arceus"),
+  z.literal("GBA Overview"),
 ] as const;
 
 const categories = categoryDefs.map((category) => category.value);

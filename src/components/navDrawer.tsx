@@ -6,10 +6,9 @@ import { Typography } from "./typography";
 import { useMobileNavDrawerOpen } from "~/state/navDrawer";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { settings } from "~/settings";
-import { Menu, MenuProps } from "antd";
+import { Menu } from "antd";
 import { getGuide, guides, categories, Category, GuideMeta } from "~/guides";
 import { partition, groupBy } from "lodash-es";
-import * as tst from "ts-toolbelt";
 import styled from "@emotion/styled";
 import { difference, upperFirst, sortBy } from "lodash-es";
 import { track } from "~/analytics";
@@ -57,12 +56,63 @@ const MenuItemTag = ({ tag, isNew }: MenuItemTagProps) => {
   );
 };
 
-type MenuItem = tst.U.NonNullable<tst.O.Required<MenuProps>["items"][number]>;
-
 const [roughDraftGuides, finalizedGuides] = partition(
   guides,
   (guide) => guide.meta.isRoughDraft,
 );
+
+type MenuItem = {
+  isNew: boolean;
+  key: string;
+  title: string;
+  tag: GuideTag;
+  label: React.ReactNode;
+  icon: React.ReactNode;
+};
+
+type MenuCategory = {
+  isNew: boolean;
+  key: string;
+  children: (MenuItem | MenuCategory)[];
+  label: React.ReactNode;
+  icon: React.ReactNode;
+};
+
+const getMenuItemFromGuide = ({
+  slug,
+  showIcon = true,
+}: {
+  slug: GuideMeta["slug"];
+  showIcon?: boolean;
+}): MenuItem => {
+  const meta = getGuide(slug).meta;
+  const isNew = dayjs(meta.addedOn).isAfter(dayjs().subtract(7, "days"));
+  return {
+    isNew,
+    key: meta.slug,
+    title: meta.title,
+    tag: meta.tag,
+    label: <Link href={meta.slug}>{meta.title}</Link>,
+    icon: showIcon ? <MenuItemTag isNew={isNew} tag={meta.tag} /> : null,
+  };
+};
+
+const getMenuCategory = (
+  category: Category,
+  keyPrefix: string,
+  guideItems: MenuItem[],
+): MenuCategory => {
+  const sortedGuideItems = sortBy(guideItems, (item) => [item.tag, item.title]);
+  const isNew = guideItems.some((item) => item.isNew);
+
+  return {
+    key: `${keyPrefix}${category}`,
+    label: category,
+    children: sortedGuideItems,
+    isNew,
+    icon: isNew ? <MenuItemTag tag="new" isNew /> : null,
+  };
+};
 
 const getGuideMenu = (
   guideList: (typeof guides)[keyof typeof guides][],
@@ -74,45 +124,14 @@ const getGuideMenu = (
     .map((category) => {
       const guideItems = guidesByCategory[category]
         .filter((guide) => !guide.meta.hideFromNavDrawer)
-        .map((guide) => {
-          const isNew = dayjs(guide.meta.addedOn).isAfter(
-            dayjs().subtract(7, "days"),
-          );
-          return {
-            key: guide.meta.slug,
-            title: guide.meta.title,
-            label: <Link href={guide.meta.slug}>{guide.meta.title}</Link>,
-            isNew,
-            tag: guide.meta.tag,
-            icon: (
-              <>
-                {/* {isNew && <MenuItemTag tag="new" />} */}
-                <MenuItemTag isNew={isNew} tag={guide.meta.tag} />
-              </>
-            ),
-          };
-        });
-
-      const sortedGuideItems = sortBy(guideItems, (item) => [
-        item.tag,
-        item.title,
-      ]);
-
-      const isNew = guideItems.some((item) => item.isNew);
-
-      return {
-        key: `${keyPrefix}${category}`,
-        label: category,
-        children: sortedGuideItems,
-        isNew,
-        icon: isNew ? <MenuItemTag tag="new" isNew /> : null,
-      };
-    }) satisfies MenuItem[];
+        .map((guide) => getMenuItemFromGuide(guide.meta));
+      return getMenuCategory(category, keyPrefix, guideItems);
+    });
 };
 
 const finalizedGuideMenu = getGuideMenu(finalizedGuides);
 
-const getMenuInCategory = (categories: Category[]) => {
+const getMenuForCategory = (categories: Category[]) => {
   return finalizedGuideMenu.filter(({ key }) =>
     (categories as string[]).includes(key),
   );
@@ -122,6 +141,7 @@ type CategoryConfig =
   | {
       key: string;
       label: string;
+      pages?: MenuItem[];
       categories: Category[];
       children?: never;
     }
@@ -129,16 +149,24 @@ type CategoryConfig =
       key: string;
       label: string;
       children: ReturnType<typeof getGuideMenu>;
+      pages?: never;
       categories?: never;
     };
 
-const getCategory = ({ key, label, categories, children }: CategoryConfig) => {
-  const subCategories = children ?? getMenuInCategory(categories);
+const getCategory = ({
+  key,
+  label,
+  pages = [],
+  categories,
+  children,
+}: CategoryConfig): MenuCategory => {
+  const subCategories = children ?? getMenuForCategory(categories);
   const isNew = subCategories.some((item) => item.isNew);
   return {
     key,
     label,
-    children: subCategories,
+    isNew,
+    children: [...pages, ...subCategories],
     icon: isNew ? <MenuItemTag tag="new" isNew /> : null,
   };
 };
@@ -146,7 +174,7 @@ const getCategory = ({ key, label, categories, children }: CategoryConfig) => {
 const roughDraftPrefix = "roughDraft-";
 
 const topLevelMenu = [
-  getMenuInCategory(["Tools and Emulators"])[0],
+  getMenuForCategory(["Tools and Emulators"])[0],
   getCategory({
     key: "GB",
     label: "GB",
@@ -156,6 +184,7 @@ const topLevelMenu = [
     key: "GBA",
     label: "GBA",
     categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+    pages: [getMenuItemFromGuide({ slug: "/gba-overview", showIcon: false })],
   }),
   getCategory({
     key: "NDS",
@@ -178,7 +207,7 @@ const topLevelMenu = [
       "Transporter",
     ],
   }),
-  getMenuInCategory(["Gamecube"])[0],
+  getMenuForCategory(["Gamecube"])[0],
   getCategory({
     key: "Switch",
     label: "Switch",
@@ -193,7 +222,7 @@ const topLevelMenu = [
     label: "Rough Drafts",
     children: getGuideMenu(roughDraftGuides, roughDraftPrefix),
   }),
-] satisfies MenuItem[];
+] satisfies (MenuItem | MenuCategory)[];
 
 const NavDrawerContent = () => {
   const [route] = useActiveRoute();

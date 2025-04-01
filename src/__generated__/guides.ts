@@ -111,6 +111,20 @@ export const guides = {
       () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
     ),
   },
+  "/gba-overview": {
+    meta: {
+      title: "Overview",
+      description: "Overview of GBA RNG",
+      category: "GBA Overview",
+      slug: "/gba-overview",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-01",
+      file: "guides/Emerald/Overview.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Overview.mdx")),
+  },
   "/emerald-painting-rng": {
     meta: {
       title: "Reseed using paintings",
@@ -2367,6 +2381,7 @@ export const guideSlugs = [
   z.literal("/gen2-research"),
   z.literal("/emulator-emerald-egg"),
   z.literal("/e-tips-rng"),
+  z.literal("/gba-overview"),
   z.literal("/emerald-painting-rng"),
   z.literal("/emerald-sid-feebas"),
   z.literal("/rs-sid-feebas"),
@@ -2522,4 +2537,5 @@ export const categories = [
   "Sword and Shield",
   "Brilliant Diamond and Shining Pearl",
   "Legends Arceus",
+  "GBA Overview",
 ] as const;

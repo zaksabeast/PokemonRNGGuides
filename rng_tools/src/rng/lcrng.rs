@@ -2,6 +2,7 @@ use super::rng_trait::{GetMaxRand, GetRand, Rng};
 use std::iter::{DoubleEndedIterator, Iterator, Rev, Skip};
 
 pub type Pokerng = Lcrng<0x6073, 0x41c64e6d, 0xa3561a1, 0xeeb9eb65>;
+pub type Xdrng = Lcrng<0x269EC3, 0x343FD, 0xA170F641, 0xB9B33155>;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Lcrng<const ADD: u32, const MUL: u32, const P_ADD: u32, const P_MUL: u32> {

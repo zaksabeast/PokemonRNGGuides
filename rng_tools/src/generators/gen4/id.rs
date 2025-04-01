@@ -1,4 +1,4 @@
-use super::seed4::calc_seed;
+use super::calc_seed;
 use crate::rng::Rng;
 use crate::rng::mt::MT;
 use crate::{IdFilter, RngDateTime};

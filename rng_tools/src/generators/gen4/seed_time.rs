@@ -1,4 +1,4 @@
-use super::seed4::{calc_ab, calc_seed};
+use super::{calc_ab, calc_seed};
 use crate::rng::mt::MT;
 use crate::{RngDateTime, get_days_in_month};
 use chrono::Duration;

@@ -1,4 +1,4 @@
-use crate::generators::gen3::seed3::calc_seed;
+use crate::generators::gen3::seed::calc_seed;
 use crate::rng::lcrng::{Pokerng, Xdrng};
 use crate::rng::{Rng, StateIterator};
 use crate::{IdFilter, RngDateTime, gen3_tsv};
@@ -149,10 +149,11 @@ fn generate_xdcolo_tidsid(mut rng: Xdrng, advance: usize) -> Gen3TidSidResult {
 
 #[cfg(test)]
 mod test {
-    use crate::{
+    use super::{
         FrlgeTidSidOptions, Gen3TidSidOptions, Gen3TidSidResult, Gen3TidSidVersionOptions,
-        RsTidSidOptions, XdColoTidSidOptions, assert_list_eq, gen3_tidsid_states,
+        RsTidSidOptions, XdColoTidSidOptions, gen3_tidsid_states,
     };
+    use crate::assert_list_eq;
 
     #[test]
     fn xdcolo() {

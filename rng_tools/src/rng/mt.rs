@@ -117,6 +117,7 @@ impl Rng for MT {}
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn rands() {
@@ -137,19 +138,11 @@ mod test {
             0xf689c34d, 0xe88abcfa, 0x4ac16b72, 0x52f3c014, 0x7cd4d1e7, 0x96856c10, 0x636d1302,
             0x86cf40aa, 0x830574b5,
         ];
-        let result = MT::new(0xaabbccdd)
+        let results = MT::new(0xaabbccdd)
             .skip(600)
             .take(100)
             .collect::<Vec<u32>>();
 
-        assert_eq!(expected.len(), result.len());
-
-        expected
-            .into_iter()
-            .zip(result.into_iter())
-            .enumerate()
-            .for_each(|(advances, (expected, actual))| {
-                assert_eq!(actual, expected, "Mismatch at advance {}", advances);
-            });
+        assert_list_eq!(results, expected);
     }
 }

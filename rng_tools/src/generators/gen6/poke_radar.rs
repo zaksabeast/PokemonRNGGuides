@@ -248,6 +248,7 @@ pub fn generate_poke_radar_states(opts: PokeRadarOptions) -> PokeRadarResult {
 mod test {
     use super::PokeRadarPatchState::*;
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn poke_radar_no_filter_no_chain_no_party() {
@@ -261,7 +262,7 @@ mod test {
             filter_shiny: false,
             filter_slot: None,
         };
-        let result = generate_poke_radar_states(opts);
+        let results = generate_poke_radar_states(opts);
         let expected = [
             PokeRadarNoChainState {
                 advance: 0,
@@ -624,15 +625,8 @@ mod test {
                 state: [0x7F090EB2, 0xC46248F6, 0x2BD2C2BA, 0x591B4393],
             },
         ];
-        if let PokeRadarResult::NoChain(result) = result {
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+        if let PokeRadarResult::NoChain(results) = results {
+            assert_list_eq!(results, expected);
         } else {
             panic!("Expected NoChain result");
         }
@@ -650,7 +644,7 @@ mod test {
             filter_shiny: false,
             filter_slot: None,
         };
-        let result = generate_poke_radar_states(opts);
+        let results = generate_poke_radar_states(opts);
         let expected = [
             PokeRadarNoChainState {
                 advance: 0,
@@ -1013,15 +1007,8 @@ mod test {
                 state: [0x7F090EB2, 0xC46248F6, 0x2BD2C2BA, 0x591B4393],
             },
         ];
-        if let PokeRadarResult::NoChain(result) = result {
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+        if let PokeRadarResult::NoChain(results) = results {
+            assert_list_eq!(results, expected);
         } else {
             panic!("Expected NoChain result");
         }
@@ -1039,7 +1026,7 @@ mod test {
             filter_shiny: true,
             filter_slot: None,
         };
-        let result = generate_poke_radar_states(opts);
+        let results = generate_poke_radar_states(opts);
         let expected = [
             PokeRadarChainState {
                 advance: 16718,
@@ -1314,15 +1301,8 @@ mod test {
                 state: [0x92FDD273, 0x116FF956, 0x13F0AE9C, 0xCA6E992A],
             },
         ];
-        if let PokeRadarResult::WithChain(result) = result {
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+        if let PokeRadarResult::WithChain(results) = results {
+            assert_list_eq!(results, expected);
         } else {
             panic!("Expected WithChain result");
         }
@@ -1340,7 +1320,7 @@ mod test {
             filter_shiny: false,
             filter_slot: None,
         };
-        let result = generate_poke_radar_states(opts);
+        let results = generate_poke_radar_states(opts);
         let expected = [
             PokeRadarChainState {
                 advance: 15000,
@@ -1547,15 +1527,8 @@ mod test {
                 state: [0x86C9A6AD, 0xD8CA3B17, 0x84D7163D, 0x5BAF9448],
             },
         ];
-        if let PokeRadarResult::WithChain(result) = result {
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+        if let PokeRadarResult::WithChain(results) = results {
+            assert_list_eq!(results, expected);
         } else {
             panic!("Expected WithChain result");
         }
@@ -1573,7 +1546,7 @@ mod test {
             filter_shiny: false,
             filter_slot: Some(3),
         };
-        let result = generate_poke_radar_states(opts);
+        let results = generate_poke_radar_states(opts);
         let expected = [
             PokeRadarNoChainState {
                 advance: 8,
@@ -1648,15 +1621,8 @@ mod test {
                 state: [0x7F090EB2, 0xC46248F6, 0x2BD2C2BA, 0x591B4393],
             },
         ];
-        if let PokeRadarResult::NoChain(result) = result {
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+        if let PokeRadarResult::NoChain(results) = results {
+            assert_list_eq!(results, expected);
         } else {
             panic!("Expected NoChain result");
         }
@@ -1674,7 +1640,7 @@ mod test {
             filter_shiny: false,
             filter_slot: Some(10),
         };
-        let result = generate_poke_radar_states(opts);
+        let results = generate_poke_radar_states(opts);
         let expected = [
             PokeRadarChainState {
                 advance: 15000,
@@ -1881,15 +1847,8 @@ mod test {
                 state: [0x86C9A6AD, 0xD8CA3B17, 0x84D7163D, 0x5BAF9448],
             },
         ];
-        if let PokeRadarResult::WithChain(result) = result {
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+        if let PokeRadarResult::WithChain(results) = results {
+            assert_list_eq!(results, expected);
         } else {
             panic!("Expected WithChain result");
         }

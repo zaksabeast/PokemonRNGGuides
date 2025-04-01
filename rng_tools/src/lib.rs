@@ -3,6 +3,7 @@ mod id;
 mod ivs;
 mod pkm;
 mod rng;
+mod test_utils;
 mod time;
 mod timer;
 

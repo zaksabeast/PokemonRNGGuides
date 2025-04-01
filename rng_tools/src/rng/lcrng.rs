@@ -127,10 +127,11 @@ impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Rng for Lcrng<A, 
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn produces_correct_rands() {
-        let expected_results: [u32; 1000] = [
+        let expected: [u32; 1000] = [
             0x00006073, 0xe97e7b6a, 0x52713895, 0x31b0dde4, 0x8e425287, 0xe2cca5ee, 0xafc58ac9,
             0x67dbb608, 0xfc3351db, 0xef2cf4b2, 0xfc5ecc3d, 0xcac5ec6c, 0xebd6f26f, 0x993d6bb6,
             0x7abcb0f1, 0xcba72510, 0x5dd60843, 0x91784efa, 0x27a62ce5, 0x618d43f4, 0x1692a757,
@@ -276,13 +277,9 @@ mod test {
             0xa6a8fff5, 0xa07001c4, 0x91d2d8e7, 0xbe871cce, 0xdfa26829, 0xac9937e8,
         ];
 
-        let rng = Pokerng::new(0);
+        let results = Pokerng::new(0).take(1000).collect::<Vec<_>>();
 
-        expected_results.into_iter().zip(rng).enumerate().for_each(
-            |(advances, (expected, actual))| {
-                assert_eq!(expected, actual, "Mismatch at advance {}", advances);
-            },
-        );
+        assert_list_eq!(results, expected);
     }
 
     #[test]

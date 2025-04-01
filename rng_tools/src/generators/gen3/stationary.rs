@@ -129,6 +129,7 @@ fn generate_gen3_static_state(
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::assert_list_eq;
 
     const ZERO_IVS: Ivs = Ivs {
         hp: 0,
@@ -335,14 +336,7 @@ mod test {
             },
         ];
 
-        assert_eq!(results.len(), expected.len());
-        results
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -533,14 +527,7 @@ mod test {
             },
         ];
 
-        assert_eq!(results.len(), expected.len());
-        results
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -731,14 +718,7 @@ mod test {
             },
         ];
 
-        assert_eq!(results.len(), expected.len());
-        results
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -849,13 +829,6 @@ mod test {
             },
         ];
 
-        assert_eq!(results.len(), expected.len());
-        results
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 }

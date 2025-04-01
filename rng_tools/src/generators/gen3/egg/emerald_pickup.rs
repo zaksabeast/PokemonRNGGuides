@@ -125,6 +125,7 @@ fn generate_pickup_ivs(opts: &Egg3PickupOptions, mut rng: Pokerng) -> Ivs {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::assert_list_eq;
 
     const MALE_IVS: Ivs = Ivs {
         hp: 1,
@@ -175,8 +176,8 @@ mod test {
             },
         };
 
-        let result = emerald_egg_pickup_states(&opts);
-        let expected_result = [
+        let results = emerald_egg_pickup_states(&opts);
+        let expected = [
             Egg3PickupState {
                 advance: 0,
                 ivs: Ivs {
@@ -300,13 +301,7 @@ mod test {
             },
         ];
 
-        assert_eq!(result.len(), expected_result.len());
-        result
-            .into_iter()
-            .zip(expected_result.into_iter())
-            .for_each(|(result, expected)| {
-                assert_eq!(result, expected);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -325,8 +320,8 @@ mod test {
             },
         };
 
-        let result = emerald_egg_pickup_states(&opts);
-        let expected_result = [
+        let results = emerald_egg_pickup_states(&opts);
+        let expected = [
             Egg3PickupState {
                 advance: 0,
                 ivs: Ivs {
@@ -450,13 +445,7 @@ mod test {
             },
         ];
 
-        assert_eq!(result.len(), expected_result.len());
-        result
-            .into_iter()
-            .zip(expected_result.into_iter())
-            .for_each(|(result, expected)| {
-                assert_eq!(result, expected);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -475,8 +464,8 @@ mod test {
             },
         };
 
-        let result = emerald_egg_pickup_states(&opts);
-        let expected_result = [
+        let results = emerald_egg_pickup_states(&opts);
+        let expected = [
             Egg3PickupState {
                 advance: 0,
                 ivs: Ivs {
@@ -600,13 +589,7 @@ mod test {
             },
         ];
 
-        assert_eq!(result.len(), expected_result.len());
-        result
-            .into_iter()
-            .zip(expected_result.into_iter())
-            .for_each(|(result, expected)| {
-                assert_eq!(result, expected);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -639,21 +622,19 @@ mod test {
             },
         };
 
-        let result = emerald_egg_pickup_states(&opts);
-        assert_eq!(
-            result,
-            [Egg3PickupState {
-                advance: 5,
-                ivs: Ivs {
-                    hp: 12,
-                    atk: 22,
-                    def: 24,
-                    spa: 10,
-                    spd: 11,
-                    spe: 12
-                }
-            }]
-        );
+        let results = emerald_egg_pickup_states(&opts);
+        let expected = [Egg3PickupState {
+            advance: 5,
+            ivs: Ivs {
+                hp: 12,
+                atk: 22,
+                def: 24,
+                spa: 10,
+                spd: 11,
+                spe: 12,
+            },
+        }];
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -671,18 +652,18 @@ mod test {
                 max_ivs: PERFECT_IVS,
             },
         };
-        let first_result = emerald_egg_pickup_states(&opts);
+        let first_results = emerald_egg_pickup_states(&opts);
 
         opts.delay = 10;
-        let second_result = emerald_egg_pickup_states(&opts);
-
-        first_result
+        let second_results = emerald_egg_pickup_states(&opts)
             .into_iter()
-            .zip(second_result.into_iter())
-            .for_each(|(first, mut second)| {
-                second.advance = second.advance.saturating_add(10);
-                assert_eq!(first, second);
-            });
+            .map(|mut egg| {
+                egg.advance = egg.advance.saturating_add(10);
+                egg
+            })
+            .collect::<Vec<_>>();
+
+        assert_list_eq!(first_results, second_results);
     }
 
     #[test]
@@ -700,17 +681,17 @@ mod test {
                 max_ivs: PERFECT_IVS,
             },
         };
-        let first_result = emerald_egg_pickup_states(&opts);
+        let first_results = emerald_egg_pickup_states(&opts);
 
         opts.lua_adjustment = true;
-        let second_result = emerald_egg_pickup_states(&opts);
-
-        first_result
+        let second_results = emerald_egg_pickup_states(&opts)
             .into_iter()
-            .zip(second_result.into_iter())
-            .for_each(|(first, mut second)| {
-                second.advance = second.advance.saturating_sub(1);
-                assert_eq!(first, second);
-            });
+            .map(|mut egg| {
+                egg.advance = egg.advance.saturating_sub(1);
+                egg
+            })
+            .collect::<Vec<_>>();
+
+        assert_list_eq!(first_results, second_results);
     }
 }

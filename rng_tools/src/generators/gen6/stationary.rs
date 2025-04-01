@@ -215,6 +215,7 @@ pub fn generate_stationary6(opts: Stationary6Opts) -> Vec<Stationary6State> {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn base_generate() {
@@ -314,13 +315,6 @@ mod test {
                 shiny: false,
             },
         ];
-        assert_eq!(result.len(), expected.len());
-        result
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(result, expected);
     }
 }

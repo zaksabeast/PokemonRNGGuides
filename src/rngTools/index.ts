@@ -12,9 +12,9 @@ import { z } from "zod";
 export const rngTools = wrap<typeof RngTools>(new RngToolsWorker());
 
 export const ZodConsole = z.union([
-  z.literal("NDSSLOT1"),
-  z.literal("DSI"),
-  z.literal("THREEDS"),
-  z.literal("GBA"),
-  z.literal("NDSSLOT2"),
+  z.literal("NdsSlot1"),
+  z.literal("Dsi"),
+  z.literal("ThreeDs"),
+  z.literal("Gba"),
+  z.literal("NdsSlot2"),
 ]);

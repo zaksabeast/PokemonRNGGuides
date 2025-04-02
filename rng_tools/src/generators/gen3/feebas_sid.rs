@@ -1,4 +1,4 @@
-use crate::rng::lcrng::Lcrng;
+use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
@@ -12,7 +12,7 @@ pub struct FeebasSidResult {
     pub vblanks: u8,
 }
 
-fn generate_feebas_seed(mut rng: Lcrng) -> u16 {
+fn generate_feebas_seed(mut rng: Pokerng) -> u16 {
     let mut trends = Vec::new();
     for _ in 0..5 {
         rng.advance(4);
@@ -45,7 +45,7 @@ pub fn emerald_sid_from_feebas_seed(
     initial_advances: usize,
     max_advances: usize,
 ) -> Vec<FeebasSidResult> {
-    StateIterator::new(Lcrng::new_prng(tid.into()))
+    StateIterator::new(Pokerng::new(tid.into()))
         .enumerate()
         .skip(initial_advances)
         .take(max_advances)
@@ -81,7 +81,7 @@ pub fn rs_sid_from_feebas_seed(
     initial_advances: usize,
     max_advances: usize,
 ) -> Vec<FeebasSidResult> {
-    StateIterator::new(Lcrng::new_prng(0x5a0))
+    StateIterator::new(Pokerng::new(0x5a0))
         .enumerate()
         .skip(initial_advances)
         .take(max_advances.saturating_add(1))
@@ -120,117 +120,120 @@ pub fn rs_sid_from_feebas_seed(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn test_generate_feebas_seed() {
-        let result = generate_feebas_seed(Lcrng::new_prng(0xaabb));
+        let result = generate_feebas_seed(Pokerng::new(0xaabb));
         assert_eq!(result, 41779);
     }
 
     #[test]
     fn test_emerald_sid_from_spots() {
         let results = emerald_sid_from_feebas_seed(14223, 0xad4f, 0, 300_000);
-        assert_eq!(results, [
+        let expected = [
             FeebasSidResult {
                 sid: 34159,
                 advances: 1810,
-                vblanks: 3
+                vblanks: 3,
             },
             FeebasSidResult {
                 sid: 27105,
                 advances: 1811,
-                vblanks: 2
+                vblanks: 2,
             },
             FeebasSidResult {
                 sid: 30561,
                 advances: 282651,
-                vblanks: 3
+                vblanks: 3,
             },
             FeebasSidResult {
                 sid: 31118,
                 advances: 282652,
-                vblanks: 2
+                vblanks: 2,
             },
             FeebasSidResult {
                 sid: 27948,
                 advances: 282657,
-                vblanks: 3
+                vblanks: 3,
             },
             FeebasSidResult {
                 sid: 39625,
                 advances: 282658,
-                vblanks: 2
+                vblanks: 2,
             },
             FeebasSidResult {
                 sid: 39625,
                 advances: 282658,
-                vblanks: 3
+                vblanks: 3,
             },
             FeebasSidResult {
                 sid: 57826,
                 advances: 282659,
-                vblanks: 2
+                vblanks: 2,
             },
             FeebasSidResult {
                 sid: 28480,
                 advances: 282664,
-                vblanks: 3
+                vblanks: 3,
             },
             FeebasSidResult {
                 sid: 4087,
                 advances: 282665,
-                vblanks: 2
+                vblanks: 2,
             },
             FeebasSidResult {
                 sid: 4087,
                 advances: 282665,
-                vblanks: 3
+                vblanks: 3,
             },
             FeebasSidResult {
                 sid: 53059,
                 advances: 282666,
-                vblanks: 2
+                vblanks: 2,
             },
             FeebasSidResult {
                 sid: 61650,
                 advances: 282671,
-                vblanks: 3
+                vblanks: 3,
             },
             FeebasSidResult {
                 sid: 42187,
                 advances: 282672,
-                vblanks: 2
+                vblanks: 2,
             },
             FeebasSidResult {
                 sid: 42187,
                 advances: 282672,
-                vblanks: 3
+                vblanks: 3,
             },
             FeebasSidResult {
                 sid: 53956,
                 advances: 282673,
-                vblanks: 2
+                vblanks: 2,
             },
             FeebasSidResult {
                 sid: 53956,
                 advances: 282673,
-                vblanks: 3
+                vblanks: 3,
             },
             FeebasSidResult {
                 sid: 53173,
                 advances: 282674,
-                vblanks: 2
+                vblanks: 2,
             },
-        ])
+        ];
+        assert_list_eq!(results, expected);
     }
 
     #[test]
     fn test_rs_sid_from_spots() {
         let results = rs_sid_from_feebas_seed(52548, 0xebf6, 0, 500_000);
-        assert_eq!(results, [FeebasSidResult {
+        let expected = [FeebasSidResult {
             sid: 4132,
             advances: 90715,
-            vblanks: 2
-        }]);
+            vblanks: 2,
+        }];
+        assert_list_eq!(results, expected);
     }
 }

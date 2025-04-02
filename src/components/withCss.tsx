@@ -43,6 +43,7 @@ type CustomStyles = {
 
   color?: Color;
   backgroundColor?: Color;
+  backgroundHoverColor?: Color;
   borderColor?: Color;
   strokeColor?: Color;
 
@@ -84,6 +85,7 @@ const styleProps = [
   "display",
   "color",
   "backgroundColor",
+  "backgroundHoverColor",
   "borderColor",
   "strokeColor",
   "boxSizing",
@@ -123,6 +125,7 @@ function styleConverter({
   display,
   color,
   backgroundColor,
+  backgroundHoverColor,
   borderColor,
   strokeColor,
   boxSizing,
@@ -169,6 +172,12 @@ function styleConverter({
           : theme.token[`color${backgroundColor}`],
       borderColor:
         borderColor == null ? undefined : theme.token[`color${borderColor}`],
+      "&:hover": {
+        backgroundColor:
+          backgroundHoverColor == null
+            ? undefined
+            : theme.token[`color${backgroundHoverColor}`],
+      },
     },
   };
 }

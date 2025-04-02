@@ -110,7 +110,7 @@ pub fn search_dppt_ids(opts: Id4SearchOptions) -> Vec<Id4> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::datetime;
+    use crate::{assert_list_eq, datetime};
 
     #[test]
     fn search() {
@@ -120,7 +120,7 @@ mod test {
             max_delay: 10,
             year: 2021,
         };
-        let result = search_dppt_ids(opts);
+        let results = search_dppt_ids(opts);
         let expected = [Id4 {
             seed: 0x4e16001a,
             tid: 1234,
@@ -130,14 +130,7 @@ mod test {
             seconds: 0,
         }];
 
-        assert_eq!(result.len(), expected.len());
-        result
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -149,7 +142,7 @@ mod test {
             filter: IdFilter::Tid(1234),
         };
 
-        let result = generate_dppt_ids(opts);
+        let results = generate_dppt_ids(opts);
         let expected = [
             Id4 {
                 seed: 0xa40b13f3,
@@ -168,13 +161,6 @@ mod test {
                 seconds: 49,
             },
         ];
-        assert_eq!(result.len(), expected.len());
-        result
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 }

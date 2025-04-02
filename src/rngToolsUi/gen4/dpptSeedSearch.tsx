@@ -5,7 +5,6 @@ import {
   RngToolForm,
   RngToolSubmit,
   Field,
-  Typography,
 } from "~/components";
 import { rngTools, SeedTime4 } from "~/rngTools";
 import {
@@ -38,11 +37,8 @@ const columns: ResultColumn<GeneratorResult>[] = [
     title: "Coin Flips",
     dataIndex: "coin_flips",
     key: "coin_flips",
-    render: (coinFlips) => (
-      <Typography.Text whiteSpace="nowrap">
-        {coinFlips.map((flip) => (flip === "Heads" ? "H" : "T")).join(", ")}
-      </Typography.Text>
-    ),
+    render: (coinFlips) =>
+      coinFlips.map((flip) => (flip === "Heads" ? "H" : "T")).join(", "),
   },
 ];
 

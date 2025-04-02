@@ -15,31 +15,31 @@ const NDS_SLOT2_FRAMERATE: f32 = 1000.0 / NDS_SLOT2_FPS;
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Console {
-    GBA,
-    NDSSLOT2,
-    NDSSLOT1,
-    DSI,
-    THREEDS,
+    Gba,
+    NdsSlot2,
+    NdsSlot1,
+    Dsi,
+    ThreeDs,
 }
 
 impl Console {
     pub fn fps(&self) -> f32 {
         match self {
-            Console::GBA => GBA_FPS,
-            Console::NDSSLOT2 => NDS_SLOT2_FPS,
-            Console::NDSSLOT1 | Console::THREEDS | Console::DSI => NDS_SLOT1_FPS,
+            Console::Gba => GBA_FPS,
+            Console::NdsSlot2 => NDS_SLOT2_FPS,
+            Console::NdsSlot1 | Console::ThreeDs | Console::Dsi => NDS_SLOT1_FPS,
         }
     }
 
     pub fn framerate(&self) -> f32 {
         match self {
-            Console::GBA => GBA_FRAMERATE,
-            Console::NDSSLOT2 => NDS_SLOT2_FRAMERATE,
-            Console::NDSSLOT1 | Console::THREEDS | Console::DSI => NDS_SLOT1_FRAMERATE,
+            Console::Gba => GBA_FRAMERATE,
+            Console::NdsSlot2 => NDS_SLOT2_FRAMERATE,
+            Console::NdsSlot1 | Console::ThreeDs | Console::Dsi => NDS_SLOT1_FRAMERATE,
         }
     }
 
-    pub fn to_calibrator(&self) -> Calibrator {
+    pub fn to_calibrator(self) -> Calibrator {
         Calibrator::new(self.framerate())
     }
 }

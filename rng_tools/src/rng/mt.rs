@@ -1,6 +1,6 @@
 use crate::rng::Rng;
 
-use super::GetRand;
+use super::{GetMaxRand, GetRand};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct MT {
@@ -32,17 +32,12 @@ impl MT {
                 .wrapping_add(i);
             self.mt[i as usize] = state;
         }
-
-        self.shuffle();
     }
 
     fn next_rand(&mut self) -> u32 {
-        if self.index == 624 {
-            self.shuffle();
-        }
-
+        self.inline_shuffle();
         let mut y = self.mt[self.index];
-        self.index += 1;
+        self.index = (self.index + 1) % 624;
         y ^= y >> 11;
         y ^= (y << 7) & 0x9d2c5680;
         y ^= (y << 15) & 0xefc60000;
@@ -50,21 +45,30 @@ impl MT {
         y
     }
 
-    fn shuffle(&mut self) {
-        for i in 0..227 {
-            let y = (self.mt[i] & 0x80000000) | (self.mt[i + 1] & 0x7fffffff);
-            self.mt[i] = self.mt[i + 397] ^ (y >> 1) ^ (y & 1).wrapping_mul(0x9908b0df);
+    fn inline_shuffle(&mut self) {
+        let i = self.index;
+        match i {
+            0..227 => {
+                let y = (self.mt[i] & 0x80000000) | (self.mt[i + 1] & 0x7fffffff);
+                self.mt[i] = self.mt[i + 397] ^ (y >> 1) ^ (y & 1).wrapping_mul(0x9908b0df);
+            }
+            227..623 => {
+                let y = (self.mt[i] & 0x80000000) | (self.mt[i + 1] & 0x7fffffff);
+                self.mt[i] = self.mt[i - 227] ^ (y >> 1) ^ (y & 1).wrapping_mul(0x9908b0df);
+            }
+            _ => {
+                let y = (self.mt[623] & 0x80000000) | (self.mt[0] & 0x7fffffff);
+                self.mt[623] = self.mt[396] ^ (y >> 1) ^ (y & 1).wrapping_mul(0x9908b0df);
+            }
         }
+    }
 
-        for i in 227..623 {
-            let y = (self.mt[i] & 0x80000000) | (self.mt[i + 1] & 0x7fffffff);
-            self.mt[i] = self.mt[i - 227] ^ (y >> 1) ^ (y & 1).wrapping_mul(0x9908b0df);
-        }
-
-        let y = (self.mt[623] & 0x80000000) | (self.mt[0] & 0x7fffffff);
-        self.mt[623] = self.mt[396] ^ (y >> 1) ^ (y & 1).wrapping_mul(0x9908b0df);
-
-        self.index = 0;
+    pub fn current_state(&self) -> u32 {
+        let index = match self.index {
+            624 => 0,
+            i => i,
+        };
+        self.mt[index]
     }
 }
 
@@ -92,6 +96,14 @@ impl GetRand<u32> for MT {
     }
 }
 
+impl GetMaxRand<u32> for MT {
+    fn get_max(&mut self, max: u32) -> u32 {
+        (self.next().unwrap() as u64)
+            .wrapping_mul(max as u64)
+            .wrapping_shr(32) as u32
+    }
+}
+
 impl Iterator for MT {
     type Item = u32;
 
@@ -105,6 +117,7 @@ impl Rng for MT {}
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn rands() {
@@ -125,19 +138,11 @@ mod test {
             0xf689c34d, 0xe88abcfa, 0x4ac16b72, 0x52f3c014, 0x7cd4d1e7, 0x96856c10, 0x636d1302,
             0x86cf40aa, 0x830574b5,
         ];
-        let result = MT::new(0xaabbccdd)
+        let results = MT::new(0xaabbccdd)
             .skip(600)
             .take(100)
             .collect::<Vec<u32>>();
 
-        assert_eq!(expected.len(), result.len());
-
-        expected
-            .into_iter()
-            .zip(result.into_iter())
-            .enumerate()
-            .for_each(|(advances, (expected, actual))| {
-                assert_eq!(actual, expected, "Mismatch at advance {}", advances);
-            });
+        assert_list_eq!(results, expected);
     }
 }

@@ -3,12 +3,9 @@ mod id;
 mod ivs;
 mod pkm;
 mod rng;
+mod test_utils;
 mod time;
 mod timer;
-
-#[cfg(feature = "wee_alloc")]
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 pub use generators::*;
 pub use id::*;

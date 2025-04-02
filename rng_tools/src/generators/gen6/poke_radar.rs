@@ -55,7 +55,7 @@ pub struct PokeRadarOptions {
     pub filter_slot: Option<u8>,
 }
 
-#[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum PokeRadarMusic {
     A,
@@ -88,7 +88,7 @@ struct PokeRadarConsolidatedState {
 }
 
 impl PokeRadarConsolidatedState {
-    fn to_no_chain(self) -> PokeRadarNoChainState {
+    fn to_no_chain(&self) -> PokeRadarNoChainState {
         PokeRadarNoChainState {
             advance: self.advance,
             state: self.state,
@@ -101,7 +101,7 @@ impl PokeRadarConsolidatedState {
         }
     }
 
-    fn to_chain(self) -> PokeRadarChainState {
+    fn to_chain(&self) -> PokeRadarChainState {
         PokeRadarChainState {
             advance: self.advance,
             state: self.state,
@@ -151,9 +151,11 @@ fn generate_poke_radar_state(
     rng: &mut TinyMT,
     advance: usize,
 ) -> PokeRadarConsolidatedState {
-    let mut result = PokeRadarConsolidatedState::default();
-    result.state = rng.get_state();
-    result.advance = advance;
+    let mut result = PokeRadarConsolidatedState {
+        advance,
+        state: rng.get_state(),
+        ..Default::default()
+    };
 
     let rand100 = rng.rand_max(100);
     if opts.chain == 0 {
@@ -248,6 +250,7 @@ pub fn generate_poke_radar_states(opts: PokeRadarOptions) -> PokeRadarResult {
 mod test {
     use super::PokeRadarPatchState::*;
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn poke_radar_no_filter_no_chain_no_party() {
@@ -261,7 +264,7 @@ mod test {
             filter_shiny: false,
             filter_slot: None,
         };
-        let result = generate_poke_radar_states(opts);
+        let results = generate_poke_radar_states(opts);
         let expected = [
             PokeRadarNoChainState {
                 advance: 0,
@@ -624,15 +627,8 @@ mod test {
                 state: [0x7F090EB2, 0xC46248F6, 0x2BD2C2BA, 0x591B4393],
             },
         ];
-        if let PokeRadarResult::NoChain(result) = result {
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+        if let PokeRadarResult::NoChain(results) = results {
+            assert_list_eq!(results, expected);
         } else {
             panic!("Expected NoChain result");
         }
@@ -650,7 +646,7 @@ mod test {
             filter_shiny: false,
             filter_slot: None,
         };
-        let result = generate_poke_radar_states(opts);
+        let results = generate_poke_radar_states(opts);
         let expected = [
             PokeRadarNoChainState {
                 advance: 0,
@@ -1013,15 +1009,8 @@ mod test {
                 state: [0x7F090EB2, 0xC46248F6, 0x2BD2C2BA, 0x591B4393],
             },
         ];
-        if let PokeRadarResult::NoChain(result) = result {
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+        if let PokeRadarResult::NoChain(results) = results {
+            assert_list_eq!(results, expected);
         } else {
             panic!("Expected NoChain result");
         }
@@ -1039,7 +1028,7 @@ mod test {
             filter_shiny: true,
             filter_slot: None,
         };
-        let result = generate_poke_radar_states(opts);
+        let results = generate_poke_radar_states(opts);
         let expected = [
             PokeRadarChainState {
                 advance: 16718,
@@ -1314,15 +1303,8 @@ mod test {
                 state: [0x92FDD273, 0x116FF956, 0x13F0AE9C, 0xCA6E992A],
             },
         ];
-        if let PokeRadarResult::WithChain(result) = result {
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+        if let PokeRadarResult::WithChain(results) = results {
+            assert_list_eq!(results, expected);
         } else {
             panic!("Expected WithChain result");
         }
@@ -1340,7 +1322,7 @@ mod test {
             filter_shiny: false,
             filter_slot: None,
         };
-        let result = generate_poke_radar_states(opts);
+        let results = generate_poke_radar_states(opts);
         let expected = [
             PokeRadarChainState {
                 advance: 15000,
@@ -1547,15 +1529,8 @@ mod test {
                 state: [0x86C9A6AD, 0xD8CA3B17, 0x84D7163D, 0x5BAF9448],
             },
         ];
-        if let PokeRadarResult::WithChain(result) = result {
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+        if let PokeRadarResult::WithChain(results) = results {
+            assert_list_eq!(results, expected);
         } else {
             panic!("Expected WithChain result");
         }
@@ -1573,7 +1548,7 @@ mod test {
             filter_shiny: false,
             filter_slot: Some(3),
         };
-        let result = generate_poke_radar_states(opts);
+        let results = generate_poke_radar_states(opts);
         let expected = [
             PokeRadarNoChainState {
                 advance: 8,
@@ -1648,15 +1623,8 @@ mod test {
                 state: [0x7F090EB2, 0xC46248F6, 0x2BD2C2BA, 0x591B4393],
             },
         ];
-        if let PokeRadarResult::NoChain(result) = result {
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+        if let PokeRadarResult::NoChain(results) = results {
+            assert_list_eq!(results, expected);
         } else {
             panic!("Expected NoChain result");
         }
@@ -1674,7 +1642,7 @@ mod test {
             filter_shiny: false,
             filter_slot: Some(10),
         };
-        let result = generate_poke_radar_states(opts);
+        let results = generate_poke_radar_states(opts);
         let expected = [
             PokeRadarChainState {
                 advance: 15000,
@@ -1881,15 +1849,8 @@ mod test {
                 state: [0x86C9A6AD, 0xD8CA3B17, 0x84D7163D, 0x5BAF9448],
             },
         ];
-        if let PokeRadarResult::WithChain(result) = result {
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+        if let PokeRadarResult::WithChain(results) = results {
+            assert_list_eq!(results, expected);
         } else {
             panic!("Expected WithChain result");
         }

@@ -1029,17 +1029,6 @@ impl Species {
     }
 
     pub fn gender(&self, pid: u32) -> Gender {
-        match self.gender_ratio() {
-            GenderRatio::Genderless => Gender::Genderless,
-            GenderRatio::MaleOnly => Gender::Male,
-            GenderRatio::FemaleOnly => Gender::Female,
-            ratio => {
-                if (pid as u8) < (ratio as u8) {
-                    Gender::Female
-                } else {
-                    Gender::Male
-                }
-            }
-        }
+        self.gender_ratio().gender(pid as u8)
     }
 }

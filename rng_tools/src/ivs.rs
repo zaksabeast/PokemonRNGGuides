@@ -60,11 +60,11 @@ pub enum G3Idx {
     Spd = 5,
 }
 
-impl<T: Into<G3Idx>> Index<T> for Ivs {
+impl Index<G3Idx> for Ivs {
     type Output = u8;
 
-    fn index(&self, index: T) -> &u8 {
-        match index.into() {
+    fn index(&self, index: G3Idx) -> &u8 {
+        match index {
             G3Idx::Hp => &self.hp,
             G3Idx::Atk => &self.atk,
             G3Idx::Def => &self.def,
@@ -75,15 +75,55 @@ impl<T: Into<G3Idx>> Index<T> for Ivs {
     }
 }
 
-impl<T: Into<G3Idx>> IndexMut<T> for Ivs {
-    fn index_mut(&mut self, index: T) -> &mut u8 {
-        match index.into() {
+impl IndexMut<G3Idx> for Ivs {
+    fn index_mut(&mut self, index: G3Idx) -> &mut u8 {
+        match index {
             G3Idx::Hp => &mut self.hp,
             G3Idx::Atk => &mut self.atk,
             G3Idx::Def => &mut self.def,
             G3Idx::Spe => &mut self.spe,
             G3Idx::Spa => &mut self.spa,
             G3Idx::Spd => &mut self.spd,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, FromPrimitive)]
+#[repr(u8)]
+pub enum G6Idx {
+    #[num_enum(default)]
+    Hp = 0,
+    Atk = 1,
+    Def = 2,
+    Spa = 3,
+    Spd = 4,
+    Spe = 5,
+}
+
+impl Index<G6Idx> for Ivs {
+    type Output = u8;
+
+    fn index(&self, index: G6Idx) -> &u8 {
+        match index {
+            G6Idx::Hp => &self.hp,
+            G6Idx::Atk => &self.atk,
+            G6Idx::Def => &self.def,
+            G6Idx::Spe => &self.spe,
+            G6Idx::Spa => &self.spa,
+            G6Idx::Spd => &self.spd,
+        }
+    }
+}
+
+impl IndexMut<G6Idx> for Ivs {
+    fn index_mut(&mut self, index: G6Idx) -> &mut u8 {
+        match index {
+            G6Idx::Hp => &mut self.hp,
+            G6Idx::Atk => &mut self.atk,
+            G6Idx::Def => &mut self.def,
+            G6Idx::Spe => &mut self.spe,
+            G6Idx::Spa => &mut self.spa,
+            G6Idx::Spd => &mut self.spd,
         }
     }
 }

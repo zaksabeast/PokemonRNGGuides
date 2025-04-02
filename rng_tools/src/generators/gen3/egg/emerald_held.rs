@@ -1,5 +1,5 @@
 use crate::Nature;
-use crate::rng::lcrng::Lcrng;
+use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
 use crate::{Gender, Species, gen3_shiny};
 use serde::{Deserialize, Serialize};
@@ -51,7 +51,7 @@ impl Gen3HeldEgg {
         if delay > 0 {
             advance = advance.saturating_sub(delay as u32);
         } else {
-            advance = advance.saturating_add(delay.abs() as u32);
+            advance = advance.saturating_add(delay.unsigned_abs() as u32);
         }
 
         Self {
@@ -117,7 +117,7 @@ pub struct Egg3HeldOptions {
 
 #[wasm_bindgen]
 pub fn emerald_egg_held_states(opts: &Egg3HeldOptions) -> Vec<Gen3HeldEgg> {
-    let mut result = StateIterator::new(Lcrng::new_prng(0))
+    let mut result = StateIterator::new(Pokerng::new(0))
         .enumerate()
         .skip(opts.initial_advances)
         .take(opts.max_advances.saturating_add(1))
@@ -128,7 +128,7 @@ pub fn emerald_egg_held_states(opts: &Egg3HeldOptions) -> Vec<Gen3HeldEgg> {
 }
 
 fn generate_redraw_states(
-    mut rng: Lcrng,
+    mut rng: Pokerng,
     opts: &Egg3HeldOptions,
     advance: usize,
 ) -> Vec<Gen3HeldEgg> {
@@ -164,7 +164,7 @@ fn generate_redraw_states(
 }
 
 fn generate_state(
-    mut go: Lcrng,
+    mut go: Pokerng,
     calibration: u16,
     female_has_everstone: bool,
     female_nature: Nature,
@@ -179,7 +179,7 @@ fn generate_state(
     let offset = (redraws as u16).wrapping_mul(3).wrapping_add(calibration) as u32;
     let held_advance = (advance).wrapping_sub(calibration.into());
     let seed = ((advance).wrapping_add(1).wrapping_sub(offset)) & 0xffff;
-    let mut trng = Lcrng::new_prng(seed);
+    let mut trng = Pokerng::new(seed);
 
     if !use_everstone {
         let pid = (go.rand_max::<u16>(0xfffe) + 1) as u32 | ((trng.rand::<u16>() as u32) << 16);
@@ -212,6 +212,7 @@ mod test {
     use super::Gender::*;
     use super::Nature::*;
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn generates_results() {
@@ -236,7 +237,7 @@ mod test {
             },
         };
 
-        let result = emerald_egg_held_states(&opts);
+        let results = emerald_egg_held_states(&opts);
         let expected = [
             Gen3HeldEgg {
                 advance: 4294967278,
@@ -348,14 +349,7 @@ mod test {
             },
         ];
 
-        assert_eq!(result.len(), expected.len());
-        result
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -381,7 +375,7 @@ mod test {
             },
         };
 
-        let result = emerald_egg_held_states(&opts);
+        let results = emerald_egg_held_states(&opts);
         let expected = [
             Gen3HeldEgg {
                 advance: 983,
@@ -547,14 +541,7 @@ mod test {
             },
         ];
 
-        assert_eq!(result.len(), expected.len());
-        result
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -580,7 +567,7 @@ mod test {
             },
         };
 
-        let result = emerald_egg_held_states(&opts);
+        let results = emerald_egg_held_states(&opts);
         let expected = [
             Gen3HeldEgg {
                 advance: 982,
@@ -638,14 +625,7 @@ mod test {
             },
         ];
 
-        assert_eq!(result.len(), expected.len());
-        result
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -671,7 +651,7 @@ mod test {
             },
         };
 
-        let result = emerald_egg_held_states(&opts);
+        let results = emerald_egg_held_states(&opts);
         let expected = [
             Gen3HeldEgg {
                 advance: 982,
@@ -747,14 +727,7 @@ mod test {
             },
         ];
 
-        assert_eq!(result.len(), expected.len());
-        result
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -780,7 +753,7 @@ mod test {
             },
         };
 
-        let result = emerald_egg_held_states(&opts);
+        let results = emerald_egg_held_states(&opts);
         let expected = [Gen3HeldEgg {
             advance: 983,
             redraws: 0,
@@ -791,14 +764,7 @@ mod test {
             gender: Gender::Female,
         }];
 
-        assert_eq!(result.len(), expected.len());
-        result
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -824,7 +790,7 @@ mod test {
             },
         };
 
-        let result = emerald_egg_held_states(&opts);
+        let results = emerald_egg_held_states(&opts);
         let expected = [
             Gen3HeldEgg {
                 advance: 982,
@@ -855,14 +821,7 @@ mod test {
             },
         ];
 
-        assert_eq!(result.len(), expected.len());
-        result
-            .into_iter()
-            .zip(expected.into_iter())
-            .enumerate()
-            .for_each(|(index, (result, expected))| {
-                assert_eq!(result, expected, "index: {}", index);
-            });
+        assert_list_eq!(results, expected);
     }
 
     #[test]
@@ -888,17 +847,17 @@ mod test {
             },
         };
 
-        let first_result = emerald_egg_held_states(&opts);
+        let first_results = emerald_egg_held_states(&opts);
         opts.delay = 10;
-        let second_result = emerald_egg_held_states(&opts);
-
-        first_result
+        let second_results = emerald_egg_held_states(&opts)
             .into_iter()
-            .zip(second_result.into_iter())
-            .for_each(|(first, mut second)| {
-                second.advance = second.advance.saturating_add(10);
-                assert_eq!(first, second);
-            });
+            .map(|mut egg| {
+                egg.advance = egg.advance.saturating_add(10);
+                egg
+            })
+            .collect::<Vec<_>>();
+
+        assert_list_eq!(first_results, second_results);
     }
 
     #[test]
@@ -924,17 +883,17 @@ mod test {
             },
         };
 
-        let first_result = emerald_egg_held_states(&opts);
+        let first_results = emerald_egg_held_states(&opts);
         opts.delay = -10;
-        let second_result = emerald_egg_held_states(&opts);
-
-        first_result
+        let second_results = emerald_egg_held_states(&opts)
             .into_iter()
-            .zip(second_result.into_iter())
-            .for_each(|(first, mut second)| {
-                second.advance = second.advance.saturating_sub(10);
-                assert_eq!(first, second);
-            });
+            .map(|mut egg| {
+                egg.advance = egg.advance.saturating_sub(10);
+                egg
+            })
+            .collect::<Vec<_>>();
+
+        assert_list_eq!(first_results, second_results);
     }
 
     #[test]
@@ -960,16 +919,16 @@ mod test {
             },
         };
 
-        let first_result = emerald_egg_held_states(&opts);
+        let first_results = emerald_egg_held_states(&opts);
         opts.lua_adjustment = true;
-        let second_result = emerald_egg_held_states(&opts);
-
-        first_result
+        let second_results = emerald_egg_held_states(&opts)
             .into_iter()
-            .zip(second_result.into_iter())
-            .for_each(|(first, mut second)| {
-                second.advance = second.advance.saturating_sub(1);
-                assert_eq!(first, second);
-            });
+            .map(|mut egg| {
+                egg.advance = egg.advance.saturating_sub(1);
+                egg
+            })
+            .collect::<Vec<_>>();
+
+        assert_list_eq!(first_results, second_results);
     }
 }

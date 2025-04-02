@@ -19,10 +19,13 @@ const screenSizeMap = {
   desktop: 1200,
 };
 
+const defaultToken = themeTools.getDesignToken();
+
 const customTheme: CustomTheme = {
   token: {
     headerHeight: "64px",
     footerHeight: "58px",
+    colorFillSecondaryHover: defaultToken.magenta5,
   },
   mediaQueries: {
     up: (size: ScreenSize) => {
@@ -51,8 +54,6 @@ const customTheme: CustomTheme = {
   },
 };
 
-const defaultToken = themeTools.getDesignToken();
-
 const primaryColorScheme = {
   100: "#f8f0ff",
   200: "#f2e6ff",
@@ -63,7 +64,6 @@ const primaryColorScheme = {
   700: "#5e2bcc",
   800: "#421ba6",
   900: "#2a0e80",
-  1000: "#1a0959",
 };
 
 const colors = {
@@ -85,6 +85,7 @@ const tokenOverrides = {
   colorLinkActive: colors.active,
   colorLinkHover: colors.hover,
   controlItemBgHover: "rgba(0, 0, 0, 0.04)",
+  colorFillSecondary: defaultToken.magenta6,
 } satisfies Partial<Theme["token"]>;
 
 export const antdTheme: Theme = {

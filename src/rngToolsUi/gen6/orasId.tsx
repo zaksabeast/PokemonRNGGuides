@@ -6,7 +6,7 @@ import {
   RngToolSubmit,
   Field,
   FormikIdFilter,
-  Typography,
+  FormikSwitch,
 } from "~/components";
 import { rngTools, Gen6Id } from "~/rngTools";
 import {
@@ -18,8 +18,18 @@ import {
   toHexString,
 } from "~/utils/number";
 import { denormalizeIdFilter, IdFilter } from "~/types/id";
+import dayjs, { Dayjs } from "dayjs";
+import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
+import { formatRngDateTime, toRngDateTime } from "~/utils/time";
 
 const columns: ResultColumn<Gen6Id>[] = [
+  {
+    title: "Seed",
+    dataIndex: "seed",
+    key: "seed",
+    monospace: true,
+    render: (seed) => seed.toString(16).toUpperCase().padStart(8, "0"),
+  },
   {
     title: "Advances",
     dataIndex: "advances",
@@ -41,37 +51,41 @@ const columns: ResultColumn<Gen6Id>[] = [
     key: "tsv",
   },
   {
+    title: "Date/Time",
+    dataIndex: "datetime",
+    key: "datetime",
+    render: (date) => formatRngDateTime(date, { seconds: true }),
+  },
+  {
     title: "State",
     dataIndex: "tinymt_state",
     key: "tinymt_state",
-    render: (state: number[]) => (
-      <Typography.Text whiteSpace="nowrap">
-        {state
-          .map((num) => num.toString(16).padStart(8, "0").toUpperCase())
-          .reverse()
-          .join(", ")}
-      </Typography.Text>
-    ),
+    monospace: true,
+    render: (state: number[]) =>
+      state
+        .map((num) => num.toString(16).padStart(8, "0").toUpperCase())
+        .reverse()
+        .join(", "),
   },
 ];
 
 type FormState = {
-  state3: HexString;
-  state2: HexString;
-  state1: HexString;
-  state0: HexString;
+  seed: HexString;
+  date: Dayjs;
+  time: Dayjs;
+  onlyCurrentSeed: boolean;
   initialAdvances: DecimalString;
   maxAdvances: DecimalString;
   filter: IdFilter;
 };
 
 const initialValues: FormState = {
-  state3: toHexString(0),
-  state2: toHexString(0),
-  state1: toHexString(0),
-  state0: toHexString(0),
-  initialAdvances: toDecimalString(0),
-  maxAdvances: toDecimalString(10000),
+  seed: toHexString(0),
+  date: dayjs(),
+  time: dayjs(),
+  onlyCurrentSeed: false,
+  initialAdvances: toDecimalString(20),
+  maxAdvances: toDecimalString(50),
   filter: {
     type: "tid",
     value0: toDecimalString(0),
@@ -81,20 +95,16 @@ const initialValues: FormState = {
 
 const fields: Field[] = [
   {
-    label: "State[3]",
-    input: <FormikInput<FormState> name="state3" />,
+    label: "TinyMT u32 Seed",
+    input: <FormikInput<FormState> name="seed" />,
   },
   {
-    label: "State[2]",
-    input: <FormikInput<FormState> name="state2" />,
+    label: "Boot Date",
+    input: <FormikDatePicker<FormState> name="date" />,
   },
   {
-    label: "State[1]",
-    input: <FormikInput<FormState> name="state1" />,
-  },
-  {
-    label: "State[0]",
-    input: <FormikInput<FormState> name="state0" />,
+    label: "Boot Time",
+    input: <FormikTimePicker<FormState> name="time" showSecond />,
   },
   {
     label: "Initial Advances",
@@ -105,8 +115,14 @@ const fields: Field[] = [
     input: <FormikInput<FormState> name="maxAdvances" />,
   },
   {
+    label: "Only Current Seed",
+    input: (
+      <FormikSwitch<FormState, "onlyCurrentSeed"> name="onlyCurrentSeed" />
+    ),
+  },
+  {
     label: "Filter",
-    input: <FormikIdFilter<FormState> name="filter" />,
+    input: <FormikIdFilter<FormState> name="filter" optional />,
   },
 ];
 
@@ -114,29 +130,27 @@ export const OrasId = () => {
   const [results, setResults] = React.useState<Gen6Id[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const state3 = fromHexString(opts.state3);
-    const state2 = fromHexString(opts.state2);
-    const state1 = fromHexString(opts.state1);
-    const state0 = fromHexString(opts.state0);
+    const seed = fromHexString(opts.seed);
     const initialAdvances = fromDecimalString(opts.initialAdvances);
     const maxAdvances = fromDecimalString(opts.maxAdvances);
 
-    if (
-      state3 == null ||
-      state2 == null ||
-      state1 == null ||
-      state0 == null ||
-      initialAdvances == null ||
-      maxAdvances == null
-    ) {
+    if (seed == null || initialAdvances == null || maxAdvances == null) {
       return;
     }
 
+    const datetime = dayjs(opts.date)
+      .set("hour", opts.time.hour())
+      .set("minute", opts.time.minute())
+      .set("second", opts.time.second());
+    const rngDateTime = toRngDateTime(datetime);
+
     const results = await rngTools.generate_oras_id({
-      state: [state0, state1, state2, state3],
+      start_seed: seed,
+      only_start_seed: opts.onlyCurrentSeed,
+      start_datetime: rngDateTime,
       initial_advances: initialAdvances,
       max_advances: maxAdvances,
-      filter: denormalizeIdFilter(opts.filter),
+      filter_id: denormalizeIdFilter(opts.filter) ?? undefined,
     });
 
     setResults(results);

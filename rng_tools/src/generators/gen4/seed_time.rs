@@ -48,15 +48,15 @@ pub fn dppt_calculate_seedtime(opts: SeedTime4Options) -> Vec<SeedTime4> {
     for day in 1..=max_days {
         for minute in 0..60 {
             for second in 0..60 {
-                if ab == calc_ab(opts.month, day, minute, second) & 0xff {
-                    if opts.forced_second.is_none() || Some(second as u8) == opts.forced_second {
-                        results.push(SeedTime4 {
-                            delay,
-                            coin_flips: coin_flips.clone(),
-                            datetime: RngDateTime::new(year, month, day, hour, minute, second)
-                                .unwrap_or_default(),
-                        });
-                    }
+                if ab == calc_ab(opts.month, day, minute, second) & 0xff
+                    && (opts.forced_second.is_none() || Some(second as u8) == opts.forced_second)
+                {
+                    results.push(SeedTime4 {
+                        delay,
+                        coin_flips: coin_flips.clone(),
+                        datetime: RngDateTime::new(year, month, day, hour, minute, second)
+                            .unwrap_or_default(),
+                    });
                 }
             }
         }
@@ -115,7 +115,7 @@ pub fn dppt_calibrate_seedtime(
     for second_offset in -opts.second_calibration..=opts.second_calibration {
         let offset = datetime + Duration::seconds(second_offset);
         for delay_offset in -opts.delay_calibration..=opts.delay_calibration {
-            let abs_delay_offset = delay_offset.abs() as u32;
+            let abs_delay_offset = delay_offset.unsigned_abs();
             let delay = match delay_offset.is_negative() {
                 true => seedtime.delay.wrapping_sub(abs_delay_offset),
                 false => seedtime.delay.wrapping_add(abs_delay_offset),

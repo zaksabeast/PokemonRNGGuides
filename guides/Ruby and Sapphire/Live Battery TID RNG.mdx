@@ -6,63 +6,43 @@ subCategory: "Emulator"
 tag: "emu"
 ---
 
-```
-This guide will help you get cool TIDs for your RNG. If you don't care about TID, consider the Dead Battery TID/SID Abuse for fewer steps and simplicity.
-```
-
 ## Tools
 
 - [mGBA with lua scripts](/mgba-setup)
 - [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
-- [Decimal to Hex Converter](https://www.binaryhexconverter.com/decimal-to-hex-converter)
-- [runasdate (Optional)](https://runasdate.en.softonic.com/)
 
-## Step 1: Decide on a shiny spread (Optional)
+## Step 1: Finding Your Initial Seed
 
-If you don’t want a shiny Pokémon and/or don't care about IVs, you can skip this step.
+1. Open PokeFinder and go to Gen 3 IDs, then select the RS tab.
+2. Select the desired filter and enter the desired TIDs, SIDs, or TSVs.
+3. Leave the time and date as is, or adjust if needed.
+4. Click "Generate" and search for a matching TID.
+   - If no results appear, try adjusting the time, date, or increasing max advances.
 
-1. Open PokeFinder and go to Gen 3 Tools. Select "IV to PID" and choose your desired IVs and nature. Ensure the correct method for your target is available. Your screen should look like this:
+## Step 2: Hitting Your Initial Seed
 
-![Setup](/images/Ruby-Sapphire/Live-Battery-TID/Setup.png)
+1. In mGBA, go to `Tools -> Game Overrides...` and enable "Realtime clock."
+2. Then go to `Tools -> Game Pak Sensors...`, select "Start time at," and enter the target time and date.
+3. Start the game and play until Prof. Birch says he'll see you later.
+4. Let the game advance to the target number of advances, making save states along the way.
 
-2. Enter your desired TID in the ID box and note the SID provided.
-
-## Step 2: Finding your initial seed
-
-1. Go to this [website](https://www.binaryhexconverter.com/decimal-to-hex-converter).
-2. Open PokeFinder.
-3. On the website, enter your desired TID.
-   - For example, 02332 gives 91C.
-4. Enter that hex value in the PID to IVs option under Generation 3 Tools.
-5. Convert the SID listed in PID To IVs as well.
-   - For example, inputting 46392 gives B538.
-
-![Hex](/images/Ruby-Sapphire/Live-Battery-TID/Hex.png)
-
-6. Open PokeFinder's Generation 3 Tools tab and select PID to IVs. Enter the two hex values (TID first, then SID). If you get a Method 1 Spread, you have a valid ID combo. If not, add 1 to your SID and reconvert to hex until you get a valid one.
-7. Take the seed it provides and go to Generation 3 Tools ----> 16-Bit Seed To Time. Enter the seed, ensure the year is set to 2000, hit search, and you'll get some dates. The seed will change to a 4-digit/lettered seed, which is your initial seed.
-
-## Step 3: Hitting your initial seed
-
-1. Open runasdate and enter the time from the 16-Bit Seed to Time results. Ensure Immediate Mode is set. Note that runasdate uses a 24-hour clock.
-2. Once loaded, pause the game and go to PokeFinder's Stationary screen. Search for the IVs from the PID to IVs tool. The resulting frame is what you need to hit.
-3. Hit Run and enter the game. Reach the screen where Prof. Birch says he'll see you later. Advance to the frame noted in RNGReporter and make save states along the way. You will likely miss your frame.
+Advance at this screen:
 
 ![Final Screen](/images/Ruby-Sapphire/Live-Battery-TID/Final-Screen.png)
 
-Advance frames on the screen above.
+## Step 3: Adjusting for Delay
 
-## Step 4: The delay
+There is a delay between pressing `A` and when the TID/SID is generated. You need to account for this.
 
-Frames pass between pressing `A` and when the TID/SID is generated. You must find how many frames pass.
-
-1. Go to the IDs function in PokeFinder.
-2. Enter your initial seed and the TID received to find what frame you hit.
-3. Adjust accordingly.
-   - For example, if you aimed for frame 89103 but hit 89175, your delay was 72, meaning you need to hit `A` 72 frames early.
+1. Note your target advance.
+2. When you reach it, press `A` to generate a TID.
+3. Enter this TID into PokeFinder and search for the result.
+4. Compare your actual advance with the target to calculate the delay.
+   - Example: If you aimed for advance **89103** but hit **89175**, your delay is **72**, so you need to press `A` **72 advances earlier**.
+5. Reload a save state from before and press `A` at the new calculated advance.
 
 ```
-If your TID/SID are swapped, go one frame earlier.
+If your TID/SID are swapped, go one advance earlier.
 ```
 
 Enjoy your new TID!

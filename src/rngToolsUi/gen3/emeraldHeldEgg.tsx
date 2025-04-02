@@ -32,6 +32,7 @@ const columns: ResultColumn<Gen3HeldEgg>[] = [
     title: "PID",
     dataIndex: "pid",
     key: "pid",
+    monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
   { title: "Gender", dataIndex: "gender", key: "gender" },

@@ -6,7 +6,6 @@ import {
   RngToolSubmit,
   Field,
   FormikSwitch,
-  Typography,
 } from "~/components";
 import {
   rngTools,
@@ -54,14 +53,12 @@ const withChainColumns: ResultColumn<LooseColumns>[] = [
     title: "State",
     dataIndex: "state",
     key: "state",
-    render: (state) => (
-      <Typography.Text whiteSpace="nowrap">
-        {state
-          ?.map((num) => num.toString(16).padStart(8, "0").toUpperCase())
-          .reverse()
-          .join(", ")}
-      </Typography.Text>
-    ),
+    monospace: true,
+    render: (state) =>
+      state
+        ?.map((num) => num.toString(16).padStart(8, "0").toUpperCase())
+        .reverse()
+        .join(", "),
   },
 ];
 
@@ -81,20 +78,17 @@ const noChainColumns: ResultColumn<LooseColumns>[] = [
     title: "Sync",
     dataIndex: "sync",
     key: "sync",
-    render: (sync) => (sync ? "true" : "false"),
+    render: (sync) => (sync ? "Yes" : "No"),
   },
   {
     title: "State",
     dataIndex: "state",
     key: "state",
-    render: (state) => (
-      <Typography.Text whiteSpace="nowrap">
-        {state
-          ?.map((num) => num.toString(16).padStart(8, "0").toUpperCase())
-          .reverse()
-          .join(", ")}
-      </Typography.Text>
-    ),
+    render: (state) =>
+      state
+        ?.map((num) => num.toString(16).padStart(8, "0").toUpperCase())
+        .reverse()
+        .join(", "),
   },
 ];
 
@@ -220,7 +214,11 @@ export const XyPokeRadar = () => {
         results={results.NoChain == null ? results.WithChain : results.NoChain}
         initialValues={initialValues}
         onSubmit={onSubmit}
-        onClickResultRow={(row) => setSelectedPatches(row.patches ?? [])}
+        onClickResultRow={
+          results.NoChain == null
+            ? (row) => setSelectedPatches(row.patches ?? [])
+            : undefined
+        }
         rowKey="advance"
         submitTrackerId="generate_xy_poke_radar"
       />

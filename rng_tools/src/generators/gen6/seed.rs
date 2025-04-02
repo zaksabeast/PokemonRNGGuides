@@ -143,11 +143,12 @@ pub fn find_seed6_state(opts: Seed6Options) -> Vec<Seed6State> {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::assert_list_eq;
     use chrono::{NaiveDate, NaiveTime};
 
     #[test]
     fn find_seed() {
-        let states = find_seed6_state(Seed6Options {
+        let results = find_seed6_state(Seed6Options {
             advance_400_seed: 0x2d139ab4,
             current_save_param: 0x2d0e851e,
             target_seed: 0xf00df00d,
@@ -158,7 +159,7 @@ mod test {
             },
             is_oras: true,
         });
-        assert_eq!(states, [
+        let expected = [
             Seed6State {
                 seed: 0xf00df00d,
                 save_param: 0x99ae8e97,
@@ -169,8 +170,8 @@ mod test {
                     day: 23,
                     hour: 4,
                     minute: 1,
-                    second: 48
-                }
+                    second: 48,
+                },
             },
             Seed6State {
                 seed: 0xf00df00d,
@@ -182,8 +183,8 @@ mod test {
                     day: 23,
                     hour: 12,
                     minute: 24,
-                    second: 0
-                }
+                    second: 0,
+                },
             },
             Seed6State {
                 seed: 0xf00df00d,
@@ -195,10 +196,11 @@ mod test {
                     day: 23,
                     hour: 16,
                     minute: 16,
-                    second: 28
-                }
-            }
-        ]);
+                    second: 28,
+                },
+            },
+        ];
+        assert_list_eq!(results, expected);
     }
 
     #[test]

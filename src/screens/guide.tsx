@@ -5,9 +5,21 @@ import { getGuide } from "~/guides";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { Flex, Typography, Loading, Button, Icon } from "~/components";
 import { settings } from "~/settings";
+import { useAbCohort } from "~/hooks/useAbTest";
+import { match } from "ts-pattern";
 
 export const GuideScreen = () => {
   const [route] = useActiveRoute();
+  const cohort = useAbCohort("supportUsButton");
+
+  const supportUsText = match(cohort)
+    .with("back_new_tools_and_videos", () => "Back New Tools & Videos!")
+    .with(
+      "fuel_rng_join_our_supporters",
+      () => "Fuel RNG - Join Our Supporters!",
+    )
+    .with("support_rng_and_unlock_perks", () => "Support RNG & Unlock Perks!")
+    .otherwise(() => "Support RNG & Unlock Perks!");
 
   const Guide = getGuide(route);
   return (
@@ -30,6 +42,20 @@ export const GuideScreen = () => {
             href={settings.discordUrl}
           >
             Hunt, Trade, and RNG with Us!
+          </Button>
+        </Flex>
+
+        <Flex>
+          <Button
+            trackerId="support_us_on_discord"
+            icon={<Icon name="Heart" />}
+            type="primary"
+            backgroundColor="FillSecondary"
+            backgroundHoverColor="FillSecondaryHover"
+            size="middle"
+            href={settings.supportUsUrl}
+          >
+            {supportUsText}
           </Button>
         </Flex>
 

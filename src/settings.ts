@@ -10,6 +10,9 @@ const settingsSchema = z.object({
   amplitudeApiKey: z.string(),
   isDev: z.boolean().default(false),
   discordUrl: z.string().default("https://www.discord.gg/d8JuAvg"),
+  supportUsUrl: z
+    .string()
+    .default("https://discord.com/servers/pokemonrng-285269328469950464"),
   githubUrl: z
     .string()
     .default("https://github.com/zaksabeast/PokemonRNGGuides"),

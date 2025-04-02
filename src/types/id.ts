@@ -9,6 +9,11 @@ import { match } from "ts-pattern";
 
 export type IdFilter =
   | {
+      type: "none";
+      value0: "";
+      value1: "";
+    }
+  | {
       type: "tid";
       value0: DecimalString;
       value1: "";
@@ -39,8 +44,11 @@ export type IdFilter =
       value1: HexString;
     };
 
-export const denormalizeIdFilter = (value: IdFilter): RngToolsIdFilter => {
-  return match<IdFilter, RngToolsIdFilter>(value)
+export const denormalizeIdFilter = (
+  value: IdFilter,
+): RngToolsIdFilter | null => {
+  return match<IdFilter, RngToolsIdFilter | null>(value)
+    .with({ type: "none" }, () => null)
     .with({ type: "tid" }, ({ value0 }) => ({
       Tid: fromDecimalString(value0) ?? 0,
     }))
@@ -66,4 +74,14 @@ export const denormalizeIdFilter = (value: IdFilter): RngToolsIdFilter => {
       },
     }))
     .exhaustive();
+};
+
+export const denormalizeIdFilterOrDefault = (
+  value: IdFilter,
+): RngToolsIdFilter => {
+  return (
+    denormalizeIdFilter(value) ?? {
+      Tid: 0,
+    }
+  );
 };

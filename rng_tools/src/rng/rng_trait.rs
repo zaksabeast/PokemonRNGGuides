@@ -1,4 +1,4 @@
-use std::iter::Skip;
+use std::iter::{Rev, Skip};
 use std::ops::Rem;
 
 pub trait GetRand<T> {
@@ -33,3 +33,4 @@ pub trait Rng: Iterator {
 }
 
 impl<T: Iterator> Rng for Skip<T> {}
+impl<T: Iterator + DoubleEndedIterator> Rng for Rev<T> {}

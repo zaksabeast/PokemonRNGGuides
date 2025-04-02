@@ -6,11 +6,13 @@ import {
   MdCheckCircle,
   MdCheck,
   MdClose,
+  MdRocketLaunch,
 } from "react-icons/md";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaDiscord } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold } from "react-icons/pi";
+import { FaHeart } from "react-icons/fa6";
 
 const icons = {
   Menu: AiOutlineMenu,
@@ -23,6 +25,8 @@ const icons = {
   Close: MdClose,
   Sparkles: IoSparkles,
   PersonSimpleWalkBold: PiPersonSimpleWalkBold,
+  RocketLaunch: MdRocketLaunch,
+  Heart: FaHeart,
 } as const;
 
 export type IconName = keyof typeof icons;

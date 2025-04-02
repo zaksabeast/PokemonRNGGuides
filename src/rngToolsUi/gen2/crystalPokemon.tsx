@@ -80,6 +80,7 @@ const getColumns = (
       title: t("State"),
       dataIndex: "state",
       key: "state",
+      monospace: true,
       render: (state) => state.toString(16).padStart(4, "0"),
     },
     {

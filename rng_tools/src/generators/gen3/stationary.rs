@@ -120,7 +120,7 @@ fn generate_gen3_static_state(
         pid,
         ivs,
         ability: (pid & 1) as u8,
-        gender: opts.species.gender(pid),
+        gender: opts.species.gender_from_pid(pid),
         nature: Nature::from_pid(pid),
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
     }

@@ -126,6 +126,70 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
   },
+  "/rs-tidsid-generator": {
+    meta: {
+      title: "RS TID and SID Generator",
+      description: "Generator for TID and SID in RS",
+      category: "Ruby and Sapphire",
+      slug: "/rs-tidsid-generator",
+      isRoughDraft: true,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides/Emerald/Gen 3 TID SID Generator.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
+    ),
+  },
+  "/frlg-tidsid-generator": {
+    meta: {
+      title: "FRLG TID and SID Generator",
+      description: "Generator for TID and SID in FRLG",
+      category: "FireRed and LeafGreen",
+      slug: "/frlg-tidsid-generator",
+      isRoughDraft: true,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides/Emerald/Gen 3 TID SID Generator.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
+    ),
+  },
+  "/emerald-tidsid-generator": {
+    meta: {
+      title: "Emerald TID and SID Generator",
+      description: "Generator for TID/SID in Emerald",
+      category: "Emerald",
+      slug: "/emerald-tidsid-generator",
+      isRoughDraft: true,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides/Emerald/Gen 3 TID SID Generator.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
+    ),
+  },
+  "/xdcolo-tidsid-generator": {
+    meta: {
+      title: "XD and Colo TID and SID Generator",
+      description: "Generator for TID and SID in XD and Colo",
+      category: "Gamecube",
+      slug: "/xdcolo-tidsid-generator",
+      isRoughDraft: true,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides/Emerald/Gen 3 TID SID Generator.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
+    ),
+  },
   "/emerald-sid-feebas": {
     meta: {
       title: "Find SID with Feebas",
@@ -2368,6 +2432,10 @@ export const guideSlugs = [
   z.literal("/emulator-emerald-egg"),
   z.literal("/e-tips-rng"),
   z.literal("/emerald-painting-rng"),
+  z.literal("/rs-tidsid-generator"),
+  z.literal("/frlg-tidsid-generator"),
+  z.literal("/emerald-tidsid-generator"),
+  z.literal("/xdcolo-tidsid-generator"),
   z.literal("/emerald-sid-feebas"),
   z.literal("/rs-sid-feebas"),
   z.literal("/gen3-sid"),

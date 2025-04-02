@@ -41,6 +41,20 @@ type Props = {
 export const LanguageButton = ({ enSlug, esSlug ,zhSlug}: Props) => {
   const [route, setLocation] = useActiveRoute();
 
+  const setLanguageKey = (key: string) => {
+    const slug = match({ key, enSlug, esSlug })
+      .with(
+        { key: "en", enSlug: P.not(P.nullish) },
+        (matched) => matched.enSlug,
+      )
+      .with(
+        { key: "es", esSlug: P.not(P.nullish) },
+        (matched) => matched.esSlug,
+      )
+      .otherwise(() => enSlug);
+    setLocation(slug);
+  };
+  
   const currentLanguageKey = match<string | undefined, LanguageKey>(route)
     .with(enSlug, () => "en")
     .with(esSlug, () => "es")

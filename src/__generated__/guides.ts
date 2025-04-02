@@ -2309,6 +2309,23 @@ export const guides = {
         import("~/../guides/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx"),
     ),
   },
+  "/zh-dppt-initial-seed": {
+    meta: {
+      title: "初始种子乱数",
+      description: "如何在《钻石/珍珠/白金》中进行初始种子乱数",
+      slug: "/zh-dppt-initial-seed",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
+      category: "Diamond, Pearl, and Platinum",
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx"),
+    ),
+  },
   "/emulator-dppt-egg": {
     meta: {
       title: "Egg RNG",
@@ -2366,6 +2383,22 @@ export const guides = {
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides/Diamond, Pearl, and Platinum/PokeRadar.mdx",
+      category: "Diamond, Pearl, and Platinum",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Diamond, Pearl, and Platinum/PokeRadar.mdx"),
+    ),
+  },
+  "/zh-dppt-pokeradar-rng": {
+    meta: {
+      title: "宝可追踪乱数",
+      description: "两种不同的宝可追踪乱数方法",
+      slug: "/zh-dppt-pokeradar-rng",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/PokeRadar.mdx",
       category: "Diamond, Pearl, and Platinum",
@@ -2628,10 +2661,12 @@ export const guideSlugs = [
   z.literal("/dppt-setup-rng"),
   z.literal("/emulator-dppt-stationary"),
   z.literal("/dppt-initial-seed"),
+  z.literal("/zh-dppt-initial-seed"),
   z.literal("/emulator-dppt-egg"),
   z.literal("/dppt-wild"),
   z.literal("/emulator-dppt-pokefinder-setup"),
   z.literal("/dppt-pokeradar-rng"),
+  z.literal("/zh-dppt-pokeradar-rng"),
   z.literal("/emulator-bw-roamers"),
   z.literal("/emulator-bw-wild"),
   z.literal("/emulator-bw-find-ds-parameters"),

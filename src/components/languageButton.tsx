@@ -42,7 +42,7 @@ export const LanguageButton = ({ enSlug, esSlug ,zhSlug}: Props) => {
   const [route, setLocation] = useActiveRoute();
 
   const setLanguageKey = (key: string) => {
-    const slug = match({ key, enSlug, esSlug })
+    const slug = match({ key, enSlug, esSlug ,zhSlug })
       .with(
         { key: "en", enSlug: P.not(P.nullish) },
         (matched) => matched.enSlug,
@@ -51,10 +51,14 @@ export const LanguageButton = ({ enSlug, esSlug ,zhSlug}: Props) => {
         { key: "es", esSlug: P.not(P.nullish) },
         (matched) => matched.esSlug,
       )
+      .with(
+        { key: "zh", zhSlug: P.not(P.nullish) },
+        (matched) => matched.zhSlug,
+      )
       .otherwise(() => enSlug);
     setLocation(slug);
   };
-  
+
   const currentLanguageKey = match<string | undefined, LanguageKey>(route)
     .with(enSlug, () => "en")
     .with(esSlug, () => "es")

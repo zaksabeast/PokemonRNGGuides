@@ -8,7 +8,7 @@ use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub enum BankGenderType {
+pub enum TransporterGenderType {
     NoGender = 0,
     RandomGender = 1,
     Mythical = 2,
@@ -73,9 +73,9 @@ struct GenerateOpts {
     max_advances: usize,
     delay: usize,
     perfect_iv_count: usize,
-    bank: bool,                            // Bank = PokemonLink or Transporter
-    target: usize,                         // Index of target pkm
-    bank_gender_list: Vec<BankGenderType>, // Gender list of Bank
+    is_transporter: bool, // PokemonLink or Transporter
+    target: usize,
+    transporter_genders: Vec<TransporterGenderType>,
     always_sync: bool,
     synchro_stat: Option<Nature>,
     shiny_charm: bool,
@@ -88,7 +88,11 @@ struct GenerateOpts {
     filter: Stationary6Filter,
 }
 
-fn quick_generate_bank_mon(rng: &mut MT, perfect_iv_count: usize, gender_type: &BankGenderType) {
+fn quick_generate_transporter_mon(
+    rng: &mut MT,
+    perfect_iv_count: usize,
+    gender_type: &TransporterGenderType,
+) {
     if perfect_iv_count < 3 {
         // Johto starters
         rng.advance(10); // EC + PID + IVs + Nature + Gender
@@ -98,7 +102,7 @@ fn quick_generate_bank_mon(rng: &mut MT, perfect_iv_count: usize, gender_type: &
     // Indefinite advance
     let mut ivs = [false; 6];
     let iv_count = match gender_type {
-        BankGenderType::Mythical => 5,
+        TransporterGenderType::Mythical => 5,
         _ => 3,
     };
     let mut i = iv_count;
@@ -110,9 +114,9 @@ fn quick_generate_bank_mon(rng: &mut MT, perfect_iv_count: usize, gender_type: &
         }
     }
     let advance = match gender_type {
-        BankGenderType::NoGender => 4,
-        BankGenderType::RandomGender => 5,
-        BankGenderType::Mythical => 2,
+        TransporterGenderType::NoGender => 4,
+        TransporterGenderType::RandomGender => 5,
+        TransporterGenderType::Mythical => 2,
     };
     rng.advance(advance);
 }
@@ -127,12 +131,12 @@ fn generate_state(rng: &mut MT, advance: usize, opts: &GenerateOpts) -> Stationa
     // https://github.com/wwwwwwzx/3DSRNGTool/blob/4c0c9a5ad957c03bc4b180084dc711f77a28e332/3DSRNGTool/Core/RNGPool.cs#L100
     rng.rand::<u32>();
 
-    if opts.bank {
-        opts.bank_gender_list
+    if opts.is_transporter {
+        opts.transporter_genders
             .iter()
             .take(opts.target.saturating_sub(1))
             .for_each(|gender_type| {
-                quick_generate_bank_mon(rng, opts.perfect_iv_count, gender_type)
+                quick_generate_transporter_mon(rng, opts.perfect_iv_count, gender_type)
             });
     }
 
@@ -265,8 +269,8 @@ pub fn generate_stationary6(opts: Stationary6Opts) -> Vec<Stationary6State> {
         gender: opts.gender,
         species: opts.species,
         filter: opts.filter,
-        bank: false,
-        bank_gender_list: vec![],
+        is_transporter: false,
+        transporter_genders: vec![],
         target: 0,
     };
     generate_states(opts)
@@ -279,8 +283,8 @@ pub struct TransporterOpts {
     pub initial_advances: usize,
     pub max_advances: usize,
     pub delay: usize,
-    pub target: usize,                         // Index of target pkm
-    pub bank_gender_list: Vec<BankGenderType>, // Gender list of Bank
+    pub target: usize,                                   // Index of target pkm
+    pub transporter_genders: Vec<TransporterGenderType>, // Gender list of Transporter pokemon
     pub tsv: u16,
     pub filter: Stationary6Filter,
 }
@@ -288,16 +292,16 @@ pub struct TransporterOpts {
 #[wasm_bindgen]
 pub fn generate_transporter(opts: TransporterOpts) -> Vec<Stationary6State> {
     let target_gender = opts
-        .bank_gender_list
+        .transporter_genders
         .get(opts.target.saturating_sub(1))
         .map(|target| *target)
-        .unwrap_or(BankGenderType::RandomGender);
+        .unwrap_or(TransporterGenderType::RandomGender);
     let ability = match target_gender {
-        BankGenderType::Mythical => AbilityType::First,
+        TransporterGenderType::Mythical => AbilityType::First,
         _ => AbilityType::Hidden,
     };
     let perfect_iv_count = match target_gender {
-        BankGenderType::Mythical => 5,
+        TransporterGenderType::Mythical => 5,
         _ => 3,
     };
     let opts = GenerateOpts {
@@ -306,9 +310,9 @@ pub fn generate_transporter(opts: TransporterOpts) -> Vec<Stationary6State> {
         max_advances: opts.max_advances,
         delay: opts.delay,
         perfect_iv_count,
-        bank: true,
+        is_transporter: true,
         target: opts.target,
-        bank_gender_list: opts.bank_gender_list,
+        transporter_genders: opts.transporter_genders,
         always_sync: true,
         synchro_stat: None,
         shiny_charm: false,
@@ -1242,7 +1246,7 @@ mod test {
                 max_advances: 3,
                 delay: 0,
                 target: 1,
-                bank_gender_list: vec![BankGenderType::RandomGender],
+                transporter_genders: vec![TransporterGenderType::RandomGender],
                 tsv: 123,
                 filter: Default::default(),
             };
@@ -1328,7 +1332,7 @@ mod test {
                 max_advances: 3,
                 delay: 0,
                 target: 4,
-                bank_gender_list: vec![BankGenderType::RandomGender; 4],
+                transporter_genders: vec![TransporterGenderType::RandomGender; 4],
                 tsv: 123,
                 filter: Default::default(),
             };
@@ -1414,7 +1418,7 @@ mod test {
                 max_advances: 3,
                 delay: 0,
                 target: 1,
-                bank_gender_list: vec![BankGenderType::Mythical],
+                transporter_genders: vec![TransporterGenderType::Mythical],
                 tsv: 123,
                 filter: Default::default(),
             };
@@ -1500,11 +1504,11 @@ mod test {
                 max_advances: 3,
                 delay: 0,
                 target: 4,
-                bank_gender_list: vec![
-                    BankGenderType::NoGender,
-                    BankGenderType::NoGender,
-                    BankGenderType::NoGender,
-                    BankGenderType::RandomGender,
+                transporter_genders: vec![
+                    TransporterGenderType::NoGender,
+                    TransporterGenderType::NoGender,
+                    TransporterGenderType::NoGender,
+                    TransporterGenderType::RandomGender,
                 ],
                 tsv: 123,
                 filter: Default::default(),
@@ -1591,11 +1595,11 @@ mod test {
                 max_advances: 3,
                 delay: 0,
                 target: 4,
-                bank_gender_list: vec![
-                    BankGenderType::Mythical,
-                    BankGenderType::Mythical,
-                    BankGenderType::Mythical,
-                    BankGenderType::RandomGender,
+                transporter_genders: vec![
+                    TransporterGenderType::Mythical,
+                    TransporterGenderType::Mythical,
+                    TransporterGenderType::Mythical,
+                    TransporterGenderType::RandomGender,
                 ],
                 tsv: 123,
                 filter: Default::default(),

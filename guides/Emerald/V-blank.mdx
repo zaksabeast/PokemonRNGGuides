@@ -19,38 +19,25 @@ In GBA Pokemon games, the v-blank associated code updates the RNG frame by 1. Th
 ## Impact of V-blanks
 Here's the simplified logic for Pokémon generation:
 
-| Sub-Step          | Frame  |
-| ----------------- | -------|
-| Generate PID      | 1      |
-| Update RNG frame  | 1 -> 2 |
-| Generate IVs      | 2      |
-| Update RNG frame  | 2 -> 3 |
+| Step          | Frame At Step Start | Frame At Step End |
+| ----------------- | --------------------|-------------------|
+| Generate PID      | 1      | 2 |
+| Generate IVs      | 2      | 3 |
 
-
-In most cases, this is exactly what happens.
+In most cases, this is exactly what happens, and the Pokemon is generating with RNG frame 1 and 2.
 
 However, in some rare cases, a v-blank occurs seemingly out of nowhere and alters the generation:
 
-| Sub-Step                   | Frame  |
-| ---------------------------| -------|
-| Generate PID               | 1      |
-| Update RNG frame           | 1 -> 2 |
-| V-BLANK: Update RNG frame  | 2 -> 3 |
-| Generate IVs               | 3      |
-| Update RNG frame           | 3 -> 4 |
+| Step          | Frame At Step Start | Frame At Step End |
+| ----------------- | --------------------|-------------------|
+| Generate PID               | 1      | 2 |
+| V-BLANK: Update RNG frame  | 2  | 3 |
+| Generate IVs               | 3  | 4 |
 
-```
-Generate PID  (frame 1)
-Update RNG frame (frame 1->2)
-Update RNG frame caused by v-blank (frame 2->3)
-Generate IVs  (frame 3)
-Update RNG frame (frame 3->4)
-```
-
-Even though the Pokémon generation started on the same frame, the resulting IVs are different.
+Even though the Pokémon generation started on the same frame, the resulting IVs are different because they were generated with frame 3 instead of frame 2.
 
 ## Understanding V-blanks Frequency
-As stated before, a v-blank occurs every 1/60th of a second, more specially every 280'896 CPU instruction cycles.
+As stated before, a v-blank occurs every 1/60th of a second, more specifically every 280'896 CPU instruction cycles.
 
 Every operation performed by the GBA (ex: addition, loading data) takes a certain number of CPU instruction cycles.
 
@@ -58,7 +45,7 @@ The more instruction cycles a Pokémon generation step takes, the more likely a 
   - Ex: A step that takes ~28'000 cycles will have ~10% chance to have a v-blank.
   - Ex: A step that takes 300'000 cycles is guaranteed to have at least 1 v-blank, possibly 2.
 
-The generation of stationary takes very few instructions, which makes v-blank very rare.
+The generation of a stationary Pokemon takes few instructions, which makes v-blank rare.
 
 In the other hand, wild Pokémon generation with a Synchronize leader can take a lot of instructions, which makes v-blank a lot more common.
 

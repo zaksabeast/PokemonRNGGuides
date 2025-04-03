@@ -12,53 +12,39 @@ This article assumes you have already read [Understanding V-Blanks](/gba-v-blank
 ## Method 1
 Here's the game logic for generating a Pokemon:
 
-| Sub-Step                   | Frame  |
-| -------------------------- | -------|
-| Generate 1st half PID      | 1      |
-| Update RNG frame           | 1 -> 2 |
-| Generate 2nd half PID      | 2      |
-| Update RNG frame           | 2 -> 3 |
-| Generate Def, Atk, HP IVs  | 3      |
-| Update RNG frame           | 3 -> 4 |
-| Generate SpD, SpA, Spe IVs | 4      |
-| Update RNG frame           | 4 -> 5 |
+| Step          | Frame At Step Start | Frame At Step End |
+| ----------------- | --------------------|-------------------|
+| Generate 1st half PID      | 1      | 2 |
+| Generate 2nd half PID      | 2      | 3 |
+| Generate Def, Atk, HP IVs      | 3      | 4 |
+| Generate SpD, SpA, Spe IVs      | 4      | 5 |
 
-Method 1 is when a Pokemon is generated and no v-blanks occur between the sub-steps "Generate 1st half PID" and "Generate SpD, SpA, Spe IVs".
-
-Assuming the Pokemon generation started on frame 1, the Pokemon is generated using the value of the RNG of frames 1,2,3,4.
+Method 1 is when a Pokemon is generated and no v-blanks occur. The Pokemon is generated using the value of the RNG of frames 1,2,3,4.
 
 ## Method 2
-Method 2 is when a v-blank occurs between the sub-steps "Generate 2nd half PID" and "Generate Def, Atk, HP IVs".
+Method 2 is when a v-blank occurs between the steps "Generate 2nd half PID" and "Generate Def, Atk, HP IVs".
 
-| Sub-Step                   | Frame  |
-| -------------------------- | -------|
-| Generate 1st half PID      | 1      |
-| Update RNG frame           | 1 -> 2 |
-| Generate 2nd half PID      | 2      |
-| Update RNG frame           | 2 -> 3 |
-| V-BLANK: Update RNG frame  | 3 -> 4 |
-| Generate Def, Atk, HP IVs  | 4      |
-| Update RNG frame           | 4 -> 5 |
-| Generate SpD, SpA, Spe IVs | 5      |
-| Update RNG frame           | 5 -> 6 |
+| Step          | Frame At Step Start | Frame At Step End |
+| ----------------- | --------------------|-------------------|
+| Generate 1st half PID      | 1      | 2 |
+| Generate 2nd half PID      | 2      | 3 |
+| V-BLANK: Update RNG frame  | 3 | 4 |
+| Generate Def, Atk, HP IVs      | 4      | 5 |
+| Generate SpD, SpA, Spe IVs      | 5      | 6 |
 
 The Pokemon is generated using the value of the RNG of frames 1,2,4,5. The RNG value of frame 3 is unused.
 
 
 ## Method 4
-Method 4 is when a v-blank occurs between the sub-steps "Generate Def, Atk, HP IVs" and "Generate SpD, SpA, Spe IVs".
+Method 4 is when a v-blank occurs between the steps "Generate Def, Atk, HP IVs" and "Generate SpD, SpA, Spe IVs".
 
-| Sub-Step                   | Frame  |
-| -------------------------- | -------|
-| Generate 1st half PID      | 1      |
-| Update RNG frame           | 1 -> 2 |
-| Generate 2nd half PID      | 2      |
-| Update RNG frame           | 2 -> 3 |
-| Generate Def, Atk, HP IVs  | 3      |
-| Update RNG frame           | 3 -> 4 |
-| V-BLANK: Update RNG frame  | 4 -> 5 |
-| Generate SpD, SpA, Spe IVs | 5      |
-| Update RNG frame           | 5 -> 6 |
+| Step          | Frame At Step Start | Frame At Step End |
+| ----------------- | --------------------|-------------------|
+| Generate 1st half PID      | 1      | 2 |
+| Generate 2nd half PID      | 2      | 3 |
+| Generate Def, Atk, HP IVs      | 3      | 4 |
+| V-BLANK: Update RNG frame  | 4 | 5 |
+| Generate SpD, SpA, Spe IVs      | 5      | 6 |
 
 The Pokemon is generated using the value of the RNG of frames 1,2,3,5. The RNG value of frame 4 is unused.
 

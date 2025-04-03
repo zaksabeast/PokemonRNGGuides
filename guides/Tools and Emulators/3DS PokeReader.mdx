@@ -1,10 +1,20 @@
 ---
-title: "PokeReader 3DS"
-description: "Installing a tool on your 3DS to help RNG Pokémon"
-slug: "install-pokereader"
-subCategory: "3DS"
-tag: "cfw"
+- title: "PokeReader 3DS"
+  description: "Installing a tool on your 3DS to help RNG Pokémon"
+  slug: "install-pokereader"
+  subCategory: "3DS"
+  tag: "cfw"
+- title: "3DS安装PokeReader"
+  description: "在3DS上安装工具来帮助乱数宝可梦"
+  slug: "zh-install-pokereader"
+  subCategory: "3DS"
+  tag: "cfw"
+  hideFromNavDrawer: true
 ---
+
+<LanguageButton enSlug="/install-pokereader" zhSlug="/zh-install-pokereader"/>
+
+<ShowIf slug="/install-pokereader">
 
 PokeReader is a plugin to help RNG by bringing emulator-like functionality to physical consoles.
 
@@ -45,6 +55,52 @@ Game updates can be downloaded from the Nintendo eShop.
 
 Try some of these RNGs!
 
-- [Shiny Celebi in Crystal](/gen2-celebi)
+- [Shiny Celebi in Crystal](/install-pokereader)
 - [Easy Transporter RNG for perfect Pokemon](/transporter-rng-offline)
 - [Shiny Wormhole Legends in USUM](/retail-usum-wormhole)
+
+## Credits
+
+- Chinese translation: Hakuhiro.
+
+</ShowIf>
+
+<ShowIf slug="/zh-install-pokereader">
+
+PokeReader是一款插件，它通过为实机提供类似模拟器脚本的功能显示内部参数来辅助乱数操作。
+
+如需了解如何在3DS模拟器上安装PokeReader，[请参阅此处](/install-pokereader-emu)。
+
+## 所需工具
+
+- [3DS破解机及自定义固件](https://3ds.hacks.guide/)
+- [Luma版本为13.0.0或更高版本](https://github.com/LumaTeam/Luma3DS/releases)
+
+## 在3DS上安装PokeReader
+
+1. 下载 [PokeReader的最新版本](https://github.com/zaksabeast/PokeReader/releases/latest)。
+2. 如果 `/luma/plugins` 文件夹不存在则手动创建它。
+3. 将 `default.3gx` 复制到 `/luma/plugins/` 文件夹下。
+4. 打开 Rosalina 菜单（`L` + `Down` + `Select`）将 `Plugin Loader` 设置为enable。
+
+## 疑难解答
+
+**PokeReader无法加载且游戏崩溃！**
+
+请先确保您的游戏已更新到最新版本！PokeReader仅兼容最新版本的游戏，旧版本将无法正常运行插件。
+
+可以在Nintendo eShop下载游戏更新补丁。
+
+## 安装完之后呢？
+
+试试这些乱数操作！
+
+- [水晶的异色时拉比](/install-pokereader)
+- [宝可梦虚拟传送获得完美宝可梦](/transporter-rng-offline)
+- [究极日月的异色时空洞传说宝可梦](/retail-usum-wormhole)
+
+## 特别鸣谢
+
+- 中文翻译：Hakuhiro/白白不是公主。
+
+</ShowIf>

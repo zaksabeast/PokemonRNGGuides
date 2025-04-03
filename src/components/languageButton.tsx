@@ -38,11 +38,11 @@ type Props = {
   zhSlug?: Route;
 };
 
-export const LanguageButton = ({ enSlug, esSlug ,zhSlug}: Props) => {
+export const LanguageButton = ({ enSlug, esSlug, zhSlug }: Props) => {
   const [route, setLocation] = useActiveRoute();
 
   const setLanguageKey = (key: string) => {
-    const slug = match({ key, enSlug, esSlug ,zhSlug })
+    const slug = match({ key, enSlug, esSlug, zhSlug })
       .with(
         { key: "en", enSlug: P.not(P.nullish) },
         (matched) => matched.enSlug,
@@ -65,19 +65,19 @@ export const LanguageButton = ({ enSlug, esSlug ,zhSlug}: Props) => {
     .with(zhSlug, () => "zh")
     .otherwise(() => "en");
 
-    const availableLanguages = languages.filter((lang) => {
-      return match(lang.key)
-        .with("en", () => true)
-        .with("es", () => esSlug != null)
-        .with("zh", () => zhSlug != null)
-        .otherwise(() => false);
-    });
-  
-    return (
-      <Flex>
-        <Dropdown
-          menu={{
-            items: availableLanguages,
+  const availableLanguages = languages.filter((lang) => {
+    return match(lang.key)
+      .with("en", () => true)
+      .with("es", () => esSlug != null)
+      .with("zh", () => zhSlug != null)
+      .otherwise(() => false);
+  });
+
+  return (
+    <Flex>
+      <Dropdown
+        menu={{
+          items: availableLanguages,
           onClick: (item) => setLanguageKey(item.key),
         }}
         placement="bottom"

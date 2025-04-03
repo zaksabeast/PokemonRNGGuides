@@ -10,8 +10,9 @@ import { guides as existingGuides } from "./src/__generated__/guides";
 import { match, P } from "ts-pattern";
 import dayjs from "dayjs";
 
-// Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, ,, and Chinese characters
-const titleAndDescriptionChars = /^[A-Za-z0-9 –.\-—é&/()!%,\u4e00-\u9fff]+$/;
+// Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, ,, 《, 》, and Chinese characters
+const titleAndDescriptionChars =
+  /^[A-Za-z0-9 –.\-—é&/()!%,《》\u4e00-\u9fff]+$/;
 
 // Only lower case letters, numbers, and hyphens
 const slugChars = /^[a-z0-9-]+$/;

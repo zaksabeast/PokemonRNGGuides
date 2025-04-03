@@ -50,8 +50,8 @@ export const guides = {
   },
   "/zh-gen2-starters": {
     meta: {
-      title: "水晶御三家乱数",
-      description: "Get Shiny Starters in Crystal",
+      title: "水晶初始宝可梦乱数",
+      description: "在水晶里获得异色初始宝可梦",
       slug: "/zh-gen2-starters",
       isRoughDraft: false,
       tag: "cfw",
@@ -2312,7 +2312,7 @@ export const guides = {
   "/zh-dppt-initial-seed": {
     meta: {
       title: "初始种子乱数",
-      description: "如何在《钻石/珍珠/白金》中进行初始种子乱数",
+      description: "如何在《钻石, 珍珠, 白金》中进行初始种子乱数",
       slug: "/zh-dppt-initial-seed",
       isRoughDraft: false,
       tag: "emu",

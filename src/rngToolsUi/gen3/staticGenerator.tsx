@@ -1,17 +1,9 @@
-import {
-  rngTools,
-  Static3Result,
-  Species,
-  Gender,
-  Nature,
-  Ivs,
-} from "~/rngTools";
+import { rngTools, Static3Result, Species, PkmFilter, Ivs } from "~/rngTools";
 import {
   Field,
   FormikInput,
   FormikSelect,
   FormikSwitch,
-  IvInput,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
@@ -24,10 +16,9 @@ import {
   toDecimalString,
   toHexString,
 } from "~/utils/number";
-import { nature } from "~/types/nature.ts";
-import { gender } from "~/types/gender.ts";
 import React from "react";
 import { match } from "ts-pattern";
+import { FormikPkmFilter } from "~/components/pkmFilter";
 
 const columns: ResultColumn<Static3Result>[] = [
   { title: "Advance", dataIndex: "advance", key: "advance" },
@@ -164,12 +155,7 @@ type FormState = {
   species: Species;
   roamer: boolean;
   method4: boolean;
-  filter_shiny: boolean;
-  filter_min_ivs: Ivs;
-  filter_max_ivs: Ivs;
-  filter_nature: Nature | "None";
-  filter_gender: Gender | "None";
-  filter_ability: DecimalString | "None";
+  filter: PkmFilter;
 };
 
 const minIvs: Ivs = {
@@ -209,12 +195,16 @@ const getInitialValues = (game: Game): FormState => {
     species: getGameSpecies(game)[0],
     roamer: false,
     method4: false,
-    filter_shiny: false,
-    filter_min_ivs: minIvs,
-    filter_max_ivs: maxIvs,
-    filter_nature: "None",
-    filter_gender: "None",
-    filter_ability: "None",
+    filter: {
+      shiny: false,
+      nature: undefined,
+      ability: undefined,
+      gender: undefined,
+      ivs: {
+        min_ivs: minIvs,
+        max_ivs: maxIvs,
+      },
+    },
   };
 };
 
@@ -265,54 +255,8 @@ const getFields = (game: Game): Field[] => {
       input: <FormikInput<FormState> name="offset" />,
     },
     {
-      label: "Min IVs",
-      input: <IvInput<FormState> name="filter_min_ivs" />,
-    },
-    {
-      label: "Max IVs",
-      input: <IvInput<FormState> name="filter_max_ivs" />,
-    },
-    {
-      label: "Filter shiny",
-      input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
-    },
-    {
-      label: "Filter nature",
-      input: (
-        <FormikSelect<FormState, "filter_nature">
-          name="filter_nature"
-          options={(["None", ...nature] as const).map((nat) => ({
-            label: nat,
-            value: nat,
-          }))}
-        />
-      ),
-    },
-    {
-      label: "Filter ability",
-      input: (
-        <FormikSelect<FormState, "filter_ability">
-          name="filter_ability"
-          options={(
-            ["None", toDecimalString(0), toDecimalString(1)] as const
-          ).map((ability) => ({
-            label: ability,
-            value: ability,
-          }))}
-        />
-      ),
-    },
-    {
-      label: "Filter gender",
-      input: (
-        <FormikSelect<FormState, "filter_gender">
-          name="filter_gender"
-          options={(["None", ...gender] as const).map((gen) => ({
-            label: gen,
-            value: gen,
-          }))}
-        />
-      ),
+      label: "Filter",
+      input: <FormikPkmFilter<FormState> name="filter" />,
     },
   ];
 };
@@ -353,21 +297,6 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
         tid,
         sid,
         bugged_roamer: game !== "emerald" && opts.roamer,
-        filter: {
-          shiny: opts.filter_shiny,
-          nature:
-            opts.filter_nature === "None" ? undefined : opts.filter_nature,
-          gender:
-            opts.filter_gender === "None" ? undefined : opts.filter_gender,
-          ability:
-            opts.filter_ability === "None"
-              ? undefined
-              : (fromDecimalString(opts.filter_ability) ?? undefined),
-          ivs: {
-            min_ivs: opts.filter_min_ivs,
-            max_ivs: opts.filter_max_ivs,
-          },
-        },
       });
 
       setResults(results);

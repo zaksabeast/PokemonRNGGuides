@@ -1,6 +1,6 @@
 use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
-use crate::{Gender, IvFilter, Ivs, Nature, Species, gen3_shiny};
+use crate::{AbilityType, Gender, Ivs, Nature, PkmFilter, PkmState, Species, gen3_shiny};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -11,51 +11,31 @@ pub struct Static3Result {
     pub advance: usize,
     pub pid: u32,
     pub ivs: Ivs,
-    pub ability: u8,
+    pub ability: AbilityType,
     pub gender: Gender,
     pub nature: Nature,
     pub shiny: bool,
 }
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Static3Filter {
-    pub shiny: bool,
-    pub nature: Option<Nature>,
-    pub gender: Option<Gender>,
-    pub ivs: IvFilter,
-    pub ability: Option<u8>,
-}
+impl PkmState for Static3Result {
+    fn shiny(&self) -> bool {
+        self.shiny
+    }
 
-impl Static3Filter {
-    fn pass_filter(&self, state: &Static3Result) -> bool {
-        if self.shiny && !state.shiny {
-            return false;
-        }
+    fn nature(&self) -> Nature {
+        self.nature
+    }
 
-        if let Some(nature) = self.nature {
-            if state.nature != nature {
-                return false;
-            }
-        }
+    fn ivs(&self) -> &Ivs {
+        &self.ivs
+    }
 
-        if let Some(gender) = self.gender {
-            if state.gender != gender {
-                return false;
-            }
-        }
+    fn ability(&self) -> AbilityType {
+        self.ability
+    }
 
-        if !state.ivs.filter(&self.ivs.min_ivs, &self.ivs.max_ivs) {
-            return false;
-        }
-
-        if let Some(ability) = self.ability {
-            if ability != state.ability {
-                return false;
-            }
-        }
-
-        true
+    fn gender(&self) -> Gender {
+        self.gender
     }
 }
 
@@ -71,7 +51,7 @@ pub struct Static3Options {
     pub method4: bool,
     pub tid: u16,
     pub sid: u16,
-    pub filter: Static3Filter,
+    pub filter: PkmFilter,
 }
 
 #[wasm_bindgen]
@@ -119,7 +99,7 @@ fn generate_gen3_static_state(
         advance,
         pid,
         ivs,
-        ability: (pid & 1) as u8,
+        ability: AbilityType::from((pid & 1) as u8),
         gender: opts.species.gender_from_pid(pid),
         nature: Nature::from_pid(pid),
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
@@ -129,7 +109,7 @@ fn generate_gen3_static_state(
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::assert_list_eq;
+    use crate::{IvFilter, assert_list_eq};
 
     const ZERO_IVS: Ivs = Ivs {
         hp: 0,
@@ -160,7 +140,7 @@ mod test {
             method4: true,
             tid: 12345,
             sid: 54321,
-            filter: Static3Filter {
+            filter: PkmFilter {
                 shiny: false,
                 nature: None,
                 gender: None,
@@ -185,7 +165,7 @@ mod test {
                     spd: 3,
                     spe: 2,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Genderless,
                 nature: Nature::Naive,
                 shiny: false,
@@ -201,7 +181,7 @@ mod test {
                     spd: 24,
                     spe: 12,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Genderless,
                 nature: Nature::Naughty,
                 shiny: false,
@@ -217,7 +197,7 @@ mod test {
                     spd: 11,
                     spe: 5,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Genderless,
                 nature: Nature::Hardy,
                 shiny: false,
@@ -233,7 +213,7 @@ mod test {
                     spd: 25,
                     spe: 27,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Genderless,
                 nature: Nature::Bashful,
                 shiny: false,
@@ -249,7 +229,7 @@ mod test {
                     spd: 31,
                     spe: 19,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Genderless,
                 nature: Nature::Adamant,
                 shiny: false,
@@ -265,7 +245,7 @@ mod test {
                     spd: 27,
                     spe: 12,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Genderless,
                 nature: Nature::Brave,
                 shiny: false,
@@ -281,7 +261,7 @@ mod test {
                     spd: 31,
                     spe: 30,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Genderless,
                 nature: Nature::Naughty,
                 shiny: false,
@@ -297,7 +277,7 @@ mod test {
                     spd: 18,
                     spe: 5,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Genderless,
                 nature: Nature::Bold,
                 shiny: false,
@@ -313,7 +293,7 @@ mod test {
                     spd: 26,
                     spe: 22,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Genderless,
                 nature: Nature::Gentle,
                 shiny: false,
@@ -329,7 +309,7 @@ mod test {
                     spd: 6,
                     spe: 29,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Genderless,
                 nature: Nature::Rash,
                 shiny: false,
@@ -351,7 +331,7 @@ mod test {
             method4: false,
             tid: 12345,
             sid: 54321,
-            filter: Static3Filter {
+            filter: PkmFilter {
                 shiny: false,
                 nature: None,
                 gender: None,
@@ -376,7 +356,7 @@ mod test {
                     spd: 13,
                     spe: 14,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Female,
                 nature: Nature::Jolly,
                 shiny: false,
@@ -392,7 +372,7 @@ mod test {
                     spd: 5,
                     spe: 12,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Male,
                 nature: Nature::Hardy,
                 shiny: false,
@@ -408,7 +388,7 @@ mod test {
                     spd: 17,
                     spe: 24,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Male,
                 nature: Nature::Naughty,
                 shiny: false,
@@ -424,7 +404,7 @@ mod test {
                     spd: 9,
                     spe: 19,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Male,
                 nature: Nature::Calm,
                 shiny: false,
@@ -440,7 +420,7 @@ mod test {
                     spd: 8,
                     spe: 17,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 nature: Nature::Brave,
                 shiny: false,
@@ -456,7 +436,7 @@ mod test {
                     spd: 8,
                     spe: 10,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Male,
                 nature: Nature::Jolly,
                 shiny: false,
@@ -472,7 +452,7 @@ mod test {
                     spd: 7,
                     spe: 24,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Male,
                 nature: Nature::Gentle,
                 shiny: false,
@@ -488,7 +468,7 @@ mod test {
                     spd: 2,
                     spe: 1,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Male,
                 nature: Nature::Bashful,
                 shiny: false,
@@ -504,7 +484,7 @@ mod test {
                     spd: 2,
                     spe: 10,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Male,
                 nature: Nature::Bashful,
                 shiny: false,
@@ -520,7 +500,7 @@ mod test {
                     spd: 25,
                     spe: 1,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Male,
                 nature: Nature::Careful,
                 shiny: false,
@@ -542,7 +522,7 @@ mod test {
             method4: false,
             tid: 12345,
             sid: 54321,
-            filter: Static3Filter {
+            filter: PkmFilter {
                 shiny: false,
                 nature: None,
                 gender: None,
@@ -567,7 +547,7 @@ mod test {
                     spd: 0,
                     spe: 0,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 nature: Nature::Naive,
                 shiny: false,
@@ -583,7 +563,7 @@ mod test {
                     spd: 0,
                     spe: 0,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 nature: Nature::Naughty,
                 shiny: false,
@@ -599,7 +579,7 @@ mod test {
                     spd: 0,
                     spe: 0,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Female,
                 nature: Nature::Hardy,
                 shiny: false,
@@ -615,7 +595,7 @@ mod test {
                     spd: 0,
                     spe: 0,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 nature: Nature::Bashful,
                 shiny: false,
@@ -631,7 +611,7 @@ mod test {
                     spd: 0,
                     spe: 0,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 nature: Nature::Adamant,
                 shiny: false,
@@ -647,7 +627,7 @@ mod test {
                     spd: 0,
                     spe: 0,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 nature: Nature::Brave,
                 shiny: false,
@@ -663,7 +643,7 @@ mod test {
                     spd: 0,
                     spe: 0,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Female,
                 nature: Nature::Naughty,
                 shiny: false,
@@ -679,7 +659,7 @@ mod test {
                     spd: 0,
                     spe: 0,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Female,
                 nature: Nature::Bold,
                 shiny: false,
@@ -695,7 +675,7 @@ mod test {
                     spd: 0,
                     spe: 0,
                 },
-                ability: 1,
+                ability: AbilityType::Second,
                 gender: Gender::Female,
                 nature: Nature::Gentle,
                 shiny: false,
@@ -711,7 +691,7 @@ mod test {
                     spd: 0,
                     spe: 0,
                 },
-                ability: 0,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 nature: Nature::Rash,
                 shiny: false,
@@ -733,7 +713,7 @@ mod test {
             method4: false,
             tid: 12345,
             sid: 54321,
-            filter: Static3Filter {
+            filter: PkmFilter {
                 shiny: false,
                 nature: None,
                 gender: None,
@@ -752,7 +732,7 @@ mod test {
                 pid: 0x880A88C1,
                 shiny: false,
                 nature: Nature::Calm,
-                ability: 1,
+                ability: AbilityType::Second,
                 ivs: Ivs {
                     hp: 1,
                     atk: 27,
@@ -768,7 +748,7 @@ mod test {
                 pid: 0x6761880A,
                 shiny: false,
                 nature: Nature::Mild,
-                ability: 0,
+                ability: AbilityType::First,
                 ivs: Ivs {
                     hp: 19,
                     atk: 28,
@@ -784,7 +764,7 @@ mod test {
                 pid: 0x6B936761,
                 shiny: false,
                 nature: Nature::Rash,
-                ability: 1,
+                ability: AbilityType::Second,
                 ivs: Ivs {
                     hp: 17,
                     atk: 12,
@@ -800,7 +780,7 @@ mod test {
                 pid: 0xC1916B93,
                 shiny: false,
                 nature: Nature::Sassy,
-                ability: 1,
+                ability: AbilityType::Second,
                 ivs: Ivs {
                     hp: 10,
                     atk: 9,
@@ -816,7 +796,7 @@ mod test {
                 pid: 0x012AC191,
                 shiny: false,
                 nature: Nature::Docile,
-                ability: 1,
+                ability: AbilityType::Second,
                 ivs: Ivs {
                     hp: 26,
                     atk: 15,

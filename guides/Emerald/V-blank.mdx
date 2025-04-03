@@ -1,7 +1,7 @@
 ---
 title: "V-Blank"
 description: "V-Blank"
-slug: "v-blank"
+slug: "gba-v-blank"
 category: "Technical Documentation"
 tag: "any"
 addedOn: "2025-04-02"
@@ -53,30 +53,4 @@ The generation of stationary takes very few instructions, which makes v-blank ve
 
 In the other hand, wild Pokémon generation with a Synchronize leader can take a lot of instructions, which makes v-blank a lot more common.
 
-Check TODO for more information about the concrete impact of v-blanks on Pokémon generation.
-
-<!--
-
-
-## Predicting V-blanks
-A simplified game repeat loop is:
-
-```
-Refresh image displayed
-Update the audio
-Check for button press
-If player is holding A, then Generate Pokémon
-Do nothing for the remaining instructions
-```
-
-To predict when a v-blank will occur during a Pokémon generation step, we need to know:
- 1- How many instruction cycles have passed before the Pokémon generation step.
- 2- How many instruction cycles each of the Pokémon generation steps take.
-
-The 1st point is particulary hard to predict because updating the audio is highly variable (between 35'000 and 65'000 cycles depending on where the song track is).
-
-The 2nd point, while also very complex, is a lot more predictable because all the factors are known. For more details, check TODO Researcher Documentation.
-
-Fortunately for us, even though the exact occurence of v-blanks is hard to predict, it often falls in the approximatively same timing.
-
--->
+Check [Method 1-4](gba-methods) for more information about the concrete impact of v-blanks on Pokémon generation.

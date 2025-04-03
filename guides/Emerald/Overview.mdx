@@ -13,8 +13,10 @@ addedOn: "2025-04-01"
 
   - This means RNG manipulation requires pressing A with a 1/60th second precision, making it more difficult than the DS generation.
   - RNG manipulation for very rare traits can require waiting for a very long time (1h+ for each attempt).
+  - v-blanks can cause hard to predict RNG frame advances during the Pokémon generation, altering the outcome unexpectely
+    - Those unexpected frame advances are the source of the differences between Methods 1-4.
 
-- Still, they are very good reason to RNG manipulate in GBA games, most notably:
+- Still, they are good reasons to RNG manipulate in GBA games, most notably:
   - Required for Ribbon Master (Obtaining all Ribbon on a Pokémon)
   - Only way to obtain Shiny Mew and Shiny Deoxys
 
@@ -27,18 +29,24 @@ addedOn: "2025-04-01"
 
 ## Key Differences between GBA Games
 
-| Game                | Initial Seed                                               |
-| ------------------- | ---------------------------------------------------------- |
-| Ruby & Sapphire     | With live battery: Random.<br/>With dead battery: Always 0 |
-| Emerald             | Always 0                                                   |
-| FireRed & LeafGreen | Random                                                     |
+| Game                | Initial Seed                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| Ruby & Sapphire     | With live battery: Random.<br/>With dead battery: Always 5A0 |
+| Emerald             | Always 0                                                     |
+| FireRed & LeafGreen | Random                                                       |
 
-Pokémon Emerald is the easiest game for RNG manipulation for
+On retail or emulator without tool-assistance, Pokémon Emerald is the easiest game for RNG manipulation for
 - Wild Pokémon
 - Stationnary Pokémon
 - Egg Pokémon
 
-TODO: say what RS/FRLG is good for
+Ruby and Sapphire with a dead battery is also useful:
+  - Because the initial seed is different than Emerald, the wait time for the same outcome as Emerald can occur more quickly.
+  - Access to level 45 Groudon and Kyogre (level 70 on Emerald)
+
+FireRed and LeafGreen also have specific purposes such as
+  - Only way to get Shiny Mewtwo, Unown
+  - Easiest way to get Shiny Articuno, Zapdos, Moltres
 
 ## Interoperability
 - Pokémon can be traded between GBA and GameCube games.

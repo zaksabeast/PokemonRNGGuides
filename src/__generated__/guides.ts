@@ -54,45 +54,13 @@ export const guides = {
         ),
     ),
   },
-  "/zh-gen2-starters": {
-    meta: {
-      title: "水晶初始宝可梦乱数",
-      description: "在水晶里获得异色初始宝可梦",
-      slug: "/zh-gen2-starters",
-      isRoughDraft: false,
-      tag: "cfw",
-      hideFromNavDrawer: true,
-      addedOn: null,
-      file: "guides/Gold, Silver, Crystal/Starter.mdx",
-      category: "Gold, Silver, Crystal",
-    },
-    Guide: React.lazy(
-      () => import("~/../guides/Gold, Silver, Crystal/Starter.mdx"),
-    ),
-  },
-  "/gen2-celebi": {
+  "/pcalc-xy-friend-safari": {
     meta: {
       title: "Friend Safari RNG",
       description: "Get shiny 6IV friend safari Pokémon, like Ditto!",
       slug: "/pcalc-xy-friend-safari",
       isRoughDraft: false,
       tag: "cfw",
-      hideFromNavDrawer: false,
-      addedOn: "2025-03-02",
-      file: "guides/Gold, Silver, Crystal/Celebi.mdx",
-      category: "Gold, Silver, Crystal",
-    },
-    Guide: React.lazy(
-      () => import("~/../guides/Gold, Silver, Crystal/Celebi.mdx"),
-    ),
-  },
-  "/gen2-research": {
-    meta: {
-      title: "Gen 2 RNG Research",
-      description: "Help research the Gen 2 RNG",
-      slug: "/gen2-research",
-      isRoughDraft: true,
-      tag: "info",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides\\X and Y\\Friend Safari RNG Guide.mdx",
@@ -155,7 +123,7 @@ export const guides = {
         ),
     ),
   },
-  "/emerald-sid-feebas": {
+  "/retail-usum-egg-no-mmsc": {
     meta: {
       title: "Egg RNG Guide without Masuda and/or Shiny Charm",
       description:
@@ -482,6 +450,22 @@ export const guides = {
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
     ),
   },
+  "/zh-install-pokereader": {
+    meta: {
+      title: "3DS安装PokeReader",
+      description: "在3DS上安装工具来帮助乱数宝可梦",
+      slug: "/zh-install-pokereader",
+      isRoughDraft: false,
+      tag: "cfw",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides\\Tools and Emulators\\3DS PokeReader.mdx",
+      category: "Tools and Emulators",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
+    ),
+  },
   "/install-capturesight": {
     meta: {
       title: "How to Install CaptureSight",
@@ -613,6 +597,23 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/mGBA Setup.mdx"),
+    ),
+  },
+  "/no-dolphin-patch": {
+    meta: {
+      title: "No Dolphin Patch",
+      description:
+        "A patch to skip needing Dolphin to obtain Wishmaker Jirachi",
+      slug: "/no-dolphin-patch",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-03",
+      file: "guides\\Tools and Emulators\\No Dolphin Patch.mdx",
+      category: "Tools and Emulators",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/No Dolphin Patch.mdx"),
     ),
   },
   "/ntr-helper-usage": {
@@ -1481,6 +1482,22 @@ export const guides = {
       () => import("~/../guides/Gold, Silver, Crystal/Celebi.mdx"),
     ),
   },
+  "/zh-gen2-celebi": {
+    meta: {
+      title: "时拉比",
+      description: "如何获得异色时拉比",
+      slug: "/zh-gen2-celebi",
+      isRoughDraft: false,
+      tag: "cfw",
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-27",
+      file: "guides\\Gold, Silver, Crystal\\Celebi.mdx",
+      category: "Gold, Silver, Crystal",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gold, Silver, Crystal/Celebi.mdx"),
+    ),
+  },
   "/gen2-research": {
     meta: {
       title: "Gen 2 RNG Research",
@@ -1518,6 +1535,22 @@ export const guides = {
       title: "RNG de Iniciales en Cristal",
       description: "Get Shiny Starters in Crystal",
       slug: "/es-gen2-starters",
+      isRoughDraft: false,
+      tag: "cfw",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides\\Gold, Silver, Crystal\\Starter.mdx",
+      category: "Gold, Silver, Crystal",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gold, Silver, Crystal/Starter.mdx"),
+    ),
+  },
+  "/zh-gen2-starters": {
+    meta: {
+      title: "水晶初始宝可梦乱数",
+      description: "在水晶里获得异色初始宝可梦",
+      slug: "/zh-gen2-starters",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: true,
@@ -1740,7 +1773,21 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
   },
-  "/misc-3ds-installing-pcalc": {
+  "/emerald-overview": {
+    meta: {
+      title: "Overview",
+      description: "Overview of Pokémon Emerald",
+      category: "Emerald",
+      slug: "/emerald-overview",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-03",
+      file: "guides\\Emerald\\Emerald Overview.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Emerald Overview.mdx")),
+  },
+  "/emerald-sid-feebas": {
     meta: {
       title: "Find SID with Feebas",
       description: "How to find your Secret ID (SID) in Emerald using Feebas.",
@@ -1815,7 +1862,35 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
-  "/install-pokereader-emu": {
+  "/gba-methods": {
+    meta: {
+      title: "Methods 1-4",
+      description: "Understanding Methods 1-4",
+      category: "Emerald",
+      slug: "/gba-methods",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-03",
+      file: "guides\\Emerald\\GBA Methods.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/GBA Methods.mdx")),
+  },
+  "/gba-overview": {
+    meta: {
+      title: "Overview",
+      description: "Overview of GBA RNG",
+      category: "GBA Overview",
+      slug: "/gba-overview",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-01",
+      file: "guides\\Emerald\\GBA Overview.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/GBA Overview.mdx")),
+  },
+  "/emerald-static-generator": {
     meta: {
       title: "Emerald Static3 Generator",
       description: "Generator for Static encounters in Emerald",
@@ -1863,19 +1938,69 @@ export const guides = {
       () => import("~/../guides/Emerald/Gen 3 Static Generator.mdx"),
     ),
   },
-  "/gba-overview": {
+  "/rs-tidsid-generator": {
     meta: {
-      title: "Overview",
-      description: "Overview of GBA RNG",
-      category: "GBA Overview",
-      slug: "/gba-overview",
-      isRoughDraft: false,
+      title: "RS TID and SID Generator",
+      description: "Generator for TID and SID in RS",
+      category: "Ruby and Sapphire",
+      slug: "/rs-tidsid-generator",
+      isRoughDraft: true,
       tag: "any",
       hideFromNavDrawer: false,
-      addedOn: "2025-04-01",
-      file: "guides\\Emerald\\Overview.mdx",
+      addedOn: null,
+      file: "guides\\Emerald\\Gen 3 TID SID Generator.mdx",
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Overview.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
+    ),
+  },
+  "/frlg-tidsid-generator": {
+    meta: {
+      title: "FRLG TID and SID Generator",
+      description: "Generator for TID and SID in FRLG",
+      category: "FireRed and LeafGreen",
+      slug: "/frlg-tidsid-generator",
+      isRoughDraft: true,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides\\Emerald\\Gen 3 TID SID Generator.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
+    ),
+  },
+  "/emerald-tidsid-generator": {
+    meta: {
+      title: "Emerald TID and SID Generator",
+      description: "Generator for TID/SID in Emerald",
+      category: "Emerald",
+      slug: "/emerald-tidsid-generator",
+      isRoughDraft: true,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides\\Emerald\\Gen 3 TID SID Generator.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
+    ),
+  },
+  "/xdcolo-tidsid-generator": {
+    meta: {
+      title: "XD and Colo TID and SID Generator",
+      description: "Generator for TID and SID in XD and Colo",
+      category: "Gamecube",
+      slug: "/xdcolo-tidsid-generator",
+      isRoughDraft: true,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides\\Emerald\\Gen 3 TID SID Generator.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
+    ),
   },
   "/emerald-painting-rng": {
     meta: {
@@ -1906,6 +2031,20 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Retail Wild RNG.mdx")),
   },
+  "/gba-vblank": {
+    meta: {
+      title: "VBlank",
+      description: "Understanding VBlanks",
+      category: "Emerald",
+      slug: "/gba-vblank",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-02",
+      file: "guides\\Emerald\\Vblank.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Vblank.mdx")),
+  },
   "/dppt-advance-rng": {
     meta: {
       title: "Advancing the RNG",
@@ -1915,6 +2054,25 @@ export const guides = {
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides\\Diamond, Pearl, and Platinum\\Advancing the RNG.mdx",
+      category: "Diamond, Pearl, and Platinum",
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Diamond, Pearl, and Platinum/Advancing the RNG.mdx"
+        ),
+    ),
+  },
+  "/zh-dppt-advance-rng": {
+    meta: {
+      title: "乱数的帧数推进方法",
+      description: "推进乱数帧数的不同方法及影响帧数的事件机制",
+      slug: "/zh-dppt-advance-rng",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
       addedOn: null,
       file: "guides\\Diamond, Pearl, and Platinum\\Advancing the RNG.mdx",
       category: "Diamond, Pearl, and Platinum",
@@ -1991,6 +2149,23 @@ export const guides = {
         import("~/../guides/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx"),
     ),
   },
+  "/zh-dppt-initial-seed": {
+    meta: {
+      title: "初始种子乱数",
+      description: "如何在《钻石, 珍珠, 白金》中进行初始种子乱数",
+      slug: "/zh-dppt-initial-seed",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides\\Diamond, Pearl, and Platinum\\Initial Seed RNG.mdx",
+      category: "Diamond, Pearl, and Platinum",
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx"),
+    ),
+  },
   "/emulator-dppt-pokefinder-setup": {
     meta: {
       title: "PokeFinder Setup",
@@ -2016,6 +2191,22 @@ export const guides = {
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides\\Diamond, Pearl, and Platinum\\PokeRadar.mdx",
+      category: "Diamond, Pearl, and Platinum",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Diamond, Pearl, and Platinum/PokeRadar.mdx"),
+    ),
+  },
+  "/zh-dppt-pokeradar-rng": {
+    meta: {
+      title: "宝可追踪乱数",
+      description: "两种不同的宝可追踪乱数方法",
+      slug: "/zh-dppt-pokeradar-rng",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
       addedOn: null,
       file: "guides\\Diamond, Pearl, and Platinum\\PokeRadar.mdx",
       category: "Diamond, Pearl, and Platinum",
@@ -2152,7 +2343,7 @@ export const guides = {
         ),
     ),
   },
-  "/emulator-dppt-tid-sid": {
+  "/cfw-bdsp-egg": {
     meta: {
       title: "Egg RNG",
       description: "How to RNG Eggs with CaptureSight",
@@ -2238,7 +2429,7 @@ export const guides = {
       () => import("~/../guides/Black and White/Entralink.mdx"),
     ),
   },
-  "/emulator-dppt-egg": {
+  "/emulator-bw-find-ds-parameters": {
     meta: {
       title: "How To Find DS Parameters in Generation 5",
       description: "Get your DS Parameters for Generation 5 RNG.",
@@ -2304,7 +2495,7 @@ export const guides = {
         ),
     ),
   },
-  "/emulator-bw-roamers": {
+  "/emulator-bw-white-forest": {
     meta: {
       title: "White Forest RNG",
       description: "White Forest RNG",
@@ -2407,41 +2598,12 @@ export const guides = {
 
 export const guideSlugs = [
   z.literal("/"),
-  z.literal("/gen2-starters"),
-  z.literal("/es-gen2-starters"),
-  z.literal("/gen2-celebi"),
-  z.literal("/gen2-research"),
-  z.literal("/emulator-emerald-egg"),
-  z.literal("/e-tips-rng"),
-  z.literal("/emerald-painting-rng"),
-  z.literal("/emerald-sid-feebas"),
-  z.literal("/rs-sid-feebas"),
-  z.literal("/gen3-sid"),
-  z.literal("/rs-gen3-sid"),
-  z.literal("/frlg-gen3-sid"),
-  z.literal("/emerald-static-generator"),
-  z.literal("/rs-static-generator"),
-  z.literal("/frlg-static-generator"),
-  z.literal("/retail-emerald-wild"),
-  z.literal("/hgss-rng-advance"),
-  z.literal("/emulator-hgss-tid-sid"),
-  z.literal("/emulator-hgss-cute-charm"),
-  z.literal("/emulator-hgss-breeding"),
-  z.literal("/emulator-hgss-special-wild"),
-  z.literal("/hgss-initial-seed"),
-  z.literal("/emulator-hgss-egg"),
-  z.literal("/emulator-hgss-wondercard"),
-  z.literal("/emulator-hgss-wild"),
-  z.literal("/emulator-hgss-stationary"),
-  z.literal("/emulator-frlg-egg"),
-  z.literal("/frlg-tips-rng"),
-  z.literal("/emulator-frlg-wild-v2"),
-  z.literal("/frlg-seeding-bot"),
-  z.literal("/emulator-frlg-wild"),
-  z.literal("/emulator-frlg-stationary"),
-  z.literal("/emulator-flrg-stationary-and-gift"),
-  z.literal("/retail-usum-timeline"),
-  z.literal("/retail-usum-sos"),
+  z.literal("/retail-xy-egg-mmsc"),
+  z.literal("/retail-xy-egg-no-mmsc"),
+  z.literal("/pcalc-xy-friend-safari"),
+  z.literal("/xy-pokeradar"),
+  z.literal("/pcalc-xy-tid"),
+  z.literal("/retail-usum-egg-mmsc"),
   z.literal("/retail-usum-egg-no-mmsc"),
   z.literal("/retail-usum-initial-seed-clocks"),
   z.literal("/retail-usum-egg-seed-no-cfw"),
@@ -2461,16 +2623,17 @@ export const guideSlugs = [
   z.literal("/transporter-rng-offline"),
   z.literal("/transporter-rng"),
   z.literal("/install-pokereader"),
+  z.literal("/zh-install-pokereader"),
   z.literal("/install-capturesight"),
   z.literal("/citrarng-setup"),
   z.literal("/desmume-setup"),
   z.literal("/install-pokereader-emu"),
   z.literal("/misc-dolphin-connect-vba"),
+  z.literal("/misc-dolphin-gba-bios"),
   z.literal("/misc-3ds-installing-pcalc"),
   z.literal("/mgba-setup"),
-  z.literal("/transporter-patches"),
-  z.literal("/install-pokereader"),
-  z.literal("/install-pokereader-emu"),
+  z.literal("/no-dolphin-patch"),
+  z.literal("/ntr-helper-usage"),
   z.literal("/mystic-timer"),
   z.literal("/transporter-patches"),
   z.literal("/misc-3ds-ips-luma-citra"),
@@ -2521,9 +2684,11 @@ export const guideSlugs = [
   z.literal("/emulator-hgss-wild"),
   z.literal("/emulator-hgss-wondercard"),
   z.literal("/gen2-celebi"),
+  z.literal("/zh-gen2-celebi"),
   z.literal("/gen2-research"),
   z.literal("/gen2-starters"),
   z.literal("/es-gen2-starters"),
+  z.literal("/zh-gen2-starters"),
   z.literal("/pal-xd-eevee"),
   z.literal("/channel-jirachi"),
   z.literal("/emulator-colosseum-general"),
@@ -2537,31 +2702,45 @@ export const guideSlugs = [
   z.literal("/emulator-frlg-wild-v2"),
   z.literal("/e-tips-rng"),
   z.literal("/emulator-emerald-egg"),
+  z.literal("/emerald-overview"),
   z.literal("/emerald-sid-feebas"),
   z.literal("/rs-sid-feebas"),
   z.literal("/gen3-sid"),
   z.literal("/rs-gen3-sid"),
   z.literal("/frlg-gen3-sid"),
+  z.literal("/gba-methods"),
+  z.literal("/gba-overview"),
   z.literal("/emerald-static-generator"),
   z.literal("/rs-static-generator"),
   z.literal("/frlg-static-generator"),
-  z.literal("/gba-overview"),
+  z.literal("/rs-tidsid-generator"),
+  z.literal("/frlg-tidsid-generator"),
+  z.literal("/emerald-tidsid-generator"),
+  z.literal("/xdcolo-tidsid-generator"),
   z.literal("/emerald-painting-rng"),
   z.literal("/retail-emerald-wild"),
+  z.literal("/gba-vblank"),
   z.literal("/dppt-advance-rng"),
-  z.literal("/emulator-dppt-tid-sid"),
+  z.literal("/zh-dppt-advance-rng"),
   z.literal("/emulator-dppt-cute-charm"),
   z.literal("/emulator-dppt-egg"),
   z.literal("/dppt-setup-rng"),
   z.literal("/dppt-initial-seed"),
-  z.literal("/emulator-dppt-egg"),
-  z.literal("/dppt-wild"),
+  z.literal("/zh-dppt-initial-seed"),
   z.literal("/emulator-dppt-pokefinder-setup"),
   z.literal("/dppt-pokeradar-rng"),
-  z.literal("/emulator-bw-roamers"),
-  z.literal("/emulator-bw-wild"),
-  z.literal("/emulator-bw-find-ds-parameters"),
-  z.literal("/emulator-bw-white-forest"),
+  z.literal("/zh-dppt-pokeradar-rng"),
+  z.literal("/emulator-dppt-stationary"),
+  z.literal("/emulator-dppt-tid-sid"),
+  z.literal("/dppt-wild"),
+  z.literal("/bdsp-advance-rng"),
+  z.literal("/bdsp-emulator-setup"),
+  z.literal("/bdsp-pokefinder"),
+  z.literal("/bdsp-chatot"),
+  z.literal("/cfw-bdsp-egg"),
+  z.literal("/cfw-bdsp-stationary"),
+  z.literal("/cfw-bdsp-tidandsid"),
+  z.literal("/cfw-bdsp-wild"),
   z.literal("/emulator-bw-entralink"),
   z.literal("/emulator-bw-find-ds-parameters"),
   z.literal("/retail-bw-entralink"),

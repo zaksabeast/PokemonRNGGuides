@@ -2,10 +2,12 @@
 title: "VBlank"
 description: "Understanding VBlanks"
 slug: "gba-vblank"
-category: "Technical Documentation"
+category: "Emerald"
 tag: "any"
 addedOn: "2025-04-02"
 ---
+
+Gist: Understanding what are Vblanks and their impact on Pokémon generation.
 
 ## What are Vblanks?
 
@@ -15,38 +17,38 @@ When a vblank interrupt occurs, the regular game program execution is paused, vb
 
 In GBA Pokémon games, the vblank associated code updates the RNG frame by 1. This means that every 1/60th of a second, the RNG frame updates by 1.
 
-
 ## Impact of vblanks
+
 Here's the simplified logic for Pokémon generation:
 
-| Step          | Frame At Step Start | Frame At Step End |
-| ----------------- | --------------------|-------------------|
-| Generate PID      | 1      | 2 |
-| Generate IVs      | 2      | 3 |
+| Step         | Frame At Step Start |
+| ------------ | ------------------- |
+| Generate PID | 1                   |
+| Generate IVs | 2                   |
 
 In most cases, this is exactly what happens, and the Pokémon is generating with RNG frame 1 and 2.
 
 However, in some rare cases, a vblank occurs seemingly out of nowhere and alters the generation:
 
-| Step          | Frame At Step Start | Frame At Step End |
-| ----------------- | --------------------|-------------------|
-| Generate PID               | 1      | 2 |
-| VBLANK: Update RNG frame  | 2  | 3 |
-| Generate IVs               | 3  | 4 |
+| Step                     | Frame At Step Start |
+| ------------------------ | ------------------- |
+| Generate PID             | 1                   |
+| <span style={{color:'green',fontWeight:'bold'}}>VBLANK: Update RNG frame</span> | <span style={{color:'green',fontWeight:'bold'}}>2</span>                   |
+| Generate IVs             | <span style={{color:'red',fontWeight:'bold'}}>3</span>                   |
 
 Even though the Pokémon generation started on the same frame, the resulting IVs are different because they were generated with frame 3 instead of frame 2.
 
-## Understanding Vblanks Frequency
-As stated before, a vblank occurs every 1/60th of a second, more specifically every 280'896 CPU instruction cycles.
+## Vblanks Frequency
 
-Every operation performed by the GBA (ex: addition, loading data) takes a certain number of CPU instruction cycles.
+As stated before, a vblank occurs every 1/60th of a second, more specifically every 280'896 CPU instruction cycles. Every operation performed by the GBA (ex: addition, loading data) takes a certain number of CPU instruction cycles.
 
 The more instruction cycles a Pokémon generation step takes, the more likely a vblank will occur during it.
-  - Ex: A step that takes ~28'000 cycles will have ~10% chance to have a vblank.
-  - Ex: A step that takes 300'000 cycles is guaranteed to have at least 1 vblank, possibly 2.
+
+- Ex: A step that takes 28'000 cycles will have ~10% chance to have a vblank.
+- Ex: A step that takes 300'000 cycles is guaranteed to have at least 1 vblank, possibly 2.
 
 The generation of a stationary Pokémon takes few instructions, which makes vblank rare.
 
-In the other hand, wild Pokémon generation with a Synchronize leader can take a lot of instructions, which makes vblank a lot more common.
+In the other hand, wild Pokémon generation with a Synchronize lead can take a lot of instructions, which makes vblanks a lot more common.
 
 Fortunately, in most cases, vblanks occuring during the Pokémon generation don't actually impact the resulting Pokémon. But sometimes, they do impact and cause what we call [Methods 2-4](/gba-methods).

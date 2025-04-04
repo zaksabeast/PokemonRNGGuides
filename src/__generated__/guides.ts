@@ -54,13 +54,45 @@ export const guides = {
         ),
     ),
   },
-  "/pcalc-xy-friend-safari": {
+  "/zh-gen2-starters": {
+    meta: {
+      title: "水晶初始宝可梦乱数",
+      description: "在水晶里获得异色初始宝可梦",
+      slug: "/zh-gen2-starters",
+      isRoughDraft: false,
+      tag: "cfw",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Gold, Silver, Crystal/Starter.mdx",
+      category: "Gold, Silver, Crystal",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gold, Silver, Crystal/Starter.mdx"),
+    ),
+  },
+  "/gen2-celebi": {
     meta: {
       title: "Friend Safari RNG",
       description: "Get shiny 6IV friend safari Pokémon, like Ditto!",
       slug: "/pcalc-xy-friend-safari",
       isRoughDraft: false,
       tag: "cfw",
+      hideFromNavDrawer: false,
+      addedOn: "2025-03-02",
+      file: "guides/Gold, Silver, Crystal/Celebi.mdx",
+      category: "Gold, Silver, Crystal",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gold, Silver, Crystal/Celebi.mdx"),
+    ),
+  },
+  "/gen2-research": {
+    meta: {
+      title: "Gen 2 RNG Research",
+      description: "Help research the Gen 2 RNG",
+      slug: "/gen2-research",
+      isRoughDraft: true,
+      tag: "info",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides\\X and Y\\Friend Safari RNG Guide.mdx",
@@ -123,7 +155,7 @@ export const guides = {
         ),
     ),
   },
-  "/retail-usum-egg-no-mmsc": {
+  "/emerald-sid-feebas": {
     meta: {
       title: "Egg RNG Guide without Masuda and/or Shiny Charm",
       description:
@@ -1708,7 +1740,7 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
   },
-  "/emerald-sid-feebas": {
+  "/misc-3ds-installing-pcalc": {
     meta: {
       title: "Find SID with Feebas",
       description: "How to find your Secret ID (SID) in Emerald using Feebas.",
@@ -1783,7 +1815,7 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
-  "/emerald-static-generator": {
+  "/install-pokereader-emu": {
     meta: {
       title: "Emerald Static3 Generator",
       description: "Generator for Static encounters in Emerald",
@@ -2120,7 +2152,7 @@ export const guides = {
         ),
     ),
   },
-  "/cfw-bdsp-egg": {
+  "/emulator-dppt-tid-sid": {
     meta: {
       title: "Egg RNG",
       description: "How to RNG Eggs with CaptureSight",
@@ -2206,7 +2238,7 @@ export const guides = {
       () => import("~/../guides/Black and White/Entralink.mdx"),
     ),
   },
-  "/emulator-bw-find-ds-parameters": {
+  "/emulator-dppt-egg": {
     meta: {
       title: "How To Find DS Parameters in Generation 5",
       description: "Get your DS Parameters for Generation 5 RNG.",
@@ -2272,7 +2304,7 @@ export const guides = {
         ),
     ),
   },
-  "/emulator-bw-white-forest": {
+  "/emulator-bw-roamers": {
     meta: {
       title: "White Forest RNG",
       description: "White Forest RNG",
@@ -2375,12 +2407,41 @@ export const guides = {
 
 export const guideSlugs = [
   z.literal("/"),
-  z.literal("/retail-xy-egg-mmsc"),
-  z.literal("/retail-xy-egg-no-mmsc"),
-  z.literal("/pcalc-xy-friend-safari"),
-  z.literal("/xy-pokeradar"),
-  z.literal("/pcalc-xy-tid"),
-  z.literal("/retail-usum-egg-mmsc"),
+  z.literal("/gen2-starters"),
+  z.literal("/es-gen2-starters"),
+  z.literal("/gen2-celebi"),
+  z.literal("/gen2-research"),
+  z.literal("/emulator-emerald-egg"),
+  z.literal("/e-tips-rng"),
+  z.literal("/emerald-painting-rng"),
+  z.literal("/emerald-sid-feebas"),
+  z.literal("/rs-sid-feebas"),
+  z.literal("/gen3-sid"),
+  z.literal("/rs-gen3-sid"),
+  z.literal("/frlg-gen3-sid"),
+  z.literal("/emerald-static-generator"),
+  z.literal("/rs-static-generator"),
+  z.literal("/frlg-static-generator"),
+  z.literal("/retail-emerald-wild"),
+  z.literal("/hgss-rng-advance"),
+  z.literal("/emulator-hgss-tid-sid"),
+  z.literal("/emulator-hgss-cute-charm"),
+  z.literal("/emulator-hgss-breeding"),
+  z.literal("/emulator-hgss-special-wild"),
+  z.literal("/hgss-initial-seed"),
+  z.literal("/emulator-hgss-egg"),
+  z.literal("/emulator-hgss-wondercard"),
+  z.literal("/emulator-hgss-wild"),
+  z.literal("/emulator-hgss-stationary"),
+  z.literal("/emulator-frlg-egg"),
+  z.literal("/frlg-tips-rng"),
+  z.literal("/emulator-frlg-wild-v2"),
+  z.literal("/frlg-seeding-bot"),
+  z.literal("/emulator-frlg-wild"),
+  z.literal("/emulator-frlg-stationary"),
+  z.literal("/emulator-flrg-stationary-and-gift"),
+  z.literal("/retail-usum-timeline"),
+  z.literal("/retail-usum-sos"),
   z.literal("/retail-usum-egg-no-mmsc"),
   z.literal("/retail-usum-initial-seed-clocks"),
   z.literal("/retail-usum-egg-seed-no-cfw"),
@@ -2405,10 +2466,11 @@ export const guideSlugs = [
   z.literal("/desmume-setup"),
   z.literal("/install-pokereader-emu"),
   z.literal("/misc-dolphin-connect-vba"),
-  z.literal("/misc-dolphin-gba-bios"),
   z.literal("/misc-3ds-installing-pcalc"),
   z.literal("/mgba-setup"),
-  z.literal("/ntr-helper-usage"),
+  z.literal("/transporter-patches"),
+  z.literal("/install-pokereader"),
+  z.literal("/install-pokereader-emu"),
   z.literal("/mystic-timer"),
   z.literal("/transporter-patches"),
   z.literal("/misc-3ds-ips-luma-citra"),
@@ -2487,23 +2549,19 @@ export const guideSlugs = [
   z.literal("/emerald-painting-rng"),
   z.literal("/retail-emerald-wild"),
   z.literal("/dppt-advance-rng"),
+  z.literal("/emulator-dppt-tid-sid"),
   z.literal("/emulator-dppt-cute-charm"),
   z.literal("/emulator-dppt-egg"),
   z.literal("/dppt-setup-rng"),
   z.literal("/dppt-initial-seed"),
+  z.literal("/emulator-dppt-egg"),
+  z.literal("/dppt-wild"),
   z.literal("/emulator-dppt-pokefinder-setup"),
   z.literal("/dppt-pokeradar-rng"),
-  z.literal("/emulator-dppt-stationary"),
-  z.literal("/emulator-dppt-tid-sid"),
-  z.literal("/dppt-wild"),
-  z.literal("/bdsp-advance-rng"),
-  z.literal("/bdsp-emulator-setup"),
-  z.literal("/bdsp-pokefinder"),
-  z.literal("/bdsp-chatot"),
-  z.literal("/cfw-bdsp-egg"),
-  z.literal("/cfw-bdsp-stationary"),
-  z.literal("/cfw-bdsp-tidandsid"),
-  z.literal("/cfw-bdsp-wild"),
+  z.literal("/emulator-bw-roamers"),
+  z.literal("/emulator-bw-wild"),
+  z.literal("/emulator-bw-find-ds-parameters"),
+  z.literal("/emulator-bw-white-forest"),
   z.literal("/emulator-bw-entralink"),
   z.literal("/emulator-bw-find-ds-parameters"),
   z.literal("/retail-bw-entralink"),

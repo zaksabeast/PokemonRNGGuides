@@ -10,7 +10,7 @@ addedOn: "2025-04-03"
 This article assumes you have already read [Understanding VBlanks](/gba-vblank)
 
 ## Method 1
-Here's the game logic for generating a Pokemon:
+Here's the game logic for generating a Pokémon:
 
 | Step          | Frame At Step Start | Frame At Step End |
 | ----------------- | --------------------|-------------------|
@@ -19,7 +19,7 @@ Here's the game logic for generating a Pokemon:
 | Generate Def, Atk, HP IVs      | 3      | 4 |
 | Generate SpD, SpA, Spe IVs      | 4      | 5 |
 
-Method 1 is when a Pokemon is generated and no vblanks occur. The Pokemon is generated using the value of the RNG of frames 1,2,3,4.
+Method 1 is when a Pokémon is generated and no vblanks occur. The Pokémon is generated using the value of the RNG of frames 1,2,3,4.
 
 ## Method 2
 Method 2 is when a vblank occurs between the steps "Generate 2nd half PID" and "Generate Def, Atk, HP IVs".
@@ -32,7 +32,7 @@ Method 2 is when a vblank occurs between the steps "Generate 2nd half PID" and "
 | Generate Def, Atk, HP IVs      | 4      | 5 |
 | Generate SpD, SpA, Spe IVs      | 5      | 6 |
 
-The Pokemon is generated using the value of the RNG of frames 1,2,4,5. The RNG value of frame 3 is unused.
+The Pokémon is generated using the value of the RNG of frames 1,2,4,5. The RNG value of frame 3 is unused.
 
 
 ## Method 4
@@ -46,7 +46,7 @@ Method 4 is when a vblank occurs between the steps "Generate Def, Atk, HP IVs" a
 | VBLANK: Update RNG frame  | 4 | 5 |
 | Generate SpD, SpA, Spe IVs      | 5      | 6 |
 
-The Pokemon is generated using the value of the RNG of frames 1,2,3,5. The RNG value of frame 4 is unused.
+The Pokémon is generated using the value of the RNG of frames 1,2,3,5. The RNG value of frame 4 is unused.
 
 
 

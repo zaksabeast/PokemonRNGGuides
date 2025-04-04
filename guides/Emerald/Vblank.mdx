@@ -13,7 +13,7 @@ A vblank interrupt is the mechanism used by the GBA to refresh the screen. It is
 
 When a vblank interrupt occurs, the regular game program execution is paused, vblank associated code is executed, then the regular game program resumes.
 
-In GBA Pokemon games, the vblank associated code updates the RNG frame by 1. This means that every 1/60th of a second, the RNG frame updates by 1.
+In GBA Pokémon games, the vblank associated code updates the RNG frame by 1. This means that every 1/60th of a second, the RNG frame updates by 1.
 
 
 ## Impact of vblanks
@@ -24,7 +24,7 @@ Here's the simplified logic for Pokémon generation:
 | Generate PID      | 1      | 2 |
 | Generate IVs      | 2      | 3 |
 
-In most cases, this is exactly what happens, and the Pokemon is generating with RNG frame 1 and 2.
+In most cases, this is exactly what happens, and the Pokémon is generating with RNG frame 1 and 2.
 
 However, in some rare cases, a vblank occurs seemingly out of nowhere and alters the generation:
 
@@ -45,7 +45,7 @@ The more instruction cycles a Pokémon generation step takes, the more likely a 
   - Ex: A step that takes ~28'000 cycles will have ~10% chance to have a vblank.
   - Ex: A step that takes 300'000 cycles is guaranteed to have at least 1 vblank, possibly 2.
 
-The generation of a stationary Pokemon takes few instructions, which makes vblank rare.
+The generation of a stationary Pokémon takes few instructions, which makes vblank rare.
 
 In the other hand, wild Pokémon generation with a Synchronize leader can take a lot of instructions, which makes vblank a lot more common.
 

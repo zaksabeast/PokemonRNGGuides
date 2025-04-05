@@ -127,6 +127,10 @@ const main = async () => {
     }
   }
 
+  guides.sort((lhs, rhs) => {
+    return lhs.slug.localeCompare(rhs.slug);
+  });
+
   const existingSlugs = Object.keys(existingGuides);
   const newSlugs = guides.map((guide) => guide.slug);
   const removedSlugs = difference(existingSlugs, newSlugs);

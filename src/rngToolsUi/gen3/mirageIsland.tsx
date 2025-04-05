@@ -1,22 +1,20 @@
-import {
-  rngTools,
-  Static3Result,
-  Species,
-  Gender,
-  Nature,
-  Ivs,
-} from "~/rngTools";
+import { Formik, FormikConfig } from "formik";
 import {
   Field,
   FormikInput,
   FormikSelect,
   FormikSwitch,
+  Flex,
+  FormFieldTable,
+  Form,
+  ResultTable,
+  Button,
   IvInput,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import { RadioGroup } from "../../components/radio";
+
 import {
   DecimalString,
   fromDecimalString,
@@ -25,58 +23,108 @@ import {
   toDecimalString,
   toHexString,
 } from "~/utils/number";
-import { nature } from "~/types/nature.ts";
-import { gender } from "~/types/gender.ts";
+import { RadioGroup } from "../../components/radio";
 import React from "react";
-import { match } from "ts-pattern";
-
-const columns: ResultColumn<Static3Result>[] = [
-  { title: "Advance", dataIndex: "advance", key: "advance" },
-  {
-    title: "PID",
-    dataIndex: "pid",
-    key: "pid",
-    monospace: true,
-    render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
-  },
-  { title: "Nature", dataIndex: "nature", key: "nature" },
-  { title: "Ability", dataIndex: "ability", key: "ability" },
-  {
-    title: "IVs",
-    dataIndex: "ivs",
-    key: "ivs",
-    render: (ivs) =>
-      ivs.hp.toString().padStart(2, "0") +
-      "/" +
-      ivs.atk.toString().padStart(2, "0") +
-      "/" +
-      ivs.def.toString().padStart(2, "0") +
-      "/" +
-      ivs.spa.toString().padStart(2, "0") +
-      "/" +
-      ivs.spd.toString().padStart(2, "0") +
-      "/" +
-      ivs.spe.toString().padStart(2, "0"),
-  },
-  {
-    title: "Shiny",
-    dataIndex: "shiny",
-    key: "shiny",
-    render: (shiny) => (shiny ? "Yes" : "No"),
-  },
-  { title: "Gender", dataIndex: "gender", key: "gender" },
-];
 
 type Game = "emerald" | "rs";
 
+
+interface ResultColumnInfo {
+  day: number;
+  dayDiff: number;
+  pidPattern: number;
+  earliestFrame: number;
+}
+
+const advanceRng = function(oldValue:number){
+  return Number((BigInt(oldValue) * 0x41C64E6Dn + 0x3039n) % 0x100000000n);
+};
+const advanceRngMulti = function(value:number,n:number){
+  for(let i = 0; i < n; i++)
+    value = advanceRng(value);
+  return value;
+};
+const shift16 = function(value:number){
+  return Number(BigInt(value) >> 16n)
+};
+const getHighPidFromRng = function(rng:number){
+  rng = advanceRng(rng);
+  return shift16(rng);
+};
+
+
+class EarliestFrameCalculator {
+  constructor(private initialSeed:number){}
+
+  private earliestFrameByPidPattern:Uint32Array | null = null; // null until the first getEarliestAdvanceCount call
+
+  private generateEarliestAdvanceCount(){
+    const EARLIEST_VALID_FRAME = 300; //NO_PROD
+    const earliestFrameByPidPattern = new Uint32Array(0x10000);
+
+    let unmatchedCount = 0x10000;
+    let rng = this.initialSeed;
+    for(let i = 0; i < 10_000_000; i++, rng = advanceRng(rng)){ // 10_000_000 to avoid infinite loop in case of error.
+      //console.log(i, initialSeed.toString(16));
+
+      if (i < EARLIEST_VALID_FRAME)
+        continue;
+      
+      const pidPattern = getHighPidFromRng(rng);
+      const oldValue = earliestFrameByPidPattern[pidPattern];
+      if (oldValue !== 0)
+        continue; // another earlier frame exists
+
+      earliestFrameByPidPattern[pidPattern] = i;
+      unmatchedCount--;
+      if (unmatchedCount === 0){
+        console.log(i);
+        break; // all were matched
+      }
+    }
+    if (unmatchedCount !== 0){
+      console.error('earliestFrameByPidPattern are missing some values');
+    }
+    return earliestFrameByPidPattern;
+  }
+  getEarliestAdvanceCount(pidPattern:number){
+    if(this.earliestFrameByPidPattern === null)
+      this.earliestFrameByPidPattern = this.generateEarliestAdvanceCount();
+    console.log(this.earliestFrameByPidPattern);
+    return this.earliestFrameByPidPattern[pidPattern];
+  } 
+}
+
+const emeraldEarliestFrameCalc = new EarliestFrameCalculator(0x0);
+const rsEarliestFrameCalc = new EarliestFrameCalculator(0x5A0);
+
+const columns: ResultColumn<ResultColumnInfo>[] = [
+  { title: "Day", dataIndex: "day", key: "day" },
+  { title: "Days From Now",dataIndex: "dayDiff",key: "dayDiff",
+    render: (dayDiff) => `+${dayDiff}`,
+  },
+  { title: "PID Pattern", dataIndex: "pidPattern", key: "pidPattern",
+    render: (pidPattern) => {
+      console.log(pidPattern);
+      return `0x${pidPattern.toString(16).toUpperCase().padStart(4,'0')}****`
+    }, 
+    monospace:true,
+  },
+  { title: "Method 1 Earliest Frame matching PID Pattern", dataIndex: "earliestFrame", key: "earliestFrame" },
+];
+
 type FormState = {
   isBatteryDead: boolean;
+  rocketLaunchedCount:DecimalString;
+  game:Game;
 };
 
 
 const getInitialValues = (game: Game): FormState => {
   return {
-    isBatteryDead: false
+    isBatteryDead: false,
+    rocketLaunchedCount: toDecimalString(0),
+    game,
   };
 };
 
@@ -100,93 +148,8 @@ const getFields = (game: Game): Field[] => {
       ),
     },
     {
-      label: "TID",
-      input: <FormikInput<FormState> name="tid" />,
-    },
-    {
-      label: "SID",
-      input: <FormikInput<FormState> name="sid" />,
-    },
-    {
-      label: "Species",
-      input: (
-        <FormikSelect<FormState, "species">
-          name="species"
-          options={staticSpecies
-            .sort((first, second) => first.localeCompare(second))
-            .map((spec) => ({ label: spec, value: spec }))}
-        />
-      ),
-    },
-    {
-      label: "Roamer",
-      input: <FormikSwitch<FormState, "roamer"> name="roamer" />,
-    },
-    {
-      label: "Method 4",
-      input: <FormikSwitch<FormState, "method4"> name="method4" />,
-    },
-    {
-      label: "Initial advances",
-      input: <FormikInput<FormState> name="initial_advances" />,
-    },
-    {
-      label: "Max advances",
-      input: <FormikInput<FormState> name="max_advances" />,
-    },
-    {
-      label: "Offset",
-      input: <FormikInput<FormState> name="offset" />,
-    },
-    {
-      label: "Min IVs",
-      input: <IvInput<FormState> name="filter_min_ivs" />,
-    },
-    {
-      label: "Max IVs",
-      input: <IvInput<FormState> name="filter_max_ivs" />,
-    },
-    {
-      label: "Filter shiny",
-      input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
-    },
-    {
-      label: "Filter nature",
-      input: (
-        <FormikSelect<FormState, "filter_nature">
-          name="filter_nature"
-          options={(["None", ...nature] as const).map((nat) => ({
-            label: nat,
-            value: nat,
-          }))}
-        />
-      ),
-    },
-    {
-      label: "Filter ability",
-      input: (
-        <FormikSelect<FormState, "filter_ability">
-          name="filter_ability"
-          options={(
-            ["None", toDecimalString(0), toDecimalString(1)] as const
-          ).map((ability) => ({
-            label: ability,
-            value: ability,
-          }))}
-        />
-      ),
-    },
-    {
-      label: "Filter gender",
-      input: (
-        <FormikSelect<FormState, "filter_gender">
-          name="filter_gender"
-          options={(["None", ...gender] as const).map((gen) => ({
-            label: gen,
-            value: gen,
-          }))}
-        />
-      ),
+      label: "Rocket Launched",
+      input: <FormikInput<FormState> name="rocketLaunchedCount" />,
     },
   ];
 };
@@ -196,67 +159,64 @@ type Props = {
 };
 
 export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
-  const [results, setResults] = React.useState<Static3Result[]>([]);
+  const [results, setResults] = React.useState<ResultColumnInfo[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const initialAdvances = fromDecimalString(opts.initial_advances);
-      const maxAdvances = fromDecimalString(opts.max_advances);
-      const seed = fromHexString(opts.seed);
-      const offset = fromDecimalString(opts.offset);
-      const tid = fromDecimalString(opts.tid);
-      const sid = fromDecimalString(opts.sid);
-
-      if (
-        initialAdvances == null ||
-        maxAdvances == null ||
-        seed == null ||
-        offset == null ||
-        tid == null ||
-        sid == null
-      ) {
+      if (opts.isBatteryDead){
+        if(game === "emerald"){
+          setResults([{day:0, dayDiff:0, pidPattern:0, earliestFrame:0}]); //NO_PROD earliestFrame
+        } else {
+          setResults([{day:0, dayDiff:0, pidPattern:0, earliestFrame:0}]);  //NO_PROD
+        }
         return;
       }
+      const calc = game === "emerald" ? emeraldEarliestFrameCalc : rsEarliestFrameCalc;
+      const rocketLaunchedCount = fromDecimalString(opts.rocketLaunchedCount) ?? 0;
+      const currentDay = rocketLaunchedCount * 7;
+      const ROW_COUNT = 50;
+      let mirageIslandRng = advanceRngMulti(0, currentDay);
 
-      const results = await rngTools.gen3_static_states({
-        ...opts,
-        initial_advances: initialAdvances,
-        max_advances: maxAdvances,
-        seed,
-        offset,
-        tid,
-        sid,
-        bugged_roamer: game !== "emerald" && opts.roamer,
-        filter: {
-          shiny: opts.filter_shiny,
-          nature:
-            opts.filter_nature === "None" ? undefined : opts.filter_nature,
-          gender:
-            opts.filter_gender === "None" ? undefined : opts.filter_gender,
-          ability:
-            opts.filter_ability === "None"
-              ? undefined
-              : (fromDecimalString(opts.filter_ability) ?? undefined),
-          ivs: {
-            min_ivs: opts.filter_min_ivs,
-            max_ivs: opts.filter_max_ivs,
-          },
-        },
-      });
-
-      setResults(results);
+      const res:ResultColumnInfo[] = [];
+      for(let dayDiff = 0; dayDiff < ROW_COUNT; dayDiff++){
+        const day = currentDay + dayDiff;
+        const pidPattern = shift16(mirageIslandRng);
+        console.log(mirageIslandRng, pidPattern);
+        res.push({
+          day, 
+          dayDiff, 
+          pidPattern, 
+          earliestFrame:calc.getEarliestAdvanceCount(pidPattern),
+        });
+        mirageIslandRng = advanceRng(mirageIslandRng);
+      }
+      console.log(res);
+      setResults(res);
     },
     [game],
   );
 
   return (
-    <RngToolForm<FormState, Static3Result>
-      fields={getFields(game)}
-      columns={columns}
-      results={results}
+    <Formik
+      enableReinitialize
       initialValues={getInitialValues(game)}
       onSubmit={onSubmit}
-      submitTrackerId="generate_gen3_static"
-    />
+    >
+      <Flex vertical gap={16}>
+        <Form>
+          <Flex vertical gap={8}>
+            <FormFieldTable fields={getFields(game)} />
+            <Button trackerId="mirage-island" htmlType="submit">
+              {"Generate"}
+            </Button>
+          </Flex>
+        </Form>
+
+        <ResultTable<ResultColumnInfo>
+          columns={columns}
+          dataSource={results}
+        />
+      </Flex>
+    </Formik>
   );
 };

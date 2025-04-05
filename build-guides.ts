@@ -83,7 +83,8 @@ const main = async () => {
   const guides: (GuideMetadata & { file: string; category: string })[] = [];
 
   // Scans the current working directory and each of its sub-directories recursively
-  for await (const file of glob.scan(".")) {
+  for await (const rawFile of glob.scan(".")) {
+    const file = rawFile.replace(/\\/g, "/"); // Needed for Windows contributors
     const unparsedCategory = file.split("/")[1];
 
     const category = match({
@@ -126,6 +127,10 @@ const main = async () => {
       });
     }
   }
+
+  guides.sort((lhs, rhs) => {
+    return lhs.slug.localeCompare(rhs.slug);
+  });
 
   const existingSlugs = Object.keys(existingGuides);
   const newSlugs = guides.map((guide) => guide.slug);

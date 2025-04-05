@@ -11,7 +11,7 @@ export const guides = {
       tag: "info",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Home.mdx",
+      file: "guides/Home.mdx",
       category: "Home",
     },
     Guide: React.lazy(() => import("~/../guides/Home.mdx")),
@@ -25,7 +25,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\X and Y\\Egg RNG With Masuda Method or Shiny Charm.mdx",
+      file: "guides/X and Y/Egg RNG With Masuda Method or Shiny Charm.mdx",
       category: "X and Y",
     },
     Guide: React.lazy(
@@ -44,7 +44,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\X and Y\\Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      file: "guides/X and Y/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       category: "X and Y",
     },
     Guide: React.lazy(
@@ -63,7 +63,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\X and Y\\Friend Safari RNG Guide.mdx",
+      file: "guides/X and Y/Friend Safari RNG Guide.mdx",
       category: "X and Y",
     },
     Guide: React.lazy(
@@ -79,7 +79,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: "2025-03-24",
-      file: "guides\\X and Y\\PokeRadar.mdx",
+      file: "guides/X and Y/PokeRadar.mdx",
       category: "X and Y",
     },
     Guide: React.lazy(() => import("~/../guides/X and Y/PokeRadar.mdx")),
@@ -93,7 +93,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\X and Y\\XY Trainer ID, Secret ID, and TSV RNG Guide.mdx",
+      file: "guides/X and Y/XY Trainer ID, Secret ID, and TSV RNG Guide.mdx",
       category: "X and Y",
     },
     Guide: React.lazy(
@@ -113,7 +113,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Egg RNG With Masuda Method or Shiny Charm.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Egg RNG With Masuda Method or Shiny Charm.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -133,7 +133,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -153,7 +153,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Finding Initial Seed with Clocks.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Finding Initial Seed with Clocks.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -172,7 +172,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\How to Find Egg Seeds Without Custom Firmware.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/How to Find Egg Seeds Without Custom Firmware.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -191,7 +191,7 @@ export const guides = {
       tag: "info",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Island Scan Pokemon.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Island Scan Pokemon.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -208,7 +208,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Island Scan.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Island Scan.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -224,7 +224,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Mystery Gift.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Mystery Gift.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -240,7 +240,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\RNGing Without Custom Firmware.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/RNGing Without Custom Firmware.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -260,7 +260,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\SOS RNG Guide.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/SOS RNG Guide.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -276,7 +276,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Stationary RNG.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Stationary RNG.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -292,7 +292,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Stationary Wormhole RNG.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Stationary Wormhole RNG.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -311,7 +311,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Time Finder.js (Citra).mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Time Finder.js (Citra).mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -330,7 +330,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Timeline Guide.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Timeline Guide.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -346,7 +346,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Timeline Leap Guide.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Timeline Leap Guide.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -363,7 +363,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Timeline With Fidget Guide.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Timeline With Fidget Guide.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -382,7 +382,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ultra Sun and Ultra Moon\\Wild RNG.mdx",
+      file: "guides/Ultra Sun and Ultra Moon/Wild RNG.mdx",
       category: "Ultra Sun and Ultra Moon",
     },
     Guide: React.lazy(
@@ -398,7 +398,7 @@ export const guides = {
       tag: "info",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Transporter\\Nature Table.mdx",
+      file: "guides/Transporter/Nature Table.mdx",
       category: "Transporter",
     },
     Guide: React.lazy(() => import("~/../guides/Transporter/Nature Table.mdx")),
@@ -412,7 +412,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Transporter\\Transporter with Offline Patch.mdx",
+      file: "guides/Transporter/Transporter with Offline Patch.mdx",
       category: "Transporter",
     },
     Guide: React.lazy(
@@ -429,7 +429,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Transporter\\Transporter.mdx",
+      file: "guides/Transporter/Transporter.mdx",
       category: "Transporter",
     },
     Guide: React.lazy(() => import("~/../guides/Transporter/Transporter.mdx")),
@@ -443,7 +443,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Tools and Emulators\\3DS PokeReader.mdx",
+      file: "guides/Tools and Emulators/3DS PokeReader.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -459,7 +459,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Tools and Emulators\\CaptureSight Install.mdx",
+      file: "guides/Tools and Emulators/CaptureSight Install.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -475,7 +475,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Tools and Emulators\\CitraRNG Setup.mdx",
+      file: "guides/Tools and Emulators/CitraRNG Setup.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -491,7 +491,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Tools and Emulators\\Desmume Setup.mdx",
+      file: "guides/Tools and Emulators/Desmume Setup.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -508,7 +508,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Tools and Emulators\\Emu PokeReader.mdx",
+      file: "guides/Tools and Emulators/Emu PokeReader.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -524,7 +524,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Tools and Emulators\\How to Connect Dolphin to VBA.mdx",
+      file: "guides/Tools and Emulators/How to Connect Dolphin to VBA.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -543,7 +543,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Tools and Emulators\\How to Extract GBA Bios.mdx",
+      file: "guides/Tools and Emulators/How to Extract GBA Bios.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -560,7 +560,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Tools and Emulators\\How to Install PCalc.mdx",
+      file: "guides/Tools and Emulators/How to Install PCalc.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -576,7 +576,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: "2025-03-03",
-      file: "guides\\Tools and Emulators\\mGBA Setup.mdx",
+      file: "guides/Tools and Emulators/mGBA Setup.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -592,7 +592,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Tools and Emulators\\NTR Helper Usage.mdx",
+      file: "guides/Tools and Emulators/NTR Helper Usage.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -608,7 +608,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: "2025-03-18",
-      file: "guides\\Tools and Emulators\\Timer.mdx",
+      file: "guides/Tools and Emulators/Timer.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -624,7 +624,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Tools and Emulators\\Transporter Patches.mdx",
+      file: "guides/Tools and Emulators/Transporter Patches.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -641,7 +641,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Tools and Emulators\\Using IPS Patches with Luma and Citra.mdx",
+      file: "guides/Tools and Emulators/Using IPS Patches with Luma and Citra.mdx",
       category: "Tools and Emulators",
     },
     Guide: React.lazy(
@@ -660,7 +660,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sword and Shield\\Get Raid Seed With CFW.mdx",
+      file: "guides/Sword and Shield/Get Raid Seed With CFW.mdx",
       category: "Sword and Shield",
     },
     Guide: React.lazy(
@@ -676,7 +676,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sword and Shield\\Get Raid Seed Without CFW.mdx",
+      file: "guides/Sword and Shield/Get Raid Seed Without CFW.mdx",
       category: "Sword and Shield",
     },
     Guide: React.lazy(
@@ -694,7 +694,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sword and Shield\\Raid RNG.mdx",
+      file: "guides/Sword and Shield/Raid RNG.mdx",
       category: "Sword and Shield",
     },
     Guide: React.lazy(
@@ -711,7 +711,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Egg RNG With Masuda Method or Shiny Charm.mdx",
+      file: "guides/Sun and Moon/Egg RNG With Masuda Method or Shiny Charm.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -731,7 +731,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      file: "guides/Sun and Moon/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -751,7 +751,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Finding Initial Seed with Clocks.mdx",
+      file: "guides/Sun and Moon/Finding Initial Seed with Clocks.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -768,7 +768,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\How to Find Egg Seeds Without Custom Firmware.mdx",
+      file: "guides/Sun and Moon/How to Find Egg Seeds Without Custom Firmware.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -787,7 +787,7 @@ export const guides = {
       tag: "info",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Island Scan Pokemon.mdx",
+      file: "guides/Sun and Moon/Island Scan Pokemon.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -803,7 +803,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Island Scan RNG.mdx",
+      file: "guides/Sun and Moon/Island Scan RNG.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -819,7 +819,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Mystery Gift.mdx",
+      file: "guides/Sun and Moon/Mystery Gift.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -835,7 +835,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\RNGing Without Custom Firmware.mdx",
+      file: "guides/Sun and Moon/RNGing Without Custom Firmware.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -853,7 +853,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\SOS RNG.mdx",
+      file: "guides/Sun and Moon/SOS RNG.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(() => import("~/../guides/Sun and Moon/SOS RNG.mdx")),
@@ -867,7 +867,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Stationary RNG.mdx",
+      file: "guides/Sun and Moon/Stationary RNG.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -883,7 +883,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Time Finder.js (Citra).mdx",
+      file: "guides/Sun and Moon/Time Finder.js (Citra).mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -899,7 +899,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Timeline Guide.mdx",
+      file: "guides/Sun and Moon/Timeline Guide.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -915,7 +915,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Timeline Leap Guide.mdx",
+      file: "guides/Sun and Moon/Timeline Leap Guide.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -931,7 +931,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Timeline With Fidget Guide.mdx",
+      file: "guides/Sun and Moon/Timeline With Fidget Guide.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(
@@ -947,7 +947,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Wild RNG.mdx",
+      file: "guides/Sun and Moon/Wild RNG.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(() => import("~/../guides/Sun and Moon/Wild RNG.mdx")),
@@ -962,7 +962,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Sun and Moon\\Wild Spots.mdx",
+      file: "guides/Sun and Moon/Wild Spots.mdx",
       category: "Sun and Moon",
     },
     Guide: React.lazy(() => import("~/../guides/Sun and Moon/Wild Spots.mdx")),
@@ -977,7 +977,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ruby and Sapphire\\Basic Rules of RNG.mdx",
+      file: "guides/Ruby and Sapphire/Basic Rules of RNG.mdx",
       category: "Ruby and Sapphire",
     },
     Guide: React.lazy(
@@ -993,7 +993,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ruby and Sapphire\\Dead Battery Stationary RNG  (Emulator).mdx",
+      file: "guides/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx",
       category: "Ruby and Sapphire",
     },
     Guide: React.lazy(
@@ -1012,7 +1012,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ruby and Sapphire\\Egg RNG.mdx",
+      file: "guides/Ruby and Sapphire/Egg RNG.mdx",
       category: "Ruby and Sapphire",
     },
     Guide: React.lazy(
@@ -1028,7 +1028,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ruby and Sapphire\\Initial Seed RNG.mdx",
+      file: "guides/Ruby and Sapphire/Initial Seed RNG.mdx",
       category: "Ruby and Sapphire",
     },
     Guide: React.lazy(
@@ -1045,7 +1045,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ruby and Sapphire\\Live and Dry Battery.mdx",
+      file: "guides/Ruby and Sapphire/Live and Dry Battery.mdx",
       category: "Ruby and Sapphire",
     },
     Guide: React.lazy(
@@ -1062,7 +1062,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ruby and Sapphire\\Live Battery TID RNG.mdx",
+      file: "guides/Ruby and Sapphire/Live Battery TID RNG.mdx",
       category: "Ruby and Sapphire",
     },
     Guide: React.lazy(
@@ -1078,7 +1078,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ruby and Sapphire\\PokeFinder Setup.mdx",
+      file: "guides/Ruby and Sapphire/PokeFinder Setup.mdx",
       category: "Ruby and Sapphire",
     },
     Guide: React.lazy(
@@ -1094,7 +1094,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ruby and Sapphire\\RSE Wild RNG - Dry Battery Emulator.mdx",
+      file: "guides/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx",
       category: "Ruby and Sapphire",
     },
     Guide: React.lazy(
@@ -1114,7 +1114,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ruby and Sapphire\\Ruby & Sapphire Live Battery Stationary Abuse.mdx",
+      file: "guides/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx",
       category: "Ruby and Sapphire",
     },
     Guide: React.lazy(
@@ -1133,7 +1133,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Ruby and Sapphire\\Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
+      file: "guides/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
       category: "Ruby and Sapphire",
     },
     Guide: React.lazy(
@@ -1152,7 +1152,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Omega Ruby and Alpha Sapphire\\DexNav RNG.mdx",
+      file: "guides/Omega Ruby and Alpha Sapphire/DexNav RNG.mdx",
       category: "Omega Ruby and Alpha Sapphire",
     },
     Guide: React.lazy(
@@ -1168,7 +1168,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Omega Ruby and Alpha Sapphire\\Egg RNG With Masuda Method or Shiny Charm.mdx",
+      file: "guides/Omega Ruby and Alpha Sapphire/Egg RNG With Masuda Method or Shiny Charm.mdx",
       category: "Omega Ruby and Alpha Sapphire",
     },
     Guide: React.lazy(
@@ -1187,7 +1187,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Omega Ruby and Alpha Sapphire\\Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      file: "guides/Omega Ruby and Alpha Sapphire/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       category: "Omega Ruby and Alpha Sapphire",
     },
     Guide: React.lazy(
@@ -1207,7 +1207,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: "2025-03-14",
-      file: "guides\\Omega Ruby and Alpha Sapphire\\Mirage Spot.mdx",
+      file: "guides/Omega Ruby and Alpha Sapphire/Mirage Spot.mdx",
       category: "Omega Ruby and Alpha Sapphire",
     },
     Guide: React.lazy(
@@ -1224,7 +1224,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: "2025-03-14",
-      file: "guides\\Omega Ruby and Alpha Sapphire\\Remove Time Penalties.mdx",
+      file: "guides/Omega Ruby and Alpha Sapphire/Remove Time Penalties.mdx",
       category: "Omega Ruby and Alpha Sapphire",
     },
     Guide: React.lazy(
@@ -1243,7 +1243,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Omega Ruby and Alpha Sapphire\\TID RNG Guide.mdx",
+      file: "guides/Omega Ruby and Alpha Sapphire/TID RNG Guide.mdx",
       category: "Omega Ruby and Alpha Sapphire",
     },
     Guide: React.lazy(
@@ -1260,7 +1260,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Legends Arceus\\MMO.mdx",
+      file: "guides/Legends Arceus/MMO.mdx",
       category: "Legends Arceus",
     },
     Guide: React.lazy(() => import("~/../guides/Legends Arceus/MMO.mdx")),
@@ -1275,7 +1275,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\HeartGold and SoulSilver\\Advancing the RNG.mdx",
+      file: "guides/HeartGold and SoulSilver/Advancing the RNG.mdx",
       category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
@@ -1292,7 +1292,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\HeartGold and SoulSilver\\Breeding RNG (Emu).mdx",
+      file: "guides/HeartGold and SoulSilver/Breeding RNG (Emu).mdx",
       category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
@@ -1309,7 +1309,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\HeartGold and SoulSilver\\Cute Charm.mdx",
+      file: "guides/HeartGold and SoulSilver/Cute Charm.mdx",
       category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
@@ -1325,7 +1325,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\HeartGold and SoulSilver\\Egg.mdx",
+      file: "guides/HeartGold and SoulSilver/Egg.mdx",
       category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
@@ -1341,7 +1341,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\HeartGold and SoulSilver\\Initial Seed RNG.mdx",
+      file: "guides/HeartGold and SoulSilver/Initial Seed RNG.mdx",
       category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
@@ -1357,7 +1357,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\HeartGold and SoulSilver\\Special Wild Case (Emu).mdx",
+      file: "guides/HeartGold and SoulSilver/Special Wild Case (Emu).mdx",
       category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
@@ -1376,7 +1376,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\HeartGold and SoulSilver\\Stationary RNG Emu.mdx",
+      file: "guides/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
       category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
@@ -1393,7 +1393,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\HeartGold and SoulSilver\\TID SID.mdx",
+      file: "guides/HeartGold and SoulSilver/TID SID.mdx",
       category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
@@ -1409,7 +1409,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\HeartGold and SoulSilver\\Wild RNG - Emulator.mdx",
+      file: "guides/HeartGold and SoulSilver/Wild RNG - Emulator.mdx",
       category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
@@ -1426,7 +1426,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\HeartGold and SoulSilver\\Wondercard.mdx",
+      file: "guides/HeartGold and SoulSilver/Wondercard.mdx",
       category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
@@ -1442,7 +1442,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: "2025-03-02",
-      file: "guides\\Gold, Silver, Crystal\\Celebi.mdx",
+      file: "guides/Gold, Silver, Crystal/Celebi.mdx",
       category: "Gold, Silver, Crystal",
     },
     Guide: React.lazy(
@@ -1458,7 +1458,7 @@ export const guides = {
       tag: "info",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Gold, Silver, Crystal\\RngResearch.mdx",
+      file: "guides/Gold, Silver, Crystal/RngResearch.mdx",
       category: "Gold, Silver, Crystal",
     },
     Guide: React.lazy(
@@ -1474,7 +1474,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Gold, Silver, Crystal\\Starter.mdx",
+      file: "guides/Gold, Silver, Crystal/Starter.mdx",
       category: "Gold, Silver, Crystal",
     },
     Guide: React.lazy(
@@ -1490,7 +1490,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: true,
       addedOn: null,
-      file: "guides\\Gold, Silver, Crystal\\Starter.mdx",
+      file: "guides/Gold, Silver, Crystal/Starter.mdx",
       category: "Gold, Silver, Crystal",
     },
     Guide: React.lazy(
@@ -1506,7 +1506,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Gamecube\\(XD) PAL Starter Eevee RNG.mdx",
+      file: "guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx",
       category: "Gamecube",
     },
     Guide: React.lazy(
@@ -1522,7 +1522,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Gamecube\\Channel.mdx",
+      file: "guides/Gamecube/Channel.mdx",
       category: "Gamecube",
     },
     Guide: React.lazy(() => import("~/../guides/Gamecube/Channel.mdx")),
@@ -1536,7 +1536,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Gamecube\\Colosseum General Guide (Emu).mdx",
+      file: "guides/Gamecube/Colosseum General Guide (Emu).mdx",
       category: "Gamecube",
     },
     Guide: React.lazy(
@@ -1553,7 +1553,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Gamecube\\Initial Seed RNG.mdx",
+      file: "guides/Gamecube/Initial Seed RNG.mdx",
       category: "Gamecube",
     },
     Guide: React.lazy(
@@ -1570,7 +1570,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\FireRed and LeafGreen\\Basic Rules of RNG.mdx",
+      file: "guides/FireRed and LeafGreen/Basic Rules of RNG.mdx",
       category: "FireRed and LeafGreen",
     },
     Guide: React.lazy(
@@ -1586,7 +1586,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\FireRed and LeafGreen\\Egg RNG.mdx",
+      file: "guides/FireRed and LeafGreen/Egg RNG.mdx",
       category: "FireRed and LeafGreen",
     },
     Guide: React.lazy(
@@ -1603,7 +1603,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\FireRed and LeafGreen\\Initial Seed Botting.mdx",
+      file: "guides/FireRed and LeafGreen/Initial Seed Botting.mdx",
       category: "FireRed and LeafGreen",
     },
     Guide: React.lazy(
@@ -1620,7 +1620,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\FireRed and LeafGreen\\Stationary and Gift RNG.mdx",
+      file: "guides/FireRed and LeafGreen/Stationary and Gift RNG.mdx",
       category: "FireRed and LeafGreen",
     },
     Guide: React.lazy(
@@ -1637,7 +1637,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\FireRed and LeafGreen\\Stationary v2 Emu.mdx",
+      file: "guides/FireRed and LeafGreen/Stationary v2 Emu.mdx",
       category: "FireRed and LeafGreen",
     },
     Guide: React.lazy(
@@ -1654,7 +1654,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\FireRed and LeafGreen\\Wild RNG.mdx",
+      file: "guides/FireRed and LeafGreen/Wild RNG.mdx",
       category: "FireRed and LeafGreen",
     },
     Guide: React.lazy(
@@ -1670,7 +1670,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\FireRed and LeafGreen\\wildv2lua.mdx",
+      file: "guides/FireRed and LeafGreen/wildv2lua.mdx",
       category: "FireRed and LeafGreen",
     },
     Guide: React.lazy(
@@ -1687,7 +1687,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Emerald\\Basic Rules of RNG.mdx",
+      file: "guides/Emerald/Basic Rules of RNG.mdx",
       category: "Emerald",
     },
     Guide: React.lazy(
@@ -1703,7 +1703,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: "2025-03-09",
-      file: "guides\\Emerald\\Egg RNG.mdx",
+      file: "guides/Emerald/Egg RNG.mdx",
       category: "Emerald",
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
@@ -1718,7 +1718,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: "2025-03-03",
-      file: "guides\\Emerald\\Find SID with Feebas.mdx",
+      file: "guides/Emerald/Find SID with Feebas.mdx",
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
@@ -1735,7 +1735,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Emerald\\Find SID with Feebas.mdx",
+      file: "guides/Emerald/Find SID with Feebas.mdx",
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
@@ -1751,7 +1751,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: "2025-03-03",
-      file: "guides\\Emerald\\Find SID.mdx",
+      file: "guides/Emerald/Find SID.mdx",
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
@@ -1765,7 +1765,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Emerald\\Find SID.mdx",
+      file: "guides/Emerald/Find SID.mdx",
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
@@ -1779,7 +1779,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Emerald\\Find SID.mdx",
+      file: "guides/Emerald/Find SID.mdx",
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
@@ -1793,7 +1793,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Emerald\\Gen 3 Static Generator.mdx",
+      file: "guides/Emerald/Gen 3 Static Generator.mdx",
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Gen 3 Static Generator.mdx"),
@@ -1809,7 +1809,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Emerald\\Gen 3 Static Generator.mdx",
+      file: "guides/Emerald/Gen 3 Static Generator.mdx",
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Gen 3 Static Generator.mdx"),
@@ -1825,7 +1825,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Emerald\\Gen 3 Static Generator.mdx",
+      file: "guides/Emerald/Gen 3 Static Generator.mdx",
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Gen 3 Static Generator.mdx"),
@@ -1841,7 +1841,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Emerald\\Reseed RNG.mdx",
+      file: "guides/Emerald/Reseed RNG.mdx",
       category: "Emerald",
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
@@ -1855,7 +1855,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Emerald\\Retail Wild RNG.mdx",
+      file: "guides/Emerald/Retail Wild RNG.mdx",
       category: "Emerald",
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Retail Wild RNG.mdx")),
@@ -1870,7 +1870,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Diamond, Pearl, and Platinum\\Advancing the RNG.mdx",
+      file: "guides/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
       category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
@@ -1889,7 +1889,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Diamond, Pearl, and Platinum\\Cute Charm.mdx",
+      file: "guides/Diamond, Pearl, and Platinum/Cute Charm.mdx",
       category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
@@ -1905,7 +1905,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Diamond, Pearl, and Platinum\\Egg.mdx",
+      file: "guides/Diamond, Pearl, and Platinum/Egg.mdx",
       category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
@@ -1921,7 +1921,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Diamond, Pearl, and Platinum\\Honey.mdx",
+      file: "guides/Diamond, Pearl, and Platinum/Honey.mdx",
       category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
@@ -1937,7 +1937,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Diamond, Pearl, and Platinum\\Initial Seed RNG.mdx",
+      file: "guides/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
       category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
@@ -1954,7 +1954,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Diamond, Pearl, and Platinum\\PokeFinder Setup.mdx",
+      file: "guides/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx",
       category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
@@ -1971,7 +1971,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Diamond, Pearl, and Platinum\\PokeRadar.mdx",
+      file: "guides/Diamond, Pearl, and Platinum/PokeRadar.mdx",
       category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
@@ -1987,7 +1987,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Diamond, Pearl, and Platinum\\Stationary.mdx",
+      file: "guides/Diamond, Pearl, and Platinum/Stationary.mdx",
       category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
@@ -2003,7 +2003,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Diamond, Pearl, and Platinum\\TID SID.mdx",
+      file: "guides/Diamond, Pearl, and Platinum/TID SID.mdx",
       category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
@@ -2019,7 +2019,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Diamond, Pearl, and Platinum\\Wild.mdx",
+      file: "guides/Diamond, Pearl, and Platinum/Wild.mdx",
       category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
@@ -2036,7 +2036,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Brilliant Diamond and Shining Pearl\\Advancing the RNG.mdx",
+      file: "guides/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
       category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
@@ -2056,7 +2056,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Brilliant Diamond and Shining Pearl\\BK - Emulator Setup.mdx",
+      file: "guides/Brilliant Diamond and Shining Pearl/BK - Emulator Setup.mdx",
       category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
@@ -2076,7 +2076,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Brilliant Diamond and Shining Pearl\\BK - How to use PokeFinder.mdx",
+      file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx",
       category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
@@ -2096,7 +2096,7 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Brilliant Diamond and Shining Pearl\\BK - How to use Shiny's site.mdx",
+      file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use Shiny's site.mdx",
       category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
@@ -2115,7 +2115,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Brilliant Diamond and Shining Pearl\\Egg.mdx",
+      file: "guides/Brilliant Diamond and Shining Pearl/Egg.mdx",
       category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
@@ -2131,7 +2131,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Brilliant Diamond and Shining Pearl\\Stationary.mdx",
+      file: "guides/Brilliant Diamond and Shining Pearl/Stationary.mdx",
       category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
@@ -2150,7 +2150,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Brilliant Diamond and Shining Pearl\\TID SID RNG.mdx",
+      file: "guides/Brilliant Diamond and Shining Pearl/TID SID RNG.mdx",
       category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
@@ -2169,7 +2169,7 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Brilliant Diamond and Shining Pearl\\Wild.mdx",
+      file: "guides/Brilliant Diamond and Shining Pearl/Wild.mdx",
       category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
@@ -2185,7 +2185,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Black and White\\Entralink.mdx",
+      file: "guides/Black and White/Entralink.mdx",
       category: "Black and White",
     },
     Guide: React.lazy(
@@ -2201,7 +2201,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Black and White\\Find DS Parameters.mdx",
+      file: "guides/Black and White/Find DS Parameters.mdx",
       category: "Black and White",
     },
     Guide: React.lazy(
@@ -2218,7 +2218,7 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Black and White\\Retail Entralink.mdx",
+      file: "guides/Black and White/Retail Entralink.mdx",
       category: "Black and White",
     },
     Guide: React.lazy(
@@ -2234,7 +2234,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Black and White\\Roamers.mdx",
+      file: "guides/Black and White/Roamers.mdx",
       category: "Black and White",
     },
     Guide: React.lazy(() => import("~/../guides/Black and White/Roamers.mdx")),
@@ -2248,7 +2248,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Black and White\\Using Runasdate to RNG Initial Seed.mdx",
+      file: "guides/Black and White/Using Runasdate to RNG Initial Seed.mdx",
       category: "Black and White",
     },
     Guide: React.lazy(
@@ -2267,7 +2267,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Black and White\\White Forest RNG (Emu).mdx",
+      file: "guides/Black and White/White Forest RNG (Emu).mdx",
       category: "Black and White",
     },
     Guide: React.lazy(
@@ -2283,7 +2283,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Black and White\\Wild RNG Emu.mdx",
+      file: "guides/Black and White/Wild RNG Emu.mdx",
       category: "Black and White",
     },
     Guide: React.lazy(
@@ -2299,7 +2299,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Black 2 and White 2\\Dream Radar.mdx",
+      file: "guides/Black 2 and White 2/Dream Radar.mdx",
       category: "Black 2 and White 2",
     },
     Guide: React.lazy(
@@ -2315,7 +2315,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Black 2 and White 2\\Egg RNG.mdx",
+      file: "guides/Black 2 and White 2/Egg RNG.mdx",
       category: "Black 2 and White 2",
     },
     Guide: React.lazy(
@@ -2331,7 +2331,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Black 2 and White 2\\Using Runasdate to RNG Initial Seed.mdx",
+      file: "guides/Black 2 and White 2/Using Runasdate to RNG Initial Seed.mdx",
       category: "Black 2 and White 2",
     },
     Guide: React.lazy(
@@ -2350,7 +2350,7 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides\\Black 2 and White 2\\Wild RNG Emu.mdx",
+      file: "guides/Black 2 and White 2/Wild RNG Emu.mdx",
       category: "Black 2 and White 2",
     },
     Guide: React.lazy(

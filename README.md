@@ -21,6 +21,7 @@ If you make rust changes, run `bun run build:rng_tools`.
 To build a production version of the site, use `bun run build`.
 
 ## Contributing on Windows
+
 To avoid wronging flagging unmodified files as modified, those git settings must be changed:
 
 `git config core.filemode false`

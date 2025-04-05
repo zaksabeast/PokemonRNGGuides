@@ -1,7 +1,6 @@
 import React from "react/jsx-runtime";
 import { Glob } from "bun";
 import fs from "node:fs/promises";
-import path from "path";
 import { evaluate } from "@mdx-js/mdx";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
@@ -83,8 +82,9 @@ const main = async () => {
   const guides: (GuideMetadata & { file: string; category: string })[] = [];
 
   // Scans the current working directory and each of its sub-directories recursively
-  for await (const file of glob.scan(".")) {
-    const unparsedCategory = file.split(path.sep)[1];
+  for await (const rawFile of glob.scan(".")) {
+    const file = rawFile.replace(/\\/g, "/"); // Needed for Windows contributors
+    const unparsedCategory = file.split("/")[1];
 
     const category = match({
       unparsedCategory,
@@ -144,7 +144,7 @@ const main = async () => {
       .map(
         (guide) => `"${guide.slug}": {
           meta: ${JSON.stringify(guide)},
-          Guide: React.lazy(() => import("~/../${guide.file.replace(/\\/g, "/")}")),
+          Guide: React.lazy(() => import("~/../${guide.file}")),
         }`,
       )
       .join(",\n")}

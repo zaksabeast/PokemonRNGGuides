@@ -82,7 +82,8 @@ const main = async () => {
   const guides: (GuideMetadata & { file: string; category: string })[] = [];
 
   // Scans the current working directory and each of its sub-directories recursively
-  for await (const file of glob.scan(".")) {
+  for await (const rawFile of glob.scan(".")) {
+    const file = rawFile.replace(/\\/g, "/");
     const unparsedCategory = file.split("/")[1];
 
     const category = match({

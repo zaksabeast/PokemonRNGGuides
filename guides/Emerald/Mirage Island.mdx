@@ -13,23 +13,22 @@ Gist: How to RNG manipulate a Pokémon with the right PID to access Mirage Islan
 
 Accessing Mirage Island is the only way to obtain Liechi Berry.
 
-Mirage Island is only accessible if the player team has a Pokémon with PID matching a specific pattern. 
+Mirage Island is only accessible if the player team has a Pokémon with PID matching a specific pattern.
 
 That pattern changes every day, and depends on the number of days since the game savefile was created.
 
-For example, if 3 days has passed, the PID to match is 0xA704****.
+For example, if 3 days has passed, the PID pattern to match is 0xA704\*\*\*\*.
 
-## Determining the PID pattern
+## Determining the earliest frame for your PID pattern
 
-If you have a dead battery example, the PID to match is always 0x0000****.
+- Enter the
+
+If you have a dead battery example, the PID to match is always 0x0000\*\*\*\*.
 
 NO_PROD
 
-
-
-
-
+<Gen3MirageIsland />
 
 ## Technical Details
 
-Mirage_Seed(n+1)={[ 0x41C64E6D * Mirage_Seed(n) ] + 0x3039 } mod 0x100000000
+`Mirage_Seed(n+1)={[ 0x41C64E6D * Mirage_Seed(n) ] + 0x3039 } mod 0x100000000`

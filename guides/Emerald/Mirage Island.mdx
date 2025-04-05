@@ -1,0 +1,35 @@
+---
+title: "Mirage Island"
+description: "Accessing Mirage Island"
+slug: "mirage-island"
+category: "Emerald"
+tag: "any"
+addedOn: "2025-04-02"
+---
+
+Gist: How to RNG manipulate a Pokémon with the right PID to access Mirage Island
+
+## Mirage Island
+
+Accessing Mirage Island is the only way to obtain Liechi Berry.
+
+Mirage Island is only accessible if the player team has a Pokémon with PID matching a specific pattern. 
+
+That pattern changes every day, and depends on the number of days since the game savefile was created.
+
+For example, if 3 days has passed, the PID to match is 0xA704****.
+
+## Determining the PID pattern
+
+If you have a dead battery example, the PID to match is always 0x0000****.
+
+NO_PROD
+
+
+
+
+
+
+## Technical Details
+
+Mirage_Seed(n+1)={[ 0x41C64E6D * Mirage_Seed(n) ] + 0x3039 } mod 0x100000000

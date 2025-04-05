@@ -2375,6 +2375,22 @@ export const guides = {
       () => import("~/../guides/Diamond, Pearl, and Platinum/Wild.mdx"),
     ),
   },
+  "/zh-dppt-wild": {
+    meta: {
+      title: "野生乱数",
+      description: "野生乱数",
+      slug: "/zh-dppt-wild",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Diamond, Pearl, and Platinum/Wild.mdx",
+      category: "Diamond, Pearl, and Platinum",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Diamond, Pearl, and Platinum/Wild.mdx"),
+    ),
+  },
   "/emulator-dppt-pokefinder-setup": {
     meta: {
       title: "PokeFinder Setup",
@@ -2682,6 +2698,7 @@ export const guideSlugs = [
   z.literal("/zh-dppt-initial-seed"),
   z.literal("/emulator-dppt-egg"),
   z.literal("/dppt-wild"),
+  z.literal("/zh-dppt-wild"),
   z.literal("/emulator-dppt-pokefinder-setup"),
   z.literal("/dppt-pokeradar-rng"),
   z.literal("/zh-dppt-pokeradar-rng"),

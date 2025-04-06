@@ -13,26 +13,29 @@
   addedOn: "2025-04-05"
 ---
 
-Gist: How to RNG manipulate a Pokémon with the right PID to access Mirage Island
+Gist: Using RNG manipulation to catch a Pokémon with the right PID to access Mirage Island
 
 ## Mirage Island
 
-Accessing Mirage Island is the only way to obtain Liechi Berry. It is only accessible if the player team has a Pokémon with PID matching a specific pattern. That pattern changes every day, and depends on the number of days since the game savefile was created.
+Accessing Mirage Island is the only way to obtain Liechi Berry. The island is only accessible if the player team has a Pokémon with PID matching a specific pattern. That pattern changes every day, and depends on the number of days since the game savefile was created.
 
-For example, if 3 days has passed, the PID pattern to match is 0xA704\*\*\*\*. If you have a dead battery, the PID to match is always 0x0000\*\*\*\*.
+For example, if 3 days have passed, the PID pattern to match is 0xA704\*\*\*\*. If you have a dead battery, the PID to match is always 0x0000\*\*\*\*.
 
-## Strategy
-- Find the number of days since the savefile was created by talking to a scientist in the Mossdeep Space Center.
+## Step 1: Find the number of days since the game savefile was created
 
-- 
+If you have a dead battery, this step is not needed.
 
+Talk to the scientist in the Mossdeep Space Center to know the number of rockets launched. This indicates the number of weeks since your savefile was created. 
 
-## Determining the earliest frame for your PID pattern
+![Scientist in Mossdeep Space Center](/images/Emerald/mirageIslandRocketLaunched.png)
 
-- Enter the
+## Step #2: Catch a Pokémon matching the PID pattern
 
+Fill the form below to find the relevant PID pattern, and the earliest frame for a Pokémon generated with Method-1 to match that pattern.
 
-NO_PROD
+The Pokémon recommended to catch with Method-1 is any of the stationnary Kecleon, but any will do. Wild Pokémon generated with other Methods also work, but they are harder to RNG manipulate.
+
+Because the rocket launch count only gives an approximation of the days passed (± 7 days), it is recommended to aim for a PID pattern at least 6 days in the future. Otherwise, in the worst case, you'll need to catch 7 Pokémon (one for each day of the week).
 
 <ShowIf slug="/emerald-mirage-island">
   <Gen3MirageIsland game="emerald" />
@@ -42,6 +45,6 @@ NO_PROD
   <Gen3MirageIsland game="rs" />
 </ShowIf>
 
-## Technical Details
+## Step #3: Visit Mirage Island on Route 130
 
-`Mirage_Seed(n+1)={[ 0x41C64E6D * Mirage_Seed(n) ] + 0x3039 } mod 0x100000000`
+Enjoy your Liechi Berry!

@@ -197,9 +197,9 @@ const getInitialValues = (game: Game): FormState => {
     filter_shiny: false,
     filter_min_ivs: minIvs,
     filter_max_ivs: maxIvs,
-    filter_nature: undefined,
-    filter_gender: undefined,
-    filter_ability: undefined,
+    filter_nature: "None",
+    filter_gender: "None",
+    filter_ability: "None",
   };
 };
 
@@ -293,9 +293,12 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
         bugged_roamer: game !== "emerald" && opts.roamer,
         filter: {
           shiny: opts.filter_shiny,
-          nature: opts.filter_nature,
-          gender: opts.filter_gender,
-          ability: opts.filter_ability,
+          nature:
+            opts.filter_nature === "None" ? undefined : opts.filter_nature,
+          gender:
+            opts.filter_gender === "None" ? undefined : opts.filter_gender,
+          ability:
+            opts.filter_ability === "None" ? undefined : opts.filter_ability,
           ivs: {
             min_ivs: opts.filter_min_ivs,
             max_ivs: opts.filter_max_ivs,

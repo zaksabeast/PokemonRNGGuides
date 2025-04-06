@@ -57,7 +57,7 @@ export const Select = <ValueType,>({
 type FormikSelectValue<
   FormState extends GenericForm,
   FieldKey extends keyof FormState,
-> = FormState[FieldKey] extends string | undefined
+> = FormState[FieldKey] extends string
   ? { label: string; value: FormState[FieldKey] | null }[]
   : never;
 
@@ -86,11 +86,9 @@ export const FormikSelect = <
   return (
     <Select
       {...props}
-      onChange={(value) =>
-        formik.setFieldValue(String(name), value === null ? undefined : value)
-      }
+      onChange={(value) => formik.setFieldValue(String(name), value)}
       // @ts-expect-error -- prop types guarantee this is correct
-      value={formik.values[name] ?? null}
+      value={formik.values[name]}
     />
   );
 };

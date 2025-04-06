@@ -872,17 +872,15 @@ export const guides = {
     meta: {
       title: "DexNav RNG",
       description: "DexNav RNG for ORAS. Citra is 100% recommended.",
+      category: "Omega Ruby and Alpha Sapphire",
       slug: "/emulator-oras-dexnav",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Omega Ruby and Alpha Sapphire/DexNav RNG.mdx",
-      category: "Omega Ruby and Alpha Sapphire",
+      file: "guides/Gen 6/DexNav.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Omega Ruby and Alpha Sapphire/DexNav RNG.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 6/DexNav.mdx")),
   },
   "/emulator-rs-dead-battery-stationary": {
     meta: {
@@ -1488,36 +1486,31 @@ export const guides = {
       title: "Mirage Spot",
       description:
         "Easily access any Mirage Spots in Omega Ruby and Alpha Sapphire",
+      category: "Omega Ruby and Alpha Sapphire",
       slug: "/oras-mirage-spots",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: "2025-03-14",
-      file: "guides/Omega Ruby and Alpha Sapphire/Mirage Spot.mdx",
-      category: "Omega Ruby and Alpha Sapphire",
+      file: "guides/Gen 6/Mirage Spot.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Omega Ruby and Alpha Sapphire/Mirage Spot.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 6/Mirage Spot.mdx")),
   },
   "/oras-remove-time-penalty": {
     meta: {
       title: "Remove Time Penalties",
       description:
         "Change your Omega Ruby or Alpha Sapphire time without penalities!",
+      category: "Omega Ruby and Alpha Sapphire",
       slug: "/oras-remove-time-penalty",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: "2025-03-14",
-      file: "guides/Omega Ruby and Alpha Sapphire/Remove Time Penalties.mdx",
-      category: "Omega Ruby and Alpha Sapphire",
+      file: "guides/Gen 6/Remove Time Penalties.mdx",
     },
     Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Omega Ruby and Alpha Sapphire/Remove Time Penalties.mdx"
-        ),
+      () => import("~/../guides/Gen 6/Remove Time Penalties.mdx"),
     ),
   },
   "/pal-xd-eevee": {
@@ -1540,36 +1533,31 @@ export const guides = {
     meta: {
       title: "Friend Safari RNG",
       description: "Get shiny 6IV friend safari Pokémon, like Ditto!",
+      category: "X and Y",
       slug: "/pcalc-xy-friend-safari",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/X and Y/Friend Safari RNG Guide.mdx",
-      category: "X and Y",
+      file: "guides/Gen 6/Friend Safari RNG Guide.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/X and Y/Friend Safari RNG Guide.mdx"),
+      () => import("~/../guides/Gen 6/Friend Safari RNG Guide.mdx"),
     ),
   },
   "/pcalc-xy-tid": {
     meta: {
       title: "Trainer ID, Secret ID, and/or TSV RNG",
       description: "RNG for a specific Trainer ID, SID, or TSV",
+      category: "X and Y",
       slug: "/pcalc-xy-tid",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/X and Y/XY Trainer ID, Secret ID, and TSV RNG Guide.mdx",
-      category: "X and Y",
+      file: "guides/Gen 6/XY TID.mdx",
     },
-    Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/X and Y/XY Trainer ID, Secret ID, and TSV RNG Guide.mdx"
-        ),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 6/XY TID.mdx")),
   },
   "/retail-bw-entralink": {
     meta: {
@@ -1606,18 +1594,18 @@ export const guides = {
     meta: {
       title: "Egg RNG Guide with Masuda Method or Shiny Charm",
       description: "RNG your perfect Pokemon at the daycare",
+      category: "Omega Ruby and Alpha Sapphire",
       slug: "/retail-oras-egg-mmsc",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Omega Ruby and Alpha Sapphire/Egg RNG With Masuda Method or Shiny Charm.mdx",
-      category: "Omega Ruby and Alpha Sapphire",
+      file: "guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Omega Ruby and Alpha Sapphire/Egg RNG With Masuda Method or Shiny Charm.mdx"
+          "~/../guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx"
         ),
     ),
   },
@@ -1625,18 +1613,18 @@ export const guides = {
     meta: {
       title: "Egg RNG Guide Without Masuda or Shiny Charm",
       description: "RNG your perfect Pokemon at the daycare",
+      category: "Omega Ruby and Alpha Sapphire",
       slug: "/retail-oras-egg-no-mmsc",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Omega Ruby and Alpha Sapphire/Egg RNG Without Masuda Method or Shiny Charm.mdx",
-      category: "Omega Ruby and Alpha Sapphire",
+      file: "guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Omega Ruby and Alpha Sapphire/Egg RNG Without Masuda Method or Shiny Charm.mdx"
+          "~/../guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx"
         ),
     ),
   },
@@ -1644,18 +1632,15 @@ export const guides = {
     meta: {
       title: "Trainer ID RNG",
       description: "RNG for that special TID/SID/TSV",
+      category: "Omega Ruby and Alpha Sapphire",
       slug: "/retail-oras-tid",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Omega Ruby and Alpha Sapphire/TID RNG Guide.mdx",
-      category: "Omega Ruby and Alpha Sapphire",
+      file: "guides/Gen 6/ORAS TID.mdx",
     },
-    Guide: React.lazy(
-      () =>
-        import("~/../guides/Omega Ruby and Alpha Sapphire/TID RNG Guide.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 6/ORAS TID.mdx")),
   },
   "/retail-sm-egg-mmsc": {
     meta: {
@@ -2145,18 +2130,18 @@ export const guides = {
     meta: {
       title: "Egg RNG Guide with Masuda Method or Shiny Charm",
       description: "RNG your perfect Pokemon at the daycare",
+      category: "X and Y",
       slug: "/retail-xy-egg-mmsc",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/X and Y/Egg RNG With Masuda Method or Shiny Charm.mdx",
-      category: "X and Y",
+      file: "guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/X and Y/Egg RNG With Masuda Method or Shiny Charm.mdx"
+          "~/../guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx"
         ),
     ),
   },
@@ -2164,18 +2149,18 @@ export const guides = {
     meta: {
       title: "Egg RNG Guide Without Masuda or Shiny Charm",
       description: "RNG your perfect Pokemon at the daycare",
+      category: "X and Y",
       slug: "/retail-xy-egg-no-mmsc",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/X and Y/Egg RNG Without Masuda Method or Shiny Charm.mdx",
-      category: "X and Y",
+      file: "guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/X and Y/Egg RNG Without Masuda Method or Shiny Charm.mdx"
+          "~/../guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx"
         ),
     ),
   },
@@ -2389,15 +2374,15 @@ export const guides = {
     meta: {
       title: "PokeRadar RNG",
       description: "Shiny hunt with the PokeRadar in XY!",
+      category: "X and Y",
       slug: "/xy-pokeradar",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: "2025-03-24",
-      file: "guides/X and Y/PokeRadar.mdx",
-      category: "X and Y",
+      file: "guides/Gen 6/PokeRadar.mdx",
     },
-    Guide: React.lazy(() => import("~/../guides/X and Y/PokeRadar.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 6/PokeRadar.mdx")),
   },
   "/zh-dppt-advance-rng": {
     meta: {

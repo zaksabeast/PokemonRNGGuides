@@ -23,6 +23,7 @@ import {
 import { Alert } from "antd";
 import {
   Flex,
+  Gist,
   YouTubeVideo,
   PixelImage,
   IpsMerger,
@@ -72,6 +73,7 @@ export const markdownComponents = {
   IpsMerger,
   Countdown,
   Flex,
+  Gist,
   Gen2PokemonRng,
   Gen2Rng,
   Gen3Sid,

@@ -998,35 +998,32 @@ export const guides = {
     meta: {
       title: "Time Finder (Citra)",
       description: "Finding times to get specific RNG seeds",
+      category: "Sun and Moon",
       slug: "/emulator-sm-time-finder",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Time Finder.js (Citra).mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Time Finder.js (Citra).mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Sun and Moon/Time Finder.js (Citra).mdx"),
+      () => import("~/../guides/Gen 7/Time Finder.js (Citra).mdx"),
     ),
   },
   "/emulator-usum-time-finder": {
     meta: {
       title: "Time Finder (Citra)",
       description: "Finding times to get specific RNG seeds",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/emulator-usum-time-finder",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Time Finder.js (Citra).mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Time Finder.js (Citra).mdx",
     },
     Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Ultra Sun and Ultra Moon/Time Finder.js (Citra).mdx"
-        ),
+      () => import("~/../guides/Gen 7/Time Finder.js (Citra).mdx"),
     ),
   },
   "/es-gen2-starters": {
@@ -1344,33 +1341,32 @@ export const guides = {
     meta: {
       title: "Sun and Moon Island Scan Pokemon",
       description: "Check Island Scan Pokemon for Sun and Moon!",
+      category: "Sun and Moon",
       slug: "/misc-3ds-island-scan-sm",
       isRoughDraft: false,
       tag: "info",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Island Scan Pokemon.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Island Scan Pokemon SM.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Sun and Moon/Island Scan Pokemon.mdx"),
+      () => import("~/../guides/Gen 7/Island Scan Pokemon SM.mdx"),
     ),
   },
   "/misc-3ds-island-scan-usum": {
     meta: {
       title: "Ultra Sun and Ultra Moon Island Scan Pokemon",
       description: "Check Island Scan Pokemon for Ultra Sun and Ultra Moon!",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/misc-3ds-island-scan-usum",
       isRoughDraft: false,
       tag: "info",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Island Scan Pokemon.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Island Scan Pokemon USUM.mdx",
     },
     Guide: React.lazy(
-      () =>
-        import("~/../guides/Ultra Sun and Ultra Moon/Island Scan Pokemon.mdx"),
+      () => import("~/../guides/Gen 7/Island Scan Pokemon USUM.mdx"),
     ),
   },
   "/misc-3ds-transporter-nature-tables": {
@@ -1428,15 +1424,15 @@ export const guides = {
       title: "Wild Pokémon Locations",
       description:
         "Where to place your character and the correction needed for each area to RNG wild Pokémon in Sun and Moon",
+      category: "Sun and Moon",
       slug: "/misc-sm-wild-spots",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Wild Spots.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Wild Spots.mdx",
     },
-    Guide: React.lazy(() => import("~/../guides/Sun and Moon/Wild Spots.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Wild Spots.mdx")),
   },
   "/mystic-timer": {
     meta: {
@@ -1666,18 +1662,18 @@ export const guides = {
       title: "Egg RNG Guide with Masuda and/or Shiny Charm",
       description:
         "RNG for eggs using Masuda Method and/or with the Shiny Charm",
+      category: "Sun and Moon",
       slug: "/retail-sm-egg-mmsc",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Egg RNG With Masuda Method or Shiny Charm.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Sun and Moon/Egg RNG With Masuda Method or Shiny Charm.mdx"
+          "~/../guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx"
         ),
     ),
   },
@@ -1686,18 +1682,18 @@ export const guides = {
       title: "Egg RNG Guide without Masuda and/or Shiny Charm",
       description:
         "RNG for eggs without using Masuda Method and without the Shiny Charm",
+      category: "Sun and Moon",
       slug: "/retail-sm-egg-no-mmsc",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Egg RNG Without Masuda Method or Shiny Charm.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Sun and Moon/Egg RNG Without Masuda Method or Shiny Charm.mdx"
+          "~/../guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx"
         ),
     ),
   },
@@ -1705,18 +1701,18 @@ export const guides = {
     meta: {
       title: "Finding Egg Seeds Without CFW/Homebrew",
       description: "Find your egg seeds for Egg RNG using the Magikarp Method",
+      category: "Sun and Moon",
       slug: "/retail-sm-egg-seed-no-cfw",
       isRoughDraft: false,
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/How to Find Egg Seeds Without Custom Firmware.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Sun and Moon/How to Find Egg Seeds Without Custom Firmware.mdx"
+          "~/../guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx"
         ),
     ),
   },
@@ -1724,16 +1720,16 @@ export const guides = {
     meta: {
       title: "Timeline with Fidget",
       description: "Using the timeline method with character fidgets",
+      category: "Sun and Moon",
       slug: "/retail-sm-fidget",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Timeline With Fidget Guide.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Timeline With Fidget Guide.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Sun and Moon/Timeline With Fidget Guide.mdx"),
+      () => import("~/../guides/Gen 7/Timeline With Fidget Guide.mdx"),
     ),
   },
   "/retail-sm-initial-seed-clocks": {
@@ -1741,66 +1737,60 @@ export const guides = {
       title: "Finding your initial seed in Gen 7 with clocks",
       description:
         "This guide allows you to find your initial seed without using custom firmware.",
+      category: "Sun and Moon",
       slug: "/retail-sm-initial-seed-clocks",
       isRoughDraft: false,
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Finding Initial Seed with Clocks.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Finding Initial Seed with Clocks.mdx",
     },
     Guide: React.lazy(
-      () =>
-        import("~/../guides/Sun and Moon/Finding Initial Seed with Clocks.mdx"),
+      () => import("~/../guides/Gen 7/Finding Initial Seed with Clocks.mdx"),
     ),
   },
   "/retail-sm-island-scan": {
     meta: {
       title: "Island Scan",
       description: "Easy shinies in apricorn balls",
+      category: "Sun and Moon",
       slug: "/retail-sm-island-scan",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Island Scan RNG.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Island Scan.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Sun and Moon/Island Scan RNG.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Island Scan.mdx")),
   },
   "/retail-sm-myster-gift": {
     meta: {
       title: "Mystery Gift (Event) RNG",
       description: "RNG your events to have 6 IVs",
+      category: "Sun and Moon",
       slug: "/retail-sm-myster-gift",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Mystery Gift.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Mystery Gift.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Sun and Moon/Mystery Gift.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Mystery Gift.mdx")),
   },
   "/retail-sm-no-cfw": {
     meta: {
       title: "RNGing without Custom Firmware",
       description: "Get your perfect Pokémon without custom firmware",
+      category: "Sun and Moon",
       slug: "/retail-sm-no-cfw",
       isRoughDraft: false,
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/RNGing Without Custom Firmware.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/RNGing Without Custom Firmware.mdx",
     },
     Guide: React.lazy(
-      () =>
-        import("~/../guides/Sun and Moon/RNGing Without Custom Firmware.mdx"),
+      () => import("~/../guides/Gen 7/RNGing Without Custom Firmware.mdx"),
     ),
   },
   "/retail-sm-sos": {
@@ -1808,77 +1798,73 @@ export const guides = {
       title: "SOS RNG",
       description:
         "Master one of the most challenging Gen 7 RNGs for fun rewards",
+      category: "Sun and Moon",
       slug: "/retail-sm-sos",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/SOS RNG.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/SOS RNG Guide.mdx",
     },
-    Guide: React.lazy(() => import("~/../guides/Sun and Moon/SOS RNG.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/SOS RNG Guide.mdx")),
   },
   "/retail-sm-stationary": {
     meta: {
       title: "Stationary RNG",
       description: "RNG the overworld Pokémon to have 6 IVs.",
+      category: "Sun and Moon",
       slug: "/retail-sm-stationary",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Stationary RNG.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Stationary RNG.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Sun and Moon/Stationary RNG.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Stationary RNG.mdx")),
   },
   "/retail-sm-timeleap": {
     meta: {
       title: "Timeline Leap",
       description: "Predict and jump onto specific Pokemon timelines",
+      category: "Sun and Moon",
       slug: "/retail-sm-timeleap",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Timeline Leap Guide.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Timeline Leap Guide.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Sun and Moon/Timeline Leap Guide.mdx"),
+      () => import("~/../guides/Gen 7/Timeline Leap Guide.mdx"),
     ),
   },
   "/retail-sm-timeline": {
     meta: {
       title: "Timeline Guide",
       description: "Key skill for Gen 7 RNG with custom firmware",
+      category: "Sun and Moon",
       slug: "/retail-sm-timeline",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Timeline Guide.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Timeline Guide.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Sun and Moon/Timeline Guide.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
   },
   "/retail-sm-wild": {
     meta: {
       title: "Wild RNG",
       description: "RNG for wild Pokémon using honey in Sun and Moon",
+      category: "Sun and Moon",
       slug: "/retail-sm-wild",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Sun and Moon/Wild RNG.mdx",
-      category: "Sun and Moon",
+      file: "guides/Gen 7/Wild RNG.mdx",
     },
-    Guide: React.lazy(() => import("~/../guides/Sun and Moon/Wild RNG.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Wild RNG.mdx")),
   },
   "/retail-swsh-get-seed-with-cfw": {
     meta: {
@@ -1935,18 +1921,18 @@ export const guides = {
       title: "Egg RNG Guide with Masuda and/or Shiny Charm",
       description:
         "RNG for eggs using Masuda Method and/or with the Shiny Charm",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-egg-mmsc",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Egg RNG With Masuda Method or Shiny Charm.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Ultra Sun and Ultra Moon/Egg RNG With Masuda Method or Shiny Charm.mdx"
+          "~/../guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx"
         ),
     ),
   },
@@ -1955,18 +1941,18 @@ export const guides = {
       title: "Egg RNG Guide without Masuda and/or Shiny Charm",
       description:
         "RNG for eggs without using Masuda Method and without the Shiny Charm",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-egg-no-mmsc",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Egg RNG Without Masuda Method or Shiny Charm.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Ultra Sun and Ultra Moon/Egg RNG Without Masuda Method or Shiny Charm.mdx"
+          "~/../guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx"
         ),
     ),
   },
@@ -1974,18 +1960,18 @@ export const guides = {
     meta: {
       title: "Finding Egg Seeds Without CFW/Homebrew",
       description: "Find your egg seeds for Egg RNG using the Magikarp Method",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-egg-seed-no-cfw",
       isRoughDraft: false,
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/How to Find Egg Seeds Without Custom Firmware.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Ultra Sun and Ultra Moon/How to Find Egg Seeds Without Custom Firmware.mdx"
+          "~/../guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx"
         ),
     ),
   },
@@ -1993,19 +1979,16 @@ export const guides = {
     meta: {
       title: "Timeline with Fidget",
       description: "Using the timeline method with character fidgets",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-fidget",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Timeline With Fidget Guide.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Timeline With Fidget Guide.mdx",
     },
     Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Ultra Sun and Ultra Moon/Timeline With Fidget Guide.mdx"
-        ),
+      () => import("~/../guides/Gen 7/Timeline With Fidget Guide.mdx"),
     ),
   },
   "/retail-usum-initial-seed-clocks": {
@@ -2013,70 +1996,60 @@ export const guides = {
       title: "Finding your initial seed in Gen 7 with clocks",
       description:
         "This guide allows you to find your initial seed without using custom firmware.",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-initial-seed-clocks",
       isRoughDraft: false,
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Finding Initial Seed with Clocks.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Finding Initial Seed with Clocks.mdx",
     },
     Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Ultra Sun and Ultra Moon/Finding Initial Seed with Clocks.mdx"
-        ),
+      () => import("~/../guides/Gen 7/Finding Initial Seed with Clocks.mdx"),
     ),
   },
   "/retail-usum-island-scan": {
     meta: {
       title: "Island Scan",
       description: "Easy shinies in apricorn balls",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-island-scan",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Island Scan.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Island Scan.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Ultra Sun and Ultra Moon/Island Scan.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Island Scan.mdx")),
   },
   "/retail-usum-mystery-gift": {
     meta: {
       title: "Mystery Gift (Event) RNG",
       description: "RNG your events to have 6 IVs",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-mystery-gift",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Mystery Gift.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Mystery Gift.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Ultra Sun and Ultra Moon/Mystery Gift.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Mystery Gift.mdx")),
   },
   "/retail-usum-no-cfw": {
     meta: {
       title: "RNGing without Custom Firmware",
       description: "Get your perfect Pokémon without custom firmware",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-no-cfw",
       isRoughDraft: false,
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/RNGing Without Custom Firmware.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/RNGing Without Custom Firmware.mdx",
     },
     Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Ultra Sun and Ultra Moon/RNGing Without Custom Firmware.mdx"
-        ),
+      () => import("~/../guides/Gen 7/RNGing Without Custom Firmware.mdx"),
     ),
   },
   "/retail-usum-sos": {
@@ -2084,100 +2057,88 @@ export const guides = {
       title: "SOS RNG",
       description:
         "Master one of the most challenging Gen 7 RNGs for fun rewards",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-sos",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/SOS RNG Guide.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/SOS RNG Guide.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Ultra Sun and Ultra Moon/SOS RNG Guide.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/SOS RNG Guide.mdx")),
   },
   "/retail-usum-stationary": {
     meta: {
       title: "Stationary RNG",
       description: "RNG the overworld Pokémon to have 6 IVs.",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-stationary",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Stationary RNG.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Stationary RNG.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Ultra Sun and Ultra Moon/Stationary RNG.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Stationary RNG.mdx")),
   },
   "/retail-usum-timeleap": {
     meta: {
       title: "Timeline Leap",
       description: "Predict and jump onto specific Pokemon timelines",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-timeleap",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Timeline Leap Guide.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Timeline Leap Guide.mdx",
     },
     Guide: React.lazy(
-      () =>
-        import("~/../guides/Ultra Sun and Ultra Moon/Timeline Leap Guide.mdx"),
+      () => import("~/../guides/Gen 7/Timeline Leap Guide.mdx"),
     ),
   },
   "/retail-usum-timeline": {
     meta: {
       title: "Timeline Guide",
       description: "Key skill for Gen 7 RNG with custom firmware",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-timeline",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Timeline Guide.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Timeline Guide.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Ultra Sun and Ultra Moon/Timeline Guide.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
   },
   "/retail-usum-wild": {
     meta: {
       title: "Wild RNG",
       description: "RNG for wild Pokémon using honey in Sun and Moon",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-wild",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Wild RNG.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Wild RNG.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Ultra Sun and Ultra Moon/Wild RNG.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 7/Wild RNG.mdx")),
   },
   "/retail-usum-wormhole": {
     meta: {
       title: "Wormhole Stationary RNG",
       description: "Get your own perfect legendary Pokémon!",
+      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-wormhole",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ultra Sun and Ultra Moon/Stationary Wormhole RNG.mdx",
-      category: "Ultra Sun and Ultra Moon",
+      file: "guides/Gen 7/Stationary Wormhole RNG.mdx",
     },
     Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Ultra Sun and Ultra Moon/Stationary Wormhole RNG.mdx"
-        ),
+      () => import("~/../guides/Gen 7/Stationary Wormhole RNG.mdx"),
     ),
   },
   "/retail-xy-egg-mmsc": {

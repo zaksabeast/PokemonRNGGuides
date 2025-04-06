@@ -172,12 +172,18 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
 
     const rocketLaunchedCount =
       fromDecimalString(values.rocketLaunchedCount) ?? 0;
-    const currentDay = rocketLaunchedCount * 7;
-    const ROW_COUNT = 50;
+
+    let currentDay = rocketLaunchedCount * 7;
+    if (currentDay < 0)
+      currentDay = 0;
+    else if (currentDay >= 65535)
+      currentDay = 65535;
+
+    const RESULT_COUNT = 50;
     let mirageIslandRng = advanceMirageIslandRngMulti(0n, currentDay);
 
     const res: ResultColumnData[] = [];
-    for (let dayDiff = 0; dayDiff < ROW_COUNT; dayDiff++) {
+    for (let dayDiff = 0; dayDiff < RESULT_COUNT; dayDiff++) {
       const day = currentDay + dayDiff;
       const pidPattern = Number(mirageIslandRng >> 16n);
       res.push({

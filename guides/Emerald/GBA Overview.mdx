@@ -7,15 +7,18 @@ tag: "any"
 addedOn: "2025-04-01"
 ---
 
-Gist: Understanding the particularities, the key RNG concepts, and version differences of GBA games.
+<Gist>
+  Gist: Understanding the particularities, the key RNG concepts, and version
+  differences of GBA games.
+</Gist>
 
 ### Particularities of GBA RNG Manipulation
 
-In GBA games, the RNG frame advances every in-game frame (every 1/60th of a second). This means RNG manipulation requires pressing A with a 1/60th second precision, making it more difficult than the DS generation.
+In GBA games, the RNG advances every in-game video frame (every 1/60th of a second). This means RNG manipulation requires pressing A with a 1/60th second precision, making it more difficult than the DS generation.
 
 RNG manipulation for very rare traits can require waiting for a very long time (1h+ for each attempt). Fortunately, some advanced techniques exist [to speed up RNG advances](/e-tips-rng).
 
-[vblanks](/gba-vblank) can cause hard to predict RNG frame advances during the Pokémon generation, altering the outcome unexpectely. Those unexpected frame advances are the source of the differences between [Methods 1-4](/gba-methods).
+[vblanks](/gba-vblank) can cause hard to predict RNG advances during the Pokémon generation, altering the outcome unexpectely. Those unexpected advances are the source of the differences between [Methods 1-4](/gba-methods).
 
 Still, they are good reasons to RNG manipulate in GBA games, most notably:
 
@@ -38,8 +41,8 @@ Shininess depends on PID, TID, and SID. This means you must [know your SID](/gen
 
 [Pokémon Emerald](/emerald-overview) is the easiest game for RNG manipulation on retail and emulator without tool-assistance for:
 
+- • Static Pokémon (ex: Starters, Stationary)
 - • Wild Pokémon
-- • Stationnary Pokémon
 - • Egg Pokémon
 
 Ruby and Sapphire with a dead battery is also useful:

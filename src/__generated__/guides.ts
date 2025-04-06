@@ -237,12 +237,12 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Diamond, Pearl, and Platinum/Advancing the RNG.mdx"
+          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx"
         ),
     ),
   },
@@ -256,11 +256,13 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
     },
     Guide: React.lazy(
       () =>
-        import("~/../guides/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx"),
+        import(
+          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx"
+        ),
     ),
   },
   "/dppt-pokeradar-rng": {
@@ -273,10 +275,11 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/PokeRadar.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Diamond, Pearl, and Platinum/PokeRadar.mdx"),
+      () =>
+        import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx"),
     ),
   },
   "/dppt-setup-rng": {
@@ -289,10 +292,10 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/Honey.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Diamond, Pearl, and Platinum/Honey.mdx"),
+      () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx"),
     ),
   },
   "/dppt-wild": {
@@ -305,10 +308,10 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/Wild.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Diamond, Pearl, and Platinum/Wild.mdx"),
+      () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx"),
     ),
   },
   "/e-tips-rng": {
@@ -549,11 +552,9 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/Cute Charm.mdx",
+      file: "guides/Gen 4/Cute Charm.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Diamond, Pearl, and Platinum/Cute Charm.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
   },
   "/emulator-dppt-egg": {
     meta: {
@@ -565,10 +566,10 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/Egg.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Diamond, Pearl, and Platinum/Egg.mdx"),
+      () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx"),
     ),
   },
   "/emulator-dppt-pokefinder-setup": {
@@ -581,11 +582,13 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx",
     },
     Guide: React.lazy(
       () =>
-        import("~/../guides/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx"),
+        import(
+          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx"
+        ),
     ),
   },
   "/emulator-dppt-stationary": {
@@ -598,10 +601,11 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/Stationary.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Diamond, Pearl, and Platinum/Stationary.mdx"),
+      () =>
+        import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx"),
     ),
   },
   "/emulator-dppt-tid-sid": {
@@ -614,10 +618,11 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/TID SID.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Diamond, Pearl, and Platinum/TID SID.mdx"),
+      () =>
+        import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx"),
     ),
   },
   "/emulator-emerald-egg": {
@@ -726,11 +731,13 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/HeartGold and SoulSilver/Breeding RNG (Emu).mdx",
+      file: "guides/Gen 4/HeartGold and SoulSilver/Breeding RNG (Emu).mdx",
     },
     Guide: React.lazy(
       () =>
-        import("~/../guides/HeartGold and SoulSilver/Breeding RNG (Emu).mdx"),
+        import(
+          "~/../guides/Gen 4/HeartGold and SoulSilver/Breeding RNG (Emu).mdx"
+        ),
     ),
   },
   "/emulator-hgss-cute-charm": {
@@ -743,11 +750,9 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/HeartGold and SoulSilver/Cute Charm.mdx",
+      file: "guides/Gen 4/Cute Charm.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/HeartGold and SoulSilver/Cute Charm.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
   },
   "/emulator-hgss-egg": {
     meta: {
@@ -759,10 +764,10 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/HeartGold and SoulSilver/Egg.mdx",
+      file: "guides/Gen 4/HeartGold and SoulSilver/Egg.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/HeartGold and SoulSilver/Egg.mdx"),
+      () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx"),
     ),
   },
   "/emulator-hgss-special-wild": {
@@ -775,12 +780,12 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/HeartGold and SoulSilver/Special Wild Case (Emu).mdx",
+      file: "guides/Gen 4/HeartGold and SoulSilver/Special Wild Case (Emu).mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/HeartGold and SoulSilver/Special Wild Case (Emu).mdx"
+          "~/../guides/Gen 4/HeartGold and SoulSilver/Special Wild Case (Emu).mdx"
         ),
     ),
   },
@@ -794,11 +799,13 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
+      file: "guides/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
     },
     Guide: React.lazy(
       () =>
-        import("~/../guides/HeartGold and SoulSilver/Stationary RNG Emu.mdx"),
+        import(
+          "~/../guides/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx"
+        ),
     ),
   },
   "/emulator-hgss-tid-sid": {
@@ -811,10 +818,10 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/HeartGold and SoulSilver/TID SID.mdx",
+      file: "guides/Gen 4/HeartGold and SoulSilver/TID SID.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/HeartGold and SoulSilver/TID SID.mdx"),
+      () => import("~/../guides/Gen 4/HeartGold and SoulSilver/TID SID.mdx"),
     ),
   },
   "/emulator-hgss-wild": {
@@ -827,11 +834,13 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/HeartGold and SoulSilver/Wild RNG - Emulator.mdx",
+      file: "guides/Gen 4/HeartGold and SoulSilver/Wild RNG - Emulator.mdx",
     },
     Guide: React.lazy(
       () =>
-        import("~/../guides/HeartGold and SoulSilver/Wild RNG - Emulator.mdx"),
+        import(
+          "~/../guides/Gen 4/HeartGold and SoulSilver/Wild RNG - Emulator.mdx"
+        ),
     ),
   },
   "/emulator-hgss-wondercard": {
@@ -844,10 +853,10 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/HeartGold and SoulSilver/Wondercard.mdx",
+      file: "guides/Gen 4/HeartGold and SoulSilver/Wondercard.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/HeartGold and SoulSilver/Wondercard.mdx"),
+      () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Wondercard.mdx"),
     ),
   },
   "/emulator-oras-dexnav": {
@@ -1184,10 +1193,13 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/HeartGold and SoulSilver/Initial Seed RNG.mdx",
+      file: "guides/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/HeartGold and SoulSilver/Initial Seed RNG.mdx"),
+      () =>
+        import(
+          "~/../guides/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx"
+        ),
     ),
   },
   "/hgss-rng-advance": {
@@ -1201,11 +1213,13 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/HeartGold and SoulSilver/Advancing the RNG.mdx",
+      file: "guides/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
     },
     Guide: React.lazy(
       () =>
-        import("~/../guides/HeartGold and SoulSilver/Advancing the RNG.mdx"),
+        import(
+          "~/../guides/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx"
+        ),
     ),
   },
   "/install-capturesight": {
@@ -2366,12 +2380,12 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: true,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Diamond, Pearl, and Platinum/Advancing the RNG.mdx"
+          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx"
         ),
     ),
   },
@@ -2385,11 +2399,13 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: true,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
     },
     Guide: React.lazy(
       () =>
-        import("~/../guides/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx"),
+        import(
+          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx"
+        ),
     ),
   },
   "/zh-dppt-pokeradar-rng": {
@@ -2402,26 +2418,27 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: true,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/PokeRadar.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Diamond, Pearl, and Platinum/PokeRadar.mdx"),
+      () =>
+        import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx"),
     ),
   },
   "/zh-dppt-wild": {
     meta: {
       title: "野生乱数",
       description: "野生乱数",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/zh-dppt-wild",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: true,
       addedOn: null,
-      file: "guides/Diamond, Pearl, and Platinum/Wild.mdx",
-      category: "Diamond, Pearl, and Platinum",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Diamond, Pearl, and Platinum/Wild.mdx"),
+      () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx"),
     ),
   },
   "/zh-gen2-celebi": {

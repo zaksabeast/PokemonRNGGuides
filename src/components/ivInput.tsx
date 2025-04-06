@@ -1,11 +1,11 @@
-import { GenericForm, GuarnteeFormNameType } from "~/types/form";
+import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { Flex } from "./flex";
 import { Input } from "./input";
 import { useFormikContext } from "formik";
 import { Ivs } from "~/rngTools";
 
 type SingleIvFieldProps<FormState extends GenericForm> = {
-  parentName: GuarnteeFormNameType<FormState, Ivs>;
+  parentName: GuaranteeFormNameType<FormState, Ivs>;
   stat: keyof Ivs;
 };
 
@@ -40,7 +40,7 @@ const SingleIvField = <FormState extends GenericForm>({
 };
 
 type Props<FormState extends GenericForm> = {
-  name: GuarnteeFormNameType<FormState, Ivs>;
+  name: GuaranteeFormNameType<FormState, Ivs>;
 };
 
 export const IvInput = <FormState extends GenericForm>({

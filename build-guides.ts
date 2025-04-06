@@ -96,11 +96,6 @@ const getCategory = ({
         { directoryCategory: { success: true, data: P.any } },
         (matched) => matched.directoryCategory.data,
       )
-      // Special exception for Home.mdx
-      .with(
-        { directoryCategory: { success: false }, directory: "Home.mdx" },
-        () => "Home" as const,
-      )
       // Something is wrong!
       .otherwise(() => {
         throw new Error(`Invalid category: ${directory}`);

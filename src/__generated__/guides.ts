@@ -6,13 +6,13 @@ export const guides = {
     meta: {
       title: "PokémonRNG.com – Get Perfect Pokémon Every Time",
       description: "No luck needed—just results.",
+      category: "Home",
       slug: "/",
       isRoughDraft: false,
       tag: "info",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Home.mdx",
-      category: "Home",
     },
     Guide: React.lazy(() => import("~/../guides/Home.mdx")),
   },
@@ -21,13 +21,13 @@ export const guides = {
       title: "Advancing the RNG",
       description:
         "The different methods the RNG can be advanced and events that influence the RNG",
+      category: "Brilliant Diamond and Shining Pearl",
       slug: "/bdsp-advance-rng",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
-      category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
       () =>
@@ -41,13 +41,13 @@ export const guides = {
       title: "How to Use Chatot",
       description:
         "How to use the chatot.pokemonrng.com website for RNG in BDSP",
+      category: "Brilliant Diamond and Shining Pearl",
       slug: "/bdsp-chatot",
       isRoughDraft: true,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use Shiny's site.mdx",
-      category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
       () =>
@@ -61,13 +61,13 @@ export const guides = {
       title: "Set up Yuzu/Ryujinx & CheatEngine",
       description:
         "How to set up Yuzu/Ryujinx and Cheat Engine to RNG in BDSP using Lua scripts",
+      category: "Brilliant Diamond and Shining Pearl",
       slug: "/bdsp-emulator-setup",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/BK - Emulator Setup.mdx",
-      category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
       () =>
@@ -81,13 +81,13 @@ export const guides = {
       title: "PokeFinder Setup",
       description:
         "How to set up PokeFinder to RNG in Brilliant Diamond and Shining Pearl",
+      category: "Brilliant Diamond and Shining Pearl",
       slug: "/bdsp-pokefinder",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx",
-      category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
       () =>
@@ -114,13 +114,13 @@ export const guides = {
     meta: {
       title: "Egg RNG",
       description: "How to RNG Eggs with CaptureSight",
+      category: "Brilliant Diamond and Shining Pearl",
       slug: "/cfw-bdsp-egg",
       isRoughDraft: true,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/Egg.mdx",
-      category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Egg.mdx"),
@@ -130,13 +130,13 @@ export const guides = {
     meta: {
       title: "Stationary RNG",
       description: "RNG Stationary Pokemon such as your starter Pokemon",
+      category: "Brilliant Diamond and Shining Pearl",
       slug: "/cfw-bdsp-stationary",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/Stationary.mdx",
-      category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
       () =>
@@ -149,13 +149,13 @@ export const guides = {
     meta: {
       title: "TID/SID RNG",
       description: "How to RNG your TID/SID with CaptureSight",
+      category: "Brilliant Diamond and Shining Pearl",
       slug: "/cfw-bdsp-tidandsid",
       isRoughDraft: true,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/TID SID RNG.mdx",
-      category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
       () =>
@@ -168,13 +168,13 @@ export const guides = {
     meta: {
       title: "Wild RNG",
       description: "Information for RNG wild Pokémon",
+      category: "Brilliant Diamond and Shining Pearl",
       slug: "/cfw-bdsp-wild",
       isRoughDraft: true,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/Wild.mdx",
-      category: "Brilliant Diamond and Shining Pearl",
     },
     Guide: React.lazy(
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Wild.mdx"),
@@ -184,13 +184,13 @@ export const guides = {
     meta: {
       title: "(PAL) Channel RNG",
       description: "How to RNG the gift Jirachi on Channel",
+      category: "Gamecube",
       slug: "/channel-jirachi",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gamecube/Channel.mdx",
-      category: "Gamecube",
     },
     Guide: React.lazy(() => import("~/../guides/Gamecube/Channel.mdx")),
   },
@@ -198,13 +198,13 @@ export const guides = {
     meta: {
       title: "3DS Emulator Setup (Azahar/Lime3DS/Citra)",
       description: "Setup a 3DS emulator for RNG",
+      category: "Tools and Emulators",
       slug: "/citrarng-setup",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/CitraRNG Setup.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/CitraRNG Setup.mdx"),
@@ -214,13 +214,13 @@ export const guides = {
     meta: {
       title: "Desmume Setup",
       description: "Setup Desmume for RNG",
+      category: "Tools and Emulators",
       slug: "/desmume-setup",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/Desmume Setup.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Desmume Setup.mdx"),
@@ -231,13 +231,13 @@ export const guides = {
       title: "Advancing the RNG",
       description:
         "The different methods the RNG can be advanced and events that influence the RNG",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/dppt-advance-rng",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () =>
@@ -250,13 +250,13 @@ export const guides = {
     meta: {
       title: "Initial Seed RNG",
       description: "How to RNG an initial seed in Diamond, Pearl, and Platinum",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/dppt-initial-seed",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () =>
@@ -267,13 +267,13 @@ export const guides = {
     meta: {
       title: "PokeRadar RNG",
       description: "Two different methods for PokeRadar RNG",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/dppt-pokeradar-rng",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/PokeRadar.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () => import("~/../guides/Diamond, Pearl, and Platinum/PokeRadar.mdx"),
@@ -283,13 +283,13 @@ export const guides = {
     meta: {
       title: "Honey RNG",
       description: "RNG honey tree Pokémon",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/dppt-setup-rng",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/Honey.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () => import("~/../guides/Diamond, Pearl, and Platinum/Honey.mdx"),
@@ -299,13 +299,13 @@ export const guides = {
     meta: {
       title: "Wild RNG",
       description: "Wild RNG",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/dppt-wild",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/Wild.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () => import("~/../guides/Diamond, Pearl, and Platinum/Wild.mdx"),
@@ -527,13 +527,13 @@ export const guides = {
     meta: {
       title: "Colosseum General RNG",
       description: "RNG in Colosseum",
+      category: "Gamecube",
       slug: "/emulator-colosseum-general",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gamecube/Colosseum General Guide (Emu).mdx",
-      category: "Gamecube",
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/Colosseum General Guide (Emu).mdx"),
@@ -543,13 +543,13 @@ export const guides = {
     meta: {
       title: "Cute Charm RNG",
       description: "How to use Cute Charm with TID/SID RNG",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/emulator-dppt-cute-charm",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/Cute Charm.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () => import("~/../guides/Diamond, Pearl, and Platinum/Cute Charm.mdx"),
@@ -559,13 +559,13 @@ export const guides = {
     meta: {
       title: "Egg RNG",
       description: "How to RNG eggs from the daycare",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/emulator-dppt-egg",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/Egg.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () => import("~/../guides/Diamond, Pearl, and Platinum/Egg.mdx"),
@@ -575,13 +575,13 @@ export const guides = {
     meta: {
       title: "PokeFinder Setup",
       description: "How to setup PokeFinder for Diamond/Pearl/Platinum RNG",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/emulator-dppt-pokefinder-setup",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () =>
@@ -592,13 +592,13 @@ export const guides = {
     meta: {
       title: "Stationary RNG",
       description: "RNG stationary Pokémon in Diamond, Pearl, and Platinum",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/emulator-dppt-stationary",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/Stationary.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () => import("~/../guides/Diamond, Pearl, and Platinum/Stationary.mdx"),
@@ -608,13 +608,13 @@ export const guides = {
     meta: {
       title: "TID/SID RNG",
       description: "How to get a desired TID/SID combo",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/emulator-dppt-tid-sid",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/TID SID.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () => import("~/../guides/Diamond, Pearl, and Platinum/TID SID.mdx"),
@@ -720,13 +720,13 @@ export const guides = {
     meta: {
       title: "Breeding RNG",
       description: "Breeding RNG",
+      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-breeding",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/HeartGold and SoulSilver/Breeding RNG (Emu).mdx",
-      category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
       () =>
@@ -737,13 +737,13 @@ export const guides = {
     meta: {
       title: "Cute Charm RNG",
       description: "How to use Cute Charm with TID/SID RNG",
+      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-cute-charm",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/HeartGold and SoulSilver/Cute Charm.mdx",
-      category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
       () => import("~/../guides/HeartGold and SoulSilver/Cute Charm.mdx"),
@@ -753,13 +753,13 @@ export const guides = {
     meta: {
       title: "Egg RNG",
       description: "How to RNG eggs from the daycare",
+      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-egg",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/HeartGold and SoulSilver/Egg.mdx",
-      category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
       () => import("~/../guides/HeartGold and SoulSilver/Egg.mdx"),
@@ -769,13 +769,13 @@ export const guides = {
     meta: {
       title: "Special Wild RNG",
       description: "Special Wild RNG",
+      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-special-wild",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/HeartGold and SoulSilver/Special Wild Case (Emu).mdx",
-      category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
       () =>
@@ -788,13 +788,13 @@ export const guides = {
     meta: {
       title: "Stationary RNG",
       description: "RNG for stationary Pokémon",
+      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-stationary",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
-      category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
       () =>
@@ -805,13 +805,13 @@ export const guides = {
     meta: {
       title: "TID/SID RNG",
       description: "How to get a desired TID/SID combo",
+      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-tid-sid",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/HeartGold and SoulSilver/TID SID.mdx",
-      category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
       () => import("~/../guides/HeartGold and SoulSilver/TID SID.mdx"),
@@ -821,13 +821,13 @@ export const guides = {
     meta: {
       title: "Wild RNG",
       description: "Wild RNG",
+      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-wild",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/HeartGold and SoulSilver/Wild RNG - Emulator.mdx",
-      category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
       () =>
@@ -838,13 +838,13 @@ export const guides = {
     meta: {
       title: "Wondercard RNG",
       description: "How to RNG Wondercards",
+      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-wondercard",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/HeartGold and SoulSilver/Wondercard.mdx",
-      category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
       () => import("~/../guides/HeartGold and SoulSilver/Wondercard.mdx"),
@@ -1010,17 +1010,15 @@ export const guides = {
     meta: {
       title: "RNG de Iniciales en Cristal",
       description: "Get Shiny Starters in Crystal",
+      category: "Gold, Silver, Crystal",
       slug: "/es-gen2-starters",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: true,
       addedOn: null,
-      file: "guides/Gold, Silver, Crystal/Starter.mdx",
-      category: "Gold, Silver, Crystal",
+      file: "guides/Gen 2/Starter.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Gold, Silver, Crystal/Starter.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 2/Starter.mdx")),
   },
   "/frlg-gen3-sid": {
     meta: {
@@ -1108,13 +1106,13 @@ export const guides = {
       title: "Initial Seed RNG",
       description:
         "How to use Dolphin to set up Initial Seed RNG for all GameCube games",
+      category: "Gamecube",
       slug: "/gc-initial",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gamecube/Initial Seed RNG.mdx",
-      category: "Gamecube",
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/Initial Seed RNG.mdx"),
@@ -1124,49 +1122,43 @@ export const guides = {
     meta: {
       title: "Celebi",
       description: "How to get a shiny Fairy",
+      category: "Gold, Silver, Crystal",
       slug: "/gen2-celebi",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: "2025-03-02",
-      file: "guides/Gold, Silver, Crystal/Celebi.mdx",
-      category: "Gold, Silver, Crystal",
+      file: "guides/Gen 2/Celebi.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Gold, Silver, Crystal/Celebi.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 2/Celebi.mdx")),
   },
   "/gen2-research": {
     meta: {
       title: "Gen 2 RNG Research",
       description: "Help research the Gen 2 RNG",
+      category: "Gold, Silver, Crystal",
       slug: "/gen2-research",
       isRoughDraft: true,
       tag: "info",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Gold, Silver, Crystal/RngResearch.mdx",
-      category: "Gold, Silver, Crystal",
+      file: "guides/Gen 2/RngResearch.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Gold, Silver, Crystal/RngResearch.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 2/RngResearch.mdx")),
   },
   "/gen2-starters": {
     meta: {
       title: "Starter Crystal RNG",
       description: "Get Shiny Starters in Crystal",
+      category: "Gold, Silver, Crystal",
       slug: "/gen2-starters",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Gold, Silver, Crystal/Starter.mdx",
-      category: "Gold, Silver, Crystal",
+      file: "guides/Gen 2/Starter.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Gold, Silver, Crystal/Starter.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 2/Starter.mdx")),
   },
   "/gen3-sid": {
     meta: {
@@ -1186,13 +1178,13 @@ export const guides = {
     meta: {
       title: "Initial Seed RNG",
       description: "How to RNG an initial seed in HeartGold/SoulSilver",
+      category: "HeartGold and SoulSilver",
       slug: "/hgss-initial-seed",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/HeartGold and SoulSilver/Initial Seed RNG.mdx",
-      category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
       () => import("~/../guides/HeartGold and SoulSilver/Initial Seed RNG.mdx"),
@@ -1203,13 +1195,13 @@ export const guides = {
       title: "Advancing the RNG",
       description:
         "The different methods the RNG can be advanced and events that influence the RNG",
+      category: "HeartGold and SoulSilver",
       slug: "/hgss-rng-advance",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/HeartGold and SoulSilver/Advancing the RNG.mdx",
-      category: "HeartGold and SoulSilver",
     },
     Guide: React.lazy(
       () =>
@@ -1220,13 +1212,13 @@ export const guides = {
     meta: {
       title: "How to Install CaptureSight",
       description: "Installing a tool on your Switch to help RNG Pokemon",
+      category: "Tools and Emulators",
       slug: "/install-capturesight",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/CaptureSight Install.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/CaptureSight Install.mdx"),
@@ -1236,13 +1228,13 @@ export const guides = {
     meta: {
       title: "PokeReader 3DS",
       description: "Installing a tool on your 3DS to help RNG Pokémon",
+      category: "Tools and Emulators",
       slug: "/install-pokereader",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/3DS PokeReader.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
@@ -1253,13 +1245,13 @@ export const guides = {
       title: "PokeReader Lime3DS",
       description:
         "Installing a tool on a 3DS emulator, such as Azahar, Lime3DS, Citra, to help RNG Pokémon",
+      category: "Tools and Emulators",
       slug: "/install-pokereader-emu",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/Emu PokeReader.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Emu PokeReader.mdx"),
@@ -1269,13 +1261,13 @@ export const guides = {
     meta: {
       title: "mGBA Setup",
       description: "Setup mGBA for RNG",
+      category: "Tools and Emulators",
       slug: "/mgba-setup",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: "2025-03-03",
       file: "guides/Tools and Emulators/mGBA Setup.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/mGBA Setup.mdx"),
@@ -1285,13 +1277,13 @@ export const guides = {
     meta: {
       title: "How to Install PCalc",
       description: "Installing a tool on your 3DS to help RNG Pokemon",
+      category: "Tools and Emulators",
       slug: "/misc-3ds-installing-pcalc",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/How to Install PCalc.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/How to Install PCalc.mdx"),
@@ -1302,13 +1294,13 @@ export const guides = {
       title: "Using IPS Patches with Luma and Azahar/Lime3DS/Citra",
       description:
         "Use game patches for instant text, no outlines, and extra fun",
+      category: "Tools and Emulators",
       slug: "/misc-3ds-ips-luma-citra",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/Using IPS Patches with Luma and Citra.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () =>
@@ -1353,13 +1345,13 @@ export const guides = {
     meta: {
       title: "Transporter EXP to Nature Conversion Table (VC)",
       description: "A quick way to check the nature your VC Pokémon will be",
+      category: "Transporter",
       slug: "/misc-3ds-transporter-nature-tables",
       isRoughDraft: false,
       tag: "info",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Transporter/Nature Table.mdx",
-      category: "Transporter",
     },
     Guide: React.lazy(() => import("~/../guides/Transporter/Nature Table.mdx")),
   },
@@ -1367,13 +1359,13 @@ export const guides = {
     meta: {
       title: "Connecting Dolphin to VBA",
       description: "RNG a Jirachi or transfer your RNGs to a GBA game",
+      category: "Tools and Emulators",
       slug: "/misc-dolphin-connect-vba",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/How to Connect Dolphin to VBA.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () =>
@@ -1386,13 +1378,13 @@ export const guides = {
     meta: {
       title: "How to extract GBA BIOS",
       description: "Guide to extracting the GBA BIOS file for use on emulators",
+      category: "Tools and Emulators",
       slug: "/misc-dolphin-gba-bios",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/How to Extract GBA Bios.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () =>
@@ -1418,13 +1410,13 @@ export const guides = {
     meta: {
       title: "Mystic Timer",
       description: "Like Eon Timer, but works on mobile devices!",
+      category: "Tools and Emulators",
       slug: "/mystic-timer",
       isRoughDraft: false,
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: "2025-03-18",
       file: "guides/Tools and Emulators/Timer.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Timer.mdx"),
@@ -1435,13 +1427,13 @@ export const guides = {
       title: "No Dolphin Patch",
       description:
         "A patch to skip needing Dolphin to obtain Wishmaker Jirachi",
+      category: "Tools and Emulators",
       slug: "/no-dolphin-patch",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: "2025-04-03",
       file: "guides/Tools and Emulators/No Dolphin Patch.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/No Dolphin Patch.mdx"),
@@ -1451,13 +1443,13 @@ export const guides = {
     meta: {
       title: "NTR Helper Usage",
       description: "How to use the NTR Helper Tool in 3DSRNGTool",
+      category: "Tools and Emulators",
       slug: "/ntr-helper-usage",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/NTR Helper Usage.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/NTR Helper Usage.mdx"),
@@ -1499,13 +1491,13 @@ export const guides = {
     meta: {
       title: "(XD) Eevee PAL RNG",
       description: "How to RNG the starter Eevee with a PAL Pokemon XD",
+      category: "Gamecube",
       slug: "/pal-xd-eevee",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx",
-      category: "Gamecube",
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx"),
@@ -1835,13 +1827,13 @@ export const guides = {
     meta: {
       title: "Get raid seed with custom firmware",
       description: "Use this if you have a switch with custom firmware.",
+      category: "Sword and Shield",
       slug: "/retail-swsh-get-seed-with-cfw",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Sword and Shield/Get Raid Seed With CFW.mdx",
-      category: "Sword and Shield",
     },
     Guide: React.lazy(
       () => import("~/../guides/Sword and Shield/Get Raid Seed With CFW.mdx"),
@@ -1851,13 +1843,13 @@ export const guides = {
     meta: {
       title: "Get raid seed without custom firmware",
       description: "Use this if you do not have a switch with custom firmware",
+      category: "Sword and Shield",
       slug: "/retail-swsh-get-seed-without-cfw",
       isRoughDraft: false,
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Sword and Shield/Get Raid Seed Without CFW.mdx",
-      category: "Sword and Shield",
     },
     Guide: React.lazy(
       () =>
@@ -1869,13 +1861,13 @@ export const guides = {
       title: "Raid RNG",
       description:
         "RNG raid Pokémon (even G-max!) found in Dens! Use this after getting your den seed.",
+      category: "Sword and Shield",
       slug: "/retail-swsh-raid",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Sword and Shield/Raid RNG.mdx",
-      category: "Sword and Shield",
     },
     Guide: React.lazy(
       () => import("~/../guides/Sword and Shield/Raid RNG.mdx"),
@@ -2277,13 +2269,13 @@ export const guides = {
     meta: {
       title: "MMO RNG",
       description: "How to RNG MMOs using Sysbot and PermuteMMO",
+      category: "Legends Arceus",
       slug: "/sysbot-lpa-mmo",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Legends Arceus/MMO.mdx",
-      category: "Legends Arceus",
     },
     Guide: React.lazy(() => import("~/../guides/Legends Arceus/MMO.mdx")),
   },
@@ -2291,13 +2283,13 @@ export const guides = {
     meta: {
       title: "Transporter Patches",
       description: "Various patches for use with Transporter",
+      category: "Tools and Emulators",
       slug: "/transporter-patches",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/Transporter Patches.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Transporter Patches.mdx"),
@@ -2307,13 +2299,13 @@ export const guides = {
     meta: {
       title: "Transporter with PCalc",
       description: "Transfer your Gen 1/2 Pokémon to always be 6IV.",
+      category: "Transporter",
       slug: "/transporter-rng",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Transporter/Transporter.mdx",
-      category: "Transporter",
     },
     Guide: React.lazy(() => import("~/../guides/Transporter/Transporter.mdx")),
   },
@@ -2321,13 +2313,13 @@ export const guides = {
     meta: {
       title: "Transporter RNG using the Offline Patch",
       description: "Ensure a stable delay for easier RNG",
+      category: "Transporter",
       slug: "/transporter-rng-offline",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Transporter/Transporter with Offline Patch.mdx",
-      category: "Transporter",
     },
     Guide: React.lazy(
       () =>
@@ -2368,13 +2360,13 @@ export const guides = {
     meta: {
       title: "乱数的帧数推进方法",
       description: "推进乱数帧数的不同方法及影响帧数的事件机制",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/zh-dppt-advance-rng",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: true,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () =>
@@ -2387,13 +2379,13 @@ export const guides = {
     meta: {
       title: "初始种子乱数",
       description: "如何在《钻石, 珍珠, 白金》中进行初始种子乱数",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/zh-dppt-initial-seed",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: true,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () =>
@@ -2404,13 +2396,13 @@ export const guides = {
     meta: {
       title: "宝可追踪乱数",
       description: "两种不同的宝可追踪乱数方法",
+      category: "Diamond, Pearl, and Platinum",
       slug: "/zh-dppt-pokeradar-rng",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: true,
       addedOn: null,
       file: "guides/Diamond, Pearl, and Platinum/PokeRadar.mdx",
-      category: "Diamond, Pearl, and Platinum",
     },
     Guide: React.lazy(
       () => import("~/../guides/Diamond, Pearl, and Platinum/PokeRadar.mdx"),
@@ -2436,45 +2428,41 @@ export const guides = {
     meta: {
       title: "时拉比",
       description: "如何获得异色时拉比",
+      category: "Gold, Silver, Crystal",
       slug: "/zh-gen2-celebi",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: true,
       addedOn: "2025-03-27",
-      file: "guides/Gold, Silver, Crystal/Celebi.mdx",
-      category: "Gold, Silver, Crystal",
+      file: "guides/Gen 2/Celebi.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Gold, Silver, Crystal/Celebi.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 2/Celebi.mdx")),
   },
   "/zh-gen2-starters": {
     meta: {
       title: "水晶初始宝可梦乱数",
       description: "在水晶里获得异色初始宝可梦",
+      category: "Gold, Silver, Crystal",
       slug: "/zh-gen2-starters",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: true,
       addedOn: null,
-      file: "guides/Gold, Silver, Crystal/Starter.mdx",
-      category: "Gold, Silver, Crystal",
+      file: "guides/Gen 2/Starter.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Gold, Silver, Crystal/Starter.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 2/Starter.mdx")),
   },
   "/zh-install-pokereader": {
     meta: {
       title: "3DS安装PokeReader",
       description: "在3DS上安装工具来帮助乱数宝可梦",
+      category: "Tools and Emulators",
       slug: "/zh-install-pokereader",
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: true,
       addedOn: null,
       file: "guides/Tools and Emulators/3DS PokeReader.mdx",
-      category: "Tools and Emulators",
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),

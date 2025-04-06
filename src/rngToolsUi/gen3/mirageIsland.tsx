@@ -1,21 +1,20 @@
 import { Formik } from "formik";
 import {
   Field,
-  FormikInput,
   Flex,
   FormFieldTable,
   Form,
   ResultTable,
-  Button,
   ResultColumn,
   RngToolSubmit,
 } from "~/components";
+import {Input} from "antd";
 import {
   DecimalString,
   fromDecimalString,
   toDecimalString,
 } from "~/utils/number";
-import { FormikRadio } from "../../components/radio";
+import { RadioGroup } from "../../components/radio";
 import React from "react";
 
 type Game = "emerald" | "rs";
@@ -24,7 +23,7 @@ interface ResultColumnData {
   day: number;
   dayDiff: number;
   pidPattern: number;
-  earliestFrame: number;
+  earliestAdv: number;
 }
 
 const advancePidRng = function (oldValue: bigint) {
@@ -46,50 +45,53 @@ const getHighPidFromRng = function (rng: bigint) {
   return rng >> 16n;
 };
 
-const formatLargeInteger = function (x: number) {
-  return x.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const formatLargeInteger = function (number: number) {
+  return number.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-class EarliestFrameCalculator {
+class EarliestAdvCalculator {
   constructor(private initialSeed: number) {}
 
-  private earliestFrameByPidPattern: Uint32Array | null = null; // null until the first getEarliestAdvanceCount call
+  /** 
+   * earliestAdvanceByPidPattern[PidPattern] = earliestMethod1Advance.
+   * null until the first getEarliestAdvanceCount call
+  */
+  private earliestAdvanceByPidPattern: Uint32Array | null = null; 
 
   private generateEarliestAdvanceCount() {
-    const EARLIEST_VALID_FRAME = 1000; // Earliest frame for Kecleon with turbo fire A is ~816
-    const earliestFrameByPidPattern = new Uint32Array(0x10000);
+    const EARLIEST_VALID_ADVANCE = 1000; // Earliest advance for Kecleon with turbo fire A is ~816
+    const earliestAdvByPidPattern = new Uint32Array(0x10000);
 
     let unmatchedCount = 0x10000;
     let pidRng = BigInt(this.initialSeed);
-    for (let pidRngFrame = 0; pidRngFrame < 1_000_000; pidRngFrame++) {
-      // avoid infinite loop in case of bug
+    for (let pidRngAdv = 0; pidRngAdv < 1_000_000; pidRngAdv++) { // 1_000_000 to avoid infinite loop in case of bug
       pidRng = advancePidRng(pidRng);
 
-      if (pidRngFrame < EARLIEST_VALID_FRAME) continue;
+      if (pidRngAdv < EARLIEST_VALID_ADVANCE) continue;
 
       const pidPattern = Number(getHighPidFromRng(pidRng));
-      const oldValue = earliestFrameByPidPattern[pidPattern];
-      if (oldValue !== 0) continue; // another earlier frame exists
+      const oldValue = earliestAdvByPidPattern[pidPattern];
+      if (oldValue !== 0) continue; // another earlier advance exists
 
-      earliestFrameByPidPattern[pidPattern] = pidRngFrame;
+      earliestAdvByPidPattern[pidPattern] = pidRngAdv;
       unmatchedCount--;
       if (unmatchedCount === 0) break; // all were matched
     }
 
     if (unmatchedCount !== 0)
-      console.error("earliestFrameByPidPattern are missing some values");
+      console.error("Error: earliestAdvByPidPattern are missing some values. This means some PID pattern won't have a earliest advance.");
 
-    return earliestFrameByPidPattern;
+    return earliestAdvByPidPattern;
   }
   getEarliestAdvanceCount(pidPattern: number) {
-    if (this.earliestFrameByPidPattern === null)
-      this.earliestFrameByPidPattern = this.generateEarliestAdvanceCount();
-    return this.earliestFrameByPidPattern[pidPattern];
+    if (this.earliestAdvanceByPidPattern === null)
+      this.earliestAdvanceByPidPattern = this.generateEarliestAdvanceCount();
+    return this.earliestAdvanceByPidPattern[pidPattern];
   }
 }
 
-const emeraldEarliestFrameCalc = new EarliestFrameCalculator(0x0);
-const rsEarliestFrameCalc = new EarliestFrameCalculator(0x5a0);
+const emeraldEarliestAdvCalc = new EarliestAdvCalculator(0x0);
+const rsEarliestAdvCalc = new EarliestAdvCalculator(0x5A0);
 
 const getColumns = (game:Game, values:FormState) : ResultColumn<ResultColumnData>[] => {
   const columns:ResultColumn<ResultColumnData>[] = [];
@@ -109,8 +111,7 @@ const getColumns = (game:Game, values:FormState) : ResultColumn<ResultColumnData
       title: "PID Pattern",
       dataIndex: "pidPattern",
       key: "pidPattern",
-      render: (pidPattern) =>
-        `0x${pidPattern.toString(16).toUpperCase().padStart(4, "0")}****`,
+      render: (pidPattern) => `0x${pidPattern.toString(16).toUpperCase().padStart(4, "0")}****`,
       monospace: true,
     }
   );
@@ -119,10 +120,10 @@ const getColumns = (game:Game, values:FormState) : ResultColumn<ResultColumnData
   if (fixedInitialSeedForMethod1)
     columns.push(
       {
-        title: "Method-1 Earliest Frame matching PID Pattern",
-        dataIndex: "earliestFrame",
-        key: "earliestFrame",
-        render: (earliestFrame) => formatLargeInteger(earliestFrame),
+        title: "Method-1 Earliest RNG Advance matching PID Pattern",
+        dataIndex: "earliestAdv",
+        key: "earliestAdv",
+        render: (earliestAdv) => formatLargeInteger(earliestAdv),
       },
     );
   return columns;
@@ -144,69 +145,52 @@ const getInitialValues = (game: Game): FormState => {
   };
 };
 
-const getFields = (values:FormState): Field[] => {
-  const fields:Field[] = [
-    {
-      label: "Battery",
-      input: (
-        <FormikRadio<FormState, "battery">
-          name="battery"
-          options={["Live", "Dead"]}
-        />
-      ),
-    },
-  ];
-  if (values.battery === "Live")
-    fields.push({
-      label: "Rocket Launched",
-      input: <FormikInput<FormState> name="rocketLaunchedCount" />,
-    });
-  return fields;
-};
-
 type Props = {
   game?: Game;
 };
 
 export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
-  const [results, setResults] = React.useState<ResultColumnData[]>([]);
+  const calc = game === "emerald" ? emeraldEarliestAdvCalc : rsEarliestAdvCalc;
+
+  const initialValues = getInitialValues(game);
+
+  const generateResults = function(values:FormState) : ResultColumnData[] {
+    if (values.battery === "Dead") {
+      return [
+        {
+          day: 0,
+          dayDiff: 0,
+          pidPattern: 0,
+          earliestAdv: calc.getEarliestAdvanceCount(0),
+        },
+      ];
+    }
+
+    const rocketLaunchedCount =
+      fromDecimalString(values.rocketLaunchedCount) ?? 0;
+    const currentDay = rocketLaunchedCount * 7;
+    const ROW_COUNT = 50;
+    let mirageIslandRng = advanceMirageIslandRngMulti(0n, currentDay);
+
+    const res: ResultColumnData[] = [];
+    for (let dayDiff = 0; dayDiff < ROW_COUNT; dayDiff++) {
+      const day = currentDay + dayDiff;
+      const pidPattern = Number(mirageIslandRng >> 16n);
+      res.push({
+        day,
+        dayDiff,
+        pidPattern,
+        earliestAdv: calc.getEarliestAdvanceCount(pidPattern),
+      });
+      mirageIslandRng = advanceMirageIslandRng(mirageIslandRng);
+    }
+    return res;
+  };
+  const [results, setResults] = React.useState<ResultColumnData[]>(generateResults(initialValues));
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
-      const calc =
-        game === "emerald" ? emeraldEarliestFrameCalc : rsEarliestFrameCalc;
-
-      if (values.battery === "Dead") {
-        setResults([
-          {
-            day: 0,
-            dayDiff: 0,
-            pidPattern: 0,
-            earliestFrame: calc.getEarliestAdvanceCount(0),
-          },
-        ]);
-        return;
-      }
-
-      const rocketLaunchedCount =
-        fromDecimalString(values.rocketLaunchedCount) ?? 0;
-      const currentDay = rocketLaunchedCount * 7;
-      const ROW_COUNT = 50;
-      let mirageIslandRng = advanceMirageIslandRngMulti(0n, currentDay);
-
-      const res: ResultColumnData[] = [];
-      for (let dayDiff = 0; dayDiff < ROW_COUNT; dayDiff++) {
-        const day = currentDay + dayDiff;
-        const pidPattern = Number(mirageIslandRng >> 16n);
-        res.push({
-          day,
-          dayDiff,
-          pidPattern,
-          earliestFrame: calc.getEarliestAdvanceCount(pidPattern),
-        });
-        mirageIslandRng = advanceMirageIslandRng(mirageIslandRng);
-      }
-      setResults(res);
+      setResults(generateResults(values));
     },
     [game],
   );
@@ -214,23 +198,48 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
   return (
     <Formik
       enableReinitialize
-      initialValues={getInitialValues(game)}
+      initialValues={initialValues}
       onSubmit={onSubmit}
-    >{({
-      values,
-    }) => (
-      <Flex vertical gap={16}>
+    >{(formik) => {
+      const fields:Field[] = [
+        {
+          label: "Battery",
+          input: (
+            <RadioGroup
+              optionType="button"
+              name="battery"
+              onChange={(e) => {
+                formik.handleChange(e);
+                formik.submitForm();
+              }}
+              value={formik.values.battery}
+              options={["Live", "Dead"]}
+            />
+          ),
+        },
+      ];
+      if (formik.values.battery === "Live")
+        fields.push({
+          label: "Rocket Launched",
+          input: <Input
+            name="rocketLaunchedCount"
+            onChange={(e) => {
+              formik.handleChange(e);
+              formik.submitForm();
+            }}
+            value={formik.values.rocketLaunchedCount}
+          />
+        });
+
+      return (<Flex vertical gap={16}>
         <Form>
           <Flex vertical gap={8}>
-            <FormFieldTable fields={getFields(values)} />
-            <Button trackerId="mirage-island" htmlType="submit">
-              {"Generate"}
-            </Button>
+            <FormFieldTable fields={fields} />
           </Flex>
         </Form>
 
-        <ResultTable<ResultColumnData> columns={getColumns(game, values)} dataSource={results} />
-      </Flex>
-    )}</Formik>
+        <ResultTable<ResultColumnData> columns={getColumns(game, formik.values)} dataSource={results} />
+      </Flex>);    
+    }}</Formik>
   );
 };

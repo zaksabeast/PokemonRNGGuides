@@ -8,7 +8,7 @@ import {
   ResultColumn,
   RngToolSubmit,
 } from "~/components";
-import {Input} from "antd";
+import { Input } from "antd";
 import {
   DecimalString,
   fromDecimalString,
@@ -52,11 +52,11 @@ const formatLargeInteger = function (number: number) {
 class EarliestAdvCalculator {
   constructor(private initialSeed: number) {}
 
-  /** 
+  /**
    * earliestAdvanceByPidPattern[PidPattern] = earliestMethod1Advance.
    * null until the first getEarliestAdvanceCount call
-  */
-  private earliestAdvanceByPidPattern: Uint32Array | null = null; 
+   */
+  private earliestAdvanceByPidPattern: Uint32Array | null = null;
 
   private generateEarliestAdvanceCount() {
     const EARLIEST_VALID_ADVANCE = 1000; // Earliest advance for Kecleon with turbo fire A is ~816
@@ -64,7 +64,8 @@ class EarliestAdvCalculator {
 
     let unmatchedCount = 0x10000;
     let pidRng = BigInt(this.initialSeed);
-    for (let pidRngAdv = 0; pidRngAdv < 1_000_000; pidRngAdv++) { // 1_000_000 to avoid infinite loop in case of bug
+    for (let pidRngAdv = 0; pidRngAdv < 1_000_000; pidRngAdv++) {
+      // 1_000_000 to avoid infinite loop in case of bug
       pidRng = advancePidRng(pidRng);
 
       if (pidRngAdv < EARLIEST_VALID_ADVANCE) continue;
@@ -79,7 +80,9 @@ class EarliestAdvCalculator {
     }
 
     if (unmatchedCount !== 0)
-      console.error("Error: earliestAdvByPidPattern are missing some values. This means some PID pattern won't have a earliest advance.");
+      console.error(
+        "Error: earliestAdvByPidPattern are missing some values. This means some PID pattern won't have a earliest advance.",
+      );
 
     return earliestAdvByPidPattern;
   }
@@ -91,11 +94,14 @@ class EarliestAdvCalculator {
 }
 
 const emeraldEarliestAdvCalc = new EarliestAdvCalculator(0x0);
-const rsEarliestAdvCalc = new EarliestAdvCalculator(0x5A0);
+const rsEarliestAdvCalc = new EarliestAdvCalculator(0x5a0);
 
-const getColumns = (game:Game, values:FormState) : ResultColumn<ResultColumnData>[] => {
-  const columns:ResultColumn<ResultColumnData>[] = [];
-  if (values.battery === "Live"){
+const getColumns = (
+  game: Game,
+  values: FormState,
+): ResultColumn<ResultColumnData>[] => {
+  const columns: ResultColumn<ResultColumnData>[] = [];
+  if (values.battery === "Live") {
     columns.push(
       { title: "Day", dataIndex: "day", key: "day" },
       {
@@ -106,28 +112,26 @@ const getColumns = (game:Game, values:FormState) : ResultColumn<ResultColumnData
       },
     );
   }
-  columns.push(
-    {
-      title: "PID Pattern",
-      dataIndex: "pidPattern",
-      key: "pidPattern",
-      render: (pidPattern) => `0x${pidPattern.toString(16).toUpperCase().padStart(4, "0")}****`,
-      monospace: true,
-    }
-  );
+  columns.push({
+    title: "PID Pattern",
+    dataIndex: "pidPattern",
+    key: "pidPattern",
+    render: (pidPattern) =>
+      `0x${pidPattern.toString(16).toUpperCase().padStart(4, "0")}****`,
+    monospace: true,
+  });
 
-  const fixedInitialSeedForMethod1 = game === "emerald" || values.battery === "Dead";
+  const fixedInitialSeedForMethod1 =
+    game === "emerald" || values.battery === "Dead";
   if (fixedInitialSeedForMethod1)
-    columns.push(
-      {
-        title: "Method-1 Earliest RNG Advance matching PID Pattern",
-        dataIndex: "earliestAdv",
-        key: "earliestAdv",
-        render: (earliestAdv) => formatLargeInteger(earliestAdv),
-      },
-    );
+    columns.push({
+      title: "Method-1 Earliest RNG Advance matching PID Pattern",
+      dataIndex: "earliestAdv",
+      key: "earliestAdv",
+      render: (earliestAdv) => formatLargeInteger(earliestAdv),
+    });
   return columns;
-}
+};
 
 type Battery = "Dead" | "Live";
 
@@ -154,7 +158,7 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
 
   const initialValues = getInitialValues(game);
 
-  const generateResults = function(values:FormState) : ResultColumnData[] {
+  const generateResults = function (values: FormState): ResultColumnData[] {
     if (values.battery === "Dead") {
       return [
         {
@@ -186,7 +190,9 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
     }
     return res;
   };
-  const [results, setResults] = React.useState<ResultColumnData[]>(generateResults(initialValues));
+  const [results, setResults] = React.useState<ResultColumnData[]>(
+    generateResults(initialValues),
+  );
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
@@ -200,46 +206,55 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
       enableReinitialize
       initialValues={initialValues}
       onSubmit={onSubmit}
-    >{(formik) => {
-      const fields:Field[] = [
-        {
-          label: "Battery",
-          input: (
-            <RadioGroup
-              optionType="button"
-              name="battery"
-              onChange={(e) => {
-                formik.handleChange(e);
-                formik.submitForm();
-              }}
-              value={formik.values.battery}
-              options={["Live", "Dead"]}
+    >
+      {(formik) => {
+        const fields: Field[] = [
+          {
+            label: "Battery",
+            input: (
+              <RadioGroup
+                optionType="button"
+                name="battery"
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  formik.submitForm();
+                }}
+                value={formik.values.battery}
+                options={["Live", "Dead"]}
+              />
+            ),
+          },
+        ];
+        if (formik.values.battery === "Live")
+          fields.push({
+            label: "Rocket Launched",
+            input: (
+              <Input
+                name="rocketLaunchedCount"
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  formik.submitForm();
+                }}
+                value={formik.values.rocketLaunchedCount}
+              />
+            ),
+          });
+
+        return (
+          <Flex vertical gap={16}>
+            <Form>
+              <Flex vertical gap={8}>
+                <FormFieldTable fields={fields} />
+              </Flex>
+            </Form>
+
+            <ResultTable<ResultColumnData>
+              columns={getColumns(game, formik.values)}
+              dataSource={results}
             />
-          ),
-        },
-      ];
-      if (formik.values.battery === "Live")
-        fields.push({
-          label: "Rocket Launched",
-          input: <Input
-            name="rocketLaunchedCount"
-            onChange={(e) => {
-              formik.handleChange(e);
-              formik.submitForm();
-            }}
-            value={formik.values.rocketLaunchedCount}
-          />
-        });
-
-      return (<Flex vertical gap={16}>
-        <Form>
-          <Flex vertical gap={8}>
-            <FormFieldTable fields={fields} />
           </Flex>
-        </Form>
-
-        <ResultTable<ResultColumnData> columns={getColumns(game, formik.values)} dataSource={results} />
-      </Flex>);    
-    }}</Formik>
+        );
+      }}
+    </Formik>
   );
 };

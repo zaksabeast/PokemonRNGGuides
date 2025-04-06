@@ -100,17 +100,15 @@ export const guides = {
     meta: {
       title: "Egg RNG",
       description: "How to RNG egg in BW2 based on the recent discoveries",
+      category: "Black 2 and White 2",
       slug: "/bw2-egg",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Black 2 and White 2/Egg RNG.mdx",
-      category: "Black 2 and White 2",
+      file: "guides/Gen 5/BW2 Egg.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Black 2 and White 2/Egg RNG.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 5/BW2 Egg.mdx")),
   },
   "/cfw-bdsp-egg": {
     meta: {
@@ -397,149 +395,133 @@ export const guides = {
     meta: {
       title: "Dream Radar RNG in Generation 5",
       description: "RNG Level 5 Dream Ball HA Legends",
+      category: "Black 2 and White 2",
       slug: "/emulator-b2w2-dream-radar",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Black 2 and White 2/Dream Radar.mdx",
-      category: "Black 2 and White 2",
+      file: "guides/Gen 5/Dream Radar.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Black 2 and White 2/Dream Radar.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Dream Radar.mdx")),
   },
   "/emulator-b2w2-runasdate-inital-seed": {
     meta: {
       title: "Initial Seed RNG (RunAsDate edition)",
       description: "How to control Gen 5 initial seeds without any difficulty",
+      category: "Black 2 and White 2",
       slug: "/emulator-b2w2-runasdate-inital-seed",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Black 2 and White 2/Using Runasdate to RNG Initial Seed.mdx",
-      category: "Black 2 and White 2",
+      file: "guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
     },
     Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Black 2 and White 2/Using Runasdate to RNG Initial Seed.mdx"
-        ),
+      () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
     ),
   },
   "/emulator-b2w2-wild": {
     meta: {
       title: "Wild RNG",
       description: "Wild RNG",
+      category: "Black 2 and White 2",
       slug: "/emulator-b2w2-wild",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Black 2 and White 2/Wild RNG Emu.mdx",
-      category: "Black 2 and White 2",
+      file: "guides/Gen 5/Wild RNG Emu.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Black 2 and White 2/Wild RNG Emu.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
   },
   "/emulator-bw-entralink": {
     meta: {
       title: "Entralink (Emulator)",
       description: "How to RNG cool Pokémon with Entralink RNG",
+      category: "Black and White",
       slug: "/emulator-bw-entralink",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Black and White/Entralink.mdx",
-      category: "Black and White",
+      file: "guides/Gen 5/Entralink.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Black and White/Entralink.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Entralink.mdx")),
   },
   "/emulator-bw-find-ds-parameters": {
     meta: {
       title: "How To Find DS Parameters in Generation 5",
       description: "Get your DS Parameters for Generation 5 RNG.",
+      category: "Black and White",
       slug: "/emulator-bw-find-ds-parameters",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Black and White/Find DS Parameters.mdx",
-      category: "Black and White",
+      file: "guides/Gen 5/Find DS Parameters.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Black and White/Find DS Parameters.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Find DS Parameters.mdx")),
   },
   "/emulator-bw-roamers": {
     meta: {
       title: "Gen 5 Roamers",
       description: "RNG Gen 5 Roamers with an emulator",
+      category: "Black and White",
       slug: "/emulator-bw-roamers",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Black and White/Roamers.mdx",
-      category: "Black and White",
+      file: "guides/Gen 5/Roamers.mdx",
     },
-    Guide: React.lazy(() => import("~/../guides/Black and White/Roamers.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Roamers.mdx")),
   },
   "/emulator-bw-runasdate-initial-seed": {
     meta: {
       title: "Initial Seed RNG (RunAsDate edition)",
       description: "How to control Gen 5 initial seeds without any difficulty",
+      category: "Black and White",
       slug: "/emulator-bw-runasdate-initial-seed",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Black and White/Using Runasdate to RNG Initial Seed.mdx",
-      category: "Black and White",
+      file: "guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
     },
     Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Black and White/Using Runasdate to RNG Initial Seed.mdx"
-        ),
+      () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
     ),
   },
   "/emulator-bw-white-forest": {
     meta: {
       title: "White Forest RNG",
       description: "White Forest RNG",
+      category: "Black and White",
       slug: "/emulator-bw-white-forest",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Black and White/White Forest RNG (Emu).mdx",
-      category: "Black and White",
+      file: "guides/Gen 5/White Forest RNG (Emu).mdx",
     },
     Guide: React.lazy(
-      () => import("~/../guides/Black and White/White Forest RNG (Emu).mdx"),
+      () => import("~/../guides/Gen 5/White Forest RNG (Emu).mdx"),
     ),
   },
   "/emulator-bw-wild": {
     meta: {
       title: "Wild RNG",
       description: "Wild RNG",
+      category: "Black and White",
       slug: "/emulator-bw-wild",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Black and White/Wild RNG Emu.mdx",
-      category: "Black and White",
+      file: "guides/Gen 5/Wild RNG Emu.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Black and White/Wild RNG Emu.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
   },
   "/emulator-colosseum-general": {
     meta: {
@@ -1564,17 +1546,15 @@ export const guides = {
       title: "Entralink (Retail)",
       description:
         "A step-by-step guide for RNG manipulation using the C-Gear method in Pokémon Black and White.",
+      category: "Black and White",
       slug: "/retail-bw-entralink",
       isRoughDraft: true,
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Black and White/Retail Entralink.mdx",
-      category: "Black and White",
+      file: "guides/Gen 5/Retail Entralink.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Black and White/Retail Entralink.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Retail Entralink.mdx")),
   },
   "/retail-emerald-wild": {
     meta: {

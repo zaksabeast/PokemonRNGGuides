@@ -15,10 +15,8 @@ import {
   fromDecimalString,
   toDecimalString,
 } from "~/utils/number";
-import { RadioGroup, FormikRadio } from "../../components/radio";
+import { FormikRadio } from "../../components/radio";
 import React from "react";
-
-//NO_PROD: hide Rocket Launched 
 
 type Game = "emerald" | "rs";
 
@@ -93,32 +91,47 @@ class EarliestFrameCalculator {
 const emeraldEarliestFrameCalc = new EarliestFrameCalculator(0x0);
 const rsEarliestFrameCalc = new EarliestFrameCalculator(0x5a0);
 
-const columns: ResultColumn<ResultColumnData>[] = [
-  { title: "Day", dataIndex: "day", key: "day" },
-  {
-    title: "Time To Wait",
-    dataIndex: "dayDiff",
-    key: "dayDiff",
-    render: (dayDiff) => `${dayDiff} day${dayDiff === 1 ? "" : "s"}`,
-  },
-  {
-    title: "PID Pattern",
-    dataIndex: "pidPattern",
-    key: "pidPattern",
-    render: (pidPattern) =>
-      `0x${pidPattern.toString(16).toUpperCase().padStart(4, "0")}****`,
-    monospace: true,
-  },
-  {
-    title: "Method-1 Earliest Frame matching PID Pattern",
-    dataIndex: "earliestFrame",
-    key: "earliestFrame",
-    render: (earliestFrame) => formatLargeInteger(earliestFrame),
-  },
-];
+const getColumns = (game:Game, values:FormState) : ResultColumn<ResultColumnData>[] => {
+  const columns:ResultColumn<ResultColumnData>[] = [];
+  if (values.battery === "Live"){
+    columns.push(
+      { title: "Day", dataIndex: "day", key: "day" },
+      {
+        title: "Time To Wait",
+        dataIndex: "dayDiff",
+        key: "dayDiff",
+        render: (dayDiff) => `${dayDiff} day${dayDiff === 1 ? "" : "s"}`,
+      },
+    );
+  }
+  columns.push(
+    {
+      title: "PID Pattern",
+      dataIndex: "pidPattern",
+      key: "pidPattern",
+      render: (pidPattern) =>
+        `0x${pidPattern.toString(16).toUpperCase().padStart(4, "0")}****`,
+      monospace: true,
+    }
+  );
+
+  const fixedInitialSeedForMethod1 = game === "emerald" || values.battery === "Dead";
+  if (fixedInitialSeedForMethod1)
+    columns.push(
+      {
+        title: "Method-1 Earliest Frame matching PID Pattern",
+        dataIndex: "earliestFrame",
+        key: "earliestFrame",
+        render: (earliestFrame) => formatLargeInteger(earliestFrame),
+      },
+    );
+  return columns;
+}
+
+type Battery = "Dead" | "Live";
 
 type FormState = {
-  battery: "Dead" | "Live";
+  battery: Battery;
   rocketLaunchedCount: DecimalString;
   game: Game;
 };
@@ -131,8 +144,8 @@ const getInitialValues = (game: Game): FormState => {
   };
 };
 
-const getFields = (): Field[] => {
-  return [
+const getFields = (values:FormState): Field[] => {
+  const fields:Field[] = [
     {
       label: "Battery",
       input: (
@@ -142,26 +155,28 @@ const getFields = (): Field[] => {
         />
       ),
     },
-    {
+  ];
+  if (values.battery === "Live")
+    fields.push({
       label: "Rocket Launched",
       input: <FormikInput<FormState> name="rocketLaunchedCount" />,
-    },
-  ];
+    });
+  return fields;
 };
 
 type Props = {
   game?: Game;
 };
 
-export const Gen3MirageIsland = ({ game = "rs" }: Props) => {
+export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
   const [results, setResults] = React.useState<ResultColumnData[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
+    async (values) => {
       const calc =
         game === "emerald" ? emeraldEarliestFrameCalc : rsEarliestFrameCalc;
 
-      if (opts.battery === "Dead") {
+      if (values.battery === "Dead") {
         setResults([
           {
             day: 0,
@@ -174,7 +189,7 @@ export const Gen3MirageIsland = ({ game = "rs" }: Props) => {
       }
 
       const rocketLaunchedCount =
-        fromDecimalString(opts.rocketLaunchedCount) ?? 0;
+        fromDecimalString(values.rocketLaunchedCount) ?? 0;
       const currentDay = rocketLaunchedCount * 7;
       const ROW_COUNT = 50;
       let mirageIslandRng = advanceMirageIslandRngMulti(0n, currentDay);
@@ -201,19 +216,21 @@ export const Gen3MirageIsland = ({ game = "rs" }: Props) => {
       enableReinitialize
       initialValues={getInitialValues(game)}
       onSubmit={onSubmit}
-    >
+    >{({
+      values,
+    }) => (
       <Flex vertical gap={16}>
         <Form>
           <Flex vertical gap={8}>
-            <FormFieldTable fields={getFields()} />
+            <FormFieldTable fields={getFields(values)} />
             <Button trackerId="mirage-island" htmlType="submit">
               {"Generate"}
             </Button>
           </Flex>
         </Form>
 
-        <ResultTable<ResultColumnData> columns={columns} dataSource={results} />
+        <ResultTable<ResultColumnData> columns={getColumns(game, values)} dataSource={results} />
       </Flex>
-    </Formik>
+    )}</Formik>
   );
 };

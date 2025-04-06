@@ -1,33 +1,46 @@
 ---
-title: "Mirage Island"
-description: "Accessing Mirage Island"
-slug: "mirage-island"
-category: "Emerald"
-tag: "any"
-addedOn: "2025-04-02"
+- title: "Mirage Island"
+  description: "Accessing Mirage Island"
+  slug: "emerald-mirage-island"
+  category: "Emerald"
+  tag: "any"
+  addedOn: "2025-04-05"
+- title: "Mirage Island"
+  description: "Accessing Mirage Island"
+  slug: "rs-mirage-island"
+  category: "Ruby and Sapphire"
+  tag: "any"
+  addedOn: "2025-04-05"
 ---
 
 Gist: How to RNG manipulate a Pokémon with the right PID to access Mirage Island
 
 ## Mirage Island
 
-Accessing Mirage Island is the only way to obtain Liechi Berry.
+Accessing Mirage Island is the only way to obtain Liechi Berry. It is only accessible if the player team has a Pokémon with PID matching a specific pattern. That pattern changes every day, and depends on the number of days since the game savefile was created.
 
-Mirage Island is only accessible if the player team has a Pokémon with PID matching a specific pattern.
+For example, if 3 days has passed, the PID pattern to match is 0xA704\*\*\*\*. If you have a dead battery, the PID to match is always 0x0000\*\*\*\*.
 
-That pattern changes every day, and depends on the number of days since the game savefile was created.
+## Strategy
+- Find the number of days since the savefile was created by talking to a scientist in the Mossdeep Space Center.
 
-For example, if 3 days has passed, the PID pattern to match is 0xA704\*\*\*\*.
+- 
+
 
 ## Determining the earliest frame for your PID pattern
 
 - Enter the
 
-If you have a dead battery example, the PID to match is always 0x0000\*\*\*\*.
 
 NO_PROD
 
-<Gen3MirageIsland />
+<ShowIf slug="/emerald-mirage-island">
+  <Gen3MirageIsland game="emerald" />
+</ShowIf>
+
+<ShowIf slug="/rs-mirage-island">
+  <Gen3MirageIsland game="rs" />
+</ShowIf>
 
 ## Technical Details
 

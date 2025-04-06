@@ -1,7 +1,21 @@
 import { Formik } from "formik";
-import {Field,FormikInput,Flex,FormFieldTable,Form,ResultTable,Button,ResultColumn,RngToolSubmit,} from "~/components";
-import {DecimalString,fromDecimalString,toDecimalString,} from "~/utils/number";
-import { RadioGroup } from "../../components/radio";
+import {
+  Field,
+  FormikInput,
+  Flex,
+  FormFieldTable,
+  Form,
+  ResultTable,
+  Button,
+  ResultColumn,
+  RngToolSubmit,
+} from "~/components";
+import {
+  DecimalString,
+  fromDecimalString,
+  toDecimalString,
+} from "~/utils/number";
+import { RadioGroup, FormikRadio } from "../../components/radio";
 import React from "react";
 
 type Game = "emerald" | "rs";
@@ -13,114 +27,116 @@ interface ResultColumnData {
   earliestFrame: number;
 }
 
-const advancePidRng = function(oldValue:bigint){
-  return (BigInt(oldValue) * 0x41C64E6Dn + 24691n) % 0x100000000n;
+const advancePidRng = function (oldValue: bigint) {
+  return (BigInt(oldValue) * 0x41c64e6dn + 24691n) % 0x100000000n;
 };
 
-const advanceMirageIslandRng = function(oldValue:bigint){
-  return (BigInt(oldValue) * 0x41C64E6Dn + 0x3039n) % 0x100000000n;
+const advanceMirageIslandRng = function (oldValue: bigint) {
+  return (BigInt(oldValue) * 0x41c64e6dn + 0x3039n) % 0x100000000n;
 };
 
-const advanceMirageIslandRngMulti = function(oldValue:bigint,n:number){
+const advanceMirageIslandRngMulti = function (oldValue: bigint, n: number) {
   let newValue = oldValue;
-  for(let i = 0; i < n; i++)
-    newValue = advanceMirageIslandRng(newValue);
+  for (let i = 0; i < n; i++) newValue = advanceMirageIslandRng(newValue);
   return newValue;
 };
 
-const getHighPidFromRng = function(rng:bigint){
+const getHighPidFromRng = function (rng: bigint) {
   rng = advancePidRng(rng);
   return rng >> 16n;
 };
 
-const formatLargeInteger = function(x:number) {
+const formatLargeInteger = function (x: number) {
   return x.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 class EarliestFrameCalculator {
-  constructor(private initialSeed:number){}
+  constructor(private initialSeed: number) {}
 
-  private earliestFrameByPidPattern:Uint32Array | null = null; // null until the first getEarliestAdvanceCount call
+  private earliestFrameByPidPattern: Uint32Array | null = null; // null until the first getEarliestAdvanceCount call
 
-  private generateEarliestAdvanceCount(){
+  private generateEarliestAdvanceCount() {
     const EARLIEST_VALID_FRAME = 1000; // Earliest frame for Kecleon with turbo fire A is ~816
     const earliestFrameByPidPattern = new Uint32Array(0x10000);
 
     let unmatchedCount = 0x10000;
     let pidRng = BigInt(this.initialSeed);
-    for(let pidRngFrame = 0; pidRngFrame < 1_000_000; pidRngFrame++){ // avoid infinite loop in case of bug
+    for (let pidRngFrame = 0; pidRngFrame < 1_000_000; pidRngFrame++) {
+      // avoid infinite loop in case of bug
       pidRng = advancePidRng(pidRng);
 
-      if (pidRngFrame < EARLIEST_VALID_FRAME)
-        continue;
-      
+      if (pidRngFrame < EARLIEST_VALID_FRAME) continue;
+
       const pidPattern = Number(getHighPidFromRng(pidRng));
       const oldValue = earliestFrameByPidPattern[pidPattern];
-      if (oldValue !== 0)
-        continue; // another earlier frame exists
+      if (oldValue !== 0) continue; // another earlier frame exists
 
       earliestFrameByPidPattern[pidPattern] = pidRngFrame;
       unmatchedCount--;
-      if (unmatchedCount === 0)
-        break; // all were matched
+      if (unmatchedCount === 0) break; // all were matched
     }
 
     if (unmatchedCount !== 0)
-      console.error('earliestFrameByPidPattern are missing some values');
-    
+      console.error("earliestFrameByPidPattern are missing some values");
+
     return earliestFrameByPidPattern;
   }
-  getEarliestAdvanceCount(pidPattern:number){
-    if(this.earliestFrameByPidPattern === null)
+  getEarliestAdvanceCount(pidPattern: number) {
+    if (this.earliestFrameByPidPattern === null)
       this.earliestFrameByPidPattern = this.generateEarliestAdvanceCount();
     return this.earliestFrameByPidPattern[pidPattern];
-  } 
+  }
 }
 
 const emeraldEarliestFrameCalc = new EarliestFrameCalculator(0x0);
-const rsEarliestFrameCalc = new EarliestFrameCalculator(0x5A0);
+const rsEarliestFrameCalc = new EarliestFrameCalculator(0x5a0);
 
 const columns: ResultColumn<ResultColumnData>[] = [
   { title: "Day", dataIndex: "day", key: "day" },
-  { title: "Time To Wait",dataIndex: "dayDiff",key: "dayDiff",
-    render: (dayDiff) => `${dayDiff} day${dayDiff === 1 ? '' : 's'}`,},
-  { title: "PID Pattern", dataIndex: "pidPattern", key: "pidPattern",
-    render: (pidPattern) => `0x${pidPattern.toString(16).toUpperCase().padStart(4,'0')}****`,
-    monospace:true,},
-  { title: "Method-1 Earliest Frame matching PID Pattern", dataIndex: "earliestFrame", key: "earliestFrame",
-    render: (earliestFrame) => formatLargeInteger(earliestFrame),},
+  {
+    title: "Time To Wait",
+    dataIndex: "dayDiff",
+    key: "dayDiff",
+    render: (dayDiff) => `${dayDiff} day${dayDiff === 1 ? "" : "s"}`,
+  },
+  {
+    title: "PID Pattern",
+    dataIndex: "pidPattern",
+    key: "pidPattern",
+    render: (pidPattern) =>
+      `0x${pidPattern.toString(16).toUpperCase().padStart(4, "0")}****`,
+    monospace: true,
+  },
+  {
+    title: "Method-1 Earliest Frame matching PID Pattern",
+    dataIndex: "earliestFrame",
+    key: "earliestFrame",
+    render: (earliestFrame) => formatLargeInteger(earliestFrame),
+  },
 ];
 
 type FormState = {
-  isBatteryDead: boolean;
-  rocketLaunchedCount:DecimalString;
-  game:Game;
+  battery: "Dead" | "Live";
+  rocketLaunchedCount: DecimalString;
+  game: Game;
 };
 
 const getInitialValues = (game: Game): FormState => {
   return {
-    isBatteryDead: false,
+    battery: "Live",
     rocketLaunchedCount: toDecimalString(0),
     game,
   };
 };
 
 const getFields = (): Field[] => {
-  const [isBatteryDead, setIsBatteryDead] = React.useState(false);
   return [
     {
       label: "Battery",
       input: (
-        <RadioGroup
-          optionType="button"
-          value={isBatteryDead}
-          onChange={({ target }) => {
-            setIsBatteryDead(target.value);
-          }}
-          options={[
-            { label: "Live", value: false },
-            { label: "Dead", value: true },
-          ]}
+        <FormikRadio<FormState, "battery">
+          name="battery"
+          options={["Live", "Dead"]}
         />
       ),
     },
@@ -140,27 +156,36 @@ export const Gen3MirageIsland = ({ game = "rs" }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const calc = game === "emerald" ? emeraldEarliestFrameCalc : rsEarliestFrameCalc;
-      
-      if (opts.isBatteryDead){
-        setResults([{day:0, dayDiff:0, pidPattern:0, earliestFrame:	calc.getEarliestAdvanceCount(0)}]);
+      const calc =
+        game === "emerald" ? emeraldEarliestFrameCalc : rsEarliestFrameCalc;
+
+      if (opts.battery === "Dead") {
+        setResults([
+          {
+            day: 0,
+            dayDiff: 0,
+            pidPattern: 0,
+            earliestFrame: calc.getEarliestAdvanceCount(0),
+          },
+        ]);
         return;
       }
 
-      const rocketLaunchedCount = fromDecimalString(opts.rocketLaunchedCount) ?? 0;
+      const rocketLaunchedCount =
+        fromDecimalString(opts.rocketLaunchedCount) ?? 0;
       const currentDay = rocketLaunchedCount * 7;
       const ROW_COUNT = 50;
       let mirageIslandRng = advanceMirageIslandRngMulti(0n, currentDay);
 
-      const res:ResultColumnData[] = [];
-      for(let dayDiff = 0; dayDiff < ROW_COUNT; dayDiff++){
+      const res: ResultColumnData[] = [];
+      for (let dayDiff = 0; dayDiff < ROW_COUNT; dayDiff++) {
         const day = currentDay + dayDiff;
         const pidPattern = Number(mirageIslandRng >> 16n);
         res.push({
-          day, 
-          dayDiff, 
-          pidPattern, 
-          earliestFrame:calc.getEarliestAdvanceCount(pidPattern),
+          day,
+          dayDiff,
+          pidPattern,
+          earliestFrame: calc.getEarliestAdvanceCount(pidPattern),
         });
         mirageIslandRng = advanceMirageIslandRng(mirageIslandRng);
       }
@@ -185,10 +210,7 @@ export const Gen3MirageIsland = ({ game = "rs" }: Props) => {
           </Flex>
         </Form>
 
-        <ResultTable<ResultColumnData>
-          columns={columns}
-          dataSource={results}
-        />
+        <ResultTable<ResultColumnData> columns={columns} dataSource={results} />
       </Flex>
     </Formik>
   );

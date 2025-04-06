@@ -1,6 +1,6 @@
 ---
 title: "Overview"
-description: "Overview of GBA RNG"
+description: "Particularities, key RNG concepts, and version differences of GBA games."
 slug: "gba-overview"
 category: "GBA Overview"
 tag: "any"
@@ -8,8 +8,7 @@ addedOn: "2025-04-01"
 ---
 
 <Gist>
-  Gist: Understanding the particularities, the key RNG concepts, and version
-  differences of GBA games.
+  Gist: Particularities, key RNG concepts, and version differences of GBA games.
 </Gist>
 
 ### Particularities of GBA RNG Manipulation
@@ -33,27 +32,11 @@ Shininess depends on PID, TID, and SID. This means you must [know your SID](/gen
 
 ### Key Differences between GBA Games
 
-| Game                | Initial Seed                                                   |
-| ------------------- | -------------------------------------------------------------- |
-| Ruby & Sapphire     | With live battery: Random.<br/>With dead battery: Normally 5A0 |
-| Emerald             | Normally 0                                                     |
-| FireRed & LeafGreen | Random                                                         |
-
-[Pokémon Emerald](/emerald-overview) is the easiest game for RNG manipulation on retail and emulator without tool-assistance for:
-
-- • Static Pokémon (ex: Starters, Stationary)
-- • Wild Pokémon
-- • Egg Pokémon
-
-Ruby and Sapphire with a dead battery is also useful:
-
-- • Because the initial seed is different than Emerald, the wait time for the same outcome as Emerald can occur more quickly.
-- • Access to level 45 Groudon and Kyogre (level 70 on Emerald)
-
-FireRed and LeafGreen also have specific purposes such as:
-
-- • Only way to get Shiny Mewtwo and Unown
-- • Easiest way to get Shiny Articuno, Zapdos, Moltres
+| Game                | Initial Seed                                                   | Useful For
+| ------------------- | -------------------------------------------------------------- | ------------------------------------------------ | 
+| [Pokémon Emerald](/emerald-overview) | Normally 0                                    | Easiest to RNG Static, Wild, and Egg Pokémon
+| Ruby & Sapphire     | With live battery: Random.<br/>With dead battery: Normally 5A0 | Access to level 45 Groudon and Kyogre
+| FireRed & LeafGreen | Random                                                         | Only way to get Shiny Mewtwo and Unown<br/>Easiest way to get Shiny Articuno, Zapdos, Moltres
 
 ### Console Interoperability
 

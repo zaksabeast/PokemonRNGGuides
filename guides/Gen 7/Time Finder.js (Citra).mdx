@@ -1,9 +1,14 @@
 ---
-title: "Time Finder (Citra)"
-description: "Finding times to get specific RNG seeds"
-slug: "emulator-usum-time-finder"
-subCategory: "Emulator"
-tag: "emu"
+- title: "Time Finder (Citra)"
+  description: "Finding times to get specific RNG seeds"
+  slug: "emulator-usum-time-finder"
+  category: "Ultra Sun and Ultra Moon"
+  tag: "emu"
+- title: "Time Finder (Citra)"
+  description: "Finding times to get specific RNG seeds"
+  slug: "emulator-sm-time-finder"
+  category: "Sun and Moon"
+  tag: "emu"
 ---
 
 ## Tools
@@ -23,12 +28,22 @@ This guide explains how to use TimeFinder.js with CitraRNG. You can use time to 
 
 ## Calibration and Profile Generation
 
+<ShowIf slug="/emulator-usum-time-finder">
+
 The default offset and tick values may not match. These values differ by the version of Citra and are just suggestions. For example, Citra Nightly 1543 has an offset of 3730114 and a tick of 55.
+
+</ShowIf>
+
+<ShowIf slug="/emulator-sm-time-finder">
+
+The default offset and tick values may not match. These values differ by the version of Citra and are just suggestions. For example, Citra Nightly 1543 has an offset of 4470937 and a tick of 56.
+
+</ShowIf>
 
 1. Open 3DSTimeFinder and go to Tools => Gen 7 Profile Calibrator.
 2. Select the game you're calibrating (SM or USUM).
-3. In the Tick Range, enter a small number like 10.
-4. In the Offset Range, enter a large number, like 50,000,000.
+3. In the Offset Range, enter a small number like 10.
+4. In the Tick Range, enter a large number, like 50,000,000.
 5. It may take some time, but you'll find a result. Create a profile based on these values.
 
 ```
@@ -36,7 +51,7 @@ Note: Because of daylight saving, it's common not to find results at the actual 
 ```
 
 ```
-Note: If you find a result for Sun, Moon will have the same profile, so you can copy it for each game.
+Note: If you find a result, its counterpart will have the same profile, so you can copy it for each game.
 ```
 
 ## Gen7TimeFinder

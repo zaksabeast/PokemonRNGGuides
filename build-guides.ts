@@ -45,6 +45,8 @@ const categories = categoryDefs.map((category) => category.value);
 
 const CategorySchema = z.union(categoryDefs);
 
+type Category = z.infer<typeof CategorySchema>;
+
 const SingleGuideMetadataSchema = z.object({
   title: z.string().refine((value) => titleAndDescriptionChars.test(value)),
   description: z
@@ -73,6 +75,41 @@ const SingleGuideMetadataSchema = z.object({
     }),
 });
 
+const getCategory = ({
+  metadataCategory,
+  directory,
+}: {
+  metadataCategory?: Category;
+  directory: string;
+}) => {
+  return (
+    match({
+      metadataCategory,
+      directory,
+      directoryCategory: CategorySchema.safeParse(directory),
+    })
+      // If a category was set, use it
+      .with(
+        { metadataCategory: P.not(undefined) },
+        (matched) => matched.metadataCategory,
+      )
+      // If a directory matches a category, use it
+      .with(
+        { directoryCategory: { success: true, data: P.any } },
+        (matched) => matched.directoryCategory.data,
+      )
+      // Special exception for Home.mdx
+      .with(
+        { directoryCategory: { success: false }, directory: "Home.mdx" },
+        () => "Home" as const,
+      )
+      // Something is wrong!
+      .otherwise(() => {
+        throw new Error(`Invalid category: ${directory}`);
+      })
+  );
+};
+
 const GuideMetadataSchema = z.union([
   SingleGuideMetadataSchema,
   z.array(SingleGuideMetadataSchema),
@@ -85,24 +122,8 @@ const main = async () => {
   const guides: (GuideMetadata & { file: string; category: string })[] = [];
 
   // Scans the current working directory and each of its sub-directories recursively
-  for await (const file of glob.scan(".")) {
-    const unparsedCategory = file.split(path.sep)[1];
-
-    const category = match({
-      unparsedCategory,
-      category: CategorySchema.safeParse(unparsedCategory),
-    })
-      .with(
-        { category: { success: true, data: P.any } },
-        ({ category }) => category.data,
-      )
-      .with(
-        { category: { success: false }, unparsedCategory: "Home.mdx" },
-        () => "Home" as const,
-      )
-      .otherwise(() => {
-        throw new Error(`Invalid category: ${unparsedCategory}`);
-      });
+  for await (const rawFile of glob.scan(".")) {
+    const file = rawFile.replace(/\\/g, "/"); // Needed for Windows contributors
 
     const compiled = await evaluate(await fs.readFile(file), {
       remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
@@ -120,14 +141,22 @@ const main = async () => {
     const metadatas = isArray(parsed) ? parsed : [parsed];
 
     for (const metadata of metadatas) {
+      const category = getCategory({
+        directory: file.split("/")[1],
+        metadataCategory: metadata.category,
+      });
       guides.push({
         ...metadata,
         slug: `/${metadata.slug}`,
         file,
-        category: metadata.category ?? category,
+        category,
       });
     }
   }
+
+  guides.sort((lhs, rhs) => {
+    return lhs.slug.localeCompare(rhs.slug);
+  });
 
   const existingSlugs = Object.keys(existingGuides);
   const newSlugs = guides.map((guide) => guide.slug);

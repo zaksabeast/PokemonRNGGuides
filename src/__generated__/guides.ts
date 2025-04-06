@@ -1776,7 +1776,8 @@ export const guides = {
   "/emerald-overview": {
     meta: {
       title: "Overview",
-      description: "Overview of Pokémon Emerald",
+      description:
+        "Practical applications of RNG Manipulation and techniques in Pokémon Emerald",
       category: "Emerald",
       slug: "/emerald-overview",
       isRoughDraft: false,
@@ -1865,7 +1866,8 @@ export const guides = {
   "/gba-methods": {
     meta: {
       title: "Methods 1-4",
-      description: "Understanding Methods 1-4",
+      description:
+        "What is a Method, the reason why Methods 1-4 exist, and how they impact Pokémon generation.",
       category: "Emerald",
       slug: "/gba-methods",
       isRoughDraft: false,
@@ -1879,7 +1881,8 @@ export const guides = {
   "/gba-overview": {
     meta: {
       title: "Overview",
-      description: "Overview of GBA RNG",
+      description:
+        "Particularities, key RNG concepts, and version differences of GBA games.",
       category: "GBA Overview",
       slug: "/gba-overview",
       isRoughDraft: false,
@@ -2034,7 +2037,7 @@ export const guides = {
   "/gba-vblank": {
     meta: {
       title: "VBlank",
-      description: "Understanding VBlanks",
+      description: "What are Vblanks and their impact on Pokémon generation.",
       category: "Emerald",
       slug: "/gba-vblank",
       isRoughDraft: false,

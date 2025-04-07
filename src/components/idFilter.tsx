@@ -1,4 +1,4 @@
-import { GenericForm, GuarnteeFormNameType } from "~/types/form";
+import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { Select } from "./select";
 import { Flex } from "./flex";
 import { Input } from "./input";
@@ -8,7 +8,7 @@ import { IdFilter } from "~/types/id";
 type FilterType = IdFilter["type"];
 
 type Props<FormState extends GenericForm> = {
-  name: GuarnteeFormNameType<FormState, IdFilter>;
+  name: GuaranteeFormNameType<FormState, IdFilter>;
   optional?: boolean;
 };
 

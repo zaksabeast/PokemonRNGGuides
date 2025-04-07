@@ -5,7 +5,7 @@ import {
 } from "antd";
 import React from "react";
 import styled from "@emotion/styled";
-import { GenericForm, GuarnteeFormNameType } from "~/types/form";
+import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { useFormikContext } from "formik";
 import * as tst from "ts-toolbelt";
 
@@ -64,7 +64,7 @@ export const Input = ({
 
 type FormikInputProps<FormState extends GenericForm> = tst.O.Merge<
   Omit<InputProps, "onChange" | "defaultValue" | "name">,
-  { name: GuarnteeFormNameType<FormState, string> }
+  { name: GuaranteeFormNameType<FormState, string> }
 >;
 
 export const FormikInput = <FormState extends GenericForm>(

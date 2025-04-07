@@ -105,9 +105,13 @@ const getMenuCategory = (
   const sortedGuideItems = sortBy(guideItems, (item) => [item.tag, item.title]);
   const isNew = guideItems.some((item) => item.isNew);
 
+  const label = match(category)
+    .with("GBA Technical Documentation", () => "Technical Documentation")
+    .otherwise(() => category);
+
   return {
     key: `${keyPrefix}${category}`,
-    label: category,
+    label,
     children: sortedGuideItems,
     isNew,
     icon: isNew ? <MenuItemTag tag="new" isNew /> : null,
@@ -183,7 +187,12 @@ const topLevelMenu = [
   getCategory({
     key: "GBA",
     label: "GBA",
-    categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+    categories: [
+      "Ruby and Sapphire",
+      "FireRed and LeafGreen",
+      "Emerald",
+      "GBA Technical Documentation",
+    ],
     pages: [getMenuItemFromGuide({ slug: "/gba-overview", showIcon: false })],
   }),
   getCategory({

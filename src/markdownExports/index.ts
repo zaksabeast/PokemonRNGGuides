@@ -67,6 +67,7 @@ export const markdownComponents = {
   tr: MarkdownTr,
   td: MarkdownTd,
   a: MarkdownA,
+  Text: MarkdownParagraph,
   YouTubeVideo,
   PixelImage,
   Alert,

@@ -1,7 +1,6 @@
 import React from "react/jsx-runtime";
 import { Glob } from "bun";
 import fs from "node:fs/promises";
-import path from "path";
 import { evaluate } from "@mdx-js/mdx";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
@@ -39,6 +38,7 @@ const categoryDefs = [
   z.literal("Brilliant Diamond and Shining Pearl"),
   z.literal("Legends Arceus"),
   z.literal("GBA Overview"),
+  z.literal("GBA Technical Documentation"),
 ] as const;
 
 const categories = categoryDefs.map((category) => category.value);
@@ -170,7 +170,7 @@ const main = async () => {
       .map(
         (guide) => `"${guide.slug}": {
           meta: ${JSON.stringify(guide)},
-          Guide: React.lazy(() => import("~/../${guide.file.replace(/\\/g, "/")}")),
+          Guide: React.lazy(() => import("~/../${guide.file}")),
         }`,
       )
       .join(",\n")}

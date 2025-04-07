@@ -2,7 +2,7 @@
 title: "VBlank"
 description: "What are Vblanks and their impact on Pokémon generation."
 slug: "gba-vblank"
-category: "Emerald"
+category: "GBA Technical Documentation"
 tag: "any"
 addedOn: "2025-04-02"
 ---
@@ -30,11 +30,11 @@ In most cases, this is exactly what happens, and the Pokémon is generating with
 
 However, in some rare cases, a vblank occurs seemingly out of nowhere and alters the generation:
 
-| Step                                                                       | Advance At Step Start                                    |
-| -------------------------------------------------------------------------- | -------------------------------------------------------- |
-| Generate PID                                                               | 1                                                        |
-| <span style={{color:'green',fontWeight:'bold'}}>VBLANK: Advance RNG</span> | <span style={{color:'green',fontWeight:'bold'}}>2</span> |
-| Generate IVs                                                               | <span style={{color:'red',fontWeight:'bold'}}>3</span>   |
+| Step                                                  | Advance At Step Start               |
+| ----------------------------------------------------- | ----------------------------------- |
+| Generate PID                                          | 1                                   |
+| <Text color="Green" strong>VBLANK: Advance RNG</Text> | <Text color="Green" strong>2</Text> |
+| Generate IVs                                          | <Text color="Red" strong>3</Text>   |
 
 Even though the Pokémon generation started on the same RNG advance, the resulting IVs are different because they were generated with advance 3 instead of advance 2.
 

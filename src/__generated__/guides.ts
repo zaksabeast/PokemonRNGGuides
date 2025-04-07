@@ -1130,7 +1130,7 @@ export const guides = {
       title: "Methods 1-4",
       description:
         "What is a Method, the reason why Methods 1-4 exist, and how they impact Pokémon generation.",
-      category: "Emerald",
+      category: "GBA Technical Documentation",
       slug: "/gba-methods",
       isRoughDraft: false,
       tag: "any",
@@ -1159,7 +1159,7 @@ export const guides = {
     meta: {
       title: "VBlank",
       description: "What are Vblanks and their impact on Pokémon generation.",
-      category: "Emerald",
+      category: "GBA Technical Documentation",
       slug: "/gba-vblank",
       isRoughDraft: false,
       tag: "any",
@@ -2726,4 +2726,5 @@ export const categories = [
   "Brilliant Diamond and Shining Pearl",
   "Legends Arceus",
   "GBA Overview",
+  "GBA Technical Documentation",
 ] as const;

@@ -58,7 +58,7 @@ type FormikSelectValue<
   FormState extends GenericForm,
   FieldKey extends keyof FormState,
 > = FormState[FieldKey] extends string
-  ? { label: string; value: FormState[FieldKey] | null }[]
+  ? { label: string; value: FormState[FieldKey] }[]
   : never;
 
 type FormikSelectProps<

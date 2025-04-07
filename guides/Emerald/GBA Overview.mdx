@@ -1,0 +1,50 @@
+---
+title: "Overview"
+description: "Particularities, key RNG concepts, and version differences of GBA games."
+slug: "gba-overview"
+category: "GBA Overview"
+tag: "any"
+addedOn: "2025-04-01"
+---
+
+<Gist>
+  Gist: Particularities, key RNG concepts, and version differences of GBA games.
+</Gist>
+
+### Particularities of GBA RNG Manipulation
+
+In GBA games, the RNG advances every in-game video frame (every 1/60th of a second). This means RNG manipulation requires pressing A with a 1/60th second precision, making it more difficult than the DS generation.
+
+RNG manipulation for very rare traits can require waiting for a very long time (1h+ for each attempt). Fortunately, some advanced techniques exist [to speed up RNG advances](/e-tips-rng).
+
+[vblanks](/gba-vblank) can cause hard to predict RNG advances during the Pokémon generation, altering the outcome unexpectely. Those unexpected advances are the source of the differences between [Methods 1-4](/gba-methods).
+
+Still, they are good reasons to RNG manipulate in GBA games, most notably:
+
+- Only way to obtain all Ribbons on a Pokémon.
+- Only way to obtain Shiny Mew and Shiny Deoxys.
+
+### GBA RNG Mechanisms Overview
+
+There is only 1 type of RNG for Pokémon generation. It is used to generate the PID (which dictates Nature, Ability, Shininess) and IVs.
+
+Shininess depends on PID, TID, and SID. This means you must [know your SID](/gen3-sid) to RNG manipulate a shiny Pokémon.
+
+### Key Differences between GBA Games
+
+| Game                                 | Initial Seed                                                   | Useful For                                                                                    |
+| ------------------------------------ | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| [Pokémon Emerald](/emerald-overview) | Normally 0                                                     | Easiest to RNG Static, Wild, and Egg Pokémon                                                  |
+| Ruby & Sapphire                      | With live battery: Random.<br/>With dead battery: Normally 5A0 | Access to level 45 Groudon and Kyogre                                                         |
+| FireRed & LeafGreen                  | Random                                                         | Only way to get Shiny Mewtwo and Unown<br/>Easiest way to get Shiny Articuno, Zapdos, Moltres |
+
+### Console Interoperability
+
+Pokémon can be traded between GBA and GameCube games.
+
+GameCube games are specifically useful for:
+
+- Only way to obtain [Shiny Jirachi](/emulator-rs-wishmaker).
+- Obtaining Entei, Raikou, Suicune with rare traits is easier than on GBA games.
+
+Pokémon can be transfered from GBA to DS games, but not the other way around.

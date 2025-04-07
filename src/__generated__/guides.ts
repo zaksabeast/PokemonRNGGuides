@@ -331,6 +331,21 @@ export const guides = {
       () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
     ),
   },
+  "/emerald-overview": {
+    meta: {
+      title: "Overview",
+      description:
+        "Practical applications of RNG Manipulation and techniques in Pokémon Emerald",
+      category: "Emerald",
+      slug: "/emerald-overview",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-03",
+      file: "guides/Emerald/Emerald Overview.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Emerald Overview.mdx")),
+  },
   "/emerald-painting-rng": {
     meta: {
       title: "Reseed using paintings",
@@ -1109,6 +1124,50 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Basic Rules of RNG.mdx"),
     ),
+  },
+  "/gba-methods": {
+    meta: {
+      title: "Methods 1-4",
+      description:
+        "What is a Method, the reason why Methods 1-4 exist, and how they impact Pokémon generation.",
+      category: "Emerald",
+      slug: "/gba-methods",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-03",
+      file: "guides/Emerald/GBA Methods.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/GBA Methods.mdx")),
+  },
+  "/gba-overview": {
+    meta: {
+      title: "Overview",
+      description:
+        "Particularities, key RNG concepts, and version differences of GBA games.",
+      category: "GBA Overview",
+      slug: "/gba-overview",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-01",
+      file: "guides/Emerald/GBA Overview.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/GBA Overview.mdx")),
+  },
+  "/gba-vblank": {
+    meta: {
+      title: "VBlank",
+      description: "What are Vblanks and their impact on Pokémon generation.",
+      category: "Emerald",
+      slug: "/gba-vblank",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-02",
+      file: "guides/Emerald/Vblank.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Vblank.mdx")),
   },
   "/gc-initial": {
     meta: {
@@ -2507,6 +2566,7 @@ export const guideSlugs = [
   z.literal("/dppt-setup-rng"),
   z.literal("/dppt-wild"),
   z.literal("/e-tips-rng"),
+  z.literal("/emerald-overview"),
   z.literal("/emerald-painting-rng"),
   z.literal("/emerald-sid-feebas"),
   z.literal("/emerald-static-generator"),
@@ -2555,6 +2615,9 @@ export const guideSlugs = [
   z.literal("/frlg-static-generator"),
   z.literal("/frlg-tidsid-generator"),
   z.literal("/frlg-tips-rng"),
+  z.literal("/gba-methods"),
+  z.literal("/gba-overview"),
+  z.literal("/gba-vblank"),
   z.literal("/gc-initial"),
   z.literal("/gen2-celebi"),
   z.literal("/gen2-research"),
@@ -2662,4 +2725,5 @@ export const categories = [
   "Sword and Shield",
   "Brilliant Diamond and Shining Pearl",
   "Legends Arceus",
+  "GBA Overview",
 ] as const;

@@ -20,16 +20,16 @@ A method indicates how a Pokémon will be generated for a given RNG advance.
 
 A method is split into 2 components (ex: Wild-2):
 
-- • Prefix: The program CPU instructions used to generate it. (ex: Wild)
-- • Suffix: When the Vblanks occured (ex: 2)
+- Prefix: The program CPU instructions used to generate it. (ex: Wild).
+- Suffix: When the Vblanks occured (ex: 2).
 
 ### Method Prefix: Program CPU Instructions
 
 The program CPU instructions depends on how the Pokémon is encountered. For RNG manipulations, 3 of them are relevant:
 
-- • Stationnary Pokémon: Prefix is "Method" (Not convenient, I know...)
-- • Wild Pokémon: Prefix is "Wild" or "H"
-- • Egg Pokémon: Prefix is "Egg"
+- Stationnary Pokémon: Prefix is "Method" (Not convenient, I know...).
+- Wild Pokémon: Prefix is "Wild" or "H".
+- Egg Pokémon: Prefix is "Egg".
 
 Program CPU instructions for Stationnary Pokémon are the simplest. The GBA game generates PID then IVs, without additional RNG logic.
 

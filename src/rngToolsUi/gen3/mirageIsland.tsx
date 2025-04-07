@@ -19,7 +19,7 @@ import React from "react";
 
 type Game = "emerald" | "rs";
 
-interface ResultColumnData {
+type ResultColumnData = {
   day: number;
   dayDiff: number;
   pidPattern: number;
@@ -48,53 +48,6 @@ const getHighPidFromRng = function (rng: bigint) {
 const formatLargeInteger = function (number: number) {
   return number.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
-
-class EarliestAdvCalculator {
-  constructor(private initialSeed: number) {}
-
-  /**
-   * earliestAdvanceByPidPattern[PidPattern] = earliestMethod1Advance.
-   * null until the first getEarliestAdvanceCount call
-   */
-  private earliestAdvanceByPidPattern: Uint32Array | null = null;
-
-  private generateEarliestAdvanceCount() {
-    const EARLIEST_VALID_ADVANCE = 1000; // Earliest advance for Kecleon with turbo fire A is ~816
-    const earliestAdvByPidPattern = new Uint32Array(0x10000);
-
-    let unmatchedCount = 0x10000;
-    let pidRng = BigInt(this.initialSeed);
-    for (let pidRngAdv = 0; pidRngAdv < 1_000_000; pidRngAdv++) {
-      // 1_000_000 to avoid infinite loop in case of bug
-      pidRng = advancePidRng(pidRng);
-
-      if (pidRngAdv < EARLIEST_VALID_ADVANCE) continue;
-
-      const pidPattern = Number(getHighPidFromRng(pidRng));
-      const oldValue = earliestAdvByPidPattern[pidPattern];
-      if (oldValue !== 0) continue; // another earlier advance exists
-
-      earliestAdvByPidPattern[pidPattern] = pidRngAdv;
-      unmatchedCount--;
-      if (unmatchedCount === 0) break; // all were matched
-    }
-
-    if (unmatchedCount !== 0)
-      console.error(
-        "Error: earliestAdvByPidPattern are missing some values. This means some PID pattern won't have a earliest advance.",
-      );
-
-    return earliestAdvByPidPattern;
-  }
-  getEarliestAdvanceCount(pidPattern: number) {
-    if (this.earliestAdvanceByPidPattern === null)
-      this.earliestAdvanceByPidPattern = this.generateEarliestAdvanceCount();
-    return this.earliestAdvanceByPidPattern[pidPattern];
-  }
-}
-
-const emeraldEarliestAdvCalc = new EarliestAdvCalculator(0x0);
-const rsEarliestAdvCalc = new EarliestAdvCalculator(0x5a0);
 
 const getColumns = (
   game: Game,
@@ -155,31 +108,32 @@ type Props = {
 
 export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
   const calc = game === "emerald" ? emeraldEarliestAdvCalc : rsEarliestAdvCalc;
+  const emeraldEarliestAdvCalc = new EarliestAdvCalculator(0x0);
+const rsEarliestAdvCalc = new EarliestAdvCalculator(0x5a0);
 
+  const initialSeed = game === "emerald" ? 0 : 0x5A0;
   const initialValues = getInitialValues(game);
 
   const generateResults = function (values: FormState): ResultColumnData[] {
-    if (values.battery === "Dead") {
-      return [
-        {
-          day: 0,
-          dayDiff: 0,
-          pidPattern: 0,
-          earliestAdv: calc.getEarliestAdvanceCount(0),
-        },
-      ];
-    }
+    if (values.battery === "Dead")
+      return calculate(initialSeed, 0, 0);
 
+    const RESULT_COUNT = 50;
+    const clamp = function(val:number, min:number, max:number){
+      if (val < min)
+        return min;
+      if (val > max)
+        return max;
+      return val;
+    };
     const rocketLaunchedCount =
       fromDecimalString(values.rocketLaunchedCount) ?? 0;
 
-    let currentDay = rocketLaunchedCount * 7;
-    if (currentDay < 0)
-      currentDay = 0;
-    else if (currentDay >= 65535)
-      currentDay = 65535;
+    let currentDay = clamp(rocketLaunchedCount * 7, 0, 0xFFFF);
+    let lastDay = clamp(currentDay + RESULT_COUNT, 0, 0xFFFF);
 
-    const RESULT_COUNT = 50;
+    //NO_PROD
+
     let mirageIslandRng = advanceMirageIslandRngMulti(0n, currentDay);
 
     const res: ResultColumnData[] = [];

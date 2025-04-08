@@ -117,6 +117,7 @@ pub fn gen3_static_generator_states(opts: &Static3GeneratorOptions) -> Vec<Stati
         .collect()
 }
 
+#[wasm_bindgen]
 pub fn gen3_static_searcher_states(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
     let Ivs {
         hp: min_hp,

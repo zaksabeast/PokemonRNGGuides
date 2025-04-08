@@ -1,4 +1,4 @@
-import { rngTools, Static3GeneratorResult, Species, Ivs } from "~/rngTools";
+import { Ivs, rngTools, Species, Static3SearcherResult } from "~/rngTools";
 import {
   Field,
   FormikInput,
@@ -11,17 +11,23 @@ import {
 import {
   DecimalString,
   fromDecimalString,
-  fromHexString,
-  HexString,
   toDecimalString,
-  toHexString,
 } from "~/utils/number";
-import React from "react";
-import { match } from "ts-pattern";
 import { getPkmFilterFields, PkmFilterFields } from "~/components/pkmFilter";
+import {
+  getStatic3Species,
+  Static3Game,
+} from "~/rngToolsUi/gen3/static/constants";
+import React from "react";
 
-const columns: ResultColumn<Static3GeneratorResult>[] = [
-  { title: "Advance", dataIndex: "advance", key: "advance" },
+const columns: ResultColumn<Static3SearcherResult>[] = [
+  {
+    title: "Seed",
+    dataIndex: "seed",
+    key: "seed",
+    monospace: true,
+    render: (seed) => seed.toString(16).padStart(8, "0").toUpperCase(),
+  },
   {
     title: "PID",
     dataIndex: "pid",
@@ -57,99 +63,7 @@ const columns: ResultColumn<Static3GeneratorResult>[] = [
   { title: "Gender", dataIndex: "gender", key: "gender" },
 ];
 
-type Game = "emerald" | "rs" | "frlg";
-
-const emeraldSpecies: Species[] = [
-  "Chikorita",
-  "Totodile",
-  "Cyndaquil",
-  "Treecko",
-  "Mudkip",
-  "Torchic",
-  "Lileep",
-  "Anorith",
-  "Castform",
-  "Beldum",
-  "Wynaut",
-  "Kecleon",
-  "Voltorb",
-  "Electrode",
-  "Sudowoodo",
-  "Regirock",
-  "Regice",
-  "Registeel",
-  "Latias",
-  "Latios",
-  "Kyogre",
-  "Groudon",
-  "Rayquaza",
-  "Mew",
-  "Deoxys",
-  "Lugia",
-  "HoOh",
-];
-
-const rsSpecies: Species[] = [
-  "Treecko",
-  "Mudkip",
-  "Torchic",
-  "Lileep",
-  "Anorith",
-  "Castform",
-  "Beldum",
-  "Wynaut",
-  "Kecleon",
-  "Voltorb",
-  "Electrode",
-  "Regirock",
-  "Regice",
-  "Registeel",
-  "Latias",
-  "Latios",
-  "Kyogre",
-  "Groudon",
-  "Rayquaza",
-];
-
-const frlgSpecies: Species[] = [
-  "Bulbasaur",
-  "Squirtle",
-  "Charmander",
-  "Omanyte",
-  "Kabuto",
-  "Aerodactyl",
-  "Hitmonlee",
-  "Hitmonchan",
-  "Magikarp",
-  "Lapras",
-  "Eevee",
-  "Togepi",
-  "Abra",
-  "Clefairy",
-  "Scyther",
-  "Dratini",
-  "Porygon",
-  "Pinsir",
-  "Snorlax",
-  "Electrode",
-  "Hypno",
-  "Articuno",
-  "Zapdos",
-  "Moltres",
-  "Mewtwo",
-  "Deoxys",
-  "Lugia",
-  "HoOh",
-  "Raikou",
-  "Entei",
-  "Suicune",
-];
-
 type FormState = {
-  offset: DecimalString;
-  seed: HexString;
-  initial_advances: DecimalString;
-  max_advances: DecimalString;
   tid: DecimalString;
   sid: DecimalString;
   species: Species;
@@ -175,23 +89,11 @@ const maxIvs: Ivs = {
   spe: 31,
 };
 
-const getGameSpecies = (game: Game) => {
-  return match(game)
-    .with("emerald", () => emeraldSpecies)
-    .with("rs", () => rsSpecies)
-    .with("frlg", () => frlgSpecies)
-    .exhaustive();
-};
-
-const getInitialValues = (game: Game): FormState => {
+const getInitialValues = (game: Static3Game): FormState => {
   return {
-    offset: toDecimalString(0),
-    seed: toHexString(0),
-    initial_advances: toDecimalString(100),
-    max_advances: toDecimalString(1000),
     tid: toDecimalString(0),
     sid: toDecimalString(0),
-    species: getGameSpecies(game)[0],
+    species: getStatic3Species(game)[0],
     roamer: false,
     method4: false,
     filter_shiny: false,
@@ -203,13 +105,9 @@ const getInitialValues = (game: Game): FormState => {
   };
 };
 
-const getFields = (game: Game): Field[] => {
-  const staticSpecies = getGameSpecies(game);
+const getFields = (game: Static3Game): Field[] => {
+  const staticSpecies = getStatic3Species(game);
   return [
-    {
-      label: "Seed",
-      input: <FormikInput<FormState> name="seed" />,
-    },
     {
       label: "TID",
       input: <FormikInput<FormState> name="tid" />,
@@ -237,57 +135,30 @@ const getFields = (game: Game): Field[] => {
       label: "Method 4",
       input: <FormikSwitch<FormState, "method4"> name="method4" />,
     },
-    {
-      label: "Initial advances",
-      input: <FormikInput<FormState> name="initial_advances" />,
-    },
-    {
-      label: "Max advances",
-      input: <FormikInput<FormState> name="max_advances" />,
-    },
-    {
-      label: "Offset",
-      input: <FormikInput<FormState> name="offset" />,
-    },
     ...getPkmFilterFields(),
   ];
 };
 
 type Props = {
-  game?: Game;
+  game: Static3Game;
 };
 
-export const Static3Generator = ({ game = "emerald" }: Props) => {
-  const [results, setResults] = React.useState<Static3GeneratorResult[]>([]);
+export const Static3Searcher = ({ game }: Props) => {
+  const [results, setResults] = React.useState<Static3SearcherResult[]>([]);
 
   const fields = React.useMemo(() => getFields(game), [game]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const initialAdvances = fromDecimalString(opts.initial_advances);
-      const maxAdvances = fromDecimalString(opts.max_advances);
-      const seed = fromHexString(opts.seed);
-      const offset = fromDecimalString(opts.offset);
       const tid = fromDecimalString(opts.tid);
       const sid = fromDecimalString(opts.sid);
 
-      if (
-        initialAdvances == null ||
-        maxAdvances == null ||
-        seed == null ||
-        offset == null ||
-        tid == null ||
-        sid == null
-      ) {
+      if (tid == null || sid == null) {
         return;
       }
 
-      const results = await rngTools.gen3_static_generator_states({
+      const results = await rngTools.gen3_static_searcher_states({
         ...opts,
-        initial_advances: initialAdvances,
-        max_advances: maxAdvances,
-        seed,
-        offset,
         tid,
         sid,
         bugged_roamer: game !== "emerald" && opts.roamer,
@@ -310,13 +181,13 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
   );
 
   return (
-    <RngToolForm<FormState, Static3GeneratorResult>
+    <RngToolForm<FormState, Static3SearcherResult>
       fields={fields}
       columns={columns}
       results={results}
       initialValues={getInitialValues(game)}
       onSubmit={onSubmit}
-      submitTrackerId="generate_gen3_static"
+      submitTrackerId="search_gen3_static"
     />
   );
 };

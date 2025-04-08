@@ -1,4 +1,4 @@
-import { rngTools, Static3Result, Species, Ivs } from "~/rngTools";
+import { rngTools, Static3GeneratorResult, Species, Ivs } from "~/rngTools";
 import {
   Field,
   FormikInput,
@@ -20,7 +20,7 @@ import React from "react";
 import { match } from "ts-pattern";
 import { getPkmFilterFields, PkmFilterFields } from "~/components/pkmFilter";
 
-const columns: ResultColumn<Static3Result>[] = [
+const columns: ResultColumn<Static3GeneratorResult>[] = [
   { title: "Advance", dataIndex: "advance", key: "advance" },
   {
     title: "PID",
@@ -258,7 +258,7 @@ type Props = {
 };
 
 export const Static3Generator = ({ game = "emerald" }: Props) => {
-  const [results, setResults] = React.useState<Static3Result[]>([]);
+  const [results, setResults] = React.useState<Static3GeneratorResult[]>([]);
 
   const fields = React.useMemo(() => getFields(game), [game]);
 
@@ -282,7 +282,7 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
         return;
       }
 
-      const results = await rngTools.gen3_static_states({
+      const results = await rngTools.gen3_static_generator_states({
         ...opts,
         initial_advances: initialAdvances,
         max_advances: maxAdvances,
@@ -299,10 +299,8 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
             opts.filter_gender === "None" ? undefined : opts.filter_gender,
           ability:
             opts.filter_ability === "None" ? undefined : opts.filter_ability,
-          ivs: {
-            min_ivs: opts.filter_min_ivs,
-            max_ivs: opts.filter_max_ivs,
-          },
+          min_ivs: opts.filter_min_ivs,
+          max_ivs: opts.filter_max_ivs,
         },
       });
 
@@ -312,7 +310,7 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
   );
 
   return (
-    <RngToolForm<FormState, Static3Result>
+    <RngToolForm<FormState, Static3GeneratorResult>
       fields={fields}
       columns={columns}
       results={results}

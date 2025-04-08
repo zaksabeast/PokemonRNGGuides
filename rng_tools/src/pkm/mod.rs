@@ -56,6 +56,32 @@ impl PkmFilter {
 
         true
     }
+
+    pub fn pass_filter_no_ivs(&self, state: &impl PkmState) -> bool {
+        if self.shiny && !state.shiny() {
+            return false;
+        }
+
+        if let Some(nature) = self.nature {
+            if state.nature() != nature {
+                return false;
+            }
+        }
+
+        if let Some(gender) = self.gender {
+            if state.gender() != gender {
+                return false;
+            }
+        }
+
+        if let Some(ability) = self.ability {
+            if ability != state.ability() {
+                return false;
+            }
+        }
+
+        true
+    }
 }
 
 pub trait PkmState {

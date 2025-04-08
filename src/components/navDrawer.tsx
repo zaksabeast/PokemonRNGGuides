@@ -245,7 +245,9 @@ const NavDrawerContent = () => {
       ? `${roughDraftPrefix}${guideMeta.category}`
       : guideMeta.category;
     const openTopLevelItem = topLevelMenu.find((item) =>
-      item.children.some((child) => child.key === openCategory),
+      item.children.some((child) =>
+        [openCategory, guideMeta.slug].includes(child.key),
+      ),
     );
     return [openTopLevelItem?.key, openCategory].filter((item) => item != null);
   });

@@ -51,13 +51,13 @@ pub fn mirage_island_calculate(
 ) -> Vec<ResultColumnData> {
     let earliest_adv_by_pid_pattern = generate_earliest_advance_count(initial_seed);
     let mut mirage_island_rng = Mirageislandrng::new(0);
-    mirage_island_rng.advance(first_day as usize);
+    if first_day != 0 {
+        mirage_island_rng.advance((first_day - 1) as usize);
+    }
     
     (first_day..=last_day).map(|day|{
         let day_diff = day - first_day;
         let pid_pattern:u16 = mirage_island_rng.rand();
-
-        mirage_island_rng.advance(1);
 
         ResultColumnData {
             day,
@@ -106,16 +106,16 @@ mod tests {
             earliest_adv: 105936,
         },
         ResultColumnData {
-            day: 0,
-            day_diff: 0,
-            pid_pattern: 0,
-            earliest_adv: 19395,
+            day: 3634,
+            day_diff: 1,
+            pid_pattern: 0x6B74,
+            earliest_adv: 23792,
         },
         ResultColumnData {
-            day: 0,
-            day_diff: 0,
-            pid_pattern: 0,
-            earliest_adv: 19395,
+            day: 3635,
+            day_diff: 2,
+            pid_pattern: 0xEACE,
+            earliest_adv: 60397,
         }]);
     }
     

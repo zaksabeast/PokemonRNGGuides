@@ -26,25 +26,6 @@ type ResultColumnData = {
   earliestAdv: number;
 }
 
-const advancePidRng = function (oldValue: bigint) {
-  return (BigInt(oldValue) * 0x41c64e6dn + 24691n) % 0x100000000n;
-};
-
-const advanceMirageIslandRng = function (oldValue: bigint) {
-  return (BigInt(oldValue) * 0x41c64e6dn + 0x3039n) % 0x100000000n;
-};
-
-const advanceMirageIslandRngMulti = function (oldValue: bigint, n: number) {
-  let newValue = oldValue;
-  for (let i = 0; i < n; i++) newValue = advanceMirageIslandRng(newValue);
-  return newValue;
-};
-
-const getHighPidFromRng = function (rng: bigint) {
-  rng = advancePidRng(rng);
-  return rng >> 16n;
-};
-
 const formatLargeInteger = function (number: number) {
   return number.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
@@ -107,9 +88,6 @@ type Props = {
 };
 
 export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
-  const calc = game === "emerald" ? emeraldEarliestAdvCalc : rsEarliestAdvCalc;
-  const emeraldEarliestAdvCalc = new EarliestAdvCalculator(0x0);
-const rsEarliestAdvCalc = new EarliestAdvCalculator(0x5a0);
 
   const initialSeed = game === "emerald" ? 0 : 0x5A0;
   const initialValues = getInitialValues(game);

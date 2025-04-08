@@ -134,20 +134,6 @@ const rsEarliestAdvCalc = new EarliestAdvCalculator(0x5a0);
 
     //NO_PROD
 
-    let mirageIslandRng = advanceMirageIslandRngMulti(0n, currentDay);
-
-    const res: ResultColumnData[] = [];
-    for (let dayDiff = 0; dayDiff < RESULT_COUNT; dayDiff++) {
-      const day = currentDay + dayDiff;
-      const pidPattern = Number(mirageIslandRng >> 16n);
-      res.push({
-        day,
-        dayDiff,
-        pidPattern,
-        earliestAdv: calc.getEarliestAdvanceCount(pidPattern),
-      });
-      mirageIslandRng = advanceMirageIslandRng(mirageIslandRng);
-    }
     return res;
   };
   const [results, setResults] = React.useState<ResultColumnData[]>(

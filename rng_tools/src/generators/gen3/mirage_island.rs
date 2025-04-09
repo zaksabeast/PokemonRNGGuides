@@ -8,7 +8,7 @@ pub type Mirageislandrng = Lcrng<0x3039, 0x41c64e6d, 1, 1>;
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct ResultColumnData {
+pub struct MirageIslandResult {
     pub day: u32,
     pub day_diff: u32,
     pub pid_pattern: u16,
@@ -48,7 +48,7 @@ pub fn mirage_island_calculate(
     initial_seed: u32,
     first_day: u32,
     last_day: u32,
-) -> Vec<ResultColumnData> {
+) -> Vec<MirageIslandResult> {
     let earliest_adv_by_pid_pattern = generate_earliest_advance_count(initial_seed);
     let mut mirage_island_rng = Mirageislandrng::new(0);
     if first_day != 0 {
@@ -59,7 +59,7 @@ pub fn mirage_island_calculate(
         let day_diff = day - first_day;
         let pid_pattern:u16 = mirage_island_rng.rand();
 
-        ResultColumnData {
+        MirageIslandResult {
             day,
             day_diff,
             pid_pattern,
@@ -77,7 +77,7 @@ mod tests {
     #[test]
     fn emerald_dead_battery() {
         let val = mirage_island_calculate(0, 0, 0);
-        assert_list_eq!(val, vec![ResultColumnData {
+        assert_list_eq!(val, vec![MirageIslandResult {
             day: 0,
             day_diff: 0,
             pid_pattern: 0,
@@ -88,7 +88,7 @@ mod tests {
     #[test]
     fn rs_dead_battery() {
         let val = mirage_island_calculate(0x5A0, 0, 0);
-        assert_list_eq!(val, vec![ResultColumnData {
+        assert_list_eq!(val, vec![MirageIslandResult {
             day: 0,
             day_diff: 0,
             pid_pattern: 0,
@@ -99,19 +99,19 @@ mod tests {
     #[test]
     fn emerald_live_battery() {
         let val = mirage_island_calculate(0, 3633, 3635);
-        assert_list_eq!(val, vec![ResultColumnData {
+        assert_list_eq!(val, vec![MirageIslandResult {
             day: 3633,
             day_diff: 0,
             pid_pattern: 0xF99F,
             earliest_adv: 105936,
         },
-        ResultColumnData {
+        MirageIslandResult {
             day: 3634,
             day_diff: 1,
             pid_pattern: 0x6B74,
             earliest_adv: 23792,
         },
-        ResultColumnData {
+        MirageIslandResult {
             day: 3635,
             day_diff: 2,
             pid_pattern: 0xEACE,

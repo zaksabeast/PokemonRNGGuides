@@ -333,7 +333,8 @@ export const guides = {
   "/emerald-mirage-island": {
     meta: {
       title: "Mirage Island",
-      description: "Accessing Mirage Island",
+      description:
+        "Access Mirage Island by catching a Pokémon with the right PID",
       category: "Emerald",
       slug: "/emerald-mirage-island",
       isRoughDraft: false,
@@ -2243,7 +2244,8 @@ export const guides = {
   "/rs-mirage-island": {
     meta: {
       title: "Mirage Island",
-      description: "Accessing Mirage Island",
+      description:
+        "Access Mirage Island by catching a Pokémon with the right PID",
       category: "Ruby and Sapphire",
       slug: "/rs-mirage-island",
       isRoughDraft: false,

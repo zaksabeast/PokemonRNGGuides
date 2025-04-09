@@ -1,21 +1,17 @@
-import { Formik } from "formik";
 import {
   Field,
-  Flex,
-  FormFieldTable,
-  Form,
-  ResultTable,
   RngToolForm,
   ResultColumn,
   RngToolSubmit,
 } from "~/components";
-import { Input } from "antd";
 import {
   DecimalString,
   fromDecimalString,
   toDecimalString,
 } from "~/utils/number";
 import { FormikRadio } from "../../components/radio";
+import { FormikInput } from "../../components/input";
+
 import { rngTools, MirageIslandResult } from "~/rngTools";
 import React from "react";
 
@@ -29,6 +25,7 @@ const getColumns = (
   game: Game,
   resultsBattery: Battery,
 ): ResultColumn<MirageIslandResult>[] => {
+  console.log(1);
   const columns: ResultColumn<MirageIslandResult>[] = [];
   if (resultsBattery === "Live") {
     columns.push(
@@ -106,6 +103,22 @@ type Props = {
   game?: Game;
 };
 
+const getFields = function(){
+  const fields: Field[] = [
+    {
+      label: "Battery",
+      input: (<FormikRadio<FormState, "battery"> name="battery" options={["Live", "Dead"]} />),
+    },
+
+    // Note: Rocket Launched should only be shown if Battery is Live. This isn't possible with RngToolForm right now.
+    {
+      label: "Rocket Launched",
+      input: (<FormikInput<FormState> name="rocketLaunchedCount" />),
+    }
+  ];
+  return fields;
+}
+
 export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
   const initialValues = getInitialValues(game);
 
@@ -123,49 +136,14 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
   );
 
   return (
-    <Formik
-      enableReinitialize
+    <RngToolForm<FormState, MirageIslandResult>
+      fields={getFields()}
+      columns={getColumns(game, resultsBattery)}
+      results={results}
       initialValues={initialValues}
       onSubmit={onSubmit}
-    >
-      {(formik) => {
-        const fields: Field[] = [
-          {
-            label: "Battery",
-            input: (
-              <FormikRadio<FormState, "battery">
-                name="battery"
-                options={["Live", "Dead"]}
-              />
-            ),
-          },
-        ];
-        if (formik.values.battery === "Live")
-          fields.push({
-            label: "Rocket Launched",
-            input: (
-              <Input
-                name="rocketLaunchedCount"
-                onChange={(e) => {
-                  formik.handleChange(e);
-                }}
-                value={formik.values.rocketLaunchedCount}
-              />
-            ),
-          });
-
-        return (
-          <RngToolForm<FormState, MirageIslandResult>
-            fields={fields}
-            columns={getColumns(game, resultsBattery)}
-            results={results}
-            initialValues={initialValues}
-            onSubmit={onSubmit}
-            rowKey="day"
-            submitTrackerId="mirage_island"
-          />
-        );
-      }}
-    </Formik>
+      rowKey="day"
+      submitTrackerId="mirage_island"
+    />
   );
 };

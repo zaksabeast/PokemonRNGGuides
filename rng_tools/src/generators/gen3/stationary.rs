@@ -1,6 +1,7 @@
 use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator, lcrng};
 use crate::{AbilityType, Gender, Ivs, Nature, PkmFilter, PkmState, Species, gen3_shiny};
+use itertools::iproduct;
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -137,31 +138,28 @@ pub fn gen3_static_searcher_states(opts: &Static3SearcherOptions) -> Vec<Static3
         spe: max_spe,
     } = opts.filter.max_ivs;
 
-    (min_hp..=max_hp)
-        .flat_map(move |hp| {
-            (min_atk..=max_atk).flat_map(move |atk| {
-                (min_def..=max_def).flat_map(move |def| {
-                    (min_spa..=max_spa).flat_map(move |spa| {
-                        (min_spd..=max_spd).flat_map(move |spd| {
-                            (min_spe..=max_spe).flat_map(move |spe| {
-                                search_gen3_static(
-                                    Ivs {
-                                        hp,
-                                        atk,
-                                        def,
-                                        spa,
-                                        spd,
-                                        spe,
-                                    },
-                                    opts,
-                                )
-                            })
-                        })
-                    })
-                })
-            })
-        })
-        .collect()
+    iproduct!(
+        min_hp..=max_hp,
+        min_atk..=max_atk,
+        min_def..=max_def,
+        min_spa..=max_spa,
+        min_spd..=max_spd,
+        min_spe..=max_spe
+    )
+    .flat_map(|(hp, atk, def, spa, spd, spe)| {
+        search_gen3_static(
+            Ivs {
+                hp,
+                atk,
+                def,
+                spa,
+                spd,
+                spe,
+            },
+            opts,
+        )
+    })
+    .collect()
 }
 
 fn search_gen3_static(mut ivs: Ivs, opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {

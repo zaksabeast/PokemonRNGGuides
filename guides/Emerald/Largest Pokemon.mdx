@@ -14,69 +14,36 @@
 ---
 
 <ShowIf slug="/rs-barboach-shroomish">
-  Gist: Catching the largest possible Barboach and Shroomish to show to Sootopolis City brothers.
+  Gist: Catching the largest possible Barboach and Shroomish to show to
+  Sootopolis City brothers.
 </ShowIf>
 
 <ShowIf slug="/emerald-lotad-seedot">
-  Gist: Catching the largest possible Lotad and Seedot to show to Sootopolis City brothers
+  Gist: Catching the largest possible Lotad and Seedot to show to Sootopolis
+  City brothers
 </ShowIf>
 
 ## Sootopolis City Brothers
 
-wild-1: 1806832
-wild-2: 2156494 
-wild-4: 598732
-
-todo: find earliest wild-1 and wild-4
-
-JP: 65533 -> 86.1
-65535 -> 86.2cm
-
-Route 102, Seedot: Emerald: frame=2156494, pid=582AE7FF, weight=65535
-3109361 7986F0FF 65534
-
-catching 65534 then 65535 doesnt give reward again
-
-2156494	11: Seedot	3	582AE7FF	No	Hasty	1: Early Bird	
-27	6	6	26	12	4	Fighting	44	♂
-
-3109361	11: Seedot	3	7986F0FF	No	Bold	1: Early Bird	0	9	12	14	16	1	Poison	40	♂
-33.9 inch
-
-1600 + 65535 - 65510
-1625 * 2
-
-3250
-
-
-1313793 4145EDC0 65525
-
 In Sootopolis City, two brothers are looking for the largest Lotad and Seedot (in Emerald) or Barboach and Shroomish (in Ruby and Sapphire). The reward for showing a Pokémon that exceeds the previous record is an Elixir (and the satisfaction of beating the record).
 
-## Step 1: Find the number of days since the game savefile was created
+The size of a Pokémon depends on its PID and IVs. The largest size for Lotad and Seedot is 33.9in (86.2cm), which has approximately 1/32'000 chance to occur (much rarer than Shiny).
 
-If you have a dead battery, this step is not needed.
+It is possible to use RNG manipulation to obtain the largest possible Pokémon. For Ruby & Sapphire, the chart assumes a dead battery is used.
 
-Talk to the scientist in the Mossdeep Space Center to know the number of rockets launched. This indicates the number of weeks since your savefile was created.
+NO_PROD convert to step
 
-![Scientist in Mossdeep Space Center](/images/Emerald/mirageIslandRocketLaunched.png)
-
-## Step #2: Catch a Pokémon matching the PID pattern
-
-Fill the form below to find the relevant PID pattern, and the earliest frame for a Pokémon generated with Method-1 to match that pattern.
-
-The Pokémon recommended to catch with Method-1 is any of the stationnary Kecleon, but any will do. Wild Pokémon generated with other Methods also work, but they are harder to RNG manipulate.
-
-Because the rocket launch count only gives an approximation of the days passed (± 7 days), it is recommended to aim for a PID pattern at least 6 days in the future. Otherwise, in the worst case, you'll need to catch 7 Pokémon (one for each day of the week).
-
-<ShowIf slug="/emerald-mirage-island">
-  <Gen3MirageIsland game="emerald" />
-</ShowIf>
-
-<ShowIf slug="/rs-mirage-island">
-  <Gen3MirageIsland game="rs" />
-</ShowIf>
-
-## Step #3: Visit Mirage Island on Route 130
-
-Enjoy your Liechi Berry!
+| Pokémon | Game       | Location  | Method | RNG Advance | PID      | IVs              |
+| ------- | ---------- | --------- | ------ | ----------- | -------- | ---------------- |
+| Seedot  | Emerald    | Route 102 | Wild-1 | 1'806'832   | EF42F5F2 | 1/22/27/25/19/17 |
+| Seedot  | Emerald    | Route 102 | Wild-2 | 2'156'494   | 582AE7FF | 27/6/6/26/12/4   |
+| Seedot  | Emerald    | Route 102 | Wild-4 | 598'732     | B807BCC3 | 26/3/5/0/11/22   |
+| Seedot  | Ruby       | Route 102 | Wild-1 | 100'149     | 4355BCB7 | 24/7/30/1/7/27   |
+| Seedot  | Ruby       | Route 102 | Wild-2 | 122'955     | 0018E7F4 | 27/0/17/21/7/28  |
+| Seedot  | Ruby       | Route 102 | Wild-4 | 270'331     | 6046FEDE | 3/9/18/13/0/0    |
+| Lotad   | Emerald    | Route 102 | Wild-1 | 148'558     | 1E77F497 | 13/30/6/26/16/17 |
+| Lotad   | Emerald    | Route 102 | Wild-2 | 237'457     | 7683FEDC | 5/16/7/15/30/1   |
+| Lotad   | Emerald    | Route 102 | Wild-4 | 108'642     | 81D4ED73 | 26/16/30/26/3/18 |
+| Lotad   | Sapphire   | Route 102 | Wild-1 | 100'149     | 4355BCB7 | 24/7/30/1/7/27   |
+| Lotad   | Sapphire   | Route 102 | Wild-2 | 122'955     | 0018E7F4 | 27/0/17/21/7/28  |
+| Lotad   | Sapphire   | Route 102 | Wild-4 | 270'331     | 6046FEDE | 3/9/18/13/0/0    |

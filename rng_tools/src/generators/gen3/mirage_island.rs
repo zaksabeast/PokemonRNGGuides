@@ -4,8 +4,6 @@ use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
-pub type Mirageislandrng = Lcrng<0x3039, 0x41c64e6d, 1, 1>;
-
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct MirageIslandResult {
@@ -35,20 +33,13 @@ fn generate_earliest_advance_count(initial_seed:u32) -> Vec<u32> {
         let old_value = earliest_adv_by_pid_pattern[pid_pattern as usize];
         if old_value != 0 { continue; } // another earlier advance exists
         
-        earliest_adv_by_pid_pattern[pid_pattern as usize] = pid_rng_adv;
+        earliest_adv_by_pid_pattern[pid_pattern as usize] = pid_rng_adv + 1;
         unmatched_count -= 1;
         if unmatched_count == 0 { break; } // all were matched
     }
     
     return earliest_adv_by_pid_pattern;
 }
-
-//NO_PROD bugged. important is Mirage Island HIGH. reference: pkhex.
-//PID must match ****PID
-//522 weeks (3654 days) MUST be ****F896
-//HIGH = 63638 aka f896
-//LOW = 56650 aka dd4a
-
 
 #[wasm_bindgen]
 pub fn mirage_island_calculate(
@@ -57,25 +48,25 @@ pub fn mirage_island_calculate(
     last_day: u32,
 ) -> Vec<MirageIslandResult> {
     let earliest_adv_by_pid_pattern = generate_earliest_advance_count(initial_seed);
-    let mut mirage_island_rng = Mirageislandrng::new(0);
-    if first_day != 0 {
-        mirage_island_rng.advance((first_day - 1) as usize);
-    }
     
-    (first_day..=last_day).map(|day|{
-        let day_diff = day - first_day;
-        let pid_pattern:u16 = (mirage_island_rng.state >> 16) as u16;
+    let mut mirage_island_rng:u32 = 0;
+    
+    let mut res:Vec<MirageIslandResult> = vec![];
+    for day in 0..=last_day {
+        let pid_pattern:u16 = (mirage_island_rng >> 16) as u16;
 
-        mirage_island_rng.advance(1);
+        mirage_island_rng = mirage_island_rng.wrapping_mul(0x41c64e6d).wrapping_add(0x3039);
 
-        MirageIslandResult {
-            day,
-            day_diff,
-            pid_pattern,
-            earliest_adv:earliest_adv_by_pid_pattern[pid_pattern as usize],
+        if day >= first_day {
+            res.push(MirageIslandResult {
+                day,
+                day_diff: day - first_day,
+                pid_pattern,
+                earliest_adv:earliest_adv_by_pid_pattern[pid_pattern as usize],
+            });
         }
-    })
-    .collect()
+    }
+    res
 }
 
 #[cfg(test)]
@@ -85,8 +76,8 @@ mod tests {
     
     #[test]
     fn emerald_dead_battery() {
-        let val = mirage_island_calculate(0, 0, 0);
-        assert_list_eq!(val, vec![MirageIslandResult {
+        let results = mirage_island_calculate(0, 0, 0);
+        assert_list_eq!(results, vec![MirageIslandResult {
             day: 0,
             day_diff: 0,
             pid_pattern: 0,
@@ -96,8 +87,8 @@ mod tests {
 
     #[test]
     fn rs_dead_battery() {
-        let val = mirage_island_calculate(0x5A0, 0, 0);
-        assert_list_eq!(val, vec![MirageIslandResult {
+        let results = mirage_island_calculate(0x5A0, 0, 0);
+        assert_list_eq!(results, vec![MirageIslandResult {
             day: 0,
             day_diff: 0,
             pid_pattern: 0,
@@ -107,13 +98,46 @@ mod tests {
     
     #[test]
     fn emerald_live_battery() {
-        let val = mirage_island_calculate(0, 3633, 3635);
-        assert_list_eq!(val, vec![MirageIslandResult {
-            day: 3633,
+        let results = mirage_island_calculate(0, 1, 2);
+        assert_list_eq!(results, vec![MirageIslandResult {
+            day: 1,
             day_diff: 0,
-            pid_pattern: 0xF99F,
-            earliest_adv: 105936,
-        },
+            pid_pattern: 0x0000,
+            earliest_adv: 18624,
+        }, MirageIslandResult {
+            day: 2,
+            day_diff: 1,
+            pid_pattern: 0xD3DC,
+            earliest_adv: 3899,
+        }]);
+        
+        let results = mirage_island_calculate(0, 3654, 3655);
+        assert_list_eq!(results, vec![MirageIslandResult {
+            day: 3654,
+            day_diff: 0,
+            pid_pattern: 0xF896,
+            earliest_adv: 2491,
+        }]);
+
+
+//NO_PROD bugged. important is Mirage Island HIGH. reference: pkhex.
+//PID must match ****PID
+//522 weeks (3654 days) MUST be ****F896
+//HIGH = 63638 aka f896
+//LOW = 56650 aka dd4a
+
+/*
+day high low
+0 0 0
+1 0 12345           00003039
+2 54236 5758        d3dc167e
+
+*/
+
+        /*,
+        let val = mirage_island_calculate(0, 3654, 3654);
+        assert_list_eq!(val, vec![MirageIslandResult {
+        }]);
         MirageIslandResult {
             day: 3634,
             day_diff: 1,
@@ -125,7 +149,7 @@ mod tests {
             day_diff: 2,
             pid_pattern: 0xEACE,
             earliest_adv: 60397,
-        }]);
+        } */
     }
     
     #[test]

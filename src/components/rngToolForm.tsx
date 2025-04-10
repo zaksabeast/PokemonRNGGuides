@@ -12,26 +12,26 @@ export type RngToolSubmit<Values> = FormikConfig<Values>["onSubmit"];
 type Props<FormState, Result> = {
   submitTrackerId: string;
   initialValues: FormState;
-  
-  
+
   onSubmit: RngToolSubmit<FormState>;
   submitButtonLabel?: string;
 } & (
-  | { 
-    fields: Field[]; 
-    getFields?:(values:FormState) => Field[]; 
-  }
-  | { 
-    fields?: Field[]; 
-    getFields:(values:FormState) => Field[]; 
-  }
-) & (
-  | { columns: ResultColumn<Result>[]; results: Result[] }
   | {
-      columns?: never;
-      results?: never;
+      fields: Field[];
+      getFields?: (values: FormState) => Field[];
+    }
+  | {
+      fields?: Field[];
+      getFields: (values: FormState) => Field[];
     }
 ) &
+  (
+    | { columns: ResultColumn<Result>[]; results: Result[] }
+    | {
+        columns?: never;
+        results?: never;
+      }
+  ) &
   (
     | { allowReset: true; resetTrackerId: string; onReset?: () => void }
     | { allowReset?: false; resetTrackerId?: never; onReset?: never }
@@ -73,41 +73,43 @@ export const RngToolForm = <
       onReset={onReset}
     >
       {(formik) => {
-        const fieldsToUse = fields || (getFields ? getFields(formik.values) : []);
+        const fieldsToUse =
+          fields || (getFields ? getFields(formik.values) : []);
 
         return (
-        <Flex vertical gap={16}>
-          <Form>
-            <Flex vertical gap={8}>
-              <FormFieldTable fields={fieldsToUse} />
-              <Button trackerId={submitTrackerId} htmlType="submit">
-                {submitButtonLabel}
-              </Button>
-              {allowReset && resetTrackerId != null && (
-                <Button trackerId={resetTrackerId} htmlType="reset">
-                  Reset
+          <Flex vertical gap={16}>
+            <Form>
+              <Flex vertical gap={8}>
+                <FormFieldTable fields={fieldsToUse} />
+                <Button trackerId={submitTrackerId} htmlType="submit">
+                  {submitButtonLabel}
                 </Button>
-              )}
-            </Flex>
-          </Form>
+                {allowReset && resetTrackerId != null && (
+                  <Button trackerId={resetTrackerId} htmlType="reset">
+                    Reset
+                  </Button>
+                )}
+              </Flex>
+            </Form>
 
-          {columns != null && (
-            <FormikResultTable<Result>
-              columns={columns}
-              rowKey={rowKey}
-              dataSource={results}
-              rowSelection={
-                onClickResultRow == null
-                  ? undefined
-                  : {
-                      type: "radio",
-                      onSelect: (record) => onClickResultRow?.(record),
-                    }
-              }
-            />
-          )}
-      </Flex>)
-    }}
+            {columns != null && (
+              <FormikResultTable<Result>
+                columns={columns}
+                rowKey={rowKey}
+                dataSource={results}
+                rowSelection={
+                  onClickResultRow == null
+                    ? undefined
+                    : {
+                        type: "radio",
+                        onSelect: (record) => onClickResultRow?.(record),
+                      }
+                }
+              />
+            )}
+          </Flex>
+        );
+      }}
     </Formik>
   );
 };

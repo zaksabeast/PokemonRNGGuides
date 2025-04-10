@@ -1,9 +1,4 @@
-import {
-  Field,
-  RngToolForm,
-  ResultColumn,
-  RngToolSubmit,
-} from "~/components";
+import { Field, RngToolForm, ResultColumn, RngToolSubmit } from "~/components";
 import {
   DecimalString,
   fromDecimalString,
@@ -25,11 +20,15 @@ const getColumns = (
   game: Game,
   resultsBattery: Battery,
 ): ResultColumn<MirageIslandResult>[] => {
-  console.log(1);
   const columns: ResultColumn<MirageIslandResult>[] = [];
   if (resultsBattery === "Live") {
     columns.push(
-      { title: "Day", dataIndex: "day", key: "day" },
+      {
+        title: "Day",
+        dataIndex: "day",
+        key: "day",
+        render: (dayDiff) => `${dayDiff + 1}`,
+      },
       {
         title: "Time To Wait",
         dataIndex: "day_diff",
@@ -92,9 +91,9 @@ const generateResults = function (
   const rocketLaunchedCount =
     fromDecimalString(values.rocketLaunchedCount) ?? 0;
 
-  const RESULT_COUNT = 50;
+  const RESULT_COUNT = 10000;
   const currentDay = clamp(rocketLaunchedCount * 7, 0, 0xffff);
-  const lastDay = clamp(currentDay + RESULT_COUNT, 0, 0xffff);
+  const lastDay = clamp(currentDay + RESULT_COUNT - 1, 0, 0xffff);
 
   return rngTools.mirage_island_calculate(initialSeed, currentDay, lastDay);
 };
@@ -103,18 +102,26 @@ type Props = {
   game?: Game;
 };
 
-const getFields = function(values:FormState){
-  return [
+const getFields = function (values: FormState) {
+  let fields: Field[] = [
     {
       label: "Battery",
-      input: (<FormikRadio<FormState, "battery"> name="battery" options={["Live", "Dead"]} />),
+      input: (
+        <FormikRadio<FormState, "battery">
+          name="battery"
+          options={["Live", "Dead"]}
+        />
+      ),
     },
-    {
-      label: "Rocket Launched",
-      input: (<FormikInput<FormState> name="rocketLaunchedCount" />),
-    }
   ];
-}
+  if (values.battery === "Live") {
+    fields.push({
+      label: "Rocket Launched",
+      input: <FormikInput<FormState> name="rocketLaunchedCount" />,
+    });
+  }
+  return fields;
+};
 
 export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
   const initialValues = getInitialValues(game);

@@ -91,7 +91,7 @@ const generateResults = function (
   const rocketLaunchedCount =
     fromDecimalString(values.rocketLaunchedCount) ?? 0;
 
-  const RESULT_COUNT = 10000;
+  const RESULT_COUNT = 100;
   const currentDay = clamp(rocketLaunchedCount * 7, 0, 0xffff);
   const lastDay = clamp(currentDay + RESULT_COUNT - 1, 0, 0xffff);
 

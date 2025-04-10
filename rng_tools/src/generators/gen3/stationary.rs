@@ -1,13 +1,14 @@
 use crate::rng::lcrng::Pokerng;
-use crate::rng::{Rng, StateIterator};
-use crate::{AbilityType, Gender, IvFilter, Ivs, Nature, Species, gen3_shiny};
+use crate::rng::{Rng, StateIterator, lcrng};
+use crate::{AbilityType, Gender, Ivs, Nature, PkmFilter, PkmState, Species, gen3_shiny};
+use itertools::iproduct;
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Static3Result {
+pub struct Static3GeneratorResult {
     pub advance: usize,
     pub pid: u32,
     pub ivs: Ivs,
@@ -17,51 +18,31 @@ pub struct Static3Result {
     pub shiny: bool,
 }
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Static3Filter {
-    pub shiny: bool,
-    pub nature: Option<Nature>,
-    pub gender: Option<Gender>,
-    pub ivs: IvFilter,
-    pub ability: Option<AbilityType>,
-}
+impl PkmState for Static3GeneratorResult {
+    fn shiny(&self) -> bool {
+        self.shiny
+    }
 
-impl Static3Filter {
-    fn pass_filter(&self, state: &Static3Result) -> bool {
-        if self.shiny && !state.shiny {
-            return false;
-        }
+    fn nature(&self) -> Nature {
+        self.nature
+    }
 
-        if let Some(nature) = self.nature {
-            if state.nature != nature {
-                return false;
-            }
-        }
+    fn ivs(&self) -> &Ivs {
+        &self.ivs
+    }
 
-        if let Some(gender) = self.gender {
-            if state.gender != gender {
-                return false;
-            }
-        }
+    fn ability(&self) -> AbilityType {
+        self.ability
+    }
 
-        if !state.ivs.filter(&self.ivs.min_ivs, &self.ivs.max_ivs) {
-            return false;
-        }
-
-        if let Some(ability) = self.ability {
-            if ability != state.ability {
-                return false;
-            }
-        }
-
-        true
+    fn gender(&self) -> Gender {
+        self.gender
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Static3Options {
+pub struct Static3GeneratorOptions {
     pub offset: usize,
     pub initial_advances: usize,
     pub max_advances: usize,
@@ -71,11 +52,56 @@ pub struct Static3Options {
     pub method4: bool,
     pub tid: u16,
     pub sid: u16,
-    pub filter: Static3Filter,
+    pub filter: PkmFilter,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Static3SearcherResult {
+    pub seed: u32,
+    pub pid: u32,
+    pub ivs: Ivs,
+    pub ability: AbilityType,
+    pub gender: Gender,
+    pub nature: Nature,
+    pub shiny: bool,
+}
+
+impl PkmState for Static3SearcherResult {
+    fn shiny(&self) -> bool {
+        self.shiny
+    }
+
+    fn nature(&self) -> Nature {
+        self.nature
+    }
+
+    fn ivs(&self) -> &Ivs {
+        &self.ivs
+    }
+
+    fn ability(&self) -> AbilityType {
+        self.ability
+    }
+
+    fn gender(&self) -> Gender {
+        self.gender
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Static3SearcherOptions {
+    pub tid: u16,
+    pub sid: u16,
+    pub method4: bool,
+    pub bugged_roamer: bool,
+    pub species: Species,
+    pub filter: PkmFilter,
 }
 
 #[wasm_bindgen]
-pub fn gen3_static_states(opts: &Static3Options) -> Vec<Static3Result> {
+pub fn gen3_static_generator_states(opts: &Static3GeneratorOptions) -> Vec<Static3GeneratorResult> {
     StateIterator::new(Pokerng::new(opts.seed))
         .skip(opts.offset)
         .enumerate()
@@ -92,11 +118,90 @@ pub fn gen3_static_states(opts: &Static3Options) -> Vec<Static3Result> {
         .collect()
 }
 
+#[wasm_bindgen]
+pub fn gen3_static_searcher_states(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
+    let Ivs {
+        hp: min_hp,
+        atk: min_atk,
+        def: min_def,
+        spa: min_spa,
+        spd: min_spd,
+        spe: min_spe,
+    } = opts.filter.min_ivs;
+
+    let Ivs {
+        hp: max_hp,
+        atk: max_atk,
+        def: max_def,
+        spa: max_spa,
+        spd: max_spd,
+        spe: max_spe,
+    } = opts.filter.max_ivs;
+
+    iproduct!(
+        min_hp..=max_hp,
+        min_atk..=max_atk,
+        min_def..=max_def,
+        min_spa..=max_spa,
+        min_spd..=max_spd,
+        min_spe..=max_spe
+    )
+    .flat_map(|(hp, atk, def, spa, spd, spe)| {
+        search_gen3_static(
+            Ivs {
+                hp,
+                atk,
+                def,
+                spa,
+                spd,
+                spe,
+            },
+            opts,
+        )
+    })
+    .collect()
+}
+
+fn search_gen3_static(mut ivs: Ivs, opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
+    let seeds = lcrng::recover_poke_rng_iv(&ivs, opts.method4);
+
+    if opts.bugged_roamer {
+        ivs = Ivs {
+            hp: ivs.hp,
+            atk: ivs.atk & 7,
+            ..Default::default()
+        };
+    }
+
+    seeds
+        .into_iter()
+        .filter_map(|seed| {
+            let mut rng = Pokerng::new(seed).rev();
+            let pid = ((rng.rand::<u16>() as u32) << 16) | (rng.rand::<u16>() as u32);
+            let nature = Nature::from_pid(pid);
+            let state = Static3SearcherResult {
+                seed: rng.rand::<u32>(),
+                pid,
+                ivs,
+                ability: AbilityType::from((pid & 1) as u8),
+                gender: opts.species.gender_from_pid(pid),
+                nature,
+                shiny: gen3_shiny(pid, opts.tid, opts.sid),
+            };
+            if opts.filter.pass_filter_no_ivs(&state) {
+                Some(state)
+            } else {
+                None
+            }
+        })
+        .collect()
+}
+
 fn generate_gen3_static_state(
     mut rng: Pokerng,
-    opts: &Static3Options,
+    opts: &Static3GeneratorOptions,
     advance: usize,
-) -> Static3Result {
+) -> Static3GeneratorResult {
     let pid = (rng.rand::<u16>() as u32) | ((rng.rand::<u16>() as u32) << 16);
 
     let iv1 = if opts.bugged_roamer {
@@ -115,7 +220,7 @@ fn generate_gen3_static_state(
 
     let ivs = Ivs::new_g3(iv1, iv2);
 
-    Static3Result {
+    Static3GeneratorResult {
         advance,
         pid,
         ivs,
@@ -150,7 +255,7 @@ mod test {
 
     #[test]
     fn generate_method4() {
-        let opts = Static3Options {
+        let opts = Static3GeneratorOptions {
             offset: 0,
             initial_advances: 0,
             max_advances: 9,
@@ -160,21 +265,19 @@ mod test {
             method4: true,
             tid: 12345,
             sid: 54321,
-            filter: Static3Filter {
+            filter: PkmFilter {
                 shiny: false,
                 nature: None,
                 gender: None,
-                ivs: IvFilter {
-                    min_ivs: ZERO_IVS,
-                    max_ivs: PERFECT_IVS,
-                },
+                min_ivs: ZERO_IVS,
+                max_ivs: PERFECT_IVS,
                 ability: None,
             },
         };
 
-        let results = gen3_static_states(&opts);
+        let results = gen3_static_generator_states(&opts);
         let expected = vec![
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 0,
                 pid: 3917348864,
                 ivs: Ivs {
@@ -190,7 +293,7 @@ mod test {
                 nature: Nature::Naive,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 1,
                 pid: 1383197054,
                 ivs: Ivs {
@@ -206,7 +309,7 @@ mod test {
                 nature: Nature::Naughty,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 2,
                 pid: 833639025,
                 ivs: Ivs {
@@ -222,7 +325,7 @@ mod test {
                 nature: Nature::Hardy,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 3,
                 pid: 2386702768,
                 ivs: Ivs {
@@ -238,7 +341,7 @@ mod test {
                 nature: Nature::Bashful,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 4,
                 pid: 3805056578,
                 ivs: Ivs {
@@ -254,7 +357,7 @@ mod test {
                 nature: Nature::Adamant,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 5,
                 pid: 2948981452,
                 ivs: Ivs {
@@ -270,7 +373,7 @@ mod test {
                 nature: Nature::Brave,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 6,
                 pid: 1742450629,
                 ivs: Ivs {
@@ -286,7 +389,7 @@ mod test {
                 nature: Nature::Naughty,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 7,
                 pid: 4231227355,
                 ivs: Ivs {
@@ -302,7 +405,7 @@ mod test {
                 nature: Nature::Bold,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 8,
                 pid: 4012702771,
                 ivs: Ivs {
@@ -318,7 +421,7 @@ mod test {
                 nature: Nature::Gentle,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 9,
                 pid: 4234080044,
                 ivs: Ivs {
@@ -341,7 +444,7 @@ mod test {
 
     #[test]
     fn generate_method1() {
-        let opts = Static3Options {
+        let opts = Static3GeneratorOptions {
             offset: 0,
             initial_advances: 0,
             max_advances: 9,
@@ -351,21 +454,19 @@ mod test {
             method4: false,
             tid: 12345,
             sid: 54321,
-            filter: Static3Filter {
+            filter: PkmFilter {
                 shiny: false,
                 nature: None,
                 gender: None,
-                ivs: IvFilter {
-                    min_ivs: ZERO_IVS,
-                    max_ivs: PERFECT_IVS,
-                },
+                min_ivs: ZERO_IVS,
+                max_ivs: PERFECT_IVS,
                 ability: None,
             },
         };
 
-        let results = gen3_static_states(&opts);
+        let results = gen3_static_generator_states(&opts);
         let expected = vec![
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 0,
                 pid: 2828921363,
                 ivs: Ivs {
@@ -381,7 +482,7 @@ mod test {
                 nature: Nature::Jolly,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 1,
                 pid: 2096212125,
                 ivs: Ivs {
@@ -397,7 +498,7 @@ mod test {
                 nature: Nature::Hardy,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 2,
                 pid: 934182129,
                 ivs: Ivs {
@@ -413,7 +514,7 @@ mod test {
                 nature: Nature::Naughty,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 3,
                 pid: 2500605870,
                 ivs: Ivs {
@@ -429,7 +530,7 @@ mod test {
                 nature: Nature::Calm,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 4,
                 pid: 1188599052,
                 ivs: Ivs {
@@ -445,7 +546,7 @@ mod test {
                 nature: Nature::Brave,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 5,
                 pid: 649283288,
                 ivs: Ivs {
@@ -461,7 +562,7 @@ mod test {
                 nature: Nature::Jolly,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 6,
                 pid: 579937971,
                 ivs: Ivs {
@@ -477,7 +578,7 @@ mod test {
                 nature: Nature::Gentle,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 7,
                 pid: 2710184593,
                 ivs: Ivs {
@@ -493,7 +594,7 @@ mod test {
                 nature: Nature::Bashful,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 8,
                 pid: 2675483018,
                 ivs: Ivs {
@@ -509,7 +610,7 @@ mod test {
                 nature: Nature::Bashful,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 9,
                 pid: 2294390648,
                 ivs: Ivs {
@@ -532,7 +633,7 @@ mod test {
 
     #[test]
     fn generate_bugged_roamer() {
-        let opts = Static3Options {
+        let opts = Static3GeneratorOptions {
             offset: 0,
             initial_advances: 0,
             max_advances: 9,
@@ -542,21 +643,19 @@ mod test {
             method4: false,
             tid: 12345,
             sid: 54321,
-            filter: Static3Filter {
+            filter: PkmFilter {
                 shiny: false,
                 nature: None,
                 gender: None,
-                ivs: IvFilter {
-                    min_ivs: ZERO_IVS,
-                    max_ivs: PERFECT_IVS,
-                },
+                min_ivs: ZERO_IVS,
+                max_ivs: PERFECT_IVS,
                 ability: None,
             },
         };
 
-        let results = gen3_static_states(&opts);
+        let results = gen3_static_generator_states(&opts);
         let expected = vec![
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 0,
                 pid: 0xE97E0000,
                 ivs: Ivs {
@@ -572,7 +671,7 @@ mod test {
                 nature: Nature::Naive,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 1,
                 pid: 0x5271E97E,
                 ivs: Ivs {
@@ -588,7 +687,7 @@ mod test {
                 nature: Nature::Naughty,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 2,
                 pid: 0x31B05271,
                 ivs: Ivs {
@@ -604,7 +703,7 @@ mod test {
                 nature: Nature::Hardy,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 3,
                 pid: 0x8E4231B0,
                 ivs: Ivs {
@@ -620,7 +719,7 @@ mod test {
                 nature: Nature::Bashful,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 4,
                 pid: 0xE2CC8E42,
                 ivs: Ivs {
@@ -636,7 +735,7 @@ mod test {
                 nature: Nature::Adamant,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 5,
                 pid: 0xAFC5E2CC,
                 ivs: Ivs {
@@ -652,7 +751,7 @@ mod test {
                 nature: Nature::Brave,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 6,
                 pid: 0x67DBAFC5,
                 ivs: Ivs {
@@ -668,7 +767,7 @@ mod test {
                 nature: Nature::Naughty,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 7,
                 pid: 0xFC3367DB,
                 ivs: Ivs {
@@ -684,7 +783,7 @@ mod test {
                 nature: Nature::Bold,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 8,
                 pid: 0xEF2CFC33,
                 ivs: Ivs {
@@ -700,7 +799,7 @@ mod test {
                 nature: Nature::Gentle,
                 shiny: false,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 9,
                 pid: 0xFC5EEF2C,
                 ivs: Ivs {
@@ -723,7 +822,7 @@ mod test {
 
     #[test]
     fn generate_method1_with_initial_advances() {
-        let opts = Static3Options {
+        let opts = Static3GeneratorOptions {
             offset: 0,
             initial_advances: 10,
             max_advances: 4,
@@ -733,21 +832,19 @@ mod test {
             method4: false,
             tid: 12345,
             sid: 54321,
-            filter: Static3Filter {
+            filter: PkmFilter {
                 shiny: false,
                 nature: None,
                 gender: None,
-                ivs: IvFilter {
-                    min_ivs: ZERO_IVS,
-                    max_ivs: PERFECT_IVS,
-                },
+                min_ivs: ZERO_IVS,
+                max_ivs: PERFECT_IVS,
                 ability: None,
             },
         };
 
-        let results = gen3_static_states(&opts);
+        let results = gen3_static_generator_states(&opts);
         let expected = vec![
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 10,
                 pid: 0x880A88C1,
                 shiny: false,
@@ -763,7 +860,7 @@ mod test {
                 },
                 gender: Gender::Male,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 11,
                 pid: 0x6761880A,
                 shiny: false,
@@ -779,7 +876,7 @@ mod test {
                 },
                 gender: Gender::Female,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 12,
                 pid: 0x6B936761,
                 shiny: false,
@@ -795,7 +892,7 @@ mod test {
                 },
                 gender: Gender::Male,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 13,
                 pid: 0xC1916B93,
                 shiny: false,
@@ -811,7 +908,7 @@ mod test {
                 },
                 gender: Gender::Male,
             },
-            Static3Result {
+            Static3GeneratorResult {
                 advance: 14,
                 pid: 0x012AC191,
                 shiny: false,
@@ -830,5 +927,174 @@ mod test {
         ];
 
         assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn search_method4() {
+        let opts = Static3SearcherOptions {
+            species: Species::Groudon,
+            bugged_roamer: false,
+            method4: true,
+            tid: 12345,
+            sid: 54321,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: PERFECT_IVS,
+                max_ivs: PERFECT_IVS,
+                ability: None,
+            },
+        };
+
+        let results = gen3_static_searcher_states(&opts);
+        assert_eq!(results.len(), 4);
+
+        let mut opts = Static3GeneratorOptions {
+            offset: 0,
+            initial_advances: 0,
+            max_advances: 0,
+            seed: 0,
+            species: Species::Groudon,
+            bugged_roamer: false,
+            method4: true,
+            tid: 12345,
+            sid: 54321,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: PERFECT_IVS,
+                max_ivs: PERFECT_IVS,
+                ability: None,
+            },
+        };
+
+        results.into_iter().for_each(|result| {
+            opts.seed = result.seed;
+            let generated = gen3_static_generator_states(&opts);
+            assert_eq!(generated.len(), 1);
+            let generated = generated[0];
+            assert_eq!(generated.pid, result.pid);
+            assert_eq!(generated.shiny, result.shiny);
+            assert_eq!(generated.nature, result.nature);
+            assert_eq!(generated.gender, result.gender);
+            assert_eq!(generated.ability, result.ability);
+            assert_eq!(generated.ivs, result.ivs);
+        })
+    }
+
+    #[test]
+    fn search_method1() {
+        let opts = Static3SearcherOptions {
+            species: Species::Totodile,
+            bugged_roamer: false,
+            method4: false,
+            tid: 12345,
+            sid: 54321,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: PERFECT_IVS,
+                max_ivs: PERFECT_IVS,
+                ability: None,
+            },
+        };
+
+        let results = gen3_static_searcher_states(&opts);
+        assert_eq!(results.len(), 6);
+
+        let mut opts = Static3GeneratorOptions {
+            offset: 0,
+            initial_advances: 0,
+            max_advances: 0,
+            seed: 0,
+            species: Species::Totodile,
+            bugged_roamer: false,
+            method4: false,
+            tid: 12345,
+            sid: 54321,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: PERFECT_IVS,
+                max_ivs: PERFECT_IVS,
+                ability: None,
+            },
+        };
+
+        results.into_iter().for_each(|result| {
+            opts.seed = result.seed;
+            let generated = gen3_static_generator_states(&opts);
+            assert_eq!(generated.len(), 1);
+            let generated = generated[0];
+            assert_eq!(generated.pid, result.pid);
+            assert_eq!(generated.shiny, result.shiny);
+            assert_eq!(generated.nature, result.nature);
+            assert_eq!(generated.gender, result.gender);
+            assert_eq!(generated.ability, result.ability);
+            assert_eq!(generated.ivs, result.ivs);
+        })
+    }
+
+    #[test]
+    fn search_bugged_roamer() {
+        let opts = Static3SearcherOptions {
+            species: Species::Latios,
+            bugged_roamer: true,
+            method4: false,
+            tid: 12345,
+            sid: 54321,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: PERFECT_IVS,
+                max_ivs: PERFECT_IVS,
+                ability: None,
+            },
+        };
+
+        let results = gen3_static_searcher_states(&opts);
+        assert_eq!(results.len(), 6);
+
+        let mut opts = Static3GeneratorOptions {
+            offset: 0,
+            initial_advances: 0,
+            max_advances: 0,
+            seed: 0,
+            species: Species::Latios,
+            bugged_roamer: true,
+            method4: false,
+            tid: 12345,
+            sid: 54321,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: Ivs {
+                    hp: 31,
+                    atk: 7,
+                    ..Default::default()
+                },
+                max_ivs: PERFECT_IVS,
+                ability: None,
+            },
+        };
+
+        results.into_iter().for_each(|result| {
+            opts.seed = result.seed;
+            let generated = gen3_static_generator_states(&opts);
+            assert_eq!(generated.len(), 1);
+            let generated = generated[0];
+            assert_eq!(generated.pid, result.pid);
+            assert_eq!(generated.shiny, result.shiny);
+            assert_eq!(generated.nature, result.nature);
+            assert_eq!(generated.gender, result.gender);
+            assert_eq!(generated.ability, result.ability);
+            assert_eq!(generated.ivs, result.ivs);
+        })
     }
 }

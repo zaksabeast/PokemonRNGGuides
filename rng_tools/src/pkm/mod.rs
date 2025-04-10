@@ -28,6 +28,16 @@ pub struct PkmFilter {
 
 impl PkmFilter {
     pub fn pass_filter(&self, state: &impl PkmState) -> bool {
+        self.pass_filter_no_ivs(state);
+
+        if !state.ivs().filter(&self.min_ivs, &self.max_ivs) {
+            return false;
+        }
+
+        true
+    }
+
+    pub fn pass_filter_no_ivs(&self, state: &impl PkmState) -> bool {
         if self.shiny && !state.shiny() {
             return false;
         }
@@ -42,10 +52,6 @@ impl PkmFilter {
             if state.gender() != gender {
                 return false;
             }
-        }
-
-        if !state.ivs().filter(&self.min_ivs, &self.max_ivs) {
-            return false;
         }
 
         if let Some(ability) = self.ability {

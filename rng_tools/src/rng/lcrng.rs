@@ -1,6 +1,7 @@
 use super::rng_trait::{GetMaxRand, GetRand, Rng};
 use crate::Ivs;
 use std::iter::{DoubleEndedIterator, Iterator, Rev, Skip};
+use std::num::Wrapping;
 
 pub type Pokerng = Lcrng<0x6073, 0x41c64e6d, 0xa3561a1, 0xeeb9eb65>;
 pub type Xdrng = Lcrng<0x269EC3, 0x343FD, 0xA170F641, 0xB9B33155>;
@@ -139,25 +140,23 @@ fn recover_poke_rng_ivs_method4(ivs: &Ivs) -> Vec<u32> {
     const ADD: u32 = 0xe97e7b6a;
     const MULT: u32 = 0xc2a29a69;
     const MOD: u32 = 0x3a89;
-    const PAT: u32 = 0x2e4c;
-    const INC: u32 = 0x5831;
+    const W_ADD: Wrapping<u32> = Wrapping(ADD);
+    const W_MULT: Wrapping<u32> = Wrapping(MULT);
+    const W_MOD: Wrapping<u32> = Wrapping(MOD);
+    const PAT: Wrapping<u32> = Wrapping(0x2e4c);
+    const INC: Wrapping<u32> = Wrapping(0x5831);
 
-    let first = ((hp as u32) | ((atk as u32) << 5) | ((def as u32) << 10)) << 16;
-    let second = ((spe as u32) | ((spa as u32) << 5) | ((spd as u32) << 10)) << 16;
+    let first = Wrapping(((hp as u32) | ((atk as u32) << 5) | ((def as u32) << 10)) << 16);
+    let second = Wrapping(((spe as u32) | ((spa as u32) << 5) | ((spd as u32) << 10)) << 16);
 
-    let diff = second.wrapping_sub(first.wrapping_mul(MULT).wrapping_add(ADD)) >> 16;
-    let start1 = (diff.wrapping_mul(MOD).wrapping_add(INC) >> 16).wrapping_mul(PAT) % MOD;
-    let start2 = (((diff & 0xFFFF) ^ 0x8000)
-        .wrapping_mul(MOD)
-        .wrapping_add(INC)
-        >> 16)
-        .wrapping_mul(PAT)
-        % MOD;
+    let diff = (second - (first * W_MULT + W_ADD)) >> 16;
+    let start1 = ((diff * W_MOD + INC) >> 16) * PAT % W_MOD;
+    let start2 = ((Wrapping((diff.0 & 0xFFFF) ^ 0x8000) * W_MOD + INC) >> 16) * PAT % W_MOD;
 
     let mut seeds = Vec::with_capacity(6);
 
-    reverse_poke_rng_seeds::<MULT, ADD, MOD>(first, second, start1, &mut seeds);
-    reverse_poke_rng_seeds::<MULT, ADD, MOD>(first, second, start2, &mut seeds);
+    reverse_poke_rng_seeds::<MULT, ADD, MOD>(first.0, second.0, start1.0, &mut seeds);
+    reverse_poke_rng_seeds::<MULT, ADD, MOD>(first.0, second.0, start2.0, &mut seeds);
 
     seeds
 }
@@ -175,21 +174,22 @@ fn recover_poke_rng_ivs_method12(ivs: &Ivs) -> Vec<u32> {
     const ADD: u32 = 0x6073;
     const MULT: u32 = 0x41c64e6d;
     const MOD: u32 = 0x67d3;
-    const PAT: u32 = 0xd3e;
-    const INC: u32 = 0x4034;
+    const W_MULT: Wrapping<u32> = Wrapping(MULT);
+    const W_MOD: Wrapping<u32> = Wrapping(MOD);
+    const PAT: Wrapping<u32> = Wrapping(0xd3e);
+    const INC: Wrapping<u32> = Wrapping(0x4034);
 
-    let first = ((hp as u32) | ((atk as u32) << 5) | ((def as u32) << 10)) << 16;
-    let second = ((spe as u32) | ((spa as u32) << 5) | ((spd as u32) << 10)) << 16;
+    let first = Wrapping(((hp as u32) | ((atk as u32) << 5) | ((def as u32) << 10)) << 16);
+    let second = Wrapping(((spe as u32) | ((spa as u32) << 5) | ((spd as u32) << 10)) << 16);
 
-    let diff = second.wrapping_sub(first.wrapping_mul(MULT)) >> 16;
-    let start1 = (diff.wrapping_mul(MOD).wrapping_add(INC) >> 16).wrapping_mul(PAT) % MOD;
-    let start2 =
-        ((diff ^ 0x8000).wrapping_mul(MOD).wrapping_add(INC) >> 16).wrapping_mul(PAT) % MOD;
+    let diff = (second - first * W_MULT) >> 16;
+    let start1 = ((diff * W_MOD + INC) >> 16) * PAT % W_MOD;
+    let start2 = ((Wrapping((diff.0 & 0xFFFF) ^ 0x8000) * W_MOD + INC) >> 16) * PAT % W_MOD;
 
     let mut seeds = Vec::with_capacity(6);
 
-    reverse_poke_rng_seeds::<MULT, ADD, MOD>(first, second, start1, &mut seeds);
-    reverse_poke_rng_seeds::<MULT, ADD, MOD>(first, second, start2, &mut seeds);
+    reverse_poke_rng_seeds::<MULT, ADD, MOD>(first.0, second.0, start1.0, &mut seeds);
+    reverse_poke_rng_seeds::<MULT, ADD, MOD>(first.0, second.0, start2.0, &mut seeds);
 
     seeds
 }

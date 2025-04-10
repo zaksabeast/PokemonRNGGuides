@@ -39,11 +39,10 @@ type GuideConfig = {
 
 type MenuItemTagProps = {
   tag: GuideTag;
-  isNew: boolean;
 };
 
-const MenuItemTag = ({ tag, isNew }: MenuItemTagProps) => {
-  const config = match<GuideTag, GuideConfig | null>(isNew ? "new" : tag)
+const MenuItemTag = ({ tag }: MenuItemTagProps) => {
+  const config = match<GuideTag, GuideConfig | null>(tag)
     .with("new", () => ({ color: "White", backgroundColor: "Primary" }))
     .otherwise(() => null);
   const label = match<GuideTag, string>(tag)
@@ -87,13 +86,14 @@ type MenuCategory = {
 
 const getMenuItemFromGuide = ({
   slug,
-  showIcon = true,
+  showTag = true,
 }: {
   slug: GuideSlug;
-  showIcon?: boolean;
+  showTag?: boolean;
 }): isNew<MenuItem> => {
   const meta = getGuide(slug).meta;
   const isNew = dayjs(meta.addedOn).isAfter(dayjs().subtract(7, "days"));
+  const tag = isNew ? "new" : meta.tag;
   return {
     isNew,
     item: {
@@ -101,7 +101,7 @@ const getMenuItemFromGuide = ({
       title: meta.title,
       tag: meta.tag,
       label: <Link href={meta.slug}>{meta.title}</Link>,
-      icon: showIcon ? <MenuItemTag isNew={isNew} tag={meta.tag} /> : null,
+      icon: isNew || showTag ? <MenuItemTag tag={tag} /> : null,
     },
   };
 };
@@ -127,7 +127,7 @@ const getMenuCategory = (
       key: `${keyPrefix}${category}`,
       label,
       children: sortedGuideItems,
-      icon: isNew ? <MenuItemTag tag="new" isNew /> : null,
+      icon: isNew ? <MenuItemTag tag="new" /> : null,
     },
   };
 };
@@ -187,7 +187,7 @@ const getCategory = ({
       key,
       label,
       children: children.map(({ item }) => item),
-      icon: isNew ? <MenuItemTag tag="new" isNew /> : null,
+      icon: isNew ? <MenuItemTag tag="new" /> : null,
     },
   };
 };
@@ -210,7 +210,7 @@ const topLevelMenu = [
       "Emerald",
       "GBA Technical Documentation",
     ],
-    pages: [getMenuItemFromGuide({ slug: "/gba-overview", showIcon: false })],
+    pages: [getMenuItemFromGuide({ slug: "/gba-overview", showTag: false })],
   }).item,
   getCategory({
     key: "NDS",

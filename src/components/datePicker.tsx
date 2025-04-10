@@ -10,7 +10,7 @@ import styled from "@emotion/styled";
 import { useFormikContext } from "formik";
 import * as tst from "ts-toolbelt";
 import { match, P } from "ts-pattern";
-import { GenericForm, GuarnteeFormNameType } from "~/types/form";
+import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { rngChronoFormat } from "~/utils/time";
 
 type DatePickerContainerProps = { fullWidth?: boolean };
@@ -81,7 +81,7 @@ type FormikTimePickerProps<FormState extends GenericForm> = Omit<
   TimePickerProps,
   "onChange"
 > & {
-  name: GuarnteeFormNameType<FormState, Dayjs | null>;
+  name: GuaranteeFormNameType<FormState, Dayjs | null>;
   onChange?: (date: Dayjs | null) => void;
 };
 
@@ -159,7 +159,7 @@ type FormikDatePickerProps<FormState extends GenericForm> = Omit<
   DatePickerProps,
   "onChange"
 > & {
-  name: GuarnteeFormNameType<FormState, Dayjs | null>;
+  name: GuaranteeFormNameType<FormState, Dayjs | null>;
   onChange?: (date: Dayjs | null) => void;
 };
 

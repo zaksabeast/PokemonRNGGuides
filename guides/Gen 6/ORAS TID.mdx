@@ -1,0 +1,85 @@
+---
+title: "Trainer ID RNG"
+description: "RNG for that special TID/SID/TSV"
+slug: "retail-oras-tid"
+category: "Omega Ruby and Alpha Sapphire"
+tag: "cfw"
+---
+
+```
+If a save file is present, delete it by pressing `X+Y+Down` on the d-pad at the title screen. This will remove the save file and start the game at the language select screen.
+```
+
+## Tools
+
+- A 3DS with PCalc ([PCalc Install Guide](https://www.pokemonrng.com/misc-3ds-installing-pcalc))
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+- (Optional) A network connection
+
+## Step 1: Setup 3DSRNGTool
+
+1. In the upper right corner, select your game version and click "Advance."
+   - Seed and TSV can be blank.
+2. In the ID tab, fill in your desired TID, SID, or TSV.
+3. 3DSRNGTool can search for multiple numbers partially or fully.
+   - Finding a specific TID/SID/TSV combination is very rare. It is advised to RNG for only one at a time.
+
+![Setup](/images/OmegaRuby-AlphaSapphire/TID/Setup.png)
+
+In this example, we will be getting the highlighted TID.
+
+## Step 2: Setup the game
+
+1. Load BootNTR Selector, then the game.
+2. Select game language.
+   - The bot used later can assist by selecting the "Mash A" option if set up early.
+3. Continue playing until this screen appears.
+
+![Final Screen](/images/OmegaRuby-AlphaSapphire/TID/Final-Screen.png)
+
+## Step 3: Advancing the frames
+
+Every time "No" is selected when confirming the name, one frame advances. This can be tedious, especially for higher target frames. A bot can automate frame advancement.
+
+```
+If a network connection is not available, manually fill in the tiny seeds.
+```
+
+1. Press the home button and wait for the internet to connect.
+2. In 3DSRNGTool, go to Tools -> RNG Helper.
+3. Fill in the IP address.
+   - The IP address can be found on the Rosalina screen after enabling Input Redirection.
+4. Open the Rosalina menu by pressing `L+Down+Select` and enable Input Redirection on the 3DS.
+5. Click "One Click" in the RNG Helper window to connect.
+   - This will fill in the tiny seeds.
+   - This information can also be filled in manually.
+
+![NTR Helper](/images/OmegaRuby-AlphaSapphire/TID/NTR-Helper.png)
+
+6. Press "Calculate" in the main window to get a list of possible frames for RNG.
+7. Adjust the range as needed.
+8. If the target frame is too high or the TID/SID/TSV combination is not possible with your seed, reboot the system to start over with a different seed.
+   - Rosalina can reboot quickly by pressing `L+Down+Select` and selecting the reboot option.
+
+```
+Soft resetting the game will hard lock the system!
+```
+
+In the RNG Helper window, fill in the starting and ending frames.
+
+At this point, you can use the bot to advance frames or do it manually.
+
+- The bot's speed depends on your 3DS's stability with your computer.
+- Adjust the bot's speed to your liking.
+
+The bot will stop 1 frame before the target frame.
+
+- Name your character and confirm the selection.
+- Wait until you can control your character to check if you got your TID/SID/TSV correct.
+
+```
+Press Start + Right then Select + Left to view TSV in the seventh party slot.
+```
+
+![Success](/images/OmegaRuby-AlphaSapphire/TID/Success.png)
+![Success](/images/OmegaRuby-AlphaSapphire/TID/Success-2.png)

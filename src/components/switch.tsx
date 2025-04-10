@@ -1,7 +1,7 @@
 import { Switch as AntdSwitch, SwitchProps as AntdSwitchProps } from "antd";
 import { useFormikContext } from "formik";
 import * as tst from "ts-toolbelt";
-import { GenericForm, GuarnteeFormNameType } from "~/types/form";
+import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { get } from "lodash-es";
 import { withCss } from "./withCss";
 
@@ -13,7 +13,7 @@ type FormikSwitchProps<
 > = tst.O.Merge<
   Omit<AntdSwitchProps, "onChange" | "value">,
   {
-    name: FieldKey extends GuarnteeFormNameType<FormState, boolean>
+    name: FieldKey extends GuaranteeFormNameType<FormState, boolean>
       ? FieldKey
       : never;
   }

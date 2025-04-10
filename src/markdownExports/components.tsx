@@ -20,6 +20,7 @@ export const MarkdownH3 = (props: Props) => (
 
 const _MarkdownParagraph = styled(Typography.Text)({
   display: "block",
+  color: "inherit",
 });
 
 export const MarkdownParagraph = (props: Props) => (

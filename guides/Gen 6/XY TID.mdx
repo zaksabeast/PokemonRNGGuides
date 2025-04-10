@@ -1,0 +1,53 @@
+---
+title: "Trainer ID, Secret ID, and/or TSV RNG"
+description: "RNG for a specific Trainer ID, SID, or TSV"
+slug: "pcalc-xy-tid"
+category: "X and Y"
+tag: "cfw"
+---
+
+## Intro
+
+You need a new save file to RNG the Trainer ID, Secret ID, or Trainer Shiny Value. To delete an existing save file, press `X + B + Up` on the d-pad at the title screen. This deletes the current save file and brings you to the language select screen.
+
+Make sure to back up your save file using a save file manager like [Checkpoint](https://github.com/FlagBrew/Checkpoint/releases) if you want to return to a previous save file.
+
+## Tools
+
+- [A 3DS with PokeReader](https://www.pokemonrng.com/install-pokereader) OR [Lime3DS with PokeReader](https://www.pokemonrng.com/citrarng-setup)
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+
+## Step 1: 3DSRNGTool Setup
+
+1. In the upper right corner, select your game version. Seed and TSV can be blank.
+2. In the "ID RNG" tab, fill in your desired TID, SID, or TSV. 3DSRNGTool can search for parts of numbers or the full number. It is recommended to RNG for only one at a time.
+3. Under "Frame Range," start from "0".
+
+## Step 2: Game Setup
+
+1. Select the game language.
+2. Continue playing until you reach the screen asking if your name is correct.
+3. Pause the game by pressing `Start + Select` on that screen.
+4. Input the 4 TinyMT seeds from PokeReader into the 4 boxes in 3DSRNGTool. Use the numbers directly listed under "TinyMT seed".
+
+## Step 3: Finding a Target Frame
+
+The frames in 3DSRNGTool track 4 values known as tiny seeds. These seeds generate trainer info like TID, SID, and TSV. Each advancement in tiny seeds equals a frame advancement. Note that these frames differ from the MT Advances in PokeReader.
+
+In X/Y, tiny seeds advance throughout the introduction at a random pace, but in a predictable order that 3DSRNGTool can track.
+
+1. Press "Calculate" in the main window to get a list of frames available for RNG.
+2. Adjust the range as needed. Higher frames take longer to obtain the desired TID/SID/TSV.
+3. If the target frame is too high or the TID/SID/TSV combination is not possible with your initial seed, reboot the system for a different initial seed. Press `Select + L + Down` in the Rosalina menu to access the reboot option.
+
+## Step 4: Advancing the Tiny Seeds
+
+1. Unpause the game by pressing `Start`.
+2. After confirming your character selection, advance to the next screen.
+   - "(name)... Tres bien! What a fantastic name!"
+3. Allow tiny seeds to advance on this screen.
+   - The number from "Frame" in 3DSRNGTool is the same as the "Advances" number in PokeReader underneath "TinyMT seed".
+4. When your desired TID/SID/TSV is about 12 frames away from the current seeds, pause the game using `Start + Select`.
+5. Advance frames and tiny seeds by pressing `Select` while the game is paused.
+6. Once on the correct frame, hold `A` so you unpause at that exact frame to hit the right tiny seeds.
+7. After gaining control of your character, check your TID via the trainer card.

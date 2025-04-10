@@ -26,6 +26,8 @@ const customTheme: CustomTheme = {
     headerHeight: "64px",
     footerHeight: "58px",
     colorFillSecondaryHover: defaultToken.magenta5,
+    colorGreen: defaultToken.green8,
+    colorRed: defaultToken.red6,
   },
   mediaQueries: {
     up: (size: ScreenSize) => {

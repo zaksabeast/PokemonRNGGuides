@@ -1,0 +1,102 @@
+---
+title: "Methods 1-4"
+description: "What is a Method, the reason why Methods 1-4 exist, and how they impact Pokémon generation."
+slug: "gba-methods"
+category: "GBA Technical Documentation"
+tag: "any"
+addedOn: "2025-04-08"
+---
+
+<Gist>
+  Gist: What is a Method, the reason why Methods 1-4 exist, and how they impact
+  Pokémon generation.
+</Gist>
+
+### What is a Method
+
+A method indicates how a Pokémon will be generated for a given RNG advance.
+
+`RNG Advance + Method => Pokémon generation result`
+
+A method is split into 2 components (ex: Wild-2):
+
+- Prefix: The program CPU instructions used to generate it. (ex: Wild).
+- Suffix: When the Vblanks occured (ex: 2).
+
+### Method Prefix: Program CPU Instructions
+
+The program CPU instructions depends on how the Pokémon is encountered. For RNG manipulations, 3 of them are relevant:
+
+- Stationary Pokémon: Prefix is "Method" (Not convenient, I know...).
+- Wild Pokémon: Prefix is "Wild" or "H".
+- Egg Pokémon: Prefix is "Egg".
+
+Program CPU instructions for Stationary Pokémon are the simplest. The GBA game generates PID then IVs, without additional RNG logic.
+
+Instructions for Wild Pokémon determine the encountered species from Encounter Table, apply Synchronize lead logic which can force multiple PID to be generated, then generate IVs.
+
+Instructions for Egg Pokémon select inherited stats from parents and more. This guide won't cover Egg generation in details.
+
+### Method Suffix: Vblank occurence
+
+As explained in [Understanding VBlanks](/gba-vblank), Vblanks can occur seemingly at any time, altering the Pokémon generation.
+
+How exactly the Pokémon generation will be affected depends if a Vblank occurs and on which program instruction exactly.
+
+This depends on many factors such as the map, background music, lead PID, the game played and how it is played (ex: via Pokémon Box Ruby & Sapphire).
+
+## List of Methods
+
+| Instructions | Methods                                    | Rarity                                  |
+| ------------ | ------------------------------------------ | --------------------------------------- |
+| Stationary   | Method-1<br/>Method-4                      | Very common<br/>Very rare               |
+| Wild         | Wild-1<br/>Wild-2<br/>Wild-4               | Very rare<br/>Very common<br/>Very rare |
+| Egg          | Egg-Normal<br/>Egg-Split<br/>Egg-Alternate | Common<br/>Common<br/>Uncommon          |
+
+### Method-1 and Wild-1
+
+Here's the game logic for generating a Pokémon:
+
+| Step                       | Advance At Step Start |
+| -------------------------- | --------------------- |
+| Generate 1st half PID      | 1                     |
+| Generate 2nd half PID      | 2                     |
+| Generate Def, Atk, HP IVs  | 3                     |
+| Generate SpD, SpA, Spe IVs | 4                     |
+
+Method-1 and Wild-1 is when a Pokémon is generated and no vblanks occur. The Pokémon is generated using the value of the RNG of advances 1,2,3,4.
+
+### Wild-2
+
+Wild-2 is when a vblank occurs between the steps "Generate 2nd half PID" and "Generate Def, Atk, HP IVs".
+
+| Step                                                  | Advance At Step Start               |
+| ----------------------------------------------------- | ----------------------------------- |
+| Generate 1st half PID                                 | 1                                   |
+| Generate 2nd half PID                                 | 2                                   |
+| <Text color="Green" strong>VBLANK: Advance RNG</Text> | <Text color="Green" strong>3</Text> |
+| Generate Def, Atk, HP IVs                             | <Text strong>4</Text>               |
+| Generate SpD, SpA, Spe IVs                            | <Text strong>5</Text>               |
+
+The Pokémon is generated using the value of the RNG of advances 1,2,4,5. The RNG value of advance 3 has no impact on the generated Pokémon.
+
+### Method-4 and Wild-4
+
+Method-4 and Wild-4 are when a vblank occurs between the steps "Generate Def, Atk, HP IVs" and "Generate SpD, SpA, Spe IVs".
+
+| Step                                                  | Advance At Step Start               |
+| ----------------------------------------------------- | ----------------------------------- |
+| Generate 1st half PID                                 | 1                                   |
+| Generate 2nd half PID                                 | 2                                   |
+| Generate Def, Atk, HP IVs                             | 3                                   |
+| <Text color="Green" strong>VBLANK: Advance RNG</Text> | <Text color="Green" strong>4</Text> |
+| Generate SpD, SpA, Spe IVs                            | <Text strong>5</Text>               |
+
+The Pokémon is generated using the value of the RNG of advances 1,2,3,5. The RNG value of advance 4 has no impact on the generated Pokémon.
+
+### Additional Methods
+
+In theory, it is possible for Vblanks to occur between the steps "Generate 1st half PID" and "Generate 2nd half PID", which would result in Wild-3.
+However, because there are so few instructions in-between those steps, a Vblank very rarely occurs there.
+
+It is also theorically possible for Vblanks to occur during a very specific instruction in the RNG update, causing the RNG update to be skipped.

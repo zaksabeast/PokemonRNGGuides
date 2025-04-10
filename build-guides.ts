@@ -10,9 +10,9 @@ import { guides as existingGuides } from "./src/__generated__/guides";
 import { match, P } from "ts-pattern";
 import dayjs from "dayjs";
 
-// Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, ,, 《, 》, and Chinese characters
+// Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, ,, ，, 《, 》, and Chinese characters
 const titleAndDescriptionChars =
-  /^[A-Za-z0-9 –.\-—é&/()!%,《》\u4e00-\u9fff]+$/;
+  /^[A-Za-z0-9 –.\-—é&/()!%,，《》\u4e00-\u9fff]+$/;
 
 // Only lower case letters, numbers, and hyphens
 const slugChars = /^[a-z0-9-]+$/;
@@ -37,6 +37,8 @@ const categoryDefs = [
   z.literal("Sword and Shield"),
   z.literal("Brilliant Diamond and Shining Pearl"),
   z.literal("Legends Arceus"),
+  z.literal("GBA Overview"),
+  z.literal("GBA Technical Documentation"),
 ] as const;
 
 const categories = categoryDefs.map((category) => category.value);
@@ -95,11 +97,6 @@ const getCategory = ({
       .with(
         { directoryCategory: { success: true, data: P.any } },
         (matched) => matched.directoryCategory.data,
-      )
-      // Special exception for Home.mdx
-      .with(
-        { directoryCategory: { success: false }, directory: "Home.mdx" },
-        () => "Home" as const,
       )
       // Something is wrong!
       .otherwise(() => {

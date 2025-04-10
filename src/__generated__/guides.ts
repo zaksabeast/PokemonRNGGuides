@@ -2520,6 +2520,50 @@ export const guides = {
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx"),
     ),
   },
+  "/zh-e-tips-rng": {
+    meta: {
+      title: "乱数介绍",
+      description: "如何推进乱数以及提高稳定性的技巧",
+      slug: "/zh-e-tips-rng",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Emerald/Basic Rules of RNG.mdx",
+      category: "Emerald",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
+    ),
+  },
+  "/zh-emerald-painting-rng": {
+    meta: {
+      title: "利用绘画重置种子",
+      description: "利用绘画重置乱数，从而快速获得目标宝可梦，而无需长时间等待",
+      slug: "/zh-emerald-painting-rng",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Emerald/Reseed RNG.mdx",
+      category: "Emerald",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
+  },
+  "/zh-emulator-emerald-egg": {
+    meta: {
+      title: "孵化乱数",
+      description: "通过培育屋进行乱数孵蛋",
+      slug: "/zh-emulator-emerald-egg",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-07",
+      file: "guides/Emerald/Egg RNG.mdx",
+      category: "Emerald",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
+  },
   "/zh-gen2-celebi": {
     meta: {
       title: "时拉比",
@@ -2563,6 +2607,20 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
     ),
+  },
+  "/zh-retail-emerald-wild": {
+    meta: {
+      title: "实机野生乱数",
+      description: "在真实主机上对野生宝可梦进行乱数操作",
+      slug: "/zh-retail-emerald-wild",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Emerald/Retail Wild RNG.mdx",
+      category: "Emerald",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Retail Wild RNG.mdx")),
   },
 } as const;
 
@@ -2721,9 +2779,13 @@ export const guideSlugs = [
   z.literal("/zh-dppt-initial-seed"),
   z.literal("/zh-dppt-pokeradar-rng"),
   z.literal("/zh-dppt-wild"),
+  z.literal("/zh-e-tips-rng"),
+  z.literal("/zh-emerald-painting-rng"),
+  z.literal("/zh-emulator-emerald-egg"),
   z.literal("/zh-gen2-celebi"),
   z.literal("/zh-gen2-starters"),
   z.literal("/zh-install-pokereader"),
+  z.literal("/zh-retail-emerald-wild"),
 ] as const;
 
 export const categories = [

@@ -8,7 +8,7 @@ import {
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import { rngTools, Ivs, Gen3PickupMethod } from "~/rngTools";
+import { rngTools, Ivs, Gen3PickupMethod, Egg3PickupState } from "~/rngTools";
 import {
   HexString,
   DecimalString,
@@ -17,19 +17,13 @@ import {
   toHexString,
   fromHexString,
 } from "~/utils/number";
+import { flattenIvs, FlattenIvs, ivColumns } from "../shared/ivColumns";
 
-type Result = {
-  advance: number;
-} & Ivs;
+type Result = FlattenIvs<Egg3PickupState>;
 
 const columns: ResultColumn<Result>[] = [
   { title: "Advance", dataIndex: "advance", key: "advance" },
-  { title: "HP", dataIndex: "hp", key: "hp" },
-  { title: "Atk", dataIndex: "atk", key: "atk" },
-  { title: "Def", dataIndex: "def", key: "def" },
-  { title: "SpA", dataIndex: "spa", key: "spa" },
-  { title: "SpD", dataIndex: "spd", key: "spd" },
-  { title: "Spe", dataIndex: "spe", key: "spe" },
+  ...ivColumns,
 ];
 
 type FormState = {
@@ -159,12 +153,7 @@ export const EmeraldPickupEgg = ({ lua = false }: Props) => {
         },
       });
 
-      setResults(
-        results.map((result) => ({
-          advance: result.advance,
-          ...result.ivs,
-        })),
-      );
+      setResults(results.map(flattenIvs));
     },
     [lua],
   );

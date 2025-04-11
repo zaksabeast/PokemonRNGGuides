@@ -19,8 +19,11 @@ import {
 import React from "react";
 import { match } from "ts-pattern";
 import { getPkmFilterFields, PkmFilterFields } from "~/components/pkmFilter";
+import { FlattenIvs, flattenIvs, ivColumns } from "../shared/ivColumns";
 
-const columns: ResultColumn<Static3Result>[] = [
+type Result = FlattenIvs<Static3Result>;
+
+const columns: ResultColumn<Result>[] = [
   { title: "Advance", dataIndex: "advance", key: "advance" },
   {
     title: "PID",
@@ -31,23 +34,7 @@ const columns: ResultColumn<Static3Result>[] = [
   },
   { title: "Nature", dataIndex: "nature", key: "nature" },
   { title: "Ability", dataIndex: "ability", key: "ability" },
-  {
-    title: "IVs",
-    dataIndex: "ivs",
-    key: "ivs",
-    render: (ivs) =>
-      ivs.hp.toString().padStart(2, "0") +
-      "/" +
-      ivs.atk.toString().padStart(2, "0") +
-      "/" +
-      ivs.def.toString().padStart(2, "0") +
-      "/" +
-      ivs.spa.toString().padStart(2, "0") +
-      "/" +
-      ivs.spd.toString().padStart(2, "0") +
-      "/" +
-      ivs.spe.toString().padStart(2, "0"),
-  },
+  ...ivColumns,
   {
     title: "Shiny",
     dataIndex: "shiny",
@@ -258,7 +245,7 @@ type Props = {
 };
 
 export const Static3Generator = ({ game = "emerald" }: Props) => {
-  const [results, setResults] = React.useState<Static3Result[]>([]);
+  const [results, setResults] = React.useState<Result[]>([]);
 
   const fields = React.useMemo(() => getFields(game), [game]);
 
@@ -306,13 +293,13 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
         },
       });
 
-      setResults(results);
+      setResults(results.map(flattenIvs));
     },
     [game],
   );
 
   return (
-    <RngToolForm<FormState, Static3Result>
+    <RngToolForm<FormState, Result>
       fields={fields}
       columns={columns}
       results={results}

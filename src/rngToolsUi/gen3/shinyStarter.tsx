@@ -122,6 +122,7 @@ type Props = {
 export const CaughtStatInput = ({statLabel,min,max,selected:selected_props,nature:nature_props,onchange}: CaughtStatProps) => {
   const [selected, setSelected] = React.useState<number | null>(selected_props);
   const [nature, setNature] = React.useState<NatureStatState>(nature_props);
+  onchange = onchange || (() => {});
 
   let value_opts:string[] = [];
   for(let val = min; val <= max; val++)
@@ -176,7 +177,10 @@ export const CaughtStatInput = ({statLabel,min,max,selected:selected_props,natur
       return <></>
     return <RadioGroup
       optionType="button"
-      onChange={() => {}}
+      onChange={(e) => {
+        console.log(nature, e.target.value);
+        //onchange(null, e.target.value === "+/");
+      }}
       options={["+","-"]}
     />
   })();
@@ -247,12 +251,14 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
       label: "Caught Pokémon",
       input: (
         <table>
-          <CaughtStatInput {...values.caughtStats.hp} onchange={onchange()} />
-          <CaughtStatInput {...values.caughtStats.atk} onchange={onchange()} />
-          <CaughtStatInput {...values.caughtStats.def} onchange={onchange()} />
-          <CaughtStatInput {...values.caughtStats.spa} onchange={onchange()} />
-          <CaughtStatInput {...values.caughtStats.spd} onchange={onchange()} />
-          <CaughtStatInput {...values.caughtStats.spe} onchange={onchange()} />
+          <tbody>
+            <CaughtStatInput {...values.caughtStats.hp} onchange={onchange()} />
+            <CaughtStatInput {...values.caughtStats.atk} onchange={onchange()} />
+            <CaughtStatInput {...values.caughtStats.def} onchange={onchange()} />
+            <CaughtStatInput {...values.caughtStats.spa} onchange={onchange()} />
+            <CaughtStatInput {...values.caughtStats.spd} onchange={onchange()} />
+            <CaughtStatInput {...values.caughtStats.spe} onchange={onchange()} />
+          </tbody>
         </table>
       ),
     });

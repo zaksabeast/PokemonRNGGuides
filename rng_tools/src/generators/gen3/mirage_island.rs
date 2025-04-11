@@ -13,10 +13,6 @@ pub struct MirageIslandResult {
     pub earliest_adv: u32,
 }
 
-fn get_high_pid_from_rng(mut rng: Pokerng) -> u16 {
-    rng.rand()
-}
-
 fn generate_earliest_advance_count(initial_seed: u32) -> Vec<u32> {
     const EARLIEST_VALID_ADVANCE: u32 = 1501; // Earliest advance for Method-1 with most delay (Groudon) is ~1326.
     let mut earliest_adv_by_pid_pattern = vec![0u32; 0x10000];
@@ -129,5 +125,16 @@ mod tests {
                 assert_ne!(earliest_adv_by_pid_pattern[pid_pattern], 0);
             }
         }
+    }
+
+    #[test]
+    fn earliest_advance_by_pid_patterns() {
+        let earliest_adv_by_pid_pattern = generate_earliest_advance_count(0x5a0);
+        let expected = [19396, 13950, 5756, 33489, 42391];
+        assert_list_eq!(&earliest_adv_by_pid_pattern[0..5], &expected);
+
+        let earliest_adv_by_pid_pattern = generate_earliest_advance_count(0x0);
+        let expected = [18625, 39963, 53159, 20315, 22085];
+        assert_list_eq!(&earliest_adv_by_pid_pattern[0..5], &expected);
     }
 }

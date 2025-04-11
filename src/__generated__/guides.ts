@@ -351,6 +351,21 @@ export const guides = {
       () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
     ),
   },
+  "/emerald-mirage-island": {
+    meta: {
+      title: "Mirage Island",
+      description:
+        "Access Mirage Island by catching a Pokémon with the right PID",
+      category: "Emerald",
+      slug: "/emerald-mirage-island",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-05",
+      file: "guides/Emerald/Mirage Island.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
+  },
   "/emerald-overview": {
     meta: {
       title: "Overview",
@@ -2276,6 +2291,21 @@ export const guides = {
       () => import("~/../guides/Ruby and Sapphire/Initial Seed RNG.mdx"),
     ),
   },
+  "/rs-mirage-island": {
+    meta: {
+      title: "Mirage Island",
+      description:
+        "Access Mirage Island by catching a Pokémon with the right PID",
+      category: "Ruby and Sapphire",
+      slug: "/rs-mirage-island",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-05",
+      file: "guides/Emerald/Mirage Island.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
+  },
   "/rs-pokefinder-setup": {
     meta: {
       title: "PokeFinder Setup",
@@ -2645,6 +2675,7 @@ export const guideSlugs = [
   z.literal("/dppt-setup-rng"),
   z.literal("/dppt-wild"),
   z.literal("/e-tips-rng"),
+  z.literal("/emerald-mirage-island"),
   z.literal("/emerald-overview"),
   z.literal("/emerald-painting-rng"),
   z.literal("/emerald-sid-feebas"),
@@ -2764,6 +2795,7 @@ export const guideSlugs = [
   z.literal("/rs-battery"),
   z.literal("/rs-gen3-sid"),
   z.literal("/rs-initial-seed"),
+  z.literal("/rs-mirage-island"),
   z.literal("/rs-pokefinder-setup"),
   z.literal("/rs-sid-feebas"),
   z.literal("/rs-static-generator"),

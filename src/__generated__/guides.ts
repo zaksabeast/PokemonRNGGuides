@@ -351,6 +351,21 @@ export const guides = {
       () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
     ),
   },
+  "/emerald-lotad-seedot": {
+    meta: {
+      title: "Largest Lotad/Seedot",
+      description:
+        "Catching the largest possible Lotad and Seedot to show to Sootopolis City brothers",
+      category: "Emerald",
+      slug: "/emerald-lotad-seedot",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-06",
+      file: "guides/Emerald/Largest Pokemon.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Largest Pokemon.mdx")),
+  },
   "/emerald-overview": {
     meta: {
       title: "Overview",
@@ -2229,6 +2244,21 @@ export const guides = {
         ),
     ),
   },
+  "/rs-barboach-shroomish": {
+    meta: {
+      title: "Largest Barboach/Shroomish",
+      description:
+        "Catching the largest possible Barboach and Shroomish to show to Sootopolis City brothers",
+      category: "Ruby and Sapphire",
+      slug: "/rs-barboach-shroomish",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-06",
+      file: "guides/Emerald/Largest Pokemon.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Largest Pokemon.mdx")),
+  },
   "/rs-battery": {
     meta: {
       title: "Difference between Live and Dry Battery",
@@ -2645,6 +2675,7 @@ export const guideSlugs = [
   z.literal("/dppt-setup-rng"),
   z.literal("/dppt-wild"),
   z.literal("/e-tips-rng"),
+  z.literal("/emerald-lotad-seedot"),
   z.literal("/emerald-overview"),
   z.literal("/emerald-painting-rng"),
   z.literal("/emerald-sid-feebas"),
@@ -2761,6 +2792,7 @@ export const guideSlugs = [
   z.literal("/retail-usum-wormhole"),
   z.literal("/retail-xy-egg-mmsc"),
   z.literal("/retail-xy-egg-no-mmsc"),
+  z.literal("/rs-barboach-shroomish"),
   z.literal("/rs-battery"),
   z.literal("/rs-gen3-sid"),
   z.literal("/rs-initial-seed"),

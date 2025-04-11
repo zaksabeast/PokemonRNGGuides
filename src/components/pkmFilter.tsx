@@ -67,10 +67,10 @@ const _getPkmFilterFields = (): Field[] => [
   },
 ];
 
-export function getPkmFilterFields<
+export const getPkmFilterFields = <
   FormField,
->(): FormField extends PkmFilterFields ? Field[] : never {
+>(): FormField extends PkmFilterFields ? Field[] : never => {
   return _getPkmFilterFields() as FormField extends PkmFilterFields
     ? Field[]
     : never;
-}
+};

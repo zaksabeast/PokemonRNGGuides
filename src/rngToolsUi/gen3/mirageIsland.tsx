@@ -9,11 +9,11 @@ import { FormikInput } from "../../components/input";
 
 import { rngTools, MirageIslandResult } from "~/rngTools";
 import React from "react";
-import { clamp } from 'lodash-es';
+import { clamp } from "lodash-es";
 
 type Game = "emerald" | "rs";
 
-const formatLargeInteger = function (number: number) {
+const formatLargeInteger = (number: number) => {
   return number.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
@@ -75,10 +75,10 @@ const getInitialValues = (game: Game): FormState => {
   };
 };
 
-const generateResults = function (
+const generateResults = (
   game: Game,
   values: FormState,
-): Promise<MirageIslandResult[]> {
+): Promise<MirageIslandResult[]> => {
   const initialSeed = game === "emerald" ? 0 : 0x5a0;
   if (values.battery === "Dead")
     return rngTools.mirage_island_calculate(initialSeed, 0, 0);

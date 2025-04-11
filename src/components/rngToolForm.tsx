@@ -1,5 +1,5 @@
 import { Flex } from "./flex";
-import { Formik, FormikConfig, FormikProps } from "formik";
+import { Formik, FormikConfig } from "formik";
 import { Form } from "./form";
 import { FormFieldTable, Field } from "./formFieldTable";
 import { Button } from "./button";
@@ -9,22 +9,20 @@ import * as tst from "ts-toolbelt";
 
 export type RngToolSubmit<Values> = FormikConfig<Values>["onSubmit"];
 
+type OneOf<T extends Record<string, unknown>> = tst.O.Either<
+  T,
+  tst.O.RequiredKeys<T>
+>;
+
 type Props<FormState, Result> = {
   submitTrackerId: string;
   initialValues: FormState;
-
   onSubmit: RngToolSubmit<FormState>;
   submitButtonLabel?: string;
-} & (
-  | {
-      fields: Field[];
-      getFields?: (values: FormState) => Field[];
-    }
-  | {
-      fields?: Field[];
-      getFields: (values: FormState) => Field[];
-    }
-) &
+} & OneOf<{
+    fields: Field[], 
+    getFields: (values: FormState) => Field[]
+  }> &
   (
     | { columns: ResultColumn<Result>[]; results: Result[] }
     | {

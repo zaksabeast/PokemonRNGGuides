@@ -103,7 +103,7 @@ type Props = {
 };
 
 const getFields = function (values: FormState) {
-  let fields: Field[] = [
+  const fields: Field[] = [
     {
       label: "Battery",
       input: (

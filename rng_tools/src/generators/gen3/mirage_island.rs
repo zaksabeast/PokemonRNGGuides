@@ -13,8 +13,8 @@ pub struct MirageIslandResult {
     pub earliest_adv: u32,
 }
 
-fn get_high_pid_from_rng(rng: Pokerng) -> u16 {
-    (rng.clone().next().unwrap() >> 16) as u16
+fn get_high_pid_from_rng(mut rng: Pokerng) -> u16 {
+    rng.rand()
 }
 
 fn generate_earliest_advance_count(initial_seed:u32) -> Vec<u32> {
@@ -38,7 +38,7 @@ fn generate_earliest_advance_count(initial_seed:u32) -> Vec<u32> {
         if unmatched_count == 0 { break; } // all were matched
     }
     
-    return earliest_adv_by_pid_pattern;
+    earliest_adv_by_pid_pattern
 }
 
 #[wasm_bindgen]

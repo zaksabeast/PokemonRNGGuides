@@ -17,27 +17,28 @@ fn get_high_pid_from_rng(mut rng: Pokerng) -> u16 {
     rng.rand()
 }
 
-fn generate_earliest_advance_count(initial_seed:u32) -> Vec<u32> {
-    const EARLIEST_VALID_ADVANCE:u32 = 1500; // Earliest advance for Method-1 with most delay (Groudon) is ~1326.
+fn generate_earliest_advance_count(initial_seed: u32) -> Vec<u32> {
+    const EARLIEST_VALID_ADVANCE: u32 = 1501; // Earliest advance for Method-1 with most delay (Groudon) is ~1326.
     let mut earliest_adv_by_pid_pattern = vec![0u32; 0x10000];
-    
-    let mut unmatched_count:u32 = 0x10000;
+
+    let mut unmatched_count: u32 = 0x10000;
     let mut pid_rng = Pokerng::new(initial_seed);
     pid_rng.advance((EARLIEST_VALID_ADVANCE) as usize);
     for pid_rng_adv in EARLIEST_VALID_ADVANCE..1_000_000 {
         // 1_000_000 to avoid infinite loop in case of bug
-        pid_rng.advance(1);
-        if pid_rng_adv < EARLIEST_VALID_ADVANCE { continue; }
-        
-        let pid_pattern = get_high_pid_from_rng(pid_rng);
+        let pid_pattern = pid_rng.rand::<u16>();
         let old_value = earliest_adv_by_pid_pattern[pid_pattern as usize];
-        if old_value != 0 { continue; } // another earlier advance exists
-        
-        earliest_adv_by_pid_pattern[pid_pattern as usize] = pid_rng_adv + 1;
+        if old_value != 0 {
+            continue;
+        } // another earlier advance exists
+
+        earliest_adv_by_pid_pattern[pid_pattern as usize] = pid_rng_adv;
         unmatched_count -= 1;
-        if unmatched_count == 0 { break; } // all were matched
+        if unmatched_count == 0 {
+            break;
+        } // all were matched
     }
-    
+
     earliest_adv_by_pid_pattern
 }
 

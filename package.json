@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "bun run build:rng_tools && bunx --bun vite --force",
     "format": "bun prettier . --write",
-    "format:check": "bun prettier . --check",
     "build": "tsc -b && bunx --bun vite build && cp dist/index.html dist/404.html && cp dist/sw.js dist/sw.ts && bun run build-seo.ts",
     "build:guides": "bun run build-guides.ts && bun run format",
     "build:rng_tools": "wasm-pack build rng_tools && bun i",
-    "lint": "eslint .",
+    "lint": "bun run lint:types && bun run lint:code && bun run lint:format",
+    "lint:code": "eslint .",
+    "lint:format": "bun prettier . --check",
+    "lint:types": "bun tsc -b",
     "lint:links": "find guides -name \\*.mdx -print0 | xargs -0 -n1 bun run markdown-link-check -c markdown-link-check.config.json -q",
     "preview": "vite preview"
   },

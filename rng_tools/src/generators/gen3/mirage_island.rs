@@ -1,5 +1,5 @@
-use crate::rng::lcrng::Pokerng;
 use crate::rng::Rng;
+use crate::rng::lcrng::Pokerng;
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -45,21 +45,23 @@ pub fn mirage_island_calculate(
     last_day: u32,
 ) -> Vec<MirageIslandResult> {
     let earliest_adv_by_pid_pattern = generate_earliest_advance_count(initial_seed);
-    
-    let mut mirage_island_rng:u32 = 0;
-    
-    let mut res:Vec<MirageIslandResult> = vec![];
-    for day in 0..=last_day {
-        let pid_pattern:u16 = (mirage_island_rng >> 16) as u16;
 
-        mirage_island_rng = mirage_island_rng.wrapping_mul(0x41c64e6d).wrapping_add(0x3039);
+    let mut mirage_island_rng: u32 = 0;
+
+    let mut res: Vec<MirageIslandResult> = vec![];
+    for day in 0..=last_day {
+        let pid_pattern: u16 = (mirage_island_rng >> 16) as u16;
+
+        mirage_island_rng = mirage_island_rng
+            .wrapping_mul(0x41c64e6d)
+            .wrapping_add(0x3039);
 
         if day >= first_day {
             res.push(MirageIslandResult {
                 day,
                 day_diff: day - first_day,
                 pid_pattern,
-                earliest_adv:earliest_adv_by_pid_pattern[pid_pattern as usize],
+                earliest_adv: earliest_adv_by_pid_pattern[pid_pattern as usize],
             });
         }
     }
@@ -70,53 +72,68 @@ pub fn mirage_island_calculate(
 mod tests {
     use super::*;
     use crate::assert_list_eq;
-    
+
     #[test]
     fn emerald_dead_battery() {
         let results = mirage_island_calculate(0, 0, 0);
-        assert_list_eq!(results, vec![MirageIslandResult {
-            day: 0,
-            day_diff: 0,
-            pid_pattern: 0,
-            earliest_adv: 18625,
-        }]);
+        assert_list_eq!(
+            results,
+            vec![MirageIslandResult {
+                day: 0,
+                day_diff: 0,
+                pid_pattern: 0,
+                earliest_adv: 18625,
+            }]
+        );
     }
 
     #[test]
     fn rs_dead_battery() {
         let results = mirage_island_calculate(0x5A0, 0, 0);
-        assert_list_eq!(results, vec![MirageIslandResult {
-            day: 0,
-            day_diff: 0,
-            pid_pattern: 0,
-            earliest_adv: 19396,
-        }]);
+        assert_list_eq!(
+            results,
+            vec![MirageIslandResult {
+                day: 0,
+                day_diff: 0,
+                pid_pattern: 0,
+                earliest_adv: 19396,
+            }]
+        );
     }
-    
+
     #[test]
     fn emerald_live_battery() {
         let results = mirage_island_calculate(0, 1, 2);
-        assert_list_eq!(results, vec![MirageIslandResult {
-            day: 1,
-            day_diff: 0,
-            pid_pattern: 0x0000,
-            earliest_adv: 18625,
-        }, MirageIslandResult {
-            day: 2,
-            day_diff: 1,
-            pid_pattern: 0xD3DC,
-            earliest_adv: 3900,
-        }]);
-        
+        assert_list_eq!(
+            results,
+            vec![
+                MirageIslandResult {
+                    day: 1,
+                    day_diff: 0,
+                    pid_pattern: 0x0000,
+                    earliest_adv: 18625,
+                },
+                MirageIslandResult {
+                    day: 2,
+                    day_diff: 1,
+                    pid_pattern: 0xD3DC,
+                    earliest_adv: 3900,
+                }
+            ]
+        );
+
         let results = mirage_island_calculate(0, 3630, 3630);
-        assert_list_eq!(results, vec![MirageIslandResult {
-            day: 3630,
-            day_diff: 0,
-            pid_pattern: 0xF306,
-            earliest_adv: 75959,
-        }]);
+        assert_list_eq!(
+            results,
+            vec![MirageIslandResult {
+                day: 3630,
+                day_diff: 0,
+                pid_pattern: 0xF306,
+                earliest_adv: 75959,
+            }]
+        );
     }
-    
+
     #[test]
     fn all_pid_patterns_have_non_zero_method_1_adv() {
         for initial_seed in vec![0u32, 0x5A0u32] {

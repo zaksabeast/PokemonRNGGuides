@@ -9,6 +9,7 @@ import { FormikInput } from "../../components/input";
 
 import { rngTools, MirageIslandResult } from "~/rngTools";
 import React from "react";
+import { clamp } from 'lodash-es';
 
 type Game = "emerald" | "rs";
 
@@ -82,12 +83,6 @@ const generateResults = function (
   if (values.battery === "Dead")
     return rngTools.mirage_island_calculate(initialSeed, 0, 0);
 
-  const clamp = function (val: number, min: number, max: number) {
-    if (val < min) return min;
-    if (val > max) return max;
-    return val;
-  };
-
   const rocketLaunchedCount =
     fromDecimalString(values.rocketLaunchedCount) ?? 0;
 
@@ -102,7 +97,7 @@ type Props = {
   game?: Game;
 };
 
-const getFields = function (values: FormState) {
+const getFields = (values: FormState) => {
   const fields: Field[] = [
     {
       label: "Battery",
@@ -139,10 +134,15 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
     [game],
   );
 
+  const columns = React.useMemo(
+    () => getColumns(game, resultsBattery),
+    [game, resultsBattery],
+  );
+
   return (
     <RngToolForm<FormState, MirageIslandResult>
       getFields={getFields}
-      columns={getColumns(game, resultsBattery)}
+      columns={columns}
       results={results}
       initialValues={initialValues}
       onSubmit={onSubmit}

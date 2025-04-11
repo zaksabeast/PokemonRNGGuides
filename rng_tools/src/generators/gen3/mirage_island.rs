@@ -38,7 +38,7 @@ fn generate_earliest_advance_count(initial_seed:u32) -> Vec<u32> {
         if unmatched_count == 0 { break; } // all were matched
     }
     
-    return earliest_adv_by_pid_pattern;
+    earliest_adv_by_pid_pattern
 }
 
 #[wasm_bindgen]

@@ -13,6 +13,7 @@ import { Button, BaseButton } from "../../components/button";
 import { Nature, rngTools } from "~/rngTools";
 import React from "react";
 import { clamp } from "lodash-es";
+import {Gen3Timer} from "../timer/gen3";
 
 type Game = "emerald" | "rs";
 
@@ -232,7 +233,13 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
       {
         label: "Target advance for shiny",
         input: (
-          <div>{values.targetAdv}</div>
+          <>{values.targetAdv}</>
+        ),
+      },
+      {
+        label: "Timer",
+        input: (
+          <Gen3Timer />
         ),
       },
     ];

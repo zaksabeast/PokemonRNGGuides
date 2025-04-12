@@ -6,13 +6,9 @@ import { Button } from "./button";
 import { FormikResultTable, ResultColumn } from "./resultTable";
 import { GenericForm } from "~/types/form";
 import * as tst from "ts-toolbelt";
+import { AllOrNone, FeatureConfig, OneOf } from "~/types/utils";
 
 export type RngToolSubmit<Values> = FormikConfig<Values>["onSubmit"];
-
-type OneOf<T extends Record<string, unknown>> = tst.O.Either<
-  T,
-  tst.O.RequiredKeys<T>
->;
 
 type Props<FormState, Result> = {
   submitTrackerId: string;
@@ -23,27 +19,12 @@ type Props<FormState, Result> = {
   fields: Field[];
   getFields: (values: FormState) => Field[];
 }> &
-  (
-    | { columns: ResultColumn<Result>[]; results: Result[] }
-    | {
-        columns?: never;
-        results?: never;
-      }
-  ) &
-  (
-    | { allowReset: true; resetTrackerId: string; onReset?: () => void }
-    | { allowReset?: false; resetTrackerId?: never; onReset?: never }
-  ) &
-  (
-    | {
-        rowKey: keyof Result;
-        onClickResultRow?: (record: Result) => void;
-      }
-    | {
-        rowKey?: keyof Result;
-        onClickResultRow?: undefined;
-      }
-  );
+  AllOrNone<{ columns: ResultColumn<Result>[]; results: Result[] }> &
+  AllOrNone<{
+    rowKey: keyof Result;
+    onClickResultRow?: (record: Result) => void;
+  }> &
+  FeatureConfig<"allowReset", { resetTrackerId: string; onReset?: () => void }>;
 
 export const RngToolForm = <
   FormState extends GenericForm,

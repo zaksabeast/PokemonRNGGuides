@@ -47,11 +47,15 @@ jobs:
         run: bun install
 
       - name: Format check
-        run: bun run format:check
+        run: bun run lint:format
         continue-on-error: false
 
-      - name: Lint and type check
-        run: bun run lint --max-warnings=0 && bun run tsc -b
+      - name: Type check
+        run: bun run lint:types
+        continue-on-error: false
+
+      - name: Lint code
+        run: bun run lint:code --max-warnings=0
         continue-on-error: false
 
       - name: Build

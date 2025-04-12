@@ -11,6 +11,7 @@ const LabelTd = styled.td({
 export type Field = {
   label: string;
   input: React.ReactNode;
+  direction?:"row" | "column"
 };
 
 type Props = {
@@ -21,14 +22,23 @@ export const FormFieldTable = ({ fields }: Props) => {
   return (
     <table>
       <tbody>
-        {fields.map(({ label, input }) => (
-          <tr key={label}>
-            <LabelTd>
-              <Typography.Text strong>{label}</Typography.Text>
-            </LabelTd>
-            <td>{input}</td>
-          </tr>
-        ))}
+        {fields.map(({ label, input, direction="row" }) => {
+          if (direction === "row"){
+            return (<tr key={label}>
+              <LabelTd>
+                <Typography.Text strong>{label}</Typography.Text>
+              </LabelTd>
+              <td>{input}</td>
+            </tr>)
+          } else {
+            return (<tr key={label}>
+              <LabelTd colSpan={2}>
+                <Typography.Text strong>{label}</Typography.Text>
+                <td style={{paddingLeft:'30px'}}>{input}</td>
+              </LabelTd>
+            </tr>)
+          }
+        })}
       </tbody>
     </table>
   );

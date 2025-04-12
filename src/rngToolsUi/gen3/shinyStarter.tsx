@@ -9,11 +9,9 @@ import { FormikInput } from "../../components/input";
 
 import { withCss } from "../../components/withCss";
 import { Button, BaseButton } from "../../components/button";
-
-import { Nature, rngTools } from "~/rngTools";
+import { Gender, Nature, rngTools } from "~/rngTools";
 import React from "react";
-import { clamp } from "lodash-es";
-import {Gen3Timer} from "../timer/gen3";
+import {MultiTimer} from "../../components/multiTimer";
 
 type Game = "emerald" | "rs";
 
@@ -25,45 +23,50 @@ export interface Result {
   adv: number;
   diffWithTarget: number;
   stats: string;
+  nature:Nature;
+  gender:Gender;
 }
 
 const getColumns = (): ResultColumn<Result>[] => {
-  const columns: ResultColumn<Result>[] = [];
-  /*
-  if (resultsBattery === "Live") {
-  columns.push(
-  {
-  title: "Day",
-  dataIndex: "day",
-  key: "day",
-  render: (dayDiff) => `${dayDiff + 1}`,
-  },
-  {
-  title: "Time To Wait",
-  dataIndex: "day_diff",
-  key: "day_diff",
-  render: (dayDiff) => `${dayDiff} day${dayDiff === 1 ? "" : "s"}`,
-  },
-  );
-  }
-  columns.push({
-  title: "PID Pattern",
-  dataIndex: "pid_pattern",
-  key: "pid_pattern",
-  render: (pid_pattern) =>
-  `****${pid_pattern.toString(16).toUpperCase().padStart(4, "0")}`,
-  monospace: true,
-  });
-  
-  const fixedInitialSeedForMethod1 =
-  game === "emerald" || resultsBattery === "Dead";
-  if (fixedInitialSeedForMethod1)
-  columns.push({
-  title: "Method-1 Earliest RNG Advance matching PID Pattern",
-  dataIndex: "earliest_adv",
-  key: "earliest_adv",
-  render: (earliestAdv) => formatLargeInteger(earliestAdv),
-  });*/
+  const columns: ResultColumn<Result>[] = [
+    {
+      title: "Advance",
+      dataIndex: "adv",
+      key: "adv",
+    },
+    {
+      title: "Difference w/ Target",
+      dataIndex: "diffWithTarget",
+      key: "diffWithTarget",
+      render:(val) => {
+        if (val > 0) return `+${val}`;
+        return '' + val;
+      }
+    },
+    {
+      title: "Stats",
+      dataIndex: "stats",
+      key: "stats",
+    },
+    {
+      title: "Nature",
+      dataIndex: "nature",
+      key: "nature",
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+    },
+    {
+      title: "",
+      dataIndex: "gender",
+      key: "gender",
+      render() {
+        return <Button trackerId="dummy">Select</Button>
+      },
+    }
+  ];
   return columns;
 };
 
@@ -98,8 +101,8 @@ type FormState = {
 const getInitialValues = (): FormState => {
   return {
     pokemonSpecies: "Mudkip",
-    tid: "",
-    sid: "",
+    tid: "0",
+    sid: "0",
     targetAdv: 1500,
     caughtStats: {
       hp:  { statLabel:"HP", min: 8, max: 10, selected: null, nature: "nochange" },
@@ -203,7 +206,10 @@ export const CaughtStatInput = ({statLabel,min,max,selected:selected_props,natur
 export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
   const initialValues = getInitialValues();
   
-  const [results, setResults] = React.useState<Result[]>([]);
+  const [results, setResults] = React.useState<Result[]>([
+    {adv: 1510, diffWithTarget:10, stats: '5/6/1/5/4/6', nature:"Adamant", gender:"Male"},
+    {adv: 1484, diffWithTarget:-16, stats: '1/6/1/3/4/6', nature:"Quirky", gender:"Female"},
+  ]);
   
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
@@ -242,8 +248,9 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
       },
       {
         label: "Timer",
+        direction:"column",
         input: (
-          <Gen3Timer />
+          <MultiTimer minutesBeforeTarget={0} milliseconds={[5000,10000]} startButtonTrackerId={"shinyStarter-startTimer"} stopButtonTrackerId={"shinyStarter-stopTimer"}/>
         ),
       },
     ];
@@ -256,6 +263,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
     fields.push(
     {
       label: "Caught Pokémon",
+      direction:"column",
       input: (
         <table>
           <tbody>
@@ -265,6 +273,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
             <CaughtStatInput {...values.caughtStats.spa} onchange={onchange()} />
             <CaughtStatInput {...values.caughtStats.spd} onchange={onchange()} />
             <CaughtStatInput {...values.caughtStats.spe} onchange={onchange()} />
+            <td>Nature:</td><td>Adamant</td>
           </tbody>
         </table>
       ),
@@ -280,6 +289,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
         columns={columns}
         results={results}
         initialValues={initialValues}
+        submitButtonLabel="Find advances matching caught Pokémon"
         onSubmit={onSubmit}
         rowKey="adv"
         submitTrackerId="mirage_island"

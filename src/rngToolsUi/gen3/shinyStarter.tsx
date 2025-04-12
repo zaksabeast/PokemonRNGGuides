@@ -138,7 +138,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
 
   const onSubmitFindTarget = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
-      setTargetAdv((+values.sid) + (+values.tid));
+      setTargetAdv((+values.sid) + (+values.tid) + 1503);
     },
     [game],
   );

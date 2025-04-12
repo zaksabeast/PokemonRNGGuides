@@ -1,26 +1,14 @@
 import { Field, RngToolForm, ResultColumn, RngToolSubmit } from "~/components";
-import {
-  DecimalString,
-  fromDecimalString,
-  toDecimalString,
-} from "~/utils/number";
-import { FormikRadio,RadioGroup } from "../../components/radio";
-import { FormikInput } from "../../components/input";
+import { FormikRadio,RadioGroup } from "../../../components/radio";
+import { FormikInput } from "../../../components/input";
 
-import { withCss } from "../../components/withCss";
-import { Button, BaseButton } from "../../components/button";
+import { Button } from "../../../components/button";
+import {CaughtStatInput,CaughtStatInputs, NatureStatState,CaughtStatProps, StatLabel} from "./caughtStatInput";
 import { Gender, Nature,Static3Result, Species, Ivs, rngTools } from "~/rngTools";
 import React from "react";
-import {MultiTimer} from "../../components/multiTimer";
-import {
-  capPrecision,
-} from "~/utils/number";
+import {MultiTimer} from "../../../components/multiTimer";
 
 type Game = "emerald" | "rs";
-
-const formatLargeInteger = function (number: number) {
-  return number.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
 
 export interface Result {
   adv: number;
@@ -31,18 +19,6 @@ export interface Result {
 }
 
 type StarterSpecies = "Mudkip" | "Torchic" | "Treecko";
-type NatureStatState = "more" | "less" | "nochange";
-type StatLabel = "HP" | "ATK" | "DEF" | "SPD" | "SPA" | "SPE";
-
-type CaughtStatProps = {
-  statLabel:StatLabel;
-  min: number;
-  max: number;
-  value: number | null;
-  nature: NatureStatState;
-  onNatureChanged?: (nature: NatureStatState) => void;
-  onValueChanged?: (selected: number) => void;
-};
 
 type FormStateFindShiny = {
   pokemonSpecies: StarterSpecies;
@@ -101,51 +77,6 @@ type Props = {
   game?: Game;
 };
 
-export const CaughtStatInput = ({statLabel,min,max,value:value_props,nature:nature_props,onNatureChanged,onValueChanged}: CaughtStatProps) => {
-  const [value, setValue] = React.useState<number | null>(value_props);
-  const [nature, setNature] = React.useState<NatureStatState>(nature_props);
-  onNatureChanged = onNatureChanged || (() => {});
-  onValueChanged = onValueChanged || (() => {});
-
-  let value_opts:{label:string,value:number}[] = [];
-  for(let val = min; val <= max; val++)
-    value_opts.push({label: '' + val, value:val});
-
-  const natureBtn:React.ReactNode = (() => {
-    if (statLabel === "HP")
-      return <></>
-    return <RadioGroup
-      optionType="button"
-      value={nature}
-      onChange={e => {
-        setNature(e.target.value);
-        onNatureChanged(e.target.value);
-      }}
-      options={[
-        {label: "+", value:"more"},
-        {label: "=", value:"nochange"},
-        {label: "-", value:"less"}
-      ]}
-    />
-  })();
-  
-  return (
-    <tr>
-      <td style={{paddingRight:'20px'}}>{statLabel}</td>
-      <td style={{paddingRight:'30px'}}>{natureBtn}</td>
-      
-      <td><RadioGroup
-        optionType="button"
-        value={value}
-        onChange={e => {
-          setValue(e.target.value);
-          onValueChanged(e.target.value);
-        }}
-        options={value_opts}
-      /></td>
-    </tr>
-  )
-};
 
 const getStatRangeForStarter = (starter:StarterSpecies) => {
   if (starter === "Mudkip")
@@ -294,40 +225,38 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
       },
     ];
     
-    const onNatureChanged = (key:keyof typeof caughtStats) => {
-      return (nature: NatureStatState) => {
-        setCaughtStats({
-          ...caughtStats,
-          [key]:{...caughtStats[key], nature}
-        });
-      };
+    const onNatureChanged = (stat:StatLabel, nature:NatureStatState) => {
+      const key = 'hp'; //NO_PROD
+      setCaughtStats({
+        ...caughtStats,
+        [key]:{...caughtStats[key], nature}
+      });
     };
+
     
-    const onValueChanged = (key:keyof typeof caughtStats) => {
-      return (value: number) => {
-        setCaughtStats({
-          ...caughtStats,
-          [key]:{...caughtStats[key], value}
-        });
-      };
+    const onValueChanged = (stat:StatLabel, value:number) => {
+      const key = 'hp'; //NO_PROD
+      setCaughtStats({
+        ...caughtStats,
+        [key]:{...caughtStats[key], value}
+      });
+    };
+
+    const clear = () => {
+      setCaughtStats({
+        hp:{...caughtStats.hp,value:null,nature:"nochange"},
+        atk:{...caughtStats.atk,value:null,nature:"nochange"},
+        def:{...caughtStats.def,value:null,nature:"nochange"},
+        spa:{...caughtStats.spa,value:null,nature:"nochange"},
+        spd:{...caughtStats.spd,value:null,nature:"nochange"},
+        spe:{...caughtStats.spe,value:null,nature:"nochange"},
+      });
     };
 
     fields.push({
       label: "Caught Pokémon",
       direction:"column",
-      input: (
-        <table>
-          <tbody>
-            <CaughtStatInput {...caughtStats.hp}  onValueChanged={onValueChanged('hp')} onNatureChanged={onNatureChanged('hp')} />
-            <CaughtStatInput {...caughtStats.atk} onValueChanged={onValueChanged('atk')} onNatureChanged={onNatureChanged('atk')} />
-            <CaughtStatInput {...caughtStats.def} onValueChanged={onValueChanged('def')} onNatureChanged={onNatureChanged('def')} />
-            <CaughtStatInput {...caughtStats.spa} onValueChanged={onValueChanged('spa')} onNatureChanged={onNatureChanged('spa')} />
-            <CaughtStatInput {...caughtStats.spd} onValueChanged={onValueChanged('spd')} onNatureChanged={onNatureChanged('spd')} />
-            <CaughtStatInput {...caughtStats.spe} onValueChanged={onValueChanged('spe')} onNatureChanged={onNatureChanged('spe')} />              
-            <tr><td></td><td>Nature: Adamant</td></tr>            
-          </tbody>
-        </table>
-      ),
+      input: <CaughtStatInputs clear={clear} {...caughtStats} onNatureChanged={onNatureChanged} onValueChanged={onValueChanged} />,
     });
 
   return fields;

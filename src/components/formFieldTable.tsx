@@ -34,7 +34,7 @@ export const FormFieldTable = ({ fields }: Props) => {
             return (<tr key={label}>
               <LabelTd colSpan={2}>
                 <Typography.Text strong>{label}</Typography.Text>
-                <td style={{paddingLeft:'30px'}}>{input}</td>
+                <div style={{paddingLeft:'30px'}}>{input}</div>
               </LabelTd>
             </tr>)
           }

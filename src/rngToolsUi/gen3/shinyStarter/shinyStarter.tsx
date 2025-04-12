@@ -224,9 +224,18 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
         ),
       },
     ];
-    
+    const labelToKey = (stat:StatLabel) : keyof typeof caughtStats => {
+      if (stat === "HP") return 'hp';
+      if (stat === "ATK") return 'atk';
+      if (stat === "DEF") return 'def';
+      if (stat === "SPA") return 'spa';
+      if (stat === "SPD") return 'spd';
+      if (stat === "SPE") return 'spe';
+      throw new Error('invalid stat label ' + stat);
+    };
+
     const onNatureChanged = (stat:StatLabel, nature:NatureStatState) => {
-      const key = 'hp'; //NO_PROD
+      const key = labelToKey(stat);
       setCaughtStats({
         ...caughtStats,
         [key]:{...caughtStats[key], nature}
@@ -235,7 +244,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
 
     
     const onValueChanged = (stat:StatLabel, value:number) => {
-      const key = 'hp'; //NO_PROD
+      const key = labelToKey(stat);
       setCaughtStats({
         ...caughtStats,
         [key]:{...caughtStats[key], value}

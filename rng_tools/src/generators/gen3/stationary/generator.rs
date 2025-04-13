@@ -147,7 +147,8 @@ mod test {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
                 ability: None,
-                stats: None,
+                min_stats: None,
+                max_stats: None,
             },
         };
 
@@ -337,7 +338,8 @@ mod test {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
                 ability: None,
-                stats: None,
+                min_stats: None,
+                max_stats: None,
             },
         };
 
@@ -527,7 +529,8 @@ mod test {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
                 ability: None,
-                stats: None,
+                min_stats: None,
+                max_stats: None,
             },
         };
 
@@ -717,7 +720,8 @@ mod test {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
                 ability: None,
-                stats: None,
+                min_stats: None,
+                max_stats: None,
             },
         };
 

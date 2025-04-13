@@ -24,11 +24,15 @@ pub struct PkmFilter {
     pub min_ivs: Ivs,
     pub max_ivs: Ivs,
     pub ability: Option<AbilityType>,
+    pub min_stats: Option<Ivs>,
+    pub max_stats: Option<Ivs>,
 }
 
 impl PkmFilter {
     pub fn pass_filter(&self, state: &impl PkmState) -> bool {
-        self.pass_filter_no_ivs(state);
+        if !self.pass_filter_no_ivs(state) {
+            return false;
+        }
 
         if !state.ivs().filter(&self.min_ivs, &self.max_ivs) {
             return false;

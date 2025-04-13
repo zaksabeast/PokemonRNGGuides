@@ -133,15 +133,17 @@ export const CaughtStatInputs = ({hp,atk,def,spa,spd,spe,natureStatMore,natureSt
     return "???";
   };
 
+  const props = {onValueChanged, onNatureChanged};
+
   return (<>
       <table>
         <tbody>
-          <CaughtStatInput {...hp} nature="nochange" statLabel="HP" onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
-          <CaughtStatInput {...atk}  nature={getNatureState("ATK")} statLabel="ATK" onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
-          <CaughtStatInput {...def}  nature={getNatureState("DEF")} statLabel="DEF" onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
-          <CaughtStatInput {...spa}  nature={getNatureState("SPA")} statLabel="SPA" onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
-          <CaughtStatInput {...spd}  nature={getNatureState("SPD")} statLabel="SPD" onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
-          <CaughtStatInput {...spe}  nature={getNatureState("SPE")} statLabel="SPE" onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />              
+          <CaughtStatInput {...props} {...hp}  nature={getNatureState("HP")}  statLabel="HP"/>
+          <CaughtStatInput {...props} {...atk} nature={getNatureState("ATK")} statLabel="ATK"/>
+          <CaughtStatInput {...props} {...def} nature={getNatureState("DEF")} statLabel="DEF"/>
+          <CaughtStatInput {...props} {...spa} nature={getNatureState("SPA")} statLabel="SPA"/>
+          <CaughtStatInput {...props} {...spd} nature={getNatureState("SPD")} statLabel="SPD"/>
+          <CaughtStatInput {...props} {...spe} nature={getNatureState("SPE")} statLabel="SPE"/>              
           <tr><td></td><td colSpan={2}>Nature: {getNatureName()}</td></tr> 
         </tbody>
       </table>

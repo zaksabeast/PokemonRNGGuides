@@ -70,6 +70,7 @@ export const FormikResultTable = <Record extends tst.O.Object>(
               },
               ".ant-table-cell": {
                 whiteSpace: "nowrap",
+                width: "auto",
               },
             },
           })}

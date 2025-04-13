@@ -265,6 +265,26 @@ export const guides = {
         ),
     ),
   },
+  "/dppt-initial-seed-retail": {
+    meta: {
+      title: "Initial Seed RNG",
+      description:
+        "How to RNG an initial seed in Diamond, Pearl, and Platinum on a physical console",
+      category: "Diamond, Pearl, and Platinum",
+      slug: "/dppt-initial-seed-retail",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-08",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx",
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx"
+        ),
+    ),
+  },
   "/dppt-pokeradar-rng": {
     meta: {
       title: "PokeRadar RNG",
@@ -330,6 +350,36 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
     ),
+  },
+  "/emerald-mirage-island": {
+    meta: {
+      title: "Mirage Island",
+      description:
+        "Access Mirage Island by catching a Pokémon with the right PID",
+      category: "Emerald",
+      slug: "/emerald-mirage-island",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-11",
+      file: "guides/Emerald/Mirage Island.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
+  },
+  "/emerald-overview": {
+    meta: {
+      title: "Overview",
+      description:
+        "Practical applications of RNG Manipulation and techniques in Pokémon Emerald",
+      category: "Emerald",
+      slug: "/emerald-overview",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-08",
+      file: "guides/Emerald/Emerald Overview.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Emerald Overview.mdx")),
   },
   "/emerald-painting-rng": {
     meta: {
@@ -1105,6 +1155,50 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Basic Rules of RNG.mdx"),
     ),
+  },
+  "/gba-methods": {
+    meta: {
+      title: "Methods 1-4",
+      description:
+        "What is a Method, the reason why Methods 1-4 exist, and how they impact Pokémon generation.",
+      category: "GBA Technical Documentation",
+      slug: "/gba-methods",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-08",
+      file: "guides/Emerald/GBA Methods.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/GBA Methods.mdx")),
+  },
+  "/gba-overview": {
+    meta: {
+      title: "Overview",
+      description:
+        "Particularities, key RNG concepts, and version differences of GBA games.",
+      category: "GBA Overview",
+      slug: "/gba-overview",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-08",
+      file: "guides/Emerald/GBA Overview.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/GBA Overview.mdx")),
+  },
+  "/gba-vblank": {
+    meta: {
+      title: "VBlank",
+      description: "What are Vblanks and their impact on Pokémon generation.",
+      category: "GBA Technical Documentation",
+      slug: "/gba-vblank",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-08",
+      file: "guides/Emerald/Vblank.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Vblank.mdx")),
   },
   "/gc-initial": {
     meta: {
@@ -2193,6 +2287,21 @@ export const guides = {
       () => import("~/../guides/Ruby and Sapphire/Initial Seed RNG.mdx"),
     ),
   },
+  "/rs-mirage-island": {
+    meta: {
+      title: "Mirage Island",
+      description:
+        "Access Mirage Island by catching a Pokémon with the right PID",
+      category: "Ruby and Sapphire",
+      slug: "/rs-mirage-island",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-11",
+      file: "guides/Emerald/Mirage Island.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
+  },
   "/rs-pokefinder-setup": {
     meta: {
       title: "PokeFinder Setup",
@@ -2435,6 +2544,50 @@ export const guides = {
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx"),
     ),
   },
+  "/zh-e-tips-rng": {
+    meta: {
+      title: "乱数介绍",
+      description: "如何推进乱数以及提高稳定性的技巧",
+      slug: "/zh-e-tips-rng",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Emerald/Basic Rules of RNG.mdx",
+      category: "Emerald",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
+    ),
+  },
+  "/zh-emerald-painting-rng": {
+    meta: {
+      title: "利用绘画重置种子",
+      description: "利用绘画重置乱数，从而快速获得目标宝可梦，而无需长时间等待",
+      slug: "/zh-emerald-painting-rng",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Emerald/Reseed RNG.mdx",
+      category: "Emerald",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
+  },
+  "/zh-emulator-emerald-egg": {
+    meta: {
+      title: "孵化乱数",
+      description: "通过培育屋进行乱数孵蛋",
+      slug: "/zh-emulator-emerald-egg",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-07",
+      file: "guides/Emerald/Egg RNG.mdx",
+      category: "Emerald",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
+  },
   "/zh-gen2-celebi": {
     meta: {
       title: "时拉比",
@@ -2479,6 +2632,20 @@ export const guides = {
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
     ),
   },
+  "/zh-retail-emerald-wild": {
+    meta: {
+      title: "实机野生乱数",
+      description: "在真实主机上对野生宝可梦进行乱数操作",
+      slug: "/zh-retail-emerald-wild",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Emerald/Retail Wild RNG.mdx",
+      category: "Emerald",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Retail Wild RNG.mdx")),
+  },
 } as const;
 
 export const guideSlugs = [
@@ -2497,10 +2664,13 @@ export const guideSlugs = [
   z.literal("/desmume-setup"),
   z.literal("/dppt-advance-rng"),
   z.literal("/dppt-initial-seed"),
+  z.literal("/dppt-initial-seed-retail"),
   z.literal("/dppt-pokeradar-rng"),
   z.literal("/dppt-setup-rng"),
   z.literal("/dppt-wild"),
   z.literal("/e-tips-rng"),
+  z.literal("/emerald-mirage-island"),
+  z.literal("/emerald-overview"),
   z.literal("/emerald-painting-rng"),
   z.literal("/emerald-sid-feebas"),
   z.literal("/emerald-static"),
@@ -2549,6 +2719,9 @@ export const guideSlugs = [
   z.literal("/frlg-static"),
   z.literal("/frlg-tidsid-generator"),
   z.literal("/frlg-tips-rng"),
+  z.literal("/gba-methods"),
+  z.literal("/gba-overview"),
+  z.literal("/gba-vblank"),
   z.literal("/gc-initial"),
   z.literal("/gen2-celebi"),
   z.literal("/gen2-research"),
@@ -2616,6 +2789,7 @@ export const guideSlugs = [
   z.literal("/rs-battery"),
   z.literal("/rs-gen3-sid"),
   z.literal("/rs-initial-seed"),
+  z.literal("/rs-mirage-island"),
   z.literal("/rs-pokefinder-setup"),
   z.literal("/rs-sid-feebas"),
   z.literal("/rs-static"),
@@ -2631,9 +2805,13 @@ export const guideSlugs = [
   z.literal("/zh-dppt-initial-seed"),
   z.literal("/zh-dppt-pokeradar-rng"),
   z.literal("/zh-dppt-wild"),
+  z.literal("/zh-e-tips-rng"),
+  z.literal("/zh-emerald-painting-rng"),
+  z.literal("/zh-emulator-emerald-egg"),
   z.literal("/zh-gen2-celebi"),
   z.literal("/zh-gen2-starters"),
   z.literal("/zh-install-pokereader"),
+  z.literal("/zh-retail-emerald-wild"),
 ] as const;
 
 export const categories = [
@@ -2656,4 +2834,6 @@ export const categories = [
   "Sword and Shield",
   "Brilliant Diamond and Shining Pearl",
   "Legends Arceus",
+  "GBA Overview",
+  "GBA Technical Documentation",
 ] as const;

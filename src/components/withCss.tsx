@@ -93,7 +93,7 @@ const styleProps = [
   "aspectRatio",
 ];
 
-function styleConverter({
+const styleConverter = ({
   mb,
   mt,
   ml,
@@ -132,7 +132,7 @@ function styleConverter({
   whiteSpace,
   aspectRatio,
   theme,
-}: CustomStyles & { theme: Theme }) {
+}: CustomStyles & { theme: Theme }) => {
   return {
     "&&&": {
       margin: m,
@@ -180,7 +180,7 @@ function styleConverter({
       },
     },
   };
-}
+};
 
 export const withCss = <T extends object>(
   Component: React.ComponentType<T>,

@@ -1,5 +1,6 @@
 import { RadioGroup } from "../../../components/radio";
 import { Button } from "../../../components/button";
+import { AutoComplete } from "antd";
 
 export type StatLabel = "HP" | "ATK" | "DEF" | "SPD" | "SPA" | "SPE";
 
@@ -197,7 +198,11 @@ export const CaughtStatInputs = ({
           />
           <tr>
             <td></td>
-            <td colSpan={2}>Nature: {getNatureName()}</td>
+            <td colSpan={3}>Nature: <AutoComplete style={{width:'100px'}} backfill={true} value={getNatureName()} options={[
+              {label:'aaa', value:'aaa'},
+              {label:'ab', value:'ab'},
+              {label:'ccc', value:'ccc'},
+            ]}></AutoComplete></td>
           </tr>
         </tbody>
       </table>

@@ -3,7 +3,7 @@ import { FormikRadio,RadioGroup } from "../../../components/radio";
 import { FormikInput } from "../../../components/input";
 
 import { Button } from "../../../components/button";
-import {CaughtStatInput,CaughtStatInputs, NatureStatState,CaughtStatProps, StatLabel} from "./caughtStatInput";
+import {CaughtStatInput,StatMinMaxValue,CaughtStatInputs, NatureStatState,CaughtStatProps, StatLabel} from "./caughtStatInput";
 import { Gender, Nature,Static3Result, Species, Ivs, rngTools } from "~/rngTools";
 import React from "react";
 import {MultiTimer} from "../../../components/multiTimer";
@@ -117,20 +117,24 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
   const [targetAdv, setTargetAdv] = React.useState<number>(0);
   const [latestHitAdv, setLatestHitAdv] = React.useState<number | null>(null);
 
-  const [caughtStats, setCaughtStats] = React.useState<{
-    hp: CaughtStatProps;
-    atk: CaughtStatProps;
-    def: CaughtStatProps;
-    spa: CaughtStatProps;
-    spd: CaughtStatProps;
-    spe: CaughtStatProps;
+  const [caughtStats, setCaughtStats] = React.useState<{    
+    natureStatMore:StatLabel | null;
+    natureStatLess:StatLabel | null;
+    hp: StatMinMaxValue;
+    atk: StatMinMaxValue;
+    def: StatMinMaxValue;
+    spa: StatMinMaxValue;
+    spd: StatMinMaxValue;
+    spe: StatMinMaxValue;
   }>({
-    hp:  { statLabel:"HP",  min: 19, max: 20, value: null, nature: "nochange" },
-    atk: { statLabel:"ATK", min: 8, max: 12, value: null, nature: "nochange" },
-    def: { statLabel:"DEF", min: 7, max: 11, value: null, nature: "nochange" },
-    spa: { statLabel:"SPA", min: 9, max: 14, value: null, nature: "nochange" },
-    spd: { statLabel:"SPD", min: 9, max: 13, value: null, nature: "nochange" },
-    spe: { statLabel:"SPE", min: 10, max: 14, value: null, nature: "nochange" },
+    natureStatMore:null,
+    natureStatLess:null,
+    hp:  { min: 19, max: 20, value: null},
+    atk: { min: 8, max: 12, value: null},
+    def: { min: 7, max: 11, value: null},
+    spa: { min: 9, max: 14, value: null},
+    spd: { min: 9, max: 13, value: null},
+    spe: { min: 10, max: 14, value: null},
   });
 
   const onSubmitFindTarget = React.useCallback<RngToolSubmit<FormStateFindShiny>>(
@@ -224,7 +228,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
         ),
       },
     ];
-    const labelToKey = (stat:StatLabel) : keyof typeof caughtStats => {
+    const labelToKey = (stat:StatLabel) => {
       if (stat === "HP") return 'hp';
       if (stat === "ATK") return 'atk';
       if (stat === "DEF") return 'def';
@@ -234,12 +238,34 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
       throw new Error('invalid stat label ' + stat);
     };
 
-    const onNatureChanged = (stat:StatLabel, nature:NatureStatState) => {
-      const key = labelToKey(stat);
-      setCaughtStats({
-        ...caughtStats,
-        [key]:{...caughtStats[key], nature}
-      });
+    const onNatureChanged = (stat:StatLabel, natureState:NatureStatState) => {
+      if (natureState === "nochange"){
+        if (caughtStats.natureStatMore === stat)
+          setCaughtStats({
+            ...caughtStats,
+            natureStatMore:null,
+          });
+        else if (caughtStats.natureStatLess === stat)
+          setCaughtStats({
+            ...caughtStats,
+            natureStatLess:null,
+          });
+        return;
+      } else if (natureState === "more"){
+        setCaughtStats({
+          ...caughtStats,
+          natureStatMore:stat,
+          natureStatLess:caughtStats.natureStatLess === stat ? null : caughtStats.natureStatLess,          
+        });
+        return;
+      } else if (natureState === "less"){
+        setCaughtStats({
+          ...caughtStats,
+          natureStatMore:caughtStats.natureStatMore === stat ? null : caughtStats.natureStatMore,
+          natureStatLess:stat, 
+        });
+        return;
+      }
     };
 
     
@@ -253,12 +279,14 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
 
     const clear = () => {
       setCaughtStats({
-        hp:{...caughtStats.hp,value:null,nature:"nochange"},
-        atk:{...caughtStats.atk,value:null,nature:"nochange"},
-        def:{...caughtStats.def,value:null,nature:"nochange"},
-        spa:{...caughtStats.spa,value:null,nature:"nochange"},
-        spd:{...caughtStats.spd,value:null,nature:"nochange"},
-        spe:{...caughtStats.spe,value:null,nature:"nochange"},
+        natureStatMore:null,
+        natureStatLess:null,
+        hp:{...caughtStats.hp,value:null},
+        atk:{...caughtStats.atk,value:null},
+        def:{...caughtStats.def,value:null},
+        spa:{...caughtStats.spa,value:null},
+        spd:{...caughtStats.spd,value:null},
+        spe:{...caughtStats.spe,value:null},
       });
     };
 

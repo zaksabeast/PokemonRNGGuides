@@ -5,6 +5,7 @@ import { Button } from "../../../components/button";
 export type StatLabel = "HP" | "ATK" | "DEF" | "SPD" | "SPA" | "SPE";
 
 export type NatureStatState = "more" | "less" | "nochange";
+import { Nature } from "~/rngTools";
 
 export type CaughtStatProps = {
   statLabel:StatLabel;
@@ -58,32 +59,93 @@ export const CaughtStatInput = ({statLabel,min,max,value,nature,onNatureChanged,
   )
 };
 
-export type CaughtStatsProps = {
-  hp: CaughtStatProps;
-  atk: CaughtStatProps;
-  def: CaughtStatProps;
-  spa: CaughtStatProps;
-  spd: CaughtStatProps;
-  spe: CaughtStatProps;
+export type StatMinMaxValue = { 
+  min: number; 
+  max: number;
+  value: number | null;
+};
+
+export type CaughtStatsProps = {    
+  natureStatMore:StatLabel | null;
+  natureStatLess:StatLabel | null;
+  hp: StatMinMaxValue;
+  atk: StatMinMaxValue;
+  def: StatMinMaxValue;
+  spa: StatMinMaxValue;
+  spd: StatMinMaxValue;
+  spe: StatMinMaxValue;
   onValueChanged:(stat:StatLabel, val:number) => void;
   onNatureChanged:(stat:StatLabel, nature:NatureStatState) => void;
   clear: () => void;
 };
 
-export const CaughtStatInputs = ({hp,atk,def,spa,spd,spe,onNatureChanged,onValueChanged,clear}: CaughtStatsProps) => {
+export const CaughtStatInputs = ({hp,atk,def,spa,spd,spe,natureStatMore,natureStatLess,onNatureChanged,onValueChanged,clear}: CaughtStatsProps) => {
+  const getNatureState = (stat:StatLabel) => {
+    if (stat === natureStatMore) return "more";
+    if (stat === natureStatLess) return "less";
+    return "nochange";
+  };
+  const getNatureName = () : string => {
+    if (natureStatMore === null && natureStatLess === null)
+      return 'Hardy or Docile or Bashful or Quirky or Serious';
+
+    if (natureStatMore === null)
+      return '???';
+
+    if (natureStatLess === null)
+      return '???';
+
+    if (natureStatMore === "ATK"){
+      if (natureStatLess === "ATK") return "Hardy";
+      if (natureStatLess === "DEF") return "Lonely";
+      if (natureStatLess === "SPA") return "Adamant";
+      if (natureStatLess === "SPD") return "Naughty";
+      if (natureStatLess === "SPE") return "Brave";
+    }
+    if (natureStatMore === "DEF"){
+      if (natureStatLess === "ATK") return "Bold";
+      if (natureStatLess === "DEF") return "Docile";
+      if (natureStatLess === "SPA") return "Impish";
+      if (natureStatLess === "SPD") return "Lax";
+      if (natureStatLess === "SPE") return "Relaxed";
+    }
+    if (natureStatMore === "SPA"){
+      if (natureStatLess === "ATK") return "Modest";
+      if (natureStatLess === "DEF") return "Mild";
+      if (natureStatLess === "SPA") return "Bashful";
+      if (natureStatLess === "SPD") return "Rash";
+      if (natureStatLess === "SPE") return "Quiet";
+    }
+    if (natureStatMore === "SPD"){
+      if (natureStatLess === "ATK") return "Calm";
+      if (natureStatLess === "DEF") return "Gentle";
+      if (natureStatLess === "SPA") return "Careful";
+      if (natureStatLess === "SPD") return "Quirky";
+      if (natureStatLess === "SPE") return "Sassy";
+    }
+    if (natureStatMore === "SPE"){
+      if (natureStatLess === "ATK") return "Timid";
+      if (natureStatLess === "DEF") return "Hasty";
+      if (natureStatLess === "SPA") return "Jolly";
+      if (natureStatLess === "SPD") return "Naive";
+      if (natureStatLess === "SPE") return "Serious";
+    }
+    return "???";
+  };
+
   return (<>
       <table>
         <tbody>
-          <CaughtStatInput {...hp}  onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
-          <CaughtStatInput {...atk} onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
-          <CaughtStatInput {...def} onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
-          <CaughtStatInput {...spa} onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
-          <CaughtStatInput {...spd} onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
-          <CaughtStatInput {...spe} onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />              
-          <tr><td></td><td>Nature: NO_PROD</td></tr> 
+          <CaughtStatInput {...hp} nature="nochange" statLabel="HP" onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
+          <CaughtStatInput {...atk}  nature={getNatureState("ATK")} statLabel="ATK" onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
+          <CaughtStatInput {...def}  nature={getNatureState("DEF")} statLabel="DEF" onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
+          <CaughtStatInput {...spa}  nature={getNatureState("SPA")} statLabel="SPA" onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
+          <CaughtStatInput {...spd}  nature={getNatureState("SPD")} statLabel="SPD" onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />
+          <CaughtStatInput {...spe}  nature={getNatureState("SPE")} statLabel="SPE" onValueChanged={onValueChanged} onNatureChanged={onNatureChanged} />              
+          <tr><td></td><td colSpan={2}>Nature: {getNatureName()}</td></tr> 
         </tbody>
       </table>
-      <Button trackerId="NO_PROD" onClick={clear}>Clear</Button>
+      <Button trackerId="CaughtStatInputs_clear" onClick={clear}>Clear</Button>
     </>
   );
 };

@@ -1713,7 +1713,7 @@ export const guides = {
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
-      addedOn: null,
+      addedOn: "2025-04-13",
       file: "guides/Gen 6/ORAS TID.mdx",
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/ORAS TID.mdx")),

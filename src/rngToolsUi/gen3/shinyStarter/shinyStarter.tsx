@@ -9,7 +9,8 @@ import {
   CaughtStatInputs,
   NatureStatState,
   CaughtStatProps,
-  StatLabel,
+  Stat,
+  calculateNature,
 } from "./caughtStatInput";
 import {
   Gender,
@@ -130,13 +131,14 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
   const initialValues = getInitialValuesFindShiny();
 
   const [results, setResults] = React.useState<Result[]>([]);
+  const [nature, setNature] = React.useState<Nature | null>(null);
 
   const [targetAdv, setTargetAdv] = React.useState<number>(0);
   const [latestHitAdv, setLatestHitAdv] = React.useState<number | null>(null);
 
-  const [caughtStats, setCaughtStats] = React.useState<{
-    natureStatMore: StatLabel | null;
-    natureStatLess: StatLabel | null;
+  const [caughtStats, setCaughtStats_raw] = React.useState<{
+    natureStatMore: Stat | null;
+    natureStatLess: Stat | null;
     hp: StatMinMaxValue;
     atk: StatMinMaxValue;
     def: StatMinMaxValue;
@@ -153,6 +155,14 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
     spd: { min: 9, max: 13, value: null },
     spe: { min: 10, max: 14, value: null },
   });
+
+  const setCaughtStats = (val:typeof caughtStats) => {
+    setCaughtStats_raw(val);
+
+    const newNature = calculateNature(val.natureStatMore, val.natureStatLess, nature);
+    if (newNature !== nature)
+        setNature(newNature);
+  };
 
   const onSubmitFindTarget = React.useCallback<
     RngToolSubmit<FormStateFindShiny>
@@ -266,7 +276,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
         ),
       },
     ];
-    const labelToKey = (stat: StatLabel) => {
+    const labelToKey = (stat: Stat) => {
       if (stat === "HP") return "hp";
       if (stat === "ATK") return "atk";
       if (stat === "DEF") return "def";
@@ -276,7 +286,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
       throw new Error("invalid stat label " + stat);
     };
 
-    const onNatureChanged = (stat: StatLabel, natureState: NatureStatState) => {
+    const onNatureBtnChanged = (stat: Stat, natureState: NatureStatState) => {
       if (natureState === "nochange") {
         if (caughtStats.natureStatMore === stat)
           setCaughtStats({
@@ -311,8 +321,13 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
         return;
       }
     };
+    
+    const onNatureInputChanged = (e:string) => {
+      //NO_PROD
+      setNature(e as Nature);
+    };
 
-    const onValueChanged = (stat: StatLabel, value: number) => {
+    const onValueChanged = (stat: Stat, value: number) => {
       const key = labelToKey(stat);
       setCaughtStats({
         ...caughtStats,
@@ -332,15 +347,18 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
         spe: { ...caughtStats.spe, value: null },
       });
     };
-
+    
     fields.push({
       label: "Caught Pokémon",
       direction: "column",
       input: (
         <CaughtStatInputs
           clear={clear}
+          natureSearchValue="" //NO_PROD
           {...caughtStats}
-          onNatureChanged={onNatureChanged}
+          natureInput={nature ?? ""}
+          onNatureInputChanged={onNatureInputChanged}
+          onNatureBtnChanged={onNatureBtnChanged}
           onValueChanged={onValueChanged}
         />
       ),
@@ -377,7 +395,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
         submitTrackerId="shinyStarter_findTarget"
       />
 
-      {targetAdv !== 0 && (
+      {targetAdv !== -1 && ( //NO_PROD
         <RngToolForm<{}, Result>
           getFields={getFields}
           columns={columns}

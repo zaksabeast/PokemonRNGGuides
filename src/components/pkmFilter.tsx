@@ -2,7 +2,7 @@ import { PkmFilter } from "~/rngTools";
 import { Field } from "~/components/formFieldTable";
 import { FormikSwitch } from "~/components/switch";
 import { FormikSelect } from "~/components/select";
-import { nature } from "~/types/nature";
+import { natures } from "~/types/nature";
 import { IvInput } from "~/components/ivInput";
 import { ability } from "~/types/ability";
 import { gender } from "~/types/gender";
@@ -26,7 +26,7 @@ const _getPkmFilterFields = (): Field[] => [
     input: (
       <FormikSelect<PkmFilterFields, "filter_nature">
         name="filter_nature"
-        options={(["None", ...nature] as const).map((nat) => ({
+        options={(["None", ...natures] as const).map((nat) => ({
           label: nat,
           value: nat,
         }))}

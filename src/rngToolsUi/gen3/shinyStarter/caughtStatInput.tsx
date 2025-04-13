@@ -1,20 +1,23 @@
 import { RadioGroup } from "../../../components/radio";
 import { Button } from "../../../components/button";
 import { AutoComplete } from "antd";
+import React from "react";
+import {FormikSelect} from "~/components";
 
-export type StatLabel = "HP" | "ATK" | "DEF" | "SPD" | "SPA" | "SPE";
+import {Stat} from "../../../types/stat";
 
 export type NatureStatState = "more" | "less" | "nochange";
 import { Nature } from "~/rngTools";
+import { getNatureFromStatMoreLess } from "~/types/nature";
 
 export type CaughtStatProps = {
-  statLabel: StatLabel;
+  statLabel: Stat;
   min: number;
   max: number;
   value: number | null;
   nature: NatureStatState;
-  onValueChanged?: (stat: StatLabel, value: number) => void;
-  onNatureChanged?: (stat: StatLabel, nature: NatureStatState) => void;
+  onValueChanged?: (stat: Stat, value: number) => void;
+  onNatureChanged?: (stat: Stat, nature: NatureStatState) => void;
 };
 
 export const CaughtStatInput = ({
@@ -34,7 +37,7 @@ export const CaughtStatInput = ({
     value_opts.push({ label: "" + val, value: val });
 
   const natureBtn: React.ReactNode = (() => {
-    if (statLabel === "HP") return <></>;
+    if (statLabel === "hp") return <></>;
     return (
       <RadioGroup
         optionType="button"
@@ -77,17 +80,34 @@ export type StatMinMaxValue = {
 };
 
 export type CaughtStatsProps = {
-  natureStatMore: StatLabel | null;
-  natureStatLess: StatLabel | null;
+  natureStatMore: Stat | null;
+  natureStatLess: Stat | null;
   hp: StatMinMaxValue;
   atk: StatMinMaxValue;
   def: StatMinMaxValue;
   spa: StatMinMaxValue;
   spd: StatMinMaxValue;
   spe: StatMinMaxValue;
-  onValueChanged: (stat: StatLabel, val: number) => void;
-  onNatureChanged: (stat: StatLabel, nature: NatureStatState) => void;
+  natureInput:string;
+  natureSearchValue:string;
+  onValueChanged: (stat: Stat, val: number) => void;
+  onNatureBtnChanged: (stat: Stat, nature: NatureStatState) => void;
+  onNatureInputChanged: (inp:string) => void;
   clear: () => void;
+};
+
+export const calculateNature = (natureStatMore:Stat | null, natureStatLess:Stat | null, currentNature:Nature | null) : Nature | null => {
+  if (natureStatMore === null && natureStatLess === null){
+    if (currentNature !== null && ["Hardy", "Docile","Bashful","Quirky","Serious"].includes(currentNature))
+      return currentNature;
+    return null;
+  }
+
+  if (natureStatMore === null) return null;
+
+  if (natureStatLess === null) return null;
+
+  return getNatureFromStatMoreLess(natureStatMore, natureStatLess);
 };
 
 export const CaughtStatInputs = ({
@@ -99,62 +119,25 @@ export const CaughtStatInputs = ({
   spe,
   natureStatMore,
   natureStatLess,
-  onNatureChanged,
+  natureInput,
+  onNatureInputChanged,
+  onNatureBtnChanged,
   onValueChanged,
   clear,
 }: CaughtStatsProps) => {
-  const getNatureState = (stat: StatLabel) => {
+  const getNatureState = (stat: Stat) => {
     if (stat === natureStatMore) return "more";
     if (stat === natureStatLess) return "less";
     return "nochange";
   };
-  const getNatureName = (): string => {
-    if (natureStatMore === null && natureStatLess === null)
-      return "Hardy or Docile or Bashful or Quirky or Serious";
 
-    if (natureStatMore === null) return "???";
-
-    if (natureStatLess === null) return "???";
-
-    if (natureStatMore === "ATK") {
-      if (natureStatLess === "ATK") return "Hardy";
-      if (natureStatLess === "DEF") return "Lonely";
-      if (natureStatLess === "SPA") return "Adamant";
-      if (natureStatLess === "SPD") return "Naughty";
-      if (natureStatLess === "SPE") return "Brave";
-    }
-    if (natureStatMore === "DEF") {
-      if (natureStatLess === "ATK") return "Bold";
-      if (natureStatLess === "DEF") return "Docile";
-      if (natureStatLess === "SPA") return "Impish";
-      if (natureStatLess === "SPD") return "Lax";
-      if (natureStatLess === "SPE") return "Relaxed";
-    }
-    if (natureStatMore === "SPA") {
-      if (natureStatLess === "ATK") return "Modest";
-      if (natureStatLess === "DEF") return "Mild";
-      if (natureStatLess === "SPA") return "Bashful";
-      if (natureStatLess === "SPD") return "Rash";
-      if (natureStatLess === "SPE") return "Quiet";
-    }
-    if (natureStatMore === "SPD") {
-      if (natureStatLess === "ATK") return "Calm";
-      if (natureStatLess === "DEF") return "Gentle";
-      if (natureStatLess === "SPA") return "Careful";
-      if (natureStatLess === "SPD") return "Quirky";
-      if (natureStatLess === "SPE") return "Sassy";
-    }
-    if (natureStatMore === "SPE") {
-      if (natureStatLess === "ATK") return "Timid";
-      if (natureStatLess === "DEF") return "Hasty";
-      if (natureStatLess === "SPA") return "Jolly";
-      if (natureStatLess === "SPD") return "Naive";
-      if (natureStatLess === "SPE") return "Serious";
-    }
-    return "???";
-  };
-
-  const props = { onValueChanged, onNatureChanged };
+  const props = { onValueChanged, onNatureChanged: onNatureBtnChanged };
+/*
+  const selectedValues = React.useMemo(
+    () => allValues.filter((v) => v.selected),
+    [allValues],
+  );
+*/
 
   return (
     <>
@@ -163,46 +146,50 @@ export const CaughtStatInputs = ({
           <CaughtStatInput
             {...props}
             {...hp}
-            nature={getNatureState("HP")}
-            statLabel="HP"
+            nature={getNatureState("hp")}
+            statLabel="hp"
           />
           <CaughtStatInput
             {...props}
             {...atk}
-            nature={getNatureState("ATK")}
-            statLabel="ATK"
+            nature={getNatureState("atk")}
+            statLabel="atk"
           />
           <CaughtStatInput
             {...props}
             {...def}
-            nature={getNatureState("DEF")}
-            statLabel="DEF"
+            nature={getNatureState("def")}
+            statLabel="def"
           />
           <CaughtStatInput
             {...props}
             {...spa}
-            nature={getNatureState("SPA")}
-            statLabel="SPA"
+            nature={getNatureState("spa")}
+            statLabel="spa"
           />
           <CaughtStatInput
             {...props}
             {...spd}
-            nature={getNatureState("SPD")}
-            statLabel="SPD"
+            nature={getNatureState("spd")}
+            statLabel="spd"
           />
           <CaughtStatInput
             {...props}
             {...spe}
-            nature={getNatureState("SPE")}
-            statLabel="SPE"
+            nature={getNatureState("spe")}
+            statLabel="spe"
           />
           <tr>
             <td></td>
-            <td colSpan={3}>Nature: <AutoComplete style={{width:'100px'}} backfill={true} value={getNatureName()} options={[
-              {label:'aaa', value:'aaa'},
-              {label:'ab', value:'ab'},
-              {label:'ccc', value:'ccc'},
-            ]}></AutoComplete></td>
+            <td colSpan={3}>Nature: 
+              
+              
+            <AutoComplete style={{width:'100px'}} 
+             backfill={true} 
+             value={natureInput}
+             onChange={onNatureInputChanged} 
+             options={natures.map(nature => ({label:nature, value:nature}))}
+            ></AutoComplete></td>
           </tr>
         </tbody>
       </table>

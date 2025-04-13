@@ -22,7 +22,7 @@ import {
   toDecimalString,
 } from "~/utils/number";
 import { gen3Species } from "~/types/species";
-import { nature } from "~/types/nature";
+import { natures } from "~/types/nature";
 import { gender } from "~/types/gender";
 
 const columns: ResultColumn<Gen3HeldEgg>[] = [
@@ -97,7 +97,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "female_nature">
         name="female_nature"
-        options={nature.map((nat) => ({ label: nat, value: nat }))}
+        options={natures.map((nat) => ({ label: nat, value: nat }))}
       />
     ),
   },
@@ -176,7 +176,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "filter_nature">
         name="filter_nature"
-        options={(["None", ...nature] as const).map((nat) => ({
+        options={(["None", ...natures] as const).map((nat) => ({
           label: nat,
           value: nat,
         }))}

@@ -20,6 +20,13 @@ pub struct Ivs {
     pub spe: u8,
 }
 
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct StatFilter {
+    pub min_stats: Ivs,
+    pub max_stats: Ivs,
+}
+
 impl Ivs {
     pub fn new_g3(iv1: u16, iv2: u16) -> Self {
         Self {

@@ -64,6 +64,7 @@ const findTargetAdvanceForShinyPokemon = async function (game:Game, values: Form
           min_ivs: {hp:0, atk:0,def:0, spa: 0,spd: 0,spe: 0},
           max_ivs: {hp:31, atk:31,def:31, spa: 31,spd: 31,spe: 31},
         },
+        stats:undefined,
       },
     });
     if (results.length)

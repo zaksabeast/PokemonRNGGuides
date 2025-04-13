@@ -290,6 +290,7 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
             min_ivs: opts.filter_min_ivs,
             max_ivs: opts.filter_max_ivs,
           },
+          stats: undefined,
         },
       });
 

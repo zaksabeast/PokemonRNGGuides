@@ -1,6 +1,6 @@
 use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
-use crate::{AbilityType, Gender, IvFilter, Ivs, Nature, Species, gen3_shiny};
+use crate::{AbilityType, Gender, IvFilter, Ivs, Nature, Species, StatFilter, gen3_shiny};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -25,6 +25,7 @@ pub struct Static3Filter {
     pub gender: Option<Gender>,
     pub ivs: IvFilter,
     pub ability: Option<AbilityType>,
+    pub stats: Option<StatFilter>,
 }
 
 impl Static3Filter {
@@ -47,6 +48,13 @@ impl Static3Filter {
 
         if !state.ivs.filter(&self.ivs.min_ivs, &self.ivs.max_ivs) {
             return false;
+        }
+
+        if let Some(filter_stats) = self.stats {
+            let state_stats = "";
+            if !state_stats.filter(filter_stats.min_stats, filter_stats.max_stats) {
+                return false;
+            }
         }
 
         if let Some(ability) = self.ability {
@@ -169,6 +177,7 @@ mod test {
                     max_ivs: PERFECT_IVS,
                 },
                 ability: None,
+                stats: None,
             },
         };
 
@@ -360,6 +369,7 @@ mod test {
                     max_ivs: PERFECT_IVS,
                 },
                 ability: None,
+                stats: None,
             },
         };
 
@@ -551,6 +561,7 @@ mod test {
                     max_ivs: PERFECT_IVS,
                 },
                 ability: None,
+                stats: None,
             },
         };
 
@@ -742,6 +753,7 @@ mod test {
                     max_ivs: PERFECT_IVS,
                 },
                 ability: None,
+                stats: None,
             },
         };
 

@@ -17,7 +17,12 @@ import {
   toHexString,
   fromHexString,
 } from "~/utils/number";
-import { flattenIvs, FlattenIvs, ivColumns } from "../shared/ivColumns";
+import { maxIvs, minIvs } from "~/types/ivs";
+import {
+  flattenIvs,
+  FlattenIvs,
+  ivColumns,
+} from "~/rngToolsUi/shared/ivColumns";
 
 type Result = FlattenIvs<Egg3PickupState>;
 
@@ -36,24 +41,6 @@ type FormState = {
   parent2_ivs: Ivs;
   filter_min_ivs: Ivs;
   filter_max_ivs: Ivs;
-};
-
-const minIvs: Ivs = {
-  hp: 0,
-  atk: 0,
-  def: 0,
-  spa: 0,
-  spd: 0,
-  spe: 0,
-};
-
-const maxIvs: Ivs = {
-  hp: 31,
-  atk: 31,
-  def: 31,
-  spa: 31,
-  spd: 31,
-  spe: 31,
 };
 
 const initialValues: FormState = {

@@ -1,4 +1,4 @@
-import { rngTools, Static3Result, Species, Ivs } from "~/rngTools";
+import { rngTools, Static3GeneratorResult, Species } from "~/rngTools";
 import {
   Field,
   FormikInput,
@@ -17,11 +17,15 @@ import {
   toHexString,
 } from "~/utils/number";
 import React from "react";
-import { match } from "ts-pattern";
 import { getPkmFilterFields, PkmFilterFields } from "~/components/pkmFilter";
-import { FlattenIvs, flattenIvs, ivColumns } from "../shared/ivColumns";
+import {
+  getStatic3Species,
+  Static3Game,
+} from "~/rngToolsUi/gen3/static/constants";
+import { maxIvs, minIvs } from "~/types/ivs";
+import { FlattenIvs, flattenIvs, ivColumns } from "../../shared/ivColumns";
 
-type Result = FlattenIvs<Static3Result>;
+type Result = FlattenIvs<Static3GeneratorResult>;
 
 const columns: ResultColumn<Result>[] = [
   { title: "Advance", dataIndex: "advance", key: "advance" },
@@ -44,94 +48,6 @@ const columns: ResultColumn<Result>[] = [
   { title: "Gender", dataIndex: "gender", key: "gender" },
 ];
 
-type Game = "emerald" | "rs" | "frlg";
-
-const emeraldSpecies: Species[] = [
-  "Chikorita",
-  "Totodile",
-  "Cyndaquil",
-  "Treecko",
-  "Mudkip",
-  "Torchic",
-  "Lileep",
-  "Anorith",
-  "Castform",
-  "Beldum",
-  "Wynaut",
-  "Kecleon",
-  "Voltorb",
-  "Electrode",
-  "Sudowoodo",
-  "Regirock",
-  "Regice",
-  "Registeel",
-  "Latias",
-  "Latios",
-  "Kyogre",
-  "Groudon",
-  "Rayquaza",
-  "Mew",
-  "Deoxys",
-  "Lugia",
-  "HoOh",
-];
-
-const rsSpecies: Species[] = [
-  "Treecko",
-  "Mudkip",
-  "Torchic",
-  "Lileep",
-  "Anorith",
-  "Castform",
-  "Beldum",
-  "Wynaut",
-  "Kecleon",
-  "Voltorb",
-  "Electrode",
-  "Regirock",
-  "Regice",
-  "Registeel",
-  "Latias",
-  "Latios",
-  "Kyogre",
-  "Groudon",
-  "Rayquaza",
-];
-
-const frlgSpecies: Species[] = [
-  "Bulbasaur",
-  "Squirtle",
-  "Charmander",
-  "Omanyte",
-  "Kabuto",
-  "Aerodactyl",
-  "Hitmonlee",
-  "Hitmonchan",
-  "Magikarp",
-  "Lapras",
-  "Eevee",
-  "Togepi",
-  "Abra",
-  "Clefairy",
-  "Scyther",
-  "Dratini",
-  "Porygon",
-  "Pinsir",
-  "Snorlax",
-  "Electrode",
-  "Hypno",
-  "Articuno",
-  "Zapdos",
-  "Moltres",
-  "Mewtwo",
-  "Deoxys",
-  "Lugia",
-  "HoOh",
-  "Raikou",
-  "Entei",
-  "Suicune",
-];
-
 type FormState = {
   offset: DecimalString;
   seed: HexString;
@@ -144,33 +60,7 @@ type FormState = {
   method4: boolean;
 } & PkmFilterFields;
 
-const minIvs: Ivs = {
-  hp: 0,
-  atk: 0,
-  def: 0,
-  spa: 0,
-  spd: 0,
-  spe: 0,
-};
-
-const maxIvs: Ivs = {
-  hp: 31,
-  atk: 31,
-  def: 31,
-  spa: 31,
-  spd: 31,
-  spe: 31,
-};
-
-const getGameSpecies = (game: Game) => {
-  return match(game)
-    .with("emerald", () => emeraldSpecies)
-    .with("rs", () => rsSpecies)
-    .with("frlg", () => frlgSpecies)
-    .exhaustive();
-};
-
-const getInitialValues = (game: Game): FormState => {
+const getInitialValues = (game: Static3Game): FormState => {
   return {
     offset: toDecimalString(0),
     seed: toHexString(0),
@@ -178,7 +68,7 @@ const getInitialValues = (game: Game): FormState => {
     max_advances: toDecimalString(1000),
     tid: toDecimalString(0),
     sid: toDecimalString(0),
-    species: getGameSpecies(game)[0],
+    species: getStatic3Species(game)[0],
     roamer: false,
     method4: false,
     filter_shiny: false,
@@ -190,8 +80,8 @@ const getInitialValues = (game: Game): FormState => {
   };
 };
 
-const getFields = (game: Game): Field[] => {
-  const staticSpecies = getGameSpecies(game);
+const getFields = (game: Static3Game): Field[] => {
+  const staticSpecies = getStatic3Species(game);
   return [
     {
       label: "Seed",
@@ -241,7 +131,7 @@ const getFields = (game: Game): Field[] => {
 };
 
 type Props = {
-  game?: Game;
+  game: Static3Game;
 };
 
 export const Static3Generator = ({ game = "emerald" }: Props) => {
@@ -269,7 +159,7 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
         return;
       }
 
-      const results = await rngTools.gen3_static_states({
+      const results = await rngTools.gen3_static_generator_states({
         ...opts,
         initial_advances: initialAdvances,
         max_advances: maxAdvances,
@@ -286,11 +176,8 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
             opts.filter_gender === "None" ? undefined : opts.filter_gender,
           ability:
             opts.filter_ability === "None" ? undefined : opts.filter_ability,
-          ivs: {
-            min_ivs: opts.filter_min_ivs,
-            max_ivs: opts.filter_max_ivs,
-          },
-          stats: undefined,
+          min_ivs: opts.filter_min_ivs,
+          max_ivs: opts.filter_max_ivs,
         },
       });
 

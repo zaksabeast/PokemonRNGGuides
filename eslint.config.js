@@ -26,6 +26,15 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "no-console": "error",
+      "prefer-arrow-callback": ["error"],
+      "func-style": ["error", "expression"],
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "VariableDeclarator > FunctionExpression",
+          message: "Use arrow functions instead of function expressions.",
+        },
+      ],
       "no-restricted-imports": [
         "error",
         {

@@ -1,4 +1,4 @@
-import { rngTools, Static3GeneratorResult, Species, Ivs } from "~/rngTools";
+import { rngTools, Static3GeneratorResult, Species } from "~/rngTools";
 import {
   Field,
   FormikInput,
@@ -22,6 +22,7 @@ import {
   getStatic3Species,
   Static3Game,
 } from "~/rngToolsUi/gen3/static/constants";
+import { maxIvs, minIvs } from "~/types/ivs";
 
 const columns: ResultColumn<Static3GeneratorResult>[] = [
   { title: "Advance", dataIndex: "advance", key: "advance" },
@@ -71,24 +72,6 @@ type FormState = {
   roamer: boolean;
   method4: boolean;
 } & PkmFilterFields;
-
-const minIvs: Ivs = {
-  hp: 0,
-  atk: 0,
-  def: 0,
-  spa: 0,
-  spd: 0,
-  spe: 0,
-};
-
-const maxIvs: Ivs = {
-  hp: 31,
-  atk: 31,
-  def: 31,
-  spa: 31,
-  spd: 31,
-  spe: 31,
-};
 
 const getInitialValues = (game: Static3Game): FormState => {
   return {

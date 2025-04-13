@@ -4,6 +4,7 @@ mod mirage_island;
 mod seed;
 mod stationary;
 mod tidsid;
+mod util;
 
 pub use egg::*;
 pub use feebas_sid::*;

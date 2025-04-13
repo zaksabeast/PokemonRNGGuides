@@ -412,21 +412,19 @@ export const guides = {
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
     ),
   },
-  "/emerald-static-generator": {
+  "/emerald-static": {
     meta: {
-      title: "Emerald Static3 Generator",
-      description: "Generator for Static encounters in Emerald",
+      title: "Emerald Static3",
+      description: "Static encounters in Emerald",
       category: "Emerald",
-      slug: "/emerald-static-generator",
+      slug: "/emerald-static",
       isRoughDraft: true,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Gen 3 Static Generator.mdx",
+      file: "guides/Emerald/Gen 3 Static.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Emerald/Gen 3 Static Generator.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Emerald/Gen 3 Static.mdx")),
   },
   "/emerald-tidsid-generator": {
     meta: {
@@ -1111,21 +1109,19 @@ export const guides = {
         import("~/../guides/FireRed and LeafGreen/Initial Seed Botting.mdx"),
     ),
   },
-  "/frlg-static-generator": {
+  "/frlg-static": {
     meta: {
-      title: "FireRed and LeafGreen Static3 Generator",
-      description: "Generator for Static encounters in FireRed and LeafGreen",
+      title: "FireRed and LeafGreen Static3",
+      description: "Static encounters in FireRed and LeafGreen",
       category: "FireRed and LeafGreen",
-      slug: "/frlg-static-generator",
+      slug: "/frlg-static",
       isRoughDraft: true,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Gen 3 Static Generator.mdx",
+      file: "guides/Emerald/Gen 3 Static.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Emerald/Gen 3 Static Generator.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Emerald/Gen 3 Static.mdx")),
   },
   "/frlg-tidsid-generator": {
     meta: {
@@ -2339,21 +2335,19 @@ export const guides = {
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
     ),
   },
-  "/rs-static-generator": {
+  "/rs-static": {
     meta: {
-      title: "Ruby and Sapphire Static3 Generator",
-      description: "Generator for Static encounters in Ruby and Sapphire",
+      title: "Ruby and Sapphire Static3",
+      description: "Static encounters in Ruby and Sapphire",
       category: "Ruby and Sapphire",
-      slug: "/rs-static-generator",
+      slug: "/rs-static",
       isRoughDraft: true,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Gen 3 Static Generator.mdx",
+      file: "guides/Emerald/Gen 3 Static.mdx",
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Emerald/Gen 3 Static Generator.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Emerald/Gen 3 Static.mdx")),
   },
   "/rs-tidsid-generator": {
     meta: {
@@ -2679,7 +2673,7 @@ export const guideSlugs = [
   z.literal("/emerald-overview"),
   z.literal("/emerald-painting-rng"),
   z.literal("/emerald-sid-feebas"),
-  z.literal("/emerald-static-generator"),
+  z.literal("/emerald-static"),
   z.literal("/emerald-tidsid-generator"),
   z.literal("/emulator-b2w2-dream-radar"),
   z.literal("/emulator-b2w2-runasdate-inital-seed"),
@@ -2722,7 +2716,7 @@ export const guideSlugs = [
   z.literal("/es-gen2-starters"),
   z.literal("/frlg-gen3-sid"),
   z.literal("/frlg-seeding-bot"),
-  z.literal("/frlg-static-generator"),
+  z.literal("/frlg-static"),
   z.literal("/frlg-tidsid-generator"),
   z.literal("/frlg-tips-rng"),
   z.literal("/gba-methods"),
@@ -2798,7 +2792,7 @@ export const guideSlugs = [
   z.literal("/rs-mirage-island"),
   z.literal("/rs-pokefinder-setup"),
   z.literal("/rs-sid-feebas"),
-  z.literal("/rs-static-generator"),
+  z.literal("/rs-static"),
   z.literal("/rs-tidsid-generator"),
   z.literal("/rs-tips-rng"),
   z.literal("/sysbot-lpa-mmo"),

@@ -37,7 +37,6 @@ import { Gen3Sid } from "~/rngToolsUi/gen3/sid";
 import { Gen4Timer } from "~/rngToolsUi/timer/gen4";
 import { EmeraldHeldEgg } from "~/rngToolsUi/gen3/emeraldHeldEgg";
 import { EmeraldPickupEgg } from "~/rngToolsUi/gen3/emeraldPickupEgg";
-import { Static3Generator } from "~/rngToolsUi/gen3/staticGenerator";
 import { Gen3TidSidGenerator } from "~/rngToolsUi/gen3/tidsid";
 import { Gen3MirageIsland } from "~/rngToolsUi/gen3/mirageIsland";
 import { OrAsMirageSpot } from "~/rngToolsUi/gen6/orasMirageSpot";
@@ -46,6 +45,7 @@ import { OrasId } from "~/rngToolsUi/gen6/orasId";
 import { DpptSeed } from "~/rngToolsUi/gen4/dpptSeed";
 import { DpptId } from "~/rngToolsUi/gen4/dpptId";
 import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
+import { Static3 } from "~/rngToolsUi/gen3/static/static3";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -82,7 +82,7 @@ export const markdownComponents = {
   Gen3MirageIsland,
   EmeraldHeldEgg,
   EmeraldPickupEgg,
-  Static3Generator,
+  Static3,
   Gen3TidSidGenerator,
   OrAsMirageSpot,
   ShowIf,

@@ -18,7 +18,11 @@ import {
   fromHexString,
 } from "~/utils/number";
 import { maxIvs, minIvs } from "~/types/ivs";
-import { flattenIvs, FlattenIvs, ivColumns } from "../shared/ivColumns";
+import {
+  flattenIvs,
+  FlattenIvs,
+  ivColumns,
+} from "~/rngToolsUi/shared/ivColumns";
 
 type Result = FlattenIvs<Egg3PickupState>;
 

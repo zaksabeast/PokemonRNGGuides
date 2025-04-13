@@ -20,8 +20,15 @@ import {
 } from "~/rngToolsUi/gen3/static/constants";
 import React from "react";
 import { maxIvs, minIvs } from "~/types/ivs";
+import {
+  flattenIvs,
+  FlattenIvs,
+  ivColumns,
+} from "~/rngToolsUi/shared/ivColumns";
 
-const columns: ResultColumn<Static3SearcherResult>[] = [
+type Result = FlattenIvs<Static3SearcherResult>;
+
+const columns: ResultColumn<Result>[] = [
   {
     title: "Seed",
     dataIndex: "seed",
@@ -38,23 +45,7 @@ const columns: ResultColumn<Static3SearcherResult>[] = [
   },
   { title: "Nature", dataIndex: "nature", key: "nature" },
   { title: "Ability", dataIndex: "ability", key: "ability" },
-  {
-    title: "IVs",
-    dataIndex: "ivs",
-    key: "ivs",
-    render: (ivs) =>
-      ivs.hp.toString().padStart(2, "0") +
-      "/" +
-      ivs.atk.toString().padStart(2, "0") +
-      "/" +
-      ivs.def.toString().padStart(2, "0") +
-      "/" +
-      ivs.spa.toString().padStart(2, "0") +
-      "/" +
-      ivs.spd.toString().padStart(2, "0") +
-      "/" +
-      ivs.spe.toString().padStart(2, "0"),
-  },
+  ...ivColumns,
   {
     title: "Shiny",
     dataIndex: "shiny",
@@ -127,7 +118,7 @@ type Props = {
 };
 
 export const Static3Searcher = ({ game }: Props) => {
-  const [results, setResults] = React.useState<Static3SearcherResult[]>([]);
+  const [results, setResults] = React.useState<Result[]>([]);
 
   const fields = React.useMemo(() => getFields(game), [game]);
 
@@ -158,13 +149,13 @@ export const Static3Searcher = ({ game }: Props) => {
         },
       });
 
-      setResults(results);
+      setResults(results.map(flattenIvs));
     },
     [game],
   );
 
   return (
-    <RngToolForm<FormState, Static3SearcherResult>
+    <RngToolForm<FormState, Result>
       fields={fields}
       columns={columns}
       results={results}

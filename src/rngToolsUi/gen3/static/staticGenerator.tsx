@@ -23,7 +23,7 @@ import {
   Static3Game,
 } from "~/rngToolsUi/gen3/static/constants";
 import { maxIvs, minIvs } from "~/types/ivs";
-import { FlattenIvs, flattenIvs, ivColumns } from "../shared/ivColumns";
+import { FlattenIvs, flattenIvs, ivColumns } from "../../shared/ivColumns";
 
 type Result = FlattenIvs<Static3GeneratorResult>;
 

@@ -3,7 +3,6 @@ TODO:
 
   add filter stat
     based on input
-    check for lvl 5 starter stat base
 
   display real results
 
@@ -72,7 +71,7 @@ const getStatRangeForStarter = async (starter: StarterSpecies) => {
   const maxStats = await rngTools.gen3_calculate_minmax_stats(baseStats, 5, false);
 
   return {
-    hp: {  min: minStats.hp, max: maxStats.hp },
+    hp:  { min: minStats.hp,  max: maxStats.hp },
     atk: { min: minStats.atk, max: maxStats.atk },
     def: { min: minStats.def, max: maxStats.def },
     spa: { min: minStats.spa, max: maxStats.spa },
@@ -89,6 +88,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
   const [gender, setGender] = React.useState<Gender | null>(null);
 
   const [targetAdv, setTargetAdv] = React.useState<number>(0);
+
   const [latestHitAdv, setLatestHitAdv] = React.useState<number | null>(null);
 
   const [caughtStats, setCaughtStats_raw] = React.useState<{
@@ -110,6 +110,8 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
     spd: { min: 9, max: 13, value: null },
     spe: { min: 10, max: 14, value: null },
   });
+
+  //NO_PROD use getStatRangeForStarter
 
   const setCaughtStats = (val:typeof caughtStats) => {
     setCaughtStats_raw(val);

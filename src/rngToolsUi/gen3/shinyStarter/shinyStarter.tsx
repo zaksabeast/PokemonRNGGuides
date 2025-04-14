@@ -39,22 +39,6 @@ import { getStatMoreLessFromNature } from "~/types/nature";
 export type Game = "emerald" | "rs";
 
 
-type StarterSpecies = "Mudkip" | "Torchic" | "Treecko";
-
-type FormStateFindShiny = {
-  pokemonSpecies: StarterSpecies;
-  tid: string;
-  sid: string;
-};
-
-const getInitialValuesFindShiny = (): FormStateFindShiny => {
-  return {
-    pokemonSpecies: "Mudkip",
-    tid: "0",
-    sid: "0",
-  };
-};
-
 type Props = {
   game?: Game;
 };
@@ -290,7 +274,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
       setNature(e as Nature);
     };
 
-    const onValueChanged = (stat: Stat, value: number) => {
+    const onStatValueChanged = (stat: Stat, value: number) => {
       setCaughtStats({
         ...caughtStats,
         [stat]: { ...caughtStats[stat], value },
@@ -324,7 +308,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
           natureInput={nature ?? ""}
           onNatureInputChanged={onNatureInputChanged}
           onNatureBtnChanged={onNatureBtnChanged}
-          onValueChanged={onValueChanged}
+          onValueChanged={onStatValueChanged}
         />
       ),
     });
@@ -334,31 +318,6 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
 
   return (
     <div>
-      <RngToolForm<FormStateFindShiny, Result>
-        fields={[
-          {
-            label: "Starter",
-            input: (
-              <FormikRadio<FormStateFindShiny, "pokemonSpecies">
-                name="pokemonSpecies"
-                options={["Mudkip", "Torchic", "Treecko"]}
-              />
-            ),
-          },
-          {
-            label: "TID",
-            input: <FormikInput<FormStateFindShiny> name="tid" />,
-          },
-          {
-            label: "SID",
-            input: <FormikInput<FormStateFindShiny> name="sid" />,
-          },
-        ]}
-        initialValues={initialValues}
-        submitButtonLabel="Find target advance for shiny Pokémon"
-        onSubmit={onSubmitFindTarget}
-        submitTrackerId="shinyStarter_findTarget"
-      />
 
       {targetAdv !== -1 && ( //NO_PROD
         <RngToolForm<{}, Result>

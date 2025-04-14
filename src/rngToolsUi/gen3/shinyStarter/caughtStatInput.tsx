@@ -2,9 +2,11 @@ import { RadioGroup } from "../../../components/radio";
 import { Button } from "../../../components/button";
 import { AutoComplete } from "antd";
 import React from "react";
-import {FormikSelect} from "~/components";
+import {Select} from "~/components";
+import { FormFieldTable } from "../../../components/formFieldTable";
 
 import {Stat} from "../../../types/stat";
+import {natures} from "../../../types/nature";
 
 export type NatureStatState = "more" | "less" | "nochange";
 import { Nature } from "~/rngTools";
@@ -18,6 +20,16 @@ export type CaughtStatProps = {
   nature: NatureStatState;
   onValueChanged?: (stat: Stat, value: number) => void;
   onNatureChanged?: (stat: Stat, nature: NatureStatState) => void;
+};
+
+const statToName = (stat:Stat) => {
+  if (stat === "hp") return "HP";
+  if (stat === "atk") return "ATK";
+  if (stat === "def") return "DEF";
+  if (stat === "spa") return "SPA";
+  if (stat === "spd") return "SPD";
+  if (stat === "spe") return "SPE";
+  throw new Error(`invalid stat (${stat})`);
 };
 
 export const CaughtStatInput = ({
@@ -56,7 +68,7 @@ export const CaughtStatInput = ({
 
   return (
     <tr>
-      <td style={{ paddingRight: "20px" }}>{statLabel}</td>
+      <td style={{ paddingRight: "20px" }}>{statToName(statLabel)}</td>
       <td style={{ paddingRight: "30px" }}>{natureBtn}</td>
 
       <td>
@@ -110,6 +122,8 @@ export const calculateNature = (natureStatMore:Stat | null, natureStatLess:Stat 
   return getNatureFromStatMoreLess(natureStatMore, natureStatLess);
 };
 
+const sortedNatures = natures.slice(0).sort();
+
 export const CaughtStatInputs = ({
   hp,
   atk,
@@ -132,12 +146,6 @@ export const CaughtStatInputs = ({
   };
 
   const props = { onValueChanged, onNatureChanged: onNatureBtnChanged };
-/*
-  const selectedValues = React.useMemo(
-    () => allValues.filter((v) => v.selected),
-    [allValues],
-  );
-*/
 
   return (
     <>
@@ -179,20 +187,20 @@ export const CaughtStatInputs = ({
             nature={getNatureState("spe")}
             statLabel="spe"
           />
-          <tr>
-            <td></td>
-            <td colSpan={3}>Nature: 
-              
-              
-            <AutoComplete style={{width:'100px'}} 
-             backfill={true} 
-             value={natureInput}
-             onChange={onNatureInputChanged} 
-             options={natures.map(nature => ({label:nature, value:nature}))}
-            ></AutoComplete></td>
-          </tr>
         </tbody>
       </table>
+      
+      <FormFieldTable fields={[
+        {
+          label: "Nature",
+          input: (<Select style={{minWidth:'120px'}}
+            value={natureInput}
+            onChange={onNatureInputChanged} 
+            options={sortedNatures.map(nature => ({label:nature, value:nature}))}
+          />)
+        }
+      ]} />
+
       <Button trackerId="CaughtStatInputs_clear" onClick={clear}>
         Clear
       </Button>

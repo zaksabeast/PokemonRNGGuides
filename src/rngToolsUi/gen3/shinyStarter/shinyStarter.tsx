@@ -9,7 +9,6 @@ import {
   CaughtStatInputs,
   NatureStatState,
   CaughtStatProps,
-  Stat,
   calculateNature,
 } from "./caughtStatInput";
 import {
@@ -21,6 +20,8 @@ import {
 } from "~/rngTools";
 import React from "react";
 import { MultiTimer } from "../../../components/multiTimer";
+import {Stat} from "../../../types/stat";
+import { getStatMoreLessFromNature } from "~/types/nature";
 
 type Game = "emerald" | "rs";
 
@@ -276,15 +277,6 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
         ),
       },
     ];
-    const labelToKey = (stat: Stat) => {
-      if (stat === "HP") return "hp";
-      if (stat === "ATK") return "atk";
-      if (stat === "DEF") return "def";
-      if (stat === "SPA") return "spa";
-      if (stat === "SPD") return "spd";
-      if (stat === "SPE") return "spe";
-      throw new Error("invalid stat label " + stat);
-    };
 
     const onNatureBtnChanged = (stat: Stat, natureState: NatureStatState) => {
       if (natureState === "nochange") {
@@ -323,15 +315,29 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
     };
     
     const onNatureInputChanged = (e:string) => {
-      //NO_PROD
+      const [statMore, statLess] = getStatMoreLessFromNature(e as Nature);
+
+      if (statMore === statLess){
+        setCaughtStats({
+          ...caughtStats,
+          natureStatMore: null,
+          natureStatLess: null,
+        });
+      } else {
+        setCaughtStats({
+          ...caughtStats,
+          natureStatMore: statMore,
+          natureStatLess: statLess,
+        });
+      }
+
       setNature(e as Nature);
     };
 
     const onValueChanged = (stat: Stat, value: number) => {
-      const key = labelToKey(stat);
       setCaughtStats({
         ...caughtStats,
-        [key]: { ...caughtStats[key], value },
+        [stat]: { ...caughtStats[stat], value },
       });
     };
 
@@ -346,6 +352,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
         spd: { ...caughtStats.spd, value: null },
         spe: { ...caughtStats.spe, value: null },
       });
+      setNature(null);
     };
     
     fields.push({

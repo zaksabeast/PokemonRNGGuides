@@ -1,3 +1,19 @@
+/*
+TODO:
+  add gender
+  
+
+  add filter stat
+    based on input
+    check for lvl 5 starter stat base
+
+  display real results
+
+  cleanup
+
+*/
+
+
 import { Field, RngToolForm, ResultColumn, RngToolSubmit } from "~/components";
 import { FormikRadio, RadioGroup } from "../../../components/radio";
 import { FormikInput } from "../../../components/input";

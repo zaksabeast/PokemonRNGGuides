@@ -19,10 +19,10 @@ pub struct Ivs {
     pub spd: u8,
     pub spe: u8,
 }
-
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct StatFilter {
+    pub base_stats: Ivs,
     pub min_stats: Ivs,
     pub max_stats: Ivs,
 }

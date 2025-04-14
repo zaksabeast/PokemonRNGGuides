@@ -5,7 +5,7 @@ mod nature;
 mod shiny;
 mod species;
 
-use crate::Ivs;
+use crate::{Ivs, StatFilter};
 pub use ability::*;
 pub use gender::*;
 pub use gender_ratio::*;
@@ -24,8 +24,7 @@ pub struct PkmFilter {
     pub min_ivs: Ivs,
     pub max_ivs: Ivs,
     pub ability: Option<AbilityType>,
-    pub min_stats: Option<Ivs>,
-    pub max_stats: Option<Ivs>,
+    pub stats: Option<StatFilter>,
 }
 
 impl PkmFilter {

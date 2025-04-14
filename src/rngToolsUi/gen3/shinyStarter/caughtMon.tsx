@@ -12,7 +12,7 @@ export type NatureStatState = "more" | "less" | "nochange";
 import { Nature } from "~/rngTools";
 import { getNatureFromStatMoreLess } from "~/types/nature";
 
-export type CaughtStatProps = {
+export type CaughtMonStatProps = {
   statLabel: Stat;
   min: number;
   max: number;
@@ -32,7 +32,7 @@ const statToName = (stat:Stat) => {
   throw new Error(`invalid stat (${stat})`);
 };
 
-export const CaughtStatInput = ({
+export const CaughtMonStatInput = ({
   statLabel,
   min,
   max,
@@ -40,7 +40,7 @@ export const CaughtStatInput = ({
   nature,
   onNatureChanged,
   onValueChanged,
-}: CaughtStatProps) => {
+}: CaughtMonStatProps) => {
   onNatureChanged = onNatureChanged || (() => {});
   onValueChanged = onValueChanged || (() => {});
 
@@ -100,8 +100,9 @@ export type CaughtStatsProps = {
   spa: StatMinMaxValue;
   spd: StatMinMaxValue;
   spe: StatMinMaxValue;
-  natureInput:string;
-  natureSearchValue:string;
+  canBeMaleOrFemale: boolean;
+  gender:Gender | null;
+  nature:string;
   onValueChanged: (stat: Stat, val: number) => void;
   onNatureBtnChanged: (stat: Stat, nature: NatureStatState) => void;
   onNatureInputChanged: (inp:string) => void;
@@ -124,16 +125,18 @@ export const calculateNature = (natureStatMore:Stat | null, natureStatLess:Stat 
 
 const sortedNatures = natures.slice(0).sort();
 
-export const CaughtStatInputs = ({
+export const CaughtMon = ({
   hp,
   atk,
   def,
   spa,
   spd,
   spe,
+  canBeMaleOrFemale,
+  gender,
   natureStatMore,
   natureStatLess,
-  natureInput,
+  nature,
   onNatureInputChanged,
   onNatureBtnChanged,
   onValueChanged,
@@ -151,37 +154,37 @@ export const CaughtStatInputs = ({
     <>
       <table>
         <tbody>
-          <CaughtStatInput
+          <CaughtMonStatInput
             {...props}
             {...hp}
             nature={getNatureState("hp")}
             statLabel="hp"
           />
-          <CaughtStatInput
+          <CaughtMonStatInput
             {...props}
             {...atk}
             nature={getNatureState("atk")}
             statLabel="atk"
           />
-          <CaughtStatInput
+          <CaughtMonStatInput
             {...props}
             {...def}
             nature={getNatureState("def")}
             statLabel="def"
           />
-          <CaughtStatInput
+          <CaughtMonStatInput
             {...props}
             {...spa}
             nature={getNatureState("spa")}
             statLabel="spa"
           />
-          <CaughtStatInput
+          <CaughtMonStatInput
             {...props}
             {...spd}
             nature={getNatureState("spd")}
             statLabel="spd"
           />
-          <CaughtStatInput
+          <CaughtMonStatInput
             {...props}
             {...spe}
             nature={getNatureState("spe")}
@@ -189,17 +192,34 @@ export const CaughtStatInputs = ({
           />
         </tbody>
       </table>
-      
-      <FormFieldTable fields={[
+
+      const fields:Field[] = [
         {
           label: "Nature",
           input: (<Select style={{minWidth:'120px'}}
-            value={natureInput}
-            onChange={onNatureInputChanged} 
+            value={nature}
+            onChange={onNatureInputChanged}
             options={sortedNatures.map(nature => ({label:nature, value:nature}))}
           />)
         }
-      ]} />
+      ];
+
+      if (canBeMaleOrFemale){
+        fields.push({
+          label: "Gender",
+          input: (<RadioGroup
+            optionType="button"
+            onChange={e => onGenderChanged(e.target.value)}
+            value={gender}
+            options={[
+              {label:"Male", value:"Male" as Gender}
+              {label:"Female", value:"Female" as Gender}
+            ]}
+          />)
+        });
+      }
+
+      <FormFieldTable fields={fields} />
 
       <Button trackerId="CaughtStatInputs_clear" onClick={clear}>
         Clear

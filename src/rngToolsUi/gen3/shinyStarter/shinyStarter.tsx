@@ -1,7 +1,5 @@
 /*
 TODO:
-  add gender
-  
 
   add filter stat
     based on input
@@ -22,11 +20,11 @@ import { Button } from "../../../components/button";
 import {
   CaughtStatInput,
   StatMinMaxValue,
-  CaughtStatInputs,
+  CaughtMon,
   NatureStatState,
   CaughtStatProps,
   calculateNature,
-} from "./caughtStatInput";
+} from "./caughtMon";
 import {
   Gender,
   Nature,
@@ -39,15 +37,8 @@ import { MultiTimer } from "../../../components/multiTimer";
 import {Stat} from "../../../types/stat";
 import { getStatMoreLessFromNature } from "~/types/nature";
 
-type Game = "emerald" | "rs";
+export type Game = "emerald" | "rs";
 
-export interface Result {
-  adv: number;
-  diffWithTarget: number;
-  stats: string;
-  nature: Nature;
-  gender: Gender;
-}
 
 type StarterSpecies = "Mudkip" | "Torchic" | "Treecko";
 
@@ -65,82 +56,29 @@ const getInitialValuesFindShiny = (): FormStateFindShiny => {
   };
 };
 
-const generateResults = async function (
-  values: FormStateFindShiny,
-): Promise<Result[]> {
-  return [];
-};
-
-const findTargetAdvanceForShinyPokemon = async function (
-  game: Game,
-  values: FormStateFindShiny,
-): Promise<number | null> {
-  const MINIMAL_ADV = 600;
-
-  for (let i = 0; i < 100; i++) {
-    const seed = game === "emerald" ? 0 : 0x5a0;
-    const initial_advances = Math.max(i * 100_000, MINIMAL_ADV);
-
-    const results = await rngTools.gen3_static_generator_states({
-      species: values.pokemonSpecies,
-      method4: false,
-      initial_advances,
-      max_advances: 100_000,
-      seed,
-      offset: 0,
-      tid: +values.tid || 0,
-      sid: +values.sid || 0,
-      bugged_roamer: false,
-      filter: {
-        shiny: true,
-        nature: undefined,
-        gender: undefined,
-        ability: undefined,
-        min_ivs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
-        max_ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
-        stats: undefined,
-      },
-    });
-    console.log(results);
-    if (results.length) return results[0].advance;
-  }
-
-  return null;
-};
-
 type Props = {
   game?: Game;
 };
 
-const getStatRangeForStarter = (starter: StarterSpecies) => {
-  if (starter === "Mudkip")
-    return {
-      hp: { min: 20, max: 21 },
-      atk: { min: 10, max: 14 },
-      def: { min: 9, max: 12 },
-      spa: { min: 9, max: 12 },
-      spd: { min: 9, max: 12 },
-      spe: { min: 8, max: 11 },
-    };
-  if (starter === "Treecko")
-    return {
-      hp: { min: 19, max: 20 },
-      atk: { min: 8, max: 12 },
-      def: { min: 7, max: 11 },
-      spa: { min: 9, max: 14 },
-      spd: { min: 9, max: 13 },
-      spe: { min: 10, max: 14 },
-    };
-  if (starter === "Torchic")
-    return {
-      hp: { min: 19, max: 21 },
-      atk: { min: 9, max: 13 },
-      def: { min: 8, max: 11 },
-      spa: { min: 10, max: 14 },
-      spd: { min: 9, max: 12 },
-      spe: { min: 8, max: 12 },
-    };
-  throw new Error("invalid starter: " + starter);
+const BASE_STATS = {
+  "Mudkip":{hp:10, atk:10, def:10, spa:10, spd:10, spe:10},
+  "Treecko":{hp:11, atk:11, def:11, spa:11, spd:11, spe:11},
+  "Torchic":{hp:12, atk:12, def:12, spa:12, spd:12, spe:12},
+} as const;
+
+const getStatRangeForStarter = async (starter: StarterSpecies) => {
+  const baseStats = BASE_STATS[starter];
+  const minStats = await rngTools.gen3_calculate_minmax_stats(baseStats, 5, true);
+  const maxStats = await rngTools.gen3_calculate_minmax_stats(baseStats, 5, false);
+
+  return {
+    hp: {  min: minStats.hp, max: maxStats.hp },
+    atk: { min: minStats.atk, max: maxStats.atk },
+    def: { min: minStats.def, max: maxStats.def },
+    spa: { min: minStats.spa, max: maxStats.spa },
+    spd: { min: minStats.spd, max: maxStats.spd },
+    spe: { min: minStats.spe, max: maxStats.spe },
+  };
 };
 
 export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
@@ -148,6 +86,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
 
   const [results, setResults] = React.useState<Result[]>([]);
   const [nature, setNature] = React.useState<Nature | null>(null);
+  const [gender, setGender] = React.useState<Gender | null>(null);
 
   const [targetAdv, setTargetAdv] = React.useState<number>(0);
   const [latestHitAdv, setLatestHitAdv] = React.useState<number | null>(null);
@@ -251,8 +190,8 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
         render(adv) {
           return (
             <Button
-              trackerId="NO_PROD"
-              onClick={(e) => {
+              trackerId="shinyStarter_adv"
+              onClick={() => {
                 setLatestHitAdv(adv);
               }}
             >
@@ -328,7 +267,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
         return;
       }
     };
-    
+
     const onNatureInputChanged = (e:string) => {
       const [statMore, statLess] = getStatMoreLessFromNature(e as Nature);
 
@@ -369,15 +308,17 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
       });
       setNature(null);
     };
-    
+
     fields.push({
       label: "Caught Pokémon",
       direction: "column",
       input: (
-        <CaughtStatInputs
+        <CaughtMon
           clear={clear}
-          natureSearchValue="" //NO_PROD
           {...caughtStats}
+          canBeMaleOrFemale={true}
+          gender={gender}
+          onGenderChanged={setGender}
           natureInput={nature ?? ""}
           onNatureInputChanged={onNatureInputChanged}
           onNatureBtnChanged={onNatureBtnChanged}

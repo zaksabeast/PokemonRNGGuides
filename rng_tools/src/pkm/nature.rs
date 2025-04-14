@@ -45,3 +45,39 @@ impl Default for Nature {
         Self::Hardy
     }
 }
+
+pub struct NatureStatFactor {
+    pub atk: i8,
+    pub def: i8,
+    pub spa: i8,
+    pub spd: i8,
+    pub spe: i8,
+}
+
+pub const NATURE_STAT_FACTORS:[NatureStatFactor;25] = [
+    NatureStatFactor { atk: 0, def:0, spa:0, spd:0, spe: 0 },
+    NatureStatFactor { atk:1, def:-1, spa:0, spd:0, spe: 0 },
+    NatureStatFactor { atk:1, def:0, spa:-1, spd:0, spe: 0 },
+    NatureStatFactor { atk:1, def:0, spa:0, spd:-1, spe: 0 },
+    NatureStatFactor { atk:1, def:0, spa:0, spd:0, spe: 1 },
+    NatureStatFactor { atk:-1, def:1, spa:0, spd:0, spe: 0 },
+    NatureStatFactor { atk: 0, def:0, spa:0, spd:0, spe: 0 },
+    NatureStatFactor { atk: 0, def:1, spa:-1, spd:0, spe: 0 },
+    NatureStatFactor { atk: 0, def:1, spa:0, spd:-1, spe: 0 },
+    NatureStatFactor { atk: 0, def:1, spa:0, spd:0, spe: 1 },
+    NatureStatFactor { atk:-1, def:0, spa:1, spd:0, spe: 0 },
+    NatureStatFactor { atk: 0, def:-1, spa:1, spd:0, spe: 0 },
+    NatureStatFactor { atk: 0, def:0, spa:0, spd:0, spe: 0 },
+    NatureStatFactor { atk: 0, def:0, spa:1, spd:-1, spe: 0 },
+    NatureStatFactor { atk: 0, def:0, spa:1, spd:0, spe: -1 },
+    NatureStatFactor { atk:-1, def:0, spa:0, spd:1, spe: 0 },
+    NatureStatFactor { atk: 0, def:-1, spa:0, spd:1, spe: 0 },
+    NatureStatFactor { atk: 0, def:0, spa:-1, spd:1, spe: 0 },
+    NatureStatFactor { atk: 0, def:0, spa:0, spd:0, spe: 0 },
+    NatureStatFactor { atk: 0, def:0, spa:0, spd:1, spe: -1 },
+    NatureStatFactor { atk:-1, def:0, spa:0, spd:0, spe: 1 },
+    NatureStatFactor { atk: 0, def:-1, spa:0, spd:0, spe: 1 },
+    NatureStatFactor { atk: 0, def:0, spa:-1, spd:0, spe: 1 },
+    NatureStatFactor { atk: 0, def:0, spa:0, spd:-1, spe: 1 },
+    NatureStatFactor { atk: 0, def:0, spa:0, spd:0, spe: 0 },
+];

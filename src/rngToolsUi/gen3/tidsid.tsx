@@ -6,17 +6,12 @@ import {
 import {
   Field,
   FormikIdFilter,
-  FormikInput,
+  FormikNumberInput,
   FormikSelect,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import {
-  DecimalString,
-  fromDecimalString,
-  toDecimalString,
-} from "~/utils/number";
 import dayjs, { Dayjs } from "dayjs";
 import { match } from "ts-pattern";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
@@ -34,30 +29,30 @@ const columns: ResultColumn<Gen3TidSidResult>[] = [
 type Game = "rs" | "frlge" | "xdcolo";
 
 export type FormState = {
-  offset: DecimalString;
-  initial_advances: DecimalString;
-  max_advances: DecimalString;
+  offset: number;
+  initial_advances: number;
+  max_advances: number;
   rs_input_type: "Dead Battery" | "DateTime" | "Seed";
-  seed: DecimalString;
+  seed: number;
   date: Dayjs;
   time: Dayjs;
-  tid: DecimalString;
+  tid: number;
   filter: IdFilter;
 };
 
 const initialValues: FormState = {
-  offset: toDecimalString(0),
-  initial_advances: toDecimalString(0),
-  max_advances: toDecimalString(1000),
+  offset: 0,
+  initial_advances: 0,
+  max_advances: 1000,
   rs_input_type: "Dead Battery",
-  seed: toDecimalString(0),
+  seed: 0,
   date: dayjs(),
   time: dayjs(),
-  tid: toDecimalString(0),
+  tid: 0,
   filter: {
     type: "tid",
-    value0: toDecimalString(0),
-    value1: "",
+    value0: 0,
+    value1: undefined,
   },
 };
 
@@ -88,19 +83,19 @@ const getFields = (game: Game) => {
       },
       {
         label: "Seed",
-        input: <FormikInput<FormState> name="seed" />,
+        input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
       },
     ])
     .with("frlge", (): Field[] => [
       {
         label: "TID",
-        input: <FormikInput<FormState> name="tid" />,
+        input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
       },
     ])
     .with("xdcolo", (): Field[] => [
       {
         label: "Seed",
-        input: <FormikInput<FormState> name="seed" />,
+        input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
       },
     ])
     .exhaustive();
@@ -108,20 +103,27 @@ const getFields = (game: Game) => {
   return [
     {
       label: "Offset",
-      input: <FormikInput<FormState> name="offset" />,
+      input: <FormikNumberInput<FormState> name="offset" numType="decimal" />,
     },
     {
       label: "Initial Advances",
-      input: <FormikInput<FormState> name="initial_advances" />,
+      input: (
+        <FormikNumberInput<FormState>
+          name="initial_advances"
+          numType="decimal"
+        />
+      ),
     },
     {
       label: "Max Advances",
-      input: <FormikInput<FormState> name="max_advances" />,
+      input: (
+        <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+      ),
     },
     ...dynamic,
     {
       label: "Filter",
-      input: <FormikIdFilter<FormState> name="filter" optional={true} />,
+      input: <FormikIdFilter<FormState> name="filter" optional />,
     },
   ];
 };
@@ -135,14 +137,6 @@ export const Gen3TidSidGenerator = ({ game = "rs" }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const offset = fromDecimalString(opts.offset);
-      const initialAdvances = fromDecimalString(opts.initial_advances);
-      const maxAdvances = fromDecimalString(opts.max_advances);
-
-      if (offset == null || initialAdvances == null || maxAdvances == null) {
-        return;
-      }
-
       const versionOpts: Gen3TidSidVersionOptions = match(game)
         .with("rs", () => ({
           Rs: match(opts.rs_input_type)
@@ -157,26 +151,26 @@ export const Gen3TidSidGenerator = ({ game = "rs" }: Props) => {
               };
             })
             .with("Seed", () => ({
-              Seed: fromDecimalString(opts.seed) ?? 0,
+              Seed: opts.seed,
             }))
             .exhaustive(),
         }))
         .with("frlge", () => ({
           Frlge: {
-            tid: fromDecimalString(opts.tid) ?? 0,
+            tid: opts.tid,
           },
         }))
         .with("xdcolo", () => ({
           XdColo: {
-            seed: fromDecimalString(opts.seed) ?? 0,
+            seed: opts.seed,
           },
         }))
         .exhaustive();
 
       const results = await rngTools.gen3_tidsid_states({
-        offset,
-        initial_advances: initialAdvances,
-        max_advances: maxAdvances,
+        offset: opts.offset,
+        initial_advances: opts.initial_advances,
+        max_advances: opts.max_advances,
         version_options: versionOpts,
         filter: denormalizeIdFilter(opts.filter) ?? undefined,
       });

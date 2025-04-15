@@ -3,11 +3,11 @@ import type { FormState } from "~/rngToolsUi/gen6/orasMirageSpot";
 
 describe("rng tool", () => {
   it("works", () => {
-    testRngTool<Omit<FormState, "startDate" | "maxAdvances">>({
+    testRngTool<Omit<FormState, "start_date" | "max_advances">>({
       url: "/oras-mirage-spots",
       form: {
         seed: "aabbccdd",
-        filterSpecies: { type: "select", value: "Ditto" },
+        filter_species: { type: "select", value: "Ditto" },
         tid: "12345",
       },
     });

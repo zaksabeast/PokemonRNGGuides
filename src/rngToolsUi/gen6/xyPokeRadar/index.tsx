@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
@@ -13,14 +13,6 @@ import {
   PokeRadarChainState,
   PokeRadarPatch,
 } from "~/rngTools";
-import {
-  DecimalString,
-  fromDecimalString,
-  fromHexString,
-  HexString,
-  toDecimalString,
-  toHexString,
-} from "~/utils/number";
 import { PokeRadarPatches } from "./patch";
 
 type ChainResult = {
@@ -93,71 +85,77 @@ const noChainColumns: ResultColumn<LooseColumns>[] = [
 ];
 
 export type FormState = {
-  state3: HexString;
-  state2: HexString;
-  state1: HexString;
-  state0: HexString;
-  partyCount: DecimalString;
-  initialAdvances: DecimalString;
-  maxAdvances: DecimalString;
-  chain: DecimalString;
-  bonusMusic: boolean;
-  filterShiny: boolean;
+  state3: number;
+  state2: number;
+  state1: number;
+  state0: number;
+  party_count: number;
+  initial_advances: number;
+  max_advances: number;
+  chain: number;
+  bonus_music: boolean;
+  filter_shiny: boolean;
 };
 
 const initialValues: FormState = {
-  state3: toHexString(0),
-  state2: toHexString(0),
-  state1: toHexString(0),
-  state0: toHexString(0),
-  partyCount: toDecimalString(1),
-  initialAdvances: toDecimalString(0),
-  maxAdvances: toDecimalString(0),
-  chain: toDecimalString(0),
-  bonusMusic: false,
-  filterShiny: false,
+  state3: 0,
+  state2: 0,
+  state1: 0,
+  state0: 0,
+  party_count: 1,
+  initial_advances: 0,
+  max_advances: 0,
+  chain: 0,
+  bonus_music: false,
+  filter_shiny: false,
 };
 
 const fields: Field[] = [
   {
     label: "State[3]",
-    input: <FormikInput<FormState> name="state3" />,
+    input: <FormikNumberInput<FormState> name="state3" numType="hex" />,
   },
   {
     label: "State[2]",
-    input: <FormikInput<FormState> name="state2" />,
+    input: <FormikNumberInput<FormState> name="state2" numType="hex" />,
   },
   {
     label: "State[1]",
-    input: <FormikInput<FormState> name="state1" />,
+    input: <FormikNumberInput<FormState> name="state1" numType="hex" />,
   },
   {
     label: "State[0]",
-    input: <FormikInput<FormState> name="state0" />,
+    input: <FormikNumberInput<FormState> name="state0" numType="hex" />,
   },
   {
     label: "Initial Advances",
-    input: <FormikInput<FormState> name="initialAdvances" />,
+    input: (
+      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
+    ),
   },
   {
     label: "Max Advances",
-    input: <FormikInput<FormState> name="maxAdvances" />,
+    input: (
+      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+    ),
   },
   {
     label: "Party Count",
-    input: <FormikInput<FormState> name="partyCount" />,
+    input: (
+      <FormikNumberInput<FormState> name="party_count" numType="decimal" />
+    ),
   },
   {
     label: "Chain",
-    input: <FormikInput<FormState> name="chain" />,
+    input: <FormikNumberInput<FormState> name="chain" numType="decimal" />,
   },
   {
     label: "Bonus Music",
-    input: <FormikSwitch<FormState, "bonusMusic"> name="bonusMusic" />,
+    input: <FormikSwitch<FormState, "bonus_music"> name="bonus_music" />,
   },
   {
     label: "Filter Shiny",
-    input: <FormikSwitch<FormState, "filterShiny"> name="filterShiny" />,
+    input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
   },
 ];
 
@@ -170,36 +168,14 @@ export const XyPokeRadar = () => {
   >([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const state3 = fromHexString(opts.state3);
-    const state2 = fromHexString(opts.state2);
-    const state1 = fromHexString(opts.state1);
-    const state0 = fromHexString(opts.state0);
-    const initialAdvances = fromDecimalString(opts.initialAdvances);
-    const maxAdvances = fromDecimalString(opts.maxAdvances);
-    const partyCount = fromDecimalString(opts.partyCount);
-    const chain = fromDecimalString(opts.chain);
-
-    if (
-      state3 == null ||
-      state2 == null ||
-      state1 == null ||
-      state0 == null ||
-      initialAdvances == null ||
-      maxAdvances == null ||
-      partyCount == null ||
-      chain == null
-    ) {
-      return;
-    }
-
     const results = await rngTools.generate_poke_radar_states({
-      state: [state0, state1, state2, state3],
-      initial_advances: initialAdvances,
-      max_advances: maxAdvances,
-      party_count: partyCount,
-      chain,
-      bonus_music: opts.bonusMusic,
-      filter_shiny: opts.filterShiny,
+      state: [opts.state0, opts.state1, opts.state2, opts.state3],
+      initial_advances: opts.initial_advances,
+      max_advances: opts.max_advances,
+      party_count: opts.party_count,
+      chain: opts.chain,
+      bonus_music: opts.bonus_music,
+      filter_shiny: opts.filter_shiny,
       filter_slot: undefined,
     });
 

@@ -7,6 +7,7 @@ import { RngToolSubmit } from "~/components/rngToolForm";
 import { noop } from "lodash-es";
 import { match } from "ts-pattern";
 import * as tst from "ts-toolbelt";
+import { RadioChangeEvent } from "antd";
 
 export type CaughtMonResult = {
   advance: number;
@@ -47,26 +48,34 @@ type StatIndicatorProps = {
 const naturStatOptions = toOptions(["+", "-"]);
 
 const NatureStatRadio = ({ stat }: StatIndicatorProps) => {
-  const formik = useFormikContext<FormState>();
-  const isIncreased = stat === formik.values.increasedStat;
-  const isDecreased = stat === formik.values.decreasedStat;
+  const { setFieldValue, values } = useFormikContext<FormState>();
+  const isIncreased = stat === values.increasedStat;
+  const isDecreased = stat === values.decreasedStat;
   const value = isIncreased ? "+" : isDecreased ? "-" : null;
+
+  const onChange = React.useCallback(
+    (event: RadioChangeEvent) => {
+      const newValue = event.target.value;
+      match({ newValue, isIncreased, isDecreased })
+        // We don't allow a stat to be both + and -,
+        // so we make sure to only set a stat when
+        // it's not already set to the opposite value
+        .with({ newValue: "+", isDecreased: false }, () => {
+          setFieldValue("increasedStat", stat);
+        })
+        .with({ newValue: "-", isIncreased: false }, () => {
+          setFieldValue("decreasedStat", stat);
+        })
+        .otherwise(noop);
+    },
+    [isIncreased, isDecreased, setFieldValue, stat],
+  );
+
   return (
     <RadioGroup
       optionType="button"
       value={value}
-      onChange={(event) => {
-        const newValue = event.target.value;
-        match({ newValue, isIncreased, isDecreased })
-          // Don't allow a stat to be both + and -
-          .with({ newValue: "+", isDecreased: false }, () =>
-            formik.setFieldValue("increasedStat", stat),
-          )
-          .with({ newValue: "-", isIncreased: false }, () =>
-            formik.setFieldValue("decreasedStat", stat),
-          )
-          .otherwise(noop);
-      }}
+      onChange={onChange}
       options={naturStatOptions}
     />
   );

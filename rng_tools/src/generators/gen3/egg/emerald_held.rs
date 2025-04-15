@@ -1,7 +1,7 @@
+use crate::Nature;
 use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
 use crate::{Gender, Species, gen3_shiny};
-use crate::{GenderRatio, Nature};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -55,11 +55,7 @@ impl Gen3HeldEgg {
         }
 
         let gender = match species {
-            // Species::NidoranM => Species::Pikachu.gender_from_pid(pid),
-            // Species::Volbeat => Species::Pikachu.gender_from_pid(pid),
-            // _ => species.gender_from_pid(pid),
-            Species::NidoranM => GenderRatio::OneToOne.gender(pid as u8),
-            Species::Illumise => {
+            Species::NidoranF | Species::Illumise => {
                 let val = (pid & 0xFFFF) as u16;
                 if val < 0x8000 {
                     Gender::Female
@@ -964,6 +960,82 @@ mod test {
             sid: 0,
             lua_adjustment: false,
             egg_species: Species::Illumise,
+            filters: Egg3HeldFilters {
+                shiny: false,
+                nature: None,
+                gender: None,
+            },
+        };
+
+        let result = emerald_egg_held_states(&opts);
+
+        let expected = [
+            Gen3HeldEgg {
+                advance: 83,
+                redraws: 0,
+                pid: 0x95122D94,
+                shiny: false,
+                nature: Nature::Hardy,
+                ability: 0,
+                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 84,
+                redraws: 0,
+                pid: 0xD6D80967,
+                shiny: false,
+                nature: Nature::Relaxed,
+                ability: 1,
+                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 85,
+                redraws: 0,
+                pid: 0x189E112E,
+                shiny: false,
+                nature: Nature::Calm,
+                ability: 0,
+                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 86,
+                redraws: 0,
+                pid: 0x5A65A1E1,
+                shiny: false,
+                nature: Nature::Quiet,
+                ability: 1,
+                gender: Gender::Male,
+            },
+            Gen3HeldEgg {
+                advance: 88,
+                redraws: 0,
+                pid: 0xDDF173C5,
+                shiny: false,
+                nature: Nature::Quirky,
+                ability: 1,
+                gender: Gender::Female,
+            },
+        ];
+
+        assert_list_eq!(result, expected);
+    }
+
+    #[test]
+    fn nidoranf_gender() {
+        let opts = Egg3HeldOptions {
+            delay: 0,
+            compatability: Compatability::GetAlong,
+            calibration: 18,
+            initial_advances: 101,
+            max_advances: 5,
+            min_redraw: 0,
+            max_redraw: 0,
+            female_has_everstone: false,
+            female_nature: Nature::Adamant,
+            tid: 0,
+            sid: 0,
+            lua_adjustment: false,
+            egg_species: Species::NidoranF,
             filters: Egg3HeldFilters {
                 shiny: false,
                 nature: None,

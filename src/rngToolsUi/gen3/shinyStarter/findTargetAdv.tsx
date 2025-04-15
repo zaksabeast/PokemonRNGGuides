@@ -35,16 +35,16 @@ type FindTargetAdvState = {
   pokemonSpecies: StarterSpecies;
   tid: string;
   sid: string;
+  targetAdv:number | null;
 };
 
 type FindTargetAdvProps = {
-  setTargetAdv:(adv:number) => void;
 }
 
 type Result = {};
 
 export const FindTargetAdv = ({
-  setTargetAdv
+  
 } : FindTargetAdvProps) => {
   const { values, setFieldValue } = useFormikContext<FindTargetAdvState>();
   
@@ -72,7 +72,7 @@ export const FindTargetAdv = ({
       initialValues={values}
       submitButtonLabel="Find target advance for shiny Pokémon"
       onSubmit={() => {
-        setTargetAdv(1000);
+        setFieldValue("targetAdv", 1000);
       }}
       submitTrackerId="shinyStarter_findTarget"
     />

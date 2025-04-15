@@ -67,261 +67,12 @@ const getStatRangeForStarter = async (starter: StarterSpecies) => {
 };
 */
 export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
-  //const initialValues = getInitialValuesFindShiny();
-
-  const [results, setResults] = React.useState<Result[]>([]);
-  const [nature, setNature] = React.useState<Nature | null>(null);
-  const [gender, setGender] = React.useState<Gender | null>(null);
-
-  const [targetAdv, setTargetAdv] = React.useState<number>(0);
-
-  const [latestHitAdv, setLatestHitAdv] = React.useState<number | null>(null);
-
-  const [caughtStats, setCaughtStats_raw] = React.useState<{
-    natureStatMore: Stat | null;
-    natureStatLess: Stat | null;
-    hp: StatMinMaxValue;
-    atk: StatMinMaxValue;
-    def: StatMinMaxValue;
-    spa: StatMinMaxValue;
-    spd: StatMinMaxValue;
-    spe: StatMinMaxValue;
-  }>({
-    natureStatMore: null,
-    natureStatLess: null,
-    hp: { min: 19, max: 20, value: null },
-    atk: { min: 8, max: 12, value: null },
-    def: { min: 7, max: 11, value: null },
-    spa: { min: 9, max: 14, value: null },
-    spd: { min: 9, max: 13, value: null },
-    spe: { min: 10, max: 14, value: null },
-  });
-
-  //NO_PROD use getStatRangeForStarter
-
-  const setCaughtStats = (val:typeof caughtStats) => {
-    setCaughtStats_raw(val);
-
-    const newNature = calculateNature(val.natureStatMore, val.natureStatLess, nature);
-    if (newNature !== nature)
-        setNature(newNature);
-  };
-
-  const onSubmitFindTarget = React.useCallback<
-    RngToolSubmit<{}>
-  >(
-    async (values) => {
-      //const adv = await findTargetAdvanceForShinyPokemon(game, values);
-      //if (adv !== null) setTargetAdv(adv);
-    },
-    [game],
-  );
-
-  const onSubmitFindMatchingCaught = React.useCallback<RngToolSubmit<{}>>(
-    async (values) => {
-      //NO_PROD
-      setResults([
-        {
-          adv: 1510,
-          diffWithTarget: 10,
-          stats: "5/6/1/5/4/6",
-          nature: "Adamant",
-          gender: "Male",
-        },
-        {
-          adv: 1484,
-          diffWithTarget: -16,
-          stats: "1/6/1/3/4/6",
-          nature: "Quirky",
-          gender: "Female",
-        },
-      ]);
-    },
-    [game],
-  );
-
-  const getColumns = (): ResultColumn<Result>[] => {
-    const columns: ResultColumn<Result>[] = [
-      {
-        title: "Advance",
-        dataIndex: "adv",
-        key: "adv",
-      },
-      {
-        title: "Difference w/ Target",
-        dataIndex: "diffWithTarget",
-        key: "diffWithTarget",
-        render: (val) => {
-          if (val > 0) return `+${val}`;
-          return "" + val;
-        },
-      },
-      {
-        title: "Stats",
-        dataIndex: "stats",
-        key: "stats",
-      },
-      {
-        title: "Nature",
-        dataIndex: "nature",
-        key: "nature",
-      },
-      {
-        title: "Gender",
-        dataIndex: "gender",
-        key: "gender",
-      },
-      {
-        title: "",
-        dataIndex: "adv",
-        key: "adv",
-        render(adv) {
-          return (
-            <Button
-              trackerId="shinyStarter_adv"
-              onClick={() => {
-                setLatestHitAdv(adv);
-              }}
-            >
-              Update Calibration
-            </Button>
-          );
-        },
-      },
-    ];
-    return columns;
-  };
-
-  const columns = React.useMemo(() => getColumns(), []);
-
-  const getFields = () => {
-    const milliseconds = Math.round((targetAdv * 1000) / 59.7275); //NO_PROD
-    const minutesBeforeTarget = Math.floor(milliseconds / 60000);
-    const fields: Field[] = [
-      {
-        label: "Target advance for shiny Pokémon",
-        input: <>{targetAdv}</>,
-      },
-      {
-        label: "Latest hit advance (calibration)",
-        input: <>{latestHitAdv === null ? "-" : latestHitAdv}</>,
-      },
-      {
-        label: "Timer",
-        direction: "column",
-        input: (
-          <MultiTimer
-            minutesBeforeTarget={minutesBeforeTarget}
-            milliseconds={[5000, milliseconds]}
-            startButtonTrackerId={"shinyStarter-startTimer"}
-            stopButtonTrackerId={"shinyStarter-stopTimer"}
-          />
-        ),
-      },
-    ];
-
-    const onNatureBtnChanged = (stat: Stat, natureState: NatureStatState) => {
-      if (natureState === "nochange") {
-        if (caughtStats.natureStatMore === stat)
-          setCaughtStats({
-            ...caughtStats,
-            natureStatMore: null,
-          });
-        else if (caughtStats.natureStatLess === stat)
-          setCaughtStats({
-            ...caughtStats,
-            natureStatLess: null,
-          });
-        return;
-      } else if (natureState === "more") {
-        setCaughtStats({
-          ...caughtStats,
-          natureStatMore: stat,
-          natureStatLess:
-            caughtStats.natureStatLess === stat
-              ? null
-              : caughtStats.natureStatLess,
-        });
-        return;
-      } else if (natureState === "less") {
-        setCaughtStats({
-          ...caughtStats,
-          natureStatMore:
-            caughtStats.natureStatMore === stat
-              ? null
-              : caughtStats.natureStatMore,
-          natureStatLess: stat,
-        });
-        return;
-      }
-    };
-
-    const onNatureInputChanged = (e:string) => {
-      const [statMore, statLess] = getStatMoreLessFromNature(e as Nature);
-
-      if (statMore === statLess){
-        setCaughtStats({
-          ...caughtStats,
-          natureStatMore: null,
-          natureStatLess: null,
-        });
-      } else {
-        setCaughtStats({
-          ...caughtStats,
-          natureStatMore: statMore,
-          natureStatLess: statLess,
-        });
-      }
-
-      setNature(e as Nature);
-    };
-
-    const onStatValueChanged = (stat: Stat, value: number) => {
-      setCaughtStats({
-        ...caughtStats,
-        [stat]: { ...caughtStats[stat], value },
-      });
-    };
-
-    const clear = () => {
-      setCaughtStats({
-        natureStatMore: null,
-        natureStatLess: null,
-        hp: { ...caughtStats.hp, value: null },
-        atk: { ...caughtStats.atk, value: null },
-        def: { ...caughtStats.def, value: null },
-        spa: { ...caughtStats.spa, value: null },
-        spd: { ...caughtStats.spd, value: null },
-        spe: { ...caughtStats.spe, value: null },
-      });
-      setNature(null);
-    };
-
-    fields.push({
-      label: "Caught Pokémon",
-      direction: "column",
-      input: (
-        <CaughtMon
-          clear={clear}
-          {...caughtStats}
-          canBeMaleOrFemale={true}
-          gender={gender}
-          onGenderChanged={setGender}
-          nature={nature ?? ""}
-          onNatureInputChanged={onNatureInputChanged}
-          onNatureBtnChanged={onNatureBtnChanged}
-          onValueChanged={onStatValueChanged}
-        />
-      ),
-    });
-
-    return fields;
-  };
 
   const initialValues = {
     pokemonSpecies:"Mudkip",
     tid:"0",
     sid:"0", 
+    targetAdv:0,
   };
 
   return (
@@ -332,11 +83,261 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
       onReset={() => {}}
     >
       {(formik) => {
+              
+        //const initialValues = getInitialValuesFindShiny();
+
+        const [results, setResults] = React.useState<Result[]>([]);
+        const [nature, setNature] = React.useState<Nature | null>(null);
+        const [gender, setGender] = React.useState<Gender | null>(null);
+
+        const [latestHitAdv, setLatestHitAdv] = React.useState<number | null>(null);
+
+        const [caughtStats, setCaughtStats_raw] = React.useState<{
+          natureStatMore: Stat | null;
+          natureStatLess: Stat | null;
+          hp: StatMinMaxValue;
+          atk: StatMinMaxValue;
+          def: StatMinMaxValue;
+          spa: StatMinMaxValue;
+          spd: StatMinMaxValue;
+          spe: StatMinMaxValue;
+        }>({
+          natureStatMore: null,
+          natureStatLess: null,
+          hp: { min: 19, max: 20, value: null },
+          atk: { min: 8, max: 12, value: null },
+          def: { min: 7, max: 11, value: null },
+          spa: { min: 9, max: 14, value: null },
+          spd: { min: 9, max: 13, value: null },
+          spe: { min: 10, max: 14, value: null },
+        });
+
+        //NO_PROD use getStatRangeForStarter
+
+        const setCaughtStats = (val:typeof caughtStats) => {
+          setCaughtStats_raw(val);
+
+          const newNature = calculateNature(val.natureStatMore, val.natureStatLess, nature);
+          if (newNature !== nature)
+              setNature(newNature);
+        };
+
+        const onSubmitFindTarget = React.useCallback<
+          RngToolSubmit<{}>
+        >(
+          async (values) => {
+            //const adv = await findTargetAdvanceForShinyPokemon(game, values);
+            //if (adv !== null) setTargetAdv(adv);
+          },
+          [game],
+        );
+
+        const onSubmitFindMatchingCaught = React.useCallback<RngToolSubmit<{}>>(
+          async (values) => {
+            //NO_PROD
+            setResults([
+              {
+                adv: 1510,
+                diffWithTarget: 10,
+                stats: "5/6/1/5/4/6",
+                nature: "Adamant",
+                gender: "Male",
+              },
+              {
+                adv: 1484,
+                diffWithTarget: -16,
+                stats: "1/6/1/3/4/6",
+                nature: "Quirky",
+                gender: "Female",
+              },
+            ]);
+          },
+          [game],
+        );
+
+        const getColumns = (): ResultColumn<Result>[] => {
+          const columns: ResultColumn<Result>[] = [
+            {
+              title: "Advance",
+              dataIndex: "adv",
+              key: "adv",
+            },
+            {
+              title: "Difference w/ Target",
+              dataIndex: "diffWithTarget",
+              key: "diffWithTarget",
+              render: (val) => {
+                if (val > 0) return `+${val}`;
+                return "" + val;
+              },
+            },
+            {
+              title: "Stats",
+              dataIndex: "stats",
+              key: "stats",
+            },
+            {
+              title: "Nature",
+              dataIndex: "nature",
+              key: "nature",
+            },
+            {
+              title: "Gender",
+              dataIndex: "gender",
+              key: "gender",
+            },
+            {
+              title: "",
+              dataIndex: "adv",
+              key: "adv",
+              render(adv) {
+                return (
+                  <Button
+                    trackerId="shinyStarter_adv"
+                    onClick={() => {
+                      setLatestHitAdv(adv);
+                    }}
+                  >
+                    Update Calibration
+                  </Button>
+                );
+              },
+            },
+          ];
+          return columns;
+        };
+
+        const columns = React.useMemo(() => getColumns(), []);
+
+        const getFields = () => {
+          const milliseconds = Math.round((formik.values.targetAdv * 1000) / 59.7275); //NO_PROD
+          const minutesBeforeTarget = Math.floor(milliseconds / 60000);
+          const fields: Field[] = [
+            {
+              label: "Target advance for shiny Pokémon",
+              input: <>{formik.values.targetAdv}</>,
+            },
+            {
+              label: "Latest hit advance (calibration)",
+              input: <>{latestHitAdv === null ? "-" : latestHitAdv}</>,
+            },
+            {
+              label: "Timer",
+              direction: "column",
+              input: (
+                <MultiTimer
+                  minutesBeforeTarget={minutesBeforeTarget}
+                  milliseconds={[5000, milliseconds]}
+                  startButtonTrackerId={"shinyStarter-startTimer"}
+                  stopButtonTrackerId={"shinyStarter-stopTimer"}
+                />
+              ),
+            },
+          ];
+
+          const onNatureBtnChanged = (stat: Stat, natureState: NatureStatState) => {
+            if (natureState === "nochange") {
+              if (caughtStats.natureStatMore === stat)
+                setCaughtStats({
+                  ...caughtStats,
+                  natureStatMore: null,
+                });
+              else if (caughtStats.natureStatLess === stat)
+                setCaughtStats({
+                  ...caughtStats,
+                  natureStatLess: null,
+                });
+              return;
+            } else if (natureState === "more") {
+              setCaughtStats({
+                ...caughtStats,
+                natureStatMore: stat,
+                natureStatLess:
+                  caughtStats.natureStatLess === stat
+                    ? null
+                    : caughtStats.natureStatLess,
+              });
+              return;
+            } else if (natureState === "less") {
+              setCaughtStats({
+                ...caughtStats,
+                natureStatMore:
+                  caughtStats.natureStatMore === stat
+                    ? null
+                    : caughtStats.natureStatMore,
+                natureStatLess: stat,
+              });
+              return;
+            }
+          };
+
+          const onNatureInputChanged = (e:string) => {
+            const [statMore, statLess] = getStatMoreLessFromNature(e as Nature);
+
+            if (statMore === statLess){
+              setCaughtStats({
+                ...caughtStats,
+                natureStatMore: null,
+                natureStatLess: null,
+              });
+            } else {
+              setCaughtStats({
+                ...caughtStats,
+                natureStatMore: statMore,
+                natureStatLess: statLess,
+              });
+            }
+
+            setNature(e as Nature);
+          };
+
+          const onStatValueChanged = (stat: Stat, value: number) => {
+            setCaughtStats({
+              ...caughtStats,
+              [stat]: { ...caughtStats[stat], value },
+            });
+          };
+
+          const clear = () => {
+            setCaughtStats({
+              natureStatMore: null,
+              natureStatLess: null,
+              hp: { ...caughtStats.hp, value: null },
+              atk: { ...caughtStats.atk, value: null },
+              def: { ...caughtStats.def, value: null },
+              spa: { ...caughtStats.spa, value: null },
+              spd: { ...caughtStats.spd, value: null },
+              spe: { ...caughtStats.spe, value: null },
+            });
+            setNature(null);
+          };
+
+          fields.push({
+            label: "Caught Pokémon",
+            direction: "column",
+            input: (
+              <CaughtMon
+                clear={clear}
+                {...caughtStats}
+                canBeMaleOrFemale={true}
+                gender={gender}
+                onGenderChanged={setGender}
+                nature={nature ?? ""}
+                onNatureInputChanged={onNatureInputChanged}
+                onNatureBtnChanged={onNatureBtnChanged}
+                onValueChanged={onStatValueChanged}
+              />
+            ),
+          });
+
+          return fields;
+        };
+
         return (
           <>
-            <FindTargetAdv setTargetAdv={setTargetAdv}/>
+            <FindTargetAdv />
 
-            {targetAdv !== -1 && ( //NO_PROD
+            {formik.values.targetAdv !== -1 && ( //NO_PROD
               <RngToolForm<{}, Result>
                 getFields={getFields}
                 columns={columns}

@@ -69,7 +69,7 @@ const columns: ResultColumn<Gen6Id>[] = [
   },
 ];
 
-type FormState = {
+export type FormState = {
   seed: HexString;
   date: Dayjs;
   time: Dayjs;

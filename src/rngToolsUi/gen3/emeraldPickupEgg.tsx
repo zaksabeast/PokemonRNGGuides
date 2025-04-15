@@ -31,7 +31,7 @@ const columns: ResultColumn<Result>[] = [
   ...ivColumns,
 ];
 
-type FormState = {
+export type FormState = {
   delay: DecimalString;
   seed: HexString;
   initial_advances: DecimalString;
@@ -152,6 +152,7 @@ export const EmeraldPickupEgg = ({ lua = false }: Props) => {
       results={results}
       initialValues={initialValues}
       onSubmit={onSubmit}
+      formContainerId="emerald_pickup_egg_form"
       submitTrackerId="generate_emerald_pickup_egg"
     />
   );

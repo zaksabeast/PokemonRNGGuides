@@ -26,7 +26,7 @@ const columns: ResultColumn<GeneratorResult>[] = [
   },
 ];
 
-type FormState = {
+export type FormState = {
   tid: DecimalString;
   feebasSeed: HexString;
   initialAdvances: DecimalString;

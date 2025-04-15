@@ -30,6 +30,7 @@ export const FormikSwitch = <
   const value = get(formik.values, name);
   return (
     <Switch
+      data-name={name}
       onChange={(value) => formik.setFieldValue(name, value)}
       value={Boolean(value)}
       {...props}

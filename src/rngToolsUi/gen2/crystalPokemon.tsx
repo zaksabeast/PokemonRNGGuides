@@ -103,7 +103,7 @@ type Field = {
   input: React.ReactNode;
 };
 
-type FormState = {
+export type FormState = {
   div: HexString;
   adivIndex: DecimalString;
   sdivIndex: DecimalString;

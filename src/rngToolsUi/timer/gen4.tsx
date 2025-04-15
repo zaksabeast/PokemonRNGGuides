@@ -38,7 +38,7 @@ const FormStateSchema = z.object({
   delayHit: z.union([ZodDecimalString, z.literal("")]),
 });
 
-type FormState = z.infer<typeof FormStateSchema>;
+export type FormState = z.infer<typeof FormStateSchema>;
 
 const defaultValues: FormState = {
   console: "NdsSlot1",
@@ -102,6 +102,7 @@ export const Gen4Timer = () => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts, formik) => {
+      let updatedOpts = opts;
       let settings = {
         console: opts.console,
         min_time_ms: fromDecimalString(opts.minTimeMs) ?? 0,
@@ -122,7 +123,7 @@ export const Gen4Timer = () => {
           target_delay: capPrecision(settings.target_delay),
           target_second: capPrecision(settings.target_second),
         };
-        formik.setValues({
+        updatedOpts = {
           console: settings.console,
           minTimeMs: toDecimalString(settings.min_time_ms),
           calibratedDelay: toDecimalString(settings.calibrated_delay),
@@ -130,7 +131,8 @@ export const Gen4Timer = () => {
           targetDelay: toDecimalString(settings.target_delay),
           targetSeconds: toDecimalString(settings.target_second),
           delayHit: "",
-        });
+        };
+        formik.setValues(updatedOpts);
       }
 
       const milliseconds = await rngTools.create_gen4_timer(settings);
@@ -138,7 +140,7 @@ export const Gen4Timer = () => {
         milliseconds: [...milliseconds],
         minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       });
-      onUpdate(opts);
+      onUpdate(updatedOpts);
     },
     [onUpdate, setTimer],
   );

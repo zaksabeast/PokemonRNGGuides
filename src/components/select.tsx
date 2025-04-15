@@ -29,6 +29,7 @@ const SelectContainer = styled(Flex)({
 type SelectProps<ValueType> = {
   fullWidth?: boolean;
   fullFlex?: boolean;
+  name?: string;
 } & AntdSelectProps<ValueType>;
 
 export const Select = <ValueType,>({
@@ -86,6 +87,7 @@ export const FormikSelect = <
   return (
     <Select
       {...props}
+      name={String(name)}
       onChange={(value) => formik.setFieldValue(String(name), value)}
       // @ts-expect-error -- prop types guarantee this is correct
       value={formik.values[name]}

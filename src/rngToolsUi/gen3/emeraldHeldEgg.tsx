@@ -46,7 +46,7 @@ const columns: ResultColumn<Gen3HeldEgg>[] = [
   { title: "Ability", dataIndex: "ability", key: "ability" },
 ];
 
-type FormState = {
+export type FormState = {
   delay: DecimalString;
   initial_advances: DecimalString;
   max_advances: DecimalString;
@@ -260,6 +260,7 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
       results={results}
       initialValues={initialValues}
       onSubmit={onSubmit}
+      formContainerId="emerald_held_egg_form"
       submitTrackerId="generate_emerald_held_egg"
     />
   );

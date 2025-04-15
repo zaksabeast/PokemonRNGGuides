@@ -43,7 +43,7 @@ const FormStateSchema = z.object({
   secondHit: z.union([ZodDecimalString, z.literal("")]),
 });
 
-type FormState = z.infer<typeof FormStateSchema>;
+export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "NdsSlot1",
@@ -112,6 +112,7 @@ export const Gen5EntralinkTimer = () => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts, formik) => {
+      let updatedOpts = opts;
       let settings: Gen5EntralinkTimerSettings = {
         console: opts.console,
         min_time_ms: fromDecimalString(opts.minTimeMs) ?? 0,
@@ -138,7 +139,7 @@ export const Gen5EntralinkTimer = () => {
           calibration: capPrecision(settings.calibration),
           entralink_calibration: capPrecision(settings.entralink_calibration),
         };
-        formik.setValues({
+        updatedOpts = {
           console: settings.console,
           minTimeMs: toDecimalString(settings.min_time_ms),
           targetDelay: toDecimalString(settings.target_delay),
@@ -147,7 +148,8 @@ export const Gen5EntralinkTimer = () => {
           entralinkCalibration: toDecimalString(settings.entralink_calibration),
           delayHit: "",
           secondHit: "",
-        });
+        };
+        formik.setValues(updatedOpts);
       }
 
       const milliseconds = await rngTools.create_gen5_entralink_timer(settings);
@@ -155,7 +157,7 @@ export const Gen5EntralinkTimer = () => {
         milliseconds: [...milliseconds],
         minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       });
-      onUpdate(opts);
+      onUpdate(updatedOpts);
     },
     [onUpdate, setTimer],
   );

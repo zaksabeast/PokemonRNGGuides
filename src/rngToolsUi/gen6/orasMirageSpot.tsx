@@ -40,7 +40,7 @@ const columns: ResultColumn<MirageSpot>[] = [
   },
 ];
 
-type FormState = {
+export type FormState = {
   seed: HexString;
   tid: DecimalString;
   startDate: Dayjs;

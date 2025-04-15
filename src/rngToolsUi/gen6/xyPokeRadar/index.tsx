@@ -92,7 +92,7 @@ const noChainColumns: ResultColumn<LooseColumns>[] = [
   },
 ];
 
-type FormState = {
+export type FormState = {
   state3: HexString;
   state2: HexString;
   state1: HexString;

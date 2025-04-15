@@ -14,7 +14,9 @@
     "lint:format": "bun prettier . --check",
     "lint:types": "bun tsc -b",
     "lint:links": "find guides -name \\*.mdx -print0 | xargs -0 -n1 bun run markdown-link-check -c markdown-link-check.config.json -q",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:e2e": "bunx cypress run --browser chrome",
+    "cypress:open": "bunx cypress open"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.11.11",
@@ -48,6 +50,7 @@
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "cheerio": "^1.0.0",
+    "cypress": "^14.3.0",
     "eslint": "^9.19.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",

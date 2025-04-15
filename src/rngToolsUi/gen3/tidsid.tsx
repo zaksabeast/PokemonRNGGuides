@@ -33,7 +33,7 @@ const columns: ResultColumn<Gen3TidSidResult>[] = [
 
 type Game = "rs" | "frlge" | "xdcolo";
 
-type FormState = {
+export type FormState = {
   offset: DecimalString;
   initial_advances: DecimalString;
   max_advances: DecimalString;

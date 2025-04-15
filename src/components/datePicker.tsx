@@ -97,6 +97,7 @@ export const FormikTimePicker = <FormState extends GenericForm>({
   return (
     <TimePicker
       {...props}
+      name={name}
       value={dateValue}
       onChange={(date) => {
         setFieldValue(name, date);
@@ -183,6 +184,7 @@ export const FormikDatePicker = <FormState extends GenericForm>({
   return (
     <DatePicker
       {...props}
+      name={name}
       allowClear={allowClear}
       fullWidth={fullWidth}
       value={dateValue}

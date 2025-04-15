@@ -61,18 +61,14 @@ const getColumns = (
 
 type Battery = "Dead" | "Live";
 
-type FormState = {
+export type FormState = {
   battery: Battery;
   rocketLaunchedCount: DecimalString;
-  game: Game;
 };
 
-const getInitialValues = (game: Game): FormState => {
-  return {
-    battery: "Live",
-    rocketLaunchedCount: toDecimalString(0),
-    game,
-  };
+const initialValues: FormState = {
+  battery: "Live",
+  rocketLaunchedCount: toDecimalString(0),
 };
 
 const generateResults = (
@@ -119,8 +115,6 @@ const getFields = (values: FormState) => {
 };
 
 export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
-  const initialValues = getInitialValues(game);
-
   const [results, setResults] = React.useState<MirageIslandResult[]>([]);
   const [resultsBattery, setResultsBattery] = React.useState<Battery>("Live");
 

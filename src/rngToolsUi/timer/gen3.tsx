@@ -36,7 +36,7 @@ const FormStateSchema = z.object({
   frameHit: z.union([ZodDecimalString, z.literal("")]),
 });
 
-type FormState = z.infer<typeof FormStateSchema>;
+export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "Gba",
@@ -92,6 +92,7 @@ export const Gen3Timer = () => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts, formik) => {
+      let updatedOpts = opts;
       let settings = {
         console: opts.console,
         pre_timer: fromDecimalString(opts.preTimer) ?? 0,
@@ -108,13 +109,14 @@ export const Gen3Timer = () => {
           target_frame: capPrecision(settings.target_frame),
           calibration: capPrecision(settings.calibration),
         };
-        formik.setValues({
+        updatedOpts = {
           console: settings.console,
           preTimer: toDecimalString(settings.pre_timer),
           targetFrame: toDecimalString(settings.target_frame),
           calibration: toDecimalString(settings.calibration),
           frameHit: "",
-        });
+        };
+        formik.setValues(updatedOpts);
       }
 
       const milliseconds = await rngTools.create_gen3_timer(settings);
@@ -122,7 +124,7 @@ export const Gen3Timer = () => {
         milliseconds: [...milliseconds],
         minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       });
-      onUpdate(opts);
+      onUpdate(updatedOpts);
     },
     [onUpdate, setTimer],
   );

@@ -37,7 +37,7 @@ const FormStateSchema = z.object({
   delayHit: z.union([ZodDecimalString, z.literal("")]),
 });
 
-type FormState = z.infer<typeof FormStateSchema>;
+export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "NdsSlot1",
@@ -96,6 +96,7 @@ export const Gen5CGearTimer = () => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts, formik) => {
+      let updatedOpts = opts;
       let settings = {
         console: opts.console,
         min_time_ms: fromDecimalString(opts.minTimeMs) ?? 0,
@@ -117,14 +118,15 @@ export const Gen5CGearTimer = () => {
           target_second: capPrecision(settings.target_second),
           calibration: capPrecision(settings.calibration),
         };
-        formik.setValues({
+        updatedOpts = {
           console: settings.console,
           minTimeMs: toDecimalString(settings.min_time_ms),
           targetDelay: toDecimalString(settings.target_delay),
           targetSecond: toDecimalString(settings.target_second),
           calibration: toDecimalString(settings.calibration),
           delayHit: "",
-        });
+        };
+        formik.setValues(updatedOpts);
       }
 
       const milliseconds = await rngTools.create_gen5_cgear_timer(settings);
@@ -132,7 +134,7 @@ export const Gen5CGearTimer = () => {
         milliseconds: [...milliseconds],
         minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       });
-      onUpdate(opts);
+      onUpdate(updatedOpts);
     },
     [onUpdate, setTimer],
   );

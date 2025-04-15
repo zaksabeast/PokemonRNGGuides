@@ -21,10 +21,7 @@ import {FindTargetAdv} from "./findTargetAdv";
 import {StarterSpecies} from "./findTargetAdv";
 import { Button } from "../../../components/button";
 import {
-  StatMinMaxValue,
   CaughtMon,
-  NatureStatState,
-  calculateNature,
 } from "./caughtMon";
 import {
   Gender,
@@ -91,32 +88,12 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
 
         const [latestHitAdv, setLatestHitAdv] = React.useState<number | null>(null);
 
-        const [caughtStats, setCaughtStats_raw] = React.useState<{
-          natureStatMore: Stat | null;
-          natureStatLess: Stat | null;
-          hp: StatMinMaxValue;
-          atk: StatMinMaxValue;
-          def: StatMinMaxValue;
-          spa: StatMinMaxValue;
-          spd: StatMinMaxValue;
-          spe: StatMinMaxValue;
-        }>({
-          natureStatMore: null,
-          natureStatLess: null,
-          hp: { min: 19, max: 20, value: null },
-          atk: { min: 8, max: 12, value: null },
-          def: { min: 7, max: 11, value: null },
-          spa: { min: 9, max: 14, value: null },
-          spd: { min: 9, max: 13, value: null },
-          spe: { min: 10, max: 14, value: null },
-        });
-
         //NO_PROD use getStatRangeForStarter
 
-        const setCaughtStats = (val:typeof caughtStats) => {
-          setCaughtStats_raw(val);
+        const setCaughtStats = (val:any) => {
+          //setCaughtStats_raw(val);
 
-          const newNature = calculateNature(val.natureStatMore, val.natureStatLess, nature);
+          const newNature = null; //NO_PROD calculateNature(val.natureStatMore, val.natureStatLess, nature);
           if (newNature !== nature)
               setNature(newNature);
         };
@@ -234,6 +211,8 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
             },
           ];
 
+
+          /*
           const onNatureBtnChanged = (stat: Stat, natureState: NatureStatState) => {
             if (natureState === "nochange") {
               if (caughtStats.natureStatMore === stat)
@@ -269,6 +248,8 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
               return;
             }
           };
+          */
+         /*
 
           const onNatureInputChanged = (e:string) => {
             const [statMore, statLess] = getStatMoreLessFromNature(e as Nature);
@@ -310,11 +291,13 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
             });
             setNature(null);
           };
+          */
 
           fields.push({
             label: "Caught Pokémon",
             direction: "column",
-            input: (
+            input: (<></>
+              /*
               <CaughtMon
                 clear={clear}
                 {...caughtStats}
@@ -326,6 +309,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
                 onNatureBtnChanged={onNatureBtnChanged}
                 onValueChanged={onStatValueChanged}
               />
+              */
             ),
           });
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { FormikInput, RngToolForm, Field } from "~/components";
-import { FormikRadio } from "~/components/radio";
+import { RadioGroup } from "~/components/radio";
 import { RngToolUpdate } from "~/components/rngToolForm";
 import {
   DecimalString,
@@ -15,56 +15,60 @@ type Starter = "Mudkip" | "Torchic" | "Treecko";
 
 const getTargetAdvance = ({
   tid,
+  starter,
 }: {
   tid: number;
   sid: number;
   starter: Starter;
 }) => {
   // stubbed
-  return tid;
+  return tid + starter.length * 10;
 };
 
 type FormState = {
   tid: DecimalString;
   sid: HexString;
-  starter: Starter;
 };
 
 const initialValues: FormState = {
   tid: toDecimalString(0),
   sid: toHexString(0),
-  starter: "Mudkip",
 };
-
-const fields: Field[] = [
-  {
-    label: "Starter",
-    input: (
-      <FormikRadio<FormState, "starter">
-        name="starter"
-        options={[
-          { value: "Mudkip", label: "Mudkip" },
-          { value: "Torchic", label: "Torchic" },
-          { value: "Treecko", label: "Treecko" },
-        ]}
-      />
-    ),
-  },
-  {
-    label: "TID",
-    input: <FormikInput<FormState> name="tid" />,
-  },
-  {
-    label: "SID",
-    input: <FormikInput<FormState> name="sid" />,
-  },
-];
 
 type Props = {
   setTargetAdvance: (targetAdvance: number) => void;
+  setPokemonSpecies: (starter: Starter) => void;
+  pokemonSpecies: Starter;
 };
 
-export const FindTargetAdvance = ({ setTargetAdvance }: Props) => {
+export const FindTargetAdvance = ({ 
+  pokemonSpecies,
+  setPokemonSpecies,
+  setTargetAdvance,
+}: Props) => {
+    
+  const fields: Field[] = [
+    {
+      label: "Starter",
+      input: (
+        <RadioGroup
+          optionType="button"
+          onChange={e => setPokemonSpecies(e.target.value)}
+          options={["Mudkip", "Torchic", "Treecko"]}
+          value={pokemonSpecies}
+        />
+      ),
+    },
+    {
+      label: "TID",
+      input: <FormikInput<FormState> name="tid" />,
+    },
+    {
+      label: "SID",
+      input: <FormikInput<FormState> name="sid" />,
+    },
+  ];
+
   const onUpdate = React.useCallback<RngToolUpdate<FormState>>(
     async (opts) => {
       const tid = fromDecimalString(opts.tid);
@@ -77,7 +81,7 @@ export const FindTargetAdvance = ({ setTargetAdvance }: Props) => {
       const targetAdvance = getTargetAdvance({
         tid,
         sid,
-        starter: opts.starter,
+        starter: pokemonSpecies,
       });
       setTargetAdvance(targetAdvance);
     },

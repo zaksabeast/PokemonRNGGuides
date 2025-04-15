@@ -1,232 +1,175 @@
-import { RadioGroup } from "../../../components/radio";
-import { Button } from "../../../components/button";
-import { AutoComplete } from "antd";
 import React from "react";
-import {Select} from "~/components";
-import { FormFieldTable } from "../../../components/formFieldTable";
-import { Field} from "~/components";
+import { useFormikContext } from "formik";
+import { RngToolForm, Field, Flex, ResultColumn } from "~/components";
+import { FormikRadio, RadioGroup } from "~/components/radio";
+import { Ivs } from "~/rngTools";
+import { RngToolSubmit } from "~/components/rngToolForm";
+import { noop } from "lodash-es";
+import { match } from "ts-pattern";
+import * as tst from "ts-toolbelt";
+import { RadioChangeEvent } from "antd";
 
-import {Stat} from "../../../types/stat";
-import {natures} from "../../../types/nature";
-
-export type NatureStatState = "more" | "less" | "nochange";
-import { Nature, Gender } from "~/rngTools";
-import { getNatureFromStatMoreLess } from "~/types/nature";
-
-export type CaughtMonStatProps = {
-  statLabel: Stat;
-  min: number;
-  max: number;
-  value: number | null;
-  nature: NatureStatState;
-  onValueChanged?: (stat: Stat, value: number) => void;
-  onNatureChanged?: (stat: Stat, nature: NatureStatState) => void;
+export type CaughtMonResult = {
+  advance: number;
+  targetAdvance: number;
+  otherData: string;
 };
 
-const statToName = (stat:Stat) => {
-  if (stat === "hp") return "HP";
-  if (stat === "atk") return "ATK";
-  if (stat === "def") return "DEF";
-  if (stat === "spa") return "SPA";
-  if (stat === "spd") return "SPD";
-  if (stat === "spe") return "SPE";
-  throw new Error(`invalid stat (${stat})`);
+const columns: ResultColumn<CaughtMonResult>[] = [
+  { title: "Advance", dataIndex: "advance", key: "advance" },
+  { title: "Target Advance", dataIndex: "targetAdvance", key: "targetAdvance" },
+  { title: "Other Data", dataIndex: "otherData", key: "otherData" },
+];
+
+const toOptions = <T,>(options: T[]) => {
+  return options.map((option) => ({
+    value: option,
+    label: String(option),
+  }));
 };
 
-export const CaughtMonStatInput = ({
-  statLabel,
-  min,
-  max,
-  value,
-  nature,
-  onNatureChanged,
-  onValueChanged,
-}: CaughtMonStatProps) => {
-  onNatureChanged = onNatureChanged || (() => {});
-  onValueChanged = onValueChanged || (() => {});
+type NatureStat = tst.U.Exclude<keyof Ivs, "hp">;
 
-  let value_opts: { label: string; value: number }[] = [];
-  for (let val = min; val <= max; val++)
-    value_opts.push({ label: "" + val, value: val });
+type FormState = {
+  hpStat: number;
+  atkStat: number;
+  defStat: number;
+  spaStat: number;
+  spdStat: number;
+  speStat: number;
+  increasedStat: NatureStat;
+  decreasedStat: NatureStat;
+};
 
-  const natureBtn: React.ReactNode = (() => {
-    if (statLabel === "hp") return <></>;
-    return (
-      <RadioGroup
-        optionType="button"
-        value={nature}
-        onChange={(e) => {
-          onNatureChanged(statLabel, e.target.value);
-        }}
-        options={[
-          { label: "+", value: "more" },
-          { label: "=", value: "nochange" },
-          { label: "-", value: "less" },
-        ]}
-      />
-    );
-  })();
+type StatIndicatorProps = {
+  stat: NatureStat;
+};
+
+const natureStatOptions = toOptions(["+", "-"]);
+
+const NatureStatRadio = ({ stat }: StatIndicatorProps) => {
+  const { setFieldValue, values } = useFormikContext<FormState>();
+  const isIncreased = stat === values.increasedStat;
+  const isDecreased = stat === values.decreasedStat;
+  const value = isIncreased ? "+" : isDecreased ? "-" : null;
+
+  const onChange = React.useCallback(
+    (event: RadioChangeEvent) => {
+      const newValue = event.target.value;
+      match({ newValue, isIncreased, isDecreased })
+        // We don't allow a stat to be both + and -,
+        // so we make sure to only set a stat when
+        // it's not already set to the opposite value
+        .with({ newValue: "+", isDecreased: false }, () => {
+          setFieldValue("increasedStat", stat);
+        })
+        .with({ newValue: "-", isIncreased: false }, () => {
+          setFieldValue("decreasedStat", stat);
+        })
+        .otherwise(noop);
+    },
+    [isIncreased, isDecreased, setFieldValue, stat],
+  );
 
   return (
-    <tr>
-      <td style={{ paddingRight: "20px" }}>{statToName(statLabel)}</td>
-      <td style={{ paddingRight: "30px" }}>{natureBtn}</td>
-
-      <td>
-        <RadioGroup
-          optionType="button"
-          value={value}
-          onChange={(e) => {
-            onValueChanged(statLabel, e.target.value);
-          }}
-          options={value_opts}
-        />
-      </td>
-    </tr>
+    <RadioGroup
+      optionType="button"
+      value={value}
+      onChange={onChange}
+      options={natureStatOptions}
+    />
   );
 };
 
-export type StatMinMaxValue = {
-  min: number;
-  max: number;
-  value: number | null;
+const StatInput = ({
+  stat,
+  options,
+}: {
+  stat: NatureStat;
+  options: number[];
+}) => {
+  return (
+    <Flex gap={8}>
+      <NatureStatRadio stat={stat} />
+      <FormikRadio<FormState, `${typeof stat}Stat`>
+        name={`${stat}Stat`}
+        options={toOptions(options)}
+      />
+    </Flex>
+  );
 };
 
-export type CaughtStatsProps = {
-  natureStatMore: Stat | null;
-  natureStatLess: Stat | null;
-  hp: StatMinMaxValue;
-  atk: StatMinMaxValue;
-  def: StatMinMaxValue;
-  spa: StatMinMaxValue;
-  spd: StatMinMaxValue;
-  spe: StatMinMaxValue;
-  canBeMaleOrFemale: boolean;
-  gender:Gender | null;
-  nature:string;
-  onGenderChanged: (gender:Gender) => void;
-  onValueChanged: (stat: Stat, val: number) => void;
-  onNatureBtnChanged: (stat: Stat, nature: NatureStatState) => void;
-  onNatureInputChanged: (inp:string) => void;
-  clear: () => void;
+const initialValues: FormState = {
+  hpStat: 0,
+  atkStat: 0,
+  defStat: 0,
+  spaStat: 0,
+  spdStat: 0,
+  speStat: 0,
+  increasedStat: "atk",
+  decreasedStat: "atk",
 };
 
-export const calculateNature = (natureStatMore:Stat | null, natureStatLess:Stat | null, currentNature:Nature | null) : Nature | null => {
-  if (natureStatMore === null && natureStatLess === null){
-    if (currentNature !== null && ["Hardy", "Docile","Bashful","Quirky","Serious"].includes(currentNature))
-      return currentNature;
-    return null;
-  }
+const fields: Field[] = [
+  {
+    label: "HP",
+    input: (
+      <FormikRadio<FormState, "hpStat">
+        name="hpStat"
+        options={toOptions([8, 9, 10])}
+      />
+    ),
+  },
+  {
+    label: "ATK",
+    input: <StatInput stat="atk" options={[2, 3]} />,
+  },
+  {
+    label: "DEF",
+    input: <StatInput stat="def" options={[4, 5]} />,
+  },
+  {
+    label: "SPA",
+    input: <StatInput stat="spa" options={[6, 7]} />,
+  },
+  {
+    label: "SPD",
+    input: <StatInput stat="spd" options={[8, 9]} />,
+  },
+  {
+    label: "SPE",
+    input: <StatInput stat="spe" options={[3, 4]} />,
+  },
+];
 
-  if (natureStatMore === null) return null;
-
-  if (natureStatLess === null) return null;
-
-  return getNatureFromStatMoreLess(natureStatMore, natureStatLess);
+type Props = {
+  targetAdvance: number;
+  onClickCaughtMon: (result: CaughtMonResult) => void;
 };
 
-const sortedNatures = natures.slice(0).sort();
-
-export const CaughtMon = ({
-  hp,
-  atk,
-  def,
-  spa,
-  spd,
-  spe,
-  canBeMaleOrFemale,
-  gender,
-  natureStatMore,
-  natureStatLess,
-  nature,
-  onGenderChanged,
-  onNatureInputChanged,
-  onNatureBtnChanged,
-  onValueChanged,
-  clear,
-}: CaughtStatsProps) => {
-  const getNatureState = (stat: Stat) => {
-    if (stat === natureStatMore) return "more";
-    if (stat === natureStatLess) return "less";
-    return "nochange";
-  };
-
-  const props = { onValueChanged, onNatureChanged: onNatureBtnChanged };
-
-  const fields:Field[] = [
-    {
-      label: "Nature",
-      input: (<Select style={{minWidth:'120px'}}
-        value={nature}
-        onChange={onNatureInputChanged}
-        options={sortedNatures.map(nature => ({label:nature, value:nature}))}
-      />)
-    }
-  ];
-
-  if (canBeMaleOrFemale){
-    fields.push({
-      label: "Gender",
-      input: (<RadioGroup
-        optionType="button"
-        onChange={e => onGenderChanged(e.target.value)}
-        value={gender}
-        options={[
-          {label:"Male", value:"Male" as Gender},
-          {label:"Female", value:"Female" as Gender},
-        ]}
-      />)
-    });
-  }
+export const CaughtMon = ({ targetAdvance, onClickCaughtMon }: Props) => {
+  const [results, setResults] = React.useState<CaughtMonResult[]>([]);
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
+    async (opts) => {
+      const otherData = JSON.stringify(opts);
+      const fakeResults = new Array(10)
+        .fill(0)
+        .map((_, i) => ({ advance: i, targetAdvance, otherData }));
+      setResults(fakeResults);
+    },
+    [targetAdvance],
+  );
 
   return (
-    <>
-      <table>
-        <tbody>
-          <CaughtMonStatInput
-            {...props}
-            {...hp}
-            nature={getNatureState("hp")}
-            statLabel="hp"
-          />
-          <CaughtMonStatInput
-            {...props}
-            {...atk}
-            nature={getNatureState("atk")}
-            statLabel="atk"
-          />
-          <CaughtMonStatInput
-            {...props}
-            {...def}
-            nature={getNatureState("def")}
-            statLabel="def"
-          />
-          <CaughtMonStatInput
-            {...props}
-            {...spa}
-            nature={getNatureState("spa")}
-            statLabel="spa"
-          />
-          <CaughtMonStatInput
-            {...props}
-            {...spd}
-            nature={getNatureState("spd")}
-            statLabel="spd"
-          />
-          <CaughtMonStatInput
-            {...props}
-            {...spe}
-            nature={getNatureState("spe")}
-            statLabel="spe"
-          />
-        </tbody>
-      </table>
-
-      <FormFieldTable fields={fields} />
-
-      <Button trackerId="CaughtStatInputs_clear" onClick={clear}>
-        Clear
-      </Button>
-    </>
+    <RngToolForm<FormState, CaughtMonResult>
+      fields={fields}
+      columns={columns}
+      results={results}
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      submitTrackerId="generate_gen3_caught_starter"
+      rowKey="advance"
+      onClickResultRow={onClickCaughtMon}
+    />
   );
 };

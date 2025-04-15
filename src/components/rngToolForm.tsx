@@ -6,9 +6,11 @@ import { Button } from "./button";
 import { FormikResultTable, ResultColumn } from "./resultTable";
 import { GenericForm } from "~/types/form";
 import * as tst from "ts-toolbelt";
+import { noop } from "lodash-es";
 import { AllOrNone, FeatureConfig, OneOf } from "~/types/utils";
 
 export type RngToolSubmit<Values> = FormikConfig<Values>["onSubmit"];
+export type RngToolUpdate<Values> = (values: Values) => void;
 
 type OneOf<T extends Record<string, unknown>> = tst.O.Either<
   T,
@@ -16,10 +18,8 @@ type OneOf<T extends Record<string, unknown>> = tst.O.Either<
 >;
 
 type Props<FormState, Result> = {
-  submitTrackerId: string;
   initialValues: FormState;
-  onSubmit: RngToolSubmit<FormState>;
-  submitButtonLabel?: string;
+  onUpdate?: RngToolUpdate<FormState>;
 } & OneOf<{
   fields: Field[];
   getFields: (values: FormState) => Field[];
@@ -28,6 +28,11 @@ type Props<FormState, Result> = {
   AllOrNone<{
     rowKey: keyof Result;
     onClickResultRow?: (record: Result) => void;
+  }> &
+  AllOrNone<{
+    submitTrackerId: string;
+    onSubmit: RngToolSubmit<FormState>;
+    submitButtonLabel?: string;
   }> &
   FeatureConfig<"allowReset", { resetTrackerId: string; onReset?: () => void }>;
 
@@ -43,6 +48,7 @@ export const RngToolForm = <
   onSubmit,
   onReset,
   onClickResultRow,
+  onUpdate,
   rowKey,
   results,
   allowReset = false,
@@ -53,20 +59,23 @@ export const RngToolForm = <
     <Formik
       enableReinitialize
       initialValues={initialValues}
-      onSubmit={onSubmit}
+      onSubmit={onSubmit ?? noop}
       onReset={onReset}
     >
       {(formik) => {
         const fieldsToUse = fields || getFields(formik.values);
+        onUpdate?.(formik.values);
 
         return (
           <Flex vertical gap={16}>
             <Form>
               <Flex vertical gap={8}>
                 <FormFieldTable fields={fieldsToUse} />
-                <Button trackerId={submitTrackerId} htmlType="submit">
-                  {submitButtonLabel}
-                </Button>
+                {onSubmit != null && submitTrackerId != null && (
+                  <Button trackerId={submitTrackerId} htmlType="submit">
+                    {submitButtonLabel}
+                  </Button>
+                )}
                 {allowReset && resetTrackerId != null && (
                   <Button trackerId={resetTrackerId} htmlType="reset">
                     Reset

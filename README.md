@@ -12,6 +12,13 @@ Install these tools:
 - [rust](https://www.rust-lang.org/tools/install)
 - [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)
 
+Run these commands in the `rng_tools` directory to get the pinned rust tools:
+
+```
+rustup update
+rustup target add wasm32-unknown-unknown
+```
+
 Run `bun i` to install the dependencies and `bun run dev` to have a development server start.
 
 If you add a guide or change guide metadata, run `bun run build:guides`.

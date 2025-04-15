@@ -43,7 +43,7 @@ impl PkmFilter {
             return false;
         }
 
-        true
+        self.pass_filter_no_ivs(state)
     }
 
     pub fn pass_filter_no_ivs(&self, state: &impl PkmState) -> bool {

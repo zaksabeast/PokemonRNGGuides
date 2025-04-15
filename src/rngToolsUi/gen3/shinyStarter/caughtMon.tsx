@@ -45,7 +45,7 @@ type StatIndicatorProps = {
   stat: NatureStat;
 };
 
-const naturStatOptions = toOptions(["+", "-"]);
+const natureStatOptions = toOptions(["+", "-"]);
 
 const NatureStatRadio = ({ stat }: StatIndicatorProps) => {
   const { setFieldValue, values } = useFormikContext<FormState>();
@@ -76,7 +76,7 @@ const NatureStatRadio = ({ stat }: StatIndicatorProps) => {
       optionType="button"
       value={value}
       onChange={onChange}
-      options={naturStatOptions}
+      options={natureStatOptions}
     />
   );
 };

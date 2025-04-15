@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
@@ -9,14 +9,6 @@ import {
   FormikSwitch,
 } from "~/components";
 import { rngTools, Gen6Id } from "~/rngTools";
-import {
-  DecimalString,
-  fromDecimalString,
-  fromHexString,
-  HexString,
-  toDecimalString,
-  toHexString,
-} from "~/utils/number";
 import { denormalizeIdFilter, IdFilter } from "~/types/id";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
@@ -70,33 +62,33 @@ const columns: ResultColumn<Gen6Id>[] = [
 ];
 
 export type FormState = {
-  seed: HexString;
+  seed: number;
   date: Dayjs;
   time: Dayjs;
-  onlyCurrentSeed: boolean;
-  initialAdvances: DecimalString;
-  maxAdvances: DecimalString;
+  only_current_seed: boolean;
+  initial_advances: number;
+  max_advances: number;
   filter: IdFilter;
 };
 
 const initialValues: FormState = {
-  seed: toHexString(0),
+  seed: 0,
   date: dayjs(),
   time: dayjs(),
-  onlyCurrentSeed: false,
-  initialAdvances: toDecimalString(20),
-  maxAdvances: toDecimalString(50),
+  only_current_seed: false,
+  initial_advances: 20,
+  max_advances: 50,
   filter: {
     type: "tid",
-    value0: toDecimalString(0),
-    value1: "",
+    value0: 0,
+    value1: undefined,
   },
 };
 
 const fields: Field[] = [
   {
     label: "TinyMT u32 Seed",
-    input: <FormikInput<FormState> name="seed" />,
+    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
   },
   {
     label: "Boot Date",
@@ -108,16 +100,20 @@ const fields: Field[] = [
   },
   {
     label: "Initial Advances",
-    input: <FormikInput<FormState> name="initialAdvances" />,
+    input: (
+      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
+    ),
   },
   {
     label: "Max Advances",
-    input: <FormikInput<FormState> name="maxAdvances" />,
+    input: (
+      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+    ),
   },
   {
     label: "Only Current Seed",
     input: (
-      <FormikSwitch<FormState, "onlyCurrentSeed"> name="onlyCurrentSeed" />
+      <FormikSwitch<FormState, "only_current_seed"> name="only_current_seed" />
     ),
   },
   {
@@ -130,14 +126,6 @@ export const OrasId = () => {
   const [results, setResults] = React.useState<Gen6Id[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const seed = fromHexString(opts.seed);
-    const initialAdvances = fromDecimalString(opts.initialAdvances);
-    const maxAdvances = fromDecimalString(opts.maxAdvances);
-
-    if (seed == null || initialAdvances == null || maxAdvances == null) {
-      return;
-    }
-
     const datetime = dayjs(opts.date)
       .set("hour", opts.time.hour())
       .set("minute", opts.time.minute())
@@ -145,11 +133,11 @@ export const OrasId = () => {
     const rngDateTime = toRngDateTime(datetime);
 
     const results = await rngTools.generate_oras_id({
-      start_seed: seed,
-      only_start_seed: opts.onlyCurrentSeed,
+      start_seed: opts.seed,
+      only_start_seed: opts.only_current_seed,
+      initial_advances: opts.initial_advances,
+      max_advances: opts.max_advances,
       start_datetime: rngDateTime,
-      initial_advances: initialAdvances,
-      max_advances: maxAdvances,
       filter_id: denormalizeIdFilter(opts.filter) ?? undefined,
     });
 

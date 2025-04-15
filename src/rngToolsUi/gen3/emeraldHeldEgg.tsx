@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   FormikSelect,
   Field,
@@ -16,11 +16,6 @@ import {
   Species,
   Gender,
 } from "~/rngTools";
-import {
-  DecimalString,
-  fromDecimalString,
-  toDecimalString,
-} from "~/utils/number";
 import { gen3Species } from "~/types/species";
 import { nature } from "~/types/nature";
 import { gender } from "~/types/gender";
@@ -47,17 +42,17 @@ const columns: ResultColumn<Gen3HeldEgg>[] = [
 ];
 
 export type FormState = {
-  delay: DecimalString;
-  initial_advances: DecimalString;
-  max_advances: DecimalString;
+  delay: number;
+  initial_advances: number;
+  max_advances: number;
   female_has_everstone: boolean;
   female_nature: Nature;
-  calibration: DecimalString;
-  min_redraw: DecimalString;
-  max_redraw: DecimalString;
+  calibration: number;
+  min_redraw: number;
+  max_redraw: number;
   compatability: Compatability;
-  tid: DecimalString;
-  sid: DecimalString;
+  tid: number;
+  sid: number;
   egg_species: Species;
   filter_shiny: boolean;
   filter_nature: Nature | "None";
@@ -65,17 +60,17 @@ export type FormState = {
 };
 
 const initialValues: FormState = {
-  delay: toDecimalString(0),
-  initial_advances: toDecimalString(100),
-  max_advances: toDecimalString(1000),
+  delay: 0,
+  initial_advances: 100,
+  max_advances: 1000,
   female_has_everstone: false,
   female_nature: "Adamant",
-  calibration: toDecimalString(18),
-  min_redraw: toDecimalString(0),
-  max_redraw: toDecimalString(5),
+  calibration: 18,
+  min_redraw: 0,
+  max_redraw: 5,
   compatability: "GetAlong",
-  tid: toDecimalString(0),
-  sid: toDecimalString(0),
+  tid: 0,
+  sid: 0,
   egg_species: "Bulbasaur",
   filter_shiny: false,
   filter_nature: "None",
@@ -137,35 +132,41 @@ const fields: Field[] = [
   },
   {
     label: "Calibration",
-    input: <FormikInput<FormState> name="calibration" />,
+    input: (
+      <FormikNumberInput<FormState> name="calibration" numType="decimal" />
+    ),
   },
   {
     label: "TID",
-    input: <FormikInput<FormState> name="tid" />,
+    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
   },
   {
     label: "SID",
-    input: <FormikInput<FormState> name="sid" />,
+    input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
   },
   {
     label: "Initial advances",
-    input: <FormikInput<FormState> name="initial_advances" />,
+    input: (
+      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
+    ),
   },
   {
     label: "Max advances",
-    input: <FormikInput<FormState> name="max_advances" />,
+    input: (
+      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+    ),
   },
   {
     label: "Delay",
-    input: <FormikInput<FormState> name="delay" />,
+    input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
   },
   {
     label: "Min redraw",
-    input: <FormikInput<FormState> name="min_redraw" />,
+    input: <FormikNumberInput<FormState> name="min_redraw" numType="decimal" />,
   },
   {
     label: "Max redraw",
-    input: <FormikInput<FormState> name="max_redraw" />,
+    input: <FormikNumberInput<FormState> name="max_redraw" numType="decimal" />,
   },
   {
     label: "Filter shiny",
@@ -206,38 +207,8 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const initialAdvances = fromDecimalString(opts.initial_advances);
-      const maxAdvances = fromDecimalString(opts.max_advances);
-      const calibration = fromDecimalString(opts.calibration);
-      const minRedraw = fromDecimalString(opts.min_redraw);
-      const maxRedraw = fromDecimalString(opts.max_redraw);
-      const tid = fromDecimalString(opts.tid);
-      const sid = fromDecimalString(opts.sid);
-      const delay = fromDecimalString(opts.delay);
-
-      if (
-        initialAdvances == null ||
-        maxAdvances == null ||
-        calibration == null ||
-        minRedraw == null ||
-        maxRedraw == null ||
-        tid == null ||
-        sid == null ||
-        delay == null
-      ) {
-        return;
-      }
-
       const results = await rngTools.emerald_egg_held_states({
         ...opts,
-        initial_advances: initialAdvances,
-        max_advances: maxAdvances,
-        calibration: calibration,
-        min_redraw: minRedraw,
-        max_redraw: maxRedraw,
-        tid,
-        sid,
-        delay,
         lua_adjustment: lua,
         filters: {
           shiny: opts.filter_shiny,

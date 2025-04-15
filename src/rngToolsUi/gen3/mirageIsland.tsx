@@ -1,11 +1,11 @@
-import { Field, RngToolForm, ResultColumn, RngToolSubmit } from "~/components";
 import {
-  DecimalString,
-  fromDecimalString,
-  toDecimalString,
-} from "~/utils/number";
+  Field,
+  RngToolForm,
+  ResultColumn,
+  RngToolSubmit,
+  FormikNumberInput,
+} from "~/components";
 import { FormikRadio } from "../../components/radio";
-import { FormikInput } from "../../components/input";
 
 import { rngTools, MirageIslandResult } from "~/rngTools";
 import React from "react";
@@ -63,12 +63,12 @@ type Battery = "Dead" | "Live";
 
 export type FormState = {
   battery: Battery;
-  rocketLaunchedCount: DecimalString;
+  rocketLaunchedCount: number;
 };
 
 const initialValues: FormState = {
   battery: "Live",
-  rocketLaunchedCount: toDecimalString(0),
+  rocketLaunchedCount: 0,
 };
 
 const generateResults = (
@@ -79,11 +79,8 @@ const generateResults = (
   if (values.battery === "Dead")
     return rngTools.mirage_island_calculate(initialSeed, 0, 0);
 
-  const rocketLaunchedCount =
-    fromDecimalString(values.rocketLaunchedCount) ?? 0;
-
   const RESULT_COUNT = 100;
-  const currentDay = clamp(rocketLaunchedCount * 7, 0, 0xffff);
+  const currentDay = clamp(values.rocketLaunchedCount * 7, 0, 0xffff);
   const lastDay = clamp(currentDay + RESULT_COUNT - 1, 0, 0xffff);
 
   return rngTools.mirage_island_calculate(initialSeed, currentDay, lastDay);
@@ -108,7 +105,12 @@ const getFields = (values: FormState) => {
   if (values.battery === "Live") {
     fields.push({
       label: "Rocket Launched",
-      input: <FormikInput<FormState> name="rocketLaunchedCount" />,
+      input: (
+        <FormikNumberInput<FormState>
+          name="rocketLaunchedCount"
+          numType="decimal"
+        />
+      ),
     });
   }
   return fields;

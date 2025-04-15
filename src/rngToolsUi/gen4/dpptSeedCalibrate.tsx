@@ -1,17 +1,12 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
   Field,
 } from "~/components";
 import { rngTools, SeedTime4, SeedTime4Calibrate } from "~/rngTools";
-import {
-  DecimalString,
-  fromDecimalString,
-  toDecimalString,
-} from "~/utils/number";
 import dayjs, { Dayjs } from "dayjs";
 import {
   formatRngDateTime,
@@ -51,9 +46,9 @@ const columns: ResultColumn<SeedTime4Calibrate>[] = [
 type FormState = {
   date: Dayjs;
   time: Dayjs;
-  delay: DecimalString;
-  delayCalibration: DecimalString;
-  secondCalibration: DecimalString;
+  delay: number;
+  delay_calibration: number;
+  second_calibration: number;
 };
 
 const fields: Field[] = [
@@ -67,15 +62,27 @@ const fields: Field[] = [
   },
   {
     label: "Searcher Result Delay",
-    input: <FormikInput<FormState> name="delay" disabled />,
+    input: (
+      <FormikNumberInput<FormState> name="delay" disabled numType="decimal" />
+    ),
   },
   {
     label: "Delay Calibration +/-",
-    input: <FormikInput<FormState> name="delayCalibration" />,
+    input: (
+      <FormikNumberInput<FormState>
+        name="delay_calibration"
+        numType="decimal"
+      />
+    ),
   },
   {
     label: "Second Calibration +/-",
-    input: <FormikInput<FormState> name="secondCalibration" />,
+    input: (
+      <FormikNumberInput<FormState>
+        name="second_calibration"
+        numType="decimal"
+      />
+    ),
   },
 ];
 
@@ -86,42 +93,27 @@ type Props = {
 export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
   const [results, setResults] = React.useState<SeedTime4Calibrate[]>([]);
 
-  const initialValues: FormState = React.useMemo(() => {
-    const delayCalibration = toDecimalString(0);
-    const secondCalibration = toDecimalString(0);
-
+  const initialValues = React.useMemo((): FormState => {
     if (selectedSeedTime == null) {
       return {
         date: dayjs(),
         time: dayjs(),
-        delay: toDecimalString(0),
-        delayCalibration,
-        secondCalibration,
+        delay: 0,
+        delay_calibration: 0,
+        second_calibration: 0,
       };
     }
 
     return {
       date: fromRngDateTime(selectedSeedTime.datetime),
       time: fromRngDateTime(selectedSeedTime.datetime),
-      delay: toDecimalString(selectedSeedTime.delay),
-      delayCalibration,
-      secondCalibration,
+      delay: selectedSeedTime.delay,
+      delay_calibration: 0,
+      second_calibration: 0,
     };
   }, [selectedSeedTime]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const delay = fromDecimalString(opts.delay);
-    const delayCalibration = fromDecimalString(opts.delayCalibration);
-    const secondCalibration = fromDecimalString(opts.secondCalibration);
-
-    if (
-      delay == null ||
-      delayCalibration == null ||
-      secondCalibration == null
-    ) {
-      return;
-    }
-
     const datetime = dayjs(opts.date)
       .set("hour", opts.time.hour())
       .set("minute", opts.time.minute())
@@ -131,12 +123,12 @@ export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
     const results = await rngTools.dppt_calibrate_seedtime(
       {
         datetime: rngDateTime,
-        delay,
+        delay: opts.delay,
         coin_flips: [],
       },
       {
-        delay_calibration: delayCalibration,
-        second_calibration: secondCalibration,
+        delay_calibration: opts.delay_calibration,
+        second_calibration: opts.second_calibration,
         entei_route: undefined,
         lati_route: undefined,
         raikou_route: undefined,

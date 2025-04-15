@@ -1,16 +1,15 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   RngToolForm,
   RngToolSubmit,
   Field,
   FormikSelect,
 } from "~/components";
 import {
-  toDecimalString,
-  fromDecimalString,
   capPrecision,
-  ZodDecimalString,
+  ZodSerializedDecimal,
+  ZodSerializedOptional,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
 import { Gen5EntralinkTimerSettings, rngTools, ZodConsole } from "~/rngTools";
@@ -34,26 +33,26 @@ const timerStateAtom = atomWithPersistence(
 
 const FormStateSchema = z.object({
   console: ZodConsole,
-  minTimeMs: ZodDecimalString,
-  targetDelay: ZodDecimalString,
-  targetSecond: ZodDecimalString,
-  calibration: ZodDecimalString,
-  entralinkCalibration: ZodDecimalString,
-  delayHit: z.union([ZodDecimalString, z.literal("")]),
-  secondHit: z.union([ZodDecimalString, z.literal("")]),
+  minTimeMs: ZodSerializedDecimal,
+  targetDelay: ZodSerializedDecimal,
+  targetSecond: ZodSerializedDecimal,
+  calibration: ZodSerializedDecimal,
+  entralinkCalibration: ZodSerializedDecimal,
+  delayHit: ZodSerializedOptional(ZodSerializedDecimal),
+  secondHit: ZodSerializedOptional(ZodSerializedDecimal),
 });
 
 export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "NdsSlot1",
-  minTimeMs: toDecimalString(14000),
-  targetDelay: toDecimalString(1200),
-  targetSecond: toDecimalString(50),
-  calibration: toDecimalString(-95),
-  entralinkCalibration: toDecimalString(256),
-  delayHit: "",
-  secondHit: "",
+  minTimeMs: 14000,
+  targetDelay: 1200,
+  targetSecond: 50,
+  calibration: -95,
+  entralinkCalibration: 256,
+  delayHit: undefined,
+  secondHit: undefined,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -78,31 +77,36 @@ const fields: Field[] = [
   },
   {
     label: "Min Time (ms)",
-    input: <FormikInput<FormState> name="minTimeMs" />,
+    input: <FormikNumberInput<FormState> name="minTimeMs" numType="float" />,
   },
   {
     label: "Target Delay",
-    input: <FormikInput<FormState> name="targetDelay" />,
+    input: <FormikNumberInput<FormState> name="targetDelay" numType="float" />,
   },
   {
     label: "Target Second",
-    input: <FormikInput<FormState> name="targetSecond" />,
+    input: <FormikNumberInput<FormState> name="targetSecond" numType="float" />,
   },
   {
     label: "Calibration",
-    input: <FormikInput<FormState> name="calibration" />,
+    input: <FormikNumberInput<FormState> name="calibration" numType="float" />,
   },
   {
     label: "Entralink Calibration",
-    input: <FormikInput<FormState> name="entralinkCalibration" />,
+    input: (
+      <FormikNumberInput<FormState>
+        name="entralinkCalibration"
+        numType="float"
+      />
+    ),
   },
   {
     label: "Delay Hit",
-    input: <FormikInput<FormState> name="delayHit" />,
+    input: <FormikNumberInput<FormState> name="delayHit" numType="float" />,
   },
   {
     label: "Second Hit",
-    input: <FormikInput<FormState> name="secondHit" />,
+    input: <FormikNumberInput<FormState> name="secondHit" numType="float" />,
   },
 ];
 
@@ -115,21 +119,18 @@ export const Gen5EntralinkTimer = () => {
       let updatedOpts = opts;
       let settings: Gen5EntralinkTimerSettings = {
         console: opts.console,
-        min_time_ms: fromDecimalString(opts.minTimeMs) ?? 0,
-        target_delay: fromDecimalString(opts.targetDelay) ?? 0,
-        target_second: fromDecimalString(opts.targetSecond) ?? 0,
-        calibration: fromDecimalString(opts.calibration) ?? 0,
-        entralink_calibration:
-          fromDecimalString(opts.entralinkCalibration) ?? 0,
+        min_time_ms: opts.minTimeMs,
+        target_delay: opts.targetDelay,
+        target_second: opts.targetSecond,
+        calibration: opts.calibration,
+        entralink_calibration: opts.entralinkCalibration,
       };
 
-      if (opts.secondHit !== "" && opts.delayHit !== "") {
-        const delayHit = fromDecimalString(opts.delayHit) ?? 0;
-        const secondHit = fromDecimalString(opts.secondHit) ?? 0;
+      if (opts.secondHit != null && opts.delayHit != null) {
         settings = await rngTools.calibrate_gen5_entralink_timer(
           settings,
-          secondHit,
-          delayHit,
+          opts.secondHit,
+          opts.delayHit,
         );
         settings = {
           console: opts.console,
@@ -141,13 +142,13 @@ export const Gen5EntralinkTimer = () => {
         };
         updatedOpts = {
           console: settings.console,
-          minTimeMs: toDecimalString(settings.min_time_ms),
-          targetDelay: toDecimalString(settings.target_delay),
-          targetSecond: toDecimalString(settings.target_second),
-          calibration: toDecimalString(settings.calibration),
-          entralinkCalibration: toDecimalString(settings.entralink_calibration),
-          delayHit: "",
-          secondHit: "",
+          minTimeMs: settings.min_time_ms,
+          targetDelay: settings.target_delay,
+          targetSecond: settings.target_second,
+          calibration: settings.calibration,
+          entralinkCalibration: settings.entralink_calibration,
+          delayHit: undefined,
+          secondHit: undefined,
         };
         formik.setValues(updatedOpts);
       }

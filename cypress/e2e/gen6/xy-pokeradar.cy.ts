@@ -6,12 +6,12 @@ describe("rng tool", () => {
     testRngTool<Omit<FormState, "date" | "time">>({
       url: "/xy-pokeradar",
       form: {
-        bonusMusic: { type: "switch", value: false },
-        filterShiny: { type: "switch", value: false },
+        bonus_music: { type: "switch", value: false },
+        filter_shiny: { type: "switch", value: false },
         chain: "10",
-        initialAdvances: "10",
-        maxAdvances: "10",
-        partyCount: "6",
+        initial_advances: "10",
+        max_advances: "10",
+        party_count: "6",
         state0: "aaaaaaaa",
         state1: "bbbbbbbb",
         state2: "cccccccc",

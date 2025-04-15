@@ -7,9 +7,9 @@ describe("rng tool", () => {
       url: "/retail-oras-tid",
       form: {
         seed: "aabbccdd",
-        initialAdvances: "10",
-        maxAdvances: "100",
-        onlyCurrentSeed: { type: "switch", value: true },
+        initial_advances: "10",
+        max_advances: "100",
+        only_current_seed: { type: "switch", value: true },
       },
     });
   });

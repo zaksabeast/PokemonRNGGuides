@@ -11,17 +11,19 @@ TODO:
 */
 
 
+import { Formik, FormikConfig } from "formik";
 import { Field, RngToolForm, ResultColumn, RngToolSubmit } from "~/components";
 import { FormikRadio, RadioGroup } from "../../../components/radio";
 import { FormikInput } from "../../../components/input";
+import {Result} from "./calc";
+import {FindTargetAdv} from "./findTargetAdv";
 
+import {StarterSpecies} from "./findTargetAdv";
 import { Button } from "../../../components/button";
 import {
-  CaughtStatInput,
   StatMinMaxValue,
   CaughtMon,
   NatureStatState,
-  CaughtStatProps,
   calculateNature,
 } from "./caughtMon";
 import {
@@ -48,7 +50,7 @@ const BASE_STATS = {
   "Treecko":{hp:11, atk:11, def:11, spa:11, spd:11, spe:11},
   "Torchic":{hp:12, atk:12, def:12, spa:12, spd:12, spe:12},
 } as const;
-
+/*
 const getStatRangeForStarter = async (starter: StarterSpecies) => {
   const baseStats = BASE_STATS[starter];
   const minStats = await rngTools.gen3_calculate_minmax_stats(baseStats, 5, true);
@@ -63,9 +65,9 @@ const getStatRangeForStarter = async (starter: StarterSpecies) => {
     spe: { min: minStats.spe, max: maxStats.spe },
   };
 };
-
+*/
 export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
-  const initialValues = getInitialValuesFindShiny();
+  //const initialValues = getInitialValuesFindShiny();
 
   const [results, setResults] = React.useState<Result[]>([]);
   const [nature, setNature] = React.useState<Nature | null>(null);
@@ -106,11 +108,11 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
   };
 
   const onSubmitFindTarget = React.useCallback<
-    RngToolSubmit<FormStateFindShiny>
+    RngToolSubmit<{}>
   >(
     async (values) => {
-      const adv = await findTargetAdvanceForShinyPokemon(game, values);
-      if (adv !== null) setTargetAdv(adv);
+      //const adv = await findTargetAdvanceForShinyPokemon(game, values);
+      //if (adv !== null) setTargetAdv(adv);
     },
     [game],
   );
@@ -305,7 +307,7 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
           canBeMaleOrFemale={true}
           gender={gender}
           onGenderChanged={setGender}
-          natureInput={nature ?? ""}
+          nature={nature ?? ""}
           onNatureInputChanged={onNatureInputChanged}
           onNatureBtnChanged={onNatureBtnChanged}
           onValueChanged={onStatValueChanged}
@@ -316,21 +318,39 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
     return fields;
   };
 
-  return (
-    <div>
+  const initialValues = {
+    pokemonSpecies:"Mudkip",
+    tid:"0",
+    sid:"0", 
+  };
 
-      {targetAdv !== -1 && ( //NO_PROD
-        <RngToolForm<{}, Result>
-          getFields={getFields}
-          columns={columns}
-          results={results}
-          initialValues={initialValues}
-          submitButtonLabel="Find advances matching caught Pokémon"
-          onSubmit={onSubmitFindMatchingCaught}
-          rowKey="adv"
-          submitTrackerId="shinyStarter_findMatchingCaught"
-        />
-      )}
-    </div>
+  return (
+    <Formik
+      enableReinitialize
+      initialValues={initialValues}
+      onSubmit={() => {}}
+      onReset={() => {}}
+    >
+      {(formik) => {
+        return (
+          <>
+            <FindTargetAdv setTargetAdv={setTargetAdv}/>
+
+            {targetAdv !== -1 && ( //NO_PROD
+              <RngToolForm<{}, Result>
+                getFields={getFields}
+                columns={columns}
+                results={results}
+                initialValues={{}}
+                submitButtonLabel="Find advances matching caught Pokémon"
+                onSubmit={onSubmitFindMatchingCaught}
+                rowKey="adv"
+                submitTrackerId="shinyStarter_findMatchingCaught"
+              />
+            )}
+          </>
+        );
+      }}
+    </Formik>
   );
 };

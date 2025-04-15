@@ -3,14 +3,13 @@
 import { Field, RngToolForm, ResultColumn, RngToolSubmit } from "~/components";
 import { FormikRadio, RadioGroup } from "../../../components/radio";
 import { FormikInput } from "../../../components/input";
+import * as tst from "ts-toolbelt";
 
 import { Button } from "../../../components/button";
 import {
-  CaughtStatInput,
   StatMinMaxValue,
   CaughtMon,
   NatureStatState,
-  CaughtStatProps,
   calculateNature,
 } from "./caughtMon";
 import {
@@ -24,57 +23,58 @@ import React from "react";
 import { MultiTimer } from "../../../components/multiTimer";
 import {Stat} from "../../../types/stat";
 import { getStatMoreLessFromNature } from "~/types/nature";
+import { GenericForm } from "~/types/form";
+
+import { GuaranteeFormNameType } from "~/types/form";
+import { useFormikContext } from "formik";
 
 
-type StarterSpecies = "Mudkip" | "Torchic" | "Treecko";
+export type StarterSpecies = "Mudkip" | "Torchic" | "Treecko";
 
-type FormStateFindShiny = {
+type FindTargetAdvState = {
   pokemonSpecies: StarterSpecies;
   tid: string;
   sid: string;
 };
 
-const getInitialValuesFindShiny = (): FormStateFindShiny => {
-  return {
-    pokemonSpecies: "Mudkip",
-    tid: "0",
-    sid: "0",
-  };
-};
-
-export type FindTargetAdvProps {
-  pokemonSpecies: StarterSpecies;
-  tid: string;
-  sid: string;
+type FindTargetAdvProps = {
+  setTargetAdv:(adv:number) => void;
 }
 
-export const FindTargetAdv = function({}){
+type Result = {};
 
+export const FindTargetAdv = ({
+  setTargetAdv
+} : FindTargetAdvProps) => {
+  const { values, setFieldValue } = useFormikContext<FindTargetAdvState>();
+  
   return (
-      <RngToolForm<FormStateFindShiny, Result>
-        fields={[
-          {
-            label: "Starter",
-            input: (
-              <FormikRadio<FormStateFindShiny, "pokemonSpecies">
-                name="pokemonSpecies"
-                options={["Mudkip", "Torchic", "Treecko"]}
-              />
-            ),
-          },
-          {
-            label: "TID",
-            input: <FormikInput<FormStateFindShiny> name="tid" />,
-          },
-          {
-            label: "SID",
-            input: <FormikInput<FormStateFindShiny> name="sid" />,
-          },
-        ]}
-        initialValues={initialValues}
-        submitButtonLabel="Find target advance for shiny Pokémon"
-        onSubmit={onSubmitFindTarget}
-        submitTrackerId="shinyStarter_findTarget"
-      />
+    <RngToolForm<FindTargetAdvState, Result>
+      fields={[
+        {
+          label: "Starter",
+          input: (
+            <FormikRadio<FindTargetAdvState, "pokemonSpecies">
+              name="pokemonSpecies"
+              options={["Mudkip", "Torchic", "Treecko"]}
+            />
+          ),
+        },
+        {
+          label: "TID",
+          input: <FormikInput<FindTargetAdvState> name="tid" />,
+        },
+        {
+          label: "SID",
+          input: <FormikInput<FindTargetAdvState> name="sid" />,
+        },
+      ]}
+      initialValues={values}
+      submitButtonLabel="Find target advance for shiny Pokémon"
+      onSubmit={() => {
+        setTargetAdv(1000);
+      }}
+      submitTrackerId="shinyStarter_findTarget"
+    />
   );
 };

@@ -27,11 +27,11 @@ pub fn gen3_calculate_minmax_stats(base_stats:StatsValue, level:u8, is_min_stat:
 
   StatsValue {
     hp:gen3_calculate_hp(base_stats.hp, iv, 0, level),
-    atk:gen3_calculate_hp(base_stats.atk, iv, 0, level, nature_fact),
-    def:gen3_calculate_hp(base_stats.def, iv, 0, level, nature_fact),
-    spa:gen3_calculate_hp(base_stats.spa, iv, 0, level, nature_fact),
-    spd:gen3_calculate_hp(base_stats.spd, iv, 0, level, nature_fact),
-    spe:gen3_calculate_hp(base_stats.spe, iv, 0, level, nature_fact),
+    atk:gen3_calculate_non_hp(base_stats.atk, iv, 0, level, nature_fact),
+    def:gen3_calculate_non_hp(base_stats.def, iv, 0, level, nature_fact),
+    spa:gen3_calculate_non_hp(base_stats.spa, iv, 0, level, nature_fact),
+    spd:gen3_calculate_non_hp(base_stats.spd, iv, 0, level, nature_fact),
+    spe:gen3_calculate_non_hp(base_stats.spe, iv, 0, level, nature_fact),
   }
 }
 

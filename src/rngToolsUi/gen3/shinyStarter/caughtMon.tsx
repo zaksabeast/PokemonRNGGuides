@@ -4,12 +4,13 @@ import { AutoComplete } from "antd";
 import React from "react";
 import {Select} from "~/components";
 import { FormFieldTable } from "../../../components/formFieldTable";
+import { Field} from "~/components";
 
 import {Stat} from "../../../types/stat";
 import {natures} from "../../../types/nature";
 
 export type NatureStatState = "more" | "less" | "nochange";
-import { Nature } from "~/rngTools";
+import { Nature, Gender } from "~/rngTools";
 import { getNatureFromStatMoreLess } from "~/types/nature";
 
 export type CaughtMonStatProps = {
@@ -103,6 +104,7 @@ export type CaughtStatsProps = {
   canBeMaleOrFemale: boolean;
   gender:Gender | null;
   nature:string;
+  onGenderChanged: (gender:Gender) => void;
   onValueChanged: (stat: Stat, val: number) => void;
   onNatureBtnChanged: (stat: Stat, nature: NatureStatState) => void;
   onNatureInputChanged: (inp:string) => void;
@@ -137,6 +139,7 @@ export const CaughtMon = ({
   natureStatMore,
   natureStatLess,
   nature,
+  onGenderChanged,
   onNatureInputChanged,
   onNatureBtnChanged,
   onValueChanged,
@@ -149,6 +152,32 @@ export const CaughtMon = ({
   };
 
   const props = { onValueChanged, onNatureChanged: onNatureBtnChanged };
+
+  const fields:Field[] = [
+    {
+      label: "Nature",
+      input: (<Select style={{minWidth:'120px'}}
+        value={nature}
+        onChange={onNatureInputChanged}
+        options={sortedNatures.map(nature => ({label:nature, value:nature}))}
+      />)
+    }
+  ];
+
+  if (canBeMaleOrFemale){
+    fields.push({
+      label: "Gender",
+      input: (<RadioGroup
+        optionType="button"
+        onChange={e => onGenderChanged(e.target.value)}
+        value={gender}
+        options={[
+          {label:"Male", value:"Male" as Gender},
+          {label:"Female", value:"Female" as Gender},
+        ]}
+      />)
+    });
+  }
 
   return (
     <>
@@ -192,32 +221,6 @@ export const CaughtMon = ({
           />
         </tbody>
       </table>
-
-      const fields:Field[] = [
-        {
-          label: "Nature",
-          input: (<Select style={{minWidth:'120px'}}
-            value={nature}
-            onChange={onNatureInputChanged}
-            options={sortedNatures.map(nature => ({label:nature, value:nature}))}
-          />)
-        }
-      ];
-
-      if (canBeMaleOrFemale){
-        fields.push({
-          label: "Gender",
-          input: (<RadioGroup
-            optionType="button"
-            onChange={e => onGenderChanged(e.target.value)}
-            value={gender}
-            options={[
-              {label:"Male", value:"Male" as Gender}
-              {label:"Female", value:"Female" as Gender}
-            ]}
-          />)
-        });
-      }
 
       <FormFieldTable fields={fields} />
 

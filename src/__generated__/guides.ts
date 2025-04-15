@@ -818,6 +818,22 @@ export const guides = {
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx"),
     ),
   },
+  "/zh-emulator-hgss-egg": {
+    meta: {
+      title: "孵化乱数",
+      description: "如何在培育屋进行孵化乱数",
+      category: "HeartGold and SoulSilver",
+      slug: "/zh-emulator-hgss-egg",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Gen 4/HeartGold and SoulSilver/Egg.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx"),
+    ),
+  },
   "/emulator-hgss-special-wild": {
     meta: {
       title: "Special Wild RNG",
@@ -2699,6 +2715,7 @@ export const guideSlugs = [
   z.literal("/emulator-hgss-breeding"),
   z.literal("/emulator-hgss-cute-charm"),
   z.literal("/emulator-hgss-egg"),
+  z.literal("/zh-emulator-hgss-egg"),
   z.literal("/emulator-hgss-special-wild"),
   z.literal("/emulator-hgss-stationary"),
   z.literal("/emulator-hgss-tid-sid"),

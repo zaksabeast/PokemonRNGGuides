@@ -2,7 +2,7 @@
 
 import { Field, RngToolForm, ResultColumn, RngToolSubmit } from "~/components";
 import { FormikRadio, RadioGroup } from "../../../components/radio";
-import { FormikInput } from "../../../components/input";
+import { FormikInput, Input } from "../../../components/input";
 import * as tst from "ts-toolbelt";
 
 import { Button } from "../../../components/button";
@@ -31,48 +31,55 @@ import { useFormikContext } from "formik";
 
 export type StarterSpecies = "Mudkip" | "Torchic" | "Treecko";
 
-type FindTargetAdvState = {
-  pokemonSpecies: StarterSpecies;
-  tid: string;
-  sid: string;
-  targetAdv:number | null;
-};
-
 type FindTargetAdvProps = {
+  pokemonSpecies: StarterSpecies;
+  setPokemonSpecies: (v:StarterSpecies) => void;
+  tid: string;
+  setTid: (v:string) => void;
+  sid: string;
+  setSid: (v:string) => void;
+
+  onTargetAdvCalculated: (adv:number) => void;
 }
 
 type Result = {};
 
 export const FindTargetAdv = ({
-  
-} : FindTargetAdvProps) => {
-  const { values, setFieldValue } = useFormikContext<FindTargetAdvState>();
-  
+  pokemonSpecies,
+  setPokemonSpecies,
+  tid,
+  setTid,
+  sid,
+  setSid,
+  onTargetAdvCalculated,
+} : FindTargetAdvProps) => {  
   return (
-    <RngToolForm<FindTargetAdvState, Result>
+    <RngToolForm<{}, Result>
       fields={[
         {
           label: "Starter",
           input: (
-            <FormikRadio<FindTargetAdvState, "pokemonSpecies">
-              name="pokemonSpecies"
+            <RadioGroup
+              optionType="button"
+              onChange={e => setPokemonSpecies(e.target.value)}
               options={["Mudkip", "Torchic", "Treecko"]}
+              value={pokemonSpecies}
             />
           ),
         },
         {
           label: "TID",
-          input: <FormikInput<FindTargetAdvState> name="tid" />,
+          input: <Input onChange={e => setTid(e.target.value)} value={tid} />
         },
         {
           label: "SID",
-          input: <FormikInput<FindTargetAdvState> name="sid" />,
+          input: <Input onChange={e => setSid(e.target.value)} value={sid} />          
         },
       ]}
-      initialValues={values}
+      initialValues={{}}
       submitButtonLabel="Find target advance for shiny Pokémon"
-      onSubmit={() => {
-        setFieldValue("targetAdv", 1000);
+      onSubmit={(values) => {
+        onTargetAdvCalculated(+sid);
       }}
       submitTrackerId="shinyStarter_findTarget"
     />

@@ -68,17 +68,16 @@ const getStatRangeForStarter = async (starter: StarterSpecies) => {
 */
 export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
 
-  const initialValues = {
-    pokemonSpecies:"Mudkip",
-    tid:"0",
-    sid:"0", 
-    targetAdv:0,
-  };
+  const [tid, setTid] = React.useState<string>("0");
+  const [sid, setSid] = React.useState<string>("0");
+  const [pokemonSpecies, setPokemonSpecies] = React.useState<StarterSpecies>("Mudkip");
+
+  const [targetAdv, setTargetAdv] = React.useState<number>(0);
 
   return (
     <Formik
       enableReinitialize
-      initialValues={initialValues}
+      initialValues={{}}
       onSubmit={() => {}}
       onReset={() => {}}
     >
@@ -210,12 +209,12 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
         const columns = React.useMemo(() => getColumns(), []);
 
         const getFields = () => {
-          const milliseconds = Math.round((formik.values.targetAdv * 1000) / 59.7275); //NO_PROD
+          const milliseconds = Math.round((targetAdv * 1000) / 59.7275); //NO_PROD
           const minutesBeforeTarget = Math.floor(milliseconds / 60000);
           const fields: Field[] = [
             {
               label: "Target advance for shiny Pokémon",
-              input: <>{formik.values.targetAdv}</>,
+              input: <>{targetAdv}</>,
             },
             {
               label: "Latest hit advance (calibration)",
@@ -335,9 +334,17 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
 
         return (
           <>
-            <FindTargetAdv />
+            <FindTargetAdv 
+              pokemonSpecies={pokemonSpecies}
+              setPokemonSpecies={setPokemonSpecies}
+              tid={tid}
+              setTid={setTid}
+              sid={sid}
+              setSid={setSid}
+              onTargetAdvCalculated={setTargetAdv}
+            />
 
-            {formik.values.targetAdv !== -1 && ( //NO_PROD
+            {targetAdv !== -1 && ( //NO_PROD
               <RngToolForm<{}, Result>
                 getFields={getFields}
                 columns={columns}

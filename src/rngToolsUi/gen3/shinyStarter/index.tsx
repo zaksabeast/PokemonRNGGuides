@@ -37,8 +37,7 @@ export const ShinyStarter = () => {
         stopButtonTrackerId="stop_gen3_shiny_starter_timer"
       />
       <CaughtMon
-        targetAdvance={targetAdvance}
-        onClickCaughtMon={onClickCaughtMon}
+        {...{pokemonSpecies, targetAdvance, onClickCaughtMon}}
       />
     </Flex>
   );

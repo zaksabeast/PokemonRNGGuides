@@ -6,9 +6,11 @@ import { Ivs, Nature } from "~/rngTools";
 import { RngToolSubmit } from "~/components/rngToolForm";
 import { noop } from "lodash-es";
 import { match } from "ts-pattern";
+import {natures} from "../../../types/nature";
 import * as tst from "ts-toolbelt";
 import { RadioChangeEvent } from "antd";
 import {Starter} from "./index";
+import {Select} from "~/components";
 
 export type CaughtMonResult = {
   advance: number;
@@ -56,12 +58,9 @@ const NatureStatRadio = ({ stat }: NatureStatRadioProps) => {
   const isDecreased = stat === values.decreasedStat;
   const value = isIncreased ? "+" : isDecreased ? "-" : "=";
 
-
-  //NO_PROD handle =
   const onChange = React.useCallback(
     (event: RadioChangeEvent) => {
       const newValue = event.target.value;
-      //NO_PROD not fluid
       match({ newValue, isIncreased, isDecreased })
         // We don't allow a stat to be both + and -,
         // so we make sure to only set a stat when
@@ -124,6 +123,7 @@ const StatInput = ({
     </Flex>
   );
 };
+const sortedNatures = natures.slice(0).sort();
 
 const initialValues: FormState = {
   hpStat: 0,
@@ -143,7 +143,7 @@ type Props = {
   onClickCaughtMon: (result: CaughtMonResult) => void;
 };
 
-export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: Props) => {
+export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: Props) => { 
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
@@ -157,47 +157,63 @@ export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: P
   );
 
   //NO_PROD adapt stat values based on species
-  const fields: Field[] = [
-    {
-      label: "HP",
-      input: (
-        <FormikRadio<FormState, "hpStat">
-          name="hpStat"
-          options={toOptions([8, 9, 10])}
-        />
-      ),
-    },
-    {
-      label: "ATK",
-      input: <StatInput stat="atk" options={[2, 3]} />,
-    },
-    {
-      label: "DEF",
-      input: <StatInput stat="def" options={[4, 5]} />,
-    },
-    {
-      label: "SPA",
-      input: <StatInput stat="spa" options={[6, 7]} />,
-    },
-    {
-      label: "SPD",
-      input: <StatInput stat="spd" options={[8, 9]} />,
-    },
-    {
-      label: "SPE",
-      input: <StatInput stat="spe" options={[3, 4]} />,
-    },
-  ];
+  const getFields = (formik:FormState) : Field[] => {
+    return [
+      {
+        label: "HP",
+        input: (
+          <FormikRadio<FormState, "hpStat">
+            name="hpStat"
+            options={toOptions([8, 9, 10])}
+          />
+        ),
+      },
+      {
+        label: "ATK",
+        input: <StatInput stat="atk" options={[2, 3]} />,
+      },
+      {
+        label: "DEF",
+        input: <StatInput stat="def" options={[4, 5]} />,
+      },
+      {
+        label: "SPA",
+        input: <StatInput stat="spa" options={[6, 7]} />,
+      },
+      {
+        label: "SPD",
+        input: <StatInput stat="spd" options={[8, 9]} />,
+      },
+      {
+        label: "SPE",
+        input: <StatInput stat="spe" options={[3, 4]} />,
+      },
+      /*{
+        label: "Nature",
+        input: (<Select style={{minWidth:'120px'}}
+          value={formik.natureDropdown}
+          onChange={e => {
+            //const { setFieldValue, values, setValues } = useFormikContext<FormState>();
+            //setFieldValue("natureDropdown", e);
+          }}
+          options={sortedNatures.map(nature => ({label:nature, value:nature}))}
+        />)
+      }*/
+    ];
+  };
 
   return (
     <RngToolForm<FormState, CaughtMonResult>
-      fields={fields}
+      getFields={getFields}
       columns={columns}
       results={results}
       initialValues={initialValues}
       onSubmit={onSubmit}
       submitTrackerId="generate_gen3_caught_starter"
+      submitButtonLabel={"Find advances matching caught " + pokemonSpecies}
       rowKey="advance"
+      allowReset={true}
+      resetTrackerId="caughtMon_reset"
       onClickResultRow={onClickCaughtMon}
     />
   );

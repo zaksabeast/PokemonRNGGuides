@@ -12,11 +12,6 @@ import { AllOrNone, FeatureConfig, OneOf } from "~/types/utils";
 export type RngToolSubmit<Values> = FormikConfig<Values>["onSubmit"];
 export type RngToolUpdate<Values> = (values: Values) => void;
 
-type OneOf<T extends Record<string, unknown>> = tst.O.Either<
-  T,
-  tst.O.RequiredKeys<T>
->;
-
 type Props<FormState, Result> = {
   initialValues: FormState;
   onUpdate?: RngToolUpdate<FormState>;

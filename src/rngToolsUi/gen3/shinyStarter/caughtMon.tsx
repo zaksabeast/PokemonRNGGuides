@@ -11,6 +11,7 @@ import * as tst from "ts-toolbelt";
 import { RadioChangeEvent } from "antd";
 import {Starter} from "./index";
 import {Select} from "~/components";
+import { Formik, FormikProps, FormikConfig } from "formik";
 
 export type CaughtMonResult = {
   advance: number;
@@ -42,17 +43,17 @@ type FormState = {
   speStat: number;
   increasedStat: NatureStat | ""; 
   decreasedStat: NatureStat | ""; 
-  natureDropdown:Nature | "";
   //NO_PROD add back neutral nature support
 };
 
 type NatureStatRadioProps = {
   stat: NatureStat;
+  onNatureBtnChange: () => void;
 };
 
 const natureStatOptions = toOptions(["+", "=", "-"]);
 
-const NatureStatRadio = ({ stat }: NatureStatRadioProps) => {
+const NatureStatRadio = ({ onNatureBtnChange, stat }: NatureStatRadioProps) => {
   const { setFieldValue, values, setValues } = useFormikContext<FormState>();
   const isIncreased = stat === values.increasedStat;
   const isDecreased = stat === values.decreasedStat;
@@ -92,8 +93,10 @@ const NatureStatRadio = ({ stat }: NatureStatRadioProps) => {
           });
         })
         .otherwise(noop);
+        
+        onNatureBtnChange();
     },
-    [isIncreased, isDecreased, setFieldValue, stat],
+    [isIncreased, isDecreased, setFieldValue, stat, onNatureBtnChange],
   );
 
   return (
@@ -109,13 +112,15 @@ const NatureStatRadio = ({ stat }: NatureStatRadioProps) => {
 const StatInput = ({
   stat,
   options,
+  onNatureBtnChange,
 }: {
   stat: NatureStat;
   options: number[];
+  onNatureBtnChange: () => void;
 }) => {
   return (
     <Flex gap={8}>
-      <NatureStatRadio stat={stat} />
+      <NatureStatRadio {...{onNatureBtnChange,stat}} />
       <FormikRadio<FormState, `${typeof stat}Stat`>
         name={`${stat}Stat`}
         options={toOptions(options)}
@@ -134,7 +139,6 @@ const initialValues: FormState = {
   speStat: 0,
   increasedStat: "",
   decreasedStat: "",
-  natureDropdown: "",
 };
 
 type Props = {
@@ -143,7 +147,8 @@ type Props = {
   onClickCaughtMon: (result: CaughtMonResult) => void;
 };
 
-export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: Props) => { 
+export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: Props) => {  
+  const [natureDropdown, setNatureDropdown] = React.useState<Nature | "">("");
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
@@ -155,9 +160,13 @@ export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: P
     },
     [targetAdvance],
   );
+  console.log(1);
+  
+  const onNatureBtnChange = () => {
+    setNatureDropdown("Bashful");
+  };
 
-  //NO_PROD adapt stat values based on species
-  const getFields = (formik:FormState) : Field[] => {
+  const getFields = (formik:FormikProps<FormState>) : Field[] => {
     return [
       {
         label: "HP",
@@ -170,24 +179,35 @@ export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: P
       },
       {
         label: "ATK",
-        input: <StatInput stat="atk" options={[2, 3]} />,
+        input: <StatInput stat="atk" options={[2, 3]} onNatureBtnChange={onNatureBtnChange} />,
       },
       {
         label: "DEF",
-        input: <StatInput stat="def" options={[4, 5]} />,
+        input: <StatInput stat="def" options={[4, 5]} onNatureBtnChange={onNatureBtnChange} />,
       },
       {
         label: "SPA",
-        input: <StatInput stat="spa" options={[6, 7]} />,
+        input: <StatInput stat="spa" options={[6, 7]} onNatureBtnChange={onNatureBtnChange} />,
       },
       {
         label: "SPD",
-        input: <StatInput stat="spd" options={[8, 9]} />,
+        input: <StatInput stat="spd" options={[8, 9]} onNatureBtnChange={onNatureBtnChange} />,
       },
       {
         label: "SPE",
-        input: <StatInput stat="spe" options={[3, 4]} />,
+        input: <StatInput stat="spe" options={[3, 4]} onNatureBtnChange={onNatureBtnChange} />,
       },
+      {
+        label: "Nature",
+        input: (<Select style={{minWidth:'120px'}}
+          value={natureDropdown}
+          onChange={e => {
+            setNatureDropdown(e);
+            formik.setFieldValue("increasedStat", "atk");
+          }}
+          options={sortedNatures.map(nature => ({label:nature, value:nature}))}
+        />)
+      }
       /*{
         label: "Nature",
         input: (<Select style={{minWidth:'120px'}}

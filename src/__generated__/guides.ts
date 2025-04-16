@@ -2583,10 +2583,12 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: true,
       addedOn: "2025-04-07",
-      file: "guides/Emerald/Egg RNG.mdx",
+      file: "guides/Emerald/translations/chinese/Egg RNG.mdx",
       category: "Emerald",
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/translations/chinese/Egg RNG.mdx"),
+    ),
   },
   "/zh-emulator-hgss-egg": {
     meta: {

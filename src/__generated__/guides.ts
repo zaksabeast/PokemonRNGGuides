@@ -2574,6 +2574,22 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
   },
+  "/zh-emerald-sid-feebas": {
+    meta: {
+      title: "使用丑丑鱼查找 SID",
+      description: "如何在《绿宝石》中利用丑丑鱼查找你的里ID (SID)。",
+      category: "Emerald",
+      slug: "/zh-emerald-sid-feebas",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-16",
+      file: "guides/Emerald/Find SID with Feebas.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
+    ),
+  },
   "/zh-emulator-emerald-egg": {
     meta: {
       title: "孵化乱数",
@@ -2661,6 +2677,22 @@ export const guides = {
       category: "Emerald",
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Retail Wild RNG.mdx")),
+  },
+  "/zh-rs-sid-feebas": {
+    meta: {
+      title: "使用丑丑鱼查找 SID",
+      description: "如何在《红宝石 / 蓝宝石》中利用丑丑鱼查找你的里ID (SID)。",
+      category: "Ruby and Sapphire",
+      slug: "/zh-rs-sid-feebas",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Emerald/Find SID with Feebas.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
+    ),
   },
 } as const;
 
@@ -2823,12 +2855,14 @@ export const guideSlugs = [
   z.literal("/zh-dppt-wild"),
   z.literal("/zh-e-tips-rng"),
   z.literal("/zh-emerald-painting-rng"),
+  z.literal("/zh-emerald-sid-feebas"),
   z.literal("/zh-emulator-emerald-egg"),
   z.literal("/zh-emulator-hgss-egg"),
   z.literal("/zh-gen2-celebi"),
   z.literal("/zh-gen2-starters"),
   z.literal("/zh-install-pokereader"),
   z.literal("/zh-retail-emerald-wild"),
+  z.literal("/zh-rs-sid-feebas"),
 ] as const;
 
 export const categories = [

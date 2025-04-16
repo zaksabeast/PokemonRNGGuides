@@ -412,6 +412,22 @@ export const guides = {
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
     ),
   },
+  "/zh-emerald-sid-feebas": {
+    meta: {
+      title: "使用丑丑鱼查找 SID",
+      description: "如何在《绿宝石》中利用丑丑鱼查找你的里ID (SID)",
+      category: "Emerald",
+      slug: "/zh-emerald-sid-feebas",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-16",
+      file: "guides/Emerald/Find SID with Feebas.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
+    ),
+  },
   "/emerald-static": {
     meta: {
       title: "Emerald Static3",
@@ -2351,6 +2367,23 @@ export const guides = {
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
     ),
   },
+  "/zh-rs-sid-feebas": {
+    meta: {
+      title: "使用丑丑鱼查找 SID",
+      description:
+        "如何在《红宝石 / 蓝宝石》中利用丑丑鱼查找你的里ID (SID)。",
+      category: "Ruby and Sapphire",
+      slug: "/rs-sid-feebas",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Emerald/Find SID with Feebas.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
+    ),
+  },
   "/rs-static": {
     meta: {
       title: "Ruby and Sapphire Static3",
@@ -2689,6 +2722,7 @@ export const guideSlugs = [
   z.literal("/emerald-overview"),
   z.literal("/emerald-painting-rng"),
   z.literal("/emerald-sid-feebas"),
+  z.literal("/zh-emerald-sid-feebas"),
   z.literal("/emerald-static"),
   z.literal("/emerald-tidsid-generator"),
   z.literal("/emulator-b2w2-dream-radar"),
@@ -2809,6 +2843,7 @@ export const guideSlugs = [
   z.literal("/rs-mirage-island"),
   z.literal("/rs-pokefinder-setup"),
   z.literal("/rs-sid-feebas"),
+  z.literal("/zh-rs-sid-feebas"),
   z.literal("/rs-static"),
   z.literal("/rs-tidsid-generator"),
   z.literal("/rs-tips-rng"),

@@ -6,7 +6,7 @@ import { Ivs, Nature } from "~/rngTools";
 import { RngToolSubmit } from "~/components/rngToolForm";
 import { noop } from "lodash-es";
 import { match } from "ts-pattern";
-import {natures} from "../../../types/nature";
+import {natures,NatureStat,getNaturesFromStatMoreLess,getStatMoreLessFromNature} from "../../../types/nature";
 import * as tst from "ts-toolbelt";
 import { RadioChangeEvent } from "antd";
 import {Starter} from "./index";
@@ -32,8 +32,6 @@ const toOptions = <T,>(options: T[]) => {
   }));
 };
 
-type NatureStat = tst.U.Exclude<keyof Ivs, "hp">;
-
 type FormState = {
   hpStat: number;
   atkStat: number;
@@ -42,61 +40,80 @@ type FormState = {
   spdStat: number;
   speStat: number;
   increasedStat: NatureStat | ""; 
-  decreasedStat: NatureStat | ""; 
-  //NO_PROD add back neutral nature support
+  decreasedStat: NatureStat | "";  
+  nature : Nature | "";
 };
 
 type NatureStatRadioProps = {
   stat: NatureStat;
-  onNatureBtnChange: () => void;
 };
 
 const natureStatOptions = toOptions(["+", "=", "-"]);
 
-const NatureStatRadio = ({ onNatureBtnChange, stat }: NatureStatRadioProps) => {
-  const { setFieldValue, values, setValues } = useFormikContext<FormState>();
+const NatureStatRadio = ({ stat }: NatureStatRadioProps) => {
+  const { values, setValues } = useFormikContext<FormState>();
   const isIncreased = stat === values.increasedStat;
   const isDecreased = stat === values.decreasedStat;
   const value = isIncreased ? "+" : isDecreased ? "-" : "=";
 
   const onChange = React.useCallback(
     (event: RadioChangeEvent) => {
+      const onChange = (args:{decreasedStat?:FormState['decreasedStat'], increasedStat?:FormState['increasedStat']}) => {
+        const newDecreasedStat = args.decreasedStat ?? values.decreasedStat;
+        const newIncreasedStat = args.increasedStat ?? values.increasedStat;
+        
+        const validNatures = getNaturesFromStatMoreLess(newIncreasedStat, newDecreasedStat);
+        const newNature = (() => {
+          if (values.nature){
+            if (validNatures.includes(values.nature))
+              return values.nature; // already good
+
+            return validNatures.length ? validNatures[0] : "";
+          } else if(validNatures.length){
+            return validNatures[0];
+          } else
+            return "";
+        })();
+        
+        setValues({
+          ...values,
+          ...args,
+          nature:newNature,
+        });
+      }
+
       const newValue = event.target.value;
       match({ newValue, isIncreased, isDecreased })
         // We don't allow a stat to be both + and -,
         // so we make sure to only set a stat when
         // it's not already set to the opposite value
         .with({ newValue: "=", isDecreased: true }, () => {
-          setFieldValue("decreasedStat", "");
+          onChange({decreasedStat:""});
         })
         .with({ newValue: "=", isIncreased: true }, () => {
-          setFieldValue("increasedStat", "");
+          onChange({increasedStat:""});
         })
         .with({ newValue: "+", isDecreased: false }, () => {
-          setFieldValue("increasedStat", stat);
+          onChange({increasedStat: stat});
         })
         .with({ newValue: "+", isDecreased: true }, () => {
-          setValues({
-            ...values,
+          onChange({
             increasedStat:stat,
             decreasedStat:"",
           });
         })
         .with({ newValue: "-", isIncreased: false }, () => {
-          setFieldValue("decreasedStat", stat);
+          onChange({decreasedStat:stat});
         })
         .with({ newValue: "-", isIncreased: true }, () => {
-          setValues({
-            ...values,
+          onChange({
             increasedStat:"",
             decreasedStat:stat,
           });
         })
         .otherwise(noop);
-        
-        onNatureBtnChange();
     },
-    [isIncreased, isDecreased, setFieldValue, stat, onNatureBtnChange],
+    [isIncreased, isDecreased, setValues, values, stat],
   );
 
   return (
@@ -112,15 +129,13 @@ const NatureStatRadio = ({ onNatureBtnChange, stat }: NatureStatRadioProps) => {
 const StatInput = ({
   stat,
   options,
-  onNatureBtnChange,
 }: {
   stat: NatureStat;
   options: number[];
-  onNatureBtnChange: () => void;
 }) => {
   return (
     <Flex gap={8}>
-      <NatureStatRadio {...{onNatureBtnChange,stat}} />
+      <NatureStatRadio stat={stat} />
       <FormikRadio<FormState, `${typeof stat}Stat`>
         name={`${stat}Stat`}
         options={toOptions(options)}
@@ -139,6 +154,7 @@ const initialValues: FormState = {
   speStat: 0,
   increasedStat: "",
   decreasedStat: "",
+  nature:"",
 };
 
 type Props = {
@@ -147,8 +163,7 @@ type Props = {
   onClickCaughtMon: (result: CaughtMonResult) => void;
 };
 
-export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: Props) => {  
-  const [natureDropdown, setNatureDropdown] = React.useState<Nature | "">("");
+export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: Props) => { 
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
@@ -162,11 +177,7 @@ export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: P
   );
   console.log(1);
   
-  const onNatureBtnChange = () => {
-    setNatureDropdown("Bashful");
-  };
-
-  const getFields = (formik:FormikProps<FormState>) : Field[] => {
+  const getFields = (formik:FormikProps<FormState>) : Field[] => {  
     return [
       {
         label: "HP",
@@ -179,31 +190,38 @@ export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: P
       },
       {
         label: "ATK",
-        input: <StatInput stat="atk" options={[2, 3]} onNatureBtnChange={onNatureBtnChange} />,
+        input: <StatInput stat="atk" options={[2, 3]} />,
       },
       {
         label: "DEF",
-        input: <StatInput stat="def" options={[4, 5]} onNatureBtnChange={onNatureBtnChange} />,
+        input: <StatInput stat="def" options={[4, 5]} />,
       },
       {
         label: "SPA",
-        input: <StatInput stat="spa" options={[6, 7]} onNatureBtnChange={onNatureBtnChange} />,
+        input: <StatInput stat="spa" options={[6, 7]} />,
       },
       {
         label: "SPD",
-        input: <StatInput stat="spd" options={[8, 9]} onNatureBtnChange={onNatureBtnChange} />,
+        input: <StatInput stat="spd" options={[8, 9]} />,
       },
       {
         label: "SPE",
-        input: <StatInput stat="spe" options={[3, 4]} onNatureBtnChange={onNatureBtnChange} />,
+        input: <StatInput stat="spe" options={[3, 4]} />,
       },
       {
         label: "Nature",
         input: (<Select style={{minWidth:'120px'}}
-          value={natureDropdown}
+          value={formik.values.nature}
           onChange={e => {
-            setNatureDropdown(e);
-            formik.setFieldValue("increasedStat", "atk");
+            if (!e)
+              return;
+            const [increasedStat, decreasedStat] = getStatMoreLessFromNature(e);
+            formik.setValues({
+              ...formik.values,
+              nature: e,
+              increasedStat,
+              decreasedStat,
+            });
           }}
           options={sortedNatures.map(nature => ({label:nature, value:nature}))}
         />)
@@ -211,10 +229,10 @@ export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: P
       /*{
         label: "Nature",
         input: (<Select style={{minWidth:'120px'}}
-          value={formik.natureDropdown}
+          value={formik.nature}
           onChange={e => {
             //const { setFieldValue, values, setValues } = useFormikContext<FormState>();
-            //setFieldValue("natureDropdown", e);
+            //setFieldValue("nature", e);
           }}
           options={sortedNatures.map(nature => ({label:nature, value:nature}))}
         />)

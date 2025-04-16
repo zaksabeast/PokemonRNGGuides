@@ -2,6 +2,8 @@ import React from "react";
 import { FormikInput, RngToolForm, Field } from "~/components";
 import { RadioGroup } from "~/components/radio";
 import { RngToolUpdate } from "~/components/rngToolForm";
+import {Starter} from "./index";
+
 import {
   DecimalString,
   fromDecimalString,
@@ -10,8 +12,6 @@ import {
   toDecimalString,
   toHexString,
 } from "~/utils/number";
-
-type Starter = "Mudkip" | "Torchic" | "Treecko";
 
 const getTargetAdvance = ({
   tid,
@@ -22,7 +22,8 @@ const getTargetAdvance = ({
   starter: Starter;
 }) => {
   // stubbed
-  return tid + starter.length * 10;
+  console.log(starter);
+  return tid + starter.charCodeAt(0) * 10;
 };
 
 type FormState = {
@@ -47,7 +48,7 @@ export const FindTargetAdvance = ({
   setTargetAdvance,
 }: Props) => {
     
-  const fields: Field[] = [
+  const fields: Field[] = React.useMemo(() => ([
     {
       label: "Starter",
       input: (
@@ -67,7 +68,7 @@ export const FindTargetAdvance = ({
       label: "SID",
       input: <FormikInput<FormState> name="sid" />,
     },
-  ];
+  ]), [pokemonSpecies, setPokemonSpecies]);
 
   const onUpdate = React.useCallback<RngToolUpdate<FormState>>(
     async (opts) => {
@@ -85,11 +86,11 @@ export const FindTargetAdvance = ({
       });
       setTargetAdvance(targetAdvance);
     },
-    [setTargetAdvance],
+    [setTargetAdvance, pokemonSpecies],
   );
 
   return (
-    <RngToolForm<FormState, unknown[]>
+    <RngToolForm<FormState, never[]>
       fields={fields}
       initialValues={initialValues}
       onUpdate={onUpdate}

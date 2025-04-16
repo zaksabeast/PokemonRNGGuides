@@ -1,5 +1,9 @@
-import type {Game, FormStateFindShiny} from "./shinyStarter";
-
+import type {Game,Starter} from "./index";
+import {
+  Gender,
+  Nature,
+  rngTools,
+} from "~/rngTools";
 
 export interface Result {
   adv: number;
@@ -9,9 +13,11 @@ export interface Result {
   gender: Gender;
 }
 
-const findTargetAdvanceForShinyPokemon = async function (
+export const findTargetAdvanceForShinyPokemon = async function (
   game: Game,
-  values: FormStateFindShiny,
+  pokemonSpecies: Starter,
+  tid:number,
+  sid:number,
 ): Promise<number | null> {
   const MINIMAL_ADV = 600;
 
@@ -20,14 +26,14 @@ const findTargetAdvanceForShinyPokemon = async function (
     const initial_advances = Math.max(i * 100_000, MINIMAL_ADV);
 
     const results = await rngTools.gen3_static_generator_states({
-      species: values.pokemonSpecies,
+      species: pokemonSpecies,
       method4: false,
       initial_advances,
       max_advances: 100_000,
       seed,
       offset: 0,
-      tid: +values.tid || 0,
-      sid: +values.sid || 0,
+      tid: tid,
+      sid: sid,
       bugged_roamer: false,
       filter: {
         shiny: true,
@@ -49,7 +55,7 @@ const findTargetAdvanceForShinyPokemon = async function (
 
 
 const generateResults = async function (
-  values: FormStateFindShiny,
+  // values: FormStateFindShiny,
 ): Promise<Result[]> {
   return [];
 };

@@ -2,12 +2,13 @@ import React from "react";
 import { useFormikContext } from "formik";
 import { RngToolForm, Field, Flex, ResultColumn } from "~/components";
 import { FormikRadio, RadioGroup } from "~/components/radio";
-import { Ivs } from "~/rngTools";
+import { Ivs, Nature } from "~/rngTools";
 import { RngToolSubmit } from "~/components/rngToolForm";
 import { noop } from "lodash-es";
 import { match } from "ts-pattern";
 import * as tst from "ts-toolbelt";
 import { RadioChangeEvent } from "antd";
+import {Starter} from "./index";
 
 export type CaughtMonResult = {
   advance: number;
@@ -37,34 +38,59 @@ type FormState = {
   spaStat: number;
   spdStat: number;
   speStat: number;
-  increasedStat: NatureStat;
-  decreasedStat: NatureStat;
+  increasedStat: NatureStat | ""; 
+  decreasedStat: NatureStat | ""; 
+  natureDropdown:Nature | "";
+  //NO_PROD add back neutral nature support
 };
 
-type StatIndicatorProps = {
+type NatureStatRadioProps = {
   stat: NatureStat;
 };
 
-const natureStatOptions = toOptions(["+", "-"]);
+const natureStatOptions = toOptions(["+", "=", "-"]);
 
-const NatureStatRadio = ({ stat }: StatIndicatorProps) => {
-  const { setFieldValue, values } = useFormikContext<FormState>();
+const NatureStatRadio = ({ stat }: NatureStatRadioProps) => {
+  const { setFieldValue, values, setValues } = useFormikContext<FormState>();
   const isIncreased = stat === values.increasedStat;
   const isDecreased = stat === values.decreasedStat;
-  const value = isIncreased ? "+" : isDecreased ? "-" : null;
+  const value = isIncreased ? "+" : isDecreased ? "-" : "=";
 
+
+  //NO_PROD handle =
   const onChange = React.useCallback(
     (event: RadioChangeEvent) => {
       const newValue = event.target.value;
+      //NO_PROD not fluid
       match({ newValue, isIncreased, isDecreased })
         // We don't allow a stat to be both + and -,
         // so we make sure to only set a stat when
         // it's not already set to the opposite value
+        .with({ newValue: "=", isDecreased: true }, () => {
+          setFieldValue("decreasedStat", "");
+        })
+        .with({ newValue: "=", isIncreased: true }, () => {
+          setFieldValue("increasedStat", "");
+        })
         .with({ newValue: "+", isDecreased: false }, () => {
           setFieldValue("increasedStat", stat);
         })
+        .with({ newValue: "+", isDecreased: true }, () => {
+          setValues({
+            ...values,
+            increasedStat:stat,
+            decreasedStat:"",
+          });
+        })
         .with({ newValue: "-", isIncreased: false }, () => {
           setFieldValue("decreasedStat", stat);
+        })
+        .with({ newValue: "-", isIncreased: true }, () => {
+          setValues({
+            ...values,
+            increasedStat:"",
+            decreasedStat:stat,
+          });
         })
         .otherwise(noop);
     },
@@ -106,48 +132,18 @@ const initialValues: FormState = {
   spaStat: 0,
   spdStat: 0,
   speStat: 0,
-  increasedStat: "atk",
-  decreasedStat: "atk",
+  increasedStat: "",
+  decreasedStat: "",
+  natureDropdown: "",
 };
 
-const fields: Field[] = [
-  {
-    label: "HP",
-    input: (
-      <FormikRadio<FormState, "hpStat">
-        name="hpStat"
-        options={toOptions([8, 9, 10])}
-      />
-    ),
-  },
-  {
-    label: "ATK",
-    input: <StatInput stat="atk" options={[2, 3]} />,
-  },
-  {
-    label: "DEF",
-    input: <StatInput stat="def" options={[4, 5]} />,
-  },
-  {
-    label: "SPA",
-    input: <StatInput stat="spa" options={[6, 7]} />,
-  },
-  {
-    label: "SPD",
-    input: <StatInput stat="spd" options={[8, 9]} />,
-  },
-  {
-    label: "SPE",
-    input: <StatInput stat="spe" options={[3, 4]} />,
-  },
-];
-
 type Props = {
+  pokemonSpecies:Starter,
   targetAdvance: number;
   onClickCaughtMon: (result: CaughtMonResult) => void;
 };
 
-export const CaughtMon = ({ targetAdvance, onClickCaughtMon }: Props) => {
+export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: Props) => {
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
@@ -159,6 +155,39 @@ export const CaughtMon = ({ targetAdvance, onClickCaughtMon }: Props) => {
     },
     [targetAdvance],
   );
+
+  //NO_PROD adapt stat values based on species
+  const fields: Field[] = [
+    {
+      label: "HP",
+      input: (
+        <FormikRadio<FormState, "hpStat">
+          name="hpStat"
+          options={toOptions([8, 9, 10])}
+        />
+      ),
+    },
+    {
+      label: "ATK",
+      input: <StatInput stat="atk" options={[2, 3]} />,
+    },
+    {
+      label: "DEF",
+      input: <StatInput stat="def" options={[4, 5]} />,
+    },
+    {
+      label: "SPA",
+      input: <StatInput stat="spa" options={[6, 7]} />,
+    },
+    {
+      label: "SPD",
+      input: <StatInput stat="spd" options={[8, 9]} />,
+    },
+    {
+      label: "SPE",
+      input: <StatInput stat="spe" options={[3, 4]} />,
+    },
+  ];
 
   return (
     <RngToolForm<FormState, CaughtMonResult>

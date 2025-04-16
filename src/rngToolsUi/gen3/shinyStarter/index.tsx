@@ -3,6 +3,9 @@ import { Flex, MultiTimer } from "~/components";
 import { FindTargetAdvance } from "./findTarget";
 import { CaughtMon, CaughtMonResult } from "./caughtMon";
 
+export type Game = "emerald" | "rs";
+export type Starter = "Mudkip" | "Torchic" | "Treecko";
+
 const calculateMillis = (
   targetAdvance: number,
   hitAdvance: number,
@@ -12,6 +15,7 @@ const calculateMillis = (
 };
 
 export const ShinyStarter = () => {
+  const [pokemonSpecies, setPokemonSpecies] = React.useState<Starter>("Mudkip");
   const [targetAdvance, setTargetAdvance] = React.useState(0);
   const [hitAdvance, setHitAdvance] = React.useState(0);
 
@@ -25,7 +29,7 @@ export const ShinyStarter = () => {
 
   return (
     <Flex gap={16} vertical>
-      <FindTargetAdvance setTargetAdvance={setTargetAdvance} />
+      <FindTargetAdvance {...{setTargetAdvance,pokemonSpecies,setPokemonSpecies}} />
       <MultiTimer
         minutesBeforeTarget={0}
         milliseconds={milliseconds}

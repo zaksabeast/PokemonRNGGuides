@@ -2588,6 +2588,22 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
   },
+  "/zh-emulator-hgss-egg": {
+    meta: {
+      title: "孵化乱数",
+      description: "如何在培育屋进行孵化乱数",
+      category: "HeartGold and SoulSilver",
+      slug: "/zh-emulator-hgss-egg",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Gen 4/HeartGold and SoulSilver/Egg.mdx",
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx"),
+    ),
+  },
   "/zh-gen2-celebi": {
     meta: {
       title: "时拉比",
@@ -2808,6 +2824,7 @@ export const guideSlugs = [
   z.literal("/zh-e-tips-rng"),
   z.literal("/zh-emerald-painting-rng"),
   z.literal("/zh-emulator-emerald-egg"),
+  z.literal("/zh-emulator-hgss-egg"),
   z.literal("/zh-gen2-celebi"),
   z.literal("/zh-gen2-starters"),
   z.literal("/zh-install-pokereader"),

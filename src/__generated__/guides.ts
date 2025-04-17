@@ -689,19 +689,18 @@ export const guides = {
   },
   "/emulator-flrg-stationary-and-gift": {
     meta: {
-      title: "FRLG Stationary/Gift RNG",
-      description: "Get shiny 6 IV stationaries from FRLG",
+      title: "Static RNG",
+      description: "Get shiny 6IV legendaries from FRLG",
       slug: "/emulator-flrg-stationary-and-gift",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/FireRed and LeafGreen/Stationary and Gift RNG.mdx",
+      file: "guides/FireRed and LeafGreen/Static RNG.mdx",
       category: "FireRed and LeafGreen",
     },
     Guide: React.lazy(
-      () =>
-        import("~/../guides/FireRed and LeafGreen/Stationary and Gift RNG.mdx"),
+      () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
     ),
   },
   "/emulator-frlg-egg": {

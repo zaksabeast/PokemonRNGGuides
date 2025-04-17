@@ -21,24 +21,22 @@ import { nature } from "~/types/nature";
 import { genderOptions, natureOptions } from "~/components/pkmFilter";
 
 const columns: ResultColumn<Gen3HeldEgg>[] = [
-  { title: "Advance", dataIndex: "advance", key: "advance" },
-  { title: "Redraws", dataIndex: "redraws", key: "redraws" },
+  { title: "Advance", dataIndex: "advance" },
+  { title: "Redraws", dataIndex: "redraws" },
   {
     title: "PID",
     dataIndex: "pid",
-    key: "pid",
     monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
-  { title: "Gender", dataIndex: "gender", key: "gender" },
+  { title: "Gender", dataIndex: "gender" },
   {
     title: "Shiny",
     dataIndex: "shiny",
-    key: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
-  { title: "Nature", dataIndex: "nature", key: "nature" },
-  { title: "Ability", dataIndex: "ability", key: "ability" },
+  { title: "Nature", dataIndex: "nature" },
+  { title: "Ability", dataIndex: "ability" },
 ];
 
 export type FormState = {

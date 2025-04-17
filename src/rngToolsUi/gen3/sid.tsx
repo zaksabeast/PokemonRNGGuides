@@ -14,7 +14,6 @@ const columns: ResultColumn<GeneratorResult>[] = [
   {
     title: "SID",
     dataIndex: "sid",
-    key: "sid",
   },
 ];
 

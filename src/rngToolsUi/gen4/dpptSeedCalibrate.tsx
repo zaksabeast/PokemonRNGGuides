@@ -20,25 +20,21 @@ const columns: ResultColumn<SeedTime4Calibrate>[] = [
   {
     title: "Seed",
     dataIndex: "seed",
-    key: "seed",
     monospace: true,
     render: (seed) => seed.toString(16).toUpperCase().padStart(8, "0"),
   },
   {
     title: "Date/Time",
     dataIndex: "datetime",
-    key: "datetime",
     render: (date) => formatRngDateTime(date, { seconds: true }),
   },
   {
     title: "Delay",
     dataIndex: "delay",
-    key: "delay",
   },
   {
     title: "Coin Flips",
     dataIndex: "coin_flips",
-    key: "coin_flips",
     render: (coinFlips) =>
       coinFlips.map((flip) => (flip === "Heads" ? "H" : "T")).join(", "),
   },

@@ -33,18 +33,15 @@ const withChainColumns: ResultColumn<LooseColumns>[] = [
   {
     title: "Advance",
     dataIndex: "advance",
-    key: "advance",
   },
   {
     title: "Shiny",
     dataIndex: "shiny",
-    key: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
   {
     title: "State",
     dataIndex: "state",
-    key: "state",
     monospace: true,
     render: (state) =>
       state
@@ -58,24 +55,20 @@ const noChainColumns: ResultColumn<LooseColumns>[] = [
   {
     title: "Advance",
     dataIndex: "advance",
-    key: "advance",
   },
   {
     title: "Shiny",
     dataIndex: "shiny",
-    key: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
   {
     title: "Sync",
     dataIndex: "sync",
-    key: "sync",
     render: (sync) => (sync ? "Yes" : "No"),
   },
   {
     title: "State",
     dataIndex: "state",
-    key: "state",
     render: (state) =>
       state
         ?.map((num) => num.toString(16).padStart(8, "0").toUpperCase())

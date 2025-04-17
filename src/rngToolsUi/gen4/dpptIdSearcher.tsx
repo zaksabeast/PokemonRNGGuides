@@ -14,29 +14,24 @@ const columns: ResultColumn<Id4>[] = [
   {
     title: "Seed",
     dataIndex: "seed",
-    key: "seed",
     monospace: true,
     render: (seed) => seed.toString(16).toUpperCase().padStart(8, "0"),
   },
   {
     title: "TID",
     dataIndex: "tid",
-    key: "tid",
   },
   {
     title: "SID",
     dataIndex: "sid",
-    key: "sid",
   },
   {
     title: "TSV",
     dataIndex: "tsv",
-    key: "tsv",
   },
   {
     title: "Delay",
     dataIndex: "delay",
-    key: "delay",
   },
 ];
 

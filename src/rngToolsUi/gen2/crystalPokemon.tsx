@@ -66,25 +66,21 @@ const getColumns = (
     {
       title: t("Advance"),
       dataIndex: "advance",
-      key: "advance",
     },
     {
       title: t("State"),
       dataIndex: "state",
-      key: "state",
       monospace: true,
       render: (state) => state.toString(16).padStart(4, "0"),
     },
     {
       title: t("Shiny"),
       dataIndex: "shiny",
-      key: "shiny",
       render: (shiny) => (shiny ? <YesIcon /> : null),
     },
     {
       title: t("Max DV"),
       dataIndex: "max_dv",
-      key: "max_dv",
       render: (max_dv) => (max_dv ? <YesIcon /> : null),
     },
   ];

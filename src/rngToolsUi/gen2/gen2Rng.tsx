@@ -18,19 +18,16 @@ const columns: ResultColumn<RngState>[] = [
   {
     title: "Advance",
     dataIndex: "advance",
-    key: "advance",
   },
   {
     title: "State",
     dataIndex: "rand",
-    key: "rand",
     monospace: true,
     render: (rand) => rand.toString(16).padStart(4, "0"),
   },
   {
     title: "Div",
     dataIndex: "div",
-    key: "div",
     monospace: true,
     render: (div) => div.toString(16).padStart(4, "0"),
   },

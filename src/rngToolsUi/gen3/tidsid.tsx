@@ -20,10 +20,10 @@ import { addRngTime, rngDate, rngTime, RngTime } from "~/utils/time";
 import { denormalizeIdFilter, IdFilter } from "~/types/id";
 
 const columns: ResultColumn<Gen3TidSidResult>[] = [
-  { title: "Advance", dataIndex: "advance", key: "advance" },
-  { title: "TID", dataIndex: "tid", key: "tid" },
-  { title: "SID", dataIndex: "sid", key: "sid" },
-  { title: "TSV", dataIndex: "tsv", key: "tsv" },
+  { title: "Advance", dataIndex: "advance" },
+  { title: "TID", dataIndex: "tid" },
+  { title: "SID", dataIndex: "sid" },
+  { title: "TSV", dataIndex: "tsv" },
 ];
 
 type Game = "rs" | "frlge" | "xdcolo";

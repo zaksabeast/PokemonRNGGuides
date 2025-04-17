@@ -19,7 +19,7 @@ import {
 type Result = FlattenIvs<Egg3PickupState>;
 
 const columns: ResultColumn<Result>[] = [
-  { title: "Advance", dataIndex: "advance", key: "advance" },
+  { title: "Advance", dataIndex: "advance" },
   ...ivColumns,
 ];
 

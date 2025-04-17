@@ -20,24 +20,22 @@ import { FlattenIvs, flattenIvs, ivColumns } from "../../shared/ivColumns";
 type Result = FlattenIvs<Static3GeneratorResult>;
 
 const columns: ResultColumn<Result>[] = [
-  { title: "Advance", dataIndex: "advance", key: "advance" },
+  { title: "Advance", dataIndex: "advance" },
   {
     title: "PID",
     dataIndex: "pid",
-    key: "pid",
     monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
-  { title: "Nature", dataIndex: "nature", key: "nature" },
-  { title: "Ability", dataIndex: "ability", key: "ability" },
+  { title: "Nature", dataIndex: "nature" },
+  { title: "Ability", dataIndex: "ability" },
   ...ivColumns,
   {
     title: "Shiny",
     dataIndex: "shiny",
-    key: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
-  { title: "Gender", dataIndex: "gender", key: "gender" },
+  { title: "Gender", dataIndex: "gender" },
 ];
 
 type FormState = {

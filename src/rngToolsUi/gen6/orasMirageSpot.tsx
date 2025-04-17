@@ -15,18 +15,15 @@ const columns: ResultColumn<MirageSpot>[] = [
   {
     title: "Date",
     dataIndex: "date",
-    key: "date",
     render: (date) => formatRngDate(date),
   },
   {
     title: "Name",
     dataIndex: "name",
-    key: "name",
   },
   {
     title: "Pokemon",
     dataIndex: "pokemon",
-    key: "pokemon",
     render: (pokemon) => pokemon.join(", "),
   },
 ];

@@ -27,13 +27,11 @@ const getColumns = (
       {
         title: "Day",
         dataIndex: "day",
-        key: "day",
         render: (dayDiff) => `${dayDiff + 1}`,
       },
       {
         title: "Time To Wait",
         dataIndex: "day_diff",
-        key: "day_diff",
         render: (dayDiff) => `${dayDiff} day${dayDiff === 1 ? "" : "s"}`,
       },
     );
@@ -41,7 +39,6 @@ const getColumns = (
   columns.push({
     title: "PID Pattern",
     dataIndex: "pid_pattern",
-    key: "pid_pattern",
     render: (pid_pattern) =>
       `****${pid_pattern.toString(16).toUpperCase().padStart(4, "0")}`,
     monospace: true,
@@ -53,7 +50,6 @@ const getColumns = (
     columns.push({
       title: "Method-1 Earliest RNG Advance matching PID Pattern",
       dataIndex: "earliest_adv",
-      key: "earliest_adv",
       render: (earliestAdv) => formatLargeInteger(earliestAdv),
     });
   return columns;

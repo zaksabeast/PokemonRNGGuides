@@ -17,18 +17,15 @@ const columns: ResultColumn<GeneratorResult>[] = [
   {
     title: "Date",
     dataIndex: "datetime",
-    key: "datetime",
     render: (date) => fromRngDateTime(date).toDate().toLocaleString(),
   },
   {
     title: "Delay",
     dataIndex: "delay",
-    key: "delay",
   },
   {
     title: "Coin Flips",
     dataIndex: "coin_flips",
-    key: "coin_flips",
     render: (coinFlips) =>
       coinFlips.map((flip) => (flip === "Heads" ? "H" : "T")).join(", "),
   },

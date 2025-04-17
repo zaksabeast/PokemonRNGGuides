@@ -23,40 +23,33 @@ const columns: ResultColumn<Gen6Id>[] = [
   {
     title: "Seed",
     dataIndex: "seed",
-    key: "seed",
     monospace: true,
     render: (seed) => seed.toString(16).toUpperCase().padStart(8, "0"),
   },
   {
     title: "Advances",
     dataIndex: "advances",
-    key: "advances",
   },
   {
     title: "TID",
     dataIndex: "tid",
-    key: "tid",
   },
   {
     title: "SID",
     dataIndex: "sid",
-    key: "sid",
   },
   {
     title: "TSV",
     dataIndex: "tsv",
-    key: "tsv",
   },
   {
     title: "Date/Time",
     dataIndex: "datetime",
-    key: "datetime",
     render: (date) => formatRngDateTime(date, { seconds: true }),
   },
   {
     title: "State",
     dataIndex: "tinymt_state",
-    key: "tinymt_state",
     monospace: true,
     render: (state: number[]) =>
       state

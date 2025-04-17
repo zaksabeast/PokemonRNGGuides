@@ -20,7 +20,6 @@ import {
   MarkdownOList,
   MarkdownA,
 } from "./components";
-import { Alert } from "antd";
 import {
   Flex,
   Gist,
@@ -30,6 +29,7 @@ import {
   Countdown,
   ShowIf,
   LanguageButton,
+  Alert,
 } from "~/components";
 import { Gen2PokemonRng } from "~/rngToolsUi/gen2/crystalPokemon";
 import { Gen2Rng } from "~/rngToolsUi/gen2/gen2Rng";

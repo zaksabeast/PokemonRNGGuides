@@ -1,25 +1,30 @@
 import React from "react";
-import { Alert } from "antd";
 import { MainLayout } from "~/layouts/main";
 import { getGuide } from "~/guides";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { Flex, Typography, Loading, Button, Icon } from "~/components";
+import { Flex, Typography, Loading, Button, Icon, Alert } from "~/components";
 import { settings } from "~/settings";
 import { useAbCohort } from "~/hooks/useAbTest";
 import { match } from "ts-pattern";
 
 export const GuideScreen = () => {
   const [route] = useActiveRoute();
-  const cohort = useAbCohort("supportUsButton");
+  const supportTextCohort = useAbCohort("supportUsButton2");
+  const supportIconCohort = useAbCohort("supportUsIcon");
 
-  const supportUsText = match(cohort)
-    .with("back_new_tools_and_videos", () => "Back New Tools & Videos!")
+  const supportUsText = match(supportTextCohort)
     .with(
-      "fuel_rng_join_our_supporters",
-      () => "Fuel RNG - Join Our Supporters!",
+      "keep_pokemon_rng_free_growing",
+      () => "Keep Pokémon RNG Free & Growing",
     )
-    .with("support_rng_and_unlock_perks", () => "Support RNG & Unlock Perks!")
-    .otherwise(() => "Support RNG & Unlock Perks!");
+    .with("love_our_tools_support_us", () => "Sponsor RNG Dev Work")
+    .with("sponsor_rng_dev_work", () => "Love Our Tools? Support Us!")
+    .exhaustive();
+
+  const supportUsIcon = match(supportIconCohort)
+    .with("heart", () => "Heart" as const)
+    .with("coffee", () => "Coffee" as const)
+    .exhaustive();
 
   const Guide = getGuide(route);
   return (
@@ -48,10 +53,10 @@ export const GuideScreen = () => {
         <Flex>
           <Button
             trackerId="support_us_on_discord"
-            icon={<Icon name="Heart" />}
+            icon={<Icon name={supportUsIcon} />}
             type="primary"
             backgroundColor="FillSecondary"
-            backgroundHoverColor="FillSecondaryHover"
+            backgroundHoverColor="FillSupportHover"
             size="middle"
             href={settings.supportUsUrl}
           >
@@ -68,6 +73,34 @@ export const GuideScreen = () => {
           />
         )}
         <Guide.Guide />
+
+        {Guide.meta.category !== "Home" && (
+          <Alert
+            mt={16}
+            backgroundColor="BgSupport"
+            borderColor="BorderSupport"
+            message="Got the Pokemon you wanted?"
+            description={
+              <Flex vertical gap={16}>
+                If everyone who used this site donated just $3/month, it could
+                be a full time job for multiple people!
+                <Flex>
+                  <Button
+                    trackerId="support_us_footer"
+                    icon={<Icon name="Heart" />}
+                    type="primary"
+                    backgroundColor="FillSecondary"
+                    backgroundHoverColor="FillSupportHover"
+                    size="middle"
+                    href={settings.supportUsUrl}
+                  >
+                    Help make this a reality!
+                  </Button>
+                </Flex>
+              </Flex>
+            }
+          />
+        )}
       </React.Suspense>
     </MainLayout>
   );

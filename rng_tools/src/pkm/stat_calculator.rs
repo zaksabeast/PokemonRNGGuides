@@ -1,4 +1,5 @@
 
+use wasm_bindgen::prelude::*;
 use crate::{StatsValue};
 
 pub fn gen3_calculate_hp(base_stat:u16, iv:u8, ev:u16, level:u8) -> u16 {
@@ -21,6 +22,7 @@ pub fn gen3_calculate_non_hp(base_stat:u16, iv:u8, ev:u16, level:u8, nature_fact
   }
 }
 
+#[wasm_bindgen]
 pub fn gen3_calculate_minmax_stats(base_stats:StatsValue, level:u8, is_min_stat:bool) -> StatsValue {
   let iv = if is_min_stat { 0 } else { 31 };
   let nature_fact = if is_min_stat { -1 } else { 1 };

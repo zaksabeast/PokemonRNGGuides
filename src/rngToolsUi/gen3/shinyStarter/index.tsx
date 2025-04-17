@@ -10,11 +10,16 @@ const calculateMillis = (
   targetAdvance: number,
   hitAdvance: number,
 ): number[] => {
-  // stubbed
-  return [targetAdvance, hitAdvance * 1000];
+  //NO_PROD hitAdvance
+  const milliseconds = Math.round((targetAdvance * 1000) / 59.7275);          
+  return [5000, milliseconds];
 };
 
-export const ShinyStarter = () => {
+type Props = {
+  game:Game;
+};
+
+export const ShinyStarter = ({game}:Props) => {
   const [pokemonSpecies, setPokemonSpecies] = React.useState<Starter>("Mudkip");
   const [targetAdvance, setTargetAdvance] = React.useState(0);
   const [hitAdvance, setHitAdvance] = React.useState(0);
@@ -27,12 +32,13 @@ export const ShinyStarter = () => {
     return calculateMillis(targetAdvance, hitAdvance);
   }, [targetAdvance, hitAdvance]);
 
+  const minutesBeforeTarget = Math.floor(milliseconds[1] / 60000);
+
   return (
     <Flex gap={16} vertical>
-      <FindTargetAdvance {...{setTargetAdvance,pokemonSpecies,setPokemonSpecies}} />
+      <FindTargetAdvance {...{game,setTargetAdvance,pokemonSpecies,setPokemonSpecies}} />
       <MultiTimer
-        minutesBeforeTarget={0}
-        milliseconds={milliseconds}
+        {...{minutesBeforeTarget, milliseconds}}
         startButtonTrackerId="start_gen3_shiny_starter_timer"
         stopButtonTrackerId="stop_gen3_shiny_starter_timer"
       />

@@ -74,7 +74,7 @@ impl PkmFilter {
 
 
     pub fn pass_filter_stats(&self, state: &impl PkmState) -> bool {
-        match (&self.stats) {
+        match &self.stats {
             None => { true },
             Some(stats_filter) => {
                 let base_stats = &stats_filter.base_stats;

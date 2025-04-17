@@ -2,7 +2,8 @@ import React from "react";
 import { FormikInput, RngToolForm, Field } from "~/components";
 import { RadioGroup } from "~/components/radio";
 import { RngToolUpdate } from "~/components/rngToolForm";
-import {Starter} from "./index";
+import {Starter,Game} from "./index";
+import {findTargetAdvanceForShinyPokemon} from "./calc";
 
 import {
   DecimalString,
@@ -13,18 +14,6 @@ import {
   toHexString,
 } from "~/utils/number";
 
-const getTargetAdvance = ({
-  tid,
-  starter,
-}: {
-  tid: number;
-  sid: number;
-  starter: Starter;
-}) => {
-  // stubbed
-  console.log(starter);
-  return tid + starter.charCodeAt(0) * 10;
-};
 
 type FormState = {
   tid: DecimalString;
@@ -37,12 +26,14 @@ const initialValues: FormState = {
 };
 
 type Props = {
+  game:Game;
   setTargetAdvance: (targetAdvance: number) => void;
   setPokemonSpecies: (starter: Starter) => void;
   pokemonSpecies: Starter;
 };
 
 export const FindTargetAdvance = ({ 
+  game,
   pokemonSpecies,
   setPokemonSpecies,
   setTargetAdvance,
@@ -75,18 +66,16 @@ export const FindTargetAdvance = ({
       const tid = fromDecimalString(opts.tid);
       const sid = fromHexString(opts.sid);
 
-      if (tid == null || sid == null) {
+      if (tid == null || tid < 0 || tid > 0xFFFF ||
+          sid == null || sid < 0 || sid > 0xFFFF){
         return;
       }
 
-      const targetAdvance = getTargetAdvance({
-        tid,
-        sid,
-        starter: pokemonSpecies,
-      });
-      setTargetAdvance(targetAdvance);
+      const targetAdvance = await findTargetAdvanceForShinyPokemon(game, tid, sid); 
+      if (targetAdvance !== null)
+          setTargetAdvance(targetAdvance);
     },
-    [setTargetAdvance, pokemonSpecies],
+    [setTargetAdvance, game],
   );
 
   return (

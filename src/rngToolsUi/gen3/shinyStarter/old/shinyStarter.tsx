@@ -47,7 +47,7 @@ const BASE_STATS = {
   "Treecko":{hp:11, atk:11, def:11, spa:11, spd:11, spe:11},
   "Torchic":{hp:12, atk:12, def:12, spa:12, spd:12, spe:12},
 } as const;
-/*
+
 const getStatRangeForStarter = async (starter: StarterSpecies) => {
   const baseStats = BASE_STATS[starter];
   const minStats = await rngTools.gen3_calculate_minmax_stats(baseStats, 5, true);
@@ -62,7 +62,7 @@ const getStatRangeForStarter = async (starter: StarterSpecies) => {
     spe: { min: minStats.spe, max: maxStats.spe },
   };
 };
-*/
+
 export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
 
   const [tid, setTid] = React.useState<string>("0");

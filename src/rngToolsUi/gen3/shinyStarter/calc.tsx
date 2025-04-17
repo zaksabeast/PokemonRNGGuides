@@ -15,7 +15,6 @@ export interface Result {
 
 export const findTargetAdvanceForShinyPokemon = async function (
   game: Game,
-  pokemonSpecies: Starter,
   tid:number,
   sid:number,
 ): Promise<number | null> {
@@ -26,7 +25,7 @@ export const findTargetAdvanceForShinyPokemon = async function (
     const initial_advances = Math.max(i * 100_000, MINIMAL_ADV);
 
     const results = await rngTools.gen3_static_generator_states({
-      species: pokemonSpecies,
+      species: "Mudkip", // doesn't matter
       method4: false,
       initial_advances,
       max_advances: 100_000,

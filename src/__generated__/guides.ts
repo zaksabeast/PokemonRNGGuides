@@ -2619,6 +2619,20 @@ export const guides = {
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx"),
     ),
   },
+  "/zh-frlg-gen3-sid": {
+    meta: {
+      title: "查找第三世代 SID",
+      description: "多种方法查找第三世代的SID",
+      category: "FireRed and LeafGreen",
+      slug: "/zh-frlg-gen3-sid",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Emerald/Find SID.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
+  },
   "/zh-gen2-celebi": {
     meta: {
       title: "时拉比",
@@ -2646,6 +2660,20 @@ export const guides = {
       file: "guides/Gen 2/Starter.mdx",
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Starter.mdx")),
+  },
+  "/zh-gen3-sid": {
+    meta: {
+      title: "查找第三世代 SID",
+      description: "多种方法查找第三世代的SID",
+      category: "Emerald",
+      slug: "/zh-gen3-sid",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-03",
+      file: "guides/Emerald/Find SID.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
   "/zh-install-pokereader": {
     meta: {
@@ -2676,6 +2704,20 @@ export const guides = {
       category: "Emerald",
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Retail Wild RNG.mdx")),
+  },
+  "/zh-rs-gen3-sid": {
+    meta: {
+      title: "查找第三世代 SID",
+      description: "多种方法查找第三世代的SID",
+      category: "Ruby and Sapphire",
+      slug: "/zh-rs-gen3-sid",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Emerald/Find SID.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
   "/zh-rs-sid-feebas": {
     meta: {
@@ -2857,10 +2899,13 @@ export const guideSlugs = [
   z.literal("/zh-emerald-sid-feebas"),
   z.literal("/zh-emulator-emerald-egg"),
   z.literal("/zh-emulator-hgss-egg"),
+  z.literal("/zh-frlg-gen3-sid"),
   z.literal("/zh-gen2-celebi"),
   z.literal("/zh-gen2-starters"),
+  z.literal("/zh-gen3-sid"),
   z.literal("/zh-install-pokereader"),
   z.literal("/zh-retail-emerald-wild"),
+  z.literal("/zh-rs-gen3-sid"),
   z.literal("/zh-rs-sid-feebas"),
 ] as const;
 

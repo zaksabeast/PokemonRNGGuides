@@ -6,12 +6,26 @@ import { nature } from "~/types/nature";
 import { IvInput } from "~/components/ivInput";
 import { ability } from "~/types/ability";
 import { gender } from "~/types/gender";
-import * as tst from "ts-toolbelt";
 
-type Optional<T> = tst.U.Replace<T, undefined, "None">;
+export const natureOptions = ([undefined, ...nature] as const).map((nat) => ({
+  label: nat ?? "None",
+  value: nat,
+}));
+
+export const abilityOptions = ([undefined, ...ability] as const).map(
+  (abil) => ({
+    label: abil ?? "None",
+    value: abil,
+  }),
+);
+
+export const genderOptions = ([undefined, ...gender] as const).map((gen) => ({
+  label: gen ?? "None",
+  value: gen,
+}));
 
 export type PkmFilterFields = {
-  [Key in keyof PkmFilter as `filter_${Key}`]: Optional<PkmFilter[Key]>;
+  [Key in keyof PkmFilter as `filter_${Key}`]: PkmFilter[Key];
 };
 
 const _getPkmFilterFields = (): Field[] => [
@@ -26,10 +40,7 @@ const _getPkmFilterFields = (): Field[] => [
     input: (
       <FormikSelect<PkmFilterFields, "filter_nature">
         name="filter_nature"
-        options={(["None", ...nature] as const).map((nat) => ({
-          label: nat,
-          value: nat,
-        }))}
+        options={natureOptions}
       />
     ),
   },
@@ -38,10 +49,7 @@ const _getPkmFilterFields = (): Field[] => [
     input: (
       <FormikSelect<PkmFilterFields, "filter_ability">
         name="filter_ability"
-        options={(["None", ...ability] as const).map((abil) => ({
-          label: abil,
-          value: abil,
-        }))}
+        options={abilityOptions}
       />
     ),
   },
@@ -50,10 +58,7 @@ const _getPkmFilterFields = (): Field[] => [
     input: (
       <FormikSelect<PkmFilterFields, "filter_gender">
         name="filter_gender"
-        options={(["None", ...gender] as const).map((gen) => ({
-          label: gen,
-          value: gen,
-        }))}
+        options={genderOptions}
       />
     ),
   },

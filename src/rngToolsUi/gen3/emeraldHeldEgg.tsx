@@ -18,7 +18,7 @@ import {
 } from "~/rngTools";
 import { gen3Species } from "~/types/species";
 import { nature } from "~/types/nature";
-import { gender } from "~/types/gender";
+import { genderOptions, natureOptions } from "~/components/pkmFilter";
 
 const columns: ResultColumn<Gen3HeldEgg>[] = [
   { title: "Advance", dataIndex: "advance", key: "advance" },
@@ -55,8 +55,8 @@ export type FormState = {
   sid: number;
   egg_species: Species;
   filter_shiny: boolean;
-  filter_nature: Nature | "None";
-  filter_gender: Gender | "None";
+  filter_nature: Nature | undefined;
+  filter_gender: Gender | undefined;
 };
 
 const initialValues: FormState = {
@@ -73,8 +73,8 @@ const initialValues: FormState = {
   sid: 0,
   egg_species: "Bulbasaur",
   filter_shiny: false,
-  filter_nature: "None",
-  filter_gender: "None",
+  filter_nature: undefined,
+  filter_gender: undefined,
 };
 
 const fields: Field[] = [
@@ -177,10 +177,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "filter_nature">
         name="filter_nature"
-        options={(["None", ...nature] as const).map((nat) => ({
-          label: nat,
-          value: nat,
-        }))}
+        options={natureOptions}
       />
     ),
   },
@@ -189,10 +186,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "filter_gender">
         name="filter_gender"
-        options={(["None", ...gender] as const).map((gen) => ({
-          label: gen,
-          value: gen,
-        }))}
+        options={genderOptions}
       />
     ),
   },
@@ -212,10 +206,8 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
         lua_adjustment: lua,
         filters: {
           shiny: opts.filter_shiny,
-          nature:
-            opts.filter_nature === "None" ? undefined : opts.filter_nature,
-          gender:
-            opts.filter_gender === "None" ? undefined : opts.filter_gender,
+          nature: opts.filter_nature,
+          gender: opts.filter_gender,
         },
       });
 

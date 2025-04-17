@@ -7,9 +7,8 @@ import {
   Field,
   FormikSelect,
 } from "~/components";
-import { rngTools, MirageSpot, Species } from "~/rngTools";
-import dayjs, { Dayjs } from "dayjs";
-import { formatRngDate, toRngDate } from "~/utils/time";
+import { rngTools, MirageSpot, Species, RngDate } from "~/rngTools";
+import { formatRngDate, rngDate } from "~/utils/time";
 import { FormikDatePicker } from "~/components/datePicker";
 
 const columns: ResultColumn<MirageSpot>[] = [
@@ -35,7 +34,7 @@ const columns: ResultColumn<MirageSpot>[] = [
 export type FormState = {
   seed: number;
   tid: number;
-  start_date: Dayjs;
+  start_date: RngDate;
   max_advances: number;
   filter_species: Species;
 };
@@ -43,7 +42,7 @@ export type FormState = {
 const initialValues: FormState = {
   seed: 0,
   tid: 0,
-  start_date: dayjs(),
+  start_date: rngDate(),
   max_advances: 1000,
   filter_species: "None",
 };
@@ -131,7 +130,6 @@ export const OrAsMirageSpot = () => {
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
     const results = await rngTools.generate_mirage_spots({
       ...opts,
-      start_date: toRngDate(opts.start_date),
       filter_species:
         opts.filter_species === "None" ? undefined : opts.filter_species,
     });

@@ -2,6 +2,7 @@ import {
   Gen3TidSidResult,
   rngTools,
   Gen3TidSidVersionOptions,
+  RngDate,
 } from "~/rngTools";
 import {
   Field,
@@ -12,11 +13,10 @@ import {
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import dayjs, { Dayjs } from "dayjs";
 import { match } from "ts-pattern";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 import React from "react";
-import { toRngDateTime } from "~/utils/time";
+import { addRngTime, rngDate, rngTime, RngTime } from "~/utils/time";
 import { denormalizeIdFilter, IdFilter } from "~/types/id";
 
 const columns: ResultColumn<Gen3TidSidResult>[] = [
@@ -34,8 +34,8 @@ export type FormState = {
   max_advances: number;
   rs_input_type: "Dead Battery" | "DateTime" | "Seed";
   seed: number;
-  date: Dayjs;
-  time: Dayjs;
+  date: RngDate;
+  time: RngTime;
   tid: number;
   filter: IdFilter;
 };
@@ -46,8 +46,8 @@ const initialValues: FormState = {
   max_advances: 1000,
   rs_input_type: "Dead Battery",
   seed: 0,
-  date: dayjs(),
-  time: dayjs(),
+  date: rngDate(),
+  time: rngTime(),
   tid: 0,
   filter: {
     type: "tid",
@@ -142,12 +142,8 @@ export const Gen3TidSidGenerator = ({ game = "rs" }: Props) => {
           Rs: match(opts.rs_input_type)
             .with("Dead Battery", (): "DeadBattery" => "DeadBattery")
             .with("DateTime", () => {
-              const dateTime = dayjs(opts.date)
-                .set("hour", opts.time.hour())
-                .set("minute", opts.time.minute())
-                .set("second", opts.time.second());
               return {
-                DateTime: toRngDateTime(dateTime),
+                DateTime: addRngTime(opts.date, opts.time),
               };
             })
             .with("Seed", () => ({

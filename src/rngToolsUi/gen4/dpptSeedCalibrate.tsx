@@ -6,12 +6,13 @@ import {
   RngToolSubmit,
   Field,
 } from "~/components";
-import { rngTools, SeedTime4, SeedTime4Calibrate } from "~/rngTools";
-import dayjs, { Dayjs } from "dayjs";
+import { RngDate, rngTools, SeedTime4, SeedTime4Calibrate } from "~/rngTools";
 import {
+  addRngTime,
   formatRngDateTime,
-  fromRngDateTime,
-  toRngDateTime,
+  rngDate,
+  rngTime,
+  RngTime,
 } from "~/utils/time";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 
@@ -44,8 +45,8 @@ const columns: ResultColumn<SeedTime4Calibrate>[] = [
 ];
 
 type FormState = {
-  date: Dayjs;
-  time: Dayjs;
+  date: RngDate;
+  time: RngTime;
   delay: number;
   delay_calibration: number;
   second_calibration: number;
@@ -96,8 +97,8 @@ export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
   const initialValues = React.useMemo((): FormState => {
     if (selectedSeedTime == null) {
       return {
-        date: dayjs(),
-        time: dayjs(),
+        date: rngDate(),
+        time: rngTime(),
         delay: 0,
         delay_calibration: 0,
         second_calibration: 0,
@@ -105,8 +106,8 @@ export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
     }
 
     return {
-      date: fromRngDateTime(selectedSeedTime.datetime),
-      time: fromRngDateTime(selectedSeedTime.datetime),
+      date: selectedSeedTime.datetime,
+      time: selectedSeedTime.datetime,
       delay: selectedSeedTime.delay,
       delay_calibration: 0,
       second_calibration: 0,
@@ -114,15 +115,9 @@ export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
   }, [selectedSeedTime]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const datetime = dayjs(opts.date)
-      .set("hour", opts.time.hour())
-      .set("minute", opts.time.minute())
-      .set("second", opts.time.second());
-    const rngDateTime = toRngDateTime(datetime);
-
     const results = await rngTools.dppt_calibrate_seedtime(
       {
-        datetime: rngDateTime,
+        datetime: addRngTime(opts.date, opts.time),
         delay: opts.delay,
         coin_flips: [],
       },

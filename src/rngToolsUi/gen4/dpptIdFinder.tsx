@@ -6,11 +6,10 @@ import {
   RngToolSubmit,
   Field,
 } from "~/components";
-import { rngTools, Id4 } from "~/rngTools";
+import { rngTools, Id4, RngDate } from "~/rngTools";
 import { denormalizeIdFilterOrDefault } from "~/types/id";
-import dayjs, { Dayjs } from "dayjs";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
-import { toRngDateTime } from "~/utils/time";
+import { addRngTime, rngDate, rngTime, RngTime } from "~/utils/time";
 
 const columns: ResultColumn<Id4>[] = [
   {
@@ -44,16 +43,16 @@ const columns: ResultColumn<Id4>[] = [
 
 type FormState = {
   tid: number;
-  date: Dayjs;
-  time: Dayjs;
+  date: RngDate;
+  time: RngTime;
   minDelay: number;
   maxDelay: number;
 };
 
 const initialValues: FormState = {
   tid: 0,
-  date: dayjs(),
-  time: dayjs(),
+  date: rngDate(),
+  time: rngTime(),
   minDelay: 5000,
   maxDelay: 6000,
 };
@@ -85,14 +84,8 @@ export const DpptIdFinder = () => {
   const [results, setResults] = React.useState<Id4[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const datetime = dayjs(opts.date)
-      .set("hour", opts.time.hour())
-      .set("minute", opts.time.minute())
-      .set("second", opts.time.second());
-    const rngDateTime = toRngDateTime(datetime);
-
     const results = await rngTools.generate_dppt_ids({
-      datetime: rngDateTime,
+      datetime: addRngTime(opts.date, opts.time),
       min_delay: opts.minDelay,
       max_delay: opts.maxDelay,
       filter: denormalizeIdFilterOrDefault({

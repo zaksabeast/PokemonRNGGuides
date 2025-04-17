@@ -59,3 +59,37 @@ export const formatRngDateTime = (
     : rngChronoFormat.dateHourMinutes;
   return fromRngDateTime(date).format(format);
 };
+
+export const rngDate = (): RngDate => {
+  return toRngDate(dayjs());
+};
+
+export type RngTime = {
+  hour: number;
+  minute: number;
+  second: number;
+};
+
+export const toRngTime = (date: Dayjs): RngTime => {
+  return {
+    hour: date.hour(),
+    minute: date.minute(),
+    second: date.second(),
+  };
+};
+
+export const fromRngTime = (time: RngTime): Dayjs => {
+  return dayjs(new Date(0, 0, 0, time.hour, time.minute, time.second));
+};
+
+export const rngTime = (): RngTime => {
+  return toRngTime(dayjs());
+};
+
+export const addRngTime = (date: RngDate, time: RngTime): RngDateTime => {
+  const datetime = fromRngDate(date)
+    .set("hour", time.hour)
+    .set("minute", time.minute)
+    .set("second", time.second);
+  return toRngDateTime(datetime);
+};

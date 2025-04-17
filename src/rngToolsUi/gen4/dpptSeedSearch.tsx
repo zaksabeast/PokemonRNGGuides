@@ -6,9 +6,8 @@ import {
   RngToolSubmit,
   Field,
 } from "~/components";
-import { rngTools, SeedTime4 } from "~/rngTools";
-import dayjs, { Dayjs } from "dayjs";
-import { fromRngDateTime, toRngDateTime } from "~/utils/time";
+import { RngDate, rngTools, SeedTime4 } from "~/rngTools";
+import { fromRngDateTime, rngDate } from "~/utils/time";
 import { FormikDatePicker } from "~/components/datePicker";
 import { uniqueId } from "lodash-es";
 
@@ -37,13 +36,13 @@ const columns: ResultColumn<GeneratorResult>[] = [
 
 type FormState = {
   seed: number;
-  date: Dayjs;
+  date: RngDate;
   forced_second: number | undefined;
 };
 
 const initialValues: FormState = {
   seed: 0,
-  date: dayjs(),
+  date: rngDate(),
   forced_second: undefined,
 };
 
@@ -72,12 +71,10 @@ export const DpptSeedSearch = ({ onClickResultRow }: Props) => {
   const [results, setResults] = React.useState<GeneratorResult[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const rngDate = toRngDateTime(opts.date);
-
     const results = await rngTools.dppt_calculate_seedtime({
       ...opts,
-      year: rngDate.year,
-      month: rngDate.month,
+      year: opts.date.year,
+      month: opts.date.month,
     });
 
     setResults(results.map((result) => ({ ...result, id: uniqueId() })));

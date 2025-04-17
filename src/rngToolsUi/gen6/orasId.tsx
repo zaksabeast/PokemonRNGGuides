@@ -8,11 +8,16 @@ import {
   FormikIdFilter,
   FormikSwitch,
 } from "~/components";
-import { rngTools, Gen6Id } from "~/rngTools";
+import { rngTools, Gen6Id, RngDate } from "~/rngTools";
 import { denormalizeIdFilter, IdFilter } from "~/types/id";
-import dayjs, { Dayjs } from "dayjs";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
-import { formatRngDateTime, toRngDateTime } from "~/utils/time";
+import {
+  addRngTime,
+  formatRngDateTime,
+  rngDate,
+  rngTime,
+  RngTime,
+} from "~/utils/time";
 
 const columns: ResultColumn<Gen6Id>[] = [
   {
@@ -63,8 +68,8 @@ const columns: ResultColumn<Gen6Id>[] = [
 
 export type FormState = {
   seed: number;
-  date: Dayjs;
-  time: Dayjs;
+  date: RngDate;
+  time: RngTime;
   only_current_seed: boolean;
   initial_advances: number;
   max_advances: number;
@@ -73,8 +78,8 @@ export type FormState = {
 
 const initialValues: FormState = {
   seed: 0,
-  date: dayjs(),
-  time: dayjs(),
+  date: rngDate(),
+  time: rngTime(),
   only_current_seed: false,
   initial_advances: 20,
   max_advances: 50,
@@ -126,18 +131,12 @@ export const OrasId = () => {
   const [results, setResults] = React.useState<Gen6Id[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const datetime = dayjs(opts.date)
-      .set("hour", opts.time.hour())
-      .set("minute", opts.time.minute())
-      .set("second", opts.time.second());
-    const rngDateTime = toRngDateTime(datetime);
-
     const results = await rngTools.generate_oras_id({
       start_seed: opts.seed,
       only_start_seed: opts.only_current_seed,
       initial_advances: opts.initial_advances,
       max_advances: opts.max_advances,
-      start_datetime: rngDateTime,
+      start_datetime: addRngTime(opts.date, opts.time),
       filter_id: denormalizeIdFilter(opts.filter) ?? undefined,
     });
 

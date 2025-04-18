@@ -1080,13 +1080,13 @@ export const guides = {
   },
   "/emulator-rs-wishmaker": {
     meta: {
-      title: "Shiny WISHMKR Jirachi RNG using wishmaker-calc",
+      title: "Shiny Wishmaker Jirachi RNG",
       description: "RNG Jirachi from the Colosseum bonus disc",
       slug: "/emulator-rs-wishmaker",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
-      addedOn: null,
+      addedOn: "2025-04-18",
       file: "guides/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
       category: "Ruby and Sapphire",
       translations: null,
@@ -1456,6 +1456,26 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Emu PokeReader.mdx"),
+    ),
+  },
+  "/meteor-jirachi": {
+    meta: {
+      title: "Meteor Jirachi RNG",
+      description: "RNG a Meteor Jirachi with different shinies than Wishmaker",
+      slug: "/meteor-jirachi",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-18",
+      file: "guides/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
+      category: "Ruby and Sapphire",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
+        ),
     ),
   },
   "/mgba-setup": {
@@ -3038,6 +3058,7 @@ export const guideSlugs = [
   z.literal("/install-capturesight"),
   z.literal("/install-pokereader"),
   z.literal("/install-pokereader-emu"),
+  z.literal("/meteor-jirachi"),
   z.literal("/mgba-setup"),
   z.literal("/misc-3ds-installing-pcalc"),
   z.literal("/misc-3ds-ips-luma-citra"),

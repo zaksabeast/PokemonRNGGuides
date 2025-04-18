@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, MultiTimer } from "~/components";
 import { FindTargetAdvance } from "./findTarget";
-import { CaughtMon, CaughtMonResult } from "./caughtMon";
+import { CaughtMon } from "./caughtMon";
 
 export type Game = "emerald" | "rs";
 export type Starter = "Mudkip" | "Torchic" | "Treecko";
@@ -12,7 +12,7 @@ const calculateMillis = (
 ): number[] => {
   //NO_PROD hitAdvance
   const milliseconds = Math.round((targetAdvance * 1000) / 59.7275);          
-  return [5000, milliseconds];
+  return [5000, milliseconds + hitAdvance];
 };
 
 type Props = {
@@ -20,13 +20,8 @@ type Props = {
 };
 
 export const ShinyStarter = ({game}:Props) => {
-  const [pokemonSpecies, setPokemonSpecies] = React.useState<Starter>("Mudkip");
   const [targetAdvance, setTargetAdvance] = React.useState(0);
   const [hitAdvance, setHitAdvance] = React.useState(0);
-
-  const onClickCaughtMon = React.useCallback((caughtMon: CaughtMonResult) => {
-    setHitAdvance(caughtMon.advance);
-  }, []);
 
   const milliseconds = React.useMemo(() => {
     return calculateMillis(targetAdvance, hitAdvance);
@@ -36,14 +31,14 @@ export const ShinyStarter = ({game}:Props) => {
 
   return (
     <Flex gap={16} vertical>
-      <FindTargetAdvance {...{game,setTargetAdvance,pokemonSpecies,setPokemonSpecies}} />
+      <FindTargetAdvance {...{game,setTargetAdvance}} />
       <MultiTimer
         {...{minutesBeforeTarget, milliseconds}}
         startButtonTrackerId="start_gen3_shiny_starter_timer"
         stopButtonTrackerId="stop_gen3_shiny_starter_timer"
       />
       <CaughtMon
-        {...{pokemonSpecies, targetAdvance, onClickCaughtMon}}
+        {...{targetAdvance, setLatestHitAdv:setHitAdvance}}
       />
     </Flex>
   );

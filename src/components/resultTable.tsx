@@ -18,7 +18,7 @@ export type ResultColumn<T> = keyof T extends string
         dataIndex: K;
         key: K;
         monospace?: boolean;
-        render?: (value: T[K]) => React.ReactNode;
+        render?: (value: T[K], values:T) => React.ReactNode;
       };
     }[keyof T]
   : never;
@@ -34,8 +34,8 @@ const applyMonospace = <Record extends tst.O.Object>(
 
   return {
     ...column,
-    render: (value: Record[string & keyof Record]) => (
-      <MonoSpaceText>{render(value)}</MonoSpaceText>
+    render: (value: Record[string & keyof Record], values:Record) => (
+      <MonoSpaceText>{render(value, values)}</MonoSpaceText>
     ),
   };
 };

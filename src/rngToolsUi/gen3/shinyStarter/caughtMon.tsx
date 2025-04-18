@@ -1,29 +1,20 @@
 import React from "react";
 import { useFormikContext } from "formik";
-import { RngToolForm, Field, Flex, ResultColumn } from "~/components";
+import { RngToolForm, Field, Flex, ResultColumn, Icon } from "~/components";
 import { FormikRadio, RadioGroup } from "~/components/radio";
-import { Ivs, Nature } from "~/rngTools";
+import { Ivs, Nature, Gender, rngTools} from "~/rngTools";
 import { RngToolSubmit } from "~/components/rngToolForm";
 import { noop } from "lodash-es";
 import { match } from "ts-pattern";
+import { Typography } from "~/components/typography";
 import {natures,NatureStat,getNaturesFromStatMoreLess,getStatMoreLessFromNature} from "../../../types/nature";
 import * as tst from "ts-toolbelt";
 import { RadioChangeEvent } from "antd";
 import {Starter} from "./index";
 import {Select} from "~/components";
 import { Formik, FormikProps, FormikConfig } from "formik";
-
-export type CaughtMonResult = {
-  advance: number;
-  targetAdvance: number;
-  otherData: string;
-};
-
-const columns: ResultColumn<CaughtMonResult>[] = [
-  { title: "Advance", dataIndex: "advance", key: "advance" },
-  { title: "Target Advance", dataIndex: "targetAdvance", key: "targetAdvance" },
-  { title: "Other Data", dataIndex: "otherData", key: "otherData" },
-];
+import {getStatRangeForStarter, CaughtMonResult, generateCaughtMonResults} from "./calc";
+import { Button } from "../../../components/button";
 
 const toOptions = <T,>(options: T[]) => {
   return options.map((option) => ({
@@ -32,7 +23,15 @@ const toOptions = <T,>(options: T[]) => {
   }));
 };
 
-type FormState = {
+const toStatOptions = ({min,max}:{min:number,max:number}) => {
+  const opts:{label:string,value:number}[] = [];
+  for(let i = min; i <= max; i++)
+    opts.push({value:i, label: String(i)});
+  return opts;
+};
+
+export type FormState = {
+  pokemonSpecies: Starter;
   hpStat: number;
   atkStat: number;
   defStat: number;
@@ -42,6 +41,15 @@ type FormState = {
   increasedStat: NatureStat | ""; 
   decreasedStat: NatureStat | "";  
   nature : Nature | "";
+  gender : Gender | "";
+  minMaxStats:{
+    hp:  {min:number, max:number},
+    atk: {min:number, max:number},
+    def: {min:number, max:number},
+    spa: {min:number, max:number},
+    spd: {min:number, max:number},
+    spe: {min:number, max:number},
+  }
 };
 
 type NatureStatRadioProps = {
@@ -131,14 +139,14 @@ const StatInput = ({
   options,
 }: {
   stat: NatureStat;
-  options: number[];
+  options: {min:number,max:number};
 }) => {
   return (
     <Flex gap={8}>
       <NatureStatRadio stat={stat} />
       <FormikRadio<FormState, `${typeof stat}Stat`>
         name={`${stat}Stat`}
-        options={toOptions(options)}
+        options={toStatOptions(options)}
       />
     </Flex>
   );
@@ -146,6 +154,7 @@ const StatInput = ({
 const sortedNatures = natures.slice(0).sort();
 
 const initialValues: FormState = {
+  pokemonSpecies: "Mudkip",
   hpStat: 0,
   atkStat: 0,
   defStat: 0,
@@ -155,58 +164,130 @@ const initialValues: FormState = {
   increasedStat: "",
   decreasedStat: "",
   nature:"",
+  gender:"",
+  minMaxStats: {
+    hp:  {min:20,max:21},
+    atk: {min:10,max:14},
+    def: {min:9,max:12},
+    spa: {min:10,max:14},
+    spd: {min:9,max:12},
+    spe: {min:8,max:11},
+  }
 };
 
 type Props = {
-  pokemonSpecies:Starter,
   targetAdvance: number;
-  onClickCaughtMon: (result: CaughtMonResult) => void;
+  setLatestHitAdv: (hitAdv: number) => void;
 };
 
-export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: Props) => { 
+
+export const CaughtMon = ({ targetAdvance, setLatestHitAdv }: Props) => { 
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const otherData = JSON.stringify(opts);
-      const fakeResults = new Array(10)
-        .fill(0)
-        .map((_, i) => ({ advance: i, targetAdvance, otherData }));
-      setResults(fakeResults);
+      setResults(await generateCaughtMonResults(targetAdvance, opts));
     },
-    [targetAdvance],
+    [targetAdvance, setResults],
   );
-  console.log(1);
-  
-  const getFields = (formik:FormikProps<FormState>) : Field[] => {  
+
+  const getColumns = (): ResultColumn<CaughtMonResult>[] => {
+    const columns: ResultColumn<CaughtMonResult>[] = [
+      { title: "Target", dataIndex: "targetAdvance", key: "targetAdvance"},
+      { title: "Advance", dataIndex: "advance", key: "advance" ,
+        render: (val, values) => {
+          const diffWithTarget = val - values.targetAdvance; 
+          if (diffWithTarget === 0) 
+            return `${val}`;
+          if (diffWithTarget > 0) 
+            return `${val} (+${diffWithTarget})`;
+          return `${val} (${diffWithTarget})`;
+        },
+      },
+      {
+        title: "Stats",
+        dataIndex: "stats",
+        key: "stats",
+      },
+      {
+        title: "Nature",
+        dataIndex: "nature",
+        key: "nature",
+      },
+      {
+        title: "Gender",
+        dataIndex: "gender",
+        key: "gender",
+      },
+      {
+        title: "",
+        dataIndex: "advance",
+        key: "advance",
+        render(advance) {
+          return (
+            <Button type="text" color="PrimaryText"
+              trackerId="shinyStarter_adv"
+              onClick={() => {
+                setLatestHitAdv(advance);
+              }}
+            >
+              <Icon name="Update" size={20} /> Update Calibration
+            </Button>
+          );
+        },
+      },
+    ];
+    return columns;
+  };
+
+  const getFields = (formik:FormikProps<FormState>) : Field[] => {
+    const {minMaxStats} = formik.values;
+
     return [
+      {
+        label: "Starter",
+        input: (
+          <RadioGroup
+            optionType="button"
+            value={formik.values.pokemonSpecies}
+            onChange={async ({ target }) => {
+              formik.setValues({
+                ...formik.values,
+                pokemonSpecies: target.value,
+                minMaxStats: await getStatRangeForStarter(target.value),
+              });
+            }}
+            options={toOptions(["Mudkip", "Torchic", "Treecko"])}
+          />
+        ),
+      },
       {
         label: "HP",
         input: (
           <FormikRadio<FormState, "hpStat">
             name="hpStat"
-            options={toOptions([8, 9, 10])}
+            options={toStatOptions(minMaxStats.hp)}
           />
         ),
       },
       {
         label: "ATK",
-        input: <StatInput stat="atk" options={[2, 3]} />,
+        input: <StatInput stat="atk" options={minMaxStats.atk} />,
       },
       {
         label: "DEF",
-        input: <StatInput stat="def" options={[4, 5]} />,
+        input: <StatInput stat="def" options={minMaxStats.def} />,
       },
       {
         label: "SPA",
-        input: <StatInput stat="spa" options={[6, 7]} />,
+        input: <StatInput stat="spa" options={minMaxStats.atk} />,
       },
       {
         label: "SPD",
-        input: <StatInput stat="spd" options={[8, 9]} />,
+        input: <StatInput stat="spd" options={minMaxStats.spd} />,
       },
       {
         label: "SPE",
-        input: <StatInput stat="spe" options={[3, 4]} />,
+        input: <StatInput stat="spe" options={minMaxStats.spe} />,
       },
       {
         label: "Nature",
@@ -225,34 +306,34 @@ export const CaughtMon = ({ pokemonSpecies, targetAdvance, onClickCaughtMon }: P
           }}
           options={sortedNatures.map(nature => ({label:nature, value:nature}))}
         />)
+      },
+      {
+        label: "Gender",
+        input: (
+          <FormikRadio<FormState, "gender">
+            name="gender"
+            options={toOptions(["Male","Female"])}
+          />
+        )
       }
-      /*{
-        label: "Nature",
-        input: (<Select style={{minWidth:'120px'}}
-          value={formik.nature}
-          onChange={e => {
-            //const { setFieldValue, values, setValues } = useFormikContext<FormState>();
-            //setFieldValue("nature", e);
-          }}
-          options={sortedNatures.map(nature => ({label:nature, value:nature}))}
-        />)
-      }*/
     ];
   };
 
   return (
-    <RngToolForm<FormState, CaughtMonResult>
-      getFields={getFields}
-      columns={columns}
-      results={results}
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      submitTrackerId="generate_gen3_caught_starter"
-      submitButtonLabel={"Find advances matching caught " + pokemonSpecies}
-      rowKey="advance"
-      allowReset={true}
-      resetTrackerId="caughtMon_reset"
-      onClickResultRow={onClickCaughtMon}
-    />
+    <>
+      <Typography.Title level={5} p={0} m={0}>Caught Pokémon</Typography.Title>
+      <RngToolForm<FormState, CaughtMonResult>
+        getFields={getFields}
+        columns={getColumns()}
+        results={results}
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        submitTrackerId="generate_gen3_caught_starter"
+        submitButtonLabel={"Find advances matching caught starter Pokémon"}
+        rowKey="advance"
+        allowReset={true}
+        resetTrackerId="caughtMon_reset"
+      />
+    </>
   );
 };

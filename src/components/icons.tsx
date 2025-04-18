@@ -7,6 +7,7 @@ import {
   MdCheck,
   MdClose,
   MdRocketLaunch,
+  MdUpdate,
 } from "react-icons/md";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaDiscord } from "react-icons/fa";
@@ -20,6 +21,7 @@ const icons = {
   Discord: FaDiscord,
   Github: FaGithub,
   CheckCircle: MdCheckCircle,
+  Update: MdUpdate,
   Check: MdCheck,
   Language: IoLanguage,
   Close: MdClose,

@@ -31,7 +31,7 @@ export const findTargetAdvanceForShinyPokemon = async function (
   for (let i = 0; i < 100; i++) {
     const seed = game === "emerald" ? 0 : 0x5a0;
     const initial_advances = Math.max(i * 100_000, MINIMAL_ADV);
-
+    console.log(i);
     const results = await rngTools.gen3_static_generator_states({
       species: "Mudkip", // doesn't matter
       method4: false,
@@ -102,7 +102,7 @@ export const generateCaughtMonResults = async function (
     spe:getMinMaxStat(isMin, caughtMonValues.speStat, caughtMonValues.minMaxStats.spe),
   }));
 
-  const results = await rngTools.gen3_static_generator_states({
+  const opts = {
     offset: 0,
     initial_advances: Math.max(targetAdvance - 10000, MINIMAL_ADV),
     max_advances: 20000,
@@ -118,8 +118,7 @@ export const generateCaughtMonResults = async function (
         lvl: 5,
         base_stats: BASE_STATS[caughtMonValues.pokemonSpecies],
         min_stats,
-        max_stats
-
+        max_stats,
       },
       min_ivs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
       max_ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
@@ -128,8 +127,12 @@ export const generateCaughtMonResults = async function (
     sid: 0, // doesn't matter
     bugged_roamer: false,  // doesn't matter
     species: "Mudkip", // doesn't matter
-  });
+  } as const;
 
+  const results = await rngTools.gen3_static_generator_states(opts);
+
+  console.log(opts, results);
+  
   if (results.length === 0)
     return [];
 

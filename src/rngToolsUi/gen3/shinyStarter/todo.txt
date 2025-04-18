@@ -1,4 +1,19 @@
 
+
+remove nature + = -
+
+
+
+
+
+
+
+
+
+
+
+
+
 I got a question about how to design my shiny starter tool.
 
 In summary, it's split in 3 sub-components:

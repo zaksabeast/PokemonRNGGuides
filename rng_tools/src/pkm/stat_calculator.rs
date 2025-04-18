@@ -2,6 +2,10 @@
 use wasm_bindgen::prelude::*;
 use crate::{StatsValue};
 
+//NO_PROD
+#[wasm_bindgen]
+extern { fn js_log(msg:&str); }
+
 pub fn gen3_calculate_hp(base_stat:u16, iv:u8, ev:u16, level:u8) -> u16 {
   if base_stat == 1 {
     return 1; // Shedinja
@@ -16,6 +20,7 @@ pub fn gen3_calculate_non_hp(base_stat:u16, iv:u8, ev:u16, level:u8, nature_fact
   if nature_factor == 1 {
     (n * 110) / 100
   } else if nature_factor == -1 {
+    unsafe { js_log(&format!("{} * 90 / 100 = {}", n, (n * 90) / 100)); }
     (n * 90) / 100
   } else {
     n
@@ -39,3 +44,4 @@ pub fn gen3_calculate_minmax_stats(base_stats:StatsValue, level:u8, is_min_stat:
 
 
 
+ 

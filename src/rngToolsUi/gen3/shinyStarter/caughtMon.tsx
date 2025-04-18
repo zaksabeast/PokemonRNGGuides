@@ -170,7 +170,7 @@ const initialValues: FormState = {
     hp:  {min:20,max:21},
     atk: {min:10,max:14},
     def: {min:9,max:12},
-    spa: {min:10,max:14},
+    spa: {min:9,max:12},
     spd: {min:9,max:12},
     spe: {min:8,max:11},
   }
@@ -277,7 +277,7 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
       },
       {
         label: "SPA",
-        input: <StatInput stat="spa" options={minMaxStats.atk} />,
+        input: <StatInput stat="spa" options={minMaxStats.spa} />,
       },
       {
         label: "SPD",

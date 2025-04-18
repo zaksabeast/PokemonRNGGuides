@@ -5,6 +5,7 @@ mod nature;
 mod shiny;
 mod species;
 mod stat_calculator;
+use wasm_bindgen::prelude::*;
 
 use crate::{Ivs, StatFilter};
 pub use ability::*;
@@ -16,6 +17,10 @@ pub use shiny::*;
 pub use species::*;
 use tsify_next::Tsify;
 pub use stat_calculator::{gen3_calculate_non_hp, gen3_calculate_hp};
+
+//NO_PROD
+#[wasm_bindgen]
+extern { fn js_log(msg:&str); }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -31,15 +36,15 @@ pub struct PkmFilter {
 
 impl PkmFilter {
     pub fn pass_filter(&self, state: &impl PkmState) -> bool {
+        if !self.pass_filter_stats(state) {
+            return false;
+        }
+
         if !self.pass_filter_no_ivs(state) {
             return false;
         }
 
         if !state.ivs().filter(&self.min_ivs, &self.max_ivs) {
-            return false;
-        }
-
-        if !self.pass_filter_stats(state) {
             return false;
         }
 
@@ -74,6 +79,7 @@ impl PkmFilter {
 
 
     pub fn pass_filter_stats(&self, state: &impl PkmState) -> bool {
+        unsafe { js_log("pass_filter_stats"); }
         match &self.stats {
             None => { true },
             Some(stats_filter) => {
@@ -85,6 +91,7 @@ impl PkmFilter {
                 let ivs = state.ivs();
                 let actual_hp = gen3_calculate_hp(base_stats.hp, ivs.hp, 0, lvl);
                 if actual_hp < min_stats.hp || actual_hp > max_stats.hp {
+                    unsafe { js_log(&format!("actual_hp {} < min_stats.hp {} || actual_hp {} > max_stats.hp {}", actual_hp, min_stats.hp, actual_hp, max_stats.hp)); }
                     return false;
                 }
 
@@ -93,26 +100,31 @@ impl PkmFilter {
 
                 let actual_atk = gen3_calculate_non_hp(base_stats.atk, ivs.atk, 0, lvl, nature_factors.atk);
                 if actual_atk < min_stats.atk || actual_atk > max_stats.atk {
+                    unsafe { js_log(&format!("actual_atk {} < min_stats.atk {} || actual_atk {} > max_stats.atk {}", actual_atk, min_stats.atk, actual_atk, max_stats.atk)); }
                     return false;
                 }
 
                 let actual_def = gen3_calculate_non_hp(base_stats.def, ivs.def, 0, lvl, nature_factors.def);
                 if actual_def < min_stats.def || actual_def > max_stats.def {
+                    unsafe { js_log(&format!("actual_def {} < min_stats.def {} || actual_def {} > max_stats.def {}", actual_def, min_stats.def, actual_def, max_stats.def)); }
                     return false;
                 }
 
                 let actual_spa = gen3_calculate_non_hp(base_stats.spa, ivs.spa, 0, lvl, nature_factors.spa);
                 if actual_spa < min_stats.spa || actual_spa > max_stats.spa {
+                    unsafe { js_log(&format!("actual_spa {} < min_stats.spa {} || actual_spa {} > max_stats.spa {}", actual_spa, min_stats.spa, actual_spa, max_stats.spa)); }
                     return false;
                 }
 
                 let actual_spd = gen3_calculate_non_hp(base_stats.spd, ivs.spd, 0, lvl, nature_factors.spd);
                 if actual_spd < min_stats.spd || actual_spd > max_stats.spd {
+                    unsafe { js_log(&format!("actual_spd {} < min_stats.spd {} || actual_spd {} > max_stats.spd {}", actual_spd, min_stats.spd, actual_spd, max_stats.spd)); }
                     return false;
                 }
 
                 let actual_spe = gen3_calculate_non_hp(base_stats.spe, ivs.spe, 0, lvl, nature_factors.spe);
                 if actual_spe < min_stats.spe || actual_spe > max_stats.spe {
+                    unsafe { js_log(&format!("actual_spe {} < min_stats.spe {} || actual_spe {} > max_stats.spe {}", actual_spe, min_stats.spe, actual_spe, max_stats.spe)); }
                     return false;
                 }
 

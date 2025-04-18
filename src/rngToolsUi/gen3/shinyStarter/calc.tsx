@@ -84,7 +84,8 @@ export const generateCaughtMonResults = async function (
   targetAdvance:number,
   values: FormState,
 ): Promise<CaughtMonResult[]> {
-  //NO_PROD
+  
+  
   return [{
     advance: 1000 + values.atkStat,
     targetAdvance,

@@ -2,7 +2,15 @@ import React from "react";
 import { MainLayout } from "~/layouts/main";
 import { getGuide } from "~/guides";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { Flex, Typography, Loading, Button, Icon, Alert } from "~/components";
+import {
+  Flex,
+  Typography,
+  Loading,
+  Button,
+  Icon,
+  Alert,
+  LanguageButton,
+} from "~/components";
 import { settings } from "~/settings";
 import { useAbCohort } from "~/hooks/useAbTest";
 import { match } from "ts-pattern";
@@ -72,6 +80,11 @@ export const GuideScreen = () => {
             description="Everything on this page is a work in progress!"
           />
         )}
+
+        {Guide.meta.translations != null && (
+          <LanguageButton {...Guide.meta.translations} />
+        )}
+
         <Guide.Guide />
 
         {Guide.meta.category !== "Home" && (

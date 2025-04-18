@@ -13,6 +13,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Home.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Home.mdx")),
   },
@@ -28,6 +29,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -48,6 +50,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use Shiny's site.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -68,6 +71,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/BK - Emulator Setup.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -88,6 +92,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -107,6 +112,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/BW2 Egg.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/BW2 Egg.mdx")),
   },
@@ -121,6 +127,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/Egg.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Egg.mdx"),
@@ -137,6 +144,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/Stationary.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -156,6 +164,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/TID SID RNG.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -175,6 +184,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Brilliant Diamond and Shining Pearl/Wild.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Wild.mdx"),
@@ -191,6 +201,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gamecube/Channel.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gamecube/Channel.mdx")),
   },
@@ -205,6 +216,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/CitraRNG Setup.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/CitraRNG Setup.mdx"),
@@ -221,6 +233,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/Desmume Setup.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Desmume Setup.mdx"),
@@ -238,6 +251,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
+      translations: { en: "/dppt-advance-rng", zh: "/zh-dppt-advance-rng" },
     },
     Guide: React.lazy(
       () =>
@@ -257,6 +271,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
+      translations: { en: "/dppt-initial-seed", zh: "/zh-dppt-initial-seed" },
     },
     Guide: React.lazy(
       () =>
@@ -277,6 +292,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -296,6 +312,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx",
+      translations: { en: "/dppt-pokeradar-rng", zh: "/zh-dppt-pokeradar-rng" },
     },
     Guide: React.lazy(
       () =>
@@ -313,6 +330,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx"),
@@ -329,6 +347,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx",
+      translations: { en: "/dppt-wild", zh: "/zh-dppt-wild" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx"),
@@ -346,6 +365,7 @@ export const guides = {
       addedOn: null,
       file: "guides/Emerald/Basic Rules of RNG.mdx",
       category: "Emerald",
+      translations: { en: "/e-tips-rng", zh: "/zh-e-tips-rng" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
@@ -363,6 +383,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-11",
       file: "guides/Emerald/Mirage Island.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
   },
@@ -378,6 +399,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
       file: "guides/Emerald/Emerald Overview.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Emerald Overview.mdx")),
   },
@@ -393,6 +415,10 @@ export const guides = {
       addedOn: null,
       file: "guides/Emerald/Reseed RNG.mdx",
       category: "Emerald",
+      translations: {
+        en: "/emerald-painting-rng",
+        zh: "/zh-emerald-painting-rng",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
   },
@@ -407,6 +433,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-03-03",
       file: "guides/Emerald/Find SID with Feebas.mdx",
+      translations: { en: "/emerald-sid-feebas", zh: "/zh-emerald-sid-feebas" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
@@ -423,6 +450,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Emerald/Gen 3 Static.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Gen 3 Static.mdx")),
   },
@@ -437,6 +465,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Emerald/Gen 3 TID SID Generator.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -453,6 +482,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/Dream Radar.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Dream Radar.mdx")),
   },
@@ -467,6 +497,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
@@ -483,6 +514,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/Wild RNG Emu.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
   },
@@ -497,6 +529,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/Entralink.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Entralink.mdx")),
   },
@@ -511,6 +544,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/Find DS Parameters.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Find DS Parameters.mdx")),
   },
@@ -525,6 +559,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/Roamers.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Roamers.mdx")),
   },
@@ -539,6 +574,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
@@ -555,6 +591,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/White Forest RNG (Emu).mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/White Forest RNG (Emu).mdx"),
@@ -571,6 +608,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/Wild RNG Emu.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
   },
@@ -585,6 +623,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gamecube/Colosseum General Guide (Emu).mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/Colosseum General Guide (Emu).mdx"),
@@ -601,6 +640,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Cute Charm.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
   },
@@ -615,6 +655,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx"),
@@ -631,6 +672,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -650,6 +692,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -667,6 +710,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -684,6 +728,10 @@ export const guides = {
       addedOn: "2025-03-09",
       file: "guides/Emerald/Egg RNG.mdx",
       category: "Emerald",
+      translations: {
+        en: "/emulator-emerald-egg",
+        zh: "/zh-emulator-emerald-egg",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
   },
@@ -698,6 +746,7 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Static RNG.mdx",
       category: "FireRed and LeafGreen",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
@@ -714,6 +763,7 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Egg RNG.mdx",
       category: "FireRed and LeafGreen",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Egg RNG.mdx"),
@@ -730,6 +780,7 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Stationary v2 Emu.mdx",
       category: "FireRed and LeafGreen",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Stationary v2 Emu.mdx"),
@@ -747,6 +798,7 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Wild RNG.mdx",
       category: "FireRed and LeafGreen",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Wild RNG.mdx"),
@@ -763,6 +815,7 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/wildv2lua.mdx",
       category: "FireRed and LeafGreen",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/wildv2lua.mdx"),
@@ -779,6 +832,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/HeartGold and SoulSilver/Breeding RNG (Emu).mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -798,6 +852,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Cute Charm.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
   },
@@ -812,6 +867,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/HeartGold and SoulSilver/Egg.mdx",
+      translations: { en: "/emulator-hgss-egg", zh: "/zh-emulator-hgss-egg" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx"),
@@ -828,6 +884,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/HeartGold and SoulSilver/Special Wild Case (Emu).mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -847,6 +904,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -866,6 +924,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/HeartGold and SoulSilver/TID SID.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/TID SID.mdx"),
@@ -882,6 +941,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/HeartGold and SoulSilver/Wild RNG - Emulator.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -901,6 +961,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/HeartGold and SoulSilver/Wondercard.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Wondercard.mdx"),
@@ -917,6 +978,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 6/DexNav.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/DexNav.mdx")),
   },
@@ -931,6 +993,7 @@ export const guides = {
       addedOn: null,
       file: "guides/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx",
       category: "Ruby and Sapphire",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -950,6 +1013,7 @@ export const guides = {
       addedOn: null,
       file: "guides/Ruby and Sapphire/Egg RNG.mdx",
       category: "Ruby and Sapphire",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Ruby and Sapphire/Egg RNG.mdx"),
@@ -967,6 +1031,7 @@ export const guides = {
       addedOn: null,
       file: "guides/Ruby and Sapphire/Live Battery TID RNG.mdx",
       category: "Ruby and Sapphire",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Ruby and Sapphire/Live Battery TID RNG.mdx"),
@@ -984,6 +1049,7 @@ export const guides = {
       addedOn: null,
       file: "guides/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx",
       category: "Ruby and Sapphire",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1003,6 +1069,7 @@ export const guides = {
       addedOn: null,
       file: "guides/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx",
       category: "Ruby and Sapphire",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1022,6 +1089,7 @@ export const guides = {
       addedOn: null,
       file: "guides/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
       category: "Ruby and Sapphire",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1041,6 +1109,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Time Finder.js (Citra).mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Time Finder.js (Citra).mdx"),
@@ -1057,6 +1126,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Time Finder.js (Citra).mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Time Finder.js (Citra).mdx"),
@@ -1072,7 +1142,13 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/gen2-starters", language: "es" },
       file: "guides/Gen 2/Starter.mdx",
+      translations: {
+        es: "/es-gen2-starters",
+        en: "/gen2-starters",
+        zh: "/zh-gen2-starters",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Starter.mdx")),
   },
@@ -1087,6 +1163,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Emerald/Find SID.mdx",
+      translations: { en: "/frlg-gen3-sid", zh: "/zh-frlg-gen3-sid" },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
@@ -1102,6 +1179,7 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Initial Seed Botting.mdx",
       category: "FireRed and LeafGreen",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1119,6 +1197,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Emerald/Gen 3 Static.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Gen 3 Static.mdx")),
   },
@@ -1133,6 +1212,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Emerald/Gen 3 TID SID Generator.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -1150,6 +1230,7 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Basic Rules of RNG.mdx",
       category: "FireRed and LeafGreen",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Basic Rules of RNG.mdx"),
@@ -1167,6 +1248,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
       file: "guides/Emerald/GBA Methods.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/GBA Methods.mdx")),
   },
@@ -1182,6 +1264,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
       file: "guides/Emerald/GBA Overview.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/GBA Overview.mdx")),
   },
@@ -1196,6 +1279,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
       file: "guides/Emerald/Vblank.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Vblank.mdx")),
   },
@@ -1211,6 +1295,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gamecube/Initial Seed RNG.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/Initial Seed RNG.mdx"),
@@ -1227,6 +1312,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-03-02",
       file: "guides/Gen 2/Celebi.mdx",
+      translations: { en: "/gen2-celebi", zh: "/zh-gen2-celebi" },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Celebi.mdx")),
   },
@@ -1241,6 +1327,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 2/RngResearch.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/RngResearch.mdx")),
   },
@@ -1255,6 +1342,11 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 2/Starter.mdx",
+      translations: {
+        es: "/es-gen2-starters",
+        en: "/gen2-starters",
+        zh: "/zh-gen2-starters",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Starter.mdx")),
   },
@@ -1269,6 +1361,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-03-03",
       file: "guides/Emerald/Find SID.mdx",
+      translations: { en: "/gen3-sid", zh: "/zh-gen3-sid" },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
@@ -1283,6 +1376,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1303,6 +1397,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1322,6 +1417,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/CaptureSight Install.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/CaptureSight Install.mdx"),
@@ -1338,6 +1434,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/3DS PokeReader.mdx",
+      translations: { en: "/install-pokereader", zh: "/zh-install-pokereader" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
@@ -1355,6 +1452,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/Emu PokeReader.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Emu PokeReader.mdx"),
@@ -1371,6 +1469,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-03-03",
       file: "guides/Tools and Emulators/mGBA Setup.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/mGBA Setup.mdx"),
@@ -1387,6 +1486,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/How to Install PCalc.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/How to Install PCalc.mdx"),
@@ -1404,6 +1504,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/Using IPS Patches with Luma and Citra.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1423,6 +1524,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Island Scan Pokemon SM.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Island Scan Pokemon SM.mdx"),
@@ -1439,6 +1541,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Island Scan Pokemon USUM.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Island Scan Pokemon USUM.mdx"),
@@ -1455,6 +1558,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Transporter/Nature Table.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Transporter/Nature Table.mdx")),
   },
@@ -1469,6 +1573,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/How to Connect Dolphin to VBA.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1488,6 +1593,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/How to Extract GBA Bios.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1506,6 +1612,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Wild Spots.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Wild Spots.mdx")),
   },
@@ -1520,6 +1627,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-03-18",
       file: "guides/Tools and Emulators/Timer.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Timer.mdx"),
@@ -1537,6 +1645,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-03",
       file: "guides/Tools and Emulators/No Dolphin Patch.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/No Dolphin Patch.mdx"),
@@ -1553,6 +1662,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/NTR Helper Usage.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/NTR Helper Usage.mdx"),
@@ -1570,6 +1680,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-03-14",
       file: "guides/Gen 6/Mirage Spot.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/Mirage Spot.mdx")),
   },
@@ -1585,6 +1696,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-03-14",
       file: "guides/Gen 6/Remove Time Penalties.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 6/Remove Time Penalties.mdx"),
@@ -1601,6 +1713,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx"),
@@ -1617,6 +1730,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 6/Friend Safari RNG Guide.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 6/Friend Safari RNG Guide.mdx"),
@@ -1633,6 +1747,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 6/XY TID.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/XY TID.mdx")),
   },
@@ -1648,6 +1763,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/Retail Entralink.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Retail Entralink.mdx")),
   },
@@ -1662,6 +1778,10 @@ export const guides = {
       addedOn: null,
       file: "guides/Emerald/Retail Wild RNG.mdx",
       category: "Emerald",
+      translations: {
+        en: "/retail-emerald-wild",
+        zh: "/zh-retail-emerald-wild",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Retail Wild RNG.mdx")),
   },
@@ -1676,6 +1796,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1695,6 +1816,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1714,6 +1836,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-13",
       file: "guides/Gen 6/ORAS TID.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/ORAS TID.mdx")),
   },
@@ -1729,6 +1852,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1749,6 +1873,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1768,6 +1893,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1787,6 +1913,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Timeline With Fidget Guide.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Timeline With Fidget Guide.mdx"),
@@ -1804,6 +1931,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Finding Initial Seed with Clocks.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Finding Initial Seed with Clocks.mdx"),
@@ -1820,6 +1948,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Island Scan.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Island Scan.mdx")),
   },
@@ -1834,6 +1963,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Mystery Gift.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Mystery Gift.mdx")),
   },
@@ -1848,6 +1978,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/RNGing Without Custom Firmware.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/RNGing Without Custom Firmware.mdx"),
@@ -1865,6 +1996,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/SOS RNG Guide.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/SOS RNG Guide.mdx")),
   },
@@ -1879,6 +2011,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Stationary RNG.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Stationary RNG.mdx")),
   },
@@ -1893,6 +2026,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Timeline Leap Guide.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Timeline Leap Guide.mdx"),
@@ -1909,6 +2043,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Timeline Guide.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
   },
@@ -1923,6 +2058,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Wild RNG.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Wild RNG.mdx")),
   },
@@ -1937,6 +2073,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Sword and Shield/Get Raid Seed With CFW.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Sword and Shield/Get Raid Seed With CFW.mdx"),
@@ -1953,6 +2090,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Sword and Shield/Get Raid Seed Without CFW.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -1971,6 +2109,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Sword and Shield/Raid RNG.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Sword and Shield/Raid RNG.mdx"),
@@ -1988,6 +2127,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -2008,6 +2148,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -2027,6 +2168,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -2046,6 +2188,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Timeline With Fidget Guide.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Timeline With Fidget Guide.mdx"),
@@ -2063,6 +2206,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Finding Initial Seed with Clocks.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Finding Initial Seed with Clocks.mdx"),
@@ -2079,6 +2223,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Island Scan.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Island Scan.mdx")),
   },
@@ -2093,6 +2238,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Mystery Gift.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Mystery Gift.mdx")),
   },
@@ -2107,6 +2253,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/RNGing Without Custom Firmware.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/RNGing Without Custom Firmware.mdx"),
@@ -2124,6 +2271,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/SOS RNG Guide.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/SOS RNG Guide.mdx")),
   },
@@ -2138,6 +2286,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Stationary RNG.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Stationary RNG.mdx")),
   },
@@ -2152,6 +2301,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Timeline Leap Guide.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Timeline Leap Guide.mdx"),
@@ -2168,6 +2318,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Timeline Guide.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
   },
@@ -2182,6 +2333,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Wild RNG.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Wild RNG.mdx")),
   },
@@ -2196,6 +2348,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 7/Stationary Wormhole RNG.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Stationary Wormhole RNG.mdx"),
@@ -2212,6 +2365,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -2231,6 +2385,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -2251,6 +2406,7 @@ export const guides = {
       addedOn: null,
       file: "guides/Ruby and Sapphire/Live and Dry Battery.mdx",
       category: "Ruby and Sapphire",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Ruby and Sapphire/Live and Dry Battery.mdx"),
@@ -2267,6 +2423,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Emerald/Find SID.mdx",
+      translations: { en: "/rs-gen3-sid", zh: "/zh-rs-gen3-sid" },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
@@ -2281,6 +2438,7 @@ export const guides = {
       addedOn: null,
       file: "guides/Ruby and Sapphire/Initial Seed RNG.mdx",
       category: "Ruby and Sapphire",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Ruby and Sapphire/Initial Seed RNG.mdx"),
@@ -2298,6 +2456,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-11",
       file: "guides/Emerald/Mirage Island.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
   },
@@ -2312,6 +2471,7 @@ export const guides = {
       addedOn: null,
       file: "guides/Ruby and Sapphire/PokeFinder Setup.mdx",
       category: "Ruby and Sapphire",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Ruby and Sapphire/PokeFinder Setup.mdx"),
@@ -2329,6 +2489,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Emerald/Find SID with Feebas.mdx",
+      translations: { en: "/rs-sid-feebas", zh: "/zh-rs-sid-feebas" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
@@ -2345,6 +2506,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Emerald/Gen 3 Static.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Gen 3 Static.mdx")),
   },
@@ -2359,6 +2521,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Emerald/Gen 3 TID SID Generator.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -2376,6 +2539,7 @@ export const guides = {
       addedOn: null,
       file: "guides/Ruby and Sapphire/Basic Rules of RNG.mdx",
       category: "Ruby and Sapphire",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Ruby and Sapphire/Basic Rules of RNG.mdx"),
@@ -2392,6 +2556,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Legends Arceus/MMO.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Legends Arceus/MMO.mdx")),
   },
@@ -2406,6 +2571,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Tools and Emulators/Transporter Patches.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Transporter Patches.mdx"),
@@ -2422,6 +2588,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Transporter/Transporter.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Transporter/Transporter.mdx")),
   },
@@ -2436,6 +2603,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Transporter/Transporter with Offline Patch.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () =>
@@ -2453,6 +2621,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Emerald/Gen 3 TID SID Generator.mdx",
+      translations: null,
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -2469,6 +2638,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-03-24",
       file: "guides/Gen 6/PokeRadar.mdx",
+      translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/PokeRadar.mdx")),
   },
@@ -2482,7 +2652,9 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/dppt-advance-rng", language: "zh" },
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
+      translations: { en: "/dppt-advance-rng", zh: "/zh-dppt-advance-rng" },
     },
     Guide: React.lazy(
       () =>
@@ -2501,7 +2673,9 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/dppt-initial-seed", language: "zh" },
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
+      translations: { en: "/dppt-initial-seed", zh: "/zh-dppt-initial-seed" },
     },
     Guide: React.lazy(
       () =>
@@ -2520,7 +2694,9 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/dppt-pokeradar-rng", language: "zh" },
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx",
+      translations: { en: "/dppt-pokeradar-rng", zh: "/zh-dppt-pokeradar-rng" },
     },
     Guide: React.lazy(
       () =>
@@ -2537,7 +2713,9 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/dppt-wild", language: "zh" },
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx",
+      translations: { en: "/dppt-wild", zh: "/zh-dppt-wild" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx"),
@@ -2552,8 +2730,10 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/e-tips-rng", language: "zh" },
       file: "guides/Emerald/Basic Rules of RNG.mdx",
       category: "Emerald",
+      translations: { en: "/e-tips-rng", zh: "/zh-e-tips-rng" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
@@ -2568,8 +2748,13 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/emerald-painting-rng", language: "zh" },
       file: "guides/Emerald/Reseed RNG.mdx",
       category: "Emerald",
+      translations: {
+        en: "/emerald-painting-rng",
+        zh: "/zh-emerald-painting-rng",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
   },
@@ -2583,7 +2768,9 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: true,
       addedOn: "2025-04-16",
+      translation: { enSlug: "/emerald-sid-feebas", language: "zh" },
       file: "guides/Emerald/Find SID with Feebas.mdx",
+      translations: { en: "/emerald-sid-feebas", zh: "/zh-emerald-sid-feebas" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
@@ -2598,8 +2785,13 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: true,
       addedOn: "2025-04-07",
+      translation: { enSlug: "/emulator-emerald-egg", language: "zh" },
       file: "guides/Emerald/Egg RNG.mdx",
       category: "Emerald",
+      translations: {
+        en: "/emulator-emerald-egg",
+        zh: "/zh-emulator-emerald-egg",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
   },
@@ -2613,7 +2805,9 @@ export const guides = {
       tag: "emu",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/emulator-hgss-egg", language: "zh" },
       file: "guides/Gen 4/HeartGold and SoulSilver/Egg.mdx",
+      translations: { en: "/emulator-hgss-egg", zh: "/zh-emulator-hgss-egg" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx"),
@@ -2629,7 +2823,9 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/frlg-gen3-sid", language: "zh" },
       file: "guides/Emerald/Find SID.mdx",
+      translations: { en: "/frlg-gen3-sid", zh: "/zh-frlg-gen3-sid" },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
@@ -2643,7 +2839,9 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: true,
       addedOn: "2025-03-27",
+      translation: { enSlug: "/gen2-celebi", language: "zh" },
       file: "guides/Gen 2/Celebi.mdx",
+      translations: { en: "/gen2-celebi", zh: "/zh-gen2-celebi" },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Celebi.mdx")),
   },
@@ -2657,7 +2855,13 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/gen2-starters", language: "zh" },
       file: "guides/Gen 2/Starter.mdx",
+      translations: {
+        es: "/es-gen2-starters",
+        en: "/gen2-starters",
+        zh: "/zh-gen2-starters",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Starter.mdx")),
   },
@@ -2671,7 +2875,9 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: true,
       addedOn: "2025-03-03",
+      translation: { enSlug: "/gen3-sid", language: "zh" },
       file: "guides/Emerald/Find SID.mdx",
+      translations: { en: "/gen3-sid", zh: "/zh-gen3-sid" },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
@@ -2685,7 +2891,9 @@ export const guides = {
       tag: "cfw",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/install-pokereader", language: "zh" },
       file: "guides/Tools and Emulators/3DS PokeReader.mdx",
+      translations: { en: "/install-pokereader", zh: "/zh-install-pokereader" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
@@ -2700,8 +2908,13 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/retail-emerald-wild", language: "zh" },
       file: "guides/Emerald/Retail Wild RNG.mdx",
       category: "Emerald",
+      translations: {
+        en: "/retail-emerald-wild",
+        zh: "/zh-retail-emerald-wild",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Retail Wild RNG.mdx")),
   },
@@ -2715,7 +2928,9 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/rs-gen3-sid", language: "zh" },
       file: "guides/Emerald/Find SID.mdx",
+      translations: { en: "/rs-gen3-sid", zh: "/zh-rs-gen3-sid" },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
@@ -2729,7 +2944,9 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: true,
       addedOn: null,
+      translation: { enSlug: "/rs-sid-feebas", language: "zh" },
       file: "guides/Emerald/Find SID with Feebas.mdx",
+      translations: { en: "/rs-sid-feebas", zh: "/zh-rs-sid-feebas" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),

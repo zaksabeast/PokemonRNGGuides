@@ -28,7 +28,6 @@ import {
   IpsMerger,
   Countdown,
   ShowIf,
-  LanguageButton,
   Alert,
 } from "~/components";
 import { Gen2PokemonRng } from "~/rngToolsUi/gen2/crystalPokemon";
@@ -86,7 +85,6 @@ export const markdownComponents = {
   Gen3TidSidGenerator,
   OrAsMirageSpot,
   ShowIf,
-  LanguageButton,
   Gen4Timer,
   RngTimer,
   OrasId,

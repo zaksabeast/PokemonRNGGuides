@@ -12,3 +12,7 @@ export const getGuide = (slug: GuideSlug) => {
 };
 
 export type Category = tst.L.UnionOf<typeof categories>;
+
+export type LanguageKey = tst.O.RequiredKeys<
+  tst.U.NonNullable<GuideMeta["translations"]>
+>;

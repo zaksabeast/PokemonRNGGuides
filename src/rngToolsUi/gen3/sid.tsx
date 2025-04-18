@@ -1,20 +1,12 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
   Field,
 } from "~/components";
 import { rngTools } from "~/rngTools";
-import {
-  DecimalString,
-  fromDecimalString,
-  fromHexString,
-  HexString,
-  toDecimalString,
-  toHexString,
-} from "~/utils/number";
 
 type GeneratorResult = { sid: number };
 
@@ -22,40 +14,43 @@ const columns: ResultColumn<GeneratorResult>[] = [
   {
     title: "SID",
     dataIndex: "sid",
-    key: "sid",
   },
 ];
 
-type FormState = {
-  tid: DecimalString;
-  feebasSeed: HexString;
-  initialAdvances: DecimalString;
-  maxAdvances: DecimalString;
+export type FormState = {
+  tid: number;
+  feebasSeed: number;
+  initialAdvances: number;
+  maxAdvances: number;
 };
 
 const initialValues: FormState = {
-  tid: toDecimalString(14223),
-  feebasSeed: toHexString(0xa4fd),
-  initialAdvances: toDecimalString(0),
-  maxAdvances: toDecimalString(10000),
+  tid: 14223,
+  feebasSeed: 0xa4fd,
+  initialAdvances: 0,
+  maxAdvances: 10000,
 };
 
 const fields: Field[] = [
   {
     label: "TID",
-    input: <FormikInput<FormState> name="tid" />,
+    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
   },
   {
     label: "Feebas Seed",
-    input: <FormikInput<FormState> name="feebasSeed" />,
+    input: <FormikNumberInput<FormState> name="feebasSeed" numType="hex" />,
   },
   {
     label: "Initial Advances",
-    input: <FormikInput<FormState> name="initialAdvances" />,
+    input: (
+      <FormikNumberInput<FormState> name="initialAdvances" numType="decimal" />
+    ),
   },
   {
     label: "Max Advances",
-    input: <FormikInput<FormState> name="maxAdvances" />,
+    input: (
+      <FormikNumberInput<FormState> name="maxAdvances" numType="decimal" />
+    ),
   },
 ];
 
@@ -68,30 +63,16 @@ export const Gen3Sid = ({ game }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const tid = fromDecimalString(opts.tid);
-      const feebasSeed = fromHexString(opts.feebasSeed);
-      const initialAdvances = fromDecimalString(opts.initialAdvances);
-      const maxAdvances = fromDecimalString(opts.maxAdvances);
-
-      if (
-        tid == null ||
-        feebasSeed == null ||
-        initialAdvances == null ||
-        maxAdvances == null
-      ) {
-        return;
-      }
-
       const generate =
         game === "rs"
           ? rngTools.rs_sid_from_feebas_seed
           : rngTools.emerald_sid_from_feebas_seed;
 
       const results = await generate(
-        tid,
-        feebasSeed,
-        initialAdvances,
-        maxAdvances,
+        opts.tid,
+        opts.feebasSeed,
+        opts.initialAdvances,
+        opts.maxAdvances,
       );
 
       setResults([...results].map(({ sid }) => ({ sid })));

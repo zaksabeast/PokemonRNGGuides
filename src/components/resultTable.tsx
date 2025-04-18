@@ -16,7 +16,6 @@ export type ResultColumn<T> = keyof T extends string
       [K in keyof T]: {
         title: string;
         dataIndex: K;
-        key: K;
         monospace?: boolean;
         render?: (value: T[K], values:T) => React.ReactNode;
       };

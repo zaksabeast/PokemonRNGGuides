@@ -40,6 +40,7 @@ export const Gen5Timer = () => {
         <Select<Gen5TimerMode>
           fullFlex
           value={mode}
+          name="gen5-timer-mode"
           onChange={(mode) => setMode({ mode })}
           options={[
             {

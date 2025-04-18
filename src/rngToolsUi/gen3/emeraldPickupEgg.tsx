@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   FormikSelect,
   IvInput,
@@ -9,14 +9,6 @@ import {
   RngToolSubmit,
 } from "~/components";
 import { rngTools, Ivs, Gen3PickupMethod, Egg3PickupState } from "~/rngTools";
-import {
-  HexString,
-  DecimalString,
-  fromDecimalString,
-  toDecimalString,
-  toHexString,
-  fromHexString,
-} from "~/utils/number";
 import { maxIvs, minIvs } from "~/types/ivs";
 import {
   flattenIvs,
@@ -27,15 +19,15 @@ import {
 type Result = FlattenIvs<Egg3PickupState>;
 
 const columns: ResultColumn<Result>[] = [
-  { title: "Advance", dataIndex: "advance", key: "advance" },
+  { title: "Advance", dataIndex: "advance" },
   ...ivColumns,
 ];
 
-type FormState = {
-  delay: DecimalString;
-  seed: HexString;
-  initial_advances: DecimalString;
-  max_advances: DecimalString;
+export type FormState = {
+  delay: number;
+  seed: number;
+  initial_advances: number;
+  max_advances: number;
   method: Gen3PickupMethod;
   parent1_ivs: Ivs;
   parent2_ivs: Ivs;
@@ -44,10 +36,10 @@ type FormState = {
 };
 
 const initialValues: FormState = {
-  delay: toDecimalString(3),
-  seed: toHexString(0),
-  initial_advances: toDecimalString(100),
-  max_advances: toDecimalString(1000),
+  delay: 3,
+  seed: 0,
+  initial_advances: 100,
+  max_advances: 1000,
   method: "EmeraldBred",
   parent1_ivs: maxIvs,
   parent2_ivs: maxIvs,
@@ -58,19 +50,23 @@ const initialValues: FormState = {
 const fields: Field[] = [
   {
     label: "Seed",
-    input: <FormikInput<FormState> name="seed" />,
+    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
   },
   {
     label: "Initial advances",
-    input: <FormikInput<FormState> name="initial_advances" />,
+    input: (
+      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
+    ),
   },
   {
     label: "Max advances",
-    input: <FormikInput<FormState> name="max_advances" />,
+    input: (
+      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+    ),
   },
   {
     label: "Delay",
-    input: <FormikInput<FormState> name="delay" />,
+    input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
   },
   {
     label: "Parent 1 IVs",
@@ -112,26 +108,8 @@ export const EmeraldPickupEgg = ({ lua = false }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const initialAdvances = fromDecimalString(opts.initial_advances);
-      const maxAdvances = fromDecimalString(opts.max_advances);
-      const seed = fromHexString(opts.seed);
-      const delay = fromDecimalString(opts.delay);
-
-      if (
-        initialAdvances == null ||
-        maxAdvances == null ||
-        seed == null ||
-        delay == null
-      ) {
-        return;
-      }
-
       const results = await rngTools.emerald_egg_pickup_states({
         ...opts,
-        seed,
-        delay,
-        initial_advances: initialAdvances,
-        max_advances: maxAdvances,
         parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
         lua_adjustment: lua,
         filter: {
@@ -152,6 +130,7 @@ export const EmeraldPickupEgg = ({ lua = false }: Props) => {
       results={results}
       initialValues={initialValues}
       onSubmit={onSubmit}
+      formContainerId="emerald_pickup_egg_form"
       submitTrackerId="generate_emerald_pickup_egg"
     />
   );

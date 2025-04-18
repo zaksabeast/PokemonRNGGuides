@@ -9,7 +9,9 @@ declare module "@emotion/react" {
     token: {
       headerHeight: string;
       footerHeight: string;
-      colorFillSecondaryHover: string;
+      colorBgSupport: string;
+      colorBorderSupport: string;
+      colorFillSupportHover: string;
       colorGreen: string;
       colorRed: string;
     };

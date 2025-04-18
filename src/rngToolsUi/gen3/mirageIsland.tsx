@@ -1,11 +1,11 @@
-import { Field, RngToolForm, ResultColumn, RngToolSubmit } from "~/components";
 import {
-  DecimalString,
-  fromDecimalString,
-  toDecimalString,
-} from "~/utils/number";
+  Field,
+  RngToolForm,
+  ResultColumn,
+  RngToolSubmit,
+  FormikNumberInput,
+} from "~/components";
 import { FormikRadio } from "../../components/radio";
-import { FormikInput } from "../../components/input";
 
 import { rngTools, MirageIslandResult } from "~/rngTools";
 import React from "react";
@@ -27,13 +27,11 @@ const getColumns = (
       {
         title: "Day",
         dataIndex: "day",
-        key: "day",
         render: (dayDiff) => `${dayDiff + 1}`,
       },
       {
         title: "Time To Wait",
         dataIndex: "day_diff",
-        key: "day_diff",
         render: (dayDiff) => `${dayDiff} day${dayDiff === 1 ? "" : "s"}`,
       },
     );
@@ -41,7 +39,6 @@ const getColumns = (
   columns.push({
     title: "PID Pattern",
     dataIndex: "pid_pattern",
-    key: "pid_pattern",
     render: (pid_pattern) =>
       `****${pid_pattern.toString(16).toUpperCase().padStart(4, "0")}`,
     monospace: true,
@@ -53,7 +50,6 @@ const getColumns = (
     columns.push({
       title: "Method-1 Earliest RNG Advance matching PID Pattern",
       dataIndex: "earliest_adv",
-      key: "earliest_adv",
       render: (earliestAdv) => formatLargeInteger(earliestAdv),
     });
   return columns;
@@ -61,18 +57,14 @@ const getColumns = (
 
 type Battery = "Dead" | "Live";
 
-type FormState = {
+export type FormState = {
   battery: Battery;
-  rocketLaunchedCount: DecimalString;
-  game: Game;
+  rocketLaunchedCount: number;
 };
 
-const getInitialValues = (game: Game): FormState => {
-  return {
-    battery: "Live",
-    rocketLaunchedCount: toDecimalString(0),
-    game,
-  };
+const initialValues: FormState = {
+  battery: "Live",
+  rocketLaunchedCount: 0,
 };
 
 const generateResults = (
@@ -83,11 +75,8 @@ const generateResults = (
   if (values.battery === "Dead")
     return rngTools.mirage_island_calculate(initialSeed, 0, 0);
 
-  const rocketLaunchedCount =
-    fromDecimalString(values.rocketLaunchedCount) ?? 0;
-
   const RESULT_COUNT = 100;
-  const currentDay = clamp(rocketLaunchedCount * 7, 0, 0xffff);
+  const currentDay = clamp(values.rocketLaunchedCount * 7, 0, 0xffff);
   const lastDay = clamp(currentDay + RESULT_COUNT - 1, 0, 0xffff);
 
   return rngTools.mirage_island_calculate(initialSeed, currentDay, lastDay);
@@ -112,15 +101,18 @@ const getFields = (values: FormState) => {
   if (values.battery === "Live") {
     fields.push({
       label: "Rocket Launched",
-      input: <FormikInput<FormState> name="rocketLaunchedCount" />,
+      input: (
+        <FormikNumberInput<FormState>
+          name="rocketLaunchedCount"
+          numType="decimal"
+        />
+      ),
     });
   }
   return fields;
 };
 
 export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
-  const initialValues = getInitialValues(game);
-
   const [results, setResults] = React.useState<MirageIslandResult[]>([]);
   const [resultsBattery, setResultsBattery] = React.useState<Battery>("Live");
 

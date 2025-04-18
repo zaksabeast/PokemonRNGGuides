@@ -1,4 +1,28 @@
 import { z } from "zod";
+import { isNumber } from "lodash-es";
+
+export const ZodSerializedOptional = <Schema extends z.ZodTypeAny>(
+  schema: Schema,
+) =>
+  z
+    .union([schema, z.literal("")])
+    .transform((arg): z.infer<Schema> | undefined => {
+      if (arg === "") {
+        return undefined;
+      }
+
+      return arg;
+    });
+
+export const ZodSerializedDecimal = z
+  .union([z.number(), z.string()])
+  .transform((arg) => (isNumber(arg) ? arg : parseFloat(arg)))
+  .refine((num) => !isNaN(num));
+
+export const ZodSerializedHex = z
+  .union([z.number(), z.string()])
+  .transform((arg) => (isNumber(arg) ? arg : parseInt(arg, 16)))
+  .refine((num) => !isNaN(num));
 
 export const ZodDecimalString = z
   .string()

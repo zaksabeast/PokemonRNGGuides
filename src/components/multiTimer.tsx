@@ -75,6 +75,7 @@ export const MultiTimer = ({
         input: (
           <Flex justify="flex-end">
             <RadioGroup
+              name="timerDisplay"
               optionType="button"
               value={state.showAllTimers ? "showAllTimers" : "showCurrentTimer"}
               onChange={({ target }) => {
@@ -95,6 +96,7 @@ export const MultiTimer = ({
         label: "Countdown beeps",
         input: (
           <Select<number>
+            name="countdownBeeps"
             value={state.maxBeepCount}
             onChange={(value) => {
               setState({

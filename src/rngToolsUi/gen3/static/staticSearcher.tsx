@@ -1,18 +1,13 @@
 import { rngTools, Species, Static3SearcherResult } from "~/rngTools";
 import {
   Field,
-  FormikInput,
+  FormikNumberInput,
   FormikSelect,
   FormikSwitch,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import {
-  DecimalString,
-  fromDecimalString,
-  toDecimalString,
-} from "~/utils/number";
 import { getPkmFilterFields, PkmFilterFields } from "~/components/pkmFilter";
 import {
   getStatic3Species,
@@ -32,32 +27,29 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Seed",
     dataIndex: "seed",
-    key: "seed",
     monospace: true,
     render: (seed) => seed.toString(16).padStart(8, "0").toUpperCase(),
   },
   {
     title: "PID",
     dataIndex: "pid",
-    key: "pid",
     monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
-  { title: "Nature", dataIndex: "nature", key: "nature" },
-  { title: "Ability", dataIndex: "ability", key: "ability" },
+  { title: "Nature", dataIndex: "nature" },
+  { title: "Ability", dataIndex: "ability" },
   ...ivColumns,
   {
     title: "Shiny",
     dataIndex: "shiny",
-    key: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
-  { title: "Gender", dataIndex: "gender", key: "gender" },
+  { title: "Gender", dataIndex: "gender" },
 ];
 
 type FormState = {
-  tid: DecimalString;
-  sid: DecimalString;
+  tid: number;
+  sid: number;
   species: Species;
   roamer: boolean;
   method4: boolean;
@@ -65,17 +57,17 @@ type FormState = {
 
 const getInitialValues = (game: Static3Game): FormState => {
   return {
-    tid: toDecimalString(0),
-    sid: toDecimalString(0),
+    tid: 0,
+    sid: 0,
     species: getStatic3Species(game)[0],
     roamer: false,
     method4: false,
     filter_shiny: false,
     filter_min_ivs: minIvs,
     filter_max_ivs: maxIvs,
-    filter_nature: "None",
-    filter_gender: "None",
-    filter_ability: "None",
+    filter_nature: undefined,
+    filter_gender: undefined,
+    filter_ability: undefined,
   };
 };
 
@@ -84,11 +76,11 @@ const getFields = (game: Static3Game): Field[] => {
   return [
     {
       label: "TID",
-      input: <FormikInput<FormState> name="tid" />,
+      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
     {
       label: "SID",
-      input: <FormikInput<FormState> name="sid" />,
+      input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
     },
     {
       label: "Species",
@@ -124,26 +116,14 @@ export const Static3Searcher = ({ game }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const tid = fromDecimalString(opts.tid);
-      const sid = fromDecimalString(opts.sid);
-
-      if (tid == null || sid == null) {
-        return;
-      }
-
       const results = await rngTools.gen3_static_searcher_states({
         ...opts,
-        tid,
-        sid,
         bugged_roamer: game !== "emerald" && opts.roamer,
         filter: {
           shiny: opts.filter_shiny,
-          nature:
-            opts.filter_nature === "None" ? undefined : opts.filter_nature,
-          gender:
-            opts.filter_gender === "None" ? undefined : opts.filter_gender,
-          ability:
-            opts.filter_ability === "None" ? undefined : opts.filter_ability,
+          nature: opts.filter_nature,
+          gender: opts.filter_gender,
+          ability: opts.filter_ability,
           min_ivs: opts.filter_min_ivs,
           max_ivs: opts.filter_max_ivs,
         },

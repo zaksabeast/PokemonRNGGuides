@@ -1,21 +1,13 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
   Field,
 } from "~/components";
-import { rngTools, SeedTime4 } from "~/rngTools";
-import {
-  DecimalString,
-  fromDecimalString,
-  fromHexString,
-  HexString,
-  toHexString,
-} from "~/utils/number";
-import dayjs, { Dayjs } from "dayjs";
-import { fromRngDateTime, toRngDateTime } from "~/utils/time";
+import { RngDate, rngTools, SeedTime4 } from "~/rngTools";
+import { fromRngDateTime, rngDate } from "~/utils/time";
 import { FormikDatePicker } from "~/components/datePicker";
 import { uniqueId } from "lodash-es";
 
@@ -25,39 +17,36 @@ const columns: ResultColumn<GeneratorResult>[] = [
   {
     title: "Date",
     dataIndex: "datetime",
-    key: "datetime",
     render: (date) => fromRngDateTime(date).toDate().toLocaleString(),
   },
   {
     title: "Delay",
     dataIndex: "delay",
-    key: "delay",
   },
   {
     title: "Coin Flips",
     dataIndex: "coin_flips",
-    key: "coin_flips",
     render: (coinFlips) =>
       coinFlips.map((flip) => (flip === "Heads" ? "H" : "T")).join(", "),
   },
 ];
 
 type FormState = {
-  seed: HexString;
-  date: Dayjs;
-  forcedSecond: DecimalString | "";
+  seed: number;
+  date: RngDate;
+  forced_second: number | undefined;
 };
 
 const initialValues: FormState = {
-  seed: toHexString(0),
-  date: dayjs(),
-  forcedSecond: "",
+  seed: 0,
+  date: rngDate(),
+  forced_second: undefined,
 };
 
 const fields: Field[] = [
   {
     label: "Seed",
-    input: <FormikInput<FormState> name="seed" />,
+    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
   },
   {
     label: "Year/Month",
@@ -65,7 +54,9 @@ const fields: Field[] = [
   },
   {
     label: "Forced Second",
-    input: <FormikInput<FormState> name="forcedSecond" />,
+    input: (
+      <FormikNumberInput<FormState> name="forced_second" numType="decimal" />
+    ),
   },
 ];
 
@@ -77,21 +68,10 @@ export const DpptSeedSearch = ({ onClickResultRow }: Props) => {
   const [results, setResults] = React.useState<GeneratorResult[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const seed = fromHexString(opts.seed);
-    const forcedSecond =
-      opts.forcedSecond === "" ? null : fromDecimalString(opts.forcedSecond);
-
-    if (seed == null) {
-      return;
-    }
-
-    const rngDate = toRngDateTime(opts.date);
-
     const results = await rngTools.dppt_calculate_seedtime({
-      seed,
-      year: rngDate.year,
-      month: rngDate.month,
-      forced_second: forcedSecond ?? undefined,
+      ...opts,
+      year: opts.date.year,
+      month: opts.date.month,
     });
 
     setResults(results.map((result) => ({ ...result, id: uniqueId() })));

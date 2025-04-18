@@ -1,16 +1,15 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   RngToolForm,
   RngToolSubmit,
   Field,
   FormikSelect,
 } from "~/components";
 import {
-  toDecimalString,
-  fromDecimalString,
   capPrecision,
-  ZodDecimalString,
+  ZodSerializedDecimal,
+  ZodSerializedOptional,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
 import { rngTools, ZodConsole } from "~/rngTools";
@@ -30,20 +29,20 @@ const timerStateAtom = atomWithPersistence("gen3Timer", TimerStateSchema, {
 
 const FormStateSchema = z.object({
   console: ZodConsole,
-  preTimer: ZodDecimalString,
-  targetFrame: ZodDecimalString,
-  calibration: ZodDecimalString,
-  frameHit: z.union([ZodDecimalString, z.literal("")]),
+  preTimer: ZodSerializedDecimal,
+  targetFrame: ZodSerializedDecimal,
+  calibration: ZodSerializedDecimal,
+  frameHit: ZodSerializedOptional(ZodSerializedDecimal),
 });
 
-type FormState = z.infer<typeof FormStateSchema>;
+export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "Gba",
-  preTimer: toDecimalString(5000),
-  targetFrame: toDecimalString(1000),
-  calibration: toDecimalString(0.0),
-  frameHit: "",
+  preTimer: 5000,
+  targetFrame: 1000,
+  calibration: 0.0,
+  frameHit: undefined,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -70,19 +69,19 @@ const fields: Field[] = [
   },
   {
     label: "Pre-Timer",
-    input: <FormikInput<FormState> name="preTimer" />,
+    input: <FormikNumberInput<FormState> name="preTimer" numType="float" />,
   },
   {
     label: "Target Frame",
-    input: <FormikInput<FormState> name="targetFrame" />,
+    input: <FormikNumberInput<FormState> name="targetFrame" numType="float" />,
   },
   {
     label: "Calibration",
-    input: <FormikInput<FormState> name="calibration" />,
+    input: <FormikNumberInput<FormState> name="calibration" numType="float" />,
   },
   {
     label: "Frame Hit",
-    input: <FormikInput<FormState> name="frameHit" />,
+    input: <FormikNumberInput<FormState> name="frameHit" numType="float" />,
   },
 ];
 
@@ -92,29 +91,30 @@ export const Gen3Timer = () => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts, formik) => {
+      let updatedOpts = opts;
       let settings = {
         console: opts.console,
-        pre_timer: fromDecimalString(opts.preTimer) ?? 0,
-        target_frame: fromDecimalString(opts.targetFrame) ?? 0,
-        calibration: fromDecimalString(opts.calibration) ?? 0,
+        pre_timer: opts.preTimer,
+        target_frame: opts.targetFrame,
+        calibration: opts.calibration,
       };
 
-      if (opts.frameHit !== "") {
-        const frameHit = fromDecimalString(opts.frameHit) ?? 0;
-        settings = await rngTools.calibrate_gen3_timer(settings, frameHit);
+      if (opts.frameHit != null) {
+        settings = await rngTools.calibrate_gen3_timer(settings, opts.frameHit);
         settings = {
           console: opts.console,
           pre_timer: capPrecision(settings.pre_timer),
           target_frame: capPrecision(settings.target_frame),
           calibration: capPrecision(settings.calibration),
         };
-        formik.setValues({
+        updatedOpts = {
           console: settings.console,
-          preTimer: toDecimalString(settings.pre_timer),
-          targetFrame: toDecimalString(settings.target_frame),
-          calibration: toDecimalString(settings.calibration),
-          frameHit: "",
-        });
+          preTimer: settings.pre_timer,
+          targetFrame: settings.target_frame,
+          calibration: settings.calibration,
+          frameHit: undefined,
+        };
+        formik.setValues(updatedOpts);
       }
 
       const milliseconds = await rngTools.create_gen3_timer(settings);
@@ -122,7 +122,7 @@ export const Gen3Timer = () => {
         milliseconds: [...milliseconds],
         minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       });
-      onUpdate(opts);
+      onUpdate(updatedOpts);
     },
     [onUpdate, setTimer],
   );

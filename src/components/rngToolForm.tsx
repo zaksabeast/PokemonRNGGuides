@@ -14,7 +14,9 @@ export type RngToolUpdate<Values> = (values: Values) => void;
 
 type Props<FormState, Result> = {
   initialValues: FormState;
-  onUpdate?: RngToolUpdate<FormState>;
+  onSubmit: RngToolSubmit<FormState>;
+  submitButtonLabel?: string;
+  formContainerId?: string;
 } & OneOf<{
   fields: Field[];
   getFields: (values: FormikProps<FormState>) => Field[];
@@ -46,6 +48,7 @@ export const RngToolForm = <
   onUpdate,
   rowKey,
   results,
+  formContainerId,
   allowReset = false,
   resetTrackerId,
   submitButtonLabel = "Generate",
@@ -62,7 +65,7 @@ export const RngToolForm = <
         onUpdate?.(formik.values);
 
         return (
-          <Flex vertical gap={16}>
+          <Flex vertical gap={16} id={formContainerId}>
             <Form>
               <Flex vertical gap={8}>
                 <FormFieldTable fields={fieldsToUse} />

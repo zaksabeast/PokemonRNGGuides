@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
@@ -8,73 +8,63 @@ import {
   FormikIdFilter,
 } from "~/components";
 import { rngTools, Id4 } from "~/rngTools";
-import {
-  DecimalString,
-  fromDecimalString,
-  toDecimalString,
-} from "~/utils/number";
 import { denormalizeIdFilterOrDefault, IdFilter } from "~/types/id";
 
 const columns: ResultColumn<Id4>[] = [
   {
     title: "Seed",
     dataIndex: "seed",
-    key: "seed",
     monospace: true,
     render: (seed) => seed.toString(16).toUpperCase().padStart(8, "0"),
   },
   {
     title: "TID",
     dataIndex: "tid",
-    key: "tid",
   },
   {
     title: "SID",
     dataIndex: "sid",
-    key: "sid",
   },
   {
     title: "TSV",
     dataIndex: "tsv",
-    key: "tsv",
   },
   {
     title: "Delay",
     dataIndex: "delay",
-    key: "delay",
   },
 ];
 
 type FormState = {
-  year: DecimalString;
-  minDelay: DecimalString;
-  maxDelay: DecimalString;
+  year: number;
+  min_delay: number;
+  max_delay: number;
   filter: IdFilter;
 };
 
 const initialValues: FormState = {
-  year: toDecimalString(2000),
-  minDelay: toDecimalString(5000),
-  maxDelay: toDecimalString(6000),
+  year: 2000,
+  min_delay: 5000,
+  max_delay: 6000,
   filter: {
     type: "tid",
-    value0: toDecimalString(0),
-    value1: "",
+    value0: 0,
+    value1: undefined,
   },
 };
 
 const fields: Field[] = [
   {
     label: "Year",
-    input: <FormikInput<FormState> name="year" />,
+    input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
   },
   {
     label: "Min Delay",
-    input: <FormikInput<FormState> name="minDelay" />,
+    input: <FormikNumberInput<FormState> name="min_delay" numType="decimal" />,
   },
   {
     label: "Max Delay",
-    input: <FormikInput<FormState> name="maxDelay" />,
+    input: <FormikNumberInput<FormState> name="max_delay" numType="decimal" />,
   },
   {
     label: "Filter",
@@ -86,18 +76,8 @@ export const DpptIdSearcher = () => {
   const [results, setResults] = React.useState<Id4[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const year = fromDecimalString(opts.year);
-    const minDelay = fromDecimalString(opts.minDelay);
-    const maxDelay = fromDecimalString(opts.maxDelay);
-
-    if (year == null || minDelay == null || maxDelay == null) {
-      return;
-    }
-
     const results = await rngTools.search_dppt_ids({
-      year,
-      min_delay: minDelay,
-      max_delay: maxDelay,
+      ...opts,
       filter: denormalizeIdFilterOrDefault(opts.filter),
     });
 
@@ -111,7 +91,7 @@ export const DpptIdSearcher = () => {
       results={results}
       initialValues={initialValues}
       onSubmit={onSubmit}
-      submitTrackerId="generate_oras_id"
+      submitTrackerId="search_dppt_id"
     />
   );
 };

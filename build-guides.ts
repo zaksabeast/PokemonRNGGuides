@@ -5,14 +5,14 @@ import { evaluate } from "@mdx-js/mdx";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import z from "zod";
-import { difference, isArray } from "lodash-es";
+import { difference, isArray, keyBy, groupBy } from "lodash-es";
 import { guides as existingGuides } from "./src/__generated__/guides";
 import { match, P } from "ts-pattern";
 import dayjs from "dayjs";
 
-// Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, ,, ，, 《, 》, and Chinese characters
+// Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, ,, ，, 《, 》, Chinese characters, and 。
 const titleAndDescriptionChars =
-  /^[A-Za-z0-9 –.\-—é&/()!%,，《》\u4e00-\u9fff]+$/;
+  /^[A-Za-z0-9 –.\-—é&/()!%,，《》\u4e00-\u9fff。]+$/;
 
 // Only lower case letters, numbers, and hyphens
 const slugChars = /^[a-z0-9-]+$/;
@@ -55,7 +55,8 @@ const SingleGuideMetadataSchema = z.object({
   category: CategorySchema.optional(),
   slug: z
     .string()
-    .refine((value) => value.length === 0 || slugChars.test(value)),
+    .refine((value) => value.length === 0 || slugChars.test(value))
+    .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
   isRoughDraft: z.boolean().default(false),
   tag: z.union([
     z.literal("retail"),
@@ -73,6 +74,14 @@ const SingleGuideMetadataSchema = z.object({
     .refine((value) => value === null || dayjs(value).isValid(), {
       message: "Invalid date format",
     }),
+  translation: z
+    .object({
+      enSlug: z
+        .string()
+        .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
+      language: z.union([z.literal("es"), z.literal("zh")]),
+    })
+    .optional(),
 });
 
 const getCategory = ({
@@ -126,7 +135,7 @@ const main = async () => {
       jsx: React.jsx,
       jsxs: React.jsxs,
     });
-    let parsed;
+    let parsed: GuideMetadata | GuideMetadata[];
     try {
       parsed = GuideMetadataSchema.parse(compiled.frontmatter);
     } catch (error) {
@@ -142,15 +151,30 @@ const main = async () => {
       });
       guides.push({
         ...metadata,
-        slug: `/${metadata.slug}`,
         file,
         category,
+        hideFromNavDrawer:
+          metadata.translation != null || metadata.hideFromNavDrawer,
       });
     }
   }
 
   guides.sort((lhs, rhs) => {
     return lhs.slug.localeCompare(rhs.slug);
+  });
+
+  const guidesBySlug = keyBy(guides, (guide) => guide.slug);
+  guides.forEach((guide) => {
+    if (guide.translation == null) {
+      return;
+    }
+
+    const translation = guidesBySlug[guide.translation.enSlug];
+    if (translation == null) {
+      throw new Error(
+        `English translation for ${guide.slug} (${guide.translation.enSlug}) not found`,
+      );
+    }
   });
 
   const existingSlugs = Object.keys(existingGuides);
@@ -161,12 +185,36 @@ const main = async () => {
     throw new Error("Removed slugs: " + removedSlugs.join(", "));
   }
 
+  const guidesByEnSlug = groupBy(
+    guides,
+    (guide) => guide.translation?.enSlug ?? guide.slug,
+  );
+
+  const getTranslations = (guide: GuideMetadata) => {
+    const translations =
+      guidesByEnSlug[guide.translation?.enSlug ?? guide.slug];
+
+    if (translations.length === 1) {
+      return null;
+    }
+
+    return translations.reduce((acc, curr) => {
+      acc[curr.translation?.language ?? "en"] = curr.slug;
+      return acc;
+    }, {});
+  };
+
+  const guidesWithTranslations = guides.map((guide) => ({
+    ...guide,
+    translations: getTranslations(guide),
+  }));
+
   const compiledGuides = `
   import React from 'react';
   import { z } from "zod";
 
   export const guides = {
-    ${guides
+    ${guidesWithTranslations
       .map(
         (guide) => `"${guide.slug}": {
           meta: ${JSON.stringify(guide)},
@@ -177,7 +225,7 @@ const main = async () => {
   } as const;
 
   export const guideSlugs = [
-    ${guides.map((guide) => `z.literal("${guide.slug}")`).join(",\n")}
+    ${guidesWithTranslations.map((guide) => `z.literal("${guide.slug}")`).join(",\n")}
   ] as const;
 
   export const categories = ${JSON.stringify(categories)} as const;

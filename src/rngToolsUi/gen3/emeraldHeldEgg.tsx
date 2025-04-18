@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   FormikSelect,
   Field,
@@ -16,70 +16,63 @@ import {
   Species,
   Gender,
 } from "~/rngTools";
-import {
-  DecimalString,
-  fromDecimalString,
-  toDecimalString,
-} from "~/utils/number";
 import { gen3Species } from "~/types/species";
-import { natures } from "~/types/nature";
-import { gender } from "~/types/gender";
+import { nature } from "~/types/nature";
+import { genderOptions, natureOptions } from "~/components/pkmFilter";
 
 const columns: ResultColumn<Gen3HeldEgg>[] = [
-  { title: "Advance", dataIndex: "advance", key: "advance" },
-  { title: "Redraws", dataIndex: "redraws", key: "redraws" },
+  { title: "Advance", dataIndex: "advance" },
+  { title: "Redraws", dataIndex: "redraws" },
   {
     title: "PID",
     dataIndex: "pid",
-    key: "pid",
     monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
-  { title: "Gender", dataIndex: "gender", key: "gender" },
+  { title: "Gender", dataIndex: "gender" },
   {
     title: "Shiny",
     dataIndex: "shiny",
-    key: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
-  { title: "Nature", dataIndex: "nature", key: "nature" },
-  { title: "Ability", dataIndex: "ability", key: "ability" },
+  { title: "Nature", dataIndex: "nature" },
+  { title: "Ability", dataIndex: "ability" },
 ];
 
-type FormState = {
-  delay: DecimalString;
-  initial_advances: DecimalString;
-  max_advances: DecimalString;
+export type FormState = {
+  delay: number;
+  initial_advances: number;
+  max_advances: number;
   female_has_everstone: boolean;
   female_nature: Nature;
-  calibration: DecimalString;
-  min_redraw: DecimalString;
-  max_redraw: DecimalString;
+  calibration: number;
+  min_redraw: number;
+  max_redraw: number;
   compatability: Compatability;
-  tid: DecimalString;
-  sid: DecimalString;
+  tid: number;
+  sid: number;
   egg_species: Species;
   filter_shiny: boolean;
-  filter_nature: Nature | "None";
-  filter_gender: Gender | "None";
+  filter_nature: Nature | undefined;
+  filter_gender: Gender | undefined;
 };
 
 const initialValues: FormState = {
-  delay: toDecimalString(0),
-  initial_advances: toDecimalString(100),
-  max_advances: toDecimalString(1000),
+  delay: 0,
+  initial_advances: 100,
+  max_advances: 1000,
   female_has_everstone: false,
   female_nature: "Adamant",
-  calibration: toDecimalString(18),
-  min_redraw: toDecimalString(0),
-  max_redraw: toDecimalString(5),
+  calibration: 18,
+  min_redraw: 0,
+  max_redraw: 5,
   compatability: "GetAlong",
-  tid: toDecimalString(0),
-  sid: toDecimalString(0),
+  tid: 0,
+  sid: 0,
   egg_species: "Bulbasaur",
   filter_shiny: false,
-  filter_nature: "None",
-  filter_gender: "None",
+  filter_nature: undefined,
+  filter_gender: undefined,
 };
 
 const fields: Field[] = [
@@ -137,35 +130,41 @@ const fields: Field[] = [
   },
   {
     label: "Calibration",
-    input: <FormikInput<FormState> name="calibration" />,
+    input: (
+      <FormikNumberInput<FormState> name="calibration" numType="decimal" />
+    ),
   },
   {
     label: "TID",
-    input: <FormikInput<FormState> name="tid" />,
+    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
   },
   {
     label: "SID",
-    input: <FormikInput<FormState> name="sid" />,
+    input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
   },
   {
     label: "Initial advances",
-    input: <FormikInput<FormState> name="initial_advances" />,
+    input: (
+      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
+    ),
   },
   {
     label: "Max advances",
-    input: <FormikInput<FormState> name="max_advances" />,
+    input: (
+      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+    ),
   },
   {
     label: "Delay",
-    input: <FormikInput<FormState> name="delay" />,
+    input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
   },
   {
     label: "Min redraw",
-    input: <FormikInput<FormState> name="min_redraw" />,
+    input: <FormikNumberInput<FormState> name="min_redraw" numType="decimal" />,
   },
   {
     label: "Max redraw",
-    input: <FormikInput<FormState> name="max_redraw" />,
+    input: <FormikNumberInput<FormState> name="max_redraw" numType="decimal" />,
   },
   {
     label: "Filter shiny",
@@ -176,10 +175,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "filter_nature">
         name="filter_nature"
-        options={(["None", ...natures] as const).map((nat) => ({
-          label: nat,
-          value: nat,
-        }))}
+        options={natureOptions}
       />
     ),
   },
@@ -188,10 +184,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "filter_gender">
         name="filter_gender"
-        options={(["None", ...gender] as const).map((gen) => ({
-          label: gen,
-          value: gen,
-        }))}
+        options={genderOptions}
       />
     ),
   },
@@ -206,45 +199,13 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const initialAdvances = fromDecimalString(opts.initial_advances);
-      const maxAdvances = fromDecimalString(opts.max_advances);
-      const calibration = fromDecimalString(opts.calibration);
-      const minRedraw = fromDecimalString(opts.min_redraw);
-      const maxRedraw = fromDecimalString(opts.max_redraw);
-      const tid = fromDecimalString(opts.tid);
-      const sid = fromDecimalString(opts.sid);
-      const delay = fromDecimalString(opts.delay);
-
-      if (
-        initialAdvances == null ||
-        maxAdvances == null ||
-        calibration == null ||
-        minRedraw == null ||
-        maxRedraw == null ||
-        tid == null ||
-        sid == null ||
-        delay == null
-      ) {
-        return;
-      }
-
       const results = await rngTools.emerald_egg_held_states({
         ...opts,
-        initial_advances: initialAdvances,
-        max_advances: maxAdvances,
-        calibration: calibration,
-        min_redraw: minRedraw,
-        max_redraw: maxRedraw,
-        tid,
-        sid,
-        delay,
         lua_adjustment: lua,
         filters: {
           shiny: opts.filter_shiny,
-          nature:
-            opts.filter_nature === "None" ? undefined : opts.filter_nature,
-          gender:
-            opts.filter_gender === "None" ? undefined : opts.filter_gender,
+          nature: opts.filter_nature,
+          gender: opts.filter_gender,
         },
       });
 
@@ -260,6 +221,7 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
       results={results}
       initialValues={initialValues}
       onSubmit={onSubmit}
+      formContainerId="emerald_held_egg_form"
       submitTrackerId="generate_emerald_held_egg"
     />
   );

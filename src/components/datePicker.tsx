@@ -5,13 +5,20 @@ import {
   DatePickerProps as AntdDatePickerProps,
 } from "antd";
 import dayjs, { Dayjs } from "dayjs";
-import { get } from "lodash-es";
 import styled from "@emotion/styled";
 import { useFormikContext } from "formik";
 import * as tst from "ts-toolbelt";
 import { match, P } from "ts-pattern";
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
-import { rngChronoFormat } from "~/utils/time";
+import {
+  rngChronoFormat,
+  toRngDate,
+  fromRngDate,
+  RngTime,
+  fromRngTime,
+  toRngTime,
+} from "~/utils/time";
+import { RngDate } from "~/rngTools";
 
 type DatePickerContainerProps = { fullWidth?: boolean };
 
@@ -79,10 +86,11 @@ const TimePicker = ({
 
 type FormikTimePickerProps<FormState extends GenericForm> = Omit<
   TimePickerProps,
-  "onChange"
+  "onChange" | "value"
 > & {
-  name: GuaranteeFormNameType<FormState, Dayjs | null>;
-  onChange?: (date: Dayjs | null) => void;
+  name: GuaranteeFormNameType<FormState, RngTime | undefined>;
+  value?: RngTime;
+  onChange?: (date: RngTime | null) => void;
 };
 
 export const FormikTimePicker = <FormState extends GenericForm>({
@@ -90,17 +98,20 @@ export const FormikTimePicker = <FormState extends GenericForm>({
   onChange,
   ...props
 }: FormikTimePickerProps<FormState>) => {
-  const { values, setFieldValue } = useFormikContext<FormState>();
-  const _formDate = get(values, name);
-  const dateValue: Dayjs | null = dayjs.isDayjs(_formDate) ? _formDate : null;
+  const { values, setFieldValue } =
+    useFormikContext<Record<typeof name, RngTime | undefined>>();
+  const formTime: RngTime | undefined = values[name];
+  const value = formTime == null ? null : fromRngTime(formTime);
 
   return (
     <TimePicker
       {...props}
-      value={dateValue}
+      name={name}
+      value={value}
       onChange={(date) => {
-        setFieldValue(name, date);
-        onChange?.(date);
+        const rngTime = date == null ? null : toRngTime(date);
+        setFieldValue(name, rngTime);
+        onChange?.(rngTime);
       }}
     />
   );
@@ -157,10 +168,11 @@ export const DatePicker = ({
 
 type FormikDatePickerProps<FormState extends GenericForm> = Omit<
   DatePickerProps,
-  "onChange"
+  "onChange" | "value"
 > & {
-  name: GuaranteeFormNameType<FormState, Dayjs | null>;
-  onChange?: (date: Dayjs | null) => void;
+  name: GuaranteeFormNameType<FormState, RngDate | undefined>;
+  value?: RngDate;
+  onChange?: (date: RngDate | null) => void;
 };
 
 export const FormikDatePicker = <FormState extends GenericForm>({
@@ -170,25 +182,29 @@ export const FormikDatePicker = <FormState extends GenericForm>({
   onChange,
   ...props
 }: FormikDatePickerProps<FormState>) => {
-  const { values, setFieldValue } = useFormikContext<FormState>();
-  const _formDate = get(values, name);
-  const formDate: Dayjs | null = dayjs.isDayjs(_formDate) ? _formDate : null;
+  const { values, setFieldValue } =
+    useFormikContext<Record<typeof name, RngDate | undefined>>();
+  const formDate: RngDate | undefined = values[name];
   const dateValue = match({ allowClear, formDate })
-    .with({ formDate: P.not(null) }, (matched) => matched.formDate)
-    .with({ allowClear: true, formDate: null }, () => null)
-    .with({ allowClear: P.not(P.nullish), formDate: null }, () => dayjs())
-    .with({ allowClear: undefined, formDate: null }, () => null)
+    .with({ formDate: P.not(undefined) }, (matched) =>
+      fromRngDate(matched.formDate),
+    )
+    .with({ allowClear: true, formDate: undefined }, () => null)
+    .with({ allowClear: P.not(P.nullish), formDate: undefined }, () => dayjs())
+    .with({ allowClear: undefined, formDate: undefined }, () => null)
     .exhaustive();
 
   return (
     <DatePicker
       {...props}
+      name={name}
       allowClear={allowClear}
       fullWidth={fullWidth}
       value={dateValue}
       onChange={(date) => {
-        setFieldValue(name, date);
-        onChange?.(date);
+        const rngDate = date == null ? null : toRngDate(date);
+        setFieldValue(name, rngDate);
+        onChange?.(rngDate);
       }}
     />
   );

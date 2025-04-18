@@ -65,6 +65,11 @@ export default tseslint.config(
               message: 'Use `import { Form } from "~/components";`',
             },
             {
+              name: "antd",
+              importNames: ["Alert"],
+              message: 'Use `import { Alert } from "~/components";`',
+            },
+            {
               name: "@amplitude/analytics-browser",
               message: "Import from `~/analytics`",
             },

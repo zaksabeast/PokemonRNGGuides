@@ -54,12 +54,24 @@ impl Gen3HeldEgg {
             advance = advance.saturating_add(delay.unsigned_abs() as u32);
         }
 
+        let gender = match species {
+            Species::NidoranF | Species::Illumise => {
+                let val = (pid & 0xFFFF) as u16;
+                if val < 0x8000 {
+                    Gender::Female
+                } else {
+                    Gender::Male
+                }
+            }
+            _ => species.gender_from_pid(pid),
+        };
+
         Self {
             pid,
             advance,
+            gender,
             redraws: egg.redraws,
             nature: Nature::from_pid(pid),
-            gender: species.gender_from_pid(pid),
             shiny: gen3_shiny(pid, tid, sid),
             ability: (pid & 1) as u8,
         }
@@ -930,5 +942,157 @@ mod test {
             .collect::<Vec<_>>();
 
         assert_list_eq!(first_results, second_results);
+    }
+
+    #[test]
+    fn illumise_gender() {
+        let opts = Egg3HeldOptions {
+            delay: 0,
+            compatability: Compatability::GetAlong,
+            calibration: 18,
+            initial_advances: 101,
+            max_advances: 5,
+            min_redraw: 0,
+            max_redraw: 0,
+            female_has_everstone: false,
+            female_nature: Nature::Adamant,
+            tid: 0,
+            sid: 0,
+            lua_adjustment: false,
+            egg_species: Species::Illumise,
+            filters: Egg3HeldFilters {
+                shiny: false,
+                nature: None,
+                gender: None,
+            },
+        };
+
+        let result = emerald_egg_held_states(&opts);
+
+        let expected = [
+            Gen3HeldEgg {
+                advance: 83,
+                redraws: 0,
+                pid: 0x95122D94,
+                shiny: false,
+                nature: Nature::Hardy,
+                ability: 0,
+                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 84,
+                redraws: 0,
+                pid: 0xD6D80967,
+                shiny: false,
+                nature: Nature::Relaxed,
+                ability: 1,
+                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 85,
+                redraws: 0,
+                pid: 0x189E112E,
+                shiny: false,
+                nature: Nature::Calm,
+                ability: 0,
+                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 86,
+                redraws: 0,
+                pid: 0x5A65A1E1,
+                shiny: false,
+                nature: Nature::Quiet,
+                ability: 1,
+                gender: Gender::Male,
+            },
+            Gen3HeldEgg {
+                advance: 88,
+                redraws: 0,
+                pid: 0xDDF173C5,
+                shiny: false,
+                nature: Nature::Quirky,
+                ability: 1,
+                gender: Gender::Female,
+            },
+        ];
+
+        assert_list_eq!(result, expected);
+    }
+
+    #[test]
+    fn nidoranf_gender() {
+        let opts = Egg3HeldOptions {
+            delay: 0,
+            compatability: Compatability::GetAlong,
+            calibration: 18,
+            initial_advances: 101,
+            max_advances: 5,
+            min_redraw: 0,
+            max_redraw: 0,
+            female_has_everstone: false,
+            female_nature: Nature::Adamant,
+            tid: 0,
+            sid: 0,
+            lua_adjustment: false,
+            egg_species: Species::NidoranF,
+            filters: Egg3HeldFilters {
+                shiny: false,
+                nature: None,
+                gender: None,
+            },
+        };
+
+        let result = emerald_egg_held_states(&opts);
+
+        let expected = [
+            Gen3HeldEgg {
+                advance: 83,
+                redraws: 0,
+                pid: 0x95122D94,
+                shiny: false,
+                nature: Nature::Hardy,
+                ability: 0,
+                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 84,
+                redraws: 0,
+                pid: 0xD6D80967,
+                shiny: false,
+                nature: Nature::Relaxed,
+                ability: 1,
+                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 85,
+                redraws: 0,
+                pid: 0x189E112E,
+                shiny: false,
+                nature: Nature::Calm,
+                ability: 0,
+                gender: Gender::Female,
+            },
+            Gen3HeldEgg {
+                advance: 86,
+                redraws: 0,
+                pid: 0x5A65A1E1,
+                shiny: false,
+                nature: Nature::Quiet,
+                ability: 1,
+                gender: Gender::Male,
+            },
+            Gen3HeldEgg {
+                advance: 88,
+                redraws: 0,
+                pid: 0xDDF173C5,
+                shiny: false,
+                nature: Nature::Quirky,
+                ability: 1,
+                gender: Gender::Female,
+            },
+        ];
+
+        assert_list_eq!(result, expected);
     }
 }

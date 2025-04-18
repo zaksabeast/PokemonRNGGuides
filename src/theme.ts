@@ -25,7 +25,9 @@ const customTheme: CustomTheme = {
   token: {
     headerHeight: "64px",
     footerHeight: "58px",
-    colorFillSecondaryHover: defaultToken.magenta5,
+    colorBgSupport: defaultToken.magenta1,
+    colorBorderSupport: defaultToken.magenta5,
+    colorFillSupportHover: defaultToken.magenta5,
     colorGreen: defaultToken.green8,
     colorRed: defaultToken.red6,
   },

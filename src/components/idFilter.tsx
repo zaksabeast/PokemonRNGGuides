@@ -1,7 +1,7 @@
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { Select } from "./select";
 import { Flex } from "./flex";
-import { Input } from "./input";
+import { NumberInput } from "./numberInput";
 import { useFormikContext } from "formik";
 import { IdFilter } from "~/types/id";
 
@@ -44,25 +44,27 @@ export const FormikIdFilter = <FormState extends GenericForm>({
         }}
       />
       {value.type !== "none" && (
-        <Input
+        <NumberInput
           fullFlex
+          numType={value.type === "pid" ? "hex" : "decimal"}
           value={value.value0}
-          onChange={(event) => {
+          onChange={(fieldValue) => {
             formik.setFieldValue(name, {
               ...value,
-              value0: event.target.value,
+              value0: fieldValue,
             });
           }}
         />
       )}
       {(value.type === "tidpid" || value.type === "tidsid") && (
-        <Input
+        <NumberInput
           fullFlex
+          numType={value.type === "tidpid" ? "hex" : "decimal"}
           value={value.value1}
-          onChange={(event) => {
+          onChange={(fieldValue) => {
             formik.setFieldValue(name, {
               ...value,
-              value1: event.target.value,
+              value1: fieldValue,
             });
           }}
         />

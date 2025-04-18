@@ -90,7 +90,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "female_nature">
         name="female_nature"
-        options={natures.map((nat) => ({ label: nat, value: nat }))}
+        options={[].map((nat) => ({ label: nat, value: nat }))}
       />
     ),
   },

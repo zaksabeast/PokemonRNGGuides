@@ -7,7 +7,7 @@ import { IvInput } from "~/components/ivInput";
 import { ability } from "~/types/ability";
 import { gender } from "~/types/gender";
 
-export const natureOptions = ([undefined, ...nature] as const).map((nat) => ({
+export const natureOptions = ([undefined, ...[]] as const).map((nat) => ({
   label: nat ?? "None",
   value: nat,
 }));

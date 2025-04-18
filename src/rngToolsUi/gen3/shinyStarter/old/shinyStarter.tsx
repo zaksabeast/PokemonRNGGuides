@@ -15,7 +15,7 @@ import { Formik, FormikConfig } from "formik";
 import { Field, RngToolForm, ResultColumn, RngToolSubmit } from "~/components";
 import { FormikRadio, RadioGroup } from "../../../components/radio";
 import { FormikInput } from "../../../components/input";
-import {Result} from "./calc";
+import {CaughtMonResult} from "./calc";
 import {FindTargetAdv} from "./findTargetAdv";
 
 import {StarterSpecies} from "./findTargetAdv";
@@ -136,12 +136,10 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
             {
               title: "Advance",
               dataIndex: "adv",
-              key: "adv",
             },
             {
               title: "Difference w/ Target",
               dataIndex: "diffWithTarget",
-              key: "diffWithTarget",
               render: (val) => {
                 if (val > 0) return `+${val}`;
                 return "" + val;
@@ -150,22 +148,18 @@ export const Gen3ShinyStarter = ({ game = "emerald" }: Props) => {
             {
               title: "Stats",
               dataIndex: "stats",
-              key: "stats",
             },
             {
               title: "Nature",
               dataIndex: "nature",
-              key: "nature",
             },
             {
               title: "Gender",
               dataIndex: "gender",
-              key: "gender",
             },
             {
               title: "",
               dataIndex: "adv",
-              key: "adv",
               render(adv) {
                 return (
                   <Button

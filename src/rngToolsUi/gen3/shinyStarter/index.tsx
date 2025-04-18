@@ -58,7 +58,7 @@ export const ShinyStarter = ({ game }: Props) => {
         stopButtonTrackerId="stop_gen3_shiny_starter_timer"
       />
       <CaughtMon
-        {...{ targetAdvance, setLatestHitAdv: setHitAdvance }}
+        {...{game, targetAdvance, setLatestHitAdv: setHitAdvance }}
       />
     </Flex>
   );

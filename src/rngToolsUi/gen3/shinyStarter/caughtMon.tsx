@@ -15,6 +15,7 @@ import {Select} from "~/components";
 import { Formik, FormikProps, FormikConfig } from "formik";
 import {getStatRangeForStarter, CaughtMonResult, generateCaughtMonResults} from "./calc";
 import { Button } from "../../../components/button";
+import type {Game} from "./index";
 
 const toOptions = <T,>(options: T[]) => {
   return options.map((option) => ({
@@ -176,24 +177,25 @@ const initialValues: FormState = {
 };
 
 type Props = {
+  game:Game;
   targetAdvance: number;
   setLatestHitAdv: (hitAdv: number) => void;
 };
 
 
-export const CaughtMon = ({ targetAdvance, setLatestHitAdv }: Props) => { 
+export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => { 
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      setResults(await generateCaughtMonResults(targetAdvance, opts));
+      setResults(await generateCaughtMonResults(game, targetAdvance, opts));
     },
     [targetAdvance, setResults],
   );
 
   const getColumns = (): ResultColumn<CaughtMonResult>[] => {
     const columns: ResultColumn<CaughtMonResult>[] = [
-      { title: "Target", dataIndex: "targetAdvance", key: "targetAdvance"},
-      { title: "Advance", dataIndex: "advance", key: "advance" ,
+      { title: "Target", dataIndex: "targetAdvance"},
+      { title: "Advance", dataIndex: "advance",
         render: (val, values) => {
           const diffWithTarget = val - values.targetAdvance; 
           if (diffWithTarget === 0) 
@@ -206,22 +208,18 @@ export const CaughtMon = ({ targetAdvance, setLatestHitAdv }: Props) => {
       {
         title: "Stats",
         dataIndex: "stats",
-        key: "stats",
       },
       {
         title: "Nature",
         dataIndex: "nature",
-        key: "nature",
       },
       {
         title: "Gender",
         dataIndex: "gender",
-        key: "gender",
       },
       {
         title: "",
         dataIndex: "advance",
-        key: "advance",
         render(advance) {
           return (
             <Button type="text" color="PrimaryText"

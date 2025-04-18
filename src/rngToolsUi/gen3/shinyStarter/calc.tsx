@@ -1,5 +1,6 @@
 import type {Game,Starter} from "./index";
 import type {FormState} from "./caughtMon";
+import {Stat} from "../../../types/stat";
 import {
   Gender,
   Nature,
@@ -9,11 +10,12 @@ import {
 export interface CaughtMonResult {
   advance: number;
   targetAdvance:number;
-  diffWithTarget: number;
   stats: string;
   nature: Nature;
   gender: Gender;
 }
+
+const MINIMAL_ADV = 600;
 
 export const findTargetAdvanceForShinyPokemon = async function (
   game: Game,
@@ -25,7 +27,6 @@ export const findTargetAdvanceForShinyPokemon = async function (
   if (sid < 0 || sid > 0xFFFF)
       return null;
 
-  const MINIMAL_ADV = 600;
 
   for (let i = 0; i < 100; i++) {
     const seed = game === "emerald" ? 0 : 0x5a0;
@@ -81,17 +82,64 @@ export const getStatRangeForStarter = async (starter: Starter) => {
 
 
 export const generateCaughtMonResults = async function (
+  game:Game,
   targetAdvance:number,
-  values: FormState,
+  caughtMonValues: FormState,
 ): Promise<CaughtMonResult[]> {
-  
-  
+
+  let getMinMaxStat = (isMin:boolean, selected:number, {min,max}:{min:number,max:number}) => {
+    if (selected >= min && selected <= max)
+        return selected;
+    return isMin ? min : max;
+  };
+
+  const [min_stats, max_stats] = [true, false].map(isMin => ({
+    hp:getMinMaxStat(isMin, caughtMonValues.hpStat, caughtMonValues.minMaxStats.hp),
+    atk:getMinMaxStat(isMin, caughtMonValues.atkStat, caughtMonValues.minMaxStats.atk),
+    def:getMinMaxStat(isMin, caughtMonValues.defStat, caughtMonValues.minMaxStats.def),
+    spa:getMinMaxStat(isMin, caughtMonValues.spaStat, caughtMonValues.minMaxStats.spa),
+    spd:getMinMaxStat(isMin, caughtMonValues.spdStat, caughtMonValues.minMaxStats.spd),
+    spe:getMinMaxStat(isMin, caughtMonValues.speStat, caughtMonValues.minMaxStats.spe),
+  }));
+
+  const results = await rngTools.gen3_static_generator_states({
+    offset: 0,
+    initial_advances: Math.max(targetAdvance - 10000, MINIMAL_ADV),
+    max_advances: 20000,
+    seed:game === "emerald" ? 0 : 0x5A0,
+
+    method4: false, 
+    filter: {
+      nature: caughtMonValues.nature || undefined,
+      gender: caughtMonValues.gender || undefined,
+      ability: undefined,
+      shiny:false, 
+      stats: {
+        lvl: 5,
+        base_stats: BASE_STATS[caughtMonValues.pokemonSpecies],
+        min_stats,
+        max_stats
+
+      },
+      min_ivs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+      max_ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
+    },
+    tid: 0, // doesn't matter
+    sid: 0, // doesn't matter
+    bugged_roamer: false,  // doesn't matter
+    species: "Mudkip", // doesn't matter
+  });
+
+  if (results.length === 0)
+    return [];
+
+  const r = results[0];
+
   return [{
-    advance: 1000 + values.atkStat,
+    advance: r.advance,
     targetAdvance,
-    diffWithTarget: 1,
-    stats: "1/2/3",
-    nature: "Gentle",
-    gender: "Male",
+    stats: JSON.stringify(r.ivs),
+    nature: r.nature,
+    gender: r.gender,
   }];
 };

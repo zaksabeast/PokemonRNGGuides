@@ -383,7 +383,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-11",
       file: "guides/Emerald/Mirage Island.mdx",
-      translations: null,
+      translations: { en: "/emerald-mirage-island", zh: "/zh-emerald-mirage-island" },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
   },
@@ -2456,7 +2456,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-11",
       file: "guides/Emerald/Mirage Island.mdx",
-      translations: null,
+      translations: { en: "/rs-mirage-island", zh: "/zh-rs-mirage-island" },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
   },
@@ -2739,6 +2739,22 @@ export const guides = {
       () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
     ),
   },
+  "/zh-emerald-mirage-island": {
+    meta: {
+      title: "幻之岛",
+      description:
+        "通过捕捉具有特定 PID 的宝可梦以进入幻之岛",
+      category: "Emerald",
+      slug: "/zh-emerald-mirage-island",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-18",
+      file: "guides/Emerald/Mirage Island.mdx",
+      translations: { en: "/emerald-mirage-island", zh: "/zh-emerald-mirage-island" },
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
+  },
   "/zh-emerald-painting-rng": {
     meta: {
       title: "利用绘画重置种子",
@@ -2934,6 +2950,22 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
+  "/zh-rs-mirage-island": {
+    meta: {
+      title: "幻之岛",
+      description:
+        "通过捕捉具有特定 PID 的宝可梦以进入幻之岛",
+      category: "Ruby and Sapphire",
+      slug: "/zh-rs-mirage-island",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-18",
+      file: "guides/Emerald/Mirage Island.mdx",
+      translations: { en: "/rs-mirage-island", zh: "/zh-rs-mirage-island" },
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
+  },
   "/zh-rs-sid-feebas": {
     meta: {
       title: "使用丑丑鱼查找 SID",
@@ -3112,6 +3144,7 @@ export const guideSlugs = [
   z.literal("/zh-dppt-pokeradar-rng"),
   z.literal("/zh-dppt-wild"),
   z.literal("/zh-e-tips-rng"),
+  z.literal("/zh-emerald-mirage-island"),
   z.literal("/zh-emerald-painting-rng"),
   z.literal("/zh-emerald-sid-feebas"),
   z.literal("/zh-emulator-emerald-egg"),
@@ -3123,6 +3156,7 @@ export const guideSlugs = [
   z.literal("/zh-install-pokereader"),
   z.literal("/zh-retail-emerald-wild"),
   z.literal("/zh-rs-gen3-sid"),
+  z.literal("/zh-rs-mirage-island"),
   z.literal("/zh-rs-sid-feebas"),
 ] as const;
 

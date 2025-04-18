@@ -383,7 +383,10 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-11",
       file: "guides/Emerald/Mirage Island.mdx",
-      translations: { en: "/emerald-mirage-island", zh: "/zh-emerald-mirage-island" },
+      translations: {
+        en: "/emerald-mirage-island",
+        zh: "/zh-emerald-mirage-island",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
   },
@@ -2742,8 +2745,7 @@ export const guides = {
   "/zh-emerald-mirage-island": {
     meta: {
       title: "幻之岛",
-      description:
-        "通过捕捉具有特定 PID 的宝可梦以进入幻之岛",
+      description: "通过捕捉具有特定 PID 的宝可梦以进入幻之岛",
       category: "Emerald",
       slug: "/zh-emerald-mirage-island",
       isRoughDraft: false,
@@ -2751,7 +2753,10 @@ export const guides = {
       hideFromNavDrawer: true,
       addedOn: "2025-04-18",
       file: "guides/Emerald/Mirage Island.mdx",
-      translations: { en: "/emerald-mirage-island", zh: "/zh-emerald-mirage-island" },
+      translations: {
+        en: "/emerald-mirage-island",
+        zh: "/zh-emerald-mirage-island",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
   },
@@ -2953,8 +2958,7 @@ export const guides = {
   "/zh-rs-mirage-island": {
     meta: {
       title: "幻之岛",
-      description:
-        "通过捕捉具有特定 PID 的宝可梦以进入幻之岛",
+      description: "通过捕捉具有特定 PID 的宝可梦以进入幻之岛",
       category: "Ruby and Sapphire",
       slug: "/zh-rs-mirage-island",
       isRoughDraft: false,

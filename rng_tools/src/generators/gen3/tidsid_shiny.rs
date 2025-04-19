@@ -27,44 +27,36 @@ use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
 const MORE_LESS_ADV:usize = 5;
-const MINIMAL_ADV:usize = 600;
 
-#[wasm_bindgen]
-pub fn gen3_earliest_shiny_starter_adv(seed:u32, tid:u16, sid:u16) -> usize {    
-  for i in 0..100 {
-    let initial_advances = std::cmp::max(i * 100_000, MINIMAL_ADV);
-    let opts = Static3GeneratorOptions {
-        offset: 0,
-        initial_advances: initial_advances,
-        max_advances: 100_000,
-        seed,
-        species: Species::Mudkip,
-        bugged_roamer: false, // doesn't matter
-        method4: false,
-        tid,
-        sid,
-        filter: PkmFilter {
-            shiny: true,
-            nature: None,
-            gender: None,
-            ability: None,
-            min_ivs: Ivs { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0, },            
-            max_ivs: Ivs { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
-            stats: None,
-        },
-    };
+fn generate_earliest_shiny_advance_by_high_tsv(initial_seed: u32) -> Vec<u32> {
+    const EARLIEST_VALID_ADVANCE: u32 = 600; // for RSE starter
+    let mut earliest_adv_by_high_tsv = vec![0u32; 0x10000 / 8];
 
-    let results = gen3_static_generator_states(&opts);
+    let mut unmatched_count: usize = earliest_adv_by_high_tsv.len();
+    let mut pid_rng = Pokerng::new(initial_seed);
+    pid_rng.advance((EARLIEST_VALID_ADVANCE) as usize);
+    for pid_rng_adv in EARLIEST_VALID_ADVANCE..1_000_000 {
+        // 1_000_000 to avoid infinite loop in case of bug
+        let pid_high = pid_rng.rand::<u16>();
+        let pid_low: u16 = pid_rng.clone().rand::<u16>();
+        let tsv = pid_high ^ pid_low;
+        let high_tsv = tsv >> 3;
+        let old_value = earliest_adv_by_high_tsv[high_tsv as usize];
+        if old_value != 0 {
+            continue;
+        } // another earlier advance exists
 
-    if !results.is_empty() {
-        return results[0].advance;
+        earliest_adv_by_high_tsv[high_tsv as usize] = pid_rng_adv;
+        unmatched_count -= 1;
+        if unmatched_count == 0 {
+            break;
+        } // all were matched
     }
-  }
-  // error
-  0
+
+    earliest_adv_by_high_tsv
 }
 
-pub fn gen3_advs_shiny_nearby_sids(seed:u32, tid:u16, tid_gen_adv:usize) -> Vec<usize> {
+pub fn gen3_advs_shiny_nearby_sids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid:u16, tid_gen_adv:usize) -> Vec<u32> {
     let opts = Gen3TidSidOptions {
         version_options:Gen3TidSidVersionOptions::Frlge(FrlgeTidSidOptions { tid }),
         offset: 0, //NO_PROD 60?
@@ -75,11 +67,12 @@ pub fn gen3_advs_shiny_nearby_sids(seed:u32, tid:u16, tid_gen_adv:usize) -> Vec<
     let state = gen3_tidsid_states(&opts);
 
     state.iter().map(|r|{
-        gen3_earliest_shiny_starter_adv(seed, tid, r.sid)
+        let high_tsv = (tid ^ r.sid) >> 3;
+        earliest_shiny_advance_by_tsv[high_tsv as usize]
     }).collect()    
 }
 
-fn evaluate_avg_adv_for_probable_sids(earliest_shiny_advs:&Vec<usize>) -> usize {
+fn evaluate_avg_adv_for_probable_sids(earliest_shiny_advs:&Vec<u32>) -> usize {
     if earliest_shiny_advs.is_empty() {
         return 0;
     }
@@ -103,22 +96,23 @@ fn evaluate_avg_adv_for_probable_sids(earliest_shiny_advs:&Vec<usize>) -> usize 
 }
 
 
-pub fn gen3_earliest_shiny_starter_advs_all_tids(seed:u32, tid_gen_adv:usize) -> Vec<Vec<usize>> {
-    let advs_all_tids:Vec<Vec<usize>> = (0..=0xFFFF).into_iter().map(|tid|{
-        gen3_advs_shiny_nearby_sids(seed, tid, tid_gen_adv)
+pub fn gen3_earliest_shiny_starter_advs_all_tids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize) -> Vec<Vec<u32>> {
+    let advs_all_tids:Vec<Vec<u32>> = (0..=0xFFFF).into_iter().map(|tid|{
+        gen3_advs_shiny_nearby_sids(earliest_shiny_advance_by_tsv, tid, tid_gen_adv)
     }).collect();
 
     advs_all_tids
 }
 
-fn evaluate_avg_adv_for_all_tids(advs_by_tid:Vec<Vec<usize>>) -> usize {
-    advs_by_tid.iter().map(|advs_for_tid|{
-        evaluate_avg_adv_for_probable_sids(advs_for_tid)
-    }).sum::<usize>() / advs_by_tid.len()
+fn evaluate_avg_adv_for_all_tids(advs_by_tid:Vec<Vec<u32>>) -> u32 {
+    let sum = advs_by_tid.iter().map(|advs_for_tid|{
+        evaluate_avg_adv_for_probable_sids(advs_for_tid) as usize
+    }).sum::<usize>();
+    return (sum / advs_by_tid.len()) as u32
 }
 
-pub fn gen3_calculate_avg_adv_for_all_tids(seed:u32, tid_gen_adv:usize) -> usize {
-    let advs = gen3_earliest_shiny_starter_advs_all_tids(seed, tid_gen_adv);
+pub fn gen3_calculate_avg_adv_for_all_tids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize) -> u32 {
+    let advs = gen3_earliest_shiny_starter_advs_all_tids(earliest_shiny_advance_by_tsv, tid_gen_adv);
     evaluate_avg_adv_for_all_tids(advs) 
 }
 
@@ -129,9 +123,13 @@ mod test {
     use crate::assert_list_eq;
 
     #[test]
-    fn generate_method4() {
-        let avg = gen3_calculate_avg_adv_for_all_tids(0, 1000);
-        println!("avg {}", avg);
+    fn calculate_avg_adv_for_all_tids() {
+        let earliest_shiny_advance_by_tsv = generate_earliest_shiny_advance_by_high_tsv(0);
+
+        for tid_gen_adv in 950..1050 {
+            let avg = gen3_calculate_avg_adv_for_all_tids(&earliest_shiny_advance_by_tsv, tid_gen_adv);
+            println!("tid_gen_adv = {}, avg = {}", tid_gen_adv, avg);
+        }
         assert_eq!(true, false);
     }
 }

@@ -1,6 +1,6 @@
 use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
-use crate::{AbilityType, Gender, Ivs, Nature, PkmFilter, PkmState, Species, gen3_shiny};
+use crate::{AbilityType, Gender, Ivs, Nature, PkmFilter, PkmState, Species, StatFilter, StatsValue, gen3_shiny};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -806,5 +806,68 @@ mod test {
         ];
 
         assert_list_eq!(results, expected);
+    }
+
+    
+    #[test]
+    fn generate_with_stat_filter() {
+        let opts = Static3GeneratorOptions {
+            offset: 0,
+            initial_advances: 0,
+            max_advances: 0,
+            seed: 0,
+            species: Species::Mudkip,
+            bugged_roamer: false,
+            method4: false,
+            tid: 0,
+            sid: 0,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: ZERO_IVS,
+                max_ivs: PERFECT_IVS,
+                ability: None,
+                stats: Some(StatFilter {
+                    lvl:5,
+                    base_stats:StatsValue { hp:50,atk:70,def:50,spa:50,spd:50,spe:40 },
+                    min_stats:StatsValue { hp:20,atk:12,def:11,spa:10,spd:9,spe:9 },
+                    max_stats:StatsValue { hp:20,atk:12,def:11,spa:10,spd:9,spe:9 },
+                }),
+            },
+        };
+
+        let results = gen3_static_generator_states(&opts);
+        assert!(results.len() != 0);
+        
+        let opts = Static3GeneratorOptions {
+            offset: 0,
+            initial_advances: 0,
+            max_advances: 0,
+            seed: 0,
+            species: Species::Mudkip,
+            bugged_roamer: false,
+            method4: false,
+            tid: 0,
+            sid: 0,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: ZERO_IVS,
+                max_ivs: PERFECT_IVS,
+                ability: None,
+                stats: Some(StatFilter {
+                    lvl:5,
+                    base_stats:StatsValue { hp:50,atk:70,def:50,spa:50,spd:50,spe:40 },
+                    min_stats:StatsValue { hp:20,atk:13,def:11,spa:10,spd:9,spe:9 },
+                    max_stats:StatsValue { hp:20,atk:13,def:11,spa:10,spd:9,spe:9 },
+                }),
+            },
+        };
+
+        let results = gen3_static_generator_states(&opts);
+        assert!(results.len() == 0);
+
     }
 }

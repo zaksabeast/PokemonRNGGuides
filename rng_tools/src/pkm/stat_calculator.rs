@@ -20,7 +20,6 @@ pub fn gen3_calculate_non_hp(base_stat:u16, iv:u8, ev:u16, level:u8, nature_fact
   if nature_factor == 1 {
     (n * 110) / 100
   } else if nature_factor == -1 {
-    unsafe { js_log(&format!("{} * 90 / 100 = {}", n, (n * 90) / 100)); }
     (n * 90) / 100
   } else {
     n
@@ -29,6 +28,10 @@ pub fn gen3_calculate_non_hp(base_stat:u16, iv:u8, ev:u16, level:u8, nature_fact
 
 #[wasm_bindgen]
 pub fn gen3_calculate_minmax_stats(base_stats:StatsValue, level:u8, is_min_stat:bool) -> StatsValue {
+  gen3_calculate_minmax_stats_internal(&base_stats, level, is_min_stat)
+}
+
+fn gen3_calculate_minmax_stats_internal(base_stats:&StatsValue, level:u8, is_min_stat:bool) -> StatsValue {
   let iv = if is_min_stat { 0 } else { 31 };
   let nature_fact = if is_min_stat { -1 } else { 1 };
 
@@ -42,6 +45,22 @@ pub fn gen3_calculate_minmax_stats(base_stats:StatsValue, level:u8, is_min_stat:
   }
 }
 
+#[cfg(test)]
+mod tests {
+  use super::*;
 
+  #[test]
+  fn test_mudkip_starter() {
+    let base_stats = StatsValue { hp:50,atk:70,def:50,spa:50,spd:50,spe:40 };
+    
+    assert_eq!(
+      gen3_calculate_minmax_stats_internal(&base_stats, 5, true), 
+      StatsValue { hp:20,atk:10,def:9,spa:9,spd:9,spe:8 }
+    );
 
- 
+    assert_eq!(
+      gen3_calculate_minmax_stats_internal(&base_stats, 5, false), 
+      StatsValue { hp:21,atk:14,def:12,spa:12,spd:12,spe:11 }
+    );
+  }
+}

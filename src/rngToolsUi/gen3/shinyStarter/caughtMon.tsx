@@ -17,6 +17,8 @@ import {getStatRangeForStarter, CaughtMonResult, generateCaughtMonResults} from 
 import { Button } from "../../../components/button";
 import type {Game} from "./index";
 
+const sortedNatures = natures.slice(0).sort();
+
 const toOptions = <T,>(options: T[]) => {
   return options.map((option) => ({
     value: option,
@@ -39,8 +41,6 @@ export type FormState = {
   spaStat: number;
   spdStat: number;
   speStat: number;
-  increasedStat: NatureStat | ""; 
-  decreasedStat: NatureStat | "";  
   nature : Nature | "";
   gender : Gender | "";
   minMaxStats:{
@@ -53,88 +53,6 @@ export type FormState = {
   }
 };
 
-type NatureStatRadioProps = {
-  stat: NatureStat;
-};
-
-const natureStatOptions = toOptions(["+", "=", "-"]);
-
-const NatureStatRadio = ({ stat }: NatureStatRadioProps) => {
-  const { values, setValues } = useFormikContext<FormState>();
-  const isIncreased = stat === values.increasedStat;
-  const isDecreased = stat === values.decreasedStat;
-  const value = isIncreased ? "+" : isDecreased ? "-" : "=";
-
-  const onChange = React.useCallback(
-    (event: RadioChangeEvent) => {
-      const onChange = (args:{decreasedStat?:FormState['decreasedStat'], increasedStat?:FormState['increasedStat']}) => {
-        const newDecreasedStat = args.decreasedStat ?? values.decreasedStat;
-        const newIncreasedStat = args.increasedStat ?? values.increasedStat;
-        
-        const validNatures = getNaturesFromStatMoreLess(newIncreasedStat, newDecreasedStat);
-        const newNature = (() => {
-          if (values.nature){
-            if (validNatures.includes(values.nature))
-              return values.nature; // already good
-
-            return validNatures.length ? validNatures[0] : "";
-          } else if(validNatures.length){
-            return validNatures[0];
-          } else
-            return "";
-        })();
-        
-        setValues({
-          ...values,
-          ...args,
-          nature:newNature,
-        });
-      }
-
-      const newValue = event.target.value;
-      match({ newValue, isIncreased, isDecreased })
-        // We don't allow a stat to be both + and -,
-        // so we make sure to only set a stat when
-        // it's not already set to the opposite value
-        .with({ newValue: "=", isDecreased: true }, () => {
-          onChange({decreasedStat:""});
-        })
-        .with({ newValue: "=", isIncreased: true }, () => {
-          onChange({increasedStat:""});
-        })
-        .with({ newValue: "+", isDecreased: false }, () => {
-          onChange({increasedStat: stat});
-        })
-        .with({ newValue: "+", isDecreased: true }, () => {
-          onChange({
-            increasedStat:stat,
-            decreasedStat:"",
-          });
-        })
-        .with({ newValue: "-", isIncreased: false }, () => {
-          onChange({decreasedStat:stat});
-        })
-        .with({ newValue: "-", isIncreased: true }, () => {
-          onChange({
-            increasedStat:"",
-            decreasedStat:stat,
-          });
-        })
-        .otherwise(noop);
-    },
-    [isIncreased, isDecreased, setValues, values, stat],
-  );
-
-  return (
-    <RadioGroup
-      optionType="button"
-      value={value}
-      onChange={onChange}
-      options={natureStatOptions}
-    />
-  );
-};
-
 const StatInput = ({
   stat,
   options,
@@ -144,7 +62,6 @@ const StatInput = ({
 }) => {
   return (
     <Flex gap={8}>
-      <NatureStatRadio stat={stat} />
       <FormikRadio<FormState, `${typeof stat}Stat`>
         name={`${stat}Stat`}
         options={toStatOptions(options)}
@@ -152,7 +69,6 @@ const StatInput = ({
     </Flex>
   );
 };
-const sortedNatures = natures.slice(0).sort();
 
 const initialValues: FormState = {
   pokemonSpecies: "Mudkip",
@@ -162,8 +78,6 @@ const initialValues: FormState = {
   spaStat: 0,
   spdStat: 0,
   speStat: 0,
-  increasedStat: "",
-  decreasedStat: "",
   nature:"",
   gender:"",
   minMaxStats: {
@@ -181,7 +95,6 @@ type Props = {
   targetAdvance: number;
   setLatestHitAdv: (hitAdv: number) => void;
 };
-
 
 export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => { 
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
@@ -259,6 +172,27 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
         ),
       },
       {
+        label: "Gender",
+        input: (
+          <FormikRadio<FormState, "gender">
+            name="gender"
+            options={toOptions(["Male","Female"])}
+          />
+        )
+      },
+      {
+        label: "Nature",
+        input: (<Select style={{minWidth:'120px'}}
+          value={formik.values.nature}
+          onChange={e => {
+            if (!e)
+              return;
+            formik.setFieldValue("nature", e);
+          }}
+          options={sortedNatures.map(nature => ({label:nature, value:nature}))}
+        />)
+      },
+      {
         label: "HP",
         input: (
           <FormikRadio<FormState, "hpStat">
@@ -287,33 +221,6 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
         label: "SPE",
         input: <StatInput stat="spe" options={minMaxStats.spe} />,
       },
-      {
-        label: "Nature",
-        input: (<Select style={{minWidth:'120px'}}
-          value={formik.values.nature}
-          onChange={e => {
-            if (!e)
-              return;
-            const [increasedStat, decreasedStat] = getStatMoreLessFromNature(e);
-            formik.setValues({
-              ...formik.values,
-              nature: e,
-              increasedStat,
-              decreasedStat,
-            });
-          }}
-          options={sortedNatures.map(nature => ({label:nature, value:nature}))}
-        />)
-      },
-      {
-        label: "Gender",
-        input: (
-          <FormikRadio<FormState, "gender">
-            name="gender"
-            options={toOptions(["Male","Female"])}
-          />
-        )
-      }
     ];
   };
 

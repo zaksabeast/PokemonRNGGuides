@@ -4,6 +4,8 @@ import { FindTargetAdvance } from "./findTarget";
 import { CaughtMon } from "./caughtMon";
 import { FormFieldTable } from "../../../components/formFieldTable";
 import { Field } from "~/components";
+import {Icon} from "~/components/icons";
+import { Button } from "~/components/button";
 
 export type Game = "emerald" | "rs";
 export type Starter = "Mudkip" | "Torchic" | "Treecko";
@@ -12,9 +14,13 @@ const calculateMillis = (
   targetAdvance: number,
   hitAdvance: number,
 ): number[] => {
-  //NO_PROD hitAdvance
-  const milliseconds = Math.round((targetAdvance * 1000) / 59.7275);
-  return [5000, milliseconds + hitAdvance];
+  // ex: target was 100, hit was 120 (diff = +20).
+  // this means the calibratedTargetAdv is 80.
+
+  const diff = hitAdvance === 0 ? 0 : hitAdvance - targetAdvance;
+  const calibratedTargetAdv = targetAdvance - diff;
+  const milliseconds = Math.round((calibratedTargetAdv * 1000) / 59.7275);
+  return [5000, milliseconds];
 };
 
 type Props = {
@@ -37,7 +43,14 @@ export const ShinyStarter = ({ game }: Props) => {
       input: <>{targetAdvance}</>
     }, {
       label: "Last hit advance",
-      input: <>{hitAdvance === 0 ? '-' : hitAdvance}</>
+      input: hitAdvance === 0 ? "-" : ( //NO_PROD === 0
+        <>
+          {hitAdvance} ({hitAdvance >= targetAdvance ? '+' : ''}{hitAdvance - targetAdvance})
+          <Button type="text" color="Red" trackerId="clear_last_hit_advance" onClick={() => setHitAdvance(0)}>
+            <Icon name="OutlineCloseCircle" size={20} />
+          </Button>
+        </>
+      )
     }];
   }, [targetAdvance, hitAdvance]);
 

@@ -26,12 +26,11 @@ export const findTargetAdvanceForShinyPokemon = async function (
       return null;
   if (sid < 0 || sid > 0xFFFF)
       return null;
-
+  console.log(tid, sid);
 
   for (let i = 0; i < 100; i++) {
     const seed = game === "emerald" ? 0 : 0x5a0;
     const initial_advances = Math.max(i * 100_000, MINIMAL_ADV);
-    console.log(i);
     const results = await rngTools.gen3_static_generator_states({
       species: "Mudkip", // doesn't matter
       method4: false,
@@ -104,8 +103,8 @@ export const generateCaughtMonResults = async function (
 
   const opts = {
     offset: 0,
-    initial_advances: Math.max(targetAdvance - 10000, MINIMAL_ADV),
-    max_advances: 20000,
+    initial_advances: Math.max(targetAdvance - 3000, MINIMAL_ADV),
+    max_advances: 6000,
     seed:game === "emerald" ? 0 : 0x5A0,
 
     method4: false, 
@@ -129,20 +128,23 @@ export const generateCaughtMonResults = async function (
     species: "Mudkip", // doesn't matter
   } as const;
 
-  const results = await rngTools.gen3_static_generator_states(opts);
+  const genResults = await rngTools.gen3_static_generator_states(opts);
 
-  console.log(opts, results);
-  
-  if (results.length === 0)
-    return [];
+  const caughtMonResults = genResults.map(r => {
+    return {
+      advance: r.advance,
+      targetAdvance,
+      stats: JSON.stringify(r.ivs),
+      nature: r.nature,
+      gender: r.gender,
+    }
+  });
 
-  const r = results[0];
+  caughtMonResults.sort((c1, c2) => {
+    const diff1 = Math.abs(c1.targetAdvance - c1.advance);
+    const diff2 = Math.abs(c2.targetAdvance - c2.advance);
+    return diff1 - diff2;
+  });
 
-  return [{
-    advance: r.advance,
-    targetAdvance,
-    stats: JSON.stringify(r.ivs),
-    nature: r.nature,
-    gender: r.gender,
-  }];
+  return caughtMonResults.slice(0, 10);
 };

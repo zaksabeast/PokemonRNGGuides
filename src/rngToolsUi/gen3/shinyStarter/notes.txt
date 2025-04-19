@@ -1,0 +1,58 @@
+
+
+make sure text speed is fast
+go until entering name
+start multitimer
+when 1st timer goes 0, press A
+...
+press a until the message ends with LAB.
+when 2nd timer goes 0, press A
+
+check TID
+
+
+delay: 58, 58, 61
+
+
+
+
+1059	62823	11998       23559
+1058	62823	26627       38902
+
+1060	62823	61958
+
+1057	62823	49654
+1061	62823	57408
+1056	62823	57462
+1062	62823	13246
+1055	62823	38966
+1063	62823	44782
+
+
+
+
+
+
+
+
+new_game 
+
+
+static void InitPlayerTrainerId(void)
+{
+    u32 trainerId = (Random() << 16) | GetGeneratedTrainerIdLower();
+    SetTrainerId(trainerId, gSaveBlock2Ptr->playerTrainerId);
+}
+
+
+void SeedRngAndSetTrainerId(void)
+{
+    u16 val = REG_TM1CNT_L;
+    SeedRng(val);
+    REG_TM1CNT_H = 0;
+    sTrainerId = val;
+}
+https://www.reddit.com/r/pokemonrng/comments/p93bfm/gen_3_how_is_tid_determined_in_emerald/
+
+http://problemkaputt.de/gbatek.htm#gbatimers
+

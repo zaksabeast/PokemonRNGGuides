@@ -17,12 +17,12 @@ import {
 
 type FormState = {
   tid: DecimalString;
-  sid: HexString;
+  sid: DecimalString;
 };
 
 const initialValues: FormState = {
   tid: toDecimalString(0),
-  sid: toHexString(0),
+  sid: toDecimalString(0),
 };
 
 type Props = {
@@ -49,13 +49,14 @@ export const FindTargetAdvance = ({
   const onSubmit = React.useCallback<RngToolUpdate<FormState>>(
     async (opts) => {
       const tid = fromDecimalString(opts.tid);
-      const sid = fromHexString(opts.sid);
+      const sid = fromDecimalString(opts.sid);
 
       if (tid == null || sid == null){
         return;
       }
 
       const targetAdvance = await findTargetAdvanceForShinyPokemon(game, tid, sid); 
+      console.log('targetAdvance', targetAdvance);
       if (targetAdvance !== null)
           setTargetAdvance(targetAdvance);
     },

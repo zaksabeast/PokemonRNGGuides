@@ -28,6 +28,20 @@ use wasm_bindgen::prelude::*;
 
 const MORE_LESS_ADV:usize = 5;
 
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen3TidSidShinyResult {
+    pub percentile:u8,
+    pub sids:Vec<Gen3TidSidShinyResultPart>
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen3TidSidShinyResultPart {
+    pub sid:u16,
+    pub earliest_shiny_adv:u32,
+}
+
 fn generate_earliest_shiny_advance_by_high_tsv(initial_seed: u32) -> Vec<u32> {
     const EARLIEST_VALID_ADVANCE: u32 = 600; // for RSE starter
     let mut earliest_adv_by_high_tsv = vec![0u32; 0x10000 / 8];
@@ -56,7 +70,7 @@ fn generate_earliest_shiny_advance_by_high_tsv(initial_seed: u32) -> Vec<u32> {
     earliest_adv_by_high_tsv
 }
 
-pub fn gen3_advs_shiny_nearby_sids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid:u16, tid_gen_adv:usize) -> Vec<u32> {
+fn gen3_advs_shiny_nearby_sids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid:u16, tid_gen_adv:usize) -> Vec<Gen3TidSidShinyResultPart> {
     let opts = Gen3TidSidOptions {
         version_options:Gen3TidSidVersionOptions::Frlge(FrlgeTidSidOptions { tid }),
         offset: 0, //NO_PROD 60?
@@ -68,7 +82,10 @@ pub fn gen3_advs_shiny_nearby_sids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid:
 
     state.iter().map(|r|{
         let high_tsv = (tid ^ r.sid) >> 3;
-        earliest_shiny_advance_by_tsv[high_tsv as usize]
+        let earliest_shiny_adv = earliest_shiny_advance_by_tsv[high_tsv as usize];
+        Gen3TidSidShinyResultPart { 
+            sid: r.sid, earliest_shiny_adv
+        }
     }).collect()    
 }
 
@@ -96,9 +113,11 @@ fn evaluate_avg_adv_for_probable_sids(earliest_shiny_advs:&Vec<u32>) -> usize {
 }
 
 
-pub fn gen3_earliest_shiny_starter_advs_all_tids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize) -> Vec<Vec<u32>> {
+fn gen3_earliest_shiny_starter_advs_all_tids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize) -> Vec<Vec<u32>> {
     let advs_all_tids:Vec<Vec<u32>> = (0..=0xFFFF).into_iter().map(|tid|{
-        gen3_advs_shiny_nearby_sids(earliest_shiny_advance_by_tsv, tid, tid_gen_adv)
+        gen3_advs_shiny_nearby_sids(earliest_shiny_advance_by_tsv, tid, tid_gen_adv).iter().map(|info|{
+            info.earliest_shiny_adv
+        }).collect()
     }).collect();
 
     advs_all_tids
@@ -111,11 +130,23 @@ fn evaluate_avg_adv_for_all_tids(advs_by_tid:Vec<Vec<u32>>) -> u32 {
     return (sum / advs_by_tid.len()) as u32
 }
 
-pub fn gen3_calculate_avg_adv_for_all_tids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize) -> u32 {
+fn gen3_calculate_avg_adv_for_all_tids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize) -> u32 {
     let advs = gen3_earliest_shiny_starter_advs_all_tids(earliest_shiny_advance_by_tsv, tid_gen_adv);
     evaluate_avg_adv_for_all_tids(advs) 
 }
 
+#[wasm_bindgen]
+pub fn gen3_calculate_tidsid_shiny_for_tid(seed:u32, tid:u16, tid_gen_adv:usize) -> Gen3TidSidShinyResult {
+    let earliest_shiny_advance_by_tsv = generate_earliest_shiny_advance_by_high_tsv(seed);
+    let advs = gen3_earliest_shiny_starter_advs_all_tids(&earliest_shiny_advance_by_tsv, tid_gen_adv);
+
+    gen3_advs_shiny_nearby_sids(
+    
+    Gen3TidSidShinyResult {
+        percentile:0,
+        sids:vec![],
+    }
+}
 
 #[cfg(test)]
 mod test {

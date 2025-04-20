@@ -89,7 +89,7 @@ fn gen3_advs_shiny_nearby_sids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid:u16,
     }).collect()    
 }
 
-fn evaluate_avg_adv_for_probable_sids(earliest_shiny_advs:&Vec<u32>) -> usize {
+fn evaluate_avg_adv_for_probable_sids(earliest_shiny_advs:&Vec<Gen3TidSidShinyResultPart>) -> u32 {
     if earliest_shiny_advs.is_empty() {
         return 0;
     }
@@ -106,45 +106,45 @@ fn evaluate_avg_adv_for_probable_sids(earliest_shiny_advs:&Vec<u32>) -> usize {
     }).collect();
 
     let pondered_scores:Vec<f64> = earliest_shiny_advs.into_iter().enumerate().map(|(i,adv)|{
-        (*adv as f64) * pond[i]
+        (adv.earliest_shiny_adv as f64) * pond[i]
     }).collect();
 
-    pondered_scores.iter().sum::<f64>() as usize
+    pondered_scores.iter().sum::<f64>() as u32
 }
 
 
-fn gen3_earliest_shiny_starter_advs_all_tids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize) -> Vec<Vec<u32>> {
-    let advs_all_tids:Vec<Vec<u32>> = (0..=0xFFFF).into_iter().map(|tid|{
-        gen3_advs_shiny_nearby_sids(earliest_shiny_advance_by_tsv, tid, tid_gen_adv).iter().map(|info|{
-            info.earliest_shiny_adv
-        }).collect()
+fn gen3_earliest_shiny_starter_advs_all_tids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize) -> Vec<Vec<Gen3TidSidShinyResultPart>> {
+    let advs_all_tids:Vec<Vec<Gen3TidSidShinyResultPart>> = (0..=0xFFFF).into_iter().map(|tid|{
+        gen3_advs_shiny_nearby_sids(earliest_shiny_advance_by_tsv, tid, tid_gen_adv)
     }).collect();
 
     advs_all_tids
 }
 
-fn evaluate_avg_adv_for_all_tids(advs_by_tid:Vec<Vec<u32>>) -> u32 {
-    let sum = advs_by_tid.iter().map(|advs_for_tid|{
-        evaluate_avg_adv_for_probable_sids(advs_for_tid) as usize
-    }).sum::<usize>();
-    return (sum / advs_by_tid.len()) as u32
-}
-
-fn gen3_calculate_avg_adv_for_all_tids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize) -> u32 {
-    let advs = gen3_earliest_shiny_starter_advs_all_tids(earliest_shiny_advance_by_tsv, tid_gen_adv);
-    evaluate_avg_adv_for_all_tids(advs) 
-}
 
 #[wasm_bindgen]
 pub fn gen3_calculate_tidsid_shiny_for_tid(seed:u32, tid:u16, tid_gen_adv:usize) -> Gen3TidSidShinyResult {
     let earliest_shiny_advance_by_tsv = generate_earliest_shiny_advance_by_high_tsv(seed);
-    let advs = gen3_earliest_shiny_starter_advs_all_tids(&earliest_shiny_advance_by_tsv, tid_gen_adv);
+    let advs_by_tid = gen3_earliest_shiny_starter_advs_all_tids(&earliest_shiny_advance_by_tsv, tid_gen_adv);
 
-    gen3_advs_shiny_nearby_sids(
+    let ratings:Vec<u32> = advs_by_tid.iter().map(|advs_for_tid|{
+        evaluate_avg_adv_for_probable_sids(advs_for_tid)
+    }).collect();
+
+    let rating_for_tid = ratings[tid as usize];
+
+    let sorted_ratings:Vec<u32> = ratings.into_iter().sorted().collect();
+    let res = sorted_ratings.binary_search_by(|r|{
+        r.cmp(&rating_for_tid)   
+    });
+
+    let idx = res.unwrap();
+    let percentile = (idx * 100) / sorted_ratings.len();
+    //gen3_advs_shiny_nearby_sids(
     
     Gen3TidSidShinyResult {
-        percentile:0,
-        sids:vec![],
+        percentile:percentile as u8,
+        sids:advs_by_tid[tid as usize].clone(),
     }
 }
 
@@ -153,14 +153,32 @@ mod test {
     use super::*;
     use crate::assert_list_eq;
 
+
+
+    //NO_PROD add test, let earliest_shiny_advance_by_tsv = generate_earliest_shiny_advance_by_high_tsv(seed);
+    // seems wrong. different than pokefinder for  tid = 11, sid: 17283,  xor=17288 -> high_tsv=2161
+
     #[test]
     fn calculate_avg_adv_for_all_tids() {
+        
+        assert_eq!(0xE373 ^ 0xA02F, 0);  // 17244 -> high_tsv 2155
+        assert_eq!(11 ^ 17283, 0); // 17288 -> high_tsv=2161
+         
+        for tid_gen_adv in 0..12 {
+            let res = gen3_calculate_tidsid_shiny_for_tid(0, tid_gen_adv, 1000);
+            println!("tid = {}, percentile = {:?}", tid_gen_adv, res);
+        }
+        assert_eq!(1, 0);
+        /*
+        tid = 11, sid: 17283, earliest_shiny_adv: 39080 
+            
+        
         let earliest_shiny_advance_by_tsv = generate_earliest_shiny_advance_by_high_tsv(0);
 
         for tid_gen_adv in 950..1050 {
             let avg = gen3_calculate_avg_adv_for_all_tids(&earliest_shiny_advance_by_tsv, tid_gen_adv);
             println!("tid_gen_adv = {}, avg = {}", tid_gen_adv, avg);
         }
-        assert_eq!(true, false);
+        assert_eq!(true, false);*/
     }
 }

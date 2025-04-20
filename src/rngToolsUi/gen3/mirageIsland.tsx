@@ -43,7 +43,7 @@ const getColumns = (
     dataIndex: "pid_pattern",
     key: "pid_pattern",
     render: (pid_pattern) =>
-      `0x${pid_pattern.toString(16).toUpperCase().padStart(4, "0")}****`,
+      `****${pid_pattern.toString(16).toUpperCase().padStart(4, "0")}`,
     monospace: true,
   });
 
@@ -103,20 +103,17 @@ type Props = {
   game?: Game;
 };
 
-const getFields = function(){
-  const fields: Field[] = [
+const getFields = function(values:FormState){
+  return [
     {
       label: "Battery",
       input: (<FormikRadio<FormState, "battery"> name="battery" options={["Live", "Dead"]} />),
     },
-
-    // Note: Rocket Launched should only be shown if Battery is Live. This isn't possible with RngToolForm right now.
     {
       label: "Rocket Launched",
       input: (<FormikInput<FormState> name="rocketLaunchedCount" />),
     }
   ];
-  return fields;
 }
 
 export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
@@ -137,7 +134,7 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
 
   return (
     <RngToolForm<FormState, MirageIslandResult>
-      fields={getFields()}
+      getFields={getFields}
       columns={getColumns(game, resultsBattery)}
       results={results}
       initialValues={initialValues}

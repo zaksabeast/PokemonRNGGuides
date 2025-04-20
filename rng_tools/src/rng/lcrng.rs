@@ -6,7 +6,7 @@ pub type Xdrng = Lcrng<0x269EC3, 0x343FD, 0xA170F641, 0xB9B33155>;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Lcrng<const ADD: u32, const MUL: u32, const P_ADD: u32, const P_MUL: u32> {
-    state: u32,
+    pub state: u32,
 }
 
 impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Lcrng<A, M, PA, PM> {

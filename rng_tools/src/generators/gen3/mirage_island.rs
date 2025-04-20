@@ -43,6 +43,13 @@ fn generate_earliest_advance_count(initial_seed:u32) -> Vec<u32> {
     return earliest_adv_by_pid_pattern;
 }
 
+//NO_PROD bugged. important is Mirage Island HIGH. reference: pkhex.
+//PID must match ****PID
+//522 weeks (3654 days) MUST be ****F896
+//HIGH = 63638 aka f896
+//LOW = 56650 aka dd4a
+
+
 #[wasm_bindgen]
 pub fn mirage_island_calculate(
     initial_seed: u32,
@@ -57,7 +64,9 @@ pub fn mirage_island_calculate(
     
     (first_day..=last_day).map(|day|{
         let day_diff = day - first_day;
-        let pid_pattern:u16 = mirage_island_rng.rand();
+        let pid_pattern:u16 = (mirage_island_rng.state >> 16) as u16;
+
+        mirage_island_rng.advance(1);
 
         MirageIslandResult {
             day,

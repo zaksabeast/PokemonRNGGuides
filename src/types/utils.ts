@@ -18,3 +18,17 @@ export type FeatureConfig<
       { [key in keyof Config]?: undefined },
       { [key in Feature]?: false }
     >;
+
+type AddNullToType<T> = undefined extends T
+  ? tst.U.Exclude<T, undefined> | null
+  : T;
+
+export type AddNull<T> = T extends tst.O.Object
+  ? {
+      [K in keyof T]: AddNull<T[K]>;
+    }
+  : AddNullToType<T>;
+
+export type AddNullToList<T extends tst.L.List> = {
+  [K in keyof T]: AddNull<T[K]>;
+};

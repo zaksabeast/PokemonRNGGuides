@@ -8,16 +8,19 @@ import {
   FormikIdFilter,
   FormikSwitch,
 } from "~/components";
-import { rngTools, Gen6Id, RngDate } from "~/rngTools";
-import { denormalizeIdFilter, IdFilter } from "~/types/id";
+import { rngTools, Gen6Id } from "~/rngTools";
+import { denormalizeIdFilter, IdFilterSchema } from "~/types/id";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 import {
   addRngTime,
   formatRngDateTime,
   rngDate,
   rngTime,
-  RngTime,
+  RngDateSchema,
+  RngTimeSchema,
 } from "~/utils/time";
+import { z } from "zod";
+import { HexSchema } from "~/utils/number";
 
 const columns: ResultColumn<Gen6Id>[] = [
   {
@@ -59,15 +62,17 @@ const columns: ResultColumn<Gen6Id>[] = [
   },
 ];
 
-export type FormState = {
-  seed: number;
-  date: RngDate;
-  time: RngTime;
-  only_current_seed: boolean;
-  initial_advances: number;
-  max_advances: number;
-  filter: IdFilter;
-};
+const Validator = z.object({
+  seed: HexSchema(0xffffffff),
+  date: RngDateSchema,
+  time: RngTimeSchema,
+  only_current_seed: z.boolean(),
+  initial_advances: z.number().int().min(0),
+  max_advances: z.number().int().min(0),
+  filter: IdFilterSchema,
+});
+
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   seed: 0,
@@ -79,7 +84,7 @@ const initialValues: FormState = {
   filter: {
     type: "tid",
     value0: 0,
-    value1: undefined,
+    value1: null,
   },
 };
 
@@ -141,6 +146,7 @@ export const OrasId = () => {
       fields={fields}
       columns={columns}
       results={results}
+      validationSchema={Validator}
       initialValues={initialValues}
       onSubmit={onSubmit}
       submitTrackerId="generate_oras_id"

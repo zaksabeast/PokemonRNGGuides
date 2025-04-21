@@ -7,6 +7,8 @@ import {
   Field,
 } from "~/components";
 import { rngTools } from "~/rngTools";
+import { HexSchema } from "~/utils/number";
+import { z } from "zod";
 
 type RngState = {
   advance: number;
@@ -33,14 +35,16 @@ const columns: ResultColumn<RngState>[] = [
   },
 ];
 
-type FormState = {
-  div: number;
-  adivIndex: number;
-  sdivIndex: number;
-  state: number;
-  startAdvance: number;
-  advanceCount: number;
-};
+const Validator = z.object({
+  div: HexSchema(0xffff),
+  adivIndex: z.number().int().min(0).max(0x4000),
+  sdivIndex: z.number().int().min(0).max(0x4000),
+  state: HexSchema(0xffff),
+  startAdvance: z.number().int().min(0),
+  advanceCount: z.number().int().min(0),
+});
+
+type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   div: 0,
@@ -114,6 +118,7 @@ export const Gen2Rng = () => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_gen2_rng"
     />

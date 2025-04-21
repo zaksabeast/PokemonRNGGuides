@@ -6,15 +6,17 @@ import {
   RngToolSubmit,
   Field,
 } from "~/components";
-import { RngDate, rngTools, SeedTime4, SeedTime4Calibrate } from "~/rngTools";
+import { rngTools, SeedTime4, SeedTime4Calibrate } from "~/rngTools";
 import {
   addRngTime,
   formatRngDateTime,
   rngDate,
+  RngDateSchema,
   rngTime,
-  RngTime,
+  RngTimeSchema,
 } from "~/utils/time";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
+import { z } from "zod";
 
 const columns: ResultColumn<SeedTime4Calibrate>[] = [
   {
@@ -40,13 +42,15 @@ const columns: ResultColumn<SeedTime4Calibrate>[] = [
   },
 ];
 
-type FormState = {
-  date: RngDate;
-  time: RngTime;
-  delay: number;
-  delay_calibration: number;
-  second_calibration: number;
-};
+const Validator = z.object({
+  date: RngDateSchema,
+  time: RngTimeSchema,
+  delay: z.number().int().min(0),
+  delay_calibration: z.number().int().min(0),
+  second_calibration: z.number().int().min(0),
+});
+
+type FormState = z.infer<typeof Validator>;
 
 const fields: Field[] = [
   {
@@ -135,6 +139,7 @@ export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_dppt_seed_search"
     />

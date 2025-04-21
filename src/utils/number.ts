@@ -1,6 +1,13 @@
 import { z } from "zod";
 import { isNumber } from "lodash-es";
 
+export const HexSchema = (max: number) =>
+  z
+    .number()
+    .int()
+    .min(0)
+    .max(max, `Must be less than or equal to ${max.toString(16)}`);
+
 export const ZodSerializedOptional = <Schema extends z.ZodTypeAny>(
   schema: Schema,
 ) =>

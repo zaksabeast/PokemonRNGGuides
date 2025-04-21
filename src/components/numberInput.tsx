@@ -2,8 +2,9 @@ import React from "react";
 import { Input } from "./input";
 import { capPrecision } from "~/utils/number";
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
-import { useFormikContext } from "formik";
+import { useField } from "formik";
 import { match, P } from "ts-pattern";
+import { Tooltip } from "antd";
 
 const serializers = {
   hex: (num: number | null) => num?.toString(16),
@@ -24,6 +25,9 @@ type NumberInputProps = {
   value?: number | null;
   numType: "hex" | "decimal" | "float";
   onChange: (value: number | null) => void;
+  errorMessage?: string;
+  textAlign?: "center";
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 };
 
 export const NumberInput = ({
@@ -78,20 +82,31 @@ export const FormikNumberInput = <FormState extends GenericForm>({
   name,
   ...props
 }: FormikNumberInputProps<FormState>) => {
-  type Name = typeof name;
-  const { values, setFieldValue } =
-    useFormikContext<Record<Name, number | null>>();
-
-  const value = values[name];
+  const [{ value, onBlur }, { error, touched }, { setValue }] = useField<
+    number | null
+  >(name);
 
   const onChange = React.useCallback(
     (value: number | null) => {
-      setFieldValue(name, value);
+      setValue(value);
     },
-    [setFieldValue, name],
+    [setValue],
   );
 
   return (
-    <NumberInput {...props} name={name} onChange={onChange} value={value} />
+    <Tooltip
+      title={touched && error ? error : undefined}
+      placement="top"
+      color="red"
+    >
+      <NumberInput
+        {...props}
+        name={name}
+        errorMessage={error}
+        onBlur={onBlur}
+        onChange={onChange}
+        value={value}
+      />
+    </Tooltip>
   );
 };

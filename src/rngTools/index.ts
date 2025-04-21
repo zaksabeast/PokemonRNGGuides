@@ -9,22 +9,9 @@ import { wrap } from "comlink";
 
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
+import { AddNullToList } from "~/types/utils";
 
 type RngToolsModules = typeof RngTools;
-
-type AddNullToType<T> = undefined extends T
-  ? tst.U.Exclude<T, undefined> | null
-  : T;
-
-type AddNull<T> = T extends tst.O.Object
-  ? {
-      [K in keyof T]: AddNull<T[K]>;
-    }
-  : AddNullToType<T>;
-
-type AddNullToList<T extends tst.L.List> = {
-  [K in keyof T]: AddNull<T[K]>;
-};
 
 type AdjustFunctionArgs<Fn extends tst.F.Function> = Fn extends (
   ...args: infer Args

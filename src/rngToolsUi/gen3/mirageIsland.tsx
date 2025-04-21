@@ -6,10 +6,10 @@ import {
   FormikNumberInput,
 } from "~/components";
 import { FormikRadio } from "../../components/radio";
-
 import { rngTools, MirageIslandResult } from "~/rngTools";
 import React from "react";
 import { clamp } from "lodash-es";
+import { z } from "zod";
 
 type Game = "emerald" | "rs";
 
@@ -55,12 +55,13 @@ const getColumns = (
   return columns;
 };
 
-type Battery = "Dead" | "Live";
+const Validator = z.object({
+  battery: z.enum(["Live", "Dead"]),
+  rocketLaunchedCount: z.number().int().min(0).max(0xffff),
+});
 
-export type FormState = {
-  battery: Battery;
-  rocketLaunchedCount: number;
-};
+export type FormState = z.infer<typeof Validator>;
+type Battery = FormState["battery"];
 
 const initialValues: FormState = {
   battery: "Live",
@@ -137,6 +138,7 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       rowKey="day"
       submitTrackerId="mirage_island"

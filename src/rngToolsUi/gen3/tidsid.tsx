@@ -2,7 +2,6 @@ import {
   Gen3TidSidResult,
   rngTools,
   Gen3TidSidVersionOptions,
-  RngDate,
 } from "~/rngTools";
 import {
   Field,
@@ -16,8 +15,16 @@ import {
 import { match } from "ts-pattern";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
 import React from "react";
-import { addRngTime, rngDate, rngTime, RngTime } from "~/utils/time";
-import { denormalizeIdFilter, IdFilter } from "~/types/id";
+import {
+  addRngTime,
+  rngDate,
+  RngDateSchema,
+  rngTime,
+  RngTimeSchema,
+} from "~/utils/time";
+import { denormalizeIdFilter, IdFilterSchema } from "~/types/id";
+import { z } from "zod";
+import { HexSchema } from "~/utils/number";
 
 const columns: ResultColumn<Gen3TidSidResult>[] = [
   { title: "Advance", dataIndex: "advance" },
@@ -28,17 +35,19 @@ const columns: ResultColumn<Gen3TidSidResult>[] = [
 
 type Game = "rs" | "frlge" | "xdcolo";
 
-export type FormState = {
-  offset: number;
-  initial_advances: number;
-  max_advances: number;
-  rs_input_type: "Dead Battery" | "DateTime" | "Seed";
-  seed: number;
-  date: RngDate;
-  time: RngTime;
-  tid: number;
-  filter: IdFilter;
-};
+const Validator = z.object({
+  offset: z.number().int().min(0),
+  initial_advances: z.number().int().min(0),
+  max_advances: z.number().int().min(0),
+  rs_input_type: z.enum(["Dead Battery", "DateTime", "Seed"]),
+  seed: HexSchema(0xffffffff),
+  date: RngDateSchema,
+  time: RngTimeSchema,
+  tid: z.number().int().min(0).max(65535),
+  filter: IdFilterSchema,
+});
+
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   offset: 0,
@@ -52,7 +61,7 @@ const initialValues: FormState = {
   filter: {
     type: "tid",
     value0: 0,
-    value1: undefined,
+    value1: null,
   },
 };
 
@@ -184,6 +193,7 @@ export const Gen3TidSidGenerator = ({ game = "rs" }: Props) => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_gen3_tidsid"
     />

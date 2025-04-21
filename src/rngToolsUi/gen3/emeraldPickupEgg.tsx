@@ -8,13 +8,16 @@ import {
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import { rngTools, Ivs, Gen3PickupMethod, Egg3PickupState } from "~/rngTools";
+import { rngTools, Egg3PickupState } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
 import {
   flattenIvs,
   FlattenIvs,
   ivColumns,
 } from "~/rngToolsUi/shared/ivColumns";
+import { z } from "zod";
+import { IvSchema } from "~/components/ivInput";
+import { HexSchema } from "~/utils/number";
 
 type Result = FlattenIvs<Egg3PickupState>;
 
@@ -23,17 +26,19 @@ const columns: ResultColumn<Result>[] = [
   ...ivColumns,
 ];
 
-export type FormState = {
-  delay: number;
-  seed: number;
-  initial_advances: number;
-  max_advances: number;
-  method: Gen3PickupMethod;
-  parent1_ivs: Ivs;
-  parent2_ivs: Ivs;
-  filter_min_ivs: Ivs;
-  filter_max_ivs: Ivs;
-};
+const Validator = z.object({
+  delay: z.number().int().min(0),
+  seed: HexSchema(0xffffffff),
+  initial_advances: z.number().int().min(0),
+  max_advances: z.number().int().min(0),
+  method: z.enum(["EmeraldBred", "EmeraldBredSplit", "EmeraldBredAlternate"]),
+  parent1_ivs: IvSchema,
+  parent2_ivs: IvSchema,
+  filter_min_ivs: IvSchema,
+  filter_max_ivs: IvSchema,
+});
+
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   delay: 3,
@@ -129,6 +134,7 @@ export const EmeraldPickupEgg = ({ lua = false }: Props) => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       formContainerId="emerald_pickup_egg_form"
       submitTrackerId="generate_emerald_pickup_egg"

@@ -1,4 +1,4 @@
-import { rngTools, Species, Static3SearcherResult } from "~/rngTools";
+import { rngTools, Static3SearcherResult } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,
@@ -8,7 +8,7 @@ import {
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import { getPkmFilterFields, PkmFilterFields } from "~/components/pkmFilter";
+import { getPkmFilterFields, pkmFilterSchema } from "~/components/pkmFilter";
 import {
   getStatic3Species,
   Static3Game,
@@ -20,6 +20,8 @@ import {
   FlattenIvs,
   ivColumns,
 } from "~/rngToolsUi/shared/ivColumns";
+import { z } from "zod";
+import { species } from "~/types/species";
 
 type Result = FlattenIvs<Static3SearcherResult>;
 
@@ -47,13 +49,17 @@ const columns: ResultColumn<Result>[] = [
   { title: "Gender", dataIndex: "gender" },
 ];
 
-type FormState = {
-  tid: number;
-  sid: number;
-  species: Species;
-  roamer: boolean;
-  method4: boolean;
-} & PkmFilterFields;
+const Validator = z
+  .object({
+    tid: z.number().int().min(0).max(65535),
+    sid: z.number().int().min(0).max(65535),
+    species: z.enum(species),
+    roamer: z.boolean(),
+    method4: z.boolean(),
+  })
+  .merge(pkmFilterSchema);
+
+type FormState = z.infer<typeof Validator>;
 
 const getInitialValues = (game: Static3Game): FormState => {
   return {
@@ -139,6 +145,7 @@ export const Static3Searcher = ({ game }: Props) => {
       fields={fields}
       columns={columns}
       results={results}
+      validationSchema={Validator}
       initialValues={getInitialValues(game)}
       onSubmit={onSubmit}
       submitTrackerId="search_gen3_static"

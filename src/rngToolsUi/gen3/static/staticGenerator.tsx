@@ -1,4 +1,4 @@
-import { rngTools, Static3GeneratorResult, Species } from "~/rngTools";
+import { rngTools, Static3GeneratorResult } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,
@@ -9,13 +9,16 @@ import {
   RngToolSubmit,
 } from "~/components";
 import React from "react";
-import { getPkmFilterFields, PkmFilterFields } from "~/components/pkmFilter";
+import { getPkmFilterFields, pkmFilterSchema } from "~/components/pkmFilter";
 import {
   getStatic3Species,
   Static3Game,
 } from "~/rngToolsUi/gen3/static/constants";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { FlattenIvs, flattenIvs, ivColumns } from "../../shared/ivColumns";
+import { z } from "zod";
+import { HexSchema } from "~/utils/number";
+import { species } from "~/types/species";
 
 type Result = FlattenIvs<Static3GeneratorResult>;
 
@@ -38,17 +41,21 @@ const columns: ResultColumn<Result>[] = [
   { title: "Gender", dataIndex: "gender" },
 ];
 
-type FormState = {
-  offset: number;
-  seed: number;
-  initial_advances: number;
-  max_advances: number;
-  tid: number;
-  sid: number;
-  species: Species;
-  roamer: boolean;
-  method4: boolean;
-} & PkmFilterFields;
+const Validator = z
+  .object({
+    offset: z.number().int().min(0),
+    seed: HexSchema(0xffff),
+    initial_advances: z.number().int().min(0),
+    max_advances: z.number().int().min(0),
+    tid: z.number().int().min(0).max(65535),
+    sid: z.number().int().min(0).max(65535),
+    species: z.enum(species),
+    roamer: z.boolean(),
+    method4: z.boolean(),
+  })
+  .merge(pkmFilterSchema);
+
+type FormState = z.infer<typeof Validator>;
 
 const getInitialValues = (game: Static3Game): FormState => {
   return {
@@ -162,6 +169,7 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
       columns={columns}
       results={results}
       initialValues={getInitialValues(game)}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_gen3_static"
     />

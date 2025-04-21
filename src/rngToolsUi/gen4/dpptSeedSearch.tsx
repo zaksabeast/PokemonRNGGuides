@@ -6,10 +6,12 @@ import {
   RngToolSubmit,
   Field,
 } from "~/components";
-import { RngDate, rngTools, SeedTime4 } from "~/rngTools";
-import { fromRngDateTime, rngDate } from "~/utils/time";
+import { rngTools, SeedTime4 } from "~/rngTools";
+import { fromRngDateTime, rngDate, RngDateSchema } from "~/utils/time";
 import { FormikDatePicker } from "~/components/datePicker";
 import { uniqueId } from "lodash-es";
+import { z } from "zod";
+import { HexSchema } from "~/utils/number";
 
 type GeneratorResult = SeedTime4 & { id: string };
 
@@ -31,11 +33,13 @@ const columns: ResultColumn<GeneratorResult>[] = [
   },
 ];
 
-type FormState = {
-  seed: number;
-  date: RngDate;
-  forced_second: number | null;
-};
+const Validator = z.object({
+  seed: HexSchema(0xffffffff),
+  date: RngDateSchema,
+  forced_second: z.number().int().min(0).nullable(),
+});
+
+type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   seed: 0,
@@ -83,6 +87,7 @@ export const DpptSeedSearch = ({ onClickResultRow }: Props) => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       onClickResultRow={onClickResultRow}
       rowKey="id"

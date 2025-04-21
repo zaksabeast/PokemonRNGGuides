@@ -6,9 +6,12 @@ import {
   FormikSelect,
   RngToolForm,
   RngToolSubmit,
+  Field,
 } from "~/components";
-import { rngTools, Gen2PokeFilter, type Gen2Spread } from "~/rngTools";
+import { rngTools, type Gen2Spread } from "~/rngTools";
 import { useTranslator, Translations, Translator } from "~/utils/siteLanguage";
+import { z } from "zod";
+import { HexSchema } from "~/utils/number";
 
 const englishTranslations = {
   Advance: "Advance",
@@ -86,20 +89,17 @@ const getColumns = (
   ];
 };
 
-type Field = {
-  label: string;
-  input: React.ReactNode;
-};
+const Validator = z.object({
+  div: HexSchema(0xffff),
+  adivIndex: z.number().int().min(0).max(0x4000),
+  sdivIndex: z.number().int().min(0).max(0x4000),
+  state: HexSchema(0xffff),
+  startAdvance: z.number().int().min(0),
+  advanceCount: z.number().int().min(0),
+  filter: z.enum(["Any", "Shiny", "MaxDv"]),
+});
 
-export type FormState = {
-  div: number;
-  adivIndex: number;
-  sdivIndex: number;
-  state: number;
-  startAdvance: number;
-  advanceCount: number;
-  filter: Gen2PokeFilter;
-};
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   div: 0,
@@ -213,6 +213,7 @@ export const Gen2PokemonRng = ({ type, language }: Props) => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId={
         type === "starter" ? "generate_gen2_starter" : "generate_gen2_celebi"

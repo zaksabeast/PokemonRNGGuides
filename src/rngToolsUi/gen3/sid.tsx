@@ -7,6 +7,8 @@ import {
   Field,
 } from "~/components";
 import { rngTools } from "~/rngTools";
+import { z } from "zod";
+import { HexSchema } from "~/utils/number";
 
 type GeneratorResult = { sid: number };
 
@@ -17,12 +19,14 @@ const columns: ResultColumn<GeneratorResult>[] = [
   },
 ];
 
-export type FormState = {
-  tid: number;
-  feebasSeed: number;
-  initialAdvances: number;
-  maxAdvances: number;
-};
+const Validator = z.object({
+  tid: z.number().int().min(0).max(65535),
+  feebasSeed: HexSchema(0xffff),
+  initialAdvances: z.number().int().min(0),
+  maxAdvances: z.number().int().min(0),
+});
+
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   tid: 14223,
@@ -86,6 +90,7 @@ export const Gen3Sid = ({ game }: Props) => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_gen3_sid"
     />

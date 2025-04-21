@@ -94,8 +94,23 @@ fn evaluate_avg_adv_for_probable_sids(earliest_shiny_advs:&Vec<Gen3TidSidShinyRe
         return 0;
     }
 
-    let mid = (earliest_shiny_advs.len() - 1) / 2; // ex: +- 5.   0,1,2,3,4,5,6,7,8,9,10
-    let pond_not_normalized:Vec<usize> = (0..earliest_shiny_advs.len()).map(|i|{
+    let filtered_earliest_shiny_advs:Vec<Gen3TidSidShinyResultPart> = earliest_shiny_advs.iter().enumerate().filter_map(|(i, adv)|{
+        let to_remove = earliest_shiny_advs.iter().skip(i + 1).any(|adv2|{
+            if adv.earliest_shiny_adv >= adv2.earliest_shiny_adv { 
+                adv.earliest_shiny_adv < adv2.earliest_shiny_adv + MORE_LESS_ADV as u32 
+            } else {
+                adv2.earliest_shiny_adv < adv.earliest_shiny_adv + MORE_LESS_ADV as u32
+            } 
+        });
+        if to_remove {
+            None
+        } else {
+            Some(adv.clone())
+        }
+    }).collect();
+
+    let mid = (filtered_earliest_shiny_advs.len() - 1) / 2; // ex: +- 5.   0,1,2,3,4,5,6,7,8,9,10
+    let pond_not_normalized:Vec<usize> = (0..filtered_earliest_shiny_advs.len()).map(|i|{
         let dist_to_mid = if i > mid { i - mid } else { mid - i };
         mid + 1 - dist_to_mid
     }).collect();
@@ -105,7 +120,7 @@ fn evaluate_avg_adv_for_probable_sids(earliest_shiny_advs:&Vec<Gen3TidSidShinyRe
         (p as f64) / (pond_sum as f64)
     }).collect();
 
-    let pondered_scores:Vec<f64> = earliest_shiny_advs.into_iter().enumerate().map(|(i,adv)|{
+    let pondered_scores:Vec<f64> = filtered_earliest_shiny_advs.into_iter().enumerate().map(|(i,adv)|{
         (adv.earliest_shiny_adv as f64) * pond[i]
     }).collect();
 
@@ -161,12 +176,12 @@ mod test {
     #[test]
     fn calculate_avg_adv_for_all_tids() {
         
-        assert_eq!(0xE373 ^ 0xA02F, 0);  // 17244 -> high_tsv 2155
-        assert_eq!(11 ^ 17283, 0); // 17288 -> high_tsv=2161
+        //assert_eq!(0xE373 ^ 0xA02F, 0);  // 17244 -> high_tsv 2155
+        //assert_eq!(11 ^ 17283, 0); // 17288 -> high_tsv=2161
          
         for tid_gen_adv in 0..12 {
             let res = gen3_calculate_tidsid_shiny_for_tid(0, tid_gen_adv, 1000);
-            println!("tid = {}, percentile = {:?}", tid_gen_adv, res);
+            println!("tid = {}, percentile = {:?}", tid_gen_adv, res.percentile);
         }
         assert_eq!(1, 0);
         /*

@@ -1182,7 +1182,7 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Initial Seed Botting.mdx",
       category: "FireRed and LeafGreen",
-      translations: null,
+      translations: { en: "/frlg-seeding-bot", zh: "/zh-frlg-seeding-bot" },
     },
     Guide: React.lazy(
       () =>
@@ -2871,6 +2871,24 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
+  "/zh-frlg-seeding-bot": {
+    meta: {
+      title: "初始种子自动刷取",
+      description: "使用初始种子自动脚本，实现更高自由度的乱数控制",
+      slug: "/zh-frlg-seeding-bot",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/FireRed and LeafGreen/Initial Seed Botting.mdx",
+      category: "FireRed and LeafGreen",
+      translations: { en: "/frlg-seeding-bot", zh: "/zh-frlg-seeding-bot" },
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/FireRed and LeafGreen/Initial Seed Botting.mdx"),
+    ),
+  },
   "/zh-gen2-celebi": {
     meta: {
       title: "时拉比",
@@ -3177,6 +3195,7 @@ export const guideSlugs = [
   z.literal("/zh-emulator-emerald-egg"),
   z.literal("/zh-emulator-hgss-egg"),
   z.literal("/zh-frlg-gen3-sid"),
+  z.literal("/zh-frlg-seeding-bot"),
   z.literal("/zh-gen2-celebi"),
   z.literal("/zh-gen2-starters"),
   z.literal("/zh-gen3-sid"),

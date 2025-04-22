@@ -5,10 +5,10 @@ export const ZodSerializedOptional = <Schema extends z.ZodTypeAny>(
   schema: Schema,
 ) =>
   z
-    .union([schema, z.literal("")])
-    .transform((arg): z.infer<Schema> | undefined => {
+    .union([schema, z.null(), z.literal("")])
+    .transform((arg): z.infer<Schema> | null => {
       if (arg === "") {
-        return undefined;
+        return null;
       }
 
       return arg;

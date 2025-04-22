@@ -169,7 +169,7 @@ export const XyPokeRadar = () => {
       chain: opts.chain,
       bonus_music: opts.bonus_music,
       filter_shiny: opts.filter_shiny,
-      filter_slot: undefined,
+      filter_slot: null,
     });
 
     setResults(results);

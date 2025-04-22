@@ -6,26 +6,27 @@ import { nature } from "~/types/nature";
 import { IvInput } from "~/components/ivInput";
 import { ability } from "~/types/ability";
 import { gender } from "~/types/gender";
+import * as tst from "ts-toolbelt";
 
-export const natureOptions = ([undefined, ...nature] as const).map((nat) => ({
+export const natureOptions = ([null, ...nature] as const).map((nat) => ({
   label: nat ?? "None",
   value: nat,
 }));
 
-export const abilityOptions = ([undefined, ...ability] as const).map(
-  (abil) => ({
-    label: abil ?? "None",
-    value: abil,
-  }),
-);
+export const abilityOptions = ([null, ...ability] as const).map((abil) => ({
+  label: abil ?? "None",
+  value: abil,
+}));
 
-export const genderOptions = ([undefined, ...gender] as const).map((gen) => ({
+export const genderOptions = ([null, ...gender] as const).map((gen) => ({
   label: gen ?? "None",
   value: gen,
 }));
 
 export type PkmFilterFields = {
-  [Key in keyof PkmFilter as `filter_${Key}`]: PkmFilter[Key];
+  [Key in keyof PkmFilter as `filter_${Key}`]: undefined extends PkmFilter[Key]
+    ? tst.U.Exclude<PkmFilter[Key], undefined> | null
+    : PkmFilter[Key];
 };
 
 const _getPkmFilterFields = (): Field[] => [

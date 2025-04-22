@@ -58,7 +58,7 @@ export const Select = <ValueType,>({
 type FormikSelectValue<
   FormState extends GenericForm,
   FieldKey extends keyof FormState,
-> = FormState[FieldKey] extends string | undefined
+> = FormState[FieldKey] extends string | null
   ? { label: string; value: FormState[FieldKey] }[]
   : never;
 

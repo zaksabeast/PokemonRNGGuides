@@ -8,8 +8,37 @@ import RngToolsWorker from "./worker?worker";
 import { wrap } from "comlink";
 
 import { z } from "zod";
+import * as tst from "ts-toolbelt";
 
-export const rngTools = wrap<typeof RngTools>(new RngToolsWorker());
+type RngToolsModules = typeof RngTools;
+
+type AddNullToType<T> = undefined extends T
+  ? tst.U.Exclude<T, undefined> | null
+  : T;
+
+type AddNull<T> = T extends tst.O.Object
+  ? {
+      [K in keyof T]: AddNull<T[K]>;
+    }
+  : AddNullToType<T>;
+
+type AddNullToList<T extends tst.L.List> = {
+  [K in keyof T]: AddNull<T[K]>;
+};
+
+type AdjustFunctionArgs<Fn extends tst.F.Function> = Fn extends (
+  ...args: infer Args
+) => infer Ret
+  ? (...args: AddNullToList<Args>) => Ret
+  : never;
+
+type AdjustAllFunctionArgs<T> = {
+  [K in keyof T]: T[K] extends tst.F.Function ? AdjustFunctionArgs<T[K]> : T[K];
+};
+
+type AdjustedRngTools = AdjustAllFunctionArgs<RngToolsModules>;
+
+export const rngTools = wrap<AdjustedRngTools>(new RngToolsWorker());
 
 export const ZodConsole = z.union([
   z.literal("NdsSlot1"),

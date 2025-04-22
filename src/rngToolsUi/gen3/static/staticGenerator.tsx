@@ -64,9 +64,9 @@ const getInitialValues = (game: Static3Game): FormState => {
     filter_shiny: false,
     filter_min_ivs: minIvs,
     filter_max_ivs: maxIvs,
-    filter_nature: undefined,
-    filter_gender: undefined,
-    filter_ability: undefined,
+    filter_nature: null,
+    filter_gender: null,
+    filter_ability: null,
   };
 };
 

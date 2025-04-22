@@ -130,7 +130,7 @@ export const OrasId = () => {
       initial_advances: opts.initial_advances,
       max_advances: opts.max_advances,
       start_datetime: addRngTime(opts.date, opts.time),
-      filter_id: denormalizeIdFilter(opts.filter) ?? undefined,
+      filter_id: denormalizeIdFilter(opts.filter),
     });
 
     setResults(results);

@@ -33,7 +33,7 @@ export type FormState = {
   tid: number;
   start_date: RngDate;
   max_advances: number;
-  filter_species: Species;
+  filter_species: Species | null;
 };
 
 const initialValues: FormState = {
@@ -41,7 +41,7 @@ const initialValues: FormState = {
   tid: 0,
   start_date: rngDate(),
   max_advances: 1000,
-  filter_species: "None",
+  filter_species: null,
 };
 
 const fields: Field[] = [
@@ -64,7 +64,7 @@ const fields: Field[] = [
         name="filter_species"
         options={(
           [
-            "None",
+            null,
             "Audino",
             "Boldore",
             "Cherrim",
@@ -105,7 +105,7 @@ const fields: Field[] = [
             "Xatu",
             "Zebstrika",
           ] as const
-        ).map((species) => ({ label: species, value: species }))}
+        ).map((species) => ({ label: species ?? "None", value: species }))}
       />
     ),
   },
@@ -125,11 +125,7 @@ export const OrAsMirageSpot = () => {
   const [results, setResults] = React.useState<MirageSpot[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const results = await rngTools.generate_mirage_spots({
-      ...opts,
-      filter_species:
-        opts.filter_species === "None" ? undefined : opts.filter_species,
-    });
+    const results = await rngTools.generate_mirage_spots(opts);
 
     setResults(results);
   }, []);

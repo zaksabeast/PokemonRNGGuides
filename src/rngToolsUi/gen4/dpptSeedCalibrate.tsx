@@ -120,9 +120,9 @@ export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
       {
         delay_calibration: opts.delay_calibration,
         second_calibration: opts.second_calibration,
-        entei_route: undefined,
-        lati_route: undefined,
-        raikou_route: undefined,
+        entei_route: null,
+        lati_route: null,
+        raikou_route: null,
       },
     );
 

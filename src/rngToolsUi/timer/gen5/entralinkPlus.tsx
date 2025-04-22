@@ -60,9 +60,9 @@ const initialValues: FormState = {
   calibration: -95,
   entralinkCalibration: 256,
   frameCalibration: 0,
-  delayHit: undefined,
-  secondHit: undefined,
-  advanceHit: undefined,
+  delayHit: null,
+  secondHit: null,
+  advanceHit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -184,9 +184,9 @@ export const Gen5EntralinkPlusTimer = () => {
           calibration: settings.calibration,
           entralinkCalibration: settings.entralink_calibration,
           frameCalibration: settings.frame_calibration,
-          delayHit: undefined,
-          secondHit: undefined,
-          advanceHit: undefined,
+          delayHit: null,
+          secondHit: null,
+          advanceHit: null,
         };
         formik.setValues(updatedOpts);
       }

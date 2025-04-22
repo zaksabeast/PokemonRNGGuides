@@ -53,8 +53,8 @@ export type FormState = {
   sid: number;
   egg_species: Species;
   filter_shiny: boolean;
-  filter_nature: Nature | undefined;
-  filter_gender: Gender | undefined;
+  filter_nature: Nature | null;
+  filter_gender: Gender | null;
 };
 
 const initialValues: FormState = {
@@ -71,8 +71,8 @@ const initialValues: FormState = {
   sid: 0,
   egg_species: "Bulbasaur",
   filter_shiny: false,
-  filter_nature: undefined,
-  filter_gender: undefined,
+  filter_nature: null,
+  filter_gender: null,
 };
 
 const fields: Field[] = [

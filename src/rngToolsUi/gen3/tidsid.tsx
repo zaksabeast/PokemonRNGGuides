@@ -168,7 +168,7 @@ export const Gen3TidSidGenerator = ({ game = "rs" }: Props) => {
         initial_advances: opts.initial_advances,
         max_advances: opts.max_advances,
         version_options: versionOpts,
-        filter: denormalizeIdFilter(opts.filter) ?? undefined,
+        filter: denormalizeIdFilter(opts.filter),
       });
 
       setResults(results);

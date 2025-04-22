@@ -34,13 +34,13 @@ const columns: ResultColumn<GeneratorResult>[] = [
 type FormState = {
   seed: number;
   date: RngDate;
-  forced_second: number | undefined;
+  forced_second: number | null;
 };
 
 const initialValues: FormState = {
   seed: 0,
   date: rngDate(),
-  forced_second: undefined,
+  forced_second: null,
 };
 
 const fields: Field[] = [

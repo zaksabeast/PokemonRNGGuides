@@ -88,7 +88,7 @@ type FormikTimePickerProps<FormState extends GenericForm> = Omit<
   TimePickerProps,
   "onChange" | "value"
 > & {
-  name: GuaranteeFormNameType<FormState, RngTime | undefined>;
+  name: GuaranteeFormNameType<FormState, RngTime | null>;
   value?: RngTime;
   onChange?: (date: RngTime | null) => void;
 };
@@ -99,8 +99,8 @@ export const FormikTimePicker = <FormState extends GenericForm>({
   ...props
 }: FormikTimePickerProps<FormState>) => {
   const { values, setFieldValue } =
-    useFormikContext<Record<typeof name, RngTime | undefined>>();
-  const formTime: RngTime | undefined = values[name];
+    useFormikContext<Record<typeof name, RngTime | null>>();
+  const formTime: RngTime | null = values[name];
   const value = formTime == null ? null : fromRngTime(formTime);
 
   return (
@@ -170,7 +170,7 @@ type FormikDatePickerProps<FormState extends GenericForm> = Omit<
   DatePickerProps,
   "onChange" | "value"
 > & {
-  name: GuaranteeFormNameType<FormState, RngDate | undefined>;
+  name: GuaranteeFormNameType<FormState, RngDate | null>;
   value?: RngDate;
   onChange?: (date: RngDate | null) => void;
 };
@@ -183,15 +183,13 @@ export const FormikDatePicker = <FormState extends GenericForm>({
   ...props
 }: FormikDatePickerProps<FormState>) => {
   const { values, setFieldValue } =
-    useFormikContext<Record<typeof name, RngDate | undefined>>();
-  const formDate: RngDate | undefined = values[name];
+    useFormikContext<Record<typeof name, RngDate | null>>();
+  const formDate: RngDate | null = values[name];
   const dateValue = match({ allowClear, formDate })
-    .with({ formDate: P.not(undefined) }, (matched) =>
-      fromRngDate(matched.formDate),
-    )
-    .with({ allowClear: true, formDate: undefined }, () => null)
-    .with({ allowClear: P.not(P.nullish), formDate: undefined }, () => dayjs())
-    .with({ allowClear: undefined, formDate: undefined }, () => null)
+    .with({ formDate: P.not(null) }, (matched) => fromRngDate(matched.formDate))
+    .with({ allowClear: true, formDate: null }, () => null)
+    .with({ allowClear: P.not(P.nullish), formDate: null }, () => dayjs())
+    .with({ allowClear: undefined, formDate: null }, () => null)
     .exhaustive();
 
   return (

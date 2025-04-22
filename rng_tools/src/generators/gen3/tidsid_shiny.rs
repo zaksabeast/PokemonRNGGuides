@@ -84,7 +84,7 @@ fn generate_earliest_shiny_advance_by_htsv(initial_seed: u32) -> Vec<u32> {
 fn calculate_nearby_sids(tid_gen_adv:usize, tid:u16) -> Vec<u16> {
     let opts = Gen3TidSidOptions {
         version_options:Gen3TidSidVersionOptions::Frlge(FrlgeTidSidOptions { tid }),
-        offset: 60, //NO_PROD
+        offset: 0, //NO_PROD
         initial_advances: tid_gen_adv - TIMING_DISTR.len() / 2,
         max_advances: TIMING_DISTR.len() - 1,
         filter: None,
@@ -218,7 +218,7 @@ pub fn find_best_tid_gen_adv(seed:u32, tid_gen_adv_min:usize, tid_gen_adv_max:us
     }).collect();
 
     let mid = (TIMING_DISTR.len() - 1) / 2;
-    let mut avg_adv_by_tid_gen_adv_with_nearby:Vec<(usize, u32)> = avg_adv_by_tid_gen_adv.iter().enumerate().map(|(i,adv)|{
+    let mut avg_adv_by_tid_gen_adv_with_nearby:Vec<(usize, u32)> = avg_adv_by_tid_gen_adv.iter().enumerate().map(|(i,_adv)|{
         let mut sum:f64 = 0f64;
         for (j, prob) in TIMING_DISTR.iter().enumerate() {
             let ideal_idx = i as i32 - mid as i32 + j as i32;

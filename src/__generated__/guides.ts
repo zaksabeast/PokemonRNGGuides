@@ -2666,7 +2666,7 @@ export const guides = {
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
-      addedOn: null,
+      addedOn: "2025-04-23",
       file: "guides/Ruby and Sapphire/Wishing Star Jirachi.mdx",
       category: "Ruby and Sapphire",
       translations: null,

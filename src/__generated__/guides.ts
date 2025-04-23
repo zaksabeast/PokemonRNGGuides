@@ -2657,6 +2657,24 @@ export const guides = {
         import("~/../guides/Transporter/Transporter with Offline Patch.mdx"),
     ),
   },
+  "/wishing-star-jirachi": {
+    meta: {
+      title: "Wishing Star Jirachi RNG",
+      description:
+        "RNG a Wishing Star Jirachi with different IVs than Wishmaker",
+      slug: "/wishing-star-jirachi",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides/Ruby and Sapphire/Wishing Star Jirachi.mdx",
+      category: "Ruby and Sapphire",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Ruby and Sapphire/Wishing Star Jirachi.mdx"),
+    ),
+  },
   "/xdcolo-tidsid-generator": {
     meta: {
       title: "XD and Colo TID and SID Generator",
@@ -3212,6 +3230,7 @@ export const guideSlugs = [
   z.literal("/transporter-patches"),
   z.literal("/transporter-rng"),
   z.literal("/transporter-rng-offline"),
+  z.literal("/wishing-star-jirachi"),
   z.literal("/xdcolo-tidsid-generator"),
   z.literal("/xy-pokeradar"),
   z.literal("/zh-dppt-advance-rng"),

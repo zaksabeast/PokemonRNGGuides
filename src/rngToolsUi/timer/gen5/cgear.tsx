@@ -44,7 +44,7 @@ const initialValues: FormState = {
   targetDelay: 1200,
   targetSecond: 50,
   calibration: -95,
-  delayHit: undefined,
+  delayHit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -122,7 +122,7 @@ export const Gen5CGearTimer = () => {
           targetDelay: settings.target_delay,
           targetSecond: settings.target_second,
           calibration: settings.calibration,
-          delayHit: undefined,
+          delayHit: null,
         };
         formik.setValues(updatedOpts);
       }

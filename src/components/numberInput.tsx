@@ -2,13 +2,14 @@ import React from "react";
 import { Input } from "./input";
 import { capPrecision } from "~/utils/number";
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
-import { useFormikContext } from "formik";
-import { match } from "ts-pattern";
+import { useField } from "formik";
+import { match, P } from "ts-pattern";
+import { Tooltip } from "antd";
 
 const serializers = {
-  hex: (num: number | undefined) => num?.toString(16),
-  decimal: (num: number | undefined) => num?.toString(10),
-  float: (num: number | undefined) => num?.toString(10),
+  hex: (num: number | null) => num?.toString(16),
+  decimal: (num: number | null) => num?.toString(10),
+  float: (num: number | null) => num?.toString(10),
 };
 
 const deserializers = {
@@ -21,9 +22,12 @@ type NumberInputProps = {
   disabled?: boolean;
   fullFlex?: boolean;
   name?: string;
-  value?: number | undefined;
+  value?: number | null;
   numType: "hex" | "decimal" | "float";
-  onChange: (value: number | undefined) => void;
+  onChange: (value: number | null) => void;
+  errorMessage?: string;
+  textAlign?: "center";
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 };
 
 export const NumberInput = ({
@@ -45,7 +49,7 @@ export const NumberInput = ({
       setIsNegative(value.includes("-"));
 
       if (value.length === 0 || value === "-") {
-        onChange(undefined);
+        onChange(null);
         return;
       }
 
@@ -59,9 +63,9 @@ export const NumberInput = ({
   );
 
   const displayedValue = match({ value, isNegative })
-    .with({ value: undefined, isNegative: false }, () => "")
-    .with({ value: undefined, isNegative: true }, () => "-")
-    .otherwise((matched) => serialize(matched.value));
+    .with({ value: P.nullish, isNegative: false }, () => "")
+    .with({ value: P.nullish, isNegative: true }, () => "-")
+    .otherwise((matched) => serialize(matched.value ?? null));
 
   return (
     <Input {...props} name={name} onChange={_onChange} value={displayedValue} />
@@ -71,27 +75,38 @@ export const NumberInput = ({
 type FormikNumberInputProps<FormState extends GenericForm> = {
   disabled?: boolean;
   numType: "hex" | "decimal" | "float";
-  name: GuaranteeFormNameType<FormState, number | undefined>;
+  name: GuaranteeFormNameType<FormState, number | null>;
 };
 
 export const FormikNumberInput = <FormState extends GenericForm>({
   name,
   ...props
 }: FormikNumberInputProps<FormState>) => {
-  type Name = typeof name;
-  const { values, setFieldValue } =
-    useFormikContext<Record<Name, number | undefined>>();
-
-  const value = values[name];
+  const [{ value, onBlur }, { error, touched }, { setValue }] = useField<
+    number | null
+  >(name);
 
   const onChange = React.useCallback(
-    (value: number | undefined) => {
-      setFieldValue(name, value);
+    (value: number | null) => {
+      setValue(value);
     },
-    [setFieldValue, name],
+    [setValue],
   );
 
   return (
-    <NumberInput {...props} name={name} onChange={onChange} value={value} />
+    <Tooltip
+      title={touched && error ? error : undefined}
+      placement="top"
+      color="red"
+    >
+      <NumberInput
+        {...props}
+        name={name}
+        errorMessage={error}
+        onBlur={onBlur}
+        onChange={onChange}
+        value={value}
+      />
+    </Tooltip>
   );
 };

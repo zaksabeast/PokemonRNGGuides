@@ -14,6 +14,8 @@ import {
   PokeRadarPatch,
 } from "~/rngTools";
 import { PokeRadarPatches } from "./patch";
+import { z } from "zod";
+import { HexSchema } from "~/utils/number";
 
 type ChainResult = {
   WithChain: PokeRadarChainState[];
@@ -77,18 +79,20 @@ const noChainColumns: ResultColumn<LooseColumns>[] = [
   },
 ];
 
-export type FormState = {
-  state3: number;
-  state2: number;
-  state1: number;
-  state0: number;
-  party_count: number;
-  initial_advances: number;
-  max_advances: number;
-  chain: number;
-  bonus_music: boolean;
-  filter_shiny: boolean;
-};
+const Validator = z.object({
+  state3: HexSchema(0xffffffff),
+  state2: HexSchema(0xffffffff),
+  state1: HexSchema(0xffffffff),
+  state0: HexSchema(0xffffffff),
+  party_count: z.number().int().min(1).max(6),
+  initial_advances: z.number().int().min(0),
+  max_advances: z.number().int().min(0),
+  chain: z.number().int().min(0),
+  bonus_music: z.boolean(),
+  filter_shiny: z.boolean(),
+});
+
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   state3: 0,
@@ -169,7 +173,7 @@ export const XyPokeRadar = () => {
       chain: opts.chain,
       bonus_music: opts.bonus_music,
       filter_shiny: opts.filter_shiny,
-      filter_slot: undefined,
+      filter_slot: null,
     });
 
     setResults(results);
@@ -182,6 +186,7 @@ export const XyPokeRadar = () => {
         columns={results.NoChain == null ? withChainColumns : noChainColumns}
         results={results.NoChain == null ? results.WithChain : results.NoChain}
         initialValues={initialValues}
+        validationSchema={Validator}
         onSubmit={onSubmit}
         onClickResultRow={
           results.NoChain == null

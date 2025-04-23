@@ -46,7 +46,7 @@ const defaultValues: FormState = {
   calibratedSeconds: 14,
   targetDelay: 600,
   targetSeconds: 50,
-  delayHit: undefined,
+  delayHit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -134,7 +134,7 @@ export const Gen4Timer = () => {
           calibratedSeconds: settings.calibrated_second,
           targetDelay: settings.target_delay,
           targetSeconds: settings.target_second,
-          delayHit: undefined,
+          delayHit: null,
         };
         formik.setValues(updatedOpts);
       }

@@ -2,11 +2,12 @@ import {
   Input as AntdInput,
   InputProps as AntdInputProps,
   InputRef,
+  Tooltip,
 } from "antd";
 import React from "react";
 import styled from "@emotion/styled";
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
-import { useFormikContext } from "formik";
+import { useField } from "formik";
 import * as tst from "ts-toolbelt";
 
 const InputContainer = styled.div<{ fullFlex?: boolean; textAlign?: "center" }>(
@@ -23,6 +24,14 @@ const InputContainer = styled.div<{ fullFlex?: boolean; textAlign?: "center" }>(
       paddingTop: 0,
       textAlign,
     },
+    ".ant-input-outlined.ant-input-status-error": {
+      borderTop: "none",
+      borderLeft: "none",
+      borderRight: "none",
+      ":focus": {
+        boxShadow: "none",
+      },
+    },
     ".ant-input-group-addon": {
       fontSize: 18,
       backgroundColor: "unset",
@@ -37,6 +46,7 @@ type InputProps = tst.O.Merge<
     fullFlex?: boolean;
     autoFocus?: boolean;
     textAlign?: "center";
+    errorMessage?: string;
   },
   AntdInputProps
 >;
@@ -45,9 +55,13 @@ export const Input = ({
   fullFlex,
   autoFocus,
   textAlign,
+  status,
+  errorMessage,
   ...props
 }: InputProps) => {
   const inputRef = React.useRef<InputRef>(null);
+
+  const _status = (status ?? errorMessage != null) ? "error" : undefined;
 
   React.useEffect(() => {
     if (autoFocus && inputRef.current != null) {
@@ -57,7 +71,15 @@ export const Input = ({
 
   return (
     <InputContainer fullFlex={fullFlex} textAlign={textAlign}>
-      <AntdInput size="large" ref={inputRef} autoComplete="off" {...props} />
+      <Tooltip color="red" title={errorMessage} placement="top">
+        <AntdInput
+          size="large"
+          ref={inputRef}
+          autoComplete="off"
+          {...props}
+          status={_status}
+        />
+      </Tooltip>
     </InputContainer>
   );
 };
@@ -67,16 +89,19 @@ type FormikInputProps<FormState extends GenericForm> = tst.O.Merge<
   { name: GuaranteeFormNameType<FormState, string> }
 >;
 
-export const FormikInput = <FormState extends GenericForm>(
-  props: FormikInputProps<FormState>,
-) => {
-  type Name = (typeof props)["name"];
-  const formik = useFormikContext<Record<Name, string>>();
+export const FormikInput = <FormState extends GenericForm>({
+  name,
+  ...props
+}: FormikInputProps<FormState>) => {
+  const [{ value, onBlur, onChange }, { error }] = useField<string>(name);
   return (
     <Input
       {...props}
-      onChange={formik.handleChange}
-      value={formik.values[props.name]}
+      name={name}
+      errorMessage={error}
+      onBlur={onBlur}
+      onChange={onChange}
+      value={value}
     />
   );
 };

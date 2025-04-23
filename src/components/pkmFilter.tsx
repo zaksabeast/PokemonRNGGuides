@@ -3,30 +3,41 @@ import { Field } from "~/components/formFieldTable";
 import { FormikSwitch } from "~/components/switch";
 import { FormikSelect } from "~/components/select";
 import { nature } from "~/types/nature";
-import { IvInput } from "~/components/ivInput";
+import { IvInput, IvSchema } from "~/components/ivInput";
 import { ability } from "~/types/ability";
 import { gender } from "~/types/gender";
+import { z } from "zod";
+import * as tst from "ts-toolbelt";
 
-export const natureOptions = ([undefined, ...nature] as const).map((nat) => ({
+export const natureOptions = ([null, ...nature] as const).map((nat) => ({
   label: nat ?? "None",
   value: nat,
 }));
 
-export const abilityOptions = ([undefined, ...ability] as const).map(
-  (abil) => ({
-    label: abil ?? "None",
-    value: abil,
-  }),
-);
+export const abilityOptions = ([null, ...ability] as const).map((abil) => ({
+  label: abil ?? "None",
+  value: abil,
+}));
 
-export const genderOptions = ([undefined, ...gender] as const).map((gen) => ({
+export const genderOptions = ([null, ...gender] as const).map((gen) => ({
   label: gen ?? "None",
   value: gen,
 }));
 
 export type PkmFilterFields = {
-  [Key in keyof PkmFilter as `filter_${Key}`]: PkmFilter[Key];
+  [Key in keyof PkmFilter as `filter_${Key}`]: undefined extends PkmFilter[Key]
+    ? tst.U.Exclude<PkmFilter[Key], undefined> | null
+    : PkmFilter[Key];
 };
+
+export const pkmFilterSchema = z.object({
+  filter_shiny: z.boolean(),
+  filter_nature: z.enum(nature).nullable(),
+  filter_ability: z.enum(ability).nullable(),
+  filter_gender: z.enum(gender).nullable(),
+  filter_min_ivs: IvSchema,
+  filter_max_ivs: IvSchema,
+}) satisfies z.Schema<PkmFilterFields>;
 
 const _getPkmFilterFields = (): Field[] => [
   {

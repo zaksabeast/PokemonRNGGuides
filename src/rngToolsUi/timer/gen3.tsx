@@ -42,7 +42,7 @@ const initialValues: FormState = {
   preTimer: 5000,
   targetFrame: 1000,
   calibration: 0.0,
-  frameHit: undefined,
+  frameHit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -112,7 +112,7 @@ export const Gen3Timer = () => {
           preTimer: settings.pre_timer,
           targetFrame: settings.target_frame,
           calibration: settings.calibration,
-          frameHit: undefined,
+          frameHit: null,
         };
         formik.setValues(updatedOpts);
       }

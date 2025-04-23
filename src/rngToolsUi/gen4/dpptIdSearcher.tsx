@@ -8,7 +8,8 @@ import {
   FormikIdFilter,
 } from "~/components";
 import { rngTools, Id4 } from "~/rngTools";
-import { denormalizeIdFilterOrDefault, IdFilter } from "~/types/id";
+import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
+import { z } from "zod";
 
 const columns: ResultColumn<Id4>[] = [
   {
@@ -35,12 +36,14 @@ const columns: ResultColumn<Id4>[] = [
   },
 ];
 
-type FormState = {
-  year: number;
-  min_delay: number;
-  max_delay: number;
-  filter: IdFilter;
-};
+const Validator = z.object({
+  year: z.number().int().min(2000),
+  min_delay: z.number().int().min(0),
+  max_delay: z.number().int().min(0),
+  filter: IdFilterSchema,
+});
+
+type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   year: 2000,
@@ -49,7 +52,7 @@ const initialValues: FormState = {
   filter: {
     type: "tid",
     value0: 0,
-    value1: undefined,
+    value1: null,
   },
 };
 
@@ -90,6 +93,7 @@ export const DpptIdSearcher = () => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="search_dppt_id"
     />

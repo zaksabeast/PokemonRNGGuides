@@ -8,17 +8,12 @@ import {
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import {
-  rngTools,
-  Gen3HeldEgg,
-  Nature,
-  Compatability,
-  Species,
-  Gender,
-} from "~/rngTools";
-import { gen3Species } from "~/types/species";
+import { rngTools, Gen3HeldEgg } from "~/rngTools";
+import { gen3Species, species } from "~/types/species";
 import { nature } from "~/types/nature";
+import { gender } from "~/types/gender";
 import { genderOptions, natureOptions } from "~/components/pkmFilter";
+import { z } from "zod";
 
 const columns: ResultColumn<Gen3HeldEgg>[] = [
   { title: "Advance", dataIndex: "advance" },
@@ -39,23 +34,25 @@ const columns: ResultColumn<Gen3HeldEgg>[] = [
   { title: "Ability", dataIndex: "ability" },
 ];
 
-export type FormState = {
-  delay: number;
-  initial_advances: number;
-  max_advances: number;
-  female_has_everstone: boolean;
-  female_nature: Nature;
-  calibration: number;
-  min_redraw: number;
-  max_redraw: number;
-  compatability: Compatability;
-  tid: number;
-  sid: number;
-  egg_species: Species;
-  filter_shiny: boolean;
-  filter_nature: Nature | undefined;
-  filter_gender: Gender | undefined;
-};
+const Validator = z.object({
+  delay: z.number().int().min(0),
+  initial_advances: z.number().int().min(0),
+  max_advances: z.number().int().min(0),
+  female_has_everstone: z.boolean(),
+  female_nature: z.enum(nature),
+  calibration: z.number().int().min(0),
+  min_redraw: z.number().int().min(0),
+  max_redraw: z.number().int().min(0),
+  compatability: z.enum(["DontLikeEachOther", "GetAlong", "GetAlongVeryWell"]),
+  tid: z.number().int().min(0).max(65535),
+  sid: z.number().int().min(0).max(65535),
+  egg_species: z.enum(species),
+  filter_shiny: z.boolean(),
+  filter_nature: z.enum(nature).nullable(),
+  filter_gender: z.enum(gender).nullable(),
+});
+
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   delay: 0,
@@ -71,8 +68,8 @@ const initialValues: FormState = {
   sid: 0,
   egg_species: "Bulbasaur",
   filter_shiny: false,
-  filter_nature: undefined,
-  filter_gender: undefined,
+  filter_nature: null,
+  filter_gender: null,
 };
 
 const fields: Field[] = [
@@ -220,6 +217,7 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       formContainerId="emerald_held_egg_form"
       submitTrackerId="generate_emerald_held_egg"

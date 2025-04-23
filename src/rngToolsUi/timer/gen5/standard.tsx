@@ -46,7 +46,7 @@ const initialValues: FormState = {
   minTimeMs: 14000,
   targetSecond: 50,
   calibration: -95,
-  secondHit: undefined,
+  secondHit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -117,7 +117,7 @@ export const Gen5StandardTimer = () => {
           minTimeMs: settings.min_time_ms,
           targetSecond: settings.target_second,
           calibration: settings.calibration,
-          secondHit: undefined,
+          secondHit: null,
         };
         formik.setValues(updatedOpts);
       }

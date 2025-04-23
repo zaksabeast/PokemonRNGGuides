@@ -749,7 +749,10 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Static RNG.mdx",
       category: "FireRed and LeafGreen",
-      translations: { en: "/emulator-flrg-stationary-and-gift", zh: "/zh-emulator-flrg-stationary-and-gift" },
+      translations: {
+        en: "/emulator-flrg-stationary-and-gift",
+        zh: "/zh-emulator-flrg-stationary-and-gift",
+      },
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
@@ -2700,7 +2703,10 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Static RNG.mdx",
       category: "FireRed and LeafGreen",
-      translations: { en: "/emulator-flrg-stationary-and-gift", zh: "/zh-emulator-flrg-stationary-and-gift" },
+      translations: {
+        en: "/emulator-flrg-stationary-and-gift",
+        zh: "/zh-emulator-flrg-stationary-and-gift",
+      },
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),

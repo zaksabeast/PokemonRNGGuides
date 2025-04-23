@@ -749,7 +749,7 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Static RNG.mdx",
       category: "FireRed and LeafGreen",
-      translations: null,
+      translations: { en: "/emulator-flrg-stationary-and-gift", zh: "/zh-emulator-flrg-stationary-and-gift" },
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
@@ -2689,6 +2689,23 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/PokeRadar.mdx")),
   },
+  "/zh-emulator-flrg-stationary-and-gift": {
+    meta: {
+      title: "固定宝可梦乱数",
+      description: "在《火红·叶绿》中获取闪光六项个体值的传说宝可梦",
+      slug: "/zh-emulator-flrg-stationary-and-gift",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/FireRed and LeafGreen/Static RNG.mdx",
+      category: "FireRed and LeafGreen",
+      translations: { en: "/emulator-flrg-stationary-and-gift", zh: "/zh-emulator-flrg-stationary-and-gift" },
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
+    ),
+  },
   "/zh-dppt-advance-rng": {
     meta: {
       title: "乱数的帧数推进方法",
@@ -3213,6 +3230,7 @@ export const guideSlugs = [
   z.literal("/transporter-rng-offline"),
   z.literal("/xdcolo-tidsid-generator"),
   z.literal("/xy-pokeradar"),
+  z.literal("/zh-emulator-flrg-stationary-and-gift"),
   z.literal("/zh-dppt-advance-rng"),
   z.literal("/zh-dppt-initial-seed"),
   z.literal("/zh-dppt-pokeradar-rng"),

@@ -1,15 +1,24 @@
 use crate::generators::gen3::{FrlgeTidSidOptions, Gen3TidSidVersionOptions, Gen3TidSidOptions, gen3_tidsid_states};
 use crate::rng::lcrng::Pokerng;
 use crate::rng::Rng;
+use crate::{gen3_psv, gen3_tsv};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
-/// Glossary
-///   htsv: high-bits-trainer-shiny-value which is (TID xor SID) >> 3
-///   tid_gen_adv: the number of advances for TID/SID generation for Gen3TidSidOptions (advance between selecting the player name, and entering the map)
-///   nearby_sids: the list of possible SIDs given the tid_gen_adv and TID obtained, assuming the player hit near its target advance (within TIMING_DISTR / 2 advances).
-///   earliest_shiny_adv: Given a TID and SID, the earliest advance to obtain a shiny starter with Method 1
+/// ---------------------------------------------------------------------------------------------------------------------------
+/// Gist:
+/// To determine SID, the player inputs the advances used for TID/SID generation (tid_gen_adv), and the obtained TID. 
+/// The output is the list of possible SIDs (nearby_sids).
+/// To verify which of those possible SIDs is the correct one, the player attempts to obtain a shiny Pokemon for each SID,
+/// by using Method 1 with the earliest advances to obtain a shiny starter (earliest_shiny_adv).
+/// 
+/// Optimization 1: The time to validate if a SID is the correct one is very variable (depending on earliest_shiny_adv). 
+/// In some cases, it is faster to generate a new TID and new list of possible SIDs, rather than testing the first possible SIDs.
+/// 
+/// Optimization 2: Using a tid_gen_adv that results in the smallest average time to determine the SID.
+/// ---------------------------------------------------------------------------------------------------------------------------
+
 
 /// TIMING_DISTR[index] is the probability that when trying to get advance X, the actual hit frame is X + 4 - index
 /// ex: target is 1000, TIMING_DISTR is [4% chance that hit advance is 996, 8%: 997, 12%: 998, 16%: 999, 20%: 1000, 16%: 1001, 12%: 1002, 8%: 1003, 4%:1004]
@@ -51,34 +60,35 @@ pub struct Gen3EarliestShinyForNearbySid {
     pub earliest_shiny_adv:u32,
 }
 
-/// Returns a vec associating each possible htsv with earliest shiny advance.
+/// Returns a vec associating each possible tsv with earliest shiny advance.
 /// ex: vec[0b11] = 12345 means that for player with TID xor SID == 0b00000000_00011***, the earliest shiny advance is 12345
-fn generate_earliest_shiny_advance_by_htsv(initial_seed: u32) -> Vec<u32> {
+fn generate_earliest_shiny_advance_by_tsv(initial_seed: u32) -> Vec<u32> {
     const EARLIEST_VALID_ADVANCE: u32 = 600; // for RSE starter
-    let mut earliest_adv_by_htsv = vec![0u32; 0x10000 >> 3];
+    let mut earliest_adv_by_tsv = vec![0u32; 0x10000 >> 3];
 
-    let mut unmatched_count: usize = earliest_adv_by_htsv.len();
+    let mut unmatched_count: usize = earliest_adv_by_tsv.len();
     let mut pid_rng = Pokerng::new(initial_seed);
     pid_rng.advance((EARLIEST_VALID_ADVANCE) as usize);
     for pid_rng_adv in EARLIEST_VALID_ADVANCE..1_000_000 {
         // 1_000_000 to avoid infinite loop in case of bug
-        let pid_high = pid_rng.rand::<u16>();
-        let pid_low: u16 = pid_rng.clone().rand::<u16>();
-        let tsv = pid_high ^ pid_low;
-        let htsv = tsv >> 3;
-        let old_value = earliest_adv_by_htsv[htsv as usize];
+        let pid_high = pid_rng.rand::<u16>() as u32;
+        let pid_low = pid_rng.clone().rand::<u16>() as u32;
+        let tsv = gen3_psv((pid_high << 16) | pid_low);
+        
+        let old_value = earliest_adv_by_tsv[tsv as usize];
+        
         if old_value != 0 {
             continue;
         } // another earlier advance exists
 
-        earliest_adv_by_htsv[htsv as usize] = pid_rng_adv;
+        earliest_adv_by_tsv[tsv as usize] = pid_rng_adv;
         unmatched_count -= 1;
         if unmatched_count == 0 {
             break;
         } // all were matched
     }
 
-    earliest_adv_by_htsv
+    earliest_adv_by_tsv
 }
 
 fn calculate_nearby_sids(tid_gen_adv:usize, tid:u16) -> Vec<u16> {
@@ -98,24 +108,24 @@ fn calculate_nearby_sids(tid_gen_adv:usize, tid:u16) -> Vec<u16> {
 fn calculate_earliest_shiny_for_nearby_sids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize, tid:u16) -> Vec<Gen3EarliestShinyForNearbySid> {
     let nearby_sids = calculate_nearby_sids(tid_gen_adv, tid);
 
-    nearby_sids.iter().map(|sid|{
-        let htsv = (tid ^ sid) >> 3;
-        let earliest_shiny_adv = earliest_shiny_advance_by_tsv[htsv as usize];
+    nearby_sids.into_iter().map(|sid|{
+        let tsv = gen3_tsv(tid, sid);
+        let earliest_shiny_adv = earliest_shiny_advance_by_tsv[tsv as usize];
         Gen3EarliestShinyForNearbySid { 
-            sid:*sid, 
+            sid, 
             earliest_shiny_adv
         }
     }).collect()    
 }
 
 fn calculate_avg_adv_for_nearby_sids_prob_by_adv(earliest_shiny_advs:&Vec<u32>) -> Vec<(u32, f64)> {
-    // It's possible that multiple sids share the same htsv, meaning both sids share
+    // It's possible that multiple sids share the same tsv, meaning both sids share
     // the same earliest_shiny_adv (ex: the earliest shiny for both sid 160 and sid 166 is advance 1234). 
     // In that case, by catching a pokemon on advance 1234, the player tests 2 sids at the same time, which is a lot faster.
     // I assume the player will attempt to do both sids simulatenously if their target advances are very close (+- 2 advances)
     const MERGE_MAX_DIFF:u32 = 2;
     let mut prob_by_adv:Vec<(u32, f64)> = vec![];
-    for (i, adv1) in earliest_shiny_advs.iter().enumerate() {
+    for (i, adv1) in earliest_shiny_advs.into_iter().enumerate() {
         let prob1 = TIMING_DISTR[i];
         let merge_with = prob_by_adv.iter_mut().find(|(adv2, _prob2)|{
             adv2.abs_diff(*adv1) <= MERGE_MAX_DIFF
@@ -162,7 +172,7 @@ fn calculate_avg_adv_for_nearby_sids(earliest_shiny_advs_by_nearby_sid:&Vec<u32>
 
 /// Returns a Gen3TidSidShinyResult for each possible TID. Their percentile is not initialized yet.
 fn calculate_tidsid_shiny_result_for_all_tids(seed:u32, tid_gen_adv:usize) -> Vec<Gen3TidSidShinyResult> {
-    let earliest_shiny_advance_by_tsv = generate_earliest_shiny_advance_by_htsv(seed);
+    let earliest_shiny_advance_by_tsv = generate_earliest_shiny_advance_by_tsv(seed);
 
     (0..=0xFFFF).into_iter().map(|tid|{
         let nearby_sids = calculate_earliest_shiny_for_nearby_sids(&earliest_shiny_advance_by_tsv, tid_gen_adv, tid);
@@ -249,7 +259,7 @@ mod test {
     #[test]
     fn all_tsv_have_non_zero_method_1_adv() {
         for initial_seed in vec![0u32, 0x5A0u32] {
-            let earliest_adv_by_tsv = generate_earliest_shiny_advance_by_htsv(initial_seed);
+            let earliest_adv_by_tsv = generate_earliest_shiny_advance_by_tsv(initial_seed);
             for tsv in 0..=(0xFFFFusize >> 3) {
                 assert_ne!(earliest_adv_by_tsv[tsv], 0);
             }
@@ -257,8 +267,8 @@ mod test {
     }    
 
     #[test]
-    fn test_generate_earliest_shiny_advance_by_htsv() {
-        let earliest_adv_by_tsv = generate_earliest_shiny_advance_by_htsv(0);
+    fn test_generate_earliest_shiny_advance_by_tsv() {
+        let earliest_adv_by_tsv = generate_earliest_shiny_advance_by_tsv(0);
         assert_eq!(earliest_adv_by_tsv[0 >> 3], 2763);
         assert_eq!(earliest_adv_by_tsv[8 >> 3], 9547);
         assert_eq!(earliest_adv_by_tsv[2568 >> 3], 811);
@@ -266,7 +276,7 @@ mod test {
     
     #[test]
     fn test_gen3_advs_shiny_nearby_sids() {
-        let earliest_adv_by_tsv = generate_earliest_shiny_advance_by_htsv(0);
+        let earliest_adv_by_tsv = generate_earliest_shiny_advance_by_tsv(0);
         let sids = calculate_earliest_shiny_for_nearby_sids(&earliest_adv_by_tsv, 1000, 0);
         assert_list_eq!(sids, vec![
             Gen3EarliestShinyForNearbySid { sid: 37330, earliest_shiny_adv: 2516 }, 

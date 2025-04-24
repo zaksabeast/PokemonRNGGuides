@@ -749,7 +749,10 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Static RNG.mdx",
       category: "FireRed and LeafGreen",
-      translations: null,
+      translations: {
+        en: "/emulator-flrg-stationary-and-gift",
+        zh: "/zh-emulator-flrg-stationary-and-gift",
+      },
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
@@ -2879,6 +2882,30 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
   },
+  "/zh-emulator-flrg-stationary-and-gift": {
+    meta: {
+      title: "固定宝可梦乱数",
+      description: "在《火红·叶绿》中获取闪光六项个体值的传说宝可梦",
+      slug: "/zh-emulator-flrg-stationary-and-gift",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/emulator-flrg-stationary-and-gift",
+        language: "zh",
+      },
+      file: "guides/FireRed and LeafGreen/Static RNG.mdx",
+      category: "FireRed and LeafGreen",
+      translations: {
+        en: "/emulator-flrg-stationary-and-gift",
+        zh: "/zh-emulator-flrg-stationary-and-gift",
+      },
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
+    ),
+  },
   "/zh-emulator-hgss-egg": {
     meta: {
       title: "孵化乱数",
@@ -3242,6 +3269,7 @@ export const guideSlugs = [
   z.literal("/zh-emerald-painting-rng"),
   z.literal("/zh-emerald-sid-feebas"),
   z.literal("/zh-emulator-emerald-egg"),
+  z.literal("/zh-emulator-flrg-stationary-and-gift"),
   z.literal("/zh-emulator-hgss-egg"),
   z.literal("/zh-frlg-gen3-sid"),
   z.literal("/zh-frlg-seeding-bot"),

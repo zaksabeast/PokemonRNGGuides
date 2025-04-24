@@ -1,6 +1,7 @@
 import React from "react";
 import { Flex, MultiTimer } from "~/components";
 import { FindTargetAdvance } from "./findTarget";
+import { GenerateTidSid } from "./generateTidSid";
 import { CaughtMon } from "./caughtMon";
 import { FormFieldTable } from "../../../components/formFieldTable";
 import { Field } from "~/components";
@@ -25,9 +26,10 @@ const calculateMillis = (
 
 type Props = {
   game: Game;
+  children:React.ReactNode[];
 };
 
-export const ShinyStarter = ({ game }: Props) => {
+export const ShinyStarter = ({ game, children }: Props) => {
   const [targetAdvance, setTargetAdvance] = React.useState(0);
   const [hitAdvance, setHitAdvance] = React.useState(0);
 
@@ -43,7 +45,7 @@ export const ShinyStarter = ({ game }: Props) => {
       input: <>{targetAdvance}</>
     }, {
       label: "Last hit advance",
-      input: hitAdvance === 0 ? "-" : ( //NO_PROD === 0
+      input: hitAdvance === 0 ? "-" : (
         <>
           {hitAdvance} ({hitAdvance >= targetAdvance ? '+' : ''}{hitAdvance - targetAdvance})
           <Button type="text" color="Red" trackerId="clear_last_hit_advance" onClick={() => setHitAdvance(0)}>
@@ -56,6 +58,7 @@ export const ShinyStarter = ({ game }: Props) => {
 
   return (
     <Flex gap={16} vertical>
+      <GenerateTidSid {...{game}} />
       <FindTargetAdvance 
         game={game}
         setTargetAdvance={(val) => {
@@ -63,7 +66,7 @@ export const ShinyStarter = ({ game }: Props) => {
           setHitAdvance(0);
         }}
       />
-
+      {children}
       <FormFieldTable fields={fields} />
       <MultiTimer
         {...{ minutesBeforeTarget, milliseconds }}

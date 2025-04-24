@@ -50,7 +50,10 @@ const AVG_ATTEMPT_TO_HIT_TARGET:f64 = 1f64 / TIMING_DISTR[(TIMING_DISTR.len() - 
 pub struct Gen3TidSidShinyResult {
     pub avg_adv_to_determine_sid_percentile:u8,
     pub avg_adv_to_determine_sid:u32,
-    pub nearby_sids:Vec<Gen3EarliestShinyForNearbySid>
+    pub nearby_sids:Vec<Gen3EarliestShinyForNearbySid>,
+    pub avg_adv_to_improve_tid:u32,
+    pub avg_adv_if_improved:u32,
+    pub should_improve_tid:bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -68,7 +71,7 @@ fn generate_earliest_shiny_advance_by_tsv(initial_seed: u32) -> Vec<u32> {
 
     let mut unmatched_count: usize = earliest_adv_by_tsv.len();
     let mut pid_rng = Pokerng::new(initial_seed);
-    pid_rng.advance((EARLIEST_VALID_ADVANCE) as usize);
+    pid_rng.advance(EARLIEST_VALID_ADVANCE as usize);
     for pid_rng_adv in EARLIEST_VALID_ADVANCE..1_000_000 {
         // 1_000_000 to avoid infinite loop in case of bug
         let pid_high = pid_rng.rand::<u16>() as u32;
@@ -179,9 +182,12 @@ fn calculate_tidsid_shiny_result_for_all_tids(seed:u32, tid_gen_adv:usize) -> Ve
         let earliest_shiny_advs_by_nearby_sid = nearby_sids.iter().map(|r|{ r.earliest_shiny_adv }).collect();
         let avg_adv_to_determine_sid = calculate_avg_adv_for_nearby_sids(&earliest_shiny_advs_by_nearby_sid);
         Gen3TidSidShinyResult {
-            avg_adv_to_determine_sid_percentile:0, // not init yet
             avg_adv_to_determine_sid,
             nearby_sids,
+            avg_adv_to_determine_sid_percentile:0, // not init yet
+            avg_adv_to_improve_tid:0,
+            avg_adv_if_improved:0,
+            should_improve_tid:false,
         }
     }).collect()
 }
@@ -196,14 +202,32 @@ pub fn gen3_calculate_tidsid_shiny_for_tid(seed:u32, tid_gen_adv:usize, tid:u16)
     let res_by_tid = calculate_tidsid_shiny_result_for_all_tids(seed, tid_gen_adv);
     let mut res_for_tid = res_by_tid[tid as usize].clone();
     
-    let mut worse_than_count:usize = 0;
+    let mut better_tid_count:usize = 0;
+    let mut sum_avg_adv_for_better_tid:usize = 0;
     for res in res_by_tid.iter() {
-        let is_worse = res_for_tid.avg_adv_to_determine_sid > res.avg_adv_to_determine_sid;
-        if is_worse {
-            worse_than_count += 1;
+        let other_tid_if_better_than_current_tid = res.avg_adv_to_determine_sid < res_for_tid.avg_adv_to_determine_sid;
+        if other_tid_if_better_than_current_tid {
+            better_tid_count += 1;
+            sum_avg_adv_for_better_tid += res.avg_adv_to_determine_sid as usize;
         }
     }
-    res_for_tid.avg_adv_to_determine_sid_percentile = ((worse_than_count * 100) / res_by_tid.len()) as u8;
+    res_for_tid.avg_adv_to_determine_sid_percentile = ((better_tid_count * 100) / res_by_tid.len()) as u8;
+
+    if better_tid_count == 0 {
+        better_tid_count = 1;
+    }
+
+    const MIN_EXPECTED_IMPROV_FOR_RETRY:u32 = 60 * 60 * 2; // must save 2 minutes
+    const RETRY_OVERHEAD_ADV:usize = 1000;
+    let adv_for_each_retry = tid_gen_adv + RETRY_OVERHEAD_ADV;
+    let avg_retry_count_to_improve = 0x10000 / better_tid_count;
+
+    let avg_avg_adv_for_better_tid = sum_avg_adv_for_better_tid / better_tid_count;
+
+    res_for_tid.avg_adv_to_improve_tid = (avg_retry_count_to_improve * adv_for_each_retry) as u32;
+    res_for_tid.avg_adv_if_improved = avg_avg_adv_for_better_tid as u32;
+    // Approximatively, should_improve_tid is true if avg_adv_to_determine_sid_percentile >= 15
+    res_for_tid.should_improve_tid = res_for_tid.avg_adv_to_improve_tid + res_for_tid.avg_adv_if_improved + MIN_EXPECTED_IMPROV_FOR_RETRY < res_for_tid.avg_adv_to_determine_sid;
     res_for_tid
 }
 
@@ -326,9 +350,20 @@ mod test {
         let res = gen3_calculate_tidsid_shiny_for_tid(0, 1000, 11);
         assert_eq!(res.avg_adv_to_determine_sid, 177737);
         assert_eq!(res.avg_adv_to_determine_sid_percentile, 88);
-        
-        let res = gen3_calculate_tidsid_shiny_for_tid(0, 1000, 12);
-        assert_eq!(res.avg_adv_to_determine_sid, 145510);
-        assert_eq!(res.avg_adv_to_determine_sid_percentile, 72);
+        assert_eq!(res.avg_adv_if_improved, 113725);
+        assert_eq!(res.avg_adv_to_improve_tid, 2000);
+        assert_eq!(res.should_improve_tid, true);
+
+        let res = gen3_calculate_tidsid_shiny_for_tid(0, 1000, 13564);
+        assert_eq!(res.avg_adv_to_determine_sid, 22431);
+        assert_eq!(res.avg_adv_to_determine_sid_percentile, 0);
+        assert_eq!(res.should_improve_tid, false);
+
+        let res = gen3_calculate_tidsid_shiny_for_tid(0, 1000, 4);
+        assert_eq!(res.avg_adv_to_determine_sid, 78367);
+        assert_eq!(res.avg_adv_if_improved, 65847);
+        assert_eq!(res.avg_adv_to_improve_tid, 16000);
+        assert_eq!(res.should_improve_tid, false);
     }
+
 }

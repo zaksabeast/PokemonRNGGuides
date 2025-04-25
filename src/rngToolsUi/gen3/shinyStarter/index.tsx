@@ -58,8 +58,7 @@ export const ShinyStarter = ({ game, children }: Props) => {
 
   return (
     <Flex gap={16} vertical>
-      <GenerateTidSid {...{game}} />
-      <FindTargetAdvance 
+      <FindTargetAdvance
         game={game}
         setTargetAdvance={(val) => {
           setTargetAdvance(val);

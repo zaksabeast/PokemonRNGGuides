@@ -8,16 +8,38 @@ use wasm_bindgen::prelude::*;
 
 /// ---------------------------------------------------------------------------------------------------------------------------
 /// Gist:
-/// To determine SID, the player inputs the advances used for TID/SID generation (tid_gen_adv), and the obtained TID. 
+/// To determine SID, the player inputs the advances used for TID/SID generation (tid_gen_adv), and the obtained TID.
 /// The output is the list of possible SIDs (nearby_sids).
 /// To verify which of those possible SIDs is the correct one, the player attempts to obtain a shiny Pokemon for each SID,
 /// by using Method 1 with the earliest advances to obtain a shiny starter (earliest_shiny_adv).
-/// 
-/// Optimization 1: The time to validate if a SID is the correct one is very variable (depending on earliest_shiny_adv). 
-/// In some cases, it is faster to generate a new TID and new list of possible SIDs, rather than testing the first possible SIDs.
-/// 
-/// Optimization 2: Using a tid_gen_adv that results in the smallest average time to determine the SID.
+///
+/// Optimization 1: The time to validate if a SID is the correct one is very variable (depending on earliest_shiny_adv).
+/// In some cases, it is faster to generate a new TID and new list of possible SIDs, rather than testing the possible
+/// SIDs of the first obtained TID.
+///
+/// Optimization 2: Using a tid_gen_adv that results in the smallest average time to determine the correct SID.
+/// The ideal tid_gen_adv is 1505, with an averge time of 124902 advances to determine the correct SID.
 /// ---------------------------------------------------------------------------------------------------------------------------
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen3TidSidShinyResult {
+    pub tid:u16, //NO_PROD
+    pub avg_adv_to_determine_sid_percentile:u8,
+    pub avg_adv_to_determine_sid:u32,
+    pub nearby_sids:Vec<Gen3NearbySid>,
+    pub avg_adv_to_improve_tid:u32,
+    pub avg_adv_if_improved:u32,
+    pub should_improve_tid:bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen3NearbySid {
+    pub tid_gen_adv:u32,
+    pub sid:u16,
+    pub earliest_shiny_adv:u32,
+}
 
 
 /// TIMING_DISTR[index] is the probability that when trying to get advance X, the actual hit frame is X + 4 - index
@@ -25,7 +47,7 @@ use wasm_bindgen::prelude::*;
 const TIMING_DISTR:[f64;9] = {
     let unnormalized_distr:[usize;9] = [1,2,3,4,5,4,3,2,1];
     let mut normalized_distr:[f64;9] = [0f64;9];
-    
+
     let mut sum:usize = 0;
     let mut i = 0;
     loop {
@@ -43,24 +65,46 @@ const TIMING_DISTR:[f64;9] = {
     normalized_distr
 };
 
+/// AVG_ATTEMPT_TO_HIT_TARGET (5) is hardcoded in the shiny starter guide.
 const AVG_ATTEMPT_TO_HIT_TARGET:f64 = 1f64 / TIMING_DISTR[(TIMING_DISTR.len() - 1) / 2];
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Gen3TidSidShinyResult {
-    pub avg_adv_to_determine_sid_percentile:u8,
-    pub avg_adv_to_determine_sid:u32,
-    pub nearby_sids:Vec<Gen3EarliestShinyForNearbySid>,
-    pub avg_adv_to_improve_tid:u32,
-    pub avg_adv_if_improved:u32,
-    pub should_improve_tid:bool,
-}
+/// Main entry point.
+/// Given a seed (game), a tid_gen_adv, and the TID the player obtained in-game, returns avg_adv_to_determine_sid
+/// which indicates approximately how many advance will be needed to determine their SID.
+/// An avg_adv_to_determine_sid_percentile is also calculated which indicates how good avg_adv_to_determine_sid is
+/// compared to the average case, and whether it's faster to reroll a new TID, or try to determine the SID for that TID
+#[wasm_bindgen]
+pub fn gen3_calculate_tidsid_shiny_for_tid(seed:u32, tid_gen_adv:usize, tid:u16) -> Gen3TidSidShinyResult {
+    let res_by_tid = calculate_tidsid_shiny_result_for_all_tids(seed, tid_gen_adv);
+    let mut res_for_tid = res_by_tid[tid as usize].clone();
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Gen3EarliestShinyForNearbySid {
-    pub sid:u16,
-    pub earliest_shiny_adv:u32,
+    let mut better_tid_count:usize = 0;
+    let mut sum_avg_adv_for_better_tid:usize = 0;
+    for res in res_by_tid.iter() {
+        let other_tid_if_better_than_current_tid = res.avg_adv_to_determine_sid < res_for_tid.avg_adv_to_determine_sid;
+        if other_tid_if_better_than_current_tid {
+            better_tid_count += 1;
+            sum_avg_adv_for_better_tid += res.avg_adv_to_determine_sid as usize;
+        }
+    }
+    res_for_tid.avg_adv_to_determine_sid_percentile = ((better_tid_count * 100) / res_by_tid.len()) as u8;
+
+    if better_tid_count == 0 {
+        better_tid_count = 1;
+    }
+
+    const MIN_EXPECTED_IMPROV_FOR_RETRY:u32 = 60 * 60 * 2; // expected improve must save at least 2 minutes
+    const RETRY_OVERHEAD_ADV:usize = 1000;
+    let adv_for_each_retry = tid_gen_adv + RETRY_OVERHEAD_ADV;
+    let avg_retry_count_to_improve = 0x10000 / better_tid_count;
+
+    let avg_avg_adv_for_better_tid = sum_avg_adv_for_better_tid / better_tid_count;
+
+    res_for_tid.avg_adv_to_improve_tid = (avg_retry_count_to_improve * adv_for_each_retry) as u32;
+    res_for_tid.avg_adv_if_improved = avg_avg_adv_for_better_tid as u32;
+    // Approximatively, should_improve_tid is true if avg_adv_to_determine_sid_percentile >= 15
+    res_for_tid.should_improve_tid = res_for_tid.avg_adv_to_improve_tid + res_for_tid.avg_adv_if_improved + MIN_EXPECTED_IMPROV_FOR_RETRY < res_for_tid.avg_adv_to_determine_sid;
+    res_for_tid
 }
 
 /// Returns a vec associating each possible tsv with earliest shiny advance.
@@ -77,9 +121,9 @@ fn generate_earliest_shiny_advance_by_tsv(initial_seed: u32) -> Vec<u32> {
         let pid_high = pid_rng.rand::<u16>() as u32;
         let pid_low = pid_rng.clone().rand::<u16>() as u32;
         let tsv = gen3_psv((pid_high << 16) | pid_low);
-        
+
         let old_value = earliest_adv_by_tsv[tsv as usize];
-        
+
         if old_value != 0 {
             continue;
         } // another earlier advance exists
@@ -94,7 +138,7 @@ fn generate_earliest_shiny_advance_by_tsv(initial_seed: u32) -> Vec<u32> {
     earliest_adv_by_tsv
 }
 
-fn calculate_nearby_sids(tid_gen_adv:usize, tid:u16) -> Vec<u16> {
+fn calculate_nearby_sids(tid_gen_adv:usize, tid:u16) -> Vec<(u16, u32)> {
     let opts = Gen3TidSidOptions {
         version_options:Gen3TidSidVersionOptions::Frlge(FrlgeTidSidOptions { tid }),
         offset: 0, //NO_PROD
@@ -102,28 +146,29 @@ fn calculate_nearby_sids(tid_gen_adv:usize, tid:u16) -> Vec<u16> {
         max_advances: TIMING_DISTR.len() - 1,
         filter: None,
     };
-    
+
     gen3_tidsid_states(&opts).iter().map(|r|{
-        r.sid
-    }).collect()    
+        (r.sid, r.advance as u32)
+    }).collect()
 }
 
-fn calculate_earliest_shiny_for_nearby_sids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize, tid:u16) -> Vec<Gen3EarliestShinyForNearbySid> {
+fn calculate_earliest_shiny_for_nearby_sids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize, tid:u16) -> Vec<Gen3NearbySid> {
     let nearby_sids = calculate_nearby_sids(tid_gen_adv, tid);
 
-    nearby_sids.into_iter().map(|sid|{
+    nearby_sids.into_iter().map(|(sid, tid_gen_adv)|{
         let tsv = gen3_tsv(tid, sid);
         let earliest_shiny_adv = earliest_shiny_advance_by_tsv[tsv as usize];
-        Gen3EarliestShinyForNearbySid { 
-            sid, 
+        Gen3NearbySid {
+            tid_gen_adv,
+            sid,
             earliest_shiny_adv
         }
-    }).collect()    
+    }).collect()
 }
 
 fn calculate_avg_adv_for_nearby_sids_prob_by_adv(earliest_shiny_advs:&Vec<u32>) -> Vec<(u32, f64)> {
     // It's possible that multiple sids share the same tsv, meaning both sids share
-    // the same earliest_shiny_adv (ex: the earliest shiny for both sid 160 and sid 166 is advance 1234). 
+    // the same earliest_shiny_adv (ex: the earliest shiny for both sid 160 and sid 166 is advance 1234).
     // In that case, by catching a pokemon on advance 1234, the player tests 2 sids at the same time, which is a lot faster.
     // I assume the player will attempt to do both sids simulatenously if their target advances are very close (+- 2 advances)
     const MERGE_MAX_DIFF:u32 = 2;
@@ -192,48 +237,9 @@ fn calculate_tidsid_shiny_result_for_all_tids(seed:u32, tid_gen_adv:usize) -> Ve
     }).collect()
 }
 
-/// Main entry point. 
-/// Given a seed (game), a tid_gen_adv which should ideally by 1505 (see find_best_tid_gen_adv), and the TID the player obtained in-game,
-/// returns avg_adv_to_determine_sid which indicates approximately how many advance will be needed to determine their SID
-/// and avg_adv_to_determine_sid_percentile which indicates how good avg_adv_to_determine_sid is compared to other TID
-/// avg_adv_to_determine_sid_percentile can be used to determine if it's faster to reroll a new TID, or try to determine the SID for that TID
-#[wasm_bindgen]
-pub fn gen3_calculate_tidsid_shiny_for_tid(seed:u32, tid_gen_adv:usize, tid:u16) -> Gen3TidSidShinyResult {
-    let res_by_tid = calculate_tidsid_shiny_result_for_all_tids(seed, tid_gen_adv);
-    let mut res_for_tid = res_by_tid[tid as usize].clone();
-    
-    let mut better_tid_count:usize = 0;
-    let mut sum_avg_adv_for_better_tid:usize = 0;
-    for res in res_by_tid.iter() {
-        let other_tid_if_better_than_current_tid = res.avg_adv_to_determine_sid < res_for_tid.avg_adv_to_determine_sid;
-        if other_tid_if_better_than_current_tid {
-            better_tid_count += 1;
-            sum_avg_adv_for_better_tid += res.avg_adv_to_determine_sid as usize;
-        }
-    }
-    res_for_tid.avg_adv_to_determine_sid_percentile = ((better_tid_count * 100) / res_by_tid.len()) as u8;
-
-    if better_tid_count == 0 {
-        better_tid_count = 1;
-    }
-
-    const MIN_EXPECTED_IMPROV_FOR_RETRY:u32 = 60 * 60 * 2; // must save 2 minutes
-    const RETRY_OVERHEAD_ADV:usize = 1000;
-    let adv_for_each_retry = tid_gen_adv + RETRY_OVERHEAD_ADV;
-    let avg_retry_count_to_improve = 0x10000 / better_tid_count;
-
-    let avg_avg_adv_for_better_tid = sum_avg_adv_for_better_tid / better_tid_count;
-
-    res_for_tid.avg_adv_to_improve_tid = (avg_retry_count_to_improve * adv_for_each_retry) as u32;
-    res_for_tid.avg_adv_if_improved = avg_avg_adv_for_better_tid as u32;
-    // Approximatively, should_improve_tid is true if avg_adv_to_determine_sid_percentile >= 15
-    res_for_tid.should_improve_tid = res_for_tid.avg_adv_to_improve_tid + res_for_tid.avg_adv_if_improved + MIN_EXPECTED_IMPROV_FOR_RETRY < res_for_tid.avg_adv_to_determine_sid;
-    res_for_tid
-}
-
-/// Returns the average advance needed to determine SID for a given tid_gen_adv, 
+/// Returns the average advance needed to determine SID for a given tid_gen_adv,
 /// assuming all TID have same probability of occuring.
-pub fn calculate_avg_adv_for_all_tids(seed:u32, tid_gen_adv:usize) -> u32 {
+fn calculate_avg_adv_for_all_tids(seed:u32, tid_gen_adv:usize) -> u32 {
     let res_by_tid = calculate_tidsid_shiny_result_for_all_tids(seed, tid_gen_adv);
     let mut sum:usize = 0;
     let len = res_by_tid.len();
@@ -246,7 +252,7 @@ pub fn calculate_avg_adv_for_all_tids(seed:u32, tid_gen_adv:usize) -> u32 {
 /// Returns find the tid_gen_adv that results in the lowest average advance needed to determine SID.
 /// tid_gen_adv in range (900, 2000), best is (adv=1505, avg=124902) and worst is (adv=1987, avg=125744)
 /// This means ideally, player should aim for tid_gen_adv 1505 to determine their SID faster.
-pub fn find_best_tid_gen_adv(seed:u32, tid_gen_adv_min:usize, tid_gen_adv_max:usize) -> usize {
+fn find_best_tid_gen_adv(seed:u32, tid_gen_adv_min:usize, tid_gen_adv_max:usize) -> usize {
     let avg_adv_by_tid_gen_adv:Vec<u32> = (tid_gen_adv_min..=tid_gen_adv_max).map(|tid_gen_adv|{
         calculate_avg_adv_for_all_tids(seed, tid_gen_adv)
     }).collect();
@@ -256,9 +262,9 @@ pub fn find_best_tid_gen_adv(seed:u32, tid_gen_adv_min:usize, tid_gen_adv_max:us
         let mut sum:f64 = 0f64;
         for (j, prob) in TIMING_DISTR.iter().enumerate() {
             let ideal_idx = i as i32 - mid as i32 + j as i32;
-            let idx = if ideal_idx < 0 { 
+            let idx = if ideal_idx < 0 {
                 0 as usize
-            } else if ideal_idx >= avg_adv_by_tid_gen_adv.len() as i32 { 
+            } else if ideal_idx >= avg_adv_by_tid_gen_adv.len() as i32 {
                 avg_adv_by_tid_gen_adv.len() - 1
             } else {
                 ideal_idx as usize
@@ -288,7 +294,7 @@ mod test {
                 assert_ne!(earliest_adv_by_tsv[tsv], 0);
             }
         }
-    }    
+    }
 
     #[test]
     fn test_generate_earliest_shiny_advance_by_tsv() {
@@ -297,45 +303,45 @@ mod test {
         assert_eq!(earliest_adv_by_tsv[8 >> 3], 9547);
         assert_eq!(earliest_adv_by_tsv[2568 >> 3], 811);
     }
-    
+
     #[test]
     fn test_gen3_advs_shiny_nearby_sids() {
         let earliest_adv_by_tsv = generate_earliest_shiny_advance_by_tsv(0);
         let sids = calculate_earliest_shiny_for_nearby_sids(&earliest_adv_by_tsv, 1000, 0);
         assert_list_eq!(sids, vec![
-            Gen3EarliestShinyForNearbySid { sid: 37330, earliest_shiny_adv: 2516 }, 
-            Gen3EarliestShinyForNearbySid { sid: 48775, earliest_shiny_adv: 4604 }, 
-            Gen3EarliestShinyForNearbySid { sid: 57250, earliest_shiny_adv: 1051 }, 
-            Gen3EarliestShinyForNearbySid { sid: 44185, earliest_shiny_adv: 9979 }, 
-            Gen3EarliestShinyForNearbySid { sid: 20917, earliest_shiny_adv: 10424 }, 
-            Gen3EarliestShinyForNearbySid { sid: 4295, earliest_shiny_adv: 5805 }, 
-            Gen3EarliestShinyForNearbySid { sid: 11292, earliest_shiny_adv: 2049 }, 
-            Gen3EarliestShinyForNearbySid { sid: 43529, earliest_shiny_adv: 2282 }, 
-            Gen3EarliestShinyForNearbySid { sid: 59237, earliest_shiny_adv: 4075 }, 
+            Gen3NearbySid { tid_gen_adv: 996,  sid: 37330, earliest_shiny_adv: 2516 },
+            Gen3NearbySid { tid_gen_adv: 997,  sid: 48775, earliest_shiny_adv: 4604 },
+            Gen3NearbySid { tid_gen_adv: 998,  sid: 57250, earliest_shiny_adv: 1051 },
+            Gen3NearbySid { tid_gen_adv: 999,  sid: 44185, earliest_shiny_adv: 9979 },
+            Gen3NearbySid { tid_gen_adv: 1000, sid: 20917, earliest_shiny_adv: 10424 },
+            Gen3NearbySid { tid_gen_adv: 1001, sid: 4295, earliest_shiny_adv: 5805 },
+            Gen3NearbySid { tid_gen_adv: 1002, sid: 11292, earliest_shiny_adv: 2049 },
+            Gen3NearbySid { tid_gen_adv: 1003, sid: 43529, earliest_shiny_adv: 2282 },
+            Gen3NearbySid { tid_gen_adv: 1004, sid: 59237, earliest_shiny_adv: 4075 },
         ]);
 
         let sids = calculate_earliest_shiny_for_nearby_sids(&earliest_adv_by_tsv, 1000, 11);
 
         assert_list_eq!(sids, vec![
-            Gen3EarliestShinyForNearbySid { sid: 28404, earliest_shiny_adv: 10961 }, 
-            Gen3EarliestShinyForNearbySid { sid: 45158, earliest_shiny_adv: 8818 }, 
-            Gen3EarliestShinyForNearbySid { sid: 53788, earliest_shiny_adv: 2062 }, 
-            Gen3EarliestShinyForNearbySid { sid: 3217, earliest_shiny_adv: 14275 }, 
-            Gen3EarliestShinyForNearbySid { sid: 54186, earliest_shiny_adv: 16714 },
-            Gen3EarliestShinyForNearbySid { sid: 43398, earliest_shiny_adv: 3696 }, 
-            Gen3EarliestShinyForNearbySid { sid: 13575, earliest_shiny_adv: 8984 }, 
-            Gen3EarliestShinyForNearbySid { sid: 17283, earliest_shiny_adv: 39080 }, 
-            Gen3EarliestShinyForNearbySid { sid: 17192, earliest_shiny_adv: 9176 }, 
+            Gen3NearbySid { tid_gen_adv: 996, sid: 28404, earliest_shiny_adv: 10961 },
+            Gen3NearbySid { tid_gen_adv: 997, sid: 45158, earliest_shiny_adv: 8818 },
+            Gen3NearbySid { tid_gen_adv: 998, sid: 53788, earliest_shiny_adv: 2062 },
+            Gen3NearbySid { tid_gen_adv: 999, sid: 3217, earliest_shiny_adv: 14275 },
+            Gen3NearbySid { tid_gen_adv: 1000, sid: 54186, earliest_shiny_adv: 16714 },
+            Gen3NearbySid { tid_gen_adv: 1001, sid: 43398, earliest_shiny_adv: 3696 },
+            Gen3NearbySid { tid_gen_adv: 1002, sid: 13575, earliest_shiny_adv: 8984 },
+            Gen3NearbySid { tid_gen_adv: 1003, sid: 17283, earliest_shiny_adv: 39080 },
+            Gen3NearbySid { tid_gen_adv: 1004, sid: 17192, earliest_shiny_adv: 9176 },
         ]);
     }
-    
+
     #[test]
     fn test_calculate_avg_adv_for_nearby_sids() {
 
         assert_list_eq!(calculate_avg_adv_for_nearby_sids_prob_by_adv(&vec![110,210,310,410,500,400,300,200,100]), vec![
             (500, 0.2), (400, 0.16), (200, 0.08), (100, 0.04), (300, 0.12), (410, 0.16), (310, 0.12), (210, 0.08), (110, 0.04)
         ]);
-        
+
         assert_list_eq!(calculate_avg_adv_for_nearby_sids_prob_by_adv(&vec![110,200,310,410,500,400,300,200,100]), vec![
             (200, 0.16), (500, 0.2), (400, 0.16), (100, 0.04), (300, 0.12), (410, 0.16), (310, 0.12), (110, 0.04)
         ]);
@@ -344,7 +350,7 @@ mod test {
         assert_eq!(calculate_avg_adv_for_nearby_sids(&vec![110,200,310,410,500,400,300,200,100]), 6206);
         assert_eq!(calculate_avg_adv_for_nearby_sids(&vec![480,485,490,495,500,505,510,515,520]), 9480);
     }
-    
+
     #[test]
     fn test_calculate_tidsid_shiny_for_tid() {
         let res = gen3_calculate_tidsid_shiny_for_tid(0, 1000, 11);

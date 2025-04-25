@@ -5,17 +5,27 @@
   tag: "retail"
 ---
 
+
+<Gist>
+  Gist: Determine SID by catching a shiny starter
+</Gist>
+
 ## Step 1: Generate your TID and list of possible SIDs
 
-- In your existing savefile, set the text speed to Fast.
-- Select New Game, type your name and move the cursor over the OK button.
-- Start the TID/SID timers on the website.
-   - The default offset is already calibrated, but it can be changed if needed. NO_PROD
+1. In your existing savefile, set the text speed to Fast.
+2. Select New Game, type your name and move the cursor over the `OK` button.
+3. Start the TID/SID timers on the website.
 - Press A to confirm your name when the first timer reaches 0.
 - Continue the dialogue until the message NO_PROD.
 - Press A when the second timer reaches 0.
 - Check the TID generated on your trainer card
 - Fill the "Obtained TID" field on the website and press Generate possible SIDs.
+
+<GenerateTidSid game="emerald" />
+
+## Step 2: Determine the correct SID
+- For each possible SIDs generated in Step 1, obtain a starter PokNO_PRODemon on the earliest Method-1 frame resulting in a shiny NO_PROD.
+- If that NO_PROD is shiny,
 
 <ShinyStarter game="emerald">
   <br/>

@@ -47,6 +47,7 @@ import { DpptId } from "~/rngToolsUi/gen4/dpptId";
 import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
 import { Static3 } from "~/rngToolsUi/gen3/static/static3";
 import { ShinyStarter } from "~/rngToolsUi/gen3/shinyStarter";
+import { GenerateTidSid } from "~/rngToolsUi/gen3/shinyStarter/generateTidSid";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -95,4 +96,5 @@ export const markdownComponents = {
   DpptId,
   XyPokeRadar,
   ShinyStarter,
+  GenerateTidSid,
 };

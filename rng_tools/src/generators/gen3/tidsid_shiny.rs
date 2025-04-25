@@ -227,6 +227,7 @@ fn calculate_tidsid_shiny_result_for_all_tids(seed:u32, tid_gen_adv:usize) -> Ve
         let earliest_shiny_advs_by_nearby_sid = nearby_sids.iter().map(|r|{ r.earliest_shiny_adv }).collect();
         let avg_adv_to_determine_sid = calculate_avg_adv_for_nearby_sids(&earliest_shiny_advs_by_nearby_sid);
         Gen3TidSidShinyResult {
+            tid,
             avg_adv_to_determine_sid,
             nearby_sids,
             avg_adv_to_determine_sid_percentile:0, // not init yet

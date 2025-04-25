@@ -1,11 +1,12 @@
 import React from "react";
-import { FormikInput, RngToolForm, Field } from "~/components";
+import { FormikInput,ResultColumn, RngToolForm, Field, FormFieldTable } from "~/components";
 import { RadioGroup } from "~/components/radio";
 import { RngToolUpdate } from "~/components/rngToolForm";
 import {Starter,Game} from "./index";
 import {findTargetAdvanceForShinyPokemon} from "./calc";
 import { Flex, MultiTimer } from "~/components";
 import {rngTools, Gen3NearbySid, Gen3TidSidShinyResult} from "~/rngTools";
+import { Formik, FormikProps, FormikConfig } from "formik";
 
 import {
   DecimalString,
@@ -37,13 +38,10 @@ type Result = Gen3NearbySid & {
 
 const QUALITATIVE_RATINGS = ['Perfect', 'Very good', 'Good', 'Acceptable', 'So-so', 'Bad', 'Very bad'] as const;
 
-const RECOMMEND_REDO_MSG = (chanceInPct:number) => `Recommendation: Redo Step 1 to generate a new easier TID (~${chanceInPct}% chance that each new TID is significately better)`;
+const RECOMMEND_REDO_MSG = (chanceInPct:number) => `Redo Step 1 to generate a new easier TID (~${chanceInPct}% chance that each new TID is significately better)`;
 
-const RECOMMEND_KEEP_MSG = `Recommendation: Keep that TID and go to Step 2.`;
+const RECOMMEND_KEEP_MSG = `Keep that TID and go to Step 2.`;
 
-const ESTIMATED_TIME_MSG = (durInMinutes:number, qualitativeRating:string) => {
-  return `Estimated time to determine SID for TID: ${durInMinutes} min (${qualitativeRating})`;
-};
 
 export const GenerateTidSidRating = ({
   result,
@@ -68,43 +66,57 @@ export const GenerateTidSidRating = ({
     return QUALITATIVE_RATINGS[6];
   })();
 
+  const estimatedTime = `~${durInMinutes} min (${qualitativeRating})`;
   const recommendation = result.should_improve_tid ? RECOMMEND_REDO_MSG(pct) : RECOMMEND_KEEP_MSG;
 
-  return (<>
-    <div>{ESTIMATED_TIME_MSG(durInMinutes, qualitativeRating)}</div>
-    <div>{recommendation}</div>
-  </>);
+  const fields = [
+    {
+      label: "Estimated time to determine SID for TID:",
+      input: estimatedTime,
+    },
+    {
+      label: "Recommendation:",
+      input: recommendation,
+    },
+    
+  ];
+  return (<FormFieldTable fields={fields} />);
 };
 
 export const GenerateTidSid = ({
   game,
 }: Props) => {
 
-  const milliseconds = React.useMemo(() => {
-    return [0,0]; //NO_PROD calculateMillis(targetAdvance, hitAdvance);
-  }, []);
 
-  const minutesBeforeTarget = Math.floor(milliseconds[1] / 60000);
+  const getFields = (formik:FormikProps<FormState>) : Field[] => {
+    const milliseconds = (() => {
+      const offset = fromDecimalString(formik.values.offset) ?? 0;
+      const milliseconds = Math.round((offset * 1000) / 59.7275);
+      return [5000, milliseconds];
+    })();
 
-  const fields: Field[] = React.useMemo(() => ([
-    {
-      label: "Offset for TID/SID generation",
-      input: <FormikInput<FormState> name="offset" />,
-    },
-    {
-      label:"TID/SID Timer",
-      direction:"column",
-      input:<MultiTimer
-        {...{ minutesBeforeTarget, milliseconds }}
-        startButtonTrackerId="start_gen3_shiny_starter_tidsid_timer"
-        stopButtonTrackerId="stop_gen3_shiny_starter_tidsid_timer"
-      />
-    },
-    {
-      label: "Obtained TID",
-      input: <FormikInput<FormState> name="tid" />,
-    },
-  ]), []);
+    const minutesBeforeTarget = Math.floor(milliseconds[1] / 60000);
+
+    return [
+      {
+        label: "Offset for TID/SID generation",
+        input: <FormikInput<FormState> name="offset" />,
+      },
+      {
+        label:"TID/SID Timer",
+        direction:"column",
+        input:<MultiTimer
+          {...{ minutesBeforeTarget, milliseconds }}
+          startButtonTrackerId="start_gen3_shiny_starter_tidsid_timer"
+          stopButtonTrackerId="stop_gen3_shiny_starter_tidsid_timer"
+        />
+      },
+      {
+        label: "Obtained TID",
+        input: <FormikInput<FormState> name="tid" />,
+      },
+    ]
+  };
 
   const [formResults, setFormResults] = React.useState<Result[]>([]);
   const [result, setResult] = React.useState<Gen3TidSidShinyResult | null>(null);
@@ -132,7 +144,7 @@ export const GenerateTidSid = ({
 
   const getColumns = (): ResultColumn<Result>[] => {
     const columns: ResultColumn<Result>[] = [
-      { title: "TID/SID Advance", dataIndex: "advance",
+      { title: "TID/SID Advance", dataIndex: "tid_gen_adv",
         render: (val, values) => {
           const diffWithTarget = val - values.tid_gen_target_adv;
           if (diffWithTarget === 0)
@@ -159,14 +171,14 @@ export const GenerateTidSid = ({
   };
 
   return (<>
-    <RngToolForm<FormState, Result[]>
+    <RngToolForm<FormState, Result>
       results={formResults}
-      fields={fields}
+      getFields={getFields}
       columns={getColumns()}
       initialValues={initialValues}
       submitTrackerId="generate_tid_sid_for_shiny_starter"
       onSubmit={onSubmit}
     />
-    {result && <GenerateTidSidRating result={result} />)
+    {result && <GenerateTidSidRating result={result} />}
   </>);
 };

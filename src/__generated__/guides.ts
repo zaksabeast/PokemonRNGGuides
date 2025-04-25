@@ -658,7 +658,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx",
-      translations: null,
+      translations: { en: "/emulator-dppt-egg", zh: "/zh-emulator-dppt-egg" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx"),
@@ -2789,6 +2789,23 @@ export const guides = {
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx"),
     ),
   },
+  "/zh-emulator-dppt-egg": {
+    meta: {
+      title: "孵化乱数",
+      description: "如何在育婴屋进行乱数孵化",
+      category: "Diamond, Pearl, and Platinum",
+      slug: "/zh-emulator-dppt-egg",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx",
+      translations: { en: "/emulator-dppt-egg", zh: "/zh-emulator-dppt-egg" },
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx"),
+    ),
+  },
   "/zh-e-tips-rng": {
     meta: {
       title: "乱数介绍",
@@ -3264,6 +3281,7 @@ export const guideSlugs = [
   z.literal("/zh-dppt-initial-seed"),
   z.literal("/zh-dppt-pokeradar-rng"),
   z.literal("/zh-dppt-wild"),
+  z.literal("/zh-emulator-dppt-egg"),
   z.literal("/zh-e-tips-rng"),
   z.literal("/zh-emerald-mirage-island"),
   z.literal("/zh-emerald-painting-rng"),

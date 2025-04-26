@@ -1,4 +1,14 @@
 
+todo:
+    find offset for tid/sid
+    find offset for starter
+
+
+
+
+
+
+
 
 make sure text speed is fast
 go until entering name

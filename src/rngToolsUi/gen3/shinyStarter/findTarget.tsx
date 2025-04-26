@@ -56,7 +56,6 @@ export const FindTargetAdvance = ({
       }
 
       const targetAdvance = await findTargetAdvanceForShinyPokemon(game, tid, sid); 
-      console.log('targetAdvance', targetAdvance);
       if (targetAdvance !== null)
           setTargetAdvance(targetAdvance);
     },
@@ -68,6 +67,7 @@ export const FindTargetAdvance = ({
       fields={fields}
       initialValues={initialValues}
       submitTrackerId="findTarget"
+      submitButtonLabel="Update Target advance of timer"
       onSubmit={onSubmit}
     />
   );

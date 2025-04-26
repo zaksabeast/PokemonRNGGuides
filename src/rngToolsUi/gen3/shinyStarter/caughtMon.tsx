@@ -121,12 +121,16 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
       {
         title: "",
         dataIndex: "advance",
-        render(advance) {
+        render(advance, values) {
+          if (values.advance === values.targetAdvance)
+            return "Shiny if correct SID";
+          
           return (
             <Button type="text" color="PrimaryText"
               trackerId="shinyStarter_adv"
               onClick={() => {
                 setLatestHitAdv(advance);
+                setResults([]);
               }}
             >
               <Icon name="Update" size={20} /> Update Calibration

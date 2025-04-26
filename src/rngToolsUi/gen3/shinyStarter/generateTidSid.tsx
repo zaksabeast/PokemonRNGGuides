@@ -24,8 +24,8 @@ type FormState = {
 };
 
 const initialValues: FormState = {
-  offset: toDecimalString(60), //NO_PROD. test in TAS mode, and check number of advance between inputs
-  tid:toDecimalString(0),
+  offset: toDecimalString(50), // offset on Emerald on mgba 0.11-8764
+  tid: toDecimalString(0),
 };
 
 type Props = {

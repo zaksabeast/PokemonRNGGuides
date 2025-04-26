@@ -67,6 +67,7 @@ const TIMING_DISTR:[f64;9] = {
     normalized_distr
 };
 
+const EARLIEST_VALID_ADVANCE: u32 = 600; // for RSE starter
 /// AVG_ATTEMPT_TO_HIT_TARGET (5) is hardcoded in the shiny starter guide.
 const AVG_ATTEMPT_TO_HIT_TARGET:f64 = 1f64 / TIMING_DISTR[(TIMING_DISTR.len() - 1) / 2];
 
@@ -113,10 +114,15 @@ pub fn gen3_calculate_tidsid_shiny_for_tid(seed:u32, target_tid_gen_adv:usize, t
     res_for_tid
 }
 
+
+#[wasm_bindgen]
+pub fn gen3_earliest_shiny_starter_adv(initial_seed:u32, tid:u16, sid:u16) -> u32 {
+  generate_earliest_shiny_advance_by_tsv(initial_seed)[gen3_tsv(tid, sid) as usize]
+}
+
 /// Returns a vec associating each possible tsv with earliest shiny advance.
 /// ex: vec[0b11] = 12345 means that for player with TSV == 0b11, the earliest shiny advance is 12345
 fn generate_earliest_shiny_advance_by_tsv(initial_seed: u32) -> Vec<u32> {
-    const EARLIEST_VALID_ADVANCE: u32 = 600; // for RSE starter
     let mut earliest_adv_by_tsv = vec![0u32; 0x10000 >> 3];
 
     let mut unmatched_count: usize = earliest_adv_by_tsv.len();
@@ -255,7 +261,7 @@ fn sort_nearby_sids(nearby_sids:&Vec<Gen3NearbySid>) -> Vec<Gen3NearbySid> {
 }
 
 fn add_additional_nearby_sids(nearby_sids:&Vec<Gen3NearbySid>, earliest_shiny_advance_by_tsv:&Vec<u32>, target_tid_gen_adv:usize, tid:u16) -> Vec<Gen3NearbySid> {
-    let mut larger_nearby_sids = calculate_earliest_shiny_for_nearby_sids(&earliest_shiny_advance_by_tsv, target_tid_gen_adv, tid, 101);
+    let mut larger_nearby_sids = calculate_earliest_shiny_for_nearby_sids(&earliest_shiny_advance_by_tsv, target_tid_gen_adv, tid, 99);
     larger_nearby_sids.sort_by(|ns1, ns2|{
         let diff1 = ns1.tid_gen_adv.abs_diff(target_tid_gen_adv as u32);
         let diff2 = ns2.tid_gen_adv.abs_diff(target_tid_gen_adv as u32);

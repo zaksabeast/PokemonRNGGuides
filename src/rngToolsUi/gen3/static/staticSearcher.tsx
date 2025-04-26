@@ -132,6 +132,7 @@ export const Static3Searcher = ({ game }: Props) => {
           ability: opts.filter_ability,
           min_ivs: opts.filter_min_ivs,
           max_ivs: opts.filter_max_ivs,
+          stats: null,
         },
       });
 

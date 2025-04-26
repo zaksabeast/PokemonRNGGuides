@@ -108,9 +108,9 @@ export const generateCaughtMonResults = async function (
 
     method4: false,
     filter: {
-      nature: caughtMonValues.nature || undefined,
-      gender: caughtMonValues.gender || undefined,
-      ability: undefined,
+      nature: caughtMonValues.nature || null,
+      gender: caughtMonValues.gender || null,
+      ability: null,
       shiny: false,
       stats: {
         lvl: 5,

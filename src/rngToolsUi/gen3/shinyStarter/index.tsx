@@ -5,7 +5,7 @@ import { GenerateTidSid } from "./generateTidSid";
 import { CaughtMon } from "./caughtMon";
 import { FormFieldTable } from "../../../components/formFieldTable";
 import { Field } from "~/components";
-import {Icon} from "~/components/icons";
+import { Icon } from "~/components/icons";
 import { Button } from "~/components/button";
 
 export type Game = "emerald" | "rs";
@@ -26,7 +26,7 @@ const calculateMillis = (
 
 type Props = {
   game: Game;
-  children:React.ReactNode[];
+  children: React.ReactNode[];
 };
 
 export const ShinyStarter = ({ game, children }: Props) => {
@@ -40,20 +40,32 @@ export const ShinyStarter = ({ game, children }: Props) => {
   const minutesBeforeTarget = Math.floor(milliseconds[1] / 60000);
 
   const fields = React.useMemo((): Field[] => {
-    return [{
-      label: "Target advance",
-      input: <>{targetAdvance}</>
-    }, {
-      label: "Last hit advance",
-      input: hitAdvance === 0 ? "-" : (
-        <>
-          {hitAdvance} ({hitAdvance >= targetAdvance ? '+' : ''}{hitAdvance - targetAdvance})
-          <Button type="text" color="Red" trackerId="clear_last_hit_advance" onClick={() => setHitAdvance(0)}>
-            <Icon name="OutlineCloseCircle" size={20} />
-          </Button>
-        </>
-      )
-    }];
+    return [
+      {
+        label: "Target advance",
+        input: <>{targetAdvance}</>,
+      },
+      {
+        label: "Last hit advance",
+        input:
+          hitAdvance === 0 ? (
+            "-"
+          ) : (
+            <>
+              {hitAdvance} ({hitAdvance >= targetAdvance ? "+" : ""}
+              {hitAdvance - targetAdvance})
+              <Button
+                type="text"
+                color="Red"
+                trackerId="clear_last_hit_advance"
+                onClick={() => setHitAdvance(0)}
+              >
+                <Icon name="OutlineCloseCircle" size={20} />
+              </Button>
+            </>
+          ),
+      },
+    ];
   }, [targetAdvance, hitAdvance]);
 
   return (
@@ -73,7 +85,7 @@ export const ShinyStarter = ({ game, children }: Props) => {
         stopButtonTrackerId="stop_gen3_shiny_starter_timer"
       />
       <CaughtMon
-        {...{game, targetAdvance }}
+        {...{ game, targetAdvance }}
         setLatestHitAdv={(val) => {
           setHitAdvance(val + hitAdvance);
         }}

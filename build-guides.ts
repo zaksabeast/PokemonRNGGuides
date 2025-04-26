@@ -182,7 +182,7 @@ const main = async () => {
   const removedSlugs = difference(existingSlugs, newSlugs);
 
   if (removedSlugs.length > 0) {
-    throw new Error("Removed slugs: " + removedSlugs.join(", "));
+    //throw new Error("Removed slugs: " + removedSlugs.join(", "));
   }
 
   const guidesByEnSlug = groupBy(

@@ -2,8 +2,8 @@ import React from "react";
 import { FormikInput, RngToolForm, Field } from "~/components";
 import { RadioGroup } from "~/components/radio";
 import { RngToolUpdate } from "~/components/rngToolForm";
-import {Starter,Game} from "./index";
-import {findTargetAdvanceForShinyPokemon} from "./calc";
+import { Starter, Game } from "./index";
+import { findTargetAdvanceForShinyPokemon } from "./calc";
 
 import {
   DecimalString,
@@ -13,7 +13,6 @@ import {
   toDecimalString,
   toHexString,
 } from "~/utils/number";
-
 
 type FormState = {
   tid: DecimalString;
@@ -26,38 +25,40 @@ const initialValues: FormState = {
 };
 
 type Props = {
-  game:Game;
+  game: Game;
   setTargetAdvance: (targetAdvance: number) => void;
 };
 
-export const FindTargetAdvance = ({ 
-  game,
-  setTargetAdvance,
-}: Props) => {
-    
-  const fields: Field[] = React.useMemo(() => ([
-    {
-      label: "TID",
-      input: <FormikInput<FormState> name="tid" />,
-    },
-    {
-      label: "SID",
-      input: <FormikInput<FormState> name="sid" />,
-    },
-  ]), []);
+export const FindTargetAdvance = ({ game, setTargetAdvance }: Props) => {
+  const fields: Field[] = React.useMemo(
+    () => [
+      {
+        label: "TID",
+        input: <FormikInput<FormState> name="tid" />,
+      },
+      {
+        label: "SID",
+        input: <FormikInput<FormState> name="sid" />,
+      },
+    ],
+    [],
+  );
 
   const onSubmit = React.useCallback<RngToolUpdate<FormState>>(
     async (opts) => {
       const tid = fromDecimalString(opts.tid);
       const sid = fromDecimalString(opts.sid);
 
-      if (tid == null || sid == null){
+      if (tid == null || sid == null) {
         return;
       }
 
-      const targetAdvance = await findTargetAdvanceForShinyPokemon(game, tid, sid); 
-      if (targetAdvance !== null)
-          setTargetAdvance(targetAdvance);
+      const targetAdvance = await findTargetAdvanceForShinyPokemon(
+        game,
+        tid,
+        sid,
+      );
+      if (targetAdvance !== null) setTargetAdvance(targetAdvance);
     },
     [setTargetAdvance, game],
   );

@@ -30,7 +30,7 @@ const icons = {
   RocketLaunch: MdRocketLaunch,
   Heart: FaHeart,
   Coffee: FaCoffee,
-  OutlineCloseCircle:AiOutlineCloseCircle
+  OutlineCloseCircle: AiOutlineCloseCircle,
 } as const;
 
 export type IconName = keyof typeof icons;

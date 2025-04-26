@@ -2565,20 +2565,6 @@ export const guides = {
       () => import("~/../guides/Ruby and Sapphire/Basic Rules of RNG.mdx"),
     ),
   },
-  "/starter-sandbox": {
-    meta: {
-      title: "Starter Sandbox",
-      description: "Playground for ideas",
-      slug: "/starter-sandbox",
-      isRoughDraft: false,
-      tag: "retail",
-      hideFromNavDrawer: false,
-      addedOn: null,
-      file: "guides/Emerald/Starter.mdx",
-      category: "Emerald",
-    },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Starter.mdx")),
-  },
   "/sysbot-lpa-mmo": {
     meta: {
       title: "MMO RNG",
@@ -3136,7 +3122,6 @@ export const guideSlugs = [
   z.literal("/rs-static"),
   z.literal("/rs-tidsid-generator"),
   z.literal("/rs-tips-rng"),
-  z.literal("/starter-sandbox"),
   z.literal("/sysbot-lpa-mmo"),
   z.literal("/transporter-patches"),
   z.literal("/transporter-rng"),

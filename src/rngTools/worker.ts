@@ -3,6 +3,8 @@ import * as RngTools from "rng_tools";
 import { expose } from "comlink";
 
 //NO_PROD
-(globalThis as any).js_log = function(...args:any[]){ console.log(...args); };
+(globalThis as any).js_log = function (...args: any[]) {
+  console.log(...args);
+};
 
 expose(RngTools);

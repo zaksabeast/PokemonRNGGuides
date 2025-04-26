@@ -6,10 +6,17 @@ import {
   RngToolSubmit,
   Field,
 } from "~/components";
-import { rngTools, Id4, RngDate } from "~/rngTools";
+import { rngTools, Id4 } from "~/rngTools";
 import { denormalizeIdFilterOrDefault } from "~/types/id";
 import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
-import { addRngTime, rngDate, rngTime, RngTime } from "~/utils/time";
+import {
+  addRngTime,
+  rngDate,
+  RngDateSchema,
+  rngTime,
+  RngTimeSchema,
+} from "~/utils/time";
+import { z } from "zod";
 
 const columns: ResultColumn<Id4>[] = [
   {
@@ -36,13 +43,15 @@ const columns: ResultColumn<Id4>[] = [
   },
 ];
 
-type FormState = {
-  tid: number;
-  date: RngDate;
-  time: RngTime;
-  minDelay: number;
-  maxDelay: number;
-};
+const Validator = z.object({
+  tid: z.number().int().min(0).max(65535),
+  date: RngDateSchema,
+  time: RngTimeSchema,
+  minDelay: z.number().int().min(0),
+  maxDelay: z.number().int().min(0),
+});
+
+type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   tid: 0,
@@ -86,7 +95,7 @@ export const DpptIdFinder = () => {
       filter: denormalizeIdFilterOrDefault({
         type: "tid",
         value0: opts.tid,
-        value1: undefined,
+        value1: null,
       }),
     });
 
@@ -99,6 +108,7 @@ export const DpptIdFinder = () => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_oras_id"
     />

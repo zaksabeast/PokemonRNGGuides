@@ -1,10 +1,20 @@
 ---
-title: "Static RNG"
-description: "Get shiny 6IV legendaries from FRLG"
-slug: "emulator-flrg-stationary-and-gift"
-subCategory: "Emulator"
-tag: "emu"
+- title: "Static RNG"
+  description: "Get shiny 6IV legendaries from FRLG"
+  slug: "emulator-flrg-stationary-and-gift"
+  subCategory: "Emulator"
+  tag: "emu"
+- title: "固定宝可梦乱数"
+  description: "在《火红·叶绿》中获取闪光六项个体值的传说宝可梦"
+  slug: "zh-emulator-flrg-stationary-and-gift"
+  subCategory: "Emulator"
+  tag: "emu"
+  translation:
+    enSlug: "emulator-flrg-stationary-and-gift"
+    language: "zh"
 ---
+
+<ShowIf slug="/emulator-flrg-stationary-and-gift">
 
 ## Tools
 
@@ -41,3 +51,53 @@ tag: "emu"
 1. Retry using the new advance adjusted for the delay.
 2. If successful, you'll hit the correct spread.
 3. If not, check how many advances you were off, reload, adjust, and try again.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+
+</ShowIf>
+
+<ShowIf slug="/zh-emulator-flrg-stationary-and-gift">
+
+## 所需工具
+
+- [带有 Lua 脚本的 mGBA 模拟器](/mgba-setup)
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
+
+## 第一步：设置 PokeFinder
+
+1. 加载游戏并启用 Lua 脚本。
+2. 在游戏进入“继续”画面时暂停模拟器。
+3. 查看 Lua 脚本中显示的初始种子。
+4. 打开 PokeFinder，进入“第三世代 定点乱数”下的“生成”标签页。
+5. 将种子填写到“Seed”输入框中。
+6. 设置目标筛选条件（如闪光、个体值、性格等），然后点击“生成”。
+   - 方式 应设为“方式 1”。
+   - 如果没有结果，请放宽筛选条件或重启游戏以获取新种子。
+7. 从生成的结果中选择一个目标帧数。
+
+## 第二步：计算延迟
+
+1. 角色应站在传说宝可梦、NPC 或宝可梦球前。
+2. 建立一个即时存档以防出错。
+3. 推进至宝可梦生成前的最后画面。
+   - 若出现叫声或对话提示，一般表示已到达最后画面。
+4. 在目标帧数时按下 A 键开始战斗或领取宝可梦。
+5. 检查该宝可梦的个体值。
+6. 将个体值输入 PokeFinder，查找你实际命中的帧数。
+7. 计算延迟：延迟 = 目标帧数 - 实际命中帧数
+8. 将该延迟输入回 PokeFinder 中，并重新生成目标列表。
+9. 记录新的目标帧数。
+
+## 第三步：获取目标宝可梦
+
+1. 根据新的目标帧数重新进行尝试。
+2. 若成功，你将命中正确的个体组合。
+3. 若仍不匹配，确认偏差帧数，加载存档并调整后再次尝试。
+
+## 特别鸣谢
+
+- 中文翻译：炫夜鳞、Hakuhiro/白希洛。
+
+</ShowIf>

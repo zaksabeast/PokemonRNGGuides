@@ -7,9 +7,12 @@ import {
   Field,
   FormikSelect,
 } from "~/components";
-import { rngTools, MirageSpot, Species, RngDate } from "~/rngTools";
-import { formatRngDate, rngDate } from "~/utils/time";
+import { rngTools, MirageSpot } from "~/rngTools";
+import { formatRngDate, rngDate, RngDateSchema } from "~/utils/time";
 import { FormikDatePicker } from "~/components/datePicker";
+import { z } from "zod";
+import { HexSchema } from "~/utils/number";
+import { species } from "~/types/species";
 
 const columns: ResultColumn<MirageSpot>[] = [
   {
@@ -28,20 +31,22 @@ const columns: ResultColumn<MirageSpot>[] = [
   },
 ];
 
-export type FormState = {
-  seed: number;
-  tid: number;
-  start_date: RngDate;
-  max_advances: number;
-  filter_species: Species;
-};
+const Validator = z.object({
+  seed: HexSchema(0xffffffff),
+  tid: z.number().int().min(0).max(65535),
+  start_date: RngDateSchema,
+  max_advances: z.number().int().min(0),
+  filter_species: z.enum(species).nullable(),
+});
+
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   seed: 0,
   tid: 0,
   start_date: rngDate(),
   max_advances: 1000,
-  filter_species: "None",
+  filter_species: null,
 };
 
 const fields: Field[] = [
@@ -64,7 +69,7 @@ const fields: Field[] = [
         name="filter_species"
         options={(
           [
-            "None",
+            null,
             "Audino",
             "Boldore",
             "Cherrim",
@@ -105,7 +110,7 @@ const fields: Field[] = [
             "Xatu",
             "Zebstrika",
           ] as const
-        ).map((species) => ({ label: species, value: species }))}
+        ).map((species) => ({ label: species ?? "None", value: species }))}
       />
     ),
   },
@@ -125,11 +130,7 @@ export const OrAsMirageSpot = () => {
   const [results, setResults] = React.useState<MirageSpot[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const results = await rngTools.generate_mirage_spots({
-      ...opts,
-      filter_species:
-        opts.filter_species === "None" ? undefined : opts.filter_species,
-    });
+    const results = await rngTools.generate_mirage_spots(opts);
 
     setResults(results);
   }, []);
@@ -140,6 +141,7 @@ export const OrAsMirageSpot = () => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_mirage_spot"
     />

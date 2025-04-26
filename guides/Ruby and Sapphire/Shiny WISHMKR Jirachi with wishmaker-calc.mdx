@@ -29,47 +29,54 @@
 
 </ShowIf>
 
-### Lua Script Set up
+## Step 1: Lua Script Set up
 
-In line 6 of the lua script edit it to the path where your save is located.
+Edit the `savePath` line of the lua script to match the path where your save is located.
+
+If you're on Windows, use double backslashes `\\` in the path.
 
 ```
 local savePath = "D:\\Desktop\\mGBA\\battery\\Pokemon - Ruby.sav"  -- Write here the path of your Ruby/Sapphire save file
 ```
 
-## Step 1: Finding Your Save Delay
+If you're on Mac or Linux, use single forward slashes `/` in the path.
 
-1. Open Ruby/Sapphire and load the wishmaker lua script.
-2. Open the save menu and pause the game at the last dialogue option over "YES".
-3. Note the current time displayed by the lua script.
-4. Hold down the `A` button and unpause the game simultaneously.
-5. When the lua script time freezes, pause the game and write down that time.
-   - Your save delay will be the time when it froze minus the time when you paused the game.
-   - `Save delay = time froze - time paused`
-6. Open the lua script in a text editor, like WordPad.
-7. Input your save delay in the variables "savedelaySecond" and "savedelayFrame".
+```
+local savePath = "/Users/username/Desktop/mGBA/battery/Pokemon - Ruby.sav"  -- Write here the path of your Ruby/Sapphire save file
+```
 
-## Step 2: Hitting the Target Seed
+## Step 2: Find a Target
 
-1. Make sure RTC is disabled in emulator settings.
-2. Open the lua script in WordPad (or a text editor).
-3. Input the target time under targetSaveHour, Minute, Second, and sixtiethSecond.
-4. Optionally, add your target Jirachi seed (for rng proofs/personal preference).
-5. Restart the lua script. You will see two different times displayed.
-6. The target save time is when you save to get the desired Jirachi.
-7. The real save time is when you save, calculated using your save delay.
-   - Target save time = Real save time + delay while saving.
-8. Advance to the last dialogue of the save menu and hover over "YES".
-9. Pause the game.
-10. Wait for the in-game time to match the real save time displayed.
-11. Unpause the game and stay close to the needed time.
-12. Once near your real save time, pause and advance frames manually.
-    - The default key for advancing frames is `Ctrl + N` for Windows.
-13. When on your real save time, hold down `A` and unpause the game simultaneously (screenshot of the final screen below).
-14. There should be "Current checksum:".
-15. If the seed matches, congrats! Your save will redeem a shiny Jirachi!
+1. Upload your save and use the tool below to search for a Jirachi.
+   - If you see the "Need to save again!" error, save again and re-upload.
+2. Open the lua script in a text editor.
+3. At the top of the lua script, update `targetSeed`, `targetSaveHour`, `targetMinute`, `targetSecond`, and `targetSixtiethSecond` from your desired Jirachi.
+
+<ShowIf slug="/emulator-rs-wishmaker">
+
+<MultibootJirachi jirachi="Wishmaker" />
+
+</ShowIf>
+
+<ShowIf slug="/meteor-jirachi">
+
+<MultibootJirachi jirachi="Meteor" />
+
+</ShowIf>
+
+## Step 3: Hit the Target Seed
+
+1. Disable RTC in the emulator settings.
+2. Load the game, then lua script.
+3. Start saving the game and stop when you see "There is already a save file."
+4. Pause the emulator when the lua script says `Current Time` is close to `Target Base Save Time`.
+5. Manually advance frames until the lua script says `Current Time` matches `Target Base Save Time`.
+6. Press `A` to save.
+7. If the `Segment 0 Checksum Seed` matches `Target Checksum Seed`, congrats! Your save will redeem your Jirachi!
 
 ![Final Screen](/images/Ruby-Sapphire/Wishmaker/Final-Screen.png)
+
+![Script Screen](/images/Ruby-Sapphire/Wishmaker/Script.png)
 
 ## Troubleshooting
 
@@ -77,7 +84,7 @@ Double check and confirm RTC is disabled.
 
 If your block 0 checksum does not match a shiny Jirachi seed, restart the process from the beginning.
 
-Alternatively, you might have saved at the wrong time or incorrectly found your save delay.
+Make sure you're saving at `Target Base Save Time`, not `Target Final Time`.
 
 <ShowIf slug="/emulator-rs-wishmaker">
 

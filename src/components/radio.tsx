@@ -2,11 +2,11 @@ import {
   Radio as AntdRadio,
   RadioGroupProps as AntdRadioGroupProps,
   CheckboxOptionType,
+  Tooltip,
 } from "antd";
-import { useFormikContext } from "formik";
+import { useField } from "formik";
 import * as tst from "ts-toolbelt";
 import { GenericForm } from "~/types/form";
-import { get } from "lodash-es";
 import { withCss } from "./withCss";
 
 export const RadioGroup = withCss(AntdRadio.Group);
@@ -35,15 +35,19 @@ export const FormikRadio = <
   name,
   ...props
 }: FormikRadioProps<FormState, FieldKey>) => {
-  const formik = useFormikContext<FormState>();
-  const value = name != null ? get(formik.values, name) : null;
+  const [{ value, onChange, onBlur }, { error }] =
+    useField<FormState[FieldKey]>(name);
+
   return (
-    <RadioGroup
-      optionType="button"
-      name={String(name)}
-      onChange={formik.handleChange}
-      value={value}
-      {...props}
-    />
+    <Tooltip color="red" title={error} placement="top">
+      <RadioGroup
+        optionType="button"
+        name={String(name)}
+        onBlur={onBlur}
+        onChange={onChange}
+        value={value}
+        {...props}
+      />
+    </Tooltip>
   );
 };

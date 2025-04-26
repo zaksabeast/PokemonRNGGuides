@@ -383,7 +383,10 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-11",
       file: "guides/Emerald/Mirage Island.mdx",
-      translations: null,
+      translations: {
+        en: "/emerald-mirage-island",
+        zh: "/zh-emerald-mirage-island",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
   },
@@ -655,7 +658,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx",
-      translations: null,
+      translations: { en: "/emulator-dppt-egg", zh: "/zh-emulator-dppt-egg" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx"),
@@ -746,7 +749,10 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Static RNG.mdx",
       category: "FireRed and LeafGreen",
-      translations: null,
+      translations: {
+        en: "/emulator-flrg-stationary-and-gift",
+        zh: "/zh-emulator-flrg-stationary-and-gift",
+      },
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
@@ -1132,6 +1138,26 @@ export const guides = {
       () => import("~/../guides/Gen 7/Time Finder.js (Citra).mdx"),
     ),
   },
+  "/es-gen2-celebi": {
+    meta: {
+      title: "Celebi",
+      description: "How to get a shiny Fairy",
+      category: "Gold, Silver, Crystal",
+      slug: "/es-gen2-celebi",
+      isRoughDraft: false,
+      tag: "cfw",
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-23",
+      translation: { enSlug: "/gen2-celebi", language: "es" },
+      file: "guides/Gen 2/Celebi.mdx",
+      translations: {
+        es: "/es-gen2-celebi",
+        en: "/gen2-celebi",
+        zh: "/zh-gen2-celebi",
+      },
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 2/Celebi.mdx")),
+  },
   "/es-gen2-starters": {
     meta: {
       title: "RNG de Iniciales en Cristal",
@@ -1179,7 +1205,7 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Initial Seed Botting.mdx",
       category: "FireRed and LeafGreen",
-      translations: null,
+      translations: { en: "/frlg-seeding-bot", zh: "/zh-frlg-seeding-bot" },
     },
     Guide: React.lazy(
       () =>
@@ -1312,7 +1338,11 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-03-02",
       file: "guides/Gen 2/Celebi.mdx",
-      translations: { en: "/gen2-celebi", zh: "/zh-gen2-celebi" },
+      translations: {
+        es: "/es-gen2-celebi",
+        en: "/gen2-celebi",
+        zh: "/zh-gen2-celebi",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Celebi.mdx")),
   },
@@ -2476,7 +2506,7 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: "2025-04-11",
       file: "guides/Emerald/Mirage Island.mdx",
-      translations: null,
+      translations: { en: "/rs-mirage-island", zh: "/zh-rs-mirage-island" },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
   },
@@ -2630,6 +2660,24 @@ export const guides = {
         import("~/../guides/Transporter/Transporter with Offline Patch.mdx"),
     ),
   },
+  "/wishing-star-jirachi": {
+    meta: {
+      title: "Wishing Star Jirachi RNG",
+      description:
+        "RNG a Wishing Star Jirachi with different IVs than Wishmaker",
+      slug: "/wishing-star-jirachi",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-23",
+      file: "guides/Ruby and Sapphire/Wishing Star Jirachi.mdx",
+      category: "Ruby and Sapphire",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Ruby and Sapphire/Wishing Star Jirachi.mdx"),
+    ),
+  },
   "/xdcolo-tidsid-generator": {
     meta: {
       title: "XD and Colo TID and SID Generator",
@@ -2759,6 +2807,25 @@ export const guides = {
       () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
     ),
   },
+  "/zh-emerald-mirage-island": {
+    meta: {
+      title: "幻之岛",
+      description: "通过捕捉具有特定 PID 的宝可梦以进入幻之岛",
+      category: "Emerald",
+      slug: "/zh-emerald-mirage-island",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-18",
+      translation: { enSlug: "/emerald-mirage-island", language: "zh" },
+      file: "guides/Emerald/Mirage Island.mdx",
+      translations: {
+        en: "/emerald-mirage-island",
+        zh: "/zh-emerald-mirage-island",
+      },
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
+  },
   "/zh-emerald-painting-rng": {
     meta: {
       title: "利用绘画重置种子",
@@ -2796,6 +2863,24 @@ export const guides = {
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
     ),
   },
+  "/zh-emulator-dppt-egg": {
+    meta: {
+      title: "孵化乱数",
+      description: "如何在育婴屋进行乱数孵化",
+      category: "Diamond, Pearl, and Platinum",
+      slug: "/zh-emulator-dppt-egg",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-dppt-egg", language: "zh" },
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx",
+      translations: { en: "/emulator-dppt-egg", zh: "/zh-emulator-dppt-egg" },
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx"),
+    ),
+  },
   "/zh-emulator-emerald-egg": {
     meta: {
       title: "孵化乱数",
@@ -2814,6 +2899,30 @@ export const guides = {
       },
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
+  },
+  "/zh-emulator-flrg-stationary-and-gift": {
+    meta: {
+      title: "固定宝可梦乱数",
+      description: "在《火红·叶绿》中获取闪光六项个体值的传说宝可梦",
+      slug: "/zh-emulator-flrg-stationary-and-gift",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/emulator-flrg-stationary-and-gift",
+        language: "zh",
+      },
+      file: "guides/FireRed and LeafGreen/Static RNG.mdx",
+      category: "FireRed and LeafGreen",
+      translations: {
+        en: "/emulator-flrg-stationary-and-gift",
+        zh: "/zh-emulator-flrg-stationary-and-gift",
+      },
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
+    ),
   },
   "/zh-emulator-hgss-egg": {
     meta: {
@@ -2849,6 +2958,25 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
+  "/zh-frlg-seeding-bot": {
+    meta: {
+      title: "初始种子自动刷取",
+      description: "使用初始种子自动脚本，实现更高自由度的乱数控制",
+      slug: "/zh-frlg-seeding-bot",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/frlg-seeding-bot", language: "zh" },
+      file: "guides/FireRed and LeafGreen/Initial Seed Botting.mdx",
+      category: "FireRed and LeafGreen",
+      translations: { en: "/frlg-seeding-bot", zh: "/zh-frlg-seeding-bot" },
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/FireRed and LeafGreen/Initial Seed Botting.mdx"),
+    ),
+  },
   "/zh-gen2-celebi": {
     meta: {
       title: "时拉比",
@@ -2861,7 +2989,11 @@ export const guides = {
       addedOn: "2025-03-27",
       translation: { enSlug: "/gen2-celebi", language: "zh" },
       file: "guides/Gen 2/Celebi.mdx",
-      translations: { en: "/gen2-celebi", zh: "/zh-gen2-celebi" },
+      translations: {
+        es: "/es-gen2-celebi",
+        en: "/gen2-celebi",
+        zh: "/zh-gen2-celebi",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Celebi.mdx")),
   },
@@ -2954,6 +3086,22 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
   },
+  "/zh-rs-mirage-island": {
+    meta: {
+      title: "幻之岛",
+      description: "通过捕捉具有特定 PID 的宝可梦以进入幻之岛",
+      category: "Ruby and Sapphire",
+      slug: "/zh-rs-mirage-island",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-18",
+      translation: { enSlug: "/rs-mirage-island", language: "zh" },
+      file: "guides/Emerald/Mirage Island.mdx",
+      translations: { en: "/rs-mirage-island", zh: "/zh-rs-mirage-island" },
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
+  },
   "/zh-rs-sid-feebas": {
     meta: {
       title: "使用丑丑鱼查找 SID",
@@ -3039,6 +3187,7 @@ export const guideSlugs = [
   z.literal("/emulator-rs-wishmaker"),
   z.literal("/emulator-sm-time-finder"),
   z.literal("/emulator-usum-time-finder"),
+  z.literal("/es-gen2-celebi"),
   z.literal("/es-gen2-starters"),
   z.literal("/frlg-gen3-sid"),
   z.literal("/frlg-seeding-bot"),
@@ -3126,6 +3275,7 @@ export const guideSlugs = [
   z.literal("/transporter-patches"),
   z.literal("/transporter-rng"),
   z.literal("/transporter-rng-offline"),
+  z.literal("/wishing-star-jirachi"),
   z.literal("/xdcolo-tidsid-generator"),
   z.literal("/xy-pokeradar"),
   z.literal("/zh-dppt-advance-rng"),
@@ -3133,17 +3283,22 @@ export const guideSlugs = [
   z.literal("/zh-dppt-pokeradar-rng"),
   z.literal("/zh-dppt-wild"),
   z.literal("/zh-e-tips-rng"),
+  z.literal("/zh-emerald-mirage-island"),
   z.literal("/zh-emerald-painting-rng"),
   z.literal("/zh-emerald-sid-feebas"),
+  z.literal("/zh-emulator-dppt-egg"),
   z.literal("/zh-emulator-emerald-egg"),
+  z.literal("/zh-emulator-flrg-stationary-and-gift"),
   z.literal("/zh-emulator-hgss-egg"),
   z.literal("/zh-frlg-gen3-sid"),
+  z.literal("/zh-frlg-seeding-bot"),
   z.literal("/zh-gen2-celebi"),
   z.literal("/zh-gen2-starters"),
   z.literal("/zh-gen3-sid"),
   z.literal("/zh-install-pokereader"),
   z.literal("/zh-retail-emerald-wild"),
   z.literal("/zh-rs-gen3-sid"),
+  z.literal("/zh-rs-mirage-island"),
   z.literal("/zh-rs-sid-feebas"),
 ] as const;
 

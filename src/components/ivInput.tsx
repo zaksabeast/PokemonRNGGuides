@@ -1,8 +1,19 @@
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { Flex } from "./flex";
-import { Input } from "./input";
-import { useFormikContext } from "formik";
+import { useField } from "formik";
 import { Ivs } from "~/rngTools";
+import { NumberInput } from "./numberInput";
+import { z } from "zod";
+import { get } from "lodash-es";
+
+export const IvSchema: z.Schema<Ivs> = z.object({
+  hp: z.number().int().min(0).max(31),
+  atk: z.number().int().min(0).max(31),
+  def: z.number().int().min(0).max(31),
+  spa: z.number().int().min(0).max(31),
+  spd: z.number().int().min(0).max(31),
+  spe: z.number().int().min(0).max(31),
+});
 
 type SingleIvFieldProps<FormState extends GenericForm> = {
   parentName: GuaranteeFormNameType<FormState, Ivs>;
@@ -13,26 +24,24 @@ const SingleIvField = <FormState extends GenericForm>({
   parentName,
   stat,
 }: SingleIvFieldProps<FormState>) => {
-  const formik = useFormikContext<Record<typeof parentName, Ivs>>();
-  const ivs = formik.values[parentName];
-  const defaultValue = formik.initialValues[parentName][stat];
+  const [{ value, onBlur }, { error }, { setValue }] =
+    useField<Ivs>(parentName);
+  const errorMessage = error == null ? undefined : get(error, stat);
 
   return (
     <Flex minWidth={50}>
-      <Input
+      <NumberInput
         name={`${parentName}_${stat}`}
-        defaultValue={defaultValue}
+        value={value[stat]}
         textAlign="center"
-        variant="outlined"
-        onChange={(event) => {
-          const iv = parseInt(event.target.value);
-
-          if (isNaN(iv)) {
-            return;
-          }
-
-          const safeIv = Math.min(31, Math.max(0, iv));
-          formik.setFieldValue(parentName, { ...ivs, [stat]: safeIv });
+        errorMessage={errorMessage}
+        numType="decimal"
+        onBlur={onBlur}
+        onChange={(newValue) => {
+          setValue({
+            ...value,
+            [stat]: newValue,
+          });
         }}
       />
     </Flex>

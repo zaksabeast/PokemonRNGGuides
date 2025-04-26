@@ -1,3 +1,4 @@
+import React from "react";
 import { Flex } from "./flex";
 import { Formik, FormikProps, FormikConfig } from "formik";
 import { Form } from "./form";
@@ -8,6 +9,8 @@ import { GenericForm } from "~/types/form";
 import * as tst from "ts-toolbelt";
 import { noop } from "lodash-es";
 import { AllOrNone, FeatureConfig, OneOf } from "~/types/utils";
+import { z } from "zod";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 
 export type RngToolSubmit<Values> = FormikConfig<Values>["onSubmit"];
 export type RngToolUpdate<Values> = (values: Values) => void;
@@ -15,6 +18,7 @@ export type RngToolUpdate<Values> = (values: Values) => void;
 type Props<FormState, Result> = {
   initialValues: FormState;
   onSubmit: RngToolSubmit<FormState>;
+  validationSchema?: z.ZodSchema<FormState>;
   submitButtonLabel?: string;
   formContainerId?: string;
 } & OneOf<{
@@ -40,6 +44,7 @@ export const RngToolForm = <
   submitTrackerId,
   initialValues,
   fields,
+  validationSchema,
   getFields,
   columns,
   onSubmit,
@@ -53,12 +58,19 @@ export const RngToolForm = <
   resetTrackerId,
   submitButtonLabel = "Generate",
 }: Props<FormState, Result>) => {
+  const _validationSchema = React.useMemo(() => {
+    return validationSchema == null
+      ? null
+      : toFormikValidationSchema(validationSchema);
+  }, [validationSchema]);
+
   return (
     <Formik
       enableReinitialize
       initialValues={initialValues}
       onSubmit={onSubmit ?? noop}
       onReset={onReset}
+      validationSchema={_validationSchema}
     >
       {(formik) => {
         const fieldsToUse = fields || getFields(formik);

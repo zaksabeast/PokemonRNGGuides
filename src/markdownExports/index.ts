@@ -48,6 +48,7 @@ import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
 import { Static3 } from "~/rngToolsUi/gen3/static/static3";
 import { ShinyStarter } from "~/rngToolsUi/gen3/shinyStarter";
 import { GenerateTidSid } from "~/rngToolsUi/gen3/shinyStarter/generateTidSid";
+import { MultibootJirachi } from "~/rngToolsUi/gen3/multibootJirachi";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -97,4 +98,5 @@ export const markdownComponents = {
   XyPokeRadar,
   ShinyStarter,
   GenerateTidSid,
+  MultibootJirachi,
 };

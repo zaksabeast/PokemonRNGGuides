@@ -31,3 +31,4 @@ export { Timer } from "./timer";
 export { MultiTimer } from "./multiTimer";
 export { FormikIdFilter } from "./idFilter";
 export { Alert } from "./alert";
+export { FileUpload } from "./fileUpload";

@@ -39,54 +39,67 @@ export const pkmFilterSchema = z.object({
   filter_max_ivs: IvSchema,
 }) satisfies z.Schema<PkmFilterFields>;
 
-const _getPkmFilterFields = (): Field[] => [
-  {
-    label: "Shiny",
-    input: (
-      <FormikSwitch<PkmFilterFields, "filter_shiny"> name="filter_shiny" />
-    ),
-  },
-  {
-    label: "Nature",
-    input: (
-      <FormikSelect<PkmFilterFields, "filter_nature">
-        name="filter_nature"
-        options={natureOptions}
-      />
-    ),
-  },
-  {
-    label: "Ability",
-    input: (
-      <FormikSelect<PkmFilterFields, "filter_ability">
-        name="filter_ability"
-        options={abilityOptions}
-      />
-    ),
-  },
-  {
-    label: "Gender",
-    input: (
-      <FormikSelect<PkmFilterFields, "filter_gender">
-        name="filter_gender"
-        options={genderOptions}
-      />
-    ),
-  },
-  {
-    label: "Min IVs",
-    input: <IvInput<PkmFilterFields> name="filter_min_ivs" />,
-  },
-  {
-    label: "Max IVs",
-    input: <IvInput<PkmFilterFields> name="filter_max_ivs" />,
-  },
-];
+type FieldOptOuts = {
+  shiny?: boolean;
+  nature?: boolean;
+  ability?: boolean;
+  gender?: boolean;
+  ivs?: boolean;
+};
 
-export const getPkmFilterFields = <
-  FormField,
->(): FormField extends PkmFilterFields ? Field[] : never => {
-  return _getPkmFilterFields() as FormField extends PkmFilterFields
+const optOut = <T,>(condition: boolean | undefined, value: T): T | null => {
+  return condition === false ? null : value;
+};
+
+const _getPkmFilterFields = (optOuts: FieldOptOuts = {}): Field[] =>
+  [
+    optOut(optOuts?.shiny, {
+      label: "Shiny",
+      input: (
+        <FormikSwitch<PkmFilterFields, "filter_shiny"> name="filter_shiny" />
+      ),
+    }),
+    optOut(optOuts?.nature, {
+      label: "Nature",
+      input: (
+        <FormikSelect<PkmFilterFields, "filter_nature">
+          name="filter_nature"
+          options={natureOptions}
+        />
+      ),
+    }),
+    optOut(optOuts?.ability, {
+      label: "Ability",
+      input: (
+        <FormikSelect<PkmFilterFields, "filter_ability">
+          name="filter_ability"
+          options={abilityOptions}
+        />
+      ),
+    }),
+    optOut(optOuts?.gender, {
+      label: "Gender",
+      input: (
+        <FormikSelect<PkmFilterFields, "filter_gender">
+          name="filter_gender"
+          options={genderOptions}
+        />
+      ),
+    }),
+    optOut(optOuts?.ivs, {
+      label: "Min IVs",
+      input: <IvInput<PkmFilterFields> name="filter_min_ivs" />,
+    }),
+    optOut(optOuts?.ivs, {
+      label: "Max IVs",
+      input: <IvInput<PkmFilterFields> name="filter_max_ivs" />,
+    }),
+  ].filter((field) => field !== null);
+
+export const getPkmFilterFields = <FormField,>(
+  optOuts?: FieldOptOuts,
+): FormField extends PkmFilterFields ? Field[] : never => {
+  return _getPkmFilterFields(optOuts) as FormField extends PkmFilterFields
     ? Field[]
     : never;
 };

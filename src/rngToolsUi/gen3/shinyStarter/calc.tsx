@@ -1,6 +1,5 @@
 import type { Game, Starter } from "./index";
 import type { FormState } from "./caughtMon";
-import { Stat } from "../../../types/stat";
 import { Gender, Nature, rngTools } from "~/rngTools";
 
 export interface CaughtMonResult {

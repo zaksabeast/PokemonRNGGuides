@@ -16,21 +16,21 @@ import { PiPersonSimpleWalkBold } from "react-icons/pi";
 import { FaHeart } from "react-icons/fa6";
 
 const icons = {
-  Menu: AiOutlineMenu,
   ArrowRightAlt: MdArrowRightAlt,
+  Check: MdCheck,
+  CheckCircle: MdCheckCircle,
+  Close: MdClose,
+  Coffee: FaCoffee,
   Discord: FaDiscord,
   Github: FaGithub,
-  CheckCircle: MdCheckCircle,
-  Update: MdUpdate,
-  Check: MdCheck,
+  Heart: FaHeart,
   Language: IoLanguage,
-  Close: MdClose,
-  Sparkles: IoSparkles,
+  Menu: AiOutlineMenu,
+  OutlineCloseCircle: AiOutlineCloseCircle,
   PersonSimpleWalkBold: PiPersonSimpleWalkBold,
   RocketLaunch: MdRocketLaunch,
-  Heart: FaHeart,
-  Coffee: FaCoffee,
-  OutlineCloseCircle: AiOutlineCloseCircle,
+  Sparkles: IoSparkles,
+  Update: MdUpdate,
 } as const;
 
 export type IconName = keyof typeof icons;

@@ -3,13 +3,13 @@ import { Field } from "~/components/formFieldTable";
 import { FormikSwitch } from "~/components/switch";
 import { FormikSelect } from "~/components/select";
 import { nature } from "~/types/nature";
-import { IvInput } from "~/components/ivInput";
+import { IvInput, IvSchema } from "~/components/ivInput";
 import { ability } from "~/types/ability";
 import { gender } from "~/types/gender";
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
 
-export const natureOptions = ([undefined, ...nature] as const).map((nat) => ({
+export const natureOptions = ([null, ...nature] as const).map((nat) => ({
   label: nat ?? "None",
   value: nat,
 }));

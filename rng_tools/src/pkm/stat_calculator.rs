@@ -1,10 +1,6 @@
 
 use wasm_bindgen::prelude::*;
-use crate::{StatsValue};
-
-//NO_PROD
-#[wasm_bindgen]
-extern { fn js_log(msg:&str); }
+use crate::StatsValue;
 
 pub fn gen3_calculate_hp(base_stat:u16, iv:u8, ev:u16, level:u8) -> u16 {
   if base_stat == 1 {

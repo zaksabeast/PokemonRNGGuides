@@ -1,21 +1,20 @@
 import React from "react";
 import { Flex } from "./flex";
-import { Formik, FormikProps, FormikConfig } from "formik";
+import { Formik, FormikConfig } from "formik";
 import { Form } from "./form";
 import { FormFieldTable, Field } from "./formFieldTable";
 import { Button } from "./button";
 import { FormikResultTable, ResultColumn } from "./resultTable";
 import { GenericForm } from "~/types/form";
 import * as tst from "ts-toolbelt";
-import { noop } from "lodash-es";
 import { AllOrNone, FeatureConfig, OneOf } from "~/types/utils";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 
 export type RngToolSubmit<Values> = FormikConfig<Values>["onSubmit"];
-export type RngToolUpdate<Values> = (values: Values) => void;
 
 type Props<FormState, Result> = {
+  submitTrackerId: string;
   initialValues: FormState;
   onSubmit: RngToolSubmit<FormState>;
   validationSchema?: z.ZodSchema<FormState>;
@@ -23,17 +22,12 @@ type Props<FormState, Result> = {
   formContainerId?: string;
 } & OneOf<{
   fields: Field[];
-  getFields: (values: FormikProps<FormState>) => Field[];
+  getFields: (values: FormState) => Field[];
 }> &
   AllOrNone<{ columns: ResultColumn<Result>[]; results: Result[] }> &
   AllOrNone<{
     rowKey: keyof Result;
     onClickResultRow?: (record: Result) => void;
-  }> &
-  AllOrNone<{
-    submitTrackerId: string;
-    onSubmit: RngToolSubmit<FormState>;
-    submitButtonLabel?: string;
   }> &
   FeatureConfig<"allowReset", { resetTrackerId: string; onReset?: () => void }>;
 
@@ -50,7 +44,6 @@ export const RngToolForm = <
   onSubmit,
   onReset,
   onClickResultRow,
-  onUpdate,
   rowKey,
   results,
   formContainerId,
@@ -68,24 +61,21 @@ export const RngToolForm = <
     <Formik
       enableReinitialize
       initialValues={initialValues}
-      onSubmit={onSubmit ?? noop}
+      onSubmit={onSubmit}
       onReset={onReset}
       validationSchema={_validationSchema}
     >
       {(formik) => {
-        const fieldsToUse = fields || getFields(formik);
-        onUpdate?.(formik.values);
+        const fieldsToUse = fields || getFields(formik.values);
 
         return (
           <Flex vertical gap={16} id={formContainerId}>
             <Form>
               <Flex vertical gap={8}>
                 <FormFieldTable fields={fieldsToUse} />
-                {onSubmit != null && submitTrackerId != null && (
-                  <Button trackerId={submitTrackerId} htmlType="submit">
-                    {submitButtonLabel}
-                  </Button>
-                )}
+                <Button trackerId={submitTrackerId} htmlType="submit">
+                  {submitButtonLabel}
+                </Button>
                 {allowReset && resetTrackerId != null && (
                   <Button trackerId={resetTrackerId} htmlType="reset">
                     Reset

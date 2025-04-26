@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex } from "./flex";
-import { Formik, FormikConfig } from "formik";
+import { Formik, FormikProps, FormikConfig } from "formik";
 import { Form } from "./form";
 import { FormFieldTable, Field } from "./formFieldTable";
 import { Button } from "./button";
@@ -22,7 +22,7 @@ type Props<FormState, Result> = {
   formContainerId?: string;
 } & OneOf<{
   fields: Field[];
-  getFields: (values: FormState) => Field[];
+  getFields: (values: FormikProps<FormState>) => Field[];
 }> &
   AllOrNone<{ columns: ResultColumn<Result>[]; results: Result[] }> &
   AllOrNone<{
@@ -66,7 +66,7 @@ export const RngToolForm = <
       validationSchema={_validationSchema}
     >
       {(formik) => {
-        const fieldsToUse = fields || getFields(formik.values);
+        const fieldsToUse = fields || getFields(formik);
 
         return (
           <Flex vertical gap={16} id={formContainerId}>

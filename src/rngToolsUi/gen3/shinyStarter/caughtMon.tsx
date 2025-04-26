@@ -10,8 +10,6 @@ import { Typography } from "~/components/typography";
 import {
   nature,
   NatureStat,
-  getNaturesFromStatMoreLess,
-  getStatMoreLessFromNature,
 } from "../../../types/nature";
 import * as tst from "ts-toolbelt";
 import { RadioChangeEvent } from "antd";

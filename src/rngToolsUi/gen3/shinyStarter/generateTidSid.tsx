@@ -82,7 +82,7 @@ export const GenerateTidSidRating = ({
 
   const fields = [
     {
-      label: "Estimated time to determine SID for TID:",
+      label: "Estimated time to determine SID for obtained TID:",
       input: estimatedTime,
     },
     {

@@ -7,10 +7,7 @@ import { RngToolSubmit } from "~/components/rngToolForm";
 import { noop } from "lodash-es";
 import { match } from "ts-pattern";
 import { Typography } from "~/components/typography";
-import {
-  nature,
-  NatureStat,
-} from "../../../types/nature";
+import { nature, NatureStat } from "../../../types/nature";
 import * as tst from "ts-toolbelt";
 import { RadioChangeEvent } from "antd";
 import { Starter } from "./index";

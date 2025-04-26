@@ -425,6 +425,21 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
   },
+  "/emerald-shiny-starter": {
+    meta: {
+      title: "Shiny Starter",
+      description: "Determine your SID by catching a shiny starter",
+      category: "Emerald",
+      slug: "/emerald-shiny-starter",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-26",
+      file: "guides/Emerald/Shiny Starter.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Shiny Starter.mdx")),
+  },
   "/emerald-sid-feebas": {
     meta: {
       title: "Find SID with Feebas",
@@ -2527,6 +2542,21 @@ export const guides = {
       () => import("~/../guides/Ruby and Sapphire/PokeFinder Setup.mdx"),
     ),
   },
+  "/rs-shiny-starter": {
+    meta: {
+      title: "Shiny Starter",
+      description: "Determine your SID by catching a shiny starter",
+      category: "Ruby and Sapphire",
+      slug: "/rs-shiny-starter",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-26",
+      file: "guides/Emerald/Shiny Starter.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Shiny Starter.mdx")),
+  },
   "/rs-sid-feebas": {
     meta: {
       title: "Find SID with Feebas",
@@ -3146,6 +3176,7 @@ export const guideSlugs = [
   z.literal("/emerald-mirage-island"),
   z.literal("/emerald-overview"),
   z.literal("/emerald-painting-rng"),
+  z.literal("/emerald-shiny-starter"),
   z.literal("/emerald-sid-feebas"),
   z.literal("/emerald-static"),
   z.literal("/emerald-tidsid-generator"),
@@ -3267,6 +3298,7 @@ export const guideSlugs = [
   z.literal("/rs-initial-seed"),
   z.literal("/rs-mirage-island"),
   z.literal("/rs-pokefinder-setup"),
+  z.literal("/rs-shiny-starter"),
   z.literal("/rs-sid-feebas"),
   z.literal("/rs-static"),
   z.literal("/rs-tidsid-generator"),

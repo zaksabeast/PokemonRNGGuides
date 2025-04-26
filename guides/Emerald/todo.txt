@@ -1,0 +1,7 @@
+- right best tid_gen_adv for ruby/Sapphire
+- validate inputs
+- change toDecimalString
+- mnanually change offset
+
+
+

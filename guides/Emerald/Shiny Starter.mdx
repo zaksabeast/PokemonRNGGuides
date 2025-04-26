@@ -16,7 +16,9 @@
 <Gist>Gist: Determine your SID by catching a shiny starter</Gist>
 
 <ShowIf slug="/rs-shiny-starter">
-  Requirements: Your battery must be dead. 
+  ## Requirements
+  
+  Your battery must be dead. 
 </ShowIf>
 
 ## Strategy Overview
@@ -25,8 +27,16 @@ When creating a new savefile, SID depends the randomly generated TID and the tim
 It isn't humanly possible to control TID because it updates ~280,000 times per second.
 The timing of pressing `A` on a specific text has a 1/60 second accuracy.
 
-The strategy to determine the SID is to attempt a timing of 1505 advances. By knowing the TID and that the actual hit advance is near 1505,
+<ShowIf slug="/rs-shiny-starter">
+  The strategy to determine the SID is to attempt a timing of 1632 advances. By knowing the TID and that the actual hit advance is near 1632,
+we can generate a list of possible SIDs (one SID for each advance near 1632).
+</ShowIf>
+
+<ShowIf slug="/emerald-shiny-starter">
+  The strategy to determine the SID is to attempt a timing of 1505 advances. By knowing the TID and that the actual hit advance is near 1505,
 we can generate a list of possible SIDs (one SID for each advance near 1505).
+</ShowIf>
+
 
 Afterwards, each possible SID of the list must be validated until the right one is found. A SID can be validated by catching a Pokémon that would be shiny is the player has that SID. If that Pokémon is shiny, then the tested SID is the right one. Otherwise it isn't.
 
@@ -65,7 +75,7 @@ If the Pokémon is not shiny, then its associated SID is not your SID.
 8. If it's shiny, congratulations! The inputted SID is the SID of your savefile.
 9. If it's not shiny, fill the species, gender, nature, and stats in the form below, then press "Find advances matching caught starter Pokémon".
 10. <ShowIf slug="/rs-shiny-starter">
-      If no results is shown, a field is incorrect, or the battery of your cartridge is not dead.
+      If no results is shown, a field is incorrect, or the battery is not dead.
     </ShowIf>
     <ShowIf slug="/emerald-shiny-starter">
       If no results are shown, a field is incorrect.

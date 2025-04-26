@@ -18,7 +18,7 @@ use wasm_bindgen::prelude::*;
 /// SIDs of the first obtained TID.
 ///
 /// Optimization 2: Using a target_tid_gen_adv that results in the smallest average time to determine the correct SID.
-/// The ideal target_tid_gen_adv is 1505, with an averge time of 124902 advances to determine the correct SID.
+/// For Emerald, the ideal target_tid_gen_adv is 1505, with an averge time of 124902 advances to determine the correct SID.
 /// ---------------------------------------------------------------------------------------------------------------------------
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -281,14 +281,14 @@ fn add_additional_nearby_sids(nearby_sids:&Vec<Gen3NearbySid>, earliest_shiny_ad
 
 /// Other entry point. 
 /// Returns find the tid_gen_adv that results in the lowest average advance needed to determine SID.
-/// tid_gen_adv in range (900, 2000), best is (adv=1505, avg=124902) and worst is (adv=1987, avg=125744)
+/// tid_gen_adv in range (900, 2000), best for emerald is (adv=1505, avg=124902) and worst is (adv=1987, avg=125744)
 /// This means ideally, player should aim for tid_gen_adv 1505 to determine their SID faster.
 /// To simplify the site, the result of the function (1505) is hardcoded in the shiny starter guide.
-fn _find_best_tid_gen_adv(seed:u32, tid_gen_adv_min:usize, tid_gen_adv_max:usize) -> usize {
+fn find_best_tid_gen_adv(seed:u32, tid_gen_adv_min:usize, tid_gen_adv_max:usize) -> usize {
     let earliest_shiny_advance_by_tsv = generate_earliest_shiny_advance_by_tsv(seed);
 
     let avg_adv_by_tid_gen_adv:Vec<u32> = (tid_gen_adv_min..=tid_gen_adv_max).map(|tid_gen_adv|{
-        _calculate_avg_adv_for_all_tids(&earliest_shiny_advance_by_tsv, tid_gen_adv)
+        calculate_avg_adv_for_all_tids(&earliest_shiny_advance_by_tsv, tid_gen_adv)
     }).collect();
 
     let mid = (TIMING_DISTR.len() - 1) / 2;
@@ -317,7 +317,7 @@ fn _find_best_tid_gen_adv(seed:u32, tid_gen_adv_min:usize, tid_gen_adv_max:usize
 
 /// Returns the average advance needed to determine SID for a given tid_gen_adv,
 /// assuming all TID have same probability of occuring.
-fn _calculate_avg_adv_for_all_tids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize) -> u32 {
+fn calculate_avg_adv_for_all_tids(earliest_shiny_advance_by_tsv:&Vec<u32>, tid_gen_adv:usize) -> u32 {
     let res_by_tid = calculate_tidsid_shiny_result_for_all_tids(earliest_shiny_advance_by_tsv, tid_gen_adv);
     let mut sum:usize = 0;
     let len = res_by_tid.len();
@@ -429,5 +429,14 @@ mod test {
         assert_eq!(res.avg_adv_to_improve_tid, 16000);
         assert_eq!(res.should_improve_tid, false);
     }
+
+    #[ignore]
+    #[test]
+    fn test_find_best_tid_gen_adv() {
+        // It is recommended to run this test in --release mode.
+        assert_eq!(find_best_tid_gen_adv(0, 900, 2000), 1505);
+        assert_eq!(find_best_tid_gen_adv(0x5A0, 900, 2000), 1632);
+    }
+    
 
 }

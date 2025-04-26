@@ -7,7 +7,6 @@ import {
   FormFieldTable,
 } from "~/components";
 import { RadioGroup } from "~/components/radio";
-import { RngToolUpdate } from "~/components/rngToolForm";
 import { Starter, Game } from "./index";
 import { findTargetAdvanceForShinyPokemon } from "./calc";
 import { Flex, MultiTimer } from "~/components";
@@ -56,7 +55,7 @@ const RECOMMEND_REDO_MSG = (chanceInPct: number) =>
 
 const RECOMMEND_KEEP_MSG = `Keep that TID and go to Step 2.`;
 
-const IDEAL_TIDSID_ADVANCE_WITH_OFFSET = 1505;
+const IDEAL_TIDSID_ADVANCE_WITH_OFFSET = (game:Game) => game === "emerald" ? 1505 : 1632;
 
 export const GenerateTidSidRating = ({
   result,
@@ -94,10 +93,12 @@ export const GenerateTidSidRating = ({
 };
 
 export const GenerateTidSid = ({ game }: Props) => {
+  const idealAdvance = IDEAL_TIDSID_ADVANCE_WITH_OFFSET(game);
+
   const getFields = (formik: FormikProps<FormState>): Field[] => {
     const milliseconds = (() => {
       const advFromOffset = fromDecimalString(formik.values.offset) ?? 0;
-      const advFromTimer = IDEAL_TIDSID_ADVANCE_WITH_OFFSET - advFromOffset;
+      const advFromTimer = idealAdvance - advFromOffset;
       let milliseconds = Math.round((advFromTimer * 1000) / 59.7275);
       if (milliseconds < 0) milliseconds = 0;
       return [5000, milliseconds];
@@ -133,7 +134,7 @@ export const GenerateTidSid = ({ game }: Props) => {
     null,
   );
 
-  const onSubmit = React.useCallback<RngToolUpdate<FormState>>(
+  const onSubmit = React.useCallback<(opts:FormState) => Promise<void>>(
     async (opts) => {
       const offset = fromDecimalString(opts.offset);
       const tid = fromDecimalString(opts.tid);
@@ -143,11 +144,11 @@ export const GenerateTidSid = ({ game }: Props) => {
       const seed = game === "emerald" ? 0 : 0x5a0;
       const rng_res = await rngTools.gen3_calculate_tidsid_shiny_for_tid(
         seed,
-        IDEAL_TIDSID_ADVANCE_WITH_OFFSET,
+        idealAdvance,
         tid,
       );
       const res = rng_res.nearby_sids.map((r) => {
-        return { ...r, tid_gen_target_adv: IDEAL_TIDSID_ADVANCE_WITH_OFFSET };
+        return { ...r, tid_gen_target_adv: idealAdvance };
       });
 
       setResult(rng_res);

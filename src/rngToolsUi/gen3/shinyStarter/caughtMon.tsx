@@ -119,18 +119,6 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
         },
       },
       {
-        title: "Stats",
-        dataIndex: "stats",
-      },
-      {
-        title: "Nature",
-        dataIndex: "nature",
-      },
-      {
-        title: "Gender",
-        dataIndex: "gender",
-      },
-      {
         title: "",
         dataIndex: "advance",
         render(advance) {

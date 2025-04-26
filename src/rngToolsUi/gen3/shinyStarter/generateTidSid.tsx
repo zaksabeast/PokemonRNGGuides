@@ -42,6 +42,7 @@ const RECOMMEND_REDO_MSG = (chanceInPct:number) => `Redo Step 1 to generate a ne
 
 const RECOMMEND_KEEP_MSG = `Keep that TID and go to Step 2.`;
 
+const IDEAL_TIDSID_ADVANCE_WITH_OFFSET = 1505;
 
 export const GenerateTidSidRating = ({
   result,
@@ -90,8 +91,11 @@ export const GenerateTidSid = ({
 
   const getFields = (formik:FormikProps<FormState>) : Field[] => {
     const milliseconds = (() => {
-      const offset = fromDecimalString(formik.values.offset) ?? 0;
-      const milliseconds = Math.round((offset * 1000) / 59.7275);
+      const advFromOffset = fromDecimalString(formik.values.offset) ?? 0;
+      const advFromTimer = IDEAL_TIDSID_ADVANCE_WITH_OFFSET - advFromOffset;
+      let milliseconds = Math.round((advFromTimer * 1000) / 59.7275);
+      if (milliseconds < 0)
+        milliseconds = 0;
       return [5000, milliseconds];
     })();
 
@@ -99,7 +103,7 @@ export const GenerateTidSid = ({
 
     return [
       {
-        label: "Offset for TID/SID generation",
+        label: "Offset",
         input: <FormikInput<FormState> name="offset" />,
       },
       {
@@ -130,11 +134,11 @@ export const GenerateTidSid = ({
         return;
 
       const seed = game === "emerald" ? 0 : 0x5A0;
-      const tid_gen_adv = 1505 - 60 + offset; //NO_PROD
-      const rng_res = await rngTools.gen3_calculate_tidsid_shiny_for_tid(seed, tid_gen_adv, tid);
+      const rng_res = await rngTools.gen3_calculate_tidsid_shiny_for_tid(seed, IDEAL_TIDSID_ADVANCE_WITH_OFFSET, tid);
       const res = rng_res.nearby_sids.map(r => {
-        return {...r, tid_gen_target_adv:tid_gen_adv}
+        return {...r, tid_gen_target_adv:IDEAL_TIDSID_ADVANCE_WITH_OFFSET}
       });
+
       setResult(rng_res);
 
       setFormResults(res);
@@ -144,7 +148,7 @@ export const GenerateTidSid = ({
 
   const getColumns = (): ResultColumn<Result>[] => {
     const columns: ResultColumn<Result>[] = [
-      { title: "TID/SID Advance", dataIndex: "tid_gen_adv",
+      { title: "TID/SID advance", dataIndex: "tid_gen_adv",
         render: (val, values) => {
           const diffWithTarget = val - values.tid_gen_target_adv;
           if (diffWithTarget === 0)
@@ -176,6 +180,7 @@ export const GenerateTidSid = ({
       getFields={getFields}
       columns={getColumns()}
       initialValues={initialValues}
+      submitButtonLabel="Generate possible SIDs"
       submitTrackerId="generate_tid_sid_for_shiny_starter"
       onSubmit={onSubmit}
     />

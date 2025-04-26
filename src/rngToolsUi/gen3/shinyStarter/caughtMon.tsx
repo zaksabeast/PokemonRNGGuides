@@ -8,7 +8,7 @@ import { noop } from "lodash-es";
 import { match } from "ts-pattern";
 import { Typography } from "~/components/typography";
 import {
-  natures,
+  nature,
   NatureStat,
   getNaturesFromStatMoreLess,
   getStatMoreLessFromNature,
@@ -26,7 +26,7 @@ import {
 import { Button } from "../../../components/button";
 import type { Game } from "./index";
 
-const sortedNatures = natures.slice(0).sort();
+const sortedNatures = nature.slice(0).sort();
 
 const toOptions = <T,>(options: T[]) => {
   return options.map((option) => ({

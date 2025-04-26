@@ -4,7 +4,7 @@ import * as tst from "ts-toolbelt";
 
 export type NatureStat = tst.U.Exclude<Stat, "hp">;
 
-export const natures = [
+export const nature = [
   "Hardy",
   "Lonely",
   "Brave",

@@ -7,11 +7,11 @@ import { Gen5EntralinkPlusTimer } from "./entralinkPlus";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { z } from "zod";
 
-const Gen5TimerModeSchema = z.union([
-  z.literal("standard"),
-  z.literal("cgear"),
-  z.literal("entralink"),
-  z.literal("entralink_plus"),
+const Gen5TimerModeSchema = z.enum([
+  "standard",
+  "cgear",
+  "entralink",
+  "entralink_plus",
 ]);
 
 type Gen5TimerMode = z.infer<typeof Gen5TimerModeSchema>;

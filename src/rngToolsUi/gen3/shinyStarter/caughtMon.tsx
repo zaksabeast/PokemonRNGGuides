@@ -158,11 +158,13 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
             optionType="button"
             value={formik.values.pokemonSpecies}
             onChange={async ({ target }) => {
+              console.log('new-vale', target.value);
               formik.setValues({
                 ...formik.values,
                 pokemonSpecies: target.value,
                 minMaxStats: await getStatRangeForStarter(target.value),
               });
+              setTimeout(() => console.log('after',formik.values.pokemonSpecies), 10);
             }}
             options={toOptions(["Mudkip", "Torchic", "Treecko"])}
           />

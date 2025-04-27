@@ -869,5 +869,65 @@ mod test {
         let results = gen3_static_generator_states(&opts);
         assert!(results.len() == 0);
 
+        
+        let opts = Static3GeneratorOptions {
+            offset: 0,
+            initial_advances: 8000,
+            max_advances: 0,
+            seed: 0,
+            species: Species::Mudkip,
+            bugged_roamer: false,
+            method4: false,
+            tid: 0,
+            sid: 0,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: ZERO_IVS,
+                max_ivs: PERFECT_IVS,
+                ability: None,
+                stats: Some(StatFilter {
+                    lvl:5,
+                    base_stats:StatsValue { hp:50,atk:70,def:50,spa:50,spd:50,spe:40 },
+                    min_stats:StatsValue { hp:21,atk:13,def:12,spa:11,spd:10,spe:8 },
+                    max_stats:StatsValue { hp:21,atk:13,def:12,spa:11,spd:10,spe:8 },
+                }),
+            },
+        };
+
+        let results = gen3_static_generator_states(&opts);
+        assert!(results.len() != 0);
+
+        
+        let opts = Static3GeneratorOptions {
+            offset: 0,
+            initial_advances: 646,
+            max_advances: 0,
+            seed: 0,
+            species: Species::Torchic,
+            bugged_roamer: false,
+            method4: false,
+            tid: 0,
+            sid: 0,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: ZERO_IVS,
+                max_ivs: PERFECT_IVS,
+                ability: None,
+                stats: Some(StatFilter {
+                    lvl:5,
+                    base_stats:StatsValue { hp: 45, atk: 60, def: 40, spa: 70, spd: 50, spe: 45 },
+                    min_stats:StatsValue { hp:19,atk:11,def:9,spa:12,spd:9,spe:9 },
+                    max_stats:StatsValue { hp:19,atk:11,def:9,spa:12,spd:9,spe:9 },
+                }),
+            },
+        };
+
+        let results = gen3_static_generator_states(&opts);
+        println!("{:?}", results[0]);
+        assert!(results.len() != 1);
     }
 }

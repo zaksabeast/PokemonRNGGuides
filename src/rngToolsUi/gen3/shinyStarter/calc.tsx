@@ -10,7 +10,7 @@ export interface CaughtMonResult {
   gender: Gender;
 }
 
-const MINIMAL_ADV = 600;
+const MINIMAL_ADV = 500;
 
 export const findTargetAdvanceForShinyPokemon = async function (
   game: Game,
@@ -124,11 +124,11 @@ export const generateCaughtMonResults = async function (
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter
     bugged_roamer: false, // doesn't matter
-    species: "Mudkip", // doesn't matter
+    species: caughtMonValues.pokemonSpecies, // doesn't matter
   } as const;
 
   const genResults = await rngTools.gen3_static_generator_states(opts);
-
+  console.log(opts, genResults);
   const caughtMonResults = genResults.map((r) => {
     return {
       advance: r.advance,

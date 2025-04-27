@@ -1,18 +1,12 @@
 import React from "react";
-import { useFormikContext } from "formik";
+import { z } from "zod";
 import { RngToolForm, Field, Flex, ResultColumn, Icon, FormFieldTable } from "~/components";
 import { FormikRadio, RadioGroup } from "~/components/radio";
-import { Ivs, Nature, Gender, rngTools } from "~/rngTools";
 import { RngToolSubmit } from "~/components/rngToolForm";
-import { noop } from "lodash-es";
-import { match } from "ts-pattern";
 import { Typography } from "~/components/typography";
 import { nature, NatureStat } from "../../../types/nature";
-import * as tst from "ts-toolbelt";
-import { RadioChangeEvent } from "antd";
-import { Starter } from "./index";
 import { Select } from "~/components";
-import { Formik, FormikProps, FormikConfig } from "formik";
+import { FormikProps } from "formik";
 import {
   getStatRangeForStarter,
   CaughtMonResult,
@@ -37,25 +31,27 @@ const toStatOptions = ({ min, max }: { min: number; max: number }) => {
   return opts;
 };
 
-export type FormState = {
-  pokemonSpecies: Starter;
-  hpStat: number;
-  atkStat: number;
-  defStat: number;
-  spaStat: number;
-  spdStat: number;
-  speStat: number;
-  nature: Nature | "";
-  gender: Gender | "";
-  minMaxStats: {
-    hp: { min: number; max: number };
-    atk: { min: number; max: number };
-    def: { min: number; max: number };
-    spa: { min: number; max: number };
-    spd: { min: number; max: number };
-    spe: { min: number; max: number };
-  };
-};
+const Validator = z.object({
+  pokemonSpecies: z.enum(["Mudkip", "Torchic", "Treecko"]),
+  hpStat: z.number().min(0).max(999),
+  atkStat: z.number().min(0).max(999),
+  defStat: z.number().min(0).max(999),
+  spaStat: z.number().min(0).max(999),
+  spdStat: z.number().min(0).max(999),
+  speStat: z.number().min(0).max(999),
+  nature: z.enum(nature).nullable(),
+  gender: z.enum(["Male","Female"]).nullable(),
+  minMaxStats: z.object({
+    hp: z.object({ min: z.number().min(0).max(999), max: z.number().min(0).max(999) }),
+    atk: z.object({ min: z.number().min(0).max(999), max: z.number().min(0).max(999) }),
+    def: z.object({ min: z.number().min(0).max(999), max: z.number().min(0).max(999) }),
+    spa: z.object({ min: z.number().min(0).max(999), max: z.number().min(0).max(999) }),
+    spd: z.object({ min: z.number().min(0).max(999), max: z.number().min(0).max(999) }),
+    spe: z.object({ min: z.number().min(0).max(999), max: z.number().min(0).max(999) }),
+  }),
+});
+
+export type FormState = z.infer<typeof Validator>;
 
 const StatInput = ({
   stat,
@@ -82,8 +78,8 @@ const initialValues: FormState = {
   spaStat: 0,
   spdStat: 0,
   speStat: 0,
-  nature: "",
-  gender: "",
+  nature: null,
+  gender: null,
   minMaxStats: {
     hp: { min: 20, max: 21 },
     atk: { min: 10, max: 14 },
@@ -185,7 +181,7 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
         input: (
           <FormikRadio<FormState, "gender">
             name="gender"
-            options={toOptions(["Male", "Female"])}
+            options={toOptions(["Male", "Female"] as const) as any}
           />
         ),
       },
@@ -249,12 +245,11 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
         columns={getColumns()}
         results={results}
         initialValues={initialValues}
+        validationSchema={Validator}
         onSubmit={onSubmit}
         submitTrackerId="generate_gen3_caught_starter"
         submitButtonLabel={"Find advances matching caught starter Pokémon"}
         rowKey="advance"
-        allowReset={true}
-        resetTrackerId="caughtMon_reset"
       />
     </>
   );

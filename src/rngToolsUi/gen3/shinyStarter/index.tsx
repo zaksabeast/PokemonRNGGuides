@@ -1,15 +1,10 @@
 import React from "react";
 import { Flex, MultiTimer } from "~/components";
 import { FindTargetAdvance } from "./findTarget";
-import { GenerateTidSid } from "./generateTidSid";
 import { CaughtMon } from "./caughtMon";
 import { FormFieldTable } from "../../../components/formFieldTable";
 import { Field } from "~/components";
-import { Icon } from "~/components/icons";
-import { Button } from "~/components/button";
 import { Input } from "~/components/input";
-import { getTargetPokemonDesc } from "./calc";
-
 
 export type Game = "emerald" | "rs";
 export type Starter = "Mudkip" | "Torchic" | "Treecko";

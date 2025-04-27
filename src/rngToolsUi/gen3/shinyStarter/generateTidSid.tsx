@@ -1,36 +1,28 @@
 import React from "react";
+import { z } from "zod";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   RngToolForm,
   Field,
   FormFieldTable,
   RngToolSubmit,
 } from "~/components";
-import { RadioGroup } from "~/components/radio";
-import { Starter, Game } from "./index";
-import { findTargetAdvanceForShinyPokemon } from "./calc";
-import { Flex, MultiTimer } from "~/components";
+import { Game } from "./index";
+import { MultiTimer } from "~/components";
 import { rngTools, Gen3NearbySid, Gen3TidSidShinyResult } from "~/rngTools";
-import { Formik, FormikProps, FormikConfig } from "formik";
+import { FormikProps } from "formik";
 
-import {
-  DecimalString,
-  fromDecimalString,
-  fromHexString,
-  HexString,
-  toDecimalString,
-  toHexString,
-} from "~/utils/number";
+const Validator = z.object({
+  offset: z.number().int().min(-999).max(999),
+  tid: z.number().int().min(0).max(65535),
+});
 
-type FormState = {
-  offset: DecimalString;
-  tid: DecimalString;
-};
+type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  offset: toDecimalString(50), // offset on Emerald on mgba 0.11-8764
-  tid: toDecimalString(0),
+  offset: 50, // offset on Emerald on mgba 0.11-8764
+  tid: 0,
 };
 
 type Props = {
@@ -98,7 +90,7 @@ export const GenerateTidSid = ({ game }: Props) => {
 
   const getFields = (formik: FormikProps<FormState>): Field[] => {
     const milliseconds = (() => {
-      const advFromOffset = fromDecimalString(formik.values.offset) ?? 0;
+      const advFromOffset = formik.values.offset;
       const advFromTimer = idealAdvance - advFromOffset;
       let milliseconds = Math.round((advFromTimer * 1000) / 59.7275);
       if (milliseconds < 0) milliseconds = 0;
@@ -110,7 +102,7 @@ export const GenerateTidSid = ({ game }: Props) => {
     return [
       {
         label: "Offset",
-        input: <FormikInput<FormState> name="offset" />,
+        input: <FormikNumberInput<FormState> name="offset" numType="decimal" />,
       },
       {
         label: "TID/SID Timer",
@@ -125,7 +117,7 @@ export const GenerateTidSid = ({ game }: Props) => {
       },
       {
         label: "Obtained TID",
-        input: <FormikInput<FormState> name="tid" />,
+        input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
       },
     ];
   };
@@ -137,16 +129,11 @@ export const GenerateTidSid = ({ game }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const offset = fromDecimalString(opts.offset);
-      const tid = fromDecimalString(opts.tid);
-
-      if (offset == null || tid == null || tid < 0 || tid > 0xffff) return;
-
       const seed = game === "emerald" ? 0 : 0x5a0;
       const rng_res = await rngTools.gen3_calculate_tidsid_shiny_for_tid(
         seed,
         idealAdvance,
-        tid,
+        opts.tid,
       );
       const res = rng_res.nearby_sids.map((r) => {
         return { ...r, tid_gen_target_adv: idealAdvance };
@@ -193,6 +180,7 @@ export const GenerateTidSid = ({ game }: Props) => {
         results={formResults}
         getFields={getFields}
         columns={getColumns()}
+        validationSchema={Validator}
         initialValues={initialValues}
         submitButtonLabel="Generate possible SIDs"
         submitTrackerId="generate_tid_sid_for_shiny_starter"

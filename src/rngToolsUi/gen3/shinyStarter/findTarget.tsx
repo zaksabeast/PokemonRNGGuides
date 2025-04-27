@@ -1,26 +1,19 @@
 import React from "react";
-import { FormikInput, RngToolForm, Field, RngToolSubmit } from "~/components";
-import { RadioGroup } from "~/components/radio";
-import { Starter, Game } from "./index";
+import { z } from "zod";
+import { RngToolForm, Field, RngToolSubmit, FormikNumberInput } from "~/components";
+import { Game } from "./index";
 import { findTargetAdvanceForShinyPokemon } from "./calc";
 
-import {
-  DecimalString,
-  fromDecimalString,
-  fromHexString,
-  HexString,
-  toDecimalString,
-  toHexString,
-} from "~/utils/number";
+const Validator = z.object({
+  tid: z.number().int().min(0).max(65535),
+  sid: z.number().int().min(0).max(65535),
+});
 
-type FormState = {
-  tid: DecimalString;
-  sid: DecimalString;
-};
+type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  tid: toDecimalString(0),
-  sid: toDecimalString(0),
+  tid: 0,
+  sid: 0,
 };
 
 type Props = {
@@ -33,11 +26,11 @@ export const FindTargetAdvance = ({ game, setTargetAdvance }: Props) => {
     () => [
       {
         label: "TID",
-        input: <FormikInput<FormState> name="tid" />,
+        input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
       },
       {
         label: "SID",
-        input: <FormikInput<FormState> name="sid" />,
+        input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
       },
     ],
     [],
@@ -45,17 +38,10 @@ export const FindTargetAdvance = ({ game, setTargetAdvance }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const tid = fromDecimalString(opts.tid);
-      const sid = fromDecimalString(opts.sid);
-
-      if (tid == null || sid == null) {
-        return;
-      }
-
       const targetAdvance = await findTargetAdvanceForShinyPokemon(
         game,
-        tid,
-        sid,
+        opts.tid,
+        opts.sid,
       );
       if (targetAdvance !== null) setTargetAdvance(targetAdvance);
     },
@@ -66,6 +52,7 @@ export const FindTargetAdvance = ({ game, setTargetAdvance }: Props) => {
     <RngToolForm<FormState, never[]>
       fields={fields}
       initialValues={initialValues}
+      validationSchema={Validator}
       submitTrackerId="findTarget"
       submitButtonLabel="Calculate Target advance"
       onSubmit={onSubmit}

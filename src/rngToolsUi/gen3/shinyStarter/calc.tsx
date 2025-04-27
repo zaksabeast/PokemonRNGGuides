@@ -1,6 +1,6 @@
 import type { Game, Starter } from "./index";
 import type { FormState } from "./caughtMon";
-import { Gender, Nature, rngTools, Static3GeneratorResult } from "~/rngTools";
+import { Gender, Nature, rngTools } from "~/rngTools";
 
 export interface CaughtMonResult {
   advance: number;

@@ -108,7 +108,7 @@ export const guides = {
       category: "Black 2 and White 2",
       slug: "/bw2-egg",
       isRoughDraft: false,
-      tag: "emu",
+      tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/BW2 Egg.mdx",

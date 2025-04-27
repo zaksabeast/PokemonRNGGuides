@@ -208,7 +208,7 @@ export const guides = {
     meta: {
       title: "3DS Emulator Setup (Azahar/Lime3DS/Citra)",
       description: "Setup a 3DS emulator for RNG",
-      category: "Tools and Emulators",
+      category: "3DS Tools",
       slug: "/citrarng-setup",
       isRoughDraft: false,
       tag: "emu",
@@ -225,7 +225,7 @@ export const guides = {
     meta: {
       title: "Desmume Setup",
       description: "Setup Desmume for RNG",
-      category: "Tools and Emulators",
+      category: "NDS Tools",
       slug: "/desmume-setup",
       isRoughDraft: false,
       tag: "emu",
@@ -1439,7 +1439,7 @@ export const guides = {
     meta: {
       title: "How to Install CaptureSight",
       description: "Installing a tool on your Switch to help RNG Pokemon",
-      category: "Tools and Emulators",
+      category: "Switch Tools",
       slug: "/install-capturesight",
       isRoughDraft: false,
       tag: "cfw",
@@ -1456,7 +1456,7 @@ export const guides = {
     meta: {
       title: "PokeReader 3DS",
       description: "Installing a tool on your 3DS to help RNG Pokémon",
-      category: "Tools and Emulators",
+      category: "3DS Tools",
       slug: "/install-pokereader",
       isRoughDraft: false,
       tag: "cfw",
@@ -1474,7 +1474,7 @@ export const guides = {
       title: "PokeReader Azahar",
       description:
         "Installing a tool on a 3DS emulator, such as Azahar, Lime3DS, Citra, to help RNG Pokémon",
-      category: "Tools and Emulators",
+      category: "3DS Tools",
       slug: "/install-pokereader-emu",
       isRoughDraft: false,
       tag: "emu",
@@ -1511,7 +1511,7 @@ export const guides = {
     meta: {
       title: "mGBA Setup",
       description: "Setup mGBA for RNG",
-      category: "Tools and Emulators",
+      category: "GBA Tools",
       slug: "/mgba-setup",
       isRoughDraft: false,
       tag: "emu",
@@ -1528,7 +1528,7 @@ export const guides = {
     meta: {
       title: "How to Install PCalc",
       description: "Installing a tool on your 3DS to help RNG Pokemon",
-      category: "Tools and Emulators",
+      category: "3DS Tools",
       slug: "/misc-3ds-installing-pcalc",
       isRoughDraft: false,
       tag: "cfw",
@@ -1546,7 +1546,7 @@ export const guides = {
       title: "Using IPS Patches with Luma and Azahar/Lime3DS/Citra",
       description:
         "Use game patches for instant text, no outlines, and extra fun",
-      category: "Tools and Emulators",
+      category: "3DS Tools",
       slug: "/misc-3ds-ips-luma-citra",
       isRoughDraft: false,
       tag: "cfw",
@@ -1615,7 +1615,7 @@ export const guides = {
     meta: {
       title: "Connecting Dolphin to VBA",
       description: "RNG a Jirachi or transfer your RNGs to a GBA game",
-      category: "Tools and Emulators",
+      category: "GBA Tools",
       slug: "/misc-dolphin-connect-vba",
       isRoughDraft: false,
       tag: "emu",
@@ -1635,7 +1635,7 @@ export const guides = {
     meta: {
       title: "How to extract GBA BIOS",
       description: "Guide to extracting the GBA BIOS file for use on emulators",
-      category: "Tools and Emulators",
+      category: "GBA Tools",
       slug: "/misc-dolphin-gba-bios",
       isRoughDraft: false,
       tag: "cfw",
@@ -1669,7 +1669,7 @@ export const guides = {
     meta: {
       title: "Mystic Timer",
       description: "Like Eon Timer, but works on mobile devices!",
-      category: "Tools and Emulators",
+      category: "Mystic Timer",
       slug: "/mystic-timer",
       isRoughDraft: false,
       tag: "retail",
@@ -1687,7 +1687,7 @@ export const guides = {
       title: "No Dolphin Patch",
       description:
         "A patch to skip needing Dolphin to obtain Wishmaker Jirachi",
-      category: "Tools and Emulators",
+      category: "GBA Tools",
       slug: "/no-dolphin-patch",
       isRoughDraft: false,
       tag: "emu",
@@ -1704,7 +1704,7 @@ export const guides = {
     meta: {
       title: "NTR Helper Usage",
       description: "How to use the NTR Helper Tool in 3DSRNGTool",
-      category: "Tools and Emulators",
+      category: "3DS Tools",
       slug: "/ntr-helper-usage",
       isRoughDraft: false,
       tag: "cfw",
@@ -2613,7 +2613,7 @@ export const guides = {
     meta: {
       title: "Transporter Patches",
       description: "Various patches for use with Transporter",
-      category: "Tools and Emulators",
+      category: "3DS Tools",
       slug: "/transporter-patches",
       isRoughDraft: false,
       tag: "cfw",
@@ -3036,7 +3036,7 @@ export const guides = {
     meta: {
       title: "3DS安装PokeReader",
       description: "在3DS上安装工具来帮助乱数宝可梦",
-      category: "Tools and Emulators",
+      category: "3DS Tools",
       slug: "/zh-install-pokereader",
       isRoughDraft: false,
       tag: "cfw",
@@ -3303,7 +3303,6 @@ export const guideSlugs = [
 
 export const categories = [
   "Home",
-  "Tools and Emulators",
   "Gold, Silver, Crystal",
   "Transporter",
   "Ruby and Sapphire",
@@ -3323,4 +3322,9 @@ export const categories = [
   "Legends Arceus",
   "GBA Overview",
   "GBA Technical Documentation",
+  "Mystic Timer",
+  "GBA Tools",
+  "NDS Tools",
+  "3DS Tools",
+  "Switch Tools",
 ] as const;

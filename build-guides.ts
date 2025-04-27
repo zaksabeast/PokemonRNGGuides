@@ -19,7 +19,6 @@ const slugChars = /^[a-z0-9-]+$/;
 
 const categories = [
   "Home",
-  "Tools and Emulators",
   "Gold, Silver, Crystal",
   "Transporter",
   "Ruby and Sapphire",
@@ -39,6 +38,11 @@ const categories = [
   "Legends Arceus",
   "GBA Overview",
   "GBA Technical Documentation",
+  "Mystic Timer",
+  "GBA Tools",
+  "NDS Tools",
+  "3DS Tools",
+  "Switch Tools",
 ] as const;
 
 const CategorySchema = z.enum(categories);

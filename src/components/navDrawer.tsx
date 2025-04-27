@@ -118,6 +118,10 @@ const getMenuCategory = (
   const isNew = guideItems.some((item) => item.isNew);
 
   const label = match(category)
+    .with("GBA Tools", () => "Tools")
+    .with("NDS Tools", () => "Tools")
+    .with("3DS Tools", () => "Tools")
+    .with("Switch Tools", () => "Tools")
     .with("GBA Technical Documentation", () => "Technical Documentation")
     .otherwise(() => category);
 
@@ -150,8 +154,8 @@ const getGuideMenu = (
 const finalizedGuideMenu = getGuideMenu(finalizedGuides);
 
 const getMenuForCategory = (categories: Category[]) => {
-  return finalizedGuideMenu.filter(({ item }) =>
-    (categories as string[]).includes(item.key),
+  return categories.flatMap((category) =>
+    finalizedGuideMenu.filter(({ item }) => item.key === category),
   );
 };
 
@@ -195,7 +199,7 @@ const getCategory = ({
 const roughDraftPrefix = "roughDraft-";
 
 const topLevelMenu = [
-  getMenuForCategory(["Tools and Emulators"])[0].item,
+  getMenuItemFromGuide({ slug: "/mystic-timer", showTag: false }).item,
   getCategory({
     key: "GB",
     label: "GB",
@@ -205,6 +209,7 @@ const topLevelMenu = [
     key: "GBA",
     label: "GBA",
     categories: [
+      "GBA Tools",
       "Ruby and Sapphire",
       "FireRed and LeafGreen",
       "Emerald",
@@ -216,6 +221,7 @@ const topLevelMenu = [
     key: "NDS",
     label: "NDS",
     categories: [
+      "NDS Tools",
       "Diamond, Pearl, and Platinum",
       "HeartGold and SoulSilver",
       "Black and White",
@@ -226,6 +232,7 @@ const topLevelMenu = [
     key: "3DS",
     label: "3DS",
     categories: [
+      "3DS Tools",
       "X and Y",
       "Omega Ruby and Alpha Sapphire",
       "Sun and Moon",
@@ -238,6 +245,7 @@ const topLevelMenu = [
     key: "Switch",
     label: "Switch",
     categories: [
+      "Switch Tools",
       "Sword and Shield",
       "Legends Arceus",
       "Brilliant Diamond and Shining Pearl",
@@ -262,9 +270,11 @@ const NavDrawerContent = () => {
       ? `${roughDraftPrefix}${guideMeta.category}`
       : guideMeta.category;
     const openTopLevelItem = topLevelMenu.find((item) =>
-      item.children.some((child) =>
-        [openCategory, guideMeta.slug].includes(child.key),
-      ),
+      "children" in item
+        ? item.children.some((child) =>
+            [openCategory, guideMeta.slug].includes(child.key),
+          )
+        : item.key === guideMeta.slug,
     );
     return [openTopLevelItem?.key, openCategory].filter((item) => item != null);
   });

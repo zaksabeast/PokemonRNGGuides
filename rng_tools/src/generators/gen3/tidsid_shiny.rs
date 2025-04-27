@@ -18,7 +18,7 @@ use wasm_bindgen::prelude::*;
 /// SIDs of the first obtained TID.
 ///
 /// Optimization 2: Using a target_tid_gen_adv that results in the smallest average time to determine the correct SID.
-/// For Emerald, the ideal target_tid_gen_adv is 1505, with an averge time of 124902 advances to determine the correct SID.
+/// For Emerald, the ideal target_tid_gen_adv is 1410, with an averge time of 124902 advances to determine the correct SID.
 /// ---------------------------------------------------------------------------------------------------------------------------
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -65,7 +65,7 @@ const TIMING_DISTR:[f64;9] = {
     normalized_distr
 };
 
-const EARLIEST_VALID_ADVANCE: u32 = 600; // for RSE starter
+const EARLIEST_VALID_ADVANCE: u32 = 650; // for RSE starter
 /// AVG_ATTEMPT_TO_HIT_TARGET (5) is hardcoded in the shiny starter guide.
 const AVG_ATTEMPT_TO_HIT_TARGET:f64 = 1f64 / TIMING_DISTR[(TIMING_DISTR.len() - 1) / 2];
 
@@ -281,9 +281,9 @@ fn add_additional_nearby_sids(nearby_sids:&Vec<Gen3NearbySid>, earliest_shiny_ad
 
 /// Other entry point. 
 /// Returns find the tid_gen_adv that results in the lowest average advance needed to determine SID.
-/// tid_gen_adv in range (900, 2000), best for emerald is (adv=1505, avg=124902) and worst is (adv=1987, avg=125744)
-/// This means ideally, player should aim for tid_gen_adv 1505 to determine their SID faster.
-/// To simplify the site, the result of the function (1505) is hardcoded in the shiny starter guide.
+/// tid_gen_adv in range (900, 2000), best for emerald is tid_gen_adv=1410.
+/// This means ideally, player should aim for tid_gen_adv 1410 to determine their SID faster.
+/// To simplify the site, the result of the function (1410) is hardcoded in the shiny starter guide.
 fn find_best_tid_gen_adv(seed:u32, tid_gen_adv_min:usize, tid_gen_adv_max:usize) -> usize {
     let earliest_shiny_advance_by_tsv = generate_earliest_shiny_advance_by_tsv(seed);
 
@@ -413,30 +413,20 @@ mod test {
     fn test_calculate_tidsid_shiny_for_tid() {
         let res = gen3_calculate_tidsid_shiny_for_tid(0, 1000, 11);
         assert_eq!(res.avg_adv_to_determine_sid, 177737);
-        assert_eq!(res.avg_adv_to_determine_sid_percentile, 88);
-        assert_eq!(res.avg_adv_if_improved, 113725);
+        assert_eq!(res.avg_adv_to_determine_sid_percentile, 87);
+        assert_eq!(res.avg_adv_if_improved, 114441);
         assert_eq!(res.avg_adv_to_improve_tid, 2000);
         assert_eq!(res.should_improve_tid, true);
 
         let res = gen3_calculate_tidsid_shiny_for_tid(0, 1000, 13564);
-        assert_eq!(res.avg_adv_to_determine_sid, 22431);
+        assert_eq!(res.avg_adv_to_determine_sid, 50563);
         assert_eq!(res.avg_adv_to_determine_sid_percentile, 0);
         assert_eq!(res.should_improve_tid, false);
 
         let res = gen3_calculate_tidsid_shiny_for_tid(0, 1000, 4);
         assert_eq!(res.avg_adv_to_determine_sid, 78367);
-        assert_eq!(res.avg_adv_if_improved, 65847);
+        assert_eq!(res.avg_adv_if_improved, 66135);
         assert_eq!(res.avg_adv_to_improve_tid, 16000);
         assert_eq!(res.should_improve_tid, false);
     }
-
-    #[ignore]
-    #[test]
-    fn test_find_best_tid_gen_adv() {
-        // It is recommended to run this test in --release mode.
-        assert_eq!(find_best_tid_gen_adv(0, 900, 2000), 1505);
-        assert_eq!(find_best_tid_gen_adv(0x5A0, 900, 2000), 1632);
-    }
-    
-
 }

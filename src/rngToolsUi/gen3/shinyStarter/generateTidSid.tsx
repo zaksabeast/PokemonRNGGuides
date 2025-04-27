@@ -48,7 +48,8 @@ const RECOMMEND_REDO_MSG = (chanceInPct: number) =>
 
 const RECOMMEND_KEEP_MSG = `Keep that TID and go to Step 2.`;
 
-const IDEAL_TIDSID_ADVANCE_WITH_OFFSET = (game:Game) => game === "emerald" ? 1505 : 1632;
+const IDEAL_TIDSID_ADVANCE_WITH_OFFSET = (game:Game) => game === "emerald" ? 1505 : 1632; // NO_PROD 1505 -> 1410
+const ADDITIONAL_DUR_IN_MINUTES = 30; // Duration not caused by in-game waiting (ex: filling form etc.)
 
 export const GenerateTidSidRating = ({
   result,
@@ -67,7 +68,7 @@ export const GenerateTidSidRating = ({
     return QUALITATIVE_RATINGS[6];
   })();
 
-  const estimatedTime = `~${durInMinutes} min (${qualitativeRating})`;
+  const estimatedTime = `~${durInMinutes + ADDITIONAL_DUR_IN_MINUTES} min (${qualitativeRating})`;
   const recommendation = result.should_improve_tid
     ? RECOMMEND_REDO_MSG(pct)
     : RECOMMEND_KEEP_MSG;

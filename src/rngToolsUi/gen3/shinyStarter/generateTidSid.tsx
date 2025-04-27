@@ -5,6 +5,7 @@ import {
   RngToolForm,
   Field,
   FormFieldTable,
+  RngToolSubmit,
 } from "~/components";
 import { RadioGroup } from "~/components/radio";
 import { Starter, Game } from "./index";
@@ -134,7 +135,7 @@ export const GenerateTidSid = ({ game }: Props) => {
     null,
   );
 
-  const onSubmit = React.useCallback<(opts:FormState) => Promise<void>>(
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
       const offset = fromDecimalString(opts.offset);
       const tid = fromDecimalString(opts.tid);

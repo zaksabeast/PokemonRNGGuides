@@ -1,7 +1,6 @@
 import React from "react";
-import { FormikInput, RngToolForm, Field } from "~/components";
+import { FormikInput, RngToolForm, Field, RngToolSubmit } from "~/components";
 import { RadioGroup } from "~/components/radio";
-import { RngToolUpdate } from "~/components/rngToolForm";
 import { Starter, Game } from "./index";
 import { findTargetAdvanceForShinyPokemon } from "./calc";
 
@@ -44,7 +43,7 @@ export const FindTargetAdvance = ({ game, setTargetAdvance }: Props) => {
     [],
   );
 
-  const onSubmit = React.useCallback<RngToolUpdate<FormState>>(
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
       const tid = fromDecimalString(opts.tid);
       const sid = fromDecimalString(opts.sid);
@@ -68,7 +67,7 @@ export const FindTargetAdvance = ({ game, setTargetAdvance }: Props) => {
       fields={fields}
       initialValues={initialValues}
       submitTrackerId="findTarget"
-      submitButtonLabel="Update Target advance of timer"
+      submitButtonLabel="Calculate Target advance"
       onSubmit={onSubmit}
     />
   );

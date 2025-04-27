@@ -7,35 +7,26 @@ import { FormFieldTable } from "../../../components/formFieldTable";
 import { Field } from "~/components";
 import { Icon } from "~/components/icons";
 import { Button } from "~/components/button";
+import { Input } from "~/components/input";
+
 
 export type Game = "emerald" | "rs";
 export type Starter = "Mudkip" | "Torchic" | "Treecko";
 
-const calculateMillis = (
-  targetAdvance: number,
-  hitAdvance: number,
-): number[] => {
-  // ex: target was 100, hit was 120 (diff = +20).
-  // this means the calibratedTargetAdv is 80.
-
-  const diff = hitAdvance === 0 ? 0 : hitAdvance - targetAdvance;
-  const calibratedTargetAdv = targetAdvance - diff;
-  const milliseconds = Math.round((calibratedTargetAdv * 1000) / 59.7275);
-  return [5000, milliseconds];
-};
-
 type Props = {
   game: Game;
-  children: React.ReactNode[];
 };
 
-export const ShinyStarter = ({ game, children }: Props) => {
+export const ShinyStarter = ({ game }: Props) => {
   const [targetAdvance, setTargetAdvance] = React.useState(0);
-  const [hitAdvance, setHitAdvance] = React.useState(0);
+  
+  // 9 adv for calibration to open the bag. 3 adv for offset between pressing A and generating the Pokémon
+  const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(9 + 3);
 
   const milliseconds = React.useMemo(() => {
-    return calculateMillis(targetAdvance, hitAdvance);
-  }, [targetAdvance, hitAdvance]);
+    const advFromTimer = targetAdvance - calibrationAndOffset;
+    return [5000, Math.round((advFromTimer * 1000) / 59.7275)];
+  }, [targetAdvance, calibrationAndOffset]);
 
   const minutesBeforeTarget = Math.floor(milliseconds[1] / 60000);
 
@@ -46,27 +37,19 @@ export const ShinyStarter = ({ game, children }: Props) => {
         input: <>{targetAdvance}</>,
       },
       {
-        label: "Last hit advance",
-        input:
-          hitAdvance === 0 ? (
-            "-"
-          ) : (
-            <>
-              {hitAdvance} ({hitAdvance >= targetAdvance ? "+" : ""}
-              {hitAdvance - targetAdvance})
-              <Button
-                type="text"
-                color="Red"
-                trackerId="clear_last_hit_advance"
-                onClick={() => setHitAdvance(0)}
-              >
-                <Icon name="OutlineCloseCircle" size={20} />
-              </Button>
-            </>
-          ),
+        label: "Calibration + Offset",
+        input:(
+          <Input
+            name="offset"
+            onChange={e => {
+              setCalibrationAndOffset(+e.target.value || 0);
+            }}
+            value={calibrationAndOffset}
+          />
+        )
       },
     ];
-  }, [targetAdvance, hitAdvance]);
+  }, [targetAdvance, calibrationAndOffset]);
 
   return (
     <Flex gap={16} vertical>
@@ -74,22 +57,20 @@ export const ShinyStarter = ({ game, children }: Props) => {
         game={game}
         setTargetAdvance={(val) => {
           setTargetAdvance(val);
-          setHitAdvance(0);
         }}
       />
-      {children}
-      <FormFieldTable fields={fields} />
-      <MultiTimer
+      {targetAdvance !== 0 && <FormFieldTable fields={fields} />}
+      {targetAdvance !== 0 && <MultiTimer
         {...{ minutesBeforeTarget, milliseconds }}
         startButtonTrackerId="start_gen3_shiny_starter_timer"
         stopButtonTrackerId="stop_gen3_shiny_starter_timer"
-      />
-      <CaughtMon
-        {...{ game, targetAdvance }}
-        setLatestHitAdv={(val) => {
-          setHitAdvance(val + hitAdvance);
-        }}
-      />
+      />}
+      {targetAdvance !== 0 && <CaughtMon
+          {...{ game, targetAdvance }}
+          setLatestHitAdv={(val) => {
+            setCalibrationAndOffset(calibrationAndOffset + val - targetAdvance);
+          }}
+      />}
     </Flex>
   );
 };

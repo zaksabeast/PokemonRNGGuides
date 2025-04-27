@@ -1,6 +1,6 @@
 
 use wasm_bindgen::prelude::*;
-use crate::{NatureFactor, StatsValue};
+use crate::{NatureFactor, Nature, StatsValue, NATURE_STAT_FACTORS};
 
 pub fn gen3_calculate_hp(base_stat:u16, iv:u8, ev:u16, level:u8) -> u16 {
   if base_stat == 1 {
@@ -32,6 +32,20 @@ pub fn gen3_calculate_minmax_stats(base_stats:&StatsValue, level:u8, is_min_stat
     spa:gen3_calculate_non_hp(base_stats.spa, iv, 0, level, nature_factor),
     spd:gen3_calculate_non_hp(base_stats.spd, iv, 0, level, nature_factor),
     spe:gen3_calculate_non_hp(base_stats.spe, iv, 0, level, nature_factor),
+  }
+}
+
+#[wasm_bindgen]
+pub fn gen3_calculate_stats(base_stats:&StatsValue, level:u8, nature:Nature, ivs:&StatsValue, evs:&StatsValue) -> StatsValue {
+  let nature_factors = &NATURE_STAT_FACTORS[nature as usize];
+
+  StatsValue {
+    hp:gen3_calculate_hp(base_stats.hp, ivs.hp as u8, evs.hp, level),
+    atk:gen3_calculate_non_hp(base_stats.atk, ivs.atk as u8, evs.atk, level, nature_factors.atk),
+    def:gen3_calculate_non_hp(base_stats.def, ivs.def as u8, evs.def, level, nature_factors.def),
+    spa:gen3_calculate_non_hp(base_stats.spa, ivs.spa as u8, evs.spa, level, nature_factors.spa),
+    spd:gen3_calculate_non_hp(base_stats.spd, ivs.spd as u8, evs.spd, level, nature_factors.spd),
+    spe:gen3_calculate_non_hp(base_stats.spe, ivs.spe as u8, evs.spe, level, nature_factors.spe),
   }
 }
 

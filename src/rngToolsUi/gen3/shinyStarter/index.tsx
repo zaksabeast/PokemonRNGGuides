@@ -8,6 +8,7 @@ import { Field } from "~/components";
 import { Icon } from "~/components/icons";
 import { Button } from "~/components/button";
 import { Input } from "~/components/input";
+import { getTargetPokemonDesc } from "./calc";
 
 
 export type Game = "emerald" | "rs";
@@ -55,22 +56,24 @@ export const ShinyStarter = ({ game }: Props) => {
     <Flex gap={16} vertical>
       <FindTargetAdvance
         game={game}
-        setTargetAdvance={(val) => {
+        setTargetAdvance={async (val) => {
           setTargetAdvance(val);
         }}
       />
-      {targetAdvance !== 0 && <FormFieldTable fields={fields} />}
-      {targetAdvance !== 0 && <MultiTimer
-        {...{ minutesBeforeTarget, milliseconds }}
-        startButtonTrackerId="start_gen3_shiny_starter_timer"
-        stopButtonTrackerId="stop_gen3_shiny_starter_timer"
-      />}
-      {targetAdvance !== 0 && <CaughtMon
-          {...{ game, targetAdvance }}
-          setLatestHitAdv={(val) => {
-            setCalibrationAndOffset(calibrationAndOffset + val - targetAdvance);
-          }}
-      />}
+      {targetAdvance !== 0 && [
+        <FormFieldTable fields={fields} />,
+        <MultiTimer
+          {...{ minutesBeforeTarget, milliseconds }}
+          startButtonTrackerId="start_gen3_shiny_starter_timer"
+          stopButtonTrackerId="stop_gen3_shiny_starter_timer"
+        />,
+        <CaughtMon
+            {...{ game, targetAdvance }}
+            setLatestHitAdv={(val) => {
+              setCalibrationAndOffset(calibrationAndOffset + val - targetAdvance);
+            }}
+        />
+      ]}
     </Flex>
   );
 };

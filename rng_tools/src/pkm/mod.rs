@@ -32,11 +32,11 @@ pub struct PkmFilter {
 
 impl PkmFilter {
     pub fn pass_filter(&self, state: &impl PkmState) -> bool {
-        if !self.pass_filter_stats(state) {
+        if !state.ivs().filter(&self.min_ivs, &self.max_ivs) {
             return false;
         }
-
-        if !state.ivs().filter(&self.min_ivs, &self.max_ivs) {
+        
+        if !self.pass_filter_stats(state) {
             return false;
         }
 
@@ -80,34 +80,42 @@ impl PkmFilter {
 
                 let ivs = state.ivs();
                 let actual_hp = gen3_calculate_hp(base_stats.hp, ivs.hp, 0, lvl);
+                println!("actual_hp {}", actual_hp);
                 if actual_hp < min_stats.hp || actual_hp > max_stats.hp {
                     return false;
                 }
 
                 let nature = state.nature();
+                println!("nature {:?}", nature);
                 let nature_factors = &NATURE_STAT_FACTORS[nature as usize];
-                
+                println!("nature_factors {:?} {:?} {:?} {:?} {:?}", nature_factors.atk, nature_factors.def, nature_factors.spa, nature_factors.spd, nature_factors.spe);
+
                 let actual_atk = gen3_calculate_non_hp(base_stats.atk, ivs.atk, 0, lvl, nature_factors.atk);
+                println!("actual_atk {}", actual_atk);
                 if actual_atk < min_stats.atk || actual_atk > max_stats.atk {
                     return false;
                 }
 
                 let actual_def = gen3_calculate_non_hp(base_stats.def, ivs.def, 0, lvl, nature_factors.def);
+                println!("actual_def {}", actual_def);
                 if actual_def < min_stats.def || actual_def > max_stats.def {
                     return false;
                 }
 
                 let actual_spa = gen3_calculate_non_hp(base_stats.spa, ivs.spa, 0, lvl, nature_factors.spa);
+                println!("actual_spa {}", actual_spa);
                 if actual_spa < min_stats.spa || actual_spa > max_stats.spa {
                     return false;
                 }
 
                 let actual_spd = gen3_calculate_non_hp(base_stats.spd, ivs.spd, 0, lvl, nature_factors.spd);
+                println!("actual_spd {}", actual_spd);
                 if actual_spd < min_stats.spd || actual_spd > max_stats.spd {
                     return false;
                 }
 
                 let actual_spe = gen3_calculate_non_hp(base_stats.spe, ivs.spe, 0, lvl, nature_factors.spe);
+                println!("actual_spe {}", actual_spe);
                 if actual_spe < min_stats.spe || actual_spe > max_stats.spe {
                     return false;
                 }

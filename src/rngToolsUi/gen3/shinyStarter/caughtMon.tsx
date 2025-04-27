@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormikContext } from "formik";
-import { RngToolForm, Field, Flex, ResultColumn, Icon } from "~/components";
+import { RngToolForm, Field, Flex, ResultColumn, Icon, FormFieldTable } from "~/components";
 import { FormikRadio, RadioGroup } from "~/components/radio";
 import { Ivs, Nature, Gender, rngTools } from "~/rngTools";
 import { RngToolSubmit } from "~/components/rngToolForm";
@@ -17,6 +17,7 @@ import {
   getStatRangeForStarter,
   CaughtMonResult,
   generateCaughtMonResults,
+  getTargetPokemonDesc,
 } from "./calc";
 import { Button } from "../../../components/button";
 import type { Game } from "./index";
@@ -101,12 +102,15 @@ type Props = {
 
 export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
+  const [targetPokemonDesc, setTargetPokemonDesc] = React.useState<string>("");
+
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
       setResults(await generateCaughtMonResults(game, targetAdvance, opts));
     },
     [targetAdvance, setResults],
   );
+  
 
   const getColumns = (): ResultColumn<CaughtMonResult>[] => {
     const columns: ResultColumn<CaughtMonResult>[] = [
@@ -147,8 +151,12 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
     return columns;
   };
 
-  const getFields = (formik: FormikProps<FormState>): Field[] => {
-    const { minMaxStats } = formik.values;
+  const getFields = (formik: FormikProps<FormState>): Field[] => {  
+    const { minMaxStats, pokemonSpecies } = formik.values;
+
+    React.useEffect(() => {
+      getTargetPokemonDesc(game, targetAdvance, pokemonSpecies).then(setTargetPokemonDesc);
+    },[targetAdvance, pokemonSpecies]);
 
     return [
       {
@@ -156,15 +164,17 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
         input: (
           <RadioGroup
             optionType="button"
-            value={formik.values.pokemonSpecies}
+            value={pokemonSpecies}
             onChange={async ({ target }) => {
-              console.log('new-vale', target.value);
+              const desc = await getTargetPokemonDesc(game, targetAdvance, target.value);
+              const minMaxStats = await getStatRangeForStarter(target.value);
               formik.setValues({
                 ...formik.values,
                 pokemonSpecies: target.value,
-                minMaxStats: await getStatRangeForStarter(target.value),
-              });
-              setTimeout(() => console.log('after',formik.values.pokemonSpecies), 10);
+                minMaxStats,
+              }); 
+              setTargetPokemonDesc(desc);
+
             }}
             options={toOptions(["Mudkip", "Torchic", "Treecko"])}
           />
@@ -229,7 +239,8 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
   };
 
   return (
-    <>
+    <>      
+      <FormFieldTable fields={[{label: "Target Pokémon",input: targetPokemonDesc},]} />
       <Typography.Title level={5} p={0} m={0}>
         Caught Pokémon
       </Typography.Title>

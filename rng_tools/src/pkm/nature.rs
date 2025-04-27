@@ -46,7 +46,7 @@ impl Default for Nature {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub enum NatureFactor {
   More,
   Less,
@@ -62,29 +62,29 @@ pub struct NatureStatFactor {
 }
 
 pub const NATURE_STAT_FACTORS:[NatureStatFactor;25] = [
-    /*Hardy */    NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Equal, spe: NatureFactor::Equal, spa: NatureFactor::Equal, spd: NatureFactor::Equal },
-    /*Lonely */   NatureStatFactor { atk: NatureFactor::More, def: NatureFactor::Less, spe: NatureFactor::Equal, spa: NatureFactor::Equal, spd: NatureFactor::Equal },
-    /*Brave */    NatureStatFactor { atk: NatureFactor::More, def: NatureFactor::Equal, spe: NatureFactor::Less, spa: NatureFactor::Equal, spd: NatureFactor::Equal },
-    /*Adamant */  NatureStatFactor { atk: NatureFactor::More, def: NatureFactor::Equal, spe: NatureFactor::Equal, spa: NatureFactor::Less, spd: NatureFactor::Equal },
-    /*Naughty */  NatureStatFactor { atk: NatureFactor::More, def: NatureFactor::Equal, spe: NatureFactor::Equal, spa: NatureFactor::Equal, spd: NatureFactor::More },
-    /*Bold */     NatureStatFactor { atk: NatureFactor::Less, def: NatureFactor::More, spe: NatureFactor::Equal, spa: NatureFactor::Equal, spd: NatureFactor::Equal },
-    /*Docile */   NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Equal, spe: NatureFactor::Equal, spa: NatureFactor::Equal, spd: NatureFactor::Equal },
-    /*Relaxed */  NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::More, spe: NatureFactor::Less, spa: NatureFactor::Equal, spd: NatureFactor::Equal },
-    /*Impish */   NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::More, spe: NatureFactor::Equal, spa: NatureFactor::Less, spd: NatureFactor::Equal },
-    /*Lax */      NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::More, spe: NatureFactor::Equal, spa: NatureFactor::Equal, spd: NatureFactor::More },
-    /*Timid */    NatureStatFactor { atk: NatureFactor::Less, def: NatureFactor::Equal, spe: NatureFactor::More, spa: NatureFactor::Equal, spd: NatureFactor::Equal },
-    /*Hasty */    NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Less, spe: NatureFactor::More, spa: NatureFactor::Equal, spd: NatureFactor::Equal },
-    /*Serious */  NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Equal, spe: NatureFactor::Equal, spa: NatureFactor::Equal, spd: NatureFactor::Equal },
-    /*Jolly */    NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Equal, spe: NatureFactor::More, spa: NatureFactor::Less, spd: NatureFactor::Equal },
-    /*Naive */    NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Equal, spe: NatureFactor::More, spa: NatureFactor::Equal, spd: NatureFactor::Less },
-    /*Modest */   NatureStatFactor { atk: NatureFactor::Less, def: NatureFactor::Equal, spe: NatureFactor::Equal, spa: NatureFactor::More, spd: NatureFactor::Equal },
-    /*Mild */     NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Less, spe: NatureFactor::Equal, spa: NatureFactor::More, spd: NatureFactor::Equal },
-    /*Quiet */    NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Equal, spe: NatureFactor::Less, spa: NatureFactor::More, spd: NatureFactor::Equal },
-    /*Bashful */  NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Equal, spe: NatureFactor::Equal, spa: NatureFactor::Equal, spd: NatureFactor::Equal },
-    /*Rash */     NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Equal, spe: NatureFactor::Equal, spa: NatureFactor::More, spd: NatureFactor::Less },
-    /*Calm */     NatureStatFactor { atk: NatureFactor::Less, def: NatureFactor::Equal, spe: NatureFactor::Equal, spa: NatureFactor::Equal, spd: NatureFactor::More },
-    /*Gentle */   NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Less, spe: NatureFactor::Equal, spa: NatureFactor::Equal, spd: NatureFactor::More },
-    /*Sassy */    NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Equal, spe: NatureFactor::Less, spa: NatureFactor::Equal, spd: NatureFactor::More },
-    /*Careful */  NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Equal, spe: NatureFactor::Equal, spa: NatureFactor::Less, spd: NatureFactor::More },
-    /*Quirky */   NatureStatFactor { atk: NatureFactor::Equal, def: NatureFactor::Equal, spe: NatureFactor::Equal, spa: NatureFactor::Equal, spd: NatureFactor::Equal },
+    /*Hardy */    NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Equal, spe:NatureFactor::Equal, spa:NatureFactor::Equal, spd:NatureFactor::Equal },
+    /*Lonely */   NatureStatFactor { atk:NatureFactor::More, def:NatureFactor::Less, spe:NatureFactor::Equal, spa:NatureFactor::Equal, spd:NatureFactor::Equal },
+    /*Brave */    NatureStatFactor { atk:NatureFactor::More, def:NatureFactor::Equal, spe:NatureFactor::Less, spa:NatureFactor::Equal, spd:NatureFactor::Equal },
+    /*Adamant */  NatureStatFactor { atk:NatureFactor::More, def:NatureFactor::Equal, spe:NatureFactor::Equal, spa:NatureFactor::Less, spd:NatureFactor::Equal },
+    /*Naughty */  NatureStatFactor { atk:NatureFactor::More, def:NatureFactor::Equal, spe:NatureFactor::Equal, spa:NatureFactor::Equal, spd:NatureFactor::Less },
+    /*Bold */     NatureStatFactor { atk:NatureFactor::Less, def:NatureFactor::More, spe:NatureFactor::Equal, spa:NatureFactor::Equal, spd:NatureFactor::Equal },
+    /*Docile */   NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Equal, spe:NatureFactor::Equal, spa:NatureFactor::Equal, spd:NatureFactor::Equal },
+    /*Relaxed */  NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::More, spe:NatureFactor::Less, spa:NatureFactor::Equal, spd:NatureFactor::Equal },
+    /*Impish */   NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::More, spe:NatureFactor::Equal, spa:NatureFactor::Less, spd:NatureFactor::Equal },
+    /*Lax */      NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::More, spe:NatureFactor::Equal, spa:NatureFactor::Equal, spd:NatureFactor::Less },
+    /*Timid */    NatureStatFactor { atk:NatureFactor::Less, def:NatureFactor::Equal, spe:NatureFactor::More, spa:NatureFactor::Equal, spd:NatureFactor::Equal },
+    /*Hasty */    NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Less, spe:NatureFactor::More, spa:NatureFactor::Equal, spd:NatureFactor::Equal },
+    /*Serious */  NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Equal, spe:NatureFactor::Equal, spa:NatureFactor::Equal, spd:NatureFactor::Equal },
+    /*Jolly */    NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Equal, spe:NatureFactor::More, spa:NatureFactor::Less, spd:NatureFactor::Equal },
+    /*Naive */    NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Equal, spe:NatureFactor::More, spa:NatureFactor::Equal, spd:NatureFactor::Less },
+    /*Modest */   NatureStatFactor { atk:NatureFactor::Less, def:NatureFactor::Equal, spe:NatureFactor::Equal, spa:NatureFactor::More, spd:NatureFactor::Equal },
+    /*Mild */     NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Less, spe:NatureFactor::Equal, spa:NatureFactor::More, spd:NatureFactor::Equal },
+    /*Quiet */    NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Equal, spe:NatureFactor::Less, spa:NatureFactor::More, spd:NatureFactor::Equal },
+    /*Bashful */  NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Equal, spe:NatureFactor::Equal, spa:NatureFactor::Equal, spd:NatureFactor::Equal },
+    /*Rash */     NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Equal, spe:NatureFactor::Equal, spa:NatureFactor::More, spd:NatureFactor::Less },
+    /*Calm */     NatureStatFactor { atk:NatureFactor::Less, def:NatureFactor::Equal, spe:NatureFactor::Equal, spa:NatureFactor::Equal, spd:NatureFactor::More },
+    /*Gentle */   NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Less, spe:NatureFactor::Equal, spa:NatureFactor::Equal, spd:NatureFactor::More },
+    /*Sassy */    NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Equal, spe:NatureFactor::Less, spa:NatureFactor::Equal, spd:NatureFactor::More },
+    /*Careful */  NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Equal, spe:NatureFactor::Equal, spa:NatureFactor::Less, spd:NatureFactor::More },
+    /*Quirky */   NatureStatFactor { atk:NatureFactor::Equal, def:NatureFactor::Equal, spe:NatureFactor::Equal, spa:NatureFactor::Equal, spd:NatureFactor::Equal },
 ];

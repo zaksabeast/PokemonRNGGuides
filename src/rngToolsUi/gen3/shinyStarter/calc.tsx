@@ -1,6 +1,6 @@
 import type { Game, Starter } from "./index";
 import type { FormState } from "./caughtMon";
-import { Gender, Nature, rngTools } from "~/rngTools";
+import { Gender, Nature, rngTools, Static3GeneratorResult } from "~/rngTools";
 
 export interface CaughtMonResult {
   advance: number;
@@ -12,17 +12,56 @@ export interface CaughtMonResult {
 
 const MINIMAL_ADV = 500;
 
-export const findTargetAdvanceForShinyPokemon = async function (
+export const findTargetAdvanceForShinyPokemon = async (
   game: Game,
   tid: number,
   sid: number,
-): Promise<number | null> {
+): Promise<number | null> => {
   if (tid < 0 || tid > 0xffff) return null;
   if (sid < 0 || sid > 0xffff) return null;
 
   const seed = game === "emerald" ? 0 : 0x5a0;
   return rngTools.gen3_earliest_shiny_starter_adv(seed, tid, sid);
 };
+
+export const getTargetPokemonDesc = async (
+  game: Game,
+  targetAdv:number,
+  pokemonSpecies:Starter,
+): Promise<string> => {  
+  const opts = {
+    offset: 0,
+    initial_advances: targetAdv,
+    max_advances: 0,
+    seed: game === "emerald" ? 0 : 0x5a0,
+    method4: false,
+    filter: {
+      nature: null,
+      gender: null,
+      ability: null,
+      shiny: false,
+      stats: null,
+      min_ivs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+      max_ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
+    },
+    tid: 0, // doesn't matter
+    sid: 0, // doesn't matter
+    bugged_roamer: false, // doesn't matter
+    species: pokemonSpecies, // doesn't matter
+  } as const;
+
+  const genResults = await rngTools.gen3_static_generator_states(opts);
+  if (genResults.length === 0)
+    return "";
+  const r = genResults[0];
+
+  const stats = await rngTools.gen3_calculate_stats(
+    BASE_STATS[pokemonSpecies], 5, r.nature, r.ivs, 
+    { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 });
+
+  return `${r.gender}, ${r.nature}, HP ${stats.hp}, ATK ${stats.atk}, DEF ${stats.def}, SPA ${stats.spa}, SPD ${stats.spd}, SPE ${stats.spe}`;
+};
+
 
 const BASE_STATS = {
   Mudkip: { hp: 50, atk: 70, def: 50, spa: 50, spd: 50, spe: 40 },
@@ -53,11 +92,11 @@ export const getStatRangeForStarter = async (starter: Starter) => {
   };
 };
 
-export const generateCaughtMonResults = async function (
+export const generateCaughtMonResults = async (
   game: Game,
   targetAdvance: number,
   caughtMonValues: FormState,
-): Promise<CaughtMonResult[]> {
+): Promise<CaughtMonResult[]> => {
   let getMinMaxStat = (
     isMin: boolean,
     selected: number,
@@ -128,7 +167,6 @@ export const generateCaughtMonResults = async function (
   } as const;
 
   const genResults = await rngTools.gen3_static_generator_states(opts);
-  console.log(opts, genResults);
   const caughtMonResults = genResults.map((r) => {
     return {
       advance: r.advance,
@@ -147,3 +185,4 @@ export const generateCaughtMonResults = async function (
 
   return caughtMonResults.slice(0, 10);
 };
+

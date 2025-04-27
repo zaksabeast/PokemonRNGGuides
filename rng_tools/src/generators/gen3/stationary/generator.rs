@@ -1,6 +1,6 @@
 use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
-use crate::{AbilityType, Gender, Ivs, Nature, PkmFilter, PkmState, Species, StatFilter, StatsValue, gen3_shiny};
+use crate::{AbilityType, Gender, Ivs, Nature, PkmFilter, PkmState, Species, gen3_shiny};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -110,6 +110,7 @@ pub fn gen3_static_generator_states(opts: &Static3GeneratorOptions) -> Vec<Stati
 mod test {
     use super::*;
     use crate::assert_list_eq;
+    use crate::{StatFilter, StatsValue};
 
     const ZERO_IVS: Ivs = Ivs {
         hp: 0,
@@ -927,7 +928,6 @@ mod test {
         };
 
         let results = gen3_static_generator_states(&opts);
-        println!("{:?}", results[0]);
-        assert!(results.len() != 1);
+        assert!(results.len() != 0);
     }
 }

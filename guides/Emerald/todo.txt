@@ -1,7 +1,9 @@
-- right best tid_gen_adv for ruby/Sapphire
+
 - validate inputs
 - change toDecimalString
-- mnanually change offset
+
+redo approx timer. a lot more time to leave and check stats
+
 
 
 
@@ -10,5 +12,5 @@ TID: 42231
 SID: 49962
 
 
-target=650
+target=	678
 

@@ -1472,7 +1472,7 @@ export const guides = {
   },
   "/install-pokereader-emu": {
     meta: {
-      title: "PokeReader Lime3DS",
+      title: "PokeReader Azahar",
       description:
         "Installing a tool on a 3DS emulator, such as Azahar, Lime3DS, Citra, to help RNG Pokémon",
       category: "Tools and Emulators",

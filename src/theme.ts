@@ -30,6 +30,7 @@ const customTheme: CustomTheme = {
     colorFillSupportHover: defaultToken.magenta5,
     colorGreen: defaultToken.green8,
     colorRed: defaultToken.red6,
+    colorAccent: defaultToken.magenta6,
   },
   mediaQueries: {
     up: (size: ScreenSize) => {
@@ -89,7 +90,7 @@ const tokenOverrides = {
   colorLinkActive: colors.active,
   colorLinkHover: colors.hover,
   controlItemBgHover: "rgba(0, 0, 0, 0.04)",
-  colorFillSecondary: defaultToken.magenta6,
+  colorAccent: defaultToken.magenta6,
 } satisfies Partial<Theme["token"]>;
 
 export const antdTheme: Theme = {

@@ -53,7 +53,7 @@ export const GuideScreen = () => {
             trackerId="support_us_on_discord"
             icon={<Icon name={supportUsIcon} />}
             type="primary"
-            backgroundColor="FillSecondary"
+            backgroundColor="Accent"
             backgroundHoverColor="FillSupportHover"
             size="middle"
             href={settings.supportUsUrl}
@@ -92,7 +92,7 @@ export const GuideScreen = () => {
                     trackerId="support_us_footer"
                     icon={<Icon name="Heart" />}
                     type="primary"
-                    backgroundColor="FillSecondary"
+                    backgroundColor="Accent"
                     backgroundHoverColor="FillSupportHover"
                     size="middle"
                     href={settings.supportUsUrl}

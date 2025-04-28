@@ -14,6 +14,7 @@ declare module "@emotion/react" {
       colorFillSupportHover: string;
       colorGreen: string;
       colorRed: string;
+      colorAccent: string;
     };
     mediaQueries: {
       up: (size: ScreenSize) => string;

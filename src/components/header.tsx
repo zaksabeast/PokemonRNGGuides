@@ -58,7 +58,7 @@ export const Header = () => {
           />
           <BaseButton href="/" trackerId="home" ml={18}>
             <Typography.Title level={4} mv={0} mr={0}>
-              PokemonRNG.com
+              Pokemon RNG
             </Typography.Title>
           </BaseButton>
         </Flex>

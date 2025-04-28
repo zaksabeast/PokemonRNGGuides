@@ -1,6 +1,13 @@
 import React from "react";
 import { z } from "zod";
-import { RngToolForm, Field, Flex, ResultColumn, Icon, FormFieldTable } from "~/components";
+import {
+  RngToolForm,
+  Field,
+  Flex,
+  ResultColumn,
+  Icon,
+  FormFieldTable,
+} from "~/components";
 import { FormikRadio, RadioGroup } from "~/components/radio";
 import { RngToolSubmit } from "~/components/rngToolForm";
 import { Typography } from "~/components/typography";
@@ -40,14 +47,32 @@ const Validator = z.object({
   spdStat: z.number().min(0).max(999),
   speStat: z.number().min(0).max(999),
   nature: z.enum(nature).nullable(),
-  gender: z.enum(["Male","Female"]).nullable(),
+  gender: z.enum(["Male", "Female"]).nullable(),
   minMaxStats: z.object({
-    hp: z.object({ min: z.number().min(0).max(999), max: z.number().min(0).max(999) }),
-    atk: z.object({ min: z.number().min(0).max(999), max: z.number().min(0).max(999) }),
-    def: z.object({ min: z.number().min(0).max(999), max: z.number().min(0).max(999) }),
-    spa: z.object({ min: z.number().min(0).max(999), max: z.number().min(0).max(999) }),
-    spd: z.object({ min: z.number().min(0).max(999), max: z.number().min(0).max(999) }),
-    spe: z.object({ min: z.number().min(0).max(999), max: z.number().min(0).max(999) }),
+    hp: z.object({
+      min: z.number().min(0).max(999),
+      max: z.number().min(0).max(999),
+    }),
+    atk: z.object({
+      min: z.number().min(0).max(999),
+      max: z.number().min(0).max(999),
+    }),
+    def: z.object({
+      min: z.number().min(0).max(999),
+      max: z.number().min(0).max(999),
+    }),
+    spa: z.object({
+      min: z.number().min(0).max(999),
+      max: z.number().min(0).max(999),
+    }),
+    spd: z.object({
+      min: z.number().min(0).max(999),
+      max: z.number().min(0).max(999),
+    }),
+    spe: z.object({
+      min: z.number().min(0).max(999),
+      max: z.number().min(0).max(999),
+    }),
   }),
 });
 
@@ -106,7 +131,6 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
     },
     [targetAdvance, setResults],
   );
-  
 
   const getColumns = (): ResultColumn<CaughtMonResult>[] => {
     const columns: ResultColumn<CaughtMonResult>[] = [
@@ -147,12 +171,14 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
     return columns;
   };
 
-  const getFields = (formik: FormikProps<FormState>): Field[] => {  
+  const getFields = (formik: FormikProps<FormState>): Field[] => {
     const { minMaxStats, pokemonSpecies } = formik.values;
 
     React.useEffect(() => {
-      getTargetPokemonDesc(game, targetAdvance, pokemonSpecies).then(setTargetPokemonDesc);
-    },[targetAdvance, pokemonSpecies]);
+      getTargetPokemonDesc(game, targetAdvance, pokemonSpecies).then(
+        setTargetPokemonDesc,
+      );
+    }, [targetAdvance, pokemonSpecies]);
 
     return [
       {
@@ -162,15 +188,18 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
             optionType="button"
             value={pokemonSpecies}
             onChange={async ({ target }) => {
-              const desc = await getTargetPokemonDesc(game, targetAdvance, target.value);
+              const desc = await getTargetPokemonDesc(
+                game,
+                targetAdvance,
+                target.value,
+              );
               const minMaxStats = await getStatRangeForStarter(target.value);
               formik.setValues({
                 ...formik.values,
                 pokemonSpecies: target.value,
                 minMaxStats,
-              }); 
+              });
               setTargetPokemonDesc(desc);
-
             }}
             options={toOptions(["Mudkip", "Torchic", "Treecko"])}
           />
@@ -235,8 +264,10 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
   };
 
   return (
-    <>      
-      <FormFieldTable fields={[{label: "Target Pokémon",input: targetPokemonDesc},]} />
+    <>
+      <FormFieldTable
+        fields={[{ label: "Target Pokémon", input: targetPokemonDesc }]}
+      />
       <Typography.Title level={5} p={0} m={0}>
         Caught Pokémon
       </Typography.Title>

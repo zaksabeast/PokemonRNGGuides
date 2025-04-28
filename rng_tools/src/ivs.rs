@@ -27,6 +27,7 @@ pub struct IvFilter {
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Ivs {
     pub hp: u8,
     pub atk: u8,
@@ -34,26 +35,6 @@ pub struct Ivs {
     pub spa: u8,
     pub spd: u8,
     pub spe: u8,
-}
-
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct StatsValue {
-    pub hp: u16,
-    pub atk: u16,
-    pub def: u16,
-    pub spa: u16,
-    pub spd: u16,
-    pub spe: u16,
-}
-
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct StatFilter {
-    pub lvl:u8,
-    pub base_stats: StatsValue,
-    pub min_stats: StatsValue,
-    pub max_stats: StatsValue,
 }
 
 impl Ivs {

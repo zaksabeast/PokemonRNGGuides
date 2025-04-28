@@ -1,6 +1,11 @@
 import React from "react";
 import { z } from "zod";
-import { RngToolForm, Field, RngToolSubmit, FormikNumberInput } from "~/components";
+import {
+  RngToolForm,
+  Field,
+  RngToolSubmit,
+  FormikNumberInput,
+} from "~/components";
 import { Game } from "./index";
 import { findTargetAdvanceForShinyPokemon } from "./calc";
 

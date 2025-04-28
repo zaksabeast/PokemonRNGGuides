@@ -15,7 +15,7 @@ type Props = {
 
 export const ShinyStarter = ({ game }: Props) => {
   const [targetAdvance, setTargetAdvance] = React.useState(0);
-  
+
   // 9 adv for calibration to open the bag. 3 adv for offset between pressing A and generating the Pokémon
   const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(9 + 3);
 
@@ -34,15 +34,15 @@ export const ShinyStarter = ({ game }: Props) => {
       },
       {
         label: "Calibration + Offset",
-        input:(
+        input: (
           <Input
             name="offset"
-            onChange={e => {
+            onChange={(e) => {
               setCalibrationAndOffset(+e.target.value || 0);
             }}
             value={calibrationAndOffset}
           />
-        )
+        ),
       },
     ];
   }, [targetAdvance, calibrationAndOffset]);
@@ -63,11 +63,11 @@ export const ShinyStarter = ({ game }: Props) => {
           stopButtonTrackerId="stop_gen3_shiny_starter_timer"
         />,
         <CaughtMon
-            {...{ game, targetAdvance }}
-            setLatestHitAdv={(val) => {
-              setCalibrationAndOffset(calibrationAndOffset + val - targetAdvance);
-            }}
-        />
+          {...{ game, targetAdvance }}
+          setLatestHitAdv={(val) => {
+            setCalibrationAndOffset(calibrationAndOffset + val - targetAdvance);
+          }}
+        />,
       ]}
     </Flex>
   );

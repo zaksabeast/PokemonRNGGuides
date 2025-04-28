@@ -26,9 +26,9 @@ export const findTargetAdvanceForShinyPokemon = async (
 
 export const getTargetPokemonDesc = async (
   game: Game,
-  targetAdv:number,
-  pokemonSpecies:Starter,
-): Promise<string> => {  
+  targetAdv: number,
+  pokemonSpecies: Starter,
+): Promise<string> => {
   const opts = {
     offset: 0,
     initial_advances: targetAdv,
@@ -51,17 +51,19 @@ export const getTargetPokemonDesc = async (
   } as const;
 
   const genResults = await rngTools.gen3_static_generator_states(opts);
-  if (genResults.length === 0)
-    return "";
+  if (genResults.length === 0) return "";
   const r = genResults[0];
 
   const stats = await rngTools.gen3_calculate_stats(
-    BASE_STATS[pokemonSpecies], 5, r.nature, r.ivs, 
-    { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 });
+    BASE_STATS[pokemonSpecies],
+    5,
+    r.nature,
+    r.ivs,
+    { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+  );
 
   return `${r.gender}, ${r.nature}, HP ${stats.hp}, ATK ${stats.atk}, DEF ${stats.def}, SPA ${stats.spa}, SPD ${stats.spd}, SPE ${stats.spe}`;
 };
-
 
 const BASE_STATS = {
   Mudkip: { hp: 50, atk: 70, def: 50, spa: 50, spd: 50, spe: 40 },
@@ -185,4 +187,3 @@ export const generateCaughtMonResults = async (
 
   return caughtMonResults.slice(0, 10);
 };
-

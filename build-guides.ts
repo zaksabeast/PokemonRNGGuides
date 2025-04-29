@@ -55,8 +55,7 @@ const TitleSchema = z
 
 const SingleGuideMetadataSchema = z.object({
   title: TitleSchema,
-  navDrawerTitle: TitleSchema
-    .nullish()
+  navDrawerTitle: TitleSchema.nullish()
     .optional()
     .default(() => null),
   description: z

@@ -101,13 +101,14 @@ const getMenuItemFromGuide = ({
   const meta = getGuide(slug).meta;
   const isNew = dayjs(meta.addedOn).isAfter(dayjs().subtract(7, "days"));
   const tag = isNew ? "new" : meta.tag;
+  const title = meta.navDrawerTitle ?? meta.title;
   return {
     isNew,
     item: {
       key: meta.slug,
-      title: meta.title,
+      title,
       tag: meta.tag,
-      label: <Link href={meta.slug}>{meta.title}</Link>,
+      label: <Link href={meta.slug}>{title}</Link>,
       icon: isNew || showTag ? <MenuItemTag tag={tag} /> : null,
     },
   };

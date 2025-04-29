@@ -202,6 +202,7 @@ export const guides = {
   "/challenge-usum-ta": {
     meta: {
       title: "Tool Assisted",
+      navDrawerTitle: null,
       description:
         "Join the leaderboard and earn rewards by completing challenges in USUM",
       category: "USUM Challenges",
@@ -3053,6 +3054,7 @@ export const guides = {
   "/zh-emulator-dppt-cute-charm": {
     meta: {
       title: "迷人之躯乱数",
+      navDrawerTitle: null,
       description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",
       category: "Diamond, Pearl, and Platinum",
       slug: "/zh-emulator-dppt-cute-charm",
@@ -3136,6 +3138,7 @@ export const guides = {
   "/zh-emulator-hgss-cute-charm": {
     meta: {
       title: "迷人之躯乱数",
+      navDrawerTitle: null,
       description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",
       category: "Diamond, Pearl, and Platinum",
       slug: "/zh-emulator-hgss-cute-charm",

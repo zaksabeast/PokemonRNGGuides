@@ -106,7 +106,7 @@ const getMenuItemFromGuide = ({
     isNew,
     item: {
       key: meta.slug,
-      title: title,
+      title,
       tag: meta.tag,
       label: <Link href={meta.slug}>{title}</Link>,
       icon: isNew || showTag ? <MenuItemTag tag={tag} /> : null,

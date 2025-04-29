@@ -49,13 +49,13 @@ const categories = [
 const CategorySchema = z.enum(categories);
 
 type Category = z.infer<typeof CategorySchema>;
-const titleSchema = z
+const TitleSchema = z
   .string()
   .refine((value) => titleAndDescriptionChars.test(value));
 
 const SingleGuideMetadataSchema = z.object({
-  title: titleSchema,
-  navDrawerTitle: titleSchema
+  title: TitleSchema,
+  navDrawerTitle: TitleSchema
     .nullish()
     .optional()
     .default(() => null),

@@ -29,8 +29,8 @@ const DesktopNavDrawerContainer = styled.div(({ theme }) => ({
   height: "100%",
   width: "100%",
   maxWidth: 300,
-  backgroundColor: "white",
-  borderRight: "2px solid #f0f0f0",
+  backgroundColor: theme.token.colorBgContainer,
+  borderRight: `2px solid ${theme.token.colorBorder}`,
   [theme.mediaQueries.up("desktop")]: {
     display: "flex",
   },

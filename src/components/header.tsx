@@ -13,7 +13,7 @@ const StyledHeader = styled(Layout.Header)(({ theme }) => ({
   top: 0,
   height: theme.token.headerHeight,
   width: "100%",
-  backgroundColor: "rgba(255, 255, 255, 0.6)",
+  backgroundColor: theme.components?.Layout?.headerBg,
   backdropFilter: "blur(8px)",
   alignItems: "center",
   paddingLeft: 0,

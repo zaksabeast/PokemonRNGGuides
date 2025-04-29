@@ -658,7 +658,10 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Cute Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-dppt-cute-charm",
+        zh: "/zh-emulator-dppt-cute-charm",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
   },
@@ -873,7 +876,10 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 4/Cute Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-hgss-cute-charm",
+        zh: "/zh-emulator-hgss-cute-charm",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
   },
@@ -2878,6 +2884,25 @@ export const guides = {
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
     ),
   },
+  "/zh-emulator-dppt-cute-charm": {
+    meta: {
+      title: "迷人之躯乱数",
+      description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",
+      category: "Diamond, Pearl, and Platinum",
+      slug: "/zh-emulator-dppt-cute-charm",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-dppt-cute-charm", language: "zh" },
+      file: "guides/Gen 4/Cute Charm.mdx",
+      translations: {
+        en: "/emulator-dppt-cute-charm",
+        zh: "/zh-emulator-dppt-cute-charm",
+      },
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
+  },
   "/zh-emulator-dppt-egg": {
     meta: {
       title: "孵化乱数",
@@ -2938,6 +2963,25 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
     ),
+  },
+  "/zh-emulator-hgss-cute-charm": {
+    meta: {
+      title: "迷人之躯乱数",
+      description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",
+      category: "Diamond, Pearl, and Platinum",
+      slug: "/zh-emulator-hgss-cute-charm",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-hgss-cute-charm", language: "zh" },
+      file: "guides/Gen 4/Cute Charm.mdx",
+      translations: {
+        en: "/emulator-hgss-cute-charm",
+        zh: "/zh-emulator-hgss-cute-charm",
+      },
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
   },
   "/zh-emulator-hgss-egg": {
     meta: {
@@ -3302,9 +3346,11 @@ export const guideSlugs = [
   "/zh-emerald-mirage-island",
   "/zh-emerald-painting-rng",
   "/zh-emerald-sid-feebas",
+  "/zh-emulator-dppt-cute-charm",
   "/zh-emulator-dppt-egg",
   "/zh-emulator-emerald-egg",
   "/zh-emulator-flrg-stationary-and-gift",
+  "/zh-emulator-hgss-cute-charm",
   "/zh-emulator-hgss-egg",
   "/zh-frlg-gen3-sid",
   "/zh-frlg-seeding-bot",

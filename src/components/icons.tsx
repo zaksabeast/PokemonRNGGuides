@@ -12,7 +12,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaDiscord, FaCoffee } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold } from "react-icons/pi";
-import { FaHeart } from "react-icons/fa6";
+import { FaHeart, FaPlay, FaFire } from "react-icons/fa6";
 
 const icons = {
   Menu: AiOutlineMenu,
@@ -28,6 +28,8 @@ const icons = {
   RocketLaunch: MdRocketLaunch,
   Heart: FaHeart,
   Coffee: FaCoffee,
+  Play: FaPlay,
+  Fire: FaFire,
 } as const;
 
 export type IconName = keyof typeof icons;

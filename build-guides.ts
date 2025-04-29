@@ -43,6 +43,7 @@ const categories = [
   "NDS Tools",
   "3DS Tools",
   "Switch Tools",
+  "USUM Challenges",
 ] as const;
 
 const CategorySchema = z.enum(categories);
@@ -60,7 +61,7 @@ const SingleGuideMetadataSchema = z.object({
     .refine((value) => value.length === 0 || slugChars.test(value))
     .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
   isRoughDraft: z.boolean().default(false),
-  tag: z.enum(["retail", "emu", "cfw", "info", "any"]),
+  tag: z.enum(["retail", "emu", "cfw", "info", "any", "challenge"]),
   hideFromNavDrawer: z.boolean().default(false),
   addedOn: z
     .string()

@@ -5,11 +5,6 @@ import { ClassNames } from "@emotion/react";
 import * as tst from "ts-toolbelt";
 import { useFormikContext } from "formik";
 import { identity } from "lodash-es";
-import styled from "@emotion/styled";
-
-const MonoSpaceText = styled(Typography.Text)({
-  fontFamily: "monospace",
-});
 
 export type ResultColumn<T> = keyof T extends string
   ? {
@@ -34,7 +29,7 @@ const applyMonospace = <Record extends tst.O.Object>(
   return {
     ...column,
     render: (value: Record[string & keyof Record]) => (
-      <MonoSpaceText>{render(value)}</MonoSpaceText>
+      <Typography.Text fontFamily="monospace">{render(value)}</Typography.Text>
     ),
   };
 };

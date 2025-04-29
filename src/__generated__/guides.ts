@@ -189,6 +189,22 @@ export const guides = {
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Wild.mdx"),
     ),
   },
+  "/challenge-usum-ta": {
+    meta: {
+      title: "Tool Assisted",
+      description:
+        "Join the leaderboard and earn rewards by completing challenges in USUM",
+      category: "USUM Challenges",
+      slug: "/challenge-usum-ta",
+      isRoughDraft: false,
+      tag: "challenge",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      file: "guides/Challenges.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(() => import("~/../guides/Challenges.mdx")),
+  },
   "/channel-jirachi": {
     meta: {
       title: "(PAL) Channel RNG",
@@ -3132,6 +3148,7 @@ export const guideSlugs = [
   "/cfw-bdsp-stationary",
   "/cfw-bdsp-tidandsid",
   "/cfw-bdsp-wild",
+  "/challenge-usum-ta",
   "/channel-jirachi",
   "/citrarng-setup",
   "/desmume-setup",
@@ -3327,4 +3344,5 @@ export const categories = [
   "NDS Tools",
   "3DS Tools",
   "Switch Tools",
+  "USUM Challenges",
 ] as const;

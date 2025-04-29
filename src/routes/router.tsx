@@ -4,6 +4,7 @@ import { routes } from "./defs";
 import { GuideScreen } from "~/screens/guide";
 import { NotFoundScreen } from "~/screens/notFound";
 import { useTrackPageNotFound } from "~/hooks/useTrackPageNotFound";
+import { ChallengeScreen } from "~/screens/challenge";
 
 // These routes used to exist before the site rewrite. Redirect them to the home page.
 const backwardsCompatibleRoutes = [
@@ -35,9 +36,13 @@ export const Router = () => {
   return (
     <WRouter>
       <Switch>
-        {routes.map((route) => (
-          <NavRoute key={route} path={route} component={GuideScreen} />
-        ))}
+        {routes.map((route) =>
+          route.startsWith("/challenge") ? (
+            <NavRoute key={route} path={route} component={ChallengeScreen} />
+          ) : (
+            <NavRoute key={route} path={route} component={GuideScreen} />
+          ),
+        )}
 
         {backwardsCompatibleRoutes.map((route) => (
           <WRoute key={route} path={route}>

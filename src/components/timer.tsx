@@ -44,11 +44,7 @@ export const Timer = ({
       size={200}
       format={() => (
         <Flex justify="center">
-          <Typography.Text
-            strong
-            fontSize={24}
-            style={{ fontFamily: "monospace" }}
-          >
+          <Typography.Text strong fontSize={24} fontFamily="monospace">
             {seconds.toString().padStart(2, "0")}:
             {milliseconds.toString().padStart(3, "0")}
           </Typography.Text>

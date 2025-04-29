@@ -33,4 +33,4 @@ export const ZodConsole = z.enum([
   "ThreeDs",
   "Gba",
   "NdsSlot2",
-]);
+]) satisfies z.Schema<RngTools.Console>;

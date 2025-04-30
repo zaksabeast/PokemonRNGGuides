@@ -37,7 +37,7 @@ export const pkmFilterSchema = z.object({
   filter_gender: z.enum(gender).nullable(),
   filter_min_ivs: IvSchema,
   filter_max_ivs: IvSchema,
-}) satisfies z.Schema<PkmFilterFields>;
+}) satisfies z.Schema<Omit<PkmFilterFields, "filter_stats">>;
 
 type FieldOptOuts = {
   shiny?: boolean;

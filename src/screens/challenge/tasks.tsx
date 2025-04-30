@@ -7,6 +7,7 @@ import { upperFirst } from "lodash-es";
 import { Color } from "@emotion/react";
 import { RngTask } from "./challenges";
 import { ChallengeModal } from "./modal";
+import { track } from "~/analytics";
 
 const TaskCardContainer = styled(Card)(({ theme }) => ({
   cursor: "pointer",
@@ -121,7 +122,13 @@ export const Tasks = ({ tasks, onUpdateTask }: Props) => {
     <Flex wrap="wrap" gap={gap} justify="center">
       {tasks.map((task) => (
         <Item>
-          <TaskCard task={task} onClick={(id) => setSelectedTaskId(id)} />
+          <TaskCard
+            task={task}
+            onClick={(id) => {
+              setSelectedTaskId(id);
+              track("Task clicked", { id });
+            }}
+          />
         </Item>
       ))}
       <ChallengeModal

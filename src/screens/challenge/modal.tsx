@@ -3,6 +3,7 @@ import { RngTask } from "./challenges";
 import { Flex, Select, Typography } from "~/components";
 import { Link } from "~/routes";
 import { upperFirst } from "lodash-es";
+import { track } from "~/analytics";
 
 type TableColumn = {
   label: string;
@@ -102,7 +103,13 @@ export const ChallengeModal = ({ task, onClose, onUpdateTask }: Props) => {
       title={<Typography.Title level={2}>{task?.name}</Typography.Title>}
     >
       {task != null && (
-        <InnerChallengeModal task={task} onUpdateTask={onUpdateTask} />
+        <InnerChallengeModal
+          task={task}
+          onUpdateTask={(task) => {
+            onUpdateTask(task);
+            track("Update task", { taskId: task.id, status: task.status });
+          }}
+        />
       )}
     </Modal>
   );

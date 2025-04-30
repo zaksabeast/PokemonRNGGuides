@@ -10,7 +10,7 @@ import {
   RngTask,
   RngTaskStatusSchema,
 } from "./challenges";
-import { Flex, Card, Typography, ContentLock } from "~/components";
+import { Flex, Card, Typography } from "~/components";
 import { MainLayout } from "~/layouts/main";
 import { getGuide } from "~/guides";
 import { useTheme } from "@emotion/react";
@@ -142,45 +142,43 @@ export const ChallengeScreen = () => {
 
   return (
     <MainLayout trackerName={route}>
-      <ContentLock unlockHash="03adcf7a44bd1bd7a2c439e22e3c9a2d">
-        <Typography.Title level={1}>{Guide.meta.title}</Typography.Title>
+      <Typography.Title level={1}>{Guide.meta.title}</Typography.Title>
 
-        <Card>
-          <Flex gap={8} vertical>
-            <Typography.Title fontSize={24}>Completion Stats</Typography.Title>
+      <Card>
+        <Flex gap={8} vertical>
+          <Typography.Title fontSize={24}>Completion Stats</Typography.Title>
 
-            <table>
-              <tbody>
-                {metrics.map(({ label, value }) => (
-                  <tr key={label}>
-                    <td>
-                      <Typography.Text fontSize={16} color="TextSecondary">
-                        {label}
-                      </Typography.Text>
-                    </td>
-                    <td>
-                      <Typography.Text fontSize={16} color="Text">
-                        {value}
-                      </Typography.Text>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <table>
+            <tbody>
+              {metrics.map(({ label, value }) => (
+                <tr key={label}>
+                  <td>
+                    <Typography.Text fontSize={16} color="TextSecondary">
+                      {label}
+                    </Typography.Text>
+                  </td>
+                  <td>
+                    <Typography.Text fontSize={16} color="Text">
+                      {value}
+                    </Typography.Text>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-            <Progress
-              showInfo={false}
-              strokeColor={
-                completionPercent >= 100
-                  ? theme.token.colorSuccess
-                  : theme.token.colorPrimary
-              }
-              percent={completionPercent}
-            />
-          </Flex>
-        </Card>
-        <Tabs defaultActiveKey="seedSearch" items={items} />
-      </ContentLock>
+          <Progress
+            showInfo={false}
+            strokeColor={
+              completionPercent >= 100
+                ? theme.token.colorSuccess
+                : theme.token.colorPrimary
+            }
+            percent={completionPercent}
+          />
+        </Flex>
+      </Card>
+      <Tabs defaultActiveKey="seedSearch" items={items} />
     </MainLayout>
   );
 };

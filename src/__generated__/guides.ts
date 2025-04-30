@@ -201,8 +201,8 @@ export const guides = {
   },
   "/challenge-usum-ta": {
     meta: {
-      title: "Tool Assisted",
-      navDrawerTitle: null,
+      title: "USUM Tool Assisted Challenge",
+      navDrawerTitle: "Tool Assisted",
       description:
         "Join the leaderboard and earn rewards by completing challenges in USUM",
       category: "USUM Challenges",

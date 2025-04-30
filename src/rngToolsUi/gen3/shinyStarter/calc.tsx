@@ -94,19 +94,20 @@ export const getStatRangeForStarter = async (starter: Starter) => {
   };
 };
 
+const getMinMaxStat = (
+  isMin: boolean,
+  selected: number,
+  { min, max }: { min: number; max: number },
+) => {
+  if (selected >= min && selected <= max) return selected;
+  return isMin ? min : max;
+};
+
 export const generateCaughtMonResults = async (
   game: Game,
   targetAdvance: number,
   caughtMonValues: FormState,
 ): Promise<CaughtMonResult[]> => {
-  let getMinMaxStat = (
-    isMin: boolean,
-    selected: number,
-    { min, max }: { min: number; max: number },
-  ) => {
-    if (selected >= min && selected <= max) return selected;
-    return isMin ? min : max;
-  };
 
   const [min_stats, max_stats] = [true, false].map((isMin) => ({
     hp: getMinMaxStat(

@@ -832,7 +832,7 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Egg RNG.mdx",
       category: "FireRed and LeafGreen",
-      translations: null,
+      translations: { en: "/emulator-frlg-egg", zh: "/zh-emulator-frlg-egg" },
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Egg RNG.mdx"),
@@ -869,7 +869,7 @@ export const guides = {
       addedOn: null,
       file: "guides/FireRed and LeafGreen/Wild RNG.mdx",
       category: "FireRed and LeafGreen",
-      translations: null,
+      translations: { en: "/emulator-frlg-wild", zh: "/zh-emulator-frlg-wild" },
     },
     Guide: React.lazy(
       () => import("~/../guides/FireRed and LeafGreen/Wild RNG.mdx"),
@@ -3135,6 +3135,44 @@ export const guides = {
       () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
     ),
   },
+  "/zh-emulator-frlg-egg": {
+    meta: {
+      title: "火红叶绿孵化乱数",
+      navDrawerTitle: "Egg RNG",
+      description: "在火红/叶绿中进行蛋的乱数",
+      slug: "/zh-emulator-frlg-egg",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-frlg-egg", language: "zh" },
+      file: "guides/FireRed and LeafGreen/Egg RNG.mdx",
+      category: "FireRed and LeafGreen",
+      translations: { en: "/emulator-frlg-egg", zh: "/zh-emulator-frlg-egg" },
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/FireRed and LeafGreen/Egg RNG.mdx"),
+    ),
+  },
+  "/zh-emulator-frlg-wild": {
+    meta: {
+      title: "火红叶绿野生乱数",
+      navDrawerTitle: "Wild RNG",
+      description: "在《火红·叶绿》中使用甜甜香气进行野生宝可梦的乱数",
+      slug: "/zh-emulator-frlg-wild",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-frlg-wild", language: "zh" },
+      file: "guides/FireRed and LeafGreen/Wild RNG.mdx",
+      category: "FireRed and LeafGreen",
+      translations: { en: "/emulator-frlg-wild", zh: "/zh-emulator-frlg-wild" },
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/FireRed and LeafGreen/Wild RNG.mdx"),
+    ),
+  },
   "/zh-emulator-hgss-cute-charm": {
     meta: {
       title: "迷人之躯乱数",
@@ -3533,6 +3571,8 @@ export const guideSlugs = [
   "/zh-emulator-dppt-egg",
   "/zh-emulator-emerald-egg",
   "/zh-emulator-flrg-stationary-and-gift",
+  "/zh-emulator-frlg-egg",
+  "/zh-emulator-frlg-wild",
   "/zh-emulator-hgss-cute-charm",
   "/zh-emulator-hgss-egg",
   "/zh-frlg-gen3-sid",

@@ -1,10 +1,12 @@
 ---
-- title: "RNGing without Custom Firmware"
+- title: "Ultra Sun and Ultra Moon RNGing on retail"
+  navDrawerTitle: "Retail RNG"
   description: "Get your perfect Pokémon without custom firmware"
   slug: "retail-usum-no-cfw"
   category: "Ultra Sun and Ultra Moon"
   tag: "retail"
-- title: "RNGing without Custom Firmware"
+- title: "Sun and Moon RNGing on retail"
+  navDrawerTitle: "Retail RNG"
   description: "Get your perfect Pokémon without custom firmware"
   slug: "retail-sm-no-cfw"
   category: "Sun and Moon"
@@ -14,10 +16,7 @@
 ## Tools
 
 - Calculator: [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases).
-- Timer: Any two-stage timer.
-  - [EonTimer 1.6](https://www.dropbox.com/s/tqf13ht2f4bxt66/EonTimer-1_6.zip?dl=0#download).
-  - [Emtimer](https://emtimer.mizdra.net/SimpleTimer).
-  - [ZomgTimer 2.21](https://www.dropbox.com/s/aurp9y34j5rdbhv/ZomgTimer-V2_21.jar#download).
+- [Mystic Timer](/mystic-timer).
 - If you want to RNG a shiny Pokémon, know your TSV. Check your TSV via Battle Videos without Homebrew. Check [here](https://www.reddit.com/r/SVExchange/wiki/keysave).
 - Having the Shiny Charm will increase your chances of hitting the shiny frame.
 - You may need a video camera to record the clock hands position at the beginning.
@@ -29,7 +28,7 @@
 
 In this guide, a row of 3DSRNGTool results is called a "Frame". If you trigger the battle or receive the Pokémon at a frame number, we say you hit the frame.
 
-"F" refers to real time: 1F = 1/60 second, which is the notation in Gen 3 and in EonTimer.
+"F" refers to real time: 1F = 1/60 second, which is the notation in Gen 3 and in Mystic Timer.
 
 ### Timer setting
 
@@ -38,14 +37,14 @@ You can use any timer that can set two stages independently. The total time span
 - Part A: Systematic error caused by loading the game, some edge frame advancements, and human reaction time.
 - Part B: Time from starting frame to target frame, varying according to the seed and target frame.
 
-## Step 1: Set Up EonTimer
+## Step 1: Set Up Mystic Timer
 
 ![Setup](/images/Sun-Moon/No-CFW/Setup.png)
 
-We are using Gen 3 Mode of EonTimer.
+We are using Gen 3 Mode of Mystic Timer.
 
 - Pre-Timer: in milliseconds. For example, 2133 means 2.133 seconds. For old 3DS users, the Pre-Timer should be around 3100. For new 3DS users, the Pre-Timer should be around 2500.
-- Target Frame: in F (1/60 seconds). For example, 3600 means 60 seconds. EonTimer may not be accurate since it's designed for Gen 3 consoles. This number is different from the target frame in 3DSRNGTool. We need to convert the Gen 7 frame into real time ("F") using 3DSRNGTool.
+- Target Frame: in F (1/60 seconds). For example, 3600 means 60 seconds. Mystic Timer may not be accurate since it's designed for Gen 3 consoles. This number is different from the target frame in 3DSRNGTool. We need to convert the Gen 7 frame into real time ("F") using 3DSRNGTool.
 - Lag: in milliseconds. This number adds to the total time.
 - Frame Hit: in F. When we do calibration, input the frame we actually hit and click update. A new Lag will be calculated.
 
@@ -76,7 +75,7 @@ In summary, the total time span in seconds = (Pre-Timer + Lag) / 1000 + (Target 
 
 ## Step 5: Find initial seed via continue screen clock needles
 
-1. Check [here](https://www.pokemonrng.com/retail-usum-initial-seed-clocks).
+1. Check [here](/retail-usum-initial-seed-clocks).
 2. When you get one seed result, the tool will update it in the main window. The starting frame in the Time Calculator will also update (417/477 + number of frames you saw for clocks).
 3. Double check your seed; most failures are from wrong seeds.
 4. Do not enter your save yet.
@@ -92,7 +91,7 @@ In summary, the total time span in seconds = (Pre-Timer + Lag) / 1000 + (Target 
 ## Step 7: Calculate waiting time and set up timer
 
 1. Go back to the Gen Main RNG Tool. In the bottom right, everything should be updated. Click Calculate.
-2. A message box will pop up with "Set EonTimer for XXXXF. (YY.YYs) Z". Set XXXX as the Target Frame of EonTimer. `Z` is how long this target frame will exist. For Blink Frame, it should be above 30.
+2. A message box will pop up with "Set EonTimer for XXXXF. (YY.YYs) Z". Set XXXX as the Target Frame of Mystic Timer. `Z` is how long this target frame will exist. For Blink Frame, it should be above 30.
 
 ## Step 8: Press A at the continue screen, start the timer at the same time
 
@@ -117,7 +116,7 @@ Press `A` to trigger the Pokémon Generation.
    - If the number is between -4F and 4F, you are doing well, just some bad luck. Start over to find a good seed and hit frame clusters with the same spread.
    - If the number is way off, like +12, you hit the frame too late. Adjust the timer two ways:
      - Decrease your pre-timer: `+ 12 / 60 * (-1000) = -200`, add that to your current Pre-Timer.
-     - Put `Target Frame + 12` into Frame Hit, click Update, and EonTimer will do the math and subtract 200 from Lag.
+     - Put `Target Frame + 12` into Frame Hit, click "Set Timer", and Mystic Timer will do the math and subtract 200 from Lag.
 
 ```
 Note: The Pre-Timer calibration is key for Gen 7 main RNG.

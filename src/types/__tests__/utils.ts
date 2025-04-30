@@ -1,7 +1,5 @@
-import { Test } from "ts-toolbelt";
 import { OneOf, AllOrNone, FeatureConfig } from "../utils";
-
-const { check } = Test;
+import { check, Pass } from "~/typeTest";
 
 export const OneOfTest = () => {
   type Config = {
@@ -21,7 +19,7 @@ export const OneOfTest = () => {
         fields?: undefined;
       };
 
-  check<Result, Expected, Test.Pass>();
+  check<Result, Expected>(Pass);
 };
 
 export const AllOrNoneTest = () => {
@@ -42,7 +40,7 @@ export const AllOrNoneTest = () => {
         onRow?: undefined;
       };
 
-  check<Result, Expected, Test.Pass>();
+  check<Result, Expected>(Pass);
 };
 
 export const FeatureConfigTest = () => {
@@ -65,5 +63,5 @@ export const FeatureConfigTest = () => {
         onReset?: undefined;
       };
 
-  check<Result, Expected, Test.Pass>();
+  check<Result, Expected>(Pass);
 };

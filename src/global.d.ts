@@ -3,7 +3,7 @@ type DataLayerProps = {
 } & Record<string, string>;
 
 interface Window {
-  theme: undefined | import("@emotion/react").Theme;
+  theme: undefined | Record<string, import("@emotion/react").CustomTheme>;
   dataLayer:
     | undefined
     | {

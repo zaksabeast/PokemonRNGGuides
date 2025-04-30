@@ -17,38 +17,47 @@ const titleAndDescriptionChars =
 // Only lower case letters, numbers, and hyphens
 const slugChars = /^[a-z0-9-]+$/;
 
-const categoryDefs = [
-  z.literal("Home"),
-  z.literal("Tools and Emulators"),
-  z.literal("Gold, Silver, Crystal"),
-  z.literal("Transporter"),
-  z.literal("Ruby and Sapphire"),
-  z.literal("Gamecube"),
-  z.literal("FireRed and LeafGreen"),
-  z.literal("Emerald"),
-  z.literal("Diamond, Pearl, and Platinum"),
-  z.literal("HeartGold and SoulSilver"),
-  z.literal("Black and White"),
-  z.literal("Black 2 and White 2"),
-  z.literal("X and Y"),
-  z.literal("Omega Ruby and Alpha Sapphire"),
-  z.literal("Sun and Moon"),
-  z.literal("Ultra Sun and Ultra Moon"),
-  z.literal("Sword and Shield"),
-  z.literal("Brilliant Diamond and Shining Pearl"),
-  z.literal("Legends Arceus"),
-  z.literal("GBA Overview"),
-  z.literal("GBA Technical Documentation"),
+const categories = [
+  "Home",
+  "Gold, Silver, Crystal",
+  "Transporter",
+  "Ruby and Sapphire",
+  "Gamecube",
+  "FireRed and LeafGreen",
+  "Emerald",
+  "Diamond, Pearl, and Platinum",
+  "HeartGold and SoulSilver",
+  "Black and White",
+  "Black 2 and White 2",
+  "X and Y",
+  "Omega Ruby and Alpha Sapphire",
+  "Sun and Moon",
+  "Ultra Sun and Ultra Moon",
+  "Sword and Shield",
+  "Brilliant Diamond and Shining Pearl",
+  "Legends Arceus",
+  "GBA Overview",
+  "GBA Technical Documentation",
+  "Mystic Timer",
+  "GBA Tools",
+  "NDS Tools",
+  "3DS Tools",
+  "Switch Tools",
+  "USUM Challenges",
 ] as const;
 
-const categories = categoryDefs.map((category) => category.value);
-
-const CategorySchema = z.union(categoryDefs);
+const CategorySchema = z.enum(categories);
 
 type Category = z.infer<typeof CategorySchema>;
+const TitleSchema = z
+  .string()
+  .refine((value) => titleAndDescriptionChars.test(value));
 
 const SingleGuideMetadataSchema = z.object({
-  title: z.string().refine((value) => titleAndDescriptionChars.test(value)),
+  title: TitleSchema,
+  navDrawerTitle: TitleSchema.nullish()
+    .optional()
+    .default(() => null),
   description: z
     .string()
     .refine((value) => titleAndDescriptionChars.test(value)),
@@ -58,13 +67,7 @@ const SingleGuideMetadataSchema = z.object({
     .refine((value) => value.length === 0 || slugChars.test(value))
     .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
   isRoughDraft: z.boolean().default(false),
-  tag: z.union([
-    z.literal("retail"),
-    z.literal("emu"),
-    z.literal("cfw"),
-    z.literal("info"),
-    z.literal("any"),
-  ]),
+  tag: z.enum(["retail", "emu", "cfw", "info", "any", "challenge"]),
   hideFromNavDrawer: z.boolean().default(false),
   addedOn: z
     .string()
@@ -79,7 +82,7 @@ const SingleGuideMetadataSchema = z.object({
       enSlug: z
         .string()
         .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
-      language: z.union([z.literal("es"), z.literal("zh")]),
+      language: z.enum(["es", "zh"]),
     })
     .optional(),
 });
@@ -211,7 +214,6 @@ const main = async () => {
 
   const compiledGuides = `
   import React from 'react';
-  import { z } from "zod";
 
   export const guides = {
     ${guidesWithTranslations
@@ -225,7 +227,7 @@ const main = async () => {
   } as const;
 
   export const guideSlugs = [
-    ${guidesWithTranslations.map((guide) => `z.literal("${guide.slug}")`).join(",\n")}
+    ${guidesWithTranslations.map((guide) => `"${guide.slug}"`).join(",\n")}
   ] as const;
 
   export const categories = ${JSON.stringify(categories)} as const;

@@ -17,17 +17,7 @@ import { match } from "ts-pattern";
 
 export const GuideScreen = () => {
   const [route] = useActiveRoute();
-  const supportTextCohort = useAbCohort("supportUsButton2");
   const supportIconCohort = useAbCohort("supportUsIcon");
-
-  const supportUsText = match(supportTextCohort)
-    .with(
-      "keep_pokemon_rng_free_growing",
-      () => "Keep Pokémon RNG Free & Growing",
-    )
-    .with("love_our_tools_support_us", () => "Sponsor RNG Dev Work")
-    .with("sponsor_rng_dev_work", () => "Love Our Tools? Support Us!")
-    .exhaustive();
 
   const supportUsIcon = match(supportIconCohort)
     .with("heart", () => "Heart" as const)
@@ -63,12 +53,12 @@ export const GuideScreen = () => {
             trackerId="support_us_on_discord"
             icon={<Icon name={supportUsIcon} />}
             type="primary"
-            backgroundColor="FillSecondary"
+            backgroundColor="Accent"
             backgroundHoverColor="FillSupportHover"
             size="middle"
             href={settings.supportUsUrl}
           >
-            {supportUsText}
+            Keep Pokémon RNG Free & Growing
           </Button>
         </Flex>
 
@@ -102,7 +92,7 @@ export const GuideScreen = () => {
                     trackerId="support_us_footer"
                     icon={<Icon name="Heart" />}
                     type="primary"
-                    backgroundColor="FillSecondary"
+                    backgroundColor="Accent"
                     backgroundHoverColor="FillSupportHover"
                     size="middle"
                     href={settings.supportUsUrl}

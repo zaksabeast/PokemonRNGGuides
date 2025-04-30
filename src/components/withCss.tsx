@@ -31,6 +31,7 @@ type CustomStyles = {
   overflowY?: "auto" | "hidden" | "scroll" | "visible";
 
   fontSize?: number | string;
+  fontFamily?: string;
   textAlign?: "left" | "right" | "center";
 
   flex?: number;
@@ -77,6 +78,7 @@ const styleProps = [
   "overflowX",
   "overflowY",
   "fontSize",
+  "fontFamily",
   "textAlign",
   "flex",
   "flexShrink",
@@ -117,6 +119,7 @@ const styleConverter = ({
   overflowX,
   overflowY,
   fontSize,
+  fontFamily,
   textAlign,
   flex,
   flexShrink,
@@ -154,6 +157,7 @@ const styleConverter = ({
       overflowX,
       overflowY,
       fontSize,
+      fontFamily,
       textAlign,
       flex,
       flexShrink,

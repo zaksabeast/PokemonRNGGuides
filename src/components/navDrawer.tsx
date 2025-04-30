@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "~/routes";
-import { Divider, Drawer } from "antd";
+import { Drawer } from "antd";
 import { Flex } from "./flex";
+import { Divider } from "./divider";
 import { Typography } from "./typography";
 import { useMobileNavDrawerOpen } from "~/state/navDrawer";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
@@ -45,9 +46,15 @@ const MenuItemTag = ({ tag }: MenuItemTagProps) => {
   const config = match<GuideTag, GuideConfig | null>(tag)
     .with("new", () => ({ color: "White", backgroundColor: "Primary" }))
     .otherwise(() => null);
-  const label = match<GuideTag, string>(tag)
+  const label = match<GuideTag, string | null>(tag)
+    .with("challenge", () => null)
     .with("cfw", () => "CFW")
     .otherwise(() => upperFirst(tag));
+
+  if (label == null) {
+    return null;
+  }
+
   return (
     <Flex style={{ position: "relative", left: 0 }}>
       <Tag
@@ -94,13 +101,14 @@ const getMenuItemFromGuide = ({
   const meta = getGuide(slug).meta;
   const isNew = dayjs(meta.addedOn).isAfter(dayjs().subtract(7, "days"));
   const tag = isNew ? "new" : meta.tag;
+  const title = meta.navDrawerTitle ?? meta.title;
   return {
     isNew,
     item: {
       key: meta.slug,
-      title: meta.title,
+      title,
       tag: meta.tag,
-      label: <Link href={meta.slug}>{meta.title}</Link>,
+      label: <Link href={meta.slug}>{title}</Link>,
       icon: isNew || showTag ? <MenuItemTag tag={tag} /> : null,
     },
   };
@@ -118,6 +126,11 @@ const getMenuCategory = (
   const isNew = guideItems.some((item) => item.isNew);
 
   const label = match(category)
+    .with("GBA Tools", () => "Tools")
+    .with("NDS Tools", () => "Tools")
+    .with("3DS Tools", () => "Tools")
+    .with("Switch Tools", () => "Tools")
+    .with("USUM Challenges", () => "USUM")
     .with("GBA Technical Documentation", () => "Technical Documentation")
     .otherwise(() => category);
 
@@ -150,8 +163,8 @@ const getGuideMenu = (
 const finalizedGuideMenu = getGuideMenu(finalizedGuides);
 
 const getMenuForCategory = (categories: Category[]) => {
-  return finalizedGuideMenu.filter(({ item }) =>
-    (categories as string[]).includes(item.key),
+  return categories.flatMap((category) =>
+    finalizedGuideMenu.filter(({ item }) => item.key === category),
   );
 };
 
@@ -194,8 +207,16 @@ const getCategory = ({
 
 const roughDraftPrefix = "roughDraft-";
 
-const topLevelMenu = [
-  getMenuForCategory(["Tools and Emulators"])[0].item,
+const challengesMenu = [
+  getCategory({
+    key: "Challenges",
+    label: "Challenges",
+    categories: ["USUM Challenges"],
+  }).item,
+];
+
+const guideMenu = [
+  getMenuItemFromGuide({ slug: "/mystic-timer", showTag: false }).item,
   getCategory({
     key: "GB",
     label: "GB",
@@ -205,6 +226,7 @@ const topLevelMenu = [
     key: "GBA",
     label: "GBA",
     categories: [
+      "GBA Tools",
       "Ruby and Sapphire",
       "FireRed and LeafGreen",
       "Emerald",
@@ -216,6 +238,7 @@ const topLevelMenu = [
     key: "NDS",
     label: "NDS",
     categories: [
+      "NDS Tools",
       "Diamond, Pearl, and Platinum",
       "HeartGold and SoulSilver",
       "Black and White",
@@ -226,6 +249,7 @@ const topLevelMenu = [
     key: "3DS",
     label: "3DS",
     categories: [
+      "3DS Tools",
       "X and Y",
       "Omega Ruby and Alpha Sapphire",
       "Sun and Moon",
@@ -238,6 +262,7 @@ const topLevelMenu = [
     key: "Switch",
     label: "Switch",
     categories: [
+      "Switch Tools",
       "Sword and Shield",
       "Legends Arceus",
       "Brilliant Diamond and Shining Pearl",
@@ -261,33 +286,51 @@ const NavDrawerContent = () => {
     const openCategory = guideMeta.isRoughDraft
       ? `${roughDraftPrefix}${guideMeta.category}`
       : guideMeta.category;
-    const openTopLevelItem = topLevelMenu.find((item) =>
-      item.children.some((child) =>
-        [openCategory, guideMeta.slug].includes(child.key),
-      ),
+    const openTopLevelItem = [...challengesMenu, ...guideMenu].find((item) =>
+      "children" in item
+        ? item.children.some((child) =>
+            [openCategory, guideMeta.slug].includes(child.key),
+          )
+        : item.key === guideMeta.slug,
     );
     return [openTopLevelItem?.key, openCategory].filter((item) => item != null);
   });
 
+  const onOpenChange = React.useCallback(
+    (updatedKeys: string[]) => {
+      const newKeys = difference(updatedKeys, openKeys);
+      if (newKeys.length === 1) {
+        track("NavDrawer Open Category", { category: newKeys[0] });
+      }
+      if (newKeys.length > 1) {
+        track("NavDrawer Open Multiple Categories", {});
+      }
+      setOpenedKeys(updatedKeys);
+    },
+    [openKeys],
+  );
+
   return (
     <Flex vertical height="100%" gap={8}>
-      <Flex vertical gap={16} flex={1}>
+      <Flex vertical flex={1}>
+        {/* We'll add this soon */}
+        {/* <StyledMenu
+          mode="inline"
+          inlineIndent={10}
+          items={challengesMenu}
+          defaultSelectedKeys={[route]}
+          openKeys={openKeys}
+          onOpenChange={onOpenChange}
+          onClick={() => setMobileNavDrawerOpen(false)}
+        />
+        <Divider mv={16} /> */}
         <StyledMenu
           mode="inline"
           inlineIndent={10}
-          items={topLevelMenu}
+          items={guideMenu}
           defaultSelectedKeys={[route]}
           openKeys={openKeys}
-          onOpenChange={(updatedKeys) => {
-            const newKeys = difference(updatedKeys, openKeys);
-            if (newKeys.length === 1) {
-              track("NavDrawer Open Category", { category: newKeys[0] });
-            }
-            if (newKeys.length > 1) {
-              track("NavDrawer Open Multiple Categories", {});
-            }
-            setOpenedKeys(updatedKeys);
-          }}
+          onOpenChange={onOpenChange}
           onClick={() => setMobileNavDrawerOpen(false)}
         />
       </Flex>

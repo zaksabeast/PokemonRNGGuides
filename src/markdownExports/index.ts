@@ -48,6 +48,7 @@ import { Static3 } from "~/rngToolsUi/gen3/static/static3";
 import { MultibootJirachi } from "~/rngToolsUi/gen3/multibootJirachi";
 import { ShinyStarter } from "~/rngToolsUi/gen3/shinyStarter";
 import { GenerateTidSid } from "~/rngToolsUi/gen3/shinyStarter/generateTidSid";
+import { ChallengeScreen } from "~/screens/challenge";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -97,4 +98,5 @@ export const markdownComponents = {
   ShinyStarter,
   GenerateTidSid,
   MultibootJirachi,
+  ChallengeScreen,
 };

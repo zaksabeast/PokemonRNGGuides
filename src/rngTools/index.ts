@@ -27,10 +27,10 @@ type AdjustedRngTools = AdjustAllFunctionArgs<RngToolsModules>;
 
 export const rngTools = wrap<AdjustedRngTools>(new RngToolsWorker());
 
-export const ZodConsole = z.union([
-  z.literal("NdsSlot1"),
-  z.literal("Dsi"),
-  z.literal("ThreeDs"),
-  z.literal("Gba"),
-  z.literal("NdsSlot2"),
-]);
+export const ZodConsole = z.enum([
+  "NdsSlot1",
+  "Dsi",
+  "ThreeDs",
+  "Gba",
+  "NdsSlot2",
+]) satisfies z.Schema<RngTools.Console>;

@@ -3,10 +3,9 @@ import React from "react";
 export const guides = {
   "/": {
     meta: {
-      title: "Welcome to PokémonRNG.com!",
+      title: "PokemonRNG.com - Become The Very Best",
       navDrawerTitle: null,
-      description:
-        "PokémonRNG.com has guides and tools to help you learn RNG - covering shiny hunting, perfect IVs, and more from Gen 2 to Legends Arceus.",
+      description: "Train Smarter, Shine Brighter — Together.",
       category: "Home",
       slug: "/",
       isRoughDraft: false,

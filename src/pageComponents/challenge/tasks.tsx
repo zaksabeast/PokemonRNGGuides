@@ -1,26 +1,11 @@
 import React from "react";
-import { Flex, Card, Typography, Tag, Icon } from "~/components";
-import styled from "@emotion/styled";
-import * as tst from "ts-toolbelt";
+import { Flex, Card, Typography, Tag, Icon, Grid } from "~/components";
 import { match } from "ts-pattern";
 import { upperFirst } from "lodash-es";
 import { Color } from "@emotion/react";
 import { RngTask } from "./challenges";
 import { ChallengeModal } from "./modal";
 import { track } from "~/analytics";
-
-const TaskCardContainer = styled(Card)(({ theme }) => ({
-  cursor: "pointer",
-  width: "100%",
-  boxShadow: theme.token.boxShadowTertiary,
-  transition: "box-shadow 0.2s ease-in-out",
-  ":hover": {
-    boxShadow: theme.token.boxShadowSecondary,
-  },
-  "& .ant-card-body": {
-    height: "100%",
-  },
-}));
 
 type TaskCardProps = {
   task: RngTask;
@@ -45,7 +30,11 @@ const TaskCard = ({ task, onClick }: TaskCardProps) => {
     .otherwise(() => "Unknown");
 
   return (
-    <TaskCardContainer onClick={() => onClick?.(task.id)}>
+    <Card
+      fullBody
+      onClick={() => onClick?.(task.id)}
+      id={`task-card-${task.id}`}
+    >
       <Flex gap={8} justify="space-between" align="center" height="100%">
         <Flex vertical gap={12} justify="space-between" height="100%">
           <Flex gap={4} align="flex-start" vertical>
@@ -87,24 +76,9 @@ const TaskCard = ({ task, onClick }: TaskCardProps) => {
           )}
         </Flex>
       </Flex>
-    </TaskCardContainer>
+    </Card>
   );
 };
-
-const gap = 16;
-const getFlex = (columns: tst.L.KeySet<1, 12>) => {
-  return `1 1 calc(${(1 / columns) * 100}% - ${gap}px)`;
-};
-
-const Item = styled(Flex)(({ theme }) => ({
-  flex: "1 1 100%",
-  [theme.mediaQueries.up("mobile")]: {
-    flex: getFlex(1),
-  },
-  [theme.mediaQueries.up("tablet")]: {
-    flex: getFlex(2),
-  },
-}));
 
 type Props = {
   tasks: RngTask[];
@@ -119,23 +93,22 @@ export const Tasks = ({ tasks, onUpdateTask }: Props) => {
   const selectedTask = tasks.find((task) => task.id === selectedTaskId);
 
   return (
-    <Flex wrap="wrap" gap={gap} justify="center">
+    <Grid mobile={1} tablet={2}>
       {tasks.map((task) => (
-        <Item>
-          <TaskCard
-            task={task}
-            onClick={(id) => {
-              setSelectedTaskId(id);
-              track("Task clicked", { id });
-            }}
-          />
-        </Item>
+        <TaskCard
+          key={task.id}
+          task={task}
+          onClick={(id) => {
+            setSelectedTaskId(id);
+            track("Task clicked", { id });
+          }}
+        />
       ))}
       <ChallengeModal
         task={selectedTask}
         onClose={() => setSelectedTaskId(null)}
         onUpdateTask={onUpdateTask}
       />
-    </Flex>
+    </Grid>
   );
 };

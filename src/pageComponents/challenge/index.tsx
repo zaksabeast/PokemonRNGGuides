@@ -139,7 +139,7 @@ export const ChallengePageComponent = () => {
 
   return (
     <Flex gap={24} vertical>
-      <Card>
+      <Card id="challenge-header">
         <Flex gap={8} vertical>
           <Typography.Title fontSize={24}>Completion Stats</Typography.Title>
 
@@ -173,7 +173,7 @@ export const ChallengePageComponent = () => {
           />
         </Flex>
       </Card>
-      <Tabs defaultActiveKey="seedSearch" items={items} />
+      <Tabs defaultActiveKey="tasks" items={items} />
     </Flex>
   );
 };

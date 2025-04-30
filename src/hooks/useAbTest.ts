@@ -29,6 +29,10 @@ const abTests = {
     cohorts: ["coffee", "heart"],
     controlCohort: "heart",
   },
+  guidePokeball: {
+    cohorts: ["on", "off"],
+    controlCohort: "off",
+  },
 } as const satisfies AbTestConfigs;
 
 type AbTest = typeof abTests;
@@ -49,9 +53,12 @@ const getAbCohort = <T extends AbTestName>(
   return cohorts[cohortIndex];
 };
 
-const joinedCohorts = atom<Record<AbTestName, boolean>>({
+type JoinedCohorts = Record<AbTestName, boolean>;
+
+const joinedCohorts = atom<JoinedCohorts>({
   supportUsIcon: false,
-});
+  guidePokeball: false,
+} satisfies JoinedCohorts);
 
 export const useAbCohort = <T extends AbTestName>(abTestName: T) => {
   const cohort = getAbCohort(abTestName);

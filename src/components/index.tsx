@@ -37,3 +37,4 @@ export { Tag } from "./tag";
 export { RadioGroup } from "./radio";
 export { Divider } from "./divider";
 export { ContentLock } from "./contentLock";
+export { Grid } from "./grid";

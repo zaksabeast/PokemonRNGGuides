@@ -14,6 +14,7 @@ import { FaGithub, FaDiscord, FaCoffee } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold } from "react-icons/pi";
 import { FaHeart, FaPlay, FaFire } from "react-icons/fa6";
+import { TbPokeball } from "react-icons/tb";
 
 const icons = {
   ArrowRightAlt: MdArrowRightAlt,
@@ -32,6 +33,7 @@ const icons = {
   Update: MdUpdate,
   Play: FaPlay,
   Fire: FaFire,
+  Pokeball: TbPokeball,
 } as const;
 
 export type IconName = keyof typeof icons;

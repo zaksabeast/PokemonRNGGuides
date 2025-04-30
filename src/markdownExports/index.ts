@@ -51,6 +51,8 @@ import { GenerateHoennTidSid } from "~/rngToolsUi/gen3/shinyStarter/generateTidS
 import { ChallengePageComponent } from "~/pageComponents/challenge";
 import { ExperimentsPageComponent } from "~/pageComponents/experiments";
 import { PaintingReseed } from "~/rngToolsUi/gen3/paintingReseed";
+import { HomePageComponent } from "~/pageComponents/home";
+import { GamePageComponent } from "~/pageComponents/gamePage";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -103,4 +105,6 @@ export const markdownComponents = {
   ChallengePageComponent,
   ExperimentsPageComponent,
   PaintingReseed,
+  HomePageComponent,
+  GamePageComponent,
 };

@@ -46,6 +46,7 @@ const categories = [
   "Switch Tools",
   "USUM Challenges",
   "User Settings",
+  "Game Hub",
 ] as const;
 
 const CategorySchema = z.enum(categories);
@@ -85,7 +86,9 @@ const SingleGuideMetadataSchema = z.object({
         .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
       language: z.enum(["es", "zh"]),
     })
-    .optional(),
+    .nullish()
+    .optional()
+    .default(() => null),
   layout: z.enum(layouts).default("guide"),
 });
 
@@ -96,15 +99,30 @@ const GuideMetadataSchema = z.union([
 
 type GuideMetadata = z.infer<typeof SingleGuideMetadataSchema>;
 
-const main = async () => {
+type SitePageFile = {
+  file: string;
+  content: string;
+};
+
+const getGuideFiles = async (): Promise<SitePageFile[]> => {
+  const results: SitePageFile[] = [];
   const glob = new Glob("guides/**/*.mdx");
-  const guides: (GuideMetadata & { file: string; category: string })[] = [];
 
   // Scans the current working directory and each of its sub-directories recursively
   for await (const rawFile of glob.scan(".")) {
     const file = rawFile.replace(/\\/g, "/"); // Needed for Windows contributors
+    const content = await fs.readFile(file);
+    results.push({ file, content: content.toString() });
+  }
+  return results;
+};
 
-    const compiled = await evaluate(await fs.readFile(file), {
+const main = async () => {
+  const guideFiles = await getGuideFiles();
+  const guides: (GuideMetadata & { file: string; category: string })[] = [];
+
+  for (const { file, content } of guideFiles) {
+    const compiled = await evaluate(content, {
       remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
       Fragment: React.Fragment,
       jsx: React.jsx,
@@ -123,6 +141,7 @@ const main = async () => {
       guides.push({
         ...metadata,
         file,
+        navDrawerTitle: metadata.navDrawerTitle ?? metadata.title,
         hideFromNavDrawer:
           metadata.translation != null || metadata.hideFromNavDrawer,
       });

@@ -6,6 +6,7 @@ import { Icon } from "./icons";
 import { useMobileNavDrawerOpen } from "~/state/navDrawer";
 import { Flex } from "./flex";
 import { settings } from "~/settings";
+import { Link } from "~/routes";
 
 const StyledHeader = styled(Layout.Header)({
   zIndex: 100,
@@ -54,11 +55,13 @@ export const Header = () => {
             icon={<Icon name="Menu" size={20} extraAlignment={-1} />}
             onClick={() => setMobileNavDrawerOpen(true)}
           />
-          <BaseButton href="/" trackerId="home" ml={18}>
-            <Typography.Title level={4} mv={0} mr={0}>
-              Pokemon RNG
-            </Typography.Title>
-          </BaseButton>
+          <Link href="/">
+            <BaseButton trackerId="home" ml={18}>
+              <Typography.Title level={4} mv={0} mr={0}>
+                Pokemon RNG
+              </Typography.Title>
+            </BaseButton>
+          </Link>
         </Flex>
 
         <Flex align="center" gap={16}>

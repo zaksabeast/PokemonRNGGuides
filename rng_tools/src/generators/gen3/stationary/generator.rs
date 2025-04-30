@@ -960,7 +960,17 @@ mod test {
 
         let results = gen3_static_generator_states(&opts);
         assert!(results.len() == 1);
-        assert_eq!(results[0].ivs, Ivs { hp: 27, atk: 30, def: 25,spa:21,spd:9,spe:0});
+        assert_eq!(
+            results[0].ivs,
+            Ivs {
+                hp: 27,
+                atk: 30,
+                def: 25,
+                spa: 21,
+                spd: 9,
+                spe: 0
+            }
+        );
 
         let opts = Static3GeneratorOptions {
             offset: 0,

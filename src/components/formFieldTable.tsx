@@ -1,3 +1,4 @@
+import { Flex } from "~/components";
 import { Typography } from "./typography";
 import styled from "@emotion/styled";
 
@@ -37,7 +38,9 @@ export const FormFieldTable = ({ fields }: Props) => {
               <tr key={label}>
                 <LabelTd colSpan={2}>
                   <Typography.Text strong>{label}</Typography.Text>
-                  <Flex pl={30} vertical>{input}</Flex>
+                  <Flex pl={30} vertical>
+                    {input}
+                  </Flex>
                 </LabelTd>
               </tr>
             );

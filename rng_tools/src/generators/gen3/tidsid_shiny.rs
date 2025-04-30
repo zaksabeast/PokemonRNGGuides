@@ -225,14 +225,16 @@ fn calculate_avg_adv_for_nearby_sids_prob_by_adv(
     for (i, nearby_sid) in nearby_sids.iter().enumerate() {
         let prob1 = TIMING_DISTR[i];
         let merge_with = prob_by_adv.iter_mut().find(|adv2| {
-            adv2.earliest_shiny_adv.abs_diff(nearby_sid.earliest_shiny_adv) <= MERGE_MAX_DIFF_SHINY_EARLIEST_ADV
+            adv2.earliest_shiny_adv
+                .abs_diff(nearby_sid.earliest_shiny_adv)
+                <= MERGE_MAX_DIFF_SHINY_EARLIEST_ADV
         });
         match merge_with {
             None => {
                 prob_by_adv.push(AvgAdvNearbySids {
-                    earliest_shiny_adv:nearby_sid.earliest_shiny_adv,
-                    probability:prob1,
-                    nearby_sids:vec![nearby_sid.clone()],
+                    earliest_shiny_adv: nearby_sid.earliest_shiny_adv,
+                    probability: prob1,
+                    nearby_sids: vec![nearby_sid.clone()],
                 });
             }
             Some(merge_with) => {
@@ -266,7 +268,8 @@ fn calculate_avg_adv_for_nearby_sids(nearby_sids: &[Gen3NearbySid]) -> usize {
     let mut avg_attempt_adv: f64 = 0f64;
     let mut remaining_prob = 1.0f64;
     for adv in prob_by_adv {
-        avg_attempt_adv += adv.earliest_shiny_adv as f64 * AVG_ATTEMPT_TO_HIT_TARGET * remaining_prob;
+        avg_attempt_adv +=
+            adv.earliest_shiny_adv as f64 * AVG_ATTEMPT_TO_HIT_TARGET * remaining_prob;
         remaining_prob -= adv.probability;
     }
     avg_attempt_adv as usize
@@ -364,8 +367,8 @@ fn find_best_tid_gen_adv(seed: u32, tid_gen_adv_min: usize, tid_gen_adv_max: usi
 
     let mid = (TIMING_DISTR.len() - 1) / 2;
     struct Advs {
-      pub tidsid_adv:usize,
-      pub method1_adv:usize,
+        pub tidsid_adv: usize,
+        pub method1_adv: usize,
     }
     let mut avg_adv_by_tid_gen_adv_with_nearby: Vec<Advs> = avg_adv_by_tid_gen_adv
         .iter()
@@ -384,15 +387,15 @@ fn find_best_tid_gen_adv(seed: u32, tid_gen_adv_min: usize, tid_gen_adv_max: usi
                 sum += avg_adv_by_tid_gen_adv[idx] as f64 * prob;
             }
             Advs {
-              tidsid_adv:i + tid_gen_adv_min,
-              method1_adv: sum as usize
+                tidsid_adv: i + tid_gen_adv_min,
+                method1_adv: sum as usize,
             }
         })
         .collect();
 
     avg_adv_by_tid_gen_adv_with_nearby.sort_by(|a, b| a.method1_adv.cmp(&b.method1_adv));
 
-    avg_adv_by_tid_gen_adv_with_nearby[0].tid_gen_adv
+    avg_adv_by_tid_gen_adv_with_nearby[0].tidsid_adv
 }
 
 /// Returns the average advance needed to determine SID for a given tid_gen_adv,
@@ -555,7 +558,7 @@ mod test {
 
     #[test]
     fn test_calculate_avg_adv_for_nearby_sids() {
-        fn to_nearby_sid(earliest_shiny_advs: &Vec<usize>) -> Vec<Gen3NearbySid> {
+        fn to_nearby_sid(earliest_shiny_advs: &[usize]) -> Vec<Gen3NearbySid> {
             earliest_shiny_advs
                 .into_iter()
                 .map(|earliest_shiny_adv| Gen3NearbySid {
@@ -567,7 +570,7 @@ mod test {
         }
 
         fn calculate_avg_adv_for_nearby_sids_prob_by_adv_wrap(
-            earliest_shiny_advs: &Vec<usize>,
+            earliest_shiny_advs: &[usize],
         ) -> Vec<(usize, f64)> {
             calculate_avg_adv_for_nearby_sids_prob_by_adv(&to_nearby_sid(earliest_shiny_advs))
                 .iter()

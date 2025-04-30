@@ -2,7 +2,9 @@ use num_enum::{FromPrimitive, IntoPrimitive};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, FromPrimitive, IntoPrimitive, Tsify, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, Debug, Eq, PartialEq, FromPrimitive, IntoPrimitive, Tsify, Serialize, Deserialize,
+)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 #[repr(u8)]
 pub enum Nature {
@@ -38,9 +40,9 @@ impl Nature {
     pub fn from_pid(pid: u32) -> Self {
         ((pid % 25) as u8).into()
     }
-    
+
     pub fn stat_factor(&self) -> &'static NatureStatFactor {
-        let idx:u8 = (*self).into();
+        let idx: u8 = (*self).into();
         &NATURE_STAT_FACTORS[idx as usize]
     }
 }

@@ -7,14 +7,10 @@ declare module "@emotion/react" {
 
   export type CustomTheme = {
     token: {
-      headerHeight: string;
-      footerHeight: string;
-      colorBgSupport: string;
-      colorBorderSupport: string;
-      colorFillSupportHover: string;
-      colorGreen: string;
-      colorRed: string;
-      colorAccent: string;
+      colorBrandSecondary: string;
+      colorBrandSecondaryHover: string;
+      colorBrandSecondaryBg: string;
+      colorBrandSecondaryBorder: string;
     } & AliasToken;
     components: Partial<ThemeConfig["components"]>;
     mediaQueries: {

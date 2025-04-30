@@ -7,13 +7,11 @@ import { useMobileNavDrawerOpen } from "~/state/navDrawer";
 import { Flex } from "./flex";
 import { settings } from "~/settings";
 
-const StyledHeader = styled(Layout.Header)(({ theme }) => ({
+const StyledHeader = styled(Layout.Header)({
   zIndex: 100,
   position: "fixed",
   top: 0,
-  height: theme.token.headerHeight,
   width: "100%",
-  backgroundColor: theme.components?.Layout?.headerBg,
   backdropFilter: "blur(8px)",
   alignItems: "center",
   paddingLeft: 0,
@@ -23,7 +21,7 @@ const StyledHeader = styled(Layout.Header)(({ theme }) => ({
   boxShadow:
     "0 1px 2px 0 rgba(0, 0, 0, 0.03),0 1px 6px -1px rgba(0, 0, 0, 0.02),0 2px 4px 0 rgba(0, 0, 0, 0.02)",
   display: "flex",
-}));
+});
 
 const HeaderButton = styled(Button)(({ theme }) => ({
   [theme.mediaQueries.up("desktop")]: {
@@ -32,7 +30,7 @@ const HeaderButton = styled(Button)(({ theme }) => ({
 }));
 
 export const HeaderSpace = styled.div(({ theme }) => ({
-  minHeight: theme.token.headerHeight,
+  minHeight: theme.components?.Layout?.headerHeight,
 }));
 
 HeaderSpace.displayName = "HeaderSpace";

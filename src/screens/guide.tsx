@@ -53,8 +53,8 @@ export const GuideScreen = () => {
             trackerId="support_us_on_discord"
             icon={<Icon name={supportUsIcon} />}
             type="primary"
-            backgroundColor="Accent"
-            backgroundHoverColor="FillSupportHover"
+            backgroundColor="BrandSecondary"
+            backgroundHoverColor="BrandSecondaryHover"
             size="middle"
             href={settings.supportUsUrl}
           >
@@ -80,8 +80,8 @@ export const GuideScreen = () => {
         {Guide.meta.category !== "Home" && (
           <Alert
             mt={16}
-            backgroundColor="BgSupport"
-            borderColor="BorderSupport"
+            backgroundColor="BrandSecondaryBg"
+            borderColor="BrandSecondaryBorder"
             message="Got the Pokemon you wanted?"
             description={
               <Flex vertical gap={16}>
@@ -92,8 +92,8 @@ export const GuideScreen = () => {
                     trackerId="support_us_footer"
                     icon={<Icon name="Heart" />}
                     type="primary"
-                    backgroundColor="Accent"
-                    backgroundHoverColor="FillSupportHover"
+                    backgroundColor="BrandSecondary"
+                    backgroundHoverColor="BrandSecondaryHover"
                     size="middle"
                     href={settings.supportUsUrl}
                   >

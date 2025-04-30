@@ -26,11 +26,12 @@ const Main = styled.main({
 const DesktopNavDrawerContainer = styled.div(({ theme }) => ({
   display: "none",
   flexDirection: "column",
-  height: "100%",
+  height: `calc(100% - ${theme.components?.Layout?.headerHeight})`,
   width: "100%",
+  marginTop: theme.components?.Layout?.headerHeight,
   maxWidth: 300,
   backgroundColor: theme.token.colorBgContainer,
-  borderRight: `2px solid ${theme.token.colorBorder}`,
+  borderRight: `1px solid ${theme.token.colorBorder}`,
   [theme.mediaQueries.up("desktop")]: {
     display: "flex",
   },
@@ -70,7 +71,6 @@ export const MainLayout = ({ children, trackerName }: Props) => {
 
       <BodyContainer>
         <DesktopNavDrawerContainer>
-          <HeaderSpace />
           <Flex flex={1} vertical p={16} overflowY="scroll">
             <DesktopDrawer />
           </Flex>

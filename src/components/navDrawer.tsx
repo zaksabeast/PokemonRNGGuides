@@ -345,6 +345,8 @@ const NavDrawerContent = () => {
   );
 };
 
+const mobileNavDrawerStyles = { wrapper: { width: 300 } };
+
 export const MobileDrawer = () => {
   const [mobileNavDrawerOpen, setMobileNavDrawerOpen] =
     useMobileNavDrawerOpen();
@@ -354,7 +356,7 @@ export const MobileDrawer = () => {
       placement="left"
       open={mobileNavDrawerOpen}
       onClose={() => setMobileNavDrawerOpen(false)}
-      styles={{ wrapper: { width: 300 } }}
+      styles={mobileNavDrawerStyles}
     >
       <NavDrawerContent />
     </Drawer>

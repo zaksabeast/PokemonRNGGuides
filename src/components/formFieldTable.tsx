@@ -37,7 +37,7 @@ export const FormFieldTable = ({ fields }: Props) => {
               <tr key={label}>
                 <LabelTd colSpan={2}>
                   <Typography.Text strong>{label}</Typography.Text>
-                  <div style={{ paddingLeft: "30px" }}>{input}</div>
+                  <Flex pl={30} vertical>{input}</Flex>
                 </LabelTd>
               </tr>
             );

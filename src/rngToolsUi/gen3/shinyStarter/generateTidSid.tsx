@@ -49,7 +49,7 @@ const RECOMMEND_REDO_MSG = (chanceInPct: number) =>
 const RECOMMEND_KEEP_MSG = `Keep that TID and go to Step 2.`;
 
 const IDEAL_TIDSID_ADVANCE_WITH_OFFSET = (game: Game) =>
-  game === "emerald" ? 1505 : 1633;
+  game === "emerald" ? 1410 : 1633;
 const ADDITIONAL_DUR_IN_MINUTES = 30; // Duration not caused by in-game waiting (ex: filling form etc.)
 
 export const GenerateTidSidRating = ({

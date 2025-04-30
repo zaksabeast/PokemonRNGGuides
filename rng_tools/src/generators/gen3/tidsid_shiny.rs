@@ -185,7 +185,7 @@ fn calculate_nearby_sids(target_tid_gen_adv: usize, tid: u16, count: usize) -> V
 }
 
 fn calculate_earliest_shiny_for_nearby_sids(
-    earliest_shiny_advance_by_tsv: &Vec<usize>,
+    earliest_shiny_advance_by_tsv: &[usize],
     target_tid_gen_adv: usize,
     tid: u16,
     count: usize,
@@ -208,30 +208,36 @@ fn calculate_earliest_shiny_for_nearby_sids(
 
 const MERGE_MAX_DIFF_SHINY_EARLIEST_ADV: usize = 2;
 
+struct AvgAdvNearbySids {
+    pub earliest_shiny_adv: usize,
+    pub probability: f64,
+    pub nearby_sids: Vec<Gen3NearbySid>,
+}
+
 fn calculate_avg_adv_for_nearby_sids_prob_by_adv(
-    nearby_sids: &Vec<Gen3NearbySid>,
-) -> Vec<(usize, f64, Vec<Gen3NearbySid>)> {
+    nearby_sids: &[Gen3NearbySid],
+) -> Vec<AvgAdvNearbySids> {
     // It's possible that multiple sids share the same tsv, meaning both sids share
     // the same earliest_shiny_adv (ex: the earliest shiny for both sid 160 and sid 166 is advance 1234).
     // In that case, by catching a pokemon on advance 1234, the player tests 2 sids at the same time, which is a lot faster.
     // I assume the player will attempt to do both sids simulatenously if their target advances are very close (+- 2 advances)
-    let mut prob_by_adv: Vec<(usize, f64, Vec<Gen3NearbySid>)> = vec![];
-    for (i, nearby_sid) in nearby_sids.into_iter().enumerate() {
+    let mut prob_by_adv: Vec<AvgAdvNearbySids> = vec![];
+    for (i, nearby_sid) in nearby_sids.iter().enumerate() {
         let prob1 = TIMING_DISTR[i];
-        let merge_with = prob_by_adv.iter_mut().find(|(adv2, _prob2, _)| {
-            adv2.abs_diff(nearby_sid.earliest_shiny_adv) <= MERGE_MAX_DIFF_SHINY_EARLIEST_ADV
+        let merge_with = prob_by_adv.iter_mut().find(|adv2| {
+            adv2.earliest_shiny_adv.abs_diff(nearby_sid.earliest_shiny_adv) <= MERGE_MAX_DIFF_SHINY_EARLIEST_ADV
         });
         match merge_with {
             None => {
-                prob_by_adv.push((
-                    nearby_sid.earliest_shiny_adv,
-                    prob1,
-                    vec![nearby_sid.clone()],
-                ));
+                prob_by_adv.push(AvgAdvNearbySids {
+                    earliest_shiny_adv:nearby_sid.earliest_shiny_adv,
+                    probability:prob1,
+                    nearby_sids:vec![nearby_sid.clone()],
+                });
             }
             Some(merge_with) => {
-                merge_with.1 += prob1;
-                merge_with.2.push(nearby_sid.clone());
+                merge_with.probability += prob1;
+                merge_with.nearby_sids.push(nearby_sid.clone());
             }
         }
     }
@@ -241,9 +247,9 @@ fn calculate_avg_adv_for_nearby_sids_prob_by_adv(
     // ex:  SID 123 has 20% probability but earliest_shiny is 100k frames.
     //      SID 674 has 16% probability but earliest_shiny is 1k frames.
     //      It's more efficient to test SID 674 first.
-    prob_by_adv.sort_by(|(adv1, prob1, _), (adv2, prob2, _)| {
-        let rating1 = *prob1 / *adv1 as f64;
-        let rating2 = *prob2 / *adv2 as f64;
+    prob_by_adv.sort_by(|adv1, adv2| {
+        let rating1 = adv1.probability / adv1.earliest_shiny_adv as f64;
+        let rating2 = adv2.probability / adv2.earliest_shiny_adv as f64;
         rating2.total_cmp(&rating1)
     });
 
@@ -254,25 +260,24 @@ fn calculate_avg_adv_for_nearby_sids_prob_by_adv(
 /// It assumes optimal planning and that in average, hitting a specific advance takes AVG_ATTEMPT_TO_HIT_TARGET attempts.
 /// earliest_shiny_advs_by_nearby_sid[i] is earliest_shiny_advs for sid obtained from hitting (target_tid_gen_adv - 4 + i)
 /// earliest_shiny_advs_by_nearby_sid contains TIMING_DISTR elements
-fn calculate_avg_adv_for_nearby_sids(nearby_sids: &Vec<Gen3NearbySid>) -> usize {
+fn calculate_avg_adv_for_nearby_sids(nearby_sids: &[Gen3NearbySid]) -> usize {
     let prob_by_adv = calculate_avg_adv_for_nearby_sids_prob_by_adv(nearby_sids);
 
     let mut avg_attempt_adv: f64 = 0f64;
     let mut remaining_prob = 1.0f64;
-    for (adv, prob, _) in prob_by_adv {
-        avg_attempt_adv += adv as f64 * AVG_ATTEMPT_TO_HIT_TARGET * remaining_prob;
-        remaining_prob -= prob;
+    for adv in prob_by_adv {
+        avg_attempt_adv += adv.earliest_shiny_adv as f64 * AVG_ATTEMPT_TO_HIT_TARGET * remaining_prob;
+        remaining_prob -= adv.probability;
     }
     avg_attempt_adv as usize
 }
 
 /// Returns a Gen3TidSidShinyResult for each possible TID. Their percentile is not initialized yet.
 fn calculate_tidsid_shiny_result_for_all_tids(
-    earliest_shiny_advance_by_tsv: &Vec<usize>,
+    earliest_shiny_advance_by_tsv: &[usize],
     target_tid_gen_adv: usize,
 ) -> Vec<Gen3TidSidShinyResult> {
     (0..=0xFFFF)
-        .into_iter()
         .map(|tid| {
             let nearby_sids = calculate_earliest_shiny_for_nearby_sids(
                 &earliest_shiny_advance_by_tsv,
@@ -295,19 +300,19 @@ fn calculate_tidsid_shiny_result_for_all_tids(
 }
 
 /// Sort nearby sids in the optimal order to minimize the advances to determine the correct SID
-fn sort_nearby_sids(nearby_sids: &Vec<Gen3NearbySid>) -> Vec<Gen3NearbySid> {
+fn sort_nearby_sids(nearby_sids: &[Gen3NearbySid]) -> Vec<Gen3NearbySid> {
     let nearby_sids_by_priority_order = calculate_avg_adv_for_nearby_sids_prob_by_adv(&nearby_sids);
 
     let mut res: Vec<Gen3NearbySid> = vec![];
     for priorized_nearby_sids in nearby_sids_by_priority_order {
-        res.extend(priorized_nearby_sids.2.into_iter());
+        res.extend(priorized_nearby_sids.nearby_sids.into_iter());
     }
     res
 }
 
 fn add_additional_nearby_sids(
-    nearby_sids: &Vec<Gen3NearbySid>,
-    earliest_shiny_advance_by_tsv: &Vec<usize>,
+    nearby_sids: &[Gen3NearbySid],
+    earliest_shiny_advance_by_tsv: &[usize],
     target_tid_gen_adv: usize,
     tid: u16,
 ) -> Vec<Gen3NearbySid> {
@@ -326,7 +331,7 @@ fn add_additional_nearby_sids(
             ns1.tid_gen_adv.cmp(&ns2.tid_gen_adv)
         }
     });
-    let mut nearby_sids = nearby_sids.clone();
+    let mut nearby_sids = nearby_sids.to_vec();
 
     larger_nearby_sids.iter().for_each(|new_nearby_sid| {
         if nearby_sids
@@ -358,7 +363,11 @@ fn find_best_tid_gen_adv(seed: u32, tid_gen_adv_min: usize, tid_gen_adv_max: usi
         .collect();
 
     let mid = (TIMING_DISTR.len() - 1) / 2;
-    let mut avg_adv_by_tid_gen_adv_with_nearby: Vec<(usize, usize)> = avg_adv_by_tid_gen_adv
+    struct Advs {
+      pub tidsid_adv:usize,
+      pub method1_adv:usize,
+    }
+    let mut avg_adv_by_tid_gen_adv_with_nearby: Vec<Advs> = avg_adv_by_tid_gen_adv
         .iter()
         .enumerate()
         .map(|(i, _adv)| {
@@ -366,7 +375,7 @@ fn find_best_tid_gen_adv(seed: u32, tid_gen_adv_min: usize, tid_gen_adv_max: usi
             for (j, prob) in TIMING_DISTR.iter().enumerate() {
                 let ideal_idx = i as i32 - mid as i32 + j as i32;
                 let idx = if ideal_idx < 0 {
-                    0 as usize
+                    0
                 } else if ideal_idx >= avg_adv_by_tid_gen_adv.len() as i32 {
                     avg_adv_by_tid_gen_adv.len() - 1
                 } else {
@@ -374,19 +383,22 @@ fn find_best_tid_gen_adv(seed: u32, tid_gen_adv_min: usize, tid_gen_adv_max: usi
                 };
                 sum += avg_adv_by_tid_gen_adv[idx] as f64 * prob;
             }
-            (i + tid_gen_adv_min, sum as usize)
+            Advs {
+              tidsid_adv:i + tid_gen_adv_min,
+              method1_adv: sum as usize
+            }
         })
         .collect();
 
-    avg_adv_by_tid_gen_adv_with_nearby.sort_by(|a, b| a.1.cmp(&b.1));
+    avg_adv_by_tid_gen_adv_with_nearby.sort_by(|a, b| a.method1_adv.cmp(&b.method1_adv));
 
-    avg_adv_by_tid_gen_adv_with_nearby[0].0
+    avg_adv_by_tid_gen_adv_with_nearby[0].tid_gen_adv
 }
 
 /// Returns the average advance needed to determine SID for a given tid_gen_adv,
 /// assuming all TID have same probability of occuring.
 fn calculate_avg_adv_for_all_tids(
-    earliest_shiny_advance_by_tsv: &Vec<usize>,
+    earliest_shiny_advance_by_tsv: &[usize],
     tid_gen_adv: usize,
 ) -> usize {
     let res_by_tid =
@@ -406,7 +418,7 @@ mod test {
 
     #[test]
     fn all_tsv_have_non_zero_method_1_adv() {
-        for initial_seed in vec![0u32, 0x5A0u32] {
+        for initial_seed in [0u32, 0x5A0u32] {
             let earliest_adv_by_tsv = generate_earliest_shiny_advance_by_tsv(initial_seed);
             for tsv in 0..=(0xFFFFusize >> 3) {
                 assert_ne!(earliest_adv_by_tsv[tsv], 0);
@@ -433,7 +445,7 @@ mod test {
         );
         assert_list_eq!(
             sids,
-            vec![
+            [
                 Gen3NearbySid {
                     tid_gen_adv: 996,
                     sid: 37330,
@@ -491,7 +503,7 @@ mod test {
 
         assert_list_eq!(
             sids,
-            vec![
+            [
                 Gen3NearbySid {
                     tid_gen_adv: 996,
                     sid: 28404,
@@ -559,14 +571,14 @@ mod test {
         ) -> Vec<(usize, f64)> {
             calculate_avg_adv_for_nearby_sids_prob_by_adv(&to_nearby_sid(earliest_shiny_advs))
                 .iter()
-                .map(|res| (res.0, res.1))
+                .map(|res| (res.earliest_shiny_adv, res.probability))
                 .collect()
         }
         assert_list_eq!(
-            calculate_avg_adv_for_nearby_sids_prob_by_adv_wrap(&vec![
+            calculate_avg_adv_for_nearby_sids_prob_by_adv_wrap(&[
                 110, 210, 310, 410, 500, 400, 300, 200, 100
             ]),
-            vec![
+            [
                 (500, 0.2),
                 (400, 0.16),
                 (200, 0.08),
@@ -580,10 +592,10 @@ mod test {
         );
 
         assert_list_eq!(
-            calculate_avg_adv_for_nearby_sids_prob_by_adv_wrap(&vec![
+            calculate_avg_adv_for_nearby_sids_prob_by_adv_wrap(&[
                 110, 200, 310, 410, 500, 400, 300, 200, 100
             ]),
-            vec![
+            [
                 (200, 0.16),
                 (500, 0.2),
                 (400, 0.16),
@@ -596,19 +608,19 @@ mod test {
         );
 
         assert_eq!(
-            calculate_avg_adv_for_nearby_sids(&to_nearby_sid(&vec![
+            calculate_avg_adv_for_nearby_sids(&to_nearby_sid(&[
                 110, 210, 310, 410, 500, 400, 300, 200, 100
             ])),
             7140
         );
         assert_eq!(
-            calculate_avg_adv_for_nearby_sids(&to_nearby_sid(&vec![
+            calculate_avg_adv_for_nearby_sids(&to_nearby_sid(&[
                 110, 200, 310, 410, 500, 400, 300, 200, 100
             ])),
             6206
         );
         assert_eq!(
-            calculate_avg_adv_for_nearby_sids(&to_nearby_sid(&vec![
+            calculate_avg_adv_for_nearby_sids(&to_nearby_sid(&[
                 480, 485, 490, 495, 500, 505, 510, 515, 520
             ])),
             9480

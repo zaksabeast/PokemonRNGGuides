@@ -5,91 +5,46 @@
   category: "Emerald"
   tag: "any"
   addedOn: "2025-04-26"
-- title: "Shiny Starter"
-  description: "Determine your SID by catching a shiny starter"
-  slug: "rs-shiny-starter"
-  category: "Ruby and Sapphire"
-  tag: "any"
-  addedOn: "2025-04-26"
 ---
 
 <Gist>Gist: Determine your SID by catching a shiny starter</Gist>
 
-<ShowIf slug="/rs-shiny-starter">
-  ## Requirements
-
-Your battery must be dead.
-
-</ShowIf>
-
 ## Strategy Overview
 
-When creating a new savefile, SID depends the randomly generated TID and the timing of pressing `A` on a specific text.
-It isn't humanly possible to control TID because it updates ~280,000 times per second.
-The timing of pressing `A` on a specific text has a 1/60 second accuracy.
-
-<ShowIf slug="/rs-shiny-starter">
-  The strategy to determine the SID is to attempt a timing of 1633 advances. By
-  knowing the TID and that the actual hit advance is near 1633, we can generate
-  a list of possible SIDs (one SID for each advance near 1633).
-</ShowIf>
-
-<ShowIf slug="/emerald-shiny-starter">
-  The strategy to determine the SID is to attempt a timing of 1410 advances. By
-  knowing the TID and that the actual hit advance is near 1410, we can generate
-  a list of possible SIDs (one SID for each advance near 1410).
-</ShowIf>
-
-Afterwards, each possible SID of the list must be validated until the right one is found. A SID can be validated by catching a Pokémon that would be shiny is the player has that SID. If that Pokémon is shiny, then the tested SID is the right one. Otherwise it isn't.
+When creating a new savefile, your SID depends the randomly generated TID and the timing of pressing `A` on a specific text.
+Considering those 2 variables, a list of possible SIDs will be generated.
+To determine which SID is the correct one, you must obtain your starter Pokémon on the advance that would make it shiny. The tested SID is the correct one if the obtained Pokémon is really shiny.
 
 ## Step 1: Generate your TID and list of possible SIDs
 
 1. On the title screen, go to Options and set the text speed to `Fast`.
-2. Create a New Game, type your name and move the cursor over the `OK` button.
+2. Select `New Game`, type your name and move the cursor over the `OK` button.
 3. Start the TID/SID timer on the tool below.
-4. Exactly when the first timer reaches 0, press `A` to confirm your name.
+4. Precisely when the first timer reaches 0, press `A` to confirm your name.
 5. Continue the dialogue until the message `Well, I'll be expecting you later. Come see me in my POKEMON LAB.`.
-6. Exactly when the second timer reaches 0, press `A`.
+6. Precisely when the second timer reaches 0, press `A`.
 7. Check the TID generated on your trainer card.
 8. Fill the "Obtained TID" field on the tool below and click "Generate possible SIDs".
 9. Follow the Recommendation below the list which states to either start over Step 1 to generate a better TID, or go to Step 2 with your TID.
 
-<ShowIf slug="/rs-shiny-starter">
-  <GenerateTidSid game="rs" />
-</ShowIf>
-
-<ShowIf slug="/emerald-shiny-starter">
-  <GenerateTidSid game="emerald" />
-</ShowIf>
+<GenerateTidSid game="emerald" />
 
 ## Step 2: Determine the correct SID
 
-Summary: For each possible SID generated in Step 1, obtain a starter Pokémon with its associated earliest Method-1 advance that results in a shiny.
-If the Pokémon is not shiny, then its associated SID is not your SID.
+Summary: For each possible SID generated in Step 1, obtain a starter Pokémon with its associated earliest Method-1 advance that results in a shiny Pokémon, if the SID is the correct one.
 
 1. Save the game in front of the starter Pokémon bag.
 2. Using the tool below, fill the TID and the first possible SID of the list you haven't tried yet.
 3. Click "Generate", then start the timer.
-4. Exactly when the first timer reaches 0, press `Start + Select + A + B` simultaneously to reset the game.
-5. Quickly open the bag to avoid unwanted advance from wandering NPCs.
+4. Precisely when the first timer reaches 0, press `Start + Select + A + B` simultaneously to reset the game.
+5. Quickly open the bag to avoid unwanted advances from wandering NPCs.
 6. Select your starter and wait with the confirmation message `Do you choose this POKEMON?` displayed.
-7. Exactly when the second timer reaches 0, press `A` to select `YES` to choose your starter.
+7. Precisely when the second timer reaches 0, press `A` to choose your starter.
 8. Complete the battle and examine your starter Pokémon.
 9. If it's shiny, congratulations! The inputted SID is the SID of your savefile.
 10. If it's not shiny, fill the species, gender, nature, and stats in the form below, then click "Find advances matching caught starter Pokémon".
-11. <ShowIf slug="/rs-shiny-starter">
-      If no results is shown, a field is incorrect, or the battery is not dead.
-    </ShowIf>
-    <ShowIf slug="/emerald-shiny-starter">
-      If no results are shown, a field is incorrect.
-    </ShowIf>
+11. If no results are shown, a field is incorrect.
 12. If the first row contains "Shiny if correct SID" but the Pokémon you got is not shiny, then the currently tested SID is incorrect. Start over Step 2 using the next SID in the list of possible SIDs.
 13. Otherwise, click on the "Update Calibration" button and start over Step 2 with the same SID.
 
-<ShowIf slug="/rs-shiny-starter">
-  <ShinyStarter game="rs" />
-</ShowIf>
-
-<ShowIf slug="/emerald-shiny-starter">
-  <ShinyStarter game="emerald" />
-</ShowIf>
+<ShinyStarter game="emerald" />

@@ -23,7 +23,7 @@ pub struct StatFilter {
     pub max_stats: StatsValue,
 }
 
-pub fn gen3_calculate_hp(base_stat: u16, iv: u8, ev: u16, level: u8) -> u16 {
+pub fn calculate_hp(base_stat: u16, iv: u8, ev: u16, level: u8) -> u16 {
     if base_stat == 1 {
         return 1; // Shedinja
     }
@@ -32,7 +32,7 @@ pub fn gen3_calculate_hp(base_stat: u16, iv: u8, ev: u16, level: u8) -> u16 {
     (((n + ev / 4) * (level as u16)) / 100) + (level as u16) + 10
 }
 
-pub fn gen3_calculate_non_hp(
+pub fn calculate_non_hp(
     base_stat: u16,
     iv: u8,
     ev: u16,
@@ -61,12 +61,12 @@ pub fn gen3_calculate_minmax_stats(
     };
 
     StatsValue {
-        hp: gen3_calculate_hp(base_stats.hp, iv, 0, level),
-        atk: gen3_calculate_non_hp(base_stats.atk, iv, 0, level, nature_factor),
-        def: gen3_calculate_non_hp(base_stats.def, iv, 0, level, nature_factor),
-        spa: gen3_calculate_non_hp(base_stats.spa, iv, 0, level, nature_factor),
-        spd: gen3_calculate_non_hp(base_stats.spd, iv, 0, level, nature_factor),
-        spe: gen3_calculate_non_hp(base_stats.spe, iv, 0, level, nature_factor),
+        hp: calculate_hp(base_stats.hp, iv, 0, level),
+        atk: calculate_non_hp(base_stats.atk, iv, 0, level, nature_factor),
+        def: calculate_non_hp(base_stats.def, iv, 0, level, nature_factor),
+        spa: calculate_non_hp(base_stats.spa, iv, 0, level, nature_factor),
+        spd: calculate_non_hp(base_stats.spd, iv, 0, level, nature_factor),
+        spe: calculate_non_hp(base_stats.spe, iv, 0, level, nature_factor),
     }
 }
 
@@ -81,12 +81,12 @@ pub fn gen3_calculate_stats(
     let nature_factors = nature.stat_factor();
 
     StatsValue {
-        hp: gen3_calculate_hp(base_stats.hp, ivs.hp, evs.hp, level),
-        atk: gen3_calculate_non_hp(base_stats.atk, ivs.atk, evs.atk, level, nature_factors.atk),
-        def: gen3_calculate_non_hp(base_stats.def, ivs.def, evs.def, level, nature_factors.def),
-        spa: gen3_calculate_non_hp(base_stats.spa, ivs.spa, evs.spa, level, nature_factors.spa),
-        spd: gen3_calculate_non_hp(base_stats.spd, ivs.spd, evs.spd, level, nature_factors.spd),
-        spe: gen3_calculate_non_hp(base_stats.spe, ivs.spe, evs.spe, level, nature_factors.spe),
+        hp: calculate_hp(base_stats.hp, ivs.hp, evs.hp, level),
+        atk: calculate_non_hp(base_stats.atk, ivs.atk, evs.atk, level, nature_factors.atk),
+        def: calculate_non_hp(base_stats.def, ivs.def, evs.def, level, nature_factors.def),
+        spa: calculate_non_hp(base_stats.spa, ivs.spa, evs.spa, level, nature_factors.spa),
+        spd: calculate_non_hp(base_stats.spd, ivs.spd, evs.spd, level, nature_factors.spd),
+        spe: calculate_non_hp(base_stats.spe, ivs.spe, evs.spe, level, nature_factors.spe),
     }
 }
 
@@ -130,25 +130,25 @@ mod tests {
         );
 
         // Mudkip on advance 8000
-        assert_eq!(gen3_calculate_hp(base_stats.hp, 27, 0, 5), 21);
+        assert_eq!(calculate_hp(base_stats.hp, 27, 0, 5), 21);
         assert_eq!(
-            gen3_calculate_non_hp(base_stats.atk, 30, 0, 5, NatureFactor::Equal),
+            calculate_non_hp(base_stats.atk, 30, 0, 5, NatureFactor::Equal),
             13
         );
         assert_eq!(
-            gen3_calculate_non_hp(base_stats.def, 25, 0, 5, NatureFactor::More),
+            calculate_non_hp(base_stats.def, 25, 0, 5, NatureFactor::More),
             12
         );
         assert_eq!(
-            gen3_calculate_non_hp(base_stats.spa, 21, 0, 5, NatureFactor::Equal),
+            calculate_non_hp(base_stats.spa, 21, 0, 5, NatureFactor::Equal),
             11
         );
         assert_eq!(
-            gen3_calculate_non_hp(base_stats.spd, 9, 0, 5, NatureFactor::Equal),
+            calculate_non_hp(base_stats.spd, 9, 0, 5, NatureFactor::Equal),
             10
         );
         assert_eq!(
-            gen3_calculate_non_hp(base_stats.spe, 0, 0, 5, NatureFactor::Less),
+            calculate_non_hp(base_stats.spe, 0, 0, 5, NatureFactor::Less),
             8
         );
     }

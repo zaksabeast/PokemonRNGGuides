@@ -29,7 +29,9 @@ const applyMonospace = <Record extends tst.O.Object>(
   return {
     ...column,
     render: (value: Record[string & keyof Record], values: Record) => (
-      <Typography.Text fontFamily="monospace">{render(value, values)}</Typography.Text>
+      <Typography.Text fontFamily="monospace">
+        {render(value, values)}
+      </Typography.Text>
     ),
   };
 };

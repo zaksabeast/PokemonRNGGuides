@@ -9,10 +9,12 @@ import { gender } from "~/types/gender";
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
 
-export const natureOptions = ([null, ...nature] as const).map((nat) => ({
-  label: nat ?? "None",
-  value: nat,
-}));
+export const natureOptions = ([null, ...nature] as const)
+  .map((nat) => ({
+    label: nat ?? "None",
+    value: nat,
+  }))
+  .toSorted((nat1, nat2) => nat1.label.localeCompare(nat2.label));
 
 export const abilityOptions = ([null, ...ability] as const).map((abil) => ({
   label: abil ?? "None",

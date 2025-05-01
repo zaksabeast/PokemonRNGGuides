@@ -1,14 +1,11 @@
 import type { Game, Starter } from "./index";
 import type { FormState } from "./caughtMon";
-import { Gender, Nature, rngTools } from "~/rngTools";
+import { rngTools } from "~/rngTools";
 
-export interface CaughtMonResult {
+export type CaughtMonResult = {
   advance: number;
   targetAdvance: number;
-  stats: string;
-  nature: Nature;
-  gender: Gender;
-}
+};
 
 const MINIMAL_ADV = 500;
 
@@ -48,7 +45,7 @@ export const getTargetPokemonDesc = async (
     sid: 0, // doesn't matter
     bugged_roamer: false, // doesn't matter
     species: pokemonSpecies, // doesn't matter
-  } as const;
+  };
 
   const genResults = await rngTools.gen3_static_generator_states(opts);
   if (genResults.length === 0) return "";
@@ -108,7 +105,6 @@ export const generateCaughtMonResults = async (
   targetAdvance: number,
   caughtMonValues: FormState,
 ): Promise<CaughtMonResult[]> => {
-
   const [min_stats, max_stats] = [true, false].map((isMin) => ({
     hp: getMinMaxStat(
       isMin,
@@ -174,9 +170,6 @@ export const generateCaughtMonResults = async (
     return {
       advance: r.advance,
       targetAdvance,
-      stats: JSON.stringify(r.ivs),
-      nature: r.nature,
-      gender: r.gender,
     };
   });
 

@@ -26,21 +26,18 @@ type Props = {
   setTargetAdvance: (targetAdvance: number) => void;
 };
 
-export const FindTargetAdvance = ({ game, setTargetAdvance }: Props) => {
-  const fields: Field[] = React.useMemo(
-    () => [
-      {
-        label: "TID",
-        input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-      },
-      {
-        label: "SID",
-        input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-      },
-    ],
-    [],
-  );
+const fields: Field[] = [
+  {
+    label: "TID",
+    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+  },
+  {
+    label: "SID",
+    input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
+  },
+];
 
+export const FindTargetAdvance = ({ game, setTargetAdvance }: Props) => {
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
       const targetAdvance = await findTargetAdvanceForShinyPokemon(

@@ -47,26 +47,28 @@ export const ShinyStarter = ({ game }: Props) => {
     ];
   }, [targetAdvance, calibrationAndOffset]);
 
+  const setLatestHitAdv = React.useCallback(
+    (val: number) => {
+      setCalibrationAndOffset(calibrationAndOffset + val - targetAdvance);
+    },
+    [targetAdvance, calibrationAndOffset, setCalibrationAndOffset],
+  );
+
   return (
     <Flex gap={16} vertical>
-      <FindTargetAdvance
-        game={game}
-        setTargetAdvance={async (val) => {
-          setTargetAdvance(val);
-        }}
-      />
+      <FindTargetAdvance game={game} setTargetAdvance={setTargetAdvance} />
       {targetAdvance !== 0 && [
         <FormFieldTable fields={fields} />,
         <MultiTimer
-          {...{ minutesBeforeTarget, milliseconds }}
+          minutesBeforeTarget={minutesBeforeTarget}
+          milliseconds={milliseconds}
           startButtonTrackerId="start_gen3_shiny_starter_timer"
           stopButtonTrackerId="stop_gen3_shiny_starter_timer"
         />,
         <CaughtMon
-          {...{ game, targetAdvance }}
-          setLatestHitAdv={(val) => {
-            setCalibrationAndOffset(calibrationAndOffset + val - targetAdvance);
-          }}
+          game={game}
+          targetAdvance={targetAdvance}
+          setLatestHitAdv={setLatestHitAdv}
         />,
       ]}
     </Flex>

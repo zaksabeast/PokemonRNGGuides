@@ -9,7 +9,7 @@ import {
   RngToolSubmit,
 } from "~/components";
 import { Game } from "./index";
-import { MultiTimer } from "~/components";
+import { MultiTimer, Flex } from "~/components";
 import { rngTools, Gen3NearbySid, Gen3TidSidShinyResult } from "~/rngTools";
 import { FormikProps } from "formik";
 
@@ -52,6 +52,31 @@ const IDEAL_TIDSID_ADVANCE_WITH_OFFSET = (game: Game) =>
   game === "emerald" ? 1410 : 1633;
 const ADDITIONAL_DUR_IN_MINUTES = 30; // Duration not caused by in-game waiting (ex: filling form etc.)
 
+const columns: ResultColumn<Result>[] = [
+  {
+    title: "TID/SID advance",
+    dataIndex: "tid_gen_adv",
+    render: (val, values) => {
+      const diffWithTarget = val - values.tid_gen_target_adv;
+      if (diffWithTarget === 0) return `${val}`;
+      if (diffWithTarget > 0) return `${val} (+${diffWithTarget})`;
+      return `${val} (${diffWithTarget})`;
+    },
+  },
+  {
+    title: "SID",
+    dataIndex: "sid",
+  },
+  {
+    title: "Earliest Method-1 advance for shiny starter",
+    dataIndex: "earliest_shiny_adv",
+    render: (val) => {
+      const durInMinutes = (val / 60 / 60).toFixed(1);
+      return `${val} (~${durInMinutes} min)`;
+    },
+  },
+];
+
 export const GenerateTidSidRating = ({
   result,
 }: {
@@ -90,39 +115,44 @@ export const GenerateTidSidRating = ({
 export const GenerateTidSid = ({ game }: Props) => {
   const idealAdvance = IDEAL_TIDSID_ADVANCE_WITH_OFFSET(game);
 
-  const getFields = (formik: FormikProps<FormState>): Field[] => {
-    const milliseconds = (() => {
-      const advFromOffset = formik.values.offset;
-      const advFromTimer = idealAdvance - advFromOffset;
-      let milliseconds = Math.round((advFromTimer * 1000) / 59.7275);
-      if (milliseconds < 0) milliseconds = 0;
-      return [5000, milliseconds];
-    })();
+  const getFields = React.useCallback(
+    (formik: FormikProps<FormState>): Field[] => {
+      const milliseconds = (() => {
+        const advFromOffset = formik.values.offset;
+        const advFromTimer = idealAdvance - advFromOffset;
+        let milliseconds = Math.round((advFromTimer * 1000) / 59.7275);
+        if (milliseconds < 0) milliseconds = 0;
+        return [5000, milliseconds];
+      })();
 
-    const minutesBeforeTarget = Math.floor(milliseconds[1] / 60000);
+      const minutesBeforeTarget = Math.floor(milliseconds[1] / 60000);
 
-    return [
-      {
-        label: "Offset",
-        input: <FormikNumberInput<FormState> name="offset" numType="decimal" />,
-      },
-      {
-        label: "TID/SID Timer",
-        direction: "column",
-        input: (
-          <MultiTimer
-            {...{ minutesBeforeTarget, milliseconds }}
-            startButtonTrackerId="start_gen3_shiny_starter_tidsid_timer"
-            stopButtonTrackerId="stop_gen3_shiny_starter_tidsid_timer"
-          />
-        ),
-      },
-      {
-        label: "Obtained TID",
-        input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-      },
-    ];
-  };
+      return [
+        {
+          label: "Offset",
+          input: (
+            <FormikNumberInput<FormState> name="offset" numType="decimal" />
+          ),
+        },
+        {
+          label: "TID/SID Timer",
+          direction: "column",
+          input: (
+            <MultiTimer
+              {...{ minutesBeforeTarget, milliseconds }}
+              startButtonTrackerId="start_gen3_shiny_starter_tidsid_timer"
+              stopButtonTrackerId="stop_gen3_shiny_starter_tidsid_timer"
+            />
+          ),
+        },
+        {
+          label: "Obtained TID",
+          input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+        },
+      ];
+    },
+    [game],
+  );
 
   const [formResults, setFormResults] = React.useState<Result[]>([]);
   const [result, setResult] = React.useState<Gen3TidSidShinyResult | null>(
@@ -145,43 +175,15 @@ export const GenerateTidSid = ({ game }: Props) => {
 
       setFormResults(res);
     },
-    [game],
+    [game, idealAdvance, setResult, setFormResults],
   );
 
-  const getColumns = (): ResultColumn<Result>[] => {
-    const columns: ResultColumn<Result>[] = [
-      {
-        title: "TID/SID advance",
-        dataIndex: "tid_gen_adv",
-        render: (val, values) => {
-          const diffWithTarget = val - values.tid_gen_target_adv;
-          if (diffWithTarget === 0) return `${val}`;
-          if (diffWithTarget > 0) return `${val} (+${diffWithTarget})`;
-          return `${val} (${diffWithTarget})`;
-        },
-      },
-      {
-        title: "SID",
-        dataIndex: "sid",
-      },
-      {
-        title: "Earliest Method-1 advance for shiny starter",
-        dataIndex: "earliest_shiny_adv",
-        render: (val) => {
-          const durInMinutes = (val / 60 / 60).toFixed(1);
-          return `${val} (~${durInMinutes} min)`;
-        },
-      },
-    ];
-    return columns;
-  };
-
   return (
-    <>
+    <Flex vertical>
       <RngToolForm<FormState, Result>
         results={formResults}
         getFields={getFields}
-        columns={getColumns()}
+        columns={columns}
         validationSchema={Validator}
         initialValues={initialValues}
         submitButtonLabel="Generate possible SIDs"
@@ -189,6 +191,6 @@ export const GenerateTidSid = ({ game }: Props) => {
         onSubmit={onSubmit}
       />
       {result && <GenerateTidSidRating result={result} />}
-    </>
+    </Flex>
   );
 };

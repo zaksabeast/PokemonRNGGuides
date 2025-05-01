@@ -1,5 +1,6 @@
 import React from "react";
 import { z } from "zod";
+import { range } from "lodash-es";
 import {
   RngToolForm,
   Field,
@@ -9,10 +10,10 @@ import {
   FormFieldTable,
 } from "~/components";
 import { FormikRadio, RadioGroup } from "~/components/radio";
+import { FormikSelect } from "~/components/select";
 import { RngToolSubmit } from "~/components/rngToolForm";
 import { Typography } from "~/components/typography";
 import { nature, NatureStat } from "../../../types/nature";
-import { Select } from "~/components";
 import { FormikProps } from "formik";
 import {
   getStatRangeForStarter,
@@ -22,57 +23,38 @@ import {
 } from "./calc";
 import { Button } from "../../../components/button";
 import type { Game } from "./index";
+import { toOptions } from "~/utils/options";
 
-const sortedNatures = nature.slice(0).sort();
-
-const toOptions = <T,>(options: T[]) => {
-  return options.map((option) => ({
-    value: option,
-    label: String(option),
-  }));
-};
+const natureOptions = toOptions(nature.toSorted());
 
 const toStatOptions = ({ min, max }: { min: number; max: number }) => {
-  const opts: { label: string; value: number }[] = [];
-  for (let i = min; i <= max; i++) opts.push({ value: i, label: String(i) });
-  return opts;
+  return toOptions(range(min, max));
 };
+
+const StatSchema = z.number().min(0).max(999);
+
+const StatRangeSchema = z.object({
+  min: StatSchema,
+  max: StatSchema,
+});
 
 const Validator = z.object({
   pokemonSpecies: z.enum(["Mudkip", "Torchic", "Treecko"]),
-  hpStat: z.number().min(0).max(999),
-  atkStat: z.number().min(0).max(999),
-  defStat: z.number().min(0).max(999),
-  spaStat: z.number().min(0).max(999),
-  spdStat: z.number().min(0).max(999),
-  speStat: z.number().min(0).max(999),
-  nature: z.enum(nature).nullable(),
-  gender: z.enum(["Male", "Female"]).nullable(),
+  hpStat: StatSchema,
+  atkStat: StatSchema,
+  defStat: StatSchema,
+  spaStat: StatSchema,
+  spdStat: StatSchema,
+  speStat: StatSchema,
+  nature: z.enum(nature),
+  gender: z.enum(["Male", "Female"]),
   minMaxStats: z.object({
-    hp: z.object({
-      min: z.number().min(0).max(999),
-      max: z.number().min(0).max(999),
-    }),
-    atk: z.object({
-      min: z.number().min(0).max(999),
-      max: z.number().min(0).max(999),
-    }),
-    def: z.object({
-      min: z.number().min(0).max(999),
-      max: z.number().min(0).max(999),
-    }),
-    spa: z.object({
-      min: z.number().min(0).max(999),
-      max: z.number().min(0).max(999),
-    }),
-    spd: z.object({
-      min: z.number().min(0).max(999),
-      max: z.number().min(0).max(999),
-    }),
-    spe: z.object({
-      min: z.number().min(0).max(999),
-      max: z.number().min(0).max(999),
-    }),
+    hp: StatRangeSchema,
+    atk: StatRangeSchema,
+    def: StatRangeSchema,
+    spa: StatRangeSchema,
+    spd: StatRangeSchema,
+    spe: StatRangeSchema,
   }),
 });
 
@@ -103,8 +85,8 @@ const initialValues: FormState = {
   spaStat: 0,
   spdStat: 0,
   speStat: 0,
-  nature: null,
-  gender: null,
+  nature: "Adamant",
+  gender: "Male",
   minMaxStats: {
     hp: { min: 20, max: 21 },
     atk: { min: 10, max: 14 },
@@ -129,10 +111,10 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
     async (opts) => {
       setResults(await generateCaughtMonResults(game, targetAdvance, opts));
     },
-    [targetAdvance, setResults],
+    [game, targetAdvance, setResults],
   );
 
-  const getColumns = (): ResultColumn<CaughtMonResult>[] => {
+  const columns = React.useMemo((): ResultColumn<CaughtMonResult>[] => {
     const columns: ResultColumn<CaughtMonResult>[] = [
       { title: "Target", dataIndex: "targetAdvance" },
       {
@@ -169,7 +151,7 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
       },
     ];
     return columns;
-  };
+  }, [setLatestHitAdv, setResults]);
 
   const getFields = (formik: FormikProps<FormState>): Field[] => {
     const { minMaxStats, pokemonSpecies } = formik.values;
@@ -210,24 +192,16 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
         input: (
           <FormikRadio<FormState, "gender">
             name="gender"
-            options={toOptions(["Male", "Female"] as const) as any}
+            options={toOptions(["Male", "Female"] as const)}
           />
         ),
       },
       {
         label: "Nature",
         input: (
-          <Select
-            style={{ minWidth: "120px" }}
-            value={formik.values.nature}
-            onChange={(e) => {
-              if (!e) return;
-              formik.setFieldValue("nature", e);
-            }}
-            options={sortedNatures.map((nature) => ({
-              label: nature,
-              value: nature,
-            }))}
+          <FormikSelect<FormState, "nature">
+            name="nature"
+            options={natureOptions}
           />
         ),
       },
@@ -264,7 +238,7 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
   };
 
   return (
-    <>
+    <Flex vertical>
       <FormFieldTable
         fields={[{ label: "Target Pokémon", input: targetPokemonDesc }]}
       />
@@ -273,7 +247,7 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
       </Typography.Title>
       <RngToolForm<FormState, CaughtMonResult>
         getFields={getFields}
-        columns={getColumns()}
+        columns={columns}
         results={results}
         initialValues={initialValues}
         validationSchema={Validator}
@@ -282,6 +256,6 @@ export const CaughtMon = ({ game, targetAdvance, setLatestHitAdv }: Props) => {
         submitButtonLabel={"Find advances matching caught starter Pokémon"}
         rowKey="advance"
       />
-    </>
+    </Flex>
   );
 };

@@ -1,4 +1,4 @@
-import type { Game, Starter } from "./index";
+import type { Game, MinMax, Starter, TargetStarter } from "./index";
 import type { FormState } from "./caughtMon";
 import { rngTools } from "~/rngTools";
 
@@ -94,7 +94,7 @@ export const getStatRangeForStarter = async (starter: Starter) => {
 const getMinMaxStat = (
   isMin: boolean,
   selected: number,
-  { min, max }: { min: number; max: number },
+  { min, max }: MinMax,
 ) => {
   if (selected >= min && selected <= max) return selected;
   return isMin ? min : max;
@@ -103,39 +103,17 @@ const getMinMaxStat = (
 export const generateCaughtMonResults = async (
   game: Game,
   targetAdvance: number,
+  targetStarter: TargetStarter,
   caughtMonValues: FormState,
 ): Promise<CaughtMonResult[]> => {
+  const { species: targetSpecies, minMaxStats } = targetStarter;
   const [min_stats, max_stats] = [true, false].map((isMin) => ({
-    hp: getMinMaxStat(
-      isMin,
-      caughtMonValues.hpStat,
-      caughtMonValues.minMaxStats.hp,
-    ),
-    atk: getMinMaxStat(
-      isMin,
-      caughtMonValues.atkStat,
-      caughtMonValues.minMaxStats.atk,
-    ),
-    def: getMinMaxStat(
-      isMin,
-      caughtMonValues.defStat,
-      caughtMonValues.minMaxStats.def,
-    ),
-    spa: getMinMaxStat(
-      isMin,
-      caughtMonValues.spaStat,
-      caughtMonValues.minMaxStats.spa,
-    ),
-    spd: getMinMaxStat(
-      isMin,
-      caughtMonValues.spdStat,
-      caughtMonValues.minMaxStats.spd,
-    ),
-    spe: getMinMaxStat(
-      isMin,
-      caughtMonValues.speStat,
-      caughtMonValues.minMaxStats.spe,
-    ),
+    hp: getMinMaxStat(isMin, caughtMonValues.hpStat, minMaxStats.hp),
+    atk: getMinMaxStat(isMin, caughtMonValues.atkStat, minMaxStats.atk),
+    def: getMinMaxStat(isMin, caughtMonValues.defStat, minMaxStats.def),
+    spa: getMinMaxStat(isMin, caughtMonValues.spaStat, minMaxStats.spa),
+    spd: getMinMaxStat(isMin, caughtMonValues.spdStat, minMaxStats.spd),
+    spe: getMinMaxStat(isMin, caughtMonValues.speStat, minMaxStats.spe),
   }));
 
   const opts = {
@@ -152,7 +130,7 @@ export const generateCaughtMonResults = async (
       shiny: false,
       stats: {
         lvl: 5,
-        base_stats: BASE_STATS[caughtMonValues.pokemonSpecies],
+        base_stats: BASE_STATS[targetSpecies],
         min_stats,
         max_stats,
       },
@@ -162,7 +140,7 @@ export const generateCaughtMonResults = async (
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter
     bugged_roamer: false, // doesn't matter
-    species: caughtMonValues.pokemonSpecies, // doesn't matter
+    species: targetSpecies, // doesn't matter
   } as const;
 
   const genResults = await rngTools.gen3_static_generator_states(opts);

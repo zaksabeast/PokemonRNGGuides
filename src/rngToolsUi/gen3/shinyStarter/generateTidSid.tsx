@@ -11,7 +11,6 @@ import {
 import { Game } from "./index";
 import { MultiTimer, Flex } from "~/components";
 import { rngTools, Gen3NearbySid, Gen3TidSidShinyResult } from "~/rngTools";
-import { FormikProps } from "formik";
 
 const Validator = z.object({
   offset: z.number().int().min(-999).max(999),
@@ -116,9 +115,9 @@ export const GenerateTidSid = ({ game }: Props) => {
   const idealAdvance = IDEAL_TIDSID_ADVANCE_WITH_OFFSET(game);
 
   const getFields = React.useCallback(
-    (formik: FormikProps<FormState>): Field[] => {
+    (values: FormState): Field[] => {
       const milliseconds = (() => {
-        const advFromOffset = formik.values.offset;
+        const advFromOffset = values.offset;
         const advFromTimer = idealAdvance - advFromOffset;
         let milliseconds = Math.round((advFromTimer * 1000) / 59.7275);
         if (milliseconds < 0) milliseconds = 0;
@@ -151,7 +150,7 @@ export const GenerateTidSid = ({ game }: Props) => {
         },
       ];
     },
-    [game],
+    [idealAdvance],
   );
 
   const [formResults, setFormResults] = React.useState<Result[]>([]);

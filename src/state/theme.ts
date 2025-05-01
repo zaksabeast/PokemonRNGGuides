@@ -1,5 +1,5 @@
 import { atom, useAtom } from "jotai";
-import { ThemeMode } from "~/theme";
+import { themePalette, ThemePalette } from "~/theme";
 
-const setThemeMode = atom<ThemeMode>("light");
+const setThemeMode = atom<ThemePalette>(themePalette.light);
 export const useThemeMode = () => useAtom(setThemeMode);

@@ -47,6 +47,7 @@ import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
 import { Static3 } from "~/rngToolsUi/gen3/static/static3";
 import { MultibootJirachi } from "~/rngToolsUi/gen3/multibootJirachi";
 import { ChallengeScreen } from "~/screens/challenge";
+import { ExperimentsPanel } from "~/screens/experiments";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -95,4 +96,5 @@ export const markdownComponents = {
   XyPokeRadar,
   MultibootJirachi,
   ChallengeScreen,
+  ExperimentsPanel,
 };

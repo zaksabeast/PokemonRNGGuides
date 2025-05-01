@@ -44,6 +44,7 @@ const categories = [
   "3DS Tools",
   "Switch Tools",
   "USUM Challenges",
+  "User Settings",
 ] as const;
 
 const CategorySchema = z.enum(categories);

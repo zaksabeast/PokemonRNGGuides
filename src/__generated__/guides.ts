@@ -1266,6 +1266,22 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Starter.mdx")),
   },
+  "/experiments": {
+    meta: {
+      title: "Experimental Features",
+      navDrawerTitle: null,
+      description: "Help us test new features and provide feedback!",
+      category: "User Settings",
+      slug: "/experiments",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      file: "guides/Experiments.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(() => import("~/../guides/Experiments.mdx")),
+  },
   "/frlg-gen3-sid": {
     meta: {
       title: "Find Gen 3 SID",
@@ -3470,6 +3486,7 @@ export const guideSlugs = [
   "/emulator-usum-time-finder",
   "/es-gen2-celebi",
   "/es-gen2-starters",
+  "/experiments",
   "/frlg-gen3-sid",
   "/frlg-seeding-bot",
   "/frlg-static",
@@ -3614,4 +3631,5 @@ export const categories = [
   "3DS Tools",
   "Switch Tools",
   "USUM Challenges",
+  "User Settings",
 ] as const;

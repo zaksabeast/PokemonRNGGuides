@@ -20,7 +20,7 @@ export {
 } from "./resultTable";
 export { Select, FormikSelect } from "./select";
 export { IvInput } from "./ivInput";
-export { FormikSwitch } from "./switch";
+export { FormikSwitch, Switch } from "./switch";
 export { IpsMerger } from "./ipsMerger";
 export { Countdown } from "./countdown";
 export { YouTubeVideo } from "./youtubeVideo";

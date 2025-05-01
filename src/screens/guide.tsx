@@ -25,6 +25,7 @@ export const GuideScreen = () => {
     .exhaustive();
 
   const Guide = getGuide(route);
+  const category = Guide.meta.category;
   return (
     <MainLayout trackerName={route}>
       <React.Suspense
@@ -36,31 +37,35 @@ export const GuideScreen = () => {
       >
         <Typography.Title level={1}>{Guide.meta.title}</Typography.Title>
 
-        <Flex>
-          <Button
-            trackerId="get_help_on_discord"
-            icon={<Icon name="Discord" />}
-            type="primary"
-            size="middle"
-            href={settings.discordUrl}
-          >
-            Hunt, Trade, and RNG with Us!
-          </Button>
-        </Flex>
+        {category !== "User Settings" && (
+          <>
+            <Flex>
+              <Button
+                trackerId="get_help_on_discord"
+                icon={<Icon name="Discord" />}
+                type="primary"
+                size="middle"
+                href={settings.discordUrl}
+              >
+                Hunt, Trade, and RNG with Us!
+              </Button>
+            </Flex>
 
-        <Flex>
-          <Button
-            trackerId="support_us_on_discord"
-            icon={<Icon name={supportUsIcon} />}
-            type="primary"
-            backgroundColor="BrandSecondary"
-            backgroundHoverColor="BrandSecondaryHover"
-            size="middle"
-            href={settings.supportUsUrl}
-          >
-            Keep Pokémon RNG Free & Growing
-          </Button>
-        </Flex>
+            <Flex>
+              <Button
+                trackerId="support_us_on_discord"
+                icon={<Icon name={supportUsIcon} />}
+                type="primary"
+                backgroundColor="BrandSecondary"
+                backgroundHoverColor="BrandSecondaryHover"
+                size="middle"
+                href={settings.supportUsUrl}
+              >
+                Keep Pokémon RNG Free & Growing
+              </Button>
+            </Flex>
+          </>
+        )}
 
         {Guide.meta.isRoughDraft && (
           <Alert
@@ -77,7 +82,7 @@ export const GuideScreen = () => {
 
         <Guide.Guide />
 
-        {Guide.meta.category !== "Home" && (
+        {!["Home", "User Settings"].includes(category) && (
           <Alert
             mt={16}
             backgroundColor="BrandSecondaryBg"

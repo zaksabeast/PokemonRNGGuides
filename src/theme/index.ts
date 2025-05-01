@@ -5,7 +5,6 @@ import {
 } from "antd";
 import { ScreenSize, CustomTheme } from "@emotion/react";
 import { match } from "ts-pattern";
-import { settings } from "~/settings";
 
 const screenSizeMap = {
   // Ant Design breakpoints
@@ -18,60 +17,102 @@ const screenSizeMap = {
   desktop: 1200,
 };
 
-export type ThemeMode = "dark" | "light";
+export type ThemeMode = "light" | "dark";
 
-const getCustomTheme = (mode: ThemeMode): CustomTheme => {
+export type ThemePalette = {
+  mask: boolean;
+  mode: ThemeMode;
+  colorLink: string;
+  colorPrimary: string;
+  colorBgBase: string;
+  colorTextBase: string;
+  colorBrandSecondary: string;
+  colorTextLightSolid: string;
+};
+
+export const themePalette = {
+  light: {
+    mask: false,
+    mode: "light",
+    colorPrimary: "#7e3ff2",
+    colorLink: "#7e3ff2",
+    colorBgBase: "#fff",
+    colorTextBase: "#000",
+    colorBrandSecondary: "#eb2f96",
+    colorTextLightSolid: "#fff",
+  },
+  dark: {
+    mask: true,
+    mode: "dark",
+    colorPrimary: "#7e3ff2",
+    colorLink: "#7e3ff2",
+    colorBgBase: "#000",
+    colorTextBase: "#fff",
+    colorBrandSecondary: "#c41d7f",
+    colorTextLightSolid: "#000",
+  },
+} satisfies Record<ThemeMode, ThemePalette>;
+
+export const getTheme = (config: ThemePalette): CustomTheme => {
+  const { mode, mask, ...colors } = config;
+  const isLightMode = mode === "light";
   const algorithm =
-    mode === "dark" ? themeTools.darkAlgorithm : themeTools.defaultAlgorithm;
-
-  const colorLink = mode === "dark" ? "#d676ff" : "#7e3ff2";
+    mode === "light" ? themeTools.defaultAlgorithm : themeTools.darkAlgorithm;
 
   const tokens = themeTools.getDesignToken({
     algorithm,
     token: {
-      colorLink,
-      colorPrimary: "#7e3ff2",
+      colorBgBase: colors.colorBgBase,
+      colorLink: colors.colorLink,
+      colorPrimary: colors.colorPrimary,
+      colorTextLightSolid: colors.colorTextLightSolid,
+      colorTextBase: colors.colorTextBase,
     },
   });
 
   const secondaryTokens = themeTools.getDesignToken({
     algorithm,
     token: {
-      colorPrimary: mode === "dark" ? "#c41d7f" : tokens.magenta6,
+      colorPrimary: colors.colorBrandSecondary,
     },
   });
 
   return {
     token: {
       ...tokens,
-      colorBgBase: mode === "dark" ? "#121212" : "#fff",
-      colorLink,
-      colorBrandSecondary: secondaryTokens.colorPrimary,
+      ...(mask
+        ? { colorBrandSecondary: secondaryTokens.colorPrimary }
+        : {
+            colorBgBase: colors.colorBgBase,
+            colorLink: colors.colorLink,
+            colorPrimary: colors.colorPrimary,
+            colorTextLightSolid: colors.colorTextLightSolid,
+            colorTextBase: colors.colorTextBase,
+            colorBrandSecondary: colors.colorBrandSecondary,
+          }),
       colorBrandSecondaryHover: secondaryTokens.colorPrimaryHover,
       colorBrandSecondaryBg: secondaryTokens.colorPrimaryBg,
       colorBrandSecondaryBorder: secondaryTokens.colorPrimaryBorder,
     },
     components: {
-      Menu:
-        mode === "light"
-          ? {}
-          : {
-              itemSelectedBg: "#121212",
-              itemSelectedColor: "#d676ff",
-              subMenuItemSelectedColor: "#d676ff",
-            },
-      Drawer:
-        mode === "light"
-          ? {}
-          : {
-              colorBgElevated: "#121212",
-            },
+      Menu: isLightMode
+        ? {}
+        : {
+            itemSelectedBg: colors.colorBgBase,
+            itemSelectedColor: colors.colorLink,
+            subMenuItemSelectedColor: colors.colorLink,
+          },
+      Drawer: isLightMode
+        ? {}
+        : {
+            colorBgElevated: colors.colorBgBase,
+          },
       Layout: {
         headerHeight: "64px",
         headerBg:
-          mode === "dark"
-            ? "rgba(255, 255, 255, 0.1)"
-            : "rgba(255, 255, 255, 0.6)",
+          mode === "light"
+            ? "rgba(255, 255, 255, 0.6)"
+            : "rgba(255, 255, 255, 0.1)",
       },
     },
     mediaQueries: {
@@ -104,15 +145,3 @@ const getCustomTheme = (mode: ThemeMode): CustomTheme => {
     },
   };
 };
-
-export const lightTheme: CustomTheme = getCustomTheme("light");
-export const darkTheme: CustomTheme = getCustomTheme("dark");
-
-if (settings.isDev) {
-  // Nice little hack to make the theme available in the browser console
-  // for easy searching and debugging in dev
-  window.theme = {
-    light: lightTheme,
-    dark: darkTheme,
-  };
-}

@@ -28,8 +28,9 @@ pub fn calculate_hp(base_stat: u16, iv: u8, ev: u16, level: u8) -> u16 {
         return 1; // Shedinja
     }
 
-    let n: u16 = 2 * base_stat + (iv as u16);
-    (((n + ev / 4) * (level as u16)) / 100) + (level as u16) + 10
+    let n = 2 * base_stat + (iv as u16);
+    let level = level as u16;
+    (((n + ev / 4) * level) / 100) + level + 10
 }
 
 pub fn calculate_non_hp(
@@ -48,7 +49,7 @@ pub fn calculate_non_hp(
 }
 
 #[wasm_bindgen]
-pub fn gen3_calculate_minmax_stats(
+pub fn calculate_minmax_stats(
     base_stats: &StatsValue,
     level: u8,
     is_min_stat: bool,
@@ -71,7 +72,7 @@ pub fn gen3_calculate_minmax_stats(
 }
 
 #[wasm_bindgen]
-pub fn gen3_calculate_stats(
+pub fn calculate_stats(
     base_stats: &StatsValue,
     level: u8,
     nature: Nature,
@@ -106,7 +107,7 @@ mod tests {
         };
 
         assert_eq!(
-            gen3_calculate_minmax_stats(&base_stats, 5, true),
+            calculate_minmax_stats(&base_stats, 5, true),
             StatsValue {
                 hp: 20,
                 atk: 10,
@@ -118,7 +119,7 @@ mod tests {
         );
 
         assert_eq!(
-            gen3_calculate_minmax_stats(&base_stats, 5, false),
+            calculate_minmax_stats(&base_stats, 5, false),
             StatsValue {
                 hp: 21,
                 atk: 14,

@@ -51,7 +51,7 @@ export const getTargetPokemonDesc = async (
   if (genResults.length === 0) return "";
   const r = genResults[0];
 
-  const stats = await rngTools.gen3_calculate_stats(
+  const stats = await rngTools.calculate_stats(
     BASE_STATS[pokemonSpecies],
     5,
     r.nature,
@@ -70,12 +70,12 @@ const BASE_STATS = {
 
 export const getStatRangeForStarter = async (starter: Starter) => {
   const baseStats = BASE_STATS[starter];
-  const minStats = await rngTools.gen3_calculate_minmax_stats(
+  const minStats = await rngTools.calculate_minmax_stats(
     baseStats,
     5,
     true,
   );
-  const maxStats = await rngTools.gen3_calculate_minmax_stats(
+  const maxStats = await rngTools.calculate_minmax_stats(
     baseStats,
     5,
     false,

@@ -15,7 +15,7 @@ import { toOptions } from "~/utils/options";
 const natureOptions = toOptions(nature.toSorted());
 
 const toStatOptions = ({ min, max }: { min: number; max: number }) => {
-  return toOptions(range(min, max));
+  return toOptions(range(min, max + 1));
 };
 
 const StatSchema = z.number().min(0).max(999);

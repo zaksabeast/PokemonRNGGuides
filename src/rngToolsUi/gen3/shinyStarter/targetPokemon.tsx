@@ -49,7 +49,7 @@ export const TargetPokemon = ({
           />
         ),
       },
-      { label: "Target Pokémon", input: targetPokemonDesc },
+      { label: "Info", input: targetPokemonDesc },
     ];
   }, [game, targetAdvance, targetStarter, targetPokemonDesc, setTargetStarter]);
 

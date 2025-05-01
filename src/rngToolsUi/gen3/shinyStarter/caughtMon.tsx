@@ -12,7 +12,7 @@ import { Button } from "../../../components/button";
 import type { Game, TargetStarter } from "./index";
 import { toOptions } from "~/utils/options";
 
-const natureOptions = toOptions(nature.toSorted());
+const NATURE_OPTIONS = toOptions(nature.toSorted());
 
 const toStatOptions = ({ min, max }: { min: number; max: number }) => {
   return toOptions(range(min, max + 1));
@@ -129,8 +129,8 @@ export const CaughtMon = ({
     return columns;
   }, [setLatestHitAdv, setResults]);
 
-  const getFields = (): Field[] => {
-    const minMaxStats = targetStarter.minMaxStats;
+  const {minMaxStats} = targetStarter;
+  const fields = React.useMemo((): Field[] => {
     return [
       {
         label: "Gender",
@@ -146,7 +146,7 @@ export const CaughtMon = ({
         input: (
           <FormikSelect<FormState, "nature">
             name="nature"
-            options={natureOptions}
+            options={NATURE_OPTIONS}
           />
         ),
       },
@@ -180,7 +180,7 @@ export const CaughtMon = ({
         input: <StatInput stat="spe" options={minMaxStats.spe} />,
       },
     ];
-  };
+  }, [minMaxStats]);
 
   return (
     <Flex vertical gap={8}>
@@ -188,7 +188,7 @@ export const CaughtMon = ({
         Caught Pokémon
       </Typography.Title>
       <RngToolForm<FormState, CaughtMonResult>
-        getFields={getFields}
+        fields={fields}
         columns={columns}
         results={results}
         initialValues={initialValues}

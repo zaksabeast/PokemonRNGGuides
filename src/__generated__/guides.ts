@@ -467,6 +467,7 @@ export const guides = {
   "/emerald-shiny-starter": {
     meta: {
       title: "Shiny Starter",
+      navDrawerTitle: null,
       description: "Determine your SID by catching a shiny starter",
       category: "Emerald",
       slug: "/emerald-shiny-starter",
@@ -3404,6 +3405,7 @@ export const guideSlugs = [
   "/emerald-mirage-island",
   "/emerald-overview",
   "/emerald-painting-rng",
+  "/emerald-shiny-starter",
   "/emerald-sid-feebas",
   "/emerald-static",
   "/emerald-tidsid-generator",

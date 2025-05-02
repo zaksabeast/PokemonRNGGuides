@@ -316,8 +316,7 @@ const NavDrawerContent = () => {
   return (
     <Flex vertical height="100%" gap={8}>
       <Flex vertical flex={1}>
-        {/* We'll add this soon */}
-        {/* <StyledMenu
+        <StyledMenu
           mode="inline"
           inlineIndent={10}
           items={challengesMenu}
@@ -326,7 +325,7 @@ const NavDrawerContent = () => {
           onOpenChange={onOpenChange}
           onClick={() => setMobileNavDrawerOpen(false)}
         />
-        <Divider mv={16} /> */}
+        <Divider mv={16} />
         <StyledMenu
           mode="inline"
           inlineIndent={10}

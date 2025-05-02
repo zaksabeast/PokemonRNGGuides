@@ -394,17 +394,17 @@ export const guides = {
       navDrawerTitle: "RNG Info",
       description:
         "How to advance the RNG and tips to make everything more stable",
+      category: "Emerald",
       slug: "/e-tips-rng",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Basic Rules of RNG.mdx",
-      category: "Emerald",
+      file: "guides/Gen 3/Emerald/Basic Rules of RNG.mdx",
       translations: { en: "/e-tips-rng", zh: "/zh-e-tips-rng" },
     },
     Guide: React.lazy(
-      () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
+      () => import("~/../guides/Gen 3/Emerald/Basic Rules of RNG.mdx"),
     ),
   },
   "/emerald-mirage-island": {
@@ -419,13 +419,15 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: "2025-04-11",
-      file: "guides/Emerald/Mirage Island.mdx",
+      file: "guides/Gen 3/Emerald/Mirage Island.mdx",
       translations: {
         en: "/emerald-mirage-island",
         zh: "/zh-emerald-mirage-island",
       },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Mirage Island.mdx"),
+    ),
   },
   "/emerald-overview": {
     meta: {
@@ -439,10 +441,12 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
-      file: "guides/Emerald/Emerald Overview.mdx",
+      file: "guides/Gen 3/Emerald/Emerald Overview.mdx",
       translations: null,
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Emerald Overview.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Emerald Overview.mdx"),
+    ),
   },
   "/emerald-painting-rng": {
     meta: {
@@ -450,19 +454,19 @@ export const guides = {
       navDrawerTitle: "Painting RNG",
       description:
         "Reseed the RNG using paintings to obtain the Pokémon wanted without the long wait",
+      category: "Emerald",
       slug: "/emerald-painting-rng",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Reseed RNG.mdx",
-      category: "Emerald",
+      file: "guides/Gen 3/Emerald/Reseed RNG.mdx",
       translations: {
         en: "/emerald-painting-rng",
         zh: "/zh-emerald-painting-rng",
       },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Reseed RNG.mdx")),
   },
   "/emerald-shiny-starter": {
     meta: {
@@ -475,10 +479,12 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: "2025-04-26",
-      file: "guides/Emerald/Shiny Starter.mdx",
+      file: "guides/Gen 3/Emerald/Shiny Starter.mdx",
       translations: null,
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Shiny Starter.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Shiny Starter.mdx"),
+    ),
   },
   "/emerald-sid-feebas": {
     meta: {
@@ -491,11 +497,11 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: "2025-03-03",
-      file: "guides/Emerald/Find SID with Feebas.mdx",
+      file: "guides/Gen 3/Emerald/Find SID with Feebas.mdx",
       translations: { en: "/emerald-sid-feebas", zh: "/zh-emerald-sid-feebas" },
     },
     Guide: React.lazy(
-      () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
+      () => import("~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx"),
     ),
   },
   "/emerald-static": {
@@ -509,10 +515,12 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Gen 3 Static.mdx",
+      file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
       translations: null,
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Gen 3 Static.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
+    ),
   },
   "/emerald-tidsid-generator": {
     meta: {
@@ -525,11 +533,11 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Gen 3 TID SID Generator.mdx",
+      file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
+      () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
     ),
   },
   "/emulator-b2w2-dream-radar": {
@@ -804,39 +812,39 @@ export const guides = {
       title: "Emerald Egg RNG",
       navDrawerTitle: "Egg RNG",
       description: "RNG Eggs from the Daycare",
+      category: "Emerald",
       slug: "/emulator-emerald-egg",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: "2025-03-09",
-      file: "guides/Emerald/Egg RNG.mdx",
-      category: "Emerald",
+      file: "guides/Gen 3/Emerald/Egg RNG.mdx",
       translations: {
         en: "/emulator-emerald-egg",
         zh: "/zh-emulator-emerald-egg",
       },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Egg RNG.mdx")),
   },
   "/emulator-flrg-stationary-and-gift": {
     meta: {
       title: "FireRed and LeafGreen Static RNG",
       navDrawerTitle: "Static RNG",
       description: "Get shiny 6IV legendaries from FRLG",
+      category: "FireRed and LeafGreen",
       slug: "/emulator-flrg-stationary-and-gift",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/FireRed and LeafGreen/Static RNG.mdx",
-      category: "FireRed and LeafGreen",
+      file: "guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx",
       translations: {
         en: "/emulator-flrg-stationary-and-gift",
         zh: "/zh-emulator-flrg-stationary-and-gift",
       },
     },
     Guide: React.lazy(
-      () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
+      () => import("~/../guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx"),
     ),
   },
   "/emulator-frlg-egg": {
@@ -844,17 +852,17 @@ export const guides = {
       title: "FireRed and LeafGreen Egg RNG",
       navDrawerTitle: "Egg RNG",
       description: "RNG eggs in FRLG",
+      category: "FireRed and LeafGreen",
       slug: "/emulator-frlg-egg",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/FireRed and LeafGreen/Egg RNG.mdx",
-      category: "FireRed and LeafGreen",
+      file: "guides/Gen 3/FireRed and LeafGreen/Egg RNG.mdx",
       translations: { en: "/emulator-frlg-egg", zh: "/zh-emulator-frlg-egg" },
     },
     Guide: React.lazy(
-      () => import("~/../guides/FireRed and LeafGreen/Egg RNG.mdx"),
+      () => import("~/../guides/Gen 3/FireRed and LeafGreen/Egg RNG.mdx"),
     ),
   },
   "/emulator-frlg-stationary": {
@@ -862,17 +870,18 @@ export const guides = {
       title: "FireRed and LeafGreen Stationary RNG",
       navDrawerTitle: "Stationary RNG",
       description: "Stationary v2 RNG",
+      category: "FireRed and LeafGreen",
       slug: "/emulator-frlg-stationary",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/FireRed and LeafGreen/Stationary v2 Emu.mdx",
-      category: "FireRed and LeafGreen",
+      file: "guides/Gen 3/FireRed and LeafGreen/Stationary v2 Emu.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/FireRed and LeafGreen/Stationary v2 Emu.mdx"),
+      () =>
+        import("~/../guides/Gen 3/FireRed and LeafGreen/Stationary v2 Emu.mdx"),
     ),
   },
   "/emulator-frlg-wild": {
@@ -881,17 +890,17 @@ export const guides = {
       navDrawerTitle: "Wild RNG",
       description:
         "RNG for Pokémon encountered in the wild using Sweet Scent in FireRed/LeafGreen",
+      category: "FireRed and LeafGreen",
       slug: "/emulator-frlg-wild",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/FireRed and LeafGreen/Wild RNG.mdx",
-      category: "FireRed and LeafGreen",
+      file: "guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx",
       translations: { en: "/emulator-frlg-wild", zh: "/zh-emulator-frlg-wild" },
     },
     Guide: React.lazy(
-      () => import("~/../guides/FireRed and LeafGreen/Wild RNG.mdx"),
+      () => import("~/../guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx"),
     ),
   },
   "/emulator-frlg-wild-v2": {
@@ -899,17 +908,17 @@ export const guides = {
       title: "FireRed and LeafGreen Wild RNG",
       navDrawerTitle: "Wild RNG",
       description: "Wild v2 RNG",
+      category: "FireRed and LeafGreen",
       slug: "/emulator-frlg-wild-v2",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/FireRed and LeafGreen/wildv2lua.mdx",
-      category: "FireRed and LeafGreen",
+      file: "guides/Gen 3/FireRed and LeafGreen/wildv2lua.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/FireRed and LeafGreen/wildv2lua.mdx"),
+      () => import("~/../guides/Gen 3/FireRed and LeafGreen/wildv2lua.mdx"),
     ),
   },
   "/emulator-hgss-breeding": {
@@ -1090,19 +1099,19 @@ export const guides = {
       title: "Ruby and Sapphire Dead Battery Stationary RNG",
       navDrawerTitle: "Stationary Dead Battery RNG",
       description: "Dead Battery Stationary RNG",
+      category: "Ruby and Sapphire",
       slug: "/emulator-rs-dead-battery-stationary",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx",
-      category: "Ruby and Sapphire",
+      file: "guides/Gen 3/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx",
       translations: null,
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx"
+          "~/../guides/Gen 3/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx"
         ),
     ),
   },
@@ -1111,17 +1120,17 @@ export const guides = {
       title: "Ruby and Sapphire Egg RNG",
       navDrawerTitle: "Egg RNG",
       description: "RNG Eggs from the Daycare",
+      category: "Ruby and Sapphire",
       slug: "/emulator-rs-egg",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ruby and Sapphire/Egg RNG.mdx",
-      category: "Ruby and Sapphire",
+      file: "guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/Ruby and Sapphire/Egg RNG.mdx"),
+      () => import("~/../guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx"),
     ),
   },
   "/emulator-rs-live-battery-tid": {
@@ -1130,17 +1139,18 @@ export const guides = {
       navDrawerTitle: "TID RNG",
       description:
         "RNG for a specific TID/SID combination with more options than dead battery",
+      category: "Ruby and Sapphire",
       slug: "/emulator-rs-live-battery-tid",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ruby and Sapphire/Live Battery TID RNG.mdx",
-      category: "Ruby and Sapphire",
+      file: "guides/Gen 3/Ruby and Sapphire/Live Battery TID RNG.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/Ruby and Sapphire/Live Battery TID RNG.mdx"),
+      () =>
+        import("~/../guides/Gen 3/Ruby and Sapphire/Live Battery TID RNG.mdx"),
     ),
   },
   "/emulator-rs-stationary": {
@@ -1149,19 +1159,19 @@ export const guides = {
       navDrawerTitle: "Stationary Live Battery RNG",
       description:
         "Easily RNG for perfect shiny legendaries in Ruby and Sapphire",
+      category: "Ruby and Sapphire",
       slug: "/emulator-rs-stationary",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx",
-      category: "Ruby and Sapphire",
+      file: "guides/Gen 3/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx",
       translations: null,
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx"
+          "~/../guides/Gen 3/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx"
         ),
     ),
   },
@@ -1170,19 +1180,19 @@ export const guides = {
       title: "Ruby and Sapphire Wild RNG",
       navDrawerTitle: "Wild RNG",
       description: "Wild RNG",
+      category: "Ruby and Sapphire",
       slug: "/emulator-rs-wild",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx",
-      category: "Ruby and Sapphire",
+      file: "guides/Gen 3/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx",
       translations: null,
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx"
+          "~/../guides/Gen 3/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx"
         ),
     ),
   },
@@ -1191,19 +1201,19 @@ export const guides = {
       title: "Ruby and Sapphire Shiny Wishmaker Jirachi RNG",
       navDrawerTitle: "Wishmaker Jirachi RNG",
       description: "RNG Jirachi from the Colosseum bonus disc",
+      category: "Ruby and Sapphire",
       slug: "/emulator-rs-wishmaker",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: "2025-04-18",
-      file: "guides/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
-      category: "Ruby and Sapphire",
+      file: "guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
       translations: null,
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
+          "~/../guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
         ),
     ),
   },
@@ -1312,10 +1322,10 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Find SID.mdx",
+      file: "guides/Gen 3/Emerald/Find SID.mdx",
       translations: { en: "/frlg-gen3-sid", zh: "/zh-frlg-gen3-sid" },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
   },
   "/frlg-seeding-bot": {
     meta: {
@@ -1323,18 +1333,20 @@ export const guides = {
       navDrawerTitle: "Initial Seed Botting",
       description:
         "How to use the Initial Seed Bot for more control in your RNGs",
+      category: "FireRed and LeafGreen",
       slug: "/frlg-seeding-bot",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/FireRed and LeafGreen/Initial Seed Botting.mdx",
-      category: "FireRed and LeafGreen",
+      file: "guides/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx",
       translations: { en: "/frlg-seeding-bot", zh: "/zh-frlg-seeding-bot" },
     },
     Guide: React.lazy(
       () =>
-        import("~/../guides/FireRed and LeafGreen/Initial Seed Botting.mdx"),
+        import(
+          "~/../guides/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx"
+        ),
     ),
   },
   "/frlg-static": {
@@ -1348,10 +1360,12 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Gen 3 Static.mdx",
+      file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
       translations: null,
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Gen 3 Static.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
+    ),
   },
   "/frlg-tidsid-generator": {
     meta: {
@@ -1364,11 +1378,11 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Gen 3 TID SID Generator.mdx",
+      file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
+      () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
     ),
   },
   "/frlg-tips-rng": {
@@ -1377,17 +1391,20 @@ export const guides = {
       navDrawerTitle: null,
       description:
         "How to advance the RNG and tips to make everything more stable",
+      category: "FireRed and LeafGreen",
       slug: "/frlg-tips-rng",
       isRoughDraft: true,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/FireRed and LeafGreen/Basic Rules of RNG.mdx",
-      category: "FireRed and LeafGreen",
+      file: "guides/Gen 3/FireRed and LeafGreen/Basic Rules of RNG.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/FireRed and LeafGreen/Basic Rules of RNG.mdx"),
+      () =>
+        import(
+          "~/../guides/Gen 3/FireRed and LeafGreen/Basic Rules of RNG.mdx"
+        ),
     ),
   },
   "/gba-methods": {
@@ -1402,10 +1419,12 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
-      file: "guides/Emerald/GBA Methods.mdx",
+      file: "guides/Gen 3/Emerald/GBA Methods.mdx",
       translations: null,
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/GBA Methods.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/GBA Methods.mdx"),
+    ),
   },
   "/gba-overview": {
     meta: {
@@ -1419,10 +1438,12 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
-      file: "guides/Emerald/GBA Overview.mdx",
+      file: "guides/Gen 3/Emerald/GBA Overview.mdx",
       translations: null,
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/GBA Overview.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/GBA Overview.mdx"),
+    ),
   },
   "/gba-vblank": {
     meta: {
@@ -1435,10 +1456,10 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
-      file: "guides/Emerald/Vblank.mdx",
+      file: "guides/Gen 3/Emerald/Vblank.mdx",
       translations: null,
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Vblank.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Vblank.mdx")),
   },
   "/gc-initial": {
     meta: {
@@ -1526,10 +1547,10 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: "2025-03-03",
-      file: "guides/Emerald/Find SID.mdx",
+      file: "guides/Gen 3/Emerald/Find SID.mdx",
       translations: { en: "/gen3-sid", zh: "/zh-gen3-sid" },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
   },
   "/hgss-initial-seed": {
     meta: {
@@ -1634,19 +1655,19 @@ export const guides = {
       title: "Ruby and Sapphire Meteor Jirachi RNG",
       navDrawerTitle: "Meteor Jirachi RNG",
       description: "RNG a Meteor Jirachi with different shinies than Wishmaker",
+      category: "Ruby and Sapphire",
       slug: "/meteor-jirachi",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: "2025-04-18",
-      file: "guides/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
-      category: "Ruby and Sapphire",
+      file: "guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
       translations: null,
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
+          "~/../guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
         ),
     ),
   },
@@ -1982,19 +2003,21 @@ export const guides = {
       title: "Emerald Retail Wild RNG",
       navDrawerTitle: "Retail Wild RNG",
       description: "RNG wild Pokemon on a retail console",
+      category: "Emerald",
       slug: "/retail-emerald-wild",
       isRoughDraft: false,
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Retail Wild RNG.mdx",
-      category: "Emerald",
+      file: "guides/Gen 3/Emerald/Retail Wild RNG.mdx",
       translations: {
         en: "/retail-emerald-wild",
         zh: "/zh-retail-emerald-wild",
       },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Retail Wild RNG.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Retail Wild RNG.mdx"),
+    ),
   },
   "/retail-oras-egg-mmsc": {
     meta: {
@@ -2649,17 +2672,18 @@ export const guides = {
       navDrawerTitle: "Live vs Dead Battery",
       description:
         "Discover the two ways to RNG on Ruby/Sapphire and learn their differences",
+      category: "Ruby and Sapphire",
       slug: "/rs-battery",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ruby and Sapphire/Live and Dry Battery.mdx",
-      category: "Ruby and Sapphire",
+      file: "guides/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/Ruby and Sapphire/Live and Dry Battery.mdx"),
+      () =>
+        import("~/../guides/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx"),
     ),
   },
   "/rs-gen3-sid": {
@@ -2673,27 +2697,27 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Find SID.mdx",
+      file: "guides/Gen 3/Emerald/Find SID.mdx",
       translations: { en: "/rs-gen3-sid", zh: "/zh-rs-gen3-sid" },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
   },
   "/rs-initial-seed": {
     meta: {
       title: "Ruby and Sapphire Initial Seed RNG",
       navDrawerTitle: "Initial Seed RNG",
       description: "How to use Runasdate for RS Live Battery RNG",
+      category: "Ruby and Sapphire",
       slug: "/rs-initial-seed",
       isRoughDraft: true,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ruby and Sapphire/Initial Seed RNG.mdx",
-      category: "Ruby and Sapphire",
+      file: "guides/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/Ruby and Sapphire/Initial Seed RNG.mdx"),
+      () => import("~/../guides/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx"),
     ),
   },
   "/rs-mirage-island": {
@@ -2708,27 +2732,29 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: "2025-04-11",
-      file: "guides/Emerald/Mirage Island.mdx",
+      file: "guides/Gen 3/Emerald/Mirage Island.mdx",
       translations: { en: "/rs-mirage-island", zh: "/zh-rs-mirage-island" },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Mirage Island.mdx"),
+    ),
   },
   "/rs-pokefinder-setup": {
     meta: {
       title: "Ruby and Sapphire PokeFinder Setup",
       navDrawerTitle: "PokeFinder Setup",
       description: "How to set up PokeFinder",
+      category: "Ruby and Sapphire",
       slug: "/rs-pokefinder-setup",
       isRoughDraft: true,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ruby and Sapphire/PokeFinder Setup.mdx",
-      category: "Ruby and Sapphire",
+      file: "guides/Gen 3/Ruby and Sapphire/PokeFinder Setup.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/Ruby and Sapphire/PokeFinder Setup.mdx"),
+      () => import("~/../guides/Gen 3/Ruby and Sapphire/PokeFinder Setup.mdx"),
     ),
   },
   "/rs-sid-feebas": {
@@ -2743,11 +2769,11 @@ export const guides = {
       tag: "retail",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Find SID with Feebas.mdx",
+      file: "guides/Gen 3/Emerald/Find SID with Feebas.mdx",
       translations: { en: "/rs-sid-feebas", zh: "/zh-rs-sid-feebas" },
     },
     Guide: React.lazy(
-      () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
+      () => import("~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx"),
     ),
   },
   "/rs-static": {
@@ -2761,10 +2787,12 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Gen 3 Static.mdx",
+      file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
       translations: null,
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Gen 3 Static.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
+    ),
   },
   "/rs-tidsid-generator": {
     meta: {
@@ -2777,11 +2805,11 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Gen 3 TID SID Generator.mdx",
+      file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
+      () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
     ),
   },
   "/rs-tips-rng": {
@@ -2790,17 +2818,18 @@ export const guides = {
       navDrawerTitle: "RNG Info",
       description:
         "How to advance the RNG and tips to make everything more stable",
+      category: "Ruby and Sapphire",
       slug: "/rs-tips-rng",
       isRoughDraft: true,
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Ruby and Sapphire/Basic Rules of RNG.mdx",
-      category: "Ruby and Sapphire",
+      file: "guides/Gen 3/Ruby and Sapphire/Basic Rules of RNG.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/Ruby and Sapphire/Basic Rules of RNG.mdx"),
+      () =>
+        import("~/../guides/Gen 3/Ruby and Sapphire/Basic Rules of RNG.mdx"),
     ),
   },
   "/sysbot-lpa-mmo": {
@@ -2878,17 +2907,18 @@ export const guides = {
       navDrawerTitle: "Wishing Star Jirachi RNG",
       description:
         "RNG a Wishing Star Jirachi with different IVs than Wishmaker",
+      category: "Ruby and Sapphire",
       slug: "/wishing-star-jirachi",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: "2025-04-23",
-      file: "guides/Ruby and Sapphire/Wishing Star Jirachi.mdx",
-      category: "Ruby and Sapphire",
+      file: "guides/Gen 3/Ruby and Sapphire/Wishing Star Jirachi.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/Ruby and Sapphire/Wishing Star Jirachi.mdx"),
+      () =>
+        import("~/../guides/Gen 3/Ruby and Sapphire/Wishing Star Jirachi.mdx"),
     ),
   },
   "/xdcolo-tidsid-generator": {
@@ -2902,11 +2932,11 @@ export const guides = {
       tag: "any",
       hideFromNavDrawer: false,
       addedOn: null,
-      file: "guides/Emerald/Gen 3 TID SID Generator.mdx",
+      file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
     },
     Guide: React.lazy(
-      () => import("~/../guides/Emerald/Gen 3 TID SID Generator.mdx"),
+      () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
     ),
   },
   "/xy-pokeradar": {
@@ -3013,18 +3043,18 @@ export const guides = {
       title: "乱数介绍",
       navDrawerTitle: null,
       description: "如何推进乱数以及提高稳定性的技巧",
+      category: "Emerald",
       slug: "/zh-e-tips-rng",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/e-tips-rng", language: "zh" },
-      file: "guides/Emerald/Basic Rules of RNG.mdx",
-      category: "Emerald",
+      file: "guides/Gen 3/Emerald/Basic Rules of RNG.mdx",
       translations: { en: "/e-tips-rng", zh: "/zh-e-tips-rng" },
     },
     Guide: React.lazy(
-      () => import("~/../guides/Emerald/Basic Rules of RNG.mdx"),
+      () => import("~/../guides/Gen 3/Emerald/Basic Rules of RNG.mdx"),
     ),
   },
   "/zh-emerald-mirage-island": {
@@ -3039,33 +3069,35 @@ export const guides = {
       hideFromNavDrawer: true,
       addedOn: "2025-04-18",
       translation: { enSlug: "/emerald-mirage-island", language: "zh" },
-      file: "guides/Emerald/Mirage Island.mdx",
+      file: "guides/Gen 3/Emerald/Mirage Island.mdx",
       translations: {
         en: "/emerald-mirage-island",
         zh: "/zh-emerald-mirage-island",
       },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Mirage Island.mdx"),
+    ),
   },
   "/zh-emerald-painting-rng": {
     meta: {
       title: "利用绘画重置种子",
       navDrawerTitle: null,
       description: "利用绘画重置乱数，从而快速获得目标宝可梦，而无需长时间等待",
+      category: "Emerald",
       slug: "/zh-emerald-painting-rng",
       isRoughDraft: false,
       tag: "any",
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emerald-painting-rng", language: "zh" },
-      file: "guides/Emerald/Reseed RNG.mdx",
-      category: "Emerald",
+      file: "guides/Gen 3/Emerald/Reseed RNG.mdx",
       translations: {
         en: "/emerald-painting-rng",
         zh: "/zh-emerald-painting-rng",
       },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Reseed RNG.mdx")),
   },
   "/zh-emerald-sid-feebas": {
     meta: {
@@ -3079,11 +3111,11 @@ export const guides = {
       hideFromNavDrawer: true,
       addedOn: "2025-04-16",
       translation: { enSlug: "/emerald-sid-feebas", language: "zh" },
-      file: "guides/Emerald/Find SID with Feebas.mdx",
+      file: "guides/Gen 3/Emerald/Find SID with Feebas.mdx",
       translations: { en: "/emerald-sid-feebas", zh: "/zh-emerald-sid-feebas" },
     },
     Guide: React.lazy(
-      () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
+      () => import("~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx"),
     ),
   },
   "/zh-emulator-bw-find-ds-parameters": {
@@ -3153,26 +3185,27 @@ export const guides = {
       title: "孵化乱数",
       navDrawerTitle: null,
       description: "通过培育屋进行乱数孵蛋",
+      category: "Emerald",
       slug: "/zh-emulator-emerald-egg",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: true,
       addedOn: "2025-04-07",
       translation: { enSlug: "/emulator-emerald-egg", language: "zh" },
-      file: "guides/Emerald/Egg RNG.mdx",
-      category: "Emerald",
+      file: "guides/Gen 3/Emerald/Egg RNG.mdx",
       translations: {
         en: "/emulator-emerald-egg",
         zh: "/zh-emulator-emerald-egg",
       },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Egg RNG.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Egg RNG.mdx")),
   },
   "/zh-emulator-flrg-stationary-and-gift": {
     meta: {
       title: "固定宝可梦乱数",
       navDrawerTitle: null,
       description: "在《火红·叶绿》中获取闪光六项个体值的传说宝可梦",
+      category: "FireRed and LeafGreen",
       slug: "/zh-emulator-flrg-stationary-and-gift",
       isRoughDraft: false,
       tag: "emu",
@@ -3182,15 +3215,14 @@ export const guides = {
         enSlug: "/emulator-flrg-stationary-and-gift",
         language: "zh",
       },
-      file: "guides/FireRed and LeafGreen/Static RNG.mdx",
-      category: "FireRed and LeafGreen",
+      file: "guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx",
       translations: {
         en: "/emulator-flrg-stationary-and-gift",
         zh: "/zh-emulator-flrg-stationary-and-gift",
       },
     },
     Guide: React.lazy(
-      () => import("~/../guides/FireRed and LeafGreen/Static RNG.mdx"),
+      () => import("~/../guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx"),
     ),
   },
   "/zh-emulator-frlg-egg": {
@@ -3198,18 +3230,18 @@ export const guides = {
       title: "火红叶绿孵化乱数",
       navDrawerTitle: "Egg RNG",
       description: "在火红/叶绿中进行蛋的乱数",
+      category: "FireRed and LeafGreen",
       slug: "/zh-emulator-frlg-egg",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-frlg-egg", language: "zh" },
-      file: "guides/FireRed and LeafGreen/Egg RNG.mdx",
-      category: "FireRed and LeafGreen",
+      file: "guides/Gen 3/FireRed and LeafGreen/Egg RNG.mdx",
       translations: { en: "/emulator-frlg-egg", zh: "/zh-emulator-frlg-egg" },
     },
     Guide: React.lazy(
-      () => import("~/../guides/FireRed and LeafGreen/Egg RNG.mdx"),
+      () => import("~/../guides/Gen 3/FireRed and LeafGreen/Egg RNG.mdx"),
     ),
   },
   "/zh-emulator-frlg-wild": {
@@ -3217,18 +3249,18 @@ export const guides = {
       title: "火红叶绿野生乱数",
       navDrawerTitle: "Wild RNG",
       description: "在《火红·叶绿》中使用甜甜香气进行野生宝可梦的乱数",
+      category: "FireRed and LeafGreen",
       slug: "/zh-emulator-frlg-wild",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-frlg-wild", language: "zh" },
-      file: "guides/FireRed and LeafGreen/Wild RNG.mdx",
-      category: "FireRed and LeafGreen",
+      file: "guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx",
       translations: { en: "/emulator-frlg-wild", zh: "/zh-emulator-frlg-wild" },
     },
     Guide: React.lazy(
-      () => import("~/../guides/FireRed and LeafGreen/Wild RNG.mdx"),
+      () => import("~/../guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx"),
     ),
   },
   "/zh-emulator-hgss-cute-charm": {
@@ -3282,29 +3314,31 @@ export const guides = {
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/frlg-gen3-sid", language: "zh" },
-      file: "guides/Emerald/Find SID.mdx",
+      file: "guides/Gen 3/Emerald/Find SID.mdx",
       translations: { en: "/frlg-gen3-sid", zh: "/zh-frlg-gen3-sid" },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
   },
   "/zh-frlg-seeding-bot": {
     meta: {
       title: "初始种子自动刷取",
       navDrawerTitle: null,
       description: "使用初始种子自动脚本，实现更高自由度的乱数控制",
+      category: "FireRed and LeafGreen",
       slug: "/zh-frlg-seeding-bot",
       isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/frlg-seeding-bot", language: "zh" },
-      file: "guides/FireRed and LeafGreen/Initial Seed Botting.mdx",
-      category: "FireRed and LeafGreen",
+      file: "guides/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx",
       translations: { en: "/frlg-seeding-bot", zh: "/zh-frlg-seeding-bot" },
     },
     Guide: React.lazy(
       () =>
-        import("~/../guides/FireRed and LeafGreen/Initial Seed Botting.mdx"),
+        import(
+          "~/../guides/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx"
+        ),
     ),
   },
   "/zh-gen2-celebi": {
@@ -3361,10 +3395,10 @@ export const guides = {
       hideFromNavDrawer: true,
       addedOn: "2025-03-03",
       translation: { enSlug: "/gen3-sid", language: "zh" },
-      file: "guides/Emerald/Find SID.mdx",
+      file: "guides/Gen 3/Emerald/Find SID.mdx",
       translations: { en: "/gen3-sid", zh: "/zh-gen3-sid" },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
   },
   "/zh-install-pokereader": {
     meta: {
@@ -3390,20 +3424,22 @@ export const guides = {
       title: "实机野生乱数",
       navDrawerTitle: null,
       description: "在真实主机上对野生宝可梦进行乱数操作",
+      category: "Emerald",
       slug: "/zh-retail-emerald-wild",
       isRoughDraft: false,
       tag: "retail",
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/retail-emerald-wild", language: "zh" },
-      file: "guides/Emerald/Retail Wild RNG.mdx",
-      category: "Emerald",
+      file: "guides/Gen 3/Emerald/Retail Wild RNG.mdx",
       translations: {
         en: "/retail-emerald-wild",
         zh: "/zh-retail-emerald-wild",
       },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Retail Wild RNG.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Retail Wild RNG.mdx"),
+    ),
   },
   "/zh-rs-gen3-sid": {
     meta: {
@@ -3417,10 +3453,10 @@ export const guides = {
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/rs-gen3-sid", language: "zh" },
-      file: "guides/Emerald/Find SID.mdx",
+      file: "guides/Gen 3/Emerald/Find SID.mdx",
       translations: { en: "/rs-gen3-sid", zh: "/zh-rs-gen3-sid" },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Find SID.mdx")),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
   },
   "/zh-rs-mirage-island": {
     meta: {
@@ -3434,10 +3470,12 @@ export const guides = {
       hideFromNavDrawer: true,
       addedOn: "2025-04-18",
       translation: { enSlug: "/rs-mirage-island", language: "zh" },
-      file: "guides/Emerald/Mirage Island.mdx",
+      file: "guides/Gen 3/Emerald/Mirage Island.mdx",
       translations: { en: "/rs-mirage-island", zh: "/zh-rs-mirage-island" },
     },
-    Guide: React.lazy(() => import("~/../guides/Emerald/Mirage Island.mdx")),
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Mirage Island.mdx"),
+    ),
   },
   "/zh-rs-sid-feebas": {
     meta: {
@@ -3451,11 +3489,11 @@ export const guides = {
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/rs-sid-feebas", language: "zh" },
-      file: "guides/Emerald/Find SID with Feebas.mdx",
+      file: "guides/Gen 3/Emerald/Find SID with Feebas.mdx",
       translations: { en: "/rs-sid-feebas", zh: "/zh-rs-sid-feebas" },
     },
     Guide: React.lazy(
-      () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
+      () => import("~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx"),
     ),
   },
 } as const;

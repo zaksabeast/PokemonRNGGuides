@@ -44,7 +44,10 @@ type MenuItemTagProps = {
 
 const MenuItemTag = ({ tag }: MenuItemTagProps) => {
   const config = match<GuideTag, GuideConfig | null>(tag)
-    .with("new", () => ({ color: "White", backgroundColor: "Primary" }))
+    .with("new", () => ({
+      color: "TextLightSolid",
+      backgroundColor: "Primary",
+    }))
     .otherwise(() => null);
   const label = match<GuideTag, string | null>(tag)
     .with("challenge", () => null)

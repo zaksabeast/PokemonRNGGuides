@@ -70,7 +70,7 @@ const columns: ResultColumn<Result>[] = [
     title: "Earliest Method-1 advance for shiny starter",
     dataIndex: "earliest_shiny_adv",
     render: (val) => {
-      const durInMinutes = (val / 60 / 60).toFixed(1);
+      const durInMinutes = (val / 59.7275 / 60).toFixed(1);
       return `${val} (~${durInMinutes} min)`;
     },
   },
@@ -81,7 +81,7 @@ export const GenerateTidSidRating = ({
 }: {
   result: Gen3TidSidShinyResult;
 }) => {
-  const durInMinutes = Math.round(result.avg_adv_to_determine_sid / 60 / 60);
+  const durInMinutes = Math.round(result.avg_adv_to_determine_sid / 59.7275 / 60);
   const pct = result.avg_adv_to_determine_sid_percentile;
   const qualitativeRating = (() => {
     if (pct <= 2) return QUALITATIVE_RATINGS[0];

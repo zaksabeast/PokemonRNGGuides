@@ -52,7 +52,7 @@ export const ShinyStarter = ({ game }: Props) => {
 
   const milliseconds = React.useMemo(() => {
     const advFromTimer = targetAdvance - calibrationAndOffset;
-    return [5000, Math.round((advFromTimer * 1000) / 59.7275)];
+    return [5000, Math.round(advFromTimer * 1000 / 59.7275)];
   }, [targetAdvance, calibrationAndOffset]);
 
   const minutesBeforeTarget = Math.floor(milliseconds[1] / 60000);

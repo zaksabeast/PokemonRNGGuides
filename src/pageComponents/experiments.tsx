@@ -35,6 +35,16 @@ const presetThemes = {
   dark_orange: createDarkPresent("#ff8c00"),
   dark_purple: createDarkPresent("#d07aff"),
   dark_yellow: createDarkPresent("#fbff00"),
+  unovx: {
+    mask: false,
+    mode: "dark",
+    colorPrimary: "#8ba7f8",
+    colorLink: "#c0aaf2",
+    colorBgBase: "#121212",
+    colorTextBase: "#ffffff",
+    colorBrandSecondary: "#9ae6c6",
+    colorTextLightSolid: "#121212",
+  },
 } as const satisfies Record<string, ThemePalette>;
 
 type Presets = keyof typeof presetThemes;
@@ -46,6 +56,7 @@ const themeOptions = [
   { label: "Magma", value: "dark_orange" },
   { label: "Shadow", value: "dark_purple" },
   { label: "Firefly", value: "dark_yellow" },
+  { label: "Unovx", value: "unovx" },
 ] satisfies { label: string; value: Presets }[];
 
 export const ExperimentsPageComponent = () => {

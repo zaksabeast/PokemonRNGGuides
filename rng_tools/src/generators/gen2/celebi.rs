@@ -1,5 +1,5 @@
 use super::poke::{Poke, SpecialTrait, possible_special_trait};
-use super::{Gen2PokeFilter, Gen2Spread};
+use super::{Gen2PokeFilter, Gen2Spread, DivParams};
 use crate::rng::gameboy::{Div, GameboyRng, Offset};
 use wasm_bindgen::prelude::*;
 
@@ -62,11 +62,7 @@ fn has_potential_special_celebi(rng: &GameboyRng) -> SpecialTrait {
 
 #[wasm_bindgen]
 pub fn crystal_generate_celebi(
-    adiv: u8,
-    sdiv: u8,
-    adiv_index: usize,
-    sdiv_index: usize,
-    state: u16,
+    config: DivParams,
     start_advance: usize,
     end_advance: usize,
     filter: Gen2PokeFilter,

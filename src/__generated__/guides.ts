@@ -464,6 +464,22 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Emerald/Reseed RNG.mdx")),
   },
+  "/emerald-shiny-starter": {
+    meta: {
+      title: "Shiny Starter",
+      navDrawerTitle: null,
+      description: "Determine your SID by catching a shiny starter",
+      category: "Emerald",
+      slug: "/emerald-shiny-starter",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-26",
+      file: "guides/Emerald/Shiny Starter.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Shiny Starter.mdx")),
+  },
   "/emerald-sid-feebas": {
     meta: {
       title: "Find SID with Feebas in Emerald",
@@ -3443,6 +3459,7 @@ export const guideSlugs = [
   "/emerald-mirage-island",
   "/emerald-overview",
   "/emerald-painting-rng",
+  "/emerald-shiny-starter",
   "/emerald-sid-feebas",
   "/emerald-static",
   "/emerald-tidsid-generator",

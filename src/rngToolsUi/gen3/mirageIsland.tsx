@@ -5,7 +5,7 @@ import {
   RngToolSubmit,
   FormikNumberInput,
 } from "~/components";
-import { FormikRadio } from "../../components/radio";
+import { FormikRadio } from "~/components/radio";
 import { rngTools, MirageIslandResult } from "~/rngTools";
 import React from "react";
 import { clamp } from "lodash-es";

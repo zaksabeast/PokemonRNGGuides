@@ -11,7 +11,7 @@ import { withCss } from "./withCss";
 
 export const RadioGroup = withCss(AntdRadio.Group);
 
-type FormikRadioOptions<OptionValues extends string> =
+type FormikRadioOptions<OptionValues extends string | number> =
   | OptionValues[]
   | CheckboxOptionType<OptionValues>[];
 
@@ -23,7 +23,7 @@ type FormikRadioProps<
   {
     name: FieldKey;
     options: FormikRadioOptions<
-      FormState[FieldKey] extends string ? FormState[FieldKey] : never
+      FormState[FieldKey] extends string | number ? FormState[FieldKey] : never
     >;
   }
 >;

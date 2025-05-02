@@ -7,6 +7,7 @@ import {
   MdCheck,
   MdClose,
   MdRocketLaunch,
+  MdUpdate,
 } from "react-icons/md";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaDiscord, FaCoffee } from "react-icons/fa";
@@ -15,19 +16,20 @@ import { PiPersonSimpleWalkBold } from "react-icons/pi";
 import { FaHeart, FaPlay, FaFire } from "react-icons/fa6";
 
 const icons = {
-  Menu: AiOutlineMenu,
   ArrowRightAlt: MdArrowRightAlt,
+  Check: MdCheck,
+  CheckCircle: MdCheckCircle,
+  Close: MdClose,
+  Coffee: FaCoffee,
   Discord: FaDiscord,
   Github: FaGithub,
-  CheckCircle: MdCheckCircle,
-  Check: MdCheck,
+  Heart: FaHeart,
   Language: IoLanguage,
-  Close: MdClose,
-  Sparkles: IoSparkles,
+  Menu: AiOutlineMenu,
   PersonSimpleWalkBold: PiPersonSimpleWalkBold,
   RocketLaunch: MdRocketLaunch,
-  Heart: FaHeart,
-  Coffee: FaCoffee,
+  Sparkles: IoSparkles,
+  Update: MdUpdate,
   Play: FaPlay,
   Fire: FaFire,
 } as const;

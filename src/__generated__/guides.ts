@@ -610,7 +610,10 @@ export const guides = {
       hideFromNavDrawer: false,
       addedOn: null,
       file: "guides/Gen 5/Find DS Parameters.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-bw-find-ds-parameters",
+        zh: "/zh-emulator-bw-find-ds-parameters",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Find DS Parameters.mdx")),
   },
@@ -3083,6 +3086,29 @@ export const guides = {
       () => import("~/../guides/Emerald/Find SID with Feebas.mdx"),
     ),
   },
+  "/zh-emulator-bw-find-ds-parameters": {
+    meta: {
+      title: "如何在第五世代中寻找 DS 参数",
+      navDrawerTitle: null,
+      description: "获取你的 DS 参数以进行第五世代乱数。",
+      category: "Black and White",
+      slug: "/zh-emulator-bw-find-ds-parameters",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/emulator-bw-find-ds-parameters",
+        language: "zh",
+      },
+      file: "guides/Gen 5/Find DS Parameters.mdx",
+      translations: {
+        en: "/emulator-bw-find-ds-parameters",
+        zh: "/zh-emulator-bw-find-ds-parameters",
+      },
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Find DS Parameters.mdx")),
+  },
   "/zh-emulator-dppt-cute-charm": {
     meta: {
       title: "迷人之躯乱数",
@@ -3601,6 +3627,7 @@ export const guideSlugs = [
   "/zh-emerald-mirage-island",
   "/zh-emerald-painting-rng",
   "/zh-emerald-sid-feebas",
+  "/zh-emulator-bw-find-ds-parameters",
   "/zh-emulator-dppt-cute-charm",
   "/zh-emulator-dppt-egg",
   "/zh-emulator-emerald-egg",

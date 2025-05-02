@@ -48,8 +48,8 @@ import { Static3 } from "~/rngToolsUi/gen3/static/static3";
 import { MultibootJirachi } from "~/rngToolsUi/gen3/multibootJirachi";
 import { ShinyHoennStarter } from "~/rngToolsUi/gen3/shinyStarter";
 import { GenerateHoennTidSid } from "~/rngToolsUi/gen3/shinyStarter/generateTidSid";
-import { ChallengeScreen } from "~/screens/challenge";
-import { ExperimentsPanel } from "~/screens/experiments";
+import { ChallengePageComponent } from "~/pageComponents/challenge";
+import { ExperimentsPageComponent } from "~/pageComponents/experiments";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -99,6 +99,6 @@ export const markdownComponents = {
   ShinyHoennStarter,
   GenerateHoennTidSid,
   MultibootJirachi,
-  ChallengeScreen,
-  ExperimentsPanel,
+  ChallengePageComponent,
+  ExperimentsPageComponent,
 };

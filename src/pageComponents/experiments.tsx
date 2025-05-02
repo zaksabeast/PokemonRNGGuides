@@ -48,7 +48,7 @@ const themeOptions = [
   { label: "Firefly", value: "dark_yellow" },
 ] satisfies { label: string; value: Presets }[];
 
-export const ExperimentsPanel = () => {
+export const ExperimentsPageComponent = () => {
   const theme = useTheme();
   const [pallete, _setPallete] = useThemeMode();
 

@@ -16,6 +16,8 @@ const titleAndDescriptionChars =
 // Only lower case letters, numbers, and hyphens
 const slugChars = /^[a-z0-9-]+$/;
 
+const layouts = ["titled", "guide"] as const;
+
 const categories = [
   "Home",
   "Gold, Silver, Crystal",
@@ -84,6 +86,7 @@ const SingleGuideMetadataSchema = z.object({
       language: z.enum(["es", "zh"]),
     })
     .optional(),
+  layout: z.enum(layouts).default("guide"),
 });
 
 const GuideMetadataSchema = z.union([

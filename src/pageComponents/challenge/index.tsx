@@ -11,8 +11,6 @@ import {
   RngTaskStatusSchema,
 } from "./challenges";
 import { Flex, Card, Typography } from "~/components";
-import { MainLayout } from "~/layouts/main";
-import { getGuide } from "~/guides";
 import { useTheme } from "@emotion/react";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { z } from "zod";
@@ -70,11 +68,10 @@ const getRank = (completedPercent: number): LeaderboardRank => {
   return "None";
 };
 
-export const ChallengeScreen = () => {
+export const ChallengePageComponent = () => {
   const [state, setState] = useAtom(rngChallengeAtom);
   const theme = useTheme();
   const [route] = useActiveRoute();
-  const Guide = getGuide(route);
 
   const tasks: RngTask[] = match(route)
     .with("/challenge-usum-ta", () => {
@@ -141,9 +138,7 @@ export const ChallengeScreen = () => {
   }, [tasks, setState]);
 
   return (
-    <MainLayout trackerName={route}>
-      <Typography.Title level={1}>{Guide.meta.title}</Typography.Title>
-
+    <Flex gap={24} vertical>
       <Card>
         <Flex gap={8} vertical>
           <Typography.Title fontSize={24}>Completion Stats</Typography.Title>
@@ -179,6 +174,6 @@ export const ChallengeScreen = () => {
         </Flex>
       </Card>
       <Tabs defaultActiveKey="seedSearch" items={items} />
-    </MainLayout>
+    </Flex>
   );
 };

@@ -10,7 +10,54 @@ tag: "emu"
 
 ## Tools
 
-## Step 1: Understanding PID
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
+- [Desmume](/desmume-setup)
+- [RunAsDate](https://www.nirsoft.net/utils/run_as_date.html)
+
+## Step 1: Find a PID to make shiny
+
+1. Open pokefinder and go to either "Static" or "Wild. For this guide, we will use "Static"
+   ![pkfinder-options](/images/Diamond-Pearl-Platinum/PokeFinder/pk-finder-options.png")
+2. Go to Searcher
+3. Input everything you want _except_ for shininess, then press search.
+4. Select a pokemon you want and copy the PID and Seed for later.
+
+##Step 2: Choosing your ID to hit
+
+1. Go to the Gen 4 tab and select "ID's"
+2. Under filters select "PID" and paste in the box to right the PID you selected. Click Search.
+   ![pk-finder-id-boxes](/images/Diamond-Pearl-Platinum/PokeFinder/pkfinder-ID-search.png)
+
+```
+Note: If you do not want to scroll through the list, right click on any collumn and select "Output results to TXT". You can then use CTRL + F in the text file to look for specific numbers.
+```
+
+3. Choose a TID and SID combo that you like
+   4.Right click on chosen option and select "Generates time for seed"
+
+## Step 3: Setup RunAsDate
+
+1. Launch RunAsDate.
+2. Configure RunAsDate to match the image below.
+
+![Setup](/images/Diamond-Pearl-Platinum/Initial-Seed/Setup.png)
+
+```
+You'll never have to change that after. This is the universal RunAsDate configuration for RNG (Gen 3, 4 or 5).
+```
+
+3. Select the program you want to fake the date/time with the `Browse...` button.
+4. Set the date and time to hit your seed as shown in PokeFinder.
+   - Right click on the chosen seed and choose "Generate times for seed".
+5. Hit `Run` to launch Desmume.
+
+## Step 4: Hit delay
+
+1. This will be the hard part of the RNG. You will want to load up your game in desmume and get through all of the opening with the proffesor until this dialog box:
+
+( a picture of last dialog box in english D/P/PT)
+
+Understanding PID
 
 Here's a basic overview to help with getting wanted PID.
 

@@ -11,6 +11,7 @@ export { Image } from "./image";
 export { MetaTags } from "./metaTags";
 export { List, ListItem } from "./list";
 export { FormikInput } from "./input";
+export { FormikNumberInput } from "./numberInput";
 export { Form } from "./form";
 export { FormFieldTable, type Field } from "./formFieldTable";
 export {
@@ -19,7 +20,7 @@ export {
 } from "./resultTable";
 export { Select, FormikSelect } from "./select";
 export { IvInput } from "./ivInput";
-export { FormikSwitch } from "./switch";
+export { FormikSwitch, Switch } from "./switch";
 export { IpsMerger } from "./ipsMerger";
 export { Countdown } from "./countdown";
 export { YouTubeVideo } from "./youtubeVideo";
@@ -29,3 +30,10 @@ export { LanguageButton } from "./languageButton";
 export { Timer } from "./timer";
 export { MultiTimer } from "./multiTimer";
 export { FormikIdFilter } from "./idFilter";
+export { Alert } from "./alert";
+export { FileUpload } from "./fileUpload";
+export { Card } from "./card";
+export { Tag } from "./tag";
+export { RadioGroup } from "./radio";
+export { Divider } from "./divider";
+export { ContentLock } from "./contentLock";

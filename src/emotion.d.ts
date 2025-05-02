@@ -7,12 +7,12 @@ declare module "@emotion/react" {
 
   export type CustomTheme = {
     token: {
-      headerHeight: string;
-      footerHeight: string;
-      colorFillSecondaryHover: string;
-      colorGreen: string;
-      colorRed: string;
-    };
+      colorBrandSecondary: string;
+      colorBrandSecondaryHover: string;
+      colorBrandSecondaryBg: string;
+      colorBrandSecondaryBorder: string;
+    } & AliasToken;
+    components: Partial<ThemeConfig["components"]>;
     mediaQueries: {
       up: (size: ScreenSize) => string;
       down: (size: ScreenSize) => string;
@@ -21,10 +21,7 @@ declare module "@emotion/react" {
 
   type CompleteTheme = tst.O.Merge<
     tst.O.Required<
-      tst.O.Overwrite<
-        ThemeConfig,
-        { token: tst.O.Merge<AliasToken, CustomTheme["token"]> }
-      >,
+      tst.O.Overwrite<ThemeConfig, { token: CustomTheme["token"] }>,
       "token"
     >,
     { mediaQueries: CustomTheme["mediaQueries"] }

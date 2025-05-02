@@ -1,7 +1,6 @@
 import React from "react";
 import * as tst from "ts-toolbelt";
-
-export type LanguageKey = "en" | "es" | "zh";
+import { LanguageKey } from "~/guides";
 
 export type Translations<EnglishTranslation extends Record<string, string>> =
   tst.O.Required<

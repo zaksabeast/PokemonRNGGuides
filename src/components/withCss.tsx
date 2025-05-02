@@ -31,6 +31,7 @@ type CustomStyles = {
   overflowY?: "auto" | "hidden" | "scroll" | "visible";
 
   fontSize?: number | string;
+  fontFamily?: string;
   textAlign?: "left" | "right" | "center";
 
   flex?: number;
@@ -77,6 +78,7 @@ const styleProps = [
   "overflowX",
   "overflowY",
   "fontSize",
+  "fontFamily",
   "textAlign",
   "flex",
   "flexShrink",
@@ -93,7 +95,7 @@ const styleProps = [
   "aspectRatio",
 ];
 
-function styleConverter({
+const styleConverter = ({
   mb,
   mt,
   ml,
@@ -117,6 +119,7 @@ function styleConverter({
   overflowX,
   overflowY,
   fontSize,
+  fontFamily,
   textAlign,
   flex,
   flexShrink,
@@ -132,7 +135,7 @@ function styleConverter({
   whiteSpace,
   aspectRatio,
   theme,
-}: CustomStyles & { theme: Theme }) {
+}: CustomStyles & { theme: Theme }) => {
   return {
     "&&&": {
       margin: m,
@@ -154,6 +157,7 @@ function styleConverter({
       overflowX,
       overflowY,
       fontSize,
+      fontFamily,
       textAlign,
       flex,
       flexShrink,
@@ -180,7 +184,7 @@ function styleConverter({
       },
     },
   };
-}
+};
 
 export const withCss = <T extends object>(
   Component: React.ComponentType<T>,

@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   RngToolForm,
   RngToolSubmit,
   Field,
@@ -8,9 +8,8 @@ import {
 } from "~/components";
 import {
   capPrecision,
-  fromDecimalString,
-  toDecimalString,
-  ZodDecimalString,
+  ZodSerializedDecimal,
+  ZodSerializedOptional,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
 import { rngTools, ZodConsole } from "~/rngTools";
@@ -30,24 +29,24 @@ const timerStateAtom = atomWithPersistence("gen4Timer", TimerStateSchema, {
 
 const FormStateSchema = z.object({
   console: ZodConsole,
-  minTimeMs: ZodDecimalString,
-  calibratedDelay: ZodDecimalString,
-  calibratedSeconds: ZodDecimalString,
-  targetDelay: ZodDecimalString,
-  targetSeconds: ZodDecimalString,
-  delayHit: z.union([ZodDecimalString, z.literal("")]),
+  minTimeMs: ZodSerializedDecimal,
+  calibratedDelay: ZodSerializedDecimal,
+  calibratedSeconds: ZodSerializedDecimal,
+  targetDelay: ZodSerializedDecimal,
+  targetSeconds: ZodSerializedDecimal,
+  delayHit: ZodSerializedOptional(ZodSerializedDecimal),
 });
 
-type FormState = z.infer<typeof FormStateSchema>;
+export type FormState = z.infer<typeof FormStateSchema>;
 
 const defaultValues: FormState = {
   console: "NdsSlot1",
-  minTimeMs: toDecimalString(14000),
-  calibratedDelay: toDecimalString(500),
-  calibratedSeconds: toDecimalString(14),
-  targetDelay: toDecimalString(600),
-  targetSeconds: toDecimalString(50),
-  delayHit: "",
+  minTimeMs: 14000,
+  calibratedDelay: 500,
+  calibratedSeconds: 14,
+  targetDelay: 600,
+  targetSeconds: 50,
+  delayHit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -72,27 +71,33 @@ const fields: Field[] = [
   },
   {
     label: "Min Time (ms)",
-    input: <FormikInput<FormState> name="minTimeMs" />,
+    input: <FormikNumberInput<FormState> name="minTimeMs" numType="float" />,
   },
   {
     label: "Calibrated Delay",
-    input: <FormikInput<FormState> name="calibratedDelay" />,
+    input: (
+      <FormikNumberInput<FormState> name="calibratedDelay" numType="float" />
+    ),
   },
   {
     label: "Calibrated Seconds",
-    input: <FormikInput<FormState> name="calibratedSeconds" />,
+    input: (
+      <FormikNumberInput<FormState> name="calibratedSeconds" numType="float" />
+    ),
   },
   {
     label: "Target Delay",
-    input: <FormikInput<FormState> name="targetDelay" />,
+    input: <FormikNumberInput<FormState> name="targetDelay" numType="float" />,
   },
   {
     label: "Target Seconds",
-    input: <FormikInput<FormState> name="targetSeconds" />,
+    input: (
+      <FormikNumberInput<FormState> name="targetSeconds" numType="float" />
+    ),
   },
   {
     label: "Delay Hit",
-    input: <FormikInput<FormState> name="delayHit" />,
+    input: <FormikNumberInput<FormState> name="delayHit" numType="float" />,
   },
 ];
 
@@ -102,18 +107,18 @@ export const Gen4Timer = () => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts, formik) => {
+      let updatedOpts = opts;
       let settings = {
         console: opts.console,
-        min_time_ms: fromDecimalString(opts.minTimeMs) ?? 0,
-        calibrated_delay: fromDecimalString(opts.calibratedDelay) ?? 0,
-        target_delay: fromDecimalString(opts.targetDelay) ?? 0,
-        target_second: fromDecimalString(opts.targetSeconds) ?? 0,
-        calibrated_second: fromDecimalString(opts.calibratedSeconds) ?? 0,
+        min_time_ms: opts.minTimeMs,
+        calibrated_delay: opts.calibratedDelay,
+        target_delay: opts.targetDelay,
+        target_second: opts.targetSeconds,
+        calibrated_second: opts.calibratedSeconds,
       };
 
-      if (opts.delayHit !== "") {
-        const delayHit = fromDecimalString(opts.delayHit) ?? 0;
-        settings = await rngTools.calibrate_gen4_timer(settings, delayHit);
+      if (opts.delayHit != null) {
+        settings = await rngTools.calibrate_gen4_timer(settings, opts.delayHit);
         settings = {
           console: opts.console,
           min_time_ms: capPrecision(settings.min_time_ms),
@@ -122,15 +127,16 @@ export const Gen4Timer = () => {
           target_delay: capPrecision(settings.target_delay),
           target_second: capPrecision(settings.target_second),
         };
-        formik.setValues({
+        updatedOpts = {
           console: settings.console,
-          minTimeMs: toDecimalString(settings.min_time_ms),
-          calibratedDelay: toDecimalString(settings.calibrated_delay),
-          calibratedSeconds: toDecimalString(settings.calibrated_second),
-          targetDelay: toDecimalString(settings.target_delay),
-          targetSeconds: toDecimalString(settings.target_second),
-          delayHit: "",
-        });
+          minTimeMs: settings.min_time_ms,
+          calibratedDelay: settings.calibrated_delay,
+          calibratedSeconds: settings.calibrated_second,
+          targetDelay: settings.target_delay,
+          targetSeconds: settings.target_second,
+          delayHit: null,
+        };
+        formik.setValues(updatedOpts);
       }
 
       const milliseconds = await rngTools.create_gen4_timer(settings);
@@ -138,7 +144,7 @@ export const Gen4Timer = () => {
         milliseconds: [...milliseconds],
         minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       });
-      onUpdate(opts);
+      onUpdate(updatedOpts);
     },
     [onUpdate, setTimer],
   );

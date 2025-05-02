@@ -36,3 +36,6 @@ target/
 
 # RustRover
 .idea/
+
+# Cypress Screenshots
+cypress/screenshots

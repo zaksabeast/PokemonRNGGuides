@@ -1,82 +1,75 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
   Field,
   FormikSelect,
 } from "~/components";
-import { rngTools, MirageSpot, Species } from "~/rngTools";
-import {
-  DecimalString,
-  fromDecimalString,
-  fromHexString,
-  HexString,
-  toDecimalString,
-  toHexString,
-} from "~/utils/number";
-import dayjs, { Dayjs } from "dayjs";
-import { formatRngDate, toRngDate } from "~/utils/time";
+import { rngTools, MirageSpot } from "~/rngTools";
+import { formatRngDate, rngDate, RngDateSchema } from "~/utils/time";
 import { FormikDatePicker } from "~/components/datePicker";
+import { z } from "zod";
+import { HexSchema } from "~/utils/number";
+import { species } from "~/types/species";
 
 const columns: ResultColumn<MirageSpot>[] = [
   {
     title: "Date",
     dataIndex: "date",
-    key: "date",
     render: (date) => formatRngDate(date),
   },
   {
     title: "Name",
     dataIndex: "name",
-    key: "name",
   },
   {
     title: "Pokemon",
     dataIndex: "pokemon",
-    key: "pokemon",
     render: (pokemon) => pokemon.join(", "),
   },
 ];
 
-type FormState = {
-  seed: HexString;
-  tid: DecimalString;
-  startDate: Dayjs;
-  maxAdvances: DecimalString;
-  filterSpecies: Species;
-};
+const Validator = z.object({
+  seed: HexSchema(0xffffffff),
+  tid: z.number().int().min(0).max(65535),
+  start_date: RngDateSchema,
+  max_advances: z.number().int().min(0),
+  filter_species: z.enum(species).nullable(),
+});
+
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  seed: toHexString(0),
-  tid: toDecimalString(0),
-  startDate: dayjs(),
-  maxAdvances: toDecimalString(1000),
-  filterSpecies: "None",
+  seed: 0,
+  tid: 0,
+  start_date: rngDate(),
+  max_advances: 1000,
+  filter_species: null,
 };
 
 const fields: Field[] = [
   {
     label: "Seed",
-    input: <FormikInput<FormState> name="seed" />,
+    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
   },
   {
     label: "TID",
-    input: <FormikInput<FormState> name="tid" />,
+    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
   },
   {
     label: "Save Date",
-    input: <FormikDatePicker<FormState> name="startDate" />,
+    input: <FormikDatePicker<FormState> name="start_date" />,
   },
   {
     label: "Species",
     input: (
-      <FormikSelect<FormState, "filterSpecies">
-        name="filterSpecies"
+      <FormikSelect<FormState, "filter_species">
+        name="filter_species"
         options={(
           [
-            "None",
+            null,
             "Audino",
             "Boldore",
             "Cherrim",
@@ -117,13 +110,19 @@ const fields: Field[] = [
             "Xatu",
             "Zebstrika",
           ] as const
-        ).map((species) => ({ label: species, value: species }))}
+        ).map((species) => ({ label: species ?? "None", value: species }))}
       />
     ),
   },
   {
     label: "Max Advances",
-    input: <FormikInput<FormState> name="maxAdvances" disabled />,
+    input: (
+      <FormikNumberInput<FormState>
+        name="max_advances"
+        disabled
+        numType="decimal"
+      />
+    ),
   },
 ];
 
@@ -131,28 +130,7 @@ export const OrAsMirageSpot = () => {
   const [results, setResults] = React.useState<MirageSpot[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const seed = fromHexString(opts.seed);
-    const tid = fromDecimalString(opts.tid);
-    const startDate = toRngDate(opts.startDate);
-    const maxAdvances = fromDecimalString(opts.maxAdvances);
-
-    if (
-      seed == null ||
-      tid == null ||
-      startDate == null ||
-      maxAdvances == null
-    ) {
-      return;
-    }
-
-    const results = await rngTools.generate_mirage_spots({
-      seed,
-      tid,
-      start_date: startDate,
-      max_advances: maxAdvances,
-      filter_species:
-        opts.filterSpecies === "None" ? undefined : opts.filterSpecies,
-    });
+    const results = await rngTools.generate_mirage_spots(opts);
 
     setResults(results);
   }, []);
@@ -163,6 +141,7 @@ export const OrAsMirageSpot = () => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_mirage_spot"
     />

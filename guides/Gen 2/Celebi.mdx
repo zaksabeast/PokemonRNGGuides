@@ -1,5 +1,6 @@
 ---
-- title: "Celebi"
+- title: "Celebi in Crystal"
+  navDrawerTitle: "Celebi RNG"
   description: "How to get a shiny Fairy"
   slug: "gen2-celebi"
   category: "Gold, Silver, Crystal"
@@ -11,10 +12,19 @@
   category: "Gold, Silver, Crystal"
   tag: "cfw"
   addedOn: "2025-03-27"
-  hideFromNavDrawer: true
+  translation:
+    enSlug: "gen2-celebi"
+    language: "zh"
+- title: "Celebi"
+  description: "How to get a shiny Fairy"
+  slug: "es-gen2-celebi"
+  category: "Gold, Silver, Crystal"
+  tag: "cfw"
+  addedOn: "2025-04-23"
+  translation:
+    enSlug: "gen2-celebi"
+    language: "es"
 ---
-
-<LanguageButton enSlug="/gen2-celebi" zhSlug="/zh-gen2-celebi" />
 
 <ShowIf slug="/gen2-celebi">
 
@@ -36,16 +46,16 @@
 ## Written guide
 
 1. Save in front of the Celebi shrine, in case you need to reset the game.
-1. Press "A" to interact with the shrine and stop when you see `Player put in the GS Ball.`.
-1. Go into PokeReader's RNG screen and wait until it stops saying `Finding ADIV Index` and `Finding SDIV Index`.
-1. Pause PokeReader with `L + R`.
-1. Type the information on PokeReader into the RNG Tool below and press `Generate`.
-1. Advance the game with `L` until PokeReader's `Advance` number matches one of the generated `Advance` columns below.
-1. (Optional) Create a save state if you're on an emulator, in case you need to reset.
-1. When you land on your desired advance, press `A` to accept the Pokemon. **Do not press anything else until you see Celebi!**
-1. If you got your Pokemon, congrats! If not, keep trying!
+2. Press "A" to interact with the shrine and stop when you see `Player put in the GS Ball.`.
+3. Go into PokeReader's RNG screen and wait until it stops saying `Finding ADIV Index` and `Finding SDIV Index`.
+4. Pause PokeReader with `L + R`.
+5. Type the information on PokeReader into the RNG Tool below and press `Generate`.
+6. Advance the game with `L` until PokeReader's `Advance` number matches one of the generated `Advance` columns below.
+7. (Optional) Create a save state if you're on an emulator, in case you need to reset.
+8. When you land on your desired advance, press `A` to accept the Pokemon. **Do not press anything else until you see Celebi!**
+9. If you got your Pokemon, congrats! If not, keep trying!
 
-### Helpful tips:
+### Helpful tips
 
 - This is unstable! Expect it to take many tries!
 - Only use `L + R` to pause and advance in Gen 2, not `Start + Select`. `Start + Select` will mess up the RNG!
@@ -62,7 +72,8 @@
 - All the people who have looked into Gen 2 over the years: Admiral Fish, EzPzStreamz, Zep, Real, Amab, wwwwwwzx, Vlad, Bambo_Rambo, Lincoln, Shiny_Sylveon, and Zaksabeast.
 - Zaksabeast for coming up with the current RNG method and building the tool.
 - Shiny_Sylveon, El Terapagos Mexicano, and Lord Timothy on Discord for helping test.
-- Chinese translation: Hakuhiro.
+- Hakuhiro for the Chinese translation.
+- El Terapagos Mexicano for the Spanish translation.
 
 </ShowIf>
 
@@ -108,6 +119,57 @@
 - All the people who have looked into Gen 2 over the years: Admiral Fish, EzPzStreamz, Zep, Real, Amab, wwwwwwzx, Vlad, Bambo_Rambo, Lincoln, Shiny_Sylveon, and Zaksabeast.
 - Zaksabeast for coming up with the current RNG method and building the tool.
 - Shiny_Sylveon, El Terapagos Mexicano, and Lord Timothy on Discord for helping test.
-- 中文翻译：Hakuhiro/白白不是公主。
+- 中文翻译：Hakuhiro/白希洛。
+
+</ShowIf>
+
+<ShowIf slug="/es-gen2-celebi">
+
+<Alert
+  showIcon
+  type="warning"
+  message="¡Altamente experimental!"
+  description="RNG de Gen 2 todavía está en sus primeros días. ¡Es normal que necesite múltiples intentos!"
+/>
+
+## Herramientas
+
+- [PokeReader](/install-pokereader)
+
+## Video guía
+
+<YouTubeVideo src="https://www.youtube.com/embed/wTpI7MV_f4U?si=0qF9bFb0HrDyv2zw" />
+
+## Guía escrita
+
+1. Guarda frente a Celebi en su santuario, en caso de que necesites resetear el juego.
+2. Presiona "A" para interactuar con el santuario y detente cuando veas `Jugador coloca la GS Ball`.
+3. Visualiza la ventana del RNG de Pokereader y espera hasta que no diga mas `Finding ADIV Index` y `Finding SDIV Index`.
+4. Pausa el Pokereader con `L + R`.
+5. Escribe la información del Pokereader en la herramienta RNG aquí abajo y presiona `Generar`.
+6. Avanza el juego con `L` hasta que el número de `Advance` en el Pokereader coincida con algún `Avance` generado en las columnas de abajo.
+7. (Opcional) Crea un estado de guardado si estas en emulador, en caso de que necesites resetear.
+8. Cuando caes en un avance deseado, presiona `A` para aceptar el Pokémon. ¡No presiones nada mas hasta que veas a Celebi!
+9. Si conseguiste a tu Pokémon, ¡felicidades!, si no, ¡sigue intentando!
+
+### Consejos útiles
+
+- ¡Esto es inestable! ¡Espera que tome varios intentos!
+- Solo usa `L + R` para pausar y avanzar en Gen 2, no `Start + Select`. ¡`Start + Select` estropeara el RNG!
+- No presiones ningún botón en el lapso en que presiones `A` y veas a Celebi (ejemplo, no cambies la ventana de RNG a la de Pokémon en el Pokereader). ¡Presionar botones estropeara el RNG!
+- El gameboy necesita más de un frame de video para registrar cuando presionas un botón, pero la 3ds lo nota inmediatamente.
+- Presionar `A` demasiado rápido reanudara el juego sin iniciar el encuentro.
+- ¡Presionar `A` por demasiado tiempo podría estropear el RNG! Presiónalo por más de un frame, pero no más.
+
+## RNG Tool
+
+<Gen2PokemonRng type="celebi" language="es" />
+
+## Créditos
+
+- Todas las personas quienes han investigado Gen 2 a través de los años: Admiral Fish, EzPzStreamz, Zep, Real, Amab, wwwwwwzx, Vlad, Bambo_Rambo, Lincoln, Shiny_Sylveon, and Zaksabeast.
+- Zaksabeast por elaborar el método actual de rng y construir la herramienta.
+- Shiny_Sylveon, El Terapagos Mexicano, y Lord Timothy en Discord por ayudar realizando pruebas.
+- El Terapagos Mexicano por ayudar con la traducción al español.
 
 </ShowIf>

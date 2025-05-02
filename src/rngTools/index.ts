@@ -8,13 +8,29 @@ import RngToolsWorker from "./worker?worker";
 import { wrap } from "comlink";
 
 import { z } from "zod";
+import * as tst from "ts-toolbelt";
+import { AddNullToList } from "~/types/utils";
 
-export const rngTools = wrap<typeof RngTools>(new RngToolsWorker());
+type RngToolsModules = typeof RngTools;
 
-export const ZodConsole = z.union([
-  z.literal("NdsSlot1"),
-  z.literal("Dsi"),
-  z.literal("ThreeDs"),
-  z.literal("Gba"),
-  z.literal("NdsSlot2"),
-]);
+type AdjustFunctionArgs<Fn extends tst.F.Function> = Fn extends (
+  ...args: infer Args
+) => infer Ret
+  ? (...args: AddNullToList<Args>) => Ret
+  : never;
+
+type AdjustAllFunctionArgs<T> = {
+  [K in keyof T]: T[K] extends tst.F.Function ? AdjustFunctionArgs<T[K]> : T[K];
+};
+
+type AdjustedRngTools = AdjustAllFunctionArgs<RngToolsModules>;
+
+export const rngTools = wrap<AdjustedRngTools>(new RngToolsWorker());
+
+export const ZodConsole = z.enum([
+  "NdsSlot1",
+  "Dsi",
+  "ThreeDs",
+  "Gba",
+  "NdsSlot2",
+]) satisfies z.Schema<RngTools.Console>;

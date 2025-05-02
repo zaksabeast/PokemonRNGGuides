@@ -1,9 +1,11 @@
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { Select } from "./select";
 import { Flex } from "./flex";
-import { Input } from "./input";
-import { useFormikContext } from "formik";
+import { NumberInput } from "./numberInput";
+import { useField } from "formik";
 import { IdFilter } from "~/types/id";
+import * as tst from "ts-toolbelt";
+import { get } from "lodash-es";
 
 type FilterType = IdFilter["type"];
 
@@ -30,8 +32,10 @@ export const FormikIdFilter = <FormState extends GenericForm>({
   name,
   optional = false,
 }: Props<FormState>) => {
-  const formik = useFormikContext<Record<typeof name, IdFilter>>();
-  const value = formik.values[name];
+  const [{ value }, { error }, { setValue, setTouched }] =
+    useField<tst.O.Nullable<IdFilter, "value0" | "value1">>(name);
+  const value0Error = error == null ? undefined : get(error, "value0");
+  const value1Error = error == null ? undefined : get(error, "value1");
 
   return (
     <Flex vertical gap={10}>
@@ -40,30 +44,37 @@ export const FormikIdFilter = <FormState extends GenericForm>({
         options={optional ? optionalFilterOptions : filterOptions}
         value={value.type}
         onChange={(value) => {
-          formik.setFieldValue(name, { type: value, value0: "", value1: "" });
+          setValue({ type: value, value0: undefined, value1: undefined });
+          setTouched(true, false);
         }}
       />
       {value.type !== "none" && (
-        <Input
+        <NumberInput
           fullFlex
-          value={value.value0}
-          onChange={(event) => {
-            formik.setFieldValue(name, {
+          numType={value.type === "pid" ? "hex" : "decimal"}
+          value={value.value0 ?? undefined}
+          errorMessage={value0Error}
+          onChange={(fieldValue) => {
+            setValue({
               ...value,
-              value0: event.target.value,
+              value0: fieldValue,
             });
+            setTouched(true);
           }}
         />
       )}
       {(value.type === "tidpid" || value.type === "tidsid") && (
-        <Input
+        <NumberInput
           fullFlex
+          numType={value.type === "tidpid" ? "hex" : "decimal"}
           value={value.value1}
-          onChange={(event) => {
-            formik.setFieldValue(name, {
+          errorMessage={value1Error}
+          onChange={(fieldValue) => {
+            setValue({
               ...value,
-              value1: event.target.value,
+              value1: fieldValue,
             });
+            setTouched(true);
           }}
         />
       )}

@@ -18,20 +18,28 @@ const readAsArrayBuffer = (file: File): Promise<Uint8Array> => {
 type Props = {
   id: string;
   accept?: string;
+  flex?: number;
   onUpload: (files: Uint8Array[]) => void;
 };
 
-export const FileUpload = ({ id, accept, onUpload }: Props) => {
+export const FileUpload = ({ id, accept, flex, onUpload }: Props) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = React.useState<string | null>(null);
 
   const onFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files == null) {
+      setFileName(null);
       return;
     }
     const promises = Array.from(files).map(readAsArrayBuffer);
     const result = await Promise.all(promises);
     onUpload(result);
+    setFileName(files[0].name);
+    if (inputRef.current) {
+      // Clear the file input value to allow re-uploading the same file
+      inputRef.current.value = "";
+    }
   };
 
   return (
@@ -47,10 +55,11 @@ export const FileUpload = ({ id, accept, onUpload }: Props) => {
       />
       <Button
         type="primary"
+        flex={flex}
         trackerId={`upload_${id}`}
         onClick={() => inputRef.current?.click()}
       >
-        Upload!
+        {fileName || "Upload!"}
       </Button>
     </>
   );

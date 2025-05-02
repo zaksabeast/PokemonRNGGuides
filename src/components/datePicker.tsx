@@ -3,15 +3,23 @@ import {
   TimePickerProps as AntdTimePickerProps,
   DatePicker as AntdDatePicker,
   DatePickerProps as AntdDatePickerProps,
+  Tooltip,
 } from "antd";
 import dayjs, { Dayjs } from "dayjs";
-import { get } from "lodash-es";
 import styled from "@emotion/styled";
-import { useFormikContext } from "formik";
+import { useField } from "formik";
 import * as tst from "ts-toolbelt";
 import { match, P } from "ts-pattern";
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
-import { rngChronoFormat } from "~/utils/time";
+import {
+  rngChronoFormat,
+  toRngDate,
+  fromRngDate,
+  RngTime,
+  fromRngTime,
+  toRngTime,
+} from "~/utils/time";
+import { RngDate } from "~/rngTools";
 
 type DatePickerContainerProps = { fullWidth?: boolean };
 
@@ -79,10 +87,11 @@ const TimePicker = ({
 
 type FormikTimePickerProps<FormState extends GenericForm> = Omit<
   TimePickerProps,
-  "onChange"
+  "onChange" | "value"
 > & {
-  name: GuaranteeFormNameType<FormState, Dayjs | null>;
-  onChange?: (date: Dayjs | null) => void;
+  name: GuaranteeFormNameType<FormState, RngTime | null>;
+  value?: RngTime;
+  onChange?: (date: RngTime | null) => void;
 };
 
 export const FormikTimePicker = <FormState extends GenericForm>({
@@ -90,19 +99,25 @@ export const FormikTimePicker = <FormState extends GenericForm>({
   onChange,
   ...props
 }: FormikTimePickerProps<FormState>) => {
-  const { values, setFieldValue } = useFormikContext<FormState>();
-  const _formDate = get(values, name);
-  const dateValue: Dayjs | null = dayjs.isDayjs(_formDate) ? _formDate : null;
+  const [{ value: formTime, onBlur }, { error, touched }, { setValue }] =
+    useField<RngTime | null>(name);
+  const value = formTime == null ? null : fromRngTime(formTime);
 
   return (
-    <TimePicker
-      {...props}
-      value={dateValue}
-      onChange={(date) => {
-        setFieldValue(name, date);
-        onChange?.(date);
-      }}
-    />
+    <Tooltip placement="top" color="red" title={error}>
+      <TimePicker
+        {...props}
+        name={name}
+        value={value}
+        onBlur={onBlur}
+        status={error && touched ? "error" : ""}
+        onChange={(date) => {
+          const rngTime = date == null ? null : toRngTime(date);
+          setValue(rngTime);
+          onChange?.(rngTime ?? null);
+        }}
+      />
+    </Tooltip>
   );
 };
 
@@ -157,10 +172,11 @@ export const DatePicker = ({
 
 type FormikDatePickerProps<FormState extends GenericForm> = Omit<
   DatePickerProps,
-  "onChange"
+  "onChange" | "value"
 > & {
-  name: GuaranteeFormNameType<FormState, Dayjs | null>;
-  onChange?: (date: Dayjs | null) => void;
+  name: GuaranteeFormNameType<FormState, RngDate | null>;
+  value?: RngDate;
+  onChange?: (date: RngDate | null) => void;
 };
 
 export const FormikDatePicker = <FormState extends GenericForm>({
@@ -170,26 +186,31 @@ export const FormikDatePicker = <FormState extends GenericForm>({
   onChange,
   ...props
 }: FormikDatePickerProps<FormState>) => {
-  const { values, setFieldValue } = useFormikContext<FormState>();
-  const _formDate = get(values, name);
-  const formDate: Dayjs | null = dayjs.isDayjs(_formDate) ? _formDate : null;
+  const [{ value: formDate, onBlur }, { error, touched }, { setValue }] =
+    useField<RngDate | null>(name);
   const dateValue = match({ allowClear, formDate })
-    .with({ formDate: P.not(null) }, (matched) => matched.formDate)
+    .with({ formDate: P.not(null) }, (matched) => fromRngDate(matched.formDate))
     .with({ allowClear: true, formDate: null }, () => null)
     .with({ allowClear: P.not(P.nullish), formDate: null }, () => dayjs())
     .with({ allowClear: undefined, formDate: null }, () => null)
     .exhaustive();
 
   return (
-    <DatePicker
-      {...props}
-      allowClear={allowClear}
-      fullWidth={fullWidth}
-      value={dateValue}
-      onChange={(date) => {
-        setFieldValue(name, date);
-        onChange?.(date);
-      }}
-    />
+    <Tooltip placement="top" color="red" title={error}>
+      <DatePicker
+        {...props}
+        name={name}
+        allowClear={allowClear}
+        fullWidth={fullWidth}
+        value={dateValue}
+        onBlur={onBlur}
+        status={error && touched ? "error" : ""}
+        onChange={(date) => {
+          const rngDate = date == null ? null : toRngDate(date);
+          setValue(rngDate);
+          onChange?.(rngDate ?? null);
+        }}
+      />
+    </Tooltip>
   );
 };

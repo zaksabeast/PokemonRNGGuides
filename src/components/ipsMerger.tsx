@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex } from "./flex";
-import { Alert } from "antd";
+import { Alert } from "~/components";
 import { FileUpload } from "./fileUpload";
 import { DownloadButton } from "./downloadButton";
 

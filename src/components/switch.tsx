@@ -1,8 +1,11 @@
-import { Switch as AntdSwitch, SwitchProps as AntdSwitchProps } from "antd";
-import { useFormikContext } from "formik";
+import {
+  Switch as AntdSwitch,
+  SwitchProps as AntdSwitchProps,
+  Tooltip,
+} from "antd";
+import { useField } from "formik";
 import * as tst from "ts-toolbelt";
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
-import { get } from "lodash-es";
 import { withCss } from "./withCss";
 
 export const Switch = withCss(AntdSwitch);
@@ -26,13 +29,20 @@ export const FormikSwitch = <
   name,
   ...props
 }: FormikSwitchProps<FormState, FieldKey>) => {
-  const formik = useFormikContext<FormState>();
-  const value = get(formik.values, name);
+  const [{ value }, { error }, { setValue, setTouched }] =
+    useField<boolean>(name);
+
   return (
-    <Switch
-      onChange={(value) => formik.setFieldValue(name, value)}
-      value={Boolean(value)}
-      {...props}
-    />
+    <Tooltip color="red" title={error} placement="top">
+      <Switch
+        data-name={name}
+        onChange={(updatedValue) => {
+          setValue(updatedValue);
+          setTouched(true, false);
+        }}
+        value={value}
+        {...props}
+      />
+    </Tooltip>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   FormikSelect,
   IvInput,
@@ -8,65 +8,43 @@ import {
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import { rngTools, Ivs, Gen3PickupMethod } from "~/rngTools";
+import { rngTools, Egg3PickupState } from "~/rngTools";
+import { maxIvs, minIvs } from "~/types/ivs";
 import {
-  HexString,
-  DecimalString,
-  fromDecimalString,
-  toDecimalString,
-  toHexString,
-  fromHexString,
-} from "~/utils/number";
+  flattenIvs,
+  FlattenIvs,
+  ivColumns,
+} from "~/rngToolsUi/shared/ivColumns";
+import { z } from "zod";
+import { IvSchema } from "~/components/ivInput";
+import { HexSchema } from "~/utils/number";
 
-type Result = {
-  advance: number;
-} & Ivs;
+type Result = FlattenIvs<Egg3PickupState>;
 
 const columns: ResultColumn<Result>[] = [
-  { title: "Advance", dataIndex: "advance", key: "advance" },
-  { title: "HP", dataIndex: "hp", key: "hp" },
-  { title: "Atk", dataIndex: "atk", key: "atk" },
-  { title: "Def", dataIndex: "def", key: "def" },
-  { title: "SpA", dataIndex: "spa", key: "spa" },
-  { title: "SpD", dataIndex: "spd", key: "spd" },
-  { title: "Spe", dataIndex: "spe", key: "spe" },
+  { title: "Advance", dataIndex: "advance" },
+  ...ivColumns,
 ];
 
-type FormState = {
-  delay: DecimalString;
-  seed: HexString;
-  initial_advances: DecimalString;
-  max_advances: DecimalString;
-  method: Gen3PickupMethod;
-  parent1_ivs: Ivs;
-  parent2_ivs: Ivs;
-  filter_min_ivs: Ivs;
-  filter_max_ivs: Ivs;
-};
+const Validator = z.object({
+  delay: z.number().int().min(0),
+  seed: HexSchema(0xffffffff),
+  initial_advances: z.number().int().min(0),
+  max_advances: z.number().int().min(0),
+  method: z.enum(["EmeraldBred", "EmeraldBredSplit", "EmeraldBredAlternate"]),
+  parent1_ivs: IvSchema,
+  parent2_ivs: IvSchema,
+  filter_min_ivs: IvSchema,
+  filter_max_ivs: IvSchema,
+});
 
-const minIvs: Ivs = {
-  hp: 0,
-  atk: 0,
-  def: 0,
-  spa: 0,
-  spd: 0,
-  spe: 0,
-};
-
-const maxIvs: Ivs = {
-  hp: 31,
-  atk: 31,
-  def: 31,
-  spa: 31,
-  spd: 31,
-  spe: 31,
-};
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  delay: toDecimalString(3),
-  seed: toHexString(0),
-  initial_advances: toDecimalString(100),
-  max_advances: toDecimalString(1000),
+  delay: 3,
+  seed: 0,
+  initial_advances: 100,
+  max_advances: 1000,
   method: "EmeraldBred",
   parent1_ivs: maxIvs,
   parent2_ivs: maxIvs,
@@ -77,19 +55,23 @@ const initialValues: FormState = {
 const fields: Field[] = [
   {
     label: "Seed",
-    input: <FormikInput<FormState> name="seed" />,
+    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
   },
   {
     label: "Initial advances",
-    input: <FormikInput<FormState> name="initial_advances" />,
+    input: (
+      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
+    ),
   },
   {
     label: "Max advances",
-    input: <FormikInput<FormState> name="max_advances" />,
+    input: (
+      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+    ),
   },
   {
     label: "Delay",
-    input: <FormikInput<FormState> name="delay" />,
+    input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
   },
   {
     label: "Parent 1 IVs",
@@ -131,26 +113,8 @@ export const EmeraldPickupEgg = ({ lua = false }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const initialAdvances = fromDecimalString(opts.initial_advances);
-      const maxAdvances = fromDecimalString(opts.max_advances);
-      const seed = fromHexString(opts.seed);
-      const delay = fromDecimalString(opts.delay);
-
-      if (
-        initialAdvances == null ||
-        maxAdvances == null ||
-        seed == null ||
-        delay == null
-      ) {
-        return;
-      }
-
       const results = await rngTools.emerald_egg_pickup_states({
         ...opts,
-        seed,
-        delay,
-        initial_advances: initialAdvances,
-        max_advances: maxAdvances,
         parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
         lua_adjustment: lua,
         filter: {
@@ -159,12 +123,7 @@ export const EmeraldPickupEgg = ({ lua = false }: Props) => {
         },
       });
 
-      setResults(
-        results.map((result) => ({
-          advance: result.advance,
-          ...result.ivs,
-        })),
-      );
+      setResults(results.map(flattenIvs));
     },
     [lua],
   );
@@ -175,7 +134,9 @@ export const EmeraldPickupEgg = ({ lua = false }: Props) => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
+      formContainerId="emerald_pickup_egg_form"
       submitTrackerId="generate_emerald_pickup_egg"
     />
   );

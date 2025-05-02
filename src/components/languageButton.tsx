@@ -5,8 +5,7 @@ import { Icon } from "./icons";
 import { match, P } from "ts-pattern";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { Route } from "~/routes/defs";
-
-type LanguageKey = "en" | "es" | "zh";
+import { LanguageKey } from "~/guides";
 
 type LanguageItem = {
   key: LanguageKey;
@@ -33,12 +32,16 @@ const languages: LanguageItem[] = [
 ];
 
 type Props = {
-  enSlug: Route;
-  esSlug?: Route;
-  zhSlug?: Route;
+  en: Route;
+  es?: Route;
+  zh?: Route;
 };
 
-export const LanguageButton = ({ enSlug, esSlug, zhSlug }: Props) => {
+export const LanguageButton = ({
+  en: enSlug,
+  es: esSlug,
+  zh: zhSlug,
+}: Props) => {
   const [route, setLocation] = useActiveRoute();
 
   const setLanguageKey = (key: string) => {

@@ -1,20 +1,14 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
   Field,
 } from "~/components";
 import { rngTools } from "~/rngTools";
-import {
-  DecimalString,
-  fromDecimalString,
-  fromHexString,
-  HexString,
-  toDecimalString,
-  toHexString,
-} from "~/utils/number";
+import { HexSchema } from "~/utils/number";
+import { z } from "zod";
 
 type RngState = {
   advance: number;
@@ -26,66 +20,73 @@ const columns: ResultColumn<RngState>[] = [
   {
     title: "Advance",
     dataIndex: "advance",
-    key: "advance",
   },
   {
     title: "State",
     dataIndex: "rand",
-    key: "rand",
     monospace: true,
     render: (rand) => rand.toString(16).padStart(4, "0"),
   },
   {
     title: "Div",
     dataIndex: "div",
-    key: "div",
     monospace: true,
     render: (div) => div.toString(16).padStart(4, "0"),
   },
 ];
 
-type FormState = {
-  div: HexString;
-  adivIndex: DecimalString;
-  sdivIndex: DecimalString;
-  state: HexString;
-  startAdvance: DecimalString;
-  advanceCount: DecimalString;
-};
+const Validator = z.object({
+  div: HexSchema(0xffff),
+  adivIndex: z.number().int().min(0).max(0x4000),
+  sdivIndex: z.number().int().min(0).max(0x4000),
+  state: HexSchema(0xffff),
+  startAdvance: z.number().int().min(0),
+  advanceCount: z.number().int().min(0),
+});
+
+type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  div: toHexString(0),
-  adivIndex: toDecimalString(0),
-  sdivIndex: toDecimalString(0),
-  state: toHexString(0),
-  startAdvance: toDecimalString(0),
-  advanceCount: toDecimalString(10000),
+  div: 0,
+  adivIndex: 0,
+  sdivIndex: 0,
+  state: 0,
+  startAdvance: 0,
+  advanceCount: 10000,
 };
 
 const fields: Field[] = [
   {
     label: "ADiv Index",
-    input: <FormikInput<FormState> name="adivIndex" />,
+    input: <FormikNumberInput<FormState> name="adivIndex" numType="decimal" />,
   },
   {
     label: "SDiv Index",
-    input: <FormikInput<FormState> name="sdivIndex" />,
+    input: <FormikNumberInput<FormState> name="sdivIndex" numType="decimal" />,
   },
   {
     label: "Div",
-    input: <FormikInput<FormState> name="div" />,
+    input: <FormikNumberInput<FormState> name="div" numType="hex" />,
   },
   {
     label: "State",
-    input: <FormikInput<FormState> name="state" />,
+    input: <FormikNumberInput<FormState> name="state" numType="hex" />,
   },
   {
     label: "Start Advance",
-    input: <FormikInput<FormState> name="startAdvance" />,
+    input: (
+      <FormikNumberInput<FormState> name="startAdvance" numType="decimal" />
+    ),
   },
   {
     label: "Advance Count",
-    input: <FormikInput<FormState> name="advanceCount" disabled />,
+    input: (
+      <FormikNumberInput<FormState>
+        name="advanceCount"
+        disabled
+        numType="decimal"
+      />
+    ),
   },
 ];
 
@@ -93,17 +94,14 @@ export const Gen2Rng = () => {
   const [results, setResults] = React.useState<RngState[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const div = fromHexString(opts.div) ?? 0;
-    const startAdvance = fromDecimalString(opts.startAdvance) ?? 0;
-    const advanceCount = fromDecimalString(opts.advanceCount) ?? 0;
     const results = await rngTools.gen2_generate_rng_states(
-      div >>> 8,
-      div & 0xff,
-      fromDecimalString(opts.adivIndex) ?? 0,
-      fromDecimalString(opts.sdivIndex) ?? 0,
-      fromHexString(opts.state) ?? 0,
-      startAdvance,
-      startAdvance + advanceCount,
+      opts.div >>> 8,
+      opts.div & 0xff,
+      opts.adivIndex,
+      opts.sdivIndex,
+      opts.state,
+      opts.startAdvance,
+      opts.startAdvance + opts.advanceCount,
     );
     setResults(
       results.map(({ add_div, sub_div, advance, rand }) => ({
@@ -120,6 +118,7 @@ export const Gen2Rng = () => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_gen2_rng"
     />

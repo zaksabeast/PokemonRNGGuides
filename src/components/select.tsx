@@ -1,8 +1,12 @@
 import * as tst from "ts-toolbelt";
 import { ClassNames } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Select as AntdSelect, SelectProps as AntdSelectProps } from "antd";
-import { useFormikContext } from "formik";
+import {
+  Select as AntdSelect,
+  SelectProps as AntdSelectProps,
+  Tooltip,
+} from "antd";
+import { useField } from "formik";
 import { GenericForm } from "~/types/form";
 import { Flex } from "./flex";
 
@@ -29,6 +33,7 @@ const SelectContainer = styled(Flex)({
 type SelectProps<ValueType> = {
   fullWidth?: boolean;
   fullFlex?: boolean;
+  name?: string;
 } & AntdSelectProps<ValueType>;
 
 export const Select = <ValueType,>({
@@ -57,7 +62,7 @@ export const Select = <ValueType,>({
 type FormikSelectValue<
   FormState extends GenericForm,
   FieldKey extends keyof FormState,
-> = FormState[FieldKey] extends string
+> = FormState[FieldKey] extends string | null
   ? { label: string; value: FormState[FieldKey] }[]
   : never;
 
@@ -82,13 +87,19 @@ export const FormikSelect = <
   name,
   ...props
 }: FormikSelectProps<FormState, FieldKey>) => {
-  const formik = useFormikContext<FormState>();
+  const [{ value, onBlur }, { error }, { setValue }] =
+    useField<FormState[FieldKey]>(name);
   return (
-    <Select
-      {...props}
-      onChange={(value) => formik.setFieldValue(String(name), value)}
-      // @ts-expect-error -- prop types guarantee this is correct
-      value={formik.values[name]}
-    />
+    <Tooltip color="red" title={error} placement="top">
+      <Select
+        {...props}
+        name={String(name)}
+        onBlur={onBlur}
+        // @ts-expect-error -- prop types guarantee this is correct
+        onChange={(value) => setValue(value)}
+        // @ts-expect-error -- prop types guarantee this is correct
+        value={value}
+      />
+    </Tooltip>
   );
 };

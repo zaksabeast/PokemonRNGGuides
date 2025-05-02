@@ -1,16 +1,15 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   RngToolForm,
   RngToolSubmit,
   Field,
   FormikSelect,
 } from "~/components";
 import {
-  toDecimalString,
-  fromDecimalString,
   capPrecision,
-  ZodDecimalString,
+  ZodSerializedDecimal,
+  ZodSerializedOptional,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
 import { rngTools, ZodConsole } from "~/rngTools";
@@ -34,20 +33,20 @@ const timerStateAtom = atomWithPersistence(
 
 const FormStateSchema = z.object({
   console: ZodConsole,
-  minTimeMs: ZodDecimalString,
-  targetSecond: ZodDecimalString,
-  calibration: ZodDecimalString,
-  secondHit: z.union([ZodDecimalString, z.literal("")]),
+  minTimeMs: ZodSerializedDecimal,
+  targetSecond: ZodSerializedDecimal,
+  calibration: ZodSerializedDecimal,
+  secondHit: ZodSerializedOptional(ZodSerializedDecimal),
 });
 
-type FormState = z.infer<typeof FormStateSchema>;
+export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "NdsSlot1",
-  minTimeMs: toDecimalString(14000),
-  targetSecond: toDecimalString(50),
-  calibration: toDecimalString(-95),
-  secondHit: "",
+  minTimeMs: 14000,
+  targetSecond: 50,
+  calibration: -95,
+  secondHit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -72,19 +71,19 @@ const fields: Field[] = [
   },
   {
     label: "Min Time (ms)",
-    input: <FormikInput<FormState> name="minTimeMs" />,
+    input: <FormikNumberInput<FormState> name="minTimeMs" numType="float" />,
   },
   {
     label: "Target Second",
-    input: <FormikInput<FormState> name="targetSecond" />,
+    input: <FormikNumberInput<FormState> name="targetSecond" numType="float" />,
   },
   {
     label: "Calibration",
-    input: <FormikInput<FormState> name="calibration" />,
+    input: <FormikNumberInput<FormState> name="calibration" numType="float" />,
   },
   {
     label: "Second Hit",
-    input: <FormikInput<FormState> name="secondHit" />,
+    input: <FormikNumberInput<FormState> name="secondHit" numType="float" />,
   },
 ];
 
@@ -94,18 +93,18 @@ export const Gen5StandardTimer = () => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts, formik) => {
+      let updatedOpts = opts;
       let settings = {
         console: opts.console,
-        min_time_ms: fromDecimalString(opts.minTimeMs) ?? 0,
-        target_second: fromDecimalString(opts.targetSecond) ?? 0,
-        calibration: fromDecimalString(opts.calibration) ?? 0,
+        min_time_ms: opts.minTimeMs,
+        target_second: opts.targetSecond,
+        calibration: opts.calibration,
       };
 
-      if (opts.secondHit !== "") {
-        const secondHit = fromDecimalString(opts.secondHit) ?? 0;
+      if (opts.secondHit != null) {
         settings = await rngTools.calibrate_gen5_standard_timer(
           settings,
-          secondHit,
+          opts.secondHit,
         );
         settings = {
           console: opts.console,
@@ -113,13 +112,14 @@ export const Gen5StandardTimer = () => {
           target_second: capPrecision(settings.target_second),
           calibration: capPrecision(settings.calibration),
         };
-        formik.setValues({
+        updatedOpts = {
           console: settings.console,
-          minTimeMs: toDecimalString(settings.min_time_ms),
-          targetSecond: toDecimalString(settings.target_second),
-          calibration: toDecimalString(settings.calibration),
-          secondHit: "",
-        });
+          minTimeMs: settings.min_time_ms,
+          targetSecond: settings.target_second,
+          calibration: settings.calibration,
+          secondHit: null,
+        };
+        formik.setValues(updatedOpts);
       }
 
       const milliseconds = await rngTools.create_gen5_standard_timer(settings);
@@ -127,7 +127,7 @@ export const Gen5StandardTimer = () => {
         milliseconds: [...milliseconds],
         minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       });
-      onUpdate(opts);
+      onUpdate(updatedOpts);
     },
     [onUpdate, setTimer],
   );

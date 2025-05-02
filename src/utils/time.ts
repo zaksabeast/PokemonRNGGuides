@@ -1,5 +1,20 @@
 import type { RngDate, RngDateTime } from "~/rngTools";
 import dayjs, { Dayjs } from "dayjs";
+import { z } from "zod";
+
+export const RngDateSchema: z.Schema<RngDate> = z.object({
+  year: z.number(),
+  month: z.number().int().min(1).max(12),
+  day: z.number().int().min(1).max(31),
+});
+
+export const RngTimeSchema = z.object({
+  hour: z.number().int().min(0).max(23),
+  minute: z.number().int().min(0).max(59),
+  second: z.number().int().min(0).max(59),
+});
+
+export type RngTime = z.infer<typeof RngTimeSchema>;
 
 export const rngChronoFormat = {
   monthYear: "MMM YYYY",
@@ -58,4 +73,32 @@ export const formatRngDateTime = (
     ? rngChronoFormat.dateHourMinutesSeconds
     : rngChronoFormat.dateHourMinutes;
   return fromRngDateTime(date).format(format);
+};
+
+export const rngDate = (): RngDate => {
+  return toRngDate(dayjs());
+};
+
+export const toRngTime = (date: Dayjs): RngTime => {
+  return {
+    hour: date.hour(),
+    minute: date.minute(),
+    second: date.second(),
+  };
+};
+
+export const fromRngTime = (time: RngTime): Dayjs => {
+  return dayjs(new Date(0, 0, 0, time.hour, time.minute, time.second));
+};
+
+export const rngTime = (): RngTime => {
+  return toRngTime(dayjs());
+};
+
+export const addRngTime = (date: RngDate, time: RngTime): RngDateTime => {
+  const datetime = fromRngDate(date)
+    .set("hour", time.hour)
+    .set("minute", time.minute)
+    .set("second", time.second);
+  return toRngDateTime(datetime);
 };

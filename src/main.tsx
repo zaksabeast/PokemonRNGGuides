@@ -1,11 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { App as AntdApp, ConfigProvider } from "antd";
+import { App as AntdApp } from "antd";
 import { App } from "~/app";
 import { settings } from "~/settings";
 import { initAmplitude } from "~/analytics";
-import { ThemeProvider } from "@emotion/react";
-import { antdTheme } from "~/theme";
+import { ThemeProvider } from "~/theme/provider";
 import { MDXProvider } from "@mdx-js/react";
 import { markdownComponents } from "~/markdownExports";
 import { MetaTags } from "~/components";
@@ -33,16 +32,14 @@ if (!settings.isDev) {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider theme={antdTheme}>
-      <ConfigProvider theme={antdTheme}>
-        <AntdApp>
-          <MDXProvider components={markdownComponents}>
-            <MetaTags />
-            <NeedsUpdateNotification updateSw={updateSw} />
-            <App />
-          </MDXProvider>
-        </AntdApp>
-      </ConfigProvider>
+    <ThemeProvider>
+      <AntdApp>
+        <MDXProvider components={markdownComponents}>
+          <MetaTags />
+          <NeedsUpdateNotification updateSw={updateSw} />
+          <App />
+        </MDXProvider>
+      </AntdApp>
     </ThemeProvider>
   </StrictMode>,
 );

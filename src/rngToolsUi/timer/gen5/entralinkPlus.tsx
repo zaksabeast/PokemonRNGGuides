@@ -1,16 +1,15 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   RngToolForm,
   RngToolSubmit,
   Field,
   FormikSelect,
 } from "~/components";
 import {
-  toDecimalString,
-  fromDecimalString,
   capPrecision,
-  ZodDecimalString,
+  ZodSerializedDecimal,
+  ZodSerializedOptional,
 } from "~/utils/number";
 import { Flex, MultiTimer } from "~/components";
 import {
@@ -38,32 +37,32 @@ const timerStateAtom = atomWithPersistence(
 
 const FormStateSchema = z.object({
   console: ZodConsole,
-  minTimeMs: ZodDecimalString,
-  targetDelay: ZodDecimalString,
-  targetSecond: ZodDecimalString,
-  targetAdvance: ZodDecimalString,
-  calibration: ZodDecimalString,
-  entralinkCalibration: ZodDecimalString,
-  frameCalibration: ZodDecimalString,
-  delayHit: z.union([ZodDecimalString, z.literal("")]),
-  secondHit: z.union([ZodDecimalString, z.literal("")]),
-  advanceHit: z.union([ZodDecimalString, z.literal("")]),
+  minTimeMs: ZodSerializedDecimal,
+  targetDelay: ZodSerializedDecimal,
+  targetSecond: ZodSerializedDecimal,
+  targetAdvance: ZodSerializedDecimal,
+  calibration: ZodSerializedDecimal,
+  entralinkCalibration: ZodSerializedDecimal,
+  frameCalibration: ZodSerializedDecimal,
+  delayHit: ZodSerializedOptional(ZodSerializedDecimal),
+  secondHit: ZodSerializedOptional(ZodSerializedDecimal),
+  advanceHit: ZodSerializedOptional(ZodSerializedDecimal),
 });
 
-type FormState = z.infer<typeof FormStateSchema>;
+export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "NdsSlot1",
-  minTimeMs: toDecimalString(14000),
-  targetDelay: toDecimalString(1200),
-  targetSecond: toDecimalString(50),
-  targetAdvance: toDecimalString(100),
-  calibration: toDecimalString(-95),
-  entralinkCalibration: toDecimalString(256),
-  frameCalibration: toDecimalString(0),
-  delayHit: "",
-  secondHit: "",
-  advanceHit: "",
+  minTimeMs: 14000,
+  targetDelay: 1200,
+  targetSecond: 50,
+  targetAdvance: 100,
+  calibration: -95,
+  entralinkCalibration: 256,
+  frameCalibration: 0,
+  delayHit: null,
+  secondHit: null,
+  advanceHit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -88,43 +87,52 @@ const fields: Field[] = [
   },
   {
     label: "Min Time (ms)",
-    input: <FormikInput<FormState> name="minTimeMs" />,
+    input: <FormikNumberInput<FormState> name="minTimeMs" numType="float" />,
   },
   {
     label: "Target Delay",
-    input: <FormikInput<FormState> name="targetDelay" />,
+    input: <FormikNumberInput<FormState> name="targetDelay" numType="float" />,
   },
   {
     label: "Target Second",
-    input: <FormikInput<FormState> name="targetSecond" />,
+    input: <FormikNumberInput<FormState> name="targetSecond" numType="float" />,
   },
   {
     label: "Target Advance",
-    input: <FormikInput<FormState> name="targetAdvance" />,
+    input: (
+      <FormikNumberInput<FormState> name="targetAdvance" numType="float" />
+    ),
   },
   {
     label: "Calibration",
-    input: <FormikInput<FormState> name="calibration" />,
+    input: <FormikNumberInput<FormState> name="calibration" numType="float" />,
   },
   {
     label: "Entralink Calibration",
-    input: <FormikInput<FormState> name="entralinkCalibration" />,
+    input: (
+      <FormikNumberInput<FormState>
+        name="entralinkCalibration"
+        numType="float"
+      />
+    ),
   },
   {
     label: "Frame Calibration",
-    input: <FormikInput<FormState> name="frameCalibration" />,
+    input: (
+      <FormikNumberInput<FormState> name="frameCalibration" numType="float" />
+    ),
   },
   {
     label: "Delay Hit",
-    input: <FormikInput<FormState> name="delayHit" />,
+    input: <FormikNumberInput<FormState> name="delayHit" numType="float" />,
   },
   {
     label: "Second Hit",
-    input: <FormikInput<FormState> name="secondHit" />,
+    input: <FormikNumberInput<FormState> name="secondHit" numType="float" />,
   },
   {
     label: "Advance Hit",
-    input: <FormikInput<FormState> name="advanceHit" />,
+    input: <FormikNumberInput<FormState> name="advanceHit" numType="float" />,
   },
 ];
 
@@ -134,31 +142,28 @@ export const Gen5EntralinkPlusTimer = () => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts, formik) => {
+      let updatedOpts = opts;
       let settings: Gen5EntralinkPlusTimerSettings = {
         console: opts.console,
-        min_time_ms: fromDecimalString(opts.minTimeMs) ?? 0,
-        target_delay: fromDecimalString(opts.targetDelay) ?? 0,
-        target_second: fromDecimalString(opts.targetSecond) ?? 0,
-        target_advances: fromDecimalString(opts.targetAdvance) ?? 0,
-        calibration: fromDecimalString(opts.calibration) ?? 0,
-        entralink_calibration:
-          fromDecimalString(opts.entralinkCalibration) ?? 0,
-        frame_calibration: fromDecimalString(opts.frameCalibration) ?? 0,
+        min_time_ms: opts.minTimeMs,
+        target_delay: opts.targetDelay,
+        target_second: opts.targetSecond,
+        target_advances: opts.targetAdvance,
+        calibration: opts.calibration,
+        entralink_calibration: opts.entralinkCalibration,
+        frame_calibration: opts.frameCalibration,
       };
 
       if (
-        opts.secondHit !== "" &&
-        opts.delayHit !== "" &&
-        opts.advanceHit !== ""
+        opts.secondHit != null &&
+        opts.delayHit != null &&
+        opts.advanceHit != null
       ) {
-        const delayHit = fromDecimalString(opts.delayHit) ?? 0;
-        const secondHit = fromDecimalString(opts.secondHit) ?? 0;
-        const advanceHit = fromDecimalString(opts.advanceHit) ?? 0;
         settings = await rngTools.calibrate_gen5_entralink_plus_timer(
           settings,
-          secondHit,
-          delayHit,
-          advanceHit,
+          opts.secondHit,
+          opts.delayHit,
+          opts.advanceHit,
         );
         settings = {
           console: opts.console,
@@ -170,19 +175,20 @@ export const Gen5EntralinkPlusTimer = () => {
           entralink_calibration: capPrecision(settings.entralink_calibration),
           frame_calibration: capPrecision(settings.frame_calibration),
         };
-        formik.setValues({
+        updatedOpts = {
           console: settings.console,
-          minTimeMs: toDecimalString(settings.min_time_ms),
-          targetDelay: toDecimalString(settings.target_delay),
-          targetSecond: toDecimalString(settings.target_second),
-          targetAdvance: toDecimalString(settings.target_advances),
-          calibration: toDecimalString(settings.calibration),
-          entralinkCalibration: toDecimalString(settings.entralink_calibration),
-          frameCalibration: toDecimalString(settings.frame_calibration),
-          delayHit: "",
-          secondHit: "",
-          advanceHit: "",
-        });
+          minTimeMs: settings.min_time_ms,
+          targetDelay: settings.target_delay,
+          targetSecond: settings.target_second,
+          targetAdvance: settings.target_advances,
+          calibration: settings.calibration,
+          entralinkCalibration: settings.entralink_calibration,
+          frameCalibration: settings.frame_calibration,
+          delayHit: null,
+          secondHit: null,
+          advanceHit: null,
+        };
+        formik.setValues(updatedOpts);
       }
 
       const milliseconds =
@@ -191,7 +197,7 @@ export const Gen5EntralinkPlusTimer = () => {
         milliseconds: [...milliseconds],
         minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       });
-      onUpdate(opts);
+      onUpdate(updatedOpts);
     },
     [onUpdate, setTimer],
   );

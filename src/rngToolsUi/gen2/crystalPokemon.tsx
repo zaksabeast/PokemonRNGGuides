@@ -1,22 +1,17 @@
 import React from "react";
 import {
-  FormikInput,
+  FormikNumberInput,
   ResultColumn,
   Icon,
   FormikSelect,
   RngToolForm,
   RngToolSubmit,
+  Field,
 } from "~/components";
-import { rngTools, Gen2PokeFilter, type Gen2Spread } from "~/rngTools";
-import {
-  DecimalString,
-  fromDecimalString,
-  fromHexString,
-  HexString,
-  toDecimalString,
-  toHexString,
-} from "~/utils/number";
+import { rngTools, type Gen2Spread } from "~/rngTools";
 import { useTranslator, Translations, Translator } from "~/utils/siteLanguage";
+import { z } from "zod";
+import { HexSchema } from "~/utils/number";
 
 const englishTranslations = {
   Advance: "Advance",
@@ -74,52 +69,45 @@ const getColumns = (
     {
       title: t("Advance"),
       dataIndex: "advance",
-      key: "advance",
     },
     {
       title: t("State"),
       dataIndex: "state",
-      key: "state",
       monospace: true,
       render: (state) => state.toString(16).padStart(4, "0"),
     },
     {
       title: t("Shiny"),
       dataIndex: "shiny",
-      key: "shiny",
       render: (shiny) => (shiny ? <YesIcon /> : null),
     },
     {
       title: t("Max DV"),
       dataIndex: "max_dv",
-      key: "max_dv",
       render: (max_dv) => (max_dv ? <YesIcon /> : null),
     },
   ];
 };
 
-type Field = {
-  label: string;
-  input: React.ReactNode;
-};
+const Validator = z.object({
+  div: HexSchema(0xffff),
+  adivIndex: z.number().int().min(0).max(0x4000),
+  sdivIndex: z.number().int().min(0).max(0x4000),
+  state: HexSchema(0xffff),
+  startAdvance: z.number().int().min(0),
+  advanceCount: z.number().int().min(0),
+  filter: z.enum(["Any", "Shiny", "MaxDv"]),
+});
 
-type FormState = {
-  div: HexString;
-  adivIndex: DecimalString;
-  sdivIndex: DecimalString;
-  state: HexString;
-  startAdvance: DecimalString;
-  advanceCount: DecimalString;
-  filter: Gen2PokeFilter;
-};
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  div: toHexString(0),
-  adivIndex: toDecimalString(0),
-  sdivIndex: toDecimalString(0),
-  state: toHexString(0),
-  startAdvance: toDecimalString(0),
-  advanceCount: toDecimalString(10000),
+  div: 0,
+  adivIndex: 0,
+  sdivIndex: 0,
+  state: 0,
+  startAdvance: 0,
+  advanceCount: 10000,
   filter: "Shiny",
 };
 
@@ -127,27 +115,39 @@ const getFields = (t: Translator<typeof translations>): Field[] => {
   return [
     {
       label: t("ADiv Index"),
-      input: <FormikInput<FormState> name="adivIndex" />,
+      input: (
+        <FormikNumberInput<FormState> name="adivIndex" numType="decimal" />
+      ),
     },
     {
       label: t("SDiv Index"),
-      input: <FormikInput<FormState> name="sdivIndex" />,
+      input: (
+        <FormikNumberInput<FormState> name="sdivIndex" numType="decimal" />
+      ),
     },
     {
       label: t("Div"),
-      input: <FormikInput<FormState> name="div" />,
+      input: <FormikNumberInput<FormState> name="div" numType="hex" />,
     },
     {
       label: t("State"),
-      input: <FormikInput<FormState> name="state" />,
+      input: <FormikNumberInput<FormState> name="state" numType="hex" />,
     },
     {
       label: t("Start Advance"),
-      input: <FormikInput<FormState> name="startAdvance" />,
+      input: (
+        <FormikNumberInput<FormState> name="startAdvance" numType="decimal" />
+      ),
     },
     {
       label: t("Advance Count"),
-      input: <FormikInput<FormState> name="advanceCount" disabled />,
+      input: (
+        <FormikNumberInput<FormState>
+          name="advanceCount"
+          disabled
+          numType="decimal"
+        />
+      ),
     },
     {
       label: t("Filter"),
@@ -187,23 +187,19 @@ export const Gen2PokemonRng = ({ type, language }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const div = fromHexString(opts.div) ?? 0;
-      const startAdvance = fromDecimalString(opts.startAdvance) ?? 0;
-      const advanceCount = fromDecimalString(opts.advanceCount) ?? 0;
-
       const generator =
         type === "starter"
           ? rngTools.crystal_generate_starters
           : rngTools.crystal_generate_celebi;
 
       const results = await generator(
-        div >>> 8,
-        div & 0xff,
-        fromDecimalString(opts.adivIndex) ?? 0,
-        fromDecimalString(opts.sdivIndex) ?? 0,
-        fromHexString(opts.state) ?? 0,
-        fromDecimalString(opts.startAdvance) ?? 0,
-        startAdvance + advanceCount,
+        opts.div >>> 8,
+        opts.div & 0xff,
+        opts.adivIndex,
+        opts.sdivIndex,
+        opts.state,
+        opts.startAdvance,
+        opts.startAdvance + opts.advanceCount,
         opts.filter,
       );
       setResults(results);
@@ -217,6 +213,7 @@ export const Gen2PokemonRng = ({ type, language }: Props) => {
       columns={columns}
       results={results}
       initialValues={initialValues}
+      validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId={
         type === "starter" ? "generate_gen2_starter" : "generate_gen2_celebi"

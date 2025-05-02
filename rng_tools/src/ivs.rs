@@ -3,6 +3,22 @@ use serde::{Deserialize, Serialize};
 use std::ops::{Index, IndexMut};
 use tsify_next::Tsify;
 
+#[cfg(test)]
+#[macro_export]
+macro_rules! ivs {
+    ($hp:literal / $atk:literal / $def:literal / $spa:literal / $spd:literal / $spe:literal) => {{
+        const IV: Ivs = Ivs {
+            hp: $hp,
+            atk: $atk,
+            def: $def,
+            spa: $spa,
+            spd: $spd,
+            spe: $spe,
+        };
+        IV
+    }};
+}
+
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct IvFilter {

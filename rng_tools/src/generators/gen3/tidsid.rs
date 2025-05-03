@@ -9,11 +9,11 @@ use wasm_bindgen::prelude::*;
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen3TidSidOptions {
-    version_options: Gen3TidSidVersionOptions,
-    offset: usize,
-    initial_advances: usize,
-    max_advances: usize,
-    filter: Option<IdFilter>,
+    pub version_options: Gen3TidSidVersionOptions,
+    pub offset: usize,
+    pub initial_advances: usize,
+    pub max_advances: usize,
+    pub filter: Option<IdFilter>,
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

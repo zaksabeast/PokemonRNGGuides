@@ -7,7 +7,6 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import z from "zod";
 import { difference, isArray, keyBy, groupBy } from "lodash-es";
 import { guides as existingGuides } from "./src/__generated__/guides";
-import { match, P } from "ts-pattern";
 import dayjs from "dayjs";
 
 // Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, ,, ，, 《, 》, Chinese characters, ·, and 。
@@ -16,6 +15,8 @@ const titleAndDescriptionChars =
 
 // Only lower case letters, numbers, and hyphens
 const slugChars = /^[a-z0-9-]+$/;
+
+const layouts = ["titled", "guide"] as const;
 
 const categories = [
   "Home",
@@ -44,11 +45,11 @@ const categories = [
   "3DS Tools",
   "Switch Tools",
   "USUM Challenges",
+  "User Settings",
 ] as const;
 
 const CategorySchema = z.enum(categories);
 
-type Category = z.infer<typeof CategorySchema>;
 const TitleSchema = z
   .string()
   .refine((value) => titleAndDescriptionChars.test(value));
@@ -61,7 +62,7 @@ const SingleGuideMetadataSchema = z.object({
   description: z
     .string()
     .refine((value) => titleAndDescriptionChars.test(value)),
-  category: CategorySchema.optional(),
+  category: CategorySchema,
   slug: z
     .string()
     .refine((value) => value.length === 0 || slugChars.test(value))
@@ -85,37 +86,8 @@ const SingleGuideMetadataSchema = z.object({
       language: z.enum(["es", "zh"]),
     })
     .optional(),
+  layout: z.enum(layouts).default("guide"),
 });
-
-const getCategory = ({
-  metadataCategory,
-  directory,
-}: {
-  metadataCategory?: Category;
-  directory: string;
-}) => {
-  return (
-    match({
-      metadataCategory,
-      directory,
-      directoryCategory: CategorySchema.safeParse(directory),
-    })
-      // If a category was set, use it
-      .with(
-        { metadataCategory: P.not(undefined) },
-        (matched) => matched.metadataCategory,
-      )
-      // If a directory matches a category, use it
-      .with(
-        { directoryCategory: { success: true, data: P.any } },
-        (matched) => matched.directoryCategory.data,
-      )
-      // Something is wrong!
-      .otherwise(() => {
-        throw new Error(`Invalid category: ${directory}`);
-      })
-  );
-};
 
 const GuideMetadataSchema = z.union([
   SingleGuideMetadataSchema,
@@ -148,14 +120,9 @@ const main = async () => {
     const metadatas = isArray(parsed) ? parsed : [parsed];
 
     for (const metadata of metadatas) {
-      const category = getCategory({
-        directory: file.split("/")[1],
-        metadataCategory: metadata.category,
-      });
       guides.push({
         ...metadata,
         file,
-        category,
         hideFromNavDrawer:
           metadata.translation != null || metadata.hideFromNavDrawer,
       });

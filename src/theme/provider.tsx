@@ -1,6 +1,7 @@
+import React from "react";
 import { ConfigProvider } from "antd";
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
-import { lightTheme, darkTheme } from "~/theme";
+import { getTheme } from "~/theme";
 import { useThemeMode } from "~/state/theme";
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
 
 export const ThemeProvider = ({ children }: Props) => {
   const [themeMode] = useThemeMode();
-  const theme = themeMode === "dark" ? darkTheme : lightTheme;
+  const theme = React.useMemo(() => getTheme(themeMode), [themeMode]);
   return (
     <EmotionThemeProvider theme={theme}>
       <ConfigProvider theme={theme}>{children}</ConfigProvider>

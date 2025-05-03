@@ -46,7 +46,10 @@ import { DpptId } from "~/rngToolsUi/gen4/dpptId";
 import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
 import { Static3 } from "~/rngToolsUi/gen3/static/static3";
 import { MultibootJirachi } from "~/rngToolsUi/gen3/multibootJirachi";
-import { ChallengeScreen } from "~/screens/challenge";
+import { ShinyHoennStarter } from "~/rngToolsUi/gen3/shinyStarter";
+import { GenerateHoennTidSid } from "~/rngToolsUi/gen3/shinyStarter/generateTidSid";
+import { ChallengePageComponent } from "~/pageComponents/challenge";
+import { ExperimentsPageComponent } from "~/pageComponents/experiments";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -93,6 +96,9 @@ export const markdownComponents = {
   DpptSeed,
   DpptId,
   XyPokeRadar,
+  ShinyHoennStarter,
+  GenerateHoennTidSid,
   MultibootJirachi,
-  ChallengeScreen,
+  ChallengePageComponent,
+  ExperimentsPageComponent,
 };

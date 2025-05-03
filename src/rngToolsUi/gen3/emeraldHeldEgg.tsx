@@ -172,7 +172,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "filter_nature">
         name="filter_nature"
-        options={natureOptions}
+        options={natureOptions.optional}
       />
     ),
   },

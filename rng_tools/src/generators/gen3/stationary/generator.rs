@@ -110,6 +110,7 @@ pub fn gen3_static_generator_states(opts: &Static3GeneratorOptions) -> Vec<Stati
 mod test {
     use super::*;
     use crate::assert_list_eq;
+    use crate::{StatFilter, StatsValue};
 
     const ZERO_IVS: Ivs = Ivs {
         hp: 0,
@@ -147,6 +148,7 @@ mod test {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
                 ability: None,
+                stats: None,
             },
         };
 
@@ -336,6 +338,7 @@ mod test {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
                 ability: None,
+                stats: None,
             },
         };
 
@@ -525,6 +528,7 @@ mod test {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
                 ability: None,
+                stats: None,
             },
         };
 
@@ -714,6 +718,7 @@ mod test {
                 min_ivs: ZERO_IVS,
                 max_ivs: PERFECT_IVS,
                 ability: None,
+                stats: None,
             },
         };
 
@@ -802,5 +807,269 @@ mod test {
         ];
 
         assert_list_eq!(results, expected);
+    }
+
+    mod stat_filter {
+        use super::*;
+
+        #[test]
+        fn finds_matching_pokemon() {
+            let opts = Static3GeneratorOptions {
+                offset: 0,
+                initial_advances: 0,
+                max_advances: 0,
+                seed: 0,
+                species: Species::Mudkip,
+                bugged_roamer: false,
+                method4: false,
+                tid: 0,
+                sid: 0,
+                filter: PkmFilter {
+                    shiny: false,
+                    nature: None,
+                    gender: None,
+                    min_ivs: ZERO_IVS,
+                    max_ivs: PERFECT_IVS,
+                    ability: None,
+                    stats: Some(StatFilter {
+                        lvl: 5,
+                        base_stats: StatsValue {
+                            hp: 50,
+                            atk: 70,
+                            def: 50,
+                            spa: 50,
+                            spd: 50,
+                            spe: 40,
+                        },
+                        min_stats: StatsValue {
+                            hp: 20,
+                            atk: 12,
+                            def: 11,
+                            spa: 10,
+                            spd: 9,
+                            spe: 9,
+                        },
+                        max_stats: StatsValue {
+                            hp: 20,
+                            atk: 12,
+                            def: 11,
+                            spa: 10,
+                            spd: 9,
+                            spe: 9,
+                        },
+                    }),
+                },
+            };
+
+            let results = gen3_static_generator_states(&opts);
+            let expected = [Static3GeneratorResult {
+                advance: 0,
+                pid: 0xe97e0000,
+                ivs: Ivs {
+                    hp: 17,
+                    atk: 19,
+                    def: 20,
+                    spa: 13,
+                    spd: 12,
+                    spe: 16,
+                },
+                ability: AbilityType::First,
+                gender: Gender::Female,
+                nature: Nature::Naive,
+                shiny: false,
+            }];
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn filters_bad_pokemon() {
+            let opts = Static3GeneratorOptions {
+                offset: 0,
+                initial_advances: 0,
+                max_advances: 0,
+                seed: 0,
+                species: Species::Mudkip,
+                bugged_roamer: false,
+                method4: false,
+                tid: 0,
+                sid: 0,
+                filter: PkmFilter {
+                    shiny: false,
+                    nature: None,
+                    gender: None,
+                    min_ivs: ZERO_IVS,
+                    max_ivs: PERFECT_IVS,
+                    ability: None,
+                    stats: Some(StatFilter {
+                        lvl: 5,
+                        base_stats: StatsValue {
+                            hp: 50,
+                            atk: 70,
+                            def: 50,
+                            spa: 50,
+                            spd: 50,
+                            spe: 40,
+                        },
+                        min_stats: StatsValue {
+                            hp: 20,
+                            atk: 13,
+                            def: 11,
+                            spa: 10,
+                            spd: 9,
+                            spe: 9,
+                        },
+                        max_stats: StatsValue {
+                            hp: 20,
+                            atk: 13,
+                            def: 11,
+                            spa: 10,
+                            spd: 9,
+                            spe: 9,
+                        },
+                    }),
+                },
+            };
+
+            let results = gen3_static_generator_states(&opts);
+            assert!(results.len() == 0);
+        }
+
+        #[test]
+        fn initial_advances() {
+            let opts = Static3GeneratorOptions {
+                offset: 0,
+                initial_advances: 8000,
+                max_advances: 0,
+                seed: 0,
+                species: Species::Mudkip,
+                bugged_roamer: false,
+                method4: false,
+                tid: 0,
+                sid: 0,
+                filter: PkmFilter {
+                    shiny: false,
+                    nature: None,
+                    gender: None,
+                    min_ivs: ZERO_IVS,
+                    max_ivs: PERFECT_IVS,
+                    ability: None,
+                    stats: Some(StatFilter {
+                        lvl: 5,
+                        base_stats: StatsValue {
+                            hp: 50,
+                            atk: 70,
+                            def: 50,
+                            spa: 50,
+                            spd: 50,
+                            spe: 40,
+                        },
+                        min_stats: StatsValue {
+                            hp: 21,
+                            atk: 13,
+                            def: 12,
+                            spa: 11,
+                            spd: 10,
+                            spe: 8,
+                        },
+                        max_stats: StatsValue {
+                            hp: 21,
+                            atk: 13,
+                            def: 12,
+                            spa: 11,
+                            spd: 10,
+                            spe: 8,
+                        },
+                    }),
+                },
+            };
+
+            let results = gen3_static_generator_states(&opts);
+            let expected = [Static3GeneratorResult {
+                advance: 8000,
+                pid: 0xc0782657,
+                ivs: Ivs {
+                    hp: 27,
+                    atk: 30,
+                    def: 25,
+                    spa: 21,
+                    spd: 9,
+                    spe: 0,
+                },
+                ability: AbilityType::Second,
+                gender: Gender::Male,
+                nature: Nature::Relaxed,
+                shiny: false,
+            }];
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn nature_regression() {
+            let opts = Static3GeneratorOptions {
+                offset: 0,
+                initial_advances: 646,
+                max_advances: 0,
+                seed: 0,
+                species: Species::Torchic,
+                bugged_roamer: false,
+                method4: false,
+                tid: 0,
+                sid: 0,
+                filter: PkmFilter {
+                    shiny: false,
+                    nature: None,
+                    gender: None,
+                    min_ivs: ZERO_IVS,
+                    max_ivs: PERFECT_IVS,
+                    ability: None,
+                    stats: Some(StatFilter {
+                        lvl: 5,
+                        base_stats: StatsValue {
+                            hp: 45,
+                            atk: 60,
+                            def: 40,
+                            spa: 70,
+                            spd: 50,
+                            spe: 45,
+                        },
+                        min_stats: StatsValue {
+                            hp: 19,
+                            atk: 11,
+                            def: 9,
+                            spa: 12,
+                            spd: 9,
+                            spe: 9,
+                        },
+                        max_stats: StatsValue {
+                            hp: 19,
+                            atk: 11,
+                            def: 9,
+                            spa: 12,
+                            spd: 9,
+                            spe: 9,
+                        },
+                    }),
+                },
+            };
+
+            let results = gen3_static_generator_states(&opts);
+            let expected = [Static3GeneratorResult {
+                advance: 646,
+                pid: 0xe20b2451,
+                ivs: Ivs {
+                    hp: 9,
+                    atk: 16,
+                    def: 2,
+                    spa: 3,
+                    spd: 9,
+                    spe: 3,
+                },
+                ability: AbilityType::Second,
+                gender: Gender::Male,
+                nature: Nature::Lax,
+                shiny: false,
+            }];
+            assert_list_eq!(results, expected);
+        }
     }
 }

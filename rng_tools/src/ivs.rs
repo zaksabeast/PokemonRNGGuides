@@ -27,6 +27,7 @@ pub struct IvFilter {
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Ivs {
     pub hp: u8,
     pub atk: u8,

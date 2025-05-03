@@ -1,0 +1,213 @@
+---
+- title: "FireRed and LeafGreen Wild RNG"
+  navDrawerTitle: "Wild RNG"
+  description: "Learn how to RNG wild Pokémon in FireRed and LeafGreen using the Sweet Scent method."
+  slug: "emulator-frlg-wild"
+  category: "FireRed and LeafGreen"
+  tag: "emu"
+- title: "火红叶绿野生乱数"
+  navDrawerTitle: "Wild RNG"
+  description: "在《火红·叶绿》中使用甜甜香气进行野生宝可梦的乱数"
+  slug: "zh-emulator-frlg-wild"
+  category: "FireRed and LeafGreen"
+  tag: "emu"
+  translation:
+    enSlug: "emulator-frlg-wild"
+    language: "zh"
+---
+
+<ShowIf slug="/emulator-frlg-wild">
+
+## Tools
+
+- [mGBA with lua scripts](/mgba-setup)
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
+- TID and SID (if going for shiny)
+
+```
+Note: If you are doing this RNG for a shiny, make sure to set up a profile in PokeFinder with the TID and SID of the save.
+```
+
+## Step 1: Set up PokeFinder
+
+1. Open PokeFinder and select "Wild" for Gen 3. Make sure you're on the "Generator" tab.
+2. Set "Method" to Method H-1.
+
+```
+Note: While there are other methods in FireRed/LeafGreen, H-1 is the most common and recommended. The other methods rely on v-blank and occur rarely.
+```
+
+3. Set "Location" to where the RNG will take place.
+4. If you want a specific Pokémon, select it in "Pokemon" after selecting its location.
+   - If the Pokémon you want isn't listed or you need a specific encounter slot, choose the number in the "Encounter Slot" box and leave "Pokemon" at the default.
+   - Use [this site](https://sites.google.com/site/pokemonslots/gen-iii/emerald) to find a specific encounter slot.
+5. Set "Encounter" to "Grass" or "Surfing" since this guide focuses on using Sweet Scent to start an encounter.
+
+```
+Note: For "Lead," leave it as "Any" since Cute Charm and Synchronize do not work in FireRed/LeafGreen.
+```
+
+6. Check the "Use Delay" box and input the delay for the Pokémon you are RNGing.
+   - This [Google Doc](https://docs.google.com/spreadsheets/d/1cVweVvJXCXeTZOBVKVCBbcSI46rqBXV3ahbuoSGOnzk/edit#gid=1091733147) has the delays for each area.
+   - Keep in mind there could still be a variation of +/- 1 delay.
+
+## Step 2: Finding the initial seed
+
+1. Save the game in the location where you'll RNG the Pokémon.
+2. Restart the emulator.
+3. Once the game loads, enter the continue screen.
+4. Pause the game to find your seed.
+
+```
+Note: FireRed/LeafGreen generates different seeds every time the game loads, unlike repeating seeds in dry battery Ruby and Sapphire, and Emerald. This can be used to reset for different seeds if needed.
+```
+
+5. The initial seed will be displayed on the screen from the Lua script.
+
+![Initial Seed](/images/FireRed-LeafGreen/Wild/Initial-Seed.png)
+
+## Step 3: Find a target advance
+
+1. Enter the initial seed into "Seed."
+2. Enter your target settings for the Pokémon you wish to search for (shiny, IVs, nature, etc.).
+   - Finding a shiny perfect Pokémon may take a while to find a seed, which will likely have very high advances.
+   - If no results show up, try lowering the filters.
+3. Click "Generate."
+
+![Setup](/images/FireRed-LeafGreen/Wild/Setup.png)
+
+In the example above, the filters are set for any shiny on Route 5.
+
+```
+Note: The initial seed can be changed by pressing `B` on the continue screen to play the intro again. The seed will change when pressing `A` to advance to the continue screen. You can repeat this process as needed to find a better seed if wanted.
+```
+
+## Step 4: RNG for the Pokémon
+
+1. Once you have a target advance, continue into the game.
+2. Advance to within a few thousand advances of the target advance.
+
+```
+Note: Teachy TV can be used to advance much faster. The RNG advances 313 times faster, allowing you to advance millions of frames in a few minutes.
+
+Open Teachy TV in Key Items and close it when a few thousand away from your target advance.
+```
+
+3. Open your Trainer Card and press `A` to flip it.
+   - Flipping the Trainer Card resets the delay, which becomes more off the more advances you make.
+4. Select the Pokémon in your party with Sweet Scent and hover over the move.
+5. When close to your target advance, pause the emulator and create a save state, then advance a frame at a time to the target advance.
+6. Hold `A` and unpause the emulator at the same time on your target advance.
+   - If the Pokémon is not the one wanted, load the previous save state and try one advance before and/or one advance after.
+
+If you followed all the above steps, the Pokémon should be what you wanted. Tada, you did your Gen 3 Wild RNG!
+
+![Success](/images/FireRed-LeafGreen/Wild/Success.png)
+
+## Troubleshooting
+
+If after trying the one advance difference above it didn't work, you'll have to adjust for your own delay.
+
+Find what advance you are hitting and adjust as needed.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+
+</ShowIf>
+
+<ShowIf slug="/zh-emulator-frlg-wild">
+
+## 所需工具
+
+- [带有 Lua 脚本的 mGBA 模拟器](/mgba-setup)
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
+- 表 ID 和里 ID（若目标为异色宝可梦）
+
+```
+提示：如果你只是为了异色宝可梦而进行乱数，请确保在 PokeFinder 中设置含有该存档 TID 与 SID 的配置档。
+```
+
+## 第一步：设置 PokeFinder
+
+1. 打开 PokeFinder，选择第三世代的 “野生乱数”，并确保你位于 “生成器” 标签页。
+2. 将 “方式” 设置为 方式 1。
+
+```
+提示：《火红·叶绿》中确实存在其他方法，但 H-1 是最常见、最推荐的。其他方法依赖于 v-blank，出现几率极低。
+```
+
+3. 将“地点” 设置为你将要进行乱数的地点。
+4. 如果你有指定目标宝可梦，在选择地点后可在 “宝可梦” 中选择该宝可梦。
+   - 若宝可梦未出现在列表中，或者你想要指定的遭遇槽，请选择 “遇敌种类” 中对应的数字，并将 “宝可梦” 留空。
+   - 可参考 [此网站](https://sites.google.com/site/pokemonslots/gen-iii/emerald)获取具体遭遇槽数据：
+5. “遇敌” 设置为 “草” 或 “冲浪”，本指南聚焦于使用甜甜香气触发战斗。
+
+```
+提示：《火红·叶绿》中迷人之躯和同步并不会影响乱数。
+```
+
+6. 填写目标地点的延迟值。
+   - 可参考 [Google Doc](https://docs.google.com/spreadsheets/d/1cVweVvJXCXeTZOBVKVCBbcSI46rqBXV3ahbuoSGOnzk/edit#gid=1091733147) 获取每个区域的延迟值。
+   - 注意：通常存在 ±1 的误差范围。
+
+## 第二步：获取初始种子
+
+1. 在你想进行乱数的地点存档。
+2. 重启模拟器。
+3. 游戏加载后，进入继续画面。
+4. 暂停游戏，此时 Lua 脚本会在屏幕上显示初始种子。
+
+```
+提示：《火红·叶绿》每次加载游戏都会生成不同的种子，和《红蓝宝石》无电电池或《绿宝石》的固定种子不同。这意味着你可以反复重置来刷更理想的种子。
+```
+
+![初始种子](/images/FireRed-LeafGreen/Wild/Initial-Seed.png)
+
+## 第三步：寻找目标帧数
+
+1. 在 Seed 输入框中填写初始种子。
+2. 设定目标宝可梦的条件（是否异色、个体值、性格等）。
+   - 如果目标为完美个体的异色，可能需要等待非常高的帧数。
+   - 若无结果，请放宽筛选条件。
+3. 点击 “生成”。
+
+![Setup](/images/FireRed-LeafGreen/Wild/Setup.png)
+
+如图所示，本例的筛选条件是“任意异色宝可梦（Route 5）”。
+
+```
+提示：你可以按 B 键回到开场动画，再按 A 进入继续画面，借此更换初始种子。重复操作直到得到一个更合适的种子。
+```
+
+## 第四步：开始乱数
+
+1. 找到目标帧数后，进入游戏。
+2. 推进到接近目标帧数前几千帧的位置。
+
+```
+提示：教学电视可以极大地加速推进帧数。使用它可使乱数每帧推进速度提升 313 倍，可在几分钟内推进数百万帧。
+
+在背包中打开教学电视并关闭它，即可迅速推进帧数。
+```
+
+3. 打开训练师卡片并按下 A 翻转 一次。
+   - 翻转能刷新延迟，有助于避免因帧数过高而导致延迟偏移。
+4. 选择拥有“甜甜香气”的宝可梦，移动光标至该技能上。
+5. 当接近目标帧数时，暂停游戏并建立即时存档。然后使用 Ctrl + N 逐帧推进至目标帧。
+6. 在目标帧时，同时按住 A 并取消暂停。
+   - 如果遇到的宝可梦不是目标个体，请尝试在前后各一帧进行操作。
+
+若上述操作正确无误，你将成功遇到目标宝可梦。完成了第三世代的野生乱数！
+
+![成功！](/images/FireRed-LeafGreen/Wild/Success.png)
+
+## 问题排除
+
+如果尝试了 ±1 帧仍未命中目标，请手动判断你实际命中的帧数，并据此调整。
+
+## 特别鸣谢
+
+- 中文翻译：炫夜鳞、Hakuhiro/白希洛。
+
+</ShowIf>

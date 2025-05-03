@@ -1,5 +1,10 @@
 If you're interested in contributing, reach out on Discord in our [#discussion channel](https://discord.com/channels/285269328469950464/888240330628005898) to coordinate with us.
 
+<details>
+  <summary><b>Read this if you're interested in adding, translating, or editing guides</b></summary>
+
+## Guide writing and updating
+
 Follow our [Style Guide](./Style%20Guide.mdx) when writing the guide.
 
 ChatGPT can help with wording, grammar, and formatting. Feel free to use this prompt when writing guides:
@@ -40,3 +45,76 @@ _INSERT THE CURRENT STYLE GUIDE HERE_
 
 **Your job**: Take the guide text, simplify the wording, fix any structure, and **follow this format exactly**. Don’t change anything except to make it simpler and more concise. Don't add extra info or remove anything—just make it easier to follow!
 ```
+
+</details>
+
+<details>
+  <summary><b>Read this if you're interested in helping code</b></summary>
+
+## Setting up
+
+First, install these tools:
+
+- [bun](https://bun.sh/)
+- [rust](https://www.rust-lang.org/tools/install)
+- [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)
+- (Windows only) [Required linker](https://stackoverflow.com/a/55603112)
+
+Next, install dependencies:
+
+```
+# Get version pinned rust tools - run these in `rng_tools`
+rustup update
+rustup target add wasm32-unknown-unknown
+
+# Install TS dependencies - run these in the repo root
+bun i
+```
+
+Finally, start the site:
+
+```
+bun run dev
+```
+
+### Additional Windows setup
+
+To avoid wrongly flagging unmodified files as modified, those git settings must be changed:
+
+```
+git config core.filemode false
+git config core.autocrlf input
+```
+
+## Dev Workflow
+
+Rust workflow:
+
+1. Make rust changes and ensure tests are written to guarantee logic works as expected
+2. Run `cargo test` to make sure tests pass
+3. Run `cargo fmt` to format code
+4. Run `cargo clippy` to make sure changes don't violate repo rules
+5. Run `bun run dev` to build rust as wasm and load the web app
+
+TypeScript workflow:
+
+1. Make TypeScript changes
+2. If you added a guide or made changes to a guide's metadata at the top of a file, run `bun run build:guides`
+3. Run `bun run format` to format code
+4. Run `bun run lint` to make sure changes don't violate repo rules
+
+## Helpful tips for VSCode users
+
+Automatic formatting:
+
+1. [Install the prettier plugin](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+2. [Install the rust analyzer plugin](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+3. [Enable format on save](https://stackoverflow.com/a/54665086)
+
+Other helpful plugins:
+
+- [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to view code violations without running commands
+- [MDX](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for mdx highlighting
+- [Bun](https://marketplace.visualstudio.com/items?itemName=oven.bun-vscode) for better bun integration
+
+</details>

@@ -1,11 +1,18 @@
 import React from "react";
-import { Flex, Header, HeaderSpace, DesktopDrawer } from "~/components";
+import {
+  Flex,
+  Header,
+  HeaderSpace,
+  DesktopDrawer,
+  Loading,
+} from "~/components";
 import styled from "@emotion/styled";
 import { useScreenViewed } from "~/hooks/useScreenViewed";
+import { useActiveRoute } from "~/hooks/useActiveRoute";
 
 type Props = {
   children: React.ReactNode;
-  trackerName: string;
+  trackerName?: string;
 };
 
 export const SIDE_MARGIN = 24;
@@ -63,7 +70,8 @@ const BottomSpace = styled.div({
 });
 
 export const MainLayout = ({ children, trackerName }: Props) => {
-  useScreenViewed(trackerName);
+  const [route] = useActiveRoute();
+  useScreenViewed(trackerName ?? route);
 
   return (
     <>
@@ -78,7 +86,20 @@ export const MainLayout = ({ children, trackerName }: Props) => {
         <Main>
           <ContentContainer>
             <HeaderSpace />
-            {children}
+            <React.Suspense
+              fallback={
+                <Flex
+                  height="100%"
+                  width="100%"
+                  justify="center"
+                  align="center"
+                >
+                  <Loading />
+                </Flex>
+              }
+            >
+              {children}
+            </React.Suspense>
             <BottomSpace />
           </ContentContainer>
         </Main>

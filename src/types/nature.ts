@@ -1,4 +1,8 @@
 import { Nature } from "~/rngTools";
+import type { Stat } from "./stat";
+import * as tst from "ts-toolbelt";
+
+export type NatureStat = tst.U.Exclude<Stat, "hp">;
 
 export const nature = [
   "Hardy",

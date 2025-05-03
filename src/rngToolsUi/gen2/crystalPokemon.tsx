@@ -8,7 +8,7 @@ import {
   RngToolSubmit,
   Field,
 } from "~/components";
-import { rngTools, type Gen2Spread } from "~/rngTools";
+import { rngTools, type Gen2Spread, type DivParams } from "~/rngTools";
 import { useTranslator, Translations, Translator } from "~/utils/siteLanguage";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
@@ -184,7 +184,6 @@ export const Gen2PokemonRng = ({ type, language }: Props) => {
   const fields = React.useMemo(() => getFields(t), [t]);
   const columns = React.useMemo(() => getColumns(t), [t]);
   const [results, setResults] = React.useState<Gen2Spread[]>([]);
-
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
       const generator =
@@ -192,12 +191,15 @@ export const Gen2PokemonRng = ({ type, language }: Props) => {
           ? rngTools.crystal_generate_starters
           : rngTools.crystal_generate_celebi;
 
+      const config: DivParams = {
+        adiv: opts.div >>> 8,
+        sdiv: opts.div & 0xff,
+        adiv_index: opts.adivIndex,
+        sdiv_index: opts.sdivIndex,
+        state: opts.state,
+      };
       const results = await generator(
-        opts.div >>> 8,
-        opts.div & 0xff,
-        opts.adivIndex,
-        opts.sdivIndex,
-        opts.state,
+        config,
         opts.startAdvance,
         opts.startAdvance + opts.advanceCount,
         opts.filter,

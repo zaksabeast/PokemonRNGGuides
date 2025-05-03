@@ -17,6 +17,16 @@ pub struct Gen2Spread {
     pub max_dv: bool,
 }
 
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct DivParams {
+    pub adiv: u8,
+    pub sdiv: u8,
+    pub adiv_index: usize,
+    pub sdiv_index: usize,
+    pub state: u16,
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Gen2PokeFilter {

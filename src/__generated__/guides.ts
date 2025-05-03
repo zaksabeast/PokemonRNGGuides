@@ -748,7 +748,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       file: "guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-b2w2-runasdate-inital-seed",
+        zh: "/zh-emulator-b2w2-runasdate-inital-seed",
+      },
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
@@ -847,7 +850,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       file: "guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-bw-runasdate-initial-seed",
+        zh: "/zh-emulator-bw-runasdate-initial-seed",
+      },
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
@@ -3809,6 +3815,32 @@ export const guides = {
       () => import("~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx"),
     ),
   },
+  "/zh-emulator-b2w2-runasdate-inital-seed": {
+    meta: {
+      title: "黑白2初始seed乱数",
+      navDrawerTitle: "黑白2初始seed乱数",
+      description: "学习如何在黑白2中乱数你的初始seed",
+      category: "Black 2 and White 2",
+      slug: "/zh-emulator-b2w2-runasdate-inital-seed",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/emulator-b2w2-runasdate-inital-seed",
+        language: "zh",
+      },
+      layout: "guide",
+      file: "guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
+      translations: {
+        en: "/emulator-b2w2-runasdate-inital-seed",
+        zh: "/zh-emulator-b2w2-runasdate-inital-seed",
+      },
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
+    ),
+  },
   "/zh-emulator-bw-find-ds-parameters": {
     meta: {
       title: "如何在第五世代中寻找 DS 参数",
@@ -3832,6 +3864,32 @@ export const guides = {
       },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Find DS Parameters.mdx")),
+  },
+  "/zh-emulator-bw-runasdate-initial-seed": {
+    meta: {
+      title: "黑白初始seed乱数",
+      navDrawerTitle: "黑白初始seed乱数",
+      description: "学习如何在黑白中乱你的初始seed",
+      category: "Black and White",
+      slug: "/zh-emulator-bw-runasdate-initial-seed",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/emulator-bw-runasdate-initial-seed",
+        language: "zh",
+      },
+      layout: "guide",
+      file: "guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
+      translations: {
+        en: "/emulator-bw-runasdate-initial-seed",
+        zh: "/zh-emulator-bw-runasdate-initial-seed",
+      },
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
+    ),
   },
   "/zh-emulator-dppt-cute-charm": {
     meta: {
@@ -4391,7 +4449,9 @@ export const guideSlugs = [
   "/zh-emerald-mirage-island",
   "/zh-emerald-painting-rng",
   "/zh-emerald-sid-feebas",
+  "/zh-emulator-b2w2-runasdate-inital-seed",
   "/zh-emulator-bw-find-ds-parameters",
+  "/zh-emulator-bw-runasdate-initial-seed",
   "/zh-emulator-dppt-cute-charm",
   "/zh-emulator-dppt-egg",
   "/zh-emulator-emerald-egg",

@@ -8,7 +8,7 @@ import {
   RngToolSubmit,
   Field,
 } from "~/components";
-import { rngTools, type Gen2Spread } from "~/rngTools";
+import { rngTools, type Gen2Spread, type DivParams } from "~/rngTools";
 import { useTranslator, Translations, Translator } from "~/utils/siteLanguage";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
@@ -179,14 +179,6 @@ type Props = {
   language: keyof typeof translations;
 };
 
-export interface DivParams {
-  adiv: number;
-  sdiv: number;
-  adiv_index: number;
-  sdiv_index: number;
-  state: number;
-}
-
 export const Gen2PokemonRng = ({ type, language }: Props) => {
   const t = useTranslator(translations, language);
   const fields = React.useMemo(() => getFields(t), [t]);
@@ -199,7 +191,7 @@ export const Gen2PokemonRng = ({ type, language }: Props) => {
           ? rngTools.crystal_generate_starters
           : rngTools.crystal_generate_celebi;
 
-      const config = {
+      const config: DivParams = {
         adiv: opts.div >>> 8,
         sdiv: opts.div & 0xff,
         adiv_index: opts.adivIndex,

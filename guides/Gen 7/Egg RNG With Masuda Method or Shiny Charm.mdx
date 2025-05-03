@@ -24,13 +24,13 @@ Note: ESV (Egg Shiny Value) determines if an egg will hatch shiny or not. If an 
 ## Tools
 
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
-- Optional: A 3DS with PCalc ([PCalc Install Guide](/misc-3ds-installing-pcalc))
+- Optional: [A 3DS with PokeReader](/install-pokereader)
 
 ## Step 1: Setting Up 3DSRNGTool
 
 ### Configuration:
 
-1. Enter your game version and TSV (`Start + Up` in PCalc will reveal TSV in the Game View window).
+1. Enter your game version and TSV.
 2. Ignore the initial seed as it won't be used.
 3. Tick the "Shiny Charm" checkbox if you have the Shiny Charm.
 
@@ -52,8 +52,7 @@ When using a Ditto with a genderless Pokémon, Ditto is considered the female pa
 ### Current status:
 
 1. Input your current egg seeds in the "Current Status" section of 3DSRNGTool.
-   - Press `Start + Down` in-game if you are using PCalc, then insert the resultant egg seed into 3DSRNGTool.
-   - Refer to Additional Notes for other methods to find egg seeds without PCalc.
+   - Refer to Additional Notes for other methods to find egg seeds without PokeReader.
 2. Avoid ticking the "Main RNG Egg (PID)" box.
 3. Fill in "Filters" with the details of the egg you aim to RNG.
 4. Tick "Shiny Only" if you want a shiny egg.
@@ -69,18 +68,18 @@ Any given frame can be chosen, but lower frames are usually more convenient due 
    - This calculates the shortest path for your target egg with the least number of accepts and rejects.
 3. Accept or reject the eggs from top to bottom as listed. A different order will yield the wrong egg seeds.
 4. The final egg that you accept will be your target egg.
-   - Confirm your egg frame using PCalc by checking your egg seeds in-game (`Start + Down` to open the menu).
+   - Confirm your egg frame using PokeReader by checking your egg seeds in-game.
    - If a specific shiny egg is what you're after, the frames could be quite high and demand a lot of egg accepts/rejects. This is due to the predetermined ESVs of the eggs.
 
 ## Additional Notes
 
-- PCalc is useful for checking your TSV, Shiny Charm, or Masuda Method.
-  - For TSV, press `Start + Up` to view the Game View window. Look where it says `YOUR TSV`.
-  - For Shiny Charm and parents' info, press `Start + Down` for the Egg Info window.
-- Without PCalc, your TSV can be found in other ways.
+- PokeReader is useful for checking your TSV, Shiny Charm, or Masuda Method.
+  - For TSV it is in the main RNG view. Look where it says `TSV`.
+  - For Shiny Charm and parents' info, it is in the Daycare view.
+- Without PokeReader, your TSV can be found in other ways.
   - Via Homebrew or CFW with a save manager like Checkpoint. Extract save file, view it in PKHeX, then hover over TID and SID to find TSV.
-  - At /r/SVEXchange, someone else might be able to help you find it.
-- If you aren't using PCalc and don't know your egg seeds, try these methods.
+  - In the [Pokemon RNG Discord](https://www.discord.gg/d8JuAvg), someone else might be able to help you find it.
+- If you aren't using PokeReader and don't know your egg seeds, try these methods.
   - If you've accepted or rejected eggs and don't want to use Homebrew or CFW, use the [127 Magikarp method](/retail-usum-egg-seed-no-cfw).
   - If you haven't interacted with the daycare and don't want to use Homebrew or CFW, try the [8 egg method](/retail-usum-egg-seed-no-cfw).
   - With access to Homebrew or CFW, PKHeX can view your egg seeds after extracting the save file using a save manager like Checkpoint.

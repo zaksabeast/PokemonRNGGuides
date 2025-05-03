@@ -17,7 +17,7 @@
 
 <ShowIf slug="/retail-usum-island-scan">
 
-- A 3DS with PCalc ([PCalc Install Guide](/misc-3ds-installing-pcalc))
+- [A 3DS with PokeReader](/install-pokereader)
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - The `honey` item
 - Have started an Island Scan and know the Pokémon you've scanned for
@@ -27,7 +27,7 @@
 
 <ShowIf slug="/retail-sm-island-scan">
 
-- A 3DS with PCalc ([PCalc Install Guide](/misc-3ds-installing-pcalc))
+- [A 3DS with PokeReader](/install-pokereader)
 - [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 - The `honey` item
 - Have started an Island Scan and know the Pokémon you've scanned for
@@ -39,48 +39,18 @@
 Note: You can get the "honey" item in any store after clearing three trials.
 ```
 
-## Step 1: Setup PCalc
+## Step 1: Setup 3DSRNGTool
 
-Make sure PCalc's wild view and game view are open.
+1. Type the `Init Seed` from PokeReader into the `Seed` box.
+2. Enter your game version and TSV.
+3. If you have the shiny charm, check the `Shiny Charm` box.
+4. Click the `Wild RNG` tab and change the `Category` dropdown to `Island Scan`.
+5. Change the `Pokemon` dropdown to your target Pokémon.
 
-```
-Note: In PCalc, press `Start + Left` to open the wild view and `Start + Up` to open the game view.
-```
+## Step 2: Create a timeline
 
-## Step 2: Setup 3DSRNGTool
-
-Open 3DSRNGTool and set it up:
-
-### In the upper right of 3DSRNGTool
-
-1. Type the `Init Seed` from PCalc into the `Seed` box.
-2. Change the `Game Version` dropdown to your game.
-3. Change `TSV` to your game's TSV.
-4. If you have the shiny charm, check the `Shiny Charm` box.
-
-```
-Note: Find your TSV in PCalc's Game Info window. Press `Start + Up` to bring up the menu if needed. The TSV is labeled "YOUR TSV".
-```
-
-### On the left of 3DSRNGTool
-
-1. Click the `Wild RNG` tab.
-2. Change the `Category` dropdown to `Island Scan`.
-3. Change the `Pokemon` dropdown to your target Pokémon.
-
-### On the right of 3DSRNGTool
-
-1. Follow the [timeline guide](/retail-usum-timeline) using the `NPC Count` from PCalc. Wait at least 30 seconds after opening the window to allow the NPC counter to calibrate.
+1. Follow the [timeline guide](/retail-usum-timeline) using the `NPC count` from PokeReader.
 2. You should have a target frame to hit.
-
-### In the middle of 3DSRNGTool
-
-1. Change the IVs to your desired values for the Pokémon.
-2. If you want a shiny Pokémon, check the `Shiny Only` box.
-
-```
-Note: If you don't care about IVs, leave the ranges as 0-31.
-```
 
 ## Step 3: The RNG
 
@@ -95,12 +65,12 @@ If you've followed the guide, you should now:
 Note: If any of these are not true, start the guide over. Moving your character will mess up the RNG.
 ```
 
-### Hitting your target frame
+### Step 4: Hitting your target frame
 
 1. Press `X` to open the in-game menu.
 2. Hold the cursor on the `bag` option.
-3. Watch the `Frame` counter on PCalc.
-   - When the `Frame` counter is close to your target frame, press `Start + Select` to pause the game.
+3. Watch the `Advances` counter on PokeReader.
+   - When the `Advances` counter is close to your target frame, press `Start + Select` to pause the game.
    - Press `Select` multiple times to slowly advance frames to your target frame.
 4. Once at your target frame, press and hold `A` to unpause the game while entering the bag.
 5. Find and use the `honey` item to start a wild encounter.
@@ -108,7 +78,3 @@ Note: If any of these are not true, start the guide over. Moving your character 
    - Search all frames for the IVs of the Pokémon you got. Check the frame range instead of the timeline and search using the IVs.
    - After finding your actual frame, adjust as necessary from the delay and restart from the beginning.
    - This should not happen frequently.
-
-```
-Note: If you paused the game too early, press `Start` to unpause the game.
-```

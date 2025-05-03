@@ -179,12 +179,19 @@ type Props = {
   language: keyof typeof translations;
 };
 
+export interface DivParams {
+  adiv: number;
+  sdiv: number;
+  adiv_index: number;
+  sdiv_index: number;
+  state: number;
+}
+
 export const Gen2PokemonRng = ({ type, language }: Props) => {
   const t = useTranslator(translations, language);
   const fields = React.useMemo(() => getFields(t), [t]);
   const columns = React.useMemo(() => getColumns(t), [t]);
   const [results, setResults] = React.useState<Gen2Spread[]>([]);
-
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
       const generator =
@@ -192,12 +199,15 @@ export const Gen2PokemonRng = ({ type, language }: Props) => {
           ? rngTools.crystal_generate_starters
           : rngTools.crystal_generate_celebi;
 
+      const config = {
+        adiv: opts.div >>> 8,
+        sdiv: opts.div & 0xff,
+        adiv_index: opts.adivIndex,
+        sdiv_index: opts.sdivIndex,
+        state: opts.state,
+      };
       const results = await generator(
-        opts.div >>> 8,
-        opts.div & 0xff,
-        opts.adivIndex,
-        opts.sdivIndex,
-        opts.state,
+        config,
         opts.startAdvance,
         opts.startAdvance + opts.advanceCount,
         opts.filter,

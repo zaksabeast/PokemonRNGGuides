@@ -1,5 +1,5 @@
 use super::poke::{Poke, SpecialTrait, possible_special_trait};
-use super::{Gen2PokeFilter, Gen2Spread, DivParams};
+use super::{DivParams, Gen2PokeFilter, Gen2Spread};
 use crate::rng::gameboy::{Div, GameboyRng, Offset};
 use wasm_bindgen::prelude::*;
 
@@ -67,9 +67,9 @@ pub fn crystal_generate_celebi(
     end_advance: usize,
     filter: Gen2PokeFilter,
 ) -> Vec<Gen2Spread> {
-    let add_div = Div::new(adiv_index, adiv);
-    let sub_div = Div::new(sdiv_index, sdiv);
-    let mut rng = GameboyRng::new(state, add_div, sub_div);
+    let add_div = Div::new(config.adiv_index, config.adiv);
+    let sub_div = Div::new(config.sdiv_index, config.sdiv);
+    let mut rng = GameboyRng::new(config.state, add_div, sub_div);
     let mut spreads = Vec::new();
     for advance in start_advance..=end_advance {
         let special_trait = has_potential_special_celebi(&rng);

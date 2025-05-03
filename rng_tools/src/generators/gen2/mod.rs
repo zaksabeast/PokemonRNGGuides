@@ -19,7 +19,7 @@ pub struct Gen2Spread {
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct DivParams{
+pub struct DivParams {
     pub adiv: u8,
     pub sdiv: u8,
     pub adiv_index: usize,

@@ -6,6 +6,7 @@ import {
   RngToolForm,
   RngToolSubmit,
   Field,
+  FormikSelect,
 } from "~/components";
 import { rngTools, TransporterOpts, Stationary6State } from "~/rngTools";
 import { z } from "zod";
@@ -119,11 +120,14 @@ const fields: Field[] = [
   },
   {
     label: "Transporter Gender",
-    input: <FormikInput<FormState> name="transporter_genders" numtype="Nogender" />
-  }
-]
-    
-
+    input: (
+      <FormikSelect<FormState, "transporter_genders">
+        name="transporter_genders"
+        options={["Nogender", "RandomGender", "Mythical"]}
+      />
+    ),
+  },
+];
 
 export const transporter = () => {
   const [results, setResults] = React.useState<Stationary6State[]>([]);

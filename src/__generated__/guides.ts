@@ -832,7 +832,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       file: "guides/Gen 5/Roamers.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-bw-roamers",
+        zh: "/zh-emulator-bw-roamers",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Roamers.mdx")),
   },
@@ -3865,6 +3868,27 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Find DS Parameters.mdx")),
   },
+  "/zh-emulator-bw-roamers": {
+    meta: {
+      title: "第五世代游走宝可梦乱数",
+      navDrawerTitle: "第五世代游走宝可梦乱数",
+      description: "在模拟器中对第五世代的游走宝可梦进行乱数",
+      category: "Black and White",
+      slug: "/zh-emulator-bw-roamers",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-bw-roamers", language: "zh" },
+      layout: "guide",
+      file: "guides/Gen 5/Roamers.mdx",
+      translations: {
+        en: "/emulator-bw-roamers",
+        zh: "/zh-emulator-bw-roamers",
+      },
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Roamers.mdx")),
+  },
   "/zh-emulator-bw-runasdate-initial-seed": {
     meta: {
       title: "黑白初始seed乱数",
@@ -4451,6 +4475,7 @@ export const guideSlugs = [
   "/zh-emerald-sid-feebas",
   "/zh-emulator-b2w2-runasdate-inital-seed",
   "/zh-emulator-bw-find-ds-parameters",
+  "/zh-emulator-bw-roamers",
   "/zh-emulator-bw-runasdate-initial-seed",
   "/zh-emulator-dppt-cute-charm",
   "/zh-emulator-dppt-egg",

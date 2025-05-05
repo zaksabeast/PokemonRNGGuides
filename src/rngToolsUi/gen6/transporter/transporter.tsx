@@ -2,21 +2,18 @@ import React from "react";
 import {
   FormikNumberInput,
   ResultColumn,
-  FormikInput,
   RngToolForm,
   RngToolSubmit,
   Field,
   FormikSelect,
 } from "~/components";
-import { rngTools, TransporterOpts, Stationary6State } from "~/rngTools";
+import { rngTools, Stationary6State } from "~/rngTools";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
+import { toOptions } from "~/utils/options";
 
-export const TransporterGenderEnum = z.enum([
-  "NoGender",
-  "RandomGender",
-  "Mythical",
-]);
+const transporterGenders = ["NoGender", "RandomGender", "Mythical"] as const;
+const transporterGenderOptions = toOptions(transporterGenders);
 
 const columns: ResultColumn<Stationary6State>[] = [
   {
@@ -64,10 +61,9 @@ const Validator = z.object({
   initial_advances: z.number().int().min(0),
   max_advances: z.number().int().min(0),
   delay: z.number().int(),
-  target: z.number().int(),
   tsv: z.number().int(),
   only_current_seed: z.boolean(),
-  transporter_genders: z.array(TransporterGenderEnum),
+  transporter_genders: z.enum(transporterGenders),
 });
 
 export type FormState = z.infer<typeof Validator>;
@@ -77,17 +73,10 @@ const initialValues: FormState = {
   initial_advances: 20,
   max_advances: 50,
   delay: 100,
-  target: 0,
   tsv: 0,
   only_current_seed: false,
-  transporter_genders: ["NoGender"],
+  transporter_genders: "NoGender",
 };
-
-const genderOptions = [
-  { label: "No Gender", value: "NoGender" },
-  { label: "Random", value: "RandomGender" },
-  { label: "Mythical", value: "Mythical" },
-] as const;
 
 const fields: Field[] = [
   {
@@ -111,10 +100,6 @@ const fields: Field[] = [
     input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
   },
   {
-    label: "Target",
-    input: <FormikNumberInput<FormState> name="target" numType="decimal" />,
-  },
-  {
     label: "TSV",
     input: <FormikNumberInput<FormState> name="tsv" numType="decimal" />,
   },
@@ -123,13 +108,13 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "transporter_genders">
         name="transporter_genders"
-        options={["Nogender", "RandomGender", "Mythical"]}
+        options={transporterGenderOptions}
       />
     ),
   },
 ];
 
-export const transporter = () => {
+export const Transporter = () => {
   const [results, setResults] = React.useState<Stationary6State[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
@@ -138,8 +123,8 @@ export const transporter = () => {
       initial_advances: opts.initial_advances,
       max_advances: opts.max_advances,
       delay: opts.delay,
-      target: opts.target,
-      transporter_genders: opts.transporter_genders,
+      target: 0,
+      transporter_genders: [opts.transporter_genders],
       tsv: opts.tsv,
       filter: {
         gender: null,

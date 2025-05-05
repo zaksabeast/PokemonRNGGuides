@@ -2446,6 +2446,27 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/XY TID.mdx")),
   },
+  "/pokefinder": {
+    meta: {
+      title: "PokeFinder - Pokemon RNG Tool for Gens 3-8",
+      navDrawerTitle: "PokeFinder",
+      description:
+        "Pokefinder is a cross-platform RNG tool for Pokémon Generations 3-8. Supports shiny hunting, TID/SID RNG, breeding, and more. Works for emulators and real hardware.",
+      category: "GBA Tools",
+      slug: "/pokefinder",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      file: "guides/Tools and Emulators/PokeFinder.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/PokeFinder.mdx"),
+    ),
+  },
   "/retail-bw-entralink": {
     meta: {
       title: "Black and White Retail Entralink RNG",
@@ -4407,6 +4428,7 @@ export const guideSlugs = [
   "/pal-xd-eevee",
   "/pcalc-xy-friend-safari",
   "/pcalc-xy-tid",
+  "/pokefinder",
   "/retail-bw-entralink",
   "/retail-emerald-wild",
   "/retail-oras-egg-mmsc",

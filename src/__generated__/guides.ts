@@ -3228,6 +3228,21 @@ export const guides = {
         ),
     ),
   },
+  "/rs-barboach-shroomish": {
+    meta: {
+      title: "Largest Barboach/Shroomish",
+      description:
+        "Catching the largest possible Barboach and Shroomish to show to Sootopolis City brothers",
+      category: "Ruby and Sapphire",
+      slug: "/rs-barboach-shroomish",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-04-06",
+      file: "guides/Emerald/Largest Pokemon.mdx",
+    },
+    Guide: React.lazy(() => import("~/../guides/Emerald/Largest Pokemon.mdx")),
+  },
   "/rs-battery": {
     meta: {
       title: "Ruby and Sapphire Live vs Dead Battery RNG",

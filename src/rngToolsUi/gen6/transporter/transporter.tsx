@@ -13,6 +13,8 @@ import {
   FlattenIvs,
   ivColumns,
 } from "~/rngToolsUi/shared/ivColumns";
+import { maxIvs, minIvs } from "~/types/ivs";
+import { getPkmFilterFields, pkmFilterSchema } from "~/components/pkmFilter";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { toOptions } from "~/utils/options";
@@ -41,7 +43,7 @@ const columns: ResultColumn<Result>[] = [
     dataIndex: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
-  ivColumns,
+  ...ivColumns,
   {
     title: "Ability",
     dataIndex: "ability",
@@ -56,15 +58,17 @@ const columns: ResultColumn<Result>[] = [
   },
 ];
 
-const Validator = z.object({
-  seed: HexSchema(0xffffffff),
-  initial_advances: z.number().int().min(0),
-  max_advances: z.number().int().min(0),
-  delay: z.number().int(),
-  tsv: z.number().int(),
-  only_current_seed: z.boolean(),
-  transporter_genders: z.enum(transporterGenders),
-});
+const Validator = z
+  .object({
+    seed: HexSchema(0xffffffff),
+    initial_advances: z.number().int().min(0),
+    max_advances: z.number().int().min(0),
+    delay: z.number().int(),
+    tsv: z.number().int(),
+    only_current_seed: z.boolean(),
+    transporter_genders: z.enum(transporterGenders),
+  })
+  .merge(pkmFilterSchema);
 
 export type FormState = z.infer<typeof Validator>;
 
@@ -76,6 +80,12 @@ const initialValues: FormState = {
   tsv: 0,
   only_current_seed: false,
   transporter_genders: "NoGender",
+  filter_shiny: false,
+  filter_min_ivs: minIvs,
+  filter_max_ivs: maxIvs,
+  filter_nature: null,
+  filter_gender: null,
+  filter_ability: null,
 };
 
 const fields: Field[] = [
@@ -112,6 +122,13 @@ const fields: Field[] = [
       />
     ),
   },
+  ...getPkmFilterFields({
+    ivs: true,
+    ability: false,
+    gender: false,
+    nature: false,
+    shiny: false,
+  }),
 ];
 
 export const Transporter = () => {

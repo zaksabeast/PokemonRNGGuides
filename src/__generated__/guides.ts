@@ -529,6 +529,27 @@ export const guides = {
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx"),
     ),
   },
+  "/dream-radar-patches": {
+    meta: {
+      title: "Dream Radar No-Cart Patch",
+      navDrawerTitle: "Dream Radar No-Cart Patch",
+      description:
+        "Learn how to patch Pokémon Dream Radar on the 3DS to load saves from TWiLightMenu, nds-bootstrap, or emulators — no game cart needed.",
+      category: "3DS Tools",
+      slug: "/dream-radar-patches",
+      isRoughDraft: false,
+      tag: "cfw",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      file: "guides/Tools and Emulators/Dream Radar Patches.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/Dream Radar Patches.mdx"),
+    ),
+  },
   "/e-tips-rng": {
     meta: {
       title: "Emerald RNG Info",
@@ -3490,10 +3511,10 @@ export const guides = {
   },
   "/transporter-patches": {
     meta: {
-      title: "Transporter Patches",
+      title: "Pokemon Transporter Offline & Save Patches",
       navDrawerTitle: "Transporter Patches",
       description:
-        "Collection of patches to modify or enhance Pokémon Transporter functionality.",
+        "Learn how to patch Pokémon Transporter to work offline and load emulator or TWiLightMenu saves from the SD card.",
       category: "3DS Tools",
       slug: "/transporter-patches",
       isRoughDraft: false,
@@ -4316,6 +4337,7 @@ export const guideSlugs = [
   "/dppt-pokeradar-rng",
   "/dppt-setup-rng",
   "/dppt-wild",
+  "/dream-radar-patches",
   "/e-tips-rng",
   "/emerald",
   "/emerald-mirage-island",

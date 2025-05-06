@@ -37,7 +37,7 @@ import { Gen4Timer } from "~/rngToolsUi/timer/gen4";
 import { EmeraldHeldEgg } from "~/rngToolsUi/gen3/emeraldHeldEgg";
 import { EmeraldPickupEgg } from "~/rngToolsUi/gen3/emeraldPickupEgg";
 import { Gen3TidSidGenerator } from "~/rngToolsUi/gen3/tidsid";
-import { RsTidSidGenerator } from "~/rngToolsUi/gen3/rstid";
+import { RsTid } from "~/rngToolsUi/gen3/rstid/index";
 import { Gen3MirageIsland } from "~/rngToolsUi/gen3/mirageIsland";
 import { OrAsMirageSpot } from "~/rngToolsUi/gen6/orasMirageSpot";
 import { RngTimer } from "~/rngToolsUi/timer";
@@ -87,7 +87,7 @@ export const markdownComponents = {
   Gen2PokemonRng,
   Gen2Rng,
   Gen3Sid,
-  RsTidSidGenerator,
+  RsTid,
   Gen3MirageIsland,
   EmeraldHeldEgg,
   EmeraldPickupEgg,

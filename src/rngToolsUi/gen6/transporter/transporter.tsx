@@ -147,7 +147,10 @@ export const Transporter = () => {
         gender: null,
         ability: null,
         nature: null,
-        ivs: null,
+        ivs: {
+          min_ivs:opts.filter_min_ivs,
+          max_ivs:opts.filter_max_ivs,
+        },
         shiny: false,
       },
     });

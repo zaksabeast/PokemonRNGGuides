@@ -10,7 +10,6 @@ tag: "cfw"
 ## Tools
 
 - [A 3DS with PokeReader](/install-pokereader)
-- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 
 ## Useful note
 
@@ -24,15 +23,12 @@ RNGing with Transporter has a delay between pressing `A` and Pokémon generation
 
 1. Make sure you have at least one Pokémon in Box 1, Slot 1 of your Gen 1/2 game.
 1. Load Pokémon Transporter with PokeReader on your 3DS.
-1. Open 3DSRNGTool on your computer.
-1. Change 3DSRNGTool's "Game Version" to "Transporter."
-1. Change 3DSRNGTool's "Seed" to the Initial Seed PokeReader shows.
-1. Change 3DSRNGTool's tab to "Stationary RNG."
+1. Enter your Initial seed in the tool below.
 1. In Transporter, press `Start` to select the game for Transporter.
 1. Press `Start + Select` to pause the game.
 1. Note your current frame; this is your starting frame.
 1. Press `A` to unpause and let Transporter generate the Pokémon.
-1. Search for the exact IVs PokeReader indicates using 3DSRNGTool to find your hit frame.
+1. Search for the exact IVs PokeReader indicates using the tool below to find your hit frame.
 1. Subtract your hit frame from your starting frame to get your delay.
    - Example: If you started on frame 1000 and hit frame 1197, your delay is 197.
 1. When asked to transfer the Pokémon, click "No."
@@ -41,15 +37,14 @@ RNGing with Transporter has a delay between pressing `A` and Pokémon generation
 
 ## Step 2: Find a spread to RNG
 
-Follow these steps in 3DSRNGTool to find a desired spread:
+Follow these steps in with the tool below to find a desired spread:
 
-1. Change the "Gender Ratio" to match the Pokémon you want to RNG.
-1. Change the "Index of Target Pkm" to "1."
-1. Change only the gender and IVs to find a spread you want.
+1. Change the "Transporter Gender" to match the Pokémon you want to RNG.
+1. Change IVs to find a spread you want.
    - Nature, ability, and shininess are determined in the Gen 1/2 game before Transporter.
-1. Change the first "Frame Range" box to your current frame.
-1. Change the second "Frame Range" box to the maximum frame you want to search.
-1. Click "Search."
+1. Change the "Initial Advance" box to your current frame.
+1. Change the "Max Advances" box to the maximum frame you want to search.
+1. Click "Generate."
 
 All results are potential wanted frames. Pick your favorite!
 
@@ -62,27 +57,5 @@ All results are potential wanted frames. Pick your favorite!
 1. Check if you got the Pokémon you wanted; if not, don’t transfer your Pokémon and try again.
 
 This may take several attempts.
-
-## Alternative method with increased chances
-
-Transporter generates 20 Pokémon at once. If you have 20 of the same Pokémon or cloned, you can have 20 chances to RNG the same Pokémon.
-
-1. Catch 20 of the same Pokémon (or clone them).
-1. Make sure all 20 are in Box 1 of your Gen 1/2 game.
-
-In 3DSRNGTool:
-
-1. Change the "Index of Target Pkm" to "1."
-1. Change the "Filters" box to have the IVs you want to RNG.
-1. Search for spreads using the initial seed PokeReader shows.
-1. Repeat this, adding 1 to the "Index of Target Pkm" to check the spreads for all 20 Pokémon.
-1. Note the index with the most consecutive frames with spreads you want; this is your target index.
-1. Ensure the number of consecutive frames is at least 10.
-1. Set the "Index of Target Pkm" to your target index.
-1. Get the list of delays from the calibration step.
-1. Look for the highest delay within 10 frames of your most common delay.
-1. In the "RNG Info" box of 3DSRNGTool, change "delay" to this new delay.
-1. Press "Calculate" to find your potential frames with this new delay for your target index.
-1. Find the highest frame among the 10+ consecutive frames from earlier and use it as your target frame.
 
 <Transporter />

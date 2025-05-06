@@ -312,7 +312,7 @@ pub fn generate_transporter(opts: TransporterOpts) -> Vec<Stationary6State> {
         delay: opts.delay,
         perfect_iv_count,
         is_transporter: true,
-        target: 0,
+        target: opts.target,
         transporter_genders: opts.transporter_genders,
         always_sync: true,
         synchro_stat: None,
@@ -1418,7 +1418,7 @@ mod test {
                 initial_advances: 0,
                 max_advances: 3,
                 delay: 0,
-                target: 1,
+                target: 0,
                 transporter_genders: vec![TransporterGenderType::Mythical],
                 tsv: 123,
                 filter: Default::default(),
@@ -1499,7 +1499,7 @@ mod test {
 
         #[test]
         fn preceding_fixed_natures() {
-            let opts = TransporterOpts {
+            let opts: TransporterOpts = TransporterOpts {
                 seed: 0xAABBCCDD,
                 initial_advances: 0,
                 max_advances: 3,

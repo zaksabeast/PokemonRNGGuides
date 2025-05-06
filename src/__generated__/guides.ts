@@ -2448,10 +2448,10 @@ export const guides = {
   },
   "/pokefinder": {
     meta: {
-      title: "PokeFinder - Pokemon RNG Tool for Gens 3-8",
+      title: "PokeFinder - Pokemon RNG Tool for Gens 3-5 & 8",
       navDrawerTitle: "PokeFinder",
       description:
-        "Pokefinder is a cross-platform RNG tool for Pokémon Generations 3-8. Supports shiny hunting, TID/SID RNG, breeding, and more. Works for emulators and real hardware.",
+        "Pokefinder is a cross-platform RNG tool for Pokémon Generations 3-5 & 8. Supports shiny hunting, TID/SID RNG, breeding, and more. Works for emulators and real hardware.",
       category: "GBA Tools",
       slug: "/pokefinder",
       isRoughDraft: false,

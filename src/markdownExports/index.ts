@@ -41,7 +41,7 @@ import { Gen3MirageIsland } from "~/rngToolsUi/gen3/mirageIsland";
 import { OrAsMirageSpot } from "~/rngToolsUi/gen6/orasMirageSpot";
 import { RngTimer } from "~/rngToolsUi/timer";
 import { OrasId } from "~/rngToolsUi/gen6/orasId";
-import { Transporter } from "~/rngToolsUi/gen6/transporter/Transporter.tsx";
+import { Transporter } from "~/rngToolsUi/gen6/transporter/transporter";
 import { DpptSeed } from "~/rngToolsUi/gen4/dpptSeed";
 import { DpptId } from "~/rngToolsUi/gen4/dpptId";
 import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";

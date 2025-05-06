@@ -8,14 +8,20 @@ import {
   FormikSelect,
 } from "~/components";
 import { rngTools, Stationary6State } from "~/rngTools";
+import {
+  flattenIvs,
+  FlattenIvs,
+  ivColumns,
+} from "~/rngToolsUi/shared/ivColumns";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { toOptions } from "~/utils/options";
 
 const transporterGenders = ["NoGender", "RandomGender", "Mythical"] as const;
 const transporterGenderOptions = toOptions(transporterGenders);
+type Result = FlattenIvs<Stationary6State>;
 
-const columns: ResultColumn<Stationary6State>[] = [
+const columns: ResultColumn<Result>[] = [
   {
     title: "Advance",
     dataIndex: "advance",
@@ -35,13 +41,7 @@ const columns: ResultColumn<Stationary6State>[] = [
     dataIndex: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
-  {
-    title: "IVs",
-    dataIndex: "ivs",
-    monospace: true,
-    render: (ivs) =>
-      [ivs.hp, ivs.atk, ivs.def, ivs.spa, ivs.spd, ivs.spe].join(" / "),
-  },
+  ivColumns,
   {
     title: "Ability",
     dataIndex: "ability",
@@ -115,7 +115,7 @@ const fields: Field[] = [
 ];
 
 export const Transporter = () => {
-  const [results, setResults] = React.useState<Stationary6State[]>([]);
+  const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
     const results = await rngTools.generate_transporter({
@@ -135,11 +135,11 @@ export const Transporter = () => {
       },
     });
 
-    setResults(results);
+    setResults(results.map(flattenIvs));
   }, []);
 
   return (
-    <RngToolForm<FormState, Stationary6State>
+    <RngToolForm<FormState, Result>
       fields={fields}
       columns={columns}
       results={results}

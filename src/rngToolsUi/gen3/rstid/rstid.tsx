@@ -6,6 +6,8 @@ import {
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
+  Button,
+  Icon,
 } from "~/components";
 import React from "react";
 import { denormalizeIdFilter, IdFilterSchema } from "~/types/id";
@@ -13,7 +15,7 @@ import { z } from "zod";
 
 type Result = Gen3TidSidResult & { time: string };
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = (): ResultColumn<Result>[] => [
   { title: "Advance", dataIndex: "advance" },
   { title: "Est. Time", dataIndex: "time" },
   { title: "TID", dataIndex: "tid" },
@@ -64,8 +66,12 @@ const fields: Field[] = [
   },
 ];
 
-export const RsTidSidGenerator = () => {
+export const RsTidSidGenerator = ({ handleTarget }) => {
   const [results, setResults] = React.useState<Result[]>([]);
+
+  const onSelectTarget = (advance: number, results) => {
+    handleTarget(advance, results);
+  };
 
   const formatTime = (seconds: number): string => {
     const hrs = Math.floor(seconds / 3600);
@@ -96,12 +102,16 @@ export const RsTidSidGenerator = () => {
   return (
     <RngToolForm<FormState, Result>
       fields={fields}
-      columns={columns}
+      columns={getColumns()}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_rs_tidsid"
+      onClickResultRow={(results) => {
+        onSelectTarget(results.advance, results);
+      }}
+      rowKey="advance"
     />
   );
 };

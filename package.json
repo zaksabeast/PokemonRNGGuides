@@ -63,6 +63,7 @@
     "cheerio": "^1.0.0",
     "cypress": "^14.3.0",
     "eslint": "^9.19.0",
+    "eslint-plugin-no-relative-import-paths": "^1.6.1",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",

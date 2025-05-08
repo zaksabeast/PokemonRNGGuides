@@ -84,7 +84,8 @@ const InnerChallengePageComponent = ({ state, setState }: InnerProps) => {
       return challenges.usumTa.map((task) => ({
         ...task,
         status:
-          state.usumTa.find((t) => t.id === task.id)?.status ?? "not-started",
+          state.usumTa.find((usumTask) => usumTask.id === task.id)?.status ??
+          "not-started",
       }));
     })
     .otherwise(() => []);

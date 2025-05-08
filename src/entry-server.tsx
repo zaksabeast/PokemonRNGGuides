@@ -19,6 +19,7 @@ import { getGuide } from "~/guides";
 import { renderToReadableStream as _renderToReadableStream } from "react-dom/server.browser";
 
 // Type hack to get the correct type for renderToReadableStream
+// eslint-disable-next-line no-duplicate-imports
 import type { renderToReadableStream as TrenderToReadableStream } from "react-dom/server";
 const renderToReadableStream: typeof TrenderToReadableStream =
   _renderToReadableStream;
@@ -31,7 +32,9 @@ const renderToStringAsync = async (element: React.ReactNode) => {
 
   while (true) {
     const { done, value } = await reader.read();
-    if (done) break;
+    if (done) {
+      break;
+    }
     html += decoder.decode(value, { stream: true });
   }
 

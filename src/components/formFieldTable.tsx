@@ -33,18 +33,17 @@ export const FormFieldTable = ({ fields }: Props) => {
                 <td>{input}</td>
               </tr>
             );
-          } else {
-            return (
-              <tr key={label}>
-                <LabelTd colSpan={2}>
-                  <Typography.Text strong>{label}</Typography.Text>
-                  <Flex pl={30} vertical>
-                    {input}
-                  </Flex>
-                </LabelTd>
-              </tr>
-            );
           }
+          return (
+            <tr key={label}>
+              <LabelTd colSpan={2}>
+                <Typography.Text strong>{label}</Typography.Text>
+                <Flex pl={30} vertical>
+                  {input}
+                </Flex>
+              </LabelTd>
+            </tr>
+          );
         })}
       </tbody>
     </table>

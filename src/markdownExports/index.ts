@@ -62,6 +62,7 @@ export const markdownComponents = {
   h4: MarkdownH4,
   h5: MarkdownH5,
   h6: MarkdownH6,
+  // eslint-disable-next-line id-length
   p: MarkdownParagraph,
   ul: MarkdownList,
   ol: MarkdownOList,
@@ -74,6 +75,7 @@ export const markdownComponents = {
   th: MarkdownTh,
   tr: MarkdownTr,
   td: MarkdownTd,
+  // eslint-disable-next-line id-length
   a: MarkdownA,
   Text: MarkdownParagraph,
   YouTubeVideo,

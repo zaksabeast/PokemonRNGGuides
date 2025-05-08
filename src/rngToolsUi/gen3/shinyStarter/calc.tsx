@@ -14,8 +14,12 @@ export const findTargetAdvanceForShinyPokemon = async (
   tid: number,
   sid: number,
 ): Promise<number | null> => {
-  if (tid < 0 || tid > 0xffff) return null;
-  if (sid < 0 || sid > 0xffff) return null;
+  if (tid < 0 || tid > 0xffff) {
+    return null;
+  }
+  if (sid < 0 || sid > 0xffff) {
+    return null;
+  }
 
   const seed = game === "emerald" ? 0 : 0x5a0;
   return rngTools.gen3_earliest_shiny_starter_adv(seed, tid, sid);
@@ -48,18 +52,20 @@ export const getTargetPokemonDesc = async (
   };
 
   const genResults = await rngTools.gen3_static_generator_states(opts);
-  if (genResults.length === 0) return "";
-  const r = genResults[0];
+  if (genResults.length === 0) {
+    return "";
+  }
+  const res = genResults[0];
 
   const stats = await rngTools.calculate_stats(
     BASE_STATS[pokemonSpecies],
     5,
-    r.nature,
-    r.ivs,
+    res.nature,
+    res.ivs,
     { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
   );
 
-  return `${r.gender}, ${r.nature}, HP ${stats.hp}, ATK ${stats.atk}, DEF ${stats.def}, SPA ${stats.spa}, SPD ${stats.spd}, SPE ${stats.spe}`;
+  return `${res.gender}, ${res.nature}, HP ${stats.hp}, ATK ${stats.atk}, DEF ${stats.def}, SPA ${stats.spa}, SPD ${stats.spd}, SPE ${stats.spe}`;
 };
 
 const BASE_STATS = {
@@ -88,7 +94,9 @@ const getMinMaxStat = (
   selected: number,
   { min, max }: MinMax,
 ) => {
-  if (selected >= min && selected <= max) return selected;
+  if (selected >= min && selected <= max) {
+    return selected;
+  }
   return isMin ? min : max;
 };
 
@@ -136,9 +144,9 @@ export const generateCaughtMonResults = async (
   } as const;
 
   const genResults = await rngTools.gen3_static_generator_states(opts);
-  const caughtMonResults = genResults.map((r) => {
+  const caughtMonResults = genResults.map((res) => {
     return {
-      advance: r.advance,
+      advance: res.advance,
       targetAdvance,
     };
   });

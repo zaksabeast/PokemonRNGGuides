@@ -43,10 +43,10 @@ app.use("*all", async (req, res) => {
       .replace(`<!--app-html-->`, rendered.html);
 
     res.status(200).set({ "Content-Type": "text/html" }).send(result);
-  } catch (e) {
-    vite?.ssrFixStacktrace(e);
-    console.log(e.stack);
-    res.status(500).end(e.stack);
+  } catch (err) {
+    vite?.ssrFixStacktrace(err);
+    console.log(err.stack);
+    res.status(500).end(err.stack);
   }
 });
 

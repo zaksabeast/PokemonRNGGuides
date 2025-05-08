@@ -1,7 +1,6 @@
-import React from "react";
+import React, { StrictMode } from "react";
 import { Router } from "~/routes/router";
 import { Flex, MobileDrawer } from "~/components";
-import { StrictMode } from "react";
 import { App as AntdApp } from "antd";
 import { ThemeProvider } from "~/theme/provider";
 import { MDXProvider } from "@mdx-js/react";

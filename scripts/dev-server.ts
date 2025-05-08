@@ -38,7 +38,7 @@ app.use("*all", async (req, res) => {
       .replace(
         `<!--injected-styles-->`,
         `<style data-emotion>${rendered.emotionStyles}</style>
-        <style>${rendered.antdStyles.all}</style>`,
+        <style>${rendered.antdStyles.light}${rendered.antdStyles.dark}</style>`,
       )
       .replace(`<!--app-html-->`, rendered.html);
 

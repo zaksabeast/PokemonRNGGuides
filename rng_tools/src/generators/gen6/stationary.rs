@@ -8,6 +8,7 @@ use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
+#[repr(u8)]
 pub enum TransporterGenderType {
     NoGender = 0,
     RandomGender = 1,
@@ -293,7 +294,7 @@ pub struct TransporterOpts {
 pub fn generate_transporter(opts: TransporterOpts) -> Vec<Stationary6State> {
     let target_gender = opts
         .transporter_genders
-        .get(opts.target.saturating_sub(1))
+        .get(opts.target)
         .map(|target| *target)
         .unwrap_or(TransporterGenderType::RandomGender);
     let ability = match target_gender {
@@ -1417,7 +1418,7 @@ mod test {
                 initial_advances: 0,
                 max_advances: 3,
                 delay: 0,
-                target: 1,
+                target: 0,
                 transporter_genders: vec![TransporterGenderType::Mythical],
                 tsv: 123,
                 filter: Default::default(),
@@ -1498,7 +1499,7 @@ mod test {
 
         #[test]
         fn preceding_fixed_natures() {
-            let opts = TransporterOpts {
+            let opts: TransporterOpts = TransporterOpts {
                 seed: 0xAABBCCDD,
                 initial_advances: 0,
                 max_advances: 3,

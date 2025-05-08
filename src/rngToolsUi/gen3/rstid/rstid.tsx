@@ -6,8 +6,6 @@ import {
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
-  Button,
-  Icon,
 } from "~/components";
 import React from "react";
 import { denormalizeIdFilter, IdFilterSchema } from "~/types/id";
@@ -15,7 +13,7 @@ import { z } from "zod";
 
 type Result = Gen3TidSidResult & { time: string };
 
-const getColumns = (): ResultColumn<Result>[] => [
+const columns: ResultColumn<Result>[] = [
   { title: "Advance", dataIndex: "advance" },
   { title: "Est. Time", dataIndex: "time" },
   { title: "TID", dataIndex: "tid" },
@@ -66,19 +64,19 @@ const fields: Field[] = [
   },
 ];
 
-export const RsTidSidGenerator = ({ handleTarget }) => {
+type Props = {
+  onSelectTarget: (advance: number, results: Result) => void;
+};
+
+const formatTime = (seconds: number): string => {
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${hrs}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+};
+
+export const RsTidSidGenerator = ({ onSelectTarget }: Props) => {
   const [results, setResults] = React.useState<Result[]>([]);
-
-  const onSelectTarget = (advance: number, results) => {
-    handleTarget(advance, results);
-  };
-
-  const formatTime = (seconds: number): string => {
-    const hrs = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${hrs}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-  };
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
     const results = await rngTools.gen3_tidsid_states({
@@ -99,18 +97,23 @@ export const RsTidSidGenerator = ({ handleTarget }) => {
     setResults(updatedResults);
   }, []);
 
+  const onClickResultRow = React.useCallback(
+    (results: Result) => {
+      onSelectTarget(results.advance, results);
+    },
+    [onSelectTarget],
+  );
+
   return (
     <RngToolForm<FormState, Result>
       fields={fields}
-      columns={getColumns()}
+      columns={columns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_rs_tidsid"
-      onClickResultRow={(results) => {
-        onSelectTarget(results.advance, results);
-      }}
+      onClickResultRow={onClickResultRow}
       rowKey="advance"
     />
   );

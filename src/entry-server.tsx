@@ -39,6 +39,19 @@ const renderToStringAsync = async (element: React.ReactNode) => {
 };
 
 const renderAntdStyles = () => {
+  const resetStyles = `
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      button,
+      .ant-btn {
+        /* Adjust selector to target the affected buttons */
+        -webkit-tap-highlight-color: transparent;
+      }`;
   const lightAntdStyles = extractStyle((node) => (
     <ConfigProvider theme={getTheme(themePalette.light)}>{node}</ConfigProvider>
   ));
@@ -48,9 +61,8 @@ const renderAntdStyles = () => {
   ));
 
   return {
-    light: lightAntdStyles,
-    dark: darkAntdStyles,
-    all: `${lightAntdStyles}${darkAntdStyles}`,
+    light: `${resetStyles}${lightAntdStyles}`,
+    dark: `${resetStyles}${darkAntdStyles}`,
   };
 };
 
@@ -63,7 +75,6 @@ type RenderResult = {
   antdStyles: {
     light: string;
     dark: string;
-    all: string;
   };
 };
 

@@ -1,3 +1,4 @@
+import { Skeleton } from "antd";
 import { MainLayout } from "~/layouts/main";
 import { GuideMeta } from "~/guides";
 import {
@@ -12,19 +13,39 @@ import { settings } from "~/settings";
 import { useAbCohort } from "~/hooks/useAbTest";
 import { match } from "ts-pattern";
 
+const SupportButton = () => {
+  const { hydrated, cohort } = useAbCohort("supportUsIcon");
+
+  if (!hydrated) {
+    return <Skeleton.Button block />;
+  }
+
+  const iconName = match(cohort)
+    .with("heart", () => "Heart" as const)
+    .with("coffee", () => "Coffee" as const)
+    .exhaustive();
+
+  return (
+    <Button
+      trackerId="support_us_on_discord"
+      icon={<Icon name={iconName} />}
+      type="primary"
+      backgroundColor="BrandSecondary"
+      backgroundHoverColor="BrandSecondaryHover"
+      size="middle"
+      href={settings.supportUsUrl}
+    >
+      Keep Pokémon RNG Free & Growing
+    </Button>
+  );
+};
+
 type Props = {
   guideMeta: GuideMeta;
   children: React.ReactNode;
 };
 
 export const GuideLayout = ({ guideMeta, children }: Props) => {
-  const supportIconCohort = useAbCohort("supportUsIcon");
-
-  const supportUsIcon = match(supportIconCohort)
-    .with("heart", () => "Heart" as const)
-    .with("coffee", () => "Coffee" as const)
-    .exhaustive();
-
   return (
     <MainLayout>
       <Typography.Title level={1}>{guideMeta.title}</Typography.Title>
@@ -42,17 +63,7 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
       </Flex>
 
       <Flex>
-        <Button
-          trackerId="support_us_on_discord"
-          icon={<Icon name={supportUsIcon} />}
-          type="primary"
-          backgroundColor="BrandSecondary"
-          backgroundHoverColor="BrandSecondaryHover"
-          size="middle"
-          href={settings.supportUsUrl}
-        >
-          Keep Pokémon RNG Free & Growing
-        </Button>
+        <SupportButton />
       </Flex>
 
       {guideMeta.isRoughDraft && (

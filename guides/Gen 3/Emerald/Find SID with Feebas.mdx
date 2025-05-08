@@ -78,11 +78,13 @@ This method only works if:
 1. Use the Feebas seed with the tool below to find your possible SIDs.
 2. Try to RNG a shiny Pokemon to confirm the correct SID.
 
-<Gen3Sid
-  game={
-    window.location.pathname.startsWith("/rs-sid-feebas") ? "rs" : "emerald"
-  }
-/>
+<ShowIf slug="/rs-sid-feebas">
+  <Gen3Sid game="rs" />
+</ShowIf>
+
+<ShowIf slug="/emerald-sid-feebas">
+  <Gen3Sid game="emerald" />
+</ShowIf>
 
 ## Credits
 
@@ -139,11 +141,13 @@ This method only works if:
 1. 在下方工具中输入你的丑丑鱼种子，计算可能的 SID。
 2. 通过乱数异色宝可梦来确认你的真实 SID。
 
-<Gen3Sid
-  game={
-    window.location.pathname.startsWith("/rs-sid-feebas") ? "rs" : "emerald"
-  }
-/>
+<ShowIf slug="/zh-rs-sid-feebas">
+  <Gen3Sid game="rs" />
+</ShowIf>
+
+<ShowIf slug="/zh-emerald-sid-feebas">
+  <Gen3Sid game="emerald" />
+</ShowIf>
 
 ## 特别鸣谢
 

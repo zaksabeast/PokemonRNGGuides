@@ -1,4 +1,5 @@
 import React from "react";
+import { Skeleton } from "antd";
 import {
   FormikNumberInput,
   RngToolForm,
@@ -20,11 +21,15 @@ import {
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { useTimerSettings } from "~/state/timerSettings";
 import { z } from "zod";
+import { useHydrate } from "~/hooks/useHydrate";
+import { hydrationLock, HydrationLock } from "~/utils/hydration";
 
 const TimerStateSchema = z.object({
   milliseconds: z.array(z.number()),
   minutesBeforeTarget: z.number(),
 });
+
+type TimerState = z.infer<typeof TimerStateSchema>;
 
 const timerStateAtom = atomWithPersistence(
   "gen5EntralinkPlusTimer",
@@ -136,10 +141,19 @@ const fields: Field[] = [
   },
 ];
 
-export const Gen5EntralinkPlusTimer = () => {
-  const { initialSettings, onUpdate } = useTimerSettings(timerSettingsAtom);
-  const [timer, setTimer] = useAtom(timerStateAtom);
+type InnerProps = {
+  timer: TimerState;
+  setTimer: (timer: HydrationLock<TimerState>) => void;
+  initialSettings: FormState;
+  onUpdate: (opts: HydrationLock<FormState>) => void;
+};
 
+const InnerGen5EntralinkPlusTimer = ({
+  timer,
+  setTimer,
+  initialSettings,
+  onUpdate,
+}: InnerProps) => {
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts, formik) => {
       let updatedOpts = opts;
@@ -193,11 +207,13 @@ export const Gen5EntralinkPlusTimer = () => {
 
       const milliseconds =
         await rngTools.create_gen5_entralink_plus_timer(settings);
-      setTimer({
-        milliseconds: [...milliseconds],
-        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
-      });
-      onUpdate(updatedOpts);
+      setTimer(
+        hydrationLock({
+          milliseconds: [...milliseconds],
+          minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
+        }),
+      );
+      onUpdate(hydrationLock(updatedOpts));
     },
     [onUpdate, setTimer],
   );
@@ -219,5 +235,23 @@ export const Gen5EntralinkPlusTimer = () => {
         submitButtonLabel="Set Timer"
       />
     </Flex>
+  );
+};
+
+export const Gen5EntralinkPlusTimer = () => {
+  const { initialSettings, onUpdate } = useTimerSettings(timerSettingsAtom);
+  const [timer, setTimer] = useAtom(timerStateAtom);
+  const { hydrated, client } = useHydrate({ initialSettings, timer });
+
+  if (!hydrated) {
+    return <Skeleton />;
+  }
+
+  return (
+    <InnerGen5EntralinkPlusTimer
+      {...client}
+      setTimer={setTimer}
+      onUpdate={onUpdate}
+    />
   );
 };

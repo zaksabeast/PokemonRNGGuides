@@ -1,4 +1,4 @@
-import { Router as WRouter, Route as WRoute, Switch, Redirect } from "wouter";
+import { Route as WRoute, Switch, Redirect } from "wouter";
 import { NavRoute } from ".";
 import { routes } from "./defs";
 import { NotFoundScreen } from "~/screens/notFound";
@@ -15,20 +15,18 @@ const BackwardsCompatiblePage = () => {
 
 export const Router = () => {
   return (
-    <WRouter>
-      <Switch>
-        {routes.map((route) => (
-          <NavRoute key={route} path={route} component={MarkdownScreen} />
-        ))}
+    <Switch>
+      {routes.map((route) => (
+        <NavRoute key={route} path={route} component={MarkdownScreen} />
+      ))}
 
-        {backwardsCompatibleRoutes.map((route) => (
-          <WRoute key={route} path={route}>
-            <BackwardsCompatiblePage />
-          </WRoute>
-        ))}
+      {backwardsCompatibleRoutes.map((route) => (
+        <WRoute key={route} path={route}>
+          <BackwardsCompatiblePage />
+        </WRoute>
+      ))}
 
-        <NavRoute component={NotFoundScreen} />
-      </Switch>
-    </WRouter>
+      <NavRoute component={NotFoundScreen} />
+    </Switch>
   );
 };

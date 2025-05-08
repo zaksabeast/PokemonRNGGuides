@@ -4,8 +4,7 @@ export type * from "rng_tools";
 // eslint-disable-next-line no-restricted-imports -- ~/rngTools is the only place where using the rng_tools lib is okay
 import type * as RngTools from "rng_tools";
 
-import RngToolsWorker from "./worker?worker";
-import { wrap } from "comlink";
+import { Remote, wrap } from "comlink";
 
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
@@ -25,7 +24,15 @@ type AdjustAllFunctionArgs<T> = {
 
 type AdjustedRngTools = AdjustAllFunctionArgs<RngToolsModules>;
 
-export const rngTools = wrap<AdjustedRngTools>(new RngToolsWorker());
+export let rngTools: Remote<AdjustedRngTools> = null!;
+
+export const initRngTools = () => {
+  rngTools = wrap<AdjustedRngTools>(
+    new Worker(new URL("./worker", import.meta.url), {
+      type: "module",
+    }),
+  );
+};
 
 export const ZodConsole = z.enum([
   "NdsSlot1",

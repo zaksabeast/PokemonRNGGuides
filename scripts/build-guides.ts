@@ -6,8 +6,9 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import z from "zod";
 import { difference, isArray, keyBy, groupBy } from "lodash-es";
-import { guides as existingGuides } from "./src/__generated__/guides";
+import { guides as existingGuides } from "../src/__generated__/guides";
 import dayjs from "dayjs";
+import { toNativeAbsolute } from "./path";
 
 // Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, ,, ，, 《, 》, Chinese characters, ·, and 。
 const titleAndDescriptionChars =
@@ -219,8 +220,11 @@ const main = async () => {
   export const categories = ${JSON.stringify(categories)} as const;
 `;
 
-  fs.mkdir("src/__generated__", { recursive: true });
-  await fs.writeFile("src/__generated__/guides.ts", compiledGuides);
+  await fs.mkdir(toNativeAbsolute("../src/__generated__"), { recursive: true });
+  await fs.writeFile(
+    toNativeAbsolute("../src/__generated__/guides.ts"),
+    compiledGuides,
+  );
 };
 
 main();

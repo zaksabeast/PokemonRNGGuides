@@ -1,5 +1,5 @@
 import React from "react";
-import { Progress, Tabs, TabsProps } from "antd";
+import { Progress, Tabs, TabsProps, Skeleton } from "antd";
 import { Tasks } from "./tasks";
 import { Leaderboard, LeaderboardRank } from "./leaderboard";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
@@ -15,6 +15,8 @@ import { useTheme } from "@emotion/react";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
+import { useHydrate } from "~/hooks/useHydrate";
+import { hydrationLock, HydrationLock } from "~/utils/hydration";
 
 type Metric = {
   label: string;
@@ -68,8 +70,12 @@ const getRank = (completedPercent: number): LeaderboardRank => {
   return "None";
 };
 
-export const ChallengePageComponent = () => {
-  const [state, setState] = useAtom(rngChallengeAtom);
+type InnerProps = {
+  state: UserChallengeState;
+  setState: (state: HydrationLock<UserChallengeState>) => void;
+};
+
+const InnerChallengePageComponent = ({ state, setState }: InnerProps) => {
   const theme = useTheme();
   const [route] = useActiveRoute();
 
@@ -120,11 +126,13 @@ export const ChallengePageComponent = () => {
           <Tasks
             tasks={tasks}
             onUpdateTask={(task) =>
-              setState({
-                [task.challengeId]: tasks.map((oldTask) =>
-                  oldTask.id === task.id ? task : oldTask,
-                ),
-              })
+              setState(
+                hydrationLock({
+                  [task.challengeId]: tasks.map((oldTask) =>
+                    oldTask.id === task.id ? task : oldTask,
+                  ),
+                }),
+              )
             }
           />
         ),
@@ -176,4 +184,15 @@ export const ChallengePageComponent = () => {
       <Tabs defaultActiveKey="tasks" items={items} />
     </Flex>
   );
+};
+
+export const ChallengePageComponent = () => {
+  const [lockedState, setState] = useAtom(rngChallengeAtom);
+  const { hydrated, client: state } = useHydrate(lockedState);
+
+  if (!hydrated) {
+    return <Skeleton />;
+  }
+
+  return <InnerChallengePageComponent state={state} setState={setState} />;
 };

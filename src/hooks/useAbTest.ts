@@ -2,6 +2,8 @@ import md5 from "md5";
 import { track, getDeviceId } from "~/analytics";
 import React from "react";
 import { atom, useAtom } from "jotai";
+import { hydrationLock } from "~/utils/hydration";
+import { useHydrate } from "./useHydrate";
 
 const md5Sum = (source: string): Uint8Array => {
   const sourceBytes = md5(source);
@@ -38,9 +40,9 @@ const abTests = {
 type AbTest = typeof abTests;
 type AbTestName = keyof AbTest;
 
-const getAbCohort = <T extends AbTestName>(
-  abTestName: T,
-): AbTest[T]["cohorts"][number] => {
+export type AbCohort<T extends AbTestName> = AbTest[T]["cohorts"][number];
+
+const getAbCohort = <T extends AbTestName>(abTestName: T): AbCohort<T> => {
   const { cohorts, controlCohort } = abTests[abTestName];
   const deviceId = getDeviceId();
   if (deviceId == null) {
@@ -60,7 +62,19 @@ const joinedCohorts = atom<JoinedCohorts>({
   guidePokeball: false,
 } satisfies JoinedCohorts);
 
-export const useAbCohort = <T extends AbTestName>(abTestName: T) => {
+type AbCohortResult<T extends AbTestName> =
+  | {
+      hydrated: false;
+      cohort: null;
+    }
+  | {
+      hydrated: true;
+      cohort: AbCohort<T>;
+    };
+
+export const useAbCohort = <T extends AbTestName>(
+  abTestName: T,
+): AbCohortResult<T> => {
   const cohort = getAbCohort(abTestName);
   const [joined, setJoined] = useAtom(joinedCohorts);
   const hasJoined = joined[abTestName];
@@ -72,5 +86,8 @@ export const useAbCohort = <T extends AbTestName>(abTestName: T) => {
     }
   }, [hasJoined, setJoined, abTestName, cohort]);
 
-  return cohort;
+  const result = useHydrate(hydrationLock(cohort));
+  return result.hydrated
+    ? { hydrated: true, cohort: result.client }
+    : { hydrated: false, cohort: null };
 };

@@ -1,3 +1,4 @@
+import { Skeleton } from "antd";
 import { Flex, Typography, Grid, Card, Icon } from "~/components";
 import { getGuide, GuideMeta, guides } from "~/guides";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
@@ -73,7 +74,8 @@ const guideByCategory = groupBy(guides, (guide) => guide.meta.category);
 
 export const GamePageComponent = () => {
   const [route] = useActiveRoute();
-  const pokeballCohort = useAbCohort("guidePokeball");
+  const abTest = useAbCohort("guidePokeball");
+
   const { meta } = getGuide(route);
 
   const category = get(routeToCategory, meta.slug);
@@ -86,6 +88,10 @@ export const GamePageComponent = () => {
         Guides and Articles
       </Typography.Title>
       {tagOrder.map((tag) => {
+        if (!abTest.hydrated) {
+          return <Skeleton />;
+        }
+
         const tagGuides = guidesByTag[tag];
         if (tagGuides == null) {
           return null;
@@ -115,7 +121,7 @@ export const GamePageComponent = () => {
                     borderColor="PrimaryBorderHover"
                     border="1px solid"
                   >
-                    {pokeballCohort === "on" && (
+                    {abTest.cohort === "on" && (
                       <CardBackground>
                         <InnerCardBackground>
                           <Icon

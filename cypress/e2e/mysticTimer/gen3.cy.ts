@@ -10,7 +10,11 @@ const tabContentsSelector = "#rc-tabs-1-panel-gen3";
 
 const afterVisit = () => {
   tab.click({ dataNodeKey: "gen3" });
-  radio.set({ name: "timerDisplay", value: "showAllTimers" });
+  radio.set({
+    parentSelector: tabContentsSelector,
+    name: "timerDisplay",
+    value: "showAllTimers",
+  });
 };
 
 describe("gen 3 timer", () => {
@@ -47,6 +51,7 @@ describe("gen 3 timer", () => {
     });
 
     form.assert<Gen3TimerFormState>({
+      parentSelector: tabContentsSelector,
       form: {
         console: { type: "select", value: "3DS" },
         preTimer: "1000",
@@ -77,8 +82,10 @@ describe("gen 3 timer", () => {
     });
 
     cy.reload();
+    cy.wait(500);
 
     form.assert<BaseFormState>({
+      parentSelector: tabContentsSelector,
       form: formState,
     });
 
@@ -103,8 +110,10 @@ describe("gen 3 timer", () => {
     });
 
     cy.reload();
+    cy.wait(500);
 
     form.assert<Gen3TimerFormState>({
+      parentSelector: tabContentsSelector,
       form: {
         console: { type: "select", value: "3DS" },
         preTimer: "1000",

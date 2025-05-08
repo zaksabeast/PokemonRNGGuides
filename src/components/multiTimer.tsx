@@ -1,4 +1,5 @@
 import React from "react";
+import { Skeleton } from "antd";
 import { Flex } from "./flex";
 import { Button } from "./button";
 import { Typography } from "./typography";
@@ -11,11 +12,15 @@ import { useAudio } from "~/hooks/useAudio";
 import { FormFieldTable } from "./formFieldTable";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { z } from "zod";
+import { hydrationLock, HydrationLock } from "~/utils/hydration";
+import { useHydrate } from "~/hooks/useHydrate";
 
 const MultiTimerStateSchema = z.object({
   showAllTimers: z.boolean(),
   maxBeepCount: z.number(),
 });
+
+type MultiTimerState = z.infer<typeof MultiTimerStateSchema>;
 
 const multiTimerStateAtom = atomWithPersistence(
   "multiTimerState",
@@ -23,22 +28,25 @@ const multiTimerStateAtom = atomWithPersistence(
   { showAllTimers: false, maxBeepCount: 5 },
 );
 
-type Props = {
+const countdownIntervalMs = 500;
+
+type InnerProps = {
+  state: MultiTimerState;
+  setState: (state: HydrationLock<MultiTimerState>) => void;
   minutesBeforeTarget: number;
   milliseconds: number[];
   startButtonTrackerId: string;
   stopButtonTrackerId: string;
 };
 
-const countdownIntervalMs = 500;
-
-export const MultiTimer = ({
+const InnerMultiTimer = ({
+  state,
+  setState,
   minutesBeforeTarget,
   milliseconds,
   startButtonTrackerId,
   stopButtonTrackerId,
-}: Props) => {
-  const [state, setState] = useAtom(multiTimerStateAtom);
+}: InnerProps) => {
   const [isRunning, setIsRunning] = React.useState(false);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
   const firstBeep = useAudio(firstBeepMp3);
@@ -79,10 +87,12 @@ export const MultiTimer = ({
               optionType="button"
               value={state.showAllTimers ? "showAllTimers" : "showCurrentTimer"}
               onChange={({ target }) => {
-                setState({
-                  showAllTimers: target.value === "showAllTimers",
-                  maxBeepCount: state.maxBeepCount,
-                });
+                setState(
+                  hydrationLock({
+                    showAllTimers: target.value === "showAllTimers",
+                    maxBeepCount: state.maxBeepCount,
+                  }),
+                );
               }}
               options={[
                 { label: "Yes", value: "showAllTimers" },
@@ -99,10 +109,12 @@ export const MultiTimer = ({
             name="countdownBeeps"
             value={state.maxBeepCount}
             onChange={(value) => {
-              setState({
-                maxBeepCount: value,
-                showAllTimers: state.showAllTimers,
-              });
+              setState(
+                hydrationLock({
+                  maxBeepCount: value,
+                  showAllTimers: state.showAllTimers,
+                }),
+              );
             }}
             options={new Array(11).fill(0).map((_, index) => ({
               label: index.toString(),
@@ -179,4 +191,17 @@ export const MultiTimer = ({
       </Button>
     </Flex>
   );
+};
+
+type Props = Omit<InnerProps, "state" | "setState">;
+
+export const MultiTimer = (props: Props) => {
+  const [lockedState, setState] = useAtom(multiTimerStateAtom);
+  const { hydrated, client: state } = useHydrate(lockedState);
+
+  if (!hydrated) {
+    return <Skeleton />;
+  }
+
+  return <InnerMultiTimer state={state} setState={setState} {...props} />;
 };

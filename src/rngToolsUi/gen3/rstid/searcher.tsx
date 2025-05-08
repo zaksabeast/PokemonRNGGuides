@@ -11,11 +11,11 @@ import React from "react";
 import { denormalizeIdFilter, IdFilterSchema } from "~/types/id";
 import { z } from "zod";
 
-type Result = Gen3TidSidResult & { time: string; offset: number };
+type Result = Gen3TidSidResult & { offset: number };
 
 const columns: ResultColumn<Result>[] = [
   { title: "Advance", dataIndex: "advance" },
-  { title: "Est. Time", dataIndex: "time" },
+  { title: "Offset", dataIndex: "offset" },
   { title: "TID", dataIndex: "tid" },
   { title: "SID", dataIndex: "sid" },
   { title: "TSV", dataIndex: "tsv" },
@@ -55,53 +55,49 @@ const fields: Field[] = [
     ),
   },
   {
-    label: "Offset",
-    input: <FormikNumberInput<FormState> name="offset" numType="decimal" />,
-  },
-  {
     label: "Filter",
     input: <FormikIdFilter<FormState> name="filter" optional />,
   },
 ];
 
-type Props = {
-  onSelectTarget: (results: Result) => void;
+type RsTidSearcherProps = {
+  target: Result;
+  setOffset: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const formatTime = (seconds: number): string => {
-  const hrs = Math.floor(seconds / 3600);
-  const mins = Math.floor((seconds % 3600) / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${hrs}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-};
-
-export const RsTidSidGenerator = ({ onSelectTarget }: Props) => {
+export const RsTidSearcher: React.FC<RsTidSearcherProps> = ({
+  target,
+  setOffset,
+}) => {
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const results = await rngTools.gen3_tidsid_states({
-      offset: opts.offset,
-      initial_advances: opts.initial_advances,
-      max_advances: opts.max_advances,
-      version_options: {
-        Rs: "DeadBattery",
-      },
-      filter: denormalizeIdFilter(opts.filter),
-    });
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
+    async (opts) => {
+      const results = await rngTools.gen3_tidsid_states({
+        offset: opts.offset,
+        initial_advances: opts.initial_advances,
+        max_advances: opts.max_advances,
+        version_options: {
+          Rs: "DeadBattery",
+        },
+        filter: denormalizeIdFilter(opts.filter),
+      });
 
-    const updatedResults = results.map((r) => ({
-      ...r,
-      time: formatTime(r.advance / 30),
-    }));
+      const updatedResults = results.map((r) => ({
+        ...r,
+        offset: target.advance - r.advance,
+      }));
 
-    setResults(updatedResults);
-  }, []);
+      setResults(updatedResults);
+    },
+    [target],
+  );
 
   const onClickResultRow = React.useCallback(
     (results: Result) => {
-      onSelectTarget(results);
+      setOffset(results.offset);
     },
-    [onSelectTarget],
+    [setOffset],
   );
 
   return (

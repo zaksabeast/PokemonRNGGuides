@@ -1,6 +1,8 @@
 import React from "react";
 import { Stepper } from "./stepper";
 import { RsTidSidGenerator } from "./rstid";
+import { RsTidSearcher } from "./searcher";
+import { RsTidTimer } from "./timer";
 import { Button, Flex } from "~/components";
 import { StepsProps } from "antd";
 import { Gen3TidSidResult } from "~/rngTools";
@@ -31,38 +33,47 @@ const NextButton = ({ next }: NextButtonProps) => (
     </Button>
   </Flex>
 );
+type TargetResult = Gen3TidSidResult & { offset: number; time: string };
+
+const initialResult = {
+  advance: 0,
+  sid: 0,
+  tid: 0,
+  time: "0:0:0",
+  tsv: 0,
+  offset: 0,
+};
 
 export const RsTid = () => {
   const [current, setCurrent] = React.useState(0);
-  const [targetSet, setTarget] = React.useState(false);
+  const [targetSet, isTargetSet] = React.useState(false);
+  const [target, setTarget] = React.useState<TargetResult>(initialResult);
+  const [offset, setOffset] = React.useState<number>(0);
 
   const next = () => {
     setCurrent(current + 1);
-  };
-
-  const prev = () => {
-    setCurrent(current - 1);
   };
 
   const onChange = (value: number) => {
     setCurrent(value);
   };
 
-  type Result = Gen3TidSidResult & { time: string };
-
-  const onSelectTarget = (advance: number, results: Result) => {
-    console.log(advance, results);
-    setTarget(true);
-    return advance;
+  const onSelectTarget = (results: TargetResult) => {
+    isTargetSet(true);
+    setTarget(results);
   };
 
   return (
-    <Flex vertical>
+    <Flex gap={32} vertical>
       <Stepper onChange={onChange} current={current} items={items} />
       <Flex vertical display={current < items.length - 1 ? "flex" : "none"}>
         {targetSet && <NextButton next={next} />}
         <RsTidSidGenerator onSelectTarget={onSelectTarget} />
         {targetSet && <NextButton next={next} />}
+      </Flex>
+      <Flex gap={8} vertical display={current === 1 ? "flex" : "none"}>
+        <RsTidTimer target={target} offset={offset} />
+        <RsTidSearcher target={target} setOffset={setOffset} />
       </Flex>
     </Flex>
   );

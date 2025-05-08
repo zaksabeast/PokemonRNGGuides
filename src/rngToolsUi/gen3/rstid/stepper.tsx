@@ -1,14 +1,5 @@
-import { Steps } from "antd";
+import { Steps, StepsProps } from "antd";
 
-export const Stepper = ({ onChange, current, items }) => {
-  return (
-    <Steps
-      type="navigation"
-      size="small"
-      current={current}
-      onChange={onChange}
-      className="site-navigation-steps"
-      items={items}
-    />
-  );
+export const Stepper = (props: StepsProps) => {
+  return <Steps type="navigation" size="small" {...props} />;
 };

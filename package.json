@@ -12,7 +12,7 @@
     "build:server": "NODE_ENV=production bunx --bun vite build --ssr src/entry-server.jsx --outDir dist/server",
     "build:server:clean": "rm -rf dist/server",
     "build:guides": "bun run scripts/build-guides.ts && bun run format",
-    "build:rng_tools": "wasm-pack build rng_tools && bun i",
+    "build:rng_tools": "wasm-pack build rng_tools && bun i --frozen-lockfile",
     "minimize-css": "bunx postcss dist/assets/*.css --replace",
     "lint": "bun run lint:types && bun run lint:code && bun run lint:format",
     "lint:code": "eslint .",

@@ -2,8 +2,10 @@ import React from "react";
 import { Stepper } from "./stepper";
 import { RsTidSidGenerator } from "./rstid";
 import { Button, Flex } from "~/components";
+import { StepsProps } from "antd";
+import { Gen3TidSidResult } from "~/rngTools";
 
-const items = [
+const items: StepsProps["items"] = [
   {
     title: "Find Target TID",
     //   subTitle: "00:00:05",
@@ -17,6 +19,18 @@ const items = [
     //   description: "RNG for a shiny starter.",
   },
 ];
+
+type NextButtonProps = {
+  next: () => void;
+};
+
+const NextButton = ({ next }: NextButtonProps) => (
+  <Flex justify="end">
+    <Button trackerId="test" type="primary" size="middle" onClick={next}>
+      Next
+    </Button>
+  </Flex>
+);
 
 export const RsTid = () => {
   const [current, setCurrent] = React.useState(0);
@@ -34,36 +48,22 @@ export const RsTid = () => {
     setCurrent(value);
   };
 
-  const handleTarget = (advance, value) => {
-    console.log(advance, value);
+  type Result = Gen3TidSidResult & { time: string };
+
+  const onSelectTarget = (advance: number, results: Result) => {
+    console.log(advance, results);
     setTarget(true);
     return advance;
   };
 
-  const NextButton = () => (
-    <Flex justify="end">
-      <Button
-        trackerId="test"
-        type="primary"
-        size="middle"
-        onClick={() => next()}
-      >
-        Next
-      </Button>
-    </Flex>
-  );
-
   return (
-    <React.Fragment>
+    <Flex vertical>
       <Stepper onChange={onChange} current={current} items={items} />
-
-      {current < items.length - 1 && (
-        <React.Fragment>
-          {targetSet && <NextButton />}
-          <RsTidSidGenerator handleTarget={handleTarget} />
-          {targetSet && <NextButton />}
-        </React.Fragment>
-      )}
-    </React.Fragment>
+      <Flex vertical display={current < items.length - 1 ? "flex" : "none"}>
+        {targetSet && <NextButton next={next} />}
+        <RsTidSidGenerator onSelectTarget={onSelectTarget} />
+        {targetSet && <NextButton next={next} />}
+      </Flex>
+    </Flex>
   );
 };

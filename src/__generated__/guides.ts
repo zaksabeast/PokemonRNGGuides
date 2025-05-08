@@ -2603,6 +2603,27 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/ORAS TID.mdx")),
   },
+  "/retail-rubysapphire-tid": {
+    meta: {
+      title: "Ruby and Sapphire Retail TID RNG",
+      navDrawerTitle: "Retail TID RNG",
+      description:
+        "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Ruby and Sapphire.",
+      category: "Ruby and Sapphire",
+      slug: "/retail-rubysapphire-tid",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      file: "guides/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx"),
+    ),
+  },
   "/retail-sm-egg-mmsc": {
     meta: {
       title: "Sun and Moon Egg RNG with Masuda and/or Shiny Charm",
@@ -4480,6 +4501,7 @@ export const guideSlugs = [
   "/retail-oras-egg-mmsc",
   "/retail-oras-egg-no-mmsc",
   "/retail-oras-tid",
+  "/retail-rubysapphire-tid",
   "/retail-sm-egg-mmsc",
   "/retail-sm-egg-no-mmsc",
   "/retail-sm-egg-seed-no-cfw",

@@ -339,9 +339,6 @@ const NavDrawerContent = () => {
       <Divider />
       <Flex vertical gap={16}>
         <Typography>Build {settings.gitCommit}</Typography>
-        <Typography>
-          Updated {settings.isoBuildDate.format("MMM D, YYYY h:mma")}
-        </Typography>
       </Flex>
     </Flex>
   );

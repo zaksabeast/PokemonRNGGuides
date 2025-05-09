@@ -3565,7 +3565,7 @@ export const guides = {
       isRoughDraft: false,
       tag: "cfw",
       hideFromNavDrawer: false,
-      addedOn: null,
+      addedOn: "2025-05-08",
       translation: null,
       layout: "guide",
       file: "guides/Transporter/Transporter.mdx",

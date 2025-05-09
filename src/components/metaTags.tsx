@@ -1,12 +1,13 @@
-import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { getGuide } from "~/guides";
+import { GuideMeta } from "~/guides";
 
-export const MetaTags = () => {
-  const [route] = useActiveRoute();
+type Props = {
+  guideMeta?: GuideMeta;
+};
 
-  const guide = route === "/" ? null : getGuide(route).meta;
-  const title = guide?.title ?? "PokemonRNG.com";
-  const description = guide?.description ?? "Guaranteed perfect shinies";
+export const MetaTags = ({ guideMeta }: Props) => {
+  const title = guideMeta?.title ?? "PokemonRNG.com - Become The Very Best";
+  const description =
+    guideMeta?.description ?? "Train Smarter, Shine Brighter — Together.";
 
   return (
     <>

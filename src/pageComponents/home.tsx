@@ -194,6 +194,7 @@ export const HomePageComponent = () => {
             <Flex justify="center" align="center" gap={8} flex={1}>
               {game.images.map((src) => (
                 <img
+                  key={src}
                   src={src}
                   alt={`${game.name} logo`}
                   style={{

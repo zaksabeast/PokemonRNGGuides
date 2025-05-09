@@ -830,7 +830,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       file: "guides/Gen 5/Entralink.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-bw-entralink",
+        zh: "/zh-emulator-bw-entralink",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Entralink.mdx")),
   },
@@ -3922,6 +3925,27 @@ export const guides = {
       () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
     ),
   },
+  "/zh-emulator-bw-entralink": {
+    meta: {
+      title: "连入之森乱数",
+      navDrawerTitle: "连入之森乱数",
+      description: "如何使用连入乱数获取心仪的宝可梦",
+      category: "Black and White",
+      slug: "/zh-emulator-bw-entralink",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-bw-entralink", language: "zh" },
+      layout: "guide",
+      file: "guides/Gen 5/Entralink.mdx",
+      translations: {
+        en: "/emulator-bw-entralink",
+        zh: "/zh-emulator-bw-entralink",
+      },
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Entralink.mdx")),
+  },
   "/zh-emulator-bw-find-ds-parameters": {
     meta: {
       title: "如何在第五世代中寻找 DS 参数",
@@ -4556,6 +4580,7 @@ export const guideSlugs = [
   "/zh-emerald-painting-rng",
   "/zh-emerald-sid-feebas",
   "/zh-emulator-b2w2-runasdate-inital-seed",
+  "/zh-emulator-bw-entralink",
   "/zh-emulator-bw-find-ds-parameters",
   "/zh-emulator-bw-roamers",
   "/zh-emulator-bw-runasdate-initial-seed",

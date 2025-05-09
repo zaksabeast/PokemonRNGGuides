@@ -1,13 +1,12 @@
 import React from "react";
 import { Link } from "~/routes";
-import { Drawer } from "antd";
+import { Menu, Drawer } from "antd";
 import { Flex } from "./flex";
 import { Divider } from "./divider";
 import { Typography } from "./typography";
 import { useMobileNavDrawerOpen } from "~/state/navDrawer";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { settings } from "~/settings";
-import { Menu } from "antd";
 import {
   getGuide,
   guides,
@@ -16,9 +15,8 @@ import {
   GuideMeta,
   GuideSlug,
 } from "~/guides";
-import { partition, groupBy } from "lodash-es";
+import { difference, upperFirst, sortBy, partition, groupBy } from "lodash-es";
 import styled from "@emotion/styled";
-import { difference, upperFirst, sortBy } from "lodash-es";
 import { track } from "~/analytics";
 import dayjs from "dayjs";
 import { Tag } from "./tag";
@@ -339,9 +337,6 @@ const NavDrawerContent = () => {
       <Divider />
       <Flex vertical gap={16}>
         <Typography>Build {settings.gitCommit}</Typography>
-        <Typography>
-          Updated {settings.isoBuildDate.format("MMM D, YYYY h:mma")}
-        </Typography>
       </Flex>
     </Flex>
   );

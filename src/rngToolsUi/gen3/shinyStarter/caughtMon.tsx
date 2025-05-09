@@ -97,8 +97,12 @@ export const CaughtMon = ({
         dataIndex: "advance",
         render: (val, values) => {
           const diffWithTarget = val - values.targetAdvance;
-          if (diffWithTarget === 0) return `${val}`;
-          if (diffWithTarget > 0) return `${val} (+${diffWithTarget})`;
+          if (diffWithTarget === 0) {
+            return `${val}`;
+          }
+          if (diffWithTarget > 0) {
+            return `${val} (+${diffWithTarget})`;
+          }
           return `${val} (${diffWithTarget})`;
         },
       },
@@ -106,8 +110,9 @@ export const CaughtMon = ({
         title: "",
         dataIndex: "advance",
         render(advance, values) {
-          if (values.advance === values.targetAdvance)
+          if (values.advance === values.targetAdvance) {
             return "Shiny if correct SID";
+          }
 
           return (
             <Button

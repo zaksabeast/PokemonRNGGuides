@@ -7,9 +7,10 @@ import {
   Field,
   FormFieldTable,
   RngToolSubmit,
+  MultiTimer,
+  Flex,
 } from "~/components";
 import { Game } from "./index";
-import { MultiTimer, Flex } from "~/components";
 import { rngTools, Gen3NearbySid, Gen3TidSidShinyResult } from "~/rngTools";
 
 const Validator = z.object({
@@ -57,8 +58,12 @@ const columns: ResultColumn<Result>[] = [
     dataIndex: "tid_gen_adv",
     render: (val, values) => {
       const diffWithTarget = val - values.tid_gen_target_adv;
-      if (diffWithTarget === 0) return `${val}`;
-      if (diffWithTarget > 0) return `${val} (+${diffWithTarget})`;
+      if (diffWithTarget === 0) {
+        return `${val}`;
+      }
+      if (diffWithTarget > 0) {
+        return `${val} (+${diffWithTarget})`;
+      }
       return `${val} (${diffWithTarget})`;
     },
   },
@@ -86,12 +91,24 @@ export const GenerateTidSidRating = ({
   );
   const pct = result.avg_adv_to_determine_sid_percentile;
   const qualitativeRating = (() => {
-    if (pct <= 2) return QUALITATIVE_RATINGS[0];
-    if (pct <= 5) return QUALITATIVE_RATINGS[1];
-    if (pct <= 10) return QUALITATIVE_RATINGS[2];
-    if (!result.should_improve_tid || pct <= 15) return QUALITATIVE_RATINGS[3];
-    if (pct <= 25) return QUALITATIVE_RATINGS[4];
-    if (pct <= 50) return QUALITATIVE_RATINGS[5];
+    if (pct <= 2) {
+      return QUALITATIVE_RATINGS[0];
+    }
+    if (pct <= 5) {
+      return QUALITATIVE_RATINGS[1];
+    }
+    if (pct <= 10) {
+      return QUALITATIVE_RATINGS[2];
+    }
+    if (!result.should_improve_tid || pct <= 15) {
+      return QUALITATIVE_RATINGS[3];
+    }
+    if (pct <= 25) {
+      return QUALITATIVE_RATINGS[4];
+    }
+    if (pct <= 50) {
+      return QUALITATIVE_RATINGS[5];
+    }
     return QUALITATIVE_RATINGS[6];
   })();
 
@@ -122,7 +139,9 @@ export const GenerateHoennTidSid = ({ game }: Props) => {
         const advFromOffset = values.offset;
         const advFromTimer = idealAdvance - advFromOffset;
         let milliseconds = Math.round((advFromTimer * 1000) / 59.7275);
-        if (milliseconds < 0) milliseconds = 0;
+        if (milliseconds < 0) {
+          milliseconds = 0;
+        }
         return [5000, milliseconds];
       })();
 
@@ -168,8 +187,8 @@ export const GenerateHoennTidSid = ({ game }: Props) => {
         idealAdvance,
         opts.tid,
       );
-      const res = rng_res.nearby_sids.map((r) => {
-        return { ...r, tid_gen_target_adv: idealAdvance };
+      const res = rng_res.nearby_sids.map((res) => {
+        return { ...res, tid_gen_target_adv: idealAdvance };
       });
 
       setResult(rng_res);

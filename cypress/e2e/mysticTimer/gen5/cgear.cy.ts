@@ -58,6 +58,7 @@ describe("gen 5 cgear timer", () => {
     });
 
     form.assert<Gen5TimerFormState>({
+      parentSelector: tabContentsSelector,
       form: {
         console: { type: "select", value: "3DS" },
         minTimeMs: "13000",
@@ -90,8 +91,10 @@ describe("gen 5 cgear timer", () => {
     });
 
     cy.reload();
+    cy.wait(500);
 
     form.assert<BaseFormState>({
+      parentSelector: tabContentsSelector,
       form: formState,
     });
 
@@ -117,8 +120,10 @@ describe("gen 5 cgear timer", () => {
     });
 
     cy.reload();
+    cy.wait(500);
 
     form.assert<Gen5TimerFormState>({
+      parentSelector: tabContentsSelector,
       form: {
         console: { type: "select", value: "3DS" },
         minTimeMs: "13000",

@@ -41,6 +41,7 @@ import { Gen3MirageIsland } from "~/rngToolsUi/gen3/mirageIsland";
 import { OrAsMirageSpot } from "~/rngToolsUi/gen6/orasMirageSpot";
 import { RngTimer } from "~/rngToolsUi/timer";
 import { OrasId } from "~/rngToolsUi/gen6/orasId";
+import { Transporter } from "~/rngToolsUi/gen6/transporter/transporter";
 import { DpptSeed } from "~/rngToolsUi/gen4/dpptSeed";
 import { DpptId } from "~/rngToolsUi/gen4/dpptId";
 import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
@@ -62,6 +63,7 @@ export const markdownComponents = {
   h4: MarkdownH4,
   h5: MarkdownH5,
   h6: MarkdownH6,
+  // eslint-disable-next-line id-length
   p: MarkdownParagraph,
   ul: MarkdownList,
   ol: MarkdownOList,
@@ -74,6 +76,7 @@ export const markdownComponents = {
   th: MarkdownTh,
   tr: MarkdownTr,
   td: MarkdownTd,
+  // eslint-disable-next-line id-length
   a: MarkdownA,
   Text: MarkdownParagraph,
   YouTubeVideo,
@@ -96,6 +99,7 @@ export const markdownComponents = {
   Gen4Timer,
   RngTimer,
   OrasId,
+  Transporter,
   DpptSeed,
   DpptId,
   XyPokeRadar,

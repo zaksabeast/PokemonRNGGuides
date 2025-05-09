@@ -55,6 +55,7 @@ describe("gen 4 timer", () => {
     });
 
     form.assert<Gen4TimerFormState>({
+      parentSelector: tabContentsSelector,
       form: {
         console: { type: "select", value: "3DS" },
         minTimeMs: "1000",
@@ -89,8 +90,10 @@ describe("gen 4 timer", () => {
     });
 
     cy.reload();
+    cy.wait(500);
 
     form.assert<BaseFormState>({
+      parentSelector: tabContentsSelector,
       form: formState,
     });
 
@@ -117,8 +120,10 @@ describe("gen 4 timer", () => {
     });
 
     cy.reload();
+    cy.wait(500);
 
     form.assert<Gen4TimerFormState>({
+      parentSelector: tabContentsSelector,
       form: {
         console: { type: "select", value: "3DS" },
         minTimeMs: "1000",

@@ -1,7 +1,18 @@
 import { z } from "zod";
 import { atomWithStorage } from "jotai/utils";
+import { noop } from "lodash-es";
+import { hydrationLock } from "~/utils/hydration";
 
 export { useAtom } from "jotai";
+
+const fakeLocalStorage = {
+  getItem: noop,
+  setItem: noop,
+  removeItem: noop,
+};
+
+const ssrLocalStorage =
+  typeof window !== "undefined" ? window.localStorage : fakeLocalStorage;
 
 export const atomWithPersistence = <Schema extends z.AnyZodObject>(
   key: string,
@@ -10,10 +21,10 @@ export const atomWithPersistence = <Schema extends z.AnyZodObject>(
 ) => {
   return atomWithStorage(
     key,
-    initialValue,
+    hydrationLock(initialValue),
     {
       getItem: (key, initialValue) => {
-        const storedValue = localStorage.getItem(key);
+        const storedValue = ssrLocalStorage.getItem(key);
         try {
           const parsed = schema.partial().parse(JSON.parse(storedValue ?? ""));
           return {
@@ -25,10 +36,10 @@ export const atomWithPersistence = <Schema extends z.AnyZodObject>(
         }
       },
       setItem: (key, value) => {
-        localStorage.setItem(key, JSON.stringify(value));
+        ssrLocalStorage.setItem(key, JSON.stringify(value));
       },
       removeItem: (key) => {
-        localStorage.removeItem(key);
+        ssrLocalStorage.removeItem(key);
       },
     },
     {

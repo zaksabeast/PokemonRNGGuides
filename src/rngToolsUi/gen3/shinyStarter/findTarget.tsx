@@ -45,7 +45,9 @@ export const FindTargetAdvance = ({ game, setTargetAdvance }: Props) => {
         opts.tid,
         opts.sid,
       );
-      if (targetAdvance !== null) setTargetAdvance(targetAdvance);
+      if (targetAdvance !== null) {
+        setTargetAdvance(targetAdvance);
+      }
     },
     [setTargetAdvance, game],
   );

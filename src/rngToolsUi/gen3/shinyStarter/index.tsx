@@ -1,10 +1,8 @@
 import React from "react";
-import { Flex, MultiTimer } from "~/components";
+import { Flex, MultiTimer, Field, Input } from "~/components";
 import { FindTargetAdvance } from "./findTarget";
 import { CaughtMon } from "./caughtMon";
 import { FormFieldTable } from "~/components/formFieldTable";
-import { Field } from "~/components";
-import { Input } from "~/components/input";
 import { TargetPokemon } from "./targetPokemon";
 
 export type Game = "emerald" | "rs";
@@ -68,8 +66,8 @@ export const ShinyHoennStarter = ({ game }: Props) => {
         input: (
           <Input
             name="offset"
-            onChange={(e) => {
-              setCalibrationAndOffset(+e.target.value || 0);
+            onChange={(event) => {
+              setCalibrationAndOffset(+event.target.value || 0);
             }}
             value={calibrationAndOffset}
           />

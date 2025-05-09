@@ -8,7 +8,7 @@ import { useMobileNavDrawerOpen } from "~/state/navDrawer";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { settings } from "~/settings";
 import { getGuide, guides, categories, Category, GuideMeta } from "~/guides";
-import { difference, upperFirst, sortBy, groupBy } from "lodash-es";
+import { difference, upperFirst, sortBy, groupBy, flatMap } from "lodash-es";
 import styled from "@emotion/styled";
 import { track } from "~/analytics";
 import dayjs from "dayjs";
@@ -17,8 +17,27 @@ import { Tag } from "./tag";
 import { match } from "ts-pattern";
 import { Color } from "@emotion/react";
 import * as tst from "ts-toolbelt";
+import { atom, useAtom } from "jotai";
+import { Route } from "~/routes/defs";
 
 dayjs.extend(utc);
+
+const openKeysAtom = atom<string[] | null>(null);
+
+type NavMenuLinkProps = {
+  label: string;
+  href: Route;
+  navKeys: string[];
+};
+
+const NavMenuLink = ({ href, label, navKeys }: NavMenuLinkProps) => {
+  const [, setOpenKeys] = useAtom(openKeysAtom);
+  return (
+    <Link href={href} onClick={() => setOpenKeys(navKeys)}>
+      {label}
+    </Link>
+  );
+};
 
 type MenuItemTagProps = {
   tag: GuideTag;
@@ -131,32 +150,80 @@ const tagOrder: GuideMeta["tag"][] = [
   "retail",
 ];
 
-const guideByCategory = groupBy(guides, (guide) => guide.meta.category);
+const guidesWithFlattenedCategories = flatMap(guides, (guide) => {
+  return guide.meta.categories.map((category) => ({ ...guide.meta, category }));
+});
+const guideByCategory = groupBy(
+  guidesWithFlattenedCategories,
+  (guide) => guide.category,
+);
 
-const roughDraftPrefix = "roughDraft-";
+type KeyParts =
+  | {
+      type: "rootCategory";
+      slug?: undefined;
+      rootCategory: string;
+      middleCategory?: undefined;
+      isRoughDraft: boolean;
+    }
+  | {
+      type: "middleCategory";
+      slug?: undefined;
+      rootCategory?: undefined;
+      middleCategory: string;
+      isRoughDraft: boolean;
+    }
+  | {
+      type: "menuItem";
+      slug: Route;
+      rootCategory?: undefined;
+      middleCategory: string;
+      isRoughDraft: boolean;
+    };
 
-const addPrefix = ({
-  key,
+const createKey = ({
+  slug,
+  rootCategory,
+  middleCategory,
   isRoughDraft,
-}: {
-  key: string;
-  isRoughDraft: boolean;
-}) => (isRoughDraft ? `${roughDraftPrefix}${key}` : key);
+}: KeyParts) => {
+  const roughDraft = isRoughDraft ? "roughDraft" : null;
+  return [roughDraft, rootCategory, middleCategory, slug]
+    .filter((str) => str != null)
+    .join("-");
+};
 
-const getMenuItem = (guide: GuideMeta): isNew<MenuItem> => {
+const getMenuItem = ({
+  guide,
+  middleCategory,
+  navKeys,
+}: {
+  guide: GuideMeta;
+  middleCategory: string;
+  navKeys: string[];
+}): isNew<MenuItem> => {
   const isNew = dayjs
     .utc(guide.addedOn)
     .isAfter(dayjs.utc().subtract(7, "days"));
   const tag = isNew ? "new" : guide.tag;
+  const key = createKey({
+    type: "menuItem",
+    slug: guide.slug,
+    middleCategory,
+    isRoughDraft: guide.isRoughDraft,
+  });
   return {
     isNew,
     item: {
       type: "menuItem",
-      key: addPrefix({
-        key: guide.slug,
-        isRoughDraft: guide.isRoughDraft,
-      }),
-      label: <Link href={guide.slug}>{guide.navDrawerTitle}</Link>,
+      key,
+      label: (
+        <NavMenuLink
+          href={guide.slug}
+          navKeys={[...navKeys, key]}
+          label={guide.navDrawerTitle}
+        />
+      ),
       tag: guide.tag,
       icon: <MenuItemTag tag={tag} />,
     },
@@ -184,9 +251,13 @@ const shouldShowGuide = ({
 const getMenuItems = ({
   guides,
   isRoughDraft,
+  middleCategory,
+  navKeys,
 }: {
   guides: GuideMeta[];
   isRoughDraft: boolean;
+  middleCategory: string;
+  navKeys: string[];
 }): isNew<MenuItem[]> | null => {
   const filteredGuides = guides.filter((guide) =>
     shouldShowGuide({ guide, showRoughDrafts: isRoughDraft }),
@@ -197,7 +268,9 @@ const getMenuItems = ({
   }
 
   const sortedGuides = sortBy(filteredGuides, (guide) => guide.navDrawerTitle);
-  const menuItems = sortedGuides.map(getMenuItem);
+  const menuItems = sortedGuides.map((guide) =>
+    getMenuItem({ guide, middleCategory, navKeys }),
+  );
   return {
     isNew: menuItems.some(({ isNew }) => isNew),
     item: menuItems.map(({ item }) => item),
@@ -205,26 +278,36 @@ const getMenuItems = ({
 };
 
 const getMiddleCategory = ({
-  category,
+  middleCategory,
   isRoughDraft,
+  navKeys,
 }: {
-  category: Category;
+  middleCategory: Category;
   isRoughDraft: boolean;
+  navKeys: string[];
 }): isNew<MenuItem | MenuCategory> | null => {
-  const guides = category == null ? null : guideByCategory[category];
+  const guides = guideByCategory[middleCategory];
 
   if (guides == null) {
     return null;
   }
 
-  const guidesByTag = groupBy(guides, (guide) => guide.meta.tag);
+  const guidesByTag = groupBy(guides, (guide) => guide.tag);
+
+  const key = createKey({
+    type: "middleCategory",
+    middleCategory,
+    isRoughDraft,
+  });
 
   const navItems = tagOrder
     .filter((tag) => guidesByTag[tag] != null)
     .flatMap((guide) => {
       return getMenuItems({
         isRoughDraft,
-        guides: guidesByTag[guide].map((guide) => guide.meta),
+        middleCategory,
+        navKeys: [...navKeys, key],
+        guides: guidesByTag[guide],
       });
     })
     .filter((item) => item != null);
@@ -235,24 +318,21 @@ const getMiddleCategory = ({
 
   const isNew = navItems.some(({ isNew }) => isNew);
 
-  const label = match(category)
+  const label = match(middleCategory)
     .with("GBA Tools", () => "Tools")
     .with("NDS Tools", () => "Tools")
     .with("3DS Tools", () => "Tools")
     .with("Switch Tools", () => "Tools")
     .with("USUM Challenges", () => "USUM")
     .with("GBA Technical Documentation", () => "Technical Documentation")
-    .otherwise(() => category);
+    .otherwise(() => middleCategory);
 
   return {
     isNew,
     item: {
       label,
       type: "menuCategory",
-      key: addPrefix({
-        key: category,
-        isRoughDraft,
-      }),
+      key,
       children: navItems.flatMap(({ item }) => item),
       icon: isNew ? <MenuItemTag tag="new" /> : null,
     },
@@ -261,21 +341,26 @@ const getMiddleCategory = ({
 
 const getRootCategory = (rootCategory: RootCategory): MenuCategory => {
   const isRoughDraft = !!rootCategory.isRoughDraft;
+
+  const key = createKey({
+    type: "rootCategory",
+    rootCategory: rootCategory.label,
+    isRoughDraft,
+  });
+
   const middleCategories = rootCategory.categories
-    .map((category) => {
+    .map((middleCategory) => {
       return getMiddleCategory({
-        category,
+        middleCategory,
         isRoughDraft,
+        navKeys: [key],
       });
     })
     .filter((category) => category != null);
 
   return {
     type: "menuCategory",
-    key: addPrefix({
-      key: rootCategory.label,
-      isRoughDraft,
-    }),
+    key,
     label: rootCategory.label,
     children: middleCategories.map(({ item }) => item),
     icon: middleCategories.some((item) => item.isNew) ? (
@@ -312,26 +397,50 @@ const challengeCategories: RootCategory[] = [
 
 const challengesMenu: MenuCategory[] = challengeCategories.map(getRootCategory);
 
+const getOpenKeys = (route: Route) => {
+  // TODO: Try to find guide in already opened keys
+  // If it doesn't exist, then find the closest one
+
+  const guideMeta = getGuide(route)?.meta;
+  const defaultCategory = guideMeta?.categories[0] ?? null;
+
+  if (route === "/" || defaultCategory == null) {
+    return [];
+  }
+
+  const openKey = createKey({
+    type: "menuItem",
+    slug: route,
+    middleCategory: defaultCategory,
+    isRoughDraft: guideMeta.isRoughDraft,
+  });
+  let openMiddleCategory: string | null = null;
+
+  const openRootCategory = [...challengesMenu, ...guideMenu].find((item) => {
+    return item.children.some((child) => {
+      if (child.type === "menuItem") {
+        return child.key === openKey;
+      }
+
+      const found = child.children.some((subChild) => subChild.key === openKey);
+      if (found) {
+        openMiddleCategory = child.key;
+      }
+      return found;
+    });
+  });
+  return [openRootCategory?.key, openMiddleCategory, openKey].filter(
+    (item) => item != null,
+  );
+};
+
 const NavDrawerContent = () => {
   const [route] = useActiveRoute();
   const [, setMobileNavDrawerOpen] = useMobileNavDrawerOpen();
-  const [openKeys, setOpenedKeys] = React.useState<string[]>(() => {
-    const guideMeta = getGuide(route)?.meta;
-    if (route === "/" || guideMeta == null) {
-      return [];
-    }
-    const openCategory = guideMeta.isRoughDraft
-      ? `${roughDraftPrefix}${guideMeta.category}`
-      : guideMeta.category;
-    const openTopLevelItem = [...challengesMenu, ...guideMenu].find((item) =>
-      item.type === "menuCategory"
-        ? item.children.some((child) =>
-            [openCategory, guideMeta.slug].includes(child.key),
-          )
-        : item.key === guideMeta.slug,
-    );
-    return [openTopLevelItem?.key, openCategory].filter((item) => item != null);
-  });
+  const [previouslyOpenedKeys] = useAtom(openKeysAtom);
+  const [openKeys, setOpenedKeys] = React.useState<string[]>(
+    () => previouslyOpenedKeys ?? getOpenKeys(route),
+  );
 
   const onOpenChange = React.useCallback(
     (updatedKeys: string[]) => {
@@ -354,7 +463,7 @@ const NavDrawerContent = () => {
           mode="inline"
           inlineIndent={10}
           items={challengesMenu}
-          defaultSelectedKeys={[route]}
+          defaultSelectedKeys={openKeys}
           openKeys={openKeys}
           onOpenChange={onOpenChange}
           onClick={() => setMobileNavDrawerOpen(false)}
@@ -364,7 +473,7 @@ const NavDrawerContent = () => {
           mode="inline"
           inlineIndent={10}
           items={guideMenu}
-          defaultSelectedKeys={[route]}
+          defaultSelectedKeys={openKeys}
           openKeys={openKeys}
           onOpenChange={onOpenChange}
           onClick={() => setMobileNavDrawerOpen(false)}

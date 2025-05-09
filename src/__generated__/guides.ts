@@ -3,10 +3,10 @@ import React from "react";
 export const guides = {
   "/": {
     meta: {
+      categories: ["Home"],
       title: "Pokemon RNG - Become The Very Best",
       navDrawerTitle: "Pokemon RNG - Become The Very Best",
       description: "Train Smarter, Shine Brighter — Together.",
-      category: "Home",
       slug: "/",
       isRoughDraft: false,
       tag: "info",
@@ -21,11 +21,11 @@ export const guides = {
   },
   "/bdsp-advance-rng": {
     meta: {
+      categories: ["Brilliant Diamond and Shining Pearl"],
       title: "Advancing the RNG in Brilliant Diamond and Shining Pearl",
       navDrawerTitle: "Advancing the RNG",
       description:
         "How RNG advances work in Brilliant Diamond and Shining Pearl. Learn what advances the RNG and how to control it for perfect Pokémon.",
-      category: "Brilliant Diamond and Shining Pearl",
       slug: "/bdsp-advance-rng",
       isRoughDraft: false,
       tag: "any",
@@ -45,11 +45,11 @@ export const guides = {
   },
   "/bdsp-chatot": {
     meta: {
+      categories: ["Brilliant Diamond and Shining Pearl"],
       title: "How to Use Chatot for Brilliant Diamond and Shining Pearl",
       navDrawerTitle: "Chatot RNG Tool",
       description:
         "How to use the chatot.pokemonrng.com website for RNG in Brilliant Diamond and Shining Pearl.",
-      category: "Brilliant Diamond and Shining Pearl",
       slug: "/bdsp-chatot",
       isRoughDraft: true,
       tag: "any",
@@ -69,11 +69,11 @@ export const guides = {
   },
   "/bdsp-emulator-setup": {
     meta: {
+      categories: ["Brilliant Diamond and Shining Pearl"],
       title: "Set up Yuzu/Ryujinx & CheatEngine",
       navDrawerTitle: "Set up Yuzu/Ryujinx & CheatEngine",
       description:
         "How to set up Yuzu/Ryujinx and Cheat Engine to RNG in Brilliant Diamond and Shining Pearl using lua scripts.",
-      category: "Brilliant Diamond and Shining Pearl",
       slug: "/bdsp-emulator-setup",
       isRoughDraft: true,
       tag: "emu",
@@ -93,11 +93,11 @@ export const guides = {
   },
   "/bdsp-pokefinder": {
     meta: {
+      categories: ["Brilliant Diamond and Shining Pearl"],
       title: "PokeFinder Setup for Brilliant Diamond and Shining Pearl",
       navDrawerTitle: "PokeFinder Setup",
       description:
         "How to set up PokeFinder to RNG in Brilliant Diamond and Shining Pearl to RNG shiny Pokemon.",
-      category: "Brilliant Diamond and Shining Pearl",
       slug: "/bdsp-pokefinder",
       isRoughDraft: false,
       tag: "any",
@@ -117,10 +117,10 @@ export const guides = {
   },
   "/black-2-and-white-2": {
     meta: {
+      categories: ["Game Hub"],
       title: "Black 2 and White 2",
       navDrawerTitle: "Black 2 and White 2",
       description: "Black 2 and White 2 Resources",
-      category: "Game Hub",
       slug: "/black-2-and-white-2",
       isRoughDraft: false,
       tag: "challenge",
@@ -135,10 +135,10 @@ export const guides = {
   },
   "/black-and-white": {
     meta: {
+      categories: ["Game Hub"],
       title: "Black and White",
       navDrawerTitle: "Black and White",
       description: "Black and White Resources",
-      category: "Game Hub",
       slug: "/black-and-white",
       isRoughDraft: false,
       tag: "challenge",
@@ -153,10 +153,10 @@ export const guides = {
   },
   "/brilliant-diamond-and-shining-pearl": {
     meta: {
+      categories: ["Game Hub"],
       title: "Brilliant Diamond and Shining Pearl",
       navDrawerTitle: "Brilliant Diamond and Shining Pearl",
       description: "Brilliant Diamond and Shining Pearl Resources",
-      category: "Game Hub",
       slug: "/brilliant-diamond-and-shining-pearl",
       isRoughDraft: false,
       tag: "challenge",
@@ -171,11 +171,11 @@ export const guides = {
   },
   "/bw2-egg": {
     meta: {
+      categories: ["Black 2 and White 2"],
       title: "Black 2 and White 2 Egg RNG",
       navDrawerTitle: "Egg RNG",
       description:
         "Learn how to RNG eggs from the Daycare in Black 2 and White 2 for shiny, high-IV Pokémon.",
-      category: "Black 2 and White 2",
       slug: "/bw2-egg",
       isRoughDraft: false,
       tag: "any",
@@ -190,11 +190,11 @@ export const guides = {
   },
   "/cfw-bdsp-egg": {
     meta: {
+      categories: ["Brilliant Diamond and Shining Pearl"],
       title: "Brilliant Diamond and Shining Pearl Egg RNG",
       navDrawerTitle: "Egg RNG",
       description:
         "Learn how to RNG eggs in Brilliant Diamond and Shining Pearl on a CFW Switch for shiny perfect Pokemon.",
-      category: "Brilliant Diamond and Shining Pearl",
       slug: "/cfw-bdsp-egg",
       isRoughDraft: true,
       tag: "cfw",
@@ -211,11 +211,11 @@ export const guides = {
   },
   "/cfw-bdsp-stationary": {
     meta: {
+      categories: ["Brilliant Diamond and Shining Pearl"],
       title: "Brilliant Diamond and Shining Pearl Static RNG",
       navDrawerTitle: "Static RNG",
       description:
         "Learn how to RNG flawless or shiny legendaries in Brilliant Diamond and Shining Pearl using CFW.",
-      category: "Brilliant Diamond and Shining Pearl",
       slug: "/cfw-bdsp-stationary",
       isRoughDraft: false,
       tag: "cfw",
@@ -235,11 +235,11 @@ export const guides = {
   },
   "/cfw-bdsp-tidandsid": {
     meta: {
+      categories: ["Brilliant Diamond and Shining Pearl"],
       title: "Brilliant Diamond and Shining Pearl TID/SID RNG",
       navDrawerTitle: "TID/SID RNG",
       description:
         "Learn how to RNG your Trainer and Secret ID in Brilliant Diamond and Shining Pearl with CFW.",
-      category: "Brilliant Diamond and Shining Pearl",
       slug: "/cfw-bdsp-tidandsid",
       isRoughDraft: true,
       tag: "cfw",
@@ -259,11 +259,11 @@ export const guides = {
   },
   "/cfw-bdsp-wild": {
     meta: {
+      categories: ["Brilliant Diamond and Shining Pearl"],
       title: "Brilliant Diamond and Shining Pearl Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
         "RNG wild Pokémon in Brilliant Diamond and Shining Pearl using CFW.",
-      category: "Brilliant Diamond and Shining Pearl",
       slug: "/cfw-bdsp-wild",
       isRoughDraft: true,
       tag: "cfw",
@@ -280,11 +280,11 @@ export const guides = {
   },
   "/challenge-usum-ta": {
     meta: {
+      categories: ["USUM Challenges"],
       title: "USUM Tool Assisted Challenge",
       navDrawerTitle: "Tool Assisted",
       description:
         "Join the leaderboard and earn rewards by completing challenges in USUM",
-      category: "USUM Challenges",
       slug: "/challenge-usum-ta",
       isRoughDraft: false,
       tag: "challenge",
@@ -299,10 +299,10 @@ export const guides = {
   },
   "/channel-jirachi": {
     meta: {
+      categories: ["Gamecube"],
       title: "(PAL) Channel RNG",
       navDrawerTitle: "(PAL) Channel RNG",
       description: "Step-by-step guide to RNG the Channel Jirachi.",
-      category: "Gamecube",
       slug: "/channel-jirachi",
       isRoughDraft: false,
       tag: "emu",
@@ -317,11 +317,11 @@ export const guides = {
   },
   "/citrarng-setup": {
     meta: {
+      categories: ["3DS Tools"],
       title: "3DS Emulator Setup (Azahar/Lime3DS/Citra)",
       navDrawerTitle: "Azahar Setup",
       description:
         "Set up Azahar, Lime3DS, or Citra for 3DS RNG, including cart dumping and installing game updates.",
-      category: "3DS Tools",
       slug: "/citrarng-setup",
       isRoughDraft: false,
       tag: "emu",
@@ -338,10 +338,10 @@ export const guides = {
   },
   "/crystal": {
     meta: {
+      categories: ["Game Hub"],
       title: "Crystal",
       navDrawerTitle: "Crystal",
       description: "Crystal Resources",
-      category: "Game Hub",
       slug: "/crystal",
       isRoughDraft: false,
       tag: "challenge",
@@ -356,11 +356,11 @@ export const guides = {
   },
   "/desmume-setup": {
     meta: {
+      categories: ["NDS Tools"],
       title: "Desmume Setup",
       navDrawerTitle: "Desmume Setup",
       description:
         "Learn how to set up DeSmuME for RNG, including cart dumping, save extraction, and using lua scripts.",
-      category: "NDS Tools",
       slug: "/desmume-setup",
       isRoughDraft: false,
       tag: "emu",
@@ -377,10 +377,10 @@ export const guides = {
   },
   "/diamond-pearl-and-platinum": {
     meta: {
+      categories: ["Game Hub"],
       title: "Diamond, Pearl, and Platinum",
       navDrawerTitle: "Diamond, Pearl, and Platinum",
       description: "Diamond, Pearl, and Platinum Resources",
-      category: "Game Hub",
       slug: "/diamond-pearl-and-platinum",
       isRoughDraft: false,
       tag: "challenge",
@@ -395,11 +395,11 @@ export const guides = {
   },
   "/dppt-advance-rng": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "Advancing the RNG in Diamond, Pearl, and Platinum",
       navDrawerTitle: "Advancing the RNG",
       description:
         "Learn how to advance the RNG in Diamond, Pearl, and Platinum. This guide explains different methods like journal flips, Chatot chatters, and NPC actions.",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/dppt-advance-rng",
       isRoughDraft: false,
       tag: "any",
@@ -419,11 +419,11 @@ export const guides = {
   },
   "/dppt-initial-seed": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "Diamond, Pearl, and Platinum Initial Seed RNG",
       navDrawerTitle: "Initial Seed RNG",
       description:
         "Learn how to RNG your initial seed in Diamond, Pearl, and Platinum.",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/dppt-initial-seed",
       isRoughDraft: false,
       tag: "emu",
@@ -443,11 +443,11 @@ export const guides = {
   },
   "/dppt-initial-seed-retail": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "Diamond, Pearl, and Platinum Retail Initial Seed RNG",
       navDrawerTitle: "Initial Seed RNG",
       description:
         "Learn how to RNG your initial seed in Diamond, Pearl, and Platinum on a physical console.",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/dppt-initial-seed-retail",
       isRoughDraft: false,
       tag: "retail",
@@ -467,11 +467,11 @@ export const guides = {
   },
   "/dppt-pokeradar-rng": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "Diamond, Pearl, and Platinum PokeRadar RNG",
       navDrawerTitle: "PokeRadar RNG",
       description:
         "Learn two different methods for RNG manipulation with the PokéRadar in Diamond, Pearl, and Platinum.",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/dppt-pokeradar-rng",
       isRoughDraft: false,
       tag: "any",
@@ -489,11 +489,11 @@ export const guides = {
   },
   "/dppt-setup-rng": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "Diamond, Pearl, and Platinum Honey Tree RNG",
       navDrawerTitle: "Honey Tree RNG",
       description:
         "Learn how to RNG Pokémon from Honey Trees in Diamond, Pearl, and Platinum for shiny and high-IV results.",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/dppt-setup-rng",
       isRoughDraft: false,
       tag: "any",
@@ -510,11 +510,11 @@ export const guides = {
   },
   "/dppt-wild": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "Diamond, Pearl, and Platinum Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in Diamond, Pearl, and Platinum for shiny and high-IV results.",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/dppt-wild",
       isRoughDraft: false,
       tag: "any",
@@ -531,11 +531,11 @@ export const guides = {
   },
   "/dream-radar-patches": {
     meta: {
+      categories: ["3DS Tools"],
       title: "Dream Radar No-Cart Patch",
       navDrawerTitle: "Dream Radar No-Cart Patch",
       description:
         "Learn how to patch Pokémon Dream Radar on the 3DS to load saves from TWiLightMenu, nds-bootstrap, or emulators — no game cart needed.",
-      category: "3DS Tools",
       slug: "/dream-radar-patches",
       isRoughDraft: false,
       tag: "cfw",
@@ -552,11 +552,11 @@ export const guides = {
   },
   "/e-tips-rng": {
     meta: {
+      categories: ["Emerald"],
       title: "Emerald RNG Info",
       navDrawerTitle: "RNG Info",
       description:
         "Learn how to advance the RNG and improve stability in Pokémon Emerald for consistent results.",
-      category: "Emerald",
       slug: "/e-tips-rng",
       isRoughDraft: false,
       tag: "any",
@@ -573,10 +573,10 @@ export const guides = {
   },
   "/emerald": {
     meta: {
+      categories: ["Game Hub"],
       title: "Emerald",
       navDrawerTitle: "Emerald",
       description: "Emerald Resources",
-      category: "Game Hub",
       slug: "/emerald",
       isRoughDraft: false,
       tag: "challenge",
@@ -591,11 +591,11 @@ export const guides = {
   },
   "/emerald-mirage-island": {
     meta: {
+      categories: ["Emerald"],
       title: "Mirage Island in Emerald",
       navDrawerTitle: "Mirage Island",
       description:
         "Learn how to access Mirage Island in Pokémon Emerald by catching a Pokémon with the correct PID using RNG manipulation.",
-      category: "Emerald",
       slug: "/emerald-mirage-island",
       isRoughDraft: false,
       tag: "any",
@@ -615,11 +615,11 @@ export const guides = {
   },
   "/emerald-overview": {
     meta: {
+      categories: ["Emerald"],
       title: "Emerald Overview",
       navDrawerTitle: "Overview",
       description:
         "Practical applications of RNG Manipulation and techniques in Pokémon Emerald.",
-      category: "Emerald",
       slug: "/emerald-overview",
       isRoughDraft: false,
       tag: "any",
@@ -636,11 +636,11 @@ export const guides = {
   },
   "/emerald-painting-rng": {
     meta: {
+      categories: ["Emerald"],
       title: "Reseed the RNG using paintings",
       navDrawerTitle: "Painting RNG",
       description:
         "Learn how to reseed the RNG using paintings in Pokémon Emerald to get the Pokémon you want quickly, without the long wait.",
-      category: "Emerald",
       slug: "/emerald-painting-rng",
       isRoughDraft: false,
       tag: "emu",
@@ -658,10 +658,10 @@ export const guides = {
   },
   "/emerald-shiny-starter": {
     meta: {
+      categories: ["Emerald"],
       title: "Shiny Starter",
       navDrawerTitle: "Shiny Starter",
       description: "Determine your SID by catching a shiny starter",
-      category: "Emerald",
       slug: "/emerald-shiny-starter",
       isRoughDraft: false,
       tag: "retail",
@@ -678,10 +678,10 @@ export const guides = {
   },
   "/emerald-sid-feebas": {
     meta: {
+      categories: ["Emerald"],
       title: "Find SID with Feebas in Emerald",
       navDrawerTitle: "Find SID with Feebas",
       description: "How to find your Secret ID (SID) in Emerald using Feebas.",
-      category: "Emerald",
       slug: "/emerald-sid-feebas",
       isRoughDraft: false,
       tag: "retail",
@@ -698,10 +698,10 @@ export const guides = {
   },
   "/emerald-static": {
     meta: {
+      categories: ["Emerald"],
       title: "Emerald Static3",
       navDrawerTitle: "Emerald Static3",
       description: "Static encounters in Emerald",
-      category: "Emerald",
       slug: "/emerald-static",
       isRoughDraft: true,
       tag: "any",
@@ -718,10 +718,10 @@ export const guides = {
   },
   "/emerald-tidsid-generator": {
     meta: {
+      categories: ["Emerald"],
       title: "Emerald TID and SID Generator",
       navDrawerTitle: "Emerald TID and SID Generator",
       description: "Generator for TID/SID in Emerald",
-      category: "Emerald",
       slug: "/emerald-tidsid-generator",
       isRoughDraft: true,
       tag: "any",
@@ -738,11 +738,11 @@ export const guides = {
   },
   "/emulator-b2w2-dream-radar": {
     meta: {
+      categories: ["Black 2 and White 2"],
       title: "Black 2 and White 2 Dream Radar RNG",
       navDrawerTitle: "Dream Radar RNG",
       description:
         "Learn how to RNG Level 5 Dream Ball legendary Pokémon with Hidden Abilities in Black 2 and White 2.",
-      category: "Black 2 and White 2",
       slug: "/emulator-b2w2-dream-radar",
       isRoughDraft: false,
       tag: "emu",
@@ -757,10 +757,10 @@ export const guides = {
   },
   "/emulator-b2w2-runasdate-inital-seed": {
     meta: {
+      categories: ["Black 2 and White 2"],
       title: "Black 2 and White 2 Initial Seed RNG",
       navDrawerTitle: "Initial Seed RNG",
       description: "Learn how to RNG your initial seed in Black 2 and White 2.",
-      category: "Black 2 and White 2",
       slug: "/emulator-b2w2-runasdate-inital-seed",
       isRoughDraft: false,
       tag: "emu",
@@ -780,11 +780,11 @@ export const guides = {
   },
   "/emulator-b2w2-wild": {
     meta: {
+      categories: ["Black 2 and White 2"],
       title: "Black 2 and White 2 Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in Black 2 and White 2 for shiny and high-IV results.",
-      category: "Black 2 and White 2",
       slug: "/emulator-b2w2-wild",
       isRoughDraft: true,
       tag: "emu",
@@ -799,11 +799,11 @@ export const guides = {
   },
   "/emulator-bw-entralink": {
     meta: {
+      categories: ["Black and White"],
       title: "Black and White Entralink RNG",
       navDrawerTitle: "Entralink RNG",
       description:
         "Learn how to RNG Pokémon exclusive to the Entralink in Black and White, including event-only encounters like Arceus.",
-      category: "Black and White",
       slug: "/emulator-bw-entralink",
       isRoughDraft: false,
       tag: "emu",
@@ -821,11 +821,11 @@ export const guides = {
   },
   "/emulator-bw-find-ds-parameters": {
     meta: {
+      categories: ["Black and White"],
       title: "How To Find DS Parameters in Generation 5",
       navDrawerTitle: "DS Parameters",
       description:
         "Learn how to find your DS parameters for successful RNG in Pokémon Black and White.",
-      category: "Black and White",
       slug: "/emulator-bw-find-ds-parameters",
       isRoughDraft: false,
       tag: "emu",
@@ -843,11 +843,11 @@ export const guides = {
   },
   "/emulator-bw-roamers": {
     meta: {
+      categories: ["Black and White"],
       title: "Black and White Roamer RNG",
       navDrawerTitle: "Roamer RNG",
       description:
         "Learn how to RNG Tornadus and Thundurus in Black and White for shiny and high-IV results.",
-      category: "Black and White",
       slug: "/emulator-bw-roamers",
       isRoughDraft: false,
       tag: "emu",
@@ -865,10 +865,10 @@ export const guides = {
   },
   "/emulator-bw-runasdate-initial-seed": {
     meta: {
+      categories: ["Black and White"],
       title: "Black and White Initial Seed RNG",
       navDrawerTitle: "Initial Seed RNG",
       description: "Learn how to RNG your initial seed in Black and White.",
-      category: "Black and White",
       slug: "/emulator-bw-runasdate-initial-seed",
       isRoughDraft: false,
       tag: "emu",
@@ -888,11 +888,11 @@ export const guides = {
   },
   "/emulator-bw-white-forest": {
     meta: {
+      categories: ["Black and White"],
       title: "White Forest RNG",
       navDrawerTitle: "White Forest RNG",
       description:
         "Learn how to RNG Pokémon found exclusively in White Forest in Pokémon White for desired IVs, nature, and shininess.",
-      category: "Black and White",
       slug: "/emulator-bw-white-forest",
       isRoughDraft: false,
       tag: "emu",
@@ -909,11 +909,11 @@ export const guides = {
   },
   "/emulator-bw-wild": {
     meta: {
+      categories: ["Black and White"],
       title: "Black and White Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in Black and White for shiny and high-IV results.",
-      category: "Black and White",
       slug: "/emulator-bw-wild",
       isRoughDraft: true,
       tag: "emu",
@@ -928,10 +928,10 @@ export const guides = {
   },
   "/emulator-colosseum-general": {
     meta: {
+      categories: ["Gamecube"],
       title: "Colosseum General RNG",
       navDrawerTitle: "Colosseum General RNG",
       description: "RNG in Colosseum",
-      category: "Gamecube",
       slug: "/emulator-colosseum-general",
       isRoughDraft: true,
       tag: "emu",
@@ -948,10 +948,10 @@ export const guides = {
   },
   "/emulator-dppt-cute-charm": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "Diamond, Pearl, and Platinum Cute Charm RNG",
       navDrawerTitle: "Cute Charm RNG",
       description: "How to use Cute Charm with TID/SID RNG.",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/emulator-dppt-cute-charm",
       isRoughDraft: false,
       tag: "emu",
@@ -969,11 +969,11 @@ export const guides = {
   },
   "/emulator-dppt-egg": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "Diamond, Pearl, and Platinum Egg RNG",
       navDrawerTitle: "Egg RNG",
       description:
         "Learn how to RNG eggs from the Daycare in Diamond, Pearl, and Platinum for shiny, high-IV Pokémon.",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/emulator-dppt-egg",
       isRoughDraft: false,
       tag: "emu",
@@ -990,11 +990,11 @@ export const guides = {
   },
   "/emulator-dppt-pokefinder-setup": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "PokeFinder Setup for Diamond, Pearl, and Platinum",
       navDrawerTitle: "PokeFinder Setup",
       description:
         "How to setup PokeFinder for Diamond, Pearl, and Platinum RNG.",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/emulator-dppt-pokefinder-setup",
       isRoughDraft: false,
       tag: "any",
@@ -1014,11 +1014,11 @@ export const guides = {
   },
   "/emulator-dppt-stationary": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "Diamond, Pearl, and Platinum Static RNG",
       navDrawerTitle: "Static RNG",
       description:
         "Learn how to RNG static Pokémon in Diamond, Pearl, and Platinum for perfect IVs, natures, and shinies.",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/emulator-dppt-stationary",
       isRoughDraft: false,
       tag: "emu",
@@ -1036,11 +1036,11 @@ export const guides = {
   },
   "/emulator-dppt-tid-sid": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "Diamond, Pearl, and Platinum TID/SID RNG",
       navDrawerTitle: "TID/SID RNG",
       description:
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Diamond, Pearl, and Platinum.",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/emulator-dppt-tid-sid",
       isRoughDraft: true,
       tag: "emu",
@@ -1058,11 +1058,11 @@ export const guides = {
   },
   "/emulator-emerald-egg": {
     meta: {
+      categories: ["Emerald"],
       title: "Emerald Egg RNG",
       navDrawerTitle: "Egg RNG",
       description:
         "Learn how to RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies.",
-      category: "Emerald",
       slug: "/emulator-emerald-egg",
       isRoughDraft: false,
       tag: "emu",
@@ -1080,11 +1080,11 @@ export const guides = {
   },
   "/emulator-flrg-stationary-and-gift": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "FireRed and LeafGreen Static RNG",
       navDrawerTitle: "Static RNG",
       description:
         "Learn how to RNG shiny 6IV legendaries in Pokémon FireRed and LeafGreen using static encounters.",
-      category: "FireRed and LeafGreen",
       slug: "/emulator-flrg-stationary-and-gift",
       isRoughDraft: false,
       tag: "emu",
@@ -1104,11 +1104,11 @@ export const guides = {
   },
   "/emulator-frlg-egg": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "FireRed and LeafGreen Egg RNG",
       navDrawerTitle: "Egg RNG",
       description:
         "Learn how to RNG eggs in Pokémon FireRed and LeafGreen for perfect IVs, natures, and shinies.",
-      category: "FireRed and LeafGreen",
       slug: "/emulator-frlg-egg",
       isRoughDraft: false,
       tag: "emu",
@@ -1125,10 +1125,10 @@ export const guides = {
   },
   "/emulator-frlg-stationary": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "FireRed and LeafGreen Static RNG",
       navDrawerTitle: "Static RNG",
       description: "Static v2 RNG",
-      category: "FireRed and LeafGreen",
       slug: "/emulator-frlg-stationary",
       isRoughDraft: true,
       tag: "emu",
@@ -1146,11 +1146,11 @@ export const guides = {
   },
   "/emulator-frlg-wild": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "FireRed and LeafGreen Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in FireRed and LeafGreen using the Sweet Scent method.",
-      category: "FireRed and LeafGreen",
       slug: "/emulator-frlg-wild",
       isRoughDraft: false,
       tag: "emu",
@@ -1167,10 +1167,10 @@ export const guides = {
   },
   "/emulator-frlg-wild-v2": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "FireRed and LeafGreen Wild RNG",
       navDrawerTitle: "Wild RNG",
       description: "Wild v2 RNG",
-      category: "FireRed and LeafGreen",
       slug: "/emulator-frlg-wild-v2",
       isRoughDraft: true,
       tag: "emu",
@@ -1187,10 +1187,10 @@ export const guides = {
   },
   "/emulator-hgss-breeding": {
     meta: {
+      categories: ["HeartGold and SoulSilver"],
       title: "HeartGold and Soulsilver Egg RNG",
       navDrawerTitle: "Egg RNG",
       description: "Breeding RNG",
-      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-breeding",
       isRoughDraft: true,
       tag: "emu",
@@ -1210,10 +1210,10 @@ export const guides = {
   },
   "/emulator-hgss-cute-charm": {
     meta: {
+      categories: ["HeartGold and SoulSilver"],
       title: "HeartGold and SoulSilver Cute Charm RNG",
       navDrawerTitle: "Cute Charm RNG",
       description: "How to use Cute Charm with TID/SID RNG.",
-      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-cute-charm",
       isRoughDraft: false,
       tag: "emu",
@@ -1231,11 +1231,11 @@ export const guides = {
   },
   "/emulator-hgss-egg": {
     meta: {
+      categories: ["HeartGold and SoulSilver"],
       title: "HeartGold and Soulsilver Egg RNG",
       navDrawerTitle: "Egg RNG",
       description:
         "Learn how to RNG eggs from the Daycare in HeartGold and SoulSilver for shiny, high-IV Pokémon.",
-      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-egg",
       isRoughDraft: false,
       tag: "emu",
@@ -1252,10 +1252,10 @@ export const guides = {
   },
   "/emulator-hgss-special-wild": {
     meta: {
+      categories: ["HeartGold and SoulSilver"],
       title: "HeartGold and SoulSilver Special Wild RNG",
       navDrawerTitle: "Special Wild RNG",
       description: "Special Wild RNG",
-      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-special-wild",
       isRoughDraft: true,
       tag: "emu",
@@ -1275,11 +1275,11 @@ export const guides = {
   },
   "/emulator-hgss-stationary": {
     meta: {
+      categories: ["HeartGold and SoulSilver"],
       title: "HeartGold and SoulSilver Static RNG",
       navDrawerTitle: "Static RNG",
       description:
         "Learn how to RNG static Pokémon in HeartGold and SoulSilver for perfect IVs, natures, and shinies.",
-      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-stationary",
       isRoughDraft: false,
       tag: "emu",
@@ -1299,11 +1299,11 @@ export const guides = {
   },
   "/emulator-hgss-tid-sid": {
     meta: {
+      categories: ["HeartGold and SoulSilver"],
       title: "HeartGold and SoulSilver TID/SID RNG",
       navDrawerTitle: "TID/SID RNG",
       description:
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in HeartGold and SoulSilver.",
-      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-tid-sid",
       isRoughDraft: true,
       tag: "emu",
@@ -1320,11 +1320,11 @@ export const guides = {
   },
   "/emulator-hgss-wild": {
     meta: {
+      categories: ["HeartGold and SoulSilver"],
       title: "HeartGold and SoulSilver Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in Diamond, Pearl, and Platinum for shiny and high-IV results.",
-      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-wild",
       isRoughDraft: true,
       tag: "emu",
@@ -1344,10 +1344,10 @@ export const guides = {
   },
   "/emulator-hgss-wondercard": {
     meta: {
+      categories: ["HeartGold and SoulSilver"],
       title: "HeartGold and SoulSilver Wondercard RNG",
       navDrawerTitle: "Wondercard RNG",
       description: "How to RNG Wondercards",
-      category: "HeartGold and SoulSilver",
       slug: "/emulator-hgss-wondercard",
       isRoughDraft: true,
       tag: "emu",
@@ -1364,11 +1364,11 @@ export const guides = {
   },
   "/emulator-oras-dexnav": {
     meta: {
+      categories: ["Omega Ruby and Alpha Sapphire"],
       title: "Omega Ruby and Alpha Sapphire DexNav RNG",
       navDrawerTitle: "DexNav RNG",
       description:
         "Learn how to RNG Pokémon using the DexNav feature in Omega Ruby and Alpha Sapphire.",
-      category: "Omega Ruby and Alpha Sapphire",
       slug: "/emulator-oras-dexnav",
       isRoughDraft: true,
       tag: "emu",
@@ -1383,11 +1383,11 @@ export const guides = {
   },
   "/emulator-rs-dead-battery-stationary": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire Dead Battery Static RNG",
       navDrawerTitle: "Static Dead Battery RNG",
       description:
         "Learn how to RNG static Pokémon in Ruby and Sapphire for perfect IVs, natures, and shinies.",
-      category: "Ruby and Sapphire",
       slug: "/emulator-rs-dead-battery-stationary",
       isRoughDraft: true,
       tag: "emu",
@@ -1407,11 +1407,11 @@ export const guides = {
   },
   "/emulator-rs-egg": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire Egg RNG",
       navDrawerTitle: "Egg RNG",
       description:
         "Learn how to RNG eggs from the Daycare in Ruby and Sapphire for shiny, high-IV Pokémon.",
-      category: "Ruby and Sapphire",
       slug: "/emulator-rs-egg",
       isRoughDraft: false,
       tag: "emu",
@@ -1428,11 +1428,11 @@ export const guides = {
   },
   "/emulator-rs-live-battery-tid": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire TID RNG",
       navDrawerTitle: "TID RNG",
       description:
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Ruby and Sapphire.",
-      category: "Ruby and Sapphire",
       slug: "/emulator-rs-live-battery-tid",
       isRoughDraft: false,
       tag: "emu",
@@ -1450,11 +1450,11 @@ export const guides = {
   },
   "/emulator-rs-stationary": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire Live Battery Static RNG",
       navDrawerTitle: "Static Live Battery RNG",
       description:
         "Learn how to RNG static Pokémon in Ruby and Sapphire for perfect IVs, natures, and shinies.",
-      category: "Ruby and Sapphire",
       slug: "/emulator-rs-stationary",
       isRoughDraft: false,
       tag: "emu",
@@ -1474,11 +1474,11 @@ export const guides = {
   },
   "/emulator-rs-wild": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in Ruby and Sapphire for shiny and high-IV results.",
-      category: "Ruby and Sapphire",
       slug: "/emulator-rs-wild",
       isRoughDraft: true,
       tag: "emu",
@@ -1498,11 +1498,11 @@ export const guides = {
   },
   "/emulator-rs-wishmaker": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire Shiny Wishmaker Jirachi RNG",
       navDrawerTitle: "Wishmaker Jirachi RNG",
       description:
         "Learn how to RNG the Shiny Wishmaker Jirachi from the Colosseum Bonus Disc in Ruby and Sapphire.",
-      category: "Ruby and Sapphire",
       slug: "/emulator-rs-wishmaker",
       isRoughDraft: false,
       tag: "emu",
@@ -1522,10 +1522,10 @@ export const guides = {
   },
   "/emulator-sm-time-finder": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon Time Finder (Citra)",
       navDrawerTitle: "Time Finder",
       description: "Finding times to get specific RNG seeds.",
-      category: "Sun and Moon",
       slug: "/emulator-sm-time-finder",
       isRoughDraft: false,
       tag: "emu",
@@ -1542,10 +1542,10 @@ export const guides = {
   },
   "/emulator-usum-time-finder": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon Time Finder (Citra)",
       navDrawerTitle: "Time Finder",
       description: "Finding times to get specific RNG seeds.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/emulator-usum-time-finder",
       isRoughDraft: false,
       tag: "emu",
@@ -1562,10 +1562,10 @@ export const guides = {
   },
   "/es-gen2-celebi": {
     meta: {
+      categories: ["Gold, Silver, Crystal"],
       title: "Celebi",
       navDrawerTitle: "Celebi",
       description: "How to get a shiny Fairy",
-      category: "Gold, Silver, Crystal",
       slug: "/es-gen2-celebi",
       isRoughDraft: false,
       tag: "cfw",
@@ -1584,10 +1584,10 @@ export const guides = {
   },
   "/es-gen2-starters": {
     meta: {
+      categories: ["Gold, Silver, Crystal"],
       title: "RNG de Iniciales en Cristal",
       navDrawerTitle: "RNG de Iniciales en Cristal",
       description: "Learn how to RNG shiny starters in Pokémon Crystal.",
-      category: "Gold, Silver, Crystal",
       slug: "/es-gen2-starters",
       isRoughDraft: false,
       tag: "cfw",
@@ -1606,10 +1606,10 @@ export const guides = {
   },
   "/experiments": {
     meta: {
+      categories: ["User Settings"],
       title: "Experimental Features",
       navDrawerTitle: "Experimental Features",
       description: "Help us test new features and provide feedback!",
-      category: "User Settings",
       slug: "/experiments",
       isRoughDraft: false,
       tag: "any",
@@ -1624,10 +1624,10 @@ export const guides = {
   },
   "/fire-red-and-leaf-green": {
     meta: {
+      categories: ["Game Hub"],
       title: "FireRed and LeafGreen",
       navDrawerTitle: "FireRed and LeafGreen",
       description: "FireRed and LeafGreen Resources",
-      category: "Game Hub",
       slug: "/fire-red-and-leaf-green",
       isRoughDraft: false,
       tag: "challenge",
@@ -1642,10 +1642,10 @@ export const guides = {
   },
   "/frlg-gen3-sid": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "Find Gen 3 SID",
       navDrawerTitle: "Find SID",
       description: "Various methods to finding an SID in Gen 3.",
-      category: "FireRed and LeafGreen",
       slug: "/frlg-gen3-sid",
       isRoughDraft: false,
       tag: "retail",
@@ -1660,11 +1660,11 @@ export const guides = {
   },
   "/frlg-seeding-bot": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "Initial Seed Botting for FireRed and LeafGreen",
       navDrawerTitle: "Initial Seed Botting",
       description:
         "Learn how to use the Initial Seed Bot in FireRed and LeafGreen for better control over your RNG results.",
-      category: "FireRed and LeafGreen",
       slug: "/frlg-seeding-bot",
       isRoughDraft: false,
       tag: "emu",
@@ -1684,10 +1684,10 @@ export const guides = {
   },
   "/frlg-static": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "FireRed and LeafGreen Static3",
       navDrawerTitle: "FireRed and LeafGreen Static3",
       description: "Static encounters in FireRed and LeafGreen",
-      category: "FireRed and LeafGreen",
       slug: "/frlg-static",
       isRoughDraft: true,
       tag: "any",
@@ -1704,10 +1704,10 @@ export const guides = {
   },
   "/frlg-tidsid-generator": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "FRLG TID and SID Generator",
       navDrawerTitle: "FRLG TID and SID Generator",
       description: "Generator for TID and SID in FRLG",
-      category: "FireRed and LeafGreen",
       slug: "/frlg-tidsid-generator",
       isRoughDraft: true,
       tag: "any",
@@ -1724,11 +1724,11 @@ export const guides = {
   },
   "/frlg-tips-rng": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "Basic rules of Gen 3 RNG",
       navDrawerTitle: "Basic rules of Gen 3 RNG",
       description:
         "Learn how to advance the RNG and improve stability in Pokémon FireRed and LeafGreen for consistent results.",
-      category: "FireRed and LeafGreen",
       slug: "/frlg-tips-rng",
       isRoughDraft: true,
       tag: "any",
@@ -1748,10 +1748,10 @@ export const guides = {
   },
   "/gamecube": {
     meta: {
+      categories: ["Game Hub"],
       title: "Gamecube",
       navDrawerTitle: "Gamecube",
       description: "Gamecube Resources",
-      category: "Game Hub",
       slug: "/gamecube",
       isRoughDraft: false,
       tag: "challenge",
@@ -1766,11 +1766,11 @@ export const guides = {
   },
   "/gba-methods": {
     meta: {
+      categories: ["GBA Technical Documentation"],
       title: "Methods 1-4 in Emerald",
       navDrawerTitle: "Methods 1-4",
       description:
         "What is a Method, the reason why Methods 1-4 exist, and how they impact Pokémon generation.",
-      category: "GBA Technical Documentation",
       slug: "/gba-methods",
       isRoughDraft: false,
       tag: "any",
@@ -1787,11 +1787,11 @@ export const guides = {
   },
   "/gba-overview": {
     meta: {
+      categories: ["GBA Overview"],
       title: "GBA Overview",
       navDrawerTitle: "Overview",
       description:
         "Particularities, key RNG concepts, and version differences of GBA games.",
-      category: "GBA Overview",
       slug: "/gba-overview",
       isRoughDraft: false,
       tag: "any",
@@ -1808,11 +1808,11 @@ export const guides = {
   },
   "/gba-vblank": {
     meta: {
+      categories: ["GBA Technical Documentation"],
       title: "VBlank in Emerald",
       navDrawerTitle: "VBlank",
       description:
         "What are Vblanks in Emerald and their impact on Pokémon generation.",
-      category: "GBA Technical Documentation",
       slug: "/gba-vblank",
       isRoughDraft: false,
       tag: "any",
@@ -1827,11 +1827,11 @@ export const guides = {
   },
   "/gc-initial": {
     meta: {
+      categories: ["Gamecube"],
       title: "Initial Seed RNG",
       navDrawerTitle: "Initial Seed RNG",
       description:
         "How to use Dolphin to set up Initial Seed RNG for all GameCube games.",
-      category: "Gamecube",
       slug: "/gc-initial",
       isRoughDraft: false,
       tag: "emu",
@@ -1848,11 +1848,11 @@ export const guides = {
   },
   "/gen2-celebi": {
     meta: {
+      categories: ["Gold, Silver, Crystal"],
       title: "Celebi in Crystal",
       navDrawerTitle: "Celebi RNG",
       description:
         "Learn how to obtain a shiny Celebi in Pokémon Crystal using RNG manipulation.",
-      category: "Gold, Silver, Crystal",
       slug: "/gen2-celebi",
       isRoughDraft: false,
       tag: "cfw",
@@ -1871,10 +1871,10 @@ export const guides = {
   },
   "/gen2-research": {
     meta: {
+      categories: ["Gold, Silver, Crystal"],
       title: "Gen 2 RNG Research",
       navDrawerTitle: "Gen 2 RNG Research",
       description: "Help research the Gen 2 RNG",
-      category: "Gold, Silver, Crystal",
       slug: "/gen2-research",
       isRoughDraft: true,
       tag: "info",
@@ -1889,10 +1889,10 @@ export const guides = {
   },
   "/gen2-starters": {
     meta: {
+      categories: ["Gold, Silver, Crystal"],
       title: "Crystal Starter RNG",
       navDrawerTitle: "Starter RNG",
       description: "Learn how to RNG shiny starters in Pokémon Crystal.",
-      category: "Gold, Silver, Crystal",
       slug: "/gen2-starters",
       isRoughDraft: false,
       tag: "cfw",
@@ -1911,10 +1911,10 @@ export const guides = {
   },
   "/gen3-sid": {
     meta: {
+      categories: ["Emerald"],
       title: "Find Gen 3 SID",
       navDrawerTitle: "Find SID",
       description: "Various methods to finding an SID in Gen 3.",
-      category: "Emerald",
       slug: "/gen3-sid",
       isRoughDraft: false,
       tag: "retail",
@@ -1929,10 +1929,10 @@ export const guides = {
   },
   "/heart-gold-and-soul-silver": {
     meta: {
+      categories: ["Game Hub"],
       title: "Heart Gold and Soul Silver",
       navDrawerTitle: "Heart Gold and Soul Silver",
       description: "Heart Gold and Soul Silver Resources",
-      category: "Game Hub",
       slug: "/heart-gold-and-soul-silver",
       isRoughDraft: false,
       tag: "challenge",
@@ -1947,11 +1947,11 @@ export const guides = {
   },
   "/hgss-initial-seed": {
     meta: {
+      categories: ["HeartGold and SoulSilver"],
       title: "HeartGold and Soulsilver Initial Seed RNG",
       navDrawerTitle: "Initial Seed RNG",
       description:
         "Learn how to RNG your initial seed in HeartGold and SoulSilver.",
-      category: "HeartGold and SoulSilver",
       slug: "/hgss-initial-seed",
       isRoughDraft: false,
       tag: "emu",
@@ -1971,11 +1971,11 @@ export const guides = {
   },
   "/hgss-rng-advance": {
     meta: {
+      categories: ["HeartGold and SoulSilver"],
       title: "Advancing the RNG in HeartGold and SoulSilver",
       navDrawerTitle: "Advancing the RNG",
       description:
         "Learn how to advance the RNG in HeartGold and SoulSilver. This guide explains different methods like Chatot chatters, radio, and NPC actions.",
-      category: "HeartGold and SoulSilver",
       slug: "/hgss-rng-advance",
       isRoughDraft: false,
       tag: "any",
@@ -1995,11 +1995,11 @@ export const guides = {
   },
   "/install-capturesight": {
     meta: {
+      categories: ["Switch Tools"],
       title: "Install CaptureSight",
       navDrawerTitle: "CaptureSight",
       description:
         "Learn how to install CaptureSight on your Switch to assist with RNG and perfect Pokémon hunting.",
-      category: "Switch Tools",
       slug: "/install-capturesight",
       isRoughDraft: false,
       tag: "cfw",
@@ -2016,11 +2016,11 @@ export const guides = {
   },
   "/install-pokereader": {
     meta: {
+      categories: ["3DS Tools"],
       title: "PokeReader 3DS",
       navDrawerTitle: "PokeReader 3DS",
       description:
         "Learn how to install PokeReader on your 3DS to assist with RNG and perfect Pokémon hunting.",
-      category: "3DS Tools",
       slug: "/install-pokereader",
       isRoughDraft: false,
       tag: "cfw",
@@ -2037,11 +2037,11 @@ export const guides = {
   },
   "/install-pokereader-emu": {
     meta: {
+      categories: ["3DS Tools"],
       title: "PokeReader Azahar",
       navDrawerTitle: "PokeReader Azahar",
       description:
         "Learn how to install PokeReader on a 3DS emulator to assist with RNG and perfect Pokémon hunting.",
-      category: "3DS Tools",
       slug: "/install-pokereader-emu",
       isRoughDraft: false,
       tag: "emu",
@@ -2058,10 +2058,10 @@ export const guides = {
   },
   "/legends-arceus": {
     meta: {
+      categories: ["Game Hub"],
       title: "Legends Arceus",
       navDrawerTitle: "Legends Arceus",
       description: "Legends Arceus Resources",
-      category: "Game Hub",
       slug: "/legends-arceus",
       isRoughDraft: false,
       tag: "challenge",
@@ -2076,11 +2076,11 @@ export const guides = {
   },
   "/meteor-jirachi": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire Meteor Jirachi RNG",
       navDrawerTitle: "Meteor Jirachi RNG",
       description:
         "Learn how to RNG a Meteor Jirachi with different shinies than Wishmaker.",
-      category: "Ruby and Sapphire",
       slug: "/meteor-jirachi",
       isRoughDraft: false,
       tag: "emu",
@@ -2100,11 +2100,11 @@ export const guides = {
   },
   "/mgba-setup": {
     meta: {
+      categories: ["GBA Tools"],
       title: "mGBA Setup",
       navDrawerTitle: "mGBA Setup",
       description:
         "Learn how to set up mGBA for GBA Pokémon RNG, including lua scripting support.",
-      category: "GBA Tools",
       slug: "/mgba-setup",
       isRoughDraft: false,
       tag: "emu",
@@ -2121,11 +2121,11 @@ export const guides = {
   },
   "/misc-3ds-installing-pcalc": {
     meta: {
+      categories: ["3DS Tools"],
       title: "How to Install PCalc",
       navDrawerTitle: "How to Install PCalc",
       description:
         "Learn how to install PCalc on your 3DS to assist with RNG in Pokémon games like X/Y, ORAS, Sun/Moon, and USUM.",
-      category: "3DS Tools",
       slug: "/misc-3ds-installing-pcalc",
       isRoughDraft: false,
       tag: "cfw",
@@ -2142,11 +2142,11 @@ export const guides = {
   },
   "/misc-3ds-ips-luma-citra": {
     meta: {
+      categories: ["3DS Tools"],
       title: "Using IPS Patches with Luma and Azahar/Lime3DS/Citra",
       navDrawerTitle: "IPS Patches",
       description:
         "Apply IPS patches like instant text and no outlines for a better experience on Luma 3DS or emulators.",
-      category: "3DS Tools",
       slug: "/misc-3ds-ips-luma-citra",
       isRoughDraft: false,
       tag: "cfw",
@@ -2166,11 +2166,11 @@ export const guides = {
   },
   "/misc-3ds-island-scan-sm": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon Island Scan Pokemon",
       navDrawerTitle: "Island Scan Pokemon",
       description:
         "View the full list of Island Scan Pokémon available in Sun and Moon by day and location.",
-      category: "Sun and Moon",
       slug: "/misc-3ds-island-scan-sm",
       isRoughDraft: false,
       tag: "info",
@@ -2187,11 +2187,11 @@ export const guides = {
   },
   "/misc-3ds-island-scan-usum": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon Island Scan Pokemon",
       navDrawerTitle: "Island Scan Pokemon",
       description:
         "View the full list of Island Scan Pokémon available in Ultra Sun and Ultra Moon by day and location.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/misc-3ds-island-scan-usum",
       isRoughDraft: false,
       tag: "info",
@@ -2208,11 +2208,11 @@ export const guides = {
   },
   "/misc-3ds-transporter-nature-tables": {
     meta: {
+      categories: ["Transporter"],
       title: "Transporter EXP to Nature Conversion Table (VC)",
       navDrawerTitle: "Nature Conversion Table",
       description:
         "Quickly check what nature your Virtual Console Pokémon will get when using Pokémon Transporter.",
-      category: "Transporter",
       slug: "/misc-3ds-transporter-nature-tables",
       isRoughDraft: false,
       tag: "info",
@@ -2227,11 +2227,11 @@ export const guides = {
   },
   "/misc-dolphin-connect-vba": {
     meta: {
+      categories: ["GBA Tools"],
       title: "Connect Dolphin to VBA",
       navDrawerTitle: "Connect Dolphin to VBA",
       description:
         "Learn how to redeem Jirachi or transfer your RNGs to a GBA game.",
-      category: "GBA Tools",
       slug: "/misc-dolphin-connect-vba",
       isRoughDraft: false,
       tag: "emu",
@@ -2251,11 +2251,11 @@ export const guides = {
   },
   "/misc-dolphin-gba-bios": {
     meta: {
+      categories: ["GBA Tools"],
       title: "How to extract GBA BIOS",
       navDrawerTitle: "GBA Bios",
       description:
         "Step-by-step guide to extracting the GBA BIOS file for use with emulators like mGBA and VBA.",
-      category: "GBA Tools",
       slug: "/misc-dolphin-gba-bios",
       isRoughDraft: false,
       tag: "cfw",
@@ -2273,11 +2273,11 @@ export const guides = {
   },
   "/misc-sm-wild-spots": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon Wild NPC Locations and Corrections",
       navDrawerTitle: "Wild NPC Locations",
       description:
         "Where to place your character and the correction needed for each area to RNG wild Pokémon in Sun and Moon.",
-      category: "Sun and Moon",
       slug: "/misc-sm-wild-spots",
       isRoughDraft: false,
       tag: "cfw",
@@ -2292,11 +2292,11 @@ export const guides = {
   },
   "/mystic-timer": {
     meta: {
+      categories: ["GBA Tools", "NDS Tools", "3DS Tools"],
       title: "Mystic Timer",
       navDrawerTitle: "Mystic Timer",
       description:
         "A mobile-friendly alternative to Eon Timer, perfect for Gen 3, Gen 4, and Gen 7 RNG.",
-      category: "Mystic Timer",
       slug: "/mystic-timer",
       isRoughDraft: false,
       tag: "retail",
@@ -2313,11 +2313,11 @@ export const guides = {
   },
   "/no-dolphin-patch": {
     meta: {
+      categories: ["GBA Tools"],
       title: "No Dolphin Patch",
       navDrawerTitle: "No Dolphin Patch",
       description:
         "Use this patch to RNG the Wishmaker Jirachi without needing the Dolphin emulator.",
-      category: "GBA Tools",
       slug: "/no-dolphin-patch",
       isRoughDraft: false,
       tag: "emu",
@@ -2334,10 +2334,10 @@ export const guides = {
   },
   "/ntr-helper-usage": {
     meta: {
+      categories: ["3DS Tools"],
       title: "NTR Helper Usage",
       navDrawerTitle: "NTR Helper Usage",
       description: "Learn how to use the NTR Helper Tool in 3DSRNGTool.",
-      category: "3DS Tools",
       slug: "/ntr-helper-usage",
       isRoughDraft: false,
       tag: "cfw",
@@ -2354,10 +2354,10 @@ export const guides = {
   },
   "/omega-ruby-and-alpha-sapphire": {
     meta: {
+      categories: ["Game Hub"],
       title: "Omega Ruby and Alpha Sapphire",
       navDrawerTitle: "Omega Ruby and Alpha Sapphire",
       description: "Omega Ruby and Alpha Sapphire Resources",
-      category: "Game Hub",
       slug: "/omega-ruby-and-alpha-sapphire",
       isRoughDraft: false,
       tag: "challenge",
@@ -2372,11 +2372,11 @@ export const guides = {
   },
   "/oras-mirage-spots": {
     meta: {
+      categories: ["Omega Ruby and Alpha Sapphire"],
       title: "Omega Ruby and Alpha Sapphire Mirage Spot RNG",
       navDrawerTitle: "Mirage Spot RNG",
       description:
         "Learn how to RNG access to any Mirage Spots in Omega Ruby and Alpha Sapphire for rare encounters and shiny Pokémon.",
-      category: "Omega Ruby and Alpha Sapphire",
       slug: "/oras-mirage-spots",
       isRoughDraft: false,
       tag: "cfw",
@@ -2391,11 +2391,11 @@ export const guides = {
   },
   "/oras-remove-time-penalty": {
     meta: {
+      categories: ["Omega Ruby and Alpha Sapphire"],
       title: "Remove Time Penalties in Omega Ruby and Alpha Sapphire",
       navDrawerTitle: "Remove Time Penalties",
       description:
         "Learn how to change the time in Omega Ruby and Alpha Sapphire without triggering time penalties.",
-      category: "Omega Ruby and Alpha Sapphire",
       slug: "/oras-remove-time-penalty",
       isRoughDraft: false,
       tag: "cfw",
@@ -2412,10 +2412,10 @@ export const guides = {
   },
   "/pal-xd-eevee": {
     meta: {
+      categories: ["Gamecube"],
       title: "XD Eevee PAL RNG",
       navDrawerTitle: "XD Eevee PAL RNG",
       description: "How to RNG the starter Eevee with a PAL Pokemon XD.",
-      category: "Gamecube",
       slug: "/pal-xd-eevee",
       isRoughDraft: false,
       tag: "emu",
@@ -2432,11 +2432,11 @@ export const guides = {
   },
   "/pcalc-xy-friend-safari": {
     meta: {
+      categories: ["X and Y"],
       title: "X and Y Friend Safari RNG",
       navDrawerTitle: "Friend Safari RNG",
       description:
         "Learn how to RNG shiny 6IV Pokémon from the Friend Safari in X and Y, including Ditto and other rare species.",
-      category: "X and Y",
       slug: "/pcalc-xy-friend-safari",
       isRoughDraft: false,
       tag: "cfw",
@@ -2453,11 +2453,11 @@ export const guides = {
   },
   "/pcalc-xy-tid": {
     meta: {
+      categories: ["X and Y"],
       title: "X and Y TID RNG",
       navDrawerTitle: "TID RNG",
       description:
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in X and Y.",
-      category: "X and Y",
       slug: "/pcalc-xy-tid",
       isRoughDraft: false,
       tag: "cfw",
@@ -2472,11 +2472,11 @@ export const guides = {
   },
   "/pokefinder": {
     meta: {
+      categories: ["GBA Tools", "NDS Tools", "3DS Tools", "Switch Tools"],
       title: "PokeFinder - Pokemon RNG Tool for Gens 3-5 & 8",
       navDrawerTitle: "PokeFinder",
       description:
         "Pokefinder is a cross-platform RNG tool for Pokémon Generations 3-5 & 8. Supports shiny hunting, TID/SID RNG, breeding, and more. Works for emulators and real hardware.",
-      category: "GBA Tools",
       slug: "/pokefinder",
       isRoughDraft: false,
       tag: "any",
@@ -2493,11 +2493,11 @@ export const guides = {
   },
   "/retail-bw-entralink": {
     meta: {
+      categories: ["Black and White"],
       title: "Black and White Retail Entralink RNG",
       navDrawerTitle: "Entralink RNG",
       description:
         "Learn how to RNG Pokémon exclusive to the Entralink in Black and White, including event-only encounters like Arceus.",
-      category: "Black and White",
       slug: "/retail-bw-entralink",
       isRoughDraft: true,
       tag: "retail",
@@ -2512,11 +2512,11 @@ export const guides = {
   },
   "/retail-emerald-wild": {
     meta: {
+      categories: ["Emerald"],
       title: "Emerald Retail Wild RNG",
       navDrawerTitle: "Retail Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in Pokémon Emerald on a retail console for perfect IVs, natures, and shinies.",
-      category: "Emerald",
       slug: "/retail-emerald-wild",
       isRoughDraft: false,
       tag: "retail",
@@ -2536,12 +2536,12 @@ export const guides = {
   },
   "/retail-oras-egg-mmsc": {
     meta: {
+      categories: ["Omega Ruby and Alpha Sapphire"],
       title:
         "Omega Ruby and Alpha Sapphire Egg RNG with Masuda Method or Shiny Charm",
       navDrawerTitle: "MM/SC Egg RNG",
       description:
         "Learn how to RNG eggs from the Daycare in Omega Ruby and Alpha Sapphire for shiny, high-IV Pokémon.",
-      category: "Omega Ruby and Alpha Sapphire",
       slug: "/retail-oras-egg-mmsc",
       isRoughDraft: false,
       tag: "cfw",
@@ -2561,12 +2561,12 @@ export const guides = {
   },
   "/retail-oras-egg-no-mmsc": {
     meta: {
+      categories: ["Omega Ruby and Alpha Sapphire"],
       title:
         "Omega Ruby and Alpha Sapphire Egg RNG Without Masuda or Shiny Charm",
       navDrawerTitle: "No MM/SC Egg RNG",
       description:
         "Learn how to RNG eggs from the Daycare in Omega Ruby and Alpha Sapphire for shiny, high-IV Pokémon.",
-      category: "Omega Ruby and Alpha Sapphire",
       slug: "/retail-oras-egg-no-mmsc",
       isRoughDraft: false,
       tag: "cfw",
@@ -2586,11 +2586,11 @@ export const guides = {
   },
   "/retail-oras-tid": {
     meta: {
+      categories: ["Omega Ruby and Alpha Sapphire"],
       title: "Omega Ruby and Alpha Sapphire TID RNG",
       navDrawerTitle: "TID RNG",
       description:
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Omega Ruby and Alpha Sapphire.",
-      category: "Omega Ruby and Alpha Sapphire",
       slug: "/retail-oras-tid",
       isRoughDraft: false,
       tag: "cfw",
@@ -2605,11 +2605,11 @@ export const guides = {
   },
   "/retail-sm-egg-mmsc": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon Egg RNG with Masuda and/or Shiny Charm",
       navDrawerTitle: "MM/SC Egg RNG",
       description:
         "Learn how to RNG eggs from the Daycare in Sun and Moon for shiny, high-IV Pokémon.",
-      category: "Sun and Moon",
       slug: "/retail-sm-egg-mmsc",
       isRoughDraft: false,
       tag: "any",
@@ -2629,11 +2629,11 @@ export const guides = {
   },
   "/retail-sm-egg-no-mmsc": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon Egg RNG without Masuda and/or Shiny Charm",
       navDrawerTitle: "No MM/SC Egg RNG",
       description:
         "Learn how to RNG eggs from the Daycare in Sun and Moon for shiny, high-IV Pokémon.",
-      category: "Sun and Moon",
       slug: "/retail-sm-egg-no-mmsc",
       isRoughDraft: false,
       tag: "cfw",
@@ -2653,11 +2653,11 @@ export const guides = {
   },
   "/retail-sm-egg-seed-no-cfw": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon retail finding egg seeds",
       navDrawerTitle: "Find Egg Seeds",
       description:
         "Find egg seeds for Egg RNG in Sun and Moon using the Magikarp Method — no CFW needed.",
-      category: "Sun and Moon",
       slug: "/retail-sm-egg-seed-no-cfw",
       isRoughDraft: false,
       tag: "retail",
@@ -2677,11 +2677,11 @@ export const guides = {
   },
   "/retail-sm-fidget": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon Timeline with Fidget RNG",
       navDrawerTitle: "Timeline Fidget RNG",
       description:
         "Learn how to create a timeline with character fidgets in Sun and Moon.",
-      category: "Sun and Moon",
       slug: "/retail-sm-fidget",
       isRoughDraft: false,
       tag: "cfw",
@@ -2698,11 +2698,11 @@ export const guides = {
   },
   "/retail-sm-initial-seed-clocks": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon finding your initial seed in with clocks",
       navDrawerTitle: "Find Initial Seed",
       description:
         "Learn how to find your initial seed in Sun and Moon using clock patterns — no custom firmware required.",
-      category: "Sun and Moon",
       slug: "/retail-sm-initial-seed-clocks",
       isRoughDraft: false,
       tag: "retail",
@@ -2719,11 +2719,11 @@ export const guides = {
   },
   "/retail-sm-island-scan": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon Island Scan RNG",
       navDrawerTitle: "Island Scan RNG",
       description:
         "Learn how to RNG Island Scan Pokémon in Sun and Moon — great for getting shinies in Apricorn Balls.",
-      category: "Sun and Moon",
       slug: "/retail-sm-island-scan",
       isRoughDraft: false,
       tag: "cfw",
@@ -2738,11 +2738,11 @@ export const guides = {
   },
   "/retail-sm-myster-gift": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon Mystery Gift RNG",
       navDrawerTitle: "Mystery Gift RNG",
       description:
         "Learn how to RNG Mystery Gift Pokémon in Sun and Moon for perfect IVs.",
-      category: "Sun and Moon",
       slug: "/retail-sm-myster-gift",
       isRoughDraft: false,
       tag: "cfw",
@@ -2757,11 +2757,11 @@ export const guides = {
   },
   "/retail-sm-no-cfw": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon RNGing on retail",
       navDrawerTitle: "Retail RNG",
       description:
         "RNG perfect Pokémon in Sun and Moon without using custom firmware.",
-      category: "Sun and Moon",
       slug: "/retail-sm-no-cfw",
       isRoughDraft: false,
       tag: "retail",
@@ -2778,11 +2778,11 @@ export const guides = {
   },
   "/retail-sm-sos": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon SOS RNG",
       navDrawerTitle: "SOS RNG",
       description:
         "Learn how to RNG SOS battles in Sun and Moon for shinies, IVs, and hidden abilities.",
-      category: "Sun and Moon",
       slug: "/retail-sm-sos",
       isRoughDraft: false,
       tag: "cfw",
@@ -2797,11 +2797,11 @@ export const guides = {
   },
   "/retail-sm-stationary": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon Static RNG",
       navDrawerTitle: "Static RNG",
       description:
         "Learn how to RNG static Pokémon in Sun and Moon for perfect IVs, natures, and shinies.",
-      category: "Sun and Moon",
       slug: "/retail-sm-stationary",
       isRoughDraft: false,
       tag: "cfw",
@@ -2816,11 +2816,11 @@ export const guides = {
   },
   "/retail-sm-timeleap": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon Timeline Leap RNG",
       navDrawerTitle: "Timeline Leap RNG",
       description:
         "Learn how to leap onto a specific timeline in Sun and Moon to get the Pokemon you want.",
-      category: "Sun and Moon",
       slug: "/retail-sm-timeleap",
       isRoughDraft: false,
       tag: "cfw",
@@ -2837,10 +2837,10 @@ export const guides = {
   },
   "/retail-sm-timeline": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon Timeline RNG",
       navDrawerTitle: "Timeline RNG",
       description: "Learn how to create a timeline in Sun and Moon.",
-      category: "Sun and Moon",
       slug: "/retail-sm-timeline",
       isRoughDraft: false,
       tag: "cfw",
@@ -2855,11 +2855,11 @@ export const guides = {
   },
   "/retail-sm-wild": {
     meta: {
+      categories: ["Sun and Moon"],
       title: "Sun and Moon Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in Sun and Moon for shiny and high-IV results.",
-      category: "Sun and Moon",
       slug: "/retail-sm-wild",
       isRoughDraft: false,
       tag: "cfw",
@@ -2874,11 +2874,11 @@ export const guides = {
   },
   "/retail-swsh-get-seed-with-cfw": {
     meta: {
+      categories: ["Sword and Shield"],
       title: "Sword and Shield find raid seed with custom firmware",
       navDrawerTitle: "Find Raid Seed",
       description:
         "Learn how to find raid seeds in Sword and Shield using a Switch with custom firmware.",
-      category: "Sword and Shield",
       slug: "/retail-swsh-get-seed-with-cfw",
       isRoughDraft: false,
       tag: "cfw",
@@ -2895,11 +2895,11 @@ export const guides = {
   },
   "/retail-swsh-get-seed-without-cfw": {
     meta: {
+      categories: ["Sword and Shield"],
       title: "Sword and Shield find raid seed without custom firmware",
       navDrawerTitle: "Find Raid Seed",
       description:
         "Learn how to find raid seeds in Sword and Shield without custom firmware.",
-      category: "Sword and Shield",
       slug: "/retail-swsh-get-seed-without-cfw",
       isRoughDraft: false,
       tag: "retail",
@@ -2917,11 +2917,11 @@ export const guides = {
   },
   "/retail-swsh-raid": {
     meta: {
+      categories: ["Sword and Shield"],
       title: "Sword and Shield Raid RNG",
       navDrawerTitle: "Raid RNG",
       description:
         "Learn how to RNG raid Pokémon (including G-Max) in Sword and Shield Dens.",
-      category: "Sword and Shield",
       slug: "/retail-swsh-raid",
       isRoughDraft: false,
       tag: "any",
@@ -2938,11 +2938,11 @@ export const guides = {
   },
   "/retail-usum-egg-mmsc": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon Egg RNG with Masuda and/or Shiny Charm",
       navDrawerTitle: "MM/SC Egg RNG",
       description:
         "Learn how to RNG eggs from the Daycare in Ultra Sun and Ultra Moon for shiny, high-IV Pokémon.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-egg-mmsc",
       isRoughDraft: false,
       tag: "any",
@@ -2962,12 +2962,12 @@ export const guides = {
   },
   "/retail-usum-egg-no-mmsc": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title:
         "Ultra Sun and Ultra Moon Egg RNG without Masuda and/or Shiny Charm",
       navDrawerTitle: "No MM/SC Egg RNG",
       description:
         "Learn how to RNG eggs from the Daycare in Ultra Sun and Ultra Moon for shiny, high-IV Pokémon.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-egg-no-mmsc",
       isRoughDraft: false,
       tag: "cfw",
@@ -2987,11 +2987,11 @@ export const guides = {
   },
   "/retail-usum-egg-seed-no-cfw": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon retail finding egg seeds",
       navDrawerTitle: "Find Egg Seeds",
       description:
         "Find egg seeds for Egg RNG in Ultra Sun and Ultra Moon using the Magikarp Method — no CFW needed.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-egg-seed-no-cfw",
       isRoughDraft: false,
       tag: "retail",
@@ -3011,11 +3011,11 @@ export const guides = {
   },
   "/retail-usum-fidget": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon Timeline with Fidget RNG",
       navDrawerTitle: "Timeline Fidget RNG",
       description:
         "Learn how to create a timeline with character fidgets in Ultra Sun and Ultra Moon.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-fidget",
       isRoughDraft: false,
       tag: "cfw",
@@ -3032,11 +3032,11 @@ export const guides = {
   },
   "/retail-usum-initial-seed-clocks": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon finding your initial seed with clocks",
       navDrawerTitle: "Find Initial Seed",
       description:
         "Learn how to find your initial seed in Ultra Sun and Ultra Moon using clock patterns — no custom firmware required.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-initial-seed-clocks",
       isRoughDraft: false,
       tag: "retail",
@@ -3053,11 +3053,11 @@ export const guides = {
   },
   "/retail-usum-island-scan": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon Island Scan RNG",
       navDrawerTitle: "Island Scan RNG",
       description:
         "Learn how to RNG Island Scan Pokémon in Ultra Sun and Ultra Moon — great for getting shinies in Apricorn Balls.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-island-scan",
       isRoughDraft: false,
       tag: "cfw",
@@ -3072,11 +3072,11 @@ export const guides = {
   },
   "/retail-usum-mystery-gift": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon Mystery Gift RNG",
       navDrawerTitle: "Mystery Gift RNG",
       description:
         "Learn how to RNG Mystery Gift Pokémon in Ultra Sun and Ultra Moon for perfect IVs.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-mystery-gift",
       isRoughDraft: false,
       tag: "cfw",
@@ -3091,11 +3091,11 @@ export const guides = {
   },
   "/retail-usum-no-cfw": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon RNGing on retail",
       navDrawerTitle: "Retail RNG",
       description:
         "RNG perfect Pokémon in Ultra Sun and Ultra Moon without using custom firmware.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-no-cfw",
       isRoughDraft: false,
       tag: "retail",
@@ -3112,11 +3112,11 @@ export const guides = {
   },
   "/retail-usum-sos": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon SOS RNG",
       navDrawerTitle: "SOS RNG",
       description:
         "Learn how to RNG SOS battles in Ultra Sun and Ultra Moon for shinies, IVs, and hidden abilities.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-sos",
       isRoughDraft: false,
       tag: "cfw",
@@ -3131,11 +3131,11 @@ export const guides = {
   },
   "/retail-usum-stationary": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon Static RNG",
       navDrawerTitle: "Static RNG",
       description:
         "Learn how to RNG static Pokémon in Ultra Sun and Ultra Moon for perfect IVs, natures, and shinies.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-stationary",
       isRoughDraft: false,
       tag: "cfw",
@@ -3150,11 +3150,11 @@ export const guides = {
   },
   "/retail-usum-timeleap": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon Timeline Leap RNG",
       navDrawerTitle: "Timeline Leap RNG",
       description:
         "Learn how to leap onto a specific timeline in Ultra Sun and Ultra Moon to get the Pokemon you want.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-timeleap",
       isRoughDraft: false,
       tag: "cfw",
@@ -3171,11 +3171,11 @@ export const guides = {
   },
   "/retail-usum-timeline": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon Timeline RNG",
       navDrawerTitle: "Timeline RNG",
       description:
         "Learn how to create a timeline in Ultra Sun and Ultra Moon.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-timeline",
       isRoughDraft: false,
       tag: "cfw",
@@ -3190,11 +3190,11 @@ export const guides = {
   },
   "/retail-usum-wild": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in Ultra Sun and Ultra Moon for shiny and high-IV results.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-wild",
       isRoughDraft: false,
       tag: "cfw",
@@ -3209,11 +3209,11 @@ export const guides = {
   },
   "/retail-usum-wormhole": {
     meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
       title: "Ultra Sun and Ultra Moon Wormhole RNG",
       navDrawerTitle: "Wormhole RNG",
       description:
         "RNG legendary Pokémon found in Ultra Wormholes for perfect IVs, nature, and shininess.",
-      category: "Ultra Sun and Ultra Moon",
       slug: "/retail-usum-wormhole",
       isRoughDraft: false,
       tag: "cfw",
@@ -3230,11 +3230,11 @@ export const guides = {
   },
   "/retail-xy-egg-mmsc": {
     meta: {
+      categories: ["X and Y"],
       title: "X and Y Egg RNG with Masuda Method or Shiny Charm",
       navDrawerTitle: "MM/SC Egg RNG",
       description:
         "Learn how to RNG eggs from the Daycare in X and Y for shiny, high-IV Pokémon.",
-      category: "X and Y",
       slug: "/retail-xy-egg-mmsc",
       isRoughDraft: false,
       tag: "cfw",
@@ -3254,11 +3254,11 @@ export const guides = {
   },
   "/retail-xy-egg-no-mmsc": {
     meta: {
+      categories: ["X and Y"],
       title: "X and Y Egg RNG Without Masuda or Shiny Charm",
       navDrawerTitle: "No MM/SC Egg RNG",
       description:
         "Learn how to RNG eggs from the Daycare in X and Y for shiny, high-IV Pokémon.",
-      category: "X and Y",
       slug: "/retail-xy-egg-no-mmsc",
       isRoughDraft: false,
       tag: "cfw",
@@ -3278,11 +3278,11 @@ export const guides = {
   },
   "/rs-battery": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire Live vs Dead Battery RNG",
       navDrawerTitle: "Live vs Dead Battery",
       description:
         "Learn the differences between RNG methods on Ruby and Sapphire with live and dead batteries, and how each impacts your Pokémon results.",
-      category: "Ruby and Sapphire",
       slug: "/rs-battery",
       isRoughDraft: false,
       tag: "any",
@@ -3300,10 +3300,10 @@ export const guides = {
   },
   "/rs-gen3-sid": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Find Gen 3 SID",
       navDrawerTitle: "Find SID",
       description: "Various methods to finding an SID in Gen 3.",
-      category: "Ruby and Sapphire",
       slug: "/rs-gen3-sid",
       isRoughDraft: false,
       tag: "retail",
@@ -3318,10 +3318,10 @@ export const guides = {
   },
   "/rs-initial-seed": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire Initial Seed RNG",
       navDrawerTitle: "Initial Seed RNG",
       description: "Learn how to RNG your initial seed in Ruby and Sapphire.",
-      category: "Ruby and Sapphire",
       slug: "/rs-initial-seed",
       isRoughDraft: true,
       tag: "emu",
@@ -3338,11 +3338,11 @@ export const guides = {
   },
   "/rs-mirage-island": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Mirage Island in Ruby and Sapphire",
       navDrawerTitle: "Mirage Island",
       description:
         "Learn how to access Mirage Island in Pokémon Emerald by catching a Pokémon with the correct PID using RNG manipulation.",
-      category: "Ruby and Sapphire",
       slug: "/rs-mirage-island",
       isRoughDraft: false,
       tag: "any",
@@ -3359,10 +3359,10 @@ export const guides = {
   },
   "/rs-pokefinder-setup": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire PokeFinder Setup",
       navDrawerTitle: "PokeFinder Setup",
       description: "How to set up PokeFinder",
-      category: "Ruby and Sapphire",
       slug: "/rs-pokefinder-setup",
       isRoughDraft: true,
       tag: "any",
@@ -3379,11 +3379,11 @@ export const guides = {
   },
   "/rs-sid-feebas": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Find SID with Feebas in Ruby and Sapphire",
       navDrawerTitle: "Find SID with Feebas",
       description:
         "How to find your Secret ID (SID) in Ruby or Sapphire using Feebas.",
-      category: "Ruby and Sapphire",
       slug: "/rs-sid-feebas",
       isRoughDraft: false,
       tag: "retail",
@@ -3400,10 +3400,10 @@ export const guides = {
   },
   "/rs-static": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire Static3",
       navDrawerTitle: "Ruby and Sapphire Static3",
       description: "Static encounters in Ruby and Sapphire",
-      category: "Ruby and Sapphire",
       slug: "/rs-static",
       isRoughDraft: true,
       tag: "any",
@@ -3420,10 +3420,10 @@ export const guides = {
   },
   "/rs-tidsid-generator": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "RS TID and SID Generator",
       navDrawerTitle: "RS TID and SID Generator",
       description: "Generator for TID and SID in RS",
-      category: "Ruby and Sapphire",
       slug: "/rs-tidsid-generator",
       isRoughDraft: true,
       tag: "any",
@@ -3440,11 +3440,11 @@ export const guides = {
   },
   "/rs-tips-rng": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire RNG Info",
       navDrawerTitle: "RNG Info",
       description:
         "Learn how to advance the RNG and improve stability in Pokémon Ruby and Sapphire for consistent results.",
-      category: "Ruby and Sapphire",
       slug: "/rs-tips-rng",
       isRoughDraft: true,
       tag: "any",
@@ -3462,10 +3462,10 @@ export const guides = {
   },
   "/ruby-and-sapphire": {
     meta: {
+      categories: ["Game Hub"],
       title: "Ruby and Sapphire",
       navDrawerTitle: "Ruby and Sapphire",
       description: "Ruby and Sapphire Resources",
-      category: "Game Hub",
       slug: "/ruby-and-sapphire",
       isRoughDraft: false,
       tag: "challenge",
@@ -3480,10 +3480,10 @@ export const guides = {
   },
   "/sun-and-moon": {
     meta: {
+      categories: ["Game Hub"],
       title: "Sun and Moon",
       navDrawerTitle: "Sun and Moon",
       description: "Sun and Moon Resources",
-      category: "Game Hub",
       slug: "/sun-and-moon",
       isRoughDraft: false,
       tag: "challenge",
@@ -3498,10 +3498,10 @@ export const guides = {
   },
   "/sword-and-shield": {
     meta: {
+      categories: ["Game Hub"],
       title: "Sword and Shield",
       navDrawerTitle: "Sword and Shield",
       description: "Sword and Shield Resources",
-      category: "Game Hub",
       slug: "/sword-and-shield",
       isRoughDraft: false,
       tag: "challenge",
@@ -3516,11 +3516,11 @@ export const guides = {
   },
   "/sysbot-lpa-mmo": {
     meta: {
+      categories: ["Legends Arceus"],
       title: "Legends Arceus MMO RNG",
       navDrawerTitle: "MMO RNG",
       description:
         "Learn how to RNG MMOs in Legends Arceus using Sysbot and PermuteMMO for shiny Pokémon.",
-      category: "Legends Arceus",
       slug: "/sysbot-lpa-mmo",
       isRoughDraft: false,
       tag: "cfw",
@@ -3535,11 +3535,11 @@ export const guides = {
   },
   "/transporter-patches": {
     meta: {
+      categories: ["3DS Tools"],
       title: "Pokemon Transporter Offline & Save Patches",
       navDrawerTitle: "Transporter Patches",
       description:
         "Learn how to patch Pokémon Transporter to work offline and load emulator or TWiLightMenu saves from the SD card.",
-      category: "3DS Tools",
       slug: "/transporter-patches",
       isRoughDraft: false,
       tag: "cfw",
@@ -3556,11 +3556,11 @@ export const guides = {
   },
   "/transporter-rng": {
     meta: {
+      categories: ["Transporter"],
       title: "Transporter RNG for Gen 1 and 2",
       navDrawerTitle: "Transporter RNG",
       description:
         "Learn how to RNG your Virtual Console Pokémon so they transfer to Gen 7 with perfect 6IVs.",
-      category: "Transporter",
       slug: "/transporter-rng",
       isRoughDraft: false,
       tag: "cfw",
@@ -3575,11 +3575,11 @@ export const guides = {
   },
   "/transporter-rng-offline": {
     meta: {
+      categories: ["Transporter"],
       title: "Transporter RNG using the Offline Patch",
       navDrawerTitle: "Offline Patch RNG",
       description:
         "Use the offline patch to stabilize delay and make RNG with Pokémon Transporter more consistent.",
-      category: "Transporter",
       slug: "/transporter-rng-offline",
       isRoughDraft: false,
       tag: "cfw",
@@ -3597,10 +3597,10 @@ export const guides = {
   },
   "/ultra-sun-and-ultra-moon": {
     meta: {
+      categories: ["Game Hub"],
       title: "Ultra Sun and Ultra Moon",
       navDrawerTitle: "Ultra Sun and Ultra Moon",
       description: "Ultra Sun and Ultra Moon Resources",
-      category: "Game Hub",
       slug: "/ultra-sun-and-ultra-moon",
       isRoughDraft: false,
       tag: "challenge",
@@ -3615,11 +3615,11 @@ export const guides = {
   },
   "/wishing-star-jirachi": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire Wishing Star Jirachi RNG",
       navDrawerTitle: "Wishing Star Jirachi RNG",
       description:
         "Learn how to RNG the Wishing Star Jirachi from the Colosseum Bonus Disc in Ruby and Sapphire.",
-      category: "Ruby and Sapphire",
       slug: "/wishing-star-jirachi",
       isRoughDraft: false,
       tag: "emu",
@@ -3637,10 +3637,10 @@ export const guides = {
   },
   "/x-and-y": {
     meta: {
+      categories: ["Game Hub"],
       title: "X and Y",
       navDrawerTitle: "X and Y",
       description: "X and Y Resources",
-      category: "Game Hub",
       slug: "/x-and-y",
       isRoughDraft: false,
       tag: "challenge",
@@ -3655,10 +3655,10 @@ export const guides = {
   },
   "/xdcolo-tidsid-generator": {
     meta: {
+      categories: ["Gamecube"],
       title: "XD and Colo TID and SID Generator",
       navDrawerTitle: "XD and Colo TID and SID Generator",
       description: "Generator for TID and SID in XD and Colo",
-      category: "Gamecube",
       slug: "/xdcolo-tidsid-generator",
       isRoughDraft: true,
       tag: "any",
@@ -3675,11 +3675,11 @@ export const guides = {
   },
   "/xy-pokeradar": {
     meta: {
+      categories: ["X and Y"],
       title: "X and Y PokeRadar RNG",
       navDrawerTitle: "PokeRadar RNG",
       description:
         "Learn how to RNG using the PokéRadar in X and Y for shiny Pokémon.",
-      category: "X and Y",
       slug: "/xy-pokeradar",
       isRoughDraft: false,
       tag: "cfw",
@@ -3694,10 +3694,10 @@ export const guides = {
   },
   "/zh-dppt-advance-rng": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "乱数的帧数推进方法",
       navDrawerTitle: "乱数的帧数推进方法",
       description: "推进乱数帧数的不同方法及影响帧数的事件机制",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/zh-dppt-advance-rng",
       isRoughDraft: false,
       tag: "any",
@@ -3717,10 +3717,10 @@ export const guides = {
   },
   "/zh-dppt-initial-seed": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "初始种子乱数",
       navDrawerTitle: "初始种子乱数",
       description: "如何在《钻石, 珍珠, 白金》中进行初始种子乱数",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/zh-dppt-initial-seed",
       isRoughDraft: false,
       tag: "emu",
@@ -3740,10 +3740,10 @@ export const guides = {
   },
   "/zh-dppt-pokeradar-rng": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "宝可追踪乱数",
       navDrawerTitle: "宝可追踪乱数",
       description: "两种不同的宝可追踪乱数方法",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/zh-dppt-pokeradar-rng",
       isRoughDraft: false,
       tag: "any",
@@ -3761,10 +3761,10 @@ export const guides = {
   },
   "/zh-dppt-wild": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "野生乱数",
       navDrawerTitle: "野生乱数",
       description: "野生乱数",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/zh-dppt-wild",
       isRoughDraft: false,
       tag: "any",
@@ -3781,10 +3781,10 @@ export const guides = {
   },
   "/zh-e-tips-rng": {
     meta: {
+      categories: ["Emerald"],
       title: "乱数介绍",
       navDrawerTitle: "乱数介绍",
       description: "如何推进乱数以及提高稳定性的技巧",
-      category: "Emerald",
       slug: "/zh-e-tips-rng",
       isRoughDraft: false,
       tag: "any",
@@ -3801,10 +3801,10 @@ export const guides = {
   },
   "/zh-emerald-mirage-island": {
     meta: {
+      categories: ["Emerald"],
       title: "幻之岛",
       navDrawerTitle: "幻之岛",
       description: "通过捕捉具有特定 PID 的宝可梦以进入幻之岛",
-      category: "Emerald",
       slug: "/zh-emerald-mirage-island",
       isRoughDraft: false,
       tag: "any",
@@ -3824,10 +3824,10 @@ export const guides = {
   },
   "/zh-emerald-painting-rng": {
     meta: {
+      categories: ["Emerald"],
       title: "利用绘画重置种子",
       navDrawerTitle: "利用绘画重置种子",
       description: "利用绘画重置乱数，从而快速获得目标宝可梦，而无需长时间等待",
-      category: "Emerald",
       slug: "/zh-emerald-painting-rng",
       isRoughDraft: false,
       tag: "emu",
@@ -3845,10 +3845,10 @@ export const guides = {
   },
   "/zh-emerald-sid-feebas": {
     meta: {
+      categories: ["Emerald"],
       title: "使用丑丑鱼查找 SID",
       navDrawerTitle: "使用丑丑鱼查找 SID",
       description: "如何在《绿宝石》中利用丑丑鱼查找你的里ID (SID)。",
-      category: "Emerald",
       slug: "/zh-emerald-sid-feebas",
       isRoughDraft: false,
       tag: "retail",
@@ -3865,10 +3865,10 @@ export const guides = {
   },
   "/zh-emulator-b2w2-runasdate-inital-seed": {
     meta: {
+      categories: ["Black 2 and White 2"],
       title: "黑白2初始seed乱数",
       navDrawerTitle: "黑白2初始seed乱数",
       description: "学习如何在黑白2中乱数你的初始seed",
-      category: "Black 2 and White 2",
       slug: "/zh-emulator-b2w2-runasdate-inital-seed",
       isRoughDraft: false,
       tag: "emu",
@@ -3891,10 +3891,10 @@ export const guides = {
   },
   "/zh-emulator-bw-entralink": {
     meta: {
+      categories: ["Black and White"],
       title: "连入之森乱数",
       navDrawerTitle: "连入之森乱数",
       description: "如何使用连入乱数获取心仪的宝可梦",
-      category: "Black and White",
       slug: "/zh-emulator-bw-entralink",
       isRoughDraft: false,
       tag: "emu",
@@ -3912,10 +3912,10 @@ export const guides = {
   },
   "/zh-emulator-bw-find-ds-parameters": {
     meta: {
+      categories: ["Black and White"],
       title: "如何在第五世代中寻找 DS 参数",
       navDrawerTitle: "如何在第五世代中寻找 DS 参数",
       description: "获取你的 DS 参数以进行第五世代乱数。",
-      category: "Black and White",
       slug: "/zh-emulator-bw-find-ds-parameters",
       isRoughDraft: false,
       tag: "emu",
@@ -3936,10 +3936,10 @@ export const guides = {
   },
   "/zh-emulator-bw-roamers": {
     meta: {
+      categories: ["Black and White"],
       title: "第五世代游走宝可梦乱数",
       navDrawerTitle: "第五世代游走宝可梦乱数",
       description: "在模拟器中对第五世代的游走宝可梦进行乱数",
-      category: "Black and White",
       slug: "/zh-emulator-bw-roamers",
       isRoughDraft: false,
       tag: "emu",
@@ -3957,10 +3957,10 @@ export const guides = {
   },
   "/zh-emulator-bw-runasdate-initial-seed": {
     meta: {
+      categories: ["Black and White"],
       title: "黑白初始seed乱数",
       navDrawerTitle: "黑白初始seed乱数",
       description: "学习如何在黑白中乱你的初始seed",
-      category: "Black and White",
       slug: "/zh-emulator-bw-runasdate-initial-seed",
       isRoughDraft: false,
       tag: "emu",
@@ -3983,10 +3983,10 @@ export const guides = {
   },
   "/zh-emulator-dppt-cute-charm": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "迷人之躯乱数",
       navDrawerTitle: "迷人之躯乱数",
       description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/zh-emulator-dppt-cute-charm",
       isRoughDraft: false,
       tag: "emu",
@@ -4004,10 +4004,10 @@ export const guides = {
   },
   "/zh-emulator-dppt-egg": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "孵化乱数",
       navDrawerTitle: "孵化乱数",
       description: "如何在育婴屋进行乱数孵化",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/zh-emulator-dppt-egg",
       isRoughDraft: false,
       tag: "emu",
@@ -4024,10 +4024,10 @@ export const guides = {
   },
   "/zh-emulator-emerald-egg": {
     meta: {
+      categories: ["Emerald"],
       title: "孵化乱数",
       navDrawerTitle: "孵化乱数",
       description: "通过培育屋进行乱数孵蛋",
-      category: "Emerald",
       slug: "/zh-emulator-emerald-egg",
       isRoughDraft: false,
       tag: "emu",
@@ -4045,10 +4045,10 @@ export const guides = {
   },
   "/zh-emulator-flrg-stationary-and-gift": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "固定宝可梦乱数",
       navDrawerTitle: "固定宝可梦乱数",
       description: "在《火红·叶绿》中获取闪光六项个体值的传说宝可梦",
-      category: "FireRed and LeafGreen",
       slug: "/zh-emulator-flrg-stationary-and-gift",
       isRoughDraft: false,
       tag: "emu",
@@ -4071,10 +4071,10 @@ export const guides = {
   },
   "/zh-emulator-frlg-egg": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "火红叶绿孵化乱数",
       navDrawerTitle: "Egg RNG",
       description: "在火红/叶绿中进行蛋的乱数",
-      category: "FireRed and LeafGreen",
       slug: "/zh-emulator-frlg-egg",
       isRoughDraft: false,
       tag: "emu",
@@ -4091,10 +4091,10 @@ export const guides = {
   },
   "/zh-emulator-frlg-wild": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "火红叶绿野生乱数",
       navDrawerTitle: "Wild RNG",
       description: "在《火红·叶绿》中使用甜甜香气进行野生宝可梦的乱数",
-      category: "FireRed and LeafGreen",
       slug: "/zh-emulator-frlg-wild",
       isRoughDraft: false,
       tag: "emu",
@@ -4111,10 +4111,10 @@ export const guides = {
   },
   "/zh-emulator-hgss-cute-charm": {
     meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
       title: "迷人之躯乱数",
       navDrawerTitle: "迷人之躯乱数",
       description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",
-      category: "Diamond, Pearl, and Platinum",
       slug: "/zh-emulator-hgss-cute-charm",
       isRoughDraft: false,
       tag: "emu",
@@ -4132,10 +4132,10 @@ export const guides = {
   },
   "/zh-emulator-hgss-egg": {
     meta: {
+      categories: ["HeartGold and SoulSilver"],
       title: "孵化乱数",
       navDrawerTitle: "孵化乱数",
       description: "如何在培育屋进行孵化乱数",
-      category: "HeartGold and SoulSilver",
       slug: "/zh-emulator-hgss-egg",
       isRoughDraft: false,
       tag: "emu",
@@ -4152,10 +4152,10 @@ export const guides = {
   },
   "/zh-frlg-gen3-sid": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "查找第三世代 SID",
       navDrawerTitle: "查找第三世代 SID",
       description: "多种方法查找第三世代的SID",
-      category: "FireRed and LeafGreen",
       slug: "/zh-frlg-gen3-sid",
       isRoughDraft: false,
       tag: "retail",
@@ -4170,10 +4170,10 @@ export const guides = {
   },
   "/zh-frlg-seeding-bot": {
     meta: {
+      categories: ["FireRed and LeafGreen"],
       title: "初始种子自动刷取",
       navDrawerTitle: "初始种子自动刷取",
       description: "使用初始种子自动脚本，实现更高自由度的乱数控制",
-      category: "FireRed and LeafGreen",
       slug: "/zh-frlg-seeding-bot",
       isRoughDraft: false,
       tag: "emu",
@@ -4193,10 +4193,10 @@ export const guides = {
   },
   "/zh-gen2-celebi": {
     meta: {
+      categories: ["Gold, Silver, Crystal"],
       title: "时拉比",
       navDrawerTitle: "时拉比",
       description: "如何获得异色时拉比",
-      category: "Gold, Silver, Crystal",
       slug: "/zh-gen2-celebi",
       isRoughDraft: false,
       tag: "cfw",
@@ -4215,10 +4215,10 @@ export const guides = {
   },
   "/zh-gen2-starters": {
     meta: {
+      categories: ["Gold, Silver, Crystal"],
       title: "水晶初始宝可梦乱数",
       navDrawerTitle: "水晶初始宝可梦乱数",
       description: "在水晶里获得异色初始宝可梦",
-      category: "Gold, Silver, Crystal",
       slug: "/zh-gen2-starters",
       isRoughDraft: false,
       tag: "cfw",
@@ -4237,10 +4237,10 @@ export const guides = {
   },
   "/zh-gen3-sid": {
     meta: {
+      categories: ["Emerald"],
       title: "查找第三世代 SID",
       navDrawerTitle: "查找第三世代 SID",
       description: "多种方法查找第三世代的SID",
-      category: "Emerald",
       slug: "/zh-gen3-sid",
       isRoughDraft: false,
       tag: "retail",
@@ -4255,10 +4255,10 @@ export const guides = {
   },
   "/zh-install-pokereader": {
     meta: {
+      categories: ["3DS Tools"],
       title: "3DS安装PokeReader",
       navDrawerTitle: "3DS安装PokeReader",
       description: "在3DS上安装工具来帮助乱数宝可梦",
-      category: "3DS Tools",
       slug: "/zh-install-pokereader",
       isRoughDraft: false,
       tag: "cfw",
@@ -4275,10 +4275,10 @@ export const guides = {
   },
   "/zh-retail-emerald-wild": {
     meta: {
+      categories: ["Emerald"],
       title: "实机野生乱数",
       navDrawerTitle: "实机野生乱数",
       description: "在真实主机上对野生宝可梦进行乱数操作",
-      category: "Emerald",
       slug: "/zh-retail-emerald-wild",
       isRoughDraft: false,
       tag: "retail",
@@ -4298,10 +4298,10 @@ export const guides = {
   },
   "/zh-rs-gen3-sid": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "查找第三世代 SID",
       navDrawerTitle: "查找第三世代 SID",
       description: "多种方法查找第三世代的SID",
-      category: "Ruby and Sapphire",
       slug: "/zh-rs-gen3-sid",
       isRoughDraft: false,
       tag: "retail",
@@ -4316,10 +4316,10 @@ export const guides = {
   },
   "/zh-rs-mirage-island": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "幻之岛",
       navDrawerTitle: "幻之岛",
       description: "通过捕捉具有特定 PID 的宝可梦以进入幻之岛",
-      category: "Ruby and Sapphire",
       slug: "/zh-rs-mirage-island",
       isRoughDraft: false,
       tag: "any",
@@ -4336,10 +4336,10 @@ export const guides = {
   },
   "/zh-rs-sid-feebas": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "使用丑丑鱼查找 SID",
       navDrawerTitle: "使用丑丑鱼查找 SID",
       description: "如何在《红宝石 / 蓝宝石》中利用丑丑鱼查找你的里ID (SID)。",
-      category: "Ruby and Sapphire",
       slug: "/zh-rs-sid-feebas",
       isRoughDraft: false,
       tag: "retail",
@@ -4587,7 +4587,6 @@ export const categories = [
   "Legends Arceus",
   "GBA Overview",
   "GBA Technical Documentation",
-  "Mystic Timer",
   "GBA Tools",
   "NDS Tools",
   "3DS Tools",

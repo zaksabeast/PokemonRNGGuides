@@ -1,31 +1,69 @@
 import { Skeleton } from "antd";
 import { Flex, Typography, Grid, Card, Icon } from "~/components";
-import { getGuide, GuideMeta, guides } from "~/guides";
+import { getGuide, GuideMeta, guides, Category } from "~/guides";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { get, groupBy, sortBy } from "lodash-es";
+import { get, groupBy, sortBy, flatMap } from "lodash-es";
 import { Route } from "~/routes/defs";
 import { match } from "ts-pattern";
 import styled from "@emotion/styled";
 import { useAbCohort } from "~/hooks/useAbTest";
 
+const isToolCategory = (category: Category) => {
+  return match(category)
+    .with("GBA Tools", () => true)
+    .with("NDS Tools", () => true)
+    .with("3DS Tools", () => true)
+    .with("Switch Tools", () => true)
+    .with("Black 2 and White 2", () => false)
+    .with("Black and White", () => false)
+    .with("Diamond, Pearl, and Platinum", () => false)
+    .with("HeartGold and SoulSilver", () => false)
+    .with("Legends Arceus", () => false)
+    .with("Ruby and Sapphire", () => false)
+    .with("FireRed and LeafGreen", () => false)
+    .with("Emerald", () => false)
+    .with("Gold, Silver, Crystal", () => false)
+    .with("X and Y", () => false)
+    .with("Omega Ruby and Alpha Sapphire", () => false)
+    .with("Sun and Moon", () => false)
+    .with("Ultra Sun and Ultra Moon", () => false)
+    .with("Sword and Shield", () => false)
+    .with("Brilliant Diamond and Shining Pearl", () => false)
+    .with("Gamecube", () => false)
+    .with("GBA Overview", () => false)
+    .with("GBA Technical Documentation", () => false)
+    .with("Game Hub", () => false)
+    .with("Home", () => false)
+    .with("Transporter", () => false)
+    .with("USUM Challenges", () => false)
+    .with("User Settings", () => false)
+    .exhaustive();
+};
+
 const routeToCategory = {
-  "/legends-arceus": "Legends Arceus",
-  "/crystal": "Gold, Silver, Crystal",
-  "/ruby-and-sapphire": "Ruby and Sapphire",
-  "/gamecube": "Gamecube",
-  "/fire-red-and-leaf-green": "FireRed and LeafGreen",
-  "/emerald": "Emerald",
-  "/diamond-pearl-and-platinum": "Diamond, Pearl, and Platinum",
-  "/heart-gold-and-soul-silver": "HeartGold and SoulSilver",
-  "/black-and-white": "Black and White",
-  "/black-2-and-white-2": "Black 2 and White 2",
-  "/x-and-y": "X and Y",
-  "/omega-ruby-and-alpha-sapphire": "Omega Ruby and Alpha Sapphire",
-  "/sun-and-moon": "Sun and Moon",
-  "/ultra-sun-and-ultra-moon": "Ultra Sun and Ultra Moon",
-  "/sword-and-shield": "Sword and Shield",
-  "/brilliant-diamond-and-shining-pearl": "Brilliant Diamond and Shining Pearl",
-} satisfies Partial<Record<Route, GuideMeta["category"]>>;
+  "/legends-arceus": ["Legends Arceus", "Switch Tools"],
+  "/crystal": ["Gold, Silver, Crystal"],
+  "/ruby-and-sapphire": ["Ruby and Sapphire", "GBA Tools"],
+  "/gamecube": ["Gamecube"],
+  "/fire-red-and-leaf-green": ["FireRed and LeafGreen", "GBA Tools"],
+  "/emerald": ["Emerald", "GBA Tools"],
+  "/diamond-pearl-and-platinum": ["Diamond, Pearl, and Platinum", "NDS Tools"],
+  "/heart-gold-and-soul-silver": ["HeartGold and SoulSilver", "NDS Tools"],
+  "/black-and-white": ["Black and White", "NDS Tools"],
+  "/black-2-and-white-2": ["Black 2 and White 2", "NDS Tools"],
+  "/x-and-y": ["X and Y", "3DS Tools"],
+  "/omega-ruby-and-alpha-sapphire": [
+    "Omega Ruby and Alpha Sapphire",
+    "3DS Tools",
+  ],
+  "/sun-and-moon": ["Sun and Moon", "3DS Tools"],
+  "/ultra-sun-and-ultra-moon": ["Ultra Sun and Ultra Moon", "3DS Tools"],
+  "/sword-and-shield": ["Sword and Shield", "Switch Tools"],
+  "/brilliant-diamond-and-shining-pearl": [
+    "Brilliant Diamond and Shining Pearl",
+    "Switch Tools",
+  ],
+} satisfies Partial<Record<Route, Category[]>>;
 
 const CardBackground = styled.div({
   position: "absolute",
@@ -42,35 +80,45 @@ const InnerCardBackground = styled.div({
   transform: "rotate(-35deg)",
 });
 
-const tagOrder: GuideMeta["tag"][] = [
+type PageSection = GuideMeta["tag"] | "tool";
+
+const sectionDisplayOrder: PageSection[] = [
   "info",
   "challenge",
   "any",
   "cfw",
   "emu",
   "retail",
+  "tool",
 ];
 
-const isTag = (tag: string): tag is GuideMeta["tag"] => {
-  return tagOrder.includes(tag as GuideMeta["tag"]);
+const isSectionDsiplay = (section: string): section is PageSection => {
+  return sectionDisplayOrder.includes(section as PageSection);
 };
 
-const getTagLabel = (tag: string) => {
-  if (!isTag(tag)) {
-    return tag;
+const getSectionLabel = (section: string) => {
+  if (!isSectionDsiplay(section)) {
+    return section;
   }
 
-  return match<GuideMeta["tag"]>(tag)
+  return match<PageSection>(section)
     .with("any", () => "Any")
     .with("cfw", () => "Custom Firmware")
     .with("challenge", () => "Challenge")
     .with("emu", () => "Emulator")
     .with("info", () => "Info")
     .with("retail", () => "Retail")
+    .with("tool", () => "Tools")
     .exhaustive();
 };
 
-const guideByCategory = groupBy(guides, (guide) => guide.meta.category);
+const guidesWithFlattenedCategories = flatMap(guides, (guide) => {
+  return guide.meta.categories.map((category) => ({ ...guide.meta, category }));
+});
+const guideByCategory = groupBy(
+  guidesWithFlattenedCategories,
+  (guide) => guide.category,
+);
 
 export const GamePageComponent = () => {
   const [route] = useActiveRoute();
@@ -78,27 +126,34 @@ export const GamePageComponent = () => {
 
   const { meta } = getGuide(route);
 
-  const category = get(routeToCategory, meta.slug);
-  const guides = category == null ? null : guideByCategory[category];
-  const guidesByTag = groupBy(guides, (guide) => guide.meta.tag);
+  const categories = get(routeToCategory, meta.slug);
+  const guides =
+    categories?.flatMap((category) => guideByCategory[category]) ?? null;
+  const guidesBySection = groupBy(guides, (guide) => {
+    if (isToolCategory(guide.category)) {
+      return "tool";
+    }
+
+    return guide.tag;
+  });
 
   return (
     <Flex vertical gap={12}>
       <Typography.Title level={2} mb={2}>
         Guides and Articles
       </Typography.Title>
-      {tagOrder.map((tag) => {
+      {sectionDisplayOrder.map((section) => {
         if (!abTest.hydrated) {
           return <Skeleton />;
         }
 
-        const tagGuides = guidesByTag[tag];
-        if (tagGuides == null) {
+        const sectionGuides = guidesBySection[section];
+        if (sectionGuides == null) {
           return null;
         }
 
-        const filteredGuides = tagGuides.filter(
-          (guide) => !guide.meta.isRoughDraft && guide.meta.translation == null,
+        const filteredGuides = sectionGuides.filter(
+          (guide) => !guide.isRoughDraft && !guide.hideFromNavDrawer,
         );
 
         if (filteredGuides.length === 0) {
@@ -106,18 +161,18 @@ export const GamePageComponent = () => {
         }
 
         return (
-          <Flex key={tag} vertical gap={12}>
+          <Flex key={section} vertical gap={12}>
             <Typography.Title level={4} mb={2}>
-              {getTagLabel(tag)}
+              {getSectionLabel(section)}
             </Typography.Title>
             <Grid mobile={1} tablet={2} desktop={3}>
-              {sortBy(filteredGuides, (guide) => guide.meta.navDrawerTitle).map(
+              {sortBy(filteredGuides, (guide) => guide.navDrawerTitle).map(
                 (guide) => (
                   <Card
-                    id={`guide-${guide.meta.slug}`}
-                    key={guide.meta.slug}
+                    id={`guide-${guide.slug}`}
+                    key={guide.slug}
                     fullBody
-                    href={guide.meta.slug}
+                    href={guide.slug}
                     borderColor="PrimaryBorderHover"
                     border="1px solid"
                   >
@@ -139,7 +194,7 @@ export const GamePageComponent = () => {
                         fontSize={16}
                         textAlign="right"
                       >
-                        {guide.meta.navDrawerTitle}
+                        {guide.navDrawerTitle}
                       </Typography.Text>
                     </Flex>
                   </Card>

@@ -159,7 +159,8 @@ export const GenerateHoennTidSid = ({ game }: Props) => {
           direction: "column",
           input: (
             <MultiTimer
-              {...{ minutesBeforeTarget, milliseconds }}
+              minutesBeforeTarget={minutesBeforeTarget}
+              milliseconds={milliseconds}
               startButtonTrackerId="start_gen3_shiny_starter_tidsid_timer"
               stopButtonTrackerId="stop_gen3_shiny_starter_tidsid_timer"
             />

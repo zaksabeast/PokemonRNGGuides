@@ -40,7 +40,6 @@ const categories = [
   "Legends Arceus",
   "GBA Overview",
   "GBA Technical Documentation",
-  "Mystic Timer",
   "GBA Tools",
   "NDS Tools",
   "3DS Tools",
@@ -56,42 +55,51 @@ const TitleSchema = z
   .string()
   .refine((value) => titleAndDescriptionChars.test(value));
 
-const SingleGuideMetadataSchema = z.object({
-  title: TitleSchema,
-  navDrawerTitle: TitleSchema.nullish()
-    .optional()
-    .default(() => null),
-  description: z
-    .string()
-    .refine((value) => titleAndDescriptionChars.test(value)),
-  category: CategorySchema,
-  slug: z
-    .string()
-    .refine((value) => value.length === 0 || slugChars.test(value))
-    .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
-  isRoughDraft: z.boolean().default(false),
-  tag: z.enum(["retail", "emu", "cfw", "info", "any", "challenge"]),
-  hideFromNavDrawer: z.boolean().default(false),
-  addedOn: z
-    .string()
-    .nullish()
-    .optional()
-    .default(() => null)
-    .refine((value) => value === null || dayjs(value).isValid(), {
-      message: "Invalid date format",
-    }),
-  translation: z
-    .object({
-      enSlug: z
-        .string()
-        .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
-      language: z.enum(["es", "zh"]),
-    })
-    .nullish()
-    .optional()
-    .default(() => null),
-  layout: z.enum(layouts).default("guide"),
-});
+const SingleGuideMetadataSchema = z
+  .object({
+    title: TitleSchema,
+    navDrawerTitle: TitleSchema.nullish()
+      .optional()
+      .default(() => null),
+    description: z
+      .string()
+      .refine((value) => titleAndDescriptionChars.test(value)),
+    category: z
+      .union([CategorySchema, CategorySchema.array()])
+      .transform((category) => {
+        return isArray(category) ? category : [category];
+      }),
+    slug: z
+      .string()
+      .refine((value) => value.length === 0 || slugChars.test(value))
+      .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
+    isRoughDraft: z.boolean().default(false),
+    tag: z.enum(["retail", "emu", "cfw", "info", "any", "challenge"]),
+    hideFromNavDrawer: z.boolean().default(false),
+    addedOn: z
+      .string()
+      .nullish()
+      .optional()
+      .default(() => null)
+      .refine((value) => value === null || dayjs(value).isValid(), {
+        message: "Invalid date format",
+      }),
+    translation: z
+      .object({
+        enSlug: z
+          .string()
+          .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
+        language: z.enum(["es", "zh"]),
+      })
+      .nullish()
+      .optional()
+      .default(() => null),
+    layout: z.enum(layouts).default("guide"),
+  })
+  .transform(({ category, ...metadata }) => ({
+    categories: category,
+    ...metadata,
+  }));
 
 const GuideMetadataSchema = z.union([
   SingleGuideMetadataSchema,
@@ -120,7 +128,7 @@ const getGuideFiles = async (): Promise<SitePageFile[]> => {
 
 const main = async () => {
   const guideFiles = await getGuideFiles();
-  const guides: (GuideMetadata & { file: string; category: string })[] = [];
+  const guides: (GuideMetadata & { file: string })[] = [];
 
   for (const { file, content } of guideFiles) {
     const compiled = await evaluate(content, {

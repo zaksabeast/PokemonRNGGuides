@@ -8,7 +8,14 @@ import { useMobileNavDrawerOpen } from "~/state/navDrawer";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { settings } from "~/settings";
 import { getGuide, guides, categories, Category, GuideMeta } from "~/guides";
-import { difference, upperFirst, sortBy, groupBy, flatMap } from "lodash-es";
+import {
+  difference,
+  upperFirst,
+  sortBy,
+  groupBy,
+  flatMap,
+  isArray,
+} from "lodash-es";
 import styled from "@emotion/styled";
 import { track } from "~/analytics";
 import dayjs from "dayjs";
@@ -92,6 +99,7 @@ type MenuCategory = {
 type RootCategory = {
   label: string;
   categories: Readonly<Category[]>;
+  flatten?: true;
   isRoughDraft?: true;
 };
 
@@ -128,7 +136,7 @@ const rootCategories: RootCategory[] = [
       "Transporter",
     ],
   },
-  { label: "Gamecube", categories: [] },
+  { label: "Gamecube", categories: ["Gamecube"], flatten: true },
   {
     label: "Switch",
     categories: [
@@ -280,12 +288,14 @@ const getMenuItems = ({
 const getMiddleCategory = ({
   middleCategory,
   isRoughDraft,
+  flatten,
   navKeys,
 }: {
   middleCategory: Category;
   isRoughDraft: boolean;
+  flatten: boolean;
   navKeys: string[];
-}): isNew<MenuItem | MenuCategory> | null => {
+}): isNew<MenuItem[] | MenuCategory> | null => {
   const guides = guideByCategory[middleCategory];
 
   if (guides == null) {
@@ -314,6 +324,13 @@ const getMiddleCategory = ({
 
   if (navItems.length === 0) {
     return null;
+  }
+
+  if (flatten) {
+    return {
+      isNew: navItems.some(({ isNew }) => isNew),
+      item: navItems.flatMap(({ item }) => item),
+    };
   }
 
   const isNew = navItems.some(({ isNew }) => isNew);
@@ -353,6 +370,7 @@ const getRootCategory = (rootCategory: RootCategory): MenuCategory => {
       return getMiddleCategory({
         middleCategory,
         isRoughDraft,
+        flatten: !!rootCategory.flatten,
         navKeys: [key],
       });
     })
@@ -362,7 +380,10 @@ const getRootCategory = (rootCategory: RootCategory): MenuCategory => {
     type: "menuCategory",
     key,
     label: rootCategory.label,
-    children: middleCategories.map(({ item }) => item),
+    children: middleCategories.flatMap(
+      ({ item }): (MenuItem | MenuCategory)[] =>
+        isArray(item) ? item : [item],
+    ),
     icon: middleCategories.some((item) => item.isNew) ? (
       <MenuItemTag tag="new" />
     ) : null,

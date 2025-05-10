@@ -658,10 +658,10 @@ export const guides = {
   },
   "/emerald-pokerus-emu": {
     meta: {
+      categories: ["Emerald"],
       title: "Pokérus in Emerald",
       navDrawerTitle: "Pokérus",
       description: "How to be infected by Pokérus",
-      category: "Emerald",
       slug: "/emerald-pokerus-emu",
       isRoughDraft: false,
       tag: "emu",
@@ -3400,10 +3400,10 @@ export const guides = {
   },
   "/rs-pokerus-emu": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Pokérus in Ruby & Sapphire",
       navDrawerTitle: "Pokérus",
       description: "How to be infected by Pokérus",
-      category: "Ruby and Sapphire",
       slug: "/rs-pokerus-emu",
       isRoughDraft: false,
       tag: "emu",

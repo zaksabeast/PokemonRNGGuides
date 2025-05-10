@@ -33,3 +33,11 @@ pub enum Gen3Ability {
     Ability0 = 0,
     Ability1 = 1,
 }
+
+#[wasm_bindgen]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+pub enum Gen3Lead {
+    Synchronize,
+}
+
+impl_display!(Gen3Lead);

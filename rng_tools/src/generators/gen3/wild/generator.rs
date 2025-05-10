@@ -1,29 +1,35 @@
+use crate::gen3::EncounterSlot;
+use crate::gen3::Gen3Ability;
+use crate::gen3::Gen3Lead;
+use crate::gen3::Gen3Method;
+use crate::rng::Lcrng;
 use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
-use crate::{EncounterSlot, Gen3Ability, Gen3Method};
 use crate::{Gender, GenderRatio, Nature, PkmFilter, Species, gen3_shiny};
 use crate::{IvFilter, Ivs};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
+use super::Gen3Ability;
+use Gen3Ability as Ability;
+use PkmFilter as Pokemon;
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Result {
     pub rng_state: u32,
     pub advances: usize,
-    pub shiny_value: Option<ShinyType>,
+    pub shiny_value: ShinyType, //gen3_shiny(pid, tid, sid),
     pub pid: u32,
     pub nature: Nature,
     pub ivs: Ivs,
-    pub ability: Ability,
+    pub ability: Gen3Ability,
     pub gender: Gender,
     pub encounter: EncounterSlot,
     pub is_synch: bool,
 }
 
-struct Pokemon(PkmFilter);
-
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Debug)]
 pub struct Settings {
     seed: u32,
     tid: u16,
@@ -43,7 +49,7 @@ pub struct Settings {
     gender: Option<Gender>,
 }
 
-pub fn generate_pokemon(mut rng: lcrng, settings: &Settings) -> Option<Pokemon> {
+pub fn generate_pokemon(mut rng: Lcrng, settings: &Settings) -> Option<Pokemon> {
     rng.next_u32(); // unknown
 
     // encounter slot
@@ -85,7 +91,7 @@ pub fn generate_pokemon(mut rng: lcrng, settings: &Settings) -> Option<Pokemon> 
     }
 
     let tsv = settings.tid ^ settings.sid;
-    let shiny = ShinyType::calculate_shiny_gen3(pid, tsv);
+    let shiny = ShinyType::gen3_shiny(pid, tid, sid);
     if !ShinyType::passes_filter(&settings.shiny_type, shiny) {
         return None;
     }

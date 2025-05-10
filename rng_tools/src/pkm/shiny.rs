@@ -1,3 +1,5 @@
+use crate::generators::gen3::SingleFilter;
+
 pub fn gen3_tsv(tid: u16, sid: u16) -> u16 {
     (tid ^ sid) >> 3
 }
@@ -21,3 +23,5 @@ pub fn gen6_psv(pid: u32) -> u16 {
     let pidl = pid as u16;
     (pidh ^ pidl) >> 4
 }
+
+impl SingleFilter for gen3_shiny {}

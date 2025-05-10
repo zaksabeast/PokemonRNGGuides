@@ -22,6 +22,7 @@ pub enum EncounterSlot {
     Slot9 = 9,
     Slot10 = 10,
     Slot11 = 11,
+    Slot12 = 12,
 }
 
 #[wasm_bindgen]
@@ -34,6 +35,8 @@ pub enum Gen3Ability {
     Ability1 = 1,
 }
 
+impl SingleFilter for Gen3Ability {}
+
 #[wasm_bindgen]
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 pub enum Gen3Lead {
@@ -41,3 +44,28 @@ pub enum Gen3Lead {
 }
 
 impl_display!(Gen3Lead);
+
+#[wasm_bindgen]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+pub enum ShinyType {
+    Star,
+    Square,
+}
+
+pub trait SingleFilter: Sized + PartialEq {
+    fn passes_filter(filter: Option<Self>, value: Self) -> bool {
+        filter.map(|filter| filter == value).unwrap_or(true)
+    }
+}
+
+pub trait MultiFilter: Sized + PartialEq {
+    fn passes_filter(filter: &[Self], value: Option<Self>) -> bool {
+        if filter.len() == 0 {
+            return true;
+        }
+
+        value
+            .map(|value| filter.contains(&value))
+            .unwrap_or_default()
+    }
+}

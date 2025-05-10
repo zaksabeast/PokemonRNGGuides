@@ -11,7 +11,6 @@ use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::Gen3Ability;
 use Gen3Ability as Ability;
 use PkmFilter as Pokemon;
 
@@ -46,7 +45,7 @@ pub struct Settings {
     gen3_ability: Ability,
     encounter_slot: Option<EncounterSlot>,
     gender_ratio: GenderRatio,
-    gender: Option<Gender>,
+    gender: Gender,
 }
 
 pub fn generate_pokemon(mut rng: Lcrng, settings: &Settings) -> Option<Pokemon> {

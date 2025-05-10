@@ -1,3 +1,4 @@
+use crate::generators::gen3::MultiFilter;
 use num_enum::{FromPrimitive, IntoPrimitive};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
@@ -270,3 +271,5 @@ const NATURE_STAT_FACTORS: [NatureStatFactor; 25] = [
         spd: NatureFactor::Equal,
     },
 ];
+
+impl MultiFilter for Nature {}

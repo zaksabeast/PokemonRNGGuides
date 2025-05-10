@@ -919,7 +919,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       file: "guides/Gen 5/White Forest RNG (Emu).mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-bw-white-forest",
+        zh: "/zh-emulator-bw-white-forest",
+      },
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/White Forest RNG (Emu).mdx"),
@@ -4017,6 +4020,29 @@ export const guides = {
       () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
     ),
   },
+  "/zh-emulator-bw-white-forest": {
+    meta: {
+      categories: ["Black and White"],
+      title: "白森林乱数",
+      navDrawerTitle: "白森林乱数",
+      description: "白森林乱数",
+      slug: "/zh-emulator-bw-white-forest",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-bw-white-forest", language: "zh" },
+      layout: "guide",
+      file: "guides/Gen 5/White Forest RNG (Emu).mdx",
+      translations: {
+        en: "/emulator-bw-white-forest",
+        zh: "/zh-emulator-bw-white-forest",
+      },
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 5/White Forest RNG (Emu).mdx"),
+    ),
+  },
   "/zh-emulator-dppt-cute-charm": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
@@ -4584,6 +4610,7 @@ export const guideSlugs = [
   "/zh-emulator-bw-find-ds-parameters",
   "/zh-emulator-bw-roamers",
   "/zh-emulator-bw-runasdate-initial-seed",
+  "/zh-emulator-bw-white-forest",
   "/zh-emulator-dppt-cute-charm",
   "/zh-emulator-dppt-egg",
   "/zh-emulator-emerald-egg",

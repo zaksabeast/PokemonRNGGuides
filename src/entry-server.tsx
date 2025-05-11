@@ -75,6 +75,7 @@ type RenderResult = {
   html: string;
   emotionStyles: string;
   metaTags: string;
+  lang: string;
   antdStyles: {
     light: string;
     dark: string;
@@ -108,5 +109,6 @@ export const render = async (url: string): Promise<RenderResult> => {
     emotionStyles,
     metaTags,
     antdStyles,
+    lang: guide.meta.translation?.language ?? "en",
   };
 };

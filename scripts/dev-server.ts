@@ -40,7 +40,8 @@ app.use("*all", async (req, res) => {
         `<style data-emotion>${rendered.emotionStyles}</style>
         <style>${rendered.antdStyles.light}${rendered.antdStyles.dark}</style>`,
       )
-      .replace(`<!--app-html-->`, rendered.html);
+      .replace(`<!--app-html-->`, rendered.html)
+      .replace('<html lang="en">', `<html lang="${rendered.lang}">`);
 
     res.status(200).set({ "Content-Type": "text/html" }).send(result);
   } catch (err) {

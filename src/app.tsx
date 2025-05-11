@@ -7,6 +7,8 @@ import { MDXProvider } from "@mdx-js/react";
 import { markdownComponents } from "~/markdownExports";
 import { NeedsUpdateNotification } from "~/swRefresh/notification";
 import { initRngTools } from "./rngTools";
+import { useActiveRoute } from "./hooks/useActiveRoute";
+import { getGuide } from "./guides";
 
 const InnerApp = () => {
   return (
@@ -25,6 +27,14 @@ export const App = ({ updateSw }: Props) => {
   React.useEffect(() => {
     initRngTools();
   }, []);
+
+  const route = useActiveRoute();
+
+  React.useEffect(() => {
+    const guide = getGuide(route);
+    const languageCode = guide.meta.translation?.language ?? "en";
+    document.documentElement.lang = languageCode;
+  }, [route]);
 
   return (
     <StrictMode>

@@ -27,7 +27,7 @@ const main = async () => {
   fs.writeFileSync(darkCssFile, antdStyles.dark);
 
   for (const url of routes) {
-    const { html, emotionStyles, metaTags } = await render(url);
+    const { html, emotionStyles, metaTags, lang } = await render(url);
 
     const result = template
       .replace("<!--injected-meta-tags-->", metaTags)
@@ -37,7 +37,8 @@ const main = async () => {
         <link rel="stylesheet" href="/assets/${lightFileName}" />
         <link rel="stylesheet" href="/assets/${darkFileName}" />`,
       )
-      .replace(`<!--app-html-->`, html);
+      .replace(`<!--app-html-->`, html)
+      .replace('<html lang="en">', `<html lang="${lang}">`);
 
     const route = url === "/" ? "" : url;
 

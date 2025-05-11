@@ -81,10 +81,6 @@ impl Gen3Ability {
     }
 }
 
-impl SingleFilter for Gen3Ability {}
-impl MultiFilter for EncounterSlot {}
-impl MultiFilter for ShinyType {}
-
 #[wasm_bindgen]
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum Gen3Lead {
@@ -97,22 +93,4 @@ pub enum ShinyType {
     Star,
     Square,
     NotShiny,
-}
-
-pub trait SingleFilter: Sized + PartialEq {
-    fn passes_filter(filter: Option<Self>, value: Self) -> bool {
-        filter.map(|filter| filter == value).unwrap_or(true)
-    }
-}
-
-pub trait MultiFilter: Sized + PartialEq {
-    fn passes_filter(filter: &[Self], value: Option<Self>) -> bool {
-        if filter.len() == 0 {
-            return true;
-        }
-
-        value
-            .map(|value| filter.contains(&value))
-            .unwrap_or_default()
-    }
 }

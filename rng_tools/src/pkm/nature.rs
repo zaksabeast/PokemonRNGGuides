@@ -270,5 +270,3 @@ const NATURE_STAT_FACTORS: [NatureStatFactor; 25] = [
         spd: NatureFactor::Equal,
     },
 ];
-
-impl MultiFilter for Nature {}

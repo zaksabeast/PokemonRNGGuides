@@ -1,4 +1,3 @@
-
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;

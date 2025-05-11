@@ -1,3 +1,5 @@
+use wasm_bindgen::prelude::wasm_bindgen;
+
 #[wasm_bindgen]
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum Gen3Method {
@@ -26,30 +28,39 @@ pub enum EncounterSlot {
 }
 
 #[wasm_bindgen]
-#[derive(
-    Copy, Clone, Debug, Eq, PartialEq, FromPrimitive, IntoPrimitive, Serialize, Deserialize,
-)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq)]
 #[repr(u8)]
 pub enum Gen3Ability {
     Ability0 = 0,
     Ability1 = 1,
 }
 
+impl Gen3Ability {
+    pub fn from_pid(pid: u32) -> Self {
+        if pid & 1 == 0 {
+            Gen3Ability::Ability0
+        } else {
+            Gen3Ability::Ability1
+        }
+    }
+}
+
 impl SingleFilter for Gen3Ability {}
+impl MultiFilter for EncounterSlot {}
+impl MultiFilter for ShinyType {}
 
 #[wasm_bindgen]
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum Gen3Lead {
     Synchronize,
 }
 
-impl_display!(Gen3Lead);
-
 #[wasm_bindgen]
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum ShinyType {
     Star,
     Square,
+    NotShiny,
 }
 
 pub trait SingleFilter: Sized + PartialEq {

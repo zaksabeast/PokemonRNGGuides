@@ -23,5 +23,3 @@ pub fn gen6_psv(pid: u32) -> u16 {
     let pidl = pid as u16;
     (pidh ^ pidl) >> 4
 }
-
-impl SingleFilter for gen3_shiny {}

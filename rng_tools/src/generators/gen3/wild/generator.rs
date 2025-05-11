@@ -312,3 +312,21 @@ mod test {
         }
     }
 }
+
+
+
+///        let expected_results = vec![GeneratedPokemon {
+///            pid: 0x945CE0C6, // Hex literals must be prefixed with `0x`
+   ///         shiny: false,
+      ///      ability: Gen3Ability::Ability0,
+         ///   gender: Gender::Male,
+           /// ivs: Ivs {
+              ///  hp: 27,
+              ///  atk: 17,
+             ///   def: 19,
+              ///  spa: 18,
+                ///spd: 22,
+               /// spe: 31, // Fix typo: was `Spe`
+           /// },
+            ///nature: Nature::Sassy,
+       /// }];

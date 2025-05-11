@@ -12,6 +12,7 @@ use crate::{Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};
 use crate::{IvFilter, Ivs};
 
 use Gen3Ability as Ability;
+use GenderRatio as get_gender;
 use PkmFilter as Pokemon;
 
 #[derive(Clone, Debug)]
@@ -26,7 +27,7 @@ pub struct Gen3WOpts {
     max_iv: Ivs,
     gen3_method: Gen3Method,
     gen3_lead: Option<Gen3Lead>,
-    shiny_type: bool,
+    shiny_type: Vec<ShinyType>,
     nature_multiselect: Vec<Nature>,
     gen3_ability: Ability,
     encounter_slot: Option<EncounterSlot>,
@@ -75,14 +76,22 @@ pub fn generate_pokemon(mut rng: Lcrng, settings: &Gen3WOpts) -> Option<Pokemon>
         }
     }
 
-    let tsv = settings.tid ^ settings.sid;
-    let shiny = ShinyType::gen3_shiny(pid, Option.tid, Option.sid);
-    if !ShinyType::passes_filter(&settings.shiny_type, shiny) {
+    let shiny_bool = gen3_shiny(pid, settings.tid, settings.sid);
+    let shiny = if shiny_bool {
+        ShinyType::Star
+    } else {
+        ShinyType::NotShiny
+    };
+    if !ShinyType::passes_filter(&settings.shiny_type, Some(shiny)) {
         return None;
     }
 
-    let ability: Gen3Ability = (pid as u8 & 1).into();
-    if !Gen3Ability::passes_filter(settings.gen3_ability, ability) {
+    let ability = if (pid & 1) == 0 {
+        Gen3Ability::Ability0
+    } else {
+        Gen3Ability::Ability1
+    };
+    if !Gen3Ability::passes_filter(Some(settings.gen3_ability), ability) {
         return None;
     }
 
@@ -125,7 +134,7 @@ pub fn generate_pokemon(mut rng: Lcrng, settings: &Gen3WOpts) -> Option<Pokemon>
         (iv2 & 0x1f) as u8,
     ];
 
-    if !check_ivs(&ivs, &settings.min_ivs(), &settings.max_ivs()) {
+    if !check_ivs(&ivs, &settings.min_iv(), &settings.max_iv()) {
         return None;
     }
 

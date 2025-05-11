@@ -1,7 +1,5 @@
-mod generator;
-mod generator_copy;
+mod generator_copy_copy;
 mod methods;
 
-pub use generator::*;
-pub use generator_copy::*;
+pub use generator_copy_copy::*;
 pub use methods::*;

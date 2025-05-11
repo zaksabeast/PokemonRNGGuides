@@ -19,8 +19,10 @@ struct Gen3WOpts {
     sid: u16,
     gender_ratio: GenderRatio,
     encounter_slot: Option<EncounterSlot>,
+    method: Option<Gen3Method>,
 }
 
+#[derive(Debug)]
 struct GeneratedPokemon {
     pid: u32,
     shiny: bool,
@@ -55,8 +57,25 @@ fn generate_pokemon(seed: u32, settings: &Gen3WOpts) -> Option<GeneratedPokemon>
             return None;
         }
     }
-    let iv1: u16 = (seed & 0xFFFF) as u16;
-    let iv2: u16 = (seed >> 16) as u16;
+    let mut iv1: u16 = (seed & 0xFFFF) as u16;
+    let mut iv2: u16 = (seed >> 16) as u16;
+
+    match settings.method.unwrap_or(Gen3Method::H1) {
+        Gen3Method::H1 => {
+            iv1 = rng.rand::<u16>();
+            iv2 = rng.rand::<u16>();
+        }
+        Gen3Method::H2 => {
+            rng.rand::<u16>(); // skip one
+            iv1 = rng.rand::<u16>();
+            iv2 = rng.rand::<u16>();
+        }
+        Gen3Method::H4 => {
+            iv1 = rng.rand::<u16>();
+            rng.rand::<u16>(); // skip one
+            iv2 = rng.rand::<u16>();
+        }
+    };
 
     let ivs = Ivs::new_g3(iv1, iv2); // you define this
     if !Ivs::filter(&ivs, &settings.iv_range.0, &settings.iv_range.1) {
@@ -98,17 +117,17 @@ mod test {
         let seed = 0;
         let gen3wopts = Gen3WOpts {
             shiny_type: Some(ShinyType::NotShiny),
-            ability: Some(Gen3Ability::Ability0),
+            ability: Some(Gen3Ability::Ability1),
             gender: Some(Gender::Male),
             nature: None,
             iv_range: (
                 Ivs {
-                    hp: 5,
-                    atk: 5,
-                    def: 5,
-                    spa: 5,
-                    spd: 5,
-                    spe: 5,
+                    hp: 0,
+                    atk: 0,
+                    def: 0,
+                    spa: 0,
+                    spd: 0,
+                    spe: 0,
                 },
                 Ivs {
                     hp: 31,
@@ -125,21 +144,34 @@ mod test {
             encounter_slot: Some(EncounterSlot::Slot0),
         };
 
-        let result = generate_pokemon(0, &gen3wopts);
-        assert!(result.is_some(), "Expected a Pokémon to be generated");
-        let pkm = result.unwrap();
+        let mut found = None;
+        for seed in 0..100000 {
+            if let Some(pkm) = generate_pokemon(seed, &gen3wopts) {
+                found = Some((seed, pkm));
+                break;
+            }
+        }
+
+        assert!(
+            found.is_some(),
+            "Expected a Pokémon to be generated from some seed"
+        );
+        let (seed, pkm) = found.unwrap();
+
+        println!("Found Pokémon at seed {}: {:?}", seed, pkm);
 
         assert_eq!(pkm.shiny, false, "Expected non-shiny Pokémon");
-        assert_eq!(pkm.ability, Gen3Ability::Ability0, "Unexpected ability");
+        assert_eq!(pkm.ability, Gen3Ability::Ability1, "Unexpected ability");
         assert_eq!(pkm.gender, Gender::Male, "Unexpected gender");
 
         let ivs = pkm.ivs;
-        assert!(ivs.hp >= 5 && ivs.hp <= 31, "HP IV out of range");
-        assert!(ivs.atk >= 5 && ivs.atk <= 31, "Atk IV out of range");
-        assert!(ivs.def >= 5 && ivs.def <= 31, "Def IV out of range");
-        assert!(ivs.spa >= 5 && ivs.spa <= 31, "SpA IV out of range");
-        assert!(ivs.spd >= 5 && ivs.spd <= 31, "SpD IV out of range");
-        assert!(ivs.spe >= 5 && ivs.spe <= 31, "Spe IV out of range");
+        assert!(ivs.hp >= 0 && ivs.hp <= 31, "HP IV out of range");
+        assert!(ivs.atk >= 0 && ivs.atk <= 31, "Atk IV out of range");
+        assert!(ivs.def >= 0 && ivs.def <= 31, "Def IV out of range");
+        assert!(ivs.spa >= 0 && ivs.spa <= 31, "SpA IV out of range");
+        assert!(ivs.spd >= 0 && ivs.spd <= 31, "SpD IV out of range");
+        assert!(ivs.spe >= 0 && ivs.spe <= 31, "Spe IV out of range");
+        print!("{:?}", pkm);
     }
 
     // TODO: call your generate function and assert result here

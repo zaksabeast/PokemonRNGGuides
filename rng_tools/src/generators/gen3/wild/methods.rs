@@ -24,7 +24,43 @@ pub enum EncounterSlot {
     Slot9 = 9,
     Slot10 = 10,
     Slot11 = 11,
-    Slot12 = 12,
+}
+
+impl EncounterSlot {
+    pub fn thresholds() -> &'static [(EncounterSlot, u8)] {
+        use EncounterSlot::*;
+        &[
+            (Slot1, 40),
+            (Slot2, 50),
+            (Slot3, 60),
+            (Slot4, 70),
+            (Slot5, 80),
+            (Slot6, 85),
+            (Slot7, 90),
+            (Slot8, 94),
+            (Slot9, 98),
+            (Slot10, 99),
+            (Slot11, 100),
+        ]
+    }
+}
+
+impl EncounterSlot {
+    pub fn from_rand(rand: u8) -> Self {
+        for (slot, threshold) in Self::thresholds() {
+            if rand < *threshold {
+                return *slot;
+            }
+        }
+        EncounterSlot::Slot0 // default to Slot0 if below first threshold
+    }
+
+    pub fn passes_filter(filter: Option<EncounterSlot>, actual: EncounterSlot) -> bool {
+        match filter {
+            Some(desired) => desired == actual,
+            None => true,
+        }
+    }
 }
 
 #[wasm_bindgen]

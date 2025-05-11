@@ -9,6 +9,12 @@ pub struct Lcrng<const ADD: u32, const MUL: u32, const P_ADD: u32, const P_MUL: 
     state: u32,
 }
 
+impl Pokerng {
+    pub fn seed(&self) -> u32 {
+        self.seed()
+    }
+}
+
 impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Lcrng<A, M, PA, PM> {
     pub fn new(seed: u32) -> Self {
         Self { state: seed }

@@ -7,9 +7,10 @@ use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
 use crate::{Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};
 use crate::{IvFilter, Ivs};
+use itertools::Itertools;
 use wasm_bindgen::prelude::wasm_bindgen;
 
-struct Gen3WOpts {
+pub struct Gen3WOpts {
     shiny_type: Option<ShinyType>,
     ability: Option<Gen3Ability>,
     gender: Option<Gender>,
@@ -20,10 +21,12 @@ struct Gen3WOpts {
     gender_ratio: GenderRatio,
     encounter_slot: Option<EncounterSlot>,
     method: Option<Gen3Method>,
+    min_advances: u32,
+    max_advances: u32,
 }
 
-#[derive(Debug)]
-struct GeneratedPokemon {
+#[derive(Debug, PartialEq)]
+pub struct GeneratedPokemon {
     pid: u32,
     shiny: bool,
     ability: Gen3Ability,
@@ -32,9 +35,17 @@ struct GeneratedPokemon {
     nature: Nature,
 }
 
-fn generate_pokemon(seed: u32, settings: &Gen3WOpts) -> Option<GeneratedPokemon> {
+pub fn generate_pokemon(seed: u32, settings: &Gen3WOpts) -> Option<GeneratedPokemon> {
     let mut rng = Pokerng::new(seed);
-    let pid = (rng.rand::<u16>() as u32) | ((rng.rand::<u16>() as u32) << 16); // you define this
+
+    let encounter_rand = (rng.rand::<u32>() >> 24) as u8;
+    let encounter_slot = EncounterSlot::from_rand(encounter_rand);
+
+    if !EncounterSlot::passes_filter(settings.encounter_slot, encounter_slot) {
+        return None;
+    }
+
+    let pid = (rng.rand::<u16>() as u32) | ((rng.rand::<u16>() as u32) << 16);
 
     // Filters
     let shiny = gen3_shiny(pid, settings.tid, settings.sid);
@@ -77,12 +88,12 @@ fn generate_pokemon(seed: u32, settings: &Gen3WOpts) -> Option<GeneratedPokemon>
         }
     };
 
-    let ivs = Ivs::new_g3(iv1, iv2); // you define this
+    let ivs = Ivs::new_g3(iv1, iv2);
     if !Ivs::filter(&ivs, &settings.iv_range.0, &settings.iv_range.1) {
         return None;
     }
 
-    let nature = Nature::from_pid(pid); // you define this
+    let nature = Nature::from_pid(pid);
     if let Some(wanted_nature) = settings.nature {
         if nature != wanted_nature {
             return None;
@@ -99,31 +110,44 @@ fn generate_pokemon(seed: u32, settings: &Gen3WOpts) -> Option<GeneratedPokemon>
     })
 }
 
+pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> {
+    let mut rng = Pokerng::new(seed);
+    let mut results: Vec<GeneratedPokemon> = Vec::new();
+
+    let mut advances = settings.min_advances;
+    while advances <= settings.max_advances {
+        rng.advance(1);
+        let current_seed = rng.seed();
+        if let Some(pokemon) = generate_pokemon(current_seed, settings) {
+            results.push(pokemon);
+        }
+        rng.next();
+        advances += 1;
+
+        if advances > settings.max_advances {
+            break;
+        }
+    }
+
+    results.into_iter().collect()
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::gen3::EncounterSlot;
-    use crate::gen3::Gen3Ability;
-    use crate::gen3::ShinyType;
-    use crate::rng;
-    use crate::rng::lcrng;
-    use crate::rng::lcrng::Pokerng;
-    use crate::rng::{Rng, StateIterator};
-    use crate::{Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};
-    use crate::{IvFilter, Ivs};
 
     #[test]
-    fn test_gen_pokemon() {
-        let seed = 0;
-        let gen3wopts = Gen3WOpts {
+    fn test_wild_gen() {
+        let mut seed = 0;
+        let options = Gen3WOpts {
             shiny_type: Some(ShinyType::NotShiny),
-            ability: Some(Gen3Ability::Ability1),
-            gender: Some(Gender::Male),
-            nature: None,
+            ability: Some(Gen3Ability::Ability0),
+            gender: Some(Gender::Female),
+            nature: Some(Nature::Adamant),
             iv_range: (
                 Ivs {
-                    hp: 0,
                     atk: 0,
+                    hp: 0,
                     def: 0,
                     spa: 0,
                     spd: 0,
@@ -142,37 +166,29 @@ mod test {
             sid: 47362,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: Some(EncounterSlot::Slot0),
+            method: Some(Gen3Method::H1),
+            min_advances: 1,
+            max_advances: 250,
         };
 
-        let mut found = None;
-        for seed in 0..100000 {
-            if let Some(pkm) = generate_pokemon(seed, &gen3wopts) {
-                found = Some((seed, pkm));
-                break;
-            }
+        let expected_results = vec![GeneratedPokemon {
+            pid: 0xA2421C5C,
+            shiny: false,
+            ability: Gen3Ability::Ability0,
+            gender: Gender::Female,
+            ivs: Ivs {
+                hp: 26,
+                atk: 17,
+                def: 1,
+                spa: 8,
+                spd: 11,
+                spe: 5,
+            },
+            nature: Nature::Adamant,
+        }];
+        let result = generate_3wild(&options, seed);
+        for (i, expected) in expected_results.iter().enumerate() {
+            assert_eq!(result.get(i), Some(expected), "Mismatch at index {}", i);
         }
-
-        assert!(
-            found.is_some(),
-            "Expected a Pokémon to be generated from some seed"
-        );
-        let (seed, pkm) = found.unwrap();
-
-        println!("Found Pokémon at seed {}: {:?}", seed, pkm);
-
-        assert_eq!(pkm.shiny, false, "Expected non-shiny Pokémon");
-        assert_eq!(pkm.ability, Gen3Ability::Ability1, "Unexpected ability");
-        assert_eq!(pkm.gender, Gender::Male, "Unexpected gender");
-
-        let ivs = pkm.ivs;
-        assert!(ivs.hp >= 0 && ivs.hp <= 31, "HP IV out of range");
-        assert!(ivs.atk >= 0 && ivs.atk <= 31, "Atk IV out of range");
-        assert!(ivs.def >= 0 && ivs.def <= 31, "Def IV out of range");
-        assert!(ivs.spa >= 0 && ivs.spa <= 31, "SpA IV out of range");
-        assert!(ivs.spd >= 0 && ivs.spd <= 31, "SpD IV out of range");
-        assert!(ivs.spe >= 0 && ivs.spe <= 31, "Spe IV out of range");
-        print!("{:?}", pkm);
     }
-
-    // TODO: call your generate function and assert result here
 }

@@ -1,9 +1,10 @@
-import { Route as WRoute, Switch, Redirect } from "wouter";
-import { NavRoute } from ".";
-import { routes } from "./defs";
+import { Route as WRoute, RouteProps, Switch, Redirect } from "wouter";
+import { type Route, routes } from "./defs";
 import { NotFoundScreen } from "~/screens/notFound";
 import { useTrackPageNotFound } from "~/hooks/useTrackPageNotFound";
 import { MarkdownScreen } from "~/screens/markdownScreen";
+
+export const NavRoute: React.FC<RouteProps<never, Route>> = WRoute;
 
 // These routes used to exist before the site rewrite. Redirect them to the home page.
 const backwardsCompatibleRoutes = ["tools-and-emulators", "transporter"];

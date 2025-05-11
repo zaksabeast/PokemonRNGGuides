@@ -6,7 +6,7 @@ import { Icon } from "./icons";
 import { useMobileNavDrawerOpen } from "~/state/navDrawer";
 import { Flex } from "./flex";
 import { settings } from "~/settings";
-import { Link } from "~/routes";
+import { Link } from "./link";
 
 const StyledHeader = styled(Layout.Header)({
   zIndex: 100,

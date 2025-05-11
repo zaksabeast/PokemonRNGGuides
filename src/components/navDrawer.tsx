@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "~/routes";
+import { Link } from "./link";
 import { Menu, MenuProps, Drawer } from "antd";
 import { Flex } from "./flex";
 import { Divider } from "./divider";

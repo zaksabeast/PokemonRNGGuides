@@ -41,25 +41,25 @@ const isToolCategory = (category: Category) => {
 };
 
 const routeToCategory = {
-  "/legends-arceus": ["Legends Arceus", "Switch Tools"],
-  "/crystal": ["Gold, Silver, Crystal"],
-  "/ruby-and-sapphire": ["Ruby and Sapphire", "GBA Tools"],
-  "/gamecube": ["Gamecube"],
-  "/fire-red-and-leaf-green": ["FireRed and LeafGreen", "GBA Tools"],
-  "/emerald": ["Emerald", "GBA Tools"],
-  "/diamond-pearl-and-platinum": ["Diamond, Pearl, and Platinum", "NDS Tools"],
-  "/heart-gold-and-soul-silver": ["HeartGold and SoulSilver", "NDS Tools"],
-  "/black-and-white": ["Black and White", "NDS Tools"],
-  "/black-2-and-white-2": ["Black 2 and White 2", "NDS Tools"],
-  "/x-and-y": ["X and Y", "3DS Tools"],
-  "/omega-ruby-and-alpha-sapphire": [
+  "/legends-arceus/": ["Legends Arceus", "Switch Tools"],
+  "/crystal/": ["Gold, Silver, Crystal"],
+  "/ruby-and-sapphire/": ["Ruby and Sapphire", "GBA Tools"],
+  "/gamecube/": ["Gamecube"],
+  "/fire-red-and-leaf-green/": ["FireRed and LeafGreen", "GBA Tools"],
+  "/emerald/": ["Emerald", "GBA Tools"],
+  "/diamond-pearl-and-platinum/": ["Diamond, Pearl, and Platinum", "NDS Tools"],
+  "/heart-gold-and-soul-silver/": ["HeartGold and SoulSilver", "NDS Tools"],
+  "/black-and-white/": ["Black and White", "NDS Tools"],
+  "/black-2-and-white-2/": ["Black 2 and White 2", "NDS Tools"],
+  "/x-and-y/": ["X and Y", "3DS Tools"],
+  "/omega-ruby-and-alpha-sapphire/": [
     "Omega Ruby and Alpha Sapphire",
     "3DS Tools",
   ],
-  "/sun-and-moon": ["Sun and Moon", "3DS Tools"],
-  "/ultra-sun-and-ultra-moon": ["Ultra Sun and Ultra Moon", "3DS Tools"],
-  "/sword-and-shield": ["Sword and Shield", "Switch Tools"],
-  "/brilliant-diamond-and-shining-pearl": [
+  "/sun-and-moon/": ["Sun and Moon", "3DS Tools"],
+  "/ultra-sun-and-ultra-moon/": ["Ultra Sun and Ultra Moon", "3DS Tools"],
+  "/sword-and-shield/": ["Sword and Shield", "Switch Tools"],
+  "/brilliant-diamond-and-shining-pearl/": [
     "Brilliant Diamond and Shining Pearl",
     "Switch Tools",
   ],

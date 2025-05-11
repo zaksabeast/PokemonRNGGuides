@@ -1,5 +1,7 @@
 import * as tst from "ts-toolbelt";
 import { type Route } from "~/routes/defs";
+// This is the only file where using the wouter Link is okay
+// eslint-disable-next-line no-restricted-imports
 import { Link as WLink, LinkProps } from "wouter";
 import { withCss } from "~/components/withCss";
 import styled from "@emotion/styled";
@@ -9,6 +11,5 @@ const UnstyledLink: React.FC<
 > = WLink;
 
 export const Link = styled(withCss(UnstyledLink))({
-  display: "flex",
   cursor: "pointer",
 });

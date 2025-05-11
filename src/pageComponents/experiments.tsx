@@ -207,7 +207,7 @@ export const ExperimentsPageComponent = () => {
       label: "Link",
       input: (
         <>
-          <Link href="/experiments">Example link</Link> with surrounding text
+          <Link href="/experiments/">Example link</Link> with surrounding text
         </>
       ),
     },

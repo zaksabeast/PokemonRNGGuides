@@ -1,6 +1,7 @@
 import React from "react";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { isEqual } from "lodash-es";
+import { formatRelativeUrl } from "~/utils/formatRelativeUrl";
 
 type Props = {
   slug?: string;
@@ -10,8 +11,11 @@ type Props = {
 
 const ShowIfInner = ({ slug, slugs, children }: Props) => {
   const [route] = useActiveRoute();
+  const allSlugs = [slug, ...(slugs ?? [])]
+    .filter((item) => item != null)
+    .map(formatRelativeUrl);
 
-  if (route === slug || slugs?.includes(route)) {
+  if (allSlugs.includes(route)) {
     return <>{children}</>;
   }
   return null;

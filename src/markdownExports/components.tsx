@@ -1,7 +1,8 @@
 import { List, Divider } from "antd";
-import { Typography, Flex, Image } from "~/components";
+import { Typography, Flex, Image, Link } from "~/components";
 import styled from "@emotion/styled";
-import { Link } from "wouter";
+import { formatRelativeUrl } from "~/utils/formatRelativeUrl";
+import { RouteSchema } from "~/routes/defs";
 
 type Props = { children: React.ReactNode };
 
@@ -140,22 +141,11 @@ const _Td = styled.td({
 
 export const MarkdownTd = ({ children }: Props) => <_Td>{children}</_Td>;
 
-const getOrigin = () => {
-  return typeof window !== "undefined" ? window.location.origin : "";
-};
-
 export const MarkdownA = ({ href, children }: { href: string } & Props) => {
-  const origin = getOrigin();
-  try {
-    const url = new URL(href, origin);
-    if (url.origin === origin && !url.pathname.startsWith("/downloads")) {
-      // Internal url
-      return <Link href={href}>{children}</Link>;
-    }
-    // External url
-    return <a href={href}>{children}</a>;
-  } catch {
-    // Not a valid url, so must be a relative path
-    return <Link href={href}>{children}</Link>;
+  const internalHref = RouteSchema.safeParse(formatRelativeUrl(href));
+  if (internalHref.success) {
+    return <Link href={internalHref.data}>{children}</Link>;
   }
+
+  return <a href={href}>{children}</a>;
 };

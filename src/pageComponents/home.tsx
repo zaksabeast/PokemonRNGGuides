@@ -47,82 +47,82 @@ const games = [
   {
     name: "Brilliant Diamond and Shining Pearl",
     images: [brilliantDiamondLogoSrc, shiningPearlLogoSrc],
-    slug: "/brilliant-diamond-and-shining-pearl",
+    slug: "/brilliant-diamond-and-shining-pearl/",
   },
   {
     name: "Sword and Shield",
     images: [swordLogoSrc, shieldLogoSrc],
-    slug: "/sword-and-shield",
+    slug: "/sword-and-shield/",
   },
   {
     name: "Ultra Sun and Ultra Moon",
     images: [ultraSunLogoSrc, ultraMoonLogoSrc],
-    slug: "/ultra-sun-and-ultra-moon",
+    slug: "/ultra-sun-and-ultra-moon/",
   },
   {
     name: "Sun and Moon",
     images: [sunLogoSrc, moonLogoSrc],
-    slug: "/sun-and-moon",
+    slug: "/sun-and-moon/",
   },
   {
     name: "Omega Ruby and Alpha Sapphire",
     images: [omegaRubyLogoSrc, alphaSapphireLogoSrc],
-    slug: "/omega-ruby-and-alpha-sapphire",
+    slug: "/omega-ruby-and-alpha-sapphire/",
   },
   {
     name: "X and Y",
     images: [xLogoSrc, yLogoSrc],
-    slug: "/x-and-y",
+    slug: "/x-and-y/",
   },
   {
     name: "Black 2 and White 2",
     images: [black2LogoSrc, white2LogoSrc],
-    slug: "/black-2-and-white-2",
+    slug: "/black-2-and-white-2/",
   },
   {
     name: "Black and White",
     images: [blackLogoSrc, whiteLogoSrc],
-    slug: "/black-and-white",
+    slug: "/black-and-white/",
   },
   {
     name: "HeartGold and SoulSilver",
     images: [heartGoldLogoSrc, soulSilverLogoSrc],
-    slug: "/heart-gold-and-soul-silver",
+    slug: "/heart-gold-and-soul-silver/",
   },
   {
     name: "Platinum",
     images: [platinumLogoSrc],
-    slug: "/diamond-pearl-and-platinum",
+    slug: "/diamond-pearl-and-platinum/",
   },
   {
     name: "Diamond and Pearl",
     images: [diamondLogoSrc, pearlLogoSrc],
-    slug: "/diamond-pearl-and-platinum",
+    slug: "/diamond-pearl-and-platinum/",
   },
   {
     name: "FireRed and LeafGreen",
     images: [fireRedLogoSrc, leafGreenLogoSrc],
-    slug: "/fire-red-and-leaf-green",
+    slug: "/fire-red-and-leaf-green/",
   },
   {
     name: "Emerald",
     images: [emeraldLogoSrc],
-    slug: "/emerald",
+    slug: "/emerald/",
   },
   {
     name: "Gamecube",
     images: [xdLogoSrc, colosseumLogoSrc],
-    slug: "/gamecube",
+    slug: "/gamecube/",
   },
   {
     name: "Ruby and Sapphire",
     images: [rubyLogoSrc, sapphireLogoSrc],
-    slug: "/ruby-and-sapphire",
+    slug: "/ruby-and-sapphire/",
   },
   {
     name: "Crystal",
     images: [crystalLogoSrc],
-    slug: "/crystal",
+    slug: "/crystal/",
   },
 ] satisfies Game[];
 
@@ -171,7 +171,7 @@ export const HomePageComponent = () => {
           id="featured-challenge"
           borderColor="PrimaryBorder"
           border="2px solid"
-          href="/challenge-usum-ta"
+          href="/challenge-usum-ta/"
           fullBody
         >
           <FeaturedChallengeContainer>

@@ -9,6 +9,7 @@ import { difference, isArray, keyBy, groupBy } from "lodash-es";
 import { guides as existingGuides } from "../src/__generated__/guides";
 import dayjs from "dayjs";
 import { toNativeAbsolute } from "./path";
+import { formatRelativeUrl } from "../src/utils/formatRelativeUrl";
 
 // Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, ,, ，, 《, 》, Chinese characters, ·, and 。
 const titleAndDescriptionChars =
@@ -72,7 +73,7 @@ const SingleGuideMetadataSchema = z
     slug: z
       .string()
       .refine((value) => value.length === 0 || slugChars.test(value))
-      .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
+      .transform(formatRelativeUrl),
     isRoughDraft: z.boolean().default(false),
     tag: z.enum(["retail", "emu", "cfw", "info", "any", "challenge"]),
     hideFromNavDrawer: z.boolean().default(false),
@@ -86,9 +87,7 @@ const SingleGuideMetadataSchema = z
       }),
     translation: z
       .object({
-        enSlug: z
-          .string()
-          .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
+        enSlug: z.string().transform(formatRelativeUrl),
         language: z.enum(["es", "zh"]),
       })
       .nullish()

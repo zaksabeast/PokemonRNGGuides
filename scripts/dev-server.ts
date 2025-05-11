@@ -31,7 +31,7 @@ app.use("*all", async (req, res) => {
     );
     template = await vite.transformIndexHtml(url, template);
 
-    const renderUrl = url.endsWith("/") ? url.slice(0, -1) : url;
+    const renderUrl = url.endsWith("/") ? url : `${url}/`;
     const rendered = await render(renderUrl);
     const result = template
       .replace("<!--injected-meta-tags-->", rendered.metaTags)

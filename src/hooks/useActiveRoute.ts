@@ -1,13 +1,10 @@
-import React from "react";
 // We really do want useLocation here, since everything else uses useActiveRoute,
 // but useActiveRoute cannot use itself.
 // eslint-disable-next-line no-restricted-imports
 import { useLocation, matchRoute, useRouter } from "wouter";
 import { Route, routes, RouteSchema } from "~/routes/defs";
 
-type SetActiveRoute = (route: Route) => void;
-
-export const useActiveRoute = (): [Route, SetActiveRoute] => {
+export const useActiveRoute = (): Route => {
   const { parser } = useRouter();
   const [location, setLocation] = useLocation();
   const [, matchedRoute] = routes
@@ -23,5 +20,5 @@ export const useActiveRoute = (): [Route, SetActiveRoute] => {
     setLocation("/");
   }
 
-  return React.useMemo(() => [route, setLocation], [route, setLocation]);
+  return route;
 };

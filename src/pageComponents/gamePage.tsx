@@ -121,7 +121,7 @@ const guideByCategory = groupBy(
 );
 
 export const GamePageComponent = () => {
-  const [route] = useActiveRoute();
+  const route = useActiveRoute();
   const abTest = useAbCohort("guidePokeball");
 
   const { meta } = getGuide(route);

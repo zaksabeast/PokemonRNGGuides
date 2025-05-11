@@ -39,7 +39,7 @@ type Props = {
 };
 
 export const LanguageButton = (props: Props) => {
-  const [route] = useActiveRoute();
+  const route = useActiveRoute();
   const slugs = props;
 
   const currentLanguageKey = match<string | undefined, LanguageKey>(route)

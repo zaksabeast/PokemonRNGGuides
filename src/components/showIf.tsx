@@ -10,7 +10,7 @@ type Props = {
 };
 
 const ShowIfInner = ({ slug, slugs, children }: Props) => {
-  const [route] = useActiveRoute();
+  const route = useActiveRoute();
   const allSlugs = [slug, ...(slugs ?? [])]
     .filter((item) => item != null)
     .map(formatRelativeUrl);

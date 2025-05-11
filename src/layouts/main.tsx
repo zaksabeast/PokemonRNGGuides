@@ -70,7 +70,7 @@ const BottomSpace = styled.div({
 });
 
 export const MainLayout = ({ children, trackerName }: Props) => {
-  const [route] = useActiveRoute();
+  const route = useActiveRoute();
   useScreenViewed(trackerName ?? route);
 
   return (

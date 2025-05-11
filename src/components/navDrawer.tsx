@@ -456,7 +456,7 @@ const getOpenKeys = (route: Route) => {
 };
 
 const NavDrawerContent = () => {
-  const [route] = useActiveRoute();
+  const route = useActiveRoute();
   const [, setMobileNavDrawerOpen] = useMobileNavDrawerOpen();
   const [previouslyOpenedKeys] = useAtom(openKeysAtom);
   const [openKeys, setOpenedKeys] = React.useState<string[]>(

@@ -1,5 +1,3 @@
-use crate::generators::gen3::SingleFilter;
-
 pub fn gen3_tsv(tid: u16, sid: u16) -> u16 {
     (tid ^ sid) >> 3
 }

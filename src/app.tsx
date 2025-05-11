@@ -1,6 +1,6 @@
 import React, { StrictMode } from "react";
 import { Router } from "~/routes/router";
-import { Flex, MobileDrawer } from "~/components";
+import { Flex } from "~/components";
 import { App as AntdApp } from "antd";
 import { ThemeProvider } from "~/theme/provider";
 import { MDXProvider } from "@mdx-js/react";
@@ -9,15 +9,6 @@ import { NeedsUpdateNotification } from "~/swRefresh/notification";
 import { initRngTools } from "./rngTools";
 import { useActiveRoute } from "./hooks/useActiveRoute";
 import { getGuide } from "./guides";
-
-const InnerApp = () => {
-  return (
-    <Flex height="100vh" vertical backgroundColor="BgBase">
-      <MobileDrawer />
-      <Router />
-    </Flex>
-  );
-};
 
 type Props = {
   updateSw: (reloadPage: boolean) => void;
@@ -42,7 +33,9 @@ export const App = ({ updateSw }: Props) => {
         <AntdApp>
           <MDXProvider components={markdownComponents}>
             <NeedsUpdateNotification updateSw={updateSw} />
-            <InnerApp />
+            <Flex height="100vh" vertical backgroundColor="BgBase">
+              <Router />
+            </Flex>
           </MDXProvider>
         </AntdApp>
       </ThemeProvider>

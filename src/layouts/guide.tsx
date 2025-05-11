@@ -8,6 +8,7 @@ import {
   Icon,
   Alert,
   LanguageButton,
+  NavBreadcrumbs,
 } from "~/components";
 import { shuffle } from "lodash-es";
 import { settings } from "~/settings";
@@ -139,7 +140,10 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
   return (
     <>
       <MainLayout>
-        <Typography.Title level={1}>{guideMeta.title}</Typography.Title>
+        <NavBreadcrumbs route={guideMeta.slug} />
+        <Typography.Title level={1} mt={0}>
+          {guideMeta.title}
+        </Typography.Title>
 
         <Flex>
           <Button

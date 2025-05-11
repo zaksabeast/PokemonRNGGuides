@@ -1,4 +1,5 @@
 import { GuideMeta } from "~/guides";
+import { map } from "lodash-es";
 
 const domain = "https://pokemonrng.com";
 
@@ -30,6 +31,15 @@ export const MetaTags = ({ guideMeta }: Props) => {
       ? fullUrl
       : joinUrl(domain, guideMeta.canonical);
 
+  const translations = map(guideMeta.translations, (slug, lang) => (
+    <link
+      key={lang}
+      rel="alternate"
+      hrefLang={lang}
+      href={joinUrl(domain, slug)}
+    />
+  ));
+
   return (
     <>
       <title>{title}</title>
@@ -39,6 +49,9 @@ export const MetaTags = ({ guideMeta }: Props) => {
       <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       <link rel="icon" href="/jirachi.png" type="image/png" sizes="128x128" />
       <link rel="canonical" href={canonicalUrl} />
+
+      <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />
+      {translations}
 
       {/* Facebook */}
       <meta property="og:type" content="website" />

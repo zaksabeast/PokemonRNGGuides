@@ -1,7 +1,7 @@
 export { Button, BaseButton } from "./button";
 export { Flex } from "./flex";
 export { Gist } from "./gist";
-export { Header, HeaderSpace } from "./header";
+export { Header } from "./header";
 export { Icon } from "./icons";
 export { Typography } from "./typography";
 export { DesktopDrawer } from "./navDrawer";

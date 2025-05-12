@@ -23,12 +23,6 @@ const StyledHeader = styled(Layout.Header)({
   display: "flex",
 });
 
-export const HeaderSpace = styled.div(({ theme }) => ({
-  minHeight: theme.components?.Layout?.headerHeight,
-}));
-
-HeaderSpace.displayName = "HeaderSpace";
-
 export const Header = () => {
   return (
     <StyledHeader>

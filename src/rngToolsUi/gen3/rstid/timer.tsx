@@ -1,17 +1,17 @@
 import { MultiTimer } from "~/components";
-import { Gen3TidSidResult } from "~/rngTools";
-
-type Result = Gen3TidSidResult & { time: number };
 
 type RsTidTimerProps = {
-  target: Result;
+  targetAdvance: number;
   offset: number;
 };
 
-export const RsTidTimer: React.FC<RsTidTimerProps> = ({ target, offset }) => {
+export const RsTidTimer: React.FC<RsTidTimerProps> = ({
+  targetAdvance,
+  offset,
+}) => {
   const milliseconds = [
     5000,
-    Math.round((target.advance - offset * 1000) / 59.7275),
+    Math.round((targetAdvance - offset * 1000) / 59.7275),
   ];
   const minutesBeforeTarget = Math.floor(milliseconds[1] / 60000);
 

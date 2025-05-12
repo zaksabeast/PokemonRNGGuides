@@ -11,9 +11,9 @@ import React from "react";
 import { denormalizeIdFilter, IdFilterSchema } from "~/types/id";
 import { z } from "zod";
 
-type Result = Gen3TidSidResult & { time: string; offset: number };
+export type RsTidTarget = Gen3TidSidResult & { time: string };
 
-const columns: ResultColumn<Result>[] = [
+const columns: ResultColumn<RsTidTarget>[] = [
   { title: "Advance", dataIndex: "advance" },
   { title: "Est. Time", dataIndex: "time" },
   { title: "TID", dataIndex: "tid" },
@@ -65,7 +65,7 @@ const fields: Field[] = [
 ];
 
 type Props = {
-  onSelectTarget: (results: Result) => void;
+  onSelectTarget: (results: RsTidTarget) => void;
 };
 
 const formatTime = (seconds: number): string => {
@@ -76,7 +76,7 @@ const formatTime = (seconds: number): string => {
 };
 
 export const RsTidSidGenerator = ({ onSelectTarget }: Props) => {
-  const [results, setResults] = React.useState<Result[]>([]);
+  const [results, setResults] = React.useState<RsTidTarget[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
     const results = await rngTools.gen3_tidsid_states({
@@ -91,21 +91,21 @@ export const RsTidSidGenerator = ({ onSelectTarget }: Props) => {
 
     const updatedResults = results.map((r) => ({
       ...r,
-      time: formatTime(r.advance / 30),
+      time: formatTime(r.advance / 59.7275),
     }));
 
     setResults(updatedResults);
   }, []);
 
   const onClickResultRow = React.useCallback(
-    (results: Result) => {
+    (results: RsTidTarget) => {
       onSelectTarget(results);
     },
     [onSelectTarget],
   );
 
   return (
-    <RngToolForm<FormState, Result>
+    <RngToolForm<FormState, RsTidTarget>
       fields={fields}
       columns={columns}
       results={results}

@@ -1,14 +1,13 @@
 import { Gen3TidSidResult, rngTools } from "~/rngTools";
 import {
   Field,
-  FormikIdFilter,
   FormikNumberInput,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
 import React from "react";
-import { denormalizeIdFilter, IdFilterSchema } from "~/types/id";
+import { denormalizeIdFilter } from "~/types/id";
 import { z } from "zod";
 
 type Result = Gen3TidSidResult & { offset: number };
@@ -25,7 +24,7 @@ const Validator = z.object({
   offset: z.number().int().min(0),
   initial_advances: z.number().int().min(0),
   max_advances: z.number().int().min(0),
-  filter: IdFilterSchema,
+  hit_tid: z.number().int().min(0).max(65535),
 });
 
 export type FormState = z.infer<typeof Validator>;
@@ -34,11 +33,7 @@ const initialValues: FormState = {
   initial_advances: 0,
   max_advances: 1000,
   offset: 0,
-  filter: {
-    type: "tid",
-    value0: 0,
-    value1: null,
-  },
+  hit_tid: 0,
 };
 
 const fields: Field[] = [
@@ -55,18 +50,18 @@ const fields: Field[] = [
     ),
   },
   {
-    label: "Filter",
-    input: <FormikIdFilter<FormState> name="filter" optional />,
+    label: "Hit TID",
+    input: <FormikNumberInput<FormState> name="hit_tid" numType="decimal" />,
   },
 ];
 
 type RsTidSearcherProps = {
-  target: Result;
+  targetAdvance: number;
   setOffset: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const RsTidSearcher: React.FC<RsTidSearcherProps> = ({
-  target,
+  targetAdvance,
   setOffset,
 }) => {
   const [results, setResults] = React.useState<Result[]>([]);
@@ -80,17 +75,21 @@ export const RsTidSearcher: React.FC<RsTidSearcherProps> = ({
         version_options: {
           Rs: "DeadBattery",
         },
-        filter: denormalizeIdFilter(opts.filter),
+        filter: denormalizeIdFilter({
+          type: "tid",
+          value0: opts.hit_tid,
+          value1: null,
+        }),
       });
 
       const updatedResults = results.map((r) => ({
         ...r,
-        offset: target.advance - r.advance,
+        offset: targetAdvance - r.advance,
       }));
 
       setResults(updatedResults);
     },
-    [target],
+    [targetAdvance],
   );
 
   const onClickResultRow = React.useCallback(
@@ -108,7 +107,7 @@ export const RsTidSearcher: React.FC<RsTidSearcherProps> = ({
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
-      submitTrackerId="generate_rs_tidsid"
+      submitTrackerId="search_rs_tidsid"
       onClickResultRow={onClickResultRow}
       rowKey="advance"
     />

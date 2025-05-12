@@ -66,16 +66,14 @@ const MenuItemTag = ({ tag }: MenuItemTagProps) => {
   }
 
   return (
-    <Flex style={{ position: "relative", left: 0 }}>
-      <Tag
-        width={47}
-        textAlign="center"
-        color={config?.color}
-        backgroundColor={config?.backgroundColor}
-      >
-        {label}
-      </Tag>
-    </Flex>
+    <Tag
+      width={47}
+      textAlign="center"
+      color={config?.color}
+      backgroundColor={config?.backgroundColor}
+    >
+      {label}
+    </Tag>
   );
 };
 

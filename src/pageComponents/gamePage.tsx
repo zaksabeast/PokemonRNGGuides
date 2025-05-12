@@ -80,6 +80,13 @@ const InnerCardBackground = styled.div({
   transform: "rotate(-35deg)",
 });
 
+const TitleContainer = styled.div({
+  display: "flex",
+  flexDirection: "column",
+  position: "relative",
+  zIndex: 1,
+});
+
 type PageSection = GuideMeta["tag"] | "tool";
 
 const sectionDisplayOrder: PageSection[] = [
@@ -187,7 +194,7 @@ export const GamePageComponent = () => {
                         </InnerCardBackground>
                       </CardBackground>
                     )}
-                    <Flex vertical style={{ position: "relative", zIndex: 1 }}>
+                    <TitleContainer>
                       <Typography.Text
                         strong
                         m={0}
@@ -196,7 +203,7 @@ export const GamePageComponent = () => {
                       >
                         {guide.navDrawerTitle}
                       </Typography.Text>
-                    </Flex>
+                    </TitleContainer>
                   </Card>
                 ),
               )}

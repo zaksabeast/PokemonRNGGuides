@@ -163,6 +163,12 @@ const FeaturedChallengeContainer = styled(Flex)(({ theme }) => ({
   },
 }));
 
+const LogoImg = styled.img({
+  width: "50%",
+  height: "50%",
+  objectFit: "contain",
+});
+
 export const HomePageComponent = () => {
   return (
     <Container gap={24} vertical>
@@ -193,16 +199,7 @@ export const HomePageComponent = () => {
           >
             <Flex justify="center" align="center" gap={8} flex={1}>
               {game.images.map((src) => (
-                <img
-                  key={src}
-                  src={src}
-                  alt={`${game.name} logo`}
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    objectFit: "contain",
-                  }}
-                />
+                <LogoImg key={src} src={src} alt={`${game.name} logo`} />
               ))}
             </Flex>
           </GameCard>

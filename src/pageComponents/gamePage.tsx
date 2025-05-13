@@ -34,13 +34,14 @@ const isToolCategory = (category: Category) => {
     .with("GBA Technical Documentation", () => false)
     .with("Game Hub", () => false)
     .with("Home", () => false)
-    .with("Transporter", () => false)
+    .with("Transporter and Dream Radar", () => false)
     .with("USUM Challenges", () => false)
     .with("User Settings", () => false)
     .exhaustive();
 };
 
 const routeToCategory = {
+  "/transporter-dream-radar/": ["Transporter and Dream Radar"],
   "/legends-arceus/": ["Legends Arceus", "Switch Tools"],
   "/crystal/": ["Gold, Silver, Crystal"],
   "/ruby-and-sapphire/": ["Ruby and Sapphire", "GBA Tools"],

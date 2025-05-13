@@ -28,7 +28,7 @@ const layouts = ["titled", "guide"] as const;
 const categories = [
   "Home",
   "Gold, Silver, Crystal",
-  "Transporter",
+  "Transporter and Dream Radar",
   "Ruby and Sapphire",
   "Gamecube",
   "FireRed and LeafGreen",

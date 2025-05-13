@@ -9,7 +9,7 @@ import { track } from "~/analytics";
 const categoryOwners: Record<Category, Route> = {
   Home: "/",
   "Gold, Silver, Crystal": "/crystal/",
-  Transporter: "/",
+  "Transporter and Dream Radar": "/",
   "Ruby and Sapphire": "/ruby-and-sapphire/",
   Gamecube: "/gamecube/",
   "FireRed and LeafGreen": "/fire-red-and-leaf-green/",

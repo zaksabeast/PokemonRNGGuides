@@ -130,7 +130,7 @@ const rootCategories: RootCategory[] = [
       "Omega Ruby and Alpha Sapphire",
       "Sun and Moon",
       "Ultra Sun and Ultra Moon",
-      "Transporter",
+      "Transporter and Dream Radar",
     ],
   },
   { label: "Gamecube", categories: ["Gamecube"], flatten: true },

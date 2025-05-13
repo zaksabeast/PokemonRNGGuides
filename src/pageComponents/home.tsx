@@ -30,6 +30,8 @@ import colosseumLogoSrc from "~/assets/logos/colosseum_logo.webp";
 import rubyLogoSrc from "~/assets/logos/ruby_logo.webp";
 import sapphireLogoSrc from "~/assets/logos/sapphire_logo.webp";
 import crystalLogoSrc from "~/assets/logos/crystal.webp";
+import transporterLogoSrc from "~/assets/logos/transporter_logo.webp";
+import dreamRadarLogoSrc from "~/assets/logos/dream_radar_logo.webp";
 
 type Game = {
   name: string;
@@ -73,6 +75,11 @@ const games = [
     name: "X and Y",
     images: [xLogoSrc, yLogoSrc],
     slug: "/x-and-y/",
+  },
+  {
+    name: "Transporter and Dream Radar",
+    images: [transporterLogoSrc, dreamRadarLogoSrc],
+    slug: "/transporter-dream-radar/",
   },
   {
     name: "Black 2 and White 2",

@@ -559,7 +559,7 @@ export const guides = {
   },
   "/dream-radar-patches/": {
     meta: {
-      categories: ["3DS Tools"],
+      categories: ["3DS Tools", "Transporter and Dream Radar"],
       title: "Dream Radar No-Cart Patch",
       navDrawerTitle: "Dream Radar No-Cart Patch",
       description:
@@ -798,7 +798,7 @@ export const guides = {
   },
   "/emulator-b2w2-dream-radar/": {
     meta: {
-      categories: ["Black 2 and White 2"],
+      categories: ["Black 2 and White 2", "Transporter and Dream Radar"],
       title: "Black 2 and White 2 Dream Radar RNG",
       navDrawerTitle: "Dream Radar RNG",
       description:
@@ -2346,7 +2346,7 @@ export const guides = {
   },
   "/misc-3ds-transporter-nature-tables/": {
     meta: {
-      categories: ["Transporter"],
+      categories: ["Transporter and Dream Radar"],
       title: "Transporter EXP to Nature Conversion Table (VC)",
       navDrawerTitle: "Nature Conversion Table",
       description:
@@ -3754,6 +3754,25 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Legends Arceus/MMO.mdx")),
   },
+  "/transporter-dream-radar/": {
+    meta: {
+      categories: ["Game Hub"],
+      title: "Pokemon Transporter and Dream Radar",
+      navDrawerTitle: "Pokemon Transporter and Dream Radar",
+      description: "Pokemon Transporter and Dream Radar Resources",
+      slug: "/transporter-dream-radar/",
+      isRoughDraft: false,
+      tag: "challenge",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "titled",
+      canonical: null,
+      file: "guides/Hubs.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+  },
   "/transporter-patches/": {
     meta: {
       categories: ["3DS Tools"],
@@ -3778,7 +3797,7 @@ export const guides = {
   },
   "/transporter-rng-offline/": {
     meta: {
-      categories: ["Transporter"],
+      categories: ["Transporter and Dream Radar"],
       title: "Transporter RNG using the Offline Patch",
       navDrawerTitle: "Offline Patch RNG",
       description:
@@ -3801,7 +3820,7 @@ export const guides = {
   },
   "/transporter-rng/": {
     meta: {
-      categories: ["Transporter"],
+      categories: ["Transporter and Dream Radar"],
       title: "Transporter RNG for Gen 1 and 2",
       navDrawerTitle: "Transporter RNG",
       description:
@@ -4823,6 +4842,7 @@ export const guideSlugs = [
   "/sun-and-moon/",
   "/sword-and-shield/",
   "/sysbot-lpa-mmo/",
+  "/transporter-dream-radar/",
   "/transporter-patches/",
   "/transporter-rng-offline/",
   "/transporter-rng/",
@@ -4868,7 +4888,7 @@ export const guideSlugs = [
 export const categories = [
   "Home",
   "Gold, Silver, Crystal",
-  "Transporter",
+  "Transporter and Dream Radar",
   "Ruby and Sapphire",
   "Gamecube",
   "FireRed and LeafGreen",

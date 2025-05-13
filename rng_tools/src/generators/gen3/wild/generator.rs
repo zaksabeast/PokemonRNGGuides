@@ -118,20 +118,28 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
 /// fn generate_pokemon_noseed (seed:u32, settings:&Gen3WOpts)
 
 pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> {
-    StateIterator::new(Pokerng::new(seed))
-        .enumerate()
-        .skip(settings.min_advances)
-        .take(settings.max_advances - settings.min_advances + 1)
-        .filter_map(|(advance, state)| {
-            let mut peek_rng = state.clone(); // Clone to simulate ahead
-            if let Some(mut pokemon) = generate_pokemon(&mut peek_rng, settings) {
-                pokemon.advances = advance;
-                Some(pokemon)
-            } else {
-                None
-            }
-        })
-        .collect()
+    let mut rng = Pokerng::new(seed);
+    let mut results: Vec<GeneratedPokemon> = Vec::new();
+
+    let mut advances = settings.min_advances;
+    rng.advance(advances);
+    let mut temp_rng = rng.clone();
+    while advances <= settings.max_advances {
+        rng.advance(1);
+        let current_seed = rng.seed();
+        if let Some(mut pokemon) = generate_pokemon(&mut temp_rng, settings) {
+            pokemon.advances = advances;
+            results.push(pokemon);
+        }
+        rng.advance(1);
+        advances += 1;
+
+        if advances > settings.max_advances {
+            break;
+        }
+    }
+
+    results.into_iter().collect()
 }
 
 #[cfg(test)]
@@ -169,7 +177,7 @@ mod test {
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: Some(EncounterSlot::Slot0),
             method: Some(Gen3Method::H1),
-            min_advances: 5,
+            min_advances: 4,
             max_advances: 10,
         };
 

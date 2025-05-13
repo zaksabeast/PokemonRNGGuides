@@ -11,7 +11,7 @@ pub struct Lcrng<const ADD: u32, const MUL: u32, const P_ADD: u32, const P_MUL: 
 
 impl Pokerng {
     pub fn seed(&self) -> u32 {
-        self.seed()
+        self.state
     }
 }
 

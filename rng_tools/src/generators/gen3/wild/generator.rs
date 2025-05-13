@@ -33,6 +33,7 @@ pub struct GeneratedPokemon {
     gender: Gender,
     ivs: Ivs,
     nature: Nature,
+    advances: u32,
 }
 
 pub fn generate_pokemon(seed: u32, settings: &Gen3WOpts) -> Option<GeneratedPokemon> {
@@ -107,6 +108,7 @@ pub fn generate_pokemon(seed: u32, settings: &Gen3WOpts) -> Option<GeneratedPoke
         gender,
         ivs,
         nature,
+        advances: 0,
     })
 }
 
@@ -118,7 +120,8 @@ pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> 
     while advances <= settings.max_advances {
         rng.advance(1);
         let current_seed = rng.seed();
-        if let Some(pokemon) = generate_pokemon(current_seed, settings) {
+        if let Some(mut pokemon) = generate_pokemon(current_seed, settings) {
+            pokemon.advances = advances;
             results.push(pokemon);
         }
         rng.next();
@@ -185,6 +188,7 @@ mod test {
                 spe: 5,
             },
             nature: Nature::Adamant,
+            advances: 45,
         }];
         let result = generate_3wild(&options, seed);
         for (i, expected) in expected_results.iter().enumerate() {

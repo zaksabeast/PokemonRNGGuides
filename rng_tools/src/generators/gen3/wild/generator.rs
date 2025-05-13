@@ -36,17 +36,39 @@ pub struct GeneratedPokemon {
     advances: usize,
 }
 
-pub fn generate_pokemon(seed: u32, settings: &Gen3WOpts) -> Option<GeneratedPokemon> {
-    let mut rng = Pokerng::new(seed);
-
+pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<GeneratedPokemon> {
     let encounter_rand = (rng.rand::<u32>() >> 8) as u8;
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
 
+    let pid = (rng.rand::<u16>() as u32) | ((rng.rand::<u16>() as u32) << 16);
+    println!("pid - Current seed: {}", rng.seed());
+
+    let mut iv1: u16;
+    let mut iv2: u16;
+
+    match settings.method.unwrap_or(Gen3Method::H1) {
+        Gen3Method::H1 => {
+            iv1 = rng.rand::<u16>();
+            iv2 = rng.rand::<u16>();
+        }
+        Gen3Method::H2 => {
+            rng.rand::<u16>(); // skip one
+            iv1 = rng.rand::<u16>();
+            iv2 = rng.rand::<u16>();
+        }
+        Gen3Method::H4 => {
+            iv1 = rng.rand::<u16>();
+            rng.rand::<u16>(); // skip one
+            iv2 = rng.rand::<u16>();
+        }
+    };
+
+    let ivs = Ivs::new_g3(iv1, iv2);
+
     if !EncounterSlot::passes_filter(settings.encounter_slot, encounter_slot) {
+        println!("encounter - Current seed: {}", rng.seed());
         return None;
     }
-
-    let pid = (rng.rand::<u16>() as u32) | ((rng.rand::<u16>() as u32) << 16);
 
     // Filters
     let shiny = gen3_shiny(pid, settings.tid, settings.sid);
@@ -69,28 +91,9 @@ pub fn generate_pokemon(seed: u32, settings: &Gen3WOpts) -> Option<GeneratedPoke
             return None;
         }
     }
-    let mut iv1: u16 = (seed & 0xFFFF) as u16;
-    let mut iv2: u16 = (seed >> 16) as u16;
 
-    match settings.method.unwrap_or(Gen3Method::H1) {
-        Gen3Method::H1 => {
-            iv1 = rng.rand::<u16>();
-            iv2 = rng.rand::<u16>();
-        }
-        Gen3Method::H2 => {
-            rng.rand::<u16>(); // skip one
-            iv1 = rng.rand::<u16>();
-            iv2 = rng.rand::<u16>();
-        }
-        Gen3Method::H4 => {
-            iv1 = rng.rand::<u16>();
-            rng.rand::<u16>(); // skip one
-            iv2 = rng.rand::<u16>();
-        }
-    };
-
-    let ivs = Ivs::new_g3(iv1, iv2);
     if !Ivs::filter(&ivs, &settings.iv_range.0, &settings.iv_range.1) {
+        println!("ivs - Current seed: {}", rng.seed());
         return None;
     }
 
@@ -115,27 +118,20 @@ pub fn generate_pokemon(seed: u32, settings: &Gen3WOpts) -> Option<GeneratedPoke
 /// fn generate_pokemon_noseed (seed:u32, settings:&Gen3WOpts)
 
 pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> {
-    let mut rng = Pokerng::new(seed);
-    let mut results: Vec<GeneratedPokemon> = Vec::new();
-    rng.advance(settings.min_advances);
-
-    let mut advances = settings.min_advances;
-    while advances <= settings.max_advances {
-        let current_seed = rng.seed();
-        if let Some(mut pokemon) = generate_pokemon(current_seed, settings) {
-            pokemon.advances = advances;
-            results.push(pokemon);
-        }
-        rng.next();
-        advances += 1;
-        print!("advance is {}", advances);
-
-        if advances > settings.max_advances {
-            break;
-        }
-    }
-
-    results.into_iter().collect()
+    StateIterator::new(Pokerng::new(seed))
+        .enumerate()
+        .skip(settings.min_advances)
+        .take(settings.max_advances - settings.min_advances + 1)
+        .filter_map(|(advance, state)| {
+            let mut peek_rng = state.clone(); // Clone to simulate ahead
+            if let Some(mut pokemon) = generate_pokemon(&mut peek_rng, settings) {
+                pokemon.advances = advance;
+                Some(pokemon)
+            } else {
+                None
+            }
+        })
+        .collect()
 }
 
 #[cfg(test)]
@@ -147,9 +143,9 @@ mod test {
         let seed = 0xAABBCCDD;
         let options = Gen3WOpts {
             shiny_type: None,
-            ability: Some(Gen3Ability::Ability0),
-            gender: Some(Gender::Male),
-            nature: Some(Nature::Rash),
+            ability: None,
+            gender: None,
+            nature: None,
             iv_range: (
                 Ivs {
                     atk: 0,
@@ -173,7 +169,7 @@ mod test {
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: Some(EncounterSlot::Slot0),
             method: Some(Gen3Method::H1),
-            min_advances: 1,
+            min_advances: 5,
             max_advances: 10,
         };
 

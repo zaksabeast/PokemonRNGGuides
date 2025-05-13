@@ -82,9 +82,9 @@ export const RsTidSearcher: React.FC<RsTidSearcherProps> = ({
         }),
       });
 
-      const updatedResults = results.map((r) => ({
-        ...r,
-        offset: targetAdvance - r.advance,
+      const updatedResults = results.map((res) => ({
+        ...res,
+        offset: targetAdvance - res.advance,
       }));
 
       setResults(updatedResults);

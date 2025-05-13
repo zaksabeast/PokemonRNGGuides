@@ -1,10 +1,9 @@
 import React from "react";
 import { Steps, StepsProps } from "antd";
-import { RsTidSidGenerator } from "./rstid";
+import { RsTidSidGenerator, RsTidTarget } from "./rstid";
 import { RsTidSearcher } from "./searcher";
 import { RsTidTimer } from "./timer";
 import { Button, Flex } from "~/components";
-import { RsTidTarget } from "./rstid";
 
 const Stepper = (props: StepsProps) => {
   return <Steps type="navigation" size="small" {...props} />;

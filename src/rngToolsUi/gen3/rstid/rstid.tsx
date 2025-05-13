@@ -89,9 +89,9 @@ export const RsTidSidGenerator = ({ onSelectTarget }: Props) => {
       filter: denormalizeIdFilter(opts.filter),
     });
 
-    const updatedResults = results.map((r) => ({
-      ...r,
-      time: formatTime(r.advance / 59.7275),
+    const updatedResults = results.map((res) => ({
+      ...res,
+      time: formatTime(res.advance / 59.7275),
     }));
 
     setResults(updatedResults);

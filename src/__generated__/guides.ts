@@ -3334,11 +3334,11 @@ export const guides = {
   },
   "/retail-rubysapphire-tid": {
     meta: {
+      categories: ["Ruby and Sapphire"],
       title: "Ruby and Sapphire Retail TID RNG",
       navDrawerTitle: "Retail TID RNG",
       description:
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Ruby and Sapphire.",
-      category: "Ruby and Sapphire",
       slug: "/retail-rubysapphire-tid",
       isRoughDraft: false,
       tag: "retail",

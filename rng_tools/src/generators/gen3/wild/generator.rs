@@ -21,8 +21,8 @@ pub struct Gen3WOpts {
     gender_ratio: GenderRatio,
     encounter_slot: Option<EncounterSlot>,
     method: Option<Gen3Method>,
-    min_advances: u32,
-    max_advances: u32,
+    min_advances: usize,
+    max_advances: usize,
 }
 
 #[derive(Debug, PartialEq)]
@@ -33,13 +33,13 @@ pub struct GeneratedPokemon {
     gender: Gender,
     ivs: Ivs,
     nature: Nature,
-    advances: u32,
+    advances: usize,
 }
 
 pub fn generate_pokemon(seed: u32, settings: &Gen3WOpts) -> Option<GeneratedPokemon> {
     let mut rng = Pokerng::new(seed);
 
-    let encounter_rand = (rng.rand::<u32>() >> 24) as u8;
+    let encounter_rand = (rng.rand::<u32>() >> 8) as u8;
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
 
     if !EncounterSlot::passes_filter(settings.encounter_slot, encounter_slot) {
@@ -112,13 +112,15 @@ pub fn generate_pokemon(seed: u32, settings: &Gen3WOpts) -> Option<GeneratedPoke
     })
 }
 
+/// fn generate_pokemon_noseed (seed:u32, settings:&Gen3WOpts)
+
 pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> {
     let mut rng = Pokerng::new(seed);
     let mut results: Vec<GeneratedPokemon> = Vec::new();
+    rng.advance(settings.min_advances);
 
     let mut advances = settings.min_advances;
     while advances <= settings.max_advances {
-        rng.advance(1);
         let current_seed = rng.seed();
         if let Some(mut pokemon) = generate_pokemon(current_seed, settings) {
             pokemon.advances = advances;
@@ -126,6 +128,7 @@ pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> 
         }
         rng.next();
         advances += 1;
+        print!("advance is {}", advances);
 
         if advances > settings.max_advances {
             break;
@@ -141,12 +144,12 @@ mod test {
 
     #[test]
     fn test_wild_gen() {
-        let mut seed = 0;
+        let seed = 0xAABBCCDD;
         let options = Gen3WOpts {
-            shiny_type: Some(ShinyType::NotShiny),
+            shiny_type: None,
             ability: Some(Gen3Ability::Ability0),
-            gender: Some(Gender::Female),
-            nature: Some(Nature::Adamant),
+            gender: Some(Gender::Male),
+            nature: Some(Nature::Rash),
             iv_range: (
                 Ivs {
                     atk: 0,
@@ -165,30 +168,30 @@ mod test {
                     spe: 31,
                 },
             ),
-            tid: 34760,
-            sid: 47362,
+            tid: 0,
+            sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: Some(EncounterSlot::Slot0),
             method: Some(Gen3Method::H1),
             min_advances: 1,
-            max_advances: 250,
+            max_advances: 10,
         };
 
         let expected_results = vec![GeneratedPokemon {
-            pid: 0xA2421C5C,
+            pid: 0x22F8B2CC,
             shiny: false,
             ability: Gen3Ability::Ability0,
-            gender: Gender::Female,
+            gender: Gender::Male,
             ivs: Ivs {
-                hp: 26,
-                atk: 17,
-                def: 1,
-                spa: 8,
-                spd: 11,
-                spe: 5,
+                hp: 31,
+                atk: 24,
+                def: 10,
+                spa: 13,
+                spd: 20,
+                spe: 14,
             },
-            nature: Nature::Adamant,
-            advances: 45,
+            nature: Nature::Rash,
+            advances: 6,
         }];
         let result = generate_3wild(&options, seed);
         for (i, expected) in expected_results.iter().enumerate() {

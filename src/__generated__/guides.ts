@@ -20,6 +20,27 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Home.mdx")),
   },
+  "/azahar-setup/": {
+    meta: {
+      categories: ["3DS Tools"],
+      title: "Azahar Setup - Install Pokemon CIAs",
+      navDrawerTitle: "Azahar Setup",
+      description: "Learn how to dump and install Pokemon CIAs on Azahar.",
+      slug: "/azahar-setup/",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Tools and Emulators/Azahar Setup.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/Azahar Setup.mdx"),
+    ),
+  },
   "/bdsp-advance-rng/": {
     meta: {
       categories: ["Brilliant Diamond and Shining Pearl"],
@@ -4674,6 +4695,7 @@ export const guides = {
 
 export const guideSlugs = [
   "/",
+  "/azahar-setup/",
   "/bdsp-advance-rng/",
   "/bdsp-chatot/",
   "/bdsp-emulator-setup/",

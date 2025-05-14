@@ -1,0 +1,96 @@
+---
+title: "Azahar Setup - Install Pokemon CIAs"
+navDrawerTitle: "Azahar Setup"
+description: "Learn how to dump and install Pokemon CIAs on Azahar."
+slug: "azahar-setup"
+category: "3DS Tools"
+tag: "emu"
+hideFromNavDrawer: true
+---
+
+This guide helps you install Pokemon CIAs on Azahar. You need an updated Custom Firmware 3DS console to dump the CIA from a cartridge or digitally purchased game.
+
+## Tools
+
+- [Azahar](https://github.com/azahar-emu/azahar/releases/latest)
+
+For dumping the CIA:
+
+- [A 3DS with CFW (Custom Firmware)](https://3ds.hacks.guide/) and the [latest GodMode9](https://github.com/d0k3/GodMode9/releases)
+- Latest game update installed on the 3DS
+- (Optional) [Dump_PKMN_Update.gm9 Script](/downloads/Dump_PKMN_Updates.gm9)
+
+## Dumping Game Data
+
+Choose one of the methods below to dump your games and game updates.
+
+<details>
+  <summary><b>Automatic Pokemon game and update dumping</b></summary>
+
+1. Place the `Dump_PKMN_Update.gm9` script on your 3DS SD card in `sdmc:\gm9\scripts`.
+2. Boot your 3ds while holding `Start` and launch GodMode9.
+3. Press the console's `Home` button to open a new menu.
+4. Select `Scripts...` from the menu.
+5. Select `Dump_PKMN_Updates` script and follow the on-screen directions.
+6. Exit GodMode9 and copy the files in `/gm9/out` to your computer.
+
+</details>
+
+<details>
+    <summary><b>Manually dump a physical cartridge</b></summary>
+
+1. Select `[C:] GAMECART`.
+2. Select the `trim.3ds` file.
+3. Select `NCSD image options...`.
+4. Select `Build CIA from file`.
+5. Exit GodMode9 and transfer files from `/gm9/out` to your computer.
+
+```
+Note: Game updates are only installed digitally.
+```
+
+</details>
+
+<details>
+    <summary><b>Manually dump a digital game</b></summary>
+
+1. Hover over `[A:] SYSNAND SD`.
+2. Hold `R` and press `A` to open the drive options.
+3. Select `Open title manager...`.
+4. Press `A` on the game or update you want to dump.
+5. Select `Manage Title...`.
+6. Select `Build CIA (standard)`.
+7. Exit GodMode9 and copy the files in `/gm9/out` to your computer.
+
+</details>
+
+<details>
+    <summary><b>Manually dump a game update</b></summary>
+
+    1. Hover over `[A:] SYSNAND SD`.
+
+2. Hold `R` and press `A` to open the drive options.
+3. Select `Open title manager...`.
+4. Press `A` on the game or update you want to dump.
+5. Select `Manage Title...`.
+6. Select `Build CIA (standard)`.
+7. Exit GodMode9 and copy the files in `/gm9/out` to your computer.
+
+</details>
+
+## Installing games on Azahar Desktop
+
+1. Run the emulator.
+2. Choose `File`, then `Install cia...`.
+3. Install both the game and update `.cia` files.
+
+## Installing games on Azahar Mobile
+
+1. Open the emulator.
+2. Tap on the three dots in the bottom right.
+3. Choose `Install CIA file`.
+4. Install both the game and update `.cia` files.
+
+## Setting up for RNG
+
+If you are interested in using Azahar for RNGing in the Pokemon games, follow the [install PokeReader guide](/install-pokereader-emu) to set up a useful tool for RNG.

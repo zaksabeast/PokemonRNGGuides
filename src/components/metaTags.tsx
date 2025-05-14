@@ -1,7 +1,7 @@
 import { GuideMeta } from "~/guides";
 import { map } from "lodash-es";
 
-const domain = "https://pokemonrng.com";
+const domain = "https://www.pokemonrng.com";
 
 const joinUrl = (base: string, slug: string) => {
   const baseHasSlash = base.endsWith("/");

@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { denormalizeIdFilter } from "~/types/id";
 import { z } from "zod";
+import { useRsTidState } from "./rsTidState";
 
 type Result = Gen3TidSidResult & { offset: number };
 
@@ -55,16 +56,9 @@ const fields: Field[] = [
   },
 ];
 
-type RsTidSearcherProps = {
-  targetAdvance: number;
-  setOffset: React.Dispatch<React.SetStateAction<number>>;
-};
-
-export const RsTidSearcher: React.FC<RsTidSearcherProps> = ({
-  targetAdvance,
-  setOffset,
-}) => {
+export const RsTidSearcher = () => {
   const [results, setResults] = React.useState<Result[]>([]);
+  const [state, setState] = useRsTidState();
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
@@ -84,19 +78,19 @@ export const RsTidSearcher: React.FC<RsTidSearcherProps> = ({
 
       const updatedResults = results.map((res) => ({
         ...res,
-        offset: targetAdvance - res.advance,
+        offset: state.target.advance - res.advance,
       }));
 
       setResults(updatedResults);
     },
-    [targetAdvance],
+    [state],
   );
 
   const onClickResultRow = React.useCallback(
-    (results: Result) => {
-      setOffset(results.offset);
+    (res: Result) => {
+      setState((prev) => ({ ...prev, offset: res.offset }));
     },
-    [setOffset],
+    [setState],
   );
 
   return (

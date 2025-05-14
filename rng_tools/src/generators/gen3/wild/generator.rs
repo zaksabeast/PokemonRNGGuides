@@ -36,6 +36,9 @@ pub struct GeneratedPokemon {
     advances: usize,
 }
 
+/// generate pokemon -> call encounter first, then call rng for pid creation and then rng calls for ivs. all filters after that just reference the pid to see if pokemon matches
+/// what user has submitted as wanting
+
 pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<GeneratedPokemon> {
     let encounter_rand = (rng.rand::<u32>() >> 8) as u8;
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
@@ -117,12 +120,15 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
 }
 
 pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> {
-    let mut rng = Pokerng::new(seed);
     let mut results: Vec<GeneratedPokemon> = Vec::new();
 
     let mut advances = settings.min_advances;
 
+    //below, we reset back to seed. then use advances to move to our next advance. on first loop this will match min advances. immediately after we copy rng to use to
+    // see what generates, if it matches we collect the results. check if we have hit max advances, and if not we loop back. advances gets +1 added per loop, so when we loop back
+    // the start from point is +1 higher then the last loop through
     while advances <= settings.max_advances {
+        let mut rng = Pokerng::new(seed);
         rng.advance(advances);
         let mut temp_rng = rng.clone();
         if let Some(mut pokemon) = generate_pokemon(&mut temp_rng, settings) {

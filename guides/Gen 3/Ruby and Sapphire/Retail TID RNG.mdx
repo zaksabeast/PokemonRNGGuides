@@ -7,4 +7,17 @@ category: "Ruby and Sapphire"
 tag: "retail"
 ---
 
-<RsTid />
+<Stepper titles={["Find Target TID", "RNG TID"]}>
+
+<Step step={0}>
+  Step 1!
+  <RsTidSidGenerator />
+</Step>
+
+<Step step={1}>
+  Step 2!
+  <RsTidTimer />
+  <RsTidSearcher />
+</Step>
+
+</Stepper>

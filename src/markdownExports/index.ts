@@ -29,6 +29,8 @@ import {
   Countdown,
   ShowIf,
   Alert,
+  Stepper,
+  Step,
 } from "~/components";
 import { Gen2PokemonRng } from "~/rngToolsUi/gen2/crystalPokemon";
 import { Gen2Rng } from "~/rngToolsUi/gen2/gen2Rng";
@@ -38,6 +40,9 @@ import { EmeraldHeldEgg } from "~/rngToolsUi/gen3/emeraldHeldEgg";
 import { EmeraldPickupEgg } from "~/rngToolsUi/gen3/emeraldPickupEgg";
 import { Gen3TidSidGenerator } from "~/rngToolsUi/gen3/tidsid";
 import { RsTid } from "~/rngToolsUi/gen3/rstid/index";
+import { RsTidSidGenerator } from "~/rngToolsUi/gen3/rstid/rstid";
+import { RsTidTimer } from "~/rngToolsUi/gen3/rstid/timer";
+import { RsTidSearcher } from "~/rngToolsUi/gen3/rstid/searcher";
 import { Gen3MirageIsland } from "~/rngToolsUi/gen3/mirageIsland";
 import { OrAsMirageSpot } from "~/rngToolsUi/gen6/orasMirageSpot";
 import { RngTimer } from "~/rngToolsUi/timer";
@@ -91,6 +96,9 @@ export const markdownComponents = {
   Gen2Rng,
   Gen3Sid,
   RsTid,
+  RsTidSidGenerator,
+  RsTidTimer,
+  RsTidSearcher,
   Gen3MirageIsland,
   EmeraldHeldEgg,
   EmeraldPickupEgg,
@@ -113,4 +121,6 @@ export const markdownComponents = {
   PaintingReseed,
   HomePageComponent,
   GamePageComponent,
+  Stepper,
+  Step,
 };

@@ -38,3 +38,4 @@ export { RadioGroup } from "./radio";
 export { Divider } from "./divider";
 export { ContentLock } from "./contentLock";
 export { Grid } from "./grid";
+export { Stepper, Step } from "./stepper";

@@ -40,11 +40,16 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
     let encounter_rand = (rng.rand::<u32>() >> 8) as u8;
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
 
+    if !EncounterSlot::passes_filter(settings.encounter_slot, encounter_slot) {
+        println!("encounter - Current seed: {}", rng.seed());
+        return None;
+    }
+
     let pid = (rng.rand::<u16>() as u32) | ((rng.rand::<u16>() as u32) << 16);
     println!("pid - Current seed: {}", rng.seed());
 
-    let mut iv1: u16;
-    let mut iv2: u16;
+    let iv1: u16;
+    let iv2: u16;
 
     match settings.method.unwrap_or(Gen3Method::H1) {
         Gen3Method::H1 => {
@@ -64,11 +69,7 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
     };
 
     let ivs = Ivs::new_g3(iv1, iv2);
-
-    if !EncounterSlot::passes_filter(settings.encounter_slot, encounter_slot) {
-        println!("encounter - Current seed: {}", rng.seed());
-        return None;
-    }
+    println!("ivs - Current seed: {}", rng.seed());
 
     // Filters
     let shiny = gen3_shiny(pid, settings.tid, settings.sid);
@@ -115,23 +116,19 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
     })
 }
 
-/// fn generate_pokemon_noseed (seed:u32, settings:&Gen3WOpts)
-
 pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> {
     let mut rng = Pokerng::new(seed);
     let mut results: Vec<GeneratedPokemon> = Vec::new();
 
     let mut advances = settings.min_advances;
-    rng.advance(advances);
-    let mut temp_rng = rng.clone();
+
     while advances <= settings.max_advances {
-        rng.advance(1);
-        let current_seed = rng.seed();
+        rng.advance(advances);
+        let mut temp_rng = rng.clone();
         if let Some(mut pokemon) = generate_pokemon(&mut temp_rng, settings) {
             pokemon.advances = advances;
             results.push(pokemon);
         }
-        rng.advance(1);
         advances += 1;
 
         if advances > settings.max_advances {
@@ -148,7 +145,7 @@ mod test {
 
     #[test]
     fn test_wild_gen() {
-        let seed = 0xAABBCCDD;
+        let seed = 0;
         let options = Gen3WOpts {
             shiny_type: None,
             ability: None,
@@ -182,20 +179,20 @@ mod test {
         };
 
         let expected_results = vec![GeneratedPokemon {
-            pid: 0x22F8B2CC,
+            pid: 0x945CE0C6,
             shiny: false,
             ability: Gen3Ability::Ability0,
             gender: Gender::Male,
             ivs: Ivs {
-                hp: 31,
-                atk: 24,
-                def: 10,
-                spa: 13,
-                spd: 20,
-                spe: 14,
+                hp: 27,
+                atk: 17,
+                def: 19,
+                spa: 1,
+                spd: 9,
+                spe: 8,
             },
-            nature: Nature::Rash,
-            advances: 6,
+            nature: Nature::Sassy,
+            advances: 4,
         }];
         let result = generate_3wild(&options, seed);
         for (i, expected) in expected_results.iter().enumerate() {

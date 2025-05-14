@@ -1,10 +1,10 @@
 export { Button, BaseButton } from "./button";
 export { Flex } from "./flex";
 export { Gist } from "./gist";
-export { Header, HeaderSpace } from "./header";
+export { Header } from "./header";
 export { Icon } from "./icons";
 export { Typography } from "./typography";
-export { DesktopDrawer, MobileDrawer } from "./navDrawer";
+export { DesktopDrawer } from "./navDrawer";
 export { PixelImage } from "./pixelImage";
 export { Loading } from "./loading";
 export { Image } from "./image";
@@ -38,3 +38,5 @@ export { RadioGroup } from "./radio";
 export { Divider } from "./divider";
 export { ContentLock } from "./contentLock";
 export { Grid } from "./grid";
+export { Link } from "./link";
+export { NavBreadcrumbs } from "./navBreadcrumbs";

@@ -1,6 +1,6 @@
 import { MainLayout } from "~/layouts/main";
 import { GuideMeta } from "~/guides";
-import { Typography } from "~/components";
+import { NavBreadcrumbs, Typography } from "~/components";
 
 type Props = {
   guideMeta: GuideMeta;
@@ -10,7 +10,10 @@ type Props = {
 export const TitledLayout = ({ guideMeta, children }: Props) => {
   return (
     <MainLayout>
-      <Typography.Title level={1}>{guideMeta.title}</Typography.Title>
+      <NavBreadcrumbs route={guideMeta.slug} />
+      <Typography.Title level={1} mt={0}>
+        {guideMeta.title}
+      </Typography.Title>
       {children}
     </MainLayout>
   );

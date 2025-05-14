@@ -3,7 +3,7 @@ import { Card as AntdCard, CardProps as AntdCardProps } from "antd";
 import { withCss } from "./withCss";
 import styled from "@emotion/styled";
 import { Route } from "~/routes/defs";
-import { Link } from "~/routes";
+import { Link } from "./link";
 import { track } from "~/analytics";
 import * as tst from "ts-toolbelt";
 

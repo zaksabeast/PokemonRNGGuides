@@ -214,7 +214,7 @@ export const guides = {
       layout: "guide",
       canonical: null,
       file: "guides/Gen 5/BW2 Egg.mdx",
-      translations: null,
+      translations: { en: "/bw2-egg/", zh: "/zh-bw2-egg/" },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/BW2 Egg.mdx")),
   },
@@ -3962,6 +3962,26 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/PokeRadar.mdx")),
   },
+  "/zh-bw2-egg/": {
+    meta: {
+      categories: ["Black 2 and White 2"],
+      title: "黑白2孵蛋乱数",
+      navDrawerTitle: "黑白2孵蛋乱数",
+      description:
+        "学习如何在黑白2的培育屋中进行孵蛋乱数，获取异色高个体宝可梦",
+      slug: "/zh-bw2-egg/",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/bw2-egg/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 5/BW2 Egg.mdx",
+      translations: { en: "/bw2-egg/", zh: "/zh-bw2-egg/" },
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 5/BW2 Egg.mdx")),
+  },
   "/zh-dppt-advance-rng/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
@@ -4874,6 +4894,7 @@ export const guideSlugs = [
   "/x-and-y/",
   "/xdcolo-tidsid-generator/",
   "/xy-pokeradar/",
+  "/zh-bw2-egg/",
   "/zh-dppt-advance-rng/",
   "/zh-dppt-initial-seed/",
   "/zh-dppt-pokeradar-rng/",

@@ -1,5 +1,7 @@
-import { GuideMeta } from "~/guides";
+import { getGuide } from "~/guides";
 import { map } from "lodash-es";
+import { Helmet } from "@dr.pogodin/react-helmet";
+import { useActiveRoute } from "~/hooks/useActiveRoute";
 
 const domain = "https://www.pokemonrng.com";
 
@@ -18,11 +20,9 @@ const joinUrl = (base: string, slug: string) => {
   return `${base}${slug}`;
 };
 
-type Props = {
-  guideMeta: GuideMeta;
-};
-
-export const MetaTags = ({ guideMeta }: Props) => {
+export const MetaTags = () => {
+  const route = useActiveRoute();
+  const guideMeta = getGuide(route).meta;
   const title = guideMeta.title;
   const description = guideMeta.description;
   const fullUrl = joinUrl(domain, guideMeta.slug);
@@ -30,7 +30,10 @@ export const MetaTags = ({ guideMeta }: Props) => {
     guideMeta.canonical == null
       ? fullUrl
       : joinUrl(domain, guideMeta.canonical);
+  const imageUrl = joinUrl(domain, "jirachi.png");
 
+  const englishTranslationSlug = guideMeta.translations?.en ?? guideMeta.slug;
+  const defaultTranslationUrl = joinUrl(domain, englishTranslationSlug);
   const translations = map(guideMeta.translations, (slug, lang) => (
     <link
       key={lang}
@@ -41,7 +44,7 @@ export const MetaTags = ({ guideMeta }: Props) => {
   ));
 
   return (
-    <>
+    <Helmet>
       <title>{title}</title>
       <meta name="title" content={title} />
       <meta name="description" content={description} />
@@ -50,24 +53,21 @@ export const MetaTags = ({ guideMeta }: Props) => {
       <link rel="icon" href="/jirachi.png" type="image/png" sizes="128x128" />
       <link rel="canonical" href={canonicalUrl} />
 
-      <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />
+      <link rel="alternate" hrefLang="x-default" href={defaultTranslationUrl} />
       {translations}
 
       {/* Facebook */}
       <meta property="og:type" content="website" />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content="https://pokemonrng.com/jirachi.png" />
+      <meta property="og:image" content={imageUrl} />
       <meta property="og:url" content={canonicalUrl} />
 
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
-      <meta
-        property="twitter:image"
-        content="https://pokemonrng.com/jirachi.png"
-      />
-    </>
+      <meta property="twitter:image" content={imageUrl} />
+    </Helmet>
   );
 };

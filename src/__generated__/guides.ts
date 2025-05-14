@@ -1751,9 +1751,10 @@ export const guides = {
   "/frlg-gen3-sid/": {
     meta: {
       categories: ["FireRed and LeafGreen"],
-      title: "Find Gen 3 SID",
+      title: "Find FireRed and LeafGreen SID",
       navDrawerTitle: "Find SID",
-      description: "Various methods to finding an SID in Gen 3.",
+      description:
+        "Various methods to finding an SID in Firered and LeafGreen.",
       slug: "/frlg-gen3-sid/",
       isRoughDraft: false,
       tag: "retail",
@@ -2033,9 +2034,9 @@ export const guides = {
   "/gen3-sid/": {
     meta: {
       categories: ["Emerald"],
-      title: "Find Gen 3 SID",
+      title: "Find Emerald SID",
       navDrawerTitle: "Find SID",
-      description: "Various methods to finding an SID in Gen 3.",
+      description: "Various methods to finding an SID in Emerald.",
       slug: "/gen3-sid/",
       isRoughDraft: false,
       tag: "retail",
@@ -3491,9 +3492,9 @@ export const guides = {
   "/rs-gen3-sid/": {
     meta: {
       categories: ["Ruby and Sapphire"],
-      title: "Find Gen 3 SID",
+      title: "Find Ruby and Sapphire SID",
       navDrawerTitle: "Find SID",
-      description: "Various methods to finding an SID in Gen 3.",
+      description: "Various methods to finding an SID in Ruby and Sapphire.",
       slug: "/rs-gen3-sid/",
       isRoughDraft: false,
       tag: "retail",

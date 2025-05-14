@@ -2188,10 +2188,10 @@ export const guides = {
   "/misc-3ds-island-scan-sm": {
     meta: {
       categories: ["Sun and Moon"],
-      title: "Sun and Moon Island Scan Pokemon",
+      title: "Island Scan Pokemon in Sun & Moon - Full List by Day & Location",
       navDrawerTitle: "Island Scan Pokemon",
       description:
-        "View the full list of Island Scan Pokémon available in Sun and Moon by day and location.",
+        "Check out an easy-to-use list of Island Scan Pokémon for Sun and Moon, organized by day and location for quick reference.",
       slug: "/misc-3ds-island-scan-sm",
       isRoughDraft: false,
       tag: "info",
@@ -2209,10 +2209,11 @@ export const guides = {
   "/misc-3ds-island-scan-usum": {
     meta: {
       categories: ["Ultra Sun and Ultra Moon"],
-      title: "Ultra Sun and Ultra Moon Island Scan Pokemon",
+      title:
+        "Island Scan Pokemon in Ultra Sun & Ultra Moon - Full List by Day & Location",
       navDrawerTitle: "Island Scan Pokemon",
       description:
-        "View the full list of Island Scan Pokémon available in Ultra Sun and Ultra Moon by day and location.",
+        "Check out an easy-to-use list of Island Scan Pokémon for Ultra Sun and Ultra Moon, organized by day and location for quick reference.",
       slug: "/misc-3ds-island-scan-usum",
       isRoughDraft: false,
       tag: "info",
@@ -2314,10 +2315,10 @@ export const guides = {
   "/mystic-timer": {
     meta: {
       categories: ["GBA Tools", "NDS Tools", "3DS Tools"],
-      title: "Mystic Timer",
+      title: "Mystic Timer - Online Pokémon RNG Timer for Gen 3, 4, and 7",
       navDrawerTitle: "Mystic Timer",
       description:
-        "A mobile-friendly alternative to Eon Timer, perfect for Gen 3, Gen 4, and Gen 7 RNG.",
+        "Mystic Timer is a mobile-friendly alternative to Eon Timer. Perfect for Gen 3, 4, and 7 Pokémon RNG on any device.",
       slug: "/mystic-timer",
       isRoughDraft: false,
       tag: "retail",

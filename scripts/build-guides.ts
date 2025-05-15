@@ -77,7 +77,7 @@ const SingleGuideMetadataSchema = z
       }),
     slug: SlugSchema,
     isRoughDraft: z.boolean().default(false),
-    tag: z.enum(["retail", "emu", "cfw", "info", "any", "challenge"]),
+    tag: z.enum(["retail", "emu", "cfw", "info", "any", "challenge", "patch"]),
     hideFromNavDrawer: z.boolean().default(false),
     addedOn: z
       .string()

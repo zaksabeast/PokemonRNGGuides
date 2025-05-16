@@ -5,12 +5,26 @@
   slug: "emulator-hgss-cute-charm"
   category: "HeartGold and SoulSilver"
   tag: "emu"
+  hideFromNavDrawer: true
+- title: "HeartGold and SoulSilver Cute Charm RNG"
+  navDrawerTitle: "Cute Charm RNG"
+  description: "How to use Cute Charm with TID/SID RNG."
+  slug: "hgss-cute-charm"
+  category: "HeartGold and SoulSilver"
+  tag: "any"
 - title: "Diamond, Pearl, and Platinum Cute Charm RNG"
   navDrawerTitle: "Cute Charm RNG"
   description: "How to use Cute Charm with TID/SID RNG."
   slug: "emulator-dppt-cute-charm"
   category: "Diamond, Pearl, and Platinum"
   tag: "emu"
+  hideFromNavDrawer: true
+- title: "Diamond, Pearl, and Platinum Cute Charm RNG"
+  navDrawerTitle: "Cute Charm RNG"
+  description: "How to use Cute Charm with TID/SID RNG."
+  slug: "dppt-cute-charm"
+  category: "Diamond, Pearl, and Platinum"
+  tag: "any"
 - title: "迷人之躯乱数"
   description: "如何通过ID乱数与迷人之躯进行高效的异色捕获"
   slug: "zh-emulator-hgss-cute-charm"
@@ -29,27 +43,29 @@
     language: "zh"
 ---
 
-<ShowIf slugs={["/emulator-hgss-cute-charm", "/emulator-dppt-cute-charm"]}>
+<ShowIf slugs={["/emulator-hgss-cute-charm", "/emulator-dppt-cute-charm", "/hgss-cute-charm", "/dppt-cute-charm"]}>
 
 ## Tools
 
 - [PokeFinder](/pokefinder)
-- Tools needed for RNG abuse with [Desmume](/desmume-setup)
 - A Cute Charm lead
 
 ## Intro
+
+Cute Charm increases your chances of encountering shiny Pokémon if you have RNG'd a specific TID/SID combination.
 
 This guide explains how to use Cute Charm in the RNG process for shiny Pokémon. Familiarity with Gen 4 RNG, including initial seed and TID/SID RNG, is assumed.
 
 ## PID and Groups
 
-Cute Charm increases your chances of encountering shiny Pokémon if you have RNG'd a specific TID/SID combo.
+To use Cute Charm, choose the right PID based on your **target** Pokemon's gender, gender ratio, and desired nature. Cute Charm doesn't affect Method 1 Pokémon, genderless species, or species with a 100% male or female gender ratio.
 
-To use Cute Charm, choose the right PID based on your target's gender, gender ratio, and desired nature. Cute Charm doesn't affect Method 1 Pokémon, genderless species, or species with a 100% male or female gender ratio.
+If you RNG for a TID/SID combination to make one of the PIDs shiny, all of the other PIDs in the same PID Group will also result in shiny Pokemon.
 
-For shiny females, prioritize the nature. For shiny males, consider the specific gender ratio (e.g., Bulbasaur's 82.5/17.5) and match it with the right nature. Below are PID tables for each scenario.
+For shiny females, it is suggested to prioritize the nature. For shiny males, consider the specific gender ratio (e.g., Bulbasaur's 82.5/17.5) and match it with the right nature. Below are PID tables for each scenario.
 
-### Male Lead (Target: Shiny Female, Gender Ratio ignored)
+<details>
+  <summary><b>Male Lead (Target: Shiny Female, Gender Ratio ignored)</b></summary>
 
 | PID Group 1      | PID Group 2      | PID Group 3      | PID Group 4     |
 | ---------------- | ---------------- | ---------------- | --------------- |
@@ -62,7 +78,10 @@ For shiny females, prioritize the nature. For shiny males, consider the specific
 | 00000006 Docile  | 0000000E Naive   | 00000016 Sassy   |                 |
 | 00000007 Relaxed | 0000000F Modest  | 00000017 Careful |                 |
 
-### Female Lead (Target: Shiny Male, 87.5%)
+</details>
+
+<details>
+<summary><b>Female Lead (Target: Shiny Male, 87.5%)</b></summary>
 
 | PID Group 1      | PID Group 2      | PID Group 3      | PID Group 4      |
 | ---------------- | ---------------- | ---------------- | ---------------- |
@@ -75,7 +94,10 @@ For shiny females, prioritize the nature. For shiny males, consider the specific
 |                  | 0000003E Serious | 00000046 Calm    |                  |
 |                  | 0000003F Jolly   | 00000047 Gentle  |                  |
 
-### Female Lead (Target: Shiny Male, 75%)
+</details>
+
+<details>
+<summary><b>Female Lead (Target: Shiny Male, 75%)</b></summary>
 
 | PID Group 1      | PID Group 2      | PID Group 3      | PID Group 4      |
 | ---------------- | ---------------- | ---------------- | ---------------- |
@@ -88,7 +110,10 @@ For shiny females, prioritize the nature. For shiny males, consider the specific
 |                  | 00000056 Hasty   | 0000005E Rash    |                  |
 |                  | 00000057 Serious | 0000005F Calm    |                  |
 
-### Female Lead (Target: Shiny Male, 50%)
+</details>
+
+<details>
+<summary><b>Female Lead (Target: Shiny Male, 50%)</b></summary>
 
 | PID Group 1     | PID Group 2      | PID Group 3      | PID Group 4      |
 | --------------- | ---------------- | ---------------- | ---------------- |
@@ -101,7 +126,10 @@ For shiny females, prioritize the nature. For shiny males, consider the specific
 |                 | 0000009E Impish  | 000000A6 Mild    | 000000AE Quirky  |
 |                 | 0000009F Lax     | 000000A7 Quiet   |                  |
 
-### Female Lead (Target: Shiny Male, 25%)
+</details>
+
+<details>
+<summary><b>Female Lead (Target: Shiny Male, 25%)</b></summary>
 
 | PID Group 1      | PID Group 2      | PID Group 3      | PID Group 4     |
 | ---------------- | ---------------- | ---------------- | --------------- |
@@ -114,20 +142,17 @@ For shiny females, prioritize the nature. For shiny males, consider the specific
 | 000000CE Docile  | 000000D6 Naive   | 000000DE Sassy   |                 |
 | 000000CF Relaxed | 000000D7 Modest  | 000000DF Careful |                 |
 
+</details>
 ## The RNG
 
 For example, if you want a shiny male adamant Machop, which is 75% male, check the 3rd table. In PID Group 1, find the matching PID `0000004E`. RNG a TID/SID around this group.
 
 1. Launch PokeFinder and Pandora's Box, input the required details, and confirm the PID is correct.
 2. Perform TID/SID RNG on a new save file.
-3. Advance in the game until you quickly obtain a Pokémon with Cute Charm.
-4. Go to a location with your desired Pokémon (Machop in this example).
+3. Play through the game until you can obtain a Pokémon with Cute Charm.
+4. Go to a location with your desired Pokemon.
 5. Use PokeFinder to search for a shiny Pokémon. Ensure you use the Cute Charm lead.
 6. RNG and encounter the shiny Pokémon.
-
-```
-Cute Charm is useful for both shiny hunting and RNGing a TID/SID for a PID group. Remember that the gender ratio is important when using a female Cute Charm lead for shiny hunting.
-```
 
 ## Credits
 

@@ -1072,7 +1072,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      canonical: null,
+      canonical: "/dppt-cute-charm/",
       file: "guides/Gen 4/Cute Charm.mdx",
       translations: {
         en: "/emulator-dppt-cute-charm/",
@@ -1349,7 +1349,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      canonical: null,
+      canonical: "/hgss-cute-charm/",
       file: "guides/Gen 4/Cute Charm.mdx",
       translations: {
         en: "/emulator-hgss-cute-charm/",

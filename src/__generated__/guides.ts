@@ -1274,7 +1274,7 @@ export const guides = {
       title: "FireRed and LeafGreen Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
-        "Learn how to RNG wild Pokémon in FireRed and LeafGreen using the Sweet Scent method.",
+        "Learn how to RNG wild Pokemon in FireRed and LeafGreen using the Sweet Scent method.",
       slug: "/emulator-frlg-wild/",
       isRoughDraft: false,
       tag: "emu",

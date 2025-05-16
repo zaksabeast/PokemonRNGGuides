@@ -25,7 +25,7 @@ impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Lcrng<A, M, PA, P
         self.state
     }
 
-    pub fn next_state(&mut self) -> u32 {
+    fn next_state(&mut self) -> u32 {
         self.state = self.state.wrapping_mul(M).wrapping_add(A);
         self.state
     }

@@ -1,15 +1,12 @@
+use crate::Ivs;
 use crate::gen3::EncounterSlot;
 use crate::gen3::Gen3Ability;
 use crate::gen3::Gen3Lead;
 use crate::gen3::Gen3Method;
 use crate::gen3::ShinyType;
-use crate::rng::lcrng::Lcrng;
+use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
-use crate::rng::{Rng, StateIterator};
-use crate::{Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};
-use crate::{IvFilter, Ivs};
-use itertools::Itertools;
-use wasm_bindgen::prelude::wasm_bindgen;
+use crate::{Gender, GenderRatio, Nature, gen3_shiny};
 
 pub struct Gen3WOpts {
     shiny_type: Option<ShinyType>,
@@ -20,7 +17,7 @@ pub struct Gen3WOpts {
     tid: u16,
     sid: u16,
     gender_ratio: GenderRatio,
-    encounter_slot: Option<EncounterSlot>,
+    encounter_slot: Option<Vec<EncounterSlot>>,
     method: Option<Gen3Method>,
     min_advances: usize,
     max_advances: usize,
@@ -36,17 +33,21 @@ pub struct GeneratedPokemon {
     ivs: Ivs,
     nature: Nature,
     advances: usize,
+    encounter_slot: EncounterSlot,
+    synch: bool,
 }
 
 pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<GeneratedPokemon> {
     rng.rand::<u32>(); // unknown
 
-    let encounter_rand = (rng.rand::<u32>() >> 8) as u8;
+    let encounter_rand = ((rng.rand::<u32>() >> 16) % 100) as u8;
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
-    if !EncounterSlot::passes_filter(settings.encounter_slot, encounter_slot) {
+
+    if !EncounterSlot::passes_filter(settings.encounter_slot.as_deref(), encounter_slot) {
         return None;
     }
     rng.rand::<u32>(); // level
+    print!("encount slot: {:?}", encounter_slot);
 
     let nature_rand: u8;
     let mut is_synch = false;
@@ -125,7 +126,7 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
         return None;
     }
 
-    let nature = Nature::try_from(nature_rand).unwrap();
+    let nature = Nature::from(nature_rand);
     if let Some(wanted_nature) = settings.nature {
         if nature != wanted_nature {
             return None;
@@ -140,6 +141,8 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
         ivs,
         nature,
         advances: 0,
+        encounter_slot,
+        synch: is_synch,
     })
 }
 
@@ -150,7 +153,7 @@ pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> 
     while advances <= settings.max_advances {
         let mut rng = Pokerng::new(seed);
         rng.advance(advances);
-        let mut temp_rng = rng.clone();
+        let mut temp_rng = rng;
         if let Some(mut pokemon) = generate_pokemon(&mut temp_rng, settings) {
             pokemon.advances = advances + 1;
             results.push(pokemon);
@@ -197,7 +200,7 @@ mod test {
             tid: 0,
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: Some(EncounterSlot::Slot0),
+            encounter_slot: None,
             method: Some(Gen3Method::H1),
             min_advances: 0,
             max_advances: 10,
@@ -205,20 +208,22 @@ mod test {
         };
 
         let expected_results = vec![GeneratedPokemon {
-            pid: 0x639E3D69,
+            pid: 0x60A1E414,
             shiny: false,
             ability: Gen3Ability::Ability0,
-            gender: Gender::Male,
+            gender: Gender::Female,
             ivs: Ivs {
-                hp: 12,
-                atk: 22,
-                def: 24,
-                spa: 30,
-                spd: 11,
-                spe: 5,
+                hp: 11,
+                atk: 25,
+                def: 10,
+                spa: 25,
+                spd: 3,
+                spe: 24,
             },
-            nature: Nature::Bashful,
-            advances: 2,
+            nature: Nature::Calm,
+            advances: 1,
+            encounter_slot: EncounterSlot::Slot5,
+            synch: false,
         }];
         let result = generate_3wild(&options, seed);
         for (i, expected) in expected_results.iter().enumerate() {

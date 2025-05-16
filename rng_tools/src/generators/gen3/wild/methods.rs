@@ -30,6 +30,7 @@ impl EncounterSlot {
     pub fn thresholds() -> &'static [(EncounterSlot, u8)] {
         use EncounterSlot::*;
         &[
+            (Slot0, 20),
             (Slot1, 40),
             (Slot2, 50),
             (Slot3, 60),
@@ -55,9 +56,9 @@ impl EncounterSlot {
         EncounterSlot::Slot0 // default to Slot0 if below first threshold
     }
 
-    pub fn passes_filter(filter: Option<EncounterSlot>, actual: EncounterSlot) -> bool {
+    pub fn passes_filter(filter: Option<&[EncounterSlot]>, actual: EncounterSlot) -> bool {
         match filter {
-            Some(desired) => desired == actual,
+            Some(slots) => slots.contains(&actual),
             None => true,
         }
     }

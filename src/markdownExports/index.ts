@@ -45,6 +45,7 @@ import { Transporter } from "~/rngToolsUi/gen6/transporter/transporter";
 import { DpptSeed } from "~/rngToolsUi/gen4/dpptSeed";
 import { DpptId } from "~/rngToolsUi/gen4/dpptId";
 import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
+import { Gen7Sos } from "~/rngToolsUi/gen7/sos";
 import { Static3 } from "~/rngToolsUi/gen3/static/static3";
 import { MultibootJirachi } from "~/rngToolsUi/gen3/multibootJirachi";
 import { ShinyHoennStarter } from "~/rngToolsUi/gen3/shinyStarter";
@@ -103,6 +104,7 @@ export const markdownComponents = {
   DpptSeed,
   DpptId,
   XyPokeRadar,
+  Gen7Sos,
   ShinyHoennStarter,
   GenerateHoennTidSid,
   MultibootJirachi,

@@ -262,6 +262,24 @@ mod test {
                 encounter_slot: EncounterSlot::Slot1,
                 synch: false,
             },
+            GeneratedPokemon {
+                pid: 0x945CE0C6,
+                shiny: false,
+                ability: Gen3Ability::Ability0,
+                gender: Gender::Male,
+                ivs: Ivs {
+                    hp: 27,
+                    atk: 17,
+                    def: 19,
+                    spa: 18,
+                    spd: 22,
+                    spe: 31,
+                },
+                nature: Nature::Sassy,
+                advances: 4,
+                encounter_slot: EncounterSlot::Slot0,
+                synch: false,
+            },
         ];
         let result = generate_3wild(&options, seed);
         for (i, expected) in expected_results.iter().enumerate() {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex } from "./flex";
-import { Formik, FormikConfig } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import { Form } from "./form";
 import { FormFieldTable, Field } from "./formFieldTable";
 import { Button } from "./button";
@@ -11,7 +11,10 @@ import { AllOrNone, FeatureConfig, OneOf } from "~/types/utils";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 
-export type RngToolSubmit<Values> = FormikConfig<Values>["onSubmit"];
+export type RngToolSubmit<Values> = (
+  values: Values,
+  formikHelpers: FormikHelpers<Values>,
+) => Promise<unknown>;
 
 type Props<FormState, Result> = {
   submitTrackerId: string;
@@ -53,7 +56,7 @@ export const RngToolForm = <
 }: Props<FormState, Result>) => {
   const _validationSchema = React.useMemo(() => {
     return validationSchema == null
-      ? null
+      ? undefined
       : toFormikValidationSchema(validationSchema);
   }, [validationSchema]);
 

@@ -15,7 +15,8 @@ export { FormikNumberInput } from "./numberInput";
 export { Form } from "./form";
 export { FormFieldTable, type Field } from "./formFieldTable";
 export {
-  FormikResultTable as ResultTable,
+  FormikResultTable,
+  ResultTable,
   type ResultColumn,
 } from "./resultTable";
 export { Select, FormikSelect } from "./select";
@@ -40,3 +41,4 @@ export { ContentLock } from "./contentLock";
 export { Grid } from "./grid";
 export { Link } from "./link";
 export { NavBreadcrumbs } from "./navBreadcrumbs";
+export { Stepper, Step } from "./stepper/stepper";

@@ -2685,6 +2685,26 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Retail Entralink.mdx")),
   },
+  "/retail-emerald-egg/": {
+    meta: {
+      categories: ["Emerald"],
+      title: "Retail Emerald Egg RNG",
+      navDrawerTitle: "Egg RNG",
+      description:
+        "Learn how to Retail RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies.",
+      slug: "/retail-emerald-egg/",
+      isRoughDraft: true,
+      tag: "retail",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 3/Emerald/Retail Egg.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Retail Egg.mdx")),
+  },
   "/retail-emerald-wild/": {
     meta: {
       categories: ["Emerald"],
@@ -4835,6 +4855,7 @@ export const guideSlugs = [
   "/pcalc-xy-tid/",
   "/pokefinder/",
   "/retail-bw-entralink/",
+  "/retail-emerald-egg/",
   "/retail-emerald-wild/",
   "/retail-oras-egg-mmsc/",
   "/retail-oras-egg-no-mmsc/",

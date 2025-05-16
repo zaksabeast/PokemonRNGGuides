@@ -207,24 +207,62 @@ mod test {
             synchronize: None,
         };
 
-        let expected_results = vec![GeneratedPokemon {
-            pid: 0x60A1E414,
-            shiny: false,
-            ability: Gen3Ability::Ability0,
-            gender: Gender::Female,
-            ivs: Ivs {
-                hp: 11,
-                atk: 25,
-                def: 10,
-                spa: 25,
-                spd: 3,
-                spe: 24,
+        let expected_results = vec![
+            GeneratedPokemon {
+                pid: 0x60A1E414,
+                shiny: false,
+                ability: Gen3Ability::Ability0,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 11,
+                    atk: 25,
+                    def: 10,
+                    spa: 25,
+                    spd: 3,
+                    spe: 24,
+                },
+                nature: Nature::Calm,
+                advances: 1,
+                encounter_slot: EncounterSlot::Slot5,
+                synch: false,
             },
-            nature: Nature::Calm,
-            advances: 1,
-            encounter_slot: EncounterSlot::Slot5,
-            synch: false,
-        }];
+            GeneratedPokemon {
+                pid: 0x639E3D69,
+                shiny: false,
+                ability: Gen3Ability::Ability1,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 9,
+                    atk: 9,
+                    def: 7,
+                    spa: 20,
+                    spd: 26,
+                    spe: 13,
+                },
+                nature: Nature::Bashful,
+                advances: 2,
+                encounter_slot: EncounterSlot::Slot0,
+                synch: false,
+            },
+            GeneratedPokemon {
+                pid: 0xAD05863A,
+                shiny: false,
+                ability: Gen3Ability::Ability0,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 18,
+                    atk: 14,
+                    def: 4,
+                    spa: 0,
+                    spd: 12,
+                    spe: 25,
+                },
+                nature: Nature::Timid,
+                advances: 3,
+                encounter_slot: EncounterSlot::Slot1,
+                synch: false,
+            },
+        ];
         let result = generate_3wild(&options, seed);
         for (i, expected) in expected_results.iter().enumerate() {
             assert_eq!(result.get(i), Some(expected), "Mismatch at index {}", i);

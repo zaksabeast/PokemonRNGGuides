@@ -3493,7 +3493,7 @@ export const guides = {
       title: "Ruby and Sapphire Live vs Dead Battery RNG",
       navDrawerTitle: "Live vs Dead Battery",
       description:
-        "Learn the differences between RNG methods on Ruby and Sapphire with live and dead batteries, and how each impacts your Pokémon results.",
+        "Learn the differences between RNG methods on Ruby and Sapphire with live and dead batteries, and how each impacts your Pokemon results.",
       slug: "/rs-battery/",
       isRoughDraft: false,
       tag: "any",

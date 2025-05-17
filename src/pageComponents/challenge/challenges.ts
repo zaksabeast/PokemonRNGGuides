@@ -26,7 +26,7 @@ const usumTaTasks = [
   {
     id: "usumTaIvEgg",
     challengeId: "usumTa",
-    slug: "/retail-usum-egg-mmsc",
+    slug: "/retail-usum-egg-mmsc/",
     name: "6IV Egg",
     requirements: "RNG a 6IV egg, does not need to be shiny.",
     description: "Easy 6IV Pokemon.",
@@ -36,7 +36,7 @@ const usumTaTasks = [
   {
     id: "usumTaShinyMmEgg",
     challengeId: "usumTa",
-    slug: "/retail-usum-egg-mmsc",
+    slug: "/retail-usum-egg-mmsc/",
     name: "Shiny 6IV Masuda Method Egg",
     requirements: "RNG a shiny 6IV egg with different language parents.",
     description: "Most relaxing shinies in the game.",
@@ -46,7 +46,7 @@ const usumTaTasks = [
   {
     id: "usumTaNoNpcWild",
     challengeId: "usumTa",
-    slug: "/retail-usum-wild",
+    slug: "/retail-usum-wild/",
     name: "0 NPC Shiny Wild",
     requirements: "RNG a shiny wild Pokémon in an area with 0 NPCs.",
     description: "Make some wild Pokemon shiny.",
@@ -56,7 +56,7 @@ const usumTaTasks = [
   {
     id: "usumTaShiny6IvNoMmscEgg",
     challengeId: "usumTa",
-    slug: "/retail-usum-egg-no-mmsc",
+    slug: "/retail-usum-egg-no-mmsc/",
     name: "Shiny 6IV Egg without Masuda",
     requirements: "RNG a shiny 6IV egg without Masuda Method or Shiny Charm.",
     description: "Fastest 6IV shinies in the game.",
@@ -66,7 +66,7 @@ const usumTaTasks = [
   {
     id: "usumTaNpcShinyWild",
     challengeId: "usumTa",
-    slug: "/retail-usum-wild",
+    slug: "/retail-usum-wild/",
     name: "Timeline Shiny Wild",
     requirements: "RNG a shiny wild Pokémon in an area with 1 or more NPCs.",
     description: "Make any wild Pokemon shiny.",
@@ -75,7 +75,7 @@ const usumTaTasks = [
   {
     id: "usumTaIslandScan",
     challengeId: "usumTa",
-    slug: "/retail-usum-wild",
+    slug: "/retail-usum-wild/",
     name: "Shiny Island Scan",
     requirements: "RNG a shiny Island Scan Pokémon.",
     description: "Ooh, rare shinies.",
@@ -84,7 +84,7 @@ const usumTaTasks = [
   {
     id: "usumTaWormhole",
     challengeId: "usumTa",
-    slug: "/retail-usum-wormhole",
+    slug: "/retail-usum-wormhole/",
     name: "Shiny 6IV Wormhole Xurkitree",
     requirements: "RNG a shiny 6IV Xurkitree in a wormhole.",
     description: "One of the most rewarding RNGs.",
@@ -93,7 +93,7 @@ const usumTaTasks = [
   {
     id: "usumTaNpcShinyHighIvWild",
     challengeId: "usumTa",
-    slug: "/retail-usum-wild",
+    slug: "/retail-usum-wild/",
     name: "Shiny High IV Wild",
     requirements: "RNG a shiny wild Pokémon where all IVs are 20 or higher.",
     description: "Make any wild Pokemon shiny.",

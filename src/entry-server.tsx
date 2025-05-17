@@ -1,5 +1,4 @@
 import { MetaTags } from "~/components";
-import { renderToString } from "react-dom/server";
 import { App } from "~/app";
 import { Router } from "wouter";
 import { noop } from "lodash-es";
@@ -15,11 +14,11 @@ import { extractStyle } from "@ant-design/static-style-extract";
 import { ConfigProvider } from "antd";
 import { themePalette, getTheme } from "~/theme/index";
 import { getGuide } from "~/guides";
+import { HelmetProvider, HelmetDataContext } from "@dr.pogodin/react-helmet";
 // @ts-expect-error -- react-dom/server is a commonjs module for some reason.  react-dom/server.browser doesn't have proper types, but works as expected.
 import { renderToReadableStream as _renderToReadableStream } from "react-dom/server.browser";
 
 // Type hack to get the correct type for renderToReadableStream
-// eslint-disable-next-line no-duplicate-imports
 import type { renderToReadableStream as TrenderToReadableStream } from "react-dom/server";
 const renderToReadableStream: typeof TrenderToReadableStream =
   _renderToReadableStream;
@@ -75,6 +74,7 @@ type RenderResult = {
   html: string;
   emotionStyles: string;
   metaTags: string;
+  lang: string;
   antdStyles: {
     light: string;
     dark: string;
@@ -86,27 +86,41 @@ export const render = async (url: string): Promise<RenderResult> => {
 
   const antdCache = createAntdCache();
   const emotionCache = createEmotionCache({ key: "css" });
+  const guide = getGuide(route);
+  const helmetContext: HelmetDataContext = {};
 
   const html = await renderToStringAsync(
-    <EmotionCacheProvider value={emotionCache}>
-      <AntdCacheProvider cache={antdCache} hashPriority="low">
-        <Router ssrPath={route}>
-          <App updateSw={noop} />
-        </Router>
-      </AntdCacheProvider>
-    </EmotionCacheProvider>,
+    <HelmetProvider context={helmetContext}>
+      <EmotionCacheProvider value={emotionCache}>
+        <AntdCacheProvider cache={antdCache} hashPriority="low">
+          <Router ssrPath={route}>
+            <MetaTags />
+            <App updateSw={noop} />
+          </Router>
+        </AntdCacheProvider>
+      </EmotionCacheProvider>
+    </HelmetProvider>,
   );
-
-  const guide = getGuide(route);
-  const metaTags = renderToString(<MetaTags guideMeta={guide.meta} />);
 
   const { css: emotionStyles } =
     createEmotionServer(emotionCache).extractCritical(html);
+
+  const { helmet } = helmetContext;
+  const metaTags =
+    helmet == null
+      ? ""
+      : [
+          helmet.title.toString(),
+          helmet.priority.toString(),
+          helmet.meta.toString(),
+          helmet.link.toString(),
+        ].join("\n");
 
   return {
     html,
     emotionStyles,
     metaTags,
     antdStyles,
+    lang: guide.meta.translation?.language ?? "en",
   };
 };

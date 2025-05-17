@@ -43,7 +43,7 @@ const loading = (
 );
 
 export const MarkdownScreen = () => {
-  const [route] = useActiveRoute();
+  const route = useActiveRoute();
   const { Guide, meta } = getGuide(route);
   return match(meta.layout)
     .with("guide", () => (

@@ -8,12 +8,12 @@ import {
   Typography,
   Button,
   Select,
+  Link,
 } from "~/components";
 import { useThemeMode } from "~/state/theme";
 import { Progress, ColorPicker, Menu } from "antd";
 import { themePalette, ThemePalette } from "~/theme";
 import { useTheme } from "@emotion/react";
-import { Link } from "~/routes";
 import { throttle } from "lodash-es";
 import { settings } from "~/settings";
 
@@ -207,7 +207,7 @@ export const ExperimentsPageComponent = () => {
       label: "Link",
       input: (
         <>
-          <Link href="/experiments">Example link</Link> with surrounding text
+          <Link href="/experiments/">Example link</Link> with surrounding text
         </>
       ),
     },

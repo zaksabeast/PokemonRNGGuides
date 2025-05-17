@@ -1,7 +1,6 @@
 import { Modal } from "antd";
 import { RngTask } from "./challenges";
-import { Flex, Select, Typography } from "~/components";
-import { Link } from "~/routes";
+import { Flex, Select, Typography, Link } from "~/components";
 import { upperFirst } from "lodash-es";
 import { track } from "~/analytics";
 

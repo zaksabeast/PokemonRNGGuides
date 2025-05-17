@@ -9,6 +9,7 @@ import { difference, isArray, keyBy, groupBy } from "lodash-es";
 import { guides as existingGuides } from "../src/__generated__/guides";
 import dayjs from "dayjs";
 import { toNativeAbsolute } from "./path";
+import { formatRelativeUrl } from "../src/utils/formatRelativeUrl";
 
 // Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, ,, ，, 《, 》, Chinese characters, ·, and 。
 const titleAndDescriptionChars =
@@ -17,12 +18,17 @@ const titleAndDescriptionChars =
 // Only lower case letters, numbers, and hyphens
 const slugChars = /^[a-z0-9-]+$/;
 
+const SlugSchema = z
+  .string()
+  .refine((value) => value.length === 0 || slugChars.test(value))
+  .transform(formatRelativeUrl);
+
 const layouts = ["titled", "guide"] as const;
 
 const categories = [
   "Home",
   "Gold, Silver, Crystal",
-  "Transporter",
+  "Transporter and Dream Radar",
   "Ruby and Sapphire",
   "Gamecube",
   "FireRed and LeafGreen",
@@ -69,10 +75,7 @@ const SingleGuideMetadataSchema = z
       .transform((category) => {
         return isArray(category) ? category : [category];
       }),
-    slug: z
-      .string()
-      .refine((value) => value.length === 0 || slugChars.test(value))
-      .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
+    slug: SlugSchema,
     isRoughDraft: z.boolean().default(false),
     tag: z.enum(["retail", "emu", "cfw", "info", "any", "challenge"]),
     hideFromNavDrawer: z.boolean().default(false),
@@ -86,15 +89,16 @@ const SingleGuideMetadataSchema = z
       }),
     translation: z
       .object({
-        enSlug: z
-          .string()
-          .transform((slug) => (slug.startsWith("/") ? slug : `/${slug}`)),
+        enSlug: SlugSchema,
         language: z.enum(["es", "zh"]),
       })
       .nullish()
       .optional()
       .default(() => null),
     layout: z.enum(layouts).default("guide"),
+    canonical: SlugSchema.nullish()
+      .optional()
+      .default(() => null),
   })
   .transform(({ category, ...metadata }) => ({
     categories: category,
@@ -163,14 +167,18 @@ const main = async () => {
 
   const guidesBySlug = keyBy(guides, (guide) => guide.slug);
   guides.forEach((guide) => {
-    if (guide.translation == null) {
-      return;
-    }
-
-    const translation = guidesBySlug[guide.translation.enSlug];
-    if (translation == null) {
+    if (
+      guide.translation != null &&
+      guidesBySlug[guide.translation.enSlug] == null
+    ) {
       throw new Error(
         `English translation for ${guide.slug} (${guide.translation.enSlug}) not found`,
+      );
+    }
+
+    if (guide.canonical != null && guidesBySlug[guide.canonical] == null) {
+      throw new Error(
+        `Canonical slug ${guide.canonical} for ${guide.slug} not found`,
       );
     }
   });

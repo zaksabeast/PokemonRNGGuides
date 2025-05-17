@@ -1,21 +1,17 @@
 import React from "react";
 import { z } from "zod";
-import { range } from "lodash-es";
 import { RngToolForm, Field, Flex, ResultColumn, Icon } from "~/components";
 import { FormikRadio } from "~/components/radio";
 import { FormikSelect } from "~/components/select";
 import { RngToolSubmit } from "~/components/rngToolForm";
 import { Typography } from "~/components/typography";
-import { nature, NatureStat } from "~/types/nature";
+import { nature } from "~/types/nature";
 import { CaughtMonResult, generateCaughtMonResults } from "./calc";
 import { Button } from "~/components/button";
 import type { Game, TargetStarter } from "./index";
 import { toOptions } from "~/utils/options";
 import { natureOptions } from "~/components/pkmFilter";
-
-const toStatOptions = ({ min, max }: { min: number; max: number }) => {
-  return toOptions(range(min, max + 1));
-};
+import { getStatFields } from "~/rngToolsUi/shared/statFields";
 
 const StatSchema = z.number().min(0).max(999);
 
@@ -31,23 +27,6 @@ const Validator = z.object({
 });
 
 export type FormState = z.infer<typeof Validator>;
-
-const StatInput = ({
-  stat,
-  options,
-}: {
-  stat: NatureStat;
-  options: { min: number; max: number };
-}) => {
-  return (
-    <Flex gap={8}>
-      <FormikRadio<FormState, `${typeof stat}Stat`>
-        name={`${stat}Stat`}
-        options={toStatOptions(options)}
-      />
-    </Flex>
-  );
-};
 
 const initialValues: FormState = {
   hpStat: 0,
@@ -154,35 +133,7 @@ export const CaughtMon = ({
           />
         ),
       },
-      {
-        label: "HP",
-        input: (
-          <FormikRadio<FormState, "hpStat">
-            name="hpStat"
-            options={toStatOptions(minMaxStats.hp)}
-          />
-        ),
-      },
-      {
-        label: "ATK",
-        input: <StatInput stat="atk" options={minMaxStats.atk} />,
-      },
-      {
-        label: "DEF",
-        input: <StatInput stat="def" options={minMaxStats.def} />,
-      },
-      {
-        label: "SPA",
-        input: <StatInput stat="spa" options={minMaxStats.spa} />,
-      },
-      {
-        label: "SPD",
-        input: <StatInput stat="spd" options={minMaxStats.spd} />,
-      },
-      {
-        label: "SPE",
-        input: <StatInput stat="spe" options={minMaxStats.spe} />,
-      },
+      ...getStatFields(minMaxStats),
     ];
   }, [minMaxStats]);
 

@@ -31,7 +31,7 @@ app.use("*all", async (req, res) => {
     );
     template = await vite.transformIndexHtml(url, template);
 
-    const renderUrl = url.endsWith("/") ? url.slice(0, -1) : url;
+    const renderUrl = url.endsWith("/") ? url : `${url}/`;
     const rendered = await render(renderUrl);
     const result = template
       .replace("<!--injected-meta-tags-->", rendered.metaTags)
@@ -40,7 +40,8 @@ app.use("*all", async (req, res) => {
         `<style data-emotion>${rendered.emotionStyles}</style>
         <style>${rendered.antdStyles.light}${rendered.antdStyles.dark}</style>`,
       )
-      .replace(`<!--app-html-->`, rendered.html);
+      .replace(`<!--app-html-->`, rendered.html)
+      .replace('<html lang="en">', `<html lang="${rendered.lang}">`);
 
     res.status(200).set({ "Content-Type": "text/html" }).send(result);
   } catch (err) {

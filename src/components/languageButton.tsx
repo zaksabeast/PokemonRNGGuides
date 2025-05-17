@@ -2,10 +2,11 @@ import { Dropdown } from "antd";
 import { Flex } from "./flex";
 import { Button } from "./button";
 import { Icon } from "./icons";
-import { match, P } from "ts-pattern";
+import { match } from "ts-pattern";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { Route } from "~/routes/defs";
 import { LanguageKey } from "~/guides";
+import { Link } from "./link";
 
 type LanguageItem = {
   key: LanguageKey;
@@ -37,54 +38,37 @@ type Props = {
   zh?: Route;
 };
 
-export const LanguageButton = ({
-  en: enSlug,
-  es: esSlug,
-  zh: zhSlug,
-}: Props) => {
-  const [route, setLocation] = useActiveRoute();
-
-  const setLanguageKey = (key: string) => {
-    const slug = match({ key, enSlug, esSlug, zhSlug })
-      .with(
-        { key: "en", enSlug: P.not(P.nullish) },
-        (matched) => matched.enSlug,
-      )
-      .with(
-        { key: "es", esSlug: P.not(P.nullish) },
-        (matched) => matched.esSlug,
-      )
-      .with(
-        { key: "zh", zhSlug: P.not(P.nullish) },
-        (matched) => matched.zhSlug,
-      )
-      .otherwise(() => enSlug);
-    setLocation(slug);
-  };
+export const LanguageButton = (props: Props) => {
+  const route = useActiveRoute();
+  const slugs = props;
 
   const currentLanguageKey = match<string | undefined, LanguageKey>(route)
-    .with(enSlug, () => "en")
-    .with(esSlug, () => "es")
-    .with(zhSlug, () => "zh")
+    .with(slugs.en, () => "en")
+    .with(slugs.es, () => "es")
+    .with(slugs.zh, () => "zh")
     .otherwise(() => "en");
 
-  const availableLanguages = languages.filter((lang) => {
-    return match(lang.key)
-      .with("en", () => true)
-      .with("es", () => esSlug != null)
-      .with("zh", () => zhSlug != null)
-      .otherwise(() => false);
-  });
+  const availableLanguages = languages
+    .map((lang) => {
+      const slug = slugs[lang.key];
+      if (slug == null) {
+        return null;
+      }
+
+      return {
+        key: lang.key,
+        label: (
+          <Link href={slug} key={lang.key}>
+            {lang.label}
+          </Link>
+        ),
+      };
+    })
+    .filter((link) => link != null);
 
   return (
     <Flex>
-      <Dropdown
-        menu={{
-          items: availableLanguages,
-          onClick: (item) => setLanguageKey(item.key),
-        }}
-        placement="bottom"
-      >
+      <Dropdown menu={{ items: availableLanguages }} placement="bottom">
         <Button
           trackerId="change_language"
           icon={<Icon name="Language" />}

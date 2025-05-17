@@ -3,10 +3,9 @@ import { Layout } from "antd";
 import { Typography } from "./typography";
 import { Button, BaseButton } from "./button";
 import { Icon } from "./icons";
-import { useMobileNavDrawerOpen } from "~/state/navDrawer";
 import { Flex } from "./flex";
 import { settings } from "~/settings";
-import { Link } from "~/routes";
+import { Link } from "./link";
 
 const StyledHeader = styled(Layout.Header)({
   zIndex: 100,
@@ -24,20 +23,7 @@ const StyledHeader = styled(Layout.Header)({
   display: "flex",
 });
 
-const HeaderButton = styled(Button)(({ theme }) => ({
-  [theme.mediaQueries.up("desktop")]: {
-    display: "none",
-  },
-}));
-
-export const HeaderSpace = styled.div(({ theme }) => ({
-  minHeight: theme.components?.Layout?.headerHeight,
-}));
-
-HeaderSpace.displayName = "HeaderSpace";
-
 export const Header = () => {
-  const [, setMobileNavDrawerOpen] = useMobileNavDrawerOpen();
   return (
     <StyledHeader>
       <Flex
@@ -48,14 +34,7 @@ export const Header = () => {
         ph={18}
       >
         <Flex align="center">
-          <HeaderButton
-            trackerId="open_mobile_nav_drawer"
-            type="text"
-            size="large"
-            icon={<Icon name="Menu" size={20} extraAlignment={-1} />}
-            onClick={() => setMobileNavDrawerOpen(true)}
-          />
-          <Link href="/">
+          <Link href="/" display="flex">
             <BaseButton trackerId="home" ml={18}>
               <Typography.Title level={4} mv={0} mr={0}>
                 Pokemon RNG

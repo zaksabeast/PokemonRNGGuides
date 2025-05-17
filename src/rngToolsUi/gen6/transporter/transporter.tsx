@@ -18,9 +18,10 @@ import { getPkmFilterFields, pkmFilterSchema } from "~/components/pkmFilter";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { toOptions } from "~/utils/options";
+import { startCase } from "lodash-es";
 
 const transporterGenders = ["NoGender", "RandomGender", "Mythical"] as const;
-const transporterGenderOptions = toOptions(transporterGenders);
+const transporterGenderOptions = toOptions(transporterGenders, startCase);
 type Result = FlattenIvs<Stationary6State>;
 
 const columns: ResultColumn<Result>[] = [

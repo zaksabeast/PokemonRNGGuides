@@ -18,6 +18,18 @@ export const useTimer = ({
   const [isRunning, setIsRunning] = React.useState(false);
   const [msRemaining, setMsRemaining] = React.useState(0);
 
+  const start = React.useCallback(() => {
+    setMsRemaining(expirationMs);
+    setIsRunning(true);
+    startDate.current = Date.now();
+  }, [expirationMs]);
+
+  const stop = React.useCallback(() => {
+    startDate.current = null;
+    setIsRunning(false);
+    setMsRemaining(expirationMs);
+  }, [expirationMs]);
+
   React.useEffect(() => {
     if (isRunning) {
       startDate.current = Date.now();
@@ -55,12 +67,13 @@ export const useTimer = ({
       ? setTimeout(() => {
           if (startDate.current != null) {
             onExpire?.();
+            stop();
           }
         }, expirationMs)
       : undefined;
 
     return () => clearTimeout(timer);
-  }, [isRunning, expirationMs, onExpire]);
+  }, [isRunning, expirationMs, onExpire, stop]);
 
   React.useEffect(() => {
     const timer = isRunning
@@ -73,18 +86,6 @@ export const useTimer = ({
 
     return () => clearTimeout(timer);
   }, [isRunning, countdownMs, onCountdown]);
-
-  const start = React.useCallback(() => {
-    setMsRemaining(expirationMs);
-    setIsRunning(true);
-    startDate.current = Date.now();
-  }, [expirationMs]);
-
-  const stop = React.useCallback(() => {
-    startDate.current = null;
-    setIsRunning(false);
-    setMsRemaining(expirationMs);
-  }, [expirationMs]);
 
   return {
     msRemaining,

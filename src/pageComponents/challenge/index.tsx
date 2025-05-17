@@ -77,10 +77,10 @@ type InnerProps = {
 
 const InnerChallengePageComponent = ({ state, setState }: InnerProps) => {
   const theme = useTheme();
-  const [route] = useActiveRoute();
+  const route = useActiveRoute();
 
   const tasks: RngTask[] = match(route)
-    .with("/challenge-usum-ta", () => {
+    .with("/challenge-usum-ta/", () => {
       return challenges.usumTa.map((task) => ({
         ...task,
         status:

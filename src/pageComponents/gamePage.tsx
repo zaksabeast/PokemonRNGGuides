@@ -34,32 +34,33 @@ const isToolCategory = (category: Category) => {
     .with("GBA Technical Documentation", () => false)
     .with("Game Hub", () => false)
     .with("Home", () => false)
-    .with("Transporter", () => false)
+    .with("Transporter and Dream Radar", () => false)
     .with("USUM Challenges", () => false)
     .with("User Settings", () => false)
     .exhaustive();
 };
 
 const routeToCategory = {
-  "/legends-arceus": ["Legends Arceus", "Switch Tools"],
-  "/crystal": ["Gold, Silver, Crystal"],
-  "/ruby-and-sapphire": ["Ruby and Sapphire", "GBA Tools"],
-  "/gamecube": ["Gamecube"],
-  "/fire-red-and-leaf-green": ["FireRed and LeafGreen", "GBA Tools"],
-  "/emerald": ["Emerald", "GBA Tools"],
-  "/diamond-pearl-and-platinum": ["Diamond, Pearl, and Platinum", "NDS Tools"],
-  "/heart-gold-and-soul-silver": ["HeartGold and SoulSilver", "NDS Tools"],
-  "/black-and-white": ["Black and White", "NDS Tools"],
-  "/black-2-and-white-2": ["Black 2 and White 2", "NDS Tools"],
-  "/x-and-y": ["X and Y", "3DS Tools"],
-  "/omega-ruby-and-alpha-sapphire": [
+  "/transporter-dream-radar/": ["Transporter and Dream Radar"],
+  "/legends-arceus/": ["Legends Arceus", "Switch Tools"],
+  "/crystal/": ["Gold, Silver, Crystal"],
+  "/ruby-and-sapphire/": ["Ruby and Sapphire", "GBA Tools"],
+  "/gamecube/": ["Gamecube"],
+  "/fire-red-and-leaf-green/": ["FireRed and LeafGreen", "GBA Tools"],
+  "/emerald/": ["Emerald", "GBA Tools"],
+  "/diamond-pearl-and-platinum/": ["Diamond, Pearl, and Platinum", "NDS Tools"],
+  "/heart-gold-and-soul-silver/": ["HeartGold and SoulSilver", "NDS Tools"],
+  "/black-and-white/": ["Black and White", "NDS Tools"],
+  "/black-2-and-white-2/": ["Black 2 and White 2", "NDS Tools"],
+  "/x-and-y/": ["X and Y", "3DS Tools"],
+  "/omega-ruby-and-alpha-sapphire/": [
     "Omega Ruby and Alpha Sapphire",
     "3DS Tools",
   ],
-  "/sun-and-moon": ["Sun and Moon", "3DS Tools"],
-  "/ultra-sun-and-ultra-moon": ["Ultra Sun and Ultra Moon", "3DS Tools"],
-  "/sword-and-shield": ["Sword and Shield", "Switch Tools"],
-  "/brilliant-diamond-and-shining-pearl": [
+  "/sun-and-moon/": ["Sun and Moon", "3DS Tools"],
+  "/ultra-sun-and-ultra-moon/": ["Ultra Sun and Ultra Moon", "3DS Tools"],
+  "/sword-and-shield/": ["Sword and Shield", "Switch Tools"],
+  "/brilliant-diamond-and-shining-pearl/": [
     "Brilliant Diamond and Shining Pearl",
     "Switch Tools",
   ],
@@ -78,6 +79,13 @@ const InnerCardBackground = styled.div({
   position: "absolute",
   top: -12,
   transform: "rotate(-35deg)",
+});
+
+const TitleContainer = styled.div({
+  display: "flex",
+  flexDirection: "column",
+  position: "relative",
+  zIndex: 1,
 });
 
 type PageSection = GuideMeta["tag"] | "tool";
@@ -121,7 +129,7 @@ const guideByCategory = groupBy(
 );
 
 export const GamePageComponent = () => {
-  const [route] = useActiveRoute();
+  const route = useActiveRoute();
   const abTest = useAbCohort("guidePokeball");
 
   const { meta } = getGuide(route);
@@ -187,7 +195,7 @@ export const GamePageComponent = () => {
                         </InnerCardBackground>
                       </CardBackground>
                     )}
-                    <Flex vertical style={{ position: "relative", zIndex: 1 }}>
+                    <TitleContainer>
                       <Typography.Text
                         strong
                         m={0}
@@ -196,7 +204,7 @@ export const GamePageComponent = () => {
                       >
                         {guide.navDrawerTitle}
                       </Typography.Text>
-                    </Flex>
+                    </TitleContainer>
                   </Card>
                 ),
               )}

@@ -1,10 +1,9 @@
 import React from "react";
-import { Link } from "~/routes";
-import { Menu, MenuProps, Drawer } from "antd";
+import { Link } from "./link";
+import { Menu, MenuProps } from "antd";
 import { Flex } from "./flex";
 import { Divider } from "./divider";
 import { Typography } from "./typography";
-import { useMobileNavDrawerOpen } from "~/state/navDrawer";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { settings } from "~/settings";
 import { getGuide, guides, categories, Category, GuideMeta } from "~/guides";
@@ -67,16 +66,14 @@ const MenuItemTag = ({ tag }: MenuItemTagProps) => {
   }
 
   return (
-    <Flex style={{ position: "relative", left: 0 }}>
-      <Tag
-        width={47}
-        textAlign="center"
-        color={config?.color}
-        backgroundColor={config?.backgroundColor}
-      >
-        {label}
-      </Tag>
-    </Flex>
+    <Tag
+      width={47}
+      textAlign="center"
+      color={config?.color}
+      backgroundColor={config?.backgroundColor}
+    >
+      {label}
+    </Tag>
   );
 };
 
@@ -133,7 +130,7 @@ const rootCategories: RootCategory[] = [
       "Omega Ruby and Alpha Sapphire",
       "Sun and Moon",
       "Ultra Sun and Ultra Moon",
-      "Transporter",
+      "Transporter and Dream Radar",
     ],
   },
   { label: "Gamecube", categories: ["Gamecube"], flatten: true },
@@ -455,9 +452,8 @@ const getOpenKeys = (route: Route) => {
   );
 };
 
-const NavDrawerContent = () => {
-  const [route] = useActiveRoute();
-  const [, setMobileNavDrawerOpen] = useMobileNavDrawerOpen();
+const NavDrawerContent = React.memo(() => {
+  const route = useActiveRoute();
   const [previouslyOpenedKeys] = useAtom(openKeysAtom);
   const [openKeys, setOpenedKeys] = React.useState<string[]>(
     () => previouslyOpenedKeys ?? getOpenKeys(route),
@@ -465,6 +461,7 @@ const NavDrawerContent = () => {
 
   const onOpenChange = React.useCallback(
     (updatedKeys: string[]) => {
+      setOpenedKeys(updatedKeys);
       const newKeys = difference(updatedKeys, openKeys);
       if (newKeys.length === 1) {
         track("NavDrawer Open Category", { category: newKeys[0] });
@@ -472,7 +469,6 @@ const NavDrawerContent = () => {
       if (newKeys.length > 1) {
         track("NavDrawer Open Multiple Categories", {});
       }
-      setOpenedKeys(updatedKeys);
     },
     [openKeys],
   );
@@ -487,7 +483,6 @@ const NavDrawerContent = () => {
           defaultSelectedKeys={openKeys}
           openKeys={openKeys}
           onOpenChange={onOpenChange}
-          onClick={() => setMobileNavDrawerOpen(false)}
         />
         <Divider mv={16} />
         <StyledMenu
@@ -497,7 +492,6 @@ const NavDrawerContent = () => {
           defaultSelectedKeys={openKeys}
           openKeys={openKeys}
           onOpenChange={onOpenChange}
-          onClick={() => setMobileNavDrawerOpen(false)}
         />
       </Flex>
       <Divider />
@@ -506,25 +500,7 @@ const NavDrawerContent = () => {
       </Flex>
     </Flex>
   );
-};
-
-const mobileNavDrawerStyles = { wrapper: { width: 300 } };
-
-export const MobileDrawer = () => {
-  const [mobileNavDrawerOpen, setMobileNavDrawerOpen] =
-    useMobileNavDrawerOpen();
-  return (
-    <Drawer
-      title="PokemonRNG.com"
-      placement="left"
-      open={mobileNavDrawerOpen}
-      onClose={() => setMobileNavDrawerOpen(false)}
-      styles={mobileNavDrawerStyles}
-    >
-      <NavDrawerContent />
-    </Drawer>
-  );
-};
+});
 
 export const DesktopDrawer = () => {
   return (

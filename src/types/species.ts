@@ -1,4 +1,6 @@
 import { Species } from "~/rngTools";
+import { toOptions } from "~/utils/options";
+import { sortBy } from "lodash-es";
 
 export const species = [
   "None",
@@ -1014,4 +1016,9 @@ export const species = [
   "Annihilape",
 ] as const satisfies Species[];
 
-export const gen3Species = species.slice(0, 387);
+const gen3SpeciesByDex = toOptions(species.slice(0, 387));
+
+export const gen3SpeciesOptions = {
+  byDex: gen3SpeciesByDex,
+  byName: sortBy(gen3SpeciesByDex, (option) => option.label),
+};

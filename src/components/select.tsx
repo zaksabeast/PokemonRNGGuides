@@ -59,26 +59,60 @@ export const Select = <ValueType,>({
   );
 };
 
-type FormikSelectValue<
+type SingleFormikSelectValue<
   FormState extends GenericForm,
   FieldKey extends keyof FormState,
 > = FormState[FieldKey] extends string | null
-  ? { label: string; value: FormState[FieldKey] }[]
+  ? {
+      label: string;
+      value: FormState[FieldKey];
+    }[]
   : never;
+
+type MultiFormikSelectValue<
+  FormState extends GenericForm,
+  FieldKey extends keyof FormState,
+> = FormState[FieldKey] extends string[] | null
+  ? {
+      label: string;
+      value: FormState[FieldKey][keyof FormState[FieldKey]];
+    }[]
+  : never;
+
+type FormikSelectValue<
+  FormState extends GenericForm,
+  FieldKey extends keyof FormState,
+  Multiple extends boolean,
+> = Multiple extends true
+  ? MultiFormikSelectValue<FormState, FieldKey>
+  : SingleFormikSelectValue<FormState, FieldKey>;
 
 type FormikSelectProps<
   FormState extends GenericForm,
   FieldKey extends keyof FormState,
-> = tst.O.Merge<
-  Omit<
-    SelectProps<FormikSelectValue<FormState, FieldKey>>,
-    "onChange" | "defaultValue" | "options"
-  >,
-  {
-    name: FieldKey;
-    options: FormikSelectValue<FormState, FieldKey>;
-  }
->;
+> =
+  | tst.O.Merge<
+      Omit<
+        SelectProps<FormikSelectValue<FormState, FieldKey, false>>,
+        "onChange" | "defaultValue" | "options" | "mode"
+      >,
+      {
+        mode?: undefined;
+        name: FieldKey;
+        options: FormikSelectValue<FormState, FieldKey, false>;
+      }
+    >
+  | tst.O.Merge<
+      Omit<
+        SelectProps<FormikSelectValue<FormState, FieldKey, true>>,
+        "onChange" | "defaultValue" | "options" | "mode"
+      >,
+      {
+        mode: "multiple";
+        name: FieldKey;
+        options: FormikSelectValue<FormState, FieldKey, true>;
+      }
+    >;
 
 export const FormikSelect = <
   FormState extends GenericForm,

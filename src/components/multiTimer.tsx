@@ -60,7 +60,7 @@ const InnerMultiTimer = ({
     Math.floor(currentMs / countdownIntervalMs),
     state.maxBeepCount,
   );
-  const countdownMs = currentMs - countdownBeeps * countdownIntervalMs;
+  const countdownMs = countdownBeeps * countdownIntervalMs;
 
   const onCountdown = React.useCallback(
     () => firstBeep.playBeeps(countdownBeeps),
@@ -165,7 +165,7 @@ const InnerMultiTimer = ({
                 key={index}
                 expirationMs={ms}
                 countdownMs={countdownMs}
-                run={isRunning && index <= currentTimerIndex}
+                run={isRunning && index === currentTimerIndex}
                 onCountdown={onCountdown}
                 onExpire={onExpire}
               />

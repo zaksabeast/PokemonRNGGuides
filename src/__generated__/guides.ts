@@ -94,12 +94,12 @@ export const guides = {
   "/bdsp-emulator-setup/": {
     meta: {
       categories: ["Brilliant Diamond and Shining Pearl"],
-      title: "Set up Yuzu/Ryujinx & CheatEngine",
-      navDrawerTitle: "Set up Yuzu/Ryujinx & CheatEngine",
+      title: "How to set up Ryujinx & CheatEngine",
+      navDrawerTitle: "Ryujinx Set Up",
       description:
-        "How to set up Yuzu/Ryujinx and Cheat Engine to RNG in Brilliant Diamond and Shining Pearl using lua scripts.",
+        "How to set up Ryujinx or Yuzu and Cheat Engine to RNG in Brilliant Diamond and Shining Pearl using lua scripts.",
       slug: "/bdsp-emulator-setup/",
-      isRoughDraft: true,
+      isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,
@@ -119,10 +119,10 @@ export const guides = {
   "/bdsp-pokefinder/": {
     meta: {
       categories: ["Brilliant Diamond and Shining Pearl"],
-      title: "PokeFinder Setup for Brilliant Diamond and Shining Pearl",
+      title: "BDSP RNG Guide - Setup PokeFinder for shiny hunting",
       navDrawerTitle: "PokeFinder Setup",
       description:
-        "How to set up PokeFinder to RNG in Brilliant Diamond and Shining Pearl to RNG shiny Pokemon.",
+        "Step-by-step guide to set up PokeFinder for RNG abuse in Brilliant Diamond and Shining Pearl.",
       slug: "/bdsp-pokefinder/",
       isRoughDraft: false,
       tag: "any",
@@ -1087,10 +1087,10 @@ export const guides = {
   "/emulator-dppt-pokefinder-setup/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      title: "PokeFinder Setup for Diamond, Pearl, and Platinum",
+      title: "How to RNG in Diamond, Pearl, and Platinum Using PokeFinder",
       navDrawerTitle: "PokeFinder Setup",
       description:
-        "How to setup PokeFinder for Diamond, Pearl, and Platinum RNG.",
+        "Step-by-step guide to RNG Pokémon in Diamond, Pearl, and Platinum using PokeFinder.",
       slug: "/emulator-dppt-pokefinder-setup/",
       isRoughDraft: false,
       tag: "any",
@@ -2300,10 +2300,11 @@ export const guides = {
   "/misc-3ds-ips-luma-citra/": {
     meta: {
       categories: ["3DS Tools"],
-      title: "Using IPS Patches with Luma and Azahar/Lime3DS/Citra",
+      title:
+        "How to Use IPS Patches on a 3DS or Emulator (Luma3DS, Azahar, Citra)",
       navDrawerTitle: "IPS Patches",
       description:
-        "Apply IPS patches like instant text and no outlines for a better experience on Luma 3DS or emulators.",
+        "Learn how to apply IPS patches like instant text and no outlines using Luma3DS, Azahar, or Citra. Includes 3DS setup, emulator mods, and a merge tool.",
       slug: "/misc-3ds-ips-luma-citra/",
       isRoughDraft: false,
       tag: "cfw",
@@ -2325,10 +2326,10 @@ export const guides = {
   "/misc-3ds-island-scan-sm/": {
     meta: {
       categories: ["Sun and Moon"],
-      title: "Sun and Moon Island Scan Pokemon",
+      title: "Island Scan Pokemon in Sun & Moon - Full List by Day & Location",
       navDrawerTitle: "Island Scan Pokemon",
       description:
-        "View the full list of Island Scan Pokémon available in Sun and Moon by day and location.",
+        "Check out an easy-to-use list of Island Scan Pokémon for Sun and Moon, organized by day and location for quick reference.",
       slug: "/misc-3ds-island-scan-sm/",
       isRoughDraft: false,
       tag: "info",
@@ -2347,10 +2348,11 @@ export const guides = {
   "/misc-3ds-island-scan-usum/": {
     meta: {
       categories: ["Ultra Sun and Ultra Moon"],
-      title: "Ultra Sun and Ultra Moon Island Scan Pokemon",
+      title:
+        "Island Scan Pokemon in Ultra Sun & Ultra Moon - Full List by Day & Location",
       navDrawerTitle: "Island Scan Pokemon",
       description:
-        "View the full list of Island Scan Pokémon available in Ultra Sun and Ultra Moon by day and location.",
+        "Check out an easy-to-use list of Island Scan Pokémon for Ultra Sun and Ultra Moon, organized by day and location for quick reference.",
       slug: "/misc-3ds-island-scan-usum/",
       isRoughDraft: false,
       tag: "info",
@@ -2414,10 +2416,10 @@ export const guides = {
   "/misc-dolphin-gba-bios/": {
     meta: {
       categories: ["GBA Tools"],
-      title: "How to extract GBA BIOS",
+      title: "GBA BIOS File - What It Is and How to Extract It for Emulators",
       navDrawerTitle: "GBA Bios",
       description:
-        "Step-by-step guide to extracting the GBA BIOS file for use with emulators like mGBA and VBA.",
+        "Learn what the GBA BIOS is, why emulators like mGBA and VBA need it, and how to legally extract it from real hardware. Step-by-step guide included.",
       slug: "/misc-dolphin-gba-bios/",
       isRoughDraft: false,
       tag: "cfw",
@@ -2457,10 +2459,10 @@ export const guides = {
   "/mystic-timer/": {
     meta: {
       categories: ["GBA Tools", "NDS Tools", "3DS Tools"],
-      title: "Mystic Timer",
+      title: "Mystic Timer - Online Pokémon RNG Timer for Gen 3, 4, and 7",
       navDrawerTitle: "Mystic Timer",
       description:
-        "A mobile-friendly alternative to Eon Timer, perfect for Gen 3, Gen 4, and Gen 7 RNG.",
+        "Mystic Timer is a mobile-friendly alternative to Eon Timer. Perfect for Gen 3, 4, and 7 Pokémon RNG on any device, including Mac, Linux, iOS, and Android.",
       slug: "/mystic-timer/",
       isRoughDraft: false,
       tag: "retail",
@@ -2646,7 +2648,7 @@ export const guides = {
   "/pokefinder/": {
     meta: {
       categories: ["GBA Tools", "NDS Tools", "3DS Tools", "Switch Tools"],
-      title: "PokeFinder - Pokemon RNG Tool for Gens 3-5 & 8",
+      title: "Pokemon RNG Tool - Use PokeFinder for Gens 3-5 & 8",
       navDrawerTitle: "PokeFinder",
       description:
         "Pokefinder is a cross-platform RNG tool for Pokémon Generations 3-5 & 8. Supports shiny hunting, TID/SID RNG, breeding, and more. Works for emulators and real hardware.",
@@ -2663,6 +2665,28 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/PokeFinder.mdx"),
+    ),
+  },
+  "/pokereader/": {
+    meta: {
+      categories: ["3DS Tools"],
+      title: "PokeReader - 3DS Overlay for Pokemon RNG",
+      navDrawerTitle: "What is PokeReader",
+      description:
+        "PokeReader is a 3GX plugin for the 3DS that adds emulator-style tools like pausing, frame advancing, and overlays - perfect for RNG manipulation on real hardware.",
+      slug: "/pokereader/",
+      isRoughDraft: false,
+      tag: "cfw",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Tools and Emulators/PokeReader.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/PokeReader.mdx"),
     ),
   },
   "/retail-bw-entralink/": {
@@ -2684,6 +2708,26 @@ export const guides = {
       translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Retail Entralink.mdx")),
+  },
+  "/retail-emerald-egg/": {
+    meta: {
+      categories: ["Emerald"],
+      title: "Retail Emerald Egg RNG",
+      navDrawerTitle: "Egg RNG",
+      description:
+        "Learn how to Retail RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies.",
+      slug: "/retail-emerald-egg/",
+      isRoughDraft: true,
+      tag: "retail",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 3/Emerald/Retail Egg.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Retail Egg.mdx")),
   },
   "/retail-emerald-wild/": {
     meta: {
@@ -3942,6 +3986,28 @@ export const guides = {
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
     ),
   },
+  "/xy-friend-safari-patch/": {
+    meta: {
+      categories: ["X and Y"],
+      title: "XY All Friend Safaris Patch",
+      navDrawerTitle: "All Friend Safaris Patch",
+      description:
+        "How to use a game patch to unlock all Friend Safari Pokemon in Pokemon X and Y, including Ditto and Vivillon.",
+      slug: "/xy-friend-safari-patch/",
+      isRoughDraft: false,
+      tag: "patch",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 6/Friend Safari Patch.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 6/Friend Safari Patch.mdx"),
+    ),
+  },
   "/xy-pokeradar/": {
     meta: {
       categories: ["X and Y"],
@@ -4834,7 +4900,9 @@ export const guideSlugs = [
   "/pcalc-xy-friend-safari/",
   "/pcalc-xy-tid/",
   "/pokefinder/",
+  "/pokereader/",
   "/retail-bw-entralink/",
+  "/retail-emerald-egg/",
   "/retail-emerald-wild/",
   "/retail-oras-egg-mmsc/",
   "/retail-oras-egg-no-mmsc/",
@@ -4893,6 +4961,7 @@ export const guideSlugs = [
   "/wishing-star-jirachi/",
   "/x-and-y/",
   "/xdcolo-tidsid-generator/",
+  "/xy-friend-safari-patch/",
   "/xy-pokeradar/",
   "/zh-bw2-egg/",
   "/zh-dppt-advance-rng/",

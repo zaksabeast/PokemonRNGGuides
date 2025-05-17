@@ -4,23 +4,10 @@ import { FindTargetAdvance } from "./findTarget";
 import { CaughtMon } from "./caughtMon";
 import { FormFieldTable } from "~/components/formFieldTable";
 import { TargetPokemon } from "./targetPokemon";
+import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
 
 export type Game = "emerald" | "rs";
 export type Starter = "Mudkip" | "Torchic" | "Treecko";
-
-export type MinMax = {
-  min: number;
-  max: number;
-};
-
-export type MinMaxStats = {
-  hp: MinMax;
-  atk: MinMax;
-  def: MinMax;
-  spa: MinMax;
-  spd: MinMax;
-  spe: MinMax;
-};
 
 export type TargetStarter = {
   species: Starter;
@@ -35,14 +22,7 @@ export const ShinyHoennStarter = ({ game }: Props) => {
   const [targetAdvance, setTargetAdvance] = React.useState(0);
   const [targetStarter, setTargetStarter] = React.useState<TargetStarter>({
     species: "Mudkip",
-    minMaxStats: {
-      hp: { min: 0, max: 0 },
-      atk: { min: 0, max: 0 },
-      def: { min: 0, max: 0 },
-      spa: { min: 0, max: 0 },
-      spd: { min: 0, max: 0 },
-      spe: { min: 0, max: 0 },
-    },
+    minMaxStats: defaultMinMaxStats,
   });
 
   // 9 adv for calibration to open the bag. 3 adv for offset between pressing A and generating the Pokémon
@@ -52,8 +32,6 @@ export const ShinyHoennStarter = ({ game }: Props) => {
     const advFromTimer = targetAdvance - calibrationAndOffset;
     return [5000, Math.round((advFromTimer * 1000) / 59.7275)];
   }, [targetAdvance, calibrationAndOffset]);
-
-  const minutesBeforeTarget = Math.floor(milliseconds[1] / 60000);
 
   const fields = React.useMemo((): Field[] => {
     return [
@@ -89,7 +67,6 @@ export const ShinyHoennStarter = ({ game }: Props) => {
       {targetAdvance !== 0 && [
         <FormFieldTable fields={fields} />,
         <MultiTimer
-          minutesBeforeTarget={minutesBeforeTarget}
           milliseconds={milliseconds}
           startButtonTrackerId="start_gen3_shiny_starter_timer"
           stopButtonTrackerId="stop_gen3_shiny_starter_timer"

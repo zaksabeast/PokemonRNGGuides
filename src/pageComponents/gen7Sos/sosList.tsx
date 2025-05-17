@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 import { Input, Icon } from "~/components";
-import data from "./sos_call_rates.json";
+import data from "./sosCallRates.json";
 import styled from "@emotion/styled";
 
 const StyledInput = styled(Input)({
@@ -31,7 +31,7 @@ const columns = [
     key: "usum_call_rate",
   },
 ];
-export const Gen7Sos = () => {
+export const Gen7SosList = () => {
   const [searchText, setSearchText] = React.useState("");
 
   const filteredData = data.filter((entry) =>

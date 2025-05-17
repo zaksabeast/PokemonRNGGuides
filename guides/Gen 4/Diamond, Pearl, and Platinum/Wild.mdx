@@ -1,5 +1,5 @@
 ---
-- title: "Diamond, Pearl, and Platinum Wild RNG"
+- title: "Diamond, Pearl, and Platinum Wild RNG Guide"
   navDrawerTitle: "Wild RNG"
   description: "Learn how to RNG wild Pokémon in Diamond, Pearl, and Platinum for shiny and high-IV results."
   slug: "dppt-wild"
@@ -17,100 +17,113 @@
 
 <ShowIf slug="/dppt-wild">
 
-## Intro
+## Introduction
 
-This guide assumes you have basic knowledge of Gen 4 RNG, such as hitting an initial seed and advancing the RNG.
+This guide shows how to RNG wild Pokémon in **Diamond, Pearl, and Platinum** on both **retail** and **emulator**, including Trophy Garden and the Great Marsh.
 
-## General
+## Tools
 
-Before getting into specifics, determine your target frame and set up [PokeFinder](/pokefinder) like this:
+- [PokeFinder](/pokefinder)
 
-1. Open PokeFinder => Gen 4 => Wild => Searcher. Make sure to select Method J.
-2. Set up your profile, including the route and desired Pokémon with the correct encounter slot.
-3. Apply your criteria and identify your target advance.
+## Set Up PokeFinder
 
-## Basic Wild
+1. Open PokeFinder and go to the Gen 4 Wild tab.
+2. Choose "Searcher" and then select your profile.
+3. In "Settings" pick the Pokemon you want to RNG.
+4. Click "Search" and pick your target advance.
 
-For a wild encounter, go to the area with your target Pokémon. You need a Pokémon with Sweet Scent or honey. Follow these steps:
+## Basic Wild RNG
 
-1. Hit your initial seed.
-2. Open your party.
-3. Advance the RNG.
-4. Use Sweet Scent or honey.
-5. Avoid leaving the menu to prevent noise cancelation.
+You need to be in the area where your target Pokemon appears.  
+You also need a Pokémon with **Sweet Scent** or the **Honey** item.
 
-Sweet Scent and honey animations won't affect RNG advancement unlike in Gen 5.
+1. RNG for your initial seed:
+   - [Retail Initial Seed RNG Guide](/dppt-initial-seed-retail)
+   - [Emulator Initial Seed RNG Guide](/dppt-initial-seed)
+2. Open your party menu in-game.
+3. Use Chatots to advance to your target frame.
+4. Use **Sweet Scent** or **Honey**.
+
+Sweet Scent and Honey animations do **not** affect the RNG like in Gen 5.
 
 ## GBA Insertions
 
-GBA insertions follow the same RNG process as basic wild RNG. They use Encounter Slot 8 and 9. If your profile is set up correctly, PokeFinder will show all relevant information automatically.
+This works the same as basic wild RNG.  
+GBA slot Pokemon appear in Encounter Slots 8 and 9.  
+PokeFinder will show this info if your profile and settings are set up correctly.
 
-## Fishing
+## Fishing RNG
 
 ```
-Note: Any methods claiming to boost the fishing rate do not work. PokeFinder should account for this as it's a DPPt bug.
+Note: Methods that claim to boost fishing success do not work.
+PokeFinder handles this bug automatically.
 ```
 
-1. Go to your desired fishing spot.
-2. Advance the RNG in your party.
+1. Go to the fishing spot where your target Pokemon appears.
+2. Use Chatots to reach the correct RNG advance.
 3. Open your bag and use the fishing rod.
 
-On an emulator, a significant advancement indicates a successful hook and possibly reaching your target encounter. PokeFinder shows which advances lead to an encounter.
+**On emulator:**
+A big RNG jump after casting means you successfully hooked something.
 
 ### Feebas
 
-Feebas encounters are trickier. Here's what to do:
+Feebas encounters are trickier.
 
-1. Find the correct tile.
-2. Save and set up your RNG.
-3. Use the PokeFinder Generator and input the initial seed to find the target advance.
-4. Make sure your target and advance result in an encounter; otherwise, you might not encounter anything.
+1. Find the correct tile where Feebas appears.
+2. Save and prepare your RNG.
+3. Use PokeFinder's Generator and input your initial seed.
+4. Make sure your target advance results in an encounter.
 
-Feebas has an element of randomness that isn't fully supported yet.
+Feebas RNG is not fully supported and may take trial and error.
 
-## Trophy Garden
+## Trophy Garden RNG
 
-1. Stand in front of the garden owner and save your game.
-2. Reload with any initial seed.
-3. Open PokeFinder, go to Static, Method 1, and generate results.
+1. Save your game in front of the garden owner.
+2. Reload your game.
+3. Open PokeFinder → Static → Method 1 and generate results.
 4. Check the first value of the PID at your current advance.
-5. Use the table to see which Pokémon are available when you talk to the owner:
+5. Use this table to see which Pokemon he will mention:
 
-| PID | Pokemon                |
-| :-- | ---------------------- |
-| 0   | Eevee                  |
-| 1   | Bonsly                 |
-| 2   | Happiny                |
-| 3   | Meowth                 |
-| 4   | Cleffa                 |
-| 5   | Clefairy               |
-| 6   | Igglybuff              |
-| 7   | Plusle                 |
-| 8   | Jigglypuff             |
-| 9   | Porygon (DP)/Ditto(Pt) |
-| A   | Castform               |
-| B   | Minun                  |
-| C   | Mime Jr.               |
-| D   | Marill                 |
-| E   | Chansey                |
-| F   | Azurill                |
+<details>
+<summary><b>Trophy Garden Table</b></summary>
+| PID | Pokemon                   |
+| --- | ------------------------- |
+| 0   | Eevee                     |
+| 1   | Bonsly                    |
+| 2   | Happiny                   |
+| 3   | Meowth                    |
+| 4   | Cleffa                    |
+| 5   | Clefairy                  |
+| 6   | Igglybuff                 |
+| 7   | Plusle                    |
+| 8   | Jigglypuff                |
+| 9   | Porygon (DP) / Ditto (Pt) |
+| A   | Castform                  |
+| B   | Minun                     |
+| C   | Mime Jr.                  |
+| D   | Marill                    |
+| E   | Chansey                   |
+| F   | Azurill                   |
+
+</details>
+```
+Note: You might be off by one due to indexing differences between tools.
+Adjust if needed.
+```
 
 ```
-Note: You might be off by one due to indexing differences between tools. Adjust if needed.
+Note: The Pokemon of the day occupies Encounter Slot 6, and the previous day's Pokémon will be in Encounter Slot 7.
 ```
 
-```
-Note: The Pokémon of the day occupies Encounter Slot 6, and the previous day's Pokémon will be in Encounter Slot 7.
-```
+## Great Marsh RNG
 
-## Great Marsh
+Works like Trophy Garden, and uses Encounter Slots 6 and 7.
 
-This process is similar to the Trophy Garden and uses Encounter Slot 6 and 7.
-
-1. Use the lookout to choose your desired Pokémon.
+1. Use the lookout to pick your desired Pokemon.
 2. Save your game in front of the Great Marsh.
 3. Find a target with a narrow enough range that allows hitting the target without introducing RNG noise from walking.
-4. Conclude the RNG as usual.
+4. Perform the RNG as usual.
 
 ## Credits
 

@@ -1,6 +1,8 @@
-import type { Game, MinMax, Starter, TargetStarter } from "./index";
+import type { Game, Starter, TargetStarter } from "./index";
 import type { FormState } from "./caughtMon";
 import { rngTools } from "~/rngTools";
+import { gen3BaseStats } from "~/types/baseStats";
+import { MinMax } from "~/types/stat";
 
 export type CaughtMonResult = {
   advance: number;
@@ -58,7 +60,7 @@ export const getTargetPokemonDesc = async (
   const res = genResults[0];
 
   const stats = await rngTools.calculate_stats(
-    BASE_STATS[pokemonSpecies],
+    gen3BaseStats[pokemonSpecies],
     5,
     res.nature,
     res.ivs,
@@ -66,27 +68,6 @@ export const getTargetPokemonDesc = async (
   );
 
   return `${res.gender}, ${res.nature}, HP ${stats.hp}, ATK ${stats.atk}, DEF ${stats.def}, SPA ${stats.spa}, SPD ${stats.spd}, SPE ${stats.spe}`;
-};
-
-const BASE_STATS = {
-  Mudkip: { hp: 50, atk: 70, def: 50, spa: 50, spd: 50, spe: 40 },
-  Treecko: { hp: 40, atk: 45, def: 35, spa: 65, spd: 55, spe: 70 },
-  Torchic: { hp: 45, atk: 60, def: 40, spa: 70, spd: 50, spe: 45 },
-} as const;
-
-export const getStatRangeForStarter = async (starter: Starter) => {
-  const baseStats = BASE_STATS[starter];
-  const minStats = await rngTools.calculate_minmax_stats(baseStats, 5, true);
-  const maxStats = await rngTools.calculate_minmax_stats(baseStats, 5, false);
-
-  return {
-    hp: { min: minStats.hp, max: maxStats.hp },
-    atk: { min: minStats.atk, max: maxStats.atk },
-    def: { min: minStats.def, max: maxStats.def },
-    spa: { min: minStats.spa, max: maxStats.spa },
-    spd: { min: minStats.spd, max: maxStats.spd },
-    spe: { min: minStats.spe, max: maxStats.spe },
-  };
 };
 
 const getMinMaxStat = (
@@ -130,7 +111,7 @@ export const generateCaughtMonResults = async (
       shiny: false,
       stats: {
         lvl: 5,
-        base_stats: BASE_STATS[targetSpecies],
+        base_stats: gen3BaseStats[targetSpecies],
         min_stats,
         max_stats,
       },

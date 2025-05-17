@@ -78,6 +78,9 @@ pub fn search_mb_jirachi_times(opts: MultibootJirachiOptions) -> JirachiSaveResu
                 jirachi,
             })
         })
+        // No one needs more than 10k results.
+        // This is a bit arbitrary, but will make sure too many results aren't returned.
+        .take(10_000)
         .collect();
 
     Ok(results)

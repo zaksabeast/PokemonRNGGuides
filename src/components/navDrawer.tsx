@@ -153,6 +153,7 @@ const tagOrder: GuideMeta["tag"][] = [
   "cfw",
   "emu",
   "retail",
+  "patch",
 ];
 
 const guidesWithFlattenedCategories = flatMap(guides, (guide) => {

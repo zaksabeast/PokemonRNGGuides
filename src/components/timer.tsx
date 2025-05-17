@@ -33,9 +33,10 @@ export const Timer = ({
     }
   }, [run, start, stop]);
 
-  const percent = (msRemaining / expirationMs) * 100;
-  const seconds = Math.floor(msRemaining / 1000);
-  const milliseconds = msRemaining % 1000;
+  const remaining = Math.floor(msRemaining);
+  const percent = (remaining / expirationMs) * 100;
+  const seconds = Math.floor(remaining / 1000);
+  const milliseconds = remaining % 1000;
 
   return (
     <Progress

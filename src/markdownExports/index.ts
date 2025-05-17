@@ -29,6 +29,8 @@ import {
   Countdown,
   ShowIf,
   Alert,
+  Stepper,
+  Step,
 } from "~/components";
 import { Gen2PokemonRng } from "~/rngToolsUi/gen2/crystalPokemon";
 import { Gen2Rng } from "~/rngToolsUi/gen2/gen2Rng";
@@ -55,6 +57,17 @@ import { ExperimentsPageComponent } from "~/pageComponents/experiments";
 import { PaintingReseed } from "~/rngToolsUi/gen3/paintingReseed";
 import { HomePageComponent } from "~/pageComponents/home";
 import { GamePageComponent } from "~/pageComponents/gamePage";
+import { RetailEmeraldHeldEgg } from "~/rngToolsUi/gen3/retailEmeraldEgg/heldEgg";
+import { PokeNavInput } from "~/rngToolsUi/gen3/retailEmeraldEgg/pokeNavTrainer";
+import {
+  CalibrateHeldEgg,
+  CalibrateHeldEggTimer,
+} from "~/rngToolsUi/gen3/retailEmeraldEgg/calibrateHeldEgg";
+import { RetailEmeraldPickupEgg } from "~/rngToolsUi/gen3/retailEmeraldEgg/pickupEgg";
+import {
+  CalibratePickupEgg,
+  CalibratePickupEggTimer,
+} from "~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -113,4 +126,13 @@ export const markdownComponents = {
   PaintingReseed,
   HomePageComponent,
   GamePageComponent,
+  RetailEmeraldHeldEgg,
+  Stepper,
+  Step,
+  PokeNavInput,
+  CalibrateHeldEgg,
+  CalibrateHeldEggTimer,
+  RetailEmeraldPickupEgg,
+  CalibratePickupEgg,
+  CalibratePickupEggTimer,
 };

@@ -6,9 +6,10 @@ import {
   FormFieldTable,
   RadioGroup,
 } from "~/components";
-import { getStatRangeForStarter, getTargetPokemonDesc } from "./calc";
+import { getTargetPokemonDesc } from "./calc";
 import type { Game, TargetStarter } from "./index";
 import { toOptions } from "~/utils/options";
+import { getGen3StatRange } from "../utils/statRange";
 
 type Props = {
   game: Game;
@@ -35,7 +36,7 @@ export const TargetPokemon = ({
             onChange={async ({ target }) => {
               setTargetStarter({
                 species: target.value,
-                minMaxStats: await getStatRangeForStarter(target.value),
+                minMaxStats: await getGen3StatRange(target.value),
               });
 
               const desc = await getTargetPokemonDesc(

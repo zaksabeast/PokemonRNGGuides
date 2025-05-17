@@ -94,12 +94,12 @@ export const guides = {
   "/bdsp-emulator-setup/": {
     meta: {
       categories: ["Brilliant Diamond and Shining Pearl"],
-      title: "Set up Yuzu/Ryujinx & CheatEngine",
-      navDrawerTitle: "Set up Yuzu/Ryujinx & CheatEngine",
+      title: "How to set up Ryujinx & CheatEngine",
+      navDrawerTitle: "Ryujinx Set Up",
       description:
-        "How to set up Yuzu/Ryujinx and Cheat Engine to RNG in Brilliant Diamond and Shining Pearl using lua scripts.",
+        "How to set up Ryujinx or Yuzu and Cheat Engine to RNG in Brilliant Diamond and Shining Pearl using lua scripts.",
       slug: "/bdsp-emulator-setup/",
-      isRoughDraft: true,
+      isRoughDraft: false,
       tag: "emu",
       hideFromNavDrawer: false,
       addedOn: null,

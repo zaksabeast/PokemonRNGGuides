@@ -833,7 +833,10 @@ export const guides = {
       layout: "guide",
       canonical: null,
       file: "guides/Gen 5/Dream Radar.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-b2w2-dream-radar/",
+        zh: "/zh-emulator-b2w2-dream-radar/",
+      },
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Dream Radar.mdx")),
   },
@@ -4254,6 +4257,28 @@ export const guides = {
       () => import("~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx"),
     ),
   },
+  "/zh-emulator-b2w2-dream-radar/": {
+    meta: {
+      categories: ["Black 2 and White 2", "Transporter and Dream Radar"],
+      title: "第五世代AR搜寻器乱数",
+      navDrawerTitle: "第五世代AR搜寻器乱数",
+      description: "乱数获取等级5梦境球隐藏特性的传说宝可梦",
+      slug: "/zh-emulator-b2w2-dream-radar/",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-b2w2-dream-radar/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 5/Dream Radar.mdx",
+      translations: {
+        en: "/emulator-b2w2-dream-radar/",
+        zh: "/zh-emulator-b2w2-dream-radar/",
+      },
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Dream Radar.mdx")),
+  },
   "/zh-emulator-b2w2-runasdate-inital-seed/": {
     meta: {
       categories: ["Black 2 and White 2"],
@@ -4994,6 +5019,7 @@ export const guideSlugs = [
   "/zh-emerald-mirage-island/",
   "/zh-emerald-painting-rng/",
   "/zh-emerald-sid-feebas/",
+  "/zh-emulator-b2w2-dream-radar/",
   "/zh-emulator-b2w2-runasdate-inital-seed/",
   "/zh-emulator-bw-entralink/",
   "/zh-emulator-bw-find-ds-parameters/",

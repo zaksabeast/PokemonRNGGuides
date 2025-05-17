@@ -1,7 +1,7 @@
 ---
 title: "Diamond, Pearl, and Platinum TID/SID RNG"
 navDrawerTitle: "TID/SID RNG"
-description: "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Diamond, Pearl, and Platinum."
+description: "How to get a desired TID/SID combo"
 slug: "emulator-dppt-tid-sid"
 category: "Diamond, Pearl, and Platinum"
 isRoughDraft: true
@@ -10,11 +10,63 @@ tag: "emu"
 
 ## Tools
 
-## Step 1: Understanding PID
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
+- [Desmume](/desmume-setup)
+- [RunAsDate](https://www.nirsoft.net/utils/run_as_date.html)
+
+##Step 1: Choosing your ID to hit
+
+1. Go to the Gen 4 tab and select "ID's"
+2. Under Filters select TID and in the box to the right enter any 5 digit number you would like it to be
+   ![pk-finder-id-boxes](/images/Diamond-Pearl-Platinum/PokeFinder/pkfinder-ID-search.png)
+
+3. Choose a TID and SID combo that you like
+4.Right click on chosen option and select "Generates time for seed"
+
+```
+Make sure your delay is at least 5000 frames, higher just gives you more time to hit your frame
+```
+
+## Step 3: Setup RunAsDate
+
+1. Launch RunAsDate.
+2. Configure RunAsDate to match the image below.
+
+![Setup](/images/Diamond-Pearl-Platinum/Initial-Seed/Setup.png)
+
+```
+You'll never have to change that after. This is the universal RunAsDate configuration for RNG (Gen 3, 4 or 5).
+```
+
+3. Select the program you want to fake the date/time with the `Browse...` button.
+4. Set the date and time to hit your seed as shown in PokeFinder.
+   - Right click on the chosen seed and choose "Generate times for seed".
+5. Hit `Run` to launch Desmume.
+
+## Step 4: Hit delay
+
+1. Now that you have set up run as date and started your game, you now will want to quickly get through the opening sequence as fast as possible.
+```
+When naming your character, you will be changing your delay between even and odds if you use Capital letters or add symbols to your name.
+```
+2. Once you have gotten to this screen below, press CTRL + N and make a save state here. then slowly get to you target delay and hold A as you press CTRL + P
+
+( a picture of last box in english D/P/PT)
+
+3. You will have most likely have not gotten the ID you were target. Enter the TID you did right in seed finder like below:
+
+(picture of pokefinder tid box with id hit)
+
+4. In this example, I hit 19 late. Go back to you save state and then hit your delay but minus 19 frames.
+
+5. Congrats! You should not have your target ID.
+
+Understanding PID
 
 Here's a basic overview to help with getting wanted PID.
 
 1. Pay attention to uppercase and lowercase letters for delay issues.
+2. Going up or down a year, will switch you between even and odd delays.
 2. Consider the special tool for finding pairs faster if they're not found by PokeFinder search.
 
 ```

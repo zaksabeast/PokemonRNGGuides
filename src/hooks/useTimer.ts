@@ -13,79 +13,74 @@ export const useTimer = ({
   onExpire?: () => void;
   onCountdown?: () => void;
 }) => {
-  const startDate = React.useRef<number | null>(null);
-  const lastTickRef = React.useRef<number>(0);
+  const startTime = React.useRef<number | null>(null);
+  const lastUpdateTime = React.useRef<number>(0);
   const [isRunning, setIsRunning] = React.useState(false);
-  const [msRemaining, setMsRemaining] = React.useState(0);
-
-  const start = React.useCallback(() => {
-    setMsRemaining(expirationMs);
-    setIsRunning(true);
-    startDate.current = Date.now();
-  }, [expirationMs]);
+  const [msRemaining, setMsRemaining] = React.useState(expirationMs);
+  const frameId = React.useRef<number | null>(null);
+  const countdownTriggered = React.useRef(false);
 
   const stop = React.useCallback(() => {
-    startDate.current = null;
+    if (frameId.current != null) {
+      cancelAnimationFrame(frameId.current);
+    }
+    frameId.current = null;
     setIsRunning(false);
+    startTime.current = null;
     setMsRemaining(expirationMs);
+    countdownTriggered.current = false;
   }, [expirationMs]);
 
-  React.useEffect(() => {
-    if (isRunning) {
-      startDate.current = Date.now();
-    } else {
-      startDate.current = null;
-    }
-  }, [expirationMs, isRunning]);
+  const tick = React.useCallback(
+    (now: number) => {
+      if (!startTime.current) {
+        return;
+      }
+
+      const elapsed = now - startTime.current;
+      const remaining = Math.max(expirationMs - elapsed, 0);
+
+      if (now - lastUpdateTime.current >= updateMs) {
+        setMsRemaining(remaining);
+        lastUpdateTime.current = now;
+      }
+
+      if (
+        countdownMs != null &&
+        !countdownTriggered.current &&
+        remaining <= countdownMs
+      ) {
+        countdownTriggered.current = true;
+        onCountdown?.();
+      }
+
+      if (remaining <= 0) {
+        onExpire?.();
+        stop();
+        return;
+      }
+
+      frameId.current = requestAnimationFrame(tick);
+    },
+    [expirationMs, updateMs, countdownMs, onCountdown, onExpire, stop],
+  );
+
+  const start = React.useCallback(() => {
+    setIsRunning(true);
+    const now = performance.now();
+    startTime.current = now;
+    lastUpdateTime.current = now;
+    countdownTriggered.current = false;
+    frameId.current = requestAnimationFrame(tick);
+  }, [tick]);
 
   React.useEffect(() => {
-    const timer = isRunning
-      ? setInterval(() => {
-          if (!isRunning || startDate.current == null) {
-            return;
-          }
-
-          const now = Date.now();
-          // Check if we've passed the throttle interval.
-          if (now - lastTickRef.current >= updateMs) {
-            lastTickRef.current = now;
-            if (startDate.current != null) {
-              const remainingMs = Math.max(
-                expirationMs - (Date.now() - startDate.current),
-                0,
-              );
-              setMsRemaining(remainingMs);
-            }
-          }
-        }, updateMs)
-      : undefined;
-    return () => clearInterval(timer);
-  }, [isRunning, expirationMs, updateMs]);
-
-  React.useEffect(() => {
-    const timer = isRunning
-      ? setTimeout(() => {
-          if (startDate.current != null) {
-            onExpire?.();
-            stop();
-          }
-        }, expirationMs)
-      : undefined;
-
-    return () => clearTimeout(timer);
-  }, [isRunning, expirationMs, onExpire, stop]);
-
-  React.useEffect(() => {
-    const timer = isRunning
-      ? setTimeout(() => {
-          if (startDate.current != null) {
-            onCountdown?.();
-          }
-        }, countdownMs)
-      : undefined;
-
-    return () => clearTimeout(timer);
-  }, [isRunning, countdownMs, onCountdown]);
+    return () => {
+      if (frameId.current != null) {
+        cancelAnimationFrame(frameId.current);
+      }
+    };
+  }, []);
 
   return {
     msRemaining,

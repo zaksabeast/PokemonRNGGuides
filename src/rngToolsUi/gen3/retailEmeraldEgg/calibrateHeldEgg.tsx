@@ -188,7 +188,10 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
         ...eggResults,
         ...callResults,
       ];
-      const results = uniqBy(merged, (res) => res.advance);
+      const results = sortBy(
+        uniqBy(merged, (res) => res.advance),
+        (res) => res.advance,
+      );
 
       setPotentialEggs(
         results.map((result) => ({

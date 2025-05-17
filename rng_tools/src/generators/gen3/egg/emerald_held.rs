@@ -389,7 +389,11 @@ fn generate_state(opts: &GenerateStateOpts) -> Option<Gen3HeldEggPid> {
     let mut trng = Pokerng::new(seed as u32);
 
     // Filter out any results that are impossible to hit
-    if redraws.wrapping_mul(180 /* ~3 seconds of video frames */) >= held_advance {
+    if redraws
+        .saturating_mul(180 /* ~3 seconds of video frames per redraw */)
+        .saturating_add(1800 /* ~30 seconds of video frames to load the game */)
+        >= held_advance
+    {
         // Impossible to hit
         return None;
     }

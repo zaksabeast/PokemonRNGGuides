@@ -140,6 +140,8 @@ type InnerProps = {
 
 const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const [state] = useHeldEggState();
+  const firstFilter = React.useRef(true);
+  const [offsets, setOffsets] = React.useState<number[]>([]);
   const [potentialEggs, setPotentialEggs] = React.useState<Result[]>([]);
   const [filters, setFilters] = React.useState<FormState>(initialValues);
 
@@ -212,21 +214,34 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   ]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => setFilters(opts),
-    [],
-  );
-
-  const dataSource = React.useMemo(
-    () =>
-      potentialEggs.filter(
+    async (opts) => {
+      const filteredEggs = potentialEggs.filter(
         (egg) =>
           egg.match_call === filters.pokeNavCall &&
           // Intentionally using `==` to compare undefined and null
           egg.nature == filters.nature &&
           egg.gender == filters.gender,
-      ),
-    [potentialEggs, filters],
+      );
+
+      if (!firstFilter.current) {
+        setOffsets(filteredEggs.map((egg) => egg.offset));
+      }
+
+      setFilters(opts);
+      firstFilter.current = false;
+    },
+    [filters, potentialEggs],
   );
+
+  const dataSource = React.useMemo(() => {
+    return potentialEggs.filter(
+      (egg) =>
+        egg.match_call === filters.pokeNavCall &&
+        // Intentionally using `==` to compare undefined and null
+        egg.nature == filters.nature &&
+        egg.gender == filters.gender,
+    );
+  }, [potentialEggs, filters]);
 
   const matchCall = state.target?.match_call;
   const targetCall =
@@ -244,6 +259,10 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
           Target Nature: {state.target?.nature}
         </Typography.Title>
       </Flex>
+
+      <Typography.Text mv={0}>
+        Previous offsets: {offsets.join(", ")}
+      </Typography.Text>
 
       <RngToolForm<FormState, Result>
         fields={fields}

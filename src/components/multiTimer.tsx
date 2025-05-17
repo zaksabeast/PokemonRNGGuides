@@ -14,6 +14,7 @@ import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { z } from "zod";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
+import * as tst from "ts-toolbelt";
 
 const MultiTimerStateSchema = z.object({
   showAllTimers: z.boolean(),
@@ -59,7 +60,7 @@ const InnerMultiTimer = ({
     Math.floor(currentMs / countdownIntervalMs),
     state.maxBeepCount,
   );
-  const countdownMs = currentMs - countdownBeeps * countdownIntervalMs;
+  const countdownMs = countdownBeeps * countdownIntervalMs;
 
   const onCountdown = React.useCallback(
     () => firstBeep.playBeeps(countdownBeeps),
@@ -69,7 +70,12 @@ const InnerMultiTimer = ({
   const onExpire = React.useCallback(() => {
     secondBeep.playBeeps(1);
     setCurrentTimerIndex((prev) => prev + 1);
-  }, [secondBeep]);
+
+    if (currentTimerIndex + 1 >= milliseconds.length) {
+      setIsRunning(false);
+      setCurrentTimerIndex(0);
+    }
+  }, [currentTimerIndex, secondBeep, milliseconds.length]);
 
   React.useEffect(() => {
     setIsRunning(false);
@@ -159,7 +165,7 @@ const InnerMultiTimer = ({
                 key={index}
                 expirationMs={ms}
                 countdownMs={countdownMs}
-                run={isRunning && index <= currentTimerIndex}
+                run={isRunning && index === currentTimerIndex}
                 onCountdown={onCountdown}
                 onExpire={onExpire}
               />
@@ -193,7 +199,15 @@ const InnerMultiTimer = ({
   );
 };
 
-type Props = Omit<InnerProps, "state" | "setState">;
+const getMinutesBeforeTarget = (milliseconds: number[]) => {
+  const summedMs = milliseconds.reduce((acc, ms) => acc + ms, 0);
+  return Math.floor(summedMs / 60000);
+};
+
+type Props = tst.O.Optional<
+  tst.O.Omit<InnerProps, "state" | "setState">,
+  "minutesBeforeTarget"
+>;
 
 export const MultiTimer = (props: Props) => {
   const [lockedState, setState] = useAtom(multiTimerStateAtom);
@@ -203,5 +217,14 @@ export const MultiTimer = (props: Props) => {
     return <Skeleton />;
   }
 
-  return <InnerMultiTimer state={state} setState={setState} {...props} />;
+  return (
+    <InnerMultiTimer
+      state={state}
+      setState={setState}
+      minutesBeforeTarget={
+        props.minutesBeforeTarget ?? getMinutesBeforeTarget(props.milliseconds)
+      }
+      {...props}
+    />
+  );
 };

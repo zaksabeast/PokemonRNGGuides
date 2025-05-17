@@ -1324,7 +1324,7 @@ export const guides = {
       description:
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Diamond, Pearl, and Platinum.",
       slug: "/emulator-dppt-tid-sid/",
-      isRoughDraft: true,
+      isRoughDraft: false,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,

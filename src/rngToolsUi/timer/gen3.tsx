@@ -133,13 +133,11 @@ const InnerGen3Timer = ({
       }
 
       const milliseconds = await rngTools.create_gen3_timer(settings);
-      setTimer(
-        hydrationLock({
-          milliseconds: [...milliseconds],
-          minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
-        }),
-      );
-      onUpdate(hydrationLock(updatedOpts));
+      setTimer({
+        milliseconds: [...milliseconds],
+        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
+      });
+      onUpdate(updatedOpts);
     },
     [onUpdate, setTimer],
   );

@@ -26,6 +26,7 @@ type Props<FormState, Result> = {
 } & OneOf<{
   fields: Field[];
   getFields: (values: FormState) => Field[];
+  children: React.ReactNode;
 }> &
   AllOrNone<{ columns: ResultColumn<Result>[]; results: Result[] }> &
   AllOrNone<{
@@ -49,6 +50,7 @@ export const RngToolForm = <
   onClickResultRow,
   rowKey,
   results,
+  children,
   formContainerId,
   allowReset = false,
   resetTrackerId,
@@ -69,13 +71,19 @@ export const RngToolForm = <
       validationSchema={_validationSchema}
     >
       {(formik) => {
-        const fieldsToUse = fields || getFields(formik.values);
+        const fieldsReactNode = (() => {
+          if (children) {
+            return children;
+          }
+          const fieldsToUse = fields || getFields!(formik.values);
+          return <FormFieldTable fields={fieldsToUse} />;
+        })();
 
         return (
           <Flex vertical gap={16} id={formContainerId}>
             <Form>
               <Flex vertical gap={8}>
-                <FormFieldTable fields={fieldsToUse} />
+                {fieldsReactNode}
                 <Button trackerId={submitTrackerId} htmlType="submit">
                   {submitButtonLabel}
                 </Button>

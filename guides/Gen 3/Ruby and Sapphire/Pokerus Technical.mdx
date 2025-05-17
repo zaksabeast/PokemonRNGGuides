@@ -1,0 +1,103 @@
+---
+title: "Pokérus"
+navDrawerTitle: "Pokérus"
+description: "How Pokérus infection is triggered"
+slug: "gba-pokerus-technical"
+category: "GBA Technical Documentation"
+tag: "any"
+addedOn: "2025-05-13"
+---
+
+<Gist>
+  Gist: Technical info about how Pokérus is triggered and understanding its
+  optimal setup for Ruby & Sapphire.
+</Gist>
+
+## What is Pokérus?
+
+After each wild battle, there is a 1 / 21,845 chance that one of your Pokémon will be infected with Pokérus. While infected by Pokérus, EVs gained from battling are doubled.
+
+## Retail RNG Manipulation
+
+To RNG manipulate Pokérus on retail, we need the following technical information:
+
+- The target advance when Pokérus is determined that will result in an infection.
+- The target player input advance (advance when the player must perform the last input).
+- How to calibrate (how to determine the actual hit player input advance).
+
+The following sections will explain how each of those elements were determined to create the [Pokérus RNG tool](/rs-pokerus-retail).
+
+### Target Advance when Pokérus is Determined
+
+One Pokémon of the team becomes infected if the RNG value is 0x4000, 0x8000 or 0xC000. In Ruby & Sapphire, the first occurences are at advances 26923, 101199, 101236. In Emerald, it's 66610.
+
+### Target Player Input Advance
+
+To determine the target player input advance, we need to understand how the RNG evolves between the player input and the Pokérus trigger.
+
+The last player input that triggers the Pokérus logic is pressing the `A` button on the message "XXX gained YY EXP.Points." at the end of a wild battle. Afterwards, the following occurs in Ruby & Sapphire:
+
+- ~94 RNG advances caused by vblanks and the battle loop.
+- For each party Pokémon that has the Pickup ability, the RNG updates to determine if the Pokémon picked up an item. 10% of time, it does and a second RNG update determines the item.
+- 4 RNG advances caused by vblanks and the battle loop.
+- If the player has entered the hall of fame and has at least one TV Show slot available, RNG advances by 1.
+- If the player has entered the hall of fame and can trigger mass outbreak, RNG advances by 1. ~0.5% of the time, it does and a second RNG update determines the mass outbreak Pokémon.
+- Another RNG advance for TV Show.
+- 74 RNG advances caused by vblanks and the battle loop.
+- 2 additional RNG advances if the Pokemon levels-up after the battle.
+- RNG advance for Pokérus.
+
+### Variables
+
+Those are the variables that affect Pokérus and that are under the control of the player :
+
+- Number of Pokémon with Pickup ability.
+- Whether the player has entered the hall of fame.
+- Whether the player can trigger a mass outbreak.
+- Whether the player has at least one TV Show slot available.
+- Whether the player's Pokémon will level-up after the battle.
+
+Each combination of those variables gives a different target player input advance. For example, with 5 Pickup Pokémon, not having entered hall of fame, no mass outbreak, no TV Show slot and no level-up, the target player input advance is 26838, in order to hit advance 26923 for Pokérus.
+
+### Calibration
+
+There are many factors that affect Pokérus that are outside of the control of the player. Calibration is the process of adjusting the player inputs (ex: adjusting timers) to take into consider those factors.
+
+To perform calibration, we must determine the hit player input advance.
+
+For Pokérus, a list of possible hit player input advances can be determined by checking the items obtained from Pickup ability. In most cases, no items are obtained and this gives us little info. But in some cases (ex: obtaining a Rare Candy on 3rd Pokémon) gives us an accurate advance.
+
+## Optimal Setups
+
+The criterias to determine if a setup is better than another are:
+
+- Accuracy of calibration (number of Pickup Pokémon).
+- Requirements.
+- Time to retry an attempt (target advance).
+- Difficulty to perform. With certain specific setups, Pokérus can be triggered by pressing `A` on two possible advances, making it easier to perform.
+
+The setups I recommend are, from best to worst:
+
+| Setup | Pickup Count | Hall of Fame | Mass Outbreak | TV Show Slot | Level-up | Target Input Adv |
+| ----- | ------------ | ------------ | ------------- | ------------ | -------- | ---------------- |
+| #1    | 5            | No           | \*            | \*           | No       | 26838            |
+| #2    | 2            | No           | \*            | \*           | No       | 26841 or 26842   |
+| #3    | 5            | Yes          | No            | Yes          | No       | 26837            |
+| #4    | 1            | Yes          | No            | Yes          | No       | 26841 or 26842   |
+| Worst | >0           | Yes          | Yes           | Yes          | \*       | ~101199          |
+
+For advanced users, it is possible to initially use setup #1 or #3 with 5 Pickup Pokémon which is the best for calibration. Once calibration is complete, switch to setup #2 or #4 which are easier to perform because they have a 2-advances window.
+
+With the worst setup above, it is impossible to hit the target advance 26923 for Pokérus. The earliest Pokérus is at advance 101199.
+
+## Advance Parity
+
+While waiting in battle, RNG advances by 2 every frame. If your RNG advance is odd, then it will always stay odd, meaning that an even target advance (ex: 26838) is impossible to hit.
+It is theorically possible to determine the advance parity based on the species fought. Using Sweet Scent and letting the opponent attack you will switch the parity from odd to even (or even to odd).
+
+## Searcher info
+
+- TV Show function: [PutPokemonTodayCaughtOnAir()](https://github.com/pret/pokeruby/blob/master/src/tv.c#L797)
+- Pickup function: [atkE5_pickup()](https://github.com/pret/pokeruby/blob/master/src/battle_script_commands.c#L9200)
+- Pokérus function: [RandomlyGivePartyPokerus()](https://github.com/pret/pokeruby/blob/master/src/pokemon_3.c#L817)
+- [Lua script to print RNG advance](https://github.com/RainingChain/pk_emu_scripts/blob/main/Gen3/log_rng_advances.lua)

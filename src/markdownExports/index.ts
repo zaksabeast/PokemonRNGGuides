@@ -34,6 +34,7 @@ import {
 } from "~/components";
 import { Gen2PokemonRng } from "~/rngToolsUi/gen2/crystalPokemon";
 import { Gen2Rng } from "~/rngToolsUi/gen2/gen2Rng";
+import { Gen3Pokerus } from "~/rngToolsUi/gen3/pokerus";
 import { Gen3Sid } from "~/rngToolsUi/gen3/sid";
 import { Gen4Timer } from "~/rngToolsUi/timer/gen4";
 import { EmeraldHeldEgg } from "~/rngToolsUi/gen3/emeraldHeldEgg";
@@ -102,6 +103,7 @@ export const markdownComponents = {
   Gist,
   Gen2PokemonRng,
   Gen2Rng,
+  Gen3Pokerus,
   Gen3Sid,
   Gen3MirageIsland,
   EmeraldHeldEgg,

@@ -2667,6 +2667,28 @@ export const guides = {
       () => import("~/../guides/Tools and Emulators/PokeFinder.mdx"),
     ),
   },
+  "/pokereader/": {
+    meta: {
+      categories: ["3DS Tools"],
+      title: "PokeReader - 3DS Overlay for Pokemon RNG",
+      navDrawerTitle: "What is PokeReader",
+      description:
+        "PokeReader is a 3GX plugin for the 3DS that adds emulator-style tools like pausing, frame advancing, and overlays - perfect for RNG manipulation on real hardware.",
+      slug: "/pokereader/",
+      isRoughDraft: false,
+      tag: "cfw",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Tools and Emulators/PokeReader.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/PokeReader.mdx"),
+    ),
+  },
   "/retail-bw-entralink/": {
     meta: {
       categories: ["Black and White"],
@@ -4856,6 +4878,7 @@ export const guideSlugs = [
   "/pcalc-xy-friend-safari/",
   "/pcalc-xy-tid/",
   "/pokefinder/",
+  "/pokereader/",
   "/retail-bw-entralink/",
   "/retail-emerald-egg/",
   "/retail-emerald-wild/",

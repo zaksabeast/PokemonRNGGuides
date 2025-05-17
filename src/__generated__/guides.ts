@@ -3986,6 +3986,28 @@ export const guides = {
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
     ),
   },
+  "/xy-friend-safari-patch/": {
+    meta: {
+      categories: ["X and Y"],
+      title: "XY All Friend Safaris Patch",
+      navDrawerTitle: "All Friend Safaris Patch",
+      description:
+        "How to use a game patch to unlock all Friend Safari Pokemon in Pokemon X and Y, including Ditto and Vivillon.",
+      slug: "/xy-friend-safari-patch/",
+      isRoughDraft: false,
+      tag: "patch",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 6/Friend Safari Patch.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 6/Friend Safari Patch.mdx"),
+    ),
+  },
   "/xy-pokeradar/": {
     meta: {
       categories: ["X and Y"],
@@ -4939,6 +4961,7 @@ export const guideSlugs = [
   "/wishing-star-jirachi/",
   "/x-and-y/",
   "/xdcolo-tidsid-generator/",
+  "/xy-friend-safari-patch/",
   "/xy-pokeradar/",
   "/zh-bw2-egg/",
   "/zh-dppt-advance-rng/",

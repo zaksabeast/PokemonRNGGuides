@@ -88,7 +88,7 @@ const TitleContainer = styled.div({
   zIndex: 1,
 });
 
-type PageSection = GuideMeta["tag"] | "tool";
+type PageSection = GuideMeta["tag"] | "tool" | "patch";
 
 const sectionDisplayOrder: PageSection[] = [
   "info",
@@ -98,6 +98,7 @@ const sectionDisplayOrder: PageSection[] = [
   "emu",
   "retail",
   "tool",
+  "patch",
 ];
 
 const isSectionDsiplay = (section: string): section is PageSection => {
@@ -117,6 +118,7 @@ const getSectionLabel = (section: string) => {
     .with("info", () => "Info")
     .with("retail", () => "Retail")
     .with("tool", () => "Tools")
+    .with("patch", () => "Patches")
     .exhaustive();
 };
 

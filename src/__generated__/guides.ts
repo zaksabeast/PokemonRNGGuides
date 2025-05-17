@@ -3763,6 +3763,26 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
   },
+  "/sos-call-rates/": {
+    meta: {
+      categories: ["Ultra Sun and Ultra Moon", "Sun and Moon"],
+      title: "Gen 7 SOS Call Rates",
+      navDrawerTitle: "SOS Call Rates",
+      description:
+        "A list of every Pokemon that can SOS and their call rates in Gen 7.",
+      slug: "/sos-call-rates/",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 7/SOS Call Rates.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 7/SOS Call Rates.mdx")),
+  },
   "/sun-and-moon/": {
     meta: {
       categories: ["Game Hub"],
@@ -4951,6 +4971,7 @@ export const guideSlugs = [
   "/rs-tidsid-generator/",
   "/rs-tips-rng/",
   "/ruby-and-sapphire/",
+  "/sos-call-rates/",
   "/sun-and-moon/",
   "/sword-and-shield/",
   "/sysbot-lpa-mmo/",

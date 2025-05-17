@@ -9,7 +9,7 @@ import {
   MdRocketLaunch,
   MdUpdate,
 } from "react-icons/md";
-import { AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaDiscord, FaCoffee } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold } from "react-icons/pi";
@@ -34,6 +34,7 @@ const icons = {
   Play: FaPlay,
   Fire: FaFire,
   Pokeball: TbPokeball,
+  OutlineSearch: AiOutlineSearch,
 } as const;
 
 export type IconName = keyof typeof icons;

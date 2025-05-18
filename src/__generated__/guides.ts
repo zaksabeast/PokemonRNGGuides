@@ -6,7 +6,8 @@ export const guides = {
       categories: ["Home"],
       title: "Pokemon RNG - Become The Very Best",
       navDrawerTitle: "Pokemon RNG - Become The Very Best",
-      description: "Train Smarter, Shine Brighter — Together.",
+      description:
+        "Learn retail and emulator RNG with our Pokémon guides and tools",
       slug: "/",
       isRoughDraft: false,
       tag: "info",
@@ -3772,7 +3773,7 @@ export const guides = {
       title: "Gen 7 SOS Call Rates",
       navDrawerTitle: "SOS Call Rates",
       description:
-        "A list of every Pokemon that can SOS and their call rates in Gen 7.",
+        "A searchable list of every Pokemon that can SOS and their call rates in Gen 7.",
       slug: "/sos-call-rates/",
       isRoughDraft: false,
       tag: "any",

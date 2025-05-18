@@ -1,0 +1,147 @@
+[
+  {
+    "name": "Seed",
+    "url": "https://en.wikipedia.org/wiki/Random_seed",
+    "aliases": ["Initial seed"],
+    "importance": "veryHigh",
+    "desc": "Starting value used by the game's random number generator (RNG). Knowing or controlling it allows players to predict and manipulate in-game randomness for desired outcomes."
+  },
+  {
+    "name": "Advance",
+    "importance": "veryHigh",
+    "desc": "Process of moving forward in the game's random number sequence. This happens through in-game actions like NPC movement, menu interactions, or specific mechanics that shift the RNG to a new state."
+  },
+  {
+    "name": "Target advance",
+    "importance": "veryHigh",
+    "desc": "Specific RNG advance a player aims for a desired outcome."
+  },
+  {
+    "name": "Hit advance",
+    "importance": "veryHigh",
+    "desc": "Specific RNG advance a player actually hit when attempting an RNG manipulation."
+  },
+  {
+    "name": "Frame",
+    "importance": "veryHigh",
+    "desc": "Single rendered image on the screen, which updates at a consistent rate (~59.7275 frames per second on GBA)."
+  },
+  {
+    "name": "Hexadecimal",
+    "aliases": ["Hex"],
+    "importance": "high",
+    "desc": "Base-16 numbering system where each digit can represent a value from 0 to 15. It uses the digits 0-9 and the letters A-F to represent the values 10-15. "
+  },
+  {
+    "name": "Modulo",
+    "aliases": ["Mod"],
+    "importance": "high",
+    "desc": "Mathematic operation to get the remainder when one number is divided by another. For example, 5 mod 3 = 2 because when you divide 5 by 3, the remainder is 2."
+  },
+  {
+    "name": "Calibration (action)",
+    "importance": "veryHigh",
+    "desc": "Process of determining the game's timing inconsistencies to accurately predict RNG outcomes."
+  },
+  {
+    "name": "Calibration (value)",
+    "importance": "veryHigh",
+    "desc": "Timing variation (ex: +100 ms) to counterbalance the game inconsistencies in order to obtain the desired outcome"
+  },
+  { "name": "Delay", "importance": "veryHigh", "desc": "" },
+  { "name": "Offset", "importance": "veryHigh", "desc": "" },
+
+  {
+    "name": "Trainer ID",
+    "aliases": ["TID"],
+    "importance": "veryHigh",
+    "desc": ""
+  },
+  {
+    "name": "Personality value",
+    "aliases": ["PID"],
+    "importance": "veryHigh",
+    "desc": ""
+  },
+  {
+    "name": "Individual value",
+    "aliases": ["IV"],
+    "importance": "veryHigh",
+    "desc": ""
+  },
+  {
+    "name": "Trainer shiny value",
+    "aliases": ["TSV"],
+    "importance": "high",
+    "desc": ""
+  },
+  {
+    "name": "Pokémon shiny value",
+    "aliases": ["PSV"],
+    "importance": "high",
+    "desc": ""
+  },
+  {
+    "name": "Egg shiny value",
+    "aliases": ["ESV"],
+    "importance": "high",
+    "desc": ""
+  },
+  {
+    "name": "Effort value",
+    "aliases": ["EV"],
+    "importance": "mid",
+    "desc": ""
+  },
+
+  {
+    "name": "Dead battery",
+    "aliases": ["Dry battery"],
+    "importance": "high",
+    "desc": ""
+  },
+  { "name": "Live battery", "importance": "high", "desc": "" },
+  {
+    "name": "Real Time Clock",
+    "aliases": ["RTC"],
+    "importance": "high",
+    "desc": ""
+  },
+
+  { "name": "Sweet Scent", "importance": "high", "desc": "" },
+  { "name": "Synchronize", "importance": "high", "desc": "" },
+
+  { "name": "Mystic Timer", "importance": "veryHigh", "desc": "" },
+  { "name": "Eon Timer", "importance": "high", "desc": "" },
+  { "name": "mGBA", "importance": "high", "desc": "", "tags": ["Emu"] },
+  { "name": "NO$GBA", "importance": "low", "desc": "", "tags": ["Emu"] },
+  { "name": "Dolphin", "importance": "low", "desc": "", "tags": ["Emu"] },
+  { "name": "VBA-M", "importance": "low", "desc": "", "tags": ["Emu"] },
+  { "name": "PKHex", "importance": "low", "desc": "", "tags": ["Emu"] },
+  { "name": "Trainer card flip", "importance": "low", "desc": "" },
+
+  { "name": "Method-X", "importance": "high", "desc": "" },
+  { "name": "Wild-X", "importance": "high", "desc": "" },
+  { "name": "Static Pokémon", "importance": "high", "desc": "" },
+  { "name": "Lua script", "importance": "high", "desc": "", "tags": ["Emu"] },
+
+  { "name": "Noise", "importance": "mid", "desc": "" },
+  { "name": "Reseeding", "importance": "mid", "desc": "" },
+  { "name": "Painting technique", "importance": "mid", "desc": "" },
+  { "name": "Battle video technique", "importance": "mid", "desc": "" },
+  { "name": "Arbitrary code execution", "importance": "low", "desc": "" },
+
+  { "name": "VBlank", "importance": "low", "desc": "", "tags": ["Research"] },
+  {
+    "name": "Cycle counter",
+    "importance": "low",
+    "desc": "",
+    "tags": ["Research"]
+  },
+  {
+    "name": "Decompil project",
+    "importance": "low",
+    "desc": "",
+    "tags": ["Research"]
+  }
+]

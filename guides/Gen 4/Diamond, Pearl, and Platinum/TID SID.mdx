@@ -4,7 +4,7 @@ navDrawerTitle: "TID/SID RNG"
 description: "How to get a desired TID/SID combo"
 slug: "emulator-dppt-tid-sid"
 category: "Diamond, Pearl, and Platinum"
-isRoughDraft: true
+isRoughDraft: false
 tag: "emu"
 ---
 
@@ -14,20 +14,20 @@ tag: "emu"
 - [Desmume](/desmume-setup)
 - [RunAsDate](https://www.nirsoft.net/utils/run_as_date.html)
 
-##Step 1: Choosing your ID to hit
+## Step 1: Choosing your ID to hit
 
 1. Go to the Gen 4 tab and select "ID's"
 
 2. Under Filters, select TID and enter any 5-digit number you want
 
-   ![pk-finder-id-boxes](/images/Diamond-Pearl-Platinum/PokeFinder/pkfinder-ID-search.png)
+   ![pk-finder-id-boxes](/images/Diamond-Pearl-Platinum/TID/pkfinder-ID-search.png)
 
 3. Choose a TID and SID combo that you like
 
 4. Right click on chosen option and select "Generates time for seed"
 
 ```
-Make sure your delay is at least 5000 frames, higher just gives you more time to hit your frame. You can go as low as 4000 for HGSS.
+Make sure your delay is at least 5000 frames, higher just gives you more time to hit your frame.
 ```
 
 ## Step 3: Setup RunAsDate
@@ -48,31 +48,27 @@ You'll never have to change that after. This is the universal RunAsDate configur
 
 ## Step 4: Hit delay
 
-1. Now that you have set up run as date and started your game, you now will want to quickly get through the opening sequence as fast as possible.
-```
-When naming your character, you will be changing your delay between even and odds if you use Capital letters or add symbols to your name.
-```
-2. Once you have gotten to this screen below, press CTRL + N and make a save state here. then slowly get to you target delay and hold A as you press CTRL + P
-
-( a picture of last box in english D/P/PT)
-
-3. You will have most likely have not gotten the ID you were target. Enter the TID you did right in seed finder like below:
-
-(picture of pokefinder tid box with id hit)
-
-4. In this example, I hit 46 early. Go back to you save state and then hit your delay but adjust for the delay you experienced. (If you are early, you add the frame different. if you are late, you subtract)
-
-5. Congrats! You should not have your target ID.
-
-Understanding PID
-
-Here's a basic overview to help with getting wanted PID.
-
-1. Going up or down a year, will switch you between even and odd delays.
-2. Consider the special tool for finding pairs faster if they're not found by PokeFinder search.
+Now that you have set up run as date and started your game, you will want to get through the opening sequence as fast as possible.
 
 ```
-Remember to check for any updates on tools or methods.
+Note: When naming your character, you will be changing your delay between even and odds if you use Capital letters or add symbols to your name. Keep this in mind, if you need to redo this step.
 ```
+Once you have gotten to this screen below, press "N" and make a save state here. then slowly get to you target delay and hold A as you press CTRL + P
 
-Congrats! You've now got a better grasp on TID/SID RNG!
+Platinum:
+![pt-last-screen](/images/Diamond-Pearl-Platinum/TID/pt-last-screen-tid.png)
+Diamond and Pearl:
+![dp-last-screen](/images/Diamond-Pearl-Platinum/TID/DP-last-screen-tid.png)
+
+You will most likely have gotten the wrong TID. Enter the TID you did get in seed finder like below:
+
+![hit-tid](/images/Diamond-Pearl-Platinum/TID/hit-tid-pkfinder-ex.png)
+
+In this example, I hit 46 early. Go back to your save state and then hit your delay but adjust for the delay you experienced. 
+
+Congrats! You should now have your target ID.
+
+- If you experience issues with the delay swapping from even and odd, you can go up or down a year on the date pokefinder gives you to swap as well.
+- The PID option is a useful filter option, if you want to tie this RNG into RNG'ing your starter as you can get a good stat spread to be shiny that has a good delay.
+- or you could use a cute charm PID to go do a cute charm RNG next!
+[Cute Charm RNG guide](/emulator-dppt-cute-charm)

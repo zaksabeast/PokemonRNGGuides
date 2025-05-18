@@ -1,24 +1,18 @@
-import {
-  Field,
-  RngToolForm,
-  ResultColumn,
-  RngToolSubmit,
-  Link,
-  FormikNumberInput,
-} from "~/components";
+import { ResultColumn, Flex } from "~/components";
+import { MarkdownA } from "~/markdownExports/components";
 import { FormikRadio } from "~/components/radio";
 import { rngTools, MirageIslandResult } from "~/rngTools";
 import React from "react";
 import { clamp } from "lodash-es";
 import { z } from "zod";
-import { Table, TableProps } from "antd";
+import { Table, TableColumnsType } from "antd";
 import { match } from "ts-pattern";
 
 type Props = {
   jsonUrl: string;
 };
 
-type Importance = "low" | "mid" | "high" | "veryHigh";
+type Importance = 1 | 2 | 3 | 4 | 5;
 type Tag = "Emu" | "Research";
 
 type TermInJson = {
@@ -40,7 +34,7 @@ type Term = {
   tags: Tag[];
 };
 
-const columns: ResultColumn<Term>[] = [
+const columns: TableColumnsType<Term> = [
   {
     title: "Name",
     dataIndex: "name",
@@ -48,17 +42,25 @@ const columns: ResultColumn<Term>[] = [
       if (!values.url) {
         return name;
       }
-      return <Link href={values.url}>{name}</Link>;
+      return <MarkdownA href={values.url}>{name}</MarkdownA>;
     },
+    showSorterTooltip: { target: "full-header" },
+    sorter: (left, right) => left.name.localeCompare(right.name),
+    sortDirections: ["ascend", "descend"],
   },
-  /*{
-    title: "Aliases",
-    dataIndex: "aliases",
-    render: (val) => {
-      if (!val.length) {
-        return "";
+  {
+    title: "Description",
+    dataIndex: "desc",
+    render: (value, record) => {
+      if (!record.aliases.length) {
+        return value;
       }
-      return `(${val.join(", ")})`;
+      return (
+        <Flex vertical gap={10}>
+          <div>{value}</div>
+          <div>{"Also known as: " + record.aliases.join(", ")}</div>
+        </Flex>
+      );
     },
   },
   {
@@ -66,16 +68,13 @@ const columns: ResultColumn<Term>[] = [
     dataIndex: "importance",
     render: (val) => {
       return match(val)
-        .with("low", () => "Low")
-        .with("mid", () => "Mid")
-        .with("high", () => "High")
-        .with("veryHigh", () => "Essential")
+        .with(1, () => "Niche")
+        .with(2, () => "Low")
+        .with(3, () => "Mid")
+        .with(4, () => "High")
+        .with(5, () => "Essential")
         .otherwise(() => "");
     },
-  },*/
-  {
-    title: "Description",
-    dataIndex: "desc",
   },
 ];
 

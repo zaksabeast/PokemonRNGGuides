@@ -1,10 +1,6 @@
-import { ResultColumn, Flex } from "~/components";
+import { Flex } from "~/components";
 import { MarkdownA } from "~/markdownExports/components";
-import { FormikRadio } from "~/components/radio";
-import { rngTools, MirageIslandResult } from "~/rngTools";
 import React from "react";
-import { clamp } from "lodash-es";
-import { z } from "zod";
 import { Table, TableColumnsType } from "antd";
 import { match } from "ts-pattern";
 
@@ -13,7 +9,6 @@ type Props = {
 };
 
 type Importance = 1 | 2 | 3 | 4 | 5;
-type Tag = "Emu" | "Research";
 
 type TermInJson = {
   name: string;
@@ -21,7 +16,6 @@ type TermInJson = {
   aliases?: string[];
   importance: Importance;
   desc: string;
-  tags?: Tag[];
 };
 
 type Term = {
@@ -31,7 +25,6 @@ type Term = {
   aliases: string[];
   importance: Importance;
   desc: string;
-  tags: Tag[];
 };
 
 const columns: TableColumnsType<Term> = [
@@ -68,7 +61,7 @@ const columns: TableColumnsType<Term> = [
     dataIndex: "importance",
     render: (val) => {
       return match(val)
-        .with(1, () => "Niche")
+        .with(1, () => "Minor")
         .with(2, () => "Low")
         .with(3, () => "Mid")
         .with(4, () => "High")
@@ -93,7 +86,6 @@ export const Glossary = ({ jsonUrl }: Props) => {
           aliases: rawTerm.aliases ?? [],
           importance: rawTerm.importance,
           desc: rawTerm.desc,
-          tags: rawTerm.tags ?? [],
         };
       });
 

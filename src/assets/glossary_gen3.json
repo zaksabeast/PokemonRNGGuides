@@ -158,8 +158,7 @@
     "name": "Lua script",
     "url": "/mgba-setup",
     "importance": 3,
-    "desc": "A file with the .lua extension that can be loaded by emulators to help manipulate RNG. Ex: Display the current RNG advance.",
-    "tags": ["Emu"]
+    "desc": "A file with the .lua extension that can be loaded by emulators to help manipulate RNG. Ex: Display the current RNG advance."
   },
   {
     "name": "Reseeding",
@@ -187,8 +186,7 @@
     "name": "mGBA",
     "url": "/mgba-setup",
     "importance": 3,
-    "desc": "GBA emulator with lua script support which is recommended for RNG manipulation.",
-    "tags": ["Emu"]
+    "desc": "GBA emulator with lua script support which is recommended for RNG manipulation."
   },
   {
     "name": "Effort value",
@@ -201,15 +199,13 @@
     "name": "NO$GBA",
     "url": "https://problemkaputt.de/gba.htm",
     "importance": 2,
-    "desc": "GBA emulator with a built-in interactive debugger which is useful for RNG manipulation research.",
-    "tags": ["Emu"]
+    "desc": "GBA emulator with a built-in interactive debugger which is useful for RNG manipulation research."
   },
   {
     "name": "Dolphin",
     "url": "https://dolphin-emu.org/",
     "importance": 2,
-    "desc": "GameCube emulator with GBA connectivity.",
-    "tags": ["Emu"]
+    "desc": "GameCube emulator with GBA connectivity."
   },
   {
     "name": "PKHex",
@@ -233,22 +229,19 @@
     "name": "VBlank",
     "url": "/gba-vblank",
     "importance": 2,
-    "desc": "Mechanism used by the GBA to refresh the screen (~59.7 times per second). VBlank updates the RNG to advance by 1.",
-    "tags": ["Research"]
+    "desc": "Mechanism used by the GBA to refresh the screen (~59.7 times per second). VBlank updates the RNG to advance by 1."
   },
   {
     "name": "Cycle counter",
     "url": "/gba-vblank",
     "importance": 2,
-    "desc": "Internal counter in the GBA that tracks the number of CPU instructions performed. Every time it reaches 280'896, a VBlank is triggered.",
-    "tags": ["Research"]
+    "desc": "Internal counter in the GBA that tracks the number of CPU instructions performed. Every time it reaches 280'896, a VBlank is triggered."
   },
   {
     "name": "Decompiled code",
     "url": "https://github.com/pret",
     "importance": 2,
     "desc": "Human-readable code equivalent to the Pokémon game program. It is used to better understand its logic.",
-    "alias": ["pret"],
-    "tags": ["Research"]
+    "alias": ["pret"]
   }
 ]

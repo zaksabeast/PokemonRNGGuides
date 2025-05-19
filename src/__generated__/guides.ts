@@ -560,7 +560,7 @@ export const guides = {
   "/dppt-wild/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      title: "Diamond, Pearl, and Platinum Wild RNG",
+      title: "Diamond, Pearl, and Platinum Wild RNG Guide",
       navDrawerTitle: "Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in Diamond, Pearl, and Platinum for shiny and high-IV results.",

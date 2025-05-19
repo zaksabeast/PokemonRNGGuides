@@ -9,7 +9,7 @@ import {
   RngToolSubmit,
 } from "~/components";
 import { rngTools, Gen3HeldEgg } from "~/rngTools";
-import { gen3Species, species } from "~/types/species";
+import { gen3SpeciesOptions, species } from "~/types/species";
 import { nature } from "~/types/nature";
 import { gender } from "~/types/gender";
 import { genderOptions, natureOptions } from "~/components/pkmFilter";
@@ -87,7 +87,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "female_nature">
         name="female_nature"
-        options={nature.map((nat) => ({ label: nat, value: nat }))}
+        options={natureOptions.required}
       />
     ),
   },
@@ -96,9 +96,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "egg_species">
         name="egg_species"
-        options={gen3Species
-          .sort((first, second) => first.localeCompare(second))
-          .map((spec) => ({ label: spec, value: spec }))}
+        options={gen3SpeciesOptions.byName}
       />
     ),
   },
@@ -172,7 +170,7 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "filter_nature">
         name="filter_nature"
-        options={natureOptions}
+        options={natureOptions.optional}
       />
     ),
   },
@@ -198,7 +196,11 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
     async (opts) => {
       const results = await rngTools.emerald_egg_held_states({
         ...opts,
+        has_lightning_rod: false,
+        has_roamer: false,
+        registered_trainers: [],
         lua_adjustment: lua,
+        filter_impossible_to_hit: false,
         filters: {
           shiny: opts.filter_shiny,
           nature: opts.filter_nature,

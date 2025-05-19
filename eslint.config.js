@@ -2,8 +2,8 @@ import js from "@eslint/js";
 import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
+import noRelativeImportPaths from "eslint-plugin-no-relative-import-paths";
 import tseslint from "typescript-eslint";
-import { message } from "antd";
 
 export default tseslint.config(
   { ignores: ["dist", "src/graphql/__generated__", "rng_tools"] },
@@ -17,14 +17,36 @@ export default tseslint.config(
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
+      "no-relative-import-paths": noRelativeImportPaths,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      "id-length": [
+        "error",
+        {
+          min: 2,
+          exceptions: [
+            "i", // index
+            "j", // index
+            "z", // zod
+            "_", // placeholder
+            "t", // translation
+          ],
+        },
+      ],
+      "no-relative-import-paths/no-relative-import-paths": [
+        "error",
+        { allowSameFolder: true, rootDir: "src", prefix: "~", allowedDepth: 1 },
+      ],
       "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/consistent-type-definitions": ["error", "type"],
       "react-refresh/only-export-components": [
         "warn",
         { allowConstantExport: true },
       ],
+      curly: ["error", "all"],
+      "no-else-return": ["error", { allowElseIf: false }],
+      "no-duplicate-imports": "error",
       "no-console": "error",
       "prefer-arrow-callback": ["error"],
       "func-style": ["error", "expression"],
@@ -48,6 +70,11 @@ export default tseslint.config(
               importNames: ["useLocation"],
               message:
                 'Use `import { useActiveRoute } from "~/hooks/useActiveRoute";`',
+            },
+            {
+              name: "wouter",
+              importNames: ["Link"],
+              message: 'Use `import { Link } from "~/components";`',
             },
             {
               name: "antd",

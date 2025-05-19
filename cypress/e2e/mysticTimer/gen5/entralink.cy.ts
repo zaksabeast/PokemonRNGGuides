@@ -61,6 +61,7 @@ describe("gen 5 entralink timer", () => {
     });
 
     form.assert<Gen5TimerFormState>({
+      parentSelector: tabContentsSelector,
       form: {
         console: { type: "select", value: "3DS" },
         minTimeMs: "14001",
@@ -96,8 +97,10 @@ describe("gen 5 entralink timer", () => {
     });
 
     cy.reload();
+    cy.wait(500);
 
     form.assert<BaseFormState>({
+      parentSelector: tabContentsSelector,
       form: formState,
     });
 
@@ -125,8 +128,10 @@ describe("gen 5 entralink timer", () => {
     });
 
     cy.reload();
+    cy.wait(500);
 
     form.assert<Gen5TimerFormState>({
+      parentSelector: tabContentsSelector,
       form: {
         console: { type: "select", value: "3DS" },
         minTimeMs: "14001",

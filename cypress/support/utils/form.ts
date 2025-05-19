@@ -1,8 +1,7 @@
 import { forEach } from "lodash-es";
 import { P, match } from "ts-pattern";
-import { IvString } from "./components/ivInput";
+import { ivInput, IvString } from "./components/ivInput";
 import { input } from "./components/input";
-import { ivInput } from "./components/ivInput";
 import { radio } from "./components/radio";
 import { select } from "./components/select";
 import { switchInput } from "./components/switch";

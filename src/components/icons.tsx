@@ -7,29 +7,34 @@ import {
   MdCheck,
   MdClose,
   MdRocketLaunch,
+  MdUpdate,
 } from "react-icons/md";
-import { AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaDiscord, FaCoffee } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold } from "react-icons/pi";
 import { FaHeart, FaPlay, FaFire } from "react-icons/fa6";
+import { TbPokeball } from "react-icons/tb";
 
 const icons = {
-  Menu: AiOutlineMenu,
   ArrowRightAlt: MdArrowRightAlt,
+  Check: MdCheck,
+  CheckCircle: MdCheckCircle,
+  Close: MdClose,
+  Coffee: FaCoffee,
   Discord: FaDiscord,
   Github: FaGithub,
-  CheckCircle: MdCheckCircle,
-  Check: MdCheck,
+  Heart: FaHeart,
   Language: IoLanguage,
-  Close: MdClose,
-  Sparkles: IoSparkles,
+  Menu: AiOutlineMenu,
   PersonSimpleWalkBold: PiPersonSimpleWalkBold,
   RocketLaunch: MdRocketLaunch,
-  Heart: FaHeart,
-  Coffee: FaCoffee,
+  Sparkles: IoSparkles,
+  Update: MdUpdate,
   Play: FaPlay,
   Fire: FaFire,
+  Pokeball: TbPokeball,
+  OutlineSearch: AiOutlineSearch,
 } as const;
 
 export type IconName = keyof typeof icons;

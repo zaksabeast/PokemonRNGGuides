@@ -6,34 +6,7 @@ Please contribute all guides to the `guides` directory.
 
 ## Contribute to the website
 
-Install these tools:
-
-- [bun](https://bun.sh/)
-- [rust](https://www.rust-lang.org/tools/install)
-- [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)
-
-Run these commands in the `rng_tools` directory to get the pinned rust tools:
-
-```
-rustup update
-rustup target add wasm32-unknown-unknown
-```
-
-Run `bun i` to install the dependencies and `bun run dev` to have a development server start.
-
-If you add a guide or change guide metadata, run `bun run build:guides`.
-
-If you make rust changes, run `bun run build:rng_tools`.
-
-To build a production version of the site, use `bun run build`.
-
-## Contributing on Windows
-
-To avoid wrongly flagging unmodified files as modified, those git settings must be changed:
-
-`git config core.filemode false`
-
-`git config core.autocrlf input`
+Read our contribution guidelines [here](./CONTRIBUTING.md).
 
 ## Licensing
 

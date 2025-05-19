@@ -44,7 +44,7 @@ export const FormikIdFilter = <FormState extends GenericForm>({
         options={optional ? optionalFilterOptions : filterOptions}
         value={value.type}
         onChange={(value) => {
-          setValue({ type: value, value0: undefined, value1: undefined });
+          setValue({ type: value, value0: null, value1: null });
           setTouched(true, false);
         }}
       />
@@ -52,7 +52,7 @@ export const FormikIdFilter = <FormState extends GenericForm>({
         <NumberInput
           fullFlex
           numType={value.type === "pid" ? "hex" : "decimal"}
-          value={value.value0 ?? undefined}
+          value={value.value0 ?? null}
           errorMessage={value0Error}
           onChange={(fieldValue) => {
             setValue({

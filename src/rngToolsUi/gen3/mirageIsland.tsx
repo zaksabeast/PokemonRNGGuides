@@ -5,7 +5,7 @@ import {
   RngToolSubmit,
   FormikNumberInput,
 } from "~/components";
-import { FormikRadio } from "../../components/radio";
+import { FormikRadio } from "~/components/radio";
 import { rngTools, MirageIslandResult } from "~/rngTools";
 import React from "react";
 import { clamp } from "lodash-es";
@@ -46,12 +46,13 @@ const getColumns = (
 
   const fixedInitialSeedForMethod1 =
     game === "emerald" || resultsBattery === "Dead";
-  if (fixedInitialSeedForMethod1)
+  if (fixedInitialSeedForMethod1) {
     columns.push({
       title: "Method-1 Earliest RNG Advance matching PID Pattern",
       dataIndex: "earliest_adv",
       render: (earliestAdv) => formatLargeInteger(earliestAdv),
     });
+  }
   return columns;
 };
 
@@ -73,8 +74,9 @@ const generateResults = (
   values: FormState,
 ): Promise<MirageIslandResult[]> => {
   const initialSeed = game === "emerald" ? 0 : 0x5a0;
-  if (values.battery === "Dead")
+  if (values.battery === "Dead") {
     return rngTools.mirage_island_calculate(initialSeed, 0, 0);
+  }
 
   const RESULT_COUNT = 100;
   const currentDay = clamp(values.rocketLaunchedCount * 7, 0, 0xffff);

@@ -15,7 +15,11 @@ import {
   Static3Game,
 } from "~/rngToolsUi/gen3/static/constants";
 import { maxIvs, minIvs } from "~/types/ivs";
-import { FlattenIvs, flattenIvs, ivColumns } from "../../shared/ivColumns";
+import {
+  FlattenIvs,
+  flattenIvs,
+  ivColumns,
+} from "~/rngToolsUi/shared/ivColumns";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { species } from "~/types/species";
@@ -155,6 +159,7 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
           ability: opts.filter_ability,
           min_ivs: opts.filter_min_ivs,
           max_ivs: opts.filter_max_ivs,
+          stats: null,
         },
       });
 

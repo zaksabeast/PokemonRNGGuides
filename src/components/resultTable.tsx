@@ -12,7 +12,7 @@ export type ResultColumn<T> = keyof T extends string
         title: string;
         dataIndex: K;
         monospace?: boolean;
-        render?: (value: T[K]) => React.ReactNode;
+        render?: (value: T[K], values: T) => React.ReactNode;
       };
     }[keyof T]
   : never;
@@ -28,8 +28,10 @@ const applyMonospace = <Record extends tst.O.Object>(
 
   return {
     ...column,
-    render: (value: Record[string & keyof Record]) => (
-      <Typography.Text fontFamily="monospace">{render(value)}</Typography.Text>
+    render: (value: Record[string & keyof Record], values: Record) => (
+      <Typography.Text fontFamily="monospace" key={column.dataIndex}>
+        {render(value, values)}
+      </Typography.Text>
     ),
   };
 };
@@ -39,11 +41,9 @@ type FormikResultTableProps<Record extends tst.O.Object> = tst.O.Overwrite<
   { columns: ResultColumn<Record>[] }
 >;
 
-export const FormikResultTable = <Record extends tst.O.Object>(
+export const ResultTable = <Record extends tst.O.Object>(
   props: FormikResultTableProps<Record>,
 ) => {
-  const { isSubmitting } = useFormikContext();
-
   const columns = React.useMemo(
     () => (props.columns ?? []).map(applyMonospace),
     [props.columns],
@@ -55,7 +55,6 @@ export const FormikResultTable = <Record extends tst.O.Object>(
         <Table
           {...props}
           columns={columns}
-          loading={isSubmitting}
           className={css({
             "&&&": {
               width: "100%",
@@ -72,4 +71,11 @@ export const FormikResultTable = <Record extends tst.O.Object>(
       )}
     </ClassNames>
   );
+};
+
+export const FormikResultTable = <Record extends tst.O.Object>(
+  props: FormikResultTableProps<Record>,
+) => {
+  const { isSubmitting } = useFormikContext();
+  return <ResultTable {...props} loading={isSubmitting} />;
 };

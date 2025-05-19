@@ -5,6 +5,7 @@ import {
 } from "antd";
 import { ScreenSize, CustomTheme } from "@emotion/react";
 import { match } from "ts-pattern";
+import { AggregationColor } from "antd/es/color-picker/color";
 
 const screenSizeMap = {
   // Ant Design breakpoints
@@ -77,6 +78,22 @@ export const getTheme = (config: ThemePalette): CustomTheme => {
     },
   });
 
+  const shadowRgb = new AggregationColor(
+    isLightMode ? colors.colorTextBase : colors.colorPrimary,
+  ).toRgb();
+  const shadowBase = [shadowRgb.r, shadowRgb.g, shadowRgb.b].join(",");
+  const shadows = {
+    boxShadow: `0 6px 16px 0 rgba(${shadowBase}, 0.08),
+  0 3px 6px -4px rgba(${shadowBase}, 0.12),
+  0 9px 28px 8px rgba(${shadowBase}, 0.05)`,
+    boxShadowSecondary: `0 6px 16px 0 rgba(${shadowBase}, 0.08),
+  0 3px 6px -4px rgba(${shadowBase}, 0.12),
+  0 9px 28px 8px rgba(${shadowBase}, 0.05)`,
+    boxShadowTertiary: `0 1px 2px 0 rgba(${shadowBase}, 0.03),
+      0 1px 6px -1px rgba(${shadowBase}, 0.02),
+      0 2px 4px 0 rgba(${shadowBase}, 0.02)`,
+  };
+
   return {
     token: {
       ...tokens,
@@ -93,6 +110,7 @@ export const getTheme = (config: ThemePalette): CustomTheme => {
       colorBrandSecondaryHover: secondaryTokens.colorPrimaryHover,
       colorBrandSecondaryBg: secondaryTokens.colorPrimaryBg,
       colorBrandSecondaryBorder: secondaryTokens.colorPrimaryBorder,
+      ...shadows,
     },
     components: {
       Menu: isLightMode

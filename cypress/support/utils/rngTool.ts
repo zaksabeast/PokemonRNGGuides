@@ -17,7 +17,13 @@ export const testRngTool = <FormState extends Record<string, unknown>>({
   afterVisit?: () => void;
 }) => {
   cy.visit(url);
+  cy.wait(500);
   afterVisit?.();
+
+  if (afterVisit != null) {
+    cy.wait(500);
+  }
+
   formUtils.set<FormState>({ form, parentSelector });
   const submitId = getElementSelector({
     parentSelector,

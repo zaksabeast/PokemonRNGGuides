@@ -1,0 +1,104 @@
+---
+- title: "Initial Seed Botting for FireRed and LeafGreen"
+  navDrawerTitle: "Initial Seed Botting"
+  description: "Learn how to use the Initial Seed Bot in FireRed and LeafGreen for better control over your RNG results."
+  slug: "frlg-seeding-bot"
+  category: "FireRed and LeafGreen"
+  tag: "emu"
+- title: "初始种子自动刷取"
+  description: "使用初始种子自动脚本，实现更高自由度的乱数控制"
+  slug: "zh-frlg-seeding-bot"
+  category: "FireRed and LeafGreen"
+  tag: "emu"
+  translation:
+    enSlug: "frlg-seeding-bot"
+    language: "zh"
+---
+
+<ShowIf slug="/frlg-seeding-bot">
+
+### Tools:
+
+- [mGBA with lua scripts](/mgba-setup)
+- [PokeFinder](/pokefinder)
+- [FRLGRSEInitialSeedsFinder](https://github.com/Real96/FRLGRSEInitialSeedsFinder) by Real96
+
+## Intro
+
+This guide shows an alternative RNG method for Fire Red and Leaf Green that offers more control over the initial seed using a Lua bot.
+
+### Setup:
+
+1. First, determine your target. Open PokeFinder, go to Gen 3 => Stationary or Wild (both work similarly).
+2. In the "Searcher" tab, apply your desired filters.
+3. Generate results and record the seed.
+4. Run FRLGRSEInitialSeedsFinder. It will ask for a seed; enter the one you recorded.
+5. When asked for the number of results, input a large number, like 100.
+
+```
+For starters where Teachy TV is unavailable, generate 100 results but only consider the lowest advance range possible.
+```
+
+6. Wait for the tool to generate results. It will create a text file with possible initial seeds. Open the file and copy its content.
+7. In the FRLG Lua script, find this line: 'local botTargetInitSeeds ='. Input all the seeds (enclose them in '{}').
+8. Save the Lua script.
+
+### Botting:
+
+1. Run the Lua script and enter the initial seed bot mode by pressing `2`.
+2. Pause the emulator.
+3. Reset the emulator.
+4. Advance a single time (`Ctrl + N`) while holding the `Select` button.
+5. Unpause the emulator.
+
+This setup allows the game to be controlled by the bot, trying to hit one of the selected initial seeds. Once it completes, the game will pause. Keep track of the initial seed, input it into the generator, and proceed with your RNG process as usual, knowing your target advance is now accessible.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+
+</ShowIf>
+
+<ShowIf slug="/zh-frlg-seeding-bot">
+
+### 所需工具：
+
+- [带有 Lua 脚本的 mGBA 模拟器](/mgba-setup)
+- [PokeFinder](/pokefinder)
+- 由 Real96 开发的 [FRLGRSEInitialSeedsFinder](https://github.com/Real96/FRLGRSEInitialSeedsFinder)
+
+## 简介
+
+本指南介绍一种适用于《火红》《叶绿》的替代乱数方式，借助 Lua 自动脚本实现对初始种子的更高控制。
+
+### 设置步骤：
+
+1. 首先确定你的目标。在 PokeFinder 中进入 第三世代 => 定点乱数 或 野生乱数（两者操作方式相似）。
+2. 在 "检索器" 标签页中设置所需的筛选条件。
+3. 生成结果后，记录你选中的种子。
+4. 运行 FRLGRSEInitialSeedsFinder 工具。它会要求输入一个种子，此时输入刚刚记录的那个。
+5. 当工具提示“请输入想生成的结果数量”时，建议输入一个较大的数字，例如 100。
+
+```
+对于刚开始游戏、尚未获得教学电视的初始 ID 乱数，建议只考虑较低帧范围内的结果。
+```
+
+6. 等待工具生成结果，它将输出一个文本文件，列出所有可能的初始种子。打开该文件并复制全部内容。
+7. 打开 FRLG 的 Lua 脚本，找到如下行： 'local botTargetInitSeeds ='。将你复制的种子内容以 {} 括起来并填入该行。
+8. 保存脚本。
+
+### 自动执行流程：
+
+1. 运行 Lua 脚本，在模拟器中按下 2 键进入初始种子自动刷取模式。
+2. 暂停模拟器。
+3. 重启模拟器。
+4. 按住 Select 键的同时，推进一帧（Ctrl + N）。
+5. 然后取消暂停，脚本将自动控制游戏，尝试命中你指定的初始种子。
+
+一旦脚本完成命中，游戏将自动暂停。此时记录下你命中的初始种子，在 PokeFinder 中输入该种子后续进行乱数操作。你现在可以确定当前帧可用于继续乱数流程。
+
+## 特别鸣谢
+
+- 中文翻译：炫夜鳞、Hakuhiro/白希洛。
+
+</ShowIf>

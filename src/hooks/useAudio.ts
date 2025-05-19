@@ -43,7 +43,7 @@ export const useAudio = (url: string) => {
 
     source.onended = () => {
       activeSourcesRef.current = activeSourcesRef.current.filter(
-        (s) => s !== source,
+        (src) => src !== source,
       );
     };
   }, []);

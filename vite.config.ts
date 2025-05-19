@@ -68,4 +68,7 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ["rng_tools"],
   },
+  ssr: {
+    target: "webworker", // A bit stricter, which helps with ssg
+  },
 });

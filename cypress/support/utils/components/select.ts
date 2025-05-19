@@ -31,7 +31,7 @@ const set = ({ parentSelector, name, value }: Props) => {
       const optionId = getElementSelector({
         selector: `[title="${value}"]`,
       });
-      cy.get(optionId).should("be.visible").click();
+      cy.get(optionId).click();
     });
 
   assert({ parentSelector, name, value });

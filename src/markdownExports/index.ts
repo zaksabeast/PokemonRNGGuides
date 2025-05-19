@@ -29,6 +29,8 @@ import {
   Countdown,
   ShowIf,
   Alert,
+  Stepper,
+  Step,
 } from "~/components";
 import { Gen2PokemonRng } from "~/rngToolsUi/gen2/crystalPokemon";
 import { Gen2Rng } from "~/rngToolsUi/gen2/gen2Rng";
@@ -41,13 +43,31 @@ import { Gen3MirageIsland } from "~/rngToolsUi/gen3/mirageIsland";
 import { OrAsMirageSpot } from "~/rngToolsUi/gen6/orasMirageSpot";
 import { RngTimer } from "~/rngToolsUi/timer";
 import { OrasId } from "~/rngToolsUi/gen6/orasId";
+import { Transporter } from "~/rngToolsUi/gen6/transporter/transporter";
 import { DpptSeed } from "~/rngToolsUi/gen4/dpptSeed";
 import { DpptId } from "~/rngToolsUi/gen4/dpptId";
 import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
+import { Gen7SosList } from "~/pageComponents/gen7Sos/sosList";
 import { Static3 } from "~/rngToolsUi/gen3/static/static3";
 import { MultibootJirachi } from "~/rngToolsUi/gen3/multibootJirachi";
-import { ChallengeScreen } from "~/screens/challenge";
-import { ExperimentsPanel } from "~/screens/experiments";
+import { ShinyHoennStarter } from "~/rngToolsUi/gen3/shinyStarter";
+import { GenerateHoennTidSid } from "~/rngToolsUi/gen3/shinyStarter/generateTidSid";
+import { ChallengePageComponent } from "~/pageComponents/challenge";
+import { ExperimentsPageComponent } from "~/pageComponents/experiments";
+import { PaintingReseed } from "~/rngToolsUi/gen3/paintingReseed";
+import { HomePageComponent } from "~/pageComponents/home";
+import { GamePageComponent } from "~/pageComponents/gamePage";
+import { RetailEmeraldHeldEgg } from "~/rngToolsUi/gen3/retailEmeraldEgg/heldEgg";
+import { PokeNavInput } from "~/rngToolsUi/gen3/retailEmeraldEgg/pokeNavTrainer";
+import {
+  CalibrateHeldEgg,
+  CalibrateHeldEggTimer,
+} from "~/rngToolsUi/gen3/retailEmeraldEgg/calibrateHeldEgg";
+import { RetailEmeraldPickupEgg } from "~/rngToolsUi/gen3/retailEmeraldEgg/pickupEgg";
+import {
+  CalibratePickupEgg,
+  CalibratePickupEggTimer,
+} from "~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg";
 
 export const markdownComponents = {
   br: MarkdownBreak,
@@ -57,6 +77,7 @@ export const markdownComponents = {
   h4: MarkdownH4,
   h5: MarkdownH5,
   h6: MarkdownH6,
+  // eslint-disable-next-line id-length
   p: MarkdownParagraph,
   ul: MarkdownList,
   ol: MarkdownOList,
@@ -69,6 +90,7 @@ export const markdownComponents = {
   th: MarkdownTh,
   tr: MarkdownTr,
   td: MarkdownTd,
+  // eslint-disable-next-line id-length
   a: MarkdownA,
   Text: MarkdownParagraph,
   YouTubeVideo,
@@ -91,10 +113,26 @@ export const markdownComponents = {
   Gen4Timer,
   RngTimer,
   OrasId,
+  Transporter,
   DpptSeed,
   DpptId,
   XyPokeRadar,
+  Gen7SosList,
+  ShinyHoennStarter,
+  GenerateHoennTidSid,
   MultibootJirachi,
-  ChallengeScreen,
-  ExperimentsPanel,
+  ChallengePageComponent,
+  ExperimentsPageComponent,
+  PaintingReseed,
+  HomePageComponent,
+  GamePageComponent,
+  RetailEmeraldHeldEgg,
+  Stepper,
+  Step,
+  PokeNavInput,
+  CalibrateHeldEgg,
+  CalibrateHeldEggTimer,
+  RetailEmeraldPickupEgg,
+  CalibratePickupEgg,
+  CalibratePickupEggTimer,
 };

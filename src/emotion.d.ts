@@ -27,6 +27,7 @@ declare module "@emotion/react" {
     { mediaQueries: CustomTheme["mediaQueries"] }
   >;
 
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   export interface Theme extends CompleteTheme {}
 
   export type Color = tst.S.Replace<

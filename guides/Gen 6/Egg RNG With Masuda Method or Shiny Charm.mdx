@@ -1,16 +1,17 @@
 ---
 - title: "Omega Ruby and Alpha Sapphire Egg RNG with Masuda Method or Shiny Charm"
   navDrawerTitle: "MM/SC Egg RNG"
-  description: "RNG your perfect Pokemon at the daycare"
+  description: "Learn how to RNG eggs from the Daycare in Omega Ruby and Alpha Sapphire for shiny, high-IV Pokémon."
   slug: "retail-oras-egg-mmsc"
   category: "Omega Ruby and Alpha Sapphire"
   tag: "cfw"
 - title: "X and Y Egg RNG with Masuda Method or Shiny Charm"
   navDrawerTitle: "MM/SC Egg RNG"
-  description: "RNG your perfect Pokemon at the daycare"
+  description: "Learn how to RNG eggs from the Daycare in X and Y for shiny, high-IV Pokémon."
   slug: "retail-xy-egg-mmsc"
   category: "X and Y"
   tag: "cfw"
+  canonical: "retail-oras-egg-mmsc"
 ---
 
 ```
@@ -19,13 +20,13 @@ This method differs from using without the Masuda Method or Shiny Charm. Here, y
 
 ## Tools
 
-- A 3DS with PCalc ([PCalc Install Guide](/misc-3ds-installing-pcalc)).
-- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases).
+- [A 3DS with PokeReader](/install-pokereader)
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
 
 ## Step 1: Enter RNG info
 
-1. Enter your game version and TSV (`Start + Up` in PCalc will reveal TSV in the Game View window).
-2. Enter the initial seed (`Start + Up` in PCalc will reveal this in the Game View window).
+1. Enter your game version and TSV.
+2. Enter the initial seed.
 3. Tick the Shiny Charm box if you have it.
 
 ```
@@ -46,10 +47,10 @@ For a Ditto and genderless Pokémon pairing, Ditto will be the female.
 
 ## Step 3: Egg Seeds, Filters, and Target Frame
 
-1. Input the current egg seeds of your game using PCalc's egg seed window (`Start + Down`).
+1. Input the current egg seeds of your game.
 2. Provide info for the egg you want in Filters.
 3. Tick the Shiny Only box for a shiny egg.
-4. Open PCalc's Game Info screen with `Start + Up` and pause the game with `Start + Select`.
+4. Pause the game with `Start + Select`.
 5. Enter your current frame and increase the frame range for more frames to search.
 6. Select "To Accept" for the first egg or "To Reject" if not. We recommend accepting the first egg to verify frame -1. The Consider Delay counter will reset to 0 if you're rejecting the egg.
 7. Finally, click on Calculate for target frames. Increase frame range and recalculate if there are no results.
@@ -76,13 +77,12 @@ Remember:
    - Rejecting the first egg: “Well then, I'll hang on to it. Thank you!” (XY/ORAS) after selecting No from previous dialogue.
 2. Press `Start + Select` to pause the game near your target frame, then press `Select` to advance frame by frame.
 3. At your target frame, hold `A` to both unpause the game and collect/reject the egg.
-4. The egg collected now will match the frame -1 from the 3DSRNGTool. PCalc's `Start + Right` shows egg info without hatching and `Select + Right` cycles through the party slots.
+4. The egg collected now will match the frame -1 from the 3DSRNGTool.
 
 Collect the NEXT egg, check or hatch it to confirm your Pokémon. Congratulations!
 
 ## Troubleshooting
 
-- Verify the TSV in the upper right matches your save by opening the party view menu with `Start + Right` then `Select + Left` for slot 7.
+- Verify the TSV in the upper right of 3DSRNGTool matches the TSV shown in the main RNG view.
 - Ensure you're using the correct daycare view for ORAS if the first egg collected doesn't match frame -1.
-- Press `Select + Right/Left` for egg seeds window to switch daycare views.
-- Egg seeds should change after each egg. If they don't change, you might need the latest PCalc and game version.
+- Egg seeds should change after each egg collected/rejected. If not, ensure you have the latest PokeReader and your game is updated to the latest version.

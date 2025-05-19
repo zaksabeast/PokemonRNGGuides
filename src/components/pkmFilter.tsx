@@ -8,11 +8,23 @@ import { ability } from "~/types/ability";
 import { gender } from "~/types/gender";
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
+import { toOptions } from "~/utils/options";
 
-export const natureOptions = ([null, ...nature] as const).map((nat) => ({
-  label: nat ?? "None",
-  value: nat,
-}));
+const sortedNatures = nature.toSorted();
+
+const requiredNatureOptions = toOptions(sortedNatures);
+const optionalNatureOptions = [
+  {
+    label: "None",
+    value: null,
+  },
+  ...requiredNatureOptions,
+];
+
+export const natureOptions = {
+  required: requiredNatureOptions,
+  optional: optionalNatureOptions,
+};
 
 export const abilityOptions = ([null, ...ability] as const).map((abil) => ({
   label: abil ?? "None",
@@ -37,7 +49,7 @@ export const pkmFilterSchema = z.object({
   filter_gender: z.enum(gender).nullable(),
   filter_min_ivs: IvSchema,
   filter_max_ivs: IvSchema,
-}) satisfies z.Schema<PkmFilterFields>;
+}) satisfies z.Schema<Omit<PkmFilterFields, "filter_stats">>;
 
 type FieldOptOuts = {
   shiny?: boolean;
@@ -64,7 +76,7 @@ const _getPkmFilterFields = (optOuts: FieldOptOuts = {}): Field[] =>
       input: (
         <FormikSelect<PkmFilterFields, "filter_nature">
           name="filter_nature"
-          options={natureOptions}
+          options={natureOptions.optional}
         />
       ),
     }),

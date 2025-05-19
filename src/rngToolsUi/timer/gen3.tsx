@@ -1,26 +1,32 @@
 import React from "react";
+import { Skeleton } from "antd";
 import {
   FormikNumberInput,
   RngToolForm,
   RngToolSubmit,
   Field,
   FormikSelect,
+  Flex,
+  MultiTimer,
 } from "~/components";
 import {
   capPrecision,
   ZodSerializedDecimal,
   ZodSerializedOptional,
 } from "~/utils/number";
-import { Flex, MultiTimer } from "~/components";
 import { rngTools, ZodConsole } from "~/rngTools";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { useTimerSettings } from "~/state/timerSettings";
 import { z } from "zod";
+import { hydrationLock, HydrationLock } from "~/utils/hydration";
+import { useHydrate } from "~/hooks/useHydrate";
 
 const TimerStateSchema = z.object({
   milliseconds: z.array(z.number()),
   minutesBeforeTarget: z.number(),
 });
+
+type TimerState = z.infer<typeof TimerStateSchema>;
 
 const timerStateAtom = atomWithPersistence("gen3Timer", TimerStateSchema, {
   milliseconds: [],
@@ -85,10 +91,19 @@ const fields: Field[] = [
   },
 ];
 
-export const Gen3Timer = () => {
-  const { initialSettings, onUpdate } = useTimerSettings(timerSettingsAtom);
-  const [timer, setTimer] = useAtom(timerStateAtom);
+type InnerProps = {
+  timer: TimerState;
+  setTimer: (timer: HydrationLock<TimerState>) => void;
+  initialSettings: FormState;
+  onUpdate: (opts: HydrationLock<FormState>) => void;
+};
 
+const InnerGen3Timer = ({
+  timer,
+  setTimer,
+  initialSettings,
+  onUpdate,
+}: InnerProps) => {
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts, formik) => {
       let updatedOpts = opts;
@@ -118,11 +133,13 @@ export const Gen3Timer = () => {
       }
 
       const milliseconds = await rngTools.create_gen3_timer(settings);
-      setTimer({
-        milliseconds: [...milliseconds],
-        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
-      });
-      onUpdate(updatedOpts);
+      setTimer(
+        hydrationLock({
+          milliseconds: [...milliseconds],
+          minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
+        }),
+      );
+      onUpdate(hydrationLock(updatedOpts));
     },
     [onUpdate, setTimer],
   );
@@ -145,4 +162,16 @@ export const Gen3Timer = () => {
       />
     </Flex>
   );
+};
+
+export const Gen3Timer = () => {
+  const { initialSettings, onUpdate } = useTimerSettings(timerSettingsAtom);
+  const [timer, setTimer] = useAtom(timerStateAtom);
+  const { hydrated, client } = useHydrate({ initialSettings, timer });
+
+  if (!hydrated) {
+    return <Skeleton />;
+  }
+
+  return <InnerGen3Timer {...client} setTimer={setTimer} onUpdate={onUpdate} />;
 };

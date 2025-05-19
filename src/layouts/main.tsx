@@ -1,27 +1,29 @@
 import React from "react";
-import { Flex, Header, HeaderSpace, DesktopDrawer } from "~/components";
+import { Flex, Header, DesktopDrawer, Loading } from "~/components";
 import styled from "@emotion/styled";
 import { useScreenViewed } from "~/hooks/useScreenViewed";
+import { useActiveRoute } from "~/hooks/useActiveRoute";
 
 type Props = {
   children: React.ReactNode;
-  trackerName: string;
+  trackerName?: string;
 };
 
 export const SIDE_MARGIN = 24;
 
-const Main = styled.main({
+const Main = styled.main(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  height: "100%",
+  height: `calc(100% - ${theme.components?.Layout?.headerHeight})`,
   width: "100%",
   gap: 24,
   boxSizing: "border-box",
   paddingLeft: SIDE_MARGIN,
   paddingRight: SIDE_MARGIN,
   overflowY: "scroll",
-});
+  marginTop: theme.components?.Layout?.headerHeight,
+}));
 
 const DesktopNavDrawerContainer = styled.div(({ theme }) => ({
   display: "none",
@@ -50,6 +52,7 @@ const ContentContainer = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: 24,
+  paddingTop: 24,
   [theme.mediaQueries.up("tablet")]: {
     width: "90%",
   },
@@ -63,7 +66,8 @@ const BottomSpace = styled.div({
 });
 
 export const MainLayout = ({ children, trackerName }: Props) => {
-  useScreenViewed(trackerName);
+  const route = useActiveRoute();
+  useScreenViewed(trackerName ?? route);
 
   return (
     <>
@@ -77,8 +81,20 @@ export const MainLayout = ({ children, trackerName }: Props) => {
         </DesktopNavDrawerContainer>
         <Main>
           <ContentContainer>
-            <HeaderSpace />
-            {children}
+            <React.Suspense
+              fallback={
+                <Flex
+                  height="100%"
+                  width="100%"
+                  justify="center"
+                  align="center"
+                >
+                  <Loading />
+                </Flex>
+              }
+            >
+              {children}
+            </React.Suspense>
             <BottomSpace />
           </ContentContainer>
         </Main>

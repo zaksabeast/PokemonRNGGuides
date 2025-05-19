@@ -1,3 +1,4 @@
+use crate::Nature;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen]
@@ -85,7 +86,7 @@ impl Gen3Ability {
 #[wasm_bindgen]
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum Gen3Lead {
-    Synchronize,
+    Synchronize(Nature),
 }
 
 #[wasm_bindgen]

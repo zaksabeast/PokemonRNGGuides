@@ -327,6 +327,7 @@ pub struct NoEggMatchCallOpts {
     calibration: usize,
     max_advances: usize,
     has_lightning_rod: bool,
+    has_roamer: bool,
     registered_trainers: Vec<PokeNavTrainer>,
 }
 
@@ -342,10 +343,16 @@ pub fn generate_no_egg_match_calls(opts: NoEggMatchCallOpts) -> Vec<NoEggMatchCa
     let rng = Pokerng::new(opts.seed);
     let ordered_trainers = order_trainer_list(&opts.registered_trainers);
 
+    let roamer_calib = match opts.has_roamer {
+        true => 1,
+        false => 0,
+    };
+    let calibration = opts.calibration.saturating_add(roamer_calib);
+
     let initial_advances = opts
         .redraws
         .saturating_mul(3)
-        .saturating_add(opts.calibration)
+        .saturating_add(calibration)
         .saturating_add(opts.initial_advances);
 
     StateIterator::new(rng)
@@ -1668,6 +1675,7 @@ mod test {
             calibration: 20,
             redraws: 0,
             has_lightning_rod: true,
+            has_roamer: false,
             max_advances: 12,
             registered_trainers: register_all_trainers(),
             seed: 0,

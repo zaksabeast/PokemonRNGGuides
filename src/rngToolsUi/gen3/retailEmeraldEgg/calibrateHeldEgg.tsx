@@ -178,6 +178,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       const callResults = await rngTools.generate_no_egg_match_calls({
         calibration: targetCalibration,
         has_lightning_rod: state.eggSettings.has_lightning_rod,
+        has_roamer: state.eggSettings.has_roamer,
         max_advances: maxAdvances,
         redraws: targetRedraws,
         registered_trainers: registeredTrainers,

@@ -200,6 +200,7 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
         has_roamer: false,
         registered_trainers: [],
         lua_adjustment: lua,
+        filter_impossible_to_hit: false,
         filters: {
           shiny: opts.filter_shiny,
           nature: opts.filter_nature,

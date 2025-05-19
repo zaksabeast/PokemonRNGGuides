@@ -167,6 +167,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
         calibration: targetCalibration,
         initial_advances: initialAdvances,
         max_advances: maxAdvances,
+        filter_impossible_to_hit: false,
         filters: {
           shiny: false,
           nature: null,

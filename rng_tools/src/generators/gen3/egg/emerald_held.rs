@@ -135,6 +135,7 @@ pub struct Egg3HeldOptions {
     pub egg_species: Species,
     pub filters: Egg3HeldFilters,
     pub lua_adjustment: bool,
+    pub filter_impossible_to_hit: bool,
 }
 
 #[wasm_bindgen]
@@ -172,6 +173,7 @@ fn generate_redraw_states(
         has_lightning_rod: opts.has_lightning_rod,
         female_has_everstone: opts.female_has_everstone,
         female_nature: opts.female_nature,
+        filter_impossible_to_hit: opts.filter_impossible_to_hit,
         advance: 0,
         redraws: 0,
     };
@@ -367,6 +369,7 @@ struct GenerateStateOpts<'a> {
     female_nature: Nature,
     advance: usize,
     redraws: usize,
+    filter_impossible_to_hit: bool,
 }
 
 fn generate_state(opts: &GenerateStateOpts) -> Option<Gen3HeldEggPid> {
@@ -389,10 +392,11 @@ fn generate_state(opts: &GenerateStateOpts) -> Option<Gen3HeldEggPid> {
     let mut trng = Pokerng::new(seed as u32);
 
     // Filter out any results that are impossible to hit
-    if redraws
-        .saturating_mul(180 /* ~3 seconds of video frames per redraw */)
-        .saturating_add(1800 /* ~30 seconds of video frames to load the game */)
-        >= held_advance
+    if opts.filter_impossible_to_hit
+        && redraws
+            .saturating_mul(180 /* ~3 seconds of video frames per redraw */)
+            .saturating_add(1800 /* ~30 seconds of video frames to load the game */)
+            >= held_advance
     {
         // Impossible to hit
         return None;
@@ -443,6 +447,7 @@ mod test {
     fn generates_results() {
         let opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::DontLikeEachOther,
             calibration: 18,
             has_roamer: false,
@@ -608,6 +613,7 @@ mod test {
     fn reasonable_initial_advances() {
         let opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::DontLikeEachOther,
             calibration: 18,
             has_roamer: false,
@@ -839,6 +845,7 @@ mod test {
     fn compatability_get_along() {
         let opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlong,
             calibration: 18,
             has_roamer: false,
@@ -938,6 +945,7 @@ mod test {
     fn compatability_get_along_well() {
         let opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlongVeryWell,
             calibration: 18,
             has_roamer: false,
@@ -1059,6 +1067,7 @@ mod test {
     fn shiny_filter() {
         let opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlong,
             calibration: 18,
             has_roamer: false,
@@ -1101,6 +1110,7 @@ mod test {
     fn everstone() {
         let opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlong,
             calibration: 18,
             has_roamer: false,
@@ -1167,6 +1177,7 @@ mod test {
     fn positive_delay() {
         let mut opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlong,
             calibration: 18,
             has_roamer: false,
@@ -1206,6 +1217,7 @@ mod test {
     fn negative_delay() {
         let mut opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlong,
             calibration: 18,
             has_roamer: false,
@@ -1245,6 +1257,7 @@ mod test {
     fn lua_adjustment() {
         let mut opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlong,
             calibration: 18,
             has_roamer: false,
@@ -1284,6 +1297,7 @@ mod test {
     fn illumise_gender() {
         let opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlong,
             calibration: 18,
             has_roamer: false,
@@ -1373,6 +1387,7 @@ mod test {
     fn nidoranf_gender() {
         let opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlong,
             calibration: 18,
             has_roamer: false,
@@ -1462,6 +1477,7 @@ mod test {
     fn all_match_calls() {
         let opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlong,
             calibration: 21,
             has_roamer: false,
@@ -1506,6 +1522,7 @@ mod test {
         use PokeNavTrainer::*;
         let opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlong,
             calibration: 21,
             has_roamer: false,
@@ -1560,6 +1577,7 @@ mod test {
     fn no_lightning_rod_match_calls() {
         let opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlong,
             calibration: 21,
             has_roamer: false,
@@ -1603,6 +1621,7 @@ mod test {
     fn roamer_rod_match_calls() {
         let opts = Egg3HeldOptions {
             delay: 0,
+            filter_impossible_to_hit: false,
             compatability: Compatability::GetAlong,
             calibration: 22,
             has_roamer: true,

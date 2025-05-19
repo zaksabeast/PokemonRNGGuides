@@ -241,6 +241,7 @@ const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
         max_redraw: 100,
         calibration: 19,
         initial_advances: 2000,
+        filter_impossible_to_hit: true,
         filters: {
           shiny: opts.filter_shiny,
           nature: opts.filter_nature,

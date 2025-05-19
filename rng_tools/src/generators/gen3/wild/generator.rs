@@ -66,7 +66,6 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
         }
     };
 
-    //let pid = (rng.rand::<u16>() as u32) | ((rng.rand::<u16>() as u32) << 16);
     let mut pid: u32;
     loop {
         let pid_low = rng.rand::<u16>() as u32;

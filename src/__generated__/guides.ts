@@ -623,6 +623,28 @@ export const guides = {
       () => import("~/../guides/Gen 3/Emerald/Basic Rules of RNG.mdx"),
     ),
   },
+  "/emerald-lotad-seedot/": {
+    meta: {
+      categories: ["Emerald"],
+      title: "Largest Lotad/Seedot",
+      navDrawerTitle: "Largest Lotad/Seedot",
+      description:
+        "Catching the largest possible Lotad and Seedot to show to Sootopolis City brothers",
+      slug: "/emerald-lotad-seedot/",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-05-06",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 3/Emerald/Largest Pokemon.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Largest Pokemon.mdx"),
+    ),
+  },
   "/emerald-mirage-island/": {
     meta: {
       categories: ["Emerald"],
@@ -4855,6 +4877,7 @@ export const guideSlugs = [
   "/dppt-wild/",
   "/dream-radar-patches/",
   "/e-tips-rng/",
+  "/emerald-lotad-seedot/",
   "/emerald-mirage-island/",
   "/emerald-overview/",
   "/emerald-painting-rng/",

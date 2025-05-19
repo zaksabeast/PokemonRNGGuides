@@ -6,6 +6,13 @@ import { match } from "ts-pattern";
 
 type JsonFileId = "gen3";
 
+const importTerms = async (jsonFileId: JsonFileId) => {
+  if (jsonFileId === "gen3") {
+    return (await import("../../assets/glossary_gen3.json")).default;
+  }
+  return [];
+};
+
 type Props = {
   jsonFileId: JsonFileId;
 };
@@ -76,13 +83,6 @@ const columns: TableColumnsType<Term> = [
     },
   },
 ];
-
-const importTerms = async (jsonFileId: string) => {
-  if (jsonFileId === "gen3") {
-    return (await import("../../assets/glossary_gen3.json")).default;
-  }
-  return [];
-};
 
 export const Glossary = ({ jsonFileId }: Props) => {
   const [terms, setTerms] = React.useState<Term[]>([]);

@@ -1544,7 +1544,7 @@ export const guides = {
       layout: "guide",
       canonical: null,
       file: "guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx",
-      translations: null,
+      translations: { en: "/emulator-rs-egg/", zh: "/zh-emulator-rs-egg/" },
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx"),
@@ -4607,6 +4607,27 @@ export const guides = {
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx"),
     ),
   },
+  "/zh-emulator-rs-egg/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      title: "孵化乱数",
+      navDrawerTitle: "孵化乱数",
+      description: "从培育屋乱数孵化宝可梦蛋",
+      slug: "/zh-emulator-rs-egg/",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-rs-egg/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx",
+      translations: { en: "/emulator-rs-egg/", zh: "/zh-emulator-rs-egg/" },
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx"),
+    ),
+  },
   "/zh-frlg-gen3-sid/": {
     meta: {
       categories: ["FireRed and LeafGreen"],
@@ -5035,6 +5056,7 @@ export const guideSlugs = [
   "/zh-emulator-frlg-wild/",
   "/zh-emulator-hgss-cute-charm/",
   "/zh-emulator-hgss-egg/",
+  "/zh-emulator-rs-egg/",
   "/zh-frlg-gen3-sid/",
   "/zh-frlg-seeding-bot/",
   "/zh-gen2-celebi/",

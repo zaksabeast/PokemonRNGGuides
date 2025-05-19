@@ -4,17 +4,23 @@ import React from "react";
 import { Table, TableColumnsType } from "antd";
 import { match } from "ts-pattern";
 
+type JsonFileId = "gen3";
+
 type Props = {
-  jsonUrl: string;
+  jsonFileId: JsonFileId;
 };
 
 type Importance = 1 | 2 | 3 | 4 | 5;
+
+const isImportance = (num: number): num is Importance => {
+  return [1, 2, 3, 4, 5].includes(num);
+};
 
 type TermInJson = {
   name: string;
   url?: string;
   aliases?: string[];
-  importance: Importance;
+  importance: number;
   desc: string;
 };
 
@@ -71,12 +77,19 @@ const columns: TableColumnsType<Term> = [
   },
 ];
 
-export const Glossary = ({ jsonUrl }: Props) => {
+const importTerms = async (jsonFileId: string) => {
+  if (jsonFileId === "gen3") {
+    return (await import("../../assets/glossary_gen3.json")).default;
+  }
+  return [];
+};
+
+export const Glossary = ({ jsonFileId }: Props) => {
   const [terms, setTerms] = React.useState<Term[]>([]);
 
   React.useEffect(() => {
-    fetch(jsonUrl).then(async (res) => {
-      const termsInJson: TermInJson[] = await res.json();
+    importTerms(jsonFileId).then((res) => {
+      const termsInJson: TermInJson[] = res;
 
       const terms: Term[] = termsInJson.map((rawTerm, i) => {
         return {
@@ -84,14 +97,14 @@ export const Glossary = ({ jsonUrl }: Props) => {
           name: rawTerm.name,
           url: rawTerm.url ?? null,
           aliases: rawTerm.aliases ?? [],
-          importance: rawTerm.importance,
+          importance: isImportance(rawTerm.importance) ? rawTerm.importance : 1,
           desc: rawTerm.desc,
         };
       });
 
       setTerms(terms);
     });
-  }, [setTerms, jsonUrl]);
+  }, [setTerms, jsonFileId]);
 
   return (
     <Table

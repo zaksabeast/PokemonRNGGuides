@@ -13,7 +13,7 @@ pub struct Gen3WOpts {
     pub sid: u16,
     pub gender_ratio: GenderRatio,
     pub encounter_slot: Option<Vec<EncounterSlot>>,
-    pub method: Option<Gen3Method>,
+    pub method: Gen3Method,
     pub initial_advances: usize,
     pub max_advances: usize,
     pub synchronize: Option<Gen3Lead>,
@@ -74,7 +74,7 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
     let iv1: u16;
     let iv2: u16;
 
-    match settings.method.unwrap_or(Gen3Method::H1) {
+    match settings.method {
         Gen3Method::H1 => {
             iv1 = rng.rand::<u16>();
             iv2 = rng.rand::<u16>();
@@ -169,7 +169,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
-            method: Some(Gen3Method::H1),
+            method: Gen3Method::H1,
             initial_advances: 0,
             max_advances: 9,
             synchronize: None,
@@ -396,7 +396,7 @@ mod test {
                 EncounterSlot::Slot6,
                 EncounterSlot::Slot8,
             ]),
-            method: Some(Gen3Method::H1),
+            method: Gen3Method::H1,
             initial_advances: 60,
             max_advances: 3625,
             synchronize: None,
@@ -510,7 +510,7 @@ mod test {
             sid: 47362,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
-            method: Some(Gen3Method::H1),
+            method: Gen3Method::H1,
             initial_advances: 0,
             max_advances: 10,
             synchronize: None,
@@ -568,7 +568,7 @@ mod test {
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
-            method: Some(Gen3Method::H1),
+            method: Gen3Method::H1,
             initial_advances: 0,
             max_advances: 4,
             synchronize: Some(Gen3Lead::Synchronize(Nature::Hardy)),

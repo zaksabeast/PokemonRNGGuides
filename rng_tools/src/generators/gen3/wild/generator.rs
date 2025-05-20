@@ -1,17 +1,16 @@
 use crate::Ivs;
 use crate::gen3::EncounterSlot;
-use crate::gen3::Gen3Ability;
 use crate::gen3::Gen3Lead;
 use crate::gen3::Gen3Method;
 use crate::gen3::ShinyType;
 use crate::rng::Rng;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
-use crate::{Gender, GenderRatio, Nature, gen3_shiny};
+use crate::{AbilityType, Gender, GenderRatio, Nature, gen3_shiny};
 
 pub struct Gen3WOpts {
     shiny_type: Option<ShinyType>,
-    ability: Option<Gen3Ability>,
+    ability: Option<AbilityType>,
     gender: Option<Gender>,
     nature: Option<Nature>,
     iv_range: (Ivs, Ivs),
@@ -106,7 +105,7 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
         }
     }
 
-    let ability = Gen3Ability::from_pid(pid);
+    let ability = AbilityType::from_gen3_pid(pid);
     if let Some(wanted_ability) = settings.ability {
         if ability != wanted_ability {
             return None;

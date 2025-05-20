@@ -68,23 +68,6 @@ impl EncounterSlot {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub enum Gen3Ability {
-    Ability0 = 0,
-    Ability1 = 1,
-}
-
-impl Gen3Ability {
-    pub fn from_pid(pid: u32) -> Self {
-        if pid & 1 == 0 {
-            Gen3Ability::Ability0
-        } else {
-            Gen3Ability::Ability1
-        }
-    }
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Gen3Lead {
     Synchronize(Nature),
 }

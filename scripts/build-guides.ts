@@ -8,8 +8,11 @@ import z from "zod";
 import { difference, isArray, keyBy, groupBy } from "lodash-es";
 import { guides as existingGuides } from "../src/__generated__/guides";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { toNativeAbsolute } from "./path";
 import { formatRelativeUrl } from "../src/utils/formatRelativeUrl";
+
+dayjs.extend(utc);
 
 // Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, ,, ，, 《, 》, Chinese characters, ·, and 。
 const titleAndDescriptionChars =
@@ -22,6 +25,18 @@ const SlugSchema = z
   .string()
   .refine((value) => value.length === 0 || slugChars.test(value))
   .transform(formatRelativeUrl);
+
+const tags = [
+  "retail",
+  "emu",
+  "cfw",
+  "info",
+  "any",
+  "challenge",
+  "patch",
+] as const;
+
+const TagSchema = z.enum(tags);
 
 const layouts = ["titled", "guide"] as const;
 
@@ -61,6 +76,19 @@ const TitleSchema = z
   .string()
   .refine((value) => titleAndDescriptionChars.test(value));
 
+const isNew = (addedOn: string | null) => {
+  if (addedOn == null) {
+    return false;
+  }
+
+  return dayjs.utc(addedOn).isAfter(dayjs.utc().subtract(7, "days"));
+};
+
+const SingleOrMultipleSchema = <T extends z.ZodTypeAny>(schema: T) =>
+  z.union([schema, schema.array()]).transform((value) => {
+    return isArray(value) ? value : [value];
+  });
+
 const SingleGuideMetadataSchema = z
   .object({
     title: TitleSchema,
@@ -70,14 +98,10 @@ const SingleGuideMetadataSchema = z
     description: z
       .string()
       .refine((value) => titleAndDescriptionChars.test(value)),
-    category: z
-      .union([CategorySchema, CategorySchema.array()])
-      .transform((category) => {
-        return isArray(category) ? category : [category];
-      }),
+    category: SingleOrMultipleSchema(CategorySchema),
     slug: SlugSchema,
     isRoughDraft: z.boolean().default(false),
-    tag: z.enum(["retail", "emu", "cfw", "info", "any", "challenge", "patch"]),
+    tag: SingleOrMultipleSchema(TagSchema),
     hideFromNavDrawer: z.boolean().default(false),
     addedOn: z
       .string()
@@ -100,15 +124,22 @@ const SingleGuideMetadataSchema = z
       .optional()
       .default(() => null),
   })
-  .transform(({ category, ...metadata }) => ({
+  .transform(({ category, tag, ...metadata }) => ({
     categories: category,
+    tags: tag,
+    isNew: isNew(metadata.addedOn),
     ...metadata,
+    navDrawerTitle: metadata.navDrawerTitle ?? metadata.title,
+    hideFromNavDrawer:
+      metadata.translation != null || metadata.hideFromNavDrawer,
   }));
 
-const GuideMetadataSchema = z.union([
-  SingleGuideMetadataSchema,
-  z.array(SingleGuideMetadataSchema),
-]);
+// Can't easily reuse SingleOrMultipleSchema here because of the transform
+const GuideMetadataSchema = z
+  .union([SingleGuideMetadataSchema, z.array(SingleGuideMetadataSchema)])
+  .transform((value) => {
+    return isArray(value) ? value : [value];
+  });
 
 type GuideMetadata = z.infer<typeof SingleGuideMetadataSchema>;
 
@@ -141,22 +172,17 @@ const main = async () => {
       jsx: React.jsx,
       jsxs: React.jsxs,
     });
-    let parsed: GuideMetadata | GuideMetadata[];
+    let metadatas: GuideMetadata[];
     try {
-      parsed = GuideMetadataSchema.parse(compiled.frontmatter);
+      metadatas = GuideMetadataSchema.parse(compiled.frontmatter);
     } catch (error) {
       throw new Error(`Error on guide ${file}`, { cause: error });
     }
-
-    const metadatas = isArray(parsed) ? parsed : [parsed];
 
     for (const metadata of metadatas) {
       guides.push({
         ...metadata,
         file,
-        navDrawerTitle: metadata.navDrawerTitle ?? metadata.title,
-        hideFromNavDrawer:
-          metadata.translation != null || metadata.hideFromNavDrawer,
       });
     }
   }

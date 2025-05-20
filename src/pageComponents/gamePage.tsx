@@ -1,6 +1,6 @@
 import { Skeleton } from "antd";
 import { Flex, Typography, Grid, Card, Icon } from "~/components";
-import { getGuide, GuideMeta, guides, Category } from "~/guides";
+import { getGuide, guides, Category, GuideTag } from "~/guides";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { get, groupBy, sortBy, flatMap } from "lodash-es";
 import { Route } from "~/routes/defs";
@@ -88,7 +88,7 @@ const TitleContainer = styled.div({
   zIndex: 1,
 });
 
-type PageSection = GuideMeta["tag"] | "tool" | "patch";
+type PageSection = GuideTag | "tool" | "patch";
 
 const sectionDisplayOrder: PageSection[] = [
   "info",
@@ -122,9 +122,14 @@ const getSectionLabel = (section: string) => {
     .exhaustive();
 };
 
-const guidesWithFlattenedCategories = flatMap(guides, (guide) => {
-  return guide.meta.categories.map((category) => ({ ...guide.meta, category }));
+const guidesWithFlattenedTags = flatMap(guides, (guide) => {
+  return guide.meta.tags.map((tag) => ({ ...guide.meta, tag }));
 });
+const guidesWithFlattenedCategories = guidesWithFlattenedTags.flatMap(
+  (guide) => {
+    return guide.categories.map((category) => ({ ...guide, category }));
+  },
+);
 const guideByCategory = groupBy(
   guidesWithFlattenedCategories,
   (guide) => guide.category,

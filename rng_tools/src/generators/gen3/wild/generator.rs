@@ -140,7 +140,6 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
 }
 
 pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> {
-    let results: Vec<GeneratedPokemon> = Vec::new();
     let base_rng = Pokerng::new(seed);
     StateIterator::new(base_rng)
         .enumerate()
@@ -157,6 +156,8 @@ pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> 
 #[cfg(test)]
 mod test {
 
+    use crate::assert_list_eq;
+
     use super::*;
 
     #[test]
@@ -170,7 +171,7 @@ mod test {
             encounter_slot: None,
             method: Some(Gen3Method::H1),
             initial_advances: 0,
-            max_advances: 10,
+            max_advances: 9,
             synchronize: None,
             filter: PkmFilter {
                 shiny: false,
@@ -380,9 +381,7 @@ mod test {
             },
         ];
         let result = generate_3wild(&options, seed);
-        for (i, expected) in expected_results.iter().enumerate() {
-            assert_eq!(result.get(i), Some(expected), "Mismatch at index {}", i);
-        }
+        assert_list_eq!(result, expected_results);
     }
     #[test]
     fn test_wild_genwfil() {
@@ -399,7 +398,7 @@ mod test {
             ]),
             method: Some(Gen3Method::H1),
             initial_advances: 60,
-            max_advances: 4000,
+            max_advances: 3625,
             synchronize: None,
             filter: PkmFilter {
                 shiny: false,
@@ -500,9 +499,7 @@ mod test {
             },
         ];
         let result = generate_3wild(&options, seed);
-        for (i, expected) in expected_results.iter().enumerate() {
-            assert_eq!(result.get(i), Some(expected), "Mismatch at index {}", i);
-        }
+        assert_list_eq!(result, expected_results);
     }
     #[test]
     fn test_wild_genwshin() {
@@ -560,9 +557,7 @@ mod test {
             synch: false,
         }];
         let result = generate_3wild(&options, seed);
-        for (i, expected) in expected_results.iter().enumerate() {
-            assert_eq!(result.get(i), Some(expected), "Mismatch at index {}", i);
-        }
+        assert_list_eq!(result, expected_results);
     }
     #[test]
     fn test_wild_gensynch() {
@@ -575,7 +570,7 @@ mod test {
             encounter_slot: None,
             method: Some(Gen3Method::H1),
             initial_advances: 0,
-            max_advances: 10,
+            max_advances: 4,
             synchronize: Some(Gen3Lead::Synchronize(Nature::Hardy)),
             filter: PkmFilter {
                 shiny: false,
@@ -694,8 +689,6 @@ mod test {
             },
         ];
         let result = generate_3wild(&options, seed);
-        for (i, expected) in expected_results.iter().enumerate() {
-            assert_eq!(result.get(i), Some(expected), "Mismatch at index {}", i);
-        }
+        assert_list_eq!(result, expected_results);
     }
 }

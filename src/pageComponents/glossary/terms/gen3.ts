@@ -2,16 +2,6 @@ import { TermInJson } from "../types";
 
 export const gen3Glossary: TermInJson[] = [
   {
-    name: "Retail guide",
-    importance: 5,
-    desc: "A guide aimed towards players playing on official Nintendo hardware or on emulators using only features available on official hardware (ex: no savestate, no access to the internal game state).",
-  },
-  {
-    name: "Emulator guide",
-    importance: 5,
-    desc: "A guide aimed towards players playing emulators and having access to emulator-exclusive features such as savestates and access to the internal game state.",
-  },
-  {
     name: "Seed",
     url: "https://en.wikipedia.org/wiki/Random_seed",
     aliases: ["Initial seed"],

@@ -37,6 +37,7 @@ import { Gen2Rng } from "~/rngToolsUi/gen2/gen2Rng";
 import { Gen3Pokerus } from "~/rngToolsUi/gen3/pokerus";
 import { Gen3Sid } from "~/rngToolsUi/gen3/sid";
 import { Gen4Timer } from "~/rngToolsUi/timer/gen4";
+import { Glossary } from "~/rngToolsUi/shared/glossary";
 import { EmeraldHeldEgg } from "~/rngToolsUi/gen3/emeraldHeldEgg";
 import { EmeraldPickupEgg } from "~/rngToolsUi/gen3/emeraldPickupEgg";
 import { Gen3TidSidGenerator } from "~/rngToolsUi/gen3/tidsid";
@@ -106,6 +107,7 @@ export const markdownComponents = {
   Gen3Pokerus,
   Gen3Sid,
   Gen3MirageIsland,
+  Glossary,
   EmeraldHeldEgg,
   EmeraldPickupEgg,
   Static3,

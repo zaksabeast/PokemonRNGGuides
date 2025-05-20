@@ -2078,6 +2078,26 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Starter.mdx")),
   },
+  "/gen3-glossary/": {
+    meta: {
+      categories: ["Emerald"],
+      title: "Glossary",
+      navDrawerTitle: "Glossary",
+      description:
+        "List of important words related to Pokémon RNG manipulation in Generation III games.",
+      slug: "/gen3-glossary/",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-05-17",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 3/Emerald/Glossary.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Glossary.mdx")),
+  },
   "/gen3-sid/": {
     meta: {
       categories: ["Emerald"],
@@ -4983,6 +5003,7 @@ export const guideSlugs = [
   "/gen2-celebi/",
   "/gen2-research/",
   "/gen2-starters/",
+  "/gen3-glossary/",
   "/gen3-sid/",
   "/heart-gold-and-soul-silver/",
   "/hgss-initial-seed/",

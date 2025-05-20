@@ -1949,6 +1949,27 @@ export const guides = {
       () => import("~/../guides/Gen 3/Emerald/GBA Overview.mdx"),
     ),
   },
+  "/gba-pokerus-technical/": {
+    meta: {
+      categories: ["GBA Technical Documentation"],
+      title: "Pokérus",
+      navDrawerTitle: "Pokérus",
+      description: "How Pokérus infection is triggered",
+      slug: "/gba-pokerus-technical/",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: false,
+      addedOn: "2025-05-13",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx"),
+    ),
+  },
   "/gba-vblank/": {
     meta: {
       categories: ["GBA Technical Documentation"],
@@ -3661,6 +3682,27 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Pokerus.mdx")),
   },
+  "/rs-pokerus-retail/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      title: "Pokérus in Ruby & Sapphire",
+      navDrawerTitle: "Pokérus",
+      description: "How to be infected by Pokérus",
+      slug: "/rs-pokerus-retail/",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: false,
+      addedOn: "2025-05-17",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx"),
+    ),
+  },
   "/rs-sid-feebas/": {
     meta: {
       categories: ["Ruby and Sapphire"],
@@ -4935,6 +4977,7 @@ export const guideSlugs = [
   "/gamecube/",
   "/gba-methods/",
   "/gba-overview/",
+  "/gba-pokerus-technical/",
   "/gba-vblank/",
   "/gc-initial/",
   "/gen2-celebi/",
@@ -5013,6 +5056,7 @@ export const guideSlugs = [
   "/rs-mirage-island/",
   "/rs-pokefinder-setup/",
   "/rs-pokerus-emu/",
+  "/rs-pokerus-retail/",
   "/rs-sid-feebas/",
   "/rs-static/",
   "/rs-tidsid-generator/",

@@ -5,6 +5,7 @@ use crate::gen3::Gen3Lead;
 use crate::gen3::Gen3Method;
 use crate::gen3::ShinyType;
 use crate::rng::Rng;
+use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
 use crate::{Gender, GenderRatio, Nature, gen3_shiny};
 
@@ -19,7 +20,7 @@ pub struct Gen3WOpts {
     gender_ratio: GenderRatio,
     encounter_slot: Option<Vec<EncounterSlot>>,
     method: Option<Gen3Method>,
-    min_advances: usize,
+    initial_advances: usize,
     max_advances: usize,
     synchronize: Option<Gen3Lead>,
 }
@@ -144,22 +145,18 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
 }
 
 pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> {
-    let mut results: Vec<GeneratedPokemon> = Vec::new();
-    let mut advances = settings.min_advances;
-
-    while advances <= settings.max_advances {
-        let mut rng = Pokerng::new(seed);
-        rng.advance(advances);
-        let mut temp_rng = rng;
-        if let Some(mut pokemon) = generate_pokemon(&mut temp_rng, settings) {
-            pokemon.advances = advances + 1;
-            results.push(pokemon);
-        }
-        advances += 1;
-        if advances > settings.max_advances {
-            break;
-        }
-    }
+    let results: Vec<GeneratedPokemon> = Vec::new();
+    let base_rng = Pokerng::new(seed);
+    StateIterator::new(base_rng)
+        .enumerate()
+        .skip(settings.initial_advances)
+        .take(settings.max_advances.wrapping_add(1))
+        .filter_map(|(adv, mut rng)| {
+            let mut pkm = generate_pokemon(&mut rng, settings)?;
+            pkm.advances = adv;
+            Some(pkm)
+        })
+        .collect::<Vec<GeneratedPokemon>>();
 
     results.into_iter().collect()
 }

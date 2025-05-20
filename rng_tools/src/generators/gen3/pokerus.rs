@@ -223,11 +223,11 @@ mod tests {
                 })
                 .collect();
 
-            println!(
-                "{}, {}, {}, {}",
+            assert_eq!(
+                results, expected_results,
+                "entered_hall_of_fame: {}, can_have_new_mass_outbreak: {}, has_empty_pokenews_slot: {}, level_up: {}",
                 entered_hall_of_fame, can_have_new_mass_outbreak, has_empty_pokenews_slot, level_up
             );
-            assert_eq!(results, expected_results);
         }
 
         cmp_each_pickup_count(

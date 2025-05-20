@@ -11,6 +11,11 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { toNativeAbsolute } from "./path";
 import { formatRelativeUrl } from "../src/utils/formatRelativeUrl";
+import { renderToStringAsync } from "../src/entry-server";
+import { TagDetector } from "../src/components/tagDetector/tagDetector";
+import { markdownComponents } from "../src/markdownExports";
+import { Router } from "wouter";
+import { ThemeProvider } from "../src/theme/provider";
 
 dayjs.extend(utc);
 
@@ -84,6 +89,7 @@ const isNew = (addedOn: string | null) => {
   return dayjs.utc(addedOn).isAfter(dayjs.utc().subtract(7, "days"));
 };
 
+// eslint-disable-next-line react-refresh/only-export-components -- This is not a component
 const SingleOrMultipleSchema = <T extends z.ZodTypeAny>(schema: T) =>
   z.union([schema, schema.array()]).transform((value) => {
     return isArray(value) ? value : [value];
@@ -163,7 +169,10 @@ const getGuideFiles = async (): Promise<SitePageFile[]> => {
 
 const main = async () => {
   const guideFiles = await getGuideFiles();
-  const guides: (GuideMetadata & { file: string })[] = [];
+  const guides: (GuideMetadata & {
+    file: string;
+    displayAttributes: string[];
+  })[] = [];
 
   for (const { file, content } of guideFiles) {
     const compiled = await evaluate(content, {
@@ -180,8 +189,24 @@ const main = async () => {
     }
 
     for (const metadata of metadatas) {
+      let detectedTags = {};
+      const setTags = (tags: Partial<Record<string, boolean>>) => {
+        detectedTags = { ...detectedTags, ...tags };
+      };
+      const Guide = compiled.default;
+      await renderToStringAsync(
+        <TagDetector setTags={setTags}>
+          <ThemeProvider>
+            <Router ssrPath={metadata.slug}>
+              <Guide components={markdownComponents} />
+            </Router>
+          </ThemeProvider>
+        </TagDetector>,
+      );
+
       guides.push({
         ...metadata,
+        displayAttributes: Object.keys(detectedTags),
         file,
       });
     }
@@ -267,6 +292,8 @@ const main = async () => {
     toNativeAbsolute("../src/__generated__/guides.ts"),
     compiledGuides,
   );
+
+  process.exit(0);
 };
 
 main();

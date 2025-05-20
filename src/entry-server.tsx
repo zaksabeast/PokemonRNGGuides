@@ -23,7 +23,7 @@ import type { renderToReadableStream as TrenderToReadableStream } from "react-do
 const renderToReadableStream: typeof TrenderToReadableStream =
   _renderToReadableStream;
 
-const renderToStringAsync = async (element: React.ReactNode) => {
+export const renderToStringAsync = async (element: React.ReactNode) => {
   const stream = await renderToReadableStream(element);
   const reader = stream.getReader();
   let html = "";

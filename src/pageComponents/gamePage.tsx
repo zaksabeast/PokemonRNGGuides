@@ -1,12 +1,50 @@
-import { Skeleton } from "antd";
-import { Flex, Typography, Grid, Card, Icon } from "~/components";
-import { getGuide, guides, Category, GuideTag } from "~/guides";
+import { Card as AntdCard, Badge } from "antd";
+import { Flex, Typography, Grid, Card, Divider, Tag, Icon } from "~/components";
+import { getGuide, guides, Category, GuideTag, GuideMeta } from "~/guides";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { get, groupBy, sortBy, flatMap } from "lodash-es";
+import { get, groupBy, sortBy, flatMap, startCase } from "lodash-es";
 import { Route } from "~/routes/defs";
 import { match } from "ts-pattern";
 import styled from "@emotion/styled";
-import { useAbCohort } from "~/hooks/useAbTest";
+
+const BadgeRibbon = styled(Badge.Ribbon)<{ $isNew: boolean }>(({ $isNew }) => ({
+  display: $isNew ? "flex" : "none",
+}));
+
+type DisplayAttribute =
+  | GuideMeta["displayAttributes"][number]
+  | "new"
+  | "translated";
+
+const DisplayTag = styled(Tag)<{ tag: DisplayAttribute }>(({ tag }) => {
+  const colors = match(tag)
+    .with("new", () => ({
+      color: "#AF52DE",
+      backgroundColor: "rgba(175, 82, 222, 0.1)",
+    }))
+    .with("translated", () => ({
+      color: "#34C759",
+      backgroundColor: "rgba(52, 199, 89, 0.1)",
+    }))
+    .with("web_tool", () => ({
+      color: "#7E5BEF",
+      backgroundColor: "rgba(126, 91, 239, 0.08)",
+    }))
+    .with("video_guide", () => ({
+      color: "#007AFF",
+      backgroundColor: "rgba(0, 122, 255, 0.1)",
+    }))
+    .exhaustive();
+
+  return {
+    ...colors,
+    borderRadius: 20,
+    border: 0,
+    boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.04)",
+  };
+});
+
+const { Meta: CardMeta } = AntdCard;
 
 const isToolCategory = (category: Category) => {
   return match(category)
@@ -66,10 +104,22 @@ const routeToCategory = {
   ],
 } satisfies Partial<Record<Route, Category[]>>;
 
+const GuideCard = styled(Card)({
+  "& .ant-card-body": {
+    padding: 0,
+  },
+  "& .ant-ribbon-wrapper": {
+    height: "100%",
+    display: "flex",
+  },
+});
+
 const CardBackground = styled.div({
   position: "absolute",
   top: 0,
   left: 0,
+  display: "flex",
+  justifyContent: "flex-end",
   width: "100%",
   height: "100%",
   overflow: "hidden",
@@ -79,13 +129,7 @@ const InnerCardBackground = styled.div({
   position: "absolute",
   top: -12,
   transform: "rotate(-35deg)",
-});
-
-const TitleContainer = styled.div({
-  display: "flex",
-  flexDirection: "column",
-  position: "relative",
-  zIndex: 1,
+  paddingTop: 12,
 });
 
 type PageSection = GuideTag | "tool" | "patch";
@@ -137,7 +181,6 @@ const guideByCategory = groupBy(
 
 export const GamePageComponent = () => {
   const route = useActiveRoute();
-  const abTest = useAbCohort("guidePokeball");
 
   const { meta } = getGuide(route);
 
@@ -158,10 +201,6 @@ export const GamePageComponent = () => {
         Guides and Articles
       </Typography.Title>
       {sectionDisplayOrder.map((section) => {
-        if (!abTest.hydrated) {
-          return <Skeleton />;
-        }
-
         const sectionGuides = guidesBySection[section];
         if (sectionGuides == null) {
           return null;
@@ -183,36 +222,49 @@ export const GamePageComponent = () => {
             <Grid mobile={1} tablet={2} desktop={3}>
               {sortBy(filteredGuides, (guide) => guide.navDrawerTitle).map(
                 (guide) => (
-                  <Card
+                  <GuideCard
                     id={`guide-${guide.slug}`}
                     key={guide.slug}
                     fullBody
                     href={guide.slug}
                     borderColor="PrimaryBorderHover"
-                    border="1px solid"
+                    border={guide.isNew ? "2px solid" : "1px solid"}
                   >
-                    {abTest.cohort === "on" && (
-                      <CardBackground>
-                        <InnerCardBackground>
-                          <Icon
-                            name="Pokeball"
-                            size={100}
-                            color="PrimaryBgHover"
-                          />
-                        </InnerCardBackground>
-                      </CardBackground>
-                    )}
-                    <TitleContainer>
-                      <Typography.Text
-                        strong
-                        m={0}
-                        fontSize={16}
-                        textAlign="right"
-                      >
-                        {guide.navDrawerTitle}
-                      </Typography.Text>
-                    </TitleContainer>
-                  </Card>
+                    <BadgeRibbon
+                      $isNew={guide.isNew}
+                      text="New"
+                      key={guide.slug}
+                    >
+                      <Flex vertical justify="space-between" flex={1} p={24}>
+                        <Flex vertical minHeight={50} gap={4} height="100%">
+                          <CardBackground>
+                            <InnerCardBackground>
+                              <Icon
+                                name="Pokeball"
+                                size={100}
+                                color="PrimaryBgHover"
+                              />
+                            </InnerCardBackground>
+                          </CardBackground>
+                          {guide.displayAttributes
+                            // Seperate filter for TS to infer types from the null check
+                            .filter((tag) => tag !== null)
+                            .filter((tag) => !isSectionDsiplay(tag))
+                            .map((tag) => (
+                              <Flex key={tag}>
+                                <DisplayTag tag={tag}>
+                                  {startCase(tag)}
+                                </DisplayTag>
+                              </Flex>
+                            ))}
+                        </Flex>
+                        <Flex vertical>
+                          <Divider />
+                          <CardMeta title={guide.navDrawerTitle} />
+                        </Flex>
+                      </Flex>
+                    </BadgeRibbon>
+                  </GuideCard>
                 ),
               )}
             </Grid>

@@ -70,8 +70,10 @@ import {
   CalibratePickupEgg,
   CalibratePickupEggTimer,
 } from "~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg";
+import { withTags } from "~/components/tagDetector/provider";
+import { mapValues } from "lodash-es";
 
-export const markdownComponents = {
+const nonTools = {
   br: MarkdownBreak,
   h1: MarkdownH1,
   h2: MarkdownH2,
@@ -98,10 +100,21 @@ export const markdownComponents = {
   YouTubeVideo,
   PixelImage,
   Alert,
-  IpsMerger,
   Countdown,
   Flex,
   Gist,
+  ShowIf,
+  Gen7SosList,
+  ChallengePageComponent,
+  ExperimentsPageComponent,
+  HomePageComponent,
+  GamePageComponent,
+  Stepper,
+  Step,
+};
+
+const tools = {
+  IpsMerger,
   Gen2PokemonRng,
   Gen2Rng,
   Gen3Pokerus,
@@ -113,7 +126,6 @@ export const markdownComponents = {
   Static3,
   Gen3TidSidGenerator,
   OrAsMirageSpot,
-  ShowIf,
   Gen4Timer,
   RngTimer,
   OrasId,
@@ -121,22 +133,26 @@ export const markdownComponents = {
   DpptSeed,
   DpptId,
   XyPokeRadar,
-  Gen7SosList,
   ShinyHoennStarter,
   GenerateHoennTidSid,
   MultibootJirachi,
-  ChallengePageComponent,
-  ExperimentsPageComponent,
   PaintingReseed,
-  HomePageComponent,
-  GamePageComponent,
   RetailEmeraldHeldEgg,
-  Stepper,
-  Step,
   PokeNavInput,
   CalibrateHeldEgg,
   CalibrateHeldEggTimer,
   RetailEmeraldPickupEgg,
   CalibratePickupEgg,
   CalibratePickupEggTimer,
+};
+
+export const markdownComponents = {
+  ...nonTools,
+  ...mapValues(tools, (Component) => {
+    // This is temporary
+    // At some point I'd like each of these to be lazy loaded, which will require specifying the component path next to the component name.
+    // A wrapper around React.lazy can include `withTags`.
+    // @ts-expect-error -- TS can't tell each component props apart in the Component union, so it thinks there are prop mismatches
+    return withTags(Component, { web_tool: true });
+  }),
 };

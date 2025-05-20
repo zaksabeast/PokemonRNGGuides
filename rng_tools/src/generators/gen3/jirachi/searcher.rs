@@ -61,10 +61,7 @@ pub fn search_mb_jirachi_times(opts: MultibootJirachiOptions) -> JirachiSaveResu
     let results = (current_frames..=max_frames)
         .filter_map(|frames| {
             let save_time = SaveTime::from_total_frames(frames);
-            let words = block0
-                .time_words(&save_time)
-                .into_iter()
-                .chain([base_chk].into_iter());
+            let words = block0.time_words(&save_time).into_iter().chain([base_chk]);
             let chk = chk_u16(words);
             let jirachi = JirachiSpread::new(chk, opts.jirachi_type);
 

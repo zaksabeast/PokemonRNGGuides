@@ -1,6 +1,6 @@
+use crate::timer::enhanced_entralink_timer::Gen5EntralinkPlusTimerSettings;
+
 use super::super::{console::Console, enhanced_entralink_timer, entralink_timer, second_timer};
-use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
 fn get_second_calibration(console: Console, target_second: f32, hit_second: f32) -> f32 {
@@ -17,30 +17,8 @@ fn get_advances_calibration(target_advances: f32, hit_advances: f32) -> f32 {
     enhanced_entralink_timer::calibrate(target_advances, hit_advances)
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Gen5EntralinkPlusTimerSettings {
-    pub console: Console,
-    pub min_time_ms: f32,
-    pub target_delay: f32,
-    pub target_second: f32,
-    pub target_advances: f32,
-    pub calibration: f32,
-    pub entralink_calibration: f32,
-    pub frame_calibration: f32,
-}
-
-fn create(settings: Gen5EntralinkPlusTimerSettings) -> [f32; 3] {
-    enhanced_entralink_timer::create(
-        settings.console,
-        settings.min_time_ms,
-        settings.target_delay,
-        settings.target_second,
-        settings.target_advances,
-        settings.calibration,
-        settings.entralink_calibration,
-        settings.frame_calibration,
-    )
+fn create(settings: &Gen5EntralinkPlusTimerSettings) -> [f32; 3] {
+    enhanced_entralink_timer::create(settings)
 }
 
 fn calibrate(
@@ -74,7 +52,7 @@ fn calibrate(
 }
 
 #[wasm_bindgen]
-pub fn create_gen5_entralink_plus_timer(settings: Gen5EntralinkPlusTimerSettings) -> Vec<f32> {
+pub fn create_gen5_entralink_plus_timer(settings: &Gen5EntralinkPlusTimerSettings) -> Vec<f32> {
     create(settings).to_vec()
 }
 
@@ -104,7 +82,7 @@ mod test {
             entralink_calibration: 256.0,
             frame_calibration: 0.0,
         };
-        assert_eq!(create(settings), [30296.0, 19897.0, 119453.0]);
+        assert_eq!(create(&settings), [30296.0, 19897.0, 119453.0]);
     }
 
     #[test]
@@ -123,6 +101,6 @@ mod test {
         assert_eq!(settings.calibration, -66.0);
         assert_eq!(settings.entralink_calibration, 255.0);
         assert_eq!(settings.frame_calibration, 1194.5306);
-        assert_eq!(create(settings), [30325.0, 19869.0, 120647.0]);
+        assert_eq!(create(&settings), [30325.0, 19869.0, 120647.0]);
     }
 }

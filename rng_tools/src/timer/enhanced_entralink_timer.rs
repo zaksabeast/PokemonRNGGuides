@@ -1,5 +1,7 @@
 use super::console::Console;
 use super::entralink_timer;
+use serde::{Deserialize, Serialize};
+use tsify_next::Tsify;
 
 const ENTRALINK_FRAME_RATE: f32 = 0.837_148_9;
 
@@ -13,30 +15,34 @@ fn create_enhanded_entralink(
     [phases[0].floor(), phases[1].floor(), phase2.floor()]
 }
 
-pub fn create(
-    console: Console,
-    min_time_ms: f32,
-    target_delay: f32,
-    target_second: f32,
-    target_advances: f32,
-    calibration: f32,
-    entralink_calibration: f32,
-    frame_calibration: f32,
-) -> [f32; 3] {
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen5EntralinkPlusTimerSettings {
+    pub console: Console,
+    pub min_time_ms: f32,
+    pub target_delay: f32,
+    pub target_second: f32,
+    pub target_advances: f32,
+    pub calibration: f32,
+    pub entralink_calibration: f32,
+    pub frame_calibration: f32,
+}
+
+pub fn create(opts: &Gen5EntralinkPlusTimerSettings) -> [f32; 3] {
     let phases = entralink_timer::create(
-        console,
-        min_time_ms,
-        target_delay,
-        target_second,
-        calibration,
-        entralink_calibration,
+        opts.console,
+        opts.min_time_ms,
+        opts.target_delay,
+        opts.target_second,
+        opts.calibration,
+        opts.entralink_calibration,
     );
 
     create_enhanded_entralink(
         phases,
-        target_advances,
+        opts.target_advances,
         ENTRALINK_FRAME_RATE,
-        frame_calibration,
+        opts.frame_calibration,
     )
 }
 

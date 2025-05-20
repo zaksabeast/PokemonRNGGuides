@@ -295,7 +295,7 @@ pub fn generate_transporter(opts: TransporterOpts) -> Vec<Stationary6State> {
     let target_gender = opts
         .transporter_genders
         .get(opts.target)
-        .map(|target| *target)
+        .copied()
         .unwrap_or(TransporterGenderType::RandomGender);
     let ability = match target_gender {
         TransporterGenderType::Mythical => AbilityType::First,

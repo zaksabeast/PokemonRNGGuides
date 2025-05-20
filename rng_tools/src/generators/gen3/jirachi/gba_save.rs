@@ -130,12 +130,7 @@ impl<'a> Block<'a> {
     }
 
     pub fn chk_u32(&self) -> u32 {
-        chk_u32(
-            self.data
-                .chunks_exact(4)
-                .take(0xf80 / 4)
-                .map(|chunk| le_u32(chunk)),
-        )
+        chk_u32(self.data.chunks_exact(4).take(0xf80 / 4).map(le_u32))
     }
 
     pub fn save_time(&self) -> SaveTime {

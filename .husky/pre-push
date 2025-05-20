@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
 cargo test --manifest-path rng_tools/Cargo.toml
+cargo clippy --manifest-path rng_tools/Cargo.toml -- -D warnings
 bun run lint

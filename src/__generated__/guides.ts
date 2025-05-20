@@ -1589,7 +1589,10 @@ export const guides = {
       layout: "guide",
       canonical: null,
       file: "guides/Gen 3/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-rs-stationary/",
+        zh: "/zh-emulator-rs-stationary/",
+      },
     },
     Guide: React.lazy(
       () =>
@@ -4690,6 +4693,33 @@ export const guides = {
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx"),
     ),
   },
+  "/zh-emulator-rs-stationary/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      title: "有电电池定点乱数",
+      navDrawerTitle: "有电电池定点乱数",
+      description: "在红宝石和蓝宝石中轻松乱数完美异色传说宝可梦",
+      slug: "/zh-emulator-rs-stationary/",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-rs-stationary/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 3/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx",
+      translations: {
+        en: "/emulator-rs-stationary/",
+        zh: "/zh-emulator-rs-stationary/",
+      },
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Gen 3/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx"
+        ),
+    ),
+  },
   "/zh-frlg-gen3-sid/": {
     meta: {
       categories: ["FireRed and LeafGreen"],
@@ -5122,6 +5152,7 @@ export const guideSlugs = [
   "/zh-emulator-hgss-cute-charm/",
   "/zh-emulator-hgss-egg/",
   "/zh-emulator-rs-egg/",
+  "/zh-emulator-rs-stationary/",
   "/zh-frlg-gen3-sid/",
   "/zh-frlg-seeding-bot/",
   "/zh-gen2-celebi/",

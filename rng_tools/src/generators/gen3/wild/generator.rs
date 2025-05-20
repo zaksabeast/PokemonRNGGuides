@@ -149,9 +149,7 @@ pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> 
             pkm.advance = adv;
             Some(pkm)
         })
-        .collect::<Vec<GeneratedPokemon>>();
-
-    results.into_iter().collect()
+        .collect::<Vec<GeneratedPokemon>>()
 }
 
 #[cfg(test)]
@@ -164,19 +162,27 @@ mod test {
         let seed = 0;
         let options = Gen3WOpts {
             shiny_type: None,
-            ability: None,
-            gender: None,
-            nature: None,
-            iv_range: (
-                Ivs {
-                    atk: 0,
+            tid: 0,
+            sid: 0,
+            gender_ratio: GenderRatio::OneToOne,
+            encounter_slot: None,
+            method: Some(Gen3Method::H1),
+            initial_advances: 0,
+            max_advances: 10,
+            synchronize: None,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: Ivs {
                     hp: 0,
+                    atk: 0,
                     def: 0,
                     spa: 0,
                     spd: 0,
                     spe: 0,
                 },
-                Ivs {
+                max_ivs: Ivs {
                     hp: 31,
                     atk: 31,
                     def: 31,
@@ -184,23 +190,37 @@ mod test {
                     spd: 31,
                     spe: 31,
                 },
-            ),
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            method: Some(Gen3Method::H1),
-            min_advances: 0,
-            max_advances: 10,
-            synchronize: None,
+                ability: None,
+                stats: None,
+            },
         };
 
-        let expected_results = vec![
+        let expected_results = [
             GeneratedPokemon {
+                advance: 0,
+                encounter_slot: EncounterSlot::Slot0,
+                pid: 0xFC3367DB,
+                shiny: false,
+                nature: Nature::Bold,
+                ability: AbilityType::Second,
+                ivs: Ivs {
+                    hp: 12,
+                    atk: 25,
+                    def: 27,
+                    spa: 2,
+                    spd: 31,
+                    spe: 30,
+                },
+                gender: Gender::Male,
+                synch: false,
+            },
+            GeneratedPokemon {
+                advance: 1,
+                encounter_slot: EncounterSlot::Slot5,
                 pid: 0x60A1E414,
                 shiny: false,
-                ability: Gen3Ability::Ability0,
-                gender: Gender::Female,
+                nature: Nature::Calm,
+                ability: AbilityType::First,
                 ivs: Ivs {
                     hp: 11,
                     atk: 25,
@@ -209,16 +229,16 @@ mod test {
                     spd: 3,
                     spe: 24,
                 },
-                nature: Nature::Calm,
-                advances: 1,
-                encounter_slot: EncounterSlot::Slot5,
+                gender: Gender::Female,
                 synch: false,
             },
             GeneratedPokemon {
+                advance: 2,
+                encounter_slot: EncounterSlot::Slot0,
                 pid: 0x639E3D69,
                 shiny: false,
-                ability: Gen3Ability::Ability1,
-                gender: Gender::Female,
+                nature: Nature::Bashful,
+                ability: AbilityType::Second,
                 ivs: Ivs {
                     hp: 9,
                     atk: 9,
@@ -227,16 +247,16 @@ mod test {
                     spd: 26,
                     spe: 13,
                 },
-                nature: Nature::Bashful,
-                advances: 2,
-                encounter_slot: EncounterSlot::Slot0,
+                gender: Gender::Female,
                 synch: false,
             },
             GeneratedPokemon {
+                advance: 3,
+                encounter_slot: EncounterSlot::Slot1,
                 pid: 0xAD05863A,
                 shiny: false,
-                ability: Gen3Ability::Ability0,
-                gender: Gender::Female,
+                nature: Nature::Timid,
+                ability: AbilityType::First,
                 ivs: Ivs {
                     hp: 18,
                     atk: 14,
@@ -245,16 +265,16 @@ mod test {
                     spd: 12,
                     spe: 25,
                 },
-                nature: Nature::Timid,
-                advances: 3,
-                encounter_slot: EncounterSlot::Slot1,
+                gender: Gender::Female,
                 synch: false,
             },
             GeneratedPokemon {
+                advance: 4,
+                encounter_slot: EncounterSlot::Slot0,
                 pid: 0x945CE0C6,
                 shiny: false,
-                ability: Gen3Ability::Ability0,
-                gender: Gender::Male,
+                nature: Nature::Sassy,
+                ability: AbilityType::First,
                 ivs: Ivs {
                     hp: 27,
                     atk: 17,
@@ -263,16 +283,16 @@ mod test {
                     spd: 22,
                     spe: 31,
                 },
-                nature: Nature::Sassy,
-                advances: 4,
-                encounter_slot: EncounterSlot::Slot0,
+                gender: Gender::Male,
                 synch: false,
             },
             GeneratedPokemon {
+                advance: 5,
+                encounter_slot: EncounterSlot::Slot4,
                 pid: 0x91785DD6,
                 shiny: false,
-                ability: Gen3Ability::Ability0,
-                gender: Gender::Male,
+                nature: Nature::Serious,
+                ability: AbilityType::First,
                 ivs: Ivs {
                     hp: 6,
                     atk: 29,
@@ -281,9 +301,79 @@ mod test {
                     spd: 24,
                     spe: 13,
                 },
-                nature: Nature::Serious,
-                advances: 5,
+                gender: Gender::Male,
+                synch: false,
+            },
+            GeneratedPokemon {
+                advance: 6,
+                encounter_slot: EncounterSlot::Slot9,
+                pid: 0xDFC5706A,
+                shiny: false,
+                nature: Nature::Jolly,
+                ability: AbilityType::First,
+                ivs: Ivs {
+                    hp: 4,
+                    atk: 20,
+                    def: 14,
+                    spa: 0,
+                    spd: 25,
+                    spe: 20,
+                },
+                gender: Gender::Female,
+                synch: false,
+            },
+            GeneratedPokemon {
+                advance: 7,
+                encounter_slot: EncounterSlot::Slot7,
+                pid: 0x618D27A6,
+                shiny: false,
+                nature: Nature::Adamant,
+                ability: AbilityType::First,
+                ivs: Ivs {
+                    hp: 18,
+                    atk: 20,
+                    def: 5,
+                    spa: 29,
+                    spd: 19,
+                    spe: 24,
+                },
+                gender: Gender::Male,
+                synch: false,
+            },
+            GeneratedPokemon {
+                advance: 8,
                 encounter_slot: EncounterSlot::Slot4,
+                pid: 0x1692618D,
+                shiny: false,
+                nature: Nature::Docile,
+                ability: AbilityType::Second,
+                ivs: Ivs {
+                    hp: 24,
+                    atk: 29,
+                    def: 19,
+                    spa: 26,
+                    spd: 13,
+                    spe: 29,
+                },
+                gender: Gender::Male,
+                synch: false,
+            },
+            GeneratedPokemon {
+                advance: 9,
+                encounter_slot: EncounterSlot::Slot1,
+                pid: 0x6E031C49,
+                shiny: false,
+                nature: Nature::Lax,
+                ability: AbilityType::Second,
+                ivs: Ivs {
+                    hp: 10,
+                    atk: 13,
+                    def: 12,
+                    spa: 20,
+                    spd: 10,
+                    spe: 9,
+                },
+                gender: Gender::Female,
                 synch: false,
             },
         ];
@@ -292,33 +382,11 @@ mod test {
             assert_eq!(result.get(i), Some(expected), "Mismatch at index {}", i);
         }
     }
-
     #[test]
     fn test_wild_genwfil() {
         let seed = 0x346A4A45;
         let options = Gen3WOpts {
             shiny_type: None,
-            ability: Some(Gen3Ability::Ability1),
-            gender: Some(Gender::Female),
-            nature: Some(Nature::Adamant),
-            iv_range: (
-                Ivs {
-                    atk: 10,
-                    hp: 10,
-                    def: 10,
-                    spa: 10,
-                    spd: 10,
-                    spe: 10,
-                },
-                Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-            ),
             tid: 12345,
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
@@ -328,16 +396,41 @@ mod test {
                 EncounterSlot::Slot8,
             ]),
             method: Some(Gen3Method::H1),
-            min_advances: 60,
+            initial_advances: 60,
             max_advances: 4000,
             synchronize: None,
+            filter: PkmFilter {
+                shiny: false,
+                nature: Some(Nature::Adamant),
+                gender: Some(Gender::Female),
+                min_ivs: Ivs {
+                    hp: 10,
+                    atk: 10,
+                    def: 10,
+                    spa: 10,
+                    spd: 10,
+                    spe: 10,
+                },
+                max_ivs: Ivs {
+                    hp: 31,
+                    atk: 31,
+                    def: 31,
+                    spa: 31,
+                    spd: 31,
+                    spe: 31,
+                },
+                ability: Some(AbilityType::Second),
+                stats: None,
+            },
         };
-        let expected_results = vec![
+        let expected_results = [
             GeneratedPokemon {
+                advance: 908,
+                encounter_slot: EncounterSlot::Slot0,
                 pid: 0x02FA9E49,
                 shiny: false,
-                ability: Gen3Ability::Ability1,
-                gender: Gender::Female,
+                nature: Nature::Adamant,
+                ability: AbilityType::Second,
                 ivs: Ivs {
                     hp: 12,
                     atk: 29,
@@ -346,16 +439,16 @@ mod test {
                     spd: 14,
                     spe: 13,
                 },
-                nature: Nature::Adamant,
-                advances: 908,
-                encounter_slot: EncounterSlot::Slot0,
+                gender: Gender::Female,
                 synch: false,
             },
             GeneratedPokemon {
+                advance: 3543,
+                encounter_slot: EncounterSlot::Slot0,
                 pid: 0xA44D455D,
                 shiny: false,
-                ability: Gen3Ability::Ability1,
-                gender: Gender::Female,
+                nature: Nature::Adamant,
+                ability: AbilityType::Second,
                 ivs: Ivs {
                     hp: 31,
                     atk: 13,
@@ -364,34 +457,16 @@ mod test {
                     spd: 21,
                     spe: 24,
                 },
-                nature: Nature::Adamant,
-                advances: 3543,
-                encounter_slot: EncounterSlot::Slot0,
+                gender: Gender::Female,
                 synch: false,
             },
             GeneratedPokemon {
-                pid: 0xA44D455D,
-                shiny: false,
-                ability: Gen3Ability::Ability1,
-                gender: Gender::Female,
-                ivs: Ivs {
-                    hp: 31,
-                    atk: 13,
-                    def: 30,
-                    spa: 26,
-                    spd: 21,
-                    spe: 24,
-                },
-                nature: Nature::Adamant,
-                advances: 3577,
+                advance: 3577,
                 encounter_slot: EncounterSlot::Slot6,
-                synch: false,
-            },
-            GeneratedPokemon {
                 pid: 0xA44D455D,
                 shiny: false,
-                ability: Gen3Ability::Ability1,
-                gender: Gender::Female,
+                nature: Nature::Adamant,
+                ability: AbilityType::Second,
                 ivs: Ivs {
                     hp: 31,
                     atk: 13,
@@ -400,12 +475,88 @@ mod test {
                     spd: 21,
                     spe: 24,
                 },
-                nature: Nature::Adamant,
-                advances: 3621,
+                gender: Gender::Female,
+                synch: false,
+            },
+            GeneratedPokemon {
+                advance: 3621,
                 encounter_slot: EncounterSlot::Slot8,
+                pid: 0xA44D455D,
+                shiny: false,
+                nature: Nature::Adamant,
+                ability: AbilityType::Second,
+                ivs: Ivs {
+                    hp: 31,
+                    atk: 13,
+                    def: 30,
+                    spa: 26,
+                    spd: 21,
+                    spe: 24,
+                },
+                gender: Gender::Female,
                 synch: false,
             },
         ];
+        let result = generate_3wild(&options, seed);
+        for (i, expected) in expected_results.iter().enumerate() {
+            assert_eq!(result.get(i), Some(expected), "Mismatch at index {}", i);
+        }
+    }
+    #[test]
+    fn test_wild_genwshin() {
+        let seed = 0x14a22065;
+        let options = Gen3WOpts {
+            shiny_type: Some(ShinyType::Star),
+            tid: 34760,
+            sid: 47362,
+            gender_ratio: GenderRatio::OneToOne,
+            encounter_slot: None,
+            method: Some(Gen3Method::H1),
+            initial_advances: 0,
+            max_advances: 10,
+            synchronize: None,
+            filter: PkmFilter {
+                shiny: true,
+                nature: Some(Nature::Naive),
+                gender: Some(Gender::Male),
+                min_ivs: Ivs {
+                    hp: 0,
+                    atk: 0,
+                    def: 0,
+                    spa: 0,
+                    spd: 0,
+                    spe: 0,
+                },
+                max_ivs: Ivs {
+                    hp: 31,
+                    atk: 31,
+                    def: 31,
+                    spa: 31,
+                    spd: 31,
+                    spe: 31,
+                },
+                ability: Some(AbilityType::Second),
+                stats: None,
+            },
+        };
+        let expected_results = [GeneratedPokemon {
+            advance: 0,
+            encounter_slot: EncounterSlot::Slot4,
+            pid: 0x692A57E1,
+            shiny: true,
+            nature: Nature::Naive,
+            ability: AbilityType::Second,
+            ivs: Ivs {
+                hp: 0,
+                atk: 0,
+                def: 0,
+                spa: 8,
+                spd: 13,
+                spe: 25,
+            },
+            gender: Gender::Male,
+            synch: false,
+        }];
         let result = generate_3wild(&options, seed);
         for (i, expected) in expected_results.iter().enumerate() {
             assert_eq!(result.get(i), Some(expected), "Mismatch at index {}", i);

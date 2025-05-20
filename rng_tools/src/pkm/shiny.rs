@@ -22,8 +22,7 @@ pub fn gen6_psv(pid: u32) -> u16 {
     (pidh ^ pidl) >> 4
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ShinyType {
     Star,
     Square,

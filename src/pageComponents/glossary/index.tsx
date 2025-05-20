@@ -3,32 +3,25 @@ import { MarkdownA } from "~/markdownExports/components";
 import React from "react";
 import { Table, TableColumnsType } from "antd";
 import { match } from "ts-pattern";
+import { importance, Importance } from "./types";
+import { memoize } from "lodash-es";
 
 type JsonFileId = "gen3";
 
-const importTerms = async (jsonFileId: JsonFileId) => {
+const importTerms = memoize(async (jsonFileId: JsonFileId) => {
   if (jsonFileId === "gen3") {
-    return (await import("../../assets/glossary_gen3.json")).default;
+    return (await import("./terms/gen3")).gen3Glossary;
   }
   return [];
-};
+});
 
 type Props = {
   jsonFileId: JsonFileId;
 };
 
-type Importance = 1 | 2 | 3 | 4 | 5;
-
 const isImportance = (num: number): num is Importance => {
-  return [1, 2, 3, 4, 5].includes(num);
-};
-
-type TermInJson = {
-  name: string;
-  url?: string;
-  aliases?: string[];
-  importance: number;
-  desc: string;
+  // Loosen types for check
+  return (importance as Readonly<number[]>).includes(num);
 };
 
 type Term = {
@@ -45,7 +38,7 @@ const columns: TableColumnsType<Term> = [
     title: "Name",
     dataIndex: "name",
     render: (name, values) => {
-      if (!values.url) {
+      if (values.url == null) {
         return name;
       }
       return <MarkdownA href={values.url}>{name}</MarkdownA>;
@@ -58,13 +51,13 @@ const columns: TableColumnsType<Term> = [
     title: "Description",
     dataIndex: "desc",
     render: (value, record) => {
-      if (!record.aliases.length) {
+      if (record.aliases.length === 0) {
         return value;
       }
       return (
         <Flex vertical gap={10}>
           <div>{value}</div>
-          <div>{"Also known as: " + record.aliases.join(", ")}</div>
+          <div>Also known as: {record.aliases.join(", ")}</div>
         </Flex>
       );
     },
@@ -85,33 +78,25 @@ const columns: TableColumnsType<Term> = [
 ];
 
 export const Glossary = ({ jsonFileId }: Props) => {
-  const [terms, setTerms] = React.useState<Term[]>([]);
+  const baseTerms = React.use(importTerms(jsonFileId));
 
-  React.useEffect(() => {
-    importTerms(jsonFileId).then((res) => {
-      const termsInJson: TermInJson[] = res;
-
-      const terms: Term[] = termsInJson.map((rawTerm, i) => {
-        return {
-          rowKey: `${i}`,
-          name: rawTerm.name,
-          url: rawTerm.url ?? null,
-          aliases: rawTerm.aliases ?? [],
-          importance: isImportance(rawTerm.importance) ? rawTerm.importance : 1,
-          desc: rawTerm.desc,
-        };
-      });
-
-      setTerms(terms);
-    });
-  }, [setTerms, jsonFileId]);
+  const terms: Term[] = baseTerms.map((rawTerm, i) => {
+    return {
+      rowKey: `${i}`,
+      name: rawTerm.name,
+      url: rawTerm.url ?? null,
+      aliases: rawTerm.aliases ?? [],
+      importance: isImportance(rawTerm.importance) ? rawTerm.importance : 1,
+      desc: rawTerm.desc,
+    };
+  });
 
   return (
     <Table
       pagination={false}
       columns={columns}
       dataSource={terms}
-      rowKey={"rowKey"}
+      rowKey="rowKey"
     />
   );
 };

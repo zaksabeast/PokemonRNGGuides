@@ -5,40 +5,35 @@ use crate::gen3::Gen3Method;
 use crate::rng::Rng;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
-use crate::{AbilityType, Gender, GenderRatio, Nature, ShinyType, gen3_shiny};
+use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, ShinyType, gen3_shiny};
 
 pub struct Gen3WOpts {
-    shiny_type: Option<ShinyType>,
-    ability: Option<AbilityType>,
-    gender: Option<Gender>,
-    nature: Option<Nature>,
-    iv_range: (Ivs, Ivs),
-    tid: u16,
-    sid: u16,
-    gender_ratio: GenderRatio,
-    encounter_slot: Option<Vec<EncounterSlot>>,
-    method: Option<Gen3Method>,
-    initial_advances: usize,
-    max_advances: usize,
-    synchronize: Option<Gen3Lead>,
+    pub shiny_type: Option<ShinyType>,
+    pub tid: u16,
+    pub sid: u16,
+    pub gender_ratio: GenderRatio,
+    pub encounter_slot: Option<Vec<EncounterSlot>>,
+    pub method: Option<Gen3Method>,
+    pub initial_advances: usize,
+    pub max_advances: usize,
+    pub synchronize: Option<Gen3Lead>,
+    pub filter: PkmFilter,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct GeneratedPokemon {
-    pid: u32,
-    shiny: bool,
-    ability: AbilityType,
-    gender: Gender,
-    ivs: Ivs,
-    nature: Nature,
-    advances: usize,
-    encounter_slot: EncounterSlot,
-    synch: bool,
+    pub pid: u32,
+    pub shiny: bool,
+    pub ability: AbilityType,
+    pub gender: Gender,
+    pub ivs: Ivs,
+    pub nature: Nature,
+    pub advance: usize,
+    pub encounter_slot: EncounterSlot,
+    pub synch: bool,
 }
 
 pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<GeneratedPokemon> {
-    rng.rand::<u32>(); // unknown
-
     let encounter_rand = ((rng.rand::<u32>() >> 16) % 100) as u8;
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
 
@@ -105,25 +100,25 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
     }
 
     let ability = AbilityType::from_gen3_pid(pid);
-    if let Some(wanted_ability) = settings.ability {
+    if let Some(wanted_ability) = settings.filter.ability {
         if ability != wanted_ability {
             return None;
         }
     }
     let rate: u8 = (pid & 0xFF) as u8;
     let gender = GenderRatio::gender(&settings.gender_ratio, rate);
-    if let Some(wanted_gender) = settings.gender {
+    if let Some(wanted_gender) = settings.filter.gender {
         if gender != wanted_gender {
             return None;
         }
     }
 
-    if !Ivs::filter(&ivs, &settings.iv_range.0, &settings.iv_range.1) {
+    if !Ivs::filter(&ivs, &settings.filter.min_ivs, &settings.filter.max_ivs) {
         return None;
     }
 
     let nature = Nature::from(nature_rand);
-    if let Some(wanted_nature) = settings.nature {
+    if let Some(wanted_nature) = settings.filter.nature {
         if nature != wanted_nature {
             return None;
         }
@@ -136,7 +131,7 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
         gender,
         ivs,
         nature,
-        advances: 0,
+        advance: 0,
         encounter_slot,
         synch: is_synch,
     })
@@ -151,7 +146,7 @@ pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> 
         .take(settings.max_advances.wrapping_add(1))
         .filter_map(|(adv, mut rng)| {
             let mut pkm = generate_pokemon(&mut rng, settings)?;
-            pkm.advances = adv;
+            pkm.advance = adv;
             Some(pkm)
         })
         .collect::<Vec<GeneratedPokemon>>();

@@ -5,6 +5,24 @@ use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
 // Pokérus generator and searcher for Ruby & Sapphire with dead battery
+use num_enum::{FromPrimitive, IntoPrimitive};
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, FromPrimitive, IntoPrimitive)]
+#[repr(i8)]
+pub enum PickUpItem {
+    #[default]
+    None = -1,
+    SuperPotion = 0,
+    FullHeal = 1,
+    UltraBall = 2,
+    RareCandy = 3,
+    FullRestore = 4,
+    Revive = 5,
+    Nugget = 6,
+    Protein = 7,
+    PpUp = 8,
+    KingsRock = 9,
+}
 
 const RS_SEED: u32 = 0x5A0; // Ruby & Sapphire dead battery
 const PICKUP_ITEM_CHANCE: [u16; 10] = [30, 40, 50, 60, 70, 80, 90, 95, 99, 0xFFFF];
@@ -19,7 +37,7 @@ pub struct Pokerus3GeneratorOptions {
     pub has_empty_pokenews_slot: bool,
     pub level_up: bool,
     pub pickup_pokemon_count: usize,
-    pub filter_pickup_items: Option<Vec<i8>>,
+    pub filter_pickup_items: Option<Vec<PickUpItem>>,
     pub filter_gives_pokerus: Option<bool>,
 }
 
@@ -27,7 +45,7 @@ pub struct Pokerus3GeneratorOptions {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Pokerus3GeneratorResult {
     pub advance_before_pickup: usize,
-    pub pickup_items: Vec<i8>,
+    pub pickup_items: Vec<PickUpItem>,
     pub advance_before_pokerus: usize,
     pub gives_pokerus: bool,
 }
@@ -43,23 +61,22 @@ fn generate_gen3_pokerus_state(
         rng.rand()
     };
 
-    let pickup_items: Vec<i8> = (0..opts.pickup_pokemon_count)
+    let pickup_items: Vec<PickUpItem> = (0..opts.pickup_pokemon_count)
         .map(|_| {
             if rand() % 10 == 0 {
                 let chance = rand() % 100;
 
-                for i in 0..PICKUP_ITEM_CHANCE.len() {
-                    if chance < PICKUP_ITEM_CHANCE[i] {
-                        return i as i8;
+                for (i, item) in PICKUP_ITEM_CHANCE.iter().enumerate() {
+                    if chance < *item {
+                        return (i as i8).into();
                     }
                 }
-                -1 // Error
+                PickUpItem::None // Error
             } else {
-                -1
+                PickUpItem::None
             }
         })
-        .collect::<Vec<i8>>();
-
+        .collect();
     // vblanks between pickup and TV shows. Either 4 (~80% of the time) or 6 (~20%). The tool assumes 4.
     for _ in 0..4 {
         rand();
@@ -69,10 +86,8 @@ fn generate_gen3_pokerus_state(
         if opts.has_empty_pokenews_slot {
             rand();
         }
-        if opts.can_have_new_mass_outbreak {
-            if rand() <= 0x147 {
-                rand();
-            }
+        if opts.can_have_new_mass_outbreak && rand() <= 0x147 {
+            rand();
         }
     }
     rand(); // TV pokenew for not catching the Pokémon
@@ -207,8 +222,11 @@ mod tests {
                     )
                 })
                 .collect();
-            
-            println!("{}, {}, {}, {}", entered_hall_of_fame, can_have_new_mass_outbreak, has_empty_pokenews_slot, level_up);
+
+            println!(
+                "{}, {}, {}, {}",
+                entered_hall_of_fame, can_have_new_mass_outbreak, has_empty_pokenews_slot, level_up
+            );
             assert_eq!(results, expected_results);
         }
 
@@ -217,7 +235,7 @@ mod tests {
             true,
             true,
             false,
-            &vec![
+            &[
                 vec![26842],
                 vec![101117],
                 vec![101152, 101153],
@@ -232,7 +250,7 @@ mod tests {
             false,
             false,
             false,
-            &vec![
+            &[
                 vec![26844],
                 vec![26843],
                 vec![26841, 26842],
@@ -247,7 +265,7 @@ mod tests {
             false,
             true,
             false,
-            &vec![
+            &[
                 vec![26843],
                 vec![26841, 26842],
                 vec![26840],
@@ -262,7 +280,7 @@ mod tests {
             true,
             true,
             true,
-            &vec![
+            &[
                 vec![26840],
                 vec![26839],
                 vec![26838],
@@ -277,7 +295,7 @@ mod tests {
             false,
             false,
             true,
-            &vec![
+            &[
                 vec![26842],
                 vec![101117],
                 vec![101152, 101153],
@@ -292,7 +310,7 @@ mod tests {
             false,
             true,
             true,
-            &vec![
+            &[
                 vec![26841],
                 vec![26840],
                 vec![26839],
@@ -326,13 +344,25 @@ mod tests {
             vec![
                 Pokerus3GeneratorResult {
                     advance_before_pickup: 10022,
-                    pickup_items: vec![-1, -1, -1, -1, 4],
+                    pickup_items: vec![
+                        PickUpItem::None,
+                        PickUpItem::None,
+                        PickUpItem::None,
+                        PickUpItem::None,
+                        PickUpItem::FullRestore
+                    ],
                     advance_before_pokerus: 10109,
                     gives_pokerus: false,
                 },
                 Pokerus3GeneratorResult {
                     advance_before_pickup: 10023,
-                    pickup_items: vec![-1, -1, -1, 4, -1],
+                    pickup_items: vec![
+                        PickUpItem::None,
+                        PickUpItem::None,
+                        PickUpItem::None,
+                        PickUpItem::FullRestore,
+                        PickUpItem::None
+                    ],
                     advance_before_pokerus: 10110,
                     gives_pokerus: false,
                 }
@@ -349,7 +379,13 @@ mod tests {
             can_have_new_mass_outbreak: true,
             has_empty_pokenews_slot: true,
             level_up: false,
-            filter_pickup_items: Some(vec![-1, -1, 2, 4, -1]),
+            filter_pickup_items: Some(vec![
+                PickUpItem::None,
+                PickUpItem::None,
+                PickUpItem::UltraBall,
+                PickUpItem::FullRestore,
+                PickUpItem::None,
+            ]),
             pickup_pokemon_count: 5,
             filter_gives_pokerus: None,
         };
@@ -360,7 +396,13 @@ mod tests {
             results,
             vec![Pokerus3GeneratorResult {
                 advance_before_pickup: 44108,
-                pickup_items: vec![-1, -1, 2, 4, -1],
+                pickup_items: vec![
+                    PickUpItem::None,
+                    PickUpItem::None,
+                    PickUpItem::UltraBall,
+                    PickUpItem::FullRestore,
+                    PickUpItem::None
+                ],
                 advance_before_pokerus: 44196,
                 gives_pokerus: false,
             }]
@@ -376,7 +418,7 @@ mod tests {
             can_have_new_mass_outbreak: false,
             has_empty_pokenews_slot: false,
             level_up: false,
-            filter_pickup_items: Some(vec![2, 4]),
+            filter_pickup_items: Some(vec![PickUpItem::UltraBall, PickUpItem::FullRestore]),
             pickup_pokemon_count: 2,
             filter_gives_pokerus: None,
         };
@@ -388,13 +430,13 @@ mod tests {
             vec![
                 Pokerus3GeneratorResult {
                     advance_before_pickup: 15713,
-                    pickup_items: vec![2, 4],
+                    pickup_items: vec![PickUpItem::UltraBall, PickUpItem::FullRestore],
                     advance_before_pokerus: 15796,
                     gives_pokerus: false
                 },
                 Pokerus3GeneratorResult {
                     advance_before_pickup: 44110,
-                    pickup_items: vec![2, 4],
+                    pickup_items: vec![PickUpItem::UltraBall, PickUpItem::FullRestore],
                     advance_before_pokerus: 44193,
                     gives_pokerus: false
                 }
@@ -422,7 +464,13 @@ mod tests {
             results,
             vec![Pokerus3GeneratorResult {
                 advance_before_pickup: 26838,
-                pickup_items: vec![-1, -1, -1, 3, -1],
+                pickup_items: vec![
+                    PickUpItem::None,
+                    PickUpItem::None,
+                    PickUpItem::None,
+                    PickUpItem::RareCandy,
+                    PickUpItem::None,
+                ],
                 advance_before_pokerus: 26923,
                 gives_pokerus: true,
             }]
@@ -430,6 +478,7 @@ mod tests {
     }
 
     /*
+    // Kept to help future debugging
     #[test]
     fn test_debug() {
         println!("{:?}", gen3_pokerus_generator_states(&Pokerus3GeneratorOptions {

@@ -62,7 +62,7 @@ export const Select = <ValueType,>({
 type SingleFormikSelectValue<
   FormState extends GenericForm,
   FieldKey extends keyof FormState,
-> = FormState[FieldKey] extends string | null
+> = FormState[FieldKey] extends string | number | null
   ? {
       label: string;
       value: FormState[FieldKey];
@@ -72,7 +72,7 @@ type SingleFormikSelectValue<
 type MultiFormikSelectValue<
   FormState extends GenericForm,
   FieldKey extends keyof FormState,
-> = FormState[FieldKey] extends string[] | null
+> = FormState[FieldKey] extends string[] | number[] | null
   ? {
       label: string;
       value: FormState[FieldKey][keyof FormState[FieldKey]];

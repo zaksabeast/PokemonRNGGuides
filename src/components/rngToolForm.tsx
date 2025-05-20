@@ -75,7 +75,7 @@ export const RngToolForm = <
           if (children) {
             return children;
           }
-          const fieldsToUse = fields || getFields!(formik.values);
+          const fieldsToUse = fields ?? getFields?.(formik.values) ?? [];
           return <FormFieldTable fields={fieldsToUse} />;
         })();
 

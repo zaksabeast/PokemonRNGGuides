@@ -20,6 +20,8 @@ import { z } from "zod";
 import { toOptions } from "~/utils/options";
 import { range } from "lodash-es";
 import { useFormikContext } from "formik";
+import { match, P } from "ts-pattern";
+import { pickupIdToName, pickupItems } from "~/types/pickupItems";
 
 const HAS_EMPTY_TV_NEWS_SLOT = true; // The tool assumes the player always has a empty TV News slot.
 const LEVEL_UP = false; // The tool assumes the player's Pokémon won't level-up after the battle.
@@ -27,25 +29,11 @@ const POKERUS_TARGETS = [26923, 101199, 101236];
 const FPS = 59.7275;
 const MS_PER_FRAME = 1000 / FPS;
 
-const PICKUP_ITEMS = [
-  "None",
-  "Super Potion",
-  "Full Heal",
-  "Ultra Ball",
-  "Rare Candy",
-  "Full Restore",
-  "Revive",
-  "Nugget",
-  "Protein",
-  "PP Up",
-  "King's Rock",
-];
-
 type Column = Pokerus3GeneratorResult & {
   target_advance_before_pickup: number;
 };
 
-const pickupItemSchema = z.number().int().min(-1).max(9);
+const pickupItemSchema = z.enum(pickupItems);
 
 const Validator = z.object({
   entered_hall_of_fame: z.boolean(),
@@ -69,11 +57,11 @@ const initialValues: FormState = {
   had_mass_outbreak: false,
   pickup_pokemon_count: 5,
   filter_active: true,
-  filter_pickup_items_0: -1,
-  filter_pickup_items_1: -1,
-  filter_pickup_items_2: -1,
-  filter_pickup_items_3: -1,
-  filter_pickup_items_4: -1,
+  filter_pickup_items_0: "None",
+  filter_pickup_items_1: "None",
+  filter_pickup_items_2: "None",
+  filter_pickup_items_3: "None",
+  filter_pickup_items_4: "None",
   initial_advance_before_pickup: 26800,
   calibration: 0,
   targetAdv: 26838,
@@ -92,7 +80,7 @@ const getTargetAdvanceBeforePickup = async (values: {
       LEVEL_UP,
       values.pickup_pokemon_count,
     );
-  return target_advances_before_pickup.length
+  return target_advances_before_pickup.length > 0
     ? target_advances_before_pickup[0]
     : 0;
 };
@@ -298,32 +286,32 @@ export const Fields = () => {
     }
 
     if (values.filter_active) {
-      const itemOptions = PICKUP_ITEMS.map((label, i) => ({
-        label,
-        value: i - 1,
-      })) as never;
+      const itemOptions = pickupItems.map((id) => ({
+        label: pickupIdToName(id),
+        value: id,
+      }));
 
       const info = [
         [
           "Filter: Pickup item obtained on 1st Pokémon",
           "filter_pickup_items_0",
-        ] as const,
+        ],
         [
           "Filter: Pickup item obtained on 2nd Pokémon",
           "filter_pickup_items_1",
-        ] as const,
+        ],
         [
           "Filter: Pickup item obtained on 3rd Pokémon",
           "filter_pickup_items_2",
-        ] as const,
+        ],
         [
           "Filter: Pickup item obtained on 4th Pokémon",
           "filter_pickup_items_3",
-        ] as const,
+        ],
         [
           "Filter: Pickup item obtained on 5th Pokémon",
           "filter_pickup_items_4",
-        ] as const,
+        ],
       ] as const;
 
       const count = Math.min(info.length, values.pickup_pokemon_count);
@@ -352,6 +340,17 @@ export const Fields = () => {
   ]);
 
   return <FormFieldTable fields={fields} />;
+};
+
+const formatAdvDiff = (hit: number, target: number) => {
+  const diff = hit - target;
+  return match(diff)
+    .with(0, () => `${hit}`)
+    .with(
+      P.when((num) => num > 0),
+      () => `${hit} (+${diff})`,
+    )
+    .otherwise(() => `${hit} (${diff})`);
 };
 
 export const Gen3Pokerus = () => {
@@ -390,32 +389,20 @@ export const Gen3Pokerus = () => {
             return "Pokérus";
           }
 
-          const pickupAdv = (() => {
-            const diffWithTarget =
-              advance_before_pickup - values.target_advance_before_pickup;
-            if (diffWithTarget === 0) {
-              return `${advance_before_pickup}`;
-            }
-            if (diffWithTarget > 0) {
-              return `${advance_before_pickup} (+${diffWithTarget})`;
-            }
-            return `${advance_before_pickup} (${diffWithTarget})`;
-          })();
+          const pickupAdv = formatAdvDiff(
+            advance_before_pickup,
+            values.target_advance_before_pickup,
+          );
 
-          const pokerusAdv = (() => {
-            const target =
-              values.target_advance_before_pickup > POKERUS_TARGETS[0]
-                ? POKERUS_TARGETS[1]
-                : POKERUS_TARGETS[0];
-            const diffWithTarget = values.advance_before_pokerus - target;
-            if (diffWithTarget === 0) {
-              return `${values.advance_before_pokerus}`;
-            }
-            if (diffWithTarget > 0) {
-              return `${values.advance_before_pokerus} (+${diffWithTarget})`;
-            }
-            return `${values.advance_before_pokerus} (${diffWithTarget})`;
-          })();
+          const pokerusTarget =
+            values.target_advance_before_pickup > POKERUS_TARGETS[0]
+              ? POKERUS_TARGETS[1]
+              : POKERUS_TARGETS[0];
+
+          const pokerusAdv = formatAdvDiff(
+            values.advance_before_pokerus,
+            pokerusTarget,
+          );
 
           return `${pickupAdv} | ${pokerusAdv}`;
         },
@@ -439,11 +426,11 @@ export const Gen3Pokerus = () => {
         render: (val) => {
           const txt =
             val
-              .map((itemId, i) => {
-                if (itemId < 0) {
+              .map((itemId, pokemonSlot) => {
+                if (itemId === "None") {
                   return "";
                 }
-                return `${i + 1}: ${PICKUP_ITEMS[itemId + 1]}`;
+                return `${pokemonSlot + 1}: ${pickupIdToName(itemId)}`;
               })
               .filter((txt) => txt)
               .join(", ") || "No items";
@@ -451,7 +438,7 @@ export const Gen3Pokerus = () => {
         },
       },
     ],
-    [],
+    [onClickUpdateCalibrationBtn],
   );
 
   return (

@@ -34,6 +34,9 @@ jobs:
         run: |
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
+      - name: Test rng_tools
+        run: cargo test --manifest-path rng_tools/Cargo.toml
+
       - name: Build rng_tools
         run: bun run build:rng_tools
 

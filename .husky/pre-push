@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+cargo test --manifest-path rng_tools/Cargo.toml
+bun run lint

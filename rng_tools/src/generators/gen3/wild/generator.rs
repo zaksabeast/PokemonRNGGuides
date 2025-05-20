@@ -2,11 +2,10 @@ use crate::Ivs;
 use crate::gen3::EncounterSlot;
 use crate::gen3::Gen3Lead;
 use crate::gen3::Gen3Method;
-use crate::gen3::ShinyType;
 use crate::rng::Rng;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
-use crate::{AbilityType, Gender, GenderRatio, Nature, gen3_shiny};
+use crate::{AbilityType, Gender, GenderRatio, Nature, ShinyType, gen3_shiny};
 
 pub struct Gen3WOpts {
     shiny_type: Option<ShinyType>,
@@ -28,7 +27,7 @@ pub struct Gen3WOpts {
 pub struct GeneratedPokemon {
     pid: u32,
     shiny: bool,
-    ability: Gen3Ability,
+    ability: AbilityType,
     gender: Gender,
     ivs: Ivs,
     nature: Nature,

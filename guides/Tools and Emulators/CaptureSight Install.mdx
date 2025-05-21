@@ -1,11 +1,23 @@
 ---
-title: "Install CaptureSight"
-navDrawerTitle: "CaptureSight"
-description: "Learn how to install CaptureSight on your Switch to assist with RNG and perfect Pokémon hunting."
-slug: "install-capturesight"
-category: "Switch Tools"
-tag: "cfw"
+- title: "Install CaptureSight"
+  navDrawerTitle: "CaptureSight"
+  description: "Learn how to install CaptureSight on your Switch to assist with RNG and perfect Pokémon hunting."
+  slug: "install-capturesight"
+  category: "Switch Tools"
+  tag: "cfw"
+- title: "Installer CaptureSight"
+  navDrawerTitle: "Installer Capture Sight"
+  description: "Apprenez a installer CaptureSight sur votre Switch pour faciliter la manipulation de RNG et attraper des Pokemon parfaits !"
+  slug: "fr-install-capturesight"
+  category: "Switch Tools"
+  tag: "cfw"
+  addedOn: "2025-05-21"
+  translation:
+    enSlug: "install-capturesight"
+    language: "fr"
 ---
+
+<ShowIf slug="/install-capturesight">
 
 ## Tools
 
@@ -50,3 +62,56 @@ tag: "cfw"
 - You are not using a game that CaptureSight supports. The supported games are:
   - Sword & Shield.
   - Brilliant Diamond & Shining Pearl.
+  - Legends Arceus.
+
+</ShowIf>
+
+<ShowIf slug="/fr-install-capturesight">
+
+## Prerecquis
+
+- une switch tournant sous Atmosphere ([Guide d'installation du CFW, en anglais](https://switch.hacks.guide/))
+
+## Etape 1: Installer Tesla Overlay
+
+- [nx-ovlloader](https://github.com/WerWolv/nx-ovlloader/releases)
+- [Tesla Menu](https://github.com/WerWolv/Tesla-Menu/releases)
+
+1. Telecharger la derniere version de Telsa Menu et nx-ovlloader.
+2. Decompresser les archives et fusionner les dossiers a la racine de la carte SD.
+
+## Etape 2: Installer CaptureSight
+
+- [CaptureSight](https://github.com/zaksabeast/CaptureSight/releases)
+
+1. Telecharger `capturesight.ovl` et le placer dans le dossier `/switch/.overlays` sur la carte SD de la Switch.
+
+## Utiliser CaptureSight
+
+1. Demarrer un jeux Pokemon compatible. (Diamant Etincelant/Perle Scintillante, Epee/Bouclier ou Legende Arceus)
+2. Appuyer sur `L + croix 'bas' + click joystick droit` pour faire apparaitre le menu de l'overlay Tesla.
+3. Ouvrir CaptureSight.
+
+## Resolution de problemes
+
+### dmnt:cht is not running
+
+- Si vous voyez cette erreur, c'est qu'il y a un probleme avec Atmosphere. Suivez [ce guide](https://switch.hacks.guide/extras/updating.html) pour mettre a jour le CFW.
+
+### No cheat process! Is a game running? Is something else using dmnt:cht?
+
+- Soyez certain d'ouvrir lejeux AVANT d'afficher CaptureSight. Assurez vous de ne pas utiliser sysbot-base en meme temps, il y a conflit.
+
+### Unsupported game update!
+
+- Le jeux n'est pas a jour. Cela peut aussi arriver si CaptureSight n'est pas a la derniere version.
+
+### Unsupported game! Title Id: \<title_id\>
+
+- CaptureSight n'est pas compatible avec ce jeux. Les seuls jeux supportes sont:
+
+  - Diamant Etincelant & Perle Scintillante.
+  - Epee & Bouclier.
+  - Legendes: Arceus.
+
+</ShowIf>

@@ -58,7 +58,7 @@ export const guides = {
       layout: "guide",
       canonical: null,
       file: "guides/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
-      translations: null,
+      translations: { en: "/bdsp-advance-rng/", fr: "/fr-bdsp-advance-rng/" },
     },
     Guide: React.lazy(
       () =>
@@ -1777,6 +1777,32 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
   },
+  "/fr-bdsp-advance-rng/": {
+    meta: {
+      categories: ["Brilliant Diamond and Shining Pearl"],
+      title:
+        "Faire avancer la RNG sur pokemon Diamant Etincelant et Perle Scintillante",
+      navDrawerTitle: "Faire avancer la rng",
+      description:
+        "Comment les avances de RNG fonctionnent dans pokemon Diamand Etincelant et Perle Scintillante. Apprennez comment controler ces avances pour rencontrer des pokemon parfaits!",
+      slug: "/fr-bdsp-advance-rng/",
+      isRoughDraft: false,
+      tag: "any",
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-21",
+      translation: { enSlug: "/bdsp-advance-rng/", language: "fr" },
+      layout: "guide",
+      canonical: null,
+      file: "guides/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
+      translations: { en: "/bdsp-advance-rng/", fr: "/fr-bdsp-advance-rng/" },
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx"
+        ),
+    ),
+  },
   "/frlg-gen3-sid/": {
     meta: {
       categories: ["FireRed and LeafGreen"],
@@ -2087,7 +2113,7 @@ export const guides = {
       title: "Glossary",
       navDrawerTitle: "Glossary",
       description:
-        "List of important words related to Pokémon RNG manipulation in Generation III games.",
+        "List of important terms related to Pokémon RNG manipulation in Generation III games.",
       slug: "/gen3-glossary/",
       isRoughDraft: false,
       tag: "any",
@@ -5019,6 +5045,7 @@ export const guideSlugs = [
   "/es-gen2-starters/",
   "/experiments/",
   "/fire-red-and-leaf-green/",
+  "/fr-bdsp-advance-rng/",
   "/frlg-gen3-sid/",
   "/frlg-seeding-bot/",
   "/frlg-static/",

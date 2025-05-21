@@ -30,12 +30,18 @@ const languages: LanguageItem[] = [
     label: "简体中文",
     type: "item",
   },
+  {
+    key: "fr",
+    label: "Français",
+    type: "item",
+  },
 ];
 
 type Props = {
   en: Route;
   es?: Route;
   zh?: Route;
+  fr?: Route;
 };
 
 export const LanguageButton = (props: Props) => {
@@ -46,6 +52,7 @@ export const LanguageButton = (props: Props) => {
     .with(slugs.en, () => "en")
     .with(slugs.es, () => "es")
     .with(slugs.zh, () => "zh")
+    .with(slugs.fr, () => "fr")
     .otherwise(() => "en");
 
   const availableLanguages = languages

@@ -51,11 +51,9 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
         }
         Some(Gen3Lead::Synchronize(lead_nature)) => {
             if (rng.rand::<u16>() & 1) == 0 {
-                println!("Synchronize succeeded");
                 nature_rand = lead_nature.into();
                 is_synch = true;
             } else {
-                println!("Synchronize failed");
                 nature_rand = (rng.rand::<u16>() % 25) as u8;
             }
         }

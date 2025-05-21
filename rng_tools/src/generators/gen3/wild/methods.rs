@@ -71,11 +71,3 @@ impl EncounterSlot {
 pub enum Gen3Lead {
     Synchronize(Nature),
 }
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub enum ShinyType {
-    Star,
-    Square,
-    NotShiny,
-}

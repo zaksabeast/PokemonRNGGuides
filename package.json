@@ -22,7 +22,7 @@
     "preview": "vite preview",
     "test:e2e": "bunx cypress run --browser chrome",
     "cypress:open": "bunx cypress open",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.11.11",

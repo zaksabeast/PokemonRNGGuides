@@ -8,6 +8,7 @@ mod stationary;
 mod tidsid;
 mod tidsid_shiny;
 mod util;
+mod wild;
 
 pub use egg::*;
 pub use feebas_sid::*;
@@ -18,3 +19,4 @@ pub use seed::*;
 pub use stationary::*;
 pub use tidsid::*;
 pub use tidsid_shiny::*;
+pub use wild::*;

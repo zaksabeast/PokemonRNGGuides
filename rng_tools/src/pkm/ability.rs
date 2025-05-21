@@ -12,3 +12,13 @@ pub enum AbilityType {
     Second = 1,
     Hidden = 2,
 }
+
+impl AbilityType {
+    pub fn from_gen3_pid(pid: u32) -> Self {
+        if pid & 1 == 0 {
+            AbilityType::First
+        } else {
+            AbilityType::Second
+        }
+    }
+}

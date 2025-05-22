@@ -120,7 +120,7 @@ const SingleGuideMetadataSchema = z
     translation: z
       .object({
         enSlug: SlugSchema,
-        language: z.enum(["es", "zh"]),
+        language: z.enum(["es", "zh", "fr"]),
       })
       .nullish()
       .optional()

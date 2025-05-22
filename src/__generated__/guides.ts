@@ -1231,7 +1231,10 @@ export const guides = {
       canonical: null,
       displayAttributes: [],
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-dppt-stationary/",
+        zh: "/zh-emulator-dppt-stationary/",
+      },
     },
     Guide: React.lazy(
       () =>
@@ -4999,6 +5002,31 @@ export const guides = {
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx"),
     ),
   },
+  "/zh-emulator-dppt-stationary/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      title: "定点乱数",
+      navDrawerTitle: "定点乱数",
+      description: "如何在钻石珍珠和白金中对固定遇敌的宝可梦进行乱数",
+      slug: "/zh-emulator-dppt-stationary/",
+      isRoughDraft: false,
+      tag: "emu",
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-dppt-stationary/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx",
+      translations: {
+        en: "/emulator-dppt-stationary/",
+        zh: "/zh-emulator-dppt-stationary/",
+      },
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx"),
+    ),
+  },
   "/zh-emulator-emerald-egg/": {
     meta: {
       categories: ["Emerald"],
@@ -5647,6 +5675,7 @@ export const guideSlugs = [
   "/zh-emulator-bw-white-forest/",
   "/zh-emulator-dppt-cute-charm/",
   "/zh-emulator-dppt-egg/",
+  "/zh-emulator-dppt-stationary/",
   "/zh-emulator-emerald-egg/",
   "/zh-emulator-flrg-stationary-and-gift/",
   "/zh-emulator-frlg-egg/",

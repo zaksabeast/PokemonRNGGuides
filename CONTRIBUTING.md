@@ -103,6 +103,10 @@ TypeScript workflow:
 3. Run `bun run format` to format code
 4. Run `bun run lint` to make sure changes don't violate repo rules
 
+If you run into problems with `bun run build:guides`, try `bun run build:guides:force` to rebuild guides from the ground up. Please use it sparingly, as it ignores some protections.
+
+`bun run build:guides:force` is primarily for automatically resolving merge conflicts with `src/__generated/guides.ts`, or if changes were made to `build-guides.tsx` that aren't compatible with your current branch.
+
 ## Helpful tips for VSCode users
 
 Automatic formatting:

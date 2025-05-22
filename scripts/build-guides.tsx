@@ -2,6 +2,7 @@ import React from "react/jsx-runtime";
 import { Glob } from "bun";
 import fs from "node:fs/promises";
 import { evaluate } from "@mdx-js/mdx";
+import { MDXContent } from "mdx/types";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import z from "zod";
@@ -16,6 +17,7 @@ import { TagDetector } from "../src/components/tagDetector/tagDetector";
 import { markdownComponents } from "../src/markdownExports";
 import { Router } from "wouter";
 import { ThemeProvider } from "../src/theme/provider";
+import pmap from "p-map";
 
 dayjs.extend(utc);
 
@@ -167,12 +169,42 @@ const getGuideFiles = async (): Promise<SitePageFile[]> => {
   return results;
 };
 
-const main = async () => {
+const saveGeneratedGuideMetadata = async <T extends Record<string, unknown>>(
+  finalGuides: T[],
+) => {
+  const compiledGuides = `
+  import React from 'react';
+
+  export const guides = {
+    ${finalGuides
+      .map(
+        (guide) => `"${guide.slug}": {
+          meta: ${JSON.stringify(guide)},
+          Guide: React.lazy(() => import("~/../${guide.file}")),
+        }`,
+      )
+      .join(",\n")}
+  } as const;
+
+  export const guideSlugs = [
+    ${finalGuides.map((guide) => `"${guide.slug}"`).join(",\n")}
+  ] as const;
+
+  export const categories = ${JSON.stringify(categories)} as const;
+`;
+
+  await fs.mkdir(toNativeAbsolute("../src/__generated__"), { recursive: true });
+  await fs.writeFile(
+    toNativeAbsolute("../src/__generated__/guides.ts"),
+    compiledGuides,
+  );
+};
+
+const main = async ({ noDetectedTags }: { noDetectedTags: boolean }) => {
   const guideFiles = await getGuideFiles();
-  const guides: (GuideMetadata & {
-    file: string;
-    displayAttributes: string[];
-  })[] = [];
+  const guides: (GuideMetadata & { file: string })[] = [];
+
+  const guideComponents: Record<string, MDXContent> = {};
 
   for (const { file, content } of guideFiles) {
     const compiled = await evaluate(content, {
@@ -189,24 +221,9 @@ const main = async () => {
     }
 
     for (const metadata of metadatas) {
-      let detectedTags = {};
-      const setTags = (tags: Partial<Record<string, boolean>>) => {
-        detectedTags = { ...detectedTags, ...tags };
-      };
-      const Guide = compiled.default;
-      await renderToStringAsync(
-        <TagDetector setTags={setTags}>
-          <ThemeProvider>
-            <Router ssrPath={metadata.slug}>
-              <Guide components={markdownComponents} />
-            </Router>
-          </ThemeProvider>
-        </TagDetector>,
-      );
-
+      guideComponents[metadata.slug] = compiled.default;
       guides.push({
         ...metadata,
-        displayAttributes: Object.keys(detectedTags),
         file,
       });
     }
@@ -261,39 +278,46 @@ const main = async () => {
     }, {});
   };
 
-  const guidesWithTranslations = guides.map((guide) => ({
-    ...guide,
-    translations: getTranslations(guide),
-  }));
+  const finalGuides = await pmap(
+    guides,
+    async (guide) => {
+      let detectedTags = {};
 
-  const compiledGuides = `
-  import React from 'react';
+      const setTags = (tags: Partial<Record<string, boolean>>) => {
+        detectedTags = { ...detectedTags, ...tags };
+      };
+      const Guide = guideComponents[guide.slug];
 
-  export const guides = {
-    ${guidesWithTranslations
-      .map(
-        (guide) => `"${guide.slug}": {
-          meta: ${JSON.stringify(guide)},
-          Guide: React.lazy(() => import("~/../${guide.file}")),
-        }`,
-      )
-      .join(",\n")}
-  } as const;
+      if (Guide == null) {
+        throw new Error(`Guide component not found for ${guide.slug}`);
+      }
 
-  export const guideSlugs = [
-    ${guidesWithTranslations.map((guide) => `"${guide.slug}"`).join(",\n")}
-  ] as const;
+      if (!noDetectedTags) {
+        await renderToStringAsync(
+          <TagDetector setTags={setTags}>
+            <ThemeProvider>
+              <Router ssrPath={guide.slug}>
+                <Guide components={markdownComponents} />
+              </Router>
+            </ThemeProvider>
+          </TagDetector>,
+        );
+      }
 
-  export const categories = ${JSON.stringify(categories)} as const;
-`;
-
-  await fs.mkdir(toNativeAbsolute("../src/__generated__"), { recursive: true });
-  await fs.writeFile(
-    toNativeAbsolute("../src/__generated__/guides.ts"),
-    compiledGuides,
+      return {
+        ...guide,
+        displayAttributes: Object.keys(detectedTags),
+        translations: getTranslations(guide),
+      };
+    },
+    { concurrency: 5 },
   );
+
+  await saveGeneratedGuideMetadata(finalGuides);
 
   process.exit(0);
 };
 
-main();
+main({
+  noDetectedTags: process.argv.includes("--no-detected-tags"),
+});

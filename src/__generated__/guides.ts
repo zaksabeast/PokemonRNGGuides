@@ -1941,6 +1941,8 @@ export const guides = {
   "/fr-bdsp-advance-rng/": {
     meta: {
       categories: ["Brilliant Diamond and Shining Pearl"],
+      tags: ["any"],
+      isNew: true,
       title:
         "Faire avancer la RNG sur pokemon Diamant Etincelant et Perle Scintillante",
       navDrawerTitle: "Faire avancer la rng",
@@ -1948,12 +1950,12 @@ export const guides = {
         "Comment les avances de RNG fonctionnent dans pokemon Diamand Etincelant et Perle Scintillante. Apprenez comment controler ces avances pour rencontrer des pokemon parfaits!",
       slug: "/fr-bdsp-advance-rng/",
       isRoughDraft: false,
-      tag: "any",
       hideFromNavDrawer: true,
       addedOn: "2025-05-21",
       translation: { enSlug: "/bdsp-advance-rng/", language: "fr" },
       layout: "guide",
       canonical: null,
+      displayAttributes: [],
       file: "guides/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
       translations: { en: "/bdsp-advance-rng/", fr: "/fr-bdsp-advance-rng/" },
     },
@@ -1967,18 +1969,20 @@ export const guides = {
   "/fr-install-capturesight/": {
     meta: {
       categories: ["Switch Tools"],
+      tags: ["cfw"],
+      isNew: true,
       title: "Installer CaptureSight",
       navDrawerTitle: "Installer Capture Sight",
       description:
         "Apprenez a installer CaptureSight sur votre Switch pour faciliter la manipulation de RNG et attraper des Pokemon parfaits !",
       slug: "/fr-install-capturesight/",
       isRoughDraft: false,
-      tag: "cfw",
       hideFromNavDrawer: true,
       addedOn: "2025-05-21",
       translation: { enSlug: "/install-capturesight/", language: "fr" },
       layout: "guide",
       canonical: null,
+      displayAttributes: [],
       file: "guides/Tools and Emulators/CaptureSight Install.mdx",
       translations: {
         fr: "/fr-install-capturesight/",
@@ -5005,17 +5009,19 @@ export const guides = {
   "/zh-emulator-dppt-stationary/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["emu"],
+      isNew: false,
       title: "定点乱数",
       navDrawerTitle: "定点乱数",
       description: "如何在钻石珍珠和白金中对固定遇敌的宝可梦进行乱数",
       slug: "/zh-emulator-dppt-stationary/",
       isRoughDraft: false,
-      tag: "emu",
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-dppt-stationary/", language: "zh" },
       layout: "guide",
       canonical: null,
+      displayAttributes: [],
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx",
       translations: {
         en: "/emulator-dppt-stationary/",

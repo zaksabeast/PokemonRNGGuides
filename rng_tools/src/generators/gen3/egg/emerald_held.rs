@@ -347,18 +347,12 @@ pub fn generate_no_egg_match_calls(opts: NoEggMatchCallOpts) -> Vec<NoEggMatchCa
         true => 1,
         false => 0,
     };
-    let calibration = opts.calibration.saturating_add(roamer_calib);
-
-    let initial_advances = opts
-        .redraws
-        .saturating_mul(3)
-        .saturating_add(calibration)
-        .saturating_add(opts.initial_advances);
+    let skip = opts.calibration.saturating_add(roamer_calib);
 
     StateIterator::new(rng)
-        .skip(1) // egg rand
+        .skip(skip)
         .enumerate()
-        .skip(initial_advances)
+        .skip(opts.initial_advances)
         .take(opts.max_advances.saturating_add(1))
         .map(|(advance, mut rng)| NoEggMatchCall {
             advance,
@@ -1685,6 +1679,7 @@ mod test {
 
         let expected: Vec<NoEggMatchCall> = [
             PokeNavTrainer::None,
+            PokeNavTrainer::None,
             PokeNavTrainer::AromaLadyRose,
             PokeNavTrainer::None,
             PokeNavTrainer::None,
@@ -1696,12 +1691,11 @@ mod test {
             PokeNavTrainer::TriathleteBenjamin,
             PokeNavTrainer::RichBoyWinston,
             PokeNavTrainer::OldCoupleJohnJay,
-            PokeNavTrainer::None,
         ]
         .into_iter()
         .enumerate()
         .map(|(advance, match_call)| NoEggMatchCall {
-            advance: advance + 20,
+            advance,
             match_call,
         })
         .collect();

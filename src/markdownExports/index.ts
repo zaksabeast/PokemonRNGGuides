@@ -111,6 +111,7 @@ const nonTools = {
   GamePageComponent,
   Stepper,
   Step,
+  Glossary,
 };
 
 const tools = {
@@ -120,7 +121,6 @@ const tools = {
   Gen3Pokerus,
   Gen3Sid,
   Gen3MirageIsland,
-  Glossary,
   EmeraldHeldEgg,
   EmeraldPickupEgg,
   Static3,

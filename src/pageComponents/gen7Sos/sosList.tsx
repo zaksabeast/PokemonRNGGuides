@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 import { Input, Icon } from "~/components";
-import data from "./sosCallRates.json";
+import { sosCallRates } from "./sosCallRates";
 import styled from "@emotion/styled";
 
 const StyledInput = styled(Input)({
@@ -34,7 +34,7 @@ const columns = [
 export const Gen7SosList = () => {
   const [searchText, setSearchText] = React.useState("");
 
-  const filteredData = data.filter((entry) =>
+  const filteredData = sosCallRates.filter((entry) =>
     entry.name.toLowerCase().includes(searchText.toLowerCase()),
   );
 

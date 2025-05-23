@@ -208,7 +208,7 @@ export const GenerateHoennTidSid = ({ game }: Props) => {
         submitTrackerId="generate_tid_sid_for_shiny_starter"
         onSubmit={onSubmit}
       />
-      {result && <GenerateTidSidRating result={result} />}
+      {result != null && <GenerateTidSidRating result={result} />}
     </Flex>
   );
 };

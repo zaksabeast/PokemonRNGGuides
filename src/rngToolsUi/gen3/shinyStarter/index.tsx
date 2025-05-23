@@ -45,7 +45,8 @@ export const ShinyHoennStarter = ({ game }: Props) => {
           <Input
             name="offset"
             onChange={(event) => {
-              setCalibrationAndOffset(+event.target.value || 0);
+              const num = Number(event.target.value);
+              setCalibrationAndOffset(Number.isFinite(num) ? num : 0);
             }}
             value={calibrationAndOffset}
           />

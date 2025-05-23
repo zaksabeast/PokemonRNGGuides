@@ -33,7 +33,7 @@ export const useTimer = ({
 
   const tick = React.useCallback(
     (now: number) => {
-      if (!startTime.current) {
+      if (startTime.current == null) {
         return;
       }
 

@@ -36,7 +36,7 @@ export const FileUpload = ({ id, accept, flex, onUpload }: Props) => {
     const result = await Promise.all(promises);
     onUpload(result);
     setFileName(files[0].name);
-    if (inputRef.current) {
+    if (inputRef.current != null) {
       // Clear the file input value to allow re-uploading the same file
       inputRef.current.value = "";
     }
@@ -59,7 +59,7 @@ export const FileUpload = ({ id, accept, flex, onUpload }: Props) => {
         trackerId={`upload_${id}`}
         onClick={() => inputRef.current?.click()}
       >
-        {fileName || "Upload!"}
+        {fileName ?? "Upload!"}
       </Button>
     </>
   );

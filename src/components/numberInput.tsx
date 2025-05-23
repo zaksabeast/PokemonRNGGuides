@@ -95,7 +95,7 @@ export const FormikNumberInput = <FormState extends GenericForm>({
 
   return (
     <Tooltip
-      title={touched && error ? error : undefined}
+      title={touched && error != null ? error : undefined}
       placement="top"
       color="red"
     >

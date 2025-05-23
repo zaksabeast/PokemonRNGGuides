@@ -7,7 +7,6 @@ import {
   RngToolSubmit,
   MultiTimer,
   FormikSelect,
-  Input,
   Button,
   Icon,
   FormFieldTable,
@@ -256,13 +255,7 @@ export const Fields = () => {
       {
         label: "Calibration (ms)",
         input: (
-          <Input
-            name="calibration"
-            onChange={(event) => {
-              setFieldValue("calibration", +event.target.value || 0); //NO_PROD use formik input
-            }}
-            value={values.calibration}
-          />
+          <FormikNumberInput<FormState> name="calibration" numType="decimal" />
         ),
       },
       {
@@ -330,8 +323,6 @@ export const Fields = () => {
     }
     return fields;
   }, [
-    values.calibration,
-    setFieldValue,
     values.entered_hall_of_fame,
     values.filter_active,
     values.pickup_pokemon_count,
@@ -424,17 +415,15 @@ export const Gen3Pokerus = () => {
         title: "Pickup Items",
         dataIndex: "pickup_items",
         render: (val) => {
-          const txt =
-            val
-              .map((itemId, pokemonSlot) => {
-                if (itemId === "None") {
-                  return "";
-                }
-                return `${pokemonSlot + 1}: ${pickupIdToName(itemId)}`;
-              })
-              .filter((txt) => txt)
-              .join(", ") || "No items";
-          return txt;
+          const items = val
+            .map((itemId, pokemonSlot) => {
+              if (itemId === "None") {
+                return null;
+              }
+              return `${pokemonSlot + 1}: ${pickupIdToName(itemId)}`;
+            })
+            .filter((txt) => txt != null);
+          return items.length === 0 ? "No items" : items.join(", ");
         },
       },
     ],

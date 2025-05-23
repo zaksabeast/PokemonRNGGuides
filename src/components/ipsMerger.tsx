@@ -58,8 +58,8 @@ export const IpsMerger = () => {
           }
         }}
       />
-      {error && <Alert type="error" message={error} />}
-      {mergedIps && (
+      {error != null && <Alert type="error" message={error} />}
+      {mergedIps != null && (
         <DownloadButton data={mergedIps} trackerId="download_merged_ips" />
       )}
     </Flex>

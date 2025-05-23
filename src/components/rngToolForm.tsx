@@ -72,7 +72,7 @@ export const RngToolForm = <
     >
       {(formik) => {
         const fieldsReactNode = (() => {
-          if (children) {
+          if (children != null) {
             return children;
           }
           const fieldsToUse = fields ?? getFields?.(formik.values) ?? [];

@@ -61,7 +61,7 @@ export const Input = ({
 }: InputProps) => {
   const inputRef = React.useRef<InputRef>(null);
 
-  const _status = (status ?? errorMessage != null) ? "error" : undefined;
+  const _status = (status ?? errorMessage) != null ? "error" : undefined;
 
   React.useEffect(() => {
     if (autoFocus && inputRef.current != null) {

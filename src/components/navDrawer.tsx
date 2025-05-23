@@ -250,13 +250,13 @@ const shouldShowGuide = ({
 }: {
   guide: GuideMeta;
   showRoughDrafts: boolean;
-}) => {
+}): boolean => {
   if (guide.translation != null) {
-    return null;
+    return false;
   }
 
   if (guide.hideFromNavDrawer) {
-    return null;
+    return false;
   }
 
   return showRoughDrafts ? guide.isRoughDraft : !guide.isRoughDraft;

@@ -110,7 +110,7 @@ export const FormikTimePicker = <FormState extends GenericForm>({
         name={name}
         value={value}
         onBlur={onBlur}
-        status={error && touched ? "error" : ""}
+        status={error != null && touched ? "error" : ""}
         onChange={(date) => {
           const rngTime = date == null ? null : toRngTime(date);
           setValue(rngTime);
@@ -135,12 +135,11 @@ type DatePickerProps = tst.O.Omit<
   _DatePickerProps,
   // Time + date doesn't work well on small screens.
   // We'll always want to separate time and date pickers
-  "showTime" | keyof NullableDate
+  "showTime" | keyof NullableDate | "allowClear"
 > &
   NullableDate;
 
 export const DatePicker = ({
-  allowClear,
   onChange,
   fullWidth,
   picker,
@@ -156,12 +155,12 @@ export const DatePicker = ({
         }
         // Virtual keyboards get in the way of the pop
         inputReadOnly
-        allowClear={allowClear}
+        allowClear={false}
         {...props}
         // antd types lie, so we're fixing them and making them more accurate
         // @ts-expect-error Type '(date: Dayjs | null, dateString: string) => void' is not assignable to type '(date: Dayjs, dateString: string | string[]) => void'.
         onChange={(date: Dayjs | null, dateString: string) => {
-          if (allowClear || date != null) {
+          if (date != null) {
             onChange?.(date, dateString);
           }
         }}
@@ -182,17 +181,14 @@ type FormikDatePickerProps<FormState extends GenericForm> = Omit<
 export const FormikDatePicker = <FormState extends GenericForm>({
   name,
   fullWidth = true,
-  allowClear = false,
   onChange,
   ...props
 }: FormikDatePickerProps<FormState>) => {
   const [{ value: formDate, onBlur }, { error, touched }, { setValue }] =
     useField<RngDate | null>(name);
-  const dateValue = match({ allowClear, formDate })
+  const dateValue = match({ formDate })
     .with({ formDate: P.not(null) }, (matched) => fromRngDate(matched.formDate))
-    .with({ allowClear: true, formDate: null }, () => null)
-    .with({ allowClear: P.not(P.nullish), formDate: null }, () => dayjs())
-    .with({ allowClear: undefined, formDate: null }, () => null)
+    .with({ formDate: null }, () => dayjs())
     .exhaustive();
 
   return (
@@ -200,11 +196,10 @@ export const FormikDatePicker = <FormState extends GenericForm>({
       <DatePicker
         {...props}
         name={name}
-        allowClear={allowClear}
         fullWidth={fullWidth}
         value={dateValue}
         onBlur={onBlur}
-        status={error && touched ? "error" : ""}
+        status={error != null && touched ? "error" : ""}
         onChange={(date) => {
           const rngDate = date == null ? null : toRngDate(date);
           setValue(rngDate);

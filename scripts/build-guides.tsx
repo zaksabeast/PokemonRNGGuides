@@ -18,6 +18,7 @@ import { markdownComponents } from "../src/markdownExports";
 import { Router } from "wouter";
 import { ThemeProvider } from "../src/theme/provider";
 import pmap from "p-map";
+import prettier from "prettier";
 
 dayjs.extend(utc);
 
@@ -169,7 +170,7 @@ const getGuideFiles = async (): Promise<SitePageFile[]> => {
   return results;
 };
 
-const saveGeneratedGuideMetadata = async <T extends Record<string, unknown>>(
+const generateGuideMetadata = async <T extends Record<string, unknown>>(
   finalGuides: T[],
 ) => {
   const compiledGuides = `
@@ -193,14 +194,16 @@ const saveGeneratedGuideMetadata = async <T extends Record<string, unknown>>(
   export const categories = ${JSON.stringify(categories)} as const;
 `;
 
-  await fs.mkdir(toNativeAbsolute("../src/__generated__"), { recursive: true });
-  await fs.writeFile(
-    toNativeAbsolute("../src/__generated__/guides.ts"),
-    compiledGuides,
-  );
+  return prettier.format(compiledGuides, { parser: "typescript" });
 };
 
-const main = async ({ noDetectedTags }: { noDetectedTags: boolean }) => {
+const main = async ({
+  check,
+  noDetectedTags,
+}: {
+  check: boolean;
+  noDetectedTags: boolean;
+}) => {
   const guideFiles = await getGuideFiles();
   const guides: (GuideMetadata & { file: string })[] = [];
 
@@ -313,11 +316,33 @@ const main = async ({ noDetectedTags }: { noDetectedTags: boolean }) => {
     { concurrency: 5 },
   );
 
-  await saveGeneratedGuideMetadata(finalGuides);
+  const compiledGuides = await generateGuideMetadata(finalGuides);
+
+  if (check) {
+    const existingGuidesString = await fs.readFile(
+      toNativeAbsolute("../src/__generated__/guides.ts"),
+      { encoding: "utf8" },
+    );
+    if (compiledGuides !== existingGuidesString) {
+      console.error(
+        "Guide metadata is out of date. Please run `bun run build:guides` to update it.",
+      );
+      process.exit(1);
+    }
+  } else {
+    await fs.mkdir(toNativeAbsolute("../src/__generated__"), {
+      recursive: true,
+    });
+    await fs.writeFile(
+      toNativeAbsolute("../src/__generated__/guides.ts"),
+      compiledGuides,
+    );
+  }
 
   process.exit(0);
 };
 
 main({
+  check: process.argv.includes("--check"),
   noDetectedTags: process.argv.includes("--no-detected-tags"),
 });

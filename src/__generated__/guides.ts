@@ -2342,7 +2342,7 @@ export const guides = {
       layout: "guide",
       canonical: null,
       file: "guides/Gen 3/Emerald/Glossary.mdx",
-      displayAttributes: ["web_tool"],
+      displayAttributes: [],
       translations: null,
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Glossary.mdx")),

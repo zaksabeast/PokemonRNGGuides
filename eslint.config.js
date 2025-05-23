@@ -109,6 +109,7 @@ export default tseslint.config(
         "error",
         { props: "never", children: "ignore" },
       ],
+      "@typescript-eslint/no-non-null-assertion": "error",
     },
   },
 );

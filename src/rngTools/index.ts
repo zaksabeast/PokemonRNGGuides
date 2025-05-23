@@ -24,6 +24,7 @@ type AdjustAllFunctionArgs<T> = {
 
 type AdjustedRngTools = AdjustAllFunctionArgs<RngToolsModules>;
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- This isn't great, but it's a workaround for server side rendering.  RngTools will be initialized immediately in the browser.
 export let rngTools: Remote<AdjustedRngTools> = null!;
 
 export const initRngTools = () => {

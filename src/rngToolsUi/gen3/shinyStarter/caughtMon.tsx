@@ -150,7 +150,7 @@ export const CaughtMon = ({
         validationSchema={Validator}
         onSubmit={onSubmit}
         submitTrackerId="generate_gen3_caught_starter"
-        submitButtonLabel={"Find advances matching caught starter Pokémon"}
+        submitButtonLabel="Find advances matching caught starter Pokémon"
         rowKey="advance"
       />
     </Flex>

@@ -2329,7 +2329,7 @@ export const guides = {
     meta: {
       categories: ["Emerald"],
       tags: ["any"],
-      isNew: true,
+      isNew: false,
       title: "Glossary",
       navDrawerTitle: "Glossary",
       description:
@@ -2434,7 +2434,7 @@ export const guides = {
       canonical: null,
       file: "guides/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
       displayAttributes: [],
-      translations: null,
+      translations: { en: "/hgss-rng-advance/", zh: "/zh-hgss-rng-advance/" },
     },
     Guide: React.lazy(
       () =>
@@ -4104,7 +4104,7 @@ export const guides = {
     meta: {
       categories: ["Ruby and Sapphire"],
       tags: ["retail"],
-      isNew: true,
+      isNew: false,
       title: "Pokérus in Ruby & Sapphire",
       navDrawerTitle: "Pokérus",
       description: "How to be infected by Pokérus",
@@ -5352,6 +5352,32 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
   },
+  "/zh-hgss-rng-advance/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["any"],
+      isNew: false,
+      title: "推进乱数",
+      navDrawerTitle: "推进乱数",
+      description: "乱数推进的方法及影响乱数的机制",
+      slug: "/zh-hgss-rng-advance/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/hgss-rng-advance/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
+      displayAttributes: [],
+      translations: { en: "/hgss-rng-advance/", zh: "/zh-hgss-rng-advance/" },
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx"
+        ),
+    ),
+  },
   "/zh-install-pokereader/": {
     meta: {
       categories: ["3DS Tools"],
@@ -5695,6 +5721,7 @@ export const guideSlugs = [
   "/zh-gen2-celebi/",
   "/zh-gen2-starters/",
   "/zh-gen3-sid/",
+  "/zh-hgss-rng-advance/",
   "/zh-install-pokereader/",
   "/zh-retail-emerald-wild/",
   "/zh-rs-gen3-sid/",

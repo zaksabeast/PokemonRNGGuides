@@ -93,27 +93,30 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<
                 Some(LeadAbilities::CutecharmM) => Gender::Female,
                 _ => Gender::Genderless,
             };
+
             for _ in 0..3 {
-                let nature = (rng.rand::<u16>() % 25) as u8;
-                let pid = buffer + nature as u32;
-                let gender = settings.encounter.species().gender_from_pid(pid);
+                if rng.rand::<u16>() % 3 != 0 {
+                    let nature = (rng.rand::<u16>() % 25) as u8;
+                    let pid = buffer + nature as u32;
+                    let gender = settings.encounter.species().gender_from_pid(pid);
+                    if gender == target_gender {
+                        let iv1 = rng.rand::<u16>();
+                        let iv2 = rng.rand::<u16>();
+                        let ivs = Ivs::new_g3(iv1, iv2);
+                        let nature = Nature::from_pid(pid);
 
-                if gender == target_gender {
-                    let iv1 = rng.rand::<u16>();
-                    let iv2 = rng.rand::<u16>();
-                    let ivs = Ivs::new_g3(iv1, iv2);
-                    let nature = Nature::from_pid(pid);
-
-                    return Some(Gen4SPokemon {
-                        pid,
-                        shiny: gen3_shiny(pid, settings.tid, settings.sid),
-                        ability: AbilityType::from_gen3_pid(pid),
-                        gender,
-                        ivs,
-                        nature,
-                        advance: 0,
-                    });
-                };
+                        return Some(Gen4SPokemon {
+                            pid,
+                            shiny: gen3_shiny(pid, settings.tid, settings.sid),
+                            ability: AbilityType::from_gen3_pid(pid),
+                            gender,
+                            ivs,
+                            nature,
+                            advance: 0,
+                        });
+                    };
+                }
+                break;
             }
         }
     }
@@ -148,6 +151,47 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<
 }
 
 pub fn generate_gen4_static_j(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<Gen4SPokemon> {
+    if let Some(lead) = settings.lead {
+        if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
+            let gender_threshold = settings.encounter.species().gender_ratio();
+            let buffer = match settings.lead {
+                Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
+                Some(LeadAbilities::CutecharmM) => 0,
+                Some(LeadAbilities::Synchronize) => 0,
+                None => 0,
+            };
+            let target_gender = match settings.lead {
+                Some(LeadAbilities::CutecharmF) => Gender::Male,
+                Some(LeadAbilities::CutecharmM) => Gender::Female,
+                _ => Gender::Genderless,
+            };
+
+            for _ in 0..3 {
+                if rng.rand::<u16>() % 3 != 0 {
+                    let nature = (rng.rand::<u16>() % 25) as u8;
+                    let pid = buffer + nature as u32;
+                    let gender = settings.encounter.species().gender_from_pid(pid);
+                    if gender == target_gender {
+                        let iv1 = rng.rand::<u16>();
+                        let iv2 = rng.rand::<u16>();
+                        let ivs = Ivs::new_g3(iv1, iv2);
+                        let nature = Nature::from_pid(pid);
+
+                        return Some(Gen4SPokemon {
+                            pid,
+                            shiny: gen3_shiny(pid, settings.tid, settings.sid),
+                            ability: AbilityType::from_gen3_pid(pid),
+                            gender,
+                            ivs,
+                            nature,
+                            advance: 0,
+                        });
+                    };
+                }
+                break;
+            }
+        }
+    }
     let nature_rand = (rng.rand::<u16>() / 0xa3e) as u8;
 
     let mut pid: u32;
@@ -230,9 +274,9 @@ mod test {
             sid: 54321,
             initial_advances: 0,
             max_advances: 10,
-            encounter: StaticEncounterId::Snorlax,
-            game: Some(GameVersion::HeartGold),
-            lead: Some(LeadAbilities::CutecharmF),
+            encounter: StaticEncounterId::Turtwig,
+            game: Some(GameVersion::Platinum),
+            lead: None,
             filter: PkmFilter {
                 shiny: false,
                 nature: None,

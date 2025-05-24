@@ -220,6 +220,33 @@ pub fn generate_gen4_static_j(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<
             }
         }
     }
+    if settings.lead == Some(LeadAbilities::Synchronize) {
+        if rng.rand::<u16>() >> 15 == 0 {
+            let mut pid: u32;
+            let nature_value = settings.lead_nature.unwrap() as u32;
+            loop {
+                let pid_low = rng.rand::<u16>() as u32;
+                let pid_high = rng.rand::<u16>() as u32;
+                pid = (pid_high << 16) | pid_low;
+                if pid % 25 == nature_value {
+                    break;
+                }
+            }
+
+            let iv1 = rng.rand::<u16>();
+            let iv2 = rng.rand::<u16>();
+            let ivs = Ivs::new_g3(iv1, iv2);
+            return Some(Gen4SPokemon {
+                pid,
+                shiny: gen3_shiny(pid, settings.tid, settings.sid),
+                ability: AbilityType::from_gen3_pid(pid),
+                gender: settings.encounter.species().gender_from_pid(pid),
+                ivs,
+                nature: Nature::from_pid(pid),
+                advance: 0,
+            });
+        }
+    }
     let nature_rand = (rng.rand::<u16>() / 0xa3e) as u8;
 
     let mut pid: u32;
@@ -1162,6 +1189,223 @@ mod test {
                         spe: 26,
                     },
                     nature: Nature::Adamant,
+                    advance: 10,
+                },
+            ];
+            let result = filter_4static(options, seed);
+            assert_eq!(result, expected_results);
+        }
+        #[test]
+        fn test_static_gen() {
+            let seed = 0;
+            let options = Gen4SOpts {
+                tid: 12345,
+                sid: 54321,
+                initial_advances: 0,
+                max_advances: 10,
+                encounter: StaticEncounterId::Dialga,
+                game: Some(GameVersion::Platinum),
+                lead: Some(LeadAbilities::Synchronize),
+                lead_nature: Some(Nature::Adamant),
+                filter: PkmFilter {
+                    shiny: false,
+                    nature: None,
+                    gender: None,
+                    min_ivs: Ivs {
+                        hp: 0,
+                        atk: 0,
+                        def: 0,
+                        spa: 0,
+                        spd: 0,
+                        spe: 0,
+                    },
+                    max_ivs: Ivs {
+                        hp: 31,
+                        atk: 31,
+                        def: 31,
+                        spa: 31,
+                        spd: 31,
+                        spe: 31,
+                    },
+                    ability: None,
+                    stats: None,
+                },
+            };
+            let expected_results = [
+                Gen4SPokemon {
+                    pid: 475834453,
+                    shiny: false,
+                    ability: AbilityType::Second,
+                    gender: Gender::Genderless,
+                    ivs: Ivs {
+                        hp: 2,
+                        atk: 18,
+                        def: 8,
+                        spa: 17,
+                        spd: 1,
+                        spe: 26,
+                    },
+                    nature: Nature::Adamant,
+                    advance: 0,
+                },
+                Gen4SPokemon {
+                    pid: 3080890308,
+                    shiny: false,
+                    ability: AbilityType::First,
+                    gender: Gender::Genderless,
+                    ivs: Ivs {
+                        hp: 21,
+                        atk: 2,
+                        def: 10,
+                        spa: 2,
+                        spd: 7,
+                        spe: 28,
+                    },
+                    nature: Nature::Impish,
+                    advance: 1,
+                },
+                Gen4SPokemon {
+                    pid: 475834453,
+                    shiny: false,
+                    ability: AbilityType::Second,
+                    gender: Gender::Genderless,
+                    ivs: Ivs {
+                        hp: 2,
+                        atk: 18,
+                        def: 8,
+                        spa: 17,
+                        spd: 1,
+                        spe: 26,
+                    },
+                    nature: Nature::Adamant,
+                    advance: 2,
+                },
+                Gen4SPokemon {
+                    pid: 3805056578,
+                    shiny: false,
+                    ability: AbilityType::First,
+                    gender: Gender::Genderless,
+                    ivs: Ivs {
+                        hp: 5,
+                        atk: 30,
+                        def: 11,
+                        spa: 30,
+                        spd: 25,
+                        spe: 27,
+                    },
+                    nature: Nature::Adamant,
+                    advance: 3,
+                },
+                Gen4SPokemon {
+                    pid: 3360178372,
+                    shiny: false,
+                    ability: AbilityType::First,
+                    gender: Gender::Genderless,
+                    ivs: Ivs {
+                        hp: 17,
+                        atk: 30,
+                        def: 15,
+                        spa: 5,
+                        spd: 14,
+                        spe: 22,
+                    },
+                    nature: Nature::Sassy,
+                    advance: 4,
+                },
+                Gen4SPokemon {
+                    pid: 840124667,
+                    shiny: false,
+                    ability: AbilityType::Second,
+                    gender: Gender::Genderless,
+                    ivs: Ivs {
+                        hp: 7,
+                        atk: 23,
+                        def: 31,
+                        spa: 29,
+                        spd: 23,
+                        spe: 3,
+                    },
+                    nature: Nature::Quiet,
+                    advance: 5,
+                },
+                Gen4SPokemon {
+                    pid: 2902820410,
+                    shiny: false,
+                    ability: AbilityType::First,
+                    gender: Gender::Genderless,
+                    ivs: Ivs {
+                        hp: 18,
+                        atk: 14,
+                        def: 4,
+                        spa: 0,
+                        spd: 12,
+                        spe: 25,
+                    },
+                    nature: Nature::Timid,
+                    advance: 6,
+                },
+                Gen4SPokemon {
+                    pid: 1636640678,
+                    shiny: false,
+                    ability: AbilityType::First,
+                    gender: Gender::Genderless,
+                    ivs: Ivs {
+                        hp: 18,
+                        atk: 20,
+                        def: 5,
+                        spa: 29,
+                        spd: 19,
+                        spe: 24,
+                    },
+                    nature: Nature::Adamant,
+                    advance: 7,
+                },
+                Gen4SPokemon {
+                    pid: 1096857248,
+                    shiny: false,
+                    ability: AbilityType::First,
+                    gender: Gender::Genderless,
+                    ivs: Ivs {
+                        hp: 22,
+                        atk: 17,
+                        def: 5,
+                        spa: 0,
+                        spd: 28,
+                        spe: 9,
+                    },
+                    nature: Nature::Careful,
+                    advance: 8,
+                },
+                Gen4SPokemon {
+                    pid: 2059180349,
+                    shiny: false,
+                    ability: AbilityType::Second,
+                    gender: Gender::Genderless,
+                    ivs: Ivs {
+                        hp: 7,
+                        atk: 29,
+                        def: 18,
+                        spa: 14,
+                        spd: 23,
+                        spe: 22,
+                    },
+                    nature: Nature::Quirky,
+                    advance: 9,
+                },
+                Gen4SPokemon {
+                    pid: 3954154919,
+                    shiny: false,
+                    ability: AbilityType::Second,
+                    gender: Gender::Genderless,
+                    ivs: Ivs {
+                        hp: 3,
+                        atk: 5,
+                        def: 20,
+                        spa: 7,
+                        spd: 22,
+                        spe: 21,
+                    },
+                    nature: Nature::Rash,
                     advance: 10,
                 },
             ];

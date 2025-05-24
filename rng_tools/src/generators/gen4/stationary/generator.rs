@@ -5,6 +5,7 @@ use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, Gender, Nature, PkmFilter, PkmState, gen3_shiny};
 
 use super::GameVersion;
+use super::LeadAbilities;
 use super::StaticEncounterId;
 use super::dpt_method_jk;
 use super::hgss_method_jk;
@@ -20,6 +21,7 @@ pub struct Gen4SOpts {
     pub filter: PkmFilter,
     pub game: Option<GameVersion>,
     pub encounter: StaticEncounterId,
+    pub lead: Option<LeadAbilities>,
 }
 
 #[derive(Debug, PartialEq)]
@@ -77,6 +79,33 @@ pub fn generate_gen4_static(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<Ge
 }
 
 pub fn generate_gen4_static_k(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<Gen4SPokemon> {
+    if let Some(lead) = settings.lead {
+        if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
+            let gender_threshold = settings.encounter.species().gender_ratio();
+            let buffer = match settings.lead {
+                Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
+                Some(LeadAbilities::CutecharmM) => 0,
+                Some(LeadAbilities::Synchronize) => 0,
+                None => 0,
+            };
+            let nature = (rng.rand::<u16>() % 25) as u8;
+            if (rng.rand::<u16>() % 3) == 0 {
+                let pid = buffer + nature as u32;
+
+                let gender = settings.encounter.species().gender_from_pid(pid);
+                let target_gender = match settings.lead {
+                    Some(LeadAbilities::CutecharmF) => Gender::Male,
+                    Some(LeadAbilities::CutecharmM) => Gender::Female,
+                    _ => Gender::Genderless,
+                };
+                if gender != target_gender {
+                    let iv1 = rng.rand::<u16>();
+                    let iv2 = rng.rand::<u16>();
+                    let ivs = Ivs::new_g3(iv1, iv2);
+                }
+            }
+        }
+    }
     let nature_rand = (rng.rand::<u16>() % 25) as u8;
 
     let mut pid: u32;
@@ -92,14 +121,16 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<
     let iv1 = rng.rand::<u16>();
     let iv2 = rng.rand::<u16>();
     let ivs = Ivs::new_g3(iv1, iv2);
+    let gender = settings.encounter.species().gender_from_pid(pid);
+    let nature = Nature::from_pid(pid);
 
     let pkm = Gen4SPokemon {
         pid,
         shiny: gen3_shiny(pid, settings.tid, settings.sid),
         ability: AbilityType::from_gen3_pid(pid),
-        gender: settings.encounter.species().gender_from_pid(pid),
+        gender,
         ivs,
-        nature: Nature::from_pid(pid),
+        nature,
         advance: 0,
     };
     Some(pkm)
@@ -188,8 +219,9 @@ mod test {
             sid: 54321,
             initial_advances: 0,
             max_advances: 10,
-            encounter: StaticEncounterId::Turtwig,
-            game: Some(GameVersion::Platinum),
+            encounter: StaticEncounterId::Snorlax,
+            game: Some(GameVersion::HeartGold),
+            lead: Some(LeadAbilities::CutecharmF),
             filter: PkmFilter {
                 shiny: false,
                 nature: None,
@@ -405,6 +437,7 @@ mod test {
             max_advances: 10,
             encounter: StaticEncounterId::Dialga,
             game: Some(GameVersion::Platinum),
+            lead: None,
             filter: PkmFilter {
                 shiny: false,
                 nature: None,
@@ -621,6 +654,7 @@ mod test {
             max_advances: 10,
             encounter: StaticEncounterId::HoOh,
             game: Some(GameVersion::HeartGold),
+            lead: None,
             filter: PkmFilter {
                 shiny: false,
                 nature: None,

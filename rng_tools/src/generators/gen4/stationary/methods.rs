@@ -7,7 +7,7 @@ pub enum GameVersion {
     HeartGold,
     SoulSilver,
 }
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum StaticEncounterId {
     Turtwig,
     Chimchar,
@@ -64,6 +64,8 @@ pub enum StaticEncounterId {
     Raikou,
     Entei,
     Suicune,
+    Voltorb,
+    Snorlax,
 }
 
 impl StaticEncounterId {
@@ -124,6 +126,8 @@ impl StaticEncounterId {
             StaticEncounterId::Raikou => Species::Raikou,
             StaticEncounterId::Entei => Species::Entei,
             StaticEncounterId::Suicune => Species::Suicune,
+            StaticEncounterId::Voltorb => Species::Voltorb,
+            StaticEncounterId::Snorlax => Species::Snorlax,
         }
     }
 }
@@ -160,5 +164,14 @@ pub fn hgss_method_jk(species: Species) -> bool {
             | Species::Suicune
             | Species::Palkia
             | Species::Giratina
+            | Species::Voltorb
+            | Species::Snorlax
     )
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub enum LeadAbilities {
+    CutecharmF,
+    CutecharmM,
+    Synchronize,
 }

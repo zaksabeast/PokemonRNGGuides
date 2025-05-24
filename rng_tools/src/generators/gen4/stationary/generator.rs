@@ -88,21 +88,32 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<
                 Some(LeadAbilities::Synchronize) => 0,
                 None => 0,
             };
-            let nature = (rng.rand::<u16>() % 25) as u8;
-            if (rng.rand::<u16>() % 3) == 0 {
+            let target_gender = match settings.lead {
+                Some(LeadAbilities::CutecharmF) => Gender::Male,
+                Some(LeadAbilities::CutecharmM) => Gender::Female,
+                _ => Gender::Genderless,
+            };
+            for _ in 0..3 {
+                let nature = (rng.rand::<u16>() % 25) as u8;
                 let pid = buffer + nature as u32;
-
                 let gender = settings.encounter.species().gender_from_pid(pid);
-                let target_gender = match settings.lead {
-                    Some(LeadAbilities::CutecharmF) => Gender::Male,
-                    Some(LeadAbilities::CutecharmM) => Gender::Female,
-                    _ => Gender::Genderless,
-                };
-                if gender != target_gender {
+
+                if gender == target_gender {
                     let iv1 = rng.rand::<u16>();
                     let iv2 = rng.rand::<u16>();
                     let ivs = Ivs::new_g3(iv1, iv2);
-                }
+                    let nature = Nature::from_pid(pid);
+
+                    return Some(Gen4SPokemon {
+                        pid,
+                        shiny: gen3_shiny(pid, settings.tid, settings.sid),
+                        ability: AbilityType::from_gen3_pid(pid),
+                        gender,
+                        ivs,
+                        nature,
+                        advance: 0,
+                    });
+                };
             }
         }
     }

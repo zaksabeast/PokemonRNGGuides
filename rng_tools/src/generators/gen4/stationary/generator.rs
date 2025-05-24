@@ -76,7 +76,7 @@ pub fn generate_gen4_static(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<Ge
     Some(pkm)
 }
 
-pub fn generate_gen4_static_j(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<Gen4SPokemon> {
+pub fn generate_gen4_static_k(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<Gen4SPokemon> {
     let nature_rand = (rng.rand::<u16>() % 25) as u8;
 
     let mut pid: u32;
@@ -105,7 +105,7 @@ pub fn generate_gen4_static_j(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<
     Some(pkm)
 }
 
-pub fn generate_gen4_static_k(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<Gen4SPokemon> {
+pub fn generate_gen4_static_j(rng: &mut Pokerng, settings: Gen4SOpts) -> Option<Gen4SPokemon> {
     let nature_rand = (rng.rand::<u16>() / 0xa3e) as u8;
 
     let mut pid: u32;
@@ -140,14 +140,14 @@ pub fn generate_4statics(settings: Gen4SOpts, rng: &mut Pokerng) -> Option<Gen4S
     match settings.game {
         Some(GameVersion::Diamond) | Some(GameVersion::Pearl) | Some(GameVersion::Platinum) => {
             if dpt_method_jk(species) {
-                generate_gen4_static_k(rng, settings)
+                generate_gen4_static_j(rng, settings)
             } else {
                 generate_gen4_static(rng, settings)
             }
         }
         Some(GameVersion::HeartGold) | Some(GameVersion::SoulSilver) => {
             if hgss_method_jk(species) {
-                generate_gen4_static_j(rng, settings)
+                generate_gen4_static_k(rng, settings)
             } else {
                 generate_gen4_static(rng, settings)
             }

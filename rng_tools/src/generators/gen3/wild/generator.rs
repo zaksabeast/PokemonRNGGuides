@@ -5,10 +5,21 @@ use crate::gen3::Gen3Method;
 use crate::rng::Rng;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
-use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, ShinyType, gen3_shiny};
+use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};
 
-pub struct Gen3WOpts {
-    pub shiny_type: Option<ShinyType>,
+pub struct Wild3GeneratorOptions {
+    pub tid: u16,
+    pub sid: u16,
+    pub gender_ratio: GenderRatio,
+    pub encounter_slot: Option<Vec<EncounterSlot>>,
+    pub method: Gen3Method,
+    pub initial_advances: usize,
+    pub max_advances: usize,
+    pub synchronize: Option<Gen3Lead>,
+    pub filter: PkmFilter,
+}
+
+pub struct Wild3SearcherOptions {
     pub tid: u16,
     pub sid: u16,
     pub gender_ratio: GenderRatio,
@@ -21,19 +32,20 @@ pub struct Gen3WOpts {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct GeneratedPokemon {
+pub struct Wild3GeneratorResult {
+    pub advance: usize,
     pub pid: u32,
-    pub shiny: bool,
+    pub ivs: Ivs,
     pub ability: AbilityType,
     pub gender: Gender,
-    pub ivs: Ivs,
     pub nature: Nature,
-    pub advance: usize,
+    pub shiny: bool,
+
     pub encounter_slot: EncounterSlot,
     pub synch: bool,
 }
 
-pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<GeneratedPokemon> {
+pub fn generate_pokemon(rng: &mut Pokerng, settings: &Wild3GeneratorOptions) -> Option<Wild3GeneratorResult> {
     let encounter_rand = ((rng.rand::<u32>() >> 16) % 100) as u8;
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
 
@@ -93,10 +105,8 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
 
     // Filters
     let shiny = gen3_shiny(pid, settings.tid, settings.sid);
-    if let Some(wanted) = settings.shiny_type {
-        if (shiny && wanted == ShinyType::NotShiny) || (!shiny && wanted != ShinyType::NotShiny) {
-            return None;
-        }
+    if settings.filter.shiny && !shiny {
+        return None;
     }
 
     let ability = AbilityType::from_gen3_pid(pid);
@@ -124,7 +134,7 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
         }
     }
 
-    Some(GeneratedPokemon {
+    Some(Wild3GeneratorResult {
         pid,
         shiny,
         ability,
@@ -137,7 +147,7 @@ pub fn generate_pokemon(rng: &mut Pokerng, settings: &Gen3WOpts) -> Option<Gener
     })
 }
 
-pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> {
+pub fn generate_3wild(settings: &Wild3GeneratorOptions, seed: u32) -> Vec<Wild3GeneratorResult> {
     let base_rng = Pokerng::new(seed);
     StateIterator::new(base_rng)
         .enumerate()
@@ -148,7 +158,7 @@ pub fn generate_3wild(settings: &Gen3WOpts, seed: u32) -> Vec<GeneratedPokemon> 
             pkm.advance = adv;
             Some(pkm)
         })
-        .collect::<Vec<GeneratedPokemon>>()
+        .collect::<Vec<Wild3GeneratorResult>>()
 }
 
 #[cfg(test)]
@@ -161,8 +171,7 @@ mod test {
     #[test]
     fn test_wild_gen() {
         let seed = 0;
-        let options = Gen3WOpts {
-            shiny_type: None,
+        let options = Wild3GeneratorOptions {
             tid: 0,
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
@@ -197,7 +206,7 @@ mod test {
         };
 
         let expected_results = [
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 0,
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 0xFC3367DB,
@@ -215,7 +224,7 @@ mod test {
                 gender: Gender::Male,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 1,
                 encounter_slot: EncounterSlot::Slot5,
                 pid: 0x60A1E414,
@@ -233,7 +242,7 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 2,
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 0x639E3D69,
@@ -251,7 +260,7 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 3,
                 encounter_slot: EncounterSlot::Slot1,
                 pid: 0xAD05863A,
@@ -269,7 +278,7 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 4,
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 0x945CE0C6,
@@ -287,7 +296,7 @@ mod test {
                 gender: Gender::Male,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 5,
                 encounter_slot: EncounterSlot::Slot4,
                 pid: 0x91785DD6,
@@ -305,7 +314,7 @@ mod test {
                 gender: Gender::Male,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 6,
                 encounter_slot: EncounterSlot::Slot9,
                 pid: 0xDFC5706A,
@@ -323,7 +332,7 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 7,
                 encounter_slot: EncounterSlot::Slot7,
                 pid: 0x618D27A6,
@@ -341,7 +350,7 @@ mod test {
                 gender: Gender::Male,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 8,
                 encounter_slot: EncounterSlot::Slot4,
                 pid: 0x1692618D,
@@ -359,7 +368,7 @@ mod test {
                 gender: Gender::Male,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 9,
                 encounter_slot: EncounterSlot::Slot1,
                 pid: 0x6E031C49,
@@ -384,8 +393,7 @@ mod test {
     #[test]
     fn test_wild_genwfil() {
         let seed = 0x346A4A45;
-        let options = Gen3WOpts {
-            shiny_type: None,
+        let options = Wild3GeneratorOptions {
             tid: 12345,
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
@@ -423,7 +431,7 @@ mod test {
             },
         };
         let expected_results = [
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 908,
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 0x02FA9E49,
@@ -441,7 +449,7 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 3543,
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 0xA44D455D,
@@ -459,7 +467,7 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 3577,
                 encounter_slot: EncounterSlot::Slot6,
                 pid: 0xA44D455D,
@@ -477,7 +485,7 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 3621,
                 encounter_slot: EncounterSlot::Slot8,
                 pid: 0xA44D455D,
@@ -502,8 +510,7 @@ mod test {
     #[test]
     fn test_wild_genwshin() {
         let seed = 0x14a22065;
-        let options = Gen3WOpts {
-            shiny_type: Some(ShinyType::Star),
+        let options = Wild3GeneratorOptions {
             tid: 34760,
             sid: 47362,
             gender_ratio: GenderRatio::OneToOne,
@@ -536,7 +543,7 @@ mod test {
                 stats: None,
             },
         };
-        let expected_results = [GeneratedPokemon {
+        let expected_results = [Wild3GeneratorResult {
             advance: 0,
             encounter_slot: EncounterSlot::Slot4,
             pid: 0x692A57E1,
@@ -560,8 +567,7 @@ mod test {
     #[test]
     fn test_wild_gensynch() {
         let seed = 0x14a22065;
-        let options = Gen3WOpts {
-            shiny_type: None,
+        let options = Wild3GeneratorOptions {
             tid: 12345,
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
@@ -595,7 +601,7 @@ mod test {
             },
         };
         let expected_results = [
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 0,
                 encounter_slot: EncounterSlot::Slot4,
                 pid: 0x3A5DEC53,
@@ -613,7 +619,7 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 1,
                 encounter_slot: EncounterSlot::Slot9,
                 pid: 0x95BC176C,
@@ -631,7 +637,7 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 2,
                 encounter_slot: EncounterSlot::Slot7,
                 pid: 0x7697C055,
@@ -649,7 +655,7 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 3,
                 encounter_slot: EncounterSlot::Slot1,
                 pid: 0x3A5DEC53,
@@ -667,7 +673,7 @@ mod test {
                 gender: Gender::Female,
                 synch: true,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 4,
                 encounter_slot: EncounterSlot::Slot5,
                 pid: 0x57E115F6,

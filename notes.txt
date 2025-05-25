@@ -1,0 +1,36 @@
+
+
+
+
+2 approaches:
+    1- generate_pokemons(possible_setups)
+        for setup in possible_setups
+            generate_pokemon(setup)     (as-is)
+
+        Pros: We split the responsibility of listing setups and generating pokemon separated.
+        Cons: High number of possible_setups (~27 leads * 3 lead PID group * 2 maps = ~180 slower than current generator)   
+
+    2- generate_pokemons(setups)
+        for map in setups.maps
+            generate encounter_slot(map)
+            if !pass filter, return;
+
+            for lead in setups.leads
+                generate nature(lead)
+                
+                if !pass filter, return;
+
+                ...
+
+        Pros: The performance is better because we avoid recalculating the same thing, and we can regroup similar outcomes together (ex: multiple synchronize). 
+
+
+    Note: In both cases, generate_pokemon generate outcomes for all methods 1-5 at once.
+
+ 
+
+
+
+
+
+

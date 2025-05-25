@@ -1,7 +1,52 @@
 If you're interested in contributing, reach out on Discord in our [#discussion channel](https://discord.com/channels/285269328469950464/888240330628005898) to coordinate with us.
 
 <details>
-  <summary><b>Read this if you're interested in adding, translating, or editing guides</b></summary>
+  <summary><b>Read this if you're interested in translating guides</b></summary>
+
+## Submitting Translations
+
+There are two ways to submit a translation:
+
+1. Send it to our Discord [#discussion channel](https://discord.com/channels/285269328469950464/888240330628005898)
+2. Submit a GitHub pull request
+
+If you send it to us in Discord, we'll take care of everything from there - you don't need to read the next section.
+
+## Submitting a pull request
+
+If you're submitting a pull request, create a new file in `guides/Translations/language_code`.
+
+For example, if you're `guides/Gen 4/Wild.mdx` to Spanish, create a file at `guides/Translations/es/Gen 4/Wild.mdx`.
+
+Next, add this info to the top of the file:
+
+```mdx
+---
+- title: "Translated Title"
+  description: "Translated Description."
+  slug: "es-dppt-wild"
+  translation:
+    enSlug: "dppt-wild"
+    language: "es"
+---
+```
+
+- `title` is the translated title
+- `description` is the translated description
+- `slug` is the English slug prefixed with the language code
+- `translation.enSlug` the English slug
+- `translation.language` the language code
+
+The translated contents should follow.
+
+After that, commit and submit the pull request!
+
+If you'd like to see an example, check out any of the files in `guides/Translated`.
+
+</details>
+
+<details>
+  <summary><b>Read this if you're interested in adding or editing guides</b></summary>
 
 ## Guide writing and updating
 

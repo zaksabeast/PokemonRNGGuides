@@ -6,7 +6,7 @@ import { MDXContent } from "mdx/types";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import z from "zod";
-import { difference, isArray, keyBy, groupBy } from "lodash-es";
+import { difference, isArray, keyBy, groupBy, forEach } from "lodash-es";
 import { guides as existingGuides } from "../src/__generated__/guides";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -19,6 +19,7 @@ import { Router } from "wouter";
 import { ThemeProvider } from "../src/theme/provider";
 import pmap from "p-map";
 import prettier from "prettier";
+import { match } from "ts-pattern";
 
 dayjs.extend(utc);
 
@@ -98,7 +99,7 @@ const SingleOrMultipleSchema = <T extends z.ZodTypeAny>(schema: T) =>
     return isArray(value) ? value : [value];
   });
 
-const SingleGuideMetadataSchema = z
+const BaseGuideSchema = z
   .object({
     title: TitleSchema,
     navDrawerTitle: TitleSchema.nullish()
@@ -120,28 +121,50 @@ const SingleGuideMetadataSchema = z
       .refine((value) => value === null || dayjs(value).isValid(), {
         message: "Invalid date format",
       }),
-    translation: z
-      .object({
-        enSlug: SlugSchema,
-        language: z.enum(["es", "zh", "fr"]),
-      })
-      .nullish()
-      .optional()
-      .default(() => null),
+    translation: z.null().optional().default(null),
     layout: z.enum(layouts).default("guide"),
     canonical: SlugSchema.nullish()
       .optional()
       .default(() => null),
   })
-  .transform(({ category, tag, ...metadata }) => ({
+  .transform(({ category, tag, ...meta }) => ({
     categories: category,
     tags: tag,
-    isNew: isNew(metadata.addedOn),
-    ...metadata,
-    navDrawerTitle: metadata.navDrawerTitle ?? metadata.title,
-    hideFromNavDrawer:
-      metadata.translation != null || metadata.hideFromNavDrawer,
+    isNew: isNew(meta.addedOn),
+    ...meta,
+    navDrawerTitle: meta.navDrawerTitle ?? meta.title,
+    type: "baseGuide" as const,
   }));
+
+const TranslatedGuideSchema = z
+  .object({
+    title: TitleSchema,
+    navDrawerTitle: TitleSchema.nullish()
+      .optional()
+      .default(() => null),
+    description: z
+      .string()
+      .refine((value) => titleAndDescriptionChars.test(value)),
+    slug: SlugSchema,
+    translation: z.object({
+      enSlug: SlugSchema,
+      language: z.enum(["es", "zh", "fr"]),
+    }),
+    canonical: SlugSchema.nullish()
+      .optional()
+      .default(() => null),
+  })
+  .transform((meta) => ({
+    ...meta,
+    hideFromNavDrawer: true,
+    navDrawerTitle: meta.navDrawerTitle ?? meta.title,
+    type: "translatedGuide" as const,
+  }));
+
+const SingleGuideMetadataSchema = z.union([
+  BaseGuideSchema,
+  TranslatedGuideSchema,
+]);
 
 // Can't easily reuse SingleOrMultipleSchema here because of the transform
 const GuideMetadataSchema = z
@@ -168,6 +191,24 @@ const getGuideFiles = async (): Promise<SitePageFile[]> => {
     results.push({ file, content: content.toString() });
   }
   return results;
+};
+
+const getEnSlug = (guide: GuideMetadata) => {
+  return match(guide)
+    .with({ type: "baseGuide" }, (matched) => matched.slug)
+    .with({ type: "translatedGuide" }, (matched) => matched.translation.enSlug)
+    .exhaustive();
+};
+
+const getEnGuide = (guide: GuideMetadata, allGuides: GuideMetadata[]) => {
+  const enSlug = getEnSlug(guide);
+  const foundGuide = allGuides.find((guide) => guide.slug === enSlug);
+
+  if (foundGuide == null) {
+    throw new Error(`Missing English guide for ${guide.slug}`);
+  }
+
+  return foundGuide;
 };
 
 const generateGuideMetadata = async <T extends Record<string, unknown>>(
@@ -239,7 +280,7 @@ const main = async ({
   const guidesBySlug = keyBy(guides, (guide) => guide.slug);
   guides.forEach((guide) => {
     if (
-      guide.translation != null &&
+      guide.type === "translatedGuide" &&
       guidesBySlug[guide.translation.enSlug] == null
     ) {
       throw new Error(
@@ -262,27 +303,48 @@ const main = async ({
     throw new Error("Removed slugs: " + removedSlugs.join(", "));
   }
 
-  const guidesByEnSlug = groupBy(
-    guides,
-    (guide) => guide.translation?.enSlug ?? guide.slug,
-  );
+  const guidesByEnSlug = groupBy(guides, getEnSlug);
 
   const getTranslations = (guide: GuideMetadata) => {
-    const translations =
-      guidesByEnSlug[guide.translation?.enSlug ?? guide.slug];
+    const enSlug = getEnSlug(guide);
+    const translations = guidesByEnSlug[enSlug];
 
+    // English guide only
     if (translations.length === 1) {
       return null;
     }
 
     return translations.reduce((acc, curr) => {
-      acc[curr.translation?.language ?? "en"] = curr.slug;
+      const languageCode = match(curr)
+        .with({ type: "baseGuide" }, () => "en")
+        .with(
+          { type: "translatedGuide" },
+          (matched) => matched.translation.language,
+        )
+        .exhaustive();
+
+      acc[languageCode] = curr.slug;
       return acc;
     }, {});
   };
 
+  const guidesWithTranslations = guides.map((guide) => ({
+    ...getEnGuide(guide, guides),
+    ...guide,
+    translations: getTranslations(guide),
+  }));
+
+  forEach(
+    groupBy(guidesWithTranslations, (guide) => guide.slug),
+    (guides, slug) => {
+      if (guides.length > 1) {
+        throw new Error(`Duplicate slugs detected for ${slug}`);
+      }
+    },
+  );
+
   const finalGuides = await pmap(
-    guides,
+    guidesWithTranslations,
     async (guide) => {
       let detectedTags = {};
 

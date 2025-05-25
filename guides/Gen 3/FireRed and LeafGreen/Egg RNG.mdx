@@ -1,22 +1,11 @@
 ---
-- title: "FireRed and LeafGreen Egg RNG"
-  navDrawerTitle: "Egg RNG"
-  description: "Learn how to RNG eggs in Pokémon FireRed and LeafGreen for perfect IVs, natures, and shinies."
-  slug: "emulator-frlg-egg"
-  category: "FireRed and LeafGreen"
-  tag: "emu"
-- title: "火红叶绿孵化乱数"
-  navDrawerTitle: "Egg RNG"
-  description: "在火红/叶绿中进行蛋的乱数"
-  slug: "zh-emulator-frlg-egg"
-  category: "FireRed and LeafGreen"
-  tag: "emu"
-  translation:
-    enSlug: "emulator-frlg-egg"
-    language: "zh"
+title: "FireRed and LeafGreen Egg RNG"
+navDrawerTitle: "Egg RNG"
+description: "Learn how to RNG eggs in Pokémon FireRed and LeafGreen for perfect IVs, natures, and shinies."
+slug: "emulator-frlg-egg"
+category: "FireRed and LeafGreen"
+tag: "emu"
 ---
-
-<ShowIf slug="/emulator-frlg-egg">
 
 ## Tools
 
@@ -75,66 +64,3 @@ If it doesn't match, recheck your steps and use savestates.
 ## Credits
 
 - Chinese translation: xuanyelin, Hakuhiro.
-
-</ShowIf>
-
-<ShowIf slug="/zh-emulator-frlg-egg">
-
-## 所需工具
-
-- [带有 Lua 脚本的 mGBA 模拟器](/mgba-setup)
-- [PokeFinder](/pokefinder)
-- 父母个体值与相性（向培育屋老爷爷询问）
-- 表 ID 与里 ID（如需孵化闪光个体）
-
-## 简介
-
-在火红/叶绿中，蛋的 PID 是分两步生成的：蛋生成时会决定 PID 的前半部分，而领取蛋时决定后半部分。
-
-## 准备阶段
-
-1. 将宝可梦交给培育屋。请确保父母都未携带道具，放入顺序没有影响。
-2. 待在培育屋内行走，直到 Lua 脚本显示步数计数为 1。必须在培育屋内部完成这一步。
-3. 达成条件后，在此处建立即时存档点。
-
-![Setup](/images/FireRed-LeafGreen/Egg/Setup.png)
-
-## 设置 PokeFinder
-
-1. 打开 PokeFinder，选择第三世代孵化乱数，并确保切换到火红/叶绿的标签页。
-2. 输入双亲的所有信息，包括他们的相性。
-3. 帧数范围可以自由设定，但“生成帧”（Frame Held）上限必须低于“领取帧”（Pickup Frame）下限。
-4. 输入 Lua 脚本中显示的初始种子，开始查找个体组合。
-
-![初始种子](/images/FireRed-LeafGreen/Egg/Initial-Seed.png)
-
-5. 找到目标组合后，请注意需要命中两个不同的帧数。
-
-## 生成帧乱数
-
-1. 在 PokeFinder 中，从目标帧中减去 18，并在该帧数上走一步。在模拟器暂停状态下使用 CTRL + N 推进帧数。到达目标帧时，按住方向键并取消暂停。
-   - 若未生成蛋，请检查输入是否有误；若确认无误，可尝试延迟为 17 或 19。
-2. 行走后，Lua 脚本会显示 PID 的后半部分。若与目标匹配，可继续进行；若不符，请反查延迟后并再次尝试。
-
-![Held Frame](/images/FireRed-LeafGreen/Egg/Held.png)
-
-3. 至此，生成帧的乱数已完成。接下来是领取帧的乱数。
-
-## 领取帧乱数
-
-1. 为防止错过按键时机，建议先建立一个即时存档点。
-2. 离开培育屋，与老爷爷对话并接受蛋。在出现最后一句对话（“请好好照顾它。”）时暂停模拟器。
-3. 推进到目标帧数，按住 A 键并取消暂停。
-   - 领取帧的标准延迟为 3。如果不匹配，可尝试延迟 2 或 4。
-
-如果成功，蛋的后半 PID 就会与目标一致。
-
-![成功！](/images/FireRed-LeafGreen/Egg/Success.png)
-
-若失败，请重新检查操作步骤，并合理利用即时存档进行调整与重试。
-
-## 特别鸣谢
-
-- 中文翻译：炫夜鳞、Hakuhiro/白希洛。
-
-</ShowIf>

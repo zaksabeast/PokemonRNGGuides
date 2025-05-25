@@ -1,0 +1,70 @@
+---
+- title: "如何在第五世代中寻找 DS 参数"
+  description: "获取你的 DS 参数以进行第五世代乱数。"
+  slug: "zh-emulator-bw-find-ds-parameters"
+  translation:
+    enSlug: "emulator-bw-find-ds-parameters"
+    language: "zh"
+---
+
+## 所需工具
+
+- [Desmume](https://www.pokemonrng.com/desmume-setup)
+- [RNG Reporter](https://github.com/Bambo-Rambo/RNGReporter)
+- [RunAsDate](https://runasdate.en.softonic.com/)
+
+## 需知事项
+
+在进行乱数前，必须先找到你的 DS 参数。每个存档、主机或模拟器只需执行一次。
+
+## 第一步：设置 RNG Reporter
+
+1. 打开 RNG Reporter。
+2. 点击 `5th Gen Tools -> Find DS Parameters`。
+3. 选择你的游戏版本和语言。
+4. 设置种子加密变量（Seed Encryption Variables）：
+   - DS 类型: Lite/Original
+   - DS MAC 地址: `0009BF123456`
+   - VCount: `10-70`
+   - Timer0: `300-1200`
+   - GxStat: `6-6`
+   - VFrame: `0-15`
+5. DeSmuMe 模拟器的 DS MAC 地址始终是 `0009BF123456`。
+
+![Seed Encryption Variables](/images/Black-and-White/Parameters/Setup.png)
+
+```
+注意：如果无法找到种子，请检查设置是否正确。如果正确无误，可以尝试：
+- VCount: `0-FF`
+- Timer0: `0-FFFF`
+不过这样搜索时间会更长。
+```
+
+## 第二步：寻找你的种子
+
+1. 打开 RunAsDate。
+2. 输入任意时间，并勾选 `Immediate Mode`。
+3. 在 DS 参数查找器中输入相同的时间。
+
+![Time Input](/images/Black-and-White/Parameters/Time.png)
+
+4. 点击 RunAsDate 中的 `Run`，加载你的 ROM。
+5. 打开 Lua 脚本，不要按任何按键。
+6. 复制 Lua 脚本显示的种子，并粘贴到 DS 参数查找器中。
+
+![Initial Seed](/images/Black-and-White/Parameters/Seed.png)
+
+## 第三步：搜索 DS 参数
+
+1. 点击 `Search` 并耐心等待搜索完成。
+2. 搜索成功后，点击 `Send Results to Profile` 将结果保存到你的配置文件中。
+
+祝你乱数顺利！
+
+```
+注意：如果更改了模拟器设置、存档，或重新下载了模拟器，可能需要重新寻找 DS 参数。
+```
+
+## 特别鸣谢
+
+- 中文翻译：炫夜鳞、Hakuhiro/白希洛。

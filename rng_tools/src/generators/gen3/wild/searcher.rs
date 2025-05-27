@@ -27,13 +27,13 @@ pub struct Wild3SearcherOptions {
 fn search_wild3_at_given_advance(rng: &mut Pokerng, advance:usize, opts: &Wild3SearcherOptions) -> Vec<Wild3GeneratorResult> {
     let mut results:Vec<Wild3GeneratorResult> = vec![];
     for lead in opts.leads.iter() {
-        for (encounter_idx, encounter_slots) in opts.encounter_slots_by_map.iter().enumerate() {
+        for (map_idx, encounter_slots) in opts.encounter_slots_by_map.iter().enumerate() {
             for method in opts.methods.iter() {
                 let gen_opts = Wild3GeneratorOptions {
                     tid: opts.tid,
                     sid: opts.sid,
                     advance,
-                    encounter_idx,
+                    map_idx,
                     gender_ratio: opts.gender_ratio,
                     encounter_slot: encounter_slots.clone(),
                     method:*method,
@@ -41,7 +41,7 @@ fn search_wild3_at_given_advance(rng: &mut Pokerng, advance:usize, opts: &Wild3S
                     filter: opts.filter.clone(),
                 };
 
-                if let Some(result) = generate_gen3_wild(rng,advance,&gen_opts) {
+                if let Some(result) = generate_gen3_wild(rng, &gen_opts) {
                     results.push(result)
                 }
             }

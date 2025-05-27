@@ -12,7 +12,7 @@ pub struct Wild3GeneratorOptions {
     pub tid: u16,
     pub sid: u16,
     pub gender_ratio: GenderRatio,
-    pub encounter_idx: usize,
+    pub map_idx: usize,
     pub encounter_slot: Option<Vec<EncounterSlot>>,
     pub method: Gen3Method,
     pub synchronize: Option<Gen3Lead>,
@@ -22,7 +22,7 @@ pub struct Wild3GeneratorOptions {
 #[derive(Debug, PartialEq)]
 pub struct Wild3GeneratorResult {
     pub advance: usize,
-    pub encounter_idx: usize,
+    pub map_idx: usize,
     pub pid: u32,
     pub ivs: Ivs,
     pub ability: AbilityType,
@@ -132,7 +132,7 @@ pub fn generate_gen3_wild(rng: &mut Pokerng, opts: &Wild3GeneratorOptions) -> Op
         ivs,
         nature,
         advance:opts.advance,
-        encounter_idx:opts.encounter_idx,
+        map_idx:opts.map_idx,
         encounter_slot,
         synch: is_synch,
     })

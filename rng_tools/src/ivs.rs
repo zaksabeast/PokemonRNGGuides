@@ -38,6 +38,26 @@ pub struct Ivs {
 }
 
 impl Ivs {
+    pub fn new_all0() -> Self {
+        Self {
+            hp:  0,
+            atk: 0,
+            def: 0,
+            spe: 0,
+            spa: 0,
+            spd: 0,
+        }
+    }
+    pub fn new_all31() -> Self {
+        Self {
+            hp:  31,
+            atk: 31,
+            def: 31,
+            spe: 31,
+            spa: 31,
+            spd: 31,
+        }
+    }
     pub fn new_g3(iv1: u16, iv2: u16) -> Self {
         Self {
             hp: (iv1 & 31) as u8,

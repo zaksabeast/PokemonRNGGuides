@@ -30,6 +30,17 @@ pub struct PkmFilter {
 }
 
 impl PkmFilter {
+    pub fn new_allow_all() -> Self {
+        Self {
+            shiny: false,
+            nature: None,
+            gender: None,
+            min_ivs: Ivs::new_all0(),
+            max_ivs: Ivs::new_all31(),
+            ability: None,
+            stats: None,
+        }
+    }
     pub fn pass_filter(&self, state: &impl PkmState) -> bool {
         if !state.ivs().filter(&self.min_ivs, &self.max_ivs) {
             return false;

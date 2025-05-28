@@ -145,6 +145,22 @@ const tools = {
   GenerateHoennTidSid,
   MultibootJirachi,
   PaintingReseed,
-  HomePageComponent,
-  GamePageComponent,
+  RetailEmeraldHeldEgg,
+  PokeNavInput,
+  CalibrateHeldEgg,
+  CalibrateHeldEggTimer,
+  RetailEmeraldPickupEgg,
+  CalibratePickupEgg,
+  CalibratePickupEggTimer,
+};
+
+export const markdownComponents = {
+  ...nonTools,
+  ...mapValues(tools, (Component) => {
+    // This is temporary
+    // At some point I'd like each of these to be lazy loaded, which will require specifying the component path next to the component name.
+    // A wrapper around React.lazy can include `withTags`.
+    // @ts-expect-error -- TS can't tell each component props apart in the Component union, so it thinks there are prop mismatches
+    return withTags(Component, { web_tool: true });
+  }),
 };

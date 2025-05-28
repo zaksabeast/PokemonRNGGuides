@@ -1,5 +1,5 @@
 import { MultiTimer } from "~/components";
-import { useRsTidState } from "./rstidState";
+import { useRsTidState } from "./rsTidState";
 
 export const RsTidTimer = () => {
   const [state] = useRsTidState();

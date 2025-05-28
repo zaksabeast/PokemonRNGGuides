@@ -1597,7 +1597,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-hgss-stationary/",
+        zh: "/zh-emulator-hgss-stationary/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5457,6 +5460,36 @@ export const guides = {
         ),
     ),
   },
+  "/zh-emulator-hgss-stationary/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["emu"],
+      isNew: false,
+      title: "定点乱数",
+      navDrawerTitle: "定点乱数",
+      description: "定点宝可梦的乱数",
+      slug: "/zh-emulator-hgss-stationary/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-hgss-stationary/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
+      translations: {
+        en: "/emulator-hgss-stationary/",
+        zh: "/zh-emulator-hgss-stationary/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx"
+        ),
+    ),
+  },
   "/zh-emulator-rs-egg/": {
     meta: {
       categories: ["Ruby and Sapphire"],
@@ -6023,6 +6056,7 @@ export const guideSlugs = [
   "/zh-emulator-frlg-wild/",
   "/zh-emulator-hgss-cute-charm/",
   "/zh-emulator-hgss-egg/",
+  "/zh-emulator-hgss-stationary/",
   "/zh-emulator-rs-egg/",
   "/zh-emulator-rs-stationary/",
   "/zh-frlg-gen3-sid/",

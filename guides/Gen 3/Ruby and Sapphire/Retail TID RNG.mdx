@@ -21,12 +21,24 @@ This guide assumes you have a dead battery in your Ruby
 2. If you are not finding a result, you can increase the max advances to search
    through, though keep in mind it will take longer for each attempt.
 3. Select your target TID and continue to Step 2.
-    <RsTidSidGenerator />
+   <RsTidSidGenerator />
+
 </Step>
 
 <Step step={1}>
-  <RsTidTimer />
-  <RsTidSearcher />
+## Step 2: RNG your TID
+
+1. Start the game.
+2. Start the timer below. When the first timer ends, reset the game using `Start + Select + A + B`.
+3. Play until the final screen (screenshot below).
+4. Wait until the second timer ends, then press `A` to generate your TID.
+5. Input the TID you got into the "Hit TID" of the tool below and click "Generate".
+6. Select the TID in the results to update the timer.
+7. Repeat the above steps to attempt to hit your target TID. If you're off by 1-2 advances, you don't need to calibrate. You can try again with the same timer settings.
+
+   <RsTidTimer />
+   <RsTidSearcher />
+
 </Step>
 
 </Stepper>

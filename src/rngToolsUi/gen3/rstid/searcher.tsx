@@ -5,6 +5,7 @@ import {
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
+  Button,
 } from "~/components";
 import React from "react";
 import { denormalizeIdFilter } from "~/types/id";
@@ -14,12 +15,34 @@ import { useRsTidState } from "./rsTidState";
 type Result = Gen3TidSidResult & { offset: number };
 
 const columns: ResultColumn<Result>[] = [
-  { title: "Advance", dataIndex: "advance" },
+  {
+    title: "Select",
+    dataIndex: "advance",
+    render: (advance) => <SelectButton targetAdvance={advance} />,
+  },
   { title: "Offset", dataIndex: "offset" },
   { title: "TID", dataIndex: "tid" },
   { title: "SID", dataIndex: "sid" },
   { title: "TSV", dataIndex: "tsv" },
 ];
+
+type SelectButtonProps = {
+  targetAdvance: number;
+};
+
+const SelectButton = ({ targetAdvance }: SelectButtonProps) => {
+  const [state, setState] = useRsTidState();
+  return (
+    <Button
+      trackerId="select_rs_tid_advance"
+      onClick={() => {
+        setState({ ...state, targetAdvance });
+      }}
+    >
+      Select
+    </Button>
+  );
+};
 
 const Validator = z.object({
   offset: z.number().int().min(0),
@@ -58,7 +81,7 @@ const fields: Field[] = [
 
 export const RsTidSearcher = () => {
   const [results, setResults] = React.useState<Result[]>([]);
-  const [state, setState] = useRsTidState();
+  const [state] = useRsTidState();
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
@@ -86,13 +109,6 @@ export const RsTidSearcher = () => {
     [state],
   );
 
-  const onClickResultRow = React.useCallback(
-    (res: Result) => {
-      setState((prev) => ({ ...prev, offset: res.offset }));
-    },
-    [setState],
-  );
-
   return (
     <RngToolForm<FormState, Result>
       fields={fields}
@@ -102,7 +118,6 @@ export const RsTidSearcher = () => {
       validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="search_rs_tidsid"
-      onClickResultRow={onClickResultRow}
       rowKey="advance"
     />
   );

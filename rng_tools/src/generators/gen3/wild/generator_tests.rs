@@ -4,10 +4,10 @@ mod test {
     use crate::gen3::EncounterSlot;
     use crate::gen3::Gen3Lead;
     use crate::gen3::Gen3Method;
+    use crate::gen3::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
     use crate::rng::Rng;
     use crate::rng::lcrng::Pokerng;
     use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
-    use crate::gen3::{generate_gen3_wild, Wild3GeneratorResult, Wild3GeneratorOptions};
 
     #[test]
     fn test_generate_wild3_no_filter() {
@@ -28,7 +28,7 @@ mod test {
         let result = generate_gen3_wild(&mut rng, &options);
         let expected_result = Some(Wild3GeneratorResult {
             advance: 9,
-            map_idx:0,
+            map_idx: 0,
             encounter_slot: EncounterSlot::Slot1,
             pid: 0x6E031C49,
             shiny: false,
@@ -51,8 +51,8 @@ mod test {
     #[test]
     fn test_generate_wild3_with_filter() {
         let options = Wild3GeneratorOptions {
-            advance:908,
-            map_idx:0,
+            advance: 908,
+            map_idx: 0,
             tid: 12345,
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
@@ -86,7 +86,7 @@ mod test {
         let result = generate_gen3_wild(&mut rng, &options);
         let expected_result = Some(Wild3GeneratorResult {
             advance: 908,
-            map_idx:0,
+            map_idx: 0,
             encounter_slot: EncounterSlot::Slot0,
             pid: 0x02FA9E49,
             shiny: false,
@@ -114,7 +114,7 @@ mod test {
             encounter_slot: None,
             method: Gen3Method::H1,
             advance: 0,
-            map_idx:0,
+            map_idx: 0,
             synchronize: None,
             filter: PkmFilter {
                 shiny: true,
@@ -131,7 +131,7 @@ mod test {
         let result = generate_gen3_wild(&mut rng, &options);
         let expected_result = Some(Wild3GeneratorResult {
             advance: 0,
-            map_idx:0,
+            map_idx: 0,
             encounter_slot: EncounterSlot::Slot4,
             pid: 0x692A57E1,
             shiny: true,
@@ -160,7 +160,7 @@ mod test {
             encounter_slot: None,
             method: Gen3Method::H1,
             advance: 0,
-            map_idx:0,
+            map_idx: 0,
             synchronize: Some(Gen3Lead::Synchronize(Nature::Hardy)),
             filter: PkmFilter::new_allow_all(),
         };
@@ -169,7 +169,7 @@ mod test {
         let result = generate_gen3_wild(&mut rng, &options);
         let expected_result = Some(Wild3GeneratorResult {
             advance: 0,
-            map_idx:0,
+            map_idx: 0,
             encounter_slot: EncounterSlot::Slot4,
             pid: 0x3A5DEC53,
             shiny: false,

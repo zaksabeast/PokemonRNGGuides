@@ -1,9 +1,7 @@
-
-
-//TODO: add back the tests
-
 #[cfg(test)]
 mod test {
+
+    use std::vec;
 
     use crate::assert_list_eq;
 
@@ -11,53 +9,29 @@ mod test {
     use crate::gen3::EncounterSlot;
     use crate::gen3::Gen3Lead;
     use crate::gen3::Gen3Method;
-    use crate::rng::Rng;
-    use crate::rng::lcrng::Pokerng;
+    use crate::gen3::search_wild3;
+    use crate::gen3::{Wild3GeneratorResult, Wild3SearcherOptions};
     use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
-    use crate::gen3::{generate_gen3_wild, Wild3GeneratorResult,Wild3SearcherOptions, Wild3GeneratorOptions};
-
 
     #[test]
-    fn test_wild_gen() {
-        let seed = 0;
+    fn test_search_wild3_no_filter() {
         let options = Wild3SearcherOptions {
-            shiny:false,
+            initial_seed: 0,
+            leads: vec![None],
+            encounter_slots_by_map: vec![None],
+            methods: vec![Gen3Method::H1],
             tid: 0,
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            method: Gen3Method::H1,
             initial_advances: 0,
             max_advances: 9,
-            synchronize: None,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
         };
 
         let expected_results = [
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 0,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 0xFC3367DB,
                 shiny: false,
@@ -74,8 +48,9 @@ mod test {
                 gender: Gender::Male,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 1,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot5,
                 pid: 0x60A1E414,
                 shiny: false,
@@ -92,8 +67,9 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 2,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 0x639E3D69,
                 shiny: false,
@@ -110,8 +86,9 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 3,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot1,
                 pid: 0xAD05863A,
                 shiny: false,
@@ -128,8 +105,9 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 4,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 0x945CE0C6,
                 shiny: false,
@@ -146,8 +124,9 @@ mod test {
                 gender: Gender::Male,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 5,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot4,
                 pid: 0x91785DD6,
                 shiny: false,
@@ -164,8 +143,9 @@ mod test {
                 gender: Gender::Male,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 6,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot9,
                 pid: 0xDFC5706A,
                 shiny: false,
@@ -182,8 +162,9 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 7,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot7,
                 pid: 0x618D27A6,
                 shiny: false,
@@ -200,8 +181,9 @@ mod test {
                 gender: Gender::Male,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 8,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot4,
                 pid: 0x1692618D,
                 shiny: false,
@@ -218,8 +200,9 @@ mod test {
                 gender: Gender::Male,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 9,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot1,
                 pid: 0x6E031C49,
                 shiny: false,
@@ -237,26 +220,26 @@ mod test {
                 synch: false,
             },
         ];
-        let result = generate_3wild(&options, seed);
+        let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
     }
+
     #[test]
-    fn test_wild_genwfil() {
-        let seed = 0x346A4A45;
-        let options = Gen3WOpts {
-            shiny_type: None,
+    fn test_search_wild3_with_filter() {
+        let options = Wild3SearcherOptions {
+            initial_seed: 0x346A4A45,
             tid: 12345,
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: Some(vec![
+            encounter_slots_by_map: vec![Some(vec![
                 EncounterSlot::Slot0,
                 EncounterSlot::Slot6,
                 EncounterSlot::Slot8,
-            ]),
-            method: Gen3Method::H1,
+            ])],
+            methods: vec![Gen3Method::H1],
             initial_advances: 60,
             max_advances: 3625,
-            synchronize: None,
+            leads: vec![None],
             filter: PkmFilter {
                 shiny: false,
                 nature: Some(Nature::Adamant),
@@ -269,21 +252,15 @@ mod test {
                     spd: 10,
                     spe: 10,
                 },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
+                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
                 stats: None,
             },
         };
         let expected_results = [
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 908,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 0x02FA9E49,
                 shiny: false,
@@ -300,8 +277,9 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 3543,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 0xA44D455D,
                 shiny: false,
@@ -318,8 +296,9 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 3577,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot6,
                 pid: 0xA44D455D,
                 shiny: false,
@@ -336,8 +315,9 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 3621,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot8,
                 pid: 0xA44D455D,
                 shiny: false,
@@ -355,48 +335,35 @@ mod test {
                 synch: false,
             },
         ];
-        let result = generate_3wild(&options, seed);
+        let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
     }
+
     #[test]
-    fn test_wild_genwshin() {
-        let seed = 0x14a22065;
-        let options = Gen3WOpts {
-            shiny_type: Some(ShinyType::Star),
+    fn test_search_wild3_shiny() {
+        let options = Wild3SearcherOptions {
+            initial_seed: 0x14a22065,
             tid: 34760,
             sid: 47362,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            method: Gen3Method::H1,
+            encounter_slots_by_map: vec![None],
+            methods: vec![Gen3Method::H1],
             initial_advances: 0,
             max_advances: 10,
-            synchronize: None,
+            leads: vec![None],
             filter: PkmFilter {
                 shiny: true,
                 nature: Some(Nature::Naive),
                 gender: Some(Gender::Male),
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
+                min_ivs: Ivs::new_all0(),
+                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
                 stats: None,
             },
         };
-        let expected_results = [GeneratedPokemon {
+        let expected_results = [Wild3GeneratorResult {
             advance: 0,
+            map_idx: 0,
             encounter_slot: EncounterSlot::Slot4,
             pid: 0x692A57E1,
             shiny: true,
@@ -413,49 +380,28 @@ mod test {
             gender: Gender::Male,
             synch: false,
         }];
-        let result = generate_3wild(&options, seed);
+        let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
     }
+
     #[test]
-    fn test_wild_gensynch() {
-        let seed = 0x14a22065;
-        let options = Gen3WOpts {
-            shiny_type: None,
+    fn test_search_wild3_synchronize() {
+        let options = Wild3SearcherOptions {
+            initial_seed: 0x14a22065,
             tid: 12345,
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            method: Gen3Method::H1,
+            encounter_slots_by_map: vec![None],
+            methods: vec![Gen3Method::H1],
             initial_advances: 0,
             max_advances: 4,
-            synchronize: Some(Gen3Lead::Synchronize(Nature::Hardy)),
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-                ability: None,
-                stats: None,
-            },
+            leads: vec![Some(Gen3Lead::Synchronize(Nature::Hardy))],
+            filter: PkmFilter::new_allow_all(),
         };
         let expected_results = [
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 0,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot4,
                 pid: 0x3A5DEC53,
                 shiny: false,
@@ -472,8 +418,9 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 1,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot9,
                 pid: 0x95BC176C,
                 shiny: false,
@@ -490,8 +437,9 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 2,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot7,
                 pid: 0x7697C055,
                 shiny: false,
@@ -508,8 +456,9 @@ mod test {
                 gender: Gender::Female,
                 synch: false,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 3,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot1,
                 pid: 0x3A5DEC53,
                 shiny: false,
@@ -526,8 +475,9 @@ mod test {
                 gender: Gender::Female,
                 synch: true,
             },
-            GeneratedPokemon {
+            Wild3GeneratorResult {
                 advance: 4,
+                map_idx: 0,
                 encounter_slot: EncounterSlot::Slot5,
                 pid: 0x57E115F6,
                 shiny: false,
@@ -545,7 +495,7 @@ mod test {
                 synch: false,
             },
         ];
-        let result = generate_3wild(&options, seed);
+        let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
     }
 }

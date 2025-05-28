@@ -3,7 +3,6 @@ use crate::gen3::EncounterSlot;
 use crate::gen3::Gen3Lead;
 use crate::gen3::Gen3Method;
 use crate::rng::Rng;
-use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};
 
@@ -34,7 +33,10 @@ pub struct Wild3GeneratorResult {
     pub synch: bool,
 }
 
-pub fn generate_gen3_wild(rng: &mut Pokerng, opts: &Wild3GeneratorOptions) -> Option<Wild3GeneratorResult> {
+pub fn generate_gen3_wild(
+    rng: &mut Pokerng,
+    opts: &Wild3GeneratorOptions,
+) -> Option<Wild3GeneratorResult> {
     let encounter_rand = ((rng.rand::<u32>() >> 16) % 100) as u8;
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
 
@@ -75,7 +77,7 @@ pub fn generate_gen3_wild(rng: &mut Pokerng, opts: &Wild3GeneratorOptions) -> Op
     if opts.filter.shiny && !shiny {
         return None;
     }
-    
+
     let ability = AbilityType::from_gen3_pid(pid);
     if let Some(wanted_ability) = opts.filter.ability {
         if ability != wanted_ability {
@@ -112,7 +114,6 @@ pub fn generate_gen3_wild(rng: &mut Pokerng, opts: &Wild3GeneratorOptions) -> Op
 
     let ivs = Ivs::new_g3(iv1, iv2);
 
-
     if !Ivs::filter(&ivs, &opts.filter.min_ivs, &opts.filter.max_ivs) {
         return None;
     }
@@ -131,10 +132,9 @@ pub fn generate_gen3_wild(rng: &mut Pokerng, opts: &Wild3GeneratorOptions) -> Op
         gender,
         ivs,
         nature,
-        advance:opts.advance,
-        map_idx:opts.map_idx,
+        advance: opts.advance,
+        map_idx: opts.map_idx,
         encounter_slot,
         synch: is_synch,
     })
 }
-

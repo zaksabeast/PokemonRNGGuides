@@ -1,4 +1,4 @@
-use crate::Species;
+use crate::{Nature, Species};
 #[derive(Debug, PartialEq, Clone)]
 pub enum GameVersion {
     Diamond,
@@ -173,5 +173,5 @@ pub fn hgss_method_jk(species: Species) -> bool {
 pub enum LeadAbilities {
     CutecharmF,
     CutecharmM,
-    Synchronize,
+    Synchronize(Nature),
 }

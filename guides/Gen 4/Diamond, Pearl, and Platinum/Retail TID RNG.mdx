@@ -1,5 +1,5 @@
 ---
-title: "Diamond, Pearl, and Platinum Retail TID/SID RNG"
+title: "How to RNG Your TID in Diamond, Pearl, and Platinum (Retail)"
 navDrawerTitle: "TID/SID RNG"
 description: "Learn how to RNG for a desired Trainer ID (TID) on retail in Diamond, Pearl, and Platinum."
 slug: "retail-dppt-tid"
@@ -7,22 +7,26 @@ category: "Diamond, Pearl, and Platinum"
 tag: "retail"
 ---
 
+RNG manipulation in Gen 4 lets you get the exact Trainer ID (TID) and Secret ID (SID) you want. This is useful for things like shiny Pokémon or Cute Charm abuse. This guide covers how to do it on a physical console for Diamond, Pearl, and Platinum.
+
+Interested in RNGing for a Cute Charm TID? Check out the [Diamond, Pearl, & Platinum Cute Charm Guide](/dppt-cute-charm)!
+
 ## Tools
 
 - [PokeFinder](/pokefinder)
 - [Mystic Timer](/mystic-timer)
 
-## Step 1: PokeFinder Set Up
+## Step 1: Set Up Your Target in PokeFinder
 
 1. Open PokeFinder to Gen 4 -> IDs.
 2. Select the filter for what you're searching for. If going for a specific TID, select `TID` and input the TID you want.
-3. You can set the "Year" to a desired year or leave it at 2000.
-4. Have "Min Delay" be 5000. Anything lower isn't feasible to hit.
+3. You can leave the "Year" at 2000 or set it to another year if you want.
+4. Set "Min Delay" to 5000. Lower values are difficult to hit due to timing.
 5. "Max Delay" can be set higher if desired, but keep in mind the higher the delay the longer each attempt will take.
 6. Search for results. If nothing shows up, you can adjust the "Max Delay" to be higher.
 7. Right click on your chosen result, and open "Generate times for seed".
 
-## Step 2: Mystic Timer Set Up
+## Step 2: Set Up Mystic Timer
 
 1. In the Gen 4 Seed to Time window, check the seconds box, input 30, then click "Generate".
 2. Take note of the target delay listed here.
@@ -31,47 +35,60 @@ tag: "retail"
 5. Adjust the "Calibrated Delay" for your game:
    - Diamond or Pearl: 600
    - Platinum: 575
-6. Input 30 for the "Target Seconds". This should match what is the Seed to Time window of PokeFinder.
+6. Enter 30 for "Target Seconds". This should match what's shown in the "Seed to Time" window of PokeFinder.
 7. Input the target delay into "Target Delay".
 8. Click "Set Timer".
 
-## Step 3: TID RNG Process
+## Step 3: Execute the RNG Attempt
 
-Because of human error need to adjust the timer to hit desired delay and time. May take several tries before it's consistent.
+You'll need to adjust Mystic Timer to match your real-world timing. Human error makes it unlikely you'll hit the target delay on the first try.
 
-1. Change date on the console to one of the results in Seed to Time.
-2. Change clock but don't accept yet.
-3. Take note if Mystic Timer has a number by "Minutes Before Target". Adjust the time of the console to account for this.
+1. Change the date on the console to one of the results in Seed to Time.
+2. Change the clock but don't accept yet.
+3. Look at “Minutes Before Target” in Mystic Timer. Subtract that number from the target time when setting your DS clock.
    - Example: Target time is 08:57 and there's a 2 for "Minutes Before Target", so the clock would be set to 08:55.
-4. When press `A` to set time, also start Mystic Timer.
-5. Open game when first timer goes off.
-6. Get to naming screen. Make sure to name character same way each time. Take note if ending on lower or upper case screen.
-7. Get to last screen. Wait for second timer to go off and press `A` at the same time.
-   - If don't have enough time to get to last screen before timer goes off, find a TID with a higher delay to give more time.
+4. When you press `A` to set the time, start Mystic Timer at the same moment.
+5. Open the game when the first timer goes off.
+6. Get to the naming screen. Make sure to name your character the same way each time. Take note if you're ending on a lower or upper case screen.
+7. Get to the last screen before the TID is generated (see screenshot below). Wait for the second timer to go off and press `A` at the same time.
+   - If you don't have enough time to reach the last screen before the timer goes off, find a TID with a higher delay to give more time.
 
-## Step 4: Calibrate
+| Diamond & Pearl                                                             | Platinum                                                                                |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| ![DP Final Screen](/images/Diamond-Pearl-Platinum/TID/DPTIDFinalScreen.png) | ![Platinum Final Screen](/images/Diamond-Pearl-Platinum/TID/PlatinumTIDFinalScreen.png) |
 
-1. Check TID by using Seed Finder part of ID window. Input TID and change date and time to what is in Seed to Time window. Adjust "Max Delay" if target delay is above 6000.
-2. Look at seconds column for one near 30.
-3. Check if delay hit is near target delay.
-4. Take note if delay hit is even or odd. Compare to target delay. If both are even or both are odd, then don't need to do anything.
-   - Otherwise, after naming character, switch to different letter case screen. Ex. from lower case to upper case. This switches the delay from even to odd or vice versa. Do this every attempt from now on.
+## Step 4: Calibrate If You're Missing
+
+1. Use the "Seed Finder" (in the ID window) to check the TID you got. Input the TID and change date and time to what is in Seed to Time window. Adjust "Max Delay" if target delay is above 6000.
+2. Look at the seconds column for a result that has 30 seconds.
+3. Check if the delay is also near your target delay.
+4. Take note if the delay hit is even or odd. Compare this to your target delay. If both are even or both are odd, then you don't need to do anything else.
+   - Otherwise, after naming character, switch to a different letter case screen. Eg. from lower case to upper case. This switches the delay from even to odd or vice versa. Do this every attempt from now on.
    - For Japanese games, switch to a different kana screen, eg. from Hiragana to Katakana.
-5. Input that delay into Mystic Timer for "Delay Hit" and click "Set Timer".
-6. Try again with new adjustments.
+5. Enter your delay into the "Delay Hit" field in Mystic Timer, then click "Set Timer".
+6. Try again with the new adjustments.
 
-## Step 4: RNG for the TID
+## Step 5: Try for Your Target TID
 
-If off by 2-4 delays don't update timer and try again. Try to be precise each time.
-If consistently 2 off, try to hit a bit earlier or later depending on which way the delay is.
-Eg. if target is 5990 and keep hitting 5992, aim to hit `A` a tad earlier when last beep happens.
-It's a matter of time before get target TID.
+If you're off by 2 - 4 delays, don't change the timer yet. Just try again. Try to be precise each time.
+If you are consistently off by 2 delays, try to hit a bit earlier or later depending on which way the delay is.
+Eg. if target is 5990 and keep hitting 5992, aim to hit `A` a tad earlier when the last beep happens.
+With some practice and consistency, you'll eventually hit your target TID.
 
 In Diamond and Pearl it is possible for the delay to randomly switch from even to odd, or vice versa. When this happens, you'll just have to try again.
 
 ## Troubleshooting
 
-Off by 1 delay
+**I keep getting 1 delay off! Why is this?**
 
-- need to adjust from even to odd or vice versa
-- change letter casing after naming character
+In the Gen 4 games, the delay can switch between even or odd delays. In doing TID RNG you'll have to swap which you're hitting to be able to land on the delay you want.
+
+To swap from even to odd, or vice versa:
+
+- Change the letter casing after naming your character, eg. from lower case to upper case.
+- **OR** Change the year on the console by 1.
+
+### Related Guides
+
+- [DPPt Wild RNG Guide](/dppt-wild)
+- [DPPt PokeRadar RNG Guide](/dppt-pokeradar-rng/)

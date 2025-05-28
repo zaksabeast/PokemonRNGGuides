@@ -2714,6 +2714,31 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Retail Entralink.mdx")),
   },
+  "/retail-dppt-tid/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      title: "How to RNG Your TID in Diamond, Pearl, and Platinum (Retail)",
+      navDrawerTitle: "TID/SID RNG",
+      description:
+        "Learn how to RNG for a desired Trainer ID (TID) on retail in Diamond, Pearl, and Platinum.",
+      slug: "/retail-dppt-tid/",
+      isRoughDraft: false,
+      tag: "retail",
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Retail TID RNG.mdx",
+      translations: null,
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Retail TID RNG.mdx"
+        ),
+    ),
+  },
   "/retail-emerald-egg/": {
     meta: {
       categories: ["Emerald"],
@@ -4949,6 +4974,7 @@ export const guideSlugs = [
   "/pokefinder/",
   "/pokereader/",
   "/retail-bw-entralink/",
+  "/retail-dppt-tid/",
   "/retail-emerald-egg/",
   "/retail-emerald-wild/",
   "/retail-oras-egg-mmsc/",

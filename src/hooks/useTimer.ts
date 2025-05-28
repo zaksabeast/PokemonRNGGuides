@@ -1,11 +1,12 @@
 import React from "react";
+import { noop } from "lodash-es";
 
 export const useTimer = ({
   expirationMs,
-  countdownMs,
+  countdownMs = 0,
   updateMs = 20,
   onExpire,
-  onCountdown,
+  onCountdown = noop,
 }: {
   expirationMs: number;
   countdownMs?: number;
@@ -51,7 +52,7 @@ export const useTimer = ({
         remaining <= countdownMs
       ) {
         countdownTriggered.current = true;
-        onCountdown?.();
+        onCountdown();
       }
 
       if (remaining <= 0) {

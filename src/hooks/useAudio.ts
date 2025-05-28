@@ -7,8 +7,8 @@ export const useAudio = (url: string) => {
   const [isLoaded, setIsLoaded] = React.useState(false);
 
   React.useEffect(() => {
-    const audioContext = new AudioContext();
-    audioContextRef.current = audioContext;
+    audioContextRef.current = new AudioContext({ latencyHint: "interactive" });
+    const audioContext = audioContextRef.current;
 
     const loadAudio = async () => {
       try {
@@ -29,14 +29,18 @@ export const useAudio = (url: string) => {
     };
   }, [url]);
 
-  const playBeep = React.useCallback((startTime: number) => {
+  const playBeep = React.useCallback((startTime: number, gain: number = 1) => {
     if (audioBufferRef.current == null || audioContextRef.current == null) {
       return;
     }
 
     const source = audioContextRef.current.createBufferSource();
     source.buffer = audioBufferRef.current;
-    source.connect(audioContextRef.current.destination);
+
+    const gainNode = audioContextRef.current.createGain();
+    gainNode.gain.value = gain;
+    source.connect(gainNode).connect(audioContextRef.current.destination);
+
     source.start(startTime);
 
     activeSourcesRef.current.push(source);
@@ -49,14 +53,14 @@ export const useAudio = (url: string) => {
   }, []);
 
   const playBeeps = React.useCallback(
-    (count: number) => {
+    ({ count, gain }: { count: number; gain?: number }) => {
       if (audioContextRef.current == null || audioBufferRef.current == null) {
         return;
       }
 
       const now = audioContextRef.current.currentTime;
       for (let i = 0; i < count; i++) {
-        playBeep(now + i * 0.5);
+        playBeep(now + i * 0.5, gain);
       }
     },
     [playBeep],

@@ -15,9 +15,11 @@ import { z } from "zod";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
 import * as tst from "ts-toolbelt";
+import { Switch } from "./switch";
 
 const MultiTimerStateSchema = z.object({
   showAllTimers: z.boolean(),
+  hardwareSyncSound: z.boolean(),
   maxBeepCount: z.number(),
 });
 
@@ -26,7 +28,7 @@ type MultiTimerState = z.infer<typeof MultiTimerStateSchema>;
 const multiTimerStateAtom = atomWithPersistence(
   "multiTimerState",
   MultiTimerStateSchema,
-  { showAllTimers: false, maxBeepCount: 5 },
+  { showAllTimers: false, maxBeepCount: 5, hardwareSyncSound: false },
 );
 
 const countdownIntervalMs = 500;
@@ -48,10 +50,10 @@ const InnerMultiTimer = ({
   startButtonTrackerId,
   stopButtonTrackerId,
 }: InnerProps) => {
-  const [isRunning, setIsRunning] = React.useState(false);
+  const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
-  const firstBeep = useAudio(firstBeepMp3);
-  const secondBeep = useAudio(secondBeepMp3);
+  const { playBeeps: playFirstBeeps, ...firstBeep } = useAudio(firstBeepMp3);
+  const { playBeeps: playSecondBeeps, ...secondBeep } = useAudio(secondBeepMp3);
 
   const currentMs = milliseconds[currentTimerIndex] ?? 0;
   const nextMs = milliseconds[currentTimerIndex + 1] ?? 0;
@@ -62,23 +64,33 @@ const InnerMultiTimer = ({
   );
   const countdownMs = countdownBeeps * countdownIntervalMs;
 
-  const onCountdown = React.useCallback(
-    () => firstBeep.playBeeps(countdownBeeps),
-    [firstBeep, countdownBeeps],
-  );
+  React.useEffect(() => {
+    if (startTimeMs == null || !state.hardwareSyncSound) {
+      return () => {};
+    }
+    const timer = setInterval(
+      () => playFirstBeeps({ count: 1, gain: 0.001 /* Mute the sound */ }),
+      1000,
+    );
+    return () => clearInterval(timer);
+  }, [state.hardwareSyncSound, startTimeMs, playFirstBeeps]);
+
+  const onCountdown = React.useCallback(() => {
+    playFirstBeeps({ count: countdownBeeps });
+  }, [playFirstBeeps, countdownBeeps]);
 
   const onExpire = React.useCallback(() => {
-    secondBeep.playBeeps(1);
+    playSecondBeeps({ count: 1 });
     setCurrentTimerIndex((prev) => prev + 1);
 
     if (currentTimerIndex + 1 >= milliseconds.length) {
-      setIsRunning(false);
+      setStartTimeMs(null);
       setCurrentTimerIndex(0);
     }
-  }, [currentTimerIndex, secondBeep, milliseconds.length]);
+  }, [playSecondBeeps, currentTimerIndex, milliseconds.length]);
 
   React.useEffect(() => {
-    setIsRunning(false);
+    setStartTimeMs(null);
     setCurrentTimerIndex(0);
   }, [milliseconds]);
 
@@ -95,8 +107,8 @@ const InnerMultiTimer = ({
               onChange={({ target }) => {
                 setState(
                   hydrationLock({
+                    ...state,
                     showAllTimers: target.value === "showAllTimers",
-                    maxBeepCount: state.maxBeepCount,
                   }),
                 );
               }}
@@ -109,7 +121,27 @@ const InnerMultiTimer = ({
         ),
       },
       {
-        label: "Countdown beeps",
+        label: "Sync Optimization",
+        tooltip:
+          "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
+        input: (
+          <Flex justify="flex-end">
+            <Switch
+              checked={state.hardwareSyncSound}
+              onChange={(checked) => {
+                setState(
+                  hydrationLock({
+                    ...state,
+                    hardwareSyncSound: checked,
+                  }),
+                );
+              }}
+            />
+          </Flex>
+        ),
+      },
+      {
+        label: "Countdown Beeps",
         input: (
           <Select<number>
             name="countdownBeeps"
@@ -117,8 +149,8 @@ const InnerMultiTimer = ({
             onChange={(value) => {
               setState(
                 hydrationLock({
+                  ...state,
                   maxBeepCount: value,
-                  showAllTimers: state.showAllTimers,
                 }),
               );
             }}
@@ -130,7 +162,7 @@ const InnerMultiTimer = ({
         ),
       },
     ],
-    [state.maxBeepCount, state.showAllTimers, setState],
+    [state, setState],
   );
 
   return (
@@ -141,7 +173,9 @@ const InnerMultiTimer = ({
             <Timer
               expirationMs={currentMs}
               countdownMs={countdownMs}
-              run={isRunning && currentTimerIndex < milliseconds.length}
+              run={
+                startTimeMs != null && currentTimerIndex < milliseconds.length
+              }
               onCountdown={onCountdown}
               onExpire={onExpire}
             />
@@ -165,7 +199,7 @@ const InnerMultiTimer = ({
                 key={index}
                 expirationMs={ms}
                 countdownMs={countdownMs}
-                run={isRunning && index === currentTimerIndex}
+                run={startTimeMs != null && index === currentTimerIndex}
                 onCountdown={onCountdown}
                 onExpire={onExpire}
               />
@@ -182,10 +216,13 @@ const InnerMultiTimer = ({
       <FormFieldTable fields={timerSettingFields} />
 
       <Button
-        trackerId={isRunning ? startButtonTrackerId : stopButtonTrackerId}
+        trackerId={
+          startTimeMs != null ? startButtonTrackerId : stopButtonTrackerId
+        }
         onClick={() => {
-          const newIsRunning = !isRunning;
-          setIsRunning(newIsRunning);
+          const newStartTimeMs = startTimeMs == null ? performance.now() : null;
+          const newIsRunning = newStartTimeMs != null;
+          setStartTimeMs(newStartTimeMs);
           setCurrentTimerIndex(0);
           if (!newIsRunning) {
             firstBeep.stopBeeps();
@@ -193,7 +230,7 @@ const InnerMultiTimer = ({
           }
         }}
       >
-        {isRunning ? "Stop" : "Start"}
+        {startTimeMs == null ? "Start" : "Stop"}
       </Button>
     </Flex>
   );

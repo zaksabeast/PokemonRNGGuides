@@ -1,6 +1,8 @@
-import { Flex } from "~/components";
+import { Flex } from "./flex";
+import { Icon } from "./icons";
 import { Typography } from "./typography";
 import styled from "@emotion/styled";
+import { Tooltip } from "antd";
 
 const LabelTd = styled.td({
   whiteSpace: "nowrap",
@@ -11,6 +13,7 @@ const LabelTd = styled.td({
 
 export type Field = {
   label: string;
+  tooltip?: string;
   input: React.ReactNode;
   direction?: "row" | "column";
 };
@@ -23,12 +26,23 @@ export const FormFieldTable = ({ fields }: Props) => {
   return (
     <table>
       <tbody>
-        {fields.map(({ label, input, direction = "row" }) => {
+        {fields.map(({ label, tooltip, input, direction = "row" }) => {
+          const labelWithTooltip =
+            tooltip == null ? (
+              label
+            ) : (
+              <Tooltip title={tooltip}>
+                <Flex gap={8}>
+                  <div>{label}</div>
+                  <Icon name="InformationCircle" size={16} />
+                </Flex>
+              </Tooltip>
+            );
           if (direction === "row") {
             return (
               <tr key={label}>
                 <LabelTd>
-                  <Typography.Text strong>{label}</Typography.Text>
+                  <Typography.Text strong>{labelWithTooltip}</Typography.Text>
                 </LabelTd>
                 <td>{input}</td>
               </tr>
@@ -37,7 +51,7 @@ export const FormFieldTable = ({ fields }: Props) => {
           return (
             <tr key={label}>
               <LabelTd colSpan={2}>
-                <Typography.Text strong>{label}</Typography.Text>
+                <Typography.Text strong>{labelWithTooltip}</Typography.Text>
                 <Flex pl={30} vertical>
                   {input}
                 </Flex>

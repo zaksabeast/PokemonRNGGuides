@@ -23,25 +23,29 @@ import {
 import { z } from "zod";
 import { species } from "~/types/species";
 import {gen3Maps} from "~/types/maps";
+import {nature} from "~/types/nature";
 
 type Result = FlattenIvs<Static3SearcherResult>;
+
+const gen3EncounterTypes = ["Sweet Scent (Land)", "Sweet Scent (Water)"];
+const gen3Methods = ["Wild-1", "Wild-2", "Wild-4","Wild-5"];
 
 const Validator = z
   .object({
     species:z.enum(species),
-    size,
     tid:z.number().int().min(0).max(0xFFFF),
     sid:z.number().int().min(0).max(0xFFFF),
+    allMaps:z.boolean(),
     maps:z.array(z.enum(gen3Maps)),
-    leads,
-    methods,
-    encounterTypes,
-    initial_advances,
-    max_advances,
+    allLeads:z.boolean(),
+    vanillaLead:z.boolean(),
+    allSynchronizeLeads:z.boolean(),
+    synchronizeLeadNatures:z.array(z.enum(nature)),
+    methods:z.array(z.enum(gen3Methods)),
+    encounterTypes:z.array(z.enum(gen3EncounterTypes)),
+    initial_advances:z.number().int().min(0),
+    max_advances:z.number().int().min(0),
 
-    species:
-    roamer: z.boolean(),
-    method4: z.boolean(),
   })
   .merge(pkmFilterSchema);
 
@@ -49,9 +53,23 @@ type FormState = z.infer<typeof Validator>;
 
 const getInitialValues = (game: Static3Game): FormState => {
   return {
+    species:getStatic3Species(game)[0],
+    tid:0,
+    sid:0,
+    allMaps:true,
+    maps:[],
+    allLeads:true,
+    vanillaLead,
+    allSynchronizeLeads,
+    synchronizeLeadNatures,
+    methods,
+    encounterTypes,
+    initial_advances,
+    max_advances,
+
     tid: 0,
     sid: 0,
-    species: getStatic3Species(game)[0],
+    species: ,
     roamer: false,
     method4: false,
     filter_shiny: false,

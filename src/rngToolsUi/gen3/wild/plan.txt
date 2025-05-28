@@ -1,10 +1,11 @@
 
-PR1: add searcher/generator backend
+PR1: add searcher/generator
+  todo: add back searcher tests
 
 
-add dummy data.
+PR2: add FindTarget UI with dummy data
 
-modify:
+PR3:
   add max size to PkFilter
   add hidden power
 

@@ -78,7 +78,7 @@ export const RsTidSearcher = () => {
 
       const updatedResults = results.map((res) => ({
         ...res,
-        offset: state.target.advance - res.advance,
+        offset: state.targetAdvance - res.advance,
       }));
 
       setResults(updatedResults);

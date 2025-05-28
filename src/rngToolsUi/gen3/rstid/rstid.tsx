@@ -6,16 +6,42 @@ import {
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
+  Button,
 } from "~/components";
 import React from "react";
 import { denormalizeIdFilter, IdFilterSchema } from "~/types/id";
 import { z } from "zod";
 import { useRsTidState } from "./rsTidState";
+import { useCurrentStep } from "~/components/stepper/state";
+
+type SelectButtonProps = {
+  targetAdvance: number;
+};
+
+const SelectButton = ({ targetAdvance }: SelectButtonProps) => {
+  const [, setCurrentStep] = useCurrentStep();
+  const [state, setState] = useRsTidState();
+  return (
+    <Button
+      trackerId="select_rs_tid_advance"
+      onClick={() => {
+        setState({ ...state, targetAdvance });
+        setCurrentStep((prev) => prev + 1);
+      }}
+    >
+      Select
+    </Button>
+  );
+};
 
 export type RsTidTarget = Gen3TidSidResult & { time: string; offset: number };
 
 const columns: ResultColumn<RsTidTarget>[] = [
-  { title: "Advance", dataIndex: "advance" },
+  {
+    title: "Select",
+    dataIndex: "advance",
+    render: (advance) => <SelectButton targetAdvance={advance} />,
+  },
   { title: "Est. Time", dataIndex: "time" },
   { title: "TID", dataIndex: "tid" },
   { title: "SID", dataIndex: "sid" },
@@ -69,7 +95,6 @@ const formatTime = (seconds: number): string => {
 };
 
 export const RsTidSidGenerator = () => {
-  const [, setState] = useRsTidState();
   const [results, setResults] = React.useState<RsTidTarget[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
@@ -92,13 +117,6 @@ export const RsTidSidGenerator = () => {
     setResults(updatedResults);
   }, []);
 
-  const onClickResultRow = React.useCallback(
-    (target: RsTidTarget) => {
-      setState((prev) => ({ ...prev, targetSet: true, target }));
-    },
-    [setState],
-  );
-
   return (
     <RngToolForm<FormState, RsTidTarget>
       fields={fields}
@@ -108,8 +126,6 @@ export const RsTidSidGenerator = () => {
       validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="generate_rs_tidsid"
-      onClickResultRow={onClickResultRow}
-      rowKey="advance"
     />
   );
 };

@@ -41,7 +41,6 @@ import { Glossary } from "~/pageComponents/glossary";
 import { EmeraldHeldEgg } from "~/rngToolsUi/gen3/emeraldHeldEgg";
 import { EmeraldPickupEgg } from "~/rngToolsUi/gen3/emeraldPickupEgg";
 import { Gen3TidSidGenerator } from "~/rngToolsUi/gen3/tidsid";
-import { RsTid } from "~/rngToolsUi/gen3/rstid/index";
 import { RsTidSidGenerator } from "~/rngToolsUi/gen3/rstid/rstid";
 import { RsTidTimer } from "~/rngToolsUi/gen3/rstid/timer";
 import { RsTidSearcher } from "~/rngToolsUi/gen3/rstid/searcher";
@@ -124,7 +123,6 @@ const tools = {
   Gen2Rng,
   Gen3Pokerus,
   Gen3Sid,
-  RsTid,
   RsTidSidGenerator,
   RsTidTimer,
   RsTidSearcher,

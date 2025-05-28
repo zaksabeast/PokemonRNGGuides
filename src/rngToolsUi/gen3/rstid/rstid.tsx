@@ -56,10 +56,6 @@ const fields: Field[] = [
     ),
   },
   {
-    label: "Offset",
-    input: <FormikNumberInput<FormState> name="offset" numType="decimal" />,
-  },
-  {
     label: "Filter",
     input: <FormikIdFilter<FormState> name="filter" optional />,
   },

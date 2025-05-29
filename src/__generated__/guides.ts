@@ -2640,7 +2640,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Retail TID.mdx",
       translations: null,
-      displayAttributes: [],
+      displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Retail TID.mdx"),

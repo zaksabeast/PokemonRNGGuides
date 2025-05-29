@@ -5,23 +5,29 @@ import {
   RngToolForm,
   RngToolSubmit,
   Field,
-  Button,
+  CalibrateTimerButton,
 } from "~/components";
 import { rngTools, Id4 } from "~/rngTools";
 import { denormalizeIdFilterOrDefault } from "~/types/id";
 import { z } from "zod";
-import { useId4State } from "./state";
+import { useId4State, idTimerAtom } from "./state";
 import { useCurrentStep } from "~/components/stepper/state";
+import { sortBy } from "lodash-es";
 
-const CalibrateButton = () => {
+type CalibrateButtonProps = {
+  hitDelay: number;
+};
+
+const CalibrateButton = ({ hitDelay }: CalibrateButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
   return (
-    <Button
+    <CalibrateTimerButton
+      type="gen4"
       trackerId="calibrate_gen4_id"
+      hitDelay={hitDelay}
+      timer={idTimerAtom}
       onClick={() => setCurrentStep((step) => step - 1)}
-    >
-      Calibrate
-    </Button>
+    />
   );
 };
 
@@ -29,7 +35,7 @@ const columns: ResultColumn<Id4>[] = [
   {
     title: "Calibrate",
     dataIndex: "seed",
-    render: () => <CalibrateButton />,
+    render: (_, target) => <CalibrateButton hitDelay={target.delay} />,
   },
   {
     title: "TID",
@@ -65,12 +71,12 @@ const initialValues: FormState = {
 
 const fields: Field[] = [
   {
-    label: "Tid Obtained",
+    label: "Obtained TID",
     input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
   },
 ];
 
-export const Id4Finder = () => {
+export const CalibrateId4 = () => {
   const [{ target }] = useId4State();
   const [results, setResults] = React.useState<Id4[]>([]);
 
@@ -96,7 +102,11 @@ export const Id4Finder = () => {
         }),
       });
 
-      setResults(results);
+      const sortedResults = sortBy(results, (result) =>
+        Math.abs(result.delay - targetDelay),
+      );
+
+      setResults(sortedResults);
     },
     [target],
   );

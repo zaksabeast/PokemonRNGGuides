@@ -7,42 +7,45 @@ category: "HeartGold and SoulSilver"
 tag: "retail"
 ---
 
-## Notes
-
-### Notes:
-
-- Delete save: select + b + up
-
-### Seed notes:
-
-- Even vs. odd delay (in tool, let people know they should adjust this)
-- HGSS needs timer -3 seconds
-- First timer: start or soft reset the game
-- Second timer: mountain scene (dppt), "I'll see you later!" (hgss)
-
-### Does 3ds need three timers?
-
-- First: set 3ds time
-- Second: soft reset the game
-- Third: a press
-
-<Stepper titles={["Pick a TID", "Hit Target", "Calibrate"]}>
+<Stepper titles={["Set up", "Pick a TID", "Hit Target", "Calibrate"]}>
 
 <Step step={0}>
 
-<Id4Searcher />
+1. Delete your save by pressing `Select + B + Up` on the title screen.
+2. Choose the game you're playing below.
+
+<Gen4IdSetup />
 
 </Step>
 
 <Step step={1}>
 
-<Id4Timer />
+<Id4Searcher />
 
 </Step>
 
 <Step step={2}>
 
-<Id4Finder />
+1. Set your console time to **<Id4ConsoleSetDateString />**
+2. Simultaneously press `A` to set the console time and start the timer below.
+3. Exit the settings on your console and restart your console.
+4. When the first timer ends, press `A` to start the game.
+5. Name your character as fast as possible, and get to the screen below.
+6. When the second timer ends, press `A`.
+
+<Id4Timer />
+
+</Step>
+
+<Step step={3}>
+
+1. Open your trainer card and check your TID.
+2. If it matches your target, congratulations! You RNG'd your TID!
+3. If not, type your TID into the box below and click "Generate".
+4. Click "Calibrate" on the TID with the closest delay to your target to adjust the timer.
+5. Try to hit your target again.
+
+<CalibrateId4 />
 
 </Step>
 

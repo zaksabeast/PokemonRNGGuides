@@ -7,6 +7,7 @@ import {
   FormikSelect,
   RngToolSubmit,
   Typography,
+  CalibrateTimerButton,
 } from "~/components";
 import {
   formatTrainerName,
@@ -29,7 +30,6 @@ import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
 import * as tst from "ts-toolbelt";
 import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
-import { CalibrateButton } from "./calibrateButton";
 import { Gen3Timer } from "~/components/gen3Timer";
 
 const timerAtom = createGen3TimerAtom();
@@ -54,7 +54,12 @@ const columns: ResultColumn<Result>[] = [
     title: "Calibrate",
     dataIndex: "advance",
     render: (_, result) => (
-      <CalibrateButton hitAdvance={result.advance} timer={timerAtom} />
+      <CalibrateTimerButton
+        type="gen3"
+        hitAdvance={result.advance}
+        timer={timerAtom}
+        trackerId="calibrate_retail_emerald_held_egg"
+      />
     ),
   },
   {

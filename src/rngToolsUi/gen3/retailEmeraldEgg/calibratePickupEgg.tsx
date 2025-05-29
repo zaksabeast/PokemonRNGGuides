@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  CalibrateTimerButton,
   Field,
   Flex,
   ResultColumn,
@@ -29,7 +30,6 @@ import pmap from "p-map";
 import { sortBy, startCase, mapValues } from "lodash-es";
 import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
 import { ivMethods } from "./constants";
-import { CalibrateButton } from "./calibrateButton";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
@@ -136,7 +136,12 @@ const columns: ResultColumn<Result>[] = [
     title: "Calibrate",
     dataIndex: "advance",
     render: (_, result) => (
-      <CalibrateButton hitAdvance={result.advance} timer={timerAtom} />
+      <CalibrateTimerButton
+        type="gen3"
+        hitAdvance={result.advance}
+        timer={timerAtom}
+        trackerId="calibrate_retail_emerald_pickup_egg"
+      />
     ),
   },
   {

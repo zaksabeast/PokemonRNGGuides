@@ -447,6 +447,30 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
   },
+  "/delete-pokemon-save/": {
+    meta: {
+      categories: ["GBA Tools", "NDS Tools", "3DS Tools", "Switch Tools"],
+      tags: ["any"],
+      isNew: false,
+      title: "How to delete Pokemon save files",
+      navDrawerTitle: "Delete Save Files",
+      description: "How to delete a Pokemon save file to start a new game.",
+      slug: "/delete-pokemon-save/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Tools and Emulators/Delete Save.mdx",
+      translations: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/Delete Save.mdx"),
+    ),
+  },
   "/desmume-setup/": {
     meta: {
       categories: ["NDS Tools"],
@@ -5860,6 +5884,7 @@ export const guideSlugs = [
   "/channel-jirachi/",
   "/citrarng-setup/",
   "/crystal/",
+  "/delete-pokemon-save/",
   "/desmume-setup/",
   "/diamond-pearl-and-platinum/",
   "/dppt-advance-rng/",

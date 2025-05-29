@@ -8,15 +8,19 @@ import {
   RngToolSubmit,
   Button,
 } from "~/components";
-import { rngTools, Egg3PickupState, Ivs, Gen3PickupMethod } from "~/rngTools";
+import { rngTools, Egg3PickupState, Gen3PickupMethod } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
 import {
   flattenIvs,
   FlattenIvs,
-  ivColumns,
+  inheritedIvColumns,
 } from "~/rngToolsUi/shared/ivColumns";
 import { z } from "zod";
-import { IvSchema } from "~/components/ivInput";
+import {
+  IvsSchema,
+  NullableIvs,
+  NullableIvsSchema,
+} from "~/components/ivInput";
 import { HexSchema } from "~/utils/number";
 import { usePickupEggState } from "./state";
 import { useCurrentStep } from "~/components/stepper/state";
@@ -29,14 +33,18 @@ type Result = FlattenIvs<
   Egg3PickupState & { method: Gen3PickupMethod; key: string }
 >;
 
-const SelectButton = ({ targetAdvance }: { targetAdvance: number }) => {
+const SelectButton = ({ result }: { result: Result }) => {
   const [, setCurrentStep] = useCurrentStep();
   const [, setPickupEggState] = usePickupEggState();
   return (
     <Button
       trackerId="select_retail_emerald_pickup_egg"
       onClick={() => {
-        setPickupEggState((prev) => ({ ...prev, targetAdvance }));
+        setPickupEggState((prev) => ({
+          ...prev,
+          targetAdvance: result.advance,
+          targetMethod: result.method,
+        }));
         setCurrentStep((prev) => prev + 1);
       }}
     >
@@ -49,7 +57,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Select",
     dataIndex: "advance",
-    render: (_, result) => <SelectButton targetAdvance={result.advance} />,
+    render: (_, result) => <SelectButton result={result} />,
   },
   { title: "Time", dataIndex: "advance", render: approximateGen3FrameTime },
   {
@@ -57,24 +65,22 @@ const columns: ResultColumn<Result>[] = [
     dataIndex: "method",
     render: (method) => startCase(method),
   },
-  ...ivColumns,
+  ...inheritedIvColumns,
 ];
 
 const Validator = z.object({
-  delay: z.number().int().min(0),
   seed: HexSchema(0xffffffff),
   initial_advances: z.number().int().min(0),
   max_advances: z.number().int().min(0),
-  parent1_ivs: IvSchema,
-  parent2_ivs: IvSchema,
-  filter_min_ivs: IvSchema,
-  filter_max_ivs: IvSchema,
+  parent1_ivs: NullableIvsSchema,
+  parent2_ivs: NullableIvsSchema,
+  filter_min_ivs: IvsSchema,
+  filter_max_ivs: IvsSchema,
 });
 
 export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  delay: 3,
   seed: 0,
   initial_advances: 1000,
   max_advances: 10000,
@@ -102,16 +108,12 @@ const fields: Field[] = [
     ),
   },
   {
-    label: "Delay",
-    input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
-  },
-  {
     label: "Parent 1 IVs",
-    input: <IvInput<FormState> name="parent1_ivs" />,
+    input: <IvInput<FormState, "nullable"> name="parent1_ivs" />,
   },
   {
     label: "Parent 2 IVs",
-    input: <IvInput<FormState> name="parent2_ivs" />,
+    input: <IvInput<FormState, "nullable"> name="parent2_ivs" />,
   },
   {
     label: "Egg min IVs",
@@ -129,12 +131,16 @@ export const RetailEmeraldPickupEgg = () => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const parentIvs: [Ivs, Ivs] = [opts.parent1_ivs, opts.parent2_ivs];
+      const parentIvs: [NullableIvs, NullableIvs] = [
+        opts.parent1_ivs,
+        opts.parent2_ivs,
+      ];
       const methodResults = await pmap(
         ivMethods,
         async (method) => {
           const spreads = await rngTools.emerald_egg_pickup_states({
             ...opts,
+            delay: 0,
             method,
             parent_ivs: parentIvs,
             lua_adjustment: true,

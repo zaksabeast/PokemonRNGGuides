@@ -5,7 +5,6 @@ import {
   Nature,
   Species,
   Compatability,
-  Ivs,
   Gen3PickupMethod,
 } from "~/rngTools";
 import { atomWithPersistence } from "~/state/localStorage";
@@ -13,6 +12,7 @@ import { maxIvs } from "~/types/ivs";
 import { z } from "zod";
 import { match } from "ts-pattern";
 import { startCase, last } from "lodash-es";
+import { NullableIvs } from "~/components/ivInput";
 
 // This is the order shown by the game
 const trainers = [
@@ -217,7 +217,7 @@ export type PickupEggState = {
   seed: number;
   targetAdvance: number;
   targetMethod: Gen3PickupMethod;
-  parentIvs: [Ivs, Ivs];
+  parentIvs: [NullableIvs, NullableIvs];
 };
 
 const initialPickupState: PickupEggState = {

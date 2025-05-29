@@ -141,7 +141,7 @@ type InnerProps = {
 const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const [state] = useHeldEggState();
   const firstFilter = React.useRef(true);
-  const [offsets, setOffsets] = React.useState<number[]>([]);
+  const [previousOffsets, setPreviousOffsets] = React.useState<number[]>([]);
   const [potentialEggs, setPotentialEggs] = React.useState<Result[]>([]);
   const [filters, setFilters] = React.useState<FormState>(initialValues);
 
@@ -226,7 +226,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       );
 
       if (!firstFilter.current) {
-        setOffsets(filteredEggs.map((egg) => egg.offset));
+        setPreviousOffsets(filteredEggs.map((egg) => egg.offset));
       }
 
       setFilters(opts);
@@ -263,7 +263,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       </Flex>
 
       <Typography.Text mv={0}>
-        Previous offsets: {offsets.join(", ")}
+        Previous offsets: {previousOffsets.join(", ")}
       </Typography.Text>
 
       <RngToolForm<FormState, Result>

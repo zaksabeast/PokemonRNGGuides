@@ -1,20 +1,62 @@
 import React from "react";
 import { Flex, ResultColumn, RngToolForm, Typography } from "~/components";
 import { PickupEggState, useHeldEggState, usePickupEggState } from "./state";
-import { rngTools, StatsValue, Gen3PickupMethod } from "~/rngTools";
+import {
+  rngTools,
+  StatsValue,
+  Gen3PickupMethod,
+  InheritedIv,
+  InheritedIvs,
+  Ivs,
+} from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
-import { ivColumns } from "~/rngToolsUi/shared/ivColumns";
+import { nullableIvColumns } from "~/rngToolsUi/shared/ivColumns";
 import { getGen3BaseStats } from "~/types/baseStats";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
 import { getGen3StatRange } from "~/rngToolsUi/gen3/utils/statRange";
 import { StatFields } from "~/components/statInput";
 import pmap from "p-map";
-import { sortBy, startCase } from "lodash-es";
+import { sortBy, startCase, mapValues } from "lodash-es";
 import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
 import { ivMethods } from "./constants";
 import { CalibrateButton } from "./calibrateButton";
 import { Gen3Timer } from "~/components/gen3Timer";
+import { match, P } from "ts-pattern";
+import { Nullable } from "~/types/utils";
+
+const hasKnownIv = (iv: InheritedIv): boolean => {
+  return match(iv)
+    .with({ Random: P.number }, () => true)
+    .with({ Parent1: P.number }, () => true)
+    .with({ Parent2: P.number }, () => true)
+    .with({ Parent1: undefined }, () => false)
+    .with({ Parent2: undefined }, () => false)
+    .exhaustive();
+};
+
+const normalizeInheritedIv = <T,>({
+  iv,
+  ivDefault,
+}: {
+  iv: InheritedIv;
+  ivDefault: T;
+}): number | T => {
+  return (
+    match(iv)
+      .with({ Random: P.number }, (matched) => matched.Random)
+      .with({ Parent1: P.number }, (matched) => matched.Parent1)
+      .with({ Parent2: P.number }, (matched) => matched.Parent2)
+      // Assume 31 if we don't know the parent ivs.
+      .with({ Parent1: undefined }, () => ivDefault)
+      .with({ Parent2: undefined }, () => ivDefault)
+      .exhaustive()
+  );
+};
+
+const normalizeInheritedIvs = (ivs: InheritedIvs): Ivs => {
+  return mapValues(ivs, (iv) => normalizeInheritedIv({ iv, ivDefault: 31 }));
+};
 
 const timerAtom = createGen3TimerAtom();
 
@@ -23,7 +65,8 @@ type Result = {
   offset: number;
   method: Gen3PickupMethod;
   key: string;
-} & StatsValue;
+  ivs: InheritedIvs;
+} & Nullable<StatsValue>;
 
 const getOffsetSymbol = (offset: number) => {
   if (offset > 0) {
@@ -53,7 +96,7 @@ const columns: ResultColumn<Result>[] = [
     dataIndex: "method",
     render: (method) => startCase(method),
   },
-  ...ivColumns,
+  ...nullableIvColumns,
 ];
 
 const getPotentialEggs = async (state: PickupEggState) => {
@@ -127,7 +170,7 @@ export const CalibratePickupEgg = () => {
           baseStats,
           5,
           targetNature,
-          result.ivs,
+          normalizeInheritedIvs(result.ivs),
           { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
         );
         return {
@@ -135,7 +178,13 @@ export const CalibratePickupEgg = () => {
           advance: result.advance,
           offset: result.advance - targetAdvance,
           method: result.method,
-          ...stats,
+          ivs: result.ivs,
+          hp: hasKnownIv(result.ivs.hp) ? stats.hp : null,
+          atk: hasKnownIv(result.ivs.atk) ? stats.atk : null,
+          def: hasKnownIv(result.ivs.def) ? stats.def : null,
+          spa: hasKnownIv(result.ivs.spa) ? stats.spa : null,
+          spd: hasKnownIv(result.ivs.spd) ? stats.spd : null,
+          spe: hasKnownIv(result.ivs.spe) ? stats.spe : null,
         };
       });
 
@@ -151,20 +200,18 @@ export const CalibratePickupEgg = () => {
     [minMaxStats],
   );
 
-  const dataSource = React.useMemo(
-    () =>
-      potentialEggs.filter((result) => {
-        return (
-          result.hp === filters.hpStat &&
-          result.atk === filters.atkStat &&
-          result.def === filters.defStat &&
-          result.spa === filters.spaStat &&
-          result.spd === filters.spdStat &&
-          result.spe === filters.speStat
-        );
-      }),
-    [potentialEggs, filters],
-  );
+  const dataSource = React.useMemo(() => {
+    return potentialEggs.filter((result) => {
+      return (
+        (result.hp === filters.hpStat || !hasKnownIv(result.ivs.hp)) &&
+        (result.atk === filters.atkStat || !hasKnownIv(result.ivs.atk)) &&
+        (result.def === filters.defStat || !hasKnownIv(result.ivs.def)) &&
+        (result.spa === filters.spaStat || !hasKnownIv(result.ivs.spa)) &&
+        (result.spd === filters.spdStat || !hasKnownIv(result.ivs.spd)) &&
+        (result.spe === filters.speStat || !hasKnownIv(result.ivs.spe))
+      );
+    });
+  }, [potentialEggs, filters]);
 
   const onSubmit = React.useCallback(
     async (opts: FormState) => setFilters(opts),
@@ -178,13 +225,27 @@ export const CalibratePickupEgg = () => {
     target == null
       ? "Unknown"
       : [
-          target.hp,
-          target.atk,
-          target.def,
-          target.spa,
-          target.spd,
-          target.spe,
+          target.hp ?? "?",
+          target.atk ?? "?",
+          target.def ?? "?",
+          target.spa ?? "?",
+          target.spd ?? "?",
+          target.spe ?? "?",
         ].join(" / ");
+
+  const targetIvs =
+    target == null
+      ? null
+      : [
+          target.ivs.hp,
+          target.ivs.atk,
+          target.ivs.def,
+          target.ivs.spa,
+          target.ivs.spd,
+          target.ivs.spe,
+        ]
+          .map((iv) => normalizeInheritedIv({ iv, ivDefault: "?" }))
+          .join(" / ");
 
   return (
     <Flex vertical gap={16} width="100%">
@@ -197,6 +258,9 @@ export const CalibratePickupEgg = () => {
         </Typography.Title>
         <Typography.Title level={5} mv={0}>
           Target Stats: {targetStats}
+        </Typography.Title>
+        <Typography.Title level={5} mv={0}>
+          Target IVs: {targetIvs}
         </Typography.Title>
       </Flex>
 

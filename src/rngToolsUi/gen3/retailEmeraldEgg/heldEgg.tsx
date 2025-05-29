@@ -24,7 +24,7 @@ import { toOptions } from "~/utils/options";
 import { match } from "ts-pattern";
 import { approximateGen3FrameTime } from "~/utils/approximateGen3FrameTime";
 
-type Result = Gen3HeldEgg;
+type Result = Gen3HeldEgg & { key: string; time: string };
 
 type SelectButtonProps = {
   result: Result;
@@ -61,9 +61,12 @@ const columns: ResultColumn<Result>[] = [
     render: (_, result) => <SelectButton result={result} />,
   },
   {
-    title: "Time",
+    title: "advance",
     dataIndex: "advance",
-    render: approximateGen3FrameTime,
+  },
+  {
+    title: "Time",
+    dataIndex: "time",
   },
   {
     title: "Shiny",
@@ -249,7 +252,13 @@ const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
         },
       });
 
-      setResults(results);
+      setResults(
+        results.map((result) => ({
+          ...result,
+          time: approximateGen3FrameTime(result.advance),
+          key: `${result.advance}-${result.pid}`,
+        })),
+      );
 
       setState((prev) => ({ ...prev, eggSettings: opts }));
     },
@@ -266,7 +275,7 @@ const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
       onSubmit={onSubmit}
       formContainerId="retail_emerald_held_egg_form"
       submitTrackerId="generate_retail_emerald_held_egg"
-      rowKey="advance"
+      rowKey="key"
     />
   );
 };

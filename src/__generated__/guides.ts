@@ -2621,6 +2621,31 @@ export const guides = {
         ),
     ),
   },
+  "/hgss-tid-sid/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["retail"],
+      isNew: false,
+      title: "HeartGold and SoulSilver TID/SID RNG",
+      navDrawerTitle: "TID/SID RNG",
+      description:
+        "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo on Retail in HeartGold and SoulSilver.",
+      slug: "/hgss-tid-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Gen 4/HeartGold and SoulSilver/Retail TID.mdx",
+      translations: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Retail TID.mdx"),
+    ),
+  },
   "/install-capturesight/": {
     meta: {
       categories: ["Switch Tools"],
@@ -6148,6 +6173,7 @@ export const guideSlugs = [
   "/hgss-cute-charm/",
   "/hgss-initial-seed/",
   "/hgss-rng-advance/",
+  "/hgss-tid-sid/",
   "/install-capturesight/",
   "/install-pokereader-emu/",
   "/install-pokereader/",

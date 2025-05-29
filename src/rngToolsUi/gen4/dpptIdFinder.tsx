@@ -41,6 +41,10 @@ const columns: ResultColumn<Id4>[] = [
     title: "Delay",
     dataIndex: "delay",
   },
+  {
+    title: "Seconds",
+    dataIndex: "seconds",
+  },
 ];
 
 const Validator = z.object({
@@ -110,7 +114,7 @@ export const DpptIdFinder = () => {
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
-      submitTrackerId="generate_oras_id"
+      submitTrackerId="generate_dppt_id"
     />
   );
 };

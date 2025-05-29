@@ -13,19 +13,47 @@ import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
 import { z } from "zod";
 import { useId4State } from "./state";
 import { useCurrentStep } from "~/components/stepper/state";
+import { range } from "lodash-es";
+import pMap from "p-map";
+import { useFormikContext } from "formik";
 
 type SelectButtonProps = {
   target: Id4;
 };
 
 const SelectButton = ({ target }: SelectButtonProps) => {
+  const { values } = useFormikContext<FormState>();
   const [, setState] = useId4State();
   const [, setCurrentStep] = useCurrentStep();
   return (
     <Button
       trackerId="select_id4_target"
-      onClick={() => {
-        setState((state) => ({ ...state, target }));
+      onClick={async () => {
+        const months = range(1, 12);
+        const dates = (
+          await pMap(
+            months,
+            async (month) => {
+              return await rngTools.dppt_calculate_seedtime({
+                seed: target.seed,
+                forced_second: null,
+                year: values.year,
+                month,
+              });
+            },
+            { concurrency: 12 },
+          )
+        ).flat();
+
+        if (dates.length === 0) {
+          // todo: show error
+          return;
+        }
+
+        setState((state) => ({
+          ...state,
+          target: { id: target, dateTime: dates[0] },
+        }));
         setCurrentStep((step) => step + 1);
       }}
     >
@@ -59,7 +87,7 @@ const columns: ResultColumn<Id4>[] = [
 ];
 
 const Validator = z.object({
-  year: z.number().int().min(2000),
+  year: z.number().int().min(2000).max(2100),
   min_delay: z.number().int().min(0),
   max_delay: z.number().int().min(0),
   filter: IdFilterSchema,

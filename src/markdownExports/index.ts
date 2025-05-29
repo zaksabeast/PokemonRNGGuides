@@ -75,6 +75,7 @@ import {
 } from "~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg";
 import { withTags } from "~/components/tagDetector/provider";
 import { mapValues } from "lodash-es";
+import { Id4Timer } from "~/rngToolsUi/gen4/id/timer";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -139,6 +140,7 @@ const tools = {
   DpptSeed,
   Id4Finder,
   Id4Searcher,
+  Id4Timer,
   XyPokeRadar,
   ShinyHoennStarter,
   GenerateHoennTidSid,

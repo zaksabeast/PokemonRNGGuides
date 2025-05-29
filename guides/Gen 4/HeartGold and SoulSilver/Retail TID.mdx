@@ -26,7 +26,7 @@ tag: "retail"
 - Second: soft reset the game
 - Third: a press
 
-<Stepper titles={["Pick a TID", "Calibrate"]}>
+<Stepper titles={["Pick a TID", "Hit Target", "Calibrate"]}>
 
 <Step step={0}>
 
@@ -35,6 +35,12 @@ tag: "retail"
 </Step>
 
 <Step step={1}>
+
+<Id4Timer />
+
+</Step>
+
+<Step step={2}>
 
 <Id4Finder />
 

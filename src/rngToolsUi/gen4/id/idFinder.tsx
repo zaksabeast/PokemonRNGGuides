@@ -5,25 +5,31 @@ import {
   RngToolForm,
   RngToolSubmit,
   Field,
+  Button,
 } from "~/components";
 import { rngTools, Id4 } from "~/rngTools";
 import { denormalizeIdFilterOrDefault } from "~/types/id";
-import { FormikDatePicker, FormikTimePicker } from "~/components/datePicker";
-import {
-  addRngTime,
-  rngDate,
-  RngDateSchema,
-  rngTime,
-  RngTimeSchema,
-} from "~/utils/time";
 import { z } from "zod";
+import { useId4State } from "./state";
+import { useCurrentStep } from "~/components/stepper/state";
+
+const CalibrateButton = () => {
+  const [, setCurrentStep] = useCurrentStep();
+  return (
+    <Button
+      trackerId="calibrate_gen4_id"
+      onClick={() => setCurrentStep((step) => step - 1)}
+    >
+      Calibrate
+    </Button>
+  );
+};
 
 const columns: ResultColumn<Id4>[] = [
   {
-    title: "Seed",
+    title: "Calibrate",
     dataIndex: "seed",
-    monospace: true,
-    render: (seed: number) => seed.toString(16).toUpperCase().padStart(8, "0"),
+    render: () => <CalibrateButton />,
   },
   {
     title: "TID",
@@ -49,20 +55,12 @@ const columns: ResultColumn<Id4>[] = [
 
 const Validator = z.object({
   tid: z.number().int().min(0).max(65535),
-  date: RngDateSchema,
-  time: RngTimeSchema,
-  minDelay: z.number().int().min(0),
-  maxDelay: z.number().int().min(0),
 });
 
 type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   tid: 0,
-  date: rngDate(),
-  time: rngTime(),
-  minDelay: 5000,
-  maxDelay: 6000,
 };
 
 const fields: Field[] = [
@@ -70,41 +68,38 @@ const fields: Field[] = [
     label: "Tid Obtained",
     input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
   },
-  {
-    label: "Date",
-    input: <FormikDatePicker<FormState> name="date" />,
-  },
-  {
-    label: "Time",
-    input: <FormikTimePicker<FormState> name="time" />,
-  },
-  {
-    label: "Min Delay",
-    input: <FormikNumberInput<FormState> name="minDelay" numType="decimal" />,
-  },
-  {
-    label: "Max Delay",
-    input: <FormikNumberInput<FormState> name="maxDelay" numType="decimal" />,
-  },
 ];
 
 export const Id4Finder = () => {
+  const [{ target }] = useId4State();
   const [results, setResults] = React.useState<Id4[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const results = await rngTools.generate_dppt_ids({
-      datetime: addRngTime(opts.date, opts.time),
-      min_delay: opts.minDelay,
-      max_delay: opts.maxDelay,
-      filter: denormalizeIdFilterOrDefault({
-        type: "tid",
-        value0: opts.tid,
-        value1: null,
-      }),
-    });
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
+    async (opts) => {
+      if (target == null) {
+        return;
+      }
 
-    setResults(results);
-  }, []);
+      const { datetime: targetDateTime, delay: targetDelay } = target.dateTime;
+
+      const minDelay = targetDelay - 1000;
+      const maxDelay = targetDelay + 1000;
+
+      const results = await rngTools.generate_dppt_ids({
+        datetime: targetDateTime,
+        min_delay: minDelay,
+        max_delay: maxDelay,
+        filter: denormalizeIdFilterOrDefault({
+          type: "tid",
+          value0: opts.tid,
+          value1: null,
+        }),
+      });
+
+      setResults(results);
+    },
+    [target],
+  );
 
   return (
     <RngToolForm<FormState, Id4>

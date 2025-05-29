@@ -22,9 +22,9 @@ import { match } from "ts-pattern";
 import { z } from "zod";
 import { getPkmFilterFields, pkmFilterSchema } from "~/components/pkmFilter";
 
-const JirachiSaveErrorSchema: z.Schema<JirachiSaveError> = z.enum([
-  "InvalidSave",
-  "NeedToSaveAgain",
+const JirachiSaveErrorSchema: z.Schema<JirachiSaveError> = z.union([
+  z.literal("NeedToSaveAgain"),
+  z.object({ InvalidSave: z.enum(["InvalidLength", "InvalidMagic"]) }),
 ]);
 
 type Result = tst.O.MergeAll<
@@ -137,7 +137,14 @@ export const MultibootJirachi = ({ jirachi }: Props) => {
 
         const message = match(parsedError)
           .with({ success: false }, () => "Unknown error!")
-          .with({ data: "InvalidSave" }, () => "Invalid save!")
+          .with(
+            { data: { InvalidSave: "InvalidLength" } },
+            () => "Invalid save length!",
+          )
+          .with(
+            { data: { InvalidSave: "InvalidMagic" } },
+            () => "Invalid save (magic)!",
+          )
           .with({ data: "NeedToSaveAgain" }, () => "Need to save again!")
           .exhaustive();
 

@@ -6,17 +6,39 @@ import {
   RngToolSubmit,
   Field,
   FormikIdFilter,
+  Button,
 } from "~/components";
 import { rngTools, Id4 } from "~/rngTools";
 import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
 import { z } from "zod";
+import { useId4State } from "./state";
+import { useCurrentStep } from "~/components/stepper/state";
+
+type SelectButtonProps = {
+  target: Id4;
+};
+
+const SelectButton = ({ target }: SelectButtonProps) => {
+  const [, setState] = useId4State();
+  const [, setCurrentStep] = useCurrentStep();
+  return (
+    <Button
+      trackerId="select_id4_target"
+      onClick={() => {
+        setState((state) => ({ ...state, target }));
+        setCurrentStep((step) => step + 1);
+      }}
+    >
+      Select
+    </Button>
+  );
+};
 
 const columns: ResultColumn<Id4>[] = [
   {
-    title: "Seed",
+    title: "Select",
     dataIndex: "seed",
-    monospace: true,
-    render: (seed) => seed.toString(16).toUpperCase().padStart(8, "0"),
+    render: (_, target) => <SelectButton target={target} />,
   },
   {
     title: "TID",
@@ -48,7 +70,7 @@ type FormState = z.infer<typeof Validator>;
 const initialValues: FormState = {
   year: 2000,
   min_delay: 5000,
-  max_delay: 6000,
+  max_delay: 5200,
   filter: {
     type: "tid",
     value0: 0,
@@ -75,7 +97,7 @@ const fields: Field[] = [
   },
 ];
 
-export const DpptIdSearcher = () => {
+export const Id4Searcher = () => {
   const [results, setResults] = React.useState<Id4[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {

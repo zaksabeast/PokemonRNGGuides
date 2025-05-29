@@ -88,7 +88,7 @@ const fields: Field[] = [
   },
 ];
 
-export const DpptIdFinder = () => {
+export const Id4Finder = () => {
   const [results, setResults] = React.useState<Id4[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {

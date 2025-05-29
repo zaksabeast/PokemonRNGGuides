@@ -46,6 +46,9 @@ impl EncounterSlot {
             (Slot11, 100),
         ]
     }
+    pub fn slot_id(&self) -> u8 {
+        *self as u8
+    }
 }
 
 impl EncounterSlot {

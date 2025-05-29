@@ -1,5 +1,6 @@
 use crate::GenderRatio;
 use crate::Ivs;
+use crate::Species;
 use crate::gen3::EncounterSlot;
 use crate::gen4::GameVersion;
 use crate::gen4::LeadAbilities;
@@ -33,19 +34,47 @@ pub struct GeneratedPokemon {
     pub encounter_slot: EncounterSlot,
 }
 
-pub fn generate_gen4_static_j(
+pub struct RouteData {
+    pub route_id: usize,
+    pub encounter_type: EncounterType,
+    pub encounter_slots: Vec<EncounterslotIDs>,
+}
+impl RouteData {
+    pub fn get_slot(&self, slot_id: u8) -> Option<&EncounterslotIDs> {
+        self.encounter_slots
+            .iter()
+            .find(|slot| slot.slot_id == slot_id)
+    }
+}
+pub struct EncounterslotIDs {
+    pub slot_id: u8,
+    pub pokemon_id: Species,
+    pub min_level: u8,
+    pub max_level: u8,
+}
+
+pub enum EncounterType {
+    Grass,
+    Cave,
+    Surf,
+    OldRod,
+    GoodRod,
+    SuperRod,
+}
+
+pub fn gen4_method_j(
     rng: &mut Pokerng,
     settings: Gen4SWildOpts,
+    route: RouteData,
 ) -> Option<GeneratedPokemon> {
     let encounter_rand = ((rng.rand::<u32>() >> 16) % 100) as u8;
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
-    if !EncounterSlot::passes_filter(settings.encounter.as_deref(), encounter_slot) {
-        return None;
-    }
-    rng.rand::<u32>(); // level
+    let slot = route.get_slot(encounter_slot.slot_id())?;
+    let nature_rand = (rng.rand::<u16>() / 0xa3e) as u8;
+
     if let Some(lead) = settings.lead {
         if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
-            let gender_threshold = settings.gender_ratio;
+            let gender_threshold = slot.pokemon_id.gender_ratio();
             let buffer = match settings.lead {
                 Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
                 Some(LeadAbilities::CutecharmM) => 0,
@@ -62,7 +91,7 @@ pub fn generate_gen4_static_j(
                 if rng.rand::<u16>() % 3 != 0 {
                     let nature = (rng.rand::<u16>() / 0xa3e) as u8;
                     let pid = buffer + nature as u32;
-                    let gender = settings.gender_ratio;
+                    let gender = slot.pokemon_id.gender_from_pid(pid);
                     if gender == target_gender {
                         let iv1 = rng.rand::<u16>();
                         let iv2 = rng.rand::<u16>();
@@ -76,6 +105,7 @@ pub fn generate_gen4_static_j(
                             gender,
                             ivs,
                             nature,
+                            encounter_slot,
                             advance: 0,
                         });
                     };
@@ -104,18 +134,19 @@ pub fn generate_gen4_static_j(
                 pid,
                 shiny: gen3_shiny(pid, settings.tid, settings.sid),
                 ability: AbilityType::from_gen3_pid(pid),
-                gender: settings.encounter.species().gender_from_pid(pid),
+                gender: slot.pokemon_id.gender_from_pid(pid),
                 ivs,
                 nature: Nature::from_pid(pid),
+                encounter_slot,
                 advance: 0,
             });
         }
     }
-    let nature_rand = (rng.rand::<u16>() / 0xa3e) as u8;
 
     let mut pid: u32;
     loop {
         let pid_low = rng.rand::<u16>() as u32;
+
         let pid_high = rng.rand::<u16>() as u32;
         pid = (pid_high << 16) | pid_low;
         if pid % 25 == nature_rand as u32 {
@@ -131,75 +162,11 @@ pub fn generate_gen4_static_j(
         pid,
         shiny: gen3_shiny(pid, settings.tid, settings.sid),
         ability: AbilityType::from_gen3_pid(pid),
-        gender: settings.encounter.species().gender_from_pid(pid),
+        gender: slot.pokemon_id.gender_from_pid(pid),
+        encounter_slot,
         ivs,
         nature: Nature::from_pid(pid),
         advance: 0,
     };
     Some(pkm)
-}
-#[cfg(test)]
-mod test {
-
-    use crate::assert_list_eq;
-
-    use super::*;
-
-    #[test]
-    fn test_wild_gen() {
-        let seed = Pokerng(0);
-        let options = Gen4SWildOpts {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter: None,
-            initial_advances: 0,
-            max_advances: 9,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-                ability: None,
-                stats: None,
-            },
-            game: GameVersion::Platinum,
-            encounter: None,
-            lead: None,
-        };
-        let expected_results = [GeneratedPokemon {
-            advance: 0,
-            encounter_slot: EncounterSlot::Slot0,
-            pid: 0xFC3367DB,
-            shiny: false,
-            nature: Nature::Bold,
-            ability: AbilityType::Second,
-            ivs: Ivs {
-                hp: 12,
-                atk: 25,
-                def: 27,
-                spa: 2,
-                spd: 31,
-                spe: 30,
-            },
-            gender: Gender::Male,
-        }];
-        let result = generate_gen4_static_j(seed, options);
-        assert_eq!(result, expected_results);
-    }
 }

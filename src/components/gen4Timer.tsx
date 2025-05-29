@@ -20,6 +20,8 @@ export const Gen4Timer = ({
   React.useEffect(() => {
     initTimer({
       min_time_ms: 14000,
+      calibrated_delay: 600,
+      calibrated_second: 14,
       target_delay: targetDelay,
       target_second: targetSecond,
     });

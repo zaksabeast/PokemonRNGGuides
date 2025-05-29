@@ -4580,7 +4580,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Transporter/Transporter with Offline Patch.mdx",
       translations: null,
-      displayAttributes: [],
+      displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
       () =>

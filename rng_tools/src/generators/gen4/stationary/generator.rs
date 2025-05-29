@@ -267,7 +267,7 @@ pub fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
 }
 
 pub fn generate_4statics(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Option<Gen4SPokemon> {
-    let encounter = opts.encounter.clone();
+    let encounter = opts.encounter;
     let species = encounter.species();
     match opts.game {
         Some(GameVersion::Diamond) | Some(GameVersion::Pearl) | Some(GameVersion::Platinum) => {

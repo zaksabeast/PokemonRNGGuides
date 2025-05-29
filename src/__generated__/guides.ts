@@ -4558,7 +4558,7 @@ export const guides = {
   },
   "/zh-emulator-hgss-cute-charm/": {
     meta: {
-      categories: ["Diamond, Pearl, and Platinum"],
+      categories: ["HeartGold and SoulSilver"],
       title: "迷人之躯乱数",
       navDrawerTitle: "迷人之躯乱数",
       description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",

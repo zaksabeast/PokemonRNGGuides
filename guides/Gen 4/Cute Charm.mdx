@@ -30,7 +30,7 @@
 - title: "迷人之躯乱数"
   description: "如何通过ID乱数与迷人之躯进行高效的异色捕获"
   slug: "zh-emulator-hgss-cute-charm"
-  category: "Diamond, Pearl, and Platinum"
+  category: "HeartGold and SoulSilver"
   tag: "emu"
   translation:
     enSlug: "hgss-cute-charm"
@@ -164,25 +164,31 @@ For example, if you want a shiny male adamant Machop, which is 75% male, check t
 
 <ShowIf slugs={["/zh-emulator-hgss-cute-charm", "/zh-emulator-dppt-cute-charm"]}>
 
-## 所需工具
+## 工具
 
 - [PokeFinder](/pokefinder)
-- 适用于 [Desmume](/desmume-setup) 进行乱数操作的工具
-- 一只迷人之躯特性的首发宝可梦
+- 一只特性的引诱娃娃作为首发宝可梦
 
 ## 介绍
 
-本指南讲解了如何通过乱数使迷人之躯具有更快捕捉异色宝可梦的效果。要求对第四世代乱数操作有一定了解，包括初始种子和ID乱数。
+当你用RNG获得特定的TID/SID组合时，引诱娃娃特性能大幅提升遇到闪光宝可梦的概率。
+
+本指南讲解了如何通过乱数使迷人之躯具有更快捕捉异色宝可梦的效果。需要你了解第四世代的乱数操作，包括初始种子和ID乱数。
 
 ## PID组合
 
 当通过乱数操控获得特定TID/SID组合时，迷人之躯特性可大幅提升遭遇异色宝可梦的概率。
 
-使用时需根据目标宝可梦的性别比例、性格需求选择对应PID组合。注意该特性对以下情况无效： 通过方式1生成的宝可梦，无性别的宝可梦，固定是雌性或雄性的宝可梦
+使用时需根据目标宝可梦的性别比例、性格需求选择对应PID组合。注意：该特性对以下宝可梦无效：方式1生成的宝可梦、无性别宝可梦、性别固定的宝可梦（只能是雄或雌）。
 
-如果目标是异色雌性，仅需要考虑想要的性格。 如果目标是异色雄性，则需要根据其性别比例（如妙蛙种子的 82.5% 雄性 / 17.5% 雌性）来选择相应的性格组。
+如果目标是异色雌性，只需考虑性格。 如果目标是异色雄性，则需要根据其性别比例（如妙蛙种子的 82.5% 雄性 / 17.5% 雌性）来选择相应的性格组。
 
-### 首发为雄性迷人之躯宝可梦 (目标: 异色雌性宝可梦, 无视性别比例)
+<details>
+<summary><b>
+
+首发为雄性迷人之躯宝可梦 (目标: 异色雌性宝可梦, 无视性别比例)
+
+</b></summary>
 
 | PID Group 1     | PID Group 2   | PID Group 3     | PID Group 4   |
 | --------------- | ------------- | --------------- | ------------- |
@@ -195,7 +201,10 @@ For example, if you want a shiny male adamant Machop, which is 75% male, check t
 | 00000006 坦率   | 0000000E 天真 | 00000016 自大   |               |
 | 00000007 悠闲   | 0000000F 内敛 | 00000017 慎重   |               |
 
-### 首发为雌性迷人之躯宝可梦 (目标: 异色雄性, 87.5%)
+</details>
+
+<details>
+<summary><b>首发为雌性迷人之躯宝可梦 (目标: 异色雄性, 87.5%)</b></summary>
 
 | PID Group 1     | PID Group 2   | PID Group 3     | PID Group 4   |
 | --------------- | ------------- | --------------- | ------------- |
@@ -208,7 +217,9 @@ For example, if you want a shiny male adamant Machop, which is 75% male, check t
 |                 | 0000003E 认真 | 00000046 温和   |               |
 |                 | 0000003F 爽朗 | 00000047 温顺   |               |
 
-### 首发为雌性迷人之躯宝可梦 (目标: 异色雄性, 75%)
+</details>
+<details>
+<summary><b>首发为雌性迷人之躯宝可梦 (目标: 异色雄性, 75%)</b></summary>
 
 | PID Group 1     | PID Group 2   | PID Group 3     | PID Group 4   |
 | --------------- | ------------- | --------------- | ------------- |
@@ -221,7 +232,10 @@ For example, if you want a shiny male adamant Machop, which is 75% male, check t
 |                 | 00000056 急躁 | 0000005E 马虎   |               |
 |                 | 00000057 认真 | 0000005F 温和   |               |
 
-### 首发为雌性迷人之躯宝可梦 (目标: 异色雄性, 50%)
+</details>
+
+<details>
+<summary><b>首发为雌性迷人之躯宝可梦 (目标: 异色雄性, 50%)</b></summary>
 
 | PID 组合 1      | PID 组合 2    | PID 组合 3      | PID 组合 4    |
 | --------------- | ------------- | --------------- | ------------- |
@@ -234,7 +248,9 @@ For example, if you want a shiny male adamant Machop, which is 75% male, check t
 |                 | 0000009E 淘气 | 000000A6 慢吞吞 | 000000AE 浮躁 |
 |                 | 0000009F 乐天 | 000000A7 冷静   |               |
 
-### 首发为雌性迷人之躯宝可梦 (目标: 异色雄性, 25%)
+</details>
+<details>
+<summary><b>首发为雌性迷人之躯宝可梦 (目标: 异色雄性, 25%)</b></summary>
 
 | PID 组合 1      | PID 组合 2    | PID 组合 3      | PID 组合 4    |
 | --------------- | ------------- | --------------- | ------------- |
@@ -247,20 +263,17 @@ For example, if you want a shiny male adamant Machop, which is 75% male, check t
 | 000000CE 坦率   | 000000D6 天真 | 000000DE 自大   |               |
 | 000000CF 悠闲   | 000000D7 内敛 | 000000DF 慎重   |               |
 
+</details>
 ## 乱数流程
 
-如果你需要捕捉异色雄性固执性格腕力（性别比 75%），可以参考第三张表。在PID组合1中，查找与固执对应的 PID 0000004E，然后进行 TID/SID 乱数以匹配该组合。
+如果你需要捕捉异色雄性固执性格腕力（性别比 75%），可以参考第三张表。在PID组合1中，查找与固执对应的 PID 0000004E，然后用TID/SID乱数来匹配这个组合。
 
-1. 使用 PokeFinder 和 Pandora’s Box 计算适合的 TID/SID，以获得目标PID组合。
-2. 新开存档进行ID乱数
-3. 推进游戏进度直到能够捕获具有迷人之躯特性的宝可梦。
-4. 前往目标宝可梦所在区域（比如腕力）
-5. 使用 PokeFinder 计算想要的异色宝可梦，并将迷人之躯特性的宝可梦在队伍首位。
-6. 乱数然后遭遇这只异色宝可梦
-
-```
-迷人之躯特性在捕捉野生异色宝可梦和通过乱数获取TID/SID以匹配特定PID的时候非常有用。需要注意的是，当使用携带迷人之躯的雌性宝可梦作为首发宝可梦捕捉野生异色宝可梦时，目标宝可梦的性别比例会直接影响异色概率。
-```
+1. 使用PokeFinder的TID/SID搜索器找一个能让你目标性格和性别变闪的组合
+2. 用常规方法RNG这个TID/SID
+3. 把目标宝可梦所在位置的遇敌PID（Encounter Slot）列出来
+4. 确保你首发带有引诱娃娃的宝可梦（性别需为♂或♀，取决于你目标闪光性别）
+5. 使用引诱娃娃闪光表去找PID。挑一个能遇到目标宝可梦的PID
+6. 用常规方法RNG这个PID
 
 ## 特别鸣谢
 

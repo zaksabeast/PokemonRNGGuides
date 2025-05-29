@@ -75,7 +75,7 @@ pub fn gen3_tidsid_states(opts: &Gen3TidSidOptions) -> Vec<Gen3TidSidResult> {
         Gen3TidSidVersionOptions::Rs(ver_opts) => {
             let seed = match ver_opts {
                 RsTidSidOptions::Seed(seed) => *seed,
-                RsTidSidOptions::DeadBattery => 0x5a6,
+                RsTidSidOptions::DeadBattery => 0x5a0,
                 RsTidSidOptions::DateTime(datetime) => calc_seed(datetime).unwrap_or_default(),
             };
             StateIterator::new(Pokerng::new(seed as u32))
@@ -377,6 +377,82 @@ mod test {
                 tid: 64606,
                 sid: 61228,
                 tsv: 622,
+            },
+        ];
+
+        assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn rs_dead_battery() {
+        let opts = Gen3TidSidOptions {
+            version_options: Gen3TidSidVersionOptions::Rs(RsTidSidOptions::DeadBattery),
+            offset: 0,
+            initial_advances: 0,
+            max_advances: 9,
+            filter: None,
+        };
+        let results = gen3_tidsid_states(&opts);
+        let expected = [
+            Gen3TidSidResult {
+                advance: 0,
+                tid: 48163,
+                sid: 64377,
+                tsv: 2283,
+            },
+            Gen3TidSidResult {
+                advance: 1,
+                tid: 5558,
+                sid: 48163,
+                tsv: 5426,
+            },
+            Gen3TidSidResult {
+                advance: 2,
+                tid: 5691,
+                sid: 5558,
+                tsv: 113,
+            },
+            Gen3TidSidResult {
+                advance: 3,
+                tid: 63864,
+                sid: 5691,
+                tsv: 7656,
+            },
+            Gen3TidSidResult {
+                advance: 4,
+                tid: 39483,
+                sid: 63864,
+                tsv: 3176,
+            },
+            Gen3TidSidResult {
+                advance: 5,
+                tid: 48056,
+                sid: 39483,
+                tsv: 1072,
+            },
+            Gen3TidSidResult {
+                advance: 6,
+                tid: 42978,
+                sid: 48056,
+                tsv: 907,
+            },
+            Gen3TidSidResult {
+                advance: 7,
+                tid: 56007,
+                sid: 42978,
+                tsv: 4004,
+            },
+            Gen3TidSidResult {
+                advance: 8,
+                tid: 61120,
+                sid: 56007,
+                tsv: 1664,
+            },
+            Gen3TidSidResult {
+                advance: 9,
+                tid: 64341,
+                sid: 61120,
+                tsv: 690,
             },
         ];
 

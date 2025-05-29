@@ -55,7 +55,7 @@ impl PkmState for Gen4SPokemon {
     }
 }
 
-pub fn generate_gen4_static(rng: &mut Pokerng, settings: Gen4StaticOpts) -> Option<Gen4SPokemon> {
+pub fn generate_gen4_static(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4SPokemon> {
     let pid_low = rng.rand::<u16>() as u32;
     let pid_high = rng.rand::<u16>() as u32;
     let pid = (pid_high << 16) | pid_low;
@@ -66,9 +66,9 @@ pub fn generate_gen4_static(rng: &mut Pokerng, settings: Gen4StaticOpts) -> Opti
 
     let pkm = Gen4SPokemon {
         pid,
-        shiny: gen3_shiny(pid, settings.tid, settings.sid),
+        shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
-        gender: settings.encounter.species().gender_from_pid(pid),
+        gender: opts.encounter.species().gender_from_pid(pid),
         ivs,
         nature: Nature::from_pid(pid),
         advance: 0,
@@ -76,49 +76,46 @@ pub fn generate_gen4_static(rng: &mut Pokerng, settings: Gen4StaticOpts) -> Opti
     Some(pkm)
 }
 
-pub fn generate_gen4_static_k(rng: &mut Pokerng, settings: Gen4StaticOpts) -> Option<Gen4SPokemon> {
-    if let Some(lead) = settings.lead {
+pub fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4SPokemon> {
+    if let Some(lead) = opts.lead {
         if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
-            let gender_threshold = settings.encounter.species().gender_ratio();
-            let buffer = match settings.lead {
+            let gender_threshold = opts.encounter.species().gender_ratio();
+            let buffer = match opts.lead {
                 Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
                 Some(LeadAbilities::CutecharmM) => 0,
                 Some(LeadAbilities::Synchronize(_)) => 0,
                 None => 0,
             };
-            let target_gender = match settings.lead {
+            let target_gender = match opts.lead {
                 Some(LeadAbilities::CutecharmF) => Gender::Male,
                 Some(LeadAbilities::CutecharmM) => Gender::Female,
                 _ => Gender::Genderless,
             };
 
-            for _ in 0..3 {
-                if rng.rand::<u16>() % 3 != 0 {
-                    let nature = (rng.rand::<u16>() % 25) as u8;
-                    let pid = buffer + nature as u32;
-                    let gender = settings.encounter.species().gender_from_pid(pid);
-                    if gender == target_gender {
-                        let iv1 = rng.rand::<u16>();
-                        let iv2 = rng.rand::<u16>();
-                        let ivs = Ivs::new_g3(iv1, iv2);
-                        let nature = Nature::from_pid(pid);
+            if rng.rand::<u16>() % 3 != 0 {
+                let nature = (rng.rand::<u16>() % 25) as u8;
+                let pid = buffer + nature as u32;
+                let gender = opts.encounter.species().gender_from_pid(pid);
+                if gender == target_gender {
+                    let iv1 = rng.rand::<u16>();
+                    let iv2 = rng.rand::<u16>();
+                    let ivs = Ivs::new_g3(iv1, iv2);
+                    let nature = Nature::from_pid(pid);
 
-                        return Some(Gen4SPokemon {
-                            pid,
-                            shiny: gen3_shiny(pid, settings.tid, settings.sid),
-                            ability: AbilityType::from_gen3_pid(pid),
-                            gender,
-                            ivs,
-                            nature,
-                            advance: 0,
-                        });
-                    };
-                }
-                break;
+                    return Some(Gen4SPokemon {
+                        pid,
+                        shiny: gen3_shiny(pid, opts.tid, opts.sid),
+                        ability: AbilityType::from_gen3_pid(pid),
+                        gender,
+                        ivs,
+                        nature,
+                        advance: 0,
+                    });
+                };
             }
         }
     }
-    if let Some(LeadAbilities::Synchronize(nature)) = settings.lead {
+    if let Some(LeadAbilities::Synchronize(nature)) = opts.lead {
         if rng.rand::<u16>() % 2 == 0 {
             let mut pid: u32;
             let nature_value = nature as u32;
@@ -136,9 +133,9 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, settings: Gen4StaticOpts) -> Op
             let ivs = Ivs::new_g3(iv1, iv2);
             return Some(Gen4SPokemon {
                 pid,
-                shiny: gen3_shiny(pid, settings.tid, settings.sid),
+                shiny: gen3_shiny(pid, opts.tid, opts.sid),
                 ability: AbilityType::from_gen3_pid(pid),
-                gender: settings.encounter.species().gender_from_pid(pid),
+                gender: opts.encounter.species().gender_from_pid(pid),
                 ivs,
                 nature: Nature::from_pid(pid),
                 advance: 0,
@@ -160,12 +157,12 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, settings: Gen4StaticOpts) -> Op
     let iv1 = rng.rand::<u16>();
     let iv2 = rng.rand::<u16>();
     let ivs = Ivs::new_g3(iv1, iv2);
-    let gender = settings.encounter.species().gender_from_pid(pid);
+    let gender = opts.encounter.species().gender_from_pid(pid);
     let nature = Nature::from_pid(pid);
 
     let pkm = Gen4SPokemon {
         pid,
-        shiny: gen3_shiny(pid, settings.tid, settings.sid),
+        shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
         gender,
         ivs,
@@ -175,49 +172,46 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, settings: Gen4StaticOpts) -> Op
     Some(pkm)
 }
 
-pub fn generate_gen4_static_j(rng: &mut Pokerng, settings: Gen4StaticOpts) -> Option<Gen4SPokemon> {
-    if let Some(lead) = settings.lead {
+pub fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4SPokemon> {
+    if let Some(lead) = opts.lead {
         if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
-            let gender_threshold = settings.encounter.species().gender_ratio();
-            let buffer = match settings.lead {
+            let gender_threshold = opts.encounter.species().gender_ratio();
+            let buffer = match opts.lead {
                 Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
                 Some(LeadAbilities::CutecharmM) => 0,
                 Some(LeadAbilities::Synchronize(_)) => 0,
                 None => 0,
             };
-            let target_gender = match settings.lead {
+            let target_gender = match opts.lead {
                 Some(LeadAbilities::CutecharmF) => Gender::Male,
                 Some(LeadAbilities::CutecharmM) => Gender::Female,
                 _ => Gender::Genderless,
             };
 
-            for _ in 0..3 {
-                if rng.rand::<u16>() % 3 != 0 {
-                    let nature = (rng.rand::<u16>() / 0xa3e) as u8;
-                    let pid = buffer + nature as u32;
-                    let gender = settings.encounter.species().gender_from_pid(pid);
-                    if gender == target_gender {
-                        let iv1 = rng.rand::<u16>();
-                        let iv2 = rng.rand::<u16>();
-                        let ivs = Ivs::new_g3(iv1, iv2);
-                        let nature = Nature::from_pid(pid);
+            if rng.rand::<u16>() % 3 != 0 {
+                let nature = (rng.rand::<u16>() / 0xa3e) as u8;
+                let pid = buffer + nature as u32;
+                let gender = opts.encounter.species().gender_from_pid(pid);
+                if gender == target_gender {
+                    let iv1 = rng.rand::<u16>();
+                    let iv2 = rng.rand::<u16>();
+                    let ivs = Ivs::new_g3(iv1, iv2);
+                    let nature = Nature::from_pid(pid);
 
-                        return Some(Gen4SPokemon {
-                            pid,
-                            shiny: gen3_shiny(pid, settings.tid, settings.sid),
-                            ability: AbilityType::from_gen3_pid(pid),
-                            gender,
-                            ivs,
-                            nature,
-                            advance: 0,
-                        });
-                    };
-                }
-                break;
+                    return Some(Gen4SPokemon {
+                        pid,
+                        shiny: gen3_shiny(pid, opts.tid, opts.sid),
+                        ability: AbilityType::from_gen3_pid(pid),
+                        gender,
+                        ivs,
+                        nature,
+                        advance: 0,
+                    });
+                };
             }
         }
     }
-    if let Some(LeadAbilities::Synchronize(nature)) = settings.lead {
+    if let Some(LeadAbilities::Synchronize(nature)) = opts.lead {
         if rng.rand::<u16>() >> 15 == 0 {
             let mut pid: u32;
             let nature_value = nature as u32;
@@ -235,9 +229,9 @@ pub fn generate_gen4_static_j(rng: &mut Pokerng, settings: Gen4StaticOpts) -> Op
             let ivs = Ivs::new_g3(iv1, iv2);
             return Some(Gen4SPokemon {
                 pid,
-                shiny: gen3_shiny(pid, settings.tid, settings.sid),
+                shiny: gen3_shiny(pid, opts.tid, opts.sid),
                 ability: AbilityType::from_gen3_pid(pid),
-                gender: settings.encounter.species().gender_from_pid(pid),
+                gender: opts.encounter.species().gender_from_pid(pid),
                 ivs,
                 nature: Nature::from_pid(pid),
                 advance: 0,
@@ -262,9 +256,9 @@ pub fn generate_gen4_static_j(rng: &mut Pokerng, settings: Gen4StaticOpts) -> Op
 
     let pkm = Gen4SPokemon {
         pid,
-        shiny: gen3_shiny(pid, settings.tid, settings.sid),
+        shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
-        gender: settings.encounter.species().gender_from_pid(pid),
+        gender: opts.encounter.species().gender_from_pid(pid),
         ivs,
         nature: Nature::from_pid(pid),
         advance: 0,
@@ -272,39 +266,39 @@ pub fn generate_gen4_static_j(rng: &mut Pokerng, settings: Gen4StaticOpts) -> Op
     Some(pkm)
 }
 
-pub fn generate_4statics(settings: Gen4StaticOpts, rng: &mut Pokerng) -> Option<Gen4SPokemon> {
-    let encounter = settings.encounter.clone();
+pub fn generate_4statics(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Option<Gen4SPokemon> {
+    let encounter = opts.encounter.clone();
     let species = encounter.species();
-    match settings.game {
+    match opts.game {
         Some(GameVersion::Diamond) | Some(GameVersion::Pearl) | Some(GameVersion::Platinum) => {
             if dpt_method_jk(species) {
-                generate_gen4_static_j(rng, settings)
+                generate_gen4_static_j(rng, opts)
             } else {
-                generate_gen4_static(rng, settings)
+                generate_gen4_static(rng, opts)
             }
         }
         Some(GameVersion::HeartGold) | Some(GameVersion::SoulSilver) => {
             if hgss_method_jk(species) {
-                generate_gen4_static_k(rng, settings)
+                generate_gen4_static_k(rng, opts)
             } else {
-                generate_gen4_static(rng, settings)
+                generate_gen4_static(rng, opts)
             }
         }
-        _ => generate_gen4_static(rng, settings),
+        _ => generate_gen4_static(rng, opts),
     }
 }
 
-pub fn filter_4static(settings: Gen4StaticOpts, seed: u32) -> Vec<Gen4SPokemon> {
+pub fn filter_4static(opts: &Gen4StaticOpts, seed: u32) -> Vec<Gen4SPokemon> {
     let base_rng = Pokerng::new(seed);
     StateIterator::new(base_rng)
         .enumerate()
-        .skip(settings.initial_advances)
-        .take(settings.max_advances.wrapping_add(1))
+        .skip(opts.initial_advances)
+        .take(opts.max_advances.wrapping_add(1))
         .filter_map(|(adv, mut rng)| {
-            let mut pkm = generate_4statics(settings.clone(), &mut rng)?;
+            let mut pkm = generate_4statics(&opts.clone(), &mut rng)?;
             pkm.advance = adv;
 
-            if settings.filter.pass_filter(&pkm) {
+            if opts.filter.pass_filter(&pkm) {
                 Some(pkm)
             } else {
                 None
@@ -533,7 +527,7 @@ mod test {
                 advance: 10,
             },
         ];
-        let result = filter_4static(options, seed);
+        let result = filter_4static(&options, seed);
         assert_list_eq!(result, expected_results);
     }
     #[test]
@@ -749,7 +743,7 @@ mod test {
                 advance: 10,
             },
         ];
-        let result = filter_4static(options, seed);
+        let result = filter_4static(&options, seed);
         assert_list_eq!(result, expected_results);
     }
 
@@ -966,7 +960,7 @@ mod test {
                 advance: 10,
             },
         ];
-        let result = filter_4static(options, seed);
+        let result = filter_4static(&options, seed);
         assert_list_eq!(result, expected_results);
     }
     #[cfg(test)]
@@ -1187,7 +1181,7 @@ mod test {
                     advance: 10,
                 },
             ];
-            let result = filter_4static(options, seed);
+            let result = filter_4static(&options, seed);
             assert_list_eq!(result, expected_results);
         }
         #[test]
@@ -1403,7 +1397,7 @@ mod test {
                     advance: 10,
                 },
             ];
-            let result = filter_4static(options, seed);
+            let result = filter_4static(&options, seed);
             assert_list_eq!(result, expected_results);
         }
     }
@@ -1624,7 +1618,7 @@ mod test {
                     advance: 10,
                 },
             ];
-            let result = filter_4static(options, seed);
+            let result = filter_4static(&options, seed);
             assert_list_eq!(result, expected_results);
         }
         #[test]
@@ -1840,7 +1834,7 @@ mod test {
                     advance: 10,
                 },
             ];
-            let result = filter_4static(options, seed);
+            let result = filter_4static(&options, seed);
             assert_list_eq!(result, expected_results);
         }
     }

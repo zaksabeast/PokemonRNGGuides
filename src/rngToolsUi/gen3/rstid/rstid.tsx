@@ -59,7 +59,7 @@ export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   initial_advances: 0,
-  max_advances: 1000,
+  max_advances: 10000,
   offset: 0,
   filter: {
     type: "tid",

@@ -5,44 +5,32 @@ import {
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
-  Button,
 } from "~/components";
 import React from "react";
 import { denormalizeIdFilter } from "~/types/id";
 import { z } from "zod";
 import { useRsTidState } from "./rsTidState";
+import { CalibrateButton } from "./calibrateButton";
+import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
+import { Gen3Timer } from "~/components/gen3Timer";
+
+const timerAtom = createGen3TimerAtom();
 
 type Result = Gen3TidSidResult & { offset: number };
 
 const columns: ResultColumn<Result>[] = [
   {
-    title: "Select",
+    title: "Calibrate",
     dataIndex: "advance",
-    render: (advance) => <SelectButton targetAdvance={advance} />,
+    render: (_, result) => (
+      <CalibrateButton hitAdvance={result.advance} timer={timerAtom} />
+    ),
   },
   { title: "Offset", dataIndex: "offset" },
   { title: "TID", dataIndex: "tid" },
   { title: "SID", dataIndex: "sid" },
   { title: "TSV", dataIndex: "tsv" },
 ];
-
-type SelectButtonProps = {
-  targetAdvance: number;
-};
-
-const SelectButton = ({ targetAdvance }: SelectButtonProps) => {
-  const [state, setState] = useRsTidState();
-  return (
-    <Button
-      trackerId="select_rs_tid_advance"
-      onClick={() => {
-        setState({ ...state, targetAdvance });
-      }}
-    >
-      Select
-    </Button>
-  );
-};
 
 const Validator = z.object({
   offset: z.number().int().min(0),
@@ -55,7 +43,7 @@ export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   initial_advances: 0,
-  max_advances: 1000,
+  max_advances: 10000,
   offset: 0,
   hit_tid: 0,
 };
@@ -78,6 +66,17 @@ const fields: Field[] = [
     input: <FormikNumberInput<FormState> name="hit_tid" numType="decimal" />,
   },
 ];
+
+export const RsTidTimer = () => {
+  const [state] = useRsTidState();
+  return (
+    <Gen3Timer
+      trackerId="retail_tid_timer"
+      targetAdvance={state.targetAdvance}
+      timer={timerAtom}
+    />
+  );
+};
 
 export const RsTidSearcher = () => {
   const [results, setResults] = React.useState<Result[]>([]);

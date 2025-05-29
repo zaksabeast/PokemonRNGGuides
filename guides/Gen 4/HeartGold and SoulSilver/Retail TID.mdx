@@ -7,12 +7,17 @@ category: "HeartGold and SoulSilver"
 tag: "retail"
 ---
 
+RNG manipulation in Gen 4 lets you get the exact Trainer ID (TID) and Secret ID (SID) you want. This is useful for things like shiny Pokémon or Cute Charm abuse. This guide covers how to do it on a physical console for HeartGold and SoulSilver.
+
+Interested in RNGing for a Cute Charm TID? Check out the [HeartGold and SoulSilver Cute Charm Guide](/hgss-cute-charm)!
+
+This guide assumes you do not have a save file already on the cartridge. If there is already a save file, you can [check here](/delete-save) for how to delete your save file.
+
 <Stepper titles={["Set up", "Pick a TID", "Hit Target", "Calibrate"]}>
 
 <Step step={0}>
 
-1. Delete your save by pressing `Select + B + Up` on the title screen.
-2. Choose the game you're playing below.
+Choose the game you're playing below then continue to the next step.
 
 <Gen4IdSetup />
 
@@ -20,18 +25,36 @@ tag: "retail"
 
 <Step step={1}>
 
+1. In the tool below, you can leave the "Year" at 2000 or set it to another year if you want.
+2. The "Min Delay" is set to 5000 as the default. Lower values are difficult to hit due to timing.
+3. "Max Delay" can be set higher if desired, but keep in mind the higher the delay the longer each attempt will take.
+4. Input a desired TID into the Filter below and generate results.
+5. If nothing shows up, you can adjust the "Max Delay" to be higher or search for another TID.
+
 <Id4Searcher />
 
 </Step>
 
 <Step step={2}>
 
-1. Set your console time to **<Id4ConsoleSetDateString />**
+You'll need to adjust the timer to match your real-world timing. Human error makes it unlikely you'll hit the target delay on the first try.
+
+1. Set your console time to **<Id4ConsoleSetDateString />** and wait at the screen to confirm setting the console time (screenshot below).
 2. Simultaneously press `A` to set the console time and start the timer below.
 3. Exit the settings on your console and restart your console.
 4. When the first timer ends, press `A` to start the game.
-5. Name your character as fast as possible, and get to the screen below.
-6. When the second timer ends, press `A`.
+5. Get to the naming screen. Make sure to name your character the same way each time. Take note if you're ending on a lower or upper case screen.
+6. Get to the last screen before the TID is generated (see screenshot below). Wait for the second timer to go off and press `A` at the same time.
+   - If you don't have enough time to reach the last screen before the timer goes off, find a TID with a higher delay to give more time.
+7. Continue to the next step to check what TID you hit.
+
+![Confirm time screen](/images/HeartGold-SoulSilver/TID/SetTimeScreen.jpg)
+
+### Final Screen
+
+| Diamond & Pearl                                                             | Platinum                                                                                | HeartGold & SoulSilver                                                        |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| ![DP Final Screen](/images/Diamond-Pearl-Platinum/TID/DPTIDFinalScreen.png) | ![Platinum Final Screen](/images/Diamond-Pearl-Platinum/TID/PlatinumTIDFinalScreen.png) | ![HGSS Final Screen](/images/HeartGold-SoulSilver/TID/HGSSTIDFinalScreen.png) |
 
 <Id4Timer />
 
@@ -43,10 +66,31 @@ tag: "retail"
 2. If it matches your target, congratulations! You RNG'd your TID!
 3. If not, type your TID into the box below and click "Generate".
 4. Click "Calibrate" on the TID with the smallest delay offset (should be the first result).
-5. Try to hit your target again.
+5. Take note if the delay hit is even or odd. Compare this to your target delay. If both are even or both are odd, then you don't need to do anything else.
+   - Otherwise, after naming character, switch to a different letter case screen. Eg. from lower case to upper case. This switches the delay from even to odd or vice versa. Do this every attempt from now on.
+   - For Japanese games, switch to a different kana screen, eg. from Hiragana to Katakana.
+6. Try to hit your target again.
+
+If you're off by 2 - 4 delays, don't change the timer yet. Just try again. Try to be precise each time.
+If you are consistently off by 2 delays, try to hit a bit earlier or later depending on which way the delay is.
+Eg. if target is 5990 and keep hitting 5992, aim to hit `A` a tad earlier when the last beep happens.
+With some practice and consistency, you'll eventually hit your target TID.
+
+In Diamond and Pearl it is possible for the delay to randomly switch from even to odd, or vice versa. When this happens, you'll just have to try again.
 
 <CalibrateId4 />
 
 </Step>
 
 </Stepper>
+
+## Troubleshooting
+
+**I keep getting 1 delay off! Why is this?**
+
+In the Gen 4 games, the delay can switch between even or odd delays. In doing TID RNG you'll have to swap which you're hitting to be able to land on the delay you want.
+
+To swap from even to odd, or vice versa:
+
+- Change the letter casing after naming your character, eg. from lower case to upper case.
+- **OR** Change the year on the console by 1.

@@ -2770,7 +2770,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/mGBA Setup.mdx",
-      translations: null,
+      translations: { en: "/mgba-setup/", zh: "/zh-mgba-setup/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5879,6 +5879,34 @@ export const guides = {
         ),
     ),
   },
+  "/zh-mgba-setup/": {
+    meta: {
+      categories: ["GBA Tools"],
+      tags: ["emu"],
+      isNew: false,
+      title: "mGBA Setup",
+      navDrawerTitle: "mGBA Setup",
+      description:
+        "Learn how to set up mGBA for GBA Pokémon RNG, including lua scripting support.",
+      slug: "/zh-mgba-setup/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-03",
+      translation: { enSlug: "/mgba-setup/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Tools and Emulators/mGBA Setup.mdx",
+      translations: { en: "/mgba-setup/", zh: "/zh-mgba-setup/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/mGBA Setup.mdx"
+        ),
+    ),
+  },
   "/zh-misc-dolphin-gba-bios/": {
     meta: {
       categories: ["GBA Tools"],
@@ -6247,6 +6275,7 @@ export const guideSlugs = [
   "/zh-hgss-cute-charm/",
   "/zh-hgss-rng-advance/",
   "/zh-install-pokereader/",
+  "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
   "/zh-retail-emerald-wild/",
   "/zh-rs-gen3-sid/",

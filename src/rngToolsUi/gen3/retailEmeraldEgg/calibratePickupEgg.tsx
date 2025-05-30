@@ -1,5 +1,12 @@
 import React from "react";
-import { Flex, ResultColumn, RngToolForm, Typography } from "~/components";
+import {
+  Field,
+  Flex,
+  ResultColumn,
+  RngToolForm,
+  Select,
+  Typography,
+} from "~/components";
 import { PickupEggState, useHeldEggState, usePickupEggState } from "./state";
 import {
   rngTools,
@@ -8,6 +15,8 @@ import {
   InheritedIv,
   InheritedIvs,
   Ivs,
+  Species,
+  Nature,
 } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { nullableIvColumns } from "~/rngToolsUi/shared/ivColumns";
@@ -24,6 +33,50 @@ import { CalibrateButton } from "./calibrateButton";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
+import { gen3SpeciesOptions } from "~/types/species";
+import { natureOptions } from "~/components/pkmFilter";
+import { atom, useAtom } from "jotai";
+
+type HeldEgg = {
+  species: Species;
+  nature: Nature;
+};
+
+const currentlyHeldEggAtom = atom<HeldEgg>({
+  species: "Bulbasaur",
+  nature: "Hardy",
+});
+
+// We use this separate from useHeldEggState
+// because some users will RNG IVs without shininess,
+// and need to manually set the species and nature.
+const useCurrentlyHeldEgg = () => useAtom(currentlyHeldEggAtom);
+
+const HeldEggSpeciesSelect = () => {
+  const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
+
+  return (
+    <Select<Species>
+      name="species"
+      options={gen3SpeciesOptions.byName}
+      value={heldEgg.species}
+      onChange={(value) => setHeldEgg((prev) => ({ ...prev, species: value }))}
+    />
+  );
+};
+
+const HeldEggNatureSelect = () => {
+  const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
+
+  return (
+    <Select<Nature>
+      name="nature"
+      options={natureOptions.required}
+      value={heldEgg.nature}
+      onChange={(value) => setHeldEgg((prev) => ({ ...prev, nature: value }))}
+    />
+  );
+};
 
 const hasKnownIv = (iv: InheritedIv): boolean => {
   return match(iv)
@@ -135,17 +188,28 @@ const initialValues: FormState = {
 };
 
 export const CalibratePickupEgg = () => {
-  const [heldState] = useHeldEggState();
+  const [previouslyRngdEgg] = useHeldEggState();
+  const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
   const [state] = usePickupEggState();
   const [potentialEggs, setPotentialEggs] = React.useState<Result[]>([]);
-  const [filters, setFilters] = React.useState<StatFields>(initialValues);
+  const [filters, setFilters] = React.useState<FormState>(initialValues);
 
-  const targetAdvance = state.targetAdvance;
-  const targetSpecies = heldState.eggSettings.egg_species;
-  const targetNature = heldState.target?.nature ?? "Hardy";
+  // If the user previously RNGd an egg, use those values.
+  const previouslyRngdSpecies = previouslyRngdEgg.eggSettings.egg_species;
+  const previouslyRngdNature = previouslyRngdEgg.target?.nature ?? "Hardy";
+  React.useEffect(() => {
+    setHeldEgg({
+      species: previouslyRngdSpecies,
+      nature: previouslyRngdNature,
+    });
+  }, [previouslyRngdSpecies, previouslyRngdNature, setHeldEgg]);
 
   const [minMaxStats, setMinMaxStats] =
     React.useState<MinMaxStats>(defaultMinMaxStats);
+
+  const targetSpecies = heldEgg.species;
+  const targetNature = heldEgg.nature;
+  const targetAdvance = state.targetAdvance;
 
   React.useEffect(() => {
     const runAsync = async () => {
@@ -195,10 +259,19 @@ export const CalibratePickupEgg = () => {
     runAsync();
   }, [state, targetAdvance, targetSpecies, targetNature]);
 
-  const fields = React.useMemo(
-    () => getStatFields<StatFields>(minMaxStats),
-    [minMaxStats],
-  );
+  const fields = React.useMemo((): Field[] => {
+    return [
+      {
+        label: "Species",
+        input: <HeldEggSpeciesSelect />,
+      },
+      {
+        label: "Nature",
+        input: <HeldEggNatureSelect />,
+      },
+      ...getStatFields<StatFields>(minMaxStats),
+    ];
+  }, [minMaxStats]);
 
   const dataSource = React.useMemo(() => {
     return potentialEggs.filter((result) => {
@@ -251,9 +324,6 @@ export const CalibratePickupEgg = () => {
     <Flex vertical gap={16} width="100%">
       <Flex vertical gap={8}>
         <Typography.Title level={5} mv={0}>
-          Target Egg: {targetNature} {targetSpecies}
-        </Typography.Title>
-        <Typography.Title level={5} mv={0}>
           Target Method: {startCase(target?.method)}
         </Typography.Title>
         <Typography.Title level={5} mv={0}>
@@ -264,7 +334,7 @@ export const CalibratePickupEgg = () => {
         </Typography.Title>
       </Flex>
 
-      <RngToolForm<StatFields, Result>
+      <RngToolForm<FormState, Result>
         fields={fields}
         columns={columns}
         results={dataSource}

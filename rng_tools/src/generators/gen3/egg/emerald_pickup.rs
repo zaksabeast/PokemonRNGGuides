@@ -705,7 +705,7 @@ mod test {
     }
 
     #[test]
-    fn do_not_filter_missing_inherited_ivs() {
+    fn filter_specific_missing_inherited_ivs() {
         let opts = Egg3PickupOptions {
             delay: 0,
             parent_ivs: [
@@ -734,6 +734,47 @@ mod test {
                     atk: 25,
                     def: 25,
                     spa: 25,
+                    spd: 25,
+                    spe: 25,
+                },
+            },
+        };
+
+        let results = emerald_egg_pickup_states(&opts);
+        let expected = [];
+        assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn do_not_filter_unspecific_missing_inherited_ivs() {
+        let opts = Egg3PickupOptions {
+            delay: 0,
+            parent_ivs: [
+                MALE_IVS,
+                PartialIvs {
+                    spa: None,
+                    ..FEMALE_IVS
+                },
+            ],
+            method: Gen3PickupMethod::EmeraldBred,
+            initial_advances: 0,
+            max_advances: 10,
+            seed: 0,
+            lua_adjustment: false,
+            filter: IvFilter {
+                min_ivs: Ivs {
+                    hp: 10,
+                    atk: 10,
+                    def: 10,
+                    spa: 0,
+                    spd: 10,
+                    spe: 10,
+                },
+                max_ivs: Ivs {
+                    hp: 25,
+                    atk: 25,
+                    def: 25,
+                    spa: 31,
                     spd: 25,
                     spe: 25,
                 },

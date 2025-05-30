@@ -74,7 +74,9 @@ impl InheritedIv {
             InheritedIv::Random(iv) => *iv >= min && *iv <= max,
             InheritedIv::Parent1(Some(iv)) => *iv >= min && *iv <= max,
             InheritedIv::Parent2(Some(iv)) => *iv >= min && *iv <= max,
-            _ => true, // If we don't know the IV, we assume it passes the filter
+            // If the range is 0 to 31, it means we don't care about this IV, so it passes the filter,
+            // otherwise it fails because we don't know the IV.
+            _ => min == 0 && max == 31,
         }
     }
 }

@@ -2927,7 +2927,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/How to Extract GBA Bios.mdx",
-      translations: null,
+      translations: {
+        en: "/misc-dolphin-gba-bios/",
+        zh: "/zh-misc-dolphin-gba-bios/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5852,6 +5855,37 @@ export const guides = {
         ),
     ),
   },
+  "/zh-misc-dolphin-gba-bios/": {
+    meta: {
+      categories: ["GBA Tools"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "GBA BIOS 文件 - 它是什么以及如何提取给模拟器使用",
+      navDrawerTitle: "GBA BIOS 文件 - 它是什么以及如何提取给模拟器使用",
+      description:
+        "了解什么是GBA BIOS，为什么模拟器（如mGBA、VBA）需要它，以及如何从实机中合法提取它。",
+      slug: "/zh-misc-dolphin-gba-bios/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/misc-dolphin-gba-bios/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Tools and Emulators/How to Extract GBA Bios.mdx",
+      translations: {
+        en: "/misc-dolphin-gba-bios/",
+        zh: "/zh-misc-dolphin-gba-bios/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/How to Extract GBA Bios.mdx"
+        ),
+    ),
+  },
   "/zh-retail-emerald-wild/": {
     meta: {
       categories: ["Emerald"],
@@ -6188,6 +6222,7 @@ export const guideSlugs = [
   "/zh-hgss-cute-charm/",
   "/zh-hgss-rng-advance/",
   "/zh-install-pokereader/",
+  "/zh-misc-dolphin-gba-bios/",
   "/zh-retail-emerald-wild/",
   "/zh-rs-gen3-sid/",
   "/zh-rs-mirage-island/",

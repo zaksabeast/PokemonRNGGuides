@@ -138,9 +138,9 @@ const sectionDisplayOrder: PageSection[] = [
   "info",
   "challenge",
   "any",
+  "retail",
   "cfw",
   "emu",
-  "retail",
   "tool",
   "patch",
 ];

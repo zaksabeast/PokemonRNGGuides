@@ -53,6 +53,7 @@ import { DpptId } from "~/rngToolsUi/gen4/dpptId";
 import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
 import { Gen7SosList } from "~/pageComponents/gen7Sos/sosList";
 import { Static3 } from "~/rngToolsUi/gen3/static/static3";
+import { Wild3SearcherFindTarget } from "~/rngToolsUi/gen3/wild/wild3FindTarget";
 import { MultibootJirachi } from "~/rngToolsUi/gen3/multibootJirachi";
 import { ShinyHoennStarter } from "~/rngToolsUi/gen3/shinyStarter";
 import { GenerateHoennTidSid } from "~/rngToolsUi/gen3/shinyStarter/generateTidSid";
@@ -129,6 +130,7 @@ const tools = {
   EmeraldHeldEgg,
   EmeraldPickupEgg,
   Static3,
+  Wild3SearcherFindTarget,
   Gen3TidSidGenerator,
   OrAsMirageSpot,
   Gen4Timer,

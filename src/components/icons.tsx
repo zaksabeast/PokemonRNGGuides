@@ -2,7 +2,9 @@ import React from "react";
 import styled from "@emotion/styled";
 import { withCss } from "./withCss";
 import {
+  MdAddCircleOutline,
   MdArrowRightAlt,
+  MdBlock,
   MdCheckCircle,
   MdCheck,
   MdClose,
@@ -18,7 +20,9 @@ import { TbPokeball } from "react-icons/tb";
 import { IoIosInformationCircle } from "react-icons/io";
 
 const icons = {
+  AddCircleOutline: MdAddCircleOutline,
   ArrowRightAlt: MdArrowRightAlt,
+  Block: MdBlock,
   Check: MdCheck,
   CheckCircle: MdCheckCircle,
   Close: MdClose,

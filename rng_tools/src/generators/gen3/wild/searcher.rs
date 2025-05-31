@@ -5,7 +5,12 @@ use crate::gen3::Gen3Method;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
 use crate::{GenderRatio, PkmFilter};
+use serde::{Deserialize, Serialize};
+use tsify_next::Tsify;
+use wasm_bindgen::prelude::*;
 
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3SearcherOptions {
     pub initial_seed: u32,
     pub tid: u16,
@@ -49,6 +54,7 @@ fn search_wild3_at_given_advance(
     results
 }
 
+#[wasm_bindgen]
 pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<Wild3GeneratorResult> {
     let base_rng = Pokerng::new(opts.initial_seed);
     StateIterator::new(base_rng)

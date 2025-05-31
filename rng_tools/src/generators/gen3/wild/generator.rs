@@ -5,6 +5,9 @@ use crate::gen3::Gen3Method;
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};
+use serde::{Deserialize, Serialize};
+use tsify_next::Tsify;
+use wasm_bindgen::prelude::*;
 
 pub struct Wild3GeneratorOptions {
     pub advance: usize,
@@ -18,7 +21,8 @@ pub struct Wild3GeneratorOptions {
     pub filter: PkmFilter,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3GeneratorResult {
     pub advance: usize,
     pub map_idx: usize,
@@ -31,6 +35,8 @@ pub struct Wild3GeneratorResult {
 
     pub encounter_slot: EncounterSlot,
     pub synch: bool,
+    pub method: Gen3Method,
+    pub lead: Option<Gen3Lead>,
 }
 
 pub fn generate_gen3_wild(
@@ -77,7 +83,6 @@ pub fn generate_gen3_wild(
     if opts.filter.shiny && !shiny {
         return None;
     }
-
     let ability = AbilityType::from_gen3_pid(pid);
     if let Some(wanted_ability) = opts.filter.ability {
         if ability != wanted_ability {
@@ -96,16 +101,16 @@ pub fn generate_gen3_wild(
     let iv2: u16;
 
     match opts.method {
-        Gen3Method::H1 => {
+        Gen3Method::Wild1 => {
             iv1 = rng.rand::<u16>();
             iv2 = rng.rand::<u16>();
         }
-        Gen3Method::H2 => {
+        Gen3Method::Wild2 => {
             rng.rand::<u16>(); // skip one
             iv1 = rng.rand::<u16>();
             iv2 = rng.rand::<u16>();
         }
-        Gen3Method::H4 => {
+        Gen3Method::Wild4 => {
             iv1 = rng.rand::<u16>();
             rng.rand::<u16>(); // skip one
             iv2 = rng.rand::<u16>();
@@ -136,5 +141,7 @@ pub fn generate_gen3_wild(
         map_idx: opts.map_idx,
         encounter_slot,
         synch: is_synch,
+        method: opts.method,
+        lead: opts.synchronize,
     })
 }

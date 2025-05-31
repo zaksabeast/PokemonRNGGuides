@@ -19,7 +19,7 @@ mod test {
             initial_seed: 0,
             leads: vec![None],
             encounter_slots_by_map: vec![None],
-            methods: vec![Gen3Method::H1],
+            methods: vec![Gen3Method::Wild1],
             tid: 0,
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
@@ -47,6 +47,8 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
             Wild3GeneratorResult {
                 advance: 1,
@@ -66,6 +68,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
             Wild3GeneratorResult {
                 advance: 2,
@@ -85,6 +89,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
             Wild3GeneratorResult {
                 advance: 3,
@@ -104,6 +110,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
             Wild3GeneratorResult {
                 advance: 4,
@@ -123,6 +131,8 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
             Wild3GeneratorResult {
                 advance: 5,
@@ -142,6 +152,8 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
             Wild3GeneratorResult {
                 advance: 6,
@@ -161,6 +173,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
             Wild3GeneratorResult {
                 advance: 7,
@@ -180,6 +194,8 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
             Wild3GeneratorResult {
                 advance: 8,
@@ -199,6 +215,8 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
             Wild3GeneratorResult {
                 advance: 9,
@@ -218,6 +236,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
         ];
         let result = search_wild3(&options);
@@ -236,7 +256,7 @@ mod test {
                 EncounterSlot::Slot6,
                 EncounterSlot::Slot8,
             ])],
-            methods: vec![Gen3Method::H1],
+            methods: vec![Gen3Method::Wild1],
             initial_advances: 60,
             max_advances: 3625,
             leads: vec![None],
@@ -276,6 +296,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
             Wild3GeneratorResult {
                 advance: 3543,
@@ -295,6 +317,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
             Wild3GeneratorResult {
                 advance: 3577,
@@ -314,6 +338,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
             Wild3GeneratorResult {
                 advance: 3621,
@@ -333,6 +359,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
             },
         ];
         let result = search_wild3(&options);
@@ -347,7 +375,7 @@ mod test {
             sid: 47362,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slots_by_map: vec![None],
-            methods: vec![Gen3Method::H1],
+            methods: vec![Gen3Method::Wild1],
             initial_advances: 0,
             max_advances: 10,
             leads: vec![None],
@@ -379,6 +407,8 @@ mod test {
             },
             gender: Gender::Male,
             synch: false,
+            method: Gen3Method::Wild1,
+            lead: None,
         }];
         let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
@@ -392,7 +422,7 @@ mod test {
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slots_by_map: vec![None],
-            methods: vec![Gen3Method::H1],
+            methods: vec![Gen3Method::Wild1],
             initial_advances: 0,
             max_advances: 4,
             leads: vec![Some(Gen3Lead::Synchronize(Nature::Hardy))],
@@ -417,6 +447,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
             },
             Wild3GeneratorResult {
                 advance: 1,
@@ -436,6 +468,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
             },
             Wild3GeneratorResult {
                 advance: 2,
@@ -455,6 +489,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
             },
             Wild3GeneratorResult {
                 advance: 3,
@@ -474,6 +510,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: true,
+                method: Gen3Method::Wild1,
+                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
             },
             Wild3GeneratorResult {
                 advance: 4,
@@ -493,6 +531,8 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
             },
         ];
         let result = search_wild3(&options);

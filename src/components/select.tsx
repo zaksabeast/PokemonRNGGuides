@@ -4,7 +4,6 @@ import styled from "@emotion/styled";
 import {
   Select as AntdSelect,
   SelectProps as AntdSelectProps,
-  Button,
   Tooltip,
 } from "antd";
 import { useField } from "formik";
@@ -12,6 +11,7 @@ import { GenericForm } from "~/types/form";
 import { Flex } from "./flex";
 import React from "react";
 import { Icon } from "./icons";
+import { Button } from "./button";
 
 const SelectContainer = styled(Flex)({
   ".ant-select": {
@@ -138,6 +138,7 @@ export const FormikSelect = <
             <div>
               <Button
                 type="text"
+                trackerId="select-all-button"
                 onClick={() => {
                   const newVals = props.options.map(({ value }) => value);
                   // @ts-expect-error -- prop types guarantee this is correct
@@ -150,6 +151,7 @@ export const FormikSelect = <
             <div>
               <Button
                 type="text"
+                trackerId="select-none-button"
                 // @ts-expect-error -- prop types guarantee this is correct
                 onClick={() => setValue([])}
               >

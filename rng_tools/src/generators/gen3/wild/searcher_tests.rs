@@ -47,6 +47,7 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 1,
@@ -66,6 +67,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 2,
@@ -85,6 +87,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 3,
@@ -104,6 +107,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 4,
@@ -123,6 +127,7 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 5,
@@ -142,6 +147,7 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 6,
@@ -161,6 +167,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 7,
@@ -180,6 +187,7 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 8,
@@ -199,6 +207,7 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 9,
@@ -218,6 +227,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                cute_charm: false,
             },
         ];
         let result = search_wild3(&options);
@@ -276,6 +286,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 3543,
@@ -295,6 +306,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 3577,
@@ -314,6 +326,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 3621,
@@ -333,6 +346,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                cute_charm: false,
             },
         ];
         let result = search_wild3(&options);
@@ -379,6 +393,7 @@ mod test {
             },
             gender: Gender::Male,
             synch: false,
+            cute_charm: false,
         }];
         let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
@@ -417,6 +432,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 1,
@@ -436,6 +452,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 2,
@@ -455,6 +472,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 3,
@@ -474,6 +492,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: true,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 4,
@@ -493,6 +512,7 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                cute_charm: false,
             },
         ];
         let result = search_wild3(&options);

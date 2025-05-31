@@ -4,11 +4,14 @@ import styled from "@emotion/styled";
 import {
   Select as AntdSelect,
   SelectProps as AntdSelectProps,
+  Button,
   Tooltip,
 } from "antd";
 import { useField } from "formik";
 import { GenericForm } from "~/types/form";
 import { Flex } from "./flex";
+import React from "react";
+import { Icon } from "./icons";
 
 const SelectContainer = styled(Flex)({
   ".ant-select": {
@@ -90,7 +93,7 @@ type FormikSelectValue<
 type FormikSelectProps<
   FormState extends GenericForm,
   FieldKey extends keyof FormState,
-> =
+> = { selectAllNoneButtons?: boolean } & (
   | tst.O.Merge<
       Omit<
         SelectProps<FormikSelectValue<FormState, FieldKey, false>>,
@@ -112,7 +115,8 @@ type FormikSelectProps<
         name: FieldKey;
         options: FormikSelectValue<FormState, FieldKey, true>;
       }
-    >;
+    >
+);
 
 export const FormikSelect = <
   FormState extends GenericForm,
@@ -123,6 +127,47 @@ export const FormikSelect = <
 }: FormikSelectProps<FormState, FieldKey>) => {
   const [{ value, onBlur }, { error }, { setValue }] =
     useField<FormState[FieldKey]>(name);
+
+  const selectAllNoneDropdownRender = React.useCallback<
+    (menu: React.ReactElement) => React.ReactElement
+  >(
+    (menu: React.ReactElement) => {
+      return (
+        <>
+          <div style={{ display: "flex", flexFlow: "row wrap" }}>
+            <div>
+              <Button
+                type="text"
+                onClick={() => {
+                  const newVals = props.options.map(({ value }) => value);
+                  // @ts-expect-error -- prop types guarantee this is correct
+                  setValue(newVals);
+                }}
+              >
+                <Icon name="AddCircleOutline" /> Select All
+              </Button>
+            </div>
+            <div>
+              <Button
+                type="text"
+                // @ts-expect-error -- prop types guarantee this is correct
+                onClick={() => setValue([])}
+              >
+                <Icon name="Block" /> Select None
+              </Button>
+            </div>
+          </div>
+          {menu}
+        </>
+      ) as React.ReactElement;
+    },
+    [props.options, setValue],
+  );
+
+  const dropdownRender = props.selectAllNoneButtons
+    ? selectAllNoneDropdownRender
+    : undefined;
+
   return (
     <Tooltip color="red" title={error} placement="top">
       <Select
@@ -133,6 +178,7 @@ export const FormikSelect = <
         onChange={(value) => setValue(value)}
         // @ts-expect-error -- prop types guarantee this is correct
         value={value}
+        dropdownRender={dropdownRender}
       />
     </Tooltip>
   );

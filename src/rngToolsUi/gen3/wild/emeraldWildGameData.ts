@@ -1,6 +1,8 @@
 import { Species, EncounterSlot } from "~/rngTools";
 import { species } from "~/types/species";
 import { encounterSlots } from "~/types/encounterSlots";
+
+// https://github.com/pret/pokeemerald/blob/master/src/data/wild_encounters.json
 import wild_encounters from "./emerald_wild_encounters.json";
 
 type Wild3GameData = {

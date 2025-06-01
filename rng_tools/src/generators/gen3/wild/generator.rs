@@ -17,7 +17,7 @@ pub struct Wild3GeneratorOptions {
     pub map_idx: usize,
     pub encounter_slot: Option<Vec<EncounterSlot>>,
     pub method: Gen3Method,
-    pub synchronize: Option<Gen3Lead>,
+    pub lead: Option<Gen3Lead>,
     pub filter: PkmFilter,
 }
 
@@ -32,9 +32,9 @@ pub struct Wild3GeneratorResult {
     pub gender: Gender,
     pub nature: Nature,
     pub shiny: bool,
-
     pub encounter_slot: EncounterSlot,
     pub synch: bool,
+    pub cute_charm: bool,
     pub method: Gen3Method,
     pub lead: Option<Gen3Lead>,
 }
@@ -51,13 +51,21 @@ pub fn generate_gen3_wild(
     }
     rng.rand::<u32>(); // level
 
+    let required_gender = match (opts.gender_ratio.has_multiple_genders(), opts.lead) {
+        (true, Some(Gen3Lead::CuteCharm(gender))) if rng.rand::<u16>() % 3 != 0 => {
+            Some(if gender == Gender::Female {
+                Gender::Male
+            } else {
+                Gender::Female
+            })
+        }
+        _ => None,
+    };
+
     let nature_rand: u8;
     let mut is_synch = false;
 
-    match opts.synchronize {
-        None => {
-            nature_rand = (rng.rand::<u16>() % 25) as u8;
-        }
+    match opts.lead {
         Some(Gen3Lead::Synchronize(lead_nature)) => {
             if (rng.rand::<u16>() & 1) == 0 {
                 nature_rand = lead_nature.into();
@@ -66,6 +74,9 @@ pub fn generate_gen3_wild(
                 nature_rand = (rng.rand::<u16>() % 25) as u8;
             }
         }
+        _ => {
+            nature_rand = (rng.rand::<u16>() % 25) as u8;
+        }
     };
 
     let mut pid: u32;
@@ -73,9 +84,17 @@ pub fn generate_gen3_wild(
         let pid_low = rng.rand::<u16>() as u32;
         let pid_high = rng.rand::<u16>() as u32;
         pid = (pid_high << 16) | pid_low;
-        if pid % 25 == nature_rand as u32 {
-            break;
+        if pid % 25 != nature_rand as u32 {
+            continue;
         }
+        if let Some(required_gender) = required_gender {
+            let rate: u8 = (pid & 0xFF) as u8;
+            let generated_mon_gender = opts.gender_ratio.gender(rate);
+            if generated_mon_gender != required_gender {
+                continue;
+            }
+        }
+        break;
     }
 
     // PID-based filters
@@ -141,6 +160,7 @@ pub fn generate_gen3_wild(
         map_idx: opts.map_idx,
         encounter_slot,
         synch: is_synch,
+        cute_charm: required_gender.is_some(),
         method: opts.method,
         lead: opts.synchronize,
     })

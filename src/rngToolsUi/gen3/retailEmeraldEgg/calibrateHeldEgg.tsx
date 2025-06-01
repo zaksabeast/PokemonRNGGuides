@@ -157,6 +157,8 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       const eggResults = await rngTools.emerald_egg_held_states({
         ...state.eggSettings,
         // preset
+        // Target calibration takes roamer into consideration
+        has_roamer: false,
         tid: 0,
         sid: 0,
         delay: 0,
@@ -176,9 +178,10 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       });
 
       const callResults = await rngTools.generate_no_egg_match_calls({
+        // Target calibration takes roamer into consideration
+        has_roamer: false,
         calibration: targetCalibration,
         has_lightning_rod: state.eggSettings.has_lightning_rod,
-        has_roamer: state.eggSettings.has_roamer,
         max_advances: maxAdvances,
         redraws: targetRedraws,
         registered_trainers: registeredTrainers,

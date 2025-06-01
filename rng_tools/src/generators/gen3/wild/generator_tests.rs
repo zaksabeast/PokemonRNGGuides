@@ -19,7 +19,7 @@ mod test {
             method: Gen3Method::Wild1,
             advance: 9,
             map_idx: 0,
-            synchronize: None,
+            lead: None,
             filter: PkmFilter::new_allow_all(),
         };
 
@@ -46,6 +46,7 @@ mod test {
             synch: false,
             method: Gen3Method::Wild1,
             lead: None,
+            cute_charm: false,
         });
         assert_eq!(result, expected_result);
     }
@@ -106,6 +107,7 @@ mod test {
             synch: false,
             method: Gen3Method::Wild1,
             lead: None,
+            cute_charm: false,
         });
         assert_eq!(result, expected_result);
     }
@@ -119,7 +121,7 @@ mod test {
             method: Gen3Method::Wild1,
             advance: 0,
             map_idx: 0,
-            synchronize: None,
+            lead: None,
             filter: PkmFilter {
                 shiny: true,
                 nature: Some(Nature::Naive),
@@ -153,6 +155,7 @@ mod test {
             synch: false,
             method: Gen3Method::Wild1,
             lead: None,
+            cute_charm: false,
         });
         assert_eq!(result, expected_result);
     }
@@ -167,7 +170,7 @@ mod test {
             method: Gen3Method::Wild1,
             advance: 0,
             map_idx: 0,
-            synchronize: Some(Gen3Lead::Synchronize(Nature::Hardy)),
+            lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
             filter: PkmFilter::new_allow_all(),
         };
 
@@ -193,6 +196,47 @@ mod test {
             synch: false,
             method: Gen3Method::Wild1,
             lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
+            cute_charm: false,
+        });
+        assert_eq!(result, expected_result);
+    }
+
+    #[test]
+    fn test_generate_wild3_cute_charm_activated() {
+        let options = Wild3GeneratorOptions {
+            tid: 0,
+            sid: 0,
+            gender_ratio: GenderRatio::OneToOne,
+            encounter_slot: None,
+            method: Gen3Method::H1,
+            advance: 2,
+            map_idx: 0,
+            lead: Some(Gen3Lead::CuteCharm(Gender::Female)),
+            filter: PkmFilter::new_allow_all(),
+        };
+
+        let mut rng = Pokerng::new(0);
+        rng.advance(options.advance);
+        let result = generate_gen3_wild(&mut rng, &options);
+        let expected_result = Some(Wild3GeneratorResult {
+            advance: 2,
+            map_idx: 0,
+            encounter_slot: EncounterSlot::Slot0,
+            pid: 0x722DEBE7,
+            shiny: false,
+            nature: Nature::Timid,
+            ability: AbilityType::Second,
+            ivs: Ivs {
+                hp: 28,
+                atk: 1,
+                def: 26,
+                spa: 0,
+                spd: 14,
+                spe: 16,
+            },
+            gender: Gender::Male,
+            synch: false,
+            cute_charm: true,
         });
         assert_eq!(result, expected_result);
     }

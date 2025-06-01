@@ -41,7 +41,7 @@ fn search_wild3_at_given_advance(
                     gender_ratio: opts.gender_ratio,
                     encounter_slot: encounter_slots.clone(),
                     method: *method,
-                    synchronize: *lead,
+                    lead: *lead,
                     filter: opts.filter.clone(),
                 };
 

@@ -49,6 +49,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 1,
@@ -70,6 +71,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 2,
@@ -91,6 +93,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 3,
@@ -112,6 +115,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 4,
@@ -133,6 +137,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 5,
@@ -154,6 +159,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 6,
@@ -175,6 +181,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 7,
@@ -196,6 +203,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 8,
@@ -217,6 +225,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 9,
@@ -238,6 +247,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
         ];
         let result = search_wild3(&options);
@@ -298,6 +308,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 3543,
@@ -319,6 +330,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 3577,
@@ -340,6 +352,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 3621,
@@ -361,6 +374,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
+                cute_charm: false,
             },
         ];
         let result = search_wild3(&options);
@@ -409,6 +423,7 @@ mod test {
             synch: false,
             method: Gen3Method::Wild1,
             lead: None,
+            cute_charm: false,
         }];
         let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
@@ -449,6 +464,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 1,
@@ -470,6 +486,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 2,
@@ -491,6 +508,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 3,
@@ -512,6 +530,7 @@ mod test {
                 synch: true,
                 method: Gen3Method::Wild1,
                 lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
+                cute_charm: false,
             },
             Wild3GeneratorResult {
                 advance: 4,
@@ -533,6 +552,7 @@ mod test {
                 synch: false,
                 method: Gen3Method::Wild1,
                 lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
+                cute_charm: false,
             },
         ];
         let result = search_wild3(&options);

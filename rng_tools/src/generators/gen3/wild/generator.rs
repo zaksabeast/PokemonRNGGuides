@@ -45,23 +45,15 @@ pub fn generate_gen3_wild(
     }
     rng.rand::<u32>(); // level
 
-    let generated_mon_required_gender: Option<Gender> = if opts.gender_ratio.has_multiple_genders()
-    {
-        if let Some(Gen3Lead::CuteCharm(gender)) = opts.lead {
-            if rng.rand::<u16>() % 3 != 0 {
-                Some(if gender == Gender::Female {
-                    Gender::Male
-                } else {
-                    Gender::Female
-                })
+    let required_gender = match (opts.gender_ratio.has_multiple_genders(), opts.lead) {
+        (true, Some(Gen3Lead::CuteCharm(gender))) if rng.rand::<u16>() % 3 != 0 => {
+            Some(if gender == Gender::Female {
+                Gender::Male
             } else {
-                None
-            }
-        } else {
-            None
+                Gender::Female
+            })
         }
-    } else {
-        None
+        _ => None,
     };
 
     let nature_rand: u8;
@@ -89,7 +81,7 @@ pub fn generate_gen3_wild(
         if pid % 25 != nature_rand as u32 {
             continue;
         }
-        if let Some(required_gender) = generated_mon_required_gender {
+        if let Some(required_gender) = required_gender {
             let rate: u8 = (pid & 0xFF) as u8;
             let generated_mon_gender = opts.gender_ratio.gender(rate);
             if generated_mon_gender != required_gender {
@@ -163,6 +155,6 @@ pub fn generate_gen3_wild(
         map_idx: opts.map_idx,
         encounter_slot,
         synch: is_synch,
-        cute_charm: generated_mon_required_gender.is_some(),
+        cute_charm: required_gender.is_some(),
     })
 }

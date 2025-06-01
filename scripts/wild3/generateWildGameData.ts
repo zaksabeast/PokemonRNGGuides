@@ -1,17 +1,12 @@
-import { Species, EncounterSlot } from "~/rngTools";
-import { species } from "~/types/species";
-import { encounterSlots } from "~/types/encounterSlots";
+import type { Species, EncounterSlot } from "../../src/rngTools";
+import { species } from "../../src/types/species";
+import { encounterSlots } from "../../src/types/encounterSlots";
 
 // https://github.com/pret/pokeemerald/blob/master/src/data/wild_encounters.json
 import wild_encounters from "./emerald_wild_encounters.json";
 
-type Wild3GameData = {
-  wildSpecies: Species[];
-  maps: string[];
-  speciesToEncounterSlots: Map<Species, Map<string, EncounterSlot[]>>;
-};
 
-export const getEmeraldWildGameData = (): Wild3GameData => {
+export const generateEmeraldWildGameData = () => {
   const maps = new Set<string>();
 
   const formatSpecies = (speciesName: string | Species): string => {
@@ -20,6 +15,7 @@ export const getEmeraldWildGameData = (): Wild3GameData => {
       .replace("species_", "")
       .replace(/[^a-z0-9]/g, "");
   };
+
   const jsonNameToSpecies = (speciesName: string): Species | undefined => {
     return formattedSpeciesToSpecies.get(formatSpecies(speciesName));
   };
@@ -81,4 +77,10 @@ export const getEmeraldWildGameData = (): Wild3GameData => {
     speciesToEncounterSlots,
   };
   return gameData;
+};
+
+
+map_encounter_tables = {
+  {mapId: "MAP_ALTERING_CAVE", encounterSlots: []},
+
 };

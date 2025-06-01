@@ -37,6 +37,7 @@ import {
 } from "~/types";
 
 import { getEmeraldWildGameData } from "./emeraldWildGameData";
+import { startCase } from "lodash-es";
 
 /*
 Possible improvements:
@@ -122,6 +123,17 @@ const getTargetMonFields = (species: Species): Field[] => {
   return targetMonFields;
 };
 
+const formatMapName = (label: string) => {
+  return label
+    .split("_")
+    .map((piece) =>
+      piece.match(/(?:B)?\d+F/) != null
+        ? piece
+        : startCase(piece.toLowerCase()),
+    )
+    .join(" ");
+};
+
 const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
   const mapsWithSpecies = Array.from(
     emeraldGameData.speciesToEncounterSlots.get(species)?.keys() ?? [],
@@ -162,7 +174,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
       input: (
         <FormikSelect<FormState, "maps">
           name="maps"
-          options={[...toOptions(mapsWithSpecies)]}
+          options={toOptions(mapsWithSpecies, formatMapName)}
           mode="multiple"
         />
       ),
@@ -317,7 +329,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Shiny",
     dataIndex: "shiny",
-    render: (shiny) => (shiny ? "Yes" : "No"),
+    render: (shiny: boolean) => (shiny ? "Yes" : "No"),
   },
   { title: "Gender", dataIndex: "gender" },
   {
@@ -407,7 +419,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
             encounter: "Sweet Scent (Land)",
             species: values.species,
           };
-        }) as Result[],
+        }),
       );
     },
     [game],

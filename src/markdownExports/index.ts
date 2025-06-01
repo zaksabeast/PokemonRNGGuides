@@ -53,7 +53,6 @@ import { DpptId } from "~/rngToolsUi/gen4/dpptId";
 import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
 import { Gen7SosList } from "~/pageComponents/gen7Sos/sosList";
 import { Static3 } from "~/rngToolsUi/gen3/static/static3";
-import { Wild3SearcherFindTarget } from "~/rngToolsUi/gen3/wild/wild3FindTarget";
 import { MultibootJirachi } from "~/rngToolsUi/gen3/multibootJirachi";
 import { ShinyHoennStarter } from "~/rngToolsUi/gen3/shinyStarter";
 import { GenerateHoennTidSid } from "~/rngToolsUi/gen3/shinyStarter/generateTidSid";
@@ -75,6 +74,7 @@ import {
 } from "~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg";
 import { withTags } from "~/components/tagDetector/provider";
 import { mapValues } from "lodash-es";
+import React from "react";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -130,7 +130,10 @@ const tools = {
   EmeraldHeldEgg,
   EmeraldPickupEgg,
   Static3,
-  Wild3SearcherFindTarget,
+  Wild3SearcherFindTarget: React.lazy(async () => {
+    const tool = await import("~/rngToolsUi/gen3/wild/wild3FindTarget");
+    return { default: tool.Wild3SearcherFindTarget };
+  }),
   Gen3TidSidGenerator,
   OrAsMirageSpot,
   Gen4Timer,

@@ -50,9 +50,9 @@ const Validator = z.object({
 export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  offset: 0,
   initial_advances: 0,
   max_advances: 1000,
+  offset: 0,
   rs_input_type: "Dead Battery",
   seed: 0,
   date: rngDate(),
@@ -111,10 +111,6 @@ const getFields = (game: Game) => {
 
   return [
     {
-      label: "Offset",
-      input: <FormikNumberInput<FormState> name="offset" numType="decimal" />,
-    },
-    {
       label: "Initial Advances",
       input: (
         <FormikNumberInput<FormState>
@@ -128,6 +124,10 @@ const getFields = (game: Game) => {
       input: (
         <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
       ),
+    },
+    {
+      label: "Offset",
+      input: <FormikNumberInput<FormState> name="offset" numType="decimal" />,
     },
     ...dynamic,
     {

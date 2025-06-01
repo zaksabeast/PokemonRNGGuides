@@ -3,7 +3,7 @@ import { Field } from "~/components/formFieldTable";
 import { FormikSwitch } from "~/components/switch";
 import { FormikSelect } from "~/components/select";
 import { nature } from "~/types/nature";
-import { IvInput, IvSchema } from "~/components/ivInput";
+import { IvInput, IvsSchema } from "~/components/ivInput";
 import { ability } from "~/types/ability";
 import { gender } from "~/types/gender";
 import { z } from "zod";
@@ -47,8 +47,8 @@ export const pkmFilterSchema = z.object({
   filter_nature: z.enum(nature).nullable(),
   filter_ability: z.enum(ability).nullable(),
   filter_gender: z.enum(gender).nullable(),
-  filter_min_ivs: IvSchema,
-  filter_max_ivs: IvSchema,
+  filter_min_ivs: IvsSchema,
+  filter_max_ivs: IvsSchema,
 }) satisfies z.Schema<Omit<PkmFilterFields, "filter_stats">>;
 
 type FieldOptOuts = {

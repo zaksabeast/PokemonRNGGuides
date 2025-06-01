@@ -8,14 +8,14 @@ import { Remote, wrap } from "comlink";
 
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
-import { AddNullToList } from "~/types/utils";
+import { UndefinedToNullForList } from "~/types/utils";
 
 type RngToolsModules = typeof RngTools;
 
 type AdjustFunctionArgs<Fn extends tst.F.Function> = Fn extends (
   ...args: infer Args
 ) => infer Ret
-  ? (...args: AddNullToList<Args>) => Ret
+  ? (...args: UndefinedToNullForList<Args>) => Ret
   : never;
 
 type AdjustAllFunctionArgs<T> = {

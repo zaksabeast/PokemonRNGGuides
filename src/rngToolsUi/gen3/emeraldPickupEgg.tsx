@@ -13,17 +13,17 @@ import { maxIvs, minIvs } from "~/types/ivs";
 import {
   flattenIvs,
   FlattenIvs,
-  ivColumns,
+  inheritedIvColumns,
 } from "~/rngToolsUi/shared/ivColumns";
 import { z } from "zod";
-import { IvSchema } from "~/components/ivInput";
+import { IvsSchema } from "~/components/ivInput";
 import { HexSchema } from "~/utils/number";
 
 type Result = FlattenIvs<Egg3PickupState>;
 
 const columns: ResultColumn<Result>[] = [
   { title: "Advance", dataIndex: "advance" },
-  ...ivColumns,
+  ...inheritedIvColumns,
 ];
 
 const Validator = z.object({
@@ -32,10 +32,10 @@ const Validator = z.object({
   initial_advances: z.number().int().min(0),
   max_advances: z.number().int().min(0),
   method: z.enum(["EmeraldBred", "EmeraldBredSplit", "EmeraldBredAlternate"]),
-  parent1_ivs: IvSchema,
-  parent2_ivs: IvSchema,
-  filter_min_ivs: IvSchema,
-  filter_max_ivs: IvSchema,
+  parent1_ivs: IvsSchema,
+  parent2_ivs: IvsSchema,
+  filter_min_ivs: IvsSchema,
+  filter_max_ivs: IvsSchema,
 });
 
 export type FormState = z.infer<typeof Validator>;

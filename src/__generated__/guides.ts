@@ -447,6 +447,30 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
   },
+  "/delete-pokemon-save/": {
+    meta: {
+      categories: ["GBA Tools", "NDS Tools", "3DS Tools", "Switch Tools"],
+      tags: ["any"],
+      isNew: false,
+      title: "How to delete Pokemon save files",
+      navDrawerTitle: "Delete Save Files",
+      description: "How to delete a Pokemon save file to start a new game.",
+      slug: "/delete-pokemon-save/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Tools and Emulators/Delete Save.mdx",
+      translations: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/Delete Save.mdx"),
+    ),
+  },
   "/desmume-setup/": {
     meta: {
       categories: ["NDS Tools"],
@@ -521,6 +545,28 @@ export const guides = {
           "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx"
         ),
     ),
+  },
+  "/dppt-cute-charm/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["any"],
+      isNew: false,
+      title: "Diamond, Pearl, and Platinum Cute Charm RNG",
+      navDrawerTitle: "Cute Charm RNG",
+      description: "How to use Cute Charm with TID/SID RNG.",
+      slug: "/dppt-cute-charm/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Gen 4/Cute Charm.mdx",
+      translations: { en: "/dppt-cute-charm/", zh: "/zh-dppt-cute-charm/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
   },
   "/dppt-initial-seed-retail/": {
     meta: {
@@ -1195,11 +1241,11 @@ export const guides = {
       description: "How to use Cute Charm with TID/SID RNG.",
       slug: "/emulator-dppt-cute-charm/",
       isRoughDraft: false,
-      hideFromNavDrawer: false,
+      hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
       layout: "guide",
-      canonical: null,
+      canonical: "/dppt-cute-charm/",
       type: "baseGuide",
       file: "guides/Gen 4/Cute Charm.mdx",
       translations: {
@@ -1302,7 +1348,7 @@ export const guides = {
       description:
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Diamond, Pearl, and Platinum.",
       slug: "/emulator-dppt-tid-sid/",
-      isRoughDraft: true,
+      isRoughDraft: false,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1512,11 +1558,11 @@ export const guides = {
       description: "How to use Cute Charm with TID/SID RNG.",
       slug: "/emulator-hgss-cute-charm/",
       isRoughDraft: false,
-      hideFromNavDrawer: false,
+      hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
       layout: "guide",
-      canonical: null,
+      canonical: "/hgss-cute-charm/",
       type: "baseGuide",
       file: "guides/Gen 4/Cute Charm.mdx",
       translations: {
@@ -1597,7 +1643,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-hgss-stationary/",
+        zh: "/zh-emulator-hgss-stationary/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -2494,6 +2543,28 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
   },
+  "/hgss-cute-charm/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["any"],
+      isNew: false,
+      title: "HeartGold and SoulSilver Cute Charm RNG",
+      navDrawerTitle: "Cute Charm RNG",
+      description: "How to use Cute Charm with TID/SID RNG.",
+      slug: "/hgss-cute-charm/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Gen 4/Cute Charm.mdx",
+      translations: { en: "/hgss-cute-charm/", zh: "/zh-hgss-cute-charm/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
+  },
   "/hgss-initial-seed/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
@@ -2699,7 +2770,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/mGBA Setup.mdx",
-      translations: null,
+      translations: { en: "/mgba-setup/", zh: "/zh-mgba-setup/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -2880,7 +2951,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/How to Extract GBA Bios.mdx",
-      translations: null,
+      translations: {
+        en: "/misc-dolphin-gba-bios/",
+        zh: "/zh-misc-dolphin-gba-bios/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -3331,6 +3405,31 @@ export const guides = {
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/ORAS TID.mdx")),
+  },
+  "/retail-rubysapphire-tid/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Ruby and Sapphire Retail TID RNG",
+      navDrawerTitle: "TID RNG",
+      description:
+        "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Ruby and Sapphire.",
+      slug: "/retail-rubysapphire-tid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx",
+      translations: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx"),
+    ),
   },
   "/retail-sm-egg-mmsc/": {
     meta: {
@@ -4577,7 +4676,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Transporter/Transporter with Offline Patch.mdx",
       translations: null,
-      displayAttributes: [],
+      displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
       () =>
@@ -4799,6 +4898,30 @@ export const guides = {
         import(
           "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx"
         ),
+    ),
+  },
+  "/zh-dppt-cute-charm/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["any"],
+      isNew: false,
+      title: "迷人之躯乱数",
+      navDrawerTitle: "迷人之躯乱数",
+      description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",
+      slug: "/zh-dppt-cute-charm/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/dppt-cute-charm/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/Cute Charm.mdx",
+      translations: { en: "/dppt-cute-charm/", zh: "/zh-dppt-cute-charm/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
     ),
   },
   "/zh-dppt-initial-seed/": {
@@ -5457,6 +5580,36 @@ export const guides = {
         ),
     ),
   },
+  "/zh-emulator-hgss-stationary/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["emu"],
+      isNew: false,
+      title: "定点乱数",
+      navDrawerTitle: "定点乱数",
+      description: "定点宝可梦的乱数",
+      slug: "/zh-emulator-hgss-stationary/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-hgss-stationary/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
+      translations: {
+        en: "/emulator-hgss-stationary/",
+        zh: "/zh-emulator-hgss-stationary/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx"
+        ),
+    ),
+  },
   "/zh-emulator-rs-egg/": {
     meta: {
       categories: ["Ruby and Sapphire"],
@@ -5645,6 +5798,30 @@ export const guides = {
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx"),
     ),
   },
+  "/zh-hgss-cute-charm/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["any"],
+      isNew: false,
+      title: "迷人之躯乱数",
+      navDrawerTitle: "迷人之躯乱数",
+      description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",
+      slug: "/zh-hgss-cute-charm/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/hgss-cute-charm/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/Cute Charm.mdx",
+      translations: { en: "/hgss-cute-charm/", zh: "/zh-hgss-cute-charm/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
+    ),
+  },
   "/zh-hgss-rng-advance/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
@@ -5699,6 +5876,65 @@ export const guides = {
       () =>
         import(
           "~/../guides/Translations/zh/Tools and Emulators/3DS PokeReader.mdx"
+        ),
+    ),
+  },
+  "/zh-mgba-setup/": {
+    meta: {
+      categories: ["GBA Tools"],
+      tags: ["emu"],
+      isNew: false,
+      title: "mGBA Setup",
+      navDrawerTitle: "mGBA Setup",
+      description:
+        "Learn how to set up mGBA for GBA Pokémon RNG, including lua scripting support.",
+      slug: "/zh-mgba-setup/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-03",
+      translation: { enSlug: "/mgba-setup/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Tools and Emulators/mGBA Setup.mdx",
+      translations: { en: "/mgba-setup/", zh: "/zh-mgba-setup/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/mGBA Setup.mdx"
+        ),
+    ),
+  },
+  "/zh-misc-dolphin-gba-bios/": {
+    meta: {
+      categories: ["GBA Tools"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "GBA BIOS 文件 - 它是什么以及如何提取给模拟器使用",
+      navDrawerTitle: "GBA BIOS 文件 - 它是什么以及如何提取给模拟器使用",
+      description:
+        "了解什么是GBA BIOS，为什么模拟器（如mGBA、VBA）需要它，以及如何从实机中合法提取它。",
+      slug: "/zh-misc-dolphin-gba-bios/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/misc-dolphin-gba-bios/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Tools and Emulators/How to Extract GBA Bios.mdx",
+      translations: {
+        en: "/misc-dolphin-gba-bios/",
+        zh: "/zh-misc-dolphin-gba-bios/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/How to Extract GBA Bios.mdx"
         ),
     ),
   },
@@ -5827,9 +6063,11 @@ export const guideSlugs = [
   "/channel-jirachi/",
   "/citrarng-setup/",
   "/crystal/",
+  "/delete-pokemon-save/",
   "/desmume-setup/",
   "/diamond-pearl-and-platinum/",
   "/dppt-advance-rng/",
+  "/dppt-cute-charm/",
   "/dppt-initial-seed-retail/",
   "/dppt-initial-seed/",
   "/dppt-pokeradar-rng/",
@@ -5907,6 +6145,7 @@ export const guideSlugs = [
   "/gen3-glossary/",
   "/gen3-sid/",
   "/heart-gold-and-soul-silver/",
+  "/hgss-cute-charm/",
   "/hgss-initial-seed/",
   "/hgss-rng-advance/",
   "/install-capturesight/",
@@ -5940,6 +6179,7 @@ export const guideSlugs = [
   "/retail-oras-egg-mmsc/",
   "/retail-oras-egg-no-mmsc/",
   "/retail-oras-tid/",
+  "/retail-rubysapphire-tid/",
   "/retail-sm-egg-mmsc/",
   "/retail-sm-egg-no-mmsc/",
   "/retail-sm-egg-seed-no-cfw/",
@@ -6000,6 +6240,7 @@ export const guideSlugs = [
   "/xy-pokeradar/",
   "/zh-bw2-egg/",
   "/zh-dppt-advance-rng/",
+  "/zh-dppt-cute-charm/",
   "/zh-dppt-initial-seed/",
   "/zh-dppt-pokeradar-rng/",
   "/zh-dppt-wild/",
@@ -6023,6 +6264,7 @@ export const guideSlugs = [
   "/zh-emulator-frlg-wild/",
   "/zh-emulator-hgss-cute-charm/",
   "/zh-emulator-hgss-egg/",
+  "/zh-emulator-hgss-stationary/",
   "/zh-emulator-rs-egg/",
   "/zh-emulator-rs-stationary/",
   "/zh-frlg-gen3-sid/",
@@ -6030,8 +6272,11 @@ export const guideSlugs = [
   "/zh-gen2-celebi/",
   "/zh-gen2-starters/",
   "/zh-gen3-sid/",
+  "/zh-hgss-cute-charm/",
   "/zh-hgss-rng-advance/",
   "/zh-install-pokereader/",
+  "/zh-mgba-setup/",
+  "/zh-misc-dolphin-gba-bios/",
   "/zh-retail-emerald-wild/",
   "/zh-rs-gen3-sid/",
   "/zh-rs-mirage-island/",

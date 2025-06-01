@@ -3,6 +3,38 @@ use serde::{Deserialize, Serialize};
 use std::ops::{Index, IndexMut};
 use tsify_next::Tsify;
 
+macro_rules! impl_index_g3idx {
+    ($ty:ty, $item:ty) => {
+        impl std::ops::Index<G3Idx> for $ty {
+            type Output = $item;
+
+            fn index(&self, index: G3Idx) -> &Self::Output {
+                match index {
+                    G3Idx::Hp => &self.hp,
+                    G3Idx::Atk => &self.atk,
+                    G3Idx::Def => &self.def,
+                    G3Idx::Spe => &self.spe,
+                    G3Idx::Spa => &self.spa,
+                    G3Idx::Spd => &self.spd,
+                }
+            }
+        }
+
+        impl std::ops::IndexMut<G3Idx> for $ty {
+            fn index_mut(&mut self, index: G3Idx) -> &mut Self::Output {
+                match index {
+                    G3Idx::Hp => &mut self.hp,
+                    G3Idx::Atk => &mut self.atk,
+                    G3Idx::Def => &mut self.def,
+                    G3Idx::Spe => &mut self.spe,
+                    G3Idx::Spa => &mut self.spa,
+                    G3Idx::Spd => &mut self.spd,
+                }
+            }
+        }
+    };
+}
+
 #[cfg(test)]
 #[macro_export]
 macro_rules! ivs {
@@ -26,6 +58,66 @@ pub struct IvFilter {
     pub max_ivs: Ivs,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub enum InheritedIv {
+    // We'll always know a randomly generated IV
+    Random(u8),
+    // We might not know parent IVs
+    Parent1(Option<u8>),
+    Parent2(Option<u8>),
+}
+
+impl InheritedIv {
+    pub fn filter(&self, min: u8, max: u8) -> bool {
+        match self {
+            InheritedIv::Random(iv) => *iv >= min && *iv <= max,
+            InheritedIv::Parent1(Some(iv)) => *iv >= min && *iv <= max,
+            InheritedIv::Parent2(Some(iv)) => *iv >= min && *iv <= max,
+            // If the range is 0 to 31, it means we don't care about this IV, so it passes the filter,
+            // otherwise it fails because we don't know the IV.
+            _ => min == 0 && max == 31,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct InheritedIvs {
+    pub hp: InheritedIv,
+    pub atk: InheritedIv,
+    pub def: InheritedIv,
+    pub spa: InheritedIv,
+    pub spd: InheritedIv,
+    pub spe: InheritedIv,
+}
+
+impl InheritedIvs {
+    pub fn filter(&self, min: &Ivs, max: &Ivs) -> bool {
+        [
+            self.hp.filter(min.hp, max.hp),
+            self.atk.filter(min.atk, max.atk),
+            self.def.filter(min.def, max.def),
+            self.spa.filter(min.spa, max.spa),
+            self.spd.filter(min.spd, max.spd),
+            self.spe.filter(min.spe, max.spe),
+        ]
+        .iter()
+        .all(|&x| x)
+    }
+}
+
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct PartialIvs {
+    pub hp: Option<u8>,
+    pub atk: Option<u8>,
+    pub def: Option<u8>,
+    pub spa: Option<u8>,
+    pub spd: Option<u8>,
+    pub spe: Option<u8>,
+}
+
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Ivs {
@@ -38,6 +130,26 @@ pub struct Ivs {
 }
 
 impl Ivs {
+    pub fn new_all0() -> Self {
+        Self {
+            hp: 0,
+            atk: 0,
+            def: 0,
+            spe: 0,
+            spa: 0,
+            spd: 0,
+        }
+    }
+    pub fn new_all31() -> Self {
+        Self {
+            hp: 31,
+            atk: 31,
+            def: 31,
+            spe: 31,
+            spa: 31,
+            spd: 31,
+        }
+    }
     pub fn new_g3(iv1: u16, iv2: u16) -> Self {
         Self {
             hp: (iv1 & 31) as u8,
@@ -77,30 +189,32 @@ pub enum G3Idx {
     Spd = 5,
 }
 
-impl Index<G3Idx> for Ivs {
-    type Output = u8;
+impl_index_g3idx!(Ivs, u8);
+impl_index_g3idx!(PartialIvs, Option<u8>);
+impl_index_g3idx!(InheritedIvs, InheritedIv);
 
-    fn index(&self, index: G3Idx) -> &u8 {
-        match index {
-            G3Idx::Hp => &self.hp,
-            G3Idx::Atk => &self.atk,
-            G3Idx::Def => &self.def,
-            G3Idx::Spe => &self.spe,
-            G3Idx::Spa => &self.spa,
-            G3Idx::Spd => &self.spd,
+impl From<Ivs> for InheritedIvs {
+    fn from(ivs: Ivs) -> Self {
+        Self {
+            hp: InheritedIv::Random(ivs.hp),
+            atk: InheritedIv::Random(ivs.atk),
+            def: InheritedIv::Random(ivs.def),
+            spa: InheritedIv::Random(ivs.spa),
+            spd: InheritedIv::Random(ivs.spd),
+            spe: InheritedIv::Random(ivs.spe),
         }
     }
 }
 
-impl IndexMut<G3Idx> for Ivs {
-    fn index_mut(&mut self, index: G3Idx) -> &mut u8 {
-        match index {
-            G3Idx::Hp => &mut self.hp,
-            G3Idx::Atk => &mut self.atk,
-            G3Idx::Def => &mut self.def,
-            G3Idx::Spe => &mut self.spe,
-            G3Idx::Spa => &mut self.spa,
-            G3Idx::Spd => &mut self.spd,
+impl From<Ivs> for PartialIvs {
+    fn from(ivs: Ivs) -> Self {
+        Self {
+            hp: ivs.hp.into(),
+            atk: ivs.atk.into(),
+            def: ivs.def.into(),
+            spa: ivs.spa.into(),
+            spd: ivs.spd.into(),
+            spe: ivs.spe.into(),
         }
     }
 }

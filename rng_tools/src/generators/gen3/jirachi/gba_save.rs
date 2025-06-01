@@ -1,10 +1,13 @@
 use super::save_time::SaveTime;
+use serde::{Deserialize, Serialize};
+use tsify_next::Tsify;
 
 const BLOCK_ID_OFFSET: usize = 0xff4;
 const BLOCK_COUNT: usize = 14;
 const SIZE_BLOCK: usize = 0x1000;
 const BLOCK_MAGIC: u32 = 0x8012025;
-const SAVE_LEN: usize = 131_088;
+const SAVE_LEN_1: usize = 131_088;
+const SAVE_LEN_2: usize = 131_072;
 
 fn chk_u32(data: impl Iterator<Item = u32>) -> u32 {
     data.fold(0u32, u32::wrapping_add)
@@ -23,6 +26,13 @@ fn le_u32(bytes: &[u8]) -> u32 {
     u32::from_le_bytes(bytes.try_into().unwrap())
 }
 
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub enum Sav3ReadError {
+    InvalidLength,
+    InvalidMagic,
+}
+
 #[derive(Debug, PartialEq)]
 pub enum SaveSlot {
     Save0,
@@ -37,19 +47,19 @@ impl<'a> Sav3<'a> {
     const SAVE_0_OFFSET: usize = 0;
     const SAVE_1_OFFSET: usize = SIZE_BLOCK * BLOCK_COUNT;
 
-    pub fn new(data: &'a [u8]) -> Option<Self> {
-        if data.len() != SAVE_LEN {
-            return None;
+    pub fn new(data: &'a [u8]) -> Result<Self, Sav3ReadError> {
+        if data.len() != SAVE_LEN_1 && data.len() != SAVE_LEN_2 {
+            return Err(Sav3ReadError::InvalidLength);
         }
 
         let s0 = Block::new(&data[Self::SAVE_0_OFFSET..][..SIZE_BLOCK]);
         let s1 = Block::new(&data[Self::SAVE_1_OFFSET..][..SIZE_BLOCK]);
 
         if !s0.valid_magic() && !s1.valid_magic() {
-            return None;
+            return Err(Sav3ReadError::InvalidMagic);
         }
 
-        Some(Self { data })
+        Ok(Self { data })
     }
 
     pub fn current_save_slot(&self) -> SaveSlot {

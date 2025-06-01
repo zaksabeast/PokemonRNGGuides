@@ -1,4 +1,4 @@
-use crate::Nature;
+use crate::{Gender, Nature};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::wasm_bindgen;
@@ -73,4 +73,5 @@ impl EncounterSlot {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Gen3Lead {
     Synchronize(Nature),
+    CuteCharm(Gender),
 }

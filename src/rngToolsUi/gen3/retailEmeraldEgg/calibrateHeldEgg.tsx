@@ -141,7 +141,7 @@ type InnerProps = {
 const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const [state] = useHeldEggState();
   const firstFilter = React.useRef(true);
-  const [offsets, setOffsets] = React.useState<number[]>([]);
+  const [previousOffsets, setPreviousOffsets] = React.useState<number[]>([]);
   const [potentialEggs, setPotentialEggs] = React.useState<Result[]>([]);
   const [filters, setFilters] = React.useState<FormState>(initialValues);
 
@@ -157,6 +157,8 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       const eggResults = await rngTools.emerald_egg_held_states({
         ...state.eggSettings,
         // preset
+        // Target calibration takes roamer into consideration
+        has_roamer: false,
         tid: 0,
         sid: 0,
         delay: 0,
@@ -176,9 +178,10 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       });
 
       const callResults = await rngTools.generate_no_egg_match_calls({
+        // Target calibration takes roamer into consideration
+        has_roamer: false,
         calibration: targetCalibration,
         has_lightning_rod: state.eggSettings.has_lightning_rod,
-        has_roamer: state.eggSettings.has_roamer,
         max_advances: maxAdvances,
         redraws: targetRedraws,
         registered_trainers: registeredTrainers,
@@ -226,7 +229,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       );
 
       if (!firstFilter.current) {
-        setOffsets(filteredEggs.map((egg) => egg.offset));
+        setPreviousOffsets(filteredEggs.map((egg) => egg.offset));
       }
 
       setFilters(opts);
@@ -263,7 +266,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       </Flex>
 
       <Typography.Text mv={0}>
-        Previous offsets: {offsets.join(", ")}
+        Previous offsets: {previousOffsets.join(", ")}
       </Typography.Text>
 
       <RngToolForm<FormState, Result>

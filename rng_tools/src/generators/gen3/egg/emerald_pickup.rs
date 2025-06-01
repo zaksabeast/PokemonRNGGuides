@@ -4,6 +4,7 @@ use crate::{
     G3Idx::{self, *},
     IvFilter, Ivs,
 };
+use crate::{InheritedIv, InheritedIvs, PartialIvs};
 
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
@@ -50,7 +51,7 @@ pub struct Egg3PickupOptions {
     pub seed: u32,
     pub initial_advances: usize,
     pub max_advances: usize,
-    pub parent_ivs: [Ivs; 2],
+    pub parent_ivs: [PartialIvs; 2],
     pub method: Gen3PickupMethod,
     pub filter: IvFilter,
     pub lua_adjustment: bool,
@@ -60,7 +61,7 @@ pub struct Egg3PickupOptions {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Egg3PickupState {
     pub advance: usize,
-    pub ivs: Ivs,
+    pub ivs: InheritedIvs,
 }
 
 #[wasm_bindgen]
@@ -86,13 +87,20 @@ pub fn emerald_egg_pickup_states(opts: &Egg3PickupOptions) -> Vec<Egg3PickupStat
         .collect()
 }
 
-fn generate_pickup_ivs(opts: &Egg3PickupOptions, mut rng: Pokerng) -> Ivs {
+fn get_inherited_iv(parent_ivs: &[PartialIvs; 2], slot: usize, stat: G3Idx) -> InheritedIv {
+    match slot {
+        0 => InheritedIv::Parent1(parent_ivs[0][stat]),
+        _ => InheritedIv::Parent2(parent_ivs[1][stat]),
+    }
+}
+
+fn generate_pickup_ivs(opts: &Egg3PickupOptions, mut rng: Pokerng) -> InheritedIvs {
     rng.advance(opts.method.iv1_advance());
     let iv1 = rng.rand::<u16>();
     rng.advance(opts.method.iv2_advance());
     let iv2 = rng.rand::<u16>();
 
-    let mut ivs = Ivs::new_g3(iv1, iv2);
+    let mut ivs: InheritedIvs = Ivs::new_g3(iv1, iv2).into();
 
     rng.advance(opts.method.iv_inherit_advance());
     let inherited_ivs: [usize; 3] = [
@@ -111,13 +119,13 @@ fn generate_pickup_ivs(opts: &Egg3PickupOptions, mut rng: Pokerng) -> Ivs {
     let available3: [G3Idx; 4] = [Atk, Spe, Spa, Spd];
 
     let stat = available1[inherited_ivs[0]];
-    ivs[stat] = opts.parent_ivs[parent_slot[0]][stat];
+    ivs[stat] = get_inherited_iv(&opts.parent_ivs, parent_slot[0], stat);
 
     let stat = available2[inherited_ivs[1]];
-    ivs[stat] = opts.parent_ivs[parent_slot[1]][stat];
+    ivs[stat] = get_inherited_iv(&opts.parent_ivs, parent_slot[1], stat);
 
     let stat = available3[inherited_ivs[2]];
-    ivs[stat] = opts.parent_ivs[parent_slot[2]][stat];
+    ivs[stat] = get_inherited_iv(&opts.parent_ivs, parent_slot[2], stat);
 
     ivs
 }
@@ -126,22 +134,23 @@ fn generate_pickup_ivs(opts: &Egg3PickupOptions, mut rng: Pokerng) -> Ivs {
 mod test {
     use super::*;
     use crate::assert_list_eq;
+    use crate::ivs::InheritedIv::*;
 
-    const MALE_IVS: Ivs = Ivs {
-        hp: 1,
-        atk: 2,
-        def: 3,
-        spa: 4,
-        spd: 5,
-        spe: 6,
+    const MALE_IVS: PartialIvs = PartialIvs {
+        hp: Some(1),
+        atk: Some(2),
+        def: Some(3),
+        spa: Some(4),
+        spd: Some(5),
+        spe: Some(6),
     };
-    const FEMALE_IVS: Ivs = Ivs {
-        hp: 7,
-        atk: 8,
-        def: 9,
-        spa: 10,
-        spd: 11,
-        spe: 12,
+    const FEMALE_IVS: PartialIvs = PartialIvs {
+        hp: Some(7),
+        atk: Some(8),
+        def: Some(9),
+        spa: Some(10),
+        spd: Some(11),
+        spe: Some(12),
     };
     const ZERO_IVS: Ivs = Ivs {
         hp: 0,
@@ -180,123 +189,123 @@ mod test {
         let expected = [
             Egg3PickupState {
                 advance: 0,
-                ivs: Ivs {
-                    hp: 7,
-                    atk: 8,
-                    def: 0,
-                    spa: 10,
-                    spd: 26,
-                    spe: 30,
+                ivs: InheritedIvs {
+                    hp: Parent2(Some(7)),
+                    atk: Parent2(Some(8)),
+                    def: Random(0),
+                    spa: Parent2(Some(10)),
+                    spd: Random(26),
+                    spe: Random(30),
                 },
             },
             Egg3PickupState {
                 advance: 1,
-                ivs: Ivs {
-                    hp: 30,
-                    atk: 8,
-                    def: 26,
-                    spa: 10,
-                    spd: 20,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(30),
+                    atk: Parent2(Some(8)),
+                    def: Random(26),
+                    spa: Parent2(Some(10)),
+                    spd: Random(20),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 2,
-                ivs: Ivs {
-                    hp: 17,
-                    atk: 19,
-                    def: 20,
-                    spa: 10,
-                    spd: 5,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(17),
+                    atk: Random(19),
+                    def: Random(20),
+                    spa: Parent2(Some(10)),
+                    spd: Parent1(Some(5)),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 3,
-                ivs: Ivs {
-                    hp: 16,
-                    atk: 13,
-                    def: 12,
-                    spa: 18,
-                    spd: 11,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(16),
+                    atk: Random(13),
+                    def: Random(12),
+                    spa: Random(18),
+                    spd: Parent2(Some(11)),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 4,
-                ivs: Ivs {
-                    hp: 2,
-                    atk: 2,
-                    def: 3,
-                    spa: 10,
-                    spd: 24,
-                    spe: 12,
+                ivs: InheritedIvs {
+                    hp: Random(2),
+                    atk: Parent1(Some(2)),
+                    def: Random(3),
+                    spa: Parent2(Some(10)),
+                    spd: Random(24),
+                    spe: Random(12),
                 },
             },
             Egg3PickupState {
                 advance: 5,
-                ivs: Ivs {
-                    hp: 12,
-                    atk: 22,
-                    def: 24,
-                    spa: 10,
-                    spd: 11,
-                    spe: 12,
+                ivs: InheritedIvs {
+                    hp: Random(12),
+                    atk: Random(22),
+                    def: Random(24),
+                    spa: Parent2(Some(10)),
+                    spd: Random(11),
+                    spe: Parent2(Some(12)),
                 },
             },
             Egg3PickupState {
                 advance: 6,
-                ivs: Ivs {
-                    hp: 5,
-                    atk: 30,
-                    def: 9,
-                    spa: 4,
-                    spd: 25,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(5),
+                    atk: Random(30),
+                    def: Parent2(Some(9)),
+                    spa: Parent1(Some(4)),
+                    spd: Random(25),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 7,
-                ivs: Ivs {
-                    hp: 27,
-                    atk: 30,
-                    def: 25,
-                    spa: 10,
-                    spd: 5,
-                    spe: 19,
+                ivs: InheritedIvs {
+                    hp: Random(27),
+                    atk: Random(30),
+                    def: Random(25),
+                    spa: Parent2(Some(10)),
+                    spd: Parent1(Some(5)),
+                    spe: Random(19),
                 },
             },
             Egg3PickupState {
                 advance: 8,
-                ivs: Ivs {
-                    hp: 19,
-                    atk: 1,
-                    def: 31,
-                    spa: 25,
-                    spd: 11,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(19),
+                    atk: Random(1),
+                    def: Random(31),
+                    spa: Random(25),
+                    spd: Parent2(Some(11)),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 9,
-                ivs: Ivs {
-                    hp: 12,
-                    atk: 2,
-                    def: 9,
-                    spa: 2,
-                    spd: 5,
-                    spe: 30,
+                ivs: InheritedIvs {
+                    hp: Random(12),
+                    atk: Parent1(Some(2)),
+                    def: Parent2(Some(9)),
+                    spa: Random(2),
+                    spd: Parent1(Some(5)),
+                    spe: Random(30),
                 },
             },
             Egg3PickupState {
                 advance: 10,
-                ivs: Ivs {
-                    hp: 30,
-                    atk: 2,
-                    def: 31,
-                    spa: 22,
-                    spd: 5,
-                    spe: 5,
+                ivs: InheritedIvs {
+                    hp: Random(30),
+                    atk: Parent1(Some(2)),
+                    def: Random(31),
+                    spa: Random(22),
+                    spd: Parent1(Some(5)),
+                    spe: Random(5),
                 },
             },
         ];
@@ -324,123 +333,123 @@ mod test {
         let expected = [
             Egg3PickupState {
                 advance: 0,
-                ivs: Ivs {
-                    hp: 0,
-                    atk: 8,
-                    def: 0,
-                    spa: 10,
-                    spd: 20,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(0),
+                    atk: Parent2(Some(8)),
+                    def: Random(0),
+                    spa: Parent2(Some(10)),
+                    spd: Random(20),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 1,
-                ivs: Ivs {
-                    hp: 30,
-                    atk: 11,
-                    def: 26,
-                    spa: 10,
-                    spd: 5,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(30),
+                    atk: Random(11),
+                    def: Random(26),
+                    spa: Parent2(Some(10)),
+                    spd: Parent1(Some(5)),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 2,
-                ivs: Ivs {
-                    hp: 17,
-                    atk: 19,
-                    def: 20,
-                    spa: 18,
-                    spd: 11,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(17),
+                    atk: Random(19),
+                    def: Random(20),
+                    spa: Random(18),
+                    spd: Parent2(Some(11)),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 3,
-                ivs: Ivs {
-                    hp: 16,
-                    atk: 2,
-                    def: 12,
-                    spa: 10,
-                    spd: 24,
-                    spe: 12,
+                ivs: InheritedIvs {
+                    hp: Random(16),
+                    atk: Parent1(Some(2)),
+                    def: Random(12),
+                    spa: Parent2(Some(10)),
+                    spd: Random(24),
+                    spe: Random(12),
                 },
             },
             Egg3PickupState {
                 advance: 4,
-                ivs: Ivs {
-                    hp: 2,
-                    atk: 18,
-                    def: 3,
-                    spa: 10,
-                    spd: 11,
-                    spe: 12,
+                ivs: InheritedIvs {
+                    hp: Random(2),
+                    atk: Random(18),
+                    def: Random(3),
+                    spa: Parent2(Some(10)),
+                    spd: Random(11),
+                    spe: Parent2(Some(12)),
                 },
             },
             Egg3PickupState {
                 advance: 5,
-                ivs: Ivs {
-                    hp: 12,
-                    atk: 22,
-                    def: 9,
-                    spa: 4,
-                    spd: 25,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(12),
+                    atk: Random(22),
+                    def: Parent2(Some(9)),
+                    spa: Parent1(Some(4)),
+                    spd: Random(25),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 6,
-                ivs: Ivs {
-                    hp: 5,
-                    atk: 30,
-                    def: 11,
-                    spa: 10,
-                    spd: 5,
-                    spe: 19,
+                ivs: InheritedIvs {
+                    hp: Random(5),
+                    atk: Random(30),
+                    def: Random(11),
+                    spa: Parent2(Some(10)),
+                    spd: Parent1(Some(5)),
+                    spe: Random(19),
                 },
             },
             Egg3PickupState {
                 advance: 7,
-                ivs: Ivs {
-                    hp: 27,
-                    atk: 30,
-                    def: 25,
-                    spa: 25,
-                    spd: 11,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(27),
+                    atk: Random(30),
+                    def: Random(25),
+                    spa: Random(25),
+                    spd: Parent2(Some(11)),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 8,
-                ivs: Ivs {
-                    hp: 19,
-                    atk: 2,
-                    def: 9,
-                    spa: 2,
-                    spd: 5,
-                    spe: 30,
+                ivs: InheritedIvs {
+                    hp: Random(19),
+                    atk: Parent1(Some(2)),
+                    def: Parent2(Some(9)),
+                    spa: Random(2),
+                    spd: Parent1(Some(5)),
+                    spe: Random(30),
                 },
             },
             Egg3PickupState {
                 advance: 9,
-                ivs: Ivs {
-                    hp: 12,
-                    atk: 2,
-                    def: 27,
-                    spa: 22,
-                    spd: 5,
-                    spe: 5,
+                ivs: InheritedIvs {
+                    hp: Random(12),
+                    atk: Parent1(Some(2)),
+                    def: Random(27),
+                    spa: Random(22),
+                    spd: Parent1(Some(5)),
+                    spe: Random(5),
                 },
             },
             Egg3PickupState {
                 advance: 10,
-                ivs: Ivs {
-                    hp: 30,
-                    atk: 2,
-                    def: 31,
-                    spa: 10,
-                    spd: 26,
-                    spe: 22,
+                ivs: InheritedIvs {
+                    hp: Random(30),
+                    atk: Parent1(Some(2)),
+                    def: Random(31),
+                    spa: Parent2(Some(10)),
+                    spd: Random(26),
+                    spe: Random(22),
                 },
             },
         ];
@@ -468,123 +477,123 @@ mod test {
         let expected = [
             Egg3PickupState {
                 advance: 0,
-                ivs: Ivs {
-                    hp: 0,
-                    atk: 8,
-                    def: 0,
-                    spa: 10,
-                    spd: 26,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(0),
+                    atk: Parent2(Some(8)),
+                    def: Random(0),
+                    spa: Parent2(Some(10)),
+                    spd: Random(26),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 1,
-                ivs: Ivs {
-                    hp: 30,
-                    atk: 11,
-                    def: 26,
-                    spa: 10,
-                    spd: 5,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(30),
+                    atk: Random(11),
+                    def: Random(26),
+                    spa: Parent2(Some(10)),
+                    spd: Parent1(Some(5)),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 2,
-                ivs: Ivs {
-                    hp: 17,
-                    atk: 19,
-                    def: 20,
-                    spa: 13,
-                    spd: 11,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(17),
+                    atk: Random(19),
+                    def: Random(20),
+                    spa: Random(13),
+                    spd: Parent2(Some(11)),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 3,
-                ivs: Ivs {
-                    hp: 16,
-                    atk: 2,
-                    def: 12,
-                    spa: 10,
-                    spd: 3,
-                    spe: 2,
+                ivs: InheritedIvs {
+                    hp: Random(16),
+                    atk: Parent1(Some(2)),
+                    def: Random(12),
+                    spa: Parent2(Some(10)),
+                    spd: Random(3),
+                    spe: Random(2),
                 },
             },
             Egg3PickupState {
                 advance: 4,
-                ivs: Ivs {
-                    hp: 2,
-                    atk: 18,
-                    def: 3,
-                    spa: 10,
-                    spd: 24,
-                    spe: 12,
+                ivs: InheritedIvs {
+                    hp: Random(2),
+                    atk: Random(18),
+                    def: Random(3),
+                    spa: Parent2(Some(10)),
+                    spd: Random(24),
+                    spe: Parent2(Some(12)),
                 },
             },
             Egg3PickupState {
                 advance: 5,
-                ivs: Ivs {
-                    hp: 12,
-                    atk: 22,
-                    def: 9,
-                    spa: 4,
-                    spd: 11,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(12),
+                    atk: Random(22),
+                    def: Parent2(Some(9)),
+                    spa: Parent1(Some(4)),
+                    spd: Random(11),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 6,
-                ivs: Ivs {
-                    hp: 5,
-                    atk: 30,
-                    def: 11,
-                    spa: 10,
-                    spd: 5,
-                    spe: 27,
+                ivs: InheritedIvs {
+                    hp: Random(5),
+                    atk: Random(30),
+                    def: Random(11),
+                    spa: Parent2(Some(10)),
+                    spd: Parent1(Some(5)),
+                    spe: Random(27),
                 },
             },
             Egg3PickupState {
                 advance: 7,
-                ivs: Ivs {
-                    hp: 27,
-                    atk: 30,
-                    def: 25,
-                    spa: 1,
-                    spd: 11,
-                    spe: 6,
+                ivs: InheritedIvs {
+                    hp: Random(27),
+                    atk: Random(30),
+                    def: Random(25),
+                    spa: Random(1),
+                    spd: Parent2(Some(11)),
+                    spe: Parent1(Some(6)),
                 },
             },
             Egg3PickupState {
                 advance: 8,
-                ivs: Ivs {
-                    hp: 19,
-                    atk: 2,
-                    def: 9,
-                    spa: 25,
-                    spd: 5,
-                    spe: 12,
+                ivs: InheritedIvs {
+                    hp: Random(19),
+                    atk: Parent1(Some(2)),
+                    def: Parent2(Some(9)),
+                    spa: Random(25),
+                    spd: Parent1(Some(5)),
+                    spe: Random(12),
                 },
             },
             Egg3PickupState {
                 advance: 9,
-                ivs: Ivs {
-                    hp: 12,
-                    atk: 2,
-                    def: 27,
-                    spa: 2,
-                    spd: 5,
-                    spe: 30,
+                ivs: InheritedIvs {
+                    hp: Random(12),
+                    atk: Parent1(Some(2)),
+                    def: Random(27),
+                    spa: Random(2),
+                    spd: Parent1(Some(5)),
+                    spe: Random(30),
                 },
             },
             Egg3PickupState {
                 advance: 10,
-                ivs: Ivs {
-                    hp: 30,
-                    atk: 2,
-                    def: 31,
-                    spa: 10,
-                    spd: 18,
-                    spe: 5,
+                ivs: InheritedIvs {
+                    hp: Random(30),
+                    atk: Parent1(Some(2)),
+                    def: Random(31),
+                    spa: Parent2(Some(10)),
+                    spd: Random(18),
+                    spe: Random(5),
                 },
             },
         ];
@@ -625,13 +634,13 @@ mod test {
         let results = emerald_egg_pickup_states(&opts);
         let expected = [Egg3PickupState {
             advance: 5,
-            ivs: Ivs {
-                hp: 12,
-                atk: 22,
-                def: 24,
-                spa: 10,
-                spd: 11,
-                spe: 12,
+            ivs: InheritedIvs {
+                hp: Random(12),
+                atk: Random(22),
+                def: Random(24),
+                spa: Parent2(Some(10)),
+                spd: Random(11),
+                spe: Parent2(Some(12)),
             },
         }];
         assert_list_eq!(results, expected);
@@ -693,5 +702,97 @@ mod test {
             .collect::<Vec<_>>();
 
         assert_list_eq!(first_results, second_results);
+    }
+
+    #[test]
+    fn filter_specific_missing_inherited_ivs() {
+        let opts = Egg3PickupOptions {
+            delay: 0,
+            parent_ivs: [
+                MALE_IVS,
+                PartialIvs {
+                    spa: None,
+                    ..FEMALE_IVS
+                },
+            ],
+            method: Gen3PickupMethod::EmeraldBred,
+            initial_advances: 0,
+            max_advances: 10,
+            seed: 0,
+            lua_adjustment: false,
+            filter: IvFilter {
+                min_ivs: Ivs {
+                    hp: 10,
+                    atk: 10,
+                    def: 10,
+                    spa: 10,
+                    spd: 10,
+                    spe: 10,
+                },
+                max_ivs: Ivs {
+                    hp: 25,
+                    atk: 25,
+                    def: 25,
+                    spa: 25,
+                    spd: 25,
+                    spe: 25,
+                },
+            },
+        };
+
+        let results = emerald_egg_pickup_states(&opts);
+        let expected = [];
+        assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn do_not_filter_unspecific_missing_inherited_ivs() {
+        let opts = Egg3PickupOptions {
+            delay: 0,
+            parent_ivs: [
+                MALE_IVS,
+                PartialIvs {
+                    spa: None,
+                    ..FEMALE_IVS
+                },
+            ],
+            method: Gen3PickupMethod::EmeraldBred,
+            initial_advances: 0,
+            max_advances: 10,
+            seed: 0,
+            lua_adjustment: false,
+            filter: IvFilter {
+                min_ivs: Ivs {
+                    hp: 10,
+                    atk: 10,
+                    def: 10,
+                    spa: 0,
+                    spd: 10,
+                    spe: 10,
+                },
+                max_ivs: Ivs {
+                    hp: 25,
+                    atk: 25,
+                    def: 25,
+                    spa: 31,
+                    spd: 25,
+                    spe: 25,
+                },
+            },
+        };
+
+        let results = emerald_egg_pickup_states(&opts);
+        let expected = [Egg3PickupState {
+            advance: 5,
+            ivs: InheritedIvs {
+                hp: Random(12),
+                atk: Random(22),
+                def: Random(24),
+                spa: Parent2(None),
+                spd: Random(11),
+                spe: Parent2(Some(12)),
+            },
+        }];
+        assert_list_eq!(results, expected);
     }
 }

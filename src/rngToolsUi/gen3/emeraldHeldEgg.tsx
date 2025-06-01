@@ -74,7 +74,7 @@ const initialValues: FormState = {
 
 const fields: Field[] = [
   {
-    label: "Female has everstone",
+    label: "Female or Ditto has everstone",
     input: (
       <FormikSwitch<
         FormState,
@@ -83,7 +83,7 @@ const fields: Field[] = [
     ),
   },
   {
-    label: "Female nature",
+    label: "Female or Ditto nature",
     input: (
       <FormikSelect<FormState, "female_nature">
         name="female_nature"

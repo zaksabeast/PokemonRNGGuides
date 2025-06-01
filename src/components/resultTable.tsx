@@ -12,8 +12,9 @@ export type ResultColumn<T> = keyof T extends string
         title: string;
         dataIndex: K;
         monospace?: boolean;
-        render?: (value: T[K], values: T) => React.ReactNode;
-      };
+      } & (T[K] extends string | number | undefined
+        ? { render?: (value: T[K], values: T) => React.ReactNode }
+        : { render: (value: T[K], values: T) => React.ReactNode });
     }[keyof T]
   : never;
 

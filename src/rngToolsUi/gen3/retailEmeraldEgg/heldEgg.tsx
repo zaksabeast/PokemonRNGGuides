@@ -92,10 +92,6 @@ const columns: ResultColumn<Result>[] = [
     title: "Advance",
     dataIndex: "advance",
   },
-  {
-    title: "Calibration",
-    dataIndex: "calibration",
-  },
 ];
 
 const compatability = [

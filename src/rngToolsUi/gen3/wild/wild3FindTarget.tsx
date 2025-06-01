@@ -5,6 +5,7 @@ import {
   Species,
   Nature,
   Wild3GeneratorResult,
+  Gen3EncounterType,
 } from "~/rngTools";
 import {
   Field,
@@ -36,7 +37,8 @@ import {
   gen3Methods,
 } from "~/types";
 
-import { getEmeraldWildGameData } from "./emeraldWildGameData";
+import { getWild3GameData } from "./wild3GameData";
+import emerald_wild3_game_data from "./emerald_wild3_game_data";
 import { startCase } from "lodash-es";
 
 /*
@@ -56,15 +58,11 @@ Possible improvements:
  - Display warning if no maps or no leads are selected.
 */
 
-type Gen3EncounterType = "Sweet Scent (Land)";
-
-const gen3EncounterTypes = [
-  "Sweet Scent (Land)",
-] as const satisfies Gen3EncounterType[];
+const gen3EncounterTypes = ["Land"] as const satisfies Gen3EncounterType[];
 
 const cuteCharmGenders = ["Male", "Female"] as const satisfies Gender[];
 
-const emeraldGameData = getEmeraldWildGameData();
+const emeraldWildGameData = getWild3GameData(emerald_wild3_game_data);
 
 const Validator = z
   .object({
@@ -77,8 +75,9 @@ const Validator = z
     synchronizeLeadNatures: z.array(z.enum(nature)),
     encounterTypes: z.array(z.enum(gen3EncounterTypes)),
     methods: z.array(z.enum(gen3Methods)),
-    initial_advances: z.number().int().min(0),
-    max_advances: z.number().int().min(0),
+    initial_advances: z.number().int().min(0).max(0xffffffff),
+    max_advances: z.number().int().min(0).max(0xffffffff),
+    max_result_count: z.number().int().min(1),
   })
   .merge(pkmFilterSchema);
 
@@ -98,6 +97,7 @@ const getInitialValues = (_game: Static3Game): FormState => {
     encounterTypes: [...gen3EncounterTypes],
     initial_advances: 1000,
     max_advances: 100_000,
+    max_result_count: 10_000,
     ...getPkmFilterInitialValues(),
   };
 };
@@ -114,7 +114,7 @@ const getTargetMonFields = (species: Species): Field[] => {
       input: (
         <FormikSelect<FormState, "species">
           name="species"
-          options={toOptions(emeraldGameData.wildSpecies)}
+          options={toOptions(emeraldWildGameData.species)}
         />
       ),
     },
@@ -136,7 +136,7 @@ const formatMapName = (label: string) => {
 
 const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
   const mapsWithSpecies = Array.from(
-    emeraldGameData.speciesToEncounterSlots.get(species)?.keys() ?? [],
+    emeraldWildGameData.speciesToEncounterSlots.get(species)?.keys() ?? [],
   );
 
   const fields: Field[] = [
@@ -145,7 +145,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
       input: (
         <FormikSelect<FormState, "species">
           name="species"
-          options={toOptions(emeraldGameData.wildSpecies)}
+          options={toOptions(emeraldWildGameData.species)}
         />
       ),
     },
@@ -176,6 +176,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
           name="maps"
           options={toOptions(mapsWithSpecies, formatMapName)}
           mode="multiple"
+          selectAllNoneButtons
         />
       ),
     },
@@ -190,6 +191,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
           name="synchronizeLeadNatures"
           options={toOptions(nature)}
           mode="multiple"
+          selectAllNoneButtons
         />
       ),
     },
@@ -241,6 +243,15 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
         <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
       ),
     },
+    {
+      label: "Max result count",
+      input: (
+        <FormikNumberInput<FormState>
+          name="max_result_count"
+          numType="decimal"
+        />
+      ),
+    },
   ];
   return fields;
 };
@@ -253,7 +264,9 @@ export const TargetMon = () => {
   }, [values.species]);
 
   React.useEffect(() => {
-    const allMaps = emeraldGameData.speciesToEncounterSlots.get(values.species);
+    const allMaps = emeraldWildGameData.speciesToEncounterSlots.get(
+      values.species,
+    );
     if (!allMaps) {
       setFieldValue("maps", []);
       return;
@@ -370,7 +383,9 @@ const getLeads = (values: FormState) => {
 const getEncounterSlotsByMap = (values: FormState) => {
   if (!values.species) return [];
 
-  const allMaps = emeraldGameData.speciesToEncounterSlots.get(values.species);
+  const allMaps = emeraldWildGameData.speciesToEncounterSlots.get(
+    values.species,
+  );
   if (!allMaps) {
     return []; // error
   }
@@ -397,6 +412,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
         gender_ratio: genderRatioBySpecies[values.species],
         initial_advances: values.initial_advances,
         max_advances: values.max_advances,
+        max_result_count: values.max_result_count,
         filter: {
           shiny: values.filter_shiny,
           nature: values.filter_nature,
@@ -416,7 +432,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
           return {
             ...r,
             mapName: ecounterSlotsByMap[r.map_idx][0],
-            encounter: "Sweet Scent (Land)",
+            encounter: "Land",
             species: values.species,
           };
         }),

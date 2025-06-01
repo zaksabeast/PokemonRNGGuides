@@ -72,3 +72,13 @@ pub enum Gen3Lead {
     Synchronize(Nature),
     CuteCharm(Gender),
 }
+
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub enum Gen3EncounterType {
+    Land,
+    Water,
+    Fishing,
+    RockSmash,
+}

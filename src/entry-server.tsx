@@ -82,6 +82,7 @@ type RenderResult = {
 };
 
 export const render = async (url: string): Promise<RenderResult> => {
+  console.log(url);
   const route = RouteSchema.parse(url.length === 0 ? "/" : url);
 
   const antdCache = createAntdCache();

@@ -1,9 +1,9 @@
 mod generator;
 mod generator_tests;
-mod methods;
+mod types;
 mod searcher;
 mod searcher_tests;
 
 pub use generator::*;
-pub use methods::*;
+pub use types::*;
 pub use searcher::*;

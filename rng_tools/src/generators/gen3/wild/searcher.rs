@@ -18,6 +18,7 @@ pub struct Wild3SearcherOptions {
     pub gender_ratio: GenderRatio,
     pub initial_advances: usize,
     pub max_advances: usize,
+    pub max_result_count: usize,
     pub filter: PkmFilter,
     pub leads: Vec<Option<Gen3Lead>>,
     pub encounter_slots_by_map: Vec<Option<Vec<EncounterSlot>>>,
@@ -61,6 +62,9 @@ pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<Wild3GeneratorResult> {
         .enumerate()
         .skip(opts.initial_advances)
         .take(opts.max_advances.wrapping_add(1))
-        .flat_map(|(adv, mut rng)| search_wild3_at_given_advance(&mut rng, adv, opts))
+        .flat_map(|(adv, mut rng)| {
+            search_wild3_at_given_advance(&mut rng, adv, opts)
+        })
+        .take(opts.max_result_count)
         .collect::<Vec<Wild3GeneratorResult>>()
 }

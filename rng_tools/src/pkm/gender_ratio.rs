@@ -1048,4 +1048,11 @@ impl GenderRatio {
             }
         }
     }
+
+    pub fn has_multiple_genders(&self) -> bool {
+        !matches!(
+            self,
+            GenderRatio::Genderless | GenderRatio::MaleOnly | GenderRatio::FemaleOnly
+        )
+    }
 }

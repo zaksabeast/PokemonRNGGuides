@@ -61,10 +61,6 @@ const columns: ResultColumn<Result>[] = [
     render: (_, result) => <SelectButton result={result} />,
   },
   {
-    title: "advance",
-    dataIndex: "advance",
-  },
-  {
     title: "Time",
     dataIndex: "time",
   },
@@ -92,6 +88,14 @@ const columns: ResultColumn<Result>[] = [
   { title: "Gender", dataIndex: "gender" },
   { title: "Nature", dataIndex: "nature" },
   { title: "Ability", dataIndex: "ability" },
+  {
+    title: "Advance",
+    dataIndex: "advance",
+  },
+  {
+    title: "Calibration",
+    dataIndex: "calibration",
+  },
 ];
 
 const compatability = [

@@ -109,7 +109,7 @@ pub fn gen4_method_j(
                 _ => Gender::Genderless,
             };
 
-            if rng.rand::<u16>() % 3 != 0 {
+            if rng.rand::<u16>() / 0x5556 != 0 {
                 let nature = (rng.rand::<u16>() / 0xa3e) as u8;
                 let pid = buffer + nature as u32;
                 let gender = slot.pokemon_id.gender_from_pid(pid);
@@ -239,7 +239,7 @@ pub fn gen4_method_k(
         }
     }
     if let Some(LeadAbilities::Synchronize(nature)) = opts.lead {
-        if rng.rand::<u16>() % 2 == 0 && rng.rand::<u16>() % 25 == nature as u16 {
+        if rng.rand::<u16>() % 2 == 0 {
             let mut pid: u32;
             let nature_value = nature as u32;
             loop {
@@ -640,7 +640,7 @@ mod test {
             },
         ];
         let result = filter_4swild(&options, seed, &route);
-        assert_eq!(result, expected_results);
+        assert_list_eq!(result, expected_results);
     }
     #[test]
     fn method_k() {
@@ -949,7 +949,7 @@ mod test {
         ];
 
         let result = filter_4swild(&options, seed, &route);
-        assert_eq!(result, expected_results);
+        assert_list_eq!(result, expected_results);
     }
     #[test]
     fn wild_k_cute() {
@@ -1258,7 +1258,7 @@ mod test {
         ];
 
         let result = filter_4swild(&options, seed, &route);
-        assert_eq!(result, expected_results);
+        assert_list_eq!(result, expected_results);
     }
     #[test]
     fn wild_k_synch() {
@@ -1378,19 +1378,19 @@ mod test {
         };
         let expected_results = [
             GeneratedPokemon {
-                pid: 5,
-                shiny: true,
-                ability: AbilityType::Second,
+                pid: 3805056578,
+                shiny: false,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 ivs: Ivs {
-                    hp: 16,
-                    atk: 13,
-                    def: 12,
-                    spa: 18,
-                    spd: 3,
-                    spe: 2,
+                    hp: 5,
+                    atk: 30,
+                    def: 11,
+                    spa: 30,
+                    spd: 25,
+                    spe: 27,
                 },
-                nature: Nature::Bold,
+                nature: Nature::Adamant,
                 advance: 0,
                 encounter_slot: EncounterSlot::Slot0,
             },
@@ -1412,24 +1412,7 @@ mod test {
                 encounter_slot: EncounterSlot::Slot5,
             },
             GeneratedPokemon {
-                pid: 1671314793,
-                shiny: false,
-                ability: AbilityType::Second,
-                gender: Gender::Female,
-                ivs: Ivs {
-                    hp: 9,
-                    atk: 9,
-                    def: 7,
-                    spa: 20,
-                    spd: 26,
-                    spe: 13,
-                },
-                nature: Nature::Bashful,
-                advance: 2,
-                encounter_slot: EncounterSlot::Slot0,
-            },
-            GeneratedPokemon {
-                pid: 10,
+                pid: 3805056578,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Female,
@@ -1441,24 +1424,41 @@ mod test {
                     spd: 25,
                     spe: 27,
                 },
-                nature: Nature::Timid,
+                nature: Nature::Adamant,
+                advance: 2,
+                encounter_slot: EncounterSlot::Slot0,
+            },
+            GeneratedPokemon {
+                pid: 475834453,
+                shiny: false,
+                ability: AbilityType::Second,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 2,
+                    atk: 18,
+                    def: 8,
+                    spa: 17,
+                    spd: 1,
+                    spe: 26,
+                },
+                nature: Nature::Adamant,
                 advance: 3,
                 encounter_slot: EncounterSlot::Slot1,
             },
             GeneratedPokemon {
-                pid: 22,
+                pid: 1636640678,
                 shiny: false,
                 ability: AbilityType::First,
-                gender: Gender::Female,
+                gender: Gender::Male,
                 ivs: Ivs {
-                    hp: 27,
-                    atk: 30,
-                    def: 25,
-                    spa: 1,
-                    spd: 31,
-                    spe: 19,
+                    hp: 18,
+                    atk: 20,
+                    def: 5,
+                    spa: 29,
+                    spd: 19,
+                    spe: 24,
                 },
-                nature: Nature::Sassy,
+                nature: Nature::Adamant,
                 advance: 4,
                 encounter_slot: EncounterSlot::Slot0,
             },
@@ -1480,17 +1480,17 @@ mod test {
                 encounter_slot: EncounterSlot::Slot4,
             },
             GeneratedPokemon {
-                pid: 13,
+                pid: 3754258538,
                 shiny: false,
-                ability: AbilityType::Second,
+                ability: AbilityType::First,
                 gender: Gender::Female,
                 ivs: Ivs {
-                    hp: 12,
-                    atk: 25,
-                    def: 27,
-                    spa: 2,
-                    spd: 31,
-                    spe: 30,
+                    hp: 4,
+                    atk: 20,
+                    def: 14,
+                    spa: 0,
+                    spd: 25,
+                    spe: 20,
                 },
                 nature: Nature::Jolly,
                 advance: 6,
@@ -1514,36 +1514,36 @@ mod test {
                 encounter_slot: EncounterSlot::Slot7,
             },
             GeneratedPokemon {
-                pid: 6,
-                shiny: true,
+                pid: 1636640678,
+                shiny: false,
                 ability: AbilityType::First,
-                gender: Gender::Female,
+                gender: Gender::Male,
                 ivs: Ivs {
-                    hp: 5,
-                    atk: 22,
-                    def: 18,
-                    spa: 30,
-                    spd: 26,
-                    spe: 22,
+                    hp: 18,
+                    atk: 20,
+                    def: 5,
+                    spa: 29,
+                    spd: 19,
+                    spe: 24,
                 },
-                nature: Nature::Docile,
+                nature: Nature::Adamant,
                 advance: 8,
                 encounter_slot: EncounterSlot::Slot4,
             },
             GeneratedPokemon {
-                pid: 9,
+                pid: 475834453,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Female,
                 ivs: Ivs {
-                    hp: 22,
-                    atk: 30,
-                    def: 26,
-                    spa: 9,
-                    spd: 6,
-                    spe: 29,
+                    hp: 2,
+                    atk: 18,
+                    def: 8,
+                    spa: 17,
+                    spd: 1,
+                    spe: 26,
                 },
-                nature: Nature::Lax,
+                nature: Nature::Adamant,
                 advance: 9,
                 encounter_slot: EncounterSlot::Slot1,
             },
@@ -1567,6 +1567,620 @@ mod test {
         ];
 
         let result = filter_4swild(&options, seed, &route);
-        assert_eq!(result, expected_results);
+        assert_list_eq!(result, expected_results);
+    }
+    #[test]
+    fn method_j_synch() {
+        let seed = 0;
+        let route = RouteData {
+            route_id: 201,
+            encounter_type: EncounterType::Grass,
+            encounter_slots: [
+                EncounterslotIDs {
+                    slot_id: 0,
+                    pokemon_id: Species::Starly,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 1,
+                    pokemon_id: Species::Bidoof,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 2,
+                    pokemon_id: Species::Starly,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 3,
+                    pokemon_id: Species::Bidoof,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 4,
+                    pokemon_id: Species::Starly,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 5,
+                    pokemon_id: Species::Bidoof,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 6,
+                    pokemon_id: Species::Starly,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 7,
+                    pokemon_id: Species::Bidoof,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 8,
+                    pokemon_id: Species::Starly,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 9,
+                    pokemon_id: Species::Bidoof,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 10,
+                    pokemon_id: Species::Starly,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 11,
+                    pokemon_id: Species::Bidoof,
+                    min_level: 2,
+                    max_level: 3,
+                },
+            ]
+            .to_vec(),
+        };
+        let options = Gen4SWildOpts {
+            tid: 12345,
+            sid: 54321,
+            initial_advances: 0,
+            max_advances: 10,
+            gender_ratio: GenderRatio::OneToOne,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: Ivs {
+                    hp: 0,
+                    atk: 0,
+                    def: 0,
+                    spa: 0,
+                    spd: 0,
+                    spe: 0,
+                },
+                max_ivs: Ivs {
+                    hp: 31,
+                    atk: 31,
+                    def: 31,
+                    spa: 31,
+                    spd: 31,
+                    spe: 31,
+                },
+                ability: None,
+                stats: None,
+            },
+            game: GameVersion::Pearl,
+            encounter: None,
+            lead: Some(LeadAbilities::Synchronize(Nature::Adamant)),
+        };
+        let expected_results = [
+            GeneratedPokemon {
+                pid: 3080890308,
+                shiny: false,
+                ability: AbilityType::First,
+                gender: Gender::Male,
+                ivs: Ivs {
+                    hp: 21,
+                    atk: 2,
+                    def: 10,
+                    spa: 2,
+                    spd: 7,
+                    spe: 28,
+                },
+                nature: Nature::Impish,
+                advance: 0,
+                encounter_slot: EncounterSlot::Slot0,
+            },
+            GeneratedPokemon {
+                pid: 475834453,
+                shiny: false,
+                ability: AbilityType::Second,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 2,
+                    atk: 18,
+                    def: 8,
+                    spa: 17,
+                    spd: 1,
+                    spe: 26,
+                },
+                nature: Nature::Adamant,
+                advance: 1,
+                encounter_slot: EncounterSlot::Slot8,
+            },
+            GeneratedPokemon {
+                pid: 3805056578,
+                shiny: false,
+                ability: AbilityType::First,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 5,
+                    atk: 30,
+                    def: 11,
+                    spa: 30,
+                    spd: 25,
+                    spe: 27,
+                },
+                nature: Nature::Adamant,
+                advance: 2,
+                encounter_slot: EncounterSlot::Slot1,
+            },
+            GeneratedPokemon {
+                pid: 3360178372,
+                shiny: false,
+                ability: AbilityType::First,
+                gender: Gender::Male,
+                ivs: Ivs {
+                    hp: 17,
+                    atk: 30,
+                    def: 15,
+                    spa: 5,
+                    spd: 14,
+                    spe: 22,
+                },
+                nature: Nature::Sassy,
+                advance: 3,
+                encounter_slot: EncounterSlot::Slot0,
+            },
+            GeneratedPokemon {
+                pid: 840124667,
+                shiny: false,
+                ability: AbilityType::Second,
+                gender: Gender::Male,
+                ivs: Ivs {
+                    hp: 7,
+                    atk: 23,
+                    def: 31,
+                    spa: 29,
+                    spd: 23,
+                    spe: 3,
+                },
+                nature: Nature::Quiet,
+                advance: 4,
+                encounter_slot: EncounterSlot::Slot3,
+            },
+            GeneratedPokemon {
+                pid: 2902820410,
+                shiny: false,
+                ability: AbilityType::First,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 18,
+                    atk: 14,
+                    def: 4,
+                    spa: 0,
+                    spd: 12,
+                    spe: 25,
+                },
+                nature: Nature::Timid,
+                advance: 5,
+                encounter_slot: EncounterSlot::Slot7,
+            },
+            GeneratedPokemon {
+                pid: 1636640678,
+                shiny: false,
+                ability: AbilityType::First,
+                gender: Gender::Male,
+                ivs: Ivs {
+                    hp: 18,
+                    atk: 20,
+                    def: 5,
+                    spa: 29,
+                    spd: 19,
+                    spe: 24,
+                },
+                nature: Nature::Adamant,
+                advance: 6,
+                encounter_slot: EncounterSlot::Slot4,
+            },
+            GeneratedPokemon {
+                pid: 1096857248,
+                shiny: false,
+                ability: AbilityType::First,
+                gender: Gender::Male,
+                ivs: Ivs {
+                    hp: 22,
+                    atk: 17,
+                    def: 5,
+                    spa: 0,
+                    spd: 28,
+                    spe: 9,
+                },
+                nature: Nature::Careful,
+                advance: 7,
+                encounter_slot: EncounterSlot::Slot2,
+            },
+            GeneratedPokemon {
+                pid: 2059180349,
+                shiny: false,
+                ability: AbilityType::Second,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 7,
+                    atk: 29,
+                    def: 18,
+                    spa: 14,
+                    spd: 23,
+                    spe: 22,
+                },
+                nature: Nature::Quirky,
+                advance: 8,
+                encounter_slot: EncounterSlot::Slot10,
+            },
+            GeneratedPokemon {
+                pid: 3954154919,
+                shiny: false,
+                ability: AbilityType::Second,
+                gender: Gender::Male,
+                ivs: Ivs {
+                    hp: 3,
+                    atk: 5,
+                    def: 20,
+                    spa: 7,
+                    spd: 22,
+                    spe: 21,
+                },
+                nature: Nature::Rash,
+                advance: 9,
+                encounter_slot: EncounterSlot::Slot8,
+            },
+            GeneratedPokemon {
+                pid: 724263073,
+                shiny: false,
+                ability: AbilityType::Second,
+                gender: Gender::Male,
+                ivs: Ivs {
+                    hp: 24,
+                    atk: 25,
+                    def: 3,
+                    spa: 21,
+                    spd: 13,
+                    spe: 0,
+                },
+                nature: Nature::Careful,
+                advance: 10,
+                encounter_slot: EncounterSlot::Slot10,
+            },
+        ];
+        let result = filter_4swild(&options, seed, &route);
+        assert_list_eq!(result, expected_results);
+    }
+    #[test]
+    fn method_j_cutec() {
+        let seed = 0;
+        let route = RouteData {
+            route_id: 201,
+            encounter_type: EncounterType::Grass,
+            encounter_slots: [
+                EncounterslotIDs {
+                    slot_id: 0,
+                    pokemon_id: Species::Starly,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 1,
+                    pokemon_id: Species::Bidoof,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 2,
+                    pokemon_id: Species::Starly,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 3,
+                    pokemon_id: Species::Bidoof,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 4,
+                    pokemon_id: Species::Starly,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 5,
+                    pokemon_id: Species::Bidoof,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 6,
+                    pokemon_id: Species::Starly,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 7,
+                    pokemon_id: Species::Bidoof,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 8,
+                    pokemon_id: Species::Starly,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 9,
+                    pokemon_id: Species::Bidoof,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 10,
+                    pokemon_id: Species::Starly,
+                    min_level: 2,
+                    max_level: 3,
+                },
+                EncounterslotIDs {
+                    slot_id: 11,
+                    pokemon_id: Species::Bidoof,
+                    min_level: 2,
+                    max_level: 3,
+                },
+            ]
+            .to_vec(),
+        };
+        let options = Gen4SWildOpts {
+            tid: 12345,
+            sid: 54321,
+            initial_advances: 0,
+            max_advances: 10,
+            gender_ratio: GenderRatio::OneToOne,
+            filter: PkmFilter {
+                shiny: false,
+                nature: None,
+                gender: None,
+                min_ivs: Ivs {
+                    hp: 0,
+                    atk: 0,
+                    def: 0,
+                    spa: 0,
+                    spd: 0,
+                    spe: 0,
+                },
+                max_ivs: Ivs {
+                    hp: 31,
+                    atk: 31,
+                    def: 31,
+                    spa: 31,
+                    spd: 31,
+                    spe: 31,
+                },
+                ability: None,
+                stats: None,
+            },
+            game: GameVersion::Pearl,
+            encounter: None,
+            lead: Some(LeadAbilities::CutecharmM),
+        };
+        let expected_results = [
+            GeneratedPokemon {
+                pid: 8,
+                shiny: false,
+                ability: AbilityType::First,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 16,
+                    atk: 13,
+                    def: 12,
+                    spa: 18,
+                    spd: 3,
+                    spe: 2,
+                },
+                nature: Nature::Impish,
+                advance: 0,
+                encounter_slot: EncounterSlot::Slot0,
+            },
+            GeneratedPokemon {
+                pid: 1742450629,
+                shiny: false,
+                ability: AbilityType::Second,
+                gender: Gender::Male,
+                ivs: Ivs {
+                    hp: 19,
+                    atk: 1,
+                    def: 31,
+                    spa: 25,
+                    spd: 27,
+                    spe: 12,
+                },
+                nature: Nature::Naughty,
+                advance: 1,
+                encounter_slot: EncounterSlot::Slot8,
+            },
+            GeneratedPokemon {
+                pid: 3754258538,
+                shiny: false,
+                ability: AbilityType::First,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 4,
+                    atk: 20,
+                    def: 14,
+                    spa: 0,
+                    spd: 25,
+                    spe: 20,
+                },
+                nature: Nature::Jolly,
+                advance: 2,
+                encounter_slot: EncounterSlot::Slot1,
+            },
+            GeneratedPokemon {
+                pid: 22,
+                shiny: false,
+                ability: AbilityType::First,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 5,
+                    atk: 30,
+                    def: 11,
+                    spa: 30,
+                    spd: 25,
+                    spe: 27,
+                },
+                nature: Nature::Sassy,
+                advance: 3,
+                encounter_slot: EncounterSlot::Slot0,
+            },
+            GeneratedPokemon {
+                pid: 17,
+                shiny: false,
+                ability: AbilityType::Second,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 27,
+                    atk: 30,
+                    def: 25,
+                    spa: 1,
+                    spd: 31,
+                    spe: 19,
+                },
+                nature: Nature::Quiet,
+                advance: 4,
+                encounter_slot: EncounterSlot::Slot3,
+            },
+            GeneratedPokemon {
+                pid: 10,
+                shiny: false,
+                ability: AbilityType::First,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 19,
+                    atk: 1,
+                    def: 31,
+                    spa: 25,
+                    spd: 27,
+                    spe: 12,
+                },
+                nature: Nature::Timid,
+                advance: 5,
+                encounter_slot: EncounterSlot::Slot7,
+            },
+            GeneratedPokemon {
+                pid: 24,
+                shiny: false,
+                ability: AbilityType::First,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 12,
+                    atk: 25,
+                    def: 27,
+                    spa: 2,
+                    spd: 31,
+                    spe: 30,
+                },
+                nature: Nature::Quirky,
+                advance: 6,
+                encounter_slot: EncounterSlot::Slot4,
+            },
+            GeneratedPokemon {
+                pid: 23,
+                shiny: false,
+                ability: AbilityType::Second,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 30,
+                    atk: 2,
+                    def: 31,
+                    spa: 22,
+                    spd: 18,
+                    spe: 5,
+                },
+                nature: Nature::Careful,
+                advance: 7,
+                encounter_slot: EncounterSlot::Slot2,
+            },
+            GeneratedPokemon {
+                pid: 24,
+                shiny: false,
+                ability: AbilityType::First,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 5,
+                    atk: 22,
+                    def: 18,
+                    spa: 30,
+                    spd: 26,
+                    spe: 22,
+                },
+                nature: Nature::Quirky,
+                advance: 8,
+                encounter_slot: EncounterSlot::Slot10,
+            },
+            GeneratedPokemon {
+                pid: 19,
+                shiny: false,
+                ability: AbilityType::Second,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 22,
+                    atk: 30,
+                    def: 26,
+                    spa: 9,
+                    spd: 6,
+                    spe: 29,
+                },
+                nature: Nature::Rash,
+                advance: 9,
+                encounter_slot: EncounterSlot::Slot8,
+            },
+            GeneratedPokemon {
+                pid: 23,
+                shiny: false,
+                ability: AbilityType::Second,
+                gender: Gender::Female,
+                ivs: Ivs {
+                    hp: 29,
+                    atk: 9,
+                    def: 6,
+                    spa: 21,
+                    spd: 30,
+                    spe: 28,
+                },
+                nature: Nature::Careful,
+                advance: 10,
+                encounter_slot: EncounterSlot::Slot10,
+            },
+        ];
+        let result = filter_4swild(&options, seed, &route);
+        assert_list_eq!(result, expected_results);
     }
 }

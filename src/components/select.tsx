@@ -33,6 +33,10 @@ const SelectContainer = styled(Flex)({
   },
 });
 
+const SelectAllContainer = styled(Flex)({
+  flexFlow: "row wrap",
+});
+
 type SelectProps<ValueType> = {
   fullWidth?: boolean;
   fullFlex?: boolean;
@@ -93,13 +97,14 @@ type FormikSelectValue<
 type FormikSelectProps<
   FormState extends GenericForm,
   FieldKey extends keyof FormState,
-> = { selectAllNoneButtons?: boolean } & (
+> =
   | tst.O.Merge<
       Omit<
         SelectProps<FormikSelectValue<FormState, FieldKey, false>>,
         "onChange" | "defaultValue" | "options" | "mode"
       >,
       {
+        selectAllNoneButtons?: undefined;
         mode?: undefined;
         name: FieldKey;
         options: FormikSelectValue<FormState, FieldKey, false>;
@@ -111,12 +116,12 @@ type FormikSelectProps<
         "onChange" | "defaultValue" | "options" | "mode"
       >,
       {
+        selectAllNoneButtons?: boolean;
         mode: "multiple";
         name: FieldKey;
         options: FormikSelectValue<FormState, FieldKey, true>;
       }
-    >
-);
+    >;
 
 export const FormikSelect = <
   FormState extends GenericForm,
@@ -134,7 +139,7 @@ export const FormikSelect = <
     (menu: React.ReactElement) => {
       return (
         <>
-          <div style={{ display: "flex", flexFlow: "row wrap" }}>
+          <SelectAllContainer>
             <div>
               <Button
                 type="text"
@@ -158,10 +163,10 @@ export const FormikSelect = <
                 <Icon name="Block" /> Select None
               </Button>
             </div>
-          </div>
+          </SelectAllContainer>
           {menu}
         </>
-      ) as React.ReactElement;
+      );
     },
     [props.options, setValue],
   );

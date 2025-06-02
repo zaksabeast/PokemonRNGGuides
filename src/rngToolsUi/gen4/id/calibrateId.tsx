@@ -6,6 +6,7 @@ import {
   RngToolSubmit,
   Field,
   CalibrateTimerButton,
+  Icon,
 } from "~/components";
 import { rngTools, Id4 } from "~/rngTools";
 import { denormalizeIdFilterOrDefault } from "~/types/id";
@@ -13,6 +14,7 @@ import { z } from "zod";
 import { useId4State, idTimerAtom } from "./state";
 import { useCurrentStep } from "~/components/stepper/state";
 import { sortBy } from "lodash-es";
+import { formatOffset } from "~/utils/offsetSymbol";
 
 type CalibrateButtonProps = {
   hitDelay: number;
@@ -31,23 +33,28 @@ const CalibrateButton = ({ hitDelay }: CalibrateButtonProps) => {
   );
 };
 
-const columns: ResultColumn<Id4>[] = [
+type Result = Id4 & { flipDelay: boolean; delayOffset: number };
+
+const columns: ResultColumn<Result>[] = [
   {
     title: "Calibrate",
     dataIndex: "seed",
     render: (_, target) => <CalibrateButton hitDelay={target.delay} />,
   },
   {
+    title: "Flip Delay",
+    dataIndex: "flipDelay",
+    render: (flipDelay) =>
+      flipDelay ? <Icon name="CheckCircle" color="Success" size={30} /> : null,
+  },
+  {
+    title: "Delay Offset",
+    dataIndex: "delayOffset",
+    render: formatOffset,
+  },
+  {
     title: "TID",
     dataIndex: "tid",
-  },
-  {
-    title: "SID",
-    dataIndex: "sid",
-  },
-  {
-    title: "TSV",
-    dataIndex: "tsv",
   },
   {
     title: "Delay",
@@ -69,16 +76,25 @@ const initialValues: FormState = {
   tid: 0,
 };
 
-const fields: Field[] = [
-  {
-    label: "Obtained TID",
-    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-  },
-];
-
 export const CalibrateId4 = () => {
   const [{ target }] = useId4State();
-  const [results, setResults] = React.useState<Id4[]>([]);
+  const [results, setResults] = React.useState<Result[]>([]);
+
+  const targetTid = target?.id.tid;
+
+  const fields = React.useMemo(
+    (): Field[] => [
+      {
+        label: `Target TID: ${targetTid ?? "None"}`,
+        input: null,
+      },
+      {
+        label: "Obtained TID",
+        input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+      },
+    ],
+    [targetTid],
+  );
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
@@ -106,13 +122,19 @@ export const CalibrateId4 = () => {
         Math.abs(result.delay - targetDelay),
       );
 
-      setResults(sortedResults);
+      const formattedResults = sortedResults.map((result) => ({
+        ...result,
+        flipDelay: targetDelay % 2 !== result.delay % 2,
+        delayOffset: result.delay - targetDelay,
+      }));
+
+      setResults(formattedResults);
     },
     [target],
   );
 
   return (
-    <RngToolForm<FormState, Id4>
+    <RngToolForm<FormState, Result>
       fields={fields}
       columns={columns}
       results={results}

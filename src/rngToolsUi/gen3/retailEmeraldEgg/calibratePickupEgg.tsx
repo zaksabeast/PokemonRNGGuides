@@ -36,6 +36,7 @@ import { Nullable } from "~/types/utils";
 import { gen3SpeciesOptions } from "~/types/species";
 import { natureOptions } from "~/components/pkmFilter";
 import { atom, useAtom } from "jotai";
+import { formatOffset } from "~/utils/offsetSymbol";
 
 type HeldEgg = {
   species: Species;
@@ -121,16 +122,6 @@ type Result = {
   ivs: InheritedIvs;
 } & Nullable<StatsValue>;
 
-const getOffsetSymbol = (offset: number) => {
-  if (offset > 0) {
-    return "+";
-  }
-  if (offset < 0) {
-    return "-";
-  }
-  return "";
-};
-
 const columns: ResultColumn<Result>[] = [
   {
     title: "Calibrate",
@@ -147,7 +138,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Offset",
     dataIndex: "offset",
-    render: (offset) => `${getOffsetSymbol(offset)}${Math.abs(offset)}`,
+    render: formatOffset,
   },
   {
     title: "Method",

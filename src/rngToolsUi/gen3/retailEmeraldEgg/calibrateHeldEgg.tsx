@@ -31,6 +31,7 @@ import { Skeleton } from "antd";
 import * as tst from "ts-toolbelt";
 import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
 import { Gen3Timer } from "~/components/gen3Timer";
+import { formatOffset } from "~/utils/offsetSymbol";
 
 const timerAtom = createGen3TimerAtom();
 
@@ -38,16 +39,6 @@ type Result = tst.O.Merge<
   tst.O.Required<Partial<Gen3HeldEgg>, "advance" | "match_call">,
   { offset: number }
 >;
-
-const getOffsetSymbol = (offset: number) => {
-  if (offset > 0) {
-    return "+";
-  }
-  if (offset < 0) {
-    return "-";
-  }
-  return "";
-};
 
 const columns: ResultColumn<Result>[] = [
   {
@@ -65,7 +56,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Offset",
     dataIndex: "offset",
-    render: (offset) => `${getOffsetSymbol(offset)}${Math.abs(offset)}`,
+    render: formatOffset,
   },
   {
     title: "Nature",

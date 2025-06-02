@@ -44,19 +44,18 @@ import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 
 /*
 Possible improvements:
+ - Support multiple encounter types.
+ - Support other leads in generator.
+ - Display warning if no maps or no leads are selected.
+ - Add Hidden Power filter.
+
  - Display map names instead of map IDs.
- - "Select all" + "Select none" button in FormikSelect.
  - Disable gender field if only 1 possible gender, instead of hiding it.
- - Display abiity names instead of First, Second, or Hidden.
+ - Display ability names instead of First, Second, or Hidden.
  - If no nature filter, then Synchonize leads is <Nature> or Not <Nature>.
  - Min/Max IVs should display the stat name.
  - Rename "None" to "Any" in filters.
  - Add Max Size filter.
- - Add Hidden Power filter.
- - Support Cute Charm leads.
- - Support other leads in generator.
- - Suppoort multiple encounter types.
- - Display warning if no maps or no leads are selected.
 */
 
 const gen3EncounterTypes = [

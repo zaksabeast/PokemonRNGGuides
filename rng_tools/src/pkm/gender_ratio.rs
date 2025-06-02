@@ -17,6 +17,7 @@ pub enum GenderRatio {
     SevenToOne = 225,
 }
 
+#[wasm_bindgen]
 pub fn get_species_gender_ratio(species: &Species) -> GenderRatio {
     match species {
         Species::None => GenderRatio::Genderless,

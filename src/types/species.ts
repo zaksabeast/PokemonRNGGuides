@@ -1022,3 +1022,10 @@ export const gen3SpeciesOptions = {
   byDex: gen3SpeciesByDex,
   byName: sortBy(gen3SpeciesByDex, (option) => option.label),
 };
+
+const gen4SpeciesByDex = toOptions(species.slice(0, 494));
+
+export const gen4SpeciesOptions = {
+  byDex: gen4SpeciesByDex,
+  byName: sortBy(gen4SpeciesByDex, (option) => option.label),
+};

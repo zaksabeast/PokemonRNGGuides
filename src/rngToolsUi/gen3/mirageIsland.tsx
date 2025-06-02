@@ -7,15 +7,12 @@ import {
 } from "~/components";
 import { FormikRadio } from "~/components/radio";
 import { rngTools, MirageIslandResult } from "~/rngTools";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import React from "react";
 import { clamp } from "lodash-es";
 import { z } from "zod";
 
 type Game = "emerald" | "rs";
-
-const formatLargeInteger = (number: number) => {
-  return number.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
 
 const getColumns = (
   game: Game,

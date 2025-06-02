@@ -1,6 +1,5 @@
 import {
   Gender,
-  Ivs,
   rngTools,
   Species,
   Nature,
@@ -20,6 +19,7 @@ import {
   Typography,
 } from "~/components";
 import { toOptions } from "~/utils/options";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { useFormikContext } from "formik";
 import {
   getPkmFilterFields,
@@ -40,6 +40,7 @@ import {
 import { getWild3GameData } from "./wild3GameData";
 import emerald_wild3_game_data from "./emerald_wild3_game_data";
 import { startCase } from "lodash-es";
+import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 
 /*
 Possible improvements:
@@ -58,9 +59,14 @@ Possible improvements:
  - Display warning if no maps or no leads are selected.
 */
 
-const gen3EncounterTypes = ["Land"] as const satisfies Gen3EncounterType[];
+const gen3EncounterTypes = [
+  "Land",
+] as const satisfies readonly Gen3EncounterType[];
 
-const cuteCharmGenders = ["Male", "Female"] as const satisfies Gender[];
+const cuteCharmGenders = [
+  "Male",
+  "Female",
+] as const satisfies readonly Gender[];
 
 const emeraldWildGameData = getWild3GameData(emerald_wild3_game_data);
 
@@ -83,8 +89,7 @@ const Validator = z
 
 type FormState = z.infer<typeof Validator>;
 
-const getInitialValues = (_game: Static3Game): FormState => {
-  //TODO initialize seed based on game
+const getInitialValues = (): FormState => {
   return {
     species: "Abra",
     tid: 0,
@@ -176,7 +181,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
           name="maps"
           options={toOptions(mapsWithSpecies, formatMapName)}
           mode="multiple"
-          selectAllNoneButtons
+          fullWidth={true}
         />
       ),
     },
@@ -191,7 +196,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
           name="synchronizeLeadNatures"
           options={toOptions(nature)}
           mode="multiple"
-          selectAllNoneButtons
+          selectAllNoneButtons={true}
         />
       ),
     },
@@ -257,7 +262,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
 };
 
 export const TargetMon = () => {
-  const { values, setFieldValue } = useFormikContext<FormState>();
+  const { values, setValues } = useFormikContext<FormState>();
 
   const fields = React.useMemo((): Field[] => {
     return getTargetMonFields(values.species);
@@ -267,12 +272,9 @@ export const TargetMon = () => {
     const allMaps = emeraldWildGameData.speciesToEncounterSlots.get(
       values.species,
     );
-    if (!allMaps) {
-      setFieldValue("maps", []);
-      return;
-    }
-    setFieldValue("maps", Array.from(allMaps.keys()));
-  }, [values.species, setFieldValue]);
+    const newMaps = allMaps !== undefined ? Array.from(allMaps.keys()) : [];
+    setValues((prev) => ({ ...prev, maps: newMaps }));
+  }, [values.species, setValues]);
 
   return (
     <Flex vertical gap={8}>
@@ -301,10 +303,6 @@ export const SetupFilter = () => {
   );
 };
 
-const formatLargeInteger = (number: number) => {
-  return number.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-
 const columns: ResultColumn<Result>[] = [
   {
     title: "Advances",
@@ -320,11 +318,15 @@ const columns: ResultColumn<Result>[] = [
     title: "Lead",
     dataIndex: "lead",
     render: (lead) => {
-      if (!lead) return "Ordinary lead";
+      if (lead == null) {
+        return "Ordinary lead";
+      }
       if ("Synchronize" in lead) {
         return `Synchronize (${lead.Synchronize})`;
       }
-      //TODO: support Cute Charm leads
+      if ("CuteCharm" in lead) {
+        return `CuteCharm (${lead.CuteCharm})`;
+      }
       return "Unknown lead";
     },
   },
@@ -345,24 +347,20 @@ const columns: ResultColumn<Result>[] = [
     render: (shiny: boolean) => (shiny ? "Yes" : "No"),
   },
   { title: "Gender", dataIndex: "gender" },
-  {
-    title: "IVs",
-    dataIndex: "ivs",
-    render: (ivs: Ivs) => {
-      return `HP: ${ivs.hp}, Atk: ${ivs.atk}, Def: ${ivs.def}, SpA: ${ivs.spa}, SpD: ${ivs.spd}, Spe: ${ivs.spe}`;
-    },
-  },
+  ...ivColumns,
 ];
 
 type Props = {
   game: Static3Game;
 };
 
-type Result = Wild3GeneratorResult & {
-  species: Species;
-  mapName: string;
-  encounter: Gen3EncounterType;
-};
+type Result = FlattenIvs<
+  Wild3GeneratorResult & {
+    species: Species;
+    mapName: string;
+    encounter: Gen3EncounterType;
+  }
+>;
 
 const getLeads = (values: FormState) => {
   const leads: ({
@@ -381,12 +379,14 @@ const getLeads = (values: FormState) => {
 };
 
 const getEncounterSlotsByMap = (values: FormState) => {
-  if (!values.species) return [];
+  if (values.species === "None") {
+    return [];
+  }
 
   const allMaps = emeraldWildGameData.speciesToEncounterSlots.get(
     values.species,
   );
-  if (!allMaps) {
+  if (allMaps === undefined) {
     return []; // error
   }
 
@@ -405,7 +405,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
     async (values) => {
       const ecounterSlotsByMap = getEncounterSlotsByMap(values);
 
-      const res = await rngTools.search_wild3({
+      const results = await rngTools.search_wild3({
         initial_seed,
         tid: values.tid,
         sid: values.sid,
@@ -428,22 +428,23 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
       });
 
       setResults(
-        res.map((r) => {
+        results.map((res) => {
           return {
-            ...r,
-            mapName: ecounterSlotsByMap[r.map_idx][0],
+            ...res,
+            ...res.ivs,
+            mapName: ecounterSlotsByMap[res.map_idx][0],
             encounter: "Land",
             species: values.species,
           };
         }),
       );
     },
-    [game],
+    [initial_seed],
   );
 
   const initialValues = React.useMemo(() => {
-    return getInitialValues(game);
-  }, [game]);
+    return getInitialValues();
+  }, []);
 
   return (
     <RngToolForm<FormState, Result>

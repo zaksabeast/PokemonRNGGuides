@@ -1,8 +1,8 @@
 use crate::Ivs;
+use crate::Species;
 use crate::gen3::{EncounterSlot, Gen3Lead, Gen3Method};
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
-use crate::Species;
 use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
@@ -10,26 +10,24 @@ use wasm_bindgen::prelude::*;
 
 use super::Gen3EncounterType;
 
-
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3EncounterSlotInfo {
-    pub min_level:u8,
-    pub max_level:u8,
-    pub species:Species,
-    pub gender_ratio:GenderRatio,
-    pub is_electric_type:bool,
-    pub is_steel_type:bool,
+    pub min_level: u8,
+    pub max_level: u8,
+    pub species: Species,
+    pub gender_ratio: GenderRatio,
+    pub is_electric_type: bool,
+    pub is_steel_type: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3EncounterTable {
-    pub map_id:String,
-    pub encounter_type:Gen3EncounterType,
-    pub slots:Vec<Wild3EncounterSlotInfo>,
+    pub map_id: String,
+    pub encounter_type: Gen3EncounterType,
+    pub slots: Vec<Wild3EncounterSlotInfo>,
 }
-
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]

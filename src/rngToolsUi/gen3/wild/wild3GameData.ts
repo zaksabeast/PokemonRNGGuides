@@ -35,7 +35,7 @@ export type Wild3GameData = {
 };
 
 const createSortedArrayWithoutDuplicates = <T extends string>(array: T[]) => {
-  return Array.from(new Set(array)).sort((a, b) => a.localeCompare(b));
+  return Array.from(new Set(array)).sort((lhs, rhs) => lhs.localeCompare(rhs));
 };
 
 export const getWild3GameData = (json: Wild3GameDataJSON): Wild3GameData => {
@@ -50,7 +50,7 @@ export const getWild3GameData = (json: Wild3GameDataJSON): Wild3GameData => {
         speciesToEncounterSlots.get(slot.species) ??
         new Map<string, EncounterSlot[]>();
 
-      const mapEncounterSlots = maps.get(table.map_id) || [];
+      const mapEncounterSlots = maps.get(table.map_id) ?? [];
 
       mapEncounterSlots.push(encounterSlots[encounterSlotIdx]);
       maps.set(table.map_id, mapEncounterSlots);

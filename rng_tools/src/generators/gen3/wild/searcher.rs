@@ -62,9 +62,7 @@ pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<Wild3GeneratorResult> {
         .enumerate()
         .skip(opts.initial_advances)
         .take(opts.max_advances.wrapping_add(1))
-        .flat_map(|(adv, mut rng)| {
-            search_wild3_at_given_advance(&mut rng, adv, opts)
-        })
+        .flat_map(|(adv, mut rng)| search_wild3_at_given_advance(&mut rng, adv, opts))
         .take(opts.max_result_count)
         .collect::<Vec<Wild3GeneratorResult>>()
 }

@@ -25,6 +25,7 @@ mod test {
             gender_ratio: GenderRatio::OneToOne,
             initial_advances: 0,
             max_advances: 9,
+            max_result_count: 10_000,
             filter: PkmFilter::new_allow_all(),
         };
 
@@ -269,6 +270,7 @@ mod test {
             methods: vec![Gen3Method::Wild1],
             initial_advances: 60,
             max_advances: 3625,
+            max_result_count: 10_000,
             leads: vec![None],
             filter: PkmFilter {
                 shiny: false,
@@ -392,6 +394,7 @@ mod test {
             methods: vec![Gen3Method::Wild1],
             initial_advances: 0,
             max_advances: 10,
+            max_result_count: 10_000,
             leads: vec![None],
             filter: PkmFilter {
                 shiny: true,
@@ -440,6 +443,7 @@ mod test {
             methods: vec![Gen3Method::Wild1],
             initial_advances: 0,
             max_advances: 4,
+            max_result_count: 10_000,
             leads: vec![Some(Gen3Lead::Synchronize(Nature::Hardy))],
             filter: PkmFilter::new_allow_all(),
         };

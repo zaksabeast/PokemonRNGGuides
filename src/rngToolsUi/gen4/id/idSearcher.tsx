@@ -10,6 +10,7 @@ import {
   FormikSelect,
   FormikSwitch,
   FormFieldTable,
+  FormikIdFilter,
 } from "~/components";
 import { rngTools, Id4, GenderRatio, Nature, IdFilter } from "~/rngTools";
 import { z } from "zod";
@@ -27,6 +28,13 @@ import {
   getCuteCharmTsvs,
   maxShinyOddsCuteCharmTsvs,
 } from "./tsvs";
+import { FormikRadio } from "~/components/radio";
+import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
+import { match, P } from "ts-pattern";
+
+const idTypes = ["Cute Charm", "Any"] as const;
+type IdType = (typeof idTypes)[number];
+const defaultIdType: IdType = "Cute Charm";
 
 const CuteCharmGenders = ["Male", "Female"] as const;
 type CuteCharmGender = (typeof CuteCharmGenders)[number];
@@ -88,54 +96,66 @@ type Result = Id4 & {
   genderRatios: GenderRatio[];
 };
 
-const columns: ResultColumn<Result>[] = [
-  {
-    title: "Select",
-    dataIndex: "seed",
-    render: (_, target) => <SelectButton target={target} />,
-  },
-  {
-    title: "TID",
-    dataIndex: "tid",
-  },
-  {
-    title: "SID",
-    dataIndex: "sid",
-  },
-  {
-    title: "TSV",
-    dataIndex: "tsv",
-  },
-  {
-    title: "Delay",
-    dataIndex: "delay",
-  },
-  {
-    title: "Target Gender",
-    dataIndex: "targetGender",
-  },
-  {
-    title: "Natures",
-    dataIndex: "natures",
-    render: (natures) => natures.join(", "),
-  },
-  {
-    title: "Gender Ratios",
-    dataIndex: "genderRatios",
-    render: (genderRatios) =>
-      genderRatios.length === 0 ? "All" : genderRatios.join(", "),
-  },
-];
+const getColumns = ({ idType }: { idType: IdType }): ResultColumn<Result>[] => {
+  const baseColumns: ResultColumn<Result>[] = [
+    {
+      title: "Select",
+      dataIndex: "seed",
+      render: (_, target) => <SelectButton target={target} />,
+    },
+    {
+      title: "TID",
+      dataIndex: "tid",
+    },
+    {
+      title: "SID",
+      dataIndex: "sid",
+    },
+    {
+      title: "TSV",
+      dataIndex: "tsv",
+    },
+    {
+      title: "Delay",
+      dataIndex: "delay",
+    },
+  ];
+
+  if (idType === "Any") {
+    return baseColumns;
+  }
+
+  return [
+    ...baseColumns,
+    {
+      title: "Target Gender",
+      dataIndex: "targetGender",
+    },
+    {
+      title: "Natures",
+      dataIndex: "natures",
+      render: (natures) => natures.join(", "),
+    },
+    {
+      title: "Gender Ratios",
+      dataIndex: "genderRatios",
+      render: (genderRatios) =>
+        genderRatios.length === 0 ? "All" : genderRatios.join(", "),
+    },
+  ];
+};
 
 const Validator = z.object({
   year: z.number().int().min(2000).max(2100),
   min_delay: z.number().int().min(0),
   max_delay: z.number().int().min(0),
-  maxShinyOdds: z.boolean(),
-  targetGender: z.enum(CuteCharmGenders),
-  targetNature: z.enum(["None", ...nature]),
-  targetSpecies: z.enum(species),
+  id_type: z.enum(idTypes),
+  max_shiny_odds: z.boolean(),
+  target_gender: z.enum(CuteCharmGenders),
+  target_nature: z.enum(["None", ...nature]),
+  target_species: z.enum(species),
   tid: z.number().int().min(0).max(65535).nullable(),
+  id_filter: IdFilterSchema,
 });
 
 type FormState = z.infer<typeof Validator>;
@@ -144,118 +164,161 @@ const initialValues: FormState = {
   year: 2000,
   min_delay: 5000,
   max_delay: 5200,
-  maxShinyOdds: true,
-  targetGender: "Female",
-  targetNature: "None",
-  targetSpecies: "None",
+  id_type: defaultIdType,
+  max_shiny_odds: true,
+  target_gender: "Female",
+  target_nature: "None",
+  target_species: "None",
   tid: null,
+  id_filter: {
+    type: "tid",
+    value0: 0,
+    value1: null,
+  },
 };
 
 const getFields = ({
+  idType,
   maxShinyOdds,
   setValues,
 }: {
+  idType: IdType;
   maxShinyOdds: boolean;
   setValues: (values: FormState) => void;
-}): Field[] => [
-  {
-    label: "Year",
-    input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
-  },
-  {
-    label: "Min Delay",
-    input: <FormikNumberInput<FormState> name="min_delay" numType="decimal" />,
-  },
-  {
-    label: "Max Delay",
-    input: <FormikNumberInput<FormState> name="max_delay" numType="decimal" />,
-  },
-  {
-    label: "Max Shiny Odds",
-    input: (
-      <FormikSwitch<FormState, "maxShinyOdds">
-        name="maxShinyOdds"
-        onChange={(checked) => {
-          if (checked) {
-            setValues(initialValues);
-          }
-        }}
-      />
-    ),
-  },
-  {
-    label: "Target Gender",
-    input: (
-      <FormikSelect<FormState, "targetGender">
-        name="targetGender"
-        options={toOptions(CuteCharmGenders)}
-        disabled={maxShinyOdds}
-      />
-    ),
-  },
-  {
-    label: "Target Nature",
-    input: (
-      <FormikSelect<FormState, "targetNature">
-        name="targetNature"
-        options={natureOptions.required}
-        disabled={maxShinyOdds}
-      />
-    ),
-  },
-  {
-    label: "Target Species",
-    input: (
-      <FormikSelect<FormState, "targetSpecies">
-        name="targetSpecies"
-        options={gen4SpeciesOptions.byName}
-        disabled={maxShinyOdds}
-      />
-    ),
-  },
-  {
-    label: "Optional TID",
-    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-  },
-];
+}): Field[] => {
+  const baseFields = [
+    {
+      label: "Year",
+      input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
+    },
+    {
+      label: "Min Delay",
+      input: (
+        <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+      ),
+    },
+    {
+      label: "Max Delay",
+      input: (
+        <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+      ),
+    },
+    {
+      label: "ID Type",
+      input: (
+        <FormikRadio<FormState, "id_type">
+          name="id_type"
+          options={toOptions(idTypes)}
+        />
+      ),
+    },
+  ];
+
+  if (idType === "Any") {
+    return [
+      ...baseFields,
+      {
+        label: "Filter",
+        input: <FormikIdFilter<FormState> name="id_filter" />,
+      },
+    ];
+  }
+
+  return [
+    ...baseFields,
+    {
+      label: "Max Shiny Odds",
+      input: (
+        <FormikSwitch<FormState, "max_shiny_odds">
+          name="max_shiny_odds"
+          onChange={(checked) => {
+            if (checked) {
+              setValues(initialValues);
+            }
+          }}
+        />
+      ),
+    },
+    {
+      label: "Target Gender",
+      input: (
+        <FormikSelect<FormState, "target_gender">
+          name="target_gender"
+          options={toOptions(CuteCharmGenders)}
+          disabled={maxShinyOdds}
+        />
+      ),
+    },
+    {
+      label: "Target Nature",
+      input: (
+        <FormikSelect<FormState, "target_nature">
+          name="target_nature"
+          options={natureOptions.required}
+          disabled={maxShinyOdds}
+        />
+      ),
+    },
+    {
+      label: "Target Species",
+      input: (
+        <FormikSelect<FormState, "target_species">
+          name="target_species"
+          options={gen4SpeciesOptions.byName}
+          disabled={maxShinyOdds}
+        />
+      ),
+    },
+    {
+      label: "Optional TID",
+      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+    },
+  ];
+};
 
 const Id4SearcherFields = () => {
   const { values, setValues } = useFormikContext<FormState>();
-  const maxShinyOdds = values.maxShinyOdds;
+  const maxShinyOdds = values.max_shiny_odds;
+  const idType = values.id_type;
   const fields = React.useMemo(
     () =>
       getFields({
+        idType,
         maxShinyOdds,
         setValues,
       }),
-    [maxShinyOdds, setValues],
+    [idType, maxShinyOdds, setValues],
   );
   return <FormFieldTable fields={fields} />;
 };
 
 export const Id4Searcher = () => {
+  const [idType, setIdType] = React.useState<IdType>(defaultIdType);
   const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const interestedTsvs = opts.maxShinyOdds
+    const interestedTsvs = opts.max_shiny_odds
       ? maxShinyOddsCuteCharmTsvs
       : getCuteCharmTsvs({
-          targetGender: opts.targetGender,
-          ratio: await rngTools.get_species_gender_ratio(opts.targetSpecies),
-          nature: opts.targetNature === "None" ? null : opts.targetNature,
+          targetGender: opts.target_gender,
+          ratio: await rngTools.get_species_gender_ratio(opts.target_species),
+          nature: opts.target_nature === "None" ? null : opts.target_nature,
         });
 
-    const idFilter: IdFilter =
-      opts.tid == null
-        ? {
-            Tsvs: interestedTsvs,
-          }
-        : {
-            TidTsvs: {
-              tid: opts.tid,
-              tsvs: interestedTsvs,
-            },
-          };
+    const idFilter = match<FormState, IdFilter>(opts)
+      .with({ id_type: "Cute Charm", tid: null }, () => ({
+        Tsvs: interestedTsvs,
+      }))
+      .with({ id_type: "Cute Charm", tid: P.not(null) }, (matched) => ({
+        TidTsvs: {
+          tid: matched.tid,
+          tsvs: interestedTsvs,
+        },
+      }))
+      .with({ id_type: "Any" }, () =>
+        denormalizeIdFilterOrDefault(opts.id_filter),
+      )
+      .exhaustive();
 
     const idResults = await rngTools.search_dppt_ids({
       ...opts,
@@ -270,7 +333,10 @@ export const Id4Searcher = () => {
     );
 
     setResults(formattedResults);
+    setIdType(opts.id_type);
   }, []);
+
+  const columns = React.useMemo(() => getColumns({ idType }), [idType]);
 
   return (
     <RngToolForm<FormState, Result>

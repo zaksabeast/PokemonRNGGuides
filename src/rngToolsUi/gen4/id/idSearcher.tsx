@@ -1,4 +1,5 @@
 import React from "react";
+import { message } from "antd";
 import {
   FormikNumberInput,
   ResultColumn,
@@ -35,43 +36,49 @@ type SelectButtonProps = {
 };
 
 const SelectButton = ({ target }: SelectButtonProps) => {
+  const [messageApi, contextHolder] = message.useMessage();
   const { values } = useFormikContext<FormState>();
   const [, setState] = useId4State();
   const [, setCurrentStep] = useCurrentStep();
   return (
-    <Button
-      trackerId="select_id4_target"
-      onClick={async () => {
-        const months = range(1, 12);
-        const dates = (
-          await pMap(
-            months,
-            async (month) => {
-              return await rngTools.dppt_calculate_seedtime({
-                seed: target.seed,
-                forced_second: null,
-                year: values.year,
-                month,
-              });
-            },
-            { concurrency: 12 },
-          )
-        ).flat();
+    <>
+      {contextHolder}
+      <Button
+        trackerId="select_id4_target"
+        onClick={async () => {
+          const months = range(1, 12);
+          const dates = (
+            await pMap(
+              months,
+              async (month) => {
+                return await rngTools.dppt_calculate_seedtime({
+                  seed: target.seed,
+                  forced_second: null,
+                  year: values.year,
+                  month,
+                });
+              },
+              { concurrency: 12 },
+            )
+          ).flat();
 
-        if (dates.length === 0) {
-          console.error("No valid dates found for the target ID.");
-          return;
-        }
+          if (dates.length === 0) {
+            messageApi.error(
+              "No valid dates found for this target.  Report this as a bug!",
+            );
+            return;
+          }
 
-        setState((state) => ({
-          ...state,
-          target: { id: target, dateTime: dates[0] },
-        }));
-        setCurrentStep((step) => step + 1);
-      }}
-    >
-      Select
-    </Button>
+          setState((state) => ({
+            ...state,
+            target: { id: target, dateTime: dates[0] },
+          }));
+          setCurrentStep((step) => step + 1);
+        }}
+      >
+        Select
+      </Button>
+    </>
   );
 };
 

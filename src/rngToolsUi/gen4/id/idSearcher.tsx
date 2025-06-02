@@ -96,6 +96,19 @@ type Result = Id4 & {
   genderRatios: GenderRatio[];
 };
 
+const formatGenderRatio = (genderRatio: GenderRatio) => {
+  return match(genderRatio)
+    .with("FemaleOnly", () => "0% Male")
+    .with("MaleOnly", () => "100% Male")
+    .with("Genderless", () => "Genderless")
+    .with("OneToOne", () => "50% Male")
+    .with("OneToSeven", () => "87.5% Male")
+    .with("OneToThree", () => "75% Male")
+    .with("ThreeToOne", () => "25% Male")
+    .with("SevenToOne", () => "12.5% Male")
+    .exhaustive();
+};
+
 const getColumns = ({ idType }: { idType: IdType }): ResultColumn<Result>[] => {
   const baseColumns: ResultColumn<Result>[] = [
     {
@@ -140,7 +153,9 @@ const getColumns = ({ idType }: { idType: IdType }): ResultColumn<Result>[] => {
       title: "Gender Ratios",
       dataIndex: "genderRatios",
       render: (genderRatios) =>
-        genderRatios.length === 0 ? "All" : genderRatios.join(", "),
+        genderRatios.length === 0
+          ? "All"
+          : genderRatios.map(formatGenderRatio).join(", "),
     },
   ];
 };
@@ -264,7 +279,7 @@ const getFields = ({
       input: (
         <FormikSelect<FormState, "target_species">
           name="target_species"
-          options={gen4SpeciesOptions.byName}
+          options={gen4SpeciesOptions.byNameOptional}
           disabled={maxShinyOdds}
         />
       ),
@@ -301,7 +316,10 @@ export const Id4Searcher = () => {
       ? maxShinyOddsCuteCharmTsvs
       : getCuteCharmTsvs({
           targetGender: opts.target_gender,
-          ratio: await rngTools.get_species_gender_ratio(opts.target_species),
+          ratio:
+            opts.target_species === "None"
+              ? null
+              : await rngTools.get_species_gender_ratio(opts.target_species),
           nature: opts.target_nature === "None" ? null : opts.target_nature,
         });
 

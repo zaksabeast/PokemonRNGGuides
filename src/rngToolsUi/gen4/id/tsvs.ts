@@ -254,7 +254,7 @@ export const getCuteCharmTsvs = ({
       return (
         cuteCharmTsv.targetGender === targetGender &&
         (cuteCharmTsv.ratio == null ||
-          cuteCharmTsv.ratio == null ||
+          ratio == null ||
           cuteCharmTsv.ratio === ratio) &&
         (nature != null ? cuteCharmTsv.natures.includes(nature) : true)
       );

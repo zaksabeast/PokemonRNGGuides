@@ -4250,7 +4250,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx",
-      translations: null,
+      translations: { en: "/rs-battery/", zh: "/zh-rs-battery/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5966,6 +5966,34 @@ export const guides = {
         import("~/../guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx"),
     ),
   },
+  "/zh-rs-battery/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["any"],
+      isNew: false,
+      title: "红蓝宝石 电池有电 vs 无电 乱数对比",
+      navDrawerTitle: "红蓝宝石 电池有电 vs 无电 乱数对比",
+      description:
+        "了解红宝石与蓝宝石在电池有电和电池耗尽情况下的乱数方法差异，以及这些差异如何影响宝可梦结果。",
+      slug: "/zh-rs-battery/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/rs-battery/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx",
+      translations: { en: "/rs-battery/", zh: "/zh-rs-battery/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx"
+        ),
+    ),
+  },
   "/zh-rs-gen3-sid/": {
     meta: {
       categories: ["Ruby and Sapphire"],
@@ -6278,6 +6306,7 @@ export const guideSlugs = [
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
   "/zh-retail-emerald-wild/",
+  "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",
   "/zh-rs-mirage-island/",
   "/zh-rs-sid-feebas/",

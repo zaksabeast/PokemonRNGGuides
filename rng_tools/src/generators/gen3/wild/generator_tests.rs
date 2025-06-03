@@ -16,7 +16,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
-            method: Gen3Method::H1,
+            method: Gen3Method::Wild1,
             advance: 9,
             map_idx: 0,
             lead: None,
@@ -44,6 +44,8 @@ mod test {
             },
             gender: Gender::Female,
             synch: false,
+            method: Gen3Method::Wild1,
+            lead: None,
             cute_charm: false,
         });
         assert_eq!(result, expected_result);
@@ -62,7 +64,7 @@ mod test {
                 EncounterSlot::Slot6,
                 EncounterSlot::Slot8,
             ]),
-            method: Gen3Method::H1,
+            method: Gen3Method::Wild1,
             lead: None,
             filter: PkmFilter {
                 shiny: false,
@@ -103,6 +105,8 @@ mod test {
             },
             gender: Gender::Female,
             synch: false,
+            method: Gen3Method::Wild1,
+            lead: None,
             cute_charm: false,
         });
         assert_eq!(result, expected_result);
@@ -114,7 +118,7 @@ mod test {
             sid: 47362,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
-            method: Gen3Method::H1,
+            method: Gen3Method::Wild1,
             advance: 0,
             map_idx: 0,
             lead: None,
@@ -149,6 +153,8 @@ mod test {
             },
             gender: Gender::Male,
             synch: false,
+            method: Gen3Method::Wild1,
+            lead: None,
             cute_charm: false,
         });
         assert_eq!(result, expected_result);
@@ -161,7 +167,7 @@ mod test {
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
-            method: Gen3Method::H1,
+            method: Gen3Method::Wild1,
             advance: 0,
             map_idx: 0,
             lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
@@ -188,6 +194,8 @@ mod test {
             },
             gender: Gender::Female,
             synch: false,
+            method: Gen3Method::Wild1,
+            lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
             cute_charm: false,
         });
         assert_eq!(result, expected_result);
@@ -200,7 +208,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
-            method: Gen3Method::H1,
+            method: Gen3Method::Wild1,
             advance: 2,
             map_idx: 0,
             lead: Some(Gen3Lead::CuteCharm(Gender::Female)),
@@ -229,6 +237,8 @@ mod test {
             gender: Gender::Male,
             synch: false,
             cute_charm: true,
+            method: Gen3Method::Wild1,
+            lead: Some(Gen3Lead::CuteCharm(Gender::Female)),
         });
         assert_eq!(result, expected_result);
     }

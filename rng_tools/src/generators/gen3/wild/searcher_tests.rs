@@ -19,12 +19,13 @@ mod test {
             initial_seed: 0,
             leads: vec![None],
             encounter_slots_by_map: vec![None],
-            methods: vec![Gen3Method::H1],
+            methods: vec![Gen3Method::Wild1],
             tid: 0,
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             initial_advances: 0,
             max_advances: 9,
+            max_result_count: 10_000,
             filter: PkmFilter::new_allow_all(),
         };
 
@@ -47,6 +48,8 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -67,6 +70,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -87,6 +92,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -107,6 +114,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -127,6 +136,8 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -147,6 +158,8 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -167,6 +180,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -187,6 +202,8 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -207,6 +224,8 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -227,6 +246,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
         ];
@@ -246,9 +267,10 @@ mod test {
                 EncounterSlot::Slot6,
                 EncounterSlot::Slot8,
             ])],
-            methods: vec![Gen3Method::H1],
+            methods: vec![Gen3Method::Wild1],
             initial_advances: 60,
             max_advances: 3625,
+            max_result_count: 10_000,
             leads: vec![None],
             filter: PkmFilter {
                 shiny: false,
@@ -286,6 +308,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -306,6 +330,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -326,6 +352,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -346,6 +374,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: None,
                 cute_charm: false,
             },
         ];
@@ -361,9 +391,10 @@ mod test {
             sid: 47362,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slots_by_map: vec![None],
-            methods: vec![Gen3Method::H1],
+            methods: vec![Gen3Method::Wild1],
             initial_advances: 0,
             max_advances: 10,
+            max_result_count: 10_000,
             leads: vec![None],
             filter: PkmFilter {
                 shiny: true,
@@ -393,6 +424,8 @@ mod test {
             },
             gender: Gender::Male,
             synch: false,
+            method: Gen3Method::Wild1,
+            lead: None,
             cute_charm: false,
         }];
         let result = search_wild3(&options);
@@ -407,9 +440,10 @@ mod test {
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slots_by_map: vec![None],
-            methods: vec![Gen3Method::H1],
+            methods: vec![Gen3Method::Wild1],
             initial_advances: 0,
             max_advances: 4,
+            max_result_count: 10_000,
             leads: vec![Some(Gen3Lead::Synchronize(Nature::Hardy))],
             filter: PkmFilter::new_allow_all(),
         };
@@ -432,6 +466,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -452,6 +488,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -472,6 +510,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -492,6 +532,8 @@ mod test {
                 },
                 gender: Gender::Female,
                 synch: true,
+                method: Gen3Method::Wild1,
+                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
                 cute_charm: false,
             },
             Wild3GeneratorResult {
@@ -512,6 +554,8 @@ mod test {
                 },
                 gender: Gender::Male,
                 synch: false,
+                method: Gen3Method::Wild1,
+                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
                 cute_charm: false,
             },
         ];

@@ -74,6 +74,7 @@ import {
 } from "~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg";
 import { withTags } from "~/components/tagDetector/provider";
 import { mapValues } from "lodash-es";
+import React from "react";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -129,6 +130,10 @@ const tools = {
   EmeraldHeldEgg,
   EmeraldPickupEgg,
   Static3,
+  Wild3SearcherFindTarget: React.lazy(async () => {
+    const tool = await import("~/rngToolsUi/gen3/wild/wild3FindTarget");
+    return { default: tool.Wild3SearcherFindTarget };
+  }),
   Gen3TidSidGenerator,
   OrAsMirageSpot,
   Gen4Timer,

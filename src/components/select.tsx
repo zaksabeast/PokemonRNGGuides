@@ -128,6 +128,7 @@ export const FormikSelect = <
   FieldKey extends keyof FormState,
 >({
   name,
+  selectAllNoneButtons,
   ...props
 }: FormikSelectProps<FormState, FieldKey>) => {
   const [{ value, onBlur }, { error }, { setValue }] =
@@ -171,7 +172,7 @@ export const FormikSelect = <
     [props.options, setValue],
   );
 
-  const dropdownRender = props.selectAllNoneButtons
+  const dropdownRender = selectAllNoneButtons
     ? selectAllNoneDropdownRender
     : undefined;
 

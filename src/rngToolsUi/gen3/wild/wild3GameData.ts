@@ -1,5 +1,6 @@
 import { Wild3EncounterTable, Species, EncounterSlot } from "~/rngTools";
 import { encounterSlots } from "~/types";
+import { uniq } from "lodash-es";
 
 export type Wild3GameDataJSON = {
   encounter_tables: Wild3EncounterTable[];
@@ -35,7 +36,7 @@ export type Wild3GameData = {
 };
 
 const createSortedArrayWithoutDuplicates = <T extends string>(array: T[]) => {
-  return Array.from(new Set(array)).sort((lhs, rhs) => lhs.localeCompare(rhs));
+  return uniq(array).sort((lhs, rhs) => lhs.localeCompare(rhs));
 };
 
 export const getWild3GameData = (json: Wild3GameDataJSON): Wild3GameData => {

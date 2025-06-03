@@ -38,7 +38,7 @@ import {
 } from "~/types";
 
 import { getWild3GameData } from "./wild3GameData";
-import emerald_wild3_game_data from "../../../__generated__/emerald_wild3_game_data";
+import emerald_wild3_game_data from "~/__generated__/emerald_wild3_game_data";
 import { startCase } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 

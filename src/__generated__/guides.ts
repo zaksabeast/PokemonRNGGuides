@@ -3782,7 +3782,7 @@ export const guides = {
       categories: ["Sword and Shield"],
       tags: ["retail"],
       isNew: false,
-      title: "Sword and Shield find raid seed without custom firmware",
+      title: "Sword and Shield - Find Raid Seed Without CFW",
       navDrawerTitle: "Find Raid Seed",
       description:
         "Learn how to find raid seeds in Sword and Shield without custom firmware.",

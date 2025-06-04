@@ -15,6 +15,7 @@
     "build:guides:force": "bun run scripts/reset-guides.ts && bun run scripts/build-guides.tsx --no-detected-tags && bun run build:guides",
     "build:guides:check": "bun run scripts/build-guides.tsx --check",
     "build:rng_tools": "wasm-pack build rng_tools && bun i --frozen-lockfile",
+    "build:wild3": "bun run scripts/wild3/generateWildGameData.ts",
     "minimize-css": "bunx postcss dist/assets/*.css --replace",
     "lint": "bun run lint:types && bun run build:guides:check && bun run lint:code && bun run lint:format",
     "lint:code": "eslint .",

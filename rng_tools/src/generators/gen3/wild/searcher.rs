@@ -5,7 +5,12 @@ use crate::gen3::Gen3Method;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
 use crate::{GenderRatio, PkmFilter};
+use serde::{Deserialize, Serialize};
+use tsify_next::Tsify;
+use wasm_bindgen::prelude::*;
 
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3SearcherOptions {
     pub initial_seed: u32,
     pub tid: u16,
@@ -13,6 +18,7 @@ pub struct Wild3SearcherOptions {
     pub gender_ratio: GenderRatio,
     pub initial_advances: usize,
     pub max_advances: usize,
+    pub max_result_count: usize,
     pub filter: PkmFilter,
     pub leads: Vec<Option<Gen3Lead>>,
     pub encounter_slots_by_map: Vec<Option<Vec<EncounterSlot>>>,
@@ -49,6 +55,7 @@ fn search_wild3_at_given_advance(
     results
 }
 
+#[wasm_bindgen]
 pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<Wild3GeneratorResult> {
     let base_rng = Pokerng::new(opts.initial_seed);
     StateIterator::new(base_rng)
@@ -56,5 +63,6 @@ pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<Wild3GeneratorResult> {
         .skip(opts.initial_advances)
         .take(opts.max_advances.wrapping_add(1))
         .flat_map(|(adv, mut rng)| search_wild3_at_given_advance(&mut rng, adv, opts))
+        .take(opts.max_result_count)
         .collect::<Vec<Wild3GeneratorResult>>()
 }

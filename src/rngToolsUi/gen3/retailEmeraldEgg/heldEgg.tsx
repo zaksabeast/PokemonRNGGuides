@@ -148,7 +148,7 @@ const fields: Field[] = [
     ),
   },
   {
-    label: "Has roamer",
+    label: "Roamer is active",
     input: <FormikSwitch<FormState, "has_roamer"> name="has_roamer" />,
   },
   {

@@ -6,6 +6,7 @@ import { nature } from "~/types/nature";
 import { IvInput, IvsSchema } from "~/components/ivInput";
 import { ability } from "~/types/ability";
 import { gender } from "~/types/gender";
+import { maxIvs, minIvs } from "~/types/ivs";
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
 import { toOptions } from "~/utils/options";
@@ -58,6 +59,19 @@ type FieldOptOuts = {
   gender?: boolean;
   ivs?: boolean;
 };
+
+export const getPkmFilterInitialValues = (): Omit<
+  PkmFilterFields,
+  "filter_stats"
+> =>
+  ({
+    filter_shiny: false,
+    filter_min_ivs: minIvs,
+    filter_max_ivs: maxIvs,
+    filter_nature: null,
+    filter_gender: null,
+    filter_ability: null,
+  }) as const;
 
 const optOut = <T,>(condition: boolean | undefined, value: T): T | null => {
   return condition === false ? null : value;

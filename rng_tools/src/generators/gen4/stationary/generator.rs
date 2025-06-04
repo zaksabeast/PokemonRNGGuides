@@ -1,16 +1,20 @@
-use crate::Ivs;
-use crate::rng::Rng;
-use crate::rng::StateIterator;
-use crate::rng::lcrng::Pokerng;
-use crate::{AbilityType, Gender, Nature, PkmFilter, PkmState, gen3_shiny};
+use wasm_bindgen::prelude::wasm_bindgen;
 
 use super::GameVersion;
 use super::LeadAbilities;
 use super::StaticEncounterId;
 use super::dpt_method_jk;
 use super::hgss_method_jk;
+use crate::Ivs;
+use crate::rng::Rng;
+use crate::rng::StateIterator;
+use crate::rng::lcrng::Pokerng;
+use crate::{AbilityType, Gender, Nature, PkmFilter, PkmState, gen3_shiny};
+use serde::{Deserialize, Serialize};
+use tsify_next::Tsify;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen4StaticOpts {
     pub tid: u16,
     pub sid: u16,
@@ -22,7 +26,8 @@ pub struct Gen4StaticOpts {
     pub lead: Option<LeadAbilities>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen4SPokemon {
     pub pid: u32,
     pub shiny: bool,
@@ -288,6 +293,7 @@ pub fn generate_4statics(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Option<Gen
     }
 }
 
+#[wasm_bindgen]
 pub fn filter_4static(opts: &Gen4StaticOpts, seed: u32) -> Vec<Gen4SPokemon> {
     let base_rng = Pokerng::new(seed);
     StateIterator::new(base_rng)

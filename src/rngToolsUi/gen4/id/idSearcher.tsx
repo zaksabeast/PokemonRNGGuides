@@ -12,7 +12,16 @@ import {
   FormFieldTable,
   FormikIdFilter,
 } from "~/components";
-import { rngTools, Id4, GenderRatio, Nature, IdFilter } from "~/rngTools";
+import {
+  rngTools,
+  Id4,
+  GenderRatio,
+  Nature,
+  IdFilter,
+  Id4SearchOptions,
+  useBatchedTool,
+  multiWorkerRngTools,
+} from "~/rngTools";
 import { z } from "zod";
 import { useId4State } from "./state";
 import { useCurrentStep } from "~/components/stepper/state";
@@ -307,52 +316,70 @@ const Id4SearcherFields = () => {
   return <FormFieldTable fields={fields} />;
 };
 
+const chunkRange = ([start, end]: [number, number], chunkSize: number) => {
+  const chunks = [];
+  for (let i = start; i < end; i += chunkSize) {
+    chunks.push([i, Math.min(i + chunkSize, end)]);
+  }
+  return chunks;
+};
+
+const mapResult = (res: Id4): Result => ({
+  ...res,
+  ...getCuteCharmTsvProps(res.tsv),
+});
+
 export const Id4Searcher = () => {
+  const [searchDpptIds, { data: results }] = useBatchedTool(
+    multiWorkerRngTools.search_dppt_ids,
+    mapResult,
+  );
+
   const [idType, setIdType] = React.useState<IdType>(defaultIdType);
-  const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const interestedTsvs = opts.max_shiny_odds
-      ? maxShinyOddsCuteCharmTsvs
-      : getCuteCharmTsvs({
-          targetGender: opts.target_gender,
-          ratio:
-            opts.target_species === "None"
-              ? null
-              : await rngTools.get_species_gender_ratio(opts.target_species),
-          nature: opts.target_nature === "None" ? null : opts.target_nature,
-        });
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
+    async (opts) => {
+      const interestedTsvs = opts.max_shiny_odds
+        ? maxShinyOddsCuteCharmTsvs
+        : getCuteCharmTsvs({
+            targetGender: opts.target_gender,
+            ratio:
+              opts.target_species === "None"
+                ? null
+                : await rngTools.get_species_gender_ratio(opts.target_species),
+            nature: opts.target_nature === "None" ? null : opts.target_nature,
+          });
 
-    const idFilter = match<FormState, IdFilter>(opts)
-      .with({ id_type: "Cute Charm", tid: null }, () => ({
-        Tsvs: interestedTsvs,
-      }))
-      .with({ id_type: "Cute Charm", tid: P.not(null) }, (matched) => ({
-        TidTsvs: {
-          tid: matched.tid,
-          tsvs: interestedTsvs,
-        },
-      }))
-      .with({ id_type: "Any" }, () =>
-        denormalizeIdFilterOrDefault(opts.id_filter),
-      )
-      .exhaustive();
+      const idFilter = match<FormState, IdFilter>(opts)
+        .with({ id_type: "Cute Charm", tid: null }, () => ({
+          Tsvs: interestedTsvs,
+        }))
+        .with({ id_type: "Cute Charm", tid: P.not(null) }, (matched) => ({
+          TidTsvs: {
+            tid: matched.tid,
+            tsvs: interestedTsvs,
+          },
+        }))
+        .with({ id_type: "Any" }, () =>
+          denormalizeIdFilterOrDefault(opts.id_filter),
+        )
+        .exhaustive();
 
-    const idResults = await rngTools.search_dppt_ids({
-      ...opts,
-      filter: idFilter,
-    });
+      const chunked = chunkRange([opts.min_delay, opts.max_delay], 200);
+      const searchOpts: Id4SearchOptions[] = chunked.map(
+        ([min_delay, max_delay]) => ({
+          year: opts.year,
+          min_delay,
+          max_delay,
+          filter: idFilter,
+        }),
+      );
+      await searchDpptIds(searchOpts);
 
-    const formattedResults = idResults.map(
-      (res): Result => ({
-        ...res,
-        ...getCuteCharmTsvProps(res.tsv),
-      }),
-    );
-
-    setResults(formattedResults);
-    setIdType(opts.id_type);
-  }, []);
+      setIdType(opts.id_type);
+    },
+    [searchDpptIds],
+  );
 
   const columns = React.useMemo(() => getColumns({ idType }), [idType]);
 

@@ -5,8 +5,8 @@ mod test {
 
     use crate::assert_list_eq;
 
+    use crate::EncounterSlot;
     use crate::Ivs;
-    use crate::gen3::EncounterSlot;
     use crate::gen3::Gen3Lead;
     use crate::gen3::Gen3Method;
     use crate::gen3::search_wild3;

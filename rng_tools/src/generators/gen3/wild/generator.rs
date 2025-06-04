@@ -1,6 +1,7 @@
+use crate::EncounterSlot;
 use crate::Ivs;
 use crate::Species;
-use crate::gen3::{EncounterSlot, Gen3Lead, Gen3Method};
+use crate::gen3::{Gen3Lead, Gen3Method};
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};

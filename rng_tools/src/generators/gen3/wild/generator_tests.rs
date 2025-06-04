@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod test {
+    use crate::EncounterSlot;
     use crate::Ivs;
-    use crate::gen3::EncounterSlot;
     use crate::gen3::Gen3Lead;
     use crate::gen3::Gen3Method;
     use crate::gen3::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};

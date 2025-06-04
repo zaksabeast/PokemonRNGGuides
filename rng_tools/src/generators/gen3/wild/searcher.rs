@@ -1,5 +1,5 @@
 use super::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
-use crate::gen3::EncounterSlot;
+use crate::EncounterSlot;
 use crate::gen3::Gen3Lead;
 use crate::gen3::Gen3Method;
 use crate::rng::StateIterator;

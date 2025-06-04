@@ -39,7 +39,7 @@ const columns: ResultColumn<Result>[] = [
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
   { title: "Gender", dataIndex: "gender" },
-   {
+  {
     title: "Advance",
     dataIndex: "advance",
     monospace: true,
@@ -61,33 +61,33 @@ const Validator = z
 type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-    seed: 0,
-    tid: 0,
-    sid: 0,
-    game: GameVersion[0],
-    encounter: StaticEncounterId[0],
-    initial_advances: 0,
-    max_advances: 100,
-    filter_shiny: false,
-    filter_min_ivs: minIvs,
-    filter_max_ivs: maxIvs,
-    filter_nature: null,
-    filter_gender: null,
-    filter_ability: null,
+  seed: 0,
+  tid: 0,
+  sid: 0,
+  game: GameVersion[0],
+  encounter: StaticEncounterId[0],
+  initial_advances: 0,
+  max_advances: 100,
+  filter_shiny: false,
+  filter_min_ivs: minIvs,
+  filter_max_ivs: maxIvs,
+  filter_nature: null,
+  filter_gender: null,
+  filter_ability: null,
 };
 const fields: Field[] = [
-        {
-          label: "Seed",
-          input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
-        },
-        {
-          label: "TID",
-          input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-        },
-        {
-          label: "SID",
-          input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-        },
+  {
+    label: "Seed",
+    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
+  },
+  {
+    label: "TID",
+    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+  },
+  {
+    label: "SID",
+    input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
+  },
   {
     label: "Initial Advances",
     input: (
@@ -101,47 +101,40 @@ const fields: Field[] = [
     ),
   },
   {
-        label: "Species",
-        input: (
-          <FormikSelect<FormState, "species">
-            name="species"
-            options={StaticEncounterId}
-          />
-        ),
-      },
-        {
-        label: "Game",
-        input: (
-          <FormikSelect<FormState, "">
-            name="game"
-            options={GameVersion}
-          />
-        ),
-      },
-       ...getPkmFilterFields(),
+    label: "Species",
+    input: (
+      <FormikSelect<FormState, "species">
+        name="species"
+        options={StaticEncounterId}
+      />
+    ),
+  },
+  {
+    label: "Game",
+    input: <FormikSelect<FormState, ""> name="game" options={GameVersion} />,
+  },
+  ...getPkmFilterFields(),
 ];
 
-export const filter_4static; => {
+export const filter_4static = () => {
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const results = await rngTools.filter_4static({
-        ...opts,
-        filter: {
-          shiny: opts.filter_shiny,
-          nature: opts.filter_nature,
-          gender: opts.filter_gender,
-          ability: opts.filter_ability,
-          min_ivs: opts.filter_min_ivs,
-          max_ivs: opts.filter_max_ivs,
-          stats: null,
-        },
-      });
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+    const results = await rngTools.filter_4static({
+      ...opts,
+      filter: {
+        shiny: opts.filter_shiny,
+        nature: opts.filter_nature,
+        gender: opts.filter_gender,
+        ability: opts.filter_ability,
+        min_ivs: opts.filter_min_ivs,
+        max_ivs: opts.filter_max_ivs,
+        stats: null,
+      },
+    });
 
-      setResults(results.map(flattenIvs));
-    },
-  );
+    setResults(results.map(flattenIvs));
+  });
 
   return (
     <RngToolForm<FormState, Result>

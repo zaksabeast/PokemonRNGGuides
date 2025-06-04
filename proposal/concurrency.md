@@ -22,7 +22,7 @@ const results = await multiWorkerRngTools.search_dppt_ids(opts);
 
 If this works well, we can remove the old `rngTools` and rename `multiWorkerRngTools` back to `rngTools`.
 
-We'll need to be careful not to spawn too many workers at once, since that can cause performance issues. We should keep it under 4 active workers at a time.
+We'll need to be careful not to spawn too many workers at once, since that can cause performance issues. Concurrency limiting tools will be added in the next section of this document.
 
 ## Batching and concurrency
 
@@ -48,26 +48,45 @@ const mult2 = async (num: number) => [num * 2];
 To make use a batchable function with chunked args, we'll add a new hook called `useBatchedTool`. It takes a batchable function and returns a function that accepts a list of the same input type.
 
 ```ts
-const [doMath] = useBatchedTool(mult2);
+const { run: doMath } = useBatchedTool(mult2);
 const result = await doMath([1, 2, 3]);
 console.log(result); // [2, 4, 6]
 ```
 
-`useBatchedTool` returns a tuple, `[runFn, meta, cancelFn]`, where meta includes progress, loading, etc.
+`useBatchedTool` returns an object:
+
+```ts
+type BatchedTool<Arg, Ret, MappedRet = Ret> {
+  run: (args: Arg[]) => Ret[]; // Process the chunked args
+  cancel: () => void; // Cancel the operation
+  data: MappedRet[]; // Current processed data
+  loading: boolean; // If is processing processing
+  progressPercent: number; // processedArgs / totalArgs * 100
+  error: Error | null; // An error caught while process a chunk
+}
+```
 
 ### Mapping results
 
 We often need to add additional data to results, such as the offset between a result and target advance.
 
-`useBatchedTool` should support a second argument: a mapping function that transforms each result item.
+`useBatchedTool` should support a second argument with options to transform the results:
+
+```ts
+type BatchedToolOptions<Result, MappedResult = Result> {
+  map?: (res: Result) => MappedResult;
+  sortBy?: (res: MappedResult) => MappedResult;
+}
+```
 
 In this example we're multiplying the number as before, but transforming the result into an object.
 
 ```ts
 const mapper = (num: number) => ({ num });
-const [doMath] = useBatchedTool(mult2, mapper);
+const sorter = (num: number) => 0 - num;
+const { run: doMath } = useBatchedTool(mult2, { map: mapper, sortBy: sorter });
 const result = await doMath([1, 2, 3]);
-console.log(result); // [{ num: 2 }, { num: 4 }, { num: 6 }]
+console.log(result); // [{ num: 6 }, { num: 4 }, { num: 2 }]
 ```
 
 ### Concurrency
@@ -96,14 +115,14 @@ console.log(sequential); //["1: 7:13:12 PM", "2: 7:13:13 PM", "3: 7:13:14 PM"]
 Using `useBatchedTool`, we get concurrent results. Notice how the results share the same timestamp.
 
 ```ts
-const [batchedTime] = useBatchedTool(getTime);
+const { run: batchedTime } = useBatchedTool(getTime);
 const concurrent = await batchedTime([1, 2, 3]);
 console.log(concurrent); // ["1: 7:13:15 PM", "2: 7:13:15 PM", "3: 7:13:15 PM"]
 ```
 
 This allows us to get calculations done faster.
 
-Concurrency should default to 4, which is a safe number of workers to run at once.
+Concurrency should be the minimum of 4 (generally safe number of workers) and [`window.navigator.hardwareConcurrency`](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/hardwareConcurrency).
 
 ### Streamed results
 
@@ -112,7 +131,7 @@ We should be able to access results as they're processed so users can see result
 The example below shows the logging that occurs each render as new results are available. Notice how new results are logged over a few seconds.
 
 ```ts
-const [doMath, { data }] = useBatchedTool(mult2);
+const { run: doMath, data } = useBatchedTool(mult2);
 
 console.log(timestamp(), data);
 // 7:26:31 PM [2, 4]
@@ -129,7 +148,7 @@ React.useEffect(() => {
 The hook should provide a way to cancel an in-progress operation. Notice how the log only happens a single time.
 
 ```ts
-const [doMath, { data }, cancel] = useBatchedTool(mult2);
+const { run: doMath, data, cancel } = useBatchedTool(mult2);
 
 console.log(timestamp(), data);
 // 7:26:31 PM [2, 4, 6, 8]
@@ -150,7 +169,7 @@ Even after canceling, the most recent results remain.
 The hook should expose the current loading state, progress percentage, and any error that occurs. Notice how progress incremeents over time.
 
 ```ts
-const [doMath, { loading, progressPercent, error }] = useBatchedTool(mult2);
+const { run: doMath, loading, progressPercent, error } = useBatchedTool(mult2);
 
 console.log(loading, progressPercent, error);
 // true 0 null
@@ -170,7 +189,7 @@ Most of our existing RNG tools are already batchable, so they should work out of
 In this example, we:
 
 - Use `multiWorkerRngTools` for multi-threading
-- Use `useBatchedTool` for concurrency with a 4-worker limit
+- Use `useBatchedTool` for concurrency with a safe worker limit
 - Add `calculateOffset` to transform results
 - Display progress to the user
 - Offer a cancel button
@@ -184,7 +203,7 @@ const calculateOffset = (result: Id4): Result => ({
   offset: offset.advance - targetAdvance,
 });
 
-const [searchDpptIds, { data, progressPercent, loading }, cancel] =
+const { run: searchDpptIds, data, progressPercent, loading, cancel } =
   useBatchedTool(multiWorkerRngTools.search_dppt_ids, calculateOffset);
 
 const onSubmit = async (opts: FormState) => {

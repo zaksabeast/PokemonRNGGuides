@@ -46,16 +46,16 @@ pub fn generate_dppt_ids(opts: Id4Options) -> Vec<Id4> {
             let tid = sidtid as u16;
             let sid = (sidtid >> 16) as u16;
 
-            // if filter.filter_gen3(tid, sid) {
-            results.push(Id4 {
-                seed,
-                delay,
-                tid,
-                sid,
-                tsv: (tid ^ sid) >> 3,
-                seconds: seconds as u8,
-            });
-            // }
+            if filter.filter_gen3(tid, sid) {
+                results.push(Id4 {
+                    seed,
+                    delay,
+                    tid,
+                    sid,
+                    tsv: (tid ^ sid) >> 3,
+                    seconds: seconds as u8,
+                });
+            }
         }
     }
 

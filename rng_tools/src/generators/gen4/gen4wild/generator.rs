@@ -178,7 +178,7 @@ fn gen4_method_j(
     let iv2 = rng.rand::<u16>();
     let ivs = Ivs::new_g3(iv1, iv2);
 
-    let pkm = GeneratedPokemon {
+    return GeneratedPokemon {
         pid,
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
@@ -188,7 +188,6 @@ fn gen4_method_j(
         nature: Nature::from_pid(pid),
         advance: 0,
     };
-    pkm
 }
 
 fn gen4_method_k(
@@ -283,7 +282,7 @@ fn gen4_method_k(
     let iv2 = rng.rand::<u16>();
     let ivs = Ivs::new_g3(iv1, iv2);
 
-    let pkm = GeneratedPokemon {
+    return GeneratedPokemon {
         pid,
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
@@ -293,7 +292,6 @@ fn gen4_method_k(
         nature: Nature::from_pid(pid),
         advance: 0,
     };
-    pkm
 }
 
 fn generate_wild4(

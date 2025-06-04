@@ -1,7 +1,7 @@
+use crate::EncounterSlot;
 use crate::GenderRatio;
 use crate::Ivs;
 use crate::Species;
-use crate::gen3::EncounterSlot;
 use crate::gen4::GameVersion;
 use crate::gen4::LeadAbilities;
 use crate::rng::Rng;
@@ -10,7 +10,7 @@ use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, Gender, Nature, PkmFilter, PkmState, gen3_shiny};
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct Gen4SWildOpts {
+pub struct Gen4SearcherOpts {
     pub tid: u16,
     pub sid: u16,
     pub initial_advances: usize,
@@ -59,19 +59,19 @@ impl PkmState for GeneratedPokemon {
 pub struct RouteData {
     pub route_id: usize,
     pub encounter_type: EncounterType,
-    pub encounter_slots: Vec<EncounterslotIDs>,
+    pub encounter_slots: Vec<Encounter>,
 }
 impl RouteData {
-    pub fn get_slot(&self, slot_id: u8) -> Option<&EncounterslotIDs> {
+    pub fn get_slot(&self, encounter_slot: EncounterSlot) -> Option<&Encounter> {
         self.encounter_slots
             .iter()
-            .find(|slot| slot.slot_id == slot_id)
+            .find(|slot| slot.slot == encounter_slot)
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-pub struct EncounterslotIDs {
-    pub slot_id: u8,
-    pub pokemon_id: Species,
+pub struct Encounter {
+    pub slot: EncounterSlot,
+    pub species: Species,
     pub min_level: u8,
     pub max_level: u8,
 }
@@ -85,18 +85,18 @@ pub enum EncounterType {
     SuperRod,
 }
 
-pub fn gen4_method_j(
+fn gen4_method_j(
     rng: &mut Pokerng,
-    opts: &Gen4SWildOpts,
+    opts: &Gen4SearcherOpts,
     route: &RouteData,
-) -> Option<GeneratedPokemon> {
-    let encounter_rand = ((rng.rand::<u32>() >> 16) / 656) as u8;
+) -> GeneratedPokemon {
+    let encounter_rand = (rng.rand::<u16>() / 656) as u8;
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
-    let slot = route.get_slot(encounter_slot.slot_id())?;
+    let slot = route.get_slot(encounter_slot);
 
     if let Some(lead) = opts.lead {
         if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
-            let gender_threshold = slot.pokemon_id.gender_ratio();
+            let gender_threshold = slot.unwrap().species.gender_ratio();
             let buffer = match opts.lead {
                 Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
                 Some(LeadAbilities::CutecharmM) => 0,
@@ -112,14 +112,14 @@ pub fn gen4_method_j(
             if rng.rand::<u16>() / 0x5556 != 0 {
                 let nature = (rng.rand::<u16>() / 0xa3e) as u8;
                 let pid = buffer + nature as u32;
-                let gender = slot.pokemon_id.gender_from_pid(pid);
+                let gender = slot.unwrap().species.gender_from_pid(pid);
                 if gender == target_gender {
                     let iv1 = rng.rand::<u16>();
                     let iv2 = rng.rand::<u16>();
                     let ivs = Ivs::new_g3(iv1, iv2);
                     let nature = Nature::from_pid(pid);
 
-                    return Some(GeneratedPokemon {
+                    return GeneratedPokemon {
                         pid,
                         shiny: gen3_shiny(pid, opts.tid, opts.sid),
                         ability: AbilityType::from_gen3_pid(pid),
@@ -128,7 +128,7 @@ pub fn gen4_method_j(
                         nature,
                         encounter_slot,
                         advance: 0,
-                    });
+                    };
                 };
             }
         }
@@ -149,16 +149,16 @@ pub fn gen4_method_j(
             let iv1 = rng.rand::<u16>();
             let iv2 = rng.rand::<u16>();
             let ivs = Ivs::new_g3(iv1, iv2);
-            return Some(GeneratedPokemon {
+            return GeneratedPokemon {
                 pid,
                 shiny: gen3_shiny(pid, opts.tid, opts.sid),
                 ability: AbilityType::from_gen3_pid(pid),
-                gender: slot.pokemon_id.gender_from_pid(pid),
+                gender: slot.unwrap().species.gender_from_pid(pid),
                 ivs,
                 nature: Nature::from_pid(pid),
                 encounter_slot,
                 advance: 0,
-            });
+            };
         }
     }
     let nature_rand = (rng.rand::<u16>() / 0xa3e) as u8;
@@ -182,27 +182,27 @@ pub fn gen4_method_j(
         pid,
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
-        gender: slot.pokemon_id.gender_from_pid(pid),
+        gender: slot.unwrap().species.gender_from_pid(pid),
         encounter_slot,
         ivs,
         nature: Nature::from_pid(pid),
         advance: 0,
     };
-    Some(pkm)
+    pkm
 }
 
-pub fn gen4_method_k(
+fn gen4_method_k(
     rng: &mut Pokerng,
-    opts: &Gen4SWildOpts,
+    opts: &Gen4SearcherOpts,
     route: &RouteData,
-) -> Option<GeneratedPokemon> {
-    let encounter_rand = ((rng.rand::<u32>() >> 16) % 100) as u8;
+) -> GeneratedPokemon {
+    let encounter_rand = (rng.rand::<u16>() % 100) as u8;
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
-    let slot = route.get_slot(encounter_slot.slot_id())?;
+    let slot = route.get_slot(encounter_slot);
 
     if let Some(lead) = opts.lead {
         if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
-            let gender_threshold = slot.pokemon_id.gender_ratio();
+            let gender_threshold = slot.unwrap().species.gender_ratio();
             let buffer = match opts.lead {
                 Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
                 Some(LeadAbilities::CutecharmM) => 0,
@@ -217,14 +217,14 @@ pub fn gen4_method_k(
             if rng.rand::<u16>() % 3 != 0 {
                 let nature = (rng.rand::<u16>() % 25) as u8;
                 let pid = buffer + nature as u32;
-                let gender = slot.pokemon_id.gender_from_pid(pid);
+                let gender = slot.unwrap().species.gender_from_pid(pid);
                 if gender == target_gender {
                     let iv1 = rng.rand::<u16>();
                     let iv2 = rng.rand::<u16>();
                     let ivs = Ivs::new_g3(iv1, iv2);
                     let nature = Nature::from_pid(pid);
 
-                    return Some(GeneratedPokemon {
+                    return GeneratedPokemon {
                         pid,
                         shiny: gen3_shiny(pid, opts.tid, opts.sid),
                         ability: AbilityType::from_gen3_pid(pid),
@@ -233,7 +233,7 @@ pub fn gen4_method_k(
                         nature,
                         encounter_slot,
                         advance: 0,
-                    });
+                    };
                 };
             }
         }
@@ -254,16 +254,16 @@ pub fn gen4_method_k(
             let iv1 = rng.rand::<u16>();
             let iv2 = rng.rand::<u16>();
             let ivs = Ivs::new_g3(iv1, iv2);
-            return Some(GeneratedPokemon {
+            return GeneratedPokemon {
                 pid,
                 shiny: gen3_shiny(pid, opts.tid, opts.sid),
                 ability: AbilityType::from_gen3_pid(pid),
-                gender: slot.pokemon_id.gender_from_pid(pid),
+                gender: slot.unwrap().species.gender_from_pid(pid),
                 ivs,
                 nature: Nature::from_pid(pid),
                 encounter_slot,
                 advance: 0,
-            });
+            };
         }
     }
 
@@ -287,20 +287,20 @@ pub fn gen4_method_k(
         pid,
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
-        gender: slot.pokemon_id.gender_from_pid(pid),
+        gender: slot.unwrap().species.gender_from_pid(pid),
         encounter_slot,
         ivs,
         nature: Nature::from_pid(pid),
         advance: 0,
     };
-    Some(pkm)
+    pkm
 }
 
-pub fn generate_4wild(
+fn generate_wild4(
     rng: &mut Pokerng,
-    opts: &Gen4SWildOpts,
+    opts: &Gen4SearcherOpts,
     route: &RouteData,
-) -> Option<GeneratedPokemon> {
+) -> GeneratedPokemon {
     match opts.game {
         GameVersion::Diamond | GameVersion::Pearl | GameVersion::Platinum => {
             gen4_method_j(rng, opts, route)
@@ -309,14 +309,18 @@ pub fn generate_4wild(
     }
 }
 
-pub fn filter_4swild(opts: &Gen4SWildOpts, seed: u32, route: &RouteData) -> Vec<GeneratedPokemon> {
+pub fn search_wild4(
+    opts: &Gen4SearcherOpts,
+    seed: u32,
+    route: &RouteData,
+) -> Vec<GeneratedPokemon> {
     let base_rng = Pokerng::new(seed);
     StateIterator::new(base_rng)
         .enumerate()
         .skip(opts.initial_advances)
         .take(opts.max_advances.wrapping_add(1))
         .filter_map(|(adv, mut rng)| {
-            let mut pkm = generate_4wild(&mut rng, &opts.clone(), route)?;
+            let mut pkm = generate_wild4(&mut rng, &opts.clone(), route);
             pkm.advance = adv;
 
             if opts.filter.pass_filter(&pkm) {
@@ -342,82 +346,82 @@ mod test {
             route_id: 201,
             encounter_type: EncounterType::Grass,
             encounter_slots: [
-                EncounterslotIDs {
-                    slot_id: 0,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot0,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 1,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot1,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 2,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot2,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 3,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot3,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 4,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot4,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 5,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot5,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 6,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot6,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 7,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot7,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 8,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot8,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 9,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot9,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 10,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot10,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 11,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot11,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
             ]
             .to_vec(),
         };
-        let options = Gen4SWildOpts {
+        let options = Gen4SearcherOpts {
             tid: 12345,
             sid: 54321,
             initial_advances: 0,
@@ -639,7 +643,7 @@ mod test {
                 encounter_slot: EncounterSlot::Slot10,
             },
         ];
-        let result = filter_4swild(&options, seed, &route);
+        let result = search_wild4(&options, seed, &route);
         assert_list_eq!(result, expected_results);
     }
     #[test]
@@ -649,75 +653,75 @@ mod test {
             route_id: 29,
             encounter_type: EncounterType::Grass,
             encounter_slots: [
-                EncounterslotIDs {
-                    slot_id: 0,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot0,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 1,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot1,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 2,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot2,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 3,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot3,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 4,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot4,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 5,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot5,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 6,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot6,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 7,
-                    pokemon_id: Species::Rattata,
+                Encounter {
+                    slot: EncounterSlot::Slot7,
+                    species: Species::Rattata,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 8,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot8,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 9,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot9,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 10,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot10,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 11,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot11,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
@@ -725,7 +729,7 @@ mod test {
             .to_vec(),
         };
 
-        let options = Gen4SWildOpts {
+        let options = Gen4SearcherOpts {
             tid: 12345,
             sid: 54321,
             initial_advances: 0,
@@ -948,7 +952,7 @@ mod test {
             },
         ];
 
-        let result = filter_4swild(&options, seed, &route);
+        let result = search_wild4(&options, seed, &route);
         assert_list_eq!(result, expected_results);
     }
     #[test]
@@ -958,75 +962,75 @@ mod test {
             route_id: 29,
             encounter_type: EncounterType::Grass,
             encounter_slots: [
-                EncounterslotIDs {
-                    slot_id: 0,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot0,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 1,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot1,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 2,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot2,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 3,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot3,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 4,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot4,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 5,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot5,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 6,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot6,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 7,
-                    pokemon_id: Species::Rattata,
+                Encounter {
+                    slot: EncounterSlot::Slot7,
+                    species: Species::Rattata,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 8,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot8,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 9,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot9,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 10,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot10,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 11,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot11,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
@@ -1034,7 +1038,7 @@ mod test {
             .to_vec(),
         };
 
-        let options = Gen4SWildOpts {
+        let options = Gen4SearcherOpts {
             tid: 2010,
             sid: 2010,
             initial_advances: 0,
@@ -1257,7 +1261,7 @@ mod test {
             },
         ];
 
-        let result = filter_4swild(&options, seed, &route);
+        let result = search_wild4(&options, seed, &route);
         assert_list_eq!(result, expected_results);
     }
     #[test]
@@ -1267,75 +1271,75 @@ mod test {
             route_id: 29,
             encounter_type: EncounterType::Grass,
             encounter_slots: [
-                EncounterslotIDs {
-                    slot_id: 0,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot0,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 1,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot1,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 2,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot2,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 3,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot3,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 4,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot4,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 5,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot5,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 6,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot6,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 7,
-                    pokemon_id: Species::Rattata,
+                Encounter {
+                    slot: EncounterSlot::Slot7,
+                    species: Species::Rattata,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 8,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot8,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 9,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot9,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 10,
-                    pokemon_id: Species::Sentret,
+                Encounter {
+                    slot: EncounterSlot::Slot10,
+                    species: Species::Sentret,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 11,
-                    pokemon_id: Species::Pidgey,
+                Encounter {
+                    slot: EncounterSlot::Slot11,
+                    species: Species::Pidgey,
                     min_level: 2,
                     max_level: 3,
                 },
@@ -1343,7 +1347,7 @@ mod test {
             .to_vec(),
         };
 
-        let options = Gen4SWildOpts {
+        let options = Gen4SearcherOpts {
             tid: 2010,
             sid: 2010,
             initial_advances: 0,
@@ -1566,7 +1570,7 @@ mod test {
             },
         ];
 
-        let result = filter_4swild(&options, seed, &route);
+        let result = search_wild4(&options, seed, &route);
         assert_list_eq!(result, expected_results);
     }
     #[test]
@@ -1576,82 +1580,82 @@ mod test {
             route_id: 201,
             encounter_type: EncounterType::Grass,
             encounter_slots: [
-                EncounterslotIDs {
-                    slot_id: 0,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot0,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 1,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot1,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 2,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot2,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 3,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot3,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 4,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot4,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 5,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot5,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 6,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot6,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 7,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot7,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 8,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot8,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 9,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot9,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 10,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot10,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 11,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot11,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
             ]
             .to_vec(),
         };
-        let options = Gen4SWildOpts {
+        let options = Gen4SearcherOpts {
             tid: 12345,
             sid: 54321,
             initial_advances: 0,
@@ -1873,7 +1877,7 @@ mod test {
                 encounter_slot: EncounterSlot::Slot10,
             },
         ];
-        let result = filter_4swild(&options, seed, &route);
+        let result = search_wild4(&options, seed, &route);
         assert_list_eq!(result, expected_results);
     }
     #[test]
@@ -1883,82 +1887,82 @@ mod test {
             route_id: 201,
             encounter_type: EncounterType::Grass,
             encounter_slots: [
-                EncounterslotIDs {
-                    slot_id: 0,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot0,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 1,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot1,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 2,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot2,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 3,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot3,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 4,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot4,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 5,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot5,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 6,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot6,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 7,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot7,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 8,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot8,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 9,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot9,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 10,
-                    pokemon_id: Species::Starly,
+                Encounter {
+                    slot: EncounterSlot::Slot10,
+                    species: Species::Starly,
                     min_level: 2,
                     max_level: 3,
                 },
-                EncounterslotIDs {
-                    slot_id: 11,
-                    pokemon_id: Species::Bidoof,
+                Encounter {
+                    slot: EncounterSlot::Slot11,
+                    species: Species::Bidoof,
                     min_level: 2,
                     max_level: 3,
                 },
             ]
             .to_vec(),
         };
-        let options = Gen4SWildOpts {
+        let options = Gen4SearcherOpts {
             tid: 12345,
             sid: 54321,
             initial_advances: 0,
@@ -2180,7 +2184,7 @@ mod test {
                 encounter_slot: EncounterSlot::Slot10,
             },
         ];
-        let result = filter_4swild(&options, seed, &route);
+        let result = search_wild4(&options, seed, &route);
         assert_list_eq!(result, expected_results);
     }
 }

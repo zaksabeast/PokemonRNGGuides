@@ -1,4 +1,5 @@
 mod ability;
+mod encounter;
 mod gender;
 mod gender_ratio;
 mod nature;
@@ -8,6 +9,7 @@ mod stat;
 
 use crate::Ivs;
 pub use ability::*;
+pub use encounter::*;
 pub use gender::*;
 pub use gender_ratio::*;
 pub use nature::*;

@@ -9,7 +9,12 @@ tag: "retail"
 
 RNG manipulation in Gen 4 lets you get the exact Trainer ID (TID) and Secret ID (SID) you want. This is useful for things like shiny Pokémon or Cute Charm abuse. This guide covers how to do it on a physical console for HeartGold and SoulSilver.
 
-Interested in RNGing for a Cute Charm TID? Check out the [HeartGold and SoulSilver Cute Charm Guide](/hgss-cute-charm)!
+## Cute Charm Abuse
+
+In Gen 4 there's a Pokemon ability called Cute Charm and this can increase the chance you'll run into a Pokemon of the opposite gender.
+The way the game increases the odds of encountering a specific gender also changes the chance you'll run into a shiny Pokemon.
+Gender is determined by a Pokemon's personality id, or PID, for short. This value is also used with your save's trainer and secret ids (TID and SID) to determine if the Pokemon is shiny.
+This means we can increase our chance of encountering random shinies in our playthrough just by having a specific TID and SID combination.
 
 This guide assumes you do not have a save file already on the cartridge. If there is already a save file, you can [check here](/delete-save) for how to delete your save file.
 
@@ -24,6 +29,12 @@ Choose the game you're playing below then continue to the next step.
 </Step>
 
 <Step step={1}>
+
+If you are wanting to RNG a TID for Cute Charm, have the ID Type set to "Cute Charm". If you're wanting a specific TID and are not wanting to do Cute Charm, then set ID Type to "Any".
+
+Max Shiny Odds: Selecting this will give TID/SID combinations that will make the largest group of Pokemon shiny.
+
+If you are going for a specific Pokemon, unselect Max Shiny Odds, and choose the target's Gender, Nature, and Species instead.
 
 1. In the tool below, you can leave the "Year" at 2000 or set it to another year if you want.
 2. The "Min Delay" is set to 5000 as the default. Lower values are difficult to hit due to timing.
@@ -78,12 +89,6 @@ With some practice and consistency, you'll eventually hit your target TID.
 
 In Diamond and Pearl it is possible for the delay to randomly switch from even to odd, or vice versa. When this happens, you'll just have to try again.
 
-<CalibrateId4 />
-
-</Step>
-
-</Stepper>
-
 ## Troubleshooting
 
 **I keep getting 1 delay off! Why is this?**
@@ -94,3 +99,9 @@ To swap from even to odd, or vice versa:
 
 - Change the letter casing after naming your character, eg. from lower case to upper case.
 - **OR** Change the year on the console by 1.
+
+<CalibrateId4 />
+
+</Step>
+
+</Stepper>

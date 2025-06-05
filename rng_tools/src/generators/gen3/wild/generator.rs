@@ -1,7 +1,8 @@
 use super::Gen3EncounterType;
+use crate::EncounterSlot;
 use crate::Ivs;
 use crate::Species;
-use crate::gen3::{EncounterSlot, Gen3Lead, Gen3Method};
+use crate::gen3::{Gen3Lead, Gen3Method};
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};
@@ -142,9 +143,7 @@ pub fn generate_gen3_wild(
     }
 
     if opts.methods.contains(&Gen3Method::Wild2) {
-        if let Some(gen_mon_wild2) =
-            generate_gen3_wild_method2(*rng, opts, encounter_slot, pid)
-        {
+        if let Some(gen_mon_wild2) = generate_gen3_wild_method2(*rng, opts, encounter_slot, pid) {
             results.push(gen_mon_wild2);
         }
     }

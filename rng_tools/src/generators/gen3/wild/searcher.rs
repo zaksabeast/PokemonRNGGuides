@@ -1,15 +1,8 @@
 use super::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
-use crate::AbilityType;
-use crate::Gender;
-use crate::Ivs;
-use crate::Nature;
-use crate::gen3::EncounterSlot;
-use crate::gen3::Gen3Lead;
-use crate::gen3::Gen3Method;
-use crate::gen3_shiny;
+use crate::gen3::{Gen3Lead, Gen3Method};
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
-use crate::{GenderRatio, PkmFilter};
+use crate::{AbilityType, EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter, gen3_shiny};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;

@@ -8,7 +8,9 @@ use wasm_bindgen::prelude::wasm_bindgen;
 pub enum Gen3Method {
     Wild1,
     Wild2,
+    Wild3,
     Wild4,
+    Wild5,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]

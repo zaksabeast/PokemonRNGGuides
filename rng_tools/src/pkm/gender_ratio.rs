@@ -1048,6 +1048,9 @@ impl GenderRatio {
             }
         }
     }
+    pub fn gender_from_pid(&self, pid: u32) -> Gender {
+        self.gender((pid & 0xFF) as u8)
+    }
 
     pub fn has_multiple_genders(&self) -> bool {
         !matches!(

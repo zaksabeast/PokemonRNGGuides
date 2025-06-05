@@ -1912,7 +1912,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-rs-wishmaker/",
+        zh: "/zh-emulator-rs-wishmaker/",
+      },
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
@@ -2742,7 +2745,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
-      translations: null,
+      translations: { en: "/meteor-jirachi/", zh: "/zh-meteor-jirachi/" },
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
@@ -5667,6 +5670,37 @@ export const guides = {
         ),
     ),
   },
+  "/zh-emulator-rs-wishmaker/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["emu"],
+      isNew: false,
+      title: "红蓝宝石 许愿星基拉祈（Wishmaker）乱数指南",
+      navDrawerTitle: "红蓝宝石 许愿星基拉祈（Wishmaker）乱数指南",
+      description:
+        "学习如何在红宝石与蓝宝石中，通过圆形竞技场乱数出异色的许愿星基拉祈。",
+      slug: "/zh-emulator-rs-wishmaker/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-18",
+      translation: { enSlug: "/emulator-rs-wishmaker/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
+      translations: {
+        en: "/emulator-rs-wishmaker/",
+        zh: "/zh-emulator-rs-wishmaker/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
+        ),
+    ),
+  },
   "/zh-frlg-gen3-sid/": {
     meta: {
       categories: ["FireRed and LeafGreen"],
@@ -5876,6 +5910,33 @@ export const guides = {
       () =>
         import(
           "~/../guides/Translations/zh/Tools and Emulators/3DS PokeReader.mdx"
+        ),
+    ),
+  },
+  "/zh-meteor-jirachi/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["emu"],
+      isNew: false,
+      title: "红蓝宝石 流星基拉祈（Meteor）乱数指南",
+      navDrawerTitle: "红蓝宝石 流星基拉祈（Meteor）乱数指南",
+      description: "学习如何乱数流星基拉祈，其异色判定与许愿星不同。",
+      slug: "/zh-meteor-jirachi/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-18",
+      translation: { enSlug: "/meteor-jirachi/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
+      translations: { en: "/meteor-jirachi/", zh: "/zh-meteor-jirachi/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
         ),
     ),
   },
@@ -6295,6 +6356,7 @@ export const guideSlugs = [
   "/zh-emulator-hgss-stationary/",
   "/zh-emulator-rs-egg/",
   "/zh-emulator-rs-stationary/",
+  "/zh-emulator-rs-wishmaker/",
   "/zh-frlg-gen3-sid/",
   "/zh-frlg-seeding-bot/",
   "/zh-gen2-celebi/",
@@ -6303,6 +6365,7 @@ export const guideSlugs = [
   "/zh-hgss-cute-charm/",
   "/zh-hgss-rng-advance/",
   "/zh-install-pokereader/",
+  "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
   "/zh-retail-emerald-wild/",

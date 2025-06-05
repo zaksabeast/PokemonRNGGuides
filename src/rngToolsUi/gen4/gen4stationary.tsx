@@ -19,6 +19,9 @@ import {
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { startCase } from "lodash-es";
+import {
+  nature,
+} from "~/types";
 
 type Result = FlattenIvs<Gen4SPokemon>;
 
@@ -227,7 +230,7 @@ export const Filter_4static = () => {
     }, opts.seed,);
 
     setResults(results.map(flattenIvs));
-  });
+  }, []);
 
   return (
     <RngToolForm<FormState, Result>

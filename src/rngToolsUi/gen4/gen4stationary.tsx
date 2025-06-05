@@ -1,4 +1,4 @@
-import { rngTools, Gen4StaticOpts } from "~/rngTools";
+import { rngTools, Gen4SPokemon } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,
@@ -14,14 +14,78 @@ import {
   FlattenIvs,
   ivColumns,
 } from "~/rngToolsUi/shared/ivColumns";
-import {
-  GameVersion,
-  StaticEncounterId,
-} from "~/rngToolsUi/gen4/static/constants";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 
-type Result = FlattenIvs<Gen4StaticOpts>;
+type Result = FlattenIvs<Gen4SPokemon>;
+
+export enum GameVersion {
+   Diamond = 0,
+   Pearl,
+   Platinum,
+   HeartGold,
+   SoulSilver}
+
+export enum StaticEncounterId {
+    Turtwig = 0,
+    Chimchar,
+    Piplup,
+    Cyndaquil,
+    Chikorita,
+    Totodile,
+    Charmander,
+    Squirtle,
+    Bulbasaur,
+    Treecko,
+    Mudkip,
+    Torchic,
+    Omanyte,
+    Kabuto,
+    Aerodactyl,
+    Lileep,
+    Anorith,
+    Cranidos,
+    Shieldon,
+    Eevee,
+    Porygon,
+    Togepi,
+    Riolu,
+    Drifloon,
+    Spiritomb,
+    Rotom,
+    Lugia,
+    HoOh,
+    Dialga,
+    Palkia,
+    Giratina,
+    Regice,
+    Regirock,
+    Registeel,
+    Uxie,
+    Azelf,
+    Heatran,
+    Regigigas,
+    Mesprit,
+    Cresselia,
+    Zapdos,
+    Articuno,
+    Moltres,
+    Tentacool,
+    Dratini,
+    Tyrogue,
+    Mareep,
+    Wooper,
+    Slugma,
+    MrMime,
+    Abra,
+    Ekans,
+    Raikou,
+    Entei,
+    Suicune,
+    Voltorb,
+    Snorlax,
+}
+
 
 const columns: ResultColumn<Result>[] = [
   {
@@ -53,8 +117,8 @@ const Validator = z
     sid: z.number().int().min(0).max(65535),
     initial_advances: z.number(),
     max_advances: z.number(),
-    game: z.enum(GameVersion),
-    encounter: z.enum(StaticEncounterId),
+    game: z.nativeEnum(GameVersion),
+    encounter: z.nativeEnum(StaticEncounterId),
   })
   .merge(pkmFilterSchema);
 
@@ -64,8 +128,8 @@ const initialValues: FormState = {
   seed: 0,
   tid: 0,
   sid: 0,
-  game: GameVersion[0],
-  encounter: StaticEncounterId[0],
+  game: 0,
+  encounter: 0,
   initial_advances: 0,
   max_advances: 100,
   filter_shiny: false,
@@ -103,9 +167,9 @@ const fields: Field[] = [
   {
     label: "Species",
     input: (
-      <FormikSelect<FormState, "species">
-        name="species"
-        options={StaticEncounterId}
+      <FormikSelect<FormState, "encounter">
+        name="encounter"
+        options={toOptions(StaticEncounterId)}
       />
     ),
   },

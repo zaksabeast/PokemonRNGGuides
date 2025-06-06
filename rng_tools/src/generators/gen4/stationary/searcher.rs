@@ -1,3 +1,4 @@
+use crate::gen4::{FindSeedTime4Options, SeedTime4, dppt_find_seedtime};
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
 use crate::{
@@ -20,14 +21,15 @@ pub struct SearchStatic4Method1Opts {
     pub max_advance: usize,
     pub min_delay: u32,
     pub max_delay: u32,
+    pub year: u32,
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SearchStatic4Method1State {
     pub seed: u32,
+    pub seed_time: SeedTime4,
     pub advance: usize,
-    pub delay: u32,
     pub pid: u32,
     pub ivs: Ivs,
     pub ability: AbilityType,
@@ -37,7 +39,18 @@ pub struct SearchStatic4Method1State {
     pub characteristic: Characteristic,
 }
 
-impl PkmState for SearchStatic4Method1State {
+struct Base4Method1State {
+    seed: u32,
+    pid: u32,
+    ivs: Ivs,
+    ability: AbilityType,
+    gender: Gender,
+    nature: Nature,
+    shiny: bool,
+    characteristic: Characteristic,
+}
+
+impl PkmState for Base4Method1State {
     fn ability(&self) -> crate::AbilityType {
         self.ability
     }
@@ -59,11 +72,29 @@ impl PkmState for SearchStatic4Method1State {
     }
 }
 
-fn get_state_from_seed(
-    opts: &SearchStatic4Method1Opts,
-    ivs: Ivs,
-    seed: u32,
-) -> SearchStatic4Method1State {
+impl Base4Method1State {
+    fn full_state(
+        &self,
+        advance: usize,
+        seed: u32,
+        seed_time: SeedTime4,
+    ) -> SearchStatic4Method1State {
+        SearchStatic4Method1State {
+            seed,
+            advance,
+            seed_time,
+            pid: self.pid,
+            ivs: self.ivs,
+            ability: self.ability,
+            gender: self.gender,
+            nature: self.nature,
+            shiny: self.shiny,
+            characteristic: self.characteristic,
+        }
+    }
+}
+
+fn get_state_from_seed(opts: &SearchStatic4Method1Opts, ivs: Ivs, seed: u32) -> Base4Method1State {
     let mut rng = Pokerng::new(seed).rev();
 
     let pidh = (rng.rand::<u16>() as u32) << 16;
@@ -77,7 +108,7 @@ fn get_state_from_seed(
 
     let characteristic = Characteristic::new(pid, &ivs);
 
-    SearchStatic4Method1State {
+    Base4Method1State {
         seed: rng.rand::<u32>(),
         pid,
         ability,
@@ -86,21 +117,18 @@ fn get_state_from_seed(
         ivs,
         shiny,
         characteristic,
-        // We'll add these later
-        advance: 0,
-        delay: 0,
     }
 }
 
-pub fn search_single_static4_method1(
+fn search_single_static4_method1(
     opts: &SearchStatic4Method1Opts,
     ivs: Ivs,
-) -> Vec<SearchStatic4Method1State> {
+) -> Vec<Base4Method1State> {
     let seeds = recover_poke_rng_iv(&ivs, false);
     seeds
         .into_iter()
         .filter_map(|seed| {
-            let state: SearchStatic4Method1State = get_state_from_seed(opts, ivs, seed);
+            let state = get_state_from_seed(opts, ivs, seed);
 
             // Don't check IVs since we specifically found matching IVs
             if !opts.filter.pass_filter_no_ivs(&state) {
@@ -112,7 +140,7 @@ pub fn search_single_static4_method1(
         .collect()
 }
 
-fn search_static4_method1(opts: &SearchStatic4Method1Opts) -> Vec<SearchStatic4Method1State> {
+fn search_static4_method1(opts: &SearchStatic4Method1Opts) -> Vec<Base4Method1State> {
     let Ivs {
         hp: min_hp,
         atk: min_atk,
@@ -161,8 +189,6 @@ pub fn search_static4_method1_seeds(
 ) -> Vec<SearchStatic4Method1State> {
     let min_advance = opts.min_advance;
     let max_advance = opts.max_advance;
-    let min_delay = opts.min_delay;
-    let max_delay = opts.max_delay;
 
     let mut results = vec![];
 
@@ -174,15 +200,15 @@ pub fn search_static4_method1_seeds(
             _ => rng.rand::<u32>(),
         };
         for advance in min_advance..=max_advance {
-            let hour = (seed >> 16) & 0xff;
-            let delay = seed & 0xffff;
+            let seed_time_opts = FindSeedTime4Options {
+                seed,
+                delay_range: opts.min_delay..=opts.max_delay,
+                year: opts.year,
+            };
+            let seed_time = dppt_find_seedtime(seed_time_opts);
 
-            // Check if seed matches a valid gen 4 format
-            if hour < 24 && delay >= min_delay && delay <= max_delay {
-                let mut found_state = state.clone();
-                found_state.seed = seed;
-                found_state.advance = advance;
-                found_state.delay = delay;
+            if let Some(seed_time) = seed_time {
+                let found_state = state.full_state(advance, seed, seed_time);
                 results.push(found_state);
             }
 
@@ -199,13 +225,14 @@ mod tests {
 
     mod search_static4_method1 {
         use super::*;
-        use crate::{assert_list_eq, ivs};
+        use crate::{assert_list_eq, coin_flips, datetime, ivs};
 
         #[test]
         fn min_advance_0() {
             let opts = SearchStatic4Method1Opts {
                 tid: 12345,
                 sid: 54321,
+                year: 2000,
                 min_delay: 600,
                 max_delay: 605,
                 min_advance: 0,
@@ -227,7 +254,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x5C03025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-1 3:32:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HTHHHHHTHHHTHHTHTHTH"),
+                    },
                     pid: 0x74313CBB,
                     shiny: false,
                     nature: Nature::Quiet,
@@ -246,7 +277,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0xDC03025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-4-26 3:57:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HHTTTTTHTHTHHTTTHHTT"),
+                    },
                     pid: 0xF431BCBB,
                     shiny: false,
                     nature: Nature::Impish,
@@ -265,7 +300,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x0403025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-1 3:0:3).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HTHTTTHTHHHHTTTTTTHH"),
+                    },
                     pid: 0x9C3104BB,
                     shiny: false,
                     nature: Nature::Gentle,
@@ -284,7 +323,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x8403025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-14 3:59:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HTTTTHTTTHHTHTTHTHTH"),
+                    },
                     pid: 0x1C3184BB,
                     shiny: false,
                     nature: Nature::Mild,
@@ -303,7 +346,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x0003025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-5-28 3:57:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HHHTTTTTHHHTTTHHTHTH"),
+                    },
                     pid: 0x583130BB,
                     shiny: false,
                     nature: Nature::Sassy,
@@ -322,7 +369,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x8003025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-10 3:59:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("TTTTHHTHHTHHHTHTHTHT"),
+                    },
                     pid: 0xD831B0BB,
                     shiny: false,
                     nature: Nature::Jolly,
@@ -341,7 +392,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0xA803025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-2-25 3:59:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HHTHHHHTTHTHHHTTHTHH"),
+                    },
                     pid: 0x8031F8BB,
                     shiny: false,
                     nature: Nature::Serious,
@@ -360,7 +415,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x2803025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-1 3:0:39).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HHHTTTHHHTHTTHTHHTHT"),
+                    },
                     pid: 0x003178BB,
                     shiny: false,
                     nature: Nature::Gentle,
@@ -379,7 +438,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0xA403025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-2-23 3:59:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("TTHHTTTHTTHHTTTTHTTT"),
+                    },
                     pid: 0x3C3124BB,
                     shiny: false,
                     nature: Nature::Brave,
@@ -398,7 +461,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x2403025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-1 3:0:35).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HTHTHTHHTHHHTTHTHHTT"),
+                    },
                     pid: 0xBC31A4BB,
                     shiny: false,
                     nature: Nature::Bashful,
@@ -417,7 +484,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x52060259,
                     advance: 0,
-                    delay: 601,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-1 6:22:59).unwrap(),
+                        delay: 601,
+                        coin_flips: coin_flips!("TTHHTTHHHTTHTTTTHTTT"),
+                    },
                     pid: 0x19B02B1C,
                     shiny: false,
                     nature: Nature::Sassy,
@@ -436,7 +507,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0xD2060259,
                     advance: 0,
-                    delay: 601,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-3-31 6:58:59).unwrap(),
+                        delay: 601,
+                        coin_flips: coin_flips!("HHHHTHTHHHTTHHHTTHHH"),
+                    },
                     pid: 0x99B0AB1C,
                     shiny: false,
                     nature: Nature::Jolly,
@@ -455,7 +530,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x3A060259,
                     advance: 0,
-                    delay: 601,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-1 6:0:57).unwrap(),
+                        delay: 601,
+                        coin_flips: coin_flips!("TTHHHTHTHHHHTHTHHHHT"),
+                    },
                     pid: 0x41B0F31C,
                     shiny: false,
                     nature: Nature::Serious,
@@ -474,7 +553,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0xBA060259,
                     advance: 0,
-                    delay: 601,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-3-23 6:58:59).unwrap(),
+                        delay: 601,
+                        coin_flips: coin_flips!("HTTTTTHHTTHTHTTTHHTT"),
+                    },
                     pid: 0xC1B0731C,
                     shiny: false,
                     nature: Nature::Quiet,
@@ -493,7 +576,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x96060259,
                     advance: 0,
-                    delay: 601,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-2-16 6:59:59).unwrap(),
+                        delay: 601,
+                        coin_flips: coin_flips!("TTHTHTHHHTHHHTTHTHTT"),
+                    },
                     pid: 0xFDB01F1C,
                     shiny: false,
                     nature: Nature::Careful,
@@ -512,7 +599,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x16060259,
                     advance: 0,
-                    delay: 601,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-1 6:0:21).unwrap(),
+                        delay: 601,
+                        coin_flips: coin_flips!("HHTHTHTTHTTHHTHTTHHT"),
+                    },
                     pid: 0x7DB09F1C,
                     shiny: false,
                     nature: Nature::Bashful,
@@ -531,7 +622,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x7E060259,
                     advance: 0,
-                    delay: 601,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-8 6:59:59).unwrap(),
+                        delay: 601,
+                        coin_flips: coin_flips!("HHHHTHHHTTHHHHTTHHHH"),
+                    },
                     pid: 0x25B0E71C,
                     shiny: false,
                     nature: Nature::Quiet,
@@ -550,7 +645,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0xFE060259,
                     advance: 0,
-                    delay: 601,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-5-28 6:55:59).unwrap(),
+                        delay: 601,
+                        coin_flips: coin_flips!("TTHHHHTTHTHHTHHHTHHT"),
+                    },
                     pid: 0xA5B0671C,
                     shiny: false,
                     nature: Nature::Sassy,
@@ -576,6 +675,7 @@ mod tests {
             let opts = SearchStatic4Method1Opts {
                 tid: 12345,
                 sid: 54321,
+                year: 2000,
                 min_delay: 600,
                 max_delay: 605,
                 min_advance: 2,
@@ -597,7 +697,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x5C03025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-1 3:32:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HTHHHHHTHHHTHHTHTHTH"),
+                    },
                     pid: 0x74313CBB,
                     shiny: false,
                     nature: Nature::Quiet,
@@ -616,7 +720,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0xDC03025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-4-26 3:57:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HHTTTTTHTHTHHTTTHHTT"),
+                    },
                     pid: 0xF431BCBB,
                     shiny: false,
                     nature: Nature::Impish,
@@ -635,7 +743,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x0403025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-1 3:0:3).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HTHTTTHTHHHHTTTTTTHH"),
+                    },
                     pid: 0x9C3104BB,
                     shiny: false,
                     nature: Nature::Gentle,
@@ -654,7 +766,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x8403025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-14 3:59:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HTTTTHTTTHHTHTTHTHTH"),
+                    },
                     pid: 0x1C3184BB,
                     shiny: false,
                     nature: Nature::Mild,
@@ -673,7 +789,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x0003025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-5-28 3:57:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HHHTTTTTHHHTTTHHTHTH"),
+                    },
                     pid: 0x583130BB,
                     shiny: false,
                     nature: Nature::Sassy,
@@ -692,7 +812,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x8003025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-10 3:59:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("TTTTHHTHHTHHHTHTHTHT"),
+                    },
                     pid: 0xD831B0BB,
                     shiny: false,
                     nature: Nature::Jolly,
@@ -711,7 +835,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0xA803025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-2-25 3:59:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HHTHHHHTTHTHHHTTHTHH"),
+                    },
                     pid: 0x8031F8BB,
                     shiny: false,
                     nature: Nature::Serious,
@@ -730,7 +858,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x2803025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-1 3:0:39).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HHHTTTHHHTHTTHTHHTHT"),
+                    },
                     pid: 0x003178BB,
                     shiny: false,
                     nature: Nature::Gentle,
@@ -749,7 +881,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0xA403025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-2-23 3:59:59).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("TTHHTTTHTTHHTTTTHTTT"),
+                    },
                     pid: 0x3C3124BB,
                     shiny: false,
                     nature: Nature::Brave,
@@ -768,7 +904,11 @@ mod tests {
                 SearchStatic4Method1State {
                     seed: 0x2403025B,
                     advance: 2,
-                    delay: 603,
+                    seed_time: SeedTime4 {
+                        datetime: datetime!(2000-1-1 3:0:35).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HTHTHTHHTHHHTTHTHHTT"),
+                    },
                     pid: 0xBC31A4BB,
                     shiny: false,
                     nature: Nature::Bashful,

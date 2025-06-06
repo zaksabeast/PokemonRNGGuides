@@ -93,7 +93,7 @@ impl From<NaiveDateTime> for RngDateTime {
 
 #[macro_export]
 macro_rules! datetime {
-    ($year:literal-$month:literal-$day:literal $hour:literal:$minute:literal:$second:literal) => {{ RngDateTime::new($year, $month, $day, $hour, $minute, $second) }};
+    ($year:literal-$month:literal-$day:literal $hour:literal:$minute:literal:$second:literal) => {{ $crate::RngDateTime::new($year, $month, $day, $hour, $minute, $second) }};
 }
 
 fn get_days_in_month_opt(year: i32, month: u32) -> Option<u32> {

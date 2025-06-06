@@ -1,5 +1,10 @@
 use crate::{Nature, Species};
-#[derive(Debug, PartialEq, Clone)]
+use serde::{Deserialize, Serialize};
+use tsify_next::Tsify;
+use wasm_bindgen::prelude::*;
+
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum GameVersion {
     Diamond,
     Pearl,
@@ -7,8 +12,10 @@ pub enum GameVersion {
     HeartGold,
     SoulSilver,
 }
-#[derive(Debug, PartialEq, Clone, Copy)]
-pub enum StaticEncounterId {
+
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub enum Static4Species {
     Turtwig,
     Chimchar,
     Piplup,
@@ -68,66 +75,66 @@ pub enum StaticEncounterId {
     Snorlax,
 }
 
-impl StaticEncounterId {
+impl Static4Species {
     pub fn species(self) -> Species {
         match self {
-            StaticEncounterId::Chikorita => Species::Chikorita,
-            StaticEncounterId::Cyndaquil => Species::Cyndaquil,
-            StaticEncounterId::Totodile => Species::Totodile,
-            StaticEncounterId::Chimchar => Species::Chimchar,
-            StaticEncounterId::Piplup => Species::Piplup,
-            StaticEncounterId::Turtwig => Species::Turtwig,
-            StaticEncounterId::Charmander => Species::Charmander,
-            StaticEncounterId::Squirtle => Species::Squirtle,
-            StaticEncounterId::Bulbasaur => Species::Bulbasaur,
-            StaticEncounterId::Treecko => Species::Treecko,
-            StaticEncounterId::Mudkip => Species::Mudkip,
-            StaticEncounterId::Torchic => Species::Torchic,
-            StaticEncounterId::Omanyte => Species::Omanyte,
-            StaticEncounterId::Kabuto => Species::Kabuto,
-            StaticEncounterId::Aerodactyl => Species::Aerodactyl,
-            StaticEncounterId::Lileep => Species::Lileep,
-            StaticEncounterId::Anorith => Species::Anorith,
-            StaticEncounterId::Cranidos => Species::Cranidos,
-            StaticEncounterId::Shieldon => Species::Shieldon,
-            StaticEncounterId::Eevee => Species::Eevee,
-            StaticEncounterId::Porygon => Species::Porygon,
-            StaticEncounterId::Togepi => Species::Togepi,
-            StaticEncounterId::Riolu => Species::Riolu,
-            StaticEncounterId::Drifloon => Species::Drifloon,
-            StaticEncounterId::Spiritomb => Species::Spiritomb,
-            StaticEncounterId::Rotom => Species::Rotom,
-            StaticEncounterId::Lugia => Species::Lugia,
-            StaticEncounterId::HoOh => Species::HoOh,
-            StaticEncounterId::Dialga => Species::Dialga,
-            StaticEncounterId::Palkia => Species::Palkia,
-            StaticEncounterId::Giratina => Species::Giratina,
-            StaticEncounterId::Regice => Species::Regice,
-            StaticEncounterId::Regirock => Species::Regirock,
-            StaticEncounterId::Registeel => Species::Registeel,
-            StaticEncounterId::Uxie => Species::Uxie,
-            StaticEncounterId::Azelf => Species::Azelf,
-            StaticEncounterId::Heatran => Species::Heatran,
-            StaticEncounterId::Regigigas => Species::Regigigas,
-            StaticEncounterId::Mesprit => Species::Mesprit,
-            StaticEncounterId::Cresselia => Species::Cresselia,
-            StaticEncounterId::Zapdos => Species::Zapdos,
-            StaticEncounterId::Articuno => Species::Articuno,
-            StaticEncounterId::Moltres => Species::Moltres,
-            StaticEncounterId::Tentacool => Species::Tentacool,
-            StaticEncounterId::Dratini => Species::Dratini,
-            StaticEncounterId::Tyrogue => Species::Tyrogue,
-            StaticEncounterId::Mareep => Species::Mareep,
-            StaticEncounterId::Wooper => Species::Wooper,
-            StaticEncounterId::Slugma => Species::Slugma,
-            StaticEncounterId::MrMime => Species::MrMime,
-            StaticEncounterId::Abra => Species::Abra,
-            StaticEncounterId::Ekans => Species::Ekans,
-            StaticEncounterId::Raikou => Species::Raikou,
-            StaticEncounterId::Entei => Species::Entei,
-            StaticEncounterId::Suicune => Species::Suicune,
-            StaticEncounterId::Voltorb => Species::Voltorb,
-            StaticEncounterId::Snorlax => Species::Snorlax,
+            Static4Species::Chikorita => Species::Chikorita,
+            Static4Species::Cyndaquil => Species::Cyndaquil,
+            Static4Species::Totodile => Species::Totodile,
+            Static4Species::Chimchar => Species::Chimchar,
+            Static4Species::Piplup => Species::Piplup,
+            Static4Species::Turtwig => Species::Turtwig,
+            Static4Species::Charmander => Species::Charmander,
+            Static4Species::Squirtle => Species::Squirtle,
+            Static4Species::Bulbasaur => Species::Bulbasaur,
+            Static4Species::Treecko => Species::Treecko,
+            Static4Species::Mudkip => Species::Mudkip,
+            Static4Species::Torchic => Species::Torchic,
+            Static4Species::Omanyte => Species::Omanyte,
+            Static4Species::Kabuto => Species::Kabuto,
+            Static4Species::Aerodactyl => Species::Aerodactyl,
+            Static4Species::Lileep => Species::Lileep,
+            Static4Species::Anorith => Species::Anorith,
+            Static4Species::Cranidos => Species::Cranidos,
+            Static4Species::Shieldon => Species::Shieldon,
+            Static4Species::Eevee => Species::Eevee,
+            Static4Species::Porygon => Species::Porygon,
+            Static4Species::Togepi => Species::Togepi,
+            Static4Species::Riolu => Species::Riolu,
+            Static4Species::Drifloon => Species::Drifloon,
+            Static4Species::Spiritomb => Species::Spiritomb,
+            Static4Species::Rotom => Species::Rotom,
+            Static4Species::Lugia => Species::Lugia,
+            Static4Species::HoOh => Species::HoOh,
+            Static4Species::Dialga => Species::Dialga,
+            Static4Species::Palkia => Species::Palkia,
+            Static4Species::Giratina => Species::Giratina,
+            Static4Species::Regice => Species::Regice,
+            Static4Species::Regirock => Species::Regirock,
+            Static4Species::Registeel => Species::Registeel,
+            Static4Species::Uxie => Species::Uxie,
+            Static4Species::Azelf => Species::Azelf,
+            Static4Species::Heatran => Species::Heatran,
+            Static4Species::Regigigas => Species::Regigigas,
+            Static4Species::Mesprit => Species::Mesprit,
+            Static4Species::Cresselia => Species::Cresselia,
+            Static4Species::Zapdos => Species::Zapdos,
+            Static4Species::Articuno => Species::Articuno,
+            Static4Species::Moltres => Species::Moltres,
+            Static4Species::Tentacool => Species::Tentacool,
+            Static4Species::Dratini => Species::Dratini,
+            Static4Species::Tyrogue => Species::Tyrogue,
+            Static4Species::Mareep => Species::Mareep,
+            Static4Species::Wooper => Species::Wooper,
+            Static4Species::Slugma => Species::Slugma,
+            Static4Species::MrMime => Species::MrMime,
+            Static4Species::Abra => Species::Abra,
+            Static4Species::Ekans => Species::Ekans,
+            Static4Species::Raikou => Species::Raikou,
+            Static4Species::Entei => Species::Entei,
+            Static4Species::Suicune => Species::Suicune,
+            Static4Species::Voltorb => Species::Voltorb,
+            Static4Species::Snorlax => Species::Snorlax,
         }
     }
 }
@@ -169,7 +176,8 @@ pub fn hgss_method_jk(species: Species) -> bool {
     )
 }
 
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum LeadAbilities {
     CutecharmF,
     CutecharmM,

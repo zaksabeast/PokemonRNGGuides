@@ -1,3 +1,4 @@
+import React from "react";
 import {
   MarkdownBreak,
   MarkdownH1,
@@ -74,7 +75,11 @@ import {
 } from "~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg";
 import { withTags } from "~/components/tagDetector/provider";
 import { mapValues } from "lodash-es";
-import React from "react";
+import {
+  CalibrateStarter4,
+  GetStarter4,
+  PickStarter4,
+} from "~/rngToolsUi/gen4/starters";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -154,6 +159,9 @@ const tools = {
   RetailEmeraldPickupEgg,
   CalibratePickupEgg,
   CalibratePickupEggTimer,
+  CalibrateStarter4,
+  GetStarter4,
+  PickStarter4,
 };
 
 export const markdownComponents = {

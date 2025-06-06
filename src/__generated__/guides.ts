@@ -3328,6 +3328,31 @@ export const guides = {
       () => import("~/../guides/Gen 3/Emerald/Retail Wild RNG.mdx"),
     ),
   },
+  "/retail-hgss-starter/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["retail"],
+      isNew: false,
+      title: "HeartGold and Soulsilver Starter RNG",
+      navDrawerTitle: "Starter RNG",
+      description:
+        "Learn how to RNG starters in HeartGold and SoulSilver for shiny, high-IV Pokémon.",
+      slug: "/retail-hgss-starter/",
+      isRoughDraft: true,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Gen 4/HeartGold and SoulSilver/Starters.mdx",
+      translations: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Starters.mdx"),
+    ),
+  },
   "/retail-oras-egg-mmsc/": {
     meta: {
       categories: ["Omega Ruby and Alpha Sapphire"],
@@ -6265,6 +6290,7 @@ export const guideSlugs = [
   "/retail-bw-entralink/",
   "/retail-emerald-egg/",
   "/retail-emerald-wild/",
+  "/retail-hgss-starter/",
   "/retail-oras-egg-mmsc/",
   "/retail-oras-egg-no-mmsc/",
   "/retail-oras-tid/",

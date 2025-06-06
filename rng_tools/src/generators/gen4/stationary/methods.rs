@@ -1,5 +1,9 @@
 use crate::{Nature, Species};
-#[derive(Debug, PartialEq, Clone)]
+use serde::{Deserialize, Serialize};
+use tsify_next::Tsify;
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum GameVersion {
     Diamond,
     Pearl,
@@ -7,7 +11,8 @@ pub enum GameVersion {
     HeartGold,
     SoulSilver,
 }
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum StaticEncounterId {
     Turtwig,
     Chimchar,
@@ -169,7 +174,8 @@ pub fn hgss_method_jk(species: Species) -> bool {
     )
 }
 
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum LeadAbilities {
     CutecharmF,
     CutecharmM,

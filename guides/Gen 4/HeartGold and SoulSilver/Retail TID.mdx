@@ -1,0 +1,89 @@
+---
+title: "HeartGold and SoulSilver TID/SID RNG"
+navDrawerTitle: "TID/SID RNG"
+description: "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo on Retail in HeartGold and SoulSilver."
+slug: "hgss-tid-sid"
+category: "HeartGold and SoulSilver"
+tag: "retail"
+isRoughDraft: false
+hideFromNavDrawer: true
+---
+
+<Gist>
+  RNG a TID and SID to predict when you'll get shiny Pokemon. Optionally RNG a
+  Cute Charm ID pair for increased shiny odds during your playthrough.
+</Gist>
+
+<Stepper titles={["Set up", "Pick a TID", "Hit Target", "Calibrate"]}>
+
+<Step step={0}>
+
+## Pick a game
+
+Choose the game you're playing below then continue to the next step.
+
+<Gen4IdSetup />
+
+</Step>
+
+<Step step={1}>
+
+## Pick a TID
+
+Fill our the tool below. If you want random max shiny odds during your playthrough, leave the default settings.
+
+<Id4Searcher />
+
+</Step>
+
+<Step step={2}>
+
+## Hit your target
+
+1. Set your console time to **<Id4ConsoleSetDateString />** and wait at the screen to confirm setting the console time (screenshot below).
+2. Simultaneously press `A` to set the console time and start the timer below.
+3. Exit the settings on your console and restart your console.
+4. When the first timer ends, press `A` to start the game.
+5. Get to the naming screen. Make sure to name your character the same way each time. Take note if you're ending on a lower or upper case screen.
+6. Get to the last screen before the TID is generated (see screenshot below). Wait for the second timer to go off and press `A` at the same time.
+   - If you don't have enough time to reach the last screen before the timer goes off, find a TID with a higher delay to give more time.
+7. Continue to the next step to check what TID you hit.
+
+| Confirm time screen                                                    |
+| ---------------------------------------------------------------------- |
+| ![Confirm time screen](/images/HeartGold-SoulSilver/SetTimeScreen.jpg) |
+
+## Final Screen
+
+| Diamond & Pearl                                                             | Platinum                                                                                | HeartGold & SoulSilver                                                    |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| ![DP Final Screen](/images/Diamond-Pearl-Platinum/TID/DPTIDFinalScreen.png) | ![Platinum Final Screen](/images/Diamond-Pearl-Platinum/TID/PlatinumTIDFinalScreen.png) | ![HGSS Final Screen](/images/HeartGold-SoulSilver/HGSSTIDFinalScreen.png) |
+
+## Timer
+
+<Id4Timer />
+
+</Step>
+
+<Step step={3}>
+
+## Calibrate
+
+1. Open your trainer card and check your TID.
+2. If it matches your target, congratulations! You RNG'd your TID!
+3. If not, type your TID into the box below and click "Generate".
+4. Click "Calibrate" on the TID with the smallest delay offset (should be the first result).
+5. If the "Flip Delay" column is checked, you'll need to swap between the player name characters one extra time, e.g. lower to upper case. Japanese games will need to switch to a different kana, eg. from Hiragana to Katakana.
+6. Try to hit your target again.
+
+In Diamond and Pearl it is possible for the delay to randomly switch from even to odd, or vice versa. When this happens, you'll need to keep trying until you get the target.
+
+<CalibrateId4 />
+
+</Step>
+
+</Stepper>
+
+## Credits
+
+- Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, whose work this tool is built upon.

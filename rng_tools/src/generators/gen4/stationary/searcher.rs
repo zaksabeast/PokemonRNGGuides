@@ -926,7 +926,7 @@ mod tests {
                 },
             ];
 
-            assert_list_eq!(results, expected);
+            assert_eq!(results, expected);
         }
     }
 }

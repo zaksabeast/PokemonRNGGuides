@@ -141,7 +141,7 @@ export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
-      submitTrackerId="generate_dppt_seed_search"
+      submitTrackerId="calibrate_dppt_seed"
     />
   );
 };

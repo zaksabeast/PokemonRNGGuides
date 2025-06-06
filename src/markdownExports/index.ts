@@ -50,7 +50,8 @@ import { RngTimer } from "~/rngToolsUi/timer";
 import { OrasId } from "~/rngToolsUi/gen6/orasId";
 import { Transporter } from "~/rngToolsUi/gen6/transporter/transporter";
 import { DpptSeed } from "~/rngToolsUi/gen4/dpptSeed";
-import { DpptId } from "~/rngToolsUi/gen4/dpptId";
+import { CalibrateId4 } from "~/rngToolsUi/gen4/id/calibrateId";
+import { Id4Searcher } from "~/rngToolsUi/gen4/id/idSearcher";
 import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
 import { Gen7SosList } from "~/pageComponents/gen7Sos/sosList";
 import { Static3 } from "~/rngToolsUi/gen3/static/static3";
@@ -80,6 +81,8 @@ import {
   GetStarter4,
   PickStarter4,
 } from "~/rngToolsUi/gen4/starters";
+import { Id4Timer, Id4ConsoleSetDateString } from "~/rngToolsUi/gen4/id/timer";
+import { Gen4IdSetup } from "~/rngToolsUi/gen4/id/setup";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -146,7 +149,11 @@ const tools = {
   OrasId,
   Transporter,
   DpptSeed,
-  DpptId,
+  CalibrateId4,
+  Gen4IdSetup,
+  Id4ConsoleSetDateString,
+  Id4Searcher,
+  Id4Timer,
   XyPokeRadar,
   ShinyHoennStarter,
   GenerateHoennTidSid,

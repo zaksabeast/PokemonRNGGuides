@@ -99,7 +99,7 @@ export const FormikTimePicker = <FormState extends GenericForm>({
   onChange,
   ...props
 }: FormikTimePickerProps<FormState>) => {
-  const [{ value: formTime, onBlur }, { error, touched }, { setValue }] =
+  const [{ value: formTime }, { error, touched }, { setValue }] =
     useField<RngTime | null>(name);
   const value = formTime == null ? null : fromRngTime(formTime);
 
@@ -109,7 +109,6 @@ export const FormikTimePicker = <FormState extends GenericForm>({
         {...props}
         name={name}
         value={value}
-        onBlur={onBlur}
         status={error != null && touched ? "error" : ""}
         onChange={(date) => {
           const rngTime = date == null ? null : toRngTime(date);

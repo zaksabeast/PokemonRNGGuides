@@ -148,7 +148,7 @@ pub enum CoinFlip {
     Tails,
 }
 
-fn coin_flips(seed: u32) -> Vec<CoinFlip> {
+pub fn coin_flips(seed: u32) -> Vec<CoinFlip> {
     MT::new(seed)
         .take(20)
         .map(|rand| match rand & 1 {

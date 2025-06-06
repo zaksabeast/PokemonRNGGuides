@@ -521,7 +521,7 @@ export const guides = {
   "/dppt-advance-rng/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Advancing the RNG in Diamond, Pearl, and Platinum",
       navDrawerTitle: "Advancing the RNG",
@@ -731,7 +731,7 @@ export const guides = {
   "/e-tips-rng/": {
     meta: {
       categories: ["Emerald"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Emerald RNG Info",
       navDrawerTitle: "RNG Info",
@@ -756,7 +756,7 @@ export const guides = {
   "/emerald-mirage-island/": {
     meta: {
       categories: ["Emerald"],
-      tags: ["any"],
+      tags: ["retail"],
       isNew: false,
       title: "Mirage Island in Emerald",
       navDrawerTitle: "Mirage Island",
@@ -784,7 +784,7 @@ export const guides = {
   "/emerald-overview/": {
     meta: {
       categories: ["Emerald"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Emerald Overview",
       navDrawerTitle: "Overview",
@@ -1284,7 +1284,7 @@ export const guides = {
   "/emulator-dppt-pokefinder-setup/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "How to RNG in Diamond, Pearl, and Platinum Using PokeFinder",
       navDrawerTitle: "PokeFinder Setup",
@@ -2285,7 +2285,7 @@ export const guides = {
   "/gba-methods/": {
     meta: {
       categories: ["GBA Technical Documentation"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Methods 1-4 in Emerald",
       navDrawerTitle: "Methods 1-4",
@@ -2335,7 +2335,7 @@ export const guides = {
   "/gba-pokerus-technical/": {
     meta: {
       categories: ["GBA Technical Documentation"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Pokérus",
       navDrawerTitle: "Pokérus",
@@ -2359,7 +2359,7 @@ export const guides = {
   "/gba-vblank/": {
     meta: {
       categories: ["GBA Technical Documentation"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "VBlank in Emerald",
       navDrawerTitle: "VBlank",
@@ -2482,7 +2482,7 @@ export const guides = {
   "/gen3-glossary/": {
     meta: {
       categories: ["Emerald"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Glossary",
       navDrawerTitle: "Glossary",
@@ -4288,7 +4288,7 @@ export const guides = {
   "/rs-battery/": {
     meta: {
       categories: ["Ruby and Sapphire"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Ruby and Sapphire Live vs Dead Battery RNG",
       navDrawerTitle: "Live vs Dead Battery",
@@ -4360,7 +4360,7 @@ export const guides = {
   "/rs-mirage-island/": {
     meta: {
       categories: ["Ruby and Sapphire"],
-      tags: ["any"],
+      tags: ["retail"],
       isNew: false,
       title: "Mirage Island in Ruby and Sapphire",
       navDrawerTitle: "Mirage Island",
@@ -4929,7 +4929,7 @@ export const guides = {
   "/zh-dppt-advance-rng/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "乱数的帧数推进方法",
       navDrawerTitle: "乱数的帧数推进方法",
@@ -5064,7 +5064,7 @@ export const guides = {
   "/zh-e-tips-rng/": {
     meta: {
       categories: ["Emerald"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "乱数介绍",
       navDrawerTitle: "乱数介绍",
@@ -5091,7 +5091,7 @@ export const guides = {
   "/zh-emerald-mirage-island/": {
     meta: {
       categories: ["Emerald"],
-      tags: ["any"],
+      tags: ["retail"],
       isNew: false,
       title: "幻之岛",
       navDrawerTitle: "幻之岛",
@@ -6080,7 +6080,7 @@ export const guides = {
   "/zh-rs-battery/": {
     meta: {
       categories: ["Ruby and Sapphire"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "红蓝宝石 电池有电 vs 无电 乱数对比",
       navDrawerTitle: "红蓝宝石 电池有电 vs 无电 乱数对比",
@@ -6132,7 +6132,7 @@ export const guides = {
   "/zh-rs-mirage-island/": {
     meta: {
       categories: ["Ruby and Sapphire"],
-      tags: ["any"],
+      tags: ["retail"],
       isNew: false,
       title: "幻之岛",
       navDrawerTitle: "幻之岛",

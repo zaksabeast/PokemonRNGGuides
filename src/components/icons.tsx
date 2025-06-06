@@ -15,7 +15,7 @@ import { AiOutlineSearch, AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaDiscord, FaCoffee } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold } from "react-icons/pi";
-import { FaHeart, FaPlay, FaFire } from "react-icons/fa6";
+import { FaHeart, FaPlay, FaFire, FaPatreon } from "react-icons/fa6";
 import { TbPokeball } from "react-icons/tb";
 import { IoIosInformationCircle } from "react-icons/io";
 
@@ -41,6 +41,7 @@ const icons = {
   Pokeball: TbPokeball,
   OutlineSearch: AiOutlineSearch,
   InformationCircle: IoIosInformationCircle,
+  Patreon: FaPatreon,
 } as const;
 
 export type IconName = keyof typeof icons;

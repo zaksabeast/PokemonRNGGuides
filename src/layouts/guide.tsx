@@ -57,7 +57,8 @@ const FeedbackModal = ({
             <Button
               type="primary"
               trackerId="support_us_399"
-              href={settings.supportUsUrl}
+              href={settings.supportUsDiscordUrl}
+              icon={<Icon name="Discord" />}
               flex={1}
             >
               $3.99
@@ -65,18 +66,53 @@ const FeedbackModal = ({
             <Button
               type="primary"
               trackerId="support_us_499"
-              href={settings.supportUsUrl}
+              href={settings.supportUsDiscordUrl}
+              icon={<Icon name="Discord" />}
               flex={1}
             >
               $4.99
             </Button>
             <Button
               type="primary"
-              trackerId="support_us_599"
-              href={settings.supportUsUrl}
+              trackerId="support_us_999"
+              href={settings.supportUsDiscordUrl}
+              icon={<Icon name="Discord" />}
               flex={1}
             >
-              $5.99
+              $9.99
+            </Button>
+          </Flex>
+
+          <Flex gap={8}>
+            <Button
+              type="primary"
+              trackerId="support_us_399"
+              backgroundColor="Error"
+              href={settings.supportUsPatreonUrl}
+              icon={<Icon name="Patreon" />}
+              flex={1}
+            >
+              $3.99
+            </Button>
+            <Button
+              type="primary"
+              trackerId="support_us_499"
+              backgroundColor="Error"
+              href={settings.supportUsPatreonUrl}
+              icon={<Icon name="Patreon" />}
+              flex={1}
+            >
+              $4.99
+            </Button>
+            <Button
+              type="primary"
+              trackerId="support_us_999"
+              backgroundColor="Error"
+              href={settings.supportUsPatreonUrl}
+              icon={<Icon name="Patreon" />}
+              flex={1}
+            >
+              $9.99
             </Button>
           </Flex>
 

@@ -1,4 +1,4 @@
-use crate::gen3::util::recover_poke_rng_iv;
+use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, Gender, Ivs, Nature, PkmFilter, PkmState, Species, gen3_shiny};

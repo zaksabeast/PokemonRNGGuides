@@ -89,7 +89,7 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
                 Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
                 Some(LeadAbilities::CutecharmM) => 0,
                 Some(LeadAbilities::Synchronize(_)) => 0,
-                None => 0,
+                _ => 0,
             };
             let target_gender = match opts.lead {
                 Some(LeadAbilities::CutecharmF) => Gender::Male,
@@ -185,7 +185,7 @@ pub fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
                 Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
                 Some(LeadAbilities::CutecharmM) => 0,
                 Some(LeadAbilities::Synchronize(_)) => 0,
-                None => 0,
+                _ => 0,
             };
             let target_gender = match opts.lead {
                 Some(LeadAbilities::CutecharmF) => Gender::Male,

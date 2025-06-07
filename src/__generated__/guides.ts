@@ -1331,7 +1331,7 @@ export const guides = {
         en: "/emulator-dppt-stationary/",
         zh: "/zh-emulator-dppt-stationary/",
       },
-      displayAttributes: [],
+      displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
       () =>

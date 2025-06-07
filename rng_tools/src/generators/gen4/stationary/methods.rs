@@ -177,7 +177,14 @@ pub fn hgss_method_jk(species: Species) -> bool {
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum LeadAbilities {
+    None,
     CutecharmF,
     CutecharmM,
     Synchronize(Nature),
+}
+
+impl Default for LeadAbilities {
+    fn default() -> Self {
+        LeadAbilities::None
+    }
 }

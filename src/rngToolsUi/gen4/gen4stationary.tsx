@@ -1,4 +1,4 @@
-import { rngTools, Gen4SPokemon } from "~/rngTools";
+import { rngTools, Gen4SPokemon, Nature } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,
@@ -19,30 +19,46 @@ import {
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { startCase } from "lodash-es";
-import {
-  nature,
-} from "~/types";
+import { nature } from "~/types";
 
 type Result = FlattenIvs<Gen4SPokemon>;
 
- const LeadAbilities = [
-    "CutecharmF",
-    "CutecharmM",
-    "Synchronize",
-    "None"
-] as const;
-const LeadAbilitiesOpts = toOptions(LeadAbilities, startCase);
+export type LeadAbilities =
+  | { kind: "None" }
+  | { kind: "CutecharmF" }
+  | { kind: "CutecharmM" }
+  | { kind: "Synchronize"; nature: Nature };
 
- const GameVersion = [
+export const LeadAbilitiesSchema = z.discriminatedUnion("kind", [
+  z.object({ kind: z.literal("None") }),
+  z.object({ kind: z.literal("CutecharmF") }),
+  z.object({ kind: z.literal("CutecharmM") }),
+  z.object({
+    kind: z.literal("Synchronize"),
+    nature: z.enum(nature),
+  }),
+]);
+
+const LeadAbilitiesOpts: { label: string; value: LeadAbilities }[] = [
+  { label: "None", value: { kind: "None" } },
+  { label: "Cute Charm (F)", value: { kind: "CutecharmF" } },
+  { label: "Cute Charm (M)", value: { kind: "CutecharmM" } },
+  {
+    label: "Synchronize",
+    value: { kind: "Synchronize", nature: nature[3] },
+  },
+];
+
+const GameVersion = [
   "Diamond",
   "Pearl",
   "Platinum",
   "HeartGold",
   "SoulSilver",
- ] as const;
- const GameVersionOpts = toOptions(GameVersion, startCase);
+] as const;
+const GameVersionOpts = toOptions(GameVersion, startCase);
 
- const  StaticEncounterId = [
+const StaticEncounterId = [
   "Turtwig",
   "Chimchar",
   "Piplup",
@@ -101,7 +117,14 @@ const LeadAbilitiesOpts = toOptions(LeadAbilities, startCase);
   "Voltorb",
   "Snorlax",
 ] as const;
- const StaticEncounterIdOpts = toOptions(StaticEncounterId, startCase);
+export type StaticEncounterId = keyof typeof StaticEncounterId;
+const StaticEncounterIdOpts = Object.entries(StaticEncounterId).map(
+  ([, value]) => ({ label: value, value }),
+);
+
+export const StaticEncounterIdSchema = z.enum(
+  Object.keys(StaticEncounterId) as ["Turtwig", ..."Snorlax"[]],
+);
 
 const columns: ResultColumn<Result>[] = [
   {
@@ -133,9 +156,9 @@ const Validator = z
     sid: z.number().int().min(0).max(65535),
     initial_advances: z.number(),
     max_advances: z.number(),
-    game: z.enum(GameVersion).nullable(),
-    encounter: z.enum(StaticEncounterId).nullable(),
-    lead: z.enum(LeadAbilities).nullable(),
+    game: z.enum(GameVersion),
+    encounter: z.enum(StaticEncounterId),
+    lead: LeadAbilitiesSchema,
   })
   .merge(pkmFilterSchema);
 
@@ -147,16 +170,17 @@ const initialValues: FormState = {
   sid: 0,
   game: "Diamond",
   encounter: "Turtwig",
-  lead: "None",
+  lead: { kind: "None" },
   initial_advances: 0,
   max_advances: 100,
   filter_shiny: false,
   filter_min_ivs: minIvs,
   filter_max_ivs: maxIvs,
-  filter_nature: null,
-  filter_gender: null,
-  filter_ability: null,
+  filter_nature: "Adamant",
+  filter_gender: "Genderless",
+  filter_ability: "First",
 };
+
 const fields: Field[] = [
   {
     label: "Seed",
@@ -200,7 +224,10 @@ const fields: Field[] = [
   {
     label: "Lead Ability",
     input: (
-      <FormikSelect<FormState, "lead"> name="lead" options={LeadAbilitiesOpts} />
+      <FormikSelect<FormState, "lead">
+        name="lead"
+        options={LeadAbilitiesOpts}
+      />
     ),
   },
   ...getPkmFilterFields(),
@@ -210,24 +237,30 @@ export const Filter_4static = () => {
   const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const results = await rngTools.filter_4static({
-      tid: opts.tid,
-      sid: opts.sid,
-      game:opts.game,
-      encounter:opts.encounter,
-      lead:opts.lead,
-      initial_advances:opts.initial_advances,
-      max_advances:opts.max_advances,
-      filter: {
-        shiny: opts.filter_shiny,
-        nature: opts.filter_nature,
-        gender: opts.filter_gender,
-        ability: opts.filter_ability,
-        min_ivs: opts.filter_min_ivs,
-        max_ivs: opts.filter_max_ivs,
-        stats: null,
-      }
-    }, opts.seed,);
+    if (opts.lead.kind === "Synchronize") {
+      opts.lead = { kind: "Synchronize", nature: opts.filter_nature as Nature };
+    }
+    const results = await rngTools.filter_4static(
+      {
+        tid: opts.tid,
+        sid: opts.sid,
+        game: opts.game,
+        encounter: opts.encounter,
+        lead: opts.lead,
+        initial_advances: opts.initial_advances,
+        max_advances: opts.max_advances,
+        filter: {
+          shiny: opts.filter_shiny,
+          nature: opts.filter_nature,
+          gender: opts.filter_gender,
+          ability: opts.filter_ability,
+          min_ivs: opts.filter_min_ivs,
+          max_ivs: opts.filter_max_ivs,
+          stats: null,
+        },
+      },
+      opts.seed,
+    );
 
     setResults(results.map(flattenIvs));
   }, []);

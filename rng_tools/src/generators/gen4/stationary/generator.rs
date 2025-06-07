@@ -3,6 +3,7 @@ use super::LeadAbilities;
 use super::Static4Species;
 use super::dpt_method_jk;
 use super::hgss_method_jk;
+use crate::Characteristic;
 use crate::Ivs;
 use crate::rng::Rng;
 use crate::rng::StateIterator;
@@ -20,6 +21,7 @@ pub struct Gen4StaticOpts {
     pub initial_advances: usize,
     pub max_advances: usize,
     pub filter: PkmFilter,
+    pub filter_characteristic: Option<Characteristic>,
     pub game: Option<GameVersion>,
     pub encounter: Static4Species,
     pub lead: Option<LeadAbilities>,
@@ -36,6 +38,7 @@ pub struct Gen4StaticPokemon {
     pub ivs: Ivs,
     pub nature: Nature,
     pub advance: usize,
+    pub characteristic: Characteristic,
 }
 
 impl PkmState for Gen4StaticPokemon {
@@ -74,6 +77,7 @@ fn generate_gen4_static(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
         gender: opts.encounter.species().gender_from_pid(pid),
+        characteristic: Characteristic::new(pid, &ivs),
         ivs,
         nature: Nature::from_pid(pid),
         advance: 0,
@@ -111,6 +115,7 @@ fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
                         pid,
                         shiny: gen3_shiny(pid, opts.tid, opts.sid),
                         ability: AbilityType::from_gen3_pid(pid),
+                        characteristic: Characteristic::new(pid, &ivs),
                         gender,
                         ivs,
                         nature,
@@ -141,6 +146,7 @@ fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
                 shiny: gen3_shiny(pid, opts.tid, opts.sid),
                 ability: AbilityType::from_gen3_pid(pid),
                 gender: opts.encounter.species().gender_from_pid(pid),
+                characteristic: Characteristic::new(pid, &ivs),
                 ivs,
                 nature: Nature::from_pid(pid),
                 advance: 0,
@@ -169,6 +175,7 @@ fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
         pid,
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
+        characteristic: Characteristic::new(pid, &ivs),
         gender,
         ivs,
         nature,
@@ -207,6 +214,7 @@ fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
                         pid,
                         shiny: gen3_shiny(pid, opts.tid, opts.sid),
                         ability: AbilityType::from_gen3_pid(pid),
+                        characteristic: Characteristic::new(pid, &ivs),
                         gender,
                         ivs,
                         nature,
@@ -237,6 +245,7 @@ fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
                 shiny: gen3_shiny(pid, opts.tid, opts.sid),
                 ability: AbilityType::from_gen3_pid(pid),
                 gender: opts.encounter.species().gender_from_pid(pid),
+                characteristic: Characteristic::new(pid, &ivs),
                 ivs,
                 nature: Nature::from_pid(pid),
                 advance: 0,
@@ -264,6 +273,7 @@ fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
         gender: opts.encounter.species().gender_from_pid(pid),
+        characteristic: Characteristic::new(pid, &ivs),
         ivs,
         nature: Nature::from_pid(pid),
         advance: 0,
@@ -302,23 +312,28 @@ pub fn generate_static4_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> 
         .take(opts.max_advances.wrapping_add(1))
         .filter_map(|(adv, mut rng)| {
             let mut pkm = generate_static4_state(&opts.clone(), &mut rng)?;
-            pkm.advance = adv;
 
-            if opts.filter.pass_filter(&pkm) {
-                Some(pkm)
-            } else {
-                None
+            if let Some(filter_characteristic) = opts.filter_characteristic {
+                if pkm.characteristic != filter_characteristic {
+                    return None;
+                }
             }
+
+            if !opts.filter.pass_filter(&pkm) {
+                return None;
+            }
+
+            pkm.advance = adv;
+            Some(pkm)
         })
         .collect::<Vec<Gen4StaticPokemon>>()
 }
 
 #[cfg(test)]
 mod test {
-
-    use crate::assert_list_eq;
-
+    use super::Characteristic::*;
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn method_1() {
@@ -331,6 +346,7 @@ mod test {
             encounter: Static4Species::Turtwig,
             game: Some(GameVersion::Platinum),
             lead: None,
+            filter_characteristic: None,
             filter: PkmFilter {
                 shiny: false,
                 nature: None,
@@ -361,6 +377,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Female,
+                characteristic: SturdyBody,
                 ivs: Ivs {
                     hp: 17,
                     atk: 19,
@@ -377,6 +394,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Male,
+                characteristic: OftenLostInThought,
                 ivs: Ivs {
                     hp: 16,
                     atk: 13,
@@ -393,6 +411,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Male,
+                characteristic: SomewhatStubborn,
                 ivs: Ivs {
                     hp: 2,
                     atk: 18,
@@ -409,6 +428,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Male,
+                characteristic: HighlyCurious,
                 ivs: Ivs {
                     hp: 12,
                     atk: 22,
@@ -425,6 +445,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Male,
+                characteristic: HighlyCurious,
                 ivs: Ivs {
                     hp: 5,
                     atk: 30,
@@ -441,6 +462,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Male,
+                characteristic: SomewhatVain,
                 ivs: Ivs {
                     hp: 27,
                     atk: 30,
@@ -457,6 +479,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Male,
+                characteristic: CapableOfTakingHits,
                 ivs: Ivs {
                     hp: 19,
                     atk: 1,
@@ -473,6 +496,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Male,
+                characteristic: SomewhatVain,
                 ivs: Ivs {
                     hp: 12,
                     atk: 25,
@@ -489,6 +513,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Male,
+                characteristic: CapableOfTakingHits,
                 ivs: Ivs {
                     hp: 30,
                     atk: 2,
@@ -505,6 +530,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Male,
+                characteristic: HighlyCurious,
                 ivs: Ivs {
                     hp: 5,
                     atk: 22,
@@ -521,6 +547,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Male,
+                characteristic: ProudOfItsPower,
                 ivs: Ivs {
                     hp: 22,
                     atk: 30,
@@ -536,6 +563,7 @@ mod test {
         let result = generate_static4_states(&options);
         assert_list_eq!(result, expected_results);
     }
+
     #[test]
     fn method_k_nosynch() {
         let options = Gen4StaticOpts {
@@ -547,6 +575,7 @@ mod test {
             encounter: Static4Species::Dialga,
             game: Some(GameVersion::Platinum),
             lead: None,
+            filter_characteristic: None,
             filter: PkmFilter {
                 shiny: false,
                 nature: None,
@@ -577,6 +606,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: LikesToThrashAbout,
                 ivs: Ivs {
                     hp: 10,
                     atk: 31,
@@ -593,6 +623,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: ProudOfItsPower,
                 ivs: Ivs {
                     hp: 17,
                     atk: 30,
@@ -609,6 +640,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: SomewhatOfAClown,
                 ivs: Ivs {
                     hp: 21,
                     atk: 2,
@@ -625,6 +657,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: CapableOfTakingHits,
                 ivs: Ivs {
                     hp: 19,
                     atk: 1,
@@ -641,6 +674,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: StrongWilled,
                 ivs: Ivs {
                     hp: 4,
                     atk: 20,
@@ -657,6 +691,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: ProudOfItsPower,
                 ivs: Ivs {
                     hp: 17,
                     atk: 30,
@@ -673,6 +708,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: CapableOfTakingHits,
                 ivs: Ivs {
                     hp: 7,
                     atk: 23,
@@ -689,6 +725,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: LikesToRun,
                 ivs: Ivs {
                     hp: 18,
                     atk: 14,
@@ -705,6 +742,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: QuickTempered,
                 ivs: Ivs {
                     hp: 7,
                     atk: 29,
@@ -721,6 +759,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: HatesToLose,
                 ivs: Ivs {
                     hp: 22,
                     atk: 17,
@@ -737,6 +776,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: QuickTempered,
                 ivs: Ivs {
                     hp: 7,
                     atk: 29,
@@ -764,6 +804,7 @@ mod test {
             encounter: Static4Species::HoOh,
             game: Some(GameVersion::HeartGold),
             lead: None,
+            filter_characteristic: None,
             filter: PkmFilter {
                 shiny: false,
                 nature: None,
@@ -794,6 +835,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: LikesToThrashAbout,
                 ivs: Ivs {
                     hp: 10,
                     atk: 31,
@@ -810,6 +852,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: ScattersThingsOften,
                 ivs: Ivs {
                     hp: 28,
                     atk: 3,
@@ -826,6 +869,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: SomewhatVain,
                 ivs: Ivs {
                     hp: 12,
                     atk: 25,
@@ -842,6 +886,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: HighlyCurious,
                 ivs: Ivs {
                     hp: 11,
                     atk: 25,
@@ -858,6 +903,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: SomewhatVain,
                 ivs: Ivs {
                     hp: 9,
                     atk: 9,
@@ -874,6 +920,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: LikesToRun,
                 ivs: Ivs {
                     hp: 18,
                     atk: 14,
@@ -890,6 +937,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: AlertToSounds,
                 ivs: Ivs {
                     hp: 27,
                     atk: 17,
@@ -906,6 +954,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: QuickTempered,
                 ivs: Ivs {
                     hp: 6,
                     atk: 29,
@@ -922,6 +971,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: StrongWilled,
                 ivs: Ivs {
                     hp: 4,
                     atk: 20,
@@ -938,6 +988,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: VeryFinicky,
                 ivs: Ivs {
                     hp: 18,
                     atk: 20,
@@ -954,6 +1005,7 @@ mod test {
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: QuickTempered,
                 ivs: Ivs {
                     hp: 24,
                     atk: 29,
@@ -969,6 +1021,7 @@ mod test {
         let result = generate_static4_states(&options);
         assert_list_eq!(result, expected_results);
     }
+
     #[cfg(test)]
     mod synch {
 
@@ -985,6 +1038,7 @@ mod test {
                 encounter: Static4Species::HoOh,
                 game: Some(GameVersion::HeartGold),
                 lead: Some(LeadAbilities::Synchronize(Nature::Adamant)),
+                filter_characteristic: None,
                 filter: PkmFilter {
                     shiny: false,
                     nature: None,
@@ -1015,6 +1069,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: AlertToSounds,
                     ivs: Ivs {
                         hp: 2,
                         atk: 18,
@@ -1031,6 +1086,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 30,
@@ -1047,6 +1103,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 11,
                         atk: 25,
@@ -1063,6 +1120,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 30,
@@ -1079,6 +1137,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: AlertToSounds,
                     ivs: Ivs {
                         hp: 2,
                         atk: 18,
@@ -1095,6 +1154,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: VeryFinicky,
                     ivs: Ivs {
                         hp: 18,
                         atk: 20,
@@ -1111,6 +1171,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: QuickTempered,
                     ivs: Ivs {
                         hp: 6,
                         atk: 29,
@@ -1127,6 +1188,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: StrongWilled,
                     ivs: Ivs {
                         hp: 4,
                         atk: 20,
@@ -1143,6 +1205,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: VeryFinicky,
                     ivs: Ivs {
                         hp: 18,
                         atk: 20,
@@ -1159,6 +1222,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: VeryFinicky,
                     ivs: Ivs {
                         hp: 18,
                         atk: 20,
@@ -1175,6 +1239,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: AlertToSounds,
                     ivs: Ivs {
                         hp: 2,
                         atk: 18,
@@ -1190,6 +1255,7 @@ mod test {
             let result = generate_static4_states(&options);
             assert_list_eq!(result, expected_results);
         }
+
         #[test]
         fn method_k() {
             let options = Gen4StaticOpts {
@@ -1201,6 +1267,7 @@ mod test {
                 encounter: Static4Species::Dialga,
                 game: Some(GameVersion::Platinum),
                 lead: Some(LeadAbilities::Synchronize(Nature::Adamant)),
+                filter_characteristic: None,
                 filter: PkmFilter {
                     shiny: false,
                     nature: None,
@@ -1231,6 +1298,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: AlertToSounds,
                     ivs: Ivs {
                         hp: 2,
                         atk: 18,
@@ -1247,6 +1315,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: SomewhatOfAClown,
                     ivs: Ivs {
                         hp: 21,
                         atk: 2,
@@ -1263,6 +1332,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: AlertToSounds,
                     ivs: Ivs {
                         hp: 2,
                         atk: 18,
@@ -1279,6 +1349,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 30,
@@ -1295,6 +1366,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: ProudOfItsPower,
                     ivs: Ivs {
                         hp: 17,
                         atk: 30,
@@ -1311,6 +1383,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: CapableOfTakingHits,
                     ivs: Ivs {
                         hp: 7,
                         atk: 23,
@@ -1327,6 +1400,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: LikesToRun,
                     ivs: Ivs {
                         hp: 18,
                         atk: 14,
@@ -1343,6 +1417,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: VeryFinicky,
                     ivs: Ivs {
                         hp: 18,
                         atk: 20,
@@ -1359,6 +1434,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: HatesToLose,
                     ivs: Ivs {
                         hp: 22,
                         atk: 17,
@@ -1375,6 +1451,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: QuickTempered,
                     ivs: Ivs {
                         hp: 7,
                         atk: 29,
@@ -1391,6 +1468,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: StronglyDefiant,
                     ivs: Ivs {
                         hp: 3,
                         atk: 5,
@@ -1407,6 +1485,7 @@ mod test {
             assert_list_eq!(result, expected_results);
         }
     }
+
     mod cutiech {
 
         use super::*;
@@ -1422,6 +1501,7 @@ mod test {
                 encounter: Static4Species::Snorlax,
                 game: Some(GameVersion::HeartGold),
                 lead: Some(LeadAbilities::CutecharmM),
+                filter_characteristic: None,
                 filter: PkmFilter {
                     shiny: false,
                     nature: None,
@@ -1452,6 +1532,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Male,
+                    characteristic: ScattersThingsOften,
                     ivs: Ivs {
                         hp: 28,
                         atk: 3,
@@ -1468,6 +1549,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Female,
+                    characteristic: OftenLostInThought,
                     ivs: Ivs {
                         hp: 16,
                         atk: 13,
@@ -1484,6 +1566,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 11,
                         atk: 25,
@@ -1500,6 +1583,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Male,
+                    characteristic: SomewhatVain,
                     ivs: Ivs {
                         hp: 9,
                         atk: 9,
@@ -1516,6 +1600,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 30,
@@ -1532,6 +1617,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: SomewhatVain,
                     ivs: Ivs {
                         hp: 27,
                         atk: 30,
@@ -1548,6 +1634,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Male,
+                    characteristic: QuickTempered,
                     ivs: Ivs {
                         hp: 6,
                         atk: 29,
@@ -1564,6 +1651,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Female,
+                    characteristic: SomewhatVain,
                     ivs: Ivs {
                         hp: 12,
                         atk: 25,
@@ -1580,6 +1668,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Male,
+                    characteristic: VeryFinicky,
                     ivs: Ivs {
                         hp: 18,
                         atk: 20,
@@ -1596,6 +1685,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 22,
@@ -1612,6 +1702,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Female,
+                    characteristic: ProudOfItsPower,
                     ivs: Ivs {
                         hp: 22,
                         atk: 30,
@@ -1638,6 +1729,7 @@ mod test {
                 encounter: Static4Species::Drifloon,
                 game: Some(GameVersion::Platinum),
                 lead: Some(LeadAbilities::CutecharmM),
+                filter_characteristic: None,
                 filter: PkmFilter {
                     shiny: false,
                     nature: None,
@@ -1668,6 +1760,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Male,
+                    characteristic: ProudOfItsPower,
                     ivs: Ivs {
                         hp: 17,
                         atk: 30,
@@ -1684,6 +1777,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: OftenLostInThought,
                     ivs: Ivs {
                         hp: 16,
                         atk: 13,
@@ -1700,6 +1794,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Male,
+                    characteristic: CapableOfTakingHits,
                     ivs: Ivs {
                         hp: 19,
                         atk: 1,
@@ -1716,6 +1811,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: StrongWilled,
                     ivs: Ivs {
                         hp: 4,
                         atk: 20,
@@ -1732,6 +1828,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 30,
@@ -1748,6 +1845,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Female,
+                    characteristic: SomewhatVain,
                     ivs: Ivs {
                         hp: 27,
                         atk: 30,
@@ -1764,6 +1862,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: LikesToRun,
                     ivs: Ivs {
                         hp: 18,
                         atk: 14,
@@ -1780,6 +1879,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: SomewhatVain,
                     ivs: Ivs {
                         hp: 12,
                         atk: 25,
@@ -1796,6 +1896,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Male,
+                    characteristic: HatesToLose,
                     ivs: Ivs {
                         hp: 22,
                         atk: 17,
@@ -1812,6 +1913,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 22,
@@ -1828,6 +1930,7 @@ mod test {
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Female,
+                    characteristic: ProudOfItsPower,
                     ivs: Ivs {
                         hp: 22,
                         atk: 30,

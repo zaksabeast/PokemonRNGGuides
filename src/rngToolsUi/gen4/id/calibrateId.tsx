@@ -35,6 +35,7 @@ const CalibrateButton = ({ hitDelay }: CalibrateButtonProps) => {
 
 type Result = Id4 & {
   flipDelay: boolean;
+  seed: number;
   delayOffset: number;
   delay: number;
   seconds: number;
@@ -131,6 +132,7 @@ export const CalibrateId4 = () => {
 
       const formattedResults = sortedResults.map((result) => ({
         ...result,
+        seed: result.seed_time.seed,
         flipDelay: targetDelay % 2 !== result.seed_time.delay % 2,
         delayOffset: result.seed_time.delay - targetDelay,
         delay: result.seed_time.delay,

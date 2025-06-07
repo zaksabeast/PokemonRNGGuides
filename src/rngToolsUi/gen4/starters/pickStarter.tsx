@@ -22,7 +22,8 @@ import {
 import { toOptions } from "~/utils/options";
 import { useCurrentStep } from "~/components/stepper/state";
 import { match } from "ts-pattern";
-import { useStarterState } from "./state";
+import { allStarters, Gen4Starter, useStarterState } from "./state";
+import { getGen3StatRange } from "~/rngToolsUi/gen3/utils/statRange";
 
 type Result = FlattenIvs<SearchStatic4Method1State & { key: string }>;
 
@@ -37,7 +38,7 @@ const SelectButton = ({ target }: SelectButtonProps) => {
     <Button
       trackerId="select_gen4_starter"
       onClick={() => {
-        setState({ target });
+        setState((prev) => ({ ...prev, target }));
         setCurrentStep((prev) => prev + 1);
       }}
     >
@@ -45,11 +46,6 @@ const SelectButton = ({ target }: SelectButtonProps) => {
     </Button>
   );
 };
-
-const dpptStarters = ["Turtwig", "Chimchar", "Piplup"] as const;
-const hgssStarters = ["Chikorita", "Cyndaquil", "Totodile"] as const;
-const allStarters = [...dpptStarters, ...hgssStarters] as const;
-type Gen4Starter = (typeof allStarters)[number];
 
 const Validator = z
   .object({
@@ -77,8 +73,8 @@ const initialValues: FormState = {
 const getStarterAdvance = (species: Gen4Starter): number => {
   return match(species)
     .with("Turtwig", () => 0)
-    .with("Chimchar", () => 4)
-    .with("Piplup", () => 8)
+    .with("Chimchar", () => 0)
+    .with("Piplup", () => 0)
     .with("Chikorita", () => 0)
     .with("Cyndaquil", () => 4)
     .with("Totodile", () => 8)
@@ -142,30 +138,36 @@ const fields: Field[] = [
 ];
 
 export const PickStarter4 = () => {
+  const [, setState] = useStarterState();
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback(async (opts: FormState) => {
-    const advance = getStarterAdvance(opts.species);
-    const results = await rngTools.search_static4_method1_seeds({
-      ...opts,
-      min_advance: advance,
-      max_advance: advance,
-      filter: {
-        shiny: opts.filter_shiny,
-        nature: opts.filter_nature,
-        gender: opts.filter_gender,
-        ability: opts.filter_ability,
-        min_ivs: opts.filter_min_ivs,
-        max_ivs: opts.filter_max_ivs,
-        stats: null,
-      },
-    });
-    const formattedResults = results.map((res) => ({
-      ...flattenIvs(res),
-      key: `${res.seed}-${res.pid}`,
-    }));
-    setResults(formattedResults);
-  }, []);
+  const onSubmit = React.useCallback(
+    async (opts: FormState) => {
+      const minMaxStats = await getGen3StatRange(opts.species);
+      setState((prev) => ({ ...prev, species: opts.species, minMaxStats }));
+      const advance = getStarterAdvance(opts.species);
+      const results = await rngTools.search_static4_method1_seeds({
+        ...opts,
+        min_advance: advance,
+        max_advance: advance,
+        filter: {
+          shiny: opts.filter_shiny,
+          nature: opts.filter_nature,
+          gender: opts.filter_gender,
+          ability: opts.filter_ability,
+          min_ivs: opts.filter_min_ivs,
+          max_ivs: opts.filter_max_ivs,
+          stats: null,
+        },
+      });
+      const formattedResults = results.map((res) => ({
+        ...flattenIvs(res),
+        key: `${res.seed_time.seed}-${res.pid}`,
+      }));
+      setResults(formattedResults);
+    },
+    [setState],
+  );
 
   return (
     <RngToolForm<FormState, Result>

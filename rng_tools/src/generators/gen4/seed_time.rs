@@ -11,9 +11,21 @@ use wasm_bindgen::prelude::*;
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SeedTime4 {
+    pub seed: u32,
     pub datetime: RngDateTime,
     pub delay: u32,
     pub coin_flips: Vec<CoinFlip>,
+}
+
+impl SeedTime4 {
+    pub fn new(seed: u32, datetime: RngDateTime, delay: u32) -> Self {
+        Self {
+            seed,
+            datetime,
+            delay,
+            coin_flips: coin_flips(seed),
+        }
+    }
 }
 
 struct SeedTime4SingleMonthOptions {
@@ -68,6 +80,7 @@ fn dppt_calculate_single_month_seedtime(opts: SeedTime4SingleMonthOptions) -> Ve
                     && (opts.forced_second.is_none() || Some(second as u8) == opts.forced_second)
                 {
                     results.push(SeedTime4 {
+                        seed: opts.seed,
                         delay,
                         coin_flips: lazy_coin_flip(),
                         datetime: RngDateTime::new(year, month, day, hour, minute, second)
@@ -235,6 +248,7 @@ mod test {
         #[test]
         fn set1() {
             let seedtime = SeedTime4 {
+                seed: 0xa9bbccda,
                 datetime: datetime!(2000-11-05 23:56:59).unwrap(),
                 delay: 10800349,
                 coin_flips: coin_flips!("HTHTHHHTHHTHHHTTHTH"),
@@ -399,81 +413,97 @@ mod test {
             let result = dppt_calculate_seedtime(opts);
             let expected = [
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-26 23:59:59).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-27 23:57:59).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-27 23:58:58).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-27 23:59:57).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:55:59).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:56:58).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:57:57).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:58:56).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:59:55).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:53:59).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:54:58).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:55:57).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:56:56).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:57:55).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:58:54).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:59:53).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
@@ -500,11 +530,13 @@ mod test {
             let result = dppt_calculate_seedtime(opts);
             let expected = [
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:58:56).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:56:56).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
@@ -523,6 +555,7 @@ mod test {
             };
             let results = dppt_find_seedtime(opts);
             let expected = SeedTime4 {
+                seed: 0xDC03025B,
                 datetime: datetime!(2000-4-26 3:57:59).unwrap(),
                 delay: 603,
                 coin_flips: coin_flips!("HHTTTTTHTHTHHTTTHHTT"),

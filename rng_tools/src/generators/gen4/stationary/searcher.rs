@@ -27,7 +27,6 @@ pub struct SearchStatic4Method1Opts {
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SearchStatic4Method1State {
-    pub seed: u32,
     pub seed_time: SeedTime4,
     pub advance: usize,
     pub pid: u32,
@@ -73,14 +72,8 @@ impl PkmState for Base4Method1State {
 }
 
 impl Base4Method1State {
-    fn full_state(
-        &self,
-        advance: usize,
-        seed: u32,
-        seed_time: SeedTime4,
-    ) -> SearchStatic4Method1State {
+    fn full_state(&self, advance: usize, seed_time: SeedTime4) -> SearchStatic4Method1State {
         SearchStatic4Method1State {
-            seed,
             advance,
             seed_time,
             pid: self.pid,
@@ -208,7 +201,7 @@ pub fn search_static4_method1_seeds(
             let seed_time = dppt_find_seedtime(seed_time_opts);
 
             if let Some(seed_time) = seed_time {
-                let found_state = state.full_state(advance, seed, seed_time);
+                let found_state = state.full_state(advance, seed_time);
                 results.push(found_state);
             }
 
@@ -252,9 +245,9 @@ mod tests {
             let results = search_static4_method1_seeds(&opts);
             let expected = [
                 SearchStatic4Method1State {
-                    seed: 0x5C03025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x5C03025B,
                         datetime: datetime!(2000-1-1 3:32:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTHHHHHTHHHTHHTHTHTH"),
@@ -275,9 +268,9 @@ mod tests {
                     characteristic: Characteristic::ProudOfItsPower,
                 },
                 SearchStatic4Method1State {
-                    seed: 0xDC03025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0xDC03025B,
                         datetime: datetime!(2000-4-26 3:57:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHTTTTTHTHTHHTTTHHTT"),
@@ -298,9 +291,9 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x0403025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x0403025B,
                         datetime: datetime!(2000-1-1 3:0:3).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTHTTTHTHHHHTTTTTTHH"),
@@ -321,9 +314,9 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x8403025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x8403025B,
                         datetime: datetime!(2000-1-14 3:59:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTTTTHTTTHHTHTTHTHTH"),
@@ -344,9 +337,9 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x0003025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x0003025B,
                         datetime: datetime!(2000-5-28 3:57:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHHTTTTTHHHTTTHHTHTH"),
@@ -367,9 +360,9 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x8003025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x8003025B,
                         datetime: datetime!(2000-1-10 3:59:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("TTTTHHTHHTHHHTHTHTHT"),
@@ -390,9 +383,9 @@ mod tests {
                     characteristic: Characteristic::ProudOfItsPower,
                 },
                 SearchStatic4Method1State {
-                    seed: 0xA803025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0xA803025B,
                         datetime: datetime!(2000-2-25 3:59:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHTHHHHTTHTHHHTTHTHH"),
@@ -413,9 +406,9 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x2803025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x2803025B,
                         datetime: datetime!(2000-1-1 3:0:39).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHHTTTHHHTHTTHTHHTHT"),
@@ -436,9 +429,9 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4Method1State {
-                    seed: 0xA403025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0xA403025B,
                         datetime: datetime!(2000-2-23 3:59:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("TTHHTTTHTTHHTTTTHTTT"),
@@ -459,9 +452,9 @@ mod tests {
                     characteristic: Characteristic::CapableOfTakingHits,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x2403025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x2403025B,
                         datetime: datetime!(2000-1-1 3:0:35).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTHTHTHHTHHHTTHTHHTT"),
@@ -482,9 +475,9 @@ mod tests {
                     characteristic: Characteristic::CapableOfTakingHits,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x52060259,
                     advance: 0,
                     seed_time: SeedTime4 {
+                        seed: 0x52060259,
                         datetime: datetime!(2000-1-1 6:22:59).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("TTHHTTHHHTTHTTTTHTTT"),
@@ -505,9 +498,9 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4Method1State {
-                    seed: 0xD2060259,
                     advance: 0,
                     seed_time: SeedTime4 {
+                        seed: 0xD2060259,
                         datetime: datetime!(2000-3-31 6:58:59).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("HHHHTHTHHHTTHHHTTHHH"),
@@ -528,9 +521,9 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x3A060259,
                     advance: 0,
                     seed_time: SeedTime4 {
+                        seed: 0x3A060259,
                         datetime: datetime!(2000-1-1 6:0:57).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("TTHHHTHTHHHHTHTHHHHT"),
@@ -551,9 +544,9 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4Method1State {
-                    seed: 0xBA060259,
                     advance: 0,
                     seed_time: SeedTime4 {
+                        seed: 0xBA060259,
                         datetime: datetime!(2000-3-23 6:58:59).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("HTTTTTHHTTHTHTTTHHTT"),
@@ -574,9 +567,9 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x96060259,
                     advance: 0,
                     seed_time: SeedTime4 {
+                        seed: 0x96060259,
                         datetime: datetime!(2000-2-16 6:59:59).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("TTHTHTHHHTHHHTTHTHTT"),
@@ -597,9 +590,9 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x16060259,
                     advance: 0,
                     seed_time: SeedTime4 {
+                        seed: 0x16060259,
                         datetime: datetime!(2000-1-1 6:0:21).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("HHTHTHTTHTTHHTHTTHHT"),
@@ -620,9 +613,9 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x7E060259,
                     advance: 0,
                     seed_time: SeedTime4 {
+                        seed: 0x7E060259,
                         datetime: datetime!(2000-1-8 6:59:59).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("HHHHTHHHTTHHHHTTHHHH"),
@@ -643,9 +636,9 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4Method1State {
-                    seed: 0xFE060259,
                     advance: 0,
                     seed_time: SeedTime4 {
+                        seed: 0xFE060259,
                         datetime: datetime!(2000-5-28 6:55:59).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("TTHHHHTTHTHHTHHHTHHT"),
@@ -695,9 +688,9 @@ mod tests {
             let results = search_static4_method1_seeds(&opts);
             let expected = [
                 SearchStatic4Method1State {
-                    seed: 0x5C03025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x5C03025B,
                         datetime: datetime!(2000-1-1 3:32:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTHHHHHTHHHTHHTHTHTH"),
@@ -718,9 +711,9 @@ mod tests {
                     characteristic: Characteristic::ProudOfItsPower,
                 },
                 SearchStatic4Method1State {
-                    seed: 0xDC03025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0xDC03025B,
                         datetime: datetime!(2000-4-26 3:57:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHTTTTTHTHTHHTTTHHTT"),
@@ -741,9 +734,9 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x0403025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x0403025B,
                         datetime: datetime!(2000-1-1 3:0:3).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTHTTTHTHHHHTTTTTTHH"),
@@ -764,9 +757,9 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x8403025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x8403025B,
                         datetime: datetime!(2000-1-14 3:59:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTTTTHTTTHHTHTTHTHTH"),
@@ -787,9 +780,9 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x0003025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x0003025B,
                         datetime: datetime!(2000-5-28 3:57:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHHTTTTTHHHTTTHHTHTH"),
@@ -810,9 +803,9 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x8003025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x8003025B,
                         datetime: datetime!(2000-1-10 3:59:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("TTTTHHTHHTHHHTHTHTHT"),
@@ -833,9 +826,9 @@ mod tests {
                     characteristic: Characteristic::ProudOfItsPower,
                 },
                 SearchStatic4Method1State {
-                    seed: 0xA803025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0xA803025B,
                         datetime: datetime!(2000-2-25 3:59:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHTHHHHTTHTHHHTTHTHH"),
@@ -856,9 +849,9 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x2803025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x2803025B,
                         datetime: datetime!(2000-1-1 3:0:39).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHHTTTHHHTHTTHTHHTHT"),
@@ -879,9 +872,9 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4Method1State {
-                    seed: 0xA403025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0xA403025B,
                         datetime: datetime!(2000-2-23 3:59:59).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("TTHHTTTHTTHHTTTTHTTT"),
@@ -902,9 +895,9 @@ mod tests {
                     characteristic: Characteristic::CapableOfTakingHits,
                 },
                 SearchStatic4Method1State {
-                    seed: 0x2403025B,
                     advance: 2,
                     seed_time: SeedTime4 {
+                        seed: 0x2403025B,
                         datetime: datetime!(2000-1-1 3:0:35).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTHTHTHHTHHHTTHTHHTT"),
@@ -926,7 +919,7 @@ mod tests {
                 },
             ];
 
-            assert_eq!(results, expected);
+            assert_list_eq!(results, expected);
         }
     }
 }

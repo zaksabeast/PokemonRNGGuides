@@ -69,6 +69,7 @@ const SelectButton = ({ target }: SelectButtonProps) => {
 };
 
 type Result = Id4 & {
+  seed: number;
   targetGender: CuteCharmGender;
   natures: Nature[];
   genderRatios: GenderRatio[];
@@ -296,6 +297,7 @@ const chunkRange = ([start, end]: [number, number], chunkSize: number) => {
 
 const mapResult = (res: Id4): Result => ({
   ...res,
+  seed: res.seed_time.seed,
   delay: res.seed_time.delay,
   ...getCuteCharmTsvProps(res.tsv),
 });

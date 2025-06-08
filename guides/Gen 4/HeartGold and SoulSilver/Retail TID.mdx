@@ -9,16 +9,24 @@ isRoughDraft: false
 hideFromNavDrawer: true
 ---
 
+<Alert
+  showIcon
+  type="info"
+  message="This guide is interactive and updates instructions based on your settings!"
+/>
+
 <Gist>
   RNG a TID and SID to predict when you'll get shiny Pokemon. Optionally RNG a
-  Cute Charm ID pair for increased shiny odds during your playthrough.
+  Cute Charm ID pair for massively increased shiny odds during your playthrough.
 </Gist>
+
+For increased shiny odds, have a Pokemon with the Cute Charm ability in the front of your party. The Pokemon's gender needs to be the opposite of your target gender. For max shiny odds, this means having a male Cute Charmer.
 
 <Stepper titles={["Set up", "Pick a TID", "Hit Target", "Calibrate"]}>
 
 <Step step={0}>
 
-## Pick a game
+## Set up
 
 Choose the game you're playing below then continue to the next step.
 
@@ -38,22 +46,25 @@ Fill our the tool below. If you want random max shiny odds during your playthrou
 
 <Step step={2}>
 
-## Hit your target
+## Prepare
 
-1. Set your console time to **<Id4ConsoleSetDateString />** and wait at the screen to confirm setting the console time (screenshot below).
-2. Simultaneously press `A` to set the console time and start the timer below.
-3. Exit the settings on your console and restart your console.
-4. When the first timer ends, press `A` to start the game.
-5. Get to the naming screen. Make sure to name your character the same way each time. Take note if you're ending on a lower or upper case screen.
-6. Get to the last screen before the TID is generated (see screenshot below). Wait for the second timer to go off and press `A` at the same time.
-   - If you don't have enough time to reach the last screen before the timer goes off, find a TID with a higher delay to give more time.
-7. Continue to the next step to check what TID you hit.
+1. Set your console date to **<Id4ConsoleSetDateString format="date" />**.
+2. Start setting your console time to **<Id4ConsoleSetDateString format="time" />**, but don't confirm it just yet.
 
 | Confirm time screen                                                    |
 | ---------------------------------------------------------------------- |
 | ![Confirm time screen](/images/HeartGold-SoulSilver/SetTimeScreen.jpg) |
 
-## Final Screen
+## Hit your target
+
+1. Simultaneously press `A` to set the console time and start the timer below.
+2. Exit the settings on your console and restart your console.
+3. When the first timer ends, press `A` to start the game.
+4. Get to the naming screen. Make sure to name your character the same way each time.
+5. If you've calibrated at least once and need to flip your delay, switch between upper and lower case characters one extra time. Japanese games should switch between Hiragana and Katakana.
+6. Get to the last screen before the TID is generated (see screenshot below). Wait for the second timer to go off and press `A` at the same time.
+   - If you don't have enough time to reach the last screen before the timer goes off, find a TID with a higher delay to give more time.
+7. Continue to the next step to check what TID you hit.
 
 | Diamond & Pearl                                                             | Platinum                                                                                | HeartGold & SoulSilver                                                    |
 | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |

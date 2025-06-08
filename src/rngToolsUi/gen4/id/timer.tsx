@@ -24,7 +24,13 @@ const getGameDateTime = (state: Id4State) => {
   };
 };
 
-export const Id4ConsoleSetDateString = () => {
+type Id4ConsoleSetDateStringProps = {
+  format?: "date" | "time";
+};
+
+export const Id4ConsoleSetDateString = ({
+  format,
+}: Id4ConsoleSetDateStringProps) => {
   const [state] = useId4State();
   const { ms } = useGen4Timer(idTimerAtom);
   const { dateTime } = getGameDateTime(state);
@@ -32,7 +38,10 @@ export const Id4ConsoleSetDateString = () => {
   const targetMinutes = Math.floor(sum(ms) / 1000 / 60); // Convert milliseconds to minutes
   const consoleSetDate = dateTime.subtract(targetMinutes, "minutes");
 
-  return <>{consoleSetDate.format(rngChronoFormat.dateHourMinutes)}</>;
+  const formatTemplate =
+    format === "date" ? rngChronoFormat.date : rngChronoFormat.hoursMinutes;
+
+  return <>{consoleSetDate.format(formatTemplate)}</>;
 };
 
 export const Id4Timer = () => {
@@ -41,6 +50,7 @@ export const Id4Timer = () => {
 
   return (
     <Gen4Timer
+      is3ds={state.is3ds}
       timer={idTimerAtom}
       targetDelay={delay}
       targetSecond={dateTime.second()}

@@ -13,11 +13,13 @@ export const games = [
 export type Game = (typeof games)[number];
 
 export type Id4State = {
+  is3ds: boolean;
   game: Game;
   target: Id4 | null;
 };
 
 const initialHeldState: Id4State = {
+  is3ds: false,
   game: "Diamond",
   target: null,
 };

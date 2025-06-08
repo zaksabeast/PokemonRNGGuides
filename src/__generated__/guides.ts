@@ -549,11 +549,12 @@ export const guides = {
   "/dppt-cute-charm/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
-      title: "Diamond, Pearl, and Platinum Cute Charm RNG",
-      navDrawerTitle: "Cute Charm RNG",
-      description: "How to use Cute Charm with TID/SID RNG.",
+      title: "Diamond, Pearl, and Platinum Cute Charm Glitch Mechanics",
+      navDrawerTitle: "Cute Charm Mechanics",
+      description:
+        "Learn about how the Cute Charm glitch works in Diamond, Pearl, and Platinum.",
       slug: "/dppt-cute-charm/",
       isRoughDraft: false,
       hideFromNavDrawer: false,
@@ -677,6 +678,29 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx"),
     ),
+  },
+  "/dppt-tid-sid/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["retail"],
+      isNew: true,
+      title: "HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG",
+      navDrawerTitle: "Cute Charm & TID/SID RNG",
+      description:
+        "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for HeartGold and SoulSilver.",
+      slug: "/dppt-tid-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: "2025-06-08",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Gen 4/Retail TID.mdx",
+      translations: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
   },
   "/dppt-wild/": {
     meta: {
@@ -1234,11 +1258,12 @@ export const guides = {
   "/emulator-dppt-cute-charm/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["emu"],
+      tags: ["info"],
       isNew: false,
-      title: "Diamond, Pearl, and Platinum Cute Charm RNG",
-      navDrawerTitle: "Cute Charm RNG",
-      description: "How to use Cute Charm with TID/SID RNG.",
+      title: "Diamond, Pearl, and Platinum Cute Charm Glitch Mechanics",
+      navDrawerTitle: "Cute Charm Mechanics",
+      description:
+        "Learn about how the Cute Charm glitch works in Diamond, Pearl, and Platinum.",
       slug: "/emulator-dppt-cute-charm/",
       isRoughDraft: false,
       hideFromNavDrawer: true,
@@ -1551,11 +1576,12 @@ export const guides = {
   "/emulator-hgss-cute-charm/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
-      tags: ["emu"],
+      tags: ["info"],
       isNew: false,
-      title: "HeartGold and SoulSilver Cute Charm RNG",
-      navDrawerTitle: "Cute Charm RNG",
-      description: "How to use Cute Charm with TID/SID RNG.",
+      title: "HeartGold and SoulSilver Cute Charm Glitch Mechanics",
+      navDrawerTitle: "Cute Charm Mechanics",
+      description:
+        "Learn about how the Cute Charm glitch works in HeartGold and SoulSilver.",
       slug: "/emulator-hgss-cute-charm/",
       isRoughDraft: false,
       hideFromNavDrawer: true,
@@ -2549,11 +2575,12 @@ export const guides = {
   "/hgss-cute-charm/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
-      title: "HeartGold and SoulSilver Cute Charm RNG",
-      navDrawerTitle: "Cute Charm RNG",
-      description: "How to use Cute Charm with TID/SID RNG.",
+      title: "HeartGold and SoulSilver Cute Charm Glitch Mechanics",
+      navDrawerTitle: "Cute Charm Mechanics",
+      description:
+        "Learn about how the Cute Charm glitch works in HeartGold and SoulSilver.",
       slug: "/hgss-cute-charm/",
       isRoughDraft: false,
       hideFromNavDrawer: false,
@@ -2628,26 +2655,24 @@ export const guides = {
     meta: {
       categories: ["HeartGold and SoulSilver"],
       tags: ["retail"],
-      isNew: false,
-      title: "HeartGold and SoulSilver TID/SID RNG",
-      navDrawerTitle: "TID/SID RNG",
+      isNew: true,
+      title: "HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG",
+      navDrawerTitle: "Cute Charm & TID/SID RNG",
       description:
-        "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo on Retail in HeartGold and SoulSilver.",
+        "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for HeartGold and SoulSilver.",
       slug: "/hgss-tid-sid/",
       isRoughDraft: false,
-      hideFromNavDrawer: true,
-      addedOn: null,
+      hideFromNavDrawer: false,
+      addedOn: "2025-06-08",
       translation: null,
       layout: "guide",
       canonical: null,
       type: "baseGuide",
-      file: "guides/Gen 4/HeartGold and SoulSilver/Retail TID.mdx",
+      file: "guides/Gen 4/Retail TID.mdx",
       translations: null,
       displayAttributes: ["web_tool"],
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Retail TID.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
   },
   "/install-capturesight/": {
     meta: {
@@ -4956,7 +4981,7 @@ export const guides = {
   "/zh-dppt-cute-charm/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "迷人之躯乱数",
       navDrawerTitle: "迷人之躯乱数",
@@ -5381,7 +5406,7 @@ export const guides = {
   "/zh-emulator-dppt-cute-charm/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["emu"],
+      tags: ["info"],
       isNew: false,
       title: "迷人之躯乱数",
       navDrawerTitle: "迷人之躯乱数",
@@ -5582,7 +5607,7 @@ export const guides = {
   "/zh-emulator-hgss-cute-charm/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
-      tags: ["emu"],
+      tags: ["info"],
       isNew: false,
       title: "迷人之躯乱数",
       navDrawerTitle: "迷人之躯乱数",
@@ -5885,7 +5910,7 @@ export const guides = {
   "/zh-hgss-cute-charm/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "迷人之躯乱数",
       navDrawerTitle: "迷人之躯乱数",
@@ -6211,6 +6236,7 @@ export const guideSlugs = [
   "/dppt-initial-seed/",
   "/dppt-pokeradar-rng/",
   "/dppt-setup-rng/",
+  "/dppt-tid-sid/",
   "/dppt-wild/",
   "/dream-radar-patches/",
   "/e-tips-rng/",

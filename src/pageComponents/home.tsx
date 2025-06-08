@@ -1,6 +1,7 @@
-import { Flex, Card, Typography, Grid } from "~/components";
+import { Flex, Card, Typography, Grid, BadgeRibbon } from "~/components";
 import { Route } from "~/routes/defs";
 import styled from "@emotion/styled";
+import { categoryHasNewContent } from "~/guides";
 import brilliantDiamondLogoSrc from "~/assets/logos/brilliant_diamond_logo.webp";
 import shiningPearlLogoSrc from "~/assets/logos/shining_pearl_logo.webp";
 import swordLogoSrc from "~/assets/logos/sword_logo.webp";
@@ -140,6 +141,7 @@ const GameCard = styled(Card)(({ theme }) => ({
     transform: "scale(1.10)",
   },
   ".ant-card-body": {
+    padding: 0,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -164,6 +166,7 @@ const FeaturedChallengeContainer = styled(Flex)(({ theme }) => ({
   justifyContent: "space-around",
   alignItems: "center",
   gap: 8,
+  padding: 24,
   height: "100%",
   [theme.mediaQueries.down("mobile")]: {
     flexDirection: "column",
@@ -204,11 +207,16 @@ export const HomePageComponent = () => {
             border="2px solid"
             fullBody
           >
-            <Flex justify="center" align="center" gap={8} flex={1}>
-              {game.images.map((src) => (
-                <LogoImg key={src} src={src} alt={`${game.name} logo`} />
-              ))}
-            </Flex>
+            <BadgeRibbon
+              $show={categoryHasNewContent(game.slug)}
+              text="New Content"
+            >
+              <Flex justify="center" align="center" gap={8} flex={1} p={24}>
+                {game.images.map((src) => (
+                  <LogoImg key={src} src={src} alt={`${game.name} logo`} />
+                ))}
+              </Flex>
+            </BadgeRibbon>
           </GameCard>
         ))}
       </Grid>

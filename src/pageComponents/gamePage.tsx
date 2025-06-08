@@ -1,15 +1,19 @@
-import { Card as AntdCard, Badge } from "antd";
-import { Flex, Typography, Grid, Card, Divider, Tag, Icon } from "~/components";
-import { getGuide, guides, Category, GuideTag, GuideMeta } from "~/guides";
+import { Card as AntdCard } from "antd";
+import {
+  Flex,
+  Typography,
+  Grid,
+  Card,
+  Divider,
+  Tag,
+  Icon,
+  BadgeRibbon,
+} from "~/components";
+import { getGuide, GuideTag, GuideMeta, getGuidesForSlug } from "~/guides";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { get, groupBy, sortBy, flatMap, startCase } from "lodash-es";
-import { Route } from "~/routes/defs";
+import { sortBy, startCase } from "lodash-es";
 import { match } from "ts-pattern";
 import styled from "@emotion/styled";
-
-const BadgeRibbon = styled(Badge.Ribbon)<{ $isNew: boolean }>(({ $isNew }) => ({
-  display: $isNew ? "flex" : "none",
-}));
 
 type DisplayAttribute =
   | GuideMeta["displayAttributes"][number]
@@ -45,68 +49,6 @@ const DisplayTag = styled(Tag)<{ tag: DisplayAttribute }>(({ tag }) => {
 });
 
 const { Meta: CardMeta } = AntdCard;
-
-const isToolCategory = (category: Category) => {
-  return match(category)
-    .with("GBA Tools", () => true)
-    .with("NDS Tools", () => true)
-    .with("3DS Tools", () => true)
-    .with("Switch Tools", () => true)
-    .with("Black 2 and White 2", () => false)
-    .with("Black and White", () => false)
-    .with("Diamond, Pearl, and Platinum", () => false)
-    .with("HeartGold and SoulSilver", () => false)
-    .with("Legends Arceus", () => false)
-    .with("Ruby and Sapphire", () => false)
-    .with("FireRed and LeafGreen", () => false)
-    .with("Emerald", () => false)
-    .with("Gold, Silver, Crystal", () => false)
-    .with("X and Y", () => false)
-    .with("Omega Ruby and Alpha Sapphire", () => false)
-    .with("Sun and Moon", () => false)
-    .with("Ultra Sun and Ultra Moon", () => false)
-    .with("Sword and Shield", () => false)
-    .with("Brilliant Diamond and Shining Pearl", () => false)
-    .with("Gamecube", () => false)
-    .with("GBA Overview", () => false)
-    .with("GBA Technical Documentation", () => false)
-    .with("Game Hub", () => false)
-    .with("Home", () => false)
-    .with("Transporter and Dream Radar", () => false)
-    .with("USUM Challenges", () => false)
-    .with("User Settings", () => false)
-    .exhaustive();
-};
-
-const routeToCategory = {
-  "/transporter-dream-radar/": ["Transporter and Dream Radar"],
-  "/legends-arceus/": ["Legends Arceus", "Switch Tools"],
-  "/crystal/": ["Gold, Silver, Crystal"],
-  "/ruby-and-sapphire/": [
-    "Ruby and Sapphire",
-    "GBA Tools",
-    "GBA Technical Documentation",
-  ],
-  "/gamecube/": ["Gamecube"],
-  "/fire-red-and-leaf-green/": ["FireRed and LeafGreen", "GBA Tools"],
-  "/emerald/": ["Emerald", "GBA Tools", "GBA Technical Documentation"],
-  "/diamond-pearl-and-platinum/": ["Diamond, Pearl, and Platinum", "NDS Tools"],
-  "/heart-gold-and-soul-silver/": ["HeartGold and SoulSilver", "NDS Tools"],
-  "/black-and-white/": ["Black and White", "NDS Tools"],
-  "/black-2-and-white-2/": ["Black 2 and White 2", "NDS Tools"],
-  "/x-and-y/": ["X and Y", "3DS Tools"],
-  "/omega-ruby-and-alpha-sapphire/": [
-    "Omega Ruby and Alpha Sapphire",
-    "3DS Tools",
-  ],
-  "/sun-and-moon/": ["Sun and Moon", "3DS Tools"],
-  "/ultra-sun-and-ultra-moon/": ["Ultra Sun and Ultra Moon", "3DS Tools"],
-  "/sword-and-shield/": ["Sword and Shield", "Switch Tools"],
-  "/brilliant-diamond-and-shining-pearl/": [
-    "Brilliant Diamond and Shining Pearl",
-    "Switch Tools",
-  ],
-} satisfies Partial<Record<Route, Category[]>>;
 
 const GuideCard = styled(Card)({
   "& .ant-card-body": {
@@ -170,34 +112,11 @@ const getSectionLabel = (section: string) => {
     .exhaustive();
 };
 
-const guidesWithFlattenedTags = flatMap(guides, (guide) => {
-  return guide.meta.tags.map((tag) => ({ ...guide.meta, tag }));
-});
-const guidesWithFlattenedCategories = guidesWithFlattenedTags.flatMap(
-  (guide) => {
-    return guide.categories.map((category) => ({ ...guide, category }));
-  },
-);
-const guideByCategory = groupBy(
-  guidesWithFlattenedCategories,
-  (guide) => guide.category,
-);
-
 export const GamePageComponent = () => {
   const route = useActiveRoute();
 
   const { meta } = getGuide(route);
-
-  const categories = get(routeToCategory, meta.slug);
-  const guides =
-    categories?.flatMap((category) => guideByCategory[category]) ?? null;
-  const guidesBySection = groupBy(guides, (guide) => {
-    if (isToolCategory(guide.category)) {
-      return "tool";
-    }
-
-    return guide.tag;
-  });
+  const guidesBySection = getGuidesForSlug(meta.slug);
 
   return (
     <Flex vertical gap={12}>
@@ -234,11 +153,7 @@ export const GamePageComponent = () => {
                     borderColor="PrimaryBorderHover"
                     border={guide.isNew ? "2px solid" : "1px solid"}
                   >
-                    <BadgeRibbon
-                      $isNew={guide.isNew}
-                      text="New"
-                      key={guide.slug}
-                    >
+                    <BadgeRibbon $show={guide.isNew} text="New">
                       <Flex vertical justify="space-between" flex={1} p={24}>
                         <Flex vertical minHeight={50} gap={4} height="100%">
                           <CardBackground>

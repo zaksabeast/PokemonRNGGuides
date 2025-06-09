@@ -1,3 +1,4 @@
+use crate::EncounterSlot;
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
 use crate::{
@@ -191,6 +192,155 @@ pub fn search_static4_method1_seeds(
     }
 
     results
+}
+
+pub struct SearchStatic4MethodjOpts {
+    pub tid: u16,
+    pub sid: u16,
+    pub encounter: EncounterSlot,
+    pub filter: PkmFilter,
+    pub min_advance: usize,
+    pub max_advance: usize,
+    pub min_delay: u32,
+    pub max_delay: u32,
+}
+
+pub struct SearchStatic4MethodjState {
+    pub seed: u32,
+    pub advance: usize,
+    pub delay: u32,
+    pub pid: u32,
+    pub ivs: Ivs,
+    pub ability: AbilityType,
+    pub gender: Gender,
+    pub nature: Nature,
+    pub shiny: bool,
+    pub characteristic: Characteristic,
+    pub encounter_slot: EncounterSlot,
+}
+
+impl PkmState for SearchStatic4MethodjState {
+    fn ability(&self) -> crate::AbilityType {
+        self.ability
+    }
+
+    fn gender(&self) -> crate::Gender {
+        self.gender
+    }
+
+    fn ivs(&self) -> &crate::Ivs {
+        &self.ivs
+    }
+
+    fn nature(&self) -> crate::Nature {
+        self.nature
+    }
+
+    fn shiny(&self) -> bool {
+        self.shiny
+    }
+}
+
+fn search_static4_methodj(opts: &SearchStatic4MethodjOpts) -> Vec<SearchStatic4Method1State> {
+    let Ivs {
+        hp: min_hp,
+        atk: min_atk,
+        def: min_def,
+        spa: min_spa,
+        spd: min_spd,
+        spe: min_spe,
+    } = opts.filter.min_ivs;
+
+    let Ivs {
+        hp: max_hp,
+        atk: max_atk,
+        def: max_def,
+        spa: max_spa,
+        spd: max_spd,
+        spe: max_spe,
+    } = opts.filter.max_ivs;
+
+    iproduct!(
+        min_hp..=max_hp,
+        min_atk..=max_atk,
+        min_def..=max_def,
+        min_spa..=max_spa,
+        min_spd..=max_spd,
+        min_spe..=max_spe
+    )
+    .flat_map(|(hp, atk, def, spa, spd, spe)| {
+        search_static4_methodj_seed(
+            opts,
+            Ivs {
+                hp,
+                atk,
+                def,
+                spa,
+                spd,
+                spe,
+            },
+        )
+    })
+    .collect()
+}
+
+fn get_state_from_jseed(
+    opts: &SearchStatic4MethodjOpts,
+    ivs: Ivs,
+    seed: u32,
+) -> SearchStatic4MethodjState {
+    let mut rng = Pokerng::new(seed).rev();
+
+    let pidh = (rng.rand::<u16>() as u32) << 16;
+    let pidl = rng.rand::<u16>() as u32;
+    let encounter_rand = (rng.rand::<u16>() / 656) as u8;
+    let encounter_slot = EncounterSlot::from_rand(encounter_rand);
+
+    let pid = pidh | pidl;
+    let nature = Nature::from((pid % 25) as u8);
+    let gender = opts.species.gender_from_pid(pid);
+    let ability = AbilityType::from_gen3_pid(pid);
+    let shiny = gen3_shiny(pid, opts.tid, opts.sid);
+
+    let characteristic = Characteristic::new(pid, &ivs);
+
+    SearchStatic4MethodjState {
+        seed: rng.rand::<u32>(),
+        pid,
+        ability,
+        gender,
+        nature,
+        ivs,
+        shiny,
+        characteristic,
+        // We'll add these later
+        advance: 0,
+        delay: 0,
+        encounter_slot,
+    }
+}
+
+pub fn search_static4_methodj_seed(
+    opts: &SearchStatic4MethodjOpts,
+    ivs: Ivs,
+) -> Vec<SearchStatic4MethodjState> {
+    let seeds = recover_poke_rng_iv(&ivs, false);
+    seeds
+        .into_iter()
+        .filter_map(|seed| {
+            let state: SearchStatic4MethodjState = get_state_from_jseed(opts, ivs, seed);
+
+            // Don't check IVs since we specifically found matching IVs
+            if !opts.filter.pass_filter_no_ivs(&state) {
+                return None;
+            }
+            if opts.encounter.passes_filter(&state.encounter_slot) {
+                return None;
+            }
+
+            Some(state)
+        })
+        .collect()
 }
 
 #[cfg(test)]

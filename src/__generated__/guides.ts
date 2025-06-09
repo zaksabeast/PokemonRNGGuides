@@ -448,6 +448,32 @@ export const guides = {
       () => import("~/../guides/Tools and Emulators/CitraRNG Setup.mdx"),
     ),
   },
+  "/connect-dolphin-to-gba/": {
+    meta: {
+      categories: ["GBA Tools"],
+      tags: ["emu"],
+      isNew: false,
+      title: "Connect Dolphin to mGBA",
+      navDrawerTitle: "Connect Dolphin to mGBA",
+      description:
+        "Learn how to redeem Jirachi or transfer your RNGs to a GBA game.",
+      slug: "/connect-dolphin-to-gba/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Tools and Emulators/Connect Dolphin To GBA.mdx",
+      translations: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Tools and Emulators/Connect Dolphin To GBA.mdx"),
+    ),
+  },
   "/crystal/": {
     meta: {
       categories: ["Game Hub"],
@@ -2992,7 +3018,7 @@ export const guides = {
         "Learn how to redeem Jirachi or transfer your RNGs to a GBA game.",
       slug: "/misc-dolphin-connect-vba/",
       isRoughDraft: false,
-      hideFromNavDrawer: false,
+      hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
       layout: "guide",
@@ -6250,6 +6276,7 @@ export const guideSlugs = [
   "/challenge-usum-ta/",
   "/channel-jirachi/",
   "/citrarng-setup/",
+  "/connect-dolphin-to-gba/",
   "/crystal/",
   "/delete-pokemon-save/",
   "/desmume-setup/",

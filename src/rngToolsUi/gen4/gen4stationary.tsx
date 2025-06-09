@@ -7,7 +7,11 @@ import {
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import { getPkmFilterFields, pkmFilterSchema } from "~/components/pkmFilter";
+import {
+  getPkmFilterFields,
+  natureOptions,
+  pkmFilterSchema,
+} from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import React from "react";
 import { maxIvs, minIvs } from "~/types/ivs";
@@ -19,112 +23,38 @@ import {
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { startCase } from "lodash-es";
-import { nature } from "~/types";
+import {
+  GameVersion,
+  StaticEncounterId,
+  leadAbilities,
+} from "~/rngToolsUi/gen4/gen4types";
 
 type Result = FlattenIvs<Gen4SPokemon>;
-
-export type LeadAbilities =
-  | { kind: "None" }
-  | { kind: "CutecharmF" }
-  | { kind: "CutecharmM" }
-  | { kind: "Synchronize"; nature: Nature };
-
-export const LeadAbilitiesSchema = z.discriminatedUnion("kind", [
-  z.object({ kind: z.literal("None") }),
-  z.object({ kind: z.literal("CutecharmF") }),
-  z.object({ kind: z.literal("CutecharmM") }),
-  z.object({
-    kind: z.literal("Synchronize"),
-    nature: z.enum(nature),
-  }),
-]);
-
-const LeadAbilitiesOpts: { label: string; value: LeadAbilities }[] = [
-  { label: "None", value: { kind: "None" } },
-  { label: "Cute Charm (F)", value: { kind: "CutecharmF" } },
-  { label: "Cute Charm (M)", value: { kind: "CutecharmM" } },
-  {
-    label: "Synchronize",
-    value: { kind: "Synchronize", nature: nature[3] },
-  },
-];
-
-const GameVersion = [
-  "Diamond",
-  "Pearl",
-  "Platinum",
-  "HeartGold",
-  "SoulSilver",
-] as const;
 const GameVersionOpts = toOptions(GameVersion, startCase);
-
-const StaticEncounterId = [
-  "Turtwig",
-  "Chimchar",
-  "Piplup",
-  "Cyndaquil",
-  "Chikorita",
-  "Totodile",
-  "Charmander",
-  "Squirtle",
-  "Bulbasaur",
-  "Treecko",
-  "Mudkip",
-  "Torchic",
-  "Omanyte",
-  "Kabuto",
-  "Aerodactyl",
-  "Lileep",
-  "Anorith",
-  "Cranidos",
-  "Shieldon",
-  "Eevee",
-  "Porygon",
-  "Togepi",
-  "Riolu",
-  "Drifloon",
-  "Spiritomb",
-  "Rotom",
-  "Lugia",
-  "HoOh",
-  "Dialga",
-  "Palkia",
-  "Giratina",
-  "Regice",
-  "Regirock",
-  "Registeel",
-  "Uxie",
-  "Azelf",
-  "Heatran",
-  "Regigigas",
-  "Mesprit",
-  "Cresselia",
-  "Zapdos",
-  "Articuno",
-  "Moltres",
-  "Tentacool",
-  "Dratini",
-  "Tyrogue",
-  "Mareep",
-  "Wooper",
-  "Slugma",
-  "MrMime",
-  "Abra",
-  "Ekans",
-  "Raikou",
-  "Entei",
-  "Suicune",
-  "Voltorb",
-  "Snorlax",
-] as const;
-export type StaticEncounterId = keyof typeof StaticEncounterId;
+type StaticEncounterId = keyof typeof StaticEncounterId;
 const StaticEncounterIdOpts = Object.entries(StaticEncounterId).map(
   ([, value]) => ({ label: value, value }),
 );
-
-export const StaticEncounterIdSchema = z.enum(
+const StaticEncounterIdSchema = z.enum(
   Object.keys(StaticEncounterId) as ["Turtwig", ..."Snorlax"[]],
 );
+
+
+
+
+type FormState = z.infer<typeof Validator>;
+
+type LeadAbilityOption = FormState["lead"];
+
+const leadAbilitiesOpts: { label: string; value: LeadAbilityOption }[] = [
+  { label: "None", value: "None" },
+  { label: "Cute Charm (F)", value: "CutecharmF" },
+  { label: "Cute Charm (M)", value: "CutecharmM" },
+  {
+    label: "Synchronize",
+    value: "Synchronize",
+  },
+];
 
 const columns: ResultColumn<Result>[] = [
   {
@@ -158,11 +88,9 @@ const Validator = z
     max_advances: z.number(),
     game: z.enum(GameVersion),
     encounter: z.enum(StaticEncounterId),
-    lead: LeadAbilitiesSchema,
+    lead: z.enum(leadAbilities),
   })
   .merge(pkmFilterSchema);
-
-type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   seed: 0,
@@ -170,13 +98,13 @@ const initialValues: FormState = {
   sid: 0,
   game: "Diamond",
   encounter: "Turtwig",
-  lead: { kind: "None" },
+  lead: "None",
   initial_advances: 0,
   max_advances: 100,
   filter_shiny: false,
   filter_min_ivs: minIvs,
   filter_max_ivs: maxIvs,
-  filter_nature: "Adamant",
+  filter_nature: null,
   filter_gender: "Genderless",
   filter_ability: "First",
 };
@@ -226,19 +154,26 @@ const fields: Field[] = [
     input: (
       <FormikSelect<FormState, "lead">
         name="lead"
-        options={LeadAbilitiesOpts}
+        options={leadAbilitiesOpts}
       />
     ),
   },
-  ...getPkmFilterFields(),
+  ...getPkmFilterFields()
 ];
+type RustLead = "None" | "CutecharmF" | "CutecharmM" | { Synchronize: Nature };
 
 export const Filter_4static = () => {
   const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    if (opts.lead.kind === "Synchronize") {
-      opts.lead = { kind: "Synchronize", nature: opts.filter_nature as Nature };
+    let lead: RustLead;
+    if (opts.lead === "Synchronize") {
+      if (opts.filter_nature === null) {
+        throw new Error("Nature is required for Synchronize.");
+      }
+      lead = { Synchronize: opts.filter_nature };
+    } else {
+      lead = opts.lead;
     }
     const results = await rngTools.filter_4static(
       {
@@ -246,7 +181,7 @@ export const Filter_4static = () => {
         sid: opts.sid,
         game: opts.game,
         encounter: opts.encounter,
-        lead: opts.lead,
+        lead,
         initial_advances: opts.initial_advances,
         max_advances: opts.max_advances,
         filter: {

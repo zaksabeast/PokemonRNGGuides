@@ -1,0 +1,81 @@
+
+
+export const GameVersion = [
+  "Diamond",
+  "Pearl",
+  "Platinum",
+  "HeartGold",
+  "SoulSilver",
+] as const;
+
+
+export const StaticEncounterId = [
+  "Turtwig",
+  "Chimchar",
+  "Piplup",
+  "Cyndaquil",
+  "Chikorita",
+  "Totodile",
+  "Charmander",
+  "Squirtle",
+  "Bulbasaur",
+  "Treecko",
+  "Mudkip",
+  "Torchic",
+  "Omanyte",
+  "Kabuto",
+  "Aerodactyl",
+  "Lileep",
+  "Anorith",
+  "Cranidos",
+  "Shieldon",
+  "Eevee",
+  "Porygon",
+  "Togepi",
+  "Riolu",
+  "Drifloon",
+  "Spiritomb",
+  "Rotom",
+  "Lugia",
+  "HoOh",
+  "Dialga",
+  "Palkia",
+  "Giratina",
+  "Regice",
+  "Regirock",
+  "Registeel",
+  "Uxie",
+  "Azelf",
+  "Heatran",
+  "Regigigas",
+  "Mesprit",
+  "Cresselia",
+  "Zapdos",
+  "Articuno",
+  "Moltres",
+  "Tentacool",
+  "Dratini",
+  "Tyrogue",
+  "Mareep",
+  "Wooper",
+  "Slugma",
+  "MrMime",
+  "Abra",
+  "Ekans",
+  "Raikou",
+  "Entei",
+  "Suicune",
+  "Voltorb",
+  "Snorlax",
+] as const;
+
+
+export const leadAbilities = [
+  "None",
+  "CutecharmF",
+  "CutecharmM",
+  "Synchronize",
+] as const;
+
+
+

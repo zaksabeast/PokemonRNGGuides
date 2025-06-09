@@ -23,7 +23,7 @@ pub struct Gen4StaticOpts {
     pub filter: PkmFilter,
     pub game: Option<GameVersion>,
     pub encounter: StaticEncounterId,
-    pub lead: Option<LeadAbilities>,
+    pub lead: LeadAbilities,
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
@@ -82,18 +82,18 @@ pub fn generate_gen4_static(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<
 }
 
 pub fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4SPokemon> {
-    if let Some(lead) = opts.lead {
+    if let lead = opts.lead {
         if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
             let gender_threshold = opts.encounter.species().gender_ratio();
             let buffer = match opts.lead {
-                Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
-                Some(LeadAbilities::CutecharmM) => 0,
-                Some(LeadAbilities::Synchronize(_)) => 0,
+                LeadAbilities::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
+                LeadAbilities::CutecharmM => 0,
+                LeadAbilities::Synchronize(_) => 0,
                 _ => 0,
             };
             let target_gender = match opts.lead {
-                Some(LeadAbilities::CutecharmF) => Gender::Male,
-                Some(LeadAbilities::CutecharmM) => Gender::Female,
+                LeadAbilities::CutecharmF => Gender::Male,
+                LeadAbilities::CutecharmM => Gender::Female,
                 _ => Gender::Genderless,
             };
 
@@ -120,7 +120,7 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
             }
         }
     }
-    if let Some(LeadAbilities::Synchronize(nature)) = opts.lead {
+    if let LeadAbilities::Synchronize(nature) = opts.lead {
         if rng.rand::<u16>() % 2 == 0 {
             let mut pid: u32;
             let nature_value = nature as u32;
@@ -178,18 +178,18 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
 }
 
 pub fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4SPokemon> {
-    if let Some(lead) = opts.lead {
+    if let lead = opts.lead {
         if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
             let gender_threshold = opts.encounter.species().gender_ratio();
             let buffer = match opts.lead {
-                Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
-                Some(LeadAbilities::CutecharmM) => 0,
-                Some(LeadAbilities::Synchronize(_)) => 0,
+                LeadAbilities::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
+                LeadAbilities::CutecharmM => 0,
+                LeadAbilities::Synchronize(_) => 0,
                 _ => 0,
             };
             let target_gender = match opts.lead {
-                Some(LeadAbilities::CutecharmF) => Gender::Male,
-                Some(LeadAbilities::CutecharmM) => Gender::Female,
+                LeadAbilities::CutecharmF => Gender::Male,
+                LeadAbilities::CutecharmM => Gender::Female,
                 _ => Gender::Genderless,
             };
 
@@ -216,7 +216,7 @@ pub fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
             }
         }
     }
-    if let Some(LeadAbilities::Synchronize(nature)) = opts.lead {
+    if let LeadAbilities::Synchronize(nature) = opts.lead {
         if rng.rand::<u16>() >> 15 == 0 {
             let mut pid: u32;
             let nature_value = nature as u32;
@@ -330,7 +330,7 @@ mod test {
             max_advances: 10,
             encounter: StaticEncounterId::Turtwig,
             game: Some(GameVersion::Platinum),
-            lead: None,
+            lead: LeadAbilities::None,
             filter: PkmFilter {
                 shiny: false,
                 nature: None,
@@ -546,7 +546,7 @@ mod test {
             max_advances: 10,
             encounter: StaticEncounterId::Dialga,
             game: Some(GameVersion::Platinum),
-            lead: None,
+            lead: LeadAbilities::None,
             filter: PkmFilter {
                 shiny: false,
                 nature: None,
@@ -763,7 +763,7 @@ mod test {
             max_advances: 10,
             encounter: StaticEncounterId::HoOh,
             game: Some(GameVersion::HeartGold),
-            lead: None,
+            lead: LeadAbilities::None,
             filter: PkmFilter {
                 shiny: false,
                 nature: None,
@@ -984,7 +984,7 @@ mod test {
                 max_advances: 10,
                 encounter: StaticEncounterId::HoOh,
                 game: Some(GameVersion::HeartGold),
-                lead: Some(LeadAbilities::Synchronize(Nature::Adamant)),
+                lead: LeadAbilities::Synchronize(Nature::Adamant),
                 filter: PkmFilter {
                     shiny: false,
                     nature: None,
@@ -1200,7 +1200,7 @@ mod test {
                 max_advances: 10,
                 encounter: StaticEncounterId::Dialga,
                 game: Some(GameVersion::Platinum),
-                lead: Some(LeadAbilities::Synchronize(Nature::Adamant)),
+                lead: LeadAbilities::Synchronize(Nature::Adamant),
                 filter: PkmFilter {
                     shiny: false,
                     nature: None,
@@ -1421,7 +1421,7 @@ mod test {
                 max_advances: 10,
                 encounter: StaticEncounterId::Snorlax,
                 game: Some(GameVersion::HeartGold),
-                lead: Some(LeadAbilities::CutecharmM),
+                lead: LeadAbilities::CutecharmM,
                 filter: PkmFilter {
                     shiny: false,
                     nature: None,
@@ -1637,7 +1637,7 @@ mod test {
                 max_advances: 10,
                 encounter: StaticEncounterId::Drifloon,
                 game: Some(GameVersion::Platinum),
-                lead: Some(LeadAbilities::CutecharmM),
+                lead: LeadAbilities::CutecharmM,
                 filter: PkmFilter {
                     shiny: false,
                     nature: None,

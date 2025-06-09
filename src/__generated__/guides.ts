@@ -24,6 +24,29 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Home.mdx")),
   },
+  "/about/": {
+    meta: {
+      categories: ["Home"],
+      tags: ["info"],
+      isNew: false,
+      title: "About us",
+      navDrawerTitle: "About us",
+      description:
+        "Learn retail and emulator RNG with our Pokémon guides and tools",
+      slug: "/about/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "titled",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/About.mdx",
+      translations: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/About.mdx")),
+  },
   "/azahar-setup/": {
     meta: {
       categories: ["3DS Tools"],
@@ -6210,6 +6233,7 @@ export const guides = {
 
 export const guideSlugs = [
   "/",
+  "/about/",
   "/azahar-setup/",
   "/bdsp-advance-rng/",
   "/bdsp-chatot/",

@@ -4470,7 +4470,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx",
-      translations: null,
+      translations: { en: "/rs-pokerus-retail/", zh: "/zh-rs-pokerus-retail/" },
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
@@ -6179,6 +6179,33 @@ export const guides = {
         import("~/../guides/Translations/zh/Gen 3/Emerald/Mirage Island.mdx"),
     ),
   },
+  "/zh-rs-pokerus-retail/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["retail"],
+      isNew: false,
+      title: "红宝石·蓝宝石中的宝可病毒",
+      navDrawerTitle: "红宝石·蓝宝石中的宝可病毒",
+      description: "如何感染宝可病毒",
+      slug: "/zh-rs-pokerus-retail/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-17",
+      translation: { enSlug: "/rs-pokerus-retail/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx",
+      translations: { en: "/rs-pokerus-retail/", zh: "/zh-rs-pokerus-retail/" },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx"
+        ),
+    ),
+  },
   "/zh-rs-sid-feebas/": {
     meta: {
       categories: ["Ruby and Sapphire"],
@@ -6450,6 +6477,7 @@ export const guideSlugs = [
   "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",
   "/zh-rs-mirage-island/",
+  "/zh-rs-pokerus-retail/",
   "/zh-rs-sid-feebas/",
 ] as const;
 

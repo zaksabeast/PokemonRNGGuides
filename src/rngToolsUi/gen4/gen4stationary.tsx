@@ -1,4 +1,4 @@
-import { rngTools, Gen4StaticPokemon } from "~/rngTools";
+import { rngTools, Gen4StaticPokemon,Characteristic, } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,
@@ -51,6 +51,39 @@ const leadAbilitiesOpts: { label: string; value: LeadAbilityOption }[] = [
   },
 ];
 
+const characteristics = [
+  "AlertToSounds",
+  "ALittleQuickTempered",
+  "CapableOfTakingHits",
+  "GoodEndurance",
+  "GoodPerseverance",
+  "HatesToLose",
+  "HighlyCurious",
+  "HighlyPersistent",
+  "ImpetuousAndSilly",
+  "LikesToFight",
+  "LikesToRelax",
+  "LikesToRun",
+  "LikesToThrashAbout",
+  "LovesToEat",
+  "Mischievous",
+  "NodsOffALot",
+  "OftenLostInThought",
+  "ProudOfItsPower",
+  "QuickTempered",
+  "QuickToFlee",
+  "ScattersThingsOften",
+  "SomewhatOfAClown",
+  "SomewhatStubborn",
+  "SomewhatVain",
+  "StronglyDefiant",
+  "StrongWilled",
+  "SturdyBody",
+  "TakesPlentyOfSiestas",
+  "ThoroughlyCunning",
+  "VeryFinicky",
+] as const satisfies Characteristic[];
+
 const columns: ResultColumn<Result>[] = [
   {
     title: "PID",
@@ -64,7 +97,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Shiny",
     dataIndex: "shiny",
-    render: (shiny) => (shiny ? "Yes" : "No"),
+    render: (shiny: boolean) => (shiny ? "Yes" : "No"),
   },
   { title: "Gender", dataIndex: "gender" },
   {
@@ -72,6 +105,11 @@ const columns: ResultColumn<Result>[] = [
     dataIndex: "advance",
     monospace: true,
   },
+  {
+    title: "Characteristics",
+    dataIndex: "characteristic",
+  }
+  
 ];
 
 const Validator = z
@@ -85,6 +123,7 @@ const Validator = z
     encounter: z.enum(StaticEncounterId),
     lead: z.enum(leadAbilities),
     synch_nature: z.enum(nature),
+    filter_characteristic: z.enum(characteristics),
   })
   .merge(pkmFilterSchema);
 
@@ -104,6 +143,7 @@ const initialValues: FormState = {
   filter_nature: null,
   filter_gender: null,
   filter_ability: null,
+  filter_characteristic: "AlertToSounds"
 };
 
 const getFields = (values: FormState) => {
@@ -163,6 +203,15 @@ const getFields = (values: FormState) => {
         />
       ),
     },
+    {
+        label: "Characteristic",
+        input: (
+          <FormikSelect<FormState, "filter_characteristic">
+            name="filter_characteristic"
+            options={toOptions(characteristics, startCase)}
+          />
+        ),
+      },
   ];
   if (values.lead === "Synchronize") {
     fields.push({
@@ -197,8 +246,9 @@ export const Filter_4static = () => {
     } else {
       lead = opts.lead;
     }
-    const results = await rngTools.filter_4static(
+    const results = await rngTools.generate_static4_states(
       {
+        seed: opts.seed,
         tid: opts.tid,
         sid: opts.sid,
         game: opts.game,
@@ -215,8 +265,9 @@ export const Filter_4static = () => {
           max_ivs: opts.filter_max_ivs,
           stats: null,
         },
-      },
-      opts.seed,
+        filter_characteristic:opts.filter_characteristic,
+        
+      }
     );
 
     setResults(results.map(flattenIvs));

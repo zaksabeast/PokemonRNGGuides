@@ -1,4 +1,4 @@
-import { rngTools, Gen4StaticPokemon,Characteristic, } from "~/rngTools";
+import { rngTools, Gen4StaticPokemon, Characteristic } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,
@@ -108,8 +108,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Characteristics",
     dataIndex: "characteristic",
-  }
-  
+  },
 ];
 
 const Validator = z
@@ -143,7 +142,7 @@ const initialValues: FormState = {
   filter_nature: null,
   filter_gender: null,
   filter_ability: null,
-  filter_characteristic: "AlertToSounds"
+  filter_characteristic: "AlertToSounds",
 };
 
 const getFields = (values: FormState) => {
@@ -204,14 +203,14 @@ const getFields = (values: FormState) => {
       ),
     },
     {
-        label: "Characteristic",
-        input: (
-          <FormikSelect<FormState, "filter_characteristic">
-            name="filter_characteristic"
-            options={toOptions(characteristics, startCase)}
-          />
-        ),
-      },
+      label: "Characteristic",
+      input: (
+        <FormikSelect<FormState, "filter_characteristic">
+          name="filter_characteristic"
+          options={toOptions(characteristics, startCase)}
+        />
+      ),
+    },
   ];
   if (values.lead === "Synchronize") {
     fields.push({
@@ -246,29 +245,26 @@ export const Filter_4static = () => {
     } else {
       lead = opts.lead;
     }
-    const results = await rngTools.generate_static4_states(
-      {
-        seed: opts.seed,
-        tid: opts.tid,
-        sid: opts.sid,
-        game: opts.game,
-        encounter: opts.encounter,
-        lead,
-        initial_advances: opts.initial_advances,
-        max_advances: opts.max_advances,
-        filter: {
-          shiny: opts.filter_shiny,
-          nature: opts.filter_nature,
-          gender: opts.filter_gender,
-          ability: opts.filter_ability,
-          min_ivs: opts.filter_min_ivs,
-          max_ivs: opts.filter_max_ivs,
-          stats: null,
-        },
-        filter_characteristic:opts.filter_characteristic,
-        
-      }
-    );
+    const results = await rngTools.generate_static4_states({
+      seed: opts.seed,
+      tid: opts.tid,
+      sid: opts.sid,
+      game: opts.game,
+      encounter: opts.encounter,
+      lead,
+      initial_advances: opts.initial_advances,
+      max_advances: opts.max_advances,
+      filter: {
+        shiny: opts.filter_shiny,
+        nature: opts.filter_nature,
+        gender: opts.filter_gender,
+        ability: opts.filter_ability,
+        min_ivs: opts.filter_min_ivs,
+        max_ivs: opts.filter_max_ivs,
+        stats: null,
+      },
+      filter_characteristic: opts.filter_characteristic,
+    });
 
     setResults(results.map(flattenIvs));
   }, []);

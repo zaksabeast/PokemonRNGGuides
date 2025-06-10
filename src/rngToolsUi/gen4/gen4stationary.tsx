@@ -1,4 +1,4 @@
-import { rngTools, Gen4SPokemon, Nature } from "~/rngTools";
+import { rngTools, Gen4SPokemon } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,
@@ -28,6 +28,7 @@ import {
   StaticEncounterId,
   leadAbilities,
 } from "~/rngToolsUi/gen4/gen4types";
+import { nature, Nature } from "~/types/nature";
 
 type Result = FlattenIvs<Gen4SPokemon>;
 const GameVersionOpts = toOptions(GameVersion, startCase);
@@ -35,12 +36,6 @@ type StaticEncounterId = keyof typeof StaticEncounterId;
 const StaticEncounterIdOpts = Object.entries(StaticEncounterId).map(
   ([, value]) => ({ label: value, value }),
 );
-const StaticEncounterIdSchema = z.enum(
-  Object.keys(StaticEncounterId) as ["Turtwig", ..."Snorlax"[]],
-);
-
-
-
 
 type FormState = z.infer<typeof Validator>;
 
@@ -89,6 +84,7 @@ const Validator = z
     game: z.enum(GameVersion),
     encounter: z.enum(StaticEncounterId),
     lead: z.enum(leadAbilities),
+    synch_nature: z.enum(nature),
   })
   .merge(pkmFilterSchema);
 
@@ -99,68 +95,94 @@ const initialValues: FormState = {
   game: "Diamond",
   encounter: "Turtwig",
   lead: "None",
+  synch_nature: "Hardy",
   initial_advances: 0,
   max_advances: 100,
   filter_shiny: false,
   filter_min_ivs: minIvs,
   filter_max_ivs: maxIvs,
   filter_nature: null,
-  filter_gender: "Genderless",
-  filter_ability: "First",
+  filter_gender: null,
+  filter_ability: null,
 };
 
-const fields: Field[] = [
-  {
-    label: "Seed",
-    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
-  },
-  {
-    label: "TID",
-    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-  },
-  {
-    label: "SID",
-    input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-  },
-  {
-    label: "Initial Advances",
-    input: (
-      <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Max Advances",
-    input: (
-      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Species",
-    input: (
-      <FormikSelect<FormState, "encounter">
-        name="encounter"
-        options={StaticEncounterIdOpts}
-      />
-    ),
-  },
-  {
-    label: "Game",
-    input: (
-      <FormikSelect<FormState, "game"> name="game" options={GameVersionOpts} />
-    ),
-  },
-  {
-    label: "Lead Ability",
-    input: (
-      <FormikSelect<FormState, "lead">
-        name="lead"
-        options={leadAbilitiesOpts}
-      />
-    ),
-  },
-  ...getPkmFilterFields()
-];
-type RustLead = "None" | "CutecharmF" | "CutecharmM" | { Synchronize: Nature };
+const getFields = (values: FormState) => {
+  const fields: Field[] = [
+    {
+      label: "Seed",
+      input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
+    },
+    {
+      label: "TID",
+      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+    },
+    {
+      label: "SID",
+      input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
+    },
+    {
+      label: "Initial Advances",
+      input: (
+        <FormikNumberInput<FormState>
+          name="initial_advances"
+          numType="decimal"
+        />
+      ),
+    },
+    {
+      label: "Max Advances",
+      input: (
+        <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+      ),
+    },
+    {
+      label: "Species",
+      input: (
+        <FormikSelect<FormState, "encounter">
+          name="encounter"
+          options={StaticEncounterIdOpts}
+        />
+      ),
+    },
+    {
+      label: "Game",
+      input: (
+        <FormikSelect<FormState, "game">
+          name="game"
+          options={GameVersionOpts}
+        />
+      ),
+    },
+    ...getPkmFilterFields(),
+    {
+      label: "Lead Ability",
+      input: (
+        <FormikSelect<FormState, "lead">
+          name="lead"
+          options={leadAbilitiesOpts}
+        />
+      ),
+    },
+  ];
+  if (values.lead === "Synchronize") {
+    fields.push({
+      label: "Synch Nature",
+      input: (
+        <FormikSelect<FormState, "synch_nature">
+          name="synch_nature"
+          options={natureOptions.required}
+        />
+      ),
+    });
+  }
+  return fields;
+};
+
+export type RustLead =
+  | "None"
+  | "CutecharmF"
+  | "CutecharmM"
+  | { Synchronize: Nature };
 
 export const Filter_4static = () => {
   const [results, setResults] = React.useState<Result[]>([]);
@@ -168,10 +190,10 @@ export const Filter_4static = () => {
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
     let lead: RustLead;
     if (opts.lead === "Synchronize") {
-      if (opts.filter_nature === null) {
+      if (opts.synch_nature === null) {
         throw new Error("Nature is required for Synchronize.");
       }
-      lead = { Synchronize: opts.filter_nature };
+      lead = { Synchronize: opts.synch_nature };
     } else {
       lead = opts.lead;
     }
@@ -202,7 +224,7 @@ export const Filter_4static = () => {
 
   return (
     <RngToolForm<FormState, Result>
-      fields={fields}
+      getFields={getFields}
       columns={columns}
       results={results}
       validationSchema={Validator}

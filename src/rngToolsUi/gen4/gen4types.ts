@@ -1,5 +1,3 @@
-
-
 export const GameVersion = [
   "Diamond",
   "Pearl",
@@ -7,7 +5,6 @@ export const GameVersion = [
   "HeartGold",
   "SoulSilver",
 ] as const;
-
 
 export const StaticEncounterId = [
   "Turtwig",
@@ -69,13 +66,9 @@ export const StaticEncounterId = [
   "Snorlax",
 ] as const;
 
-
 export const leadAbilities = [
   "None",
   "CutecharmF",
   "CutecharmM",
   "Synchronize",
 ] as const;
-
-
-

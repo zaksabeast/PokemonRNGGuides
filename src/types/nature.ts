@@ -1,4 +1,3 @@
-import { Nature } from "~/rngTools";
 import type { Stat } from "./stat";
 import * as tst from "ts-toolbelt";
 

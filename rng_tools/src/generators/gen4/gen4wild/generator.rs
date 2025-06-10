@@ -101,6 +101,7 @@ fn gen4_method_j(
                 Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
                 Some(LeadAbilities::CutecharmM) => 0,
                 Some(LeadAbilities::Synchronize(_)) => 0,
+                Some(LeadAbilities::None) => 0,
                 None => 0,
             };
             let target_gender = match opts.lead {
@@ -206,6 +207,7 @@ fn gen4_method_k(
                 Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
                 Some(LeadAbilities::CutecharmM) => 0,
                 Some(LeadAbilities::Synchronize(_)) => 0,
+                Some(LeadAbilities::None) => 0,
                 None => 0,
             };
             let target_gender = match opts.lead {

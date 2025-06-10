@@ -30,6 +30,8 @@ import {
 } from "~/rngToolsUi/gen4/gen4types";
 import { nature, Nature } from "~/types/nature";
 
+//test
+
 type Result = FlattenIvs<Gen4SPokemon>;
 const GameVersionOpts = toOptions(GameVersion, startCase);
 type StaticEncounterId = keyof typeof StaticEncounterId;

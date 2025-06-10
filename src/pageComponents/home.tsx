@@ -57,14 +57,14 @@ const games = [
     slug: "/gamecube/",
   },
   {
-    name: "Emerald",
-    images: [emeraldLogoSrc],
-    slug: "/emerald/",
-  },
-  {
     name: "FireRed and LeafGreen",
     images: [fireRedLogoSrc, leafGreenLogoSrc],
     slug: "/fire-red-and-leaf-green/",
+  },
+  {
+    name: "Emerald",
+    images: [emeraldLogoSrc],
+    slug: "/emerald/",
   },
   {
     name: "Diamond and Pearl",

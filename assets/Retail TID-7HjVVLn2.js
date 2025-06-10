@@ -1,0 +1,32 @@
+import{q as x,j as e}from"./index-D1CmZc7R.js";const p=[{title:"HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG",navDrawerTitle:"Cute Charm & TID/SID RNG",description:"Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for HeartGold and SoulSilver.",slug:"hgss-tid-sid",category:"HeartGold and SoulSilver",tag:"retail",addedOn:"2025-06-08"},{title:"HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG",navDrawerTitle:"Cute Charm & TID/SID RNG",description:"Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for HeartGold and SoulSilver.",slug:"dppt-tid-sid",category:"Diamond, Pearl, and Platinum",tag:"retail",addedOn:"2025-06-08"}];function m(r){const t={a:"a",code:"code",h2:"h2",img:"img",li:"li",ol:"ol",p:"p",strong:"strong",table:"table",tbody:"tbody",td:"td",th:"th",thead:"thead",tr:"tr",ul:"ul",...x(),...r.components},{Alert:a,CalibrateId4:o,Gen4IdSetup:l,Gist:d,Id4ConsoleSetDateString:s,Id4Searcher:h,Id4Timer:c,Step:i,Stepper:u}=t;return a||n("Alert"),o||n("CalibrateId4"),l||n("Gen4IdSetup"),d||n("Gist"),s||n("Id4ConsoleSetDateString"),h||n("Id4Searcher"),c||n("Id4Timer"),i||n("Step"),u||n("Stepper"),e.jsxs(e.Fragment,{children:[e.jsx(a,{showIcon:!0,type:"info",message:"This guide is interactive and updates instructions based on your settings!"}),`
+`,e.jsx(d,{children:e.jsx(t.p,{children:`RNG a TID and SID to predict when you'll get shiny Pokemon. Optionally RNG a
+Cute Charm ID pair for massively increased shiny odds during your playthrough.`})}),`
+`,e.jsx(t.p,{children:"For increased shiny odds, have a Pokemon with the Cute Charm ability in the front of your party. The Pokemon's gender needs to be the opposite of your target gender. For max shiny odds, this means having a male Cute Charmer."}),`
+`,e.jsxs(u,{titles:["Set up","Pick a TID","Hit Target","Calibrate"],children:[e.jsxs(i,{step:0,children:[e.jsx(t.h2,{children:"Set up"}),e.jsx(t.p,{children:"Choose the game you're playing below then continue to the next step."}),e.jsx(l,{})]}),e.jsxs(i,{step:1,children:[e.jsx(t.h2,{children:"Pick a TID"}),e.jsx(t.p,{children:"Fill our the tool below. If you want random max shiny odds during your playthrough, leave the default settings."}),e.jsx(h,{})]}),e.jsxs(i,{step:2,children:[e.jsx(t.h2,{children:"Prepare"}),e.jsxs(t.ol,{children:[`
+`,e.jsxs(t.li,{children:["Set your console date to ",e.jsx(t.strong,{children:e.jsx(s,{format:"date"})}),"."]}),`
+`,e.jsxs(t.li,{children:["Start setting your console time to ",e.jsx(t.strong,{children:e.jsx(s,{format:"time"})}),", but don't confirm it just yet."]}),`
+`]}),e.jsxs(t.table,{children:[e.jsx(t.thead,{children:e.jsx(t.tr,{children:e.jsx(t.th,{children:"Confirm time screen"})})}),e.jsx(t.tbody,{children:e.jsx(t.tr,{children:e.jsx(t.td,{children:e.jsx(t.img,{src:"/images/HeartGold-SoulSilver/SetTimeScreen.jpg",alt:"Confirm time screen"})})})})]}),e.jsx(t.h2,{children:"Hit your target"}),e.jsxs(t.ol,{children:[`
+`,e.jsxs(t.li,{children:["Simultaneously press ",e.jsx(t.code,{children:"A"})," to set the console time and start the timer below."]}),`
+`,e.jsx(t.li,{children:"Exit the settings on your console and restart your console."}),`
+`,e.jsxs(t.li,{children:["When the first timer ends, press ",e.jsx(t.code,{children:"A"})," to start the game."]}),`
+`,e.jsx(t.li,{children:"Get to the naming screen. Make sure to name your character the same way each time."}),`
+`,e.jsx(t.li,{children:"If you've calibrated at least once and need to flip your delay, switch between upper and lower case characters one extra time. Japanese games should switch between Hiragana and Katakana."}),`
+`,e.jsxs(t.li,{children:["Get to the last screen before the TID is generated (see screenshot below). Wait for the second timer to go off and press ",e.jsx(t.code,{children:"A"})," at the same time.",`
+`,e.jsxs(t.ul,{children:[`
+`,e.jsx(t.li,{children:"If you don't have enough time to reach the last screen before the timer goes off, find a TID with a higher delay to give more time."}),`
+`]}),`
+`]}),`
+`,e.jsx(t.li,{children:"Continue to the next step to check what TID you hit."}),`
+`]}),e.jsxs(t.table,{children:[e.jsx(t.thead,{children:e.jsxs(t.tr,{children:[e.jsx(t.th,{children:"Diamond & Pearl"}),e.jsx(t.th,{children:"Platinum"}),e.jsx(t.th,{children:"HeartGold & SoulSilver"})]})}),e.jsx(t.tbody,{children:e.jsxs(t.tr,{children:[e.jsx(t.td,{children:e.jsx(t.img,{src:"/images/Diamond-Pearl-Platinum/TID/DPTIDFinalScreen.png",alt:"DP Final Screen"})}),e.jsx(t.td,{children:e.jsx(t.img,{src:"/images/Diamond-Pearl-Platinum/TID/PlatinumTIDFinalScreen.png",alt:"Platinum Final Screen"})}),e.jsx(t.td,{children:e.jsx(t.img,{src:"/images/HeartGold-SoulSilver/HGSSTIDFinalScreen.png",alt:"HGSS Final Screen"})})]})})]}),e.jsx(t.h2,{children:"Timer"}),e.jsx(c,{})]}),e.jsxs(i,{step:3,children:[e.jsx(t.h2,{children:"Calibrate"}),e.jsxs(t.ol,{children:[`
+`,e.jsx(t.li,{children:"Open your trainer card and check your TID."}),`
+`,e.jsx(t.li,{children:"If it matches your target, congratulations! You RNG'd your TID!"}),`
+`,e.jsx(t.li,{children:'If not, type your TID into the box below and click "Generate".'}),`
+`,e.jsx(t.li,{children:'Click "Calibrate" on the TID with the smallest delay offset (should be the first result).'}),`
+`,e.jsx(t.li,{children:`If the "Flip Delay" column is checked, you'll need to swap between the player name characters one extra time, e.g. lower to upper case. Japanese games will need to switch to a different kana, eg. from Hiragana to Katakana.`}),`
+`,e.jsx(t.li,{children:"Try to hit your target again."}),`
+`]}),e.jsx(t.p,{children:"In Diamond and Pearl it is possible for the delay to randomly switch from even to odd, or vice versa. When this happens, you'll need to keep trying until you get the target."}),e.jsx(o,{})]})]}),`
+`,e.jsx(t.h2,{children:"Credits"}),`
+`,e.jsxs(t.ul,{children:[`
+`,e.jsx(t.li,{children:"Zaksabeast for writing this tool"}),`
+`,e.jsxs(t.li,{children:["Thanks to all ",e.jsx(t.a,{href:"https://github.com/Admiral-Fish/PokeFinder",children:"PokeFinder"})," contributors, whose work this tool is built upon."]}),`
+`]})]})}function g(r={}){const{wrapper:t}={...x(),...r.components};return t?e.jsx(t,{...r,children:e.jsx(m,{...r})}):m(r)}function n(r,t){throw new Error("Expected component `"+r+"` to be defined: you likely forgot to import, pass, or provide it.")}export{g as default,p as frontmatter};

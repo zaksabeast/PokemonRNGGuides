@@ -1,4 +1,4 @@
-import { rngTools, Gen4SPokemon } from "~/rngTools";
+import { rngTools, Gen4StaticPokemon } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,
@@ -30,9 +30,7 @@ import {
 } from "~/rngToolsUi/gen4/gen4types";
 import { nature, Nature } from "~/types/nature";
 
-//test
-
-type Result = FlattenIvs<Gen4SPokemon>;
+type Result = FlattenIvs<Gen4StaticPokemon>;
 const GameVersionOpts = toOptions(GameVersion, startCase);
 type StaticEncounterId = keyof typeof StaticEncounterId;
 const StaticEncounterIdOpts = Object.entries(StaticEncounterId).map(

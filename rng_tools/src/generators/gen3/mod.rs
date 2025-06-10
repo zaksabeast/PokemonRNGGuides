@@ -7,7 +7,6 @@ mod seed;
 mod stationary;
 mod tidsid;
 mod tidsid_shiny;
-mod util;
 mod wild;
 
 pub use egg::*;

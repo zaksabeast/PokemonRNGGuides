@@ -1,10 +1,9 @@
-use wasm_bindgen::prelude::wasm_bindgen;
-
 use super::GameVersion;
 use super::LeadAbilities;
-use super::StaticEncounterId;
+use super::Static4Species;
 use super::dpt_method_jk;
 use super::hgss_method_jk;
+use crate::Characteristic;
 use crate::Ivs;
 use crate::rng::Rng;
 use crate::rng::StateIterator;
@@ -12,6 +11,7 @@ use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, Gender, Nature, PkmFilter, PkmState, gen3_shiny};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
+use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -21,14 +21,16 @@ pub struct Gen4StaticOpts {
     pub initial_advances: usize,
     pub max_advances: usize,
     pub filter: PkmFilter,
+    pub filter_characteristic: Option<Characteristic>,
     pub game: Option<GameVersion>,
-    pub encounter: StaticEncounterId,
-    pub lead: LeadAbilities,
+    pub encounter: Static4Species,
+    pub lead: Option<LeadAbilities>,
+    pub seed: u32,
 }
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Gen4SPokemon {
+pub struct Gen4StaticPokemon {
     pub pid: u32,
     pub shiny: bool,
     pub ability: AbilityType,
@@ -36,9 +38,10 @@ pub struct Gen4SPokemon {
     pub ivs: Ivs,
     pub nature: Nature,
     pub advance: usize,
+    pub characteristic: Characteristic,
 }
 
-impl PkmState for Gen4SPokemon {
+impl PkmState for Gen4StaticPokemon {
     fn ability(&self) -> AbilityType {
         self.ability
     }
@@ -60,7 +63,7 @@ impl PkmState for Gen4SPokemon {
     }
 }
 
-pub fn generate_gen4_static(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4SPokemon> {
+fn generate_gen4_static(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4StaticPokemon> {
     let pid_low = rng.rand::<u16>() as u32;
     let pid_high = rng.rand::<u16>() as u32;
     let pid = (pid_high << 16) | pid_low;
@@ -69,11 +72,12 @@ pub fn generate_gen4_static(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<
     let iv2 = rng.rand::<u16>();
     let ivs = Ivs::new_g3(iv1, iv2);
 
-    let pkm = Gen4SPokemon {
+    let pkm = Gen4StaticPokemon {
         pid,
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
         gender: opts.encounter.species().gender_from_pid(pid),
+        characteristic: Characteristic::new(pid, &ivs),
         ivs,
         nature: Nature::from_pid(pid),
         advance: 0,
@@ -81,8 +85,8 @@ pub fn generate_gen4_static(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<
     Some(pkm)
 }
 
-pub fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4SPokemon> {
-    if let lead = opts.lead {
+fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4StaticPokemon> {
+    if let Some(lead) = opts.lead {
         if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
             let gender_threshold = opts.encounter.species().gender_ratio();
             let buffer = match opts.lead {
@@ -107,10 +111,11 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
                     let ivs = Ivs::new_g3(iv1, iv2);
                     let nature = Nature::from_pid(pid);
 
-                    return Some(Gen4SPokemon {
+                    return Some(Gen4StaticPokemon {
                         pid,
                         shiny: gen3_shiny(pid, opts.tid, opts.sid),
                         ability: AbilityType::from_gen3_pid(pid),
+                        characteristic: Characteristic::new(pid, &ivs),
                         gender,
                         ivs,
                         nature,
@@ -136,11 +141,12 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
             let iv1 = rng.rand::<u16>();
             let iv2 = rng.rand::<u16>();
             let ivs = Ivs::new_g3(iv1, iv2);
-            return Some(Gen4SPokemon {
+            return Some(Gen4StaticPokemon {
                 pid,
                 shiny: gen3_shiny(pid, opts.tid, opts.sid),
                 ability: AbilityType::from_gen3_pid(pid),
                 gender: opts.encounter.species().gender_from_pid(pid),
+                characteristic: Characteristic::new(pid, &ivs),
                 ivs,
                 nature: Nature::from_pid(pid),
                 advance: 0,
@@ -165,10 +171,11 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
     let gender = opts.encounter.species().gender_from_pid(pid);
     let nature = Nature::from_pid(pid);
 
-    let pkm = Gen4SPokemon {
+    let pkm = Gen4StaticPokemon {
         pid,
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
+        characteristic: Characteristic::new(pid, &ivs),
         gender,
         ivs,
         nature,
@@ -177,8 +184,8 @@ pub fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
     Some(pkm)
 }
 
-pub fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4SPokemon> {
-    if let lead = opts.lead {
+fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4StaticPokemon> {
+    if let Some(lead) = opts.lead {
         if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
             let gender_threshold = opts.encounter.species().gender_ratio();
             let buffer = match opts.lead {
@@ -203,10 +210,11 @@ pub fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
                     let ivs = Ivs::new_g3(iv1, iv2);
                     let nature = Nature::from_pid(pid);
 
-                    return Some(Gen4SPokemon {
+                    return Some(Gen4StaticPokemon {
                         pid,
                         shiny: gen3_shiny(pid, opts.tid, opts.sid),
                         ability: AbilityType::from_gen3_pid(pid),
+                        characteristic: Characteristic::new(pid, &ivs),
                         gender,
                         ivs,
                         nature,
@@ -232,11 +240,12 @@ pub fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
             let iv1 = rng.rand::<u16>();
             let iv2 = rng.rand::<u16>();
             let ivs = Ivs::new_g3(iv1, iv2);
-            return Some(Gen4SPokemon {
+            return Some(Gen4StaticPokemon {
                 pid,
                 shiny: gen3_shiny(pid, opts.tid, opts.sid),
                 ability: AbilityType::from_gen3_pid(pid),
                 gender: opts.encounter.species().gender_from_pid(pid),
+                characteristic: Characteristic::new(pid, &ivs),
                 ivs,
                 nature: Nature::from_pid(pid),
                 advance: 0,
@@ -259,11 +268,12 @@ pub fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
     let iv2 = rng.rand::<u16>();
     let ivs = Ivs::new_g3(iv1, iv2);
 
-    let pkm = Gen4SPokemon {
+    let pkm = Gen4StaticPokemon {
         pid,
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
         gender: opts.encounter.species().gender_from_pid(pid),
+        characteristic: Characteristic::new(pid, &ivs),
         ivs,
         nature: Nature::from_pid(pid),
         advance: 0,
@@ -271,7 +281,7 @@ pub fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Optio
     Some(pkm)
 }
 
-pub fn generate_4statics(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Option<Gen4SPokemon> {
+fn generate_static4_state(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Option<Gen4StaticPokemon> {
     let encounter = opts.encounter;
     let species = encounter.species();
     match opts.game {
@@ -294,43 +304,49 @@ pub fn generate_4statics(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Option<Gen
 }
 
 #[wasm_bindgen]
-pub fn filter_4static(opts: &Gen4StaticOpts, seed: u32) -> Vec<Gen4SPokemon> {
-    let base_rng = Pokerng::new(seed);
+pub fn generate_static4_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> {
+    let base_rng = Pokerng::new(opts.seed);
     StateIterator::new(base_rng)
         .enumerate()
         .skip(opts.initial_advances)
         .take(opts.max_advances.wrapping_add(1))
         .filter_map(|(adv, mut rng)| {
-            let mut pkm = generate_4statics(&opts.clone(), &mut rng)?;
-            pkm.advance = adv;
+            let mut pkm = generate_static4_state(&opts.clone(), &mut rng)?;
 
-            if opts.filter.pass_filter(&pkm) {
-                Some(pkm)
-            } else {
-                None
+            if let Some(filter_characteristic) = opts.filter_characteristic {
+                if pkm.characteristic != filter_characteristic {
+                    return None;
+                }
             }
+
+            if !opts.filter.pass_filter(&pkm) {
+                return None;
+            }
+
+            pkm.advance = adv;
+            Some(pkm)
         })
-        .collect::<Vec<Gen4SPokemon>>()
+        .collect::<Vec<Gen4StaticPokemon>>()
 }
 
 #[cfg(test)]
 mod test {
-
-    use crate::assert_list_eq;
-
+    use super::Characteristic::*;
     use super::*;
+    use crate::assert_list_eq;
 
     #[test]
     fn method_1() {
-        let seed = 0;
         let options = Gen4StaticOpts {
+            seed: 0,
             tid: 12345,
             sid: 54321,
             initial_advances: 0,
             max_advances: 10,
-            encounter: StaticEncounterId::Turtwig,
+            encounter: Static4Species::Turtwig,
             game: Some(GameVersion::Platinum),
-            lead: LeadAbilities::None,
+            lead: None,
+            filter_characteristic: None,
             filter: PkmFilter {
                 shiny: false,
                 nature: None,
@@ -356,11 +372,12 @@ mod test {
             },
         };
         let expected_results = [
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 3917348864,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Female,
+                characteristic: SturdyBody,
                 ivs: Ivs {
                     hp: 17,
                     atk: 19,
@@ -372,11 +389,12 @@ mod test {
                 nature: Nature::Naive,
                 advance: 0,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 1383197054,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Male,
+                characteristic: OftenLostInThought,
                 ivs: Ivs {
                     hp: 16,
                     atk: 13,
@@ -388,11 +406,12 @@ mod test {
                 nature: Nature::Naughty,
                 advance: 1,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 833639025,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Male,
+                characteristic: SomewhatStubborn,
                 ivs: Ivs {
                     hp: 2,
                     atk: 18,
@@ -404,11 +423,12 @@ mod test {
                 nature: Nature::Hardy,
                 advance: 2,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 2386702768,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Male,
+                characteristic: HighlyCurious,
                 ivs: Ivs {
                     hp: 12,
                     atk: 22,
@@ -420,11 +440,12 @@ mod test {
                 nature: Nature::Bashful,
                 advance: 3,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 3805056578,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Male,
+                characteristic: HighlyCurious,
                 ivs: Ivs {
                     hp: 5,
                     atk: 30,
@@ -436,11 +457,12 @@ mod test {
                 nature: Nature::Adamant,
                 advance: 4,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 2948981452,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Male,
+                characteristic: SomewhatVain,
                 ivs: Ivs {
                     hp: 27,
                     atk: 30,
@@ -452,11 +474,12 @@ mod test {
                 nature: Nature::Brave,
                 advance: 5,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 1742450629,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Male,
+                characteristic: CapableOfTakingHits,
                 ivs: Ivs {
                     hp: 19,
                     atk: 1,
@@ -468,11 +491,12 @@ mod test {
                 nature: Nature::Naughty,
                 advance: 6,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 4231227355,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Male,
+                characteristic: SomewhatVain,
                 ivs: Ivs {
                     hp: 12,
                     atk: 25,
@@ -484,11 +508,12 @@ mod test {
                 nature: Nature::Bold,
                 advance: 7,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 4012702771,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Male,
+                characteristic: CapableOfTakingHits,
                 ivs: Ivs {
                     hp: 30,
                     atk: 2,
@@ -500,11 +525,12 @@ mod test {
                 nature: Nature::Gentle,
                 advance: 8,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 4234080044,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Male,
+                characteristic: HighlyCurious,
                 ivs: Ivs {
                     hp: 5,
                     atk: 22,
@@ -516,11 +542,12 @@ mod test {
                 nature: Nature::Rash,
                 advance: 9,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 3401972830,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Male,
+                characteristic: ProudOfItsPower,
                 ivs: Ivs {
                     hp: 22,
                     atk: 30,
@@ -533,20 +560,22 @@ mod test {
                 advance: 10,
             },
         ];
-        let result = filter_4static(&options, seed);
+        let result = generate_static4_states(&options);
         assert_list_eq!(result, expected_results);
     }
+
     #[test]
     fn method_k_nosynch() {
-        let seed = 0;
         let options = Gen4StaticOpts {
+            seed: 0,
             tid: 12345,
             sid: 54321,
             initial_advances: 0,
             max_advances: 10,
-            encounter: StaticEncounterId::Dialga,
+            encounter: Static4Species::Dialga,
             game: Some(GameVersion::Platinum),
-            lead: LeadAbilities::None,
+            lead: None,
+            filter_characteristic: None,
             filter: PkmFilter {
                 shiny: false,
                 nature: None,
@@ -572,11 +601,12 @@ mod test {
             },
         };
         let expected_results = [
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 3552946825,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: LikesToThrashAbout,
                 ivs: Ivs {
                     hp: 10,
                     atk: 31,
@@ -588,11 +618,12 @@ mod test {
                 nature: Nature::Hardy,
                 advance: 0,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 3360178372,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: ProudOfItsPower,
                 ivs: Ivs {
                     hp: 17,
                     atk: 30,
@@ -604,11 +635,12 @@ mod test {
                 nature: Nature::Sassy,
                 advance: 1,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 3080890308,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: SomewhatOfAClown,
                 ivs: Ivs {
                     hp: 21,
                     atk: 2,
@@ -620,11 +652,12 @@ mod test {
                 nature: Nature::Impish,
                 advance: 2,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 1742450629,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: CapableOfTakingHits,
                 ivs: Ivs {
                     hp: 19,
                     atk: 1,
@@ -636,11 +669,12 @@ mod test {
                 nature: Nature::Naughty,
                 advance: 3,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 3754258538,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: StrongWilled,
                 ivs: Ivs {
                     hp: 4,
                     atk: 20,
@@ -652,11 +686,12 @@ mod test {
                 nature: Nature::Jolly,
                 advance: 4,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 3360178372,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: ProudOfItsPower,
                 ivs: Ivs {
                     hp: 17,
                     atk: 30,
@@ -668,11 +703,12 @@ mod test {
                 nature: Nature::Sassy,
                 advance: 5,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 840124667,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: CapableOfTakingHits,
                 ivs: Ivs {
                     hp: 7,
                     atk: 23,
@@ -684,11 +720,12 @@ mod test {
                 nature: Nature::Quiet,
                 advance: 6,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 2902820410,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: LikesToRun,
                 ivs: Ivs {
                     hp: 18,
                     atk: 14,
@@ -700,11 +737,12 @@ mod test {
                 nature: Nature::Timid,
                 advance: 7,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 2059180349,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: QuickTempered,
                 ivs: Ivs {
                     hp: 7,
                     atk: 29,
@@ -716,11 +754,12 @@ mod test {
                 nature: Nature::Quirky,
                 advance: 8,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 1096857248,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: HatesToLose,
                 ivs: Ivs {
                     hp: 22,
                     atk: 17,
@@ -732,11 +771,12 @@ mod test {
                 nature: Nature::Careful,
                 advance: 9,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 2059180349,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: QuickTempered,
                 ivs: Ivs {
                     hp: 7,
                     atk: 29,
@@ -749,21 +789,22 @@ mod test {
                 advance: 10,
             },
         ];
-        let result = filter_4static(&options, seed);
+        let result = generate_static4_states(&options);
         assert_list_eq!(result, expected_results);
     }
 
     #[test]
     fn method_j_nosynch() {
-        let seed = 0;
         let options = Gen4StaticOpts {
+            seed: 0,
             tid: 12345,
             sid: 54321,
             initial_advances: 0,
             max_advances: 10,
-            encounter: StaticEncounterId::HoOh,
+            encounter: Static4Species::HoOh,
             game: Some(GameVersion::HeartGold),
-            lead: LeadAbilities::None,
+            lead: None,
+            filter_characteristic: None,
             filter: PkmFilter {
                 shiny: false,
                 nature: None,
@@ -789,11 +830,12 @@ mod test {
             },
         };
         let expected_results = [
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 3552946825,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: LikesToThrashAbout,
                 ivs: Ivs {
                     hp: 10,
                     atk: 31,
@@ -805,11 +847,12 @@ mod test {
                 nature: Nature::Hardy,
                 advance: 0,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 813709149,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: ScattersThingsOften,
                 ivs: Ivs {
                     hp: 28,
                     atk: 3,
@@ -821,11 +864,12 @@ mod test {
                 nature: Nature::Quirky,
                 advance: 1,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 4231227355,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: SomewhatVain,
                 ivs: Ivs {
                     hp: 12,
                     atk: 25,
@@ -837,11 +881,12 @@ mod test {
                 nature: Nature::Bold,
                 advance: 2,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 1621222420,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: HighlyCurious,
                 ivs: Ivs {
                     hp: 11,
                     atk: 25,
@@ -853,11 +898,12 @@ mod test {
                 nature: Nature::Calm,
                 advance: 3,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 1671314793,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: SomewhatVain,
                 ivs: Ivs {
                     hp: 9,
                     atk: 9,
@@ -869,11 +915,12 @@ mod test {
                 nature: Nature::Bashful,
                 advance: 4,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 2902820410,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: LikesToRun,
                 ivs: Ivs {
                     hp: 18,
                     atk: 14,
@@ -885,11 +932,12 @@ mod test {
                 nature: Nature::Timid,
                 advance: 5,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 2489114822,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: AlertToSounds,
                 ivs: Ivs {
                     hp: 27,
                     atk: 17,
@@ -901,11 +949,12 @@ mod test {
                 nature: Nature::Sassy,
                 advance: 6,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 2440584662,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: QuickTempered,
                 ivs: Ivs {
                     hp: 6,
                     atk: 29,
@@ -917,11 +966,12 @@ mod test {
                 nature: Nature::Serious,
                 advance: 7,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 3754258538,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: StrongWilled,
                 ivs: Ivs {
                     hp: 4,
                     atk: 20,
@@ -933,11 +983,12 @@ mod test {
                 nature: Nature::Jolly,
                 advance: 8,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 1636640678,
                 shiny: false,
                 ability: AbilityType::First,
                 gender: Gender::Genderless,
+                characteristic: VeryFinicky,
                 ivs: Ivs {
                     hp: 18,
                     atk: 20,
@@ -949,11 +1000,12 @@ mod test {
                 nature: Nature::Adamant,
                 advance: 9,
             },
-            Gen4SPokemon {
+            Gen4StaticPokemon {
                 pid: 378691981,
                 shiny: false,
                 ability: AbilityType::Second,
                 gender: Gender::Genderless,
+                characteristic: QuickTempered,
                 ivs: Ivs {
                     hp: 24,
                     atk: 29,
@@ -966,9 +1018,10 @@ mod test {
                 advance: 10,
             },
         ];
-        let result = filter_4static(&options, seed);
+        let result = generate_static4_states(&options);
         assert_list_eq!(result, expected_results);
     }
+
     #[cfg(test)]
     mod synch {
 
@@ -976,15 +1029,16 @@ mod test {
 
         #[test]
         fn method_j() {
-            let seed = 0;
             let options = Gen4StaticOpts {
+                seed: 0,
                 tid: 12345,
                 sid: 54321,
                 initial_advances: 0,
                 max_advances: 10,
-                encounter: StaticEncounterId::HoOh,
+                encounter: Static4Species::HoOh,
                 game: Some(GameVersion::HeartGold),
-                lead: LeadAbilities::Synchronize(Nature::Adamant),
+                lead: Some(LeadAbilities::Synchronize(Nature::Adamant)),
+                filter_characteristic: None,
                 filter: PkmFilter {
                     shiny: false,
                     nature: None,
@@ -1010,11 +1064,12 @@ mod test {
                 },
             };
             let expected_results = [
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 475834453,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: AlertToSounds,
                     ivs: Ivs {
                         hp: 2,
                         atk: 18,
@@ -1026,11 +1081,12 @@ mod test {
                     nature: Nature::Adamant,
                     advance: 0,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 3805056578,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 30,
@@ -1042,11 +1098,12 @@ mod test {
                     nature: Nature::Adamant,
                     advance: 1,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 1621222420,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 11,
                         atk: 25,
@@ -1058,11 +1115,12 @@ mod test {
                     nature: Nature::Calm,
                     advance: 2,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 3805056578,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 30,
@@ -1074,11 +1132,12 @@ mod test {
                     nature: Nature::Adamant,
                     advance: 3,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 475834453,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: AlertToSounds,
                     ivs: Ivs {
                         hp: 2,
                         atk: 18,
@@ -1090,11 +1149,12 @@ mod test {
                     nature: Nature::Adamant,
                     advance: 4,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 1636640678,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: VeryFinicky,
                     ivs: Ivs {
                         hp: 18,
                         atk: 20,
@@ -1106,11 +1166,12 @@ mod test {
                     nature: Nature::Adamant,
                     advance: 5,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 2440584662,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: QuickTempered,
                     ivs: Ivs {
                         hp: 6,
                         atk: 29,
@@ -1122,11 +1183,12 @@ mod test {
                     nature: Nature::Serious,
                     advance: 6,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 3754258538,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: StrongWilled,
                     ivs: Ivs {
                         hp: 4,
                         atk: 20,
@@ -1138,11 +1200,12 @@ mod test {
                     nature: Nature::Jolly,
                     advance: 7,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 1636640678,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: VeryFinicky,
                     ivs: Ivs {
                         hp: 18,
                         atk: 20,
@@ -1154,11 +1217,12 @@ mod test {
                     nature: Nature::Adamant,
                     advance: 8,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 1636640678,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: VeryFinicky,
                     ivs: Ivs {
                         hp: 18,
                         atk: 20,
@@ -1170,11 +1234,12 @@ mod test {
                     nature: Nature::Adamant,
                     advance: 9,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 475834453,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: AlertToSounds,
                     ivs: Ivs {
                         hp: 2,
                         atk: 18,
@@ -1187,20 +1252,22 @@ mod test {
                     advance: 10,
                 },
             ];
-            let result = filter_4static(&options, seed);
+            let result = generate_static4_states(&options);
             assert_list_eq!(result, expected_results);
         }
+
         #[test]
         fn method_k() {
-            let seed = 0;
             let options = Gen4StaticOpts {
+                seed: 0,
                 tid: 12345,
                 sid: 54321,
                 initial_advances: 0,
                 max_advances: 10,
-                encounter: StaticEncounterId::Dialga,
+                encounter: Static4Species::Dialga,
                 game: Some(GameVersion::Platinum),
-                lead: LeadAbilities::Synchronize(Nature::Adamant),
+                lead: Some(LeadAbilities::Synchronize(Nature::Adamant)),
+                filter_characteristic: None,
                 filter: PkmFilter {
                     shiny: false,
                     nature: None,
@@ -1226,11 +1293,12 @@ mod test {
                 },
             };
             let expected_results = [
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 475834453,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: AlertToSounds,
                     ivs: Ivs {
                         hp: 2,
                         atk: 18,
@@ -1242,11 +1310,12 @@ mod test {
                     nature: Nature::Adamant,
                     advance: 0,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 3080890308,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: SomewhatOfAClown,
                     ivs: Ivs {
                         hp: 21,
                         atk: 2,
@@ -1258,11 +1327,12 @@ mod test {
                     nature: Nature::Impish,
                     advance: 1,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 475834453,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: AlertToSounds,
                     ivs: Ivs {
                         hp: 2,
                         atk: 18,
@@ -1274,11 +1344,12 @@ mod test {
                     nature: Nature::Adamant,
                     advance: 2,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 3805056578,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 30,
@@ -1290,11 +1361,12 @@ mod test {
                     nature: Nature::Adamant,
                     advance: 3,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 3360178372,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: ProudOfItsPower,
                     ivs: Ivs {
                         hp: 17,
                         atk: 30,
@@ -1306,11 +1378,12 @@ mod test {
                     nature: Nature::Sassy,
                     advance: 4,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 840124667,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: CapableOfTakingHits,
                     ivs: Ivs {
                         hp: 7,
                         atk: 23,
@@ -1322,11 +1395,12 @@ mod test {
                     nature: Nature::Quiet,
                     advance: 5,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 2902820410,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: LikesToRun,
                     ivs: Ivs {
                         hp: 18,
                         atk: 14,
@@ -1338,11 +1412,12 @@ mod test {
                     nature: Nature::Timid,
                     advance: 6,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 1636640678,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: VeryFinicky,
                     ivs: Ivs {
                         hp: 18,
                         atk: 20,
@@ -1354,11 +1429,12 @@ mod test {
                     nature: Nature::Adamant,
                     advance: 7,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 1096857248,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Genderless,
+                    characteristic: HatesToLose,
                     ivs: Ivs {
                         hp: 22,
                         atk: 17,
@@ -1370,11 +1446,12 @@ mod test {
                     nature: Nature::Careful,
                     advance: 8,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 2059180349,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: QuickTempered,
                     ivs: Ivs {
                         hp: 7,
                         atk: 29,
@@ -1386,11 +1463,12 @@ mod test {
                     nature: Nature::Quirky,
                     advance: 9,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 3954154919,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Genderless,
+                    characteristic: StronglyDefiant,
                     ivs: Ivs {
                         hp: 3,
                         atk: 5,
@@ -1403,25 +1481,27 @@ mod test {
                     advance: 10,
                 },
             ];
-            let result = filter_4static(&options, seed);
+            let result = generate_static4_states(&options);
             assert_list_eq!(result, expected_results);
         }
     }
+
     mod cutiech {
 
         use super::*;
 
         #[test]
         fn method_j_cc() {
-            let seed = 0;
             let options = Gen4StaticOpts {
+                seed: 0,
                 tid: 12345,
                 sid: 54321,
                 initial_advances: 0,
                 max_advances: 10,
-                encounter: StaticEncounterId::Snorlax,
+                encounter: Static4Species::Snorlax,
                 game: Some(GameVersion::HeartGold),
-                lead: LeadAbilities::CutecharmM,
+                lead: Some(LeadAbilities::CutecharmM),
+                filter_characteristic: None,
                 filter: PkmFilter {
                     shiny: false,
                     nature: None,
@@ -1447,11 +1527,12 @@ mod test {
                 },
             };
             let expected_results = [
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 813709149,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Male,
+                    characteristic: ScattersThingsOften,
                     ivs: Ivs {
                         hp: 28,
                         atk: 3,
@@ -1463,11 +1544,12 @@ mod test {
                     nature: Nature::Quirky,
                     advance: 0,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 5,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Female,
+                    characteristic: OftenLostInThought,
                     ivs: Ivs {
                         hp: 16,
                         atk: 13,
@@ -1479,11 +1561,12 @@ mod test {
                     nature: Nature::Bold,
                     advance: 1,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 1621222420,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 11,
                         atk: 25,
@@ -1495,11 +1578,12 @@ mod test {
                     nature: Nature::Calm,
                     advance: 2,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 1671314793,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Male,
+                    characteristic: SomewhatVain,
                     ivs: Ivs {
                         hp: 9,
                         atk: 9,
@@ -1511,11 +1595,12 @@ mod test {
                     nature: Nature::Bashful,
                     advance: 3,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 10,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 30,
@@ -1527,11 +1612,12 @@ mod test {
                     nature: Nature::Timid,
                     advance: 4,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 22,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: SomewhatVain,
                     ivs: Ivs {
                         hp: 27,
                         atk: 30,
@@ -1543,11 +1629,12 @@ mod test {
                     nature: Nature::Sassy,
                     advance: 5,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 2440584662,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Male,
+                    characteristic: QuickTempered,
                     ivs: Ivs {
                         hp: 6,
                         atk: 29,
@@ -1559,11 +1646,12 @@ mod test {
                     nature: Nature::Serious,
                     advance: 6,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 13,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Female,
+                    characteristic: SomewhatVain,
                     ivs: Ivs {
                         hp: 12,
                         atk: 25,
@@ -1575,11 +1663,12 @@ mod test {
                     nature: Nature::Jolly,
                     advance: 7,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 1636640678,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Male,
+                    characteristic: VeryFinicky,
                     ivs: Ivs {
                         hp: 18,
                         atk: 20,
@@ -1591,11 +1680,12 @@ mod test {
                     nature: Nature::Adamant,
                     advance: 8,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 6,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 22,
@@ -1607,11 +1697,12 @@ mod test {
                     nature: Nature::Docile,
                     advance: 9,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 9,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Female,
+                    characteristic: ProudOfItsPower,
                     ivs: Ivs {
                         hp: 22,
                         atk: 30,
@@ -1624,20 +1715,21 @@ mod test {
                     advance: 10,
                 },
             ];
-            let result = filter_4static(&options, seed);
+            let result = generate_static4_states(&options);
             assert_list_eq!(result, expected_results);
         }
         #[test]
         fn method_k_cc() {
-            let seed = 0;
             let options = Gen4StaticOpts {
+                seed: 0,
                 tid: 12345,
                 sid: 54321,
                 initial_advances: 0,
                 max_advances: 10,
-                encounter: StaticEncounterId::Drifloon,
+                encounter: Static4Species::Drifloon,
                 game: Some(GameVersion::Platinum),
-                lead: LeadAbilities::CutecharmM,
+                lead: Some(LeadAbilities::CutecharmM),
+                filter_characteristic: None,
                 filter: PkmFilter {
                     shiny: false,
                     nature: None,
@@ -1663,11 +1755,12 @@ mod test {
                 },
             };
             let expected_results = [
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 3360178372,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Male,
+                    characteristic: ProudOfItsPower,
                     ivs: Ivs {
                         hp: 17,
                         atk: 30,
@@ -1679,11 +1772,12 @@ mod test {
                     nature: Nature::Sassy,
                     advance: 0,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 8,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: OftenLostInThought,
                     ivs: Ivs {
                         hp: 16,
                         atk: 13,
@@ -1695,11 +1789,12 @@ mod test {
                     nature: Nature::Impish,
                     advance: 1,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 1742450629,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Male,
+                    characteristic: CapableOfTakingHits,
                     ivs: Ivs {
                         hp: 19,
                         atk: 1,
@@ -1711,11 +1806,12 @@ mod test {
                     nature: Nature::Naughty,
                     advance: 2,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 3754258538,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: StrongWilled,
                     ivs: Ivs {
                         hp: 4,
                         atk: 20,
@@ -1727,11 +1823,12 @@ mod test {
                     nature: Nature::Jolly,
                     advance: 3,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 22,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 30,
@@ -1743,11 +1840,12 @@ mod test {
                     nature: Nature::Sassy,
                     advance: 4,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 17,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Female,
+                    characteristic: SomewhatVain,
                     ivs: Ivs {
                         hp: 27,
                         atk: 30,
@@ -1759,11 +1857,12 @@ mod test {
                     nature: Nature::Quiet,
                     advance: 5,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 2902820410,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: LikesToRun,
                     ivs: Ivs {
                         hp: 18,
                         atk: 14,
@@ -1775,11 +1874,12 @@ mod test {
                     nature: Nature::Timid,
                     advance: 6,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 24,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: SomewhatVain,
                     ivs: Ivs {
                         hp: 12,
                         atk: 25,
@@ -1791,11 +1891,12 @@ mod test {
                     nature: Nature::Quirky,
                     advance: 7,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 1096857248,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Male,
+                    characteristic: HatesToLose,
                     ivs: Ivs {
                         hp: 22,
                         atk: 17,
@@ -1807,11 +1908,12 @@ mod test {
                     nature: Nature::Careful,
                     advance: 8,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 24,
                     shiny: false,
                     ability: AbilityType::First,
                     gender: Gender::Female,
+                    characteristic: HighlyCurious,
                     ivs: Ivs {
                         hp: 5,
                         atk: 22,
@@ -1823,11 +1925,12 @@ mod test {
                     nature: Nature::Quirky,
                     advance: 9,
                 },
-                Gen4SPokemon {
+                Gen4StaticPokemon {
                     pid: 19,
                     shiny: false,
                     ability: AbilityType::Second,
                     gender: Gender::Female,
+                    characteristic: ProudOfItsPower,
                     ivs: Ivs {
                         hp: 22,
                         atk: 30,
@@ -1840,7 +1943,7 @@ mod test {
                     advance: 10,
                 },
             ];
-            let result = filter_4static(&options, seed);
+            let result = generate_static4_states(&options);
             assert_list_eq!(result, expected_results);
         }
     }

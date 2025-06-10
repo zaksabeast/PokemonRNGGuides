@@ -14,7 +14,7 @@ type FormikSwitchProps<
   FormState extends GenericForm,
   FieldKey extends keyof FormState,
 > = tst.O.Merge<
-  Omit<AntdSwitchProps, "onChange" | "value">,
+  Omit<AntdSwitchProps, "value">,
   {
     name: FieldKey extends GuaranteeFormNameType<FormState, boolean>
       ? FieldKey
@@ -27,6 +27,7 @@ export const FormikSwitch = <
   FieldKey extends keyof FormState,
 >({
   name,
+  onChange: _onChange,
   ...props
 }: FormikSwitchProps<FormState, FieldKey>) => {
   const [{ value }, { error }, { setValue, setTouched }] =
@@ -36,9 +37,10 @@ export const FormikSwitch = <
     <Tooltip color="red" title={error} placement="top">
       <Switch
         data-name={name}
-        onChange={(updatedValue) => {
+        onChange={(updatedValue, event) => {
           setValue(updatedValue);
           setTouched(true, false);
+          _onChange?.(updatedValue, event);
         }}
         value={value}
         {...props}

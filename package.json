@@ -47,6 +47,7 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
     "rng_tools": "./rng_tools/pkg",
+    "rxjs": "^7.8.2",
     "ts-pattern": "^5.6.2",
     "ts-toolbelt": "^9.6.0",
     "wouter": "^3.7.0",

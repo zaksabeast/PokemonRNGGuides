@@ -24,6 +24,29 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Home.mdx")),
   },
+  "/about/": {
+    meta: {
+      categories: ["Home"],
+      tags: ["info"],
+      isNew: false,
+      title: "About us",
+      navDrawerTitle: "About us",
+      description:
+        "Learn retail and emulator RNG with our Pokémon guides and tools",
+      slug: "/about/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "titled",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/About.mdx",
+      translations: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/About.mdx")),
+  },
   "/azahar-setup/": {
     meta: {
       categories: ["3DS Tools"],
@@ -425,6 +448,32 @@ export const guides = {
       () => import("~/../guides/Tools and Emulators/CitraRNG Setup.mdx"),
     ),
   },
+  "/connect-dolphin-to-gba/": {
+    meta: {
+      categories: ["GBA Tools"],
+      tags: ["emu"],
+      isNew: false,
+      title: "Connect Dolphin to mGBA",
+      navDrawerTitle: "Connect Dolphin to mGBA",
+      description:
+        "Learn how to redeem Jirachi or transfer your RNGs to a GBA game.",
+      slug: "/connect-dolphin-to-gba/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Tools and Emulators/Connect Dolphin To GBA.mdx",
+      translations: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Tools and Emulators/Connect Dolphin To GBA.mdx"),
+    ),
+  },
   "/crystal/": {
     meta: {
       categories: ["Game Hub"],
@@ -521,7 +570,7 @@ export const guides = {
   "/dppt-advance-rng/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Advancing the RNG in Diamond, Pearl, and Platinum",
       navDrawerTitle: "Advancing the RNG",
@@ -549,11 +598,12 @@ export const guides = {
   "/dppt-cute-charm/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
-      title: "Diamond, Pearl, and Platinum Cute Charm RNG",
-      navDrawerTitle: "Cute Charm RNG",
-      description: "How to use Cute Charm with TID/SID RNG.",
+      title: "Diamond, Pearl, and Platinum Cute Charm Glitch Mechanics",
+      navDrawerTitle: "Cute Charm Mechanics",
+      description:
+        "Learn about how the Cute Charm glitch works in Diamond, Pearl, and Platinum.",
       slug: "/dppt-cute-charm/",
       isRoughDraft: false,
       hideFromNavDrawer: false,
@@ -678,6 +728,29 @@ export const guides = {
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx"),
     ),
   },
+  "/dppt-tid-sid/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["retail"],
+      isNew: true,
+      title: "HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG",
+      navDrawerTitle: "Cute Charm & TID/SID RNG",
+      description:
+        "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for HeartGold and SoulSilver.",
+      slug: "/dppt-tid-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: "2025-06-08",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Gen 4/Retail TID.mdx",
+      translations: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
+  },
   "/dppt-wild/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
@@ -731,7 +804,7 @@ export const guides = {
   "/e-tips-rng/": {
     meta: {
       categories: ["Emerald"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Emerald RNG Info",
       navDrawerTitle: "RNG Info",
@@ -756,7 +829,7 @@ export const guides = {
   "/emerald-mirage-island/": {
     meta: {
       categories: ["Emerald"],
-      tags: ["any"],
+      tags: ["retail"],
       isNew: false,
       title: "Mirage Island in Emerald",
       navDrawerTitle: "Mirage Island",
@@ -784,7 +857,7 @@ export const guides = {
   "/emerald-overview/": {
     meta: {
       categories: ["Emerald"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Emerald Overview",
       navDrawerTitle: "Overview",
@@ -1234,11 +1307,12 @@ export const guides = {
   "/emulator-dppt-cute-charm/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["emu"],
+      tags: ["info"],
       isNew: false,
-      title: "Diamond, Pearl, and Platinum Cute Charm RNG",
-      navDrawerTitle: "Cute Charm RNG",
-      description: "How to use Cute Charm with TID/SID RNG.",
+      title: "Diamond, Pearl, and Platinum Cute Charm Glitch Mechanics",
+      navDrawerTitle: "Cute Charm Mechanics",
+      description:
+        "Learn about how the Cute Charm glitch works in Diamond, Pearl, and Platinum.",
       slug: "/emulator-dppt-cute-charm/",
       isRoughDraft: false,
       hideFromNavDrawer: true,
@@ -1284,7 +1358,7 @@ export const guides = {
   "/emulator-dppt-pokefinder-setup/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "How to RNG in Diamond, Pearl, and Platinum Using PokeFinder",
       navDrawerTitle: "PokeFinder Setup",
@@ -1551,11 +1625,12 @@ export const guides = {
   "/emulator-hgss-cute-charm/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
-      tags: ["emu"],
+      tags: ["info"],
       isNew: false,
-      title: "HeartGold and SoulSilver Cute Charm RNG",
-      navDrawerTitle: "Cute Charm RNG",
-      description: "How to use Cute Charm with TID/SID RNG.",
+      title: "HeartGold and SoulSilver Cute Charm Glitch Mechanics",
+      navDrawerTitle: "Cute Charm Mechanics",
+      description:
+        "Learn about how the Cute Charm glitch works in HeartGold and SoulSilver.",
       slug: "/emulator-hgss-cute-charm/",
       isRoughDraft: false,
       hideFromNavDrawer: true,
@@ -1912,7 +1987,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-rs-wishmaker/",
+        zh: "/zh-emulator-rs-wishmaker/",
+      },
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
@@ -2282,7 +2360,7 @@ export const guides = {
   "/gba-methods/": {
     meta: {
       categories: ["GBA Technical Documentation"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Methods 1-4 in Emerald",
       navDrawerTitle: "Methods 1-4",
@@ -2332,7 +2410,7 @@ export const guides = {
   "/gba-pokerus-technical/": {
     meta: {
       categories: ["GBA Technical Documentation"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Pokérus",
       navDrawerTitle: "Pokérus",
@@ -2356,7 +2434,7 @@ export const guides = {
   "/gba-vblank/": {
     meta: {
       categories: ["GBA Technical Documentation"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "VBlank in Emerald",
       navDrawerTitle: "VBlank",
@@ -2479,7 +2557,7 @@ export const guides = {
   "/gen3-glossary/": {
     meta: {
       categories: ["Emerald"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Glossary",
       navDrawerTitle: "Glossary",
@@ -2546,11 +2624,12 @@ export const guides = {
   "/hgss-cute-charm/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
-      title: "HeartGold and SoulSilver Cute Charm RNG",
-      navDrawerTitle: "Cute Charm RNG",
-      description: "How to use Cute Charm with TID/SID RNG.",
+      title: "HeartGold and SoulSilver Cute Charm Glitch Mechanics",
+      navDrawerTitle: "Cute Charm Mechanics",
+      description:
+        "Learn about how the Cute Charm glitch works in HeartGold and SoulSilver.",
       slug: "/hgss-cute-charm/",
       isRoughDraft: false,
       hideFromNavDrawer: false,
@@ -2620,6 +2699,29 @@ export const guides = {
           "~/../guides/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx"
         ),
     ),
+  },
+  "/hgss-tid-sid/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["retail"],
+      isNew: true,
+      title: "HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG",
+      navDrawerTitle: "Cute Charm & TID/SID RNG",
+      description:
+        "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for HeartGold and SoulSilver.",
+      slug: "/hgss-tid-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: "2025-06-08",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Gen 4/Retail TID.mdx",
+      translations: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
   },
   "/install-capturesight/": {
     meta: {
@@ -2742,7 +2844,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
-      translations: null,
+      translations: { en: "/meteor-jirachi/", zh: "/zh-meteor-jirachi/" },
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
@@ -2916,7 +3018,7 @@ export const guides = {
         "Learn how to redeem Jirachi or transfer your RNGs to a GBA game.",
       slug: "/misc-dolphin-connect-vba/",
       isRoughDraft: false,
-      hideFromNavDrawer: false,
+      hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
       layout: "guide",
@@ -3323,6 +3425,31 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Retail Wild RNG.mdx"),
+    ),
+  },
+  "/retail-hgss-starter/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["retail"],
+      isNew: false,
+      title: "HeartGold and Soulsilver Starter RNG",
+      navDrawerTitle: "Starter RNG",
+      description:
+        "Learn how to RNG starters in HeartGold and SoulSilver for shiny, high-IV Pokémon.",
+      slug: "/retail-hgss-starter/",
+      isRoughDraft: true,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Gen 4/HeartGold and SoulSilver/Starters.mdx",
+      translations: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Starters.mdx"),
     ),
   },
   "/retail-oras-egg-mmsc/": {
@@ -4235,7 +4362,7 @@ export const guides = {
   "/rs-battery/": {
     meta: {
       categories: ["Ruby and Sapphire"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "Ruby and Sapphire Live vs Dead Battery RNG",
       navDrawerTitle: "Live vs Dead Battery",
@@ -4250,7 +4377,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx",
-      translations: null,
+      translations: { en: "/rs-battery/", zh: "/zh-rs-battery/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -4307,7 +4434,7 @@ export const guides = {
   "/rs-mirage-island/": {
     meta: {
       categories: ["Ruby and Sapphire"],
-      tags: ["any"],
+      tags: ["retail"],
       isNew: false,
       title: "Mirage Island in Ruby and Sapphire",
       navDrawerTitle: "Mirage Island",
@@ -4876,7 +5003,7 @@ export const guides = {
   "/zh-dppt-advance-rng/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "乱数的帧数推进方法",
       navDrawerTitle: "乱数的帧数推进方法",
@@ -4903,7 +5030,7 @@ export const guides = {
   "/zh-dppt-cute-charm/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "迷人之躯乱数",
       navDrawerTitle: "迷人之躯乱数",
@@ -5011,7 +5138,7 @@ export const guides = {
   "/zh-e-tips-rng/": {
     meta: {
       categories: ["Emerald"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "乱数介绍",
       navDrawerTitle: "乱数介绍",
@@ -5038,7 +5165,7 @@ export const guides = {
   "/zh-emerald-mirage-island/": {
     meta: {
       categories: ["Emerald"],
-      tags: ["any"],
+      tags: ["retail"],
       isNew: false,
       title: "幻之岛",
       navDrawerTitle: "幻之岛",
@@ -5328,7 +5455,7 @@ export const guides = {
   "/zh-emulator-dppt-cute-charm/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      tags: ["emu"],
+      tags: ["info"],
       isNew: false,
       title: "迷人之躯乱数",
       navDrawerTitle: "迷人之躯乱数",
@@ -5529,7 +5656,7 @@ export const guides = {
   "/zh-emulator-hgss-cute-charm/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
-      tags: ["emu"],
+      tags: ["info"],
       isNew: false,
       title: "迷人之躯乱数",
       navDrawerTitle: "迷人之躯乱数",
@@ -5667,6 +5794,37 @@ export const guides = {
         ),
     ),
   },
+  "/zh-emulator-rs-wishmaker/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["emu"],
+      isNew: false,
+      title: "红蓝宝石 许愿星基拉祈（Wishmaker）乱数指南",
+      navDrawerTitle: "红蓝宝石 许愿星基拉祈（Wishmaker）乱数指南",
+      description:
+        "学习如何在红宝石与蓝宝石中，通过圆形竞技场乱数出异色的许愿星基拉祈。",
+      slug: "/zh-emulator-rs-wishmaker/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-18",
+      translation: { enSlug: "/emulator-rs-wishmaker/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
+      translations: {
+        en: "/emulator-rs-wishmaker/",
+        zh: "/zh-emulator-rs-wishmaker/",
+      },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
+        ),
+    ),
+  },
   "/zh-frlg-gen3-sid/": {
     meta: {
       categories: ["FireRed and LeafGreen"],
@@ -5801,7 +5959,7 @@ export const guides = {
   "/zh-hgss-cute-charm/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: false,
       title: "迷人之躯乱数",
       navDrawerTitle: "迷人之躯乱数",
@@ -5876,6 +6034,33 @@ export const guides = {
       () =>
         import(
           "~/../guides/Translations/zh/Tools and Emulators/3DS PokeReader.mdx"
+        ),
+    ),
+  },
+  "/zh-meteor-jirachi/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["emu"],
+      isNew: false,
+      title: "红蓝宝石 流星基拉祈（Meteor）乱数指南",
+      navDrawerTitle: "红蓝宝石 流星基拉祈（Meteor）乱数指南",
+      description: "学习如何乱数流星基拉祈，其异色判定与许愿星不同。",
+      slug: "/zh-meteor-jirachi/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-18",
+      translation: { enSlug: "/meteor-jirachi/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
+      translations: { en: "/meteor-jirachi/", zh: "/zh-meteor-jirachi/" },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
         ),
     ),
   },
@@ -5966,6 +6151,34 @@ export const guides = {
         import("~/../guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx"),
     ),
   },
+  "/zh-rs-battery/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["info"],
+      isNew: false,
+      title: "红蓝宝石 电池有电 vs 无电 乱数对比",
+      navDrawerTitle: "红蓝宝石 电池有电 vs 无电 乱数对比",
+      description:
+        "了解红宝石与蓝宝石在电池有电和电池耗尽情况下的乱数方法差异，以及这些差异如何影响宝可梦结果。",
+      slug: "/zh-rs-battery/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/rs-battery/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx",
+      translations: { en: "/rs-battery/", zh: "/zh-rs-battery/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx"
+        ),
+    ),
+  },
   "/zh-rs-gen3-sid/": {
     meta: {
       categories: ["Ruby and Sapphire"],
@@ -5993,7 +6206,7 @@ export const guides = {
   "/zh-rs-mirage-island/": {
     meta: {
       categories: ["Ruby and Sapphire"],
-      tags: ["any"],
+      tags: ["retail"],
       isNew: false,
       title: "幻之岛",
       navDrawerTitle: "幻之岛",
@@ -6046,6 +6259,7 @@ export const guides = {
 
 export const guideSlugs = [
   "/",
+  "/about/",
   "/azahar-setup/",
   "/bdsp-advance-rng/",
   "/bdsp-chatot/",
@@ -6062,6 +6276,7 @@ export const guideSlugs = [
   "/challenge-usum-ta/",
   "/channel-jirachi/",
   "/citrarng-setup/",
+  "/connect-dolphin-to-gba/",
   "/crystal/",
   "/delete-pokemon-save/",
   "/desmume-setup/",
@@ -6072,6 +6287,7 @@ export const guideSlugs = [
   "/dppt-initial-seed/",
   "/dppt-pokeradar-rng/",
   "/dppt-setup-rng/",
+  "/dppt-tid-sid/",
   "/dppt-wild/",
   "/dream-radar-patches/",
   "/e-tips-rng/",
@@ -6148,6 +6364,7 @@ export const guideSlugs = [
   "/hgss-cute-charm/",
   "/hgss-initial-seed/",
   "/hgss-rng-advance/",
+  "/hgss-tid-sid/",
   "/install-capturesight/",
   "/install-pokereader-emu/",
   "/install-pokereader/",
@@ -6176,6 +6393,7 @@ export const guideSlugs = [
   "/retail-bw-entralink/",
   "/retail-emerald-egg/",
   "/retail-emerald-wild/",
+  "/retail-hgss-starter/",
   "/retail-oras-egg-mmsc/",
   "/retail-oras-egg-no-mmsc/",
   "/retail-oras-tid/",
@@ -6267,6 +6485,7 @@ export const guideSlugs = [
   "/zh-emulator-hgss-stationary/",
   "/zh-emulator-rs-egg/",
   "/zh-emulator-rs-stationary/",
+  "/zh-emulator-rs-wishmaker/",
   "/zh-frlg-gen3-sid/",
   "/zh-frlg-seeding-bot/",
   "/zh-gen2-celebi/",
@@ -6275,9 +6494,11 @@ export const guideSlugs = [
   "/zh-hgss-cute-charm/",
   "/zh-hgss-rng-advance/",
   "/zh-install-pokereader/",
+  "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
   "/zh-retail-emerald-wild/",
+  "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",
   "/zh-rs-mirage-island/",
   "/zh-rs-sid-feebas/",

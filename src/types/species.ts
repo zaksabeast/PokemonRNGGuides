@@ -1016,9 +1016,24 @@ export const species = [
   "Annihilape",
 ] as const satisfies Species[];
 
-const gen3SpeciesByDex = toOptions(species.slice(0, 387));
+const gen3SpeciesByDex = toOptions(species.slice(1, 387));
 
 export const gen3SpeciesOptions = {
   byDex: gen3SpeciesByDex,
   byName: sortBy(gen3SpeciesByDex, (option) => option.label),
+};
+
+const gen4SpeciesByDex = toOptions(species.slice(1, 494));
+const gen4SpeciesOptionsByName = sortBy(
+  gen4SpeciesByDex,
+  (option) => option.label,
+);
+
+export const gen4SpeciesOptions = {
+  byDex: gen4SpeciesByDex,
+  byName: gen4SpeciesOptionsByName,
+  byNameOptional: [
+    { label: "None", value: "None" } as const,
+    ...gen4SpeciesOptionsByName,
+  ],
 };

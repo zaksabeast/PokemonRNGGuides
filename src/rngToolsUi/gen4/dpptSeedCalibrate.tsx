@@ -94,6 +94,8 @@ type Props = {
 export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
   const [results, setResults] = React.useState<SeedTime4Calibrate[]>([]);
 
+  const selectedSeed = selectedSeedTime?.seed ?? 0;
+
   const initialValues = React.useMemo((): FormState => {
     if (selectedSeedTime == null) {
       return {
@@ -114,24 +116,28 @@ export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
     };
   }, [selectedSeedTime]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    const results = await rngTools.dppt_calibrate_seedtime(
-      {
-        datetime: addRngTime(opts.date, opts.time),
-        delay: opts.delay,
-        coin_flips: [],
-      },
-      {
-        delay_calibration: opts.delay_calibration,
-        second_calibration: opts.second_calibration,
-        entei_route: null,
-        lati_route: null,
-        raikou_route: null,
-      },
-    );
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
+    async (opts) => {
+      const results = await rngTools.dppt_calibrate_seedtime(
+        {
+          seed: selectedSeed,
+          datetime: addRngTime(opts.date, opts.time),
+          delay: opts.delay,
+          coin_flips: [],
+        },
+        {
+          delay_calibration: opts.delay_calibration,
+          second_calibration: opts.second_calibration,
+          entei_route: null,
+          lati_route: null,
+          raikou_route: null,
+        },
+      );
 
-    setResults(results);
-  }, []);
+      setResults(results);
+    },
+    [selectedSeed],
+  );
 
   return (
     <RngToolForm<FormState, SeedTime4Calibrate>
@@ -141,7 +147,7 @@ export const DpptSeedCalibrate = ({ selectedSeedTime }: Props) => {
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
-      submitTrackerId="generate_dppt_seed_search"
+      submitTrackerId="calibrate_dppt_seed"
     />
   );
 };

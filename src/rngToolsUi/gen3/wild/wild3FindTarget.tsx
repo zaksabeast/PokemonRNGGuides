@@ -3,8 +3,8 @@ import {
   rngTools,
   Species,
   Nature,
-  Wild3GeneratorResult,
   Gen3EncounterType,
+  Wild3SearcherResultMon,
 } from "~/rngTools";
 import {
   Field,
@@ -354,7 +354,7 @@ type Props = {
 };
 
 type Result = FlattenIvs<
-  Wild3GeneratorResult & {
+  Wild3SearcherResultMon & {
     species: Species;
     mapName: string;
     encounter: Gen3EncounterType;

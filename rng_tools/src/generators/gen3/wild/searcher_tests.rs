@@ -1,16 +1,14 @@
 #[cfg(test)]
 mod test {
-
+    use crate::assert_list_eq;
     use std::vec;
 
-    use crate::assert_list_eq;
-
+    use crate::EncounterSlot;
     use crate::Ivs;
-    use crate::gen3::EncounterSlot;
     use crate::gen3::Gen3Lead;
     use crate::gen3::Gen3Method;
     use crate::gen3::search_wild3;
-    use crate::gen3::{Wild3GeneratorResult, Wild3SearcherOptions};
+    use crate::gen3::{Wild3SearcherOptions, Wild3SearcherResultMon};
     use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
 
     #[test]
@@ -24,13 +22,13 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             initial_advances: 0,
-            max_advances: 9,
+            max_advances: 2,
             max_result_count: 10_000,
             filter: PkmFilter::new_allow_all(),
         };
 
         let expected_results = [
-            Wild3GeneratorResult {
+            Wild3SearcherResultMon {
                 advance: 0,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
@@ -47,12 +45,10 @@ mod test {
                     spe: 30,
                 },
                 gender: Gender::Male,
-                synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
-                cute_charm: false,
             },
-            Wild3GeneratorResult {
+            Wild3SearcherResultMon {
                 advance: 1,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot5,
@@ -69,12 +65,10 @@ mod test {
                     spe: 24,
                 },
                 gender: Gender::Female,
-                synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
-                cute_charm: false,
             },
-            Wild3GeneratorResult {
+            Wild3SearcherResultMon {
                 advance: 2,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
@@ -91,164 +85,8 @@ mod test {
                     spe: 13,
                 },
                 gender: Gender::Female,
-                synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
-                cute_charm: false,
-            },
-            Wild3GeneratorResult {
-                advance: 3,
-                map_idx: 0,
-                encounter_slot: EncounterSlot::Slot1,
-                pid: 0xAD05863A,
-                shiny: false,
-                nature: Nature::Timid,
-                ability: AbilityType::First,
-                ivs: Ivs {
-                    hp: 18,
-                    atk: 14,
-                    def: 4,
-                    spa: 0,
-                    spd: 12,
-                    spe: 25,
-                },
-                gender: Gender::Female,
-                synch: false,
-                method: Gen3Method::Wild1,
-                lead: None,
-                cute_charm: false,
-            },
-            Wild3GeneratorResult {
-                advance: 4,
-                map_idx: 0,
-                encounter_slot: EncounterSlot::Slot0,
-                pid: 0x945CE0C6,
-                shiny: false,
-                nature: Nature::Sassy,
-                ability: AbilityType::First,
-                ivs: Ivs {
-                    hp: 27,
-                    atk: 17,
-                    def: 19,
-                    spa: 18,
-                    spd: 22,
-                    spe: 31,
-                },
-                gender: Gender::Male,
-                synch: false,
-                method: Gen3Method::Wild1,
-                lead: None,
-                cute_charm: false,
-            },
-            Wild3GeneratorResult {
-                advance: 5,
-                map_idx: 0,
-                encounter_slot: EncounterSlot::Slot4,
-                pid: 0x91785DD6,
-                shiny: false,
-                nature: Nature::Serious,
-                ability: AbilityType::First,
-                ivs: Ivs {
-                    hp: 6,
-                    atk: 29,
-                    def: 9,
-                    spa: 12,
-                    spd: 24,
-                    spe: 13,
-                },
-                gender: Gender::Male,
-                synch: false,
-                method: Gen3Method::Wild1,
-                lead: None,
-                cute_charm: false,
-            },
-            Wild3GeneratorResult {
-                advance: 6,
-                map_idx: 0,
-                encounter_slot: EncounterSlot::Slot9,
-                pid: 0xDFC5706A,
-                shiny: false,
-                nature: Nature::Jolly,
-                ability: AbilityType::First,
-                ivs: Ivs {
-                    hp: 4,
-                    atk: 20,
-                    def: 14,
-                    spa: 0,
-                    spd: 25,
-                    spe: 20,
-                },
-                gender: Gender::Female,
-                synch: false,
-                method: Gen3Method::Wild1,
-                lead: None,
-                cute_charm: false,
-            },
-            Wild3GeneratorResult {
-                advance: 7,
-                map_idx: 0,
-                encounter_slot: EncounterSlot::Slot7,
-                pid: 0x618D27A6,
-                shiny: false,
-                nature: Nature::Adamant,
-                ability: AbilityType::First,
-                ivs: Ivs {
-                    hp: 18,
-                    atk: 20,
-                    def: 5,
-                    spa: 29,
-                    spd: 19,
-                    spe: 24,
-                },
-                gender: Gender::Male,
-                synch: false,
-                method: Gen3Method::Wild1,
-                lead: None,
-                cute_charm: false,
-            },
-            Wild3GeneratorResult {
-                advance: 8,
-                map_idx: 0,
-                encounter_slot: EncounterSlot::Slot4,
-                pid: 0x1692618D,
-                shiny: false,
-                nature: Nature::Docile,
-                ability: AbilityType::Second,
-                ivs: Ivs {
-                    hp: 24,
-                    atk: 29,
-                    def: 19,
-                    spa: 26,
-                    spd: 13,
-                    spe: 29,
-                },
-                gender: Gender::Male,
-                synch: false,
-                method: Gen3Method::Wild1,
-                lead: None,
-                cute_charm: false,
-            },
-            Wild3GeneratorResult {
-                advance: 9,
-                map_idx: 0,
-                encounter_slot: EncounterSlot::Slot1,
-                pid: 0x6E031C49,
-                shiny: false,
-                nature: Nature::Lax,
-                ability: AbilityType::Second,
-                ivs: Ivs {
-                    hp: 10,
-                    atk: 13,
-                    def: 12,
-                    spa: 20,
-                    spd: 10,
-                    spe: 9,
-                },
-                gender: Gender::Female,
-                synch: false,
-                method: Gen3Method::Wild1,
-                lead: None,
-                cute_charm: false,
             },
         ];
         let result = search_wild3(&options);
@@ -269,7 +107,7 @@ mod test {
             ])],
             methods: vec![Gen3Method::Wild1],
             initial_advances: 60,
-            max_advances: 3625,
+            max_advances: 3540,
             max_result_count: 10_000,
             leads: vec![None],
             filter: PkmFilter {
@@ -290,7 +128,7 @@ mod test {
             },
         };
         let expected_results = [
-            Wild3GeneratorResult {
+            Wild3SearcherResultMon {
                 advance: 908,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
@@ -307,12 +145,10 @@ mod test {
                     spe: 13,
                 },
                 gender: Gender::Female,
-                synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
-                cute_charm: false,
             },
-            Wild3GeneratorResult {
+            Wild3SearcherResultMon {
                 advance: 3543,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
@@ -329,12 +165,10 @@ mod test {
                     spe: 24,
                 },
                 gender: Gender::Female,
-                synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
-                cute_charm: false,
             },
-            Wild3GeneratorResult {
+            Wild3SearcherResultMon {
                 advance: 3577,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot6,
@@ -351,32 +185,8 @@ mod test {
                     spe: 24,
                 },
                 gender: Gender::Female,
-                synch: false,
                 method: Gen3Method::Wild1,
                 lead: None,
-                cute_charm: false,
-            },
-            Wild3GeneratorResult {
-                advance: 3621,
-                map_idx: 0,
-                encounter_slot: EncounterSlot::Slot8,
-                pid: 0xA44D455D,
-                shiny: false,
-                nature: Nature::Adamant,
-                ability: AbilityType::Second,
-                ivs: Ivs {
-                    hp: 31,
-                    atk: 13,
-                    def: 30,
-                    spa: 26,
-                    spd: 21,
-                    spe: 24,
-                },
-                gender: Gender::Female,
-                synch: false,
-                method: Gen3Method::Wild1,
-                lead: None,
-                cute_charm: false,
             },
         ];
         let result = search_wild3(&options);
@@ -406,7 +216,7 @@ mod test {
                 stats: None,
             },
         };
-        let expected_results = [Wild3GeneratorResult {
+        let expected_results = [Wild3SearcherResultMon {
             advance: 0,
             map_idx: 0,
             encounter_slot: EncounterSlot::Slot4,
@@ -423,10 +233,8 @@ mod test {
                 spe: 25,
             },
             gender: Gender::Male,
-            synch: false,
             method: Gen3Method::Wild1,
             lead: None,
-            cute_charm: false,
         }];
         let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
@@ -442,13 +250,13 @@ mod test {
             encounter_slots_by_map: vec![None],
             methods: vec![Gen3Method::Wild1],
             initial_advances: 0,
-            max_advances: 4,
+            max_advances: 2,
             max_result_count: 10_000,
             leads: vec![Some(Gen3Lead::Synchronize(Nature::Hardy))],
             filter: PkmFilter::new_allow_all(),
         };
         let expected_results = [
-            Wild3GeneratorResult {
+            Wild3SearcherResultMon {
                 advance: 0,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot4,
@@ -465,12 +273,10 @@ mod test {
                     spe: 13,
                 },
                 gender: Gender::Female,
-                synch: false,
                 method: Gen3Method::Wild1,
                 lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
-                cute_charm: false,
             },
-            Wild3GeneratorResult {
+            Wild3SearcherResultMon {
                 advance: 1,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot9,
@@ -487,12 +293,10 @@ mod test {
                     spe: 15,
                 },
                 gender: Gender::Female,
-                synch: false,
                 method: Gen3Method::Wild1,
                 lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
-                cute_charm: false,
             },
-            Wild3GeneratorResult {
+            Wild3SearcherResultMon {
                 advance: 2,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot7,
@@ -509,54 +313,83 @@ mod test {
                     spe: 22,
                 },
                 gender: Gender::Female,
-                synch: false,
                 method: Gen3Method::Wild1,
                 lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
-                cute_charm: false,
             },
-            Wild3GeneratorResult {
-                advance: 3,
-                map_idx: 0,
-                encounter_slot: EncounterSlot::Slot1,
-                pid: 0x3A5DEC53,
-                shiny: false,
-                nature: Nature::Hardy,
-                ability: AbilityType::Second,
+        ];
+        let result = search_wild3(&options);
+        assert_list_eq!(result, expected_results);
+    }
+
+    #[test]
+    fn test_search_wild3_all_methods() {
+        let options = Wild3SearcherOptions {
+            initial_seed: 0,
+            tid: 0x1234,
+            sid: 0x4321,
+            gender_ratio: GenderRatio::OneToOne,
+            encounter_slots_by_map: vec![None],
+            methods: vec![
+                Gen3Method::Wild1,
+                Gen3Method::Wild2,
+                Gen3Method::Wild3,
+                Gen3Method::Wild4,
+                Gen3Method::Wild5,
+            ],
+            initial_advances: 5000,
+            max_advances: 1000,
+            max_result_count: 10_000,
+            leads: vec![None],
+            filter: PkmFilter {
+                shiny: true,
+                nature: None,
+                gender: None,
+                min_ivs: Ivs::new_all0(),
+                max_ivs: Ivs::new_all31(),
+                ability: None,
+                stats: None,
+            },
+        };
+        let expected_results = [
+            Wild3SearcherResultMon {
+                pid: 2495399342,
                 ivs: Ivs {
-                    hp: 0,
-                    atk: 4,
-                    def: 15,
-                    spa: 8,
-                    spd: 25,
-                    spe: 13,
+                    hp: 21,
+                    atk: 24,
+                    def: 8,
+                    spa: 26,
+                    spd: 20,
+                    spe: 25,
                 },
-                gender: Gender::Female,
-                synch: true,
-                method: Gen3Method::Wild1,
-                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
-                cute_charm: false,
-            },
-            Wild3GeneratorResult {
-                advance: 4,
-                map_idx: 0,
-                encounter_slot: EncounterSlot::Slot5,
-                pid: 0x57E115F6,
-                shiny: false,
-                nature: Nature::Naive,
+                method: Gen3Method::Wild3,
+                encounter_slot: EncounterSlot::Slot6,
                 ability: AbilityType::First,
-                ivs: Ivs {
-                    hp: 10,
-                    atk: 9,
-                    def: 26,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
                 gender: Gender::Male,
-                synch: false,
-                method: Gen3Method::Wild1,
-                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
-                cute_charm: false,
+                nature: Nature::Quiet,
+                shiny: true,
+                advance: 5022,
+                lead: None,
+                map_idx: 0,
+            },
+            Wild3SearcherResultMon {
+                pid: 2495399342,
+                ivs: Ivs {
+                    hp: 21,
+                    atk: 24,
+                    def: 8,
+                    spa: 26,
+                    spd: 20,
+                    spe: 25,
+                },
+                method: Gen3Method::Wild3,
+                encounter_slot: EncounterSlot::Slot9,
+                ability: AbilityType::First,
+                gender: Gender::Male,
+                nature: Nature::Quiet,
+                shiny: true,
+                advance: 5080,
+                lead: None,
+                map_idx: 0,
             },
         ];
         let result = search_wild3(&options);

@@ -1,3 +1,5 @@
+use std::ops::RangeInclusive;
+
 use super::{calc_ab, calc_seed};
 use crate::rng::mt::MT;
 use crate::{RngDateTime, get_days_in_month};
@@ -9,28 +11,38 @@ use wasm_bindgen::prelude::*;
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SeedTime4 {
+    pub seed: u32,
     pub datetime: RngDateTime,
     pub delay: u32,
     pub coin_flips: Vec<CoinFlip>,
 }
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct SeedTime4Options {
+impl SeedTime4 {
+    pub fn new(seed: u32, datetime: RngDateTime, delay: u32) -> Self {
+        Self {
+            seed,
+            datetime,
+            delay,
+            coin_flips: coin_flips(seed),
+        }
+    }
+}
+
+struct SeedTime4SingleMonthOptions {
     pub seed: u32,
     pub year: u32,
     pub month: u32,
     pub forced_second: Option<u8>,
+    pub delay_range: Option<RangeInclusive<u32>>,
+    pub find_first: bool,
 }
 
-#[wasm_bindgen]
-pub fn dppt_calculate_seedtime(opts: SeedTime4Options) -> Vec<SeedTime4> {
+fn dppt_calculate_single_month_seedtime(opts: SeedTime4SingleMonthOptions) -> Vec<SeedTime4> {
     let year = opts.year.clamp(2000, 2100);
     let month = opts.month.clamp(1, 12);
     let ab = opts.seed >> 24;
     let cd = (opts.seed >> 16) & 0xff;
     let efgh = opts.seed & 0xffff;
-    let coin_flips = coin_flips(opts.seed);
 
     // Allow overflow seeds by setting hour to 23 and adjusting for delay
     let hour = if cd > 23 { 23 } else { cd };
@@ -39,7 +51,23 @@ pub fn dppt_calculate_seedtime(opts: SeedTime4Options) -> Vec<SeedTime4> {
             .wrapping_add(2000)
             .wrapping_sub(year)
             .wrapping_add(cd.wrapping_sub(23).wrapping_mul(0x10000)),
-        false => efgh + (2000 - year),
+        false => efgh.wrapping_add(2000).wrapping_sub(year),
+    };
+
+    if let Some(delay_range) = opts.delay_range {
+        if !delay_range.contains(&delay) {
+            return vec![];
+        }
+    }
+
+    let mut coin_flips_res: Option<Vec<CoinFlip>> = None;
+    let mut lazy_coin_flip = || match coin_flips_res {
+        Some(ref flips) => flips.clone(),
+        None => {
+            let new_flips = coin_flips(opts.seed);
+            coin_flips_res = Some(new_flips.clone());
+            new_flips
+        }
     };
 
     let mut results = vec![];
@@ -48,21 +76,82 @@ pub fn dppt_calculate_seedtime(opts: SeedTime4Options) -> Vec<SeedTime4> {
     for day in 1..=max_days {
         for minute in 0..60 {
             for second in 0..60 {
-                if ab == calc_ab(opts.month, day, minute, second) & 0xff
+                if ab == calc_ab(month, day, minute, second) & 0xff
                     && (opts.forced_second.is_none() || Some(second as u8) == opts.forced_second)
                 {
                     results.push(SeedTime4 {
+                        seed: opts.seed,
                         delay,
-                        coin_flips: coin_flips.clone(),
+                        coin_flips: lazy_coin_flip(),
                         datetime: RngDateTime::new(year, month, day, hour, minute, second)
                             .unwrap_or_default(),
                     });
+
+                    if opts.find_first {
+                        return results;
+                    }
                 }
             }
         }
     }
 
     results
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct SeedTime4Options {
+    pub seed: u32,
+    pub year: u32,
+    pub month: Option<u32>,
+    pub forced_second: Option<u8>,
+    pub delay_range: Option<RangeInclusive<u32>>,
+    pub find_first: bool,
+}
+
+#[wasm_bindgen]
+pub fn dppt_calculate_seedtime(opts: SeedTime4Options) -> Vec<SeedTime4> {
+    let month_range = match opts.month {
+        Some(month) if (1..=12).contains(&month) => month..=month,
+        _ => 1..=12,
+    };
+
+    let limit = match opts.find_first {
+        true => 1,
+        false => 10_000,
+    };
+
+    month_range
+        .flat_map(|month| {
+            dppt_calculate_single_month_seedtime(SeedTime4SingleMonthOptions {
+                month,
+                seed: opts.seed,
+                year: opts.year,
+                forced_second: opts.forced_second,
+                delay_range: opts.delay_range.clone(),
+                find_first: opts.find_first,
+            })
+        })
+        .take(limit)
+        .collect()
+}
+
+pub struct FindSeedTime4Options {
+    pub seed: u32,
+    pub year: u32,
+    pub delay_range: RangeInclusive<u32>,
+}
+
+pub fn dppt_find_seedtime(opts: FindSeedTime4Options) -> Option<SeedTime4> {
+    let opts = SeedTime4Options {
+        seed: opts.seed,
+        year: opts.year,
+        month: None,
+        forced_second: None,
+        delay_range: Some(opts.delay_range),
+        find_first: true,
+    };
+    dppt_calculate_seedtime(opts).into_iter().next()
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -72,7 +161,7 @@ pub enum CoinFlip {
     Tails,
 }
 
-fn coin_flips(seed: u32) -> Vec<CoinFlip> {
+pub fn coin_flips(seed: u32) -> Vec<CoinFlip> {
     MT::new(seed)
         .take(20)
         .map(|rand| match rand & 1 {
@@ -80,6 +169,20 @@ fn coin_flips(seed: u32) -> Vec<CoinFlip> {
             _ => CoinFlip::Heads,
         })
         .collect()
+}
+
+#[macro_export]
+macro_rules! coin_flips {
+    ($flips:expr) => {{
+        let s = $flips;
+        s.chars()
+            .map(|c| match c {
+                'H' => $crate::generators::gen4::seed_time::CoinFlip::Heads,
+                'T' => $crate::generators::gen4::seed_time::CoinFlip::Tails,
+                _ => $crate::generators::gen4::seed_time::CoinFlip::Heads, // Default to Heads for any invalid character
+            })
+            .collect::<Vec<$crate::generators::gen4::seed_time::CoinFlip>>()
+    }};
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -139,20 +242,16 @@ mod test {
     use super::*;
 
     mod calibrate {
-        use super::CoinFlip::*;
         use super::*;
-        use crate::datetime;
+        use crate::{assert_list_eq, datetime};
 
         #[test]
         fn set1() {
             let seedtime = SeedTime4 {
+                seed: 0xa9bbccda,
                 datetime: datetime!(2000-11-05 23:56:59).unwrap(),
                 delay: 10800349,
-
-                coin_flips: vec![
-                    Heads, Tails, Heads, Tails, Heads, Heads, Heads, Tails, Heads, Heads, Heads,
-                    Heads, Tails, Tails, Tails, Heads, Heads, Tails, Heads, Tails,
-                ],
+                coin_flips: coin_flips!("HTHTHHHTHHTHHHTTHTH"),
             };
             let opts = SeedTime4CalibrationOptions {
                 delay_calibration: 3,
@@ -167,313 +266,251 @@ mod test {
                     seed: 0xa9bbccda,
                     datetime: datetime!(2000-11-05 23:56:58).unwrap(),
                     delay: 10800346,
-                    coin_flips: vec![
-                        Heads, Heads, Tails, Tails, Tails, Heads, Tails, Tails, Heads, Tails,
-                        Heads, Heads, Heads, Heads, Heads, Tails, Heads, Heads, Tails, Heads,
-                    ],
+                    coin_flips: coin_flips!("HHTTTHTTHTHHHHHTHHTH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xa9bbccdb,
                     datetime: datetime!(2000-11-05 23:56:58).unwrap(),
                     delay: 10800347,
-                    coin_flips: vec![
-                        Heads, Tails, Tails, Tails, Tails, Tails, Tails, Tails, Heads, Heads,
-                        Heads, Tails, Tails, Tails, Heads, Tails, Heads, Tails, Heads, Tails,
-                    ],
+                    coin_flips: coin_flips!("HTTTTTTTHHHTTTHTHTHT"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xa9bbccdc,
                     datetime: datetime!(2000-11-05 23:56:58).unwrap(),
                     delay: 10800348,
-                    coin_flips: vec![
-                        Tails, Heads, Tails, Tails, Heads, Heads, Heads, Heads, Heads, Heads,
-                        Heads, Heads, Tails, Tails, Heads, Tails, Heads, Tails, Heads, Heads,
-                    ],
+                    coin_flips: coin_flips!("THTTHHHHHHHHTTHTHTHH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xa9bbccdd,
                     datetime: datetime!(2000-11-05 23:56:58).unwrap(),
                     delay: 10800349,
-                    coin_flips: vec![
-                        Heads, Tails, Tails, Heads, Heads, Heads, Heads, Heads, Heads, Heads,
-                        Tails, Tails, Tails, Tails, Heads, Heads, Heads, Heads, Heads, Heads,
-                    ],
+                    coin_flips: coin_flips!("HTTHHHHHHHTTTTHHHHHH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xa9bbccde,
                     datetime: datetime!(2000-11-05 23:56:58).unwrap(),
                     delay: 10800350,
-                    coin_flips: vec![
-                        Tails, Tails, Tails, Tails, Tails, Heads, Tails, Heads, Heads, Heads,
-                        Heads, Tails, Tails, Tails, Tails, Heads, Heads, Heads, Heads, Tails,
-                    ],
+                    coin_flips: coin_flips!("TTTTTHTHHHHTTTTHHHHT"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xa9bbccdf,
                     datetime: datetime!(2000-11-05 23:56:58).unwrap(),
                     delay: 10800351,
-                    coin_flips: vec![
-                        Heads, Tails, Heads, Tails, Heads, Heads, Tails, Tails, Tails, Tails,
-                        Heads, Heads, Heads, Tails, Heads, Heads, Heads, Heads, Heads, Heads,
-                    ],
+                    coin_flips: coin_flips!("HTHTHHTTTTHHHTHHHHHH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xa9bbcce0,
                     datetime: datetime!(2000-11-05 23:56:58).unwrap(),
                     delay: 10800352,
-                    coin_flips: vec![
-                        Heads, Heads, Tails, Heads, Tails, Heads, Tails, Tails, Tails, Tails,
-                        Tails, Heads, Heads, Tails, Tails, Tails, Heads, Heads, Heads, Heads,
-                    ],
+                    coin_flips: coin_flips!("HHTHTHTTTTTHHTTTHHHH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xaabbccda,
                     datetime: datetime!(2000-11-05 23:56:59).unwrap(),
                     delay: 10800346,
-                    coin_flips: vec![
-                        Tails, Tails, Tails, Tails, Heads, Heads, Tails, Heads, Tails, Tails,
-                        Tails, Tails, Tails, Tails, Heads, Tails, Tails, Heads, Heads, Heads,
-                    ],
+                    coin_flips: coin_flips!("TTTTHHTHTTTTTTHTTHHH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xaabbccdb,
                     datetime: datetime!(2000-11-05 23:56:59).unwrap(),
                     delay: 10800347,
-                    coin_flips: vec![
-                        Tails, Tails, Tails, Heads, Heads, Tails, Heads, Tails, Tails, Heads,
-                        Tails, Heads, Tails, Heads, Tails, Tails, Heads, Heads, Tails, Heads,
-                    ],
+                    coin_flips: coin_flips!("TTTHHTHTTHTHTHTTHHTH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xaabbccdc,
                     datetime: datetime!(2000-11-05 23:56:59).unwrap(),
                     delay: 10800348,
-                    coin_flips: vec![
-                        Heads, Heads, Tails, Tails, Tails, Tails, Tails, Tails, Heads, Tails,
-                        Heads, Heads, Heads, Heads, Heads, Heads, Tails, Tails, Tails, Tails,
-                    ],
+                    coin_flips: coin_flips!("HHTTTTTTHTHHHHHHTTTT"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2000-11-05 23:56:59).unwrap(),
                     delay: 10800349,
-                    coin_flips: vec![
-                        Heads, Tails, Heads, Tails, Heads, Heads, Heads, Tails, Heads, Heads,
-                        Heads, Heads, Tails, Tails, Tails, Heads, Heads, Tails, Heads, Tails,
-                    ],
+                    coin_flips: coin_flips!("HTHTHHHTHHHHTTTHHTHT"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xaabbccde,
                     datetime: datetime!(2000-11-05 23:56:59).unwrap(),
                     delay: 10800350,
-                    coin_flips: vec![
-                        Tails, Heads, Heads, Tails, Tails, Tails, Heads, Heads, Tails, Heads,
-                        Tails, Tails, Tails, Heads, Heads, Tails, Heads, Tails, Heads, Heads,
-                    ],
+                    coin_flips: coin_flips!("THHTTTHHTHTTTHHTHTHH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xaabbccdf,
                     datetime: datetime!(2000-11-05 23:56:59).unwrap(),
                     delay: 10800351,
-                    coin_flips: vec![
-                        Heads, Tails, Tails, Tails, Tails, Heads, Heads, Tails, Heads, Heads,
-                        Tails, Heads, Tails, Heads, Heads, Heads, Heads, Tails, Heads, Heads,
-                    ],
+                    coin_flips: coin_flips!("HTTTTHHTHHTHTHHHHTHH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0xaabbcce0,
                     datetime: datetime!(2000-11-05 23:56:59).unwrap(),
                     delay: 10800352,
-                    coin_flips: vec![
-                        Heads, Tails, Tails, Heads, Heads, Heads, Tails, Tails, Heads, Tails,
-                        Tails, Tails, Heads, Tails, Heads, Heads, Tails, Heads, Tails, Heads,
-                    ],
+                    coin_flips: coin_flips!("HTTHHHTTHTTTHTHHTHTH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0x70bbccda,
                     datetime: datetime!(2000-11-05 23:57:00).unwrap(),
                     delay: 10800346,
-                    coin_flips: vec![
-                        Heads, Tails, Heads, Heads, Tails, Tails, Tails, Heads, Heads, Heads,
-                        Tails, Tails, Heads, Tails, Tails, Tails, Heads, Tails, Heads, Heads,
-                    ],
+                    coin_flips: coin_flips!("HTHHTTTHHHTTHTTTHTHH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0x70bbccdb,
                     datetime: datetime!(2000-11-05 23:57:00).unwrap(),
                     delay: 10800347,
-                    coin_flips: vec![
-                        Heads, Heads, Heads, Tails, Heads, Heads, Tails, Heads, Heads, Tails,
-                        Tails, Tails, Heads, Tails, Tails, Heads, Heads, Tails, Tails, Heads,
-                    ],
+                    coin_flips: coin_flips!("HHHTHHTHHTTTHTTHHTTH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0x70bbccdc,
                     datetime: datetime!(2000-11-05 23:57:00).unwrap(),
                     delay: 10800348,
-                    coin_flips: vec![
-                        Heads, Tails, Heads, Heads, Tails, Tails, Tails, Heads, Tails, Heads,
-                        Tails, Heads, Heads, Heads, Tails, Heads, Tails, Heads, Heads, Heads,
-                    ],
+                    coin_flips: coin_flips!("HTHHTTTHTHTHHHTHTHHH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0x70bbccdd,
                     datetime: datetime!(2000-11-05 23:57:00).unwrap(),
                     delay: 10800349,
-                    coin_flips: vec![
-                        Tails, Heads, Heads, Heads, Heads, Heads, Heads, Heads, Tails, Tails,
-                        Tails, Tails, Tails, Tails, Heads, Heads, Heads, Tails, Tails, Heads,
-                    ],
+                    coin_flips: coin_flips!("THHHHHHHTTTTTTHHHTTH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0x70bbccde,
                     datetime: datetime!(2000-11-05 23:57:00).unwrap(),
                     delay: 10800350,
-                    coin_flips: vec![
-                        Heads, Tails, Tails, Heads, Heads, Tails, Tails, Tails, Heads, Tails,
-                        Heads, Tails, Heads, Heads, Heads, Tails, Heads, Tails, Tails, Tails,
-                    ],
+                    coin_flips: coin_flips!("HTTHHTTTHTHTHHHTHTTT"),
                 },
                 SeedTime4Calibrate {
                     seed: 0x70bbccdf,
                     datetime: datetime!(2000-11-05 23:57:00).unwrap(),
                     delay: 10800351,
-                    coin_flips: vec![
-                        Tails, Heads, Heads, Tails, Tails, Heads, Tails, Heads, Heads, Tails,
-                        Heads, Heads, Tails, Tails, Tails, Heads, Heads, Heads, Heads, Heads,
-                    ],
+                    coin_flips: coin_flips!("THHTTHTHHTHHTTTHHHHH"),
                 },
                 SeedTime4Calibrate {
                     seed: 0x70bbcce0,
                     datetime: datetime!(2000-11-05 23:57:00).unwrap(),
                     delay: 10800352,
-                    coin_flips: vec![
-                        Tails, Tails, Tails, Heads, Tails, Tails, Heads, Heads, Tails, Heads,
-                        Tails, Tails, Heads, Heads, Heads, Tails, Heads, Tails, Heads, Tails,
-                    ],
+                    coin_flips: coin_flips!("TTTHTTHHTHTTHHHTHTHT"),
                 },
             ];
 
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+            assert_list_eq!(result, expected);
         }
     }
 
     mod calculate_times {
         use super::CoinFlip::*;
         use super::*;
-        use crate::datetime;
+        use crate::{assert_list_eq, datetime};
 
         #[test]
         fn without_forced_second() {
             let opts = SeedTime4Options {
                 seed: 0xaabbccdd,
                 year: 2032,
-                month: 2,
+                month: Some(2),
                 forced_second: None,
+                delay_range: None,
+                find_first: false,
             };
-            let coin_flips = vec![
-                Heads, Tails, Heads, Tails, Heads, Heads, Heads, Tails, Heads, Heads, Heads, Heads,
-                Tails, Tails, Tails, Heads, Heads, Tails, Heads, Tails,
-            ];
+            let coin_flips = coin_flips!("HTHTHHHTHHHHTTTHHTHT");
             let result = dppt_calculate_seedtime(opts);
             let expected = [
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-26 23:59:59).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-27 23:57:59).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-27 23:58:58).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-27 23:59:57).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:55:59).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:56:58).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:57:57).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:58:56).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:59:55).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:53:59).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:54:58).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:55:57).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:56:56).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:57:55).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:58:54).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:59:53).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
             ];
 
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+            assert_list_eq!(result, expected);
         }
 
         #[test]
@@ -481,8 +518,10 @@ mod test {
             let opts = SeedTime4Options {
                 seed: 0xaabbccdd,
                 year: 2032,
-                month: 2,
+                month: Some(2),
                 forced_second: Some(56),
+                delay_range: None,
+                find_first: false,
             };
             let coin_flips = vec![
                 Heads, Tails, Heads, Tails, Heads, Heads, Heads, Tails, Heads, Heads, Heads, Heads,
@@ -491,25 +530,38 @@ mod test {
             let result = dppt_calculate_seedtime(opts);
             let expected = [
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:58:56).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
                 SeedTime4 {
+                    seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:56:56).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
             ];
 
-            assert_eq!(result.len(), expected.len());
-            result
-                .into_iter()
-                .zip(expected.into_iter())
-                .enumerate()
-                .for_each(|(index, (result, expected))| {
-                    assert_eq!(result, expected, "index: {}", index);
-                });
+            assert_list_eq!(result, expected);
+        }
+
+        #[test]
+        fn find_single_seed_after_first_month() {
+            let opts = FindSeedTime4Options {
+                seed: 0xDC03025B,
+                year: 2000,
+                delay_range: 601..=605,
+            };
+            let results = dppt_find_seedtime(opts);
+            let expected = SeedTime4 {
+                seed: 0xDC03025B,
+                datetime: datetime!(2000-4-26 3:57:59).unwrap(),
+                delay: 603,
+                coin_flips: coin_flips!("HHTTTTTHTHTHHTTTHHTT"),
+            };
+
+            assert_eq!(results, Some(expected));
         }
     }
 

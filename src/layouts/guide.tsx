@@ -56,7 +56,7 @@ const FeedbackModal = ({
           <Flex gap={8}>
             <Button
               type="primary"
-              trackerId="support_us_399"
+              trackerId="support_us_discord_399"
               href={settings.supportUsDiscordUrl}
               icon={<Icon name="Discord" />}
               flex={1}
@@ -65,7 +65,7 @@ const FeedbackModal = ({
             </Button>
             <Button
               type="primary"
-              trackerId="support_us_499"
+              trackerId="support_us_discord_499"
               href={settings.supportUsDiscordUrl}
               icon={<Icon name="Discord" />}
               flex={1}
@@ -74,7 +74,7 @@ const FeedbackModal = ({
             </Button>
             <Button
               type="primary"
-              trackerId="support_us_999"
+              trackerId="support_us_discord_999"
               href={settings.supportUsDiscordUrl}
               icon={<Icon name="Discord" />}
               flex={1}
@@ -86,7 +86,7 @@ const FeedbackModal = ({
           <Flex gap={8}>
             <Button
               type="primary"
-              trackerId="support_us_399"
+              trackerId="support_us_patreon_399"
               backgroundColor="Error"
               href={settings.supportUsPatreonUrl}
               icon={<Icon name="Patreon" />}
@@ -96,7 +96,7 @@ const FeedbackModal = ({
             </Button>
             <Button
               type="primary"
-              trackerId="support_us_499"
+              trackerId="support_us_patreon_499"
               backgroundColor="Error"
               href={settings.supportUsPatreonUrl}
               icon={<Icon name="Patreon" />}
@@ -106,7 +106,7 @@ const FeedbackModal = ({
             </Button>
             <Button
               type="primary"
-              trackerId="support_us_999"
+              trackerId="support_us_patreon_999"
               backgroundColor="Error"
               href={settings.supportUsPatreonUrl}
               icon={<Icon name="Patreon" />}

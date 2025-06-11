@@ -49,7 +49,7 @@ import { OrAsMirageSpot } from "~/rngToolsUi/gen6/orasMirageSpot";
 import { RngTimer } from "~/rngToolsUi/timer";
 import { OrasId } from "~/rngToolsUi/gen6/orasId";
 import { Transporter } from "~/rngToolsUi/gen6/transporter/transporter";
-import { Filter_4static } from "~/rngToolsUi/gen4/gen4stationary.tsx";
+import { Static4Generator } from "~/rngToolsUi/gen4/gen4stationary.tsx";
 import { DpptSeed } from "~/rngToolsUi/gen4/dpptSeed";
 import { CalibrateId4 } from "~/rngToolsUi/gen4/id/calibrateId";
 import { Id4Searcher } from "~/rngToolsUi/gen4/id/idSearcher";
@@ -150,7 +150,7 @@ const tools = {
   RngTimer,
   OrasId,
   Transporter,
-  Filter_4static,
+  Static4Generator,
   DpptSeed,
   CalibrateId4,
   Gen4IdSetup,

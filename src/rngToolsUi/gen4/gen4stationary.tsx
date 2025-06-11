@@ -1,4 +1,4 @@
-import { rngTools, Gen4StaticPokemon, Characteristic } from "~/rngTools";
+import { rngTools, Gen4StaticPokemon } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,
@@ -25,15 +25,17 @@ import { HexSchema } from "~/utils/number";
 import { startCase } from "lodash-es";
 import {
   GameVersion,
-  StaticEncounterId,
+  StaticEncounterSpecies,
   leadAbilities,
+  getLeadAbility,
+  characteristics,
 } from "~/rngToolsUi/gen4/gen4types";
-import { nature, Nature } from "~/types/nature";
+import { nature } from "~/types/nature";
 
 type Result = FlattenIvs<Gen4StaticPokemon>;
 const GameVersionOpts = toOptions(GameVersion, startCase);
-type StaticEncounterId = keyof typeof StaticEncounterId;
-const StaticEncounterIdOpts = Object.entries(StaticEncounterId).map(
+type StaticEncounterSpecies = keyof typeof StaticEncounterSpecies;
+const StaticEncounterIdOpts = Object.entries(StaticEncounterSpecies).map(
   ([, value]) => ({ label: value, value }),
 );
 
@@ -50,39 +52,6 @@ const leadAbilitiesOpts: { label: string; value: LeadAbilityOption }[] = [
     value: "Synchronize",
   },
 ];
-
-const characteristics = [
-  "AlertToSounds",
-  "ALittleQuickTempered",
-  "CapableOfTakingHits",
-  "GoodEndurance",
-  "GoodPerseverance",
-  "HatesToLose",
-  "HighlyCurious",
-  "HighlyPersistent",
-  "ImpetuousAndSilly",
-  "LikesToFight",
-  "LikesToRelax",
-  "LikesToRun",
-  "LikesToThrashAbout",
-  "LovesToEat",
-  "Mischievous",
-  "NodsOffALot",
-  "OftenLostInThought",
-  "ProudOfItsPower",
-  "QuickTempered",
-  "QuickToFlee",
-  "ScattersThingsOften",
-  "SomewhatOfAClown",
-  "SomewhatStubborn",
-  "SomewhatVain",
-  "StronglyDefiant",
-  "StrongWilled",
-  "SturdyBody",
-  "TakesPlentyOfSiestas",
-  "ThoroughlyCunning",
-  "VeryFinicky",
-] as const satisfies Characteristic[];
 
 const columns: ResultColumn<Result>[] = [
   {
@@ -119,10 +88,10 @@ const Validator = z
     initial_advances: z.number(),
     max_advances: z.number(),
     game: z.enum(GameVersion),
-    encounter: z.enum(StaticEncounterId),
+    encounter: z.enum(StaticEncounterSpecies),
     lead: z.enum(leadAbilities),
     synch_nature: z.enum(nature),
-    filter_characteristic: z.enum(characteristics),
+    filter_characteristic: z.enum(characteristics).nullable(),
   })
   .merge(pkmFilterSchema);
 
@@ -142,7 +111,7 @@ const initialValues: FormState = {
   filter_nature: null,
   filter_gender: null,
   filter_ability: null,
-  filter_characteristic: "AlertToSounds",
+  filter_characteristic: null,
 };
 
 const getFields = (values: FormState) => {
@@ -226,32 +195,17 @@ const getFields = (values: FormState) => {
   return fields;
 };
 
-export type RustLead =
-  | "None"
-  | "CutecharmF"
-  | "CutecharmM"
-  | { Synchronize: Nature };
-
-export const Filter_4static = () => {
+export const Static4Generator = () => {
   const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
-    let lead: RustLead;
-    if (opts.lead === "Synchronize") {
-      if (opts.synch_nature === null) {
-        throw new Error("Nature is required for Synchronize.");
-      }
-      lead = { Synchronize: opts.synch_nature };
-    } else {
-      lead = opts.lead;
-    }
     const results = await rngTools.generate_static4_states({
       seed: opts.seed,
       tid: opts.tid,
       sid: opts.sid,
       game: opts.game,
       encounter: opts.encounter,
-      lead,
+      lead: getLeadAbility(opts),
       initial_advances: opts.initial_advances,
       max_advances: opts.max_advances,
       filter: {

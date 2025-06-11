@@ -30,5 +30,3 @@ export const nature = [
   "Careful",
   "Quirky",
 ] as const;
-
-export type Nature = (typeof nature)[number];

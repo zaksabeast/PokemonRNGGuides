@@ -19,7 +19,7 @@ pub struct Gen4SearcherOpts {
     pub filter: PkmFilter,
     pub game: GameVersion,
     pub encounter: Option<Vec<EncounterSlot>>,
-    pub lead: Option<LeadAbilities>,
+    pub lead: LeadAbilities,
 }
 
 #[derive(Debug, PartialEq)]
@@ -94,19 +94,19 @@ fn gen4_method_j(
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
     let slot = route.get_slot(encounter_slot);
 
-    if let Some(lead) = opts.lead {
+    let lead = opts.lead;
+    {
         if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
             let gender_threshold = slot.unwrap().species.gender_ratio();
             let buffer = match opts.lead {
-                Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
-                Some(LeadAbilities::CutecharmM) => 0,
-                Some(LeadAbilities::Synchronize(_)) => 0,
-                Some(LeadAbilities::None) => 0,
-                None => 0,
+                LeadAbilities::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
+                LeadAbilities::CutecharmM => 0,
+                LeadAbilities::Synchronize(_) => 0,
+                LeadAbilities::None => 0,
             };
             let target_gender = match opts.lead {
-                Some(LeadAbilities::CutecharmF) => Gender::Male,
-                Some(LeadAbilities::CutecharmM) => Gender::Female,
+                LeadAbilities::CutecharmF => Gender::Male,
+                LeadAbilities::CutecharmM => Gender::Female,
                 _ => Gender::Genderless,
             };
 
@@ -134,7 +134,7 @@ fn gen4_method_j(
             }
         }
     }
-    if let Some(LeadAbilities::Synchronize(nature)) = opts.lead {
+    if let LeadAbilities::Synchronize(nature) = opts.lead {
         if rng.rand::<u16>() >> 15 == 0 {
             let mut pid: u32;
             let nature_value = nature as u32;
@@ -200,19 +200,19 @@ fn gen4_method_k(
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
     let slot = route.get_slot(encounter_slot);
 
-    if let Some(lead) = opts.lead {
+    let lead = opts.lead;
+    {
         if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
             let gender_threshold = slot.unwrap().species.gender_ratio();
             let buffer = match opts.lead {
-                Some(LeadAbilities::CutecharmF) => 25 * ((gender_threshold as u32 / 25) + 1),
-                Some(LeadAbilities::CutecharmM) => 0,
-                Some(LeadAbilities::Synchronize(_)) => 0,
-                Some(LeadAbilities::None) => 0,
-                None => 0,
+                LeadAbilities::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
+                LeadAbilities::CutecharmM => 0,
+                LeadAbilities::Synchronize(_) => 0,
+                LeadAbilities::None => 0,
             };
             let target_gender = match opts.lead {
-                Some(LeadAbilities::CutecharmF) => Gender::Male,
-                Some(LeadAbilities::CutecharmM) => Gender::Female,
+                LeadAbilities::CutecharmF => Gender::Male,
+                LeadAbilities::CutecharmM => Gender::Female,
                 _ => Gender::Genderless,
             };
             if rng.rand::<u16>() % 3 != 0 {
@@ -239,7 +239,7 @@ fn gen4_method_k(
             }
         }
     }
-    if let Some(LeadAbilities::Synchronize(nature)) = opts.lead {
+    if let LeadAbilities::Synchronize(nature) = opts.lead {
         if rng.rand::<u16>() % 2 == 0 {
             let mut pid: u32;
             let nature_value = nature as u32;
@@ -452,7 +452,7 @@ mod test {
             },
             game: GameVersion::Pearl,
             encounter: None,
-            lead: None,
+            lead: LeadAbilities::None,
         };
         let expected_results = [
             GeneratedPokemon {
@@ -760,7 +760,7 @@ mod test {
             },
             game: GameVersion::HeartGold,
             encounter: None,
-            lead: None,
+            lead: LeadAbilities::None,
         };
         let expected_results = [
             GeneratedPokemon {
@@ -1069,7 +1069,7 @@ mod test {
             },
             game: GameVersion::HeartGold,
             encounter: None,
-            lead: Some(LeadAbilities::CutecharmM),
+            lead: LeadAbilities::CutecharmM,
         };
         let expected_results = [
             GeneratedPokemon {
@@ -1378,7 +1378,7 @@ mod test {
             },
             game: GameVersion::HeartGold,
             encounter: None,
-            lead: Some(LeadAbilities::Synchronize(Nature::Adamant)),
+            lead: LeadAbilities::Synchronize(Nature::Adamant),
         };
         let expected_results = [
             GeneratedPokemon {
@@ -1686,7 +1686,7 @@ mod test {
             },
             game: GameVersion::Pearl,
             encounter: None,
-            lead: Some(LeadAbilities::Synchronize(Nature::Adamant)),
+            lead: LeadAbilities::Synchronize(Nature::Adamant),
         };
         let expected_results = [
             GeneratedPokemon {
@@ -1993,7 +1993,7 @@ mod test {
             },
             game: GameVersion::Pearl,
             encounter: None,
-            lead: Some(LeadAbilities::CutecharmM),
+            lead: LeadAbilities::CutecharmM,
         };
         let expected_results = [
             GeneratedPokemon {

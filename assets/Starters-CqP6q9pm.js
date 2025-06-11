@@ -1,0 +1,8 @@
+import{q as h,j as t}from"./index-C8jU3vOd.js";const x=[{title:"HeartGold and Soulsilver Starter RNG",navDrawerTitle:"Starter RNG",description:"Learn how to RNG starters in HeartGold and SoulSilver for shiny, high-IV Pokémon.",slug:"retail-hgss-starter",category:"HeartGold and SoulSilver",tag:"retail",isRoughDraft:!0,hideFromNavDrawer:!0}];function d(r){const e={a:"a",h2:"h2",li:"li",ol:"ol",strong:"strong",ul:"ul",...h(),...r.components},{CalibrateStarter4:i,GetStarter4:s,PickStarter4:a,Starter4ConsoleSetDateString:l,Step:o,Stepper:c}=e;return i||n("CalibrateStarter4"),s||n("GetStarter4"),a||n("PickStarter4"),l||n("Starter4ConsoleSetDateString"),o||n("Step"),c||n("Stepper"),t.jsxs(t.Fragment,{children:[t.jsxs(c,{titles:["Pick a starter","Get the starter","Calibrate"],children:[t.jsx(o,{step:0,children:t.jsx(a,{})}),t.jsxs(o,{step:1,children:[t.jsxs(e.ol,{children:[`
+`,t.jsxs(e.li,{children:["Set console date and time to ",t.jsx(e.strong,{children:t.jsx(l,{})})]}),`
+`]}),t.jsx(s,{})]}),t.jsx(o,{step:2,children:t.jsx(i,{})})]}),`
+`,t.jsx(e.h2,{children:"Credits"}),`
+`,t.jsxs(e.ul,{children:[`
+`,t.jsx(e.li,{children:"Zaksabeast, Sorendog, EzPz, and RainingChain for various contributions to this tool"}),`
+`,t.jsxs(e.li,{children:["Thanks to all ",t.jsx(e.a,{href:"https://github.com/Admiral-Fish/PokeFinder",children:"PokeFinder"})," contributors, whose work this tool is built upon."]}),`
+`]})]})}function S(r={}){const{wrapper:e}={...h(),...r.components};return e?t.jsx(e,{...r,children:t.jsx(d,{...r})}):d(r)}function n(r,e){throw new Error("Expected component `"+r+"` to be defined: you likely forgot to import, pass, or provide it.")}export{S as default,x as frontmatter};

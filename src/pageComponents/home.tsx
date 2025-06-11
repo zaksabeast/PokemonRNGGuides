@@ -53,7 +53,7 @@ const games = [
   },
   {
     name: "Gamecube",
-    images: [xdLogoSrc, colosseumLogoSrc],
+    images: [colosseumLogoSrc, xdLogoSrc],
     slug: "/gamecube/",
   },
   {

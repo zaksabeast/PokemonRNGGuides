@@ -4876,7 +4876,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Wishing Star Jirachi.mdx",
-      translations: null,
+      translations: {
+        en: "/wishing-star-jirachi/",
+        zh: "/zh-wishing-star-jirachi/",
+      },
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(
@@ -6315,6 +6318,37 @@ export const guides = {
         ),
     ),
   },
+  "/zh-wishing-star-jirachi/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["emu"],
+      isNew: false,
+      title: "红蓝宝石 许愿星基拉祈乱数",
+      navDrawerTitle: "红蓝宝石 许愿星基拉祈乱数",
+      description:
+        "学习如何在红宝石和蓝宝石中，通过圆形竞技场发放的许愿星基拉祈进行乱数。",
+      slug: "/zh-wishing-star-jirachi/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-23",
+      translation: { enSlug: "/wishing-star-jirachi/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Wishing Star Jirachi.mdx",
+      translations: {
+        en: "/wishing-star-jirachi/",
+        zh: "/zh-wishing-star-jirachi/",
+      },
+      displayAttributes: ["video_guide"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Wishing Star Jirachi.mdx"
+        ),
+    ),
+  },
 } as const;
 
 export const guideSlugs = [
@@ -6564,6 +6598,7 @@ export const guideSlugs = [
   "/zh-rs-mirage-island/",
   "/zh-rs-pokerus-retail/",
   "/zh-rs-sid-feebas/",
+  "/zh-wishing-star-jirachi/",
 ] as const;
 
 export const categories = [

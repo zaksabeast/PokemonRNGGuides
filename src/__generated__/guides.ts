@@ -3551,7 +3551,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-rubysapphire-tid/",
+        zh: "/zh-retail-rubysapphire-tid/",
+      },
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
@@ -6151,6 +6154,36 @@ export const guides = {
         import("~/../guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx"),
     ),
   },
+  "/zh-retail-rubysapphire-tid/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["retail"],
+      isNew: false,
+      title: "红蓝宝石实机TID乱数指南",
+      navDrawerTitle: "红蓝宝石实机TID乱数指南",
+      description: "学习如何在红宝石和蓝宝石中获取你想要的TID和SID组合。",
+      slug: "/zh-retail-rubysapphire-tid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-rubysapphire-tid/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx",
+      translations: {
+        en: "/retail-rubysapphire-tid/",
+        zh: "/zh-retail-rubysapphire-tid/",
+      },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx"
+        ),
+    ),
+  },
   "/zh-rs-battery/": {
     meta: {
       categories: ["Ruby and Sapphire"],
@@ -6525,6 +6558,7 @@ export const guideSlugs = [
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
   "/zh-retail-emerald-wild/",
+  "/zh-retail-rubysapphire-tid/",
   "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",
   "/zh-rs-mirage-island/",

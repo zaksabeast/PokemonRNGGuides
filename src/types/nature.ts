@@ -1,3 +1,4 @@
+import { Nature } from "~/rngTools";
 import type { Stat } from "./stat";
 import * as tst from "ts-toolbelt";
 
@@ -29,4 +30,4 @@ export const nature = [
   "Sassy",
   "Careful",
   "Quirky",
-] as const;
+] as const satisfies Nature[];

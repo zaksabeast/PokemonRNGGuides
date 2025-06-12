@@ -245,7 +245,7 @@ export const CalibrateStarter4 = () => {
           max_advances: 20,
           game: getStarterGame(targetSpecies),
           encounter: targetSpecies,
-          lead: null,
+          lead: "None",
           seed: seedTime.seed,
           filter_characteristic: opts.filter_characteristic,
           filter: {

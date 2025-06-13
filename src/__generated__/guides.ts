@@ -3376,6 +3376,29 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Retail Entralink.mdx")),
   },
+  "/retail-dppt-starter/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Diamond, Pearl, and Platinum Starter RNG",
+      navDrawerTitle: "Starter RNG",
+      description:
+        "Learn how to RNG starters in Diamond, Pearl, and Platinum for shiny, high-IV Pokémon.",
+      slug: "/retail-dppt-starter/",
+      isRoughDraft: true,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Gen 4/Starters.mdx",
+      translations: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
+  },
   "/retail-emerald-egg/": {
     meta: {
       categories: ["Emerald"],
@@ -3444,13 +3467,11 @@ export const guides = {
       layout: "guide",
       canonical: null,
       type: "baseGuide",
-      file: "guides/Gen 4/HeartGold and SoulSilver/Starters.mdx",
+      file: "guides/Gen 4/Starters.mdx",
       translations: null,
       displayAttributes: ["web_tool"],
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Starters.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
   },
   "/retail-oras-egg-mmsc/": {
     meta: {
@@ -6485,6 +6506,7 @@ export const guideSlugs = [
   "/pokefinder/",
   "/pokereader/",
   "/retail-bw-entralink/",
+  "/retail-dppt-starter/",
   "/retail-emerald-egg/",
   "/retail-emerald-wild/",
   "/retail-hgss-starter/",

@@ -21,10 +21,10 @@ import {
 } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { nullableIvColumns } from "~/rngToolsUi/shared/ivColumns";
-import { getGen3BaseStats } from "~/types/baseStats";
+import { getLooseBaseStats } from "~/types/baseStats";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
-import { getGen3StatRange } from "~/rngToolsUi/gen3/utils/statRange";
+import { getStatRange } from "~/types/statRange";
 import { StatFields } from "~/components/statInput";
 import pmap from "p-map";
 import { sortBy, startCase, mapValues } from "lodash-es";
@@ -209,7 +209,7 @@ export const CalibratePickupEgg = () => {
 
   React.useEffect(() => {
     const runAsync = async () => {
-      const stats = await getGen3StatRange(targetSpecies);
+      const stats = await getStatRange(targetSpecies);
       setMinMaxStats(stats);
     };
     runAsync();
@@ -217,7 +217,7 @@ export const CalibratePickupEgg = () => {
 
   React.useEffect(() => {
     const runAsync = async () => {
-      const baseStats = getGen3BaseStats(targetSpecies);
+      const baseStats = getLooseBaseStats(targetSpecies);
 
       if (baseStats == null) {
         setPotentialEggs([]);

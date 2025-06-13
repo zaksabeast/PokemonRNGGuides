@@ -24,7 +24,7 @@ import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { startCase } from "lodash-es";
 import {
-  GameVersion,
+  Gen4GameVersions,
   StaticEncounterSpecies,
   leadAbilities,
   getLeadAbility,
@@ -33,7 +33,7 @@ import {
 import { nature } from "~/types/nature";
 
 type Result = FlattenIvs<Gen4StaticPokemon>;
-const GameVersionOpts = toOptions(GameVersion, startCase);
+const GameVersionOpts = toOptions(Gen4GameVersions, startCase);
 type StaticEncounterSpecies = keyof typeof StaticEncounterSpecies;
 const StaticEncounterIdOpts = Object.entries(StaticEncounterSpecies).map(
   ([, value]) => ({ label: value, value }),
@@ -87,7 +87,7 @@ const Validator = z
     sid: z.number().int().min(0).max(65535),
     initial_advances: z.number(),
     max_advances: z.number(),
-    game: z.enum(GameVersion),
+    game: z.enum(Gen4GameVersions),
     encounter: z.enum(StaticEncounterSpecies),
     lead: z.enum(leadAbilities),
     synch_nature: z.enum(nature),

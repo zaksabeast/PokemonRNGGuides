@@ -81,6 +81,7 @@ import {
   CalibrateStarter4,
   GetStarter4,
   PickStarter4,
+  Starter4Setup,
 } from "~/rngToolsUi/gen4/starters";
 import { Id4Timer, Id4ConsoleSetDateString } from "~/rngToolsUi/gen4/id/timer";
 import { Gen4IdSetup } from "~/rngToolsUi/gen4/id/setup";
@@ -173,6 +174,7 @@ const tools = {
   GetStarter4,
   PickStarter4,
   Starter4ConsoleSetDateString,
+  Starter4Setup,
 };
 
 export const markdownComponents = {

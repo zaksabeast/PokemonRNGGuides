@@ -1,20 +1,21 @@
 import { Field, FormFieldTable } from "~/components";
-import { id4Atom } from "./state";
-import { Gen4GameVersions } from "../gen4types";
+import { starterAtom } from "./state";
 import { SelectGame } from "../shared/selectGame";
 import { Is3dsSwitch } from "../shared/is3dsSwitch";
+
+const supportedGames = ["Diamond", "Pearl", "HeartGold", "SoulSilver"] as const;
 
 const fields: Field[] = [
   {
     label: "Game",
-    input: <SelectGame stateAtom={id4Atom} games={Gen4GameVersions} />,
+    input: <SelectGame stateAtom={starterAtom} games={supportedGames} />,
   },
   {
     label: "Using 3ds? (Coming soon)",
-    input: <Is3dsSwitch stateAtom={id4Atom} disabled />,
+    input: <Is3dsSwitch stateAtom={starterAtom} disabled />,
   },
 ];
 
-export const Gen4IdSetup = () => {
+export const Starter4Setup = () => {
   return <FormFieldTable fields={fields} />;
 };

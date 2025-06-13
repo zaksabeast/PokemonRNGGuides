@@ -7,7 +7,7 @@ import {
   ResultColumn,
   RngToolForm,
 } from "~/components";
-import { rngTools, SearchStatic4Method1State } from "~/rngTools";
+import { multiWorkerRngTools, SearchStatic4Method1State } from "~/rngTools";
 import { z } from "zod";
 import {
   getPkmFilterFields,
@@ -22,10 +22,26 @@ import {
 import { toOptions } from "~/utils/options";
 import { useCurrentStep } from "~/components/stepper/state";
 import { match } from "ts-pattern";
-import { allStarters, Gen4Starter, useStarterState } from "./state";
-import { getGen3StatRange } from "~/rngToolsUi/gen3/utils/statRange";
+import {
+  dpptStarters,
+  hgssStarters,
+  Gen4Starter,
+  useStarterState,
+  allStarters,
+} from "./state";
+import { getStatRange } from "~/types/statRange";
+import { Gen4GameVersion } from "../gen4types";
+import { useBatchedTool } from "~/hooks/useBatchedTool";
+import { chunkRange } from "~/utils/chunkRange";
 
-type Result = FlattenIvs<SearchStatic4Method1State & { key: string }>;
+type Result = FlattenIvs<
+  SearchStatic4Method1State & {
+    key: string;
+    second: number;
+    seed: number;
+    delay: number;
+  }
+>;
 
 type SelectButtonProps = {
   target: Result;
@@ -60,7 +76,7 @@ const Validator = z
 
 type FormState = z.infer<typeof Validator>;
 
-const initialValues: FormState = {
+const dpptInitialValues: FormState = {
   tid: 0,
   sid: 0,
   year: 2000,
@@ -70,15 +86,23 @@ const initialValues: FormState = {
   ...getPkmFilterInitialValues(),
 };
 
-const getStarterAdvance = (species: Gen4Starter): number => {
-  return match(species)
-    .with("Turtwig", () => 0)
-    .with("Chimchar", () => 0)
-    .with("Piplup", () => 0)
-    .with("Chikorita", () => 0)
-    .with("Cyndaquil", () => 4)
-    .with("Totodile", () => 8)
-    .exhaustive();
+const hgssInitialValues: FormState = {
+  ...dpptInitialValues,
+  species: "Chikorita",
+};
+
+const getStarterAdvance = (
+  species: Gen4Starter,
+  game: Gen4GameVersion,
+): number => {
+  return match({ species, game })
+    .with({ game: "Platinum" }, () => 2)
+    .with({ game: "Diamond" }, () => 0)
+    .with({ game: "Pearl" }, () => 0)
+    .with({ species: "Chikorita" }, () => 0)
+    .with({ species: "Cyndaquil" }, () => 4)
+    .with({ species: "Totodile" }, () => 8)
+    .otherwise(() => 0);
 };
 
 const columns: ResultColumn<Result>[] = [
@@ -95,58 +119,94 @@ const columns: ResultColumn<Result>[] = [
   { title: "Nature", dataIndex: "nature" },
   { title: "Ability", dataIndex: "ability" },
   { title: "Gender", dataIndex: "gender" },
+  ...ivColumns,
   {
     title: "PID",
     dataIndex: "pid",
     monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
-  ...ivColumns,
+  { title: "Delay", dataIndex: "delay" },
+  {
+    title: "Second",
+    dataIndex: "second",
+  },
+  {
+    title: "Seed",
+    dataIndex: "seed",
+    monospace: true,
+    render: (seed) => seed.toString(16).padStart(8, "0").toUpperCase(),
+  },
 ];
 
-const fields: Field[] = [
-  {
-    label: "TID",
-    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-  },
-  {
-    label: "SID",
-    input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-  },
-  {
-    label: "Year",
-    input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
-  },
-  {
-    label: "Min Delay",
-    input: <FormikNumberInput<FormState> name="min_delay" numType="decimal" />,
-  },
-  {
-    label: "Max Delay",
-    input: <FormikNumberInput<FormState> name="max_delay" numType="decimal" />,
-  },
-  {
-    label: "Species",
-    input: (
-      <FormikSelect<FormState, "species">
-        name="species"
-        options={toOptions(allStarters)}
-      />
-    ),
-  },
-  ...getPkmFilterFields(),
-];
+const getFields = (game: Gen4GameVersion): Field[] => {
+  const starters = match(game)
+    .with("Diamond", "Pearl", "Platinum", () => dpptStarters)
+    .with("HeartGold", "SoulSilver", () => hgssStarters)
+    .exhaustive();
+  return [
+    {
+      label: "TID",
+      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+    },
+    {
+      label: "SID",
+      input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
+    },
+    {
+      label: "Year",
+      input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
+    },
+    {
+      label: "Min Delay",
+      input: (
+        <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+      ),
+    },
+    {
+      label: "Max Delay",
+      input: (
+        <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+      ),
+    },
+    {
+      label: "Species",
+      input: (
+        <FormikSelect<FormState, "species">
+          name="species"
+          options={toOptions(starters)}
+        />
+      ),
+    },
+    ...getPkmFilterFields(),
+  ];
+};
+
+const mapResult = (res: SearchStatic4Method1State): Result => {
+  return {
+    ...flattenIvs(res),
+    key: `${res.seed_time.seed}-${res.pid}`,
+    second: res.seed_time.datetime.second,
+    seed: res.seed_time.seed,
+    delay: res.seed_time.delay,
+  };
+};
 
 export const PickStarter4 = () => {
-  const [, setState] = useStarterState();
-  const [results, setResults] = React.useState<Result[]>([]);
+  const [state, setState] = useStarterState();
+  const { run: searchStarterSeeds, data: results } = useBatchedTool(
+    multiWorkerRngTools.search_static4_method1_seeds,
+    { map: mapResult },
+  );
+
+  const game = state.game;
 
   const onSubmit = React.useCallback(
     async (opts: FormState) => {
-      const minMaxStats = await getGen3StatRange(opts.species);
+      const minMaxStats = await getStatRange(opts.species, [5, 6]);
       setState((prev) => ({ ...prev, species: opts.species, minMaxStats }));
-      const advance = getStarterAdvance(opts.species);
-      const results = await rngTools.search_static4_method1_seeds({
+      const advance = getStarterAdvance(opts.species, game);
+      const baseOpts = {
         ...opts,
         min_advance: advance,
         max_advance: advance,
@@ -159,15 +219,23 @@ export const PickStarter4 = () => {
           max_ivs: opts.filter_max_ivs,
           stats: null,
         },
-      });
-      const formattedResults = results.map((res) => ({
-        ...flattenIvs(res),
-        key: `${res.seed_time.seed}-${res.pid}`,
+      };
+      const chunked = chunkRange([opts.min_delay, opts.max_delay], 500);
+      const searchOpts = chunked.map(([min_delay, max_delay]) => ({
+        ...baseOpts,
+        min_delay,
+        max_delay,
       }));
-      setResults(formattedResults);
+      await searchStarterSeeds(searchOpts);
     },
-    [setState],
+    [game, setState, searchStarterSeeds],
   );
+
+  const fields = React.useMemo(() => getFields(game), [game]);
+  const initialValues = match(game)
+    .with("Diamond", "Pearl", "Platinum", () => dpptInitialValues)
+    .with("HeartGold", "SoulSilver", () => hgssInitialValues)
+    .exhaustive();
 
   return (
     <RngToolForm<FormState, Result>

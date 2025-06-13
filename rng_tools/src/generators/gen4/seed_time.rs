@@ -32,7 +32,7 @@ struct SeedTime4SingleMonthOptions {
     pub seed: u32,
     pub year: u32,
     pub month: u32,
-    pub forced_second: Option<u8>,
+    pub second_range: Option<RangeInclusive<u32>>,
     pub delay_range: Option<RangeInclusive<u32>>,
     pub find_first: bool,
 }
@@ -72,23 +72,25 @@ fn dppt_calculate_single_month_seedtime(opts: SeedTime4SingleMonthOptions) -> Ve
 
     let mut results = vec![];
 
+    let second_range = opts.second_range.unwrap_or(0..=59);
+
     let max_days = get_days_in_month(year as i32, month);
     for day in 1..=max_days {
         for minute in 0..60 {
-            for second in 0..60 {
-                if ab == calc_ab(month, day, minute, second) & 0xff
-                    && (opts.forced_second.is_none() || Some(second as u8) == opts.forced_second)
-                {
-                    results.push(SeedTime4 {
-                        seed: opts.seed,
-                        delay,
-                        coin_flips: lazy_coin_flip(),
-                        datetime: RngDateTime::new(year, month, day, hour, minute, second)
-                            .unwrap_or_default(),
-                    });
+            for second in second_range.clone() {
+                if ab == calc_ab(month, day, minute, second) & 0xff {
+                    if let Some(datetime) = RngDateTime::new(year, month, day, hour, minute, second)
+                    {
+                        results.push(SeedTime4 {
+                            seed: opts.seed,
+                            delay,
+                            datetime,
+                            coin_flips: lazy_coin_flip(),
+                        });
 
-                    if opts.find_first {
-                        return results;
+                        if opts.find_first {
+                            return results;
+                        }
                     }
                 }
             }
@@ -104,7 +106,7 @@ pub struct SeedTime4Options {
     pub seed: u32,
     pub year: u32,
     pub month: Option<u32>,
-    pub forced_second: Option<u8>,
+    pub second_range: Option<RangeInclusive<u32>>,
     pub delay_range: Option<RangeInclusive<u32>>,
     pub find_first: bool,
 }
@@ -127,7 +129,7 @@ pub fn dppt_calculate_seedtime(opts: SeedTime4Options) -> Vec<SeedTime4> {
                 month,
                 seed: opts.seed,
                 year: opts.year,
-                forced_second: opts.forced_second,
+                second_range: opts.second_range.clone(),
                 delay_range: opts.delay_range.clone(),
                 find_first: opts.find_first,
             })
@@ -140,6 +142,18 @@ pub struct FindSeedTime4Options {
     pub seed: u32,
     pub year: u32,
     pub delay_range: RangeInclusive<u32>,
+    pub second_range: Option<RangeInclusive<u32>>,
+}
+
+impl FindSeedTime4Options {
+    pub fn new_safe_second(seed: u32, year: u32, delay_range: RangeInclusive<u32>) -> Self {
+        Self {
+            seed,
+            year,
+            delay_range,
+            second_range: Some(1..=58),
+        }
+    }
 }
 
 pub fn dppt_find_seedtime(opts: FindSeedTime4Options) -> Option<SeedTime4> {
@@ -147,7 +161,7 @@ pub fn dppt_find_seedtime(opts: FindSeedTime4Options) -> Option<SeedTime4> {
         seed: opts.seed,
         year: opts.year,
         month: None,
-        forced_second: None,
+        second_range: opts.second_range,
         delay_range: Some(opts.delay_range),
         find_first: true,
     };
@@ -405,7 +419,7 @@ mod test {
                 seed: 0xaabbccdd,
                 year: 2032,
                 month: Some(2),
-                forced_second: None,
+                second_range: None,
                 delay_range: None,
                 find_first: false,
             };
@@ -519,7 +533,7 @@ mod test {
                 seed: 0xaabbccdd,
                 year: 2032,
                 month: Some(2),
-                forced_second: Some(56),
+                second_range: Some(56..=56),
                 delay_range: None,
                 find_first: false,
             };
@@ -552,6 +566,7 @@ mod test {
                 seed: 0xDC03025B,
                 year: 2000,
                 delay_range: 601..=605,
+                second_range: None,
             };
             let results = dppt_find_seedtime(opts);
             let expected = SeedTime4 {

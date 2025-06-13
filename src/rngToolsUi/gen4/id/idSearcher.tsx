@@ -37,6 +37,7 @@ import {
 import { FormikRadio } from "~/components/radio";
 import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
 import { match, P } from "ts-pattern";
+import { chunkRange } from "~/utils/chunkRange";
 
 const idTypes = ["Cute Charm", "Any TID"] as const;
 type IdType = (typeof idTypes)[number];
@@ -285,14 +286,6 @@ const Id4SearcherFields = () => {
     [idType, maxShinyOdds, setValues],
   );
   return <FormFieldTable fields={fields} />;
-};
-
-const chunkRange = ([start, end]: [number, number], chunkSize: number) => {
-  const chunks = [];
-  for (let i = start; i < end; i += chunkSize) {
-    chunks.push([i, Math.min(i + chunkSize, end)]);
-  }
-  return chunks;
 };
 
 const mapResult = (res: Id4): Result => ({

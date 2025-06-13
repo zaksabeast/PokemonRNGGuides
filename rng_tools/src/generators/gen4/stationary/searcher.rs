@@ -193,11 +193,11 @@ pub fn search_static4_method1_seeds(
             _ => rng.rand::<u32>(),
         };
         for advance in min_advance..=max_advance {
-            let seed_time_opts = FindSeedTime4Options {
+            let seed_time_opts = FindSeedTime4Options::new_safe_second(
                 seed,
-                delay_range: opts.min_delay..=opts.max_delay,
-                year: opts.year,
-            };
+                opts.year,
+                opts.min_delay..=opts.max_delay,
+            );
             let seed_time = dppt_find_seedtime(seed_time_opts);
 
             if let Some(seed_time) = seed_time {
@@ -248,7 +248,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x5C03025B,
-                        datetime: datetime!(2000-1-1 3:32:59).unwrap(),
+                        datetime: datetime!(2000-01-01 03:33:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTHHHHHTHHHTHHTHTHTH"),
                     },
@@ -271,7 +271,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0xDC03025B,
-                        datetime: datetime!(2000-4-26 3:57:59).unwrap(),
+                        datetime: datetime!(2000-04-26 03:58:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHTTTTTHTHTHHTTTHHTT"),
                     },
@@ -294,7 +294,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x0403025B,
-                        datetime: datetime!(2000-1-1 3:0:3).unwrap(),
+                        datetime: datetime!(2000-01-01 03:00:03).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTHTTTHTHHHHTTTTTTHH"),
                     },
@@ -317,7 +317,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x8403025B,
-                        datetime: datetime!(2000-1-14 3:59:59).unwrap(),
+                        datetime: datetime!(2000-01-15 03:59:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTTTTHTTTHHTHTTHTHTH"),
                     },
@@ -340,7 +340,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x0003025B,
-                        datetime: datetime!(2000-5-28 3:57:59).unwrap(),
+                        datetime: datetime!(2000-05-28 03:58:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHHTTTTTHHHTTTHHTHTH"),
                     },
@@ -363,7 +363,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x8003025B,
-                        datetime: datetime!(2000-1-10 3:59:59).unwrap(),
+                        datetime: datetime!(2000-01-11 03:59:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("TTTTHHTHHTHHHTHTHTHT"),
                     },
@@ -386,7 +386,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0xA803025B,
-                        datetime: datetime!(2000-2-25 3:59:59).unwrap(),
+                        datetime: datetime!(2000-02-26 03:58:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHTHHHHTTHTHHHTTHTHH"),
                     },
@@ -409,7 +409,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x2803025B,
-                        datetime: datetime!(2000-1-1 3:0:39).unwrap(),
+                        datetime: datetime!(2000-01-01 03:00:39).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHHTTTHHHTHTTHTHHTHT"),
                     },
@@ -432,7 +432,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0xA403025B,
-                        datetime: datetime!(2000-2-23 3:59:59).unwrap(),
+                        datetime: datetime!(2000-02-24 03:58:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("TTHHTTTHTTHHTTTTHTTT"),
                     },
@@ -455,7 +455,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x2403025B,
-                        datetime: datetime!(2000-1-1 3:0:35).unwrap(),
+                        datetime: datetime!(2000-01-01 03:00:35).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTHTHTHHTHHHTTHTHHTT"),
                     },
@@ -478,7 +478,7 @@ mod tests {
                     advance: 0,
                     seed_time: SeedTime4 {
                         seed: 0x52060259,
-                        datetime: datetime!(2000-1-1 6:22:59).unwrap(),
+                        datetime: datetime!(2000-01-01 06:23:58).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("TTHHTTHHHTTHTTTTHTTT"),
                     },
@@ -501,7 +501,7 @@ mod tests {
                     advance: 0,
                     seed_time: SeedTime4 {
                         seed: 0xD2060259,
-                        datetime: datetime!(2000-3-31 6:58:59).unwrap(),
+                        datetime: datetime!(2000-03-31 06:59:58).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("HHHHTHTHHHTTHHHTTHHH"),
                     },
@@ -524,7 +524,7 @@ mod tests {
                     advance: 0,
                     seed_time: SeedTime4 {
                         seed: 0x3A060259,
-                        datetime: datetime!(2000-1-1 6:0:57).unwrap(),
+                        datetime: datetime!(2000-01-01 06:00:57).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("TTHHHTHTHHHHTHTHHHHT"),
                     },
@@ -547,7 +547,7 @@ mod tests {
                     advance: 0,
                     seed_time: SeedTime4 {
                         seed: 0xBA060259,
-                        datetime: datetime!(2000-3-23 6:58:59).unwrap(),
+                        datetime: datetime!(2000-03-23 06:59:58).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("HTTTTTHHTTHTHTTTHHTT"),
                     },
@@ -570,7 +570,7 @@ mod tests {
                     advance: 0,
                     seed_time: SeedTime4 {
                         seed: 0x96060259,
-                        datetime: datetime!(2000-2-16 6:59:59).unwrap(),
+                        datetime: datetime!(2000-02-17 06:58:58).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("TTHTHTHHHTHHHTTHTHTT"),
                     },
@@ -593,7 +593,7 @@ mod tests {
                     advance: 0,
                     seed_time: SeedTime4 {
                         seed: 0x16060259,
-                        datetime: datetime!(2000-1-1 6:0:21).unwrap(),
+                        datetime: datetime!(2000-01-01 06:00:21).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("HHTHTHTTHTTHHTHTTHHT"),
                     },
@@ -616,7 +616,7 @@ mod tests {
                     advance: 0,
                     seed_time: SeedTime4 {
                         seed: 0x7E060259,
-                        datetime: datetime!(2000-1-8 6:59:59).unwrap(),
+                        datetime: datetime!(2000-01-09 06:59:58).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("HHHHTHHHTTHHHHTTHHHH"),
                     },
@@ -639,7 +639,7 @@ mod tests {
                     advance: 0,
                     seed_time: SeedTime4 {
                         seed: 0xFE060259,
-                        datetime: datetime!(2000-5-28 6:55:59).unwrap(),
+                        datetime: datetime!(2000-05-28 06:56:58).unwrap(),
                         delay: 601,
                         coin_flips: coin_flips!("TTHHHHTTHTHHTHHHTHHT"),
                     },
@@ -691,7 +691,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x5C03025B,
-                        datetime: datetime!(2000-1-1 3:32:59).unwrap(),
+                        datetime: datetime!(2000-01-01 03:33:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTHHHHHTHHHTHHTHTHTH"),
                     },
@@ -714,7 +714,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0xDC03025B,
-                        datetime: datetime!(2000-4-26 3:57:59).unwrap(),
+                        datetime: datetime!(2000-04-26 03:58:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHTTTTTHTHTHHTTTHHTT"),
                     },
@@ -737,7 +737,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x0403025B,
-                        datetime: datetime!(2000-1-1 3:0:3).unwrap(),
+                        datetime: datetime!(2000-01-01 03:00:03).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTHTTTHTHHHHTTTTTTHH"),
                     },
@@ -760,7 +760,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x8403025B,
-                        datetime: datetime!(2000-1-14 3:59:59).unwrap(),
+                        datetime: datetime!(2000-01-15 03:59:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTTTTHTTTHHTHTTHTHTH"),
                     },
@@ -783,7 +783,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x0003025B,
-                        datetime: datetime!(2000-5-28 3:57:59).unwrap(),
+                        datetime: datetime!(2000-05-28 03:58:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHHTTTTTHHHTTTHHTHTH"),
                     },
@@ -806,7 +806,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x8003025B,
-                        datetime: datetime!(2000-1-10 3:59:59).unwrap(),
+                        datetime: datetime!(2000-01-11 03:59:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("TTTTHHTHHTHHHTHTHTHT"),
                     },
@@ -829,7 +829,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0xA803025B,
-                        datetime: datetime!(2000-2-25 3:59:59).unwrap(),
+                        datetime: datetime!(2000-02-26 03:58:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHTHHHHTTHTHHHTTHTHH"),
                     },
@@ -852,7 +852,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x2803025B,
-                        datetime: datetime!(2000-1-1 3:0:39).unwrap(),
+                        datetime: datetime!(2000-01-01 03:00:39).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HHHTTTHHHTHTTHTHHTHT"),
                     },
@@ -875,7 +875,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0xA403025B,
-                        datetime: datetime!(2000-2-23 3:59:59).unwrap(),
+                        datetime: datetime!(2000-02-24 03:58:58).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("TTHHTTTHTTHHTTTTHTTT"),
                     },
@@ -898,7 +898,7 @@ mod tests {
                     advance: 2,
                     seed_time: SeedTime4 {
                         seed: 0x2403025B,
-                        datetime: datetime!(2000-1-1 3:0:35).unwrap(),
+                        datetime: datetime!(2000-01-01 03:00:35).unwrap(),
                         delay: 603,
                         coin_flips: coin_flips!("HTHTHTHHTHHHTTHTHHTT"),
                     },

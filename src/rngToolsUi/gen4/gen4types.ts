@@ -1,13 +1,15 @@
 import { match } from "ts-pattern";
 import { Characteristic, LeadAbilities, Nature } from "~/rngTools";
 
-export const GameVersion = [
+export const Gen4GameVersions = [
   "Diamond",
   "Pearl",
   "Platinum",
   "HeartGold",
   "SoulSilver",
 ] as const;
+
+export type Gen4GameVersion = (typeof Gen4GameVersions)[number];
 
 export const StaticEncounterSpecies = [
   "Turtwig",

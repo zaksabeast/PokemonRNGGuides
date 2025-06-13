@@ -90,11 +90,8 @@ pub fn search_dppt_ids(opts: Id4SearchOptions) -> Vec<Id4> {
                     continue;
                 }
 
-                let seed_time_opts = FindSeedTime4Options {
-                    seed,
-                    year: opts.year,
-                    delay_range: delay..=delay,
-                };
+                let seed_time_opts =
+                    FindSeedTime4Options::new_safe_second(seed, opts.year, delay..=delay);
 
                 let seed_time = dppt_find_seedtime(seed_time_opts);
 
@@ -133,7 +130,7 @@ mod test {
             tsv: 1398,
             seed_time: SeedTime4 {
                 seed: 0x4e16001a,
-                datetime: datetime!(2021-01-01 22:18:59).unwrap(),
+                datetime: datetime!(2021-01-01 22:19:58).unwrap(),
                 delay: 5,
                 coin_flips: coin_flips!("TTHTTHTHTTHHHHHHHTTH"),
             },

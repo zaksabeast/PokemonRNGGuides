@@ -32,7 +32,7 @@ import {
 import { getStatRange } from "~/types/statRange";
 import { Gen4GameVersion } from "../gen4types";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
-import { chunkRange } from "~/utils/chunkRange";
+import { chunkIvs } from "~/utils/chunkIvs";
 
 type Result = FlattenIvs<
   SearchStatic4Method1State & {
@@ -220,11 +220,14 @@ export const PickStarter4 = () => {
           stats: null,
         },
       };
-      const chunked = chunkRange([opts.min_delay, opts.max_delay], 500);
-      const searchOpts = chunked.map(([min_delay, max_delay]) => ({
+      const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
+      const searchOpts = chunkedIvs.map(([minIvs, maxIvs]) => ({
         ...baseOpts,
-        min_delay,
-        max_delay,
+        filter: {
+          ...baseOpts.filter,
+          min_ivs: minIvs,
+          max_ivs: maxIvs,
+        },
       }));
       await searchStarterSeeds(searchOpts);
     },

@@ -194,10 +194,13 @@ const mapResult = (res: SearchStatic4Method1State): Result => {
 
 export const PickStarter4 = () => {
   const [state, setState] = useStarterState();
-  const { run: searchStarterSeeds, data: results } = useBatchedTool(
-    multiWorkerRngTools.search_static4_method1_seeds,
-    { map: mapResult },
-  );
+  const {
+    run: searchStarterSeeds,
+    data: results,
+    cancel,
+  } = useBatchedTool(multiWorkerRngTools.search_static4_method1_seeds, {
+    map: mapResult,
+  });
 
   const game = state.game;
 
@@ -250,6 +253,9 @@ export const PickStarter4 = () => {
       onSubmit={onSubmit}
       rowKey="key"
       submitTrackerId="search_gen4_starters"
+      allowCancel
+      cancelTrackerId="cancel_gen4_starters"
+      onCancel={cancel}
     />
   );
 };

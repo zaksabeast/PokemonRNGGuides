@@ -3,7 +3,13 @@ import { starterAtom } from "./state";
 import { SelectGame } from "../shared/selectGame";
 import { Is3dsSwitch } from "../shared/is3dsSwitch";
 
-const supportedGames = ["Diamond", "Pearl", "HeartGold", "SoulSilver"] as const;
+const supportedGames = [
+  "Diamond",
+  "Pearl",
+  "Platinum",
+  "HeartGold",
+  "SoulSilver",
+] as const;
 
 const fields: Field[] = [
   {

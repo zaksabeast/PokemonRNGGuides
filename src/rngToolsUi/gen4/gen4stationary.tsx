@@ -29,6 +29,7 @@ import {
   leadAbilities,
   getLeadAbility,
   characteristics,
+  Characteristic4Options,
 } from "~/rngToolsUi/gen4/gen4types";
 import { nature } from "~/types/nature";
 
@@ -176,7 +177,7 @@ const getFields = (values: FormState) => {
       input: (
         <FormikSelect<FormState, "filter_characteristic">
           name="filter_characteristic"
-          options={toOptions(characteristics, startCase)}
+          options={Characteristic4Options}
         />
       ),
     },

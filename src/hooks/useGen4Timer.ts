@@ -56,7 +56,7 @@ export const createGen4TimerAtom = () =>
 
 const getMs = (updated: Float32Array<ArrayBufferLike>, is3ds: boolean) => {
   const [first, ...rest] = updated;
-  return is3ds ? [first + 60_000, ...rest] : [...updated];
+  return is3ds ? [10_000, first + 60_000, ...rest] : [...updated];
 };
 
 export type Gen4TimerAtom = ReturnType<typeof createGen4TimerAtom>;

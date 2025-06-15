@@ -27,10 +27,10 @@ import {
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { FormikRadio } from "~/components/radio";
 import { formatOffset } from "~/utils/offsetSymbol";
-import { sortBy, startCase } from "lodash-es";
+import { sortBy } from "lodash-es";
 import pMap from "p-map";
 import { match } from "ts-pattern";
-import { characteristics } from "../gen4types";
+import { characteristics, Characteristic4Options } from "../gen4types";
 
 type Result = Gen4StaticPokemon & {
   key: string;
@@ -171,7 +171,7 @@ export const CalibrateStarter4 = () => {
         input: (
           <FormikSelect<FormState, "filter_characteristic">
             name="filter_characteristic"
-            options={toOptions(characteristics, startCase)}
+            options={Characteristic4Options}
           />
         ),
       },
@@ -211,12 +211,14 @@ export const CalibrateStarter4 = () => {
         max_delay: maxDelay,
       });
 
+      const maxAdvances = state.game === "Platinum" ? 40 : 20;
+
       const results = await pMap(seedTimes, async (seedTime) => {
         const states = await rngTools.generate_static4_states({
           tid: 0,
           sid: 0,
-          initial_advances: Math.max(targetAdvance - 10, 0),
-          max_advances: 20,
+          initial_advances: Math.max(targetAdvance - maxAdvances / 2, 0),
+          max_advances: maxAdvances,
           game: getStarterGame(targetSpecies),
           encounter: targetSpecies,
           lead: "None",
@@ -258,7 +260,7 @@ export const CalibrateStarter4 = () => {
       ]);
       setResults(sortedResults);
     },
-    [targetAdvance, targetDelay, targetDateTime, targetSpecies],
+    [targetAdvance, targetDelay, targetDateTime, targetSpecies, state.game],
   );
 
   return (

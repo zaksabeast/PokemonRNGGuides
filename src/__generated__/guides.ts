@@ -732,7 +732,7 @@ export const guides = {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
       tags: ["retail"],
-      isNew: true,
+      isNew: false,
       title: "HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG",
       navDrawerTitle: "Cute Charm & TID/SID RNG",
       description:
@@ -2704,7 +2704,7 @@ export const guides = {
     meta: {
       categories: ["HeartGold and SoulSilver"],
       tags: ["retail"],
-      isNew: true,
+      isNew: false,
       title: "HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG",
       navDrawerTitle: "Cute Charm & TID/SID RNG",
       description:

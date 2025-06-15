@@ -96,7 +96,7 @@ const getStarterAdvance = (
   game: Gen4GameVersion,
 ): number => {
   return match({ species, game })
-    .with({ game: "Platinum" }, () => 2)
+    .with({ game: "Platinum" }, () => 4)
     .with({ game: "Diamond" }, () => 0)
     .with({ game: "Pearl" }, () => 0)
     .with({ species: "Chikorita" }, () => 0)

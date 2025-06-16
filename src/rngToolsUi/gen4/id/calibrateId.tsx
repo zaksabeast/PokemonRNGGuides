@@ -19,6 +19,7 @@ type Result = Id4 & {
   flipDelay: boolean;
   seed: number;
   delayOffset: number;
+  secondOffset: number;
   delay: number;
   seconds: number;
 };
@@ -46,6 +47,11 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Delay Offset",
     dataIndex: "delayOffset",
+    render: formatOffset,
+  },
+  {
+    title: "Second Offset",
+    dataIndex: "secondOffset",
     render: formatOffset,
   },
   {
@@ -125,6 +131,7 @@ export const CalibrateId4 = () => {
         delayOffset: result.seed_time.delay - targetDelay,
         delay: result.seed_time.delay,
         seconds: result.seed_time.datetime.second,
+        secondOffset: result.seed_time.datetime.second - targetDateTime.second,
       }));
 
       setResults(formattedResults);

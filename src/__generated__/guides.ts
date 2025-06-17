@@ -2424,7 +2424,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx",
-      translations: null,
+      translations: {
+        en: "/gba-pokerus-technical/",
+        zh: "/zh-gba-pokerus-technical/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5903,6 +5906,36 @@ export const guides = {
         ),
     ),
   },
+  "/zh-gba-pokerus-technical/": {
+    meta: {
+      categories: ["GBA Technical Documentation"],
+      tags: ["info"],
+      isNew: false,
+      title: "宝可病毒",
+      navDrawerTitle: "宝可病毒",
+      description: "宝可病毒的触发机制",
+      slug: "/zh-gba-pokerus-technical/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-13",
+      translation: { enSlug: "/gba-pokerus-technical/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx",
+      translations: {
+        en: "/gba-pokerus-technical/",
+        zh: "/zh-gba-pokerus-technical/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx"
+        ),
+    ),
+  },
   "/zh-gen2-celebi/": {
     meta: {
       categories: ["Gold, Silver, Crystal"],
@@ -6604,6 +6637,7 @@ export const guideSlugs = [
   "/zh-emulator-rs-wishmaker/",
   "/zh-frlg-gen3-sid/",
   "/zh-frlg-seeding-bot/",
+  "/zh-gba-pokerus-technical/",
   "/zh-gen2-celebi/",
   "/zh-gen2-starters/",
   "/zh-gen3-sid/",

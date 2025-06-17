@@ -37,6 +37,7 @@ import {
 import { FormikRadio } from "~/components/radio";
 import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
 import { match, P } from "ts-pattern";
+import { chunkRange } from "~/utils/chunkRange";
 
 const idTypes = ["Cute Charm", "Any TID"] as const;
 type IdType = (typeof idTypes)[number];
@@ -74,6 +75,7 @@ type Result = Id4 & {
   natures: Nature[];
   genderRatios: GenderRatio[];
   delay: number;
+  seconds: number;
 };
 
 const formatGenderRatio = (genderRatio: GenderRatio) => {
@@ -90,7 +92,7 @@ const formatGenderRatio = (genderRatio: GenderRatio) => {
 };
 
 const getColumns = ({ idType }: { idType: IdType }): ResultColumn<Result>[] => {
-  const baseColumns: ResultColumn<Result>[] = [
+  const startColumns: ResultColumn<Result>[] = [
     {
       title: "Select",
       dataIndex: "seed",
@@ -108,18 +110,24 @@ const getColumns = ({ idType }: { idType: IdType }): ResultColumn<Result>[] => {
       title: "TSV",
       dataIndex: "tsv",
     },
+  ];
+  const endColumns: ResultColumn<Result>[] = [
     {
       title: "Delay",
       dataIndex: "delay",
     },
+    {
+      title: "Seconds",
+      dataIndex: "seconds",
+    },
   ];
 
   if (idType === "Any TID") {
-    return baseColumns;
+    return [...startColumns, ...endColumns];
   }
 
   return [
-    ...baseColumns,
+    ...startColumns,
     {
       title: "Target Gender",
       dataIndex: "targetGender",
@@ -137,6 +145,7 @@ const getColumns = ({ idType }: { idType: IdType }): ResultColumn<Result>[] => {
           ? "All"
           : genderRatios.map(formatGenderRatio).join(", "),
     },
+    ...endColumns,
   ];
 };
 
@@ -287,18 +296,11 @@ const Id4SearcherFields = () => {
   return <FormFieldTable fields={fields} />;
 };
 
-const chunkRange = ([start, end]: [number, number], chunkSize: number) => {
-  const chunks = [];
-  for (let i = start; i < end; i += chunkSize) {
-    chunks.push([i, Math.min(i + chunkSize, end)]);
-  }
-  return chunks;
-};
-
 const mapResult = (res: Id4): Result => ({
   ...res,
   seed: res.seed_time.seed,
   delay: res.seed_time.delay,
+  seconds: res.seed_time.datetime.second,
   ...getCuteCharmTsvProps(res.tsv),
 });
 

@@ -78,6 +78,7 @@ export const DpptSeedSearch = ({ onClickResultRow }: Props) => {
       month: opts.date.month,
       delay_range: null,
       find_first: false,
+      second_range: null,
     });
 
     setResults(results.map((result) => ({ ...result, id: uniqueId() })));

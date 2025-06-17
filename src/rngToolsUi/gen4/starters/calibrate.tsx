@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Button,
+  CalibrateTimerButton,
   Field,
   FormikSelect,
   Icon,
@@ -8,7 +8,6 @@ import {
   RngToolForm,
 } from "~/components";
 import {
-  Characteristic,
   Gen4StaticPokemon,
   RngDateTime,
   rngTools,
@@ -17,10 +16,9 @@ import {
 import { z } from "zod";
 import { natureOptions } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
-import { useCurrentStep } from "~/components/stepper/state";
 import { Gen4Starter, starterTimer, useStarterState } from "./state";
 import {
-  getGen3BaseStats,
+  getStrictBaseStats,
   maxIvs,
   minIvs,
   nature,
@@ -28,77 +26,28 @@ import {
 } from "~/types";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { FormikRadio } from "~/components/radio";
-import { useGen4Timer } from "~/hooks/useGen4Timer";
 import { formatOffset } from "~/utils/offsetSymbol";
-import { sortBy, startCase } from "lodash-es";
+import { sortBy } from "lodash-es";
 import pMap from "p-map";
 import { match } from "ts-pattern";
+import { characteristics, Characteristic4Options } from "../gen4types";
 
 type Result = Gen4StaticPokemon & {
   key: string;
-  delay: number;
   flipDelay: boolean;
   delayOffset: number;
   advanceOffset: number;
+  secondOffset: number;
   seed: number;
-};
-
-type CalibrateButtonProps = {
-  target: Result;
-};
-
-const CalibrateButton = ({ target }: CalibrateButtonProps) => {
-  const [, setCurrentStep] = useCurrentStep();
-  const { calibrate } = useGen4Timer(starterTimer);
-  return (
-    <Button
-      trackerId="calibrate_gen4_starter"
-      onClick={() => {
-        calibrate(target.delay);
-        setCurrentStep((prev) => prev - 1);
-      }}
-    >
-      Calibrate
-    </Button>
-  );
+  second: number;
+  delay: number;
 };
 
 const starterGenders = ["Male", "Female"] as const;
-const characteristics = [
-  "AlertToSounds",
-  "ALittleQuickTempered",
-  "CapableOfTakingHits",
-  "GoodEndurance",
-  "GoodPerseverance",
-  "HatesToLose",
-  "HighlyCurious",
-  "HighlyPersistent",
-  "ImpetuousAndSilly",
-  "LikesToFight",
-  "LikesToRelax",
-  "LikesToRun",
-  "LikesToThrashAbout",
-  "LovesToEat",
-  "Mischievous",
-  "NodsOffALot",
-  "OftenLostInThought",
-  "ProudOfItsPower",
-  "QuickTempered",
-  "QuickToFlee",
-  "ScattersThingsOften",
-  "SomewhatOfAClown",
-  "SomewhatStubborn",
-  "SomewhatVain",
-  "StronglyDefiant",
-  "StrongWilled",
-  "SturdyBody",
-  "TakesPlentyOfSiestas",
-  "ThoroughlyCunning",
-  "VeryFinicky",
-] as const satisfies Characteristic[];
 
 const Validator = z
   .object({
+    level: z.number().int().min(1).max(100),
     nature: z.enum(nature),
     gender: z.enum(starterGenders),
     filter_characteristic: z.enum(characteristics),
@@ -108,6 +57,7 @@ const Validator = z
 type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
+  level: 0,
   hpStat: 0,
   atkStat: 0,
   defStat: 0,
@@ -123,7 +73,15 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Calibrate",
     dataIndex: "key",
-    render: (_, target) => <CalibrateButton target={target} />,
+    render: (_, target) => (
+      <CalibrateTimerButton
+        type="gen4"
+        hitDelay={target.delay}
+        timer={starterTimer}
+        trackerId="calibrate_gen4_starter"
+        previousStepOnClick
+      />
+    ),
   },
   {
     title: "Delay Offset",
@@ -133,6 +91,12 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Advance Offset",
     dataIndex: "advanceOffset",
+    render: formatOffset,
+  },
+  {
+    title: "Second Offset",
+    dataIndex: "secondOffset",
+    render: formatOffset,
   },
   {
     title: "Flip Delay",
@@ -145,6 +109,10 @@ const columns: ResultColumn<Result>[] = [
     dataIndex: "seed",
     monospace: true,
     render: (val) => val.toString(16).padStart(8, "0").toUpperCase(),
+  },
+  {
+    title: "Second",
+    dataIndex: "second",
   },
 ];
 
@@ -203,7 +171,16 @@ export const CalibrateStarter4 = () => {
         input: (
           <FormikSelect<FormState, "filter_characteristic">
             name="filter_characteristic"
-            options={toOptions(characteristics, startCase)}
+            options={Characteristic4Options}
+          />
+        ),
+      },
+      {
+        label: "Level",
+        input: (
+          <FormikRadio<FormState, "level">
+            name="level"
+            options={toOptions([5, 6])}
           />
         ),
       },
@@ -216,11 +193,7 @@ export const CalibrateStarter4 = () => {
       const minDelay = Math.max(targetDelay - 500, 0);
       const maxDelay = targetDelay + 500;
 
-      const baseStats = getGen3BaseStats(targetSpecies);
-
-      if (baseStats == null) {
-        return;
-      }
+      const baseStats = getStrictBaseStats(targetSpecies);
 
       const caughtStats: StatsValue = {
         hp: opts.hpStat,
@@ -231,18 +204,21 @@ export const CalibrateStarter4 = () => {
         spe: opts.speStat,
       };
 
-      const seedTimes = await rngTools.calc_gen4_seeds(
-        targetDateTime,
-        minDelay,
-        maxDelay,
-      );
+      const seedTimes = await rngTools.calc_gen4_seeds({
+        datetime: targetDateTime,
+        seconds_increment: 1,
+        min_delay: minDelay,
+        max_delay: maxDelay,
+      });
+
+      const maxAdvances = state.game === "Platinum" ? 40 : 20;
 
       const results = await pMap(seedTimes, async (seedTime) => {
         const states = await rngTools.generate_static4_states({
           tid: 0,
           sid: 0,
-          initial_advances: Math.max(targetAdvance - 10, 0),
-          max_advances: 20,
+          initial_advances: Math.max(targetAdvance - maxAdvances / 2, 0),
+          max_advances: maxAdvances,
           game: getStarterGame(targetSpecies),
           encounter: targetSpecies,
           lead: "None",
@@ -256,7 +232,7 @@ export const CalibrateStarter4 = () => {
             nature: opts.nature,
             gender: opts.gender,
             stats: {
-              lvl: 5,
+              lvl: opts.level,
               base_stats: baseStats,
               min_stats: caughtStats,
               max_stats: caughtStats,
@@ -272,16 +248,19 @@ export const CalibrateStarter4 = () => {
             flipDelay: targetDelay % 2 !== seedTime.delay % 2,
             key: `${seedTime.seed}-${state.pid}`,
             delayOffset: seedTime.delay - targetDelay,
+            second: seedTime.datetime.second,
+            secondOffset: seedTime.datetime.second - targetDateTime.second,
           }),
         );
       });
 
-      const sortedResults = sortBy(results.flat(), (res) =>
-        Math.abs(res.delayOffset),
-      );
+      const sortedResults = sortBy(results.flat(), [
+        (res) => Math.abs(res.advanceOffset),
+        (res) => Math.abs(res.delayOffset),
+      ]);
       setResults(sortedResults);
     },
-    [targetAdvance, targetDelay, targetDateTime, targetSpecies],
+    [targetAdvance, targetDelay, targetDateTime, targetSpecies, state.game],
   );
 
   return (
@@ -293,7 +272,7 @@ export const CalibrateStarter4 = () => {
       validationSchema={Validator}
       onSubmit={onSubmit}
       rowKey="key"
-      submitTrackerId="search_hit_gen4_starter"
+      submitTrackerId="calibrate_gen4_starter"
     />
   );
 };

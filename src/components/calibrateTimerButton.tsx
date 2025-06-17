@@ -4,10 +4,12 @@ import { message } from "antd";
 import { Gen3TimerAtom, useGen3Timer } from "~/hooks/useGen3Timer";
 import { Gen4TimerAtom, useGen4Timer } from "~/hooks/useGen4Timer";
 import { match } from "ts-pattern";
+import { useCurrentStep } from "./stepper/state";
 
 type InnerCalibrateButtonProps = {
   trackerId: string;
   hitValue: number;
+  previousStepOnClick?: boolean;
   calibrate: (hitValue: number) => Promise<void>;
   onClick?: () => void;
 };
@@ -15,16 +17,28 @@ type InnerCalibrateButtonProps = {
 const InnerCalibrateButton = ({
   trackerId,
   hitValue,
+  previousStepOnClick,
   calibrate,
   onClick: _onClick,
 }: InnerCalibrateButtonProps) => {
+  const [, setCurrentStep] = useCurrentStep();
   const [messageApi, contextHolder] = message.useMessage();
 
   const onClick = React.useCallback(async () => {
     await calibrate(hitValue);
+    if (previousStepOnClick) {
+      setCurrentStep((step) => step - 1);
+    }
     messageApi.success("Calibrated timer");
     _onClick?.();
-  }, [calibrate, hitValue, messageApi, _onClick]);
+  }, [
+    calibrate,
+    hitValue,
+    messageApi,
+    previousStepOnClick,
+    setCurrentStep,
+    _onClick,
+  ]);
 
   return (
     <>
@@ -41,6 +55,7 @@ type CalibrateGen3ButtonProps = {
   hitAdvance: number;
   timer: Gen3TimerAtom;
   trackerId: string;
+  previousStepOnClick?: boolean;
   onClick?: () => void;
 };
 
@@ -48,6 +63,7 @@ const CalibrateGen3Button = ({
   hitAdvance,
   timer,
   trackerId,
+  previousStepOnClick,
   onClick,
 }: CalibrateGen3ButtonProps) => {
   const { calibrate } = useGen3Timer(timer);
@@ -57,6 +73,7 @@ const CalibrateGen3Button = ({
       trackerId={trackerId}
       hitValue={hitAdvance}
       calibrate={calibrate}
+      previousStepOnClick={previousStepOnClick}
       onClick={onClick}
     />
   );
@@ -67,6 +84,7 @@ type CalibrateGen4ButtonProps = {
   hitDelay: number;
   timer: Gen4TimerAtom;
   trackerId: string;
+  previousStepOnClick?: boolean;
   onClick?: () => void;
 };
 
@@ -74,6 +92,7 @@ const CalibrateGen4Button = ({
   hitDelay,
   timer,
   trackerId,
+  previousStepOnClick,
   onClick,
 }: CalibrateGen4ButtonProps) => {
   const { calibrate } = useGen4Timer(timer);
@@ -83,6 +102,7 @@ const CalibrateGen4Button = ({
       trackerId={trackerId}
       hitValue={hitDelay}
       calibrate={calibrate}
+      previousStepOnClick={previousStepOnClick}
       onClick={onClick}
     />
   );

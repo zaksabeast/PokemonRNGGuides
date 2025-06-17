@@ -33,7 +33,14 @@ type Props<FormState, Result> = {
     rowKey: keyof Result;
     onClickResultRow?: (record: Result) => void;
   }> &
-  FeatureConfig<"allowReset", { resetTrackerId: string; onReset?: () => void }>;
+  FeatureConfig<
+    "allowReset",
+    { resetTrackerId: string; onReset?: () => void }
+  > &
+  FeatureConfig<
+    "allowCancel",
+    { cancelTrackerId: string; onCancel: () => void }
+  >;
 
 export const RngToolForm = <
   FormState extends GenericForm,
@@ -55,6 +62,9 @@ export const RngToolForm = <
   allowReset = false,
   resetTrackerId,
   submitButtonLabel = "Generate",
+  allowCancel = false,
+  cancelTrackerId,
+  onCancel,
 }: Props<FormState, Result>) => {
   const _validationSchema = React.useMemo(() => {
     return validationSchema == null
@@ -87,6 +97,15 @@ export const RngToolForm = <
                 <Button trackerId={submitTrackerId} htmlType="submit">
                   {submitButtonLabel}
                 </Button>
+                {allowCancel && cancelTrackerId != null && (
+                  <Button
+                    trackerId={cancelTrackerId}
+                    htmlType="button"
+                    onClick={onCancel}
+                  >
+                    Cancel
+                  </Button>
+                )}
                 {allowReset && resetTrackerId != null && (
                   <Button trackerId={resetTrackerId} htmlType="reset">
                     Reset

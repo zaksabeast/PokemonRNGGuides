@@ -1,41 +1,17 @@
-import { Field, FormFieldTable, Select, Switch } from "~/components";
-import { games, useId4State, Game } from "./state";
-import { toOptions } from "~/utils/options";
-import { startCase } from "lodash-es";
-
-const gameOptions = toOptions(games, startCase);
-
-const SelectGen4Game = () => {
-  const [state, setState] = useId4State();
-  return (
-    <Select<Game>
-      options={gameOptions}
-      value={state.game}
-      onChange={(game) => setState((prev) => ({ ...prev, game }))}
-    />
-  );
-};
-
-const Is3dsSwitch = () => {
-  const [state, setState] = useId4State();
-  return (
-    <Switch
-      // Disabled until more testing is done
-      disabled
-      value={state.is3ds}
-      onChange={(is3ds) => setState((prev) => ({ ...prev, is3ds }))}
-    />
-  );
-};
+import { Field, FormFieldTable } from "~/components";
+import { id4Atom } from "./state";
+import { Gen4GameVersions } from "../gen4types";
+import { SelectGame } from "../shared/selectGame";
+import { Is3dsSwitch } from "../shared/is3dsSwitch";
 
 const fields: Field[] = [
   {
     label: "Game",
-    input: <SelectGen4Game />,
+    input: <SelectGame stateAtom={id4Atom} games={Gen4GameVersions} />,
   },
   {
     label: "Using 3ds? (Coming soon)",
-    input: <Is3dsSwitch />,
+    input: <Is3dsSwitch stateAtom={id4Atom} disabled />,
   },
 ];
 

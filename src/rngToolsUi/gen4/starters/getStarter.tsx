@@ -1,34 +1,40 @@
 import { Gen4Timer } from "~/components/gen4Timer";
 import { starterTimer, useStarterState } from "./state";
 import { useGen4Timer } from "~/hooks/useGen4Timer";
-import { fromRngDateTime, rngChronoFormat } from "~/utils/time";
-import { sum } from "lodash-es";
+import { fromRngDateTime } from "~/utils/time";
+import {
+  ConsoleDateTimeFormat,
+  ConsoleSetDateString,
+} from "../shared/consoleDateStrings";
 
-export const Starter4ConsoleSetDateString = () => {
+type Starter4ConsoleSetDateStringProps = {
+  format?: ConsoleDateTimeFormat;
+};
+
+export const Starter4ConsoleSetDateString = ({
+  format,
+}: Starter4ConsoleSetDateStringProps) => {
   const [state] = useStarterState();
   const { ms } = useGen4Timer(starterTimer);
-
-  const targetMinutes = Math.floor(sum(ms) / 1000 / 60); // Convert milliseconds to minutes
-  const targetDateTime = state.target?.seed_time.datetime;
-  const consoleSetDate =
-    targetDateTime == null
-      ? null
-      : fromRngDateTime(targetDateTime).subtract(targetMinutes, "minutes");
+  const datetime = state.target?.seed_time.datetime;
+  const targetDateTime = datetime == null ? null : fromRngDateTime(datetime);
 
   return (
-    <>
-      {consoleSetDate?.format(rngChronoFormat.dateHourMinutes) ??
-        "Unknown time"}
-    </>
+    <ConsoleSetDateString
+      format={format}
+      targetDatetime={targetDateTime}
+      timerMs={ms}
+    />
   );
 };
 
 export const GetStarter4 = () => {
   const [state] = useStarterState();
   const seedTime = state.target?.seed_time;
+
   return (
     <Gen4Timer
-      is3ds={false}
+      is3ds={state.is3ds}
       trackerId="get_gen4_starter_timer"
       targetDelay={seedTime?.delay ?? 0}
       targetSecond={seedTime?.datetime.second ?? 0}

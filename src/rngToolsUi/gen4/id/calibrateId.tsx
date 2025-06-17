@@ -12,31 +12,14 @@ import { rngTools, Id4 } from "~/rngTools";
 import { denormalizeIdFilterOrDefault } from "~/types/id";
 import { z } from "zod";
 import { useId4State, idTimerAtom } from "./state";
-import { useCurrentStep } from "~/components/stepper/state";
 import { sortBy } from "lodash-es";
 import { formatOffset } from "~/utils/offsetSymbol";
-
-type CalibrateButtonProps = {
-  hitDelay: number;
-};
-
-const CalibrateButton = ({ hitDelay }: CalibrateButtonProps) => {
-  const [, setCurrentStep] = useCurrentStep();
-  return (
-    <CalibrateTimerButton
-      type="gen4"
-      trackerId="calibrate_gen4_id"
-      hitDelay={hitDelay}
-      timer={idTimerAtom}
-      onClick={() => setCurrentStep((step) => step - 1)}
-    />
-  );
-};
 
 type Result = Id4 & {
   flipDelay: boolean;
   seed: number;
   delayOffset: number;
+  secondOffset: number;
   delay: number;
   seconds: number;
 };
@@ -46,7 +29,13 @@ const columns: ResultColumn<Result>[] = [
     title: "Calibrate",
     dataIndex: "seed",
     render: (_, target) => (
-      <CalibrateButton hitDelay={target.seed_time.delay} />
+      <CalibrateTimerButton
+        type="gen4"
+        trackerId="calibrate_gen4_id"
+        hitDelay={target.seed_time.delay}
+        timer={idTimerAtom}
+        previousStepOnClick
+      />
     ),
   },
   {
@@ -58,6 +47,11 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Delay Offset",
     dataIndex: "delayOffset",
+    render: formatOffset,
+  },
+  {
+    title: "Second Offset",
+    dataIndex: "secondOffset",
     render: formatOffset,
   },
   {
@@ -137,6 +131,7 @@ export const CalibrateId4 = () => {
         delayOffset: result.seed_time.delay - targetDelay,
         delay: result.seed_time.delay,
         seconds: result.seed_time.datetime.second,
+        secondOffset: result.seed_time.datetime.second - targetDateTime.second,
       }));
 
       setResults(formattedResults);

@@ -1,13 +1,17 @@
 import { match } from "ts-pattern";
 import { Characteristic, LeadAbilities, Nature } from "~/rngTools";
+import { toOptions } from "~/utils/options";
+import { startCase, sortBy } from "lodash-es";
 
-export const GameVersion = [
+export const Gen4GameVersions = [
   "Diamond",
   "Pearl",
   "Platinum",
   "HeartGold",
   "SoulSilver",
 ] as const;
+
+export type Gen4GameVersion = (typeof Gen4GameVersions)[number];
 
 export const StaticEncounterSpecies = [
   "Turtwig",
@@ -133,3 +137,16 @@ export const characteristics = [
   "ThoroughlyCunning",
   "VeryFinicky",
 ] as const satisfies Characteristic[];
+
+export const Characteristic4Options = sortBy(
+  toOptions(characteristics, (characteristic) => {
+    return (
+      match(characteristic)
+        // These two were mistranslated from Japanese in Gen 4 and 5
+        .with("TakesPlentyOfSiestas", () => "Often dozes off")
+        .with("NodsOffALot", () => "Often scatters things")
+        .otherwise(startCase)
+    );
+  }),
+  (option) => option.label,
+);

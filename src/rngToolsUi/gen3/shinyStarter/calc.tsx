@@ -1,7 +1,7 @@
 import type { Game, Starter, TargetStarter } from "./index";
 import type { FormState } from "./caughtMon";
 import { rngTools } from "~/rngTools";
-import { gen3BaseStats } from "~/types/baseStats";
+import { getStrictBaseStats } from "~/types/baseStats";
 import { MinMax } from "~/types/stat";
 
 export type CaughtMonResult = {
@@ -60,7 +60,7 @@ export const getTargetPokemonDesc = async (
   const res = genResults[0];
 
   const stats = await rngTools.calculate_stats(
-    gen3BaseStats[pokemonSpecies],
+    getStrictBaseStats(pokemonSpecies),
     5,
     res.nature,
     res.ivs,
@@ -111,7 +111,7 @@ export const generateCaughtMonResults = async (
       shiny: false,
       stats: {
         lvl: 5,
-        base_stats: gen3BaseStats[targetSpecies],
+        base_stats: getStrictBaseStats(targetSpecies),
         min_stats,
         max_stats,
       },

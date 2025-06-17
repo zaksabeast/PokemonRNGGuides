@@ -38,6 +38,7 @@ import { FormikRadio } from "~/components/radio";
 import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
 import { match, P } from "ts-pattern";
 import { chunkRange } from "~/utils/chunkRange";
+import { UndefinedToNull } from "~/types";
 
 const idTypes = ["Cute Charm", "Any TID"] as const;
 type IdType = (typeof idTypes)[number];
@@ -159,6 +160,7 @@ const Validator = z.object({
   target_nature: z.enum(["None", ...nature]),
   target_species: z.enum(species),
   tid: z.number().int().min(0).max(65535).nullable(),
+  force_second: z.number().int().min(0).max(59).nullable(),
   id_filter: IdFilterSchema,
 });
 
@@ -174,6 +176,7 @@ const initialValues: FormState = {
   target_nature: "None",
   target_species: "None",
   tid: null,
+  force_second: null,
   id_filter: {
     type: "tid",
     value0: 0,
@@ -277,6 +280,12 @@ const getFields = ({
       label: "Optional TID",
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
+    {
+      label: "Force Second",
+      input: (
+        <FormikNumberInput<FormState> name="force_second" numType="decimal" />
+      ),
+    },
   ];
 };
 
@@ -341,12 +350,13 @@ export const Id4Searcher = () => {
         .exhaustive();
 
       const chunked = chunkRange([opts.min_delay, opts.max_delay], 200);
-      const searchOpts: Id4SearchOptions[] = chunked.map(
+      const searchOpts: UndefinedToNull<Id4SearchOptions>[] = chunked.map(
         ([min_delay, max_delay]) => ({
           year: opts.year,
           min_delay,
           max_delay,
           filter: idFilter,
+          force_second: opts.force_second,
         }),
       );
       await searchDpptIds(searchOpts);

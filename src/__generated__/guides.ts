@@ -1458,6 +1458,7 @@ export const guides = {
       file: "guides/Gen 3/Emerald/Egg RNG.mdx",
       translations: {
         en: "/emulator-emerald-egg/",
+        it: "/it-emulator-emerald-egg/",
         zh: "/zh-emulator-emerald-egg/",
       },
       displayAttributes: ["video_guide", "web_tool"],
@@ -2805,6 +2806,38 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
+    ),
+  },
+  "/it-emulator-emerald-egg/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["emu"],
+      isNew: false,
+      title: "RNG UOVA SMERALDO",
+      navDrawerTitle: "RNG UOVA SMERALDO",
+      description:
+        "Learn how to RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies.",
+      slug: "/it-emulator-emerald-egg/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-09",
+      translation: { enSlug: "/emulator-emerald-egg/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Emulator Egg RNG.mdx",
+      translations: {
+        en: "/emulator-emerald-egg/",
+        it: "/it-emulator-emerald-egg/",
+        zh: "/zh-emulator-emerald-egg/",
+      },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Gen 3/Emerald/Emulator Egg RNG.mdx"
+        ),
     ),
   },
   "/legends-arceus/": {
@@ -5585,6 +5618,7 @@ export const guides = {
       file: "guides/Translations/zh/Gen 3/Emerald/Egg RNG.mdx",
       translations: {
         en: "/emulator-emerald-egg/",
+        it: "/it-emulator-emerald-egg/",
         zh: "/zh-emulator-emerald-egg/",
       },
       displayAttributes: ["video_guide", "web_tool"],
@@ -6541,6 +6575,7 @@ export const guideSlugs = [
   "/install-capturesight/",
   "/install-pokereader-emu/",
   "/install-pokereader/",
+  "/it-emulator-emerald-egg/",
   "/legends-arceus/",
   "/meteor-jirachi/",
   "/mgba-setup/",

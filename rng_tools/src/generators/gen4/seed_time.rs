@@ -146,12 +146,38 @@ pub struct FindSeedTime4Options {
 }
 
 impl FindSeedTime4Options {
+    pub fn new(
+        seed: u32,
+        year: u32,
+        delay_range: RangeInclusive<u32>,
+        second: Option<u32>,
+    ) -> Self {
+        match second {
+            Some(second) => Self::new_force_second(seed, year, delay_range, second),
+            None => Self::new_safe_second(seed, year, delay_range),
+        }
+    }
+
     pub fn new_safe_second(seed: u32, year: u32, delay_range: RangeInclusive<u32>) -> Self {
         Self {
             seed,
             year,
             delay_range,
             second_range: Some(1..=58),
+        }
+    }
+
+    pub fn new_force_second(
+        seed: u32,
+        year: u32,
+        delay_range: RangeInclusive<u32>,
+        second: u32,
+    ) -> Self {
+        Self {
+            seed,
+            year,
+            delay_range,
+            second_range: Some(second..=second),
         }
     }
 }

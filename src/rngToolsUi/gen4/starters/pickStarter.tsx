@@ -7,7 +7,11 @@ import {
   ResultColumn,
   RngToolForm,
 } from "~/components";
-import { multiWorkerRngTools, SearchStatic4Method1State } from "~/rngTools";
+import {
+  multiWorkerRngTools,
+  SearchStatic4Method1Opts,
+  SearchStatic4Method1State,
+} from "~/rngTools";
 import { z } from "zod";
 import {
   getPkmFilterFields,
@@ -33,6 +37,7 @@ import { getStatRange } from "~/types/statRange";
 import { Gen4GameVersion } from "../gen4types";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { chunkIvs } from "~/utils/chunkIvs";
+import { UndefinedToNull } from "~/types";
 
 type Result = FlattenIvs<
   SearchStatic4Method1State & {
@@ -71,6 +76,7 @@ const Validator = z
     species: z.enum(allStarters),
     min_delay: z.number().int().min(0),
     max_delay: z.number().int().min(0),
+    force_second: z.number().int().min(0).max(59).nullable(),
   })
   .merge(pkmFilterSchema);
 
@@ -83,6 +89,7 @@ const dpptInitialValues: FormState = {
   species: "Turtwig",
   min_delay: 600,
   max_delay: 1000,
+  force_second: null,
   ...getPkmFilterInitialValues(),
 };
 
@@ -179,6 +186,12 @@ const getFields = (game: Gen4GameVersion): Field[] => {
       ),
     },
     ...getPkmFilterFields(),
+    {
+      label: "Force Second",
+      input: (
+        <FormikNumberInput<FormState> name="force_second" numType="decimal" />
+      ),
+    },
   ];
 };
 
@@ -209,10 +222,11 @@ export const PickStarter4 = () => {
       const minMaxStats = await getStatRange(opts.species, [5, 6]);
       setState((prev) => ({ ...prev, species: opts.species, minMaxStats }));
       const advance = getStarterAdvance(opts.species, game);
-      const baseOpts = {
+      const baseOpts: UndefinedToNull<SearchStatic4Method1Opts> = {
         ...opts,
         min_advance: advance,
         max_advance: advance,
+        force_second: opts.force_second,
         filter: {
           shiny: opts.filter_shiny,
           nature: opts.filter_nature,

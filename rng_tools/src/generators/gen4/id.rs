@@ -65,6 +65,7 @@ pub struct Id4SearchOptions {
     pub max_delay: u32,
     pub year: u32,
     pub filter: IdFilter,
+    pub force_second: Option<u32>,
 }
 
 #[wasm_bindgen]
@@ -91,7 +92,7 @@ pub fn search_dppt_ids(opts: Id4SearchOptions) -> Vec<Id4> {
                 }
 
                 let seed_time_opts =
-                    FindSeedTime4Options::new_safe_second(seed, opts.year, delay..=delay);
+                    FindSeedTime4Options::new(seed, opts.year, delay..=delay, opts.force_second);
 
                 let seed_time = dppt_find_seedtime(seed_time_opts);
 
@@ -122,6 +123,7 @@ mod test {
             min_delay: 0,
             max_delay: 10,
             year: 2021,
+            force_second: None,
         };
         let results = search_dppt_ids(opts);
         let expected = [Id4 {
@@ -131,6 +133,31 @@ mod test {
             seed_time: SeedTime4 {
                 seed: 0x4e16001a,
                 datetime: datetime!(2021-01-01 22:19:58).unwrap(),
+                delay: 5,
+                coin_flips: coin_flips!("TTHTTHTHTTHHHHHHHTTH"),
+            },
+        }];
+
+        assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn search_with_second() {
+        let opts = Id4SearchOptions {
+            filter: IdFilter::Tid(1234),
+            min_delay: 0,
+            max_delay: 10,
+            year: 2021,
+            force_second: Some(30),
+        };
+        let results = search_dppt_ids(opts);
+        let expected = [Id4 {
+            tid: 1234,
+            sid: 12129,
+            tsv: 1398,
+            seed_time: SeedTime4 {
+                seed: 0x4e16001a,
+                datetime: datetime!(2021-01-01 22:47:30).unwrap(),
                 delay: 5,
                 coin_flips: coin_flips!("TTHTTHTHTTHHHHHHHTTH"),
             },

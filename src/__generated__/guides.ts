@@ -5906,7 +5906,7 @@ export const guides = {
         ),
     ),
   },
-"/zh-gba-methods/": {
+  "/zh-gba-methods/": {
     meta: {
       categories: ["GBA Technical Documentation"],
       tags: ["info"],

@@ -2375,7 +2375,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Methods.mdx",
-      translations: null,
+      translations: { en: "/gba-methods/", zh: "/zh-gba-methods/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5906,6 +5906,31 @@ export const guides = {
         ),
     ),
   },
+"/zh-gba-methods/": {
+    meta: {
+      categories: ["GBA Technical Documentation"],
+      tags: ["info"],
+      isNew: false,
+      title: "绿宝石中的方式 1-4",
+      navDrawerTitle: "绿宝石中的方式 1-4",
+      description:
+        "什么是方式、为什么会存在方式 1-4，以及它们如何影响宝可梦的生成。",
+      slug: "/zh-gba-methods/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-08",
+      translation: { enSlug: "/gba-methods/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Emerald/GBA Methods.mdx",
+      translations: { en: "/gba-methods/", zh: "/zh-gba-methods/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 3/Emerald/GBA Methods.mdx"),
+    ),
+  },
   "/zh-gba-pokerus-technical/": {
     meta: {
       categories: ["GBA Technical Documentation"],
@@ -6637,6 +6662,7 @@ export const guideSlugs = [
   "/zh-emulator-rs-wishmaker/",
   "/zh-frlg-gen3-sid/",
   "/zh-frlg-seeding-bot/",
+  "/zh-gba-methods/",
   "/zh-gba-pokerus-technical/",
   "/zh-gen2-celebi/",
   "/zh-gen2-starters/",

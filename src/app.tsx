@@ -6,7 +6,6 @@ import { ThemeProvider } from "~/theme/provider";
 import { MDXProvider } from "@mdx-js/react";
 import { markdownComponents } from "~/markdownExports";
 import { NeedsUpdateNotification } from "~/swRefresh/notification";
-import { initRngTools } from "./rngTools";
 import { useActiveRoute } from "./hooks/useActiveRoute";
 import { getGuide } from "./guides";
 
@@ -15,10 +14,6 @@ type Props = {
 };
 
 export const App = ({ updateSw }: Props) => {
-  React.useEffect(() => {
-    initRngTools();
-  }, []);
-
   const route = useActiveRoute();
 
   React.useEffect(() => {

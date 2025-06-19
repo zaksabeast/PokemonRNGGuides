@@ -3420,7 +3420,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Retail Egg.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-emerald-egg/",
+        zh: "/zh-retail-emerald-egg/",
+      },
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Retail Egg.mdx")),
@@ -6208,6 +6211,34 @@ export const guides = {
         ),
     ),
   },
+  "/zh-retail-emerald-egg/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Retail Emerald Egg RNG",
+      navDrawerTitle: "Retail Emerald Egg RNG",
+      description:
+        "Learn how to Retail RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies.",
+      slug: "/zh-retail-emerald-egg/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-18",
+      translation: { enSlug: "/retail-emerald-egg/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Emerald/Retail Egg.mdx",
+      translations: {
+        en: "/retail-emerald-egg/",
+        zh: "/zh-retail-emerald-egg/",
+      },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 3/Emerald/Retail Egg.mdx"),
+    ),
+  },
   "/zh-retail-emerald-wild/": {
     meta: {
       categories: ["Emerald"],
@@ -6673,6 +6704,7 @@ export const guideSlugs = [
   "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
+  "/zh-retail-emerald-egg/",
   "/zh-retail-emerald-wild/",
   "/zh-retail-rubysapphire-tid/",
   "/zh-rs-battery/",

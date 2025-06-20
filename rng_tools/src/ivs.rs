@@ -39,7 +39,7 @@ macro_rules! impl_index_g3idx {
 #[macro_export]
 macro_rules! ivs {
     ($hp:literal / $atk:literal / $def:literal / $spa:literal / $spd:literal / $spe:literal) => {{
-        const IV: Ivs = Ivs {
+        const IV: Ivs = $crate::Ivs {
             hp: $hp,
             atk: $atk,
             def: $def,

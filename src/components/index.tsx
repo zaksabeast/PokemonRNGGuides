@@ -42,3 +42,6 @@ export { Grid } from "./grid";
 export { Link } from "./link";
 export { NavBreadcrumbs } from "./navBreadcrumbs";
 export { Stepper, Step } from "./stepper/stepper";
+export { CalibrateTimerButton } from "./calibrateTimerButton";
+export { BadgeRibbon } from "./badgeRibbon";
+export { MetronomeButton } from "./metronome";

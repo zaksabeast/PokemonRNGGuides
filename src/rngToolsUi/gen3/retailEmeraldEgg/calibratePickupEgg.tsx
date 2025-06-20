@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  CalibrateTimerButton,
   Field,
   Flex,
   ResultColumn,
@@ -20,22 +21,22 @@ import {
 } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { nullableIvColumns } from "~/rngToolsUi/shared/ivColumns";
-import { getGen3BaseStats } from "~/types/baseStats";
+import { getLooseBaseStats } from "~/types/baseStats";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
-import { getGen3StatRange } from "~/rngToolsUi/gen3/utils/statRange";
+import { getStatRange } from "~/types/statRange";
 import { StatFields } from "~/components/statInput";
 import pmap from "p-map";
 import { sortBy, startCase, mapValues } from "lodash-es";
 import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
 import { ivMethods } from "./constants";
-import { CalibrateButton } from "./calibrateButton";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
 import { gen3SpeciesOptions } from "~/types/species";
 import { natureOptions } from "~/components/pkmFilter";
 import { atom, useAtom } from "jotai";
+import { formatOffset } from "~/utils/offsetSymbol";
 
 type HeldEgg = {
   species: Species;
@@ -121,28 +122,23 @@ type Result = {
   ivs: InheritedIvs;
 } & Nullable<StatsValue>;
 
-const getOffsetSymbol = (offset: number) => {
-  if (offset > 0) {
-    return "+";
-  }
-  if (offset < 0) {
-    return "-";
-  }
-  return "";
-};
-
 const columns: ResultColumn<Result>[] = [
   {
     title: "Calibrate",
     dataIndex: "advance",
     render: (_, result) => (
-      <CalibrateButton hitAdvance={result.advance} timer={timerAtom} />
+      <CalibrateTimerButton
+        type="gen3"
+        hitAdvance={result.advance}
+        timer={timerAtom}
+        trackerId="calibrate_retail_emerald_pickup_egg"
+      />
     ),
   },
   {
     title: "Offset",
     dataIndex: "offset",
-    render: (offset) => `${getOffsetSymbol(offset)}${Math.abs(offset)}`,
+    render: formatOffset,
   },
   {
     title: "Method",
@@ -213,7 +209,7 @@ export const CalibratePickupEgg = () => {
 
   React.useEffect(() => {
     const runAsync = async () => {
-      const stats = await getGen3StatRange(targetSpecies);
+      const stats = await getStatRange(targetSpecies);
       setMinMaxStats(stats);
     };
     runAsync();
@@ -221,7 +217,7 @@ export const CalibratePickupEgg = () => {
 
   React.useEffect(() => {
     const runAsync = async () => {
-      const baseStats = getGen3BaseStats(targetSpecies);
+      const baseStats = getLooseBaseStats(targetSpecies);
 
       if (baseStats == null) {
         setPotentialEggs([]);

@@ -1,18 +1,27 @@
 import { rngTools, Species } from "~/rngTools";
-import { getGen3BaseStats } from "~/types/baseStats";
+import { getLooseBaseStats } from "~/types/baseStats";
 import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
 
-export const getGen3StatRange = async (
+export const getStatRange = async (
   species: Species,
+  levelRange: [number, number] = [5, 5],
 ): Promise<MinMaxStats> => {
-  const baseStats = getGen3BaseStats(species);
+  const baseStats = getLooseBaseStats(species);
 
   if (baseStats == null) {
     return defaultMinMaxStats;
   }
 
-  const minStats = await rngTools.calculate_minmax_stats(baseStats, 5, true);
-  const maxStats = await rngTools.calculate_minmax_stats(baseStats, 5, false);
+  const minStats = await rngTools.calculate_minmax_stats(
+    baseStats,
+    levelRange[0],
+    true,
+  );
+  const maxStats = await rngTools.calculate_minmax_stats(
+    baseStats,
+    levelRange[1],
+    false,
+  );
 
   return {
     hp: { min: minStats.hp, max: maxStats.hp },

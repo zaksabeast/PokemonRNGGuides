@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type Stat = "hp" | "atk" | "def" | "spa" | "spd" | "spe";
 
 export const stats = [
@@ -31,3 +33,14 @@ export const defaultMinMaxStats: MinMaxStats = {
   spd: { min: 0, max: 0 },
   spe: { min: 0, max: 0 },
 };
+
+const StatSchema = z.number().min(0).max(999);
+
+export const StatFieldsSchema = z.object({
+  hpStat: StatSchema,
+  atkStat: StatSchema,
+  defStat: StatSchema,
+  spaStat: StatSchema,
+  spdStat: StatSchema,
+  speStat: StatSchema,
+});

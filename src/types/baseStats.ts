@@ -1,7 +1,7 @@
 import { Species, StatsValue } from "~/rngTools";
 import { get } from "lodash-es";
 
-export const gen3BaseStats = {
+const baseStats = {
   Bulbasaur: { hp: 45, atk: 49, def: 49, spa: 65, spd: 65, spe: 45 },
   Ivysaur: { hp: 60, atk: 62, def: 63, spa: 80, spd: 80, spe: 60 },
   Venusaur: { hp: 80, atk: 82, def: 83, spa: 100, spd: 100, spe: 80 },
@@ -387,10 +387,26 @@ export const gen3BaseStats = {
   Groudon: { hp: 100, atk: 150, def: 140, spa: 100, spd: 90, spe: 90 },
   Rayquaza: { hp: 105, atk: 150, def: 90, spa: 150, spd: 90, spe: 95 },
   Jirachi: { hp: 100, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 },
+  Turtwig: { hp: 55, atk: 68, def: 64, spa: 45, spd: 55, spe: 31 },
+  Chimchar: { hp: 44, atk: 58, def: 44, spa: 58, spd: 44, spe: 61 },
+  Piplup: { hp: 53, atk: 51, def: 53, spa: 61, spd: 56, spe: 40 },
 } as const satisfies Partial<Record<Species, StatsValue>>;
 
-export type StatSpecies = keyof typeof gen3BaseStats;
+type StatSpecies = keyof typeof baseStats;
 
-export const getGen3BaseStats = (species: Species): StatsValue | null => {
-  return get(gen3BaseStats, species) ?? null;
+/**
+ * Returns the base stats for a given species.
+ * Good for tools that only accept a small set of species, like starters.
+ */
+export const getStrictBaseStats = (species: StatSpecies): StatsValue => {
+  return baseStats[species];
+};
+
+/**
+ * Accepts any valid species, but returns null if the base stats are not defined.
+ * Good for cases where a tool accepts a large variety of species.
+ * Just make sure to add the stats for new tools, like eggs.
+ */
+export const getLooseBaseStats = (species: Species): StatsValue | null => {
+  return get(baseStats, species) ?? null;
 };

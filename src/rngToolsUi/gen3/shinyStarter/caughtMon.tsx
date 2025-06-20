@@ -12,19 +12,14 @@ import type { Game, TargetStarter } from "./index";
 import { toOptions } from "~/utils/options";
 import { natureOptions } from "~/components/pkmFilter";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
+import { StatFieldsSchema } from "~/types";
 
-const StatSchema = z.number().min(0).max(999);
-
-const Validator = z.object({
-  hpStat: StatSchema,
-  atkStat: StatSchema,
-  defStat: StatSchema,
-  spaStat: StatSchema,
-  spdStat: StatSchema,
-  speStat: StatSchema,
-  nature: z.enum(nature),
-  gender: z.enum(["Male", "Female"]),
-});
+const Validator = z
+  .object({
+    nature: z.enum(nature),
+    gender: z.enum(["Male", "Female"]),
+  })
+  .merge(StatFieldsSchema);
 
 export type FormState = z.infer<typeof Validator>;
 
@@ -133,7 +128,7 @@ export const CaughtMon = ({
           />
         ),
       },
-      ...getStatFields(minMaxStats),
+      ...getStatFields<FormState>(minMaxStats),
     ];
   }, [minMaxStats]);
 

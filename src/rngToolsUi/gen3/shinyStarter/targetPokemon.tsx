@@ -9,7 +9,7 @@ import {
 import { getTargetPokemonDesc } from "./calc";
 import type { Game, TargetStarter } from "./index";
 import { toOptions } from "~/utils/options";
-import { getGen3StatRange } from "../utils/statRange";
+import { getStatRange } from "~/types/statRange";
 
 type Props = {
   game: Game;
@@ -36,7 +36,7 @@ export const TargetPokemon = ({
             onChange={async ({ target }) => {
               setTargetStarter({
                 species: target.value,
-                minMaxStats: await getGen3StatRange(target.value),
+                minMaxStats: await getStatRange(target.value),
               });
 
               const desc = await getTargetPokemonDesc(

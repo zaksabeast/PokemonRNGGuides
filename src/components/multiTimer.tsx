@@ -38,6 +38,7 @@ type InnerProps = {
   setState: (state: HydrationLock<MultiTimerState>) => void;
   minutesBeforeTarget: number;
   milliseconds: number[];
+  disableStart?: boolean;
   startButtonTrackerId: string;
   stopButtonTrackerId: string;
 };
@@ -47,6 +48,7 @@ const InnerMultiTimer = ({
   setState,
   minutesBeforeTarget,
   milliseconds,
+  disableStart = false,
   startButtonTrackerId,
   stopButtonTrackerId,
 }: InnerProps) => {
@@ -216,6 +218,7 @@ const InnerMultiTimer = ({
       <FormFieldTable fields={timerSettingFields} />
 
       <Button
+        disabled={disableStart && startTimeMs == null}
         trackerId={
           startTimeMs != null ? startButtonTrackerId : stopButtonTrackerId
         }

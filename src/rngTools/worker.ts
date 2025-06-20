@@ -3,3 +3,4 @@ import * as RngTools from "rng_tools";
 import { expose } from "comlink";
 
 expose(RngTools);
+postMessage({ ready: true });

@@ -76,6 +76,9 @@ export const DpptSeedSearch = ({ onClickResultRow }: Props) => {
       ...opts,
       year: opts.date.year,
       month: opts.date.month,
+      delay_range: null,
+      find_first: false,
+      second_range: null,
     });
 
     setResults(results.map((result) => ({ ...result, id: uniqueId() })));
@@ -91,7 +94,7 @@ export const DpptSeedSearch = ({ onClickResultRow }: Props) => {
       onSubmit={onSubmit}
       onClickResultRow={onClickResultRow}
       rowKey="id"
-      submitTrackerId="generate_dppt_seed_search"
+      submitTrackerId="dppt_seed_search"
     />
   );
 };

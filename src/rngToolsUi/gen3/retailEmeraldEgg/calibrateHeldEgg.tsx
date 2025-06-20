@@ -7,6 +7,7 @@ import {
   FormikSelect,
   RngToolSubmit,
   Typography,
+  CalibrateTimerButton,
 } from "~/components";
 import {
   formatTrainerName,
@@ -29,8 +30,8 @@ import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
 import * as tst from "ts-toolbelt";
 import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
-import { CalibrateButton } from "./calibrateButton";
 import { Gen3Timer } from "~/components/gen3Timer";
+import { formatOffset } from "~/utils/offsetSymbol";
 
 const timerAtom = createGen3TimerAtom();
 
@@ -39,28 +40,23 @@ type Result = tst.O.Merge<
   { offset: number }
 >;
 
-const getOffsetSymbol = (offset: number) => {
-  if (offset > 0) {
-    return "+";
-  }
-  if (offset < 0) {
-    return "-";
-  }
-  return "";
-};
-
 const columns: ResultColumn<Result>[] = [
   {
     title: "Calibrate",
     dataIndex: "advance",
     render: (_, result) => (
-      <CalibrateButton hitAdvance={result.advance} timer={timerAtom} />
+      <CalibrateTimerButton
+        type="gen3"
+        hitAdvance={result.advance}
+        timer={timerAtom}
+        trackerId="calibrate_retail_emerald_held_egg"
+      />
     ),
   },
   {
     title: "Offset",
     dataIndex: "offset",
-    render: (offset) => `${getOffsetSymbol(offset)}${Math.abs(offset)}`,
+    render: formatOffset,
   },
   {
     title: "Nature",

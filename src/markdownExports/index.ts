@@ -1,3 +1,4 @@
+import React from "react";
 import {
   MarkdownBreak,
   MarkdownH1,
@@ -48,8 +49,10 @@ import { OrAsMirageSpot } from "~/rngToolsUi/gen6/orasMirageSpot";
 import { RngTimer } from "~/rngToolsUi/timer";
 import { OrasId } from "~/rngToolsUi/gen6/orasId";
 import { Transporter } from "~/rngToolsUi/gen6/transporter/transporter";
+import { Static4Generator } from "~/rngToolsUi/gen4/gen4stationary.tsx";
 import { DpptSeed } from "~/rngToolsUi/gen4/dpptSeed";
-import { DpptId } from "~/rngToolsUi/gen4/dpptId";
+import { CalibrateId4 } from "~/rngToolsUi/gen4/id/calibrateId";
+import { Id4Searcher } from "~/rngToolsUi/gen4/id/idSearcher";
 import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
 import { Gen7SosList } from "~/pageComponents/gen7Sos/sosList";
 import { Static3 } from "~/rngToolsUi/gen3/static/static3";
@@ -74,7 +77,18 @@ import {
 } from "~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg";
 import { withTags } from "~/components/tagDetector/provider";
 import { mapValues } from "lodash-es";
-import React from "react";
+import {
+  CalibrateStarter4,
+  GetStarter4,
+  PickStarter4,
+  Starter4Setup,
+} from "~/rngToolsUi/gen4/starters";
+import { Id4Timer, Id4ConsoleSetDateString } from "~/rngToolsUi/gen4/id/timer";
+import { Gen4IdSetup } from "~/rngToolsUi/gen4/id/setup";
+import { Starter4ConsoleSetDateString } from "~/rngToolsUi/gen4/starters/getStarter";
+import { Starter4ShowIf } from "~/rngToolsUi/gen4/starters/showIf";
+import { Id4ShowIf } from "~/rngToolsUi/gen4/id/showIf";
+import { Metronome3dsNotice } from "~/rngToolsUi/gen4/shared/metronomeNotice";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -115,6 +129,9 @@ const nonTools = {
   Stepper,
   Step,
   Glossary,
+  Starter4ShowIf,
+  Id4ShowIf,
+  Metronome3dsNotice,
 };
 
 const tools = {
@@ -140,8 +157,13 @@ const tools = {
   RngTimer,
   OrasId,
   Transporter,
+  Static4Generator,
   DpptSeed,
-  DpptId,
+  CalibrateId4,
+  Gen4IdSetup,
+  Id4ConsoleSetDateString,
+  Id4Searcher,
+  Id4Timer,
   XyPokeRadar,
   ShinyHoennStarter,
   GenerateHoennTidSid,
@@ -154,6 +176,11 @@ const tools = {
   RetailEmeraldPickupEgg,
   CalibratePickupEgg,
   CalibratePickupEggTimer,
+  CalibrateStarter4,
+  GetStarter4,
+  PickStarter4,
+  Starter4ConsoleSetDateString,
+  Starter4Setup,
 };
 
 export const markdownComponents = {

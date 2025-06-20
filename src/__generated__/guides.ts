@@ -2358,6 +2358,31 @@ export const guides = {
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
   },
+  "/gba-methods-lead-impact/": {
+    meta: {
+      categories: ["GBA Technical Documentation"],
+      tags: ["any"],
+      isNew: true,
+      title: "Lead Impact on Wild Methods in Emerald",
+      navDrawerTitle: "Methods & Lead",
+      description:
+        "Understanding why the lead impacts which Wild method is triggered",
+      slug: "/gba-methods-lead-impact/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: "2025-06-18",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Gen 3/Emerald/GBA Methods Part2.mdx",
+      translations: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/GBA Methods Part2.mdx"),
+    ),
+  },
   "/gba-methods/": {
     meta: {
       categories: ["GBA Technical Documentation"],
@@ -6582,6 +6607,7 @@ export const guideSlugs = [
   "/frlg-tidsid-generator/",
   "/frlg-tips-rng/",
   "/gamecube/",
+  "/gba-methods-lead-impact/",
   "/gba-methods/",
   "/gba-overview/",
   "/gba-pokerus-technical/",

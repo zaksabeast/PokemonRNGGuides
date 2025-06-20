@@ -1458,6 +1458,7 @@ export const guides = {
       file: "guides/Gen 3/Emerald/Egg RNG.mdx",
       translations: {
         en: "/emulator-emerald-egg/",
+        it: "/it-emulator-emerald-egg/",
         zh: "/zh-emulator-emerald-egg/",
       },
       displayAttributes: ["video_guide", "web_tool"],
@@ -2575,7 +2576,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Glossary.mdx",
-      translations: null,
+      translations: { en: "/gen3-glossary/", it: "/it-gen3-glossary/" },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Glossary.mdx")),
@@ -2805,6 +2806,63 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
+    ),
+  },
+  "/it-emulator-emerald-egg/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["emu"],
+      isNew: false,
+      title: "RNG UOVA SMERALDO",
+      navDrawerTitle: "RNG UOVA SMERALDO",
+      description:
+        "Learn how to RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies.",
+      slug: "/it-emulator-emerald-egg/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-09",
+      translation: { enSlug: "/emulator-emerald-egg/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Emulator Egg RNG.mdx",
+      translations: {
+        en: "/emulator-emerald-egg/",
+        it: "/it-emulator-emerald-egg/",
+        zh: "/zh-emulator-emerald-egg/",
+      },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Gen 3/Emerald/Emulator Egg RNG.mdx"
+        ),
+    ),
+  },
+  "/it-gen3-glossary/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["info"],
+      isNew: false,
+      title: "Glossary",
+      navDrawerTitle: "Glossary",
+      description:
+        "List of important terms related to Pokémon RNG manipulation in Generation III games.",
+      slug: "/it-gen3-glossary/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-17",
+      translation: { enSlug: "/gen3-glossary/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Glossary.mdx",
+      translations: { en: "/gen3-glossary/", it: "/it-gen3-glossary/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/it/Gen 3/Emerald/Glossary.mdx"),
     ),
   },
   "/legends-arceus/": {
@@ -5585,6 +5643,7 @@ export const guides = {
       file: "guides/Translations/zh/Gen 3/Emerald/Egg RNG.mdx",
       translations: {
         en: "/emulator-emerald-egg/",
+        it: "/it-emulator-emerald-egg/",
         zh: "/zh-emulator-emerald-egg/",
       },
       displayAttributes: ["video_guide", "web_tool"],
@@ -6541,6 +6600,8 @@ export const guideSlugs = [
   "/install-capturesight/",
   "/install-pokereader-emu/",
   "/install-pokereader/",
+  "/it-emulator-emerald-egg/",
+  "/it-gen3-glossary/",
   "/legends-arceus/",
   "/meteor-jirachi/",
   "/mgba-setup/",

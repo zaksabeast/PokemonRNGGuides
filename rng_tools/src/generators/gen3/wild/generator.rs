@@ -1,4 +1,4 @@
-use super::Gen3EncounterType;
+use super::{Gen3EncounterType, calc_modulo_cycle_signed, calc_modulo_cycle_unsigned};
 use crate::EncounterSlot;
 use crate::Ivs;
 use crate::Species;
@@ -7,8 +7,15 @@ use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};
 use serde::{Deserialize, Serialize};
+use std::ops;
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
+
+const BASE_LEAD_PID: u32 = 0;
+const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 24);
+const BASE_LEAD_PID_MOD_25_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 25);
+
+const VERBOSE: bool = false;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -39,8 +46,71 @@ pub struct Wild3GeneratorOptions {
     pub map_idx: usize,
     pub encounter_slot: Option<Vec<EncounterSlot>>,
     pub methods: Vec<Gen3Method>,
-    pub lead: Option<Gen3Lead>,
+    pub lead: Gen3Lead,
     pub filter: PkmFilter,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct CycleCount {
+    pub cycle: usize,
+    pub mod24: usize,
+    pub mod25: usize,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct CycleRange {
+    pub start: CycleCount,
+    pub len: usize,
+}
+
+impl CycleRange {
+    pub fn from_start_len(start: CycleCount, len: usize) -> CycleRange {
+        CycleRange { start, len }
+    }
+    pub fn new(cycle: usize, mod24: usize, mod25: usize, len: usize) -> CycleRange {
+        CycleRange {
+            start: CycleCount {
+                cycle,
+                mod24,
+                mod25,
+            },
+            len,
+        }
+    }
+}
+
+impl Default for CycleCount {
+    fn default() -> Self {
+        CycleCount {
+            cycle: 0,
+            mod24: 0,
+            mod25: 0,
+        }
+    }
+}
+
+impl CycleCount {
+    pub fn add(&mut self, cycle: usize, reason: &str) {
+        self.cycle += cycle;
+        if VERBOSE {
+            println!("cycle += {} (total: {}) : {}", cycle, self.cycle, reason);
+        }
+    }
+    pub fn add_mod_24(&mut self, mod24: usize) {
+        self.cycle += mod24 * BASE_LEAD_PID_MOD_24_CYCLES;
+        self.mod24 += mod24;
+    }
+    pub fn add_mod_25(&mut self, mod25: usize) {
+        self.cycle += mod25 * BASE_LEAD_PID_MOD_25_CYCLES;
+        self.mod25 += mod25;
+    }
+}
+impl ops::AddAssign<(usize, &str)> for CycleCount {
+    fn add_assign(&mut self, rhs: (usize, &str)) {
+        self.add(rhs.0, rhs.1);
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -50,42 +120,173 @@ pub struct Wild3GeneratorResult {
     pub pid: u32,
     pub ivs: Ivs,
     pub method: Gen3Method,
+    pub cycle_range: CycleRange,
 }
 
 pub fn generate_gen3_wild(
-    rng: &mut Pokerng,
+    mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
 ) -> Vec<Wild3GeneratorResult> {
     let mut results: Vec<Wild3GeneratorResult> = vec![];
-    let encounter_rand = ((rng.rand::<u32>() >> 16) % 100) as u8;
+
+    let mut cycle = CycleCount::default();
+
+    // between SweetScentWildEncounter and ChooseWildMonIndex_Land
+    match opts.lead {
+        Gen3Lead::Egg => {
+            cycle.add(
+                2819,
+                "between SweetScentWildEncounter and ChooseWildMonIndex_Land",
+            );
+        }
+        _ => {
+            cycle.add(
+                12059,
+                "between SweetScentWildEncounter and ChooseWildMonIndex_Land",
+            );
+            cycle.add_mod_24(32);
+        }
+    }
+
+    let encounter_rand_val = rng.rand::<u16>() as u32; // ChooseWildMonIndex_Land
+    let encounter_rand = (encounter_rand_val % 100) as u8;
     let encounter_slot = EncounterSlot::from_rand(encounter_rand);
+
+    //between ChooseWildMonIndex_Land and ChooseWildMonLevel
+    cycle += (
+        match opts.lead {
+            Gen3Lead::Egg => 234,
+            _ => 378,
+        },
+        "between ChooseWildMonIndex_Land and ChooseWildMonLevel",
+    );
+
+    cycle += (
+        calc_modulo_cycle_unsigned(encounter_rand_val, 100),
+        "encounter_rand_val % 100",
+    ); // TODO: cycle increment depends on slot
 
     if !EncounterSlot::passes_filter(opts.encounter_slot.as_deref(), encounter_slot) {
         return results;
     }
-    rng.rand::<u32>(); // level
 
-    let required_gender = match (opts.gender_ratio.has_multiple_genders(), opts.lead) {
-        (true, Some(Gen3Lead::CuteCharm(gender))) if rng.rand::<u16>() % 3 != 0 => {
-            Some(if gender == Gender::Female {
-                Gender::Male
-            } else {
-                Gender::Female
-            })
+    let lvl_range_rand_val = rng.rand::<u16>(); // ChooseWildMonLevel
+    let lvl_range = 1; // TODO: get from Wild3EncounterTable
+
+    let required_gender: Option<Gender>;
+    let required_nature: Nature;
+
+    // between ChooseWildMonLevel and CreateWildMon_CuteCharmCheck
+    cycle += (
+        calc_modulo_cycle_signed(lvl_range_rand_val as i32, lvl_range),
+        "calc_modulo_cycle_s(lvl_range_rand_val, lvl_range)",
+    );
+    match opts.lead {
+        Gen3Lead::Egg => {
+            cycle += (
+                9199,
+                "between ChooseWildMonLevel and CreateWildMon_CuteCharmCheck",
+            );
         }
-        _ => None,
+        _ => {
+            cycle.add_mod_24(20);
+            if opts.gender_ratio.has_multiple_genders() {
+                cycle.add_mod_24(12);
+            }
+            cycle += (
+                25182,
+                "between ChooseWildMonLevel and CreateWildMon_CuteCharmCheck",
+            );
+        }
     };
 
-    let required_nature = match opts.lead {
-        Some(Gen3Lead::Synchronize(lead_nature)) => {
+    let pick_wild_mon_nature = |cycle: &mut CycleCount, rng: &mut Pokerng| -> Nature {
+        let nature_rand_val = rng.rand::<u16>();
+        *cycle += (
+            calc_modulo_cycle_unsigned(nature_rand_val as u32, 25),
+            "nature_rand_val % 25",
+        );
+        *cycle += (
+            179,
+            "between PickWildMonNature_ifNotSynchro and CreateMonWithNature_pidlow",
+        );
+        match opts.lead {
+            Gen3Lead::Egg => {} // nothing
+            _ => cycle.add_mod_24(16),
+        }
+        ((nature_rand_val % 25) as u8).into()
+    };
+
+    match (opts.lead, opts.gender_ratio.has_multiple_genders()) {
+        (Gen3Lead::Vanilla, _) | (Gen3Lead::Egg, _) | (Gen3Lead::CuteCharm(_), false) => {
+            required_gender = None;
+
+            cycle += (
+                5763,
+                "between PickWildMonNature_pickRandom and CreateMonWithNature_pidlow",
+            );
+
+            // between PickWildMonNature_pickRandom and CreateMonWithNature_pidlow
+            required_nature = pick_wild_mon_nature(&mut cycle, &mut rng);
+        }
+        (Gen3Lead::Synchronize(lead_nature), _) => {
+            required_gender = None;
+
+            cycle += (
+                5763,
+                "between PickWildMonNature_pickRandom and CreateMonWithNature_pidlow",
+            );
+
             if (rng.rand::<u16>() & 1) == 0 {
-                lead_nature
+                required_nature = lead_nature;
+                // between PickWildMonNature and CreateMonWithNature_pidlow
+                cycle += (
+                    389,
+                    "between PickWildMonNature and CreateMonWithNature_pidlow (synchronize triggered)",
+                );
+                cycle.add_mod_25(1);
+                cycle.add_mod_24(16);
             } else {
-                ((rng.rand::<u16>() % 25) as u8).into()
+                cycle += (
+                    96,
+                    "between PickWildMonNature_pickRandom and CreateMonWithNature_pidlow (synchronize not triggered)",
+                );
+
+                //
+                required_nature = pick_wild_mon_nature(&mut cycle, &mut rng);
             }
         }
-        _ => ((rng.rand::<u16>() % 25) as u8).into(),
-    };
+        (Gen3Lead::CuteCharm(lead_gender), true) => {
+            let cute_charm_rand_val = rng.rand::<u16>();
+
+            // between CreateWildMon_CuteCharmRandom and PickWildMonNature_pickRandom
+            cycle += (
+                calc_modulo_cycle_unsigned(cute_charm_rand_val as u32, 3),
+                "cute_charm_rand_val % 3",
+            );
+
+            if cute_charm_rand_val % 3 != 0 {
+                required_gender = Some(if lead_gender == Gender::Female {
+                    Gender::Male
+                } else {
+                    Gender::Female
+                });
+                cycle.add_mod_24(8);
+                cycle += (
+                    8786 + 44,
+                    "CreateWildMon_CuteCharmRandom and PickWildMonNature_pickRandom (cute charm triggered)",
+                );
+            } else {
+                required_gender = None;
+                cycle += (
+                    5863,
+                    "CreateWildMon_CuteCharmRandom and PickWildMonNature_pickRandom (cute charm not triggered)",
+                );
+            }
+            // between PickWildMonNature_pickRandom and CreateMonWithGenderNatureLetter_pidlow
+            required_nature = pick_wild_mon_nature(&mut cycle, &mut rng);
+        }
+    }
 
     let methods_contains_wild3 = opts.methods.contains(&Gen3Method::Wild3);
     let methods_contains_wild5 = opts.methods.contains(&Gen3Method::Wild5);
@@ -94,18 +295,24 @@ pub fn generate_gen3_wild(
     loop {
         let pid_low = rng.rand::<u16>() as u32;
 
+        let method3_range = 80;
         if methods_contains_wild3 {
             if let Some(gen_mon_wild3) = generate_gen3_wild_method3(
-                *rng,
+                rng,
                 opts,
                 encounter_slot,
                 pid_low,
                 required_gender,
                 required_nature,
+                CycleRange::from_start_len(cycle, method3_range),
             ) {
                 results.push(gen_mon_wild3);
             }
         }
+        cycle += (
+            method3_range,
+            "between CreateMonWithNature_pidlow and CreateMonWithNature_pidhigh",
+        );
 
         let pid_high = rng.rand::<u16>() as u32;
         pid = (pid_high << 16) | pid_low;
@@ -120,50 +327,91 @@ pub fn generate_gen3_wild(
         };
 
         if good_nature && good_gender {
+            // cycle increment done after the loop
             break;
         }
 
+        // between CreateMonWithNature_pidhigh and CreateMonWithNature_pidlow (retry)
+        let retry_pid_cycle = if good_nature { 140 } else { 158 }; // 18 cycles to check gender
+        let method5_range = retry_pid_cycle + calc_modulo_cycle_unsigned(pid, 25);
         if methods_contains_wild5 {
             // Multiple iterations will result in the same Method5 Pokémon.
             // To avoid duplicates, we add the generated Pokémon only in the latest possible PID reroll.
             if let Some(gen_mon_wild5) = generate_gen3_wild_method5(
-                *rng,
+                rng,
                 opts,
                 encounter_slot,
                 required_gender,
                 required_nature,
+                CycleRange::from_start_len(cycle, method5_range),
             ) {
                 results.push(gen_mon_wild5);
             }
         }
+        cycle += (
+            method5_range,
+            "retry_pid_cycle + calc_modulo_cycle_u(pid, 25)",
+        );
     }
 
     if !passes_pid_filter(opts, pid) {
         return results;
     }
 
+    // between CreateMonWithNature_pidhigh and CreateBoxMon_ivs1
+    let method2_range =
+        calc_modulo_cycle_unsigned(pid, 25) + 100 * calc_modulo_cycle_unsigned(pid, 24) + 36900;
+    // TODO: investigate if species impact this. Got 36721, 36903 (poochyena), 36950 (wurmple), 37210 (ralts).
+
     if opts.methods.contains(&Gen3Method::Wild2) {
-        if let Some(gen_mon_wild2) = generate_gen3_wild_method2(*rng, opts, encounter_slot, pid) {
+        if let Some(gen_mon_wild2) = generate_gen3_wild_method2(
+            rng,
+            opts,
+            encounter_slot,
+            pid,
+            CycleRange::from_start_len(cycle, method2_range),
+        ) {
             results.push(gen_mon_wild2);
         }
     }
+    cycle += (
+        method2_range,
+        "method2_range: between CreateMonWithNature_pidhigh and CreateBoxMon_ivs1 (x100 pid % 24 + pid % 25)",
+    );
 
     let iv1 = rng.rand::<u16>();
 
+    // between CreateBoxMon_ivs1 and CreateBoxMon_ivs2
+    let method4_range = 36 * calc_modulo_cycle_unsigned(pid, 24) + 11103; // between CreateBoxMon_ivs1 and CreateBoxMon_ivs2
+
     if opts.methods.contains(&Gen3Method::Wild4) {
-        if let Some(gen_mon_wild4) =
-            generate_gen3_wild_method4(*rng, opts, encounter_slot, pid, iv1)
-        {
+        if let Some(gen_mon_wild4) = generate_gen3_wild_method4(
+            rng,
+            opts,
+            encounter_slot,
+            pid,
+            iv1,
+            CycleRange::from_start_len(cycle, method4_range),
+        ) {
             results.push(gen_mon_wild4);
         }
     }
+    cycle += (
+        method4_range,
+        "method4_range: between CreateBoxMon_ivs1 and CreateBoxMon_ivs2 (x36 pid % 24)",
+    );
 
     if opts.methods.contains(&Gen3Method::Wild1) {
         let ivs = Ivs::new_g3(iv1, rng.rand::<u16>());
 
-        if let Some(gen_mon_wild1) =
-            create_if_passes_filter(opts, pid, ivs, Gen3Method::Wild1, encounter_slot)
-        {
+        if let Some(gen_mon_wild1) = create_if_passes_filter(
+            opts,
+            pid,
+            ivs,
+            Gen3Method::Wild1,
+            encounter_slot,
+            CycleRange::from_start_len(cycle, 280_896),
+        ) {
             results.push(gen_mon_wild1);
         }
     }
@@ -176,12 +424,20 @@ pub fn generate_gen3_wild_method2(
     opts: &Wild3GeneratorOptions,
     encounter_slot: EncounterSlot,
     pid: u32,
+    cycle_range: CycleRange,
 ) -> Option<Wild3GeneratorResult> {
     rng.rand::<u16>(); // Vblank from method2
 
     let ivs = Ivs::new_g3(rng.rand::<u16>(), rng.rand::<u16>());
 
-    create_if_passes_filter(opts, pid, ivs, Gen3Method::Wild2, encounter_slot)
+    create_if_passes_filter(
+        opts,
+        pid,
+        ivs,
+        Gen3Method::Wild2,
+        encounter_slot,
+        cycle_range,
+    )
 }
 
 pub fn generate_gen3_wild_method3(
@@ -191,6 +447,7 @@ pub fn generate_gen3_wild_method3(
     pid_low: u32,
     required_gender: Option<Gender>,
     required_nature: Nature,
+    cycle_range: CycleRange,
 ) -> Option<Wild3GeneratorResult> {
     rng.rand::<u16>(); // Vblank from method3
 
@@ -212,7 +469,14 @@ pub fn generate_gen3_wild_method3(
 
     let ivs = Ivs::new_g3(rng.rand::<u16>(), rng.rand::<u16>());
 
-    create_if_passes_filter(opts, pid, ivs, Gen3Method::Wild3, encounter_slot)
+    create_if_passes_filter(
+        opts,
+        pid,
+        ivs,
+        Gen3Method::Wild3,
+        encounter_slot,
+        cycle_range,
+    )
 }
 
 pub fn generate_gen3_wild_method4(
@@ -221,12 +485,20 @@ pub fn generate_gen3_wild_method4(
     encounter_slot: EncounterSlot,
     pid: u32,
     iv1: u16,
+    cycle_range: CycleRange,
 ) -> Option<Wild3GeneratorResult> {
     rng.rand::<u16>(); // Vblank from method4
 
     let ivs = Ivs::new_g3(iv1, rng.rand::<u16>());
 
-    create_if_passes_filter(opts, pid, ivs, Gen3Method::Wild4, encounter_slot)
+    create_if_passes_filter(
+        opts,
+        pid,
+        ivs,
+        Gen3Method::Wild4,
+        encounter_slot,
+        cycle_range,
+    )
 }
 
 pub fn generate_gen3_wild_method5(
@@ -235,6 +507,7 @@ pub fn generate_gen3_wild_method5(
     encounter_slot: EncounterSlot,
     required_gender: Option<Gender>,
     required_nature: Nature,
+    cycle_range: CycleRange,
 ) -> Option<Wild3GeneratorResult> {
     rng.rand::<u16>(); // Vblank from method5
 
@@ -258,7 +531,14 @@ pub fn generate_gen3_wild_method5(
 
     let ivs = Ivs::new_g3(rng.rand::<u16>(), rng.rand::<u16>());
 
-    create_if_passes_filter(opts, pid, ivs, Gen3Method::Wild5, encounter_slot)
+    create_if_passes_filter(
+        opts,
+        pid,
+        ivs,
+        Gen3Method::Wild5,
+        encounter_slot,
+        cycle_range,
+    )
 }
 
 pub fn passes_pid_filter(opts: &Wild3GeneratorOptions, pid: u32) -> bool {
@@ -303,6 +583,7 @@ pub fn create_if_passes_filter(
     ivs: Ivs,
     method: Gen3Method,
     encounter_slot: EncounterSlot,
+    cycle_range: CycleRange,
 ) -> Option<Wild3GeneratorResult> {
     if !passes_ivs_filter(opts, &ivs) {
         return None;
@@ -313,5 +594,6 @@ pub fn create_if_passes_filter(
         ivs,
         method,
         encounter_slot,
+        cycle_range,
     })
 }

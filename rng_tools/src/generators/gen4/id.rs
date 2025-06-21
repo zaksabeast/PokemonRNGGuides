@@ -1,7 +1,7 @@
-use super::calc_seed;
+use super::{FindSeedTime4Options, SeedTime4, calc_seed, dppt_find_seedtime};
 use crate::rng::Rng;
 use crate::rng::mt::MT;
-use crate::{IdFilter, RngDateTime};
+use crate::{IdFilter, RngDateTime, gen3_tsv};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -18,12 +18,10 @@ pub struct Id4Options {
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Id4 {
-    pub seed: u32,
-    pub delay: u32,
+    pub seed_time: SeedTime4,
     pub tid: u16,
     pub sid: u16,
     pub tsv: u16,
-    pub seconds: u8,
 }
 
 #[wasm_bindgen]
@@ -48,12 +46,10 @@ pub fn generate_dppt_ids(opts: Id4Options) -> Vec<Id4> {
 
             if filter.filter_gen3(tid, sid) {
                 results.push(Id4 {
-                    seed,
-                    delay,
+                    seed_time: SeedTime4::new(seed, datetime.clone(), delay),
                     tid,
                     sid,
-                    tsv: (tid ^ sid) >> 3,
-                    seconds: seconds as u8,
+                    tsv: gen3_tsv(tid, sid),
                 });
             }
         }
@@ -69,6 +65,7 @@ pub struct Id4SearchOptions {
     pub max_delay: u32,
     pub year: u32,
     pub filter: IdFilter,
+    pub force_second: Option<u32>,
 }
 
 #[wasm_bindgen]
@@ -90,14 +87,21 @@ pub fn search_dppt_ids(opts: Id4SearchOptions) -> Vec<Id4> {
                 let tid = sidtid as u16;
                 let sid = (sidtid >> 16) as u16;
 
-                if opts.filter.filter_gen3(tid, sid) {
+                if !opts.filter.filter_gen3(tid, sid) {
+                    continue;
+                }
+
+                let seed_time_opts =
+                    FindSeedTime4Options::new(seed, opts.year, delay..=delay, opts.force_second);
+
+                let seed_time = dppt_find_seedtime(seed_time_opts);
+
+                if let Some(seed_time) = seed_time {
                     results.push(Id4 {
-                        seed,
+                        seed_time,
                         tid,
                         sid,
-                        delay,
-                        tsv: (tid ^ sid) >> 3,
-                        seconds: 0,
+                        tsv: gen3_tsv(tid, sid),
                     });
                 }
             }
@@ -110,7 +114,7 @@ pub fn search_dppt_ids(opts: Id4SearchOptions) -> Vec<Id4> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{assert_list_eq, datetime};
+    use crate::{assert_list_eq, coin_flips, datetime};
 
     #[test]
     fn search() {
@@ -119,15 +123,44 @@ mod test {
             min_delay: 0,
             max_delay: 10,
             year: 2021,
+            force_second: None,
         };
         let results = search_dppt_ids(opts);
         let expected = [Id4 {
-            seed: 0x4e16001a,
             tid: 1234,
             sid: 12129,
             tsv: 1398,
-            delay: 5,
-            seconds: 0,
+            seed_time: SeedTime4 {
+                seed: 0x4e16001a,
+                datetime: datetime!(2021-01-01 22:19:58).unwrap(),
+                delay: 5,
+                coin_flips: coin_flips!("TTHTTHTHTTHHHHHHHTTH"),
+            },
+        }];
+
+        assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn search_with_second() {
+        let opts = Id4SearchOptions {
+            filter: IdFilter::Tid(1234),
+            min_delay: 0,
+            max_delay: 10,
+            year: 2021,
+            force_second: Some(30),
+        };
+        let results = search_dppt_ids(opts);
+        let expected = [Id4 {
+            tid: 1234,
+            sid: 12129,
+            tsv: 1398,
+            seed_time: SeedTime4 {
+                seed: 0x4e16001a,
+                datetime: datetime!(2021-01-01 22:47:30).unwrap(),
+                delay: 5,
+                coin_flips: coin_flips!("TTHTTHTHTTHHHHHHHTTH"),
+            },
         }];
 
         assert_list_eq!(results, expected);
@@ -145,20 +178,26 @@ mod test {
         let results = generate_dppt_ids(opts);
         let expected = [
             Id4 {
-                seed: 0xa40b13f3,
                 tid: 1234,
                 sid: 11608,
                 tsv: 1329,
-                delay: 5086,
-                seconds: 37,
+                seed_time: SeedTime4 {
+                    seed: 0xa40b13f3,
+                    datetime: datetime!(2021-03-23 11:58:37).unwrap(),
+                    delay: 5086,
+                    coin_flips: coin_flips!("TTTTHTTTHHHHTHHTTHTT"),
+                },
             },
             Id4 {
-                seed: 0xb00b1662,
                 tid: 1234,
                 sid: 22909,
                 tsv: 2997,
-                delay: 5709,
-                seconds: 49,
+                seed_time: SeedTime4 {
+                    seed: 0xb00b1662,
+                    datetime: datetime!(2021-03-23 11:58:49).unwrap(),
+                    delay: 5709,
+                    coin_flips: coin_flips!("TTHTTHTHTTTTHTTTTTHT"),
+                },
             },
         ];
         assert_list_eq!(results, expected);

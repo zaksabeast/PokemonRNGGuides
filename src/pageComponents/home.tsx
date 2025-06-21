@@ -1,6 +1,7 @@
-import { Flex, Card, Typography, Grid } from "~/components";
+import { Flex, Card, Typography, Grid, BadgeRibbon } from "~/components";
 import { Route } from "~/routes/defs";
 import styled from "@emotion/styled";
+import { categoryHasNewContent } from "~/guides";
 import brilliantDiamondLogoSrc from "~/assets/logos/brilliant_diamond_logo.webp";
 import shiningPearlLogoSrc from "~/assets/logos/shining_pearl_logo.webp";
 import swordLogoSrc from "~/assets/logos/sword_logo.webp";
@@ -40,71 +41,20 @@ type Game = {
 };
 
 const games = [
-  // Temporarily don't show this since we only have one post
-  // {
-  //   name: "Legends: Arceus",
-  //   images: [],
-  //   slug: "/legends-arceus",
-  // },
   {
-    name: "Brilliant Diamond and Shining Pearl",
-    images: [brilliantDiamondLogoSrc, shiningPearlLogoSrc],
-    slug: "/brilliant-diamond-and-shining-pearl/",
+    name: "Crystal",
+    images: [crystalLogoSrc],
+    slug: "/crystal/",
   },
   {
-    name: "Sword and Shield",
-    images: [swordLogoSrc, shieldLogoSrc],
-    slug: "/sword-and-shield/",
+    name: "Ruby and Sapphire",
+    images: [rubyLogoSrc, sapphireLogoSrc],
+    slug: "/ruby-and-sapphire/",
   },
   {
-    name: "Ultra Sun and Ultra Moon",
-    images: [ultraSunLogoSrc, ultraMoonLogoSrc],
-    slug: "/ultra-sun-and-ultra-moon/",
-  },
-  {
-    name: "Sun and Moon",
-    images: [sunLogoSrc, moonLogoSrc],
-    slug: "/sun-and-moon/",
-  },
-  {
-    name: "Omega Ruby and Alpha Sapphire",
-    images: [omegaRubyLogoSrc, alphaSapphireLogoSrc],
-    slug: "/omega-ruby-and-alpha-sapphire/",
-  },
-  {
-    name: "X and Y",
-    images: [xLogoSrc, yLogoSrc],
-    slug: "/x-and-y/",
-  },
-  {
-    name: "Transporter and Dream Radar",
-    images: [transporterLogoSrc, dreamRadarLogoSrc],
-    slug: "/transporter-dream-radar/",
-  },
-  {
-    name: "Black 2 and White 2",
-    images: [black2LogoSrc, white2LogoSrc],
-    slug: "/black-2-and-white-2/",
-  },
-  {
-    name: "Black and White",
-    images: [blackLogoSrc, whiteLogoSrc],
-    slug: "/black-and-white/",
-  },
-  {
-    name: "HeartGold and SoulSilver",
-    images: [heartGoldLogoSrc, soulSilverLogoSrc],
-    slug: "/heart-gold-and-soul-silver/",
-  },
-  {
-    name: "Platinum",
-    images: [platinumLogoSrc],
-    slug: "/diamond-pearl-and-platinum/",
-  },
-  {
-    name: "Diamond and Pearl",
-    images: [diamondLogoSrc, pearlLogoSrc],
-    slug: "/diamond-pearl-and-platinum/",
+    name: "Gamecube",
+    images: [colosseumLogoSrc, xdLogoSrc],
+    slug: "/gamecube/",
   },
   {
     name: "FireRed and LeafGreen",
@@ -117,20 +67,71 @@ const games = [
     slug: "/emerald/",
   },
   {
-    name: "Gamecube",
-    images: [xdLogoSrc, colosseumLogoSrc],
-    slug: "/gamecube/",
+    name: "Diamond and Pearl",
+    images: [diamondLogoSrc, pearlLogoSrc],
+    slug: "/diamond-pearl-and-platinum/",
   },
   {
-    name: "Ruby and Sapphire",
-    images: [rubyLogoSrc, sapphireLogoSrc],
-    slug: "/ruby-and-sapphire/",
+    name: "Platinum",
+    images: [platinumLogoSrc],
+    slug: "/diamond-pearl-and-platinum/",
   },
   {
-    name: "Crystal",
-    images: [crystalLogoSrc],
-    slug: "/crystal/",
+    name: "HeartGold and SoulSilver",
+    images: [heartGoldLogoSrc, soulSilverLogoSrc],
+    slug: "/heart-gold-and-soul-silver/",
   },
+  {
+    name: "Black and White",
+    images: [blackLogoSrc, whiteLogoSrc],
+    slug: "/black-and-white/",
+  },
+  {
+    name: "Black 2 and White 2",
+    images: [black2LogoSrc, white2LogoSrc],
+    slug: "/black-2-and-white-2/",
+  },
+  {
+    name: "Transporter and Dream Radar",
+    images: [transporterLogoSrc, dreamRadarLogoSrc],
+    slug: "/transporter-dream-radar/",
+  },
+  {
+    name: "X and Y",
+    images: [xLogoSrc, yLogoSrc],
+    slug: "/x-and-y/",
+  },
+  {
+    name: "Omega Ruby and Alpha Sapphire",
+    images: [omegaRubyLogoSrc, alphaSapphireLogoSrc],
+    slug: "/omega-ruby-and-alpha-sapphire/",
+  },
+  {
+    name: "Sun and Moon",
+    images: [sunLogoSrc, moonLogoSrc],
+    slug: "/sun-and-moon/",
+  },
+  {
+    name: "Ultra Sun and Ultra Moon",
+    images: [ultraSunLogoSrc, ultraMoonLogoSrc],
+    slug: "/ultra-sun-and-ultra-moon/",
+  },
+  {
+    name: "Sword and Shield",
+    images: [swordLogoSrc, shieldLogoSrc],
+    slug: "/sword-and-shield/",
+  },
+  {
+    name: "Brilliant Diamond and Shining Pearl",
+    images: [brilliantDiamondLogoSrc, shiningPearlLogoSrc],
+    slug: "/brilliant-diamond-and-shining-pearl/",
+  },
+  // Temporarily don't show this since we only have one post
+  // {
+  //   name: "Legends: Arceus",
+  //   images: [],
+  //   slug: "/legends-arceus",
+  // },
 ] satisfies Game[];
 
 const GameCard = styled(Card)(({ theme }) => ({
@@ -140,6 +141,7 @@ const GameCard = styled(Card)(({ theme }) => ({
     transform: "scale(1.10)",
   },
   ".ant-card-body": {
+    padding: 0,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -164,6 +166,7 @@ const FeaturedChallengeContainer = styled(Flex)(({ theme }) => ({
   justifyContent: "space-around",
   alignItems: "center",
   gap: 8,
+  padding: 24,
   height: "100%",
   [theme.mediaQueries.down("mobile")]: {
     flexDirection: "column",
@@ -204,11 +207,16 @@ export const HomePageComponent = () => {
             border="2px solid"
             fullBody
           >
-            <Flex justify="center" align="center" gap={8} flex={1}>
-              {game.images.map((src) => (
-                <LogoImg key={src} src={src} alt={`${game.name} logo`} />
-              ))}
-            </Flex>
+            <BadgeRibbon
+              $show={categoryHasNewContent(game.slug)}
+              text="New Content"
+            >
+              <Flex justify="center" align="center" gap={8} flex={1} p={24}>
+                {game.images.map((src) => (
+                  <LogoImg key={src} src={src} alt={`${game.name} logo`} />
+                ))}
+              </Flex>
+            </BadgeRibbon>
           </GameCard>
         ))}
       </Grid>

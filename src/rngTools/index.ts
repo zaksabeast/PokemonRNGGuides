@@ -13,8 +13,17 @@ import {
   BatchableFunctionNamesOf,
   BatchableFunctionsOf,
 } from "~/hooks/useBatchedTool";
+import { memoize } from "lodash-es";
 
 type RngToolsModules = typeof RngTools;
+
+type FunctionNamesOf<T> = {
+  [K in keyof T]: T[K] extends tst.F.Function ? K : never;
+}[keyof T];
+
+type FunctionsOf<T> = {
+  [K in FunctionNamesOf<T>]: T[K];
+};
 
 type AdjustFunctionArgs<Fn extends tst.F.Function> = Fn extends (
   ...args: infer Args
@@ -33,10 +42,31 @@ type RngToolWorker = {
   terminate: () => void;
 };
 
+const getMaxWorkerCount = () => {
+  const isFirefox = /firefox/i.test(navigator.userAgent);
+  if (isFirefox) {
+    return 2; // Firefox seems to over report hardwareConcurrency and has a stricter worker limit
+  }
+
+  return Math.max(1, Math.min(window.navigator.hardwareConcurrency, 8));
+};
+
+let workerCount = 0;
+
+const waitUntilAvailable = async (): Promise<void> => {
+  const maxWorkers = getMaxWorkerCount();
+  while (workerCount >= maxWorkers) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+};
+
 /**
  * Spawns a new worker for rng_tools and waits for it to be ready.
  */
 const spawnRngToolWorker = async (): Promise<RngToolWorker> => {
+  await waitUntilAvailable();
+
+  workerCount += 1;
   const worker = new Worker(new URL("./worker", import.meta.url), {
     type: "module",
   });
@@ -57,16 +87,11 @@ const spawnRngToolWorker = async (): Promise<RngToolWorker> => {
 
   return {
     tools: wrap<AdjustedRngTools>(worker),
-    terminate: () => worker.terminate(),
+    terminate: () => {
+      worker.terminate();
+      workerCount -= 1;
+    },
   };
-};
-
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- This isn't great, but it's a workaround for server side rendering.  RngTools will be initialized immediately in the browser.
-export let rngTools: Remote<AdjustedRngTools> = null!;
-
-export const initRngTools = async () => {
-  const worker = await spawnRngToolWorker();
-  rngTools = worker.tools;
 };
 
 export const ZodConsole = z.enum([
@@ -120,3 +145,24 @@ export const multiWorkerRngTools = new Proxy(
     },
   },
 ) as Remote<BatchableFunctionsOf<AdjustedRngTools>>;
+
+const getRngTools = memoize(async () => {
+  const { tools } = await spawnRngToolWorker();
+  return tools;
+});
+
+export const rngTools = new Proxy(
+  {},
+  {
+    get: (_, functionName: keyof FunctionsOf<AdjustedRngTools>) => {
+      return async (
+        ...args: tst.F.Parameters<AdjustedRngTools[typeof functionName]>
+      ) => {
+        const tools = await getRngTools();
+        const func = tools[functionName];
+        // @ts-expect-error -- Function signature makes sure this is correct
+        return func(...args);
+      };
+    },
+  },
+) as Remote<AdjustedRngTools>;

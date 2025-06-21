@@ -72,7 +72,8 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
         });
         let results: MappedRet[] = [];
 
-        const concurrency = window.navigator.hardwareConcurrency;
+        const concurrency = 8;
+
         const sub = from(args)
           // Process each argument in parallel with a concurrency limit
           .pipe(mergeMap(func, concurrency))

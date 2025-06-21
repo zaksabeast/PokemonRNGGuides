@@ -1,4 +1,4 @@
-use chrono::{Datelike, NaiveDate, NaiveDateTime, Timelike};
+use chrono::{Datelike, Duration, NaiveDate, NaiveDateTime, Timelike};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -28,7 +28,7 @@ impl From<NaiveDate> for RngDate {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct RngDateTime {
     pub year: u32,
@@ -76,6 +76,10 @@ impl RngDateTime {
             self.second,
         )
     }
+
+    pub fn as_seconds_iterator(&mut self) -> SecondsIterator {
+        SecondsIterator::new(self)
+    }
 }
 
 impl From<NaiveDateTime> for RngDateTime {
@@ -91,9 +95,39 @@ impl From<NaiveDateTime> for RngDateTime {
     }
 }
 
+pub struct SecondsIterator<'a> {
+    returned_initial: bool,
+    rng_datetime: &'a mut RngDateTime,
+}
+
+impl<'a> SecondsIterator<'a> {
+    fn new(rng_datetime: &'a mut RngDateTime) -> Self {
+        Self {
+            returned_initial: false,
+            rng_datetime,
+        }
+    }
+}
+
+impl Iterator for SecondsIterator<'_> {
+    type Item = RngDateTime;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if !self.returned_initial {
+            self.returned_initial = true;
+            return Some(self.rng_datetime.clone());
+        }
+
+        let mut datetime = self.rng_datetime.to_naive_datetime()?;
+        datetime = datetime.checked_add_signed(Duration::seconds(1))?;
+        *self.rng_datetime = RngDateTime::from(datetime);
+        Some(self.rng_datetime.clone())
+    }
+}
+
 #[macro_export]
 macro_rules! datetime {
-    ($year:literal-$month:literal-$day:literal $hour:literal:$minute:literal:$second:literal) => {{ RngDateTime::new($year, $month, $day, $hour, $minute, $second) }};
+    ($year:literal-$month:literal-$day:literal $hour:literal:$minute:literal:$second:literal) => {{ $crate::RngDateTime::new($year, $month, $day, $hour, $minute, $second) }};
 }
 
 fn get_days_in_month_opt(year: i32, month: u32) -> Option<u32> {
@@ -116,4 +150,45 @@ fn get_days_in_month_opt(year: i32, month: u32) -> Option<u32> {
 pub fn get_days_in_month(year: i32, month: u32) -> u32 {
     // Lazily return 0 if the month is invalid
     get_days_in_month_opt(year, month).unwrap_or_default()
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::assert_list_eq;
+
+    mod seconds_iterator {
+        use super::*;
+
+        #[test]
+        fn iterates() {
+            let results = datetime!(2025-1-1 0:0:0)
+                .unwrap()
+                .as_seconds_iterator()
+                .take(5)
+                .collect::<Vec<RngDateTime>>();
+            let expected = vec![
+                datetime!(2025-1-1 0:0:0).unwrap(),
+                datetime!(2025-1-1 0:0:1).unwrap(),
+                datetime!(2025-1-1 0:0:2).unwrap(),
+                datetime!(2025-1-1 0:0:3).unwrap(),
+                datetime!(2025-1-1 0:0:4).unwrap(),
+            ];
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn handles_overflow() {
+            let results = datetime!(2025-12-31 23:59:59)
+                .unwrap()
+                .as_seconds_iterator()
+                .take(2)
+                .collect::<Vec<_>>();
+            let expected = [
+                datetime!(2025-12-31 23:59:59).unwrap(),
+                datetime!(2026-1-1 0:0:0).unwrap(),
+            ];
+            assert_eq!(results, expected);
+        }
+    }
 }

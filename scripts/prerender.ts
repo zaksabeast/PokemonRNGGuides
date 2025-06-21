@@ -29,8 +29,29 @@ const main = async () => {
   for (const url of routes) {
     const { html, emotionStyles, metaTags, lang } = await render(url);
 
+    const journey = `<script data-grow-initializer="">
+    !(function () {
+      window.growMe ||
+        ((window.growMe = function (e) {
+          window.growMe._.push(e);
+        }),
+        (window.growMe._ = []));
+      var e = document.createElement("script");
+      (e.type = "text/javascript"),
+        (e.src = "https://faves.grow.me/main.js"),
+        (e.defer = !0),
+        e.setAttribute(
+          "data-grow-faves-site-id",
+          "U2l0ZTo4NmZkZDY5Yi0wYTNlLTQ5ODEtYmVlNS0yNWQzZTFmYjY1NmU="
+        );
+      var t = document.getElementsByTagName("script")[0];
+      t.parentNode.insertBefore(e, t);
+    })();
+  </script>
+`;
+
     const result = template
-      .replace("<!--injected-meta-tags-->", metaTags)
+      .replace("<!--injected-meta-tags-->", [metaTags, journey].join("\n"))
       .replace(
         `<!--injected-styles-->`,
         `<style data-emotion>${emotionStyles}</style>

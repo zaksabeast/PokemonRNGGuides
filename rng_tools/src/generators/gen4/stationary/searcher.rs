@@ -1,4 +1,3 @@
-use crate::EncounterSlot;
 use crate::gen4::Static4Species;
 use crate::gen4::{
     FindSeedTime4Options, GameVersion, LeadAbilities, SeedTime4, dppt_find_seedtime,
@@ -218,6 +217,8 @@ pub fn search_static4_method1_seeds(
     results
 }
 
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SearchStatic4MethodjOpts {
     pub tid: u16,
     pub sid: u16,
@@ -230,7 +231,8 @@ pub struct SearchStatic4MethodjOpts {
     pub min_delay: u32,
     pub max_delay: u32,
 }
-
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SearchStatic4MethodjState {
     pub seed: u32,
     pub advance: usize,
@@ -242,7 +244,6 @@ pub struct SearchStatic4MethodjState {
     pub nature: Nature,
     pub shiny: bool,
     pub characteristic: Characteristic,
-    pub encounter_slot: EncounterSlot,
 }
 
 impl PkmState for SearchStatic4MethodjState {
@@ -267,7 +268,7 @@ impl PkmState for SearchStatic4MethodjState {
     }
 }
 
-fn search_static4_methodj(opts: &SearchStatic4MethodjOpts) -> Vec<SearchStatic4Method1State> {
+fn search_static4_methodj(opts: &SearchStatic4MethodjOpts) -> Vec<SearchStatic4MethodjState> {
     let Ivs {
         hp: min_hp,
         atk: min_atk,
@@ -318,20 +319,106 @@ fn get_state_from_jseed(
     let mut rng = Pokerng::new(seed).rev();
     let lead = opts.lead;
 
-    if let LeadAbilities::Synchronize(nature) = lead {
-        if rng.rand::<u16>() >> 15 == 0 {
-            let mut pid: u32;
-            let nature_value = nature as u32;
-            loop {
-                let pid_low = rng.rand::<u16>() as u32;
-                let pid_high = rng.rand::<u16>() as u32;
-                pid = (pid_high << 16) | pid_low;
-                if pid % 25 == nature_value {
-                    break;
+    match lead {
+        LeadAbilities::Synchronize(nature) => {
+            if rng.rand::<u16>() >> 15 == 0 {
+                let mut pid: u32;
+                let nature_value = nature as u32;
+                loop {
+                    let pid_low = rng.rand::<u16>() as u32;
+                    let pid_high = rng.rand::<u16>() as u32;
+                    pid = (pid_high << 16) | pid_low;
+                    if pid % 25 == nature_value {
+                        break;
+                    }
+                }
+                let nature = Nature::from((pid % 25) as u8);
+                let gender = opts.encounter.species().gender_from_pid(pid);
+                let ability = AbilityType::from_gen3_pid(pid);
+                let shiny = gen3_shiny(pid, opts.tid, opts.sid);
+
+                let characteristic = Characteristic::new(pid, &ivs);
+
+                return SearchStatic4MethodjState {
+                    seed: rng.rand::<u32>(),
+                    pid,
+                    ability,
+                    gender,
+                    nature,
+                    ivs,
+                    shiny,
+                    characteristic,
+                    // We'll add these later
+                    advance: 0,
+                    delay: 0,
+                };
+            }
+        }
+        LeadAbilities::CutecharmF => {
+            let gender_threshold = opts.encounter.species().gender_ratio();
+            let buffer = 25 * ((gender_threshold as u32 / 25) + 1);
+            let target_gender = Gender::Male;
+            let nature = (rng.rand::<u16>() / 0xa3e) as u8;
+            if rng.rand::<u16>() % 3 != 0 {
+                let pid = buffer + nature as u32;
+                let gender = opts.encounter.species().gender_from_pid(pid);
+                let ability = AbilityType::from_gen3_pid(pid);
+                let shiny = gen3_shiny(pid, opts.tid, opts.sid);
+                let characteristic = Characteristic::new(pid, &ivs);
+                if gender == target_gender {
+                    let nature = Nature::from_pid(pid);
+
+                    return SearchStatic4MethodjState {
+                        seed: rng.rand::<u32>(),
+                        pid,
+                        ability,
+                        gender,
+                        nature,
+                        ivs,
+                        shiny,
+                        characteristic,
+                        // We'll add these later
+                        advance: 0,
+                        delay: 0,
+                    };
                 }
             }
+        }
+        LeadAbilities::CutecharmM => {
+            let buffer = 0;
+            let target_gender = Gender::Female;
+            let nature = (rng.rand::<u16>() / 0xa3e) as u8;
+            if rng.rand::<u16>() % 3 != 0 {
+                let pid = buffer + nature as u32;
+                let gender = opts.encounter.species().gender_from_pid(pid);
+                let ability = AbilityType::from_gen3_pid(pid);
+                let shiny = gen3_shiny(pid, opts.tid, opts.sid);
+                let characteristic = Characteristic::new(pid, &ivs);
+                if gender == target_gender {
+                    let nature = Nature::from_pid(pid);
+
+                    return SearchStatic4MethodjState {
+                        seed: rng.rand::<u32>(),
+                        pid,
+                        ability,
+                        gender,
+                        nature,
+                        ivs,
+                        shiny,
+                        characteristic,
+                        // We'll add these later
+                        advance: 0,
+                        delay: 0,
+                    };
+                }
+            }
+        }
+        LeadAbilities::None => {
+            let pidh = (rng.rand::<u16>() as u32) << 16;
+            let pidl = rng.rand::<u16>() as u32;
+            let pid = pidh | pidl;
             let nature = Nature::from((pid % 25) as u8);
-            let gender = opts.encounter.gender_from_pid(pid);
+            let gender = opts.encounter.species().gender_from_pid(pid);
             let ability = AbilityType::from_gen3_pid(pid);
             let shiny = gen3_shiny(pid, opts.tid, opts.sid);
 
@@ -349,72 +436,32 @@ fn get_state_from_jseed(
                 // We'll add these later
                 advance: 0,
                 delay: 0,
-                encounter_slot,
             };
         }
     }
 
-    if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
-        let gender_threshold = opts.encounter.species().gender_ratio();
-        let buffer = match opts.lead {
-            LeadAbilities::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
-            LeadAbilities::CutecharmM => 0,
-            LeadAbilities::Synchronize(_) => 0,
-            _ => 0,
-        };
-        let target_gender = match opts.lead {
-            LeadAbilities::CutecharmF => Gender::Male,
-            LeadAbilities::CutecharmM => Gender::Female,
-            _ => Gender::Genderless,
-        };
+    let pidh = (rng.rand::<u16>() as u32) << 16;
+    let pidl = rng.rand::<u16>() as u32;
+    let pid = pidh | pidl;
+    let nature = Nature::from((pid % 25) as u8);
+    let gender = opts.encounter.species().gender_from_pid(pid);
+    let ability = AbilityType::from_gen3_pid(pid);
+    let shiny = gen3_shiny(pid, opts.tid, opts.sid);
 
-        let nature = (rng.rand::<u16>() / 0xa3e) as u8;
-        if rng.rand::<u16>() % 3 != 0 {
-            let pid = buffer + nature as u32;
-            let gender = opts.encounter.species().gender_from_pid(pid);
-            if gender == target_gender {
-                let nature = Nature::from_pid(pid);
-            }
-            return SearchStatic4MethodjState {
-                seed: rng.rand::<u32>(),
-                pid,
-                ability,
-                gender,
-                nature,
-                ivs,
-                shiny,
-                characteristic,
-                // We'll add these later
-                advance: 0,
-                delay: 0,
-                encounter_slot,
-            };
-        }
+    let characteristic = Characteristic::new(pid, &ivs);
 
-        let pidh = (rng.rand::<u16>() as u32) << 16;
-        let pidl = rng.rand::<u16>() as u32;
-        let pid = pidh | pidl;
-        let nature = Nature::from((pid % 25) as u8);
-        let gender = opts.encounter.gender_from_pid(pid);
-        let ability = AbilityType::from_gen3_pid(pid);
-        let shiny = gen3_shiny(pid, opts.tid, opts.sid);
-
-        let characteristic = Characteristic::new(pid, &ivs);
-
-        SearchStatic4MethodjState {
-            seed: rng.rand::<u32>(),
-            pid,
-            ability,
-            gender,
-            nature,
-            ivs,
-            shiny,
-            characteristic,
-            // We'll add these later
-            advance: 0,
-            delay: 0,
-            encounter_slot,
-        }
+    SearchStatic4MethodjState {
+        seed: rng.rand::<u32>(),
+        pid,
+        ability,
+        gender,
+        nature,
+        ivs,
+        shiny,
+        characteristic,
+        // We'll add these later
+        advance: 0,
+        delay: 0,
     }
 }
 
@@ -430,9 +477,6 @@ pub fn search_static4_methodj_seed(
 
             // Don't check IVs since we specifically found matching IVs
             if !opts.filter.pass_filter_no_ivs(&state) {
-                return None;
-            }
-            if opts.encounter.passes_filter(&state.encounter_slot) {
                 return None;
             }
 

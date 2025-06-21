@@ -1,4 +1,8 @@
-use crate::gen4::{FindSeedTime4Options, SeedTime4, dppt_find_seedtime};
+use crate::EncounterSlot;
+use crate::gen4::Static4Species;
+use crate::gen4::{
+    FindSeedTime4Options, GameVersion, LeadAbilities, SeedTime4, dppt_find_seedtime,
+};
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
 use crate::{
@@ -218,7 +222,7 @@ pub struct SearchStatic4MethodjOpts {
     pub tid: u16,
     pub sid: u16,
     pub game: GameVersion,
-    pub encounter: StaticEncounterId,
+    pub encounter: Static4Species,
     pub lead: LeadAbilities,
     pub filter: PkmFilter,
     pub min_advance: usize,

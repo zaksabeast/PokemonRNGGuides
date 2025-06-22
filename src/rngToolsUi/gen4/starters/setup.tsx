@@ -17,7 +17,7 @@ const fields: Field[] = [
     input: <SelectGame stateAtom={starterAtom} games={supportedGames} />,
   },
   {
-    label: "Using 3ds? (Highly Experimental!)",
+    label: "3ds mode (Preview)",
     tooltip:
       "This feature is highly experimental! Please share your results in the Discord server!",
     input: <Is3dsSwitch stateAtom={starterAtom} />,

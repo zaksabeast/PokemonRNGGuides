@@ -3466,7 +3466,7 @@ export const guides = {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
       tags: ["retail"],
-      isNew: true,
+      isNew: false,
       title: "Diamond, Pearl, and Platinum Starter RNG",
       navDrawerTitle: "Starter RNG",
       description:
@@ -3481,7 +3481,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 4/Starters.mdx",
       translations: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
   },
@@ -3543,7 +3543,7 @@ export const guides = {
     meta: {
       categories: ["HeartGold and SoulSilver"],
       tags: ["retail"],
-      isNew: true,
+      isNew: false,
       title: "HeartGold and Soulsilver Starter RNG",
       navDrawerTitle: "Starter RNG",
       description:
@@ -3558,7 +3558,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 4/Starters.mdx",
       translations: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
   },

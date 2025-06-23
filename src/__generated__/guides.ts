@@ -2361,7 +2361,7 @@ export const guides = {
   "/gba-methods-lead-impact/": {
     meta: {
       categories: ["GBA Technical Documentation"],
-      tags: ["any"],
+      tags: ["info"],
       isNew: true,
       title: "Lead Impact on Wild Methods in Emerald",
       navDrawerTitle: "Methods & Lead",

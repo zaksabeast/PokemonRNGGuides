@@ -8,6 +8,7 @@ import {
   FormikSelect,
   Flex,
   MultiTimer,
+  MetronomeButton,
 } from "~/components";
 import {
   capPrecision,
@@ -20,6 +21,7 @@ import { useTimerSettings } from "~/state/timerSettings";
 import { z } from "zod";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
+import { useMetronome } from "~/hooks/useMetronome";
 
 const TimerStateSchema = z.object({
   milliseconds: z.array(z.number()),
@@ -120,6 +122,10 @@ const InnerGen4Timer = ({
   initialSettings,
   onUpdate,
 }: InnerProps) => {
+  const metronome = useMetronome({
+    enableAudio: true,
+  });
+
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts, formik) => {
       let updatedOpts = opts;
@@ -173,7 +179,10 @@ const InnerGen4Timer = ({
         stopButtonTrackerId="stop_gen4_timer"
         milliseconds={timer.milliseconds}
         minutesBeforeTarget={timer.minutesBeforeTarget}
+        disableStart={metronome.isRunning && !metronome.justTicked}
       />
+
+      <MetronomeButton {...metronome} />
 
       <RngToolForm<FormState, number[]>
         fields={fields}

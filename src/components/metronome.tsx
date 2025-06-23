@@ -27,7 +27,7 @@ export const MetronomeButton = ({
       <Flex gap={16} align="center">
         <Tooltip title="Enable this only if you have a second offset of 1 after several RNG attempts.">
           <Flex gap={8}>
-            <Typography.Text strong>Metronome offset</Typography.Text>
+            <Typography.Text strong>3ds Offset</Typography.Text>
             <Icon name="InformationCircle" size={16} />
           </Flex>
         </Tooltip>
@@ -41,7 +41,7 @@ export const MetronomeButton = ({
         trackerId={`${route}-metronome`}
         onClick={() => runMetronome(!isRunning)}
       >
-        {isRunning ? "Stop" : "Start"} Metronome
+        {isRunning ? "Stop" : "Start"} 3ds Helper
       </NoTransitionButton>
     </Flex>
   );

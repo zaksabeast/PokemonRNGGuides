@@ -17,6 +17,15 @@ const settingsSchema = z.object({
   githubUrl: z
     .string()
     .default("https://github.com/zaksabeast/PokemonRNGGuides"),
+  discordHallOfFameSupporters: z
+    .string()
+    .transform((val) =>
+      val
+        .split(",")
+        .map((str) => str.trim())
+        .filter((str) => str.length > 0),
+    )
+    .default(""),
 });
 
 export const settings = settingsSchema.parse({
@@ -24,4 +33,6 @@ export const settings = settingsSchema.parse({
   isoBuildDate: import.meta.env.VITE_ISO_BUILD_DATE,
   amplitudeApiKey: import.meta.env.VITE_AMPLITUDE_API_KEY,
   isDev: import.meta.env.DEV,
+  discordHallOfFameSupporters: import.meta.env
+    .VITE_DISCORD_HALL_OF_FAME_SUPPORTERS,
 });

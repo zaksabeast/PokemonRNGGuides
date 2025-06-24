@@ -15,8 +15,6 @@ const BASE_LEAD_PID: u32 = 0;
 const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 24);
 const BASE_LEAD_PID_MOD_25_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 25);
 
-const VERBOSE: bool = false;
-
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3EncounterSlotInfo {
@@ -50,7 +48,7 @@ pub struct Wild3GeneratorOptions {
     pub filter: PkmFilter,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct CycleCount {
     pub cycle: usize,
@@ -81,22 +79,9 @@ impl CycleRange {
     }
 }
 
-impl Default for CycleCount {
-    fn default() -> Self {
-        CycleCount {
-            cycle: 0,
-            mod24: 0,
-            mod25: 0,
-        }
-    }
-}
-
 impl CycleCount {
-    pub fn add(&mut self, cycle: usize, reason: &str) {
+    pub fn add(&mut self, cycle: usize, _reason: &str) {
         self.cycle += cycle;
-        if VERBOSE {
-            println!("cycle += {} (total: {}) : {}", cycle, self.cycle, reason);
-        }
     }
     pub fn add_mod_24(&mut self, mod24: usize) {
         self.cycle += mod24 * BASE_LEAD_PID_MOD_24_CYCLES;

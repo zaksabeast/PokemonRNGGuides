@@ -303,7 +303,6 @@ mod test {
         assert_eq!(result, expected_result);
     }
 
-    
     #[test]
     fn test_generate_wild3_egg_lead() {
         let options = Wild3GeneratorOptions {
@@ -317,27 +316,27 @@ mod test {
             lead: Gen3Lead::Egg,
             filter: PkmFilter::new_allow_all(),
         };
-        
+
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
         let result = generate_gen3_wild(rng, &options);
-        let expected_result = vec![Wild3GeneratorResult { 
-            encounter_slot: EncounterSlot::Slot1, 
-            pid: 1996552928, 
-            ivs: Ivs { 
-                hp: 23, 
-                atk: 27, 
-                def: 7, 
-                spa: 20, 
-                spd: 15, 
-                spe: 31 
+        let expected_result = vec![Wild3GeneratorResult {
+            encounter_slot: EncounterSlot::Slot1,
+            pid: 1996552928,
+            ivs: Ivs {
+                hp: 23,
+                atk: 27,
+                def: 7,
+                spa: 20,
+                spd: 15,
+                spe: 31,
             },
-             method: Gen3Method::Wild4, 
-             cycle_range: CycleRange::new(146246, 0, 0, 39507),
+            method: Gen3Method::Wild4,
+            cycle_range: CycleRange::new(146246, 0, 0, 39507),
         }];
         assert_eq!(result, expected_result);
     }
-    
+
     /*
     // Kept to help future debugging
     #[test]
@@ -353,11 +352,11 @@ mod test {
             lead: Gen3Lead::CuteCharm(Gender::Female),
             filter: PkmFilter::new_allow_all(),
         };
-        
+
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
         let result = generate_gen3_wild(rng, &options);
-        
+
         println!("{:?}", result);
         assert!(false);
     }

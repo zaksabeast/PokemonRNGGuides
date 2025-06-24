@@ -38,8 +38,8 @@ export const useMetronome = ({
     let rafId: number | null = null;
 
     const loop = () => {
-      const now = performance.now();
-      const ms = now % 1000;
+      const now = performance.timeOrigin + performance.now();
+      const ms = Math.floor(now % 1000);
 
       const currentSecond = Math.floor(now / 1000);
       if (ms >= offset && currentSecond !== lastTriggerRef.current) {

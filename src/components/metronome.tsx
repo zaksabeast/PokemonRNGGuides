@@ -4,9 +4,15 @@ import { Flex } from "./flex";
 import { Icon } from "./icons";
 import { Button } from "./button";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { Switch } from "./switch";
+import { Select } from "./select";
 import { Typography } from "./typography";
 import { Metronome } from "~/hooks/useMetronome";
+import { toOptions } from "~/utils/options";
+
+const options = toOptions(
+  [0, 100, 200, 300, 400, 500, 600, 700, 800, 900],
+  (ms) => `${ms}ms`,
+);
 
 const NoTransitionButton = styled(Button)({
   transition: "none",
@@ -15,6 +21,7 @@ const NoTransitionButton = styled(Button)({
 type MetronomeProps = Metronome;
 
 export const MetronomeButton = ({
+  offset,
   setOffset,
   justTicked,
   isRunning,
@@ -31,7 +38,14 @@ export const MetronomeButton = ({
             <Icon name="InformationCircle" size={16} />
           </Flex>
         </Tooltip>
-        <Switch onChange={() => setOffset((prev) => (prev === 0 ? 500 : 0))} />
+        <Flex width={100}>
+          <Select
+            fullFlex
+            value={offset}
+            options={options}
+            onChange={setOffset}
+          />
+        </Flex>
       </Flex>
       <NoTransitionButton
         flex={1}

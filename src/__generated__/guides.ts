@@ -944,7 +944,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Shiny Starter.mdx",
-      translations: null,
+      translations: {
+        en: "/emerald-shiny-starter/",
+        zh: "/zh-emerald-shiny-starter/",
+      },
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
@@ -5333,6 +5336,34 @@ export const guides = {
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Reseed RNG.mdx"),
     ),
   },
+  "/zh-emerald-shiny-starter/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Shiny Starter",
+      navDrawerTitle: "Shiny Starter",
+      description: "Determine your SID by catching a shiny starter",
+      slug: "/zh-emerald-shiny-starter/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-03",
+      translation: { enSlug: "/emerald-shiny-starter/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Emerald/Shiny Starter.mdx",
+      translations: {
+        en: "/emerald-shiny-starter/",
+        zh: "/zh-emerald-shiny-starter/",
+      },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 3/Emerald/Shiny Starter.mdx"),
+    ),
+  },
   "/zh-emerald-sid-feebas/": {
     meta: {
       categories: ["Emerald"],
@@ -6781,6 +6812,7 @@ export const guideSlugs = [
   "/zh-e-tips-rng/",
   "/zh-emerald-mirage-island/",
   "/zh-emerald-painting-rng/",
+  "/zh-emerald-shiny-starter/",
   "/zh-emerald-sid-feebas/",
   "/zh-emulator-b2w2-dream-radar/",
   "/zh-emulator-b2w2-runasdate-inital-seed/",

@@ -62,22 +62,32 @@ const getMs = (updated: Float32Array<ArrayBufferLike>, is3ds: boolean) => {
 export type Gen4TimerAtom = ReturnType<typeof createGen4TimerAtom>;
 
 export const useGen4Timer = (timerAtom: Gen4TimerAtom) => {
-  const [{ ms, timer }, setState] = useAtom(timerAtom);
+  const [{ ms, timer, is3ds }, setState] = useAtom(timerAtom);
 
   const initTimer = React.useCallback(
-    async ({
-      is3ds,
-      ...settings
-    }: Partial<Gen4TimerSettings & { is3ds: boolean }>) => {
-      const fullSettings = getTimerSettings(settings);
+    async (
+      settings: Partial<
+        Gen4TimerSettings & { is3ds: boolean; hit_delay?: number | null }
+      >,
+    ) => {
+      let fullSettings = getTimerSettings(settings);
+      if (settings.hit_delay != null) {
+        fullSettings = await calibrateTimer({
+          timer: fullSettings,
+          hit_delay: settings.hit_delay,
+        });
+      }
       const updatedMs = await rngTools.create_gen4_timer(fullSettings);
-      setState((prev) => ({
-        is3ds: is3ds ?? prev.is3ds,
-        ms: getMs(updatedMs, is3ds ?? prev.is3ds),
+      const updatedIs3ds = settings.is3ds ?? is3ds;
+      const updated = {
+        is3ds: updatedIs3ds,
+        ms: getMs(updatedMs, updatedIs3ds),
         timer: fullSettings,
-      }));
+      };
+      setState(updated);
+      return updated;
     },
-    [setState],
+    [setState, is3ds],
   );
 
   const calibrate = React.useCallback(
@@ -87,13 +97,15 @@ export const useGen4Timer = (timerAtom: Gen4TimerAtom) => {
         hit_delay,
       });
       const updatedMs = await rngTools.create_gen4_timer(updated);
-      setState((prev) => ({
-        ...prev,
-        ms: getMs(updatedMs, prev.is3ds),
+      const updatedState = {
+        is3ds,
+        ms: getMs(updatedMs, is3ds),
         timer: updated,
-      }));
+      };
+      setState(updatedState);
+      return updatedState;
     },
-    [timer, setState],
+    [timer, is3ds, setState],
   );
 
   return { ms, initTimer, calibrate };

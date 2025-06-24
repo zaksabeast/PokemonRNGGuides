@@ -10,7 +10,7 @@ type InnerCalibrateButtonProps = {
   trackerId: string;
   hitValue: number;
   previousStepOnClick?: boolean;
-  calibrate: (hitValue: number) => Promise<void>;
+  calibrate: (hitValue: number) => Promise<unknown>;
   onClick?: () => void;
 };
 

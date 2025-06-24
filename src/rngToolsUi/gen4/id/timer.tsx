@@ -51,6 +51,7 @@ export const Id4Timer = () => {
 
   return (
     <Gen4Timer
+      selfInit
       is3ds={state.is3ds}
       timer={idTimerAtom}
       targetDelay={state.target?.seed_time?.delay ?? 0}

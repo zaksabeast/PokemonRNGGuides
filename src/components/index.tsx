@@ -46,3 +46,4 @@ export { CalibrateTimerButton } from "./calibrateTimerButton";
 export { BadgeRibbon } from "./badgeRibbon";
 export { MetronomeButton } from "./metronome";
 export { SupportModal } from "./supportModal/modal";
+export { Gen4Timer } from "./gen4Timer";

@@ -34,6 +34,7 @@ export const GetStarter4 = () => {
 
   return (
     <Gen4Timer
+      selfInit
       is3ds={state.is3ds}
       trackerId="get_gen4_starter_timer"
       targetDelay={seedTime?.delay ?? 0}

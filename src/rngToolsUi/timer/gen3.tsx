@@ -145,7 +145,7 @@ const InnerGen3Timer = ({
   );
 
   return (
-    <Flex vertical gap={24}>
+    <Flex vertical gap={12}>
       <MultiTimer
         startButtonTrackerId="start_gen3_timer"
         stopButtonTrackerId="stop_gen3_timer"

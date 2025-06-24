@@ -15,7 +15,7 @@ mod test {
     fn test_search_wild3_no_filter() {
         let options = Wild3SearcherOptions {
             initial_seed: 0,
-            leads: vec![None],
+            leads: vec![Gen3Lead::Vanilla],
             encounter_slots_by_map: vec![None],
             methods: vec![Gen3Method::Wild1],
             tid: 0,
@@ -46,7 +46,7 @@ mod test {
                 },
                 gender: Gender::Male,
                 method: Gen3Method::Wild1,
-                lead: None,
+                lead: Gen3Lead::Vanilla,
             },
             Wild3SearcherResultMon {
                 advance: 1,
@@ -66,7 +66,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
-                lead: None,
+                lead: Gen3Lead::Vanilla,
             },
             Wild3SearcherResultMon {
                 advance: 2,
@@ -86,7 +86,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
-                lead: None,
+                lead: Gen3Lead::Vanilla,
             },
         ];
         let result = search_wild3(&options);
@@ -109,7 +109,7 @@ mod test {
             initial_advances: 60,
             max_advances: 3540,
             max_result_count: 10_000,
-            leads: vec![None],
+            leads: vec![Gen3Lead::Vanilla],
             filter: PkmFilter {
                 shiny: false,
                 nature: Some(Nature::Adamant),
@@ -146,7 +146,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
-                lead: None,
+                lead: Gen3Lead::Vanilla,
             },
             Wild3SearcherResultMon {
                 advance: 3543,
@@ -166,7 +166,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
-                lead: None,
+                lead: Gen3Lead::Vanilla,
             },
             Wild3SearcherResultMon {
                 advance: 3577,
@@ -186,7 +186,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
-                lead: None,
+                lead: Gen3Lead::Vanilla,
             },
         ];
         let result = search_wild3(&options);
@@ -205,7 +205,7 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             max_result_count: 10_000,
-            leads: vec![None],
+            leads: vec![Gen3Lead::Vanilla],
             filter: PkmFilter {
                 shiny: true,
                 nature: Some(Nature::Naive),
@@ -234,7 +234,7 @@ mod test {
             },
             gender: Gender::Male,
             method: Gen3Method::Wild1,
-            lead: None,
+            lead: Gen3Lead::Vanilla,
         }];
         let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
@@ -252,7 +252,7 @@ mod test {
             initial_advances: 0,
             max_advances: 2,
             max_result_count: 10_000,
-            leads: vec![Some(Gen3Lead::Synchronize(Nature::Hardy))],
+            leads: vec![Gen3Lead::Synchronize(Nature::Hardy)],
             filter: PkmFilter::new_allow_all(),
         };
         let expected_results = [
@@ -274,7 +274,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
-                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
+                lead: Gen3Lead::Synchronize(Nature::Hardy),
             },
             Wild3SearcherResultMon {
                 advance: 1,
@@ -294,7 +294,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
-                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
+                lead: Gen3Lead::Synchronize(Nature::Hardy),
             },
             Wild3SearcherResultMon {
                 advance: 2,
@@ -314,7 +314,7 @@ mod test {
                 },
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
-                lead: Some(Gen3Lead::Synchronize(Nature::Hardy)),
+                lead: Gen3Lead::Synchronize(Nature::Hardy),
             },
         ];
         let result = search_wild3(&options);
@@ -339,7 +339,7 @@ mod test {
             initial_advances: 5000,
             max_advances: 1000,
             max_result_count: 10_000,
-            leads: vec![None],
+            leads: vec![Gen3Lead::Vanilla],
             filter: PkmFilter {
                 shiny: true,
                 nature: None,
@@ -368,7 +368,7 @@ mod test {
                 nature: Nature::Quiet,
                 shiny: true,
                 advance: 5022,
-                lead: None,
+                lead: Gen3Lead::Vanilla,
                 map_idx: 0,
             },
             Wild3SearcherResultMon {
@@ -388,7 +388,7 @@ mod test {
                 nature: Nature::Quiet,
                 shiny: true,
                 advance: 5080,
-                lead: None,
+                lead: Gen3Lead::Vanilla,
                 map_idx: 0,
             },
         ];

@@ -19,6 +19,7 @@ import { Switch } from "./switch";
 
 const MultiTimerStateSchema = z.object({
   showAllTimers: z.boolean(),
+  // Keeping for now in case we need to revert and use the persisted state
   hardwareSyncSound: z.boolean(),
   maxBeepCount: z.number(),
 });
@@ -52,10 +53,28 @@ const InnerMultiTimer = ({
   startButtonTrackerId,
   stopButtonTrackerId,
 }: InnerProps) => {
+  const [altSounds, setAltSounds] = React.useState(false);
   const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
-  const { playBeeps: playFirstBeeps, ...firstBeep } = useAudio(firstBeepMp3);
-  const { playBeeps: playSecondBeeps, ...secondBeep } = useAudio(secondBeepMp3);
+  const { playBeeps: playFirstBeeps, ...firstBeep } = useAudio(
+    altSounds
+      ? {
+          id: "softBeep",
+        }
+      : {
+          url: firstBeepMp3,
+        },
+  );
+  const { playBeeps: playSecondBeeps, ...secondBeep } = useAudio(
+    altSounds
+      ? {
+          id: "softBeep",
+        }
+      : {
+          url: secondBeepMp3,
+        },
+  );
+  const silence = useAudio({ id: "silentNoise" });
 
   const currentMs = milliseconds[currentTimerIndex] ?? 0;
   const nextMs = milliseconds[currentTimerIndex + 1] ?? 0;
@@ -67,15 +86,12 @@ const InnerMultiTimer = ({
   const countdownMs = countdownBeeps * countdownIntervalMs;
 
   React.useEffect(() => {
-    if (startTimeMs == null || !state.hardwareSyncSound) {
+    if (startTimeMs == null) {
       return () => {};
     }
-    const timer = setInterval(
-      () => playFirstBeeps({ count: 1, gain: 0.001 /* Mute the sound */ }),
-      1000,
-    );
+    const timer = setInterval(() => silence.playBeeps({ count: 1 }), 1000);
     return () => clearInterval(timer);
-  }, [state.hardwareSyncSound, startTimeMs, playFirstBeeps]);
+  }, [startTimeMs, silence]);
 
   const onCountdown = React.useCallback(() => {
     playFirstBeeps({ count: countdownBeeps });
@@ -123,22 +139,12 @@ const InnerMultiTimer = ({
         ),
       },
       {
-        label: "Sync Optimization",
+        label: "Alt Beeps (Test)",
         tooltip:
-          "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
+          "This is a special test to see if it helps certain computers with audio issues.",
         input: (
           <Flex justify="flex-end">
-            <Switch
-              checked={state.hardwareSyncSound}
-              onChange={(checked) => {
-                setState(
-                  hydrationLock({
-                    ...state,
-                    hardwareSyncSound: checked,
-                  }),
-                );
-              }}
-            />
+            <Switch checked={altSounds} onChange={setAltSounds} />
           </Flex>
         ),
       },
@@ -164,7 +170,7 @@ const InnerMultiTimer = ({
         ),
       },
     ],
-    [state, setState],
+    [state, setState, altSounds],
   );
 
   return (

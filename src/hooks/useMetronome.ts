@@ -1,6 +1,5 @@
 import React from "react";
 import { useAudio } from "~/hooks/useAudio";
-import firstBeepMp3 from "~/assets/first-beep.mp3";
 import { noop } from "lodash-es";
 
 export type Metronome = {
@@ -24,7 +23,7 @@ export const useMetronome = ({
   const [justTicked, setJustTicked] = React.useState(false);
   const [isRunning, setIsRunning] = React.useState(false);
   const lastTriggerRef = React.useRef(-1);
-  const { playBeeps } = useAudio(firstBeepMp3);
+  const { playBeeps } = useAudio({ id: "softBeep" });
 
   const beep = enableAudio ? playBeeps : noop;
 

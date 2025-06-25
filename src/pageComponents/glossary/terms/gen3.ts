@@ -219,7 +219,7 @@ export const gen3Glossary: TermInJson[] = [
     name: "Arbitrary code execution",
     url: "https://bulbapedia.bulbagarden.net/wiki/Arbitrary_code_execution#Pok%C3%A9mon_Emerald",
     importance: 2,
-    desc: "Exploit allowing players to alter the Pokémon generation code. Exclusive to Emerald.",
+    desc: "Exploit allowing players to alter the Pokémon generation code.",
     aliases: ["ACE"],
   },
   {

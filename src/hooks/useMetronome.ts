@@ -24,7 +24,7 @@ export const useMetronome = ({
   const [justTicked, setJustTicked] = React.useState(false);
   const [isRunning, setIsRunning] = React.useState(false);
   const lastTriggerRef = React.useRef(-1);
-  const { playBeeps } = useAudio(firstBeepMp3);
+  const { playBeeps } = useAudio({ url: firstBeepMp3 });
 
   const beep = enableAudio ? playBeeps : noop;
 

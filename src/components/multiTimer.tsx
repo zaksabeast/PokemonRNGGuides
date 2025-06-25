@@ -15,11 +15,10 @@ import { z } from "zod";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
 import * as tst from "ts-toolbelt";
+import { Switch } from "./switch";
 
 const MultiTimerStateSchema = z.object({
   showAllTimers: z.boolean(),
-  // Intentionally not deprecating this field at the moment.
-  // If we need to revert recent changes, we'll want this persisted in people's browsers.
   hardwareSyncSound: z.boolean(),
   maxBeepCount: z.number(),
 });
@@ -55,11 +54,9 @@ const InnerMultiTimer = ({
 }: InnerProps) => {
   const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
-  const firstBeep = useAudio({ url: firstBeepMp3 });
-  const secondBeep = useAudio({ url: secondBeepMp3 });
-  const keepAlive = useAudio({ id: "silentNoise" });
+  const { playBeeps: playFirstBeeps, ...firstBeep } = useAudio(firstBeepMp3);
+  const { playBeeps: playSecondBeeps, ...secondBeep } = useAudio(secondBeepMp3);
 
-  const isRunning = startTimeMs != null;
   const currentMs = milliseconds[currentTimerIndex] ?? 0;
   const nextMs = milliseconds[currentTimerIndex + 1] ?? 0;
   const displayTimerMs = milliseconds.length === 0 ? [0] : milliseconds;
@@ -70,41 +67,29 @@ const InnerMultiTimer = ({
   const countdownMs = countdownBeeps * countdownIntervalMs;
 
   React.useEffect(() => {
-    if (isRunning) {
-      firstBeep.playBeeps({
-        count: countdownBeeps,
-        offsetMs: currentMs - countdownMs,
-      });
-      secondBeep.playBeeps({
-        count: 1,
-        offsetMs: currentMs,
-      });
-    }
-  }, [
-    isRunning,
-    firstBeep,
-    secondBeep,
-    countdownMs,
-    currentMs,
-    countdownBeeps,
-  ]);
-
-  React.useEffect(() => {
-    if (!isRunning) {
+    if (startTimeMs == null || !state.hardwareSyncSound) {
       return () => {};
     }
-    const timer = setInterval(() => keepAlive.playBeeps({ count: 1 }), 1000);
+    const timer = setInterval(
+      () => playFirstBeeps({ count: 1, gain: 0.001 /* Mute the sound */ }),
+      1000,
+    );
     return () => clearInterval(timer);
-  }, [isRunning, keepAlive]);
+  }, [state.hardwareSyncSound, startTimeMs, playFirstBeeps]);
+
+  const onCountdown = React.useCallback(() => {
+    playFirstBeeps({ count: countdownBeeps });
+  }, [playFirstBeeps, countdownBeeps]);
 
   const onExpire = React.useCallback(() => {
+    playSecondBeeps({ count: 1 });
     setCurrentTimerIndex((prev) => prev + 1);
 
     if (currentTimerIndex + 1 >= milliseconds.length) {
       setStartTimeMs(null);
       setCurrentTimerIndex(0);
     }
-  }, [currentTimerIndex, milliseconds.length]);
+  }, [playSecondBeeps, currentTimerIndex, milliseconds.length]);
 
   React.useEffect(() => {
     setStartTimeMs(null);
@@ -133,6 +118,26 @@ const InnerMultiTimer = ({
                 { label: "Yes", value: "showAllTimers" },
                 { label: "No", value: "showCurrentTimer" },
               ]}
+            />
+          </Flex>
+        ),
+      },
+      {
+        label: "Sync Optimization",
+        tooltip:
+          "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
+        input: (
+          <Flex justify="flex-end">
+            <Switch
+              checked={state.hardwareSyncSound}
+              onChange={(checked) => {
+                setState(
+                  hydrationLock({
+                    ...state,
+                    hardwareSyncSound: checked,
+                  }),
+                );
+              }}
             />
           </Flex>
         ),
@@ -170,7 +175,10 @@ const InnerMultiTimer = ({
             <Timer
               expirationMs={currentMs}
               countdownMs={countdownMs}
-              run={isRunning && currentTimerIndex < milliseconds.length}
+              run={
+                startTimeMs != null && currentTimerIndex < milliseconds.length
+              }
+              onCountdown={onCountdown}
               onExpire={onExpire}
             />
           </Flex>
@@ -193,7 +201,8 @@ const InnerMultiTimer = ({
                 key={index}
                 expirationMs={ms}
                 countdownMs={countdownMs}
-                run={isRunning && index === currentTimerIndex}
+                run={startTimeMs != null && index === currentTimerIndex}
+                onCountdown={onCountdown}
                 onExpire={onExpire}
               />
             ))}
@@ -209,10 +218,12 @@ const InnerMultiTimer = ({
       <FormFieldTable fields={timerSettingFields} />
 
       <Button
-        disabled={disableStart && !isRunning}
-        trackerId={isRunning ? startButtonTrackerId : stopButtonTrackerId}
+        disabled={disableStart && startTimeMs == null}
+        trackerId={
+          startTimeMs != null ? startButtonTrackerId : stopButtonTrackerId
+        }
         onClick={() => {
-          const newStartTimeMs = !isRunning ? performance.now() : null;
+          const newStartTimeMs = startTimeMs == null ? performance.now() : null;
           const newIsRunning = newStartTimeMs != null;
           setStartTimeMs(newStartTimeMs);
           setCurrentTimerIndex(0);

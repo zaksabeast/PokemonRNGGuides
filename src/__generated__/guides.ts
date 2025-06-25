@@ -2362,7 +2362,7 @@ export const guides = {
     meta: {
       categories: ["GBA Technical Documentation"],
       tags: ["info"],
-      isNew: false,
+      isNew: true,
       title: "Lead Impact on Wild Methods in Emerald",
       navDrawerTitle: "Methods & Lead",
       description:

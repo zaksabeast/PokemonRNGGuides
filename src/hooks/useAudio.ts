@@ -10,7 +10,7 @@ const silentNoise = (audioContext: AudioContext) => {
   source.frequency.value = 30;
   gainNode.gain.value = 0.005;
 
-  return { source, duration: null };
+  return { source, duration: 0.5 };
 };
 
 const makeAudioSource = (
@@ -27,14 +27,18 @@ const makeAudioSource = (
   return { source, duration: audioBuffer.duration };
 };
 
-const softBeep = (audioContext: AudioContext, startTime: number) => {
+const softBeep = (
+  audioContext: AudioContext,
+  startTime: number,
+  gain: number,
+) => {
   const duration = 0.2;
   const frequency = 880;
   const gainNode = audioContext.createGain();
   const source = audioContext.createOscillator();
 
   gainNode.gain.setValueAtTime(0, startTime);
-  gainNode.gain.linearRampToValueAtTime(0.4, startTime + 0.01);
+  gainNode.gain.linearRampToValueAtTime(gain, startTime + 0.01);
   gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
 
   source.type = "sine";
@@ -98,7 +102,7 @@ export const useAudio = (opts: AudioOptions) => {
         buffer: audioBufferRef.current,
       })
         .with({ id: "silentNoise" }, () => silentNoise(audioContext))
-        .with({ id: "softBeep" }, () => softBeep(audioContext, startTime))
+        .with({ id: "softBeep" }, () => softBeep(audioContext, startTime, gain))
         .with({ buffer: P.nullish }, () => silentNoise(audioContext))
         .with({ buffer: P.not(P.nullish) }, (matched) =>
           makeAudioSource(audioContext, matched.buffer, gain),
@@ -107,9 +111,7 @@ export const useAudio = (opts: AudioOptions) => {
 
       const safeStartTime = Math.max(audioContext.currentTime, startTime);
       source.start(safeStartTime);
-      if (duration != null) {
-        source.stop(safeStartTime + duration);
-      }
+      source.stop(safeStartTime + duration);
 
       activeSourcesRef.current.push(source);
 
@@ -124,7 +126,7 @@ export const useAudio = (opts: AudioOptions) => {
 
   const playBeeps = React.useCallback(
     ({ count, gain }: { count: number; gain?: number }) => {
-      if (audioContextRef.current == null || audioBufferRef.current == null) {
+      if (audioContextRef.current == null) {
         return;
       }
 

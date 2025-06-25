@@ -48,7 +48,7 @@ export const useMetronome = ({
         if (!isFirstTick) {
           tickStart?.();
           setJustTicked(true);
-          beep({ count: 1, gain: 0.5 });
+          beep({ count: 1, gain: 0.1 });
           setTimeout(() => {
             tickEnd?.();
             setJustTicked(false);

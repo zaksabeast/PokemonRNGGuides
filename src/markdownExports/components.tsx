@@ -37,21 +37,6 @@ export const MarkdownH5 = (props: Props) => (
 
 export const MarkdownH6 = MarkdownParagraph;
 
-const Ul = styled.ul({
-  margin: 0,
-  marginBlock: 0,
-  "& > .ant-list-item": {
-    display: "block",
-    listStyleType: "none",
-  },
-});
-
-export const MarkdownList = ({ children }: Props) => (
-  <List>
-    <Ul>{children}</Ul>
-  </List>
-);
-
 const Ol = styled.ol({
   margin: 0,
   marginBlock: 0,

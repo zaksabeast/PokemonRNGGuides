@@ -8,7 +8,6 @@ import {
   MarkdownH5,
   MarkdownH6,
   MarkdownParagraph,
-  MarkdownList,
   MarkdownListItem,
   MarkdownDivider,
   MarkdownCode,
@@ -32,6 +31,8 @@ import {
   Alert,
   Stepper,
   Step,
+  WhatNext,
+  List,
 } from "~/components";
 import { Gen2PokemonRng } from "~/rngToolsUi/gen2/crystalPokemon";
 import { Gen2Rng } from "~/rngToolsUi/gen2/gen2Rng";
@@ -100,7 +101,7 @@ const nonTools = {
   h6: MarkdownH6,
   // eslint-disable-next-line id-length
   p: MarkdownParagraph,
-  ul: MarkdownList,
+  ul: List,
   ol: MarkdownOList,
   li: MarkdownListItem,
   hr: MarkdownDivider,
@@ -132,6 +133,7 @@ const nonTools = {
   Starter4ShowIf,
   Id4ShowIf,
   Metronome3dsNotice,
+  WhatNext,
 };
 
 const tools = {

@@ -1,6 +1,7 @@
 import React from "react";
 import { match, P } from "ts-pattern";
 import { OneOf } from "~/types";
+import { useUserInteraction } from "./useUserInteraction";
 
 const silentNoise = (audioContext: AudioContext) => {
   const source = audioContext.createOscillator();
@@ -63,6 +64,16 @@ export const useAudio = (opts: AudioOptions) => {
     (AudioBufferSourceNode | OscillatorNode)[]
   >([]);
   const [isLoaded, setIsLoaded] = React.useState(false);
+
+  useUserInteraction(() => {
+    // Resume audio context on user interaction
+    if (
+      audioContextRef.current != null &&
+      audioContextRef.current.state === "suspended"
+    ) {
+      audioContextRef.current.resume();
+    }
+  });
 
   React.useEffect(() => {
     audioContextRef.current = new AudioContext({ latencyHint: "interactive" });

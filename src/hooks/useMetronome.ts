@@ -52,7 +52,7 @@ export const useMetronome = ({
           setTimeout(() => {
             tickEnd?.();
             setJustTicked(false);
-          }, 200);
+          }, 100);
         }
       }
 

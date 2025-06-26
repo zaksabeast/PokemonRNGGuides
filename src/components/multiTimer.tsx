@@ -74,7 +74,7 @@ const InnerMultiTimer = ({
           url: secondBeepMp3,
         },
   );
-  const silence = useAudio({ id: "silentNoise" });
+  const keepAlive = useAudio({ url: firstBeepMp3 });
 
   const currentMs = milliseconds[currentTimerIndex] ?? 0;
   const nextMs = milliseconds[currentTimerIndex + 1] ?? 0;
@@ -89,9 +89,12 @@ const InnerMultiTimer = ({
     if (startTimeMs == null) {
       return () => {};
     }
-    const timer = setInterval(() => silence.playBeeps({ count: 1 }), 1000);
+    const timer = setInterval(
+      () => keepAlive.playBeeps({ count: 1, gain: 0.001 }),
+      1000,
+    );
     return () => clearInterval(timer);
-  }, [startTimeMs, silence]);
+  }, [startTimeMs, keepAlive]);
 
   const onCountdown = React.useCallback(() => {
     playFirstBeeps({ count: countdownBeeps });

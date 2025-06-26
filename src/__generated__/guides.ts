@@ -5364,14 +5364,16 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx"),
+    ),
+  },
   "/zh-emerald-shiny-starter/": {
     meta: {
       categories: ["Emerald"],
       tags: ["retail"],
       isNew: false,
-      title: "Shiny Starter",
-      navDrawerTitle: "Shiny Starter",
-      description: "Determine your SID by catching a shiny starter",
+      title: "异色御三家",
+      navDrawerTitle: "异色御三家",
+      description: "通过捕捉异色御三家确定你的 SID",
       slug: "/zh-emerald-shiny-starter/",
       isRoughDraft: false,
       hideFromNavDrawer: true,

@@ -36,7 +36,7 @@ export const WhatNext = ({ slugs }: WhatNextProps) => {
   return (
     <Flex vertical>
       <Typography.Text fontSize={30} strong>
-        🚀 What next?
+        What next? 🚀
       </Typography.Text>
 
       <Flex vertical>

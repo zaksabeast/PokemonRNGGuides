@@ -2362,7 +2362,7 @@ export const guides = {
     meta: {
       categories: ["GBA Technical Documentation"],
       tags: ["any"],
-      isNew: true,
+      isNew: false,
       title: "Lead Impact on Wild Methods in Emerald",
       navDrawerTitle: "Methods & Lead",
       description:
@@ -3544,7 +3544,7 @@ export const guides = {
       categories: ["HeartGold and SoulSilver"],
       tags: ["retail"],
       isNew: false,
-      title: "HeartGold and Soulsilver Starter RNG",
+      title: "HeartGold and SoulSilver Starter RNG",
       navDrawerTitle: "Starter RNG",
       description:
         "Learn how to RNG starters in HeartGold and SoulSilver for shiny, high-IV Pokémon.",

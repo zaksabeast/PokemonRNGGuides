@@ -14,10 +14,6 @@ import {
   MarkdownCode,
   MarkdownPre,
   MarkdownImage,
-  MarkdownTable,
-  MarkdownTd,
-  MarkdownTh,
-  MarkdownTr,
   MarkdownOList,
   MarkdownA,
 } from "./components";
@@ -32,6 +28,11 @@ import {
   Alert,
   Stepper,
   Step,
+  MediaGrid,
+  MediaGridCell,
+  MediaGridHeader,
+  MediaGridRow,
+  YouTubeTable,
 } from "~/components";
 import { Gen2PokemonRng } from "~/rngToolsUi/gen2/crystalPokemon";
 import { Gen2Rng } from "~/rngToolsUi/gen2/gen2Rng";
@@ -107,10 +108,10 @@ const nonTools = {
   pre: MarkdownPre,
   code: MarkdownCode,
   img: MarkdownImage,
-  table: MarkdownTable,
-  th: MarkdownTh,
-  tr: MarkdownTr,
-  td: MarkdownTd,
+  table: MediaGrid,
+  th: MediaGridHeader,
+  tr: MediaGridRow,
+  td: MediaGridCell,
   // eslint-disable-next-line id-length
   a: MarkdownA,
   Text: MarkdownParagraph,
@@ -132,6 +133,7 @@ const nonTools = {
   Starter4ShowIf,
   Id4ShowIf,
   Metronome3dsNotice,
+  YouTubeTable,
 };
 
 const tools = {

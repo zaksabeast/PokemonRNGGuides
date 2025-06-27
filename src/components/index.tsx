@@ -48,9 +48,10 @@ export { MetronomeButton } from "./metronome";
 export { SupportModal } from "./supportModal/modal";
 export { Gen4Timer } from "./gen4Timer";
 export {
-  MediaGrid,
-  MediaGridHeader,
-  MediaGridRow,
-  MediaGridCell,
-} from "./mediaGrid";
+  MediaTable,
+  MediaTableBody,
+  MediaTableHeader,
+  MediaTableRow,
+  MediaTableCell,
+} from "./mediaTable";
 export { YouTubeTable } from "./youtubeTable";

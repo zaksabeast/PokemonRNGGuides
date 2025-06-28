@@ -231,7 +231,7 @@ pub struct SearchStatic4MethodjOpts {
     pub min_delay: u32,
     pub max_delay: u32,
 }
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SearchStatic4MethodjState {
     pub seed: u32,
@@ -469,6 +469,8 @@ pub fn search_static4_methodj_seed(
     opts: &SearchStatic4MethodjOpts,
     ivs: Ivs,
 ) -> Vec<SearchStatic4MethodjState> {
+    let min_advance = opts.min_advance;
+    let max_advance = opts.max_advance;
     let seeds = recover_poke_rng_iv(&ivs, false);
     seeds
         .into_iter()
@@ -1455,6 +1457,78 @@ mod tests {
             ];
 
             assert_list_eq!(results, expected);
+        }
+    }
+
+    mod search_static4_methodj_seed {
+
+        use crate::ivs;
+
+        use super::*;
+        #[test]
+        fn static_methodj() {
+            let opts = SearchStatic4MethodjOpts {
+                tid: 12345,
+                sid: 54321,
+                game: GameVersion::Diamond,
+                encounter: Static4Species::Drifloon,
+                lead: LeadAbilities::None,
+                filter: PkmFilter {
+                    shiny: false,
+                    nature: Some(Nature::Careful),
+                    gender: None,
+                    min_ivs: ivs!(29 / 29 / 29 / 29 / 29 / 29),
+                    max_ivs: Ivs::new_all31(),
+                    ability: None,
+                    stats: None,
+                },
+                min_advance: 0,
+                max_advance: 20,
+                min_delay: 0,
+                max_delay: 20,
+            };
+            let results = search_static4_methodj(&opts);
+            let expected = [
+                SearchStatic4MethodjState {
+                    seed: 0,
+                    advance: 0,
+                    delay: 0,
+                    pid: 1,
+                    ivs: Ivs {
+                        hp: 0,
+                        atk: 0,
+                        def: 0,
+                        spa: 0,
+                        spd: 0,
+                        spe: 0,
+                    },
+                    ability: AbilityType::First,
+                    gender: Gender::Female,
+                    nature: Nature::Adamant,
+                    shiny: false,
+                    characteristic: Characteristic::ALittleQuickTempered,
+                },
+                SearchStatic4MethodjState {
+                    seed: 0,
+                    advance: 0,
+                    delay: 0,
+                    pid: 1,
+                    ivs: Ivs {
+                        hp: 0,
+                        atk: 0,
+                        def: 0,
+                        spa: 0,
+                        spd: 0,
+                        spe: 0,
+                    },
+                    ability: AbilityType::First,
+                    gender: Gender::Female,
+                    nature: Nature::Adamant,
+                    shiny: false,
+                    characteristic: Characteristic::ALittleQuickTempered,
+                },
+            ];
+            assert_eq!(results, expected);
         }
     }
 }

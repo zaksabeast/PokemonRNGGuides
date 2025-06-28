@@ -469,8 +469,8 @@ pub fn search_static4_methodj_seed(
     opts: &SearchStatic4MethodjOpts,
     ivs: Ivs,
 ) -> Vec<SearchStatic4MethodjState> {
-    let min_advance = opts.min_advance;
-    let max_advance = opts.max_advance;
+    //let min_advance = opts.min_advance;
+    //let max_advance = opts.max_advance;
     let seeds = recover_poke_rng_iv(&ivs, false);
     seeds
         .into_iter()

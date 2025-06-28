@@ -2,7 +2,7 @@ export { Button, BaseButton } from "./button";
 export { Flex } from "./flex";
 export { Gist } from "./gist";
 export { Header } from "./header";
-export { Icon } from "./icons";
+export { Icon, type IconName } from "./icons";
 export { Typography } from "./typography";
 export { DesktopDrawer } from "./navDrawer";
 export { PixelImage } from "./pixelImage";
@@ -45,3 +45,13 @@ export { Stepper, Step } from "./stepper/stepper";
 export { CalibrateTimerButton } from "./calibrateTimerButton";
 export { BadgeRibbon } from "./badgeRibbon";
 export { MetronomeButton } from "./metronome";
+export { SupportModal } from "./supportModal/modal";
+export { Gen4Timer } from "./gen4Timer";
+export {
+  MediaTable,
+  MediaTableBody,
+  MediaTableHeader,
+  MediaTableRow,
+  MediaTableCell,
+} from "./mediaTable";
+export { YouTubeTable } from "./youtubeTable";

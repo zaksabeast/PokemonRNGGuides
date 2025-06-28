@@ -872,7 +872,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Emerald Overview.mdx",
-      translations: null,
+      translations: { en: "/emerald-overview/", it: "/it-emerald-overview/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -922,7 +922,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Pokerus.mdx",
-      translations: null,
+      translations: {
+        en: "/emerald-pokerus-emu/",
+        zh: "/zh-emerald-pokerus-emu/",
+      },
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Pokerus.mdx")),
@@ -944,7 +947,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Shiny Starter.mdx",
-      translations: null,
+      translations: {
+        en: "/emerald-shiny-starter/",
+        zh: "/zh-emerald-shiny-starter/",
+      },
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
@@ -2361,8 +2367,8 @@ export const guides = {
   "/gba-methods-lead-impact/": {
     meta: {
       categories: ["GBA Technical Documentation"],
-      tags: ["any"],
-      isNew: true,
+      tags: ["info"],
+      isNew: false,
       title: "Lead Impact on Wild Methods in Emerald",
       navDrawerTitle: "Methods & Lead",
       description:
@@ -2831,6 +2837,34 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
+    ),
+  },
+  "/it-emerald-overview/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["info"],
+      isNew: false,
+      title: "Panoramica di Smeraldo",
+      navDrawerTitle: "Overview",
+      description:
+        "Applicazioni pratiche della manipolazione RNG e tecniche in Pokémon Smeraldo.",
+      slug: "/it-emerald-overview/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-08",
+      translation: { enSlug: "/emerald-overview/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Emerald Overview.mdx",
+      translations: { en: "/emerald-overview/", it: "/it-emerald-overview/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Gen 3/Emerald/Emerald Overview.mdx"
+        ),
     ),
   },
   "/it-emulator-emerald-egg/": {
@@ -3466,7 +3500,7 @@ export const guides = {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
       tags: ["retail"],
-      isNew: true,
+      isNew: false,
       title: "Diamond, Pearl, and Platinum Starter RNG",
       navDrawerTitle: "Starter RNG",
       description:
@@ -3481,7 +3515,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 4/Starters.mdx",
       translations: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
   },
@@ -3503,7 +3537,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Retail Egg.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-emerald-egg/",
+        zh: "/zh-retail-emerald-egg/",
+      },
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Retail Egg.mdx")),
@@ -3540,7 +3577,7 @@ export const guides = {
     meta: {
       categories: ["HeartGold and SoulSilver"],
       tags: ["retail"],
-      isNew: true,
+      isNew: false,
       title: "HeartGold and Soulsilver Starter RNG",
       navDrawerTitle: "Starter RNG",
       description:
@@ -3555,7 +3592,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 4/Starters.mdx",
       translations: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
   },
@@ -4607,7 +4644,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Pokerus.mdx",
-      translations: null,
+      translations: { en: "/rs-pokerus-emu/", zh: "/zh-rs-pokerus-emu/" },
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Pokerus.mdx")),
@@ -5328,6 +5365,61 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Reseed RNG.mdx"),
+    ),
+  },
+  "/zh-emerald-pokerus-emu/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["emu"],
+      isNew: false,
+      title: "绿宝石的宝可病毒",
+      navDrawerTitle: "绿宝石的宝可病毒",
+      description: "如何感染宝可病毒",
+      slug: "/zh-emerald-pokerus-emu/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-09",
+      translation: { enSlug: "/emerald-pokerus-emu/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx",
+      translations: {
+        en: "/emerald-pokerus-emu/",
+        zh: "/zh-emerald-pokerus-emu/",
+      },
+      displayAttributes: ["video_guide"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx"),
+    ),
+  },
+  "/zh-emerald-shiny-starter/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["retail"],
+      isNew: false,
+      title: "异色御三家",
+      navDrawerTitle: "异色御三家",
+      description: "通过捕捉异色御三家确定你的 SID",
+      slug: "/zh-emerald-shiny-starter/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-03",
+      translation: { enSlug: "/emerald-shiny-starter/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Emerald/Shiny Starter.mdx",
+      translations: {
+        en: "/emerald-shiny-starter/",
+        zh: "/zh-emerald-shiny-starter/",
+      },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 3/Emerald/Shiny Starter.mdx"),
     ),
   },
   "/zh-emerald-sid-feebas/": {
@@ -6316,6 +6408,34 @@ export const guides = {
         ),
     ),
   },
+  "/zh-retail-emerald-egg/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Retail Emerald Egg RNG",
+      navDrawerTitle: "Retail Emerald Egg RNG",
+      description:
+        "Learn how to Retail RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies.",
+      slug: "/zh-retail-emerald-egg/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-18",
+      translation: { enSlug: "/retail-emerald-egg/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Emerald/Retail Egg.mdx",
+      translations: {
+        en: "/retail-emerald-egg/",
+        zh: "/zh-retail-emerald-egg/",
+      },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 3/Emerald/Retail Egg.mdx"),
+    ),
+  },
   "/zh-retail-emerald-wild/": {
     meta: {
       categories: ["Emerald"],
@@ -6449,6 +6569,30 @@ export const guides = {
     Guide: React.lazy(
       () =>
         import("~/../guides/Translations/zh/Gen 3/Emerald/Mirage Island.mdx"),
+    ),
+  },
+  "/zh-rs-pokerus-emu/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["emu"],
+      isNew: false,
+      title: "红蓝宝石的宝可病毒",
+      navDrawerTitle: "红蓝宝石的宝可病毒",
+      description: "如何感染宝可病毒",
+      slug: "/zh-rs-pokerus-emu/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-09",
+      translation: { enSlug: "/rs-pokerus-emu/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx",
+      translations: { en: "/rs-pokerus-emu/", zh: "/zh-rs-pokerus-emu/" },
+      displayAttributes: ["video_guide"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx"),
     ),
   },
   "/zh-rs-pokerus-retail/": {
@@ -6650,6 +6794,7 @@ export const guideSlugs = [
   "/install-capturesight/",
   "/install-pokereader-emu/",
   "/install-pokereader/",
+  "/it-emerald-overview/",
   "/it-emulator-emerald-egg/",
   "/it-gen3-glossary/",
   "/legends-arceus/",
@@ -6750,6 +6895,8 @@ export const guideSlugs = [
   "/zh-e-tips-rng/",
   "/zh-emerald-mirage-island/",
   "/zh-emerald-painting-rng/",
+  "/zh-emerald-pokerus-emu/",
+  "/zh-emerald-shiny-starter/",
   "/zh-emerald-sid-feebas/",
   "/zh-emulator-b2w2-dream-radar/",
   "/zh-emulator-b2w2-runasdate-inital-seed/",
@@ -6785,11 +6932,13 @@ export const guideSlugs = [
   "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
+  "/zh-retail-emerald-egg/",
   "/zh-retail-emerald-wild/",
   "/zh-retail-rubysapphire-tid/",
   "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",
   "/zh-rs-mirage-island/",
+  "/zh-rs-pokerus-emu/",
   "/zh-rs-pokerus-retail/",
   "/zh-rs-sid-feebas/",
   "/zh-wishing-star-jirachi/",

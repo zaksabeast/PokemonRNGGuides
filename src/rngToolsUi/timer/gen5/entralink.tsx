@@ -181,7 +181,7 @@ const InnerGen5EntralinkTimer = ({
   );
 
   return (
-    <Flex vertical gap={24}>
+    <Flex vertical gap={12}>
       <MultiTimer
         startButtonTrackerId="start_gen5_entralink_timer"
         stopButtonTrackerId="stop_gen5_entralink_timer"

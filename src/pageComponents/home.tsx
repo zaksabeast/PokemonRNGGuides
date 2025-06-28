@@ -139,12 +139,16 @@ const GameCard = styled(Card)(({ theme }) => ({
   ":hover": {
     boxShadow: theme.token.boxShadow,
     transform: "scale(1.10)",
+    zIndex: 1,
   },
   ".ant-card-body": {
     padding: 0,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  "& .ant-ribbon-wrapper": {
+    width: "100%",
   },
 }));
 

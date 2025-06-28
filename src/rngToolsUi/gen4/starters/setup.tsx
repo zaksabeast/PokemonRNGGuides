@@ -1,7 +1,7 @@
 import { Field, FormFieldTable } from "~/components";
 import { starterAtom } from "./state";
 import { SelectGame } from "../shared/selectGame";
-import { TestMode3dsSwitch } from "../shared/is3dsSwitch";
+import { Is3dsSwitch } from "../shared/is3dsSwitch";
 
 const supportedGames = [
   "Diamond",
@@ -17,8 +17,10 @@ const fields: Field[] = [
     input: <SelectGame stateAtom={starterAtom} games={supportedGames} />,
   },
   {
-    label: "Using 3ds? (Coming soon)",
-    input: <TestMode3dsSwitch stateAtom={starterAtom} />,
+    label: "3ds mode (Preview)",
+    tooltip:
+      "This feature is highly experimental! Please share your results in the Discord server!",
+    input: <Is3dsSwitch stateAtom={starterAtom} />,
   },
 ];
 

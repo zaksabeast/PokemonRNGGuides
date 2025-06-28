@@ -1,0 +1,61 @@
+---
+- title: "绿宝石的宝可病毒"
+  description: "如何感染宝可病毒"
+  slug: "zh-emerald-pokerus-emu"
+  translation:
+    enSlug: "emerald-pokerus-emu"
+    language: "zh"
+- title: "红蓝宝石的宝可病毒"
+  description: "如何感染宝可病毒"
+  slug: "zh-rs-pokerus-emu"
+  translation:
+    enSlug: "rs-pokerus-emu"
+    language: "zh"
+---
+
+<Gist>要点：如何感染宝可病毒</Gist>
+
+## 所需工具
+
+- [mGBA](/mgba-setup)
+- Download [Pokérus lua script](https://raw.githubusercontent.com/RainingChain/pk_emu_scripts/refs/heads/main/Gen3/pokerus.lua)
+
+## 关于宝可病毒
+
+在每场野生战斗结束后，有 1 / 21845 的几率让你的宝可梦感染宝可病毒。感染后，战斗获得的努力值（EV）将加倍。宝可病毒在某些低等级最优化的宝可梦（例如带有龙之怒的 5 级图图犬）中是必要条件。
+
+![感染宝可病毒的宝可梦](/images/Emerald/pokerus.png)
+
+## 第一步：设置
+
+1. <ShowIf slug="/zh-emerald-pokerus-emu">打开 mGBA。</ShowIf>
+   <ShowIf slug="/zh-rs-pokerus-emu">
+     打开 mGBA。请确保关闭了“实时时钟”（路径为 Tools -> Game overrides...）。
+   </ShowIf>
+1. 启动游戏并加载 `pokerus.lua` 脚本。
+1. 使用 `Ctrl + R` 重启游戏。
+
+## 第二步：校准
+
+1. 进入一场野生宝可梦战斗，将敌方宝可梦击倒。
+2. 当出现“XXX 获得了 YY 经验值。”的提示时，使用即时存档保存当前状态。
+3. 使用 `Ctrl + P` 暂停游戏。
+4. 在脚本窗口中记下当前的乱数帧数。
+5. 按住 `A`，同时在暂停状态下按 `Ctrl + P` 取消暂停游戏。
+6. 如果脚本窗口显示当前战斗无法生成宝可病毒，请结束战斗并返回校准的第一步。
+7. 否则，将第四步中记录的当前帧数与脚本窗口中显示的“Advance Difference”（帧差）相加，得出目标帧。
+
+## 第三步：命中目标
+
+1. 重新加载之前在战斗中的即时存档，使用 `Ctrl + N` 单步推进帧数，直到当前帧数与上一步计算出的目标帧一致。
+2. 一旦对齐，按住 `A`，同时按 `Ctrl + P` 取消暂停游戏。
+3. 战斗结束后检查所有宝可梦的状态，确认是否有宝可梦感染了宝可病毒。
+
+<YouTubeVideo src="https://www.youtube.com/embed/ySpe6-4xCNc" />
+
+## 特别鸣谢
+
+- 指南与脚本：RainingChain.
+- 脚本灵感来源：Real96.
+- 反编译项目：[pret 团队](https://github.com/pret/pokeemerald).
+- 中文翻译：炫夜鳞、白希洛/Hakuhiro。

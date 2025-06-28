@@ -4,7 +4,7 @@ navDrawerTitle: "Methods & Lead"
 description: "Understanding why the lead impacts which Wild method is triggered"
 slug: "gba-methods-lead-impact"
 category: "GBA Technical Documentation"
-tag: "any"
+tag: "info"
 addedOn: "2025-06-18"
 ---
 
@@ -32,7 +32,7 @@ Here's a simplified example of the code executed on a wild encounter:
 | 8- Generate SpD, SpA, Spe IVs | + 1K       | 236K-336K    |
 | 9- Assign SpD, SpA, Spe IVs   | + 39K      | 275K-375K    |
 
-Reminder: When the cycle count reaches 280K, a VBlank occurs. VBlank occuring during step "5- Create Pokémon without IVs" will cause Wild-2 method. VBlank at step "7- Assign Def, Atk, HP IVs" causes Wild-4 method. VBlank occuring afterwards or no VBlank will cause Wild-1.
+Reminder: When the cycle count reaches 280K, a VBlank occurs. VBlank occurring during step "5- Create Pokémon without IVs" will cause Wild-2 method. VBlank at step "7- Assign Def, Atk, HP IVs" causes Wild-4 method. VBlank occurring afterwards or no VBlank will cause Wild-1.
 
 During the step "3- Prepare wild encounter", the code fetches the ability of the lead Pokémon multiple times. This takes a variable number of cycles depending on the lead.
 
@@ -96,7 +96,7 @@ The cycles of the step "1- Update audio & visual" depends on the audio frame, wh
 
 ### VBlank when generating a valid PID
 
-A VBlank occuring during the step "4- Generate valid PID" would result in either Wild-3 or Wild-5. Those methods will be covered in the next article.
+A VBlank occurring during the step "4- Generate valid PID" would result in either Wild-3 or Wild-5. Those methods will be covered in the next article.
 
 ## Credits
 

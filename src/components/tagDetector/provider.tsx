@@ -7,11 +7,11 @@ export type SetTags = (tag: TagCollector) => void;
 
 export const TagContext = React.createContext<SetTags | undefined>(undefined);
 
-export const withTags = (
-  Component: React.FC,
+export const withTags = <Props extends Record<string, unknown>>(
+  Component: React.ComponentType<Props>,
   tags: Partial<Record<DetectableTag, true>>,
 ) => {
-  return (props: React.ComponentProps<typeof Component>) => {
+  return (props: Props) => {
     const setTags = React.useContext(TagContext);
     setTags?.(tags);
 

@@ -872,7 +872,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Emerald Overview.mdx",
-      translations: null,
+      translations: { en: "/emerald-overview/", it: "/it-emerald-overview/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -2837,6 +2837,34 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
+    ),
+  },
+  "/it-emerald-overview/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["info"],
+      isNew: false,
+      title: "Panoramica di Smeraldo",
+      navDrawerTitle: "Overview",
+      description:
+        "Applicazioni pratiche della manipolazione RNG e tecniche in Pokémon Smeraldo.",
+      slug: "/it-emerald-overview/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-08",
+      translation: { enSlug: "/emerald-overview/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Emerald Overview.mdx",
+      translations: { en: "/emerald-overview/", it: "/it-emerald-overview/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Gen 3/Emerald/Emerald Overview.mdx"
+        ),
     ),
   },
   "/it-emulator-emerald-egg/": {
@@ -6766,6 +6794,7 @@ export const guideSlugs = [
   "/install-capturesight/",
   "/install-pokereader-emu/",
   "/install-pokereader/",
+  "/it-emerald-overview/",
   "/it-emulator-emerald-egg/",
   "/it-gen3-glossary/",
   "/legends-arceus/",

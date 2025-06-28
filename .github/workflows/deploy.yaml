@@ -69,6 +69,7 @@ jobs:
           VITE_ISO_BUILD_DATE: ${{ env.ISO_BUILD_DATE }}
           VITE_AMPLITUDE_API_KEY: ${{ vars.VITE_AMPLITUDE_API_KEY }}
           VITE_DISCORD_HALL_OF_FAME_SUPPORTERS: ${{ vars.VITE_DISCORD_HALL_OF_FAME_SUPPORTERS }}
+          VITE_PATREON_HALL_OF_FAME_SUPPORTERS: ${{ vars.VITE_PATREON_HALL_OF_FAME_SUPPORTERS }}
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

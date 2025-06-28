@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   Icon,
+  IconName,
   SupportModal,
   Button,
 } from "~/components";
@@ -16,6 +17,25 @@ import { useScreenViewed } from "~/hooks/useScreenViewed";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { useSupportModal } from "~/components/supportModal/state";
 import { settings } from "~/settings";
+import { match } from "ts-pattern";
+import { Color } from "@emotion/react";
+
+type SupporterType = (typeof settings)["hallOfFameSupporters"][number]["type"];
+
+type IconProps = { name: IconName; color: Color };
+
+const DISCORD_SUPPORTER_PROPS: IconProps = {
+  name: "Discord",
+  color: "Primary",
+};
+const PATREON_SUPPORTER_PROPS: IconProps = { name: "Patreon", color: "Error" };
+
+const getSupporterIconProps = (type: SupporterType): IconProps => {
+  return match(type)
+    .with("discord", () => DISCORD_SUPPORTER_PROPS)
+    .with("patreon", () => PATREON_SUPPORTER_PROPS)
+    .exhaustive();
+};
 
 type Props = {
   children: React.ReactNode;
@@ -126,20 +146,18 @@ export const MainLayout = ({ children, trackerName }: Props) => {
                 {children}
               </React.Suspense>
             </Main>
-            {settings.discordHallOfFameSupporters.length === 0 && (
-              <BottomSpace />
-            )}
-            {settings.discordHallOfFameSupporters.length > 0 && (
+            {settings.hallOfFameSupporters.length === 0 && <BottomSpace />}
+            {settings.hallOfFameSupporters.length > 0 && (
               <Footer>
                 <Typography.Text strong fontSize={20}>
                   Special thanks to our Hall of Fame supporters!
                 </Typography.Text>
-                <List ml={24}>
-                  {settings.discordHallOfFameSupporters.map((supporter) => (
+                <List ml={24} pv={12}>
+                  {settings.hallOfFameSupporters.map((supporter) => (
                     <ListItem fontSize={18}>
                       <Flex gap={8} align="center">
-                        <Icon name="Discord" color="Primary" />
-                        {supporter}
+                        <Icon {...getSupporterIconProps(supporter.type)} />
+                        {supporter.name}
                       </Flex>
                     </ListItem>
                   ))}

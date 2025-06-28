@@ -2,7 +2,7 @@ export { Button, BaseButton } from "./button";
 export { Flex } from "./flex";
 export { Gist } from "./gist";
 export { Header } from "./header";
-export { Icon } from "./icons";
+export { Icon, type IconName } from "./icons";
 export { Typography } from "./typography";
 export { DesktopDrawer } from "./navDrawer";
 export { PixelImage } from "./pixelImage";

@@ -346,6 +346,7 @@ fn get_state_from_jseed(
     seed: u32,
 ) -> Option<Base4MethodjState> {
     let mut rng = Pokerng::new(seed).rev();
+    let mut rng2 = Pokerng::new(seed).rev();
     let lead = opts.lead;
 
     match lead {
@@ -434,14 +435,22 @@ fn get_state_from_jseed(
             }
         }
         LeadAbilities::None => {
-            let pidh = (rng.rand::<u16>() as u32) << 16;
-            let pidl = rng.rand::<u16>() as u32;
-            let pid = pidh | pidl;
-            let nature = Nature::from((pid % 25) as u8);
-            let nature_rand = (rng.rand::<u16>() / 0xa3e) as u8;
-            if nature as u8 != nature_rand {
-                return None;
-            }
+            let pid = loop {
+                let pidh = (rng.rand::<u16>() as u32) << 16;
+                let pidl = rng.rand::<u16>() as u32;
+                let pid = pidh | pidl;
+                let nature = Nature::from((pid % 25) as u8);
+                let nature_rand = (rng.rand::<u16>() / 0xa3e) as u8;
+                if nature as u8 == nature_rand {
+                    break pid;
+                } else {
+                    rng = rng2.clone();
+                    rng.rand::<u16>();
+                    rng.rand::<u16>();
+                    rng2.rand::<u16>();
+                    rng2.rand::<u16>();
+                }
+            };
             let gender = opts.encounter.species().gender_from_pid(pid);
             let ability = AbilityType::from_gen3_pid(pid);
             let shiny = gen3_shiny(pid, opts.tid, opts.sid);
@@ -453,7 +462,7 @@ fn get_state_from_jseed(
                 pid,
                 ability,
                 gender,
-                nature,
+                nature: Nature::from_pid(pid),
                 ivs,
                 shiny,
                 characteristic,

@@ -230,13 +230,15 @@ pub struct SearchStatic4MethodjOpts {
     pub max_advance: usize,
     pub min_delay: u32,
     pub max_delay: u32,
+    pub year: u32,
+    pub force_second: Option<u32>,
 }
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SearchStatic4MethodjState {
+    pub seed_time: SeedTime4,
     pub seed: u32,
     pub advance: usize,
-    pub delay: u32,
     pub pid: u32,
     pub ivs: Ivs,
     pub ability: AbilityType,
@@ -246,7 +248,18 @@ pub struct SearchStatic4MethodjState {
     pub characteristic: Characteristic,
 }
 
-impl PkmState for SearchStatic4MethodjState {
+struct Base4MethodjState {
+    seed: u32,
+    pid: u32,
+    ivs: Ivs,
+    ability: AbilityType,
+    gender: Gender,
+    nature: Nature,
+    shiny: bool,
+    characteristic: Characteristic,
+}
+
+impl PkmState for Base4MethodjState {
     fn ability(&self) -> crate::AbilityType {
         self.ability
     }
@@ -267,8 +280,24 @@ impl PkmState for SearchStatic4MethodjState {
         self.shiny
     }
 }
+impl Base4MethodjState {
+    fn full_state(&self, advance: usize, seed_time: SeedTime4) -> SearchStatic4MethodjState {
+        SearchStatic4MethodjState {
+            advance,
+            seed_time,
+            seed: self.seed,
+            pid: self.pid,
+            ivs: self.ivs,
+            ability: self.ability,
+            gender: self.gender,
+            nature: self.nature,
+            shiny: self.shiny,
+            characteristic: self.characteristic,
+        }
+    }
+}
 
-fn search_static4_methodj(opts: &SearchStatic4MethodjOpts) -> Vec<SearchStatic4MethodjState> {
+fn search_static4_methodj(opts: &SearchStatic4MethodjOpts) -> Vec<Base4MethodjState> {
     let Ivs {
         hp: min_hp,
         atk: min_atk,
@@ -315,7 +344,7 @@ fn get_state_from_jseed(
     opts: &SearchStatic4MethodjOpts,
     ivs: Ivs,
     seed: u32,
-) -> SearchStatic4MethodjState {
+) -> Option<Base4MethodjState> {
     let mut rng = Pokerng::new(seed).rev();
     let lead = opts.lead;
 
@@ -339,7 +368,7 @@ fn get_state_from_jseed(
 
                 let characteristic = Characteristic::new(pid, &ivs);
 
-                return SearchStatic4MethodjState {
+                return Some(Base4MethodjState {
                     seed: rng.rand::<u32>(),
                     pid,
                     ability,
@@ -348,10 +377,7 @@ fn get_state_from_jseed(
                     ivs,
                     shiny,
                     characteristic,
-                    // We'll add these later
-                    advance: 0,
-                    delay: 0,
-                };
+                });
             }
         }
         LeadAbilities::CutecharmF => {
@@ -368,7 +394,7 @@ fn get_state_from_jseed(
                 if gender == target_gender {
                     let nature = Nature::from_pid(pid);
 
-                    return SearchStatic4MethodjState {
+                    return Some(Base4MethodjState {
                         seed: rng.rand::<u32>(),
                         pid,
                         ability,
@@ -377,10 +403,7 @@ fn get_state_from_jseed(
                         ivs,
                         shiny,
                         characteristic,
-                        // We'll add these later
-                        advance: 0,
-                        delay: 0,
-                    };
+                    });
                 }
             }
         }
@@ -397,7 +420,7 @@ fn get_state_from_jseed(
                 if gender == target_gender {
                     let nature = Nature::from_pid(pid);
 
-                    return SearchStatic4MethodjState {
+                    return Some(Base4MethodjState {
                         seed: rng.rand::<u32>(),
                         pid,
                         ability,
@@ -406,10 +429,7 @@ fn get_state_from_jseed(
                         ivs,
                         shiny,
                         characteristic,
-                        // We'll add these later
-                        advance: 0,
-                        delay: 0,
-                    };
+                    });
                 }
             }
         }
@@ -418,13 +438,17 @@ fn get_state_from_jseed(
             let pidl = rng.rand::<u16>() as u32;
             let pid = pidh | pidl;
             let nature = Nature::from((pid % 25) as u8);
+            let nature_rand = (rng.rand::<u16>() / 0xa3e) as u8;
+            if nature as u8 != nature_rand {
+                return None;
+            }
             let gender = opts.encounter.species().gender_from_pid(pid);
             let ability = AbilityType::from_gen3_pid(pid);
             let shiny = gen3_shiny(pid, opts.tid, opts.sid);
 
             let characteristic = Characteristic::new(pid, &ivs);
 
-            return SearchStatic4MethodjState {
+            return Some(Base4MethodjState {
                 seed: rng.rand::<u32>(),
                 pid,
                 ability,
@@ -433,10 +457,7 @@ fn get_state_from_jseed(
                 ivs,
                 shiny,
                 characteristic,
-                // We'll add these later
-                advance: 0,
-                delay: 0,
-            };
+            });
         }
     }
 
@@ -444,13 +465,17 @@ fn get_state_from_jseed(
     let pidl = rng.rand::<u16>() as u32;
     let pid = pidh | pidl;
     let nature = Nature::from((pid % 25) as u8);
+    let nature_rand = (rng.rand::<u16>() / 0xa3e) as u8;
+    if nature as u8 != nature_rand {
+        return None;
+    }
     let gender = opts.encounter.species().gender_from_pid(pid);
     let ability = AbilityType::from_gen3_pid(pid);
     let shiny = gen3_shiny(pid, opts.tid, opts.sid);
 
     let characteristic = Characteristic::new(pid, &ivs);
 
-    SearchStatic4MethodjState {
+    Some(Base4MethodjState {
         seed: rng.rand::<u32>(),
         pid,
         ability,
@@ -459,23 +484,18 @@ fn get_state_from_jseed(
         ivs,
         shiny,
         characteristic,
-        // We'll add these later
-        advance: 0,
-        delay: 0,
-    }
+    })
 }
 
 pub fn search_static4_methodj_seed(
     opts: &SearchStatic4MethodjOpts,
     ivs: Ivs,
-) -> Vec<SearchStatic4MethodjState> {
-    //let min_advance = opts.min_advance;
-    //let max_advance = opts.max_advance;
+) -> Vec<Base4MethodjState> {
     let seeds = recover_poke_rng_iv(&ivs, false);
     seeds
         .into_iter()
         .filter_map(|seed| {
-            let state: SearchStatic4MethodjState = get_state_from_jseed(opts, ivs, seed);
+            let state: Base4MethodjState = get_state_from_jseed(opts, ivs, seed)?;
 
             // Don't check IVs since we specifically found matching IVs
             if !opts.filter.pass_filter_no_ivs(&state) {
@@ -485,6 +505,42 @@ pub fn search_static4_methodj_seed(
             Some(state)
         })
         .collect()
+}
+
+pub fn search_static4_methodj_seeds(
+    opts: &SearchStatic4MethodjOpts,
+) -> Vec<SearchStatic4MethodjState> {
+    let min_advance = opts.min_advance;
+    let max_advance = opts.max_advance;
+
+    let mut results = vec![];
+
+    for state in search_static4_methodj(opts).iter() {
+        let mut rng = Pokerng::new(state.seed).rev();
+        rng.advance(min_advance.saturating_sub(1));
+        let mut seed = match min_advance {
+            0 => state.seed,
+            _ => rng.rand::<u32>(),
+        };
+        for advance in min_advance..=max_advance {
+            let seed_time_opts = FindSeedTime4Options::new(
+                seed,
+                opts.year,
+                opts.min_delay..=opts.max_delay,
+                opts.force_second,
+            );
+            let seed_time = dppt_find_seedtime(seed_time_opts);
+
+            if let Some(seed_time) = seed_time {
+                let found_state = state.full_state(advance, seed_time);
+                results.push(found_state);
+            }
+
+            seed = rng.rand::<u32>();
+        }
+    }
+
+    results
 }
 
 #[cfg(test)]
@@ -1462,9 +1518,8 @@ mod tests {
 
     mod search_static4_methodj_seed {
 
-        use crate::ivs;
-
         use super::*;
+        use crate::{assert_list_eq, coin_flips, datetime, ivs};
         #[test]
         fn static_methodj() {
             let opts = SearchStatic4MethodjOpts {
@@ -1475,9 +1530,9 @@ mod tests {
                 lead: LeadAbilities::None,
                 filter: PkmFilter {
                     shiny: false,
-                    nature: Some(Nature::Careful),
+                    nature: None,
                     gender: None,
-                    min_ivs: ivs!(29 / 29 / 29 / 29 / 29 / 29),
+                    min_ivs: ivs!(30 / 30 / 20 / 20 / 20 / 20),
                     max_ivs: Ivs::new_all31(),
                     ability: None,
                     stats: None,
@@ -1486,13 +1541,20 @@ mod tests {
                 max_advance: 20,
                 min_delay: 0,
                 max_delay: 20,
+                year: 2025,
+                force_second: None,
             };
-            let results = search_static4_methodj(&opts);
+            let results = search_static4_methodj_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
+                    seed_time: SeedTime4 {
+                        seed: 0x5C03025B,
+                        datetime: datetime!(2000-01-01 03:33:58).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HTHHHHHTHHHTHHTHTHTH"),
+                    },
                     seed: 0,
                     advance: 0,
-                    delay: 0,
                     pid: 1,
                     ivs: Ivs {
                         hp: 0,
@@ -1509,9 +1571,14 @@ mod tests {
                     characteristic: Characteristic::ALittleQuickTempered,
                 },
                 SearchStatic4MethodjState {
+                    seed_time: SeedTime4 {
+                        seed: 0x5C03025B,
+                        datetime: datetime!(2000-01-01 03:33:58).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HTHHHHHTHHHTHHTHTHTH"),
+                    },
                     seed: 0,
                     advance: 0,
-                    delay: 0,
                     pid: 1,
                     ivs: Ivs {
                         hp: 0,

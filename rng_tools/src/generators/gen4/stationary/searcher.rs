@@ -1,3 +1,5 @@
+use std::result;
+
 use crate::gen4::Static4Species;
 use crate::gen4::{
     FindSeedTime4Options, GameVersion, LeadAbilities, SeedTime4, dppt_find_seedtime,
@@ -248,15 +250,16 @@ pub struct SearchStatic4MethodjState {
     pub characteristic: Characteristic,
 }
 
-struct Base4MethodjState {
-    seed: u32,
-    pid: u32,
-    ivs: Ivs,
-    ability: AbilityType,
-    gender: Gender,
-    nature: Nature,
-    shiny: bool,
-    characteristic: Characteristic,
+#[derive(Clone, Copy)]
+pub struct Base4MethodjState {
+    pub seed: u32,
+    pub pid: u32,
+    pub ivs: Ivs,
+    pub ability: AbilityType,
+    pub gender: Gender,
+    pub nature: Nature,
+    pub shiny: bool,
+    pub characteristic: Characteristic,
 }
 
 impl PkmState for Base4MethodjState {
@@ -344,156 +347,181 @@ fn get_state_from_jseed(
     opts: &SearchStatic4MethodjOpts,
     ivs: Ivs,
     seed: u32,
-) -> Option<Base4MethodjState> {
+) -> Vec<Base4MethodjState> {
+    let mut results = vec![];
     let mut rng = Pokerng::new(seed).rev();
-    let mut rng2 = Pokerng::new(seed).rev();
     let lead = opts.lead;
 
     match lead {
-        LeadAbilities::Synchronize(nature) => {
-            if rng.rand::<u16>() >> 15 == 0 {
-                let mut pid: u32;
-                let nature_value = nature as u32;
-                loop {
-                    let pid_low = rng.rand::<u16>() as u32;
-                    let pid_high = rng.rand::<u16>() as u32;
-                    pid = (pid_high << 16) | pid_low;
-                    if pid % 25 == nature_value {
-                        break;
-                    }
+        LeadAbilities::Synchronize(_) => {
+            let pidh = (rng.rand::<u16>() as u32) << 16;
+            let pidl = rng.rand::<u16>() as u32;
+            let pid = pidh | pidl;
+
+            let nature_rand = (pid % 25) as u16;
+            let nature = Nature::from(nature_rand as u8);
+
+            let mut next_rng = rng.rand::<u16>();
+            let mut next_rng_2 = rng.rand::<u16>();
+            loop {
+                if next_rng / 0xa3e == nature_rand {
+                    let gender: Gender = opts.encounter.species().gender_from_pid(pid);
+                    let ability = AbilityType::from_gen3_pid(pid);
+                    let shiny = gen3_shiny(pid, opts.tid, opts.sid);
+                    let characteristic = Characteristic::new(pid, &ivs);
+
+                    let mut seed_rng = Pokerng::new(rng.rand::<u32>());
+                    let origin_seed = seed_rng.rand::<u32>();
+
+                    results.push(Base4MethodjState {
+                        ivs,
+                        seed: origin_seed,
+                        shiny,
+                        ability,
+                        characteristic,
+                        gender,
+                        nature,
+                        pid,
+                    });
                 }
-                let nature = Nature::from((pid % 25) as u8);
-                let gender = opts.encounter.species().gender_from_pid(pid);
-                let ability = AbilityType::from_gen3_pid(pid);
-                let shiny = gen3_shiny(pid, opts.tid, opts.sid);
 
-                let characteristic = Characteristic::new(pid, &ivs);
+                let hunt_nature = (((next_rng as u32) << 16 | next_rng_2 as u32) % 25) as u16;
+                next_rng = rng.rand::<u16>();
+                next_rng_2 = rng.rand::<u16>();
 
-                return Some(Base4MethodjState {
-                    seed: rng.rand::<u32>(),
-                    pid,
-                    ability,
-                    gender,
-                    nature,
-                    ivs,
-                    shiny,
-                    characteristic,
-                });
+                if hunt_nature == nature_rand {
+                    break;
+                }
             }
+            results
         }
         LeadAbilities::CutecharmF => {
-            let gender_threshold = opts.encounter.species().gender_ratio();
-            let buffer = 25 * ((gender_threshold as u32 / 25) + 1);
-            let target_gender = Gender::Male;
-            let nature = (rng.rand::<u16>() / 0xa3e) as u8;
-            if rng.rand::<u16>() % 3 != 0 {
-                let pid = buffer + nature as u32;
-                let gender = opts.encounter.species().gender_from_pid(pid);
-                let ability = AbilityType::from_gen3_pid(pid);
-                let shiny = gen3_shiny(pid, opts.tid, opts.sid);
-                let characteristic = Characteristic::new(pid, &ivs);
-                if gender == target_gender {
-                    let nature = Nature::from_pid(pid);
+            let pidh = (rng.rand::<u16>() as u32) << 16;
+            let pidl = rng.rand::<u16>() as u32;
+            let pid = pidh | pidl;
 
-                    return Some(Base4MethodjState {
-                        seed: rng.rand::<u32>(),
-                        pid,
+            let nature_rand = (pid % 25) as u16;
+            let nature = Nature::from(nature_rand as u8);
+
+            let mut next_rng = rng.rand::<u16>();
+            let mut next_rng_2 = rng.rand::<u16>();
+            loop {
+                if next_rng / 0xa3e == nature_rand {
+                    let gender: Gender = opts.encounter.species().gender_from_pid(pid);
+                    let ability = AbilityType::from_gen3_pid(pid);
+                    let shiny = gen3_shiny(pid, opts.tid, opts.sid);
+                    let characteristic = Characteristic::new(pid, &ivs);
+
+                    let mut seed_rng = Pokerng::new(rng.rand::<u32>());
+                    let origin_seed = seed_rng.rand::<u32>();
+
+                    results.push(Base4MethodjState {
+                        ivs,
+                        seed: origin_seed,
+                        shiny,
                         ability,
+                        characteristic,
                         gender,
                         nature,
-                        ivs,
-                        shiny,
-                        characteristic,
+                        pid,
                     });
                 }
+
+                let hunt_nature = (((next_rng as u32) << 16 | next_rng_2 as u32) % 25) as u16;
+                next_rng = rng.rand::<u16>();
+                next_rng_2 = rng.rand::<u16>();
+
+                if hunt_nature == nature_rand {
+                    break;
+                }
             }
+            results
         }
         LeadAbilities::CutecharmM => {
-            let buffer = 0;
-            let target_gender = Gender::Female;
-            let nature = (rng.rand::<u16>() / 0xa3e) as u8;
-            if rng.rand::<u16>() % 3 != 0 {
-                let pid = buffer + nature as u32;
-                let gender = opts.encounter.species().gender_from_pid(pid);
-                let ability = AbilityType::from_gen3_pid(pid);
-                let shiny = gen3_shiny(pid, opts.tid, opts.sid);
-                let characteristic = Characteristic::new(pid, &ivs);
-                if gender == target_gender {
-                    let nature = Nature::from_pid(pid);
+            let pidh = (rng.rand::<u16>() as u32) << 16;
+            let pidl = rng.rand::<u16>() as u32;
+            let pid = pidh | pidl;
 
-                    return Some(Base4MethodjState {
-                        seed: rng.rand::<u32>(),
-                        pid,
+            let nature_rand = (pid % 25) as u16;
+            let nature = Nature::from(nature_rand as u8);
+
+            let mut next_rng = rng.rand::<u16>();
+            let mut next_rng_2 = rng.rand::<u16>();
+            loop {
+                if next_rng / 0xa3e == nature_rand {
+                    let gender: Gender = opts.encounter.species().gender_from_pid(pid);
+                    let ability = AbilityType::from_gen3_pid(pid);
+                    let shiny = gen3_shiny(pid, opts.tid, opts.sid);
+                    let characteristic = Characteristic::new(pid, &ivs);
+
+                    let mut seed_rng = Pokerng::new(rng.rand::<u32>());
+                    let origin_seed = seed_rng.rand::<u32>();
+
+                    results.push(Base4MethodjState {
+                        ivs,
+                        seed: origin_seed,
+                        shiny,
                         ability,
+                        characteristic,
                         gender,
                         nature,
-                        ivs,
-                        shiny,
-                        characteristic,
+                        pid,
                     });
                 }
+
+                let hunt_nature = (((next_rng as u32) << 16 | next_rng_2 as u32) % 25) as u16;
+                next_rng = rng.rand::<u16>();
+                next_rng_2 = rng.rand::<u16>();
+
+                if hunt_nature == nature_rand {
+                    break;
+                }
             }
+            results
         }
         LeadAbilities::None => {
-            let pid = loop {
-                let pidh = (rng.rand::<u16>() as u32) << 16;
-                let pidl = rng.rand::<u16>() as u32;
-                let pid = pidh | pidl;
-                let nature = Nature::from((pid % 25) as u8);
-                let nature_rand = (rng.rand::<u16>() / 0xa3e) as u8;
-                if nature as u8 == nature_rand {
-                    break pid;
-                } else {
-                    rng = rng2.clone();
-                    rng.rand::<u16>();
-                    rng.rand::<u16>();
-                    rng2.rand::<u16>();
-                    rng2.rand::<u16>();
+            let pidh = (rng.rand::<u16>() as u32) << 16;
+            let pidl = rng.rand::<u16>() as u32;
+            let pid = pidh | pidl;
+
+            let nature_rand = (pid % 25) as u16;
+            let nature = Nature::from(nature_rand as u8);
+
+            let mut next_rng = rng.rand::<u16>();
+            let mut next_rng_2 = rng.rand::<u16>();
+            loop {
+                if next_rng / 0xa3e == nature_rand {
+                    let gender: Gender = opts.encounter.species().gender_from_pid(pid);
+                    let ability = AbilityType::from_gen3_pid(pid);
+                    let shiny = gen3_shiny(pid, opts.tid, opts.sid);
+                    let characteristic = Characteristic::new(pid, &ivs);
+
+                    let mut seed_rng = Pokerng::new(rng.rand::<u32>());
+                    let origin_seed = seed_rng.rand::<u32>();
+
+                    results.push(Base4MethodjState {
+                        ivs,
+                        seed: origin_seed,
+                        shiny,
+                        ability,
+                        characteristic,
+                        gender,
+                        nature,
+                        pid,
+                    });
                 }
-            };
-            let gender = opts.encounter.species().gender_from_pid(pid);
-            let ability = AbilityType::from_gen3_pid(pid);
-            let shiny = gen3_shiny(pid, opts.tid, opts.sid);
 
-            let characteristic = Characteristic::new(pid, &ivs);
+                let hunt_nature = (((next_rng as u32) << 16 | next_rng_2 as u32) % 25) as u16;
+                next_rng = rng.rand::<u16>();
+                next_rng_2 = rng.rand::<u16>();
 
-            return Some(Base4MethodjState {
-                seed: rng.rand::<u32>(),
-                pid,
-                ability,
-                gender,
-                nature: Nature::from_pid(pid),
-                ivs,
-                shiny,
-                characteristic,
-            });
+                if hunt_nature == nature_rand {
+                    break;
+                }
+            }
+            results
         }
     }
-
-    let pidh = (rng.rand::<u16>() as u32) << 16;
-    let pidl = rng.rand::<u16>() as u32;
-    let pid = pidh | pidl;
-    let nature = Nature::from((pid % 25) as u8);
-    let nature_rand = (rng.rand::<u16>() / 0xa3e) as u8;
-    if nature as u8 != nature_rand {
-        return None;
-    }
-    let gender = opts.encounter.species().gender_from_pid(pid);
-    let ability = AbilityType::from_gen3_pid(pid);
-    let shiny = gen3_shiny(pid, opts.tid, opts.sid);
-
-    let characteristic = Characteristic::new(pid, &ivs);
-
-    Some(Base4MethodjState {
-        seed: rng.rand::<u32>(),
-        pid,
-        ability,
-        gender,
-        nature,
-        ivs,
-        shiny,
-        characteristic,
-    })
 }
 
 pub fn search_static4_methodj_seed(
@@ -503,15 +531,10 @@ pub fn search_static4_methodj_seed(
     let seeds = recover_poke_rng_iv(&ivs, false);
     seeds
         .into_iter()
-        .filter_map(|seed| {
-            let state: Base4MethodjState = get_state_from_jseed(opts, ivs, seed)?;
-
+        .flat_map(|seed| get_state_from_jseed(opts, ivs, seed))
+        .filter(|state| {
             // Don't check IVs since we specifically found matching IVs
-            if !opts.filter.pass_filter_no_ivs(&state) {
-                return None;
-            }
-
-            Some(state)
+            opts.filter.pass_filter_no_ivs(state)
         })
         .collect()
 }
@@ -526,11 +549,9 @@ pub fn search_static4_methodj_seeds(
 
     for state in search_static4_methodj(opts).iter() {
         let mut rng = Pokerng::new(state.seed).rev();
-        rng.advance(min_advance.saturating_sub(1));
-        let mut seed = match min_advance {
-            0 => state.seed,
-            _ => rng.rand::<u32>(),
-        };
+        rng.advance(min_advance);
+        let mut seed = rng.rand::<u32>();
+
         for advance in min_advance..=max_advance {
             let seed_time_opts = FindSeedTime4Options::new(
                 seed,
@@ -548,7 +569,6 @@ pub fn search_static4_methodj_seeds(
             seed = rng.rand::<u32>();
         }
     }
-
     results
 }
 
@@ -1528,7 +1548,7 @@ mod tests {
     mod search_static4_methodj_seed {
 
         use super::*;
-        use crate::{assert_list_eq, coin_flips, datetime, ivs};
+        use crate::{coin_flips, datetime, ivs};
         #[test]
         fn static_methodj() {
             let opts = SearchStatic4MethodjOpts {
@@ -1547,9 +1567,9 @@ mod tests {
                     stats: None,
                 },
                 min_advance: 0,
-                max_advance: 20,
+                max_advance: 1,
                 min_delay: 0,
-                max_delay: 20,
+                max_delay: 1,
                 year: 2025,
                 force_second: None,
             };

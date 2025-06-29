@@ -1,4 +1,9 @@
-use crate::gen4::{FindSeedTime4Options, SeedTime4, dppt_find_seedtime};
+use std::result;
+
+use crate::gen4::Static4Species;
+use crate::gen4::{
+    FindSeedTime4Options, GameVersion, LeadAbilities, SeedTime4, dppt_find_seedtime,
+};
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
 use crate::{
@@ -211,6 +216,359 @@ pub fn search_static4_method1_seeds(
         }
     }
 
+    results
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct SearchStatic4MethodjOpts {
+    pub tid: u16,
+    pub sid: u16,
+    pub game: GameVersion,
+    pub encounter: Static4Species,
+    pub lead: LeadAbilities,
+    pub filter: PkmFilter,
+    pub min_advance: usize,
+    pub max_advance: usize,
+    pub min_delay: u32,
+    pub max_delay: u32,
+    pub year: u32,
+    pub force_second: Option<u32>,
+}
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct SearchStatic4MethodjState {
+    pub seed_time: SeedTime4,
+    pub seed: u32,
+    pub advance: usize,
+    pub pid: u32,
+    pub ivs: Ivs,
+    pub ability: AbilityType,
+    pub gender: Gender,
+    pub nature: Nature,
+    pub shiny: bool,
+    pub characteristic: Characteristic,
+}
+
+#[derive(Clone, Copy)]
+pub struct Base4MethodjState {
+    pub seed: u32,
+    pub pid: u32,
+    pub ivs: Ivs,
+    pub ability: AbilityType,
+    pub gender: Gender,
+    pub nature: Nature,
+    pub shiny: bool,
+    pub characteristic: Characteristic,
+}
+
+impl PkmState for Base4MethodjState {
+    fn ability(&self) -> crate::AbilityType {
+        self.ability
+    }
+
+    fn gender(&self) -> crate::Gender {
+        self.gender
+    }
+
+    fn ivs(&self) -> &crate::Ivs {
+        &self.ivs
+    }
+
+    fn nature(&self) -> crate::Nature {
+        self.nature
+    }
+
+    fn shiny(&self) -> bool {
+        self.shiny
+    }
+}
+impl Base4MethodjState {
+    fn full_state(&self, advance: usize, seed_time: SeedTime4) -> SearchStatic4MethodjState {
+        SearchStatic4MethodjState {
+            advance,
+            seed_time,
+            seed: self.seed,
+            pid: self.pid,
+            ivs: self.ivs,
+            ability: self.ability,
+            gender: self.gender,
+            nature: self.nature,
+            shiny: self.shiny,
+            characteristic: self.characteristic,
+        }
+    }
+}
+
+fn search_static4_methodj(opts: &SearchStatic4MethodjOpts) -> Vec<Base4MethodjState> {
+    let Ivs {
+        hp: min_hp,
+        atk: min_atk,
+        def: min_def,
+        spa: min_spa,
+        spd: min_spd,
+        spe: min_spe,
+    } = opts.filter.min_ivs;
+
+    let Ivs {
+        hp: max_hp,
+        atk: max_atk,
+        def: max_def,
+        spa: max_spa,
+        spd: max_spd,
+        spe: max_spe,
+    } = opts.filter.max_ivs;
+
+    iproduct!(
+        min_hp..=max_hp,
+        min_atk..=max_atk,
+        min_def..=max_def,
+        min_spa..=max_spa,
+        min_spd..=max_spd,
+        min_spe..=max_spe
+    )
+    .flat_map(|(hp, atk, def, spa, spd, spe)| {
+        search_static4_methodj_seed(
+            opts,
+            Ivs {
+                hp,
+                atk,
+                def,
+                spa,
+                spd,
+                spe,
+            },
+        )
+    })
+    .collect()
+}
+
+fn get_state_from_jseed(
+    opts: &SearchStatic4MethodjOpts,
+    ivs: Ivs,
+    seed: u32,
+) -> Vec<Base4MethodjState> {
+    let mut results = vec![];
+    let mut rng = Pokerng::new(seed).rev();
+    let lead = opts.lead;
+
+    match lead {
+        LeadAbilities::Synchronize(_) => {
+            let pidh = (rng.rand::<u16>() as u32) << 16;
+            let pidl = rng.rand::<u16>() as u32;
+            let pid = pidh | pidl;
+
+            let nature_rand = (pid % 25) as u16;
+            let nature = Nature::from(nature_rand as u8);
+
+            let mut next_rng = rng.rand::<u16>();
+            let mut next_rng_2 = rng.rand::<u16>();
+            loop {
+                if next_rng / 0xa3e == nature_rand {
+                    let gender: Gender = opts.encounter.species().gender_from_pid(pid);
+                    let ability = AbilityType::from_gen3_pid(pid);
+                    let shiny = gen3_shiny(pid, opts.tid, opts.sid);
+                    let characteristic = Characteristic::new(pid, &ivs);
+
+                    let mut seed_rng = Pokerng::new(rng.rand::<u32>());
+                    let origin_seed = seed_rng.rand::<u32>();
+
+                    results.push(Base4MethodjState {
+                        ivs,
+                        seed: origin_seed,
+                        shiny,
+                        ability,
+                        characteristic,
+                        gender,
+                        nature,
+                        pid,
+                    });
+                }
+
+                let hunt_nature = (((next_rng as u32) << 16 | next_rng_2 as u32) % 25) as u16;
+                next_rng = rng.rand::<u16>();
+                next_rng_2 = rng.rand::<u16>();
+
+                if hunt_nature == nature_rand {
+                    break;
+                }
+            }
+            results
+        }
+        LeadAbilities::CutecharmF => {
+            let pidh = (rng.rand::<u16>() as u32) << 16;
+            let pidl = rng.rand::<u16>() as u32;
+            let pid = pidh | pidl;
+
+            let nature_rand = (pid % 25) as u16;
+            let nature = Nature::from(nature_rand as u8);
+
+            let mut next_rng = rng.rand::<u16>();
+            let mut next_rng_2 = rng.rand::<u16>();
+            loop {
+                if next_rng / 0xa3e == nature_rand {
+                    let gender: Gender = opts.encounter.species().gender_from_pid(pid);
+                    let ability = AbilityType::from_gen3_pid(pid);
+                    let shiny = gen3_shiny(pid, opts.tid, opts.sid);
+                    let characteristic = Characteristic::new(pid, &ivs);
+
+                    let mut seed_rng = Pokerng::new(rng.rand::<u32>());
+                    let origin_seed = seed_rng.rand::<u32>();
+
+                    results.push(Base4MethodjState {
+                        ivs,
+                        seed: origin_seed,
+                        shiny,
+                        ability,
+                        characteristic,
+                        gender,
+                        nature,
+                        pid,
+                    });
+                }
+
+                let hunt_nature = (((next_rng as u32) << 16 | next_rng_2 as u32) % 25) as u16;
+                next_rng = rng.rand::<u16>();
+                next_rng_2 = rng.rand::<u16>();
+
+                if hunt_nature == nature_rand {
+                    break;
+                }
+            }
+            results
+        }
+        LeadAbilities::CutecharmM => {
+            let pidh = (rng.rand::<u16>() as u32) << 16;
+            let pidl = rng.rand::<u16>() as u32;
+            let pid = pidh | pidl;
+
+            let nature_rand = (pid % 25) as u16;
+            let nature = Nature::from(nature_rand as u8);
+
+            let mut next_rng = rng.rand::<u16>();
+            let mut next_rng_2 = rng.rand::<u16>();
+            loop {
+                if next_rng / 0xa3e == nature_rand {
+                    let gender: Gender = opts.encounter.species().gender_from_pid(pid);
+                    let ability = AbilityType::from_gen3_pid(pid);
+                    let shiny = gen3_shiny(pid, opts.tid, opts.sid);
+                    let characteristic = Characteristic::new(pid, &ivs);
+
+                    let mut seed_rng = Pokerng::new(rng.rand::<u32>());
+                    let origin_seed = seed_rng.rand::<u32>();
+
+                    results.push(Base4MethodjState {
+                        ivs,
+                        seed: origin_seed,
+                        shiny,
+                        ability,
+                        characteristic,
+                        gender,
+                        nature,
+                        pid,
+                    });
+                }
+
+                let hunt_nature = (((next_rng as u32) << 16 | next_rng_2 as u32) % 25) as u16;
+                next_rng = rng.rand::<u16>();
+                next_rng_2 = rng.rand::<u16>();
+
+                if hunt_nature == nature_rand {
+                    break;
+                }
+            }
+            results
+        }
+        LeadAbilities::None => {
+            let pidh = (rng.rand::<u16>() as u32) << 16;
+            let pidl = rng.rand::<u16>() as u32;
+            let pid = pidh | pidl;
+
+            let nature_rand = (pid % 25) as u16;
+            let nature = Nature::from(nature_rand as u8);
+
+            let mut next_rng = rng.rand::<u16>();
+            let mut next_rng_2 = rng.rand::<u16>();
+            loop {
+                if next_rng / 0xa3e == nature_rand {
+                    let gender: Gender = opts.encounter.species().gender_from_pid(pid);
+                    let ability = AbilityType::from_gen3_pid(pid);
+                    let shiny = gen3_shiny(pid, opts.tid, opts.sid);
+                    let characteristic = Characteristic::new(pid, &ivs);
+
+                    let mut seed_rng = Pokerng::new(rng.rand::<u32>());
+                    let origin_seed = seed_rng.rand::<u32>();
+
+                    results.push(Base4MethodjState {
+                        ivs,
+                        seed: origin_seed,
+                        shiny,
+                        ability,
+                        characteristic,
+                        gender,
+                        nature,
+                        pid,
+                    });
+                }
+
+                let hunt_nature = (((next_rng as u32) << 16 | next_rng_2 as u32) % 25) as u16;
+                next_rng = rng.rand::<u16>();
+                next_rng_2 = rng.rand::<u16>();
+
+                if hunt_nature == nature_rand {
+                    break;
+                }
+            }
+            results
+        }
+    }
+}
+
+pub fn search_static4_methodj_seed(
+    opts: &SearchStatic4MethodjOpts,
+    ivs: Ivs,
+) -> Vec<Base4MethodjState> {
+    let seeds = recover_poke_rng_iv(&ivs, false);
+    seeds
+        .into_iter()
+        .flat_map(|seed| get_state_from_jseed(opts, ivs, seed))
+        .filter(|state| {
+            // Don't check IVs since we specifically found matching IVs
+            opts.filter.pass_filter_no_ivs(state)
+        })
+        .collect()
+}
+
+pub fn search_static4_methodj_seeds(
+    opts: &SearchStatic4MethodjOpts,
+) -> Vec<SearchStatic4MethodjState> {
+    let min_advance = opts.min_advance;
+    let max_advance = opts.max_advance;
+
+    let mut results = vec![];
+
+    for state in search_static4_methodj(opts).iter() {
+        let mut rng = Pokerng::new(state.seed).rev();
+        rng.advance(min_advance);
+        let mut seed = rng.rand::<u32>();
+
+        for advance in min_advance..=max_advance {
+            let seed_time_opts = FindSeedTime4Options::new(
+                seed,
+                opts.year,
+                opts.min_delay..=opts.max_delay,
+                opts.force_second,
+            );
+            let seed_time = dppt_find_seedtime(seed_time_opts);
+
+            if let Some(seed_time) = seed_time {
+                let found_state = state.full_state(advance, seed_time);
+                results.push(found_state);
+            }
+
+            seed = rng.rand::<u32>();
+        }
+    }
     results
 }
 
@@ -1184,6 +1542,89 @@ mod tests {
             ];
 
             assert_list_eq!(results, expected);
+        }
+    }
+
+    mod search_static4_methodj_seed {
+
+        use super::*;
+        use crate::{coin_flips, datetime, ivs};
+        #[test]
+        fn static_methodj() {
+            let opts = SearchStatic4MethodjOpts {
+                tid: 12345,
+                sid: 54321,
+                game: GameVersion::Diamond,
+                encounter: Static4Species::Drifloon,
+                lead: LeadAbilities::None,
+                filter: PkmFilter {
+                    shiny: false,
+                    nature: None,
+                    gender: None,
+                    min_ivs: ivs!(30 / 30 / 20 / 20 / 20 / 20),
+                    max_ivs: Ivs::new_all31(),
+                    ability: None,
+                    stats: None,
+                },
+                min_advance: 0,
+                max_advance: 1,
+                min_delay: 0,
+                max_delay: 1,
+                year: 2025,
+                force_second: None,
+            };
+            let results = search_static4_methodj_seeds(&opts);
+            let expected = [
+                SearchStatic4MethodjState {
+                    seed_time: SeedTime4 {
+                        seed: 0x5C03025B,
+                        datetime: datetime!(2000-01-01 03:33:58).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HTHHHHHTHHHTHHTHTHTH"),
+                    },
+                    seed: 0,
+                    advance: 0,
+                    pid: 1,
+                    ivs: Ivs {
+                        hp: 0,
+                        atk: 0,
+                        def: 0,
+                        spa: 0,
+                        spd: 0,
+                        spe: 0,
+                    },
+                    ability: AbilityType::First,
+                    gender: Gender::Female,
+                    nature: Nature::Adamant,
+                    shiny: false,
+                    characteristic: Characteristic::ALittleQuickTempered,
+                },
+                SearchStatic4MethodjState {
+                    seed_time: SeedTime4 {
+                        seed: 0x5C03025B,
+                        datetime: datetime!(2000-01-01 03:33:58).unwrap(),
+                        delay: 603,
+                        coin_flips: coin_flips!("HTHHHHHTHHHTHHTHTHTH"),
+                    },
+                    seed: 0,
+                    advance: 0,
+                    pid: 1,
+                    ivs: Ivs {
+                        hp: 0,
+                        atk: 0,
+                        def: 0,
+                        spa: 0,
+                        spd: 0,
+                        spe: 0,
+                    },
+                    ability: AbilityType::First,
+                    gender: Gender::Female,
+                    nature: Nature::Adamant,
+                    shiny: false,
+                    characteristic: Characteristic::ALittleQuickTempered,
+                },
+            ];
+            assert_eq!(results, expected);
         }
     }
 }

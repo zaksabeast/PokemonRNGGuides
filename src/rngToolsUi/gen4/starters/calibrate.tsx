@@ -31,6 +31,7 @@ import { sortBy } from "lodash-es";
 import pMap from "p-map";
 import { match } from "ts-pattern";
 import { characteristics, Characteristic4Options } from "../gen4types";
+import { fromRngDateTime, toRngDateTime } from "~/utils/time";
 
 type Result = Gen4StaticPokemon & {
   key: string;
@@ -204,9 +205,13 @@ export const CalibrateStarter4 = () => {
         spe: opts.speStat,
       };
 
+      const datetime = toRngDateTime(
+        fromRngDateTime(targetDateTime).subtract(1, "seconds"),
+      );
+
       const seedTimes = await rngTools.calc_gen4_seeds({
-        datetime: targetDateTime,
-        seconds_increment: 1,
+        datetime,
+        seconds_increment: 2,
         min_delay: minDelay,
         max_delay: maxDelay,
       });

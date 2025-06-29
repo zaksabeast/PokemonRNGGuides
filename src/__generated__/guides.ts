@@ -513,7 +513,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/Delete Save.mdx",
-      translations: null,
+      translations: {
+        en: "/delete-pokemon-save/",
+        es: "/es-delete-pokemon-save/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -2053,6 +2056,36 @@ export const guides = {
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Time Finder.js (Citra).mdx"),
+    ),
+  },
+  "/es-delete-pokemon-save/": {
+    meta: {
+      categories: ["GBA Tools", "NDS Tools", "3DS Tools", "Switch Tools"],
+      tags: ["any"],
+      isNew: false,
+      title: "Como eliminar partidas de Pokémon",
+      navDrawerTitle: "Como eliminar partidas de Pokémon",
+      description: "Como eliminar partidas de Pokémon",
+      slug: "/es-delete-pokemon-save/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/delete-pokemon-save/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Tools and Emulators/Delete Save.mdx",
+      translations: {
+        en: "/delete-pokemon-save/",
+        es: "/es-delete-pokemon-save/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/es/Tools and Emulators/Delete Save.mdx"
+        ),
     ),
   },
   "/es-gen2-celebi/": {
@@ -6763,6 +6796,7 @@ export const guideSlugs = [
   "/emulator-rs-wishmaker/",
   "/emulator-sm-time-finder/",
   "/emulator-usum-time-finder/",
+  "/es-delete-pokemon-save/",
   "/es-gen2-celebi/",
   "/es-gen2-starters/",
   "/experiments/",

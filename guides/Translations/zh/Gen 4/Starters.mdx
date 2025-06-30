@@ -1,0 +1,144 @@
+---
+- title: "心金魂银初始宝可梦乱数"
+  description: "学习如何在心金与魂银中进行初始宝可梦的乱数，以获得异色、高个体值的宝可梦。"
+  slug: "zh-retail-hgss-starter"
+  translation:
+    enSlug: "retail-hgss-starter"
+    language: "zh"
+- title: "钻石珍珠白金初始宝可梦乱数"
+  description: "学习如何在钻石、珍珠和白金中进行初始宝可梦的乱数，以获得异色、高个体值的宝可梦。"
+  slug: "zh-retail-dppt-starter"
+  translation:
+    enSlug: "retail-dppt-starter"
+    language: "zh"
+---
+
+## Video guide
+
+<YouTubeTable
+  videos={[
+    {
+      title: "Starter RNG",
+      src: "https://www.youtube.com/embed/PMEuRlT83Qs?si=N_Ha7LBg3mtEHdKA",
+    },
+    {
+      title: "3DS RNG",
+      src: "https://www.youtube.com/embed/-ayvPKWNkNw?si=eA7yboNXFhGl0MUX",
+    },
+  ]}
+/>
+
+## Written guide
+
+<Alert
+showIcon
+type="info"
+message="本指南为交互式，会根据你的设置动态更新步骤！"
+/>
+
+<Stepper titles={["准备工作", "选择初始宝可梦", "获取宝可梦", "校准"]}>
+
+<Step step={0}>
+
+## 准备工作
+
+请选择你正在游玩的游戏版本后继续下一步。
+
+<Starter4ShowIf game="Platinum">
+
+<Alert
+showIcon
+type="info"
+message="白金是最难乱数的版本，并可能存在稳定性问题！"
+/>
+
+</Starter4ShowIf>
+
+<Starter4Setup />
+
+</Step>
+
+<Step step={1}>
+
+## 选择初始宝可梦
+
+1. 使用下方工具填写筛选条件，找到你理想的初始宝可梦。
+2. 如果找不到满意的目标，可以尝试调高最小和最大延迟范围，但这将增加成功所需等待的时间。
+
+想要异色并拥有高个体值的初始宝可梦非常困难，建议目标最多包含 3 个完美个体值。
+
+<PickStarter4 />
+
+</Step>
+
+<Step step={2}>
+
+## 准备存档
+
+1. 如果你玩的是白金版，请在 NDS 上将系统日期设为 **2099/12/31**，在 3DS 上设为 **2050/12/31**。
+2. 根据游戏版本，将角色停在如下图所示的位置并存档。
+
+| 钻石与珍珠                                                               | 白金                                                                 | 心金与魂银                                                               |
+| ----------------------------- | ------------------------------------ | ------------------------------- |
+| ![DPPt 存档点](/images/Diamond-Pearl-Platinum/Starter/DPPt-starter.webp) | ![白金存档点](/images/Diamond-Pearl-Platinum/Starter/plat-starter.webp) | ![HGSS 存档点](/images/HeartGold-SoulSilver/Starter/hgss-starter.webp) |
+
+## 准备主机
+
+1. 将主机日期设为 **<Starter4ConsoleSetDateString format="date" />**。
+2. 开始设定主机时间为 **<Starter4ConsoleSetDateString format="time" />**，但暂时不要确认。
+
+| 时间确认画面                                                    |
+| ----------------------------- |
+| ![确认时间界面](/images/HeartGold-SoulSilver/SetTimeScreen.jpg) |
+
+## 命中目标
+
+<Starter4ShowIf is3ds>
+  <Metronome3dsNotice />
+</Starter4ShowIf>
+
+1. 同时按下 `A` 键确认时间，并启动下方计时器。
+2. <Starter4ShowIf is3ds>
+     退出设置并重启主机启动游戏。
+   </Starter4ShowIf>
+   <Starter4ShowIf is3ds={false}>
+     退出设置并重启主机。
+   </Starter4ShowIf>
+3. 第一组计时器结束时， <Starter4ShowIf is3ds>按下 `L + R + Start + Select` 软复位游戏。</Starter4ShowIf><Starter4ShowIf is3ds={false}>按 `A` 启动游戏。</Starter4ShowIf>
+4. 到达读档界面。
+5. 第二组计时器结束时立刻按 `A` 进入游戏。
+6. 如果是白金，快速连打按钮进入初始宝可梦选择流程。
+
+<GetStarter4 />
+
+</Step>
+
+<Step step={3}>
+
+## 校准
+
+1. 检查你获得的宝可梦能力值。
+2. 如果与你的目标一致，恭喜你成功乱数出初始宝可梦！
+3. 如果不一致，在下方工具中填写该宝可梦的信息并点击“生成”。
+4. 在结果中点击延迟偏差最小的“校准”按钮（通常是第一项）。
+5. 重新尝试命中目标。
+6. 如果你命中的那只宝可梦的“翻转延迟（Flip Delay）”列被勾选，请执行以下任一操作：
+
+   - **任意版本**：插入一张 GBA 卡带。
+   - **心金魂银**：在继续界面使用触摸屏点击上下箭头。
+   - **钻石珍珠白金**：进入“新游戏”，然后按 `B` 返回主界面。
+   - 如果你已进行延迟翻转操作，并再次提示翻转，则无需再做操作。
+
+在 DPPtt 中，延迟可能随机从奇数变成偶数或反之。发生这种情况时，继续尝试直到命中目标为止。
+
+<CalibrateStarter4 />
+
+</Step>
+
+</Stepper>
+
+## Credits
+
+- Zaksabeast, Sorendog, EzPz, and RainingChain for various contributions to this tool
+- Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, whose work this tool is built upon.
+- 中文翻译：炫夜鳞、白希洛/Hakuhiro。

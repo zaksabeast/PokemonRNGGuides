@@ -8,6 +8,7 @@ import { RadioGroup } from "./radio";
 import { Select } from "./select";
 import firstBeepMp3 from "~/assets/first-beep.mp3";
 import secondBeepMp3 from "~/assets/second-beep.mp3";
+import experimentalBeeps from "~/assets/timer-6-beeps.mp3";
 import { useAudio } from "~/hooks/useAudio";
 import { FormFieldTable } from "./formFieldTable";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
@@ -52,8 +53,12 @@ const InnerMultiTimer = ({
   startButtonTrackerId,
   stopButtonTrackerId,
 }: InnerProps) => {
+  const [experimentalSync, setExperimentalSync] = React.useState(false);
   const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
+  const { playBeeps: playExperimentalBeeps, ...experimentalBeep } = useAudio({
+    url: experimentalBeeps,
+  });
   const { playBeeps: playFirstBeeps, ...firstBeep } = useAudio({
     url: firstBeepMp3,
   });
@@ -83,18 +88,30 @@ const InnerMultiTimer = ({
   }, [startTimeMs, keepAlive]);
 
   const onCountdown = React.useCallback(() => {
+    if (experimentalSync) {
+      playExperimentalBeeps({ count: 1 });
+      return;
+    }
     playFirstBeeps({ count: countdownBeeps });
-  }, [playFirstBeeps, countdownBeeps]);
+  }, [playFirstBeeps, playExperimentalBeeps, experimentalSync, countdownBeeps]);
 
   const onExpire = React.useCallback(() => {
-    playSecondBeeps({ count: 1 });
+    if (experimentalSync) {
+      playSecondBeeps({ count: 1 });
+    }
+
     setCurrentTimerIndex((prev) => prev + 1);
 
     if (currentTimerIndex + 1 >= milliseconds.length) {
       setStartTimeMs(null);
       setCurrentTimerIndex(0);
     }
-  }, [playSecondBeeps, currentTimerIndex, milliseconds.length]);
+  }, [
+    playSecondBeeps,
+    currentTimerIndex,
+    milliseconds.length,
+    experimentalSync,
+  ]);
 
   React.useEffect(() => {
     setStartTimeMs(null);
@@ -148,10 +165,35 @@ const InnerMultiTimer = ({
         ),
       },
       {
+        label: "Experimental Sync (Test)",
+        tooltip:
+          "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
+        input: (
+          <Flex justify="flex-end">
+            <Switch
+              checked={experimentalSync}
+              onChange={(checked) => {
+                setExperimentalSync(checked);
+                if (checked) {
+                  setState(
+                    hydrationLock({
+                      ...state,
+                      hardwareSyncSound: true,
+                      maxBeepCount: 5,
+                    }),
+                  );
+                }
+              }}
+            />
+          </Flex>
+        ),
+      },
+      {
         label: "Beeps",
         input: (
           <Select<number>
             name="countdownBeeps"
+            disabled={experimentalSync}
             value={state.maxBeepCount}
             onChange={(value) => {
               setState(
@@ -169,7 +211,7 @@ const InnerMultiTimer = ({
         ),
       },
     ],
-    [state, setState],
+    [state, setState, experimentalSync],
   );
 
   return (
@@ -233,6 +275,7 @@ const InnerMultiTimer = ({
           setStartTimeMs(newStartTimeMs);
           setCurrentTimerIndex(0);
           if (!newIsRunning) {
+            experimentalBeep.stopBeeps();
             firstBeep.stopBeeps();
             secondBeep.stopBeeps();
           }

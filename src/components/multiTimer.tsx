@@ -148,7 +148,7 @@ const InnerMultiTimer = ({
         ),
       },
       {
-        label: "Countdown Beeps",
+        label: "Beeps",
         input: (
           <Select<number>
             name="countdownBeeps"
@@ -162,7 +162,7 @@ const InnerMultiTimer = ({
               );
             }}
             options={new Array(11).fill(0).map((_, index) => ({
-              label: index.toString(),
+              label: (index + 1).toString(),
               value: index,
             }))}
           />

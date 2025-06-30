@@ -19,7 +19,6 @@ import { Switch } from "./switch";
 
 const MultiTimerStateSchema = z.object({
   showAllTimers: z.boolean(),
-  // Keeping for now in case we need to revert and use the persisted state
   hardwareSyncSound: z.boolean(),
   maxBeepCount: z.number(),
 });
@@ -53,27 +52,14 @@ const InnerMultiTimer = ({
   startButtonTrackerId,
   stopButtonTrackerId,
 }: InnerProps) => {
-  const [altSounds, setAltSounds] = React.useState(false);
   const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
-  const { playBeeps: playFirstBeeps, ...firstBeep } = useAudio(
-    altSounds
-      ? {
-          id: "softBeep",
-        }
-      : {
-          url: firstBeepMp3,
-        },
-  );
-  const { playBeeps: playSecondBeeps, ...secondBeep } = useAudio(
-    altSounds
-      ? {
-          id: "softBeep",
-        }
-      : {
-          url: secondBeepMp3,
-        },
-  );
+  const { playBeeps: playFirstBeeps, ...firstBeep } = useAudio({
+    url: firstBeepMp3,
+  });
+  const { playBeeps: playSecondBeeps, ...secondBeep } = useAudio({
+    url: secondBeepMp3,
+  });
   const keepAlive = useAudio({ url: firstBeepMp3 });
 
   const currentMs = milliseconds[currentTimerIndex] ?? 0;
@@ -142,12 +128,22 @@ const InnerMultiTimer = ({
         ),
       },
       {
-        label: "Alt Beeps (Test)",
+        label: "Sync Optimization",
         tooltip:
-          "This is a special test to see if it helps certain computers with audio issues.",
+          "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
         input: (
           <Flex justify="flex-end">
-            <Switch checked={altSounds} onChange={setAltSounds} />
+            <Switch
+              checked={state.hardwareSyncSound}
+              onChange={(checked) => {
+                setState(
+                  hydrationLock({
+                    ...state,
+                    hardwareSyncSound: checked,
+                  }),
+                );
+              }}
+            />
           </Flex>
         ),
       },
@@ -173,7 +169,7 @@ const InnerMultiTimer = ({
         ),
       },
     ],
-    [state, setState, altSounds],
+    [state, setState],
   );
 
   return (

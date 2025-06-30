@@ -96,7 +96,7 @@ const InnerMultiTimer = ({
   }, [playFirstBeeps, playExperimentalBeeps, experimentalSync, countdownBeeps]);
 
   const onExpire = React.useCallback(() => {
-    if (experimentalSync) {
+    if (!experimentalSync) {
       playSecondBeeps({ count: 1 });
     }
 

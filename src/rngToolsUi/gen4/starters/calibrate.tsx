@@ -244,19 +244,21 @@ export const CalibrateStarter4 = () => {
             },
           },
         });
-        return states.map(
-          (state): Result => ({
+        return states.map((state): Result => {
+          const secondOffset = seedTime.datetime.second - targetDateTime.second;
+          return {
             ...state,
             seed: seedTime.seed,
             delay: seedTime.delay,
             advanceOffset: state.advance - targetAdvance,
-            flipDelay: targetDelay % 2 !== seedTime.delay % 2,
+            flipDelay:
+              secondOffset % 2 === 0 && targetDelay % 2 !== seedTime.delay % 2,
             key: `${seedTime.seed}-${state.pid}`,
             delayOffset: seedTime.delay - targetDelay,
             second: seedTime.datetime.second,
-            secondOffset: seedTime.datetime.second - targetDateTime.second,
-          }),
-        );
+            secondOffset,
+          };
+        });
       });
 
       const sortedResults = sortBy(results.flat(), [

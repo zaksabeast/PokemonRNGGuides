@@ -124,15 +124,21 @@ export const CalibrateId4 = () => {
         Math.abs(result.seed_time.delay - targetDelay),
       );
 
-      const formattedResults = sortedResults.map((result) => ({
-        ...result,
-        seed: result.seed_time.seed,
-        flipDelay: targetDelay % 2 !== result.seed_time.delay % 2,
-        delayOffset: result.seed_time.delay - targetDelay,
-        delay: result.seed_time.delay,
-        seconds: result.seed_time.datetime.second,
-        secondOffset: result.seed_time.datetime.second - targetDateTime.second,
-      }));
+      const formattedResults = sortedResults.map((result) => {
+        const secondOffset =
+          result.seed_time.datetime.second - targetDateTime.second;
+        return {
+          ...result,
+          seed: result.seed_time.seed,
+          flipDelay:
+            secondOffset % 2 === 0 &&
+            targetDelay % 2 !== result.seed_time.delay % 2,
+          delayOffset: result.seed_time.delay - targetDelay,
+          delay: result.seed_time.delay,
+          seconds: result.seed_time.datetime.second,
+          secondOffset,
+        };
+      });
 
       setResults(formattedResults);
     },

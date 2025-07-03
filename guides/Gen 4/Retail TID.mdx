@@ -51,9 +51,17 @@ For increased shiny odds, have a Pokemon with the Cute Charm ability in the fron
 
 ## Set up
 
-Choose the game you're playing below then continue to the next step.
+Choose the game and console you're playing below then continue to the next step.
 
 <Gen4IdSetup />
+
+<Id4ShowIf is3dsNormalSettings>
+  [Learn how to use the 3DS Helper here](/3ds-helper).
+</Id4ShowIf>
+
+<Id4ShowIf is3dsAltSettings>
+  [Download the 3DS Alt Settings app here](/3ds-alt-settings).
+</Id4ShowIf>
 
 </Step>
 
@@ -81,14 +89,18 @@ Fill our the tool below. If you want random max shiny odds during your playthrou
 ## Hit your target
 
 1. Simultaneously press `A` to set the console time and start the timer below.
-2. <Id4ShowIf is3ds>
+2. <Id4ShowIf is3dsNormalSettings>
      Exit the settings on your console, restart your console, and start the
      game.
    </Id4ShowIf>
-   <Id4ShowIf is3ds={false}>
+   <Id4ShowIf is3dsAltSettings>
+     Press `Start` to exit the Alt Settings on your console, then start the
+     game.
+   </Id4ShowIf>
+   <Id4ShowIf isNdsDsi>
      Exit the settings on your console and restart your console.
    </Id4ShowIf>
-3. When the first timer ends, <Id4ShowIf is3ds>press `L + R + Start + Select` to soft reset the game.</Id4ShowIf><Id4ShowIf is3ds={false}>press `A` to start the game.</Id4ShowIf>
+3. When the first timer ends, <Id4ShowIf is3dsNormalSettings is3dsAltSettings>press `L + R + Start + Select` to soft reset the game.</Id4ShowIf><Id4ShowIf isNdsDsi>press `A` to start the game.</Id4ShowIf>
 4. Get to the naming screen. Make sure to name your character the same way each time.
 5. If you've calibrated at least once and need to flip your delay, switch between upper and lower case characters one extra time. Japanese games should switch between Hiragana and Katakana.
 6. Get to the last screen before the TID is generated (see screenshot below). Wait for the second timer to go off and press `A` at the same time.
@@ -101,8 +113,8 @@ Fill our the tool below. If you want random max shiny odds during your playthrou
 
 ## Timer
 
-<Id4ShowIf is3ds>
-  <Metronome3dsNotice />
+<Id4ShowIf is3dsNormalSettings>
+  [Learn how to use the 3DS Helper here](/3ds-helper).
 </Id4ShowIf>
 
 <Id4Timer />

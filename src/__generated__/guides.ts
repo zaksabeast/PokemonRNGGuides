@@ -528,7 +528,7 @@ export const guides = {
       title: "More consistent Platinum RNG",
       navDrawerTitle: "Consistent Platinum RNG",
       description:
-        "New Research to RNG in Platinum consistently for shiny, high-IV Pokémon.",
+        "New research for more consistent Platinum RNG—get shiny, high-IV Pokémon more easily.",
       slug: "/consistent-platinum-rng/",
       isRoughDraft: false,
       hideFromNavDrawer: false,
@@ -537,14 +537,14 @@ export const guides = {
       layout: "guide",
       canonical: null,
       type: "baseGuide",
-      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Platinum Starters.mdx",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Consistent Platinum RNG.mdx",
       translations: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
       () =>
         import(
-          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Platinum Starters.mdx"
+          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Consistent Platinum RNG.mdx"
         ),
     ),
   },

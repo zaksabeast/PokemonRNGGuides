@@ -3,6 +3,7 @@ import { SearchStatic4Method1State } from "~/rngTools";
 import { createGen4TimerAtom } from "~/hooks/useGen4Timer";
 import { MinMaxStats } from "~/types";
 import { Gen4GameVersion } from "../gen4types";
+import { Gen4Console } from "../shared/is3dsSwitch";
 
 export const dpptStarters = ["Turtwig", "Chimchar", "Piplup"] as const;
 export const hgssStarters = ["Chikorita", "Cyndaquil", "Totodile"] as const;
@@ -12,7 +13,7 @@ export type Gen4Starter = (typeof allStarters)[number];
 export const starterTimer = createGen4TimerAtom();
 
 type State = {
-  is3ds: boolean;
+  console: Gen4Console;
   game: Gen4GameVersion;
   species: Gen4Starter;
   minMaxStats: MinMaxStats;
@@ -20,7 +21,7 @@ type State = {
 };
 
 export const starterAtom = atom<State>({
-  is3ds: false,
+  console: "NdsDsi",
   game: "Diamond",
   target: null,
   minMaxStats: {

@@ -3,20 +3,26 @@ import { match } from "ts-pattern";
 
 type Starter4ShowIfProps = {
   game?: string;
-  is3ds?: boolean;
+  isNdsDsi?: boolean;
+  is3dsAltSettings?: boolean;
+  is3dsNormalSettings?: boolean;
   children: React.ReactNode;
 };
 
 export const Starter4ShowIf = ({
-  game,
-  is3ds,
   children,
+  ...settings
 }: Starter4ShowIfProps) => {
   const [state] = useStarterState();
 
-  const show = match<{ game: string; is3ds: boolean }, boolean>(state)
-    .with({ game }, () => true)
-    .with({ is3ds }, () => true)
+  const show = match(settings)
+    .with({ game: state.game }, () => true)
+    .with({ isNdsDsi: state.console === "NdsDsi" }, () => true)
+    .with({ is3dsAltSettings: state.console === "3dsAltSettings" }, () => true)
+    .with(
+      { is3dsNormalSettings: state.console === "3dsNormalSettings" },
+      () => true,
+    )
     .otherwise(() => false);
 
   if (show) {

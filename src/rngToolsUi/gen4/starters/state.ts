@@ -3,7 +3,7 @@ import { SearchStatic4Method1State } from "~/rngTools";
 import { createGen4TimerAtom } from "~/hooks/useGen4Timer";
 import { MinMaxStats } from "~/types";
 import { Gen4GameVersion } from "../gen4types";
-import { Gen4Console } from "../shared/is3dsSwitch";
+import { Gen4Console } from "../shared/consoleSelect";
 
 export const dpptStarters = ["Turtwig", "Chimchar", "Piplup"] as const;
 export const hgssStarters = ["Chikorita", "Cyndaquil", "Totodile"] as const;

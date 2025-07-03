@@ -2,7 +2,7 @@ import { Field, FormFieldTable } from "~/components";
 import { id4Atom } from "./state";
 import { Gen4GameVersions } from "../gen4types";
 import { SelectGame } from "../shared/selectGame";
-import { Gen4ConsoleSelect } from "../shared/is3dsSwitch";
+import { Gen4ConsoleSelect } from "../shared/consoleSelect";
 
 const fields: Field[] = [
   {

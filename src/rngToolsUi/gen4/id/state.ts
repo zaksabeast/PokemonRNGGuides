@@ -2,7 +2,7 @@ import { atom, useAtom } from "jotai";
 import { createGen4TimerAtom } from "~/hooks/useGen4Timer";
 import { Id4 } from "~/rngTools";
 import { Gen4GameVersion } from "../gen4types";
-import { Gen4Console } from "../shared/is3dsSwitch";
+import { Gen4Console } from "../shared/consoleSelect";
 
 export type Id4State = {
   console: Gen4Console;

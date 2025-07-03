@@ -520,6 +520,34 @@ export const guides = {
         import("~/../guides/Tools and Emulators/Connect Dolphin To GBA.mdx"),
     ),
   },
+  "/consistent-platinum-rng/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["info"],
+      isNew: true,
+      title: "More consistent Platinum RNG",
+      navDrawerTitle: "Consistent Platinum RNG",
+      description:
+        "New Research to RNG in Platinum consistently for shiny, high-IV Pokémon.",
+      slug: "/consistent-platinum-rng/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: "2025-07-03",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Platinum Starters.mdx",
+      translations: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Platinum Starters.mdx"
+        ),
+    ),
+  },
   "/crystal/": {
     meta: {
       categories: ["Game Hub"],
@@ -6829,6 +6857,7 @@ export const guideSlugs = [
   "/channel-jirachi/",
   "/citrarng-setup/",
   "/connect-dolphin-to-gba/",
+  "/consistent-platinum-rng/",
   "/crystal/",
   "/delete-pokemon-save/",
   "/desmume-setup/",

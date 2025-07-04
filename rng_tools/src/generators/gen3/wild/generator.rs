@@ -1,4 +1,7 @@
-use super::{Gen3EncounterType, calc_modulo_cycle_signed, calc_modulo_cycle_unsigned};
+use super::{
+    Gen3EncounterType, calc_modulo_cycle_signed, calc_modulo_cycle_unsigned,
+    is_method_possible_to_trigger,
+};
 use crate::EncounterSlot;
 use crate::Ivs;
 use crate::Species;
@@ -11,9 +14,20 @@ use std::ops;
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
-const BASE_LEAD_PID: u32 = 0;
-const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 24);
-const BASE_LEAD_PID_MOD_25_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 25);
+/*
+TODO:
+- Support all leads in generator.
+- Add an optional data structure to store cycle increment reasons.
+- Provide a .lua script to generate actual cycle increments for validation and debugging.
+
+- Support Wild5 with multiple vblanks. Right now, only 1 vblank is supported.
+*/
+
+pub const INFINITE_CYCLE: usize = 10_000_000;
+pub const VBLANK_FREQ: usize = 280_896;
+pub const BASE_LEAD_PID: u32 = 0;
+pub const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 24);
+pub const BASE_LEAD_PID_MOD_25_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 25);
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -46,11 +60,13 @@ pub struct Wild3GeneratorOptions {
     pub methods: Vec<Gen3Method>,
     pub lead: Gen3Lead,
     pub filter: PkmFilter,
+    pub consider_cycles: bool,
+    pub consider_rng_manipulated_lead_pid: bool,
 }
 
 #[derive(Default, Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct CycleCount {
+pub struct CycleAndModCount {
     pub cycle: usize,
     pub mod24: usize,
     pub mod25: usize,
@@ -58,18 +74,42 @@ pub struct CycleCount {
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct CycleRange {
-    pub start: CycleCount,
+pub struct CycleRange<T> {
+    pub start: T,
     pub len: usize,
 }
 
-impl CycleRange {
-    pub fn from_start_len(start: CycleCount, len: usize) -> CycleRange {
+pub type CycleAndModRange = CycleRange<CycleAndModCount>;
+
+impl<T> CycleRange<T> {
+    pub fn from_start_len(start: T, len: usize) -> CycleRange<T> {
         CycleRange { start, len }
     }
-    pub fn new(cycle: usize, mod24: usize, mod25: usize, len: usize) -> CycleRange {
+}
+
+impl CycleRange<usize> {
+    pub fn end(&self) -> usize {
+        self.start + self.len
+    }
+    pub fn from_start_end(start: usize, end: usize) -> CycleRange<usize> {
         CycleRange {
-            start: CycleCount {
+            start,
+            len: end - start,
+        }
+    }
+}
+
+impl CycleAndModRange {
+    pub fn end(&self) -> CycleAndModCount {
+        CycleAndModCount {
+            cycle: self.start.cycle + self.len,
+            mod24: self.start.mod24,
+            mod25: self.start.mod25,
+        }
+    }
+    pub fn new(cycle: usize, mod24: usize, mod25: usize, len: usize) -> CycleAndModRange {
+        CycleRange {
+            start: CycleAndModCount {
                 cycle,
                 mod24,
                 mod25,
@@ -77,9 +117,15 @@ impl CycleRange {
             len,
         }
     }
+    pub fn apply_mod_cycle_count(&self, pid_cycle_count: usize) -> CycleRange<usize> {
+        CycleRange::<usize> {
+            start: self.start.cycle + self.start.mod_count() * pid_cycle_count,
+            len: self.len,
+        }
+    }
 }
 
-impl CycleCount {
+impl CycleAndModCount {
     pub fn add(&mut self, cycle: usize, _reason: &str) {
         self.cycle += cycle;
     }
@@ -91,8 +137,12 @@ impl CycleCount {
         self.cycle += mod25 * BASE_LEAD_PID_MOD_25_CYCLES;
         self.mod25 += mod25;
     }
+    pub fn mod_count(&self) -> usize {
+        self.mod24 + self.mod25
+    }
 }
-impl ops::AddAssign<(usize, &str)> for CycleCount {
+
+impl ops::AddAssign<(usize, &str)> for CycleAndModCount {
     fn add_assign(&mut self, rhs: (usize, &str)) {
         self.add(rhs.0, rhs.1);
     }
@@ -105,7 +155,7 @@ pub struct Wild3GeneratorResult {
     pub pid: u32,
     pub ivs: Ivs,
     pub method: Gen3Method,
-    pub cycle_range: CycleRange,
+    pub cycle_range: Option<CycleAndModRange>,
 }
 
 pub fn generate_gen3_wild(
@@ -114,7 +164,7 @@ pub fn generate_gen3_wild(
 ) -> Vec<Wild3GeneratorResult> {
     let mut results: Vec<Wild3GeneratorResult> = vec![];
 
-    let mut cycle = CycleCount::default();
+    let mut cycle = CycleAndModCount::default();
 
     // between SweetScentWildEncounter and ChooseWildMonIndex_Land
     match opts.lead {
@@ -185,7 +235,7 @@ pub fn generate_gen3_wild(
         }
     };
 
-    let pick_wild_mon_nature = |cycle: &mut CycleCount, rng: &mut Pokerng| -> Nature {
+    let pick_wild_mon_nature = |cycle: &mut CycleAndModCount, rng: &mut Pokerng| -> Nature {
         let nature_rand_val = rng.rand::<u16>();
         *cycle += (
             calc_modulo_cycle_unsigned(nature_rand_val as u32, 25),
@@ -395,7 +445,7 @@ pub fn generate_gen3_wild(
             ivs,
             Gen3Method::Wild1,
             encounter_slot,
-            CycleRange::from_start_len(cycle, 280_896),
+            CycleRange::from_start_len(cycle, INFINITE_CYCLE),
         ) {
             results.push(gen_mon_wild1);
         }
@@ -404,12 +454,12 @@ pub fn generate_gen3_wild(
     results
 }
 
-pub fn generate_gen3_wild_method2(
+fn generate_gen3_wild_method2(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
     encounter_slot: EncounterSlot,
     pid: u32,
-    cycle_range: CycleRange,
+    cycle_range: CycleAndModRange,
 ) -> Option<Wild3GeneratorResult> {
     rng.rand::<u16>(); // Vblank from method2
 
@@ -425,14 +475,14 @@ pub fn generate_gen3_wild_method2(
     )
 }
 
-pub fn generate_gen3_wild_method3(
+fn generate_gen3_wild_method3(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
     encounter_slot: EncounterSlot,
     pid_low: u32,
     required_gender: Option<Gender>,
     required_nature: Nature,
-    cycle_range: CycleRange,
+    cycle_range: CycleAndModRange,
 ) -> Option<Wild3GeneratorResult> {
     rng.rand::<u16>(); // Vblank from method3
 
@@ -464,13 +514,13 @@ pub fn generate_gen3_wild_method3(
     )
 }
 
-pub fn generate_gen3_wild_method4(
+fn generate_gen3_wild_method4(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
     encounter_slot: EncounterSlot,
     pid: u32,
     iv1: u16,
-    cycle_range: CycleRange,
+    cycle_range: CycleAndModRange,
 ) -> Option<Wild3GeneratorResult> {
     rng.rand::<u16>(); // Vblank from method4
 
@@ -486,15 +536,17 @@ pub fn generate_gen3_wild_method4(
     )
 }
 
-pub fn generate_gen3_wild_method5(
+fn generate_gen3_wild_method5(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
     encounter_slot: EncounterSlot,
     required_gender: Option<Gender>,
     required_nature: Nature,
-    cycle_range: CycleRange,
+    cycle_range: CycleAndModRange,
 ) -> Option<Wild3GeneratorResult> {
     rng.rand::<u16>(); // Vblank from method5
+
+    // Limitation: Only 1 vblank is supported. In theory, multiple vblanks could occur.
 
     let pid_low = rng.rand::<u16>() as u32;
     let pid_high = rng.rand::<u16>() as u32;
@@ -526,7 +578,7 @@ pub fn generate_gen3_wild_method5(
     )
 }
 
-pub fn passes_pid_filter(opts: &Wild3GeneratorOptions, pid: u32) -> bool {
+fn passes_pid_filter(opts: &Wild3GeneratorOptions, pid: u32) -> bool {
     if opts.filter.shiny {
         let generated_shiny = gen3_shiny(pid, opts.tid, opts.sid);
         if !generated_shiny {
@@ -558,21 +610,38 @@ pub fn passes_pid_filter(opts: &Wild3GeneratorOptions, pid: u32) -> bool {
     true
 }
 
-pub fn passes_ivs_filter(opts: &Wild3GeneratorOptions, ivs: &Ivs) -> bool {
+fn passes_ivs_filter(opts: &Wild3GeneratorOptions, ivs: &Ivs) -> bool {
     Ivs::filter(ivs, &opts.filter.min_ivs, &opts.filter.max_ivs)
 }
 
-pub fn create_if_passes_filter(
+fn create_if_passes_filter(
     opts: &Wild3GeneratorOptions,
     pid: u32,
     ivs: Ivs,
     method: Gen3Method,
     encounter_slot: EncounterSlot,
-    cycle_range: CycleRange,
+    cycle_range: CycleAndModRange,
 ) -> Option<Wild3GeneratorResult> {
     if !passes_ivs_filter(opts, &ivs) {
         return None;
     }
+
+    let is_egg = matches!(opts.lead, Gen3Lead::Egg);
+    if opts.consider_cycles
+        && !is_method_possible_to_trigger(
+            &cycle_range,
+            is_egg,
+            opts.consider_rng_manipulated_lead_pid,
+        )
+    {
+        return None;
+    }
+
+    let cycle_range = if opts.consider_cycles {
+        Some(cycle_range)
+    } else {
+        None
+    };
 
     Some(Wild3GeneratorResult {
         pid,

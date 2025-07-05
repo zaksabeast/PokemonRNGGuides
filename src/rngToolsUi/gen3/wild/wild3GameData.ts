@@ -6,28 +6,6 @@ export type Wild3GameDataJSON = {
   encounter_tables: Wild3EncounterTable[];
 };
 
-/*
-pub struct Wild3EncounterSlotInfo {
-    pub min_level:u8,
-    pub max_level:u8,
-    pub gender_ratio:GenderRatio,
-    pub is_electric_type:bool,
-    pub is_steel_type:bool,
-}
-
-pub struct Wild3EncounterTable {
-    pub map_id:String,
-    pub encounter_rate:u8,
-    pub encounter_type:"Land",
-    pub slots:Vec<Wild3EncounterSlotInfo>,
-}*/
-/*
-class Wild3GameData {
-  wildSpecies: Species[];
-  maps: string[];
-  speciesToEncounterSlots: Map<Species, Map<string, EncounterSlot[]>>;
-}*/
-
 export type Wild3GameData = {
   encounter_tables: Wild3EncounterTable[];
   species: Species[];
@@ -52,7 +30,6 @@ export const getWild3GameData = (json: Wild3GameDataJSON): Wild3GameData => {
         new Map<string, EncounterSlot[]>();
 
       const mapEncounterSlots = maps.get(table.map_id) ?? [];
-
       mapEncounterSlots.push(encounterSlots[encounterSlotIdx]);
       maps.set(table.map_id, mapEncounterSlots);
       speciesToEncounterSlots.set(slot.species, maps);

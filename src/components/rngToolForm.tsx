@@ -97,9 +97,7 @@ export const RngToolForm = <
           return <FormFieldTable fields={fieldsToUse} />;
         })();
 
-        const columnsToUse = (() => {
-          return columns ?? getColumns?.(formik.values) ?? null;
-        })();
+        const columnsToUse = columns ?? getColumns?.(formik.values) ?? null;
 
         return (
           <Flex vertical gap={16} id={formContainerId}>

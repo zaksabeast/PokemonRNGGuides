@@ -6,9 +6,10 @@ import * as tst from "ts-toolbelt";
 import { useFormikContext } from "formik";
 import { identity } from "lodash-es";
 
-export type ResultColumn<T> = keyof T extends string
+export type SingleResultColumn<T> = keyof T extends string
   ? {
       [K in keyof T]: {
+        type?: "single";
         title: string;
         dataIndex: K;
         monospace?: boolean;
@@ -19,19 +20,26 @@ export type ResultColumn<T> = keyof T extends string
   : never;
 
 export type ResultColumnGroup<T> = {
+  type: "group";
   title: string;
-  columns: ResultColumn<T>[];
+  columns: SingleResultColumn<T>[];
 };
 
-export type ResultColumnsType<T> = (ResultColumn<T> | ResultColumnGroup<T>)[];
+export type ResultColumn<T> = SingleResultColumn<T> | ResultColumnGroup<T>;
 
 const applyMonospace = <Record extends tst.O.Object>(
   column: ResultColumn<Record>,
 ) => {
-  if (!column.monospace) {
+  if (column.type === "group") {
+    column.columns = column.columns.map(applyMonospaceSingleColumn);
     return column;
   }
+  return applyMonospaceSingleColumn(column);
+};
 
+const applyMonospaceSingleColumn = <Record extends tst.O.Object>(
+  column: SingleResultColumn<Record>,
+) => {
   const render = column.render ?? identity;
 
   return {
@@ -46,25 +54,19 @@ const applyMonospace = <Record extends tst.O.Object>(
 
 type FormikResultTableProps<Record extends tst.O.Object> = tst.O.Overwrite<
   TableProps<Record>,
-  { columns: ResultColumnsType<Record> }
+  { columns: ResultColumn<Record>[] }
 >;
 
 export const ResultTable = <Record extends tst.O.Object>(
   props: FormikResultTableProps<Record>,
 ) => {
   const columns = React.useMemo(() => {
-    return (props.columns ?? []).map((column) => {
-      if ("columns" in column) {
-        column.columns = column.columns.map(applyMonospace);
-        return column;
-      }
-      return applyMonospace(column);
-    });
+    return (props.columns ?? []).map(applyMonospace);
   }, [props.columns]);
 
   const children = React.useMemo(() => {
     return columns.map((column) => {
-      if ("columns" in column) {
+      if (column.type === "group") {
         return (
           <Table.ColumnGroup title={column.title} key={column.title}>
             {column.columns.map((subColumn) => (

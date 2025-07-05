@@ -18,6 +18,8 @@ export {
   FormikResultTable,
   ResultTable,
   type ResultColumn,
+  type ResultColumnGroup,
+  type ResultColumnsType,
 } from "./resultTable";
 export { Select, FormikSelect } from "./select";
 export { IvInput } from "./ivInput";

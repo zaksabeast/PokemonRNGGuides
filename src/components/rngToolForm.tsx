@@ -4,7 +4,7 @@ import { Formik, FormikHelpers } from "formik";
 import { Form } from "./form";
 import { FormFieldTable, Field } from "./formFieldTable";
 import { Button } from "./button";
-import { FormikResultTable, ResultColumn } from "./resultTable";
+import { FormikResultTable, ResultColumnsType } from "./resultTable";
 import { GenericForm } from "~/types/form";
 import * as tst from "ts-toolbelt";
 import { AllOrNone, FeatureConfig, OneOf } from "~/types/utils";
@@ -28,7 +28,14 @@ type Props<FormState, Result> = {
   getFields: (values: FormState) => Field[];
   children: React.ReactNode;
 }> &
-  AllOrNone<{ columns: ResultColumn<Result>[]; results: Result[] }> &
+  AllOrNone<
+    OneOf<{
+      columns: ResultColumnsType<Result>;
+      getColumns: (values: FormState) => ResultColumnsType<Result>;
+    }> & {
+      results: Result[];
+    }
+  > &
   AllOrNone<{
     rowKey: keyof Result;
     onClickResultRow?: (record: Result) => void;
@@ -52,6 +59,7 @@ export const RngToolForm = <
   validationSchema,
   getFields,
   columns,
+  getColumns,
   onSubmit,
   onReset,
   onClickResultRow,
@@ -89,6 +97,10 @@ export const RngToolForm = <
           return <FormFieldTable fields={fieldsToUse} />;
         })();
 
+        const columnsToUse = (() => {
+          return columns ?? getColumns?.(formik.values) ?? null;
+        })();
+
         return (
           <Flex vertical gap={16} id={formContainerId}>
             <Form>
@@ -114,9 +126,9 @@ export const RngToolForm = <
               </Flex>
             </Form>
 
-            {columns != null && (
+            {columnsToUse != null && (
               <FormikResultTable<Result>
-                columns={columns}
+                columns={columnsToUse}
                 rowKey={rowKey}
                 dataSource={results}
                 rowSelection={

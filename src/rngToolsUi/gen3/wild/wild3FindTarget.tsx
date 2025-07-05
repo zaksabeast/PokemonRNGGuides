@@ -13,7 +13,7 @@ import {
   FormikNumberInput,
   FormikSelect,
   FormikSwitch,
-  ResultColumn,
+  ResultColumnsType,
   RngToolForm,
   RngToolSubmit,
   FormFieldTable,
@@ -369,8 +369,8 @@ const getMethodLikelihoodColumValue = (
   );
 };
 
-const getColumns = (): ResultColumn<UiResult>[] => {
-  const columns: ResultColumn<UiResult>[] = [];
+const getColumns = (values: FormState): ResultColumnsType<UiResult> => {
+  const columns: ResultColumnsType<UiResult> = [];
   columns.push(
     {
       title: "Advances",
@@ -406,11 +406,12 @@ const getColumns = (): ResultColumn<UiResult>[] => {
           .exhaustive();
       },
     },
-    {
+  );
+  if (!values.rngManipulatedLeadPid) {
+    columns.push({
       title: "Likelihood",
       dataIndex: "cycle_data_by_lead",
       render: (cycle_data_by_lead) => {
-        //TODO: Only display this column if options.rngManipulatedLeadPid is false.
         if (cycle_data_by_lead == undefined) {
           return "";
         }
@@ -421,97 +422,103 @@ const getColumns = (): ResultColumn<UiResult>[] => {
             : cycle_data_by_lead.common_upper_lead;
         return formatProbability(least_likely_common.method_probability);
       },
-    },
-    {
-      title: "Ideal Lead Speed",
-      dataIndex: "cycle_data_by_lead",
-      render: (cycle_data_by_lead, values) => {
-        //TODO: Only display this column if options.rngManipulatedLeadPid is true.
-        if (cycle_data_by_lead == undefined) {
-          return "";
-        }
-        if (values.lead === "Egg") {
-          return "";
-        }
-        if (
-          cycle_data_by_lead.slowest_lead.method_probability ===
-          cycle_data_by_lead.fastest_lead.method_probability
-        ) {
-          return "Any";
-        }
-        const cycle = cycle_data_by_lead.ideal_lead.lead_pid_cycle_count;
-        const label = match(cycle)
-          .with(18, () => "Fastest")
-          .with(900, () => "Slowest")
-          .with(P.number, () => {
-            return cycle + " cycles";
-          })
-          .exhaustive();
+    });
+  } else {
+    columns.push(
+      {
+        title: "Ideal Lead Speed",
+        dataIndex: "cycle_data_by_lead",
+        render: (cycle_data_by_lead, values) => {
+          if (cycle_data_by_lead == undefined) {
+            return "";
+          }
+          if (values.lead === "Egg") {
+            return "";
+          }
+          if (
+            cycle_data_by_lead.slowest_lead.method_probability ===
+            cycle_data_by_lead.fastest_lead.method_probability
+          ) {
+            return "Any";
+          }
+          const cycle = cycle_data_by_lead.ideal_lead.lead_pid_cycle_count;
+          const label = match(cycle)
+            .with(18, () => "Fastest")
+            .with(900, () => "Slowest")
+            .with(P.number, () => {
+              return cycle + " cycles";
+            })
+            .exhaustive();
 
-        return label;
+          return label;
+        },
       },
-    },
-    {
-      title: "Ideal",
-      dataIndex: "cycle_data_by_lead",
-      render: (cycle_data_by_lead, values) => {
-        //TODO: Only display this column if options.rngManipulatedLeadPid is true.
-        if (cycle_data_by_lead == undefined) {
-          return "";
-        }
-        return getMethodLikelihoodColumValue(
-          cycle_data_by_lead.ideal_lead,
-          values.method,
-        );
+      {
+        title: "Likelyhood by Lead Speed",
+        columns: [
+          {
+            title: "Ideal",
+            dataIndex: "cycle_data_by_lead",
+            render: (cycle_data_by_lead, values) => {
+              if (cycle_data_by_lead == undefined) {
+                return "";
+              }
+              return getMethodLikelihoodColumValue(
+                cycle_data_by_lead.ideal_lead,
+                values.method,
+              );
+            },
+          },
+          {
+            title: "Fastest",
+            dataIndex: "cycle_data_by_lead",
+            render: (cycle_data_by_lead, values) => {
+              if (cycle_data_by_lead == undefined) {
+                return "";
+              }
+              return getMethodLikelihoodColumValue(
+                cycle_data_by_lead.fastest_lead,
+                values.method,
+              );
+            },
+          },
+          {
+            title: "Common",
+            dataIndex: "cycle_data_by_lead",
+            render: (cycle_data_by_lead, values) => {
+              if (cycle_data_by_lead == undefined) {
+                return "";
+              }
+              const least_likely_common =
+                cycle_data_by_lead.common_lower_lead.method_probability <
+                cycle_data_by_lead.common_upper_lead.method_probability
+                  ? cycle_data_by_lead.common_lower_lead
+                  : cycle_data_by_lead.common_upper_lead;
+              return getMethodLikelihoodColumValue(
+                least_likely_common,
+                values.method,
+              );
+            },
+          },
+          {
+            title: "Slowest",
+            dataIndex: "cycle_data_by_lead",
+            render: (cycle_data_by_lead, values) => {
+              if (cycle_data_by_lead == undefined) {
+                return "";
+              }
+              return getMethodLikelihoodColumValue(
+                cycle_data_by_lead.slowest_lead,
+                values.method,
+              );
+            },
+          },
+        ],
       },
-    },
-    {
-      title: "Fastest",
-      dataIndex: "cycle_data_by_lead",
-      render: (cycle_data_by_lead, values) => {
-        //TODO: Only display this column if options.rngManipulatedLeadPid is true.
-        if (cycle_data_by_lead == undefined) {
-          return "";
-        }
-        return getMethodLikelihoodColumValue(
-          cycle_data_by_lead.fastest_lead,
-          values.method,
-        );
-      },
-    },
-    {
-      title: "Common",
-      dataIndex: "cycle_data_by_lead",
-      render: (cycle_data_by_lead, values) => {
-        //TODO: Only display this column if options.rngManipulatedLeadPid is true.
-        if (cycle_data_by_lead == undefined) {
-          return "";
-        }
-        const least_likely_common =
-          cycle_data_by_lead.common_lower_lead.method_probability <
-          cycle_data_by_lead.common_upper_lead.method_probability
-            ? cycle_data_by_lead.common_lower_lead
-            : cycle_data_by_lead.common_upper_lead;
-        return getMethodLikelihoodColumValue(
-          least_likely_common,
-          values.method,
-        );
-      },
-    },
-    {
-      title: "Slowest",
-      dataIndex: "cycle_data_by_lead",
-      render: (cycle_data_by_lead, values) => {
-        //TODO: Only display this column if options.rngManipulatedLeadPid is true.
-        if (cycle_data_by_lead == undefined) {
-          return "";
-        }
-        return getMethodLikelihoodColumValue(
-          cycle_data_by_lead.slowest_lead,
-          values.method,
-        );
-      },
-    },
+    );
+  }
+
+  columns.push(
     { title: "Species", dataIndex: "species" },
     {
       title: "PID",
@@ -681,11 +688,9 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
     return getInitialValues();
   }, []);
 
-  const columns = React.useMemo(() => getColumns(), []);
-
   return (
     <RngToolForm<FormState, UiResult>
-      columns={columns}
+      getColumns={getColumns}
       results={results}
       validationSchema={Validator}
       initialValues={initialValues}

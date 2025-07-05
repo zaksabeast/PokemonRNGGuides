@@ -18,6 +18,13 @@ export type ResultColumn<T> = keyof T extends string
     }[keyof T]
   : never;
 
+export type ResultColumnGroup<T> = {
+  title: string;
+  columns: ResultColumn<T>[];
+};
+
+export type ResultColumnsType<T> = (ResultColumn<T> | ResultColumnGroup<T>)[];
+
 const applyMonospace = <Record extends tst.O.Object>(
   column: ResultColumn<Record>,
 ) => {
@@ -39,23 +46,50 @@ const applyMonospace = <Record extends tst.O.Object>(
 
 type FormikResultTableProps<Record extends tst.O.Object> = tst.O.Overwrite<
   TableProps<Record>,
-  { columns: ResultColumn<Record>[] }
+  { columns: ResultColumnsType<Record> }
 >;
 
 export const ResultTable = <Record extends tst.O.Object>(
   props: FormikResultTableProps<Record>,
 ) => {
-  const columns = React.useMemo(
-    () => (props.columns ?? []).map(applyMonospace),
-    [props.columns],
-  );
+  const columns = React.useMemo(() => {
+    return (props.columns ?? []).map((column) => {
+      if ("columns" in column) {
+        column.columns = column.columns.map(applyMonospace);
+        return column;
+      }
+      return applyMonospace(column);
+    });
+  }, [props.columns]);
+
+  const children = React.useMemo(() => {
+    return columns.map((column) => {
+      if ("columns" in column) {
+        return (
+          <Table.ColumnGroup title={column.title} key={column.title}>
+            {column.columns.map((subColumn) => (
+              <Table.Column
+                {...subColumn}
+                key={subColumn.dataIndex + " " + subColumn.title}
+              />
+            ))}
+          </Table.ColumnGroup>
+        );
+      }
+      return (
+        <Table.Column {...column} key={column.dataIndex + " " + column.title} />
+      );
+    });
+  }, [columns]);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { columns: _, ...propsWithColumns } = props;
 
   return (
     <ClassNames>
       {({ css }) => (
         <Table
-          {...props}
-          columns={columns}
+          {...propsWithColumns}
           className={css({
             "&&&": {
               width: "100%",
@@ -68,7 +102,9 @@ export const ResultTable = <Record extends tst.O.Object>(
               },
             },
           })}
-        />
+        >
+          {children}
+        </Table>
       )}
     </ClassNames>
   );

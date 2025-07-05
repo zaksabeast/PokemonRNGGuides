@@ -395,7 +395,7 @@ fn find_best_tid_gen_adv(seed: u32, tid_gen_adv_min: usize, tid_gen_adv_max: usi
 }
 
 /// Returns the average advance needed to determine SID for a given tid_gen_adv,
-/// assuming all TID have same probability of occuring.
+/// assuming all TID have same probability of occurring.
 fn calculate_avg_adv_for_all_tids(
     earliest_shiny_advance_by_tsv: &[usize],
     tid_gen_adv: usize,

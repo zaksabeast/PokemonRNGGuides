@@ -1,6 +1,5 @@
 import React from "react";
 import { useAudio } from "~/hooks/useAudio";
-import firstBeepMp3 from "~/assets/first-beep.mp3";
 import { noop } from "lodash-es";
 
 export type Metronome = {
@@ -24,7 +23,7 @@ export const useMetronome = ({
   const [justTicked, setJustTicked] = React.useState(false);
   const [isRunning, setIsRunning] = React.useState(false);
   const lastTriggerRef = React.useRef(-1);
-  const { playBeeps } = useAudio(firstBeepMp3);
+  const { playBeeps } = useAudio({ id: "softBeep" });
 
   const beep = enableAudio ? playBeeps : noop;
 
@@ -38,8 +37,8 @@ export const useMetronome = ({
     let rafId: number | null = null;
 
     const loop = () => {
-      const now = performance.now();
-      const ms = now % 1000;
+      const now = performance.timeOrigin + performance.now();
+      const ms = Math.floor(now % 1000);
 
       const currentSecond = Math.floor(now / 1000);
       if (ms >= offset && currentSecond !== lastTriggerRef.current) {
@@ -49,11 +48,11 @@ export const useMetronome = ({
         if (!isFirstTick) {
           tickStart?.();
           setJustTicked(true);
-          beep({ count: 1, gain: 0.5 });
+          beep({ count: 1, gain: 0.1 });
           setTimeout(() => {
             tickEnd?.();
             setJustTicked(false);
-          }, 200);
+          }, 100);
         }
       }
 

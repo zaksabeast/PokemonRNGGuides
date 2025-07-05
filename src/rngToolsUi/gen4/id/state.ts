@@ -2,15 +2,16 @@ import { atom, useAtom } from "jotai";
 import { createGen4TimerAtom } from "~/hooks/useGen4Timer";
 import { Id4 } from "~/rngTools";
 import { Gen4GameVersion } from "../gen4types";
+import { Gen4Console } from "../shared/consoleSelect";
 
 export type Id4State = {
-  is3ds: boolean;
+  console: Gen4Console;
   game: Gen4GameVersion;
   target: Id4 | null;
 };
 
 const initialHeldState: Id4State = {
-  is3ds: false,
+  console: "NdsDsi",
   game: "Diamond",
   target: null,
 };

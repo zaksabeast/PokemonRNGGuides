@@ -18,7 +18,7 @@ pub struct Wild3SearcherOptions {
     pub max_advances: usize,
     pub max_result_count: usize,
     pub filter: PkmFilter,
-    pub leads: Vec<Option<Gen3Lead>>,
+    pub leads: Vec<Gen3Lead>,
     pub encounter_slots_by_map: Vec<Option<Vec<EncounterSlot>>>,
     pub methods: Vec<Gen3Method>,
 }
@@ -39,7 +39,7 @@ pub struct Wild3SearcherResultMon {
 
     // derived from searcher context
     pub advance: usize,
-    pub lead: Option<Gen3Lead>,
+    pub lead: Gen3Lead,
     pub map_idx: usize,
 }
 
@@ -49,7 +49,7 @@ impl Wild3SearcherResultMon {
         opts: &Wild3SearcherOptions,
         advance: usize,
         map_idx: usize,
-        lead: Option<Gen3Lead>,
+        lead: Gen3Lead,
     ) -> Wild3SearcherResultMon {
         Wild3SearcherResultMon {
             pid: gen_res.pid,
@@ -70,7 +70,7 @@ impl Wild3SearcherResultMon {
 }
 
 fn search_wild3_at_given_advance(
-    rng: &mut Pokerng,
+    rng: Pokerng,
     advance: usize,
     opts: &Wild3SearcherOptions,
 ) -> Vec<Wild3SearcherResultMon> {
@@ -108,7 +108,7 @@ pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<Wild3SearcherResultMon> 
         .enumerate()
         .skip(opts.initial_advances)
         .take(opts.max_advances.wrapping_add(1))
-        .flat_map(|(adv, mut rng)| search_wild3_at_given_advance(&mut rng, adv, opts))
+        .flat_map(|(adv, rng)| search_wild3_at_given_advance(rng, adv, opts))
         .take(opts.max_result_count)
         .collect::<Vec<Wild3SearcherResultMon>>()
 }

@@ -13,10 +13,6 @@ import {
   MarkdownCode,
   MarkdownPre,
   MarkdownImage,
-  MarkdownTable,
-  MarkdownTd,
-  MarkdownTh,
-  MarkdownTr,
   MarkdownOList,
   MarkdownA,
 } from "./components";
@@ -33,6 +29,12 @@ import {
   Step,
   WhatNext,
   List,
+  MediaTable,
+  MediaTableBody,
+  MediaTableHeader,
+  MediaTableRow,
+  MediaTableCell,
+  YouTubeTable,
 } from "~/components";
 import { Gen2PokemonRng } from "~/rngToolsUi/gen2/crystalPokemon";
 import { Gen2Rng } from "~/rngToolsUi/gen2/gen2Rng";
@@ -89,7 +91,6 @@ import { Gen4IdSetup } from "~/rngToolsUi/gen4/id/setup";
 import { Starter4ConsoleSetDateString } from "~/rngToolsUi/gen4/starters/getStarter";
 import { Starter4ShowIf } from "~/rngToolsUi/gen4/starters/showIf";
 import { Id4ShowIf } from "~/rngToolsUi/gen4/id/showIf";
-import { Metronome3dsNotice } from "~/rngToolsUi/gen4/shared/metronomeNotice";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -108,10 +109,11 @@ const nonTools = {
   pre: MarkdownPre,
   code: MarkdownCode,
   img: MarkdownImage,
-  table: MarkdownTable,
-  th: MarkdownTh,
-  tr: MarkdownTr,
-  td: MarkdownTd,
+  table: MediaTable,
+  tbody: MediaTableBody,
+  th: MediaTableHeader,
+  tr: MediaTableRow,
+  td: MediaTableCell,
   // eslint-disable-next-line id-length
   a: MarkdownA,
   Text: MarkdownParagraph,
@@ -132,8 +134,8 @@ const nonTools = {
   Glossary,
   Starter4ShowIf,
   Id4ShowIf,
-  Metronome3dsNotice,
   WhatNext,
+  YouTubeTable,
 };
 
 const tools = {

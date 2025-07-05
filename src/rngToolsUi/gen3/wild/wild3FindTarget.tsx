@@ -2,9 +2,9 @@ import {
   Gender,
   rngTools,
   Species,
-  Nature,
   Gen3EncounterType,
   Wild3SearcherResultMon,
+  Gen3Lead,
 } from "~/rngTools";
 import {
   Field,
@@ -36,6 +36,7 @@ import {
   hasMultiplePossibleGenders,
   gen3Methods,
 } from "~/types";
+import { match, P } from "ts-pattern";
 
 import { getWild3GameData } from "./wild3GameData";
 import emerald_wild3_game_data from "~/__generated__/emerald_wild3_game_data";
@@ -317,16 +318,22 @@ const columns: ResultColumn<Result>[] = [
     title: "Lead",
     dataIndex: "lead",
     render: (lead) => {
-      if (lead == null) {
-        return "Ordinary lead";
-      }
-      if ("Synchronize" in lead) {
-        return `Synchronize (${lead.Synchronize})`;
-      }
-      if ("CuteCharm" in lead) {
-        return `CuteCharm (${lead.CuteCharm})`;
-      }
-      return "Unknown lead";
+      return (
+        match(lead)
+          .with("Vanilla", () => "Ordinary lead")
+          .with(
+            { Synchronize: P.string },
+            (matched) => `Synchronize (${matched.Synchronize})`,
+          )
+          .with(
+            { CuteCharm: P.string },
+            (matched) => `CuteCharm (${matched.CuteCharm})`,
+          )
+          // This should be impossible, but we don't
+          // want to swallow it in case we have a bug.
+          .with("Egg", () => "Egg lead")
+          .exhaustive()
+      );
     },
   },
   { title: "Encounter", dataIndex: "encounter" },
@@ -361,13 +368,11 @@ type Result = FlattenIvs<
   }
 >;
 
-const getLeads = (values: FormState) => {
-  const leads: ({
-    Synchronize: Nature;
-  } | null)[] = [];
+const getLeads = (values: FormState): Gen3Lead[] => {
+  const leads: Gen3Lead[] = [];
 
   if (values.vanillaLead) {
-    leads.push(null);
+    leads.push("Vanilla");
   }
   for (const nature of values.synchronizeLeadNatures) {
     leads.push({

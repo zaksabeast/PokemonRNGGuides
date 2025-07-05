@@ -183,7 +183,7 @@ export const FormikDatePicker = <FormState extends GenericForm>({
   onChange,
   ...props
 }: FormikDatePickerProps<FormState>) => {
-  const [{ value: formDate, onBlur }, { error, touched }, { setValue }] =
+  const [{ value: formDate }, { error, touched }, { setValue }] =
     useField<RngDate | null>(name);
   const dateValue = match({ formDate })
     .with({ formDate: P.not(null) }, (matched) => fromRngDate(matched.formDate))
@@ -197,7 +197,6 @@ export const FormikDatePicker = <FormState extends GenericForm>({
         name={name}
         fullWidth={fullWidth}
         value={dateValue}
-        onBlur={onBlur}
         status={error != null && touched ? "error" : ""}
         onChange={(date) => {
           const rngDate = date == null ? null : toRngDate(date);

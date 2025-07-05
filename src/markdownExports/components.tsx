@@ -96,36 +96,6 @@ export const MarkdownImage = ({ src, alt }: { src: string; alt: string }) => (
   </Flex>
 );
 
-export const MarkdownTable = ({ children }: Props) => (
-  <table cellSpacing={0} cellPadding={0}>
-    {children}
-  </table>
-);
-
-const _Th = styled.th(({ theme }) => ({
-  padding: 16,
-  backgroundColor: theme.token.colorFillQuaternary,
-  borderBottom: `1px solid ${theme.token.colorBorderSecondary}`,
-}));
-
-export const MarkdownTh = ({ children }: Props) => <_Th>{children}</_Th>;
-
-const _Tr = styled.tr(({ theme }) => ({
-  borderCollapse: "collapse",
-  textAlign: "left",
-  ":hover": {
-    backgroundColor: theme.token.colorFillQuaternary,
-  },
-}));
-
-export const MarkdownTr = ({ children }: Props) => <_Tr>{children}</_Tr>;
-
-const _Td = styled.td({
-  padding: 16,
-});
-
-export const MarkdownTd = ({ children }: Props) => <_Td>{children}</_Td>;
-
 export const MarkdownA = ({ href, children }: { href: string } & Props) => {
   const internalHref = RouteSchema.safeParse(formatRelativeUrl(href));
   if (internalHref.success) {

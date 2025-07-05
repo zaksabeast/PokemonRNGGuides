@@ -1,8 +1,41 @@
 import React from "react";
-import { Flex, Header, DesktopDrawer, Loading } from "~/components";
+import {
+  Typography,
+  Flex,
+  Header,
+  DesktopDrawer,
+  Loading,
+  List,
+  ListItem,
+  Icon,
+  IconName,
+  SupportModal,
+  Button,
+} from "~/components";
 import styled from "@emotion/styled";
 import { useScreenViewed } from "~/hooks/useScreenViewed";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
+import { useSupportModal } from "~/components/supportModal/state";
+import { settings } from "~/settings";
+import { match } from "ts-pattern";
+import { Color } from "@emotion/react";
+
+type SupporterType = (typeof settings)["hallOfFameSupporters"][number]["type"];
+
+type IconProps = { name: IconName; color: Color };
+
+const DISCORD_SUPPORTER_PROPS: IconProps = {
+  name: "Discord",
+  color: "Primary",
+};
+const PATREON_SUPPORTER_PROPS: IconProps = { name: "Patreon", color: "Error" };
+
+const getSupporterIconProps = (type: SupporterType): IconProps => {
+  return match(type)
+    .with("discord", () => DISCORD_SUPPORTER_PROPS)
+    .with("patreon", () => PATREON_SUPPORTER_PROPS)
+    .exhaustive();
+};
 
 type Props = {
   children: React.ReactNode;
@@ -11,7 +44,7 @@ type Props = {
 
 export const SIDE_MARGIN = 24;
 
-const Main = styled.main(({ theme }) => ({
+const ContentLayout = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -24,6 +57,13 @@ const Main = styled.main(({ theme }) => ({
   overflowY: "scroll",
   marginTop: theme.components?.Layout?.headerHeight,
 }));
+
+const Main = styled.main({
+  display: "flex",
+  flexDirection: "column",
+  width: "100%",
+  gap: 24,
+});
 
 const DesktopNavDrawerContainer = styled.div(({ theme }) => ({
   display: "none",
@@ -51,7 +91,7 @@ const ContentContainer = styled.div(({ theme }) => ({
   maxWidth: 750,
   display: "flex",
   flexDirection: "column",
-  gap: 24,
+  gap: 32,
   paddingTop: 24,
   [theme.mediaQueries.up("tablet")]: {
     width: "90%",
@@ -65,8 +105,17 @@ const BottomSpace = styled.div({
   paddingBottom: 32,
 });
 
+const Footer = styled.footer(({ theme }) => ({
+  width: "100%",
+  paddingTop: 24,
+  paddingBottom: 36,
+  backgroundColor: theme.token.colorBgContainer,
+  borderTop: `1px solid ${theme.token.colorBorder}`,
+}));
+
 export const MainLayout = ({ children, trackerName }: Props) => {
   const route = useActiveRoute();
+  const { openSupportModal } = useSupportModal();
   useScreenViewed(trackerName ?? route);
 
   return (
@@ -79,26 +128,57 @@ export const MainLayout = ({ children, trackerName }: Props) => {
             <DesktopDrawer />
           </Flex>
         </DesktopNavDrawerContainer>
-        <Main>
+        <ContentLayout>
           <ContentContainer>
-            <React.Suspense
-              fallback={
-                <Flex
-                  height="100%"
-                  width="100%"
-                  justify="center"
-                  align="center"
+            <Main>
+              <React.Suspense
+                fallback={
+                  <Flex
+                    height="100%"
+                    width="100%"
+                    justify="center"
+                    align="center"
+                  >
+                    <Loading />
+                  </Flex>
+                }
+              >
+                {children}
+              </React.Suspense>
+            </Main>
+            {settings.hallOfFameSupporters.length === 0 && <BottomSpace />}
+            {settings.hallOfFameSupporters.length > 0 && (
+              <Footer>
+                <Typography.Text strong fontSize={20}>
+                  Special thanks to our Hall of Fame supporters!
+                </Typography.Text>
+                <List ml={24} pv={12}>
+                  {settings.hallOfFameSupporters.map((supporter) => (
+                    <ListItem fontSize={18}>
+                      <Flex gap={8} align="center">
+                        <Icon {...getSupporterIconProps(supporter.type)} />
+                        {supporter.name}
+                      </Flex>
+                    </ListItem>
+                  ))}
+                </List>
+                <Button
+                  trackerId="support_us_footer"
+                  icon={<Icon name="Heart" />}
+                  type="primary"
+                  backgroundColor="BrandSecondary"
+                  backgroundHoverColor="BrandSecondaryHover"
+                  size="middle"
+                  onClick={openSupportModal}
                 >
-                  <Loading />
-                </Flex>
-              }
-            >
-              {children}
-            </React.Suspense>
-            <BottomSpace />
+                  Want your name here?
+                </Button>
+              </Footer>
+            )}
           </ContentContainer>
-        </Main>
+        </ContentLayout>
       </BodyContainer>
+      <SupportModal />
     </>
   );
 };

@@ -313,7 +313,7 @@ pub fn generate_static4_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> 
         .skip(opts.initial_advances)
         .take(opts.max_advances.wrapping_add(1))
         .filter_map(|(adv, mut rng)| {
-            let mut pkm = generate_static4_state(&opts.clone(), &mut rng)?;
+            let mut pkm = generate_static4_state(opts, &mut rng)?;
 
             if let Some(filter_characteristic) = opts.filter_characteristic {
                 if pkm.characteristic != filter_characteristic {

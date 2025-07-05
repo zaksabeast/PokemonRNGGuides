@@ -150,7 +150,7 @@ export const InnerGen5StandardTimer = ({
   );
 
   return (
-    <Flex vertical gap={24}>
+    <Flex vertical gap={12}>
       <MultiTimer
         startButtonTrackerId="start_gen5_standard_timer"
         stopButtonTrackerId="stop_gen5_standard_timer"

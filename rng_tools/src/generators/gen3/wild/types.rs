@@ -16,8 +16,10 @@ pub enum Gen3Method {
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Gen3Lead {
+    Vanilla,
     Synchronize(Nature),
     CuteCharm(Gender),
+    Egg,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]

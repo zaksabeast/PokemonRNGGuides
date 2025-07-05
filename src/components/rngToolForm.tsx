@@ -4,7 +4,7 @@ import { Formik, FormikHelpers } from "formik";
 import { Form } from "./form";
 import { FormFieldTable, Field } from "./formFieldTable";
 import { Button } from "./button";
-import { FormikResultTable, ResultColumnsType } from "./resultTable";
+import { FormikResultTable, ResultColumn } from "./resultTable";
 import { GenericForm } from "~/types/form";
 import * as tst from "ts-toolbelt";
 import { AllOrNone, FeatureConfig, OneOf } from "~/types/utils";
@@ -30,8 +30,8 @@ type Props<FormState, Result> = {
 }> &
   AllOrNone<
     OneOf<{
-      columns: ResultColumnsType<Result>;
-      getColumns: (values: FormState) => ResultColumnsType<Result>;
+      columns: ResultColumn<Result>[];
+      getColumns: (values: FormState) => ResultColumn<Result>[];
     }> & {
       results: Result[];
     }

@@ -28,7 +28,14 @@ type Props<FormState, Result> = {
   getFields: (values: FormState) => Field[];
   children: React.ReactNode;
 }> &
-  AllOrNone<{ columns: ResultColumn<Result>[]; results: Result[] }> &
+  AllOrNone<
+    OneOf<{
+      columns: ResultColumn<Result>[];
+      getColumns: (values: FormState) => ResultColumn<Result>[];
+    }> & {
+      results: Result[];
+    }
+  > &
   AllOrNone<{
     rowKey: keyof Result;
     onClickResultRow?: (record: Result) => void;
@@ -52,6 +59,7 @@ export const RngToolForm = <
   validationSchema,
   getFields,
   columns,
+  getColumns,
   onSubmit,
   onReset,
   onClickResultRow,
@@ -89,6 +97,8 @@ export const RngToolForm = <
           return <FormFieldTable fields={fieldsToUse} />;
         })();
 
+        const columnsToUse = columns ?? getColumns?.(formik.values) ?? null;
+
         return (
           <Flex vertical gap={16} id={formContainerId}>
             <Form>
@@ -114,9 +124,9 @@ export const RngToolForm = <
               </Flex>
             </Form>
 
-            {columns != null && (
+            {columnsToUse != null && (
               <FormikResultTable<Result>
-                columns={columns}
+                columns={columnsToUse}
                 rowKey={rowKey}
                 dataSource={results}
                 rowSelection={

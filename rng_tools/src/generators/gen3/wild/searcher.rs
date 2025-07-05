@@ -1,5 +1,7 @@
 use super::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
-use crate::gen3::{Gen3Lead, Gen3Method};
+use crate::gen3::{
+    Gen3Lead, Gen3Method, Wild3SearcherCycleDataByLead, calculate_cycle_data_by_lead,
+};
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter, gen3_shiny};
@@ -21,6 +23,8 @@ pub struct Wild3SearcherOptions {
     pub leads: Vec<Gen3Lead>,
     pub encounter_slots_by_map: Vec<Option<Vec<EncounterSlot>>>,
     pub methods: Vec<Gen3Method>,
+    pub consider_cycles: bool,
+    pub consider_rng_manipulated_lead_pid: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -30,6 +34,8 @@ pub struct Wild3SearcherResultMon {
     pub ivs: Ivs,
     pub method: Gen3Method,
     pub encounter_slot: EncounterSlot,
+
+    pub cycle_data_by_lead: Option<Wild3SearcherCycleDataByLead>,
 
     // derived from pid
     pub ability: AbilityType,
@@ -51,17 +57,24 @@ impl Wild3SearcherResultMon {
         map_idx: usize,
         lead: Gen3Lead,
     ) -> Wild3SearcherResultMon {
+        let cycle_data_by_lead = match gen_res.cycle_range {
+            Some(cycle_range) => {
+                let is_egg = matches!(lead, Gen3Lead::Egg);
+                Some(calculate_cycle_data_by_lead(&cycle_range, is_egg))
+            }
+            _ => None,
+        };
+
         Wild3SearcherResultMon {
             pid: gen_res.pid,
             ivs: gen_res.ivs,
             method: gen_res.method,
             encounter_slot: gen_res.encounter_slot,
-
+            cycle_data_by_lead,
             shiny: gen3_shiny(gen_res.pid, opts.tid, opts.sid),
             nature: Nature::from_pid(gen_res.pid),
             ability: AbilityType::from_gen3_pid(gen_res.pid),
             gender: opts.gender_ratio.gender_from_pid(gen_res.pid),
-
             advance,
             map_idx,
             lead,
@@ -87,6 +100,8 @@ fn search_wild3_at_given_advance(
                 methods: opts.methods.clone(),
                 lead: *lead,
                 filter: opts.filter.clone(),
+                consider_cycles: opts.consider_cycles,
+                consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
             };
 
             generate_gen3_wild(rng, &gen_opts)

@@ -42,7 +42,7 @@ import { match, P } from "ts-pattern";
 
 import { getWild3GameData } from "./wild3GameData";
 import emerald_wild3_game_data from "~/__generated__/emerald_wild3_game_data";
-import { startCase } from "lodash-es";
+import { startCase, sortBy } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { Tooltip } from "antd";
 
@@ -611,17 +611,7 @@ const filterResults = (results: Wild3SearcherResultMon[]) => {
 };
 
 const sortResults = (results: Wild3SearcherResultMon[]) => {
-  return results.sort((res1, res2) => {
-    const advDiff = res1.advance - res2.advance;
-    if (advDiff !== 0) {
-      return advDiff;
-    }
-    const methodDiff = res1.method.localeCompare(res2.method);
-    if (methodDiff !== 0) {
-      return methodDiff;
-    }
-    return res1.map_idx - res2.map_idx;
-  });
+  return sortBy(results, ["advance", "method", "map_idx"]);
 };
 
 export const Wild3SearcherFindTarget = ({ game }: Props) => {

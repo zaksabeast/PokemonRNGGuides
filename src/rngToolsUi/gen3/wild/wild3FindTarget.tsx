@@ -13,7 +13,7 @@ import {
   FormikNumberInput,
   FormikSelect,
   FormikSwitch,
-  ResultColumnsType,
+  ResultColumn,
   RngToolForm,
   RngToolSubmit,
   FormFieldTable,
@@ -369,8 +369,8 @@ const getMethodLikelihoodColumValue = (
   );
 };
 
-const getColumns = (values: FormState): ResultColumnsType<UiResult> => {
-  const columns: ResultColumnsType<UiResult> = [];
+const getColumns = (values: FormState): ResultColumn<UiResult>[] => {
+  const columns: ResultColumn<UiResult>[] = [];
   columns.push(
     {
       title: "Advances",
@@ -455,6 +455,7 @@ const getColumns = (values: FormState): ResultColumnsType<UiResult> => {
       },
       {
         title: "Likelyhood by Lead Speed",
+        type: "group",
         columns: [
           {
             title: "Ideal",

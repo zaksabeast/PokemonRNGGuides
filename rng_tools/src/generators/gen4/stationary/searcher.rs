@@ -1,5 +1,3 @@
-use std::result;
-
 use crate::gen4::Static4Species;
 use crate::gen4::{
     FindSeedTime4Options, GameVersion, LeadAbilities, SeedTime4, dppt_find_seedtime,
@@ -363,7 +361,7 @@ fn get_state_from_jseed(
             let mut nature = Nature::from(nature_rand as u8);
 
             let synch_check = rng.rand::<u32>();
-            let synch_check16 = synch_check >> 16 as u16;
+            let synch_check16 = synch_check >> 16_u16;
 
             if synch_check16 >> 15 == 0 {
                 if nature == sync_nature {
@@ -387,7 +385,7 @@ fn get_state_from_jseed(
                 results
             } else {
                 let next_rng = rng.rand::<u32>();
-                let next_rng16 = next_rng >> 16 as u16;
+                let next_rng16 = next_rng >> 16_u16;
                 if next_rng16 >> 15 == 1 && (synch_check16 / 0xa3e) as u16 == nature_rand {
                     let gender: Gender = opts.encounter.species().gender_from_pid(pid);
                     let ability = AbilityType::from_gen3_pid(pid);
@@ -417,7 +415,7 @@ fn get_state_from_jseed(
         LeadAbilities::CutecharmF => {
             let gender_threshold = opts.encounter.species().gender_ratio();
             let buffer = 25 * ((gender_threshold as u32 / 25) + 1);
-            let nature_rand = (rng.rand::<u16>() / 0xa3e) as u16;
+            let nature_rand = rng.rand::<u16>() / 0xa3e;
             let nature = Nature::from(nature_rand as u8);
             let full_seed = rng.rand::<u32>();
 
@@ -438,12 +436,12 @@ fn get_state_from_jseed(
                 });
                 results
             } else {
-                return vec![];
+                vec![]
             }
         }
         LeadAbilities::CutecharmM => {
             let buffer = 0;
-            let nature_rand = (rng.rand::<u16>() / 0xa3e) as u16;
+            let nature_rand = rng.rand::<u16>() / 0xa3e;
             let nature = Nature::from(nature_rand as u8);
             let full_seed = rng.rand::<u32>();
 
@@ -464,7 +462,7 @@ fn get_state_from_jseed(
                 });
                 results
             } else {
-                return vec![];
+                vec![]
             }
         }
         LeadAbilities::None => {
@@ -585,7 +583,7 @@ fn get_state_from_kseed(
             let mut nature = Nature::from(nature_rand as u8);
 
             let synch_check = rng.rand::<u32>();
-            let synch_check16 = synch_check >> 16 as u16;
+            let synch_check16 = synch_check >> 16_u16;
 
             if synch_check16 % 2 == 0 {
                 if nature == sync_nature {
@@ -609,7 +607,7 @@ fn get_state_from_kseed(
                 results
             } else {
                 let next_rng = rng.rand::<u32>();
-                let next_rng16 = next_rng >> 16 as u16;
+                let next_rng16 = next_rng >> 16_u16;
                 if next_rng16 % 2 == 1 && (synch_check16 % 25) as u16 == nature_rand {
                     let gender: Gender = opts.encounter.species().gender_from_pid(pid);
                     let ability = AbilityType::from_gen3_pid(pid);
@@ -639,7 +637,7 @@ fn get_state_from_kseed(
         LeadAbilities::CutecharmF => {
             let gender_threshold = opts.encounter.species().gender_ratio();
             let buffer = 25 * ((gender_threshold as u32 / 25) + 1);
-            let nature_rand = (rng.rand::<u16>() % 25) as u16;
+            let nature_rand = rng.rand::<u16>() % 25;
             let nature = Nature::from(nature_rand as u8);
             let full_seed = rng.rand::<u32>();
 
@@ -660,12 +658,12 @@ fn get_state_from_kseed(
                 });
                 results
             } else {
-                return vec![];
+                vec![]
             }
         }
         LeadAbilities::CutecharmM => {
             let buffer = 0;
-            let nature_rand = (rng.rand::<u16>() % 25) as u16;
+            let nature_rand = rng.rand::<u16>() % 25;
             let nature = Nature::from(nature_rand as u8);
             let full_seed = rng.rand::<u32>();
 
@@ -686,7 +684,7 @@ fn get_state_from_kseed(
                 });
                 results
             } else {
-                return vec![];
+                vec![]
             }
         }
         LeadAbilities::None => {

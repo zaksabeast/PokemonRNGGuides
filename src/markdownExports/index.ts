@@ -8,7 +8,6 @@ import {
   MarkdownH5,
   MarkdownH6,
   MarkdownParagraph,
-  MarkdownList,
   MarkdownListItem,
   MarkdownDivider,
   MarkdownCode,
@@ -28,6 +27,8 @@ import {
   Alert,
   Stepper,
   Step,
+  WhatNext,
+  List,
   MediaTable,
   MediaTableBody,
   MediaTableHeader,
@@ -101,7 +102,7 @@ const nonTools = {
   h6: MarkdownH6,
   // eslint-disable-next-line id-length
   p: MarkdownParagraph,
-  ul: MarkdownList,
+  ul: List,
   ol: MarkdownOList,
   li: MarkdownListItem,
   hr: MarkdownDivider,
@@ -133,6 +134,7 @@ const nonTools = {
   Glossary,
   Starter4ShowIf,
   Id4ShowIf,
+  WhatNext,
   YouTubeTable,
 };
 

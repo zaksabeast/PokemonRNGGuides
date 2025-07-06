@@ -42,7 +42,7 @@ import { match, P } from "ts-pattern";
 
 import { getWild3GameData } from "./wild3GameData";
 import emerald_wild3_game_data from "~/__generated__/emerald_wild3_game_data";
-import { startCase } from "lodash-es";
+import { startCase, sortBy } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { Tooltip } from "antd";
 
@@ -333,212 +333,54 @@ export const SetupFilter = () => {
   );
 };
 
-const formatProbability = (prob: number) => {
-  if (prob <= 0) {
-    return "0%";
-  }
-  if (prob >= 1) {
-    return "100%";
-  }
-
-  if (prob < 1e-30) {
-    return "~0%";
-  }
-
-  const val = prob * 100;
-  const valLog10 = Math.log10(val);
-  return `${val.toFixed(-Math.floor(valLog10) + 1)}%`;
-};
-
-const getMethodLikelihoodColumValue = (
-  cycleData: Wild3SearcherCycleData,
-  method: Gen3Method,
-) => {
-  const probAsTxt = formatProbability(cycleData.method_probability);
-  const end =
-    cycleData.pre_sweet_scent_cycle_range.start +
-    cycleData.pre_sweet_scent_cycle_range.len;
-  const rangeAsTxt =
-    end === 0
-      ? `Method ${method} can't be triggered.`
-      : `Method ${method} is triggered if the cycle counter at Sweet Scent is between ${cycleData.pre_sweet_scent_cycle_range.start} and ${end}.`;
-  return (
-    <Tooltip title={rangeAsTxt}>
-      <div>{probAsTxt}</div>
-    </Tooltip>
-  );
-};
-
-const getColumns = (values: FormState): ResultColumn<UiResult>[] => {
-  const columns: ResultColumn<UiResult>[] = [];
-  columns.push(
-    {
-      title: "Advances",
-      dataIndex: "advance",
-      monospace: true,
-      render: (adv) => {
-        const durInMinutes = (adv / 59.7275 / 60).toFixed(1);
-        return (
-          <Tooltip title={`~${durInMinutes} min`}>
-            <div>{formatLargeInteger(adv)}</div>
-          </Tooltip>
-        );
-      },
+const columns: ResultColumn<Result>[] = [
+  {
+    title: "Advances",
+    dataIndex: "advance",
+    monospace: true,
+    render: (adv) => {
+      const durInMinutes = (adv / 59.7275 / 60).toFixed(1);
+      return `${formatLargeInteger(adv)} (~${durInMinutes} min)`;
     },
-    { title: "Map", dataIndex: "mapName" },
-    { title: "Encounter", dataIndex: "encounter" },
-    { title: "Method", dataIndex: "method" },
-    {
-      title: "Lead",
-      dataIndex: "lead",
-      render: (lead) => {
-        return match(lead)
-          .with("Vanilla", () => "Ordinary lead")
-          .with(
-            { Synchronize: P.string },
-            (matched) => `Synchronize (${matched.Synchronize})`,
-          )
-          .with(
-            { CuteCharm: P.string },
-            (matched) => `CuteCharm (${matched.CuteCharm})`,
-          )
-          .with("Egg", () => "Egg lead")
-          .exhaustive();
-      },
+  },
+  { title: "Map", dataIndex: "mapName" },
+  {
+    title: "Lead",
+    dataIndex: "lead",
+    render: (lead) => {
+      return match(lead)
+        .with("Vanilla", () => "Ordinary lead")
+        .with(
+          { Synchronize: P.string },
+          (matched) => `Synchronize (${matched.Synchronize})`,
+        )
+        .with(
+          { CuteCharm: P.string },
+          (matched) => `CuteCharm (${matched.CuteCharm})`,
+        )
+        .with("Egg", () => "Egg lead")
+        .exhaustive();
     },
-  );
-  if (!values.rngManipulatedLeadPid) {
-    columns.push({
-      title: "Likelihood",
-      dataIndex: "cycle_data_by_lead",
-      render: (cycle_data_by_lead) => {
-        if (cycle_data_by_lead == undefined) {
-          return "";
-        }
-        const least_likely_common =
-          cycle_data_by_lead.common_lower_lead.method_probability <
-          cycle_data_by_lead.common_upper_lead.method_probability
-            ? cycle_data_by_lead.common_lower_lead
-            : cycle_data_by_lead.common_upper_lead;
-        return formatProbability(least_likely_common.method_probability);
-      },
-    });
-  } else {
-    columns.push(
-      {
-        title: "Ideal Lead Speed",
-        dataIndex: "cycle_data_by_lead",
-        render: (cycle_data_by_lead, values) => {
-          if (cycle_data_by_lead == undefined) {
-            return "";
-          }
-          if (values.lead === "Egg") {
-            return "";
-          }
-          if (
-            cycle_data_by_lead.slowest_lead.method_probability ===
-            cycle_data_by_lead.fastest_lead.method_probability
-          ) {
-            return "Any";
-          }
-          const cycle = cycle_data_by_lead.ideal_lead.lead_pid_cycle_count;
-          const label = match(cycle)
-            .with(18, () => "Fastest")
-            .with(900, () => "Slowest")
-            .with(P.number, () => {
-              return cycle + " cycles";
-            })
-            .exhaustive();
-
-          return label;
-        },
-      },
-      {
-        title: "Likelyhood by Lead Speed",
-        type: "group",
-        columns: [
-          {
-            title: "Ideal",
-            dataIndex: "cycle_data_by_lead",
-            render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead == undefined) {
-                return "";
-              }
-              return getMethodLikelihoodColumValue(
-                cycle_data_by_lead.ideal_lead,
-                values.method,
-              );
-            },
-          },
-          {
-            title: "Fastest",
-            dataIndex: "cycle_data_by_lead",
-            render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead == undefined) {
-                return "";
-              }
-              return getMethodLikelihoodColumValue(
-                cycle_data_by_lead.fastest_lead,
-                values.method,
-              );
-            },
-          },
-          {
-            title: "Common",
-            dataIndex: "cycle_data_by_lead",
-            render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead == undefined) {
-                return "";
-              }
-              const least_likely_common =
-                cycle_data_by_lead.common_lower_lead.method_probability <
-                cycle_data_by_lead.common_upper_lead.method_probability
-                  ? cycle_data_by_lead.common_lower_lead
-                  : cycle_data_by_lead.common_upper_lead;
-              return getMethodLikelihoodColumValue(
-                least_likely_common,
-                values.method,
-              );
-            },
-          },
-          {
-            title: "Slowest",
-            dataIndex: "cycle_data_by_lead",
-            render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead == undefined) {
-                return "";
-              }
-              return getMethodLikelihoodColumValue(
-                cycle_data_by_lead.slowest_lead,
-                values.method,
-              );
-            },
-          },
-        ],
-      },
-    );
-  }
-
-  columns.push(
-    { title: "Species", dataIndex: "species" },
-    {
-      title: "PID",
-      dataIndex: "pid",
-      monospace: true,
-      render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
-    },
-    { title: "Nature", dataIndex: "nature" },
-    { title: "Ability", dataIndex: "ability" },
-    {
-      title: "Shiny",
-      dataIndex: "shiny",
-      render: (shiny: boolean) => (shiny ? "Yes" : "No"),
-    },
-    { title: "Gender", dataIndex: "gender" },
-    ...ivColumns,
-  );
-  return columns;
-};
+  },
+  { title: "Encounter", dataIndex: "encounter" },
+  { title: "Method", dataIndex: "method" },
+  { title: "Species", dataIndex: "species" },
+  {
+    title: "PID",
+    dataIndex: "pid",
+    monospace: true,
+    render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
+  },
+  { title: "Nature", dataIndex: "nature" },
+  { title: "Ability", dataIndex: "ability" },
+  {
+    title: "Shiny",
+    dataIndex: "shiny",
+    render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+  },
+  { title: "Gender", dataIndex: "gender" },
+  ...ivColumns,
+];
 
 type Props = {
   game: Static3Game;
@@ -582,53 +424,6 @@ const getEncounterSlotsByMap = (values: FormState) => {
   const mapIdAndSlots = Array.from(allMaps.entries());
   return mapIdAndSlots.filter((val) => {
     return values.maps.includes(val[0]);
-  });
-};
-
-let nextUid = 0;
-const convertSearcherResultToUIResult = (
-  res: Wild3SearcherResultMon,
-  species: Species,
-  mapName: string,
-): UiResult => {
-  return {
-    ...res,
-    ...res.ivs,
-    mapName,
-    encounter: "Land",
-    species,
-    uid: nextUid++,
-  };
-};
-
-const filterResults = (results: Wild3SearcherResultMon[]) => {
-  const resByMon = new Map<string, Wild3SearcherResultMon>();
-  results.forEach((res) => {
-    const key = `${res.pid},${res.ivs.hp},${res.ivs.atk},${res.ivs.def},${res.ivs.spa},${res.ivs.spd},${res.ivs.spe}`;
-    const alreadyAddedRes = resByMon.get(key);
-
-    // If possible, keep the vanilla lead because it's simpler to get.
-    if (
-      alreadyAddedRes === undefined ||
-      (alreadyAddedRes.lead !== "Vanilla" && res.lead === "Vanilla")
-    ) {
-      resByMon.set(key, res);
-    }
-  });
-  return Array.from(resByMon.values());
-};
-
-const sortResults = (results: Wild3SearcherResultMon[]) => {
-  return results.sort((res1, res2) => {
-    const advDiff = res1.advance - res2.advance;
-    if (advDiff !== 0) {
-      return advDiff;
-    }
-    const methodDiff = res1.method.localeCompare(res2.method);
-    if (methodDiff !== 0) {
-      return methodDiff;
-    }
-    return res1.map_idx - res2.map_idx;
   });
 };
 
@@ -689,9 +484,11 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
     return getInitialValues();
   }, []);
 
+  const columns = React.useMemo(() => getColumns(), []);
+
   return (
-    <RngToolForm<FormState, UiResult>
-      getColumns={getColumns}
+    <RngToolForm<FormState, Result>
+      columns={columns}
       results={results}
       validationSchema={Validator}
       initialValues={initialValues}

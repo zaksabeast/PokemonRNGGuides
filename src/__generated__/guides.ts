@@ -1132,7 +1132,7 @@ export const guides = {
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
     ),
   },
-  "/emerald-wild-searcher/": {
+  "/emerald-wild/": {
     meta: {
       categories: ["Emerald"],
       tags: ["retail"],
@@ -1140,7 +1140,7 @@ export const guides = {
       title: "Emerald Wild Searcher",
       navDrawerTitle: "Emerald Wild Searcher",
       description: "Emerald Wild Searcher",
-      slug: "/emerald-wild-searcher/",
+      slug: "/emerald-wild/",
       isRoughDraft: true,
       hideFromNavDrawer: false,
       addedOn: null,
@@ -3753,7 +3753,7 @@ export const guides = {
       categories: ["HeartGold and SoulSilver"],
       tags: ["retail"],
       isNew: false,
-      title: "HeartGold and Soulsilver Starter RNG",
+      title: "HeartGold and SoulSilver Starter RNG",
       navDrawerTitle: "Starter RNG",
       description:
         "Learn how to RNG starters in HeartGold and SoulSilver for shiny, high-IV Pokémon.",
@@ -6903,7 +6903,7 @@ export const guideSlugs = [
   "/emerald-sid-feebas/",
   "/emerald-static/",
   "/emerald-tidsid-generator/",
-  "/emerald-wild-searcher/",
+  "/emerald-wild/",
   "/emerald/",
   "/emulator-b2w2-dream-radar/",
   "/emulator-b2w2-runasdate-inital-seed/",

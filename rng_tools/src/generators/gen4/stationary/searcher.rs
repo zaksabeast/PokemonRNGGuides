@@ -1803,7 +1803,7 @@ mod tests {
     mod search_static4_methodj_seed {
 
         use super::*;
-        use crate::{RngDateTime, coin_flips, ivs};
+        use crate::{RngDateTime, assert_list_eq, coin_flips, ivs};
         #[test]
         fn static_methodj() {
             let opts = SearchStatic4MethodjOpts {
@@ -2079,7 +2079,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
             ];
-            assert_eq!(results, expected);
+            assert_list_eq!(results, expected);
         }
         #[test]
         fn static_methodj_cutecharm_m() {
@@ -2635,7 +2635,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
             ];
-            assert_eq!(results, expected);
+            assert_list_eq!(results, expected);
         }
         #[test]
         fn static_methodj_cutecharm_f() {
@@ -2943,7 +2943,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
             ];
-            assert_eq!(results, expected);
+            assert_list_eq!(results, expected);
         }
         #[test]
         fn static_methodj_synch() {
@@ -3530,12 +3530,12 @@ mod tests {
                     characteristic: Characteristic::Mischievous,
                 },
             ];
-            assert_eq!(results, expected);
+            assert_list_eq!(results, expected);
         }
     }
     mod search_static4_methodk_seed {
         use super::*;
-        use crate::{RngDateTime, coin_flips, ivs};
+        use crate::{RngDateTime, assert_list_eq, coin_flips, ivs};
 
         #[test]
         fn static_methodk() {
@@ -3905,7 +3905,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
             ];
-            assert_eq!(results, expected);
+            assert_list_eq!(results, expected);
         }
         #[test]
         fn static_methodk_synch() {
@@ -4058,7 +4058,7 @@ mod tests {
                     characteristic: Characteristic::Mischievous,
                 },
             ];
-            assert_eq!(results, expected);
+            assert_list_eq!(results, expected);
         }
         #[test]
         fn static_methodk_cutecharm_f() {
@@ -4242,7 +4242,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
             ];
-            assert_eq!(results, expected);
+            assert_list_eq!(results, expected);
         }
         #[test]
         fn static_methodk_cutecharm_m() {
@@ -4426,7 +4426,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
             ];
-            assert_eq!(results, expected);
+            assert_list_eq!(results, expected);
         }
     }
 }

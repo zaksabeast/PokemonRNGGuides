@@ -102,23 +102,29 @@ mod tests {
             spe: 40,
         };
 
-        assert_eq!(calculate_minmax_stats(&base_stats, 5, true), StatsValue {
-            hp: 20,
-            atk: 10,
-            def: 9,
-            spa: 9,
-            spd: 9,
-            spe: 8
-        });
+        assert_eq!(
+            calculate_minmax_stats(&base_stats, 5, true),
+            StatsValue {
+                hp: 20,
+                atk: 10,
+                def: 9,
+                spa: 9,
+                spd: 9,
+                spe: 8
+            }
+        );
 
-        assert_eq!(calculate_minmax_stats(&base_stats, 5, false), StatsValue {
-            hp: 21,
-            atk: 14,
-            def: 12,
-            spa: 12,
-            spd: 12,
-            spe: 11
-        });
+        assert_eq!(
+            calculate_minmax_stats(&base_stats, 5, false),
+            StatsValue {
+                hp: 21,
+                atk: 14,
+                def: 12,
+                spa: 12,
+                spd: 12,
+                spe: 11
+            }
+        );
 
         // Mudkip on advance 8000
         assert_eq!(calculate_hp(base_stats.hp, 27, 0, 5), 21);

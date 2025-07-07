@@ -76,50 +76,62 @@ mod tests {
     #[test]
     fn emerald_dead_battery() {
         let results = mirage_island_calculate(0, 0, 0);
-        assert_list_eq!(results, vec![MirageIslandResult {
-            day: 0,
-            day_diff: 0,
-            pid_pattern: 0,
-            earliest_adv: 18625,
-        }]);
+        assert_list_eq!(
+            results,
+            vec![MirageIslandResult {
+                day: 0,
+                day_diff: 0,
+                pid_pattern: 0,
+                earliest_adv: 18625,
+            }]
+        );
     }
 
     #[test]
     fn rs_dead_battery() {
         let results = mirage_island_calculate(0x5A0, 0, 0);
-        assert_list_eq!(results, vec![MirageIslandResult {
-            day: 0,
-            day_diff: 0,
-            pid_pattern: 0,
-            earliest_adv: 19396,
-        }]);
+        assert_list_eq!(
+            results,
+            vec![MirageIslandResult {
+                day: 0,
+                day_diff: 0,
+                pid_pattern: 0,
+                earliest_adv: 19396,
+            }]
+        );
     }
 
     #[test]
     fn emerald_live_battery() {
         let results = mirage_island_calculate(0, 1, 2);
-        assert_list_eq!(results, vec![
-            MirageIslandResult {
-                day: 1,
-                day_diff: 0,
-                pid_pattern: 0x0000,
-                earliest_adv: 18625,
-            },
-            MirageIslandResult {
-                day: 2,
-                day_diff: 1,
-                pid_pattern: 0xD3DC,
-                earliest_adv: 3900,
-            }
-        ]);
+        assert_list_eq!(
+            results,
+            vec![
+                MirageIslandResult {
+                    day: 1,
+                    day_diff: 0,
+                    pid_pattern: 0x0000,
+                    earliest_adv: 18625,
+                },
+                MirageIslandResult {
+                    day: 2,
+                    day_diff: 1,
+                    pid_pattern: 0xD3DC,
+                    earliest_adv: 3900,
+                }
+            ]
+        );
 
         let results = mirage_island_calculate(0, 3630, 3630);
-        assert_list_eq!(results, vec![MirageIslandResult {
-            day: 3630,
-            day_diff: 0,
-            pid_pattern: 0xF306,
-            earliest_adv: 75959,
-        }]);
+        assert_list_eq!(
+            results,
+            vec![MirageIslandResult {
+                day: 3630,
+                day_diff: 0,
+                pid_pattern: 0xF306,
+                earliest_adv: 75959,
+            }]
+        );
     }
 
     #[test]

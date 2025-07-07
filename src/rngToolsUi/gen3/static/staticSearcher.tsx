@@ -8,13 +8,12 @@ import {
   RngToolForm,
   RngToolSubmit,
 } from "~/components";
-import { getPkmFilterFields, pkmFilterSchema } from "~/components/pkmFilter";
+import { getPkmFilterFields, pkmFilterSchema, getPkmFilterInitialValues, pkmFilterFieldsToRustInput } from "~/components/pkmFilter";
 import {
   getStatic3Species,
   Static3Game,
 } from "~/rngToolsUi/gen3/static/constants";
 import React from "react";
-import { maxIvs, minIvs } from "~/types/ivs";
 import {
   flattenIvs,
   FlattenIvs,
@@ -68,13 +67,7 @@ const getInitialValues = (game: Static3Game): FormState => {
     species: getStatic3Species(game)[0],
     roamer: false,
     method4: false,
-    filter_shiny: false,
-    filter_min_ivs: minIvs,
-    filter_max_ivs: maxIvs,
-    filter_nature: null,
-    filter_gender: null,
-    filter_ability: null,
-    filter_max_size: false,
+    ...getPkmFilterInitialValues(),
   };
 };
 
@@ -126,17 +119,7 @@ export const Static3Searcher = ({ game }: Props) => {
       const results = await rngTools.gen3_static_searcher_states({
         ...opts,
         bugged_roamer: game !== "emerald" && opts.roamer,
-        filter: {
-          shiny: opts.filter_shiny,
-          nature: opts.filter_nature,
-          gender: opts.filter_gender,
-          ability: opts.filter_ability,
-          min_ivs: opts.filter_min_ivs,
-          max_ivs: opts.filter_max_ivs,
-          max_size: opts.filter_max_size,
-          hidden_power:null,
-          stats: null,
-        },
+        filter: pkmFilterFieldsToRustInput(opts),
       });
 
       setResults(results.map(flattenIvs));

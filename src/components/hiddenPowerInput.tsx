@@ -21,8 +21,8 @@ export const defaultHiddenPowerFilter:UiHiddenPowerFilter = {
 export const HiddenPowerSchema = z.object({
   active:z.boolean(),
   pokemon_types: z.array(z.enum(pokemonTypes)),
-  min_bp: z.number().min(15).max(70),
-  max_bp: z.number().min(15).max(70),
+  min_bp: z.number().min(30).max(70),
+  max_bp: z.number().min(30).max(70),
 });
 
 type Props<FormState extends GenericForm> = {

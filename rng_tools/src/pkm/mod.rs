@@ -96,7 +96,7 @@ impl PkmFilter {
             }
         }
 
-        if !self.pass_filter_hidden_power(state) {
+        if !self.pass_filter_hidden_power(state.ivs()) {
             return false;
         }
 
@@ -106,7 +106,7 @@ impl PkmFilter {
         true
     }
 
-    pub fn pass_filter_hidden_power(&self, state: &impl PkmState) -> bool {
+    pub fn pass_filter_hidden_power(&self, ivs: &Ivs) -> bool {
         match &self.hidden_power {
             None => true,
             Some(wanted_hidden_power) => {
@@ -114,7 +114,7 @@ impl PkmFilter {
                     return true;
                 }
 
-                let state_hidden_power = calculate_hidden_power(state.ivs());
+                let state_hidden_power = calculate_hidden_power(ivs);
 
                 wanted_hidden_power
                     .pokemon_types

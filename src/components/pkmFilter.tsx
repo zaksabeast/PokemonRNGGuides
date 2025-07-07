@@ -11,6 +11,7 @@ import { z } from "zod";
 import * as tst from "ts-toolbelt";
 import { toOptions } from "~/utils/options";
 import { defaultHiddenPowerFilter, HiddenPowerInput, HiddenPowerSchema } from "./hiddenPowerInput";
+import {StatsFilterSchema} from "../types/stat";
 
 const sortedNatures = nature.toSorted();
 
@@ -46,6 +47,13 @@ export type PkmFilterFields = {
   filter_hidden_power: tst.U.Exclude<PkmFilter['hidden_power'], undefined>,
 };
 
+//NO_PROD bad
+export type PkmFilterNull = {
+  [Key in keyof PkmFilter as `${Key}`]: undefined extends PkmFilter[Key]
+    ? tst.U.Exclude<PkmFilter[Key], undefined> | null
+    : PkmFilter[Key];
+};
+
 export const pkmFilterSchema = z.object({
   filter_shiny: z.boolean(),
   filter_nature: z.enum(nature).nullable(),
@@ -55,20 +63,20 @@ export const pkmFilterSchema = z.object({
   filter_max_ivs: IvsSchema,
   filter_max_size: z.boolean(),
   filter_hidden_power: HiddenPowerSchema, 
-  filter_stats: z.null(),
+  filter_stats: StatsFilterSchema.nullable(),
 });
 
-export const pkmFilterFieldsToRustInput = (fields:PkmFilterFields) : PkmFilter => {
+export const pkmFilterFieldsToRustInput = (fields:PkmFilterFields) : PkmFilterNull => {
   return {
     shiny: fields.filter_shiny,
-    nature: fields.filter_nature ?? undefined,
-    gender: fields.filter_gender ?? undefined,
+    nature: fields.filter_nature,
+    gender: fields.filter_gender,
     min_ivs: fields.filter_min_ivs,
     max_ivs: fields.filter_max_ivs,
-    ability: fields.filter_ability ?? undefined,
+    ability: fields.filter_ability,
     max_size: fields.filter_max_size,
     hidden_power: fields.filter_hidden_power,
-    stats: undefined,
+    stats: null,
   };
 };
 
@@ -93,7 +101,7 @@ export const getPkmFilterInitialValues = (): PkmFilterFields =>
     filter_max_size: false,
     filter_hidden_power:defaultHiddenPowerFilter,
     filter_stats:null,
-  }) as const;
+  });
 
 const optOut = <T,>(condition: boolean | undefined, value: T): T | null => {
   return condition === false ? null : value;
@@ -141,12 +149,6 @@ const _getPkmFilterFields = (optOuts: FieldOptOuts = {}): Field[] =>
     optOut(optOuts?.ivs, {
       label: "Max IVs",
       input: <IvInput<PkmFilterFields> name="filter_max_ivs" />,
-    }),
-    optOut(optOuts?.max_size, {
-      label: "Max Size",
-      input: (
-        <FormikSwitch<PkmFilterFields, "filter_max_size"> name="filter_max_size" />
-      ),
     }),
     optOut(optOuts?.hidden_power, {
       label: "Hidden Power",

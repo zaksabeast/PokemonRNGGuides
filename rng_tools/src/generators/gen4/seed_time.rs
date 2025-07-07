@@ -1,8 +1,10 @@
 use std::ops::RangeInclusive;
 
 use super::{calc_ab, calc_seed};
+use crate::rng::Rng;
+use crate::rng::lcrng::Pokerng;
 use crate::rng::mt::MT;
-use crate::{RngDateTime, get_days_in_month};
+use crate::{RngDateTime, Species, get_days_in_month};
 use chrono::Duration;
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
@@ -271,6 +273,223 @@ pub fn dppt_calibrate_seedtime(
                 datetime: result_datetime,
                 coin_flips: coin_flips(seed),
             });
+        }
+    }
+
+    results
+}
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+pub struct RoamerLocation {
+    pub roamer: Species,
+    pub location: u16,
+}
+impl RoamerLocation {
+    fn new(roamer: Species) -> Self {
+        RoamerLocation {
+            roamer,
+            location: 0,
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+pub struct RoamerSet {
+    pub entei: bool,
+    pub raikou: bool,
+    pub latios: bool,
+    pub latias: bool,
+}
+
+fn get_route_j(seed: u32, roamer: &mut RoamerLocation) {
+    let mut rng = Pokerng::new(seed);
+    let roamer_rand = rng.rand::<u16>() & 15;
+
+    roamer.location = if roamer_rand < 11 {
+        roamer_rand + 29
+    } else {
+        roamer_rand + 31
+    };
+}
+
+fn get_route_k(seed: u32, roamer: &mut RoamerLocation) {
+    let mut rng = Pokerng::new(seed);
+    let roamer_rand = rng.rand::<u16>() % 25;
+
+    let location = if roamer_rand > 21 {
+        if roamer_rand == 22 {
+            24
+        } else if roamer_rand == 23 {
+            26
+        } else {
+            28
+        }
+    } else {
+        roamer_rand + 1
+    };
+
+    roamer.location = location;
+}
+
+fn roamer_check(seed: u32, roamer_opts: RoamerSet) -> Vec<RoamerLocation> {
+    let mut rng = Pokerng::new(seed);
+    let mut results = Vec::new();
+    if roamer_opts.entei == true {
+        let mut roamer = RoamerLocation::new(Species::Entei);
+        get_route_j(rng.rand::<u32>(), &mut roamer);
+        results.push(roamer)
+    }
+    if roamer_opts.raikou == true {
+        let mut roamer = RoamerLocation::new(Species::Raikou);
+        get_route_j(rng.rand::<u32>(), &mut roamer);
+        results.push(roamer)
+    }
+    if roamer_opts.latios == true {
+        let mut roamer = RoamerLocation::new(Species::Latios);
+        get_route_k(rng.rand::<u32>(), &mut roamer);
+        results.push(roamer)
+    }
+    if roamer_opts.latias == true {
+        let mut roamer = RoamerLocation::new(Species::Latias);
+        get_route_k(rng.rand::<u32>(), &mut roamer);
+        results.push(roamer)
+    }
+    results
+}
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+pub enum ElmCall {
+    E,
+    K,
+    P,
+}
+
+fn get_elm_calls(seed: u32) -> Vec<ElmCall> {
+    Pokerng::new(seed)
+        .take(20)
+        .map(|rand| match rand % 3 {
+            0 => ElmCall::E,
+            1 => ElmCall::K,
+            _ => ElmCall::P,
+        })
+        .collect()
+}
+
+#[macro_export]
+macro_rules! elm_calls {
+    ($flips:expr) => {{
+        let s = $flips;
+        s.chars()
+            .map(|c| match c {
+                'E' => $crate::generators::gen4::seed_time::ElmCall::E,
+                'K' => $crate::generators::gen4::seed_time::ElmCall::K,
+                'P' => $crate::generators::gen4::seed_time::ElmCall::P,
+                _ => $crate::generators::gen4::seed_time::ElmCall::E, // Default to Heads for any invalid character
+            })
+            .collect::<Vec<$crate::generators::gen4::seed_time::ElmCall>>()
+    }};
+}
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+pub struct HgssSeedTime4 {
+    pub seed: u32,
+    pub datetime: RngDateTime,
+    pub delay: u32,
+    pub roamer: Vec<RoamerLocation>,
+    pub elm: Vec<ElmCall>,
+}
+
+pub fn hgss_find_seedtime(opts: FindSeedTime4Options, roamer: RoamerSet) -> Option<HgssSeedTime4> {
+    let opts = SeedTime4Options {
+        seed: opts.seed,
+        year: opts.year,
+        month: None,
+        second_range: opts.second_range,
+        delay_range: Some(opts.delay_range),
+        find_first: true,
+    };
+    hgss_calculate_seedtime(opts, roamer).into_iter().next()
+}
+
+pub fn hgss_calculate_seedtime(opts: SeedTime4Options, roamer: RoamerSet) -> Vec<HgssSeedTime4> {
+    let month_range = match opts.month {
+        Some(month) if (1..=12).contains(&month) => month..=month,
+        _ => 1..=12,
+    };
+
+    let limit = match opts.find_first {
+        true => 1,
+        false => 10_000,
+    };
+
+    month_range
+        .flat_map(|month| {
+            hgss_calculate_single_month_seedtime(
+                SeedTime4SingleMonthOptions {
+                    month,
+                    seed: opts.seed,
+                    year: opts.year,
+                    second_range: opts.second_range.clone(),
+                    delay_range: opts.delay_range.clone(),
+                    find_first: opts.find_first,
+                },
+                roamer,
+            )
+        })
+        .take(limit)
+        .collect()
+}
+
+fn hgss_calculate_single_month_seedtime(
+    opts: SeedTime4SingleMonthOptions,
+    roamer: RoamerSet,
+) -> Vec<HgssSeedTime4> {
+    let year = opts.year.clamp(2000, 2100);
+    let month = opts.month.clamp(1, 12);
+    let ab = opts.seed >> 24;
+    let cd = (opts.seed >> 16) & 0xff;
+    let efgh = opts.seed & 0xffff;
+
+    // Allow overflow seeds by setting hour to 23 and adjusting for delay
+    let hour = if cd > 23 { 23 } else { cd };
+    let delay = match cd > 23 {
+        true => efgh
+            .wrapping_add(2000)
+            .wrapping_sub(year)
+            .wrapping_add(cd.wrapping_sub(23).wrapping_mul(0x10000)),
+        false => efgh.wrapping_add(2000).wrapping_sub(year),
+    };
+
+    if let Some(delay_range) = opts.delay_range {
+        if !delay_range.contains(&delay) {
+            return vec![];
+        }
+    }
+    let elm = get_elm_calls(opts.seed);
+    let roamer = roamer_check(opts.seed, roamer);
+
+    let mut results = vec![];
+
+    let second_range = opts.second_range.unwrap_or(0..=59);
+
+    let max_days = get_days_in_month(year as i32, month);
+    for day in 1..=max_days {
+        for minute in 0..60 {
+            for second in second_range.clone() {
+                if ab == calc_ab(month, day, minute, second) & 0xff {
+                    if let Some(datetime) = RngDateTime::new(year, month, day, hour, minute, second)
+                    {
+                        results.push(HgssSeedTime4 {
+                            seed: opts.seed,
+                            delay,
+                            datetime,
+                            roamer: roamer.clone(),
+                            elm: elm.clone(),
+                        });
+
+                        if opts.find_first {
+                            return results;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -603,6 +822,40 @@ mod test {
             };
 
             assert_eq!(results, Some(expected));
+        }
+        #[test]
+        fn hgss_time() {
+            let opts = FindSeedTime4Options {
+                seed: 0xad090311,
+                year: 2032,
+                second_range: None,
+                delay_range: 750..=753,
+            };
+            let roamer = RoamerSet {
+                entei: true,
+                raikou: true,
+                latios: false,
+                latias: true,
+            };
+            let result = hgss_find_seedtime(opts, roamer);
+            let expected = Some(HgssSeedTime4 {
+                seed: 0xaabbccdd,
+                datetime: datetime!(2032-02-26 23:59:59).unwrap(),
+                delay: 10800317,
+                roamer: vec![
+                    RoamerLocation {
+                        roamer: Species::Entei,
+                        location: 10,
+                    },
+                    RoamerLocation {
+                        roamer: Species::Raikou,
+                        location: 10,
+                    },
+                ],
+                elm: elm_calls!("EKPEKPEKPEKP"),
+            });
+
+            assert_eq!(result, expected);
         }
     }
 

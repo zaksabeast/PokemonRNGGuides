@@ -7,6 +7,7 @@ mod hidden_power;
 mod nature;
 mod pokemon_type;
 mod shiny;
+mod size;
 mod species;
 mod stat;
 
@@ -21,6 +22,7 @@ pub use nature::*;
 pub use pokemon_type::*;
 use serde::{Deserialize, Serialize};
 pub use shiny::*;
+pub use size::*;
 pub use species::*;
 pub use stat::*;
 use tsify_next::Tsify;
@@ -94,7 +96,33 @@ impl PkmFilter {
             }
         }
 
+        if !self.pass_filter_hidden_power(state) {
+            return false;
+        }
+
+        if self.max_size && is_max_size(state.pid(), state.ivs()) {
+            return false;
+        }
         true
+    }
+
+    pub fn pass_filter_hidden_power(&self, state: &impl PkmState) -> bool {
+        match &self.hidden_power {
+            None => true,
+            Some(wanted_hidden_power) => {
+                if !wanted_hidden_power.active {
+                    return true;
+                }
+
+                let state_hidden_power = calculate_hidden_power(state.ivs());
+
+                wanted_hidden_power
+                    .pokemon_types
+                    .contains(&state_hidden_power.pokemon_type)
+                    && state_hidden_power.bp >= wanted_hidden_power.min_bp
+                    && state_hidden_power.bp <= wanted_hidden_power.max_bp
+            }
+        }
     }
 
     pub fn pass_filter_stats(&self, state: &impl PkmState) -> bool {
@@ -151,6 +179,7 @@ impl PkmFilter {
 }
 
 pub trait PkmState {
+    fn pid(&self) -> u32;
     fn shiny(&self) -> bool;
     fn nature(&self) -> Nature;
     fn ivs(&self) -> &Ivs;

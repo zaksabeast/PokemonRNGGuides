@@ -39,6 +39,10 @@ impl PkmState for Static3SearcherResult {
     fn gender(&self) -> Gender {
         self.gender
     }
+
+    fn pid(&self) -> u32 {
+        self.pid
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

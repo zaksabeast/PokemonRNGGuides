@@ -70,6 +70,10 @@ impl PkmState for Base4Method1State {
     fn shiny(&self) -> bool {
         self.shiny
     }
+
+    fn pid(&self) -> u32 {
+        self.pid
+    }
 }
 
 impl Base4Method1State {

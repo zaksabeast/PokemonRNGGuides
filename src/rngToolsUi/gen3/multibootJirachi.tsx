@@ -21,6 +21,7 @@ import * as tst from "ts-toolbelt";
 import { match } from "ts-pattern";
 import { z } from "zod";
 import { getPkmFilterFields, pkmFilterSchema } from "~/components/pkmFilter";
+import {defaultHiddenPowerFilter} from "~/components/hiddenPowerInput";
 
 const JirachiSaveErrorSchema: z.Schema<JirachiSaveError> = z.union([
   z.literal("NeedToSaveAgain"),
@@ -71,6 +72,8 @@ const initialValues: FormState = {
   filter_gender: null,
   filter_min_ivs: minIvs,
   filter_max_ivs: maxIvs,
+  filter_max_size:false,
+  filter_hidden_power: defaultHiddenPowerFilter,
 };
 
 type Props = {
@@ -119,6 +122,8 @@ export const MultibootJirachi = ({ jirachi }: Props) => {
             ability: opts.filter_ability,
             min_ivs: opts.filter_min_ivs,
             max_ivs: opts.filter_max_ivs,
+            max_size:opts.filter_max_size,
+            hidden_power: opts.filter_hidden_power,
             stats: null,
           },
         });

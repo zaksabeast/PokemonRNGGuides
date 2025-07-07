@@ -78,6 +78,7 @@ const getInitialValues = (game: Static3Game): FormState => {
     filter_nature: null,
     filter_gender: null,
     filter_ability: null,
+    filter_max_size: false,
   };
 };
 

@@ -87,6 +87,7 @@ const initialValues: FormState = {
   filter_nature: null,
   filter_gender: null,
   filter_ability: null,
+  filter_max_size:false,
 };
 
 const fields: Field[] = [
@@ -153,6 +154,7 @@ export const Transporter = () => {
           max_ivs: opts.filter_max_ivs,
         },
         shiny: false,
+        max_size:false,
       },
     });
 

@@ -26,6 +26,7 @@ pub enum PokemonType {
     Ice = 14,
     Dragon = 15,
     Dark = 16,
+    Fairy = 17,
 }
 
 pub const POKEMON_TYPE_COUNT: usize = 17;

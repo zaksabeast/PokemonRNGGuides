@@ -112,6 +112,7 @@ const initialValues: FormState = {
   filter_nature: null,
   filter_gender: null,
   filter_ability: null,
+  filter_max_size: false,
   filter_characteristic: null,
 };
 
@@ -216,6 +217,7 @@ export const Static4Generator = () => {
         ability: opts.filter_ability,
         min_ivs: opts.filter_min_ivs,
         max_ivs: opts.filter_max_ivs,
+        max_size: opts.filter_max_size,
         stats: null,
       },
       filter_characteristic: opts.filter_characteristic,

@@ -235,6 +235,7 @@ export const PickStarter4 = () => {
           min_ivs: opts.filter_min_ivs,
           max_ivs: opts.filter_max_ivs,
           stats: null,
+          max_size:false,
         },
       };
       const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);

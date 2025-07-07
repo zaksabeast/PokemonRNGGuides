@@ -54,6 +54,10 @@ impl PkmState for GeneratedPokemon {
     fn shiny(&self) -> bool {
         self.shiny
     }
+
+    fn pid(&self) -> u32 {
+        self.pid
+    }
 }
 
 pub struct RouteData {

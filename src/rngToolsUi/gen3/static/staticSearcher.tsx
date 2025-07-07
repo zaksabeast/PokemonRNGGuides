@@ -74,6 +74,7 @@ const getInitialValues = (game: Static3Game): FormState => {
     filter_nature: null,
     filter_gender: null,
     filter_ability: null,
+    filter_max_size: false,
   };
 };
 
@@ -132,6 +133,8 @@ export const Static3Searcher = ({ game }: Props) => {
           ability: opts.filter_ability,
           min_ivs: opts.filter_min_ivs,
           max_ivs: opts.filter_max_ivs,
+          max_size: opts.filter_max_size,
+          hidden_power:null,
           stats: null,
         },
       });

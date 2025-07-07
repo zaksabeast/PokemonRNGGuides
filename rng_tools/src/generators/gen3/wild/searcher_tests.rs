@@ -117,7 +117,6 @@ mod test {
             consider_cycles: false,
             consider_rng_manipulated_lead_pid: false,
             filter: PkmFilter {
-                shiny: false,
                 nature: Some(Nature::Adamant),
                 gender: Some(Gender::Female),
                 min_ivs: Ivs {
@@ -130,7 +129,7 @@ mod test {
                 },
                 max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
-                stats: None,
+                ..Default::default()
             },
         };
         let expected_results = [
@@ -221,10 +220,9 @@ mod test {
                 shiny: true,
                 nature: Some(Nature::Naive),
                 gender: Some(Gender::Male),
-                min_ivs: Ivs::new_all0(),
                 max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
-                stats: None,
+                ..Default::default()
             },
         };
         let expected_results = [Wild3SearcherResultMon {
@@ -361,12 +359,8 @@ mod test {
             leads: vec![Gen3Lead::Vanilla],
             filter: PkmFilter {
                 shiny: true,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs::new_all0(),
                 max_ivs: Ivs::new_all31(),
-                ability: None,
-                stats: None,
+                ..Default::default()
             },
         };
         let expected_results = [

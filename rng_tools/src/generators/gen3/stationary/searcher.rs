@@ -154,13 +154,9 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
                 min_ivs: PERFECT_IVS,
                 max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
+                ..Default::default()
             },
         };
 
@@ -178,13 +174,9 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
                 min_ivs: PERFECT_IVS,
                 max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
+                ..Default::default()
             },
         };
 
@@ -211,13 +203,9 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
                 min_ivs: PERFECT_IVS,
                 max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
+                ..Default::default()
             },
         };
 
@@ -235,13 +223,9 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
                 min_ivs: PERFECT_IVS,
                 max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
+                ..Default::default()
             },
         };
 
@@ -268,13 +252,9 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
                 min_ivs: PERFECT_IVS,
                 max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
+                ..Default::default()
             },
         };
 
@@ -292,17 +272,13 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
                 min_ivs: Ivs {
                     hp: 31,
                     atk: 7,
                     ..Default::default()
                 },
                 max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
+                ..Default::default()
             },
         };
 

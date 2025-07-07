@@ -3,7 +3,9 @@ mod characteristic;
 mod encounter;
 mod gender;
 mod gender_ratio;
+mod hidden_power;
 mod nature;
+mod pokemon_type;
 mod shiny;
 mod species;
 mod stat;
@@ -14,14 +16,16 @@ pub use characteristic::*;
 pub use encounter::*;
 pub use gender::*;
 pub use gender_ratio::*;
+pub use hidden_power::*;
 pub use nature::*;
+pub use pokemon_type::*;
 use serde::{Deserialize, Serialize};
 pub use shiny::*;
 pub use species::*;
 pub use stat::*;
 use tsify_next::Tsify;
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Default)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct PkmFilter {
     pub shiny: bool,
@@ -31,6 +35,8 @@ pub struct PkmFilter {
     pub max_ivs: Ivs,
     pub ability: Option<AbilityType>,
     pub stats: Option<StatFilter>,
+    pub hidden_power: Option<HiddenPowerFilter>,
+    pub max_size: bool,
 }
 
 impl PkmFilter {
@@ -43,6 +49,8 @@ impl PkmFilter {
             max_ivs: Ivs::new_all31(),
             ability: None,
             stats: None,
+            hidden_power: None,
+            max_size: false,
         }
     }
     pub fn pass_filter(&self, state: &impl PkmState) -> bool {

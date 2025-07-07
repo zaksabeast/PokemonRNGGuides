@@ -839,20 +839,24 @@ mod test {
             };
             let result = hgss_find_seedtime(opts, roamer);
             let expected = Some(HgssSeedTime4 {
-                seed: 0xaabbccdd,
-                datetime: datetime!(2032-02-26 23:59:59).unwrap(),
-                delay: 10800317,
+                seed: 0xad090311,
+                datetime: datetime!(2032-02-28 09:58:59).unwrap(),
+                delay: 753,
                 roamer: vec![
                     RoamerLocation {
                         roamer: Species::Entei,
-                        location: 10,
+                        location: 39,
                     },
                     RoamerLocation {
                         roamer: Species::Raikou,
-                        location: 10,
+                        location: 42,
+                    },
+                    RoamerLocation {
+                        roamer: Species::Latias,
+                        location: 20,
                     },
                 ],
-                elm: elm_calls!("EKPEKPEKPEKP"),
+                elm: elm_calls!("KKEKKEPKEEEEKEKEEKEP"),
             });
 
             assert_eq!(result, expected);

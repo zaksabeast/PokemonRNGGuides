@@ -35,7 +35,6 @@ mod test {
             filter: PkmFilter {
                 nature: Some(Nature::Naive),
                 gender: Some(Gender::Male),
-                max_ivs: Ivs::new_all31(),
                 ..Default::default()
             },
         };

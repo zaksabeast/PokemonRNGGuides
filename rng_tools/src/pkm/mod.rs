@@ -25,7 +25,7 @@ pub use species::*;
 pub use stat::*;
 use tsify_next::Tsify;
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct PkmFilter {
     pub shiny: bool,
@@ -37,6 +37,12 @@ pub struct PkmFilter {
     pub stats: Option<StatFilter>,
     pub hidden_power: Option<HiddenPowerFilter>,
     pub max_size: bool,
+}
+
+impl Default for PkmFilter {
+    fn default() -> Self {
+        PkmFilter::new_allow_all()
+    }
 }
 
 impl PkmFilter {

@@ -136,15 +136,6 @@ mod test {
     use super::*;
     use crate::gen3::{Static3GeneratorOptions, gen3_static_generator_states};
 
-    const PERFECT_IVS: Ivs = Ivs {
-        hp: 31,
-        atk: 31,
-        def: 31,
-        spa: 31,
-        spd: 31,
-        spe: 31,
-    };
-
     #[test]
     fn search_method4() {
         let opts = Static3SearcherOptions {
@@ -154,8 +145,7 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                min_ivs: PERFECT_IVS,
-                max_ivs: PERFECT_IVS,
+                min_ivs: Ivs::new_all31(),
                 ..Default::default()
             },
         };
@@ -174,8 +164,7 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                min_ivs: PERFECT_IVS,
-                max_ivs: PERFECT_IVS,
+                min_ivs: Ivs::new_all31(),
                 ..Default::default()
             },
         };
@@ -203,8 +192,7 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                min_ivs: PERFECT_IVS,
-                max_ivs: PERFECT_IVS,
+                min_ivs: Ivs::new_all31(),
                 ..Default::default()
             },
         };
@@ -223,8 +211,7 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                min_ivs: PERFECT_IVS,
-                max_ivs: PERFECT_IVS,
+                min_ivs: Ivs::new_all31(),
                 ..Default::default()
             },
         };
@@ -252,8 +239,7 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                min_ivs: PERFECT_IVS,
-                max_ivs: PERFECT_IVS,
+                min_ivs: Ivs::new_all31(),
                 ..Default::default()
             },
         };
@@ -277,7 +263,6 @@ mod test {
                     atk: 7,
                     ..Default::default()
                 },
-                max_ivs: PERFECT_IVS,
                 ..Default::default()
             },
         };

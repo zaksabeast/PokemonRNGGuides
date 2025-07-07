@@ -127,7 +127,6 @@ mod test {
                     spd: 10,
                     spe: 10,
                 },
-                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
                 ..Default::default()
             },
@@ -220,7 +219,6 @@ mod test {
                 shiny: true,
                 nature: Some(Nature::Naive),
                 gender: Some(Gender::Male),
-                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
                 ..Default::default()
             },

@@ -112,23 +112,6 @@ mod test {
     use crate::assert_list_eq;
     use crate::{StatFilter, StatsValue};
 
-    const ZERO_IVS: Ivs = Ivs {
-        hp: 0,
-        atk: 0,
-        def: 0,
-        spa: 0,
-        spd: 0,
-        spe: 0,
-    };
-    const PERFECT_IVS: Ivs = Ivs {
-        hp: 31,
-        atk: 31,
-        def: 31,
-        spa: 31,
-        spd: 31,
-        spe: 31,
-    };
-
     #[test]
     fn generate_method4() {
         let opts = Static3GeneratorOptions {
@@ -793,7 +776,6 @@ mod test {
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    max_ivs: PERFECT_IVS,
                     stats: Some(StatFilter {
                         lvl: 5,
                         base_stats: StatsValue {
@@ -858,7 +840,6 @@ mod test {
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    max_ivs: PERFECT_IVS,
                     stats: Some(StatFilter {
                         lvl: 5,
                         base_stats: StatsValue {
@@ -907,7 +888,6 @@ mod test {
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    max_ivs: PERFECT_IVS,
                     stats: Some(StatFilter {
                         lvl: 5,
                         base_stats: StatsValue {
@@ -972,7 +952,6 @@ mod test {
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    max_ivs: PERFECT_IVS,
                     stats: Some(StatFilter {
                         lvl: 5,
                         base_stats: StatsValue {

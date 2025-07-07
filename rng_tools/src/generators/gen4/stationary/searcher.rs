@@ -236,7 +236,6 @@ mod tests {
                 species: Species::Turtwig,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 20 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
                     ..Default::default()
                 },
             };
@@ -676,7 +675,6 @@ mod tests {
                 species: Species::Turtwig,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 20 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
                     ..Default::default()
                 },
             };
@@ -932,7 +930,6 @@ mod tests {
                 species: Species::Turtwig,
                 filter: PkmFilter {
                     min_ivs: ivs!(30 / 30 / 20 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
                     ..Default::default()
                 },
             };

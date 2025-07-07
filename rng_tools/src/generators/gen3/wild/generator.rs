@@ -119,7 +119,10 @@ impl CycleAndModRange {
     }
     pub fn apply_mod_cycle_count(&self, pid_cycle_count: usize) -> CycleRange<usize> {
         CycleRange::<usize> {
-            start: self.start.cycle.saturating_add(self.start.mod_count() * pid_cycle_count),
+            start: self
+                .start
+                .cycle
+                .saturating_add(self.start.mod_count() * pid_cycle_count),
             len: self.len,
         }
     }

@@ -442,56 +442,53 @@ mod test {
             0,
             TIMING_DISTR.len(),
         );
-        assert_list_eq!(
-            sids,
-            [
-                Gen3NearbySid {
-                    tid_gen_adv: 996,
-                    sid: 37330,
-                    earliest_shiny_adv: 2516
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 997,
-                    sid: 48775,
-                    earliest_shiny_adv: 4604
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 998,
-                    sid: 57250,
-                    earliest_shiny_adv: 1051
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 999,
-                    sid: 44185,
-                    earliest_shiny_adv: 9979
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 1000,
-                    sid: 20917,
-                    earliest_shiny_adv: 10424
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 1001,
-                    sid: 4295,
-                    earliest_shiny_adv: 5805
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 1002,
-                    sid: 11292,
-                    earliest_shiny_adv: 2049
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 1003,
-                    sid: 43529,
-                    earliest_shiny_adv: 2282
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 1004,
-                    sid: 59237,
-                    earliest_shiny_adv: 4075
-                },
-            ]
-        );
+        assert_list_eq!(sids, [
+            Gen3NearbySid {
+                tid_gen_adv: 996,
+                sid: 37330,
+                earliest_shiny_adv: 2516
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 997,
+                sid: 48775,
+                earliest_shiny_adv: 4604
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 998,
+                sid: 57250,
+                earliest_shiny_adv: 1051
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 999,
+                sid: 44185,
+                earliest_shiny_adv: 9979
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 1000,
+                sid: 20917,
+                earliest_shiny_adv: 10424
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 1001,
+                sid: 4295,
+                earliest_shiny_adv: 5805
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 1002,
+                sid: 11292,
+                earliest_shiny_adv: 2049
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 1003,
+                sid: 43529,
+                earliest_shiny_adv: 2282
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 1004,
+                sid: 59237,
+                earliest_shiny_adv: 4075
+            },
+        ]);
 
         let sids = calculate_earliest_shiny_for_nearby_sids(
             &earliest_adv_by_tsv,
@@ -500,56 +497,53 @@ mod test {
             TIMING_DISTR.len(),
         );
 
-        assert_list_eq!(
-            sids,
-            [
-                Gen3NearbySid {
-                    tid_gen_adv: 996,
-                    sid: 28404,
-                    earliest_shiny_adv: 10961
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 997,
-                    sid: 45158,
-                    earliest_shiny_adv: 8818
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 998,
-                    sid: 53788,
-                    earliest_shiny_adv: 2062
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 999,
-                    sid: 3217,
-                    earliest_shiny_adv: 14275
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 1000,
-                    sid: 54186,
-                    earliest_shiny_adv: 16714
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 1001,
-                    sid: 43398,
-                    earliest_shiny_adv: 3696
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 1002,
-                    sid: 13575,
-                    earliest_shiny_adv: 8984
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 1003,
-                    sid: 17283,
-                    earliest_shiny_adv: 39080
-                },
-                Gen3NearbySid {
-                    tid_gen_adv: 1004,
-                    sid: 17192,
-                    earliest_shiny_adv: 9176
-                },
-            ]
-        );
+        assert_list_eq!(sids, [
+            Gen3NearbySid {
+                tid_gen_adv: 996,
+                sid: 28404,
+                earliest_shiny_adv: 10961
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 997,
+                sid: 45158,
+                earliest_shiny_adv: 8818
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 998,
+                sid: 53788,
+                earliest_shiny_adv: 2062
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 999,
+                sid: 3217,
+                earliest_shiny_adv: 14275
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 1000,
+                sid: 54186,
+                earliest_shiny_adv: 16714
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 1001,
+                sid: 43398,
+                earliest_shiny_adv: 3696
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 1002,
+                sid: 13575,
+                earliest_shiny_adv: 8984
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 1003,
+                sid: 17283,
+                earliest_shiny_adv: 39080
+            },
+            Gen3NearbySid {
+                tid_gen_adv: 1004,
+                sid: 17192,
+                earliest_shiny_adv: 9176
+            },
+        ]);
     }
 
     #[test]

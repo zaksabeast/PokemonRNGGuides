@@ -162,17 +162,14 @@ fn search_static4_method1(opts: &SearchStatic4Method1Opts) -> Vec<Base4Method1St
         min_spe..=max_spe
     )
     .flat_map(|(hp, atk, def, spa, spd, spe)| {
-        search_single_static4_method1(
-            opts,
-            Ivs {
-                hp,
-                atk,
-                def,
-                spa,
-                spd,
-                spe,
-            },
-        )
+        search_single_static4_method1(opts, Ivs {
+            hp,
+            atk,
+            def,
+            spa,
+            spd,
+            spe,
+        })
     })
     .collect()
 }

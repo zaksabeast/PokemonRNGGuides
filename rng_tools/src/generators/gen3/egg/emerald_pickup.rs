@@ -708,13 +708,10 @@ mod test {
     fn filter_specific_missing_inherited_ivs() {
         let opts = Egg3PickupOptions {
             delay: 0,
-            parent_ivs: [
-                MALE_IVS,
-                PartialIvs {
-                    spa: None,
-                    ..FEMALE_IVS
-                },
-            ],
+            parent_ivs: [MALE_IVS, PartialIvs {
+                spa: None,
+                ..FEMALE_IVS
+            }],
             method: Gen3PickupMethod::EmeraldBred,
             initial_advances: 0,
             max_advances: 10,
@@ -749,13 +746,10 @@ mod test {
     fn do_not_filter_unspecific_missing_inherited_ivs() {
         let opts = Egg3PickupOptions {
             delay: 0,
-            parent_ivs: [
-                MALE_IVS,
-                PartialIvs {
-                    spa: None,
-                    ..FEMALE_IVS
-                },
-            ],
+            parent_ivs: [MALE_IVS, PartialIvs {
+                spa: None,
+                ..FEMALE_IVS
+            }],
             method: Gen3PickupMethod::EmeraldBred,
             initial_advances: 0,
             max_advances: 10,

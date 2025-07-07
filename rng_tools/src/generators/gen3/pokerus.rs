@@ -230,95 +230,59 @@ mod tests {
             );
         }
 
-        cmp_each_pickup_count(
-            true,
-            true,
-            true,
-            false,
-            &[
-                vec![26842],
-                vec![101117],
-                vec![101152, 101153],
-                vec![101115],
-                vec![101114],
-                vec![101113],
-            ],
-        );
+        cmp_each_pickup_count(true, true, true, false, &[
+            vec![26842],
+            vec![101117],
+            vec![101152, 101153],
+            vec![101115],
+            vec![101114],
+            vec![101113],
+        ]);
 
-        cmp_each_pickup_count(
-            false,
-            false,
-            false,
-            false,
-            &[
-                vec![26844],
-                vec![26843],
-                vec![26841, 26842],
-                vec![26840],
-                vec![26839],
-                vec![26838],
-            ],
-        );
+        cmp_each_pickup_count(false, false, false, false, &[
+            vec![26844],
+            vec![26843],
+            vec![26841, 26842],
+            vec![26840],
+            vec![26839],
+            vec![26838],
+        ]);
 
-        cmp_each_pickup_count(
-            true,
-            false,
-            true,
-            false,
-            &[
-                vec![26843],
-                vec![26841, 26842],
-                vec![26840],
-                vec![26839],
-                vec![26838],
-                vec![26837],
-            ],
-        );
+        cmp_each_pickup_count(true, false, true, false, &[
+            vec![26843],
+            vec![26841, 26842],
+            vec![26840],
+            vec![26839],
+            vec![26838],
+            vec![26837],
+        ]);
 
-        cmp_each_pickup_count(
-            true,
-            true,
-            true,
-            true,
-            &[
-                vec![26840],
-                vec![26839],
-                vec![26838],
-                vec![26837],
-                vec![26836],
-                vec![26835],
-            ],
-        );
+        cmp_each_pickup_count(true, true, true, true, &[
+            vec![26840],
+            vec![26839],
+            vec![26838],
+            vec![26837],
+            vec![26836],
+            vec![26835],
+        ]);
 
-        cmp_each_pickup_count(
-            false,
-            false,
-            false,
-            true,
-            &[
-                vec![26842],
-                vec![101117],
-                vec![101152, 101153],
-                vec![101115],
-                vec![101114],
-                vec![101113],
-            ],
-        );
+        cmp_each_pickup_count(false, false, false, true, &[
+            vec![26842],
+            vec![101117],
+            vec![101152, 101153],
+            vec![101115],
+            vec![101114],
+            vec![101113],
+        ]);
 
-        cmp_each_pickup_count(
-            true,
-            false,
-            true,
-            true,
-            &[
-                vec![26841],
-                vec![26840],
-                vec![26839],
-                vec![26838],
-                vec![26837],
-                vec![26836],
-            ],
-        );
+        cmp_each_pickup_count(true, false, true, true, &[
+            vec![26841],
+            vec![26840],
+            vec![26839],
+            vec![26838],
+            vec![26837],
+            vec![26836],
+        ]);
 
         // Conclusion: There are 2 setups that have a 2-advances window.
     }
@@ -339,35 +303,32 @@ mod tests {
 
         let results = gen3_pokerus_generator_states(&opts);
 
-        assert_list_eq!(
-            results,
-            vec![
-                Pokerus3GeneratorResult {
-                    advance_before_pickup: 10022,
-                    pickup_items: vec![
-                        PickUpItem::None,
-                        PickUpItem::None,
-                        PickUpItem::None,
-                        PickUpItem::None,
-                        PickUpItem::FullRestore
-                    ],
-                    advance_before_pokerus: 10109,
-                    gives_pokerus: false,
-                },
-                Pokerus3GeneratorResult {
-                    advance_before_pickup: 10023,
-                    pickup_items: vec![
-                        PickUpItem::None,
-                        PickUpItem::None,
-                        PickUpItem::None,
-                        PickUpItem::FullRestore,
-                        PickUpItem::None
-                    ],
-                    advance_before_pokerus: 10110,
-                    gives_pokerus: false,
-                }
-            ]
-        );
+        assert_list_eq!(results, vec![
+            Pokerus3GeneratorResult {
+                advance_before_pickup: 10022,
+                pickup_items: vec![
+                    PickUpItem::None,
+                    PickUpItem::None,
+                    PickUpItem::None,
+                    PickUpItem::None,
+                    PickUpItem::FullRestore
+                ],
+                advance_before_pokerus: 10109,
+                gives_pokerus: false,
+            },
+            Pokerus3GeneratorResult {
+                advance_before_pickup: 10023,
+                pickup_items: vec![
+                    PickUpItem::None,
+                    PickUpItem::None,
+                    PickUpItem::None,
+                    PickUpItem::FullRestore,
+                    PickUpItem::None
+                ],
+                advance_before_pokerus: 10110,
+                gives_pokerus: false,
+            }
+        ]);
     }
 
     #[test]
@@ -392,21 +353,18 @@ mod tests {
 
         let results = gen3_pokerus_generator_states(&opts);
 
-        assert_list_eq!(
-            results,
-            vec![Pokerus3GeneratorResult {
-                advance_before_pickup: 44108,
-                pickup_items: vec![
-                    PickUpItem::None,
-                    PickUpItem::None,
-                    PickUpItem::UltraBall,
-                    PickUpItem::FullRestore,
-                    PickUpItem::None
-                ],
-                advance_before_pokerus: 44196,
-                gives_pokerus: false,
-            }]
-        );
+        assert_list_eq!(results, vec![Pokerus3GeneratorResult {
+            advance_before_pickup: 44108,
+            pickup_items: vec![
+                PickUpItem::None,
+                PickUpItem::None,
+                PickUpItem::UltraBall,
+                PickUpItem::FullRestore,
+                PickUpItem::None
+            ],
+            advance_before_pokerus: 44196,
+            gives_pokerus: false,
+        }]);
     }
 
     #[test]
@@ -425,23 +383,20 @@ mod tests {
 
         let results = gen3_pokerus_generator_states(&opts);
 
-        assert_list_eq!(
-            results,
-            vec![
-                Pokerus3GeneratorResult {
-                    advance_before_pickup: 15713,
-                    pickup_items: vec![PickUpItem::UltraBall, PickUpItem::FullRestore],
-                    advance_before_pokerus: 15796,
-                    gives_pokerus: false
-                },
-                Pokerus3GeneratorResult {
-                    advance_before_pickup: 44110,
-                    pickup_items: vec![PickUpItem::UltraBall, PickUpItem::FullRestore],
-                    advance_before_pokerus: 44193,
-                    gives_pokerus: false
-                }
-            ]
-        );
+        assert_list_eq!(results, vec![
+            Pokerus3GeneratorResult {
+                advance_before_pickup: 15713,
+                pickup_items: vec![PickUpItem::UltraBall, PickUpItem::FullRestore],
+                advance_before_pokerus: 15796,
+                gives_pokerus: false
+            },
+            Pokerus3GeneratorResult {
+                advance_before_pickup: 44110,
+                pickup_items: vec![PickUpItem::UltraBall, PickUpItem::FullRestore],
+                advance_before_pokerus: 44193,
+                gives_pokerus: false
+            }
+        ]);
     }
 
     #[test]
@@ -460,21 +415,18 @@ mod tests {
 
         let results = gen3_pokerus_generator_states(&opts);
 
-        assert_list_eq!(
-            results,
-            vec![Pokerus3GeneratorResult {
-                advance_before_pickup: 26838,
-                pickup_items: vec![
-                    PickUpItem::None,
-                    PickUpItem::None,
-                    PickUpItem::None,
-                    PickUpItem::RareCandy,
-                    PickUpItem::None,
-                ],
-                advance_before_pokerus: 26923,
-                gives_pokerus: true,
-            }]
-        );
+        assert_list_eq!(results, vec![Pokerus3GeneratorResult {
+            advance_before_pickup: 26838,
+            pickup_items: vec![
+                PickUpItem::None,
+                PickUpItem::None,
+                PickUpItem::None,
+                PickUpItem::RareCandy,
+                PickUpItem::None,
+            ],
+            advance_before_pokerus: 26923,
+            gives_pokerus: true,
+        }]);
     }
 
     /*

@@ -102,10 +102,9 @@ mod test {
         }
 
         assert_eq!(rng.rand::<u32>(), 0x670e7a39);
-        assert_eq!(
-            rng.get_state(),
-            [0x5a385202, 0xd9905227, 0x90ffb4e5, 0x3dc72b8f]
-        );
+        assert_eq!(rng.get_state(), [
+            0x5a385202, 0xd9905227, 0x90ffb4e5, 0x3dc72b8f
+        ]);
     }
 
     #[test]
@@ -114,9 +113,8 @@ mod test {
         rng.state = [0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff];
 
         assert_eq!(rng.rand::<u32>(), 0x7c78fb);
-        assert_eq!(
-            rng.get_state(),
-            [0xffffffff, 0x708fee11, 0x7c78fb1e, 0x00000001]
-        );
+        assert_eq!(rng.get_state(), [
+            0xffffffff, 0x708fee11, 0x7c78fb1e, 0x00000001
+        ]);
     }
 }

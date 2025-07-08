@@ -20,6 +20,18 @@ pub struct HiddenPower {
     pub bp: u8,
 }
 
+impl HiddenPower {
+    pub fn from_ivs(ivs: &Ivs) -> Self {
+        Self {
+            pokemon_type: calculate_hidden_power_type(ivs),
+            bp: calculate_hidden_power_bp(ivs),
+        }
+    }
+    pub fn new(pokemon_type: PokemonType, bp: u8) -> Self {
+        Self { pokemon_type, bp }
+    }
+}
+
 pub fn calculate_hidden_power_type(ivs: &Ivs) -> PokemonType {
     let a = ivs.hp & 1;
     let b = ivs.atk & 1;
@@ -27,20 +39,20 @@ pub fn calculate_hidden_power_type(ivs: &Ivs) -> PokemonType {
     let d = ivs.spe & 1;
     let e = ivs.spa & 1;
     let f = ivs.spd & 1;
-    let formula_from_ivs = a + 2 * b + 4 * c + 8 * d + 16 * e + 32 * f;
-    let raw_type = formula_from_ivs * 15 / 63;
-    (raw_type + 1).into() // Hidden Power types are 1-indexed
+    let formula_from_ivs = (a + 2 * b + 4 * c + 8 * d + 16 * e + 32 * f) as u16;
+    let raw_type = (formula_from_ivs * 15 / 63) as u8;
+    (raw_type + 1).into() // +1 to skip Normal type
 }
 
 pub fn calculate_hidden_power_bp(ivs: &Ivs) -> u8 {
-    let a = (ivs.hp & 10) >> 1;
-    let b = (ivs.atk & 10) >> 1;
-    let c = (ivs.def & 10) >> 1;
-    let d = (ivs.spe & 10) >> 1;
-    let e = (ivs.spa & 10) >> 1;
-    let f = (ivs.spd & 10) >> 1;
-    let formula_from_ivs = a + 2 * b + 4 * c + 8 * d + 16 * e + 32 * f;
-    (formula_from_ivs * 40 / 63) + 30
+    let a = (ivs.hp & 0b10) >> 1;
+    let b = (ivs.atk & 0b10) >> 1;
+    let c = (ivs.def & 0b10) >> 1;
+    let d = (ivs.spe & 0b10) >> 1;
+    let e = (ivs.spa & 0b10) >> 1;
+    let f = (ivs.spd & 0b10) >> 1;
+    let formula_from_ivs = (a + 2 * b + 4 * c + 8 * d + 16 * e + 32 * f) as u16;
+    ((formula_from_ivs * 40 / 63) + 30) as u8
 }
 
 pub fn calculate_hidden_power(ivs: &Ivs) -> HiddenPower {

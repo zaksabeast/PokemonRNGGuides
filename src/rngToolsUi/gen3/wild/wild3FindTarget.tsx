@@ -49,14 +49,11 @@ import { Tooltip } from "antd";
 
 /*
 Possible improvements:
- - Show/hide columns based on options.
- - Add ColumnGroup for Likelihood by lead speed columns.
  - Add Tooltip for Likelihood by lead speed columns.
 
  - Support multiple encounter types.
  - Support all leads in generator.
  - Display warning if no maps or no leads are selected.
- - Add Hidden Power filter.
  - Add lead PID speed filter.
 
  - Display map names instead of formatted map IDs.

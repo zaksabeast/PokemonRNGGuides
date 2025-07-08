@@ -1,14 +1,14 @@
 #[cfg(test)]
 mod test {
-    use crate::assert_list_eq;
+    use crate::{HiddenPowerFilter, assert_list_eq};
 
-    use crate::EncounterSlot;
-    use crate::Ivs;
-    use crate::gen3::Gen3Lead;
-    use crate::gen3::Gen3Method;
-    use crate::gen3::search_wild3;
-    use crate::gen3::{Wild3SearcherOptions, Wild3SearcherResultMon};
-    use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
+    use crate::gen3::{
+        Gen3Lead, Gen3Method, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
+    };
+    use crate::{
+        AbilityType, EncounterSlot, Gender, GenderRatio, HiddenPower, Ivs, Nature, PkmFilter,
+        PokemonType,
+    };
 
     #[test]
     fn test_search_wild3_no_filter() {
@@ -49,6 +49,7 @@ mod test {
                 gender: Gender::Male,
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Vanilla,
+                hidden_power: HiddenPower::new(PokemonType::Water, 68),
             },
             Wild3SearcherResultMon {
                 advance: 1,
@@ -70,6 +71,7 @@ mod test {
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Vanilla,
+                hidden_power: HiddenPower::new(PokemonType::Psychic, 53),
             },
             Wild3SearcherResultMon {
                 advance: 2,
@@ -91,6 +93,7 @@ mod test {
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Vanilla,
+                hidden_power: HiddenPower::new(PokemonType::Ground, 52),
             },
         ];
         let result = search_wild3(&options);
@@ -152,6 +155,7 @@ mod test {
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Vanilla,
+                hidden_power: HiddenPower::new(PokemonType::Ground, 63),
             },
             Wild3SearcherResultMon {
                 advance: 3543,
@@ -173,6 +177,7 @@ mod test {
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Vanilla,
+                hidden_power: HiddenPower::new(PokemonType::Fire, 43),
             },
             Wild3SearcherResultMon {
                 advance: 3577,
@@ -194,6 +199,7 @@ mod test {
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Vanilla,
+                hidden_power: HiddenPower::new(PokemonType::Fire, 43),
             },
         ];
         let result = search_wild3(&options);
@@ -243,6 +249,7 @@ mod test {
             gender: Gender::Male,
             method: Gen3Method::Wild1,
             lead: Gen3Lead::Vanilla,
+            hidden_power: HiddenPower::new(PokemonType::Water, 30),
         }];
         let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
@@ -286,6 +293,7 @@ mod test {
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Synchronize(Nature::Hardy),
+                hidden_power: HiddenPower::new(PokemonType::Grass, 32),
             },
             Wild3SearcherResultMon {
                 advance: 1,
@@ -307,6 +315,7 @@ mod test {
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Synchronize(Nature::Hardy),
+                hidden_power: HiddenPower::new(PokemonType::Bug, 38),
             },
             Wild3SearcherResultMon {
                 advance: 2,
@@ -328,6 +337,7 @@ mod test {
                 gender: Gender::Female,
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Synchronize(Nature::Hardy),
+                hidden_power: HiddenPower::new(PokemonType::Bug, 67),
             },
         ];
         let result = search_wild3(&options);
@@ -382,6 +392,7 @@ mod test {
                 advance: 5022,
                 lead: Gen3Lead::Vanilla,
                 map_idx: 0,
+                hidden_power: HiddenPower::new(PokemonType::Poison, 40),
             },
             Wild3SearcherResultMon {
                 pid: 2495399342,
@@ -403,12 +414,95 @@ mod test {
                 advance: 5080,
                 lead: Gen3Lead::Vanilla,
                 map_idx: 0,
+                hidden_power: HiddenPower::new(PokemonType::Poison, 40),
             },
         ];
         let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
     }
 
+    #[test]
+    fn test_search_wild3_hidden_power() {
+        let options = Wild3SearcherOptions {
+            initial_seed: 0,
+            tid: 0,
+            sid: 0,
+            gender_ratio: GenderRatio::OneToOne,
+            encounter_slots_by_map: vec![None],
+            methods: vec![Gen3Method::Wild1],
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
+            initial_advances: 440,
+            max_advances: 10,
+            max_result_count: 1,
+            leads: vec![Gen3Lead::Vanilla],
+            filter: PkmFilter {
+                hidden_power: Some(HiddenPowerFilter {
+                    active: true,
+                    pokemon_types: vec![PokemonType::Flying, PokemonType::Fire],
+                    min_bp: 67,
+                    max_bp: 69,
+                }),
+                ..Default::default()
+            },
+        };
+        let expected_results = [Wild3SearcherResultMon {
+            pid: 3070009587,
+            ivs: Ivs::new(28, 5, 15, 10, 6, 30),
+            method: Gen3Method::Wild1,
+            encounter_slot: EncounterSlot::Slot0,
+            cycle_data_by_lead: None,
+            ability: AbilityType::Second,
+            gender: Gender::Male,
+            nature: Nature::Serious,
+            shiny: false,
+            advance: 445,
+            lead: Gen3Lead::Vanilla,
+            map_idx: 0,
+            hidden_power: HiddenPower::new(PokemonType::Flying, 68),
+        }];
+        let result = search_wild3(&options);
+        assert_list_eq!(result, expected_results);
+    }
+
+    #[test]
+    fn test_search_wild3_max_size() {
+        let options = Wild3SearcherOptions {
+            initial_seed: 0,
+            tid: 0,
+            sid: 0,
+            gender_ratio: GenderRatio::OneToOne,
+            encounter_slots_by_map: vec![None],
+            methods: vec![Gen3Method::Wild1],
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
+            initial_advances: 0,
+            max_advances: 1000000,
+            max_result_count: 1,
+            leads: vec![Gen3Lead::Vanilla],
+            filter: PkmFilter {
+                max_size: true,
+                ..Default::default()
+            },
+        };
+        let expected_results = [Wild3SearcherResultMon {
+            pid: 1686167762,
+            ivs: Ivs::new(25, 16, 21, 18, 0, 31),
+            method: Gen3Method::Wild1,
+            encounter_slot: EncounterSlot::Slot6,
+            cycle_data_by_lead: None,
+            ability: AbilityType::First,
+            gender: Gender::Male,
+            nature: Nature::Serious,
+            shiny: false,
+            advance: 121132,
+            lead: Gen3Lead::Vanilla,
+            map_idx: 0,
+            hidden_power: HiddenPower::new(PokemonType::Ground, 45),
+        }];
+        let result = search_wild3(&options);
+        assert_list_eq!(result, expected_results);
+    }
     /*
     // Kept to help future debugging
     #[test]

@@ -2,14 +2,14 @@
 mod test {
     use crate::assert_list_eq;
 
-    use crate::EncounterSlot;
-    use crate::Ivs;
-    use crate::gen3::Gen3Lead;
-    use crate::gen3::Gen3Method;
-    use crate::gen3::search_wild3;
-    use crate::gen3::{Wild3SearcherCycleData, Wild3SearcherCycleDataByLead};
-    use crate::gen3::{Wild3SearcherOptions, Wild3SearcherResultMon};
-    use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
+    use crate::gen3::{
+        Gen3Lead, Gen3Method, Wild3SearcherCycleData, Wild3SearcherCycleDataByLead,
+        Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
+    };
+    use crate::{
+        AbilityType, EncounterSlot, Gender, GenderRatio, HiddenPower, Ivs, Nature, PkmFilter,
+        PokemonType,
+    };
 
     #[test]
     fn test_search_wild3_cycle_methods_1_2_4() {
@@ -65,6 +65,7 @@ mod test {
                 advance: 65,
                 lead: Gen3Lead::Vanilla,
                 map_idx: 0,
+                hidden_power: HiddenPower::new(PokemonType::Psychic, 49),
             },
             Wild3SearcherResultMon {
                 pid: 2695989139,
@@ -92,6 +93,7 @@ mod test {
                 advance: 65,
                 lead: Gen3Lead::Vanilla,
                 map_idx: 0,
+                hidden_power: HiddenPower::new(PokemonType::Electric, 45),
             },
             Wild3SearcherResultMon {
                 pid: 2695989139,
@@ -119,6 +121,7 @@ mod test {
                 advance: 65,
                 lead: Gen3Lead::Vanilla,
                 map_idx: 0,
+                hidden_power: HiddenPower::new(PokemonType::Water, 60),
             },
         ];
         let result = search_wild3(&options);

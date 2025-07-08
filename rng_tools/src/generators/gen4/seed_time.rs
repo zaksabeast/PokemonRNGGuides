@@ -301,8 +301,7 @@ pub struct RoamerSet {
 }
 
 fn get_route_j(seed: u32, roamer: &mut RoamerLocation) {
-    let mut rng = Pokerng::new(seed);
-    let roamer_rand = rng.rand::<u16>() & 15;
+    let roamer_rand = (seed >> 16) as u16 & 15;
 
     roamer.location = if roamer_rand < 11 {
         roamer_rand + 29
@@ -312,8 +311,7 @@ fn get_route_j(seed: u32, roamer: &mut RoamerLocation) {
 }
 
 fn get_route_k(seed: u32, roamer: &mut RoamerLocation) {
-    let mut rng = Pokerng::new(seed);
-    let roamer_rand = rng.rand::<u16>() % 25;
+    let roamer_rand = (seed >> 16) as u16 % 25;
 
     let location = if roamer_rand > 21 {
         if roamer_rand == 22 {
@@ -333,13 +331,14 @@ fn get_route_k(seed: u32, roamer: &mut RoamerLocation) {
 fn roamer_check(seed: u32, roamer_opts: RoamerSet) -> Vec<RoamerLocation> {
     let mut rng = Pokerng::new(seed);
     let mut results = Vec::new();
-    if roamer_opts.entei == true {
-        let mut roamer = RoamerLocation::new(Species::Entei);
+
+    if roamer_opts.raikou == true {
+        let mut roamer = RoamerLocation::new(Species::Raikou);
         get_route_j(rng.rand::<u32>(), &mut roamer);
         results.push(roamer)
     }
-    if roamer_opts.raikou == true {
-        let mut roamer = RoamerLocation::new(Species::Raikou);
+    if roamer_opts.entei == true {
+        let mut roamer = RoamerLocation::new(Species::Entei);
         get_route_j(rng.rand::<u32>(), &mut roamer);
         results.push(roamer)
     }
@@ -365,7 +364,7 @@ pub enum ElmCall {
 fn get_elm_calls(seed: u32) -> Vec<ElmCall> {
     Pokerng::new(seed)
         .take(20)
-        .map(|rand| match rand % 3 {
+        .map(|rand| match (rand >> 16) as u16 % 3 {
             0 => ElmCall::E,
             1 => ElmCall::K,
             _ => ElmCall::P,
@@ -382,7 +381,7 @@ macro_rules! elm_calls {
                 'E' => $crate::generators::gen4::seed_time::ElmCall::E,
                 'K' => $crate::generators::gen4::seed_time::ElmCall::K,
                 'P' => $crate::generators::gen4::seed_time::ElmCall::P,
-                _ => $crate::generators::gen4::seed_time::ElmCall::E, // Default to Heads for any invalid character
+                _ => $crate::generators::gen4::seed_time::ElmCall::E, // Default to E for invalid characters
             })
             .collect::<Vec<$crate::generators::gen4::seed_time::ElmCall>>()
     }};
@@ -839,24 +838,72 @@ mod test {
             };
             let result = hgss_find_seedtime(opts, roamer);
             let expected = Some(HgssSeedTime4 {
-                seed: 0xad090311,
-                datetime: datetime!(2032-02-28 09:58:59).unwrap(),
+                seed: 2903048977,
+                datetime: RngDateTime {
+                    year: 2032,
+                    month: 2,
+                    day: 28,
+                    hour: 9,
+                    minute: 58,
+                    second: 59,
+                },
                 delay: 753,
                 roamer: vec![
                     RoamerLocation {
-                        roamer: Species::Entei,
-                        location: 39,
-                    },
-                    RoamerLocation {
                         roamer: Species::Raikou,
                         location: 42,
+                    },
+                    RoamerLocation {
+                        roamer: Species::Entei,
+                        location: 39,
                     },
                     RoamerLocation {
                         roamer: Species::Latias,
                         location: 20,
                     },
                 ],
-                elm: elm_calls!("KKEKKEPKEEEEKEKEEKEP"),
+                elm: elm_calls!("KEPKKEKKEPKEEEEKEKEE"),
+            });
+
+            assert_eq!(result, expected);
+        }
+        #[test]
+        fn hgss_time_force_second() {
+            let opts = FindSeedTime4Options {
+                seed: 0x24130c1f,
+                year: 2032,
+                second_range: Some(30..=31),
+                delay_range: 3000..=3080,
+            };
+            let roamer = RoamerSet {
+                entei: true,
+                raikou: true,
+                latios: false,
+                latias: false,
+            };
+            let result = hgss_find_seedtime(opts, roamer);
+            let expected = Some(HgssSeedTime4 {
+                seed: 605228063,
+                datetime: RngDateTime {
+                    year: 2032,
+                    month: 1,
+                    day: 1,
+                    hour: 19,
+                    minute: 4,
+                    second: 31,
+                },
+                delay: 3071,
+                roamer: vec![
+                    RoamerLocation {
+                        roamer: Species::Raikou,
+                        location: 36,
+                    },
+                    RoamerLocation {
+                        roamer: Species::Entei,
+                        location: 36,
+                    },
+                ],
+                elm: elm_calls!("EKKKPKPEPKKPEEEPEKKE"),
             });
 
             assert_eq!(result, expected);

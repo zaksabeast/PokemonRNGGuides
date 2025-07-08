@@ -28,7 +28,7 @@ pub fn calculate_hidden_power_type(ivs: &Ivs) -> PokemonType {
     let e = ivs.spa & 1;
     let f = ivs.spd & 1;
     let formula_from_ivs = a + 2 * b + 4 * c + 8 * d + 16 * e + 32 * f;
-    let raw_type = (formula_from_ivs * 15 / 63);
+    let raw_type = formula_from_ivs * 15 / 63;
     (raw_type + 1).into() // Hidden Power types are 1-indexed
 }
 

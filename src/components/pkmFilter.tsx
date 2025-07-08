@@ -153,6 +153,13 @@ const _getPkmFilterFields = (optOuts: FieldOptOuts = {}): Field[] =>
     optOut(optOuts?.hidden_power, {
       label: "Hidden Power",
       input: (
+        <FormikSwitch<PkmFilterFields['filter_hidden_power'], "active"> name="filter_hidden_power.active" />
+      ),
+    }),
+    optOut(optOuts?.hidden_power, {
+      label: "",
+      direction:"column",
+      input: (
          <HiddenPowerInput<PkmFilterFields> name="filter_hidden_power"/>
       ),
     }),

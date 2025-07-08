@@ -3,6 +3,20 @@ import { Flex } from "./flex";
 import { z } from "zod";
 import {pokemonTypes} from "../types/pokemonTypes";
 import {PokemonType} from "~/rngTools";
+import {
+  Field,
+  FormikNumberInput,
+  FormikSelect,
+  FormikSwitch,
+  ResultColumn,
+  RngToolForm,
+  RngToolSubmit,
+  FormFieldTable,
+  Typography,
+} from "~/components";
+import { toOptions } from "~/utils/options";
+import React from "react";
+import { useField } from "formik";
 
 type UiHiddenPowerFilter = {
   active:boolean,
@@ -14,7 +28,7 @@ type UiHiddenPowerFilter = {
 export const defaultHiddenPowerFilter:UiHiddenPowerFilter = {
   active:false,
   pokemon_types:[],
-  min_bp:15,
+  min_bp:30,
   max_bp:70,
 };
 
@@ -32,14 +46,39 @@ type Props<FormState extends GenericForm> = {
   >;
 };
 
+const HIDDEN_POWER_TYPES = pokemonTypes.filter(type => type !== "Normal");
+
 export const HiddenPowerInput = <
   FormState extends GenericForm,
 >({
-  name
+  name,
 }:Props<FormState>) => {
+  const [{ value:active }] = useField<UiHiddenPowerFilter['active']>(`${name}.active`);
+  const fields = [
+    {
+      label:"Type",
+      input:<FormikSelect<UiHiddenPowerFilter, "pokemon_types">
+        name={`${name}.pokemon_types`}
+        options={toOptions(HIDDEN_POWER_TYPES)}
+        mode="multiple"
+      />
+    },
+    {
+      label:"Min Power",
+      input:<FormikNumberInput<UiHiddenPowerFilter>
+        name={`${name}.min_bp`}
+        numType="decimal"
+      />
+    },
+    {
+      label:"Max Power",
+      input:<FormikNumberInput<UiHiddenPowerFilter>
+        name={`${name}.max_bp`}
+        numType="decimal"
+      />
+    },
+  ];
   return (
-    <Flex gap={16}>
-      HiddenPower {name} NO_PROD
-    </Flex>
+    active && <FormFieldTable fields={fields} />
   );
 };

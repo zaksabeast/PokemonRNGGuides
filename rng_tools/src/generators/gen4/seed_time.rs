@@ -12,11 +12,29 @@ use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct SeedTime4 {
+pub struct DpptSeedTime4 {
     pub seed: u32,
     pub datetime: RngDateTime,
     pub delay: u32,
     pub coin_flips: Vec<CoinFlip>,
+}
+
+impl DpptSeedTime4 {
+    pub fn new(seed: u32, datetime: RngDateTime, delay: u32) -> Self {
+        Self {
+            seed,
+            datetime,
+            delay,
+            coin_flips: coin_flips(seed),
+        }
+    }
+}
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct SeedTime4 {
+    pub seed: u32,
+    pub datetime: RngDateTime,
+    pub delay: u32,
 }
 
 impl SeedTime4 {
@@ -25,7 +43,6 @@ impl SeedTime4 {
             seed,
             datetime,
             delay,
-            coin_flips: coin_flips(seed),
         }
     }
 }
@@ -37,69 +54,6 @@ struct SeedTime4SingleMonthOptions {
     pub second_range: Option<RangeInclusive<u32>>,
     pub delay_range: Option<RangeInclusive<u32>>,
     pub find_first: bool,
-}
-
-fn dppt_calculate_single_month_seedtime(opts: SeedTime4SingleMonthOptions) -> Vec<SeedTime4> {
-    let year = opts.year.clamp(2000, 2100);
-    let month = opts.month.clamp(1, 12);
-    let ab = opts.seed >> 24;
-    let cd = (opts.seed >> 16) & 0xff;
-    let efgh = opts.seed & 0xffff;
-
-    // Allow overflow seeds by setting hour to 23 and adjusting for delay
-    let hour = if cd > 23 { 23 } else { cd };
-    let delay = match cd > 23 {
-        true => efgh
-            .wrapping_add(2000)
-            .wrapping_sub(year)
-            .wrapping_add(cd.wrapping_sub(23).wrapping_mul(0x10000)),
-        false => efgh.wrapping_add(2000).wrapping_sub(year),
-    };
-
-    if let Some(delay_range) = opts.delay_range {
-        if !delay_range.contains(&delay) {
-            return vec![];
-        }
-    }
-
-    let mut coin_flips_res: Option<Vec<CoinFlip>> = None;
-    let mut lazy_coin_flip = || match coin_flips_res {
-        Some(ref flips) => flips.clone(),
-        None => {
-            let new_flips = coin_flips(opts.seed);
-            coin_flips_res = Some(new_flips.clone());
-            new_flips
-        }
-    };
-
-    let mut results = vec![];
-
-    let second_range = opts.second_range.unwrap_or(0..=59);
-
-    let max_days = get_days_in_month(year as i32, month);
-    for day in 1..=max_days {
-        for minute in 0..60 {
-            for second in second_range.clone() {
-                if ab == calc_ab(month, day, minute, second) & 0xff {
-                    if let Some(datetime) = RngDateTime::new(year, month, day, hour, minute, second)
-                    {
-                        results.push(SeedTime4 {
-                            seed: opts.seed,
-                            delay,
-                            datetime,
-                            coin_flips: lazy_coin_flip(),
-                        });
-
-                        if opts.find_first {
-                            return results;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    results
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -114,7 +68,7 @@ pub struct SeedTime4Options {
 }
 
 #[wasm_bindgen]
-pub fn dppt_calculate_seedtime(opts: SeedTime4Options) -> Vec<SeedTime4> {
+pub fn dppt_calculate_seedtime(opts: SeedTime4Options) -> Vec<DpptSeedTime4> {
     let month_range = match opts.month {
         Some(month) if (1..=12).contains(&month) => month..=month,
         _ => 1..=12,
@@ -184,7 +138,7 @@ impl FindSeedTime4Options {
     }
 }
 
-pub fn dppt_find_seedtime(opts: FindSeedTime4Options) -> Option<SeedTime4> {
+pub fn dppt_find_seedtime(opts: FindSeedTime4Options) -> Option<DpptSeedTime4> {
     let opts = SeedTime4Options {
         seed: opts.seed,
         year: opts.year,
@@ -248,7 +202,7 @@ pub struct SeedTime4Calibrate {
 
 #[wasm_bindgen]
 pub fn dppt_calibrate_seedtime(
-    seedtime: SeedTime4,
+    seedtime: DpptSeedTime4,
     opts: SeedTime4CalibrationOptions,
 ) -> Vec<SeedTime4Calibrate> {
     let mut results = vec![];
@@ -406,7 +360,63 @@ pub fn hgss_find_seedtime(opts: FindSeedTime4Options, roamer: RoamerSet) -> Opti
     };
     hgss_calculate_seedtime(opts, roamer).into_iter().next()
 }
+#[macro_export]
+macro_rules! calculate_seedtime {
+    ($opts:expr) => {{
+        let opts = $opts;
+        'macro_scope: {
+            let year = opts.year.clamp(2000, 2100);
+            let month = opts.month.clamp(1, 12);
+            let ab = opts.seed >> 24;
+            let cd = (opts.seed >> 16) & 0xff;
+            let efgh = opts.seed & 0xffff;
 
+            // Allow overflow seeds by setting hour to 23 and adjusting for delay
+            let hour = if cd > 23 { 23 } else { cd };
+            let delay = match cd > 23 {
+                true => efgh
+                    .wrapping_add(2000)
+                    .wrapping_sub(year)
+                    .wrapping_add(cd.wrapping_sub(23).wrapping_mul(0x10000)),
+                false => efgh.wrapping_add(2000).wrapping_sub(year),
+            };
+
+            if let Some(delay_range) = opts.delay_range {
+                if !delay_range.contains(&delay) {
+                    break 'macro_scope vec![];
+                }
+            }
+
+            let mut results = vec![];
+
+            let second_range = opts.second_range.unwrap_or(0..=59);
+
+            let max_days = get_days_in_month(year as i32, month);
+            for day in 1..=max_days {
+                for minute in 0..60 {
+                    for second in second_range.clone() {
+                        if ab == calc_ab(month, day, minute, second) & 0xff {
+                            if let Some(datetime) =
+                                RngDateTime::new(year, month, day, hour, minute, second)
+                            {
+                                results.push(SeedTime4 {
+                                    seed: opts.seed,
+                                    delay,
+                                    datetime,
+                                });
+
+                                if opts.find_first {
+                                    break 'macro_scope results;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            results
+        }
+    }};
+}
 pub fn hgss_calculate_seedtime(opts: SeedTime4Options, roamer: RoamerSet) -> Vec<HgssSeedTime4> {
     let month_range = match opts.month {
         Some(month) if (1..=12).contains(&month) => month..=month,
@@ -440,59 +450,40 @@ fn hgss_calculate_single_month_seedtime(
     opts: SeedTime4SingleMonthOptions,
     roamer: RoamerSet,
 ) -> Vec<HgssSeedTime4> {
-    let year = opts.year.clamp(2000, 2100);
-    let month = opts.month.clamp(1, 12);
-    let ab = opts.seed >> 24;
-    let cd = (opts.seed >> 16) & 0xff;
-    let efgh = opts.seed & 0xffff;
-
-    // Allow overflow seeds by setting hour to 23 and adjusting for delay
-    let hour = if cd > 23 { 23 } else { cd };
-    let delay = match cd > 23 {
-        true => efgh
-            .wrapping_add(2000)
-            .wrapping_sub(year)
-            .wrapping_add(cd.wrapping_sub(23).wrapping_mul(0x10000)),
-        false => efgh.wrapping_add(2000).wrapping_sub(year),
-    };
-
-    if let Some(delay_range) = opts.delay_range {
-        if !delay_range.contains(&delay) {
-            return vec![];
-        }
-    }
     let elm = get_elm_calls(opts.seed);
     let roamer = roamer_check(opts.seed, roamer);
+    calculate_seedtime!(opts)
+        .into_iter()
+        .map(|s| HgssSeedTime4 {
+            seed: s.seed,
+            delay: s.delay,
+            datetime: s.datetime,
+            roamer: roamer.clone(),
+            elm: elm.clone(),
+        })
+        .collect()
+}
 
-    let mut results = vec![];
-
-    let second_range = opts.second_range.unwrap_or(0..=59);
-
-    let max_days = get_days_in_month(year as i32, month);
-    for day in 1..=max_days {
-        for minute in 0..60 {
-            for second in second_range.clone() {
-                if ab == calc_ab(month, day, minute, second) & 0xff {
-                    if let Some(datetime) = RngDateTime::new(year, month, day, hour, minute, second)
-                    {
-                        results.push(HgssSeedTime4 {
-                            seed: opts.seed,
-                            delay,
-                            datetime,
-                            roamer: roamer.clone(),
-                            elm: elm.clone(),
-                        });
-
-                        if opts.find_first {
-                            return results;
-                        }
-                    }
-                }
-            }
+fn dppt_calculate_single_month_seedtime(opts: SeedTime4SingleMonthOptions) -> Vec<DpptSeedTime4> {
+    let seed = opts.seed;
+    let mut coin_flips_res: Option<Vec<CoinFlip>> = None;
+    let mut lazy_coin_flip = || match coin_flips_res {
+        Some(ref flips) => flips.clone(),
+        None => {
+            let new_flips = coin_flips(seed);
+            coin_flips_res = Some(new_flips.clone());
+            new_flips
         }
-    }
-
-    results
+    };
+    calculate_seedtime!(opts)
+        .into_iter()
+        .map(|s| DpptSeedTime4 {
+            seed: s.seed,
+            delay: s.delay,
+            datetime: s.datetime,
+            coin_flips: lazy_coin_flip(),
+        })
+        .collect()
 }
 
 #[cfg(test)]
@@ -505,7 +496,7 @@ mod test {
 
         #[test]
         fn set1() {
-            let seedtime = SeedTime4 {
+            let seedtime = DpptSeedTime4 {
                 seed: 0xa9bbccda,
                 datetime: datetime!(2000-11-05 23:56:59).unwrap(),
                 delay: 10800349,
@@ -670,97 +661,97 @@ mod test {
             let coin_flips = coin_flips!("HTHTHHHTHHHHTTTHHTHT");
             let result = dppt_calculate_seedtime(opts);
             let expected = [
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-26 23:59:59).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-27 23:57:59).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-27 23:58:58).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-27 23:59:57).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:55:59).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:56:58).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:57:57).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:58:56).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:59:55).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:53:59).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:54:58).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:55:57).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:56:56).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:57:55).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:58:54).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:59:53).unwrap(),
                     delay: 10800317,
@@ -787,13 +778,13 @@ mod test {
             ];
             let result = dppt_calculate_seedtime(opts);
             let expected = [
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-28 23:58:56).unwrap(),
                     delay: 10800317,
                     coin_flips: coin_flips.clone(),
                 },
-                SeedTime4 {
+                DpptSeedTime4 {
                     seed: 0xaabbccdd,
                     datetime: datetime!(2032-02-29 23:56:56).unwrap(),
                     delay: 10800317,
@@ -813,7 +804,7 @@ mod test {
                 second_range: None,
             };
             let results = dppt_find_seedtime(opts);
-            let expected = SeedTime4 {
+            let expected = DpptSeedTime4 {
                 seed: 0xDC03025B,
                 datetime: datetime!(2000-4-26 3:57:59).unwrap(),
                 delay: 603,

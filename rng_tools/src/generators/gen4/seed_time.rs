@@ -332,22 +332,22 @@ fn roamer_check(seed: u32, roamer_opts: RoamerSet) -> Vec<RoamerLocation> {
     let mut rng = Pokerng::new(seed);
     let mut results = Vec::new();
 
-    if roamer_opts.raikou == true {
+    if roamer_opts.raikou {
         let mut roamer = RoamerLocation::new(Species::Raikou);
         get_route_j(rng.rand::<u32>(), &mut roamer);
         results.push(roamer)
     }
-    if roamer_opts.entei == true {
+    if roamer_opts.entei {
         let mut roamer = RoamerLocation::new(Species::Entei);
         get_route_j(rng.rand::<u32>(), &mut roamer);
         results.push(roamer)
     }
-    if roamer_opts.latios == true {
+    if roamer_opts.latios {
         let mut roamer = RoamerLocation::new(Species::Latios);
         get_route_k(rng.rand::<u32>(), &mut roamer);
         results.push(roamer)
     }
-    if roamer_opts.latias == true {
+    if roamer_opts.latias {
         let mut roamer = RoamerLocation::new(Species::Latias);
         get_route_k(rng.rand::<u32>(), &mut roamer);
         results.push(roamer)

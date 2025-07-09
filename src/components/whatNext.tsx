@@ -27,7 +27,7 @@ export const WhatNext = ({ slugs }: WhatNextProps) => {
       }
       const title = getGuide(link.data).meta.title;
       return (
-        <ListItem>
+        <ListItem key={slug}>
           <Link href={link.data}>{title}</Link>
         </ListItem>
       );

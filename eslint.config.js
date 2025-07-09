@@ -61,6 +61,7 @@ const baseConfig = {
     "no-console": "error",
     "prefer-arrow-callback": ["error"],
     "func-style": ["error", "expression"],
+    "react/jsx-key": "error",
     "no-restricted-syntax": [
       "error",
       {

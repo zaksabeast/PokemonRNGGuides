@@ -40,6 +40,10 @@ const applyMonospace = <Record extends tst.O.Object>(
 const applyMonospaceSingleColumn = <Record extends tst.O.Object>(
   column: SingleResultColumn<Record>,
 ) => {
+  if (!column.monospace) {
+    return column;
+  }
+
   const render = column.render ?? identity;
 
   return {

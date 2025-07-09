@@ -1,14 +1,11 @@
 #[cfg(test)]
 mod test {
-    use crate::{HiddenPowerFilter, assert_list_eq};
+    use crate::assert_list_eq;
 
     use crate::gen3::{
         Gen3Lead, Gen3Method, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
     };
-    use crate::{
-        AbilityType, EncounterSlot, Gender, GenderRatio, HiddenPower, Ivs, Nature, PkmFilter,
-        PokemonType,
-    };
+    use crate::{AbilityType, EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter};
 
     #[test]
     fn test_search_wild3_no_filter() {

@@ -14,6 +14,7 @@ import {
   BatchableFunctionsOf,
 } from "~/hooks/useBatchedTool";
 import { memoize } from "lodash-es";
+import { UndefinedToNull } from "~/types/utils";
 
 type RngToolsModules = typeof RngTools;
 
@@ -166,3 +167,5 @@ export const rngTools = new Proxy(
     },
   },
 ) as Remote<AdjustedRngTools>;
+
+export type PkmFilter = UndefinedToNull<RngTools.PkmFilter>;

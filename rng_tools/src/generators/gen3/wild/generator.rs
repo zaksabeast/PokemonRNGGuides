@@ -8,7 +8,7 @@ use crate::Species;
 use crate::gen3::{Gen3Lead, Gen3Method};
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
-use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny, is_max_size};
+use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};
 use serde::{Deserialize, Serialize};
 use std::ops;
 use tsify_next::Tsify;
@@ -615,7 +615,6 @@ fn passes_pid_filter(opts: &Wild3GeneratorOptions, pid: u32) -> bool {
 
 fn passes_ivs_filter(opts: &Wild3GeneratorOptions, ivs: &Ivs) -> bool {
     Ivs::filter(ivs, &opts.filter.min_ivs, &opts.filter.max_ivs)
-        && opts.filter.pass_filter_hidden_power(ivs)
 }
 
 fn create_if_passes_filter(
@@ -627,10 +626,6 @@ fn create_if_passes_filter(
     cycle_range: CycleAndModRange,
 ) -> Option<Wild3GeneratorResult> {
     if !passes_ivs_filter(opts, &ivs) {
-        return None;
-    }
-
-    if opts.filter.max_size && !is_max_size(pid, &ivs) {
         return None;
     }
 

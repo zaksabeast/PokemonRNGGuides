@@ -4,10 +4,7 @@ use crate::gen3::{
 };
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
-use crate::{
-    AbilityType, EncounterSlot, Gender, GenderRatio, HiddenPower, Ivs, Nature, PkmFilter,
-    gen3_shiny,
-};
+use crate::{AbilityType, EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter, gen3_shiny};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -46,9 +43,6 @@ pub struct Wild3SearcherResultMon {
     pub nature: Nature,
     pub shiny: bool,
 
-    // derived from ivs
-    pub hidden_power: HiddenPower,
-
     // derived from searcher context
     pub advance: usize,
     pub lead: Gen3Lead,
@@ -81,7 +75,6 @@ impl Wild3SearcherResultMon {
             nature: Nature::from_pid(gen_res.pid),
             ability: AbilityType::from_gen3_pid(gen_res.pid),
             gender: opts.gender_ratio.gender_from_pid(gen_res.pid),
-            hidden_power: HiddenPower::from_ivs(&gen_res.ivs),
             advance,
             map_idx,
             lead,

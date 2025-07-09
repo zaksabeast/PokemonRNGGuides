@@ -19,7 +19,12 @@ import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import * as tst from "ts-toolbelt";
 import { match } from "ts-pattern";
 import { z } from "zod";
-import { getPkmFilterFields, getPkmFilterInitialValues, pkmFilterFieldsToRustInput, pkmFilterSchema } from "~/components/pkmFilter";
+import {
+  getPkmFilterFields,
+  getPkmFilterInitialValues,
+  pkmFilterFieldsToRustInput,
+  pkmFilterSchema,
+} from "~/components/pkmFilter";
 
 const JirachiSaveErrorSchema: z.Schema<JirachiSaveError> = z.union([
   z.literal("NeedToSaveAgain"),

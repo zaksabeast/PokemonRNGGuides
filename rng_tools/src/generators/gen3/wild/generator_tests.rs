@@ -1,12 +1,13 @@
 #[cfg(test)]
 mod test {
-    use crate::gen3::{
-        Gen3Lead, Gen3Method, Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild,
-    };
+    use crate::EncounterSlot;
+    use crate::Ivs;
+    use crate::gen3::Gen3Lead;
+    use crate::gen3::Gen3Method;
+    use crate::gen3::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
     use crate::rng::Rng;
     use crate::rng::lcrng::Pokerng;
     use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
-    use crate::{EncounterSlot, Ivs};
 
     #[test]
     fn test_generate_wild3_no_filter() {

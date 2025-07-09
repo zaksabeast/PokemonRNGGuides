@@ -54,6 +54,7 @@ Possible improvements:
  - Support multiple encounter types.
  - Support all leads in generator.
  - Display warning if no maps or no leads are selected.
+ - Add Hidden Power filter.
  - Add lead PID speed filter.
 
  - Display map names instead of formatted map IDs.

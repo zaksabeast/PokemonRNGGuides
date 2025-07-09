@@ -45,9 +45,8 @@ export const StatFieldsSchema = z.object({
   speStat: StatSchema,
 });
 
-
 export const StatValuesSchema = z.object({
-  hp:  StatSchema,
+  hp: StatSchema,
   atk: StatSchema,
   def: StatSchema,
   spa: StatSchema,
@@ -56,8 +55,8 @@ export const StatValuesSchema = z.object({
 });
 
 export const StatsFilterSchema = z.object({
-    lvl: z.number().min(1).max(99),
-    base_stats: StatValuesSchema,
-    min_stats: StatValuesSchema,
-    max_stats: StatValuesSchema,
+  lvl: z.number().min(1).max(99),
+  base_stats: StatValuesSchema,
+  min_stats: StatValuesSchema,
+  max_stats: StatValuesSchema,
 });

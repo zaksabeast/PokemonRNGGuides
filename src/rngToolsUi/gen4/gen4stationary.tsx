@@ -11,7 +11,8 @@ import {
   getPkmFilterFields,
   natureOptions,
   pkmFilterSchema,
-  getPkmFilterInitialValues, pkmFilterFieldsToRustInput,
+  getPkmFilterInitialValues,
+  pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import React from "react";

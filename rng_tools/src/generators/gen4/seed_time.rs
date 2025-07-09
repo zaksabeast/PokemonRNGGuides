@@ -397,7 +397,17 @@ pub fn hgss_calculate_seedtime(opts: HgssSeedTime4Options) -> Vec<HgssSeedTime4>
 }
 
 fn hgss_calculate_single_month_seedtime(opts: HgssSeedTime4Options) -> Vec<HgssSeedTime4> {
-    let elm = get_elm_calls(opts.seed);
+    let seed = opts.seed;
+    let mut elm_calls_res: Option<Vec<ElmCall>> = None;
+
+    let mut lazy_elm_calls = || match elm_calls_res {
+        Some(ref calls) => calls.clone(),
+        None => {
+            let new_calls = get_elm_calls(seed);
+            elm_calls_res = Some(new_calls.clone());
+            new_calls
+        }
+    };
     let roamer = roamer_check(opts.seed, opts.roamer);
     calculate_seedtime!(from_optional_month:opts)
         .into_iter()
@@ -405,7 +415,7 @@ fn hgss_calculate_single_month_seedtime(opts: HgssSeedTime4Options) -> Vec<HgssS
             convert_seedtime!( s, HgssSeedTime4, {
 
                 roamer: roamer.clone(),
-                elm: elm.clone(),
+                elm: lazy_elm_calls(),
             })
         })
         .collect()
@@ -454,20 +464,20 @@ pub fn dppt_calibrate_seedtime(
     results
 }
 
-fn get_route_j(seed: u32, roamer: &mut RoamerLocation) {
-    let roamer_rand = (seed >> 16) as u16 & 15;
+fn get_route_j(rand: u16) -> u16 {
+    let roamer_rand = rand & 15;
 
-    roamer.location = if roamer_rand < 11 {
+    if roamer_rand < 11 {
         roamer_rand + 29
     } else {
         roamer_rand + 31
-    };
+    }
 }
 
-fn get_route_k(seed: u32, roamer: &mut RoamerLocation) {
-    let roamer_rand = (seed >> 16) as u16 % 25;
+fn get_route_k(rand: u16) -> u16 {
+    let roamer_rand = rand % 25;
 
-    let location = if roamer_rand > 21 {
+    if roamer_rand > 21 {
         if roamer_rand == 22 {
             24
         } else if roamer_rand == 23 {
@@ -477,9 +487,7 @@ fn get_route_k(seed: u32, roamer: &mut RoamerLocation) {
         }
     } else {
         roamer_rand + 1
-    };
-
-    roamer.location = location;
+    }
 }
 
 fn roamer_check(seed: u32, roamer_opts: RoamerSet) -> Vec<RoamerLocation> {
@@ -488,22 +496,22 @@ fn roamer_check(seed: u32, roamer_opts: RoamerSet) -> Vec<RoamerLocation> {
 
     if roamer_opts.raikou {
         let mut roamer = RoamerLocation::new(Species::Raikou);
-        get_route_j(rng.rand::<u32>(), &mut roamer);
+        roamer.location = get_route_j(rng.rand::<u16>());
         results.push(roamer)
     }
     if roamer_opts.entei {
         let mut roamer = RoamerLocation::new(Species::Entei);
-        get_route_j(rng.rand::<u32>(), &mut roamer);
+        roamer.location = get_route_j(rng.rand::<u16>());
         results.push(roamer)
     }
     if roamer_opts.latios {
         let mut roamer = RoamerLocation::new(Species::Latios);
-        get_route_k(rng.rand::<u32>(), &mut roamer);
+        roamer.location = get_route_k(rng.rand::<u16>());
         results.push(roamer)
     }
     if roamer_opts.latias {
         let mut roamer = RoamerLocation::new(Species::Latias);
-        get_route_k(rng.rand::<u32>(), &mut roamer);
+        roamer.location = get_route_k(rng.rand::<u16>());
         results.push(roamer)
     }
     results
@@ -846,6 +854,144 @@ mod test {
             };
 
             assert_eq!(results, Some(expected));
+        }
+        #[test]
+        fn hgss_multi_result() {
+            let opts = HgssSeedTime4Options {
+                seed: 0xDC03025B,
+                year: 2025,
+                month: Some(4),
+                second_range: Some(59..=59),
+                delay_range: Some(500..=650),
+                find_first: false,
+                roamer: RoamerSet {
+                    entei: true,
+                    raikou: true,
+                    latios: false,
+                    latias: false,
+                },
+            };
+            let result = hgss_calculate_seedtime(opts);
+            let expected = [
+                HgssSeedTime4 {
+                    seed: 0xDC03025B,
+                    datetime: datetime!(2025-4-26 3:57:59).unwrap(),
+                    delay: 578,
+                    roamer: vec![
+                        RoamerLocation {
+                            roamer: Species::Raikou,
+                            location: 31,
+                        },
+                        RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 42,
+                        },
+                    ],
+                    elm: elm_calls!("EKEPPKKEPEPPPKPPEEEP"),
+                },
+                HgssSeedTime4 {
+                    seed: 0xDC03025B,
+                    datetime: datetime!(2025-4-27 3:53:59).unwrap(),
+                    delay: 578,
+                    roamer: vec![
+                        RoamerLocation {
+                            roamer: Species::Raikou,
+                            location: 31,
+                        },
+                        RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 42,
+                        },
+                    ],
+                    elm: elm_calls!("EKEPPKKEPEPPPKPPEEEP"),
+                },
+                HgssSeedTime4 {
+                    seed: 0xDC03025B,
+                    datetime: datetime!(2025-4-28 3:49:59).unwrap(),
+                    delay: 578,
+                    roamer: vec![
+                        RoamerLocation {
+                            roamer: Species::Raikou,
+                            location: 31,
+                        },
+                        RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 42,
+                        },
+                    ],
+                    elm: elm_calls!("EKEPPKKEPEPPPKPPEEEP"),
+                },
+                HgssSeedTime4 {
+                    seed: 0xDC03025B,
+                    datetime: datetime!(2025-4-29 3:45:59).unwrap(),
+                    delay: 578,
+                    roamer: vec![
+                        RoamerLocation {
+                            roamer: Species::Raikou,
+                            location: 31,
+                        },
+                        RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 42,
+                        },
+                    ],
+                    elm: elm_calls!("EKEPPKKEPEPPPKPPEEEP"),
+                },
+                HgssSeedTime4 {
+                    seed: 0xDC03025B,
+                    datetime: datetime!(2025-4-30 3:41:59).unwrap(),
+                    delay: 578,
+                    roamer: vec![
+                        RoamerLocation {
+                            roamer: Species::Raikou,
+                            location: 31,
+                        },
+                        RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 42,
+                        },
+                    ],
+                    elm: elm_calls!("EKEPPKKEPEPPPKPPEEEP"),
+                },
+            ];
+
+            assert_eq!(result, expected);
+        }
+        #[test]
+        fn hgss_1result() {
+            let opts = HgssSeedTime4Options {
+                seed: 0xDC03025B,
+                year: 2025,
+                month: Some(4),
+                second_range: Some(1..=59),
+                delay_range: Some(500..=650),
+                find_first: true,
+                roamer: RoamerSet {
+                    entei: true,
+                    raikou: true,
+                    latios: false,
+                    latias: false,
+                },
+            };
+            let result = hgss_calculate_seedtime(opts);
+            let expected = [HgssSeedTime4 {
+                seed: 0xDC03025B,
+                datetime: datetime!(2025-4-26 3:57:59).unwrap(),
+                delay: 578,
+                roamer: vec![
+                    RoamerLocation {
+                        roamer: Species::Raikou,
+                        location: 31,
+                    },
+                    RoamerLocation {
+                        roamer: Species::Entei,
+                        location: 42,
+                    },
+                ],
+                elm: elm_calls!("EKEPPKKEPEPPPKPPEEEP"),
+            }];
+
+            assert_eq!(result, expected);
         }
     }
 

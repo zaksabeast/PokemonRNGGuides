@@ -10,25 +10,23 @@ use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+//Time to get organized, First enums:
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct DpptSeedTime4 {
-    pub seed: u32,
-    pub datetime: RngDateTime,
-    pub delay: u32,
-    pub coin_flips: Vec<CoinFlip>,
+pub enum CoinFlip {
+    Heads,
+    Tails,
 }
 
-impl DpptSeedTime4 {
-    pub fn new(seed: u32, datetime: RngDateTime, delay: u32) -> Self {
-        Self {
-            seed,
-            datetime,
-            delay,
-            coin_flips: coin_flips(seed),
-        }
-    }
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+pub enum ElmCall {
+    E,
+    K,
+    P,
 }
+
+//second is structs with there impls:
+
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SeedTime4 {
@@ -46,7 +44,6 @@ impl SeedTime4 {
         }
     }
 }
-
 struct SeedTime4SingleMonthOptions {
     pub seed: u32,
     pub year: u32,
@@ -65,33 +62,6 @@ pub struct SeedTime4Options {
     pub second_range: Option<RangeInclusive<u32>>,
     pub delay_range: Option<RangeInclusive<u32>>,
     pub find_first: bool,
-}
-
-#[wasm_bindgen]
-pub fn dppt_calculate_seedtime(opts: SeedTime4Options) -> Vec<DpptSeedTime4> {
-    let month_range = match opts.month {
-        Some(month) if (1..=12).contains(&month) => month..=month,
-        _ => 1..=12,
-    };
-
-    let limit = match opts.find_first {
-        true => 1,
-        false => 10_000,
-    };
-
-    month_range
-        .flat_map(|month| {
-            dppt_calculate_single_month_seedtime(SeedTime4SingleMonthOptions {
-                month,
-                seed: opts.seed,
-                year: opts.year,
-                second_range: opts.second_range.clone(),
-                delay_range: opts.delay_range.clone(),
-                find_first: opts.find_first,
-            })
-        })
-        .take(limit)
-        .collect()
 }
 
 pub struct FindSeedTime4Options {
@@ -138,49 +108,6 @@ impl FindSeedTime4Options {
     }
 }
 
-pub fn dppt_find_seedtime(opts: FindSeedTime4Options) -> Option<DpptSeedTime4> {
-    let opts = SeedTime4Options {
-        seed: opts.seed,
-        year: opts.year,
-        month: None,
-        second_range: opts.second_range,
-        delay_range: Some(opts.delay_range),
-        find_first: true,
-    };
-    dppt_calculate_seedtime(opts).into_iter().next()
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub enum CoinFlip {
-    Heads,
-    Tails,
-}
-
-pub fn coin_flips(seed: u32) -> Vec<CoinFlip> {
-    MT::new(seed)
-        .take(20)
-        .map(|rand| match rand & 1 {
-            0 => CoinFlip::Tails,
-            _ => CoinFlip::Heads,
-        })
-        .collect()
-}
-
-#[macro_export]
-macro_rules! coin_flips {
-    ($flips:expr) => {{
-        let s = $flips;
-        s.chars()
-            .map(|c| match c {
-                'H' => $crate::generators::gen4::seed_time::CoinFlip::Heads,
-                'T' => $crate::generators::gen4::seed_time::CoinFlip::Tails,
-                _ => $crate::generators::gen4::seed_time::CoinFlip::Heads, // Default to Heads for any invalid character
-            })
-            .collect::<Vec<$crate::generators::gen4::seed_time::CoinFlip>>()
-    }};
-}
-
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SeedTime4CalibrationOptions {
@@ -198,6 +125,300 @@ pub struct SeedTime4Calibrate {
     pub datetime: RngDateTime,
     pub delay: u32,
     pub coin_flips: Vec<CoinFlip>,
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+pub struct RoamerLocation {
+    pub roamer: Species,
+    pub location: u16,
+}
+impl RoamerLocation {
+    fn new(roamer: Species) -> Self {
+        RoamerLocation {
+            roamer,
+            location: 0,
+        }
+    }
+}
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
+pub struct RoamerSet {
+    pub entei: bool,
+    pub raikou: bool,
+    pub latios: bool,
+    pub latias: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct HgssSeedTime4Options {
+    pub seed: u32,
+    pub year: u32,
+    pub month: Option<u32>,
+    pub second_range: Option<RangeInclusive<u32>>,
+    pub delay_range: Option<RangeInclusive<u32>>,
+    pub find_first: bool,
+    pub roamer: RoamerSet,
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+pub struct HgssSeedTime4 {
+    pub seed: u32,
+    pub datetime: RngDateTime,
+    pub delay: u32,
+    pub roamer: Vec<RoamerLocation>,
+    pub elm: Vec<ElmCall>,
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct DpptSeedTime4 {
+    pub seed: u32,
+    pub datetime: RngDateTime,
+    pub delay: u32,
+    pub coin_flips: Vec<CoinFlip>,
+}
+
+impl DpptSeedTime4 {
+    pub fn new(seed: u32, datetime: RngDateTime, delay: u32) -> Self {
+        Self {
+            seed,
+            datetime,
+            delay,
+            coin_flips: coin_flips(seed),
+        }
+    }
+}
+
+// third is macros:
+#[macro_export]
+macro_rules! convert_seedtime {
+    ($input:expr, $target:ident, { $($extra_field:ident : $value:expr),* $(,)? }) => {
+        $target {
+            seed: $input.seed,
+            delay: $input.delay,
+            datetime: $input.datetime.clone(),
+            $($extra_field: $value),*
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! build_seedtime_opts {
+    ($find_opts:expr) => {
+        SeedTime4Options {
+            seed: $find_opts.seed,
+            year: $find_opts.year,
+            month: None,
+            second_range: $find_opts.second_range.clone(),
+            delay_range: Some($find_opts.delay_range.clone()),
+            find_first: true,
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! coin_flips {
+    ($flips:expr) => {{
+        let s = $flips;
+        s.chars()
+            .map(|c| match c {
+                'H' => $crate::generators::gen4::seed_time::CoinFlip::Heads,
+                'T' => $crate::generators::gen4::seed_time::CoinFlip::Tails,
+                _ => $crate::generators::gen4::seed_time::CoinFlip::Heads, // Default to Heads for any invalid character
+            })
+            .collect::<Vec<$crate::generators::gen4::seed_time::CoinFlip>>()
+    }};
+}
+
+#[macro_export]
+macro_rules! elm_calls {
+    ($flips:expr) => {{
+        let s = $flips;
+        s.chars()
+            .map(|c| match c {
+                'E' => $crate::generators::gen4::seed_time::ElmCall::E,
+                'K' => $crate::generators::gen4::seed_time::ElmCall::K,
+                'P' => $crate::generators::gen4::seed_time::ElmCall::P,
+                _ => $crate::generators::gen4::seed_time::ElmCall::E, // Default to E for invalid characters
+            })
+            .collect::<Vec<$crate::generators::gen4::seed_time::ElmCall>>()
+    }};
+}
+
+#[macro_export]
+macro_rules! calculate_seedtime {
+    (from_optional_month: $opts:expr) => {{
+        let opts = $opts;
+        let month = match opts.month {
+            Some(m) => m,
+            None => 1, // or panic!("Missing month in opts")
+        };
+        calculate_seedtime!(core: opts, month)
+    }};
+
+    // Form 2: Given plain u32 month and opts
+    (core: $opts:expr, $month:expr) => {{
+        let opts = $opts;
+        'macro_scope: {
+            let year = opts.year.clamp(2000, 2100);
+            let month = $month.clamp(1, 12);
+            let ab = opts.seed >> 24;
+            let cd = (opts.seed >> 16) & 0xff;
+            let efgh = opts.seed & 0xffff;
+
+            // Allow overflow seeds by setting hour to 23 and adjusting for delay
+            let hour = if cd > 23 { 23 } else { cd };
+            let delay = match cd > 23 {
+                true => efgh
+                    .wrapping_add(2000)
+                    .wrapping_sub(year)
+                    .wrapping_add(cd.wrapping_sub(23).wrapping_mul(0x10000)),
+                false => efgh.wrapping_add(2000).wrapping_sub(year),
+            };
+
+            if let Some(delay_range) = opts.delay_range {
+                if !delay_range.contains(&delay) {
+                    break 'macro_scope vec![];
+                }
+            }
+
+            let mut results = vec![];
+
+            let second_range = opts.second_range.unwrap_or(0..=59);
+
+            let max_days = get_days_in_month(year as i32, month);
+            for day in 1..=max_days {
+                for minute in 0..60 {
+                    for second in second_range.clone() {
+                        if ab == calc_ab(month, day, minute, second) & 0xff {
+                            if let Some(datetime) =
+                                RngDateTime::new(year, month, day, hour, minute, second)
+                            {
+                                results.push(SeedTime4 {
+                                    seed: opts.seed,
+                                    delay,
+                                    datetime,
+                                });
+
+                                if opts.find_first {
+                                    break 'macro_scope results;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            results
+        }
+    }};
+}
+
+//Function path way is dppt_find_seedtime -> dppt_calculate_seedtime ->dppt_calculate_single_month_seedtime. replace with hgss with for its version.
+
+pub fn dppt_find_seedtime(opts: FindSeedTime4Options) -> Option<DpptSeedTime4> {
+    let opts = build_seedtime_opts!(opts);
+    dppt_calculate_seedtime(opts).into_iter().next()
+}
+
+#[wasm_bindgen]
+pub fn dppt_calculate_seedtime(opts: SeedTime4Options) -> Vec<DpptSeedTime4> {
+    let month_range = match opts.month {
+        Some(month) if (1..=12).contains(&month) => month..=month,
+        _ => 1..=12,
+    };
+
+    let limit = match opts.find_first {
+        true => 1,
+        false => 10_000,
+    };
+
+    month_range
+        .flat_map(|month| {
+            dppt_calculate_single_month_seedtime(SeedTime4SingleMonthOptions {
+                month,
+                seed: opts.seed,
+                year: opts.year,
+                second_range: opts.second_range.clone(),
+                delay_range: opts.delay_range.clone(),
+                find_first: opts.find_first,
+            })
+        })
+        .take(limit)
+        .collect()
+}
+
+fn dppt_calculate_single_month_seedtime(opts: SeedTime4SingleMonthOptions) -> Vec<DpptSeedTime4> {
+    let seed = opts.seed;
+    let month = opts.month;
+    let mut coin_flips_res: Option<Vec<CoinFlip>> = None;
+    let mut lazy_coin_flip = || match coin_flips_res {
+        Some(ref flips) => flips.clone(),
+        None => {
+            let new_flips = coin_flips(seed);
+            coin_flips_res = Some(new_flips.clone());
+            new_flips
+        }
+    };
+    calculate_seedtime!(core:opts, month)
+        .into_iter()
+        .map(|s| {
+            convert_seedtime!(s, DpptSeedTime4, {
+                coin_flips: lazy_coin_flip(),
+            })
+        })
+        .collect()
+}
+
+pub fn hgss_calculate_seedtime(opts: HgssSeedTime4Options) -> Vec<HgssSeedTime4> {
+    let month_range = match opts.month {
+        Some(month) if (1..=12).contains(&month) => month..=month,
+        _ => 1..=12,
+    };
+
+    let limit = match opts.find_first {
+        true => 1,
+        false => 10_000,
+    };
+
+    month_range
+        .flat_map(|month| {
+            hgss_calculate_single_month_seedtime(HgssSeedTime4Options {
+                month: Some(month),
+                seed: opts.seed,
+                year: opts.year,
+                second_range: opts.second_range.clone(),
+                delay_range: opts.delay_range.clone(),
+                find_first: opts.find_first,
+                roamer: opts.roamer,
+            })
+        })
+        .take(limit)
+        .collect()
+}
+
+fn hgss_calculate_single_month_seedtime(opts: HgssSeedTime4Options) -> Vec<HgssSeedTime4> {
+    let elm = get_elm_calls(opts.seed);
+    let roamer = roamer_check(opts.seed, opts.roamer);
+    calculate_seedtime!(from_optional_month:opts)
+        .into_iter()
+        .map(|s| {
+            convert_seedtime!( s, HgssSeedTime4, {
+
+                roamer: roamer.clone(),
+                elm: elm.clone(),
+            })
+        })
+        .collect()
+}
+
+pub fn coin_flips(seed: u32) -> Vec<CoinFlip> {
+    MT::new(seed)
+        .take(20)
+        .map(|rand| match rand & 1 {
+            0 => CoinFlip::Tails,
+            _ => CoinFlip::Heads,
+        })
+        .collect()
 }
 
 #[wasm_bindgen]
@@ -231,27 +452,6 @@ pub fn dppt_calibrate_seedtime(
     }
 
     results
-}
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
-pub struct RoamerLocation {
-    pub roamer: Species,
-    pub location: u16,
-}
-impl RoamerLocation {
-    fn new(roamer: Species) -> Self {
-        RoamerLocation {
-            roamer,
-            location: 0,
-        }
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
-pub struct RoamerSet {
-    pub entei: bool,
-    pub raikou: bool,
-    pub latios: bool,
-    pub latias: bool,
 }
 
 fn get_route_j(seed: u32, roamer: &mut RoamerLocation) {
@@ -308,12 +508,6 @@ fn roamer_check(seed: u32, roamer_opts: RoamerSet) -> Vec<RoamerLocation> {
     }
     results
 }
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]
-pub enum ElmCall {
-    E,
-    K,
-    P,
-}
 
 fn get_elm_calls(seed: u32) -> Vec<ElmCall> {
     Pokerng::new(seed)
@@ -322,166 +516,6 @@ fn get_elm_calls(seed: u32) -> Vec<ElmCall> {
             0 => ElmCall::E,
             1 => ElmCall::K,
             _ => ElmCall::P,
-        })
-        .collect()
-}
-
-#[macro_export]
-macro_rules! elm_calls {
-    ($flips:expr) => {{
-        let s = $flips;
-        s.chars()
-            .map(|c| match c {
-                'E' => $crate::generators::gen4::seed_time::ElmCall::E,
-                'K' => $crate::generators::gen4::seed_time::ElmCall::K,
-                'P' => $crate::generators::gen4::seed_time::ElmCall::P,
-                _ => $crate::generators::gen4::seed_time::ElmCall::E, // Default to E for invalid characters
-            })
-            .collect::<Vec<$crate::generators::gen4::seed_time::ElmCall>>()
-    }};
-}
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-pub struct HgssSeedTime4 {
-    pub seed: u32,
-    pub datetime: RngDateTime,
-    pub delay: u32,
-    pub roamer: Vec<RoamerLocation>,
-    pub elm: Vec<ElmCall>,
-}
-
-pub fn hgss_find_seedtime(opts: FindSeedTime4Options, roamer: RoamerSet) -> Option<HgssSeedTime4> {
-    let opts = SeedTime4Options {
-        seed: opts.seed,
-        year: opts.year,
-        month: None,
-        second_range: opts.second_range,
-        delay_range: Some(opts.delay_range),
-        find_first: true,
-    };
-    hgss_calculate_seedtime(opts, roamer).into_iter().next()
-}
-#[macro_export]
-macro_rules! calculate_seedtime {
-    ($opts:expr) => {{
-        let opts = $opts;
-        'macro_scope: {
-            let year = opts.year.clamp(2000, 2100);
-            let month = opts.month.clamp(1, 12);
-            let ab = opts.seed >> 24;
-            let cd = (opts.seed >> 16) & 0xff;
-            let efgh = opts.seed & 0xffff;
-
-            // Allow overflow seeds by setting hour to 23 and adjusting for delay
-            let hour = if cd > 23 { 23 } else { cd };
-            let delay = match cd > 23 {
-                true => efgh
-                    .wrapping_add(2000)
-                    .wrapping_sub(year)
-                    .wrapping_add(cd.wrapping_sub(23).wrapping_mul(0x10000)),
-                false => efgh.wrapping_add(2000).wrapping_sub(year),
-            };
-
-            if let Some(delay_range) = opts.delay_range {
-                if !delay_range.contains(&delay) {
-                    break 'macro_scope vec![];
-                }
-            }
-
-            let mut results = vec![];
-
-            let second_range = opts.second_range.unwrap_or(0..=59);
-
-            let max_days = get_days_in_month(year as i32, month);
-            for day in 1..=max_days {
-                for minute in 0..60 {
-                    for second in second_range.clone() {
-                        if ab == calc_ab(month, day, minute, second) & 0xff {
-                            if let Some(datetime) =
-                                RngDateTime::new(year, month, day, hour, minute, second)
-                            {
-                                results.push(SeedTime4 {
-                                    seed: opts.seed,
-                                    delay,
-                                    datetime,
-                                });
-
-                                if opts.find_first {
-                                    break 'macro_scope results;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            results
-        }
-    }};
-}
-pub fn hgss_calculate_seedtime(opts: SeedTime4Options, roamer: RoamerSet) -> Vec<HgssSeedTime4> {
-    let month_range = match opts.month {
-        Some(month) if (1..=12).contains(&month) => month..=month,
-        _ => 1..=12,
-    };
-
-    let limit = match opts.find_first {
-        true => 1,
-        false => 10_000,
-    };
-
-    month_range
-        .flat_map(|month| {
-            hgss_calculate_single_month_seedtime(
-                SeedTime4SingleMonthOptions {
-                    month,
-                    seed: opts.seed,
-                    year: opts.year,
-                    second_range: opts.second_range.clone(),
-                    delay_range: opts.delay_range.clone(),
-                    find_first: opts.find_first,
-                },
-                roamer,
-            )
-        })
-        .take(limit)
-        .collect()
-}
-
-fn hgss_calculate_single_month_seedtime(
-    opts: SeedTime4SingleMonthOptions,
-    roamer: RoamerSet,
-) -> Vec<HgssSeedTime4> {
-    let elm = get_elm_calls(opts.seed);
-    let roamer = roamer_check(opts.seed, roamer);
-    calculate_seedtime!(opts)
-        .into_iter()
-        .map(|s| HgssSeedTime4 {
-            seed: s.seed,
-            delay: s.delay,
-            datetime: s.datetime,
-            roamer: roamer.clone(),
-            elm: elm.clone(),
-        })
-        .collect()
-}
-
-fn dppt_calculate_single_month_seedtime(opts: SeedTime4SingleMonthOptions) -> Vec<DpptSeedTime4> {
-    let seed = opts.seed;
-    let mut coin_flips_res: Option<Vec<CoinFlip>> = None;
-    let mut lazy_coin_flip = || match coin_flips_res {
-        Some(ref flips) => flips.clone(),
-        None => {
-            let new_flips = coin_flips(seed);
-            coin_flips_res = Some(new_flips.clone());
-            new_flips
-        }
-    };
-    calculate_seedtime!(opts)
-        .into_iter()
-        .map(|s| DpptSeedTime4 {
-            seed: s.seed,
-            delay: s.delay,
-            datetime: s.datetime,
-            coin_flips: lazy_coin_flip(),
         })
         .collect()
 }
@@ -812,92 +846,6 @@ mod test {
             };
 
             assert_eq!(results, Some(expected));
-        }
-        #[test]
-        fn hgss_time() {
-            let opts = FindSeedTime4Options {
-                seed: 0xad090311,
-                year: 2032,
-                second_range: None,
-                delay_range: 750..=753,
-            };
-            let roamer = RoamerSet {
-                entei: true,
-                raikou: true,
-                latios: false,
-                latias: true,
-            };
-            let result = hgss_find_seedtime(opts, roamer);
-            let expected = Some(HgssSeedTime4 {
-                seed: 2903048977,
-                datetime: RngDateTime {
-                    year: 2032,
-                    month: 2,
-                    day: 28,
-                    hour: 9,
-                    minute: 58,
-                    second: 59,
-                },
-                delay: 753,
-                roamer: vec![
-                    RoamerLocation {
-                        roamer: Species::Raikou,
-                        location: 42,
-                    },
-                    RoamerLocation {
-                        roamer: Species::Entei,
-                        location: 39,
-                    },
-                    RoamerLocation {
-                        roamer: Species::Latias,
-                        location: 20,
-                    },
-                ],
-                elm: elm_calls!("KEPKKEKKEPKEEEEKEKEE"),
-            });
-
-            assert_eq!(result, expected);
-        }
-        #[test]
-        fn hgss_time_force_second() {
-            let opts = FindSeedTime4Options {
-                seed: 0x24130c1f,
-                year: 2032,
-                second_range: Some(30..=31),
-                delay_range: 3000..=3080,
-            };
-            let roamer = RoamerSet {
-                entei: true,
-                raikou: true,
-                latios: false,
-                latias: false,
-            };
-            let result = hgss_find_seedtime(opts, roamer);
-            let expected = Some(HgssSeedTime4 {
-                seed: 605228063,
-                datetime: RngDateTime {
-                    year: 2032,
-                    month: 1,
-                    day: 1,
-                    hour: 19,
-                    minute: 4,
-                    second: 31,
-                },
-                delay: 3071,
-                roamer: vec![
-                    RoamerLocation {
-                        roamer: Species::Raikou,
-                        location: 36,
-                    },
-                    RoamerLocation {
-                        roamer: Species::Entei,
-                        location: 36,
-                    },
-                ],
-                elm: elm_calls!("EKKKPKPEPKKPEEEPEKKE"),
-            });
-
-            assert_eq!(result, expected);
         }
     }
 

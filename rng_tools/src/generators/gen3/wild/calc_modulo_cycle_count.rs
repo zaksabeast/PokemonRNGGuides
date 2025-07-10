@@ -408,7 +408,10 @@ pub fn calculate_pid_speed_ranking(pid_cycle_speed: usize) -> f64 {
     let pid_cycle_speed = std::cmp::min(pid_cycle_speed, MAX_PID_MOD_24_CYCLE_COUNT);
 
     let mut slower_than_count = 0u64;
-    for count in DISTRIBUTION_CYCLE_COUNT_MODULO_24.iter().take(pid_cycle_speed) {
+    for count in DISTRIBUTION_CYCLE_COUNT_MODULO_24
+        .iter()
+        .take(pid_cycle_speed)
+    {
         slower_than_count += *count as u64;
     }
     slower_than_count as f64 / 4294967296.0_f64

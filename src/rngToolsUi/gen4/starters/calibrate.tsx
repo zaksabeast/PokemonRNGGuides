@@ -32,6 +32,47 @@ import pMap from "p-map";
 import { match } from "ts-pattern";
 import { characteristics, Characteristic4Options } from "../gen4types";
 import { fromRngDateTime, toRngDateTime } from "~/utils/time";
+import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
+import { createTranslator, Translations } from "~/utils/siteLanguage";
+import { LanguageKey } from "~/guides";
+
+const englishTranslations = {
+  Generate: "Generate",
+  Nature: "Nature",
+  Gender: "Gender",
+  Characteristic: "Characteristic",
+  Level: "Level",
+  Calibrate: "Calibrate",
+  "Delay Offset": "Delay Offset",
+  "Advance Offset": "Advance Offset",
+  "Second Offset": "Second Offset",
+  "Flip Delay": "Flip Delay",
+  Seed: "Seed",
+  Second: "Second",
+} as const;
+
+const translations = {
+  en: englishTranslations,
+  es: englishTranslations,
+  zh: englishTranslations,
+  fr: englishTranslations,
+  it: {
+    Generate: "Genera",
+    Nature: "Natura",
+    Gender: "Genere",
+    Characteristic: "Caratteristica",
+    Level: "Livello",
+    Calibrate: "Calibra",
+    "Delay Offset": "Ritardo Delay",
+    "Advance Offset": "Ritardo Advance",
+    "Second Offset": "Ritardo Secondo",
+    "Flip Delay": "Inverti Delay",
+    Seed: "Seed",
+    Second: "Secondo",
+  },
+} as const satisfies Translations<typeof englishTranslations>;
+
+const t = createTranslator(translations);
 
 type Result = Gen4StaticPokemon & {
   key: string;
@@ -58,7 +99,7 @@ const Validator = z
 type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  level: 0,
+  level: 5,
   hpStat: 0,
   atkStat: 0,
   defStat: 0,
@@ -70,9 +111,9 @@ const initialValues: FormState = {
   filter_characteristic: "AlertToSounds",
 };
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = (language: LanguageKey): ResultColumn<Result>[] => [
   {
-    title: "Calibrate",
+    title: t("Calibrate", language),
     dataIndex: "key",
     render: (_, target) => (
       <CalibrateTimerButton
@@ -85,34 +126,34 @@ const columns: ResultColumn<Result>[] = [
     ),
   },
   {
-    title: "Delay Offset",
+    title: t("Delay Offset", language),
     dataIndex: "delayOffset",
     render: formatOffset,
   },
   {
-    title: "Advance Offset",
+    title: t("Advance Offset", language),
     dataIndex: "advanceOffset",
     render: formatOffset,
   },
   {
-    title: "Second Offset",
+    title: t("Second Offset", language),
     dataIndex: "secondOffset",
     render: formatOffset,
   },
   {
-    title: "Flip Delay",
+    title: t("Flip Delay", language),
     dataIndex: "flipDelay",
     render: (flipDelay) =>
       flipDelay ? <Icon name="CheckCircle" color="Success" size={30} /> : null,
   },
   {
-    title: "Seed",
+    title: t("Seed", language),
     dataIndex: "seed",
     monospace: true,
     render: (val) => val.toString(16).padStart(8, "0").toUpperCase(),
   },
   {
-    title: "Second",
+    title: t("Second", language),
     dataIndex: "second",
   },
 ];
@@ -138,6 +179,7 @@ const getStarterGame = (starter: Gen4Starter) => {
 };
 
 export const CalibrateStarter4 = () => {
+  const language = useActiveRouteLanguage();
   const [state] = useStarterState();
   const [results, setResults] = React.useState<Result[]>([]);
 
@@ -150,7 +192,7 @@ export const CalibrateStarter4 = () => {
   const fields = React.useMemo((): Field[] => {
     return [
       {
-        label: "Gender",
+        label: t("Gender", language),
         input: (
           <FormikRadio<FormState, "gender">
             name="gender"
@@ -159,7 +201,7 @@ export const CalibrateStarter4 = () => {
         ),
       },
       {
-        label: "Nature",
+        label: t("Nature", language),
         input: (
           <FormikSelect<FormState, "nature">
             name="nature"
@@ -168,7 +210,7 @@ export const CalibrateStarter4 = () => {
         ),
       },
       {
-        label: "Characteristic",
+        label: t("Characteristic", language),
         input: (
           <FormikSelect<FormState, "filter_characteristic">
             name="filter_characteristic"
@@ -177,7 +219,7 @@ export const CalibrateStarter4 = () => {
         ),
       },
       {
-        label: "Level",
+        label: t("Level", language),
         input: (
           <FormikRadio<FormState, "level">
             name="level"
@@ -185,9 +227,11 @@ export const CalibrateStarter4 = () => {
           />
         ),
       },
-      ...getStatFields<FormState>(minMaxStats),
+      ...getStatFields<FormState>(minMaxStats, language),
     ];
-  }, [minMaxStats]);
+  }, [minMaxStats, language]);
+
+  const columns = React.useMemo(() => getColumns(language), [language]);
 
   const onSubmit = React.useCallback(
     async (opts: FormState) => {
@@ -278,6 +322,7 @@ export const CalibrateStarter4 = () => {
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
+      submitButtonLabel={t("Generate", language)}
       rowKey="key"
       submitTrackerId="calibrate_gen4_starter"
     />

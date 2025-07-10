@@ -12,6 +12,18 @@ export type Translator<
   TTranslations extends Translations<Record<string, string>>,
 > = (key: keyof TTranslations[keyof TTranslations]) => string;
 
+export const createTranslator = <
+  EnglishTranslation extends Record<string, string>,
+  TTranslations extends Translations<EnglishTranslation>,
+>(
+  translations: TTranslations,
+) => {
+  return (
+    key: keyof TTranslations[keyof TTranslations],
+    languageKey: keyof TTranslations,
+  ) => translations[languageKey][key];
+};
+
 export const useTranslator = <
   EnglishTranslation extends Record<string, string>,
   TTranslations extends Translations<EnglishTranslation>,

@@ -17,6 +17,38 @@ import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
 import * as tst from "ts-toolbelt";
 import { Switch } from "./switch";
+import { createTranslator, Translations } from "~/utils/siteLanguage";
+import { LanguageKey } from "~/guides";
+
+const englishTranslations = {
+  "Minutes Before Target": "Minutes Before Target",
+  Yes: "Yes",
+  No: "No",
+  "Display All Timers?": "Display All Timers?",
+  Beeps: "Beeps",
+  "Sync Optimization": "Sync Optimization",
+  "Experimental Sync (Test)": "Experimental Sync (Test)",
+  "Next Phase": "Next Phase",
+} as const;
+
+const translations = {
+  en: englishTranslations,
+  es: englishTranslations,
+  zh: englishTranslations,
+  fr: englishTranslations,
+  it: {
+    "Minutes Before Target": "Minuti prima del target",
+    Yes: "Sì",
+    No: "No",
+    "Display All Timers?": "Mostra tutti i timer?",
+    Beeps: "Beeps",
+    "Sync Optimization": "Sync Optimization",
+    "Experimental Sync (Test)": "Experimental Sync (Test)",
+    "Next Phase": "Next Phase",
+  },
+} as const satisfies Translations<typeof englishTranslations>;
+
+const t = createTranslator(translations);
 
 const MultiTimerStateSchema = z.object({
   showAllTimers: z.boolean(),
@@ -42,6 +74,7 @@ type InnerProps = {
   disableStart?: boolean;
   startButtonTrackerId: string;
   stopButtonTrackerId: string;
+  language?: LanguageKey;
 };
 
 const InnerMultiTimer = ({
@@ -52,6 +85,7 @@ const InnerMultiTimer = ({
   disableStart = false,
   startButtonTrackerId,
   stopButtonTrackerId,
+  language = "en",
 }: InnerProps) => {
   const [experimentalSync, setExperimentalSync] = React.useState(false);
   const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
@@ -121,7 +155,7 @@ const InnerMultiTimer = ({
   const timerSettingFields = React.useMemo(
     () => [
       {
-        label: "Display All Timers?",
+        label: t("Display All Timers?", language),
         input: (
           <Flex justify="flex-end">
             <RadioGroup
@@ -137,15 +171,15 @@ const InnerMultiTimer = ({
                 );
               }}
               options={[
-                { label: "Yes", value: "showAllTimers" },
-                { label: "No", value: "showCurrentTimer" },
+                { label: t("Yes", language), value: "showAllTimers" },
+                { label: t("No", language), value: "showCurrentTimer" },
               ]}
             />
           </Flex>
         ),
       },
       {
-        label: "Sync Optimization",
+        label: t("Sync Optimization", language),
         tooltip:
           "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
         input: (
@@ -165,7 +199,7 @@ const InnerMultiTimer = ({
         ),
       },
       {
-        label: "Experimental Sync (Test)",
+        label: t("Experimental Sync (Test)", language),
         tooltip:
           "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
         input: (
@@ -189,7 +223,7 @@ const InnerMultiTimer = ({
         ),
       },
       {
-        label: "Beeps",
+        label: t("Beeps", language),
         input: (
           <Select<number>
             name="countdownBeeps"
@@ -211,7 +245,7 @@ const InnerMultiTimer = ({
         ),
       },
     ],
-    [state, setState, experimentalSync],
+    [state, setState, experimentalSync, language],
   );
 
   return (
@@ -231,10 +265,11 @@ const InnerMultiTimer = ({
           </Flex>
           <Flex vertical gap={8}>
             <Typography.Title level={5} p={0} m={0}>
-              Next Phase: {nextMs == null ? "None" : nextMs / 1000}
+              {t("Next Phase", language)}:{" "}
+              {nextMs == null ? "None" : nextMs / 1000}
             </Typography.Title>
             <Typography.Title level={5} p={0} m={0}>
-              Minutes Before Target: {minutesBeforeTarget}
+              {t("Minutes Before Target", language)}: {minutesBeforeTarget}
             </Typography.Title>
           </Flex>
         </>
@@ -256,7 +291,7 @@ const InnerMultiTimer = ({
           </Flex>
           <Flex vertical gap={8}>
             <Typography.Title level={5} p={0} m={0}>
-              Minutes Before Target: {minutesBeforeTarget}
+              {t("Minutes Before Target", language)}: {minutesBeforeTarget}
             </Typography.Title>
           </Flex>
         </>

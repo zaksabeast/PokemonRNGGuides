@@ -46,7 +46,11 @@ type Props<FormState, Result> = {
   > &
   FeatureConfig<
     "allowCancel",
-    { cancelTrackerId: string; onCancel: () => void }
+    {
+      cancelTrackerId: string;
+      onCancel: () => void;
+      cancelButtonLabel?: string;
+    }
   >;
 
 export const RngToolForm = <
@@ -70,6 +74,7 @@ export const RngToolForm = <
   allowReset = false,
   resetTrackerId,
   submitButtonLabel = "Generate",
+  cancelButtonLabel = "Cancel",
   allowCancel = false,
   cancelTrackerId,
   onCancel,
@@ -113,7 +118,7 @@ export const RngToolForm = <
                     htmlType="button"
                     onClick={onCancel}
                   >
-                    Cancel
+                    {cancelButtonLabel}
                   </Button>
                 )}
                 {allowReset && resetTrackerId != null && (

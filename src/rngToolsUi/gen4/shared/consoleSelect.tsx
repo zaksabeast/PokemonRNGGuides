@@ -1,6 +1,29 @@
 import { PrimitiveAtom, useAtom } from "jotai";
 import { RadioGroup } from "~/components";
 import { z } from "zod";
+import { createTranslator, Translations } from "~/utils/siteLanguage";
+import { LanguageKey } from "~/guides";
+import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
+
+const englishTranslations = {
+  "NDS/DSi": "NDS/DSi",
+  "3DS (Normal Settings)": "3DS (Normal Settings)",
+  "3DS (Alt Settings)": "3DS (Alt Settings)",
+} as const;
+
+const translations = {
+  en: englishTranslations,
+  es: englishTranslations,
+  zh: englishTranslations,
+  fr: englishTranslations,
+  it: {
+    "NDS/DSi": "NDS/DSi",
+    "3DS (Normal Settings)": "3DS (Impostazioni Normali)",
+    "3DS (Alt Settings)": "3DS (Impostazioni Alternative)",
+  },
+} as const satisfies Translations<typeof englishTranslations>;
+
+const t = createTranslator(translations);
 
 const Gen4ConsoleSchema = z.enum([
   "NdsDsi",
@@ -10,10 +33,16 @@ const Gen4ConsoleSchema = z.enum([
 
 export type Gen4Console = z.infer<typeof Gen4ConsoleSchema>;
 
-const options = [
-  { label: "NDS/DSi", value: "NdsDsi" },
-  { label: "3DS (Normal Settings)", value: "3dsNormalSettings" },
-  { label: "3DS (Alt Settings)", value: "3dsAltSettings" },
+const getOptions = (language: LanguageKey = "en") => [
+  { label: t("NDS/DSi", language), value: "NdsDsi" as const },
+  {
+    label: t("3DS (Normal Settings)", language),
+    value: "3dsNormalSettings" as const,
+  },
+  {
+    label: t("3DS (Alt Settings)", language),
+    value: "3dsAltSettings" as const,
+  },
 ];
 
 type Gen4ConsoleSelectProps<State extends { console: Gen4Console }> = {
@@ -23,6 +52,7 @@ type Gen4ConsoleSelectProps<State extends { console: Gen4Console }> = {
 export const Gen4ConsoleSelect = <State extends { console: Gen4Console }>({
   stateAtom,
 }: Gen4ConsoleSelectProps<State>) => {
+  const language = useActiveRouteLanguage();
   const [state, setState] = useAtom(stateAtom);
   return (
     <RadioGroup
@@ -40,7 +70,7 @@ export const Gen4ConsoleSelect = <State extends { console: Gen4Console }>({
           console: value.data,
         }));
       }}
-      options={options}
+      options={getOptions(language)}
     />
   );
 };

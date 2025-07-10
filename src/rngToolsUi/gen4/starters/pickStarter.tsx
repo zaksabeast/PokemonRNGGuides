@@ -22,7 +22,7 @@ import {
 import {
   flattenIvs,
   FlattenIvs,
-  ivColumns,
+  getIvColumns,
 } from "~/rngToolsUi/shared/ivColumns";
 import { toOptions } from "~/utils/options";
 import { useCurrentStep } from "~/components/stepper/state";
@@ -39,6 +39,60 @@ import { Gen4GameVersion } from "../gen4types";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { UndefinedToNull } from "~/types";
+import { createTranslator, Translations } from "~/utils/siteLanguage";
+import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
+import { LanguageKey } from "~/guides";
+
+const englishTranslations = {
+  TID: "TID",
+  SID: "SID",
+  Year: "Year",
+  "Min Delay": "Min Delay",
+  "Max Delay": "Max Delay",
+  Species: "Species",
+  "Force Second": "Force Second",
+  Generate: "Generate",
+  Cancel: "Cancel",
+  Select: "Select",
+  Shiny: "Shiny",
+  Nature: "Nature",
+  Ability: "Ability",
+  Gender: "Gender",
+  PID: "PID",
+  Delay: "Delay",
+  Second: "Second",
+  Seed: "Seed",
+} as const;
+
+const translations = {
+  en: englishTranslations,
+  es: englishTranslations,
+  zh: englishTranslations,
+  fr: englishTranslations,
+  it: {
+    TID: "TID",
+    SID: "SID",
+    Year: "Anno",
+    "Min Delay": "Delay minimo",
+    "Max Delay": "Delay massimo",
+    Species: "Specie",
+    "Force Second": "Forza secondo",
+    Generate: "Genera",
+    Cancel: "Cancella",
+
+    Select: "Seleziona",
+    Shiny: "Cromatico",
+    Nature: "Natura",
+    Ability: "Abilità",
+    Gender: "Genere",
+    PID: "PID",
+    Delay: "Delay",
+    Second: "Secondo",
+    Seed: "Seed",
+  },
+} as const satisfies Translations<typeof englishTranslations>;
+
+const t = createTranslator(translations);
 
 type Result = FlattenIvs<
   SearchStatic4Method1State & {
@@ -113,72 +167,72 @@ const getStarterAdvance = (
     .otherwise(() => 0);
 };
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = (language: LanguageKey): ResultColumn<Result>[] => [
   {
-    title: "Select",
+    title: t("Select", language),
     dataIndex: "key",
     render: (_, target) => <SelectButton target={target} />,
   },
   {
-    title: "Shiny",
+    title: t("Shiny", language),
     dataIndex: "shiny",
     render: (shiny: boolean) => (shiny ? "Yes" : "No"),
   },
-  { title: "Nature", dataIndex: "nature" },
-  { title: "Ability", dataIndex: "ability" },
-  { title: "Gender", dataIndex: "gender" },
-  ...ivColumns,
+  { title: t("Nature", language), dataIndex: "nature" },
+  { title: t("Ability", language), dataIndex: "ability" },
+  { title: t("Gender", language), dataIndex: "gender" },
+  ...getIvColumns(language),
   {
-    title: "PID",
+    title: t("PID", language),
     dataIndex: "pid",
     monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
-  { title: "Delay", dataIndex: "delay" },
+  { title: t("Delay", language), dataIndex: "delay" },
   {
-    title: "Second",
+    title: t("Second", language),
     dataIndex: "second",
   },
   {
-    title: "Seed",
+    title: t("Seed", language),
     dataIndex: "seed",
     monospace: true,
     render: (seed) => seed.toString(16).padStart(8, "0").toUpperCase(),
   },
 ];
 
-const getFields = (game: Gen4GameVersion): Field[] => {
+const getFields = (game: Gen4GameVersion, language: LanguageKey): Field[] => {
   const starters = match(game)
     .with("Diamond", "Pearl", "Platinum", () => dpptStarters)
     .with("HeartGold", "SoulSilver", () => hgssStarters)
     .exhaustive();
   return [
     {
-      label: "TID",
+      label: t("TID", language),
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
     {
-      label: "SID",
+      label: t("SID", language),
       input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
     },
     {
-      label: "Year",
+      label: t("Year", language),
       input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
     },
     {
-      label: "Min Delay",
+      label: t("Min Delay", language),
       input: (
         <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
       ),
     },
     {
-      label: "Max Delay",
+      label: t("Max Delay", language),
       input: (
         <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
       ),
     },
     {
-      label: "Species",
+      label: t("Species", language),
       input: (
         <FormikSelect<FormState, "species">
           name="species"
@@ -186,9 +240,9 @@ const getFields = (game: Gen4GameVersion): Field[] => {
         />
       ),
     },
-    ...getPkmFilterFields(),
+    ...getPkmFilterFields({}, language),
     {
-      label: "Force Second",
+      label: t("Force Second", language),
       input: (
         <FormikNumberInput<FormState> name="force_second" numType="decimal" />
       ),
@@ -207,6 +261,7 @@ const mapResult = (res: SearchStatic4Method1State): Result => {
 };
 
 export const PickStarter4 = () => {
+  const language = useActiveRouteLanguage();
   const [state, setState] = useStarterState();
   const {
     run: searchStarterSeeds,
@@ -244,7 +299,13 @@ export const PickStarter4 = () => {
     [game, setState, searchStarterSeeds],
   );
 
-  const fields = React.useMemo(() => getFields(game), [game]);
+  const { fields, columns } = React.useMemo(
+    () => ({
+      fields: getFields(game, language),
+      columns: getColumns(language),
+    }),
+    [game, language],
+  );
   const initialValues = match(game)
     .with("Diamond", "Pearl", "Platinum", () => dpptInitialValues)
     .with("HeartGold", "SoulSilver", () => hgssInitialValues)
@@ -262,6 +323,8 @@ export const PickStarter4 = () => {
       submitTrackerId="search_gen4_starters"
       allowCancel
       cancelTrackerId="cancel_gen4_starters"
+      submitButtonLabel={t("Generate", language)}
+      cancelButtonLabel={t("Cancel", language)}
       onCancel={cancel}
     />
   );

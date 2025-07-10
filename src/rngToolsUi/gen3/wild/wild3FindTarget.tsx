@@ -7,6 +7,7 @@ import {
   Wild3SearcherCycleData,
   Gen3Lead,
   Gen3Method,
+  Gen3EncounterInfo,
 } from "~/rngTools";
 import {
   Field,
@@ -43,7 +44,7 @@ import { match, P } from "ts-pattern";
 
 import { getWild3GameData } from "./wild3GameData";
 import emerald_wild3_game_data from "~/__generated__/emerald_wild3_game_data";
-import { startCase, sortBy } from "lodash-es";
+import { uniq, startCase, sortBy } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { Tooltip } from "antd";
 
@@ -68,6 +69,11 @@ Possible improvements:
 
 const gen3EncounterTypes = [
   "Land",
+  "Water",
+  "OldRod",
+  "GoodRod",
+  "SuperRod",
+  "RockSmash",
 ] as const satisfies readonly Gen3EncounterType[];
 
 const cuteCharmGenders = [
@@ -147,14 +153,35 @@ const formatMapName = (label: string) => {
         ? piece
         : startCase(piece.toLowerCase()),
     )
-    .join(" ");
+    .join(" ")
+    .replace(/^Map /, "");
 };
 
-const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
-  const mapsWithSpecies = Array.from(
-    emeraldWildGameData.speciesToEncounterSlots.get(species)?.keys() ?? [],
+const formatEncounterTypeName = (encounterType: Gen3EncounterType) => {
+  return match(encounterType)
+    .with("OldRod", () => "Old Rod")
+    .with("GoodRod", () => "Good Rod")
+    .with("SuperRod", () => "Super Rod")
+    .with("RockSmash", () => "Rock Smash")
+    .otherwise(() => encounterType);
+};
+
+const getMapsWithSpecies = (species: Species) =>
+  Array.from(
+    emeraldWildGameData.speciesToEncounterInfo.get(species)?.keys() ?? [],
   );
 
+const getEncounterTypesWithSpecies = (species: Species) =>
+  uniq(
+    getMapsWithSpecies(species).flatMap((mapId) => {
+      const encounterInfos = emeraldWildGameData.speciesToEncounterInfo
+        .get(species)
+        ?.get(mapId);
+      return encounterInfos?.map((info) => info.encounter_type) ?? [];
+    }),
+  );
+
+const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
   const fields: Field[] = [
     {
       label: "Species",
@@ -190,9 +217,25 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
       input: (
         <FormikSelect<FormState, "maps">
           name="maps"
-          options={toOptions(mapsWithSpecies, formatMapName)}
+          options={toOptions(getMapsWithSpecies(species), formatMapName)}
           mode="multiple"
           fullWidth={true}
+          selectAllNoneButtons={true}
+        />
+      ),
+    },
+    {
+      label: "Encounters",
+      input: (
+        <FormikSelect<FormState, "encounterTypes">
+          name="encounterTypes"
+          options={toOptions(
+            getEncounterTypesWithSpecies(species),
+            formatEncounterTypeName,
+          )}
+          mode="multiple"
+          fullWidth={true}
+          selectAllNoneButtons={true}
         />
       ),
     },
@@ -298,11 +341,11 @@ export const TargetMon = () => {
   }, [values.species]);
 
   React.useEffect(() => {
-    const allMaps = emeraldWildGameData.speciesToEncounterSlots.get(
-      values.species,
-    );
-    const newMaps = allMaps !== undefined ? Array.from(allMaps.keys()) : [];
-    setValues((prev) => ({ ...prev, maps: newMaps }));
+    setValues((prev) => ({
+      ...prev,
+      maps: getMapsWithSpecies(values.species),
+      encounterTypes: getEncounterTypesWithSpecies(values.species),
+    }));
   }, [values.species, setValues]);
 
   return (
@@ -385,30 +428,13 @@ const getColumns = (values: FormState): ResultColumn<UiResult>[] => {
       },
     },
     { title: "Map", dataIndex: "mapName" },
-    { title: "Encounter", dataIndex: "encounter" },
+    { title: "Encounter", dataIndex: "encounterTypeName" },
     { title: "Method", dataIndex: "method" },
-    {
-      title: "Lead",
-      dataIndex: "lead",
-      render: (lead) => {
-        return match(lead)
-          .with("Vanilla", () => "Ordinary lead")
-          .with(
-            { Synchronize: P.string },
-            (matched) => `Synchronize (${matched.Synchronize})`,
-          )
-          .with(
-            { CuteCharm: P.string },
-            (matched) => `CuteCharm (${matched.CuteCharm})`,
-          )
-          .with("Egg", () => "Egg lead")
-          .exhaustive();
-      },
-    },
   );
+
   if (!values.rngManipulatedLeadPid) {
     columns.push({
-      title: "Likelihood",
+      title: "Method Likelihood",
       dataIndex: "cycle_data_by_lead",
       render: (cycle_data_by_lead) => {
         if (cycle_data_by_lead == undefined) {
@@ -422,7 +448,28 @@ const getColumns = (values: FormState): ResultColumn<UiResult>[] => {
         return formatProbability(least_likely_common.method_probability);
       },
     });
-  } else {
+  }
+
+  columns.push({
+    title: "Lead",
+    dataIndex: "lead",
+    render: (lead) => {
+      return match(lead)
+        .with("Vanilla", () => "Ordinary lead")
+        .with(
+          { Synchronize: P.string },
+          (matched) => `Synchronize (${matched.Synchronize})`,
+        )
+        .with(
+          { CuteCharm: P.string },
+          (matched) => `CuteCharm (${matched.CuteCharm})`,
+        )
+        .with("Egg", () => "Egg lead")
+        .exhaustive();
+    },
+  });
+
+  if (values.rngManipulatedLeadPid) {
     columns.push(
       {
         title: "Ideal Lead Speed",
@@ -453,7 +500,7 @@ const getColumns = (values: FormState): ResultColumn<UiResult>[] => {
         },
       },
       {
-        title: "Likelyhood by Lead Speed",
+        title: "Method Likelyhood by Lead Speed",
         type: "group",
         columns: [
           {
@@ -547,7 +594,7 @@ type UiResult = FlattenIvs<
   Wild3SearcherResultMon & {
     species: Species;
     mapName: string;
-    encounter: Gen3EncounterType;
+    encounterTypeName: string;
     uid: number;
   }
 >;
@@ -566,22 +613,35 @@ const getLeads = (values: FormState): Gen3Lead[] => {
   return leads;
 };
 
-const getEncounterSlotsByMap = (values: FormState) => {
+const getEncounterInfoByMap = (
+  values: FormState,
+): [string, Gen3EncounterInfo][] => {
   if (values.species === "None") {
     return [];
   }
+  const allowedMaps = values.maps;
+  const allowedEncounterTypes = values.encounterTypes;
 
-  const allMaps = emeraldWildGameData.speciesToEncounterSlots.get(
+  const allMapsForSpecies = emeraldWildGameData.speciesToEncounterInfo.get(
     values.species,
   );
-  if (allMaps === undefined) {
+  if (allMapsForSpecies === undefined) {
     return []; // error
   }
 
-  const mapIdAndSlots = Array.from(allMaps.entries());
-  return mapIdAndSlots.filter((val) => {
-    return values.maps.includes(val[0]);
+  const res: [string, Gen3EncounterInfo][] = [];
+  allMapsForSpecies.forEach((encounterInfos, mapId) => {
+    if (!allowedMaps.includes(mapId)) {
+      return;
+    }
+    encounterInfos.forEach((encounterInfo) => {
+      if (!allowedEncounterTypes.includes(encounterInfo.encounter_type)) {
+        return;
+      }
+      res.push([mapId, encounterInfo]);
+    });
   });
+  return res;
 };
 
 let nextUid = 0;
@@ -589,12 +649,13 @@ const convertSearcherResultToUIResult = (
   res: Wild3SearcherResultMon,
   species: Species,
   mapName: string,
+  encounterTypeName: string,
 ): UiResult => {
   return {
     ...res,
     ...res.ivs,
     mapName,
-    encounter: "Land",
+    encounterTypeName,
     species,
     uid: nextUid++,
   };
@@ -628,7 +689,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
-      const ecounterSlotsByMap = getEncounterSlotsByMap(values);
+      const encounterInfoByMap = getEncounterInfoByMap(values);
 
       const opts = {
         initial_seed,
@@ -640,7 +701,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
         max_result_count: values.max_result_count,
         filter: pkmFilterFieldsToRustInput(values),
         leads: getLeads(values),
-        encounter_slots_by_map: ecounterSlotsByMap.map((val) => val[1]),
+        encounter_info_by_map: encounterInfoByMap.map((val) => val[1]),
         methods: values.methods,
         consider_cycles: true,
         consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
@@ -653,11 +714,12 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
       results = sortResults(results);
 
       const uiResults = results.map((res) => {
-        const mapId = ecounterSlotsByMap[res.map_idx][0];
+        const [mapId, encounterInfo] = encounterInfoByMap[res.map_idx];
         return convertSearcherResultToUIResult(
           res,
           values.species,
           formatMapName(mapId),
+          formatEncounterTypeName(encounterInfo.encounter_type),
         );
       });
 

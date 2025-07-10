@@ -186,11 +186,7 @@ fn calculate_pre_sweet_scent_cycle_range(
     }
 
     let pre_sweet_scent_end = VBLANK_FREQ - post_sweet_scent_range.start;
-    let pre_sweet_scent_start = if pre_sweet_scent_end < post_sweet_scent_range.len {
-        0
-    } else {
-        pre_sweet_scent_end - post_sweet_scent_range.len
-    };
+    let pre_sweet_scent_start = pre_sweet_scent_end.saturating_sub(post_sweet_scent_range.len);
 
     CycleRange::from_start_end(pre_sweet_scent_start, pre_sweet_scent_end)
 }

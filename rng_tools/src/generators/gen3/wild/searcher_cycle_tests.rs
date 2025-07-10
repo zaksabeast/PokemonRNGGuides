@@ -2,14 +2,11 @@
 mod test {
     use crate::assert_list_eq;
 
-    use crate::EncounterSlot;
-    use crate::Ivs;
-    use crate::gen3::Gen3Lead;
-    use crate::gen3::Gen3Method;
-    use crate::gen3::search_wild3;
-    use crate::gen3::{Wild3SearcherCycleData, Wild3SearcherCycleDataByLead};
-    use crate::gen3::{Wild3SearcherOptions, Wild3SearcherResultMon};
-    use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
+    use crate::gen3::{
+        Gen3EncounterInfo, Gen3EncounterType, Gen3Lead, Gen3Method, Wild3SearcherCycleData,
+        Wild3SearcherCycleDataByLead, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
+    };
+    use crate::{AbilityType, EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter};
 
     #[test]
     fn test_search_wild3_cycle_methods_1_2_4() {
@@ -18,7 +15,10 @@ mod test {
             tid: 0,
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_slots_by_map: vec![None],
+            encounter_info_by_map: vec![Gen3EncounterInfo {
+                encounter_type: Gen3EncounterType::Land,
+                slots: None,
+            }],
             methods: vec![
                 Gen3Method::Wild1,
                 Gen3Method::Wild2,

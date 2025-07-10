@@ -3,16 +3,24 @@ mod test {
     use crate::assert_list_eq;
 
     use crate::gen3::{
-        Gen3Lead, Gen3Method, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
+        Gen3EncounterInfo, Gen3EncounterType, Gen3Lead, Gen3Method, Wild3SearcherOptions,
+        Wild3SearcherResultMon, search_wild3,
     };
     use crate::{AbilityType, EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter};
+
+    fn default_encounter_info_by_map() -> Vec<Gen3EncounterInfo> {
+        vec![Gen3EncounterInfo {
+            encounter_type: Gen3EncounterType::Land,
+            slots: None,
+        }]
+    }
 
     #[test]
     fn test_search_wild3_no_filter() {
         let options = Wild3SearcherOptions {
             initial_seed: 0,
             leads: vec![Gen3Lead::Vanilla],
-            encounter_slots_by_map: vec![None],
+            encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![Gen3Method::Wild1],
             tid: 0,
             sid: 0,
@@ -101,11 +109,14 @@ mod test {
             tid: 12345,
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_slots_by_map: vec![Some(vec![
-                EncounterSlot::Slot0,
-                EncounterSlot::Slot6,
-                EncounterSlot::Slot8,
-            ])],
+            encounter_info_by_map: vec![Gen3EncounterInfo {
+                encounter_type: Gen3EncounterType::Land,
+                slots: Some(vec![
+                    EncounterSlot::Slot0,
+                    EncounterSlot::Slot6,
+                    EncounterSlot::Slot8,
+                ]),
+            }],
             methods: vec![Gen3Method::Wild1],
             initial_advances: 60,
             max_advances: 3540,
@@ -204,7 +215,7 @@ mod test {
             tid: 34760,
             sid: 47362,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_slots_by_map: vec![None],
+            encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![Gen3Method::Wild1],
             initial_advances: 0,
             max_advances: 10,
@@ -252,7 +263,7 @@ mod test {
             tid: 12345,
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_slots_by_map: vec![None],
+            encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![Gen3Method::Wild1],
             consider_cycles: false,
             consider_rng_manipulated_lead_pid: false,
@@ -338,7 +349,7 @@ mod test {
             tid: 0x1234,
             sid: 0x4321,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_slots_by_map: vec![None],
+            encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![
                 Gen3Method::Wild1,
                 Gen3Method::Wild2,
@@ -415,7 +426,7 @@ mod test {
             tid: 0,
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_slots_by_map: vec![None],
+            encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![Gen3Method::Wild2],
             initial_advances: 1005,
             max_advances: 0,

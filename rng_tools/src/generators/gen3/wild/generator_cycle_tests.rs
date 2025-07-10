@@ -2,6 +2,7 @@
 mod test {
     use crate::EncounterSlot;
     use crate::Ivs;
+    use crate::gen3::Gen3EncounterType;
     use crate::gen3::Gen3Lead;
     use crate::gen3::Gen3Method;
     use crate::gen3::INFINITE_CYCLE;
@@ -19,6 +20,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild3],
             advance: 3012,
             map_idx: 0,
@@ -73,6 +75,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild3],
             advance: 3012,
             map_idx: 0,
@@ -95,6 +98,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild5],
             advance: 4894,
             map_idx: 0,
@@ -147,6 +151,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1, Gen3Method::Wild2, Gen3Method::Wild4],
             advance: 3001,
             map_idx: 0,

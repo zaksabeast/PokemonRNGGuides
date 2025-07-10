@@ -2,6 +2,7 @@
 mod test {
     use crate::EncounterSlot;
     use crate::Ivs;
+    use crate::gen3::Gen3EncounterType;
     use crate::gen3::Gen3Lead;
     use crate::gen3::Gen3Method;
     use crate::gen3::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
@@ -16,6 +17,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
             advance: 9,
             map_idx: 0,
@@ -58,6 +60,7 @@ mod test {
                 EncounterSlot::Slot6,
                 EncounterSlot::Slot8,
             ]),
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
             lead: Gen3Lead::Vanilla,
             filter: PkmFilter {
@@ -104,6 +107,7 @@ mod test {
             sid: 47362,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
             advance: 0,
             map_idx: 0,
@@ -145,6 +149,7 @@ mod test {
             sid: 54321,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
             advance: 0,
             map_idx: 0,
@@ -180,6 +185,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
             advance: 2,
             map_idx: 0,
@@ -216,6 +222,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![
                 Gen3Method::Wild1,
                 Gen3Method::Wild2,
@@ -316,6 +323,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
             encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild4],
             advance: 1234,
             map_idx: 0,
@@ -354,6 +362,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::SevenToOne,
             encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
             advance: 1234,
             map_idx: 0,

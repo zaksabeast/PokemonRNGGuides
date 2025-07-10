@@ -14,91 +14,28 @@ import { nature } from "~/types/nature";
 import { gender } from "~/types/gender";
 import { genderOptions, natureOptions } from "~/components/pkmFilter";
 import { z } from "zod";
-import { useTranslator, Translations, Translator } from "~/utils/siteLanguage";
+import { t } from "~/translations";
+import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
+import { LanguageKey } from "~/guides";
 
-const englishTranslations = {
-  Advance: "Advance",
-  Redraws: "Redraws",
-  PID: "PID",
-  Gender: "Gender",
-  Shiny: "Shiny",
-  Nature: "Nature",
-  Ability: "Ability",
-  "Female or Ditto has everstone": "Female or Ditto has everstone",
-  "Female or Ditto nature": "Female or Ditto nature",
-  "Egg species": "Egg species",
-  Compatability: "Compatability",
-  "The two seem to get along": "The two seem to get along",
-  "The two seem to get along very well": "The two seem to get along very well",
-  "The two don't seem to like each other":
-    "The two don't seem to like each other",
-  Calibration: "Calibration",
-  TID: "TID",
-  SID: "SID",
-  "Initial advances": "Initial advances",
-  "Max advances": "Max advances",
-  Delay: "Delay",
-  "Min redraw": "Min redraw",
-  "Max redraw": "Max redraw",
-  "Filter shiny": "Filter shiny",
-  "Filter nature": "Filter nature",
-  "Filter gender": "Filter gender",
-  Generate: "Generate",
-} as const;
-
-const translations = {
-  en: englishTranslations,
-  it: {
-    Advance: "Advance",
-    Redraws: "Aggiornamenti",
-    PID: "PID",
-    Gender: "Genere",
-    Shiny: "Cromatico",
-    Nature: "Natura",
-    Ability: "Abilità",
-    "Female or Ditto has everstone": "Femmina o Ditto ha pietrastante",
-    "Female or Ditto nature": "Natura della femmina o Ditto",
-    "Egg species": "Specie dell'uovo",
-    Compatability: "Compatibilità",
-    "The two seem to get along": "I due vanno d'accordo.",
-    "The two seem to get along very well": "I due vanno d'amore e d'accordo.",
-    "The two don't seem to like each other":
-      "Pare che i due non si piacciano proprio.",
-    Calibration: "Calibrazione",
-    TID: "TID",
-    SID: "SID",
-    "Initial advances": "Advance Iniziali",
-    "Max advances": "Advance Massimi",
-    Delay: "Ritardo",
-    "Min redraw": "Aggiornamenti minimi",
-    "Max redraw": "Aggiornamenti massimi",
-    "Filter shiny": "Filtro Cromatico",
-    "Filter nature": "Filtro Natura",
-    "Filter gender": "Filtro genere",
-    Generate: "Genera",
-  },
-} as const satisfies Translations<typeof englishTranslations>;
-
-const getColumns = (
-  t: Translator<typeof translations>,
-): ResultColumn<Gen3HeldEgg>[] => {
+const getColumns = (language: LanguageKey): ResultColumn<Gen3HeldEgg>[] => {
   return [
-    { title: t("Advance"), dataIndex: "advance" },
-    { title: t("Redraws"), dataIndex: "redraws" },
+    { title: t("Advance", language), dataIndex: "advance" },
+    { title: t("Redraws", language), dataIndex: "redraws" },
     {
-      title: t("PID"),
+      title: t("PID", language),
       dataIndex: "pid",
       monospace: true,
       render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
     },
-    { title: t("Gender"), dataIndex: "gender" },
+    { title: t("Gender", language), dataIndex: "gender" },
     {
-      title: t("Shiny"),
+      title: t("Shiny", language),
       dataIndex: "shiny",
       render: (shiny) => (shiny ? "Yes" : "No"),
     },
-    { title: t("Nature"), dataIndex: "nature" },
-    { title: t("Ability"), dataIndex: "ability" },
+    { title: t("Nature", language), dataIndex: "nature" },
+    { title: t("Ability", language), dataIndex: "ability" },
   ];
 };
 
@@ -140,10 +77,10 @@ const initialValues: FormState = {
   filter_gender: null,
 };
 
-const getFields = (t: Translator<typeof translations>): Field[] => {
+const getFields = (language: LanguageKey): Field[] => {
   return [
     {
-      label: t("Female or Ditto has everstone"),
+      label: t("Female or Ditto has everstone", language),
       input: (
         <FormikSwitch<
           FormState,
@@ -152,7 +89,7 @@ const getFields = (t: Translator<typeof translations>): Field[] => {
       ),
     },
     {
-      label: t("Female or Ditto nature"),
+      label: t("Female or Ditto nature", language),
       input: (
         <FormikSelect<FormState, "female_nature">
           name="female_nature"
@@ -161,7 +98,7 @@ const getFields = (t: Translator<typeof translations>): Field[] => {
       ),
     },
     {
-      label: t("Egg species"),
+      label: t("Egg species", language),
       input: (
         <FormikSelect<FormState, "egg_species">
           name="egg_species"
@@ -171,21 +108,21 @@ const getFields = (t: Translator<typeof translations>): Field[] => {
     },
 
     {
-      label: t("Compatability"),
+      label: t("Compatability", language),
       input: (
         <FormikSelect<FormState, "compatability">
           name="compatability"
           options={[
             {
-              label: t("The two seem to get along"),
+              label: t("The two seem to get along", language),
               value: "GetAlong",
             },
             {
-              label: t("The two seem to get along very well"),
+              label: t("The two seem to get along very well", language),
               value: "GetAlongVeryWell",
             },
             {
-              label: t("The two don't seem to like each other"),
+              label: t("The two don't seem to like each other", language),
               value: "DontLikeEachOther",
             },
           ]}
@@ -193,21 +130,21 @@ const getFields = (t: Translator<typeof translations>): Field[] => {
       ),
     },
     {
-      label: t("Calibration"),
+      label: t("Calibration", language),
       input: (
         <FormikNumberInput<FormState> name="calibration" numType="decimal" />
       ),
     },
     {
-      label: t("TID"),
+      label: t("TID", language),
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
     {
-      label: t("SID"),
+      label: t("SID", language),
       input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
     },
     {
-      label: t("Initial advances"),
+      label: t("Initial advances", language),
       input: (
         <FormikNumberInput<FormState>
           name="initial_advances"
@@ -216,33 +153,33 @@ const getFields = (t: Translator<typeof translations>): Field[] => {
       ),
     },
     {
-      label: t("Max advances"),
+      label: t("Max advances", language),
       input: (
         <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
       ),
     },
     {
-      label: t("Delay"),
+      label: t("Delay", language),
       input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
     },
     {
-      label: t("Min redraw"),
+      label: t("Min redraw", language),
       input: (
         <FormikNumberInput<FormState> name="min_redraw" numType="decimal" />
       ),
     },
     {
-      label: t("Max redraw"),
+      label: t("Max redraw", language),
       input: (
         <FormikNumberInput<FormState> name="max_redraw" numType="decimal" />
       ),
     },
     {
-      label: t("Filter shiny"),
+      label: t("Filter shiny", language),
       input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
     },
     {
-      label: t("Filter nature"),
+      label: t("Filter nature", language),
       input: (
         <FormikSelect<FormState, "filter_nature">
           name="filter_nature"
@@ -251,7 +188,7 @@ const getFields = (t: Translator<typeof translations>): Field[] => {
       ),
     },
     {
-      label: t("Filter gender"),
+      label: t("Filter gender", language),
       input: (
         <FormikSelect<FormState, "filter_gender">
           name="filter_gender"
@@ -264,13 +201,12 @@ const getFields = (t: Translator<typeof translations>): Field[] => {
 
 type Props = {
   lua?: boolean;
-  language?: keyof typeof translations;
 };
 
-export const EmeraldHeldEgg = ({ lua = false, language }: Props) => {
-  const t = useTranslator(translations, language ?? "en");
-  const fields = React.useMemo(() => getFields(t), [t]);
-  const columns = React.useMemo(() => getColumns(t), [t]);
+export const EmeraldHeldEgg = ({ lua = false }: Props) => {
+  const language = useActiveRouteLanguage();
+  const fields = React.useMemo(() => getFields(language), [language]);
+  const columns = React.useMemo(() => getColumns(language), [language]);
   const [results, setResults] = React.useState<Gen3HeldEgg[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
@@ -302,7 +238,7 @@ export const EmeraldHeldEgg = ({ lua = false, language }: Props) => {
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
-      submitButtonLabel={t("Generate")}
+      submitButtonLabel={t("Generate", language)}
       formContainerId="emerald_held_egg_form"
       submitTrackerId="generate_emerald_held_egg"
     />

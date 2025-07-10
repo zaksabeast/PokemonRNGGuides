@@ -39,60 +39,9 @@ import { Gen4GameVersion } from "../gen4types";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { UndefinedToNull } from "~/types";
-import { createTranslator, Translations } from "~/utils/siteLanguage";
+import { t } from "~/translations";
 import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
 import { LanguageKey } from "~/guides";
-
-const englishTranslations = {
-  TID: "TID",
-  SID: "SID",
-  Year: "Year",
-  "Min Delay": "Min Delay",
-  "Max Delay": "Max Delay",
-  Species: "Species",
-  "Force Second": "Force Second",
-  Generate: "Generate",
-  Cancel: "Cancel",
-  Select: "Select",
-  Shiny: "Shiny",
-  Nature: "Nature",
-  Ability: "Ability",
-  Gender: "Gender",
-  PID: "PID",
-  Delay: "Delay",
-  Second: "Second",
-  Seed: "Seed",
-} as const;
-
-const translations = {
-  en: englishTranslations,
-  es: englishTranslations,
-  zh: englishTranslations,
-  fr: englishTranslations,
-  it: {
-    TID: "TID",
-    SID: "SID",
-    Year: "Anno",
-    "Min Delay": "Delay minimo",
-    "Max Delay": "Delay massimo",
-    Species: "Specie",
-    "Force Second": "Forza secondo",
-    Generate: "Genera",
-    Cancel: "Cancella",
-
-    Select: "Seleziona",
-    Shiny: "Cromatico",
-    Nature: "Natura",
-    Ability: "Abilità",
-    Gender: "Genere",
-    PID: "PID",
-    Delay: "Delay",
-    Second: "Secondo",
-    Seed: "Seed",
-  },
-} as const satisfies Translations<typeof englishTranslations>;
-
-const t = createTranslator(translations);
 
 type Result = FlattenIvs<
   SearchStatic4Method1State & {

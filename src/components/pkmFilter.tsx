@@ -12,33 +12,7 @@ import * as tst from "ts-toolbelt";
 import { toOptions } from "~/utils/options";
 import { StatsFilterSchema } from "../types/stat";
 import { LanguageKey } from "~/guides";
-import { createTranslator, Translations } from "~/utils/siteLanguage";
-
-const englishTranslations = {
-  Shiny: "Shiny",
-  Nature: "Nature",
-  Ability: "Ability",
-  Gender: "Gender",
-  "Min IVs": "Min IVs",
-  "Max IVs": "Max IVs",
-} as const;
-
-const translations = {
-  en: englishTranslations,
-  es: englishTranslations,
-  zh: englishTranslations,
-  fr: englishTranslations,
-  it: {
-    Shiny: "Cromatico",
-    Nature: "Nature",
-    Ability: "Abilità",
-    Gender: "Genere",
-    "Min IVs": "IV minime",
-    "Max IVs": "IV massime",
-  },
-} as const satisfies Translations<typeof englishTranslations>;
-
-const t = createTranslator(translations);
+import { t } from "~/translations";
 
 const sortedNatures = nature.toSorted();
 

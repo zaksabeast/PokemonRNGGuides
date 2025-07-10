@@ -33,46 +33,8 @@ import { match } from "ts-pattern";
 import { characteristics, Characteristic4Options } from "../gen4types";
 import { fromRngDateTime, toRngDateTime } from "~/utils/time";
 import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
-import { createTranslator, Translations } from "~/utils/siteLanguage";
+import { t } from "~/translations";
 import { LanguageKey } from "~/guides";
-
-const englishTranslations = {
-  Generate: "Generate",
-  Nature: "Nature",
-  Gender: "Gender",
-  Characteristic: "Characteristic",
-  Level: "Level",
-  Calibrate: "Calibrate",
-  "Delay Offset": "Delay Offset",
-  "Advance Offset": "Advance Offset",
-  "Second Offset": "Second Offset",
-  "Flip Delay": "Flip Delay",
-  Seed: "Seed",
-  Second: "Second",
-} as const;
-
-const translations = {
-  en: englishTranslations,
-  es: englishTranslations,
-  zh: englishTranslations,
-  fr: englishTranslations,
-  it: {
-    Generate: "Genera",
-    Nature: "Natura",
-    Gender: "Genere",
-    Characteristic: "Caratteristica",
-    Level: "Livello",
-    Calibrate: "Calibra",
-    "Delay Offset": "Ritardo Delay",
-    "Advance Offset": "Ritardo Advance",
-    "Second Offset": "Ritardo Secondo",
-    "Flip Delay": "Inverti Delay",
-    Seed: "Seed",
-    Second: "Secondo",
-  },
-} as const satisfies Translations<typeof englishTranslations>;
-
-const t = createTranslator(translations);
 
 type Result = Gen4StaticPokemon & {
   key: string;

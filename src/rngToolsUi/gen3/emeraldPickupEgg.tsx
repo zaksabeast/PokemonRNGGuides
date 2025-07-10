@@ -18,51 +18,17 @@ import {
 import { z } from "zod";
 import { IvsSchema } from "~/components/ivInput";
 import { HexSchema } from "~/utils/number";
-import { useTranslator, Translations, Translator } from "~/utils/siteLanguage";
-
-const englishTranslations = {
-  Advance: "Advance",
-  Seed: "Seed",
-  "Initial advances": "Initial advances",
-  "Max advances": "Max advances",
-  Delay: "Delay",
-  "Parent 1 IVs": "Parent 1 IVs",
-  "Parent 2 IVs": "Parent 2 IVs",
-  Method: "Method",
-  Normal: "Normal",
-  Split: "Split",
-  Alternate: "Alternate",
-  "Egg min IVs": "Egg min IVs",
-  "Egg max IVs": "Egg max IVs",
-  Generate: "Generate",
-} as const;
-
-const translations = {
-  en: englishTranslations,
-  it: {
-    Advance: "Advance",
-    Seed: "Seed",
-    "Initial advances": "Advance Iniziali",
-    "Max advances": "Advance Massimi",
-    Delay: "Ritardo",
-    "Parent 1 IVs": "IV del Parente 1",
-    "Parent 2 IVs": "IV del Parente 2",
-    Method: "Metodo",
-    Normal: "Normale",
-    Split: "Split",
-    Alternate: "Alternato",
-    "Egg min IVs": "IV minime dell'uovo",
-    "Egg max IVs": "IV massime dell'uovo",
-    Generate: "Genera",
-  },
-} as const satisfies Translations<typeof englishTranslations>;
+import { t } from "~/translations";
+import { LanguageKey } from "~/guides";
+import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
 
 type Result = FlattenIvs<Egg3PickupState>;
 
-const getColumns = (
-  t: Translator<typeof translations>,
-): ResultColumn<Result>[] => {
-  return [{ title: t("Advance"), dataIndex: "advance" }, ...inheritedIvColumns];
+const getColumns = (language: LanguageKey): ResultColumn<Result>[] => {
+  return [
+    { title: t("Advance", language), dataIndex: "advance" },
+    ...inheritedIvColumns,
+  ];
 };
 
 const Validator = z.object({
@@ -91,14 +57,14 @@ const initialValues: FormState = {
   filter_max_ivs: maxIvs,
 };
 
-const getFields = (t: Translator<typeof translations>): Field[] => {
+const getFields = (language: LanguageKey): Field[] => {
   return [
     {
-      label: t("Seed"),
+      label: t("Seed", language),
       input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
     },
     {
-      label: t("Initial advances"),
+      label: t("Initial advances", language),
       input: (
         <FormikNumberInput<FormState>
           name="initial_advances"
@@ -107,42 +73,42 @@ const getFields = (t: Translator<typeof translations>): Field[] => {
       ),
     },
     {
-      label: t("Max advances"),
+      label: t("Max advances", language),
       input: (
         <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
       ),
     },
     {
-      label: t("Delay"),
+      label: t("Delay", language),
       input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
     },
     {
-      label: t("Parent 1 IVs"),
+      label: t("Parent 1 IVs", language),
       input: <IvInput<FormState> name="parent1_ivs" />,
     },
     {
-      label: t("Parent 2 IVs"),
+      label: t("Parent 2 IVs", language),
       input: <IvInput<FormState> name="parent2_ivs" />,
     },
     {
-      label: t("Method"),
+      label: t("Method", language),
       input: (
         <FormikSelect<FormState, "method">
           name="method"
           options={[
-            { label: t("Normal"), value: "EmeraldBred" },
-            { label: t("Split"), value: "EmeraldBredSplit" },
-            { label: t("Alternate"), value: "EmeraldBredAlternate" },
+            { label: t("Normal", language), value: "EmeraldBred" },
+            { label: t("Split", language), value: "EmeraldBredSplit" },
+            { label: t("Alternate", language), value: "EmeraldBredAlternate" },
           ]}
         />
       ),
     },
     {
-      label: t("Egg min IVs"),
+      label: t("Egg min IVs", language),
       input: <IvInput<FormState> name="filter_min_ivs" />,
     },
     {
-      label: t("Egg max IVs"),
+      label: t("Egg max IVs", language),
       input: <IvInput<FormState> name="filter_max_ivs" />,
     },
   ];
@@ -150,13 +116,12 @@ const getFields = (t: Translator<typeof translations>): Field[] => {
 
 type Props = {
   lua?: boolean;
-  language?: keyof typeof translations;
 };
 
-export const EmeraldPickupEgg = ({ lua = false, language }: Props) => {
-  const t = useTranslator(translations, language ?? "en");
-  const fields = React.useMemo(() => getFields(t), [t]);
-  const columns = React.useMemo(() => getColumns(t), [t]);
+export const EmeraldPickupEgg = ({ lua = false }: Props) => {
+  const language = useActiveRouteLanguage();
+  const fields = React.useMemo(() => getFields(language), [language]);
+  const columns = React.useMemo(() => getColumns(language), [language]);
   const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
@@ -184,7 +149,7 @@ export const EmeraldPickupEgg = ({ lua = false, language }: Props) => {
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
-      submitButtonLabel={t("Generate")}
+      submitButtonLabel={t("Generate", language)}
       formContainerId="emerald_pickup_egg_form"
       submitTrackerId="generate_emerald_pickup_egg"
     />

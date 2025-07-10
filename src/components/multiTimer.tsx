@@ -17,38 +17,8 @@ import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
 import * as tst from "ts-toolbelt";
 import { Switch } from "./switch";
-import { createTranslator, Translations } from "~/utils/siteLanguage";
+import { t } from "~/translations";
 import { LanguageKey } from "~/guides";
-
-const englishTranslations = {
-  "Minutes Before Target": "Minutes Before Target",
-  Yes: "Yes",
-  No: "No",
-  "Display All Timers?": "Display All Timers?",
-  Beeps: "Beeps",
-  "Sync Optimization": "Sync Optimization",
-  "Experimental Sync (Test)": "Experimental Sync (Test)",
-  "Next Phase": "Next Phase",
-} as const;
-
-const translations = {
-  en: englishTranslations,
-  es: englishTranslations,
-  zh: englishTranslations,
-  fr: englishTranslations,
-  it: {
-    "Minutes Before Target": "Minuti prima del target",
-    Yes: "Sì",
-    No: "No",
-    "Display All Timers?": "Mostra tutti i timer?",
-    Beeps: "Beeps",
-    "Sync Optimization": "Sync Optimization",
-    "Experimental Sync (Test)": "Experimental Sync (Test)",
-    "Next Phase": "Next Phase",
-  },
-} as const satisfies Translations<typeof englishTranslations>;
-
-const t = createTranslator(translations);
 
 const MultiTimerStateSchema = z.object({
   showAllTimers: z.boolean(),

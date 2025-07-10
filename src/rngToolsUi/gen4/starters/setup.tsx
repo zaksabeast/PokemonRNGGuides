@@ -2,27 +2,9 @@ import { Field, FormFieldTable } from "~/components";
 import { starterAtom } from "./state";
 import { SelectGame } from "../shared/selectGame";
 import { Gen4ConsoleSelect } from "../shared/consoleSelect";
-import { createTranslator, Translations } from "~/utils/siteLanguage";
+import { t } from "~/translations";
 import { LanguageKey } from "~/guides";
 import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
-
-const englishTranslations = {
-  Game: "Game",
-  Console: "Console",
-} as const;
-
-const translations = {
-  en: englishTranslations,
-  es: englishTranslations,
-  zh: englishTranslations,
-  fr: englishTranslations,
-  it: {
-    Game: "Gioco",
-    Console: "Console",
-  },
-} as const satisfies Translations<typeof englishTranslations>;
-
-const t = createTranslator(translations);
 
 const supportedGames = [
   "Diamond",

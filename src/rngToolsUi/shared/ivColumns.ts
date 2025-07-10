@@ -4,33 +4,7 @@ import { InheritedIv, InheritedIvs, Ivs } from "~/rngTools";
 import { match, P } from "ts-pattern";
 import { NullableIvs } from "~/components/ivInput";
 import { LanguageKey } from "~/guides";
-import { createTranslator, Translations } from "~/utils/siteLanguage";
-
-const englishTranslations = {
-  HP: "HP",
-  Atk: "Atk",
-  Def: "Def",
-  SpA: "SpA",
-  SpD: "SpD",
-  Spe: "Spe",
-} as const;
-
-const translations = {
-  en: englishTranslations,
-  es: englishTranslations,
-  zh: englishTranslations,
-  fr: englishTranslations,
-  it: {
-    HP: "PS",
-    Atk: "Att",
-    Def: "Dif",
-    SpA: "Att Sp",
-    SpD: "Dif Sp",
-    Spe: "Vel",
-  },
-} as const satisfies Translations<typeof englishTranslations>;
-
-const t = createTranslator(translations);
+import { t } from "~/translations";
 
 export type FlattenIvs<T extends { ivs: Record<keyof Ivs, unknown> }> =
   tst.O.Merge<tst.O.Omit<T, "ivs">, T["ivs"]>;

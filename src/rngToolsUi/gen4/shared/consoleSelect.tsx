@@ -1,29 +1,9 @@
 import { PrimitiveAtom, useAtom } from "jotai";
 import { RadioGroup } from "~/components";
 import { z } from "zod";
-import { createTranslator, Translations } from "~/utils/siteLanguage";
+import { t } from "~/translations";
 import { LanguageKey } from "~/guides";
 import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
-
-const englishTranslations = {
-  "NDS/DSi": "NDS/DSi",
-  "3DS (Normal Settings)": "3DS (Normal Settings)",
-  "3DS (Alt Settings)": "3DS (Alt Settings)",
-} as const;
-
-const translations = {
-  en: englishTranslations,
-  es: englishTranslations,
-  zh: englishTranslations,
-  fr: englishTranslations,
-  it: {
-    "NDS/DSi": "NDS/DSi",
-    "3DS (Normal Settings)": "3DS (Impostazioni Normali)",
-    "3DS (Alt Settings)": "3DS (Impostazioni Alternative)",
-  },
-} as const satisfies Translations<typeof englishTranslations>;
-
-const t = createTranslator(translations);
 
 const Gen4ConsoleSchema = z.enum([
   "NdsDsi",

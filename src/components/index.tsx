@@ -11,7 +11,7 @@ export { Image } from "./image";
 export { MetaTags } from "./metaTags";
 export { List, ListItem } from "./list";
 export { FormikInput, Input } from "./input";
-export { FormikNumberInput } from "./numberInput";
+export { FormikNumberInput, NumberInput } from "./numberInput";
 export { Form } from "./form";
 export { FormFieldTable, type Field } from "./formFieldTable";
 export {

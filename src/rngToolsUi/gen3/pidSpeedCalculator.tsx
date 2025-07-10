@@ -1,8 +1,9 @@
 import React from "react";
-import { Input, Typography, Flex, FormFieldTable } from "~/components";
+import { Typography, Flex, FormFieldTable } from "~/components";
 import { rngTools } from "~/rngTools";
 import { match, P } from "ts-pattern";
 import { formatProbability } from "~/utils/formatProbability";
+import { NumberInput } from "~/components/numberInput";
 
 const formatPct = (val: number) => {
   if (val > 0.999999) {
@@ -47,6 +48,7 @@ export const Gen3PidSpeedCalculator = () => {
       });
   }, [speed, ranking]);
 
+  const [value, setValue] = React.useState<number>(0);
   const fields = React.useMemo(() => {
     return [
       {
@@ -54,14 +56,14 @@ export const Gen3PidSpeedCalculator = () => {
         input: (
           <NumberInput
             numType="hex"
-            name="Seed"
-            placeholder="1234abcd"
+            value={value}
             onChange={async (pid) => {
-              if (pid == null) {
-                setSpeed(null);
-                setRanking(null);
-                return;
+              if (pid == null || pid < 0) {
+                pid = 0;
+              } else if (pid > 0xffffffff) {
+                pid = 0xffffffff;
               }
+              setValue(pid);
 
               const pidSpeed = await rngTools.calculate_pid_speed(pid);
               const ranking =
@@ -73,7 +75,7 @@ export const Gen3PidSpeedCalculator = () => {
         ),
       },
     ];
-  }, [setSpeed, setRanking]);
+  }, [setSpeed, setRanking, value, setValue]);
 
   return (
     <Flex vertical gap={16}>

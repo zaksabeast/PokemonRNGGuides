@@ -18,17 +18,13 @@ import {
 import { z } from "zod";
 import { IvsSchema } from "~/components/ivInput";
 import { HexSchema } from "~/utils/number";
-import { t } from "~/translations";
-import { LanguageKey } from "~/guides";
-import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type Result = FlattenIvs<Egg3PickupState>;
 
-const getColumns = (language: LanguageKey): ResultColumn<Result>[] => {
-  return [
-    { title: t("Advance", language), dataIndex: "advance" },
-    ...inheritedIvColumns,
-  ];
+const getColumns = (t: Translations): ResultColumn<Result>[] => {
+  return [{ title: t["Advance"], dataIndex: "advance" }, ...inheritedIvColumns];
 };
 
 const Validator = z.object({
@@ -57,14 +53,14 @@ const initialValues: FormState = {
   filter_max_ivs: maxIvs,
 };
 
-const getFields = (language: LanguageKey): Field[] => {
+const getFields = (t: Translations): Field[] => {
   return [
     {
-      label: t("Seed", language),
+      label: t["Seed"],
       input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
     },
     {
-      label: t("Initial advances", language),
+      label: t["Initial advances"],
       input: (
         <FormikNumberInput<FormState>
           name="initial_advances"
@@ -73,42 +69,42 @@ const getFields = (language: LanguageKey): Field[] => {
       ),
     },
     {
-      label: t("Max advances", language),
+      label: t["Max advances"],
       input: (
         <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
       ),
     },
     {
-      label: t("Delay", language),
+      label: t["Delay"],
       input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
     },
     {
-      label: t("Parent 1 IVs", language),
+      label: t["Parent 1 IVs"],
       input: <IvInput<FormState> name="parent1_ivs" />,
     },
     {
-      label: t("Parent 2 IVs", language),
+      label: t["Parent 2 IVs"],
       input: <IvInput<FormState> name="parent2_ivs" />,
     },
     {
-      label: t("Method", language),
+      label: t["Method"],
       input: (
         <FormikSelect<FormState, "method">
           name="method"
           options={[
-            { label: t("Normal", language), value: "EmeraldBred" },
-            { label: t("Split", language), value: "EmeraldBredSplit" },
-            { label: t("Alternate", language), value: "EmeraldBredAlternate" },
+            { label: t["Normal"], value: "EmeraldBred" },
+            { label: t["Split"], value: "EmeraldBredSplit" },
+            { label: t["Alternate"], value: "EmeraldBredAlternate" },
           ]}
         />
       ),
     },
     {
-      label: t("Egg min IVs", language),
+      label: t["Egg min IVs"],
       input: <IvInput<FormState> name="filter_min_ivs" />,
     },
     {
-      label: t("Egg max IVs", language),
+      label: t["Egg max IVs"],
       input: <IvInput<FormState> name="filter_max_ivs" />,
     },
   ];
@@ -119,9 +115,9 @@ type Props = {
 };
 
 export const EmeraldPickupEgg = ({ lua = false }: Props) => {
-  const language = useActiveRouteLanguage();
-  const fields = React.useMemo(() => getFields(language), [language]);
-  const columns = React.useMemo(() => getColumns(language), [language]);
+  const t = useActiveRouteTranslations();
+  const fields = React.useMemo(() => getFields(t), [t]);
+  const columns = React.useMemo(() => getColumns(t), [t]);
   const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
@@ -149,7 +145,6 @@ export const EmeraldPickupEgg = ({ lua = false }: Props) => {
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
-      submitButtonLabel={t("Generate", language)}
       formContainerId="emerald_pickup_egg_form"
       submitTrackerId="generate_emerald_pickup_egg"
     />

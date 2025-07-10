@@ -11,8 +11,7 @@ import { z } from "zod";
 import * as tst from "ts-toolbelt";
 import { toOptions } from "~/utils/options";
 import { StatsFilterSchema } from "../types/stat";
-import { LanguageKey } from "~/guides";
-import { t } from "~/translations";
+import { Translations } from "~/translations";
 
 const sortedNatures = nature.toSorted();
 
@@ -94,17 +93,17 @@ const optOut = <T,>(condition: boolean | undefined, value: T): T | null => {
 
 const _getPkmFilterFields = (
   optOuts: FieldOptOuts = {},
-  language: LanguageKey = "en",
+  t?: Translations,
 ): Field[] =>
   [
     optOut(optOuts?.shiny, {
-      label: t("Shiny", language),
+      label: t?.["Shiny"] ?? "Shiny",
       input: (
         <FormikSwitch<PkmFilterFields, "filter_shiny"> name="filter_shiny" />
       ),
     }),
     optOut(optOuts?.nature, {
-      label: t("Nature", language),
+      label: t?.["Nature"] ?? "Nature",
       input: (
         <FormikSelect<PkmFilterFields, "filter_nature">
           name="filter_nature"
@@ -113,7 +112,7 @@ const _getPkmFilterFields = (
       ),
     }),
     optOut(optOuts?.ability, {
-      label: t("Ability", language),
+      label: t?.["Ability"] ?? "Ability",
       input: (
         <FormikSelect<PkmFilterFields, "filter_ability">
           name="filter_ability"
@@ -122,7 +121,7 @@ const _getPkmFilterFields = (
       ),
     }),
     optOut(optOuts?.gender, {
-      label: t("Gender", language),
+      label: t?.["Gender"] ?? "Gender",
       input: (
         <FormikSelect<PkmFilterFields, "filter_gender">
           name="filter_gender"
@@ -131,21 +130,20 @@ const _getPkmFilterFields = (
       ),
     }),
     optOut(optOuts?.ivs, {
-      label: t("Min IVs", language),
+      label: t?.["Min IVs"] ?? "Min IVs",
       input: <IvInput<PkmFilterFields> name="filter_min_ivs" />,
     }),
     optOut(optOuts?.ivs, {
-      label: t("Max IVs", language),
+      label: t?.["Max IVs"] ?? "Max IVs",
       input: <IvInput<PkmFilterFields> name="filter_max_ivs" />,
     }),
   ].filter((field) => field !== null);
 
 export const getPkmFilterFields = <FormField,>(
   optOuts?: FieldOptOuts,
-  language?: LanguageKey,
+  t?: Translations,
 ): FormField extends PkmFilterFields ? Field[] : never => {
-  return _getPkmFilterFields(
-    optOuts,
-    language,
-  ) as FormField extends PkmFilterFields ? Field[] : never;
+  return _getPkmFilterFields(optOuts, t) as FormField extends PkmFilterFields
+    ? Field[]
+    : never;
 };

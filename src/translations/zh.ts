@@ -87,4 +87,5 @@ export const zh: Translations = {
   Alternate: "Alternate",
   "Egg min IVs": "Egg min IVs",
   "Egg max IVs": "Egg max IVs",
+  Reset: "Reset",
 };

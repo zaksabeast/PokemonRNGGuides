@@ -10,6 +10,7 @@ import * as tst from "ts-toolbelt";
 import { AllOrNone, FeatureConfig, OneOf } from "~/types/utils";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 export type RngToolSubmit<Values> = (
   values: Values,
@@ -79,11 +80,17 @@ export const RngToolForm = <
   cancelTrackerId,
   onCancel,
 }: Props<FormState, Result>) => {
+  const t = useActiveRouteTranslations();
   const _validationSchema = React.useMemo(() => {
     return validationSchema == null
       ? undefined
       : toFormikValidationSchema(validationSchema);
   }, [validationSchema]);
+
+  const translatedSubmitLabel =
+    submitButtonLabel === "Generate" ? t["Generate"] : submitButtonLabel;
+  const translatedCancelLabel =
+    cancelButtonLabel === "Cancel" ? t["Cancel"] : cancelButtonLabel;
 
   return (
     <Formik
@@ -110,7 +117,7 @@ export const RngToolForm = <
               <Flex vertical gap={8}>
                 {fieldsReactNode}
                 <Button trackerId={submitTrackerId} htmlType="submit">
-                  {submitButtonLabel}
+                  {translatedSubmitLabel}
                 </Button>
                 {allowCancel && cancelTrackerId != null && (
                   <Button
@@ -118,12 +125,12 @@ export const RngToolForm = <
                     htmlType="button"
                     onClick={onCancel}
                   >
-                    {cancelButtonLabel}
+                    {translatedCancelLabel}
                   </Button>
                 )}
                 {allowReset && resetTrackerId != null && (
                   <Button trackerId={resetTrackerId} htmlType="reset">
-                    Reset
+                    {t["Reset"]}
                   </Button>
                 )}
               </Flex>

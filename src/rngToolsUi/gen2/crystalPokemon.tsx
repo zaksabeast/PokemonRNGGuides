@@ -9,33 +9,32 @@ import {
   Field,
 } from "~/components";
 import { rngTools, type Gen2Spread, type DivParams } from "~/rngTools";
-import { t } from "~/translations";
+import { Translations } from "~/translations";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
-import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
-import { LanguageKey } from "~/guides";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const YesIcon = () => <Icon name="CheckCircle" color="Success" size={20} />;
 
-const getColumns = (language: LanguageKey): ResultColumn<Gen2Spread>[] => {
+const getColumns = (t: Translations): ResultColumn<Gen2Spread>[] => {
   return [
     {
-      title: t("Advance", language),
+      title: t["Advance"],
       dataIndex: "advance",
     },
     {
-      title: t("State", language),
+      title: t["State"],
       dataIndex: "state",
       monospace: true,
       render: (state) => state.toString(16).padStart(4, "0"),
     },
     {
-      title: t("Shiny", language),
+      title: t["Shiny"],
       dataIndex: "shiny",
       render: (shiny) => (shiny ? <YesIcon /> : null),
     },
     {
-      title: t("Max DV", language),
+      title: t["Max DV"],
       dataIndex: "max_dv",
       render: (max_dv) => (max_dv ? <YesIcon /> : null),
     },
@@ -64,36 +63,36 @@ const initialValues: FormState = {
   filter: "Shiny",
 };
 
-const getFields = (language: LanguageKey): Field[] => {
+const getFields = (t: Translations): Field[] => {
   return [
     {
-      label: t("ADiv Index", language),
+      label: t["ADiv Index"],
       input: (
         <FormikNumberInput<FormState> name="adivIndex" numType="decimal" />
       ),
     },
     {
-      label: t("SDiv Index", language),
+      label: t["SDiv Index"],
       input: (
         <FormikNumberInput<FormState> name="sdivIndex" numType="decimal" />
       ),
     },
     {
-      label: t("Div", language),
+      label: t["Div"],
       input: <FormikNumberInput<FormState> name="div" numType="hex" />,
     },
     {
-      label: t("State", language),
+      label: t["State"],
       input: <FormikNumberInput<FormState> name="state" numType="hex" />,
     },
     {
-      label: t("Start Advance", language),
+      label: t["Start Advance"],
       input: (
         <FormikNumberInput<FormState> name="startAdvance" numType="decimal" />
       ),
     },
     {
-      label: t("Advance Count", language),
+      label: t["Advance Count"],
       input: (
         <FormikNumberInput<FormState>
           name="advanceCount"
@@ -103,21 +102,21 @@ const getFields = (language: LanguageKey): Field[] => {
       ),
     },
     {
-      label: t("Filter", language),
+      label: t["Filter"],
       input: (
         <FormikSelect<FormState, "filter">
           name="filter"
           options={[
             {
-              label: t("Any", language),
+              label: t["Any"],
               value: "Any",
             },
             {
-              label: t("Shiny", language),
+              label: t["Shiny"],
               value: "Shiny",
             },
             {
-              label: t("Max DV", language),
+              label: t["Max DV"],
               value: "MaxDv",
             },
           ]}
@@ -132,9 +131,9 @@ type Props = {
 };
 
 export const Gen2PokemonRng = ({ type }: Props) => {
-  const language = useActiveRouteLanguage();
-  const fields = React.useMemo(() => getFields(language), [language]);
-  const columns = React.useMemo(() => getColumns(language), [language]);
+  const t = useActiveRouteTranslations();
+  const fields = React.useMemo(() => getFields(t), [t]);
+  const columns = React.useMemo(() => getColumns(t), [t]);
   const [results, setResults] = React.useState<Gen2Spread[]>([]);
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
@@ -169,7 +168,6 @@ export const Gen2PokemonRng = ({ type }: Props) => {
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
-      submitButtonLabel={t("Generate", language)}
       submitTrackerId={
         type === "starter" ? "generate_gen2_starter" : "generate_gen2_celebi"
       }

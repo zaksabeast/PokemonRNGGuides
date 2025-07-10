@@ -85,6 +85,7 @@ export const en = {
   Alternate: "Alternate",
   "Egg min IVs": "Egg min IVs",
   "Egg max IVs": "Egg max IVs",
+  Reset: "Reset",
 } as const;
 
 export type Translations = Record<keyof typeof en, string>;

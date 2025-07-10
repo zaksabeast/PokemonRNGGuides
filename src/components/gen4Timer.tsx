@@ -1,6 +1,5 @@
 import React from "react";
 import { MultiTimer, Flex, MetronomeButton } from "~/components";
-import { LanguageKey } from "~/guides";
 import { Gen4TimerAtom, useGen4Timer } from "~/hooks/useGen4Timer";
 import { useMetronome } from "~/hooks/useMetronome";
 import { FeatureConfig } from "~/types";
@@ -10,7 +9,6 @@ type Props = {
   timer: Gen4TimerAtom;
   is3ds: boolean;
   fields?: React.ReactNode;
-  language?: LanguageKey;
 } & FeatureConfig<
   "selfInit",
   {
@@ -27,7 +25,6 @@ export const Gen4Timer = ({
   timer,
   is3ds,
   fields,
-  language,
 }: Props) => {
   const { ms, initTimer } = useGen4Timer(timer);
   const metronome = useMetronome({
@@ -50,7 +47,6 @@ export const Gen4Timer = ({
   return (
     <Flex vertical gap={12}>
       <MultiTimer
-        language={language}
         milliseconds={ms}
         disableStart={
           (is3ds && !metronome.isRunning) ||

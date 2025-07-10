@@ -2,9 +2,8 @@ import { Field, FormFieldTable } from "~/components";
 import { starterAtom } from "./state";
 import { SelectGame } from "../shared/selectGame";
 import { Gen4ConsoleSelect } from "../shared/consoleSelect";
-import { t } from "~/translations";
-import { LanguageKey } from "~/guides";
-import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const supportedGames = [
   "Diamond",
@@ -14,19 +13,19 @@ const supportedGames = [
   "SoulSilver",
 ] as const;
 
-const getFields = (language: LanguageKey = "en"): Field[] => [
+const getFields = (t: Translations): Field[] => [
   {
-    label: t("Game", language),
+    label: t["Game"],
     input: <SelectGame stateAtom={starterAtom} games={supportedGames} />,
   },
   {
-    label: t("Console", language),
+    label: t["Console"],
     input: <Gen4ConsoleSelect stateAtom={starterAtom} />,
   },
 ];
 
 export const Starter4Setup = () => {
-  const language = useActiveRouteLanguage();
-  const fields = getFields(language);
+  const t = useActiveRouteTranslations();
+  const fields = getFields(t);
   return <FormFieldTable fields={fields} />;
 };

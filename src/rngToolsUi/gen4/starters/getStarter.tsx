@@ -6,7 +6,6 @@ import {
   ConsoleDateTimeFormat,
   ConsoleSetDateString,
 } from "../shared/consoleDateStrings";
-import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
 
 type Starter4ConsoleSetDateStringProps = {
   format?: ConsoleDateTimeFormat;
@@ -30,7 +29,6 @@ export const Starter4ConsoleSetDateString = ({
 };
 
 export const GetStarter4 = () => {
-  const language = useActiveRouteLanguage();
   const [state] = useStarterState();
   const seedTime = state.target?.seed_time;
 
@@ -42,7 +40,6 @@ export const GetStarter4 = () => {
       targetDelay={seedTime?.delay ?? 0}
       targetSecond={seedTime?.datetime.second ?? 0}
       timer={starterTimer}
-      language={language}
     />
   );
 };

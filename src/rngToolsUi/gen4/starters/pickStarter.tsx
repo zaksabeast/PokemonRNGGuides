@@ -39,9 +39,8 @@ import { Gen4GameVersion } from "../gen4types";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { UndefinedToNull } from "~/types";
-import { t } from "~/translations";
-import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
-import { LanguageKey } from "~/guides";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
 
 type Result = FlattenIvs<
   SearchStatic4Method1State & {
@@ -116,72 +115,72 @@ const getStarterAdvance = (
     .otherwise(() => 0);
 };
 
-const getColumns = (language: LanguageKey): ResultColumn<Result>[] => [
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
-    title: t("Select", language),
+    title: t["Select"],
     dataIndex: "key",
     render: (_, target) => <SelectButton target={target} />,
   },
   {
-    title: t("Shiny", language),
+    title: t["Shiny"],
     dataIndex: "shiny",
     render: (shiny: boolean) => (shiny ? "Yes" : "No"),
   },
-  { title: t("Nature", language), dataIndex: "nature" },
-  { title: t("Ability", language), dataIndex: "ability" },
-  { title: t("Gender", language), dataIndex: "gender" },
-  ...getIvColumns(language),
+  { title: t["Nature"], dataIndex: "nature" },
+  { title: t["Ability"], dataIndex: "ability" },
+  { title: t["Gender"], dataIndex: "gender" },
+  ...getIvColumns(t),
   {
-    title: t("PID", language),
+    title: t["PID"],
     dataIndex: "pid",
     monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
-  { title: t("Delay", language), dataIndex: "delay" },
+  { title: t["Delay"], dataIndex: "delay" },
   {
-    title: t("Second", language),
+    title: t["Second"],
     dataIndex: "second",
   },
   {
-    title: t("Seed", language),
+    title: t["Seed"],
     dataIndex: "seed",
     monospace: true,
     render: (seed) => seed.toString(16).padStart(8, "0").toUpperCase(),
   },
 ];
 
-const getFields = (game: Gen4GameVersion, language: LanguageKey): Field[] => {
+const getFields = (game: Gen4GameVersion, t: Translations): Field[] => {
   const starters = match(game)
     .with("Diamond", "Pearl", "Platinum", () => dpptStarters)
     .with("HeartGold", "SoulSilver", () => hgssStarters)
     .exhaustive();
   return [
     {
-      label: t("TID", language),
+      label: t["TID"],
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
     {
-      label: t("SID", language),
+      label: t["SID"],
       input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
     },
     {
-      label: t("Year", language),
+      label: t["Year"],
       input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
     },
     {
-      label: t("Min Delay", language),
+      label: t["Min Delay"],
       input: (
         <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
       ),
     },
     {
-      label: t("Max Delay", language),
+      label: t["Max Delay"],
       input: (
         <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
       ),
     },
     {
-      label: t("Species", language),
+      label: t["Species"],
       input: (
         <FormikSelect<FormState, "species">
           name="species"
@@ -189,9 +188,9 @@ const getFields = (game: Gen4GameVersion, language: LanguageKey): Field[] => {
         />
       ),
     },
-    ...getPkmFilterFields({}, language),
+    ...getPkmFilterFields({}, t),
     {
-      label: t("Force Second", language),
+      label: t["Force Second"],
       input: (
         <FormikNumberInput<FormState> name="force_second" numType="decimal" />
       ),
@@ -210,7 +209,7 @@ const mapResult = (res: SearchStatic4Method1State): Result => {
 };
 
 export const PickStarter4 = () => {
-  const language = useActiveRouteLanguage();
+  const t = useActiveRouteTranslations();
   const [state, setState] = useStarterState();
   const {
     run: searchStarterSeeds,
@@ -250,10 +249,10 @@ export const PickStarter4 = () => {
 
   const { fields, columns } = React.useMemo(
     () => ({
-      fields: getFields(game, language),
-      columns: getColumns(language),
+      fields: getFields(game, t),
+      columns: getColumns(t),
     }),
-    [game, language],
+    [game, t],
   );
   const initialValues = match(game)
     .with("Diamond", "Pearl", "Platinum", () => dpptInitialValues)
@@ -272,8 +271,8 @@ export const PickStarter4 = () => {
       submitTrackerId="search_gen4_starters"
       allowCancel
       cancelTrackerId="cancel_gen4_starters"
-      submitButtonLabel={t("Generate", language)}
-      cancelButtonLabel={t("Cancel", language)}
+      submitButtonLabel={t["Generate"]}
+      cancelButtonLabel={t["Cancel"]}
       onCancel={cancel}
     />
   );

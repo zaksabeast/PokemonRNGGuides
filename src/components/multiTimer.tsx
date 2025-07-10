@@ -17,8 +17,7 @@ import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
 import * as tst from "ts-toolbelt";
 import { Switch } from "./switch";
-import { t } from "~/translations";
-import { LanguageKey } from "~/guides";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const MultiTimerStateSchema = z.object({
   showAllTimers: z.boolean(),
@@ -44,7 +43,6 @@ type InnerProps = {
   disableStart?: boolean;
   startButtonTrackerId: string;
   stopButtonTrackerId: string;
-  language?: LanguageKey;
 };
 
 const InnerMultiTimer = ({
@@ -55,8 +53,8 @@ const InnerMultiTimer = ({
   disableStart = false,
   startButtonTrackerId,
   stopButtonTrackerId,
-  language = "en",
 }: InnerProps) => {
+  const t = useActiveRouteTranslations();
   const [experimentalSync, setExperimentalSync] = React.useState(false);
   const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
@@ -125,7 +123,7 @@ const InnerMultiTimer = ({
   const timerSettingFields = React.useMemo(
     () => [
       {
-        label: t("Display All Timers?", language),
+        label: t["Display All Timers?"],
         input: (
           <Flex justify="flex-end">
             <RadioGroup
@@ -141,15 +139,15 @@ const InnerMultiTimer = ({
                 );
               }}
               options={[
-                { label: t("Yes", language), value: "showAllTimers" },
-                { label: t("No", language), value: "showCurrentTimer" },
+                { label: t["Yes"], value: "showAllTimers" },
+                { label: t["No"], value: "showCurrentTimer" },
               ]}
             />
           </Flex>
         ),
       },
       {
-        label: t("Sync Optimization", language),
+        label: t["Sync Optimization"],
         tooltip:
           "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
         input: (
@@ -169,7 +167,7 @@ const InnerMultiTimer = ({
         ),
       },
       {
-        label: t("Experimental Sync (Test)", language),
+        label: t["Experimental Sync (Test)"],
         tooltip:
           "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
         input: (
@@ -193,7 +191,7 @@ const InnerMultiTimer = ({
         ),
       },
       {
-        label: t("Beeps", language),
+        label: t["Beeps"],
         input: (
           <Select<number>
             name="countdownBeeps"
@@ -215,7 +213,7 @@ const InnerMultiTimer = ({
         ),
       },
     ],
-    [state, setState, experimentalSync, language],
+    [state, setState, experimentalSync, t],
   );
 
   return (
@@ -235,11 +233,10 @@ const InnerMultiTimer = ({
           </Flex>
           <Flex vertical gap={8}>
             <Typography.Title level={5} p={0} m={0}>
-              {t("Next Phase", language)}:{" "}
-              {nextMs == null ? "None" : nextMs / 1000}
+              {t["Next Phase"]}: {nextMs == null ? "None" : nextMs / 1000}
             </Typography.Title>
             <Typography.Title level={5} p={0} m={0}>
-              {t("Minutes Before Target", language)}: {minutesBeforeTarget}
+              {t["Minutes Before Target"]}: {minutesBeforeTarget}
             </Typography.Title>
           </Flex>
         </>
@@ -261,7 +258,7 @@ const InnerMultiTimer = ({
           </Flex>
           <Flex vertical gap={8}>
             <Typography.Title level={5} p={0} m={0}>
-              {t("Minutes Before Target", language)}: {minutesBeforeTarget}
+              {t["Minutes Before Target"]}: {minutesBeforeTarget}
             </Typography.Title>
           </Flex>
         </>

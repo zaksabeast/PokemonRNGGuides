@@ -1,34 +1,33 @@
 import { StatInput, StatFields } from "~/components/statInput";
-import { LanguageKey } from "~/guides";
 import { MinMaxStats } from "~/types/stat";
-import { t } from "~/translations";
+import { Translations } from "~/translations";
 
 export const getStatFields = <FormState extends StatFields>(
   minMaxStats: MinMaxStats,
-  language: LanguageKey = "en",
+  t?: Translations,
 ) => [
   {
-    label: t("HP", language),
+    label: t?.["HP"] ?? "HP",
     input: <StatInput<FormState> stat="hp" options={minMaxStats.hp} />,
   },
   {
-    label: t("Atk", language),
+    label: t?.["Atk"] ?? "Atk",
     input: <StatInput<FormState> stat="atk" options={minMaxStats.atk} />,
   },
   {
-    label: t("Def", language),
+    label: t?.["Def"] ?? "Def",
     input: <StatInput<FormState> stat="def" options={minMaxStats.def} />,
   },
   {
-    label: t("SpA", language),
+    label: t?.["SpA"] ?? "SpA",
     input: <StatInput<FormState> stat="spa" options={minMaxStats.spa} />,
   },
   {
-    label: t("SpD", language),
+    label: t?.["SpD"] ?? "SpD",
     input: <StatInput<FormState> stat="spd" options={minMaxStats.spd} />,
   },
   {
-    label: t("Spe", language),
+    label: t?.["Spe"] ?? "Spe",
     input: <StatInput<FormState> stat="spe" options={minMaxStats.spe} />,
   },
 ];

@@ -32,9 +32,8 @@ import pMap from "p-map";
 import { match } from "ts-pattern";
 import { characteristics, Characteristic4Options } from "../gen4types";
 import { fromRngDateTime, toRngDateTime } from "~/utils/time";
-import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
-import { t } from "~/translations";
-import { LanguageKey } from "~/guides";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
 
 type Result = Gen4StaticPokemon & {
   key: string;
@@ -73,9 +72,9 @@ const initialValues: FormState = {
   filter_characteristic: "AlertToSounds",
 };
 
-const getColumns = (language: LanguageKey): ResultColumn<Result>[] => [
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
-    title: t("Calibrate", language),
+    title: t["Calibrate"],
     dataIndex: "key",
     render: (_, target) => (
       <CalibrateTimerButton
@@ -88,34 +87,34 @@ const getColumns = (language: LanguageKey): ResultColumn<Result>[] => [
     ),
   },
   {
-    title: t("Delay Offset", language),
+    title: t["Delay Offset"],
     dataIndex: "delayOffset",
     render: formatOffset,
   },
   {
-    title: t("Advance Offset", language),
+    title: t["Advance Offset"],
     dataIndex: "advanceOffset",
     render: formatOffset,
   },
   {
-    title: t("Second Offset", language),
+    title: t["Second Offset"],
     dataIndex: "secondOffset",
     render: formatOffset,
   },
   {
-    title: t("Flip Delay", language),
+    title: t["Flip Delay"],
     dataIndex: "flipDelay",
     render: (flipDelay) =>
       flipDelay ? <Icon name="CheckCircle" color="Success" size={30} /> : null,
   },
   {
-    title: t("Seed", language),
+    title: t["Seed"],
     dataIndex: "seed",
     monospace: true,
     render: (val) => val.toString(16).padStart(8, "0").toUpperCase(),
   },
   {
-    title: t("Second", language),
+    title: t["Second"],
     dataIndex: "second",
   },
 ];
@@ -141,7 +140,7 @@ const getStarterGame = (starter: Gen4Starter) => {
 };
 
 export const CalibrateStarter4 = () => {
-  const language = useActiveRouteLanguage();
+  const t = useActiveRouteTranslations();
   const [state] = useStarterState();
   const [results, setResults] = React.useState<Result[]>([]);
 
@@ -154,7 +153,7 @@ export const CalibrateStarter4 = () => {
   const fields = React.useMemo((): Field[] => {
     return [
       {
-        label: t("Gender", language),
+        label: t["Gender"],
         input: (
           <FormikRadio<FormState, "gender">
             name="gender"
@@ -163,7 +162,7 @@ export const CalibrateStarter4 = () => {
         ),
       },
       {
-        label: t("Nature", language),
+        label: t["Nature"],
         input: (
           <FormikSelect<FormState, "nature">
             name="nature"
@@ -172,7 +171,7 @@ export const CalibrateStarter4 = () => {
         ),
       },
       {
-        label: t("Characteristic", language),
+        label: t["Characteristic"],
         input: (
           <FormikSelect<FormState, "filter_characteristic">
             name="filter_characteristic"
@@ -181,7 +180,7 @@ export const CalibrateStarter4 = () => {
         ),
       },
       {
-        label: t("Level", language),
+        label: t["Level"],
         input: (
           <FormikRadio<FormState, "level">
             name="level"
@@ -189,11 +188,11 @@ export const CalibrateStarter4 = () => {
           />
         ),
       },
-      ...getStatFields<FormState>(minMaxStats, language),
+      ...getStatFields<FormState>(minMaxStats, t),
     ];
-  }, [minMaxStats, language]);
+  }, [minMaxStats, t]);
 
-  const columns = React.useMemo(() => getColumns(language), [language]);
+  const columns = React.useMemo(() => getColumns(t), [t]);
 
   const onSubmit = React.useCallback(
     async (opts: FormState) => {
@@ -284,7 +283,6 @@ export const CalibrateStarter4 = () => {
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
-      submitButtonLabel={t("Generate", language)}
       rowKey="key"
       submitTrackerId="calibrate_gen4_starter"
     />

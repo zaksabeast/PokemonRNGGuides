@@ -14,28 +14,27 @@ import { nature } from "~/types/nature";
 import { gender } from "~/types/gender";
 import { genderOptions, natureOptions } from "~/components/pkmFilter";
 import { z } from "zod";
-import { t } from "~/translations";
-import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
-import { LanguageKey } from "~/guides";
+import { Translations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
-const getColumns = (language: LanguageKey): ResultColumn<Gen3HeldEgg>[] => {
+const getColumns = (t: Translations): ResultColumn<Gen3HeldEgg>[] => {
   return [
-    { title: t("Advance", language), dataIndex: "advance" },
-    { title: t("Redraws", language), dataIndex: "redraws" },
+    { title: t["Advance"], dataIndex: "advance" },
+    { title: t["Redraws"], dataIndex: "redraws" },
     {
-      title: t("PID", language),
+      title: t["PID"],
       dataIndex: "pid",
       monospace: true,
       render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
     },
-    { title: t("Gender", language), dataIndex: "gender" },
+    { title: t["Gender"], dataIndex: "gender" },
     {
-      title: t("Shiny", language),
+      title: t["Shiny"],
       dataIndex: "shiny",
       render: (shiny) => (shiny ? "Yes" : "No"),
     },
-    { title: t("Nature", language), dataIndex: "nature" },
-    { title: t("Ability", language), dataIndex: "ability" },
+    { title: t["Nature"], dataIndex: "nature" },
+    { title: t["Ability"], dataIndex: "ability" },
   ];
 };
 
@@ -77,10 +76,10 @@ const initialValues: FormState = {
   filter_gender: null,
 };
 
-const getFields = (language: LanguageKey): Field[] => {
+const getFields = (t: Translations): Field[] => {
   return [
     {
-      label: t("Female or Ditto has everstone", language),
+      label: t["Female or Ditto has everstone"],
       input: (
         <FormikSwitch<
           FormState,
@@ -89,7 +88,7 @@ const getFields = (language: LanguageKey): Field[] => {
       ),
     },
     {
-      label: t("Female or Ditto nature", language),
+      label: t["Female or Ditto nature"],
       input: (
         <FormikSelect<FormState, "female_nature">
           name="female_nature"
@@ -98,7 +97,7 @@ const getFields = (language: LanguageKey): Field[] => {
       ),
     },
     {
-      label: t("Egg species", language),
+      label: t["Egg species"],
       input: (
         <FormikSelect<FormState, "egg_species">
           name="egg_species"
@@ -108,21 +107,21 @@ const getFields = (language: LanguageKey): Field[] => {
     },
 
     {
-      label: t("Compatability", language),
+      label: t["Compatability"],
       input: (
         <FormikSelect<FormState, "compatability">
           name="compatability"
           options={[
             {
-              label: t("The two seem to get along", language),
+              label: t["The two seem to get along"],
               value: "GetAlong",
             },
             {
-              label: t("The two seem to get along very well", language),
+              label: t["The two seem to get along very well"],
               value: "GetAlongVeryWell",
             },
             {
-              label: t("The two don't seem to like each other", language),
+              label: t["The two don't seem to like each other"],
               value: "DontLikeEachOther",
             },
           ]}
@@ -130,21 +129,21 @@ const getFields = (language: LanguageKey): Field[] => {
       ),
     },
     {
-      label: t("Calibration", language),
+      label: t["Calibration"],
       input: (
         <FormikNumberInput<FormState> name="calibration" numType="decimal" />
       ),
     },
     {
-      label: t("TID", language),
+      label: t["TID"],
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
     {
-      label: t("SID", language),
+      label: t["SID"],
       input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
     },
     {
-      label: t("Initial advances", language),
+      label: t["Initial advances"],
       input: (
         <FormikNumberInput<FormState>
           name="initial_advances"
@@ -153,33 +152,33 @@ const getFields = (language: LanguageKey): Field[] => {
       ),
     },
     {
-      label: t("Max advances", language),
+      label: t["Max advances"],
       input: (
         <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
       ),
     },
     {
-      label: t("Delay", language),
+      label: t["Delay"],
       input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
     },
     {
-      label: t("Min redraw", language),
+      label: t["Min redraw"],
       input: (
         <FormikNumberInput<FormState> name="min_redraw" numType="decimal" />
       ),
     },
     {
-      label: t("Max redraw", language),
+      label: t["Max redraw"],
       input: (
         <FormikNumberInput<FormState> name="max_redraw" numType="decimal" />
       ),
     },
     {
-      label: t("Filter shiny", language),
+      label: t["Filter shiny"],
       input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
     },
     {
-      label: t("Filter nature", language),
+      label: t["Filter nature"],
       input: (
         <FormikSelect<FormState, "filter_nature">
           name="filter_nature"
@@ -188,7 +187,7 @@ const getFields = (language: LanguageKey): Field[] => {
       ),
     },
     {
-      label: t("Filter gender", language),
+      label: t["Filter gender"],
       input: (
         <FormikSelect<FormState, "filter_gender">
           name="filter_gender"
@@ -204,9 +203,9 @@ type Props = {
 };
 
 export const EmeraldHeldEgg = ({ lua = false }: Props) => {
-  const language = useActiveRouteLanguage();
-  const fields = React.useMemo(() => getFields(language), [language]);
-  const columns = React.useMemo(() => getColumns(language), [language]);
+  const t = useActiveRouteTranslations();
+  const fields = React.useMemo(() => getFields(t), [t]);
+  const columns = React.useMemo(() => getColumns(t), [t]);
   const [results, setResults] = React.useState<Gen3HeldEgg[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
@@ -238,7 +237,6 @@ export const EmeraldHeldEgg = ({ lua = false }: Props) => {
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
-      submitButtonLabel={t("Generate", language)}
       formContainerId="emerald_held_egg_form"
       submitTrackerId="generate_emerald_held_egg"
     />

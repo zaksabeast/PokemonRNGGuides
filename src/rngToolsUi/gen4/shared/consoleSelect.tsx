@@ -1,9 +1,8 @@
 import { PrimitiveAtom, useAtom } from "jotai";
 import { RadioGroup } from "~/components";
 import { z } from "zod";
-import { t } from "~/translations";
-import { LanguageKey } from "~/guides";
-import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const Gen4ConsoleSchema = z.enum([
   "NdsDsi",
@@ -13,14 +12,14 @@ const Gen4ConsoleSchema = z.enum([
 
 export type Gen4Console = z.infer<typeof Gen4ConsoleSchema>;
 
-const getOptions = (language: LanguageKey = "en") => [
-  { label: t("NDS/DSi", language), value: "NdsDsi" as const },
+const getOptions = (t: Translations) => [
+  { label: t["NDS/DSi"], value: "NdsDsi" as const },
   {
-    label: t("3DS (Normal Settings)", language),
+    label: t["3DS (Normal Settings)"],
     value: "3dsNormalSettings" as const,
   },
   {
-    label: t("3DS (Alt Settings)", language),
+    label: t["3DS (Alt Settings)"],
     value: "3dsAltSettings" as const,
   },
 ];
@@ -32,7 +31,7 @@ type Gen4ConsoleSelectProps<State extends { console: Gen4Console }> = {
 export const Gen4ConsoleSelect = <State extends { console: Gen4Console }>({
   stateAtom,
 }: Gen4ConsoleSelectProps<State>) => {
-  const language = useActiveRouteLanguage();
+  const t = useActiveRouteTranslations();
   const [state, setState] = useAtom(stateAtom);
   return (
     <RadioGroup
@@ -50,7 +49,7 @@ export const Gen4ConsoleSelect = <State extends { console: Gen4Console }>({
           console: value.data,
         }));
       }}
-      options={getOptions(language)}
+      options={getOptions(t)}
     />
   );
 };

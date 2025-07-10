@@ -87,4 +87,5 @@ export const it: Translations = {
   Alternate: "Alternato",
   "Egg min IVs": "IV minime dell'uovo",
   "Egg max IVs": "IV massime dell'uovo",
+  Reset: "Reset",
 };

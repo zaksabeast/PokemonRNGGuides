@@ -3,8 +3,7 @@ import { ResultColumn } from "~/components";
 import { InheritedIv, InheritedIvs, Ivs } from "~/rngTools";
 import { match, P } from "ts-pattern";
 import { NullableIvs } from "~/components/ivInput";
-import { LanguageKey } from "~/guides";
-import { t } from "~/translations";
+import { Translations } from "~/translations";
 
 export type FlattenIvs<T extends { ivs: Record<keyof Ivs, unknown> }> =
   tst.O.Merge<tst.O.Omit<T, "ivs">, T["ivs"]>;
@@ -18,10 +17,10 @@ export const ivColumns = [
   { title: "Spe", dataIndex: "spe" },
 ] as const satisfies ResultColumn<Ivs>[];
 
-export const getIvColumns = (language: LanguageKey = "en") => {
+export const getIvColumns = (t: Translations) => {
   return ivColumns.map((column) => ({
     ...column,
-    title: t(column.title, language),
+    title: t[column.title],
   }));
 };
 

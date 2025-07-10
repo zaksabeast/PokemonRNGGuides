@@ -52,14 +52,15 @@ export const Gen3PidSpeedCalculator = () => {
       {
         label: "Lead PID",
         input: (
-          <Input
-            type="text"
+          <NumberInput
+            numType="hex"
             name="Seed"
             placeholder="1234abcd"
-            onChange={async (event) => {
-              const pid = parseInt(event.target.value, 16);
-              if (isNaN(pid) || pid < 0 || pid > 0xffffffff) {
-                return setSpeed(null);
+            onChange={async (pid) => {
+              if (pid == null) {
+                setSpeed(null);
+                setRanking(null);
+                return;
               }
 
               const pidSpeed = await rngTools.calculate_pid_speed(pid);

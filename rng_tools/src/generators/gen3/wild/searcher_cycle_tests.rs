@@ -33,13 +33,9 @@ mod test {
             consider_rng_manipulated_lead_pid: true,
             leads: vec![Gen3Lead::Vanilla],
             filter: PkmFilter {
-                shiny: false,
                 nature: Some(Nature::Naive),
                 gender: Some(Gender::Male),
-                min_ivs: Ivs::new_all0(),
-                max_ivs: Ivs::new_all31(),
-                ability: None,
-                stats: None,
+                ..Default::default()
             },
         };
         let expected_results = [

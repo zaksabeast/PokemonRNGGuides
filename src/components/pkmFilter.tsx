@@ -10,6 +10,7 @@ import { maxIvs, minIvs } from "~/types/ivs";
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
 import { toOptions } from "~/utils/options";
+import { StatsFilterSchema } from "../types/stat";
 
 const sortedNatures = nature.toSorted();
 
@@ -50,7 +51,22 @@ export const pkmFilterSchema = z.object({
   filter_gender: z.enum(gender).nullable(),
   filter_min_ivs: IvsSchema,
   filter_max_ivs: IvsSchema,
-}) satisfies z.Schema<Omit<PkmFilterFields, "filter_stats">>;
+  filter_stats: StatsFilterSchema.nullable(),
+});
+
+export const pkmFilterFieldsToRustInput = (
+  fields: PkmFilterFields,
+): PkmFilter => {
+  return {
+    shiny: fields.filter_shiny,
+    nature: fields.filter_nature,
+    gender: fields.filter_gender,
+    min_ivs: fields.filter_min_ivs,
+    max_ivs: fields.filter_max_ivs,
+    ability: fields.filter_ability,
+    stats: null,
+  };
+};
 
 type FieldOptOuts = {
   shiny?: boolean;
@@ -60,18 +76,15 @@ type FieldOptOuts = {
   ivs?: boolean;
 };
 
-export const getPkmFilterInitialValues = (): Omit<
-  PkmFilterFields,
-  "filter_stats"
-> =>
-  ({
-    filter_shiny: false,
-    filter_min_ivs: minIvs,
-    filter_max_ivs: maxIvs,
-    filter_nature: null,
-    filter_gender: null,
-    filter_ability: null,
-  }) as const;
+export const getPkmFilterInitialValues = (): PkmFilterFields => ({
+  filter_shiny: false,
+  filter_min_ivs: minIvs,
+  filter_max_ivs: maxIvs,
+  filter_nature: null,
+  filter_gender: null,
+  filter_ability: null,
+  filter_stats: null,
+});
 
 const optOut = <T,>(condition: boolean | undefined, value: T): T | null => {
   return condition === false ? null : value;

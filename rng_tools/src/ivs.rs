@@ -58,6 +58,21 @@ pub struct IvFilter {
     pub max_ivs: Ivs,
 }
 
+impl IvFilter {
+    pub fn new_allow_all() -> Self {
+        Self {
+            min_ivs: Ivs::new_all0(),
+            max_ivs: Ivs::new_all31(),
+        }
+    }
+}
+
+impl Default for IvFilter {
+    fn default() -> Self {
+        Self::new_allow_all()
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum InheritedIv {
@@ -130,6 +145,16 @@ pub struct Ivs {
 }
 
 impl Ivs {
+    pub fn new(hp: u8, atk: u8, def: u8, spa: u8, spd: u8, spe: u8) -> Self {
+        Self {
+            hp,
+            atk,
+            def,
+            spe,
+            spa,
+            spd,
+        }
+    }
     pub fn new_all0() -> Self {
         Self {
             hp: 0,

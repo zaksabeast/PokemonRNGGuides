@@ -2,13 +2,10 @@
 mod test {
     use crate::assert_list_eq;
 
-    use crate::EncounterSlot;
-    use crate::Ivs;
-    use crate::gen3::Gen3Lead;
-    use crate::gen3::Gen3Method;
-    use crate::gen3::search_wild3;
-    use crate::gen3::{Wild3SearcherOptions, Wild3SearcherResultMon};
-    use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
+    use crate::gen3::{
+        Gen3Lead, Gen3Method, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
+    };
+    use crate::{AbilityType, EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter};
 
     #[test]
     fn test_search_wild3_no_filter() {
@@ -117,7 +114,6 @@ mod test {
             consider_cycles: false,
             consider_rng_manipulated_lead_pid: false,
             filter: PkmFilter {
-                shiny: false,
                 nature: Some(Nature::Adamant),
                 gender: Some(Gender::Female),
                 min_ivs: Ivs {
@@ -128,9 +124,8 @@ mod test {
                     spd: 10,
                     spe: 10,
                 },
-                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
-                stats: None,
+                ..Default::default()
             },
         };
         let expected_results = [
@@ -221,10 +216,8 @@ mod test {
                 shiny: true,
                 nature: Some(Nature::Naive),
                 gender: Some(Gender::Male),
-                min_ivs: Ivs::new_all0(),
-                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
-                stats: None,
+                ..Default::default()
             },
         };
         let expected_results = [Wild3SearcherResultMon {
@@ -361,12 +354,8 @@ mod test {
             leads: vec![Gen3Lead::Vanilla],
             filter: PkmFilter {
                 shiny: true,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs::new_all0(),
                 max_ivs: Ivs::new_all31(),
-                ability: None,
-                stats: None,
+                ..Default::default()
             },
         };
         let expected_results = [

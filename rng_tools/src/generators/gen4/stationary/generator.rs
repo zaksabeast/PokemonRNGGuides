@@ -61,6 +61,10 @@ impl PkmState for Gen4StaticPokemon {
     fn shiny(&self) -> bool {
         self.shiny
     }
+
+    fn pid(&self) -> u32 {
+        self.pid
+    }
 }
 
 fn generate_gen4_static(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4StaticPokemon> {
@@ -349,29 +353,7 @@ mod test {
             game: Some(GameVersion::Platinum),
             lead: LeadAbilities::None,
             filter_characteristic: None,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
         };
         let expected_results = [
             Gen4StaticPokemon {
@@ -578,29 +560,7 @@ mod test {
             game: Some(GameVersion::Platinum),
             lead: LeadAbilities::None,
             filter_characteristic: None,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
         };
         let expected_results = [
             Gen4StaticPokemon {
@@ -807,29 +767,7 @@ mod test {
             game: Some(GameVersion::HeartGold),
             lead: LeadAbilities::None,
             filter_characteristic: None,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
         };
         let expected_results = [
             Gen4StaticPokemon {
@@ -1041,29 +979,7 @@ mod test {
                 game: Some(GameVersion::HeartGold),
                 lead: LeadAbilities::Synchronize(Nature::Adamant),
                 filter_characteristic: None,
-                filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
-                    min_ivs: Ivs {
-                        hp: 0,
-                        atk: 0,
-                        def: 0,
-                        spa: 0,
-                        spd: 0,
-                        spe: 0,
-                    },
-                    max_ivs: Ivs {
-                        hp: 31,
-                        atk: 31,
-                        def: 31,
-                        spa: 31,
-                        spd: 31,
-                        spe: 31,
-                    },
-                    ability: None,
-                    stats: None,
-                },
+                filter: PkmFilter::new_allow_all(),
             };
             let expected_results = [
                 Gen4StaticPokemon {
@@ -1270,29 +1186,7 @@ mod test {
                 game: Some(GameVersion::Platinum),
                 lead: LeadAbilities::Synchronize(Nature::Adamant),
                 filter_characteristic: None,
-                filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
-                    min_ivs: Ivs {
-                        hp: 0,
-                        atk: 0,
-                        def: 0,
-                        spa: 0,
-                        spd: 0,
-                        spe: 0,
-                    },
-                    max_ivs: Ivs {
-                        hp: 31,
-                        atk: 31,
-                        def: 31,
-                        spa: 31,
-                        spd: 31,
-                        spe: 31,
-                    },
-                    ability: None,
-                    stats: None,
-                },
+                filter: PkmFilter::new_allow_all(),
             };
             let expected_results = [
                 Gen4StaticPokemon {
@@ -1504,29 +1398,7 @@ mod test {
                 game: Some(GameVersion::HeartGold),
                 lead: LeadAbilities::CutecharmM,
                 filter_characteristic: None,
-                filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
-                    min_ivs: Ivs {
-                        hp: 0,
-                        atk: 0,
-                        def: 0,
-                        spa: 0,
-                        spd: 0,
-                        spe: 0,
-                    },
-                    max_ivs: Ivs {
-                        hp: 31,
-                        atk: 31,
-                        def: 31,
-                        spa: 31,
-                        spd: 31,
-                        spe: 31,
-                    },
-                    ability: None,
-                    stats: None,
-                },
+                filter: PkmFilter::new_allow_all(),
             };
             let expected_results = [
                 Gen4StaticPokemon {
@@ -1732,29 +1604,7 @@ mod test {
                 game: Some(GameVersion::Platinum),
                 lead: LeadAbilities::CutecharmM,
                 filter_characteristic: None,
-                filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
-                    min_ivs: Ivs {
-                        hp: 0,
-                        atk: 0,
-                        def: 0,
-                        spa: 0,
-                        spd: 0,
-                        spe: 0,
-                    },
-                    max_ivs: Ivs {
-                        hp: 31,
-                        atk: 31,
-                        def: 31,
-                        spa: 31,
-                        spd: 31,
-                        spe: 31,
-                    },
-                    ability: None,
-                    stats: None,
-                },
+                filter: PkmFilter::new_allow_all(),
             };
             let expected_results = [
                 Gen4StaticPokemon {

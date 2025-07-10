@@ -27,6 +27,7 @@ import {
   getPkmFilterFields,
   pkmFilterSchema,
   getPkmFilterInitialValues,
+  pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
 import { Static3Game } from "~/rngToolsUi/gen3/static/constants";
 import React from "react";
@@ -48,8 +49,6 @@ import { Tooltip } from "antd";
 
 /*
 Possible improvements:
- - Show/hide columns based on options.
- - Add ColumnGroup for Likelihood by lead speed columns.
  - Add Tooltip for Likelihood by lead speed columns.
 
  - Support multiple encounter types.
@@ -639,15 +638,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
         initial_advances: values.initial_advances,
         max_advances: values.max_advances,
         max_result_count: values.max_result_count,
-        filter: {
-          shiny: values.filter_shiny,
-          nature: values.filter_nature,
-          gender: values.filter_gender,
-          min_ivs: values.filter_min_ivs,
-          max_ivs: values.filter_max_ivs,
-          ability: values.filter_ability,
-          stats: null,
-        },
+        filter: pkmFilterFieldsToRustInput(values),
         leads: getLeads(values),
         encounter_slots_by_map: ecounterSlotsByMap.map((val) => val[1]),
         methods: values.methods,

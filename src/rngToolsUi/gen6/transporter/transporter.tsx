@@ -13,8 +13,11 @@ import {
   FlattenIvs,
   ivColumns,
 } from "~/rngToolsUi/shared/ivColumns";
-import { maxIvs, minIvs } from "~/types/ivs";
-import { getPkmFilterFields, pkmFilterSchema } from "~/components/pkmFilter";
+import {
+  getPkmFilterFields,
+  pkmFilterSchema,
+  getPkmFilterInitialValues,
+} from "~/components/pkmFilter";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { toOptions } from "~/utils/options";
@@ -81,12 +84,7 @@ const initialValues: FormState = {
   tsv: 0,
   only_current_seed: false,
   transporter_genders: "NoGender",
-  filter_shiny: false,
-  filter_min_ivs: minIvs,
-  filter_max_ivs: maxIvs,
-  filter_nature: null,
-  filter_gender: null,
-  filter_ability: null,
+  ...getPkmFilterInitialValues(),
 };
 
 const fields: Field[] = [

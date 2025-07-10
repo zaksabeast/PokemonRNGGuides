@@ -33,6 +33,12 @@ pub struct PkmFilter {
     pub stats: Option<StatFilter>,
 }
 
+impl Default for PkmFilter {
+    fn default() -> Self {
+        PkmFilter::new_allow_all()
+    }
+}
+
 impl PkmFilter {
     pub fn new_allow_all() -> Self {
         Self {
@@ -137,6 +143,7 @@ impl PkmFilter {
 }
 
 pub trait PkmState {
+    fn pid(&self) -> u32;
     fn shiny(&self) -> bool;
     fn nature(&self) -> Nature;
     fn ivs(&self) -> &Ivs;

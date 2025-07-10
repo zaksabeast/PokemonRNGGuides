@@ -61,7 +61,6 @@ mod test {
             methods: vec![Gen3Method::Wild1],
             lead: Gen3Lead::Vanilla,
             filter: PkmFilter {
-                shiny: false,
                 nature: Some(Nature::Adamant),
                 gender: Some(Gender::Female),
                 min_ivs: Ivs {
@@ -72,9 +71,8 @@ mod test {
                     spd: 10,
                     spe: 10,
                 },
-                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
-                stats: None,
+                ..Default::default()
             },
             consider_cycles: false,
             consider_rng_manipulated_lead_pid: false,
@@ -114,10 +112,8 @@ mod test {
                 shiny: true,
                 nature: Some(Nature::Naive),
                 gender: Some(Gender::Male),
-                min_ivs: Ivs::new_all0(),
-                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
-                stats: None,
+                ..Default::default()
             },
             consider_cycles: false,
             consider_rng_manipulated_lead_pid: false,

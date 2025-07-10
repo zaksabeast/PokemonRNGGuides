@@ -4,9 +4,7 @@ mod test {
     use crate::Ivs;
     use crate::gen3::Gen3Lead;
     use crate::gen3::Gen3Method;
-    use crate::gen3::{
-        CycleRange, Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild,
-    };
+    use crate::gen3::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
     use crate::rng::Rng;
     use crate::rng::lcrng::Pokerng;
     use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
@@ -23,6 +21,8 @@ mod test {
             map_idx: 0,
             lead: Gen3Lead::Vanilla,
             filter: PkmFilter::new_allow_all(),
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
         };
 
         let mut rng = Pokerng::new(0);
@@ -40,7 +40,7 @@ mod test {
                 spe: 9,
             },
             method: Gen3Method::Wild1,
-            cycle_range: CycleRange::new(214094, 80, 0, 280896),
+            cycle_range: None,
         }];
         assert_eq!(result, expected_result);
     }
@@ -61,7 +61,6 @@ mod test {
             methods: vec![Gen3Method::Wild1],
             lead: Gen3Lead::Vanilla,
             filter: PkmFilter {
-                shiny: false,
                 nature: Some(Nature::Adamant),
                 gender: Some(Gender::Female),
                 min_ivs: Ivs {
@@ -72,10 +71,11 @@ mod test {
                     spd: 10,
                     spe: 10,
                 },
-                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
-                stats: None,
+                ..Default::default()
             },
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
         };
 
         let mut rng = Pokerng::new(0x346A4A45);
@@ -93,7 +93,7 @@ mod test {
                 spe: 13,
             },
             method: Gen3Method::Wild1,
-            cycle_range: CycleRange::new(202240, 80, 0, 280896),
+            cycle_range: None,
         }];
         assert_eq!(result, expected_result);
     }
@@ -112,11 +112,11 @@ mod test {
                 shiny: true,
                 nature: Some(Nature::Naive),
                 gender: Some(Gender::Male),
-                min_ivs: Ivs::new_all0(),
-                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
-                stats: None,
+                ..Default::default()
             },
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
         };
 
         let rng = Pokerng::new(0x14a22065);
@@ -133,7 +133,7 @@ mod test {
                 spe: 25,
             },
             method: Gen3Method::Wild1,
-            cycle_range: CycleRange::new(202345, 80, 0, 280896),
+            cycle_range: None,
         }];
         assert_eq!(result, expected_result);
     }
@@ -150,6 +150,8 @@ mod test {
             map_idx: 0,
             lead: Gen3Lead::Synchronize(Nature::Hardy),
             filter: PkmFilter::new_allow_all(),
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
         };
 
         let rng = Pokerng::new(0x14a22065);
@@ -166,7 +168,7 @@ mod test {
                 spe: 13,
             },
             encounter_slot: EncounterSlot::Slot4,
-            cycle_range: CycleRange::new(343478, 80, 0, 280896),
+            cycle_range: None,
         }];
         assert_eq!(result, expected_result);
     }
@@ -183,6 +185,8 @@ mod test {
             map_idx: 0,
             lead: Gen3Lead::CuteCharm(Gender::Female),
             filter: PkmFilter::new_allow_all(),
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
         };
 
         let mut rng = Pokerng::new(0);
@@ -200,7 +204,7 @@ mod test {
                 spe: 16,
             },
             method: Gen3Method::Wild1,
-            cycle_range: CycleRange::new(278304, 88, 0, 280896),
+            cycle_range: None,
         }];
         assert_eq!(result, expected_result);
     }
@@ -223,6 +227,8 @@ mod test {
             map_idx: 0,
             lead: Gen3Lead::Vanilla,
             filter: PkmFilter::new_allow_all(),
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
         };
 
         let mut rng = Pokerng::new(0);
@@ -241,7 +247,7 @@ mod test {
                     spe: 7,
                 },
                 method: Gen3Method::Wild5,
-                cycle_range: CycleRange::new(48353, 80, 0, 913),
+                cycle_range: None,
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot0,
@@ -255,7 +261,7 @@ mod test {
                     spe: 24,
                 },
                 method: Gen3Method::Wild3,
-                cycle_range: CycleRange::new(52284, 80, 0, 80),
+                cycle_range: None,
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot0,
@@ -269,7 +275,7 @@ mod test {
                     spe: 22,
                 },
                 method: Gen3Method::Wild2,
-                cycle_range: CycleRange::new(58459, 80, 0, 116031),
+                cycle_range: None,
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot0,
@@ -283,7 +289,7 @@ mod test {
                     spe: 22,
                 },
                 method: Gen3Method::Wild4,
-                cycle_range: CycleRange::new(174490, 80, 0, 39291),
+                cycle_range: None,
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot0,
@@ -297,7 +303,7 @@ mod test {
                     spe: 13,
                 },
                 method: Gen3Method::Wild1,
-                cycle_range: CycleRange::new(213781, 80, 0, 280896),
+                cycle_range: None,
             },
         ];
         assert_eq!(result, expected_result);
@@ -315,6 +321,8 @@ mod test {
             map_idx: 0,
             lead: Gen3Lead::Egg,
             filter: PkmFilter::new_allow_all(),
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
         };
 
         let mut rng = Pokerng::new(0);
@@ -332,7 +340,7 @@ mod test {
                 spe: 31,
             },
             method: Gen3Method::Wild4,
-            cycle_range: CycleRange::new(146246, 0, 0, 39507),
+            cycle_range: None,
         }];
         assert_eq!(result, expected_result);
     }

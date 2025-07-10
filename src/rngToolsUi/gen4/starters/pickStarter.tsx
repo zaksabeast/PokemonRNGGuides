@@ -17,6 +17,7 @@ import {
   getPkmFilterFields,
   getPkmFilterInitialValues,
   pkmFilterSchema,
+  pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
 import {
   flattenIvs,
@@ -227,15 +228,7 @@ export const PickStarter4 = () => {
         min_advance: advance,
         max_advance: advance,
         force_second: opts.force_second,
-        filter: {
-          shiny: opts.filter_shiny,
-          nature: opts.filter_nature,
-          gender: opts.filter_gender,
-          ability: opts.filter_ability,
-          min_ivs: opts.filter_min_ivs,
-          max_ivs: opts.filter_max_ivs,
-          stats: null,
-        },
+        filter: pkmFilterFieldsToRustInput(opts),
       };
       const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
       const searchOpts = chunkedIvs.map(([minIvs, maxIvs]) => ({

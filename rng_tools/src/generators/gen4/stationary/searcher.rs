@@ -70,6 +70,10 @@ impl PkmState for Base4Method1State {
     fn shiny(&self) -> bool {
         self.shiny
     }
+
+    fn pid(&self) -> u32 {
+        self.pid
+    }
 }
 
 impl Base4Method1State {
@@ -235,13 +239,8 @@ mod tests {
                 force_second: None,
                 species: Species::Turtwig,
                 filter: PkmFilter {
-                    ability: None,
-                    gender: None,
-                    nature: None,
-                    shiny: false,
-                    stats: None,
                     min_ivs: ivs!(30 / 30 / 20 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
+                    ..Default::default()
                 },
             };
 
@@ -679,13 +678,8 @@ mod tests {
                 force_second: None,
                 species: Species::Turtwig,
                 filter: PkmFilter {
-                    ability: None,
-                    gender: None,
-                    nature: None,
-                    shiny: false,
-                    stats: None,
                     min_ivs: ivs!(30 / 30 / 20 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
+                    ..Default::default()
                 },
             };
 
@@ -939,13 +933,8 @@ mod tests {
                 force_second: Some(30),
                 species: Species::Turtwig,
                 filter: PkmFilter {
-                    ability: None,
-                    gender: None,
-                    nature: None,
-                    shiny: false,
-                    stats: None,
                     min_ivs: ivs!(30 / 30 / 20 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
+                    ..Default::default()
                 },
             };
 

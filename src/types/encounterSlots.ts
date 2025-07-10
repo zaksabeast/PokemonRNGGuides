@@ -1,6 +1,7 @@
 import { EncounterSlot } from "~/rngTools";
 
 export const encounterSlots = [
+  "Slot0",
   "Slot1",
   "Slot2",
   "Slot3",

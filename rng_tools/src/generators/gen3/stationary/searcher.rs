@@ -39,6 +39,10 @@ impl PkmState for Static3SearcherResult {
     fn gender(&self) -> Gender {
         self.gender
     }
+
+    fn pid(&self) -> u32 {
+        self.pid
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -136,15 +140,6 @@ mod test {
     use super::*;
     use crate::gen3::{Static3GeneratorOptions, gen3_static_generator_states};
 
-    const PERFECT_IVS: Ivs = Ivs {
-        hp: 31,
-        atk: 31,
-        def: 31,
-        spa: 31,
-        spd: 31,
-        spe: 31,
-    };
-
     #[test]
     fn search_method4() {
         let opts = Static3SearcherOptions {
@@ -154,13 +149,8 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: PERFECT_IVS,
-                max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
+                min_ivs: Ivs::new_all31(),
+                ..Default::default()
             },
         };
 
@@ -178,13 +168,8 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: PERFECT_IVS,
-                max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
+                min_ivs: Ivs::new_all31(),
+                ..Default::default()
             },
         };
 
@@ -211,13 +196,8 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: PERFECT_IVS,
-                max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
+                min_ivs: Ivs::new_all31(),
+                ..Default::default()
             },
         };
 
@@ -235,13 +215,8 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: PERFECT_IVS,
-                max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
+                min_ivs: Ivs::new_all31(),
+                ..Default::default()
             },
         };
 
@@ -268,13 +243,8 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: PERFECT_IVS,
-                max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
+                min_ivs: Ivs::new_all31(),
+                ..Default::default()
             },
         };
 
@@ -292,17 +262,12 @@ mod test {
             tid: 12345,
             sid: 54321,
             filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
                 min_ivs: Ivs {
                     hp: 31,
                     atk: 7,
                     ..Default::default()
                 },
-                max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
+                ..Default::default()
             },
         };
 

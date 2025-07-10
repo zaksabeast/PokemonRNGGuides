@@ -154,7 +154,7 @@ export const MainLayout = ({ children, trackerName }: Props) => {
                 </Typography.Text>
                 <List ml={24} pv={12}>
                   {settings.hallOfFameSupporters.map((supporter) => (
-                    <ListItem fontSize={18}>
+                    <ListItem fontSize={18} key={supporter.name}>
                       <Flex gap={8} align="center">
                         <Icon {...getSupporterIconProps(supporter.type)} />
                         {supporter.name}

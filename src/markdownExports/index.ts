@@ -8,7 +8,6 @@ import {
   MarkdownH5,
   MarkdownH6,
   MarkdownParagraph,
-  MarkdownList,
   MarkdownListItem,
   MarkdownDivider,
   MarkdownCode,
@@ -28,6 +27,8 @@ import {
   Alert,
   Stepper,
   Step,
+  WhatNext,
+  List,
   MediaTable,
   MediaTableBody,
   MediaTableHeader,
@@ -90,7 +91,6 @@ import { Gen4IdSetup } from "~/rngToolsUi/gen4/id/setup";
 import { Starter4ConsoleSetDateString } from "~/rngToolsUi/gen4/starters/getStarter";
 import { Starter4ShowIf } from "~/rngToolsUi/gen4/starters/showIf";
 import { Id4ShowIf } from "~/rngToolsUi/gen4/id/showIf";
-import { Metronome3dsNotice } from "~/rngToolsUi/gen4/shared/metronomeNotice";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -102,7 +102,7 @@ const nonTools = {
   h6: MarkdownH6,
   // eslint-disable-next-line id-length
   p: MarkdownParagraph,
-  ul: MarkdownList,
+  ul: List,
   ol: MarkdownOList,
   li: MarkdownListItem,
   hr: MarkdownDivider,
@@ -134,7 +134,7 @@ const nonTools = {
   Glossary,
   Starter4ShowIf,
   Id4ShowIf,
-  Metronome3dsNotice,
+  WhatNext,
   YouTubeTable,
 };
 

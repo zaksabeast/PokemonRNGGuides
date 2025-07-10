@@ -8,7 +8,7 @@ import { Remote, wrap } from "comlink";
 
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
-import { UndefinedToNullForList } from "~/types/utils";
+import { UndefinedToNull, UndefinedToNullForList } from "~/types/utils";
 import {
   BatchableFunctionNamesOf,
   BatchableFunctionsOf,
@@ -166,3 +166,5 @@ export const rngTools = new Proxy(
     },
   },
 ) as Remote<AdjustedRngTools>;
+
+export type PkmFilter = UndefinedToNull<RngTools.PkmFilter>;

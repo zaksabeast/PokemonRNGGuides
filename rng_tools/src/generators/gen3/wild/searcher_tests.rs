@@ -1,15 +1,11 @@
 #[cfg(test)]
 mod test {
     use crate::assert_list_eq;
-    use std::vec;
 
-    use crate::EncounterSlot;
-    use crate::Ivs;
-    use crate::gen3::Gen3Lead;
-    use crate::gen3::Gen3Method;
-    use crate::gen3::search_wild3;
-    use crate::gen3::{Wild3SearcherOptions, Wild3SearcherResultMon};
-    use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
+    use crate::gen3::{
+        Gen3Lead, Gen3Method, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
+    };
+    use crate::{AbilityType, EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter};
 
     #[test]
     fn test_search_wild3_no_filter() {
@@ -25,6 +21,8 @@ mod test {
             max_advances: 2,
             max_result_count: 10_000,
             filter: PkmFilter::new_allow_all(),
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
         };
 
         let expected_results = [
@@ -32,6 +30,7 @@ mod test {
                 advance: 0,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
+                cycle_data_by_lead: None,
                 pid: 0xFC3367DB,
                 shiny: false,
                 nature: Nature::Bold,
@@ -52,6 +51,7 @@ mod test {
                 advance: 1,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot5,
+                cycle_data_by_lead: None,
                 pid: 0x60A1E414,
                 shiny: false,
                 nature: Nature::Calm,
@@ -72,6 +72,7 @@ mod test {
                 advance: 2,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
+                cycle_data_by_lead: None,
                 pid: 0x639E3D69,
                 shiny: false,
                 nature: Nature::Bashful,
@@ -110,8 +111,9 @@ mod test {
             max_advances: 3540,
             max_result_count: 10_000,
             leads: vec![Gen3Lead::Vanilla],
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
             filter: PkmFilter {
-                shiny: false,
                 nature: Some(Nature::Adamant),
                 gender: Some(Gender::Female),
                 min_ivs: Ivs {
@@ -122,9 +124,8 @@ mod test {
                     spd: 10,
                     spe: 10,
                 },
-                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
-                stats: None,
+                ..Default::default()
             },
         };
         let expected_results = [
@@ -132,6 +133,7 @@ mod test {
                 advance: 908,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
+                cycle_data_by_lead: None,
                 pid: 0x02FA9E49,
                 shiny: false,
                 nature: Nature::Adamant,
@@ -152,6 +154,7 @@ mod test {
                 advance: 3543,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot0,
+                cycle_data_by_lead: None,
                 pid: 0xA44D455D,
                 shiny: false,
                 nature: Nature::Adamant,
@@ -172,6 +175,7 @@ mod test {
                 advance: 3577,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot6,
+                cycle_data_by_lead: None,
                 pid: 0xA44D455D,
                 shiny: false,
                 nature: Nature::Adamant,
@@ -205,21 +209,22 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             max_result_count: 10_000,
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
             leads: vec![Gen3Lead::Vanilla],
             filter: PkmFilter {
                 shiny: true,
                 nature: Some(Nature::Naive),
                 gender: Some(Gender::Male),
-                min_ivs: Ivs::new_all0(),
-                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
-                stats: None,
+                ..Default::default()
             },
         };
         let expected_results = [Wild3SearcherResultMon {
             advance: 0,
             map_idx: 0,
             encounter_slot: EncounterSlot::Slot4,
+            cycle_data_by_lead: None,
             pid: 0x692A57E1,
             shiny: true,
             nature: Nature::Naive,
@@ -249,6 +254,8 @@ mod test {
             gender_ratio: GenderRatio::OneToOne,
             encounter_slots_by_map: vec![None],
             methods: vec![Gen3Method::Wild1],
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
             initial_advances: 0,
             max_advances: 2,
             max_result_count: 10_000,
@@ -260,6 +267,7 @@ mod test {
                 advance: 0,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot4,
+                cycle_data_by_lead: None,
                 pid: 0x3A5DEC53,
                 shiny: false,
                 nature: Nature::Hardy,
@@ -280,6 +288,7 @@ mod test {
                 advance: 1,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot9,
+                cycle_data_by_lead: None,
                 pid: 0x95BC176C,
                 shiny: false,
                 nature: Nature::Careful,
@@ -300,6 +309,7 @@ mod test {
                 advance: 2,
                 map_idx: 0,
                 encounter_slot: EncounterSlot::Slot7,
+                cycle_data_by_lead: None,
                 pid: 0x7697C055,
                 shiny: false,
                 nature: Nature::Hasty,
@@ -336,18 +346,16 @@ mod test {
                 Gen3Method::Wild4,
                 Gen3Method::Wild5,
             ],
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
             initial_advances: 5000,
             max_advances: 1000,
             max_result_count: 10_000,
             leads: vec![Gen3Lead::Vanilla],
             filter: PkmFilter {
                 shiny: true,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs::new_all0(),
                 max_ivs: Ivs::new_all31(),
-                ability: None,
-                stats: None,
+                ..Default::default()
             },
         };
         let expected_results = [
@@ -363,6 +371,7 @@ mod test {
                 },
                 method: Gen3Method::Wild3,
                 encounter_slot: EncounterSlot::Slot6,
+                cycle_data_by_lead: None,
                 ability: AbilityType::First,
                 gender: Gender::Male,
                 nature: Nature::Quiet,
@@ -383,6 +392,7 @@ mod test {
                 },
                 method: Gen3Method::Wild3,
                 encounter_slot: EncounterSlot::Slot9,
+                cycle_data_by_lead: None,
                 ability: AbilityType::First,
                 gender: Gender::Male,
                 nature: Nature::Quiet,
@@ -395,4 +405,31 @@ mod test {
         let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
     }
+
+    /*
+    // Kept to help future debugging
+    #[test]
+    fn test_search_wild3_debug() {
+        let options = Wild3SearcherOptions {
+            initial_seed: 0,
+            tid: 0,
+            sid: 0,
+            gender_ratio: GenderRatio::OneToOne,
+            encounter_slots_by_map: vec![None],
+            methods: vec![Gen3Method::Wild2],
+            initial_advances: 1005,
+            max_advances: 0,
+            max_result_count: 10_000,
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid:false,
+            leads: vec![Gen3Lead::Vanilla],
+            filter: PkmFilter::new_allow_all(),
+        };
+
+        let results = search_wild3( &options);
+
+        println!("{:?}", results);
+        assert!(false);
+    }
+    */
 }

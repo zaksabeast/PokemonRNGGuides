@@ -11,10 +11,11 @@ import {
   getPkmFilterFields,
   natureOptions,
   pkmFilterSchema,
+  getPkmFilterInitialValues,
+  pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import React from "react";
-import { maxIvs, minIvs } from "~/types/ivs";
 import {
   flattenIvs,
   FlattenIvs,
@@ -106,13 +107,8 @@ const initialValues: FormState = {
   synch_nature: "Hardy",
   initial_advances: 0,
   max_advances: 100,
-  filter_shiny: false,
-  filter_min_ivs: minIvs,
-  filter_max_ivs: maxIvs,
-  filter_nature: null,
-  filter_gender: null,
-  filter_ability: null,
   filter_characteristic: null,
+  ...getPkmFilterInitialValues(),
 };
 
 const getFields = (values: FormState) => {
@@ -209,15 +205,7 @@ export const Static4Generator = () => {
       lead: getLeadAbility(opts),
       initial_advances: opts.initial_advances,
       max_advances: opts.max_advances,
-      filter: {
-        shiny: opts.filter_shiny,
-        nature: opts.filter_nature,
-        gender: opts.filter_gender,
-        ability: opts.filter_ability,
-        min_ivs: opts.filter_min_ivs,
-        max_ivs: opts.filter_max_ivs,
-        stats: null,
-      },
+      filter: pkmFilterFieldsToRustInput(opts),
       filter_characteristic: opts.filter_characteristic,
     });
 

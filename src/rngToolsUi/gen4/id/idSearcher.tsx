@@ -1,4 +1,5 @@
 import React from "react";
+import { message } from "antd";
 import {
   FormikNumberInput,
   ResultColumn,
@@ -314,6 +315,7 @@ const mapResult = (res: Id4): Result => ({
 });
 
 export const Id4Searcher = () => {
+  const [messageApi, contextHolder] = message.useMessage();
   const { run: searchDpptIds, data: results } = useBatchedTool(
     multiWorkerRngTools.search_dppt_ids,
     { map: mapResult },
@@ -323,47 +325,55 @@ export const Id4Searcher = () => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const interestedTsvs = opts.max_shiny_odds
-        ? maxShinyOddsCuteCharmTsvs
-        : getCuteCharmTsvs({
-            targetGender: opts.target_gender,
-            ratio:
-              opts.target_species === "None"
-                ? null
-                : await rngTools.get_species_gender_ratio(opts.target_species),
-            nature: opts.target_nature === "None" ? null : opts.target_nature,
-          });
+      try {
+        const interestedTsvs = opts.max_shiny_odds
+          ? maxShinyOddsCuteCharmTsvs
+          : getCuteCharmTsvs({
+              targetGender: opts.target_gender,
+              ratio:
+                opts.target_species === "None"
+                  ? null
+                  : await rngTools.get_species_gender_ratio(
+                      opts.target_species,
+                    ),
+              nature: opts.target_nature === "None" ? null : opts.target_nature,
+            });
 
-      const idFilter = match<FormState, IdFilter>(opts)
-        .with({ id_type: "Cute Charm", tid: null }, () => ({
-          Tsvs: interestedTsvs,
-        }))
-        .with({ id_type: "Cute Charm", tid: P.not(null) }, (matched) => ({
-          TidTsvs: {
-            tid: matched.tid,
-            tsvs: interestedTsvs,
-          },
-        }))
-        .with({ id_type: "Any TID" }, () =>
-          denormalizeIdFilterOrDefault(opts.id_filter),
-        )
-        .exhaustive();
+        const idFilter = match<FormState, IdFilter>(opts)
+          .with({ id_type: "Cute Charm", tid: null }, () => ({
+            Tsvs: interestedTsvs,
+          }))
+          .with({ id_type: "Cute Charm", tid: P.not(null) }, (matched) => ({
+            TidTsvs: {
+              tid: matched.tid,
+              tsvs: interestedTsvs,
+            },
+          }))
+          .with({ id_type: "Any TID" }, () =>
+            denormalizeIdFilterOrDefault(opts.id_filter),
+          )
+          .exhaustive();
 
-      const chunked = chunkRange([opts.min_delay, opts.max_delay], 200);
-      const searchOpts: UndefinedToNull<Id4SearchOptions>[] = chunked.map(
-        ([min_delay, max_delay]) => ({
-          year: opts.year,
-          min_delay,
-          max_delay,
-          filter: idFilter,
-          force_second: opts.force_second,
-        }),
-      );
-      await searchDpptIds(searchOpts);
+        const chunked = chunkRange([opts.min_delay, opts.max_delay], 200);
+        const searchOpts: UndefinedToNull<Id4SearchOptions>[] = chunked.map(
+          ([min_delay, max_delay]) => ({
+            year: opts.year,
+            min_delay,
+            max_delay,
+            filter: idFilter,
+            force_second: opts.force_second,
+          }),
+        );
+        await searchDpptIds(searchOpts);
 
-      setIdType(opts.id_type);
+        setIdType(opts.id_type);
+      } catch (error) {
+        messageApi.error(
+          `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
+        );
+      }
     },
-    [searchDpptIds],
+    [searchDpptIds, messageApi],
   );
 
   const columns = React.useMemo(() => getColumns({ idType }), [idType]);
@@ -377,6 +387,7 @@ export const Id4Searcher = () => {
       onSubmit={onSubmit}
       submitTrackerId="search_dppt_id"
     >
+      {contextHolder}
       <Id4SearcherFields />
     </RngToolForm>
   );

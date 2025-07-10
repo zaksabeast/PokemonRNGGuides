@@ -4,7 +4,9 @@ import {
   Species,
   Gen3EncounterType,
   Wild3SearcherResultMon,
+  Wild3SearcherCycleData,
   Gen3Lead,
+  Gen3Method,
 } from "~/rngTools";
 import {
   Field,
@@ -25,6 +27,7 @@ import {
   getPkmFilterFields,
   pkmFilterSchema,
   getPkmFilterInitialValues,
+  pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
 import { Static3Game } from "~/rngToolsUi/gen3/static/constants";
 import React from "react";
@@ -40,17 +43,21 @@ import { match, P } from "ts-pattern";
 
 import { getWild3GameData } from "./wild3GameData";
 import emerald_wild3_game_data from "~/__generated__/emerald_wild3_game_data";
-import { startCase } from "lodash-es";
+import { startCase, sortBy } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
+import { Tooltip } from "antd";
 
 /*
 Possible improvements:
+ - Add Tooltip for Likelihood by lead speed columns.
+
  - Support multiple encounter types.
- - Support other leads in generator.
+ - Support all leads in generator.
  - Display warning if no maps or no leads are selected.
  - Add Hidden Power filter.
+ - Add lead PID speed filter.
 
- - Display map names instead of map IDs.
+ - Display map names instead of formatted map IDs.
  - Disable gender field if only 1 possible gender, instead of hiding it.
  - Display ability names instead of First, Second, or Hidden.
  - If no nature filter, then Synchonize leads is <Nature> or Not <Nature>.
@@ -84,6 +91,8 @@ const Validator = z
     initial_advances: z.number().int().min(0).max(0xffffffff),
     max_advances: z.number().int().min(0).max(0xffffffff),
     max_result_count: z.number().int().min(1),
+    rngManipulatedLeadPid: z.boolean(),
+    mergeSimilarResults: z.boolean(),
   })
   .merge(pkmFilterSchema);
 
@@ -98,12 +107,14 @@ const getInitialValues = (): FormState => {
     vanillaLead: true,
     cuteCharmLeadGenders: [...cuteCharmGenders],
     synchronizeLeadNatures: [...nature],
-    methods: ["Wild2"],
+    methods: ["Wild1", "Wild2", "Wild4"],
     encounterTypes: [...gen3EncounterTypes],
     initial_advances: 1000,
     max_advances: 100_000,
     max_result_count: 10_000,
     ...getPkmFilterInitialValues(),
+    rngManipulatedLeadPid: false,
+    mergeSimilarResults: true,
   };
 };
 
@@ -234,6 +245,15 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
       ),
     },
     {
+      label: "RNG-manipulated lead PID",
+      input: (
+        <FormikSwitch<
+          FormState,
+          "rngManipulatedLeadPid"
+        > name="rngManipulatedLeadPid" />
+      ),
+    },
+    {
       label: "Initial advances",
       input: (
         <FormikNumberInput<FormState>
@@ -255,6 +275,15 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
           name="max_result_count"
           numType="decimal"
         />
+      ),
+    },
+    {
+      label: "Merge similar results",
+      input: (
+        <FormikSwitch<
+          FormState,
+          "mergeSimilarResults"
+        > name="mergeSimilarResults" />
       ),
     },
   ];
@@ -303,23 +332,66 @@ export const SetupFilter = () => {
   );
 };
 
-const columns: ResultColumn<Result>[] = [
-  {
-    title: "Advances",
-    dataIndex: "advance",
-    monospace: true,
-    render: (adv) => {
-      const durInMinutes = (adv / 59.7275 / 60).toFixed(1);
-      return `${formatLargeInteger(adv)} (~${durInMinutes} min)`;
+const formatProbability = (prob: number) => {
+  if (prob <= 0) {
+    return "0%";
+  }
+  if (prob >= 1) {
+    return "100%";
+  }
+
+  if (prob < 1e-30) {
+    return "~0%";
+  }
+
+  const val = prob * 100;
+  const valLog10 = Math.log10(val);
+  return `${val.toFixed(-Math.floor(valLog10) + 1)}%`;
+};
+
+const getMethodLikelihoodColumValue = (
+  cycleData: Wild3SearcherCycleData,
+  method: Gen3Method,
+) => {
+  const probAsTxt = formatProbability(cycleData.method_probability);
+  const end =
+    cycleData.pre_sweet_scent_cycle_range.start +
+    cycleData.pre_sweet_scent_cycle_range.len;
+  const rangeAsTxt =
+    end === 0
+      ? `Method ${method} can't be triggered.`
+      : `Method ${method} is triggered if the cycle counter at Sweet Scent is between ${cycleData.pre_sweet_scent_cycle_range.start} and ${end}.`;
+  return (
+    <Tooltip title={rangeAsTxt}>
+      <div>{probAsTxt}</div>
+    </Tooltip>
+  );
+};
+
+const getColumns = (values: FormState): ResultColumn<UiResult>[] => {
+  const columns: ResultColumn<UiResult>[] = [];
+  columns.push(
+    {
+      title: "Advances",
+      dataIndex: "advance",
+      monospace: true,
+      render: (adv) => {
+        const durInMinutes = (adv / 59.7275 / 60).toFixed(1);
+        return (
+          <Tooltip title={`~${durInMinutes} min`}>
+            <div>{formatLargeInteger(adv)}</div>
+          </Tooltip>
+        );
+      },
     },
-  },
-  { title: "Map", dataIndex: "mapName" },
-  {
-    title: "Lead",
-    dataIndex: "lead",
-    render: (lead) => {
-      return (
-        match(lead)
+    { title: "Map", dataIndex: "mapName" },
+    { title: "Encounter", dataIndex: "encounter" },
+    { title: "Method", dataIndex: "method" },
+    {
+      title: "Lead",
+      dataIndex: "lead",
+      render: (lead) => {
+        return match(lead)
           .with("Vanilla", () => "Ordinary lead")
           .with(
             { Synchronize: P.string },
@@ -329,42 +401,154 @@ const columns: ResultColumn<Result>[] = [
             { CuteCharm: P.string },
             (matched) => `CuteCharm (${matched.CuteCharm})`,
           )
-          // This should be impossible, but we don't
-          // want to swallow it in case we have a bug.
           .with("Egg", () => "Egg lead")
-          .exhaustive()
-      );
+          .exhaustive();
+      },
     },
-  },
-  { title: "Encounter", dataIndex: "encounter" },
-  { title: "Method", dataIndex: "method" },
-  { title: "Species", dataIndex: "species" },
-  {
-    title: "PID",
-    dataIndex: "pid",
-    monospace: true,
-    render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
-  },
-  { title: "Nature", dataIndex: "nature" },
-  { title: "Ability", dataIndex: "ability" },
-  {
-    title: "Shiny",
-    dataIndex: "shiny",
-    render: (shiny: boolean) => (shiny ? "Yes" : "No"),
-  },
-  { title: "Gender", dataIndex: "gender" },
-  ...ivColumns,
-];
+  );
+  if (!values.rngManipulatedLeadPid) {
+    columns.push({
+      title: "Likelihood",
+      dataIndex: "cycle_data_by_lead",
+      render: (cycle_data_by_lead) => {
+        if (cycle_data_by_lead == undefined) {
+          return "";
+        }
+        const least_likely_common =
+          cycle_data_by_lead.common_lower_lead.method_probability <
+          cycle_data_by_lead.common_upper_lead.method_probability
+            ? cycle_data_by_lead.common_lower_lead
+            : cycle_data_by_lead.common_upper_lead;
+        return formatProbability(least_likely_common.method_probability);
+      },
+    });
+  } else {
+    columns.push(
+      {
+        title: "Ideal Lead Speed",
+        dataIndex: "cycle_data_by_lead",
+        render: (cycle_data_by_lead, values) => {
+          if (cycle_data_by_lead == undefined) {
+            return "";
+          }
+          if (values.lead === "Egg") {
+            return "";
+          }
+          if (
+            cycle_data_by_lead.slowest_lead.method_probability ===
+            cycle_data_by_lead.fastest_lead.method_probability
+          ) {
+            return "Any";
+          }
+          const cycle = cycle_data_by_lead.ideal_lead.lead_pid_cycle_count;
+          const label = match(cycle)
+            .with(18, () => "Fastest")
+            .with(900, () => "Slowest")
+            .with(P.number, () => {
+              return cycle + " cycles";
+            })
+            .exhaustive();
+
+          return label;
+        },
+      },
+      {
+        title: "Likelyhood by Lead Speed",
+        type: "group",
+        columns: [
+          {
+            title: "Ideal",
+            dataIndex: "cycle_data_by_lead",
+            render: (cycle_data_by_lead, values) => {
+              if (cycle_data_by_lead == undefined) {
+                return "";
+              }
+              return getMethodLikelihoodColumValue(
+                cycle_data_by_lead.ideal_lead,
+                values.method,
+              );
+            },
+          },
+          {
+            title: "Fastest",
+            dataIndex: "cycle_data_by_lead",
+            render: (cycle_data_by_lead, values) => {
+              if (cycle_data_by_lead == undefined) {
+                return "";
+              }
+              return getMethodLikelihoodColumValue(
+                cycle_data_by_lead.fastest_lead,
+                values.method,
+              );
+            },
+          },
+          {
+            title: "Common",
+            dataIndex: "cycle_data_by_lead",
+            render: (cycle_data_by_lead, values) => {
+              if (cycle_data_by_lead == undefined) {
+                return "";
+              }
+              const least_likely_common =
+                cycle_data_by_lead.common_lower_lead.method_probability <
+                cycle_data_by_lead.common_upper_lead.method_probability
+                  ? cycle_data_by_lead.common_lower_lead
+                  : cycle_data_by_lead.common_upper_lead;
+              return getMethodLikelihoodColumValue(
+                least_likely_common,
+                values.method,
+              );
+            },
+          },
+          {
+            title: "Slowest",
+            dataIndex: "cycle_data_by_lead",
+            render: (cycle_data_by_lead, values) => {
+              if (cycle_data_by_lead == undefined) {
+                return "";
+              }
+              return getMethodLikelihoodColumValue(
+                cycle_data_by_lead.slowest_lead,
+                values.method,
+              );
+            },
+          },
+        ],
+      },
+    );
+  }
+
+  columns.push(
+    { title: "Species", dataIndex: "species" },
+    {
+      title: "PID",
+      dataIndex: "pid",
+      monospace: true,
+      render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
+    },
+    { title: "Nature", dataIndex: "nature" },
+    { title: "Ability", dataIndex: "ability" },
+    {
+      title: "Shiny",
+      dataIndex: "shiny",
+      render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+    },
+    { title: "Gender", dataIndex: "gender" },
+    ...ivColumns,
+  );
+  return columns;
+};
 
 type Props = {
   game: Static3Game;
 };
 
-type Result = FlattenIvs<
+type UiResult = FlattenIvs<
   Wild3SearcherResultMon & {
     species: Species;
     mapName: string;
     encounter: Gen3EncounterType;
+    uid: number;
   }
 >;
 
@@ -400,8 +584,45 @@ const getEncounterSlotsByMap = (values: FormState) => {
   });
 };
 
+let nextUid = 0;
+const convertSearcherResultToUIResult = (
+  res: Wild3SearcherResultMon,
+  species: Species,
+  mapName: string,
+): UiResult => {
+  return {
+    ...res,
+    ...res.ivs,
+    mapName,
+    encounter: "Land",
+    species,
+    uid: nextUid++,
+  };
+};
+
+const filterResults = (results: Wild3SearcherResultMon[]) => {
+  const resByMon = new Map<string, Wild3SearcherResultMon>();
+  results.forEach((res) => {
+    const key = `${res.pid},${res.ivs.hp},${res.ivs.atk},${res.ivs.def},${res.ivs.spa},${res.ivs.spd},${res.ivs.spe}`;
+    const alreadyAddedRes = resByMon.get(key);
+
+    // If possible, keep the vanilla lead because it's simpler to get.
+    if (
+      alreadyAddedRes === undefined ||
+      (alreadyAddedRes.lead !== "Vanilla" && res.lead === "Vanilla")
+    ) {
+      resByMon.set(key, res);
+    }
+  });
+  return Array.from(resByMon.values());
+};
+
+const sortResults = (results: Wild3SearcherResultMon[]) => {
+  return sortBy(results, ["advance", "method", "map_idx"]);
+};
+
 export const Wild3SearcherFindTarget = ({ game }: Props) => {
-  const [results, setResults] = React.useState<Result[]>([]);
+  const [results, setResults] = React.useState<UiResult[]>([]);
 
   const initial_seed = game === "emerald" ? 0 : 0x5a0;
 
@@ -409,7 +630,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
     async (values) => {
       const ecounterSlotsByMap = getEncounterSlotsByMap(values);
 
-      const results = await rngTools.search_wild3({
+      const opts = {
         initial_seed,
         tid: values.tid,
         sid: values.sid,
@@ -417,31 +638,30 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
         initial_advances: values.initial_advances,
         max_advances: values.max_advances,
         max_result_count: values.max_result_count,
-        filter: {
-          shiny: values.filter_shiny,
-          nature: values.filter_nature,
-          gender: values.filter_gender,
-          min_ivs: values.filter_min_ivs,
-          max_ivs: values.filter_max_ivs,
-          ability: values.filter_ability,
-          stats: null,
-        },
+        filter: pkmFilterFieldsToRustInput(values),
         leads: getLeads(values),
         encounter_slots_by_map: ecounterSlotsByMap.map((val) => val[1]),
         methods: values.methods,
+        consider_cycles: true,
+        consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
+      };
+
+      let results = await rngTools.search_wild3(opts);
+      if (values.mergeSimilarResults) {
+        results = filterResults(results);
+      }
+      results = sortResults(results);
+
+      const uiResults = results.map((res) => {
+        const mapId = ecounterSlotsByMap[res.map_idx][0];
+        return convertSearcherResultToUIResult(
+          res,
+          values.species,
+          formatMapName(mapId),
+        );
       });
 
-      setResults(
-        results.map((res) => {
-          return {
-            ...res,
-            ...res.ivs,
-            mapName: ecounterSlotsByMap[res.map_idx][0],
-            encounter: "Land",
-            species: values.species,
-          };
-        }),
-      );
+      setResults(uiResults);
     },
     [initial_seed],
   );
@@ -451,13 +671,14 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
   }, []);
 
   return (
-    <RngToolForm<FormState, Result>
-      columns={columns}
+    <RngToolForm<FormState, UiResult>
+      getColumns={getColumns}
       results={results}
       validationSchema={Validator}
       initialValues={initialValues}
       onSubmit={onSubmit}
       submitTrackerId="wild3_find_target"
+      rowKey="uid"
     >
       <TargetMon />
       <br />

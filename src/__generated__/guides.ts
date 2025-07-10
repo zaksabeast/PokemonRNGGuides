@@ -28,7 +28,7 @@ export const guides = {
     meta: {
       categories: ["NDS Tools"],
       tags: ["info"],
-      isNew: true,
+      isNew: false,
       title: "3DS Alt Settings - 3DS Settings App for RNG",
       navDrawerTitle: "3DS Alt Settings",
       description:
@@ -51,7 +51,7 @@ export const guides = {
     meta: {
       categories: ["NDS Tools"],
       tags: ["info"],
-      isNew: true,
+      isNew: false,
       title: "3DS Timer Helper",
       navDrawerTitle: "3DS Timer Helper",
       description:
@@ -524,7 +524,7 @@ export const guides = {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
       tags: ["info"],
-      isNew: true,
+      isNew: false,
       title: "More consistent Platinum RNG",
       navDrawerTitle: "Consistent Platinum RNG",
       description:
@@ -648,7 +648,7 @@ export const guides = {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
       tags: ["info"],
-      isNew: true,
+      isNew: false,
       title: "Diamond, Pearl, and Platinum 3DS RNG",
       navDrawerTitle: "3DS RNG",
       description:
@@ -2812,7 +2812,7 @@ export const guides = {
     meta: {
       categories: ["HeartGold and SoulSilver"],
       tags: ["info"],
-      isNew: true,
+      isNew: false,
       title: "HeartGold and Soulsilver 3DS RNG",
       navDrawerTitle: "3DS RNG",
       description:

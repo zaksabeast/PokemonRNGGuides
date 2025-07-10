@@ -41,14 +41,7 @@ mod test {
         let expected_results = [
             Wild3SearcherResultMon {
                 pid: 2695989139,
-                ivs: Ivs {
-                    hp: 25,
-                    atk: 22,
-                    def: 31,
-                    spa: 3,
-                    spd: 13,
-                    spe: 6,
-                },
+                ivs: Ivs::new(25, 22, 31, 3, 13, 6),
                 method: Gen3Method::Wild2,
                 encounter_slot: EncounterSlot::Slot1,
                 cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
@@ -68,14 +61,7 @@ mod test {
             },
             Wild3SearcherResultMon {
                 pid: 2695989139,
-                ivs: Ivs {
-                    hp: 25,
-                    atk: 8,
-                    def: 4,
-                    spa: 3,
-                    spd: 13,
-                    spe: 6,
-                },
+                ivs: Ivs::new(25, 8, 4, 3, 13, 6),
                 method: Gen3Method::Wild4,
                 encounter_slot: EncounterSlot::Slot1,
                 cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
@@ -95,14 +81,7 @@ mod test {
             },
             Wild3SearcherResultMon {
                 pid: 2695989139,
-                ivs: Ivs {
-                    hp: 25,
-                    atk: 8,
-                    def: 4,
-                    spa: 22,
-                    spd: 31,
-                    spe: 25,
-                },
+                ivs: Ivs::new(25, 8, 4, 22, 31, 25),
                 method: Gen3Method::Wild1,
                 encounter_slot: EncounterSlot::Slot1,
                 cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {

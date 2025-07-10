@@ -91,6 +91,7 @@ import { Gen4IdSetup } from "~/rngToolsUi/gen4/id/setup";
 import { Starter4ConsoleSetDateString } from "~/rngToolsUi/gen4/starters/getStarter";
 import { Starter4ShowIf } from "~/rngToolsUi/gen4/starters/showIf";
 import { Id4ShowIf } from "~/rngToolsUi/gen4/id/showIf";
+import { Gen3PidSpeedCalculator } from "~/rngToolsUi/gen3/pidSpeedCalculator";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -155,6 +156,7 @@ const tools = {
     const tool = await import("~/rngToolsUi/gen3/wild/wild3FindTarget");
     return { default: tool.Wild3SearcherFindTarget };
   }),
+  Gen3PidSpeedCalculator,
   Gen3TidSidGenerator,
   OrAsMirageSpot,
   Gen4Timer,

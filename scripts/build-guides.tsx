@@ -216,6 +216,7 @@ const generateGuideMetadata = async <T extends Record<string, unknown>>(
 ) => {
   const compiledGuides = `
   import React from 'react';
+  import { memoize } from "lodash-es";
 
   export const guides = {
     ${finalGuides
@@ -223,6 +224,10 @@ const generateGuideMetadata = async <T extends Record<string, unknown>>(
         (guide) => `"${guide.slug}": {
           meta: ${JSON.stringify(guide)},
           Guide: React.lazy(() => import("~/../${guide.file}")),
+          getRawFile: memoize(async () => {
+            const file = await import("~/../${guide.file}?raw");
+            return file.default;
+          }),
         }`,
       )
       .join(",\n")}

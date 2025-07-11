@@ -58,3 +58,4 @@ export {
   MediaTableCell,
 } from "./mediaTable";
 export { YouTubeTable } from "./youtubeTable";
+export { CopyToClipboardButton } from "./copyToClipboardButton";

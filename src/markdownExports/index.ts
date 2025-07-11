@@ -92,6 +92,9 @@ import { Starter4ConsoleSetDateString } from "~/rngToolsUi/gen4/starters/getStar
 import { Starter4ShowIf } from "~/rngToolsUi/gen4/starters/showIf";
 import { Id4ShowIf } from "~/rngToolsUi/gen4/id/showIf";
 import { Gen3PidSpeedCalculator } from "~/rngToolsUi/gen3/pidSpeedCalculator";
+import { TranslationHelperSelectGuide } from "~/rngToolsUi/translationHelper/selectGuide";
+import { TranslationHelperEditGuide } from "~/rngToolsUi/translationHelper/editGuide";
+import { ToolTranslationButton } from "~/rngToolsUi/translationHelper/toolTranslations";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -137,6 +140,9 @@ const nonTools = {
   Id4ShowIf,
   WhatNext,
   YouTubeTable,
+  TranslationHelperSelectGuide,
+  TranslationHelperEditGuide,
+  ToolTranslationButton,
 };
 
 const tools = {

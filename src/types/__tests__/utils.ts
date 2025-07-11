@@ -1,4 +1,4 @@
-import { OneOf, AllOrNone, FeatureConfig } from "../utils";
+import { OneOf, AllOrNone, FeatureConfig, Paths } from "../utils";
 import { check, Pass } from "~/typeTest";
 
 export const OneOfTest = () => {
@@ -63,5 +63,59 @@ export const FeatureConfigTest = () => {
         onReset?: undefined;
       };
 
+  check<Result, Expected>(Pass);
+};
+
+export const PathsTest = () => {
+  type Result = Paths<{
+    nested: {
+      test: boolean;
+    };
+    topLevel: string;
+    anotherNested: {
+      deeper: {
+        value1: number;
+        value2: string;
+      };
+    };
+  }>;
+  type Expected =
+    | "topLevel"
+    | "nested.test"
+    | "anotherNested.deeper.value1"
+    | "anotherNested.deeper.value2";
+  check<Result, Expected>(Pass);
+};
+
+export const PathsOfTypeTest = () => {
+  type Result = Paths<
+    {
+      nested: {
+        test: boolean;
+      };
+      topLevel: string;
+      anotherNested: {
+        deeper: {
+          value1: number;
+          value2: string;
+        };
+      };
+    },
+    boolean
+  >;
+  type Expected = "nested.test";
+  check<Result, Expected>(Pass);
+};
+
+export const PathsOfUndefinedTypeTest = () => {
+  type Result = Paths<
+    {
+      nested: {
+        test: boolean | undefined;
+      };
+    },
+    boolean | undefined
+  >;
+  type Expected = "nested.test";
   check<Result, Expected>(Pass);
 };

@@ -36,3 +36,23 @@ export type UndefinedToNullForList<T extends tst.L.List> = {
 export type Nullable<T> = T extends tst.O.Object
   ? { [key in keyof T]: T[key] | null }
   : T | null;
+
+// Limit index depth to prevent excessive recursion
+export type Paths<
+  Obj extends tst.O.Object,
+  // It's fine to use any here since we are looking for paths that match a type
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Type = any,
+  Index extends number = 5,
+> =
+  tst.N.GreaterEq<Index, 0> extends 1
+    ? {
+        [K in keyof Obj]: K extends string
+          ? Obj[K] extends tst.O.Object
+            ? `${K}.${Paths<Obj[K], Type, tst.N.Sub<Index, 1>>}`
+            : Obj[K] extends Type
+              ? K
+              : never
+          : never;
+      }[keyof Obj]
+    : never;

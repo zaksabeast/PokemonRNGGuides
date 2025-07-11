@@ -9,80 +9,32 @@ import {
   Field,
 } from "~/components";
 import { rngTools, type Gen2Spread, type DivParams } from "~/rngTools";
-import { useTranslator, Translations, Translator } from "~/utils/siteLanguage";
+import { Translations } from "~/translations";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
-
-const englishTranslations = {
-  Advance: "Advance",
-  State: "State",
-  Shiny: "Shiny",
-  "Max DV": "Max DV",
-  "ADiv Index": "ADiv Index",
-  "SDiv Index": "SDiv Index",
-  Div: "Div",
-  "Start Advance": "Start Advance",
-  "Advance Count": "Advance Count",
-  Filter: "Filter",
-  Any: "Any",
-  Generate: "Generate",
-} as const;
-
-const translations = {
-  en: englishTranslations,
-  es: {
-    "ADiv Index": "Índice ADiv",
-    "SDiv Index": "Índice SDiv",
-    Div: "Div",
-    State: "Estado",
-    "Start Advance": "Avance pausado",
-    "Advance Count": "Conteo de avances",
-    Filter: "Filtro",
-    Any: "Cualquiera",
-    Shiny: "Brillante",
-    "Max DV": "DV Max",
-    Generate: "Generar",
-    Advance: "Avance",
-  },
-  zh: {
-    Advance: "帧数",
-    State: "State",
-    Shiny: "异色",
-    "Max DV": "Max DV",
-    "ADiv Index": "ADiv Index",
-    "SDiv Index": "SDiv Index",
-    Div: "Div",
-    "Start Advance": "起始帧数",
-    "Advance Count": "最大帧数",
-    Filter: "筛选",
-    Any: "任意",
-    Generate: "计算",
-  },
-} as const satisfies Translations<typeof englishTranslations>;
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const YesIcon = () => <Icon name="CheckCircle" color="Success" size={20} />;
 
-const getColumns = (
-  t: Translator<typeof translations>,
-): ResultColumn<Gen2Spread>[] => {
+const getColumns = (t: Translations): ResultColumn<Gen2Spread>[] => {
   return [
     {
-      title: t("Advance"),
+      title: t["Advance"],
       dataIndex: "advance",
     },
     {
-      title: t("State"),
+      title: t["State"],
       dataIndex: "state",
       monospace: true,
       render: (state) => state.toString(16).padStart(4, "0"),
     },
     {
-      title: t("Shiny"),
+      title: t["Shiny"],
       dataIndex: "shiny",
       render: (shiny) => (shiny ? <YesIcon /> : null),
     },
     {
-      title: t("Max DV"),
+      title: t["Max DV"],
       dataIndex: "max_dv",
       render: (max_dv) => (max_dv ? <YesIcon /> : null),
     },
@@ -111,36 +63,36 @@ const initialValues: FormState = {
   filter: "Shiny",
 };
 
-const getFields = (t: Translator<typeof translations>): Field[] => {
+const getFields = (t: Translations): Field[] => {
   return [
     {
-      label: t("ADiv Index"),
+      label: t["ADiv Index"],
       input: (
         <FormikNumberInput<FormState> name="adivIndex" numType="decimal" />
       ),
     },
     {
-      label: t("SDiv Index"),
+      label: t["SDiv Index"],
       input: (
         <FormikNumberInput<FormState> name="sdivIndex" numType="decimal" />
       ),
     },
     {
-      label: t("Div"),
+      label: t["Div"],
       input: <FormikNumberInput<FormState> name="div" numType="hex" />,
     },
     {
-      label: t("State"),
+      label: t["State"],
       input: <FormikNumberInput<FormState> name="state" numType="hex" />,
     },
     {
-      label: t("Start Advance"),
+      label: t["Start Advance"],
       input: (
         <FormikNumberInput<FormState> name="startAdvance" numType="decimal" />
       ),
     },
     {
-      label: t("Advance Count"),
+      label: t["Advance Count"],
       input: (
         <FormikNumberInput<FormState>
           name="advanceCount"
@@ -150,21 +102,21 @@ const getFields = (t: Translator<typeof translations>): Field[] => {
       ),
     },
     {
-      label: t("Filter"),
+      label: t["Filter"],
       input: (
         <FormikSelect<FormState, "filter">
           name="filter"
           options={[
             {
-              label: t("Any"),
+              label: t["Any"],
               value: "Any",
             },
             {
-              label: t("Shiny"),
+              label: t["Shiny"],
               value: "Shiny",
             },
             {
-              label: t("Max DV"),
+              label: t["Max DV"],
               value: "MaxDv",
             },
           ]}
@@ -176,11 +128,10 @@ const getFields = (t: Translator<typeof translations>): Field[] => {
 
 type Props = {
   type: "starter" | "celebi";
-  language: keyof typeof translations;
 };
 
-export const Gen2PokemonRng = ({ type, language }: Props) => {
-  const t = useTranslator(translations, language);
+export const Gen2PokemonRng = ({ type }: Props) => {
+  const t = useActiveRouteTranslations();
   const fields = React.useMemo(() => getFields(t), [t]);
   const columns = React.useMemo(() => getColumns(t), [t]);
   const [results, setResults] = React.useState<Gen2Spread[]>([]);

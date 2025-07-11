@@ -17,6 +17,7 @@ import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
 import * as tst from "ts-toolbelt";
 import { Switch } from "./switch";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const MultiTimerStateSchema = z.object({
   showAllTimers: z.boolean(),
@@ -53,6 +54,7 @@ const InnerMultiTimer = ({
   startButtonTrackerId,
   stopButtonTrackerId,
 }: InnerProps) => {
+  const t = useActiveRouteTranslations();
   const [experimentalSync, setExperimentalSync] = React.useState(false);
   const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
@@ -121,7 +123,7 @@ const InnerMultiTimer = ({
   const timerSettingFields = React.useMemo(
     () => [
       {
-        label: "Display All Timers?",
+        label: t["Display All Timers?"],
         input: (
           <Flex justify="flex-end">
             <RadioGroup
@@ -137,15 +139,15 @@ const InnerMultiTimer = ({
                 );
               }}
               options={[
-                { label: "Yes", value: "showAllTimers" },
-                { label: "No", value: "showCurrentTimer" },
+                { label: t["Yes"], value: "showAllTimers" },
+                { label: t["No"], value: "showCurrentTimer" },
               ]}
             />
           </Flex>
         ),
       },
       {
-        label: "Sync Optimization",
+        label: t["Sync Optimization"],
         tooltip:
           "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
         input: (
@@ -165,7 +167,7 @@ const InnerMultiTimer = ({
         ),
       },
       {
-        label: "Experimental Sync (Test)",
+        label: t["Experimental Sync (Test)"],
         tooltip:
           "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
         input: (
@@ -189,7 +191,7 @@ const InnerMultiTimer = ({
         ),
       },
       {
-        label: "Beeps",
+        label: t["Beeps"],
         input: (
           <Select<number>
             name="countdownBeeps"
@@ -211,7 +213,7 @@ const InnerMultiTimer = ({
         ),
       },
     ],
-    [state, setState, experimentalSync],
+    [state, setState, experimentalSync, t],
   );
 
   return (
@@ -231,10 +233,10 @@ const InnerMultiTimer = ({
           </Flex>
           <Flex vertical gap={8}>
             <Typography.Title level={5} p={0} m={0}>
-              Next Phase: {nextMs == null ? "None" : nextMs / 1000}
+              {t["Next Phase"]}: {nextMs == null ? "None" : nextMs / 1000}
             </Typography.Title>
             <Typography.Title level={5} p={0} m={0}>
-              Minutes Before Target: {minutesBeforeTarget}
+              {t["Minutes Before Target"]}: {minutesBeforeTarget}
             </Typography.Title>
           </Flex>
         </>
@@ -256,7 +258,7 @@ const InnerMultiTimer = ({
           </Flex>
           <Flex vertical gap={8}>
             <Typography.Title level={5} p={0} m={0}>
-              Minutes Before Target: {minutesBeforeTarget}
+              {t["Minutes Before Target"]}: {minutesBeforeTarget}
             </Typography.Title>
           </Flex>
         </>

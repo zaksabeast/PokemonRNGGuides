@@ -1,3 +1,7 @@
+use wasm_bindgen::prelude::*;
+
+const MAX_PID_MOD_24_CYCLE_COUNT: usize = 1000; // min is 18 and max is 900
+
 // Calculate the number of cycles for unsigned modulo operation in Gen3 GBA games.
 // Original code by Shao
 pub const fn calc_modulo_cycle_unsigned(dividend: u32, divisor: u32) -> usize {
@@ -288,7 +292,7 @@ pub fn find_longest_modulo_cycle_unsigned(divisor: u32) -> (u32, usize) {
 }
 
 pub fn calculate_distribution_modulo_cycle_unsigned_24() -> Vec<u32> {
-    let mut res: [u32; 1000] = [0; 1000]; // min is 18 and max is 900, so we can use 1000 to cover all cases
+    let mut res: [u32; MAX_PID_MOD_24_CYCLE_COUNT] = [0; MAX_PID_MOD_24_CYCLE_COUNT];
     for dividend in 0..=u32::MAX {
         let cycles = calc_modulo_cycle_unsigned(dividend, 24);
         res[cycles] += 1;
@@ -302,7 +306,7 @@ pub const SLOWEST_MODULO_CYCLE_24: usize = 900;
 // This range contains 99.9% of the values of DISTRIBUTION_CYCLE_COUNT_MODULO_24
 pub const COMMON_LEAD_RANGE: std::ops::Range<usize> = 608..868;
 
-const DISTRIBUTION_CYCLE_COUNT_MODULO_24: [u32; 1000] = [
+const DISTRIBUTION_CYCLE_COUNT_MODULO_24: [u32; MAX_PID_MOD_24_CYCLE_COUNT] = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -392,6 +396,25 @@ pub fn calculate_common_lead_range() -> std::ops::Range<usize> {
         .unwrap();
 
     return smallest_range_idx..smallest_range_idx + smallest_range_len;
+}
+
+#[wasm_bindgen]
+pub fn calculate_pid_speed(pid: u32) -> usize {
+    calc_modulo_cycle_unsigned(pid, 24)
+}
+
+#[wasm_bindgen]
+pub fn calculate_pid_speed_ranking(pid_cycle_speed: usize) -> f64 {
+    let pid_cycle_speed = std::cmp::min(pid_cycle_speed, MAX_PID_MOD_24_CYCLE_COUNT);
+
+    let mut slower_than_count = 0u64;
+    for count in DISTRIBUTION_CYCLE_COUNT_MODULO_24
+        .iter()
+        .take(pid_cycle_speed)
+    {
+        slower_than_count += *count as u64;
+    }
+    slower_than_count as f64 / 4294967296.0_f64
 }
 
 #[cfg(test)]

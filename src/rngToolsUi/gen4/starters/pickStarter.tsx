@@ -22,7 +22,7 @@ import {
 import {
   flattenIvs,
   FlattenIvs,
-  ivColumns,
+  getIvColumns,
 } from "~/rngToolsUi/shared/ivColumns";
 import { toOptions } from "~/utils/options";
 import { useCurrentStep } from "~/components/stepper/state";
@@ -39,6 +39,8 @@ import { Gen4GameVersion } from "../gen4types";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { UndefinedToNull } from "~/types";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
 
 type Result = FlattenIvs<
   SearchStatic4Method1State & {
@@ -113,72 +115,72 @@ const getStarterAdvance = (
     .otherwise(() => 0);
 };
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
-    title: "Select",
+    title: t["Select"],
     dataIndex: "key",
     render: (_, target) => <SelectButton target={target} />,
   },
   {
-    title: "Shiny",
+    title: t["Shiny"],
     dataIndex: "shiny",
     render: (shiny: boolean) => (shiny ? "Yes" : "No"),
   },
-  { title: "Nature", dataIndex: "nature" },
-  { title: "Ability", dataIndex: "ability" },
-  { title: "Gender", dataIndex: "gender" },
-  ...ivColumns,
+  { title: t["Nature"], dataIndex: "nature" },
+  { title: t["Ability"], dataIndex: "ability" },
+  { title: t["Gender"], dataIndex: "gender" },
+  ...getIvColumns(t),
   {
-    title: "PID",
+    title: t["PID"],
     dataIndex: "pid",
     monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
-  { title: "Delay", dataIndex: "delay" },
+  { title: t["Delay"], dataIndex: "delay" },
   {
-    title: "Second",
+    title: t["Second"],
     dataIndex: "second",
   },
   {
-    title: "Seed",
+    title: t["Seed"],
     dataIndex: "seed",
     monospace: true,
     render: (seed) => seed.toString(16).padStart(8, "0").toUpperCase(),
   },
 ];
 
-const getFields = (game: Gen4GameVersion): Field[] => {
+const getFields = (game: Gen4GameVersion, t: Translations): Field[] => {
   const starters = match(game)
     .with("Diamond", "Pearl", "Platinum", () => dpptStarters)
     .with("HeartGold", "SoulSilver", () => hgssStarters)
     .exhaustive();
   return [
     {
-      label: "TID",
+      label: t["TID"],
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
     {
-      label: "SID",
+      label: t["SID"],
       input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
     },
     {
-      label: "Year",
+      label: t["Year"],
       input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
     },
     {
-      label: "Min Delay",
+      label: t["Min Delay"],
       input: (
         <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
       ),
     },
     {
-      label: "Max Delay",
+      label: t["Max Delay"],
       input: (
         <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
       ),
     },
     {
-      label: "Species",
+      label: t["Species"],
       input: (
         <FormikSelect<FormState, "species">
           name="species"
@@ -186,9 +188,9 @@ const getFields = (game: Gen4GameVersion): Field[] => {
         />
       ),
     },
-    ...getPkmFilterFields(),
+    ...getPkmFilterFields({}, t),
     {
-      label: "Force Second",
+      label: t["Force Second"],
       input: (
         <FormikNumberInput<FormState> name="force_second" numType="decimal" />
       ),
@@ -207,6 +209,7 @@ const mapResult = (res: SearchStatic4Method1State): Result => {
 };
 
 export const PickStarter4 = () => {
+  const t = useActiveRouteTranslations();
   const [state, setState] = useStarterState();
   const {
     run: searchStarterSeeds,
@@ -244,7 +247,13 @@ export const PickStarter4 = () => {
     [game, setState, searchStarterSeeds],
   );
 
-  const fields = React.useMemo(() => getFields(game), [game]);
+  const { fields, columns } = React.useMemo(
+    () => ({
+      fields: getFields(game, t),
+      columns: getColumns(t),
+    }),
+    [game, t],
+  );
   const initialValues = match(game)
     .with("Diamond", "Pearl", "Platinum", () => dpptInitialValues)
     .with("HeartGold", "SoulSilver", () => hgssInitialValues)
@@ -262,6 +271,8 @@ export const PickStarter4 = () => {
       submitTrackerId="search_gen4_starters"
       allowCancel
       cancelTrackerId="cancel_gen4_starters"
+      submitButtonLabel={t["Generate"]}
+      cancelButtonLabel={t["Cancel"]}
       onCancel={cancel}
     />
   );

@@ -168,3 +168,5 @@ export const rngTools = new Proxy(
 ) as Remote<AdjustedRngTools>;
 
 export type PkmFilter = UndefinedToNull<RngTools.PkmFilter>;
+
+export type Gen3EncounterInfo = UndefinedToNull<RngTools.Gen3EncounterInfo>;

@@ -1,6 +1,7 @@
 use super::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
 use crate::gen3::{
-    Gen3Lead, Gen3Method, Wild3SearcherCycleDataByLead, calculate_cycle_data_by_lead,
+    Gen3EncounterType, Gen3Lead, Gen3Method, Wild3SearcherCycleDataByLead,
+    calculate_cycle_data_by_lead,
 };
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
@@ -8,6 +9,13 @@ use crate::{AbilityType, EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFil
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen3EncounterInfo {
+    pub encounter_type: Gen3EncounterType,
+    pub slots: Option<Vec<EncounterSlot>>,
+}
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -21,7 +29,7 @@ pub struct Wild3SearcherOptions {
     pub max_result_count: usize,
     pub filter: PkmFilter,
     pub leads: Vec<Gen3Lead>,
-    pub encounter_slots_by_map: Vec<Option<Vec<EncounterSlot>>>,
+    pub encounter_info_by_map: Vec<Gen3EncounterInfo>,
     pub methods: Vec<Gen3Method>,
     pub consider_cycles: bool,
     pub consider_rng_manipulated_lead_pid: bool,
@@ -89,14 +97,15 @@ fn search_wild3_at_given_advance(
 ) -> Vec<Wild3SearcherResultMon> {
     let mut results: Vec<Wild3SearcherResultMon> = vec![];
     for lead in opts.leads.iter() {
-        for (map_idx, encounter_slots) in opts.encounter_slots_by_map.iter().enumerate() {
+        for (map_idx, encounter_info) in opts.encounter_info_by_map.iter().enumerate() {
             let gen_opts = Wild3GeneratorOptions {
                 tid: opts.tid,
                 sid: opts.sid,
                 advance,
                 map_idx,
                 gender_ratio: opts.gender_ratio,
-                encounter_slot: encounter_slots.clone(),
+                encounter_slot: encounter_info.slots.clone(),
+                encounter_type: encounter_info.encounter_type,
                 methods: opts.methods.clone(),
                 lead: *lead,
                 filter: opts.filter.clone(),

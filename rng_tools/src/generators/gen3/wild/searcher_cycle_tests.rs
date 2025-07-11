@@ -2,14 +2,11 @@
 mod test {
     use crate::assert_list_eq;
 
-    use crate::EncounterSlot;
-    use crate::Ivs;
-    use crate::gen3::Gen3Lead;
-    use crate::gen3::Gen3Method;
-    use crate::gen3::search_wild3;
-    use crate::gen3::{Wild3SearcherCycleData, Wild3SearcherCycleDataByLead};
-    use crate::gen3::{Wild3SearcherOptions, Wild3SearcherResultMon};
-    use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
+    use crate::gen3::{
+        Gen3EncounterInfo, Gen3EncounterType, Gen3Lead, Gen3Method, Wild3SearcherCycleData,
+        Wild3SearcherCycleDataByLead, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
+    };
+    use crate::{AbilityType, EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter};
 
     #[test]
     fn test_search_wild3_cycle_methods_1_2_4() {
@@ -18,7 +15,10 @@ mod test {
             tid: 0,
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_slots_by_map: vec![None],
+            encounter_info_by_map: vec![Gen3EncounterInfo {
+                encounter_type: Gen3EncounterType::Land,
+                slots: None,
+            }],
             methods: vec![
                 Gen3Method::Wild1,
                 Gen3Method::Wild2,
@@ -41,14 +41,7 @@ mod test {
         let expected_results = [
             Wild3SearcherResultMon {
                 pid: 2695989139,
-                ivs: Ivs {
-                    hp: 25,
-                    atk: 22,
-                    def: 31,
-                    spa: 3,
-                    spd: 13,
-                    spe: 6,
-                },
+                ivs: Ivs::new(25, 22, 31, 3, 13, 6),
                 method: Gen3Method::Wild2,
                 encounter_slot: EncounterSlot::Slot1,
                 cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
@@ -68,14 +61,7 @@ mod test {
             },
             Wild3SearcherResultMon {
                 pid: 2695989139,
-                ivs: Ivs {
-                    hp: 25,
-                    atk: 8,
-                    def: 4,
-                    spa: 3,
-                    spd: 13,
-                    spe: 6,
-                },
+                ivs: Ivs::new(25, 8, 4, 3, 13, 6),
                 method: Gen3Method::Wild4,
                 encounter_slot: EncounterSlot::Slot1,
                 cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
@@ -95,14 +81,7 @@ mod test {
             },
             Wild3SearcherResultMon {
                 pid: 2695989139,
-                ivs: Ivs {
-                    hp: 25,
-                    atk: 8,
-                    def: 4,
-                    spa: 22,
-                    spd: 31,
-                    spe: 25,
-                },
+                ivs: Ivs::new(25, 8, 4, 22, 31, 25),
                 method: Gen3Method::Wild1,
                 encounter_slot: EncounterSlot::Slot1,
                 cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {

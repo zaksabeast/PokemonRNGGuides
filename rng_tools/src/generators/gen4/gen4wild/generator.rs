@@ -95,7 +95,7 @@ fn gen4_method_j(
     route: &RouteData,
 ) -> GeneratedPokemon {
     let encounter_rand = (rng.rand::<u16>() / 656) as u8;
-    let encounter_slot = EncounterSlot::from_rand(encounter_rand);
+    let encounter_slot = EncounterSlot::from_rand(encounter_rand, EncounterSlot::thresholds_land());
     let slot = route.get_slot(encounter_slot);
 
     let lead = opts.lead;
@@ -201,7 +201,7 @@ fn gen4_method_k(
     route: &RouteData,
 ) -> GeneratedPokemon {
     let encounter_rand = (rng.rand::<u16>() % 100) as u8;
-    let encounter_slot = EncounterSlot::from_rand(encounter_rand);
+    let encounter_slot = EncounterSlot::from_rand(encounter_rand, EncounterSlot::thresholds_land());
     let slot = route.get_slot(encounter_slot);
 
     let lead = opts.lead;

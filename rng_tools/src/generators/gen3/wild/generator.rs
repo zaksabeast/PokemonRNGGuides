@@ -56,6 +56,7 @@ pub struct Wild3GeneratorOptions {
     pub sid: u16,
     pub gender_ratio: GenderRatio,
     pub map_idx: usize,
+    pub encounter_type: Gen3EncounterType,
     pub encounter_slot: Option<Vec<EncounterSlot>>,
     pub methods: Vec<Gen3Method>,
     pub lead: Gen3Lead,
@@ -188,7 +189,10 @@ pub fn generate_gen3_wild(
 
     let encounter_rand_val = rng.rand::<u16>() as u32; // ChooseWildMonIndex_Land
     let encounter_rand = (encounter_rand_val % 100) as u8;
-    let encounter_slot = EncounterSlot::from_rand(encounter_rand);
+    let encounter_slot = EncounterSlot::from_rand(
+        encounter_rand,
+        EncounterSlot::gen3_thresholds(opts.encounter_type),
+    );
 
     //between ChooseWildMonIndex_Land and ChooseWildMonLevel
     cycle += (

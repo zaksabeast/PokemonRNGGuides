@@ -56,3 +56,24 @@ export type Paths<
           : never;
       }[keyof Obj]
     : never;
+
+type SinglePath<Obj extends tst.O.Object, P extends string> = tst.O.Path<
+  Obj,
+  tst.S.Split<P, ".">
+>;
+
+type _Path<
+  Obj extends tst.O.Object,
+  InList extends tst.L.List<string>,
+  OutList extends tst.L.List = [],
+> = InList extends [infer Head, ...infer Tail]
+  ? Head extends string
+    ? Tail extends tst.L.List<string>
+      ? _Path<Obj, Tail, [...OutList, SinglePath<Obj, Head>]>
+      : never
+    : never
+  : OutList;
+
+export type Path<Obj extends tst.O.Object, P extends string> = tst.L.UnionOf<
+  _Path<Obj, tst.U.ListOf<P>>
+>;

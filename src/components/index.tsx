@@ -37,7 +37,7 @@ export { Alert } from "./alert";
 export { FileUpload } from "./fileUpload";
 export { Card } from "./card";
 export { Tag } from "./tag";
-export { RadioGroup } from "./radio";
+export { FormikRadio, RadioGroup } from "./radio";
 export { Divider } from "./divider";
 export { ContentLock } from "./contentLock";
 export { Grid } from "./grid";

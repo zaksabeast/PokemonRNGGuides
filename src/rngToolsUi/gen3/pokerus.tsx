@@ -217,7 +217,7 @@ export const Fields = () => {
       {
         label: "Number of Pickup Pokémon",
         input: (
-          <FormikRadio<FormState, `pickup_pokemon_count`>
+          <FormikRadio<FormState>
             name="pickup_pokemon_count"
             options={toOptions(range(0, 5 + 1)).toReversed()}
           />

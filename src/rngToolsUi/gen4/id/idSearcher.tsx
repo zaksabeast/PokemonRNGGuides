@@ -214,10 +214,7 @@ const getFields = ({
     {
       label: "ID Type",
       input: (
-        <FormikRadio<FormState, "id_type">
-          name="id_type"
-          options={toOptions(idTypes)}
-        />
+        <FormikRadio<FormState> name="id_type" options={toOptions(idTypes)} />
       ),
     },
   ];

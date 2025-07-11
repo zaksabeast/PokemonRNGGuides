@@ -1,4 +1,4 @@
-import { OneOf, AllOrNone, FeatureConfig, Paths } from "../utils";
+import { OneOf, AllOrNone, FeatureConfig, Paths, Path } from "../utils";
 import { check, Pass } from "~/typeTest";
 
 export const OneOfTest = () => {
@@ -117,5 +117,26 @@ export const PathsOfUndefinedTypeTest = () => {
     boolean | undefined
   >;
   type Expected = "nested.test";
+  check<Result, Expected>(Pass);
+};
+
+export const PathRootTest = () => {
+  type Result = Path<{ other: number; foo: { bar: boolean } }, "other">;
+  type Expected = number;
+  check<Result, Expected>(Pass);
+};
+
+export const PathNestedTest = () => {
+  type Result = Path<{ other: number; foo: { bar: boolean } }, "foo.bar">;
+  type Expected = boolean;
+  check<Result, Expected>(Pass);
+};
+
+export const PathUnionTest = () => {
+  type Result = Path<
+    { other: number; foo: { bar: boolean } },
+    "other" | "foo.bar"
+  >;
+  type Expected = boolean | number;
   check<Result, Expected>(Pass);
 };

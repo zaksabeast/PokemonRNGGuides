@@ -91,10 +91,7 @@ const getFields = (values: FormState) => {
     {
       label: "Battery",
       input: (
-        <FormikRadio<FormState, "battery">
-          name="battery"
-          options={["Live", "Dead"]}
-        />
+        <FormikRadio<FormState> name="battery" options={["Live", "Dead"]} />
       ),
     },
   ];

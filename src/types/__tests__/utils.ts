@@ -120,6 +120,34 @@ export const PathsOfUndefinedTypeTest = () => {
   check<Result, Expected>(Pass);
 };
 
+export const PathsWithArrayTest = () => {
+  type Result = Paths<
+    {
+      array: number[];
+      nested: {
+        test: boolean | undefined;
+      };
+    },
+    boolean | undefined
+  >;
+  type Expected = "nested.test";
+  check<Result, Expected>(Pass);
+};
+
+export const PathsSelectingArrayTest = () => {
+  type Result = Paths<
+    {
+      array: number[];
+      nested: {
+        test: boolean | undefined;
+      };
+    },
+    number[]
+  >;
+  type Expected = "array";
+  check<Result, Expected>(Pass);
+};
+
 export const PathRootTest = () => {
   type Result = Path<{ other: number; foo: { bar: boolean } }, "other">;
   type Expected = number;
@@ -138,5 +166,17 @@ export const PathUnionTest = () => {
     "other" | "foo.bar"
   >;
   type Expected = boolean | number;
+  check<Result, Expected>(Pass);
+};
+
+export const PathWithArrayTest = () => {
+  type Result = Path<{ array: number[]; foo: { bar: boolean } }, "foo.bar">;
+  type Expected = boolean;
+  check<Result, Expected>(Pass);
+};
+
+export const PathSelectArrayTest = () => {
+  type Result = Path<{ array: number[]; foo: { bar: boolean } }, "array">;
+  type Expected = number[];
   check<Result, Expected>(Pass);
 };

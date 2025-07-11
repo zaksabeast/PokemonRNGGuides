@@ -48,11 +48,15 @@ export type Paths<
   tst.N.GreaterEq<Index, 0> extends 1
     ? {
         [K in keyof Obj]: K extends string
-          ? Obj[K] extends tst.O.Object
-            ? `${K}.${Paths<Obj[K], Type, tst.N.Sub<Index, 1>>}`
-            : Obj[K] extends Type
+          ? Obj[K] extends tst.L.List
+            ? Obj[K] extends Type
               ? K
               : never
+            : Obj[K] extends tst.O.Object
+              ? `${K}.${Paths<Obj[K], Type, tst.N.Sub<Index, 1>>}`
+              : Obj[K] extends Type
+                ? K
+                : never
           : never;
       }[keyof Obj]
     : never;

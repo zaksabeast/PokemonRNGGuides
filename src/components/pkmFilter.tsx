@@ -98,9 +98,7 @@ const _getPkmFilterFields = (
   [
     optOut(optOuts?.shiny, {
       label: t?.["Shiny"] ?? "Shiny",
-      input: (
-        <FormikSwitch<PkmFilterFields, "filter_shiny"> name="filter_shiny" />
-      ),
+      input: <FormikSwitch<PkmFilterFields> name="filter_shiny" />,
     }),
     optOut(optOuts?.nature, {
       label: t?.["Nature"] ?? "Nature",

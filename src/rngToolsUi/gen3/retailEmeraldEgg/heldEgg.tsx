@@ -143,22 +143,15 @@ const compatabilityOptions = toOptions(compatability, (option) => {
 const fields: Field[] = [
   {
     label: "Has lightning rod",
-    input: (
-      <FormikSwitch<FormState, "has_lightning_rod"> name="has_lightning_rod" />
-    ),
+    input: <FormikSwitch<FormState> name="has_lightning_rod" />,
   },
   {
     label: "Roamer is active",
-    input: <FormikSwitch<FormState, "has_roamer"> name="has_roamer" />,
+    input: <FormikSwitch<FormState> name="has_roamer" />,
   },
   {
     label: "Female has everstone",
-    input: (
-      <FormikSwitch<
-        FormState,
-        "female_has_everstone"
-      > name="female_has_everstone" />
-    ),
+    input: <FormikSwitch<FormState> name="female_has_everstone" />,
   },
   {
     label: "Female nature",
@@ -203,7 +196,7 @@ const fields: Field[] = [
   },
   {
     label: "Filter shiny",
-    input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
+    input: <FormikSwitch<FormState> name="filter_shiny" />,
   },
   {
     label: "Filter nature",

@@ -237,7 +237,7 @@ const getFields = ({
     {
       label: "Max Shiny Odds",
       input: (
-        <FormikSwitch<FormState, "max_shiny_odds">
+        <FormikSwitch<FormState>
           name="max_shiny_odds"
           onChange={(checked: boolean) => {
             if (checked) {

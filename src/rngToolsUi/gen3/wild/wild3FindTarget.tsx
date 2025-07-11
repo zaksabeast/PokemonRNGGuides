@@ -242,7 +242,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
     },
     {
       label: "Ordinary lead",
-      input: <FormikSwitch<FormState, "vanillaLead"> name="vanillaLead" />,
+      input: <FormikSwitch<FormState> name="vanillaLead" />,
     },
     {
       label: "Synchronize leads",
@@ -290,12 +290,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
     },
     {
       label: "RNG-manipulated lead PID",
-      input: (
-        <FormikSwitch<
-          FormState,
-          "rngManipulatedLeadPid"
-        > name="rngManipulatedLeadPid" />
-      ),
+      input: <FormikSwitch<FormState> name="rngManipulatedLeadPid" />,
     },
     {
       label: "Initial advances",
@@ -323,12 +318,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
     },
     {
       label: "Merge similar results",
-      input: (
-        <FormikSwitch<
-          FormState,
-          "mergeSimilarResults"
-        > name="mergeSimilarResults" />
-      ),
+      input: <FormikSwitch<FormState> name="mergeSimilarResults" />,
     },
   ];
   return fields;

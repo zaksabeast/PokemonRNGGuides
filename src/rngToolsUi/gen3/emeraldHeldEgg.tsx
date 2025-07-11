@@ -80,12 +80,7 @@ const getFields = (t: Translations): Field[] => {
   return [
     {
       label: t["Female or Ditto has everstone"],
-      input: (
-        <FormikSwitch<
-          FormState,
-          "female_has_everstone"
-        > name="female_has_everstone" />
-      ),
+      input: <FormikSwitch<FormState> name="female_has_everstone" />,
     },
     {
       label: t["Female or Ditto nature"],
@@ -175,7 +170,7 @@ const getFields = (t: Translations): Field[] => {
     },
     {
       label: t["Filter shiny"],
-      input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
+      input: <FormikSwitch<FormState> name="filter_shiny" />,
     },
     {
       label: t["Filter nature"],

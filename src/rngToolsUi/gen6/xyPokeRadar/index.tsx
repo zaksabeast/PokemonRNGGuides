@@ -148,11 +148,11 @@ const fields: Field[] = [
   },
   {
     label: "Bonus Music",
-    input: <FormikSwitch<FormState, "bonus_music"> name="bonus_music" />,
+    input: <FormikSwitch<FormState> name="bonus_music" />,
   },
   {
     label: "Filter Shiny",
-    input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
+    input: <FormikSwitch<FormState> name="filter_shiny" />,
   },
 ];
 

@@ -1,19 +1,24 @@
+import React from "react";
 import { LanguageKey } from "~/guides";
-import { en } from "./en";
-import { fr } from "./fr";
-import { es } from "./es";
-import { zh } from "./zh";
-import { it } from "./it";
+import { match } from "ts-pattern";
 
 export type { Translations } from "./en";
 
-const translations = {
-  en,
-  fr,
-  es,
-  zh,
-  it,
+const getTranslations = async (language: LanguageKey) => {
+  const { translations } = await match(language)
+    .with("en", () => import("./en"))
+    .with("fr", () => import("./fr"))
+    .with("es", () => import("./es"))
+    .with("zh", () => import("./zh"))
+    .with("it", () => import("./it"))
+    .exhaustive();
+  return translations;
 };
 
-export const getTranslations = (language: LanguageKey) =>
-  translations[language];
+export const useTranslations = (language: LanguageKey) => {
+  const translation = React.useMemo(
+    () => getTranslations(language),
+    [language],
+  );
+  return React.use(translation);
+};

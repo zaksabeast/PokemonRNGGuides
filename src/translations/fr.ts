@@ -1,6 +1,6 @@
-import { Translations } from "./en";
+import type { Translations } from "./en";
 
-export const fr: Translations = {
+export const translations: Translations = {
   Shiny: "Shiny",
   Nature: "Nature",
   Ability: "Ability",

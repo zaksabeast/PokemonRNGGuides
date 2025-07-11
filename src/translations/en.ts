@@ -1,4 +1,4 @@
-export const en = {
+export const translations = {
   Shiny: "Shiny",
   Nature: "Nature",
   Ability: "Ability",
@@ -88,4 +88,4 @@ export const en = {
   Reset: "Reset",
 } as const;
 
-export type Translations = Record<keyof typeof en, string>;
+export type Translations = Record<keyof typeof translations, string>;

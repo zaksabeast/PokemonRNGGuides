@@ -86,6 +86,7 @@ export const translations = {
   "Egg min IVs": "Egg min IVs",
   "Egg max IVs": "Egg max IVs",
   Reset: "Reset",
+  "Target Advance": "Target Advance",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string>;

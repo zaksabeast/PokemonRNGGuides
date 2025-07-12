@@ -10,7 +10,6 @@ use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
-//Time to get organized, First enums:
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum CoinFlip {
@@ -24,8 +23,6 @@ pub enum ElmCall {
     K,
     P,
 }
-
-//second is structs with there impls:
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -189,7 +186,6 @@ impl DpptSeedTime4 {
     }
 }
 
-// third is macros:
 #[macro_export]
 macro_rules! convert_seedtime {
     ($input:expr, $target:ident, { $($extra_field:ident : $value:expr),* $(,)? }) => {
@@ -247,17 +243,19 @@ macro_rules! elm_calls {
 
 #[macro_export]
 macro_rules! calculate_seedtime {
-    (from_optional_month: $opts:expr) => {{
+    (from_optional_month: $opts:expr, $target:ident,{ $($extra_field:ident : $value:expr),*$(,)? }) => {{
         let opts = $opts;
         let month = match opts.month {
             Some(m) => m,
-            None => 1, // or panic!("Missing month in opts")
+            None => return vec![],
         };
-        calculate_seedtime!(core: opts, month)
+        calculate_seedtime!(core: opts, month, $target,{
+                                    $($extra_field: $value),*
+                                } )
     }};
 
     // Form 2: Given plain u32 month and opts
-    (core: $opts:expr, $month:expr) => {{
+    (core: $opts:expr, $month:expr,$target:ident, { $($extra_field:ident : $value:expr),*$(,)? }) => {{
         let opts = $opts;
         'macro_scope: {
             let year = opts.year.clamp(2000, 2100);
@@ -294,11 +292,19 @@ macro_rules! calculate_seedtime {
                             if let Some(datetime) =
                                 RngDateTime::new(year, month, day, hour, minute, second)
                             {
-                                results.push(SeedTime4 {
-                                    seed: opts.seed,
-                                    delay,
-                                    datetime,
-                                });
+                            let seedtime = SeedTime4 {
+                                seed: opts.seed,
+                                delay,
+                                datetime,
+                            };
+                            let result = convert_seedtime!(
+                                seedtime,
+                                $target,
+                                {
+                                    $($extra_field: $value),*
+                                }
+                            );
+                            results.push(result);
 
                                 if opts.find_first {
                                     break 'macro_scope results;
@@ -313,7 +319,7 @@ macro_rules! calculate_seedtime {
     }};
 }
 
-//Function path way is dppt_find_seedtime -> dppt_calculate_seedtime ->dppt_calculate_single_month_seedtime. replace with hgss with for its version.
+//Function path way is dppt_find_seedtime -> dppt_calculate_seedtime ->dppt_calculate_single_month_seedtime. hgaa does not have find_seedtime first step, but is the same.
 
 pub fn dppt_find_seedtime(opts: FindSeedTime4Options) -> Option<DpptSeedTime4> {
     let opts = build_seedtime_opts!(opts);
@@ -359,14 +365,9 @@ fn dppt_calculate_single_month_seedtime(opts: SeedTime4SingleMonthOptions) -> Ve
             new_flips
         }
     };
-    calculate_seedtime!(core:opts, month)
-        .into_iter()
-        .map(|s| {
-            convert_seedtime!(s, DpptSeedTime4, {
-                coin_flips: lazy_coin_flip(),
-            })
-        })
-        .collect()
+    calculate_seedtime!(core:opts, month, DpptSeedTime4, {
+            coin_flips: lazy_coin_flip(),
+    })
 }
 
 pub fn hgss_calculate_seedtime(opts: HgssSeedTime4Options) -> Vec<HgssSeedTime4> {
@@ -409,16 +410,11 @@ fn hgss_calculate_single_month_seedtime(opts: HgssSeedTime4Options) -> Vec<HgssS
         }
     };
     let roamer = roamer_check(opts.seed, opts.roamer);
-    calculate_seedtime!(from_optional_month:opts)
-        .into_iter()
-        .map(|s| {
-            convert_seedtime!( s, HgssSeedTime4, {
+    calculate_seedtime!(from_optional_month:opts, HgssSeedTime4, {
 
-                roamer: roamer.clone(),
-                elm: lazy_elm_calls(),
-            })
-        })
-        .collect()
+        roamer: roamer.clone(),
+        elm: lazy_elm_calls(),
+    })
 }
 
 pub fn coin_flips(seed: u32) -> Vec<CoinFlip> {

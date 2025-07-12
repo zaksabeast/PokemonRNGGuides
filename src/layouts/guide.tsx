@@ -18,6 +18,15 @@ import { Skeleton } from "antd";
 import { match } from "ts-pattern";
 import { useAbCohort } from "~/hooks/useAbTest";
 
+const DiscordButtonContainer = styled(Flex)(({ theme }) => ({
+  gap: 10,
+  flexDirection: "column",
+  width: "fit-content",
+  [theme.mediaQueries.up("mobile")]: {
+    flexDirection: "row",
+  },
+}));
+
 const SpinOnceIcon = styled(Icon)({
   animation: "spin 5s linear",
   transform: "scaleX(0.7)",
@@ -68,20 +77,35 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
         {guideMeta.title}
       </Typography.Title>
 
-      <Flex>
-        <Button
-          trackerId="get_help_on_discord"
-          icon={<Icon name="Discord" />}
-          type="primary"
-          size="middle"
-          href={settings.discordUrl}
-        >
-          Hunt, Trade, and RNG with Us!
-        </Button>
-      </Flex>
+      <Flex vertical gap={10}>
+        <Flex>
+          <AppIdeaButton />
+        </Flex>
 
-      <Flex>
-        <AppIdeaButton />
+        <DiscordButtonContainer>
+          <Flex>
+            <Button
+              trackerId="get_help_on_discord"
+              icon={<Icon name="Discord" />}
+              type="primary"
+              size="middle"
+              href={settings.discordUrl}
+            >
+              Hunt and Trade on PokemonRNG
+            </Button>
+          </Flex>
+          <Flex>
+            <Button
+              trackerId="get_help_on_discord"
+              icon={<Icon name="Discord" />}
+              type="primary"
+              size="middle"
+              href={settings.discordUrl}
+            >
+              LazyHunters
+            </Button>
+          </Flex>
+        </DiscordButtonContainer>
       </Flex>
 
       {guideMeta.isRoughDraft && (

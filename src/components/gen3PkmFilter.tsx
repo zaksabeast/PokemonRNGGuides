@@ -2,10 +2,10 @@ import { Gen3PkmFilter, Gen3PidSpeedFilter } from "~/rngTools";
 import { Field } from "~/components/formFieldTable";
 import { FormikSwitch } from "~/components/switch";
 import { z } from "zod";
-import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { FormikNumberInput, FormFieldTable } from "~/components";
 import { useField } from "formik";
 import React from "react";
+import { Paths } from "~/types";
 
 export type Gen3PkmFilterFields = {
   filter_max_size: boolean;
@@ -56,21 +56,12 @@ const _getGen3PkmFilterFields = (opts: FieldOpts = {}): Field[] =>
   [
     optIn(opts?.max_size, {
       label: "Max size",
-      input: (
-        <FormikSwitch<
-          Gen3PkmFilterFields,
-          "filter_max_size"
-        > name="filter_max_size" />
-      ),
+      input: <FormikSwitch<Gen3PkmFilterFields> name="filter_max_size" />,
     }),
     optOut(opts?.pid_speed, {
       label: "PID cycle speed",
       input: (
-        <FormikSwitch<
-          Gen3PkmFilterFields,
-          //@ts-expect-error TODO
-          "filter_pid_speed.active"
-        > name="filter_pid_speed.active" />
+        <FormikSwitch<Gen3PkmFilterFields> name="filter_pid_speed.active" />
       ),
     }),
     optOut(opts?.pid_speed, {
@@ -88,11 +79,11 @@ export const getGen3PkmFilterFields = <FormField,>(
     : never;
 };
 
-type Props<FormState extends GenericForm> = {
-  name: GuaranteeFormNameType<FormState, Gen3PidSpeedFilter>;
+type Props<FormState extends Gen3PkmFilterFields> = {
+  name: Paths<FormState, Gen3PidSpeedFilter>;
 };
 
-export const Gen3PidSpeedInput = <FormState extends GenericForm>({
+export const Gen3PidSpeedInput = <FormState extends Gen3PkmFilterFields>({
   name,
 }: Props<FormState>) => {
   const [{ value: active }] = useField<Gen3PidSpeedFilter["active"]>(
@@ -103,9 +94,8 @@ export const Gen3PidSpeedInput = <FormState extends GenericForm>({
       {
         label: "Min cycle count",
         input: (
-          //@ts-expect-error TODO
-          <FormikNumberInput<FormState>
-            name={`${name}.min_cycle_count`}
+          <FormikNumberInput<Gen3PkmFilterFields>
+            name="filter_pid_speed.min_cycle_count"
             numType="decimal"
           />
         ),
@@ -113,15 +103,20 @@ export const Gen3PidSpeedInput = <FormState extends GenericForm>({
       {
         label: "Max cycle count",
         input: (
-          //@ts-expect-error TODO
-          <FormikNumberInput<FormState>
-            name={`${name}.max_cycle_count`}
+          <FormikNumberInput<Gen3PkmFilterFields>
+            name="filter_pid_speed.max_cycle_count"
             numType="decimal"
           />
         ),
       },
     ],
-    [name],
+    [],
   );
-  return active && <FormFieldTable fields={fields} />;
+
+  // Eslint is asking this to be a strict check
+  if (active === true) {
+    return <FormFieldTable fields={fields} />;
+  }
+
+  return null;
 };

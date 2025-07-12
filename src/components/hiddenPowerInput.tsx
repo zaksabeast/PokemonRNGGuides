@@ -1,11 +1,12 @@
-import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { z } from "zod";
 import { pokemonTypes } from "../types/pokemonTypes";
-import { PokemonType } from "~/rngTools";
+import { HiddenPowerFilter, PokemonType } from "~/rngTools";
 import { FormikNumberInput, FormikSelect, FormFieldTable } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useField } from "formik";
 import React from "react";
+import { PkmFilterFields } from "./pkmFilter";
+import { Paths } from "~/types";
 
 type UiHiddenPowerFilter = {
   active: boolean;
@@ -28,16 +29,16 @@ export const HiddenPowerSchema = z.object({
   max_bp: z.number().min(30).max(70),
 });
 
-type Props<FormState extends GenericForm> = {
-  name: GuaranteeFormNameType<FormState, UiHiddenPowerFilter>;
-};
-
 const HIDDEN_POWER_TYPES = pokemonTypes.filter((type) => type !== "Normal");
 
-export const HiddenPowerInput = <FormState extends GenericForm>({
+type Props<FormState extends PkmFilterFields> = {
+  name: Paths<FormState, HiddenPowerFilter> & "filter_hidden_power";
+};
+
+export const HiddenPowerInput = <FormState extends PkmFilterFields>({
   name,
 }: Props<FormState>) => {
-  const [{ value: active }] = useField<UiHiddenPowerFilter["active"]>(
+  const [{ value: active }] = useField<HiddenPowerFilter["active"]>(
     `${name}.active`,
   );
   const fields = React.useMemo(
@@ -45,9 +46,9 @@ export const HiddenPowerInput = <FormState extends GenericForm>({
       {
         label: "Type",
         input: (
-          <FormikSelect<FormState, "pokemon_types">
-            name={`${name}.pokemon_types`}
-            //@ts-expect-error TODO
+          //@ts-expect-error TODO
+          <FormikSelect<PkmFilterFields, "filter_hidden_power.pokemon_types">
+            name="filter_hidden_power.pokemon_types"
             options={toOptions(HIDDEN_POWER_TYPES)}
             mode="multiple"
           />
@@ -56,9 +57,8 @@ export const HiddenPowerInput = <FormState extends GenericForm>({
       {
         label: "Min power",
         input: (
-          //@ts-expect-error TODO
-          <FormikNumberInput<FormState>
-            name={`${name}.min_bp`}
+          <FormikNumberInput<PkmFilterFields>
+            name="filter_hidden_power.min_bp"
             numType="decimal"
           />
         ),
@@ -66,15 +66,17 @@ export const HiddenPowerInput = <FormState extends GenericForm>({
       {
         label: "Max power",
         input: (
-          //@ts-expect-error TODO
-          <FormikNumberInput<FormState>
-            name={`${name}.max_bp`}
+          <FormikNumberInput<PkmFilterFields>
+            name="filter_hidden_power.max_bp"
             numType="decimal"
           />
         ),
       },
     ],
-    [name],
+    [],
   );
-  return active && <FormFieldTable fields={fields} />;
+  if (active === true) {
+    return <FormFieldTable fields={fields} />;
+  }
+  return null;
 };

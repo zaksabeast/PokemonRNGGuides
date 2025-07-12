@@ -147,11 +147,7 @@ const _getPkmFilterFields = (
     optOut(optOuts?.hidden_power, {
       label: "Hidden Power",
       input: (
-        <FormikSwitch<
-          PkmFilterFields,
-          //@ts-expect-error TODO
-          "filter_hidden_power.active"
-        > name="filter_hidden_power.active" />
+        <FormikSwitch<PkmFilterFields> name="filter_hidden_power.active" />
       ),
     }),
     optOut(optOuts?.hidden_power, {

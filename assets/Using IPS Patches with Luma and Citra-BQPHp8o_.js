@@ -1,0 +1,56 @@
+const e=`---
+title: "How to Use IPS Patches on a 3DS or Emulator (Luma3DS, Azahar, Citra)"
+navDrawerTitle: "IPS Patches"
+description: "Learn how to apply IPS patches like instant text and no outlines using Luma3DS, Azahar, or Citra. Includes 3DS setup, emulator mods, and a merge tool."
+slug: "misc-3ds-ips-luma-citra"
+category: "3DS Tools"
+tag: "cfw"
+---
+
+## What are IPS Patches?
+
+IPS patches are small files that change how a game runs without modifying the full ROM. Common patches include instant text, no outlines, or minor fixes. You can use them on real 3DS hardware or in emulators.
+
+## Tools
+
+- [A 3DS with CFW](https://3ds.hacks.guide/) OR [Azahar](https://github.com/azahar-emu/azahar/releases/latest)
+- The \`code.ips\` file that you want to use
+
+## 3DS Instructions
+
+### Update Luma Settings
+
+1. Boot the console while holding \`Select\`.
+2. Select "Enable game patches".
+
+### Install the Patch
+
+1. Find your game's title ID [using 3dsdb](http://www.3dsdb.com/).
+2. Place your \`code.ips\` patch in \`/luma/titles/_title ID_/code.ips\`.
+
+For example, Ultra Moon would be at \`/luma/title/00040000001B5100/code.ips\`.
+
+## Azahar Instructions
+
+1. Right click your game in Azahar.
+2. Select "Open Mods Location" to open the mods folder.
+3. Copy your \`code.ips\` into the mods folder.
+
+### Azahar patch video guide
+
+<YouTubeVideo src="https://www.youtube.com/embed/klBkGQDaQR8?si=CbGCOKODlGu27Du4&amp;start=241" />
+
+## Merging patches
+
+<IpsMerger />
+
+1. Click the \`Upload\` button above.
+2. Select your IPS patches.
+3. Click \`Download\`.
+
+## Suggested Patches
+
+Use Dream Radar without needing a cartridge! [Dream Radar No-Cart Patch](/dream-radar-patches)
+
+Use Transporter Offline! [Offline Transporter Patch](/transporter-patches)
+`;export{e as default};

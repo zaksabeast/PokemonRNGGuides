@@ -1,0 +1,66 @@
+const n=`---
+title: "Diamond, Pearl, and Platinum Static RNG"
+navDrawerTitle: "Static RNG"
+description: "Learn how to RNG static Pokémon in Diamond, Pearl, and Platinum for perfect IVs, natures, and shinies."
+slug: "emulator-dppt-stationary"
+category: "Diamond, Pearl, and Platinum"
+tag: "emu"
+---
+
+## Tools
+
+- [PokeFinder](/pokefinder)
+- [Desmume with lua scripts](/desmume-setup)
+
+## Set up
+
+1. Open PokeFinder -> Gen 4 -> Static -> Searcher. Select the Pokemon you want in Settings.
+2. Set up or select correct profile and adjust filters as wanted.
+3. Search for a target seed and its advances.
+
+## RNG Initial Seed
+
+Follow [this guide to RNG the initial seed](/dppt-initial-seed) found above.
+
+## Advance RNG
+
+Follow [this guide to advance the RNG](/dppt-advance-rng).
+
+## Calibration
+
+1. Navigate to the Generator tab in PokeFinder.
+2. Input the initial seed and the Pokemon you are RNGing.
+3. Search for the Pokemon you got.
+4. Adjust the delay and try again.
+
+\`\`\`
+Target Advance - Advance Hit = Delay
+\`\`\`
+
+## Unique Cases
+
+If you want to RNG Giratina in the Distortion World, it's trickier. When you enter the Distortion World, the RNG advances by 11, and you have 12 advances when encountering Giratina. So, you need to factor in an initial advance of 23 since you will load the Distortion World at least once if using the journal method.
+
+For Sinnoh starters in Diamond and Pearl, save on the route before entering the lake. It will also be easier with a shiny target advance of 0. In Platinum, it's more difficult due to noise.
+
+Cresselia and Mesprit are generated the first time you talk to them, so RNG them before they escape.
+
+When talking to Prof. Oak for the Kanto birds, Moltres has an initial advance of 1, Zapdos of 6, and Articuno of 11. It’s suggested to use the E4 method: defeat the target, then RNG by talking to Oak again.
+
+## Manaphy Egg RNG
+
+The Manaphy egg is received like a Wondercard Pokémon, but it uses Method 1 generation. The Wondercard follows normal RNG rules.
+
+Manaphy has a shiny lock that prevents it from hatching shiny in the game it’s obtained in. To bypass this, RNG the Manaphy to hatch shiny in a different game.
+
+1. Know the shiny PID for Game A.
+2. In Game B, obtain the egg with that PID.
+3. Trade the egg from Game B to Game A.
+4. Hatch the egg in Game A.
+
+Congratulations, you now have a shiny Manaphy!
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{n as default};

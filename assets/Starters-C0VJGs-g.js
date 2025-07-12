@@ -1,0 +1,164 @@
+const e=`---
+- title: "RNG di Starter per Oro HeartGold e Argento SoulSilver"
+  navDrawerTitle: "Starter RNG"
+  description: "Impara a manipolare l'RNG degli starter in HeartGold e SoulSilver per ottenere Pokémon shiny con IV alti."
+  slug: "it-retail-hgss-starter"
+  tag: "retail"
+  translation:
+    enSlug: "retail-hgss-starter"
+    language: "it"
+- title: "RNG di Starter per Diamante, Perla e Platino"
+  navDrawerTitle: "Starter RNG"
+  description: "Impara a manipolare l'RNG degli starter in Diamante, Perla e Platino per ottenere Pokémon shiny con IV alti."
+  slug: "it-retail-dppt-starter"
+  tag: "retail"
+  translation:
+    enSlug: "retail-dppt-starter"
+    language: "it"
+---
+
+## Video guida (inglese)
+
+<YouTubeTable
+  videos={[
+    {
+      title: "Starter RNG",
+      src: "https://www.youtube.com/embed/PMEuRlT83Qs?si=N_Ha7LBg3mtEHdKA",
+    },
+    {
+      title: "3DS RNG",
+      src: "https://www.youtube.com/embed/-ayvPKWNkNw?si=eA7yboNXFhGl0MUX",
+    },
+  ]}
+/>
+
+## Guida scritta
+
+<Alert
+  showIcon
+  type="info"
+  message="Questa guida è interattiva e aggiorna le istruzioni in base alle tue impostazioni!"
+/>
+
+<Stepper titles={["Preparativi", "Seleziona lo starter", "Ottieni lo starter", "Calibra"]}>
+
+<Step step={0}>
+
+## Preparativi
+
+Seleziona qui sotto il gioco a cui stai giocando per procedere al passaggio successivo.
+
+<Starter4ShowIf game="Platinum">
+
+<Alert
+  showIcon
+  type="info"
+  message="Platino è il più difficile e potresti avere problemi di stabilità!"
+/>
+
+</Starter4ShowIf>
+
+<Starter4Setup />
+
+<Starter4ShowIf is3dsNormalSettings>
+  [Impara qui come usare il 3DS Helper](/3ds-helper).
+</Starter4ShowIf>
+
+<Starter4ShowIf is3dsAltSettings>
+  [Scarica qui l'app 3DS Alt Setting](/3ds-alt-settings).
+</Starter4ShowIf>
+
+</Step>
+
+<Step step={1}>
+
+## Seleziona lo starter
+
+1. Compila lo strumento qui sotto per trovare lo starter più adatto a te.
+2. Se non riesci a trovare uno starter che ti piace, puoi aumentare i delay minimo e massimo. Questo aumenterà il tempo necessario per ottenere lo starter.
+
+Gli starter cromatici con IV alti difficilmente arriveranno in un lasso di tempo ragionevole. Avrai maggiori probabilità di ottenere un massimo di 3 IV perfetti.
+
+Il tool è inglese, perciò se ti servono la traduzioni delle nature puoi seguire [**questo link**](https://wiki.pokemoncentral.it/Natura).
+
+<PickStarter4 />
+
+</Step>
+
+<Step step={2}>
+
+## Prepara il salvataggio
+
+1. Se sei su Platino, imposta la data della tua console al **12/31/2099** sul DS o **12/31/2050** sul 3DS.
+1. Salva nel posto nello screenshot qua sotto a seconda del gioco.
+
+| Diamante e Perla                                                             | Platino                                                              | Oro HeartGold e Argento                                                            |
+| ---------------------------------------------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| ![Diamante e Perla](/images/Diamond-Pearl-Platinum/Starter/dpp-starter.webp) | ![Platino](/images/Diamond-Pearl-Platinum/Starter/plat-starter.webp) | ![Oro HeartGold e Argento](/images/HeartGold-SoulSilver/Starter/hgss-starter.webp) |
+
+## Prepara la console
+
+1. Imposta la data della console al **<Starter4ConsoleSetDateString format="date" />**.
+2. Inizia a impostare l'ora della console alle **<Starter4ConsoleSetDateString format="time" />**, ma non confermarla subito.
+
+| Schermata conferma Ora                                                    |
+| ------------------------------------------------------------------------- |
+| ![Schermata conferma Ora](/images/HeartGold-SoulSilver/SetTimeScreen.jpg) |
+
+## Colpisci il tuo target
+
+<Starter4ShowIf is3dsNormalSettings>
+  [Impara qui come usare il 3DS Helper](/3ds-helper).
+</Starter4ShowIf>
+
+1. Premi simultaneamente \`A\` per impostare l'ora della console e fai partire il timer qua sotto.
+2. <Starter4ShowIf is3dsNormalSettings>
+     Esci dalle impostazioni della tua console, riavviala e avvia il gioco.
+   </Starter4ShowIf>
+   <Starter4ShowIf is3dsAltSettings>
+     Premi \`Start\` per uscire da Alt Setting nella tua console, poi avvia il
+     gioco.
+   </Starter4ShowIf>
+   <Starter4ShowIf isNdsDsi>
+     Esci dalle impostazioni della tua console e riavviala.
+   </Starter4ShowIf>
+3. Quando il primo timer finisce, <Starter4ShowIf is3dsNormalSettings is3dsAltSettings>premi \`L + R + Start + Select\` per softresettare il gioco.</Starter4ShowIf><Starter4ShowIf isNdsDsi>premi \`A\` per avviare il gioco.</Starter4ShowIf>
+4. Arriva alla schermata dove carichi il tuo salvataggio.
+5. Premi subito \`A\` quando il secondo timer termina.
+6. Se sei su Platino, premi ripetutamente il pulsante A per ottenere il tuo starter il più velocemente possibile.
+
+<GetStarter4 />
+
+</Step>
+
+<Step step={3}>
+
+## Calibra
+
+1. Controlla le statistiche del tuo Pokémon.
+2. Se corrispondono al tuo obiettivo, congratulazioni! Hai generato il tuo Pokémon iniziale con l'RNG!
+3. In caso contrario, digita le informazioni sul tuo Pokémon nel modulo sottostante e clicca su "Genera".
+4. Clicca su "Calibra" sullo starter con il Ritardo Delay minore (dovrebbe essere il primo risultato).
+5. Prova a colpire di nuovo il tuo obiettivo.
+6. Se la colonna "Inverti Delay" è selezionata per il Pokémon che hai colpito, esegui una di queste azioni:
+   - Per **qualsiasi gioco**, inserisci una cartuccia GBA.
+   - Per **Oro HeartGold e Argento SoulSilver**, usa il touch screen per premere le frecce giù e su nella schermata "Continua".
+   - Per **Diamante, Perla e Platino**, clicca su "Nuova partita", premi B per tornare alla schermata "Continua".
+   - Se hai invertito il ritardo e ti viene chiesto di invertirlo di nuovo, non fare nulla.
+
+In Diamante, Perla e Platino è possibile che il ritardo cambi casualmente da pari a dispari, o viceversa. Quando ciò accade, continua a provare finché non ottieni l'obiettivo.
+
+Per le traduzioni delle caratteristiche, puoi usare [**questo sito**](https://bulbapedia.bulbagarden.net/wiki/Characteristic).
+
+<CalibrateStarter4 />
+
+</Step>
+
+</Stepper>
+
+## Credits
+
+- Zaksabeast, Sorendog, EzPz, and RainingChain for various contributions to this tool
+- Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, whose work this tool is built upon.
+- Fiask per la traduzione in italiano.
+`;export{e as default};

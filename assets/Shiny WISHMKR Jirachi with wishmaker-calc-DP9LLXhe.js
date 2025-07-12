@@ -1,0 +1,184 @@
+const e=`---
+- title: "Ruby and Sapphire Shiny Wishmaker Jirachi RNG"
+  navDrawerTitle: "Wishmaker Jirachi RNG"
+  description: "Learn how to RNG the Shiny Wishmaker Jirachi from the Colosseum Bonus Disc in Ruby and Sapphire."
+  slug: "emulator-rs-wishmaker"
+  category: "Ruby and Sapphire"
+  tag: "emu"
+  addedOn: "2025-04-18"
+- title: "Ruby and Sapphire Meteor Jirachi RNG"
+  navDrawerTitle: "Meteor Jirachi RNG"
+  description: "Learn how to RNG a Meteor Jirachi with different shinies than Wishmaker."
+  slug: "meteor-jirachi"
+  category: "Ruby and Sapphire"
+  tag: "emu"
+  addedOn: "2025-04-18"
+---
+
+## Tools
+
+<ShowIf slug="/emulator-rs-wishmaker">
+
+- [mGBA](/mgba-setup)
+- [RS checksum lua script](https://github.com/Real96/PokeLua/blob/main/Gen%203/mGBA/RS_RNG_Checksums_mGBA.lua)
+
+</ShowIf>
+
+<ShowIf slug="/meteor-jirachi">
+
+- [mGBA](/mgba-setup)
+- [RS checksum lua script](https://github.com/Real96/PokeLua/blob/main/Gen%203/mGBA/RS_RNG_Checksums_mGBA.lua)
+- Meteor Jirachi Multiboot Rom with the [No Dolphin patch](/no-dolphin-patch)
+
+</ShowIf>
+
+## Step 1: Lua Script Set up
+
+Edit the \`savePath\` line of the lua script to match the path where your save is located.
+
+If you're on Windows, use double backslashes \`\\\\\` in the path.
+
+\`\`\`
+local savePath = "D:\\\\Desktop\\\\mGBA\\\\battery\\\\Pokemon - Ruby.sav"  -- Write here the path of your Ruby/Sapphire save file
+\`\`\`
+
+If you're on Mac or Linux, use single forward slashes \`/\` in the path.
+
+\`\`\`
+local savePath = "/Users/username/Desktop/mGBA/battery/Pokemon - Ruby.sav"  -- Write here the path of your Ruby/Sapphire save file
+\`\`\`
+
+## Step 2: Find a Target
+
+1. Upload your save and use the tool below to search for a Jirachi.
+   - If you see the "Need to save again!" error, save again and re-upload.
+2. Open the lua script in a text editor.
+3. At the top of the lua script, update \`targetSeed\`, \`targetSaveHour\`, \`targetMinute\`, \`targetSecond\`, and \`targetSixtiethSecond\` from your desired Jirachi.
+
+<ShowIf slug="/emulator-rs-wishmaker">
+
+<MultibootJirachi jirachi="Wishmaker" />
+
+</ShowIf>
+
+<ShowIf slug="/meteor-jirachi">
+
+<MultibootJirachi jirachi="Meteor" />
+
+</ShowIf>
+
+## Step 3: Hit the Target Seed
+
+1. Disable RTC in the emulator settings.
+2. Load the game, then lua script.
+3. Start saving the game and stop when you see "There is already a save file."
+4. Pause the emulator when the lua script says \`Current Time\` is close to \`Target Base Save Time\`.
+5. Manually advance frames until the lua script says \`Current Time\` matches \`Target Base Save Time\`.
+6. Press \`A\` to save.
+7. If the \`Segment 0 Checksum Seed\` matches \`Target Checksum Seed\`, congrats! Your save will redeem your Jirachi!
+
+![Final Screen](/images/Ruby-Sapphire/Wishmaker/Final-Screen.png)
+
+![Script Screen](/images/Ruby-Sapphire/Wishmaker/Script.png)
+
+## Troubleshooting
+
+Double check and confirm RTC is disabled.
+
+If your block 0 checksum does not match a shiny Jirachi seed, restart the process from the beginning.
+
+Make sure you're saving at \`Target Base Save Time\`, not \`Target Final Time\`.
+
+<ShowIf slug="/emulator-rs-wishmaker">
+
+## How to Redeem Jirachi
+
+You have a few options:
+
+- Transfer your save to a real cart and use the actual bonus disc.
+- Emulate the bonus disc in Dolphin and link to a GBA emulator — [guide here](/misc-dolphin-connect-vba).
+- Skip Dolphin entirely with the No Dolphin patch — [guide here](/no-dolphin-patch).
+
+</ShowIf>
+
+## Target Spreads
+
+<ShowIf slug="/meteor-jirachi">
+
+### Shiny Meteor spreads
+
+| Seed | PID      | IVs               | Shiny |
+| ---- | -------- | ----------------- | ----- |
+| 0313 | 34a3435f | 28/07/21/29/27/09 | true  |
+| 49d7 | c9e9be16 | 26/22/05/27/28/01 | true  |
+| 4c8c | d7bba042 | 26/25/26/23/18/23 | true  |
+| 4e26 | 2f5558ad | 26/04/13/10/00/30 | true  |
+| 5979 | 07ff7007 | 26/03/17/07/29/15 | true  |
+| 9350 | 6d011af9 | 24/08/11/21/19/15 | true  |
+| 9ea3 | 45ab3253 | 24/07/15/18/16/00 | true  |
+| a03d | 9d45eabe | 24/18/01/05/30/07 | true  |
+| e567 | daf1ad0a | 22/22/31/15/17/24 | true  |
+| f0ba | b39bc465 | 22/21/03/12/14/09 | true  |
+
+### Meteor spreads with all IVs 25+
+
+| Seed | PID      | IVs               | Shiny |
+| ---- | -------- | ----------------- | ----- |
+| 0a79 | d5cb4261 | 30/25/29/29/28/25 | false |
+| 1ad4 | 9c309bd5 | 27/29/31/31/29/25 | false |
+| 9df6 | d2a8aa71 | 31/31/25/30/25/28 | false |
+| bd9d | be845336 | 31/30/28/27/29/28 | false |
+| d517 | e812b093 | 31/29/30/31/30/31 | false |
+
+### Meteor spreads with the highest 0 IV count
+
+| Seed | PID      | IVs               | Shiny |
+| ---- | -------- | ----------------- | ----- |
+| 0f71 | a7215a50 | 00/00/26/00/09/00 | false |
+| 1dea | 96263d9d | 00/30/00/00/00/05 | false |
+| a64d | 5f80e487 | 00/05/00/00/00/10 | false |
+| a738 | c08a8fca | 12/00/29/00/00/00 | false |
+
+</ShowIf>
+
+<ShowIf slug="/emulator-rs-wishmaker">
+
+### Shiny Wishmaker spreads
+
+| Seed | PID      | IVs               | Shiny |
+| ---- | -------- | ----------------- | ----- |
+| 353d | ba7df435 | 24/03/30/12/16/11 | true  |
+| 3d60 | eb0da543 | 15/28/29/03/00/07 | true  |
+| 7236 | 2ec1608d | 31/23/26/29/18/05 | true  |
+| 7360 | bf98f1d5 | 29/10/31/25/23/21 | true  |
+| 9359 | bcfaf2b0 | 03/12/12/07/11/09 | true  |
+| a030 | 4633087d | 21/31/31/18/24/19 | true  |
+| cf37 | 7b053548 | 11/08/06/14/05/20 | true  |
+| ecdd | 987ed636 | 19/07/10/19/10/16 | true  |
+| f500 | c90e8744 | 10/00/10/10/26/12 | true  |
+
+### Wishmaker spreads with all IVs 25+
+
+| Seed | PID      | IVs               | Shiny |
+| ---- | -------- | ----------------- | ----- |
+| 0a79 | d5cb4261 | 30/25/29/29/28/25 | false |
+| 1ad4 | 9c309bd5 | 27/29/31/31/29/25 | false |
+| 9df6 | d2a8aa71 | 31/31/25/30/25/28 | false |
+| bd9d | be845336 | 31/30/28/27/29/28 | false |
+| d517 | e812b093 | 31/29/30/31/30/31 | false |
+
+### Wishmaker spreads with the highest 0 IV count
+
+| Seed | PID      | IVs               | Shiny |
+| ---- | -------- | ----------------- | ----- |
+| 0f71 | a7215a50 | 00/00/26/00/09/00 | false |
+| 1dea | 96263d9d | 00/30/00/00/00/05 | false |
+| a64d | 5f80e487 | 00/05/00/00/00/10 | false |
+| a738 | c08a8fca | 12/00/29/00/00/00 | false |
+
+</ShowIf>
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

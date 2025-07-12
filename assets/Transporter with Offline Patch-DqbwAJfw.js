@@ -1,0 +1,57 @@
+const e=`---
+title: "Transporter RNG using the Offline Patch"
+navDrawerTitle: "Offline Patch RNG"
+description: "Use the offline patch to stabilize delay and make RNG with Pokémon Transporter more consistent."
+slug: "transporter-rng-offline"
+category: "Transporter and Dream Radar"
+tag: "cfw"
+---
+
+This guide allows for RNGing the IVs of Pokemon transferred from Gen 1/2 using Transporter. For a stable delay a patch is used to allow for transferring Pokemon without needing to connect to online servers. The Pokemon are still transferred the same as if the patch was not used.
+
+Shininess and nature are predetermined in the Gen 1/2 game the Pokemon are coming from.
+
+You can check the [nature table here](/misc-3ds-transporter-nature-tables) for what nature your Pokemon will have when transferred.
+
+If you do not want to use the patch, you can follow the [Transporter RNG guide here](transporter-rng).
+
+## Tools
+
+- [A 3DS with PokeReader](/install-pokereader)
+
+## Step 1: Ensure a Stable Delay
+
+Set up the offline Transporter patch to ensure a stable delay by following the instructions [here](/transporter-patches).
+
+## Step 2: Find a target advance
+
+1. Make sure you have a Pokemon in Box 1, Slot 1 of your Gen 1/2 game.
+1. Load Pokemon Transporter with PokeReader on your 3DS.
+1. Enter the initial seed displayed by PokeReader into the tool below for "Seed".
+1. Set "Delay" to 28.
+1. In Transporter, press \`Start\` to select the game you would like to use with Transporter.
+   - This is the final \`A\` press before Pokemon are generated.
+1. Press \`Start + Select\` to pause the game.
+1. Adjust the IV filters to find a desired spread.
+   - Nature, ability, and shininess are determined in the Gen 1/2 game before Transporter.
+1. Set the "Initial Advance" to your current advance.
+1. Set the "Max Advances" to the highest advance you want to search for spreads.
+1. Click "Search".
+
+All the displayed results are potential target advances. Choose your preferred one.
+
+## Step 2: Hit the target
+
+1. Unpause the game by pressing \`Start\`.
+1. Wait at the game selection screen until you are close to the target advance.
+1. When you are close, press \`Start + Select\` to pause the game.
+1. Use \`Select\` to advance one by one until you reach the target advance.
+1. Once you reach the target advance, press and hold \`A\`.
+1. Check if you obtained the desired Pokemon. If not, do not transfer the Pokemon and try again.
+
+\`\`\`
+Note: When asked if you want to transfer your Pokemon, clicking "No" will cause the Pokemon to be generated again. This allows for infinite retries in case you miss the RNG.
+\`\`\`
+
+<Transporter />
+`;export{e as default};

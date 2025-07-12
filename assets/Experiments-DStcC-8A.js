@@ -1,0 +1,14 @@
+const e=`---
+title: "Experimental Features"
+description: "Help us test new features and provide feedback!"
+slug: "experiments"
+category: "User Settings"
+tag: "any"
+layout: "titled"
+hideFromNavDrawer: true
+---
+
+This is where new ideas are brewed and left sitting out for testing.
+
+<ExperimentsPageComponent />
+`;export{e as default};

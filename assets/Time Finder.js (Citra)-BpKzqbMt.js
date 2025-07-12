@@ -1,0 +1,77 @@
+const e=`---
+- title: "Ultra Sun and Ultra Moon Time Finder (Citra)"
+  navDrawerTitle: "Time Finder"
+  description: "Finding times to get specific RNG seeds."
+  slug: "emulator-usum-time-finder"
+  category: "Ultra Sun and Ultra Moon"
+  tag: "emu"
+- title: "Sun and Moon Time Finder (Citra)"
+  navDrawerTitle: "Time Finder"
+  description: "Finding times to get specific RNG seeds."
+  slug: "emulator-sm-time-finder"
+  category: "Sun and Moon"
+  tag: "emu"
+  canonical: "emulator-usum-time-finder"
+---
+
+## Tools
+
+- Citra and CitraRNG
+- 3DSTimeFinder
+
+## Intro
+
+This guide explains how to use TimeFinder.js with CitraRNG. You can use time to hit the desired initial seed without soft resetting and redo RNG attempts. This guide assumes basic knowledge of CitraRNG.
+
+## Setup
+
+1. Open Citra and set your RTC to any date you want. Write it down as you'll need it.
+2. Launch your game and CitraRNG, and go to the Gen 7 tab.
+3. Update the initial seed and write it down.
+
+## Calibration and Profile Generation
+
+<ShowIf slug="/emulator-usum-time-finder">
+
+The default offset and tick values may not match. These values differ by the version of Citra and are just suggestions. For example, Citra Nightly 1543 has an offset of 3730114 and a tick of 55.
+
+</ShowIf>
+
+<ShowIf slug="/emulator-sm-time-finder">
+
+The default offset and tick values may not match. These values differ by the version of Citra and are just suggestions. For example, Citra Nightly 1543 has an offset of 4470937 and a tick of 56.
+
+</ShowIf>
+
+1. Open 3DSTimeFinder and go to Tools => Gen 7 Profile Calibrator.
+2. Select the game you're calibrating (SM or USUM).
+3. In the Offset Range, enter a small number like 10.
+4. In the Tick Range, enter a large number, like 50,000,000.
+5. It may take some time, but you'll find a result. Create a profile based on these values.
+
+\`\`\`
+Note: Because of daylight saving, it's common not to find results at the actual hour. If this happens, adjust by +/- 1 hour and retry until you get a result.
+\`\`\`
+
+\`\`\`
+Note: If you find a result, its counterpart will have the same profile, so you can copy it for each game.
+\`\`\`
+
+## Gen7TimeFinder
+
+Gen7TimeFinder is another option to TimeFinder.js.
+
+To find desired results, select the category (Wild, Stationary, Event, or TID/SID) and input your criteria in the main tab. Ensure the correct profile is selected and search for spreads. Adjust the time range for rarer spreads.
+
+For SOS battles, use the Stationary tab. Be aware there will be many RNG advances during setup, so find a target that is further out.
+
+Once you find a result, record the date and time.
+
+## Hitting Any Initial Seed
+
+To achieve your target initial seed, input the desired RTC in Citra, save, and run the game.
+
+\`\`\`
+Note: Due to daylight saving, you may need to adjust the time by +/- 1 hour and relaunch the game and CitraRNG to ensure it worked.
+\`\`\`
+`;export{e as default};

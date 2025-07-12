@@ -1,0 +1,87 @@
+const e=`---
+title: "X and Y Friend Safari RNG"
+navDrawerTitle: "Friend Safari RNG"
+description: "Learn how to RNG shiny 6IV Pokémon from the Friend Safari in X and Y, including Ditto and other rare species."
+slug: "pcalc-xy-friend-safari"
+category: "X and Y"
+tag: "cfw"
+---
+
+## Tools
+
+- A 3DS with PCalc ([PCalc Install Guide](/misc-3ds-installing-pcalc))
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+
+## Required Reading
+
+- [TinyMT Timeline](https://github.com/wwwwwwzx/3DSRNGTool/wiki/Gen6-TinyMT-Timeline-Calibration)
+- [NTR Helper Usage](/ntr-helper-usage)
+
+## Explanation of TinyMT frames within Tiny Timeline Tool
+
+- **Main RNG Frame**: Main RNG frame ranges for each TinyMT frame listed. Manipulating the TinyMT timeline makes these frames overlap.
+- **Enctr?**: Determines if there will be an encounter if the character turns or walks into the grass during those TinyMT seeds. The encounter must be under 13 (0-12) for guaranteed encounters.
+- **Sync?**: Determines if nature will be synchronized.
+  - \`X\` = No, \`O\` = Yes.
+- **Slot**: Chooses which slot of Friend Safari will be used for the Pokémon.
+  - Order matches the Friend Safari Pokémon screen from left to right.
+- **HA**: Determines if Pokémon will have Hidden Ability or not.
+  - \`X\` = No, \`O\` = Yes.
+
+## Step 1: Set up
+
+1. Load XY and connect to NTR Helper within 3DSRNGTool.
+2. Enter the Friend Safari you wish to RNG in.
+3. Walk to the left side of the area outside the grass and save.
+   - You can now either do a test run or reset the game to use the reseeding method mentioned later in the guide to find a target frame.
+
+\`\`\`
+Note: This guide assumes you already have basic knowledge of how to do Gen 6 RNG. It is recommended to first learn about Gen 6 RNG mechanics by RNGing something simple like eggs.
+\`\`\`
+
+## Step 2: Manipulating TinyMT
+
+To successfully cause an encounter on your target frame, manipulate the TinyMT with the following method. It’s good to practice manipulating the TinyMT first with test frames.
+
+1. Choose a test frame as your target frame.
+   - Search for any frame within the \`Wild RNG\` Tab of 3DSRNGTool.
+   - Don't worry about nature if using Sync; this will be handled with TinyMT.
+   - Right-click on the frame you want and select "Set as Target Frame."
+2. In-game, step into the first grass tile.
+3. Open the game menu with \`X\`.
+   - This prevents your character from fidgeting and messing with the TinyMT timeline.
+4. Click on \`Tiny Timeline Tool\` in the Wild RNG Tab of 3DSRNGTool.
+   - Check the \`Consider Delay\` box and set delay to 6.
+5. Click on \`Calibrate\` next to \`Tiny Seeds\` and wait for it to calibrate.
+6. If the desired TinyMT frames do not overlap with the target frame, step out of the grass and back in, open the menu, then calibrate again.
+   - Repeat until the TinyMT frames align with the target frame.
+   - To advance TinyMT frames slightly, just turn in place instead of stepping.
+   - For faster advancement, walk up and down the left side, since steps advance TinyMT frames quickly.
+   - If you trigger an encounter, walk at least 5 steps after to enable another encounter. Remember this even after a successful RNG.
+
+## Step 3: Hitting the Target Frame
+
+1. To avoid random TinyMT index advancement (+2), close the menu during your target's index. Pause the game with \`Start + Select\`.
+   - Advance frame by frame by pressing \`Select\` until you're on your target frame.
+   - Ensure you're standing on a grass tile while doing this.
+2. Unpause with \`A\` and turn in any direction with the D-Pad to trigger the encounter.
+3. Calibrate a delay if needed, but delay of 6 should work for Friend Safari if you turn, and 14 if you step.
+
+## Reseeding Method
+
+Once you can manipulate the TinyMT to reach a target frame, you can look for higher frames. Using NTR Helper and reseeding helps find a target frame faster.
+
+1. Load XY and connect to NTR Helper within 3DSRNGTool.
+   - Press \`One Click\` in NTR Helper to connect and grab the initial seed.
+   - Directions on how to do this can be found in the NTR Helper Usage link above.
+2. Press \`A\` to reach the continue screen. This is when the seed is set.
+3. Search for frames using that seed. If you find nothing appealing, reseed.
+   - Press \`B\` then \`A\` to back out of the continue menu and return to it.
+   - This refreshes the initial seed each time.
+4. Repeat until you find a desirable frame.
+5. Continue the save, manipulate the TinyMT, and trigger the encounter on the target frame to get the Pokémon you want.
+
+\`\`\`
+Note: Frames advance twice as fast in a battle, so you can battle to advance many frames, then manipulate the TinyMT. Allow extra time for this in case you miss your target frame while aligning the TinyMT frames.
+\`\`\`
+`;export{e as default};

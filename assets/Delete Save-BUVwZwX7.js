@@ -1,0 +1,52 @@
+const a=`---
+title: "Como eliminar partidas de Pokémon"
+description: "Como eliminar partidas de Pokémon"
+slug: "es-delete-pokemon-save"
+translation:
+  enSlug: "delete-pokemon-save"
+  language: "es"
+---
+
+Esta página contiene instrucciones sobre como eliminar las partidas guardadas de Pokémon de cada cartucho/consola para iniciar una nueva partida, incluyendo cómo canjear varios Huevos de Manaphy de Pokémon Ranger.
+
+## Borrar una partida de Gameboy/Cartucho de Gameboy
+
+Inicia un juego nuevo y guarda tu progreso. Esto sobrescribirá la vieja partida.
+
+## Borrar una partida de Cartucho de GBA
+
+Inicia un juego nuevo y guarda tu progreso. Esto sobrescribirá la vieja partida.
+
+También puedes sostener \`Up + Select + B\` en la pantalla de inicio.
+
+Alternativamente, puedes usar homebrew en una Wii con Firmware Personalizado (CFW) para borrar los archivos de guardado.
+
+- [Guía de como instalar Firmware Personalizado en una Wii](https://wii.hacks.guide/). (Guía en ingles)
+- [GBA Link Cable Dumper](https://github.com/FIX94/gba-link-cable-dumper).
+
+## Borrar una partida de guardado de un cartucho de DS
+
+Sosten \`Up + Select + B\` en la pantalla de inicio.
+
+### Pokémon Ranger
+
+Para Pokémon Ranger, borrar la partida de guardado no hará posible reclamar otro huevo de Manaphy.
+
+Sin embargo, [con una 3ds con Firmware Personalizado](https://3ds.hacks.guide/) es posible resetear por completo un cartucho.
+
+1. Con un Pokémon Ranger insertado, ve a [FBI](https://github.com/Steveice10/FBI/releases) -> titles (títulos) -> game (juego).
+2. Ve a borrar save data (borrar datos) y presiona \`A\`.
+3. Si tu usas [Checkpoint](https://github.com/BernardoGiordano/Checkpoint/releases) para respaldar tus partidas antes de transferir el huevo de Manaphy puedes fácilmente obtener el huevo de Manaphy repetidamente.
+
+## Borrar una partida de guardado de un cartucho de 3DS
+
+Sostén \`Arriba + B + X\` en la pantalla de inicio.
+
+## Borrar una partida de guardado de Nintendo Switch
+
+1. Ve a Menú de Home y selecciona "Configuración de sistema".
+2. Desliza hacia abajo y selecciona "Gestión de datos".
+3. Escoge "Borrar datos de guardado".
+4. Selecciona el titulo del juego al que le quieres borrar su información.
+5. Confirma la eliminación cuando se le solicite.
+`;export{a as default};

@@ -1,0 +1,60 @@
+const e=`---
+- title: "Mirage Island in Emerald"
+  navDrawerTitle: "Mirage Island"
+  description: "Learn how to access Mirage Island in Pokémon Emerald by catching a Pokémon with the correct PID using RNG manipulation."
+  slug: "emerald-mirage-island"
+  category: "Emerald"
+  tag: "retail"
+  addedOn: "2025-04-11"
+- title: "Mirage Island in Ruby and Sapphire"
+  navDrawerTitle: "Mirage Island"
+  description: "Learn how to access Mirage Island in Pokémon Emerald by catching a Pokémon with the correct PID using RNG manipulation."
+  slug: "rs-mirage-island"
+  category: "Ruby and Sapphire"
+  tag: "retail"
+  addedOn: "2025-04-11"
+---
+
+<Gist>
+  Gist: Access Mirage Island by catching a Pokémon with the right PID.
+</Gist>
+
+## Mirage Island
+
+Accessing Mirage Island is the only way to obtain Liechi Berry. The island is only accessible if the player team has a Pokémon with PID matching a specific pattern. That pattern changes every day, and depends on the number of days since the game savefile was created.
+
+## Step 1: Find the number of days since the game savefile was created
+
+If you have a dead battery, this step is not needed.
+
+Talk to the scientist in the Mossdeep Space Center to know the number of rockets launched. This indicates the number of weeks since your savefile was created.
+
+![Scientist in Mossdeep Space Center](/images/Emerald/mirageIslandRocketLaunched.png)
+
+## Step #2: Catch a Pokémon matching the PID pattern
+
+1. Fill the form below to view results.
+2. For live battery, choose any result 6 or more days in the future.
+3. Catch a Pokémon with Method-1 PID generation on your chosen result's advance. Kecleon is recommended, but any Method-1 Pokémon will do.
+
+<ShowIf slug="/emerald-mirage-island">
+  <Gen3MirageIsland game="emerald" />
+</ShowIf>
+
+<ShowIf slug="/rs-mirage-island">
+  <Gen3MirageIsland game="rs" />
+</ShowIf>
+
+## Step #3: Visit Mirage Island
+
+Attempt to visit Mirage Island on Route 130 for the next 6 days. One of the days should have Mirage Island accessible.
+
+Enjoy your Liechi Berry!
+
+![Scientist in Mossdeep Space Center](/images/Emerald/mirageIslandLiechiBerry.png)
+
+## Credits
+
+- Guide and tools: RainingChain.
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

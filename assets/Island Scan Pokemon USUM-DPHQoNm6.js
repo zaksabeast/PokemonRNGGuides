@@ -1,0 +1,72 @@
+const e=`---
+title: "Island Scan Pokemon in Ultra Sun & Ultra Moon - Full List by Day & Location"
+navDrawerTitle: "Island Scan Pokemon"
+description: "Check out an easy-to-use list of Island Scan Pokémon for Ultra Sun and Ultra Moon, organized by day and location for quick reference."
+slug: "misc-3ds-island-scan-usum"
+category: "Ultra Sun and Ultra Moon"
+tag: "info"
+---
+
+## Monday
+
+| Island   | Sprite                         | Pokemon  | Location     |
+| -------- | ------------------------------ | -------- | ------------ |
+| Melemele | <PixelImage name='Squirtle' /> | Squirtle | Seaward Cave |
+| Akala    | <PixelImage name='Spheal' />   | Spheal   | Route 7      |
+| Ula'ula  | <PixelImage name='Swinub' />   | Swinub   | Tapu Village |
+| Poni     | <PixelImage name='Aggron' />   | Aggron   | Poni Plains  |
+
+## Tuesday
+
+| Island   | Sprite                          | Pokemon   | Location       |
+| -------- | ------------------------------- | --------- | -------------- |
+| Melemele | <PixelImage name='Onix' />      | Onix      | Ten Carat Hill |
+| Akala    | <PixelImage name='Combusken' /> | Combusken | Route 8        |
+| Ula'ula  | <PixelImage name='Prinplup' />  | Prinplup  | Route 16       |
+| Poni     | <PixelImage name='Rotom' />     | Rotom     | Poni Gauntlet  |
+
+## Wednesday
+
+| Island   | Sprite                         | Pokemon  | Location        |
+| -------- | ------------------------------ | -------- | --------------- |
+| Melemele | <PixelImage name='Horsea' />   | Horsea   | Kala'e Bay      |
+| Akala    | <PixelImage name='Honedge' />  | Honedge  | Akala Outskirts |
+| Ula'ula  | <PixelImage name='Grotle' />   | Grotle   | Ula'ula Meadow  |
+| Poni     | <PixelImage name='Leavanny' /> | Leavanny | Poni Meadow     |
+
+## Thursday
+
+| Island   | Sprite                           | Pokemon    | Location         |
+| -------- | -------------------------------- | ---------- | ---------------- |
+| Melemele | <PixelImage name='Scatterbug' /> | Scatterbug | Hau'oli City     |
+| Akala    | <PixelImage name='Beedrill' />   | Beedrill   | Route 4          |
+| Ula'ula  | <PixelImage name='Pidgeot' />    | Pidgeot    | Route 10         |
+| Poni     | <PixelImage name='Chesnaught' /> | Chesnaught | Exeggutor Island |
+
+## Friday
+
+| Island   | Sprite                          | Pokemon   | Location   |
+| -------- | ------------------------------- | --------- | ---------- |
+| Melemele | <PixelImage name='Bulbasaur' /> | Bulbasaur | Route 2    |
+| Akala    | <PixelImage name='Grovyle' />   | Grovyle   | Route 5    |
+| Ula'ula  | <PixelImage name='Monferno' />  | Monferno  | Route 11   |
+| Poni     | <PixelImage name='Greninja' />  | Greninja  | Poni Wilds |
+
+## Saturday
+
+| Island   | Sprite                          | Pokemon   | Location          |
+| -------- | ------------------------------- | --------- | ----------------- |
+| Melemele | <PixelImage name='Litwick' />   | Litwick   | Hau'oli Cemetery  |
+| Akala    | <PixelImage name='Marshtomp' /> | Marshtomp | Brooklet Hill     |
+| Ula'ula  | <PixelImage name='Axew' />      | Axew      | Mount Hokulani    |
+| Poni     | <PixelImage name='Delphox' />   | Delphox   | Ancient Poni Path |
+
+## Sunday
+
+| Island   | Sprite                           | Pokemon    | Location       |
+| -------- | -------------------------------- | ---------- | -------------- |
+| Melemele | <PixelImage name='Charmander' /> | Charmander | Route 3        |
+| Akala    | <PixelImage name='Ralts' />      | Ralts      | Route 6        |
+| Ula'ula  | <PixelImage name='Rhyorn' />     | Rhyorn     | Blush Mountain |
+| Poni     | <PixelImage name='Eelektross' /> | Eelektross | Poni Grove     |
+`;export{e as default};

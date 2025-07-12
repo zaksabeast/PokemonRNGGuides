@@ -1,0 +1,38 @@
+const e=`---
+title: "mGBA Setup"
+description: "Learn how to set up mGBA for GBA Pokémon RNG, including lua scripting support."
+slug: "mgba-setup"
+category: "GBA Tools"
+tag: "emu"
+addedOn: "2025-03-03"
+---
+
+## Tools
+
+- [mGBA (development build)](https://mgba.io/downloads.html#desktop-os-1)
+- [Lua scripts](https://github.com/Real96/PokeLua/tree/main/Gen%203/mGBA)
+
+## Set up lua script
+
+1. Go to Tools -> Scripting...
+2. Then File -> Load Script... and choose the lua script for your game version.
+
+Every time you need to save or load a state, hold \`Shift + (n)\` or \`(n)\` with game unpaused.
+This will load the save state to have the script read advances correctly.
+
+- For example, \`Shift + 1\` to save a state in slot 1 or \`1\` to load the state in slot 1.
+
+## Troubleshooting
+
+### Error: \`attempt to call a nil value (method 'setWatchpoint')\`
+
+Make sure to use the development build of mGBA linked above. Other versions of mGBA will show this error.
+
+### Error: \`attempt to index a nil value (global 'emu')\`
+
+Make sure you have loaded a rom before attempting to run your lua script.
+
+## Credits
+
+- Chinese translation: Hakuhiro.
+`;export{e as default};

@@ -1,0 +1,39 @@
+const e=`---
+title: "Brilliant Diamond and Shining Pearl Wild RNG"
+navDrawerTitle: "Wild RNG"
+description: "RNG wild Pokémon in Brilliant Diamond and Shining Pearl using CFW."
+slug: "cfw-bdsp-wild"
+category: "Brilliant Diamond and Shining Pearl"
+isRoughDraft: true
+tag: "cfw"
+---
+
+For this guide, we'll assume you know how to use CaptureSight and the Chatot site for setup. You'll also need to understand how to advance your states and manage noise using the Wild tab of the Chatot site.
+
+This guide focuses on basic information about delays and specific setups. Other details are covered in the basic knowledge guides.
+
+It's important to set up a gender rate if you're not hunting for a genderless Pokémon. The opposite applies if you are hunting for a genderless Pokémon. The generation checks for this, so skipping it may lead to different Nature results for Pokémon.
+
+### Pure Wild (Honey)
+
+- Delay: 1 (2 for Unown).
+- Notes: Use Honey. Sweet Scent may lead to instability. Press \`A\` on the "Use" message at the right frame.
+
+For encounter slots, visit: https://www.pokemon-element-sh.fr/encounters-slots. The site is in French but is reliable. If it doesn't work, check: https://www.pokebip.com/page/jeuxvideo/dossier_shasse/encounter_slot.
+
+If you're a [PokeFinder](/pokefinder) user (Gen 8 Tab => Wild), the Encounter Tables are available. Fill in necessary information (like the route) to see available Pokémon. Remember to edit your profile for swarms or similar events.
+
+### Fishing
+
+- Delay: 1 (double-check recommended).
+- Notes: Press \`A\` on the "Landed a Pokémon!" message.
+
+\`\`\`
+Note: The whole generation is being worked on. Some factors generate when using the rod, while PID and others generate once hooked. This will help with hunting rare Encounter Slots.
+\`\`\`
+
+## Surfing
+
+- Delay: 2.
+- Notes: Same as basic wild; use Honey instead of Sweet Scent.
+`;export{e as default};

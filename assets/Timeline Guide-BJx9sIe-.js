@@ -1,0 +1,58 @@
+const e=`---
+- title: "Ultra Sun and Ultra Moon Timeline RNG"
+  navDrawerTitle: "Timeline RNG"
+  description: "Learn how to create a timeline in Ultra Sun and Ultra Moon."
+  slug: "retail-usum-timeline"
+  category: "Ultra Sun and Ultra Moon"
+  tag: "cfw"
+- title: "Sun and Moon Timeline RNG"
+  navDrawerTitle: "Timeline RNG"
+  description: "Learn how to create a timeline in Sun and Moon."
+  slug: "retail-sm-timeline"
+  category: "Sun and Moon"
+  tag: "cfw"
+  canonical: "retail-usum-timeline"
+---
+
+## Tools
+
+- [A 3DS with PokeReader](/install-pokereader)
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+
+## Step 1: Setting Up 3DSRNGTool
+
+Only create a timeline if there are one or more NPCs in your area. If you have 0 NPCs, you don't need a timeline.
+
+1. Enter your game version and TSV.
+2. Input the initial seed, found in the main RNG view under \`Init Seed:\`.
+3. If you have the Shiny Charm, check the Shiny Charm box.
+
+\`\`\`
+Note: In Gen 7 games, NPCs affect the RNG frames. Usually each NPC advances the frame by one. Therefore, an area with four NPCs typically progresses five frames each time. Things like Rotom or character blinks also have an effect. Accurate predictions can be achieved if the timeline is correctly created, ensuring you don't miss your target frame due to NPCs.
+\`\`\`
+
+## Step 2: Timeline Creation
+
+1. Enable “Safe F Only” in 3DSRNGTool.
+2. Enter the count of NPCs for the area. Confirm this count with PokeReader.
+3. In the game, advance to the Pokémon's final screen you are RNGing for. Input the current frame in the frame range.
+4. Click "Calculate", then advance to any listed frames with a "-" in the Mark column. These are "Safe Frames", useful for accurate frame landing predictions.
+5. Press \`Start\` to advance frames by unpausing the game. You can then pause again with \`Start + Select\` when close to your frame and slowly advance with \`Select\` button while paused.
+
+## Step 3: Timeline and NPC Number Confirmation
+
+1. After reaching any safe frame, input your current frame into 3DSRNGTool, then enable “Create Timeline” and click "Calculate".
+2. Advance several times by pressing \`Select\` and compare with the subsequent frames in 3DSRNGTool.
+   - If they match, the NPC count is correct.
+   - If they do not match, recreate your timeline.
+
+Errors in making the timeline are typically discovered at this point. Verify the initial seed and ensure PokeReader's NPC counter hasn't changed during timeline creation.
+
+\`\`\`
+Note: Do not adjust filters during timeline creation. Only "Safe F Only" box should have been activated by this point. If any other filter has been adjusted, start again from the beginning.
+\`\`\`
+
+\`\`\`
+Note: Check if your desired frame is still within the timeline by redoing the timeline with your current frame, then searching for your target. If it doesn't appear in the results, your timeline has shifted.
+\`\`\`
+`;export{e as default};

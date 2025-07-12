@@ -1,0 +1,162 @@
+const e=`---
+title: "Retail Emerald Egg RNG"
+navDrawerTitle: "Egg RNG"
+description: "Learn how to Retail RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies."
+slug: "retail-emerald-egg"
+category: "Emerald"
+tag: "retail"
+addedOn: "2025-05-18"
+---
+
+## Video Guides
+
+<YouTubeTable
+  videos={[
+    {
+      title: "Getting Shiny Eggs",
+      src: "https://www.youtube.com/embed/yNWmpMTBOlc?si=rMUHb89lp8lkWCQD",
+    },
+    {
+      title: "Getting Pefect IVs",
+      src: "https://www.youtube.com/embed/Kdqbl08xmVQ?si=lFIE_KePFouiS2hU",
+    },
+    {
+      title: "Match Call Trainers by El Terapagos Mexicano",
+      src: "https://www.youtube.com/embed/oQl6Knrydnc?si=rB8WuNunPOUFS8zY",
+    },
+  ]}
+/>
+
+## Written Guide
+
+<Stepper titles={["PokeNav", "Setup", "Pick Target", "Get PID", "Pick IVs", "Get Stats"]}>
+
+<Step step={0}>
+
+### PokeNav
+
+1. Register as many trainers to the PokeNav as possible.
+2. Open the PokeNav Match Call feature and select all the trainers you registered in the tool below.
+3. Proceed to the next step.
+
+  <PokeNavInput />
+</Step>
+
+<Step step={1}>
+
+### Step 1: Prepare
+
+1. Optional, but highly recommended: Put a Pokemon with Lightning Rod and Flame Body in your party.
+   - Electrike with Lightning Rod is on Route 110, just South of Mauville.
+   - Slugma with Flame Body is in Fiery Path, just North of Mauville.
+2. Buy at least 3 normal repels from Verdanturf.
+3. Go to the Daycare and withdraw any Pokemon currently there.
+4. Stand in front of the top right edge of the white path on Route 118.
+5. Use the first repel.
+
+![White Path](/images/Emerald/Retail-Egg/start-point.webp)
+
+### Step 2: Deposit Pokemon
+
+1. Walk left until you're in front of the Daycare, then walk up until you're in front of the Daycare lady.
+2. Deposit your parent Pokemon into the Daycare.
+3. Exit the Daycare.
+4. Talk to the Daycare Man to get the egg compatibility and write it down for later.
+
+### Step 3: Get into position
+
+1. Walk to Verdanturf and run around.
+2. Use the second repel.
+3. Run around Verdanturf and use the third repel.
+4. Stand next to the tree closest to the PokeCenter (screenshot below).
+5. Walk back and forth on the two tiles in front of the PokeCenter until the repel wears off.
+6. Save the game and proceed to the next step.
+
+![PokeCenter](/images/Emerald/Retail-Egg/end-point.webp)
+
+</Step>
+
+<Step step={2}>
+
+### Pick a Target
+
+1. Enter your egg details in the tool below and press "Generate".
+2. Press "Select" on the target Pokemon you want to hatch.
+
+If you are using a Ditto with a genderless or male parent, enter the information for the Ditto as the "Female".
+
+  <RetailEmeraldHeldEgg />
+</Step>
+
+<Step step={3}>
+
+### Step 1: RNGing the PID
+
+1. Make sure the Lightning Rod Pokemon is in the front of your party and save.
+2. Start the timer below.
+3. When first timer goes off, soft reset your game and load your save as fast as possible.
+4. Walk back and forth on the two tiles in front of the PokeCenter for 9 steps.
+5. Open the PokeDex however many times the tool below says.
+6. Take 1 step on the same two tiles when the timer goes off.
+7. If you received a PokeNav call that matches your expected call and the Daycare man has an egg, save the game. If not, scroll down to the "Calibrate" section.
+
+<CalibrateHeldEggTimer />
+
+### Step 2: Calibrate
+
+1. Put the Flame Body Pokemon in the front of your party.
+2. Pick up your egg from the daycare man and hatch it. If it's shiny, proceed to the next step.
+3. If the egg wasn't shiny, fill in the tool below with the match call and egg nature.
+4. Press "Find advances matching eggs" to view a list of possible eggs.
+5. Press "Calibrate" on the egg with the offset closest to 0 to adjust the timer.
+6. Restart the PID RNG process.
+
+  <CalibrateHeldEgg />
+</Step>
+
+<Step step={4}>
+
+### Picking IVs
+
+1. Fill in the tool below and press "Generate" to get a list of possible IVs.
+2. Press "Select" on the target Pokemon you want to hatch.
+
+  <RetailEmeraldPickupEgg />
+</Step>
+
+<Step step={5}>
+
+### Step 1: RNGing the IVs
+
+1. Stand next to the Daycare man and save.
+2. Start the timer below.
+3. When the first timer goes off, soft reset your game, load your save, and talk to the Daycare man as fast as possible.
+4. Continue the dialogue until you see the text "Take good care of it".
+5. When the second timer goes off, press \`A\` to receive the egg.
+6. Hatch the egg.
+
+<CalibratePickupEggTimer />
+
+### Step 2: Calibrate
+
+1. Enter the stats in the tool below and press "Find advances matching hatched egg".
+2. If the result with offset 0 matches your target stats and method, congratulations! You got your egg!
+3. If the result with offset 0 doesn't match your target method, try again without calibrating.
+4. If there is not a result with offset 0, click "Calibrate" on the result with the offset closest to 0 to adjust the timer.
+5. Restart the IV RNG process.
+
+  <CalibratePickupEgg />
+</Step>
+
+</Stepper>
+
+---
+
+## Credits
+
+- Zaksabeast for writing this web tool.
+- Lincoln for the [PokeNav tool](https://github.com/Lincoln-LM/PokeNav-Egg-RNG-Tool), which this tool is based on.
+- Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, which this tool is based on.
+- El Terapagos Mexicano, jafet0022, and everyone who contributed to [this Discord thread](https://discord.com/channels/285269328469950464/1257368429107875992), which is filled with lots of retail Emerald egg research and info.
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

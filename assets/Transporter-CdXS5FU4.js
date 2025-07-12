@@ -1,0 +1,83 @@
+const e=`---
+title: "Transporter RNG for Gen 1 and 2"
+navDrawerTitle: "Transporter RNG"
+description: "Learn how to RNG your Virtual Console Pokémon so they transfer to Gen 7 with perfect 6IVs."
+slug: "transporter-rng"
+category: "Transporter and Dream Radar"
+tag: "cfw"
+addedOn: "2025-05-08"
+---
+
+This guide allows for RNGing the IVs of Pokemon transferred from Gen 1/2 using Transporter. Shininess and nature are predetermined in the Gen 1/2 game the Pokemon are coming from.
+
+You can check the [nature table here](/misc-3ds-transporter-nature-tables) for what nature your Pokemon will have when transferred.
+
+If you would like a stable delay for easier RNG, you can follow the [Offline Patch Transporter RNG guide here](transporter-rng-offline).
+
+## Tools
+
+- [A 3DS with PokeReader](/install-pokereader)
+
+## Useful note
+
+\`\`\`
+When asked if you want to transfer your Pokémon, clicking "No" will cause the Pokémon to be generated again. This allows infinite retries if you miss the RNG.
+\`\`\`
+
+## Step 1: Calibrate your delay
+
+RNGing with Transporter has a delay between pressing \`A\` and Pokémon generation. The delay must be calibrated before RNGing.
+
+1. Make sure you have at least one Pokémon in Box 1, Slot 1 of your Gen 1/2 game.
+1. Load Pokémon Transporter with PokeReader on your 3DS.
+1. Enter your Initial seed in the tool below.
+1. In Transporter, press \`Start\` to select the game for Transporter.
+1. Press \`Start + Select\` to pause the game.
+1. Note your current advance; this is your starting advance.
+1. Press \`A\` to unpause and let Transporter generate the Pokémon.
+1. Search for the exact IVs PokeReader indicates using the tool below to find your hit advance.
+1. Subtract your hit advance from your starting advance to get your delay.
+   - Example: If you started on advance 1000 and hit advance 1197, your delay is 197.
+1. When asked to transfer the Pokémon, click "No."
+1. Repeat the process 5-10 times to get 5-10 delays.
+1. Input the most frequent delay or an average into the "Delay" box.
+
+## Step 2: Find a spread to RNG
+
+Follow these steps with the tool below to find a desired spread:
+
+1. Change the "Transporter Gender" to match the Pokémon you want to RNG.
+1. Change IVs to find a spread you want.
+   - Nature, ability, and shininess are determined in the Gen 1/2 game before Transporter.
+1. Change the "Initial Advance" box to your current advance.
+1. Change the "Max Advances" box to the maximum advance you want to search.
+1. Click "Generate."
+
+All results are potential wanted advances. Pick your favorite!
+
+## Step 3: Hit the target
+
+1. Wait at the game selection screen until you get close to your wanted advance.
+1. Once close, press \`Start + Select\` to pause the game.
+1. Press \`Select\` to advance one by one until you reach your wanted advance.
+1. Once at your wanted advance, press and hold \`A\`.
+1. Check if you got the Pokémon you wanted; if not, don't transfer your Pokémon and try again.
+
+This may take several attempts.
+
+## 20 Pokemon Method
+
+Transporter generates 20 Pokémon at once. If you have 20 of the same Pokémon, you can have 20 chances at landing on the right advance.
+
+1. Catch 20 of the same Pokémon (or clone them).
+1. Make sure all 20 are in Box 1 of your Gen 1/2 game.
+
+In the tool below:
+
+1. Change the "Filters" box to have the IVs you want to RNG.
+1. Search for spreads using the initial seed PokeReader shows.
+1. Ensure the number of consecutive advances is at least 10.
+1. Aim for the middle advance as your target advance.
+
+<Transporter />
+`;export{e as default};

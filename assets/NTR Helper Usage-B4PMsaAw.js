@@ -1,0 +1,36 @@
+const e=`---
+title: "NTR Helper Usage"
+description: "Learn how to use the NTR Helper Tool in 3DSRNGTool."
+slug: "ntr-helper-usage"
+category: "3DS Tools"
+tag: "cfw"
+hideFromNavDrawer: true
+---
+
+\`\`\`
+Note: The computer and the 3DS must be on the same internet connection for 3DSRNGTool to connect.
+
+NTR Helper can be found in 3DSRNGTool under the \`Tools\` tab in the upper right.
+\`\`\`
+
+## Tools
+
+- A 3DS with CFW (Custom Firmware) and NTR.
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases).
+
+## Gen 6 Connecting to 3dsrngtool
+
+1. Press \`X + Y\` to open the NTR menu, then select "Enable Debugger." This keeps the console connected to the internet after loading the game.
+2. Load the game while holding the \`Left\` button on the d-pad. The screen will flash three times and stop on the 3DS logo.
+3. In 3DSRNGTool, go to \`Tools -> RNG Helper.\`
+4. Fill in the console IP address.
+5. Click "One Click" to connect in the RNG Helper window within 3DSRNGTool.
+
+## Gen 7 Connecting to 3dsrngtool
+
+1. Press \`X + Y\` to open the NTR menu, then select "Enable Debugger." This keeps the console connected to the internet after loading the game.
+2. Load the game and pause at the continue screen. Optionally, you can connect while in the game later. If using an N3DS or N2DSXL, press the home button to connect to the internet, then resume the game once connected to NTR Helper. For O3DS/O2DS, pressing the home button with NTR running will crash the console, so enabling the debugger in Rosalina keeps the 3DS connected to the internet.
+3. In 3DSRNGTool, go to \`Tools -> RNG Helper.\`
+4. Fill in the console IP address.
+5. Click "Connect" to connect in the RNG Helper window within 3DSRNGTool.
+`;export{e as default};

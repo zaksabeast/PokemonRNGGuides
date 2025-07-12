@@ -1,0 +1,104 @@
+const e=`---
+- title: "Black and White Roamer RNG"
+  navDrawerTitle: "Roamer RNG"
+  description: "Learn how to RNG Tornadus and Thundurus in Black and White for shiny and high-IV results."
+  slug: "emulator-bw-roamers"
+  category: "Black and White"
+  tag: "emu"
+---
+
+## Tools
+
+- [Desmume](/desmume-setup)
+- [RNG Reporter](https://github.com/Admiral-Fish/RNGReporter/releases)
+
+## Step 1: Finding a spread
+
+1. In RNG Reporter, set the Month to 2 and 11.
+2. Set the Encounter Type to Roaming Pokémon and Method as IVs (Standard Seed).
+3. Choose a nice IV Spread; do not worry about Shininess right now.
+
+![Setup](/images/Black-and-White/Roamer/Setup.png)
+
+\`\`\`
+Note: If you choose a different month, your Frames will be way more unstable/random and thus more luck-based.
+\`\`\`
+
+\`\`\`
+Note: This should take a while.
+\`\`\`
+
+![Target Seed](/images/Black-and-White/Roamer/Target.png)
+
+## Step 2: Getting the target PID and Nature
+
+Before we only searched for an IV spread because TID abuse is recommended for shiny roamers with good IVs.
+
+\`\`\`
+If you only want IVs or Shininess and not both, feel free to skip this and the next step.
+\`\`\`
+
+Choose a Frame (recommended: at least 1500 Frames, perhaps 2000 if using a month other than 2 or 11). Note the PID and the Frame.
+
+![Pandora's Box](/images/Black-and-White/Roamer/Pandora.png)
+
+## Step 3: Save preparation
+
+Similar to Generation 3 or 4 RNG abuse, it is recommended that you TID/SID abuse for a good shiny. Skip this step if you only care about IVs or only care about Shininess.
+
+1. Choose a TID/SID combo you like (or specify a TID/SID) and get your TID/SID.
+2. Hit your Initial Seed and advance frames.
+3. Note your TID/SID and get to the point you can release the roamer.
+4. Then save inside.
+
+This is where you should save (the house on Route 7):
+
+![Where to save](/images/Black-and-White/Roamer/Save.png)
+
+## Step 4: Calibration
+
+![Final Screen](/images/Black-and-White/Roamer/Final-Screen.png)
+
+On the RNG Reporter screen, you got a Frame Number, most likely between 1-6.
+
+1. Advance frames by walking around in the house.
+2. Make a Save State and walk outside. Get to the screen pictured above.
+3. Start advancing frames.
+4. Once you're at the target frame, press \`A\`.
+
+\`\`\`
+Note: It will most likely not have hit your Frame. You can check your Pokédex to see if you succeeded. (Assuming you are aiming for a shiny)
+\`\`\`
+
+5. Run into the roamer and note the PID. You can use a Lua Script to see the PID or catch it and use PkHeX to view the stats.
+
+![Calibration](/images/Black-and-White/Roamer/Calibration.png)
+
+## Step 5: Getting the target
+
+At this point, you should have found the PID you hit.
+
+1. Go back to RNG Reporter.
+2. On the main screen, enter your Seed and ensure it searches Generation 5 PIDRNG abuse.
+3. Hit Search and look for your PID.
+
+\`\`\`
+Note: Exporting the results to .txt makes this easier, so you can use \`Ctrl\` + \`F\` to find the PID.
+\`\`\`
+
+4. Find out how many frames advanced after hitting \`A\`, and subtract that from your target. This is your new target frame.
+5. Try to hit this new target frame. If you do not hit your Pokémon,
+6. Repeat these steps once more.
+7. You may need to repeat this multiple times, but you will succeed eventually.
+8. Keep track of what Frames you have hit and what Frame you pressed \`A\` on before in Notepad or Google Docs.
+
+![Success](/images/Black-and-White/Roamer/Success.png)
+
+## Celebrate!
+
+Catch your roamer with a Master Ball or use a Mean Look/Arena Trap/Shadow Tag Trapper. Then share your success with your friends or the Pokemon RNG Discord's bragging channel.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

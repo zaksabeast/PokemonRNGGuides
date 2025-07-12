@@ -1,0 +1,74 @@
+const e=`---
+- title: "Diamond, Pearl, and Platinum Initial Seed RNG"
+  navDrawerTitle: "Initial Seed RNG"
+  description: "Learn how to RNG your initial seed in Diamond, Pearl, and Platinum."
+  slug: "dppt-initial-seed"
+  category: "Diamond, Pearl, and Platinum"
+  tag: "emu"
+---
+
+\`\`\`
+This guide assumes you have found a target seed already. You need your target seed and delay before following this guide.
+\`\`\`
+
+## Tools
+
+- [Desmume](/desmume-setup)
+- [RunAsDate](https://www.nirsoft.net/utils/run_as_date.html)
+
+### What is RunAsDate?
+
+RunAsDate is a tool that allows any program to load with a set time you specify. This tool is useful for Gen 4 RNG and helps hit your seed easier.
+
+## Setup RunAsDate
+
+1. Launch RunAsDate.
+2. Configure RunAsDate to match the image below.
+
+![Setup](/images/Diamond-Pearl-Platinum/Initial-Seed/Setup.png)
+
+\`\`\`
+You'll never have to change that after. This is the universal RunAsDate configuration for RNG (Gen 3, 4 or 5).
+\`\`\`
+
+3. Select the program you want to fake the date/time with the \`Browse...\` button.
+4. Set the date and time to hit your seed as shown in [PokeFinder](/pokefinder).
+   - Right click on the chosen seed and choose "Generate times for seed".
+5. Hit \`Run\` to launch Desmume.
+
+## Hitting the target seed
+
+\`\`\`
+Make save states often during this process.
+\`\`\`
+
+1. Load the lua script.
+2. Click \`A\` to reach the "Continue" screen quickly.
+3. Pause your emulator using \`Ctrl + P\`.
+4. Make plenty of save states.
+5. Unpause your game and let it run until close to your target delay.
+6. When close, pause your emulator.
+7. Create another save state.
+8. Press \`N\` to advance the game one video frame to increase the delay.
+9. When you reach the target delay, hold \`A\` while unpausing.
+
+## Troubleshooting
+
+If you notice that you are pressing \`A\` at the right delay but hitting a different delay by +/-1, this can happen due to Gen 4 delays being always odd or always even. You can switch delays from even to odd or vice versa with the following methods:
+
+### Changing the year
+
+Close your emulator, then change the year in RunAsDate to one year before or after your current year. This will change the delay as well. Verify your new delay in PokeFinder in the "Seed to Time" window. Relaunch Desmume with RunAsDate and load a save state to RNG for the new delay.
+
+### Load a GBA game
+
+Load a GBA game into the GBA slot in the emulator to switch the delay from even to odd, or vice versa.
+
+### Continue Screen
+
+Choose "New Game", then press \`B\` to cancel and go back to the continue screen, which will switch the delay from even to odd, or vice versa.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

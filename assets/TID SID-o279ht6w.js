@@ -1,0 +1,28 @@
+const e=`---
+title: "HeartGold and SoulSilver TID/SID RNG"
+navDrawerTitle: "TID/SID RNG"
+description: "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in HeartGold and SoulSilver."
+slug: "emulator-hgss-tid-sid"
+category: "HeartGold and SoulSilver"
+isRoughDraft: true
+tag: "emu"
+---
+
+## Step 1: Understanding TID and SID
+
+Here's the basics about getting your desired PID.
+
+1. Know that uppercase and lowercase can affect delay issues.
+2. Consider special cases that may not be covered in this guide.
+
+\`\`\`
+If you need to find pairs faster, look for a special tool that can help.
+\`\`\`
+
+## Step 2: Using Special Tools
+
+If you’re having trouble finding pairs with PokeFinder, here’s what to do.
+
+1. Find and use a specific tool to help locate TID/SID pairs.
+2. Follow the instructions from that tool.
+`;export{e as default};

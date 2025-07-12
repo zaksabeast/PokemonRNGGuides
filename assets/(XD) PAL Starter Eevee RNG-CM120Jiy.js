@@ -1,0 +1,66 @@
+const e=`---
+title: "XD Eevee PAL RNG"
+description: "How to RNG the starter Eevee with a PAL Pokemon XD."
+slug: "pal-xd-eevee"
+category: "Gamecube"
+isRoughDraft: false
+tag: "emu"
+---
+
+## Tools
+
+- Dolphin with Lua support (available on Discord)
+- Lua scripts for Gamecube (available on Discord)
+- [PokeFinder](/pokefinder)
+- PAL-Pal (https://github.com/KapitalRoser/PAL-Pal) by Kapital#9267
+- A new save of PAL XD
+- List of shiny Eevee spreads by Parzival#3035 (https://pastebin.com/0Dh740Kg) for Method 2
+- RunAsDate (x64) for Method 2
+
+## Intro
+
+This guide covers two methods to RNG Eevee in PAL XD. Choose based on your needs: one with a known Eevee spread list using Initial Seed RNG, and a simpler method using any Initial Seed for more random spreads.
+
+This guide assumes basic knowledge of emulator setup and Initial Seed RNG for PAL XD.
+
+\`\`\`
+Note: This guide only works for PAL XD; it doesn't apply to the NTSC version.
+\`\`\`
+
+## Advancing the RNG
+
+Understand how to advance the RNG since the PAL version freezes in the name menu. Use these methods:
+
+1. Rerolls: Triggered in the main menu by going to "VS Mode" => "Quick Battle" => "Battle vs CPU" => Ultimate. Each reroll is when Pokémon are shown. Press \`No\` and redo for multiple advances.
+2. Memory Card Reloads: Press \`B\` and \`A\` in the main menu to reload Memory Card Data, shown by an in-game message. Each reload counts as +1.
+3. Options Saves: Change the Rumbling setting in Settings, save, then return to the main menu.
+4. Name Screen Blackout: Start a New Game and press \`B\` when asked about using a specific name. Do not select a name as it's irreversible.
+
+\`\`\`
+Note: Set your trainer's name when the Current Seed matches your target Seed. Avoid Name Screen Blackout at this point.
+\`\`\`
+
+## Method 1: Using PAL-Pal Only
+
+This method is straightforward for hitting any Eevee not listed but can take time and yield less favorable spreads.
+
+1. Open Dolphin, load the Luas, note the Current Seed in the main menu, and pause the emulator.
+2. Open PAL-Pal, go to the Speedrun tab, set filters for your desired Eevee (Shiny, IVs, gender, Nature), and save.
+3. Input the Current Seed in the 'Current Seed (Hex)' window and search for results.
+4. Cycle between results using 'Next' and 'Previous.'
+5. Once you find the right result, follow instructions to get the path and perform necessary advances.
+
+## Method 2: Using the Shiny Eevee Spread List
+
+This method needs Initial Seed RNG but quickly accesses great spreads.
+
+1. Open PokeFinder, go to the Gamecube RTC tab, and input the Seed of your desired Eevee in the Target Seed section. Ensure the Initial Seed is around 15-20k advances, nothing earlier.
+2. Do the Initial Seed RNG with RunAsDate, Dolphin, and the Lua script. Pause the emulator on the main screen.
+3. Open PAL-Pal, go to the Custom Tab, and input your Current Seed.
+4. For the Target Title Seed, input the Seed that allows hitting the target, not the Target Seed. Use the Researcher in PokeFinder, select XDRNG[R], put the Target Seed in the Seed box, set Max Advance to 1010, and generate results. Check Advance 1000; it's your Target Title Seed to input in PAL-Pal.
+5. Click on Search; your Eevee should be first. Follow the path to advance your Seeds and get your shiny Eevee.
+
+\`\`\`
+Note: The delay may not be exactly 1000 but slightly different. Stick with 1000; if it doesn't match the Target Seed, you'll perform a few extra advances in-game. To adjust, use results from Advance 1002 and 1004 in the Researcher.
+\`\`\`
+`;export{e as default};

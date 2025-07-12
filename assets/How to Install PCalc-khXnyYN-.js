@@ -1,0 +1,114 @@
+const n=`---
+title: "How to Install PCalc"
+description: "Learn how to install PCalc on your 3DS to assist with RNG in Pokémon games like X/Y, ORAS, Sun/Moon, and USUM."
+slug: "misc-3ds-installing-pcalc"
+category: "3DS Tools"
+tag: "cfw"
+hideFromNavDrawer: true
+---
+
+<Alert
+  showIcon
+  type="warning"
+  message="It's strongly advised to use PokeReader instead!"
+  description={
+    <>
+      PokeReader is newer, easier to set up, and actively maintained!{" "}
+      <a href="/install-pokereader">Get it here!</a>
+    </>
+  }
+/>
+
+## Tools
+
+- A 3DS with CFW (Custom Firmware). Check out https://3ds.hacks.guide/ for instructions on installing CFW.
+
+## Update Luma
+
+Ensure your installed version of Luma3ds is 13.0 or later. Older versions aren't compatible with NTR.
+
+- [Download Luma3ds](https://github.com/LumaTeam/Luma3DS/releases).  
+  Download the \`boot.firm\` and overwrite the current \`boot.firm\` on the root of the SD card.
+
+## Step 1: Installing NTR
+
+First, install NTR by getting [BootNTR Selector](https://github.com/Nanquitas/BootNTR/releases).
+
+- **N3DS and N2DSXL:** Download and install BootNTR Selector.  
+  Download either of the CIAs that are _not_ Mode 3 and copy it to the SD card, then install using FBI.
+- **O3DS and O2DS:** Download and install _BOTH_ BootNTR Selector and BootNTR Selector Mode 3.  
+  Mode 3 is for Ultra Sun/Ultra Moon and Sun/Moon ONLY. Download one Mode 3 CIA and one regular CIA. Copy both CIAs to the SD card and install using FBI.
+
+\`\`\`
+To install a CIA using FBI, launch FBI on the console, then navigate to the CIA file on the SD card and press \`A\` on it to install.
+\`\`\`
+
+Launch BootNTR Selector and choose default for settings.
+
+- Version 3.6 (replacing 3.4 and 3.5) is the only version that works for plugins, so choose it every time you boot NTR.
+- **For O3DS and O2DS only:** Then launch BootNTR Selector Mode 3 and repeat the steps above.
+
+## Step 2: Installing PCalc
+
+After installing NTR, the next step is to install the PCalc plugin.
+
+- [Ultra Sun/Ultra Moon](/downloads/pcalc/pcalc-usum.zip)
+- [Sun/Moon](/downloads/pcalc/pcalc-sm.zip)
+- [OR/AS](/downloads/pcalc/pcalc-oras.zip)
+- [X/Y](/downloads/pcalc/pcalc-xy.zip)
+- [Transporter](/downloads/pcalc/pcalc-tport.zip)
+
+1. Download the .zip for the version you want and unzip its contents.
+2. Move the plugin folder from the zip to the root of the SD card. Merge and overwrite contents if prompted.
+3. You should now have a \`Plugin\` folder on the root of the SD card and two/four/six/eight folders inside it (depends on which PCalcs you downloaded) with a \`cheat.plg\` in each.
+
+## Step 3: Launching PCalc
+
+Launch BootNTR Selector and then the application of your choice.
+
+- **O3DS and O2DS Only:** Launch BootNTR Selector Mode 3 for Ultra Sun/Ultra Moon and Sun/Moon ONLY.  
+  Press the home button to return to the home screen, then launch Ultra Sun/Ultra Moon or Sun/Moon. Mode 3 should close ONLY when prompted to launch the game.
+
+If the screen flashes green, congrats, you did it!
+
+\`\`\`
+The PCalc Menu can be opened by pressing \`X\` + \`Up\` on the D-pad.
+
+The NTR Menu can be opened by pressing \`X\` + \`Y\`. This is useful for taking screenshots; all screenshots are saved to the root of the SD card as .bmp files.
+\`\`\`
+
+## Troubleshooting
+
+If you updated to 3DS version 11.15 and NTR isn’t working, make sure you have the latest BootNTR Selector and/or BootNTR Selector Mode 3, and a compatible Luma version for NTR.
+
+- Hold \`X\` while launching to update easily.
+- **O3DS and O2DS:** Update BOTH versions of BootNTR Selector.
+- Check the section at the beginning of this guide for updating Luma for NTR.
+
+If using Ultra Sun/Ultra Moon or Sun/Moon and PCalc displays \`Init Seed\` as 0:
+
+- You are missing the v1.2 update for Sun and Moon or the v1.2 update for Ultra Sun and Ultra Moon.  
+  This can be downloaded from the Eshop or extracted from another console using CFW.
+
+If using XY/ORAS and PCalc isn't working:
+
+- Ensure you have the latest update for the game.  
+  XY is 1.5, ORAS is 1.4. The game version can be found at the continue screen.  
+  The update can be downloaded from the Eshop or extracted from another console using CFW.
+
+If the game is updated to the latest version and PCalc and/or NTR isn't loading:
+
+- Delete all NTR related files on the SD card.  
+  Delete any NTR.bin files on the root of the SD card.  
+  Delete these folders and their contents:
+  - SD:/Nintendo 3DS/EBNTR/
+  - SD:/3ds/ntr/
+  - SD:/3ds/BootNTRSelector/
+- Redownload the necessary NTR files by launching BootNTR Selector and BootNTRSelector Mode 3.
+
+About Pokemon Gen 6/7 Game Updates:
+
+- If you have a firmware region changed console or emunand, this can be obtained from other sources, such as dumping your update from another console, emunand, or sysnand.
+- Pokemon game updates are not region locked.
+- Cartridge and digital updates are stored on the SD card and are console/emunand specific, so they must be installed on the console/emunand you are using the game with.
+`;export{n as default};

@@ -1,0 +1,71 @@
+const e=`---
+- title: "How To Find DS Parameters in Generation 5"
+  navDrawerTitle: "DS Parameters"
+  description: "Learn how to find your DS parameters for successful RNG in Pokémon Black and White."
+  slug: "emulator-bw-find-ds-parameters"
+  category: "Black and White"
+  tag: "emu"
+---
+
+## Tools
+
+- [Desmume](/desmume-setup)
+- [RNG Reporter](https://github.com/Admiral-Fish/RNGReporter/releases)
+- [RunAsDate](https://runasdate.en.softonic.com/)
+
+## Things To Know
+
+You need to find your DS Parameters to proceed with RNG. This only needs to be done once per save, console, or emulator.
+
+## Step 1: Set Up RNG Reporter
+
+1. Open RNG Reporter.
+2. Click \`5th Gen Tools -> Find DS Parameters\`.
+3. Choose your game version and language.
+4. Set the Seed Encryption Variables:
+   - DS Type: Lite/Original
+   - DS MAC Address: \`0009BF123456\`
+   - VCount: \`10-70\`
+   - Timer0: \`300-1200\`
+   - GxStat: \`6-6\`
+   - VFrame: \`0-15\`
+5. DeSmuMe's DS MAC Address is always \`0009BF123456\`.
+
+![Seed Encryption Variables](/images/Black-and-White/Parameters/Setup.png)
+
+\`\`\`
+Note: If you cannot find a seed, double-check your settings. If correct, try:
+- VCount: \`0-FF\`
+- Timer0: \`0-FFFF\`
+This will take longer to search.
+\`\`\`
+
+## Step 2: Find Your Seed
+
+1. Open RunAsDate.
+2. Enter any time and check \`Immediate Mode\`.
+3. Input the same time in the DS Parameter Finder.
+
+![Time Input](/images/Black-and-White/Parameters/Time.png)
+
+4. Click \`Run\` in RunAsDate and load your ROM.
+5. Open your Lua script. Do not press any keys.
+6. Copy the seed you get and paste it into the DS Parameters Finder.
+
+![Initial Seed](/images/Black-and-White/Parameters/Seed.png)
+
+## Step 3: Search for DS Parameters
+
+1. Click \`Search\` and wait for it to finish.
+2. When you get a result, click \`Send Results to Profile\`.
+
+Good luck with your RNG!
+
+\`\`\`
+Note: You may need to redo this if you change emulation settings, saves, or redownload the emulator.
+\`\`\`
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

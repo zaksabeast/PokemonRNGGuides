@@ -1,0 +1,87 @@
+const e=`---
+title: "Ruby and Sapphire Wishing Star Jirachi RNG"
+navDrawerTitle: "Wishing Star Jirachi RNG"
+description: "Learn how to RNG the Wishing Star Jirachi from the Colosseum Bonus Disc in Ruby and Sapphire."
+slug: "wishing-star-jirachi"
+category: "Ruby and Sapphire"
+addedOn: "2025-04-23"
+tag: "emu"
+---
+
+## Tools
+
+- [VBA-M](https://github.com/visualboyadvance-m/visualboyadvance-m/releases/latest)
+- [RunAsDate](https://www.nirsoft.net/utils/run_as_date.html)
+- Wishing Star Multiboot Rom with the [No Dolphin patch](/no-dolphin-patch)
+
+## Video Guide
+
+<YouTubeVideo src="https://www.youtube.com/embed/bw2XLZzsfdU?si=LUD28rVsZBDUzn0m" />
+
+## Intro
+
+Wishing Star was an event distributed in 2003 whose distribution rom can be found on and extracted from the Colosseum bonus disc, making it an extra special type of RNG.
+
+It's seeded with the current date and time and generated immediately, making it one of the easiest RNGs you will ever do.
+
+Wishing Star has better spreads than Wishmaker and Meteor, but it cannot be shiny.
+
+## The RNG
+
+1. Find a target spread in the list below.
+2. Configure RunAsDate to match the time and date of your target spread.
+3. Launch VBA with RunAsDate, and load the multiboot rom.
+4. Load your Ruby or Sapphire save in the emulator with "File" > "Import" > "Battery File".
+5. Reset the game, and wait for the Jirachi to be distributed.
+6. If Jirachi does not appear, retry the import and reset process.
+7. VBA will create a new save file matching the ROM name.
+   - Example: If the ROM is \`sample0519.gba\`, a new file \`sample0519.sav\` will be created.
+8. Load your Ruby or Sapphire game and import the new battery file.
+9. Reset the emulator and load your save to confirm Jirachi is in your party.
+10. Save your game so the Jirachi is saved to your Ruby or Sapphire save.
+
+Congrats! You have a Jirachi with the target spread.
+
+## Troubleshooting
+
+If your Jirachi has a PID of \`15b6163b\`, the RTC was not set.
+
+Ensure you configured RunAsDate correctly.
+
+## Target Spreads
+
+### Wishing Star spreads with the highest 31 IV count
+
+| Seed | Date Time        | PID      | IVs               |
+| ---- | ---------------- | -------- | ----------------- |
+| 08c4 | 02/15/2000 19:29 | a09ba2a2 | 31/31/31/17/30/31 |
+| 5e33 | 01/16/2000 11:37 | 16c8ffa4 | 10/31/13/31/31/31 |
+| bf76 | 02/02/2000 18:36 | 5c31c17d | 31/27/31/31/27/31 |
+
+### Wishing Star spreads with all IVs 25+
+
+| Seed | Date Time        | PID      | IVs               |
+| ---- | ---------------- | -------- | ----------------- |
+| 1d0b | 01/05/2000 03:37 | 1638285d | 31/26/28/25/28/27 |
+| 37f2 | 04/09/2000 16:48 | ccd89921 | 29/25/28/31/31/30 |
+| 5a11 | 01/15/2000 18:11 | 0f2248cb | 29/26/25/26/26/28 |
+| 7671 | 01/20/2000 18:51 | feec4120 | 31/29/25/28/29/28 |
+| bf76 | 02/02/2000 18:36 | 5c31c17d | 31/27/31/31/27/31 |
+| c9e5 | 02/04/2000 14:55 | fc153744 | 31/25/29/31/25/25 |
+| cfa3 | 02/05/2000 15:37 | ce160092 | 28/26/31/25/28/27 |
+| daf4 | 02/07/2000 15:48 | dcfb9816 | 31/27/30/29/28/26 |
+| ea8a | 05/11/2000 10:48 | 84b67156 | 27/25/31/31/31/29 |
+| ec03 | 05/11/2000 16:59 | bde1f8e8 | 30/29/31/27/31/27 |
+
+### Wishing Star spreads with the highest 0 IV count
+
+| Seed | Date Time        | PID      | IVs               |
+| ---- | ---------------- | -------- | ----------------- |
+| 137e | 01/02/2000 22:46 | e555d451 | 00/00/00/30/00/07 |
+| 4fd7 | 01/14/2000 04:27 | 09461a5b | 00/00/14/00/20/00 |
+| ddc0 | 02/07/2000 21:44 | 3ca75241 | 21/20/00/00/00/00 |
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

@@ -1,0 +1,63 @@
+const e=`---
+title: "3DS Emulator Setup (Azahar/Lime3DS/Citra)"
+navDrawerTitle: "Azahar Setup"
+description: "Set up Azahar, Lime3DS, or Citra for 3DS RNG, including cart dumping and installing game updates."
+slug: "citrarng-setup"
+category: "3DS Tools"
+tag: "emu"
+---
+
+This guide helps you set up a 3DS emulator to RNG on a PC. You need an updated Custom Firmware 3DS console to dump the game data.
+
+## Tools
+
+- [Azahar](https://github.com/azahar-emu/azahar/releases/latest)
+- [Latest GodMode9](https://github.com/d0k3/GodMode9/releases)
+- [A 3DS with CFW (Custom Firmware)](https://3ds.hacks.guide/)
+- Latest game update installed on the 3DS
+- (Optional) [Dump_PKMN_Update.gm9 Script](/downloads/Dump_PKMN_Updates.gm9)
+
+## Dumping Game Data
+
+Choose one of the methods below to dump your games and game updates.
+
+### Automatic game and update dump
+
+1. Place the \`Dump_PKMN_Update.gm9\` script on your 3DS SD card in \`sdmc:\\gm9\\scripts\`.
+2. Boot your 3ds while holding \`Start\` and launch GodMode9.
+3. Press the console's \`Home\` button to open a new menu.
+4. Select \`Scripts...\` from the menu.
+5. Select \`Dump_PKMN_Updates\` script and follow the on-screen directions.
+6. Copy the files in \`/gm9/out\` to your computer.
+
+### Manually dump a physical cartridge
+
+1. Select \`[C:] GAMECART\`.
+2. Select the \`trim.3ds\` file.
+3. Select \`NCSD image options...\`.
+4. Select \`Build CIA from file\`.
+5. Exit GodMode9 and transfer files from \`sdmc:\\gm9\\out\` to your PC.
+
+\`\`\`
+Note: Game updates are only installed digitally.
+\`\`\`
+
+### Manually dump a digital game and game update
+
+1. Hover over \`[A:] SYSNAND SD\`.
+2. Hold \`R\` and press \`A\` to open the drive options.
+3. Select \`Open title manager...\`.
+4. Press \`A\` on the game or update you want to dump.
+5. Select \`Manage Title...\`.
+6. Select \`Build CIA (standard)\`.
+
+## Installing games on the emulator
+
+1. Run the emulator.
+2. Choose \`File\`, then \`Install cia...\`.
+3. Install both the game and update \`.cia\` files.
+
+## Setting up for RNG
+
+Follow the [install PokeReader guide](/install-pokereader-emu).
+`;export{e as default};

@@ -1,0 +1,90 @@
+const e=`---
+title: "Ultra Sun and Ultra Moon Wormhole RNG"
+navDrawerTitle: "Wormhole RNG"
+description: "RNG legendary Pokémon found in Ultra Wormholes for perfect IVs, nature, and shininess."
+slug: "retail-usum-wormhole"
+category: "Ultra Sun and Ultra Moon"
+tag: "cfw"
+---
+
+## Tools
+
+- [A 3DS with PokeReader](/install-pokereader)
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+- [3DSRNGTool README](https://github.com/wwwwwwzx/3DSRNGTool/blob/master/README.md#final-screen) - list of final screens before Pokémon are generated
+
+\`\`\`
+Note: This method works for all Pokémon found within the wormholes, including Ultra Beasts.
+\`\`\`
+
+## Step 1: Finding your seed
+
+The seed is shown at the top of the overlay under "Init Seed:". For example, the seed is \`5DA5CA91\`.
+
+![Setup](/images/UltraSun-UltraMoon/Wormhole/Setup.png)
+
+## Step 2: Creating a timeline and finding a target frame
+
+\`\`\`
+Note: When moving forward to initiate the encounter, be precise with the joystick. Always move in the same direction for consistent results.
+\`\`\`
+
+There are two methods to RNG Pokémon in wormholes.
+
+### Basic timeline with character fidgets
+
+This method creates a timeline and accounts for character fidgets. The disadvantage is the limited frames available based on the timeline.
+
+- Follow the [timeline with fidget guide](/retail-usum-fidget) to create a timeline and find a target frame.
+
+### Timeline leap
+
+This method finds a target frame and then "leaps" onto the needed timeline. The advantage is landing on any frame regardless of the timeline. You can also use Festival Plaza to advance frames faster for shorter wait times.
+
+- Follow the [timeline leap guide](/retail-usum-timeleap) to find a target frame and leap onto it.
+
+## Step 3: Hit your target frame
+
+1. Search for your target by entering what you want in the filters and hitting calculate.
+
+![Target](/images/UltraSun-UltraMoon/Wormhole/Target.jpg)
+
+2. Advance near your frame and pause.
+
+![Final screen](/images/UltraSun-UltraMoon/Wormhole/Final-Screen.png)
+
+3. When you reach your frame, initiate the encounter. For UBs, just press \`A\`, and for Legends, hold forward and then press \`A\`. Save as close as possible to the spot that triggers the encounter.
+
+![Final Screen 2](/images/UltraSun-UltraMoon/Wormhole/Final-Screen-2.png)
+
+4. Profit???
+   - Not so much.
+
+![Calibration](/images/UltraSun-UltraMoon/Wormhole/Calibration.png)
+
+### So what happened?
+
+This is normal as each 3DS/save has its own delay. The delay is the time from when you initiate the encounter to when the Pokémon is generated. Let's learn how to find your delay!
+
+## Step 4: Finding your delay and hitting it
+
+1. Use the IVs, nature, and PSV of the Pokémon you got to see what frame you actually hit. For example, if your target was 4973 and you hit 4969 (-4), the delay you hit versus the default setting of the 3DSRNGTool is -4 or 152.
+
+![Result](/images/UltraSun-UltraMoon/Wormhole/Result.jpg)
+
+2. Repeat this process with random targets to find the frame you hit relative to the default. Enter the most common delay you find after "Consider Delay." Adjust the delay to see how it changes the result.
+
+- Wait until you find a common delay before changing it. This can take 10-20 times or more, depending on your results.
+
+![Delay](/images/UltraSun-UltraMoon/Wormhole/Delay.jpg)
+
+3. Once you find a consistent delay, enter it into the field and try harder targets! For example, here is the shiny Groudon I hit after finding my consistent delay of 152. Be aware that legendary Pokémon can be more inconsistent than UBs because you take a step before the animation occurs, adding more variables.
+
+![Success](/images/UltraSun-UltraMoon/Wormhole/Success.png)
+
+\`\`\`
+Note: You can change from motion control to stick controls by going to the Game Freak building in Hea Hea and speaking to this Aether employee.
+\`\`\`
+
+![Ather](/images/UltraSun-UltraMoon/Wormhole/Screenshot-wormhole-controls.png)
+`;export{e as default};

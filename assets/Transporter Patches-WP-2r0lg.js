@@ -1,0 +1,70 @@
+const n=`---
+title: "Pokemon Transporter Offline & Save Patches"
+navDrawerTitle: "Transporter Patches"
+description: "Learn how to patch Pokémon Transporter to work offline and load emulator or TWiLightMenu saves from the SD card."
+slug: "transporter-patches"
+category: "3DS Tools"
+tag: "cfw"
+---
+
+## Tools
+
+- A 3DS with CFW (Custom Firmware)
+- [Instructions for installing CFW](https://3ds.hacks.guide/)
+
+## Update Luma Settings
+
+1. Boot the console while holding \`Select\`.
+2. Select "Enable game patches".
+
+## Offline Patch + PKSM Patch
+
+This patch lets you use Transporter offline and keeps a stable delay for RNGing Pokémon from VC games. PKSM is needed as a destination for the transferred Pokémon.
+
+### Install the patch
+
+1. Download the [code.ips file](https://github.com/zaksabeast/Transporter-Offline-Patch/releases) for Transporter.
+2. Copy the file to:
+   - \`/luma/titles/00040000000C9C00/code.ips\`.
+
+### Set up PKSM
+
+1. Open PKSM and go to storage.
+2. Enable "Edit during transfers" in the settings.
+3. Create a new bank named \`transport\`.
+4. Transfer Pokémon using Transporter.
+
+- For more info, visit the [PKSM wiki](https://github.com/FlagBrew/PKSM/wiki/Storage).
+
+### Troubleshooting
+
+Q: Why does Transporter show, "At least one Pokémon remains in the Transport Box from your previous session"?
+
+A: This may happen if:
+
+- You don't have a PKSM bank named \`transport\`.
+- You have Pokémon in Box 1 of your PKSM \`transport\` bank.
+- Your PKSM \`transport\` bank is invalid.
+
+## Cart Redirect Patch
+
+This patch tricks Transporter into thinking a cartridge is inserted by loading a .sav file from the SD card instead.
+
+It allows you to use your save from [TWiLightMenu](https://github.com/DS-Homebrew/TWiLightMenu) or [nds-bootstrap](https://github.com/ahezard/nds-bootstrap). It also lets you use saves from an emulator without needing to inject them.
+
+### Install the patch
+
+1. Download and unzip the [zip file](https://github.com/zaksabeast/DreamRadarCartRedirect/releases).
+2. Copy the IPS patch for Transporter to:
+   - \`/luma/titles/00040000000C9C00/code.ips\`.
+
+## Prepare your save file
+
+1. Make sure you have a save file at \`/roms/nds/saves/white2.sav\`, \`/roms/nds/saves/black2.sav\`, \`/roms/nds/saves/black.sav\`, or \`/roms/nds/saves/white.sav\`.
+
+2. If using TWiLightMenu, have a game file at \`/roms/nds/white2.nds\`, \`/roms/nds/black2.nds\`, \`/roms/nds/black.nds\`, or \`/roms/nds/white.nds\`.
+
+\`\`\`
+Note: Black and White are only supported by Transporter.
+\`\`\`
+`;export{n as default};

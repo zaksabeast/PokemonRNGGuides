@@ -1,0 +1,34 @@
+const e=`---
+title: "Ruby and Sapphire Initial Seed RNG"
+navDrawerTitle: "Initial Seed RNG"
+description: "Learn how to RNG your initial seed in Ruby and Sapphire."
+slug: "rs-initial-seed"
+category: "Ruby and Sapphire"
+isRoughDraft: true
+tag: "emu"
+---
+
+## Tools
+
+## Step 1: Runasdate Setup
+
+You need to use the 32-bit version of Runasdate to get your desired initial seed.
+
+1. Download and install the 32-bit version of Runasdate.
+2. Open Runasdate.
+3. Set the date and time to match your desired initial seed.
+4. Use Runasdate to launch your game.
+
+\`\`\`
+Make sure to check the game version compatibility.
+\`\`\`
+
+## Step 2: Generating the Seed
+
+To generate the seed, follow these steps.
+
+1. Start your game.
+2. Check the initial seed based on the date and time you set.
+
+Congrats! You've now set up your initial seed for RNG.
+`;export{e as default};

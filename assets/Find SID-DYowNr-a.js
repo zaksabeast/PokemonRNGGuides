@@ -1,0 +1,216 @@
+const e=`---
+- title: "Find Emerald SID"
+  navDrawerTitle: "Find SID"
+  description: "Various methods to finding an SID in Emerald."
+  slug: "gen3-sid"
+  category: "Emerald"
+  addedOn: "2025-03-03"
+  tag: "retail"
+- title: "Find Ruby and Sapphire SID"
+  navDrawerTitle: "Find SID"
+  description: "Various methods to finding an SID in Ruby and Sapphire."
+  slug: "rs-gen3-sid"
+  category: "Ruby and Sapphire"
+  tag: "retail"
+- title: "Find FireRed and LeafGreen SID"
+  navDrawerTitle: "Find SID"
+  description: "Various methods to finding an SID in Firered and LeafGreen."
+  slug: "frlg-gen3-sid"
+  category: "FireRed and LeafGreen"
+  tag: "retail"
+---
+
+<ShowIf slug="/gen3-sid">
+
+This page is for finding your SID in **Emerald**.
+
+Looking for a different game? Check out these pages:
+
+- [Ruby and Sapphire SID Guide](/rs-gen3-sid)
+- [FireRed and LeafGreen SID Guide](/frlg-gen3-sid)
+
+</ShowIf>
+
+<ShowIf slug="/rs-gen3-sid">
+
+This page is for finding your SID in **Ruby and Sapphire**.
+
+Looking for a different game? Check out these pages:
+
+- [Emerald SID Guide](/gen3-sid)
+- [FireRed and LeafGreen SID Guide](/frlg-gen3-sid)
+
+</ShowIf>
+
+<ShowIf slug="/frlg-gen3-sid">
+
+This page is for finding your SID in **FireRed and LeafGreen**.
+
+Looking for a different game? Check out these pages:
+
+- [Ruby and Sapphire SID Guide](/rs-gen3-sid)
+- [Emerald SID Guide](/gen3-sid)
+
+</ShowIf>
+
+<details>
+  <summary><b>If you're using an emulator or GBA flashcart</b></summary>
+
+1. Load your save in [PKHex](https://github.com/kwsch/PKHeX/releases/latest) or [pkmds.app](https://pkmds.app/) and view the SID.
+
+</details>
+
+<details>
+  <summary><b>If you're playing Ruby or Sapphire</b></summary>
+<br />
+### RNG for a TID/SID combination
+
+1. Follow the [Ruby & Sapphire TID RNG Guide](/retail-rubysapphire-tid) to obtain a specific TID and SID.
+
+### PokeFinder
+
+1. Open [PokeFinder](/pokefinder) and click the "IDs" button in the "Gen 3" tab.
+2. Select the "RS" tab in the new window that appears.
+3. Check "Dead Battery" if you have a dead battery (likely), otherwise fill in the time and date you started the save.
+4. Enter your TID in PokeFinder's filters.
+5. Click "Generate" to get a list of possible SIDs.
+6. If you have multiple possible SIDs, save your game before choosing your starter.
+7. Attempt to RNG your starter for each SID. If you get a shiny, you found your SID.
+
+### Web tool with dead battery
+
+1. Go to Lincoln's [SID Finder](https://lincoln-lm.github.io/JS-Finder/Gen3/IDs.html).
+2. Enter your TID and click the "TID" circle.
+3. Enter \`5a0\` as the "Initial Seed".
+4. Click "Generate" to get a list of possible SIDs.
+5. If you have multiple possible SIDs, save your game before choosing your starter.
+6. Attempt to RNG your starter for each SID. If you get a shiny, you found your SID.
+
+</details>
+
+<details>
+  <summary><b>If you already have a shiny</b></summary>
+
+1. Use EV-reducing berries if the Pokémon has battled to reset EVs.
+2. Open [PokeFinder](/pokefinder) and go to "Gen 3 Tools" > "IV Calculator".
+3. Input the Pokémon's info to determine its IVs.
+4. Open "Gen 3 Tools" > "IVs to PID".
+5. Enter the Pokémon’s IVs, nature, and your Trainer ID.
+6. Search for results and determine the correct method:
+   - Wild Pokémon: Methods 1-4.
+   - Legendaries: Method 1.
+7. If multiple SIDs appear, attempt to RNG a shiny using each until you find the correct one.
+
+</details>
+
+<details>
+  <summary><b>If you play Emerald, didn't alter Dewford Trends, and have a dead battery</b></summary>
+
+1. [Follow this guide](/emerald-sid-feebas)
+
+</details>
+
+<details>
+  <summary><b>If you play Emerald, didn't alter Dewford Trends, and have a save under a day old</b></summary>
+
+1. [Follow this guide](/emerald-sid-feebas)
+
+</details>
+
+<details>
+  <summary><b>If you have a hacked Wii or Gamecube and a GBA-GC cable</b></summary>
+
+1. Dump your save with [FIX94's gba-link-cable-dumper](https://github.com/FIX94/gba-link-cable-dumper/releases/tag/v1.6).
+2. Load your save in [PKHex](https://github.com/kwsch/PKHeX/releases/latest) or [pkmds.app](https://pkmds.app/) and view the SID.
+
+</details>
+
+<details>
+  <summary><b>If you have an NDS and NDS flashcart</b></summary>
+
+1. Dump your save with [Rudolph's GBA Backup Tool](https://projectpokemon.org/home/tutorials/save-editing/managing-gba-saves/using-gba-backup-tool-r55/).
+2. Load your save in [PKHex](https://github.com/kwsch/PKHeX/releases/latest) or [pkmds.app](https://pkmds.app/) and view the SID.
+
+</details>
+
+<details>
+  <summary><b>If you can transfer Pokemon to a hacked DSI, 3DS, or Switch</b></summary>
+
+1. Transfer a Pokemon up to your hacked console.
+2. Dump your hacked console's save
+   - [GodMod9i for DSI](https://github.com/DS-Homebrew/GodMode9i/releases/latest)
+   - [Checkpoint for 3DS](https://github.com/BernardoGiordano/Checkpoint/releases/latest)
+   - [JKSV for Switch](https://github.com/J-D-K/JKSV/releases/latest)
+3. Load your save in [PKHex](https://github.com/kwsch/PKHeX/releases/latest) or [pkmds.app](https://pkmds.app/) and view the SID.
+
+</details>
+
+<details>
+  <summary><b>If you have an NDS connected to WiFi and a Gen 4 game</b></summary>
+
+1. Join the [Pokemon RNG Discord](https://www.discord.gg/d8JuAvg).
+2. Ask if someone is willing to check the SID of your Pokemon using the [PokeClassic Network GTS](https://pkmnclassic.net/gts/).
+3. Transfer a Pokemon up to a Gen 4 NDS game.
+4. Put a Pokemon on the [PokeClassic Network GTS](https://pkmnclassic.net/gts/).
+5. Tell the other person which Pokemon is yours.
+
+</details>
+
+<details>
+  <summary><b>If you can transfer Pokemon to Pokemon Home</b></summary>
+
+1. Transfer a Pokemon up to Pokemon Home.
+2. Join the [Pokemon RNG Discord](https://www.discord.gg/d8JuAvg).
+3. Ask someone to check the SID of the Pokemon.
+
+</details>
+
+<details>
+  <summary><b>If you're okay using ACE and play Emerald</b></summary>
+
+1. Set up ACE with [this guide](https://e-sh4rk.github.io/ACE3/emerald/getting-started/introduction/).
+2. Use the "Read SID from Pokémon in box 9 slot 27" code in [this pastebin](https://pastebin.com/kYfBzVE3), which sets your TID to be your SID.
+3. View your Trainer Card, which will now show your SID instead of TID.
+4. Soft reset to avoid saving the changes.
+
+</details>
+
+<details>
+  <summary><b>If you're okay starting a new save in Emerald</b></summary>
+
+1. Check the [Shiny Starter](/emerald-shiny-starter) guide.
+
+</details>
+
+<details>
+  <summary><b>If you're okay starting a new save in Fire Red or Leaf Green</b></summary>
+
+1. Start a new save
+2. Start a stopwatch when you press \`A\` to accept your name on the "YOUR NAME?" screen.
+3. Stop the stopwatch when your character shrinks and turns white, just before the character is in the moving truck.
+4. Open [PokeFinder](/pokefinder) and click the "IDs" button in the "Gen 3" tab.
+5. Select the "FRLGE" tab in the new window that appears.
+6. Enter your TID in the \`TID\` field.
+7. Multiply the number of seconds on your stopwatch by 59.7275, and round down to get your likely advance.
+8. Subtract 50 from your likely adance and enter the result in the \`Initial Advances\` field.
+9. Add 50 from your likely adance and enter the result in the \`Max Advances\` field.
+10. Click "Generate" to get a list of possible SIDs.
+11. If you have multiple possible SIDs, save your game before choosing your starter.
+12. Attempt to RNG your starter for each SID. If you get a shiny, you found your SID.
+
+</details>
+
+<details>
+  <summary><b>If nothing above applies to you (last resort option)</b></summary>
+
+1. Try to randomly encounter a shiny.
+2. Follow the "If you already have a Shiny" section above.
+
+</details>
+
+Are we missing a method? Join the [Pokemon RNG Discord](https://www.discord.gg/d8JuAvg) and let us know!
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

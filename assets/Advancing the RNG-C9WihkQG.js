@@ -1,0 +1,49 @@
+const e=`---
+- title: "Advancing the RNG in Diamond, Pearl, and Platinum"
+  navDrawerTitle: "Advancing the RNG"
+  description: "Learn how to advance the RNG in Diamond, Pearl, and Platinum. This guide explains different methods like journal flips, Chatot chatters, and NPC actions."
+  slug: "dppt-advance-rng"
+  category: "Diamond, Pearl, and Platinum"
+  tag: "info"
+---
+
+This explains the different ways to advance the RNG in Diamond, Pearl, and Platinum. The best methods are using Chatot or the Journal, but there are other options if those are not available.
+
+## Chatot Chatter
+
+- You need a Chatot with the move Chatter and a custom Chatter recorded to use this method. Accessing Chatot's summary page advances the RNG by 1.
+- You don't need to listen to the whole Chatter sound; just viewing their summary works.
+- To speed things up, have two Chatots in your party and flip between their summaries by pressing \`Up\` and \`Down\`.
+
+## Character Movement
+
+- Taking a step or turning in areas where wild Pokémon appear (grass, water, or caves) advances the RNG by 1 for each step or turn.
+- Walking at least 128 steps advances the RNG by the number of Pokémon in your party.
+- There is a step counter that starts at 0, increases to 128, then resets to 0. The step counter is saved, so if you load your game at 127, taking one step advances the RNG by the number of Pokémon in your party.
+- It is not recommended to use this method unless no other options are available.
+
+## NPC Movement
+
+- Any NPC that randomly moves (turning or walking) advances the RNG by 1 for each movement. If an NPC does both, the RNG advances by 2.
+- NPCs offscreen still advance the RNG if they're in the same area, so try to capture Pokémon where there are few NPCs.
+- You can use the VS Seeker to stop some NPCs from moving.
+- If you can't avoid NPC movement, press \`X\` to access the menu as you enter the game. This freezes all NPCs in place and stops unnecessary advancements.
+
+## Journal Flips
+
+- When the journal shows \`(Pokemon) was caught (Time)\`, the RNG advances by 2.
+- Flipping the journal to another page with a similar entry also advances the RNG by 2.
+- As long as the journal has at least one entry of \`(Pokemon) was caught (Time)\`, the RNG advances by 2, regardless of how many entries there are.
+
+![Journal](/images/Diamond-Pearl-Platinum/Advance-RNG/Journal.png)
+
+## Active Roamer
+
+- Having an active roamer in your game advances the initial RNG by one or two for each active roamer.
+- These advances need to be considered to reach your target advance.
+- Depending on the number of active roamers, aim for a higher minimum initial advance to avoid skipping your target due to active roamers advancing the RNG past it.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

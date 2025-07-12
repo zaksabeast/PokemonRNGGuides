@@ -1,0 +1,67 @@
+const e=`---
+title: "FireRed and LeafGreen Egg RNG"
+navDrawerTitle: "Egg RNG"
+description: "Learn how to RNG eggs in Pokémon FireRed and LeafGreen for perfect IVs, natures, and shinies."
+slug: "emulator-frlg-egg"
+category: "FireRed and LeafGreen"
+tag: "emu"
+---
+
+## Tools
+
+- [mGBA with lua scripts](/mgba-setup)
+- [PokeFinder](/pokefinder)
+- Parent's IVs and compatibility (talk to the daycare man)
+- TID and SID (if going for shiny)
+
+## Intro
+
+The egg's PID in FRLG is generated in two parts. The first part is set when the egg is generated, and the second part is set when picking it up.
+
+## Setup
+
+1. Deposit both parents at the daycare. The order doesn't matter.
+2. Stay inside and take steps until the Lua script displays \`FE\` for the step counter. Do this inside the daycare.
+3. Create a savestate before continuing.
+
+![Setup](/images/FireRed-LeafGreen/Egg/Setup.png)
+
+## PokeFinder Setup
+
+1. Open PokeFinder and go to Gen 3 Egg. Select the Fire Red/Leaf Green tab.
+2. Enter the parents' info, including compatibility.
+3. Set a frame range. The max for Frame Held must be lower than the min for Pickup Frame.
+4. Find your initial seed from the Lua script, enter it, and search for a spread.
+
+![Initial Seed](/images/FireRed-LeafGreen/Egg/Initial-Seed.png)
+
+5. You'll need to hit two different frames.
+
+## Held Frame RNG
+
+1. Take one step at the right frame to generate an egg. Use \`CTRL + N\` to advance frames while paused. When on the target frame, hold a directional button and unpause.
+   - In PokeFinder, subtract 18 from the target frame and step on that frame.
+   - If no egg appears, double-check your inputs. If correct, try a delay of 17 or 19.
+2. After stepping, the Lua script will show the second half of the PID. If it matches, continue. If not, restart and try again.
+
+![Held Frame](/images/FireRed-LeafGreen/Egg/Held.png)
+
+3. Held Frame RNG is done. Now for Pickup Frame RNG.
+
+## Pickup Frame RNG
+
+1. Create a savestate to avoid missing the \`A\` press.
+2. Exit, talk to the old man, and accept the egg. Pause at the last dialogue ("Take good care of it.").
+3. Advance to the target frame, pause, hold \`A\`, and unpause.
+   - The Pickup Frame delay is 3. If incorrect, try 2 or 4.
+
+If successful, your egg's second PID half should match.
+
+![Success](/images/FireRed-LeafGreen/Egg/Success.png)
+
+If it doesn't match, recheck your steps and use savestates.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

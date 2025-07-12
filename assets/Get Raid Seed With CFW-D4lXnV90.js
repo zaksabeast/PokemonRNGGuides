@@ -1,0 +1,34 @@
+const e=`---
+title: "Sword and Shield find raid seed with custom firmware"
+navDrawerTitle: "Find Raid Seed"
+description: "Learn how to find raid seeds in Sword and Shield using a Switch with custom firmware."
+slug: "retail-swsh-get-seed-with-cfw"
+category: "Sword and Shield"
+tag: "cfw"
+---
+
+## Tools
+
+- [CaptureSight](https://github.com/zaksabeast/CaptureSight/releases) or [PKHeX Raid Plugin](https://github.com/Leanny/PKHeX_Raid_Plugin)
+
+## Method 1: Use CaptureSight
+
+1. Start your game.
+2. Press the \`Home\` button and open CaptureSight.
+3. Look at the Active Den List and note the currently active Den Ids.
+4. Go back to the game and save in front of your desired den.
+5. Use your wishing piece on the den.
+6. Press the \`Home\` button as fast as possible, before the game finishes saving.
+7. Load CaptureSight and go to the Active Den List.
+8. Find the new Den Id in the list.
+9. Close and reopen the game so it doesn't think the wishing piece was used.
+
+## Method 2: Use the PKHeX Raid Plugin
+
+1. Use CFW or RCM to get your save file.
+2. Open the "main" file with PKHeX.
+3. Go to "Tools" => "Display Raids" to see all your raids.
+4. Search for a den you're interested in and get the den seed.
+5. Use RaidFinder with the den seed to find Pokémon you can RNG.
+6. If you don't find anything interesting, just re-use a wishing piece or check for natural dens.
+`;export{e as default};

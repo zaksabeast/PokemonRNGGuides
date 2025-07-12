@@ -1,0 +1,36 @@
+const e=`---
+title: "More consistent Platinum RNG"
+navDrawerTitle: "Consistent Platinum RNG"
+description: "New research for more consistent Platinum RNG—get shiny, high-IV Pokémon more easily."
+slug: "consistent-platinum-rng"
+category: "Diamond, Pearl, and Platinum"
+tag: "info"
+addedOn: "2025-07-03"
+---
+
+Platinum RNG is notoriously inconsistent because the game seems to advance the RNG randomly.
+
+New research has found a way to make it much more consistent!
+
+## New Research
+
+When the save loads, the game does a lot of extra RNG advances when the current time is after the last save date.
+
+This mostly affects RNGing starters since you can't verify the current RNG state or reliably advance it.
+
+## More consistent advances
+
+To prevent these extra advances, set your console to the max date: 12/31/2099 on NDS or 12/31/2050 on 3DS before starting your RNG.
+
+After that, you'll find that the game advances the RNG much more consistently, making it easier to hit your target.
+
+This simple date tweak can save hours of frustration when RNGing Platinum starters.
+
+## What next?
+
+[RNG a starter in Platinum](/retail-dppt-starter) with this new knowledge!
+
+## Credits
+
+- Zaksabeast for researching this
+`;export{e as default};

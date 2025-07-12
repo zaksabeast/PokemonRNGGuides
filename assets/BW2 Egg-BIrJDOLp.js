@@ -1,0 +1,66 @@
+const e=`---
+- title: "Black 2 and White 2 Egg RNG"
+  navDrawerTitle: "Egg RNG"
+  description: "Learn how to RNG eggs from the Daycare in Black 2 and White 2 for shiny, high-IV Pokémon."
+  slug: "bw2-egg"
+  category: "Black 2 and White 2"
+  tag: "any"
+---
+
+## Tools
+
+- [PokeFinder](/pokefinder)
+- All the tools needed for your method ([Mystic Timer](/mystic-timer) or [Luas](/desmume-setup))
+- Access to the Daycare
+- IVs of your parent Pokémon
+
+## Part 1: Setup
+
+1. Open PokeFinder.
+2. Go to Gen 5 Tab -> Egg.
+3. Input the parent Pokémon details.
+4. Deposit your parent Pokémon in the daycare.
+5. Walk until you have an egg ready.
+6. Save the game, preferably in the daycare to avoid advancing the RNG.
+
+\`\`\`
+Note: Egg RNG in BW2 is different than in BW1. IVs are generated first, then the PID. If you're interested in only one part, you can skip to the relevant section.
+\`\`\`
+
+## Part 2: IV + Nature RNG
+
+\`\`\`
+Important: If you are going for Nidoran or Volbeat/Illumise, this step will determine which species you get. Enter the correct egg species, and you'll know the gender of the egg (male for Nidoran M/Volbeat and female for Nidoran F/Illumise).
+\`\`\`
+
+In contrast to Gen 6 Egg RNG, you'll RNG a seed and IVs for the next egg without needing a specific advance. **Only hitting the initial seed matters**.
+
+1. Input the IVs, nature, and ability you want in PokeFinder (don't add other filters yet).
+2. Search for an initial seed.
+3. Start the game and hit the initial seed.
+4. Talk to the old man and **reject the egg**.
+5. Walk around until you have another egg ready.
+6. Save next to the old man.
+
+\`\`\`
+Note: If you only want IVs and not a PID, you can grab the egg. The RNG is done.
+\`\`\`
+
+## Part 3: PID RNG
+
+1. Remove all the IV filters and input the PID filters (gender, shininess).
+2. Search for an initial seed that gives your PID.
+3. Start the game and hit the initial seed.
+4. Advance the RNG until you reach your PID spread.
+5. Talk to the old man and accept the egg.
+
+\`\`\`
+Note: Sometimes with PokeFinder, you may need to talk to the man one advance earlier than your target. If your target is at 100 advances, talk to him at 99.
+\`\`\`
+
+You should now have the egg with everything you wanted!
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

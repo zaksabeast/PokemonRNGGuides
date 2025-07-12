@@ -1,0 +1,64 @@
+const e=`---
+title: "Ruby and Sapphire Live vs Dead Battery RNG"
+navDrawerTitle: "Live vs Dead Battery"
+description: "Learn the differences between RNG methods on Ruby and Sapphire with live and dead batteries, and how each impacts your Pokemon results."
+slug: "rs-battery"
+category: "Ruby and Sapphire"
+tag: "info"
+---
+
+## Introduction
+
+This guide explains how the RNG works with live and dead batteries in Ruby and Sapphire. It's for both emulator and retail players. It also answers common questions for beginners.
+
+We'll look at both methods (live and dry battery), how they work, and help you choose which one to use.
+
+## Dry Battery
+
+If you know Emerald RNG, this will feel familiar.
+
+A dry (dead) battery means the Real Time Clock (RTC) is not working. Time-based events like berry growth stop.
+
+**With a dry battery, your initial seed is always 5A0.**
+
+This is great for retail players. It's just like RNG in Emerald — you always start from the same place, so it's easier to hit your target frame.
+
+Two big differences from Emerald:
+
+- The initial seed is 5A0 (not 0).
+- You can't use Battle Videos.
+
+You can now also change the initial seed using the [Painting Seed method](/emerald-painting-rng). This lets you start from different seeds, similar to how live battery works.
+
+## Live Battery
+
+Live battery works best on emulator. Here's the idea:
+
+- One in-game minute = one initial seed.
+- You'll always get the same seed if the clock is the same.
+- Tools like PokeFinder can find dates and times for specific initial seeds.
+
+Live Battery used to be better because you could hit any seed. But now with the Painting method, dry battery can do that too. Still, Live Battery is useful if you can set the clock — especially on emulator.
+
+### What about retail?
+
+1. Take the battery out and put it back in to reset the clock.
+2. Wait for the correct time to hit your seed.
+
+This method gives you one try per minute. To make it easier, use this tool:  
+[Set RTC with this tool](https://github.com/megaboyexe/GBA_RTCRead)
+
+It lets you set the clock directly in a working battery game.
+
+## Which method is better?
+
+- Use **Live Battery** if you can control the RTC (like on emulator).
+- Use **Dry Battery** if you can't (like on retail).
+- With either method you can try the **Painting method** to hit any seed.
+
+The RNG process is the same either way. Just change how you get your initial seed depending on the method.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

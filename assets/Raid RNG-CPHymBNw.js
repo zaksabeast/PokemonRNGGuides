@@ -1,0 +1,132 @@
+const e=`---
+title: "Sword and Shield Raid RNG"
+navDrawerTitle: "Raid RNG"
+description: "Learn how to RNG raid Pokémon (including G-Max) in Sword and Shield Dens."
+slug: "retail-swsh-raid"
+category: "Sword and Shield"
+tag: "any"
+---
+
+## Tools
+
+- [PokeFinder](/pokefinder) or [Leanny's Mobile Seed Checker](https://leanny.github.io/seedchecker/index.html)
+- (Optional) CFW Seed Finding: [Leanny's PKHeX Raid Plugin](https://github.com/Leanny/PKHeX_Raid_Plugin) or [Zaksabeast’s CaptureSight](https://github.com/zaksabeast/CaptureSight/releases)
+- (Optional) CFW Advancing: [Luxray](https://github.com/3096/luxray/releases/tag/0.1.0)
+
+## Info
+
+The Shiny Charm does _not_ affect shiny odds in raids.
+
+## Step 1: Get your raid seed
+
+Follow one of these two guides to get your raid seed:
+
+- [Get your raid seed with custom firmware](/retail-swsh-get-seed-with-cfw).
+- [Get your raid seed without custom firmware](/retail-swsh-get-seed-without-cfw).
+
+## Step 2: Find your desired Pokémon
+
+Once you have the seed for your desired den, you can use PokeFinder or the Mobile Seed Checker to find your desired Pokémon.
+
+1. Select the den you are RNGing for and its rarity.
+2. Adjust the filters for desired stats and/or shininess.
+
+\`\`\`
+Note: The PKHeX raid plugin shows the current Pokémon in 0 advances, while PokeFinder shows the current Pokémon in 1 advance.
+\`\`\`
+
+## Step 3: Advance the RNG
+
+There are several methods to advance the RNG:
+
+- **Day by day:** use this if you do not have Nintendo online or a friend with a Switch.
+- **VS battle glitch:** use this if you have Nintendo online or a friend with a Switch.
+- **Luxray:** a custom firmware only bot to advance for you.
+- **Arduino:** a hardware bot to advance for you. This method is not covered in this guide, but you can find an example of an RNG advancing tool [here](https://github.com/nnguy132/Switch-Frame-Advancer).
+
+At any point, you can check your seed again to confirm you haven't made a mistake.
+To recheck your current RNG advance, follow the same steps from Step 1: Get your raid seed.
+
+### Step 3A: Day by Day
+
+Use this if you don't have online or a second Switch.
+
+Your Switch must be in local mode (airplane mode won't work).
+
+1. Interact with the den and select “Invite Others.”
+2. Press the \`Home\` button while it's searching.
+3. Open “System Settings” > “Date and Time.”
+4. Move the date forward by 1 day and press \`OK\`.
+5. Return to the game and cancel the search.
+6. Exit the raid screen. The den should now be red again — that’s advanced the RNG by 1.
+7. Repeat until you're 3 advances away from your target.
+
+\`\`\`
+Note: You can only advance once per day change. Setting the date back does nothing. If it's the end of a month, increase both the month and day to avoid going backward.
+\`\`\`
+
+### Step 3B: VS battle glitch
+
+Make sure to do this method inside a Pokémon center. Doing this elsewhere may crash the game.
+
+1. Connect your Switch online and go to the VS Menu.
+2. Start a battle and let your Switch find another player.
+3. The moment your game finds a player, hold the \`Home\` button and enable airplane mode (you will see a connection error if done correctly).
+4. Go to "Date and Time" settings in the Switch settings menu.
+5. Edit the day forward by one and press \`OK\`.
+6. Continue repeating step 5 until you reach three advances from your desired Pokémon.
+   - Some people have issues advancing a specific amount and ending up beyond expected, so check your seed often to make sure you're still on track.
+   - To recheck your current RNG advance, follow the same steps from Step 1: Get your raid seed.
+
+\`\`\`
+Note: Setting an earlier date won’t advance the RNG, so update both the month and day at the end of the month.
+\`\`\`
+
+### Step 3C: Luxray
+
+Make sure to do this method inside a Pokémon center. Doing this elsewhere may crash the game.
+
+1. Update the Date/Time setting to use server time.
+2. Set the amount of RNG advances you want using the overlay menu.
+3. Press \`Step\` to have Luxray advance the RNG.
+
+You can use Luxray to fix your Switch's clock, as it edits the internal server time.
+
+## Step 4: Reset to get your desired Pokémon
+
+A den's spawns are predetermined for the current raid and the next two advances.
+However the third advance is not predetermined and can be reset to obtain the desired Pokemon.
+
+1. Advance the RNG until you are three advances away from your desired Pokemon.
+2. Save the game.
+3. Advance three times.
+4. Start the raid and check if it's your desired Pokemon.
+5. If not, reset the game and try again.
+
+| Advance | Pokemon                                  |
+| ------- | ---------------------------------------- |
+| 0       | Current Advance                          |
+| 1       | Not your target                          |
+| 2       | Not your target                          |
+| 3       | ✅ Desired Pokémon - randomly determined |
+
+## Natural raid RNG
+
+Every den has its own seed. Even if it's inactive, the advancement works the same—day by day, and every RNG advancement will advance every den.
+
+Most people do raid RNG using a wishing piece to reset a den's seed until a good seed is found. However, it's possible to get a shiny Pokémon using the seed each den already has.
+
+A den's seed is typically reset to get a specific den with exact Pokémon properties, such as nature, shininess, and IVs. With natural raid RNG, an existing seed is selected, leading to less control over Pokémon properties and potential spawns. This method is only recommended if you want quick shiny Pokémon.
+
+This method is faster because instead of focusing on one specific den, every den is RNG'd at the same time.
+
+1. Use CaptureSight's "all den view" or the PKHeX raid plugin to find a den with a nearby shiny.
+2. Advance the RNG until you reach three advances from the shiny raid.
+3. Save the game.
+4. Advance three days and see if the red beam appears.
+5. If not, reset the game and try again until the den is active.
+
+\`\`\`
+Tip: Save time by throwing wishing pieces on a random den to do advances without moving to different dens. The wishing piece den might be usable for RNG later too!
+\`\`\`
+`;export{e as default};

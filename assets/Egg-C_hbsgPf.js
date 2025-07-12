@@ -1,0 +1,57 @@
+const e=`---
+- title: "HeartGold and Soulsilver Egg RNG"
+  navDrawerTitle: "Egg RNG"
+  description: "Learn how to RNG eggs from the Daycare in HeartGold and SoulSilver for shiny, high-IV Pokémon."
+  slug: "emulator-hgss-egg"
+  category: "HeartGold and SoulSilver"
+  tag: "emu"
+---
+
+## Tools
+
+- [PokeFinder](/pokefinder)
+- Tools needed for RNG abuse with [Desmume](/desmume-setup)
+- Access to the Daycare and info about your parents
+
+## Intro
+
+This guide will show you how to advance the RNG to get the Pokémon you want. It assumes you know some basics about Gen 4 RNG, like starting and advancing the RNG. The Masuda Method is introduced in this generation, but it's not essential to use.
+
+## Setup
+
+Getting ready is easy:
+
+1. Open PokeFinder and go to Gen 4 => Eggs => Searcher.
+2. Choose your profile and enter your parents' info. The Pokémon that went into the daycare first is Parent A, and the other is Parent B.
+3. Drop off your parents at the daycare and save your game.
+
+## Hitting the PID using Egg Advances
+
+Aim for an egg that doesn't need to advance the RNG, as this is the easiest method:
+
+1. In PokeFinder, set your Advance Range to 0-0.
+2. Choose the traits you want for your Pokémon, like Shiny, Nature, Gender, Ability, etc.
+3. Generate results based on your criteria.
+4. Select your target RNG advance.
+5. RNG your Initial Seed.
+
+If you need to advance the RNG beyond 0, increase the egg advance before making your egg. Here are some ways to do it:
+
+- Use the Magikarp Coin to advance the RNG by 1.
+- Open the Happiness App (loaded or used) – it advances the RNG 2 times the number of Pokémon on your team.
+- Calling Youngster Joey (available on Route 30) advances the RNG by 2.
+
+Remember to save your game in front of the old man.
+
+## Hitting the IVs
+
+The next part of the RNG is standard. Switch to the 'IVs' Method on PokeFinder and set your IV filters. Consider the IVs from your parents, but getting some 31 IVs is usually easy.
+
+Get a result, hit your target advance, and advance the RNG as usual.
+
+Once you’ve done everything correctly, grab your egg, and you’ll have your desired Pokémon.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

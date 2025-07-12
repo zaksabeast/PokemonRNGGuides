@@ -1,0 +1,105 @@
+const e=`---
+title: "Colosseum General RNG"
+description: "RNG in Colosseum"
+slug: "emulator-colosseum-general"
+category: "Gamecube"
+isRoughDraft: true
+tag: "emu"
+---
+
+## Tools:
+
+To RNG abuse Pokémon Colosseum, you will need:
+
+1. [PokeFinder](/pokefinder)
+2. An ISO of Pokémon Colosseum
+3. Dolphin version 4.0-6848 (this version works with RTC for Colosseum)
+4. RunAsDate (x64)
+5. A calculator
+
+## Intro
+
+This guide explains how to RNG Pokémon Colosseum using emulators. You need basic knowledge of Gamecube RNG (especially XD) and using Dolphin & VBA (Visual Boy Advance).
+
+The original guide was provided by Jellal.
+
+## Setting up
+
+1. Open PokeFinder and select "Stationary" in the Gen 3 column.
+2. Create a new profile for Pokémon Colosseum.
+3. In the Gen 3 Stationary Window, select your new profile. PokeFinder will set Colo/XD as the search method.
+
+## Configuration
+
+Setting up Dolphin for this RNG is important, as we are using an outdated version with RTC only through RunAsDate.
+
+1. In RunAsDate, select the path where your Dolphin.exe is located.
+2. Choose "Absolute date/time" in Date/Time.
+3. In "Parameters," type: \`" -d "\`.
+4. Ensure other checkboxes are unchecked.
+5. Set the date and time to 1/1/2000 at 12:00:00 AM.
+6. Run Dolphin from RunAsDate.
+
+In Dolphin, open your game, pause, and check Watch in View. Add these numbers to your RAM Watch:
+
+For US Colosseum:
+
+1. Main PRNG: 80478c90.
+2. AI Slot 1: 80473070.
+3. AI Slot 2: 804731a8.
+4. AI Slot 3: 804732e0.
+5. AI Slot 4: 80473418.
+6. AI Slot 5: 80473550.
+7. AI Slot 6: 80473688.
+
+For PAL Colosseum:
+
+1. Main PRNG: 804c6130.
+2. AI Slot 1: 804c0508.
+3. AI Slot 2: 804c0640.
+4. AI Slot 3: 804c0778.
+5. AI Slot 4: 804c08b0.
+6. AI Slot 5: 804c09e8.
+7. AI Slot 6: 804c0b20.
+
+For JPN Colosseum:
+
+1. Main PRNG: 80464360.
+2. AI Slot 1: 8045e750.
+3. AI Slot 2: 8045e888.
+4. AI Slot 3: 8045e9c0.
+5. AI Slot 4: 8045eaf8.
+6. AI Slot 5: 8045ec30.
+7. AI Slot 6: 8045ed68.
+
+Click "Save," so you don't have to re-enter these values.
+
+## The RNG Process
+
+1. In the main PokeFinder window, go to Gen 3 Tools > IVs to PID.
+2. Enter the IVs and Nature of your desired spread.
+3. Copy the Seed from the results table.
+4. Open the Gamecube RTC window (Gen 3 Tools). Enter the initial seed from 1/1/2000 and the seed from the IVs to PID window.
+5. Set an advance range (e.g., 4000 min) and click "Search."
+6. Gamecube RTC will provide the time you need to set up on RunAsDate to boot your game with the specific initial seed required.
+7. Change RunAsDate's date and time values to match the ones from Gamecube RTC.
+8. Boot up your game, ensuring the PRNG state in RAM Watch matches the seed in Gamecube RTC. If they don't match, check your Dolphin version, Date/Time, or PRNG value.
+9. In PokeFinder's Gen 3 stationary window, enter your new initial seed, spread info, load your profile, and click "Calculate." Your target advance will be displayed.
+
+## The RNG Process (Continued)
+
+1. Boot your game and enter the overworld, starting from a point where you can reach your target Shadow Pokémon.
+2. Create a save state before encountering the Pokémon.
+3. To advance the PRNG:
+   - In noiseless areas: Over 10,000 advances: Check a Shadow Pokémon's summary. Less than 3,000 advances: View a regular Pokémon's summary. Less than 500 advances: Go back and forth from the PDA Menu to Shadow Monitor.
+   - In noisy areas (Bayleff method): Swap summaries of two non-shadow Pokémon.
+   - During battles: Advance the RNG while battling.
+4. In noiseless areas, you can control advancements. In noisy areas, PRNG advances uncontrollably. Hope to hit the correct PRNG state.
+5. Advance the RNG using the techniques mentioned earlier. Make save states as you approach your target.
+6. Once you are five advances from your target, trigger the encounter. Check the Shadow Pokémon's AI slot for your spread.
+7. For confirmation, enter the PRNG address in Memory View.
+
+From here, you can either KO the Pokémon and capture it later or capture it immediately. Once you're in the post-game, use Dive/Repeat/Luxury Balls from the mainline GBA games to capture your shiny Shadow Pokémon.
+
+Congratulations! You now have a shiny Shadow Pokémon.
+`;export{e as default};

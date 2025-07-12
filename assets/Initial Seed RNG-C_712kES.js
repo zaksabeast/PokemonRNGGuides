@@ -1,0 +1,74 @@
+const n=`---
+- title: "初始种子乱数"
+  description: "如何在《钻石, 珍珠, 白金》中进行初始种子乱数"
+  slug: "zh-dppt-initial-seed"
+  translation:
+    enSlug: "dppt-initial-seed"
+    language: "zh"
+---
+
+\`\`\`
+本指南假设你已经找到目标种子，在进行本教程前你需要知道目标种子和目标延迟。
+\`\`\`
+
+## Tools
+
+- [Desmume](/desmume-setup)
+- [RunAsDate](https://www.nirsoft.net/utils/run_as_date.html)
+
+### 什么是 RunAsDate?
+
+RunAsDate 是一个让程序以指定时间启动的工具，适用于第四世代乱数，它可以让你精准地命中种子。
+
+## 设置 RunAsDate
+
+1. 打开 RunAsDate。
+2. 按照下图进行配置。
+
+![Setup](/images/Diamond-Pearl-Platinum/Initial-Seed/Setup.png)
+
+\`\`\`
+该配置适用于 Gen 3、Gen 4 和 Gen 5 乱数，不需要更改。
+\`\`\`
+
+3. 点击 Browse... 选择Desmume。
+4. 设置日期和时间，与 [PokeFinder](/pokefinder) 显示的目标时间一致。
+   - 右键点击目标种子，选择 "为seed生成时间" 来获得具体时间。
+5. 点击 Run 以目标时间启动 Desmume。
+
+## 命中目标种子
+
+\`\`\`
+在整个过程中经常进行即时保存，以防出错。
+\`\`\`
+
+1. 加载 Lua 脚本（用于实时查看当前种子）。
+2. 快速点击 A 进入 "继续" 屏幕。
+3. 使用 Ctrl + P 暂停模拟器。
+4. 创建多个即时存档点。
+5. 取消暂停，让游戏运行，接近目标延迟。
+6. 接近目标延迟时，暂停模拟器。
+7. 创建一个新的即时存档点。
+8. 按 N 逐帧推进游戏，以精准调整延迟。
+9. 达到目标延迟时，按住 A 并取消暂停。
+
+## 问题排查
+
+如果你 按 A 进入游戏的时机正确，但命中的延迟 偏差 ±1，可能是由于 Gen 4 的 Delay 只会是奇数或偶数。你可以通过以下方法切换奇数 / 偶数延迟：
+
+### 修改年份
+
+关闭模拟器，在 PokeFinder 的 "Seed to Time" 窗口中将年份调早或调晚一年并生成确认新延迟，修改RunAsDate 的年份时间，重新启动 Desmume ，使用新的延迟进行乱数。
+
+### 加载 GBA 游戏
+
+在 Desmume 的 GBA 插槽中加载任意 GBA 游戏，可以切换 Delay 奇偶性。
+
+### 利用“继续游戏”画面
+
+选择从头开始游戏，按 B 取消，返回继续游戏界面。这样可以切换当前延迟的奇偶性，再尝试乱数。
+
+## 特别鸣谢
+
+- 中文翻译：炫夜鳞、白希洛/Hakuhiro。
+`;export{n as default};

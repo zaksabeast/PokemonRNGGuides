@@ -1,0 +1,60 @@
+const e=`---
+- title: "Ultra Sun and Ultra Moon Mystery Gift RNG"
+  navDrawerTitle: "Mystery Gift RNG"
+  description: "Learn how to RNG Mystery Gift Pokémon in Ultra Sun and Ultra Moon for perfect IVs."
+  slug: "retail-usum-mystery-gift"
+  category: "Ultra Sun and Ultra Moon"
+  tag: "cfw"
+- title: "Sun and Moon Mystery Gift RNG"
+  navDrawerTitle: "Mystery Gift RNG"
+  description: "Learn how to RNG Mystery Gift Pokémon in Sun and Moon for perfect IVs."
+  slug: "retail-sm-myster-gift"
+  category: "Sun and Moon"
+  tag: "cfw"
+  canonical: "retail-usum-mystery-gift"
+---
+
+## Tools
+
+- [A 3DS with PokeReader](/install-pokereader)
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+
+Before starting, go to the first PokeCenter (by the Pokémon School) and stand in front of the Delivery Man.
+
+## Step 1: Start at the final screen
+
+Stand exactly as shown in the image below, or the timeline may be incorrect, causing you to miss your target frame.
+
+You should see the text: "You received xxx!"
+
+![Final Screen](/images/UltraSun-UltraMoon/Mystery-Gift/Final-Screen.png)
+
+## Step 2: Set Up 3DSRNGTool
+
+1. Input your game version and TSV in the upper right.
+2. Input the initial seed in the upper right.
+3. Check the Shiny Charm box if you have it.
+4. Ensure you're on the "Event RNG" tab in 3DSRNGTool.
+5. If you have the WonderCard file (.wc7) for the event, import it into 3DSRNGTool to update "Event Setting" automatically.
+   - WonderCard files are available [here](https://github.com/projectpokemon/EventsGallery).
+   - Alternatively, you can enter the data manually, but ensure it's correct for your event.
+
+\`\`\`
+Note: Some events trigger a Pokedex registration animation, affecting RNG by changing the delay from 0 to 62 frames. Check 'No Dex Entry' in RNG Info to calibrate correctly. When the Pokedex entry screen comes up, try to close it quickly.
+\`\`\`
+
+## Step 3: RNGing the Pokémon
+
+1. Create a timeline using this guide: [Gen 7 Timeline Guide](/retail-usum-timeline).
+2. Advance to your target frame. When you land on it, press \`A\` to unpause and obtain the Pokémon.
+
+Congrats! You should now have the Pokémon you wanted. If not, reset the game and try again.
+
+## Additional notes
+
+If you didn't get the Pokémon you wanted:
+
+1. Double-check all information, especially the initial seed.
+2. Restart the guide from the beginning and follow _all_ instructions. Incorrect Pokémon usually result from user error.
+3. Ensure you're creating a timeline correctly. Skipping a target frame often comes from not doing it right.
+`;export{e as default};

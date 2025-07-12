@@ -1,0 +1,39 @@
+const e=`---
+title: "How to Use Chatot for Brilliant Diamond and Shining Pearl"
+navDrawerTitle: "Chatot RNG Tool"
+description: "How to use the chatot.pokemonrng.com website for RNG in Brilliant Diamond and Shining Pearl."
+slug: "bdsp-chatot"
+category: "Brilliant Diamond and Shining Pearl"
+isRoughDraft: true
+tag: "any"
+---
+
+This guide will help you use the Chatot website to set up RNG Abuse in Brilliant Diamond and Shining Pearl.
+
+## Tools
+
+- CaptureSight or Luas for Ryujinx/Yuzu set up and ready to go.
+- Visit the Chatot site at https://chatot.pokemonrng.com/#/bdsp.
+- Brilliant Diamond or Shining Pearl with the latest version.
+
+## Step 1: Using the Website
+
+When you open the website, you'll see the wild, stationary, and underground tabs. Select the method you want to use for RNG. Input your data like the delay, min/max advances, etc. You can find more details about filling specific information in dedicated guides and search for specific filters.
+
+Once everything is set up, you just need the seeds.
+
+1. If you're using CaptureSight: Launch the game and, at the title screen, open the Tesla Menu. Open CaptureSight and go to "Main RNG." Enter the 4 seeds into the Chatot site. The seeds are in order, so the first seed in CaptureSight is seed 0. This method keeps track of everything safely.
+2. If you're using Luas: Enter the values shown in the Initial Seed section. They appear in the same order as the website. Ensure that the StateSize is set to \`u32\`. If it's in \`u64\`, press \`3\` to switch to the correct mode.
+
+\`\`\`
+Note: If you lose track of your advances during RNG, relaunch the Tesla Menu and try to freeze the Main RNG at 0 by pressing \`A\`. If successful, you can input new seeds and keep track again without issues.
+\`\`\`
+
+## Step 2: Generate
+
+Once done, hit generate to find out which frame to hit.
+
+Press the \`D-Up\` button on the Switch to regain control of the game (press the same button again to control the overlay).
+
+Now you're ready to advance your frames and complete your RNG!
+`;export{e as default};

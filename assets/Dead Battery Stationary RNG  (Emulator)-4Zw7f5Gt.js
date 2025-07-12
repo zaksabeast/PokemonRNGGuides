@@ -1,0 +1,79 @@
+const e=`---
+title: "Ruby and Sapphire Dead Battery Static RNG"
+navDrawerTitle: "Static Dead Battery RNG"
+description: "Learn how to RNG static Pokémon in Ruby and Sapphire for perfect IVs, natures, and shinies."
+slug: "emulator-rs-dead-battery-stationary"
+category: "Ruby and Sapphire"
+isRoughDraft: true
+tag: "emu"
+---
+
+You can refer to my FRLG guide for most of the content. This guide is BEFORE the update with Real's scripts.
+
+This guide covers Fixed Initial Seed in Gen 3, specifically RS dry and Emerald.
+
+Edited Rick's guide, not yet complete. -Subject
+
+---
+
+# Dead Battery Stationary Abuse (Ruby/Sapphire/Emerald)
+
+---
+
+## Tools
+
+- [mGBA with lua scripts](/mgba-setup)
+- [PokeFinder](/pokefinder)
+
+---
+
+## Settings
+
+### VBA-RR Setup
+
+1. Set the save mode correctly.
+2. Go to \`Options > Emulation > Save Type > Automatic & Flash 128K\`.
+3. Disable Real Time Clock to obtain dead battery seeds.
+4. Go to \`Options > Emulation > Real Time Clock\`.
+5. Restart VBA if there are loading errors, like a corrupted save or dead battery message.
+6. Load the Lua script.
+
+### PokeFinder Setup
+
+1. Launch PokeFinder and select Gen 3 Stationary.
+2. Select a profile or input TID/SID information.
+3. Input the correct initial seeds into PokeFinder:
+   - "0" for Emerald.
+   - "5A0" for Ruby/Sapphire.
+4. Non-wild Pokémon for Generation 3 are Method 1.
+5. Search for a spread and find a target frame.
+
+![](pic of pokefinder example)
+
+---
+
+## Hitting the Desired Frame
+
+1. **Finding Delay**
+   - Advance to the final screen before encountering the target Pokémon.
+   - Make a save state ~100 frames before the encounter.
+
+![](pic of wait screen)
+
+2. Press \`A\` when you land on your target frame to enter the encounter.
+3. Use the period \`.\` key to advance by one frame when paused.
+4. Take note of the IVs of the encountered Pokémon; they won't match the target Pokémon's IVs.
+5. Open a new PokeFinder window and input the IVs of the encountered Pokémon.
+6. To find the delay, subtract the frame hit from the desired frame.
+
+\`Delay = Frame Hit - Target Frame\`
+
+\`Your new Target Frame = Desired Frame - Delay\`
+
+2. **Encountering the Pokémon**
+   - Reload the previous save state before the encounter.
+   - Advance to the new target frame.
+   - If the Pokémon is not the desired one, find the new delay.
+
+![](pic of the pokemon)
+`;export{e as default};

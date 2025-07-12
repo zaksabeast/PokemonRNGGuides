@@ -1,0 +1,76 @@
+const n=`---
+title: "Connect Dolphin to VBA"
+description: "Learn how to redeem Jirachi or transfer your RNGs to a GBA game."
+slug: "misc-dolphin-connect-vba"
+category: "GBA Tools"
+tag: "emu"
+hideFromNavDrawer: true
+---
+
+<Alert
+  showIcon
+  type="warning"
+  message="This guide is outdated!"
+  description={
+    <a href="/connect-dolphin-to-gba">
+      Use the Connect Dolphin to mGBA Guide instead.
+    </a>
+  }
+/>
+
+\`\`\`
+This link can be unstable and may not work 100% of the time due to timing inconsistencies between the two emulators. The performance of your PC could affect the success rate of the connection.
+\`\`\`
+
+## Tools
+
+- [VBA-M](https://sourceforge.net/projects/vbam/)
+- Dolphin 5 (some other versions might work, Dolphin releases new versions frequently)
+- GBA bios ([This is the Nintendo logo displayed during the start](http://imgur.com/byn7Kfb))
+- You'll need a GBA and GameCube game that can connect.
+
+This guide applies to:
+
+- Colosseum Bonus Disc
+- Pokemon Colosseum
+- Pokemon Channel
+- JPN Colosseum Bonus Disc
+- JPN Pokemon Colosseum
+- Pokemon XD Gale of Darkness
+
+## Step 1: Set up VBA-M
+
+1. Navigate to GBA options and select "use bios file".
+
+![Setup Bios](/images/Tools-and-Emulators/VBA-to-Dolphin/Setup.png)
+
+2. Press configure and choose the bios file to use.
+
+![Select Bios](/images/Tools-and-Emulators/VBA-to-Dolphin/Setup-2.png)
+
+3. Choose GameCube link.
+
+![Gamecube Link](/images/Tools-and-Emulators/VBA-to-Dolphin/Gamecube-Link.png)
+
+4. Start the network link.
+
+## Step 2: Set up Dolphin
+
+1. Set port 2 to GBA.
+
+![Change Port](/images/Tools-and-Emulators/VBA-to-Dolphin/Change-Port.png)
+
+## Step 3: Establish the connection
+
+1. When asked by the GameCube game to activate your GBA, import the battery file.
+
+![Import Battery](/images/Tools-and-Emulators/VBA-to-Dolphin/Import.png)
+
+\`\`\`
+If the connection fails to establish immediately, try to restart the game or retry importing the battery file. If a connection is established but an error occurs, keep on trying.
+\`\`\`
+
+2. After few restarts, the connection should succeed.
+
+![Success](/images/Tools-and-Emulators/VBA-to-Dolphin/Success.png)
+`;export{n as default};

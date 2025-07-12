@@ -1,0 +1,50 @@
+const e=`---
+title: "Initial Seed RNG"
+description: "How to use Dolphin to set up Initial Seed RNG for all GameCube games."
+slug: "gc-initial"
+category: "Gamecube"
+tag: "emu"
+---
+
+## Tools
+
+- Dolphin with Lua support (only available on Discord)
+- Lua scripts for GameCube (only available on Discord)
+- [PokeFinder](/pokefinder)
+- RunAsDate (x64)
+
+## Intro
+
+This guide helps you perform Initial Seed RNG using Dolphin and Lua scripts for all GameCube games, including Pokémon Channel. Understanding this process is key for all RNG methods in other guides in this section.
+
+## How to Obtain Your Origin Seed
+
+The Origin Seed is the Initial Seed for a specific date and time, used to calibrate results when searching for an Initial Seed. This is a quick process:
+
+1. Open RunAsDate and set the date and time to '2000-01-01 00:00.'
+2. Run Dolphin with this config, load the game and Lua script.
+3. Write down the Initial Seed displayed; this is your Origin Seed.
+
+\`\`\`
+Note: The Origin Seed will differ for each game. The Origin Seed for Colosseum will be different from XD, so keep these values recorded to avoid repeating this step.
+\`\`\`
+
+## Method 1: Performing an Initial Seed RNG
+
+Now that you have your Origin Seed, you're ready to conduct an Initial Seed RNG. This method helps you find the right Initial Seed to achieve your desired Target Seed within an Advances Range.
+
+1. Open PokeFinder and navigate to 'Gen 3 Tool' > 'GameCube' > 'GameCube RTC.' Fill in the following:
+
+   - Origin Seed: This is your Origin Seed.
+   - Target Seed: Enter the Seed of the spread you want to RNG, obtained from PokeFinder or another tool.
+   - End Date: Set a date a few years in the future to maximize results.
+   - Min Advance/Max Advance: Specify the Advances range according to your RNG needs.
+
+2. Input your Origin Seed, Target Seed, Advances Range, and set an appropriate End Date. Start the search for results.
+3. Once you find an Initial Seed that fits your needs, note the 'Time' result and input it into RunAsDate.
+4. Relaunch Dolphin using RunAsDate, load the game and the Lua script. The Initial Seed will match the one displayed in the GameCube RTC results. You've successfully completed your Initial Seed RNG!
+
+\`\`\`
+Note: If you're new to GameCube RNG, you can use a random Target Seed to learn how the process works.
+\`\`\`
+`;export{e as default};

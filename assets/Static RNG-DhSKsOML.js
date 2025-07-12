@@ -1,0 +1,49 @@
+const e=`---
+title: "FireRed and LeafGreen Static RNG"
+navDrawerTitle: "Static RNG"
+description: "Learn how to RNG shiny 6IV legendaries in Pokémon FireRed and LeafGreen using static encounters."
+slug: "emulator-flrg-stationary-and-gift"
+category: "FireRed and LeafGreen"
+tag: "emu"
+---
+
+## Tools
+
+- [mGBA with lua scripts](/mgba-setup)
+- [PokeFinder](/pokefinder)
+
+## Step 1: Set up PokeFinder
+
+1. Load the game with the lua script.
+2. Go to the "Continue" screen and pause the emulator.
+3. Find your initial seed displayed in the lua script.
+4. Open PokeFinder > Gen 3 Static > Generator tab.
+5. Input the seed into the "Seed" box.
+6. Set your target filters (shiny, IVs, nature, etc.) and click "Generate."
+   - Method should be "Method 1."
+   - If no results, adjust filters or reset for a new seed.
+7. Choose a target advance from the results.
+
+## Step 2: Find the Delay
+
+1. Your player should be in front of the right legendary, NPC, or Pokéball.
+2. Make a save state to avoid mistakes.
+3. Advance to the final screen before the Pokémon is generated.
+   - If there's a cry or dialog, that's usually the final screen.
+4. At your target advance, press \`A\` to start the encounter or receive the Pokémon.
+5. Check the IVs of the Pokémon.
+6. In PokeFinder, input the IVs and find the advance you hit.
+7. Calculate the delay: \`Delay = Target Advance - Advance Hit\`
+8. Enter the delay in PokeFinder and generate again.
+9. Note the new advance number.
+
+## Step 3: Get the Desired Pokémon
+
+1. Retry using the new advance adjusted for the delay.
+2. If successful, you'll hit the correct spread.
+3. If not, check how many advances you were off, reload, adjust, and try again.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

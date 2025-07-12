@@ -1,0 +1,47 @@
+const e=`---
+title: "HeartGold and SoulSilver Wild RNG"
+navDrawerTitle: "Wild RNG"
+description: "Learn how to RNG wild Pokémon in Diamond, Pearl, and Platinum for shiny and high-IV results."
+slug: "emulator-hgss-wild"
+category: "HeartGold and SoulSilver"
+isRoughDraft: true
+tag: "emu"
+---
+
+## Tools
+
+You will need:
+
+- [Desmume](/desmume-setup)
+- [PokeFinder](/pokefinder)
+- A Sweet Scenter
+- Optional: A lead
+
+Before starting, you must know how to hit an initial seed. Refer to the appropriate guide for that.
+
+## Step 1: Find Your Target
+
+First, save in the area where you want to hunt.
+
+1. Open PokeFinder, select Gen 4, then Wild.
+2. Go to the Searcher tab (this step is important), select or create your profile.
+3. Choose the route and enter your desired parameters. Since it's HGSS, remember to use method K, not method J.
+4. Consider using leads to increase possible frames.
+5. Be aware that the delay can be high, as well as the frames.
+
+Once you have a target frame, right-click on it and select "Generate times for seed."
+
+## Step 2: Setup the Emulator
+
+1. Open your emulator and load your Lua script.
+2. Hit the initial seed.
+3. Open your menu with \`X\`.
+
+From there, you can advance PIDRNG Frames in a few ways:
+
+1. Use a Chatot (preferably x2) with chatter activated. If it doesn’t work, use the record feature of Desmume to advance frames.
+2. NPCs can advance frames randomly.
+3. The radio (the bottom right one advances one by one, while Oak advances around 14-18 frames; the rest is more random).
+
+Once you reach the right frame, just use your Sweet Scenter, and you're good to go!
+`;export{e as default};

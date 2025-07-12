@@ -1,0 +1,59 @@
+const e=`---
+title: "Omega Ruby and Alpha Sapphire Mirage Spot RNG"
+navDrawerTitle: "Mirage Spot RNG"
+description: "Learn how to RNG access to any Mirage Spots in Omega Ruby and Alpha Sapphire for rare encounters and shiny Pokémon."
+slug: "oras-mirage-spots"
+category: "Omega Ruby and Alpha Sapphire"
+tag: "cfw"
+addedOn: "2025-03-14"
+---
+
+## Tools
+
+- [PokeReader](/install-pokereader)
+
+## Video Guide
+
+<YouTubeVideo src="https://www.youtube.com/embed/fifrq7Vjoe0" />
+
+## Advancing the Console Date
+
+**3DS emulator (Azahar/Lime3DS/Citra):**
+
+1. Open the "System" tab in the emulator settings.
+2. Change "Clock" to "Fixed Time".
+3. Change "Startup time" to your desired date.
+
+**Physical console with time penalities removed:**
+
+1. Follow our [guide to remove time penalties](/oras-remove-time-penalty).
+2. Set your console date like normal.
+
+\`\`\`
+Note: If you have problems with the above methods, start your game, save, then try again.
+\`\`\`
+
+**Physical console without time penalities removed (untested):**
+
+1. Set your console date to be the day before your target date.
+2. Start the game and save.
+3. Wait 24 hours, then play the game again.
+
+## The RNG
+
+1. Start the game and view PokeReader's "Mirage Spot" screen.
+2. Enter the Mirage Spot seed, your TID, and console's save date into the RNG Tool below.
+3. Press "Generate" to get the Mirage Spot's details, and choose a Mirage Spot you want to visit.
+4. Turn off your game and set your console's date to the Mirage Spot's date.
+5. Start the game and go to the Mirage Spot you chose. The Mirage Spot will update when you start to fly.
+
+<OrAsMirageSpot />
+
+## Credits
+
+- Shiny_Sylveon for helping find information about Mirage Spots.
+- theSlayer and suloku for associating Mirage Spot Ids with names and Pokemon in [this ProjectPokemon thread](https://projectpokemon.org/home/forums/topic/37218-mirage-islands-in-oras/page/4/).
+- Falo for reverse engineering how the Mirage Spot Id is generated [in the same ProjectPokemon thread](https://projectpokemon.org/home/forums/topic/37218-mirage-islands-in-oras/page/4/).
+- Zaksabeast for reverse engineering how Mirage Spot RNG is seeded and reseeded on save load, as well as building the tool in this guide.
+- Rebel on Discord for helping test.
+`;export{e as default};

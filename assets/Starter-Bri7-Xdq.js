@@ -1,0 +1,41 @@
+const n=`---
+title: "水晶初始宝可梦乱数"
+description: "在水晶里获得异色初始宝可梦"
+slug: "zh-gen2-starters"
+translation:
+  enSlug: "gen2-starters"
+  language: "zh"
+---
+
+## 所需工具
+
+- [PokeReader](/install-pokereader)
+
+## 视频教程
+
+<YouTubeVideo src="https://www.youtube.com/embed/1PFQv-S8a48?si=7N6RoITaJg0lyrPR" />
+
+## 文字教程
+
+1. 在你想要选择的初始宝可梦前存档，以防需要复位游戏。
+2. 选择初始宝可梦后继续对话，直到在 \`玩家名 received 选择的宝可梦名\` 这段文本下等待。
+3. 进入PokeReader的RNG界面，等待直到停止显示 \`Finding ADIV Index\` 和 \`Finding SDIV Index\` 。
+4. 按住 \`L + R\` 键暂停PokeReader。
+5. 将PokeReader上的信息输入下方的乱数工具中，然后点击 \`计算\`。
+6. 持续按 \`L\` 键推进帧数，直到PokeReader显示的\`帧数\`与下方计算的某一列\`帧数\`匹配。
+7. （可选）如果你使用的是模拟器，可以使用即时存档以防失败复位。
+8. 当推进到目标帧数时，按 \`A\` 键确认选择宝可梦。
+9. 如果获得目标宝可梦，恭喜你成功了！如果没有，继续多次尝试！很快就能成功。
+
+## 乱数工具
+
+<Gen2PokemonRng type="starter" />
+
+## 特别鸣谢
+
+- All the people who have looked into Gen 2 over the years: Admiral Fish, EzPzStreamz, Zep, Real, Amab, wwwwwwzx, Vlad, Bambo_Rambo, Lincoln, Shiny_Sylveon, and Zaksabeast.
+- Zaksabeast for coming up with the current RNG method and building the tool.
+- Shiny_Sylveon, El Terapagos Mexicano, and Lord Timothy on Discord for helping test.
+- El Terapagos Mexicano for the Spanish translation.
+- 中文翻译：白希洛/Hakuhiro。
+`;export{n as default};

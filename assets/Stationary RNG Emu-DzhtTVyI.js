@@ -1,0 +1,66 @@
+const n=`---
+title: "HeartGold and SoulSilver Static RNG"
+navDrawerTitle: "Static RNG"
+description: "Learn how to RNG static Pokémon in HeartGold and SoulSilver for perfect IVs, natures, and shinies."
+slug: "emulator-hgss-stationary"
+category: "HeartGold and SoulSilver"
+tag: "emu"
+---
+
+## Tools
+
+- [PokeFinder](/pokefinder)
+- All tools needed to RNG abuse with [Desmume](/desmume-setup)
+
+## Intro
+
+This guide lists Pokémon and highlights any unique features. The RNG process is consistent, and after reviewing the Initial Seed Guide and the Advancing guide, you'll have the basics down.
+
+Make sure PokeFinder is open under Gen 4 => Static.
+
+## Method K List
+
+- Lapras.
+- Electrode (\\*3).
+- Snorlax.
+- Articuno, Zapdos, Moltres.
+- Mewtwo.
+- Sudowoodo.
+- Suicune.
+- Lugia, Ho-oh.
+- Eon Event Latios/Latias (not roamers).
+- Groudon, Kyogre, Rayquaza.
+
+## Method 1 List
+
+- Chikorita (initial advance of 1).
+- Cyndaquil (initial advance of 5).
+- Totodile (initial advance of 9).
+- Kanto Starter (initial advance of 5).
+- Hoenn Starter.
+- Egg of Togepi.
+- Eevee from Bill.
+- Roamers.
+- Game Corner.
+- Fossils.
+- Dratini (Extreme Speed or not).
+- Dialga/Palkia/Giratina from the Arceus Event.
+- Primo's Egg.
+- Tentacool from softlock protection.
+- Shuckle.
+- Tyrogue.
+
+\`\`\`
+
+To efficiently RNG the roamers, it's best to use the E4 Method. Encounter the roamer you want to RNG, defeat it, and then perform the RNG before battling Lance. Otherwise, you'll face an initial advance of 1 for Entei and 6 for Raikou. For Latios and Latias, RNG them right after leaving the fan club's door.
+
+\`\`\`
+
+## Chained Spread
+
+- Red Gyarados.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{n as default};

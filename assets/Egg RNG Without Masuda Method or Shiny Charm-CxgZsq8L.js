@@ -1,0 +1,96 @@
+const e=`---
+- title: "Ultra Sun and Ultra Moon Egg RNG without Masuda and/or Shiny Charm"
+  navDrawerTitle: "No MM/SC Egg RNG"
+  description: "Learn how to RNG eggs from the Daycare in Ultra Sun and Ultra Moon for shiny, high-IV Pokémon."
+  slug: "retail-usum-egg-no-mmsc"
+  category: "Ultra Sun and Ultra Moon"
+  tag: "cfw"
+- title: "Sun and Moon Egg RNG without Masuda and/or Shiny Charm"
+  navDrawerTitle: "No MM/SC Egg RNG"
+  description: "Learn how to RNG eggs from the Daycare in Sun and Moon for shiny, high-IV Pokémon."
+  slug: "retail-sm-egg-no-mmsc"
+  category: "Sun and Moon"
+  tag: "cfw"
+  canonical: "retail-usum-egg-no-mmsc"
+---
+
+## How is this different from using the Masuda Method and/or Shiny Charm?
+
+Using the Masuda Method and/or Shiny Charm sets the Egg Shiny Values (ESVs) in a fixed pattern, and the only way to reach desired frames is to accept or reject eggs. But without them, ESVs generate at the moment you accept the egg. This allows any egg frame to become any ESV.
+
+\`\`\`
+Note: An ESV determines if an egg hatches shiny. When an ESV matches a Trainer Shiny Value (TSV), the egg hatches shiny.
+\`\`\`
+
+## Tools
+
+- [A 3DS with PokeReader](/install-pokereader)
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+
+## Step 1: Setting Up 3DSRNGTool
+
+### In the upper right of 3DSRNGTool:
+
+1. Enter your game version and TSV.
+2. Enter the initial seed.
+3. Make sure the "Shiny Charm" box is unchecked. This method doesn't work if you have the Shiny Charm.
+
+\`\`\`
+To RNG an egg with a specific ESV that isn't yours, click on "Edit TSV List" and input the TSV(s). Keep YOUR TSV in the upper right or the RNG will be incorrect.
+\`\`\`
+
+### For parents information:
+
+Fill it out based on the parents you're using.
+
+- Ensure the "Masuda Method" box is not checked. You can't use this method if parents have different languages.
+- Double-check that parents share the same language to save time later on.
+
+\`\`\`
+Note: For Masuda Method, only the Pokémon's language matters, not the region.
+\`\`\`
+
+The Ditto will be the female in a Ditto and genderless Pokemon pair. Otherwise, it'll be the opposite gender of the other parent.
+
+Note about Rockruff breeding:
+
+- If its ability is Own Tempo, setting the ability as 1, 2, or H makes no difference.
+- If it isn't Own Tempo, its abilities are [1] Keen Eye, [2] Vital Spirit, or [H] Steadfast.
+
+### For current status
+
+1. For the "Current Status" section in 3DSRNGTool, enter your current egg seeds.
+2. Leave the "Main RNG Egg (PID)" box unchecked for now.
+3. For "Filters", enter the details about the egg you want.
+4. Leave the "Shiny Only" box empty, even if you want a shiny egg. We'll RNG the ESV separately.
+5. Set "0" as the starting frame.
+6. Click "Calculate".
+
+## Step 2: Finding a Target Frame
+
+You may choose any of the listed frames. Lower frames usually mean fewer egg acceptances/rejections.
+
+1. Right-click your chosen row and click "Set as Target Frame".
+2. Click on "Shortest Path" and "Calculate". This will determine the shortest path with the fewest accepts and rejects to get your target egg.
+3. Accept and/or reject eggs in the sequence provided. Following a different order will result in incorrect egg seeds. Do NOT accept your target egg, the last egg listed!
+4. Once you have your target egg seeds, proceed with the guide.
+
+## Step 3: RNGing the ESV of the Egg
+
+1. Save your game while standing in front of the daycare helper before accepting the egg in case of errors.
+2. Begin the dialogue to accept the egg from the daycare helper.
+3. When the “Yes” or “No” choice appears pause the game with \`Start + Select\`.
+4. Create a timeline to achieve your desired ESV by following these steps:
+   - Check the "Main RNG Egg (PID)" box under "Current Status" in the 3DSRNGTool.
+   - Click the gear icon to reset "Filters".
+   - Follow the [timeline guide](/retail-usum-timeline) to create a timeline.
+   - Creating a timeline helps identify feasible frames due to NPC influence.
+5. Search for your target frame once you've created a timeline.
+   - If you want to RNG for a specific ESV that isn't yours, click on "Edit TSV List", input TSV(s), and select the "Other TSVs Shiny" box.
+   - Select the "Shiny Only" box.
+   - Click "Calculate" to find frames for desired ESV(s).
+   - Select any of the highlighted blue frames (lower frames require less waiting).
+6. Advance to that frame, and press \`A\` to accept the egg once you land on it.
+
+Congrats! You should now have the desired egg with the RNG’d TSV. If not, you can reset the game (if you saved before picking up the egg) and try again.
+`;export{e as default};

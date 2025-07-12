@@ -1,0 +1,15 @@
+const e=`---
+title: "Gen 2 RNG Research"
+description: "Help research the Gen 2 RNG"
+slug: "gen2-research"
+category: "Gold, Silver, Crystal"
+isRoughDraft: true
+tag: "info"
+---
+
+This page is for researching the Gen 2 RNG. If you have any information to contribute, please do so!
+
+## RNG Tool
+
+<Gen2Rng />
+`;export{e as default};

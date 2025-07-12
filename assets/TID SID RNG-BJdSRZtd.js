@@ -1,0 +1,27 @@
+const e=`---
+title: "Brilliant Diamond and Shining Pearl TID/SID RNG"
+navDrawerTitle: "TID/SID RNG"
+description: "Learn how to RNG your Trainer and Secret ID in Brilliant Diamond and Shining Pearl with CFW."
+slug: "cfw-bdsp-tidandsid"
+category: "Brilliant Diamond and Shining Pearl"
+isRoughDraft: true
+tag: "cfw"
+---
+
+This guide will help you RNG the TID/SID combination of your choice. Both are linked, so one frame will give both TID and SID. Make sure to read the Basic Knowledge guides, especially the PokeFinder guide, since it will be used here.
+
+## Tools
+
+- [PokeFinder](/pokefinder)
+- CaptureSight
+
+Open your game. Use CaptureSight to get the states. Open PokeFinder, go to the Gen 8 tab, and click on TID/SID.
+
+Generate the results. Remember, this is a slow RNG, so avoid going for too high frames. No delay is needed for this RNG.
+
+The TID/SID is generated when you press \`Yes\` after entering your name. States are frozen at the name screen, so hit your target when you select your player's hair and style.
+
+To advance states, watch the Munchlax in the intro blinking; this allows for +1 advancement.
+
+You can also advance your states by +5 or +6 by returning to the Hat menu after selecting your name. This helps you reach your target faster.
+`;export{e as default};

@@ -1,0 +1,87 @@
+const e=`---
+- title: "Ultra Sun and Ultra Moon Egg RNG with Masuda and/or Shiny Charm"
+  navDrawerTitle: "MM/SC Egg RNG"
+  description: "Learn how to RNG eggs from the Daycare in Ultra Sun and Ultra Moon for shiny, high-IV Pokémon."
+  slug: "retail-usum-egg-mmsc"
+  category: "Ultra Sun and Ultra Moon"
+  tag: "any"
+- title: "Sun and Moon Egg RNG with Masuda and/or Shiny Charm"
+  navDrawerTitle: "MM/SC Egg RNG"
+  description: "Learn how to RNG eggs from the Daycare in Sun and Moon for shiny, high-IV Pokémon."
+  slug: "retail-sm-egg-mmsc"
+  category: "Sun and Moon"
+  tag: "any"
+  canonical: "retail-usum-egg-mmsc"
+---
+
+## Differences with Masuda Method and/or Shiny Charm
+
+Using the Masuda Method and/or Shiny Charm sets the ESVs of all eggs in a fixed order. To reach desired frames, you'll need to accept or reject eggs accordingly. Without these, any egg frame can have the ESV you want since ESVs are only generated once you accept an egg.
+
+\`\`\`
+Note: ESV (Egg Shiny Value) determines if an egg will hatch shiny or not. If an ESV matches a TSV (Trainer Shiny Value), the egg will hatch shiny.
+\`\`\`
+
+## Tools
+
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+- Optional: [A 3DS with PokeReader](/install-pokereader)
+
+## Step 1: Setting Up 3DSRNGTool
+
+### Configuration:
+
+1. Enter your game version and TSV.
+2. Ignore the initial seed as it won't be used.
+3. Tick the "Shiny Charm" checkbox if you have the Shiny Charm.
+
+\`\`\`
+Note: If you aim to RNG an egg with specific ESV that is not yours, click Edit TSV List, enter TSV(s), then tick the "Other TSVs Shiny". Do not enter the TSV in the top right. Only YOUR TSV should be in the top right or the RNG will be incorrect.
+\`\`\`
+
+### Parents information:
+
+- Fill in details as per the parents you're using.
+  - Tick the "Masuda Method" box if the parents have different languages.
+
+\`\`\`
+Note: Only language of the Pokémon matters for Masuda Method, not the region.
+\`\`\`
+
+When using a Ditto with a genderless Pokémon, Ditto is considered the female parent. If not, Ditto is the opposite gender of the other parent.
+
+### Current status:
+
+1. Input your current egg seeds in the "Current Status" section of 3DSRNGTool.
+   - Refer to Additional Notes for other methods to find egg seeds without PokeReader.
+2. Avoid ticking the "Main RNG Egg (PID)" box.
+3. Fill in "Filters" with the details of the egg you aim to RNG.
+4. Tick "Shiny Only" if you want a shiny egg.
+5. Enter "0" as the starting frame.
+6. Click "Calculate".
+
+## Step 2: Selecting a Target Frame
+
+Any given frame can be chosen, but lower frames are usually more convenient due to fewer egg accepts/rejects.
+
+1. Right-click on your desired row and select "Set as Target Frame".
+2. Click on "Shortest Path" and then "Calculate".
+   - This calculates the shortest path for your target egg with the least number of accepts and rejects.
+3. Accept or reject the eggs from top to bottom as listed. A different order will yield the wrong egg seeds.
+4. The final egg that you accept will be your target egg.
+   - Confirm your egg frame using PokeReader by checking your egg seeds in-game.
+   - If a specific shiny egg is what you're after, the frames could be quite high and demand a lot of egg accepts/rejects. This is due to the predetermined ESVs of the eggs.
+
+## Additional Notes
+
+- PokeReader is useful for checking your TSV, Shiny Charm, or Masuda Method.
+  - For TSV it is in the main RNG view. Look where it says \`TSV\`.
+  - For Shiny Charm and parents' info, it is in the Daycare view.
+- Without PokeReader, your TSV can be found in other ways.
+  - Via Homebrew or CFW with a save manager like Checkpoint. Extract save file, view it in PKHeX, then hover over TID and SID to find TSV.
+  - In the [Pokemon RNG Discord](https://www.discord.gg/d8JuAvg), someone else might be able to help you find it.
+- If you aren't using PokeReader and don't know your egg seeds, try these methods.
+  - If you've accepted or rejected eggs and don't want to use Homebrew or CFW, use the [127 Magikarp method](/retail-usum-egg-seed-no-cfw).
+  - If you haven't interacted with the daycare and don't want to use Homebrew or CFW, try the [8 egg method](/retail-usum-egg-seed-no-cfw).
+  - With access to Homebrew or CFW, PKHeX can view your egg seeds after extracting the save file using a save manager like Checkpoint.
+`;export{e as default};

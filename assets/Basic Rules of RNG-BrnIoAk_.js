@@ -1,0 +1,36 @@
+const e=`---
+title: "Emerald RNG Info"
+navDrawerTitle: "RNG Info"
+description: "Learn how to advance the RNG and improve stability in Pokemon Emerald for consistent results."
+slug: "e-tips-rng"
+category: "Emerald"
+tag: "info"
+---
+
+## RNG Methods
+
+- For stationary Pokemon: Method 1.
+- For wild encounters: Method H-2.
+
+The different methods for wild encounters are caused by [vblank](/gba-vblank), though H-2 is the most commonly seen.
+
+### Painting RNG
+
+Painting RNG is a great method to obtain any desired initial seed. It's a more advanced technique and is covered in [this guide](/emerald-painting-rng).
+
+## Speeding Up RNG Advances
+
+### Battle Video
+
+This method helps with seeding by preserving the RNG's state as an initial seed. Engage in a battle at the Battle Frontier and save it as a video. The video retains the seed from the battle, allowing you to set it as the initial seed when loading. For example, if your target is 1 million advances away, go up to 950k, save a battle video, and upon loading, you'll start at 950k advances.
+
+While this method is helpful, it's a bit outdated compared to Painting RNG. However, it's useful when you need to hit a specific advance multiple times.
+
+### In-Battle
+
+Being in battle advances RNG twice as fast. This is particularly helpful for wild Pokemon RNG.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

@@ -1,0 +1,141 @@
+const e=`---
+title: "Brilliant Diamond and Shining Pearl Static RNG"
+navDrawerTitle: "Static RNG"
+description: "Learn how to RNG flawless or shiny legendaries in Brilliant Diamond and Shining Pearl using CFW."
+slug: "cfw-bdsp-stationary"
+category: "Brilliant Diamond and Shining Pearl"
+tag: "cfw"
+---
+
+## Tools
+
+- A Switch with CaptureSight ([CaptureSight Install Guide](/install-capturesight))
+- [Chatot](https://chatot.pokemonrng.com/#/bdsp)
+- [PokeFinder](/pokefinder)
+
+## Step 1: Set Up the Tool
+
+1. Start the game from the Switch menu, but do not enter into the continue screen yet.
+2. Input the 4 current states from CaptureSight into the 4 current state boxes.
+   - To keep the current states from changing while doing this, you can press \`A\` to pause CaptureSight from updating the states, though this should not be necessary if doing this at the intro screen.
+3. Input the correct delay for the Pokemon you are RNGing.
+   - See below for the delays needed.
+4. Check the "Set IVs" box if going for a Pokemon with 3 set IVs.
+5. Adjust the filters to the Pokemon wanted.
+   - If going for a genderless Pokemon make sure to choose "Genderless" in the "Gender" box.
+6. Generate results and find a target advance.
+   - If there are no results, try lowering the filters, or increasing the max advances.
+   - Keep in mind that the higher the advance is, the longer the wait to reach the target advance.
+
+\`\`\`
+Note: CaptureSight keeps track of how many times the RNG has advanced since opening the overlay. Should you back out of the Main RNG window, or close the overlay, this will reset the advance counter. In the case of this happening, input the new current states to adjust for the new target advances.
+\`\`\`
+
+## Step 2: Obtaining the wanted Pokemon
+
+1. If going for a high advance, you can advance the RNG faster before entering the final screen.
+   - See the [Advancing the RNG guide](/bdsp-advance-rng) for the different ways the RNG can be advanced to reach a target advance.
+2. When nearing the target advance, enter into the final screen or final input.
+   - See below for the final screens and delays needed.
+3. Wait for the target advance to show, then press \`A\` to obtain Pokemon or begin the battle on the target advance.
+
+Congrats! You should now have the Pokemon you wanted. If not, you can reset the game and try again.
+
+\`\`\`
+Note: We're looking for more delays and the last screen (or the last input before the game generates a spread) for these Pokemon. Don't hesitate to open an issue on Github, or send a message on the Discord with any delay and information based on the Chatot site.
+\`\`\`
+
+## Delays and Final Screens
+
+### Starters
+
+- Delay: 64
+- Generation: "Yes" when selecting the Pokemon from the briefcase.
+
+\`\`\`
+Note: Make sure to save before entering the lake area. There is a cutscene that will advance the RNG around 300 times, so keep that in mind when waiting for a target advance.
+\`\`\`
+
+### Rotom
+
+- Delay: 90
+- Generation: "You thumped the TV Set."
+- Genderless
+
+### Eevee
+
+- Delay: 0
+- Generation: "You obtained an Eevee!"
+
+### Dialga/Palkia
+
+- Delay: 84
+- Generation: After text, on the second \`A\` press to start the battle.
+- Genderless and 3 set IVs
+
+![Palkia](/images/Brilliant-Diamond-Shining-Pearl/Stationary/palkia.png)
+
+\`\`\`
+Note: Doing this RNG post E4 is easier because it is quieter. For that, knock out Dialga/Palkia the first time you encounter them, and then beat the Elite 4 to have them respawn.
+\`\`\`
+
+### Giratina
+
+- Delay: 84
+- Final Screen: "Bishaaan!"
+- Genderless and 3 set IVs
+
+### Heatran
+
+- Delay: 84
+- Generation: "Gwogbogogo..."
+- Set gender and 3 set IVs
+
+### Regigigas
+
+- Delay: 84
+- Generation: "Zut Zutt!"
+- Genderless and 3 set IVs
+
+\`\`\`
+Note: Due to player blinking, the delay can be off. In general you'll have a +1 or +2 delay. It's really important to test and see how it goes. These delays are based on breakpoints values, so user experience might be a little different. Practice to see how your delay goes.
+\`\`\`
+
+### Ramanas Park
+
+- Delay: 84
+- Final Screen: Dialog Box
+- Some will be Genderless, all have 3 set IVs
+
+**Warning: Don't forget to select the Roamers method for Mesprit and Cresselia**
+
+### Mesprit
+
+- Delay: 84
+- Generation: "Kyauun."
+
+\`\`\`
+Note: Due to player blinking, the delay can be off. In general you'll have a +1 or +2 delay. It's really important to test and see how it goes. These delays are based on breakpoints values, so user experience might be a little different. Practice to see how your delay goes.
+\`\`\`
+
+### Cresselia
+
+- Delay: 103 / 104
+- Generation: Press \`A\` in front of her
+
+\`\`\`
+Note: Due to player blinking, the delay can be off. In general you'll have a +1 or +2 delay. It's really important to test and see how it goes. These delays are based on breakpoints values, so user experience might be a little different. Practice to see how your delay goes.
+\`\`\`
+
+PokeFinder supports Mystery Gift Generation. Download the right event information [here](https://projectpokemon.org/home/files/category/203-generation-8/) and load it with PokeFinder to have accurate results.
+
+### Mystery Gift
+
+- Delay: 0
+- Final Screen: The moment when you SELECT the event in the menu where you can chose what to claim.
+- Some are Genderless and some have 3 set IVs. Check the Wondercard info for this.
+
+\`\`\`
+Note: It is recommended to RNG the Mystery Gift in the upstairs of the player's house for slower RNG advances.
+\`\`\`
+`;export{e as default};

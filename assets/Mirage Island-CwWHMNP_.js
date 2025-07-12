@@ -1,0 +1,55 @@
+const n=`---
+- title: "幻之岛"
+  description: "通过捕捉具有特定 PID 的宝可梦以进入幻之岛"
+  slug: "zh-emerald-mirage-island"
+  translation:
+    enSlug: "emerald-mirage-island"
+    language: "zh"
+- title: "幻之岛"
+  description: "通过捕捉具有特定 PID 的宝可梦以进入幻之岛"
+  slug: "zh-rs-mirage-island"
+  translation:
+    enSlug: "rs-mirage-island"
+    language: "zh"
+---
+
+<Gist>要点：通过捕捉具有特定 PID 的宝可梦来进入幻之岛。</Gist>
+
+## 幻之岛
+
+进入幻之岛是唯一能够获得“利木果”的方法。幻之岛仅在队伍中有一只宝可梦的 PID 与特定数值匹配时可见。该数值每天变化，取决于游戏存档创建以来经过的天数。
+
+## 第一步：确认游戏存档创建至今的天数
+
+若你使用的是干电池（即电池没电），此步骤可以跳过。
+
+前往“绿岭市宇航中心”与科学家对话，得知已发射火箭的数量。这个数字代表从你创建游戏存档以来经过的周数。
+
+![绿岭市宇航中心的科学家](/images/Emerald/mirageIslandRocketLaunched.png)
+
+## 第二步：捕捉符合 PID 条件的宝可梦
+
+1. 在下方表单中输入数据以查看可能结果。
+2. 若你使用有电电池，请选择 6 天或更久以后的任意结果。
+3. 在对应的帧数下捕捉一只使用方式-1 生成 PID 的宝可梦即可。推荐使用变隐龙，不过任意 Method-1 宝可梦都可以。
+
+<ShowIf slug="/zh-emerald-mirage-island">
+  <Gen3MirageIsland game="emerald" />
+</ShowIf>
+
+<ShowIf slug="/zh-rs-mirage-island">
+  <Gen3MirageIsland game="rs" />
+</ShowIf>
+
+## 第三步：前往幻之岛
+
+在接下来的 6 天内前往 130 号道路，尝试进入幻之岛。其中某一天幻之岛将会出现。
+
+享受你的利木果吧！
+
+![利木果所在处](/images/Emerald/mirageIslandLiechiBerry.png)
+
+## 特别鸣谢
+
+- 中文翻译：炫夜鳞、白希洛/Hakuhiro。
+`;export{n as default};

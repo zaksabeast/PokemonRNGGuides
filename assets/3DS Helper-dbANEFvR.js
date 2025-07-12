@@ -1,0 +1,53 @@
+const e=`---
+title: "3DS Timer Helper"
+navDrawerTitle: "3DS Timer Helper"
+description: "Easier 3DS RNG without homebrew using precise timer starts."
+slug: "3ds-helper"
+category: "NDS Tools"
+tag: "info"
+addedOn: "2025-07-03"
+---
+
+<Gist>Use the 3DS Helper Tools for easier 3DS RNG.</Gist>
+
+**No CFW needed** - works on retail consoles!
+
+This works with [PokeFinder](/pokefinder) if you use [Mystic Timer](/mystic-timer), and our web tools have it built in, like [Cute Charm RNG](/hgss-tid-sid) and [Starter RNG](/retail-hgss-starter).
+
+## Video Guide
+
+<YouTubeTable
+  videos={[
+    {
+      title: "Using the 3DS Helper",
+      src: "https://www.youtube.com/embed/-ayvPKWNkNw?si=eA7yboNXFhGl0MUX",
+    },
+  ]}
+/>
+
+## Written Guide
+
+1. Set your console to "3DS" in whichever tool you're using (e.g. Mystic Timer, Cute Charm, Starter, etc.).
+2. Set your 3DS date.
+3. Start setting the 3DS time, but do not confirm it yet.
+4. Click "Start 3DS Helper" in the web tool.
+5. Press the timer's "Start" button at the same time as you confirm the 3DS time.
+6. If the timer did not start, you tapped "Ok" too early or too late - try again.
+7. If the timer started, continue with your RNG.
+8. If you are consistently off by 1 second, increase the 3DS Helper's offset by 100ms.
+9. Repeat steps 2-5 until you consistently have the correct second value after an RNG attempt.
+
+Congrats! You can now use the 3DS Helper to get consistent second values for your RNG attempts.
+
+<Alert
+  showIcon
+  type="info"
+  message="Quick tip!"
+  description={\`The 3DS time doesn't set until after you lift your finger from the "Ok" button. For easier timing, hold it down before starting the timer, then release it at the same time as you press "Start" on the timer.\`}
+/>
+
+## Credits
+
+- Zaksabeast for researching this and making the 3DS Helper tool
+- Rainlan on Discord for noticing the 3DS time isn't set until you lift your finger from the "Ok" button, which makes timing much easier
+`;export{e as default};

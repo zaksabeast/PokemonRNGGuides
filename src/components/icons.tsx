@@ -10,9 +10,10 @@ import {
   MdClose,
   MdRocketLaunch,
   MdUpdate,
+  MdOutlineCampaign,
 } from "react-icons/md";
 import { AiOutlineSearch, AiOutlineMenu } from "react-icons/ai";
-import { FaGithub, FaDiscord, FaCoffee } from "react-icons/fa";
+import { FaGithub, FaDiscord, FaCoffee, FaRegCopy } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold } from "react-icons/pi";
 import { FaHeart, FaPlay, FaFire, FaPatreon } from "react-icons/fa6";
@@ -42,6 +43,8 @@ const icons = {
   OutlineSearch: AiOutlineSearch,
   InformationCircle: IoIosInformationCircle,
   Patreon: FaPatreon,
+  Copy: FaRegCopy,
+  OutlineCampaign: MdOutlineCampaign,
 } as const;
 
 export type IconName = keyof typeof icons;

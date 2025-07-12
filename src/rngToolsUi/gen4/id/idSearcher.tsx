@@ -214,10 +214,7 @@ const getFields = ({
     {
       label: "ID Type",
       input: (
-        <FormikRadio<FormState, "id_type">
-          name="id_type"
-          options={toOptions(idTypes)}
-        />
+        <FormikRadio<FormState> name="id_type" options={toOptions(idTypes)} />
       ),
     },
   ];
@@ -237,7 +234,7 @@ const getFields = ({
     {
       label: "Max Shiny Odds",
       input: (
-        <FormikSwitch<FormState, "max_shiny_odds">
+        <FormikSwitch<FormState>
           name="max_shiny_odds"
           onChange={(checked: boolean) => {
             if (checked) {

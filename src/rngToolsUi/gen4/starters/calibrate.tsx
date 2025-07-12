@@ -156,7 +156,7 @@ export const CalibrateStarter4 = () => {
       {
         label: t["Gender"],
         input: (
-          <FormikRadio<FormState, "gender">
+          <FormikRadio<FormState>
             name="gender"
             options={toOptions(starterGenders)}
           />
@@ -183,10 +183,7 @@ export const CalibrateStarter4 = () => {
       {
         label: t["Level"],
         input: (
-          <FormikRadio<FormState, "level">
-            name="level"
-            options={toOptions([5, 6])}
-          />
+          <FormikRadio<FormState> name="level" options={toOptions([5, 6])} />
         ),
       },
       ...getStatFields<FormState>(minMaxStats, t),

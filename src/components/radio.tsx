@@ -8,6 +8,7 @@ import { useField } from "formik";
 import * as tst from "ts-toolbelt";
 import { GenericForm } from "~/types/form";
 import { withCss } from "./withCss";
+import { Path, Paths } from "~/types";
 
 export const RadioGroup = withCss(AntdRadio.Group);
 
@@ -17,26 +18,29 @@ type FormikRadioOptions<OptionValues extends string | number> =
 
 type FormikRadioProps<
   FormState extends GenericForm,
-  FieldKey extends keyof FormState,
+  FieldKey extends Paths<FormState, string | number | null> = Paths<
+    FormState,
+    string | number | null
+  >,
 > = tst.O.Overwrite<
-  Omit<AntdRadioGroupProps, "onChange">,
+  tst.O.Omit<tst.O.Required<AntdRadioGroupProps, "name">, "onChange">,
   {
     name: FieldKey;
     options: FormikRadioOptions<
-      FormState[FieldKey] extends string | number ? FormState[FieldKey] : never
+      Path<FormState, FieldKey> extends string | number | null
+        ? tst.U.Exclude<Path<FormState, FieldKey>, null>
+        : never
     >;
   }
 >;
 
-export const FormikRadio = <
-  FormState extends GenericForm,
-  FieldKey extends keyof FormState,
->({
+export const FormikRadio = <FormState extends GenericForm>({
   name,
   ...props
-}: FormikRadioProps<FormState, FieldKey>) => {
+}: FormikRadioProps<FormState>) => {
+  type FieldKey = typeof name;
   const [{ value, onChange, onBlur }, { error }] =
-    useField<FormState[FieldKey]>(name);
+    useField<Path<FormState, FieldKey>>(name);
 
   return (
     <Tooltip color="red" title={error} placement="top">

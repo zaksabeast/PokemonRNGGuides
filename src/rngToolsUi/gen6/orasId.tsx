@@ -115,9 +115,7 @@ const fields: Field[] = [
   },
   {
     label: "Only Current Seed",
-    input: (
-      <FormikSwitch<FormState, "only_current_seed"> name="only_current_seed" />
-    ),
+    input: <FormikSwitch<FormState> name="only_current_seed" />,
   },
   {
     label: "Filter",

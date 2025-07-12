@@ -108,11 +108,11 @@ const getFields = (game: Static3Game): Field[] => {
     },
     {
       label: "Roamer",
-      input: <FormikSwitch<FormState, "roamer"> name="roamer" />,
+      input: <FormikSwitch<FormState> name="roamer" />,
     },
     {
       label: "Method 4",
-      input: <FormikSwitch<FormState, "method4"> name="method4" />,
+      input: <FormikSwitch<FormState> name="method4" />,
     },
     {
       label: "Initial advances",

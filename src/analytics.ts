@@ -11,7 +11,7 @@ export {
 
 export const track = (
   eventName: string,
-  eventProperties: Record<string, string | number | null>,
+  eventProperties: Record<string, string | number | boolean | null>,
 ) => {
   if (settings.isDev) {
     // eslint-disable-next-line no-console

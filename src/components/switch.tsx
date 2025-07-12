@@ -5,31 +5,24 @@ import {
 } from "antd";
 import { useField } from "formik";
 import * as tst from "ts-toolbelt";
-import { GenericForm, GuaranteeFormNameType } from "~/types/form";
+import { GenericForm } from "~/types/form";
 import { withCss } from "./withCss";
+import { Paths } from "~/types";
 
 export const Switch = withCss(AntdSwitch);
 
-type FormikSwitchProps<
-  FormState extends GenericForm,
-  FieldKey extends keyof FormState,
-> = tst.O.Merge<
+type FormikSwitchProps<FormState extends GenericForm> = tst.O.Merge<
   Omit<AntdSwitchProps, "value">,
   {
-    name: FieldKey extends GuaranteeFormNameType<FormState, boolean>
-      ? FieldKey
-      : never;
+    name: Paths<FormState, boolean>;
   }
 >;
 
-export const FormikSwitch = <
-  FormState extends GenericForm,
-  FieldKey extends keyof FormState,
->({
+export const FormikSwitch = <FormState extends GenericForm>({
   name,
   onChange: _onChange,
   ...props
-}: FormikSwitchProps<FormState, FieldKey>) => {
+}: FormikSwitchProps<FormState>) => {
   const [{ value }, { error }, { setValue, setTouched }] =
     useField<boolean>(name);
 

@@ -21,7 +21,7 @@ export const StatInput = <FormState extends StatFields>({
 }) => {
   return (
     <Flex gap={8}>
-      <FormikRadio<StatFields, `${typeof stat}Stat`>
+      <FormikRadio<StatFields>
         name={`${stat}Stat`}
         options={toStatOptions(options)}
       />

@@ -202,24 +202,14 @@ export const Fields = () => {
     const fields: Field[] = [
       {
         label: "Entered Hall of Fame",
-        input: (
-          <FormikSwitch<
-            FormState,
-            "entered_hall_of_fame"
-          > name="entered_hall_of_fame" />
-        ),
+        input: <FormikSwitch<FormState> name="entered_hall_of_fame" />,
       },
     ];
 
     if (values.entered_hall_of_fame) {
       fields.push({
         label: "Had Mass Outbreak",
-        input: (
-          <FormikSwitch<
-            FormState,
-            "had_mass_outbreak"
-          > name="had_mass_outbreak" />
-        ),
+        input: <FormikSwitch<FormState> name="had_mass_outbreak" />,
       });
     }
 
@@ -227,7 +217,7 @@ export const Fields = () => {
       {
         label: "Number of Pickup Pokémon",
         input: (
-          <FormikRadio<FormState, `pickup_pokemon_count`>
+          <FormikRadio<FormState>
             name="pickup_pokemon_count"
             options={toOptions(range(0, 5 + 1)).toReversed()}
           />
@@ -260,9 +250,7 @@ export const Fields = () => {
       },
       {
         label: "Filter?",
-        input: (
-          <FormikSwitch<FormState, "filter_active"> name="filter_active" />
-        ),
+        input: <FormikSwitch<FormState> name="filter_active" />,
       },
     );
 

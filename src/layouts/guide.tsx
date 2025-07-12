@@ -11,16 +11,44 @@ import {
   NavBreadcrumbs,
 } from "~/components";
 import { settings } from "~/settings";
-import { useSupportModal } from "~/components/supportModal/state";
+import { SurveyModal } from "~/components/surveyModal/modal";
+import { useSurveyModal } from "~/components/surveyModal/state";
+import { useAbCohort } from "~/hooks/useAbTest";
+import { Skeleton } from "antd";
+import { match } from "ts-pattern";
 
 type Props = {
   guideMeta: GuideMeta;
   children: React.ReactNode;
 };
 
-export const GuideLayout = ({ guideMeta, children }: Props) => {
-  const { openSupportModal } = useSupportModal();
+const AppIdeaButton = () => {
+  const { openModal } = useSurveyModal();
+  const abTest = useAbCohort("appIdeaButton");
 
+  const text = match(abTest.cohort)
+    .with(null, () => <Skeleton.Button size="small" active />)
+    .with("budgetByForce", () => "I’m building a money app — want to try it?")
+    .with("buildingAnApp", () => "Budget-by-force: A new app I’m making")
+    .with("needThoughts", () => "Building a money tool — need your thoughts")
+    .exhaustive();
+
+  return (
+    <Button
+      trackerId="app_idea_button"
+      icon={<Icon size={20} name="OutlineCampaign" />}
+      type="primary"
+      size="middle"
+      backgroundColor="SuccessActive"
+      backgroundHoverColor="Success"
+      onClick={openModal}
+    >
+      {text}
+    </Button>
+  );
+};
+
+export const GuideLayout = ({ guideMeta, children }: Props) => {
   return (
     <MainLayout>
       <NavBreadcrumbs route={guideMeta.slug} />
@@ -41,17 +69,7 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
       </Flex>
 
       <Flex>
-        <Button
-          trackerId="support_us_on_discord"
-          icon={<Icon name="Heart" />}
-          type="primary"
-          backgroundColor="BrandSecondary"
-          backgroundHoverColor="BrandSecondaryHover"
-          size="middle"
-          onClick={openSupportModal}
-        >
-          Keep Pokémon RNG Free & Growing
-        </Button>
+        <AppIdeaButton />
       </Flex>
 
       {guideMeta.isRoughDraft && (
@@ -68,6 +86,7 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
       )}
 
       {children}
+      <SurveyModal />
     </MainLayout>
   );
 };

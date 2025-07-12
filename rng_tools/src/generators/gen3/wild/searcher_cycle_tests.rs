@@ -1,20 +1,16 @@
 #[cfg(test)]
 mod test {
-    use crate::assert_list_eq;
+    use crate::{HiddenPower, PokemonType, assert_list_eq};
 
     use crate::gen3::{
         Gen3EncounterInfo, Gen3EncounterType, Gen3Lead, Gen3Method, Wild3SearcherCycleData,
         Wild3SearcherCycleDataByLead, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
     };
-    use crate::{AbilityType, EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter};
+    use crate::{AbilityType, EncounterSlot, Gender, Ivs, Nature, PkmFilter};
 
     #[test]
     fn test_search_wild3_cycle_methods_1_2_4() {
         let options = Wild3SearcherOptions {
-            initial_seed: 0,
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
             encounter_info_by_map: vec![Gen3EncounterInfo {
                 encounter_type: Gen3EncounterType::Land,
                 slots: None,
@@ -27,7 +23,6 @@ mod test {
                 Gen3Method::Wild5,
             ],
             initial_advances: 65,
-            max_advances: 0,
             max_result_count: 10,
             consider_cycles: true,
             consider_rng_manipulated_lead_pid: true,
@@ -37,6 +32,7 @@ mod test {
                 gender: Some(Gender::Male),
                 ..Default::default()
             },
+            ..Default::default()
         };
         let expected_results = [
             Wild3SearcherResultMon {
@@ -58,6 +54,7 @@ mod test {
                 advance: 65,
                 lead: Gen3Lead::Vanilla,
                 map_idx: 0,
+                hidden_power: HiddenPower::new(PokemonType::Psychic, 49),
             },
             Wild3SearcherResultMon {
                 pid: 2695989139,
@@ -78,6 +75,7 @@ mod test {
                 advance: 65,
                 lead: Gen3Lead::Vanilla,
                 map_idx: 0,
+                hidden_power: HiddenPower::new(PokemonType::Electric, 45),
             },
             Wild3SearcherResultMon {
                 pid: 2695989139,
@@ -98,6 +96,7 @@ mod test {
                 advance: 65,
                 lead: Gen3Lead::Vanilla,
                 map_idx: 0,
+                hidden_power: HiddenPower::new(PokemonType::Water, 60),
             },
         ];
         let result = search_wild3(&options);

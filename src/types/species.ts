@@ -1037,3 +1037,14 @@ export const gen4SpeciesOptions = {
     ...gen4SpeciesOptionsByName,
   ],
 };
+
+const GEN3_SPECIES_WITH_VARIABLE_SIZE: Set<Species> = new Set([
+  "Lotad",
+  "Seedot",
+  "Barboach",
+  "Shroomish",
+] satisfies Species[]);
+
+export const gen3SpeciesHasVariableSize = (species: Species) => {
+  return GEN3_SPECIES_WITH_VARIABLE_SIZE.has(species);
+};

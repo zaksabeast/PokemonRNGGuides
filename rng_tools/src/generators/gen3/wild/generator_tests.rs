@@ -1,30 +1,21 @@
 #[cfg(test)]
 mod test {
-    use crate::EncounterSlot;
-    use crate::Ivs;
     use crate::gen3::Gen3EncounterType;
-    use crate::gen3::Gen3Lead;
-    use crate::gen3::Gen3Method;
-    use crate::gen3::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
+    use crate::gen3::{
+        Gen3Lead, Gen3Method, Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild,
+    };
     use crate::rng::Rng;
     use crate::rng::lcrng::Pokerng;
-    use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
+    use crate::{AbilityType, Gender, Nature, PkmFilter};
+    use crate::{EncounterSlot, Ivs};
 
     #[test]
     fn test_generate_wild3_no_filter() {
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
             encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
             advance: 9,
-            map_idx: 0,
-            lead: Gen3Lead::Vanilla,
-            filter: PkmFilter::new_allow_all(),
-            consider_cycles: false,
-            consider_rng_manipulated_lead_pid: false,
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);
@@ -44,10 +35,6 @@ mod test {
     fn test_generate_wild3_with_filter() {
         let options = Wild3GeneratorOptions {
             advance: 908,
-            map_idx: 0,
-            tid: 12345,
-            sid: 54321,
-            gender_ratio: GenderRatio::OneToOne,
             encounter_slot: Some(vec![
                 EncounterSlot::Slot0,
                 EncounterSlot::Slot6,
@@ -55,7 +42,6 @@ mod test {
             ]),
             encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
-            lead: Gen3Lead::Vanilla,
             filter: PkmFilter {
                 nature: Some(Nature::Adamant),
                 gender: Some(Gender::Female),
@@ -63,8 +49,7 @@ mod test {
                 ability: Some(AbilityType::Second),
                 ..Default::default()
             },
-            consider_cycles: false,
-            consider_rng_manipulated_lead_pid: false,
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0x346A4A45);
@@ -84,13 +69,7 @@ mod test {
         let options = Wild3GeneratorOptions {
             tid: 34760,
             sid: 47362,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
-            advance: 0,
-            map_idx: 0,
-            lead: Gen3Lead::Vanilla,
             filter: PkmFilter {
                 shiny: true,
                 nature: Some(Nature::Naive),
@@ -98,8 +77,7 @@ mod test {
                 ability: Some(AbilityType::Second),
                 ..Default::default()
             },
-            consider_cycles: false,
-            consider_rng_manipulated_lead_pid: false,
+            ..Default::default()
         };
 
         let rng = Pokerng::new(0x14a22065);
@@ -117,18 +95,9 @@ mod test {
     #[test]
     fn test_generate_wild3_synch() {
         let options = Wild3GeneratorOptions {
-            tid: 12345,
-            sid: 54321,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
-            advance: 0,
-            map_idx: 0,
             lead: Gen3Lead::Synchronize(Nature::Hardy),
-            filter: PkmFilter::new_allow_all(),
-            consider_cycles: false,
-            consider_rng_manipulated_lead_pid: false,
+            ..Default::default()
         };
 
         let rng = Pokerng::new(0x14a22065);
@@ -146,18 +115,10 @@ mod test {
     #[test]
     fn test_generate_wild3_cute_charm_activated() {
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
             advance: 2,
-            map_idx: 0,
             lead: Gen3Lead::CuteCharm(Gender::Female),
-            filter: PkmFilter::new_allow_all(),
-            consider_cycles: false,
-            consider_rng_manipulated_lead_pid: false,
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);
@@ -176,11 +137,6 @@ mod test {
     #[test]
     fn test_generate_wild3_all_methods() {
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            encounter_type: Gen3EncounterType::Land,
             methods: vec![
                 Gen3Method::Wild1,
                 Gen3Method::Wild2,
@@ -189,11 +145,7 @@ mod test {
                 Gen3Method::Wild5,
             ],
             advance: 2,
-            map_idx: 0,
-            lead: Gen3Lead::Vanilla,
-            filter: PkmFilter::new_allow_all(),
-            consider_cycles: false,
-            consider_rng_manipulated_lead_pid: false,
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);
@@ -242,18 +194,10 @@ mod test {
     #[test]
     fn test_generate_wild3_egg_lead() {
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild4],
             advance: 1234,
-            map_idx: 0,
             lead: Gen3Lead::Egg,
-            filter: PkmFilter::new_allow_all(),
-            consider_cycles: false,
-            consider_rng_manipulated_lead_pid: false,
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);
@@ -272,18 +216,10 @@ mod test {
     #[test]
     fn test_generate_wild3_fishing() {
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
             encounter_type: Gen3EncounterType::GoodRod,
             methods: vec![Gen3Method::Wild1],
             advance: 234,
-            map_idx: 0,
-            lead: Gen3Lead::Vanilla,
-            filter: PkmFilter::new_allow_all(),
-            consider_cycles: false,
-            consider_rng_manipulated_lead_pid: false,
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);

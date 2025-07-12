@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
-#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 #[repr(u8)]
 pub enum GenderRatio {
@@ -12,6 +12,7 @@ pub enum GenderRatio {
     MaleOnly = 0,
     OneToSeven = 31,
     OneToThree = 63,
+    #[default]
     OneToOne = 127,
     ThreeToOne = 191,
     SevenToOne = 225,

@@ -3,8 +3,11 @@ mod characteristic;
 mod encounter;
 mod gender;
 mod gender_ratio;
+mod hidden_power;
 mod nature;
+mod pokemon_type;
 mod shiny;
+mod size;
 mod species;
 mod stat;
 
@@ -14,9 +17,12 @@ pub use characteristic::*;
 pub use encounter::*;
 pub use gender::*;
 pub use gender_ratio::*;
+pub use hidden_power::*;
 pub use nature::*;
+pub use pokemon_type::*;
 use serde::{Deserialize, Serialize};
 pub use shiny::*;
+pub use size::*;
 pub use species::*;
 pub use stat::*;
 use tsify_next::Tsify;
@@ -31,6 +37,7 @@ pub struct PkmFilter {
     pub max_ivs: Ivs,
     pub ability: Option<AbilityType>,
     pub stats: Option<StatFilter>,
+    pub hidden_power: HiddenPowerFilter,
 }
 
 impl Default for PkmFilter {
@@ -49,6 +56,7 @@ impl PkmFilter {
             max_ivs: Ivs::new_all31(),
             ability: None,
             stats: None,
+            hidden_power: HiddenPowerFilter::default(),
         }
     }
     pub fn pass_filter(&self, state: &impl PkmState) -> bool {
@@ -86,7 +94,25 @@ impl PkmFilter {
             }
         }
 
+        if !self.pass_filter_hidden_power(state.ivs()) {
+            return false;
+        }
+
         true
+    }
+
+    pub fn pass_filter_hidden_power(&self, ivs: &Ivs) -> bool {
+        if !self.hidden_power.active {
+            return true;
+        }
+
+        let state_hidden_power = calculate_hidden_power(ivs);
+
+        self.hidden_power
+            .pokemon_types
+            .contains(&state_hidden_power.pokemon_type)
+            && state_hidden_power.bp >= self.hidden_power.min_bp
+            && state_hidden_power.bp <= self.hidden_power.max_bp
     }
 
     pub fn pass_filter_stats(&self, state: &impl PkmState) -> bool {

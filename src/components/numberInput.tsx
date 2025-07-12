@@ -1,10 +1,11 @@
 import React from "react";
 import { Input } from "./input";
 import { capPrecision } from "~/utils/number";
-import { GenericForm, GuaranteeFormNameType } from "~/types/form";
+import { GenericForm } from "~/types/form";
 import { useField } from "formik";
 import { match, P } from "ts-pattern";
 import { Tooltip } from "antd";
+import { Paths } from "~/types";
 
 const serializers = {
   hex: (num: number | null) => num?.toString(16),
@@ -86,7 +87,7 @@ export const NumberInput = ({
 type FormikNumberInputProps<FormState extends GenericForm> = {
   disabled?: boolean;
   numType: "hex" | "decimal" | "float";
-  name: GuaranteeFormNameType<FormState, number | null>;
+  name: Paths<FormState, number | null>;
 };
 
 export const FormikNumberInput = <FormState extends GenericForm>({

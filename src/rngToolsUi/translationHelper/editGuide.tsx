@@ -5,13 +5,14 @@ import { useTranslationState } from "./state";
 import { guides } from "~/guides";
 import { Flex, CopyToClipboardButton, TextArea } from "~/components";
 import { useTranslations } from "~/translations";
+import { formatRelativeUrl } from "~/utils/formatRelativeUrl";
 
 const noop = memoize(async () => "");
 
 const InnerTranslationHelperEditGuide = () => {
   const [{ type, selectedGuide, selectedLanguage }] = useTranslationState();
   const [file, setFile] = React.useState<string>("");
-  const rawTranslations = useTranslations(selectedLanguage ?? "en");
+  const rawTranslations = useTranslations(selectedLanguage);
   const translations = map(
     rawTranslations,
     (value, key) => `"${key}": "${value}"`,
@@ -33,16 +34,26 @@ const InnerTranslationHelperEditGuide = () => {
       return;
     }
 
+    const slug = guide?.meta.slug ?? "";
+    const formattedSlug = formatRelativeUrl({
+      url: slug,
+      leadingSlash: false,
+      trailingSlash: false,
+    });
+
     const frontMatter = `
-title: "${guide?.meta.title}"
-navDrawerTitle: "${guide?.meta.navDrawerTitle}"
-description: "${guide?.meta.description}"
-slug: "${guide?.meta.slug}"
+- title: "${guide?.meta.title}"
+  navDrawerTitle: "${guide?.meta.navDrawerTitle}"
+  description: "${guide?.meta.description}"
+  slug: "${selectedLanguage}-${formattedSlug}"
+  translation:
+    enSlug: "${formattedSlug}"
+    language: "${selectedLanguage}"
 `;
 
     const content = ["", frontMatter, ...splitFile.slice(2)].join("---").trim();
     setFile(content);
-  }, [type, translations, rawFile, guide?.meta]);
+  }, [type, translations, selectedLanguage, rawFile, guide?.meta]);
 
   return (
     <Flex vertical gap={16}>

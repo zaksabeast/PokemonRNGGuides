@@ -33,7 +33,9 @@ const slugChars = /^[a-z0-9-]+$/;
 const SlugSchema = z
   .string()
   .refine((value) => value.length === 0 || slugChars.test(value))
-  .transform(formatRelativeUrl);
+  .transform((url) =>
+    formatRelativeUrl({ url, leadingSlash: true, trailingSlash: true }),
+  );
 
 const tags = [
   "retail",

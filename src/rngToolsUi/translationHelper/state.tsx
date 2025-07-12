@@ -6,17 +6,18 @@ export type TranslationState =
   | {
       type: "guide";
       selectedGuide: Route | null;
-      selectedLanguage?: undefined;
+      selectedLanguage: LanguageKey;
     }
   | {
       type: "tools";
-      selectedGuide?: undefined;
-      selectedLanguage: LanguageKey | null;
+      selectedGuide?: null;
+      selectedLanguage: LanguageKey;
     };
 
 const initialState: TranslationState = {
   type: "guide",
   selectedGuide: null,
+  selectedLanguage: "en",
 };
 
 export const translationState = atom<TranslationState>(initialState);

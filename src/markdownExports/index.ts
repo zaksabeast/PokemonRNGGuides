@@ -95,6 +95,7 @@ import { Gen3PidSpeedCalculator } from "~/rngToolsUi/gen3/pidSpeedCalculator";
 import { TranslationHelperSelectGuide } from "~/rngToolsUi/translationHelper/selectGuide";
 import { TranslationHelperEditGuide } from "~/rngToolsUi/translationHelper/editGuide";
 import { ToolTranslationButton } from "~/rngToolsUi/translationHelper/toolTranslations";
+import { TranslationHelperSelectLanguage } from "~/rngToolsUi/translationHelper/selectLanguage";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -143,6 +144,7 @@ const nonTools = {
   TranslationHelperSelectGuide,
   TranslationHelperEditGuide,
   ToolTranslationButton,
+  TranslationHelperSelectLanguage,
 };
 
 const tools = {

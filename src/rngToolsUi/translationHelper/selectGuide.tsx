@@ -61,10 +61,11 @@ export const TranslationHelperSelectGuide = () => {
           if (!parsed.success) {
             return;
           }
-          setState({
+          setState((prev) => ({
+            ...prev,
             type: "guide",
             selectedGuide: parsed.data,
-          });
+          }));
           setCurrentStep((prev) => prev + 1);
         }}
         treeData={treeData}

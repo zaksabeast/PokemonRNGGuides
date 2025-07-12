@@ -13,9 +13,21 @@ import {
 import { settings } from "~/settings";
 import { SurveyModal } from "~/components/surveyModal/modal";
 import { useSurveyModal } from "~/components/surveyModal/state";
-import { useAbCohort } from "~/hooks/useAbTest";
+import styled from "@emotion/styled";
 import { Skeleton } from "antd";
 import { match } from "ts-pattern";
+import { useAbCohort } from "~/hooks/useAbTest";
+
+const SpinOnceIcon = styled(Icon)({
+  animation: "spin 5s linear",
+  transform: "scaleX(0.7)",
+  transformOrigin: "center",
+  transition: "transform 0.3s ease",
+  "@keyframes spin": {
+    "0%": { transform: "rotate(0deg) scaleX(0.7)" },
+    "100%": { transform: "rotate(360deg) scaleX(0.7)" },
+  },
+});
 
 type Props = {
   guideMeta: GuideMeta;
@@ -24,23 +36,23 @@ type Props = {
 
 const AppIdeaButton = () => {
   const { openModal } = useSurveyModal();
-  const abTest = useAbCohort("appIdeaButton");
+  const abTest = useAbCohort("appCommunityButton");
 
   const text = match(abTest.cohort)
     .with(null, () => <Skeleton.Button size="small" active />)
-    .with("budgetByForce", () => "I’m building a money app — want to try it?")
-    .with("buildingAnApp", () => "Budget-by-force: A new app I’m making")
-    .with("needThoughts", () => "Building a money tool — need your thoughts")
+    .with("curiousAboutApps", () => "New App Ideas — Vote & Shape")
+    .with("youVoteIBuild", () => "Join the New Ideas Community")
+    .with("shapeTheFuture", () => "New App Ideas Hub — Join Now")
     .exhaustive();
 
   return (
     <Button
       trackerId="app_idea_button"
-      icon={<Icon size={20} name="OutlineCampaign" />}
+      icon={<SpinOnceIcon size={20} name="StarSwirl" />}
       type="primary"
       size="middle"
-      backgroundColor="SuccessActive"
-      backgroundHoverColor="Success"
+      backgroundColor="ErrorActive"
+      backgroundHoverColor="Error"
       onClick={openModal}
     >
       {text}

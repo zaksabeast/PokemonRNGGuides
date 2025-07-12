@@ -2666,6 +2666,44 @@ export const guides = {
       return file.default;
     }),
   },
+  "/es-gba-methods-lead-impact/": {
+    meta: {
+      categories: ["GBA Technical Documentation"],
+      tags: ["info"],
+      isNew: false,
+      title:
+        "Impacto del Pokémon inicial en el equipo para encuentros salvajes en Esmeralda",
+      navDrawerTitle: "Methods & Lead",
+      description:
+        "Entender por qué la carta de salida influye en qué método de Wild se activa",
+      slug: "/es-gba-methods-lead-impact/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-06-18",
+      translation: { enSlug: "/gba-methods-lead-impact/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Gen 3/Emerald/GBA Methods Part2.mdx",
+      translations: {
+        es: "/es-gba-methods-lead-impact/",
+        en: "/gba-methods-lead-impact/",
+      },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/es/Gen 3/Emerald/GBA Methods Part2.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Gen 3/Emerald/GBA Methods Part2.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/es-gen2-celebi/": {
     meta: {
       categories: ["Gold, Silver, Crystal"],
@@ -3057,7 +3095,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Methods Part2.mdx",
-      translations: null,
+      translations: {
+        es: "/es-gba-methods-lead-impact/",
+        en: "/gba-methods-lead-impact/",
+      },
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
@@ -8511,6 +8552,7 @@ export const guideSlugs = [
   "/emulator-sm-time-finder/",
   "/emulator-usum-time-finder/",
   "/es-delete-pokemon-save/",
+  "/es-gba-methods-lead-impact/",
   "/es-gen2-celebi/",
   "/es-gen2-starters/",
   "/experiments/",

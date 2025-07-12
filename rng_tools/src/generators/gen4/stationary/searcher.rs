@@ -352,48 +352,34 @@ fn get_state_from_jseed(
     let lead = opts.lead;
 
     match lead {
-        LeadAbilities::Synchronize(sync_nature) => {
-            let pidh = (rng.rand::<u16>() as u32) << 16;
+        LeadAbilities::Synchronize(_) => {
+            let pidh = rng.rand::<u16>() as u32;
             let pidl = rng.rand::<u16>() as u32;
-            let pid = pidh | pidl;
+            let pid = (pidh << 16) | pidl;
 
             let nature_rand = (pid % 25) as u16;
-            let mut nature = Nature::from(nature_rand as u8);
+            let nature = Nature::from(nature_rand as u8);
 
-            let synch_check = rng.rand::<u32>();
-            let synch_check16 = synch_check >> 16_u16;
+            let mut full_seed = rng.rand::<u32>();
+            let mut next_rng = (full_seed >> 16) as u16;
+            let mut next_rng_2 = rng.rand::<u16>();
+            loop {
+                let origin_seed = if next_rng >> 15 == 0 {
+                    let mut seed_rng = Pokerng::new(full_seed).rev();
+                    Some(seed_rng.rand::<u32>())
+                } else if next_rng_2 >> 15 == 1 && next_rng / 0xa3e == nature_rand {
+                    let mut seed_rng = Pokerng::new(full_seed).rev();
+                    seed_rng.rand::<u32>();
+                    Some(seed_rng.rand::<u32>())
+                } else {
+                    None
+                };
 
-            if synch_check16 >> 15 == 0 {
-                if nature == sync_nature {
-                    let mut seed_rng = Pokerng::new(synch_check).rev();
-                    let origin_seed = seed_rng.rand::<u32>();
-
-                    nature = sync_nature;
-
-                    results.push(Base4MethodjState {
-                        ivs,
-                        seed: origin_seed,
-                        shiny: gen3_shiny(pid, opts.tid, opts.sid),
-                        ability: AbilityType::from_gen3_pid(pid),
-                        characteristic: Characteristic::new(pid, &ivs),
-                        gender: opts.encounter.species().gender_from_pid(pid),
-                        nature,
-                        pid,
-                        advance: 0,
-                    })
-                }
-                results
-            } else {
-                let next_rng = rng.rand::<u32>();
-                let next_rng16 = next_rng >> 16_u16;
-                if next_rng16 >> 15 == 1 && (synch_check16 / 0xa3e) as u16 == nature_rand {
+                if let Some(origin_seed) = origin_seed {
                     let gender: Gender = opts.encounter.species().gender_from_pid(pid);
                     let ability = AbilityType::from_gen3_pid(pid);
                     let shiny = gen3_shiny(pid, opts.tid, opts.sid);
                     let characteristic = Characteristic::new(pid, &ivs);
-
-                    let mut seed_rng = Pokerng::new(next_rng).rev();
-                    let origin_seed = seed_rng.rand::<u32>();
 
                     results.push(Base4MethodjState {
                         ivs,
@@ -406,15 +392,27 @@ fn get_state_from_jseed(
                         pid,
                         advance: 0,
                     });
-                } else {
-                    return vec![];
-                };
-                results
+                }
+
+                let hunt_nature = (((next_rng as u32) << 16 | next_rng_2 as u32) % 25) as u16;
+                full_seed = rng.rand::<u32>();
+                next_rng = (full_seed >> 16) as u16;
+                next_rng_2 = rng.rand::<u16>();
+
+                if hunt_nature == nature_rand {
+                    break;
+                }
             }
+            results
         }
-        LeadAbilities::CutecharmF => {
+        LeadAbilities::CutecharmF | LeadAbilities::CutecharmM => {
             let gender_threshold = opts.encounter.species().gender_ratio();
-            let buffer = 25 * ((gender_threshold as u32 / 25) + 1);
+            let buffer: u32;
+            if lead == LeadAbilities::CutecharmF {
+                buffer = 25 * ((gender_threshold as u32 / 25) + 1);
+            } else {
+                buffer = 0;
+            }
             let nature_rand = rng.rand::<u16>() / 0xa3e;
             let nature = Nature::from(nature_rand as u8);
             let full_seed = rng.rand::<u32>();
@@ -439,32 +437,7 @@ fn get_state_from_jseed(
                 vec![]
             }
         }
-        LeadAbilities::CutecharmM => {
-            let buffer = 0;
-            let nature_rand = rng.rand::<u16>() / 0xa3e;
-            let nature = Nature::from(nature_rand as u8);
-            let full_seed = rng.rand::<u32>();
 
-            if (full_seed >> 16) as u16 / ((65535 / 3) + 1) != 0 {
-                let pid = buffer + nature_rand as u32;
-                let mut seed_rng = Pokerng::new(full_seed).rev();
-                let origin_seed = seed_rng.rand::<u32>();
-                results.push(Base4MethodjState {
-                    ivs,
-                    seed: origin_seed,
-                    shiny: gen3_shiny(pid, opts.tid, opts.sid),
-                    ability: AbilityType::from_gen3_pid(pid),
-                    characteristic: Characteristic::new(pid, &ivs),
-                    gender: opts.encounter.species().gender_from_pid(pid),
-                    nature,
-                    pid,
-                    advance: 0,
-                });
-                results
-            } else {
-                vec![]
-            }
-        }
         LeadAbilities::None => {
             let pidh = rng.rand::<u16>() as u32;
             let pidl = rng.rand::<u16>() as u32;
@@ -574,48 +547,34 @@ fn get_state_from_kseed(
     let lead = opts.lead;
 
     match lead {
-        LeadAbilities::Synchronize(sync_nature) => {
-            let pidh = (rng.rand::<u16>() as u32) << 16;
+        LeadAbilities::Synchronize(_) => {
+            let pidh = rng.rand::<u16>() as u32;
             let pidl = rng.rand::<u16>() as u32;
-            let pid = pidh | pidl;
+            let pid = (pidh << 16) | pidl;
 
             let nature_rand = (pid % 25) as u16;
-            let mut nature = Nature::from(nature_rand as u8);
+            let nature = Nature::from(nature_rand as u8);
 
-            let synch_check = rng.rand::<u32>();
-            let synch_check16 = synch_check >> 16_u16;
+            let mut full_seed = rng.rand::<u32>();
+            let mut next_rng = (full_seed >> 16) as u16;
+            let mut next_rng_2 = rng.rand::<u16>();
+            loop {
+                let origin_seed = if next_rng >> 15 == 0 {
+                    let mut seed_rng = Pokerng::new(full_seed).rev();
+                    Some(seed_rng.rand::<u32>())
+                } else if next_rng_2 >> 15 == 1 && next_rng % 25 == nature_rand {
+                    let mut seed_rng = Pokerng::new(full_seed).rev();
+                    seed_rng.rand::<u32>();
+                    Some(seed_rng.rand::<u32>())
+                } else {
+                    None
+                };
 
-            if synch_check16 % 2 == 0 {
-                if nature == sync_nature {
-                    let mut seed_rng = Pokerng::new(synch_check).rev();
-                    let origin_seed = seed_rng.rand::<u32>();
-
-                    nature = sync_nature;
-
-                    results.push(Base4MethodjState {
-                        ivs,
-                        seed: origin_seed,
-                        shiny: gen3_shiny(pid, opts.tid, opts.sid),
-                        ability: AbilityType::from_gen3_pid(pid),
-                        characteristic: Characteristic::new(pid, &ivs),
-                        gender: opts.encounter.species().gender_from_pid(pid),
-                        nature,
-                        pid,
-                        advance: 0,
-                    })
-                }
-                results
-            } else {
-                let next_rng = rng.rand::<u32>();
-                let next_rng16 = next_rng >> 16_u16;
-                if next_rng16 % 2 == 1 && (synch_check16 % 25) as u16 == nature_rand {
+                if let Some(origin_seed) = origin_seed {
                     let gender: Gender = opts.encounter.species().gender_from_pid(pid);
                     let ability = AbilityType::from_gen3_pid(pid);
                     let shiny = gen3_shiny(pid, opts.tid, opts.sid);
                     let characteristic = Characteristic::new(pid, &ivs);
-
-                    let mut seed_rng = Pokerng::new(next_rng).rev();
-                    let origin_seed = seed_rng.rand::<u32>();
 
                     results.push(Base4MethodjState {
                         ivs,
@@ -628,41 +587,27 @@ fn get_state_from_kseed(
                         pid,
                         advance: 0,
                     });
-                } else {
-                    return vec![];
-                };
-                results
-            }
-        }
-        LeadAbilities::CutecharmF => {
-            let gender_threshold = opts.encounter.species().gender_ratio();
-            let buffer = 25 * ((gender_threshold as u32 / 25) + 1);
-            let nature_rand = rng.rand::<u16>() % 25;
-            let nature = Nature::from(nature_rand as u8);
-            let full_seed = rng.rand::<u32>();
+                }
 
-            if (full_seed >> 16) as u16 % 3 != 0 {
-                let pid = buffer + nature_rand as u32;
-                let mut seed_rng = Pokerng::new(full_seed).rev();
-                let origin_seed = seed_rng.rand::<u32>();
-                results.push(Base4MethodjState {
-                    ivs,
-                    seed: origin_seed,
-                    shiny: gen3_shiny(pid, opts.tid, opts.sid),
-                    ability: AbilityType::from_gen3_pid(pid),
-                    characteristic: Characteristic::new(pid, &ivs),
-                    gender: opts.encounter.species().gender_from_pid(pid),
-                    nature,
-                    pid,
-                    advance: 0,
-                });
-                results
-            } else {
-                vec![]
+                let hunt_nature = (((next_rng as u32) << 16 | next_rng_2 as u32) % 25) as u16;
+                full_seed = rng.rand::<u32>();
+                next_rng = (full_seed >> 16) as u16;
+                next_rng_2 = rng.rand::<u16>();
+
+                if hunt_nature == nature_rand {
+                    break;
+                }
             }
+            results
         }
-        LeadAbilities::CutecharmM => {
-            let buffer = 0;
+        LeadAbilities::CutecharmF | LeadAbilities::CutecharmM => {
+            let gender_threshold = opts.encounter.species().gender_ratio();
+            let buffer: u32;
+            if lead == LeadAbilities::CutecharmF {
+                buffer = 25 * ((gender_threshold as u32 / 25) + 1);
+            } else {
+                buffer = 0;
+            }
             let nature_rand = rng.rand::<u16>() % 25;
             let nature = Nature::from(nature_rand as u8);
             let full_seed = rng.rand::<u32>();
@@ -2962,572 +2907,200 @@ mod tests {
                     ability: None,
                     stats: None,
                 },
-                min_advance: 20,
-                max_advance: 21,
+                min_advance: 0,
+                max_advance: 0,
                 min_delay: 780,
-                max_delay: 1200,
-                year: 2025,
+                max_delay: 780,
+                year: 2000,
                 force_second: None,
             };
             let results = search_static4_methodj_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
                     seed_time: SeedTime4 {
-                        seed: 1409549440,
+                        seed: 0xd0a030c,
                         datetime: RngDateTime {
-                            year: 2025,
+                            year: 2000,
                             month: 1,
                             day: 1,
-                            hour: 4,
-                            minute: 25,
-                            second: 58,
-                        },
-                        delay: 1127,
-                        coin_flips: coin_flips!("THHHHHHTHTTHTTHTHHHH"),
-                    },
-                    seed: 2128162932,
-                    advance: 20,
-                    pid: 708389153,
-                    ivs: Ivs {
-                        hp: 30,
-                        atk: 30,
-                        def: 21,
-                        spa: 20,
-                        spd: 20,
-                        spe: 23,
-                    },
-                    ability: AbilityType::Second,
-                    gender: Gender::Female,
-                    nature: Nature::Adamant,
-                    shiny: false,
-                    characteristic: Characteristic::LovesToEat,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 3003515780,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 3,
-                            day: 21,
-                            hour: 6,
-                            minute: 58,
-                            second: 58,
-                        },
-                        delay: 875,
-                        coin_flips: coin_flips!("TTTTTHHTTTHHHHHTTTTT"),
-                    },
-                    seed: 1102521035,
-                    advance: 21,
-                    pid: 3281576703,
-                    ivs: Ivs {
-                        hp: 30,
-                        atk: 30,
-                        def: 28,
-                        spa: 26,
-                        spd: 28,
-                        spe: 25,
-                    },
-                    ability: AbilityType::Second,
-                    gender: Gender::Male,
-                    nature: Nature::Adamant,
-                    shiny: false,
-                    characteristic: Characteristic::LovesToEat,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 1610876043,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 1,
-                            day: 1,
-                            hour: 4,
-                            minute: 37,
-                            second: 58,
-                        },
-                        delay: 1138,
-                        coin_flips: coin_flips!("HTHTTTHTHTTHHTHHTTHH"),
-                    },
-                    seed: 251320886,
-                    advance: 21,
-                    pid: 2926311378,
-                    ivs: Ivs {
-                        hp: 30,
-                        atk: 30,
-                        def: 28,
-                        spa: 26,
-                        spd: 30,
-                        spe: 29,
-                    },
-                    ability: AbilityType::First,
-                    gender: Gender::Male,
-                    nature: Nature::Adamant,
-                    shiny: false,
-                    characteristic: Characteristic::LovesToEat,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 3909354361,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 4,
-                            day: 29,
-                            hour: 4,
-                            minute: 59,
-                            second: 58,
-                        },
-                        delay: 864,
-                        coin_flips: coin_flips!("THTHHTTHHTHTHHHHTHHT"),
-                    },
-                    seed: 3870794348,
-                    advance: 21,
-                    pid: 2622137053,
-                    ivs: Ivs {
-                        hp: 30,
-                        atk: 31,
-                        def: 20,
-                        spa: 28,
-                        spd: 29,
-                        spe: 30,
-                    },
-                    ability: AbilityType::Second,
-                    gender: Gender::Male,
-                    nature: Nature::Adamant,
-                    shiny: false,
-                    characteristic: Characteristic::LikesToThrashAbout,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 2701460333,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 2,
-                            day: 22,
-                            hour: 5,
-                            minute: 59,
-                            second: 58,
-                        },
-                        delay: 852,
-                        coin_flips: coin_flips!("THTTTTTTHHHHTTHHHTHH"),
-                    },
-                    seed: 362011249,
-                    advance: 20,
-                    pid: 646336914,
-                    ivs: Ivs {
-                        hp: 30,
-                        atk: 31,
-                        def: 24,
-                        spa: 23,
-                        spd: 30,
-                        spe: 20,
-                    },
-                    ability: AbilityType::First,
-                    gender: Gender::Male,
-                    nature: Nature::Naive,
-                    shiny: false,
-                    characteristic: Characteristic::LikesToThrashAbout,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 335676354,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 1,
-                            day: 1,
-                            hour: 2,
+                            hour: 10,
                             minute: 0,
-                            second: 19,
+                            second: 12,
                         },
-                        delay: 937,
-                        coin_flips: coin_flips!("TTTHHTTHHHHTTTHTHTHT"),
+                        delay: 780,
+                        coin_flips: coin_flips!("HTTHHHTTTTTTHTTHHHHT"),
                     },
-                    seed: 2303524438,
-                    advance: 20,
-                    pid: 547793278,
+                    seed: 0xd0a030c,
+                    advance: 0,
+                    pid: 0xbc4a8fd6,
                     ivs: Ivs {
                         hp: 30,
-                        atk: 31,
-                        def: 26,
-                        spa: 25,
-                        spd: 20,
-                        spe: 25,
-                    },
-                    ability: AbilityType::First,
-                    gender: Gender::Female,
-                    nature: Nature::Adamant,
-                    shiny: false,
-                    characteristic: Characteristic::LikesToThrashAbout,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 1049640,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 5,
-                            day: 28,
-                            hour: 16,
-                            minute: 58,
-                            second: 58,
-                        },
-                        delay: 1039,
-                        coin_flips: coin_flips!("HTHHTHTTTTHTTTTHTHTH"),
-                    },
-                    seed: 983914207,
-                    advance: 21,
-                    pid: 537289903,
-                    ivs: Ivs {
-                        hp: 30,
-                        atk: 31,
+                        atk: 30,
                         def: 29,
                         spa: 26,
-                        spd: 23,
-                        spe: 21,
-                    },
-                    ability: AbilityType::Second,
-                    gender: Gender::Male,
-                    nature: Nature::Adamant,
-                    shiny: false,
-                    characteristic: Characteristic::LikesToThrashAbout,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 3573941368,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 4,
-                            day: 24,
-                            hour: 6,
-                            minute: 59,
-                            second: 58,
-                        },
-                        delay: 1119,
-                        coin_flips: coin_flips!("HTTHHTTTHHHHHTHTTHTH"),
-                    },
-                    seed: 594806252,
-                    advance: 20,
-                    pid: 2799533070,
-                    ivs: Ivs {
-                        hp: 30,
-                        atk: 31,
-                        def: 31,
-                        spa: 27,
-                        spd: 25,
-                        spe: 25,
-                    },
-                    ability: AbilityType::First,
-                    gender: Gender::Female,
-                    nature: Nature::Calm,
-                    shiny: false,
-                    characteristic: Characteristic::LikesToThrashAbout,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 3590980665,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 4,
-                            day: 25,
-                            hour: 10,
-                            minute: 56,
-                            second: 58,
-                        },
-                        delay: 1056,
-                        coin_flips: coin_flips!("TTHTHHTTTHHHTTTHHTHH"),
-                    },
-                    seed: 4032796413,
-                    advance: 20,
-                    pid: 2993768353,
-                    ivs: Ivs {
-                        hp: 31,
-                        atk: 30,
-                        def: 20,
-                        spa: 28,
-                        spd: 26,
-                        spe: 29,
-                    },
-                    ability: AbilityType::Second,
-                    gender: Gender::Male,
-                    nature: Nature::Adamant,
-                    shiny: false,
-                    characteristic: Characteristic::TakesPlentyOfSiestas,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 1964180280,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 1,
-                            day: 1,
-                            hour: 19,
-                            minute: 58,
-                            second: 58,
-                        },
-                        delay: 799,
-                        coin_flips: coin_flips!("TTHHHTHHTTTHTTHHHHTH"),
-                    },
-                    seed: 2653942191,
-                    advance: 21,
-                    pid: 3796250953,
-                    ivs: Ivs {
-                        hp: 31,
-                        atk: 30,
-                        def: 21,
-                        spa: 29,
-                        spd: 23,
-                        spe: 23,
-                    },
-                    ability: AbilityType::Second,
-                    gender: Gender::Female,
-                    nature: Nature::Adamant,
-                    shiny: false,
-                    characteristic: Characteristic::TakesPlentyOfSiestas,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 1175127175,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 1,
-                            day: 1,
-                            hour: 11,
-                            minute: 11,
-                            second: 58,
-                        },
-                        delay: 1134,
-                        coin_flips: coin_flips!("THTTHHHHHHHTTTHHHTHT"),
-                    },
-                    seed: 843879490,
-                    advance: 21,
-                    pid: 2209378778,
-                    ivs: Ivs {
-                        hp: 31,
-                        atk: 30,
-                        def: 22,
-                        spa: 29,
-                        spd: 25,
-                        spe: 22,
-                    },
-                    ability: AbilityType::First,
-                    gender: Gender::Male,
-                    nature: Nature::Adamant,
-                    shiny: false,
-                    characteristic: Characteristic::TakesPlentyOfSiestas,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 3926524985,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 4,
-                            day: 30,
-                            hour: 10,
-                            minute: 56,
-                            second: 58,
-                        },
-                        delay: 1056,
-                        coin_flips: coin_flips!("HHTTTHTHHHHHTTTTTHTH"),
-                    },
-                    seed: 1147115261,
-                    advance: 20,
-                    pid: 376552353,
-                    ivs: Ivs {
-                        hp: 31,
-                        atk: 30,
-                        def: 25,
-                        spa: 28,
-                        spd: 27,
-                        spe: 29,
-                    },
-                    ability: AbilityType::Second,
-                    gender: Gender::Male,
-                    nature: Nature::Adamant,
-                    shiny: false,
-                    characteristic: Characteristic::TakesPlentyOfSiestas,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 1494418232,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 1,
-                            day: 1,
-                            hour: 19,
-                            minute: 30,
-                            second: 58,
-                        },
-                        delay: 799,
-                        coin_flips: coin_flips!("HTHTHHHHHTHHHHTTHTHT"),
-                    },
-                    seed: 4063228335,
-                    advance: 21,
-                    pid: 1179034953,
-                    ivs: Ivs {
-                        hp: 31,
-                        atk: 30,
-                        def: 26,
-                        spa: 29,
-                        spd: 24,
-                        spe: 23,
-                    },
-                    ability: AbilityType::Second,
-                    gender: Gender::Female,
-                    nature: Nature::Adamant,
-                    shiny: false,
-                    characteristic: Characteristic::TakesPlentyOfSiestas,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 2130707404,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 1,
-                            day: 10,
-                            hour: 0,
-                            minute: 59,
-                            second: 58,
-                        },
-                        delay: 947,
-                        coin_flips: coin_flips!("HHTHTHTTHHTHTHTHHTTH"),
-                    },
-                    seed: 277876211,
-                    advance: 21,
-                    pid: 573593278,
-                    ivs: Ivs {
-                        hp: 31,
-                        atk: 30,
-                        def: 31,
-                        spa: 26,
-                        spd: 22,
-                        spe: 20,
-                    },
-                    ability: AbilityType::First,
-                    gender: Gender::Male,
-                    nature: Nature::Adamant,
-                    shiny: false,
-                    characteristic: Characteristic::TakesPlentyOfSiestas,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
-                        seed: 907150432,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 1,
-                            day: 1,
-                            hour: 18,
-                            minute: 0,
-                            second: 53,
-                        },
-                        delay: 1095,
-                        coin_flips: coin_flips!("HHTHHHHHTTHHHTHTTHHT"),
-                    },
-                    seed: 2938799700,
-                    advance: 20,
-                    pid: 706739499,
-                    ivs: Ivs {
-                        hp: 31,
-                        atk: 31,
-                        def: 21,
-                        spa: 23,
-                        spd: 24,
+                        spd: 20,
                         spe: 31,
                     },
-                    ability: AbilityType::Second,
-                    gender: Gender::Female,
-                    nature: Nature::Quirky,
+                    ability: AbilityType::First,
+                    gender: Gender::Male,
+                    nature: Nature::Rash,
                     shiny: false,
                     characteristic: Characteristic::AlertToSounds,
                 },
                 SearchStatic4MethodjState {
                     seed_time: SeedTime4 {
-                        seed: 1393165428,
+                        seed: 0x2007030c,
                         datetime: RngDateTime {
-                            year: 2025,
+                            year: 2000,
                             month: 1,
                             day: 1,
-                            hour: 10,
-                            minute: 24,
+                            hour: 7,
+                            minute: 0,
+                            second: 31,
+                        },
+                        delay: 780,
+                        coin_flips: coin_flips!("TTHTTHTTTTTHTHTTTHTH"),
+                    },
+                    seed: 0x2007030c,
+                    advance: 0,
+                    pid: 0xb30e46f9,
+                    ivs: Ivs {
+                        hp: 30,
+                        atk: 31,
+                        def: 22,
+                        spa: 25,
+                        spd: 28,
+                        spe: 29,
+                    },
+                    ability: AbilityType::Second,
+                    gender: Gender::Male,
+                    nature: Nature::Serious,
+                    shiny: false,
+                    characteristic: Characteristic::LikesToThrashAbout,
+                },
+                SearchStatic4MethodjState {
+                    seed_time: SeedTime4 {
+                        seed: 0xa807030c,
+                        datetime: RngDateTime {
+                            year: 2000,
+                            month: 2,
+                            day: 26,
+                            hour: 7,
+                            minute: 58,
                             second: 58,
                         },
-                        delay: 1115,
-                        coin_flips: coin_flips!("THHTTHHTHHTHTTHHHHTT"),
+                        delay: 780,
+                        coin_flips: coin_flips!("THTTTHHHTHHTTTTHTHTT"),
                     },
-                    seed: 456421544,
-                    advance: 20,
-                    pid: 323500053,
+                    seed: 0xa807030c,
+                    advance: 0,
+                    pid: 0xdb0e0ef9,
                     ivs: Ivs {
-                        hp: 31,
+                        hp: 30,
                         atk: 31,
-                        def: 21,
-                        spa: 24,
+                        def: 24,
+                        spa: 25,
                         spd: 22,
-                        spe: 24,
+                        spe: 29,
+                    },
+                    ability: AbilityType::Second,
+                    gender: Gender::Male,
+                    nature: Nature::Mild,
+                    shiny: false,
+                    characteristic: Characteristic::LikesToThrashAbout,
+                },
+                SearchStatic4MethodjState {
+                    seed_time: SeedTime4 {
+                        seed: 0xa812030c,
+                        datetime: RngDateTime {
+                            year: 2000,
+                            month: 2,
+                            day: 26,
+                            hour: 18,
+                            minute: 58,
+                            second: 58,
+                        },
+                        delay: 780,
+                        coin_flips: coin_flips!("HTTHTHHTTHHTTTHTTTHH"),
+                    },
+                    seed: 0xa812030c,
+                    advance: 0,
+                    pid: 0x232d5e31,
+                    ivs: Ivs {
+                        hp: 30,
+                        atk: 31,
+                        def: 26,
+                        spa: 24,
+                        spd: 25,
+                        spe: 31,
                     },
                     ability: AbilityType::Second,
                     gender: Gender::Female,
-                    nature: Nature::Adamant,
+                    nature: Nature::Bashful,
                     shiny: false,
-                    characteristic: Characteristic::TakesPlentyOfSiestas,
+                    characteristic: Characteristic::LikesToThrashAbout,
                 },
                 SearchStatic4MethodjState {
                     seed_time: SeedTime4 {
-                        seed: 1679098774,
+                        seed: 0xf407030c,
                         datetime: RngDateTime {
-                            year: 2025,
-                            month: 1,
-                            day: 1,
-                            hour: 21,
-                            minute: 41,
+                            year: 2000,
+                            month: 5,
+                            day: 26,
+                            hour: 7,
+                            minute: 56,
                             second: 58,
                         },
-                        delay: 893,
-                        coin_flips: coin_flips!("HTHTHHTTTTHHTHTTHTTT"),
+                        delay: 780,
+                        coin_flips: coin_flips!("TTTTTHHTHHHTHHTHHHHT"),
                     },
-                    seed: 2410189930,
-                    advance: 20,
-                    pid: 694255103,
+                    seed: 0xf407030c,
+                    advance: 0,
+                    pid: 0x970e3af9,
                     ivs: Ivs {
-                        hp: 31,
+                        hp: 30,
                         atk: 31,
-                        def: 24,
-                        spa: 30,
-                        spd: 21,
-                        spe: 21,
+                        def: 27,
+                        spa: 25,
+                        spd: 29,
+                        spe: 29,
                     },
                     ability: AbilityType::Second,
                     gender: Gender::Male,
-                    nature: Nature::Adamant,
+                    nature: Nature::Quiet,
                     shiny: false,
-                    characteristic: Characteristic::TakesPlentyOfSiestas,
+                    characteristic: Characteristic::LikesToThrashAbout,
                 },
                 SearchStatic4MethodjState {
                     seed_time: SeedTime4 {
-                        seed: 3943367619,
+                        seed: 0xee15030c,
                         datetime: RngDateTime {
-                            year: 2025,
-                            month: 4,
-                            day: 30,
-                            hour: 11,
-                            minute: 57,
+                            year: 2000,
+                            month: 5,
+                            day: 25,
+                            hour: 21,
+                            minute: 55,
                             second: 58,
                         },
-                        delay: 938,
-                        coin_flips: coin_flips!("HTHTTTTHHTTTHTHTTTTH"),
+                        delay: 780,
+                        coin_flips: coin_flips!("HHTTHTHTHTHTHHHHTTHH"),
                     },
-                    seed: 1057416103,
-                    advance: 20,
-                    pid: 2584315378,
+                    seed: 0xee15030c,
+                    advance: 0,
+                    pid: 0x3c611daa,
                     ivs: Ivs {
                         hp: 31,
                         atk: 31,
-                        def: 24,
-                        spa: 31,
-                        spd: 30,
-                        spe: 20,
+                        def: 23,
+                        spa: 22,
+                        spd: 26,
+                        spe: 31,
                     },
                     ability: AbilityType::First,
                     gender: Gender::Male,
-                    nature: Nature::Adamant,
+                    nature: Nature::Gentle,
                     shiny: false,
-                    characteristic: Characteristic::Mischievous,
+                    characteristic: Characteristic::AlertToSounds,
                 },
             ];
             assert_list_eq!(results, expected);
@@ -3919,15 +3492,15 @@ mod tests {
                     shiny: false,
                     nature: None,
                     gender: None,
-                    min_ivs: ivs!(30 / 30 / 20 / 20 / 20 / 20),
+                    min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
                     max_ivs: Ivs::new_all31(),
                     ability: None,
                     stats: None,
                 },
                 min_advance: 20,
-                max_advance: 21,
+                max_advance: 20,
                 min_delay: 760,
-                max_delay: 810,
+                max_delay: 770,
                 year: 2025,
                 force_second: None,
             };

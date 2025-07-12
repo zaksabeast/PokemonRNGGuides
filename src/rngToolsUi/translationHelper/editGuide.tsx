@@ -1,9 +1,9 @@
 import React from "react";
-import { Input, Skeleton } from "antd";
+import { Skeleton } from "antd";
 import { memoize, map } from "lodash-es";
 import { useTranslationState } from "./state";
 import { guides } from "~/guides";
-import { Flex, CopyToClipboardButton } from "~/components";
+import { Flex, CopyToClipboardButton, TextArea } from "~/components";
 import { useTranslations } from "~/translations";
 
 const noop = memoize(async () => "");
@@ -46,8 +46,9 @@ slug: "${guide?.meta.slug}"
 
   return (
     <Flex vertical gap={16}>
-      <Input.TextArea
+      <TextArea
         value={file}
+        fontFamily="monospace"
         onChange={(event) => setFile(event.target.value)}
         rows={25}
       />

@@ -3829,6 +3829,7 @@ export const guides = {
       translations: {
         it: "/it-retail-dppt-starter/",
         en: "/retail-dppt-starter/",
+        zh: "/zh-retail-dppt-starter/",
       },
       displayAttributes: ["video_guide", "web_tool"],
     },
@@ -3863,6 +3864,7 @@ export const guides = {
       translations: {
         it: "/it-retail-hgss-starter/",
         en: "/retail-hgss-starter/",
+        zh: "/zh-retail-hgss-starter/",
       },
       displayAttributes: ["video_guide", "web_tool"],
     },
@@ -4593,6 +4595,7 @@ export const guides = {
       translations: {
         it: "/it-retail-dppt-starter/",
         en: "/retail-dppt-starter/",
+        zh: "/zh-retail-dppt-starter/",
       },
       displayAttributes: ["video_guide", "web_tool"],
     },
@@ -4687,6 +4690,7 @@ export const guides = {
       translations: {
         it: "/it-retail-hgss-starter/",
         en: "/retail-hgss-starter/",
+        zh: "/zh-retail-hgss-starter/",
       },
       displayAttributes: ["video_guide", "web_tool"],
     },
@@ -7829,6 +7833,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gamecube/Initial Seed RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gamecube/Initial Seed RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-gen2-celebi/": {
     meta: {
@@ -8131,6 +8141,41 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-dppt-starter/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["retail"],
+      isNew: false,
+      title: "钻石珍珠白金初始宝可梦乱数",
+      navDrawerTitle: "钻石珍珠白金初始宝可梦乱数",
+      description:
+        "学习如何在钻石、珍珠和白金中进行初始宝可梦的乱数，以获得异色、高个体值的宝可梦。",
+      slug: "/zh-retail-dppt-starter/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-06-15",
+      translation: { enSlug: "/retail-dppt-starter/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/Starters.mdx",
+      translations: {
+        it: "/it-retail-dppt-starter/",
+        en: "/retail-dppt-starter/",
+        zh: "/zh-retail-dppt-starter/",
+      },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Starters.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Starters.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-emerald-egg/": {
     meta: {
       categories: ["Emerald"],
@@ -8195,6 +8240,41 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-hgss-starter/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["retail"],
+      isNew: false,
+      title: "心金魂银初始宝可梦乱数",
+      navDrawerTitle: "心金魂银初始宝可梦乱数",
+      description:
+        "学习如何在心金与魂银中进行初始宝可梦的乱数，以获得异色、高个体值的宝可梦。",
+      slug: "/zh-retail-hgss-starter/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-06-15",
+      translation: { enSlug: "/retail-hgss-starter/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/Starters.mdx",
+      translations: {
+        it: "/it-retail-hgss-starter/",
+        en: "/retail-hgss-starter/",
+        zh: "/zh-retail-hgss-starter/",
+      },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Starters.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Starters.mdx?raw"
       );
       return file.default;
     }),
@@ -8727,8 +8807,10 @@ export const guideSlugs = [
   "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
+  "/zh-retail-dppt-starter/",
   "/zh-retail-emerald-egg/",
   "/zh-retail-emerald-wild/",
+  "/zh-retail-hgss-starter/",
   "/zh-retail-rubysapphire-tid/",
   "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",

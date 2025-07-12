@@ -1,4 +1,5 @@
 import React from "react";
+import { check, Pass } from "~/typeTest";
 import {
   MarkdownBreak,
   MarkdownH1,
@@ -21,7 +22,6 @@ import {
   Gist,
   YouTubeVideo,
   PixelImage,
-  IpsMerger,
   Countdown,
   ShowIf,
   Alert,
@@ -36,62 +36,16 @@ import {
   MediaTableCell,
   YouTubeTable,
 } from "~/components";
-import { Gen2PokemonRng } from "~/rngToolsUi/gen2/crystalPokemon";
-import { Gen2Rng } from "~/rngToolsUi/gen2/gen2Rng";
-import { Gen3Pokerus } from "~/rngToolsUi/gen3/pokerus";
-import { Gen3Sid } from "~/rngToolsUi/gen3/sid";
-import { Gen4Timer } from "~/rngToolsUi/timer/gen4";
 import { Glossary } from "~/pageComponents/glossary";
-import { EmeraldHeldEgg } from "~/rngToolsUi/gen3/emeraldHeldEgg";
-import { EmeraldPickupEgg } from "~/rngToolsUi/gen3/emeraldPickupEgg";
-import { Gen3TidSidGenerator } from "~/rngToolsUi/gen3/tidsid";
-import { RsTidSidGenerator } from "~/rngToolsUi/gen3/rstid/rstid";
-import { RsTidSearcher, RsTidTimer } from "~/rngToolsUi/gen3/rstid/searcher";
-import { Gen3MirageIsland } from "~/rngToolsUi/gen3/mirageIsland";
-import { OrAsMirageSpot } from "~/rngToolsUi/gen6/orasMirageSpot";
-import { RngTimer } from "~/rngToolsUi/timer";
-import { OrasId } from "~/rngToolsUi/gen6/orasId";
-import { Transporter } from "~/rngToolsUi/gen6/transporter/transporter";
-import { Static4Generator } from "~/rngToolsUi/gen4/gen4stationary.tsx";
-import { DpptSeed } from "~/rngToolsUi/gen4/dpptSeed";
-import { CalibrateId4 } from "~/rngToolsUi/gen4/id/calibrateId";
-import { Id4Searcher } from "~/rngToolsUi/gen4/id/idSearcher";
-import { XyPokeRadar } from "~/rngToolsUi/gen6/xyPokeRadar";
 import { Gen7SosList } from "~/pageComponents/gen7Sos/sosList";
-import { Static3 } from "~/rngToolsUi/gen3/static/static3";
-import { MultibootJirachi } from "~/rngToolsUi/gen3/multibootJirachi";
-import { ShinyHoennStarter } from "~/rngToolsUi/gen3/shinyStarter";
-import { GenerateHoennTidSid } from "~/rngToolsUi/gen3/shinyStarter/generateTidSid";
 import { ChallengePageComponent } from "~/pageComponents/challenge";
 import { ExperimentsPageComponent } from "~/pageComponents/experiments";
-import { PaintingReseed } from "~/rngToolsUi/gen3/paintingReseed";
 import { HomePageComponent } from "~/pageComponents/home";
 import { GamePageComponent } from "~/pageComponents/gamePage";
-import { RetailEmeraldHeldEgg } from "~/rngToolsUi/gen3/retailEmeraldEgg/heldEgg";
-import { PokeNavInput } from "~/rngToolsUi/gen3/retailEmeraldEgg/pokeNavTrainer";
-import {
-  CalibrateHeldEgg,
-  CalibrateHeldEggTimer,
-} from "~/rngToolsUi/gen3/retailEmeraldEgg/calibrateHeldEgg";
-import { RetailEmeraldPickupEgg } from "~/rngToolsUi/gen3/retailEmeraldEgg/pickupEgg";
-import {
-  CalibratePickupEgg,
-  CalibratePickupEggTimer,
-} from "~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg";
 import { withTags } from "~/components/tagDetector/provider";
 import { mapValues } from "lodash-es";
-import {
-  CalibrateStarter4,
-  GetStarter4,
-  PickStarter4,
-  Starter4Setup,
-} from "~/rngToolsUi/gen4/starters";
-import { Id4Timer, Id4ConsoleSetDateString } from "~/rngToolsUi/gen4/id/timer";
-import { Gen4IdSetup } from "~/rngToolsUi/gen4/id/setup";
-import { Starter4ConsoleSetDateString } from "~/rngToolsUi/gen4/starters/getStarter";
 import { Starter4ShowIf } from "~/rngToolsUi/gen4/starters/showIf";
 import { Id4ShowIf } from "~/rngToolsUi/gen4/id/showIf";
-import { Gen3PidSpeedCalculator } from "~/rngToolsUi/gen3/pidSpeedCalculator";
 import { TranslationHelperSelectGuide } from "~/rngToolsUi/translationHelper/selectGuide";
 import { TranslationHelperEditGuide } from "~/rngToolsUi/translationHelper/editGuide";
 import { ToolTranslationButton } from "~/rngToolsUi/translationHelper/toolTranslations";
@@ -148,62 +102,93 @@ const nonTools = {
 };
 
 const tools = {
-  IpsMerger,
-  Gen2PokemonRng,
-  Gen2Rng,
-  Gen3Pokerus,
-  Gen3Sid,
-  RsTidSidGenerator,
-  RsTidTimer,
-  RsTidSearcher,
-  Gen3MirageIsland,
-  EmeraldHeldEgg,
-  EmeraldPickupEgg,
-  Static3,
-  Wild3SearcherFindTarget: React.lazy(async () => {
-    const tool = await import("~/rngToolsUi/gen3/wild/wild3FindTarget");
-    return { default: tool.Wild3SearcherFindTarget };
-  }),
-  Gen3PidSpeedCalculator,
-  Gen3TidSidGenerator,
-  OrAsMirageSpot,
-  Gen4Timer,
-  RngTimer,
-  OrasId,
-  Transporter,
-  Static4Generator,
-  DpptSeed,
-  CalibrateId4,
-  Gen4IdSetup,
-  Id4ConsoleSetDateString,
-  Id4Searcher,
-  Id4Timer,
-  XyPokeRadar,
-  ShinyHoennStarter,
-  GenerateHoennTidSid,
-  MultibootJirachi,
-  PaintingReseed,
-  RetailEmeraldHeldEgg,
-  PokeNavInput,
-  CalibrateHeldEgg,
-  CalibrateHeldEggTimer,
-  RetailEmeraldPickupEgg,
-  CalibratePickupEgg,
-  CalibratePickupEggTimer,
-  CalibrateStarter4,
-  GetStarter4,
-  PickStarter4,
-  Starter4ConsoleSetDateString,
-  Starter4Setup,
+  IpsMerger: () => import("~/components/ipsMerger"),
+  Gen2PokemonRng: () => import("~/rngToolsUi/gen2/crystalPokemon"),
+  Gen2Rng: () => import("~/rngToolsUi/gen2/gen2Rng"),
+  Gen3Pokerus: () => import("~/rngToolsUi/gen3/pokerus"),
+  Gen3Sid: () => import("~/rngToolsUi/gen3/sid"),
+  RsTidSidGenerator: () => import("~/rngToolsUi/gen3/rstid/rstid"),
+  RsTidTimer: () => import("~/rngToolsUi/gen3/rstid/searcher"),
+  RsTidSearcher: () => import("~/rngToolsUi/gen3/rstid/searcher"),
+  Gen3MirageIsland: () => import("~/rngToolsUi/gen3/mirageIsland"),
+  EmeraldHeldEgg: () => import("~/rngToolsUi/gen3/emeraldHeldEgg"),
+  EmeraldPickupEgg: () => import("~/rngToolsUi/gen3/emeraldPickupEgg"),
+  Static3: () => import("~/rngToolsUi/gen3/static/static3"),
+  Wild3SearcherFindTarget: () =>
+    import("~/rngToolsUi/gen3/wild/wild3FindTarget"),
+  Gen3PidSpeedCalculator: () => import("~/rngToolsUi/gen3/pidSpeedCalculator"),
+  Gen3TidSidGenerator: () => import("~/rngToolsUi/gen3/tidsid"),
+  OrAsMirageSpot: () => import("~/rngToolsUi/gen6/orasMirageSpot"),
+  Gen4Timer: () => import("~/rngToolsUi/timer/gen4"),
+  RngTimer: () => import("~/rngToolsUi/timer"),
+  OrasId: () => import("~/rngToolsUi/gen6/orasId"),
+  Transporter: () => import("~/rngToolsUi/gen6/transporter/transporter"),
+  Static4Generator: () => import("~/rngToolsUi/gen4/gen4stationary"),
+  DpptSeed: () => import("~/rngToolsUi/gen4/dpptSeed"),
+  CalibrateId4: () => import("~/rngToolsUi/gen4/id/calibrateId"),
+  Gen4IdSetup: () => import("~/rngToolsUi/gen4/id/setup"),
+  Id4ConsoleSetDateString: () => import("~/rngToolsUi/gen4/id/timer"),
+  Id4Searcher: () => import("~/rngToolsUi/gen4/id/idSearcher"),
+  Id4Timer: () => import("~/rngToolsUi/gen4/id/timer"),
+  XyPokeRadar: () => import("~/rngToolsUi/gen6/xyPokeRadar"),
+  ShinyHoennStarter: () => import("~/rngToolsUi/gen3/shinyStarter"),
+  GenerateHoennTidSid: () =>
+    import("~/rngToolsUi/gen3/shinyStarter/generateTidSid"),
+  MultibootJirachi: () => import("~/rngToolsUi/gen3/multibootJirachi"),
+  PaintingReseed: () => import("~/rngToolsUi/gen3/paintingReseed"),
+  RetailEmeraldHeldEgg: () =>
+    import("~/rngToolsUi/gen3/retailEmeraldEgg/heldEgg"),
+  PokeNavInput: () =>
+    import("~/rngToolsUi/gen3/retailEmeraldEgg/pokeNavTrainer"),
+  CalibrateHeldEgg: () =>
+    import("~/rngToolsUi/gen3/retailEmeraldEgg/calibrateHeldEgg"),
+  CalibrateHeldEggTimer: () =>
+    import("~/rngToolsUi/gen3/retailEmeraldEgg/calibrateHeldEgg"),
+  RetailEmeraldPickupEgg: () =>
+    import("~/rngToolsUi/gen3/retailEmeraldEgg/pickupEgg"),
+  CalibratePickupEgg: () =>
+    import("~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg"),
+  CalibratePickupEggTimer: () =>
+    import("~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg"),
+  CalibrateStarter4: () => import("~/rngToolsUi/gen4/starters"),
+  GetStarter4: () => import("~/rngToolsUi/gen4/starters/getStarter"),
+  PickStarter4: () => import("~/rngToolsUi/gen4/starters/pickStarter"),
+  Starter4ConsoleSetDateString: () =>
+    import("~/rngToolsUi/gen4/starters/getStarter"),
+  Starter4Setup: () => import("~/rngToolsUi/gen4/starters/setup"),
+};
+
+type ToolMapWithStrictExportNameAsKey = {
+  [ExportName in keyof typeof tools]: () => Promise<Record<ExportName, Tool>>;
+};
+
+// This type check ensures that the keys of the tools object are strictly the export names.
+type Result = typeof tools extends ToolMapWithStrictExportNameAsKey
+  ? true
+  : false;
+check<Result, true>(Pass);
+
+// We don't want to enforce specific props for tools, as they can vary.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Tool = (props: any) => React.JSX.Element;
+
+const createLazyTool = <ExportName extends string>(
+  exportName: ExportName,
+  importFunc: () => Promise<Record<ExportName, Tool>>,
+) => {
+  return React.lazy(async () => {
+    const tool = await importFunc();
+    return { default: tool[exportName] };
+  });
 };
 
 export const markdownComponents = {
   ...nonTools,
-  ...mapValues(tools, (Component) => {
+  ...mapValues(tools, (importFunc, componentName) => {
+    const Component = createLazyTool(componentName, importFunc);
     // This is temporary
     // At some point I'd like each of these to be lazy loaded, which will require specifying the component path next to the component name.
     // A wrapper around React.lazy can include `withTags`.
-    // @ts-expect-error -- TS can't tell each component props apart in the Component union, so it thinks there are prop mismatches
     return withTags(Component, { web_tool: true });
   }),
 };

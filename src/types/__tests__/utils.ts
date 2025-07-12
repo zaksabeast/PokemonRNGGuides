@@ -80,8 +80,11 @@ export const PathsTest = () => {
     };
   }>;
   type Expected =
+    | "nested"
     | "topLevel"
+    | "anotherNested"
     | "nested.test"
+    | "anotherNested.deeper"
     | "anotherNested.deeper.value1"
     | "anotherNested.deeper.value2";
   check<Result, Expected>(Pass);
@@ -145,6 +148,24 @@ export const PathsSelectingArrayTest = () => {
     number[]
   >;
   type Expected = "array";
+  check<Result, Expected>(Pass);
+};
+
+export const PathSelectingObjectTest = () => {
+  type Person = {
+    name: string;
+    age: number;
+  };
+  type Result = Paths<
+    {
+      array: number[];
+      nested: {
+        test: Person;
+      };
+    },
+    Person
+  >;
+  type Expected = "nested.test";
   check<Result, Expected>(Pass);
 };
 

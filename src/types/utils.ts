@@ -52,10 +52,12 @@ export type Paths<
             ? Obj[K] extends Type
               ? K
               : never
-            : Obj[K] extends tst.O.Object
-              ? `${K}.${Paths<Obj[K], Type, tst.N.Sub<Index, 1>>}`
-              : Obj[K] extends Type
-                ? K
+            : Obj[K] extends Type
+              ? Obj[K] extends tst.O.Object
+                ? K | `${K}.${Paths<Obj[K], Type, tst.N.Sub<Index, 1>>}`
+                : K
+              : Obj[K] extends tst.O.Object
+                ? `${K}.${Paths<Obj[K], Type, tst.N.Sub<Index, 1>>}`
                 : never
           : never;
       }[keyof Obj]

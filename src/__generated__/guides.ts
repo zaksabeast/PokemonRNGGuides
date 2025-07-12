@@ -3210,7 +3210,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gamecube/Initial Seed RNG.mdx",
-      translations: null,
+      translations: { en: "/gc-initial/", zh: "/zh-gc-initial/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7764,6 +7764,31 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-gc-initial/": {
+    meta: {
+      categories: ["Gamecube"],
+      tags: ["emu"],
+      isNew: false,
+      title: "初始种子乱数",
+      navDrawerTitle: "初始种子乱数",
+      description:
+        "如何使用 Dolphin 设置适用于所有 GameCube 游戏的初始种子乱数",
+      slug: "/zh-gc-initial/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/gc-initial/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gamecube/Initial Seed RNG.mdx",
+      translations: { en: "/gc-initial/", zh: "/zh-gc-initial/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gamecube/Initial Seed RNG.mdx"),
+    ),
+  },
   "/zh-gen2-celebi/": {
     meta: {
       categories: ["Gold, Silver, Crystal"],
@@ -8650,6 +8675,7 @@ export const guideSlugs = [
   "/zh-gba-methods/",
   "/zh-gba-pokerus-technical/",
   "/zh-gba-vblank/",
+  "/zh-gc-initial/",
   "/zh-gen2-celebi/",
   "/zh-gen2-starters/",
   "/zh-gen3-sid/",

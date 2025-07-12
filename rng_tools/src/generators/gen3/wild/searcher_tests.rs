@@ -359,7 +359,7 @@ mod test {
         let options = Wild3SearcherOptions {
             encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![Gen3Method::Wild1],
-            initial_advances:121000,
+            initial_advances: 121000,
             max_advances: 1000,
             max_result_count: 1,
             leads: vec![Gen3Lead::Vanilla],

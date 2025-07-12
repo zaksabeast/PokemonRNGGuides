@@ -1,0 +1,160 @@
+const t=`---
+- title: "HeartGold and SoulSilver Starter RNG"
+  navDrawerTitle: "Starter RNG"
+  description: "Learn how to RNG starters in HeartGold and SoulSilver for shiny, high-IV Pokémon."
+  slug: "retail-hgss-starter"
+  category: "HeartGold and SoulSilver"
+  tag: "retail"
+  addedOn: "2025-06-15"
+- title: "Diamond, Pearl, and Platinum Starter RNG"
+  navDrawerTitle: "Starter RNG"
+  description: "Learn how to RNG starters in Diamond, Pearl, and Platinum for shiny, high-IV Pokémon."
+  slug: "retail-dppt-starter"
+  category: "Diamond, Pearl, and Platinum"
+  tag: "retail"
+  addedOn: "2025-06-15"
+---
+
+## Video guide
+
+<YouTubeTable
+  videos={[
+    {
+      title: "Starter RNG",
+      src: "https://www.youtube.com/embed/PMEuRlT83Qs?si=N_Ha7LBg3mtEHdKA",
+    },
+    {
+      title: "3DS RNG",
+      src: "https://www.youtube.com/embed/-ayvPKWNkNw?si=eA7yboNXFhGl0MUX",
+    },
+  ]}
+/>
+
+## Written guide
+
+<Alert
+  showIcon
+  type="info"
+  message="This guide is interactive and updates instructions based on your settings!"
+/>
+
+<Stepper titles={["Set up", "Pick a starter", "Get the starter", "Calibrate"]}>
+
+<Step step={0}>
+
+## Set up
+
+Choose the game and console you're playing below then continue to the next step.
+
+<Starter4ShowIf game="Platinum">
+
+<Alert
+  showIcon
+  type="info"
+  message="Platinum is the hardest and might have stability issues!"
+/>
+
+</Starter4ShowIf>
+
+<Starter4Setup />
+
+<Starter4ShowIf is3dsNormalSettings>
+  [Learn how to use the 3DS Helper here](/3ds-helper).
+</Starter4ShowIf>
+
+<Starter4ShowIf is3dsAltSettings>
+  [Download the 3DS Alt Settings app here](/3ds-alt-settings).
+</Starter4ShowIf>
+
+</Step>
+
+<Step step={1}>
+
+## Pick a starter
+
+1. Fill out the tool below to find a starter that suits you.
+2. If you can't find a starter you like, you can increase the min and max delays. This will increase the time to get the starter.
+
+Shiny starters with high IV are unlikely to get in a reasonable amount of time. You'll have better chances aiming for a max of 3 perfect IVs.
+
+<PickStarter4 />
+
+</Step>
+
+<Step step={2}>
+
+## Prepare the save
+
+1. If you're on Platinum, set your console date to **12/31/2099** on NDS or **12/31/2050** on 3DS.
+1. Save at the location in the screenshots below depending on your game.
+
+| Diamond and Pearl                                                                                      | Platinum                                                                                                | HeartGold and SoulSilver                                                                          |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| ![Diamond, Pearl, and Platinum save location](/images/Diamond-Pearl-Platinum/Starter/dpp-starter.webp) | ![Diamond, Pearl, and Platinum save location](/images/Diamond-Pearl-Platinum/Starter/plat-starter.webp) | ![HeartGold and SoulSilver save location](/images/HeartGold-SoulSilver/Starter/hgss-starter.webp) |
+
+## Prepare the console
+
+1. Set your console date to **<Starter4ConsoleSetDateString format="date" />**.
+2. Start setting your console time to **<Starter4ConsoleSetDateString format="time" />**, but don't confirm it just yet.
+
+| Confirm time screen                                                    |
+| ---------------------------------------------------------------------- |
+| ![Confirm time screen](/images/HeartGold-SoulSilver/SetTimeScreen.jpg) |
+
+## Hit your target
+
+<Starter4ShowIf is3dsNormalSettings>
+  [Learn how to use the 3DS Helper here](/3ds-helper).
+</Starter4ShowIf>
+
+1. Simultaneously press \`A\` to set the console time and start the timer below.
+2. <Starter4ShowIf is3dsNormalSettings>
+     Exit the settings on your console, restart your console, and start the
+     game.
+   </Starter4ShowIf>
+   <Starter4ShowIf is3dsAltSettings>
+     Press \`Start\` to exit the Alt Settings on your console, then start the
+     game.
+   </Starter4ShowIf>
+   <Starter4ShowIf isNdsDsi>
+     Exit the settings on your console and restart your console.
+   </Starter4ShowIf>
+3. When the first timer ends, <Starter4ShowIf is3dsNormalSettings is3dsAltSettings>press \`L + R + Start + Select\` to soft reset the game.</Starter4ShowIf><Starter4ShowIf isNdsDsi>press \`A\` to start the game.</Starter4ShowIf>
+4. Get to the screen where you load your save.
+5. Immediately press \`A\` when the second timer to goes off.
+6. If you're on Platinum, button mash to get your starter as fast as possible.
+
+<GetStarter4 />
+
+</Step>
+
+<Step step={3}>
+
+## Calibrate
+
+1. Check your Pokemon stats.
+2. If it matches your target, congratulations! You RNG'd your starter!
+3. If not, type your Pokemon info into the form below and click "Generate".
+4. Click "Calibrate" on the starter with the smallest delay offset (should be the first result).
+5. Try to hit your target again.
+6. If the "Flip Delay" column is checked for the Pokemon you hit, take one of these actions:
+   - For **Any game**, insert a GBA cart
+   - For **HeartGold and SoulSilver**, use the touch screen to press the down and up arrows on the continue screen.
+   - For **Diamond, Pearl, and Platinum**, click "New Game", then press \`B\` to return to the continue screen.
+   - If you've flipped the delay and are asked to flip it again, do not take any action.
+
+In Diamond, Pearl, and Platinum it is possible for the delay to randomly switch from even to odd, or vice versa. When this happens, keep trying until you get the target.
+
+<CalibrateStarter4 />
+
+</Step>
+
+</Stepper>
+
+## Credits
+
+- Zaksabeast, Sorendog, EzPz, and RainingChain for various contributions to this tool
+- Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, whose work this tool is built upon.
+- Chinese translation: xuanyelin, Hakuhiro.
+- Italian translation: Fiask.
+`;export{t as default};

@@ -5,10 +5,11 @@ use super::{
 use crate::EncounterSlot;
 use crate::Ivs;
 use crate::Species;
+use crate::gen3::calculate_pid_speed;
 use crate::gen3::{Gen3Lead, Gen3Method};
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
-use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny};
+use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny, is_max_size};
 use serde::{Deserialize, Serialize};
 use std::ops;
 use tsify_next::Tsify;
@@ -29,6 +30,21 @@ pub const BASE_LEAD_PID: u32 = 0;
 pub const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 24);
 pub const BASE_LEAD_PID_MOD_25_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 25);
 
+#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen3PidSpeedFilter {
+    pub active: bool,
+    pub min_cycle_count: usize,
+    pub max_cycle_count: usize,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Gen3PkmFilter {
+    pub max_size: bool,
+    pub pid_speed: Gen3PidSpeedFilter,
+}
+
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3EncounterSlotInfo {
@@ -48,7 +64,7 @@ pub struct Wild3EncounterTable {
     pub slots: Vec<Wild3EncounterSlotInfo>,
 }
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3GeneratorOptions {
     pub advance: usize,
@@ -61,6 +77,7 @@ pub struct Wild3GeneratorOptions {
     pub methods: Vec<Gen3Method>,
     pub lead: Gen3Lead,
     pub filter: PkmFilter,
+    pub gen3_filter: Gen3PkmFilter,
     pub consider_cycles: bool,
     pub consider_rng_manipulated_lead_pid: bool,
 }
@@ -614,11 +631,21 @@ fn passes_pid_filter(opts: &Wild3GeneratorOptions, pid: u32) -> bool {
         }
     }
 
+    if opts.gen3_filter.pid_speed.active {
+        let pid_speed = calculate_pid_speed(pid);
+        if pid_speed < opts.gen3_filter.pid_speed.min_cycle_count
+            || pid_speed > opts.gen3_filter.pid_speed.max_cycle_count
+        {
+            return false;
+        }
+    }
+
     true
 }
 
 fn passes_ivs_filter(opts: &Wild3GeneratorOptions, ivs: &Ivs) -> bool {
     Ivs::filter(ivs, &opts.filter.min_ivs, &opts.filter.max_ivs)
+        && opts.filter.pass_filter_hidden_power(ivs)
 }
 
 fn create_if_passes_filter(
@@ -630,6 +657,10 @@ fn create_if_passes_filter(
     cycle_range: CycleAndModRange,
 ) -> Option<Wild3GeneratorResult> {
     if !passes_ivs_filter(opts, &ivs) {
+        return None;
+    }
+
+    if opts.gen3_filter.max_size && !is_max_size(pid, &ivs) {
         return None;
     }
 

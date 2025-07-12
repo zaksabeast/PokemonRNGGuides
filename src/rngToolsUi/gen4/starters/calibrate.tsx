@@ -34,6 +34,7 @@ import { characteristics, Characteristic4Options } from "../gen4types";
 import { fromRngDateTime, toRngDateTime } from "~/utils/time";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
+import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
 
 type Result = Gen4StaticPokemon & {
   key: string;
@@ -247,6 +248,7 @@ export const CalibrateStarter4 = () => {
               min_stats: caughtStats,
               max_stats: caughtStats,
             },
+            hidden_power: defaultHiddenPowerFilter,
           },
         });
         return states.map((state): Result => {

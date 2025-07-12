@@ -35,6 +35,11 @@ type Props<FormState extends PkmFilterFields> = {
   name: Paths<FormState, HiddenPowerFilter> & "filter_hidden_power";
 };
 
+//TODO: Fix FormikSelect to support name with dot
+type DummyType = {
+  pokemon_types: PokemonType[];
+};
+
 export const HiddenPowerInput = <FormState extends PkmFilterFields>({
   name,
 }: Props<FormState>) => {
@@ -46,8 +51,7 @@ export const HiddenPowerInput = <FormState extends PkmFilterFields>({
       {
         label: "Type",
         input: (
-          //@ts-expect-error TODO
-          <FormikSelect<PkmFilterFields, "filter_hidden_power.pokemon_types">
+          <FormikSelect<DummyType, "pokemon_types">
             name="filter_hidden_power.pokemon_types"
             options={toOptions(HIDDEN_POWER_TYPES)}
             mode="multiple"

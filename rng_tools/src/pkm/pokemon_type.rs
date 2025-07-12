@@ -29,4 +29,4 @@ pub enum PokemonType {
     Fairy = 17,
 }
 
-pub const POKEMON_TYPE_COUNT: usize = 17;
+pub const POKEMON_TYPE_COUNT: usize = 18;

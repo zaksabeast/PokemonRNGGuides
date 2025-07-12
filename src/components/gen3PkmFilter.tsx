@@ -52,7 +52,7 @@ const optIn = <T,>(condition: boolean | undefined, value: T): T | null => {
   return condition === true ? value : null;
 };
 
-const _getPkmFilterFields = (opts: FieldOpts = {}): Field[] =>
+const _getGen3PkmFilterFields = (opts: FieldOpts = {}): Field[] =>
   [
     optIn(opts?.max_size, {
       label: "Max size",
@@ -83,7 +83,7 @@ const _getPkmFilterFields = (opts: FieldOpts = {}): Field[] =>
 export const getGen3PkmFilterFields = <FormField,>(
   opts?: FieldOpts,
 ): FormField extends Gen3PkmFilterFields ? Field[] : never => {
-  return _getPkmFilterFields(opts) as FormField extends Gen3PkmFilterFields
+  return _getGen3PkmFilterFields(opts) as FormField extends Gen3PkmFilterFields
     ? Field[]
     : never;
 };

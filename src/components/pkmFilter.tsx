@@ -76,7 +76,7 @@ export const pkmFilterFieldsToRustInput = (
   };
 };
 
-type FieldOpts = {
+type FieldOptOuts = {
   shiny?: boolean;
   nature?: boolean;
   ability?: boolean;
@@ -100,15 +100,18 @@ const optOut = <T,>(condition: boolean | undefined, value: T): T | null => {
   return condition === false ? null : value;
 };
 
-const _getPkmFilterFields = (opts: FieldOpts = {}, t?: Translations): Field[] =>
+const _getPkmFilterFields = (
+  optOuts: FieldOptOuts = {},
+  t?: Translations,
+): Field[] =>
   [
-    optOut(opts?.shiny, {
+    optOut(optOuts?.shiny, {
       label: t?.["Shiny"] ?? "Shiny",
       input: (
         <FormikSwitch<PkmFilterFields, "filter_shiny"> name="filter_shiny" />
       ),
     }),
-    optOut(opts?.nature, {
+    optOut(optOuts?.nature, {
       label: t?.["Nature"] ?? "Nature",
       input: (
         <FormikSelect<PkmFilterFields, "filter_nature">
@@ -117,7 +120,7 @@ const _getPkmFilterFields = (opts: FieldOpts = {}, t?: Translations): Field[] =>
         />
       ),
     }),
-    optOut(opts?.ability, {
+    optOut(optOuts?.ability, {
       label: t?.["Ability"] ?? "Ability",
       input: (
         <FormikSelect<PkmFilterFields, "filter_ability">
@@ -126,7 +129,7 @@ const _getPkmFilterFields = (opts: FieldOpts = {}, t?: Translations): Field[] =>
         />
       ),
     }),
-    optOut(opts?.gender, {
+    optOut(optOuts?.gender, {
       label: t?.["Gender"] ?? "Gender",
       input: (
         <FormikSelect<PkmFilterFields, "filter_gender">
@@ -135,15 +138,15 @@ const _getPkmFilterFields = (opts: FieldOpts = {}, t?: Translations): Field[] =>
         />
       ),
     }),
-    optOut(opts?.ivs, {
+    optOut(optOuts?.ivs, {
       label: t?.["Min IVs"] ?? "Min IVs",
       input: <IvInput<PkmFilterFields> name="filter_min_ivs" />,
     }),
-    optOut(opts?.ivs, {
+    optOut(optOuts?.ivs, {
       label: t?.["Max IVs"] ?? "Max IVs",
       input: <IvInput<PkmFilterFields> name="filter_max_ivs" />,
     }),
-    optOut(opts?.hidden_power, {
+    optOut(optOuts?.hidden_power, {
       label: "Hidden Power",
       input: (
         <FormikSwitch<
@@ -153,7 +156,7 @@ const _getPkmFilterFields = (opts: FieldOpts = {}, t?: Translations): Field[] =>
         > name="filter_hidden_power.active" />
       ),
     }),
-    optOut(opts?.hidden_power, {
+    optOut(optOuts?.hidden_power, {
       label: "",
       direction: "column",
       input: <HiddenPowerInput<PkmFilterFields> name="filter_hidden_power" />,
@@ -161,7 +164,7 @@ const _getPkmFilterFields = (opts: FieldOpts = {}, t?: Translations): Field[] =>
   ].filter((field) => field !== null);
 
 export const getPkmFilterFields = <FormField,>(
-  optOuts?: FieldOpts,
+  optOuts?: FieldOptOuts,
   t?: Translations,
 ): FormField extends PkmFilterFields ? Field[] : never => {
   return _getPkmFilterFields(optOuts, t) as FormField extends PkmFilterFields

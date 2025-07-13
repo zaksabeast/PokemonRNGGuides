@@ -11,6 +11,7 @@ import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import React from "react";
 import { clamp } from "lodash-es";
 import { z } from "zod";
+import { Translations } from "~/translations";
 
 type Game = "emerald" | "rs";
 
@@ -86,7 +87,7 @@ type Props = {
   game?: Game;
 };
 
-const getFields = (values: FormState) => {
+const getFields = (_t: Translations, values: FormState) => {
   const fields: Field[] = [
     {
       label: "Battery",

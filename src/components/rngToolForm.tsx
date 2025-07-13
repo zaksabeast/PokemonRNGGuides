@@ -11,6 +11,7 @@ import { AllOrNone, FeatureConfig, OneOf } from "~/types/utils";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
 
 export type RngToolSubmit<Values> = (
   values: Values,
@@ -26,13 +27,16 @@ type Props<FormState, Result> = {
   formContainerId?: string;
 } & OneOf<{
   fields: Field[];
-  getFields: (values: FormState) => Field[];
+  getFields: (t: Translations, values: FormState) => Field[];
   children: React.ReactNode;
 }> &
   AllOrNone<
     OneOf<{
       columns: ResultColumn<Result>[];
-      getColumns: (values: FormState) => ResultColumn<Result>[];
+      getColumns: (
+        t: Translations,
+        values: FormState,
+      ) => ResultColumn<Result>[];
     }> & {
       results: Result[];
     }
@@ -105,11 +109,11 @@ export const RngToolForm = <
           if (children != null) {
             return children;
           }
-          const fieldsToUse = fields ?? getFields?.(formik.values) ?? [];
+          const fieldsToUse = fields ?? getFields?.(t, formik.values) ?? [];
           return <FormFieldTable fields={fieldsToUse} />;
         })();
 
-        const columnsToUse = columns ?? getColumns?.(formik.values) ?? null;
+        const columnsToUse = columns ?? getColumns?.(t, formik.values) ?? null;
 
         return (
           <Flex vertical gap={16} id={formContainerId}>

@@ -9,26 +9,27 @@ import {
 import { rngTools } from "~/rngTools";
 import { HexSchema } from "~/utils/number";
 import { z } from "zod";
+import { Translations } from "~/translations";
 
-type RngState = {
+type Result = {
   advance: number;
   rand: number;
   div: number;
 };
 
-const columns: ResultColumn<RngState>[] = [
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
-    title: "Advance",
+    title: t["Advance"],
     dataIndex: "advance",
   },
   {
-    title: "State",
+    title: t["State"],
     dataIndex: "rand",
     monospace: true,
     render: (rand) => rand.toString(16).padStart(4, "0"),
   },
   {
-    title: "Div",
+    title: t["Div"],
     dataIndex: "div",
     monospace: true,
     render: (div) => div.toString(16).padStart(4, "0"),
@@ -55,31 +56,31 @@ const initialValues: FormState = {
   advanceCount: 10000,
 };
 
-const fields: Field[] = [
+const getFields = (t: Translations): Field[] => [
   {
-    label: "ADiv Index",
+    label: t["ADiv Index"],
     input: <FormikNumberInput<FormState> name="adivIndex" numType="decimal" />,
   },
   {
-    label: "SDiv Index",
+    label: t["SDiv Index"],
     input: <FormikNumberInput<FormState> name="sdivIndex" numType="decimal" />,
   },
   {
-    label: "Div",
+    label: t["Div"],
     input: <FormikNumberInput<FormState> name="div" numType="hex" />,
   },
   {
-    label: "State",
+    label: t["State"],
     input: <FormikNumberInput<FormState> name="state" numType="hex" />,
   },
   {
-    label: "Start Advance",
+    label: t["Start Advance"],
     input: (
       <FormikNumberInput<FormState> name="startAdvance" numType="decimal" />
     ),
   },
   {
-    label: "Advance Count",
+    label: t["Advance Count"],
     input: (
       <FormikNumberInput<FormState>
         name="advanceCount"
@@ -91,7 +92,7 @@ const fields: Field[] = [
 ];
 
 export const Gen2Rng = () => {
-  const [results, setResults] = React.useState<RngState[]>([]);
+  const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
     const results = await rngTools.gen2_generate_rng_states(
@@ -113,9 +114,9 @@ export const Gen2Rng = () => {
   }, []);
 
   return (
-    <RngToolForm<FormState, RngState>
-      fields={fields}
-      columns={columns}
+    <RngToolForm<FormState, Result>
+      getFields={getFields}
+      getColumns={getColumns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

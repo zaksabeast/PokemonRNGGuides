@@ -100,7 +100,7 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
               icon={<Icon name="Discord" />}
               type="primary"
               size="middle"
-              href={settings.discordUrl}
+              href="https://discord.gg/rvY3SwJHMk"
             >
               LazyHunters
             </Button>

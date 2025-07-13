@@ -4414,7 +4414,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx",
-      translations: null,
+      translations: { en: "/pal-xd-eevee/", zh: "/zh-pal-xd-eevee/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8171,6 +8171,39 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-pal-xd-eevee/": {
+    meta: {
+      categories: ["Gamecube"],
+      tags: ["emu"],
+      isNew: false,
+      title: "PAL 版宝可梦 XD 伊布乱数",
+      navDrawerTitle: "PAL 版宝可梦 XD 伊布乱数",
+      description: "如何在 PAL 版宝可梦 XD 中乱数初始伊布",
+      slug: "/zh-pal-xd-eevee/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/pal-xd-eevee/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gamecube/(XD) PAL Starter Eevee RNG.mdx",
+      translations: { en: "/pal-xd-eevee/", zh: "/zh-pal-xd-eevee/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gamecube/(XD) PAL Starter Eevee RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gamecube/(XD) PAL Starter Eevee RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-dppt-starter/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
@@ -8838,6 +8871,7 @@ export const guideSlugs = [
   "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
+  "/zh-pal-xd-eevee/",
   "/zh-retail-dppt-starter/",
   "/zh-retail-emerald-egg/",
   "/zh-retail-emerald-wild/",

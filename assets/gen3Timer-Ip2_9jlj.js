@@ -1,0 +1,1 @@
+import{R as i,j as m,M as a}from"./index-DXZ5ShUP.js";import{u as n}from"./useGen3Timer-D-oFIk24.js";const T=({trackerId:t,targetAdvance:s,timer:e})=>{const{ms:o,initTimer:r}=n(e);return i.useEffect(()=>{r({target_frame:s})},[r,s]),m.jsx(a,{milliseconds:o,startButtonTrackerId:`${t}_start`,stopButtonTrackerId:`${t}_stop`})};export{T as G};

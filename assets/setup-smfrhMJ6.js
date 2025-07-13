@@ -1,0 +1,1 @@
+import{u as a,j as e,g as l,bE as s}from"./index-DXZ5ShUP.js";import{S as r,G as n}from"./consoleSelect-DnTx5hfH.js";const m=["Diamond","Pearl","Platinum","HeartGold","SoulSilver"],i=t=>[{label:t.Game,input:e.jsx(r,{stateAtom:s,games:m})},{label:t.Console,input:e.jsx(n,{stateAtom:s})}],c=()=>{const t=a(),o=i(t);return e.jsx(l,{fields:o})};export{c as Starter4Setup};

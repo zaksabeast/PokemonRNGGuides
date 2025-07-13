@@ -40,6 +40,7 @@ import {
   genderRatioBySpecies,
   hasMultiplePossibleGenders,
   gen3Methods,
+  gen3SpeciesHasVariableSize,
 } from "~/types";
 import { match, P } from "ts-pattern";
 
@@ -49,6 +50,12 @@ import { uniq, startCase, sortBy } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { Tooltip } from "antd";
 import { Translations } from "~/translations";
+import {
+  gen3PkmFilterFieldsToRustInput,
+  getGen3PkmFilterInitialValues,
+  gen3PkmFilterSchema,
+  getGen3PkmFilterFields,
+} from "~/components/gen3PkmFilter";
 
 /*
 Possible improvements:
@@ -57,7 +64,6 @@ Possible improvements:
  - Support multiple encounter types.
  - Support all leads in generator.
  - Display warning if no maps or no leads are selected.
- - Add Hidden Power filter.
  - Add lead PID speed filter.
 
  - Display map names instead of formatted map IDs.
@@ -102,7 +108,8 @@ const Validator = z
     rngManipulatedLeadPid: z.boolean(),
     mergeSimilarResults: z.boolean(),
   })
-  .merge(pkmFilterSchema);
+  .merge(pkmFilterSchema)
+  .merge(gen3PkmFilterSchema);
 
 type FormState = z.infer<typeof Validator>;
 
@@ -120,9 +127,10 @@ const getInitialValues = (): FormState => {
     initial_advances: 1000,
     max_advances: 100_000,
     max_result_count: 10_000,
-    ...getPkmFilterInitialValues(),
     rngManipulatedLeadPid: false,
     mergeSimilarResults: true,
+    ...getPkmFilterInitialValues(),
+    ...getGen3PkmFilterInitialValues(),
   };
 };
 
@@ -143,6 +151,9 @@ const getTargetMonFields = (species: Species): Field[] => {
       ),
     },
     ...getPkmFilterFields({ gender: multipleGenders }),
+    ...getGen3PkmFilterFields({
+      max_size: gen3SpeciesHasVariableSize(species),
+    }),
   ];
   return targetMonFields;
 };
@@ -560,6 +571,27 @@ const getColumns = (
     },
     { title: "Gender", dataIndex: "gender" },
     ...ivColumns,
+    {
+      title: "Hidden Power",
+      type: "group",
+      columns: [
+        {
+          title: "Type",
+          dataIndex: "hidden_power",
+          render: (hidden_power) => hidden_power.pokemon_type,
+        },
+        {
+          title: "Power",
+          dataIndex: "hidden_power",
+          render: (hidden_power) => hidden_power.bp,
+        },
+      ],
+    },
+    {
+      title: "PID speed",
+      dataIndex: "pidCycleCount",
+      render: (pidCycleCount) => `${pidCycleCount} cycles`,
+    },
   );
   return columns;
 };
@@ -574,6 +606,7 @@ type UiResult = FlattenIvs<
     mapName: string;
     encounterTypeName: string;
     uid: number;
+    pidCycleCount: number;
   }
 >;
 
@@ -623,12 +656,12 @@ const getEncounterInfoByMap = (
 };
 
 let nextUid = 0;
-const convertSearcherResultToUIResult = (
+const convertSearcherResultToUIResult = async (
   res: Wild3SearcherResultMon,
   species: Species,
   mapName: string,
   encounterTypeName: string,
-): UiResult => {
+): Promise<UiResult> => {
   return {
     ...res,
     ...res.ivs,
@@ -636,6 +669,7 @@ const convertSearcherResultToUIResult = (
     encounterTypeName,
     species,
     uid: nextUid++,
+    pidCycleCount: await rngTools.calculate_pid_speed(res.pid),
   };
 };
 
@@ -678,6 +712,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
         max_advances: values.max_advances,
         max_result_count: values.max_result_count,
         filter: pkmFilterFieldsToRustInput(values),
+        gen3_filter: gen3PkmFilterFieldsToRustInput(values),
         leads: getLeads(values),
         encounter_info_by_map: encounterInfoByMap.map((val) => val[1]),
         methods: values.methods,
@@ -691,15 +726,17 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
       }
       results = sortResults(results);
 
-      const uiResults = results.map((res) => {
-        const [mapId, encounterInfo] = encounterInfoByMap[res.map_idx];
-        return convertSearcherResultToUIResult(
-          res,
-          values.species,
-          formatMapName(mapId),
-          formatEncounterTypeName(encounterInfo.encounter_type),
-        );
-      });
+      const uiResults = await Promise.all(
+        results.map((res) => {
+          const [mapId, encounterInfo] = encounterInfoByMap[res.map_idx];
+          return convertSearcherResultToUIResult(
+            res,
+            values.species,
+            formatMapName(mapId),
+            formatEncounterTypeName(encounterInfo.encounter_type),
+          );
+        }),
+      );
 
       setResults(uiResults);
     },

@@ -6,6 +6,7 @@ import { FormikNumberInput, FormFieldTable } from "~/components";
 import { useField } from "formik";
 import React from "react";
 import { Paths } from "~/types";
+import { optIn, optOut } from "~/utils/options";
 
 export type Gen3PkmFilterFields = {
   filter_max_size: boolean;
@@ -43,14 +44,6 @@ export const getGen3PkmFilterInitialValues = (): Gen3PkmFilterFields => ({
     max_cycle_count: 900,
   },
 });
-
-const optOut = <T,>(condition: boolean | undefined, value: T): T | null => {
-  return condition === false ? null : value;
-};
-
-const optIn = <T,>(condition: boolean | undefined, value: T): T | null => {
-  return condition === true ? value : null;
-};
 
 const _getGen3PkmFilterFields = (opts: FieldOpts = {}): Field[] =>
   [

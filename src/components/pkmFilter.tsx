@@ -9,7 +9,7 @@ import { gender } from "~/types/gender";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
-import { toOptions } from "~/utils/options";
+import { toOptions, optOut } from "~/utils/options";
 import {
   defaultHiddenPowerFilter,
   HiddenPowerInput,
@@ -95,10 +95,6 @@ export const getPkmFilterInitialValues = (): PkmFilterFields => ({
   filter_hidden_power: defaultHiddenPowerFilter,
   filter_stats: null,
 });
-
-const optOut = <T,>(condition: boolean | undefined, value: T): T | null => {
-  return condition === false ? null : value;
-};
 
 const _getPkmFilterFields = (
   optOuts: FieldOptOuts = {},

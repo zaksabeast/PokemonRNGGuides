@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { pokemonTypes } from "../types/pokemonTypes";
-import { HiddenPowerFilter, PokemonType } from "~/rngTools";
+import { HiddenPowerFilter } from "~/rngTools";
 import { FormikNumberInput, FormikSelect, FormFieldTable } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useField } from "formik";
@@ -8,12 +8,7 @@ import React from "react";
 import { PkmFilterFields } from "./pkmFilter";
 import { Paths } from "~/types";
 
-type UiHiddenPowerFilter = {
-  active: boolean;
-  pokemon_types: PokemonType[];
-  min_bp: number;
-  max_bp: number;
-};
+type UiHiddenPowerFilter = z.infer<typeof HiddenPowerSchema>;
 
 export const defaultHiddenPowerFilter: UiHiddenPowerFilter = {
   active: false,
@@ -35,11 +30,6 @@ type Props<FormState extends PkmFilterFields> = {
   name: Paths<FormState, HiddenPowerFilter> & "filter_hidden_power";
 };
 
-//TODO: Fix FormikSelect to support name with dot
-type DummyType = {
-  pokemon_types: PokemonType[];
-};
-
 export const HiddenPowerInput = <FormState extends PkmFilterFields>({
   name,
 }: Props<FormState>) => {
@@ -51,7 +41,7 @@ export const HiddenPowerInput = <FormState extends PkmFilterFields>({
       {
         label: "Type",
         input: (
-          <FormikSelect<DummyType, "pokemon_types">
+          <FormikSelect<PkmFilterFields, "filter_hidden_power.pokemon_types">
             name="filter_hidden_power.pokemon_types"
             options={toOptions(HIDDEN_POWER_TYPES)}
             mode="multiple"

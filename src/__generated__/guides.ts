@@ -4414,7 +4414,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx",
-      translations: null,
+      translations: { en: "/pal-xd-eevee/", zh: "/zh-pal-xd-eevee/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7840,31 +7840,6 @@ export const guides = {
       return file.default;
     }),
   },
-  "/zh-gc-initial/": {
-    meta: {
-      categories: ["Gamecube"],
-      tags: ["emu"],
-      isNew: false,
-      title: "初始种子乱数",
-      navDrawerTitle: "初始种子乱数",
-      description:
-        "如何使用 Dolphin 设置适用于所有 GameCube 游戏的初始种子乱数",
-      slug: "/zh-gc-initial/",
-      isRoughDraft: false,
-      hideFromNavDrawer: true,
-      addedOn: null,
-      translation: { enSlug: "/gc-initial/", language: "zh" },
-      layout: "guide",
-      canonical: null,
-      type: "translatedGuide",
-      file: "guides/Translations/zh/Gamecube/Initial Seed RNG.mdx",
-      translations: { en: "/gc-initial/", zh: "/zh-gc-initial/" },
-      displayAttributes: [],
-    },
-    Guide: React.lazy(
-      () => import("~/../guides/Translations/zh/Gamecube/Initial Seed RNG.mdx"),
-    ),
-  },
   "/zh-gen2-celebi/": {
     meta: {
       categories: ["Gold, Silver, Crystal"],
@@ -8162,6 +8137,39 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Tools and Emulators/How to Extract GBA Bios.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-pal-xd-eevee/": {
+    meta: {
+      categories: ["Gamecube"],
+      tags: ["emu"],
+      isNew: false,
+      title: "PAL 版宝可梦 XD 伊布乱数",
+      navDrawerTitle: "PAL 版宝可梦 XD 伊布乱数",
+      description: "如何在 PAL 版宝可梦 XD 中乱数初始伊布",
+      slug: "/zh-pal-xd-eevee/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/pal-xd-eevee/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gamecube/(XD) PAL Starter Eevee RNG.mdx",
+      translations: { en: "/pal-xd-eevee/", zh: "/zh-pal-xd-eevee/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gamecube/(XD) PAL Starter Eevee RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gamecube/(XD) PAL Starter Eevee RNG.mdx?raw"
       );
       return file.default;
     }),
@@ -8832,6 +8840,7 @@ export const guideSlugs = [
   "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
+  "/zh-pal-xd-eevee/",
   "/zh-retail-dppt-starter/",
   "/zh-retail-emerald-egg/",
   "/zh-retail-emerald-wild/",

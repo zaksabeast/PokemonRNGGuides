@@ -63,6 +63,10 @@ impl PkmState for JirachiSpread {
     fn gender(&self) -> Gender {
         Gender::Genderless
     }
+
+    fn pid(&self) -> u32 {
+        self.pid
+    }
 }
 
 #[cfg(test)]

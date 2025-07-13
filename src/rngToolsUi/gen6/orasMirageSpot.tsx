@@ -13,19 +13,20 @@ import { FormikDatePicker } from "~/components/datePicker";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { species } from "~/types/species";
+import { Translations } from "~/translations";
 
-const columns: ResultColumn<MirageSpot>[] = [
+const getColumns = (t: Translations): ResultColumn<MirageSpot>[] => [
   {
-    title: "Date",
+    title: t["Date"],
     dataIndex: "date",
     render: (date) => formatRngDate(date),
   },
   {
-    title: "Name",
+    title: t["Name"],
     dataIndex: "name",
   },
   {
-    title: "Pokemon",
+    title: t["Pokemon"],
     dataIndex: "pokemon",
     render: (pokemon) => pokemon.join(", "),
   },
@@ -49,21 +50,21 @@ const initialValues: FormState = {
   filter_species: null,
 };
 
-const fields: Field[] = [
+const getFields = (t: Translations): Field[] => [
   {
-    label: "Seed",
+    label: t["Seed"],
     input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
   },
   {
-    label: "TID",
+    label: t["TID"],
     input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
   },
   {
-    label: "Save Date",
+    label: t["Save Date"],
     input: <FormikDatePicker<FormState> name="start_date" />,
   },
   {
-    label: "Species",
+    label: t["Species"],
     input: (
       <FormikSelect<FormState, "filter_species">
         name="filter_species"
@@ -115,7 +116,7 @@ const fields: Field[] = [
     ),
   },
   {
-    label: "Max Advances",
+    label: t["Max Advances"],
     input: (
       <FormikNumberInput<FormState>
         name="max_advances"
@@ -137,8 +138,8 @@ export const OrAsMirageSpot = () => {
 
   return (
     <RngToolForm<FormState, MirageSpot>
-      fields={fields}
-      columns={columns}
+      getFields={getFields}
+      getColumns={getColumns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

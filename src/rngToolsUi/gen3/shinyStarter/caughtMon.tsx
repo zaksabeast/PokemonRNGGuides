@@ -113,7 +113,7 @@ export const CaughtMon = ({
       {
         label: "Gender",
         input: (
-          <FormikRadio<FormState, "gender">
+          <FormikRadio<FormState>
             name="gender"
             options={toOptions(["Male", "Female"] as const)}
           />

@@ -37,21 +37,6 @@ export const MarkdownH5 = (props: Props) => (
 
 export const MarkdownH6 = MarkdownParagraph;
 
-const Ul = styled.ul({
-  margin: 0,
-  marginBlock: 0,
-  "& > .ant-list-item": {
-    display: "block",
-    listStyleType: "none",
-  },
-});
-
-export const MarkdownList = ({ children }: Props) => (
-  <List>
-    <Ul>{children}</Ul>
-  </List>
-);
-
 const Ol = styled.ol({
   margin: 0,
   marginBlock: 0,
@@ -112,7 +97,9 @@ export const MarkdownImage = ({ src, alt }: { src: string; alt: string }) => (
 );
 
 export const MarkdownA = ({ href, children }: { href: string } & Props) => {
-  const internalHref = RouteSchema.safeParse(formatRelativeUrl(href));
+  const internalHref = RouteSchema.safeParse(
+    formatRelativeUrl({ url: href, leadingSlash: true, trailingSlash: true }),
+  );
   if (internalHref.success) {
     return <Link href={internalHref.data}>{children}</Link>;
   }

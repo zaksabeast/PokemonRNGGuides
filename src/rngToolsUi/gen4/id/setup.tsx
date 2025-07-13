@@ -2,7 +2,7 @@ import { Field, FormFieldTable } from "~/components";
 import { id4Atom } from "./state";
 import { Gen4GameVersions } from "../gen4types";
 import { SelectGame } from "../shared/selectGame";
-import { Is3dsSwitch } from "../shared/is3dsSwitch";
+import { Gen4ConsoleSelect } from "../shared/consoleSelect";
 
 const fields: Field[] = [
   {
@@ -10,10 +10,8 @@ const fields: Field[] = [
     input: <SelectGame stateAtom={id4Atom} games={Gen4GameVersions} />,
   },
   {
-    label: "3ds mode (Preview)",
-    tooltip:
-      "This feature is highly experimental! Please share your results in the Discord server!",
-    input: <Is3dsSwitch stateAtom={id4Atom} />,
+    label: "Console",
+    input: <Gen4ConsoleSelect stateAtom={id4Atom} />,
   },
 ];
 

@@ -16,6 +16,8 @@ import {
 import { PokeRadarPatches } from "./patch";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
+import { Translations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type ChainResult = {
   WithChain: PokeRadarChainState[];
@@ -31,18 +33,18 @@ type Result = ChainResult | NoChainResult;
 
 type LooseColumns = Partial<PokeRadarChainState & PokeRadarNoChainState>;
 
-const withChainColumns: ResultColumn<LooseColumns>[] = [
+const getWithChainColumns = (t: Translations): ResultColumn<LooseColumns>[] => [
   {
-    title: "Advance",
+    title: t["Advance"],
     dataIndex: "advance",
   },
   {
-    title: "Shiny",
+    title: t["Shiny"],
     dataIndex: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
   {
-    title: "State",
+    title: t["State"],
     dataIndex: "state",
     monospace: true,
     render: (state) =>
@@ -53,23 +55,23 @@ const withChainColumns: ResultColumn<LooseColumns>[] = [
   },
 ];
 
-const noChainColumns: ResultColumn<LooseColumns>[] = [
+const getNoChainColumns = (t: Translations): ResultColumn<LooseColumns>[] => [
   {
-    title: "Advance",
+    title: t["Advance"],
     dataIndex: "advance",
   },
   {
-    title: "Shiny",
+    title: t["Shiny"],
     dataIndex: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
   {
-    title: "Sync",
+    title: t["Sync"],
     dataIndex: "sync",
     render: (sync) => (sync ? "Yes" : "No"),
   },
   {
-    title: "State",
+    title: t["State"],
     dataIndex: "state",
     render: (state) =>
       state
@@ -148,15 +150,16 @@ const fields: Field[] = [
   },
   {
     label: "Bonus Music",
-    input: <FormikSwitch<FormState, "bonus_music"> name="bonus_music" />,
+    input: <FormikSwitch<FormState> name="bonus_music" />,
   },
   {
     label: "Filter Shiny",
-    input: <FormikSwitch<FormState, "filter_shiny"> name="filter_shiny" />,
+    input: <FormikSwitch<FormState> name="filter_shiny" />,
   },
 ];
 
 export const XyPokeRadar = () => {
+  const t = useActiveRouteTranslations();
   const [results, setResults] = React.useState<Result>({
     NoChain: [],
   });
@@ -183,7 +186,11 @@ export const XyPokeRadar = () => {
     <>
       <RngToolForm<FormState, LooseColumns>
         fields={fields}
-        columns={results.NoChain == null ? withChainColumns : noChainColumns}
+        columns={
+          results.NoChain == null
+            ? getWithChainColumns(t)
+            : getNoChainColumns(t)
+        }
         results={results.NoChain == null ? results.WithChain : results.NoChain}
         initialValues={initialValues}
         validationSchema={Validator}

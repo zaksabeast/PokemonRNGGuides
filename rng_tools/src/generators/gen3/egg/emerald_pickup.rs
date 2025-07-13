@@ -152,22 +152,6 @@ mod test {
         spd: Some(11),
         spe: Some(12),
     };
-    const ZERO_IVS: Ivs = Ivs {
-        hp: 0,
-        atk: 0,
-        def: 0,
-        spa: 0,
-        spd: 0,
-        spe: 0,
-    };
-    const PERFECT_IVS: Ivs = Ivs {
-        hp: 31,
-        atk: 31,
-        def: 31,
-        spa: 31,
-        spd: 31,
-        spe: 31,
-    };
 
     #[test]
     fn generate_emberald_bred_results() {
@@ -179,10 +163,7 @@ mod test {
             max_advances: 10,
             seed: 0,
             lua_adjustment: false,
-            filter: IvFilter {
-                min_ivs: ZERO_IVS,
-                max_ivs: PERFECT_IVS,
-            },
+            filter: IvFilter::new_allow_all(),
         };
 
         let results = emerald_egg_pickup_states(&opts);
@@ -323,10 +304,7 @@ mod test {
             max_advances: 10,
             seed: 0,
             lua_adjustment: false,
-            filter: IvFilter {
-                min_ivs: ZERO_IVS,
-                max_ivs: PERFECT_IVS,
-            },
+            filter: IvFilter::new_allow_all(),
         };
 
         let results = emerald_egg_pickup_states(&opts);
@@ -467,10 +445,7 @@ mod test {
             max_advances: 10,
             seed: 0,
             lua_adjustment: false,
-            filter: IvFilter {
-                min_ivs: ZERO_IVS,
-                max_ivs: PERFECT_IVS,
-            },
+            filter: IvFilter::new_allow_all(),
         };
 
         let results = emerald_egg_pickup_states(&opts);
@@ -656,10 +631,7 @@ mod test {
             max_advances: 10,
             seed: 0,
             lua_adjustment: false,
-            filter: IvFilter {
-                min_ivs: ZERO_IVS,
-                max_ivs: PERFECT_IVS,
-            },
+            filter: IvFilter::new_allow_all(),
         };
         let first_results = emerald_egg_pickup_states(&opts);
 
@@ -685,10 +657,7 @@ mod test {
             max_advances: 10,
             seed: 0,
             lua_adjustment: false,
-            filter: IvFilter {
-                min_ivs: ZERO_IVS,
-                max_ivs: PERFECT_IVS,
-            },
+            filter: IvFilter::new_allow_all(),
         };
         let first_results = emerald_egg_pickup_states(&opts);
 

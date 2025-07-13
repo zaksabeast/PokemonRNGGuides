@@ -9,12 +9,16 @@ import {
   RngToolSubmit,
 } from "~/components";
 import React from "react";
-import { getPkmFilterFields, pkmFilterSchema } from "~/components/pkmFilter";
+import {
+  getPkmFilterFields,
+  pkmFilterSchema,
+  pkmFilterFieldsToRustInput,
+  getPkmFilterInitialValues,
+} from "~/components/pkmFilter";
 import {
   getStatic3Species,
   Static3Game,
 } from "~/rngToolsUi/gen3/static/constants";
-import { maxIvs, minIvs } from "~/types/ivs";
 import {
   FlattenIvs,
   flattenIvs,
@@ -72,12 +76,7 @@ const getInitialValues = (game: Static3Game): FormState => {
     species: getStatic3Species(game)[0],
     roamer: false,
     method4: false,
-    filter_shiny: false,
-    filter_min_ivs: minIvs,
-    filter_max_ivs: maxIvs,
-    filter_nature: null,
-    filter_gender: null,
-    filter_ability: null,
+    ...getPkmFilterInitialValues(),
   };
 };
 
@@ -109,11 +108,11 @@ const getFields = (game: Static3Game): Field[] => {
     },
     {
       label: "Roamer",
-      input: <FormikSwitch<FormState, "roamer"> name="roamer" />,
+      input: <FormikSwitch<FormState> name="roamer" />,
     },
     {
       label: "Method 4",
-      input: <FormikSwitch<FormState, "method4"> name="method4" />,
+      input: <FormikSwitch<FormState> name="method4" />,
     },
     {
       label: "Initial advances",
@@ -152,15 +151,7 @@ export const Static3Generator = ({ game = "emerald" }: Props) => {
       const results = await rngTools.gen3_static_generator_states({
         ...opts,
         bugged_roamer: game !== "emerald" && opts.roamer,
-        filter: {
-          shiny: opts.filter_shiny,
-          nature: opts.filter_nature,
-          gender: opts.filter_gender,
-          ability: opts.filter_ability,
-          min_ivs: opts.filter_min_ivs,
-          max_ivs: opts.filter_max_ivs,
-          stats: null,
-        },
+        filter: pkmFilterFieldsToRustInput(opts),
       });
 
       setResults(results.map(flattenIvs));

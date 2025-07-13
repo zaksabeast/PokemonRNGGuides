@@ -13,20 +13,24 @@ pub enum Gen3Method {
     Wild5,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Clone, Copy, Default, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Gen3Lead {
+    #[default]
     Vanilla,
     Synchronize(Nature),
     CuteCharm(Gender),
     Egg,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Clone, Copy, Default, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Gen3EncounterType {
+    #[default]
     Land,
     Water,
-    Fishing,
+    OldRod,
+    GoodRod,
+    SuperRod,
     RockSmash,
 }

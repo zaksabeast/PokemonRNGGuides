@@ -65,26 +65,28 @@ export const ShinyHoennStarter = ({ game }: Props) => {
   return (
     <Flex gap={32} vertical>
       <FindTargetAdvance game={game} setTargetAdvance={setTargetAdvance} />
-      {targetAdvance !== 0 && [
-        <FormFieldTable fields={fields} />,
-        <MultiTimer
-          milliseconds={milliseconds}
-          startButtonTrackerId="start_gen3_shiny_starter_timer"
-          stopButtonTrackerId="stop_gen3_shiny_starter_timer"
-        />,
-        <TargetPokemon
-          game={game}
-          targetAdvance={targetAdvance}
-          targetStarter={targetStarter}
-          setTargetStarter={setTargetStarter}
-        />,
-        <CaughtMon
-          game={game}
-          targetAdvance={targetAdvance}
-          targetStarter={targetStarter}
-          setLatestHitAdv={setLatestHitAdv}
-        />,
-      ]}
+      {targetAdvance !== 0 && (
+        <>
+          <FormFieldTable fields={fields} />
+          <MultiTimer
+            milliseconds={milliseconds}
+            startButtonTrackerId="start_gen3_shiny_starter_timer"
+            stopButtonTrackerId="stop_gen3_shiny_starter_timer"
+          />
+          <TargetPokemon
+            game={game}
+            targetAdvance={targetAdvance}
+            targetStarter={targetStarter}
+            setTargetStarter={setTargetStarter}
+          />
+          <CaughtMon
+            game={game}
+            targetAdvance={targetAdvance}
+            targetStarter={targetStarter}
+            setLatestHitAdv={setLatestHitAdv}
+          />
+        </>
+      )}
     </Flex>
   );
 };

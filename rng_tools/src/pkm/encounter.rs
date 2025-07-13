@@ -2,6 +2,8 @@ use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::wasm_bindgen;
 
+use crate::gen3::Gen3EncounterType;
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum EncounterSlot {
@@ -20,7 +22,7 @@ pub enum EncounterSlot {
 }
 
 impl EncounterSlot {
-    pub fn thresholds() -> &'static [(EncounterSlot, u8)] {
+    pub fn thresholds_land() -> &'static [(EncounterSlot, u8)] {
         use EncounterSlot::*;
         &[
             (Slot0, 20),
@@ -37,11 +39,65 @@ impl EncounterSlot {
             (Slot11, 100),
         ]
     }
+
+    pub fn thresholds_water() -> &'static [(EncounterSlot, u8)] {
+        use EncounterSlot::*;
+        &[
+            (Slot0, 60),
+            (Slot1, 60 + 30),
+            (Slot2, 60 + 30 + 5),
+            (Slot3, 60 + 30 + 5 + 4),
+            (Slot4, 60 + 30 + 5 + 4 + 1),
+        ]
+    }
+
+    pub fn thresholds_rock_smash() -> &'static [(EncounterSlot, u8)] {
+        use EncounterSlot::*;
+        &[
+            (Slot0, 60),
+            (Slot1, 60 + 30),
+            (Slot2, 60 + 30 + 5),
+            (Slot3, 60 + 30 + 5 + 4),
+            (Slot4, 60 + 30 + 5 + 4 + 1),
+        ]
+    }
+
+    pub fn thresholds_old_rod() -> &'static [(EncounterSlot, u8)] {
+        use EncounterSlot::*;
+        &[(Slot0, 70), (Slot1, 70 + 30)]
+    }
+
+    pub fn thresholds_good_rod() -> &'static [(EncounterSlot, u8)] {
+        use EncounterSlot::*;
+        &[(Slot0, 60), (Slot1, 60 + 20), (Slot2, 60 + 20 + 20)]
+    }
+
+    pub fn thresholds_super_rod() -> &'static [(EncounterSlot, u8)] {
+        use EncounterSlot::*;
+        &[
+            (Slot0, 40),
+            (Slot1, 40 + 40),
+            (Slot2, 40 + 40 + 15),
+            (Slot3, 40 + 40 + 15 + 4),
+            (Slot4, 40 + 40 + 15 + 4 + 1),
+        ]
+    }
+
+    pub fn gen3_thresholds(encounter_type: Gen3EncounterType) -> &'static [(EncounterSlot, u8)] {
+        match encounter_type {
+            Gen3EncounterType::Land => Self::thresholds_land(),
+            Gen3EncounterType::Water => Self::thresholds_water(),
+            Gen3EncounterType::OldRod => Self::thresholds_old_rod(),
+            Gen3EncounterType::GoodRod => Self::thresholds_good_rod(),
+            Gen3EncounterType::SuperRod => Self::thresholds_super_rod(),
+            Gen3EncounterType::RockSmash => Self::thresholds_rock_smash(),
+        }
+    }
 }
 
 impl EncounterSlot {
-    pub fn from_rand(rand: u8) -> Self {
-        for (slot, threshold) in Self::thresholds() {
+    pub fn from_rand(rand: u8, thresholds: &[(EncounterSlot, u8)]) -> Self {
+        for (slot, threshold) in thresholds.iter() {
             if rand < *threshold {
                 return *slot;
             }

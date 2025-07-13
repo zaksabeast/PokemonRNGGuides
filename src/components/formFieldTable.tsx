@@ -13,6 +13,7 @@ const LabelTd = styled.td({
 
 export type Field = {
   label: string;
+  hide?: boolean;
   tooltip?: string;
   input: React.ReactNode;
   direction?: "row" | "column";
@@ -26,7 +27,11 @@ export const FormFieldTable = ({ fields }: Props) => {
   return (
     <table>
       <tbody>
-        {fields.map(({ label, tooltip, input, direction = "row" }) => {
+        {fields.map(({ hide, label, tooltip, input, direction = "row" }) => {
+          if (hide) {
+            return null;
+          }
+
           const labelWithTooltip =
             tooltip == null ? (
               label

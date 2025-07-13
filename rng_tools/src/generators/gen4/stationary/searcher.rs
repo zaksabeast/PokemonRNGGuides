@@ -1,7 +1,4 @@
-use crate::gen4::Static4Species;
-use crate::gen4::{
-    FindSeedTime4Options, GameVersion, LeadAbilities, SeedTime4, dppt_find_seedtime,
-};
+use crate::gen4::{DpptSeedTime4, FindSeedTime4Options, dppt_find_seedtime};
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
 use crate::{
@@ -31,7 +28,7 @@ pub struct SearchStatic4Method1Opts {
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SearchStatic4Method1State {
-    pub seed_time: SeedTime4,
+    pub seed_time: DpptSeedTime4,
     pub advance: usize,
     pub pid: u32,
     pub ivs: Ivs,
@@ -73,10 +70,14 @@ impl PkmState for Base4Method1State {
     fn shiny(&self) -> bool {
         self.shiny
     }
+
+    fn pid(&self) -> u32 {
+        self.pid
+    }
 }
 
 impl Base4Method1State {
-    fn full_state(&self, advance: usize, seed_time: SeedTime4) -> SearchStatic4Method1State {
+    fn full_state(&self, advance: usize, seed_time: DpptSeedTime4) -> SearchStatic4Method1State {
         SearchStatic4Method1State {
             advance,
             seed_time,
@@ -793,13 +794,8 @@ mod tests {
                 force_second: None,
                 species: Species::Turtwig,
                 filter: PkmFilter {
-                    ability: None,
-                    gender: None,
-                    nature: None,
-                    shiny: false,
-                    stats: None,
                     min_ivs: ivs!(30 / 30 / 20 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
+                    ..Default::default()
                 },
             };
 
@@ -807,7 +803,7 @@ mod tests {
             let expected = [
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x5C03025B,
                         datetime: datetime!(2000-01-01 03:33:58).unwrap(),
                         delay: 603,
@@ -830,7 +826,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xDC03025B,
                         datetime: datetime!(2000-04-26 03:58:58).unwrap(),
                         delay: 603,
@@ -853,7 +849,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x0403025B,
                         datetime: datetime!(2000-01-01 03:00:03).unwrap(),
                         delay: 603,
@@ -876,7 +872,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x8403025B,
                         datetime: datetime!(2000-01-15 03:59:58).unwrap(),
                         delay: 603,
@@ -899,7 +895,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x0003025B,
                         datetime: datetime!(2000-05-28 03:58:58).unwrap(),
                         delay: 603,
@@ -922,7 +918,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x8003025B,
                         datetime: datetime!(2000-01-11 03:59:58).unwrap(),
                         delay: 603,
@@ -945,7 +941,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xA803025B,
                         datetime: datetime!(2000-02-26 03:58:58).unwrap(),
                         delay: 603,
@@ -968,7 +964,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x2803025B,
                         datetime: datetime!(2000-01-01 03:00:39).unwrap(),
                         delay: 603,
@@ -991,7 +987,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xA403025B,
                         datetime: datetime!(2000-02-24 03:58:58).unwrap(),
                         delay: 603,
@@ -1014,7 +1010,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x2403025B,
                         datetime: datetime!(2000-01-01 03:00:35).unwrap(),
                         delay: 603,
@@ -1037,7 +1033,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 0,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x52060259,
                         datetime: datetime!(2000-01-01 06:23:58).unwrap(),
                         delay: 601,
@@ -1060,7 +1056,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 0,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xD2060259,
                         datetime: datetime!(2000-03-31 06:59:58).unwrap(),
                         delay: 601,
@@ -1083,7 +1079,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 0,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x3A060259,
                         datetime: datetime!(2000-01-01 06:00:57).unwrap(),
                         delay: 601,
@@ -1106,7 +1102,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 0,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xBA060259,
                         datetime: datetime!(2000-03-23 06:59:58).unwrap(),
                         delay: 601,
@@ -1129,7 +1125,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 0,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x96060259,
                         datetime: datetime!(2000-02-17 06:58:58).unwrap(),
                         delay: 601,
@@ -1152,7 +1148,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 0,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x16060259,
                         datetime: datetime!(2000-01-01 06:00:21).unwrap(),
                         delay: 601,
@@ -1175,7 +1171,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 0,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x7E060259,
                         datetime: datetime!(2000-01-09 06:59:58).unwrap(),
                         delay: 601,
@@ -1198,7 +1194,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 0,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xFE060259,
                         datetime: datetime!(2000-05-28 06:56:58).unwrap(),
                         delay: 601,
@@ -1237,13 +1233,8 @@ mod tests {
                 force_second: None,
                 species: Species::Turtwig,
                 filter: PkmFilter {
-                    ability: None,
-                    gender: None,
-                    nature: None,
-                    shiny: false,
-                    stats: None,
                     min_ivs: ivs!(30 / 30 / 20 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
+                    ..Default::default()
                 },
             };
 
@@ -1251,7 +1242,7 @@ mod tests {
             let expected = [
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x5C03025B,
                         datetime: datetime!(2000-01-01 03:33:58).unwrap(),
                         delay: 603,
@@ -1274,7 +1265,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xDC03025B,
                         datetime: datetime!(2000-04-26 03:58:58).unwrap(),
                         delay: 603,
@@ -1297,7 +1288,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x0403025B,
                         datetime: datetime!(2000-01-01 03:00:03).unwrap(),
                         delay: 603,
@@ -1320,7 +1311,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x8403025B,
                         datetime: datetime!(2000-01-15 03:59:58).unwrap(),
                         delay: 603,
@@ -1343,7 +1334,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x0003025B,
                         datetime: datetime!(2000-05-28 03:58:58).unwrap(),
                         delay: 603,
@@ -1366,7 +1357,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x8003025B,
                         datetime: datetime!(2000-01-11 03:59:58).unwrap(),
                         delay: 603,
@@ -1389,7 +1380,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xA803025B,
                         datetime: datetime!(2000-02-26 03:58:58).unwrap(),
                         delay: 603,
@@ -1412,7 +1403,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x2803025B,
                         datetime: datetime!(2000-01-01 03:00:39).unwrap(),
                         delay: 603,
@@ -1435,7 +1426,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xA403025B,
                         datetime: datetime!(2000-02-24 03:58:58).unwrap(),
                         delay: 603,
@@ -1458,7 +1449,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x2403025B,
                         datetime: datetime!(2000-01-01 03:00:35).unwrap(),
                         delay: 603,
@@ -1497,13 +1488,8 @@ mod tests {
                 force_second: Some(30),
                 species: Species::Turtwig,
                 filter: PkmFilter {
-                    ability: None,
-                    gender: None,
-                    nature: None,
-                    shiny: false,
-                    stats: None,
                     min_ivs: ivs!(30 / 30 / 20 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
+                    ..Default::default()
                 },
             };
 
@@ -1511,7 +1497,7 @@ mod tests {
             let expected = [
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x5C03025B,
                         datetime: datetime!(2000-01-03 03:59:30).unwrap(),
                         delay: 603,
@@ -1534,7 +1520,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xDC03025B,
                         datetime: datetime!(2000-05-27 03:55:30).unwrap(),
                         delay: 603,
@@ -1557,7 +1543,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x0403025B,
                         datetime: datetime!(2000-06-29 03:56:30).unwrap(),
                         delay: 603,
@@ -1580,7 +1566,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x8403025B,
                         datetime: datetime!(2000-02-22 03:58:30).unwrap(),
                         delay: 603,
@@ -1603,7 +1589,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x0003025B,
                         datetime: datetime!(2000-06-28 03:58:30).unwrap(),
                         delay: 603,
@@ -1626,7 +1612,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x8003025B,
                         datetime: datetime!(2000-02-20 03:58:30).unwrap(),
                         delay: 603,
@@ -1649,7 +1635,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xA803025B,
                         datetime: datetime!(2000-03-27 03:57:30).unwrap(),
                         delay: 603,
@@ -1672,7 +1658,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x2803025B,
                         datetime: datetime!(2000-01-01 03:09:30).unwrap(),
                         delay: 603,
@@ -1695,7 +1681,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xA403025B,
                         datetime: datetime!(2000-03-25 03:59:30).unwrap(),
                         delay: 603,
@@ -1718,7 +1704,7 @@ mod tests {
                 },
                 SearchStatic4Method1State {
                     advance: 2,
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x2403025B,
                         datetime: datetime!(2000-01-01 03:05:30).unwrap(),
                         delay: 603,

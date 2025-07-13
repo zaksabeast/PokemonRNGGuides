@@ -8,7 +8,6 @@ import {
   MarkdownH5,
   MarkdownH6,
   MarkdownParagraph,
-  MarkdownList,
   MarkdownListItem,
   MarkdownDivider,
   MarkdownCode,
@@ -28,6 +27,8 @@ import {
   Alert,
   Stepper,
   Step,
+  WhatNext,
+  List,
   MediaTable,
   MediaTableBody,
   MediaTableHeader,
@@ -90,7 +91,11 @@ import { Gen4IdSetup } from "~/rngToolsUi/gen4/id/setup";
 import { Starter4ConsoleSetDateString } from "~/rngToolsUi/gen4/starters/getStarter";
 import { Starter4ShowIf } from "~/rngToolsUi/gen4/starters/showIf";
 import { Id4ShowIf } from "~/rngToolsUi/gen4/id/showIf";
-import { Metronome3dsNotice } from "~/rngToolsUi/gen4/shared/metronomeNotice";
+import { Gen3PidSpeedCalculator } from "~/rngToolsUi/gen3/pidSpeedCalculator";
+import { TranslationHelperSelectGuide } from "~/rngToolsUi/translationHelper/selectGuide";
+import { TranslationHelperEditGuide } from "~/rngToolsUi/translationHelper/editGuide";
+import { ToolTranslationButton } from "~/rngToolsUi/translationHelper/toolTranslations";
+import { TranslationHelperSelectLanguage } from "~/rngToolsUi/translationHelper/selectLanguage";
 
 const nonTools = {
   br: MarkdownBreak,
@@ -102,7 +107,7 @@ const nonTools = {
   h6: MarkdownH6,
   // eslint-disable-next-line id-length
   p: MarkdownParagraph,
-  ul: MarkdownList,
+  ul: List,
   ol: MarkdownOList,
   li: MarkdownListItem,
   hr: MarkdownDivider,
@@ -134,8 +139,12 @@ const nonTools = {
   Glossary,
   Starter4ShowIf,
   Id4ShowIf,
-  Metronome3dsNotice,
+  WhatNext,
   YouTubeTable,
+  TranslationHelperSelectGuide,
+  TranslationHelperEditGuide,
+  ToolTranslationButton,
+  TranslationHelperSelectLanguage,
 };
 
 const tools = {
@@ -155,6 +164,7 @@ const tools = {
     const tool = await import("~/rngToolsUi/gen3/wild/wild3FindTarget");
     return { default: tool.Wild3SearcherFindTarget };
   }),
+  Gen3PidSpeedCalculator,
   Gen3TidSidGenerator,
   OrAsMirageSpot,
   Gen4Timer,

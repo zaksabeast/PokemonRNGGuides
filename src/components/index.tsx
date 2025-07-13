@@ -11,13 +11,15 @@ export { Image } from "./image";
 export { MetaTags } from "./metaTags";
 export { List, ListItem } from "./list";
 export { FormikInput, Input } from "./input";
-export { FormikNumberInput } from "./numberInput";
+export { FormikNumberInput, NumberInput } from "./numberInput";
 export { Form } from "./form";
 export { FormFieldTable, type Field } from "./formFieldTable";
 export {
   FormikResultTable,
   ResultTable,
   type ResultColumn,
+  type ResultColumnGroup,
+  type SingleResultColumn,
 } from "./resultTable";
 export { Select, FormikSelect } from "./select";
 export { IvInput } from "./ivInput";
@@ -35,7 +37,7 @@ export { Alert } from "./alert";
 export { FileUpload } from "./fileUpload";
 export { Card } from "./card";
 export { Tag } from "./tag";
-export { RadioGroup } from "./radio";
+export { FormikRadio, RadioGroup } from "./radio";
 export { Divider } from "./divider";
 export { ContentLock } from "./contentLock";
 export { Grid } from "./grid";
@@ -45,6 +47,7 @@ export { Stepper, Step } from "./stepper/stepper";
 export { CalibrateTimerButton } from "./calibrateTimerButton";
 export { BadgeRibbon } from "./badgeRibbon";
 export { MetronomeButton } from "./metronome";
+export { WhatNext } from "./whatNext";
 export { SupportModal } from "./supportModal/modal";
 export { Gen4Timer } from "./gen4Timer";
 export {
@@ -55,3 +58,5 @@ export {
   MediaTableCell,
 } from "./mediaTable";
 export { YouTubeTable } from "./youtubeTable";
+export { CopyToClipboardButton } from "./copyToClipboardButton";
+export { TextArea } from "./textArea";

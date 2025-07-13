@@ -1,10 +1,11 @@
 import React from "react";
 import { Input } from "./input";
 import { capPrecision } from "~/utils/number";
-import { GenericForm, GuaranteeFormNameType } from "~/types/form";
+import { GenericForm } from "~/types/form";
 import { useField } from "formik";
 import { match, P } from "ts-pattern";
 import { Tooltip } from "antd";
+import { Paths } from "~/types";
 
 const serializers = {
   hex: (num: number | null) => num?.toString(16),
@@ -28,12 +29,13 @@ type NumberInputProps = {
   errorMessage?: string;
   textAlign?: "center";
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  placeholder?: string;
 };
 
 export const NumberInput = ({
   name,
   numType,
-  value,
+  value: externalValue,
   onChange,
   ...props
 }: NumberInputProps) => {
@@ -41,6 +43,8 @@ export const NumberInput = ({
   const deserialize = deserializers[numType];
   // Tracking negative allows us to show only '-', which is not a valid number
   const [isNegative, setIsNegative] = React.useState(false);
+  const isExternallyControlled = React.useRef(externalValue !== undefined);
+  const [internalValue, setInternalValue] = React.useState<number | null>(null);
 
   const _onChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +54,9 @@ export const NumberInput = ({
 
       if (value.length === 0 || value === "-") {
         onChange(null);
+        if (!isExternallyControlled.current) {
+          setInternalValue(null);
+        }
         return;
       }
 
@@ -57,10 +64,15 @@ export const NumberInput = ({
 
       if (!isNaN(deserialized)) {
         onChange(deserialized);
+        if (!isExternallyControlled.current) {
+          setInternalValue(deserialized);
+        }
       }
     },
     [deserialize, onChange],
   );
+
+  const value = externalValue === undefined ? internalValue : externalValue;
 
   const displayedValue = match({ value, isNegative })
     .with({ value: P.nullish, isNegative: false }, () => "")
@@ -75,7 +87,7 @@ export const NumberInput = ({
 type FormikNumberInputProps<FormState extends GenericForm> = {
   disabled?: boolean;
   numType: "hex" | "decimal" | "float";
-  name: GuaranteeFormNameType<FormState, number | null>;
+  name: Paths<FormState, number | null>;
 };
 
 export const FormikNumberInput = <FormState extends GenericForm>({

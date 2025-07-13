@@ -10,6 +10,8 @@ import * as tst from "ts-toolbelt";
 import { AllOrNone, FeatureConfig, OneOf } from "~/types/utils";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
 
 export type RngToolSubmit<Values> = (
   values: Values,
@@ -25,10 +27,20 @@ type Props<FormState, Result> = {
   formContainerId?: string;
 } & OneOf<{
   fields: Field[];
-  getFields: (values: FormState) => Field[];
+  getFields: (t: Translations, values: FormState) => Field[];
   children: React.ReactNode;
 }> &
-  AllOrNone<{ columns: ResultColumn<Result>[]; results: Result[] }> &
+  AllOrNone<
+    OneOf<{
+      columns: ResultColumn<Result>[];
+      getColumns: (
+        t: Translations,
+        values: FormState,
+      ) => ResultColumn<Result>[];
+    }> & {
+      results: Result[];
+    }
+  > &
   AllOrNone<{
     rowKey: keyof Result;
     onClickResultRow?: (record: Result) => void;
@@ -39,7 +51,11 @@ type Props<FormState, Result> = {
   > &
   FeatureConfig<
     "allowCancel",
-    { cancelTrackerId: string; onCancel: () => void }
+    {
+      cancelTrackerId: string;
+      onCancel: () => void;
+      cancelButtonLabel?: string;
+    }
   >;
 
 export const RngToolForm = <
@@ -52,6 +68,7 @@ export const RngToolForm = <
   validationSchema,
   getFields,
   columns,
+  getColumns,
   onSubmit,
   onReset,
   onClickResultRow,
@@ -62,15 +79,22 @@ export const RngToolForm = <
   allowReset = false,
   resetTrackerId,
   submitButtonLabel = "Generate",
+  cancelButtonLabel = "Cancel",
   allowCancel = false,
   cancelTrackerId,
   onCancel,
 }: Props<FormState, Result>) => {
+  const t = useActiveRouteTranslations();
   const _validationSchema = React.useMemo(() => {
     return validationSchema == null
       ? undefined
       : toFormikValidationSchema(validationSchema);
   }, [validationSchema]);
+
+  const translatedSubmitLabel =
+    submitButtonLabel === "Generate" ? t["Generate"] : submitButtonLabel;
+  const translatedCancelLabel =
+    cancelButtonLabel === "Cancel" ? t["Cancel"] : cancelButtonLabel;
 
   return (
     <Formik
@@ -85,9 +109,11 @@ export const RngToolForm = <
           if (children != null) {
             return children;
           }
-          const fieldsToUse = fields ?? getFields?.(formik.values) ?? [];
+          const fieldsToUse = fields ?? getFields?.(t, formik.values) ?? [];
           return <FormFieldTable fields={fieldsToUse} />;
         })();
+
+        const columnsToUse = columns ?? getColumns?.(t, formik.values) ?? null;
 
         return (
           <Flex vertical gap={16} id={formContainerId}>
@@ -95,7 +121,7 @@ export const RngToolForm = <
               <Flex vertical gap={8}>
                 {fieldsReactNode}
                 <Button trackerId={submitTrackerId} htmlType="submit">
-                  {submitButtonLabel}
+                  {translatedSubmitLabel}
                 </Button>
                 {allowCancel && cancelTrackerId != null && (
                   <Button
@@ -103,20 +129,20 @@ export const RngToolForm = <
                     htmlType="button"
                     onClick={onCancel}
                   >
-                    Cancel
+                    {translatedCancelLabel}
                   </Button>
                 )}
                 {allowReset && resetTrackerId != null && (
                   <Button trackerId={resetTrackerId} htmlType="reset">
-                    Reset
+                    {t["Reset"]}
                   </Button>
                 )}
               </Flex>
             </Form>
 
-            {columns != null && (
+            {columnsToUse != null && (
               <FormikResultTable<Result>
-                columns={columns}
+                columns={columnsToUse}
                 rowKey={rowKey}
                 dataSource={results}
                 rowSelection={

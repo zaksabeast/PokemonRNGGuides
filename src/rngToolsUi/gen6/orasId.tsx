@@ -21,37 +21,38 @@ import {
 } from "~/utils/time";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
+import { Translations } from "~/translations";
 
-const columns: ResultColumn<Gen6Id>[] = [
+const getColumns = (t: Translations): ResultColumn<Gen6Id>[] => [
   {
-    title: "Seed",
+    title: t["Seed"],
     dataIndex: "seed",
     monospace: true,
     render: (seed) => seed.toString(16).toUpperCase().padStart(8, "0"),
   },
   {
-    title: "Advances",
+    title: t["Advances"],
     dataIndex: "advances",
   },
   {
-    title: "TID",
+    title: t["TID"],
     dataIndex: "tid",
   },
   {
-    title: "SID",
+    title: t["SID"],
     dataIndex: "sid",
   },
   {
-    title: "TSV",
+    title: t["TSV"],
     dataIndex: "tsv",
   },
   {
-    title: "Date/Time",
+    title: t["Date/Time"],
     dataIndex: "datetime",
     render: (date) => formatRngDateTime(date, { seconds: true }),
   },
   {
-    title: "State",
+    title: t["State"],
     dataIndex: "tinymt_state",
     monospace: true,
     render: (state: number[]) =>
@@ -88,39 +89,37 @@ const initialValues: FormState = {
   },
 };
 
-const fields: Field[] = [
+const getFields = (t: Translations): Field[] => [
   {
-    label: "TinyMT u32 Seed",
+    label: t["TinyMT u32 Seed"],
     input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
   },
   {
-    label: "Boot Date",
+    label: t["Boot Date"],
     input: <FormikDatePicker<FormState> name="date" />,
   },
   {
-    label: "Boot Time",
+    label: t["Boot Time"],
     input: <FormikTimePicker<FormState> name="time" showSecond />,
   },
   {
-    label: "Initial Advances",
+    label: t["Initial Advances"],
     input: (
       <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
     ),
   },
   {
-    label: "Max Advances",
+    label: t["Max Advances"],
     input: (
       <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
     ),
   },
   {
-    label: "Only Current Seed",
-    input: (
-      <FormikSwitch<FormState, "only_current_seed"> name="only_current_seed" />
-    ),
+    label: t["Only Current Seed"],
+    input: <FormikSwitch<FormState> name="only_current_seed" />,
   },
   {
-    label: "Filter",
+    label: t["Filter"],
     input: <FormikIdFilter<FormState> name="filter" optional />,
   },
 ];
@@ -143,8 +142,8 @@ export const OrasId = () => {
 
   return (
     <RngToolForm<FormState, Gen6Id>
-      fields={fields}
-      columns={columns}
+      getFields={getFields}
+      getColumns={getColumns}
       results={results}
       validationSchema={Validator}
       initialValues={initialValues}

@@ -14,6 +14,7 @@ import { z } from "zod";
 import { useId4State, idTimerAtom } from "./state";
 import { sortBy } from "lodash-es";
 import { formatOffset } from "~/utils/offsetSymbol";
+import { Translations } from "~/translations";
 
 type Result = Id4 & {
   flipDelay: boolean;
@@ -24,9 +25,9 @@ type Result = Id4 & {
   seconds: number;
 };
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
-    title: "Calibrate",
+    title: t["Calibrate"],
     dataIndex: "seed",
     render: (_, target) => (
       <CalibrateTimerButton
@@ -39,31 +40,31 @@ const columns: ResultColumn<Result>[] = [
     ),
   },
   {
-    title: "Flip Delay",
+    title: t["Flip Delay"],
     dataIndex: "flipDelay",
     render: (flipDelay) =>
       flipDelay ? <Icon name="CheckCircle" color="Success" size={30} /> : null,
   },
   {
-    title: "Delay Offset",
+    title: t["Delay Offset"],
     dataIndex: "delayOffset",
     render: formatOffset,
   },
   {
-    title: "Second Offset",
+    title: t["Second Offset"],
     dataIndex: "secondOffset",
     render: formatOffset,
   },
   {
-    title: "TID",
+    title: t["TID"],
     dataIndex: "tid",
   },
   {
-    title: "Delay",
+    title: t["Delay"],
     dataIndex: "delay",
   },
   {
-    title: "Seconds",
+    title: t["Seconds"],
     dataIndex: "seconds",
   },
 ];
@@ -84,17 +85,21 @@ export const CalibrateId4 = () => {
 
   const targetTid = target?.tid;
 
-  const fields = React.useMemo(
-    (): Field[] => [
-      {
-        label: `Target TID: ${targetTid ?? "None"}`,
-        input: null,
-      },
-      {
-        label: "Obtained TID",
-        input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-      },
-    ],
+  const getFields = React.useCallback(
+    (t: Translations): Field[] => {
+      const targetTidText = t["Target TID"];
+      const noneText = t["None"];
+      return [
+        {
+          label: `${targetTidText}: ${targetTid ?? noneText}`,
+          input: null,
+        },
+        {
+          label: t["Obtained TID"],
+          input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+        },
+      ];
+    },
     [targetTid],
   );
 
@@ -124,15 +129,21 @@ export const CalibrateId4 = () => {
         Math.abs(result.seed_time.delay - targetDelay),
       );
 
-      const formattedResults = sortedResults.map((result) => ({
-        ...result,
-        seed: result.seed_time.seed,
-        flipDelay: targetDelay % 2 !== result.seed_time.delay % 2,
-        delayOffset: result.seed_time.delay - targetDelay,
-        delay: result.seed_time.delay,
-        seconds: result.seed_time.datetime.second,
-        secondOffset: result.seed_time.datetime.second - targetDateTime.second,
-      }));
+      const formattedResults = sortedResults.map((result) => {
+        const secondOffset =
+          result.seed_time.datetime.second - targetDateTime.second;
+        return {
+          ...result,
+          seed: result.seed_time.seed,
+          flipDelay:
+            secondOffset % 2 === 0 &&
+            targetDelay % 2 !== result.seed_time.delay % 2,
+          delayOffset: result.seed_time.delay - targetDelay,
+          delay: result.seed_time.delay,
+          seconds: result.seed_time.datetime.second,
+          secondOffset,
+        };
+      });
 
       setResults(formattedResults);
     },
@@ -141,8 +152,8 @@ export const CalibrateId4 = () => {
 
   return (
     <RngToolForm<FormState, Result>
-      fields={fields}
-      columns={columns}
+      getFields={getFields}
+      getColumns={getColumns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

@@ -37,6 +37,10 @@ impl PkmState for Static3GeneratorResult {
     fn gender(&self) -> Gender {
         self.gender
     }
+
+    fn pid(&self) -> u32 {
+        self.pid
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -112,23 +116,6 @@ mod test {
     use crate::assert_list_eq;
     use crate::{StatFilter, StatsValue};
 
-    const ZERO_IVS: Ivs = Ivs {
-        hp: 0,
-        atk: 0,
-        def: 0,
-        spa: 0,
-        spd: 0,
-        spe: 0,
-    };
-    const PERFECT_IVS: Ivs = Ivs {
-        hp: 31,
-        atk: 31,
-        def: 31,
-        spa: 31,
-        spd: 31,
-        spe: 31,
-    };
-
     #[test]
     fn generate_method4() {
         let opts = Static3GeneratorOptions {
@@ -141,15 +128,7 @@ mod test {
             method4: true,
             tid: 12345,
             sid: 54321,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: ZERO_IVS,
-                max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
         };
 
         let results = gen3_static_generator_states(&opts);
@@ -331,15 +310,7 @@ mod test {
             method4: false,
             tid: 12345,
             sid: 54321,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: ZERO_IVS,
-                max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
         };
 
         let results = gen3_static_generator_states(&opts);
@@ -521,15 +492,7 @@ mod test {
             method4: false,
             tid: 12345,
             sid: 54321,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: ZERO_IVS,
-                max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
         };
 
         let results = gen3_static_generator_states(&opts);
@@ -711,15 +674,7 @@ mod test {
             method4: false,
             tid: 12345,
             sid: 54321,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: ZERO_IVS,
-                max_ivs: PERFECT_IVS,
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
         };
 
         let results = gen3_static_generator_states(&opts);
@@ -825,12 +780,6 @@ mod test {
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
-                    min_ivs: ZERO_IVS,
-                    max_ivs: PERFECT_IVS,
-                    ability: None,
                     stats: Some(StatFilter {
                         lvl: 5,
                         base_stats: StatsValue {
@@ -858,6 +807,7 @@ mod test {
                             spe: 9,
                         },
                     }),
+                    ..Default::default()
                 },
             };
 
@@ -894,12 +844,6 @@ mod test {
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
-                    min_ivs: ZERO_IVS,
-                    max_ivs: PERFECT_IVS,
-                    ability: None,
                     stats: Some(StatFilter {
                         lvl: 5,
                         base_stats: StatsValue {
@@ -927,6 +871,7 @@ mod test {
                             spe: 9,
                         },
                     }),
+                    ..Default::default()
                 },
             };
 
@@ -947,12 +892,6 @@ mod test {
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
-                    min_ivs: ZERO_IVS,
-                    max_ivs: PERFECT_IVS,
-                    ability: None,
                     stats: Some(StatFilter {
                         lvl: 5,
                         base_stats: StatsValue {
@@ -980,6 +919,7 @@ mod test {
                             spe: 8,
                         },
                     }),
+                    ..Default::default()
                 },
             };
 
@@ -1016,12 +956,6 @@ mod test {
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
-                    min_ivs: ZERO_IVS,
-                    max_ivs: PERFECT_IVS,
-                    ability: None,
                     stats: Some(StatFilter {
                         lvl: 5,
                         base_stats: StatsValue {
@@ -1049,6 +983,7 @@ mod test {
                             spe: 9,
                         },
                     }),
+                    ..Default::default()
                 },
             };
 

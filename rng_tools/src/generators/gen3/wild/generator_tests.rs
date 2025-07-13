@@ -1,28 +1,21 @@
 #[cfg(test)]
 mod test {
-    use crate::EncounterSlot;
-    use crate::Ivs;
-    use crate::gen3::Gen3Lead;
-    use crate::gen3::Gen3Method;
+    use crate::gen3::Gen3EncounterType;
     use crate::gen3::{
-        CycleRange, Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild,
+        Gen3Lead, Gen3Method, Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild,
     };
     use crate::rng::Rng;
     use crate::rng::lcrng::Pokerng;
-    use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter};
+    use crate::{AbilityType, Gender, Nature, PkmFilter};
+    use crate::{EncounterSlot, Ivs};
 
     #[test]
     fn test_generate_wild3_no_filter() {
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
             advance: 9,
-            map_idx: 0,
-            lead: Gen3Lead::Vanilla,
-            filter: PkmFilter::new_allow_all(),
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);
@@ -31,16 +24,9 @@ mod test {
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot1,
             pid: 0x6E031C49,
-            ivs: Ivs {
-                hp: 10,
-                atk: 13,
-                def: 12,
-                spa: 20,
-                spd: 10,
-                spe: 9,
-            },
+            ivs: Ivs::new(10, 13, 12, 20, 10, 9),
             method: Gen3Method::Wild1,
-            cycle_range: CycleRange::new(214094, 80, 0, 280896),
+            cycle_range: None,
         }];
         assert_eq!(result, expected_result);
     }
@@ -49,33 +35,21 @@ mod test {
     fn test_generate_wild3_with_filter() {
         let options = Wild3GeneratorOptions {
             advance: 908,
-            map_idx: 0,
-            tid: 12345,
-            sid: 54321,
-            gender_ratio: GenderRatio::OneToOne,
             encounter_slot: Some(vec![
                 EncounterSlot::Slot0,
                 EncounterSlot::Slot6,
                 EncounterSlot::Slot8,
             ]),
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
-            lead: Gen3Lead::Vanilla,
             filter: PkmFilter {
-                shiny: false,
                 nature: Some(Nature::Adamant),
                 gender: Some(Gender::Female),
-                min_ivs: Ivs {
-                    hp: 10,
-                    atk: 10,
-                    def: 10,
-                    spa: 10,
-                    spd: 10,
-                    spe: 10,
-                },
-                max_ivs: Ivs::new_all31(),
+                min_ivs: Ivs::new(10, 10, 10, 10, 10, 10),
                 ability: Some(AbilityType::Second),
-                stats: None,
+                ..Default::default()
             },
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0x346A4A45);
@@ -84,16 +58,9 @@ mod test {
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot0,
             pid: 0x02FA9E49,
-            ivs: Ivs {
-                hp: 12,
-                atk: 29,
-                def: 23,
-                spa: 10,
-                spd: 14,
-                spe: 13,
-            },
+            ivs: Ivs::new(12, 29, 23, 10, 14, 13),
             method: Gen3Method::Wild1,
-            cycle_range: CycleRange::new(202240, 80, 0, 280896),
+            cycle_range: None,
         }];
         assert_eq!(result, expected_result);
     }
@@ -102,21 +69,15 @@ mod test {
         let options = Wild3GeneratorOptions {
             tid: 34760,
             sid: 47362,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
             methods: vec![Gen3Method::Wild1],
-            advance: 0,
-            map_idx: 0,
-            lead: Gen3Lead::Vanilla,
             filter: PkmFilter {
                 shiny: true,
                 nature: Some(Nature::Naive),
                 gender: Some(Gender::Male),
-                min_ivs: Ivs::new_all0(),
-                max_ivs: Ivs::new_all31(),
                 ability: Some(AbilityType::Second),
-                stats: None,
+                ..Default::default()
             },
+            ..Default::default()
         };
 
         let rng = Pokerng::new(0x14a22065);
@@ -124,16 +85,9 @@ mod test {
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot4,
             pid: 0x692A57E1,
-            ivs: Ivs {
-                hp: 0,
-                atk: 0,
-                def: 0,
-                spa: 8,
-                spd: 13,
-                spe: 25,
-            },
+            ivs: Ivs::new(0, 0, 0, 8, 13, 25),
             method: Gen3Method::Wild1,
-            cycle_range: CycleRange::new(202345, 80, 0, 280896),
+            cycle_range: None,
         }];
         assert_eq!(result, expected_result);
     }
@@ -141,15 +95,9 @@ mod test {
     #[test]
     fn test_generate_wild3_synch() {
         let options = Wild3GeneratorOptions {
-            tid: 12345,
-            sid: 54321,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
             methods: vec![Gen3Method::Wild1],
-            advance: 0,
-            map_idx: 0,
             lead: Gen3Lead::Synchronize(Nature::Hardy),
-            filter: PkmFilter::new_allow_all(),
+            ..Default::default()
         };
 
         let rng = Pokerng::new(0x14a22065);
@@ -157,16 +105,9 @@ mod test {
         let expected_result = vec![Wild3GeneratorResult {
             pid: 0x3A5DEC53,
             method: Gen3Method::Wild1,
-            ivs: Ivs {
-                hp: 0,
-                atk: 4,
-                def: 15,
-                spa: 8,
-                spd: 25,
-                spe: 13,
-            },
+            ivs: Ivs::new(0, 4, 15, 8, 25, 13),
             encounter_slot: EncounterSlot::Slot4,
-            cycle_range: CycleRange::new(343478, 80, 0, 280896),
+            cycle_range: None,
         }];
         assert_eq!(result, expected_result);
     }
@@ -174,15 +115,10 @@ mod test {
     #[test]
     fn test_generate_wild3_cute_charm_activated() {
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
             methods: vec![Gen3Method::Wild1],
             advance: 2,
-            map_idx: 0,
             lead: Gen3Lead::CuteCharm(Gender::Female),
-            filter: PkmFilter::new_allow_all(),
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);
@@ -191,16 +127,9 @@ mod test {
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot0,
             pid: 0x722DEBE7,
-            ivs: Ivs {
-                hp: 28,
-                atk: 1,
-                def: 26,
-                spa: 0,
-                spd: 14,
-                spe: 16,
-            },
+            ivs: Ivs::new(28, 1, 26, 0, 14, 16),
             method: Gen3Method::Wild1,
-            cycle_range: CycleRange::new(278304, 88, 0, 280896),
+            cycle_range: None,
         }];
         assert_eq!(result, expected_result);
     }
@@ -208,10 +137,6 @@ mod test {
     #[test]
     fn test_generate_wild3_all_methods() {
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
             methods: vec![
                 Gen3Method::Wild1,
                 Gen3Method::Wild2,
@@ -220,9 +145,7 @@ mod test {
                 Gen3Method::Wild5,
             ],
             advance: 2,
-            map_idx: 0,
-            lead: Gen3Lead::Vanilla,
-            filter: PkmFilter::new_allow_all(),
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);
@@ -232,72 +155,37 @@ mod test {
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 2570972118,
-                ivs: Ivs {
-                    hp: 28,
-                    atk: 21,
-                    def: 30,
-                    spa: 29,
-                    spd: 18,
-                    spe: 7,
-                },
+                ivs: Ivs::new(28, 21, 30, 29, 18, 7),
                 method: Gen3Method::Wild5,
-                cycle_range: CycleRange::new(48353, 80, 0, 913),
+                cycle_range: None,
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 1636667768,
-                ivs: Ivs {
-                    hp: 18,
-                    atk: 20,
-                    def: 5,
-                    spa: 29,
-                    spd: 19,
-                    spe: 24,
-                },
+                ivs: Ivs::new(18, 20, 5, 29, 19, 24),
                 method: Gen3Method::Wild3,
-                cycle_range: CycleRange::new(52284, 80, 0, 80),
+                cycle_range: None,
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 1671314793,
-                ivs: Ivs {
-                    hp: 13,
-                    atk: 20,
-                    def: 26,
-                    spa: 20,
-                    spd: 24,
-                    spe: 22,
-                },
+                ivs: Ivs::new(13, 20, 26, 20, 24, 22),
                 method: Gen3Method::Wild2,
-                cycle_range: CycleRange::new(58459, 80, 0, 116031),
+                cycle_range: None,
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 1671314793,
-                ivs: Ivs {
-                    hp: 9,
-                    atk: 9,
-                    def: 7,
-                    spa: 20,
-                    spd: 24,
-                    spe: 22,
-                },
+                ivs: Ivs::new(9, 9, 7, 20, 24, 22),
                 method: Gen3Method::Wild4,
-                cycle_range: CycleRange::new(174490, 80, 0, 39291),
+                cycle_range: None,
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot0,
                 pid: 1671314793,
-                ivs: Ivs {
-                    hp: 9,
-                    atk: 9,
-                    def: 7,
-                    spa: 20,
-                    spd: 26,
-                    spe: 13,
-                },
+                ivs: Ivs::new(9, 9, 7, 20, 26, 13),
                 method: Gen3Method::Wild1,
-                cycle_range: CycleRange::new(213781, 80, 0, 280896),
+                cycle_range: None,
             },
         ];
         assert_eq!(result, expected_result);
@@ -306,15 +194,10 @@ mod test {
     #[test]
     fn test_generate_wild3_egg_lead() {
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
             methods: vec![Gen3Method::Wild4],
             advance: 1234,
-            map_idx: 0,
             lead: Gen3Lead::Egg,
-            filter: PkmFilter::new_allow_all(),
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);
@@ -323,16 +206,31 @@ mod test {
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot1,
             pid: 1996552928,
-            ivs: Ivs {
-                hp: 23,
-                atk: 27,
-                def: 7,
-                spa: 20,
-                spd: 15,
-                spe: 31,
-            },
+            ivs: Ivs::new(23, 27, 7, 20, 15, 31),
             method: Gen3Method::Wild4,
-            cycle_range: CycleRange::new(146246, 0, 0, 39507),
+            cycle_range: None,
+        }];
+        assert_eq!(result, expected_result);
+    }
+
+    #[test]
+    fn test_generate_wild3_fishing() {
+        let options = Wild3GeneratorOptions {
+            encounter_type: Gen3EncounterType::GoodRod,
+            methods: vec![Gen3Method::Wild1],
+            advance: 234,
+            ..Default::default()
+        };
+
+        let mut rng = Pokerng::new(0);
+        rng.advance(options.advance);
+        let result = generate_gen3_wild(rng, &options);
+        let expected_result = vec![Wild3GeneratorResult {
+            encounter_slot: EncounterSlot::Slot1,
+            pid: 4072166945,
+            ivs: Ivs::new(15, 0, 10, 2, 28, 7),
+            method: Gen3Method::Wild1,
+            cycle_range: None,
         }];
         assert_eq!(result, expected_result);
     }
@@ -346,6 +244,7 @@ mod test {
             sid: 0,
             gender_ratio: GenderRatio::SevenToOne,
             encounter_slot: None,
+            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
             advance: 1234,
             map_idx: 0,

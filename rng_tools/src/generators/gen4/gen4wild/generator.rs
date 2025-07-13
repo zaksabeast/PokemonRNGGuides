@@ -54,6 +54,10 @@ impl PkmState for GeneratedPokemon {
     fn shiny(&self) -> bool {
         self.shiny
     }
+
+    fn pid(&self) -> u32 {
+        self.pid
+    }
 }
 
 pub struct RouteData {
@@ -91,7 +95,7 @@ fn gen4_method_j(
     route: &RouteData,
 ) -> GeneratedPokemon {
     let encounter_rand = (rng.rand::<u16>() / 656) as u8;
-    let encounter_slot = EncounterSlot::from_rand(encounter_rand);
+    let encounter_slot = EncounterSlot::from_rand(encounter_rand, EncounterSlot::thresholds_land());
     let slot = route.get_slot(encounter_slot);
 
     let lead = opts.lead;
@@ -197,7 +201,7 @@ fn gen4_method_k(
     route: &RouteData,
 ) -> GeneratedPokemon {
     let encounter_rand = (rng.rand::<u16>() % 100) as u8;
-    let encounter_slot = EncounterSlot::from_rand(encounter_rand);
+    let encounter_slot = EncounterSlot::from_rand(encounter_rand, EncounterSlot::thresholds_land());
     let slot = route.get_slot(encounter_slot);
 
     let lead = opts.lead;
@@ -427,29 +431,7 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             gender_ratio: GenderRatio::OneToOne,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
             game: GameVersion::Pearl,
             encounter: None,
             lead: LeadAbilities::None,
@@ -735,29 +717,7 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             gender_ratio: GenderRatio::OneToOne,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
             game: GameVersion::HeartGold,
             encounter: None,
             lead: LeadAbilities::None,
@@ -1044,29 +1004,7 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             gender_ratio: GenderRatio::OneToOne,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
             game: GameVersion::HeartGold,
             encounter: None,
             lead: LeadAbilities::CutecharmM,
@@ -1353,29 +1291,7 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             gender_ratio: GenderRatio::OneToOne,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
             game: GameVersion::HeartGold,
             encounter: None,
             lead: LeadAbilities::Synchronize(Nature::Adamant),
@@ -1661,29 +1577,7 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             gender_ratio: GenderRatio::OneToOne,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
             game: GameVersion::Pearl,
             encounter: None,
             lead: LeadAbilities::Synchronize(Nature::Adamant),
@@ -1968,29 +1862,7 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             gender_ratio: GenderRatio::OneToOne,
-            filter: PkmFilter {
-                shiny: false,
-                nature: None,
-                gender: None,
-                min_ivs: Ivs {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0,
-                },
-                max_ivs: Ivs {
-                    hp: 31,
-                    atk: 31,
-                    def: 31,
-                    spa: 31,
-                    spd: 31,
-                    spe: 31,
-                },
-                ability: None,
-                stats: None,
-            },
+            filter: PkmFilter::new_allow_all(),
             game: GameVersion::Pearl,
             encounter: None,
             lead: LeadAbilities::CutecharmM,

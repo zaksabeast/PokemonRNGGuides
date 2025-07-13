@@ -3,6 +3,8 @@
 // eslint-disable-next-line no-restricted-imports
 import { useLocation, matchRoute, useRouter } from "wouter";
 import { Route, routes, RouteSchema } from "~/routes/defs";
+import { guides } from "~/guides";
+import { useTranslations } from "~/translations";
 
 export const useActiveRoute = (): Route => {
   const { parser } = useRouter();
@@ -21,4 +23,10 @@ export const useActiveRoute = (): Route => {
   }
 
   return route;
+};
+
+export const useActiveRouteTranslations = () => {
+  const route = useActiveRoute();
+  const language = guides[route].meta?.translation?.language ?? "en";
+  return useTranslations(language);
 };

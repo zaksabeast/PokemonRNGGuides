@@ -555,7 +555,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gamecube/Channel.mdx",
-      translations: null,
+      translations: { en: "/channel-jirachi/", zh: "/zh-channel-jirachi/" },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gamecube/Channel.mdx")),
@@ -6582,6 +6582,36 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-channel-jirachi/": {
+    meta: {
+      categories: ["Gamecube"],
+      tags: ["emu"],
+      isNew: false,
+      title: "(PAL) Channel 乱数",
+      navDrawerTitle: "(PAL) Channel 乱数",
+      description: "一步步教你乱数出 Channel 基拉祈",
+      slug: "/zh-channel-jirachi/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/channel-jirachi/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gamecube/Channel.mdx",
+      translations: { en: "/channel-jirachi/", zh: "/zh-channel-jirachi/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gamecube/Channel.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gamecube/Channel.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-dppt-advance-rng/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
@@ -8761,6 +8791,7 @@ export const guideSlugs = [
   "/xy-friend-safari-patch/",
   "/xy-pokeradar/",
   "/zh-bw2-egg/",
+  "/zh-channel-jirachi/",
   "/zh-dppt-advance-rng/",
   "/zh-dppt-cute-charm/",
   "/zh-dppt-initial-seed/",

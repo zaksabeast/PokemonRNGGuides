@@ -26,23 +26,17 @@ export const SurveyModal = () => {
       }}
     >
       <Typography.Paragraph>
-        I'm exploring which app ideas are worth building — sharing the process
-        and looking for people who want to help shape what gets made.
+        I want to expand beyond Pokemon and explore new ideas.
       </Typography.Paragraph>
 
       <List
         header={<Typography.Text strong>Inside the Discord:</Typography.Text>}
         mb={16}
       >
-        <ListItem>Vote on new app ideas as they're shared</ListItem>
-        <ListItem>Suggest problems you'd love to see solved</ListItem>
-        <ListItem>Watch ideas go from concept to launch</ListItem>
+        <ListItem>Suggest app ideas</ListItem>
+        <ListItem>Vote on new app ideas</ListItem>
+        <ListItem>Watch ideas built in realtime</ListItem>
       </List>
-
-      <Typography.Paragraph>
-        If you're curious about how apps get made, or have ideas of your own,
-        come join.
-      </Typography.Paragraph>
 
       <Button
         type="primary"
@@ -54,9 +48,8 @@ export const SurveyModal = () => {
         Join the App Ideas Discord
       </Button>
 
-      <Typography.Paragraph italic mt={16}>
-        (Only join if you're interested in voting, shaping, or sharing ideas —
-        no passive lurkers please!)
+      <Typography.Paragraph mt={20}>
+        If you're curious in how apps get made, or have ideas, come join.
       </Typography.Paragraph>
     </StyledModal>
   );

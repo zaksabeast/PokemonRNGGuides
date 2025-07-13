@@ -31,9 +31,9 @@ const abTests = {
     cohorts: ["on", "off"],
     controlCohort: "off",
   },
-  appCommunityButton: {
-    cohorts: ["curiousAboutApps", "youVoteIBuild", "shapeTheFuture"],
-    controlCohort: "curiousAboutApps",
+  appCommunityButton2: {
+    cohorts: ["expandingBeyondPokemon", "nonPokemonAppIdeas", "helpMeBuild"],
+    controlCohort: "expandingBeyondPokemon",
   },
 } as const satisfies AbTestConfigs;
 
@@ -59,7 +59,7 @@ type JoinedCohorts = Record<AbTestName, boolean>;
 
 const joinedCohorts = atom<JoinedCohorts>({
   placeholder: false,
-  appCommunityButton: false,
+  appCommunityButton2: false,
 } satisfies JoinedCohorts);
 
 type AbCohortResult<T extends AbTestName> =

@@ -19,6 +19,7 @@ import { PiPersonSimpleWalkBold } from "react-icons/pi";
 import { FaHeart, FaPlay, FaFire, FaPatreon } from "react-icons/fa6";
 import { TbPokeball } from "react-icons/tb";
 import { IoIosInformationCircle } from "react-icons/io";
+import { GiStarSwirl } from "react-icons/gi";
 
 const icons = {
   AddCircleOutline: MdAddCircleOutline,
@@ -45,6 +46,7 @@ const icons = {
   Patreon: FaPatreon,
   Copy: FaRegCopy,
   OutlineCampaign: MdOutlineCampaign,
+  StarSwirl: GiStarSwirl,
 } as const;
 
 export type IconName = keyof typeof icons;

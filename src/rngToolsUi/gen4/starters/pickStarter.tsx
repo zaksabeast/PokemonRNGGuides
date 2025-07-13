@@ -79,6 +79,7 @@ const Validator = z
     species: z.enum(allStarters),
     min_delay: z.number().int().min(0),
     max_delay: z.number().int().min(0),
+    platinum_target_advance: z.number().int().min(0),
     force_second: z.number().int().min(0).max(59).nullable(),
   })
   .merge(pkmFilterSchema);
@@ -92,6 +93,7 @@ const dpptInitialValues: FormState = {
   species: "Turtwig",
   min_delay: 600,
   max_delay: 1000,
+  platinum_target_advance: 4,
   force_second: null,
   ...getPkmFilterInitialValues(),
 };
@@ -101,12 +103,17 @@ const hgssInitialValues: FormState = {
   species: "Chikorita",
 };
 
-const getStarterAdvance = (
-  species: Gen4Starter,
-  game: Gen4GameVersion,
-): number => {
+const getStarterAdvance = ({
+  species,
+  game,
+  platinum_target_advance,
+}: {
+  species: Gen4Starter;
+  game: Gen4GameVersion;
+  platinum_target_advance: number;
+}): number => {
   return match({ species, game })
-    .with({ game: "Platinum" }, () => 4)
+    .with({ game: "Platinum" }, () => platinum_target_advance)
     .with({ game: "Diamond" }, () => 0)
     .with({ game: "Pearl" }, () => 0)
     .with({ species: "Chikorita" }, () => 0)
@@ -180,6 +187,17 @@ const getFields = (game: Gen4GameVersion, t: Translations): Field[] => {
       ),
     },
     {
+      // Only Platinum has a variable advance
+      hide: game !== "Platinum",
+      label: t["Target Advance"],
+      input: (
+        <FormikNumberInput<FormState>
+          name="platinum_target_advance"
+          numType="decimal"
+        />
+      ),
+    },
+    {
       label: t["Species"],
       input: (
         <FormikSelect<FormState, "species">
@@ -225,7 +243,11 @@ export const PickStarter4 = () => {
     async (opts: FormState) => {
       const minMaxStats = await getStatRange(opts.species, [5, 6]);
       setState((prev) => ({ ...prev, species: opts.species, minMaxStats }));
-      const advance = getStarterAdvance(opts.species, game);
+      const advance = getStarterAdvance({
+        game,
+        species: opts.species,
+        platinum_target_advance: opts.platinum_target_advance,
+      });
       const baseOpts: UndefinedToNull<SearchStatic4Method1Opts> = {
         ...opts,
         min_advance: advance,

@@ -11,7 +11,7 @@ import { rngTools, Stationary6State } from "~/rngTools";
 import {
   flattenIvs,
   FlattenIvs,
-  ivColumns,
+  getIvColumns,
 } from "~/rngToolsUi/shared/ivColumns";
 import {
   getPkmFilterFields,
@@ -22,42 +22,43 @@ import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 import { toOptions } from "~/utils/options";
 import { startCase } from "lodash-es";
+import { Translations } from "~/translations";
 
 const transporterGenders = ["NoGender", "RandomGender", "Mythical"] as const;
 const transporterGenderOptions = toOptions(transporterGenders, startCase);
 type Result = FlattenIvs<Stationary6State>;
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
-    title: "Advance",
+    title: t["Advance"],
     dataIndex: "advance",
   },
   {
-    title: "RNG State",
+    title: t["RNG State"],
     dataIndex: "rng_state",
     monospace: true,
     render: (seed) => seed.toString(16).toUpperCase().padStart(8, "0"),
   },
   {
-    title: "PSV",
+    title: t["PSV"],
     dataIndex: "psv",
   },
   {
-    title: "Shiny",
+    title: t["Shiny"],
     dataIndex: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
-  ...ivColumns,
+  ...getIvColumns(t),
   {
-    title: "Ability",
+    title: t["Ability"],
     dataIndex: "ability",
   },
   {
-    title: "Nature",
+    title: t["Nature"],
     dataIndex: "nature",
   },
   {
-    title: "Gender",
+    title: t["Gender"],
     dataIndex: "gender",
   },
 ];
@@ -87,33 +88,33 @@ const initialValues: FormState = {
   ...getPkmFilterInitialValues(),
 };
 
-const fields: Field[] = [
+const getFields = (t: Translations): Field[] => [
   {
-    label: "Seed",
+    label: t["Seed"],
     input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
   },
   {
-    label: "Initial Advance",
+    label: t["Initial Advance"],
     input: (
       <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
     ),
   },
   {
-    label: "Max Advances",
+    label: t["Max Advances"],
     input: (
       <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
     ),
   },
   {
-    label: "Delay",
+    label: t["Delay"],
     input: <FormikNumberInput<FormState> name="delay" numType="decimal" />,
   },
   {
-    label: "TSV",
+    label: t["TSV"],
     input: <FormikNumberInput<FormState> name="tsv" numType="decimal" />,
   },
   {
-    label: "Transporter Gender",
+    label: t["Transporter Gender"],
     input: (
       <FormikSelect<FormState, "transporter_genders">
         name="transporter_genders"
@@ -121,13 +122,16 @@ const fields: Field[] = [
       />
     ),
   },
-  ...getPkmFilterFields({
-    ivs: true,
-    ability: false,
-    gender: false,
-    nature: false,
-    shiny: false,
-  }),
+  ...getPkmFilterFields(
+    {
+      ivs: true,
+      ability: false,
+      gender: false,
+      nature: false,
+      shiny: false,
+    },
+    t,
+  ),
 ];
 
 export const Transporter = () => {
@@ -159,8 +163,8 @@ export const Transporter = () => {
 
   return (
     <RngToolForm<FormState, Result>
-      fields={fields}
-      columns={columns}
+      getFields={getFields}
+      getColumns={getColumns}
       results={results}
       validationSchema={Validator}
       initialValues={initialValues}

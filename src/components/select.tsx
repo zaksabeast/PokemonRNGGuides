@@ -12,6 +12,7 @@ import { Flex } from "./flex";
 import React from "react";
 import { Icon } from "./icons";
 import { Button } from "./button";
+import { Path, Paths } from "~/types";
 
 const SelectContainer = styled(Flex)({
   ".ant-select": {
@@ -68,71 +69,70 @@ export const Select = <ValueType,>({
 
 type SingleFormikSelectValue<
   FormState extends GenericForm,
-  FieldKey extends keyof FormState,
-> = FormState[FieldKey] extends string | number | null
-  ? {
-      label: string;
-      value: FormState[FieldKey];
-    }[]
-  : never;
+  FieldKey extends Paths<FormState>,
+> =
+  Path<FormState, FieldKey> extends string | number | null
+    ? {
+        label: string;
+        value: Path<FormState, FieldKey>;
+      }[]
+    : never;
+
+type SingleFormikSelectProps<
+  FormState extends GenericForm,
+  FieldKey extends Paths<FormState>,
+> = tst.O.Merge<
+  Omit<
+    SelectProps<SingleFormikSelectValue<FormState, FieldKey>>,
+    "onChange" | "defaultValue" | "options" | "mode"
+  >,
+  {
+    selectAllNoneButtons?: undefined;
+    mode?: undefined;
+    name: FieldKey;
+    options: SingleFormikSelectValue<FormState, FieldKey>;
+  }
+>;
 
 type MultiFormikSelectValue<
   FormState extends GenericForm,
-  FieldKey extends keyof FormState,
-> = FormState[FieldKey] extends string[] | number[] | null
-  ? {
-      label: string;
-      value: FormState[FieldKey][keyof FormState[FieldKey]];
-    }[]
-  : never;
-
-type FormikSelectValue<
-  FormState extends GenericForm,
-  FieldKey extends keyof FormState,
-  Multiple extends boolean,
-> = Multiple extends true
-  ? MultiFormikSelectValue<FormState, FieldKey>
-  : SingleFormikSelectValue<FormState, FieldKey>;
-
-type FormikSelectProps<
-  FormState extends GenericForm,
-  FieldKey extends keyof FormState,
+  FieldKey extends Paths<FormState>,
 > =
-  | tst.O.Merge<
-      Omit<
-        SelectProps<FormikSelectValue<FormState, FieldKey, false>>,
-        "onChange" | "defaultValue" | "options" | "mode"
-      >,
-      {
-        selectAllNoneButtons?: undefined;
-        mode?: undefined;
-        name: FieldKey;
-        options: FormikSelectValue<FormState, FieldKey, false>;
-      }
-    >
-  | tst.O.Merge<
-      Omit<
-        SelectProps<FormikSelectValue<FormState, FieldKey, true>>,
-        "onChange" | "defaultValue" | "options" | "mode"
-      >,
-      {
-        selectAllNoneButtons?: boolean;
-        mode: "multiple";
-        name: FieldKey;
-        options: FormikSelectValue<FormState, FieldKey, true>;
-      }
-    >;
+  Path<FormState, FieldKey> extends string[] | number[] | null
+    ? {
+        label: string;
+        value: Path<FormState, FieldKey>[keyof Path<FormState, FieldKey>];
+      }[]
+    : never;
+
+type MultiFormikSelectProps<
+  FormState extends GenericForm,
+  FieldKey extends Paths<FormState>,
+> = tst.O.Merge<
+  Omit<
+    SelectProps<MultiFormikSelectValue<FormState, FieldKey>>,
+    "onChange" | "defaultValue" | "options" | "mode"
+  >,
+  {
+    selectAllNoneButtons?: boolean;
+    mode: "multiple";
+    name: FieldKey;
+    options: MultiFormikSelectValue<FormState, FieldKey>;
+  }
+>;
 
 export const FormikSelect = <
   FormState extends GenericForm,
-  FieldKey extends keyof FormState,
+  FieldKey extends Paths<FormState>,
 >({
   name,
   selectAllNoneButtons,
   ...props
-}: FormikSelectProps<FormState, FieldKey>) => {
+}:
+  | SingleFormikSelectProps<FormState, FieldKey>
+  | MultiFormikSelectProps<FormState, FieldKey>) => {
   const [{ value, onBlur }, { error }, { setValue }] =
-    useField<FormState[FieldKey]>(name);
+    useField<Path<FormState, typeof name>>(name);
 
   const selectAllNoneDropdownRender = React.useCallback<
     (menu: React.ReactElement) => React.ReactElement

@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "./button";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const readAsArrayBuffer = (file: File): Promise<Uint8Array> => {
   return new Promise((resolve, reject) => {
@@ -23,6 +24,7 @@ type Props = {
 };
 
 export const FileUpload = ({ id, accept, flex, onUpload }: Props) => {
+  const t = useActiveRouteTranslations();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = React.useState<string | null>(null);
 
@@ -59,7 +61,7 @@ export const FileUpload = ({ id, accept, flex, onUpload }: Props) => {
         trackerId={`upload_${id}`}
         onClick={() => inputRef.current?.click()}
       >
-        {fileName ?? "Upload!"}
+        {fileName ?? t["Upload!"]}
       </Button>
     </>
   );

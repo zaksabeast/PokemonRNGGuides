@@ -49,6 +49,7 @@ import emerald_wild3_game_data from "~/__generated__/emerald_wild3_game_data";
 import { uniq, startCase, sortBy } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { Tooltip } from "antd";
+import { Translations } from "~/translations";
 import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
@@ -396,7 +397,10 @@ const getMethodLikelihoodColumValue = (
   );
 };
 
-const getColumns = (values: FormState): ResultColumn<UiResult>[] => {
+const getColumns = (
+  _t: Translations,
+  values: FormState,
+): ResultColumn<UiResult>[] => {
   const columns: ResultColumn<UiResult>[] = [];
   columns.push(
     {

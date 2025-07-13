@@ -25,6 +25,7 @@ import {
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
 } from "~/components/pkmFilter";
+import { Translations } from "~/translations";
 
 const JirachiSaveErrorSchema: z.Schema<JirachiSaveError> = z.union([
   z.literal("NeedToSaveAgain"),
@@ -41,18 +42,18 @@ type Result = tst.O.MergeAll<
   ]
 >;
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
-    title: "Seed",
+    title: t["Seed"],
     dataIndex: "seed",
     render: (seed) => seed.toString(16).toUpperCase().padStart(4, "0"),
   },
-  { title: "Hours", dataIndex: "hours" },
-  { title: "Minutes", dataIndex: "minutes" },
-  { title: "Seconds", dataIndex: "seconds" },
-  { title: "Frames", dataIndex: "frames" },
+  { title: t["Hours"], dataIndex: "hours" },
+  { title: t["Minutes"], dataIndex: "minutes" },
+  { title: t["Seconds"], dataIndex: "seconds" },
+  { title: t["Frames"], dataIndex: "frames" },
   {
-    title: "Shiny",
+    title: t["Shiny"],
     dataIndex: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
@@ -81,15 +82,15 @@ export const MultibootJirachi = ({ jirachi }: Props) => {
   const [results, setResults] = React.useState<Result[]>([]);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
-  const fields: Field[] = React.useMemo(
-    () => [
+  const getFields = React.useCallback(
+    (t: Translations): Field[] => [
       {
-        label: "Search Hours",
+        label: t["Search Hours"],
         input: <FormikNumberInput<FormState> name="hours" numType="decimal" />,
       },
       ...getPkmFilterFields<FormState>({ ability: false, gender: false }),
       {
-        label: "Save file",
+        label: t["Save file"],
         input: (
           <Flex width="100%">
             <FileUpload
@@ -152,8 +153,8 @@ export const MultibootJirachi = ({ jirachi }: Props) => {
         <Alert showIcon type="error" message={errorMessage} />
       )}
       <RngToolForm<FormState, Result>
-        fields={fields}
-        columns={columns}
+        getFields={getFields}
+        getColumns={getColumns}
         results={results}
         initialValues={initialValues}
         validationSchema={Validator}

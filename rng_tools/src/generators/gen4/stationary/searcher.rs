@@ -1,4 +1,7 @@
-use crate::gen4::{DpptSeedTime4, FindSeedTime4Options, dppt_find_seedtime};
+use crate::gen4::{
+    DpptSeedTime4, FindSeedTime4Options, GameVersion, LeadAbilities, Static4Species,
+    dppt_find_seedtime,
+};
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
 use crate::{
@@ -237,7 +240,7 @@ pub struct SearchStatic4MethodjOpts {
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SearchStatic4MethodjState {
-    pub seed_time: SeedTime4,
+    pub seed_time: DpptSeedTime4,
     pub seed: u32,
     pub advance: usize,
     pub pid: u32,
@@ -282,9 +285,13 @@ impl PkmState for Base4MethodjState {
     fn shiny(&self) -> bool {
         self.shiny
     }
+
+    fn pid(&self) -> u32 {
+        self.pid
+    }
 }
 impl Base4MethodjState {
-    fn full_state(&self, advance: usize, seed_time: SeedTime4) -> SearchStatic4MethodjState {
+    fn full_state(&self, advance: usize, seed_time: DpptSeedTime4) -> SearchStatic4MethodjState {
         SearchStatic4MethodjState {
             advance,
             seed_time,
@@ -1751,6 +1758,7 @@ mod tests {
                     max_ivs: Ivs::new_all31(),
                     ability: None,
                     stats: None,
+                    ..Default::default()
                 },
                 min_advance: 20,
                 max_advance: 21,
@@ -1762,7 +1770,7 @@ mod tests {
             let results = search_static4_methodj_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 251986750,
                         datetime: RngDateTime {
                             year: 2025,
@@ -1793,7 +1801,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2031092537,
                         datetime: RngDateTime {
                             year: 2025,
@@ -1824,7 +1832,7 @@ mod tests {
                     characteristic: Characteristic::SomewhatVain,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 3540321084,
                         datetime: RngDateTime {
                             year: 2025,
@@ -1855,7 +1863,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 4144825153,
                         datetime: RngDateTime {
                             year: 2025,
@@ -1886,7 +1894,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 990184252,
                         datetime: RngDateTime {
                             year: 2025,
@@ -1917,7 +1925,7 @@ mod tests {
                     characteristic: Characteristic::SomewhatVain,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 3020292925,
                         datetime: RngDateTime {
                             year: 2025,
@@ -1948,7 +1956,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 1611924281,
                         datetime: RngDateTime {
                             year: 2025,
@@ -1979,7 +1987,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 1645413181,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2028,6 +2036,7 @@ mod tests {
                     max_ivs: Ivs::new_all31(),
                     ability: None,
                     stats: None,
+                    ..Default::default()
                 },
                 min_advance: 20,
                 max_advance: 21,
@@ -2039,7 +2048,7 @@ mod tests {
             let results = search_static4_methodj_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 1947206500,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2070,7 +2079,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2014315364,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2101,7 +2110,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2081424228,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2132,7 +2141,7 @@ mod tests {
                     characteristic: Characteristic::CapableOfTakingHits,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 3221881707,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2163,7 +2172,7 @@ mod tests {
                     characteristic: Characteristic::LikesToThrashAbout,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 3288990571,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2194,7 +2203,7 @@ mod tests {
                     characteristic: Characteristic::LikesToThrashAbout,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2600469312,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2225,7 +2234,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 1879180138,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2256,7 +2265,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 3624010602,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2287,7 +2296,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2667578176,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2318,7 +2327,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 1946289002,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2349,7 +2358,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 3691119466,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2380,7 +2389,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 4228186973,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2411,7 +2420,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 1325663066,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2442,7 +2451,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 3070493530,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2473,7 +2482,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2416247645,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2504,7 +2513,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 1392771930,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2535,7 +2544,7 @@ mod tests {
                     characteristic: Characteristic::SomewhatVain,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 3137602394,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2584,6 +2593,7 @@ mod tests {
                     max_ivs: Ivs::new_all31(),
                     ability: None,
                     stats: None,
+                    ..Default::default()
                 },
                 min_advance: 20,
                 max_advance: 21,
@@ -2595,7 +2605,7 @@ mod tests {
             let results = search_static4_methodj_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2014315364,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2626,7 +2636,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 4161799012,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2657,7 +2667,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2081424228,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2688,7 +2698,7 @@ mod tests {
                     characteristic: Characteristic::CapableOfTakingHits,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 4228907876,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2719,7 +2729,7 @@ mod tests {
                     characteristic: Characteristic::CapableOfTakingHits,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 1611268971,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2750,7 +2760,7 @@ mod tests {
                     characteristic: Characteristic::LikesToThrashAbout,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 1946289002,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2781,7 +2791,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 1392771930,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2812,7 +2822,7 @@ mod tests {
                     characteristic: Characteristic::SomewhatVain,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 3137602394,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2843,7 +2853,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 990118746,
                         datetime: RngDateTime {
                             year: 2025,
@@ -2892,6 +2902,7 @@ mod tests {
                     max_ivs: Ivs::new_all31(),
                     ability: None,
                     stats: None,
+                    ..Default::default()
                 },
                 min_advance: 0,
                 max_advance: 0,
@@ -2903,7 +2914,7 @@ mod tests {
             let results = search_static4_methodj_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xd0a030c,
                         datetime: RngDateTime {
                             year: 2000,
@@ -2934,7 +2945,7 @@ mod tests {
                     characteristic: Characteristic::AlertToSounds,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0x2007030c,
                         datetime: RngDateTime {
                             year: 2000,
@@ -2965,7 +2976,7 @@ mod tests {
                     characteristic: Characteristic::LikesToThrashAbout,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xa807030c,
                         datetime: RngDateTime {
                             year: 2000,
@@ -2996,7 +3007,7 @@ mod tests {
                     characteristic: Characteristic::LikesToThrashAbout,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xa812030c,
                         datetime: RngDateTime {
                             year: 2000,
@@ -3027,7 +3038,7 @@ mod tests {
                     characteristic: Characteristic::LikesToThrashAbout,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xf407030c,
                         datetime: RngDateTime {
                             year: 2000,
@@ -3058,7 +3069,7 @@ mod tests {
                     characteristic: Characteristic::LikesToThrashAbout,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 0xee15030c,
                         datetime: RngDateTime {
                             year: 2000,
@@ -3094,7 +3105,11 @@ mod tests {
     }
     mod search_static4_methodk_seed {
         use super::*;
-        use crate::{RngDateTime, assert_list_eq, coin_flips, ivs};
+        use crate::{
+            RngDateTime, assert_list_eq, coin_flips,
+            gen4::{GameVersion, Static4Species},
+            ivs,
+        };
 
         #[test]
         fn static_methodk() {
@@ -3112,6 +3127,7 @@ mod tests {
                     max_ivs: Ivs::new_all31(),
                     ability: None,
                     stats: None,
+                    ..Default::default()
                 },
                 min_advance: 20,
                 max_advance: 21,
@@ -3123,7 +3139,7 @@ mod tests {
             let results = search_static4_methodk_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2635531070,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3154,7 +3170,7 @@ mod tests {
                     characteristic: Characteristic::SomewhatVain,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2768372541,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3185,7 +3201,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 722207548,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3216,7 +3232,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2434204478,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3247,7 +3263,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 51381052,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3278,7 +3294,7 @@ mod tests {
                     characteristic: Characteristic::LikesToThrashAbout,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 3540321084,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3309,7 +3325,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2266432322,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3340,7 +3356,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 1997341505,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3371,7 +3387,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 4111729472,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3402,7 +3418,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 806748993,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3433,7 +3449,7 @@ mod tests {
                     characteristic: Characteristic::SomewhatVain,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 805634874,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3482,6 +3498,7 @@ mod tests {
                     max_ivs: Ivs::new_all31(),
                     ability: None,
                     stats: None,
+                    ..Default::default()
                 },
                 min_advance: 20,
                 max_advance: 20,
@@ -3493,7 +3510,7 @@ mod tests {
             let results = search_static4_methodk_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 3809280816,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3524,7 +3541,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2332885808,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3555,7 +3572,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 3255829300,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3586,7 +3603,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 2601583405,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3635,6 +3652,7 @@ mod tests {
                     max_ivs: Ivs::new_all31(),
                     ability: None,
                     stats: None,
+                    ..Default::default()
                 },
                 min_advance: 20,
                 max_advance: 21,
@@ -3646,7 +3664,7 @@ mod tests {
             let results = search_static4_methodk_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 855638848,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3677,7 +3695,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 452985664,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3708,7 +3726,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 922747712,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3739,7 +3757,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 520094528,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3770,7 +3788,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 989856576,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3819,6 +3837,7 @@ mod tests {
                     max_ivs: Ivs::new_all31(),
                     ability: None,
                     stats: None,
+                    ..Default::default()
                 },
                 min_advance: 20,
                 max_advance: 21,
@@ -3830,7 +3849,7 @@ mod tests {
             let results = search_static4_methodk_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 855638848,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3861,7 +3880,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 452985664,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3892,7 +3911,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 922747712,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3923,7 +3942,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 520094528,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3954,7 +3973,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: SeedTime4 {
+                    seed_time: DpptSeedTime4 {
                         seed: 989856576,
                         datetime: RngDateTime {
                             year: 2025,

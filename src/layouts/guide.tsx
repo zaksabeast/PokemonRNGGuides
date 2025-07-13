@@ -96,7 +96,7 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
           </Flex>
           <Flex>
             <Button
-              trackerId="get_help_on_discord"
+              trackerId="join_lazy_discord"
               icon={<Icon name="Discord" />}
               type="primary"
               size="middle"

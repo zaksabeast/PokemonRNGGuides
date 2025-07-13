@@ -45,13 +45,19 @@ type Props = {
 
 const AppIdeaButton = () => {
   const { openModal } = useSurveyModal();
-  const abTest = useAbCohort("appCommunityButton2");
+  const abTest = useAbCohort("appCommunityButton3");
 
   const text = match(abTest.cohort)
     .with(null, () => <Skeleton.Button size="small" active />)
-    .with("expandingBeyondPokemon", () => "I'm expanding beyond Pokemon")
-    .with("nonPokemonAppIdeas", () => "Share Your App Ideas — New Community")
-    .with("helpMeBuild", () => "Got App Ideas Beyond Pokémon?")
+    .with(
+      "newNonPokemonProjectCurious",
+      () => "New (non-Pokémon) project — curious?",
+    )
+    .with(
+      "buildingOutsidePokemonTakeALook",
+      () => "Building outside Pokemon — take a look?",
+    )
+    .with("newSideProjectNotPokemon", () => "New side project — not Pokemon!")
     .exhaustive();
 
   return (

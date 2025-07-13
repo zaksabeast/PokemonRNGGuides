@@ -40,6 +40,8 @@ import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
 import { match, P } from "ts-pattern";
 import { chunkRange } from "~/utils/chunkRange";
 import { UndefinedToNull } from "~/types";
+import { Translations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const idTypes = ["Cute Charm", "Any TID"] as const;
 type IdType = (typeof idTypes)[number];
@@ -93,33 +95,39 @@ const formatGenderRatio = (genderRatio: GenderRatio) => {
     .exhaustive();
 };
 
-const getColumns = ({ idType }: { idType: IdType }): ResultColumn<Result>[] => {
+const getColumns = ({
+  t,
+  idType,
+}: {
+  t: Translations;
+  idType: IdType;
+}): ResultColumn<Result>[] => {
   const startColumns: ResultColumn<Result>[] = [
     {
-      title: "Select",
+      title: t["Select"],
       dataIndex: "seed",
       render: (_, target) => <SelectButton target={target} />,
     },
     {
-      title: "TID",
+      title: t["TID"],
       dataIndex: "tid",
     },
     {
-      title: "SID",
+      title: t["SID"],
       dataIndex: "sid",
     },
     {
-      title: "TSV",
+      title: t["TSV"],
       dataIndex: "tsv",
     },
   ];
   const endColumns: ResultColumn<Result>[] = [
     {
-      title: "Delay",
+      title: t["Delay"],
       dataIndex: "delay",
     },
     {
-      title: "Seconds",
+      title: t["Seconds"],
       dataIndex: "seconds",
     },
   ];
@@ -131,16 +139,16 @@ const getColumns = ({ idType }: { idType: IdType }): ResultColumn<Result>[] => {
   return [
     ...startColumns,
     {
-      title: "Target Gender",
+      title: t["Target Gender"],
       dataIndex: "targetGender",
     },
     {
-      title: "Natures",
+      title: t["Natures"],
       dataIndex: "natures",
       render: (natures) => natures.join(", "),
     },
     {
-      title: "Gender Ratios",
+      title: t["Gender Ratios"],
       dataIndex: "genderRatios",
       render: (genderRatios) =>
         genderRatios.length === 0
@@ -186,38 +194,37 @@ const initialValues: FormState = {
 };
 
 const getFields = ({
+  t,
   idType,
   maxShinyOdds,
   setValues,
 }: {
+  t: Translations;
   idType: IdType;
   maxShinyOdds: boolean;
   setValues: (values: FormState) => void;
 }): Field[] => {
   const baseFields = [
     {
-      label: "Year",
+      label: t["Year"],
       input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
     },
     {
-      label: "Min Delay",
+      label: t["Min Delay"],
       input: (
         <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
       ),
     },
     {
-      label: "Max Delay",
+      label: t["Max Delay"],
       input: (
         <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
       ),
     },
     {
-      label: "ID Type",
+      label: t["ID Type"],
       input: (
-        <FormikRadio<FormState, "id_type">
-          name="id_type"
-          options={toOptions(idTypes)}
-        />
+        <FormikRadio<FormState> name="id_type" options={toOptions(idTypes)} />
       ),
     },
   ];
@@ -226,7 +233,7 @@ const getFields = ({
     return [
       ...baseFields,
       {
-        label: "Filter",
+        label: t["Filter"],
         input: <FormikIdFilter<FormState> name="id_filter" />,
       },
     ];
@@ -235,9 +242,9 @@ const getFields = ({
   return [
     ...baseFields,
     {
-      label: "Max Shiny Odds",
+      label: t["Max Shiny Odds"],
       input: (
-        <FormikSwitch<FormState, "max_shiny_odds">
+        <FormikSwitch<FormState>
           name="max_shiny_odds"
           onChange={(checked: boolean) => {
             if (checked) {
@@ -248,7 +255,7 @@ const getFields = ({
       ),
     },
     {
-      label: "Target Gender",
+      label: t["Target Gender"],
       input: (
         <FormikSelect<FormState, "target_gender">
           name="target_gender"
@@ -258,7 +265,7 @@ const getFields = ({
       ),
     },
     {
-      label: "Target Nature",
+      label: t["Target Nature"],
       input: (
         <FormikSelect<FormState, "target_nature">
           name="target_nature"
@@ -268,7 +275,7 @@ const getFields = ({
       ),
     },
     {
-      label: "Target Species",
+      label: t["Target Species"],
       input: (
         <FormikSelect<FormState, "target_species">
           name="target_species"
@@ -278,11 +285,11 @@ const getFields = ({
       ),
     },
     {
-      label: "Optional TID",
+      label: t["Optional TID"],
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
     {
-      label: "Force Second",
+      label: t["Force Second"],
       input: (
         <FormikNumberInput<FormState> name="force_second" numType="decimal" />
       ),
@@ -291,17 +298,19 @@ const getFields = ({
 };
 
 const Id4SearcherFields = () => {
+  const t = useActiveRouteTranslations();
   const { values, setValues } = useFormikContext<FormState>();
   const maxShinyOdds = values.max_shiny_odds;
   const idType = values.id_type;
   const fields = React.useMemo(
     () =>
       getFields({
+        t,
         idType,
         maxShinyOdds,
         setValues,
       }),
-    [idType, maxShinyOdds, setValues],
+    [t, idType, maxShinyOdds, setValues],
   );
   return <FormFieldTable fields={fields} />;
 };
@@ -315,6 +324,7 @@ const mapResult = (res: Id4): Result => ({
 });
 
 export const Id4Searcher = () => {
+  const t = useActiveRouteTranslations();
   const [messageApi, contextHolder] = message.useMessage();
   const { run: searchDpptIds, data: results } = useBatchedTool(
     multiWorkerRngTools.search_dppt_ids,
@@ -376,7 +386,7 @@ export const Id4Searcher = () => {
     [searchDpptIds, messageApi],
   );
 
-  const columns = React.useMemo(() => getColumns({ idType }), [idType]);
+  const columns = React.useMemo(() => getColumns({ t, idType }), [t, idType]);
 
   return (
     <RngToolForm<FormState, Result>

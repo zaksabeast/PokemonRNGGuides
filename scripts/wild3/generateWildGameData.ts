@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import prettier from "prettier";
 import { z } from "zod";
-import type { Species } from "../../src/rngTools";
+import type { Gen3EncounterType, Species } from "../../src/rngTools";
 import { species as allSpecies } from "../../src/types/species";
 import { genderRatioBySpecies } from "../../src/types/gender";
 import { Wild3GameDataJSON } from "../../src/rngToolsUi/gen3/wild/wild3GameData";
@@ -55,20 +55,24 @@ export const generateEmeraldWildGameData = async () => {
     formattedSpeciesToSpecies.set(formatSpecies(species), species);
   });
 
+  const encounterTypeMons = z
+    .object({
+      mons: z.array(
+        z.object({
+          species: z.string(),
+          min_level: z.number(),
+          max_level: z.number(),
+        }),
+      ),
+    })
+    .optional();
+
   const EncounterSchema = z.object({
     map: z.string().optional(),
     base_label: z.string().optional(),
-    land_mons: z
-      .object({
-        mons: z
-          .object({
-            min_level: z.number(),
-            max_level: z.number(),
-            species: z.string(),
-          })
-          .array(),
-      })
-      .optional(),
+    land_mons: encounterTypeMons,
+    water_mons: encounterTypeMons,
+    fishing_mons: encounterTypeMons,
   });
 
   emerald_wild_encounters.wild_encounter_groups.forEach((grp) => {
@@ -86,8 +90,17 @@ export const generateEmeraldWildGameData = async () => {
         return;
       }
 
-      if (enc.land_mons) {
-        const slots = enc.land_mons.mons.map((landMon, encounterSlotIdx) => {
+      const handleEncounterType = (
+        encounterType: Gen3EncounterType,
+        mons:
+          | { species: string; min_level: number; max_level: number }[]
+          | undefined,
+      ) => {
+        if (!mons || mons.length === 0) {
+          return;
+        }
+
+        const slots = mons.map((landMon, encounterSlotIdx) => {
           const species = jsonNameToSpecies(landMon.species);
 
           return {
@@ -99,12 +112,19 @@ export const generateEmeraldWildGameData = async () => {
             is_steel_type: doesSpeciesHaveType(3, species, "Steel"),
           };
         });
+
         jsonData.encounter_tables.push({
           map_id: enc.map,
-          encounter_type: "Land",
+          encounter_type: encounterType,
           slots,
         });
-      }
+      };
+
+      handleEncounterType("Land", enc.land_mons?.mons);
+      handleEncounterType("Water", enc.water_mons?.mons);
+      handleEncounterType("OldRod", enc.fishing_mons?.mons.slice(0, 2));
+      handleEncounterType("GoodRod", enc.fishing_mons?.mons.slice(2, 5));
+      handleEncounterType("SuperRod", enc.fishing_mons?.mons.slice(5, 10));
     });
   });
 

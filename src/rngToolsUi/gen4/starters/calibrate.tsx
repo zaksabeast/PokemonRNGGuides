@@ -32,6 +32,8 @@ import pMap from "p-map";
 import { match } from "ts-pattern";
 import { characteristics, Characteristic4Options } from "../gen4types";
 import { fromRngDateTime, toRngDateTime } from "~/utils/time";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
 
 type Result = Gen4StaticPokemon & {
   key: string;
@@ -58,7 +60,7 @@ const Validator = z
 type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  level: 0,
+  level: 5,
   hpStat: 0,
   atkStat: 0,
   defStat: 0,
@@ -70,9 +72,9 @@ const initialValues: FormState = {
   filter_characteristic: "AlertToSounds",
 };
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
-    title: "Calibrate",
+    title: t["Calibrate"],
     dataIndex: "key",
     render: (_, target) => (
       <CalibrateTimerButton
@@ -85,34 +87,34 @@ const columns: ResultColumn<Result>[] = [
     ),
   },
   {
-    title: "Delay Offset",
+    title: t["Delay Offset"],
     dataIndex: "delayOffset",
     render: formatOffset,
   },
   {
-    title: "Advance Offset",
+    title: t["Advance Offset"],
     dataIndex: "advanceOffset",
     render: formatOffset,
   },
   {
-    title: "Second Offset",
+    title: t["Second Offset"],
     dataIndex: "secondOffset",
     render: formatOffset,
   },
   {
-    title: "Flip Delay",
+    title: t["Flip Delay"],
     dataIndex: "flipDelay",
     render: (flipDelay) =>
       flipDelay ? <Icon name="CheckCircle" color="Success" size={30} /> : null,
   },
   {
-    title: "Seed",
+    title: t["Seed"],
     dataIndex: "seed",
     monospace: true,
     render: (val) => val.toString(16).padStart(8, "0").toUpperCase(),
   },
   {
-    title: "Second",
+    title: t["Second"],
     dataIndex: "second",
   },
 ];
@@ -138,6 +140,7 @@ const getStarterGame = (starter: Gen4Starter) => {
 };
 
 export const CalibrateStarter4 = () => {
+  const t = useActiveRouteTranslations();
   const [state] = useStarterState();
   const [results, setResults] = React.useState<Result[]>([]);
 
@@ -150,16 +153,16 @@ export const CalibrateStarter4 = () => {
   const fields = React.useMemo((): Field[] => {
     return [
       {
-        label: "Gender",
+        label: t["Gender"],
         input: (
-          <FormikRadio<FormState, "gender">
+          <FormikRadio<FormState>
             name="gender"
             options={toOptions(starterGenders)}
           />
         ),
       },
       {
-        label: "Nature",
+        label: t["Nature"],
         input: (
           <FormikSelect<FormState, "nature">
             name="nature"
@@ -168,7 +171,7 @@ export const CalibrateStarter4 = () => {
         ),
       },
       {
-        label: "Characteristic",
+        label: t["Characteristic"],
         input: (
           <FormikSelect<FormState, "filter_characteristic">
             name="filter_characteristic"
@@ -177,17 +180,16 @@ export const CalibrateStarter4 = () => {
         ),
       },
       {
-        label: "Level",
+        label: t["Level"],
         input: (
-          <FormikRadio<FormState, "level">
-            name="level"
-            options={toOptions([5, 6])}
-          />
+          <FormikRadio<FormState> name="level" options={toOptions([5, 6])} />
         ),
       },
-      ...getStatFields<FormState>(minMaxStats),
+      ...getStatFields<FormState>(minMaxStats, t),
     ];
-  }, [minMaxStats]);
+  }, [minMaxStats, t]);
+
+  const columns = React.useMemo(() => getColumns(t), [t]);
 
   const onSubmit = React.useCallback(
     async (opts: FormState) => {

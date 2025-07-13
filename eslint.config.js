@@ -61,6 +61,7 @@ const baseConfig = {
     "no-console": "error",
     "prefer-arrow-callback": ["error"],
     "func-style": ["error", "expression"],
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "react/jsx-key": "error",
     "no-restricted-syntax": [
       "error",

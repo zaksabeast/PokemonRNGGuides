@@ -11,16 +11,56 @@ import {
   NavBreadcrumbs,
 } from "~/components";
 import { settings } from "~/settings";
-import { useSupportModal } from "~/components/supportModal/state";
+import { SurveyModal } from "~/components/surveyModal/modal";
+import { useSurveyModal } from "~/components/surveyModal/state";
+import styled from "@emotion/styled";
+import { Skeleton } from "antd";
+import { match } from "ts-pattern";
+import { useAbCohort } from "~/hooks/useAbTest";
+
+const SpinOnceIcon = styled(Icon)({
+  animation: "spin 5s linear",
+  transform: "scaleX(0.7)",
+  transformOrigin: "center",
+  transition: "transform 0.3s ease",
+  "@keyframes spin": {
+    "0%": { transform: "rotate(0deg) scaleX(0.7)" },
+    "100%": { transform: "rotate(360deg) scaleX(0.7)" },
+  },
+});
 
 type Props = {
   guideMeta: GuideMeta;
   children: React.ReactNode;
 };
 
-export const GuideLayout = ({ guideMeta, children }: Props) => {
-  const { openSupportModal } = useSupportModal();
+const AppIdeaButton = () => {
+  const { openModal } = useSurveyModal();
+  const abTest = useAbCohort("appCommunityButton");
 
+  const text = match(abTest.cohort)
+    .with(null, () => <Skeleton.Button size="small" active />)
+    .with("curiousAboutApps", () => "New App Ideas — Vote & Shape")
+    .with("youVoteIBuild", () => "Join the New Ideas Community")
+    .with("shapeTheFuture", () => "New App Ideas Hub — Join Now")
+    .exhaustive();
+
+  return (
+    <Button
+      trackerId="app_idea_button"
+      icon={<SpinOnceIcon size={20} name="StarSwirl" />}
+      type="primary"
+      size="middle"
+      backgroundColor="ErrorActive"
+      backgroundHoverColor="Error"
+      onClick={openModal}
+    >
+      {text}
+    </Button>
+  );
+};
+
+export const GuideLayout = ({ guideMeta, children }: Props) => {
   return (
     <MainLayout>
       <NavBreadcrumbs route={guideMeta.slug} />
@@ -41,17 +81,7 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
       </Flex>
 
       <Flex>
-        <Button
-          trackerId="support_us_on_discord"
-          icon={<Icon name="Heart" />}
-          type="primary"
-          backgroundColor="BrandSecondary"
-          backgroundHoverColor="BrandSecondaryHover"
-          size="middle"
-          onClick={openSupportModal}
-        >
-          Keep Pokémon RNG Free & Growing
-        </Button>
+        <AppIdeaButton />
       </Flex>
 
       {guideMeta.isRoughDraft && (
@@ -68,6 +98,7 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
       )}
 
       {children}
+      <SurveyModal />
     </MainLayout>
   );
 };

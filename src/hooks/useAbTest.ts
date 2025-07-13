@@ -27,9 +27,13 @@ type AbTestConfigs = Record<string, AbTestConfig>;
 
 const abTests = {
   // Temporarily keep at least one for type purposes
-  guidePokeball: {
+  placeholder: {
     cohorts: ["on", "off"],
     controlCohort: "off",
+  },
+  appCommunityButton: {
+    cohorts: ["curiousAboutApps", "youVoteIBuild", "shapeTheFuture"],
+    controlCohort: "curiousAboutApps",
   },
 } as const satisfies AbTestConfigs;
 
@@ -54,7 +58,8 @@ const getAbCohort = <T extends AbTestName>(abTestName: T): AbCohort<T> => {
 type JoinedCohorts = Record<AbTestName, boolean>;
 
 const joinedCohorts = atom<JoinedCohorts>({
-  guidePokeball: false,
+  placeholder: false,
+  appCommunityButton: false,
 } satisfies JoinedCohorts);
 
 type AbCohortResult<T extends AbTestName> =

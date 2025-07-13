@@ -33,6 +33,7 @@ import {
   Characteristic4Options,
 } from "~/rngToolsUi/gen4/gen4types";
 import { nature } from "~/types/nature";
+import { Translations } from "~/translations";
 
 type Result = FlattenIvs<Gen4StaticPokemon>;
 const GameVersionOpts = toOptions(Gen4GameVersions, startCase);
@@ -111,7 +112,7 @@ const initialValues: FormState = {
   ...getPkmFilterInitialValues(),
 };
 
-const getFields = (values: FormState) => {
+const getFields = (_t: Translations, values: FormState) => {
   const fields: Field[] = [
     {
       label: "Seed",

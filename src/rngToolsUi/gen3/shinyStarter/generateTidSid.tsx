@@ -12,6 +12,7 @@ import {
 } from "~/components";
 import { Game } from "./index";
 import { rngTools, Gen3NearbySid, Gen3TidSidShinyResult } from "~/rngTools";
+import { Translations } from "~/translations";
 
 const Validator = z.object({
   offset: z.number().int().min(-999).max(999),
@@ -134,7 +135,7 @@ export const GenerateHoennTidSid = ({ game }: Props) => {
   const idealAdvance = IDEAL_TIDSID_ADVANCE_WITH_OFFSET(game);
 
   const getFields = React.useCallback(
-    (values: FormState): Field[] => {
+    (_t: Translations, values: FormState): Field[] => {
       const milliseconds = (() => {
         const advFromOffset = values.offset;
         const advFromTimer = idealAdvance - advFromOffset;

@@ -1,4 +1,5 @@
 import React from "react";
+import { memoize } from "lodash-es";
 
 export const guides = {
   "/": {
@@ -23,6 +24,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Home.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Home.mdx?raw");
+      return file.default;
+    }),
   },
   "/3ds-alt-settings/": {
     meta: {
@@ -46,6 +51,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS Alt Settings.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/3DS Alt Settings.mdx?raw");
+      return file.default;
+    }),
   },
   "/3ds-helper/": {
     meta: {
@@ -69,6 +78,10 @@ export const guides = {
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS Helper.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/3DS Helper.mdx?raw");
+      return file.default;
+    }),
   },
   "/about/": {
     meta: {
@@ -92,6 +105,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/About.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/About.mdx?raw");
+      return file.default;
+    }),
   },
   "/azahar-setup/": {
     meta: {
@@ -116,6 +133,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Azahar Setup.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/Azahar Setup.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/bdsp-advance-rng/": {
     meta: {
@@ -144,6 +167,12 @@ export const guides = {
           "~/../guides/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/bdsp-chatot/": {
     meta: {
@@ -172,6 +201,12 @@ export const guides = {
           "~/../guides/Brilliant Diamond and Shining Pearl/BK - How to use Shiny's site.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Brilliant Diamond and Shining Pearl/BK - How to use Shiny's site.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/bdsp-emulator-setup/": {
     meta: {
@@ -200,6 +235,12 @@ export const guides = {
           "~/../guides/Brilliant Diamond and Shining Pearl/BK - Emulator Setup.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Brilliant Diamond and Shining Pearl/BK - Emulator Setup.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/bdsp-pokefinder/": {
     meta: {
@@ -228,6 +269,12 @@ export const guides = {
           "~/../guides/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/black-2-and-white-2/": {
     meta: {
@@ -250,6 +297,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/black-and-white/": {
     meta: {
@@ -272,6 +323,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/brilliant-diamond-and-shining-pearl/": {
     meta: {
@@ -294,6 +349,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/bw2-egg/": {
     meta: {
@@ -317,6 +376,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/BW2 Egg.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/BW2 Egg.mdx?raw");
+      return file.default;
+    }),
   },
   "/cfw-bdsp-egg/": {
     meta: {
@@ -342,6 +405,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Egg.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Brilliant Diamond and Shining Pearl/Egg.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/cfw-bdsp-stationary/": {
     meta: {
@@ -370,6 +439,12 @@ export const guides = {
           "~/../guides/Brilliant Diamond and Shining Pearl/Stationary.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Brilliant Diamond and Shining Pearl/Stationary.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/cfw-bdsp-tidandsid/": {
     meta: {
@@ -398,6 +473,12 @@ export const guides = {
           "~/../guides/Brilliant Diamond and Shining Pearl/TID SID RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Brilliant Diamond and Shining Pearl/TID SID RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/cfw-bdsp-wild/": {
     meta: {
@@ -423,6 +504,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Wild.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Brilliant Diamond and Shining Pearl/Wild.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/challenge-usum-ta/": {
     meta: {
@@ -446,6 +533,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Challenges.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Challenges.mdx?raw");
+      return file.default;
+    }),
   },
   "/channel-jirachi/": {
     meta: {
@@ -468,6 +559,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gamecube/Channel.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gamecube/Channel.mdx?raw");
+      return file.default;
+    }),
   },
   "/citrarng-setup/": {
     meta: {
@@ -493,6 +588,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/CitraRNG Setup.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/CitraRNG Setup.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/connect-dolphin-to-gba/": {
     meta: {
@@ -519,6 +620,12 @@ export const guides = {
       () =>
         import("~/../guides/Tools and Emulators/Connect Dolphin To GBA.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/Connect Dolphin To GBA.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/consistent-platinum-rng/": {
     meta: {
@@ -547,6 +654,12 @@ export const guides = {
           "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Consistent Platinum RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Consistent Platinum RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/crystal/": {
     meta: {
@@ -569,6 +682,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/delete-pokemon-save/": {
     meta: {
@@ -596,6 +713,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Delete Save.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/Delete Save.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/desmume-setup/": {
     meta: {
@@ -621,6 +744,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Desmume Setup.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/Desmume Setup.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/diamond-pearl-and-platinum/": {
     meta: {
@@ -643,6 +772,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/dppt-3ds-rng/": {
     meta: {
@@ -666,6 +799,10 @@ export const guides = {
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS RNG.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/3DS RNG.mdx?raw");
+      return file.default;
+    }),
   },
   "/dppt-advance-rng/": {
     meta: {
@@ -694,6 +831,12 @@ export const guides = {
           "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/dppt-cute-charm/": {
     meta: {
@@ -717,6 +860,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Cute Charm.mdx?raw");
+      return file.default;
+    }),
   },
   "/dppt-initial-seed-retail/": {
     meta: {
@@ -745,6 +892,12 @@ export const guides = {
           "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/dppt-initial-seed/": {
     meta: {
@@ -773,6 +926,12 @@ export const guides = {
           "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/dppt-pokeradar-rng/": {
     meta: {
@@ -802,6 +961,12 @@ export const guides = {
       () =>
         import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/dppt-setup-rng/": {
     meta: {
@@ -827,6 +992,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/dppt-tid-sid/": {
     meta: {
@@ -850,6 +1021,10 @@ export const guides = {
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Retail TID.mdx?raw");
+      return file.default;
+    }),
   },
   "/dppt-wild/": {
     meta: {
@@ -875,6 +1050,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/dream-radar-patches/": {
     meta: {
@@ -900,6 +1081,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Dream Radar Patches.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/Dream Radar Patches.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/e-tips-rng/": {
     meta: {
@@ -925,6 +1112,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Basic Rules of RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Basic Rules of RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emerald-mirage-island/": {
     meta: {
@@ -953,6 +1146,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Mirage Island.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Mirage Island.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emerald-overview/": {
     meta: {
@@ -978,6 +1177,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Emerald Overview.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Emerald Overview.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emerald-painting-rng/": {
     meta: {
@@ -1004,6 +1209,10 @@ export const guides = {
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Reseed RNG.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 3/Emerald/Reseed RNG.mdx?raw");
+      return file.default;
+    }),
   },
   "/emerald-pokerus-emu/": {
     meta: {
@@ -1029,6 +1238,10 @@ export const guides = {
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Pokerus.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 3/Emerald/Pokerus.mdx?raw");
+      return file.default;
+    }),
   },
   "/emerald-shiny-starter/": {
     meta: {
@@ -1056,6 +1269,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Shiny Starter.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Shiny Starter.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emerald-sid-feebas/": {
     meta: {
@@ -1083,6 +1302,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emerald-static/": {
     meta: {
@@ -1107,6 +1332,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Gen 3 Static.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emerald-tidsid-generator/": {
     meta: {
@@ -1131,6 +1362,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emerald-wild/": {
     meta: {
@@ -1153,6 +1390,10 @@ export const guides = {
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx?raw");
+      return file.default;
+    }),
   },
   "/emerald/": {
     meta: {
@@ -1175,6 +1416,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/emulator-b2w2-dream-radar/": {
     meta: {
@@ -1201,6 +1446,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Dream Radar.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/Dream Radar.mdx?raw");
+      return file.default;
+    }),
   },
   "/emulator-b2w2-runasdate-inital-seed/": {
     meta: {
@@ -1228,6 +1477,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-b2w2-wild/": {
     meta: {
@@ -1251,6 +1506,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/Wild RNG Emu.mdx?raw");
+      return file.default;
+    }),
   },
   "/emulator-bw-entralink/": {
     meta: {
@@ -1277,6 +1536,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Entralink.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/Entralink.mdx?raw");
+      return file.default;
+    }),
   },
   "/emulator-bw-find-ds-parameters/": {
     meta: {
@@ -1303,6 +1566,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Find DS Parameters.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/Find DS Parameters.mdx?raw");
+      return file.default;
+    }),
   },
   "/emulator-bw-roamers/": {
     meta: {
@@ -1329,6 +1596,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Roamers.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/Roamers.mdx?raw");
+      return file.default;
+    }),
   },
   "/emulator-bw-runasdate-initial-seed/": {
     meta: {
@@ -1356,6 +1627,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-bw-white-forest/": {
     meta: {
@@ -1384,6 +1661,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/White Forest RNG (Emu).mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 5/White Forest RNG (Emu).mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-bw-wild/": {
     meta: {
@@ -1407,6 +1690,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/Wild RNG Emu.mdx?raw");
+      return file.default;
+    }),
   },
   "/emulator-colosseum-general/": {
     meta: {
@@ -1431,6 +1718,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/Colosseum General Guide (Emu).mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gamecube/Colosseum General Guide (Emu).mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-dppt-cute-charm/": {
     meta: {
@@ -1457,6 +1750,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Cute Charm.mdx?raw");
+      return file.default;
+    }),
   },
   "/emulator-dppt-egg/": {
     meta: {
@@ -1482,6 +1779,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-dppt-pokefinder-setup/": {
     meta: {
@@ -1510,6 +1813,12 @@ export const guides = {
           "~/../guides/Gen 4/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-dppt-stationary/": {
     meta: {
@@ -1539,6 +1848,12 @@ export const guides = {
       () =>
         import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-dppt-tid-sid/": {
     meta: {
@@ -1565,6 +1880,12 @@ export const guides = {
       () =>
         import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-emerald-egg/": {
     meta: {
@@ -1592,6 +1913,10 @@ export const guides = {
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Egg RNG.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 3/Emerald/Egg RNG.mdx?raw");
+      return file.default;
+    }),
   },
   "/emulator-flrg-stationary-and-gift/": {
     meta: {
@@ -1620,6 +1945,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-frlg-egg/": {
     meta: {
@@ -1645,6 +1976,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/FireRed and LeafGreen/Egg RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/FireRed and LeafGreen/Egg RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-frlg-stationary/": {
     meta: {
@@ -1670,6 +2007,12 @@ export const guides = {
       () =>
         import("~/../guides/Gen 3/FireRed and LeafGreen/Stationary v2 Emu.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/FireRed and LeafGreen/Stationary v2 Emu.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-frlg-wild-v2/": {
     meta: {
@@ -1695,6 +2038,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-frlg-wild/": {
     meta: {
@@ -1723,6 +2072,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-hgss-breeding/": {
     meta: {
@@ -1750,6 +2105,12 @@ export const guides = {
           "~/../guides/Gen 4/HeartGold and SoulSilver/Breeding RNG (Emu).mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/HeartGold and SoulSilver/Breeding RNG (Emu).mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-hgss-cute-charm/": {
     meta: {
@@ -1776,6 +2137,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Cute Charm.mdx?raw");
+      return file.default;
+    }),
   },
   "/emulator-hgss-egg/": {
     meta: {
@@ -1801,6 +2166,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-hgss-special-wild/": {
     meta: {
@@ -1828,6 +2199,12 @@ export const guides = {
           "~/../guides/Gen 4/HeartGold and SoulSilver/Special Wild Case (Emu).mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/HeartGold and SoulSilver/Special Wild Case (Emu).mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-hgss-stationary/": {
     meta: {
@@ -1859,6 +2236,12 @@ export const guides = {
           "~/../guides/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-hgss-tid-sid/": {
     meta: {
@@ -1884,6 +2267,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/TID SID.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/HeartGold and SoulSilver/TID SID.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-hgss-wild/": {
     meta: {
@@ -1912,6 +2301,12 @@ export const guides = {
           "~/../guides/Gen 4/HeartGold and SoulSilver/Wild RNG - Emulator.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/HeartGold and SoulSilver/Wild RNG - Emulator.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-hgss-wondercard/": {
     meta: {
@@ -1936,6 +2331,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Wondercard.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/HeartGold and SoulSilver/Wondercard.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-oras-dexnav/": {
     meta: {
@@ -1959,6 +2360,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/DexNav.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 6/DexNav.mdx?raw");
+      return file.default;
+    }),
   },
   "/emulator-rs-dead-battery-stationary/": {
     meta: {
@@ -1987,6 +2392,12 @@ export const guides = {
           "~/../guides/Gen 3/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-rs-egg/": {
     meta: {
@@ -2012,6 +2423,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-rs-live-battery-tid/": {
     meta: {
@@ -2038,6 +2455,12 @@ export const guides = {
       () =>
         import("~/../guides/Gen 3/Ruby and Sapphire/Live Battery TID RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Live Battery TID RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-rs-stationary/": {
     meta: {
@@ -2069,6 +2492,12 @@ export const guides = {
           "~/../guides/Gen 3/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-rs-wild/": {
     meta: {
@@ -2097,6 +2526,12 @@ export const guides = {
           "~/../guides/Gen 3/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-rs-wishmaker/": {
     meta: {
@@ -2128,6 +2563,12 @@ export const guides = {
           "~/../guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-sm-time-finder/": {
     meta: {
@@ -2152,6 +2593,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Time Finder.js (Citra).mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Time Finder.js (Citra).mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/emulator-usum-time-finder/": {
     meta: {
@@ -2176,6 +2623,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Time Finder.js (Citra).mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Time Finder.js (Citra).mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/es-delete-pokemon-save/": {
     meta: {
@@ -2206,6 +2659,50 @@ export const guides = {
           "~/../guides/Translations/es/Tools and Emulators/Delete Save.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Tools and Emulators/Delete Save.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/es-gba-methods-lead-impact/": {
+    meta: {
+      categories: ["GBA Technical Documentation"],
+      tags: ["info"],
+      isNew: false,
+      title:
+        "Impacto del Pokémon inicial en el equipo para encuentros salvajes en Esmeralda",
+      navDrawerTitle: "Methods & Lead",
+      description:
+        "Entender por qué la carta de salida influye en qué método de Wild se activa",
+      slug: "/es-gba-methods-lead-impact/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-06-18",
+      translation: { enSlug: "/gba-methods-lead-impact/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Gen 3/Emerald/GBA Methods Part2.mdx",
+      translations: {
+        es: "/es-gba-methods-lead-impact/",
+        en: "/gba-methods-lead-impact/",
+      },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/es/Gen 3/Emerald/GBA Methods Part2.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Gen 3/Emerald/GBA Methods Part2.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/es-gen2-celebi/": {
     meta: {
@@ -2234,6 +2731,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/es/Gen 2/Celebi.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Gen 2/Celebi.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/es-gen2-starters/": {
     meta: {
@@ -2262,6 +2765,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/es/Gen 2/Starter.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Gen 2/Starter.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/experiments/": {
     meta: {
@@ -2284,6 +2793,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Experiments.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Experiments.mdx?raw");
+      return file.default;
+    }),
   },
   "/fire-red-and-leaf-green/": {
     meta: {
@@ -2306,6 +2819,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/fr-bdsp-advance-rng/": {
     meta: {
@@ -2335,6 +2852,12 @@ export const guides = {
           "~/../guides/Translations/fr/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/fr/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/fr-install-capturesight/": {
     meta: {
@@ -2366,6 +2889,12 @@ export const guides = {
           "~/../guides/Translations/fr/Tools and Emulators/CaptureSight Install.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/fr/Tools and Emulators/CaptureSight Install.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/frlg-gen3-sid/": {
     meta: {
@@ -2389,6 +2918,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 3/Emerald/Find SID.mdx?raw");
+      return file.default;
+    }),
   },
   "/frlg-seeding-bot/": {
     meta: {
@@ -2417,6 +2950,12 @@ export const guides = {
           "~/../guides/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/frlg-static/": {
     meta: {
@@ -2441,6 +2980,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Gen 3 Static.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/frlg-tidsid-generator/": {
     meta: {
@@ -2465,6 +3010,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/frlg-tips-rng/": {
     meta: {
@@ -2493,6 +3044,12 @@ export const guides = {
           "~/../guides/Gen 3/FireRed and LeafGreen/Basic Rules of RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/FireRed and LeafGreen/Basic Rules of RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/gamecube/": {
     meta: {
@@ -2515,6 +3072,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/gba-methods-lead-impact/": {
     meta: {
@@ -2534,12 +3095,21 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Methods Part2.mdx",
-      translations: null,
-      displayAttributes: [],
+      translations: {
+        es: "/es-gba-methods-lead-impact/",
+        en: "/gba-methods-lead-impact/",
+      },
+      displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/GBA Methods Part2.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/GBA Methods Part2.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/gba-methods/": {
     meta: {
@@ -2565,6 +3135,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/GBA Methods.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/GBA Methods.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/gba-overview/": {
     meta: {
@@ -2590,6 +3166,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/GBA Overview.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/GBA Overview.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/gba-pokerus-technical/": {
     meta: {
@@ -2617,6 +3199,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/gba-vblank/": {
     meta: {
@@ -2640,6 +3228,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Vblank.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 3/Emerald/Vblank.mdx?raw");
+      return file.default;
+    }),
   },
   "/gc-initial/": {
     meta: {
@@ -2665,6 +3257,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/Initial Seed RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gamecube/Initial Seed RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/gen2-celebi/": {
     meta: {
@@ -2692,6 +3290,10 @@ export const guides = {
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Celebi.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 2/Celebi.mdx?raw");
+      return file.default;
+    }),
   },
   "/gen2-research/": {
     meta: {
@@ -2714,6 +3316,10 @@ export const guides = {
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/RngResearch.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 2/RngResearch.mdx?raw");
+      return file.default;
+    }),
   },
   "/gen2-starters/": {
     meta: {
@@ -2740,6 +3346,10 @@ export const guides = {
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Starter.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 2/Starter.mdx?raw");
+      return file.default;
+    }),
   },
   "/gen3-glossary/": {
     meta: {
@@ -2763,6 +3373,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Glossary.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 3/Emerald/Glossary.mdx?raw");
+      return file.default;
+    }),
   },
   "/gen3-sid/": {
     meta: {
@@ -2785,6 +3399,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 3/Emerald/Find SID.mdx?raw");
+      return file.default;
+    }),
   },
   "/heart-gold-and-soul-silver/": {
     meta: {
@@ -2807,6 +3425,37 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/help-translate/": {
+    meta: {
+      categories: ["Home"],
+      tags: ["info"],
+      isNew: false,
+      title: "Translation Helper",
+      navDrawerTitle: "Translation Helper",
+      description:
+        "Help us translate Pokémon guides and tools into your language",
+      slug: "/help-translate/",
+      isRoughDraft: false,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "titled",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Translations.mdx",
+      translations: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/Translations.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Translations.mdx?raw");
+      return file.default;
+    }),
   },
   "/hgss-3ds-rng/": {
     meta: {
@@ -2830,6 +3479,10 @@ export const guides = {
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS RNG.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/3DS RNG.mdx?raw");
+      return file.default;
+    }),
   },
   "/hgss-cute-charm/": {
     meta: {
@@ -2853,6 +3506,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Cute Charm.mdx?raw");
+      return file.default;
+    }),
   },
   "/hgss-initial-seed/": {
     meta: {
@@ -2881,6 +3538,12 @@ export const guides = {
           "~/../guides/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/hgss-rng-advance/": {
     meta: {
@@ -2909,6 +3572,12 @@ export const guides = {
           "~/../guides/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/hgss-tid-sid/": {
     meta: {
@@ -2932,6 +3601,10 @@ export const guides = {
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Retail TID.mdx?raw");
+      return file.default;
+    }),
   },
   "/install-capturesight/": {
     meta: {
@@ -2960,6 +3633,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/CaptureSight Install.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/CaptureSight Install.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/install-pokereader-emu/": {
     meta: {
@@ -2985,6 +3664,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Emu PokeReader.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/Emu PokeReader.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/install-pokereader/": {
     meta: {
@@ -3013,6 +3698,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/3DS PokeReader.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/it-emerald-overview/": {
     meta: {
@@ -3041,6 +3732,12 @@ export const guides = {
           "~/../guides/Translations/it/Gen 3/Emerald/Emerald Overview.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Emerald Overview.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/it-emulator-emerald-egg/": {
     meta: {
@@ -3073,6 +3770,12 @@ export const guides = {
           "~/../guides/Translations/it/Gen 3/Emerald/Emulator Egg RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Emulator Egg RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/it-gen3-glossary/": {
     meta: {
@@ -3098,6 +3801,82 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 3/Emerald/Glossary.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Glossary.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-retail-dppt-starter/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["retail"],
+      isNew: false,
+      title: "RNG di Starter per Diamante, Perla e Platino",
+      navDrawerTitle: "Starter RNG",
+      description:
+        "Impara a manipolare l'RNG degli starter in Diamante, Perla e Platino per ottenere Pokémon shiny con IV alti.",
+      slug: "/it-retail-dppt-starter/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-06-15",
+      translation: { enSlug: "/retail-dppt-starter/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 4/Starters.mdx",
+      translations: {
+        it: "/it-retail-dppt-starter/",
+        en: "/retail-dppt-starter/",
+        zh: "/zh-retail-dppt-starter/",
+      },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/it/Gen 4/Starters.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 4/Starters.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-retail-hgss-starter/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["retail"],
+      isNew: false,
+      title: "RNG di Starter per Oro HeartGold e Argento SoulSilver",
+      navDrawerTitle: "Starter RNG",
+      description:
+        "Impara a manipolare l'RNG degli starter in HeartGold e SoulSilver per ottenere Pokémon shiny con IV alti.",
+      slug: "/it-retail-hgss-starter/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-06-15",
+      translation: { enSlug: "/retail-hgss-starter/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 4/Starters.mdx",
+      translations: {
+        it: "/it-retail-hgss-starter/",
+        en: "/retail-hgss-starter/",
+        zh: "/zh-retail-hgss-starter/",
+      },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/it/Gen 4/Starters.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 4/Starters.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/legends-arceus/": {
     meta: {
@@ -3120,6 +3899,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/meteor-jirachi/": {
     meta: {
@@ -3148,6 +3931,12 @@ export const guides = {
           "~/../guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/mgba-setup/": {
     meta: {
@@ -3173,6 +3962,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/mGBA Setup.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/mGBA Setup.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/misc-3ds-installing-pcalc/": {
     meta: {
@@ -3198,6 +3993,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/How to Install PCalc.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/How to Install PCalc.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/misc-3ds-ips-luma-citra/": {
     meta: {
@@ -3227,6 +4028,12 @@ export const guides = {
           "~/../guides/Tools and Emulators/Using IPS Patches with Luma and Citra.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/Using IPS Patches with Luma and Citra.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/misc-3ds-island-scan-sm/": {
     meta: {
@@ -3252,6 +4059,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Island Scan Pokemon SM.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Island Scan Pokemon SM.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/misc-3ds-island-scan-usum/": {
     meta: {
@@ -3278,6 +4091,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Island Scan Pokemon USUM.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Island Scan Pokemon USUM.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/misc-3ds-transporter-nature-tables/": {
     meta: {
@@ -3301,6 +4120,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Transporter/Nature Table.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Transporter/Nature Table.mdx?raw");
+      return file.default;
+    }),
   },
   "/misc-dolphin-connect-vba/": {
     meta: {
@@ -3329,6 +4152,12 @@ export const guides = {
           "~/../guides/Tools and Emulators/How to Connect Dolphin to VBA.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/How to Connect Dolphin to VBA.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/misc-dolphin-gba-bios/": {
     meta: {
@@ -3358,6 +4187,12 @@ export const guides = {
       () =>
         import("~/../guides/Tools and Emulators/How to Extract GBA Bios.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/How to Extract GBA Bios.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/misc-sm-wild-spots/": {
     meta: {
@@ -3381,6 +4216,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Wild Spots.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Wild Spots.mdx?raw");
+      return file.default;
+    }),
   },
   "/mystic-timer/": {
     meta: {
@@ -3406,6 +4245,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Timer.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/Timer.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/no-dolphin-patch/": {
     meta: {
@@ -3431,6 +4276,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/No Dolphin Patch.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/No Dolphin Patch.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/ntr-helper-usage/": {
     meta: {
@@ -3455,6 +4306,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/NTR Helper Usage.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/NTR Helper Usage.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/omega-ruby-and-alpha-sapphire/": {
     meta: {
@@ -3477,6 +4334,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/oras-mirage-spots/": {
     meta: {
@@ -3500,6 +4361,10 @@ export const guides = {
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/Mirage Spot.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 6/Mirage Spot.mdx?raw");
+      return file.default;
+    }),
   },
   "/oras-remove-time-penalty/": {
     meta: {
@@ -3525,6 +4390,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 6/Remove Time Penalties.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 6/Remove Time Penalties.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/pal-xd-eevee/": {
     meta: {
@@ -3549,6 +4420,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/pcalc-xy-friend-safari/": {
     meta: {
@@ -3574,6 +4451,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 6/Friend Safari RNG Guide.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 6/Friend Safari RNG Guide.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/pcalc-xy-tid/": {
     meta: {
@@ -3597,6 +4480,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/XY TID.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 6/XY TID.mdx?raw");
+      return file.default;
+    }),
   },
   "/pokefinder/": {
     meta: {
@@ -3622,6 +4509,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/PokeFinder.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/PokeFinder.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/pokereader/": {
     meta: {
@@ -3647,6 +4540,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/PokeReader.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/PokeReader.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-bw-entralink/": {
     meta: {
@@ -3670,6 +4569,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Retail Entralink.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/Retail Entralink.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-dppt-starter/": {
     meta: {
@@ -3689,10 +4592,18 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/Starters.mdx",
-      translations: null,
+      translations: {
+        it: "/it-retail-dppt-starter/",
+        en: "/retail-dppt-starter/",
+        zh: "/zh-retail-dppt-starter/",
+      },
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Starters.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-emerald-egg/": {
     meta: {
@@ -3719,6 +4630,10 @@ export const guides = {
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Retail Egg.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 3/Emerald/Retail Egg.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-emerald-wild/": {
     meta: {
@@ -3747,6 +4662,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Retail Wild RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Retail Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-hgss-starter/": {
     meta: {
@@ -3766,10 +4687,18 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/Starters.mdx",
-      translations: null,
+      translations: {
+        it: "/it-retail-hgss-starter/",
+        en: "/retail-hgss-starter/",
+        zh: "/zh-retail-hgss-starter/",
+      },
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Starters.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-oras-egg-mmsc/": {
     meta: {
@@ -3799,6 +4728,12 @@ export const guides = {
           "~/../guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-oras-egg-no-mmsc/": {
     meta: {
@@ -3828,6 +4763,12 @@ export const guides = {
           "~/../guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-oras-tid/": {
     meta: {
@@ -3851,6 +4792,10 @@ export const guides = {
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/ORAS TID.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 6/ORAS TID.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-rubysapphire-tid/": {
     meta: {
@@ -3879,6 +4824,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-sm-egg-mmsc/": {
     meta: {
@@ -3907,6 +4858,12 @@ export const guides = {
           "~/../guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-sm-egg-no-mmsc/": {
     meta: {
@@ -3935,6 +4892,12 @@ export const guides = {
           "~/../guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-sm-egg-seed-no-cfw/": {
     meta: {
@@ -3963,6 +4926,12 @@ export const guides = {
           "~/../guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-sm-fidget/": {
     meta: {
@@ -3988,6 +4957,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Timeline With Fidget Guide.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Timeline With Fidget Guide.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-sm-initial-seed-clocks/": {
     meta: {
@@ -4013,6 +4988,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Finding Initial Seed with Clocks.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Finding Initial Seed with Clocks.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-sm-island-scan/": {
     meta: {
@@ -4036,6 +5017,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Island Scan.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Island Scan.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-sm-myster-gift/": {
     meta: {
@@ -4059,6 +5044,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Mystery Gift.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Mystery Gift.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-sm-no-cfw/": {
     meta: {
@@ -4084,6 +5073,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/RNGing Without Custom Firmware.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/RNGing Without Custom Firmware.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-sm-sos/": {
     meta: {
@@ -4107,6 +5102,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/SOS RNG Guide.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/SOS RNG Guide.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-sm-stationary/": {
     meta: {
@@ -4130,6 +5129,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Stationary RNG.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Stationary RNG.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-sm-timeleap/": {
     meta: {
@@ -4155,6 +5158,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Timeline Leap Guide.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Timeline Leap Guide.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-sm-timeline/": {
     meta: {
@@ -4177,6 +5186,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Timeline Guide.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-sm-wild/": {
     meta: {
@@ -4200,6 +5213,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Wild RNG.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Wild RNG.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-swsh-get-seed-with-cfw/": {
     meta: {
@@ -4225,6 +5242,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Sword and Shield/Get Raid Seed With CFW.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Sword and Shield/Get Raid Seed With CFW.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-swsh-get-seed-without-cfw/": {
     meta: {
@@ -4251,6 +5274,12 @@ export const guides = {
       () =>
         import("~/../guides/Sword and Shield/Get Raid Seed Without CFW.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Sword and Shield/Get Raid Seed Without CFW.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-swsh-raid/": {
     meta: {
@@ -4276,6 +5305,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Sword and Shield/Raid RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Sword and Shield/Raid RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-usum-egg-mmsc/": {
     meta: {
@@ -4304,6 +5339,12 @@ export const guides = {
           "~/../guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-usum-egg-no-mmsc/": {
     meta: {
@@ -4333,6 +5374,12 @@ export const guides = {
           "~/../guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-usum-egg-seed-no-cfw/": {
     meta: {
@@ -4361,6 +5408,12 @@ export const guides = {
           "~/../guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-usum-fidget/": {
     meta: {
@@ -4386,6 +5439,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Timeline With Fidget Guide.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Timeline With Fidget Guide.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-usum-initial-seed-clocks/": {
     meta: {
@@ -4411,6 +5470,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Finding Initial Seed with Clocks.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Finding Initial Seed with Clocks.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-usum-island-scan/": {
     meta: {
@@ -4434,6 +5499,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Island Scan.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Island Scan.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-usum-mystery-gift/": {
     meta: {
@@ -4457,6 +5526,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Mystery Gift.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Mystery Gift.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-usum-no-cfw/": {
     meta: {
@@ -4482,6 +5555,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/RNGing Without Custom Firmware.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/RNGing Without Custom Firmware.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-usum-sos/": {
     meta: {
@@ -4505,6 +5584,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/SOS RNG Guide.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/SOS RNG Guide.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-usum-stationary/": {
     meta: {
@@ -4528,6 +5611,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Stationary RNG.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Stationary RNG.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-usum-timeleap/": {
     meta: {
@@ -4553,6 +5640,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Timeline Leap Guide.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Timeline Leap Guide.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-usum-timeline/": {
     meta: {
@@ -4576,6 +5669,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Timeline Guide.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-usum-wild/": {
     meta: {
@@ -4599,6 +5696,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Wild RNG.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/Wild RNG.mdx?raw");
+      return file.default;
+    }),
   },
   "/retail-usum-wormhole/": {
     meta: {
@@ -4624,6 +5725,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Stationary Wormhole RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 7/Stationary Wormhole RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-xy-egg-mmsc/": {
     meta: {
@@ -4652,6 +5759,12 @@ export const guides = {
           "~/../guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/retail-xy-egg-no-mmsc/": {
     meta: {
@@ -4680,6 +5793,12 @@ export const guides = {
           "~/../guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/rs-battery/": {
     meta: {
@@ -4706,6 +5825,12 @@ export const guides = {
       () =>
         import("~/../guides/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/rs-gen3-sid/": {
     meta: {
@@ -4728,6 +5853,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 3/Emerald/Find SID.mdx?raw");
+      return file.default;
+    }),
   },
   "/rs-initial-seed/": {
     meta: {
@@ -4752,6 +5881,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/rs-mirage-island/": {
     meta: {
@@ -4777,6 +5912,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Mirage Island.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Mirage Island.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/rs-pokefinder-setup/": {
     meta: {
@@ -4801,6 +5942,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/PokeFinder Setup.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/PokeFinder Setup.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/rs-pokerus-emu/": {
     meta: {
@@ -4823,6 +5970,10 @@ export const guides = {
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Pokerus.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 3/Emerald/Pokerus.mdx?raw");
+      return file.default;
+    }),
   },
   "/rs-pokerus-retail/": {
     meta: {
@@ -4847,6 +5998,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/rs-sid-feebas/": {
     meta: {
@@ -4872,6 +6029,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/rs-static/": {
     meta: {
@@ -4896,6 +6059,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Gen 3 Static.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/rs-tidsid-generator/": {
     meta: {
@@ -4920,6 +6089,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/rs-tips-rng/": {
     meta: {
@@ -4946,6 +6121,12 @@ export const guides = {
       () =>
         import("~/../guides/Gen 3/Ruby and Sapphire/Basic Rules of RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Basic Rules of RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/ruby-and-sapphire/": {
     meta: {
@@ -4968,6 +6149,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/sos-call-rates/": {
     meta: {
@@ -4991,6 +6176,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/SOS Call Rates.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 7/SOS Call Rates.mdx?raw");
+      return file.default;
+    }),
   },
   "/sun-and-moon/": {
     meta: {
@@ -5013,6 +6202,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/sword-and-shield/": {
     meta: {
@@ -5035,6 +6228,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/sysbot-lpa-mmo/": {
     meta: {
@@ -5058,6 +6255,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Legends Arceus/MMO.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Legends Arceus/MMO.mdx?raw");
+      return file.default;
+    }),
   },
   "/transporter-dream-radar/": {
     meta: {
@@ -5080,6 +6281,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/transporter-patches/": {
     meta: {
@@ -5105,6 +6310,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Transporter Patches.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/Transporter Patches.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/transporter-rng-offline/": {
     meta: {
@@ -5131,6 +6342,12 @@ export const guides = {
       () =>
         import("~/../guides/Transporter/Transporter with Offline Patch.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Transporter/Transporter with Offline Patch.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/transporter-rng/": {
     meta: {
@@ -5154,6 +6371,10 @@ export const guides = {
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Transporter/Transporter.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Transporter/Transporter.mdx?raw");
+      return file.default;
+    }),
   },
   "/ultra-sun-and-ultra-moon/": {
     meta: {
@@ -5176,6 +6397,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/wishing-star-jirachi/": {
     meta: {
@@ -5205,6 +6430,12 @@ export const guides = {
       () =>
         import("~/../guides/Gen 3/Ruby and Sapphire/Wishing Star Jirachi.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Ruby and Sapphire/Wishing Star Jirachi.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/x-and-y/": {
     meta: {
@@ -5227,6 +6458,10 @@ export const guides = {
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
   },
   "/xdcolo-tidsid-generator/": {
     meta: {
@@ -5251,6 +6486,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/xy-friend-safari-patch/": {
     meta: {
@@ -5276,6 +6517,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Gen 6/Friend Safari Patch.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 6/Friend Safari Patch.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/xy-pokeradar/": {
     meta: {
@@ -5299,6 +6546,10 @@ export const guides = {
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/PokeRadar.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 6/PokeRadar.mdx?raw");
+      return file.default;
+    }),
   },
   "/zh-bw2-egg/": {
     meta: {
@@ -5324,6 +6575,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/BW2 Egg.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/BW2 Egg.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-dppt-advance-rng/": {
     meta: {
@@ -5351,6 +6608,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-dppt-cute-charm/": {
     meta: {
@@ -5375,6 +6638,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Cute Charm.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-dppt-initial-seed/": {
     meta: {
@@ -5402,6 +6671,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-dppt-pokeradar-rng/": {
     meta: {
@@ -5432,6 +6707,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-dppt-wild/": {
     meta: {
@@ -5459,6 +6740,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-e-tips-rng/": {
     meta: {
@@ -5486,6 +6773,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/Emerald/Basic Rules of RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Basic Rules of RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emerald-mirage-island/": {
     meta: {
@@ -5514,6 +6807,12 @@ export const guides = {
       () =>
         import("~/../guides/Translations/zh/Gen 3/Emerald/Mirage Island.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Mirage Island.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emerald-painting-rng/": {
     meta: {
@@ -5541,6 +6840,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Reseed RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Reseed RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emerald-pokerus-emu/": {
     meta: {
@@ -5568,6 +6873,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emerald-shiny-starter/": {
     meta: {
@@ -5596,6 +6907,12 @@ export const guides = {
       () =>
         import("~/../guides/Translations/zh/Gen 3/Emerald/Shiny Starter.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Shiny Starter.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emerald-sid-feebas/": {
     meta: {
@@ -5626,6 +6943,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/Emerald/Find SID with Feebas.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Find SID with Feebas.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-b2w2-dream-radar/": {
     meta: {
@@ -5653,6 +6976,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/Dream Radar.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/Dream Radar.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-b2w2-runasdate-inital-seed/": {
     meta: {
@@ -5686,6 +7015,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 5/Using Runasdate to RNG Initial Seed.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/Using Runasdate to RNG Initial Seed.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-bw-entralink/": {
     meta: {
@@ -5713,6 +7048,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/Entralink.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/Entralink.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-bw-find-ds-parameters/": {
     meta: {
@@ -5743,6 +7084,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/Find DS Parameters.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/Find DS Parameters.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-bw-roamers/": {
     meta: {
@@ -5770,6 +7117,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/Roamers.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/Roamers.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-bw-runasdate-initial-seed/": {
     meta: {
@@ -5803,6 +7156,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 5/Using Runasdate to RNG Initial Seed.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/Using Runasdate to RNG Initial Seed.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-bw-white-forest/": {
     meta: {
@@ -5831,6 +7190,12 @@ export const guides = {
       () =>
         import("~/../guides/Translations/zh/Gen 5/White Forest RNG (Emu).mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 5/White Forest RNG (Emu).mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-dppt-cute-charm/": {
     meta: {
@@ -5858,6 +7223,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Cute Charm.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-dppt-egg/": {
     meta: {
@@ -5885,6 +7256,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-dppt-stationary/": {
     meta: {
@@ -5915,6 +7292,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-emerald-egg/": {
     meta: {
@@ -5943,6 +7326,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Egg RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Egg RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-flrg-stationary-and-gift/": {
     meta: {
@@ -5976,6 +7365,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/FireRed and LeafGreen/Static RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/FireRed and LeafGreen/Static RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-frlg-egg/": {
     meta: {
@@ -6003,6 +7398,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/FireRed and LeafGreen/Egg RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/FireRed and LeafGreen/Egg RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-frlg-wild/": {
     meta: {
@@ -6033,6 +7434,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/FireRed and LeafGreen/Wild RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/FireRed and LeafGreen/Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-hgss-cute-charm/": {
     meta: {
@@ -6060,6 +7467,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Cute Charm.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-hgss-egg/": {
     meta: {
@@ -6087,6 +7500,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Egg.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Egg.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-hgss-stationary/": {
     meta: {
@@ -6117,6 +7536,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-rs-egg/": {
     meta: {
@@ -6144,6 +7569,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Egg RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Egg RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-rs-stationary/": {
     meta: {
@@ -6174,6 +7605,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-emulator-rs-wishmaker/": {
     meta: {
@@ -6205,6 +7642,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-frlg-gen3-sid/": {
     meta: {
@@ -6229,6 +7672,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-frlg-seeding-bot/": {
     meta: {
@@ -6256,6 +7705,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-gba-methods/": {
     meta: {
@@ -6281,6 +7736,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/GBA Methods.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/GBA Methods.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-gba-pokerus-technical/": {
     meta: {
@@ -6311,6 +7772,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-gba-vblank/": {
     meta: {
@@ -6335,6 +7802,43 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Vblank.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Vblank.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-gc-initial/": {
+    meta: {
+      categories: ["Gamecube"],
+      tags: ["emu"],
+      isNew: false,
+      title: "初始种子乱数",
+      navDrawerTitle: "初始种子乱数",
+      description:
+        "如何使用 Dolphin 设置适用于所有 GameCube 游戏的初始种子乱数",
+      slug: "/zh-gc-initial/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/gc-initial/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gamecube/Initial Seed RNG.mdx",
+      translations: { en: "/gc-initial/", zh: "/zh-gc-initial/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gamecube/Initial Seed RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gamecube/Initial Seed RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-gc-initial/": {
     meta: {
@@ -6388,6 +7892,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 2/Celebi.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 2/Celebi.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-gen2-starters/": {
     meta: {
@@ -6416,6 +7926,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 2/Starter.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 2/Starter.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-gen3-sid/": {
     meta: {
@@ -6440,6 +7956,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-hgss-cute-charm/": {
     meta: {
@@ -6464,6 +7986,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Cute Charm.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-hgss-rng-advance/": {
     meta: {
@@ -6491,6 +8019,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-install-pokereader/": {
     meta: {
@@ -6521,6 +8055,12 @@ export const guides = {
           "~/../guides/Translations/zh/Tools and Emulators/3DS PokeReader.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Tools and Emulators/3DS PokeReader.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-meteor-jirachi/": {
     meta: {
@@ -6548,6 +8088,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-mgba-setup/": {
     meta: {
@@ -6576,6 +8122,12 @@ export const guides = {
           "~/../guides/Translations/zh/Tools and Emulators/mGBA Setup.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Tools and Emulators/mGBA Setup.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-misc-dolphin-gba-bios/": {
     meta: {
@@ -6607,6 +8159,47 @@ export const guides = {
           "~/../guides/Translations/zh/Tools and Emulators/How to Extract GBA Bios.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Tools and Emulators/How to Extract GBA Bios.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-dppt-starter/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["retail"],
+      isNew: false,
+      title: "钻石珍珠白金初始宝可梦乱数",
+      navDrawerTitle: "钻石珍珠白金初始宝可梦乱数",
+      description:
+        "学习如何在钻石、珍珠和白金中进行初始宝可梦的乱数，以获得异色、高个体值的宝可梦。",
+      slug: "/zh-retail-dppt-starter/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-06-15",
+      translation: { enSlug: "/retail-dppt-starter/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/Starters.mdx",
+      translations: {
+        it: "/it-retail-dppt-starter/",
+        en: "/retail-dppt-starter/",
+        zh: "/zh-retail-dppt-starter/",
+      },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Starters.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Starters.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-retail-emerald-egg/": {
     meta: {
@@ -6635,6 +8228,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Retail Egg.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Retail Egg.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-retail-emerald-wild/": {
     meta: {
@@ -6663,6 +8262,47 @@ export const guides = {
       () =>
         import("~/../guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-hgss-starter/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["retail"],
+      isNew: false,
+      title: "心金魂银初始宝可梦乱数",
+      navDrawerTitle: "心金魂银初始宝可梦乱数",
+      description:
+        "学习如何在心金与魂银中进行初始宝可梦的乱数，以获得异色、高个体值的宝可梦。",
+      slug: "/zh-retail-hgss-starter/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-06-15",
+      translation: { enSlug: "/retail-hgss-starter/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/Starters.mdx",
+      translations: {
+        it: "/it-retail-hgss-starter/",
+        en: "/retail-hgss-starter/",
+        zh: "/zh-retail-hgss-starter/",
+      },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Starters.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Starters.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-retail-rubysapphire-tid/": {
     meta: {
@@ -6693,6 +8333,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-rs-battery/": {
     meta: {
@@ -6721,6 +8367,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-rs-gen3-sid/": {
     meta: {
@@ -6745,6 +8397,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-rs-mirage-island/": {
     meta: {
@@ -6770,6 +8428,12 @@ export const guides = {
       () =>
         import("~/../guides/Translations/zh/Gen 3/Emerald/Mirage Island.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Mirage Island.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-rs-pokerus-emu/": {
     meta: {
@@ -6794,6 +8458,12 @@ export const guides = {
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx"),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-rs-pokerus-retail/": {
     meta: {
@@ -6821,6 +8491,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-rs-sid-feebas/": {
     meta: {
@@ -6848,6 +8524,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/Emerald/Find SID with Feebas.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/Find SID with Feebas.mdx?raw"
+      );
+      return file.default;
+    }),
   },
   "/zh-wishing-star-jirachi/": {
     meta: {
@@ -6879,6 +8561,12 @@ export const guides = {
           "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Wishing Star Jirachi.mdx"
         ),
     ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Wishing Star Jirachi.mdx?raw"
+      );
+      return file.default;
+    }),
   },
 } as const;
 
@@ -6969,6 +8657,7 @@ export const guideSlugs = [
   "/emulator-sm-time-finder/",
   "/emulator-usum-time-finder/",
   "/es-delete-pokemon-save/",
+  "/es-gba-methods-lead-impact/",
   "/es-gen2-celebi/",
   "/es-gen2-starters/",
   "/experiments/",
@@ -6993,6 +8682,7 @@ export const guideSlugs = [
   "/gen3-glossary/",
   "/gen3-sid/",
   "/heart-gold-and-soul-silver/",
+  "/help-translate/",
   "/hgss-3ds-rng/",
   "/hgss-cute-charm/",
   "/hgss-initial-seed/",
@@ -7004,6 +8694,8 @@ export const guideSlugs = [
   "/it-emerald-overview/",
   "/it-emulator-emerald-egg/",
   "/it-gen3-glossary/",
+  "/it-retail-dppt-starter/",
+  "/it-retail-hgss-starter/",
   "/legends-arceus/",
   "/meteor-jirachi/",
   "/mgba-setup/",
@@ -7140,8 +8832,10 @@ export const guideSlugs = [
   "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
+  "/zh-retail-dppt-starter/",
   "/zh-retail-emerald-egg/",
   "/zh-retail-emerald-wild/",
+  "/zh-retail-hgss-starter/",
   "/zh-retail-rubysapphire-tid/",
   "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",

@@ -97,7 +97,9 @@ export const MarkdownImage = ({ src, alt }: { src: string; alt: string }) => (
 );
 
 export const MarkdownA = ({ href, children }: { href: string } & Props) => {
-  const internalHref = RouteSchema.safeParse(formatRelativeUrl(href));
+  const internalHref = RouteSchema.safeParse(
+    formatRelativeUrl({ url: href, leadingSlash: true, trailingSlash: true }),
+  );
   if (internalHref.success) {
     return <Link href={internalHref.data}>{children}</Link>;
   }

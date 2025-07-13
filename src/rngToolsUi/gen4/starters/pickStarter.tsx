@@ -22,7 +22,7 @@ import {
 import {
   flattenIvs,
   FlattenIvs,
-  ivColumns,
+  getIvColumns,
 } from "~/rngToolsUi/shared/ivColumns";
 import { toOptions } from "~/utils/options";
 import { useCurrentStep } from "~/components/stepper/state";
@@ -39,6 +39,8 @@ import { Gen4GameVersion } from "../gen4types";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { UndefinedToNull } from "~/types";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translations } from "~/translations";
 
 type Result = FlattenIvs<
   SearchStatic4Method1State & {
@@ -77,6 +79,7 @@ const Validator = z
     species: z.enum(allStarters),
     min_delay: z.number().int().min(0),
     max_delay: z.number().int().min(0),
+    platinum_target_advance: z.number().int().min(0),
     force_second: z.number().int().min(0).max(59).nullable(),
   })
   .merge(pkmFilterSchema);
@@ -90,6 +93,7 @@ const dpptInitialValues: FormState = {
   species: "Turtwig",
   min_delay: 600,
   max_delay: 1000,
+  platinum_target_advance: 4,
   force_second: null,
   ...getPkmFilterInitialValues(),
 };
@@ -99,12 +103,17 @@ const hgssInitialValues: FormState = {
   species: "Chikorita",
 };
 
-const getStarterAdvance = (
-  species: Gen4Starter,
-  game: Gen4GameVersion,
-): number => {
+const getStarterAdvance = ({
+  species,
+  game,
+  platinum_target_advance,
+}: {
+  species: Gen4Starter;
+  game: Gen4GameVersion;
+  platinum_target_advance: number;
+}): number => {
   return match({ species, game })
-    .with({ game: "Platinum" }, () => 4)
+    .with({ game: "Platinum" }, () => platinum_target_advance)
     .with({ game: "Diamond" }, () => 0)
     .with({ game: "Pearl" }, () => 0)
     .with({ species: "Chikorita" }, () => 0)
@@ -113,72 +122,83 @@ const getStarterAdvance = (
     .otherwise(() => 0);
 };
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
-    title: "Select",
+    title: t["Select"],
     dataIndex: "key",
     render: (_, target) => <SelectButton target={target} />,
   },
   {
-    title: "Shiny",
+    title: t["Shiny"],
     dataIndex: "shiny",
     render: (shiny: boolean) => (shiny ? "Yes" : "No"),
   },
-  { title: "Nature", dataIndex: "nature" },
-  { title: "Ability", dataIndex: "ability" },
-  { title: "Gender", dataIndex: "gender" },
-  ...ivColumns,
+  { title: t["Nature"], dataIndex: "nature" },
+  { title: t["Ability"], dataIndex: "ability" },
+  { title: t["Gender"], dataIndex: "gender" },
+  ...getIvColumns(t),
   {
-    title: "PID",
+    title: t["PID"],
     dataIndex: "pid",
     monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
-  { title: "Delay", dataIndex: "delay" },
+  { title: t["Delay"], dataIndex: "delay" },
   {
-    title: "Second",
+    title: t["Second"],
     dataIndex: "second",
   },
   {
-    title: "Seed",
+    title: t["Seed"],
     dataIndex: "seed",
     monospace: true,
     render: (seed) => seed.toString(16).padStart(8, "0").toUpperCase(),
   },
 ];
 
-const getFields = (game: Gen4GameVersion): Field[] => {
+const getFields = (game: Gen4GameVersion, t: Translations): Field[] => {
   const starters = match(game)
     .with("Diamond", "Pearl", "Platinum", () => dpptStarters)
     .with("HeartGold", "SoulSilver", () => hgssStarters)
     .exhaustive();
   return [
     {
-      label: "TID",
+      label: t["TID"],
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
     {
-      label: "SID",
+      label: t["SID"],
       input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
     },
     {
-      label: "Year",
+      label: t["Year"],
       input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
     },
     {
-      label: "Min Delay",
+      label: t["Min Delay"],
       input: (
         <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
       ),
     },
     {
-      label: "Max Delay",
+      label: t["Max Delay"],
       input: (
         <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
       ),
     },
     {
-      label: "Species",
+      // Only Platinum has a variable advance
+      hide: game !== "Platinum",
+      label: t["Target Advance"],
+      input: (
+        <FormikNumberInput<FormState>
+          name="platinum_target_advance"
+          numType="decimal"
+        />
+      ),
+    },
+    {
+      label: t["Species"],
       input: (
         <FormikSelect<FormState, "species">
           name="species"
@@ -186,9 +206,9 @@ const getFields = (game: Gen4GameVersion): Field[] => {
         />
       ),
     },
-    ...getPkmFilterFields(),
+    ...getPkmFilterFields({}, t),
     {
-      label: "Force Second",
+      label: t["Force Second"],
       input: (
         <FormikNumberInput<FormState> name="force_second" numType="decimal" />
       ),
@@ -207,6 +227,7 @@ const mapResult = (res: SearchStatic4Method1State): Result => {
 };
 
 export const PickStarter4 = () => {
+  const t = useActiveRouteTranslations();
   const [state, setState] = useStarterState();
   const {
     run: searchStarterSeeds,
@@ -222,7 +243,11 @@ export const PickStarter4 = () => {
     async (opts: FormState) => {
       const minMaxStats = await getStatRange(opts.species, [5, 6]);
       setState((prev) => ({ ...prev, species: opts.species, minMaxStats }));
-      const advance = getStarterAdvance(opts.species, game);
+      const advance = getStarterAdvance({
+        game,
+        species: opts.species,
+        platinum_target_advance: opts.platinum_target_advance,
+      });
       const baseOpts: UndefinedToNull<SearchStatic4Method1Opts> = {
         ...opts,
         min_advance: advance,
@@ -244,7 +269,13 @@ export const PickStarter4 = () => {
     [game, setState, searchStarterSeeds],
   );
 
-  const fields = React.useMemo(() => getFields(game), [game]);
+  const { fields, columns } = React.useMemo(
+    () => ({
+      fields: getFields(game, t),
+      columns: getColumns(t),
+    }),
+    [game, t],
+  );
   const initialValues = match(game)
     .with("Diamond", "Pearl", "Platinum", () => dpptInitialValues)
     .with("HeartGold", "SoulSilver", () => hgssInitialValues)
@@ -262,6 +293,8 @@ export const PickStarter4 = () => {
       submitTrackerId="search_gen4_starters"
       allowCancel
       cancelTrackerId="cancel_gen4_starters"
+      submitButtonLabel={t["Generate"]}
+      cancelButtonLabel={t["Cancel"]}
       onCancel={cancel}
     />
   );

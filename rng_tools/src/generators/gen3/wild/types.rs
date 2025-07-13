@@ -27,6 +27,8 @@ pub enum Gen3Lead {
 pub enum Gen3EncounterType {
     Land,
     Water,
-    Fishing,
+    OldRod,
+    GoodRod,
+    SuperRod,
     RockSmash,
 }

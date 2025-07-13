@@ -6,14 +6,14 @@ import {
   RngToolSubmit,
   Field,
 } from "~/components";
-import { rngTools, SeedTime4 } from "~/rngTools";
+import { rngTools, DpptSeedTime4 } from "~/rngTools";
 import { fromRngDateTime, rngDate, RngDateSchema } from "~/utils/time";
 import { FormikDatePicker } from "~/components/datePicker";
 import { uniqueId } from "lodash-es";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
 
-type GeneratorResult = SeedTime4 & { id: string };
+type GeneratorResult = DpptSeedTime4 & { id: string };
 
 const columns: ResultColumn<GeneratorResult>[] = [
   {
@@ -65,7 +65,7 @@ const fields: Field[] = [
 ];
 
 type Props = {
-  onClickResultRow: (record: SeedTime4) => void;
+  onClickResultRow: (record: DpptSeedTime4) => void;
 };
 
 export const DpptSeedSearch = ({ onClickResultRow }: Props) => {

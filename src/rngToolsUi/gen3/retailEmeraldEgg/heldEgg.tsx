@@ -16,13 +16,18 @@ import { nature } from "~/types/nature";
 import { gender } from "~/types/gender";
 import { genderOptions, natureOptions } from "~/components/pkmFilter";
 import { z } from "zod";
-import { startCase } from "lodash-es";
 import { useHeldEggState, useRegisteredTrainers } from "./state";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
 import { toOptions } from "~/utils/options";
 import { match } from "ts-pattern";
 import { approximateGen3FrameTime } from "~/utils/approximateGen3FrameTime";
+import { Translations, usePokeNavTranslations } from "~/translations";
+import {
+  useActiveRouteLanguage,
+  useActiveRouteTranslations,
+} from "~/hooks/useActiveRoute";
+import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
 
 type Result = Gen3HeldEgg & { key: string; time: string };
 
@@ -31,6 +36,7 @@ type SelectButtonProps = {
 };
 
 const SelectButton = ({ result }: SelectButtonProps) => {
+  const t = useActiveRouteTranslations();
   const [, setCurrentStep] = useCurrentStep();
   const [, setState] = useHeldEggState();
 
@@ -49,47 +55,53 @@ const SelectButton = ({ result }: SelectButtonProps) => {
 
   return (
     <Button trackerId="select_retail_emerald_held_egg" onClick={onClick}>
-      Select
+      {t["Select"]}
     </Button>
   );
 };
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = ({
+  t,
+  translatedTrainers,
+}: {
+  t: Translations;
+  translatedTrainers: PokeNavTrainerTranslations;
+}): ResultColumn<Result>[] => [
   {
-    title: "Select",
+    title: t["Select"],
     dataIndex: "advance",
     render: (_, result) => <SelectButton result={result} />,
   },
   {
-    title: "Time",
+    title: t["Time"],
     dataIndex: "time",
   },
   {
-    title: "Shiny",
+    title: t["Shiny"],
     dataIndex: "shiny",
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
   {
-    title: "PokeDex",
+    title: t["PokeDex"],
     dataIndex: "redraws",
-    render: (redraws) => `PokeDex x${redraws}`,
+    render: (redraws) => `${t["PokeDex"]} x${redraws}`,
   },
   {
-    title: "Match call",
+    title: t["Match call"],
     dataIndex: "match_call",
-    render: (match_call) => startCase(match_call),
+    render: (match_call) => translatedTrainers[match_call],
   },
   {
-    title: "PID",
+    title: t["PID"],
     dataIndex: "pid",
     monospace: true,
     render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
   },
-  { title: "Gender", dataIndex: "gender" },
-  { title: "Nature", dataIndex: "nature" },
-  { title: "Ability", dataIndex: "ability" },
+  { title: t["Gender"], dataIndex: "gender" },
+  { title: t["Nature"], dataIndex: "nature" },
+  { title: t["Ability"], dataIndex: "ability" },
   {
-    title: "Advance",
+    title: t["Advance"],
     dataIndex: "advance",
   },
 ];
@@ -132,97 +144,105 @@ const initialValues: FormState = {
   filter_gender: null,
 };
 
-const compatabilityOptions = toOptions(compatability, (option) => {
-  return match(option)
-    .with("GetAlong", () => "The two seem to get along")
-    .with("GetAlongVeryWell", () => "The two seem to get along very well")
-    .with("DontLikeEachOther", () => "The two don't seem to like each other")
-    .exhaustive();
-});
+const getFields = (t: Translations): Field[] => {
+  const compatabilityOptions = toOptions(compatability, (option) => {
+    return match(option)
+      .with("GetAlong", () => t["The two seem to get along"])
+      .with("GetAlongVeryWell", () => t["The two seem to get along very well"])
+      .with(
+        "DontLikeEachOther",
+        () => t["The two don't seem to like each other"],
+      )
+      .exhaustive();
+  });
 
-const fields: Field[] = [
-  {
-    label: "Has lightning rod",
-    input: <FormikSwitch<FormState> name="has_lightning_rod" />,
-  },
-  {
-    label: "Roamer is active",
-    input: <FormikSwitch<FormState> name="has_roamer" />,
-  },
-  {
-    label: "Female has everstone",
-    input: <FormikSwitch<FormState> name="female_has_everstone" />,
-  },
-  {
-    label: "Female nature",
-    input: (
-      <FormikSelect<FormState, "female_nature">
-        name="female_nature"
-        options={natureOptions.required}
-      />
-    ),
-  },
-  {
-    label: "Egg species",
-    input: (
-      <FormikSelect<FormState, "egg_species">
-        name="egg_species"
-        options={gen3SpeciesOptions.byName}
-      />
-    ),
-  },
-  {
-    label: "Compatability",
-    input: (
-      <FormikSelect<FormState, "compatability">
-        name="compatability"
-        options={compatabilityOptions}
-      />
-    ),
-  },
-  {
-    label: "TID",
-    input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-  },
-  {
-    label: "SID",
-    input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-  },
-  {
-    label: "Max advances",
-    input: (
-      <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
-    ),
-  },
-  {
-    label: "Filter shiny",
-    input: <FormikSwitch<FormState> name="filter_shiny" />,
-  },
-  {
-    label: "Filter nature",
-    input: (
-      <FormikSelect<FormState, "filter_nature">
-        name="filter_nature"
-        options={natureOptions.optional}
-      />
-    ),
-  },
-  {
-    label: "Filter gender",
-    input: (
-      <FormikSelect<FormState, "filter_gender">
-        name="filter_gender"
-        options={genderOptions}
-      />
-    ),
-  },
-];
+  return [
+    {
+      label: t["Has lightning rod"],
+      input: <FormikSwitch<FormState> name="has_lightning_rod" />,
+    },
+    {
+      label: t["Roamer is active"],
+      input: <FormikSwitch<FormState> name="has_roamer" />,
+    },
+    {
+      label: t["Female has everstone"],
+      input: <FormikSwitch<FormState> name="female_has_everstone" />,
+    },
+    {
+      label: t["Female nature"],
+      input: (
+        <FormikSelect<FormState, "female_nature">
+          name="female_nature"
+          options={natureOptions.required}
+        />
+      ),
+    },
+    {
+      label: t["Egg species"],
+      input: (
+        <FormikSelect<FormState, "egg_species">
+          name="egg_species"
+          options={gen3SpeciesOptions.byName}
+        />
+      ),
+    },
+    {
+      label: t["Compatability"],
+      input: (
+        <FormikSelect<FormState, "compatability">
+          name="compatability"
+          options={compatabilityOptions}
+        />
+      ),
+    },
+    {
+      label: t["TID"],
+      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+    },
+    {
+      label: t["SID"],
+      input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
+    },
+    {
+      label: t["Max advances"],
+      input: (
+        <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+      ),
+    },
+    {
+      label: t["Filter shiny"],
+      input: <FormikSwitch<FormState> name="filter_shiny" />,
+    },
+    {
+      label: t["Filter nature"],
+      input: (
+        <FormikSelect<FormState, "filter_nature">
+          name="filter_nature"
+          options={natureOptions.optional}
+        />
+      ),
+    },
+    {
+      label: t["Filter gender"],
+      input: (
+        <FormikSelect<FormState, "filter_gender">
+          name="filter_gender"
+          options={genderOptions}
+        />
+      ),
+    },
+  ];
+};
 
 type InnerProps = {
   registeredTrainers: PokeNavTrainer[];
 };
 
 const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
+  const t = useActiveRouteTranslations();
+  const language = useActiveRouteLanguage();
+  const translatedTrainers = usePokeNavTranslations(language);
   const [, setState] = useHeldEggState();
   const [results, setResults] = React.useState<Result[]>([]);
 
@@ -258,9 +278,15 @@ const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
     [registeredTrainers, setState],
   );
 
+  const columns = React.useMemo(
+    () =>
+      getColumns({ t, translatedTrainers: translatedTrainers.withoutTitle }),
+    [t, translatedTrainers],
+  );
+
   return (
     <RngToolForm<FormState, Result>
-      fields={fields}
+      getFields={getFields}
       columns={columns}
       results={results}
       initialValues={initialValues}

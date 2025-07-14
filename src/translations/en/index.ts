@@ -123,6 +123,22 @@ export const translations = {
   "Search Hours": "Search Hours",
   "Save file": "Save file",
   "Upload!": "Upload!",
+  "PokeNav Call": "PokeNav Call",
+  "Hatched Nature": "Hatched Nature",
+  "Hatched Gender": "Hatched Gender",
+  "Number of times to open the PokeDex": "Number of times to open the PokeDex",
+  "Target caller": "Target caller",
+  Offset: "Offset",
+  "Match call": "Match call",
+  "Target Method": "Target Method",
+  "Target Stats": "Target Stats",
+  "Target IVs": "Target IVs",
+  Time: "Time",
+  "Has lightning rod": "Has lightning rod",
+  "Roamer is active": "Roamer is active",
+  "Female has everstone": "Female has everstone",
+  "Female nature": "Female nature",
+  PokeDex: "PokeDex",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string>;

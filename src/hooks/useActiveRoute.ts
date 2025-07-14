@@ -25,8 +25,12 @@ export const useActiveRoute = (): Route => {
   return route;
 };
 
-export const useActiveRouteTranslations = () => {
+export const useActiveRouteLanguage = () => {
   const route = useActiveRoute();
-  const language = guides[route].meta?.translation?.language ?? "en";
+  return guides[route].meta?.translation?.language ?? "en";
+};
+
+export const useActiveRouteTranslations = () => {
+  const language = useActiveRouteLanguage();
   return useTranslations(language);
 };

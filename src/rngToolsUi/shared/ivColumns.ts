@@ -37,6 +37,13 @@ export const nullableIvColumns = [
   { title: "Spe", dataIndex: "spe", render: renderNullableIv },
 ] as const satisfies ResultColumn<NullableIvs>[];
 
+export const getNullableIvColumns = (t: Translations) => {
+  return nullableIvColumns.map((column) => ({
+    ...column,
+    title: t[column.title],
+  }));
+};
+
 const renderInheritedIv = (iv: InheritedIv) => {
   return match(iv)
     .with({ Random: P.number }, (matched) => matched.Random)
@@ -55,6 +62,13 @@ export const inheritedIvColumns = [
   { title: "SpD", dataIndex: "spd", render: renderInheritedIv },
   { title: "Spe", dataIndex: "spe", render: renderInheritedIv },
 ] as const satisfies ResultColumn<InheritedIvs>[];
+
+export const getInheritedIvColumns = (t: Translations) => {
+  return inheritedIvColumns.map((column) => ({
+    ...column,
+    title: t[column.title],
+  }));
+};
 
 export const flattenIvs = <T extends { ivs: Record<keyof Ivs, unknown> }>({
   ivs,

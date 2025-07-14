@@ -10,7 +10,7 @@ import styled from "@emotion/styled";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock } from "~/utils/hydration";
 import { usePokeNavTranslations } from "~/translations";
-import { useActiveRouteLanguage } from "~/hooks/useActiveRoute";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const Label = styled.label({
   display: "flex",
@@ -42,8 +42,8 @@ const updateTrainerState = ({
 };
 
 export const PokeNavInput = () => {
-  const language = useActiveRouteLanguage();
-  const translatedTrainers = usePokeNavTranslations(language);
+  const t = useActiveRouteTranslations();
+  const translatedTrainers = usePokeNavTranslations(t.language);
   const [lockedState, setRegisteredTrainers] = useRegisteredTrainers();
   const { hydrated, client } = useHydrate(lockedState);
 

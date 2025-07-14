@@ -31,13 +31,10 @@ import * as tst from "ts-toolbelt";
 import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { formatOffset } from "~/utils/offsetSymbol";
-import {
-  useActiveRouteLanguage,
-  useActiveRouteTranslations,
-} from "~/hooks/useActiveRoute";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations, usePokeNavTranslations } from "~/translations";
 import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
-import { LanguageKey } from "~/guides";
+import { sortLocale } from "~/utils/sortLocale";
 
 const timerAtom = createGen3TimerAtom();
 
@@ -97,11 +94,9 @@ const initialValues: FormState = {
 const getFields = ({
   t,
   translatedTrainers,
-  language,
 }: {
   t: Translations;
   translatedTrainers: PokeNavTrainerTranslations;
-  language: LanguageKey;
 }): Field[] => {
   const hatchedNatureOptions = natureOptions.optional.map((option) => ({
     label: option.value === null ? t["No Egg"] : t[option.label],
@@ -117,9 +112,7 @@ const getFields = ({
     pokeNavTrainers,
     (name) => translatedTrainers[name],
   );
-  const sortedOptions = unsortedTrainerOptions.sort((first, second) =>
-    first.label.localeCompare(second.label, language),
-  );
+  const sortedOptions = sortLocale(unsortedTrainerOptions, "label");
   const trainerOptions = [
     { label: t["None"], value: "None" },
     ...sortedOptions,
@@ -163,9 +156,8 @@ type InnerProps = {
 const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const [state] = useHeldEggState();
   const firstFilter = React.useRef(true);
-  const language = useActiveRouteLanguage();
-  const translatedTrainers = usePokeNavTranslations(language);
   const t = useActiveRouteTranslations();
+  const translatedTrainers = usePokeNavTranslations(t.language);
   const [previousOffsets, setPreviousOffsets] = React.useState<number[]>([]);
   const [potentialEggs, setPotentialEggs] = React.useState<Result[]>([]);
   const [filters, setFilters] = React.useState<FormState>(initialValues);
@@ -276,13 +268,12 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const matchCall = state.target?.match_call;
   const targetCall =
     matchCall === "None" || matchCall == null
-      ? "No Call"
-      : `Target: ${translatedTrainers.withoutTitle[matchCall]}`;
+      ? t["None"]
+      : `${t["Target Call"]}: ${translatedTrainers.withoutTitle[matchCall]}`;
 
   const { fields, columns } = React.useMemo(() => {
     const fields = getFields({
       t,
-      language,
       translatedTrainers: translatedTrainers.withoutTitle,
     });
     const columns = getColumns({
@@ -290,7 +281,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       translatedTrainers: translatedTrainers.withoutTitle,
     });
     return { fields, columns };
-  }, [t, language, translatedTrainers.withoutTitle]);
+  }, [t, translatedTrainers.withoutTitle]);
 
   return (
     <Flex vertical gap={16} width="100%">
@@ -336,9 +327,8 @@ export const CalibrateHeldEgg = () => {
 
 export const CalibrateHeldEggTimer = () => {
   const [state] = useHeldEggState();
-  const language = useActiveRouteLanguage();
-  const translatedTrainers = usePokeNavTranslations(language);
   const t = useActiveRouteTranslations();
+  const translatedTrainers = usePokeNavTranslations(t.language);
   const targetAdvance = state.target?.advance ?? 0;
   const redraws = state.target?.redraws ?? 0;
   const matchCall = state.target?.match_call;

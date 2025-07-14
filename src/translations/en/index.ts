@@ -1,3 +1,5 @@
+import { LanguageKey } from "~/guides";
+
 export const translations = {
   language: "en",
   Shiny: "Shiny",
@@ -173,4 +175,6 @@ export const translations = {
   Quirky: "Quirky",
 } as const;
 
-export type Translations = Record<keyof typeof translations, string>;
+export type Translations = Record<keyof typeof translations, string> & {
+  language: LanguageKey;
+};

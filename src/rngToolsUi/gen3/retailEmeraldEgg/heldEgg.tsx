@@ -27,10 +27,7 @@ import {
   Translations,
   usePokeNavTranslations,
 } from "~/translations";
-import {
-  useActiveRouteLanguage,
-  useActiveRouteTranslations,
-} from "~/hooks/useActiveRoute";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
 
 type Result = Gen3HeldEgg & { key: string; time: string };
@@ -256,8 +253,7 @@ type InnerProps = {
 
 const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const t = useActiveRouteTranslations();
-  const language = useActiveRouteLanguage();
-  const translatedTrainers = usePokeNavTranslations(language);
+  const translatedTrainers = usePokeNavTranslations(t.language);
   const [, setState] = useHeldEggState();
   const [results, setResults] = React.useState<Result[]>([]);
 

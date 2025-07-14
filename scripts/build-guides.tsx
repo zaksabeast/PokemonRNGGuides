@@ -150,7 +150,7 @@ const TranslatedGuideSchema = z
     slug: SlugSchema,
     translation: z.object({
       enSlug: SlugSchema,
-      language: z.enum(["es", "zh", "fr", "it"]),
+      language: z.enum(["es", "zh", "fr", "it", "de"]),
     }),
     canonical: SlugSchema.nullish()
       .optional()

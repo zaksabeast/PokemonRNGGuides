@@ -687,6 +687,41 @@ export const guides = {
       return file.default;
     }),
   },
+  "/de-retail-emerald-egg/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Retail Emerald Egg RNG",
+      navDrawerTitle: "Ei RNG",
+      description:
+        "Lerne, wie du in Pokémon Smaragd mit Hilfe der Pokemon-Pension, Eier RNG manipulieren kannst. Erhalte perfekte IVs, Wesen, und Shinies.",
+      slug: "/de-retail-emerald-egg/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-18",
+      translation: { enSlug: "/retail-emerald-egg/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Retail Egg.mdx",
+      translations: {
+        de: "/de-retail-emerald-egg/",
+        en: "/retail-emerald-egg/",
+        zh: "/zh-retail-emerald-egg/",
+      },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/de/Gen 3/Emerald/Retail Egg.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Retail Egg.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/delete-pokemon-save/": {
     meta: {
       categories: ["GBA Tools", "NDS Tools", "3DS Tools", "Switch Tools"],
@@ -4624,6 +4659,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Retail Egg.mdx",
       translations: {
+        de: "/de-retail-emerald-egg/",
         en: "/retail-emerald-egg/",
         zh: "/zh-retail-emerald-egg/",
       },
@@ -8258,6 +8294,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Retail Egg.mdx",
       translations: {
+        de: "/de-retail-emerald-egg/",
         en: "/retail-emerald-egg/",
         zh: "/zh-retail-emerald-egg/",
       },
@@ -8632,6 +8669,7 @@ export const guideSlugs = [
   "/connect-dolphin-to-gba/",
   "/consistent-platinum-rng/",
   "/crystal/",
+  "/de-retail-emerald-egg/",
   "/delete-pokemon-save/",
   "/desmume-setup/",
   "/diamond-pearl-and-platinum/",

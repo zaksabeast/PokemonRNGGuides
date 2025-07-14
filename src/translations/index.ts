@@ -14,6 +14,7 @@ const getTranslations = async (
     .with("es", () => import("./es"))
     .with("zh", () => import("./zh"))
     .with("it", () => import("./it"))
+    .with("de", () => import("./de"))
     .exhaustive();
   return { ...enTranslations, ...translations };
 };

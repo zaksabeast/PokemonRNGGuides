@@ -5,6 +5,7 @@ import { toOptions } from "~/utils/options";
 import { toUpper } from "lodash-es";
 
 const languageOptions = [
+  "de",
   "en",
   "es",
   "fr",

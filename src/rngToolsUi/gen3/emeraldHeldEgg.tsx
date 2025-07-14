@@ -14,7 +14,7 @@ import { nature } from "~/types/nature";
 import { gender } from "~/types/gender";
 import { genderOptions, natureOptions } from "~/components/pkmFilter";
 import { z } from "zod";
-import { Translations } from "~/translations";
+import { translateOptions, Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const getColumns = (t: Translations): ResultColumn<Gen3HeldEgg>[] => {
@@ -87,7 +87,11 @@ const getFields = (t: Translations): Field[] => {
       input: (
         <FormikSelect<FormState, "female_nature">
           name="female_nature"
-          options={natureOptions.required}
+          options={translateOptions({
+            t,
+            options: natureOptions.required,
+            sort: true,
+          })}
         />
       ),
     },
@@ -177,7 +181,11 @@ const getFields = (t: Translations): Field[] => {
       input: (
         <FormikSelect<FormState, "filter_nature">
           name="filter_nature"
-          options={natureOptions.optional}
+          options={translateOptions({
+            t,
+            options: natureOptions.optional,
+            sort: true,
+          })}
         />
       ),
     },

@@ -37,7 +37,7 @@ import { gen3SpeciesOptions } from "~/types/species";
 import { natureOptions } from "~/components/pkmFilter";
 import { atom, useAtom } from "jotai";
 import { formatOffset } from "~/utils/offsetSymbol";
-import { Translations } from "~/translations";
+import { translateOptions, Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type HeldEgg = {
@@ -69,12 +69,21 @@ const HeldEggSpeciesSelect = () => {
 };
 
 const HeldEggNatureSelect = () => {
+  const t = useActiveRouteTranslations();
   const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
+
+  const options = React.useMemo(() => {
+    return translateOptions({
+      t,
+      options: natureOptions.required,
+      sort: true,
+    });
+  }, [t]);
 
   return (
     <Select<Nature>
       name="nature"
-      options={natureOptions.required}
+      options={options}
       value={heldEgg.nature}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, nature: value }))}
     />

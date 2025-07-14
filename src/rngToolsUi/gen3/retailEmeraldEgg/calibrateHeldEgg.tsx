@@ -22,7 +22,7 @@ import {
   NoEggMatchCall,
   Gender,
 } from "~/rngTools";
-import { startCase, uniqBy, sortBy } from "lodash-es";
+import { uniqBy, sortBy } from "lodash-es";
 import { genderOptions, natureOptions } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { useHydrate } from "~/hooks/useHydrate";
@@ -46,7 +46,13 @@ type Result = tst.O.Merge<
   { offset: number }
 >;
 
-const getColumns = (t: Translations): ResultColumn<Result>[] => [
+const getColumns = ({
+  t,
+  translatedTrainers,
+}: {
+  t: Translations;
+  translatedTrainers: PokeNavTrainerTranslations;
+}): ResultColumn<Result>[] => [
   {
     title: t["Calibrate"],
     dataIndex: "advance",
@@ -67,24 +73,14 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Nature"],
     dataIndex: "nature",
-    render: (nature) => (nature == null ? "No Egg" : startCase(nature)),
+    render: (nature) => (nature == null ? t["No Egg"] : t[nature]),
   },
   {
     title: t["Match call"],
     dataIndex: "match_call",
-    render: (matchCall) => startCase(matchCall),
+    render: (matchCall) => translatedTrainers[matchCall],
   },
 ];
-
-const hatchedNatureOptions = natureOptions.optional.map((option) => ({
-  label: option.value === null ? "No Egg" : option.label,
-  value: option.value,
-}));
-
-const hatchedGenderOptions = genderOptions.map((option) => ({
-  label: option.value === null ? "No Egg" : option.label,
-  value: option.value,
-}));
 
 type FormState = {
   nature: Nature | null;
@@ -107,6 +103,16 @@ const getFields = ({
   translatedTrainers: PokeNavTrainerTranslations;
   language: LanguageKey;
 }): Field[] => {
+  const hatchedNatureOptions = natureOptions.optional.map((option) => ({
+    label: option.value === null ? t["No Egg"] : t[option.label],
+    value: option.value,
+  }));
+
+  const hatchedGenderOptions = genderOptions.map((option) => ({
+    label: option.value === null ? t["No Egg"] : t[option.label],
+    value: option.value,
+  }));
+
   const unsortedTrainerOptions = toOptions(
     pokeNavTrainers,
     (name) => translatedTrainers[name],
@@ -273,34 +279,37 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       ? "No Call"
       : `Target: ${translatedTrainers.withoutTitle[matchCall]}`;
 
-  const fields = React.useMemo(
-    () =>
-      getFields({
-        t,
-        language,
-        translatedTrainers: translatedTrainers.withoutTitle,
-      }),
-    [t, language, translatedTrainers.withoutTitle],
-  );
+  const { fields, columns } = React.useMemo(() => {
+    const fields = getFields({
+      t,
+      language,
+      translatedTrainers: translatedTrainers.withoutTitle,
+    });
+    const columns = getColumns({
+      t,
+      translatedTrainers: translatedTrainers.withoutTitle,
+    });
+    return { fields, columns };
+  }, [t, language, translatedTrainers.withoutTitle]);
 
   return (
     <Flex vertical gap={16} width="100%">
       <Flex vertical gap={8}>
         <Typography.Title level={5} mv={0}>
-          Target Call: {targetCall}
+          {t["Target Call"]}: {targetCall}
         </Typography.Title>
         <Typography.Title level={5} mv={0}>
-          Target Nature: {state.target?.nature}
+          {t["Target Nature"]}: {state.target?.nature}
         </Typography.Title>
       </Flex>
 
       <Typography.Text mv={0}>
-        Previous offsets: {previousOffsets.join(", ")}
+        {t["Previous offsets"]}: {previousOffsets.join(", ")}
       </Typography.Text>
 
       <RngToolForm<FormState, Result>
         fields={fields}
-        getColumns={getColumns}
+        columns={columns}
         results={dataSource}
         initialValues={initialValues}
         onSubmit={onSubmit}

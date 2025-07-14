@@ -23,7 +23,7 @@ const sortedNatures = nature.toSorted();
 const requiredNatureOptions = toOptions(sortedNatures);
 const optionalNatureOptions = [
   {
-    label: "None",
+    label: "None" as const,
     value: null,
   },
   ...requiredNatureOptions,
@@ -35,12 +35,12 @@ export const natureOptions = {
 };
 
 export const abilityOptions = ([null, ...ability] as const).map((abil) => ({
-  label: abil ?? "None",
+  label: abil ?? ("None" as const),
   value: abil,
 }));
 
 export const genderOptions = ([null, ...gender] as const).map((gen) => ({
-  label: gen ?? "None",
+  label: gen ?? ("None" as const),
   value: gen,
 }));
 

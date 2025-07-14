@@ -22,7 +22,11 @@ import { Skeleton } from "antd";
 import { toOptions } from "~/utils/options";
 import { match } from "ts-pattern";
 import { approximateGen3FrameTime } from "~/utils/approximateGen3FrameTime";
-import { Translations, usePokeNavTranslations } from "~/translations";
+import {
+  translateOptions,
+  Translations,
+  usePokeNavTranslations,
+} from "~/translations";
 import {
   useActiveRouteLanguage,
   useActiveRouteTranslations,
@@ -174,7 +178,11 @@ const getFields = (t: Translations): Field[] => {
       input: (
         <FormikSelect<FormState, "female_nature">
           name="female_nature"
-          options={natureOptions.required}
+          options={translateOptions({
+            t,
+            sort: true,
+            options: natureOptions.required,
+          })}
         />
       ),
     },
@@ -219,7 +227,11 @@ const getFields = (t: Translations): Field[] => {
       input: (
         <FormikSelect<FormState, "filter_nature">
           name="filter_nature"
-          options={natureOptions.optional}
+          options={translateOptions({
+            t,
+            options: natureOptions.optional,
+            sort: true,
+          })}
         />
       ),
     },
@@ -228,7 +240,10 @@ const getFields = (t: Translations): Field[] => {
       input: (
         <FormikSelect<FormState, "filter_gender">
           name="filter_gender"
-          options={genderOptions}
+          options={translateOptions({
+            t,
+            options: genderOptions,
+          })}
         />
       ),
     },

@@ -6,6 +6,7 @@ import {
   pokeNavTrainers as enPokeNavTrainers,
   PokeNavTrainerTranslationPair,
 } from "./en/pokeNav";
+import { sortLocale } from "~/utils/sortLocale";
 
 export type { Translations } from "./en";
 
@@ -20,7 +21,7 @@ const getTranslations = async (
     .with("it", () => import("./it"))
     .with("de", () => import("./de"))
     .exhaustive();
-  return { ...enTranslations, ...translations };
+  return { ...enTranslations, ...translations, language } as Translations;
 };
 
 const getPokeNavTranslations = async (
@@ -51,4 +52,38 @@ export const useTranslations = (language: LanguageKey) => {
     [language],
   );
   return React.use(translation);
+};
+
+export const translateOptions = <Value>({
+  sort = false,
+  t,
+  options,
+}: {
+  sort?: boolean;
+  t: Translations;
+  options: { label: keyof Translations; value: Value }[];
+}) => {
+  const opts = options.map((option) => ({
+    label: t[option.label],
+    value: option.value,
+  }));
+
+  if (sort) {
+    return sortLocale(opts, "label", t.language);
+  }
+
+  return opts;
+};
+
+export const translateColumns = <Value>({
+  t,
+  columns,
+}: {
+  t: Translations;
+  columns: { title: keyof Translations; value: Value }[];
+}) => {
+  return columns.map((option) => ({
+    title: t[option.title],
+    value: option.value,
+  }));
 };

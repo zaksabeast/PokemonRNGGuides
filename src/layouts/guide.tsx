@@ -27,17 +27,6 @@ const DiscordButtonContainer = styled(Flex)(({ theme }) => ({
   },
 }));
 
-const SpinOnceIcon = styled(Icon)({
-  animation: "spin 5s linear",
-  transform: "scaleX(0.7)",
-  transformOrigin: "center",
-  transition: "transform 0.3s ease",
-  "@keyframes spin": {
-    "0%": { transform: "rotate(0deg) scaleX(0.7)" },
-    "100%": { transform: "rotate(360deg) scaleX(0.7)" },
-  },
-});
-
 type Props = {
   guideMeta: GuideMeta;
   children: React.ReactNode;
@@ -66,7 +55,7 @@ const AppIdeaButton = () => {
   return (
     <Button
       trackerId="app_idea_button"
-      icon={<SpinOnceIcon size={20} name="StarSwirl" />}
+      icon={<Icon size={20} name="StarSwirl" />}
       type="primary"
       size="middle"
       backgroundColor="ErrorActive"

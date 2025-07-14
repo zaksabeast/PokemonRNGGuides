@@ -26,14 +26,15 @@ const getTranslations = async (
 const getPokeNavTranslations = async (
   language: LanguageKey,
 ): Promise<PokeNavTrainerTranslationPair> => {
-  return match(language)
-    .with("en", () => enPokeNavTrainers)
-    .with("fr", () => enPokeNavTrainers)
-    .with("es", () => enPokeNavTrainers)
-    .with("zh", () => enPokeNavTrainers)
-    .with("it", () => enPokeNavTrainers)
-    .with("de", () => enPokeNavTrainers)
+  const { pokeNavTrainers } = await match(language)
+    .with("en", () => ({ pokeNavTrainers: enPokeNavTrainers }))
+    .with("fr", () => ({ pokeNavTrainers: enPokeNavTrainers }))
+    .with("es", () => ({ pokeNavTrainers: enPokeNavTrainers }))
+    .with("zh", () => ({ pokeNavTrainers: enPokeNavTrainers }))
+    .with("it", () => ({ pokeNavTrainers: enPokeNavTrainers }))
+    .with("de", () => import("./de/pokeNav"))
     .exhaustive();
+  return pokeNavTrainers;
 };
 
 export const usePokeNavTranslations = (language: LanguageKey) => {

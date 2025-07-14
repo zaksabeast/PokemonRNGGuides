@@ -1,6 +1,6 @@
 use crate::gen4::{
-    DpptSeedTime4, FindSeedTime4Options, GameVersion, LeadAbilities, Static4Species,
-    dppt_find_seedtime,
+    DpptSeedTime4, FindSeedTime4Options, GameVersion, HgssSeedTime4, HgssSeedTime4Options,
+    LeadAbilities, RoamerSet, Static4Species, dppt_find_seedtime, hgss_calculate_seedtime,
 };
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
@@ -236,6 +236,7 @@ pub struct SearchStatic4MethodjOpts {
     pub max_delay: u32,
     pub year: u32,
     pub force_second: Option<u32>,
+    pub roamer: RoamerSet,
 }
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -292,6 +293,22 @@ impl PkmState for Base4MethodjState {
 }
 impl Base4MethodjState {
     fn full_state(&self, advance: usize, seed_time: DpptSeedTime4) -> SearchStatic4MethodjState {
+        SearchStatic4MethodjState {
+            advance,
+            seed_time,
+            seed: self.seed,
+            pid: self.pid,
+            ivs: self.ivs,
+            ability: self.ability,
+            gender: self.gender,
+            nature: self.nature,
+            shiny: self.shiny,
+            characteristic: self.characteristic,
+        }
+    }
+}
+impl Base4MethodjState {
+    fn full_hg_state(&self, advance: usize, seed_time: HgssSeedTime4) -> SearchStatic4MethodjState {
         SearchStatic4MethodjState {
             advance,
             seed_time,
@@ -520,10 +537,10 @@ pub fn search_static4_methodj_seeds(
     for state in search_static4_methodj(opts).iter() {
         let mut rng = Pokerng::new(state.seed).rev();
         let mut seed = state.seed;
-        if min_advance == 0 {
-        } else {
+        if min_advance != 0 {
             rng.advance(min_advance.saturating_sub(1));
             seed = rng.rand::<u32>();
+        } else {
         }
         for advance in min_advance..=max_advance {
             let seed_time_opts = FindSeedTime4Options::new(
@@ -567,12 +584,11 @@ fn get_state_from_kseed(
             let mut next_rng = (full_seed >> 16) as u16;
             let mut next_rng_2 = rng.rand::<u16>();
             loop {
-                let origin_seed = if next_rng >> 15 == 0 {
+                let origin_seed = if next_rng % 2 == 0 {
                     let mut seed_rng = Pokerng::new(full_seed).rev();
                     Some(seed_rng.rand::<u32>())
-                } else if next_rng_2 >> 15 == 1 && next_rng % 25 == nature_rand {
+                } else if next_rng_2 % 2 == 1 && next_rng % 25 == nature_rand {
                     let mut seed_rng = Pokerng::new(full_seed).rev();
-                    seed_rng.rand::<u32>();
                     Some(seed_rng.rand::<u32>())
                 } else {
                     None
@@ -692,29 +708,32 @@ pub fn search_static4_methodk_seeds(
 ) -> Vec<SearchStatic4MethodjState> {
     let min_advance = opts.min_advance;
     let max_advance = opts.max_advance;
+    let second = opts.force_second.unwrap();
 
     let mut results = vec![];
 
     for state in search_static4_methodk(opts).iter() {
         let mut rng = Pokerng::new(state.seed).rev();
         let mut seed = state.seed;
-        if min_advance == 0 {
-        } else {
+        if min_advance != 0 {
             rng.advance(min_advance.saturating_sub(1));
             seed = rng.rand::<u32>();
+        } else {
         }
         for advance in min_advance..=max_advance {
-            let seed_time_opts = FindSeedTime4Options::new(
-                seed,
-                opts.year,
-                opts.min_delay..=opts.max_delay,
-                opts.force_second,
-            );
-            let seed_time = dppt_find_seedtime(seed_time_opts);
-            // using dppt for now since none for hgss
+            let seed_time_opts = HgssSeedTime4Options {
+                seed: seed,
+                year: opts.year,
+                month: None,
+                second_range: Some(second..=second),
+                delay_range: Some(opts.min_delay..=opts.max_delay),
+                find_first: true,
+                roamer: opts.roamer,
+            };
+            let seed_time = hgss_calculate_seedtime(seed_time_opts);
 
             if let Some(seed_time) = seed_time {
-                let found_state = state.full_state(advance, seed_time);
+                let found_state = state.full_hg_state(advance, seed_time);
                 results.push(found_state);
             }
             seed = rng.rand::<u32>();

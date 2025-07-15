@@ -5,7 +5,7 @@ import { withTags } from "./tagDetector/provider";
 import { Typography } from "./typography";
 
 type YouTubeVideo = {
-  src: string;
+  id: string;
   title: string;
 };
 
@@ -38,9 +38,9 @@ export const YouTubeTable = withTags(
 
     return (
       <Container>
-        {safeVideos.map(({ src, title }) => (
+        {safeVideos.map(({ id, title }) => (
           <Flex
-            key={src}
+            key={id}
             vertical
             flex={1}
             height="100%"
@@ -59,7 +59,7 @@ export const YouTubeTable = withTags(
               </Typography.Text>
             </TitleContainer>
             <Flex p={2}>
-              <YouTubeVideo src={src} />
+              <YouTubeVideo id={id} />
             </Flex>
           </Flex>
         ))}

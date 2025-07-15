@@ -1,0 +1,65 @@
+const e=`---
+- title: "Pokérus in Emerald"
+  navDrawerTitle: "Pokérus"
+  description: "How to be infected by Pokérus"
+  slug: "emerald-pokerus-emu"
+  category: "Emerald"
+  tag: "emu"
+  addedOn: "2025-05-09"
+- title: "Pokérus in Ruby & Sapphire"
+  navDrawerTitle: "Pokérus"
+  description: "How to be infected by Pokérus"
+  slug: "rs-pokerus-emu"
+  category: "Ruby and Sapphire"
+  tag: "emu"
+  addedOn: "2025-05-09"
+---
+
+<Gist>Gist: Be infected by Pokérus</Gist>
+
+## Tools
+
+- [mGBA](/mgba-setup)
+- Download [Pokérus lua script](https://raw.githubusercontent.com/RainingChain/pk_emu_scripts/refs/heads/main/Gen3/pokerus.lua)
+
+## Pokérus
+
+After each wild battle, there is a 1 / 21,845 chance that one of your Pokémon will be infected with Pokérus. While infected by Pokérus, EVs gained from battling are doubled. Pokérus is notably required to get optimal low-level Pokémon such as Level 5 Smeargle with Dragon Rage.
+
+![Pokémon infected by Pokérus](/images/Emerald/pokerus.png)
+
+## Step 1 : Setup
+
+1. <ShowIf slug="/emerald-pokerus-emu">Open mGBA.</ShowIf>
+   <ShowIf slug="/rs-pokerus-emu">
+     Open mGBA. Make sure that "Reatime clock" is disabled (Tools -> Game
+     overrides...).
+   </ShowIf>
+1. Start your game and load the \`pokerus.lua\` script.
+1. Restart the game with \`Ctrl + R\`.
+
+## Step 2 : Calibration
+
+1. Start a Pokémon battle and attack the wild Pokémon until it faints.
+1. Make a savestate on the message "XXX gained YY EXP.Points.".
+1. Pause the game with \`Ctrl + P\`.
+1. Write down the Current advance, which is displayed in the Scripting window.
+1. Press \`A\` with the game paused, and while holding \`A\`, unpause the game with \`Ctrl + P\`.
+1. If the scripting window says the current battle can't yield Pokérus, end the battle and return to Step 1 of the calibration.
+1. Otherwise, calculate your target advance by summing the current advance from Step 4 with the "Advance Difference" shown in the scripting window.
+
+## Step 3: Hitting your target
+
+1. Reload your previous savestate (taken during the battle), and advance time with \`Ctrl + N\` until the Current advance matches the target advance calculated in the last step.
+1. Once they match, press \`A\` with the game paused, and while holding \`A\`, unpause the game with \`Ctrl + P\`.
+1. Check the summary of all your Pokémon to verify if one of them has Pokérus.
+
+<YouTubeVideo id="ySpe6-4xCNc" />
+
+## Credits
+
+- Guide and scripts: RainingChain.
+- Script inspiration: Real96.
+- Decompil projects: [pret team](https://github.com/pret/pokeemerald).
+- Chinese translation: xuanyelin, Hakuhiro.
+`;export{e as default};

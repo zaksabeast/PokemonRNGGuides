@@ -1,0 +1,153 @@
+const n=`---
+- title: "心金魂银初始宝可梦乱数"
+  description: "学习如何在心金与魂银中进行初始宝可梦的乱数，以获得异色、高个体值的宝可梦。"
+  slug: "zh-retail-hgss-starter"
+  translation:
+    enSlug: "retail-hgss-starter"
+    language: "zh"
+- title: "钻石珍珠白金初始宝可梦乱数"
+  description: "学习如何在钻石、珍珠和白金中进行初始宝可梦的乱数，以获得异色、高个体值的宝可梦。"
+  slug: "zh-retail-dppt-starter"
+  translation:
+    enSlug: "retail-dppt-starter"
+    language: "zh"
+---
+
+## 视频教程
+
+<YouTubeTable
+  videos={[
+    {
+      title: "Starter RNG",
+      id: "PMEuRlT83Qs",
+    },
+    {
+      title: "3DS RNG",
+      id: "-ayvPKWNkNw",
+    },
+  ]}
+/>
+
+## 图文教程
+
+<Alert
+  showIcon
+  type="info"
+  message="本指南为交互式，会根据你设置的机种和游戏版本动态更新内容。"
+/>
+
+<Stepper titles={["环境准备", "选择目标", "执行乱数", "校准偏差"]}>
+
+<Step step={0}>
+
+## 环境准备
+
+请先选择你使用的游戏版本和机型，然后继续下一步。
+
+<Starter4ShowIf game="Platinum">
+
+<Alert
+  showIcon
+  type="info"
+  message="注意：白金版是最难进行乱数的一版，可能会出现不稳定情况。"
+/>
+
+</Starter4ShowIf>
+
+<Starter4Setup />
+
+<Starter4ShowIf is3dsNormalSettings>
+  [点击此处查看 3DS Helper 使用指南](/3ds-helper).
+</Starter4ShowIf>
+
+<Starter4ShowIf is3dsAltSettings>
+  [点击此处下载 3DS Alt Settings 应用](/3ds-alt-settings).
+</Starter4ShowIf>
+
+</Step>
+
+<Step step={1}>
+
+## 选择目标初始宝可梦
+
+1. 使用下方工具设置筛选条件，寻找你想要的初始宝可梦。
+2. 如果没有喜欢的目标，可以适当提高最小与最大延迟，来拓宽筛选范围。
+
+带有高个体值的异色宝可梦通常非常稀有。建议目标是最多 3 个完美个体。
+
+<PickStarter4 />
+
+</Step>
+
+<Step step={2}>
+
+## 准备存档
+
+1. 如果你使用的是白金版，请将主机日期设置为： **12/31/2099** on NDS or **12/31/2050** on 3DS.
+1. 根据你游戏的版本，在下方图示位置存档：
+
+| 钻石/珍珠                                                                | 白金                                                                      | 心金/魂银                                                                   |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| ![钻珍存档位置](/images/Diamond-Pearl-Platinum/Starter/dpp-starter.webp) | ![白金存档位置](/images/Diamond-Pearl-Platinum/Starter/plat-starter.webp) | ![心金魂银存档位置](/images/HeartGold-SoulSilver/Starter/hgss-starter.webp) |
+
+## 设置主机时间
+
+1. 将主机日期设置为：**<Starter4ConsoleSetDateString format="date" />**
+2. 开始设置时间为：**<Starter4ConsoleSetDateString format="time" />**，但不要立刻确认。
+
+| 确认时间画面                                                    |
+| --------------------------------------------------------------- |
+| ![时间确认画面](/images/HeartGold-SoulSilver/SetTimeScreen.jpg) |
+
+## 命中目标帧
+
+<Starter4ShowIf is3dsNormalSettings>
+  [点此学习如何使用 3DS Helper](/3ds-helper)
+</Starter4ShowIf>
+
+1. 同时按下 \`A\` 键设定时间，并启动下方计时器。
+2. <Starter4ShowIf is3dsNormalSettings>
+     离开设定画面，重启主机并开启游戏。
+   </Starter4ShowIf>
+   <Starter4ShowIf is3dsAltSettings>
+     按下 \`Start\` 退出 Alt Settings，然后启动游戏。
+   </Starter4ShowIf>
+   <Starter4ShowIf isNdsDsi>离开设定画面并重启主机。</Starter4ShowIf>
+3. 第一段计时结束时，<Starter4ShowIf is3dsNormalSettings is3dsAltSettings>按 \`L + R + Start + Select\` 软重启游戏。</Starter4ShowIf><Starter4ShowIf isNdsDsi>按 \`A\` 启动游戏。</Starter4ShowIf>
+4. 进入读取存档界面。
+5. 第二段计时结束时，立即按 \`A\` 读取存档。
+6. 若是白金版，请快速猛按按键以尽快领取御三家。
+
+<GetStarter4 />
+
+</Step>
+
+<Step step={3}>
+
+## 校准偏差
+
+1. 查看起始宝可梦的属性。
+2. 如果与目标一致，恭喜你命中了目标帧！
+3. 若不一致，请将宝可梦资料填入下方表单并点击“Generate”。
+4. 选择延迟偏差最小的那一行，点击“Calibrate”进行校准。
+5. 按照修正值重新进行一次乱数尝试。
+6. 如果命中的结果提示“Flip Delay”需勾选，请依照以下方法操作：
+   - **任意版本**：插入一张 GBA 卡带。
+   - **心金魂银**：在继续界面使用触控笔点击上下箭头。
+   - **钻石珍珠白金**：点击“新游戏”，随后按 \`B\` 返回继续界面。
+   - 若你已进行 Flip Delay 但再次被提示翻转，则**不要**重复翻转操作。
+
+注意：在钻石珍珠白金中，延迟有可能会随机从奇数变成偶数，反之亦然。遇到这种情况，只能不断尝试直至命中目标。
+
+<CalibrateStarter4 />
+
+</Step>
+
+</Stepper>
+
+## Credits
+
+- Zaksabeast, Sorendog, EzPz, and RainingChain for various contributions to this tool
+- Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, whose work this tool is built upon.
+- 中文翻译：炫夜鳞、白希洛/Hakuhiro。
+`;export{n as default};

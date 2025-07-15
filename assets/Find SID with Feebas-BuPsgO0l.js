@@ -1,0 +1,74 @@
+const n=`---
+- title: "使用丑丑鱼查找 SID"
+  description: "如何在《绿宝石》中利用丑丑鱼查找你的里ID (SID)。"
+  slug: "zh-emerald-sid-feebas"
+  translation:
+    enSlug: "emerald-sid-feebas"
+    language: "zh"
+- title: "使用丑丑鱼查找 SID"
+  description: "如何在《红宝石 / 蓝宝石》中利用丑丑鱼查找你的里ID (SID)。"
+  slug: "zh-rs-sid-feebas"
+  translation:
+    enSlug: "rs-sid-feebas"
+    language: "zh"
+---
+
+<ShowIf slug="/zh-rs-sid-feebas">
+  <Alert
+    showIcon
+    type="warning"
+    message="红宝石和蓝宝石有一个更简单的方法！"
+    description={
+      <>
+        请参考
+        <a href="/gen3-sid">本指南</a>的"If you're playing Ruby or Sapphire"部分进行操作！
+      </>
+    }
+  />
+
+此方法仅适用于：
+
+- 电池已耗尽。
+- 你没有更改武斗镇的流行话题。
+
+</ShowIf>
+
+<ShowIf slug="/zh-emerald-sid-feebas">
+
+此方法仅适用于：
+
+- 电池已耗尽或游戏时间少于一天。
+- 你没有更改武斗镇的流行话题。
+
+</ShowIf>
+
+## 视频指南
+
+<YouTubeVideo id="nOCbSmMRXLA" />
+
+## 查找丑丑鱼钓点
+
+1. 前往武斗镇。
+2. 与宝可梦中心正上方的 NPC 交谈，获取当前的流行话题。
+3. 使用 [mucksw 的丑丑鱼钓点计算器](https://mucksw.github.io/Feebas-Tile-Calculator/) 获取可能的丑丑鱼种子列表。
+4. 在计算器提供的钓点逐一垂钓，测试每个种子。
+
+## 查找你的 SID
+
+1. 在下方工具中输入你的丑丑鱼种子，计算可能的 SID。
+2. 通过乱数异色宝可梦来确认你的真实 SID。
+
+<ShowIf slug="/zh-rs-sid-feebas">
+  <Gen3Sid game="rs" />
+</ShowIf>
+
+<ShowIf slug="/zh-emerald-sid-feebas">
+  <Gen3Sid game="emerald" />
+</ShowIf>
+
+## 特别鸣谢
+
+- 感谢 Lincoln、HappyLappy 和 Shao 提供的[Python SID 查找工具](https://github.com/HappyLappy1/Lappy-Python-Scripts/tree/main/RSE_Trendy_Saying_2_SID) 。
+- 感谢 mucksw 制作的[ 丑丑鱼钓点计算器](https://mucksw.github.io/Feebas-Tile-Calculator)。
+- 中文翻译：炫夜鳞、白希洛/Hakuhiro。
+`;export{n as default};

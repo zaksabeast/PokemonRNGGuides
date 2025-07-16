@@ -115,6 +115,7 @@ const compatability = [
 
 const Validator = z.object({
   max_advances: z.number().int().min(0),
+  calibration: z.number().int().min(0),
   has_roamer: z.boolean(),
   has_lightning_rod: z.boolean(),
   female_has_everstone: z.boolean(),
@@ -132,6 +133,7 @@ export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   max_advances: 10000,
+  calibration: 19,
   has_roamer: false,
   has_lightning_rod: true,
   female_has_everstone: false,
@@ -202,6 +204,12 @@ const getFields = (t: Translations): Field[] => {
       ),
     },
     {
+      label: t["Calibration"],
+      input: (
+        <FormikNumberInput<FormState> name="calibration" numType="decimal" />
+      ),
+    },
+    {
       label: t["TID"],
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
@@ -266,7 +274,6 @@ const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
         lua_adjustment: true,
         min_redraw: 0,
         max_redraw: 100,
-        calibration: 19,
         initial_advances: 2000,
         filter_impossible_to_hit: true,
         filters: {

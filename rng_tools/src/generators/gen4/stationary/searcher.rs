@@ -240,8 +240,8 @@ pub struct SearchStatic4MethodjOpts {
 }
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct SearchStatic4MethodjState {
-    pub seed_time: DpptSeedTime4,
+pub struct SearchStatic4MethodjState<T> {
+    pub seed_time: T,
     pub seed: u32,
     pub advance: usize,
     pub pid: u32,
@@ -292,7 +292,11 @@ impl PkmState for Base4MethodjState {
     }
 }
 impl Base4MethodjState {
-    fn full_state(&self, advance: usize, seed_time: DpptSeedTime4) -> SearchStatic4MethodjState {
+    fn full_state(
+        &self,
+        advance: usize,
+        seed_time: DpptSeedTime4,
+    ) -> SearchStatic4MethodjState<DpptSeedTime4> {
         SearchStatic4MethodjState {
             advance,
             seed_time,
@@ -308,7 +312,11 @@ impl Base4MethodjState {
     }
 }
 impl Base4MethodjState {
-    fn full_hg_state(&self, advance: usize, seed_time: HgssSeedTime4) -> SearchStatic4MethodjState {
+    fn full_hg_state(
+        &self,
+        advance: usize,
+        seed_time: HgssSeedTime4,
+    ) -> SearchStatic4MethodjState<HgssSeedTime4> {
         SearchStatic4MethodjState {
             advance,
             seed_time,
@@ -528,7 +536,7 @@ pub fn search_static4_methodj_seed(
 
 pub fn search_static4_methodj_seeds(
     opts: &SearchStatic4MethodjOpts,
-) -> Vec<SearchStatic4MethodjState> {
+) -> Vec<SearchStatic4MethodjState<DpptSeedTime4>> {
     let min_advance = opts.min_advance;
     let max_advance = opts.max_advance;
 
@@ -705,10 +713,11 @@ fn get_state_from_kseed(
 }
 pub fn search_static4_methodk_seeds(
     opts: &SearchStatic4MethodjOpts,
-) -> Vec<SearchStatic4MethodjState> {
+) -> Vec<SearchStatic4MethodjState<HgssSeedTime4>> {
     let min_advance = opts.min_advance;
     let max_advance = opts.max_advance;
-    let second = opts.force_second.unwrap();
+    let second = opts.force_second;
+    let second_range = second.map(|s| s..=s).unwrap_or(0..=59);
 
     let mut results = vec![];
 
@@ -725,14 +734,14 @@ pub fn search_static4_methodk_seeds(
                 seed: seed,
                 year: opts.year,
                 month: None,
-                second_range: Some(second..=second),
+                second_range: Some(second_range.clone()),
                 delay_range: Some(opts.min_delay..=opts.max_delay),
                 find_first: true,
                 roamer: opts.roamer,
             };
             let seed_time = hgss_calculate_seedtime(seed_time_opts);
 
-            if let Some(seed_time) = seed_time {
+            if let Some(seed_time) = seed_time.into_iter().next() {
                 let found_state = state.full_hg_state(advance, seed_time);
                 results.push(found_state);
             }
@@ -1785,6 +1794,12 @@ mod tests {
                 max_delay: 810,
                 year: 2025,
                 force_second: None,
+                roamer: RoamerSet {
+                    entei: false,
+                    raikou: false,
+                    latios: false,
+                    latias: false,
+                },
             };
             let results = search_static4_methodj_seeds(&opts);
             let expected = [
@@ -2063,6 +2078,12 @@ mod tests {
                 max_delay: 850,
                 year: 2025,
                 force_second: None,
+                roamer: RoamerSet {
+                    entei: false,
+                    raikou: false,
+                    latios: false,
+                    latias: false,
+                },
             };
             let results = search_static4_methodj_seeds(&opts);
             let expected = [
@@ -2620,6 +2641,12 @@ mod tests {
                 max_delay: 850,
                 year: 2025,
                 force_second: None,
+                roamer: RoamerSet {
+                    entei: false,
+                    raikou: false,
+                    latios: false,
+                    latias: false,
+                },
             };
             let results = search_static4_methodj_seeds(&opts);
             let expected = [
@@ -2929,6 +2956,12 @@ mod tests {
                 max_delay: 780,
                 year: 2000,
                 force_second: None,
+                roamer: RoamerSet {
+                    entei: false,
+                    raikou: false,
+                    latios: false,
+                    latias: false,
+                },
             };
             let results = search_static4_methodj_seeds(&opts);
             let expected = [
@@ -3125,8 +3158,8 @@ mod tests {
     mod search_static4_methodk_seed {
         use super::*;
         use crate::{
-            RngDateTime, assert_list_eq, coin_flips,
-            gen4::{GameVersion, Static4Species},
+            RngDateTime, assert_list_eq, elm_calls,
+            gen4::{GameVersion, RoamerLocation, Static4Species},
             ivs,
         };
 
@@ -3154,11 +3187,17 @@ mod tests {
                 max_delay: 810,
                 year: 2025,
                 force_second: None,
+                roamer: RoamerSet {
+                    entei: true,
+                    raikou: true,
+                    latios: false,
+                    latias: false,
+                },
             };
             let results = search_static4_methodk_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 2635531070,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3169,7 +3208,11 @@ mod tests {
                             second: 58,
                         },
                         delay: 805,
-                        coin_flips: coin_flips!("TTTTHTTTTTHHTTTTHTHH"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 63560349,
                     advance: 21,
@@ -3189,7 +3232,7 @@ mod tests {
                     characteristic: Characteristic::SomewhatVain,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 2768372541,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3200,7 +3243,11 @@ mod tests {
                             second: 58,
                         },
                         delay: 804,
-                        coin_flips: coin_flips!("TTHHTHTHTTHHTHHTTHTT"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 3749043009,
                     advance: 20,
@@ -3220,7 +3267,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 722207548,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3231,7 +3278,11 @@ mod tests {
                             second: 42,
                         },
                         delay: 803,
-                        coin_flips: coin_flips!("HHHHHHTHTHHHHHHHTTHH"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 2799581091,
                     advance: 21,
@@ -3251,7 +3302,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 2434204478,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3262,7 +3313,11 @@ mod tests {
                             second: 58,
                         },
                         delay: 805,
-                        coin_flips: coin_flips!("HTTTHHTHTTHTTHHHTHTT"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 667540125,
                     advance: 21,
@@ -3282,7 +3337,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 51381052,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3293,7 +3348,11 @@ mod tests {
                             second: 2,
                         },
                         delay: 803,
-                        coin_flips: coin_flips!("THTHTHTTTHTHTTHHHTTT"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 2298672624,
                     advance: 20,
@@ -3313,7 +3372,7 @@ mod tests {
                     characteristic: Characteristic::LikesToThrashAbout,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 3540321084,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3324,7 +3383,11 @@ mod tests {
                             second: 58,
                         },
                         delay: 803,
-                        coin_flips: coin_flips!("HTHHHHHTTTTHHTHHTTTT"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 2122839536,
                     advance: 20,
@@ -3344,7 +3407,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 2266432322,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3355,7 +3418,11 @@ mod tests {
                             second: 58,
                         },
                         delay: 809,
-                        coin_flips: coin_flips!("HTTHTTHTTHTHHHHTTTHH"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 1266636246,
                     advance: 20,
@@ -3375,7 +3442,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 1997341505,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3386,7 +3453,11 @@ mod tests {
                             second: 58,
                         },
                         delay: 808,
-                        coin_flips: coin_flips!("THHHTTHTTTTTHHTHTHHH"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 2461716244,
                     advance: 21,
@@ -3406,7 +3477,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 4111729472,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3417,7 +3488,11 @@ mod tests {
                             second: 58,
                         },
                         delay: 807,
-                        coin_flips: coin_flips!("TTHTHTTHTHTTHHTHHHHH"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 970947991,
                     advance: 21,
@@ -3437,7 +3512,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 806748993,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3448,7 +3523,11 @@ mod tests {
                             second: 47,
                         },
                         delay: 808,
-                        coin_flips: coin_flips!("HHTTTTTHTTTHHHTTTHTT"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 1078816901,
                     advance: 20,
@@ -3468,7 +3547,7 @@ mod tests {
                     characteristic: Characteristic::SomewhatVain,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 805634874,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3479,7 +3558,11 @@ mod tests {
                             second: 47,
                         },
                         delay: 801,
-                        coin_flips: coin_flips!("HHHHHTTTTTHHHHTTTTTT"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 2867238057,
                     advance: 21,
@@ -3525,11 +3608,17 @@ mod tests {
                 max_delay: 770,
                 year: 2025,
                 force_second: None,
+                roamer: RoamerSet {
+                    entei: false,
+                    raikou: false,
+                    latios: false,
+                    latias: false,
+                },
             };
             let results = search_static4_methodk_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 3809280816,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3540,7 +3629,11 @@ mod tests {
                             second: 58,
                         },
                         delay: 791,
-                        coin_flips: coin_flips!("HTTTHHTTHTTTHTHHHHHH"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 1183135268,
                     advance: 20,
@@ -3560,7 +3653,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 2332885808,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3571,7 +3664,11 @@ mod tests {
                             second: 58,
                         },
                         delay: 791,
-                        coin_flips: coin_flips!("HTTHHHTHTHHTHHTTHTTH"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 1854223908,
                     advance: 20,
@@ -3591,7 +3688,7 @@ mod tests {
                     characteristic: Characteristic::LovesToEat,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 3255829300,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3602,7 +3699,11 @@ mod tests {
                             second: 58,
                         },
                         delay: 795,
-                        coin_flips: coin_flips!("HHTHHTHHTHTTTHHTHHTT"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 16501608,
                     advance: 20,
@@ -3622,7 +3723,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 2601583405,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3633,7 +3734,11 @@ mod tests {
                             second: 58,
                         },
                         delay: 788,
-                        coin_flips: coin_flips!("THTTHTTTTHTHTHHHHTHH"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 1932554576,
                     advance: 21,
@@ -3679,11 +3784,17 @@ mod tests {
                 max_delay: 810,
                 year: 2025,
                 force_second: None,
+                roamer: RoamerSet {
+                    entei: false,
+                    raikou: false,
+                    latios: false,
+                    latias: false,
+                },
             };
             let results = search_static4_methodk_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 855638848,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3694,7 +3805,11 @@ mod tests {
                             second: 50,
                         },
                         delay: 807,
-                        coin_flips: coin_flips!("THTHTTTHTTTHHTTTHHHT"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 3749088052,
                     advance: 20,
@@ -3714,7 +3829,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 452985664,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3725,7 +3840,11 @@ mod tests {
                             second: 26,
                         },
                         delay: 807,
-                        coin_flips: coin_flips!("TTHHHHTHTHHTTHHTTTHT"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 1198951220,
                     advance: 20,
@@ -3745,7 +3864,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 922747712,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3756,7 +3875,11 @@ mod tests {
                             second: 54,
                         },
                         delay: 807,
-                        coin_flips: coin_flips!("THTTHTHHHTTHHTHHHHHH"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 594971444,
                     advance: 20,
@@ -3776,7 +3899,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 520094528,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3787,7 +3910,11 @@ mod tests {
                             second: 30,
                         },
                         delay: 807,
-                        coin_flips: coin_flips!("THHHTHHTHHTHTHTHTTTH"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 2339801908,
                     advance: 20,
@@ -3807,7 +3934,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 989856576,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3818,7 +3945,11 @@ mod tests {
                             second: 58,
                         },
                         delay: 807,
-                        coin_flips: coin_flips!("HHTHHHHHTTTHTHTTTHHT"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 1735822132,
                     advance: 20,
@@ -3864,11 +3995,17 @@ mod tests {
                 max_delay: 810,
                 year: 2025,
                 force_second: None,
+                roamer: RoamerSet {
+                    entei: false,
+                    raikou: false,
+                    latios: false,
+                    latias: false,
+                },
             };
             let results = search_static4_methodk_seeds(&opts);
             let expected = [
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 855638848,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3879,7 +4016,11 @@ mod tests {
                             second: 50,
                         },
                         delay: 807,
-                        coin_flips: coin_flips!("THTHTTTHTTTHHTTTHHHT"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 3749088052,
                     advance: 20,
@@ -3899,7 +4040,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 452985664,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3910,7 +4051,11 @@ mod tests {
                             second: 26,
                         },
                         delay: 807,
-                        coin_flips: coin_flips!("TTHHHHTHTHHTTHHTTTHT"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 1198951220,
                     advance: 20,
@@ -3930,7 +4075,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 922747712,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3941,7 +4086,11 @@ mod tests {
                             second: 54,
                         },
                         delay: 807,
-                        coin_flips: coin_flips!("THTTHTHHHTTHHTHHHHHH"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 594971444,
                     advance: 20,
@@ -3961,7 +4110,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
                 SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
+                    seed_time: HgssSeedTime4 {
                         seed: 520094528,
                         datetime: RngDateTime {
                             year: 2025,
@@ -3972,7 +4121,11 @@ mod tests {
                             second: 30,
                         },
                         delay: 807,
-                        coin_flips: coin_flips!("THHHTHHTHHTHTHTHTTTH"),
+                        roamer: vec![RoamerLocation {
+                            roamer: Species::Entei,
+                            location: 32,
+                        }],
+                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
                     },
                     seed: 2339801908,
                     advance: 20,
@@ -3988,37 +4141,6 @@ mod tests {
                     ability: AbilityType::First,
                     gender: Gender::Female,
                     nature: Nature::Naughty,
-                    shiny: false,
-                    characteristic: Characteristic::TakesPlentyOfSiestas,
-                },
-                SearchStatic4MethodjState {
-                    seed_time: DpptSeedTime4 {
-                        seed: 989856576,
-                        datetime: RngDateTime {
-                            year: 2025,
-                            month: 1,
-                            day: 1,
-                            hour: 0,
-                            minute: 0,
-                            second: 58,
-                        },
-                        delay: 807,
-                        coin_flips: coin_flips!("HHTHHHHHTTTHTHTTTHHT"),
-                    },
-                    seed: 1735822132,
-                    advance: 20,
-                    pid: 3,
-                    ivs: Ivs {
-                        hp: 31,
-                        atk: 30,
-                        def: 31,
-                        spa: 22,
-                        spd: 30,
-                        spe: 22,
-                    },
-                    ability: AbilityType::Second,
-                    gender: Gender::Female,
-                    nature: Nature::Adamant,
                     shiny: false,
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },

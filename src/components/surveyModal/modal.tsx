@@ -16,37 +16,33 @@ const StyledModal = styled(Modal)({
 });
 
 export const SurveyModal = () => {
-  const { cohort } = useAbCohort("appCommunityDiscord2");
+  const { cohort } = useAbCohort("appCommunityDiscord3");
   const { isOpen, closeModal: closeModal } = useSurveyModal();
 
   const pitchText = match(cohort)
     .with(null, () => <Skeleton.Input active />)
     .with(
-      "imChasingNewFunAppIdeasWannaPeek",
-      () => "I'm chasing new, fun app ideas.",
+      "buildingOutsidePokemonLetsSeeWhatSticks",
+      () => "I'm Building outside Pokémon.",
     )
     .with(
-      "imSpinningUpSomethingNewTotallySeparateFromPokemonCurious",
-      () => "I'm spinning up something new! Totally separate from Pokémon.",
+      "imTestingIdeasInPublicWannaPeek",
+      () => "I'm testing ideas in public.",
     )
     .with(
-      "imMakingSomethingNotSureWhatItIsYetThatsTheFunPartCurious",
-      () =>
-        "I'm making something. Not sure what it is yet. That’s the fun part.",
+      "newPlaygroundForAppIdeasCurious",
+      () => "New playground for app ideas.",
     )
     .exhaustive();
 
   const buttonText = match(cohort)
     .with(null, () => <Skeleton.Button size="small" active />)
-    .with("imChasingNewFunAppIdeasWannaPeek", () => "Wanna peek?")
     .with(
-      "imSpinningUpSomethingNewTotallySeparateFromPokemonCurious",
-      () => "Curious?",
+      "buildingOutsidePokemonLetsSeeWhatSticks",
+      () => "Let's see what sticks!",
     )
-    .with(
-      "imMakingSomethingNotSureWhatItIsYetThatsTheFunPartCurious",
-      () => "Curious?",
-    )
+    .with("imTestingIdeasInPublicWannaPeek", () => "Wanna Peek?")
+    .with("newPlaygroundForAppIdeasCurious", () => "Curious?")
     .exhaustive();
 
   return (

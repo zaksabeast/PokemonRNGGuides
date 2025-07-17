@@ -14,9 +14,6 @@ import { settings } from "~/settings";
 import { SurveyModal } from "~/components/surveyModal/modal";
 import { useSurveyModal } from "~/components/surveyModal/state";
 import styled from "@emotion/styled";
-import { Skeleton } from "antd";
-import { match } from "ts-pattern";
-import { useAbCohort } from "~/hooks/useAbTest";
 
 const DiscordButtonContainer = styled(Flex)(({ theme }) => ({
   gap: 10,
@@ -34,16 +31,6 @@ type Props = {
 
 const AppIdeaButton = () => {
   const { openModal } = useSurveyModal();
-  const abTest = useAbCohort("appCommunityButton5");
-
-  const text = match(abTest.cohort)
-    .with(null, () => <Skeleton.Button size="small" active />)
-    .with(
-      "newBuildInProgressOutsidePokemon",
-      () => "New build in progress — outside Pokémon",
-    )
-    .with("newSideProjectNotPokemon", () => "New side project — not Pokemon!")
-    .exhaustive();
 
   return (
     <Button
@@ -55,7 +42,7 @@ const AppIdeaButton = () => {
       backgroundHoverColor="Error"
       onClick={openModal}
     >
-      {text}
+      New build in progress — outside Pokémon
     </Button>
   );
 };

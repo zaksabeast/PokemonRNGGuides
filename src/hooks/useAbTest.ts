@@ -31,6 +31,22 @@ const abTests = {
     cohorts: ["on", "off"],
     controlCohort: "off",
   },
+  duoForCodingButton: {
+    cohorts: [
+      "imMakingDuolingoForCoding",
+      "newAppLearnCodingLikeDuolingo",
+      "earlyTestingDuolingoForCoding",
+    ],
+    controlCohort: "imMakingDuolingoForCoding",
+  },
+  duoForCodingModal: {
+    cohorts: [
+      "imBuildingDuolingoButForCodingWannaUseIt",
+      "duolingoForCodingWantEarlyAccess",
+      "wouldYouUseADuolingoForCodingJoinIfYes",
+    ],
+    controlCohort: "imBuildingDuolingoButForCodingWannaUseIt",
+  },
   appCommunityDiscord3: {
     cohorts: [
       "buildingOutsidePokemonLetsSeeWhatSticks",
@@ -63,6 +79,8 @@ type JoinedCohorts = Record<AbTestName, boolean>;
 
 const joinedCohorts = atom<JoinedCohorts>({
   placeholder: false,
+  duoForCodingButton: false,
+  duoForCodingModal: false,
   appCommunityDiscord3: false,
 } satisfies JoinedCohorts);
 

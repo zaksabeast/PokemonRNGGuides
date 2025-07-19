@@ -16,33 +16,30 @@ const StyledModal = styled(Modal)({
 });
 
 export const SurveyModal = () => {
-  const { cohort } = useAbCohort("appCommunityDiscord3");
+  const { cohort } = useAbCohort("duoForCodingModal");
   const { isOpen, closeModal: closeModal } = useSurveyModal();
 
   const pitchText = match(cohort)
     .with(null, () => <Skeleton.Input active />)
     .with(
-      "buildingOutsidePokemonLetsSeeWhatSticks",
-      () => "I'm Building outside Pokémon.",
+      "imBuildingDuolingoButForCodingWannaUseIt",
+      () => "I'm building Duolingo, but for coding.",
     )
     .with(
-      "imTestingIdeasInPublicWannaPeek",
-      () => "I'm testing ideas in public.",
+      "duolingoForCodingWantEarlyAccess",
+      () => "Duolingo for coding — want early access?",
     )
     .with(
-      "newPlaygroundForAppIdeasCurious",
-      () => "New playground for app ideas.",
+      "wouldYouUseADuolingoForCodingJoinIfYes",
+      () => "Would you use a Duolingo for coding?",
     )
     .exhaustive();
 
   const buttonText = match(cohort)
     .with(null, () => <Skeleton.Button size="small" active />)
-    .with(
-      "buildingOutsidePokemonLetsSeeWhatSticks",
-      () => "Let's see what sticks!",
-    )
-    .with("imTestingIdeasInPublicWannaPeek", () => "Wanna Peek?")
-    .with("newPlaygroundForAppIdeasCurious", () => "Curious?")
+    .with("imBuildingDuolingoButForCodingWannaUseIt", () => "Wanna use it?")
+    .with("duolingoForCodingWantEarlyAccess", () => "Join the Waitlist")
+    .with("wouldYouUseADuolingoForCodingJoinIfYes", () => "Join if yes")
     .exhaustive();
 
   return (

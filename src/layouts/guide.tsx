@@ -14,6 +14,9 @@ import { settings } from "~/settings";
 import { SurveyModal } from "~/components/surveyModal/modal";
 import { useSurveyModal } from "~/components/surveyModal/state";
 import styled from "@emotion/styled";
+import { useAbCohort } from "~/hooks/useAbTest";
+import { match } from "ts-pattern";
+import { Skeleton } from "antd";
 
 const DiscordButtonContainer = styled(Flex)(({ theme }) => ({
   gap: 10,
@@ -31,6 +34,20 @@ type Props = {
 
 const AppIdeaButton = () => {
   const { openModal } = useSurveyModal();
+  const { cohort } = useAbCohort("duoForCodingButton");
+
+  const text = match(cohort)
+    .with(null, () => <Skeleton.Button size="small" active />)
+    .with("imMakingDuolingoForCoding", () => "I'm making Duolingo for coding")
+    .with(
+      "newAppLearnCodingLikeDuolingo",
+      () => "New app: Learn coding like Duolingo",
+    )
+    .with(
+      "earlyTestingDuolingoForCoding",
+      () => "Early testing: Duolingo for coding",
+    )
+    .exhaustive();
 
   return (
     <Button
@@ -42,7 +59,7 @@ const AppIdeaButton = () => {
       backgroundHoverColor="Error"
       onClick={openModal}
     >
-      New build in progress — outside Pokémon
+      {text}
     </Button>
   );
 };

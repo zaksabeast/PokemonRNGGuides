@@ -1,7 +1,6 @@
 import React from "react";
 import { HydrationLock } from "~/utils/hydration";
 import * as tst from "ts-toolbelt";
-import { atom, useAtom } from "jotai";
 
 type _HydrationUnlock<T> = T extends HydrationLock<infer U> ? U : T;
 
@@ -31,14 +30,12 @@ type HydratedResult<T> =
       client: HydrationUnlock<T>;
     };
 
-const hydratedAtom = atom(false);
-
 export const useHydrate = <T>(value: LockedValue<T>): HydratedResult<T> => {
-  const [hydrated, setHydrated] = useAtom(hydratedAtom);
+  const [hydrated, setHydrated] = React.useState(false);
 
   React.useEffect(() => {
     setHydrated(true);
-  }, [setHydrated]);
+  }, []);
 
   return hydrated
     ? { hydrated, client: unlockHydration(value) }

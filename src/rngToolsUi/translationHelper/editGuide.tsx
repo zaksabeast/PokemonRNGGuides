@@ -1,6 +1,6 @@
 import React from "react";
 import { Skeleton } from "antd";
-import { memoize, map } from "lodash-es";
+import { memoize, map, get } from "lodash-es";
 import { useTranslationState } from "./state";
 import { guides, GuideSlug, LanguageKey } from "~/guides";
 import {
@@ -18,6 +18,23 @@ import { match, P } from "ts-pattern";
 
 const noop = memoize(async () => "");
 
+const selectGuide = ({
+  selectedGuide,
+  selectedLanguage,
+}: {
+  selectedGuide: GuideSlug;
+  selectedLanguage: LanguageKey;
+}) => {
+  const guide = guides[selectedGuide];
+
+  const translatedGuideSlug = get(guide.meta.translations, selectedLanguage);
+  if (translatedGuideSlug != null) {
+    return guides[translatedGuideSlug];
+  }
+
+  return guide;
+};
+
 type TranslateGuideProps = {
   selectedGuide: GuideSlug;
   selectedLanguage: LanguageKey;
@@ -28,7 +45,7 @@ const TranslateGuide = ({
   selectedLanguage,
 }: TranslateGuideProps) => {
   const [file, setFile] = React.useState<string>("");
-  const guide = selectedGuide == null ? null : guides[selectedGuide];
+  const guide = selectGuide({ selectedGuide, selectedLanguage });
 
   const getRawFile = guide?.getRawFile ?? noop;
   const rawFile = React.use(getRawFile());

@@ -160,7 +160,7 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const translatedTrainers = usePokeNavTranslations(t.language);
   const [previousOffsets, setPreviousOffsets] = React.useState<number[]>([]);
   const [potentialEggs, setPotentialEggs] = React.useState<Result[]>([]);
-  const [filters, setFilters] = React.useState<FormState>(initialValues);
+  const [filters, setFilters] = React.useState<FormState | null>(null);
 
   const targetAdvance = state.target?.advance ?? 0;
   const targetRedraws = state.target?.redraws ?? 0;
@@ -237,13 +237,16 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const filteredEggs = potentialEggs.filter(
-        (egg) =>
-          egg.match_call === filters.pokeNavCall &&
-          // Intentionally using `==` to compare undefined and null
-          egg.nature == filters.nature &&
-          egg.gender == filters.gender,
-      );
+      const filteredEggs =
+        filters == null
+          ? []
+          : potentialEggs.filter(
+              (egg) =>
+                egg.match_call === filters.pokeNavCall &&
+                // Intentionally using `==` to compare undefined and null
+                egg.nature == filters.nature &&
+                egg.gender == filters.gender,
+            );
 
       if (!firstFilter.current) {
         setPreviousOffsets(filteredEggs.map((egg) => egg.offset));
@@ -256,6 +259,10 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   );
 
   const dataSource = React.useMemo(() => {
+    if (filters == null) {
+      return [];
+    }
+
     return potentialEggs.filter(
       (egg) =>
         egg.match_call === filters.pokeNavCall &&

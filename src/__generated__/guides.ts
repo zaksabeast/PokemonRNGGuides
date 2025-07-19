@@ -3997,6 +3997,42 @@ export const guides = {
       return file.default;
     }),
   },
+  "/it-retail-emerald-wild/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["retail"],
+      isNew: false,
+      title: "RNG Retail di Selvatici su Smeraldo",
+      navDrawerTitle: "RNG Retail di Selvatici su Smeraldo",
+      description:
+        "Impara come Manipolare l'RNG di Pokémon selvatici su Pokémon Smeraldo su una console originale per IV perfette, nature, cromatici.",
+      slug: "/it-retail-emerald-wild/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-emerald-wild/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Retail Wild RNG.mdx",
+      translations: {
+        it: "/it-retail-emerald-wild/",
+        en: "/retail-emerald-wild/",
+        zh: "/zh-retail-emerald-wild/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/it/Gen 3/Emerald/Retail Wild RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Retail Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/it-retail-hgss-starter/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
@@ -4843,6 +4879,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Retail Wild RNG.mdx",
       translations: {
+        it: "/it-retail-emerald-wild/",
         en: "/retail-emerald-wild/",
         zh: "/zh-retail-emerald-wild/",
       },
@@ -8497,6 +8534,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx",
       translations: {
+        it: "/it-retail-emerald-wild/",
         en: "/retail-emerald-wild/",
         zh: "/zh-retail-emerald-wild/",
       },
@@ -8947,6 +8985,7 @@ export const guideSlugs = [
   "/it-gen3-glossary/",
   "/it-gen3-sid/",
   "/it-retail-dppt-starter/",
+  "/it-retail-emerald-wild/",
   "/it-retail-hgss-starter/",
   "/it-rs-gen3-sid/",
   "/legends-arceus/",

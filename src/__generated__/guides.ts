@@ -2949,7 +2949,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID.mdx",
-      translations: { en: "/frlg-gen3-sid/", zh: "/zh-frlg-gen3-sid/" },
+      translations: {
+        en: "/frlg-gen3-sid/",
+        it: "/it-frlg-gen3-sid/",
+        zh: "/zh-frlg-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
@@ -3430,7 +3434,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID.mdx",
-      translations: { en: "/gen3-sid/", zh: "/zh-gen3-sid/" },
+      translations: {
+        en: "/gen3-sid/",
+        it: "/it-gen3-sid/",
+        zh: "/zh-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
@@ -3812,6 +3820,41 @@ export const guides = {
       return file.default;
     }),
   },
+  "/it-frlg-gen3-sid/": {
+    meta: {
+      categories: ["FireRed and LeafGreen"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Trova il tuo SID su Rosso Fuoco e Verde Foglia",
+      navDrawerTitle: "Trova SID",
+      description:
+        "Vari metodi per trovare il tuo SID su Rosso Fuoco e Verde Foglia.",
+      slug: "/it-frlg-gen3-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/frlg-gen3-sid/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Find SID.mdx",
+      translations: {
+        en: "/frlg-gen3-sid/",
+        it: "/it-frlg-gen3-sid/",
+        zh: "/zh-frlg-gen3-sid/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/it-gen3-glossary/": {
     meta: {
       categories: ["Emerald"],
@@ -3839,6 +3882,40 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/it/Gen 3/Emerald/Glossary.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-gen3-sid/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Trova il tuo SID su Smeraldo",
+      navDrawerTitle: "Trova SID",
+      description: "Vari metodi per trovare il tuo SID su Smeraldo.",
+      slug: "/it-gen3-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-03",
+      translation: { enSlug: "/gen3-sid/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Find SID.mdx",
+      translations: {
+        en: "/gen3-sid/",
+        it: "/it-gen3-sid/",
+        zh: "/zh-gen3-sid/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx?raw"
       );
       return file.default;
     }),
@@ -3909,6 +3986,40 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/it/Gen 4/Starters.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-rs-gen3-sid/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Trova il tuo SID su Rubino e Zaffiro",
+      navDrawerTitle: "Trova SID",
+      description: "Vari metodi per trovare il tuo SID su Rubino e Zaffiro.",
+      slug: "/it-rs-gen3-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/rs-gen3-sid/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Find SID.mdx",
+      translations: {
+        it: "/it-rs-gen3-sid/",
+        en: "/rs-gen3-sid/",
+        zh: "/zh-rs-gen3-sid/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx?raw"
       );
       return file.default;
     }),
@@ -5885,7 +5996,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID.mdx",
-      translations: { en: "/rs-gen3-sid/", zh: "/zh-rs-gen3-sid/" },
+      translations: {
+        it: "/it-rs-gen3-sid/",
+        en: "/rs-gen3-sid/",
+        zh: "/zh-rs-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
@@ -7732,7 +7847,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID.mdx",
-      translations: { en: "/frlg-gen3-sid/", zh: "/zh-frlg-gen3-sid/" },
+      translations: {
+        en: "/frlg-gen3-sid/",
+        it: "/it-frlg-gen3-sid/",
+        zh: "/zh-frlg-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7991,7 +8110,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID.mdx",
-      translations: { en: "/gen3-sid/", zh: "/zh-gen3-sid/" },
+      translations: {
+        en: "/gen3-sid/",
+        it: "/it-gen3-sid/",
+        zh: "/zh-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8466,7 +8589,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID.mdx",
-      translations: { en: "/rs-gen3-sid/", zh: "/zh-rs-gen3-sid/" },
+      translations: {
+        it: "/it-rs-gen3-sid/",
+        en: "/rs-gen3-sid/",
+        zh: "/zh-rs-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8769,9 +8896,12 @@ export const guideSlugs = [
   "/install-pokereader/",
   "/it-emerald-overview/",
   "/it-emulator-emerald-egg/",
+  "/it-frlg-gen3-sid/",
   "/it-gen3-glossary/",
+  "/it-gen3-sid/",
   "/it-retail-dppt-starter/",
   "/it-retail-hgss-starter/",
+  "/it-rs-gen3-sid/",
   "/legends-arceus/",
   "/meteor-jirachi/",
   "/mgba-setup/",

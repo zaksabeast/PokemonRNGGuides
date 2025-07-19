@@ -23,10 +23,6 @@ import { match } from "ts-pattern";
 
 dayjs.extend(utc);
 
-// Only letters, numbers, spaces, the en-dash, period, hyphen, é, &, /, (, ), !, %, ,, ', ，, 《, 》, Chinese characters, ·, and 。
-const titleAndDescriptionChars =
-  /^[A-Za-z0-9 –.\-—é&/()!%,'，《》\u4e00-\u9fff·。、（）]+$/;
-
 // Only lower case letters, numbers, and hyphens
 const slugChars = /^[a-z0-9-]+$/;
 
@@ -83,10 +79,6 @@ const categories = [
 
 const CategorySchema = z.enum(categories);
 
-const TitleSchema = z
-  .string()
-  .refine((value) => titleAndDescriptionChars.test(value));
-
 const isNew = (addedOn: string | null) => {
   if (addedOn == null) {
     return false;
@@ -103,13 +95,13 @@ const SingleOrMultipleSchema = <T extends z.ZodTypeAny>(schema: T) =>
 
 const BaseGuideSchema = z
   .object({
-    title: TitleSchema,
-    navDrawerTitle: TitleSchema.nullish()
+    title: z.string(),
+    navDrawerTitle: z
+      .string()
+      .nullish()
       .optional()
       .default(() => null),
-    description: z
-      .string()
-      .refine((value) => titleAndDescriptionChars.test(value)),
+    description: z.string(),
     category: SingleOrMultipleSchema(CategorySchema),
     slug: SlugSchema,
     isRoughDraft: z.boolean().default(false),
@@ -140,13 +132,13 @@ const BaseGuideSchema = z
 
 const TranslatedGuideSchema = z
   .object({
-    title: TitleSchema,
-    navDrawerTitle: TitleSchema.nullish()
+    title: z.string(),
+    navDrawerTitle: z
+      .string()
+      .nullish()
       .optional()
       .default(() => null),
-    description: z
-      .string()
-      .refine((value) => titleAndDescriptionChars.test(value)),
+    description: z.string(),
     slug: SlugSchema,
     translation: z.object({
       enSlug: SlugSchema,

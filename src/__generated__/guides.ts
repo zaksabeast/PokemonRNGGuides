@@ -1141,7 +1141,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Basic Rules of RNG.mdx",
-      translations: { en: "/e-tips-rng/", zh: "/zh-e-tips-rng/" },
+      translations: {
+        en: "/e-tips-rng/",
+        it: "/it-e-tips-rng/",
+        zh: "/zh-e-tips-rng/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -3744,6 +3748,44 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Tools and Emulators/3DS PokeReader.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-e-tips-rng/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["info"],
+      isNew: false,
+      title: "Info sull'RNG di Smeraldo",
+      navDrawerTitle: "Info sull'RNG",
+      description:
+        "Impara come avanzare l'RNG migliora la stabilità su Pokemon Smeraldo per risultati consistenti.",
+      slug: "/it-e-tips-rng/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/e-tips-rng/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Basic Rules of RNG.mdx",
+      translations: {
+        en: "/e-tips-rng/",
+        it: "/it-e-tips-rng/",
+        zh: "/zh-e-tips-rng/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Gen 3/Emerald/Basic Rules of RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Basic Rules of RNG.mdx?raw"
       );
       return file.default;
     }),
@@ -6945,7 +6987,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Basic Rules of RNG.mdx",
-      translations: { en: "/e-tips-rng/", zh: "/zh-e-tips-rng/" },
+      translations: {
+        en: "/e-tips-rng/",
+        it: "/it-e-tips-rng/",
+        zh: "/zh-e-tips-rng/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8894,6 +8940,7 @@ export const guideSlugs = [
   "/install-capturesight/",
   "/install-pokereader-emu/",
   "/install-pokereader/",
+  "/it-e-tips-rng/",
   "/it-emerald-overview/",
   "/it-emulator-emerald-egg/",
   "/it-frlg-gen3-sid/",

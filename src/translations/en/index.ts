@@ -173,6 +173,8 @@ export const translations = {
   Sassy: "Sassy",
   Careful: "Careful",
   Quirky: "Quirky",
+  "Do not change. Only for advanced users.":
+    "Do not change. Only for advanced users.",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

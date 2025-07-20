@@ -8,6 +8,8 @@ import {
   RngToolForm,
   RngToolSubmit,
   Button,
+  Switch,
+  Flex,
 } from "~/components";
 import { useCurrentStep } from "~/components/stepper/state";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
@@ -29,6 +31,22 @@ import {
 } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
+
+const Calibration = () => {
+  const [disabled, setDisabled] = React.useState(true);
+  return (
+    <Flex gap={8} justify="space-between" align="center">
+      <Switch onClick={() => setDisabled((prev) => !prev)} />
+      <div style={{ width: "100%" }}>
+        <FormikNumberInput<FormState>
+          name="calibration"
+          numType="decimal"
+          disabled={disabled}
+        />
+      </div>
+    </Flex>
+  );
+};
 
 type Result = Gen3HeldEgg & { key: string; time: string };
 
@@ -204,12 +222,6 @@ const getFields = (t: Translations): Field[] => {
       ),
     },
     {
-      label: t["Calibration"],
-      input: (
-        <FormikNumberInput<FormState> name="calibration" numType="decimal" />
-      ),
-    },
-    {
       label: t["TID"],
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
@@ -222,6 +234,11 @@ const getFields = (t: Translations): Field[] => {
       input: (
         <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
       ),
+    },
+    {
+      label: t["Calibration"],
+      tooltip: t["Do not change. Only for advanced users."],
+      input: <Calibration />,
     },
     {
       label: t["Filter shiny"],

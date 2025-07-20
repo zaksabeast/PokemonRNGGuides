@@ -16,7 +16,7 @@ const StyledModal = styled(Modal)({
 });
 
 export const SurveyModal = () => {
-  const { cohort } = useAbCohort("duoForCodingModal");
+  const { cohort } = useAbCohort("duoForCodingModal2");
   const { isOpen, closeModal: closeModal } = useSurveyModal();
 
   const pitchText = match(cohort)
@@ -33,13 +33,6 @@ export const SurveyModal = () => {
       "wouldYouUseADuolingoForCodingJoinIfYes",
       () => "Would you use a Duolingo for coding?",
     )
-    .exhaustive();
-
-  const buttonText = match(cohort)
-    .with(null, () => <Skeleton.Button size="small" active />)
-    .with("imBuildingDuolingoButForCodingWannaUseIt", () => "Wanna use it?")
-    .with("duolingoForCodingWantEarlyAccess", () => "Join the Waitlist")
-    .with("wouldYouUseADuolingoForCodingJoinIfYes", () => "Join if yes")
     .exhaustive();
 
   return (
@@ -61,7 +54,7 @@ export const SurveyModal = () => {
         href="https://discord.gg/nwMcqyf8Xs"
         mb={16}
       >
-        {buttonText}
+        Wanna use it?
       </Button>
     </StyledModal>
   );

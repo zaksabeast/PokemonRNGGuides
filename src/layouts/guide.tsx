@@ -34,19 +34,13 @@ type Props = {
 
 const AppIdeaButton = () => {
   const { openModal } = useSurveyModal();
-  const { cohort } = useAbCohort("duoForCodingButton");
+  const { cohort } = useAbCohort("duoForCodingButton2");
 
   const text = match(cohort)
     .with(null, () => <Skeleton.Button size="small" active />)
-    .with("imMakingDuolingoForCoding", () => "I'm making Duolingo for coding")
-    .with(
-      "newAppLearnCodingLikeDuolingo",
-      () => "New app: Learn coding like Duolingo",
-    )
-    .with(
-      "earlyTestingDuolingoForCoding",
-      () => "Early testing: Duolingo for coding",
-    )
+    .with("imMakingDuolingoForCoding", () => "I'm making Duolingo for code")
+    .with("imBuildingDuolingoForCoding", () => "I'm building Duolingo for code")
+    .with("imCreatingDuolingoForCoding", () => "I'm creating Duolingo for code")
     .exhaustive();
 
   return (

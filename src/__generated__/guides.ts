@@ -3738,6 +3738,7 @@ export const guides = {
       file: "guides/Tools and Emulators/3DS PokeReader.mdx",
       translations: {
         en: "/install-pokereader/",
+        it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
       },
       displayAttributes: [],
@@ -3958,6 +3959,78 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-install-pokereader/": {
+    meta: {
+      categories: ["3DS Tools"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "PokeReader 3DS",
+      navDrawerTitle: "PokeReader 3DS",
+      description:
+        "Impara come installare PokeReader sul tuo 3DS per assisterti con l'RNG e cacciare Pokémon perfetti.",
+      slug: "/it-install-pokereader/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/install-pokereader/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Tools And Emulators/3DS PokeReader.mdx",
+      translations: {
+        en: "/install-pokereader/",
+        it: "/it-install-pokereader/",
+        zh: "/zh-install-pokereader/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Tools And Emulators/3DS PokeReader.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Tools And Emulators/3DS PokeReader.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-pokereader/": {
+    meta: {
+      categories: ["3DS Tools"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "PokeReader - Overlay 3DS per RNG su Pokemon",
+      navDrawerTitle: "Cos'è PokeReader",
+      description:
+        "PokeReader è un plugin 3GX per 3DS che aggiunge uno strumento (emulator-style) come mettere in pausa il gioco, avanzare i frame e altro - perfetto per l'RNG manipulation negli hardware originali.",
+      slug: "/it-pokereader/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/pokereader/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Tools And Emulators/PokeReader.mdx",
+      translations: { it: "/it-pokereader/", en: "/pokereader/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Tools And Emulators/PokeReader.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Tools And Emulators/PokeReader.mdx?raw"
       );
       return file.default;
     }),
@@ -4758,7 +4831,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/PokeReader.mdx",
-      translations: null,
+      translations: { it: "/it-pokereader/", en: "/pokereader/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8292,6 +8365,7 @@ export const guides = {
       file: "guides/Translations/zh/Tools and Emulators/3DS PokeReader.mdx",
       translations: {
         en: "/install-pokereader/",
+        it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
       },
       displayAttributes: [],
@@ -8984,6 +9058,8 @@ export const guideSlugs = [
   "/it-frlg-gen3-sid/",
   "/it-gen3-glossary/",
   "/it-gen3-sid/",
+  "/it-install-pokereader/",
+  "/it-pokereader/",
   "/it-retail-dppt-starter/",
   "/it-retail-emerald-wild/",
   "/it-retail-hgss-starter/",

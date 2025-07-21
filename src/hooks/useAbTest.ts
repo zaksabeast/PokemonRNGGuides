@@ -31,13 +31,13 @@ const abTests = {
     cohorts: ["on", "off"],
     controlCohort: "off",
   },
-  duoForCodingButton4: {
+  duoForCodingButton5: {
     cohorts: [
-      "imBuildingCodeLingoTryTheLiveDemo",
-      "liveDemoCodeLingoMySideProject",
-      "imTestingCodeLingoWannaTryIt",
+      "5MinCodingLessonsSideProject",
+      "startCodingWithMyByteKnightApp",
+      "wantToCodeTooTryMyByteKnightApp",
     ],
-    controlCohort: "imBuildingCodeLingoTryTheLiveDemo",
+    controlCohort: "5MinCodingLessonsSideProject",
   },
   duoForCodingModal2: {
     cohorts: [
@@ -79,7 +79,7 @@ type JoinedCohorts = Record<AbTestName, boolean>;
 
 const joinedCohorts = atom<JoinedCohorts>({
   placeholder: false,
-  duoForCodingButton4: false,
+  duoForCodingButton5: false,
   duoForCodingModal2: false,
   appCommunityDiscord3: false,
 } satisfies JoinedCohorts);

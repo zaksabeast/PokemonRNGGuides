@@ -3,6 +3,40 @@ import { guides, categories } from "./__generated__/guides";
 import { groupBy, flatMap, get } from "lodash-es";
 import { match } from "ts-pattern";
 
+type DisplayAttribute =
+  | GuideMeta["displayAttributes"][number]
+  | "external-link";
+
+type ExternalMeta = tst.O.Overwrite<
+  tst.O.Merge<
+    tst.O.Pick<
+      GuideMeta,
+      | "title"
+      | "navDrawerTitle"
+      | "categories"
+      | "displayAttributes"
+      | "isNew"
+      | "tags"
+      | "type"
+      | "isRoughDraft"
+      | "hideFromNavDrawer"
+    >,
+    { url: `https://${string}` }
+  >,
+  {
+    type: "external-link";
+    title: string;
+    displayAttributes: DisplayAttribute[];
+    navDrawerTitle?: string;
+    description?: string;
+  }
+>;
+
+const externalLinks = {} as const satisfies Record<
+  `https://${string}`,
+  { meta: ExternalMeta }
+>;
+
 export { guides, guideSlugs, categories } from "~/__generated__/guides";
 
 export type Guide = (typeof guides)[keyof typeof guides];
@@ -83,9 +117,12 @@ const isToolCategory = (category: Category) => {
     .exhaustive();
 };
 
-const guidesWithFlattenedTags = flatMap(guides, (guide) => {
-  return guide.meta.tags.map((tag) => ({ ...guide.meta, tag }));
-});
+const guidesWithFlattenedTags = flatMap(
+  { ...guides, ...externalLinks },
+  (guide) => {
+    return guide.meta.tags.map((tag) => ({ ...guide.meta, tag }));
+  },
+);
 const guidesWithFlattenedCategories = guidesWithFlattenedTags.flatMap(
   (guide) => {
     return guide.categories.map((category) => ({ ...guide, category }));

@@ -12,7 +12,7 @@ import {
 } from "~/components";
 import { settings } from "~/settings";
 import { SurveyModal } from "~/components/surveyModal/modal";
-import { useSurveyModal } from "~/components/surveyModal/state";
+// import { useSurveyModal } from "~/components/surveyModal/state";
 import styled from "@emotion/styled";
 import { useAbCohort } from "~/hooks/useAbTest";
 import { match } from "ts-pattern";
@@ -33,17 +33,23 @@ type Props = {
 };
 
 const AppIdeaButton = () => {
-  const { openModal } = useSurveyModal();
-  const { cohort } = useAbCohort("duoForCodingButton3");
+  // const { openModal } = useSurveyModal();
+  const { cohort } = useAbCohort("duoForCodingButton4");
 
   const text = match(cohort)
     .with(null, () => <Skeleton.Button size="small" active />)
-    .with("newSideProjectCodeLingo", () => "New side project — CodeLingo!")
     .with(
-      "imBuildingACodeTeacherWantToTryIt",
-      () => "I'm building a code teacher — want to try it?",
+      "imBuildingCodeLingoTryTheLiveDemo",
+      () => "I'm building CodeLingo — try the live demo",
     )
-    .with("newFromZakLearnToCode", () => "New from Zak — learn to code?")
+    .with(
+      "liveDemoCodeLingoMySideProject",
+      () => "Live demo — CodeLingo (my side project)",
+    )
+    .with(
+      "imTestingCodeLingoWannaTryIt",
+      () => "I'm testing CodeLingo — wanna try it?",
+    )
     .exhaustive();
 
   return (
@@ -54,7 +60,9 @@ const AppIdeaButton = () => {
       size="middle"
       backgroundColor="ErrorActive"
       backgroundHoverColor="Error"
-      onClick={openModal}
+      href="https://zaksabeast.github.io/CodeLingo/"
+      target="_blank"
+      // onClick={openModal}
     >
       {text}
     </Button>

@@ -12,7 +12,7 @@ import {
 } from "~/components";
 import { settings } from "~/settings";
 import { SurveyModal } from "~/components/surveyModal/modal";
-// import { useSurveyModal } from "~/components/surveyModal/state";
+import { useSurveyModal } from "~/components/surveyModal/state";
 import styled from "@emotion/styled";
 import { useAbCohort } from "~/hooks/useAbTest";
 import { match } from "ts-pattern";
@@ -33,22 +33,16 @@ type Props = {
 };
 
 const AppIdeaButton = () => {
-  // const { openModal } = useSurveyModal();
-  const { cohort } = useAbCohort("duoForCodingButton5");
+  const { openModal } = useSurveyModal();
+  const { cohort } = useAbCohort("moneyApp1");
 
   const text = match(cohort)
     .with(null, () => <Skeleton.Button size="small" active />)
+    .with("newMoneyProjectSeeIt", () => "New money project — see it?")
+    .with("moneySideProjectCurious", () => "Money side project — curious?")
     .with(
-      "5MinCodingLessonsSideProject",
-      () => "5-min coding lessons (side project)",
-    )
-    .with(
-      "startCodingWithMyByteKnightApp",
-      () => "Start coding with my ByteKnight app",
-    )
-    .with(
-      "wantToCodeTooTryMyByteKnightApp",
-      () => "Want to code too? Try my ByteKnight app",
+      "buildingAMoneyToolCheckIt",
+      () => "Building a money tool — check it?",
     )
     .exhaustive();
 
@@ -60,9 +54,7 @@ const AppIdeaButton = () => {
       size="middle"
       backgroundColor="ErrorActive"
       backgroundHoverColor="Error"
-      href="https://zaksabeast.github.io/CodeLingo/"
-      target="_blank"
-      // onClick={openModal}
+      onClick={openModal}
     >
       {text}
     </Button>

@@ -1,61 +1,92 @@
-import { Button, Typography, Icon } from "~/components";
-import { Modal, Skeleton } from "antd";
+import React from "react";
+import { Button, Icon, Flex } from "~/components";
+import { Modal } from "antd";
 import { track } from "~/analytics";
 import styled from "@emotion/styled";
 import { useSurveyModal } from "./state";
-import { useAbCohort } from "~/hooks/useAbTest";
-import { match } from "ts-pattern";
 
 const StyledModal = styled(Modal)({
   ".ant-modal-body": {
     paddingTop: 16,
   },
-  ".ant-modal-footer": {
-    display: "none",
-  },
 });
 
-export const SurveyModal = () => {
-  const { cohort } = useAbCohort("duoForCodingModal2");
-  const { isOpen, closeModal: closeModal } = useSurveyModal();
+type AppType = "budgeting" | "sideHustles" | "investing" | "other";
 
-  const pitchText = match(cohort)
-    .with(null, () => <Skeleton.Input active />)
-    .with(
-      "imBuildingDuolingoButForCodingWannaUseIt",
-      () => "I'm building Duolingo, but for coding.",
-    )
-    .with(
-      "duolingoForCodingWantEarlyAccess",
-      () => "Duolingo for coding — want early access?",
-    )
-    .with(
-      "wouldYouUseADuolingoForCodingJoinIfYes",
-      () => "Would you use a Duolingo for coding?",
-    )
-    .exhaustive();
+export const SurveyModal = () => {
+  const { isOpen, closeModal: closeModal } = useSurveyModal();
+  const [clicked, setClicked] = React.useState<Record<AppType, boolean>>({
+    budgeting: false,
+    sideHustles: false,
+    investing: false,
+    other: false,
+  });
 
   return (
     <StyledModal
       open={isOpen}
-      title="New start for Zak"
+      title="Vote: Best money app?"
       onCancel={() => {
         closeModal();
         track("Survey modal cancelled", {});
       }}
+      footer={[
+        <Button
+          mt={8}
+          key="joinDiscord"
+          type="primary"
+          trackerId="budget_app_survey_join_discord"
+          icon={<Icon name="Discord" />}
+          size="middle"
+          href="https://discord.gg/nwMcqyf8Xs"
+        >
+          My Side Projects Discord
+        </Button>,
+      ]}
     >
-      <Typography.Paragraph>{pitchText}</Typography.Paragraph>
+      <Flex gap={16} vertical>
+        <Button
+          disabled={clicked.budgeting}
+          icon={
+            clicked.budgeting ? <Icon name="Check" color="Success" /> : null
+          }
+          trackerId="money-app-idea-budgeting"
+          onClick={() => setClicked((prev) => ({ ...prev, budgeting: true }))}
+        >
+          Budgeting
+        </Button>
 
-      <Button
-        type="primary"
-        trackerId="budget_app_survey_join_discord"
-        icon={<Icon name="Discord" />}
-        size="middle"
-        href="https://discord.gg/nwMcqyf8Xs"
-        mb={16}
-      >
-        Wanna use it?
-      </Button>
+        <Button
+          disabled={clicked.sideHustles}
+          icon={
+            clicked.sideHustles ? <Icon name="Check" color="Success" /> : null
+          }
+          trackerId="money-app-idea-sideHustles"
+          onClick={() => setClicked((prev) => ({ ...prev, sideHustles: true }))}
+        >
+          Side hustles
+        </Button>
+
+        <Button
+          disabled={clicked.investing}
+          icon={
+            clicked.investing ? <Icon name="Check" color="Success" /> : null
+          }
+          trackerId="money-app-idea-investing"
+          onClick={() => setClicked((prev) => ({ ...prev, investing: true }))}
+        >
+          Growing money
+        </Button>
+
+        <Button
+          disabled={clicked.other}
+          icon={clicked.other ? <Icon name="Check" color="Success" /> : null}
+          trackerId="money-app-idea-other"
+          onClick={() => setClicked((prev) => ({ ...prev, other: true }))}
+        >
+          Something else
+        </Button>
+      </Flex>
     </StyledModal>
   );
 };

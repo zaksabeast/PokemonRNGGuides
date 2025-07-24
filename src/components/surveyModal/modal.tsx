@@ -1,5 +1,4 @@
-import React from "react";
-import { Button, Icon, Flex } from "~/components";
+import { Button, Typography, Icon } from "~/components";
 import { Modal } from "antd";
 import { track } from "~/analytics";
 import styled from "@emotion/styled";
@@ -9,84 +8,35 @@ const StyledModal = styled(Modal)({
   ".ant-modal-body": {
     paddingTop: 16,
   },
+  ".ant-modal-footer": {
+    display: "none",
+  },
 });
-
-type AppType = "budgeting" | "sideHustles" | "investing" | "other";
 
 export const SurveyModal = () => {
   const { isOpen, closeModal: closeModal } = useSurveyModal();
-  const [clicked, setClicked] = React.useState<Record<AppType, boolean>>({
-    budgeting: false,
-    sideHustles: false,
-    investing: false,
-    other: false,
-  });
 
   return (
     <StyledModal
       open={isOpen}
-      title="Vote: Best money app?"
+      title="New start for Zak"
       onCancel={() => {
         closeModal();
         track("Survey modal cancelled", {});
       }}
-      footer={[
-        <Button
-          mt={8}
-          key="joinDiscord"
-          type="primary"
-          trackerId="budget_app_survey_join_discord"
-          icon={<Icon name="Discord" />}
-          size="middle"
-          href="https://discord.gg/nwMcqyf8Xs"
-        >
-          My Side Projects Discord
-        </Button>,
-      ]}
     >
-      <Flex gap={16} vertical>
-        <Button
-          disabled={clicked.budgeting}
-          icon={
-            clicked.budgeting ? <Icon name="Check" color="Success" /> : null
-          }
-          trackerId="money-app-idea-budgeting"
-          onClick={() => setClicked((prev) => ({ ...prev, budgeting: true }))}
-        >
-          Budgeting
-        </Button>
+      <Typography.Paragraph>I'm Building outside Pokémon.</Typography.Paragraph>
 
-        <Button
-          disabled={clicked.sideHustles}
-          icon={
-            clicked.sideHustles ? <Icon name="Check" color="Success" /> : null
-          }
-          trackerId="money-app-idea-sideHustles"
-          onClick={() => setClicked((prev) => ({ ...prev, sideHustles: true }))}
-        >
-          Side hustles
-        </Button>
-
-        <Button
-          disabled={clicked.investing}
-          icon={
-            clicked.investing ? <Icon name="Check" color="Success" /> : null
-          }
-          trackerId="money-app-idea-investing"
-          onClick={() => setClicked((prev) => ({ ...prev, investing: true }))}
-        >
-          Growing money
-        </Button>
-
-        <Button
-          disabled={clicked.other}
-          icon={clicked.other ? <Icon name="Check" color="Success" /> : null}
-          trackerId="money-app-idea-other"
-          onClick={() => setClicked((prev) => ({ ...prev, other: true }))}
-        >
-          Something else
-        </Button>
-      </Flex>
+      <Button
+        type="primary"
+        trackerId="budget_app_survey_join_discord"
+        icon={<Icon name="Discord" />}
+        size="middle"
+        href="https://discord.gg/nwMcqyf8Xs"
+        mb={16}
+      >
+        Let's see what sticks!
+      </Button>
     </StyledModal>
   );
 };

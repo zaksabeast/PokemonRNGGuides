@@ -31,14 +31,6 @@ const abTests = {
     cohorts: ["on", "off"],
     controlCohort: "off",
   },
-  moneyApp1: {
-    cohorts: [
-      "newMoneyProjectSeeIt",
-      "moneySideProjectCurious",
-      "buildingAMoneyToolCheckIt",
-    ],
-    controlCohort: "newMoneyProjectSeeIt",
-  },
 } as const satisfies AbTestConfigs;
 
 type AbTest = typeof abTests;
@@ -63,7 +55,6 @@ type JoinedCohorts = Record<AbTestName, boolean>;
 
 const joinedCohorts = atom<JoinedCohorts>({
   placeholder: false,
-  moneyApp1: false,
 } satisfies JoinedCohorts);
 
 type AbCohortResult<T extends AbTestName> =

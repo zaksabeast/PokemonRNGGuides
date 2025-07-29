@@ -12,12 +12,20 @@ const LabelTd = styled.td({
 });
 
 export type Field = {
-  label: string;
   hide?: boolean;
   tooltip?: string;
   input: React.ReactNode;
   direction?: "row" | "column";
-};
+} & (
+  | {
+      label: React.ReactNode;
+      key: string;
+    }
+  | {
+      label: string;
+      key?: string; // title will be used as the key
+    }
+);
 
 type Props = {
   fields: Field[];
@@ -27,43 +35,47 @@ export const FormFieldTable = ({ fields }: Props) => {
   return (
     <table>
       <tbody>
-        {fields.map(({ hide, label, tooltip, input, direction = "row" }) => {
-          if (hide) {
-            return null;
-          }
+        {fields.map(
+          ({ hide, key, label, tooltip, input, direction = "row" }) => {
+            if (hide) {
+              return null;
+            }
 
-          const labelWithTooltip =
-            tooltip == null ? (
-              label
-            ) : (
-              <Tooltip title={tooltip}>
-                <Flex gap={8}>
-                  <div>{label}</div>
-                  <Icon name="InformationCircle" size={16} />
-                </Flex>
-              </Tooltip>
-            );
-          if (direction === "row") {
+            const labelWithTooltip =
+              tooltip == null ? (
+                label
+              ) : (
+                <Tooltip title={tooltip}>
+                  <Flex gap={8}>
+                    <div>{label}</div>
+                    <Icon name="InformationCircle" size={16} />
+                  </Flex>
+                </Tooltip>
+              );
+
+            const keyToUse = typeof key === "string" ? key : (label as string);
+            if (direction === "row") {
+              return (
+                <tr key={keyToUse}>
+                  <LabelTd>
+                    <Typography.Text strong>{labelWithTooltip}</Typography.Text>
+                  </LabelTd>
+                  <td>{input}</td>
+                </tr>
+              );
+            }
             return (
-              <tr key={label}>
-                <LabelTd>
+              <tr key={keyToUse}>
+                <LabelTd colSpan={2}>
                   <Typography.Text strong>{labelWithTooltip}</Typography.Text>
+                  <Flex pl={30} vertical>
+                    {input}
+                  </Flex>
                 </LabelTd>
-                <td>{input}</td>
               </tr>
             );
-          }
-          return (
-            <tr key={label}>
-              <LabelTd colSpan={2}>
-                <Typography.Text strong>{labelWithTooltip}</Typography.Text>
-                <Flex pl={30} vertical>
-                  {input}
-                </Flex>
-              </LabelTd>
-            </tr>
-          );
-        })}
+          },
+        )}
       </tbody>
     </table>
   );

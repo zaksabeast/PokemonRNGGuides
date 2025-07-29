@@ -10,20 +10,37 @@ export type SingleResultColumn<T> = keyof T extends string
   ? {
       [K in keyof T]: {
         type?: "single";
-        title: string;
         dataIndex: K;
         monospace?: boolean;
-      } & (T[K] extends string | number | undefined
-        ? { render?: (value: T[K], values: T) => React.ReactNode }
-        : { render: (value: T[K], values: T) => React.ReactNode });
+      } & (
+        | {
+            title: React.ReactNode;
+            key: string;
+          }
+        | {
+            title: string;
+            key?: string; // dataIndex + title will be used as the key
+          }
+      ) &
+        (T[K] extends string | number | undefined
+          ? { render?: (value: T[K], values: T) => React.ReactNode }
+          : { render: (value: T[K], values: T) => React.ReactNode });
     }[keyof T]
   : never;
 
 export type ResultColumnGroup<T> = {
   type: "group";
-  title: string;
   columns: SingleResultColumn<T>[];
-};
+} & (
+  | {
+      title: React.ReactNode;
+      key: string;
+    }
+  | {
+      title: string;
+      key?: string; // title will be used as the key
+    }
+);
 
 export type ResultColumn<T> = SingleResultColumn<T> | ResultColumnGroup<T>;
 
@@ -71,20 +88,28 @@ export const ResultTable = <Record extends tst.O.Object>(
   const children = React.useMemo(() => {
     return columns.map((column) => {
       if (column.type === "group") {
+        const groupKey =
+          typeof column.key === "string"
+            ? column.key
+            : (column.title as string);
         return (
-          <Table.ColumnGroup title={column.title} key={column.title}>
-            {column.columns.map((subColumn) => (
-              <Table.Column
-                {...subColumn}
-                key={subColumn.dataIndex + " " + subColumn.title}
-              />
-            ))}
+          <Table.ColumnGroup title={column.title} key={groupKey}>
+            {column.columns.map((subColumn) => {
+              const colKey =
+                typeof subColumn.key === "string"
+                  ? subColumn.key
+                  : subColumn.dataIndex + " " + (subColumn.title as string);
+              return <Table.Column {...subColumn} key={colKey} />;
+            })}
           </Table.ColumnGroup>
         );
       }
-      return (
-        <Table.Column {...column} key={column.dataIndex + " " + column.title} />
-      );
+
+      const colKey =
+        typeof column.key === "string"
+          ? column.key
+          : column.dataIndex + " " + (column.title as string);
+      return <Table.Column {...column} key={colKey} />;
     });
   }, [columns]);
 

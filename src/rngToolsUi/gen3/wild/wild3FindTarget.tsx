@@ -190,20 +190,15 @@ const getEncounterTypesWithSpecies = (species: Species) =>
       const encounterInfos = emeraldWildGameData.speciesToEncounterInfo
         .get(species)
         ?.get(mapId);
-      return encounterInfos?.map((info) => info.encounter_type) ?? [];
+      return encounterInfos?.map((info) => info.encounter_table.encounter_type) ?? [];
     }),
   );
 
 const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
   const fields: Field[] = [
     {
-      label: "Species",
-      input: (
-        <FormikSelect<FormState, "species">
-          name="species"
-          options={toOptions(emeraldWildGameData.species)}
-        />
-      ),
+      label: "Target Species",
+      input: species,
     },
     {
       label: "TID",
@@ -646,7 +641,7 @@ const getEncounterInfoByMap = (
       return;
     }
     encounterInfos.forEach((encounterInfo) => {
-      if (!allowedEncounterTypes.includes(encounterInfo.encounter_type)) {
+      if (!allowedEncounterTypes.includes(encounterInfo.encounter_table.encounter_type)) {
         return;
       }
       res.push([mapId, encounterInfo]);
@@ -733,7 +728,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
             res,
             values.species,
             formatMapName(mapId),
-            formatEncounterTypeName(encounterInfo.encounter_type),
+            formatEncounterTypeName(encounterInfo.encounter_table.encounter_type),
           );
         }),
       );

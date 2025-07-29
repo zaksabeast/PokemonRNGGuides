@@ -2,7 +2,8 @@
 mod test {
     use crate::gen3::Gen3EncounterType;
     use crate::gen3::{
-        Gen3Lead, Gen3Method, Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild,
+        Gen3Lead, Gen3Method, Wild3EncounterTable, Wild3GeneratorOptions, Wild3GeneratorResult,
+        generate_gen3_wild,
     };
     use crate::rng::Rng;
     use crate::rng::lcrng::Pokerng;
@@ -12,7 +13,6 @@ mod test {
     #[test]
     fn test_generate_wild3_no_filter() {
         let options = Wild3GeneratorOptions {
-            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
             advance: 9,
             ..Default::default()
@@ -20,7 +20,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot1,
             pid: 0x6E031C49,
@@ -40,7 +40,6 @@ mod test {
                 EncounterSlot::Slot6,
                 EncounterSlot::Slot8,
             ]),
-            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1],
             filter: PkmFilter {
                 nature: Some(Nature::Adamant),
@@ -54,7 +53,7 @@ mod test {
 
         let mut rng = Pokerng::new(0x346A4A45);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot0,
             pid: 0x02FA9E49,
@@ -81,7 +80,7 @@ mod test {
         };
 
         let rng = Pokerng::new(0x14a22065);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot4,
             pid: 0x692A57E1,
@@ -101,7 +100,7 @@ mod test {
         };
 
         let rng = Pokerng::new(0x14a22065);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![Wild3GeneratorResult {
             pid: 0x3A5DEC53,
             method: Gen3Method::Wild1,
@@ -123,7 +122,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot0,
             pid: 0x722DEBE7,
@@ -150,7 +149,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot0,
@@ -202,7 +201,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot1,
             pid: 1996552928,
@@ -216,15 +215,16 @@ mod test {
     #[test]
     fn test_generate_wild3_fishing() {
         let options = Wild3GeneratorOptions {
-            encounter_type: Gen3EncounterType::GoodRod,
             methods: vec![Gen3Method::Wild1],
             advance: 234,
             ..Default::default()
         };
+        let mut game_data = Wild3EncounterTable::default();
+        game_data.encounter_type = Gen3EncounterType::GoodRod;
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &game_data);
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot1,
             pid: 4072166945,

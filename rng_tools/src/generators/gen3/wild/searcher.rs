@@ -1,6 +1,6 @@
 use super::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
 use crate::gen3::{
-    Gen3EncounterType, Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3SearcherCycleDataByLead,
+    Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3EncounterTable, Wild3SearcherCycleDataByLead,
     calculate_cycle_data_by_lead,
 };
 use crate::rng::StateIterator;
@@ -16,7 +16,7 @@ use wasm_bindgen::prelude::*;
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen3EncounterInfo {
-    pub encounter_type: Gen3EncounterType,
+    pub encounter_table: Wild3EncounterTable,
     pub slots: Option<Vec<EncounterSlot>>,
 }
 
@@ -111,9 +111,7 @@ fn search_wild3_at_given_advance(
                 sid: opts.sid,
                 advance,
                 map_idx,
-                gender_ratio: opts.gender_ratio,
                 encounter_slot: encounter_info.slots.clone(),
-                encounter_type: encounter_info.encounter_type,
                 methods: opts.methods.clone(),
                 lead: *lead,
                 filter: opts.filter.clone(),
@@ -122,7 +120,7 @@ fn search_wild3_at_given_advance(
                 gen3_filter: opts.gen3_filter.clone(),
             };
 
-            generate_gen3_wild(rng, &gen_opts)
+            generate_gen3_wild(rng, &gen_opts, &encounter_info.encounter_table)
                 .iter()
                 .for_each(|gen_res| {
                     results.push(Wild3SearcherResultMon::new(

@@ -4,13 +4,13 @@ mod test {
 
     use crate::gen3::{
         Gen3EncounterInfo, Gen3EncounterType, Gen3Lead, Gen3Method, Gen3PkmFilter,
-        Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3, Wild3EncounterTable
+        Wild3EncounterTable, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
     };
     use crate::{AbilityType, EncounterSlot, Gender, Ivs, Nature, PkmFilter};
 
     fn default_encounter_info_by_map() -> Vec<Gen3EncounterInfo> {
         vec![Gen3EncounterInfo {
-            encounter_table:Wild3EncounterTable::default(),
+            encounter_table: Wild3EncounterTable::default(),
             slots: None,
         }]
     }

@@ -3,8 +3,8 @@ mod test {
     use crate::{HiddenPower, PokemonType, assert_list_eq};
 
     use crate::gen3::{
-        Gen3EncounterInfo, Wild3EncounterTable, Gen3Lead, Gen3Method, Wild3SearcherCycleData,
-        Wild3SearcherCycleDataByLead, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3, 
+        Gen3EncounterInfo, Gen3Lead, Gen3Method, Wild3EncounterTable, Wild3SearcherCycleData,
+        Wild3SearcherCycleDataByLead, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
     };
     use crate::{AbilityType, EncounterSlot, Gender, Ivs, Nature, PkmFilter};
 

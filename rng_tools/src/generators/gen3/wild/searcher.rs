@@ -1,6 +1,7 @@
 use super::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
 use crate::gen3::{
-    calculate_cycle_data_by_lead, Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3EncounterTable, Wild3SearcherCycleDataByLead
+    Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3EncounterTable, Wild3SearcherCycleDataByLead,
+    calculate_cycle_data_by_lead,
 };
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;

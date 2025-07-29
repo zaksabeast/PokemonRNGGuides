@@ -2,13 +2,14 @@
 mod test {
     use crate::gen3::Gen3EncounterType;
     use crate::gen3::{
-        Gen3Lead, Gen3Method, Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild, Wild3EncounterTable,
+        Gen3Lead, Gen3Method, Wild3EncounterTable, Wild3GeneratorOptions, Wild3GeneratorResult,
+        generate_gen3_wild,
     };
     use crate::rng::Rng;
     use crate::rng::lcrng::Pokerng;
     use crate::{AbilityType, Gender, Nature, PkmFilter};
     use crate::{EncounterSlot, Ivs};
-    
+
     #[test]
     fn test_generate_wild3_no_filter() {
         let options = Wild3GeneratorOptions {

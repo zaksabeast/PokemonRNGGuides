@@ -66,11 +66,11 @@ pub struct Wild3EncounterTable {
 impl Default for Wild3EncounterTable {
     fn default() -> Self {
         Self {
-            slots:(0..=EncounterSlot::Slot11 as usize).map(|_i|{
-                Wild3EncounterSlotInfo::default()
-            }).collect::<Vec<_>>(),
-            map_id:String::default(),
-            encounter_type:Gen3EncounterType::default(),
+            slots: (0..=EncounterSlot::Slot11 as usize)
+                .map(|_i| Wild3EncounterSlotInfo::default())
+                .collect::<Vec<_>>(),
+            map_id: String::default(),
+            encounter_type: Gen3EncounterType::default(),
         }
     }
 }
@@ -191,7 +191,7 @@ pub struct Wild3GeneratorResult {
 pub fn generate_gen3_wild(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
-    game_data:&Wild3EncounterTable,
+    game_data: &Wild3EncounterTable,
 ) -> Vec<Wild3GeneratorResult> {
     let mut results: Vec<Wild3GeneratorResult> = vec![];
 
@@ -429,7 +429,7 @@ pub fn generate_gen3_wild(
         );
     }
 
-    if !passes_pid_filter(opts, encounter_gender_ratio,  pid) {
+    if !passes_pid_filter(opts, encounter_gender_ratio, pid) {
         return results;
     }
 
@@ -519,7 +519,7 @@ fn generate_gen3_wild_method3(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
     encounter_slot: EncounterSlot,
-    encounter_gender_ratio:GenderRatio,
+    encounter_gender_ratio: GenderRatio,
     pid_low: u32,
     required_gender: Option<Gender>,
     required_nature: Nature,
@@ -581,7 +581,7 @@ fn generate_gen3_wild_method5(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
     encounter_slot: EncounterSlot,
-    encounter_gender_ratio:GenderRatio,
+    encounter_gender_ratio: GenderRatio,
     required_gender: Option<Gender>,
     required_nature: Nature,
     cycle_range: CycleAndModRange,
@@ -621,9 +621,10 @@ fn generate_gen3_wild_method5(
 }
 
 fn passes_pid_filter(
-    opts: &Wild3GeneratorOptions, 
-    encounter_gender_ratio:GenderRatio,
-    pid: u32) -> bool {
+    opts: &Wild3GeneratorOptions,
+    encounter_gender_ratio: GenderRatio,
+    pid: u32,
+) -> bool {
     if opts.filter.shiny {
         let generated_shiny = gen3_shiny(pid, opts.tid, opts.sid);
         if !generated_shiny {

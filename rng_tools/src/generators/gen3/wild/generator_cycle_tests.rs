@@ -6,7 +6,8 @@ mod test {
     use crate::gen3::Gen3Method;
     use crate::gen3::INFINITE_CYCLE;
     use crate::gen3::{
-        CycleRange, Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild, Wild3EncounterTable
+        CycleRange, Wild3EncounterTable, Wild3GeneratorOptions, Wild3GeneratorResult,
+        generate_gen3_wild,
     };
     use crate::rng::Rng;
     use crate::rng::lcrng::Pokerng;

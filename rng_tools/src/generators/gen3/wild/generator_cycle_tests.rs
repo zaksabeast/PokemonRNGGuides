@@ -6,7 +6,7 @@ mod test {
     use crate::gen3::Gen3Method;
     use crate::gen3::INFINITE_CYCLE;
     use crate::gen3::{
-        CycleRange, Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild,
+        CycleRange, Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild, Wild3EncounterTable
     };
     use crate::rng::Rng;
     use crate::rng::lcrng::Pokerng;
@@ -25,7 +25,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot5,
@@ -61,7 +61,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         assert_eq!(result, vec![]);
     }
 
@@ -77,7 +77,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot5,
@@ -110,7 +110,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot3,

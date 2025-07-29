@@ -3,8 +3,8 @@ mod test {
     use crate::{HiddenPower, PokemonType, assert_list_eq};
 
     use crate::gen3::{
-        Gen3EncounterInfo, Gen3EncounterType, Gen3Lead, Gen3Method, Wild3SearcherCycleData,
-        Wild3SearcherCycleDataByLead, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
+        Gen3EncounterInfo, Wild3EncounterTable, Gen3Lead, Gen3Method, Wild3SearcherCycleData,
+        Wild3SearcherCycleDataByLead, Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3, 
     };
     use crate::{AbilityType, EncounterSlot, Gender, Ivs, Nature, PkmFilter};
 
@@ -12,7 +12,7 @@ mod test {
     fn test_search_wild3_cycle_methods_1_2_4() {
         let options = Wild3SearcherOptions {
             encounter_info_by_map: vec![Gen3EncounterInfo {
-                encounter_type: Gen3EncounterType::Land,
+                encounter_table: Wild3EncounterTable::default(),
                 slots: None,
             }],
             methods: vec![

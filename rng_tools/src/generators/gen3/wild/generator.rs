@@ -44,7 +44,7 @@ pub struct Gen3PkmFilter {
     pub pid_speed: Gen3PidSpeedFilter,
 }
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3EncounterSlotInfo {
     pub min_level: u8,
@@ -63,15 +63,25 @@ pub struct Wild3EncounterTable {
     pub slots: Vec<Wild3EncounterSlotInfo>,
 }
 
+impl Default for Wild3EncounterTable {
+    fn default() -> Self {
+        Self {
+            slots:(0..=EncounterSlot::Slot11 as usize).map(|_i|{
+                Wild3EncounterSlotInfo::default()
+            }).collect::<Vec<_>>(),
+            map_id:String::default(),
+            encounter_type:Gen3EncounterType::default(),
+        }
+    }
+}
+
 #[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3GeneratorOptions {
     pub advance: usize,
     pub tid: u16,
     pub sid: u16,
-    pub gender_ratio: GenderRatio,
     pub map_idx: usize,
-    pub encounter_type: Gen3EncounterType,
     pub encounter_slot: Option<Vec<EncounterSlot>>,
     pub methods: Vec<Gen3Method>,
     pub lead: Gen3Lead,
@@ -181,6 +191,7 @@ pub struct Wild3GeneratorResult {
 pub fn generate_gen3_wild(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
+    game_data:&Wild3EncounterTable,
 ) -> Vec<Wild3GeneratorResult> {
     let mut results: Vec<Wild3GeneratorResult> = vec![];
 
@@ -207,7 +218,7 @@ pub fn generate_gen3_wild(
     let encounter_rand = (encounter_rand_val % 100) as u8;
     let encounter_slot = EncounterSlot::from_rand(
         encounter_rand,
-        EncounterSlot::gen3_thresholds(opts.encounter_type),
+        EncounterSlot::gen3_thresholds(game_data.encounter_type),
     );
 
     //between ChooseWildMonIndex_Land and ChooseWildMonLevel
@@ -228,11 +239,15 @@ pub fn generate_gen3_wild(
         return results;
     }
 
+    let slot_info = &game_data.slots[encounter_slot as usize];
+
     let lvl_range_rand_val = rng.rand::<u16>(); // ChooseWildMonLevel
-    let lvl_range = 1; // TODO: get from Wild3EncounterTable
+    let lvl_range = (slot_info.max_level - slot_info.min_level + 1) as i32;
 
     let required_gender: Option<Gender>;
     let required_nature: Nature;
+
+    let encounter_gender_ratio = slot_info.gender_ratio;
 
     // between ChooseWildMonLevel and CreateWildMon_CuteCharmCheck
     cycle += (
@@ -248,7 +263,7 @@ pub fn generate_gen3_wild(
         }
         _ => {
             cycle.add_mod_24(20);
-            if opts.gender_ratio.has_multiple_genders() {
+            if encounter_gender_ratio.has_multiple_genders() {
                 cycle.add_mod_24(12);
             }
             cycle += (
@@ -275,7 +290,7 @@ pub fn generate_gen3_wild(
         ((nature_rand_val % 25) as u8).into()
     };
 
-    match (opts.lead, opts.gender_ratio.has_multiple_genders()) {
+    match (opts.lead, encounter_gender_ratio.has_multiple_genders()) {
         (Gen3Lead::Vanilla, _) | (Gen3Lead::Egg, _) | (Gen3Lead::CuteCharm(_), false) => {
             required_gender = None;
 
@@ -359,6 +374,7 @@ pub fn generate_gen3_wild(
                 rng,
                 opts,
                 encounter_slot,
+                encounter_gender_ratio,
                 pid_low,
                 required_gender,
                 required_nature,
@@ -378,7 +394,7 @@ pub fn generate_gen3_wild(
         let good_nature = Nature::from_pid(pid) == required_nature;
 
         let good_gender = if let Some(required_gender) = required_gender {
-            let generated_mon_gender = opts.gender_ratio.gender_from_pid(pid);
+            let generated_mon_gender = encounter_gender_ratio.gender_from_pid(pid);
             generated_mon_gender == required_gender
         } else {
             true
@@ -399,6 +415,7 @@ pub fn generate_gen3_wild(
                 rng,
                 opts,
                 encounter_slot,
+                encounter_gender_ratio,
                 required_gender,
                 required_nature,
                 CycleRange::from_start_len(cycle, method5_range),
@@ -412,7 +429,7 @@ pub fn generate_gen3_wild(
         );
     }
 
-    if !passes_pid_filter(opts, pid) {
+    if !passes_pid_filter(opts, encounter_gender_ratio,  pid) {
         return results;
     }
 
@@ -502,6 +519,7 @@ fn generate_gen3_wild_method3(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
     encounter_slot: EncounterSlot,
+    encounter_gender_ratio:GenderRatio,
     pid_low: u32,
     required_gender: Option<Gender>,
     required_nature: Nature,
@@ -515,13 +533,13 @@ fn generate_gen3_wild_method3(
         return None;
     }
     if let Some(required_gender) = required_gender {
-        let generated_mon_gender = opts.gender_ratio.gender_from_pid(pid);
+        let generated_mon_gender = encounter_gender_ratio.gender_from_pid(pid);
         if generated_mon_gender != required_gender {
             return None;
         }
     }
 
-    if !passes_pid_filter(opts, pid) {
+    if !passes_pid_filter(opts, encounter_gender_ratio, pid) {
         return None;
     }
 
@@ -563,6 +581,7 @@ fn generate_gen3_wild_method5(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
     encounter_slot: EncounterSlot,
+    encounter_gender_ratio:GenderRatio,
     required_gender: Option<Gender>,
     required_nature: Nature,
     cycle_range: CycleAndModRange,
@@ -579,13 +598,13 @@ fn generate_gen3_wild_method5(
         return None;
     }
     if let Some(required_gender) = required_gender {
-        let generated_mon_gender = opts.gender_ratio.gender_from_pid(pid);
+        let generated_mon_gender = encounter_gender_ratio.gender_from_pid(pid);
         if generated_mon_gender != required_gender {
             return None;
         }
     }
 
-    if !passes_pid_filter(opts, pid) {
+    if !passes_pid_filter(opts, encounter_gender_ratio, pid) {
         return None;
     }
 
@@ -601,7 +620,10 @@ fn generate_gen3_wild_method5(
     )
 }
 
-fn passes_pid_filter(opts: &Wild3GeneratorOptions, pid: u32) -> bool {
+fn passes_pid_filter(
+    opts: &Wild3GeneratorOptions, 
+    encounter_gender_ratio:GenderRatio,
+    pid: u32) -> bool {
     if opts.filter.shiny {
         let generated_shiny = gen3_shiny(pid, opts.tid, opts.sid);
         if !generated_shiny {
@@ -617,7 +639,7 @@ fn passes_pid_filter(opts: &Wild3GeneratorOptions, pid: u32) -> bool {
     }
 
     if let Some(wanted_gender) = opts.filter.gender {
-        let generated_gender = opts.gender_ratio.gender_from_pid(pid);
+        let generated_gender = encounter_gender_ratio.gender_from_pid(pid);
         if generated_gender != wanted_gender {
             return false;
         }

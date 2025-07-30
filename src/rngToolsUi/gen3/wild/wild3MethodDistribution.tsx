@@ -6,6 +6,7 @@ import {
   Gen3Lead,
   Gen3Method,
   Wild3MethodDistributionResult,
+  Wild3EncounterTable,
 } from "~/rngTools";
 import {
   Field,
@@ -56,7 +57,7 @@ const leadSpeedTypes = [
 
 const Validator = z.object({
   map: z.string(),
-  encounter_type: z.enum(gen3EncounterTypes),
+  encounterType: z.enum(gen3EncounterTypes),
   advance: z.number().int().min(0),
   tid: z.number().int().min(0).max(0xffff),
   sid: z.number().int().min(0).max(0xffff),
@@ -71,7 +72,7 @@ type FormState = z.infer<typeof Validator>;
 const getInitialValues = (): FormState => {
   return {
     map: "MAP_ROUTE101",
-    encounter_type: "Land",
+    encounterType: "Land",
     tid: 0,
     sid: 0,
     advance: 0,
@@ -82,36 +83,30 @@ const getInitialValues = (): FormState => {
   };
 };
 
-const leadTypeOptions = (() => {
-  const opts: { value: Gen3Lead; label: string }[] = [];
-  opts.push({
+const leadTypeOptions: { value: Gen3Lead; label: string }[] = [
+  {
     label: "Ordinary lead",
     value: "Vanilla",
-  });
-  opts.push({
+  },
+  {
     label: "Egg",
     value: "Egg",
-  });
-  opts.push(
-    ...nature.map((nat) => {
-      return {
-        label: `Synchronize (${nat})`,
-        value: { Synchronize: nat },
-      };
-    }),
-  );
-  opts.push(
-    {
-      label: `Cute Charm (Male)`,
-      value: { CuteCharm: "Male" },
-    },
-    {
-      label: `Cute Charm (Female)`,
-      value: { CuteCharm: "Female" },
-    },
-  );
-  return opts;
-})();
+  },
+  ...nature.map((nat) => {
+    return {
+      label: `Synchronize (${nat})`,
+      value: { Synchronize: nat },
+    };
+  }),
+  {
+    label: `Cute Charm (Male)`,
+    value: { CuteCharm: "Male" },
+  },
+  {
+    label: `Cute Charm (Female)`,
+    value: { CuteCharm: "Female" },
+  },
+];
 
 const getFields = (
   map_id: string,
@@ -119,9 +114,10 @@ const getFields = (
   leadSpeedType: LeadSpeedType,
   leadCycleSpeed: number,
 ): Field[] => {
-  const encounter_types = emeraldWildGameData.encounter_tables
+  const encounterTypes = emeraldWildGameData.encounter_tables
     .filter((table) => table.map_id === map_id)
     .map((table) => table.encounter_type);
+
   const fields: Field[] = [
     {
       label: "Map",
@@ -136,9 +132,9 @@ const getFields = (
     {
       label: "Encounter Type",
       input: (
-        <FormikSelect<FormState, "encounter_type">
-          name="encounter_type"
-          options={toOptions(encounter_types, formatEncounterTypeName)}
+        <FormikSelect<FormState, "encounterType">
+          name="encounterType"
+          options={toOptions(encounterTypes, formatEncounterTypeName)}
         />
       ),
     },
@@ -155,7 +151,7 @@ const getFields = (
       input: (
         <FormikSelect<FormState, "leadTypeIdx">
           name="leadTypeIdx"
-          // Limitation: options must be an array of primitive.
+          // Limitation: value must be a primitive, so we use the index instead of Gen3Lead.
           options={leadTypeOptions.map((el, idx) => {
             return { label: el.label, value: idx };
           })}
@@ -314,10 +310,6 @@ const getColumns = (_t: Translations): ResultColumn<UiResult>[] => {
   return columns;
 };
 
-type Props = {
-  game: Static3Game;
-};
-
 const calculateLeadCycleSpeed = async (
   leadSpeedType: LeadSpeedType,
   leadCycleSpeed: number,
@@ -341,10 +333,13 @@ type UiResult = FlattenIvs<
 >;
 
 let nextUid = 0;
-const convertSearcherResultToUIResult = async (
+const convertSearcherResultToUIResult = (
   res: Wild3MethodDistributionResult,
-  species: Species,
-): Promise<UiResult> => {
+  encounterTable: Wild3EncounterTable,
+): UiResult => {
+  const slot_idx = encounterSlots.indexOf(res.searcher_res.encounter_slot);
+  const species =
+    slot_idx == -1 ? "None" : encounterTable.slots[slot_idx].species;
   return {
     ...res.searcher_res,
     ...res.searcher_res.ivs,
@@ -352,6 +347,31 @@ const convertSearcherResultToUIResult = async (
     species,
     uid: nextUid++,
   };
+};
+
+const convertSearcherResultsToUIResults = (
+  results: Wild3MethodDistributionResult[],
+  encounterTable: Wild3EncounterTable,
+) => {
+  return results
+    .map((res) => convertSearcherResultToUIResult(res, encounterTable))
+    .sort((lhs, rhs) => {
+      const startDiff =
+        lhs.cycle_data_for_lead.pre_sweet_scent_cycle_range.start -
+        rhs.cycle_data_for_lead.pre_sweet_scent_cycle_range.start;
+
+      if (startDiff !== 0) {
+        return startDiff;
+      }
+      return (
+        lhs.cycle_data_for_lead.pre_sweet_scent_cycle_range.len -
+        rhs.cycle_data_for_lead.pre_sweet_scent_cycle_range.len
+      );
+    });
+};
+
+type Props = {
+  game: Static3Game;
 };
 
 export const Wild3MethodDistribution = ({ game }: Props) => {
@@ -378,44 +398,25 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
         generate_even_if_impossible: true,
       };
 
-      const encounter_table = emeraldWildGameData.encounter_tables.find(
+      const encounterTable = emeraldWildGameData.encounter_tables.find(
         (table) =>
           table.map_id === values.map &&
-          table.encounter_type === values.encounter_type,
+          table.encounter_type === values.encounterType,
       );
-      if (encounter_table == null) {
+      if (encounterTable == null) {
         return setResults([]);
       }
 
       const results = await rngTools.generate_gen3_wild_distribution(
         initial_seed,
         opts,
-        encounter_table,
+        encounterTable,
         values.leadCycleSpeed,
       );
-      const uiResults = await Promise.all(
-        results.map((res) => {
-          const slot_idx = encounterSlots.indexOf(
-            res.searcher_res.encounter_slot,
-          );
-          const species =
-            slot_idx == -1 ? "None" : encounter_table.slots[slot_idx].species;
-          return convertSearcherResultToUIResult(res, species);
-        }),
+      const uiResults = convertSearcherResultsToUIResults(
+        results,
+        encounterTable,
       );
-      uiResults.sort((lhs, rhs) => {
-        const startDiff =
-          lhs.cycle_data_for_lead.pre_sweet_scent_cycle_range.start -
-          rhs.cycle_data_for_lead.pre_sweet_scent_cycle_range.start;
-
-        if (startDiff !== 0) {
-          return startDiff;
-        }
-        return (
-          lhs.cycle_data_for_lead.pre_sweet_scent_cycle_range.len -
-          rhs.cycle_data_for_lead.pre_sweet_scent_cycle_range.len
-        );
-      });
 
       setResults(uiResults);
     },

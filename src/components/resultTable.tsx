@@ -19,7 +19,7 @@ export type SingleResultColumn<T> = keyof T extends string
           }
         | {
             title: string;
-            key?: string; // dataIndex + title will be used as the key
+            key?: undefined; // dataIndex + title will be used as the key
           }
       ) &
         (T[K] extends string | number | undefined
@@ -88,17 +88,14 @@ export const ResultTable = <Record extends tst.O.Object>(
   const children = React.useMemo(() => {
     return columns.map((column) => {
       if (column.type === "group") {
-        const groupKey =
-          typeof column.key === "string"
-            ? column.key
-            : (column.title as string);
+        const groupKey = column.key == null ? column.title : column.key;
         return (
           <Table.ColumnGroup title={column.title} key={groupKey}>
             {column.columns.map((subColumn) => {
               const colKey =
-                typeof subColumn.key === "string"
-                  ? subColumn.key
-                  : subColumn.dataIndex + " " + (subColumn.title as string);
+                subColumn.key == null
+                  ? subColumn.dataIndex + " " + subColumn.title
+                  : subColumn.key;
               return <Table.Column {...subColumn} key={colKey} />;
             })}
           </Table.ColumnGroup>
@@ -106,9 +103,7 @@ export const ResultTable = <Record extends tst.O.Object>(
       }
 
       const colKey =
-        typeof column.key === "string"
-          ? column.key
-          : column.dataIndex + " " + (column.title as string);
+        column.key == null ? column.dataIndex + " " + column.title : column.key;
       return <Table.Column {...column} key={colKey} />;
     });
   }, [columns]);

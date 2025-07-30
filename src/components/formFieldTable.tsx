@@ -23,7 +23,7 @@ export type Field = {
     }
   | {
       label: string;
-      key?: string; // title will be used as the key
+      key?: undefined; // title will be used as the key
     }
 );
 
@@ -53,7 +53,7 @@ export const FormFieldTable = ({ fields }: Props) => {
                 </Tooltip>
               );
 
-            const keyToUse = typeof key === "string" ? key : (label as string);
+            const keyToUse = key == null ? label : key;
             if (direction === "row") {
               return (
                 <tr key={keyToUse}>

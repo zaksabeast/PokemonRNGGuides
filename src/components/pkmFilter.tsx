@@ -148,6 +148,7 @@ const _getPkmFilterFields = (
     }),
     optOut(optOuts?.hidden_power, {
       label: "",
+      key: "_getPkmFilterFields.hidden_power",
       direction: "column",
       input: <HiddenPowerInput<PkmFilterFields> name="filter_hidden_power" />,
     }),

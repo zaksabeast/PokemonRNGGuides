@@ -1,10 +1,10 @@
 use super::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
 use crate::gen3::{
-    Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3EncounterTable, Wild3SearcherCycleDataByLead,
-    calculate_cycle_data_by_lead,
+    Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3EncounterTable, Wild3SearcherCycleData,
+    Wild3SearcherCycleDataByLead, calculate_cycle_data, calculate_cycle_data_by_lead,
 };
-use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
+use crate::rng::{Rng, StateIterator};
 use crate::{
     AbilityType, EncounterSlot, Gender, GenderRatio, HiddenPower, Ivs, Nature, PkmFilter,
     gen3_shiny,
@@ -37,6 +37,7 @@ pub struct Wild3SearcherOptions {
     pub methods: Vec<Gen3Method>,
     pub consider_cycles: bool,
     pub consider_rng_manipulated_lead_pid: bool,
+    pub generate_even_if_impossible: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -67,7 +68,9 @@ pub struct Wild3SearcherResultMon {
 impl Wild3SearcherResultMon {
     pub fn new(
         gen_res: &Wild3GeneratorResult,
-        opts: &Wild3SearcherOptions,
+        tid: u16,
+        sid: u16,
+        gender_ratio: GenderRatio,
         advance: usize,
         map_idx: usize,
         lead: Gen3Lead,
@@ -86,10 +89,10 @@ impl Wild3SearcherResultMon {
             method: gen_res.method,
             encounter_slot: gen_res.encounter_slot,
             cycle_data_by_lead,
-            shiny: gen3_shiny(gen_res.pid, opts.tid, opts.sid),
+            shiny: gen3_shiny(gen_res.pid, tid, sid),
             nature: Nature::from_pid(gen_res.pid),
             ability: AbilityType::from_gen3_pid(gen_res.pid),
-            gender: opts.gender_ratio.gender_from_pid(gen_res.pid),
+            gender: gender_ratio.gender_from_pid(gen_res.pid),
             hidden_power: HiddenPower::from_ivs(&gen_res.ivs),
             advance,
             map_idx,
@@ -117,14 +120,24 @@ fn search_wild3_at_given_advance(
                 filter: opts.filter.clone(),
                 consider_cycles: opts.consider_cycles,
                 consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
+                generate_even_if_impossible: opts.generate_even_if_impossible,
                 gen3_filter: opts.gen3_filter.clone(),
             };
 
             generate_gen3_wild(rng, &gen_opts, &encounter_info.encounter_table)
                 .iter()
                 .for_each(|gen_res| {
+                    let gender_ratio = encounter_info.encounter_table.slots
+                        [gen_res.encounter_slot as usize]
+                        .gender_ratio;
                     results.push(Wild3SearcherResultMon::new(
-                        gen_res, opts, advance, map_idx, *lead,
+                        gen_res,
+                        opts.tid,
+                        opts.sid,
+                        gender_ratio,
+                        advance,
+                        map_idx,
+                        *lead,
                     ));
                 });
         }
@@ -142,4 +155,46 @@ pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<Wild3SearcherResultMon> 
         .flat_map(|(adv, rng)| search_wild3_at_given_advance(rng, adv, opts))
         .take(opts.max_result_count)
         .collect::<Vec<Wild3SearcherResultMon>>()
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Wild3MethodDistributionResult {
+    pub searcher_res: Wild3SearcherResultMon,
+    pub cycle_data_for_lead: Wild3SearcherCycleData,
+}
+
+#[wasm_bindgen]
+pub fn generate_gen3_wild_distribution(
+    initial_seed: u32,
+    opts: &Wild3GeneratorOptions,
+    game_data: &Wild3EncounterTable,
+    lead_cycle_speed: usize,
+) -> Vec<Wild3MethodDistributionResult> {
+    let mut rng = Pokerng::new(initial_seed);
+    rng.advance(opts.advance);
+
+    let gen_results = generate_gen3_wild(rng, opts, game_data);
+    gen_results
+        .iter()
+        .map(|gen_res| {
+            let gender_ratio = game_data.slots[gen_res.encounter_slot as usize].gender_ratio;
+            let searcher_res = Wild3SearcherResultMon::new(
+                gen_res,
+                opts.tid,
+                opts.sid,
+                gender_ratio,
+                opts.advance,
+                0,
+                opts.lead,
+            );
+            Wild3MethodDistributionResult {
+                searcher_res,
+                cycle_data_for_lead: calculate_cycle_data(
+                    &gen_res.cycle_range.unwrap(),
+                    lead_cycle_speed,
+                ),
+            }
+        })
+        .collect()
 }

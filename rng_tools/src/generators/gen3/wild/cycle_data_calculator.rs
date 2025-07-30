@@ -93,7 +93,7 @@ pub fn calculate_cycle_data_by_lead(
     }
 }
 
-fn calculate_cycle_data(
+pub fn calculate_cycle_data(
     post_sweet_scent_mod_range: &CycleAndModRange,
     lead_pid_cycle_count: usize,
 ) -> Wild3SearcherCycleData {

@@ -89,6 +89,7 @@ pub struct Wild3GeneratorOptions {
     pub gen3_filter: Gen3PkmFilter,
     pub consider_cycles: bool,
     pub consider_rng_manipulated_lead_pid: bool,
+    pub generate_even_if_impossible: bool,
 }
 
 #[derive(Default, Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -688,6 +689,7 @@ fn create_if_passes_filter(
 
     let is_egg = matches!(opts.lead, Gen3Lead::Egg);
     if opts.consider_cycles
+        && !opts.generate_even_if_impossible
         && !is_method_possible_to_trigger(
             &cycle_range,
             is_egg,

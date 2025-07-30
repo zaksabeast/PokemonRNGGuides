@@ -590,13 +590,14 @@ fn get_state_from_kseed(
 
             let mut full_seed = rng.rand::<u32>();
             let mut next_rng = (full_seed >> 16) as u16;
-            let mut next_rng_2 = rng.rand::<u16>();
+            let full_seed2 = rng.rand::<u32>();
+            let mut next_rng_2 = (full_seed2 >> 16) as u16;
             loop {
                 let origin_seed = if next_rng % 2 == 0 {
                     let mut seed_rng = Pokerng::new(full_seed).rev();
                     Some(seed_rng.rand::<u32>())
                 } else if next_rng_2 % 2 == 1 && next_rng % 25 == nature_rand {
-                    let mut seed_rng = Pokerng::new(full_seed).rev();
+                    let mut seed_rng = Pokerng::new(full_seed2).rev();
                     Some(seed_rng.rand::<u32>())
                 } else {
                     None
@@ -3602,10 +3603,10 @@ mod tests {
                     stats: None,
                     ..Default::default()
                 },
-                min_advance: 20,
-                max_advance: 20,
+                min_advance: 21,
+                max_advance: 23,
                 min_delay: 760,
-                max_delay: 770,
+                max_delay: 800,
                 year: 2025,
                 force_second: None,
                 roamer: RoamerSet {

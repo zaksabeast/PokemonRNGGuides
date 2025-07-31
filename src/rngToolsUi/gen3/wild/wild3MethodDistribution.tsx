@@ -2,7 +2,6 @@ import {
   rngTools,
   Species,
   Wild3SearcherResultMon,
-  Wild3SearcherCycleData,
   Gen3Lead,
   Gen3Method,
   Wild3MethodDistributionResult,
@@ -275,20 +274,25 @@ const getColumns = (_t: Translations): ResultColumn<UiResult>[] => {
         </>
       ),
       key: "Cycle at start",
-      dataIndex: "cycle_data_for_lead",
-      render: (cycle_data_for_lead) => {
-        const range = cycle_data_for_lead.pre_sweet_scent_cycle_range;
-        if (range.len === 0) {
+      dataIndex: "pre_sweet_scent_cycle_ranges",
+      render: (pre_sweet_scent_cycle_ranges) => {
+        if (pre_sweet_scent_cycle_ranges.length === 0) {
           return "Less than 0";
         }
-        return `${range.start} - ${range.start + range.len - 1}`;
+
+        const rangeTxts = pre_sweet_scent_cycle_ranges.map(
+          (range) => `${range.start} - ${range.start + range.len - 1}`,
+        );
+        return rangeTxts.map((rangeTxt) => {
+          return <div key={rangeTxt}>{rangeTxt}</div>;
+        });
       },
     },
     {
       title: "Likelihood",
-      dataIndex: "cycle_data_for_lead",
-      render: (cycle_data_for_lead) => {
-        return formatProbability(cycle_data_for_lead.method_probability);
+      dataIndex: "method_probability",
+      render: (method_probability) => {
+        return formatProbability(method_probability);
       },
     },
     { title: "Method", dataIndex: "method" },
@@ -328,7 +332,8 @@ type UiResult = FlattenIvs<
   Wild3SearcherResultMon & {
     species: Species;
     uid: number;
-    cycle_data_for_lead: Wild3SearcherCycleData;
+    method_probability: Wild3MethodDistributionResult["method_probability"];
+    pre_sweet_scent_cycle_ranges: Wild3MethodDistributionResult["pre_sweet_scent_cycle_ranges"];
   }
 >;
 
@@ -343,7 +348,8 @@ const convertSearcherResultToUIResult = (
   return {
     ...res.searcher_res,
     ...res.searcher_res.ivs,
-    cycle_data_for_lead: res.cycle_data_for_lead,
+    method_probability: res.method_probability,
+    pre_sweet_scent_cycle_ranges: res.pre_sweet_scent_cycle_ranges,
     species,
     uid: nextUid++,
   };
@@ -357,15 +363,15 @@ const convertSearcherResultsToUIResults = (
     .map((res) => convertSearcherResultToUIResult(res, encounterTable))
     .sort((lhs, rhs) => {
       const startDiff =
-        lhs.cycle_data_for_lead.pre_sweet_scent_cycle_range.start -
-        rhs.cycle_data_for_lead.pre_sweet_scent_cycle_range.start;
+        lhs.pre_sweet_scent_cycle_ranges[0].start -
+        rhs.pre_sweet_scent_cycle_ranges[0].start;
 
       if (startDiff !== 0) {
         return startDiff;
       }
       return (
-        lhs.cycle_data_for_lead.pre_sweet_scent_cycle_range.len -
-        rhs.cycle_data_for_lead.pre_sweet_scent_cycle_range.len
+        lhs.pre_sweet_scent_cycle_ranges[0].len -
+        rhs.pre_sweet_scent_cycle_ranges[0].len
       );
     });
 };

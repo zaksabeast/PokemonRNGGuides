@@ -1,10 +1,10 @@
 use super::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
 use crate::gen3::{
-    Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3EncounterTable, Wild3SearcherCycleData,
-    Wild3SearcherCycleDataByLead, calculate_cycle_data, calculate_cycle_data_by_lead,
+    Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3EncounterTable, 
+    Wild3SearcherCycleDataByLead, calculate_cycle_data_by_lead,
 };
 use crate::rng::lcrng::Pokerng;
-use crate::rng::{Rng, StateIterator};
+use crate::rng::{StateIterator};
 use crate::{
     AbilityType, EncounterSlot, Gender, GenderRatio, HiddenPower, Ivs, Nature, PkmFilter,
     gen3_shiny,
@@ -155,46 +155,4 @@ pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<Wild3SearcherResultMon> 
         .flat_map(|(adv, rng)| search_wild3_at_given_advance(rng, adv, opts))
         .take(opts.max_result_count)
         .collect::<Vec<Wild3SearcherResultMon>>()
-}
-
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Wild3MethodDistributionResult {
-    pub searcher_res: Wild3SearcherResultMon,
-    pub cycle_data_for_lead: Wild3SearcherCycleData,
-}
-
-#[wasm_bindgen]
-pub fn generate_gen3_wild_distribution(
-    initial_seed: u32,
-    opts: &Wild3GeneratorOptions,
-    game_data: &Wild3EncounterTable,
-    lead_cycle_speed: usize,
-) -> Vec<Wild3MethodDistributionResult> {
-    let mut rng = Pokerng::new(initial_seed);
-    rng.advance(opts.advance);
-
-    let gen_results = generate_gen3_wild(rng, opts, game_data);
-    gen_results
-        .iter()
-        .map(|gen_res| {
-            let gender_ratio = game_data.slots[gen_res.encounter_slot as usize].gender_ratio;
-            let searcher_res = Wild3SearcherResultMon::new(
-                gen_res,
-                opts.tid,
-                opts.sid,
-                gender_ratio,
-                opts.advance,
-                0,
-                opts.lead,
-            );
-            Wild3MethodDistributionResult {
-                searcher_res,
-                cycle_data_for_lead: calculate_cycle_data(
-                    &gen_res.cycle_range.unwrap(),
-                    lead_cycle_speed,
-                ),
-            }
-        })
-        .collect()
 }

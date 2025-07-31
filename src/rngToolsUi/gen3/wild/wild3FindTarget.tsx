@@ -422,8 +422,10 @@ const getColumns = (
             return "";
           }
           if (
-            cycle_data_by_lead.slowest_lead.method_probability ===
-            cycle_data_by_lead.fastest_lead.method_probability
+            cycle_data_by_lead.ideal_lead.method_probability ===
+              cycle_data_by_lead.slowest_lead.method_probability &&
+            cycle_data_by_lead.ideal_lead.method_probability ===
+              cycle_data_by_lead.fastest_lead.method_probability
           ) {
             return "Any";
           }

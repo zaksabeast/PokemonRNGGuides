@@ -89,7 +89,6 @@ pub struct Wild3GeneratorOptions {
     pub gen3_filter: Gen3PkmFilter,
     pub consider_cycles: bool,
     pub consider_rng_manipulated_lead_pid: bool,
-    pub generate_even_if_impossible: bool,
 }
 
 #[derive(Default, Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -209,6 +208,22 @@ impl Wild3GeneratorResult {
     }
 }
 
+fn retain_methods_possible_to_trigger(
+    opts: &Wild3GeneratorOptions,
+    results: &mut Vec<Wild3GeneratorResult>,
+) {
+    if opts.consider_cycles {
+        let is_egg = matches!(opts.lead, Gen3Lead::Egg);
+        results.retain(|res| {
+            is_method_possible_to_trigger(
+                &res.cycle_range.unwrap(),
+                is_egg,
+                opts.consider_rng_manipulated_lead_pid,
+            )
+        });
+    }
+}
+
 pub fn generate_gen3_wild(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
@@ -257,7 +272,7 @@ pub fn generate_gen3_wild(
     ); // TODO: cycle increment depends on slot
 
     if !EncounterSlot::passes_filter(opts.encounter_slot.as_deref(), encounter_slot) {
-        return results;
+        return results; // empty
     }
 
     let slot_info = &game_data.slots[encounter_slot as usize];
@@ -464,6 +479,7 @@ pub fn generate_gen3_wild(
     }
 
     if !passes_pid_filter(opts, encounter_gender_ratio, pid) {
+        retain_methods_possible_to_trigger(opts, &mut results);
         return results;
     }
 
@@ -524,6 +540,8 @@ pub fn generate_gen3_wild(
             results.push(gen_mon_wild1);
         }
     }
+
+    retain_methods_possible_to_trigger(opts, &mut results);
 
     results
 }
@@ -727,18 +745,6 @@ fn create_if_passes_filter(
     }
 
     if opts.gen3_filter.max_size && !is_max_size(pid, &ivs) {
-        return None;
-    }
-
-    let is_egg = matches!(opts.lead, Gen3Lead::Egg);
-    if opts.consider_cycles
-        && !opts.generate_even_if_impossible
-        && !is_method_possible_to_trigger(
-            &cycle_range,
-            is_egg,
-            opts.consider_rng_manipulated_lead_pid,
-        )
-    {
         return None;
     }
 

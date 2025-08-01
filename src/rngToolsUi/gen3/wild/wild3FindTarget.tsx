@@ -7,6 +7,7 @@ import {
   Wild3SearcherCycleData,
   Gen3Lead,
   Gen3Method,
+  Gen3EncounterInfo,
 } from "~/rngTools";
 import {
   Field,
@@ -22,11 +23,13 @@ import {
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { formatProbability } from "~/utils/formatProbability";
 import { useFormikContext } from "formik";
 import {
   getPkmFilterFields,
   pkmFilterSchema,
   getPkmFilterInitialValues,
+  pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
 import { Static3Game } from "~/rngToolsUi/gen3/static/constants";
 import React from "react";
@@ -37,25 +40,30 @@ import {
   genderRatioBySpecies,
   hasMultiplePossibleGenders,
   gen3Methods,
+  gen3SpeciesHasVariableSize,
 } from "~/types";
 import { match, P } from "ts-pattern";
 
 import { getWild3GameData } from "./wild3GameData";
 import emerald_wild3_game_data from "~/__generated__/emerald_wild3_game_data";
-import { startCase, sortBy } from "lodash-es";
+import { uniq, startCase, sortBy } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { Tooltip } from "antd";
+import { Translations } from "~/translations";
+import {
+  gen3PkmFilterFieldsToRustInput,
+  getGen3PkmFilterInitialValues,
+  gen3PkmFilterSchema,
+  getGen3PkmFilterFields,
+} from "~/components/gen3PkmFilter";
 
 /*
 Possible improvements:
- - Show/hide columns based on options.
- - Add ColumnGroup for Likelihood by lead speed columns.
  - Add Tooltip for Likelihood by lead speed columns.
 
  - Support multiple encounter types.
  - Support all leads in generator.
  - Display warning if no maps or no leads are selected.
- - Add Hidden Power filter.
  - Add lead PID speed filter.
 
  - Display map names instead of formatted map IDs.
@@ -69,6 +77,11 @@ Possible improvements:
 
 const gen3EncounterTypes = [
   "Land",
+  "Water",
+  "OldRod",
+  "GoodRod",
+  "SuperRod",
+  "RockSmash",
 ] as const satisfies readonly Gen3EncounterType[];
 
 const cuteCharmGenders = [
@@ -95,7 +108,8 @@ const Validator = z
     rngManipulatedLeadPid: z.boolean(),
     mergeSimilarResults: z.boolean(),
   })
-  .merge(pkmFilterSchema);
+  .merge(pkmFilterSchema)
+  .merge(gen3PkmFilterSchema);
 
 type FormState = z.infer<typeof Validator>;
 
@@ -113,9 +127,10 @@ const getInitialValues = (): FormState => {
     initial_advances: 1000,
     max_advances: 100_000,
     max_result_count: 10_000,
-    ...getPkmFilterInitialValues(),
     rngManipulatedLeadPid: false,
     mergeSimilarResults: true,
+    ...getPkmFilterInitialValues(),
+    ...getGen3PkmFilterInitialValues(),
   };
 };
 
@@ -136,6 +151,9 @@ const getTargetMonFields = (species: Species): Field[] => {
       ),
     },
     ...getPkmFilterFields({ gender: multipleGenders }),
+    ...getGen3PkmFilterFields({
+      max_size: gen3SpeciesHasVariableSize(species),
+    }),
   ];
   return targetMonFields;
 };
@@ -148,23 +166,41 @@ const formatMapName = (label: string) => {
         ? piece
         : startCase(piece.toLowerCase()),
     )
-    .join(" ");
+    .join(" ")
+    .replace(/^Map /, "");
 };
 
-const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
-  const mapsWithSpecies = Array.from(
-    emeraldWildGameData.speciesToEncounterSlots.get(species)?.keys() ?? [],
+const formatEncounterTypeName = (encounterType: Gen3EncounterType) => {
+  return match(encounterType)
+    .with("OldRod", () => "Old Rod")
+    .with("GoodRod", () => "Good Rod")
+    .with("SuperRod", () => "Super Rod")
+    .with("RockSmash", () => "Rock Smash")
+    .otherwise(() => encounterType);
+};
+
+const getMapsWithSpecies = (species: Species) =>
+  Array.from(
+    emeraldWildGameData.speciesToEncounterInfo.get(species)?.keys() ?? [],
   );
 
+const getEncounterTypesWithSpecies = (species: Species) =>
+  uniq(
+    getMapsWithSpecies(species).flatMap((mapId) => {
+      const encounterInfos = emeraldWildGameData.speciesToEncounterInfo
+        .get(species)
+        ?.get(mapId);
+      return (
+        encounterInfos?.map((info) => info.encounter_table.encounter_type) ?? []
+      );
+    }),
+  );
+
+const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
   const fields: Field[] = [
     {
-      label: "Species",
-      input: (
-        <FormikSelect<FormState, "species">
-          name="species"
-          options={toOptions(emeraldWildGameData.species)}
-        />
-      ),
+      label: "Target Species",
+      input: species,
     },
     {
       label: "TID",
@@ -191,15 +227,31 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
       input: (
         <FormikSelect<FormState, "maps">
           name="maps"
-          options={toOptions(mapsWithSpecies, formatMapName)}
+          options={toOptions(getMapsWithSpecies(species), formatMapName)}
           mode="multiple"
           fullWidth={true}
+          selectAllNoneButtons={true}
+        />
+      ),
+    },
+    {
+      label: "Encounters",
+      input: (
+        <FormikSelect<FormState, "encounterTypes">
+          name="encounterTypes"
+          options={toOptions(
+            getEncounterTypesWithSpecies(species),
+            formatEncounterTypeName,
+          )}
+          mode="multiple"
+          fullWidth={true}
+          selectAllNoneButtons={true}
         />
       ),
     },
     {
       label: "Ordinary lead",
-      input: <FormikSwitch<FormState, "vanillaLead"> name="vanillaLead" />,
+      input: <FormikSwitch<FormState> name="vanillaLead" />,
     },
     {
       label: "Synchronize leads",
@@ -247,12 +299,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
     },
     {
       label: "RNG-manipulated lead PID",
-      input: (
-        <FormikSwitch<
-          FormState,
-          "rngManipulatedLeadPid"
-        > name="rngManipulatedLeadPid" />
-      ),
+      input: <FormikSwitch<FormState> name="rngManipulatedLeadPid" />,
     },
     {
       label: "Initial advances",
@@ -280,12 +327,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
     },
     {
       label: "Merge similar results",
-      input: (
-        <FormikSwitch<
-          FormState,
-          "mergeSimilarResults"
-        > name="mergeSimilarResults" />
-      ),
+      input: <FormikSwitch<FormState> name="mergeSimilarResults" />,
     },
   ];
   return fields;
@@ -299,11 +341,11 @@ export const TargetMon = () => {
   }, [values.species]);
 
   React.useEffect(() => {
-    const allMaps = emeraldWildGameData.speciesToEncounterSlots.get(
-      values.species,
-    );
-    const newMaps = allMaps !== undefined ? Array.from(allMaps.keys()) : [];
-    setValues((prev) => ({ ...prev, maps: newMaps }));
+    setValues((prev) => ({
+      ...prev,
+      maps: getMapsWithSpecies(values.species),
+      encounterTypes: getEncounterTypesWithSpecies(values.species),
+    }));
   }, [values.species, setValues]);
 
   return (
@@ -333,23 +375,6 @@ export const SetupFilter = () => {
   );
 };
 
-const formatProbability = (prob: number) => {
-  if (prob <= 0) {
-    return "0%";
-  }
-  if (prob >= 1) {
-    return "100%";
-  }
-
-  if (prob < 1e-30) {
-    return "~0%";
-  }
-
-  const val = prob * 100;
-  const valLog10 = Math.log10(val);
-  return `${val.toFixed(-Math.floor(valLog10) + 1)}%`;
-};
-
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
   method: Gen3Method,
@@ -369,7 +394,10 @@ const getMethodLikelihoodColumValue = (
   );
 };
 
-const getColumns = (values: FormState): ResultColumn<UiResult>[] => {
+const getColumns = (
+  _t: Translations,
+  values: FormState,
+): ResultColumn<UiResult>[] => {
   const columns: ResultColumn<UiResult>[] = [];
   columns.push(
     {
@@ -386,30 +414,13 @@ const getColumns = (values: FormState): ResultColumn<UiResult>[] => {
       },
     },
     { title: "Map", dataIndex: "mapName" },
-    { title: "Encounter", dataIndex: "encounter" },
+    { title: "Encounter", dataIndex: "encounterTypeName" },
     { title: "Method", dataIndex: "method" },
-    {
-      title: "Lead",
-      dataIndex: "lead",
-      render: (lead) => {
-        return match(lead)
-          .with("Vanilla", () => "Ordinary lead")
-          .with(
-            { Synchronize: P.string },
-            (matched) => `Synchronize (${matched.Synchronize})`,
-          )
-          .with(
-            { CuteCharm: P.string },
-            (matched) => `CuteCharm (${matched.CuteCharm})`,
-          )
-          .with("Egg", () => "Egg lead")
-          .exhaustive();
-      },
-    },
   );
+
   if (!values.rngManipulatedLeadPid) {
     columns.push({
-      title: "Likelihood",
+      title: "Method Likelihood",
       dataIndex: "cycle_data_by_lead",
       render: (cycle_data_by_lead) => {
         if (cycle_data_by_lead == undefined) {
@@ -423,7 +434,28 @@ const getColumns = (values: FormState): ResultColumn<UiResult>[] => {
         return formatProbability(least_likely_common.method_probability);
       },
     });
-  } else {
+  }
+
+  columns.push({
+    title: "Lead",
+    dataIndex: "lead",
+    render: (lead) => {
+      return match(lead)
+        .with("Vanilla", () => "Ordinary lead")
+        .with(
+          { Synchronize: P.string },
+          (matched) => `Synchronize (${matched.Synchronize})`,
+        )
+        .with(
+          { CuteCharm: P.string },
+          (matched) => `CuteCharm (${matched.CuteCharm})`,
+        )
+        .with("Egg", () => "Egg lead")
+        .exhaustive();
+    },
+  });
+
+  if (values.rngManipulatedLeadPid) {
     columns.push(
       {
         title: "Ideal Lead Speed",
@@ -454,7 +486,7 @@ const getColumns = (values: FormState): ResultColumn<UiResult>[] => {
         },
       },
       {
-        title: "Likelyhood by Lead Speed",
+        title: "Method Likelyhood by Lead Speed",
         type: "group",
         columns: [
           {
@@ -536,6 +568,27 @@ const getColumns = (values: FormState): ResultColumn<UiResult>[] => {
     },
     { title: "Gender", dataIndex: "gender" },
     ...ivColumns,
+    {
+      title: "Hidden Power",
+      type: "group",
+      columns: [
+        {
+          title: "Type",
+          dataIndex: "hidden_power",
+          render: (hidden_power) => hidden_power.pokemon_type,
+        },
+        {
+          title: "Power",
+          dataIndex: "hidden_power",
+          render: (hidden_power) => hidden_power.bp,
+        },
+      ],
+    },
+    {
+      title: "PID speed",
+      dataIndex: "pidCycleCount",
+      render: (pidCycleCount) => `${pidCycleCount} cycles`,
+    },
   );
   return columns;
 };
@@ -548,8 +601,9 @@ type UiResult = FlattenIvs<
   Wild3SearcherResultMon & {
     species: Species;
     mapName: string;
-    encounter: Gen3EncounterType;
+    encounterTypeName: string;
     uid: number;
+    pidCycleCount: number;
   }
 >;
 
@@ -567,37 +621,56 @@ const getLeads = (values: FormState): Gen3Lead[] => {
   return leads;
 };
 
-const getEncounterSlotsByMap = (values: FormState) => {
+const getEncounterInfoByMap = (
+  values: FormState,
+): [string, Gen3EncounterInfo][] => {
   if (values.species === "None") {
     return [];
   }
+  const allowedMaps = values.maps;
+  const allowedEncounterTypes = values.encounterTypes;
 
-  const allMaps = emeraldWildGameData.speciesToEncounterSlots.get(
+  const allMapsForSpecies = emeraldWildGameData.speciesToEncounterInfo.get(
     values.species,
   );
-  if (allMaps === undefined) {
+  if (allMapsForSpecies === undefined) {
     return []; // error
   }
 
-  const mapIdAndSlots = Array.from(allMaps.entries());
-  return mapIdAndSlots.filter((val) => {
-    return values.maps.includes(val[0]);
+  const res: [string, Gen3EncounterInfo][] = [];
+  allMapsForSpecies.forEach((encounterInfos, mapId) => {
+    if (!allowedMaps.includes(mapId)) {
+      return;
+    }
+    encounterInfos.forEach((encounterInfo) => {
+      if (
+        !allowedEncounterTypes.includes(
+          encounterInfo.encounter_table.encounter_type,
+        )
+      ) {
+        return;
+      }
+      res.push([mapId, encounterInfo]);
+    });
   });
+  return res;
 };
 
 let nextUid = 0;
-const convertSearcherResultToUIResult = (
+const convertSearcherResultToUIResult = async (
   res: Wild3SearcherResultMon,
   species: Species,
   mapName: string,
-): UiResult => {
+  encounterTypeName: string,
+): Promise<UiResult> => {
   return {
     ...res,
     ...res.ivs,
     mapName,
-    encounter: "Land",
+    encounterTypeName,
     species,
     uid: nextUid++,
+    pidCycleCount: await rngTools.calculate_pid_speed(res.pid),
   };
 };
 
@@ -629,7 +702,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
-      const ecounterSlotsByMap = getEncounterSlotsByMap(values);
+      const encounterInfoByMap = getEncounterInfoByMap(values);
 
       const opts = {
         initial_seed,
@@ -639,17 +712,10 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
         initial_advances: values.initial_advances,
         max_advances: values.max_advances,
         max_result_count: values.max_result_count,
-        filter: {
-          shiny: values.filter_shiny,
-          nature: values.filter_nature,
-          gender: values.filter_gender,
-          min_ivs: values.filter_min_ivs,
-          max_ivs: values.filter_max_ivs,
-          ability: values.filter_ability,
-          stats: null,
-        },
+        filter: pkmFilterFieldsToRustInput(values),
+        gen3_filter: gen3PkmFilterFieldsToRustInput(values),
         leads: getLeads(values),
-        encounter_slots_by_map: ecounterSlotsByMap.map((val) => val[1]),
+        encounter_info_by_map: encounterInfoByMap.map((val) => val[1]),
         methods: values.methods,
         consider_cycles: true,
         consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
@@ -661,14 +727,19 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
       }
       results = sortResults(results);
 
-      const uiResults = results.map((res) => {
-        const mapId = ecounterSlotsByMap[res.map_idx][0];
-        return convertSearcherResultToUIResult(
-          res,
-          values.species,
-          formatMapName(mapId),
-        );
-      });
+      const uiResults = await Promise.all(
+        results.map((res) => {
+          const [mapId, encounterInfo] = encounterInfoByMap[res.map_idx];
+          return convertSearcherResultToUIResult(
+            res,
+            values.species,
+            formatMapName(mapId),
+            formatEncounterTypeName(
+              encounterInfo.encounter_table.encounter_type,
+            ),
+          );
+        }),
+      );
 
       setResults(uiResults);
     },

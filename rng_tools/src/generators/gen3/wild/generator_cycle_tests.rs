@@ -85,14 +85,21 @@ mod test {
                 pid: 26625321,
                 ivs: Ivs::new(21, 2, 31, 1, 18, 19),
                 method: Gen3Method::Wild5,
-                cycle_range: Some(CycleRange::new(145311, 80, 0, 934)),
+                cycle_range: Some(CycleRange::new(139231, 80, 0, 7094)),
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot5,
                 pid: 2210948146,
                 ivs: Ivs::new(13, 0, 19, 1, 12, 6),
                 method: Gen3Method::Wild5,
-                cycle_range: Some(CycleRange::new(148361, 80, 0, 926)),
+                cycle_range: Some(CycleRange::new(146325, 80, 0, 3042)),
+            },
+            Wild3GeneratorResult {
+                encounter_slot: EncounterSlot::Slot5,
+                pid: 2335347696,
+                ivs: Ivs::new(13, 12, 19, 0, 1, 29),
+                method: Gen3Method::Wild5,
+                cycle_range: Some(CycleRange::new(149367, 80, 0, 6009)),
             },
         ];
         assert_eq!(result, expected_result);

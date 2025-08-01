@@ -59,6 +59,7 @@ const _getGen3PkmFilterFields = (opts: FieldOpts = {}): Field[] =>
     }),
     optOut(opts?.pid_speed, {
       label: "",
+      key: "_getGen3PkmFilterFields.pid_speed",
       direction: "column",
       input: <Gen3PidSpeedInput<Gen3PkmFilterFields> name="filter_pid_speed" />,
     }),

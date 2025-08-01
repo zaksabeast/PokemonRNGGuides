@@ -124,6 +124,9 @@ impl CycleRange<usize> {
             len: end - start,
         }
     }
+    pub fn set_end(&mut self, end: usize) {
+        self.len = end - self.start;
+    }
 }
 
 impl CycleAndModRange {
@@ -188,6 +191,39 @@ pub struct Wild3GeneratorResult {
     pub cycle_range: Option<CycleAndModRange>,
 }
 
+impl Wild3GeneratorResult {
+    pub fn clone_with_cycle_end(&self, cycle_end: usize) -> Self {
+        if let Some(cycle_range) = self.cycle_range {
+            let new_cycle_range = CycleAndModRange {
+                start: cycle_range.start,
+                len: cycle_end - cycle_range.start.cycle,
+            };
+            Self {
+                cycle_range: Some(new_cycle_range),
+                ..self.clone()
+            }
+        } else {
+            self.clone()
+        }
+    }
+}
+
+fn retain_methods_possible_to_trigger(
+    opts: &Wild3GeneratorOptions,
+    results: &mut Vec<Wild3GeneratorResult>,
+) {
+    if opts.consider_cycles {
+        let is_egg = matches!(opts.lead, Gen3Lead::Egg);
+        results.retain(|res| {
+            is_method_possible_to_trigger(
+                &res.cycle_range.unwrap(),
+                is_egg,
+                opts.consider_rng_manipulated_lead_pid,
+            )
+        });
+    }
+}
+
 pub fn generate_gen3_wild(
     mut rng: Pokerng,
     opts: &Wild3GeneratorOptions,
@@ -236,7 +272,7 @@ pub fn generate_gen3_wild(
     ); // TODO: cycle increment depends on slot
 
     if !EncounterSlot::passes_filter(opts.encounter_slot.as_deref(), encounter_slot) {
-        return results;
+        return results; // empty
     }
 
     let slot_info = &game_data.slots[encounter_slot as usize];
@@ -364,6 +400,8 @@ pub fn generate_gen3_wild(
     let methods_contains_wild3 = opts.methods.contains(&Gen3Method::Wild3);
     let methods_contains_wild5 = opts.methods.contains(&Gen3Method::Wild5);
 
+    let mut skip_method5_counter = 0;
+    let mut last_generated_method5: Option<Wild3GeneratorResult> = None;
     let mut pid: u32;
     loop {
         let pid_low = rng.rand::<u16>() as u32;
@@ -407,29 +445,41 @@ pub fn generate_gen3_wild(
 
         // between CreateMonWithNature_pidhigh and CreateMonWithNature_pidlow (retry)
         let retry_pid_cycle = if good_nature { 140 } else { 158 }; // 18 cycles to check gender
-        let method5_range = retry_pid_cycle + calc_modulo_cycle_unsigned(pid, 25);
         if methods_contains_wild5 {
             // Multiple iterations will result in the same Method5 Pokémon.
-            // To avoid duplicates, we add the generated Pokémon only in the latest possible PID reroll.
-            if let Some(gen_mon_wild5) = generate_gen3_wild_method5(
-                rng,
-                opts,
-                encounter_slot,
-                encounter_gender_ratio,
-                required_gender,
-                required_nature,
-                CycleRange::from_start_len(cycle, method5_range),
-            ) {
-                results.push(gen_mon_wild5);
+            // To avoid duplicates, we add the generated Pokémon only in the first possible PID reroll
+            // then skip until a different Pokémon would be generated.
+            if skip_method5_counter > 0 {
+                skip_method5_counter -= 1;
+            } else {
+                if let Some(last_generated_method5) = last_generated_method5 {
+                    results.push(last_generated_method5.clone_with_cycle_end(cycle.cycle));
+                }
+                (skip_method5_counter, last_generated_method5) = generate_gen3_wild_method5(
+                    rng,
+                    opts,
+                    encounter_slot,
+                    encounter_gender_ratio,
+                    required_gender,
+                    required_nature,
+                    // Cycle len will be set later. See clone_with_cycle_end.
+                    CycleRange::from_start_len(cycle, 0),
+                );
             }
         }
+
         cycle += (
-            method5_range,
+            retry_pid_cycle + calc_modulo_cycle_unsigned(pid, 25),
             "retry_pid_cycle + calc_modulo_cycle_u(pid, 25)",
         );
     }
 
+    if let Some(last_generated_method5) = last_generated_method5 {
+        results.push(last_generated_method5.clone_with_cycle_end(cycle.cycle));
+    }
+
     if !passes_pid_filter(opts, encounter_gender_ratio, pid) {
+        retain_methods_possible_to_trigger(opts, &mut results);
         return results;
     }
 
@@ -490,6 +540,8 @@ pub fn generate_gen3_wild(
             results.push(gen_mon_wild1);
         }
     }
+
+    retain_methods_possible_to_trigger(opts, &mut results);
 
     results
 }
@@ -585,38 +637,48 @@ fn generate_gen3_wild_method5(
     required_gender: Option<Gender>,
     required_nature: Nature,
     cycle_range: CycleAndModRange,
-) -> Option<Wild3GeneratorResult> {
+) -> (usize, Option<Wild3GeneratorResult>) {
     rng.rand::<u16>(); // Vblank from method5
 
     // Limitation: Only 1 vblank is supported. In theory, multiple vblanks could occur.
 
-    let pid_low = rng.rand::<u16>() as u32;
-    let pid_high = rng.rand::<u16>() as u32;
-    let pid = (pid_high << 16) | pid_low;
+    let mut pid: u32;
+    let mut retry_count = 0_usize;
+    loop {
+        let pid_low = rng.rand::<u16>() as u32;
+        let pid_high = rng.rand::<u16>() as u32;
+        pid = (pid_high << 16) | pid_low;
 
-    if Nature::from_pid(pid) != required_nature {
-        return None;
-    }
-    if let Some(required_gender) = required_gender {
-        let generated_mon_gender = encounter_gender_ratio.gender_from_pid(pid);
-        if generated_mon_gender != required_gender {
-            return None;
+        if Nature::from_pid(pid) != required_nature {
+            retry_count += 1;
+            continue;
         }
+        if let Some(required_gender) = required_gender {
+            let generated_mon_gender = encounter_gender_ratio.gender_from_pid(pid);
+            if generated_mon_gender != required_gender {
+                retry_count += 1;
+                continue;
+            }
+        }
+        break;
     }
 
     if !passes_pid_filter(opts, encounter_gender_ratio, pid) {
-        return None;
+        return (retry_count, None);
     }
 
     let ivs = Ivs::new_g3(rng.rand::<u16>(), rng.rand::<u16>());
 
-    create_if_passes_filter(
-        opts,
-        pid,
-        ivs,
-        Gen3Method::Wild5,
-        encounter_slot,
-        cycle_range,
+    (
+        retry_count,
+        create_if_passes_filter(
+            opts,
+            pid,
+            ivs,
+            Gen3Method::Wild5,
+            encounter_slot,
+            cycle_range,
+        ),
     )
 }
 
@@ -683,17 +745,6 @@ fn create_if_passes_filter(
     }
 
     if opts.gen3_filter.max_size && !is_max_size(pid, &ivs) {
-        return None;
-    }
-
-    let is_egg = matches!(opts.lead, Gen3Lead::Egg);
-    if opts.consider_cycles
-        && !is_method_possible_to_trigger(
-            &cycle_range,
-            is_egg,
-            opts.consider_rng_manipulated_lead_pid,
-        )
-    {
         return None;
     }
 

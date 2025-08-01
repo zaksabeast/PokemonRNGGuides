@@ -164,10 +164,6 @@ const tools = {
     const tool = await import("~/rngToolsUi/gen3/wild/wild3FindTarget");
     return { default: tool.Wild3SearcherFindTarget };
   }),
-  Wild3MethodDistribution: React.lazy(async () => {
-    const tool = await import("~/rngToolsUi/gen3/wild/wild3MethodDistribution");
-    return { default: tool.Wild3MethodDistribution };
-  }),
   Gen3PidSpeedCalculator,
   Gen3TidSidGenerator,
   OrAsMirageSpot,

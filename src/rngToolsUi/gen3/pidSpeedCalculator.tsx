@@ -18,9 +18,6 @@ const formatPct = (val: number) => {
   if (val > 0.999) {
     return "99.9%";
   }
-  if (val > 0.99) {
-    return "99%";
-  }
   return formatProbability(val);
 };
 

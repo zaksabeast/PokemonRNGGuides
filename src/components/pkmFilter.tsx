@@ -12,9 +12,9 @@ import * as tst from "ts-toolbelt";
 import { toOptions, optOut } from "~/utils/options";
 import {
   defaultHiddenPowerFilter,
-  HiddenPowerInput,
   HiddenPowerSchema,
 } from "./hiddenPowerInput";
+import { HiddenPowerInput } from "./hiddenPowerInput.component";
 import { StatsFilterSchema } from "../types/stat";
 import { Translations } from "~/translations";
 

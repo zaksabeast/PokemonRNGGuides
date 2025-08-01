@@ -1,4 +1,3 @@
-
 import { pokemonTypes } from "../types/pokemonTypes";
 import { HiddenPowerFilter } from "~/rngTools";
 import { FormikNumberInput, FormikSelect, FormFieldTable } from "~/components";

@@ -1,6 +1,5 @@
 import { pokemonTypes } from "../types/pokemonTypes";
 import { z } from "zod";
-export * from "./hiddenPowerInput.component";
 
 export const HiddenPowerSchema = z.object({
   active: z.boolean(),
@@ -15,4 +14,3 @@ export const defaultHiddenPowerFilter: z.infer<typeof HiddenPowerSchema> = {
   min_bp: 30,
   max_bp: 70,
 };
-

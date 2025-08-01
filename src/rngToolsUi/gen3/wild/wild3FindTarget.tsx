@@ -1,8 +1,6 @@
 import {
-  Gender,
   rngTools,
   Species,
-  Gen3EncounterType,
   Wild3SearcherResultMon,
   Wild3SearcherCycleData,
   Gen3Lead,
@@ -44,52 +42,36 @@ import {
 } from "~/types";
 import { match, P } from "ts-pattern";
 
-import { getWild3GameData } from "./wild3GameData";
-import emerald_wild3_game_data from "~/__generated__/emerald_wild3_game_data";
-import { uniq, startCase, sortBy } from "lodash-es";
+import { uniq, sortBy } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { Tooltip } from "antd";
 import { Translations } from "~/translations";
 import {
   gen3PkmFilterFieldsToRustInput,
-  getGen3PkmFilterInitialValues,
   gen3PkmFilterSchema,
   getGen3PkmFilterFields,
+  getGen3PkmFilterInitialValues,
 } from "~/components/gen3PkmFilter";
 
+import {
+  cuteCharmGenders,
+  emeraldWildGameData,
+  formatEncounterTypeName,
+  formatMapName,
+  gen3EncounterTypes,
+} from "./utils";
+
 /*
-Possible improvements:
+Possible UI improvements:
  - Add Tooltip for Likelihood by lead speed columns.
-
- - Support multiple encounter types.
- - Support all leads in generator.
  - Display warning if no maps or no leads are selected.
- - Add lead PID speed filter.
-
  - Display map names instead of formatted map IDs.
  - Disable gender field if only 1 possible gender, instead of hiding it.
  - Display ability names instead of First, Second, or Hidden.
  - If no nature filter, then Synchonize leads is <Nature> or Not <Nature>.
  - Min/Max IVs should display the stat name.
  - Rename "None" to "Any" in filters.
- - Add Max Size filter.
 */
-
-const gen3EncounterTypes = [
-  "Land",
-  "Water",
-  "OldRod",
-  "GoodRod",
-  "SuperRod",
-  "RockSmash",
-] as const satisfies readonly Gen3EncounterType[];
-
-const cuteCharmGenders = [
-  "Male",
-  "Female",
-] as const satisfies readonly Gender[];
-
-const emeraldWildGameData = getWild3GameData(emerald_wild3_game_data);
 
 const Validator = z
   .object({
@@ -156,27 +138,6 @@ const getTargetMonFields = (species: Species): Field[] => {
     }),
   ];
   return targetMonFields;
-};
-
-const formatMapName = (label: string) => {
-  return label
-    .split("_")
-    .map((piece) =>
-      piece.match(/(?:B)?\d+F/) != null
-        ? piece
-        : startCase(piece.toLowerCase()),
-    )
-    .join(" ")
-    .replace(/^Map /, "");
-};
-
-const formatEncounterTypeName = (encounterType: Gen3EncounterType) => {
-  return match(encounterType)
-    .with("OldRod", () => "Old Rod")
-    .with("GoodRod", () => "Good Rod")
-    .with("SuperRod", () => "Super Rod")
-    .with("RockSmash", () => "Rock Smash")
-    .otherwise(() => encounterType);
 };
 
 const getMapsWithSpecies = (species: Species) =>
@@ -274,19 +235,6 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
         />
       ),
     },
-    /*
-    //TODO: support multiple encounter types
-    {
-      label: "Encounter types",
-      input: (
-        <FormikSelect<FormState, "encounterTypes">
-          name="encounterTypes"
-          options={toOptions(gen3EncounterTypes)}
-          mode="multiple"
-        />
-      ),
-    },
-    */
     {
       label: "Methods",
       input: (
@@ -420,7 +368,13 @@ const getColumns = (
 
   if (!values.rngManipulatedLeadPid) {
     columns.push({
-      title: "Method Likelihood",
+      title: (
+        <>
+          Method <br />
+          Likelihood
+        </>
+      ),
+      key: "<>Method <br />Likelihood</>",
       dataIndex: "cycle_data_by_lead",
       render: (cycle_data_by_lead) => {
         if (cycle_data_by_lead == undefined) {
@@ -468,8 +422,10 @@ const getColumns = (
             return "";
           }
           if (
-            cycle_data_by_lead.slowest_lead.method_probability ===
-            cycle_data_by_lead.fastest_lead.method_probability
+            cycle_data_by_lead.ideal_lead.method_probability ===
+              cycle_data_by_lead.slowest_lead.method_probability &&
+            cycle_data_by_lead.ideal_lead.method_probability ===
+              cycle_data_by_lead.fastest_lead.method_probability
           ) {
             return "Any";
           }

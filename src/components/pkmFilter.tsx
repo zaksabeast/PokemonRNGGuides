@@ -12,9 +12,9 @@ import * as tst from "ts-toolbelt";
 import { toOptions, optOut } from "~/utils/options";
 import {
   defaultHiddenPowerFilter,
-  HiddenPowerInput,
   HiddenPowerSchema,
 } from "./hiddenPowerInput";
+import { HiddenPowerInput } from "./hiddenPowerInput.component";
 import { StatsFilterSchema } from "../types/stat";
 import { Translations } from "~/translations";
 
@@ -148,6 +148,7 @@ const _getPkmFilterFields = (
     }),
     optOut(optOuts?.hidden_power, {
       label: "",
+      key: "_getPkmFilterFields.hidden_power",
       direction: "column",
       input: <HiddenPowerInput<PkmFilterFields> name="filter_hidden_power" />,
     }),

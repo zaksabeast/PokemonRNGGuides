@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { pokemonTypes } from "../types/pokemonTypes";
 import { HiddenPowerFilter } from "~/rngTools";
 import { FormikNumberInput, FormikSelect, FormFieldTable } from "~/components";
@@ -7,22 +6,6 @@ import { useField } from "formik";
 import React from "react";
 import { PkmFilterFields } from "./pkmFilter";
 import { Paths } from "~/types";
-
-type UiHiddenPowerFilter = z.infer<typeof HiddenPowerSchema>;
-
-export const defaultHiddenPowerFilter: UiHiddenPowerFilter = {
-  active: false,
-  pokemon_types: [],
-  min_bp: 30,
-  max_bp: 70,
-};
-
-export const HiddenPowerSchema = z.object({
-  active: z.boolean(),
-  pokemon_types: z.array(z.enum(pokemonTypes)),
-  min_bp: z.number().min(30).max(70),
-  max_bp: z.number().min(30).max(70),
-});
 
 const HIDDEN_POWER_TYPES = pokemonTypes.filter((type) => type !== "Normal");
 

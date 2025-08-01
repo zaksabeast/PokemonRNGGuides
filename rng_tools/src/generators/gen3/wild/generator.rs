@@ -125,6 +125,9 @@ impl CycleRange<usize> {
             len: end - start,
         }
     }
+    pub fn set_end(&mut self, end: usize) {
+        self.len = end - self.start;
+    }
 }
 
 impl CycleAndModRange {
@@ -190,14 +193,14 @@ pub struct Wild3GeneratorResult {
 }
 
 impl Wild3GeneratorResult {
-    pub fn clone_with_cycle_end(&self, cycle_end:usize) -> Self {
+    pub fn clone_with_cycle_end(&self, cycle_end: usize) -> Self {
         if let Some(cycle_range) = self.cycle_range {
             let new_cycle_range = CycleAndModRange {
                 start: cycle_range.start,
-                len: cycle_end - cycle_range.start.cycle
+                len: cycle_end - cycle_range.start.cycle,
             };
             Self {
-                cycle_range:Some(new_cycle_range),
+                cycle_range: Some(new_cycle_range),
                 ..self.clone()
             }
         } else {
@@ -383,7 +386,7 @@ pub fn generate_gen3_wild(
     let methods_contains_wild5 = opts.methods.contains(&Gen3Method::Wild5);
 
     let mut skip_method5_counter = 0;
-    let mut last_generated_method5:Option<Wild3GeneratorResult> = None;
+    let mut last_generated_method5: Option<Wild3GeneratorResult> = None;
     let mut pid: u32;
     loop {
         let pid_low = rng.rand::<u16>() as u32;
@@ -447,7 +450,7 @@ pub fn generate_gen3_wild(
                     // Cycle len will be set later. See clone_with_cycle_end.
                     CycleRange::from_start_len(cycle, 0),
                 );
-            } 
+            }
         }
 
         cycle += (
@@ -648,14 +651,17 @@ fn generate_gen3_wild_method5(
 
     let ivs = Ivs::new_g3(rng.rand::<u16>(), rng.rand::<u16>());
 
-    (retry_count, create_if_passes_filter(
-        opts,
-        pid,
-        ivs,
-        Gen3Method::Wild5,
-        encounter_slot,
-        cycle_range,
-    ))
+    (
+        retry_count,
+        create_if_passes_filter(
+            opts,
+            pid,
+            ivs,
+            Gen3Method::Wild5,
+            encounter_slot,
+            cycle_range,
+        ),
+    )
 }
 
 fn passes_pid_filter(

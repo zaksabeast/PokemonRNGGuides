@@ -363,15 +363,15 @@ const convertSearcherResultsToUIResults = (
     .map((res) => convertSearcherResultToUIResult(res, encounterTable))
     .sort((lhs, rhs) => {
       const startDiff =
-        lhs.pre_sweet_scent_cycle_ranges[0].start -
-        rhs.pre_sweet_scent_cycle_ranges[0].start;
+        (lhs.pre_sweet_scent_cycle_ranges[0]?.start ?? -1) -
+        (rhs.pre_sweet_scent_cycle_ranges[0]?.start ?? -1);
 
       if (startDiff !== 0) {
         return startDiff;
       }
       return (
-        lhs.pre_sweet_scent_cycle_ranges[0].len -
-        rhs.pre_sweet_scent_cycle_ranges[0].len
+        (lhs.pre_sweet_scent_cycle_ranges[0]?.len ?? 0) -
+        (rhs.pre_sweet_scent_cycle_ranges[0]?.len ?? 0)
       );
     });
 };

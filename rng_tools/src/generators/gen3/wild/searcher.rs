@@ -67,9 +67,7 @@ pub struct Wild3SearcherResultMon {
 impl Wild3SearcherResultMon {
     pub fn new(
         gen_res: &Wild3GeneratorResult,
-        tid: u16,
-        sid: u16,
-        gender_ratio: GenderRatio,
+        opts: &Wild3SearcherOptions,
         advance: usize,
         map_idx: usize,
         lead: Gen3Lead,
@@ -88,10 +86,10 @@ impl Wild3SearcherResultMon {
             method: gen_res.method,
             encounter_slot: gen_res.encounter_slot,
             cycle_data_by_lead,
-            shiny: gen3_shiny(gen_res.pid, tid, sid),
+            shiny: gen3_shiny(gen_res.pid, opts.tid, opts.sid),
             nature: Nature::from_pid(gen_res.pid),
             ability: AbilityType::from_gen3_pid(gen_res.pid),
-            gender: gender_ratio.gender_from_pid(gen_res.pid),
+            gender: opts.gender_ratio.gender_from_pid(gen_res.pid),
             hidden_power: HiddenPower::from_ivs(&gen_res.ivs),
             advance,
             map_idx,
@@ -125,17 +123,8 @@ fn search_wild3_at_given_advance(
             generate_gen3_wild(rng, &gen_opts, &encounter_info.encounter_table)
                 .iter()
                 .for_each(|gen_res| {
-                    let gender_ratio = encounter_info.encounter_table.slots
-                        [gen_res.encounter_slot as usize]
-                        .gender_ratio;
                     results.push(Wild3SearcherResultMon::new(
-                        gen_res,
-                        opts.tid,
-                        opts.sid,
-                        gender_ratio,
-                        advance,
-                        map_idx,
-                        *lead,
+                        gen_res, opts, advance, map_idx, *lead,
                     ));
                 });
         }

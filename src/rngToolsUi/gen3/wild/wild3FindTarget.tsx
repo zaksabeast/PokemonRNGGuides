@@ -675,7 +675,6 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
         methods: values.methods,
         consider_cycles: true,
         consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
-        generate_even_if_impossible: false,
       };
 
       let results = await rngTools.search_wild3(opts);

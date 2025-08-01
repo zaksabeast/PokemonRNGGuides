@@ -89,7 +89,6 @@ pub struct Wild3GeneratorOptions {
     pub gen3_filter: Gen3PkmFilter,
     pub consider_cycles: bool,
     pub consider_rng_manipulated_lead_pid: bool,
-    pub generate_even_if_impossible: bool,
 }
 
 #[derive(Default, Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -124,9 +123,6 @@ impl CycleRange<usize> {
             start,
             len: end - start,
         }
-    }
-    pub fn set_end(&mut self, end: usize) {
-        self.len = end - self.start;
     }
 }
 
@@ -190,23 +186,6 @@ pub struct Wild3GeneratorResult {
     pub ivs: Ivs,
     pub method: Gen3Method,
     pub cycle_range: Option<CycleAndModRange>,
-}
-
-impl Wild3GeneratorResult {
-    pub fn clone_with_cycle_end(&self, cycle_end: usize) -> Self {
-        if let Some(cycle_range) = self.cycle_range {
-            let new_cycle_range = CycleAndModRange {
-                start: cycle_range.start,
-                len: cycle_end - cycle_range.start.cycle,
-            };
-            Self {
-                cycle_range: Some(new_cycle_range),
-                ..self.clone()
-            }
-        } else {
-            self.clone()
-        }
-    }
 }
 
 pub fn generate_gen3_wild(
@@ -385,8 +364,6 @@ pub fn generate_gen3_wild(
     let methods_contains_wild3 = opts.methods.contains(&Gen3Method::Wild3);
     let methods_contains_wild5 = opts.methods.contains(&Gen3Method::Wild5);
 
-    let mut skip_method5_counter = 0;
-    let mut last_generated_method5: Option<Wild3GeneratorResult> = None;
     let mut pid: u32;
     loop {
         let pid_low = rng.rand::<u16>() as u32;
@@ -430,37 +407,26 @@ pub fn generate_gen3_wild(
 
         // between CreateMonWithNature_pidhigh and CreateMonWithNature_pidlow (retry)
         let retry_pid_cycle = if good_nature { 140 } else { 158 }; // 18 cycles to check gender
+        let method5_range = retry_pid_cycle + calc_modulo_cycle_unsigned(pid, 25);
         if methods_contains_wild5 {
             // Multiple iterations will result in the same Method5 Pokémon.
-            // To avoid duplicates, we add the generated Pokémon only in the first possible PID reroll
-            // then skip until a different Pokémon would be generated.
-            if skip_method5_counter > 0 {
-                skip_method5_counter -= 1;
-            } else {
-                if let Some(last_generated_method5) = last_generated_method5 {
-                    results.push(last_generated_method5.clone_with_cycle_end(cycle.cycle));
-                }
-                (skip_method5_counter, last_generated_method5) = generate_gen3_wild_method5(
-                    rng,
-                    opts,
-                    encounter_slot,
-                    encounter_gender_ratio,
-                    required_gender,
-                    required_nature,
-                    // Cycle len will be set later. See clone_with_cycle_end.
-                    CycleRange::from_start_len(cycle, 0),
-                );
+            // To avoid duplicates, we add the generated Pokémon only in the latest possible PID reroll.
+            if let Some(gen_mon_wild5) = generate_gen3_wild_method5(
+                rng,
+                opts,
+                encounter_slot,
+                encounter_gender_ratio,
+                required_gender,
+                required_nature,
+                CycleRange::from_start_len(cycle, method5_range),
+            ) {
+                results.push(gen_mon_wild5);
             }
         }
-
         cycle += (
-            retry_pid_cycle + calc_modulo_cycle_unsigned(pid, 25),
+            method5_range,
             "retry_pid_cycle + calc_modulo_cycle_u(pid, 25)",
         );
-    }
-
-    if let Some(last_generated_method5) = last_generated_method5 {
-        results.push(last_generated_method5.clone_with_cycle_end(cycle.cycle));
     }
 
     if !passes_pid_filter(opts, encounter_gender_ratio, pid) {
@@ -619,48 +585,38 @@ fn generate_gen3_wild_method5(
     required_gender: Option<Gender>,
     required_nature: Nature,
     cycle_range: CycleAndModRange,
-) -> (usize, Option<Wild3GeneratorResult>) {
+) -> Option<Wild3GeneratorResult> {
     rng.rand::<u16>(); // Vblank from method5
 
     // Limitation: Only 1 vblank is supported. In theory, multiple vblanks could occur.
 
-    let mut pid: u32;
-    let mut retry_count = 0_usize;
-    loop {
-        let pid_low = rng.rand::<u16>() as u32;
-        let pid_high = rng.rand::<u16>() as u32;
-        pid = (pid_high << 16) | pid_low;
+    let pid_low = rng.rand::<u16>() as u32;
+    let pid_high = rng.rand::<u16>() as u32;
+    let pid = (pid_high << 16) | pid_low;
 
-        if Nature::from_pid(pid) != required_nature {
-            retry_count += 1;
-            continue;
+    if Nature::from_pid(pid) != required_nature {
+        return None;
+    }
+    if let Some(required_gender) = required_gender {
+        let generated_mon_gender = encounter_gender_ratio.gender_from_pid(pid);
+        if generated_mon_gender != required_gender {
+            return None;
         }
-        if let Some(required_gender) = required_gender {
-            let generated_mon_gender = encounter_gender_ratio.gender_from_pid(pid);
-            if generated_mon_gender != required_gender {
-                retry_count += 1;
-                continue;
-            }
-        }
-        break;
     }
 
     if !passes_pid_filter(opts, encounter_gender_ratio, pid) {
-        return (retry_count, None);
+        return None;
     }
 
     let ivs = Ivs::new_g3(rng.rand::<u16>(), rng.rand::<u16>());
 
-    (
-        retry_count,
-        create_if_passes_filter(
-            opts,
-            pid,
-            ivs,
-            Gen3Method::Wild5,
-            encounter_slot,
-            cycle_range,
-        ),
+    create_if_passes_filter(
+        opts,
+        pid,
+        ivs,
+        Gen3Method::Wild5,
+        encounter_slot,
+        cycle_range,
     )
 }
 
@@ -732,7 +688,6 @@ fn create_if_passes_filter(
 
     let is_egg = matches!(opts.lead, Gen3Lead::Egg);
     if opts.consider_cycles
-        && !opts.generate_even_if_impossible
         && !is_method_possible_to_trigger(
             &cycle_range,
             is_egg,

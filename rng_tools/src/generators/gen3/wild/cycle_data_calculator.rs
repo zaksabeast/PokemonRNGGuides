@@ -54,7 +54,6 @@ impl Wild3SearcherCycleData {
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3SearcherCycleDataByLead {
-    pub post_sweet_scent_range: CycleAndModRange,
     pub slowest_lead: Wild3SearcherCycleData,
     pub fastest_lead: Wild3SearcherCycleData,
     pub ideal_lead: Wild3SearcherCycleData,
@@ -71,7 +70,6 @@ pub fn calculate_cycle_data_by_lead(
         let cycle_data = calculate_cycle_data(post_sweet_scent_range, 0);
 
         Wild3SearcherCycleDataByLead {
-            post_sweet_scent_range:*post_sweet_scent_range,
             slowest_lead: cycle_data.clone(),
             fastest_lead: cycle_data.clone(),
             ideal_lead: cycle_data.clone(),
@@ -83,7 +81,6 @@ pub fn calculate_cycle_data_by_lead(
             calculate_ideal_lead_pid_cycle_count(post_sweet_scent_range);
 
         Wild3SearcherCycleDataByLead {
-            post_sweet_scent_range:*post_sweet_scent_range,
             slowest_lead: calculate_cycle_data(post_sweet_scent_range, SLOWEST_MODULO_CYCLE_24),
             fastest_lead: calculate_cycle_data(post_sweet_scent_range, FASTEST_MODULO_CYCLE_24),
             ideal_lead: calculate_cycle_data(post_sweet_scent_range, ideal_lead_pid_cycle_count),
@@ -96,7 +93,7 @@ pub fn calculate_cycle_data_by_lead(
     }
 }
 
-pub fn calculate_cycle_data(
+fn calculate_cycle_data(
     post_sweet_scent_mod_range: &CycleAndModRange,
     lead_pid_cycle_count: usize,
 ) -> Wild3SearcherCycleData {

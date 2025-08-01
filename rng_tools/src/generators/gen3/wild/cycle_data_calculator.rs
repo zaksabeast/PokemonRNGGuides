@@ -71,7 +71,7 @@ pub fn calculate_cycle_data_by_lead(
         let cycle_data = calculate_cycle_data(post_sweet_scent_range, 0);
 
         Wild3SearcherCycleDataByLead {
-            post_sweet_scent_range:*post_sweet_scent_range,
+            post_sweet_scent_range: *post_sweet_scent_range,
             slowest_lead: cycle_data.clone(),
             fastest_lead: cycle_data.clone(),
             ideal_lead: cycle_data.clone(),
@@ -83,7 +83,7 @@ pub fn calculate_cycle_data_by_lead(
             calculate_ideal_lead_pid_cycle_count(post_sweet_scent_range);
 
         Wild3SearcherCycleDataByLead {
-            post_sweet_scent_range:*post_sweet_scent_range,
+            post_sweet_scent_range: *post_sweet_scent_range,
             slowest_lead: calculate_cycle_data(post_sweet_scent_range, SLOWEST_MODULO_CYCLE_24),
             fastest_lead: calculate_cycle_data(post_sweet_scent_range, FASTEST_MODULO_CYCLE_24),
             ideal_lead: calculate_cycle_data(post_sweet_scent_range, ideal_lead_pid_cycle_count),

@@ -167,6 +167,13 @@ mod test {
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot0,
+                pid: 1036881243,
+                ivs: Ivs::new(19, 28, 1, 5, 8, 17),
+                method: Gen3Method::Wild5,
+                cycle_range: None,
+            },
+            Wild3GeneratorResult {
+                encounter_slot: EncounterSlot::Slot0,
                 pid: 1671314793,
                 ivs: Ivs::new(13, 20, 26, 20, 24, 22),
                 method: Gen3Method::Wild2,

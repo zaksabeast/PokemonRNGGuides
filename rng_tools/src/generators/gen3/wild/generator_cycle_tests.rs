@@ -33,14 +33,14 @@ mod test {
                 pid: 1459093362,
                 ivs: Ivs::new(13, 14, 2, 20, 14, 15),
                 method: Gen3Method::Wild3,
-                cycle_range: Some(CycleRange::new(144256, 80, 1, 80)),
+                cycle_range: Some(CycleRange::new(144256, 81, 80)),
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot5,
                 pid: 3087365287,
                 ivs: Ivs::new(21, 3, 3, 11, 15, 19),
                 method: Gen3Method::Wild3,
-                cycle_range: Some(CycleRange::new(158414, 80, 1, 80)),
+                cycle_range: Some(CycleRange::new(158414, 81, 80)),
             },
         ];
         assert_eq!(result, expected_result);
@@ -85,21 +85,21 @@ mod test {
                 pid: 26625321,
                 ivs: Ivs::new(21, 2, 31, 1, 18, 19),
                 method: Gen3Method::Wild5,
-                cycle_range: Some(CycleRange::new(139231, 80, 0, 7094)),
+                cycle_range: Some(CycleRange::new(139231, 80, 7094)),
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot5,
                 pid: 2210948146,
                 ivs: Ivs::new(13, 0, 19, 1, 12, 6),
                 method: Gen3Method::Wild5,
-                cycle_range: Some(CycleRange::new(146325, 80, 0, 3042)),
+                cycle_range: Some(CycleRange::new(146325, 80, 3042)),
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot5,
                 pid: 2335347696,
                 ivs: Ivs::new(13, 12, 19, 0, 1, 29),
                 method: Gen3Method::Wild5,
-                cycle_range: Some(CycleRange::new(149367, 80, 0, 6009)),
+                cycle_range: Some(CycleRange::new(149367, 80, 6009)),
             },
         ];
         assert_eq!(result, expected_result);
@@ -125,21 +125,21 @@ mod test {
                 pid: 3864471792,
                 ivs: Ivs::new(0, 9, 4, 5, 4, 3),
                 method: Gen3Method::Wild2,
-                cycle_range: Some(CycleRange::new(54709, 80, 0, 112996)),
+                cycle_range: Some(CycleRange::new(54709, 80, 112996)),
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot3,
                 pid: 3864471792,
                 ivs: Ivs::new(26, 8, 17, 5, 4, 3),
                 method: Gen3Method::Wild4,
-                cycle_range: Some(CycleRange::new(167705, 80, 0, 38211)),
+                cycle_range: Some(CycleRange::new(167705, 80, 38211)),
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot3,
                 pid: 3864471792,
                 ivs: Ivs::new(26, 8, 17, 9, 4, 0),
                 method: Gen3Method::Wild1,
-                cycle_range: Some(CycleRange::new(205916, 80, 0, INFINITE_CYCLE)),
+                cycle_range: Some(CycleRange::new(205916, 80, INFINITE_CYCLE)),
             },
         ];
         assert_eq!(result, expected_result);

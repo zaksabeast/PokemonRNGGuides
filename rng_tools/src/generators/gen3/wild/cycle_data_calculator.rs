@@ -151,7 +151,7 @@ pub fn is_method_possible_to_trigger(
 }
 
 fn calculate_ideal_lead_pid_cycle_count(post_sweet_scent_range: &CycleAndModRange) -> usize {
-    let mod_count = post_sweet_scent_range.start.mod_count();
+    let mod_count = post_sweet_scent_range.start.modulo;
     if mod_count == 0 {
         // Should only occurs with egg lead
         return 0;

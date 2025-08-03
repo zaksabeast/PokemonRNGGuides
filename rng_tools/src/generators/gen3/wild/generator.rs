@@ -213,7 +213,7 @@ fn retain_methods_possible_to_trigger(
     opts: &Wild3GeneratorOptions,
     results: &mut Vec<Wild3GeneratorResult>,
 ) {
-    if opts.consider_cycles {
+    if opts.consider_cycles && !opts.generate_even_if_impossible {
         let is_egg = matches!(opts.lead, Gen3Lead::Egg);
         results.retain(|res| {
             is_method_possible_to_trigger(

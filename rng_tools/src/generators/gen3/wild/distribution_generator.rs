@@ -17,16 +17,6 @@ pub struct Wild3MethodDistributionResult {
     pub method_probability: f64,
 }
 
-fn get_pre_range_start_cycle(res: &Wild3SearcherResultMon) -> usize {
-    // pre_range.start is based on post_range.end()
-    res.cycle_data_by_lead
-        .as_ref()
-        .unwrap()
-        .post_sweet_scent_range
-        .end()
-        .cycle
-}
-
 #[wasm_bindgen]
 pub fn generate_gen3_wild_distribution(
     initial_seed: u32,
@@ -75,9 +65,17 @@ pub fn generate_gen3_wild_distribution(
             (searcher_res, cycle_data)
         })
         .sorted_by(|(_, lhs), (_, rhs)| {
-            lhs.pre_sweet_scent_cycle_range
+            let cmp = lhs
+                .pre_sweet_scent_cycle_range
                 .start
-                .cmp(&rhs.pre_sweet_scent_cycle_range.start)
+                .cmp(&rhs.pre_sweet_scent_cycle_range.start);
+            if cmp != std::cmp::Ordering::Equal {
+                cmp
+            } else {
+                lhs.pre_sweet_scent_cycle_range
+                    .end()
+                    .cmp(&rhs.pre_sweet_scent_cycle_range.end())
+            }
         })
         .collect::<Vec<_>>();
 
@@ -105,8 +103,7 @@ pub fn generate_gen3_wild_distribution(
 
                 let mut method_probability = cycle_data.method_probability;
 
-                for other_res_idx in i + 1..search_results.len() {
-                    let (wild3_res, wild3_cycle_data) = &search_results[other_res_idx];
+                for (wild3_res, wild3_cycle_data) in search_results.iter().skip(i + 1) {
                     if wild3_res.method != Gen3Method::Wild3 {
                         break;
                     }
@@ -150,16 +147,11 @@ pub fn generate_gen3_wild_distribution(
 
 #[cfg(test)]
 mod test {
-    use std::iter::Cycle;
-
     use super::*;
+    use crate::assert_list_eq;
+    use crate::gen3::{Gen3Method, Wild3EncounterTable};
 
-    use crate::{HiddenPower, PokemonType, assert_list_eq};
-
-    use crate::gen3::{Gen3Lead, Gen3Method, Wild3EncounterTable, Wild3SearcherResultMon};
-    use crate::{AbilityType, EncounterSlot, Gender, Ivs, Nature};
-
-    #[derive(Debug)]
+    #[derive(Debug, PartialEq)]
     struct ResultForTest {
         pub method: Gen3Method,
         pub pre_sweet_scent_cycle_ranges: Vec<CycleRange<usize>>,
@@ -191,7 +183,7 @@ mod test {
         let opts = Wild3GeneratorOptions {
             consider_cycles: true,
             generate_even_if_impossible: true,
-            advance: 1,
+            advance: 44,
             methods: vec![
                 Gen3Method::Wild1,
                 Gen3Method::Wild2,
@@ -202,32 +194,85 @@ mod test {
             ..Default::default()
         };
         let results =
-            generate_gen3_wild_distribution(0, &opts, &Wild3EncounterTable::default(), 775)
+            generate_gen3_wild_distribution(0, &opts, &Wild3EncounterTable::default(), 700)
                 .iter()
                 .map(|dist_res| ResultForTest::new_from_dist_res(dist_res))
                 .collect::<Vec<_>>();
 
-        /*
-
-        [
-        ReducedResult { method: Wild4, pre_sweet_scent_cycle_ranges: [CycleRange { start: 0, len: 26394 }], method_probability: 0.0 },
-        ReducedResult { method: Wild1, pre_sweet_scent_cycle_ranges: [], method_probability: 0.0 },
-        ReducedResult { method: Wild2, pre_sweet_scent_cycle_ranges: [CycleRange { start: 26394, len: 115597 }], method_probability: 1.0 },
-        ReducedResult { method: Wild5, pre_sweet_scent_cycle_ranges: [CycleRange { start: 141991, len: 8917 }, CycleRange { start: 150988, len: 4980 }, CycleRange { start: 156048, len: 13209 }, CycleRange { start: 169337, len: 2918 }], method_probability: 0.0 },
-        ReducedResult { method: Wild3, pre_sweet_scent_cycle_ranges: [CycleRange { start: 150908, len: 80 }], method_probability: 0.0 },
-        ReducedResult { method: Wild3, pre_sweet_scent_cycle_ranges: [CycleRange { start: 155968, len: 80 }], method_probability: 0.0 },
-        ReducedResult { method: Wild3, pre_sweet_scent_cycle_ranges: [CycleRange { start: 169257, len: 80 }], method_probability: 0.0 }]
-        */
         let expected_results = [
+            ResultForTest::new(Gen3Method::Wild4, 0.0f64, &[]),
+            ResultForTest::new(Gen3Method::Wild1, 0.0f64, &[]),
             ResultForTest::new(
-                Gen3Method::Wild4,
-                0f64,
-                &[CycleRange::from_start_len(0, 26394)],
+                Gen3Method::Wild2,
+                0.2237,
+                &[CycleRange::from_start_len(0, 49474)],
             ),
-            ResultForTest::new(Gen3Method::Wild1, 0f64, &[]),
+            ResultForTest::new(
+                Gen3Method::Wild5,
+                0.7074,
+                &[
+                    CycleRange::from_start_len(49474, 4114),
+                    CycleRange::from_start_len(53668, 10034),
+                ],
+            ),
+            ResultForTest::new(
+                Gen3Method::Wild3,
+                0.004f64,
+                &[CycleRange::from_start_len(53588, 80)],
+            ),
+            ResultForTest::new(
+                Gen3Method::Wild5,
+                0.0649,
+                &[
+                    CycleRange::from_start_len(63702, 19271),
+                    CycleRange::from_start_len(83053, 5983),
+                    CycleRange::from_start_len(89116, 9032),
+                ],
+            ),
+            ResultForTest::new(
+                Gen3Method::Wild3,
+                0.0f64,
+                &[CycleRange::from_start_len(82973, 80)],
+            ),
+            ResultForTest::new(
+                Gen3Method::Wild3,
+                0.0f64,
+                &[CycleRange::from_start_len(89036, 80)],
+            ),
+            ResultForTest::new(
+                Gen3Method::Wild5,
+                0.0f64,
+                &[CycleRange::from_start_len(98148, 1035)],
+            ),
+            ResultForTest::new(
+                Gen3Method::Wild5,
+                0.0f64,
+                &[CycleRange::from_start_len(99183, 12163)],
+            ),
+            ResultForTest::new(
+                Gen3Method::Wild5,
+                0.0f64,
+                &[CycleRange::from_start_len(111346, 12124)],
+            ),
+            ResultForTest::new(
+                Gen3Method::Wild5,
+                0.0f64,
+                &[CycleRange::from_start_len(123470, 32566)],
+            ),
+            ResultForTest::new(
+                Gen3Method::Wild5,
+                0.0f64,
+                &[
+                    CycleRange::from_start_len(156036, 12092),
+                    CycleRange::from_start_len(168208, 10030),
+                ],
+            ),
+            ResultForTest::new(
+                Gen3Method::Wild3,
+                0.0f64,
+                &[CycleRange::from_start_len(168128, 80)],
+            ),
         ];
-        println!("{:?}", results);
-        assert_eq!(false, true);
-        //assert_list_eq!(result, expected_results);
+        assert_list_eq!(results, expected_results);
     }
 }

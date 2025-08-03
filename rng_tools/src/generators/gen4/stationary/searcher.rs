@@ -580,21 +580,22 @@ fn get_state_from_kseed(
     let lead = opts.lead;
 
     match lead {
-        LeadAbilities::Synchronize(_) => {
+        LeadAbilities::Synchronize(synch_nature) => {
             let pidh = rng.rand::<u16>() as u32;
             let pidl = rng.rand::<u16>() as u32;
             let pid = (pidh << 16) | pidl;
 
             let nature_rand = (pid % 25) as u16;
-            let nature = Nature::from(nature_rand as u8);
+            let mut nature = Nature::from(nature_rand as u8);
 
             let mut full_seed = rng.rand::<u32>();
             let mut next_rng = (full_seed >> 16) as u16;
-            let full_seed2 = rng.rand::<u32>();
+            let mut full_seed2 = rng.rand::<u32>();
             let mut next_rng_2 = (full_seed2 >> 16) as u16;
             loop {
                 let origin_seed = if next_rng % 2 == 0 {
                     let mut seed_rng = Pokerng::new(full_seed).rev();
+                    nature = synch_nature;
                     Some(seed_rng.rand::<u32>())
                 } else if next_rng_2 % 2 == 1 && next_rng % 25 == nature_rand {
                     let mut seed_rng = Pokerng::new(full_seed2).rev();
@@ -625,7 +626,8 @@ fn get_state_from_kseed(
                 let hunt_nature = (((next_rng as u32) << 16 | next_rng_2 as u32) % 25) as u16;
                 full_seed = rng.rand::<u32>();
                 next_rng = (full_seed >> 16) as u16;
-                next_rng_2 = rng.rand::<u16>();
+                full_seed2 = rng.rand::<u32>();
+                next_rng_2 = (full_seed2 >> 16) as u16;
 
                 if hunt_nature == nature_rand {
                     break;
@@ -3185,7 +3187,7 @@ mod tests {
                 min_advance: 20,
                 max_advance: 21,
                 min_delay: 800,
-                max_delay: 810,
+                max_delay: 811,
                 year: 2025,
                 force_second: None,
                 roamer: RoamerSet {
@@ -3205,15 +3207,21 @@ mod tests {
                             month: 2,
                             day: 20,
                             hour: 23,
-                            minute: 59,
-                            second: 58,
+                            minute: 58,
+                            second: 59,
                         },
                         delay: 805,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![
+                            RoamerLocation {
+                                roamer: Species::Raikou,
+                                location: 44,
+                            },
+                            RoamerLocation {
+                                roamer: Species::Entei,
+                                location: 45,
+                            },
+                        ],
+                        elm: elm_calls!("KEPKEEKPKEPPKPPEPEPK"),
                     },
                     seed: 63560349,
                     advance: 21,
@@ -3240,15 +3248,21 @@ mod tests {
                             month: 2,
                             day: 24,
                             hour: 2,
-                            minute: 59,
-                            second: 58,
+                            minute: 58,
+                            second: 59,
                         },
                         delay: 804,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![
+                            RoamerLocation {
+                                roamer: Species::Raikou,
+                                location: 35,
+                            },
+                            RoamerLocation {
+                                roamer: Species::Entei,
+                                location: 45,
+                            },
+                        ],
+                        elm: elm_calls!("PKEEKKPPEPPKKEEPEEEK"),
                     },
                     seed: 3749043009,
                     advance: 20,
@@ -3279,11 +3293,17 @@ mod tests {
                             second: 42,
                         },
                         delay: 803,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![
+                            RoamerLocation {
+                                roamer: Species::Raikou,
+                                location: 31,
+                            },
+                            RoamerLocation {
+                                roamer: Species::Entei,
+                                location: 34,
+                            },
+                        ],
+                        elm: elm_calls!("EPEKPKKPEEEEPPEPPKPE"),
                     },
                     seed: 2799581091,
                     advance: 21,
@@ -3308,17 +3328,23 @@ mod tests {
                         datetime: RngDateTime {
                             year: 2025,
                             month: 1,
-                            day: 28,
+                            day: 27,
                             hour: 23,
                             minute: 59,
-                            second: 58,
+                            second: 59,
                         },
                         delay: 805,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![
+                            RoamerLocation {
+                                roamer: Species::Raikou,
+                                location: 44,
+                            },
+                            RoamerLocation {
+                                roamer: Species::Entei,
+                                location: 45,
+                            },
+                        ],
+                        elm: elm_calls!("EPKPEEKEPEEPEEKEKPPP"),
                     },
                     seed: 667540125,
                     advance: 21,
@@ -3349,11 +3375,17 @@ mod tests {
                             second: 2,
                         },
                         delay: 803,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![
+                            RoamerLocation {
+                                roamer: Species::Raikou,
+                                location: 35,
+                            },
+                            RoamerLocation {
+                                roamer: Species::Entei,
+                                location: 38,
+                            },
+                        ],
+                        elm: elm_calls!("KPKPPEEKPEEKPKEPPEPK"),
                     },
                     seed: 2298672624,
                     advance: 20,
@@ -3377,18 +3409,24 @@ mod tests {
                         seed: 3540321084,
                         datetime: RngDateTime {
                             year: 2025,
-                            month: 4,
-                            day: 24,
+                            month: 3,
+                            day: 31,
                             hour: 5,
-                            minute: 57,
-                            second: 58,
+                            minute: 59,
+                            second: 59,
                         },
                         delay: 803,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![
+                            RoamerLocation {
+                                roamer: Species::Raikou,
+                                location: 36,
+                            },
+                            RoamerLocation {
+                                roamer: Species::Entei,
+                                location: 35,
+                            },
+                        ],
+                        elm: elm_calls!("KEKPPPPEEPEKPPKPKPEE"),
                     },
                     seed: 2122839536,
                     advance: 20,
@@ -3413,17 +3451,23 @@ mod tests {
                         datetime: RngDateTime {
                             year: 2025,
                             month: 1,
-                            day: 18,
+                            day: 17,
                             hour: 23,
                             minute: 59,
-                            second: 58,
+                            second: 59,
                         },
                         delay: 809,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![
+                            RoamerLocation {
+                                roamer: Species::Raikou,
+                                location: 35,
+                            },
+                            RoamerLocation {
+                                roamer: Species::Entei,
+                                location: 37,
+                            },
+                        ],
+                        elm: elm_calls!("EKPPPKEEPKKKEPEPEKEK"),
                     },
                     seed: 1266636246,
                     advance: 20,
@@ -3448,17 +3492,23 @@ mod tests {
                         datetime: RngDateTime {
                             year: 2025,
                             month: 1,
-                            day: 2,
+                            day: 1,
                             hour: 13,
                             minute: 59,
-                            second: 58,
+                            second: 59,
                         },
                         delay: 808,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![
+                            RoamerLocation {
+                                roamer: Species::Raikou,
+                                location: 45,
+                            },
+                            RoamerLocation {
+                                roamer: Species::Entei,
+                                location: 42,
+                            },
+                        ],
+                        elm: elm_calls!("EPKEKEPPKEEEPPKKPKEK"),
                     },
                     seed: 2461716244,
                     advance: 21,
@@ -3485,15 +3535,21 @@ mod tests {
                             month: 5,
                             day: 26,
                             hour: 20,
-                            minute: 57,
-                            second: 58,
+                            minute: 56,
+                            second: 59,
                         },
                         delay: 807,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![
+                            RoamerLocation {
+                                roamer: Species::Raikou,
+                                location: 32,
+                            },
+                            RoamerLocation {
+                                roamer: Species::Entei,
+                                location: 37,
+                            },
+                        ],
+                        elm: elm_calls!("EPPEKEKEEEEKKKKKKKPP"),
                     },
                     seed: 970947991,
                     advance: 21,
@@ -3524,11 +3580,17 @@ mod tests {
                             second: 47,
                         },
                         delay: 808,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![
+                            RoamerLocation {
+                                roamer: Species::Raikou,
+                                location: 32,
+                            },
+                            RoamerLocation {
+                                roamer: Species::Entei,
+                                location: 43,
+                            },
+                        ],
+                        elm: elm_calls!("KKKEPEEEPKKKKPKPPPPE"),
                     },
                     seed: 1078816901,
                     advance: 20,
@@ -3559,11 +3621,17 @@ mod tests {
                             second: 47,
                         },
                         delay: 801,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![
+                            RoamerLocation {
+                                roamer: Species::Raikou,
+                                location: 39,
+                            },
+                            RoamerLocation {
+                                roamer: Species::Entei,
+                                location: 30,
+                            },
+                        ],
+                        elm: elm_calls!("PEPKEPKPPPPPEPPEEKEP"),
                     },
                     seed: 2867238057,
                     advance: 21,
@@ -3604,9 +3672,9 @@ mod tests {
                     ..Default::default()
                 },
                 min_advance: 21,
-                max_advance: 23,
-                min_delay: 760,
-                max_delay: 800,
+                max_advance: 21,
+                min_delay: 800,
+                max_delay: 810,
                 year: 2025,
                 force_second: None,
                 roamer: RoamerSet {
@@ -3759,7 +3827,7 @@ mod tests {
                     characteristic: Characteristic::Mischievous,
                 },
             ];
-            assert_list_eq!(results, expected);
+            assert_eq!(results, expected);
         }
         #[test]
         fn static_methodk_cutecharm_f() {
@@ -3806,11 +3874,8 @@ mod tests {
                             second: 50,
                         },
                         delay: 807,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![],
+                        elm: elm_calls!("KPPEKEPKKPKPKPEEKPEP"),
                     },
                     seed: 3749088052,
                     advance: 20,
@@ -3841,11 +3906,8 @@ mod tests {
                             second: 26,
                         },
                         delay: 807,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![],
+                        elm: elm_calls!("PEEPKEEKPEEKKKEEPEPE"),
                     },
                     seed: 1198951220,
                     advance: 20,
@@ -3876,11 +3938,8 @@ mod tests {
                             second: 54,
                         },
                         delay: 807,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![],
+                        elm: elm_calls!("EEEPKEKEPPKEEPEKEKKE"),
                     },
                     seed: 594971444,
                     advance: 20,
@@ -3911,11 +3970,8 @@ mod tests {
                             second: 30,
                         },
                         delay: 807,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![],
+                        elm: elm_calls!("PKPKKPPKEEEKPPKKPPEP"),
                     },
                     seed: 2339801908,
                     advance: 20,
@@ -3946,11 +4002,8 @@ mod tests {
                             second: 58,
                         },
                         delay: 807,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![],
+                        elm: elm_calls!("EPKKKPEEEPKEKEKKEPPP"),
                     },
                     seed: 1735822132,
                     advance: 20,
@@ -4017,11 +4070,8 @@ mod tests {
                             second: 50,
                         },
                         delay: 807,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![],
+                        elm: elm_calls!("KPPEKEPKKPKPKPEEKPEP"),
                     },
                     seed: 3749088052,
                     advance: 20,
@@ -4052,11 +4102,8 @@ mod tests {
                             second: 26,
                         },
                         delay: 807,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![],
+                        elm: elm_calls!("PEEPKEEKPEEKKKEEPEPE"),
                     },
                     seed: 1198951220,
                     advance: 20,
@@ -4087,11 +4134,8 @@ mod tests {
                             second: 54,
                         },
                         delay: 807,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![],
+                        elm: elm_calls!("EEEPKEKEPPKEEPEKEKKE"),
                     },
                     seed: 594971444,
                     advance: 20,
@@ -4122,11 +4166,8 @@ mod tests {
                             second: 30,
                         },
                         delay: 807,
-                        roamer: vec![RoamerLocation {
-                            roamer: Species::Entei,
-                            location: 32,
-                        }],
-                        elm: elm_calls!("EKPEKPEKPEKPEKP"),
+                        roamer: vec![],
+                        elm: elm_calls!("PKPKKPPKEEEKPPKKPPEP"),
                     },
                     seed: 2339801908,
                     advance: 20,
@@ -4142,6 +4183,38 @@ mod tests {
                     ability: AbilityType::First,
                     gender: Gender::Female,
                     nature: Nature::Naughty,
+                    shiny: false,
+                    characteristic: Characteristic::TakesPlentyOfSiestas,
+                },
+                SearchStatic4MethodjState {
+                    seed_time: HgssSeedTime4 {
+                        seed: 989856576,
+                        datetime: RngDateTime {
+                            year: 2025,
+                            month: 1,
+                            day: 1,
+                            hour: 0,
+                            minute: 0,
+                            second: 58,
+                        },
+                        delay: 807,
+                        roamer: vec![],
+                        elm: elm_calls!("EPKKKPEEEPKEKEKKEPPP"),
+                    },
+                    seed: 1735822132,
+                    advance: 20,
+                    pid: 3,
+                    ivs: Ivs {
+                        hp: 31,
+                        atk: 30,
+                        def: 31,
+                        spa: 22,
+                        spd: 30,
+                        spe: 22,
+                    },
+                    ability: AbilityType::Second,
+                    gender: Gender::Female,
+                    nature: Nature::Adamant,
                     shiny: false,
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },

@@ -89,6 +89,7 @@ const Validator = z
     max_result_count: z.number().int().min(1),
     rngManipulatedLeadPid: z.boolean(),
     mergeSimilarResults: z.boolean(),
+    generate_even_if_impossible: z.boolean(),
   })
   .merge(pkmFilterSchema)
   .merge(gen3PkmFilterSchema);
@@ -111,6 +112,7 @@ const getInitialValues = (): FormState => {
     max_result_count: 10_000,
     rngManipulatedLeadPid: false,
     mergeSimilarResults: true,
+    generate_even_if_impossible: false,
     ...getPkmFilterInitialValues(),
     ...getGen3PkmFilterInitialValues(),
   };
@@ -276,6 +278,10 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
     {
       label: "Merge similar results",
       input: <FormikSwitch<FormState> name="mergeSimilarResults" />,
+    },
+    {
+      label: "Display results with 0% likelihood",
+      input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
     },
   ];
   return fields;
@@ -675,7 +681,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
         methods: values.methods,
         consider_cycles: true,
         consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
-        generate_even_if_impossible: false,
+        generate_even_if_impossible: values.generate_even_if_impossible,
       };
 
       let results = await rngTools.search_wild3(opts);

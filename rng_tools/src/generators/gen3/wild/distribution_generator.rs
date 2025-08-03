@@ -95,7 +95,7 @@ pub fn generate_gen3_wild_distribution(
                     method_probability: cycle_data.method_probability,
                 }
             } else {
-                // We must exclude Wild3 ranges and probability
+                // We must exclude Wild3 ranges and their probability
                 // Ex: Wild5={ranges:[[20,30]], probability: 0.10} followed by Wild3={ranges:[25,26], probability: 0.01}
                 // Result: Wild5={ranges:[[20,25],[26,30]], probability: 0.09}
                 let mut pre_sweet_scent_cycle_ranges_vals: Vec<usize> =
@@ -120,13 +120,11 @@ pub fn generate_gen3_wild_distribution(
                 pre_sweet_scent_cycle_ranges_vals
                     .push(cycle_data.pre_sweet_scent_cycle_range.end());
 
-                println!("{:?}", pre_sweet_scent_cycle_ranges_vals);
                 let pre_sweet_scent_cycle_ranges = pre_sweet_scent_cycle_ranges_vals
                     .windows(2)
                     .step_by(2)
                     .filter_map(|vals| {
                         let [start, end] = [vals[0], vals[1]];
-                        println!("{} {}", start, end);
                         if start > end {
                             None
                         } else {
@@ -181,16 +179,7 @@ mod test {
     #[test]
     fn test_distribution_generator() {
         let opts = Wild3GeneratorOptions {
-            consider_cycles: true,
-            generate_even_if_impossible: true,
             advance: 44,
-            methods: vec![
-                Gen3Method::Wild1,
-                Gen3Method::Wild2,
-                Gen3Method::Wild3,
-                Gen3Method::Wild4,
-                Gen3Method::Wild5,
-            ],
             ..Default::default()
         };
         let results =
@@ -200,8 +189,8 @@ mod test {
                 .collect::<Vec<_>>();
 
         let expected_results = [
-            ResultForTest::new(Gen3Method::Wild4, 0.0f64, &[]),
-            ResultForTest::new(Gen3Method::Wild1, 0.0f64, &[]),
+            ResultForTest::new(Gen3Method::Wild4, 0.0, &[]),
+            ResultForTest::new(Gen3Method::Wild1, 0.0, &[]),
             ResultForTest::new(
                 Gen3Method::Wild2,
                 0.2237,
@@ -231,37 +220,37 @@ mod test {
             ),
             ResultForTest::new(
                 Gen3Method::Wild3,
-                0.0f64,
+                0.0,
                 &[CycleRange::from_start_len(82973, 80)],
             ),
             ResultForTest::new(
                 Gen3Method::Wild3,
-                0.0f64,
+                0.0,
                 &[CycleRange::from_start_len(89036, 80)],
             ),
             ResultForTest::new(
                 Gen3Method::Wild5,
-                0.0f64,
+                0.0,
                 &[CycleRange::from_start_len(98148, 1035)],
             ),
             ResultForTest::new(
                 Gen3Method::Wild5,
-                0.0f64,
+                0.0,
                 &[CycleRange::from_start_len(99183, 12163)],
             ),
             ResultForTest::new(
                 Gen3Method::Wild5,
-                0.0f64,
+                0.0,
                 &[CycleRange::from_start_len(111346, 12124)],
             ),
             ResultForTest::new(
                 Gen3Method::Wild5,
-                0.0f64,
+                0.0,
                 &[CycleRange::from_start_len(123470, 32566)],
             ),
             ResultForTest::new(
                 Gen3Method::Wild5,
-                0.0f64,
+                0.0,
                 &[
                     CycleRange::from_start_len(156036, 12092),
                     CycleRange::from_start_len(168208, 10030),
@@ -269,7 +258,7 @@ mod test {
             ),
             ResultForTest::new(
                 Gen3Method::Wild3,
-                0.0f64,
+                0.0,
                 &[CycleRange::from_start_len(168128, 80)],
             ),
         ];

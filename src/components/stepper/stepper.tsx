@@ -89,7 +89,12 @@ type StepProps = {
 export const Step = ({ step, children }: StepProps) => {
   const [currentStep] = useCurrentStep();
   return (
-    <Flex vertical display={step === currentStep ? "flex" : "none"} gap={24}>
+    <Flex
+      vertical
+      id={`step-${step}`}
+      display={step === currentStep ? "flex" : "none"}
+      gap={24}
+    >
       {children}
     </Flex>
   );

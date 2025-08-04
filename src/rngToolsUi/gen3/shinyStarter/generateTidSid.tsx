@@ -19,7 +19,7 @@ const Validator = z.object({
   tid: z.number().int().min(0).max(65535),
 });
 
-type FormState = z.infer<typeof Validator>;
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   offset: 50, // offset on Emerald on mgba 0.11-8764
@@ -200,6 +200,7 @@ export const GenerateHoennTidSid = ({ game }: Props) => {
   return (
     <Flex vertical>
       <RngToolForm<FormState, Result>
+        formContainerId="generate-tid-sid-for-shiny-starter"
         results={formResults}
         getFields={getFields}
         columns={columns}

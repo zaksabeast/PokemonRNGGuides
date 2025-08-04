@@ -138,6 +138,7 @@ export const CaughtMon = ({
         Caught Pokémon
       </Typography.Title>
       <RngToolForm<FormState, CaughtMonResult>
+        formContainerId="generate-gen3-caught-starter"
         fields={fields}
         columns={columns}
         results={results}

@@ -58,7 +58,7 @@ const Validator = z
   })
   .merge(StatFieldsSchema);
 
-type FormState = z.infer<typeof Validator>;
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   level: 5,

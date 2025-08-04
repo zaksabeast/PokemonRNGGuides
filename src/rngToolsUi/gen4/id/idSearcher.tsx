@@ -173,7 +173,7 @@ const Validator = z.object({
   id_filter: IdFilterSchema,
 });
 
-type FormState = z.infer<typeof Validator>;
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   year: 2000,

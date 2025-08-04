@@ -41,6 +41,7 @@ export const FormikIdFilter = <FormState extends GenericForm>({
     <Flex vertical gap={10}>
       <Select<FilterType>
         fullFlex
+        name={`${name}.type`}
         options={optional ? optionalFilterOptions : filterOptions}
         value={value.type}
         onChange={(value) => {
@@ -51,6 +52,7 @@ export const FormikIdFilter = <FormState extends GenericForm>({
       {value.type !== "none" && (
         <NumberInput
           fullFlex
+          name={`${name}.value0`}
           numType={value.type === "pid" ? "hex" : "decimal"}
           value={value.value0 ?? null}
           errorMessage={value0Error}
@@ -66,6 +68,7 @@ export const FormikIdFilter = <FormState extends GenericForm>({
       {(value.type === "tidpid" || value.type === "tidsid") && (
         <NumberInput
           fullFlex
+          name={`${name}.value1`}
           numType={value.type === "tidpid" ? "hex" : "decimal"}
           value={value.value1}
           errorMessage={value1Error}

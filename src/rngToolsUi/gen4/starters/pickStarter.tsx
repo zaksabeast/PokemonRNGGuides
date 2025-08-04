@@ -84,7 +84,7 @@ const Validator = z
   })
   .merge(pkmFilterSchema);
 
-type FormState = z.infer<typeof Validator>;
+export type FormState = z.infer<typeof Validator>;
 
 const dpptInitialValues: FormState = {
   tid: 0,

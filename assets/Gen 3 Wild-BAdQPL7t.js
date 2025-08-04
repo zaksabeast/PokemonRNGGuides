@@ -1,0 +1,37 @@
+const e=`---
+- title: "Emerald Wild Searcher"
+  description: "Emerald Wild Searcher"
+  slug: "emerald-wild"
+  category: "Emerald"
+  tag: "retail"
+  isRoughDraft: true
+---
+
+## Searcher
+
+**Use case**: Determine the best setup (map, advance, lead) to obtain the wanted target Pokémon.
+
+<Wild3SearcherFindTarget game="emerald" />
+
+<br />
+
+## Generate All Methods At Once
+
+**What it does**: Given a setup (map, advance, lead), calculate the Pokémon outcome for every method (Wild1-Wild5) and their likelihood.
+
+**Use case**: Determine if the likehood of hitting your target Pokémon is good enough with your actual lead.
+
+<Wild3MethodDistribution game="emerald" />
+
+## Coming soon
+
+- Textual guide for the Emerald Wild Searcher.
+- Calibration tool.
+- Performance improvements.
+
+## Credits
+
+- RainingChain: Research about cycle range to estimate method likelihood. Creation of the multi-lead searcher, multi-method generator, and the web UI tool.
+- Sorendog: Original Wild generation tool.
+- Shao: Function to calculate cycles taken by modulo operations.
+`;export{e as default};

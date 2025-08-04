@@ -1912,7 +1912,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-dppt-tid-sid/",
+        zh: "/zh-emulator-dppt-tid-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7636,6 +7639,43 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-emulator-dppt-tid-sid/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["emu"],
+      isNew: false,
+      title: "钻石、珍珠与白金版 TID/SID 乱数",
+      navDrawerTitle: "钻石、珍珠与白金版 TID/SID 乱数",
+      description:
+        "了解如何在钻石、珍珠和白金版中通过模拟器获得你想要的训练家 ID（TID）与里 ID（SID）组合",
+      slug: "/zh-emulator-dppt-tid-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-dppt-tid-sid/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx",
+      translations: {
+        en: "/emulator-dppt-tid-sid/",
+        zh: "/zh-emulator-dppt-tid-sid/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-emulator-emerald-egg/": {
     meta: {
       categories: ["Emerald"],
@@ -9176,6 +9216,7 @@ export const guideSlugs = [
   "/zh-emulator-dppt-cute-charm/",
   "/zh-emulator-dppt-egg/",
   "/zh-emulator-dppt-stationary/",
+  "/zh-emulator-dppt-tid-sid/",
   "/zh-emulator-emerald-egg/",
   "/zh-emulator-flrg-stationary-and-gift/",
   "/zh-emulator-frlg-egg/",

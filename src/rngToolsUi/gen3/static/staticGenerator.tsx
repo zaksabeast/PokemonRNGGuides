@@ -61,7 +61,7 @@ const Validator = z
     roamer: z.boolean(),
     method4: z.boolean(),
   })
-  .merge(pkmFilterSchema);
+  .extend(pkmFilterSchema.shape);
 
 type FormState = z.infer<typeof Validator>;
 

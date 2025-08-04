@@ -91,8 +91,8 @@ const Validator = z
     mergeSimilarResults: z.boolean(),
     generate_even_if_impossible: z.boolean(),
   })
-  .merge(pkmFilterSchema)
-  .merge(gen3PkmFilterSchema);
+  .extend(pkmFilterSchema.shape)
+  .extend(gen3PkmFilterSchema.shape);
 
 type FormState = z.infer<typeof Validator>;
 

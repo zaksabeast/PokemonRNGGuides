@@ -19,7 +19,7 @@ const Validator = z
     nature: z.enum(nature),
     gender: z.enum(["Male", "Female"]),
   })
-  .merge(StatFieldsSchema);
+  .extend(StatFieldsSchema.shape);
 
 export type FormState = z.infer<typeof Validator>;
 

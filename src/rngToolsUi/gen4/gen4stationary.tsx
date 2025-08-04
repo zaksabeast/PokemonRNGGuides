@@ -96,7 +96,7 @@ const Validator = z
     synch_nature: z.enum(nature),
     filter_characteristic: z.enum(characteristics).nullable(),
   })
-  .merge(pkmFilterSchema);
+  .extend(pkmFilterSchema.shape);
 
 const initialValues: FormState = {
   seed: 0,

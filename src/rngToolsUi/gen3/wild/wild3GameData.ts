@@ -35,7 +35,7 @@ export const getWild3GameData = (json: Wild3GameDataJSON): Wild3GameData => {
       encounterInfoByMapForSpecies.set(table.map_id, encounterInfoForMap);
 
       const encounterInfoForEncounterType = encounterInfoForMap.find(
-        (info) => info.encounter_type === table.encounter_type,
+        (info) => info.encounter_table.encounter_type === table.encounter_type,
       );
 
       if (encounterInfoForEncounterType?.slots != undefined) {
@@ -46,7 +46,7 @@ export const getWild3GameData = (json: Wild3GameDataJSON): Wild3GameData => {
       }
 
       encounterInfoForMap.push({
-        encounter_type: table.encounter_type,
+        encounter_table: table,
         slots: [encounterSlots[encounterSlotIdx]],
       });
     });

@@ -18,7 +18,7 @@ import styled from "@emotion/styled";
 type DisplayAttribute =
   | GuideMeta["displayAttributes"][number]
   | "new"
-  | "translated";
+  | "external-link";
 
 const DisplayTag = styled(Tag)<{ tag: DisplayAttribute }>(({ tag }) => {
   const colors = match(tag)
@@ -26,9 +26,9 @@ const DisplayTag = styled(Tag)<{ tag: DisplayAttribute }>(({ tag }) => {
       color: "#AF52DE",
       backgroundColor: "rgba(175, 82, 222, 0.1)",
     }))
-    .with("translated", () => ({
-      color: "#34C759",
-      backgroundColor: "rgba(52, 199, 89, 0.1)",
+    .with("external-link", () => ({
+      color: "#30B0C7",
+      backgroundColor: "rgba(48, 176, 199, 0.1)",
     }))
     .with("web_tool", () => ({
       color: "#7E5BEF",
@@ -144,47 +144,55 @@ export const GamePageComponent = () => {
             </Typography.Title>
             <Grid mobile={1} tablet={2} desktop={3}>
               {sortBy(filteredGuides, (guide) => guide.navDrawerTitle).map(
-                (guide) => (
-                  <GuideCard
-                    id={`guide-${guide.slug}`}
-                    key={guide.slug}
-                    fullBody
-                    href={guide.slug}
-                    borderColor="PrimaryBorderHover"
-                    border={guide.isNew ? "2px solid" : "1px solid"}
-                  >
-                    <BadgeRibbon $show={guide.isNew} text="New">
-                      <Flex vertical justify="space-between" flex={1} p={24}>
-                        <Flex vertical minHeight={50} gap={4} height="100%">
-                          <CardBackground>
-                            <InnerCardBackground>
-                              <Icon
-                                name="Pokeball"
-                                size={100}
-                                color="PrimaryBgHover"
-                              />
-                            </InnerCardBackground>
-                          </CardBackground>
-                          {guide.displayAttributes
-                            // Seperate filter for TS to infer types from the null check
-                            .filter((tag) => tag !== null)
-                            .filter((tag) => !isSectionDsiplay(tag))
-                            .map((tag) => (
-                              <Flex key={tag}>
-                                <DisplayTag tag={tag}>
-                                  {startCase(tag)}
-                                </DisplayTag>
-                              </Flex>
-                            ))}
+                (guide) => {
+                  const { url, ...linkProps } = match(guide)
+                    .with({ type: "baseGuide" }, (matched) => ({
+                      url: matched.slug,
+                      slug: matched.slug,
+                    }))
+                    .exhaustive();
+                  return (
+                    <GuideCard
+                      id={`guide-${url}`}
+                      key={url}
+                      fullBody
+                      borderColor="PrimaryBorderHover"
+                      border={guide.isNew ? "2px solid" : "1px solid"}
+                      {...linkProps}
+                    >
+                      <BadgeRibbon $show={guide.isNew} text="New">
+                        <Flex vertical justify="space-between" flex={1} p={24}>
+                          <Flex vertical minHeight={50} gap={4} height="100%">
+                            <CardBackground>
+                              <InnerCardBackground>
+                                <Icon
+                                  name="Pokeball"
+                                  size={100}
+                                  color="PrimaryBgHover"
+                                />
+                              </InnerCardBackground>
+                            </CardBackground>
+                            {guide.displayAttributes
+                              // Seperate filter for TS to infer types from the null check
+                              .filter((tag) => tag !== null)
+                              .filter((tag) => !isSectionDsiplay(tag))
+                              .map((tag) => (
+                                <Flex key={tag}>
+                                  <DisplayTag tag={tag}>
+                                    {startCase(tag)}
+                                  </DisplayTag>
+                                </Flex>
+                              ))}
+                          </Flex>
+                          <Flex vertical>
+                            <Divider />
+                            <CardMeta title={guide.navDrawerTitle} />
+                          </Flex>
                         </Flex>
-                        <Flex vertical>
-                          <Divider />
-                          <CardMeta title={guide.navDrawerTitle} />
-                        </Flex>
-                      </Flex>
-                    </BadgeRibbon>
-                  </GuideCard>
-                ),
+                      </BadgeRibbon>
+                    </GuideCard>
+                  );
+                },
               )}
             </Grid>
           </Flex>

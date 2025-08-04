@@ -3,6 +3,11 @@ import type { FormState } from "./caughtMon";
 import { rngTools } from "~/rngTools";
 import { getStrictBaseStats } from "~/types/baseStats";
 import { MinMax } from "~/types/stat";
+import {
+  getPkmFilterInitialValues,
+  pkmFilterFieldsToRustInput,
+} from "~/components/pkmFilter";
+import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
 
 export type CaughtMonResult = {
   advance: number;
@@ -38,15 +43,7 @@ export const getTargetPokemonDesc = async (
     max_advances: 0,
     seed: game === "emerald" ? 0 : 0x5a0,
     method4: false,
-    filter: {
-      nature: null,
-      gender: null,
-      ability: null,
-      shiny: false,
-      stats: null,
-      min_ivs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
-      max_ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
-    },
+    filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter
     bugged_roamer: false, // doesn't matter
@@ -117,6 +114,7 @@ export const generateCaughtMonResults = async (
       },
       min_ivs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
       max_ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
+      hidden_power: defaultHiddenPowerFilter,
     },
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter

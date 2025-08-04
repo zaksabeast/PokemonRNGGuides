@@ -2,37 +2,31 @@
 mod test {
     use crate::EncounterSlot;
     use crate::Ivs;
-    use crate::gen3::Gen3EncounterType;
     use crate::gen3::Gen3Lead;
     use crate::gen3::Gen3Method;
     use crate::gen3::INFINITE_CYCLE;
     use crate::gen3::{
-        CycleRange, Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild,
+        CycleRange, Wild3EncounterTable, Wild3GeneratorOptions, Wild3GeneratorResult,
+        generate_gen3_wild,
     };
     use crate::rng::Rng;
     use crate::rng::lcrng::Pokerng;
-    use crate::{GenderRatio, Nature, PkmFilter};
+    use crate::{Nature, PkmFilter};
 
     #[test]
     fn test_generate_wild3_cycle_method_3() {
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild3],
             advance: 3012,
-            map_idx: 0,
             lead: Gen3Lead::Synchronize(Nature::Serious),
-            filter: PkmFilter::new_allow_all(),
             consider_cycles: true,
             consider_rng_manipulated_lead_pid: true,
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot5,
@@ -57,60 +51,55 @@ mod test {
         // Same as test_generate_wild3_cycle_method_3, but consider_rng_manipulated_lead_pid is false.
         // This should return an empty result, as the method cannot be triggered with a common lead PID.
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild3],
             advance: 3012,
-            map_idx: 0,
             lead: Gen3Lead::Synchronize(Nature::Serious),
             filter: PkmFilter::new_allow_all(),
             consider_cycles: true,
             consider_rng_manipulated_lead_pid: false,
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         assert_eq!(result, vec![]);
     }
 
     #[test]
     fn test_generate_wild3_cycle_method_5() {
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild5],
             advance: 4894,
-            map_idx: 0,
-            lead: Gen3Lead::Vanilla,
-            filter: PkmFilter::new_allow_all(),
             consider_cycles: true,
             consider_rng_manipulated_lead_pid: true,
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot5,
                 pid: 26625321,
                 ivs: Ivs::new(21, 2, 31, 1, 18, 19),
                 method: Gen3Method::Wild5,
-                cycle_range: Some(CycleRange::new(145311, 80, 0, 934)),
+                cycle_range: Some(CycleRange::new(139231, 80, 0, 7094)),
             },
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot5,
                 pid: 2210948146,
                 ivs: Ivs::new(13, 0, 19, 1, 12, 6),
                 method: Gen3Method::Wild5,
-                cycle_range: Some(CycleRange::new(148361, 80, 0, 926)),
+                cycle_range: Some(CycleRange::new(146325, 80, 0, 3042)),
+            },
+            Wild3GeneratorResult {
+                encounter_slot: EncounterSlot::Slot5,
+                pid: 2335347696,
+                ivs: Ivs::new(13, 12, 19, 0, 1, 29),
+                method: Gen3Method::Wild5,
+                cycle_range: Some(CycleRange::new(149367, 80, 0, 6009)),
             },
         ];
         assert_eq!(result, expected_result);
@@ -119,23 +108,17 @@ mod test {
     #[test]
     fn test_generate_wild3_cycle_methods_1_2_4() {
         let options = Wild3GeneratorOptions {
-            tid: 0,
-            sid: 0,
-            gender_ratio: GenderRatio::OneToOne,
-            encounter_slot: None,
-            encounter_type: Gen3EncounterType::Land,
             methods: vec![Gen3Method::Wild1, Gen3Method::Wild2, Gen3Method::Wild4],
             advance: 3001,
-            map_idx: 0,
             lead: Gen3Lead::Synchronize(Nature::Hardy),
-            filter: PkmFilter::new_allow_all(),
             consider_cycles: true,
             consider_rng_manipulated_lead_pid: true,
+            ..Default::default()
         };
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot3,

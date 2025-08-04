@@ -1,11 +1,14 @@
 use super::{Wild3GeneratorOptions, Wild3GeneratorResult, generate_gen3_wild};
 use crate::gen3::{
-    Gen3EncounterType, Gen3Lead, Gen3Method, Wild3SearcherCycleDataByLead,
+    Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3EncounterTable, Wild3SearcherCycleDataByLead,
     calculate_cycle_data_by_lead,
 };
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
-use crate::{AbilityType, EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter, gen3_shiny};
+use crate::{
+    AbilityType, EncounterSlot, Gender, GenderRatio, HiddenPower, Ivs, Nature, PkmFilter,
+    gen3_shiny,
+};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -13,11 +16,11 @@ use wasm_bindgen::prelude::*;
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Gen3EncounterInfo {
-    pub encounter_type: Gen3EncounterType,
+    pub encounter_table: Wild3EncounterTable,
     pub slots: Option<Vec<EncounterSlot>>,
 }
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3SearcherOptions {
     pub initial_seed: u32,
@@ -28,11 +31,13 @@ pub struct Wild3SearcherOptions {
     pub max_advances: usize,
     pub max_result_count: usize,
     pub filter: PkmFilter,
+    pub gen3_filter: Gen3PkmFilter,
     pub leads: Vec<Gen3Lead>,
     pub encounter_info_by_map: Vec<Gen3EncounterInfo>,
     pub methods: Vec<Gen3Method>,
     pub consider_cycles: bool,
     pub consider_rng_manipulated_lead_pid: bool,
+    pub generate_even_if_impossible: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -51,6 +56,9 @@ pub struct Wild3SearcherResultMon {
     pub nature: Nature,
     pub shiny: bool,
 
+    // derived from ivs
+    pub hidden_power: HiddenPower,
+
     // derived from searcher context
     pub advance: usize,
     pub lead: Gen3Lead,
@@ -60,7 +68,9 @@ pub struct Wild3SearcherResultMon {
 impl Wild3SearcherResultMon {
     pub fn new(
         gen_res: &Wild3GeneratorResult,
-        opts: &Wild3SearcherOptions,
+        tid: u16,
+        sid: u16,
+        gender_ratio: GenderRatio,
         advance: usize,
         map_idx: usize,
         lead: Gen3Lead,
@@ -79,10 +89,11 @@ impl Wild3SearcherResultMon {
             method: gen_res.method,
             encounter_slot: gen_res.encounter_slot,
             cycle_data_by_lead,
-            shiny: gen3_shiny(gen_res.pid, opts.tid, opts.sid),
+            shiny: gen3_shiny(gen_res.pid, tid, sid),
             nature: Nature::from_pid(gen_res.pid),
             ability: AbilityType::from_gen3_pid(gen_res.pid),
-            gender: opts.gender_ratio.gender_from_pid(gen_res.pid),
+            gender: gender_ratio.gender_from_pid(gen_res.pid),
+            hidden_power: HiddenPower::from_ivs(&gen_res.ivs),
             advance,
             map_idx,
             lead,
@@ -103,21 +114,30 @@ fn search_wild3_at_given_advance(
                 sid: opts.sid,
                 advance,
                 map_idx,
-                gender_ratio: opts.gender_ratio,
                 encounter_slot: encounter_info.slots.clone(),
-                encounter_type: encounter_info.encounter_type,
                 methods: opts.methods.clone(),
                 lead: *lead,
                 filter: opts.filter.clone(),
                 consider_cycles: opts.consider_cycles,
                 consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
+                generate_even_if_impossible: opts.generate_even_if_impossible,
+                gen3_filter: opts.gen3_filter.clone(),
             };
 
-            generate_gen3_wild(rng, &gen_opts)
+            generate_gen3_wild(rng, &gen_opts, &encounter_info.encounter_table)
                 .iter()
                 .for_each(|gen_res| {
+                    let gender_ratio = encounter_info.encounter_table.slots
+                        [gen_res.encounter_slot as usize]
+                        .gender_ratio;
                     results.push(Wild3SearcherResultMon::new(
-                        gen_res, opts, advance, map_idx, *lead,
+                        gen_res,
+                        opts.tid,
+                        opts.sid,
+                        gender_ratio,
+                        advance,
+                        map_idx,
+                        *lead,
                     ));
                 });
         }

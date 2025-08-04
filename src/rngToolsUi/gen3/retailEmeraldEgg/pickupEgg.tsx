@@ -13,7 +13,7 @@ import { maxIvs, minIvs } from "~/types/ivs";
 import {
   flattenIvs,
   FlattenIvs,
-  inheritedIvColumns,
+  getInheritedIvColumns,
 } from "~/rngToolsUi/shared/ivColumns";
 import { z } from "zod";
 import {
@@ -28,6 +28,7 @@ import pmap from "p-map";
 import { sortBy, startCase } from "lodash-es";
 import { approximateGen3FrameTime } from "~/utils/approximateGen3FrameTime";
 import { ivMethods } from "./constants";
+import { Translations } from "~/translations";
 
 type Result = FlattenIvs<
   Egg3PickupState & { method: Gen3PickupMethod; key: string }
@@ -53,19 +54,19 @@ const SelectButton = ({ result }: { result: Result }) => {
   );
 };
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
-    title: "Select",
+    title: t["Select"],
     dataIndex: "advance",
     render: (_, result) => <SelectButton result={result} />,
   },
-  { title: "Time", dataIndex: "advance", render: approximateGen3FrameTime },
+  { title: t["Time"], dataIndex: "advance", render: approximateGen3FrameTime },
   {
-    title: "Method",
+    title: t["Method"],
     dataIndex: "method",
     render: (method) => startCase(method),
   },
-  ...inheritedIvColumns,
+  ...getInheritedIvColumns(t),
 ];
 
 const Validator = z.object({
@@ -90,37 +91,37 @@ const initialValues: FormState = {
   filter_max_ivs: maxIvs,
 };
 
-const fields: Field[] = [
+const getFields = (t: Translations): Field[] => [
   {
-    label: "Seed",
+    label: t["Seed"],
     input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
   },
   {
-    label: "Initial advances",
+    label: t["Initial advances"],
     input: (
       <FormikNumberInput<FormState> name="initial_advances" numType="decimal" />
     ),
   },
   {
-    label: "Max advances",
+    label: t["Max advances"],
     input: (
       <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
     ),
   },
   {
-    label: "Parent 1 IVs",
+    label: t["Parent 1 IVs"],
     input: <IvInput<FormState, "nullable"> name="parent1_ivs" />,
   },
   {
-    label: "Parent 2 IVs",
+    label: t["Parent 2 IVs"],
     input: <IvInput<FormState, "nullable"> name="parent2_ivs" />,
   },
   {
-    label: "Egg min IVs",
+    label: t["Egg min IVs"],
     input: <IvInput<FormState> name="filter_min_ivs" />,
   },
   {
-    label: "Egg max IVs",
+    label: t["Egg max IVs"],
     input: <IvInput<FormState> name="filter_max_ivs" />,
   },
 ];
@@ -174,8 +175,8 @@ export const RetailEmeraldPickupEgg = () => {
 
   return (
     <RngToolForm<FormState, Result>
-      fields={fields}
-      columns={columns}
+      getFields={getFields}
+      getColumns={getColumns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

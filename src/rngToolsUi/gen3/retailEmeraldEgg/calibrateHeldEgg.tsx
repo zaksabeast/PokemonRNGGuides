@@ -10,7 +10,6 @@ import {
   CalibrateTimerButton,
 } from "~/components";
 import {
-  formatTrainerName,
   pokeNavTrainers,
   useHeldEggState,
   useRegisteredTrainers,
@@ -23,7 +22,7 @@ import {
   NoEggMatchCall,
   Gender,
 } from "~/rngTools";
-import { startCase, uniqBy, sortBy } from "lodash-es";
+import { uniqBy, sortBy } from "lodash-es";
 import { genderOptions, natureOptions } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { useHydrate } from "~/hooks/useHydrate";
@@ -32,6 +31,10 @@ import * as tst from "ts-toolbelt";
 import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { formatOffset } from "~/utils/offsetSymbol";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translations, usePokeNavTranslations } from "~/translations";
+import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
+import { sortLocale } from "~/utils/sortLocale";
 
 const timerAtom = createGen3TimerAtom();
 
@@ -40,9 +43,15 @@ type Result = tst.O.Merge<
   { offset: number }
 >;
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = ({
+  t,
+  translatedTrainers,
+}: {
+  t: Translations;
+  translatedTrainers: PokeNavTrainerTranslations;
+}): ResultColumn<Result>[] => [
   {
-    title: "Calibrate",
+    title: t["Calibrate"],
     dataIndex: "advance",
     render: (_, result) => (
       <CalibrateTimerButton
@@ -54,39 +63,21 @@ const columns: ResultColumn<Result>[] = [
     ),
   },
   {
-    title: "Offset",
+    title: t["Offset"],
     dataIndex: "offset",
     render: formatOffset,
   },
   {
-    title: "Nature",
+    title: t["Nature"],
     dataIndex: "nature",
-    render: (nature) => (nature == null ? "No Egg" : startCase(nature)),
+    render: (nature) => (nature == null ? t["No Egg"] : t[nature]),
   },
   {
-    title: "Match call",
+    title: t["Match call"],
     dataIndex: "match_call",
-    render: (matchCall) => startCase(matchCall),
+    render: (matchCall) => translatedTrainers[matchCall],
   },
 ];
-
-const unsortedTrainerOptions = toOptions(pokeNavTrainers.alphabetical, (name) =>
-  formatTrainerName({ name, withoutTitle: true }),
-);
-const trainerOptions = [
-  { label: "None", value: "None" },
-  ...sortBy(unsortedTrainerOptions, (option) => option.label),
-] satisfies { value: PokeNavTrainer; label: string }[];
-
-const hatchedNatureOptions = natureOptions.optional.map((option) => ({
-  label: option.value === null ? "No Egg" : option.label,
-  value: option.value,
-}));
-
-const hatchedGenderOptions = genderOptions.map((option) => ({
-  label: option.value === null ? "No Egg" : option.label,
-  value: option.value,
-}));
 
 type FormState = {
   nature: Nature | null;
@@ -100,35 +91,63 @@ const initialValues: FormState = {
   pokeNavCall: "None",
 };
 
-const fields: Field[] = [
-  {
-    label: "PokeNav Call",
-    input: (
-      <FormikSelect<FormState, "pokeNavCall">
-        name="pokeNavCall"
-        options={trainerOptions}
-      />
-    ),
-  },
-  {
-    label: "Hatched Nature",
-    input: (
-      <FormikSelect<FormState, "nature">
-        name="nature"
-        options={hatchedNatureOptions}
-      />
-    ),
-  },
-  {
-    label: "Hatched Gender",
-    input: (
-      <FormikSelect<FormState, "gender">
-        name="gender"
-        options={hatchedGenderOptions}
-      />
-    ),
-  },
-];
+const getFields = ({
+  t,
+  translatedTrainers,
+}: {
+  t: Translations;
+  translatedTrainers: PokeNavTrainerTranslations;
+}): Field[] => {
+  const hatchedNatureOptions = natureOptions.optional.map((option) => ({
+    label: option.value === null ? t["No Egg"] : t[option.label],
+    value: option.value,
+  }));
+
+  const hatchedGenderOptions = genderOptions.map((option) => ({
+    label: option.value === null ? t["No Egg"] : t[option.label],
+    value: option.value,
+  }));
+
+  const unsortedTrainerOptions = toOptions(
+    pokeNavTrainers,
+    (name) => translatedTrainers[name],
+  );
+  const sortedOptions = sortLocale(unsortedTrainerOptions, "label");
+  const trainerOptions = [
+    { label: t["None"], value: "None" },
+    ...sortedOptions,
+  ] satisfies { value: PokeNavTrainer; label: string }[];
+
+  return [
+    {
+      label: t["PokeNav Call"],
+      input: (
+        <FormikSelect<FormState, "pokeNavCall">
+          name="pokeNavCall"
+          options={trainerOptions}
+        />
+      ),
+    },
+    {
+      label: t["Hatched Nature"],
+      input: (
+        <FormikSelect<FormState, "nature">
+          name="nature"
+          options={hatchedNatureOptions}
+        />
+      ),
+    },
+    {
+      label: t["Hatched Gender"],
+      input: (
+        <FormikSelect<FormState, "gender">
+          name="gender"
+          options={hatchedGenderOptions}
+        />
+      ),
+    },
+  ];
+};
 
 type InnerProps = {
   registeredTrainers: PokeNavTrainer[];
@@ -137,9 +156,11 @@ type InnerProps = {
 const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const [state] = useHeldEggState();
   const firstFilter = React.useRef(true);
+  const t = useActiveRouteTranslations();
+  const translatedTrainers = usePokeNavTranslations(t.language);
   const [previousOffsets, setPreviousOffsets] = React.useState<number[]>([]);
   const [potentialEggs, setPotentialEggs] = React.useState<Result[]>([]);
-  const [filters, setFilters] = React.useState<FormState>(initialValues);
+  const [filters, setFilters] = React.useState<FormState | null>(null);
 
   const targetAdvance = state.target?.advance ?? 0;
   const targetRedraws = state.target?.redraws ?? 0;
@@ -216,13 +237,16 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts) => {
-      const filteredEggs = potentialEggs.filter(
-        (egg) =>
-          egg.match_call === filters.pokeNavCall &&
-          // Intentionally using `==` to compare undefined and null
-          egg.nature == filters.nature &&
-          egg.gender == filters.gender,
-      );
+      const filteredEggs =
+        filters == null
+          ? []
+          : potentialEggs.filter(
+              (egg) =>
+                egg.match_call === filters.pokeNavCall &&
+                // Intentionally using `==` to compare undefined and null
+                egg.nature == filters.nature &&
+                egg.gender == filters.gender,
+            );
 
       if (!firstFilter.current) {
         setPreviousOffsets(filteredEggs.map((egg) => egg.offset));
@@ -235,6 +259,10 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   );
 
   const dataSource = React.useMemo(() => {
+    if (filters == null) {
+      return [];
+    }
+
     return potentialEggs.filter(
       (egg) =>
         egg.match_call === filters.pokeNavCall &&
@@ -247,22 +275,34 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const matchCall = state.target?.match_call;
   const targetCall =
     matchCall === "None" || matchCall == null
-      ? "No Call"
-      : `Call from ${formatTrainerName({ name: matchCall, withoutTitle: true })}`;
+      ? t["None"]
+      : `${t["Target Call"]}: ${translatedTrainers.withoutTitle[matchCall]}`;
+
+  const { fields, columns } = React.useMemo(() => {
+    const fields = getFields({
+      t,
+      translatedTrainers: translatedTrainers.withoutTitle,
+    });
+    const columns = getColumns({
+      t,
+      translatedTrainers: translatedTrainers.withoutTitle,
+    });
+    return { fields, columns };
+  }, [t, translatedTrainers.withoutTitle]);
 
   return (
     <Flex vertical gap={16} width="100%">
       <Flex vertical gap={8}>
         <Typography.Title level={5} mv={0}>
-          Target Call: {targetCall}
+          {t["Target Call"]}: {targetCall}
         </Typography.Title>
         <Typography.Title level={5} mv={0}>
-          Target Nature: {state.target?.nature}
+          {t["Target Nature"]}: {state.target?.nature}
         </Typography.Title>
       </Flex>
 
       <Typography.Text mv={0}>
-        Previous offsets: {previousOffsets.join(", ")}
+        {t["Previous offsets"]}: {previousOffsets.join(", ")}
       </Typography.Text>
 
       <RngToolForm<FormState, Result>
@@ -294,22 +334,24 @@ export const CalibrateHeldEgg = () => {
 
 export const CalibrateHeldEggTimer = () => {
   const [state] = useHeldEggState();
+  const t = useActiveRouteTranslations();
+  const translatedTrainers = usePokeNavTranslations(t.language);
   const targetAdvance = state.target?.advance ?? 0;
   const redraws = state.target?.redraws ?? 0;
   const matchCall = state.target?.match_call;
   const targetCall =
     matchCall === "None" || matchCall == null
-      ? "no one"
-      : formatTrainerName({ name: matchCall, withoutTitle: true });
+      ? "None"
+      : translatedTrainers.withoutTitle[matchCall];
 
   return (
     <Flex vertical gap={16} width="100%">
       <Flex vertical gap={8}>
         <Typography.Title level={5} mv={0}>
-          Open the PokeDex {redraws} times
+          {t["Number of times to open the PokeDex"]}: {redraws}
         </Typography.Title>
         <Typography.Title level={5} mv={0}>
-          Expect a call from {targetCall}
+          {t["Target caller"]}: {targetCall}
         </Typography.Title>
       </Flex>
 

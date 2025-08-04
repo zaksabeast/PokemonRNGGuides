@@ -10,8 +10,6 @@ import {
 import { atomWithPersistence } from "~/state/localStorage";
 import { maxIvs } from "~/types/ivs";
 import { z } from "zod";
-import { match } from "ts-pattern";
-import { startCase, last } from "lodash-es";
 import { NullableIvs } from "~/components/ivInput";
 
 // This is the order shown by the game
@@ -82,84 +80,7 @@ const trainers = [
   "YoungCoupleKiraDan",
 ] as const satisfies PokeNavTrainer[];
 
-export const formatTrainerName = ({
-  name,
-  withoutTitle = false,
-}: {
-  name: PokeNavTrainer;
-  withoutTitle?: boolean;
-}) => {
-  return (
-    match({ name, withoutTitle })
-      // With title
-      .with(
-        { name: "SisAndBroLilaRoy", withoutTitle: false },
-        () => "Sis and Bro Lila & Roy",
-      )
-      .with(
-        { name: "OldCoupleJohnJay", withoutTitle: false },
-        () => "Old Couple John & Jay",
-      )
-      .with(
-        { name: "SrAndJrAnnaMeg", withoutTitle: false },
-        () => "Sr. and Jr. Anna & Meg",
-      )
-      .with(
-        { name: "TwinsAmyLiv", withoutTitle: false },
-        () => "Twins Amy & Liv",
-      )
-      .with(
-        { name: "YoungCoupleKiraDan", withoutTitle: false },
-        () => "Young Couple Kira & Dan",
-      )
-      .with(
-        { name: "PkmnBreederGabrielle", withoutTitle: false },
-        () => "PKMN Breeder Gabrielle",
-      )
-      .with(
-        { name: "PkmnBreederLydia", withoutTitle: false },
-        () => "PKMN Breeder Lydia",
-      )
-      .with(
-        { name: "PkmnBreederIsaac", withoutTitle: false },
-        () => "PKMN Breeder Isaac",
-      )
-      .with(
-        { name: "PkmnRangerCatherine", withoutTitle: false },
-        () => "PKMN Ranger Catherine",
-      )
-      .with(
-        { name: "PkmnRangerJackson", withoutTitle: false },
-        () => "PKMN Ranger Jackson",
-      )
-      .with({ withoutTitle: false }, () => startCase(name))
-      // Without title
-      .with(
-        { name: "SisAndBroLilaRoy", withoutTitle: true },
-        () => "Lila & Roy",
-      )
-      .with(
-        { name: "OldCoupleJohnJay", withoutTitle: true },
-        () => "John & Jay",
-      )
-      .with({ name: "SrAndJrAnnaMeg", withoutTitle: true }, () => "Anna & Meg")
-      .with({ name: "TwinsAmyLiv", withoutTitle: true }, () => "Amy & Liv")
-      .with(
-        { name: "YoungCoupleKiraDan", withoutTitle: true },
-        () => "Kira & Dan",
-      )
-      .with(
-        { withoutTitle: true },
-        () => last(startCase(name).split(" ")) ?? "",
-      )
-      .exhaustive()
-  );
-};
-
-export const pokeNavTrainers = {
-  gameOrder: trainers,
-  alphabetical: [...trainers].sort(),
-};
+export const pokeNavTrainers = trainers;
 
 export const RegisteredPokeNavTrainersSchema = z.object({
   registeredTrainers: z.enum(trainers).array(),

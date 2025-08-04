@@ -1,17 +1,11 @@
 import { Flex } from "./flex";
 import { YouTubeVideo } from "./youtubeVideo";
-import {
-  MediaTable,
-  MediaTableBody,
-  MediaTableHeader,
-  MediaTableRow,
-  MediaTableCell,
-} from "./mediaTable";
 import styled from "@emotion/styled";
 import { withTags } from "./tagDetector/provider";
+import { Typography } from "./typography";
 
 type YouTubeVideo = {
-  src: string;
+  id: string;
   title: string;
 };
 
@@ -19,20 +13,20 @@ type YouTubeTableProps = {
   videos?: YouTubeVideo[];
 };
 
-const MobileContainer = styled(Flex)(({ theme }) => ({
+const Container = styled(Flex)(({ theme }) => ({
   width: "100%",
-  display: "none",
+  flexDirection: "row",
   [theme.mediaQueries.down("mobile")]: {
-    display: "flex",
     flexDirection: "column",
   },
 }));
 
-const DesktopContainer = styled(Flex)(({ theme }) => ({
-  width: "100%",
-  [theme.mediaQueries.down("mobile")]: {
-    display: "none",
-  },
+const TitleContainer = styled(Flex)(({ theme }) => ({
+  backgroundColor: theme.token.colorFillQuaternary,
+  padding: 16,
+  height: "100%",
+  alignContent: "center",
+  borderBottom: `1px solid ${theme.token.colorBorderSecondary}`,
 }));
 
 export const YouTubeTable = withTags(
@@ -43,42 +37,33 @@ export const YouTubeTable = withTags(
     }
 
     return (
-      <>
-        <DesktopContainer>
-          <MediaTable flex={1} tableLayout="fixed" width="100%">
-            <MediaTableBody>
-              <MediaTableRow>
-                {safeVideos.map(({ src, title }) => (
-                  <MediaTableHeader key={src}>{title}</MediaTableHeader>
-                ))}
-              </MediaTableRow>
-              <MediaTableRow>
-                {safeVideos.map(({ src }) => (
-                  <MediaTableCell key={src}>
-                    <YouTubeVideo src={src} />
-                  </MediaTableCell>
-                ))}
-              </MediaTableRow>
-            </MediaTableBody>
-          </MediaTable>
-        </DesktopContainer>
-        <MobileContainer>
-          {safeVideos.map(({ title, src }) => (
-            <MediaTable key={src} flex={1}>
-              <MediaTableBody>
-                <MediaTableRow>
-                  <MediaTableHeader>{title}</MediaTableHeader>
-                </MediaTableRow>
-                <MediaTableRow>
-                  <MediaTableCell>
-                    <YouTubeVideo src={src} />
-                  </MediaTableCell>
-                </MediaTableRow>
-              </MediaTableBody>
-            </MediaTable>
-          ))}
-        </MobileContainer>
-      </>
+      <Container>
+        {safeVideos.map(({ id, title }) => (
+          <Flex
+            key={id}
+            vertical
+            flex={1}
+            height="100%"
+            justify="space-between"
+            gap={16}
+          >
+            <TitleContainer
+              backgroundColor="FillQuaternary"
+              p={16}
+              height="100%"
+              align="center"
+              borderColor="BorderSecondary"
+            >
+              <Typography.Text strong fontSize={14}>
+                {title}
+              </Typography.Text>
+            </TitleContainer>
+            <Flex p={2}>
+              <YouTubeVideo id={id} />
+            </Flex>
+          </Flex>
+        ))}
+      </Container>
     );
   },
   {

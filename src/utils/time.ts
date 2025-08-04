@@ -1,6 +1,9 @@
 import type { RngDate, RngDateTime } from "~/rngTools";
 import dayjs, { Dayjs } from "dayjs";
 import { z } from "zod";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 export const RngDateSchema: z.Schema<RngDate> = z.object({
   year: z.number(),
@@ -34,7 +37,12 @@ export const toRngDate = (date: Dayjs): RngDate => {
 };
 
 export const fromRngDate = (date: RngDate): Dayjs => {
-  return dayjs(new Date(date.year, date.month - 1, date.day));
+  return dayjs()
+    .utc()
+    .year(date.year)
+    .month(date.month - 1)
+    .date(date.day)
+    .startOf("day");
 };
 
 export const formatRngDate = (date: RngDate): string => {
@@ -53,16 +61,14 @@ export const toRngDateTime = (date: Dayjs): RngDateTime => {
 };
 
 export const fromRngDateTime = (date: RngDateTime): Dayjs => {
-  return dayjs(
-    new Date(
-      date.year,
-      date.month - 1,
-      date.day,
-      date.hour,
-      date.minute,
-      date.second,
-    ),
-  );
+  return dayjs()
+    .utc()
+    .year(date.year)
+    .month(date.month - 1)
+    .date(date.day)
+    .hour(date.hour)
+    .minute(date.minute)
+    .second(date.second);
 };
 
 export const formatRngDateTime = (

@@ -6,9 +6,11 @@ import { Route } from "~/routes/defs";
 import { Link } from "./link";
 import { track } from "~/analytics";
 import * as tst from "ts-toolbelt";
+import { BaseButton } from "./button";
 
 type ExtraProps = {
-  href?: Route;
+  slug?: Route;
+  externalHref?: string;
   fullBody?: boolean;
 };
 
@@ -18,7 +20,8 @@ type LinkCardProps = tst.O.Merge<
 >;
 
 const LinkCard = ({
-  href,
+  slug,
+  externalHref,
   fullBody,
   id,
   onClick: _onClick,
@@ -26,7 +29,7 @@ const LinkCard = ({
 }: LinkCardProps) => {
   const onClick: React.MouseEventHandler<HTMLDivElement> = React.useCallback(
     (event) => {
-      if (_onClick == null && href == null) {
+      if (_onClick == null && slug == null && externalHref == null) {
         return;
       }
 
@@ -34,31 +37,40 @@ const LinkCard = ({
 
       track("Card Clicked", { id });
     },
-    [href, id, _onClick],
+    [slug, externalHref, id, _onClick],
   );
 
-  if (href == null) {
-    return <AntdCard onClick={onClick} {...props} />;
+  if (externalHref != null) {
+    return (
+      <BaseButton trackerId={`${id}-card-button`} href={externalHref}>
+        <AntdCard onClick={onClick} {...props} />
+      </BaseButton>
+    );
   }
 
-  return (
-    <Link
-      href={href}
-      height={fullBody ? "100%" : undefined}
-      width={fullBody ? "100%" : undefined}
-    >
-      <AntdCard onClick={onClick} {...props} />
-    </Link>
-  );
+  if (slug != null) {
+    return (
+      <Link
+        href={slug}
+        height={fullBody ? "100%" : undefined}
+        width={fullBody ? "100%" : undefined}
+      >
+        <AntdCard onClick={onClick} {...props} />
+      </Link>
+    );
+  }
+
+  return <AntdCard onClick={onClick} {...props} />;
 };
 
 export const Card = styled(withCss(LinkCard))<ExtraProps>(({
-  href,
+  slug,
+  externalHref,
   fullBody,
   onClick,
   theme,
 }) => {
-  const isClickable = href != null || onClick != null;
+  const isClickable = slug != null || externalHref != null || onClick != null;
 
   return {
     cursor: isClickable ? "pointer" : "default",

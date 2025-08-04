@@ -191,7 +191,7 @@ export const HomePageComponent = () => {
           id="featured-challenge"
           borderColor="PrimaryBorder"
           border="2px solid"
-          href="/challenge-usum-ta/"
+          slug="/challenge-usum-ta/"
           fullBody
         >
           <FeaturedChallengeContainer>
@@ -206,7 +206,7 @@ export const HomePageComponent = () => {
           <GameCard
             id={`home-game-${game.name}`}
             key={game.name}
-            href={game.slug}
+            slug={game.slug}
             borderColor="PrimaryBorder"
             border="2px solid"
             fullBody

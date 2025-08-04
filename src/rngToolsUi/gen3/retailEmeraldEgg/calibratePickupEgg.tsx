@@ -20,7 +20,7 @@ import {
   Nature,
 } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
-import { nullableIvColumns } from "~/rngToolsUi/shared/ivColumns";
+import { getNullableIvColumns } from "~/rngToolsUi/shared/ivColumns";
 import { getLooseBaseStats } from "~/types/baseStats";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
@@ -37,6 +37,8 @@ import { gen3SpeciesOptions } from "~/types/species";
 import { natureOptions } from "~/components/pkmFilter";
 import { atom, useAtom } from "jotai";
 import { formatOffset } from "~/utils/offsetSymbol";
+import { translateOptions, Translations } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type HeldEgg = {
   species: Species;
@@ -67,12 +69,21 @@ const HeldEggSpeciesSelect = () => {
 };
 
 const HeldEggNatureSelect = () => {
+  const t = useActiveRouteTranslations();
   const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
+
+  const options = React.useMemo(() => {
+    return translateOptions({
+      t,
+      options: natureOptions.required,
+      sort: true,
+    });
+  }, [t]);
 
   return (
     <Select<Nature>
       name="nature"
-      options={natureOptions.required}
+      options={options}
       value={heldEgg.nature}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, nature: value }))}
     />
@@ -122,9 +133,9 @@ type Result = {
   ivs: InheritedIvs;
 } & Nullable<StatsValue>;
 
-const columns: ResultColumn<Result>[] = [
+const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
-    title: "Calibrate",
+    title: t["Calibrate"],
     dataIndex: "advance",
     render: (_, result) => (
       <CalibrateTimerButton
@@ -136,16 +147,16 @@ const columns: ResultColumn<Result>[] = [
     ),
   },
   {
-    title: "Offset",
+    title: t["Offset"],
     dataIndex: "offset",
     render: formatOffset,
   },
   {
-    title: "Method",
+    title: t["Method"],
     dataIndex: "method",
     render: (method) => startCase(method),
   },
-  ...nullableIvColumns,
+  ...getNullableIvColumns(t),
 ];
 
 const getPotentialEggs = async (state: PickupEggState) => {
@@ -184,6 +195,7 @@ const initialValues: FormState = {
 };
 
 export const CalibratePickupEgg = () => {
+  const t = useActiveRouteTranslations();
   const [previouslyRngdEgg] = useHeldEggState();
   const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
   const [state] = usePickupEggState();
@@ -258,16 +270,16 @@ export const CalibratePickupEgg = () => {
   const fields = React.useMemo((): Field[] => {
     return [
       {
-        label: "Species",
+        label: t["Species"],
         input: <HeldEggSpeciesSelect />,
       },
       {
-        label: "Nature",
+        label: t["Nature"],
         input: <HeldEggNatureSelect />,
       },
-      ...getStatFields<StatFields>(minMaxStats),
+      ...getStatFields<StatFields>(minMaxStats, t),
     ];
-  }, [minMaxStats]);
+  }, [t, minMaxStats]);
 
   const dataSource = React.useMemo(() => {
     return potentialEggs.filter((result) => {
@@ -320,19 +332,19 @@ export const CalibratePickupEgg = () => {
     <Flex vertical gap={16} width="100%">
       <Flex vertical gap={8}>
         <Typography.Title level={5} mv={0}>
-          Target Method: {startCase(target?.method)}
+          {t["Target Method"]}: {startCase(target?.method)}
         </Typography.Title>
         <Typography.Title level={5} mv={0}>
-          Target Stats: {targetStats}
+          {t["Target Stats"]}: {targetStats}
         </Typography.Title>
         <Typography.Title level={5} mv={0}>
-          Target IVs: {targetIvs}
+          {t["Target IVs"]}: {targetIvs}
         </Typography.Title>
       </Flex>
 
       <RngToolForm<FormState, Result>
         fields={fields}
-        columns={columns}
+        getColumns={getColumns}
         results={dataSource}
         initialValues={initialValues}
         onSubmit={onSubmit}

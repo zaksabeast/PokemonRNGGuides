@@ -555,7 +555,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gamecube/Channel.mdx",
-      translations: null,
+      translations: { en: "/channel-jirachi/", zh: "/zh-channel-jirachi/" },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gamecube/Channel.mdx")),
@@ -684,6 +684,41 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Hubs.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/de-retail-emerald-egg/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Retail Emerald Egg RNG",
+      navDrawerTitle: "Ei RNG",
+      description:
+        "Lerne, wie du in Pokémon Smaragd mit Hilfe der Pokemon-Pension, Eier RNG manipulieren kannst. Erhalte perfekte IVs, Wesen, und Shinies.",
+      slug: "/de-retail-emerald-egg/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-18",
+      translation: { enSlug: "/retail-emerald-egg/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Retail Egg.mdx",
+      translations: {
+        de: "/de-retail-emerald-egg/",
+        en: "/retail-emerald-egg/",
+        zh: "/zh-retail-emerald-egg/",
+      },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/de/Gen 3/Emerald/Retail Egg.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Retail Egg.mdx?raw"
+      );
       return file.default;
     }),
   },
@@ -1106,7 +1141,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Basic Rules of RNG.mdx",
-      translations: { en: "/e-tips-rng/", zh: "/zh-e-tips-rng/" },
+      translations: {
+        en: "/e-tips-rng/",
+        it: "/it-e-tips-rng/",
+        zh: "/zh-e-tips-rng/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -2914,7 +2953,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID.mdx",
-      translations: { en: "/frlg-gen3-sid/", zh: "/zh-frlg-gen3-sid/" },
+      translations: {
+        en: "/frlg-gen3-sid/",
+        it: "/it-frlg-gen3-sid/",
+        zh: "/zh-frlg-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
@@ -3395,7 +3438,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID.mdx",
-      translations: { en: "/gen3-sid/", zh: "/zh-gen3-sid/" },
+      translations: {
+        en: "/gen3-sid/",
+        it: "/it-gen3-sid/",
+        zh: "/zh-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
@@ -3691,6 +3738,7 @@ export const guides = {
       file: "guides/Tools and Emulators/3DS PokeReader.mdx",
       translations: {
         en: "/install-pokereader/",
+        it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
       },
       displayAttributes: [],
@@ -3701,6 +3749,44 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Tools and Emulators/3DS PokeReader.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-e-tips-rng/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["info"],
+      isNew: false,
+      title: "Info sull'RNG di Smeraldo",
+      navDrawerTitle: "Info sull'RNG",
+      description:
+        "Impara come avanzare l'RNG migliora la stabilità su Pokemon Smeraldo per risultati consistenti.",
+      slug: "/it-e-tips-rng/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/e-tips-rng/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Basic Rules of RNG.mdx",
+      translations: {
+        en: "/e-tips-rng/",
+        it: "/it-e-tips-rng/",
+        zh: "/zh-e-tips-rng/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Gen 3/Emerald/Basic Rules of RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Basic Rules of RNG.mdx?raw"
       );
       return file.default;
     }),
@@ -3777,6 +3863,41 @@ export const guides = {
       return file.default;
     }),
   },
+  "/it-frlg-gen3-sid/": {
+    meta: {
+      categories: ["FireRed and LeafGreen"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Trova il tuo SID su Rosso Fuoco e Verde Foglia",
+      navDrawerTitle: "Trova SID",
+      description:
+        "Vari metodi per trovare il tuo SID su Rosso Fuoco e Verde Foglia.",
+      slug: "/it-frlg-gen3-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/frlg-gen3-sid/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Find SID.mdx",
+      translations: {
+        en: "/frlg-gen3-sid/",
+        it: "/it-frlg-gen3-sid/",
+        zh: "/zh-frlg-gen3-sid/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/it-gen3-glossary/": {
     meta: {
       categories: ["Emerald"],
@@ -3804,6 +3925,112 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/it/Gen 3/Emerald/Glossary.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-gen3-sid/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Trova il tuo SID su Smeraldo",
+      navDrawerTitle: "Trova SID",
+      description: "Vari metodi per trovare il tuo SID su Smeraldo.",
+      slug: "/it-gen3-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-03",
+      translation: { enSlug: "/gen3-sid/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Find SID.mdx",
+      translations: {
+        en: "/gen3-sid/",
+        it: "/it-gen3-sid/",
+        zh: "/zh-gen3-sid/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-install-pokereader/": {
+    meta: {
+      categories: ["3DS Tools"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "PokeReader 3DS",
+      navDrawerTitle: "PokeReader 3DS",
+      description:
+        "Impara come installare PokeReader sul tuo 3DS per assisterti con l'RNG e cacciare Pokémon perfetti.",
+      slug: "/it-install-pokereader/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/install-pokereader/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Tools And Emulators/3DS PokeReader.mdx",
+      translations: {
+        en: "/install-pokereader/",
+        it: "/it-install-pokereader/",
+        zh: "/zh-install-pokereader/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Tools And Emulators/3DS PokeReader.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Tools And Emulators/3DS PokeReader.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-pokereader/": {
+    meta: {
+      categories: ["3DS Tools"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "PokeReader - Overlay 3DS per RNG su Pokemon",
+      navDrawerTitle: "Cos'è PokeReader",
+      description:
+        "PokeReader è un plugin 3GX per 3DS che aggiunge uno strumento (emulator-style) come mettere in pausa il gioco, avanzare i frame e altro - perfetto per l'RNG manipulation negli hardware originali.",
+      slug: "/it-pokereader/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/pokereader/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Tools And Emulators/PokeReader.mdx",
+      translations: { it: "/it-pokereader/", en: "/pokereader/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Tools And Emulators/PokeReader.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Tools And Emulators/PokeReader.mdx?raw"
       );
       return file.default;
     }),
@@ -3843,6 +4070,42 @@ export const guides = {
       return file.default;
     }),
   },
+  "/it-retail-emerald-wild/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["retail"],
+      isNew: false,
+      title: "RNG Retail di Selvatici su Smeraldo",
+      navDrawerTitle: "RNG Retail di Selvatici su Smeraldo",
+      description:
+        "Impara come Manipolare l'RNG di Pokémon selvatici su Pokémon Smeraldo su una console originale per IV perfette, nature, cromatici.",
+      slug: "/it-retail-emerald-wild/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-emerald-wild/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Retail Wild RNG.mdx",
+      translations: {
+        it: "/it-retail-emerald-wild/",
+        en: "/retail-emerald-wild/",
+        zh: "/zh-retail-emerald-wild/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/it/Gen 3/Emerald/Retail Wild RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Retail Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/it-retail-hgss-starter/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
@@ -3874,6 +4137,40 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/it/Gen 4/Starters.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-rs-gen3-sid/": {
+    meta: {
+      categories: ["Ruby and Sapphire"],
+      tags: ["retail"],
+      isNew: false,
+      title: "Trova il tuo SID su Rubino e Zaffiro",
+      navDrawerTitle: "Trova SID",
+      description: "Vari metodi per trovare il tuo SID su Rubino e Zaffiro.",
+      slug: "/it-rs-gen3-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/rs-gen3-sid/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 3/Emerald/Find SID.mdx",
+      translations: {
+        it: "/it-rs-gen3-sid/",
+        en: "/rs-gen3-sid/",
+        zh: "/zh-rs-gen3-sid/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx?raw"
       );
       return file.default;
     }),
@@ -4534,7 +4831,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/PokeReader.mdx",
-      translations: null,
+      translations: { it: "/it-pokereader/", en: "/pokereader/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -4624,6 +4921,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Retail Egg.mdx",
       translations: {
+        de: "/de-retail-emerald-egg/",
         en: "/retail-emerald-egg/",
         zh: "/zh-retail-emerald-egg/",
       },
@@ -4654,6 +4952,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Retail Wild RNG.mdx",
       translations: {
+        it: "/it-retail-emerald-wild/",
         en: "/retail-emerald-wild/",
         zh: "/zh-retail-emerald-wild/",
       },
@@ -5849,7 +6148,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID.mdx",
-      translations: { en: "/rs-gen3-sid/", zh: "/zh-rs-gen3-sid/" },
+      translations: {
+        it: "/it-rs-gen3-sid/",
+        en: "/rs-gen3-sid/",
+        zh: "/zh-rs-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
@@ -6582,6 +6885,36 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-channel-jirachi/": {
+    meta: {
+      categories: ["Gamecube"],
+      tags: ["emu"],
+      isNew: false,
+      title: "(PAL) Channel 乱数",
+      navDrawerTitle: "(PAL) Channel 乱数",
+      description: "一步步教你乱数出 Channel 基拉祈",
+      slug: "/zh-channel-jirachi/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/channel-jirachi/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gamecube/Channel.mdx",
+      translations: { en: "/channel-jirachi/", zh: "/zh-channel-jirachi/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gamecube/Channel.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gamecube/Channel.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-dppt-advance-rng/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
@@ -6764,7 +7097,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Basic Rules of RNG.mdx",
-      translations: { en: "/e-tips-rng/", zh: "/zh-e-tips-rng/" },
+      translations: {
+        en: "/e-tips-rng/",
+        it: "/it-e-tips-rng/",
+        zh: "/zh-e-tips-rng/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7666,7 +8003,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID.mdx",
-      translations: { en: "/frlg-gen3-sid/", zh: "/zh-frlg-gen3-sid/" },
+      translations: {
+        en: "/frlg-gen3-sid/",
+        it: "/it-frlg-gen3-sid/",
+        zh: "/zh-frlg-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7925,7 +8266,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID.mdx",
-      translations: { en: "/gen3-sid/", zh: "/zh-gen3-sid/" },
+      translations: {
+        en: "/gen3-sid/",
+        it: "/it-gen3-sid/",
+        zh: "/zh-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8020,6 +8365,7 @@ export const guides = {
       file: "guides/Translations/zh/Tools and Emulators/3DS PokeReader.mdx",
       translations: {
         en: "/install-pokereader/",
+        it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
       },
       displayAttributes: [],
@@ -8228,6 +8574,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Retail Egg.mdx",
       translations: {
+        de: "/de-retail-emerald-egg/",
         en: "/retail-emerald-egg/",
         zh: "/zh-retail-emerald-egg/",
       },
@@ -8261,6 +8608,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx",
       translations: {
+        it: "/it-retail-emerald-wild/",
         en: "/retail-emerald-wild/",
         zh: "/zh-retail-emerald-wild/",
       },
@@ -8399,7 +8747,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID.mdx",
-      translations: { en: "/rs-gen3-sid/", zh: "/zh-rs-gen3-sid/" },
+      translations: {
+        it: "/it-rs-gen3-sid/",
+        en: "/rs-gen3-sid/",
+        zh: "/zh-rs-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8602,6 +8954,7 @@ export const guideSlugs = [
   "/connect-dolphin-to-gba/",
   "/consistent-platinum-rng/",
   "/crystal/",
+  "/de-retail-emerald-egg/",
   "/delete-pokemon-save/",
   "/desmume-setup/",
   "/diamond-pearl-and-platinum/",
@@ -8699,11 +9052,18 @@ export const guideSlugs = [
   "/install-capturesight/",
   "/install-pokereader-emu/",
   "/install-pokereader/",
+  "/it-e-tips-rng/",
   "/it-emerald-overview/",
   "/it-emulator-emerald-egg/",
+  "/it-frlg-gen3-sid/",
   "/it-gen3-glossary/",
+  "/it-gen3-sid/",
+  "/it-install-pokereader/",
+  "/it-pokereader/",
   "/it-retail-dppt-starter/",
+  "/it-retail-emerald-wild/",
   "/it-retail-hgss-starter/",
+  "/it-rs-gen3-sid/",
   "/legends-arceus/",
   "/meteor-jirachi/",
   "/mgba-setup/",
@@ -8794,6 +9154,7 @@ export const guideSlugs = [
   "/xy-friend-safari-patch/",
   "/xy-pokeradar/",
   "/zh-bw2-egg/",
+  "/zh-channel-jirachi/",
   "/zh-dppt-advance-rng/",
   "/zh-dppt-cute-charm/",
   "/zh-dppt-initial-seed/",

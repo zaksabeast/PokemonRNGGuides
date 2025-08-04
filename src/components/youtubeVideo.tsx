@@ -1,39 +1,37 @@
-import { Flex } from "./flex";
 import styled from "@emotion/styled";
 import { withTags } from "./tagDetector/provider";
+import { YouTubeEmbed } from "@next/third-parties/google";
 
-const IframeContainer = styled(Flex)({
-  justify: "center",
+const Container = styled.div(({ theme }) => ({
+  minHeight: 200,
   width: "100%",
-  position: "relative",
-  overflowX: "hidden",
-  overflowY: "hidden",
-  paddingTop: "56.25%",
-});
+  '& [data-ntpc="YouTubeEmbed"]': {
+    display: "flex",
+    justifyContent: "center",
+    width: "100% !important",
+    "& lite-youtube": {
+      borderRadius: theme.token.borderRadiusSM,
+      boxShadow: theme.token.boxShadow,
+      backgroundColor: theme.token.colorFillQuaternary,
+      width: "100%",
+    },
+  },
+}));
 
-const StyledIframe = styled.iframe({
-  position: "absolute",
-  top: 0,
-  left: 0,
-  bottom: 0,
-  right: 0,
-  width: "100%",
-  height: "100%",
-});
+type Props = {
+  id?: string;
+};
 
 export const YouTubeVideo = withTags(
-  (props: React.ComponentProps<"iframe">) => {
+  ({ id }: Props) => {
+    if (id == null) {
+      return null;
+    }
+
     return (
-      <IframeContainer>
-        <StyledIframe
-          title="YouTube video player"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-          loading="lazy"
-          {...props}
-        />
-      </IframeContainer>
+      <Container>
+        <YouTubeEmbed videoid={id} />
+      </Container>
     );
   },
   {

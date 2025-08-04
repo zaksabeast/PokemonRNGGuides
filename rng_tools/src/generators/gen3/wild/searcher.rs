@@ -37,6 +37,7 @@ pub struct Wild3SearcherOptions {
     pub methods: Vec<Gen3Method>,
     pub consider_cycles: bool,
     pub consider_rng_manipulated_lead_pid: bool,
+    pub generate_even_if_impossible: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -119,6 +120,7 @@ fn search_wild3_at_given_advance(
                 filter: opts.filter.clone(),
                 consider_cycles: opts.consider_cycles,
                 consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
+                generate_even_if_impossible: opts.generate_even_if_impossible,
                 gen3_filter: opts.gen3_filter.clone(),
             };
 

@@ -1,13 +1,20 @@
 use super::{calc_modulo_cycle_unsigned};
 
 use serde::{Deserialize, Serialize};
-use std::ops;
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
 pub const BASE_LEAD_PID: u32 = 0;
 pub const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 24);
 pub const BASE_LEAD_PID_MOD_25_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 25);
+
+pub enum Reason {
+    BetweenSweetScentWildEncounterAndChooseWildMonIndexLand = 0,
+    betweenChooseWildMonIndex_LandandChooseWildMonLevel = 1,
+    encounter_rand_val_mod_100,
+    calc_modulo_cycle_s_lvl_range_rand_val_lvl_range,
+    between_ChooseWildMonLevel_and_CreateWildMon_CuteCharmCheck,
+}
 
 #[derive(Default, Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -74,9 +81,24 @@ impl CycleAndModRange {
 }
 
 impl CycleAndModCount {
-    pub fn add(&mut self, cycle: usize, modulo:usize, _reason: &str) {
+    pub fn add(&mut self, cycle: usize, modulo:usize) {
         self.cycle += cycle;
         self.cycle += modulo * BASE_LEAD_PID_MOD_24_CYCLES;
         self.modulo += modulo;
+    }
+}
+
+#[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct CycleRangeByReason {
+    pub total_cycle_range: CycleAndModCount,   
+    pub cycle_ranges_by_reason: [CycleAndModCount;10],    
+}
+
+impl CycleRangeByReason {
+    pub fn add(&mut self, cycle: usize, modulo:usize, reason: Reason) {
+        self.total_cycle_range.add(cycle, modulo);
+        
+        self.cycle_ranges_by_reason[reason as usize].add(cycle, modulo);
     }
 }

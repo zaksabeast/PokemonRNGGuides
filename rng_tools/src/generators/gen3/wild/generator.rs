@@ -4,7 +4,7 @@ use super::{
 };
 use crate::EncounterSlot;
 use crate::Ivs;
-use crate::gen3::{Gen3Lead,Gen3PkmFilter, Gen3Method, calculate_pid_speed, CycleAndModCount, CycleRange, CycleAndModRange, Wild3EncounterTable};
+use crate::gen3::{CycleRangeByReason,Reason,Gen3Lead,Gen3PkmFilter, Gen3Method, calculate_pid_speed, CycleAndModCount, CycleRange, CycleAndModRange, Wild3EncounterTable};
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny, is_max_size};
@@ -23,10 +23,6 @@ TODO:
 
 pub const INFINITE_CYCLE: usize = 10_000_000;
 pub const VBLANK_FREQ: usize = 280_896;
-
-enum Moment {
-
-}
 
 #[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -95,7 +91,7 @@ pub fn generate_gen3_wild(
 ) -> Vec<Wild3GeneratorResult> {
     let mut results: Vec<Wild3GeneratorResult> = vec![];
 
-    let mut cycle = CycleAndModCount::default();
+    let mut cycle = CycleRangeByReason::default();
 
     // between SweetScentWildEncounter and ChooseWildMonIndex_Land
     match opts.lead {
@@ -103,14 +99,14 @@ pub fn generate_gen3_wild(
             cycle.add(
                 2819,
                 0,
-                "between SweetScentWildEncounter and ChooseWildMonIndex_Land",
+                Reason::BetweenSweetScentWildEncounterAndChooseWildMonIndexLand,
             );
         }
         _ => {
             cycle.add(
                 12059,
                 32,
-                "between SweetScentWildEncounter and ChooseWildMonIndex_Land",
+                Reason::BetweenSweetScentWildEncounterAndChooseWildMonIndexLand,
             );
         }
     }
@@ -129,13 +125,13 @@ pub fn generate_gen3_wild(
             _ => 378,
         },
         0,
-        "between ChooseWildMonIndex_Land and ChooseWildMonLevel",
+        Reason::betweenChooseWildMonIndex_LandandChooseWildMonLevel,
     );
 
     cycle.add(
         calc_modulo_cycle_unsigned(encounter_rand_val, 100),
         0,
-        "encounter_rand_val % 100",
+        Reason::encounter_rand_val_mod_100,
     ); // TODO: cycle increment depends on slot
 
     if !EncounterSlot::passes_filter(opts.encounter_slot.as_deref(), encounter_slot) {
@@ -156,14 +152,14 @@ pub fn generate_gen3_wild(
     cycle.add(
         calc_modulo_cycle_signed(lvl_range_rand_val as i32, lvl_range),
         0,
-        "calc_modulo_cycle_s(lvl_range_rand_val, lvl_range)",
+        Reason::calc_modulo_cycle_s_lvl_range_rand_val_lvl_range,
     );
     match opts.lead {
         Gen3Lead::Egg => {
             cycle.add(
                 9199,
                 0,
-                "between ChooseWildMonLevel and CreateWildMon_CuteCharmCheck",
+                Reason::between_ChooseWildMonLevel_and_CreateWildMon_CuteCharmCheck,
             );
         }
         _ => {

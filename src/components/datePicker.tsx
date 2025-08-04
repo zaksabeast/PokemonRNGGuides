@@ -7,7 +7,7 @@ import {
 } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import styled from "@emotion/styled";
-import { useField } from "formik";
+import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
 import { match, P } from "ts-pattern";
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
@@ -186,9 +186,10 @@ export const FormikDatePicker = <FormState extends GenericForm>({
   const [{ value: formDate }, { error, touched }, { setValue }] =
     useField<RngDate | null>(name);
   const dateValue = match({ formDate })
-    .with({ formDate: P.not(null) }, (matched) => fromRngDate(matched.formDate))
-    .with({ formDate: null }, () => dayjs())
-    .exhaustive();
+    .with({ formDate: P.not(P.nullish) }, (matched) =>
+      fromRngDate(matched.formDate),
+    )
+    .otherwise(() => dayjs());
 
   return (
     <Tooltip placement="top" color="red" title={error}>

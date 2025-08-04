@@ -4,7 +4,7 @@ import {
   CheckboxOptionType,
   Tooltip,
 } from "antd";
-import { useField } from "formik";
+import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
 import { GenericForm } from "~/types/form";
 import { withCss } from "./withCss";

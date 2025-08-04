@@ -3,7 +3,7 @@ import {
   SwitchProps as AntdSwitchProps,
   Tooltip,
 } from "antd";
-import { useField } from "formik";
+import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
 import { GenericForm } from "~/types/form";
 import { withCss } from "./withCss";
@@ -23,8 +23,7 @@ export const FormikSwitch = <FormState extends GenericForm>({
   onChange: _onChange,
   ...props
 }: FormikSwitchProps<FormState>) => {
-  const [{ value }, { error }, { setValue, setTouched }] =
-    useField<boolean>(name);
+  const [{ value }, { error }, { setValue }] = useField<boolean>(name);
 
   return (
     <Tooltip color="red" title={error} placement="top">
@@ -32,7 +31,6 @@ export const FormikSwitch = <FormState extends GenericForm>({
         data-name={name}
         onChange={(updatedValue, event) => {
           setValue(updatedValue);
-          setTouched(true, false);
           _onChange?.(updatedValue, event);
         }}
         value={value}

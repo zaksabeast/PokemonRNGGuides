@@ -1,6 +1,7 @@
 import { rngTools, Gen4StaticPokemon } from "~/rngTools";
 import {
   Field,
+  FormFieldTable,
   FormikNumberInput,
   FormikSelect,
   ResultColumn,
@@ -33,7 +34,7 @@ import {
   Characteristic4Options,
 } from "~/rngToolsUi/gen4/gen4types";
 import { nature } from "~/types/nature";
-import { Translations } from "~/translations";
+import { useWatch } from "react-hook-form";
 
 type Result = FlattenIvs<Gen4StaticPokemon>;
 const GameVersionOpts = toOptions(Gen4GameVersions, startCase);
@@ -112,7 +113,10 @@ const initialValues: FormState = {
   ...getPkmFilterInitialValues(),
 };
 
-const getFields = (_t: Translations, values: FormState) => {
+const Fields = () => {
+  const lead = useWatch<FormState, "lead">({
+    name: "lead",
+  });
   const fields: Field[] = [
     {
       label: "Seed",
@@ -179,7 +183,7 @@ const getFields = (_t: Translations, values: FormState) => {
       ),
     },
   ];
-  if (values.lead === "Synchronize") {
+  if (lead === "Synchronize") {
     fields.push({
       label: "Synch Nature",
       input: (
@@ -190,7 +194,8 @@ const getFields = (_t: Translations, values: FormState) => {
       ),
     });
   }
-  return fields;
+
+  return <FormFieldTable fields={fields} />;
 };
 
 export const Static4Generator = () => {
@@ -215,13 +220,14 @@ export const Static4Generator = () => {
 
   return (
     <RngToolForm<FormState, Result>
-      getFields={getFields}
       columns={columns}
       results={results}
       validationSchema={Validator}
       initialValues={initialValues}
       onSubmit={onSubmit}
       submitTrackerId="filter_4static"
-    />
+    >
+      <Fields />
+    </RngToolForm>
   );
 };

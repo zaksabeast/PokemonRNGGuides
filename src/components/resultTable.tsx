@@ -3,7 +3,7 @@ import { Typography } from "./typography";
 import { Table, TableProps } from "antd";
 import { ClassNames } from "@emotion/react";
 import * as tst from "ts-toolbelt";
-import { useFormikContext } from "formik";
+import { useFormContext } from "~/hooks/form";
 import { identity } from "lodash-es";
 
 export type SingleResultColumn<T> = keyof T extends string
@@ -139,6 +139,6 @@ export const ResultTable = <Record extends tst.O.Object>(
 export const FormikResultTable = <Record extends tst.O.Object>(
   props: FormikResultTableProps<Record>,
 ) => {
-  const { isSubmitting } = useFormikContext();
+  const { isSubmitting } = useFormContext();
   return <ResultTable {...props} loading={isSubmitting} />;
 };

@@ -109,7 +109,7 @@ const InnerGen5CGearTimer = ({
   onUpdate,
 }: InnerProps) => {
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts, formik) => {
+    async (opts, { setValue }) => {
       let updatedOpts = opts;
       let settings = {
         console: opts.console,
@@ -139,7 +139,13 @@ const InnerGen5CGearTimer = ({
           calibration: settings.calibration,
           delayHit: null,
         };
-        formik.setValues(updatedOpts);
+
+        setValue("console", updatedOpts.console);
+        setValue("minTimeMs", updatedOpts.minTimeMs);
+        setValue("targetDelay", updatedOpts.targetDelay);
+        setValue("targetSecond", updatedOpts.targetSecond);
+        setValue("calibration", updatedOpts.calibration);
+        setValue("delayHit", updatedOpts.delayHit);
       }
 
       const milliseconds = await rngTools.create_gen5_cgear_timer(settings);

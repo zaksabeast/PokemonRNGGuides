@@ -100,11 +100,6 @@ const baseConfig = {
             message: 'Use `import { Button } from "~/components";`',
           },
           {
-            name: "formik",
-            importNames: ["Form"],
-            message: 'Use `import { Form } from "~/components";`',
-          },
-          {
             name: "antd",
             importNames: ["Alert"],
             message: 'Use `import { Alert } from "~/components";`',

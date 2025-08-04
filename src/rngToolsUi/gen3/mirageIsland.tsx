@@ -4,6 +4,7 @@ import {
   ResultColumn,
   RngToolSubmit,
   FormikNumberInput,
+  FormFieldTable,
 } from "~/components";
 import { FormikRadio } from "~/components/radio";
 import { rngTools, MirageIslandResult } from "~/rngTools";
@@ -11,7 +12,7 @@ import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import React from "react";
 import { clamp } from "lodash-es";
 import { z } from "zod";
-import { Translations } from "~/translations";
+import { useWatch } from "react-hook-form";
 
 type Game = "emerald" | "rs";
 
@@ -87,7 +88,11 @@ type Props = {
   game?: Game;
 };
 
-const getFields = (_t: Translations, values: FormState) => {
+const Fields = () => {
+  const battery = useWatch<FormState, "battery">({
+    name: "battery",
+  });
+
   const fields: Field[] = [
     {
       label: "Battery",
@@ -96,7 +101,7 @@ const getFields = (_t: Translations, values: FormState) => {
       ),
     },
   ];
-  if (values.battery === "Live") {
+  if (battery === "Live") {
     fields.push({
       label: "Rocket Launched",
       input: (
@@ -107,7 +112,8 @@ const getFields = (_t: Translations, values: FormState) => {
       ),
     });
   }
-  return fields;
+
+  return <FormFieldTable fields={fields} />;
 };
 
 export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
@@ -131,7 +137,6 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
 
   return (
     <RngToolForm<FormState, MirageIslandResult>
-      getFields={getFields}
       columns={columns}
       results={results}
       initialValues={initialValues}
@@ -139,6 +144,8 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
       onSubmit={onSubmit}
       rowKey="day"
       submitTrackerId="mirage_island"
-    />
+    >
+      <Fields />
+    </RngToolForm>
   );
 };

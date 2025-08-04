@@ -2,7 +2,7 @@ import { pokemonTypes } from "../types/pokemonTypes";
 import { HiddenPowerFilter } from "~/rngTools";
 import { FormikNumberInput, FormikSelect, FormFieldTable } from "~/components";
 import { toOptions } from "~/utils/options";
-import { useField } from "formik";
+import { useField } from "~/hooks/form";
 import React from "react";
 import { PkmFilterFields } from "./pkmFilter";
 import { Paths } from "~/types";

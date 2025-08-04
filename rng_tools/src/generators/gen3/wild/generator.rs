@@ -4,7 +4,7 @@ use super::{
 };
 use crate::EncounterSlot;
 use crate::Ivs;
-use crate::gen3::{CycleRangeByReason,Reason,Gen3Lead,Gen3PkmFilter, Gen3Method, calculate_pid_speed, CycleAndModCount, CycleRange, CycleAndModRange, Wild3EncounterTable};
+use crate::gen3::{CycleRangeByReason,Reason,Gen3Lead,Gen3PkmFilter, Gen3Method, calculate_pid_speed, CycleRange, CycleAndModRange, Wild3EncounterTable};
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, Gender, GenderRatio, Nature, PkmFilter, gen3_shiny, is_max_size};
@@ -15,7 +15,6 @@ use wasm_bindgen::prelude::*;
 /*
 TODO:
 - Support all leads in generator.
-- Add an optional data structure to store cycle increment reasons.
 - Provide a .lua script to generate actual cycle increments for validation and debugging.
 
 - Support Wild5 with multiple vblanks. Right now, only 1 vblank is supported.
@@ -172,17 +171,17 @@ pub fn generate_gen3_wild(
             cycle.add(
                 25182,
                 modulo,
-                "between ChooseWildMonLevel and CreateWildMon_CuteCharmCheck",
+                Reason::between_ChooseWildMonLevel_and_CreateWildMon_CuteCharmCheck,
             );
         }
     };
 
-    let pick_wild_mon_nature = |cycle: &mut CycleAndModCount, rng: &mut Pokerng| -> Nature {
+    let pick_wild_mon_nature = |cycle: &mut CycleRangeByReason, rng: &mut Pokerng| -> Nature {
         let nature_rand_val = rng.rand::<u16>();
         cycle.add(
             calc_modulo_cycle_unsigned(nature_rand_val as u32, 25),
             0,
-            "nature_rand_val % 25",
+            Reason::nature_rand_val_mod_25,
         );
         cycle.add(
             179,
@@ -190,7 +189,7 @@ pub fn generate_gen3_wild(
                 Gen3Lead::Egg => 0,
                 _ => 16,
             },
-            "between PickWildMonNature_ifNotSynchro and CreateMonWithNature_pidlow",
+            Reason::between_PickWildMonNature_ifNotSynchro_and_CreateMonWithNature_pidlow,
         );
         
         ((nature_rand_val % 25) as u8).into()
@@ -203,7 +202,7 @@ pub fn generate_gen3_wild(
             cycle.add(
                 5763,
                 0,
-                "between PickWildMonNature_pickRandom and CreateMonWithNature_pidlow",
+                Reason::between_PickWildMonNature_pickRandom_and_CreateMonWithNature_pidlow,
             );
 
             // between PickWildMonNature_pickRandom and CreateMonWithNature_pidlow
@@ -215,7 +214,7 @@ pub fn generate_gen3_wild(
             cycle.add(
                 5763,
                 0,
-                "between PickWildMonNature_pickRandom and CreateMonWithNature_pidlow",
+                Reason::between_PickWildMonNature_pickRandom_and_CreateMonWithNature_pidlow,
             );
 
             if (rng.rand::<u16>() & 1) == 0 {
@@ -224,13 +223,13 @@ pub fn generate_gen3_wild(
                 cycle.add(
                     389,
                     17,
-                    "between PickWildMonNature and CreateMonWithNature_pidlow (synchronize triggered)",
+                    Reason::between_PickWildMonNature_pickRandom_and_CreateMonWithNature_pidlow_synchro_success,
                 );
             } else {
                 cycle.add(
                     96,
                     0,
-                    "between PickWildMonNature_pickRandom and CreateMonWithNature_pidlow (synchronize not triggered)",
+                    Reason::between_PickWildMonNature_pickRandom_and_CreateMonWithNature_pidlow_synchro_fail,
                 );
 
                 //
@@ -244,7 +243,7 @@ pub fn generate_gen3_wild(
             cycle.add(
                 calc_modulo_cycle_unsigned(cute_charm_rand_val as u32, 3),
                 0,
-                "cute_charm_rand_val % 3",
+                Reason::cute_charm_rand_val_mod_3,
             );
 
             if cute_charm_rand_val % 3 != 0 {
@@ -256,14 +255,14 @@ pub fn generate_gen3_wild(
                 cycle.add(
                     8786 + 44,
                     8,
-                    "CreateWildMon_CuteCharmRandom and PickWildMonNature_pickRandom (cute charm triggered)",
+                    Reason::CreateWildMon_CuteCharmRandom_and_PickWildMonNature_pickRandom_cute_charm_triggered,
                 );
             } else {
                 required_gender = None;
                 cycle.add(
                     5863,
                     0,
-                    "CreateWildMon_CuteCharmRandom and PickWildMonNature_pickRandom (cute charm not triggered)",
+                    Reason::CreateWildMon_CuteCharmRandom_and_PickWildMonNature_pickRandom_cute_charm_not_triggered,
                 );
             }
             // between PickWildMonNature_pickRandom and CreateMonWithGenderNatureLetter_pidlow
@@ -290,7 +289,7 @@ pub fn generate_gen3_wild(
                 pid_low,
                 required_gender,
                 required_nature,
-                CycleRange::from_start_len(cycle, method3_range),
+                CycleRange::from_start_len(cycle.total_cycle_range, method3_range),
             ) {
                 results.push(gen_mon_wild3);
             }
@@ -298,7 +297,7 @@ pub fn generate_gen3_wild(
         cycle.add(
             method3_range,
             0,
-            "between CreateMonWithNature_pidlow and CreateMonWithNature_pidhigh",
+            Reason::between_CreateMonWithNature_pidlow_and_CreateMonWithNature_pidhigh,
         );
 
         let pid_high = rng.rand::<u16>() as u32;
@@ -328,7 +327,7 @@ pub fn generate_gen3_wild(
                 skip_method5_counter -= 1;
             } else {
                 if let Some(last_generated_method5) = last_generated_method5 {
-                    results.push(last_generated_method5.clone_with_cycle_end(cycle.cycle));
+                    results.push(last_generated_method5.clone_with_cycle_end(cycle.total_cycle_range.cycle));
                 }
                 (skip_method5_counter, last_generated_method5) = generate_gen3_wild_method5(
                     rng,
@@ -338,7 +337,7 @@ pub fn generate_gen3_wild(
                     required_gender,
                     required_nature,
                     // Cycle len will be set later. See clone_with_cycle_end.
-                    CycleRange::from_start_len(cycle, 0),
+                    CycleRange::from_start_len(cycle.total_cycle_range, 0),
                 );
             }
         }
@@ -346,12 +345,12 @@ pub fn generate_gen3_wild(
         cycle.add(
             retry_pid_cycle + calc_modulo_cycle_unsigned(pid, 25),
             0,
-            "retry_pid_cycle + calc_modulo_cycle_u(pid, 25)",
+            Reason::retry_pid_cycle_pid_mod_25,
         );
     }
 
     if let Some(last_generated_method5) = last_generated_method5 {
-        results.push(last_generated_method5.clone_with_cycle_end(cycle.cycle));
+        results.push(last_generated_method5.clone_with_cycle_end(cycle.total_cycle_range.cycle));
     }
 
     if !passes_pid_filter(opts, encounter_gender_ratio, pid) {
@@ -370,7 +369,7 @@ pub fn generate_gen3_wild(
             opts,
             encounter_slot,
             pid,
-            CycleRange::from_start_len(cycle, method2_range),
+            CycleRange::from_start_len(cycle.total_cycle_range, method2_range),
         ) {
             results.push(gen_mon_wild2);
         }
@@ -378,7 +377,7 @@ pub fn generate_gen3_wild(
     cycle.add(
         method2_range,
         0,
-        "method2_range: between CreateMonWithNature_pidhigh and CreateBoxMon_ivs1 (x100 pid % 24 + pid % 25)",
+        Reason::between_CreateMonWithNature_pidhigh_and_CreateBoxMon_ivs1,
     );
 
     let iv1 = rng.rand::<u16>();
@@ -393,7 +392,7 @@ pub fn generate_gen3_wild(
             encounter_slot,
             pid,
             iv1,
-            CycleRange::from_start_len(cycle, method4_range),
+            CycleRange::from_start_len(cycle.total_cycle_range, method4_range),
         ) {
             results.push(gen_mon_wild4);
         }
@@ -401,7 +400,7 @@ pub fn generate_gen3_wild(
     cycle.add(
         method4_range,
         0,
-        "method4_range: between CreateBoxMon_ivs1 and CreateBoxMon_ivs2 (x36 pid % 24)",
+        Reason::between_CreateBoxMon_ivs1_and_CreateBoxMon_ivs2,
     );
 
     if opts.methods.contains(&Gen3Method::Wild1) {
@@ -413,7 +412,7 @@ pub fn generate_gen3_wild(
             ivs,
             Gen3Method::Wild1,
             encounter_slot,
-            CycleRange::from_start_len(cycle, INFINITE_CYCLE),
+            CycleRange::from_start_len(cycle.total_cycle_range, INFINITE_CYCLE),
         ) {
             results.push(gen_mon_wild1);
         }

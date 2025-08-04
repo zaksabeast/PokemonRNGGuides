@@ -58,13 +58,25 @@ export const translateOptions = <Value>({
   t: Translations;
   options: { label: keyof Translations; value: Value }[];
 }) => {
-  const opts = options.map((option) => ({
-    label: t[option.label],
-    value: option.value,
-  }));
+  let noneIndex = -1;
+  const opts = options.map((option, index) => {
+    if (option.label === "None") {
+      noneIndex = index;
+    }
+    return {
+      label: t[option.label],
+      value: option.value,
+    };
+  });
+
+  if (noneIndex !== -1) {
+    const noneOption = opts[noneIndex];
+    opts.splice(noneIndex, 1);
+    opts.unshift(noneOption);
+  }
 
   if (sort) {
-    return sortLocale(opts, "label", t.language);
+    return sortLocale(opts, "label", t.language, noneIndex);
   }
 
   return opts;

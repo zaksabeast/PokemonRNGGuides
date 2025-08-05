@@ -1,6 +1,6 @@
 use super::{Wild3GeneratorOptions, generate_gen3_wild};
 use crate::gen3::{
-    CycleRange, Gen3Method, Wild3EncounterTable, Wild3SearcherResultMon, calculate_cycle_data,
+    calculate_cycle_data, CycleAtMoment, CycleRange, Gen3Method, Wild3EncounterTable, Wild3SearcherResultMon
 };
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
@@ -17,13 +17,20 @@ pub struct Wild3MethodDistributionResult {
     pub method_probability: f64,
 }
 
+#[derive(Debug, Clone, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Wild3MethodDistributionResults {
+    pub results: Vec<Wild3MethodDistributionResult>,
+    pub cycle_at_moments: Vec<CycleAtMoment>,
+}
+
 #[wasm_bindgen]
 pub fn generate_gen3_wild_distribution(
     initial_seed: u32,
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3EncounterTable,
     lead_cycle_speed: usize,
-) -> Vec<Wild3MethodDistributionResult> {
+) -> Wild3MethodDistributionResults {
     let opts = Wild3GeneratorOptions {
         consider_cycles: true,
         generate_even_if_impossible: true,
@@ -40,7 +47,7 @@ pub fn generate_gen3_wild_distribution(
     let mut rng = Pokerng::new(initial_seed);
     rng.advance(opts.advance);
 
-    let gen_results = generate_gen3_wild(rng, &opts, game_data);
+    let (gen_results, cycle_counter) = generate_gen3_wild(rng, &opts, game_data);
     let search_results = gen_results
         .iter()
         .map(|gen_res| {
@@ -79,7 +86,7 @@ pub fn generate_gen3_wild_distribution(
         })
         .collect::<Vec<_>>();
 
-    search_results
+    let dist_results = search_results
         .iter()
         .enumerate()
         .map(|(i, (searcher_res, cycle_data))| {
@@ -140,7 +147,14 @@ pub fn generate_gen3_wild_distribution(
                 }
             }
         })
-        .collect()
+        .collect::<Vec<_>>();
+
+    Wild3MethodDistributionResults {
+        results:dist_results,
+        cycle_at_moments:cycle_counter.cycle_at_moments.iter().map(|cycle_at_moment|{
+            
+        }),
+    }
 }
 
 #[cfg(test)]
@@ -182,9 +196,10 @@ mod test {
             advance: 44,
             ..Default::default()
         };
-        let results =
-            generate_gen3_wild_distribution(0, &opts, &Wild3EncounterTable::default(), 700)
-                .iter()
+        let dist_results =
+            generate_gen3_wild_distribution(0, &opts, &Wild3EncounterTable::default(), 700);
+
+        let results = dist_results.results.iter()
                 .map(|dist_res| ResultForTest::new_from_dist_res(dist_res))
                 .collect::<Vec<_>>();
 
@@ -263,5 +278,9 @@ mod test {
             ),
         ];
         assert_list_eq!(results, expected_results);
+
+        println!("{:?}", dist_results.cycle_at_moments);
+
+        assert!(false);
     }
 }

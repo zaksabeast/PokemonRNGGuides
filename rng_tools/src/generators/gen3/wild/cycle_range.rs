@@ -8,24 +8,17 @@ pub const BASE_LEAD_PID: u32 = 0;
 pub const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 24);
 pub const BASE_LEAD_PID_MOD_25_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 25);
 
-pub enum Reason {
-    BetweenSweetScentWildEncounterAndChooseWildMonIndexLand = 0,
-    betweenChooseWildMonIndex_LandandChooseWildMonLevel = 1,
-    encounter_rand_val_mod_100,
-    calc_modulo_cycle_s_lvl_range_rand_val_lvl_range,
-    between_ChooseWildMonLevel_and_CreateWildMon_CuteCharmCheck,
-    nature_rand_val_mod_25,
-    between_PickWildMonNature_ifNotSynchro_and_CreateMonWithNature_pidlow,
-    between_PickWildMonNature_pickRandom_and_CreateMonWithNature_pidlow,
-    between_PickWildMonNature_pickRandom_and_CreateMonWithNature_pidlow_synchro_success,
-    between_PickWildMonNature_pickRandom_and_CreateMonWithNature_pidlow_synchro_fail,
-    between_CreateMonWithNature_pidlow_and_CreateMonWithNature_pidhigh,
-    retry_pid_cycle_pid_mod_25,
-    cute_charm_rand_val_mod_3,
-    CreateWildMon_CuteCharmRandom_and_PickWildMonNature_pickRandom_cute_charm_triggered,
-    CreateWildMon_CuteCharmRandom_and_PickWildMonNature_pickRandom_cute_charm_not_triggered,
-    between_CreateMonWithNature_pidhigh_and_CreateBoxMon_ivs1,
-    between_CreateBoxMon_ivs1_and_CreateBoxMon_ivs2,
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[allow(non_camel_case_types)]
+pub enum Moment {
+    ChooseWildMonIndex_Land_Random,
+    ChooseWildMonLevel_RandomLvl,
+    PickWildMonNature_RandomTestSynchro,
+    PickWildMonNature_RandomPickNature,
+    CreateMonWithNature_RandomPidLowFirst,
+    CreateMonWithNature_RandomPidHighLast,
+    CreateBoxMon_RandomIvs1,
+    CreateBoxMon_RandomIvs2,
 
 }
 
@@ -101,17 +94,48 @@ impl CycleAndModCount {
     }
 }
 
-#[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct CycleRangeByReason {
-    pub total_cycle_range: CycleAndModCount,   
-    pub cycle_ranges_by_reason: [CycleAndModCount;17],    
+pub struct CycleAndModAtMoment {
+    pub cycle: usize,
+    pub lead_pid_mod: usize,
+    pub moment: Moment,
 }
 
-impl CycleRangeByReason {
-    pub fn add(&mut self, cycle: usize, lead_pid_mod:usize, reason: Reason) {
-        self.total_cycle_range.add(cycle, lead_pid_mod);
-        
-        self.cycle_ranges_by_reason[reason as usize].add(cycle, lead_pid_mod);
+impl CycleAndModAtMoment {
+    pub fn apply_lead_pid_speed(&self, lead_pid_speed:usize) -> CycleAtMoment {
+        CycleAtMoment {
+            cycle: self.cycle + lead_pid_speed * self.lead_pid_mod,
+            moment: self.moment,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct CycleAtMoment {
+    pub cycle: usize,
+    pub moment: Moment,
+}
+
+
+#[derive(Debug, Default, Clone, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct CycleCounter {
+    pub cycle: CycleAndModCount,   
+    pub cycle_at_moments: Vec<CycleAndModAtMoment>,
+}
+
+impl CycleCounter {
+    pub fn add(&mut self, cycle: usize, lead_pid_mod:usize) {
+        self.cycle.add(cycle, lead_pid_mod);
+    }
+    pub fn on_moment_reached(&mut self, moment: Moment) {
+        self.cycle_at_moments.push(CycleAndModAtMoment {
+            cycle:self.cycle.cycle,
+            lead_pid_mod: self.cycle.lead_pid_mod,
+            moment,
+        });
     }
 }

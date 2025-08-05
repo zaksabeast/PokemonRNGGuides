@@ -32,6 +32,7 @@ const baseConfig = {
   },
   rules: {
     ...reactHooks.configs.recommended.rules,
+    "react-hooks/react-compiler": "error",
     "id-length": [
       "error",
       {

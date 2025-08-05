@@ -242,7 +242,6 @@ pub struct SearchStatic4MethodjOpts {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SearchStatic4MethodjState<T> {
     pub seed_time: T,
-    pub seed: u32,
     pub advance: usize,
     pub pid: u32,
     pub ivs: Ivs,
@@ -300,7 +299,6 @@ impl Base4MethodjState {
         SearchStatic4MethodjState {
             advance,
             seed_time,
-            seed: self.seed,
             pid: self.pid,
             ivs: self.ivs,
             ability: self.ability,
@@ -320,7 +318,6 @@ impl Base4MethodjState {
         SearchStatic4MethodjState {
             advance,
             seed_time,
-            seed: self.seed,
             pid: self.pid,
             ivs: self.ivs,
             ability: self.ability,
@@ -1827,7 +1824,7 @@ mod tests {
                         delay: 805,
                         coin_flips: coin_flips!("TTTHHTHTTHTTTHTHHTHH"),
                     },
-                    seed: 3091841170,
+
                     advance: 20,
                     pid: 1825628748,
                     ivs: Ivs {
@@ -1858,7 +1855,7 @@ mod tests {
                         delay: 800,
                         coin_flips: coin_flips!("THHTHTHTTTTTTHTTHHHT"),
                     },
-                    seed: 3070182188,
+
                     advance: 21,
                     pid: 3854107970,
                     ivs: Ivs {
@@ -1889,7 +1886,7 @@ mod tests {
                         delay: 803,
                         coin_flips: coin_flips!("HTHHHHHTTTTHHTHHTTTT"),
                     },
-                    seed: 2122839536,
+
                     advance: 20,
                     pid: 3989040986,
                     ivs: Ivs {
@@ -1920,7 +1917,7 @@ mod tests {
                         delay: 808,
                         coin_flips: coin_flips!("TTTTHTTTTHTHTHTTTTTT"),
                     },
-                    seed: 314232596,
+
                     advance: 21,
                     pid: 3605752178,
                     ivs: Ivs {
@@ -1951,7 +1948,7 @@ mod tests {
                         delay: 803,
                         coin_flips: coin_flips!("THTTHTTTHTTTTHTHTTHH"),
                     },
-                    seed: 1720186352,
+
                     advance: 20,
                     pid: 901994330,
                     ivs: Ivs {
@@ -1982,7 +1979,7 @@ mod tests {
                         delay: 804,
                         coin_flips: coin_flips!("HTHHHTHTTTTHHHTTHTTT"),
                     },
-                    seed: 3157690656,
+
                     advance: 21,
                     pid: 3753134498,
                     ivs: Ivs {
@@ -2013,7 +2010,7 @@ mod tests {
                         delay: 800,
                         coin_flips: coin_flips!("TTHHHTHTHHTHHHHHTHTT"),
                     },
-                    seed: 2930001405,
+
                     advance: 20,
                     pid: 2122931394,
                     ivs: Ivs {
@@ -2044,7 +2041,7 @@ mod tests {
                         delay: 804,
                         coin_flips: coin_flips!("HTHHHTTHHTTTTTTTTHTH"),
                     },
-                    seed: 3872840513,
+
                     advance: 20,
                     pid: 1161248720,
                     ivs: Ivs {
@@ -2111,7 +2108,7 @@ mod tests {
                         delay: 843,
                         coin_flips: coin_flips!("HHHHHHHTTHHTHHTTTTTT"),
                     },
-                    seed: 489081496,
+
                     advance: 20,
                     pid: 14,
                     ivs: Ivs {
@@ -2142,7 +2139,7 @@ mod tests {
                         delay: 843,
                         coin_flips: coin_flips!("THTTHTHHHHHHTHTTTHHT"),
                     },
-                    seed: 1629932184,
+
                     advance: 20,
                     pid: 12,
                     ivs: Ivs {
@@ -2173,7 +2170,7 @@ mod tests {
                         delay: 843,
                         coin_flips: coin_flips!("HTHTHTHHTHTTTTTHTTHH"),
                     },
-                    seed: 2770782872,
+
                     advance: 20,
                     pid: 9,
                     ivs: Ivs {
@@ -2204,7 +2201,7 @@ mod tests {
                         delay: 850,
                         coin_flips: coin_flips!("THHHTHTHHTTHHHHHHTTT"),
                     },
-                    seed: 560402383,
+
                     advance: 20,
                     pid: 12,
                     ivs: Ivs {
@@ -2235,7 +2232,7 @@ mod tests {
                         delay: 850,
                         coin_flips: coin_flips!("TTTTTTTHTHTTHTHTTTHT"),
                     },
-                    seed: 1701253071,
+
                     advance: 20,
                     pid: 9,
                     ivs: Ivs {
@@ -2266,7 +2263,7 @@ mod tests {
                         delay: 807,
                         coin_flips: coin_flips!("THTTTHTHTHHHHTHHHHHH"),
                     },
-                    seed: 3346434868,
+
                     advance: 20,
                     pid: 13,
                     ivs: Ivs {
@@ -2297,7 +2294,7 @@ mod tests {
                         delay: 849,
                         coin_flips: coin_flips!("HTTTHTTTTHHHTHTHHTTH"),
                     },
-                    seed: 134097534,
+
                     advance: 20,
                     pid: 11,
                     ivs: Ivs {
@@ -2328,7 +2325,7 @@ mod tests {
                         delay: 849,
                         coin_flips: coin_flips!("HHTHHTTHHHHHTTTHHHHH"),
                     },
-                    seed: 4026411646,
+
                     advance: 20,
                     pid: 15,
                     ivs: Ivs {
@@ -2359,7 +2356,7 @@ mod tests {
                         delay: 807,
                         coin_flips: coin_flips!("TTTTTHTTTTHTHTHHTHHH"),
                     },
-                    seed: 192318260,
+
                     advance: 20,
                     pid: 10,
                     ivs: Ivs {
@@ -2390,7 +2387,7 @@ mod tests {
                         delay: 849,
                         coin_flips: coin_flips!("HHHHHTHHTTHTHHHTTHTH"),
                     },
-                    seed: 1274948222,
+
                     advance: 20,
                     pid: 8,
                     ivs: Ivs {
@@ -2421,7 +2418,7 @@ mod tests {
                         delay: 849,
                         coin_flips: coin_flips!("TTTTHHTHTTHHTTHHHHHT"),
                     },
-                    seed: 872295038,
+
                     advance: 20,
                     pid: 12,
                     ivs: Ivs {
@@ -2452,7 +2449,7 @@ mod tests {
                         delay: 836,
                         coin_flips: coin_flips!("THTTTTHTHHHHHHHTTTTH"),
                     },
-                    seed: 3145971904,
+
                     advance: 21,
                     pid: 11,
                     ivs: Ivs {
@@ -2483,7 +2480,7 @@ mod tests {
                         delay: 833,
                         coin_flips: coin_flips!("THTTHTHTHTTHTHTHHTTH"),
                     },
-                    seed: 1938937198,
+
                     advance: 20,
                     pid: 11,
                     ivs: Ivs {
@@ -2514,7 +2511,7 @@ mod tests {
                         delay: 833,
                         coin_flips: coin_flips!("HHTHHHTHTHHHHHHHHTHH"),
                     },
-                    seed: 1536284014,
+
                     advance: 20,
                     pid: 15,
                     ivs: Ivs {
@@ -2545,7 +2542,7 @@ mod tests {
                         delay: 836,
                         coin_flips: coin_flips!("HHTHHTHHTHTTHHHHHTTT"),
                     },
-                    seed: 4286822592,
+
                     advance: 21,
                     pid: 9,
                     ivs: Ivs {
@@ -2576,7 +2573,7 @@ mod tests {
                         delay: 833,
                         coin_flips: coin_flips!("TTHHHHHTHTTTHHHHTTHT"),
                     },
-                    seed: 3079787886,
+
                     advance: 20,
                     pid: 8,
                     ivs: Ivs {
@@ -2607,7 +2604,7 @@ mod tests {
                         delay: 833,
                         coin_flips: coin_flips!("HTHHTTHHTHTTHHHHHHHH"),
                     },
-                    seed: 2677134702,
+
                     advance: 20,
                     pid: 12,
                     ivs: Ivs {
@@ -2674,7 +2671,7 @@ mod tests {
                         delay: 843,
                         coin_flips: coin_flips!("THTTHTHHHHHHTHTTTHHT"),
                     },
-                    seed: 1629932184,
+
                     advance: 20,
                     pid: 162,
                     ivs: Ivs {
@@ -2705,7 +2702,7 @@ mod tests {
                         delay: 843,
                         coin_flips: coin_flips!("HHTTTTHTTHHHTTHHTTTH"),
                     },
-                    seed: 3777415832,
+
                     advance: 20,
                     pid: 174,
                     ivs: Ivs {
@@ -2736,7 +2733,7 @@ mod tests {
                         delay: 843,
                         coin_flips: coin_flips!("HTHTHTHHTHTTTTTHTTHH"),
                     },
-                    seed: 2770782872,
+
                     advance: 20,
                     pid: 159,
                     ivs: Ivs {
@@ -2767,7 +2764,7 @@ mod tests {
                         delay: 843,
                         coin_flips: coin_flips!("HTHHTHTTHHHTHHTHHTTT"),
                     },
-                    seed: 623299224,
+
                     advance: 20,
                     pid: 171,
                     ivs: Ivs {
@@ -2798,7 +2795,7 @@ mod tests {
                         delay: 850,
                         coin_flips: coin_flips!("HHHHHTHHTTHTTTTHTHHH"),
                     },
-                    seed: 3244756943,
+
                     advance: 20,
                     pid: 152,
                     ivs: Ivs {
@@ -2829,7 +2826,7 @@ mod tests {
                         delay: 849,
                         coin_flips: coin_flips!("HHHHHTHHTTHTHHHTTHTH"),
                     },
-                    seed: 1274948222,
+
                     advance: 20,
                     pid: 158,
                     ivs: Ivs {
@@ -2860,7 +2857,7 @@ mod tests {
                         delay: 833,
                         coin_flips: coin_flips!("TTHHHHHTHTTTHHHHTTHT"),
                     },
-                    seed: 3079787886,
+
                     advance: 20,
                     pid: 158,
                     ivs: Ivs {
@@ -2891,7 +2888,7 @@ mod tests {
                         delay: 833,
                         coin_flips: coin_flips!("HTHHTTHHTHTTHHHHHHHH"),
                     },
-                    seed: 2677134702,
+
                     advance: 20,
                     pid: 162,
                     ivs: Ivs {
@@ -2922,7 +2919,7 @@ mod tests {
                         delay: 833,
                         coin_flips: coin_flips!("HTHTTHTTHHHTTTHTTHHH"),
                     },
-                    seed: 529651054,
+
                     advance: 20,
                     pid: 150,
                     ivs: Ivs {
@@ -2989,7 +2986,7 @@ mod tests {
                         delay: 785,
                         coin_flips: coin_flips!("THTTTHHHTTHHHTTTTTTH"),
                     },
-                    seed: 1912603409,
+
                     advance: 0,
                     pid: 2283518128,
                     ivs: Ivs {
@@ -3020,7 +3017,7 @@ mod tests {
                         delay: 783,
                         coin_flips: coin_flips!("TTHTHHHTTHTHHTTTTHTH"),
                     },
-                    seed: 805307151,
+
                     advance: 0,
                     pid: 2445127822,
                     ivs: Ivs {
@@ -3051,7 +3048,7 @@ mod tests {
                         delay: 794,
                         coin_flips: coin_flips!("THTTTHHTTTTTTTTTHHTH"),
                     },
-                    seed: 151061274,
+
                     advance: 0,
                     pid: 2265884228,
                     ivs: Ivs {
@@ -3082,7 +3079,7 @@ mod tests {
                         delay: 784,
                         coin_flips: coin_flips!("HHTTHTTTHHTTTHTHHHHH"),
                     },
-                    seed: 2685600528,
+
                     advance: 0,
                     pid: 2255504803,
                     ivs: Ivs {
@@ -3113,7 +3110,7 @@ mod tests {
                         delay: 793,
                         coin_flips: coin_flips!("HHTTHTTTTHHTTTHHHHHT"),
                     },
-                    seed: 1947009817,
+
                     advance: 0,
                     pid: 3287591853,
                     ivs: Ivs {
@@ -3144,7 +3141,7 @@ mod tests {
                         delay: 797,
                         coin_flips: coin_flips!("TTTTTTHTHTHTHTHTTHTH"),
                     },
-                    seed: 688063261,
+
                     advance: 0,
                     pid: 2866307253,
                     ivs: Ivs {
@@ -3175,7 +3172,7 @@ mod tests {
                         delay: 799,
                         coin_flips: coin_flips!("HTTHTTHHHHHHHTTTTHHH"),
                     },
-                    seed: 4061528863,
+
                     advance: 0,
                     pid: 2178294503,
                     ivs: Ivs {
@@ -3206,7 +3203,7 @@ mod tests {
                         delay: 784,
                         coin_flips: coin_flips!("HTHTTTHTTTHHTHTHHTHT"),
                     },
-                    seed: 2668954384,
+
                     advance: 0,
                     pid: 2540936821,
                     ivs: Ivs {
@@ -3237,7 +3234,7 @@ mod tests {
                         delay: 781,
                         coin_flips: coin_flips!("HTHHHTHHHTTHHTTHTHHH"),
                     },
-                    seed: 3322086157,
+
                     advance: 0,
                     pid: 2929506568,
                     ivs: Ivs {
@@ -3268,7 +3265,7 @@ mod tests {
                         delay: 796,
                         coin_flips: coin_flips!("TTHTTTHTTHTTHTHTTHHT"),
                     },
-                    seed: 2013397788,
+
                     advance: 0,
                     pid: 1201474528,
                     ivs: Ivs {
@@ -3354,7 +3351,7 @@ mod tests {
                         ],
                         elm: elm_calls!("KEPKEEKPKEPPKPPEPEPK"),
                     },
-                    seed: 63560349,
+
                     advance: 21,
                     pid: 630242142,
                     ivs: Ivs {
@@ -3395,7 +3392,7 @@ mod tests {
                         ],
                         elm: elm_calls!("PKEEKKPPEPPKKEEPEEEK"),
                     },
-                    seed: 3749043009,
+
                     advance: 20,
                     pid: 4265370851,
                     ivs: Ivs {
@@ -3436,7 +3433,7 @@ mod tests {
                         ],
                         elm: elm_calls!("EPEKPKKPEEEEPPEPPKPE"),
                     },
-                    seed: 2799581091,
+
                     advance: 21,
                     pid: 687981377,
                     ivs: Ivs {
@@ -3477,7 +3474,7 @@ mod tests {
                         ],
                         elm: elm_calls!("EPKPEEKEPEEPEEKEKPPP"),
                     },
-                    seed: 667540125,
+
                     advance: 21,
                     pid: 3650142046,
                     ivs: Ivs {
@@ -3518,7 +3515,7 @@ mod tests {
                         ],
                         elm: elm_calls!("KPKPPEEKPEEKPKEPPEPK"),
                     },
-                    seed: 2298672624,
+
                     advance: 20,
                     pid: 3819057710,
                     ivs: Ivs {
@@ -3559,7 +3556,7 @@ mod tests {
                         ],
                         elm: elm_calls!("KEKPPPPEEPEKPPKPKPEE"),
                     },
-                    seed: 2122839536,
+
                     advance: 20,
                     pid: 3989040986,
                     ivs: Ivs {
@@ -3600,7 +3597,7 @@ mod tests {
                         ],
                         elm: elm_calls!("EKPPPKEEPKKKEPEPEKEK"),
                     },
-                    seed: 1266636246,
+
                     advance: 20,
                     pid: 3079292222,
                     ivs: Ivs {
@@ -3641,7 +3638,7 @@ mod tests {
                         ],
                         elm: elm_calls!("EPKEKEPPKEEEPPKKPKEK"),
                     },
-                    seed: 2461716244,
+
                     advance: 21,
                     pid: 1458301298,
                     ivs: Ivs {
@@ -3682,7 +3679,7 @@ mod tests {
                         ],
                         elm: elm_calls!("EPPEKEKEEEEKKKKKKKPP"),
                     },
-                    seed: 970947991,
+
                     advance: 21,
                     pid: 739429178,
                     ivs: Ivs {
@@ -3723,7 +3720,7 @@ mod tests {
                         ],
                         elm: elm_calls!("KKKEPEEEPKKKKPKPPPPE"),
                     },
-                    seed: 1078816901,
+
                     advance: 20,
                     pid: 1161062213,
                     ivs: Ivs {
@@ -3764,7 +3761,7 @@ mod tests {
                         ],
                         elm: elm_calls!("PEPKEPKPPPPPEPPEEKEP"),
                     },
-                    seed: 2867238057,
+
                     advance: 21,
                     pid: 3692708595,
                     ivs: Ivs {
@@ -3832,7 +3829,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("EPKPPEEEKPPEPPEEPPPP"),
                     },
-                    seed: 755565635,
+
                     advance: 0,
                     pid: 2591517390,
                     ivs: Ivs {
@@ -3864,7 +3861,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("EPKEPKKPKEKKKKKEKEKP"),
                     },
-                    seed: 2165703722,
+
                     advance: 0,
                     pid: 1129196203,
                     ivs: Ivs {
@@ -3896,7 +3893,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("KEEKEPPEPEKPPEEPPKEK"),
                     },
-                    seed: 3642164275,
+
                     advance: 0,
                     pid: 945751353,
                     ivs: Ivs {
@@ -3928,7 +3925,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("KKEPEKPKKPEKKKEKPEPP"),
                     },
-                    seed: 1905623908,
+
                     advance: 1,
                     pid: 1669546549,
                     ivs: Ivs {
@@ -3960,7 +3957,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("KKEKKEEKKPPPKPPEPEPK"),
                     },
-                    seed: 1774871997,
+
                     advance: 1,
                     pid: 2143691624,
                     ivs: Ivs {
@@ -3992,7 +3989,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("PKPEPEEEKPPPKPEKKPKE"),
                     },
-                    seed: 305271513,
+
                     advance: 1,
                     pid: 2211836703,
                     ivs: Ivs {
@@ -4024,7 +4021,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("KKKEKPPKPKEKEKEKKEKP"),
                     },
-                    seed: 2718893074,
+
                     advance: 0,
                     pid: 1887661228,
                     ivs: Ivs {
@@ -4092,7 +4089,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("KPPEKEPKKPKPKPEEKPEP"),
                     },
-                    seed: 3749088052,
+
                     advance: 20,
                     pid: 64,
                     ivs: Ivs {
@@ -4124,7 +4121,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("PEEPKEEKPEEKKKEEPEPE"),
                     },
-                    seed: 1198951220,
+
                     advance: 20,
                     pid: 61,
                     ivs: Ivs {
@@ -4156,7 +4153,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("EEEPKEKEPPKEEPEKEKKE"),
                     },
-                    seed: 594971444,
+
                     advance: 20,
                     pid: 71,
                     ivs: Ivs {
@@ -4188,7 +4185,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("PKPKKPPKEEEKPPKKPPEP"),
                     },
-                    seed: 2339801908,
+
                     advance: 20,
                     pid: 54,
                     ivs: Ivs {
@@ -4220,7 +4217,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("EPKKKPEEEPKEKEKKEPPP"),
                     },
-                    seed: 1735822132,
+
                     advance: 20,
                     pid: 53,
                     ivs: Ivs {
@@ -4288,7 +4285,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("KPPEKEPKKPKPKPEEKPEP"),
                     },
-                    seed: 3749088052,
+
                     advance: 20,
                     pid: 14,
                     ivs: Ivs {
@@ -4320,7 +4317,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("PEEPKEEKPEEKKKEEPEPE"),
                     },
-                    seed: 1198951220,
+
                     advance: 20,
                     pid: 11,
                     ivs: Ivs {
@@ -4352,7 +4349,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("EEEPKEKEPPKEEPEKEKKE"),
                     },
-                    seed: 594971444,
+
                     advance: 20,
                     pid: 21,
                     ivs: Ivs {
@@ -4384,7 +4381,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("PKPKKPPKEEEKPPKKPPEP"),
                     },
-                    seed: 2339801908,
+
                     advance: 20,
                     pid: 4,
                     ivs: Ivs {
@@ -4416,7 +4413,7 @@ mod tests {
                         roamer: vec![],
                         elm: elm_calls!("EPKKKPEEEPKEKEKKEPPP"),
                     },
-                    seed: 1735822132,
+
                     advance: 20,
                     pid: 3,
                     ivs: Ivs {

@@ -1,41 +1,10 @@
 import React from "react";
 import { Breadcrumb, BreadcrumbProps } from "antd";
-import { Category, guides, getGuide } from "~/guides";
+import { guides, getGuide, categoryOwners } from "~/guides";
 import { Route, RouteSchema } from "~/routes/defs";
 import { mapValues } from "lodash-es";
 import { Link } from "./link";
 import { track } from "~/analytics";
-
-const categoryOwners: Record<Category, Route> = {
-  Home: "/",
-  "Gold, Silver, Crystal": "/crystal/",
-  "Transporter and Dream Radar": "/",
-  "Ruby and Sapphire": "/ruby-and-sapphire/",
-  Gamecube: "/gamecube/",
-  "FireRed and LeafGreen": "/fire-red-and-leaf-green/",
-  Emerald: "/emerald/",
-  "Diamond, Pearl, and Platinum": "/diamond-pearl-and-platinum/",
-  "HeartGold and SoulSilver": "/heart-gold-and-soul-silver/",
-  "Black and White": "/black-and-white/",
-  "Black 2 and White 2": "/black-2-and-white-2/",
-  "X and Y": "/x-and-y/",
-  "Omega Ruby and Alpha Sapphire": "/omega-ruby-and-alpha-sapphire/",
-  "Sun and Moon": "/sun-and-moon/",
-  "Ultra Sun and Ultra Moon": "/ultra-sun-and-ultra-moon/",
-  "Sword and Shield": "/sword-and-shield/",
-  "Brilliant Diamond and Shining Pearl":
-    "/brilliant-diamond-and-shining-pearl/",
-  "Legends Arceus": "/legends-arceus/",
-  "GBA Overview": "/",
-  "GBA Technical Documentation": "/",
-  "GBA Tools": "/",
-  "NDS Tools": "/",
-  "3DS Tools": "/",
-  "Switch Tools": "/",
-  "USUM Challenges": "/",
-  "User Settings": "/",
-  "Game Hub": "/",
-};
 
 type Screen = {
   route: Route;

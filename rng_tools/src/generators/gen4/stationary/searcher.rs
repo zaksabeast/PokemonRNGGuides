@@ -95,6 +95,95 @@ impl Base4Method1State {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct SearchStatic4MethodjOpts {
+    pub tid: u16,
+    pub sid: u16,
+    pub game: GameVersion,
+    pub encounter: Static4Species,
+    pub lead: LeadAbilities,
+    pub filter: PkmFilter,
+    pub min_advance: usize,
+    pub max_advance: usize,
+    pub min_delay: u32,
+    pub max_delay: u32,
+    pub year: u32,
+    pub force_second: Option<u32>,
+    pub roamer: RoamerSet,
+}
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct SearchStatic4MethodjState<T> {
+    pub seed_time: T,
+    pub advance: usize,
+    pub pid: u32,
+    pub ivs: Ivs,
+    pub ability: AbilityType,
+    pub gender: Gender,
+    pub nature: Nature,
+    pub shiny: bool,
+    pub characteristic: Characteristic,
+}
+
+#[derive(Clone, Copy)]
+pub struct Base4MethodjState {
+    pub seed: u32,
+    pub pid: u32,
+    pub ivs: Ivs,
+    pub ability: AbilityType,
+    pub gender: Gender,
+    pub nature: Nature,
+    pub shiny: bool,
+    pub characteristic: Characteristic,
+    pub advance: usize,
+}
+
+impl PkmState for Base4MethodjState {
+    fn ability(&self) -> crate::AbilityType {
+        self.ability
+    }
+
+    fn gender(&self) -> crate::Gender {
+        self.gender
+    }
+
+    fn ivs(&self) -> &crate::Ivs {
+        &self.ivs
+    }
+
+    fn nature(&self) -> crate::Nature {
+        self.nature
+    }
+
+    fn shiny(&self) -> bool {
+        self.shiny
+    }
+
+    fn pid(&self) -> u32 {
+        self.pid
+    }
+}
+impl Base4MethodjState {
+    fn full_state(
+        &self,
+        advance: usize,
+        seed_time: DpptSeedTime4,
+    ) -> SearchStatic4MethodjState<DpptSeedTime4> {
+        SearchStatic4MethodjState {
+            advance,
+            seed_time,
+            pid: self.pid,
+            ivs: self.ivs,
+            ability: self.ability,
+            gender: self.gender,
+            nature: self.nature,
+            shiny: self.shiny,
+            characteristic: self.characteristic,
+        }
+    }
+}
+
 fn get_state_from_seed(opts: &SearchStatic4Method1Opts, ivs: Ivs, seed: u32) -> Base4Method1State {
     let mut rng = Pokerng::new(seed).rev();
 
@@ -221,94 +310,6 @@ pub fn search_static4_method1_seeds(
     results
 }
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct SearchStatic4MethodjOpts {
-    pub tid: u16,
-    pub sid: u16,
-    pub game: GameVersion,
-    pub encounter: Static4Species,
-    pub lead: LeadAbilities,
-    pub filter: PkmFilter,
-    pub min_advance: usize,
-    pub max_advance: usize,
-    pub min_delay: u32,
-    pub max_delay: u32,
-    pub year: u32,
-    pub force_second: Option<u32>,
-    pub roamer: RoamerSet,
-}
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct SearchStatic4MethodjState<T> {
-    pub seed_time: T,
-    pub advance: usize,
-    pub pid: u32,
-    pub ivs: Ivs,
-    pub ability: AbilityType,
-    pub gender: Gender,
-    pub nature: Nature,
-    pub shiny: bool,
-    pub characteristic: Characteristic,
-}
-
-#[derive(Clone, Copy)]
-pub struct Base4MethodjState {
-    pub seed: u32,
-    pub pid: u32,
-    pub ivs: Ivs,
-    pub ability: AbilityType,
-    pub gender: Gender,
-    pub nature: Nature,
-    pub shiny: bool,
-    pub characteristic: Characteristic,
-    pub advance: usize,
-}
-
-impl PkmState for Base4MethodjState {
-    fn ability(&self) -> crate::AbilityType {
-        self.ability
-    }
-
-    fn gender(&self) -> crate::Gender {
-        self.gender
-    }
-
-    fn ivs(&self) -> &crate::Ivs {
-        &self.ivs
-    }
-
-    fn nature(&self) -> crate::Nature {
-        self.nature
-    }
-
-    fn shiny(&self) -> bool {
-        self.shiny
-    }
-
-    fn pid(&self) -> u32 {
-        self.pid
-    }
-}
-impl Base4MethodjState {
-    fn full_state(
-        &self,
-        advance: usize,
-        seed_time: DpptSeedTime4,
-    ) -> SearchStatic4MethodjState<DpptSeedTime4> {
-        SearchStatic4MethodjState {
-            advance,
-            seed_time,
-            pid: self.pid,
-            ivs: self.ivs,
-            ability: self.ability,
-            gender: self.gender,
-            nature: self.nature,
-            shiny: self.shiny,
-            characteristic: self.characteristic,
-        }
-    }
-}
 impl Base4MethodjState {
     fn full_hg_state(
         &self,
@@ -327,6 +328,42 @@ impl Base4MethodjState {
             characteristic: self.characteristic,
         }
     }
+}
+
+pub fn search_static4_methodj_seeds(
+    opts: &SearchStatic4MethodjOpts,
+) -> Vec<SearchStatic4MethodjState<DpptSeedTime4>> {
+    let min_advance = opts.min_advance;
+    let max_advance = opts.max_advance;
+
+    let mut results = vec![];
+
+    for state in search_static4_methodj(opts).iter() {
+        let mut rng = Pokerng::new(state.seed).rev();
+        let mut seed = state.seed;
+        if min_advance != 0 {
+            rng.advance(min_advance.saturating_sub(1));
+            seed = rng.rand::<u32>();
+        } else {
+        }
+        for advance in min_advance..=max_advance {
+            let seed_time_opts = FindSeedTime4Options::new(
+                seed,
+                opts.year,
+                opts.min_delay..=opts.max_delay,
+                opts.force_second,
+            );
+            let seed_time = dppt_find_seedtime(seed_time_opts);
+
+            if let Some(seed_time) = seed_time {
+                let found_state = state.full_state(advance, seed_time);
+                results.push(found_state);
+            }
+            seed = rng.rand::<u32>();
+        }
+    }
+
+    results
 }
 
 fn search_static4_methodj(opts: &SearchStatic4MethodjOpts) -> Vec<Base4MethodjState> {
@@ -370,6 +407,21 @@ fn search_static4_methodj(opts: &SearchStatic4MethodjOpts) -> Vec<Base4MethodjSt
         )
     })
     .collect()
+}
+
+pub fn search_static4_methodj_seed(
+    opts: &SearchStatic4MethodjOpts,
+    ivs: Ivs,
+) -> Vec<Base4MethodjState> {
+    let seeds = recover_poke_rng_iv(&ivs, false);
+    seeds
+        .into_iter()
+        .flat_map(|seed| get_state_from_jseed(opts, ivs, seed))
+        .filter(|state| {
+            // Don't check IVs since we specifically found matching IVs
+            opts.filter.pass_filter_no_ivs(state)
+        })
+        .collect()
 }
 
 fn get_state_from_jseed(
@@ -520,30 +572,17 @@ fn get_state_from_jseed(
     }
 }
 
-pub fn search_static4_methodj_seed(
+pub fn search_static4_methodk_seeds(
     opts: &SearchStatic4MethodjOpts,
-    ivs: Ivs,
-) -> Vec<Base4MethodjState> {
-    let seeds = recover_poke_rng_iv(&ivs, false);
-    seeds
-        .into_iter()
-        .flat_map(|seed| get_state_from_jseed(opts, ivs, seed))
-        .filter(|state| {
-            // Don't check IVs since we specifically found matching IVs
-            opts.filter.pass_filter_no_ivs(state)
-        })
-        .collect()
-}
-
-pub fn search_static4_methodj_seeds(
-    opts: &SearchStatic4MethodjOpts,
-) -> Vec<SearchStatic4MethodjState<DpptSeedTime4>> {
+) -> Vec<SearchStatic4MethodjState<HgssSeedTime4>> {
     let min_advance = opts.min_advance;
     let max_advance = opts.max_advance;
+    let second = opts.force_second;
+    let second_range = second.map(|s| s..=s).unwrap_or(0..=59);
 
     let mut results = vec![];
 
-    for state in search_static4_methodj(opts).iter() {
+    for state in search_static4_methodk(opts).iter() {
         let mut rng = Pokerng::new(state.seed).rev();
         let mut seed = state.seed;
         if min_advance != 0 {
@@ -552,16 +591,19 @@ pub fn search_static4_methodj_seeds(
         } else {
         }
         for advance in min_advance..=max_advance {
-            let seed_time_opts = FindSeedTime4Options::new(
-                seed,
-                opts.year,
-                opts.min_delay..=opts.max_delay,
-                opts.force_second,
-            );
-            let seed_time = dppt_find_seedtime(seed_time_opts);
+            let seed_time_opts = HgssSeedTime4Options {
+                seed: seed,
+                year: opts.year,
+                month: None,
+                second_range: Some(second_range.clone()),
+                delay_range: Some(opts.min_delay..=opts.max_delay),
+                find_first: true,
+                roamer: opts.roamer,
+            };
+            let seed_time = hgss_calculate_seedtime(seed_time_opts);
 
-            if let Some(seed_time) = seed_time {
-                let found_state = state.full_state(advance, seed_time);
+            if let Some(seed_time) = seed_time.into_iter().next() {
+                let found_state = state.full_hg_state(advance, seed_time);
                 results.push(found_state);
             }
             seed = rng.rand::<u32>();
@@ -569,6 +611,64 @@ pub fn search_static4_methodj_seeds(
     }
 
     results
+}
+
+fn search_static4_methodk(opts: &SearchStatic4MethodjOpts) -> Vec<Base4MethodjState> {
+    let Ivs {
+        hp: min_hp,
+        atk: min_atk,
+        def: min_def,
+        spa: min_spa,
+        spd: min_spd,
+        spe: min_spe,
+    } = opts.filter.min_ivs;
+
+    let Ivs {
+        hp: max_hp,
+        atk: max_atk,
+        def: max_def,
+        spa: max_spa,
+        spd: max_spd,
+        spe: max_spe,
+    } = opts.filter.max_ivs;
+
+    iproduct!(
+        min_hp..=max_hp,
+        min_atk..=max_atk,
+        min_def..=max_def,
+        min_spa..=max_spa,
+        min_spd..=max_spd,
+        min_spe..=max_spe
+    )
+    .flat_map(|(hp, atk, def, spa, spd, spe)| {
+        search_static4_methodk_seed(
+            opts,
+            Ivs {
+                hp,
+                atk,
+                def,
+                spa,
+                spd,
+                spe,
+            },
+        )
+    })
+    .collect()
+}
+
+pub fn search_static4_methodk_seed(
+    opts: &SearchStatic4MethodjOpts,
+    ivs: Ivs,
+) -> Vec<Base4MethodjState> {
+    let seeds = recover_poke_rng_iv(&ivs, false);
+    seeds
+        .into_iter()
+        .flat_map(|seed| get_state_from_kseed(opts, ivs, seed))
+        .filter(|state| {
+            // Don't check IVs since we specifically found matching IVs
+            opts.filter.pass_filter_no_ivs(state)
+        })
+        .collect()
 }
 
 fn get_state_from_kseed(
@@ -717,102 +817,6 @@ fn get_state_from_kseed(
             results
         }
     }
-}
-pub fn search_static4_methodk_seeds(
-    opts: &SearchStatic4MethodjOpts,
-) -> Vec<SearchStatic4MethodjState<HgssSeedTime4>> {
-    let min_advance = opts.min_advance;
-    let max_advance = opts.max_advance;
-    let second = opts.force_second;
-    let second_range = second.map(|s| s..=s).unwrap_or(0..=59);
-
-    let mut results = vec![];
-
-    for state in search_static4_methodk(opts).iter() {
-        let mut rng = Pokerng::new(state.seed).rev();
-        let mut seed = state.seed;
-        if min_advance != 0 {
-            rng.advance(min_advance.saturating_sub(1));
-            seed = rng.rand::<u32>();
-        } else {
-        }
-        for advance in min_advance..=max_advance {
-            let seed_time_opts = HgssSeedTime4Options {
-                seed: seed,
-                year: opts.year,
-                month: None,
-                second_range: Some(second_range.clone()),
-                delay_range: Some(opts.min_delay..=opts.max_delay),
-                find_first: true,
-                roamer: opts.roamer,
-            };
-            let seed_time = hgss_calculate_seedtime(seed_time_opts);
-
-            if let Some(seed_time) = seed_time.into_iter().next() {
-                let found_state = state.full_hg_state(advance, seed_time);
-                results.push(found_state);
-            }
-            seed = rng.rand::<u32>();
-        }
-    }
-
-    results
-}
-fn search_static4_methodk(opts: &SearchStatic4MethodjOpts) -> Vec<Base4MethodjState> {
-    let Ivs {
-        hp: min_hp,
-        atk: min_atk,
-        def: min_def,
-        spa: min_spa,
-        spd: min_spd,
-        spe: min_spe,
-    } = opts.filter.min_ivs;
-
-    let Ivs {
-        hp: max_hp,
-        atk: max_atk,
-        def: max_def,
-        spa: max_spa,
-        spd: max_spd,
-        spe: max_spe,
-    } = opts.filter.max_ivs;
-
-    iproduct!(
-        min_hp..=max_hp,
-        min_atk..=max_atk,
-        min_def..=max_def,
-        min_spa..=max_spa,
-        min_spd..=max_spd,
-        min_spe..=max_spe
-    )
-    .flat_map(|(hp, atk, def, spa, spd, spe)| {
-        search_static4_methodk_seed(
-            opts,
-            Ivs {
-                hp,
-                atk,
-                def,
-                spa,
-                spd,
-                spe,
-            },
-        )
-    })
-    .collect()
-}
-pub fn search_static4_methodk_seed(
-    opts: &SearchStatic4MethodjOpts,
-    ivs: Ivs,
-) -> Vec<Base4MethodjState> {
-    let seeds = recover_poke_rng_iv(&ivs, false);
-    seeds
-        .into_iter()
-        .flat_map(|seed| get_state_from_kseed(opts, ivs, seed))
-        .filter(|state| {
-            // Don't check IVs since we specifically found matching IVs
-            opts.filter.pass_filter_no_ivs(state)
-        })
-        .collect()
 }
 
 #[cfg(test)]
@@ -4039,7 +4043,7 @@ mod tests {
                     characteristic: Characteristic::TakesPlentyOfSiestas,
                 },
             ];
-            assert_eq!(results, expected);
+            assert_list_eq!(results, expected);
         }
         #[test]
         fn static_methodk_cutecharm_f() {

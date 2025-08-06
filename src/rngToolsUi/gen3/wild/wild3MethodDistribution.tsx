@@ -46,6 +46,7 @@ import {
   emeraldWildGameData,
 } from "./utils";
 import { encounterSlots, nature } from "~/types";
+import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
 
 type LeadSpeedType = "Fastest" | "Average" | "Slowest" | "From PID" | "Custom";
 
@@ -340,37 +341,6 @@ type UiResult = FlattenIvs<
   }
 >;
 
-type UiResultCycleAtMoment = CycleAtMoment & {
-  uid: number;
-  increment_from_previous: number;
-  increment_from_previous_diff_compare: number | null;
-  cycle_diff_compare: number | null;
-};
-
-const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
-  {
-    title: "Moment",
-    dataIndex: "moment",
-    key: "moment",
-  },
-  {
-    title: (
-      <>
-        Cycle from
-        <br />
-        Sweet Scent start
-      </>
-    ),
-    dataIndex: "cycle",
-    key: "cycle",
-  },
-  {
-    title: "Increment",
-    dataIndex: "increment_from_previous",
-    key: "increment_from_previous",
-  },
-];
-
 let nextUid = 0;
 const convertSearcherResultToUIResult = (
   res: Wild3MethodDistributionResult,
@@ -414,27 +384,10 @@ type Props = {
   game: Static3Game;
 };
 
-const parseCompareCycleAtMoments = (input: string) => {
-  try {
-    const info = JSON.parse(input);
-    if (!Array.isArray(info.cycleAtMoments)) {
-      return null;
-    }
-    //NO_PROD use zod?
-  } catch (err) {
-    return null;
-  }
-};
-
 export const Wild3MethodDistribution = ({ game }: Props) => {
   const [results, setResults] = React.useState<UiResult[]>([]);
-  const [uiResultsCycleAtMoment, setResultsUiCycleAtMoment] = React.useState<
-    UiResultCycleAtMoment[]
-  >([]);
-
-  const [compareCycleAtMomentsStr, setCompareCycleAtMomentsStr] =
-    React.useState<string>("");
-
+  const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>([]);
+  
   const initial_seed = game === "emerald" ? 0 : 0x5a0;
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
@@ -478,27 +431,7 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
       );
 
       setResults(uiResults);
-
-      const compareCycleAtMoments = parseCompareCycleAtMoments(
-        compareCycleAtMomentsStr,
-      );
-
-      const uiResultsCycleAtMoment: UiResultCycleAtMoment[] =
-        cycle_at_moments.map((cycle_at_moment, idx) => {
-          const prevCycle = idx === 0 ? 0 : cycle_at_moments[idx - 1].cycle;
-          const increment_from_previous_diff_compare: number | null = null;
-
-          const compareCycle = 0; // NO_PROD
-
-          return {
-            ...cycle_at_moment,
-            uid: nextUid++,
-            increment_from_previous: cycle_at_moment.cycle - prevCycle,
-            increment_from_previous_diff_compare: 0,
-            cycle_diff_compare: 0,
-          };
-        });
-      setResultsUiCycleAtMoment(uiResultsCycleAtMoment);
+      setCycleAtMoments(cycle_at_moments);
     },
     [initial_seed],
   );
@@ -521,11 +454,7 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
         <Wild3MethodDistributionFields />
       </RngToolForm>
 
-      <ResultTable<UiResultCycleAtMoment>
-        columns={uiCycleAtMomentColumns}
-        rowKey="uid"
-        dataSource={uiResultsCycleAtMoment}
-      />
+      <Wild3CycleAtMoments cycleAtMoments={cycleAtMoments} />
     </>
   );
 };

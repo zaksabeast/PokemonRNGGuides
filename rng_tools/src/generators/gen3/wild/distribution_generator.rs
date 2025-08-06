@@ -1,6 +1,7 @@
 use super::{Wild3GeneratorOptions, generate_gen3_wild};
 use crate::gen3::{
-    calculate_cycle_data, CycleAtMoment, CycleRange, Gen3Method, Wild3EncounterTable, Wild3SearcherResultMon
+    CycleAtMoment, CycleRange, Gen3Method, Wild3EncounterTable, Wild3SearcherResultMon,
+    calculate_cycle_data,
 };
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
@@ -150,10 +151,12 @@ pub fn generate_gen3_wild_distribution(
         .collect::<Vec<_>>();
 
     Wild3MethodDistributionResults {
-        results:dist_results,
-        cycle_at_moments:cycle_counter.cycle_at_moments.iter().map(|cycle_at_moment|{
-            
-        }),
+        results: dist_results,
+        cycle_at_moments: cycle_counter
+            .cycle_at_moments
+            .iter()
+            .map(|cycle_at_moment| cycle_at_moment.apply_lead_pid_speed(lead_cycle_speed))
+            .collect(),
     }
 }
 
@@ -199,9 +202,11 @@ mod test {
         let dist_results =
             generate_gen3_wild_distribution(0, &opts, &Wild3EncounterTable::default(), 700);
 
-        let results = dist_results.results.iter()
-                .map(|dist_res| ResultForTest::new_from_dist_res(dist_res))
-                .collect::<Vec<_>>();
+        let results = dist_results
+            .results
+            .iter()
+            .map(|dist_res| ResultForTest::new_from_dist_res(dist_res))
+            .collect::<Vec<_>>();
 
         let expected_results = [
             ResultForTest::new(Gen3Method::Wild4, 0.0, &[]),

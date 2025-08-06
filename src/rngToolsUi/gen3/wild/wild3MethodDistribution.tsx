@@ -6,6 +6,7 @@ import {
   Gen3Method,
   Wild3MethodDistributionResult,
   Wild3EncounterTable,
+  CycleAtMoment,
 } from "~/rngTools";
 import {
   Field,
@@ -16,6 +17,8 @@ import {
   RngToolSubmit,
   FormFieldTable,
   FormikRadio,
+  FormikResultTable,
+  ResultTable,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatProbability } from "~/utils/formatProbability";
@@ -337,6 +340,29 @@ type UiResult = FlattenIvs<
   }
 >;
 
+type UiResultCycleAtMoment = CycleAtMoment & {
+  uid:number;
+  diff_with_previous:number;
+};
+
+const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
+  {
+    title: "Moment",
+    dataIndex: "moment",
+    key: "moment",
+  },
+  {
+    title: <>Cycle from<br />Sweet Scent start</>,
+    dataIndex: "cycle",
+    key: "cycle",
+  },
+  {
+    title: "Diff",
+    dataIndex: "diff_with_previous",
+    key: "diff_with_previous",
+  },
+];
+
 let nextUid = 0;
 const convertSearcherResultToUIResult = (
   res: Wild3MethodDistributionResult,
@@ -354,6 +380,7 @@ const convertSearcherResultToUIResult = (
     uid: nextUid++,
   };
 };
+
 
 const convertSearcherResultsToUIResults = (
   results: Wild3MethodDistributionResult[],
@@ -382,6 +409,7 @@ type Props = {
 
 export const Wild3MethodDistribution = ({ game }: Props) => {
   const [results, setResults] = React.useState<UiResult[]>([]);
+  const [uiResultsCycleAtMoment, setResultsUiCycleAtMoment] = React.useState<UiResultCycleAtMoment[]>([]);
 
   const initial_seed = game === "emerald" ? 0 : 0x5a0;
 
@@ -413,7 +441,7 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
         return setResults([]);
       }
 
-      const results = await rngTools.generate_gen3_wild_distribution(
+      const {results, cycle_at_moments} = await rngTools.generate_gen3_wild_distribution(
         initial_seed,
         opts,
         encounterTable,
@@ -425,6 +453,22 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
       );
 
       setResults(uiResults);
+
+      const uiResultsCycleAtMoment: UiResultCycleAtMoment[] = cycle_at_moments.map(
+        (cycle_at_moment, idx) => {
+          const prevCycle = idx === 0 ? 0 : cycle_at_moments[idx - 1].cycle;
+          const compareCycle = 
+
+          return {
+            ...cycle_at_moment,
+            uid: nextUid++,
+            diff_with_previous: cycle_at_moment.cycle - prevCycle,
+            diff_with_compare: cycle_at_moment.cycle - prevCycle,
+          }
+        ),
+      );  
+      setResultsUiCycleAtMoment(uiResultsCycleAtMoment);
+
     },
     [initial_seed],
   );
@@ -434,6 +478,7 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
   }, []);
 
   return (
+    <>
     <RngToolForm<FormState, UiResult>
       getColumns={getColumns}
       results={results}
@@ -445,5 +490,12 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
     >
       <Wild3MethodDistributionFields />
     </RngToolForm>
+    
+    <ResultTable<UiResultCycleAtMoment>
+        columns={uiCycleAtMomentColumns}
+        rowKey="uid"
+        dataSource={uiResultsCycleAtMoment}
+      />
+    </>
   );
 };

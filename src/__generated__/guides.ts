@@ -918,7 +918,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx",
-      translations: null,
+      translations: {
+        en: "/dppt-initial-seed-retail/",
+        zh: "/zh-dppt-initial-seed-retail/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -6978,6 +6981,42 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-dppt-initial-seed-retail/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["retail"],
+      isNew: false,
+      title: "钻石珍珠白金 实机初始种子乱数",
+      navDrawerTitle: "钻石珍珠白金 实机初始种子乱数",
+      description: "学习如何在实机上对钻石、珍珠与白金的初始种子进行乱数。",
+      slug: "/zh-dppt-initial-seed-retail/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-08",
+      translation: { enSlug: "/dppt-initial-seed-retail/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx",
+      translations: {
+        en: "/dppt-initial-seed-retail/",
+        zh: "/zh-dppt-initial-seed-retail/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-dppt-initial-seed/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
@@ -9157,6 +9196,7 @@ export const guideSlugs = [
   "/zh-channel-jirachi/",
   "/zh-dppt-advance-rng/",
   "/zh-dppt-cute-charm/",
+  "/zh-dppt-initial-seed-retail/",
   "/zh-dppt-initial-seed/",
   "/zh-dppt-pokeradar-rng/",
   "/zh-dppt-wild/",

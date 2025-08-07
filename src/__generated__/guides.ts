@@ -74,7 +74,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/3DS Helper.mdx",
-      translations: null,
+      translations: { en: "/3ds-helper/", zh: "/zh-3ds-helper/" },
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS Helper.mdx")),
@@ -6860,6 +6860,37 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-3ds-helper/": {
+    meta: {
+      categories: ["NDS Tools"],
+      tags: ["info"],
+      isNew: false,
+      title: "3DS Timer Helper",
+      navDrawerTitle: "3DS Timer Helper",
+      description:
+        "Easier 3DS RNG without homebrew using precise timer starts.",
+      slug: "/zh-3ds-helper/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-07-03",
+      translation: { enSlug: "/3ds-helper/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/3DS Helper.mdx",
+      translations: { en: "/3ds-helper/", zh: "/zh-3ds-helper/" },
+      displayAttributes: ["video_guide"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/3DS Helper.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/3DS Helper.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-bw2-egg/": {
     meta: {
       categories: ["Black 2 and White 2"],
@@ -9232,6 +9263,7 @@ export const guideSlugs = [
   "/xdcolo-tidsid-generator/",
   "/xy-friend-safari-patch/",
   "/xy-pokeradar/",
+  "/zh-3ds-helper/",
   "/zh-bw2-egg/",
   "/zh-channel-jirachi/",
   "/zh-dppt-advance-rng/",

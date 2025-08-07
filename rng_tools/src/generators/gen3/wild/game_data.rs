@@ -1,6 +1,4 @@
-use super::{
-    Gen3EncounterType,
-};
+use super::Gen3EncounterType;
 use crate::{EncounterSlot, GenderRatio, Species};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;

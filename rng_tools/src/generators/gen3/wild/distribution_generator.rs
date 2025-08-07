@@ -285,13 +285,13 @@ mod test {
         assert_list_eq!(results, expected_results);
 
         let expected_cycle_at_moments = [
-            CycleAtMoment { cycle: 35035, moment:  Moment::ChooseWildMonIndex_Land_Random }, 
-            CycleAtMoment { cycle: 35894, moment:  Moment::ChooseWildMonLevel_RandomLvl }, 
-            CycleAtMoment { cycle: 90430, moment:  Moment::PickWildMonNature_RandomPickNature }, 
-            CycleAtMoment { cycle: 102578, moment: Moment::CreateMonWithNature_RandomPidLowFirst }, 
-            CycleAtMoment { cycle: 231422, moment: Moment::CreateMonWithNature_RandomPidHighLast }, 
-            CycleAtMoment { cycle: 353657, moment: Moment::CreateBoxMon_RandomIvs1 }, 
-            CycleAtMoment { cycle: 395216, moment: Moment::CreateBoxMon_RandomIvs2 }
+            CycleAtMoment::new(Moment::ChooseWildMonIndex_Land_Random, 35035),
+            CycleAtMoment::new(Moment::ChooseWildMonLevel_RandomLvl, 35894),
+            CycleAtMoment::new(Moment::PickWildMonNature_RandomPickNature, 90430),
+            CycleAtMoment::new(Moment::CreateMonWithNature_RandomPidLowFirst, 102578),
+            CycleAtMoment::new(Moment::CreateMonWithNature_RandomPidHighLast, 231422),
+            CycleAtMoment::new(Moment::CreateBoxMon_RandomIvs1, 353657),
+            CycleAtMoment::new(Moment::CreateBoxMon_RandomIvs2, 395216),
         ];
         assert_list_eq!(dist_results.cycle_at_moments, expected_cycle_at_moments);
     }

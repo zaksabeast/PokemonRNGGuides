@@ -1,4 +1,4 @@
-use super::{calc_modulo_cycle_unsigned};
+use super::calc_modulo_cycle_unsigned;
 
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
@@ -19,7 +19,6 @@ pub enum Moment {
     CreateMonWithNature_RandomPidHighLast,
     CreateBoxMon_RandomIvs1,
     CreateBoxMon_RandomIvs2,
-
 }
 
 #[derive(Default, Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -87,13 +86,12 @@ impl CycleAndModRange {
 }
 
 impl CycleAndModCount {
-    pub fn add(&mut self, cycle: usize, lead_pid_mod:usize) {
+    pub fn add(&mut self, cycle: usize, lead_pid_mod: usize) {
         self.cycle += cycle;
         self.cycle += lead_pid_mod * BASE_LEAD_PID_MOD_24_CYCLES;
         self.lead_pid_mod += lead_pid_mod;
     }
 }
-
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -104,7 +102,7 @@ pub struct CycleAndModAtMoment {
 }
 
 impl CycleAndModAtMoment {
-    pub fn apply_lead_pid_speed(&self, lead_pid_speed:usize) -> CycleAtMoment {
+    pub fn apply_lead_pid_speed(&self, lead_pid_speed: usize) -> CycleAtMoment {
         CycleAtMoment {
             cycle: self.cycle + lead_pid_speed * self.lead_pid_mod,
             moment: self.moment,
@@ -119,21 +117,26 @@ pub struct CycleAtMoment {
     pub moment: Moment,
 }
 
+impl CycleAtMoment {
+    pub fn new(moment: Moment, cycle: usize) -> Self {
+        Self { cycle, moment }
+    }
+}
 
 #[derive(Debug, Default, Clone, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct CycleCounter {
-    pub cycle: CycleAndModCount,   
+    pub cycle: CycleAndModCount,
     pub cycle_at_moments: Vec<CycleAndModAtMoment>,
 }
 
 impl CycleCounter {
-    pub fn add(&mut self, cycle: usize, lead_pid_mod:usize) {
+    pub fn add(&mut self, cycle: usize, lead_pid_mod: usize) {
         self.cycle.add(cycle, lead_pid_mod);
     }
     pub fn on_moment_reached(&mut self, moment: Moment) {
         self.cycle_at_moments.push(CycleAndModAtMoment {
-            cycle:self.cycle.cycle,
+            cycle: self.cycle.cycle,
             lead_pid_mod: self.cycle.lead_pid_mod,
             moment,
         });

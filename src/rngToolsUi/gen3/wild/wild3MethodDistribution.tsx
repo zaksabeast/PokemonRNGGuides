@@ -386,8 +386,10 @@ type Props = {
 
 export const Wild3MethodDistribution = ({ game }: Props) => {
   const [results, setResults] = React.useState<UiResult[]>([]);
-  const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>([]);
-  
+  const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>(
+    [],
+  );
+
   const initial_seed = game === "emerald" ? 0 : 0x5a0;
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(

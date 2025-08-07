@@ -73,7 +73,7 @@ const Validator = z
     only_current_seed: z.boolean(),
     transporter_genders: z.enum(transporterGenders),
   })
-  .merge(pkmFilterSchema);
+  .extend(pkmFilterSchema.shape);
 
 export type FormState = z.infer<typeof Validator>;
 

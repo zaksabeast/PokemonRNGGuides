@@ -15,3 +15,10 @@
 
 // Import commands.js using ES2015 syntax:
 import "./commands";
+
+beforeEach(() => {
+  // Spoofs the performant YouTube embed CDN as always available.
+  cy.intercept("GET", "**/cdn.jsdelivr.net/**", {
+    statusCode: 200,
+  });
+});

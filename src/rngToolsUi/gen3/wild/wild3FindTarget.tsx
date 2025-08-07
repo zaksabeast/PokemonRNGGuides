@@ -22,7 +22,7 @@ import {
 import { toOptions } from "~/utils/options";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
-import { useFormikContext } from "formik";
+import { useFormContext } from "~/hooks/form";
 import {
   getPkmFilterFields,
   pkmFilterSchema,
@@ -45,7 +45,6 @@ import { match, P } from "ts-pattern";
 import { uniq, sortBy } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { Tooltip } from "antd";
-import { Translations } from "~/translations";
 import {
   gen3PkmFilterFieldsToRustInput,
   gen3PkmFilterSchema,
@@ -60,6 +59,10 @@ import {
   formatMapName,
   gen3EncounterTypes,
 } from "./utils";
+import { useWatch } from "react-hook-form";
+import { atom, useAtom } from "jotai";
+
+const rngManipulatedLeadPidAtom = atom(false);
 
 /*
 Possible UI improvements:
@@ -91,8 +94,8 @@ const Validator = z
     mergeSimilarResults: z.boolean(),
     generate_even_if_impossible: z.boolean(),
   })
-  .merge(pkmFilterSchema)
-  .merge(gen3PkmFilterSchema);
+  .extend(pkmFilterSchema.shape)
+  .extend(gen3PkmFilterSchema.shape);
 
 type FormState = z.infer<typeof Validator>;
 
@@ -158,6 +161,18 @@ const getEncounterTypesWithSpecies = (species: Species) =>
       );
     }),
   );
+
+const RngManipulatedLeadPidSwitch = () => {
+  const [, setRngManipulatedLeadPid] = useAtom(rngManipulatedLeadPidAtom);
+  return (
+    <FormikSwitch<FormState>
+      name="rngManipulatedLeadPid"
+      onChange={(isOn) => {
+        setRngManipulatedLeadPid(isOn);
+      }}
+    />
+  );
+};
 
 const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
   const fields: Field[] = [
@@ -249,7 +264,7 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
     },
     {
       label: "RNG-manipulated lead PID",
-      input: <FormikSwitch<FormState> name="rngManipulatedLeadPid" />,
+      input: <RngManipulatedLeadPidSwitch />,
     },
     {
       label: "Initial advances",
@@ -288,19 +303,19 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
 };
 
 export const TargetMon = () => {
-  const { values, setValues } = useFormikContext<FormState>();
+  const { setFieldValue } = useFormContext<FormState>();
+  const species = useWatch<FormState, "species">({
+    name: "species",
+  });
 
   const fields = React.useMemo((): Field[] => {
-    return getTargetMonFields(values.species);
-  }, [values.species]);
+    return getTargetMonFields(species);
+  }, [species]);
 
   React.useEffect(() => {
-    setValues((prev) => ({
-      ...prev,
-      maps: getMapsWithSpecies(values.species),
-      encounterTypes: getEncounterTypesWithSpecies(values.species),
-    }));
-  }, [values.species, setValues]);
+    setFieldValue("maps", getMapsWithSpecies(species));
+    setFieldValue("encounterTypes", getEncounterTypesWithSpecies(species));
+  }, [species, setFieldValue]);
 
   return (
     <Flex vertical gap={8}>
@@ -313,11 +328,16 @@ export const TargetMon = () => {
 };
 
 export const SetupFilter = () => {
-  const { values } = useFormikContext<FormState>();
+  const species = useWatch<FormState, "species">({
+    name: "species",
+  });
+  const filterShiny = useWatch<FormState, "filter_shiny">({
+    name: "filter_shiny",
+  });
 
   const fields = React.useMemo((): Field[] => {
-    return getSetupFields(values.species, values.filter_shiny);
-  }, [values.species, values.filter_shiny]);
+    return getSetupFields(species, filterShiny);
+  }, [species, filterShiny]);
 
   return (
     <Flex vertical gap={8}>
@@ -348,10 +368,11 @@ const getMethodLikelihoodColumValue = (
   );
 };
 
-const getColumns = (
-  _t: Translations,
-  values: FormState,
-): ResultColumn<UiResult>[] => {
+const getColumns = ({
+  rngManipulatedLeadPid,
+}: {
+  rngManipulatedLeadPid: boolean;
+}): ResultColumn<UiResult>[] => {
   const columns: ResultColumn<UiResult>[] = [];
   columns.push(
     {
@@ -372,7 +393,7 @@ const getColumns = (
     { title: "Method", dataIndex: "method" },
   );
 
-  if (!values.rngManipulatedLeadPid) {
+  if (!rngManipulatedLeadPid) {
     columns.push({
       title: (
         <>
@@ -415,7 +436,7 @@ const getColumns = (
     },
   });
 
-  if (values.rngManipulatedLeadPid) {
+  if (rngManipulatedLeadPid) {
     columns.push(
       {
         title: "Ideal Lead Speed",
@@ -659,6 +680,7 @@ const sortResults = (results: Wild3SearcherResultMon[]) => {
 
 export const Wild3SearcherFindTarget = ({ game }: Props) => {
   const [results, setResults] = React.useState<UiResult[]>([]);
+  const [rngManipulatedLeadPid] = useAtom(rngManipulatedLeadPidAtom);
 
   const initial_seed = game === "emerald" ? 0 : 0x5a0;
 
@@ -713,9 +735,13 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
     return getInitialValues();
   }, []);
 
+  const columns = React.useMemo(() => {
+    return getColumns({ rngManipulatedLeadPid });
+  }, [rngManipulatedLeadPid]);
+
   return (
     <RngToolForm<FormState, UiResult>
-      getColumns={getColumns}
+      columns={columns}
       results={results}
       validationSchema={Validator}
       initialValues={initialValues}

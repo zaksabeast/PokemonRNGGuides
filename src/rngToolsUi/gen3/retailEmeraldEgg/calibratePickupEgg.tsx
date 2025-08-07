@@ -183,7 +183,7 @@ const getPotentialEggs = async (state: PickupEggState) => {
   return results.flat();
 };
 
-type FormState = StatFields;
+export type FormState = StatFields;
 
 const initialValues: FormState = {
   hpStat: 0,

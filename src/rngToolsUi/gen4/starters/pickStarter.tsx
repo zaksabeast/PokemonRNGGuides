@@ -82,9 +82,9 @@ const Validator = z
     platinum_target_advance: z.number().int().min(0),
     force_second: z.number().int().min(0).max(59).nullable(),
   })
-  .merge(pkmFilterSchema);
+  .extend(pkmFilterSchema.shape);
 
-type FormState = z.infer<typeof Validator>;
+export type FormState = z.infer<typeof Validator>;
 
 const dpptInitialValues: FormState = {
   tid: 0,

@@ -18,9 +18,10 @@ import React from "react";
 import { z } from "zod";
 import { toOptions } from "~/utils/options";
 import { range } from "lodash-es";
-import { useFormikContext } from "formik";
+import { useFormContext } from "~/hooks/form";
 import { match, P } from "ts-pattern";
 import { pickupIdToName, pickupItems } from "~/types/pickupItems";
+import { useWatch } from "react-hook-form";
 
 const HAS_EMPTY_TV_NEWS_SLOT = true; // The tool assumes the player always has a empty TV News slot.
 const LEVEL_UP = false; // The tool assumes the player's Pokémon won't level-up after the battle.
@@ -145,7 +146,10 @@ export const UpdateCalibrationBtn = ({
   colValues: Column;
   onClick: () => void;
 }) => {
-  const { values, setFieldValue } = useFormikContext<FormState>();
+  const { setFieldValue } = useFormContext<FormState>();
+  const calibration = useWatch<FormState, "calibration">({
+    name: "calibration",
+  });
   return (
     <Button
       type="text"
@@ -158,7 +162,7 @@ export const UpdateCalibrationBtn = ({
         const diffMsWithTarget = (diffAdvWithTarget / 2) * MS_PER_FRAME; // divide by 2 because 2 advances per frame during battle
         setFieldValue(
           "calibration",
-          values.calibration - Math.round(diffMsWithTarget),
+          calibration - Math.round(diffMsWithTarget),
         );
         onClick();
       }}
@@ -169,34 +173,46 @@ export const UpdateCalibrationBtn = ({
 };
 
 export const Fields = () => {
-  const { values, setFieldValue } = useFormikContext<FormState>();
+  const { setFieldValue } = useFormContext<FormState>();
+  const enteredHallOfFame = useWatch<FormState, "entered_hall_of_fame">({
+    name: "entered_hall_of_fame",
+  });
+  const hadMassOutbreak = useWatch<FormState, "had_mass_outbreak">({
+    name: "had_mass_outbreak",
+  });
+  const pickupPokemonCount = useWatch<FormState, "pickup_pokemon_count">({
+    name: "pickup_pokemon_count",
+  });
+  const targetAdv = useWatch<FormState, "targetAdv">({
+    name: "targetAdv",
+  });
+  const calibration = useWatch<FormState, "calibration">({
+    name: "calibration",
+  });
+  const filterActive = useWatch<FormState, "filter_active">({
+    name: "filter_active",
+  });
 
   const timerMilliseconds = React.useMemo(() => {
     const FRAME_START_TO_SWEET_SCENT = 800;
     const FRAME_SWEET_SCENT_TO_BATTLE_END =
-      values.targetAdv / 2 + 506 - FRAME_START_TO_SWEET_SCENT;
+      targetAdv / 2 + 506 - FRAME_START_TO_SWEET_SCENT;
     return [
       5000,
       Math.round(MS_PER_FRAME * FRAME_START_TO_SWEET_SCENT),
-      Math.round(MS_PER_FRAME * FRAME_SWEET_SCENT_TO_BATTLE_END) +
-        values.calibration,
+      Math.round(MS_PER_FRAME * FRAME_SWEET_SCENT_TO_BATTLE_END) + calibration,
     ];
-  }, [values.targetAdv, values.calibration]);
+  }, [targetAdv, calibration]);
 
   React.useEffect(() => {
     getTargetAdvanceBeforePickup({
-      entered_hall_of_fame: values.entered_hall_of_fame,
-      had_mass_outbreak: values.had_mass_outbreak,
-      pickup_pokemon_count: values.pickup_pokemon_count,
+      entered_hall_of_fame: enteredHallOfFame,
+      had_mass_outbreak: hadMassOutbreak,
+      pickup_pokemon_count: pickupPokemonCount,
     }).then((adv) => {
       setFieldValue("targetAdv", adv);
     });
-  }, [
-    setFieldValue,
-    values.entered_hall_of_fame,
-    values.had_mass_outbreak,
-    values.pickup_pokemon_count,
-  ]);
+  }, [setFieldValue, enteredHallOfFame, hadMassOutbreak, pickupPokemonCount]);
 
   const fields = React.useMemo((): Field[] => {
     const fields: Field[] = [
@@ -206,7 +222,7 @@ export const Fields = () => {
       },
     ];
 
-    if (values.entered_hall_of_fame) {
+    if (enteredHallOfFame) {
       fields.push({
         label: "Had Mass Outbreak",
         input: <FormikSwitch<FormState> name="had_mass_outbreak" />,
@@ -226,9 +242,9 @@ export const Fields = () => {
       {
         label: "Target Advance",
         input:
-          values.targetAdv > POKERUS_TARGETS[0]
-            ? `${values.targetAdv} ${"(Not recommended)"}`
-            : `${values.targetAdv}`,
+          targetAdv > POKERUS_TARGETS[0]
+            ? `${targetAdv} ${"(Not recommended)"}`
+            : `${targetAdv}`,
       },
       {
         label: "",
@@ -254,7 +270,7 @@ export const Fields = () => {
       },
     );
 
-    if (!values.filter_active) {
+    if (!filterActive) {
       fields.push({
         label: "Initial Advance",
         input: (
@@ -266,7 +282,7 @@ export const Fields = () => {
       });
     }
 
-    if (values.filter_active) {
+    if (filterActive) {
       const itemOptions = pickupItems.map((id) => ({
         label: pickupIdToName(id),
         value: id,
@@ -295,7 +311,7 @@ export const Fields = () => {
         ],
       ] as const;
 
-      const count = Math.min(info.length, values.pickup_pokemon_count);
+      const count = Math.min(info.length, pickupPokemonCount);
       for (let i = 0; i < count; i++) {
         const [label, name] = info[i];
         fields.push({
@@ -311,11 +327,11 @@ export const Fields = () => {
     }
     return fields;
   }, [
-    values.entered_hall_of_fame,
-    values.filter_active,
-    values.pickup_pokemon_count,
+    enteredHallOfFame,
+    filterActive,
+    pickupPokemonCount,
     timerMilliseconds,
-    values.targetAdv,
+    targetAdv,
   ]);
 
   return <FormFieldTable fields={fields} />;

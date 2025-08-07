@@ -32,6 +32,7 @@ export const TargetPokemon = ({
         label: "Starter",
         input: (
           <RadioGroup
+            name="targetStarter"
             optionType="button"
             onChange={async ({ target }) => {
               setTargetStarter({
@@ -55,7 +56,7 @@ export const TargetPokemon = ({
   }, [game, targetAdvance, targetStarter, targetPokemonDesc, setTargetStarter]);
 
   return (
-    <Flex vertical gap={8} flex={1}>
+    <Flex id="target-pokemon-container" vertical gap={8} flex={1}>
       <Typography.Title level={5} p={0} m={0}>
         Target Pokemon
       </Typography.Title>

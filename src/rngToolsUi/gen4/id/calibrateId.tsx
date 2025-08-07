@@ -73,7 +73,7 @@ const Validator = z.object({
   tid: z.number().int().min(0).max(65535),
 });
 
-type FormState = z.infer<typeof Validator>;
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   tid: 0,

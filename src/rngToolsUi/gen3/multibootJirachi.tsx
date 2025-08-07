@@ -64,7 +64,7 @@ const Validator = z
   .object({
     hours: z.number().int().min(1).max(999),
   })
-  .merge(pkmFilterSchema);
+  .extend(pkmFilterSchema.shape);
 
 type FormState = z.infer<typeof Validator>;
 

@@ -1,16 +1,15 @@
-import { GenericForm, GuaranteeFormNameType } from "~/types/form";
-import { Select } from "./select";
+import { GenericForm } from "~/types/form";
+import { FormikSelect } from "./select";
 import { Flex } from "./flex";
-import { NumberInput } from "./numberInput";
-import { useField } from "formik";
+import { FormikNumberInput } from "./numberInput";
 import { IdFilter } from "~/types/id";
-import * as tst from "ts-toolbelt";
-import { get } from "lodash-es";
+import { Paths } from "~/types";
+import { useWatch } from "react-hook-form";
 
 type FilterType = IdFilter["type"];
 
 type Props<FormState extends GenericForm> = {
-  name: GuaranteeFormNameType<FormState, IdFilter>;
+  name: Paths<FormState, IdFilter>;
   optional?: boolean;
 };
 
@@ -32,50 +31,29 @@ export const FormikIdFilter = <FormState extends GenericForm>({
   name,
   optional = false,
 }: Props<FormState>) => {
-  const [{ value }, { error }, { setValue, setTouched }] =
-    useField<tst.O.Nullable<IdFilter, "value0" | "value1">>(name);
-  const value0Error = error == null ? undefined : get(error, "value0");
-  const value1Error = error == null ? undefined : get(error, "value1");
+  type FakeForm = Record<"field", IdFilter>;
+  const fakeName = name as "field";
+
+  const type = useWatch<FakeForm>({
+    name: `${fakeName}.type`,
+  });
 
   return (
     <Flex vertical gap={10}>
-      <Select<FilterType>
-        fullFlex
+      <FormikSelect<FakeForm, `${typeof fakeName}.type`>
+        name={`${fakeName}.type`}
         options={optional ? optionalFilterOptions : filterOptions}
-        value={value.type}
-        onChange={(value) => {
-          setValue({ type: value, value0: null, value1: null });
-          setTouched(true, false);
-        }}
       />
-      {value.type !== "none" && (
-        <NumberInput
-          fullFlex
-          numType={value.type === "pid" ? "hex" : "decimal"}
-          value={value.value0 ?? null}
-          errorMessage={value0Error}
-          onChange={(fieldValue) => {
-            setValue({
-              ...value,
-              value0: fieldValue,
-            });
-            setTouched(true);
-          }}
+      {type !== "none" && (
+        <FormikNumberInput<FakeForm>
+          name={`${fakeName}.value0`}
+          numType={type === "pid" ? "hex" : "decimal"}
         />
       )}
-      {(value.type === "tidpid" || value.type === "tidsid") && (
-        <NumberInput
-          fullFlex
-          numType={value.type === "tidpid" ? "hex" : "decimal"}
-          value={value.value1}
-          errorMessage={value1Error}
-          onChange={(fieldValue) => {
-            setValue({
-              ...value,
-              value1: fieldValue,
-            });
-            setTouched(true);
-          }}
+      {(type === "tidpid" || type === "tidsid") && (
+        <FormikNumberInput<FakeForm>
+          name={`${fakeName}.value1`}
+          numType={type === "tidpid" ? "hex" : "decimal"}
         />
       )}
     </Flex>

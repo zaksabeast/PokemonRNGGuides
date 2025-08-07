@@ -19,7 +19,7 @@ const Validator = z
     nature: z.enum(nature),
     gender: z.enum(["Male", "Female"]),
   })
-  .merge(StatFieldsSchema);
+  .extend(StatFieldsSchema.shape);
 
 export type FormState = z.infer<typeof Validator>;
 
@@ -138,6 +138,7 @@ export const CaughtMon = ({
         Caught Pokémon
       </Typography.Title>
       <RngToolForm<FormState, CaughtMonResult>
+        formContainerId="generate-gen3-caught-starter"
         fields={fields}
         columns={columns}
         results={results}

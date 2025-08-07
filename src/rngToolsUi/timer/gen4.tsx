@@ -117,8 +117,8 @@ const InnerGen4Timer = ({ timerSettings, onUpdate }: InnerProps) => {
   }, [initTimer, timerSettings]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const updates = await initTimer({
+    async (opts, { setValue }) => {
+      const newTimer = await initTimer({
         calibrated_delay: opts.calibratedDelay,
         calibrated_second: opts.calibratedSeconds,
         console: opts.console,
@@ -127,17 +127,26 @@ const InnerGen4Timer = ({ timerSettings, onUpdate }: InnerProps) => {
         target_second: opts.targetSeconds,
         hit_delay: opts.delayHit,
       });
-      onUpdate(
-        hydrationLock({
-          calibratedDelay: updates.timer.calibrated_delay,
-          calibratedSeconds: updates.timer.calibrated_second,
-          console: updates.timer.console,
-          delayHit: null,
-          minTimeMs: updates.timer.min_time_ms,
-          targetDelay: updates.timer.target_delay,
-          targetSeconds: updates.timer.target_second,
-        }),
-      );
+
+      const updates = {
+        calibratedDelay: newTimer.timer.calibrated_delay,
+        calibratedSeconds: newTimer.timer.calibrated_second,
+        console: newTimer.timer.console,
+        delayHit: null,
+        minTimeMs: newTimer.timer.min_time_ms,
+        targetDelay: newTimer.timer.target_delay,
+        targetSeconds: newTimer.timer.target_second,
+      };
+
+      setValue("calibratedDelay", updates.calibratedDelay);
+      setValue("calibratedSeconds", updates.calibratedSeconds);
+      setValue("console", updates.console);
+      setValue("delayHit", updates.delayHit);
+      setValue("minTimeMs", updates.minTimeMs);
+      setValue("targetDelay", updates.targetDelay);
+      setValue("targetSeconds", updates.targetSeconds);
+
+      onUpdate(hydrationLock(updates));
     },
     [initTimer, onUpdate],
   );

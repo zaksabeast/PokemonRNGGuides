@@ -11,17 +11,19 @@ export const testRngTool = <FormState extends Record<string, unknown>>({
 }: {
   parentSelector?: string;
   fakeDate?: Date;
-  url: `/${string}`;
+  url?: `/${string}`;
   form: Record<keyof FormState, FormField>;
   partialFirstColumnValues?: ResultColumnValue[];
   afterVisit?: () => void;
 }) => {
-  cy.visit(url);
-  cy.wait(500);
-  afterVisit?.();
-
-  if (afterVisit != null) {
+  if (url != null) {
+    cy.visit(url);
     cy.wait(500);
+    afterVisit?.();
+
+    if (afterVisit != null) {
+      cy.wait(500);
+    }
   }
 
   formUtils.set<FormState>({ form, parentSelector });

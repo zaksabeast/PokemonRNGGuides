@@ -2,10 +2,11 @@ import React from "react";
 import { Input } from "./input";
 import { capPrecision } from "~/utils/number";
 import { GenericForm } from "~/types/form";
-import { useField } from "formik";
+import { useField } from "~/hooks/form";
 import { match, P } from "ts-pattern";
 import { Tooltip } from "antd";
 import { Paths } from "~/types";
+import * as tst from "ts-toolbelt";
 
 const serializers = {
   hex: (num: number | null) => num?.toString(16),
@@ -25,7 +26,7 @@ type NumberInputProps = {
   name?: string;
   value?: number | null;
   numType: "hex" | "decimal" | "float";
-  onChange: (value: number | null) => void;
+  onChange?: (value: number | null) => void;
   errorMessage?: string;
   textAlign?: "center";
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
@@ -53,7 +54,7 @@ export const NumberInput = ({
       setIsNegative(value.includes("-"));
 
       if (value.length === 0 || value === "-") {
-        onChange(null);
+        onChange?.(null);
         if (!isExternallyControlled.current) {
           setInternalValue(null);
         }
@@ -63,7 +64,7 @@ export const NumberInput = ({
       const deserialized = deserialize(value);
 
       if (!isNaN(deserialized)) {
-        onChange(deserialized);
+        onChange?.(deserialized);
         if (!isExternallyControlled.current) {
           setInternalValue(deserialized);
         }
@@ -84,11 +85,15 @@ export const NumberInput = ({
   );
 };
 
-type FormikNumberInputProps<FormState extends GenericForm> = {
-  disabled?: boolean;
-  numType: "hex" | "decimal" | "float";
-  name: Paths<FormState, number | null>;
-};
+type FormikNumberInputProps<FormState extends GenericForm> = tst.O.Required<
+  tst.O.Overwrite<
+    NumberInputProps,
+    {
+      name: Paths<FormState, number | null>;
+    }
+  >,
+  "name"
+>;
 
 export const FormikNumberInput = <FormState extends GenericForm>({
   name,

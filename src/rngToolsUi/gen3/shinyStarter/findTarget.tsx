@@ -14,7 +14,7 @@ const Validator = z.object({
   sid: z.number().int().min(0).max(65535),
 });
 
-type FormState = z.infer<typeof Validator>;
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   tid: 0,
@@ -54,6 +54,7 @@ export const FindTargetAdvance = ({ game, setTargetAdvance }: Props) => {
 
   return (
     <RngToolForm<FormState, never[]>
+      formContainerId="find-target-advance"
       fields={fields}
       initialValues={initialValues}
       validationSchema={Validator}

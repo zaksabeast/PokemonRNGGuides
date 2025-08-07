@@ -32,6 +32,7 @@ const baseConfig = {
   },
   rules: {
     ...reactHooks.configs.recommended.rules,
+    "react-hooks/react-compiler": "error",
     "id-length": [
       "error",
       {
@@ -98,11 +99,6 @@ const baseConfig = {
             name: "antd",
             importNames: ["Button"],
             message: 'Use `import { Button } from "~/components";`',
-          },
-          {
-            name: "formik",
-            importNames: ["Form"],
-            message: 'Use `import { Form } from "~/components";`',
           },
           {
             name: "antd",

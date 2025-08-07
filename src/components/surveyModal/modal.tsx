@@ -19,13 +19,15 @@ export const SurveyModal = () => {
   return (
     <StyledModal
       open={isOpen}
-      title="New start for Zak"
+      title="New side project — not Pokémon!"
       onCancel={() => {
         closeModal();
         track("Survey modal cancelled", {});
       }}
     >
-      <Typography.Paragraph>I'm Building outside Pokémon.</Typography.Paragraph>
+      <Typography.Paragraph>
+        I'm testing new ideas outside Pokémon.
+      </Typography.Paragraph>
 
       <Button
         type="primary"
@@ -35,7 +37,7 @@ export const SurveyModal = () => {
         href="https://discord.gg/nwMcqyf8Xs"
         mb={16}
       >
-        Let's see what sticks!
+        Join the App Idea Discord
       </Button>
     </StyledModal>
   );

@@ -107,7 +107,7 @@ export const InnerGen5StandardTimer = ({
   onUpdate,
 }: InnerProps) => {
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts, formik) => {
+    async (opts, { setValue }) => {
       let updatedOpts = opts;
       let settings = {
         console: opts.console,
@@ -134,7 +134,12 @@ export const InnerGen5StandardTimer = ({
           calibration: settings.calibration,
           secondHit: null,
         };
-        formik.setValues(updatedOpts);
+
+        setValue("console", updatedOpts.console);
+        setValue("minTimeMs", updatedOpts.minTimeMs);
+        setValue("targetSecond", updatedOpts.targetSecond);
+        setValue("calibration", updatedOpts.calibration);
+        setValue("secondHit", updatedOpts.secondHit);
       }
 
       const milliseconds = await rngTools.create_gen5_standard_timer(settings);

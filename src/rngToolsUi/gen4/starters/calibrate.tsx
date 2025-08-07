@@ -56,9 +56,9 @@ const Validator = z
     gender: z.enum(starterGenders),
     filter_characteristic: z.enum(characteristics),
   })
-  .merge(StatFieldsSchema);
+  .extend(StatFieldsSchema.shape);
 
-type FormState = z.infer<typeof Validator>;
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   level: 5,

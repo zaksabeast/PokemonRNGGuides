@@ -79,7 +79,7 @@ const getColumns = ({
   },
 ];
 
-type FormState = {
+export type FormState = {
   nature: Nature | null;
   gender: Gender | null;
   pokeNavCall: PokeNavTrainer;

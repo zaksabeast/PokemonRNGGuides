@@ -22,7 +22,7 @@ import {
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatProbability } from "~/utils/formatProbability";
-import { useFormikContext } from "formik";
+import { useFormContext } from "~/hooks/form";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
@@ -46,6 +46,7 @@ import {
   emeraldWildGameData,
 } from "./utils";
 import { encounterSlots, nature } from "~/types";
+import { useWatch } from "react-hook-form";
 import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
 
 type LeadSpeedType = "Fastest" | "Average" | "Slowest" | "From PID" | "Custom";
@@ -234,36 +235,35 @@ const getFields = (
 };
 
 export const Wild3MethodDistributionFields = () => {
-  const { values, setFieldValue } = useFormikContext<FormState>();
+  const { setFieldValue } = useFormContext<FormState>();
+  const map = useWatch<FormState, "map">({ name: "map" });
+  const leadTypeIdx = useWatch<FormState, "leadTypeIdx">({
+    name: "leadTypeIdx",
+  });
+  const leadSpeedType = useWatch<FormState, "leadSpeedType">({
+    name: "leadSpeedType",
+  });
+  const leadCycleSpeed = useWatch<FormState, "leadCycleSpeed">({
+    name: "leadCycleSpeed",
+  });
+  const leadPID = useWatch<FormState, "leadPID">({ name: "leadPID" });
 
   const fields = React.useMemo((): Field[] => {
     return getFields(
-      values.map,
-      leadTypeOptions[values.leadTypeIdx].value,
-      values.leadSpeedType,
-      values.leadCycleSpeed,
+      map,
+      leadTypeOptions[leadTypeIdx].value,
+      leadSpeedType,
+      leadCycleSpeed,
     );
-  }, [
-    values.map,
-    values.leadTypeIdx,
-    values.leadSpeedType,
-    values.leadCycleSpeed,
-  ]);
+  }, [map, leadTypeIdx, leadSpeedType, leadCycleSpeed]);
 
   React.useEffect(() => {
-    calculateLeadCycleSpeed(
-      values.leadSpeedType,
-      values.leadCycleSpeed,
-      values.leadPID,
-    ).then((leadCycleSpeed) => {
-      setFieldValue("leadCycleSpeed", leadCycleSpeed);
-    });
-  }, [
-    setFieldValue,
-    values.leadCycleSpeed,
-    values.leadSpeedType,
-    values.leadPID,
-  ]);
+    calculateLeadCycleSpeed(leadSpeedType, leadCycleSpeed, leadPID).then(
+      (leadCycleSpeed) => {
+        setFieldValue("leadCycleSpeed", leadCycleSpeed);
+      },
+    );
+  }, [setFieldValue, leadCycleSpeed, leadSpeedType, leadPID]);
 
   return <FormFieldTable fields={fields} />;
 };

@@ -105,7 +105,7 @@ const InnerGen3Timer = ({
   onUpdate,
 }: InnerProps) => {
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts, formik) => {
+    async (opts, { setValue }) => {
       let updatedOpts = opts;
       let settings = {
         console: opts.console,
@@ -129,7 +129,11 @@ const InnerGen3Timer = ({
           calibration: settings.calibration,
           frameHit: null,
         };
-        formik.setValues(updatedOpts);
+        setValue("console", updatedOpts.console);
+        setValue("preTimer", updatedOpts.preTimer);
+        setValue("targetFrame", updatedOpts.targetFrame);
+        setValue("calibration", updatedOpts.calibration);
+        setValue("frameHit", updatedOpts.frameHit);
       }
 
       const milliseconds = await rngTools.create_gen3_timer(settings);

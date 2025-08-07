@@ -130,7 +130,7 @@ const InnerGen5EntralinkTimer = ({
   onUpdate,
 }: InnerProps) => {
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts, formik) => {
+    async (opts, { setValue }) => {
       let updatedOpts = opts;
       let settings: Gen5EntralinkTimerSettings = {
         console: opts.console,
@@ -165,7 +165,15 @@ const InnerGen5EntralinkTimer = ({
           delayHit: null,
           secondHit: null,
         };
-        formik.setValues(updatedOpts);
+
+        setValue("console", updatedOpts.console);
+        setValue("minTimeMs", updatedOpts.minTimeMs);
+        setValue("targetDelay", updatedOpts.targetDelay);
+        setValue("targetSecond", updatedOpts.targetSecond);
+        setValue("calibration", updatedOpts.calibration);
+        setValue("entralinkCalibration", updatedOpts.entralinkCalibration);
+        setValue("delayHit", updatedOpts.delayHit);
+        setValue("secondHit", updatedOpts.secondHit);
       }
 
       const milliseconds = await rngTools.create_gen5_entralink_timer(settings);

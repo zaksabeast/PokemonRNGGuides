@@ -918,7 +918,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx",
-      translations: null,
+      translations: {
+        en: "/dppt-initial-seed-retail/",
+        zh: "/zh-dppt-initial-seed-retail/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -1912,7 +1915,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-dppt-tid-sid/",
+        zh: "/zh-emulator-dppt-tid-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -6978,6 +6984,42 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-dppt-initial-seed-retail/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["retail"],
+      isNew: false,
+      title: "钻石珍珠白金 实机初始种子乱数",
+      navDrawerTitle: "钻石珍珠白金 实机初始种子乱数",
+      description: "学习如何在实机上对钻石、珍珠与白金的初始种子进行乱数。",
+      slug: "/zh-dppt-initial-seed-retail/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-08",
+      translation: { enSlug: "/dppt-initial-seed-retail/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx",
+      translations: {
+        en: "/dppt-initial-seed-retail/",
+        zh: "/zh-dppt-initial-seed-retail/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-dppt-initial-seed/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
@@ -7632,6 +7674,43 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emulator-dppt-tid-sid/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["emu"],
+      isNew: false,
+      title: "钻石、珍珠与白金版 TID/SID 乱数",
+      navDrawerTitle: "钻石、珍珠与白金版 TID/SID 乱数",
+      description:
+        "了解如何在钻石、珍珠和白金版中通过模拟器获得你想要的训练家 ID（TID）与里 ID（SID）组合",
+      slug: "/zh-emulator-dppt-tid-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-dppt-tid-sid/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx",
+      translations: {
+        en: "/emulator-dppt-tid-sid/",
+        zh: "/zh-emulator-dppt-tid-sid/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx?raw"
       );
       return file.default;
     }),
@@ -9157,6 +9236,7 @@ export const guideSlugs = [
   "/zh-channel-jirachi/",
   "/zh-dppt-advance-rng/",
   "/zh-dppt-cute-charm/",
+  "/zh-dppt-initial-seed-retail/",
   "/zh-dppt-initial-seed/",
   "/zh-dppt-pokeradar-rng/",
   "/zh-dppt-wild/",
@@ -9176,6 +9256,7 @@ export const guideSlugs = [
   "/zh-emulator-dppt-cute-charm/",
   "/zh-emulator-dppt-egg/",
   "/zh-emulator-dppt-stationary/",
+  "/zh-emulator-dppt-tid-sid/",
   "/zh-emulator-emerald-egg/",
   "/zh-emulator-flrg-stationary-and-gift/",
   "/zh-emulator-frlg-egg/",

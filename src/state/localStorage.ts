@@ -14,7 +14,7 @@ const fakeLocalStorage = {
 const ssrLocalStorage =
   typeof window !== "undefined" ? window.localStorage : fakeLocalStorage;
 
-export const atomWithPersistence = <Schema extends z.AnyZodObject>(
+export const atomWithPersistence = <Schema extends z.ZodObject>(
   key: string,
   schema: Schema,
   initialValue: z.infer<Schema>,

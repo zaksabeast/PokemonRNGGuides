@@ -31,7 +31,7 @@ const set = ({ parentSelector, name, value }: Props) => {
   stats.forEach((stat, index) => {
     input.set({
       parentSelector,
-      name: `${name}_${stat}`,
+      name: `${name}.${stat}`,
       value: ivs[index],
     });
   });

@@ -1,10 +1,8 @@
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { Flex } from "./flex";
-import { useField } from "formik";
 import { Ivs } from "~/rngTools";
-import { NumberInput } from "./numberInput";
+import { FormikNumberInput } from "./numberInput";
 import { z } from "zod";
-import { get } from "lodash-es";
 
 const IvSchema = z.number().int().min(0).max(31);
 
@@ -50,25 +48,12 @@ const SingleIvField = <
   parentName,
   stat,
 }: SingleIvFieldProps<FormState, IvNullability>) => {
-  const [{ value, onBlur }, { error }, { setValue }] =
-    useField<Ivs>(parentName);
-  const errorMessage = error == null ? undefined : get(error, stat);
-
   return (
     <Flex minWidth={50}>
-      <NumberInput
-        name={`${parentName}_${stat}`}
-        value={value[stat]}
+      <FormikNumberInput
+        name={`${parentName}.${stat}`}
         textAlign="center"
-        errorMessage={errorMessage}
         numType="decimal"
-        onBlur={onBlur}
-        onChange={(newValue) => {
-          setValue({
-            ...value,
-            [stat]: newValue,
-          });
-        }}
       />
     </Flex>
   );

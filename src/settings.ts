@@ -3,13 +3,13 @@ import dayjs from "dayjs";
 
 const CommaSeparatedString = z
   .string()
+  .default("")
   .transform((val) =>
     val
       .split(",")
       .map((str) => str.trim())
       .filter((str) => str.length > 0),
-  )
-  .default("");
+  );
 
 const settingsSchema = z
   .object({

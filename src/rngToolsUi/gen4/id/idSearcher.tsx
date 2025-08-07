@@ -25,7 +25,7 @@ import {
 import { z } from "zod";
 import { useId4State } from "./state";
 import { useCurrentStep } from "~/components/stepper/state";
-import { useFormikContext } from "formik";
+import { useFormContext } from "~/hooks/form";
 import { nature } from "~/types/nature";
 import { gen4SpeciesOptions, species } from "~/types/species";
 import { natureOptions } from "~/components/pkmFilter";
@@ -42,6 +42,7 @@ import { chunkRange } from "~/utils/chunkRange";
 import { UndefinedToNull } from "~/types";
 import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { useWatch } from "react-hook-form";
 
 const idTypes = ["Cute Charm", "Any TID"] as const;
 type IdType = (typeof idTypes)[number];
@@ -173,7 +174,7 @@ const Validator = z.object({
   id_filter: IdFilterSchema,
 });
 
-type FormState = z.infer<typeof Validator>;
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   year: 2000,
@@ -197,12 +198,12 @@ const getFields = ({
   t,
   idType,
   maxShinyOdds,
-  setValues,
+  reset,
 }: {
   t: Translations;
   idType: IdType;
   maxShinyOdds: boolean;
-  setValues: (values: FormState) => void;
+  reset: () => void;
 }): Field[] => {
   const baseFields = [
     {
@@ -248,7 +249,7 @@ const getFields = ({
           name="max_shiny_odds"
           onChange={(checked: boolean) => {
             if (checked) {
-              setValues(initialValues);
+              reset();
             }
           }}
         />
@@ -299,18 +300,22 @@ const getFields = ({
 
 const Id4SearcherFields = () => {
   const t = useActiveRouteTranslations();
-  const { values, setValues } = useFormikContext<FormState>();
-  const maxShinyOdds = values.max_shiny_odds;
-  const idType = values.id_type;
+  const { reset } = useFormContext<FormState>();
+  const maxShinyOdds = useWatch<FormState, "max_shiny_odds">({
+    name: "max_shiny_odds",
+  });
+  const idType = useWatch<FormState, "id_type">({
+    name: "id_type",
+  });
   const fields = React.useMemo(
     () =>
       getFields({
         t,
         idType,
         maxShinyOdds,
-        setValues,
+        reset,
       }),
-    [t, idType, maxShinyOdds, setValues],
+    [t, idType, maxShinyOdds, reset],
   );
   return <FormFieldTable fields={fields} />;
 };

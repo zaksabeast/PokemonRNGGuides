@@ -1,6 +1,6 @@
 import { Gen3PidSpeedFilter } from "~/rngTools";
 import { FormikNumberInput, FormFieldTable } from "~/components";
-import { useField } from "formik";
+import { useField } from "~/hooks/form";
 import React from "react";
 import { Paths } from "~/types";
 import { Gen3PkmFilterFields } from "./gen3PkmFilter";

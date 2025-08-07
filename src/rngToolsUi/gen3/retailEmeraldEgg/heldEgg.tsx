@@ -36,7 +36,10 @@ const Calibration = () => {
   const [disabled, setDisabled] = React.useState(true);
   return (
     <Flex gap={8} justify="space-between" align="center">
-      <Switch onClick={() => setDisabled((prev) => !prev)} />
+      <Switch
+        id="enable-calibration"
+        onClick={() => setDisabled((prev) => !prev)}
+      />
       <div style={{ width: "100%" }}>
         <FormikNumberInput<FormState>
           name="calibration"

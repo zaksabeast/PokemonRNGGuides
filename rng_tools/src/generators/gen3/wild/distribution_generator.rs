@@ -164,7 +164,7 @@ pub fn generate_gen3_wild_distribution(
 mod test {
     use super::*;
     use crate::assert_list_eq;
-    use crate::gen3::{Gen3Method, Wild3EncounterTable};
+    use crate::gen3::{Gen3Method, Moment, Wild3EncounterTable};
 
     #[derive(Debug, PartialEq)]
     struct ResultForTest {
@@ -284,8 +284,15 @@ mod test {
         ];
         assert_list_eq!(results, expected_results);
 
-        println!("{:?}", dist_results.cycle_at_moments);
-
-        assert!(false);
+        let expected_cycle_at_moments = [
+            CycleAtMoment { cycle: 35035, moment:  Moment::ChooseWildMonIndex_Land_Random }, 
+            CycleAtMoment { cycle: 35894, moment:  Moment::ChooseWildMonLevel_RandomLvl }, 
+            CycleAtMoment { cycle: 90430, moment:  Moment::PickWildMonNature_RandomPickNature }, 
+            CycleAtMoment { cycle: 102578, moment: Moment::CreateMonWithNature_RandomPidLowFirst }, 
+            CycleAtMoment { cycle: 231422, moment: Moment::CreateMonWithNature_RandomPidHighLast }, 
+            CycleAtMoment { cycle: 353657, moment: Moment::CreateBoxMon_RandomIvs1 }, 
+            CycleAtMoment { cycle: 395216, moment: Moment::CreateBoxMon_RandomIvs2 }
+        ];
+        assert_list_eq!(dist_results.cycle_at_moments, expected_cycle_at_moments);
     }
 }

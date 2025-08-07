@@ -15,8 +15,7 @@ use wasm_bindgen::prelude::*;
 /*
 TODO:
 - Support all leads in generator.
-- Provide a .lua script to generate actual cycle increments for validation and debugging.
-
+- Support Feebas
 - Support Wild5 with multiple vblanks. Right now, only 1 vblank is supported.
 */
 

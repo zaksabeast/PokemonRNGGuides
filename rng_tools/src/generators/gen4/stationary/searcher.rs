@@ -344,7 +344,6 @@ pub fn search_static4_methodj_seeds(
         if min_advance != 0 {
             rng.advance(min_advance.saturating_sub(1));
             seed = rng.rand::<u32>();
-        } else {
         }
         for advance in min_advance..=max_advance {
             let seed_time_opts = FindSeedTime4Options::new(
@@ -588,7 +587,6 @@ pub fn search_static4_methodk_seeds(
         if min_advance != 0 {
             rng.advance(min_advance.saturating_sub(1));
             seed = rng.rand::<u32>();
-        } else {
         }
         for advance in min_advance..=max_advance {
             let seed_time_opts = HgssSeedTime4Options {

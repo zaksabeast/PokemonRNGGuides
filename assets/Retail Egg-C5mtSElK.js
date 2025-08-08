@@ -1,0 +1,161 @@
+const n=`---
+title: "Retail Emerald Egg RNG"
+description: "Learn how to Retail RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies."
+slug: "zh-retail-emerald-egg"
+translation:
+  enSlug: "retail-emerald-egg"
+  language: "zh"
+---
+
+## 视频教程
+
+<YouTubeTable
+  videos={[
+    {
+      title: "如何获得异色蛋",
+      id: "yNWmpMTBOlc",
+    },
+    {
+      title: "如何获得完美个体蛋",
+      id: "Kdqbl08xmVQ",
+    },
+    {
+      title: "El Terapagos Mexicano 制作的所有电话训练家位置",
+      id: "oQl6Knrydnc",
+    },
+  ]}
+/>
+
+## 图文教程
+
+<Stepper titles={["宝可梦导航器", "准备工作", "选择目标", "获取 PID", "选择个体", "获取能力值"]}>
+
+<Step step={0}>
+
+### 宝可梦导航器（PokeNav）
+
+1. 尽可能多地在宝可梦导航器中注册训练家。
+2. 打开宝可梦导航器的“电话功能”，并在下方工具中选择你注册过的所有训练家。
+3. 完成后进入下一步。
+
+  <PokeNavInput />
+</Step>
+
+<Step step={1}>
+
+### 第一步：准备工作
+
+1. 可选但强烈推荐：在队伍中放一只带有避雷针和一只带有火焰之躯的宝可梦。
+   - 避雷针落雷兽在110号道路（紫堇市正下方）。
+   - 火焰之躯的熔岩虫在火山小径（紫堇市正上方）。
+2. 在绿荫镇商店购买至少 3 瓶普通的除虫喷雾。
+3. 前往培育屋，并取出当前放置在里面的宝可梦。
+4. 站在 118 号道路右上角的白色道路边缘。
+5. 使用第一瓶除虫喷雾。
+
+![白色道路起点](/images/Emerald/Retail-Egg/start-point.webp)
+
+### 第二步：存入宝可梦
+
+1. 向左走到培育屋门口，然后向上走到培育屋老奶奶前。
+2. 将亲代宝可梦存入培育屋。
+3. 走出培育屋。
+4. 与培育屋老爷爷对话，获取亲代的相性信息并记录备用。
+
+### 第三步：站好位置
+
+1. 前往绿荫镇，四处奔跑。
+2. 使用第二瓶除虫喷雾。
+3. 继续在绿荫镇奔跑并使用第三瓶除虫喷雾。
+4. 站在最靠近宝可梦中心的树旁（如下图所示）。
+5. 在宝可梦中心门前的两格地上来回走，直到除虫喷雾效果结束。
+6. 存档，并进入下一步。
+
+![宝可梦中心前](/images/Emerald/Retail-Egg/end-point.webp)
+
+</Step>
+
+<Step step={2}>
+
+### 选择目标
+
+1. 在下方工具中输入蛋的信息并点击“生成”。
+2. 点击你想孵化的目标宝可梦旁的“选择”。
+
+如果你使用了百变怪与一只无性别或雄性的亲代，请在“雌性”栏中填写非百变怪的那只宝可梦。
+
+  <RetailEmeraldHeldEgg />
+</Step>
+
+<Step step={3}>
+
+### 第一步：乱数 PID
+
+1. 确保避雷针宝可梦处于队伍首位，并进行存档。
+2. 启动下方计时器。
+3. 当第一个计时器结束时，快速软重启游戏并读取存档。
+4. 在宝可梦中心前的两格地上来回走 9 步。
+5. 根据下方工具提示按照指定次数打开图鉴。
+6. 当第二个计时器结束时，在这两格地上再走一步。
+7. 如果你收到了与你预期匹配的电话，并且培育屋老爷爷已经准备好蛋了，就保存游戏。否则，请继续查看“校准”部分。
+
+<CalibrateHeldEggTimer />
+
+### 第二步：校准
+
+1. 将火焰之躯宝可梦放到队伍首位。
+2. 向培育屋老爷爷领取蛋并孵化。如果是异色，继续下一步。
+3. 如果不是异色，在下方表单中填写电话内容和蛋的性格。
+4. 点击“查找与蛋匹配的帧数”以获取可能结果。
+5. 找到最接近 0 的 offset，并点击“校准”来调整计时器。
+6. 重新开始 PID 的乱数步骤。
+
+  <CalibrateHeldEgg />
+</Step>
+
+<Step step={4}>
+
+### 选择个体值
+
+1. 在下方工具中填写条件后点击“生成”来获取可选的个体组合。
+2. 点击你想孵化的目标宝可梦旁的“选择”。
+
+  <RetailEmeraldPickupEgg />
+</Step>
+
+<Step step={5}>
+
+### 第一步：乱数个体值
+
+1. 站在培育屋老爷爷旁边并进行存档。
+2. 启动下方计时器。
+3. 当第一个计时器结束时，软重启游戏，读取存档后尽快与老爷爷对话。
+4. 继续对话，直到出现“Take good care of it”。
+5. 当第二个计时器结束时按下 \`A\` 领取蛋。
+6. 孵化这个蛋。
+
+<CalibratePickupEggTimer />
+
+### 第二步：校准
+
+1. 在下方工具中填写孵化出的个体值并点击“查找匹配的帧数”。
+2. 如果 offset 为 0 的结果与你目标一致，恭喜你，乱数成功！
+3. 如果 offset 为 0 的结果方法不对，请重新尝试一次，无需校准。
+4. 如果没有 offset 为 0 的结果，点击最接近 0 的那行的“校准”以调整计时器。
+5. 重新执行个体值乱数步骤。
+
+  <CalibratePickupEgg />
+</Step>
+
+</Stepper>
+
+---
+
+## 特别鸣谢
+
+- Zak for writing this web tool.
+- Lincoln for the [PokeNav tool](https://github.com/Lincoln-LM/PokeNav-Egg-RNG-Tool), which this tool is based on.
+- Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, which this tool is based on.
+- El Terapagos Mexicano, jafet0022, and everyone who contributed to [this Discord thread](https://discord.com/channels/285269328469950464/1257368429107875992), which is filled with lots of retail Emerald egg research and info.
+- 中文翻译：炫夜鳞、白希洛/Hakuhiro
+`;export{n as default};

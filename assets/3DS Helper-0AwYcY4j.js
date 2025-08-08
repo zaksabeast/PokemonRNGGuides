@@ -1,0 +1,53 @@
+const n=`---
+title: "3DS Timer Helper"
+description: "Easier 3DS RNG without homebrew using precise timer starts."
+slug: "zh-3ds-helper"
+translation:
+  enSlug: "3ds-helper"
+  language: "zh"
+---
+
+<Gist>使用 3DS 辅助工具，让你的 3DS 乱数操作更轻松。</Gist>
+
+**无需破解 CFW** - 在原装主机上也可使用！
+
+本工具适用于使用 [Mystic Timer](/mystic-timer) 的 [PokeFinder](/pokefinder)，也整合在我们的一些网页工具中，例如 [迷人之躯乱数](/hgss-tid-sid) 和 [御三家乱数](/retail-hgss-starter)。
+
+## 视频教程
+
+<YouTubeTable
+  videos={[
+    {
+      title: "Using the 3DS Helper",
+      id: "-ayvPKWNkNw",
+    },
+  ]}
+/>
+
+## 图文教程
+
+1. 在你所使用的工具（如 Mystic Timer、迷人之躯、御三家等）中，将主机类型设为“3DS”。
+2. 设置你的 3DS 日期。
+3. 开始设置时间，但 **不要立刻确认**。
+4. 在网页工具中点击“启动 3DS Helper”。
+5. 当你确认 3DS 时间时，同时点击计时器的“Start”按钮。
+6. 如果计时器没有启动，说明你点“确定”太早或太晚 - 请重试。
+7. 如果计时器启动了，继续进行你的乱数流程。
+8. 如果你经常偏差 1 秒，请将 3DS Helper 的偏移值增加 100ms。
+9. 重复步骤 2–5，直到你在乱数操作中稳定地命中正确秒数为止。
+
+恭喜！你已经可以使用 3DS Helper 工具来稳定控制秒数，进行精准的乱数操作了。
+
+<Alert
+  showIcon
+  type="info"
+  message="小技巧"
+  description={\`3DS 的系统时间是在你松开“确定”按钮后才会真正设定。为了更精准地操作，你可以先按住“确定”，在准备好的同时松手并按下计时器的“Start”。这样更容易把握时机。\`}
+/>
+
+## 特别鸣谢
+
+- Zaksabeast for researching this and making the 3DS Helper tool
+- Rainlan on Discord for noticing the 3DS time isn't set until you lift your finger from the "Ok" button, which makes timing much easier
+- 中文翻译：炫夜鳞、白希洛/Hakuhiro
+`;export{n as default};

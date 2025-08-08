@@ -72,7 +72,16 @@ pub enum Static4Species {
     Entei,
     Suicune,
     Voltorb,
+    Electrode,
     Snorlax,
+    Lapras,
+    Mewtwo,
+    Sudowoodo,
+    EonLatios,
+    EonLatias,
+    Groudon,
+    Kyogre,
+    Rayquaza,
 }
 
 impl Static4Species {
@@ -134,7 +143,16 @@ impl Static4Species {
             Static4Species::Entei => Species::Entei,
             Static4Species::Suicune => Species::Suicune,
             Static4Species::Voltorb => Species::Voltorb,
+            Static4Species::Electrode => Species::Electrode,
             Static4Species::Snorlax => Species::Snorlax,
+            Static4Species::Lapras => Species::Lapras,
+            Static4Species::Mewtwo => Species::Mewtwo,
+            Static4Species::Sudowoodo => Species::Sudowoodo,
+            Static4Species::EonLatios => Species::Latios,
+            Static4Species::EonLatias => Species::Latias,
+            Static4Species::Groudon => Species::Groudon,
+            Static4Species::Rayquaza => Species::Rayquaza,
+            Static4Species::Kyogre => Species::Kyogre,
         }
     }
 }
@@ -173,6 +191,14 @@ pub fn hgss_method_jk(species: Species) -> bool {
             | Species::Giratina
             | Species::Voltorb
             | Species::Snorlax
+            | Species::Lapras
+            | Species::Electrode
+            | Species::Sudowoodo
+            | Species::Latias
+            | Species::Latios
+            | Species::Groudon
+            | Species::Kyogre
+            | Species::Rayquaza
     )
 }
 

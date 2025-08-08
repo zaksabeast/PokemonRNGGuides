@@ -9,7 +9,6 @@ import {
 import React from "react";
 import { z } from "zod";
 import { TextArea } from "~/components/textArea";
-import { ExternalLink } from "~/components/link";
 
 type UiResultCycleAtMoment = CycleAtMoment & {
   uid: number;

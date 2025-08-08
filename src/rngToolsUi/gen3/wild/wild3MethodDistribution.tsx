@@ -17,8 +17,6 @@ import {
   RngToolSubmit,
   FormFieldTable,
   FormikRadio,
-  FormikResultTable,
-  ResultTable,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatProbability } from "~/utils/formatProbability";

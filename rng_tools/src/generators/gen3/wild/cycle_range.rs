@@ -6,7 +6,6 @@ use wasm_bindgen::prelude::*;
 
 pub const BASE_LEAD_PID: u32 = 0;
 pub const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 24);
-pub const BASE_LEAD_PID_MOD_25_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 25);
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[allow(non_camel_case_types)]
@@ -14,6 +13,7 @@ pub enum Moment {
     ChooseWildMonIndex_Land_Random,
     ChooseWildMonLevel_RandomLvl,
     PickWildMonNature_RandomTestSynchro,
+    CreateWildMon_RandomTestCuteCharm,
     PickWildMonNature_RandomPickNature,
     CreateMonWithNature_RandomPidLowFirst,
     CreateMonWithNature_RandomPidHighLast,
@@ -86,8 +86,10 @@ impl CycleAndModRange {
 }
 
 impl CycleAndModCount {
-    pub fn add(&mut self, cycle: usize, lead_pid_mod: usize) {
+    pub fn add_cycle(&mut self, cycle: usize) {
         self.cycle += cycle;
+    }
+    pub fn add_mod(&mut self, lead_pid_mod: usize) {
         self.cycle += lead_pid_mod * BASE_LEAD_PID_MOD_24_CYCLES;
         self.lead_pid_mod += lead_pid_mod;
     }
@@ -132,7 +134,14 @@ pub struct CycleCounter {
 
 impl CycleCounter {
     pub fn add(&mut self, cycle: usize, lead_pid_mod: usize) {
-        self.cycle.add(cycle, lead_pid_mod);
+        self.add_cycle(cycle);
+        self.add_mod(lead_pid_mod);
+    }
+    pub fn add_cycle(&mut self, cycle: usize) {
+        self.cycle.add_cycle(cycle);
+    }
+    pub fn add_mod(&mut self, lead_pid_mod: usize) {
+        self.cycle.add_mod(lead_pid_mod);
     }
     pub fn on_moment_reached(&mut self, moment: Moment) {
         self.cycle_at_moments.push(CycleAndModAtMoment {

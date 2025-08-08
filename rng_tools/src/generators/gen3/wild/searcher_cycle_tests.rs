@@ -42,7 +42,7 @@ mod test {
                 method: Gen3Method::Wild2,
                 encounter_slot: EncounterSlot::Slot1,
                 cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
-                    post_sweet_scent_range: CycleRange::new(72102, 80, 0, 114265),
+                    post_sweet_scent_range: CycleRange::new(72102, 80, 114265),
                     slowest_lead: Wild3SearcherCycleData::new(900, 22529, 114265, 1.0),
                     fastest_lead: Wild3SearcherCycleData::new(18, 93089, 114265, 0.0),
                     ideal_lead: Wild3SearcherCycleData::new(900, 22529, 114265, 1.0),
@@ -64,7 +64,7 @@ mod test {
                 method: Gen3Method::Wild4,
                 encounter_slot: EncounterSlot::Slot1,
                 cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
-                    post_sweet_scent_range: CycleRange::new(186367, 80, 0, 38679),
+                    post_sweet_scent_range: CycleRange::new(186367, 80, 38679),
                     slowest_lead: Wild3SearcherCycleData::new(900, 0, 22529, 0.0),
                     fastest_lead: Wild3SearcherCycleData::new(18, 54410, 38679, 0.5295),
                     ideal_lead: Wild3SearcherCycleData::new(252, 35690, 38679, 1.0),
@@ -86,7 +86,7 @@ mod test {
                 method: Gen3Method::Wild1,
                 encounter_slot: EncounterSlot::Slot1,
                 cycle_data_by_lead: Some(Wild3SearcherCycleDataByLead {
-                    post_sweet_scent_range: CycleRange::new(225046, 80, 0, 10000000),
+                    post_sweet_scent_range: CycleRange::new(225046, 80, 10000000),
                     slowest_lead: Wild3SearcherCycleData::new(900, 0, 0, 0.0),
                     fastest_lead: Wild3SearcherCycleData::new(18, 0, 54410, 0.4705),
                     ideal_lead: Wild3SearcherCycleData::new(18, 0, 54410, 0.4705),

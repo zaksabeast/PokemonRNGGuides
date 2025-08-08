@@ -125,6 +125,7 @@ fn search_wild3_at_given_advance(
             };
 
             generate_gen3_wild(rng, &gen_opts, &encounter_info.encounter_table)
+                .0
                 .iter()
                 .for_each(|gen_res| {
                     let gender_ratio = encounter_info.encounter_table.slots

@@ -54,7 +54,6 @@ pub struct Egg3PickupOptions {
     pub parent_ivs: [PartialIvs; 2],
     pub method: Gen3PickupMethod,
     pub filter: IvFilter,
-    pub lua_adjustment: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -74,10 +73,7 @@ pub fn emerald_egg_pickup_states(opts: &Egg3PickupOptions) -> Vec<Egg3PickupStat
             let ivs = generate_pickup_ivs(opts, rng);
             if ivs.filter(&opts.filter.min_ivs, &opts.filter.max_ivs) {
                 Some(Egg3PickupState {
-                    advance: advance
-                        // Lua scripts are off by 1
-                        .saturating_add(opts.lua_adjustment as usize)
-                        .saturating_sub(opts.delay),
+                    advance: advance.saturating_sub(opts.delay),
                     ivs,
                 })
             } else {
@@ -162,7 +158,6 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
-            lua_adjustment: false,
             filter: IvFilter::new_allow_all(),
         };
 
@@ -303,7 +298,6 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
-            lua_adjustment: false,
             filter: IvFilter::new_allow_all(),
         };
 
@@ -444,7 +438,6 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
-            lua_adjustment: false,
             filter: IvFilter::new_allow_all(),
         };
 
@@ -585,7 +578,6 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
-            lua_adjustment: false,
             filter: IvFilter {
                 min_ivs: Ivs {
                     hp: 10,
@@ -630,7 +622,6 @@ mod test {
             initial_advances: 100,
             max_advances: 10,
             seed: 0,
-            lua_adjustment: false,
             filter: IvFilter::new_allow_all(),
         };
         let first_results = emerald_egg_pickup_states(&opts);
@@ -640,32 +631,6 @@ mod test {
             .into_iter()
             .map(|mut egg| {
                 egg.advance = egg.advance.saturating_add(10);
-                egg
-            })
-            .collect::<Vec<_>>();
-
-        assert_list_eq!(first_results, second_results);
-    }
-
-    #[test]
-    fn lua_adjustment() {
-        let mut opts = Egg3PickupOptions {
-            delay: 0,
-            parent_ivs: [MALE_IVS, FEMALE_IVS],
-            method: Gen3PickupMethod::EmeraldBred,
-            initial_advances: 100,
-            max_advances: 10,
-            seed: 0,
-            lua_adjustment: false,
-            filter: IvFilter::new_allow_all(),
-        };
-        let first_results = emerald_egg_pickup_states(&opts);
-
-        opts.lua_adjustment = true;
-        let second_results = emerald_egg_pickup_states(&opts)
-            .into_iter()
-            .map(|mut egg| {
-                egg.advance = egg.advance.saturating_sub(1);
                 egg
             })
             .collect::<Vec<_>>();
@@ -688,7 +653,6 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
-            lua_adjustment: false,
             filter: IvFilter {
                 min_ivs: Ivs {
                     hp: 10,
@@ -729,7 +693,6 @@ mod test {
             initial_advances: 0,
             max_advances: 10,
             seed: 0,
-            lua_adjustment: false,
             filter: IvFilter {
                 min_ivs: Ivs {
                     hp: 10,

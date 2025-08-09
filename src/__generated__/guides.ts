@@ -1042,10 +1042,10 @@ export const guides = {
       categories: ["Diamond, Pearl, and Platinum"],
       tags: ["retail"],
       isNew: false,
-      title: "HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG",
+      title: "Diamond, Pearl, and Platinum Cute Charm Glitch TID/SID RNG",
       navDrawerTitle: "Cute Charm & TID/SID RNG",
       description:
-        "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for HeartGold and SoulSilver.",
+        "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for Diamond, Pearl, and Platinum.",
       slug: "/dppt-tid-sid/",
       isRoughDraft: false,
       hideFromNavDrawer: false,
@@ -1055,7 +1055,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/Retail TID.mdx",
-      translations: null,
+      translations: { en: "/dppt-tid-sid/", zh: "/zh-dppt-tid-sid/" },
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
@@ -3650,7 +3650,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/Retail TID.mdx",
-      translations: null,
+      translations: { en: "/hgss-tid-sid/", zh: "/zh-hgss-tid-sid/" },
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
@@ -7150,6 +7150,36 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-dppt-tid-sid/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["retail"],
+      isNew: false,
+      title: "珍钻白金迷人之躯漏洞TID/SID乱数",
+      navDrawerTitle: "珍钻白金迷人之躯漏洞TID/SID乱数",
+      description: "学习如何在珍钻中通过乱数获得迷人之躯漏洞的TID/SID组合",
+      slug: "/zh-dppt-tid-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-06-08",
+      translation: { enSlug: "/dppt-tid-sid/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/Retail TID.mdx",
+      translations: { en: "/dppt-tid-sid/", zh: "/zh-dppt-tid-sid/" },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Retail TID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Retail TID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-dppt-wild/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
@@ -8516,6 +8546,36 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-hgss-tid-sid/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["retail"],
+      isNew: false,
+      title: "心金魂银迷人之躯漏洞TID/SID乱数",
+      navDrawerTitle: "心金魂银迷人之躯漏洞TID/SID乱数",
+      description: "学习如何在心金魂银中通过乱数获得迷人之躯漏洞的TID/SID组合",
+      slug: "/zh-hgss-tid-sid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-06-08",
+      translation: { enSlug: "/hgss-tid-sid/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/Retail TID.mdx",
+      translations: { en: "/hgss-tid-sid/", zh: "/zh-hgss-tid-sid/" },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/Retail TID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Retail TID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-install-pokereader/": {
     meta: {
       categories: ["3DS Tools"],
@@ -9332,6 +9392,7 @@ export const guideSlugs = [
   "/zh-dppt-initial-seed-retail/",
   "/zh-dppt-initial-seed/",
   "/zh-dppt-pokeradar-rng/",
+  "/zh-dppt-tid-sid/",
   "/zh-dppt-wild/",
   "/zh-e-tips-rng/",
   "/zh-emerald-mirage-island/",
@@ -9372,6 +9433,7 @@ export const guideSlugs = [
   "/zh-hgss-3ds-rng/",
   "/zh-hgss-cute-charm/",
   "/zh-hgss-rng-advance/",
+  "/zh-hgss-tid-sid/",
   "/zh-install-pokereader/",
   "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",

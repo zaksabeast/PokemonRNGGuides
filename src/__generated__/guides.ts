@@ -1042,10 +1042,10 @@ export const guides = {
       categories: ["Diamond, Pearl, and Platinum"],
       tags: ["retail"],
       isNew: false,
-      title: "HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG",
+      title: "Diamond, Pearl, & Platinum Cute Charm Glitch TID/SID RNG",
       navDrawerTitle: "Cute Charm & TID/SID RNG",
       description:
-        "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for HeartGold and SoulSilver.",
+        "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for Diamond, Pearl, & Platinum.",
       slug: "/dppt-tid-sid/",
       isRoughDraft: false,
       hideFromNavDrawer: false,

@@ -1,0 +1,149 @@
+const e=`---
+- title: "HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG"
+  navDrawerTitle: "Cute Charm & TID/SID RNG"
+  description: "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for HeartGold and SoulSilver."
+  slug: "hgss-tid-sid"
+  category: "HeartGold and SoulSilver"
+  tag: "retail"
+  addedOn: "2025-06-08"
+- title: "Diamond, Pearl, & Platinum Cute Charm Glitch TID/SID RNG"
+  navDrawerTitle: "Cute Charm & TID/SID RNG"
+  description: "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for Diamond, Pearl, & Platinum."
+  slug: "dppt-tid-sid"
+  category: "Diamond, Pearl, and Platinum"
+  tag: "retail"
+  addedOn: "2025-06-08"
+---
+
+## Video Guide
+
+<YouTubeTable
+  videos={[
+    {
+      title: "Cute Charm and TID/SID",
+      id: "4mLxKXYWgvs",
+    },
+    {
+      title: "3DS RNG",
+      id: "-ayvPKWNkNw",
+    },
+  ]}
+/>
+
+## Written Guide
+
+<Alert
+  showIcon
+  type="info"
+  message="This guide is interactive and updates instructions based on your settings!"
+/>
+
+<Gist>
+  RNG a TID and SID to predict when you'll get shiny Pokemon. Optionally RNG a
+  Cute Charm ID pair for massively increased shiny odds during your playthrough.
+</Gist>
+
+For increased shiny odds, have a Pokemon with the Cute Charm ability in the front of your party. The Pokemon's gender needs to be the opposite of your target gender. For max shiny odds, this means having a male Cute Charmer.
+
+<Stepper titles={["Set up", "Pick a TID", "Hit Target", "Calibrate"]}>
+
+<Step step={0}>
+
+## Set up
+
+Choose the game and console you're playing below then continue to the next step.
+
+<Gen4IdSetup />
+
+<Id4ShowIf is3dsNormalSettings>
+  [Learn how to use the 3DS Helper here](/3ds-helper).
+</Id4ShowIf>
+
+<Id4ShowIf is3dsAltSettings>
+  [Download the 3DS Alt Settings app here](/3ds-alt-settings).
+</Id4ShowIf>
+
+</Step>
+
+<Step step={1}>
+
+## Pick a TID
+
+Fill our the tool below. If you want random max shiny odds during your playthrough, leave the default settings.
+
+<Id4Searcher />
+
+</Step>
+
+<Step step={2}>
+
+## Prepare
+
+1. Set your console date to **<Id4ConsoleSetDateString format="date" />**.
+2. Start setting your console time to **<Id4ConsoleSetDateString format="time" />**, but don't confirm it just yet.
+
+| Confirm time screen                                                    |
+| ---------------------------------------------------------------------- |
+| ![Confirm time screen](/images/HeartGold-SoulSilver/SetTimeScreen.jpg) |
+
+## Hit your target
+
+1. Simultaneously press \`A\` to set the console time and start the timer below.
+2. <Id4ShowIf is3dsNormalSettings>
+     Exit the settings on your console, restart your console, and start the
+     game.
+   </Id4ShowIf>
+   <Id4ShowIf is3dsAltSettings>
+     Press \`Start\` to exit the Alt Settings on your console, then start the
+     game.
+   </Id4ShowIf>
+   <Id4ShowIf isNdsDsi>
+     Exit the settings on your console and restart your console.
+   </Id4ShowIf>
+3. When the first timer ends, <Id4ShowIf is3dsNormalSettings is3dsAltSettings>press \`L + R + Start + Select\` to soft reset the game.</Id4ShowIf><Id4ShowIf isNdsDsi>press \`A\` to start the game.</Id4ShowIf>
+4. Get to the naming screen. Make sure to name your character the same way each time.
+5. If you've calibrated at least once and need to flip your delay, switch between upper and lower case characters one extra time. Japanese games should switch between Hiragana and Katakana.
+6. Get to the last screen before the TID is generated (see screenshot below). Wait for the second timer to go off and press \`A\` at the same time.
+   - If you don't have enough time to reach the last screen before the timer goes off, find a TID with a higher delay to give more time.
+7. Continue to the next step to check what TID you hit.
+
+| Diamond & Pearl                                                             | Platinum                                                                                | HeartGold & SoulSilver                                                    |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| ![DP Final Screen](/images/Diamond-Pearl-Platinum/TID/DPTIDFinalScreen.png) | ![Platinum Final Screen](/images/Diamond-Pearl-Platinum/TID/PlatinumTIDFinalScreen.png) | ![HGSS Final Screen](/images/HeartGold-SoulSilver/HGSSTIDFinalScreen.png) |
+
+## Timer
+
+<Id4ShowIf is3dsNormalSettings>
+  [Learn how to use the 3DS Helper here](/3ds-helper).
+</Id4ShowIf>
+
+<Id4Timer />
+
+</Step>
+
+<Step step={3}>
+
+## Calibrate
+
+1. Open your trainer card and check your TID.
+2. If it matches your target, congratulations! You RNG'd your TID!
+3. If not, type your TID into the box below and click "Generate".
+4. Click "Calibrate" on the TID with the smallest delay offset (should be the first result).
+5. If the "Flip Delay" column is checked, you'll need to swap between the player name characters one extra time, e.g. lower to upper case. Japanese games will need to switch to a different kana, eg. from Hiragana to Katakana.
+6. Try to hit your target again.
+
+In Diamond and Pearl it is possible for the delay to randomly switch from even to odd, or vice versa. When this happens, you'll need to keep trying until you get the target.
+
+<CalibrateId4 />
+
+</Step>
+
+</Stepper>
+
+<WhatNext slugs={["retail-hgss-starter", "retail-dppt-starter"]} />
+
+## Credits
+
+- Zaksabeast for writing this tool
+- Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, whose work this tool is built upon.
+`;export{e as default};

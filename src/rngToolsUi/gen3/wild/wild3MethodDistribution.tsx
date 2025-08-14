@@ -6,6 +6,7 @@ import {
   Gen3Method,
   Wild3MethodDistributionResult,
   Wild3EncounterTable,
+  CycleAtMoment,
 } from "~/rngTools";
 import {
   Field,
@@ -44,6 +45,7 @@ import {
 } from "./utils";
 import { encounterSlots, nature } from "~/types";
 import { useWatch } from "react-hook-form";
+import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
 
 type LeadSpeedType = "Fastest" | "Average" | "Slowest" | "From PID" | "Custom";
 
@@ -382,6 +384,9 @@ type Props = {
 
 export const Wild3MethodDistribution = ({ game }: Props) => {
   const [results, setResults] = React.useState<UiResult[]>([]);
+  const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>(
+    [],
+  );
 
   const initial_seed = game === "emerald" ? 0 : 0x5a0;
 
@@ -413,18 +418,20 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
         return setResults([]);
       }
 
-      const results = await rngTools.generate_gen3_wild_distribution(
-        initial_seed,
-        opts,
-        encounterTable,
-        values.leadCycleSpeed,
-      );
+      const { results, cycle_at_moments } =
+        await rngTools.generate_gen3_wild_distribution(
+          initial_seed,
+          opts,
+          encounterTable,
+          values.leadCycleSpeed,
+        );
       const uiResults = convertSearcherResultsToUIResults(
         results,
         encounterTable,
       );
 
       setResults(uiResults);
+      setCycleAtMoments(cycle_at_moments);
     },
     [initial_seed],
   );
@@ -434,16 +441,20 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
   }, []);
 
   return (
-    <RngToolForm<FormState, UiResult>
-      getColumns={getColumns}
-      results={results}
-      validationSchema={Validator}
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      submitTrackerId="wild3_find_target"
-      rowKey="uid"
-    >
-      <Wild3MethodDistributionFields />
-    </RngToolForm>
+    <>
+      <RngToolForm<FormState, UiResult>
+        getColumns={getColumns}
+        results={results}
+        validationSchema={Validator}
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        submitTrackerId="wild3_find_target"
+        rowKey="uid"
+      >
+        <Wild3MethodDistributionFields />
+      </RngToolForm>
+
+      <Wild3CycleAtMoments cycleAtMoments={cycleAtMoments} />
+    </>
   );
 };

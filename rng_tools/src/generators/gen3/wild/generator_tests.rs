@@ -20,7 +20,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
+        let (result, _) = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot1,
             pid: 0x6E031C49,
@@ -53,7 +53,7 @@ mod test {
 
         let mut rng = Pokerng::new(0x346A4A45);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
+        let (result, _) = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot0,
             pid: 0x02FA9E49,
@@ -80,7 +80,7 @@ mod test {
         };
 
         let rng = Pokerng::new(0x14a22065);
-        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
+        let (result, _) = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot4,
             pid: 0x692A57E1,
@@ -100,7 +100,7 @@ mod test {
         };
 
         let rng = Pokerng::new(0x14a22065);
-        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
+        let (result, _) = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![Wild3GeneratorResult {
             pid: 0x3A5DEC53,
             method: Gen3Method::Wild1,
@@ -122,7 +122,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
+        let (result, _) = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot0,
             pid: 0x722DEBE7,
@@ -149,7 +149,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
+        let (result, _) = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![
             Wild3GeneratorResult {
                 encounter_slot: EncounterSlot::Slot0,
@@ -208,7 +208,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
+        let (result, _) = generate_gen3_wild(rng, &options, &Wild3EncounterTable::default());
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot1,
             pid: 1996552928,
@@ -231,7 +231,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options, &game_data);
+        let (result, _) = generate_gen3_wild(rng, &options, &game_data);
         let expected_result = vec![Wild3GeneratorResult {
             encounter_slot: EncounterSlot::Slot1,
             pid: 4072166945,
@@ -261,7 +261,7 @@ mod test {
 
         let mut rng = Pokerng::new(0);
         rng.advance(options.advance);
-        let result = generate_gen3_wild(rng, &options);
+        let (result,_) = generate_gen3_wild(rng, &options);
 
         println!("{:?}", result);
         assert!(false);

@@ -247,6 +247,7 @@ pub fn generate_gen3_wild(
             return (results, cycle_counter); // empty
         }
     }
+    cycle_counter.on_moment_reached(Moment::ChooseWildMonIndex_Land_Random);
 
     let lvl = select_lvl(&mut rng, opts.lead, encounter, &mut cycle_counter);
 

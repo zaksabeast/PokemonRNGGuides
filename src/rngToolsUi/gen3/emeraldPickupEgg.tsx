@@ -110,32 +110,24 @@ const getFields = (t: Translations): Field[] => {
   ];
 };
 
-type Props = {
-  lua?: boolean;
-};
-
-export const EmeraldPickupEgg = ({ lua = false }: Props) => {
+export const EmeraldPickupEgg = () => {
   const t = useActiveRouteTranslations();
   const fields = React.useMemo(() => getFields(t), [t]);
   const columns = React.useMemo(() => getColumns(t), [t]);
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const results = await rngTools.emerald_egg_pickup_states({
-        ...opts,
-        parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
-        lua_adjustment: lua,
-        filter: {
-          max_ivs: opts.filter_max_ivs,
-          min_ivs: opts.filter_min_ivs,
-        },
-      });
+  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+    const results = await rngTools.emerald_egg_pickup_states({
+      ...opts,
+      parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
+      filter: {
+        max_ivs: opts.filter_max_ivs,
+        min_ivs: opts.filter_min_ivs,
+      },
+    });
 
-      setResults(results.map(flattenIvs));
-    },
-    [lua],
-  );
+    setResults(results.map(flattenIvs));
+  }, []);
 
   return (
     <RngToolForm<FormState, Result>

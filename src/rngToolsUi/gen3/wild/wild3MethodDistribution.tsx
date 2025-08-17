@@ -5,7 +5,9 @@ import {
   Gen3Lead,
   Gen3Method,
   Wild3MethodDistributionResult,
-  Wild3EncounterTable,
+  CycleAtMoment,
+  Wild3GeneratorOptions,
+  Wild3Action,
 } from "~/rngTools";
 import {
   Field,
@@ -38,12 +40,23 @@ import {
 
 import {
   formatMapName,
-  formatEncounterTypeName,
-  gen3EncounterTypes,
-  emeraldWildGameData,
+  formatActionName,
+  wild3Actions,
+  wild3FeebasStates,
+  formatRoamerStateName,
+  wild3RoamerStates,
+  wild3MassOutbreakStates,
+  formatMassOutbreakStateName,
+  formatFeebasStateName,
+  leadsLabels,
+  gen3Leads,
 } from "./utils";
-import { encounterSlots, nature } from "~/types";
 import { useWatch } from "react-hook-form";
+import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
+import { uniq } from "lodash-es";
+import { getWild3EmeraldGameData } from "./data/wild3GameData";
+
+const emeraldWildGameData = getWild3EmeraldGameData();
 
 type LeadSpeedType = "Fastest" | "Average" | "Slowest" | "From PID" | "Custom";
 
@@ -57,14 +70,21 @@ const leadSpeedTypes = [
 
 const Validator = z.object({
   map: z.string(),
-  encounterType: z.enum(gen3EncounterTypes),
+  action: z.enum(wild3Actions),
   advance: z.number().int().min(0),
   tid: z.number().int().min(0).max(0xffff),
   sid: z.number().int().min(0).max(0xffff),
-  leadTypeIdx: z.number(),
+  // Limitation: value in Select must be a primitive, so we use the index instead of Gen3Lead.
+  leadIdx: z
+    .number()
+    .min(0)
+    .max(gen3Leads.length - 1),
   leadSpeedType: z.enum(leadSpeedTypes),
   leadPID: z.number().min(0).max(0xffffffff),
   leadCycleSpeed: z.number().min(18).max(900),
+  feebasState: z.enum(wild3FeebasStates),
+  roamerState: z.enum(wild3RoamerStates),
+  massOutbreakState: z.enum(wild3MassOutbreakStates),
 });
 
 type FormState = z.infer<typeof Validator>;
@@ -72,52 +92,61 @@ type FormState = z.infer<typeof Validator>;
 const getInitialValues = (): FormState => {
   return {
     map: "MAP_ROUTE101",
-    encounterType: "Land",
+    action: "SweetScentLand",
     tid: 0,
     sid: 0,
     advance: 0,
-    leadTypeIdx: 0,
+    leadIdx: 0,
     leadSpeedType: "Average",
     leadPID: 0,
     leadCycleSpeed: 0,
+    feebasState: "NotInMap",
+    roamerState: "Inactive",
+    massOutbreakState: "Inactive",
   };
 };
 
-const leadTypeOptions: { value: Gen3Lead; label: string }[] = [
-  {
-    label: "Ordinary lead",
-    value: "Vanilla",
-  },
-  {
-    label: "Egg",
-    value: "Egg",
-  },
-  ...nature.map((nat) => {
-    return {
-      label: `Synchronize (${nat})`,
-      value: { Synchronize: nat },
-    };
-  }),
-  {
-    label: `Cute Charm (Male)`,
-    value: { CuteCharm: "Male" },
-  },
-  {
-    label: `Cute Charm (Female)`,
-    value: { CuteCharm: "Female" },
-  },
-];
+const getPossibleValuesForMap = (mapId: string, action: Wild3Action) => {
+  const mapSetups = Array.from(emeraldWildGameData.mapSetupsBySpecies.values())
+    .flat()
+    .filter((mapSetup) => {
+      return mapSetup.map_data.map_id === mapId;
+    });
+
+  const mapSetupsForAction = mapSetups.filter((mapSetup) => {
+    return mapSetup.actions.includes(action);
+  });
+
+  const feebas_states = uniq(
+    mapSetupsForAction.flatMap((mapSetup) => mapSetup.feebas_states),
+  ).filter((state) => {
+    // fix issue where "Not in Map" is selectable even when in Route 119
+    // this is because of Tentacool which is both OldRod and SweetScentOnWater.
+    // SweetScentOnWater has the feebas_state NotInMap
+    return mapId !== "MAP_ROUTE119" || state !== "NotInMap";
+  });
+
+  return {
+    actions: uniq(mapSetups.flatMap((mapSetup) => mapSetup.actions)),
+    feebas_states,
+    roamer_states: uniq(
+      mapSetupsForAction.flatMap((mapSetup) => mapSetup.roamer_states),
+    ),
+    mass_outbreak_states: uniq(
+      mapSetupsForAction.flatMap((mapSetup) => mapSetup.mass_outbreak_states),
+    ),
+  };
+};
 
 const getFields = (
-  map_id: string,
+  mapId: string,
+  action: Wild3Action,
   leadType: Gen3Lead,
   leadSpeedType: LeadSpeedType,
   leadCycleSpeed: number,
 ): Field[] => {
-  const encounterTypes = emeraldWildGameData.encounter_tables
-    .filter((table) => table.map_id === map_id)
-    .map((table) => table.encounter_type);
-
+  const { actions, feebas_states, roamer_states, mass_outbreak_states } =
+    getPossibleValuesForMap(mapId, action);
   const fields: Field[] = [
     {
       label: "Map",
@@ -128,13 +157,19 @@ const getFields = (
         />
       ),
     },
+  ];
 
+  if (actions.length === 0) {
+    return fields;
+  }
+
+  fields.push(
     {
-      label: "Encounter Type",
+      label: "Player action",
       input: (
-        <FormikSelect<FormState, "encounterType">
-          name="encounterType"
-          options={toOptions(encounterTypes, formatEncounterTypeName)}
+        <FormikSelect<FormState, "action">
+          name="action"
+          options={toOptions(actions, formatActionName)}
         />
       ),
     },
@@ -149,16 +184,15 @@ const getFields = (
     {
       label: "Lead",
       input: (
-        <FormikSelect<FormState, "leadTypeIdx">
-          name="leadTypeIdx"
+        <FormikSelect<FormState, "leadIdx">
+          name="leadIdx"
           // Limitation: value must be a primitive, so we use the index instead of Gen3Lead.
-          options={leadTypeOptions.map((el, idx) => {
-            return { label: el.label, value: idx };
-          })}
+          options={leadsLabels}
         />
       ),
     },
-  ];
+  );
+
   if (leadType !== "Egg") {
     fields.push({
       label: "Lead Speed",
@@ -227,14 +261,50 @@ const getFields = (
     label: "Advance",
     input: <FormikNumberInput<FormState> name="advance" numType="decimal" />,
   });
+
+  if (feebas_states.length > 1) {
+    fields.push({
+      label: "Feebas state",
+      input: (
+        <FormikSelect<FormState, "feebasState">
+          name="feebasState"
+          options={toOptions(feebas_states, formatFeebasStateName)}
+        />
+      ),
+    });
+  }
+
+  if (roamer_states.length > 1) {
+    fields.push({
+      label: "Roamer state",
+      input: (
+        <FormikSelect<FormState, "roamerState">
+          name="roamerState"
+          options={toOptions(roamer_states, formatRoamerStateName)}
+        />
+      ),
+    });
+  }
+
+  if (mass_outbreak_states.length > 1) {
+    fields.push({
+      label: "Mass outbreak state",
+      input: (
+        <FormikSelect<FormState, "massOutbreakState">
+          name="massOutbreakState"
+          options={toOptions(mass_outbreak_states, formatMassOutbreakStateName)}
+        />
+      ),
+    });
+  }
   return fields;
 };
 
 export const Wild3MethodDistributionFields = () => {
   const { setFieldValue } = useFormContext<FormState>();
   const map = useWatch<FormState, "map">({ name: "map" });
-  const leadTypeIdx = useWatch<FormState, "leadTypeIdx">({
-    name: "leadTypeIdx",
+  const leadIdx = useWatch<FormState, "leadIdx">({
+    name: "leadIdx",
   });
   const leadSpeedType = useWatch<FormState, "leadSpeedType">({
     name: "leadSpeedType",
@@ -243,15 +313,54 @@ export const Wild3MethodDistributionFields = () => {
     name: "leadCycleSpeed",
   });
   const leadPID = useWatch<FormState, "leadPID">({ name: "leadPID" });
+  const action = useWatch<FormState, "action">({ name: "action" });
+  const feebasState = useWatch<FormState, "feebasState">({
+    name: "feebasState",
+  });
+  const massOutbreakState = useWatch<FormState, "massOutbreakState">({
+    name: "massOutbreakState",
+  });
+  const roamerState = useWatch<FormState, "roamerState">({
+    name: "roamerState",
+  });
 
   const fields = React.useMemo((): Field[] => {
     return getFields(
       map,
-      leadTypeOptions[leadTypeIdx].value,
+      action,
+      gen3Leads[leadIdx],
       leadSpeedType,
       leadCycleSpeed,
     );
-  }, [map, leadTypeIdx, leadSpeedType, leadCycleSpeed]);
+  }, [map, action, leadIdx, leadSpeedType, leadCycleSpeed]);
+
+  React.useEffect(() => {
+    const possVals = getPossibleValuesForMap(map, action);
+    if (
+      possVals.actions.length > 0 &&
+      possVals.actions.includes(action) === false
+    ) {
+      setFieldValue("action", possVals.actions[0]);
+    }
+    if (
+      possVals.feebas_states.length > 0 &&
+      possVals.feebas_states.includes(feebasState) === false
+    ) {
+      setFieldValue("feebasState", possVals.feebas_states[0]);
+    }
+    if (
+      possVals.mass_outbreak_states.length > 0 &&
+      possVals.mass_outbreak_states.includes(massOutbreakState) === false
+    ) {
+      setFieldValue("massOutbreakState", possVals.mass_outbreak_states[0]);
+    }
+    if (
+      possVals.roamer_states.length > 0 &&
+      possVals.roamer_states.includes(roamerState) === false
+    ) {
+      setFieldValue("roamerState", possVals.roamer_states[0]);
+    }
+  }, [map, action, feebasState, massOutbreakState, roamerState, setFieldValue]);
 
   React.useEffect(() => {
     calculateLeadCycleSpeed(leadSpeedType, leadCycleSpeed, leadPID).then(
@@ -340,27 +449,22 @@ type UiResult = FlattenIvs<
 let nextUid = 0;
 const convertSearcherResultToUIResult = (
   res: Wild3MethodDistributionResult,
-  encounterTable: Wild3EncounterTable,
 ): UiResult => {
-  const slot_idx = encounterSlots.indexOf(res.searcher_res.encounter_slot);
-  const species =
-    slot_idx == -1 ? "None" : encounterTable.slots[slot_idx].species;
   return {
     ...res.searcher_res,
     ...res.searcher_res.ivs,
     method_probability: res.method_probability,
     pre_sweet_scent_cycle_ranges: res.pre_sweet_scent_cycle_ranges,
-    species,
+    species: res.searcher_res.species,
     uid: nextUid++,
   };
 };
 
 const convertSearcherResultsToUIResults = (
   results: Wild3MethodDistributionResult[],
-  encounterTable: Wild3EncounterTable,
 ) => {
   return results
-    .map((res) => convertSearcherResultToUIResult(res, encounterTable))
+    .map((res) => convertSearcherResultToUIResult(res))
     .sort((lhs, rhs) => {
       const startDiff =
         (lhs.pre_sweet_scent_cycle_ranges[0]?.start ?? -1) -
@@ -382,49 +486,53 @@ type Props = {
 
 export const Wild3MethodDistribution = ({ game }: Props) => {
   const [results, setResults] = React.useState<UiResult[]>([]);
+  const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>(
+    [],
+  );
 
   const initial_seed = game === "emerald" ? 0 : 0x5a0;
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
-      const opts = {
-        advance: values.advance,
+      const opts: Wild3GeneratorOptions = {
         tid: values.tid,
         sid: values.sid,
         map_idx: 0,
-        encounter_slot: null,
+        action: values.action,
         methods: ["Wild1", "Wild2", "Wild3", "Wild4", "Wild5"] as Gen3Method[],
-        lead: leadTypeOptions[values.leadTypeIdx].value,
+        lead: gen3Leads[values.leadIdx],
         filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
         gen3_filter: gen3PkmFilterFieldsToRustInput(
           getGen3PkmFilterInitialValues(),
+          null,
         ),
         consider_cycles: true,
         consider_rng_manipulated_lead_pid: true,
         generate_even_if_impossible: true,
+        roamer_state: values.roamerState,
+        mass_outbreak_state: values.massOutbreakState,
+        feebas_state: values.feebasState,
       };
 
-      const encounterTable = emeraldWildGameData.encounter_tables.find(
-        (table) =>
-          table.map_id === values.map &&
-          table.encounter_type === values.encounterType,
+      const map_data = emeraldWildGameData.maps_data.find(
+        (table) => table.map_id === values.map,
       );
-      if (encounterTable == null) {
+      if (map_data == null) {
         return setResults([]);
       }
 
-      const results = await rngTools.generate_gen3_wild_distribution(
-        initial_seed,
-        opts,
-        encounterTable,
-        values.leadCycleSpeed,
-      );
-      const uiResults = convertSearcherResultsToUIResults(
-        results,
-        encounterTable,
-      );
+      const { results, cycle_at_moments } =
+        await rngTools.generate_gen3_wild_distribution(
+          initial_seed,
+          values.advance,
+          opts,
+          map_data,
+          values.leadCycleSpeed,
+        );
+      const uiResults = convertSearcherResultsToUIResults(results);
 
       setResults(uiResults);
+      setCycleAtMoments(cycle_at_moments);
     },
     [initial_seed],
   );
@@ -434,16 +542,20 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
   }, []);
 
   return (
-    <RngToolForm<FormState, UiResult>
-      getColumns={getColumns}
-      results={results}
-      validationSchema={Validator}
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      submitTrackerId="wild3_find_target"
-      rowKey="uid"
-    >
-      <Wild3MethodDistributionFields />
-    </RngToolForm>
+    <>
+      <RngToolForm<FormState, UiResult>
+        getColumns={getColumns}
+        results={results}
+        validationSchema={Validator}
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        submitTrackerId="wild3_method_distribution"
+        rowKey="uid"
+      >
+        <Wild3MethodDistributionFields />
+      </RngToolForm>
+
+      <Wild3CycleAtMoments cycleAtMoments={cycleAtMoments} />
+    </>
   );
 };

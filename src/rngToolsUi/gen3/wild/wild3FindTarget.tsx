@@ -3,9 +3,9 @@ import {
   Species,
   Wild3SearcherResultMon,
   Wild3SearcherCycleData,
-  Gen3Lead,
   Gen3Method,
-  Gen3EncounterInfo,
+  Wild3MapSetups,
+  Wild3SearcherOptions,
 } from "~/rngTools";
 import {
   Field,
@@ -34,7 +34,6 @@ import React from "react";
 import { z } from "zod";
 import {
   species,
-  nature,
   genderRatioBySpecies,
   hasMultiplePossibleGenders,
   gen3Methods,
@@ -42,7 +41,7 @@ import {
 } from "~/types";
 import { match, P } from "ts-pattern";
 
-import { uniq, sortBy } from "lodash-es";
+import { uniq, sortBy, intersection } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { Tooltip } from "antd";
 import {
@@ -53,15 +52,24 @@ import {
 } from "~/components/gen3PkmFilter";
 
 import {
-  cuteCharmGenders,
-  emeraldWildGameData,
-  formatEncounterTypeName,
+  gen3Leads,
+  formatActionName,
   formatMapName,
-  gen3EncounterTypes,
+  wild3Actions,
+  formatLeadName,
+  wild3RoamerStates,
+  wild3MassOutbreakStates,
+  wild3FeebasStates,
+  formatRoamerStateName,
+  formatMassOutbreakStateName,
+  formatFeebasStateName,
+  leadsLabels,
 } from "./utils";
+import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { useWatch } from "react-hook-form";
 import { atom, useAtom } from "jotai";
 
+const emeraldWildGameData = getWild3EmeraldGameData();
 const rngManipulatedLeadPidAtom = atom(false);
 
 /*
@@ -71,9 +79,9 @@ Possible UI improvements:
  - Display map names instead of formatted map IDs.
  - Disable gender field if only 1 possible gender, instead of hiding it.
  - Display ability names instead of First, Second, or Hidden.
- - If no nature filter, then Synchonize leads is <Nature> or Not <Nature>.
  - Min/Max IVs should display the stat name.
  - Rename "None" to "Any" in filters.
+ - In case of similar results, keep the mass outbreak that doesn't require mixing records 
 */
 
 const Validator = z
@@ -81,12 +89,23 @@ const Validator = z
     species: z.enum(species),
     tid: z.number().int().min(0).max(0xffff),
     sid: z.number().int().min(0).max(0xffff),
-    maps: z.array(z.string()),
-    vanillaLead: z.boolean(),
-    cuteCharmLeadGenders: z.array(z.enum(cuteCharmGenders)),
-    synchronizeLeadNatures: z.array(z.enum(nature)),
-    encounterTypes: z.array(z.enum(gen3EncounterTypes)),
-    methods: z.array(z.enum(gen3Methods)),
+    maps: z.array(z.string()).min(1),
+    allSetups: z.boolean(),
+    // Limitation: value in Select must be a primitive, so we use the index instead of Gen3Lead.
+    leadIdxs: z
+      .array(
+        z
+          .number()
+          .int()
+          .min(0)
+          .max(gen3Leads.length - 1),
+      )
+      .min(1),
+    actions: z.array(z.enum(wild3Actions)).min(1),
+    roamerStates: z.array(z.enum(wild3RoamerStates)).min(1),
+    massOutbreakStates: z.array(z.enum(wild3MassOutbreakStates)).min(1),
+    feebasStates: z.array(z.enum(wild3FeebasStates)).min(1),
+    methods: z.array(z.enum(gen3Methods)).min(1),
     initial_advances: z.number().int().min(0).max(0xffffffff),
     max_advances: z.number().int().min(0).max(0xffffffff),
     max_result_count: z.number().int().min(1),
@@ -105,11 +124,13 @@ const getInitialValues = (): FormState => {
     tid: 0,
     sid: 0,
     maps: [],
-    vanillaLead: true,
-    cuteCharmLeadGenders: [...cuteCharmGenders],
-    synchronizeLeadNatures: [...nature],
+    leadIdxs: gen3Leads.map((_, i) => i),
+    allSetups: true,
     methods: ["Wild1", "Wild2", "Wild4"],
-    encounterTypes: [...gen3EncounterTypes],
+    actions: [...wild3Actions],
+    roamerStates: [...wild3RoamerStates],
+    feebasStates: [...wild3FeebasStates],
+    massOutbreakStates: [...wild3MassOutbreakStates],
     initial_advances: 1000,
     max_advances: 100_000,
     max_result_count: 10_000,
@@ -145,22 +166,19 @@ const getTargetMonFields = (species: Species): Field[] => {
   return targetMonFields;
 };
 
-const getMapsWithSpecies = (species: Species) =>
-  Array.from(
-    emeraldWildGameData.speciesToEncounterInfo.get(species)?.keys() ?? [],
-  );
+const getPossibleValuesForSpecies = (species: Species) => {
+  const setups = emeraldWildGameData.mapSetupsBySpecies.get(species) ?? [];
 
-const getEncounterTypesWithSpecies = (species: Species) =>
-  uniq(
-    getMapsWithSpecies(species).flatMap((mapId) => {
-      const encounterInfos = emeraldWildGameData.speciesToEncounterInfo
-        .get(species)
-        ?.get(mapId);
-      return (
-        encounterInfos?.map((info) => info.encounter_table.encounter_type) ?? []
-      );
-    }),
-  );
+  return {
+    maps: setups.map((setup) => setup.map_data.map_id),
+    actions: uniq(setups.flatMap((setup) => setup.actions)),
+    roamerStates: uniq(setups.flatMap((setup) => setup.roamer_states)),
+    massOutbreakStates: uniq(
+      setups.flatMap((setup) => setup.mass_outbreak_states),
+    ),
+    feebasStates: uniq(setups.flatMap((setup) => setup.feebas_states)),
+  };
+};
 
 const RngManipulatedLeadPidSwitch = () => {
   const [, setRngManipulatedLeadPid] = useAtom(rngManipulatedLeadPidAtom);
@@ -174,7 +192,13 @@ const RngManipulatedLeadPidSwitch = () => {
   );
 };
 
-const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
+const getSetupFields = (
+  species: Species,
+  filter_shiny: boolean,
+  allSetups: boolean,
+): Field[] => {
+  const possVals = getPossibleValuesForSpecies(species);
+
   const fields: Field[] = [
     {
       label: "Target Species",
@@ -201,57 +225,100 @@ const getSetupFields = (species: Species, filter_shiny: boolean): Field[] => {
       ),
     },
     {
-      label: "Maps",
-      input: (
-        <FormikSelect<FormState, "maps">
-          name="maps"
-          options={toOptions(getMapsWithSpecies(species), formatMapName)}
-          mode="multiple"
-          fullWidth={true}
-          selectAllNoneButtons={true}
-        />
-      ),
+      label: "All Setups?",
+      input: <FormikSwitch<FormState> name="allSetups" />,
     },
-    {
-      label: "Encounters",
-      input: (
-        <FormikSelect<FormState, "encounterTypes">
-          name="encounterTypes"
-          options={toOptions(
-            getEncounterTypesWithSpecies(species),
-            formatEncounterTypeName,
-          )}
-          mode="multiple"
-          fullWidth={true}
-          selectAllNoneButtons={true}
-        />
-      ),
-    },
-    {
-      label: "Ordinary lead",
-      input: <FormikSwitch<FormState> name="vanillaLead" />,
-    },
-    {
-      label: "Synchronize leads",
-      input: (
-        <FormikSelect<FormState, "synchronizeLeadNatures">
-          name="synchronizeLeadNatures"
-          options={toOptions(nature)}
-          mode="multiple"
-          selectAllNoneButtons={true}
-        />
-      ),
-    },
-    {
-      label: "Cute Charm leads",
-      input: (
-        <FormikSelect<FormState, "cuteCharmLeadGenders">
-          name="cuteCharmLeadGenders"
-          options={toOptions(cuteCharmGenders)}
-          mode="multiple"
-        />
-      ),
-    },
+    ...(allSetups
+      ? []
+      : [
+          {
+            label: "Actions",
+            input: (
+              <FormikSelect<FormState, "actions">
+                name="actions"
+                options={toOptions(possVals.actions, formatActionName)}
+                mode="multiple"
+                fullWidth={true}
+                selectAllNoneButtons={true}
+              />
+            ),
+          },
+          {
+            label: "Maps",
+            input: (
+              <FormikSelect<FormState, "maps">
+                name="maps"
+                options={toOptions(possVals.maps, formatMapName)}
+                mode="multiple"
+                fullWidth={true}
+                selectAllNoneButtons={true}
+              />
+            ),
+          },
+          {
+            label: "Leads",
+            input: (
+              <FormikSelect<FormState, "leadIdxs">
+                name="leadIdxs"
+                options={leadsLabels}
+                mode="multiple"
+                selectAllNoneButtons={true}
+              />
+            ),
+          },
+          ...(possVals.roamerStates.length > 1
+            ? [
+                {
+                  label: "Roamer states",
+                  input: (
+                    <FormikSelect<FormState, "roamerStates">
+                      name="roamerStates"
+                      options={toOptions(
+                        possVals.roamerStates,
+                        formatRoamerStateName,
+                      )}
+                      mode="multiple"
+                    />
+                  ),
+                },
+              ]
+            : []),
+          ...(possVals.massOutbreakStates.length > 1
+            ? [
+                {
+                  label: "Mass outbreak states",
+                  input: (
+                    <FormikSelect<FormState, "massOutbreakStates">
+                      name="roamerStates"
+                      options={toOptions(
+                        possVals.massOutbreakStates,
+                        formatMassOutbreakStateName,
+                      )}
+                      mode="multiple"
+                      selectAllNoneButtons={true}
+                    />
+                  ),
+                },
+              ]
+            : []),
+          ...(possVals.feebasStates.length > 1
+            ? [
+                {
+                  label: "Feebas states",
+                  input: (
+                    <FormikSelect<FormState, "feebasStates">
+                      name="feebasStates"
+                      options={toOptions(
+                        possVals.feebasStates,
+                        formatFeebasStateName,
+                      )}
+                      mode="multiple"
+                    />
+                  ),
+                },
+              ]
+            : []),
+        ]),
     {
       label: "Methods",
       input: (
@@ -312,9 +379,15 @@ export const TargetMon = () => {
     return getTargetMonFields(species);
   }, [species]);
 
+  // when user changes species, select all the possible setup values
   React.useEffect(() => {
-    setFieldValue("maps", getMapsWithSpecies(species));
-    setFieldValue("encounterTypes", getEncounterTypesWithSpecies(species));
+    const possVals = getPossibleValuesForSpecies(species);
+
+    setFieldValue("maps", possVals.maps);
+    setFieldValue("actions", possVals.actions);
+    setFieldValue("roamerStates", possVals.roamerStates);
+    setFieldValue("massOutbreakStates", possVals.massOutbreakStates);
+    setFieldValue("feebasStates", possVals.feebasStates);
   }, [species, setFieldValue]);
 
   return (
@@ -334,10 +407,13 @@ export const SetupFilter = () => {
   const filterShiny = useWatch<FormState, "filter_shiny">({
     name: "filter_shiny",
   });
+  const allSetups = useWatch<FormState, "allSetups">({
+    name: "allSetups",
+  });
 
   const fields = React.useMemo((): Field[] => {
-    return getSetupFields(species, filterShiny);
-  }, [species, filterShiny]);
+    return getSetupFields(species, filterShiny, allSetups);
+  }, [species, filterShiny, allSetups]);
 
   return (
     <Flex vertical gap={8}>
@@ -389,8 +465,35 @@ const getColumns = ({
       },
     },
     { title: "Map", dataIndex: "mapName" },
-    { title: "Encounter", dataIndex: "encounterTypeName" },
-    { title: "Method", dataIndex: "method" },
+    { title: "Player action", dataIndex: "actionName" },
+    {
+      title: "Roamer",
+      dataIndex: "roamer_state",
+      render: (roamerState) => {
+        return match(roamerState)
+          .with("Inactive", () => "Inactive")
+          .with("ActiveNotInMap", () => "Roaming in another map")
+          .with("ActiveInMapLatios", () => "Latios in map")
+          .with("ActiveInMapLatias", () => "Latias in map")
+          .exhaustive();
+      },
+    },
+    {
+      title: "Feebas Tile?",
+      dataIndex: "feebas_state",
+      render: (feebasState) => {
+        return match(feebasState)
+          .with("NotInMap", () => "N/A")
+          .with("OnFeebasTile", () => "Yes")
+          .with("InMapButNotOnFeebasTile", () => "No")
+          .exhaustive();
+      },
+    },
+    {
+      title: "Mass outbreak",
+      dataIndex: "mass_outbreak_state",
+      render: formatMassOutbreakStateName,
+    },
   );
 
   if (!rngManipulatedLeadPid) {
@@ -420,20 +523,7 @@ const getColumns = ({
   columns.push({
     title: "Lead",
     dataIndex: "lead",
-    render: (lead) => {
-      return match(lead)
-        .with("Vanilla", () => "Ordinary lead")
-        .with(
-          { Synchronize: P.string },
-          (matched) => `Synchronize (${matched.Synchronize})`,
-        )
-        .with(
-          { CuteCharm: P.string },
-          (matched) => `CuteCharm (${matched.CuteCharm})`,
-        )
-        .with("Egg", () => "Egg lead")
-        .exhaustive();
-    },
+    render: formatLeadName,
   });
 
   if (rngManipulatedLeadPid) {
@@ -550,7 +640,15 @@ const getColumns = ({
       render: (shiny: boolean) => (shiny ? "Yes" : "No"),
     },
     { title: "Gender", dataIndex: "gender" },
-    ...ivColumns,
+    {
+      title: "IV",
+      type: "group",
+      columns: ivColumns,
+    },
+    {
+      title: "Lvl",
+      dataIndex: "lvl",
+    },
     {
       title: "Hidden Power",
       type: "group",
@@ -582,76 +680,56 @@ type Props = {
 
 type UiResult = FlattenIvs<
   Wild3SearcherResultMon & {
-    species: Species;
     mapName: string;
-    encounterTypeName: string;
+    actionName: string;
     uid: number;
     pidCycleCount: number;
   }
 >;
 
-const getLeads = (values: FormState): Gen3Lead[] => {
-  const leads: Gen3Lead[] = [];
-
-  if (values.vanillaLead) {
-    leads.push("Vanilla");
-  }
-  for (const nature of values.synchronizeLeadNatures) {
-    leads.push({
-      Synchronize: nature,
-    });
-  }
-  return leads;
-};
-
-const getEncounterInfoByMap = (
+const getMapSetupsConsideringStateSubsets = (
   values: FormState,
-): [string, Gen3EncounterInfo][] => {
-  if (values.species === "None") {
-    return [];
-  }
-  const allowedMaps = values.maps;
-  const allowedEncounterTypes = values.encounterTypes;
-
-  const allMapsForSpecies = emeraldWildGameData.speciesToEncounterInfo.get(
-    values.species,
-  );
-  if (allMapsForSpecies === undefined) {
-    return []; // error
+): Wild3MapSetups[] => {
+  const mapSetupsWithAllStates =
+    emeraldWildGameData.mapSetupsBySpecies.get(values.species) ?? [];
+  if (values.allSetups) {
+    return mapSetupsWithAllStates;
   }
 
-  const res: [string, Gen3EncounterInfo][] = [];
-  allMapsForSpecies.forEach((encounterInfos, mapId) => {
-    if (!allowedMaps.includes(mapId)) {
-      return;
-    }
-    encounterInfos.forEach((encounterInfo) => {
-      if (
-        !allowedEncounterTypes.includes(
-          encounterInfo.encounter_table.encounter_type,
-        )
-      ) {
-        return;
-      }
-      res.push([mapId, encounterInfo]);
+  return mapSetupsWithAllStates
+    .filter((mapSetupWithAllStates) => {
+      return values.maps.includes(mapSetupWithAllStates.map_data.map_id);
+    })
+    .map((mapSetupWithAllStates) => {
+      return {
+        map_data: mapSetupWithAllStates.map_data,
+        actions: intersection(mapSetupWithAllStates.actions, values.actions),
+        roamer_states: intersection(
+          mapSetupWithAllStates.roamer_states,
+          values.roamerStates,
+        ),
+        mass_outbreak_states: intersection(
+          mapSetupWithAllStates.mass_outbreak_states,
+          values.massOutbreakStates,
+        ),
+        feebas_states: intersection(
+          mapSetupWithAllStates.feebas_states,
+          values.feebasStates,
+        ),
+      };
     });
-  });
-  return res;
 };
 
 let nextUid = 0;
 const convertSearcherResultToUIResult = async (
   res: Wild3SearcherResultMon,
-  species: Species,
   mapName: string,
-  encounterTypeName: string,
 ): Promise<UiResult> => {
   return {
     ...res,
     ...res.ivs,
     mapName,
-    encounterTypeName,
-    species,
+    actionName: formatActionName(res.action),
     uid: nextUid++,
     pidCycleCount: await rngTools.calculate_pid_speed(res.pid),
   };
@@ -686,9 +764,12 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
-      const encounterInfoByMap = getEncounterInfoByMap(values);
+      const map_setups = getMapSetupsConsideringStateSubsets(values);
 
-      const opts = {
+      const leadsToUse = values.allSetups
+        ? [...gen3Leads]
+        : values.leadIdxs.map((i) => gen3Leads[i]);
+      const opts: Wild3SearcherOptions = {
         initial_seed,
         tid: values.tid,
         sid: values.sid,
@@ -697,9 +778,9 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
         max_advances: values.max_advances,
         max_result_count: values.max_result_count,
         filter: pkmFilterFieldsToRustInput(values),
-        gen3_filter: gen3PkmFilterFieldsToRustInput(values),
-        leads: getLeads(values),
-        encounter_info_by_map: encounterInfoByMap.map((val) => val[1]),
+        gen3_filter: gen3PkmFilterFieldsToRustInput(values, values.species),
+        leads: leadsToUse,
+        map_setups,
         methods: values.methods,
         consider_cycles: true,
         consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
@@ -714,14 +795,10 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
 
       const uiResults = await Promise.all(
         results.map((res) => {
-          const [mapId, encounterInfo] = encounterInfoByMap[res.map_idx];
+          const mapSetup = map_setups[res.map_idx];
           return convertSearcherResultToUIResult(
             res,
-            values.species,
-            formatMapName(mapId),
-            formatEncounterTypeName(
-              encounterInfo.encounter_table.encounter_type,
-            ),
+            formatMapName(mapSetup.map_data.map_id),
           );
         }),
       );

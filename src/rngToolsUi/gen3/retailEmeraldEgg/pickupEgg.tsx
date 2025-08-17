@@ -67,6 +67,10 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
     render: (method) => startCase(method),
   },
   ...getInheritedIvColumns(t),
+  {
+    title: t["Advance"],
+    dataIndex: "advance",
+  },
 ];
 
 const Validator = z.object({
@@ -144,7 +148,6 @@ export const RetailEmeraldPickupEgg = () => {
             delay: 0,
             method,
             parent_ivs: parentIvs,
-            lua_adjustment: true,
             filter: {
               max_ivs: opts.filter_max_ivs,
               min_ivs: opts.filter_min_ivs,

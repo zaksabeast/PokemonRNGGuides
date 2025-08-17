@@ -19,7 +19,7 @@ describe("pickup egg", () => {
         filter_max_ivs: { type: "ivs", value: "5/31/14/30/31/0" },
         method: { type: "select", value: "Alternate" },
       },
-      partialFirstColumnValues: ["99", "5", "31", "14", "30", "31", "0"],
+      partialFirstColumnValues: ["98", "5", "31", "14", "30", "31", "0"],
     });
   });
 });

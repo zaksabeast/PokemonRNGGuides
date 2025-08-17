@@ -1,6 +1,9 @@
 mod calc_modulo_cycle_count;
 mod cycle_data_calculator;
+mod cycle_range;
 mod distribution_generator;
+mod filter;
+mod game_data;
 mod generator;
 mod generator_cycle_tests;
 mod generator_tests;
@@ -11,7 +14,9 @@ mod types;
 
 pub use calc_modulo_cycle_count::*;
 pub use cycle_data_calculator::*;
-pub use distribution_generator::*;
+pub use cycle_range::*;
+pub use filter::*;
+pub use game_data::*;
 pub use generator::*;
 pub use searcher::*;
 pub use types::*;

@@ -13,7 +13,7 @@ pub struct HiddenPowerFilter {
     pub max_bp: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct HiddenPower {
     pub pokemon_type: PokemonType,

@@ -74,7 +74,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/3DS Helper.mdx",
-      translations: null,
+      translations: { en: "/3ds-helper/", zh: "/zh-3ds-helper/" },
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS Helper.mdx")),
@@ -830,7 +830,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/3DS RNG.mdx",
-      translations: null,
+      translations: { en: "/dppt-3ds-rng/", zh: "/zh-dppt-3ds-rng/" },
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS RNG.mdx")),
@@ -1042,10 +1042,10 @@ export const guides = {
       categories: ["Diamond, Pearl, and Platinum"],
       tags: ["retail"],
       isNew: false,
-      title: "HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG",
+      title: "Diamond, Pearl, & Platinum Cute Charm Glitch TID/SID RNG",
       navDrawerTitle: "Cute Charm & TID/SID RNG",
       description:
-        "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for HeartGold and SoulSilver.",
+        "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for Diamond, Pearl, & Platinum.",
       slug: "/dppt-tid-sid/",
       isRoughDraft: false,
       hideFromNavDrawer: false,
@@ -3528,7 +3528,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/3DS RNG.mdx",
-      translations: null,
+      translations: { en: "/hgss-3ds-rng/", zh: "/zh-hgss-3ds-rng/" },
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS RNG.mdx")),
@@ -6860,6 +6860,37 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-3ds-helper/": {
+    meta: {
+      categories: ["NDS Tools"],
+      tags: ["info"],
+      isNew: false,
+      title: "3DS Timer Helper",
+      navDrawerTitle: "3DS Timer Helper",
+      description:
+        "Easier 3DS RNG without homebrew using precise timer starts.",
+      slug: "/zh-3ds-helper/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-07-03",
+      translation: { enSlug: "/3ds-helper/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/3DS Helper.mdx",
+      translations: { en: "/3ds-helper/", zh: "/zh-3ds-helper/" },
+      displayAttributes: ["video_guide"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/3DS Helper.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/3DS Helper.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-bw2-egg/": {
     meta: {
       categories: ["Black 2 and White 2"],
@@ -6917,6 +6948,36 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gamecube/Channel.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-dppt-3ds-rng/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["info"],
+      isNew: false,
+      title: "珍钻白金3DS乱数",
+      navDrawerTitle: "珍钻白金3DS乱数",
+      description: "学习如何通过乱数在珍钻白金获得异色、高个体宝可梦",
+      slug: "/zh-dppt-3ds-rng/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-07-03",
+      translation: { enSlug: "/dppt-3ds-rng/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/3DS RNG.mdx",
+      translations: { en: "/dppt-3ds-rng/", zh: "/zh-dppt-3ds-rng/" },
+      displayAttributes: ["video_guide"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/3DS RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/3DS RNG.mdx?raw"
       );
       return file.default;
     }),
@@ -8362,6 +8423,36 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-hgss-3ds-rng/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["info"],
+      isNew: false,
+      title: "心金魂银3DS乱数",
+      navDrawerTitle: "心金魂银3DS乱数",
+      description: "学习如何通过乱数在心金魂银获得异色、高个体宝可梦",
+      slug: "/zh-hgss-3ds-rng/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-07-03",
+      translation: { enSlug: "/hgss-3ds-rng/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/3DS RNG.mdx",
+      translations: { en: "/hgss-3ds-rng/", zh: "/zh-hgss-3ds-rng/" },
+      displayAttributes: ["video_guide"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/3DS RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/3DS RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-hgss-cute-charm/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
@@ -9232,8 +9323,10 @@ export const guideSlugs = [
   "/xdcolo-tidsid-generator/",
   "/xy-friend-safari-patch/",
   "/xy-pokeradar/",
+  "/zh-3ds-helper/",
   "/zh-bw2-egg/",
   "/zh-channel-jirachi/",
+  "/zh-dppt-3ds-rng/",
   "/zh-dppt-advance-rng/",
   "/zh-dppt-cute-charm/",
   "/zh-dppt-initial-seed-retail/",
@@ -9276,6 +9369,7 @@ export const guideSlugs = [
   "/zh-gen2-celebi/",
   "/zh-gen2-starters/",
   "/zh-gen3-sid/",
+  "/zh-hgss-3ds-rng/",
   "/zh-hgss-cute-charm/",
   "/zh-hgss-rng-advance/",
   "/zh-install-pokereader/",

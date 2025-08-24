@@ -19,6 +19,11 @@ impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Lcrng<A, M, PA, P
     pub fn new(seed: u32) -> Self {
         Self { state: seed }
     }
+    pub fn with_advances(seed: u32, advance: usize) -> Self {
+        let mut rng = Self::new(seed);
+        rng.advance(advance);
+        rng
+    }
 
     fn prev_state(&mut self) -> u32 {
         self.state = self.state.wrapping_mul(PM).wrapping_add(PA);

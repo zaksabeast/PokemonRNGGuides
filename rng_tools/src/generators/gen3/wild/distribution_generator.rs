@@ -1,9 +1,8 @@
 use super::{Wild3GeneratorOptions, generate_gen3_wild};
 use crate::gen3::{
-    CycleAtMoment, CycleRange, Gen3Method, Wild3EncounterTable, Wild3SearcherResultMon,
+    CycleAtMoment, CycleRange, Gen3Method, Wild3MapGameData, Wild3SearcherResultMon,
     calculate_cycle_data,
 };
-use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
@@ -28,8 +27,9 @@ pub struct Wild3MethodDistributionResults {
 #[wasm_bindgen]
 pub fn generate_gen3_wild_distribution(
     initial_seed: u32,
+    advances: usize,
     opts: &Wild3GeneratorOptions,
-    game_data: &Wild3EncounterTable,
+    game_data: &Wild3MapGameData,
     lead_cycle_speed: usize,
 ) -> Wild3MethodDistributionResults {
     let opts = Wild3GeneratorOptions {
@@ -45,23 +45,18 @@ pub fn generate_gen3_wild_distribution(
         ..opts.clone()
     };
 
-    let mut rng = Pokerng::new(initial_seed);
-    rng.advance(opts.advance);
-
-    let (gen_results, cycle_counter) = generate_gen3_wild(rng, &opts, game_data);
+    let (gen_results, cycle_counter) = generate_gen3_wild(
+        Pokerng::with_advances(initial_seed, advances),
+        &opts,
+        game_data,
+    );
     let search_results = gen_results
         .iter()
         .map(|gen_res| {
-            let gender_ratio = game_data.slots[gen_res.encounter_slot as usize].gender_ratio;
-            let searcher_res = Wild3SearcherResultMon::new(
-                gen_res,
-                opts.tid,
-                opts.sid,
-                gender_ratio,
-                opts.advance,
-                0,
-                opts.lead,
-            );
+            let encounter = game_data
+                .get_encounter(opts.action, gen_res.encounter_idx)
+                .unwrap();
+            let searcher_res = Wild3SearcherResultMon::new(gen_res, &opts, advances, encounter);
             let cycle_data = calculate_cycle_data(
                 &searcher_res
                     .cycle_data_by_lead
@@ -164,7 +159,7 @@ pub fn generate_gen3_wild_distribution(
 mod test {
     use super::*;
     use crate::assert_list_eq;
-    use crate::gen3::{Gen3Method, Moment, Wild3EncounterTable};
+    use crate::gen3::{Gen3Method, Moment, Wild3MapGameData};
 
     #[derive(Debug, PartialEq)]
     struct ResultForTest {
@@ -196,11 +191,10 @@ mod test {
     #[test]
     fn test_distribution_generator() {
         let opts = Wild3GeneratorOptions {
-            advance: 44,
             ..Default::default()
         };
         let dist_results =
-            generate_gen3_wild_distribution(0, &opts, &Wild3EncounterTable::default(), 700);
+            generate_gen3_wild_distribution(0, 44, &opts, &Wild3MapGameData::default(), 700);
 
         let results = dist_results
             .results

@@ -1,12 +1,17 @@
+use num_enum::{FromPrimitive, IntoPrimitive};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::wasm_bindgen;
 
-use crate::gen3::Gen3EncounterType;
+use crate::gen3::Wild3Action;
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, Debug, Eq, PartialEq, FromPrimitive, IntoPrimitive, Tsify, Serialize, Deserialize,
+)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
+#[repr(u8)]
 pub enum EncounterSlot {
+    #[num_enum(default)]
     Slot0 = 0,
     Slot1 = 1,
     Slot2 = 2,
@@ -83,14 +88,14 @@ impl EncounterSlot {
         ]
     }
 
-    pub fn gen3_thresholds(encounter_type: Gen3EncounterType) -> &'static [(EncounterSlot, u8)] {
-        match encounter_type {
-            Gen3EncounterType::Land => Self::thresholds_land(),
-            Gen3EncounterType::Water => Self::thresholds_water(),
-            Gen3EncounterType::OldRod => Self::thresholds_old_rod(),
-            Gen3EncounterType::GoodRod => Self::thresholds_good_rod(),
-            Gen3EncounterType::SuperRod => Self::thresholds_super_rod(),
-            Gen3EncounterType::RockSmash => Self::thresholds_rock_smash(),
+    pub fn gen3_thresholds(action: Wild3Action) -> &'static [(EncounterSlot, u8)] {
+        match action {
+            Wild3Action::SweetScentLand => Self::thresholds_land(),
+            Wild3Action::SweetScentWater => Self::thresholds_water(),
+            Wild3Action::OldRod => Self::thresholds_old_rod(),
+            Wild3Action::GoodRod => Self::thresholds_good_rod(),
+            Wild3Action::SuperRod => Self::thresholds_super_rod(),
+            Wild3Action::RockSmash => Self::thresholds_rock_smash(),
         }
     }
 }

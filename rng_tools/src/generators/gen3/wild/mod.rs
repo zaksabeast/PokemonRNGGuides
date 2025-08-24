@@ -15,7 +15,6 @@ mod types;
 pub use calc_modulo_cycle_count::*;
 pub use cycle_data_calculator::*;
 pub use cycle_range::*;
-pub use distribution_generator::*;
 pub use filter::*;
 pub use game_data::*;
 pub use generator::*;

@@ -1,4 +1,4 @@
-import { Gen3PkmFilter, Gen3PidSpeedFilter } from "~/rngTools";
+import { Gen3PkmFilter, Gen3PidSpeedFilter, Species } from "~/rngTools";
 import { Field } from "~/components/formFieldTable";
 import { FormikSwitch } from "~/components/switch";
 import { z } from "zod";
@@ -21,10 +21,12 @@ export const gen3PkmFilterSchema = z.object({
 
 export const gen3PkmFilterFieldsToRustInput = (
   fields: Gen3PkmFilterFields,
+  species: Species | null,
 ): Gen3PkmFilter => {
   return {
     max_size: fields.filter_max_size,
     pid_speed: fields.filter_pid_speed,
+    species,
   };
 };
 

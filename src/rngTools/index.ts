@@ -169,4 +169,14 @@ export const rngTools = new Proxy(
 
 export type PkmFilter = UndefinedToNull<RngTools.PkmFilter>;
 
-export type Gen3EncounterInfo = UndefinedToNull<RngTools.Gen3EncounterInfo>;
+export type Wild3MapSetups = UndefinedToNull<RngTools.Wild3MapSetups>;
+
+export type Wild3MapGameData = UndefinedToNull<RngTools.Wild3MapGameData>;
+
+export type Wild3SearcherOptions =
+  UndefinedToNull<RngTools.Wild3SearcherOptions>;
+
+export type Gen3PkmFilter = UndefinedToNull<RngTools.Gen3PkmFilter>;
+
+export type Wild3GeneratorOptions =
+  UndefinedToNull<RngTools.Wild3GeneratorOptions>;

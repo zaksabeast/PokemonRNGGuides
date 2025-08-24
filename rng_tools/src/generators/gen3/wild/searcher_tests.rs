@@ -1,25 +1,18 @@
 #[cfg(test)]
 mod test {
-    use crate::{HiddenPower, HiddenPowerFilter, PokemonType, assert_list_eq};
-
     use crate::gen3::{
-        Gen3EncounterInfo, Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3EncounterTable,
+        Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3Action, Wild3EncounterIndex,
         Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3,
     };
-    use crate::{AbilityType, EncounterSlot, Gender, Ivs, Nature, PkmFilter};
-
-    fn default_encounter_info_by_map() -> Vec<Gen3EncounterInfo> {
-        vec![Gen3EncounterInfo {
-            encounter_table: Wild3EncounterTable::default(),
-            slots: None,
-        }]
-    }
+    use crate::{
+        AbilityType, EncounterSlot, Gender, HiddenPower, HiddenPowerFilter, Ivs, Nature, PkmFilter,
+        PokemonType, Species, assert_list_eq,
+    };
 
     #[test]
     fn test_search_wild3_no_filter() {
         let options = Wild3SearcherOptions {
             leads: vec![Gen3Lead::Vanilla],
-            encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![Gen3Method::Wild1],
             max_advances: 2,
             max_result_count: 10_000,
@@ -30,7 +23,7 @@ mod test {
             Wild3SearcherResultMon {
                 advance: 0,
                 map_idx: 0,
-                encounter_slot: EncounterSlot::Slot0,
+                encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
                 cycle_data_by_lead: None,
                 pid: 0xFC3367DB,
                 shiny: false,
@@ -41,11 +34,12 @@ mod test {
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Vanilla,
                 hidden_power: HiddenPower::new(PokemonType::Water, 68),
+                ..Default::default()
             },
             Wild3SearcherResultMon {
                 advance: 1,
                 map_idx: 0,
-                encounter_slot: EncounterSlot::Slot5,
+                encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot5),
                 cycle_data_by_lead: None,
                 pid: 0x60A1E414,
                 shiny: false,
@@ -56,11 +50,12 @@ mod test {
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Vanilla,
                 hidden_power: HiddenPower::new(PokemonType::Psychic, 53),
+                ..Default::default()
             },
             Wild3SearcherResultMon {
                 advance: 2,
                 map_idx: 0,
-                encounter_slot: EncounterSlot::Slot0,
+                encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
                 cycle_data_by_lead: None,
                 pid: 0x639E3D69,
                 shiny: false,
@@ -71,6 +66,7 @@ mod test {
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Vanilla,
                 hidden_power: HiddenPower::new(PokemonType::Ground, 52),
+                ..Default::default()
             },
         ];
         let result = search_wild3(&options);
@@ -79,16 +75,8 @@ mod test {
 
     #[test]
     fn test_search_wild3_with_filter() {
-        let options = Wild3SearcherOptions {
+        let mut options = Wild3SearcherOptions {
             initial_seed: 0x346A4A45,
-            encounter_info_by_map: vec![Gen3EncounterInfo {
-                encounter_table: Wild3EncounterTable::default(),
-                slots: Some(vec![
-                    EncounterSlot::Slot0,
-                    EncounterSlot::Slot6,
-                    EncounterSlot::Slot8,
-                ]),
-            }],
             methods: vec![Gen3Method::Wild1],
             initial_advances: 60,
             max_advances: 3540,
@@ -101,13 +89,28 @@ mod test {
                 ability: Some(AbilityType::Second),
                 ..Default::default()
             },
+            gen3_filter: Gen3PkmFilter {
+                species: Some(Species::Abra),
+                ..Default::default()
+            },
             ..Default::default()
         };
+
+        options.map_setups[0].map_data.slots_by_action[Wild3Action::SweetScentLand as usize]
+            [EncounterSlot::Slot0 as usize]
+            .species = Species::Abra;
+        options.map_setups[0].map_data.slots_by_action[Wild3Action::SweetScentLand as usize]
+            [EncounterSlot::Slot6 as usize]
+            .species = Species::Abra;
+        options.map_setups[0].map_data.slots_by_action[Wild3Action::SweetScentLand as usize]
+            [EncounterSlot::Slot8 as usize]
+            .species = Species::Abra;
+
         let expected_results = [
             Wild3SearcherResultMon {
                 advance: 908,
                 map_idx: 0,
-                encounter_slot: EncounterSlot::Slot0,
+                encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
                 cycle_data_by_lead: None,
                 pid: 0x02FA9E49,
                 shiny: false,
@@ -118,11 +121,13 @@ mod test {
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Vanilla,
                 hidden_power: HiddenPower::new(PokemonType::Ground, 63),
+                species: Species::Abra,
+                ..Default::default()
             },
             Wild3SearcherResultMon {
                 advance: 3543,
                 map_idx: 0,
-                encounter_slot: EncounterSlot::Slot0,
+                encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
                 cycle_data_by_lead: None,
                 pid: 0xA44D455D,
                 shiny: false,
@@ -133,11 +138,13 @@ mod test {
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Vanilla,
                 hidden_power: HiddenPower::new(PokemonType::Fire, 43),
+                species: Species::Abra,
+                ..Default::default()
             },
             Wild3SearcherResultMon {
                 advance: 3577,
                 map_idx: 0,
-                encounter_slot: EncounterSlot::Slot6,
+                encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot6),
                 cycle_data_by_lead: None,
                 pid: 0xA44D455D,
                 shiny: false,
@@ -148,6 +155,8 @@ mod test {
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Vanilla,
                 hidden_power: HiddenPower::new(PokemonType::Fire, 43),
+                species: Species::Abra,
+                ..Default::default()
             },
         ];
         let result = search_wild3(&options);
@@ -160,7 +169,6 @@ mod test {
             initial_seed: 0x14a22065,
             tid: 34760,
             sid: 47362,
-            encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![Gen3Method::Wild1],
             max_advances: 10,
             max_result_count: 10_000,
@@ -177,7 +185,7 @@ mod test {
         let expected_results = [Wild3SearcherResultMon {
             advance: 0,
             map_idx: 0,
-            encounter_slot: EncounterSlot::Slot4,
+            encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot4),
             cycle_data_by_lead: None,
             pid: 0x692A57E1,
             shiny: true,
@@ -188,6 +196,7 @@ mod test {
             method: Gen3Method::Wild1,
             lead: Gen3Lead::Vanilla,
             hidden_power: HiddenPower::new(PokemonType::Water, 30),
+            ..Default::default()
         }];
         let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
@@ -197,7 +206,6 @@ mod test {
     fn test_search_wild3_synchronize() {
         let options = Wild3SearcherOptions {
             initial_seed: 0x14a22065,
-            encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![Gen3Method::Wild1],
             max_advances: 2,
             max_result_count: 10_000,
@@ -208,7 +216,7 @@ mod test {
             Wild3SearcherResultMon {
                 advance: 0,
                 map_idx: 0,
-                encounter_slot: EncounterSlot::Slot4,
+                encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot4),
                 cycle_data_by_lead: None,
                 pid: 0x3A5DEC53,
                 shiny: false,
@@ -219,11 +227,12 @@ mod test {
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Synchronize(Nature::Hardy),
                 hidden_power: HiddenPower::new(PokemonType::Grass, 32),
+                ..Default::default()
             },
             Wild3SearcherResultMon {
                 advance: 1,
                 map_idx: 0,
-                encounter_slot: EncounterSlot::Slot9,
+                encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot9),
                 cycle_data_by_lead: None,
                 pid: 0x95BC176C,
                 shiny: false,
@@ -234,11 +243,12 @@ mod test {
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Synchronize(Nature::Hardy),
                 hidden_power: HiddenPower::new(PokemonType::Bug, 38),
+                ..Default::default()
             },
             Wild3SearcherResultMon {
                 advance: 2,
                 map_idx: 0,
-                encounter_slot: EncounterSlot::Slot7,
+                encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot7),
                 cycle_data_by_lead: None,
                 pid: 0x7697C055,
                 shiny: false,
@@ -249,6 +259,7 @@ mod test {
                 method: Gen3Method::Wild1,
                 lead: Gen3Lead::Synchronize(Nature::Hardy),
                 hidden_power: HiddenPower::new(PokemonType::Bug, 67),
+                ..Default::default()
             },
         ];
         let result = search_wild3(&options);
@@ -260,7 +271,6 @@ mod test {
         let options = Wild3SearcherOptions {
             tid: 0x1234,
             sid: 0x4321,
-            encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![
                 Gen3Method::Wild1,
                 Gen3Method::Wild2,
@@ -284,7 +294,7 @@ mod test {
                 pid: 2495399342,
                 ivs: Ivs::new(21, 24, 8, 26, 20, 25),
                 method: Gen3Method::Wild3,
-                encounter_slot: EncounterSlot::Slot6,
+                encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot6),
                 cycle_data_by_lead: None,
                 ability: AbilityType::First,
                 gender: Gender::Male,
@@ -294,12 +304,13 @@ mod test {
                 lead: Gen3Lead::Vanilla,
                 map_idx: 0,
                 hidden_power: HiddenPower::new(PokemonType::Poison, 40),
+                ..Default::default()
             },
             Wild3SearcherResultMon {
                 pid: 2495399342,
                 ivs: Ivs::new(21, 24, 8, 26, 20, 25),
                 method: Gen3Method::Wild3,
-                encounter_slot: EncounterSlot::Slot9,
+                encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot9),
                 cycle_data_by_lead: None,
                 ability: AbilityType::First,
                 gender: Gender::Male,
@@ -309,6 +320,7 @@ mod test {
                 lead: Gen3Lead::Vanilla,
                 map_idx: 0,
                 hidden_power: HiddenPower::new(PokemonType::Poison, 40),
+                ..Default::default()
             },
         ];
         let result = search_wild3(&options);
@@ -318,7 +330,6 @@ mod test {
     #[test]
     fn test_search_wild3_hidden_power() {
         let options = Wild3SearcherOptions {
-            encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![Gen3Method::Wild1],
             initial_advances: 440,
             max_advances: 10,
@@ -339,7 +350,7 @@ mod test {
             pid: 3070009587,
             ivs: Ivs::new(28, 5, 15, 10, 6, 30),
             method: Gen3Method::Wild1,
-            encounter_slot: EncounterSlot::Slot0,
+            encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
             cycle_data_by_lead: None,
             ability: AbilityType::Second,
             gender: Gender::Male,
@@ -349,6 +360,7 @@ mod test {
             lead: Gen3Lead::Vanilla,
             map_idx: 0,
             hidden_power: HiddenPower::new(PokemonType::Flying, 68),
+            ..Default::default()
         }];
         let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
@@ -357,7 +369,6 @@ mod test {
     #[test]
     fn test_search_wild3_max_size() {
         let options = Wild3SearcherOptions {
-            encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![Gen3Method::Wild1],
             initial_advances: 121000,
             max_advances: 1000,
@@ -373,7 +384,7 @@ mod test {
             pid: 1686167762,
             ivs: Ivs::new(25, 16, 21, 18, 0, 31),
             method: Gen3Method::Wild1,
-            encounter_slot: EncounterSlot::Slot6,
+            encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot6),
             cycle_data_by_lead: None,
             ability: AbilityType::First,
             gender: Gender::Male,
@@ -383,10 +394,14 @@ mod test {
             lead: Gen3Lead::Vanilla,
             map_idx: 0,
             hidden_power: HiddenPower::new(PokemonType::Ground, 45),
+            ..Default::default()
         }];
         let result = search_wild3(&options);
         assert_list_eq!(result, expected_results);
     }
+
+    //NO_PROD add feebas test, roamer, mass outbreak seedot
+
     /*
     // Kept to help future debugging
     #[test]
@@ -396,7 +411,6 @@ mod test {
             tid: 0,
             sid: 0,
             gender_ratio: GenderRatio::OneToOne,
-            encounter_info_by_map: default_encounter_info_by_map(),
             methods: vec![Gen3Method::Wild2],
             initial_advances: 1005,
             max_advances: 0,

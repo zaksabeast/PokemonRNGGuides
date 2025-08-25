@@ -1,4 +1,5 @@
 import React from "react";
+import { FloatButton } from "antd";
 import { MainLayout } from "~/layouts/main";
 import { GuideMeta } from "~/guides";
 import {
@@ -14,6 +15,13 @@ import { settings } from "~/settings";
 import { SurveyModal } from "~/components/surveyModal/modal";
 import { useSurveyModal } from "~/components/surveyModal/state";
 import styled from "@emotion/styled";
+import { track } from "~/analytics";
+
+const SmallScreenFab = styled(FloatButton)(({ theme }) => ({
+  [theme.mediaQueries.up("tablet")]: {
+    display: "none",
+  },
+}));
 
 const DiscordButtonContainer = styled(Flex)(({ theme }) => ({
   gap: 10,
@@ -48,8 +56,10 @@ const AppIdeaButton = () => {
 };
 
 export const GuideLayout = ({ guideMeta, children }: Props) => {
+  const topRef = React.useRef<HTMLDivElement>(null);
   return (
     <MainLayout>
+      <div ref={topRef} />
       <NavBreadcrumbs route={guideMeta.slug} />
       <Typography.Title level={1} mt={0}>
         {guideMeta.title}
@@ -101,6 +111,13 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
 
       {children}
       <SurveyModal />
+      <SmallScreenFab
+        icon={<Icon name="ArrowUp" />}
+        onClick={() => {
+          track("Button clicked", { id: "scroll_to_top" });
+          topRef.current?.scrollIntoView({ behavior: "smooth" });
+        }}
+      />
     </MainLayout>
   );
 };

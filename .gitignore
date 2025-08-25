@@ -39,3 +39,5 @@ target/
 
 # Cypress Screenshots
 cypress/screenshots
+
+.coderabbit.yaml

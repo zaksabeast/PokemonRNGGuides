@@ -16,7 +16,7 @@ import { AiOutlineSearch, AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaDiscord, FaCoffee, FaRegCopy } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold } from "react-icons/pi";
-import { FaHeart, FaPlay, FaFire, FaPatreon } from "react-icons/fa6";
+import { FaHeart, FaPlay, FaFire, FaPatreon, FaArrowUp } from "react-icons/fa6";
 import { TbPokeball } from "react-icons/tb";
 import { IoIosInformationCircle } from "react-icons/io";
 import { GiStarSwirl } from "react-icons/gi";
@@ -47,6 +47,7 @@ const icons = {
   Copy: FaRegCopy,
   OutlineCampaign: MdOutlineCampaign,
   StarSwirl: GiStarSwirl,
+  ArrowUp: FaArrowUp,
 } as const;
 
 export type IconName = keyof typeof icons;

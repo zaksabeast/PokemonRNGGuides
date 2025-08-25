@@ -168,7 +168,6 @@ const getPotentialEggs = async (state: PickupEggState) => {
         seed: state.seed,
         parent_ivs: state.parentIvs,
         initial_advances: Math.max(state.targetAdvance - 100, 0),
-        lua_adjustment: true,
         max_advances: 200,
         delay: 0,
         filter: {

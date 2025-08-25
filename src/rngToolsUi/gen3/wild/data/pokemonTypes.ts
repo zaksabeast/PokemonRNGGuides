@@ -1,4 +1,4 @@
-import type { Species } from "../../src/rngTools";
+import type { Species } from "~/rngTools";
 
 type POKEMON_TYPE =
   | "Normal"
@@ -412,8 +412,11 @@ export const doesSpeciesHaveType = (
   _gen: 3,
   species: Species,
   type: POKEMON_TYPE,
-) => {
-  const types = gen3TypesBySpecies[species];
-  if (!types) throw new Error(`Unsupported species ${species}`);
-  return types.includes(type);
+): boolean => {
+  if (!(species in gen3TypesBySpecies)) {
+    return false;
+  }
+
+  //@ts-expect-error The !(species in gen3TypesBySpecies) condition above prevents runtime errors.
+  return gen3TypesBySpecies[species].includes(type);
 };

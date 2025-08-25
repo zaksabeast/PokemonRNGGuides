@@ -1,8 +1,8 @@
 use super::{Wild3GeneratorOptions, generate_gen3_wild};
 use crate::gen3::{
-    CycleRange, Gen3Method, Wild3EncounterTable, Wild3SearcherResultMon, calculate_cycle_data,
+    CycleAtMoment, CycleRange, Gen3Method, Wild3MapGameData, Wild3SearcherResultMon,
+    calculate_cycle_data,
 };
-use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
@@ -17,13 +17,21 @@ pub struct Wild3MethodDistributionResult {
     pub method_probability: f64,
 }
 
+#[derive(Debug, Clone, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Wild3MethodDistributionResults {
+    pub results: Vec<Wild3MethodDistributionResult>,
+    pub cycle_at_moments: Vec<CycleAtMoment>,
+}
+
 #[wasm_bindgen]
 pub fn generate_gen3_wild_distribution(
     initial_seed: u32,
+    advances: usize,
     opts: &Wild3GeneratorOptions,
-    game_data: &Wild3EncounterTable,
+    game_data: &Wild3MapGameData,
     lead_cycle_speed: usize,
-) -> Vec<Wild3MethodDistributionResult> {
+) -> Wild3MethodDistributionResults {
     let opts = Wild3GeneratorOptions {
         consider_cycles: true,
         generate_even_if_impossible: true,
@@ -37,23 +45,18 @@ pub fn generate_gen3_wild_distribution(
         ..opts.clone()
     };
 
-    let mut rng = Pokerng::new(initial_seed);
-    rng.advance(opts.advance);
-
-    let gen_results = generate_gen3_wild(rng, &opts, game_data);
+    let (gen_results, cycle_counter) = generate_gen3_wild(
+        Pokerng::with_advances(initial_seed, advances),
+        &opts,
+        game_data,
+    );
     let search_results = gen_results
         .iter()
         .map(|gen_res| {
-            let gender_ratio = game_data.slots[gen_res.encounter_slot as usize].gender_ratio;
-            let searcher_res = Wild3SearcherResultMon::new(
-                gen_res,
-                opts.tid,
-                opts.sid,
-                gender_ratio,
-                opts.advance,
-                0,
-                opts.lead,
-            );
+            let encounter = game_data
+                .get_encounter(opts.action, gen_res.encounter_idx)
+                .unwrap();
+            let searcher_res = Wild3SearcherResultMon::new(gen_res, &opts, advances, encounter);
             let cycle_data = calculate_cycle_data(
                 &searcher_res
                     .cycle_data_by_lead
@@ -79,7 +82,7 @@ pub fn generate_gen3_wild_distribution(
         })
         .collect::<Vec<_>>();
 
-    search_results
+    let dist_results = search_results
         .iter()
         .enumerate()
         .map(|(i, (searcher_res, cycle_data))| {
@@ -140,14 +143,23 @@ pub fn generate_gen3_wild_distribution(
                 }
             }
         })
-        .collect()
+        .collect::<Vec<_>>();
+
+    Wild3MethodDistributionResults {
+        results: dist_results,
+        cycle_at_moments: cycle_counter
+            .cycle_at_moments
+            .iter()
+            .map(|cycle_at_moment| cycle_at_moment.apply_lead_pid_speed(lead_cycle_speed))
+            .collect(),
+    }
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
     use crate::assert_list_eq;
-    use crate::gen3::{Gen3Method, Wild3EncounterTable};
+    use crate::gen3::{Gen3Method, Moment, Wild3MapGameData};
 
     #[derive(Debug, PartialEq)]
     struct ResultForTest {
@@ -179,14 +191,16 @@ mod test {
     #[test]
     fn test_distribution_generator() {
         let opts = Wild3GeneratorOptions {
-            advance: 44,
             ..Default::default()
         };
-        let results =
-            generate_gen3_wild_distribution(0, &opts, &Wild3EncounterTable::default(), 700)
-                .iter()
-                .map(|dist_res| ResultForTest::new_from_dist_res(dist_res))
-                .collect::<Vec<_>>();
+        let dist_results =
+            generate_gen3_wild_distribution(0, 44, &opts, &Wild3MapGameData::default(), 700);
+
+        let results = dist_results
+            .results
+            .iter()
+            .map(|dist_res| ResultForTest::new_from_dist_res(dist_res))
+            .collect::<Vec<_>>();
 
         let expected_results = [
             ResultForTest::new(Gen3Method::Wild4, 0.0, &[]),
@@ -263,5 +277,16 @@ mod test {
             ),
         ];
         assert_list_eq!(results, expected_results);
+
+        let expected_cycle_at_moments = [
+            CycleAtMoment::new(Moment::ChooseWildMonIndex_Land_Random, 35035),
+            CycleAtMoment::new(Moment::ChooseWildMonLevel_RandomLvl, 35894),
+            CycleAtMoment::new(Moment::PickWildMonNature_RandomPickNature, 90430),
+            CycleAtMoment::new(Moment::CreateMonWithNature_RandomPidLowFirst, 102578),
+            CycleAtMoment::new(Moment::CreateMonWithNature_RandomPidHighLast, 231422),
+            CycleAtMoment::new(Moment::CreateBoxMon_RandomIvs1, 353657),
+            CycleAtMoment::new(Moment::CreateBoxMon_RandomIvs2, 395216),
+        ];
+        assert_list_eq!(dist_results.cycle_at_moments, expected_cycle_at_moments);
     }
 }

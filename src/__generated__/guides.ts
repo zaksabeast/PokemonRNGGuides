@@ -47,7 +47,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/3DS Alt Settings.mdx",
-      translations: null,
+      translations: { en: "/3ds-alt-settings/", zh: "/zh-3ds-alt-settings/" },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS Alt Settings.mdx")),
@@ -1042,10 +1042,10 @@ export const guides = {
       categories: ["Diamond, Pearl, and Platinum"],
       tags: ["retail"],
       isNew: false,
-      title: "Diamond, Pearl, and Platinum Cute Charm Glitch TID/SID RNG",
+      title: "Diamond, Pearl, & Platinum Cute Charm Glitch TID/SID RNG",
       navDrawerTitle: "Cute Charm & TID/SID RNG",
       description:
-        "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for Diamond, Pearl, and Platinum.",
+        "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for Diamond, Pearl, & Platinum.",
       slug: "/dppt-tid-sid/",
       isRoughDraft: false,
       hideFromNavDrawer: false,
@@ -6860,6 +6860,37 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-3ds-alt-settings/": {
+    meta: {
+      categories: ["NDS Tools"],
+      tags: ["info"],
+      isNew: false,
+      title: "3DS Alt Settings - 适用于乱数的 3DS 设置应用",
+      navDrawerTitle: "3DS Alt Settings - 适用于乱数的 3DS 设置应用",
+      description:
+        "无需重启即可设置 3DS 系统时间 - 这对于更快速、更稳定地进行宝可梦乱数尝试很有用。",
+      slug: "/zh-3ds-alt-settings/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-07-03",
+      translation: { enSlug: "/3ds-alt-settings/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/3DS Alt Settings.mdx",
+      translations: { en: "/3ds-alt-settings/", zh: "/zh-3ds-alt-settings/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 4/3DS Alt Settings.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/3DS Alt Settings.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-3ds-helper/": {
     meta: {
       categories: ["NDS Tools"],
@@ -9383,6 +9414,7 @@ export const guideSlugs = [
   "/xdcolo-tidsid-generator/",
   "/xy-friend-safari-patch/",
   "/xy-pokeradar/",
+  "/zh-3ds-alt-settings/",
   "/zh-3ds-helper/",
   "/zh-bw2-egg/",
   "/zh-channel-jirachi/",

@@ -3582,7 +3582,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx",
-      translations: null,
+      translations: { en: "/hgss-initial-seed/", zh: "/zh-hgss-initial-seed/" },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8544,6 +8544,39 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-hgss-initial-seed/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["emu"],
+      isNew: false,
+      title: "心金魂银初始种子乱数",
+      navDrawerTitle: "心金魂银初始种子乱数",
+      description: "学习如何在《心金》和《魂银》中进行初始种子乱数。",
+      slug: "/zh-hgss-initial-seed/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/hgss-initial-seed/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx",
+      translations: { en: "/hgss-initial-seed/", zh: "/zh-hgss-initial-seed/" },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-hgss-rng-advance/": {
     meta: {
       categories: ["HeartGold and SoulSilver"],
@@ -9464,6 +9497,7 @@ export const guideSlugs = [
   "/zh-gen3-sid/",
   "/zh-hgss-3ds-rng/",
   "/zh-hgss-cute-charm/",
+  "/zh-hgss-initial-seed/",
   "/zh-hgss-rng-advance/",
   "/zh-hgss-tid-sid/",
   "/zh-install-pokereader/",

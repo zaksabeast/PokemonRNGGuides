@@ -5188,7 +5188,10 @@ export const guides = {
       canonical: "/retail-usum-egg-no-mmsc/",
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-egg-no-mmsc/",
+        zh: "/zh-retail-sm-egg-no-mmsc/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8995,7 +8998,7 @@ export const guides = {
   },
   "/zh-retail-sm-egg-no-mmsc/": {
     meta: {
-      categories: ["Ultra Sun and Ultra Moon"],
+      categories: ["Sun and Moon"],
       tags: ["cfw"],
       isNew: false,
       title: "日月无不同语言/无闪耀呼符孵蛋乱数",
@@ -9006,14 +9009,14 @@ export const guides = {
       isRoughDraft: false,
       hideFromNavDrawer: true,
       addedOn: null,
-      translation: { enSlug: "/retail-usum-egg-no-mmsc/", language: "zh" },
+      translation: { enSlug: "/retail-sm-egg-no-mmsc/", language: "zh" },
       layout: "guide",
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       translations: {
-        en: "/retail-usum-egg-no-mmsc/",
-        zh: "/zh-retail-usum-egg-no-mmsc/",
+        en: "/retail-sm-egg-no-mmsc/",
+        zh: "/zh-retail-sm-egg-no-mmsc/",
       },
       displayAttributes: [],
     },

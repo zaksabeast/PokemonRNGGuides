@@ -1,0 +1,145 @@
+const n=`---
+- title: "心金魂银迷人之躯漏洞TID/SID乱数"
+  description: "学习如何在心金魂银中通过乱数获得迷人之躯漏洞的TID/SID组合"
+  slug: "zh-hgss-tid-sid"
+  translation:
+    enSlug: "hgss-tid-sid"
+    language: "zh"
+- title: "珍钻白金迷人之躯漏洞TID/SID乱数"
+  description: "学习如何在珍钻中通过乱数获得迷人之躯漏洞的TID/SID组合"
+  slug: "zh-dppt-tid-sid"
+  translation:
+    enSlug: "dppt-tid-sid"
+    language: "zh"
+---
+
+## 视频指南
+
+<YouTubeTable
+  videos={[
+    {
+      title: "迷人之躯与 TID/SID",
+      id: "4mLxKXYWgvs",
+    },
+    {
+      title: "3DS 乱数",
+      id: "-ayvPKWNkNw",
+    },
+  ]}
+/>
+
+## 图文指南
+
+<Alert
+  showIcon
+  type="info"
+  message="本指南为互动形式，步骤会根据你的设置动态更新！"
+/>
+
+<Gist>
+  通过乱数获得特定的 TID 和
+  SID，以便预测哪些宝可梦会异色。你也可以额外乱数出一组迷人之躯
+  ID，以便在整个流程中大幅提升异色几率。
+</Gist>
+
+若想提升异色几率，请在队伍首位放置具有“迷人之躯”特性的宝可梦，其性别需与目标宝可梦性别相反。若要最大化异色几率，应使用雄性迷人之躯宝可梦。
+
+<Stepper titles={["准备工作", "选择 TID", "击中目标", "校准"]}>
+
+<Step step={0}>
+
+## 准备工作
+
+请选择你正在游玩的游戏版本，然后继续下一步。
+
+<Gen4IdSetup />
+
+<Id4ShowIf is3dsNormalSettings>
+  [点这学习如何使用3DS Helper](/3ds-helper).
+</Id4ShowIf>
+
+<Id4ShowIf is3dsAltSettings>
+  [点这下载3DS Alt Settings](/3ds-alt-settings).
+</Id4ShowIf>
+
+</Step>
+
+<Step step={1}>
+
+## 选择 TID
+
+填写下方工具。如果你只是希望在游戏流程中随机提高异色几率，可以保持默认设置。
+
+<Id4Searcher />
+
+</Step>
+
+<Step step={2}>
+
+## 准备阶段
+
+1. 将主机日期设置为 **<Id4ConsoleSetDateString format="date" />**。
+2. 进入设置时间界面，将时间设置为 **<Id4ConsoleSetDateString format="time" />**，但不要立刻确认。
+
+| 设置确认时间的界面                                              |
+| --------------------------------------------------------------- |
+| ![确认时间界面](/images/HeartGold-SoulSilver/SetTimeScreen.jpg) |
+
+## 击中目标
+
+1. 同时按下 \`A\` 键以确认时间，并启动下方计时器。
+2. <Id4ShowIf is3dsNormalSettings>
+     退出主机上的设置，重启主机，然后启动游戏。
+   </Id4ShowIf>
+   <Id4ShowIf is3dsAltSettings>
+     按下 \`Start\` 键退出主机上的Alt Settings，然后启动游戏。
+   </Id4ShowIf>
+   <Id4ShowIf isNdsDsi>退出主机上的设置并重启主机。</Id4ShowIf>
+3. 第一声计时器响起时，<Id4ShowIf is3dsNormalSettings is3dsAltSettings>按 \`L + R + Start + Select\` 软重启游戏</Id4ShowIf><Id4ShowIf isNdsDsi>按 \`A\` 启动游戏</Id4ShowIf>。
+4. 进入角色命名画面，确保每次使用相同的角色名称和输入方式。
+5. 如果你之前已经进行过校准，并且需要翻转 Delay，请在角色名称输入时多切换一次大小写。日版游戏请在平假名与片假名之间切换。
+6. 到达生成 TID 之前的最后一个确认画面（见下图）。等待第二声计时器响起，同时按下 \`A\`。
+   - 如果来不及在第二声响起前到达该界面，可以重新选择一个 Delay 更高的 TID 目标，以获得更多准备时间。
+7. 继续下一步，检查自己获得的 TID。
+
+| 钻石 & 珍珠                                                             | 白金                                                                           | 心金 & 魂银                                                           |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| ![DP 最终界面](/images/Diamond-Pearl-Platinum/TID/DPTIDFinalScreen.png) | ![白金最终界面](/images/Diamond-Pearl-Platinum/TID/PlatinumTIDFinalScreen.png) | ![HGSS 最终界面](/images/HeartGold-SoulSilver/HGSSTIDFinalScreen.png) |
+
+## 计时器
+
+<Id4ShowIf is3dsNormalSettings>
+  [点这学习如何使用3DS Helper](/3ds-helper).
+</Id4ShowIf>
+
+<Id4Timer />
+
+</Step>
+
+<Step step={3}>
+
+## 校准
+
+1. 打开训练师卡，查看当前 TID。
+2. 如果与你的目标一致，恭喜你完成了乱数！
+3. 如果不一致，请在下方输入你获得的 TID，然后点击“生成”。
+4. 在生成的结果中点击 Delay 偏差最小的那一项（通常是第一个）。
+5. 如果该项的“Flip Delay”列被勾选，你需要在命名角色时多切换一次字符类型（如大小写）。日版游戏请在平假名和片假名之间切换。
+6. 再次尝试击中目标。
+
+在钻石和珍珠版本中，Delay 有可能在偶数与奇数之间随机变化。若发生此情况，只能多尝试几次直到成功。
+
+<CalibrateId4 />
+
+</Step>
+
+</Stepper>
+
+<WhatNext slugs={["retail-hgss-starter", "retail-dppt-starter"]} />
+
+## 特别鸣谢
+
+- Zaksabeast for writing this tool
+- Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, whose work this tool is built upon.
+- 中文翻译：炫夜鳞、白希洛/Hakuhiro
+`;export{n as default};

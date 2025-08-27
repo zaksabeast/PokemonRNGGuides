@@ -5670,7 +5670,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-egg-no-mmsc/",
+        zh: "/zh-retail-usum-egg-no-mmsc/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8990,6 +8993,80 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-sm-egg-no-mmsc/": {
+    meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "日月无不同语言/无闪耀呼符孵蛋乱数",
+      navDrawerTitle: "日月无不同语言/无闪耀呼符孵蛋乱数",
+      description:
+        "学习如何在《日月》中不依赖不同语言或闪耀呼符进行高个体异色宝可梦的孵蛋乱数。",
+      slug: "/zh-retail-sm-egg-no-mmsc/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-egg-no-mmsc/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      translations: {
+        en: "/retail-usum-egg-no-mmsc/",
+        zh: "/zh-retail-usum-egg-no-mmsc/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-egg-no-mmsc/": {
+    meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "究极日月无不同语言/无闪耀呼符孵蛋乱数",
+      navDrawerTitle: "究极日月无不同语言/无闪耀呼符孵蛋乱数",
+      description:
+        "学习如何在《究极日月》中不依赖不同语言或闪耀呼符进行高个体异色宝可梦的孵蛋乱数。",
+      slug: "/zh-retail-usum-egg-no-mmsc/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-egg-no-mmsc/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      translations: {
+        en: "/retail-usum-egg-no-mmsc/",
+        zh: "/zh-retail-usum-egg-no-mmsc/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-rs-battery/": {
     meta: {
       categories: ["Ruby and Sapphire"],
@@ -9510,6 +9587,8 @@ export const guideSlugs = [
   "/zh-retail-emerald-wild/",
   "/zh-retail-hgss-starter/",
   "/zh-retail-rubysapphire-tid/",
+  "/zh-retail-sm-egg-no-mmsc/",
+  "/zh-retail-usum-egg-no-mmsc/",
   "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",
   "/zh-rs-mirage-island/",

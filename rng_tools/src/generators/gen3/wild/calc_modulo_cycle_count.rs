@@ -284,6 +284,7 @@ pub const SLOWEST_MODULO_CYCLE_24: usize = 900;
 // Enough possibilities to cover all natures, genders and ability.
 pub const FASTEST_DIVIDENDS_MOD_24_RANGE: std::ops::RangeInclusive<usize> =
     FASTEST_MODULO_CYCLE_24..=250;
+
 pub const FASTEST_DIVIDENDS_MOD_24: &[u32] = &[
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
     26, 48, 49, 50, 72, 73, 74, 96, 97, 98, 120, 121, 122, 144, 145, 146, 168, 169, 170, 192, 193,
@@ -297,6 +298,7 @@ pub const FASTEST_DIVIDENDS_MOD_24: &[u32] = &[
 
 pub const SLOWEST_DIVIDENDS_MOD_24_RANGE: std::ops::RangeInclusive<usize> =
     896..=SLOWEST_MODULO_CYCLE_24;
+
 pub const SLOWEST_DIVIDENDS_MOD_24: &[u32] = &[
     1503238548, 1503238549, 1503238550, 1503238551, 1503238552, 1503238553, 1503238554, 1503238555,
     1503238556, 1503238557, 1503238558, 1503238559, 1503238645, 1503238646, 1503238647, 1503238648,

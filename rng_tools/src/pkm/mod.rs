@@ -102,17 +102,7 @@ impl PkmFilter {
     }
 
     pub fn pass_filter_hidden_power(&self, ivs: &Ivs) -> bool {
-        if !self.hidden_power.active {
-            return true;
-        }
-
-        let state_hidden_power = calculate_hidden_power(ivs);
-
-        self.hidden_power
-            .pokemon_types
-            .contains(&state_hidden_power.pokemon_type)
-            && state_hidden_power.bp >= self.hidden_power.min_bp
-            && state_hidden_power.bp <= self.hidden_power.max_bp
+        self.hidden_power.pass_filter(ivs)
     }
 
     pub fn pass_filter_stats(&self, state: &impl PkmState) -> bool {

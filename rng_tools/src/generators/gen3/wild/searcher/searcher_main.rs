@@ -1,20 +1,24 @@
-use super::{
-    Wild3FeebasState, Wild3GeneratorOptions, Wild3GeneratorResult, Wild3MassOutbreakState,
-    Wild3RoamerState, generate_gen3_wild,
-};
-use crate::gen3::{
-    Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
-    Wild3MapGameData, Wild3SearcherCycleDataByLead, calculate_cycle_data_by_lead,
-};
-use crate::rng::StateIterator;
-use crate::rng::lcrng::Pokerng;
-use crate::{
-    AbilityType, Gender, GenderRatio, HiddenPower, Ivs, Nature, PkmFilter, Species, gen3_shiny,
-};
-use itertools::iproduct;
+use itertools::{Itertools, iproduct};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
+
+use super::super::{
+    Wild3FeebasState, Wild3GeneratorOptions, Wild3GeneratorResult, Wild3MassOutbreakState,
+    Wild3RoamerState, generate_gen3_wild,
+};
+use crate::{
+    AbilityType, Gender, GenderRatio, HiddenPower, Ivs, Nature, PkmFilter, Species,
+    gen3::{
+        Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, search_wild3_reverse,
+        wild::{
+            Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
+            Wild3SearcherCycleDataByLead, calculate_cycle_data_by_lead,
+        },
+    },
+    gen3_shiny,
+    rng::{StateIterator, lcrng::Pokerng},
+};
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -35,6 +39,48 @@ impl Default for Wild3MapSetups {
             mass_outbreak_states: vec![Wild3MassOutbreakState::Inactive],
             feebas_states: vec![Wild3FeebasState::NotInMap],
         }
+    }
+}
+
+impl Wild3MapSetups {
+    pub fn get_encounter_species_data(&self, species: Species) -> Option<SpeciesData> {
+        let mut encounter_game_datas: Vec<&Wild3EncounterGameData> = vec![];
+
+        encounter_game_datas.extend(
+            self.map_data
+                .slots_by_action
+                .iter()
+                .flatten()
+                .collect::<Vec<_>>(),
+        );
+
+        if let Some(feebas) = self.map_data.feebas.as_ref() {
+            encounter_game_datas.push(feebas);
+        }
+        encounter_game_datas.extend(
+            self.map_data
+                .mass_outbreaks
+                .iter()
+                .map(|mass_outbreak| &mass_outbreak.encounter_data),
+        );
+        encounter_game_datas.extend(
+            self.map_data
+                .roamers
+                .iter()
+                .map(|roamer| &roamer.encounter_data),
+        );
+
+        for encounter_game_data in encounter_game_datas {
+            if encounter_game_data.species_data.species == species {
+                return Some(SpeciesData {
+                    species,
+                    gender_ratio: encounter_game_data.species_data.gender_ratio,
+                    is_electric_type: encounter_game_data.species_data.is_electric_type,
+                    is_steel_type: encounter_game_data.species_data.is_steel_type,
+                });
+            }
+        }
+        None
     }
 }
 
@@ -134,11 +180,14 @@ impl Wild3SearcherResultMon {
             encounter_idx: gen_res.encounter_idx,
             lvl: gen_res.lvl,
             cycle_data_by_lead,
-            species: encounter.species,
+            species: encounter.species_data.species,
             shiny: gen3_shiny(gen_res.pid, gen_opts.tid, gen_opts.sid),
             nature: Nature::from_pid(gen_res.pid),
             ability: AbilityType::from_gen3_pid(gen_res.pid),
-            gender: encounter.gender_ratio.gender_from_pid(gen_res.pid),
+            gender: encounter
+                .species_data
+                .gender_ratio
+                .gender_from_pid(gen_res.pid),
             hidden_power: HiddenPower::from_ivs(&gen_res.ivs),
             advance,
             map_idx: gen_opts.map_idx,
@@ -151,66 +200,23 @@ impl Wild3SearcherResultMon {
     }
 }
 
-fn search_wild3_at_given_advance(
-    rng: Pokerng,
-    advance: usize,
-    opts: &Wild3SearcherOptions,
-) -> Vec<Wild3SearcherResultMon> {
-    let mut results: Vec<Wild3SearcherResultMon> = vec![];
-
-    let lead_encounter_products = iproduct!(opts.leads.iter(), opts.map_setups.iter().enumerate());
-
-    for (lead, (map_idx, map_setups)) in lead_encounter_products {
-        let map_state_products = iproduct!(
-            &map_setups.actions,
-            &map_setups.roamer_states,
-            &map_setups.mass_outbreak_states,
-            &map_setups.feebas_states
-        );
-        for (action, roamer_state, mass_outbreak_state, feebas_state) in map_state_products {
-            let gen_opts = Wild3GeneratorOptions {
-                tid: opts.tid,
-                sid: opts.sid,
-                map_idx,
-                action: *action,
-                methods: opts.methods.clone(),
-                lead: *lead,
-                filter: opts.filter.clone(),
-                consider_cycles: opts.consider_cycles,
-                consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
-                generate_even_if_impossible: opts.generate_even_if_impossible,
-                gen3_filter: opts.gen3_filter.clone(),
-                roamer_state: *roamer_state,
-                mass_outbreak_state: *mass_outbreak_state,
-                feebas_state: *feebas_state,
-            };
-
-            generate_gen3_wild(rng, &gen_opts, &map_setups.map_data)
-                .0
-                .iter()
-                .for_each(|gen_res| {
-                    let encounter = map_setups
-                        .map_data
-                        .get_encounter(gen_opts.action, gen_res.encounter_idx)
-                        .unwrap();
-                    results.push(Wild3SearcherResultMon::new(
-                        gen_res, &gen_opts, advance, encounter,
-                    ));
-                });
-        }
-    }
-
-    results
+// Workaround because it's not possible to return Vec<Vec<T>> in wasm
+#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct VecWrapperForWasm {
+    pub vec: Vec<Wild3SearcherResultMon>,
 }
 
 #[wasm_bindgen]
-pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<Wild3SearcherResultMon> {
-    let base_rng = Pokerng::new(opts.initial_seed);
-    StateIterator::new(base_rng)
-        .enumerate()
-        .skip(opts.initial_advances)
-        .take(opts.max_advances.wrapping_add(1))
-        .flat_map(|(adv, rng)| search_wild3_at_given_advance(rng, adv, opts))
-        .take(opts.max_result_count)
-        .collect::<Vec<Wild3SearcherResultMon>>()
+pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<VecWrapperForWasm> {
+    search_wild3_reverse(opts)
+        .into_iter()
+        .map(|vec| VecWrapperForWasm { vec })
+        .collect_vec()
 }
+
+#[path = "searcher_naive.rs"]
+pub mod searcher_naive;
+
+#[path = "searcher_reverse.rs"]
+pub mod searcher_reverse;

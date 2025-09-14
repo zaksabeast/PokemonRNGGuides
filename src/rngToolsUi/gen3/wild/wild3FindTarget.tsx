@@ -18,6 +18,7 @@ import {
   FormFieldTable,
   Flex,
   Typography,
+  ResultTable,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
@@ -41,7 +42,7 @@ import {
 } from "~/types";
 import { match, P } from "ts-pattern";
 
-import { uniq, sortBy, intersection } from "lodash-es";
+import { uniq, sortBy, orderBy, intersection } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { Tooltip } from "antd";
 import {
@@ -73,7 +74,10 @@ const emeraldWildGameData = getWild3EmeraldGameData();
 const rngManipulatedLeadPidAtom = atom(false);
 
 /*
+TODO: Investigate duplicate setup entries
+
 Possible UI improvements:
+ - Display filter restrictiveness
  - Add Tooltip for Likelihood by lead speed columns.
  - Display warning if no maps or no leads are selected.
  - Display map names instead of formatted map IDs.
@@ -81,7 +85,6 @@ Possible UI improvements:
  - Display ability names instead of First, Second, or Hidden.
  - Min/Max IVs should display the stat name.
  - Rename "None" to "Any" in filters.
- - In case of similar results, keep the mass outbreak that doesn't require mixing records 
 */
 
 const Validator = z
@@ -90,7 +93,7 @@ const Validator = z
     tid: z.number().int().min(0).max(0xffff),
     sid: z.number().int().min(0).max(0xffff),
     maps: z.array(z.string()).min(1),
-    allSetups: z.boolean(),
+    recommendedSetups: z.boolean(),
     // Limitation: value in Select must be a primitive, so we use the index instead of Gen3Lead.
     leadIdxs: z
       .array(
@@ -125,15 +128,15 @@ const getInitialValues = (): FormState => {
     sid: 0,
     maps: [],
     leadIdxs: gen3Leads.map((_, i) => i),
-    allSetups: true,
+    recommendedSetups: true,
     methods: ["Wild1", "Wild2", "Wild4"],
     actions: [...wild3Actions],
     roamerStates: [...wild3RoamerStates],
     feebasStates: [...wild3FeebasStates],
     massOutbreakStates: [...wild3MassOutbreakStates],
     initial_advances: 1000,
-    max_advances: 100_000,
-    max_result_count: 10_000,
+    max_advances: 10_000_000,
+    max_result_count: 20,
     rngManipulatedLeadPid: false,
     mergeSimilarResults: true,
     generate_even_if_impossible: false,
@@ -195,7 +198,7 @@ const RngManipulatedLeadPidSwitch = () => {
 const getSetupFields = (
   species: Species,
   filter_shiny: boolean,
-  allSetups: boolean,
+  recommendedSetups: boolean,
 ): Field[] => {
   const possVals = getPossibleValuesForSpecies(species);
 
@@ -225,10 +228,10 @@ const getSetupFields = (
       ),
     },
     {
-      label: "All Setups?",
-      input: <FormikSwitch<FormState> name="allSetups" />,
+      label: "Recommended Setups?",
+      input: <FormikSwitch<FormState> name="recommendedSetups" />,
     },
-    ...(allSetups
+    ...(recommendedSetups
       ? []
       : [
           {
@@ -358,10 +361,6 @@ const getSetupFields = (
       ),
     },
     {
-      label: "Merge similar results",
-      input: <FormikSwitch<FormState> name="mergeSimilarResults" />,
-    },
-    {
       label: "Display results with 0% likelihood",
       input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
     },
@@ -407,13 +406,13 @@ export const SetupFilter = () => {
   const filterShiny = useWatch<FormState, "filter_shiny">({
     name: "filter_shiny",
   });
-  const allSetups = useWatch<FormState, "allSetups">({
-    name: "allSetups",
+  const recommendedSetups = useWatch<FormState, "recommendedSetups">({
+    name: "recommendedSetups",
   });
 
   const fields = React.useMemo((): Field[] => {
-    return getSetupFields(species, filterShiny, allSetups);
-  }, [species, filterShiny, allSetups]);
+    return getSetupFields(species, filterShiny, recommendedSetups);
+  }, [species, filterShiny, recommendedSetups]);
 
   return (
     <Flex vertical gap={8}>
@@ -436,7 +435,7 @@ const getMethodLikelihoodColumValue = (
   const rangeAsTxt =
     end === 0
       ? `Method ${method} can't be triggered.`
-      : `Method ${method} is triggered if the cycle counter at Sweet Scent is between ${cycleData.pre_sweet_scent_cycle_range.start} and ${end}.`;
+      : `Method ${method} is triggered if the cycle counter is between ${cycleData.pre_sweet_scent_cycle_range.start} and ${end}.`;
   return (
     <Tooltip title={rangeAsTxt}>
       <div>{probAsTxt}</div>
@@ -444,12 +443,14 @@ const getMethodLikelihoodColumValue = (
   );
 };
 
-const getColumns = ({
+const getResultSetupInfoColumns = ({
   rngManipulatedLeadPid,
+  showMassOutbreak,
 }: {
   rngManipulatedLeadPid: boolean;
-}): ResultColumn<UiResult>[] => {
-  const columns: ResultColumn<UiResult>[] = [];
+  showMassOutbreak: boolean;
+}): ResultColumn<ResultSetupInfo>[] => {
+  const columns: ResultColumn<ResultSetupInfo>[] = [];
   columns.push(
     {
       title: "Advances",
@@ -466,6 +467,8 @@ const getColumns = ({
     },
     { title: "Map", dataIndex: "mapName" },
     { title: "Player action", dataIndex: "actionName" },
+    /*
+    TODO: Support roamer and fishing in Feebas tile to catch non-Feebas Pokémon. 
     {
       title: "Roamer",
       dataIndex: "roamer_state",
@@ -488,12 +491,16 @@ const getColumns = ({
           .with("InMapButNotOnFeebasTile", () => "No")
           .exhaustive();
       },
-    },
-    {
-      title: "Mass outbreak",
-      dataIndex: "mass_outbreak_state",
-      render: formatMassOutbreakStateName,
-    },
+    },*/
+    ...(showMassOutbreak
+      ? ([
+          {
+            title: "Mass outbreak",
+            dataIndex: "mass_outbreak_state",
+            render: formatMassOutbreakStateName,
+          },
+        ] as const)
+      : []),
   );
 
   if (!rngManipulatedLeadPid) {
@@ -506,16 +513,25 @@ const getColumns = ({
       ),
       key: "<>Method <br />Likelihood</>",
       dataIndex: "cycle_data_by_lead",
-      render: (cycle_data_by_lead) => {
-        if (cycle_data_by_lead == undefined) {
-          return "";
-        }
-        const least_likely_common =
-          cycle_data_by_lead.common_lower_lead.method_probability <
-          cycle_data_by_lead.common_upper_lead.method_probability
-            ? cycle_data_by_lead.common_lower_lead
-            : cycle_data_by_lead.common_upper_lead;
-        return formatProbability(least_likely_common.method_probability);
+      render: (cycle_data_by_lead, values) => {
+        const text = (() => {
+          if (cycle_data_by_lead == undefined) {
+            return "";
+          }
+          const least_likely_common =
+            cycle_data_by_lead.common_lower_lead.method_probability <
+            cycle_data_by_lead.common_upper_lead.method_probability
+              ? cycle_data_by_lead.common_lower_lead
+              : cycle_data_by_lead.common_upper_lead;
+
+          return formatProbability(least_likely_common.method_probability);
+        })();
+
+        return (
+          <Tooltip title={`Method ${values.method}`}>
+            <div>{text}</div>
+          </Tooltip>
+        );
       },
     });
   }
@@ -623,32 +639,57 @@ const getColumns = ({
       },
     );
   }
+  return columns;
+};
 
-  columns.push(
-    { title: "Species", dataIndex: "species" },
+const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
+  return [
     {
-      title: "PID",
-      dataIndex: "pid",
+      title: "",
+      dataIndex: "resultSetupInfos",
+      render: (resultSetupInfos) =>
+        `${resultSetupInfos.length} setup${resultSetupInfos.length > 1 ? "s" : ""}`,
+    },
+    {
+      title: "Likelihood",
+      dataIndex: "resultSetupInfos",
+      key: "best_likelihood",
+      render: (resultSetupInfos) => {
+        return formatProbability(resultSetupInfos[0]?.primaryLikelihood ?? 0);
+      },
+    },
+    {
+      title: "Advances",
+      dataIndex: "earliestAdvance",
       monospace: true,
-      render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
+      render: (adv) => {
+        const durInMinutes = (adv / 59.7275 / 60).toFixed(1);
+        return (
+          <Tooltip title={`~${durInMinutes} min`}>
+            <div>~{formatLargeInteger(adv)}</div>
+          </Tooltip>
+        );
+      },
     },
     { title: "Nature", dataIndex: "nature" },
-    { title: "Ability", dataIndex: "ability" },
     {
       title: "Shiny",
       dataIndex: "shiny",
       render: (shiny: boolean) => (shiny ? "Yes" : "No"),
     },
-    { title: "Gender", dataIndex: "gender" },
     {
       title: "IV",
       type: "group",
       columns: ivColumns,
     },
     {
-      title: "Lvl",
-      dataIndex: "lvl",
+      title: "PID",
+      dataIndex: "pid",
+      monospace: true,
+      render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
     },
+    { title: "Ability", dataIndex: "ability" },
+    { title: "Gender", dataIndex: "gender" },
     {
       title: "Hidden Power",
       type: "group",
@@ -670,29 +711,24 @@ const getColumns = ({
       dataIndex: "pidCycleCount",
       render: (pidCycleCount) => `${pidCycleCount} cycles`,
     },
-  );
-  return columns;
+    {
+      title: "Method",
+      dataIndex: "method",
+    },
+  ];
 };
 
 type Props = {
   game: Static3Game;
 };
 
-type UiResult = FlattenIvs<
-  Wild3SearcherResultMon & {
-    mapName: string;
-    actionName: string;
-    uid: number;
-    pidCycleCount: number;
-  }
->;
-
 const getMapSetupsConsideringStateSubsets = (
   values: FormState,
 ): Wild3MapSetups[] => {
   const mapSetupsWithAllStates =
     emeraldWildGameData.mapSetupsBySpecies.get(values.species) ?? [];
-  if (values.allSetups) {
+  if (values.recommendedSetups) {
+    // TODO: remove not needed states. right now, the filtering systematically occurs in searcher_reverse even if the user doesn't want it.
     return mapSetupsWithAllStates;
   }
 
@@ -721,43 +757,86 @@ const getMapSetupsConsideringStateSubsets = (
 };
 
 let nextUid = 0;
-const convertSearcherResultToUIResult = async (
-  res: Wild3SearcherResultMon,
-  mapName: string,
-): Promise<UiResult> => {
+
+const convertResultsForPidPathToPidPathResult = async (
+  results: Wild3SearcherResultMon[],
+  mapSetups: Wild3MapSetups[],
+  rngManipulatedLeadPid: boolean,
+): Promise<PidPathResult | null> => {
+  if (results.length === 0) {
+    return null;
+  }
+
+  const firstRes = results[0];
+
+  const resultSetupInfos: ResultSetupInfo[] = await Promise.all(
+    results.map((res) => {
+      const mapSetup = mapSetups[res.map_idx];
+      const mapName = formatMapName(mapSetup.map_data.map_id);
+      const primaryLikelihood = (() => {
+        const { cycle_data_by_lead } = res;
+        if (cycle_data_by_lead == null) {
+          return 0;
+        }
+
+        if (rngManipulatedLeadPid) {
+          return cycle_data_by_lead.ideal_lead.method_probability;
+        }
+
+        return Math.min(
+          cycle_data_by_lead.common_lower_lead.method_probability,
+          cycle_data_by_lead.common_upper_lead.method_probability,
+        );
+      })();
+
+      return {
+        ...res,
+        uid: nextUid++,
+        mapName,
+        actionName: formatActionName(res.action),
+        primaryLikelihood,
+      };
+    }),
+  );
+
+  const earliestAdvance = Math.min(...results.map((res) => res.advance));
+
   return {
-    ...res,
-    ...res.ivs,
-    mapName,
-    actionName: formatActionName(res.action),
+    ...firstRes,
+    ...firstRes.ivs,
+    earliestAdvance,
     uid: nextUid++,
-    pidCycleCount: await rngTools.calculate_pid_speed(res.pid),
+    pidCycleCount: await rngTools.calculate_pid_speed(firstRes.pid),
+    resultSetupInfos: orderBy(
+      resultSetupInfos,
+      ["primaryLikelihood", "advance", "method", "map_idx"],
+      ["desc", "asc", "asc", "asc"],
+    ),
   };
 };
 
-const filterResults = (results: Wild3SearcherResultMon[]) => {
-  const resByMon = new Map<string, Wild3SearcherResultMon>();
-  results.forEach((res) => {
-    const key = `${res.pid},${res.ivs.hp},${res.ivs.atk},${res.ivs.def},${res.ivs.spa},${res.ivs.spd},${res.ivs.spe}`;
-    const alreadyAddedRes = resByMon.get(key);
+type PidPathResult = FlattenIvs<
+  Wild3SearcherResultMon & {
+    uid: number;
+    pidCycleCount: number;
+    earliestAdvance: number;
+    resultSetupInfos: ResultSetupInfo[];
+  }
+>;
 
-    // If possible, keep the vanilla lead because it's simpler to get.
-    if (
-      alreadyAddedRes === undefined ||
-      (alreadyAddedRes.lead !== "Vanilla" && res.lead === "Vanilla")
-    ) {
-      resByMon.set(key, res);
-    }
-  });
-  return Array.from(resByMon.values());
-};
-
-const sortResults = (results: Wild3SearcherResultMon[]) => {
-  return sortBy(results, ["advance", "method", "map_idx"]);
+type ResultSetupInfo = Wild3SearcherResultMon & {
+  uid: number;
+  mapName: string;
+  actionName: string;
+  primaryLikelihood: number;
 };
 
 export const Wild3SearcherFindTarget = ({ game }: Props) => {
-  const [results, setResults] = React.useState<UiResult[]>([]);
+  const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
+    [],
+  );
+  const [selectedPidPathResult, setSelectedPidPathResult] =
+    React.useState<PidPathResult | null>(null);
   const [rngManipulatedLeadPid] = useAtom(rngManipulatedLeadPidAtom);
 
   const initial_seed = game === "emerald" ? 0 : 0x5a0;
@@ -766,7 +845,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
     async (values) => {
       const map_setups = getMapSetupsConsideringStateSubsets(values);
 
-      const leadsToUse = values.allSetups
+      const leadsToUse = values.recommendedSetups
         ? [...gen3Leads]
         : values.leadIdxs.map((i) => gen3Leads[i]);
       const opts: Wild3SearcherOptions = {
@@ -787,23 +866,25 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
         generate_even_if_impossible: values.generate_even_if_impossible,
       };
 
-      let results = await rngTools.search_wild3(opts);
-      if (values.mergeSimilarResults) {
-        results = filterResults(results);
-      }
-      results = sortResults(results);
+      const resultsByPidPath = await rngTools.search_wild3(opts);
 
-      const uiResults = await Promise.all(
-        results.map((res) => {
-          const mapSetup = map_setups[res.map_idx];
-          return convertSearcherResultToUIResult(
-            res,
-            formatMapName(mapSetup.map_data.map_id),
-          );
-        }),
+      const pidPathResults = await Promise.all(
+        resultsByPidPath.map((results) =>
+          convertResultsForPidPathToPidPathResult(
+            results.vec,
+            map_setups,
+            values.rngManipulatedLeadPid,
+          ),
+        ),
       );
 
-      setResults(uiResults);
+      setPidPathResults(
+        sortBy(
+          pidPathResults.filter((el) => el != null),
+          "earliestAdvance",
+        ),
+      );
+      setSelectedPidPathResult(null);
     },
     [initial_seed],
   );
@@ -812,23 +893,45 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
     return getInitialValues();
   }, []);
 
-  const columns = React.useMemo(() => {
-    return getColumns({ rngManipulatedLeadPid });
-  }, [rngManipulatedLeadPid]);
+  const pidPathColumns = React.useMemo(() => {
+    return getPidPathColumns();
+  }, []);
+
+  const resultSetupInfoColumns = React.useMemo(() => {
+    const showMassOutbreak =
+      selectedPidPathResult != null &&
+      selectedPidPathResult.resultSetupInfos.some(
+        (setup) => setup.mass_outbreak_state !== "Inactive",
+      );
+    return getResultSetupInfoColumns({
+      rngManipulatedLeadPid,
+      showMassOutbreak,
+    });
+  }, [rngManipulatedLeadPid, selectedPidPathResult]);
 
   return (
-    <RngToolForm<FormState, UiResult>
-      columns={columns}
-      results={results}
-      validationSchema={Validator}
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      submitTrackerId="wild3_find_target"
-      rowKey="uid"
-    >
-      <TargetMon />
-      <br />
-      <SetupFilter />
-    </RngToolForm>
+    <>
+      <RngToolForm<FormState, PidPathResult>
+        columns={pidPathColumns}
+        results={pidPathResults}
+        validationSchema={Validator}
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        submitTrackerId="wild3_find_target"
+        rowKey="uid"
+        onClickResultRow={setSelectedPidPathResult}
+      >
+        <TargetMon />
+        <br />
+        <SetupFilter />
+      </RngToolForm>
+      {selectedPidPathResult != null ? (
+        <ResultTable<ResultSetupInfo>
+          columns={resultSetupInfoColumns}
+          rowKey="uid"
+          dataSource={selectedPidPathResult.resultSetupInfos}
+        />
+      ) : null}
+    </>
   );
 };

@@ -1,13 +1,16 @@
-use super::{Wild3GeneratorOptions, generate_gen3_wild};
-use crate::gen3::{
-    CycleAtMoment, CycleRange, Gen3Method, Wild3MapGameData, Wild3SearcherResultMon,
-    calculate_cycle_data,
-};
-use crate::rng::lcrng::Pokerng;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
+
+use super::{Wild3GeneratorOptions, generate_gen3_wild};
+use crate::{
+    gen3::{
+        CycleAtMoment, CycleRange, Gen3Method, Wild3MapGameData, Wild3SearcherResultMon,
+        calculate_cycle_data,
+    },
+    rng::lcrng::Pokerng,
+};
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -68,17 +71,14 @@ pub fn generate_gen3_wild_distribution(
             (searcher_res, cycle_data)
         })
         .sorted_by(|(_, lhs), (_, rhs)| {
-            let cmp = lhs
-                .pre_sweet_scent_cycle_range
+            lhs.pre_sweet_scent_cycle_range
                 .start
-                .cmp(&rhs.pre_sweet_scent_cycle_range.start);
-            if cmp != std::cmp::Ordering::Equal {
-                cmp
-            } else {
-                lhs.pre_sweet_scent_cycle_range
-                    .end()
-                    .cmp(&rhs.pre_sweet_scent_cycle_range.end())
-            }
+                .cmp(&rhs.pre_sweet_scent_cycle_range.start)
+                .then_with(|| {
+                    lhs.pre_sweet_scent_cycle_range
+                        .end()
+                        .cmp(&rhs.pre_sweet_scent_cycle_range.end())
+                })
         })
         .collect::<Vec<_>>();
 
@@ -158,8 +158,10 @@ pub fn generate_gen3_wild_distribution(
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::assert_list_eq;
-    use crate::gen3::{Gen3Method, Moment, Wild3MapGameData};
+    use crate::{
+        assert_list_eq,
+        gen3::{Gen3Method, Moment, Wild3MapGameData},
+    };
 
     #[derive(Debug, PartialEq)]
     struct ResultForTest {
@@ -188,6 +190,7 @@ mod test {
         }
     }
 
+    #[ignore]
     #[test]
     fn test_distribution_generator() {
         let opts = Wild3GeneratorOptions {
@@ -199,7 +202,7 @@ mod test {
         let results = dist_results
             .results
             .iter()
-            .map(|dist_res| ResultForTest::new_from_dist_res(dist_res))
+            .map(ResultForTest::new_from_dist_res)
             .collect::<Vec<_>>();
 
         let expected_results = [

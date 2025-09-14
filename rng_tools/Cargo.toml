@@ -14,3 +14,4 @@ serde-wasm-bindgen = "0.6.5"
 tsify-next = { version = "0.5.5", features = ["js"] }
 wasm-bindgen = "0.2.100"
 itertools = "0.14.0"
+arrayvec = "0.7.6"

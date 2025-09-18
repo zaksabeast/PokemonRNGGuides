@@ -1,11 +1,11 @@
-import { PkmFilter } from "~/rngTools";
+import { GenderRatio, PkmFilter } from "~/rngTools";
 import { Field } from "~/components/formFieldTable";
 import { FormikSwitch } from "~/components/switch";
 import { FormikSelect } from "~/components/select";
 import { nature } from "~/types/nature";
 import { IvInput, IvsSchema } from "~/components/ivInput";
 import { ability } from "~/types/ability";
-import { gender } from "~/types/gender";
+import { gender, getPossibleGenders } from "~/types/gender";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
@@ -23,7 +23,7 @@ const sortedNatures = nature.toSorted();
 const requiredNatureOptions = toOptions(sortedNatures);
 const optionalNatureOptions = [
   {
-    label: "None" as const,
+    label: "Any" as const,
     value: null,
   },
   ...requiredNatureOptions,
@@ -35,12 +35,12 @@ export const natureOptions = {
 };
 
 export const abilityOptions = ([null, ...ability] as const).map((abil) => ({
-  label: abil ?? ("None" as const),
+  label: abil ?? ("Any" as const),
   value: abil,
 }));
 
 export const genderOptions = ([null, ...gender] as const).map((gen) => ({
-  label: gen ?? ("None" as const),
+  label: gen ?? ("Any" as const),
   value: gen,
 }));
 
@@ -76,13 +76,14 @@ export const pkmFilterFieldsToRustInput = (
   };
 };
 
-type FieldOptOuts = {
-  shiny?: boolean;
-  nature?: boolean;
-  ability?: boolean;
-  gender?: boolean;
-  ivs?: boolean;
-  hidden_power?: boolean;
+type Props = {
+  displayShiny?: boolean;
+  displayNature?: boolean;
+  displayAbility?: boolean;
+  displayGender?: boolean;
+  displayIvs?: boolean;
+  displayHiddenPower?: boolean;
+  genderRatio?: GenderRatio;
 };
 
 export const getPkmFilterInitialValues = (): PkmFilterFields => ({
@@ -96,16 +97,38 @@ export const getPkmFilterInitialValues = (): PkmFilterFields => ({
   filter_stats: null,
 });
 
-const _getPkmFilterFields = (
-  optOuts: FieldOptOuts = {},
-  t?: Translations,
-): Field[] =>
+const getGenderFilterComponent = (genderRatio?: GenderRatio) => {
+  const options = (() => {
+    if (genderRatio == null) {
+      return genderOptions;
+    }
+    const possibleGenders = getPossibleGenders(genderRatio);
+    const permitNull = possibleGenders.length > 1;
+    return genderOptions.filter((label) => {
+      if (label.value == null) {
+        return permitNull;
+      }
+      return possibleGenders.includes(label.value);
+    });
+  })();
+
+  //NO_PROD useEffect if invalid
+  return (
+    <FormikSelect<PkmFilterFields, "filter_gender">
+      name="filter_gender"
+      options={options}
+      disabled={options.length <= 1}
+    />
+  );
+};
+
+const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
   [
-    optOut(optOuts?.shiny, {
+    optOut(props?.displayShiny, {
       label: t?.["Shiny"] ?? "Shiny",
       input: <FormikSwitch<PkmFilterFields> name="filter_shiny" />,
     }),
-    optOut(optOuts?.nature, {
+    optOut(props?.displayNature, {
       label: t?.["Nature"] ?? "Nature",
       input: (
         <FormikSelect<PkmFilterFields, "filter_nature">
@@ -114,7 +137,7 @@ const _getPkmFilterFields = (
         />
       ),
     }),
-    optOut(optOuts?.ability, {
+    optOut(props?.displayAbility, {
       label: t?.["Ability"] ?? "Ability",
       input: (
         <FormikSelect<PkmFilterFields, "filter_ability">
@@ -123,30 +146,25 @@ const _getPkmFilterFields = (
         />
       ),
     }),
-    optOut(optOuts?.gender, {
+    optOut(props?.displayGender, {
       label: t?.["Gender"] ?? "Gender",
-      input: (
-        <FormikSelect<PkmFilterFields, "filter_gender">
-          name="filter_gender"
-          options={genderOptions}
-        />
-      ),
+      input: getGenderFilterComponent(props.genderRatio),
     }),
-    optOut(optOuts?.ivs, {
+    optOut(props?.displayIvs, {
       label: t?.["Min IVs"] ?? "Min IVs",
       input: <IvInput<PkmFilterFields> name="filter_min_ivs" />,
     }),
-    optOut(optOuts?.ivs, {
+    optOut(props?.displayIvs, {
       label: t?.["Max IVs"] ?? "Max IVs",
       input: <IvInput<PkmFilterFields> name="filter_max_ivs" />,
     }),
-    optOut(optOuts?.hidden_power, {
+    optOut(props?.displayHiddenPower, {
       label: "Hidden Power",
       input: (
         <FormikSwitch<PkmFilterFields> name="filter_hidden_power.active" />
       ),
     }),
-    optOut(optOuts?.hidden_power, {
+    optOut(props?.displayHiddenPower, {
       label: "",
       key: "_getPkmFilterFields.hidden_power",
       direction: "column",
@@ -155,10 +173,10 @@ const _getPkmFilterFields = (
   ].filter((field) => field !== null);
 
 export const getPkmFilterFields = <FormField,>(
-  optOuts?: FieldOptOuts,
+  props?: Props,
   t?: Translations,
 ): FormField extends PkmFilterFields ? Field[] : never => {
-  return _getPkmFilterFields(optOuts, t) as FormField extends PkmFilterFields
+  return _getPkmFilterFields(props, t) as FormField extends PkmFilterFields
     ? Field[]
     : never;
 };

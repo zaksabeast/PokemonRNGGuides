@@ -23,7 +23,7 @@ const filterOptions = [
 ] as const satisfies { label: string; value: FilterType }[];
 
 const optionalFilterOptions = [
-  { label: "None", value: "none" },
+  { label: "Any", value: "none" },
   ...filterOptions,
 ] as const satisfies { label: string; value: FilterType }[];
 

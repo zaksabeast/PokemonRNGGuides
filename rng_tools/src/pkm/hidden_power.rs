@@ -13,6 +13,21 @@ pub struct HiddenPowerFilter {
     pub max_bp: u8,
 }
 
+impl HiddenPowerFilter {
+    pub fn pass_filter(&self, ivs: &Ivs) -> bool {
+        if !self.active {
+            return true;
+        }
+
+        let state_hidden_power = calculate_hidden_power(ivs);
+
+        self.pokemon_types
+            .contains(&state_hidden_power.pokemon_type)
+            && state_hidden_power.bp >= self.min_bp
+            && state_hidden_power.bp <= self.max_bp
+    }
+}
+
 #[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct HiddenPower {

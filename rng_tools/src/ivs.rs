@@ -202,6 +202,16 @@ impl Ivs {
     }
 }
 
+impl std::fmt::Display for Ivs {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "{}/{}/{}/{}/{}/{}",
+            self.hp, self.atk, self.def, self.spa, self.spd, self.spe,
+        )
+    }
+}
+
 #[derive(Debug, Clone, Copy, FromPrimitive)]
 #[repr(u8)]
 pub enum G3Idx {

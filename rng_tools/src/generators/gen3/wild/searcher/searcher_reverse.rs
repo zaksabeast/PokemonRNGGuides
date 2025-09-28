@@ -112,7 +112,13 @@ where
             .iter()
             .flat_map(|encounter_idx_path| {
                 let map_setups = &opts.map_setups[encounter_idx_path.map_setups_idx];
-                create_result(encounter_idx_path, opts, map_setups, encounter_gender_ratio)
+                create_result(
+                    encounter_idx_path,
+                    opts,
+                    map_setups,
+                    encounter_idx_path.map_setups_idx,
+                    encounter_gender_ratio,
+                )
             })
             .collect_vec();
         if vec.is_empty() { None } else { Some(vec) }
@@ -196,6 +202,7 @@ fn create_result(
     seed: &EncounterIdxPath,
     opts: &Wild3SearcherOptions,
     map_setups: &Wild3MapSetups,
+    map_idx: usize,
     encounter_gender_ratio: GenderRatio,
 ) -> Vec<Wild3SearcherResultMon> {
     let mass_outbreak_state = match seed.encounter_idx_to_lvl_arc {
@@ -216,7 +223,7 @@ fn create_result(
     let gen_opts = Wild3GeneratorOptions {
         tid: opts.tid,
         sid: opts.sid,
-        map_idx: 0,
+        map_idx,
         action: seed.action,
         methods: vec![seed.pid_path.method()],
         lead: seed.lead(encounter_gender_ratio),

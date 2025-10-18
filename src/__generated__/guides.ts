@@ -857,7 +857,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
-      translations: { en: "/dppt-advance-rng/", zh: "/zh-dppt-advance-rng/" },
+      translations: {
+        en: "/dppt-advance-rng/",
+        es: "/es-dppt-advance-rng/",
+        zh: "/zh-dppt-advance-rng/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -2707,6 +2711,44 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/es/Tools and Emulators/Delete Save.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/es-dppt-advance-rng/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["info"],
+      isNew: false,
+      title: "Avanzar el RNG en Diamante, Perla y Platino",
+      navDrawerTitle: "Advancing the RNG",
+      description:
+        "Aprende cómo avanzar el RNG en Diamante, Perla y Platino. Esta guía explica diferentes métodos como pasar páginas del diario, los “chatters” de Chatot y las acciones de los NPC.",
+      slug: "/es-dppt-advance-rng/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/dppt-advance-rng/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
+      translations: {
+        en: "/dppt-advance-rng/",
+        es: "/es-dppt-advance-rng/",
+        zh: "/zh-dppt-advance-rng/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/es/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx?raw"
       );
       return file.default;
     }),
@@ -7126,7 +7168,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
-      translations: { en: "/dppt-advance-rng/", zh: "/zh-dppt-advance-rng/" },
+      translations: {
+        en: "/dppt-advance-rng/",
+        es: "/es-dppt-advance-rng/",
+        zh: "/zh-dppt-advance-rng/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -9549,6 +9595,7 @@ export const guideSlugs = [
   "/emulator-sm-time-finder/",
   "/emulator-usum-time-finder/",
   "/es-delete-pokemon-save/",
+  "/es-dppt-advance-rng/",
   "/es-gba-methods-lead-impact/",
   "/es-gen2-celebi/",
   "/es-gen2-starters/",

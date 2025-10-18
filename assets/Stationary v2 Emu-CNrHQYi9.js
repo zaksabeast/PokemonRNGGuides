@@ -1,0 +1,35 @@
+const e=`---
+title: "FireRed and LeafGreen Static RNG"
+navDrawerTitle: "Static RNG"
+description: "Static v2 RNG"
+slug: "emulator-frlg-stationary"
+category: "FireRed and LeafGreen"
+isRoughDraft: true
+tag: "emu"
+---
+
+## Tools
+
+- [mGBA with lua scripts](/mgba-setup)
+- [PokeFinder](/pokefinder)
+- Vlad's doc for delays: https://docs.google.com/document/d/11jxX7bTSGf2vzkdHr-lEpz2bLRI_u7zRbXaOtbasTp0
+
+## Step 1: Prepare for RNG
+
+These scripts improve frame counting and reduce mistakes. With some technique, you can hit any frame without calibration. You need to know your Pokémon's basic delay to do this. I've provided as much data as possible. If something is missing, feel free to contact me.
+
+1. Open your emulator and save in front of the target.
+2. Open PokeFinder, select "Gen 3" => "Stationary" (Method 1). Select your profile.
+3. In the delay box, check it and add the delay for your target.
+4. Search for a target.
+
+## Step 2: Advance Frames
+
+You can advance many frames (about 1 million every 10 seconds with the Teachy TV).
+
+## Step 3: Target the Frame
+
+Go to the last input. When close to the target frame, pause the emulator (\`ctrl + p\`), and advance frame by frame (\`ctrl + n\`) to the frame shown by PokeFinder. Press \`A\` and unpause at the same time.
+
+Congrats! You're done!
+`;export{e as default};

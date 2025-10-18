@@ -1,0 +1,52 @@
+const e=`---
+title: "Advancing the RNG in HeartGold and SoulSilver"
+navDrawerTitle: "Advancing the RNG"
+description: "Learn how to advance the RNG in HeartGold and SoulSilver. This guide explains different methods like Chatot chatters, radio, and NPC actions."
+slug: "hgss-rng-advance"
+category: "HeartGold and SoulSilver"
+tag: "any"
+---
+
+This explains how the RNG can be advanced and influenced in HeartGold and SoulSilver. The preferred method to advance the RNG is using Chatot or the Radio, but there are other methods if those are unavailable.
+
+## Chatot Chatter
+
+1. You need a Chatot with the move Chatter and a recorded custom Chatter to use this method. Accessing Chatot's summary advances the RNG by 1.
+2. You don't need to listen to the whole Chatter sound; just viewing its summary is enough.
+3. To speed things up, have two Chatots in your party and switch between their summaries by pressing \`Up\` and \`Down\`.
+
+## Radio
+
+1. Switching between a specific channel and no channel advances the RNG.
+2. The Pokemon Talk channel advances 14-18.
+3. The Serial Radio Drama advances by 1 unless Bueno's Password is playing, in which case it does not advance.
+4. This method can be combined with other methods for more precision when close to the target advance.
+
+![Radio Station](/images/HeartGold-SoulSilver/Advance-RNG/Radio.png)
+
+![Radio Station](/images/HeartGold-SoulSilver/Advance-RNG/Radio-2.png)
+
+## Character Movement
+
+1. Taking a step or turning in areas where you can encounter wild Pokémon (grass, water, or caves) advances the RNG by 1 for each step or turn.
+2. Walking at least 128 steps will advance the RNG by the number of Pokémon in your party.
+3. An internal step counter starts at 0 and increases up to 128, then resets. This counter is saved, so if you load your game at 127, taking one step will advance the RNG by the number of Pokémon in your party.
+4. It is recommended to avoid this method unless no other options are available.
+
+## NPC Movement
+
+1. Any NPC that randomly moves (by turning or walking) will advance the RNG by 1 for each movement. If an NPC does both, the RNG advances by 2.
+2. NPCs offscreen can still advance the RNG as long as they're in the same area. Try to capture in areas with few or no NPCs.
+3. If you can't avoid NPC movement, press \`X\` to open the menu when you enter the game. This freezes all NPCs and stops unnecessary advancements.
+
+## Active Roamer
+
+1. Having an active roamer in your game advances the initial RNG by one or two for each active roamer.
+2. You need to account for these advances to determine how much to advance the RNG to reach a target.
+3. Based on the number of active roamers, aim for a higher minimum initial advance; otherwise, active roamers may skip the target advance.
+
+## Credits
+
+- Chinese translation: xuanyelin, Hakuhiro.
+- Spanish translation: El Terapagos Mexicano.
+`;export{e as default};

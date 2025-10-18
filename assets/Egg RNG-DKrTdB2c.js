@@ -1,0 +1,68 @@
+const e=`---
+title: "Emerald Egg RNG"
+navDrawerTitle: "Egg RNG"
+description: "Learn how to RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies."
+slug: "emulator-emerald-egg"
+category: "Emerald"
+tag: "emu"
+addedOn: "2025-03-09"
+---
+
+## Tools:
+
+- [mGBA with lua scripts](/mgba-setup)
+
+## Intro
+
+Eggs in Emerald are generated in two steps: the PID is set when you take a step that creates the egg, and the IVs are set when you pick it up from the daycare man. You'll need to do two RNGs to get a perfect shiny egg.
+
+## Video Guide
+
+<YouTubeVideo id="JtwSZgw6Q4U" />
+
+## Getting a Shiny Pokémon
+
+1. Open the "Pokemon Info" tab in the Lua script to view the IVs and Nature of your parent Pokémon. Write them down for later.
+2. Place both Pokémon in the Daycare. The first parent given to the Daycare is Parent 1, the second is Parent 2. Write this down for later.
+3. Talk to the Daycare Man to check Pokémon compatibility, and input this into the RNG tool below.
+4. Walk inside the Daycare until the Lua script's step counter is 1.
+5. Save the game, restart, and pause after loading the save.
+6. Switch to the Lua script's "Breeding" tab and input the "Calibration", "Initial Seed", "TID", "SID", and "Advances" (as "Initial advances") into the RNG tool. Also, enter the Nature of the non-Ditto or female parent. Optionally, filter for shininess, nature, and gender.
+7. Click "Generate" to get a list of potential PIDs, and choose one to target. If there are no results, increase the "Max Advances."
+8. Unpause your game.
+9. If there are redraws, open the game menu (press \`Start\`), then open and close the Pokedex for each redraw.
+10. Pause the game near your target advance, then create a save state.
+11. Manually advance the game (\`Ctrl + N\` for Windows, \`Cmd + N\` for Mac) until you reach your target advance.
+12. Hold the movement button to make your character walk, then unpause while holding the button. Walk in the same direction your character is facing (e.g., if facing left, hold the \`Left\` button).
+13. The egg you receive should have your target PID.
+14. If you missed the target, input the nature in the RNG tool to find the advance you landed on.
+15. Subtract the advance you hit from your target, and enter the difference in the RNG tool's "Delay" field, then regenerate the results and try again.
+
+**Congrats! You now have a shiny egg!**
+
+<EmeraldHeldEgg lua />
+
+## Getting IVs
+
+1. Walk outside next to the Daycare man, save the game, then restart.
+2. Talk to the Daycare man until you see the text "Take good care of it." Pause the game and make a save state.
+3. Input the current advance into the "Initial advances" field in the RNG tool.
+4. Enter the IVs of your parent Pokémon into the RNG tool.
+5. Click "Generate" to get a list of possible results, and choose a target advance.
+6. Pause the game near your target advance, then create a save state.
+7. Manually advance the game (\`Ctrl + N\` for Windows, \`Cmd + N\` for Mac) until you reach the target advance.
+8. Hold "A" and unpause to finish receiving the egg at the target advance.
+9. Use the Lua script's "Pokemon Info" tab to check the received Pokémon's IVs.
+10. If you missed the target, input the IVs in the RNG tool to find the advance you landed on. You might need to change the "Method" field to find a match.
+11. Subtract the advance you hit from your target, and enter the difference in the RNG tool's "Delay" field, then regenerate the results and try again.
+
+**Congrats! Your egg now has fantastic IVs!**
+
+<EmeraldPickupEgg />
+
+## Credits
+
+- Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, whose work this tool is built upon.
+- Chinese translation: xuanyelin, Hakuhiro.
+- Italian translation: Fiask.
+`;export{e as default};

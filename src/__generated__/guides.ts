@@ -2817,6 +2817,41 @@ export const guides = {
       return file.default;
     }),
   },
+  "/es-gen3-glossary/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["info"],
+      isNew: false,
+      title: "Glosario",
+      navDrawerTitle: "Glosario",
+      description:
+        "Lista de términos importantes relacionados a la manipulación del RNG de Pokémon en los juegos de Generación III.",
+      slug: "/es-gen3-glossary/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-17",
+      translation: { enSlug: "/gen3-glossary/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Gen 3/Emerald/Glossary.mdx",
+      translations: {
+        es: "/es-gen3-glossary/",
+        en: "/gen3-glossary/",
+        it: "/it-gen3-glossary/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/es/Gen 3/Emerald/Glossary.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Gen 3/Emerald/Glossary.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/experiments/": {
     meta: {
       categories: ["User Settings"],
@@ -3418,7 +3453,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Glossary.mdx",
-      translations: { en: "/gen3-glossary/", it: "/it-gen3-glossary/" },
+      translations: {
+        es: "/es-gen3-glossary/",
+        en: "/gen3-glossary/",
+        it: "/it-gen3-glossary/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Glossary.mdx")),
@@ -3922,7 +3961,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Glossary.mdx",
-      translations: { en: "/gen3-glossary/", it: "/it-gen3-glossary/" },
+      translations: {
+        es: "/es-gen3-glossary/",
+        en: "/gen3-glossary/",
+        it: "/it-gen3-glossary/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -9467,6 +9510,7 @@ export const guideSlugs = [
   "/es-gba-methods-lead-impact/",
   "/es-gen2-celebi/",
   "/es-gen2-starters/",
+  "/es-gen3-glossary/",
   "/experiments/",
   "/fire-red-and-leaf-green/",
   "/fr-bdsp-advance-rng/",

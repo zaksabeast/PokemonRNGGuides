@@ -6,11 +6,12 @@ import { match } from "ts-pattern";
 import { importance, Importance } from "./types";
 import { memoize } from "lodash-es";
 
-type JsonFileId = "gen3" | "it-gen3";
+type JsonFileId = "gen3" | "it-gen3" | "es-gen3";
 
 const importTerms = memoize(async (jsonFileId: JsonFileId) => {
   return match(jsonFileId)
     .with("it-gen3", async () => (await import("./terms/it-gen3")).gen3Glossary)
+    .with("es-gen3", async () => (await import("./terms/es-gen3")).gen3Glossary)
     .with("gen3", async () => (await import("./terms/gen3")).gen3Glossary)
     .otherwise(() => []);
 });

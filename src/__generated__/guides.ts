@@ -2852,6 +2852,45 @@ export const guides = {
       return file.default;
     }),
   },
+  "/es-install-pokereader/": {
+    meta: {
+      categories: ["3DS Tools"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "PokeReader 3DS",
+      navDrawerTitle: "PokeReader 3DS",
+      description:
+        "Aprende a instalar PokeReader en tu 3DS para ayudarte con el RNG y perfeccionar la caza de Pokémon.",
+      slug: "/es-install-pokereader/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/install-pokereader/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Tools and Emulators/3DS PokeReader.mdx",
+      translations: {
+        es: "/es-install-pokereader/",
+        en: "/install-pokereader/",
+        it: "/it-install-pokereader/",
+        zh: "/zh-install-pokereader/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/es/Tools and Emulators/3DS PokeReader.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Tools and Emulators/3DS PokeReader.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/experiments/": {
     meta: {
       categories: ["User Settings"],
@@ -3782,6 +3821,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/3DS PokeReader.mdx",
       translations: {
+        es: "/es-install-pokereader/",
         en: "/install-pokereader/",
         it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
@@ -4031,6 +4071,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/it/Tools And Emulators/3DS PokeReader.mdx",
       translations: {
+        es: "/es-install-pokereader/",
         en: "/install-pokereader/",
         it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
@@ -8713,6 +8754,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Tools and Emulators/3DS PokeReader.mdx",
       translations: {
+        es: "/es-install-pokereader/",
         en: "/install-pokereader/",
         it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
@@ -9511,6 +9553,7 @@ export const guideSlugs = [
   "/es-gen2-celebi/",
   "/es-gen2-starters/",
   "/es-gen3-glossary/",
+  "/es-install-pokereader/",
   "/experiments/",
   "/fire-red-and-leaf-green/",
   "/fr-bdsp-advance-rng/",

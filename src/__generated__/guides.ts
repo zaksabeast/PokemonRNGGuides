@@ -2721,7 +2721,7 @@ export const guides = {
       tags: ["info"],
       isNew: false,
       title: "Avanzar el RNG en Diamante, Perla y Platino",
-      navDrawerTitle: "Advancing the RNG",
+      navDrawerTitle: "Avanzar el RNG",
       description:
         "Aprende cómo avanzar el RNG en Diamante, Perla y Platino. Esta guía explica diferentes métodos como pasar páginas del diario, los “chatters” de Chatot y las acciones de los NPC.",
       slug: "/es-dppt-advance-rng/",
@@ -2890,6 +2890,44 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/es/Gen 3/Emerald/Glossary.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/es-hgss-rng-advance/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["any"],
+      isNew: false,
+      title: "Avanzar el RNG en HeartGold y SoulSilver",
+      navDrawerTitle: "Avanzar el RNG",
+      description:
+        "Aprende cómo avanzar el RNG en HeartGold y SoulSilver. Esta guía explica diferentes métodos como los chatters de Chatot, la radio y las acciones de los NPC.",
+      slug: "/es-hgss-rng-advance/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/hgss-rng-advance/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
+      translations: {
+        es: "/es-hgss-rng-advance/",
+        en: "/hgss-rng-advance/",
+        zh: "/zh-hgss-rng-advance/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/es/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx?raw"
       );
       return file.default;
     }),
@@ -3736,7 +3774,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
-      translations: { en: "/hgss-rng-advance/", zh: "/zh-hgss-rng-advance/" },
+      translations: {
+        es: "/es-hgss-rng-advance/",
+        en: "/hgss-rng-advance/",
+        zh: "/zh-hgss-rng-advance/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8736,7 +8778,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
-      translations: { en: "/hgss-rng-advance/", zh: "/zh-hgss-rng-advance/" },
+      translations: {
+        es: "/es-hgss-rng-advance/",
+        en: "/hgss-rng-advance/",
+        zh: "/zh-hgss-rng-advance/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -9600,6 +9646,7 @@ export const guideSlugs = [
   "/es-gen2-celebi/",
   "/es-gen2-starters/",
   "/es-gen3-glossary/",
+  "/es-hgss-rng-advance/",
   "/es-install-pokereader/",
   "/experiments/",
   "/fire-red-and-leaf-green/",

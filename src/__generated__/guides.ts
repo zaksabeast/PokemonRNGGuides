@@ -5490,7 +5490,10 @@ export const guides = {
       canonical: "/retail-usum-timeline/",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Guide.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-timeline/",
+        zh: "/zh-retail-sm-timeline/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
@@ -5976,7 +5979,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Guide.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-timeline/",
+        zh: "/zh-retail-usum-timeline/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
@@ -9033,6 +9039,39 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-sm-timeline/": {
+    meta: {
+      categories: ["Sun and Moon"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "日月时间线乱数",
+      navDrawerTitle: "日月时间线乱数",
+      description: "学习如何在《日月》中创建时间线。",
+      slug: "/zh-retail-sm-timeline/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-timeline/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Timeline Guide.mdx",
+      translations: {
+        en: "/retail-sm-timeline/",
+        zh: "/zh-retail-sm-timeline/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Timeline Guide.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Timeline Guide.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-usum-egg-no-mmsc/": {
     meta: {
       categories: ["Ultra Sun and Ultra Moon"],
@@ -9066,6 +9105,39 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-timeline/": {
+    meta: {
+      categories: ["Ultra Sun and Ultra Moon"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "究极日月时间线乱数",
+      navDrawerTitle: "究极日月时间线乱数",
+      description: "学习如何在《究极之日／究极之月》中创建时间线。",
+      slug: "/zh-retail-usum-timeline/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-timeline/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Timeline Guide.mdx",
+      translations: {
+        en: "/retail-usum-timeline/",
+        zh: "/zh-retail-usum-timeline/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Timeline Guide.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Timeline Guide.mdx?raw"
       );
       return file.default;
     }),
@@ -9591,7 +9663,9 @@ export const guideSlugs = [
   "/zh-retail-hgss-starter/",
   "/zh-retail-rubysapphire-tid/",
   "/zh-retail-sm-egg-no-mmsc/",
+  "/zh-retail-sm-timeline/",
   "/zh-retail-usum-egg-no-mmsc/",
+  "/zh-retail-usum-timeline/",
   "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",
   "/zh-rs-mirage-island/",

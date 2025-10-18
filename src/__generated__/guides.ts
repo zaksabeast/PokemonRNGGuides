@@ -2791,6 +2791,41 @@ export const guides = {
       return file.default;
     }),
   },
+  "/es-gba-methods/": {
+    meta: {
+      categories: ["GBA Technical Documentation"],
+      tags: ["info"],
+      isNew: false,
+      title: "Métodos 1-4 en Esmeralda",
+      navDrawerTitle: "Métodos 1-4",
+      description:
+        "Qué es un método, la razón por la que existen los métodos 1-4 y cómo afectan la generación de Pokémon.",
+      slug: "/es-gba-methods/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-08",
+      translation: { enSlug: "/gba-methods/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Gen 3/Emerald/GBA Methods.mdx",
+      translations: {
+        es: "/es-gba-methods/",
+        en: "/gba-methods/",
+        zh: "/zh-gba-methods/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/es/Gen 3/Emerald/GBA Methods.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Gen 3/Emerald/GBA Methods.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/es-gen2-celebi/": {
     meta: {
       categories: ["Gold, Silver, Crystal"],
@@ -3332,7 +3367,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Methods.mdx",
-      translations: { en: "/gba-methods/", zh: "/zh-gba-methods/" },
+      translations: {
+        es: "/es-gba-methods/",
+        en: "/gba-methods/",
+        zh: "/zh-gba-methods/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8456,7 +8495,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/GBA Methods.mdx",
-      translations: { en: "/gba-methods/", zh: "/zh-gba-methods/" },
+      translations: {
+        es: "/es-gba-methods/",
+        en: "/gba-methods/",
+        zh: "/zh-gba-methods/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -9643,6 +9686,7 @@ export const guideSlugs = [
   "/es-delete-pokemon-save/",
   "/es-dppt-advance-rng/",
   "/es-gba-methods-lead-impact/",
+  "/es-gba-methods/",
   "/es-gen2-celebi/",
   "/es-gen2-starters/",
   "/es-gen3-glossary/",

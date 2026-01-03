@@ -1,8 +1,8 @@
-use super::calc_modulo_cycle_unsigned;
-
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
+
+use super::calc_modulo_cycle_unsigned;
 
 pub const BASE_LEAD_PID: u32 = 0;
 pub const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_LEAD_PID, 24);

@@ -40,10 +40,12 @@ const jsonMonToSlot = (jsonMon: JsonMon) => {
   return {
     min_level: jsonMon.min_level,
     max_level: jsonMon.max_level,
-    species,
-    gender_ratio: genderRatioBySpecies[species],
-    is_electric_type: doesSpeciesHaveType(3, species, "Electric"),
-    is_steel_type: doesSpeciesHaveType(3, species, "Steel"),
+    species_data: {
+      species,
+      gender_ratio: genderRatioBySpecies[species],
+      is_electric_type: doesSpeciesHaveType(3, species, "Electric"),
+      is_steel_type: doesSpeciesHaveType(3, species, "Steel"),
+    },
   };
 };
 
@@ -199,7 +201,8 @@ const generateMapSetupsBySpecies = (
 
       map_data.roamers.forEach((roamer) => {
         const mapSetupsForSpecies =
-          mapSetupsBySpecies.get(roamer.encounter_data.species) ?? [];
+          mapSetupsBySpecies.get(roamer.encounter_data.species_data.species) ??
+          [];
 
         const thisMapSetups = mapSetupsForSpecies.find(
           (map) => map.map_data === map_data,
@@ -219,7 +222,7 @@ const generateMapSetupsBySpecies = (
 
       if (map_data.feebas != null && action === "OldRod") {
         const mapSetupsForSpecies =
-          mapSetupsBySpecies.get(map_data.feebas.species) ?? [];
+          mapSetupsBySpecies.get(map_data.feebas.species_data.species) ?? [];
 
         const thisMapSetups = mapSetupsForSpecies.find(
           (map) => map.map_data === map_data,
@@ -236,7 +239,8 @@ const generateMapSetupsBySpecies = (
       }
 
       slots.forEach((slot) => {
-        const mapSetupsForSpecies = mapSetupsBySpecies.get(slot.species) ?? [];
+        const mapSetupsForSpecies =
+          mapSetupsBySpecies.get(slot.species_data.species) ?? [];
         let thisMapSetups = mapSetupsForSpecies.find(
           (map) => map.map_data === map_data,
         );
@@ -298,7 +302,7 @@ const generateWild3EmeraldGameData = (): Wild3GameData => {
         ];
       })
       .flat(2)
-      .map((slot) => slot.species),
+      .map((slot) => slot.species_data.species),
   );
 
   return {

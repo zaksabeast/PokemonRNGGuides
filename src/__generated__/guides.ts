@@ -857,7 +857,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
-      translations: { en: "/dppt-advance-rng/", zh: "/zh-dppt-advance-rng/" },
+      translations: {
+        en: "/dppt-advance-rng/",
+        es: "/es-dppt-advance-rng/",
+        zh: "/zh-dppt-advance-rng/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -2711,6 +2715,44 @@ export const guides = {
       return file.default;
     }),
   },
+  "/es-dppt-advance-rng/": {
+    meta: {
+      categories: ["Diamond, Pearl, and Platinum"],
+      tags: ["info"],
+      isNew: false,
+      title: "Avanzar el RNG en Diamante, Perla y Platino",
+      navDrawerTitle: "Avanzar el RNG",
+      description:
+        "Aprende cómo avanzar el RNG en Diamante, Perla y Platino. Esta guía explica diferentes métodos como pasar páginas del diario, los “chatters” de Chatot y las acciones de los NPC.",
+      slug: "/es-dppt-advance-rng/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/dppt-advance-rng/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
+      translations: {
+        en: "/dppt-advance-rng/",
+        es: "/es-dppt-advance-rng/",
+        zh: "/zh-dppt-advance-rng/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/es/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/es-gba-methods-lead-impact/": {
     meta: {
       categories: ["GBA Technical Documentation"],
@@ -2745,6 +2787,41 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/es/Gen 3/Emerald/GBA Methods Part2.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/es-gba-methods/": {
+    meta: {
+      categories: ["GBA Technical Documentation"],
+      tags: ["info"],
+      isNew: false,
+      title: "Métodos 1-4 en Esmeralda",
+      navDrawerTitle: "Métodos 1-4",
+      description:
+        "Qué es un método, la razón por la que existen los métodos 1-4 y cómo afectan la generación de Pokémon.",
+      slug: "/es-gba-methods/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-08",
+      translation: { enSlug: "/gba-methods/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Gen 3/Emerald/GBA Methods.mdx",
+      translations: {
+        es: "/es-gba-methods/",
+        en: "/gba-methods/",
+        zh: "/zh-gba-methods/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/es/Gen 3/Emerald/GBA Methods.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Gen 3/Emerald/GBA Methods.mdx?raw"
       );
       return file.default;
     }),
@@ -2813,6 +2890,118 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/es/Gen 2/Starter.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/es-gen3-glossary/": {
+    meta: {
+      categories: ["Emerald"],
+      tags: ["info"],
+      isNew: false,
+      title: "Glosario",
+      navDrawerTitle: "Glosario",
+      description:
+        "Lista de términos importantes relacionados a la manipulación del RNG de Pokémon en los juegos de Generación III.",
+      slug: "/es-gen3-glossary/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-17",
+      translation: { enSlug: "/gen3-glossary/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Gen 3/Emerald/Glossary.mdx",
+      translations: {
+        es: "/es-gen3-glossary/",
+        en: "/gen3-glossary/",
+        it: "/it-gen3-glossary/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/es/Gen 3/Emerald/Glossary.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Gen 3/Emerald/Glossary.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/es-hgss-rng-advance/": {
+    meta: {
+      categories: ["HeartGold and SoulSilver"],
+      tags: ["any"],
+      isNew: false,
+      title: "Avanzar el RNG en HeartGold y SoulSilver",
+      navDrawerTitle: "Avanzar el RNG",
+      description:
+        "Aprende cómo avanzar el RNG en HeartGold y SoulSilver. Esta guía explica diferentes métodos como los chatters de Chatot, la radio y las acciones de los NPC.",
+      slug: "/es-hgss-rng-advance/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/hgss-rng-advance/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
+      translations: {
+        es: "/es-hgss-rng-advance/",
+        en: "/hgss-rng-advance/",
+        zh: "/zh-hgss-rng-advance/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/es/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/es-install-pokereader/": {
+    meta: {
+      categories: ["3DS Tools"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "PokeReader 3DS",
+      navDrawerTitle: "PokeReader 3DS",
+      description:
+        "Aprende a instalar PokeReader en tu 3DS para ayudarte con el RNG y perfeccionar la caza de Pokémon.",
+      slug: "/es-install-pokereader/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/install-pokereader/", language: "es" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/es/Tools and Emulators/3DS PokeReader.mdx",
+      translations: {
+        es: "/es-install-pokereader/",
+        en: "/install-pokereader/",
+        it: "/it-install-pokereader/",
+        zh: "/zh-install-pokereader/",
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/es/Tools and Emulators/3DS PokeReader.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/es/Tools and Emulators/3DS PokeReader.mdx?raw"
       );
       return file.default;
     }),
@@ -3178,7 +3367,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Methods.mdx",
-      translations: { en: "/gba-methods/", zh: "/zh-gba-methods/" },
+      translations: {
+        es: "/es-gba-methods/",
+        en: "/gba-methods/",
+        zh: "/zh-gba-methods/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -3418,7 +3611,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Glossary.mdx",
-      translations: { en: "/gen3-glossary/", it: "/it-gen3-glossary/" },
+      translations: {
+        es: "/es-gen3-glossary/",
+        en: "/gen3-glossary/",
+        it: "/it-gen3-glossary/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Glossary.mdx")),
@@ -3616,7 +3813,11 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
-      translations: { en: "/hgss-rng-advance/", zh: "/zh-hgss-rng-advance/" },
+      translations: {
+        es: "/es-hgss-rng-advance/",
+        en: "/hgss-rng-advance/",
+        zh: "/zh-hgss-rng-advance/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -3743,6 +3944,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/3DS PokeReader.mdx",
       translations: {
+        es: "/es-install-pokereader/",
         en: "/install-pokereader/",
         it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
@@ -3922,7 +4124,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Glossary.mdx",
-      translations: { en: "/gen3-glossary/", it: "/it-gen3-glossary/" },
+      translations: {
+        es: "/es-gen3-glossary/",
+        en: "/gen3-glossary/",
+        it: "/it-gen3-glossary/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -3988,6 +4194,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/it/Tools And Emulators/3DS PokeReader.mdx",
       translations: {
+        es: "/es-install-pokereader/",
         en: "/install-pokereader/",
         it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
@@ -7042,7 +7249,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
-      translations: { en: "/dppt-advance-rng/", zh: "/zh-dppt-advance-rng/" },
+      translations: {
+        en: "/dppt-advance-rng/",
+        es: "/es-dppt-advance-rng/",
+        zh: "/zh-dppt-advance-rng/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8284,7 +8495,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/GBA Methods.mdx",
-      translations: { en: "/gba-methods/", zh: "/zh-gba-methods/" },
+      translations: {
+        es: "/es-gba-methods/",
+        en: "/gba-methods/",
+        zh: "/zh-gba-methods/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8606,7 +8821,11 @@ export const guides = {
       canonical: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
-      translations: { en: "/hgss-rng-advance/", zh: "/zh-hgss-rng-advance/" },
+      translations: {
+        es: "/es-hgss-rng-advance/",
+        en: "/hgss-rng-advance/",
+        zh: "/zh-hgss-rng-advance/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -8670,6 +8889,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Tools and Emulators/3DS PokeReader.mdx",
       translations: {
+        es: "/es-install-pokereader/",
         en: "/install-pokereader/",
         it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
@@ -9464,9 +9684,14 @@ export const guideSlugs = [
   "/emulator-sm-time-finder/",
   "/emulator-usum-time-finder/",
   "/es-delete-pokemon-save/",
+  "/es-dppt-advance-rng/",
   "/es-gba-methods-lead-impact/",
+  "/es-gba-methods/",
   "/es-gen2-celebi/",
   "/es-gen2-starters/",
+  "/es-gen3-glossary/",
+  "/es-hgss-rng-advance/",
+  "/es-install-pokereader/",
   "/experiments/",
   "/fire-red-and-leaf-green/",
   "/fr-bdsp-advance-rng/",

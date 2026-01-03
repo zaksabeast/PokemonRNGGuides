@@ -1,7 +1,8 @@
-use crate::{Gender, Nature};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::wasm_bindgen;
+
+use crate::{Gender, Nature};
 
 #[derive(Clone, Copy, Default, Debug, Eq, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]

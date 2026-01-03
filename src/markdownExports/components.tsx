@@ -106,3 +106,22 @@ export const MarkdownA = ({ href, children }: { href: string } & Props) => {
 
   return <a href={href}>{children}</a>;
 };
+
+export const MarkdownSummary = styled.summary({
+  cursor: "pointer",
+  listStyle: "none",
+  fontWeight: 800,
+  position: "relative",
+  paddingLeft: "1.5em",
+  "::-webkit-details-marker": { display: "none" },
+  "::marker": { content: '""' },
+  "&::before": {
+    content: '"▶"',
+    position: "absolute",
+    left: 0,
+    transition: "transform 0.2s ease",
+  },
+  "details[open] &::before": {
+    transform: "rotate(90deg)",
+  },
+});

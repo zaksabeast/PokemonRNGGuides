@@ -5300,7 +5300,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 6/ORAS TID.mdx",
-      translations: null,
+      translations: { en: "/retail-oras-tid/", zh: "/zh-retail-oras-tid/" },
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/ORAS TID.mdx")),
@@ -9186,6 +9186,37 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-oras-tid/": {
+    meta: {
+      categories: ["Omega Ruby and Alpha Sapphire"],
+      tags: ["cfw"],
+      isNew: false,
+      title: "欧米伽红宝石与阿尔法蓝宝石 TID 乱数",
+      navDrawerTitle: "欧米伽红宝石与阿尔法蓝宝石 TID 乱数",
+      description:
+        "学习如何在《欧米伽红宝石 / 阿尔法蓝宝石》中获取理想的训练家 ID（TID）与隐藏 ID（SID）组合。",
+      slug: "/zh-retail-oras-tid/",
+      isRoughDraft: false,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-13",
+      translation: { enSlug: "/retail-oras-tid/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/ORAS TID.mdx",
+      translations: { en: "/retail-oras-tid/", zh: "/zh-retail-oras-tid/" },
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 6/ORAS TID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/ORAS TID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-rubysapphire-tid/": {
     meta: {
       categories: ["Ruby and Sapphire"],
@@ -9886,6 +9917,7 @@ export const guideSlugs = [
   "/zh-retail-emerald-egg/",
   "/zh-retail-emerald-wild/",
   "/zh-retail-hgss-starter/",
+  "/zh-retail-oras-tid/",
   "/zh-retail-rubysapphire-tid/",
   "/zh-retail-sm-egg-no-mmsc/",
   "/zh-retail-sm-timeline/",

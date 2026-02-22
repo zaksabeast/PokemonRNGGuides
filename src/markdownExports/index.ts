@@ -15,6 +15,7 @@ import {
   MarkdownImage,
   MarkdownOList,
   MarkdownA,
+  MarkdownSummary,
 } from "./components";
 import {
   Flex,
@@ -121,6 +122,7 @@ const nonTools = {
   td: MediaTableCell,
   // eslint-disable-next-line id-length
   a: MarkdownA,
+  Summary: MarkdownSummary,
   Text: MarkdownParagraph,
   YouTubeVideo,
   PixelImage,

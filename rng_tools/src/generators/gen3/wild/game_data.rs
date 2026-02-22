@@ -1,8 +1,9 @@
-use super::Wild3Action;
-use crate::{EncounterSlot, GenderRatio, Species};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
+
+use super::Wild3Action;
+use crate::{EncounterSlot, GenderRatio, Species};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -49,10 +50,17 @@ pub enum Wild3FeebasState {
 pub struct Wild3EncounterGameData {
     pub min_level: u8,
     pub max_level: u8,
+    pub species_data: SpeciesData,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct SpeciesData {
     pub species: Species,
     pub gender_ratio: GenderRatio,
     pub is_electric_type: bool,
     pub is_steel_type: bool,
+    // TODO for caughtMon searcher: stats
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Tsify, Serialize, Deserialize)]

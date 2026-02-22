@@ -12,8 +12,6 @@ import {
   NavBreadcrumbs,
 } from "~/components";
 import { settings } from "~/settings";
-import { SurveyModal } from "~/components/surveyModal/modal";
-import { useSurveyModal } from "~/components/surveyModal/state";
 import styled from "@emotion/styled";
 import { track } from "~/analytics";
 
@@ -37,24 +35,6 @@ type Props = {
   children: React.ReactNode;
 };
 
-const AppIdeaButton = () => {
-  const { openModal } = useSurveyModal();
-
-  return (
-    <Button
-      trackerId="app_idea_button"
-      icon={<Icon size={20} name="StarSwirl" />}
-      type="primary"
-      size="middle"
-      backgroundColor="ErrorActive"
-      backgroundHoverColor="Error"
-      onClick={openModal}
-    >
-      New side project — not Pokemon!
-    </Button>
-  );
-};
-
 export const GuideLayout = ({ guideMeta, children }: Props) => {
   const topRef = React.useRef<HTMLDivElement>(null);
   return (
@@ -66,10 +46,6 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
       </Typography.Title>
 
       <Flex vertical gap={10}>
-        <Flex>
-          <AppIdeaButton />
-        </Flex>
-
         <DiscordButtonContainer>
           <Flex>
             <Button
@@ -110,7 +86,6 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
       )}
 
       {children}
-      <SurveyModal />
       <SmallScreenFab
         icon={<Icon name="ArrowUp" />}
         onClick={() => {

@@ -278,30 +278,39 @@ pub const fn calc_modulo_cycle_signed(dividend: i32, divisor: i32) -> usize {
     cycles
 }
 
-pub fn find_longest_modulo_cycle_unsigned(divisor: u32) -> (u32, usize) {
-    let mut max = 0;
-    let mut dividend_for_max = 0;
-    for dividend in 0..=u32::MAX {
-        let cycles = calc_modulo_cycle_unsigned(dividend, divisor);
-        if cycles > max {
-            max = cycles;
-            dividend_for_max = dividend;
-        }
-    }
-    (dividend_for_max, max)
-}
-
-pub fn calculate_distribution_modulo_cycle_unsigned_24() -> Vec<u32> {
-    let mut res: [u32; MAX_PID_MOD_24_CYCLE_COUNT] = [0; MAX_PID_MOD_24_CYCLE_COUNT];
-    for dividend in 0..=u32::MAX {
-        let cycles = calc_modulo_cycle_unsigned(dividend, 24);
-        res[cycles] += 1;
-    }
-    res.to_vec()
-}
-
 pub const FASTEST_MODULO_CYCLE_24: usize = 18;
 pub const SLOWEST_MODULO_CYCLE_24: usize = 900;
+
+// Enough possibilities to cover all natures, genders and ability.
+pub const FASTEST_DIVIDENDS_MOD_24_RANGE: std::ops::RangeInclusive<usize> =
+    FASTEST_MODULO_CYCLE_24..=250;
+
+pub const FASTEST_DIVIDENDS_MOD_24: &[u32] = &[
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+    26, 48, 49, 50, 72, 73, 74, 96, 97, 98, 120, 121, 122, 144, 145, 146, 168, 169, 170, 192, 193,
+    194, 216, 217, 218, 240, 241, 242, 264, 265, 266, 288, 289, 290, 312, 313, 314, 336, 337, 338,
+    360, 361, 362, 384, 432, 480, 528, 576, 624, 672, 768, 1152, 1200, 1248, 1344, 1536, 1920,
+    1968, 2016, 2112, 2304, 2688, 3072, 3456, 3504, 3552, 3648, 3840, 4224, 4608, 4992, 5376, 6144,
+    12288, 24576, 36864, 49152, 61440, 73728, 86016, 98304, 196608, 393216, 589824, 786432, 983040,
+    1179648, 1376256, 1572864, 3145728, 6291456, 9437184, 12582912, 15728640, 18874368, 25165824,
+    402653184,
+];
+
+pub const SLOWEST_DIVIDENDS_MOD_24_RANGE: std::ops::RangeInclusive<usize> =
+    896..=SLOWEST_MODULO_CYCLE_24;
+
+pub const SLOWEST_DIVIDENDS_MOD_24: &[u32] = &[
+    1503238548, 1503238549, 1503238550, 1503238551, 1503238552, 1503238553, 1503238554, 1503238555,
+    1503238556, 1503238557, 1503238558, 1503238559, 1503238645, 1503238646, 1503238647, 1503238648,
+    1503238649, 1503238650, 1503238651, 1503238652, 1503238653, 1503238654, 1503238655, 1503240085,
+    1503240086, 1503240087, 1503240088, 1503240089, 1503240090, 1503240091, 1503240092, 1503240093,
+    1503240094, 1503240095, 1503263125, 1503263126, 1503263127, 1503263128, 1503263129, 1503263130,
+    1503263131, 1503263132, 1503263133, 1503263134, 1503263135, 1503631765, 1503631766, 1503631767,
+    1503631768, 1503631769, 1503631770, 1503631771, 1503631772, 1503631773, 1503631774, 1503631775,
+    1509530005, 1509530006, 1509530007, 1509530008, 1509530009, 1509530010, 1509530011, 1509530012,
+    1509530013, 1509530014, 1509530015, 1603901845, 1603901846, 1603901847, 1603901848, 1603901849,
+    1603901850, 1603901851, 1603901852, 1603901853, 1603901854, 1603901855,
+];
 
 // This range contains 99.9% of the values of DISTRIBUTION_CYCLE_COUNT_MODULO_24
 pub const COMMON_LEAD_RANGE: std::ops::Range<usize> = 608..868;
@@ -368,36 +377,6 @@ const DISTRIBUTION_CYCLE_COUNT_MODULO_24: [u32; MAX_PID_MOD_24_CYCLE_COUNT] = [
     0, 0, 0, 0, 0, 0, 0,
 ];
 
-pub fn calculate_common_lead_range() -> std::ops::Range<usize> {
-    // find the smallest range of DISTRIBUTION_CYCLE_COUNT_MODULO_24 that contains 99.9% of the values
-
-    const COUNT_FOR_99_9_PCT: u64 = 4294967296 * 999 / 1000;
-
-    // the range (x, x + range_len_by_start_idx[x]) contains 99.9% values
-    let range_len_by_start_idx = (0..DISTRIBUTION_CYCLE_COUNT_MODULO_24.len()).map(|i| {
-        let mut total_val_count_contained = 0_u64;
-        for (j, val_count_contained) in DISTRIBUTION_CYCLE_COUNT_MODULO_24
-            .iter()
-            .enumerate()
-            .skip(i)
-        {
-            total_val_count_contained += *val_count_contained as u64;
-
-            if total_val_count_contained >= COUNT_FOR_99_9_PCT {
-                return j - i;
-            }
-        }
-        1000 // impossible to hold 99.9% of the values
-    });
-
-    let (smallest_range_idx, smallest_range_len) = range_len_by_start_idx
-        .enumerate()
-        .min_by(|(_, a), (_, b)| a.cmp(b))
-        .unwrap();
-
-    return smallest_range_idx..smallest_range_idx + smallest_range_len;
-}
-
 #[wasm_bindgen]
 pub fn calculate_pid_speed(pid: u32) -> usize {
     calc_modulo_cycle_unsigned(pid, 24)
@@ -417,9 +396,94 @@ pub fn calculate_pid_speed_ranking(pid_cycle_speed: usize) -> f64 {
     slower_than_count as f64 / 4294967296.0_f64
 }
 
+pub fn get_probability_that_random_pid_has_speed_range(
+    min_pid_cycle_speed: usize,
+    max_pid_cycle_speed: usize,
+) -> f64 {
+    let min_pid_cycle_speed = std::cmp::min(min_pid_cycle_speed, MAX_PID_MOD_24_CYCLE_COUNT);
+    let max_pid_cycle_speed =
+        max_pid_cycle_speed.clamp(min_pid_cycle_speed, MAX_PID_MOD_24_CYCLE_COUNT);
+
+    let mut in_range_count = 0u64;
+    for count in DISTRIBUTION_CYCLE_COUNT_MODULO_24
+        .iter()
+        .skip(min_pid_cycle_speed)
+        .take(max_pid_cycle_speed - min_pid_cycle_speed)
+    {
+        in_range_count += *count as u64;
+    }
+    in_range_count as f64 / 4294967296.0_f64
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
+
+    fn find_modulo_dividends_in_range(
+        divisor: u32,
+        cycles_range: std::ops::RangeInclusive<usize>,
+    ) -> Vec<u32> {
+        (0..=u32::MAX)
+            .filter(|dividend| {
+                let cycles = calc_modulo_cycle_unsigned(*dividend, divisor);
+                cycles_range.contains(&cycles)
+            })
+            .collect()
+    }
+
+    fn find_longest_modulo_dividends_and_cycle_unsigned(divisor: u32) -> (Vec<u32>, usize) {
+        let mut max = 0;
+        let mut dividends_for_max = vec![];
+        for dividend in 0..=u32::MAX {
+            let cycles = calc_modulo_cycle_unsigned(dividend, divisor);
+            if cycles > max {
+                max = cycles;
+                dividends_for_max = vec![dividend];
+            } else if cycles == max {
+                dividends_for_max.push(dividend);
+            }
+        }
+        (dividends_for_max, max)
+    }
+
+    fn calculate_distribution_modulo_cycle_unsigned_24() -> Vec<u32> {
+        let mut res: [u32; MAX_PID_MOD_24_CYCLE_COUNT] = [0; MAX_PID_MOD_24_CYCLE_COUNT];
+        for dividend in 0..=u32::MAX {
+            let cycles = calc_modulo_cycle_unsigned(dividend, 24);
+            res[cycles] += 1;
+        }
+        res.to_vec()
+    }
+
+    fn calculate_common_lead_range() -> std::ops::Range<usize> {
+        // find the smallest range of DISTRIBUTION_CYCLE_COUNT_MODULO_24 that contains 99.9% of the values
+
+        const COUNT_FOR_99_9_PCT: u64 = 4294967296 * 999 / 1000;
+
+        // the range (x, x + range_len_by_start_idx[x]) contains 99.9% values
+        let range_len_by_start_idx = (0..DISTRIBUTION_CYCLE_COUNT_MODULO_24.len()).map(|i| {
+            let mut total_val_count_contained = 0_u64;
+            for (j, val_count_contained) in DISTRIBUTION_CYCLE_COUNT_MODULO_24
+                .iter()
+                .enumerate()
+                .skip(i)
+            {
+                total_val_count_contained += *val_count_contained as u64;
+
+                if total_val_count_contained >= COUNT_FOR_99_9_PCT {
+                    return j - i;
+                }
+            }
+            1000 // impossible to hold 99.9% of the values
+        });
+
+        let (smallest_range_idx, smallest_range_len) = range_len_by_start_idx
+            .enumerate()
+            .min_by(|(_, a), (_, b)| a.cmp(b))
+            .unwrap();
+
+        return smallest_range_idx..smallest_range_idx + smallest_range_len;
+    }
 
     #[test]
     #[ignore] // The test takes too long to be enabled by default
@@ -434,18 +498,28 @@ mod test {
     #[ignore] // The test takes too long to be enabled by default
     fn test_find_longest_modulo_cycle_unsigned() {
         assert_eq!(
-            find_longest_modulo_cycle_unsigned(24),
-            (0x59999995, SLOWEST_MODULO_CYCLE_24)
-        );
-        assert_eq!(
-            find_longest_modulo_cycle_unsigned(25),
-            (0x5d555550, SLOWEST_MODULO_CYCLE_24)
+            find_longest_modulo_dividends_and_cycle_unsigned(24),
+            (SLOWEST_DIVIDENDS_MOD_24.to_vec(), SLOWEST_MODULO_CYCLE_24)
         );
     }
 
     #[test]
     fn test_calculate_common_lead_range() {
         assert_eq!(calculate_common_lead_range(), COMMON_LEAD_RANGE);
+    }
+
+    #[test]
+    #[ignore] // The test takes too long to be enabled by default
+    fn test_find_modulo_dividends_in_range() {
+        assert_eq!(
+            find_modulo_dividends_in_range(24, FASTEST_DIVIDENDS_MOD_24_RANGE),
+            FASTEST_DIVIDENDS_MOD_24
+        );
+
+        assert_eq!(
+            find_modulo_dividends_in_range(24, SLOWEST_DIVIDENDS_MOD_24_RANGE),
+            SLOWEST_DIVIDENDS_MOD_24
+        );
     }
 
     #[test]

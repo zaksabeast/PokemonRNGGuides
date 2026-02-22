@@ -1,11 +1,11 @@
+use serde::{Deserialize, Serialize};
+use tsify_next::Tsify;
+use wasm_bindgen::prelude::*;
+
 use super::{CycleRange, VBLANK_FREQ};
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, SLOWEST_MODULO_CYCLE_24,
 };
-
-use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
-use wasm_bindgen::prelude::*;
 
 /*
 lead_pid_cycle_count: The cycle count for the operationr "lead_PID % 24".

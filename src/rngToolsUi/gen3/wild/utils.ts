@@ -34,8 +34,8 @@ export const wild3Actions = [
 
 export const formatActionName = (action: Wild3Action) => {
   return match(action)
-    .with("SweetScentLand", () => "Sweet Scent on Land")
-    .with("SweetScentWater", () => "Sweet Scent on Water")
+    .with("SweetScentLand", () => "Sweet Scent (Land)")
+    .with("SweetScentWater", () => "Sweet Scent (Water)")
     .with("OldRod", () => "Old Rod")
     .with("GoodRod", () => "Good Rod")
     .with("SuperRod", () => "Super Rod")

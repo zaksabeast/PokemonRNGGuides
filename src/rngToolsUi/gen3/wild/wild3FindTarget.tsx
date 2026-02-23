@@ -19,6 +19,7 @@ import {
   Flex,
   Typography,
   ResultTable,
+  Icon,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
@@ -571,7 +572,19 @@ const getResultSetupInfoColumns = ({
         },
       },
       {
-        title: "Method Likelihood by Lead Speed",
+        title: (
+          <div>
+            {"Method Likelihood by "}
+            <a
+              href="/gba-methods-lead-impact/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Lead Speed
+            </a>
+          </div>
+        ),
+        key: "methodLikelihoodByLeadSpeed",
         type: "group",
         columns: [
           {
@@ -590,7 +603,9 @@ const getResultSetupInfoColumns = ({
           {
             title: (
               <Tooltip title="Lead PID speed equal to 18 cycles">
-                <div>Fastest</div>
+                <div>
+                  Fastest <Icon name="InformationCircle" size={16} />
+                </div>
               </Tooltip>
             ),
             key: "methodLikelihoodFastest",
@@ -608,7 +623,9 @@ const getResultSetupInfoColumns = ({
           {
             title: (
               <Tooltip title="Lead PID speed between 608 and 868 cycles (99.9% of all PIDs)">
-                <div>Common</div>
+                <div>
+                  Common <Icon name="InformationCircle" size={16} />
+                </div>
               </Tooltip>
             ),
             key: "methodLikelihoodCommon",
@@ -631,7 +648,9 @@ const getResultSetupInfoColumns = ({
           {
             title: (
               <Tooltip title="Lead PID speed equal to 900 cycles">
-                <div>Slowest</div>
+                <div>
+                  Slowest <Icon name="InformationCircle" size={16} />
+                </div>
               </Tooltip>
             ),
             key: "methodLikelihoodSlowest",

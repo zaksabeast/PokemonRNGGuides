@@ -17,6 +17,9 @@ import {
 import { HiddenPowerInput } from "./hiddenPowerInput.component";
 import { StatsFilterSchema } from "../types/stat";
 import { Translations } from "~/translations";
+import { useFormContext } from "~/hooks/form";
+import { useEffect } from "react";
+import { useWatch } from "react-hook-form";
 
 const sortedNatures = nature.toSorted();
 
@@ -97,7 +100,16 @@ export const getPkmFilterInitialValues = (): PkmFilterFields => ({
   filter_stats: null,
 });
 
-const getGenderFilterComponent = (genderRatio?: GenderRatio) => {
+export const GenderFilter = ({
+  genderRatio,
+}: {
+  genderRatio?: GenderRatio;
+}) => {
+  const { setFieldValue } = useFormContext<PkmFilterFields>();
+  const filter_gender = useWatch<PkmFilterFields, "filter_gender">({
+    name: "filter_gender",
+  });
+
   const options = (() => {
     if (genderRatio == null) {
       return genderOptions;
@@ -112,7 +124,17 @@ const getGenderFilterComponent = (genderRatio?: GenderRatio) => {
     });
   })();
 
-  //NO_PROD useEffect if invalid
+  useEffect(() => {
+    if (options.some((opt) => opt.value === filter_gender)) {
+      return;
+    }
+    if (options.length === 0) {
+      return;
+    }
+    // Currently selected value is invalid.
+    setFieldValue("filter_gender", options[0].value);
+  }, [filter_gender, options, setFieldValue]);
+
   return (
     <FormikSelect<PkmFilterFields, "filter_gender">
       name="filter_gender"
@@ -148,7 +170,7 @@ const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
     }),
     optOut(props?.displayGender, {
       label: t?.["Gender"] ?? "Gender",
-      input: getGenderFilterComponent(props.genderRatio),
+      input: <GenderFilter genderRatio={props.genderRatio} />,
     }),
     optOut(props?.displayIvs, {
       label: t?.["Min IVs"] ?? "Min IVs",

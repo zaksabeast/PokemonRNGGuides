@@ -1,5 +1,7 @@
 use crate::rng::lcrng::POKERNG_JUMP_TABLE;
+use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
 pub fn lcrng_distance(mut start: u32, end: u32) -> u32 {
     let mut count = 0_u32;
     let mut p = 1_u32;

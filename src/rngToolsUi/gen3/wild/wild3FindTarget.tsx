@@ -109,7 +109,10 @@ const Validator = z
     massOutbreakStates: z.array(z.enum(wild3MassOutbreakStates)).min(1),
     feebasStates: z.array(z.enum(wild3FeebasStates)).min(1),
     methods: z.array(z.enum(gen3Methods)).min(1),
+    usingPaintingReseeding: z.boolean(),
+    initial_seed: z.number().int().min(0).max(0xffffffff),
     initial_advances: z.number().int().min(0).max(0xffffffff),
+    min_advances_after_reseeding: z.number().int().min(0).max(0xffffffff),
     max_advances: z.number().int().min(0).max(0xffffffff),
     max_result_count: z.number().int().min(1),
     rngManipulatedLeadPid: z.boolean(),
@@ -134,7 +137,10 @@ const getInitialValues = (): FormState => {
     roamerStates: [...wild3RoamerStates],
     feebasStates: [...wild3FeebasStates],
     massOutbreakStates: [...wild3MassOutbreakStates],
+    usingPaintingReseeding: false,
+    initial_seed: 0,
     initial_advances: 1000,
+    min_advances_after_reseeding: 10000,
     max_advances: 10_000_000,
     max_result_count: 20,
     rngManipulatedLeadPid: false,
@@ -199,6 +205,7 @@ const getSetupFields = (
   species: Species,
   filter_shiny: boolean,
   recommendedSetups: boolean,
+  usingPaintingReseeding: boolean,
 ): Field[] => {
   const possVals = getPossibleValuesForSpecies(species);
 
@@ -336,17 +343,57 @@ const getSetupFields = (
       label: "RNG-manipulated lead PID",
       input: <RngManipulatedLeadPidSwitch />,
     },
+
     {
-      label: "Initial advances",
-      input: (
-        <FormikNumberInput<FormState>
-          name="initial_advances"
-          numType="decimal"
-        />
+      label: (
+        <>
+          Using{" "}
+          <a
+            href="/emerald-painting-rng/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Painting Reseeding
+          </a>
+          ?
+        </>
       ),
+      key: "usingPaintingReseeding",
+      input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
+    ...(usingPaintingReseeding
+      ? [
+          {
+            label: "Seed after Painting Reseeding",
+            input: (
+              <FormikNumberInput<FormState> name="initial_seed" numType="hex" />
+            ),
+          },
+          {
+            label: "Min advances after reseeding",
+            input: (
+              <FormikNumberInput<FormState>
+                name="min_advances_after_reseeding"
+                numType="decimal"
+              />
+            ),
+          },
+        ]
+      : [
+          {
+            label: "Min advances",
+            input: (
+              <FormikNumberInput<FormState>
+                name="initial_advances"
+                numType="decimal"
+              />
+            ),
+          },
+        ]),
     {
-      label: "Max advances",
+      label: usingPaintingReseeding
+        ? "Max advances after reseeding"
+        : "Max advances",
       input: (
         <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
       ),
@@ -409,10 +456,18 @@ export const SetupFilter = () => {
   const recommendedSetups = useWatch<FormState, "recommendedSetups">({
     name: "recommendedSetups",
   });
+  const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
+    name: "usingPaintingReseeding",
+  });
 
   const fields = React.useMemo((): Field[] => {
-    return getSetupFields(species, filterShiny, recommendedSetups);
-  }, [species, filterShiny, recommendedSetups]);
+    return getSetupFields(
+      species,
+      filterShiny,
+      recommendedSetups,
+      usingPaintingReseeding,
+    );
+  }, [species, filterShiny, recommendedSetups, usingPaintingReseeding]);
 
   return (
     <Flex vertical gap={8}>
@@ -839,10 +894,19 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
     React.useState<PidPathResult | null>(null);
   const [rngManipulatedLeadPid] = useAtom(rngManipulatedLeadPidAtom);
 
-  const initial_seed = game === "emerald" ? 0 : 0x5a0;
-
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
+      const initial_seed = (() => {
+        if (values.usingPaintingReseeding) {
+          return values.initial_seed;
+        }
+        return game === "emerald" ? 0 : 0x5a0;
+      })();
+
+      const initial_advances = values.usingPaintingReseeding
+        ? values.min_advances_after_reseeding
+        : values.initial_advances;
+
       const map_setups = getMapSetupsConsideringStateSubsets(values);
 
       const leadsToUse = values.recommendedSetups
@@ -853,7 +917,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
         tid: values.tid,
         sid: values.sid,
         gender_ratio: genderRatioBySpecies[values.species],
-        initial_advances: values.initial_advances,
+        initial_advances,
         max_advances: values.max_advances,
         max_result_count: values.max_result_count,
         filter: pkmFilterFieldsToRustInput(values),
@@ -886,7 +950,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
       );
       setSelectedPidPathResult(null);
     },
-    [initial_seed],
+    [game],
   );
 
   const initialValues = React.useMemo(() => {

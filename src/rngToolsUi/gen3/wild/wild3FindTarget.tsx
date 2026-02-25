@@ -69,6 +69,7 @@ import {
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { useWatch } from "react-hook-form";
 import { atom, useAtom } from "jotai";
+import { NewTabLink } from "~/components/newTabLink";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 const rngManipulatedLeadPidAtom = atom(false);
@@ -575,13 +576,7 @@ const getResultSetupInfoColumns = ({
         title: (
           <div>
             {"Method Likelihood by "}
-            <a
-              href="/gba-methods-lead-impact/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Lead Speed
-            </a>
+            <NewTabLink href="/gba-methods-lead-impact/">Lead Speed</NewTabLink>
           </div>
         ),
         key: "methodLikelihoodByLeadSpeed",

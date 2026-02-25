@@ -1021,14 +1021,6 @@ export const genderRatioBySpecies = {
   Annihilape: "OneToOne",
 } as const satisfies Partial<Record<Species, GenderRatio>>;
 
-export const hasMultiplePossibleGenders = (
-  ratios: Partial<Record<Species, GenderRatio>>,
-  species: Species,
-) => {
-  const ratio = ratios[species];
-  return ratio != null && getPossibleGenders(ratio).length > 0;
-};
-
 export const getPossibleGenders = (
   genderRatio: GenderRatio,
 ): readonly Gender[] => {

@@ -5,7 +5,7 @@ import { FormikSelect } from "~/components/select";
 import { nature } from "~/types/nature";
 import { IvInput, IvsSchema } from "~/components/ivInput";
 import { ability } from "~/types/ability";
-import { gender, getPossibleGenders } from "~/types/gender";
+import { gender } from "~/types/gender";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
@@ -17,9 +17,7 @@ import {
 import { HiddenPowerInput } from "./hiddenPowerInput.component";
 import { StatsFilterSchema } from "../types/stat";
 import { Translations } from "~/translations";
-import { useFormContext } from "~/hooks/form";
-import { useEffect } from "react";
-import { useWatch } from "react-hook-form";
+import { GenderFilter } from "./genderFilter";
 
 const sortedNatures = nature.toSorted();
 
@@ -40,11 +38,6 @@ export const natureOptions = {
 export const abilityOptions = ([null, ...ability] as const).map((abil) => ({
   label: abil ?? ("Any" as const),
   value: abil,
-}));
-
-export const genderOptions = ([null, ...gender] as const).map((gen) => ({
-  label: gen ?? ("Any" as const),
-  value: gen,
 }));
 
 export type PkmFilterFields = {
@@ -99,50 +92,6 @@ export const getPkmFilterInitialValues = (): PkmFilterFields => ({
   filter_hidden_power: defaultHiddenPowerFilter,
   filter_stats: null,
 });
-
-export const GenderFilter = ({
-  genderRatio,
-}: {
-  genderRatio?: GenderRatio;
-}) => {
-  const { setFieldValue } = useFormContext<PkmFilterFields>();
-  const filter_gender = useWatch<PkmFilterFields, "filter_gender">({
-    name: "filter_gender",
-  });
-
-  const options = (() => {
-    if (genderRatio == null) {
-      return genderOptions;
-    }
-    const possibleGenders = getPossibleGenders(genderRatio);
-    const permitNull = possibleGenders.length > 1;
-    return genderOptions.filter((label) => {
-      if (label.value == null) {
-        return permitNull;
-      }
-      return possibleGenders.includes(label.value);
-    });
-  })();
-
-  useEffect(() => {
-    if (options.some((opt) => opt.value === filter_gender)) {
-      return;
-    }
-    if (options.length === 0) {
-      return;
-    }
-    // Currently selected value is invalid.
-    setFieldValue("filter_gender", options[0].value);
-  }, [filter_gender, options, setFieldValue]);
-
-  return (
-    <FormikSelect<PkmFilterFields, "filter_gender">
-      name="filter_gender"
-      options={options}
-      disabled={options.length <= 1}
-    />
-  );
-};
 
 const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
   [

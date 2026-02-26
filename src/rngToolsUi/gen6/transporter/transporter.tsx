@@ -124,11 +124,11 @@ const getFields = (t: Translations): Field[] => [
   },
   ...getPkmFilterFields(
     {
-      ivs: true,
-      ability: false,
-      gender: false,
-      nature: false,
-      shiny: false,
+      displayIvs: true,
+      displayAbility: false,
+      displayGender: false,
+      displayNature: false,
+      displayShiny: false,
     },
     t,
   ),

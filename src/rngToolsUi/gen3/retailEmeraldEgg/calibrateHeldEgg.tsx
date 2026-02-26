@@ -23,7 +23,8 @@ import {
   Gender,
 } from "~/rngTools";
 import { uniqBy, sortBy } from "lodash-es";
-import { genderOptions, natureOptions } from "~/components/pkmFilter";
+import { natureOptions } from "~/components/pkmFilter";
+import { genderOptions } from "~/components/genderFilter";
 import { toOptions } from "~/utils/options";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";

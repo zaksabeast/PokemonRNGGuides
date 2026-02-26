@@ -256,7 +256,7 @@ export const guides = {
   "/bdsp-emulator-setup/": {
     meta: {
       categories: ["Brilliant Diamond and Shining Pearl"],
-      section: "info",
+      section: "tool",
       guideVariants: null,
       guideKey: "/bdsp-emulator-setup/",
       isNew: false,
@@ -295,7 +295,7 @@ export const guides = {
   "/bdsp-pokefinder/": {
     meta: {
       categories: ["Brilliant Diamond and Shining Pearl"],
-      section: "info",
+      section: "tool",
       guideVariants: null,
       guideKey: "/bdsp-pokefinder/",
       isNew: false,
@@ -1311,13 +1311,7 @@ export const guides = {
   },
   "/dream-radar-patches/": {
     meta: {
-      categories: [
-        "Transporter and Dream Radar",
-        "X and Y",
-        "Omega Ruby and Alpha Sapphire",
-        "Sun and Moon",
-        "Ultra Sun and Ultra Moon",
-      ],
+      categories: ["Transporter and Dream Radar"],
       section: "patch",
       guideVariants: null,
       guideKey: "/dream-radar-patches/",
@@ -1336,8 +1330,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/Dream Radar Patches.mdx",
       translations: null,
-      guideGroupId:
-        "en:/dream-radar-patches/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+      guideGroupId: "en:/dream-radar-patches/:Transporter and Dream Radar",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -2172,7 +2165,7 @@ export const guides = {
   "/emulator-dppt-pokefinder-setup/": {
     meta: {
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "info",
+      section: "tool",
       guideVariants: null,
       guideKey: "/emulator-dppt-pokefinder-setup/",
       isNew: false,
@@ -5587,7 +5580,7 @@ export const guides = {
   "/no-dolphin-patch/": {
     meta: {
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
-      section: "tool",
+      section: "patch",
       guideVariants: null,
       guideKey: "/no-dolphin-patch/",
       isNew: false,
@@ -7981,13 +7974,7 @@ export const guides = {
   },
   "/transporter-patches/": {
     meta: {
-      categories: [
-        "Transporter and Dream Radar",
-        "X and Y",
-        "Omega Ruby and Alpha Sapphire",
-        "Sun and Moon",
-        "Ultra Sun and Ultra Moon",
-      ],
+      categories: ["Transporter and Dream Radar"],
       section: "patch",
       guideVariants: null,
       guideKey: "/transporter-patches/",
@@ -8006,8 +7993,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/Transporter Patches.mdx",
       translations: null,
-      guideGroupId:
-        "en:/transporter-patches/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+      guideGroupId: "en:/transporter-patches/:Transporter and Dream Radar",
       guideVariantLinks: null,
       displayAttributes: [],
     },

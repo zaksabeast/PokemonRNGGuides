@@ -23,7 +23,7 @@ import { match } from "ts-pattern";
 
 dayjs.extend(utc);
 
-const guideSections = ["info", "challenge", "guide", "patch"] as const;
+const guideSections = ["info", "challenge", "guide", "tool", "patch"] as const;
 
 const guideVariants = ["retail", "cfw-emu"] as const;
 
@@ -72,7 +72,75 @@ const categories = [
   "Game Hub",
 ] as const;
 
+const emittedCategories = [
+  "Home",
+  "Gold, Silver, Crystal",
+  "Transporter and Dream Radar",
+  "Ruby and Sapphire",
+  "Gamecube",
+  "FireRed and LeafGreen",
+  "Emerald",
+  "Diamond, Pearl, and Platinum",
+  "HeartGold and SoulSilver",
+  "Black and White",
+  "Black 2 and White 2",
+  "X and Y",
+  "Omega Ruby and Alpha Sapphire",
+  "Sun and Moon",
+  "Ultra Sun and Ultra Moon",
+  "Sword and Shield",
+  "Brilliant Diamond and Shining Pearl",
+  "Legends Arceus",
+  "GBA Overview",
+  "GBA Technical Documentation",
+  "USUM Challenges",
+  "User Settings",
+  "Game Hub",
+] as const;
+
 const CategorySchema = z.enum(categories);
+
+const categoryAliases: Partial<
+  Record<
+    (typeof categories)[number],
+    readonly (typeof emittedCategories)[number][]
+  >
+> = {
+  "GBA Tools": ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+  "NDS Tools": [
+    "Diamond, Pearl, and Platinum",
+    "HeartGold and SoulSilver",
+    "Black and White",
+    "Black 2 and White 2",
+  ],
+  "3DS Tools": [
+    "Transporter and Dream Radar",
+    "X and Y",
+    "Omega Ruby and Alpha Sapphire",
+    "Sun and Moon",
+    "Ultra Sun and Ultra Moon",
+  ],
+  "Switch Tools": [
+    "Sword and Shield",
+    "Brilliant Diamond and Shining Pearl",
+    "Legends Arceus",
+  ],
+};
+
+const normalizeCategories = (
+  rawCategories: (typeof categories)[number][],
+): (typeof emittedCategories)[number][] => {
+  const normalized = rawCategories.flatMap((category) => {
+    const aliased = categoryAliases[category];
+    if (aliased != null) {
+      return [...aliased];
+    }
+
+    return [category as (typeof emittedCategories)[number]];
+  });
+
+  return [...new Set(normalized)];
+};
 
 const isNew = (addedOn: string | null) => {
   if (addedOn == null) {
@@ -143,7 +211,7 @@ const BaseGuideSchema = z
     }
 
     return {
-      categories: category,
+      categories: normalizeCategories(category),
       section,
       guideVariants: hasGuideSection ? normalizedVariants : null,
       guideKey: guideKey ?? meta.slug,
@@ -362,7 +430,7 @@ const generateGuideMetadata = async <T extends Record<string, unknown>>(
     ${finalGuides.map((guide) => `"${guide.slug}"`).join(",\n")}
   ] as const;
 
-  export const categories = ${JSON.stringify(categories)} as const;
+  export const categories = ${JSON.stringify(emittedCategories)} as const;
 `;
 
   return prettier.format(compiledGuides, { parser: "typescript" });

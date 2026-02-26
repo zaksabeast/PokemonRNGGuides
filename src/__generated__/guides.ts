@@ -35,8 +35,8 @@ export const guides = {
   },
   "/3ds-alt-settings/": {
     meta: {
-      categories: ["NDS Tools"],
-      section: "info",
+      categories: ["HeartGold and SoulSilver", "Diamond, Pearl, and Platinum"],
+      section: "tool",
       guideVariants: null,
       guideKey: "/3ds-alt-settings/",
       isNew: false,
@@ -54,7 +54,8 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 4/3DS Alt Settings.mdx",
       translations: { en: "/3ds-alt-settings/", zh: "/zh-3ds-alt-settings/" },
-      guideGroupId: "en:/3ds-alt-settings/:NDS Tools",
+      guideGroupId:
+        "en:/3ds-alt-settings/:Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -66,8 +67,13 @@ export const guides = {
   },
   "/3ds-helper/": {
     meta: {
-      categories: ["NDS Tools"],
-      section: "info",
+      categories: [
+        "Diamond, Pearl, and Platinum",
+        "HeartGold and SoulSilver",
+        "Black and White",
+        "Black 2 and White 2",
+      ],
+      section: "tool",
       guideVariants: null,
       guideKey: "/3ds-helper/",
       isNew: false,
@@ -85,7 +91,8 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 4/3DS Helper.mdx",
       translations: { en: "/3ds-helper/", zh: "/zh-3ds-helper/" },
-      guideGroupId: "en:/3ds-helper/:NDS Tools",
+      guideGroupId:
+        "en:/3ds-helper/:Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
       displayAttributes: ["video_guide"],
     },
@@ -128,9 +135,15 @@ export const guides = {
   },
   "/azahar-setup/": {
     meta: {
-      categories: ["3DS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/azahar-setup/",
       isNew: false,
       title: "Azahar Setup - Install Pokemon CIAs",
@@ -146,8 +159,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/Azahar Setup.mdx",
       translations: null,
-      guideGroupId: "en:/azahar-setup/:3DS Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/azahar-setup/" },
+      guideGroupId:
+        "en:/azahar-setup/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -648,9 +662,15 @@ export const guides = {
   },
   "/citrarng-setup/": {
     meta: {
-      categories: ["3DS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/citrarng-setup/",
       isNew: false,
       title: "3DS Emulator Setup (Azahar/Lime3DS/Citra)",
@@ -667,8 +687,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/CitraRNG Setup.mdx",
       translations: null,
-      guideGroupId: "en:/citrarng-setup/:3DS Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/citrarng-setup/" },
+      guideGroupId:
+        "en:/citrarng-setup/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -683,9 +704,9 @@ export const guides = {
   },
   "/connect-dolphin-to-gba/": {
     meta: {
-      categories: ["GBA Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/connect-dolphin-to-gba/",
       isNew: false,
       title: "Connect Dolphin to mGBA",
@@ -702,8 +723,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/Connect Dolphin To GBA.mdx",
       translations: null,
-      guideGroupId: "en:/connect-dolphin-to-gba/:GBA Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/connect-dolphin-to-gba/" },
+      guideGroupId:
+        "en:/connect-dolphin-to-gba/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -826,8 +848,24 @@ export const guides = {
   },
   "/delete-pokemon-save/": {
     meta: {
-      categories: ["GBA Tools", "NDS Tools", "3DS Tools", "Switch Tools"],
-      section: "info",
+      categories: [
+        "Ruby and Sapphire",
+        "FireRed and LeafGreen",
+        "Emerald",
+        "Diamond, Pearl, and Platinum",
+        "HeartGold and SoulSilver",
+        "Black and White",
+        "Black 2 and White 2",
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+        "Sword and Shield",
+        "Brilliant Diamond and Shining Pearl",
+        "Legends Arceus",
+      ],
+      section: "tool",
       guideVariants: null,
       guideKey: "/delete-pokemon-save/",
       isNew: false,
@@ -848,7 +886,7 @@ export const guides = {
         es: "/es-delete-pokemon-save/",
       },
       guideGroupId:
-        "en:/delete-pokemon-save/:3DS Tools|GBA Tools|NDS Tools|Switch Tools",
+        "en:/delete-pokemon-save/:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -864,9 +902,14 @@ export const guides = {
   },
   "/desmume-setup/": {
     meta: {
-      categories: ["NDS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Diamond, Pearl, and Platinum",
+        "HeartGold and SoulSilver",
+        "Black and White",
+        "Black 2 and White 2",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/desmume-setup/",
       isNew: false,
       title: "Desmume Setup",
@@ -883,8 +926,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/Desmume Setup.mdx",
       translations: null,
-      guideGroupId: "en:/desmume-setup/:NDS Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/desmume-setup/" },
+      guideGroupId:
+        "en:/desmume-setup/:Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -1267,7 +1311,13 @@ export const guides = {
   },
   "/dream-radar-patches/": {
     meta: {
-      categories: ["3DS Tools", "Transporter and Dream Radar"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
       section: "patch",
       guideVariants: null,
       guideKey: "/dream-radar-patches/",
@@ -1287,7 +1337,7 @@ export const guides = {
       file: "guides/Tools and Emulators/Dream Radar Patches.mdx",
       translations: null,
       guideGroupId:
-        "en:/dream-radar-patches/:3DS Tools|Transporter and Dream Radar",
+        "en:/dream-radar-patches/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -3097,8 +3147,24 @@ export const guides = {
   },
   "/es-delete-pokemon-save/": {
     meta: {
-      categories: ["GBA Tools", "NDS Tools", "3DS Tools", "Switch Tools"],
-      section: "info",
+      categories: [
+        "Ruby and Sapphire",
+        "FireRed and LeafGreen",
+        "Emerald",
+        "Diamond, Pearl, and Platinum",
+        "HeartGold and SoulSilver",
+        "Black and White",
+        "Black 2 and White 2",
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+        "Sword and Shield",
+        "Brilliant Diamond and Shining Pearl",
+        "Legends Arceus",
+      ],
+      section: "tool",
       guideVariants: null,
       guideKey: "/delete-pokemon-save/",
       isNew: false,
@@ -3119,7 +3185,7 @@ export const guides = {
         es: "/es-delete-pokemon-save/",
       },
       guideGroupId:
-        "es:/delete-pokemon-save/:3DS Tools|GBA Tools|NDS Tools|Switch Tools",
+        "es:/delete-pokemon-save/:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -3418,9 +3484,15 @@ export const guides = {
   },
   "/es-install-pokereader/": {
     meta: {
-      categories: ["3DS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/install-pokereader/",
       isNew: false,
       title: "PokeReader 3DS",
@@ -3442,7 +3514,8 @@ export const guides = {
         it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
       },
-      guideGroupId: "es:/install-pokereader/:3DS Tools",
+      guideGroupId:
+        "es:/install-pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -3560,9 +3633,13 @@ export const guides = {
   },
   "/fr-install-capturesight/": {
     meta: {
-      categories: ["Switch Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Sword and Shield",
+        "Brilliant Diamond and Shining Pearl",
+        "Legends Arceus",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/install-capturesight/",
       isNew: false,
       title: "Installer CaptureSight",
@@ -3582,7 +3659,8 @@ export const guides = {
         fr: "/fr-install-capturesight/",
         en: "/install-capturesight/",
       },
-      guideGroupId: "fr:/install-capturesight/:Switch Tools",
+      guideGroupId:
+        "fr:/install-capturesight/:Brilliant Diamond and Shining Pearl|Legends Arceus|Sword and Shield",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -4433,9 +4511,13 @@ export const guides = {
   },
   "/install-capturesight/": {
     meta: {
-      categories: ["Switch Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Sword and Shield",
+        "Brilliant Diamond and Shining Pearl",
+        "Legends Arceus",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/install-capturesight/",
       isNew: false,
       title: "Install CaptureSight",
@@ -4455,8 +4537,9 @@ export const guides = {
         fr: "/fr-install-capturesight/",
         en: "/install-capturesight/",
       },
-      guideGroupId: "en:/install-capturesight/:Switch Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/install-capturesight/" },
+      guideGroupId:
+        "en:/install-capturesight/:Brilliant Diamond and Shining Pearl|Legends Arceus|Sword and Shield",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -4471,9 +4554,15 @@ export const guides = {
   },
   "/install-pokereader-emu/": {
     meta: {
-      categories: ["3DS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/install-pokereader-emu/",
       isNew: false,
       title: "PokeReader Azahar",
@@ -4490,8 +4579,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/Emu PokeReader.mdx",
       translations: null,
-      guideGroupId: "en:/install-pokereader-emu/:3DS Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/install-pokereader-emu/" },
+      guideGroupId:
+        "en:/install-pokereader-emu/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -4506,9 +4596,15 @@ export const guides = {
   },
   "/install-pokereader/": {
     meta: {
-      categories: ["3DS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/install-pokereader/",
       isNew: false,
       title: "PokeReader 3DS",
@@ -4530,8 +4626,9 @@ export const guides = {
         it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
       },
-      guideGroupId: "en:/install-pokereader/:3DS Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/install-pokereader/" },
+      guideGroupId:
+        "en:/install-pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -4784,9 +4881,15 @@ export const guides = {
   },
   "/it-install-pokereader/": {
     meta: {
-      categories: ["3DS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/install-pokereader/",
       isNew: false,
       title: "PokeReader 3DS",
@@ -4808,7 +4911,8 @@ export const guides = {
         it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
       },
-      guideGroupId: "it:/install-pokereader/:3DS Tools",
+      guideGroupId:
+        "it:/install-pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -4827,9 +4931,15 @@ export const guides = {
   },
   "/it-pokereader/": {
     meta: {
-      categories: ["3DS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/pokereader/",
       isNew: false,
       title: "PokeReader - Overlay 3DS per RNG su Pokemon",
@@ -4846,7 +4956,8 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/it/Tools And Emulators/PokeReader.mdx",
       translations: { it: "/it-pokereader/", en: "/pokereader/" },
-      guideGroupId: "it:/pokereader/:3DS Tools",
+      guideGroupId:
+        "it:/pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -5089,9 +5200,9 @@ export const guides = {
   },
   "/mgba-setup/": {
     meta: {
-      categories: ["GBA Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/mgba-setup/",
       isNew: false,
       title: "mGBA Setup",
@@ -5108,8 +5219,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/mGBA Setup.mdx",
       translations: { en: "/mgba-setup/", zh: "/zh-mgba-setup/" },
-      guideGroupId: "en:/mgba-setup/:GBA Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/mgba-setup/" },
+      guideGroupId:
+        "en:/mgba-setup/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5124,9 +5236,15 @@ export const guides = {
   },
   "/misc-3ds-installing-pcalc/": {
     meta: {
-      categories: ["3DS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/misc-3ds-installing-pcalc/",
       isNew: false,
       title: "How to Install PCalc",
@@ -5143,11 +5261,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/How to Install PCalc.mdx",
       translations: null,
-      guideGroupId: "en:/misc-3ds-installing-pcalc/:3DS Tools",
-      guideVariantLinks: {
-        retail: null,
-        cfwEmu: "/misc-3ds-installing-pcalc/",
-      },
+      guideGroupId:
+        "en:/misc-3ds-installing-pcalc/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5162,9 +5278,15 @@ export const guides = {
   },
   "/misc-3ds-ips-luma-citra/": {
     meta: {
-      categories: ["3DS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/misc-3ds-ips-luma-citra/",
       isNew: false,
       title:
@@ -5182,8 +5304,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/Using IPS Patches with Luma and Citra.mdx",
       translations: null,
-      guideGroupId: "en:/misc-3ds-ips-luma-citra/:3DS Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/misc-3ds-ips-luma-citra/" },
+      guideGroupId:
+        "en:/misc-3ds-ips-luma-citra/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(
@@ -5304,9 +5427,9 @@ export const guides = {
   },
   "/misc-dolphin-connect-vba/": {
     meta: {
-      categories: ["GBA Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/misc-dolphin-connect-vba/",
       isNew: false,
       title: "Connect Dolphin to VBA",
@@ -5323,8 +5446,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/How to Connect Dolphin to VBA.mdx",
       translations: null,
-      guideGroupId: "en:/misc-dolphin-connect-vba/:GBA Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/misc-dolphin-connect-vba/" },
+      guideGroupId:
+        "en:/misc-dolphin-connect-vba/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5342,9 +5466,9 @@ export const guides = {
   },
   "/misc-dolphin-gba-bios/": {
     meta: {
-      categories: ["GBA Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/misc-dolphin-gba-bios/",
       isNew: false,
       title: "GBA BIOS File - What It Is and How to Extract It for Emulators",
@@ -5364,8 +5488,9 @@ export const guides = {
         en: "/misc-dolphin-gba-bios/",
         zh: "/zh-misc-dolphin-gba-bios/",
       },
-      guideGroupId: "en:/misc-dolphin-gba-bios/:GBA Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/misc-dolphin-gba-bios/" },
+      guideGroupId:
+        "en:/misc-dolphin-gba-bios/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5412,9 +5537,22 @@ export const guides = {
   },
   "/mystic-timer/": {
     meta: {
-      categories: ["GBA Tools", "NDS Tools", "3DS Tools"],
-      section: "guide",
-      guideVariants: ["retail"],
+      categories: [
+        "Ruby and Sapphire",
+        "FireRed and LeafGreen",
+        "Emerald",
+        "Diamond, Pearl, and Platinum",
+        "HeartGold and SoulSilver",
+        "Black and White",
+        "Black 2 and White 2",
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/mystic-timer/",
       isNew: false,
       title: "Mystic Timer - Online Pokémon RNG Timer for Gen 3, 4, and 7",
@@ -5431,8 +5569,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/Timer.mdx",
       translations: null,
-      guideGroupId: "en:/mystic-timer/:3DS Tools|GBA Tools|NDS Tools",
-      guideVariantLinks: { retail: "/mystic-timer/", cfwEmu: null },
+      guideGroupId:
+        "en:/mystic-timer/:Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
@@ -5447,9 +5586,9 @@ export const guides = {
   },
   "/no-dolphin-patch/": {
     meta: {
-      categories: ["GBA Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/no-dolphin-patch/",
       isNew: false,
       title: "No Dolphin Patch",
@@ -5466,8 +5605,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/No Dolphin Patch.mdx",
       translations: null,
-      guideGroupId: "en:/no-dolphin-patch/:GBA Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/no-dolphin-patch/" },
+      guideGroupId:
+        "en:/no-dolphin-patch/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+      guideVariantLinks: null,
       displayAttributes: ["video_guide"],
     },
     Guide: React.lazy(
@@ -5482,9 +5622,15 @@ export const guides = {
   },
   "/ntr-helper-usage/": {
     meta: {
-      categories: ["3DS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/ntr-helper-usage/",
       isNew: false,
       title: "NTR Helper Usage",
@@ -5500,8 +5646,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/NTR Helper Usage.mdx",
       translations: null,
-      guideGroupId: "en:/ntr-helper-usage/:3DS Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/ntr-helper-usage/" },
+      guideGroupId:
+        "en:/ntr-helper-usage/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5713,8 +5860,24 @@ export const guides = {
   },
   "/pokefinder/": {
     meta: {
-      categories: ["GBA Tools", "NDS Tools", "3DS Tools", "Switch Tools"],
-      section: "info",
+      categories: [
+        "Ruby and Sapphire",
+        "FireRed and LeafGreen",
+        "Emerald",
+        "Diamond, Pearl, and Platinum",
+        "HeartGold and SoulSilver",
+        "Black and White",
+        "Black 2 and White 2",
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+        "Sword and Shield",
+        "Brilliant Diamond and Shining Pearl",
+        "Legends Arceus",
+      ],
+      section: "tool",
       guideVariants: null,
       guideKey: "/pokefinder/",
       isNew: false,
@@ -5733,7 +5896,7 @@ export const guides = {
       file: "guides/Tools and Emulators/PokeFinder.mdx",
       translations: null,
       guideGroupId:
-        "en:/pokefinder/:3DS Tools|GBA Tools|NDS Tools|Switch Tools",
+        "en:/pokefinder/:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -5749,9 +5912,15 @@ export const guides = {
   },
   "/pokereader/": {
     meta: {
-      categories: ["3DS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/pokereader/",
       isNew: false,
       title: "PokeReader - 3DS Overlay for Pokemon RNG",
@@ -5768,8 +5937,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Tools and Emulators/PokeReader.mdx",
       translations: { it: "/it-pokereader/", en: "/pokereader/" },
-      guideGroupId: "en:/pokereader/:3DS Tools",
-      guideVariantLinks: { retail: null, cfwEmu: "/pokereader/" },
+      guideGroupId:
+        "en:/pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7811,7 +7981,13 @@ export const guides = {
   },
   "/transporter-patches/": {
     meta: {
-      categories: ["3DS Tools", "Transporter and Dream Radar"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
       section: "patch",
       guideVariants: null,
       guideKey: "/transporter-patches/",
@@ -7831,7 +8007,7 @@ export const guides = {
       file: "guides/Tools and Emulators/Transporter Patches.mdx",
       translations: null,
       guideGroupId:
-        "en:/transporter-patches/:3DS Tools|Transporter and Dream Radar",
+        "en:/transporter-patches/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -8116,8 +8292,8 @@ export const guides = {
   },
   "/zh-3ds-alt-settings/": {
     meta: {
-      categories: ["NDS Tools"],
-      section: "info",
+      categories: ["HeartGold and SoulSilver", "Diamond, Pearl, and Platinum"],
+      section: "tool",
       guideVariants: null,
       guideKey: "/3ds-alt-settings/",
       isNew: false,
@@ -8135,7 +8311,8 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/3DS Alt Settings.mdx",
       translations: { en: "/3ds-alt-settings/", zh: "/zh-3ds-alt-settings/" },
-      guideGroupId: "zh:/3ds-alt-settings/:NDS Tools",
+      guideGroupId:
+        "zh:/3ds-alt-settings/:Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -8151,8 +8328,13 @@ export const guides = {
   },
   "/zh-3ds-helper/": {
     meta: {
-      categories: ["NDS Tools"],
-      section: "info",
+      categories: [
+        "Diamond, Pearl, and Platinum",
+        "HeartGold and SoulSilver",
+        "Black and White",
+        "Black 2 and White 2",
+      ],
+      section: "tool",
       guideVariants: null,
       guideKey: "/3ds-helper/",
       isNew: false,
@@ -8170,7 +8352,8 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/3DS Helper.mdx",
       translations: { en: "/3ds-helper/", zh: "/zh-3ds-helper/" },
-      guideGroupId: "zh:/3ds-helper/:NDS Tools",
+      guideGroupId:
+        "zh:/3ds-helper/:Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
       displayAttributes: ["video_guide"],
     },
@@ -10125,9 +10308,15 @@ export const guides = {
   },
   "/zh-install-pokereader/": {
     meta: {
-      categories: ["3DS Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: [
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+      ],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/install-pokereader/",
       isNew: false,
       title: "3DS安装PokeReader",
@@ -10148,7 +10337,8 @@ export const guides = {
         it: "/it-install-pokereader/",
         zh: "/zh-install-pokereader/",
       },
-      guideGroupId: "zh:/install-pokereader/:3DS Tools",
+      guideGroupId:
+        "zh:/install-pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -10204,9 +10394,9 @@ export const guides = {
   },
   "/zh-mgba-setup/": {
     meta: {
-      categories: ["GBA Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/mgba-setup/",
       isNew: false,
       title: "mGBA Setup",
@@ -10223,7 +10413,8 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Tools and Emulators/mGBA Setup.mdx",
       translations: { en: "/mgba-setup/", zh: "/zh-mgba-setup/" },
-      guideGroupId: "zh:/mgba-setup/:GBA Tools",
+      guideGroupId:
+        "zh:/mgba-setup/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -10242,9 +10433,9 @@ export const guides = {
   },
   "/zh-misc-dolphin-gba-bios/": {
     meta: {
-      categories: ["GBA Tools"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/misc-dolphin-gba-bios/",
       isNew: false,
       title: "GBA BIOS 文件 - 它是什么以及如何提取给模拟器使用",
@@ -10264,7 +10455,8 @@ export const guides = {
         en: "/misc-dolphin-gba-bios/",
         zh: "/zh-misc-dolphin-gba-bios/",
       },
-      guideGroupId: "zh:/misc-dolphin-gba-bios/:GBA Tools",
+      guideGroupId:
+        "zh:/misc-dolphin-gba-bios/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -11293,10 +11485,6 @@ export const categories = [
   "Legends Arceus",
   "GBA Overview",
   "GBA Technical Documentation",
-  "GBA Tools",
-  "NDS Tools",
-  "3DS Tools",
-  "Switch Tools",
   "USUM Challenges",
   "User Settings",
   "Game Hub",

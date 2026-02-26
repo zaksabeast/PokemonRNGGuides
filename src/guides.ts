@@ -26,10 +26,6 @@ export const categoryOwners: Record<Category, Route> = {
   "Legends Arceus": "/legends-arceus/",
   "GBA Overview": "/",
   "GBA Technical Documentation": "/",
-  "GBA Tools": "/",
-  "NDS Tools": "/",
-  "3DS Tools": "/",
-  "Switch Tools": "/",
   "USUM Challenges": "/",
   "User Settings": "/",
   "Game Hub": "/",
@@ -119,44 +115,25 @@ export type LanguageKey = tst.O.RequiredKeys<
 
 const routeToCategory = {
   "/transporter-dream-radar/": ["Transporter and Dream Radar"],
-  "/legends-arceus/": ["Legends Arceus", "Switch Tools"],
+  "/legends-arceus/": ["Legends Arceus"],
   "/crystal/": ["Gold, Silver, Crystal"],
-  "/ruby-and-sapphire/": [
-    "Ruby and Sapphire",
-    "GBA Tools",
-    "GBA Technical Documentation",
-  ],
+  "/ruby-and-sapphire/": ["Ruby and Sapphire", "GBA Technical Documentation"],
   "/gamecube/": ["Gamecube"],
-  "/fire-red-and-leaf-green/": ["FireRed and LeafGreen", "GBA Tools"],
-  "/emerald/": ["Emerald", "GBA Tools", "GBA Technical Documentation"],
-  "/diamond-pearl-and-platinum/": ["Diamond, Pearl, and Platinum", "NDS Tools"],
-  "/heart-gold-and-soul-silver/": ["HeartGold and SoulSilver", "NDS Tools"],
-  "/black-and-white/": ["Black and White", "NDS Tools"],
-  "/black-2-and-white-2/": ["Black 2 and White 2", "NDS Tools"],
-  "/x-and-y/": ["X and Y", "3DS Tools"],
-  "/omega-ruby-and-alpha-sapphire/": [
-    "Omega Ruby and Alpha Sapphire",
-    "3DS Tools",
-  ],
-  "/sun-and-moon/": ["Sun and Moon", "3DS Tools"],
-  "/ultra-sun-and-ultra-moon/": ["Ultra Sun and Ultra Moon", "3DS Tools"],
-  "/sword-and-shield/": ["Sword and Shield", "Switch Tools"],
+  "/fire-red-and-leaf-green/": ["FireRed and LeafGreen"],
+  "/emerald/": ["Emerald", "GBA Technical Documentation"],
+  "/diamond-pearl-and-platinum/": ["Diamond, Pearl, and Platinum"],
+  "/heart-gold-and-soul-silver/": ["HeartGold and SoulSilver"],
+  "/black-and-white/": ["Black and White"],
+  "/black-2-and-white-2/": ["Black 2 and White 2"],
+  "/x-and-y/": ["X and Y"],
+  "/omega-ruby-and-alpha-sapphire/": ["Omega Ruby and Alpha Sapphire"],
+  "/sun-and-moon/": ["Sun and Moon"],
+  "/ultra-sun-and-ultra-moon/": ["Ultra Sun and Ultra Moon"],
+  "/sword-and-shield/": ["Sword and Shield"],
   "/brilliant-diamond-and-shining-pearl/": [
     "Brilliant Diamond and Shining Pearl",
-    "Switch Tools",
   ],
 } satisfies Partial<Record<GuideSlug, Category[]>>;
-
-const toolCategories = new Set<Category>([
-  "GBA Tools",
-  "NDS Tools",
-  "3DS Tools",
-  "Switch Tools",
-]);
-
-const isToolCategory = (category: Category) => {
-  return toolCategories.has(category);
-};
 
 const createEmptySectionedGuides = (): GuidesBySection => ({
   info: [],
@@ -242,6 +219,10 @@ const addNonGuideToSection = (
       ...sectioned,
       patch: [...sectioned.patch, guide],
     }))
+    .with("tool", () => ({
+      ...sectioned,
+      tool: [...sectioned.tool, guide],
+    }))
     .with("guide", () => sectioned)
     .exhaustive();
 };
@@ -283,14 +264,6 @@ export const getGuidesBySectionForSlug = (slug: GuideSlug): GuidesBySection => {
   let guideCardsById: GuideCardMap = {};
 
   guides.forEach((guide) => {
-    if (isToolCategory(guide.category)) {
-      sectioned = {
-        ...sectioned,
-        tool: [...sectioned.tool, guide],
-      };
-      return;
-    }
-
     if (guide.section !== "guide") {
       sectioned = addNonGuideToSection(sectioned, guide);
       return;

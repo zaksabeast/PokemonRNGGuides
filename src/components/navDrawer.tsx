@@ -97,7 +97,6 @@ const gameMenu = [
       { label: "Emerald", href: "/emerald/" },
     ],
     categories: [
-      "GBA Tools",
       "Ruby and Sapphire",
       "FireRed and LeafGreen",
       "Emerald",
@@ -124,7 +123,6 @@ const gameMenu = [
       { label: "Black 2 and White 2", href: "/black-2-and-white-2/" },
     ],
     categories: [
-      "NDS Tools",
       "Diamond, Pearl, and Platinum",
       "HeartGold and SoulSilver",
       "Black and White",
@@ -135,7 +133,7 @@ const gameMenu = [
     label: "3DS",
     items: [
       {
-        label: "Pokemon Transporter and Dream Radar",
+        label: "Transporter and Dream Radar",
         href: "/transporter-dream-radar/",
       },
       { label: "X and Y", href: "/x-and-y/" },
@@ -150,7 +148,6 @@ const gameMenu = [
       },
     ],
     categories: [
-      "3DS Tools",
       "X and Y",
       "Omega Ruby and Alpha Sapphire",
       "Sun and Moon",
@@ -168,7 +165,6 @@ const gameMenu = [
       },
     ],
     categories: [
-      "Switch Tools",
       "Sword and Shield",
       "Legends Arceus",
       "Brilliant Diamond and Shining Pearl",

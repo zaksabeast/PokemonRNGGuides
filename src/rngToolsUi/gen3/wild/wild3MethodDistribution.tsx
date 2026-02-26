@@ -57,6 +57,7 @@ import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
 import { uniq } from "lodash-es";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { NewTabLink } from "~/components/newTabLink";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -270,13 +271,9 @@ const getFields = (
     label: (
       <>
         Using{" "}
-        <a
-          href="/emerald-painting-rng/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <NewTabLink href="/emerald-painting-rng/">
           Painting Reseeding
-        </a>
+        </NewTabLink>
         ?
       </>
     ),
@@ -284,30 +281,28 @@ const getFields = (
     input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
   });
 
-  if (usingPaintingReseeding) {
-    fields.push({
-      label: "Seed after Painting Reseeding",
-      input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
-    });
-  }
+  fields.push({
+    label: "Seed after Painting Reseeding",
+    input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
+    hide: !usingPaintingReseeding,
+  });
 
   fields.push({
     label: usingPaintingReseeding ? "Advances after reseeding" : "Advances",
     input: <FormikNumberInput<FormState> name="advance" numType="decimal" />,
   });
 
-  if (usingPaintingReseeding) {
-    fields.push({
-      label: "",
-      key: "Equivalent to Initial Seed",
-      input: (
-        <>
-          Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
-          without reseeding
-        </>
-      ),
-    });
-  }
+  fields.push({
+    label: "",
+    key: "Equivalent to Advances",
+    hide: !usingPaintingReseeding,
+    input: (
+      <>
+        Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
+        without reseeding
+      </>
+    ),
+  });
 
   if (feebas_states.length > 1) {
     fields.push({
@@ -565,12 +560,13 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
-      const initial_seed = (() => {
-        if (values.usingPaintingReseeding) {
-          return values.initial_seed;
-        }
-        return game === "emerald" ? 0 : 0x5a0;
-      })();
+      const initial_seed = match({
+        usingPaintingReseeding: values.usingPaintingReseeding,
+        game,
+      })
+        .with({ usingPaintingReseeding: true }, () => values.initial_seed)
+        .with({ game: "emerald" }, () => 0)
+        .otherwise(() => 0x5a0);
 
       const opts: Wild3GeneratorOptions = {
         tid: values.tid,

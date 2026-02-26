@@ -297,7 +297,7 @@ const getSetupFields = (
                   label: "Mass outbreak states",
                   input: (
                     <FormikSelect<FormState, "massOutbreakStates">
-                      name="roamerStates"
+                      name="massOutbreakStates"
                       options={toOptions(
                         possVals.massOutbreakStates,
                         formatMassOutbreakStateName,
@@ -346,13 +346,9 @@ const getSetupFields = (
       label: (
         <>
           Using{" "}
-          <a
-            href="/emerald-painting-rng/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <NewTabLink href="/emerald-painting-rng/">
             Painting Reseeding
-          </a>
+          </NewTabLink>
           ?
         </>
       ),
@@ -921,12 +917,13 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
-      const initial_seed = (() => {
-        if (values.usingPaintingReseeding) {
-          return values.initial_seed;
-        }
-        return game === "emerald" ? 0 : 0x5a0;
-      })();
+      const initial_seed = match({
+        usingPaintingReseeding: values.usingPaintingReseeding,
+        game,
+      })
+        .with({ usingPaintingReseeding: true }, () => values.initial_seed)
+        .with({ game: "emerald" }, () => 0)
+        .otherwise(() => 0x5a0);
 
       const initial_advances = values.usingPaintingReseeding
         ? values.min_advances_after_reseeding

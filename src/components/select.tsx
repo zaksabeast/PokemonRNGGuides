@@ -55,6 +55,7 @@ export const Select = <ValueType,>({
         {({ css }) => (
           <AntdSelect
             size="large"
+            showSearch
             {...props}
             className={css({
               width: fullWidth ? "100%" : undefined,

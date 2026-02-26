@@ -88,7 +88,10 @@ export const MultibootJirachi = ({ jirachi }: Props) => {
         label: t["Search Hours"],
         input: <FormikNumberInput<FormState> name="hours" numType="decimal" />,
       },
-      ...getPkmFilterFields<FormState>({ ability: false, gender: false }),
+      ...getPkmFilterFields<FormState>({
+        displayAbility: false,
+        displayGender: false,
+      }),
       {
         label: t["Save file"],
         input: (

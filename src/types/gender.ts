@@ -1,3 +1,4 @@
+import { match } from "ts-pattern";
 import { Gender, Species, GenderRatio } from "~/rngTools";
 
 export const gender = [
@@ -1020,12 +1021,12 @@ export const genderRatioBySpecies = {
   Annihilape: "OneToOne",
 } as const satisfies Partial<Record<Species, GenderRatio>>;
 
-export const hasMultiplePossibleGenders = (
-  ratios: Partial<Record<Species, GenderRatio>>,
-  species: Species,
-) => {
-  const ratio = ratios[species];
-  return (
-    ratio !== "Genderless" && ratio !== "FemaleOnly" && ratio !== "MaleOnly"
-  );
+export const getPossibleGenders = (
+  genderRatio: GenderRatio,
+): readonly Gender[] => {
+  return match(genderRatio)
+    .with("Genderless", () => ["Genderless"] as const)
+    .with("FemaleOnly", () => ["Female"] as const)
+    .with("MaleOnly", () => ["Male"] as const)
+    .otherwise(() => ["Female", "Male"] as const);
 };

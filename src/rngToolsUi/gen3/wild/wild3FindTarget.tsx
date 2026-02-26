@@ -19,6 +19,7 @@ import {
   Flex,
   Typography,
   ResultTable,
+  Icon,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
@@ -36,7 +37,6 @@ import { z } from "zod";
 import {
   species,
   genderRatioBySpecies,
-  hasMultiplePossibleGenders,
   gen3Methods,
   gen3SpeciesHasVariableSize,
 } from "~/types";
@@ -69,6 +69,7 @@ import {
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { useWatch } from "react-hook-form";
 import { atom, useAtom } from "jotai";
+import { NewTabLink } from "~/components/newTabLink";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 const rngManipulatedLeadPidAtom = atom(false);
@@ -152,10 +153,7 @@ const getInitialValues = (): FormState => {
 };
 
 const getTargetMonFields = (species: Species): Field[] => {
-  const multipleGenders = hasMultiplePossibleGenders(
-    genderRatioBySpecies,
-    species,
-  );
+  const genderRatio = genderRatioBySpecies[species];
 
   const targetMonFields: Field[] = [
     {
@@ -167,7 +165,7 @@ const getTargetMonFields = (species: Species): Field[] => {
         />
       ),
     },
-    ...getPkmFilterFields({ gender: multipleGenders }),
+    ...getPkmFilterFields({ genderRatio }),
     ...getGen3PkmFilterFields({
       max_size: gen3SpeciesHasVariableSize(species),
     }),
@@ -630,7 +628,13 @@ const getResultSetupInfoColumns = ({
         },
       },
       {
-        title: "Method Likelyhood by Lead Speed",
+        title: (
+          <div>
+            {"Method Likelihood by "}
+            <NewTabLink href="/gba-methods-lead-impact/">Lead Speed</NewTabLink>
+          </div>
+        ),
+        key: "methodLikelihoodByLeadSpeed",
         type: "group",
         columns: [
           {
@@ -647,7 +651,14 @@ const getResultSetupInfoColumns = ({
             },
           },
           {
-            title: "Fastest",
+            title: (
+              <Tooltip title="Lead PID speed equal to 18 cycles">
+                <div>
+                  Fastest <Icon name="InformationCircle" size={16} />
+                </div>
+              </Tooltip>
+            ),
+            key: "methodLikelihoodFastest",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead == undefined) {
@@ -660,7 +671,14 @@ const getResultSetupInfoColumns = ({
             },
           },
           {
-            title: "Common",
+            title: (
+              <Tooltip title="Lead PID speed between 608 and 868 cycles (99.9% of all PIDs)">
+                <div>
+                  Common <Icon name="InformationCircle" size={16} />
+                </div>
+              </Tooltip>
+            ),
+            key: "methodLikelihoodCommon",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead == undefined) {
@@ -678,7 +696,14 @@ const getResultSetupInfoColumns = ({
             },
           },
           {
-            title: "Slowest",
+            title: (
+              <Tooltip title="Lead PID speed equal to 900 cycles">
+                <div>
+                  Slowest <Icon name="InformationCircle" size={16} />
+                </div>
+              </Tooltip>
+            ),
+            key: "methodLikelihoodSlowest",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead == undefined) {

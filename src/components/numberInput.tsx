@@ -16,7 +16,7 @@ const serializers = {
 
 const deserializers = {
   hex: (str: string) => parseInt(str, 16),
-  decimal: (str: string) => parseInt(str, 10),
+  decimal: (str: string) => parseInt(str.replaceAll(",", ""), 10),
   float: (str: string) => capPrecision(parseInt(str, 10)),
 };
 

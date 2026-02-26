@@ -23,6 +23,10 @@ import { match } from "ts-pattern";
 
 dayjs.extend(utc);
 
+const guideSections = ["info", "challenge", "guide", "patch"] as const;
+
+const guideVariants = ["retail", "cfw-emu"] as const;
+
 // Only lower case letters, numbers, and hyphens
 const slugChars = /^[a-z0-9-]+$/;
 
@@ -33,17 +37,8 @@ const SlugSchema = z
     formatRelativeUrl({ url, leadingSlash: true, trailingSlash: true }),
   );
 
-const tags = [
-  "retail",
-  "emu",
-  "cfw",
-  "info",
-  "any",
-  "challenge",
-  "patch",
-] as const;
-
-const TagSchema = z.enum(tags);
+const GuideSectionSchema = z.enum(guideSections);
+const GuideVariantSchema = z.enum(guideVariants);
 
 const layouts = ["titled", "guide"] as const;
 
@@ -105,7 +100,11 @@ const BaseGuideSchema = z
     category: SingleOrMultipleSchema(CategorySchema),
     slug: SlugSchema,
     isRoughDraft: z.boolean().default(false),
-    tag: SingleOrMultipleSchema(TagSchema),
+    section: GuideSectionSchema,
+    variant: SingleOrMultipleSchema(GuideVariantSchema).optional(),
+    guideKey: SlugSchema.nullish()
+      .optional()
+      .default(() => null),
     hideFromNavDrawer: z.boolean().default(false),
     addedOn: z
       .string()
@@ -121,14 +120,39 @@ const BaseGuideSchema = z
       .optional()
       .default(() => null),
   })
-  .transform(({ category, tag, ...meta }) => ({
-    categories: category,
-    tags: tag,
-    isNew: isNew(meta.addedOn),
-    ...meta,
-    navDrawerTitle: meta.navDrawerTitle ?? meta.title,
-    type: "baseGuide" as const,
-  }));
+  .transform(({ category, section, variant, guideKey, ...meta }) => {
+    const normalizedVariants = variant ?? [];
+    const hasGuideSection = section === "guide";
+
+    if (hasGuideSection && normalizedVariants.length === 0) {
+      throw new Error(
+        `Guide section requires variant for ${meta.slug}. Add variant.`,
+      );
+    }
+
+    if (!hasGuideSection && normalizedVariants.length > 0) {
+      throw new Error(
+        `Variant without guide section for ${meta.slug}. Add section: guide or remove the variant.`,
+      );
+    }
+
+    if (!hasGuideSection && guideKey != null) {
+      throw new Error(
+        `guideKey is only allowed for section: guide (${meta.slug}).`,
+      );
+    }
+
+    return {
+      categories: category,
+      section,
+      guideVariants: hasGuideSection ? normalizedVariants : null,
+      guideKey: guideKey ?? meta.slug,
+      isNew: isNew(meta.addedOn),
+      ...meta,
+      navDrawerTitle: meta.navDrawerTitle ?? meta.title,
+      type: "baseGuide" as const,
+    };
+  });
 
 const TranslatedGuideSchema = z
   .object({
@@ -168,10 +192,110 @@ const GuideMetadataSchema = z
   });
 
 type GuideMetadata = z.infer<typeof SingleGuideMetadataSchema>;
+type BaseGuideMetadata = Extract<GuideMetadata, { type: "baseGuide" }>;
+
+const getGuideLanguage = (guide: GuideMetadata) => {
+  return match(guide)
+    .with({ type: "baseGuide" }, () => "en")
+    .with(
+      { type: "translatedGuide" },
+      (matched) => matched.translation.language,
+    )
+    .exhaustive();
+};
+
+const getGuideGroupId = ({
+  language,
+  guideKey,
+  categories,
+}: {
+  language: string;
+  guideKey: string;
+  categories: string[];
+}) => {
+  const categoriesKey = [...categories].sort().join("|");
+  return `${language}:${guideKey}:${categoriesKey}`;
+};
 
 type SitePageFile = {
   file: string;
   content: string;
+};
+
+type GuideWithFile = GuideMetadata & { file: string };
+
+type GuideWithTranslations = GuideWithFile & {
+  categories: BaseGuideMetadata["categories"];
+  guideKey: BaseGuideMetadata["guideKey"];
+  section: BaseGuideMetadata["section"];
+  guideVariants: BaseGuideMetadata["guideVariants"];
+  translations: Record<string, string> | null;
+};
+
+type GuidePairingByGroup = Record<
+  string,
+  { retail: string | null; cfwEmu: string | null }
+>;
+
+type GuidePairing = GuidePairingByGroup[string];
+
+type DerivedGuideMetadata = GuideWithTranslations & {
+  translations: Record<string, string> | null;
+  guideGroupId: string;
+  guideVariantLinks: GuidePairing | null;
+};
+
+const GENERATED_GUIDES_PATH = toNativeAbsolute(
+  "../src/__generated__/guides.ts",
+);
+
+const createEmptyGuidePairing = (): GuidePairing => ({
+  retail: null,
+  cfwEmu: null,
+});
+
+const getGuidePairingGroupId = (guide: GuideWithTranslations) => {
+  return getGuideGroupId({
+    language: getGuideLanguage(guide),
+    guideKey: guide.guideKey,
+    categories: guide.categories,
+  });
+};
+
+const applyGuideVariantToPairing = ({
+  pairing,
+  variant,
+  guideSlug,
+  groupId,
+}: {
+  pairing: GuidePairing;
+  variant: (typeof guideVariants)[number];
+  guideSlug: string;
+  groupId: string;
+}): GuidePairing => {
+  if (variant === "retail") {
+    if (pairing.retail != null && pairing.retail !== guideSlug) {
+      throw new Error(
+        `Duplicate retail guide variant for group ${groupId} (${pairing.retail}, ${guideSlug})`,
+      );
+    }
+
+    return {
+      ...pairing,
+      retail: guideSlug,
+    };
+  }
+
+  if (pairing.cfwEmu != null && pairing.cfwEmu !== guideSlug) {
+    throw new Error(
+      `Duplicate cfw-emu guide variant for group ${groupId} (${pairing.cfwEmu}, ${guideSlug})`,
+    );
+  }
+
+  return {
+    ...pairing,
+    cfwEmu: guideSlug,
+  };
 };
 
 const getGuideFiles = async (): Promise<SitePageFile[]> => {
@@ -194,12 +318,19 @@ const getEnSlug = (guide: GuideMetadata) => {
     .exhaustive();
 };
 
-const getEnGuide = (guide: GuideMetadata, allGuides: GuideMetadata[]) => {
+const getEnGuide = (
+  guide: GuideMetadata,
+  allGuides: GuideMetadata[],
+): BaseGuideMetadata => {
   const enSlug = getEnSlug(guide);
   const foundGuide = allGuides.find((guide) => guide.slug === enSlug);
 
   if (foundGuide == null) {
     throw new Error(`Missing English guide for ${guide.slug}`);
+  }
+
+  if (foundGuide.type !== "baseGuide") {
+    throw new Error(`English guide for ${guide.slug} must be a base guide`);
   }
 
   return foundGuide;
@@ -237,34 +368,39 @@ const generateGuideMetadata = async <T extends Record<string, unknown>>(
   return prettier.format(compiledGuides, { parser: "typescript" });
 };
 
-const main = async ({
-  check,
-  noDetectedTags,
-}: {
-  check: boolean;
-  noDetectedTags: boolean;
-}) => {
-  const guideFiles = await getGuideFiles();
-  const guides: (GuideMetadata & { file: string })[] = [];
+const parseGuideFile = async ({ file, content }: SitePageFile) => {
+  const compiled = await evaluate(content, {
+    remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+    Fragment: React.Fragment,
+    jsx: React.jsx,
+    jsxs: React.jsxs,
+  });
 
+  let metadatas: GuideMetadata[];
+  try {
+    metadatas = GuideMetadataSchema.parse(compiled.frontmatter);
+  } catch (error) {
+    throw new Error(`Error on guide ${file}`, { cause: error });
+  }
+
+  return {
+    metadatas,
+    guideComponent: compiled.default,
+  };
+};
+
+const parseGuideFiles = async (guideFiles: SitePageFile[]) => {
+  const guides: GuideWithFile[] = [];
   const guideComponents: Record<string, MDXContent> = {};
 
   for (const { file, content } of guideFiles) {
-    const compiled = await evaluate(content, {
-      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
-      Fragment: React.Fragment,
-      jsx: React.jsx,
-      jsxs: React.jsxs,
+    const { metadatas, guideComponent } = await parseGuideFile({
+      file,
+      content,
     });
-    let metadatas: GuideMetadata[];
-    try {
-      metadatas = GuideMetadataSchema.parse(compiled.frontmatter);
-    } catch (error) {
-      throw new Error(`Error on guide ${file}`, { cause: error });
-    }
 
     for (const metadata of metadatas) {
-      guideComponents[metadata.slug] = compiled.default;
+      guideComponents[metadata.slug] = guideComponent;
       guides.push({
         ...metadata,
         file,
@@ -272,12 +408,18 @@ const main = async ({
     }
   }
 
-  guides.sort((lhs, rhs) => {
-    return lhs.slug.localeCompare(rhs.slug);
-  });
+  guides.sort((lhs, rhs) => lhs.slug.localeCompare(rhs.slug));
 
+  return {
+    guides,
+    guideComponents,
+  };
+};
+
+const validateGuideReferences = (guides: GuideWithFile[]) => {
   const guidesBySlug = keyBy(guides, (guide) => guide.slug);
-  guides.forEach((guide) => {
+
+  for (const guide of guides) {
     if (
       guide.type === "translatedGuide" &&
       guidesBySlug[guide.translation.enSlug] == null
@@ -292,8 +434,10 @@ const main = async ({
         `Canonical slug ${guide.canonical} for ${guide.slug} not found`,
       );
     }
-  });
+  }
+};
 
+const validateRemovedSlugs = (guides: GuideWithFile[]) => {
   const existingSlugs = Object.keys(existingGuides);
   const newSlugs = guides.map((guide) => guide.slug);
   const removedSlugs = difference(existingSlugs, newSlugs);
@@ -301,103 +445,242 @@ const main = async ({
   if (removedSlugs.length > 0) {
     throw new Error("Removed slugs: " + removedSlugs.join(", "));
   }
+};
 
+const createTranslationsGetter = (guides: GuideWithFile[]) => {
   const guidesByEnSlug = groupBy(guides, getEnSlug);
 
-  const getTranslations = (guide: GuideMetadata) => {
+  return (guide: GuideMetadata) => {
     const enSlug = getEnSlug(guide);
-    const translations = guidesByEnSlug[enSlug];
+    const translations = guidesByEnSlug[enSlug] ?? [];
 
-    // English guide only
-    if (translations.length === 1) {
+    if (translations.length <= 1) {
       return null;
     }
 
-    return translations.reduce((acc, curr) => {
-      const languageCode = match(curr)
-        .with({ type: "baseGuide" }, () => "en")
-        .with(
-          { type: "translatedGuide" },
-          (matched) => matched.translation.language,
-        )
-        .exhaustive();
+    return translations.reduce(
+      (acc: Record<string, string>, translatedGuide) => {
+        const languageCode = match(translatedGuide)
+          .with({ type: "baseGuide" }, () => "en")
+          .with(
+            { type: "translatedGuide" },
+            (matched) => matched.translation.language,
+          )
+          .exhaustive();
 
-      acc[languageCode] = curr.slug;
-      return acc;
-    }, {});
+        acc[languageCode] = translatedGuide.slug;
+        return acc;
+      },
+      {},
+    );
   };
+};
 
-  const guidesWithTranslations = guides.map((guide) => ({
-    ...getEnGuide(guide, guides),
-    ...guide,
-    translations: getTranslations(guide),
-  }));
+const buildGuidesWithTranslations = (guides: GuideWithFile[]) => {
+  const getTranslations = createTranslationsGetter(guides);
 
+  return guides.map((guide): GuideWithTranslations => {
+    const enGuide = getEnGuide(guide, guides);
+
+    return {
+      ...enGuide,
+      ...guide,
+      translations: getTranslations(guide),
+    };
+  });
+};
+
+const buildGuidePairingByGroup = (
+  guidesWithTranslations: GuideWithTranslations[],
+): GuidePairingByGroup => {
+  return guidesWithTranslations.reduce<GuidePairingByGroup>(
+    (pairingByGroup, guide) => {
+      if (guide.type !== "baseGuide" || guide.section !== "guide") {
+        return pairingByGroup;
+      }
+
+      const groupId = getGuidePairingGroupId(guide);
+      const initialPairing =
+        pairingByGroup[groupId] ?? createEmptyGuidePairing();
+
+      const nextPairing = (guide.guideVariants ?? []).reduce(
+        (pairing, variant) => {
+          return applyGuideVariantToPairing({
+            pairing,
+            variant,
+            guideSlug: guide.slug,
+            groupId,
+          });
+        },
+        initialPairing,
+      );
+
+      return {
+        ...pairingByGroup,
+        [groupId]: nextPairing,
+      };
+    },
+    {},
+  );
+};
+
+const validateDuplicateSlugs = (guides: GuideWithFile[]) => {
   forEach(
-    groupBy(guidesWithTranslations, (guide) => guide.slug),
-    (guides, slug) => {
-      if (guides.length > 1) {
+    groupBy(guides, (guide) => guide.slug),
+    (guidesWithSlug, slug) => {
+      if (guidesWithSlug.length > 1) {
         throw new Error(`Duplicate slugs detected for ${slug}`);
       }
     },
   );
+};
 
-  const finalGuides = await pmap(
-    guidesWithTranslations,
+const detectGuideTags = async (
+  guideSlug: string,
+  Guide: MDXContent,
+  noDetectedTags: boolean,
+) => {
+  if (noDetectedTags) {
+    return [];
+  }
+
+  let detectedTags = {};
+
+  const setTags = (newTags: Partial<Record<string, boolean>>) => {
+    detectedTags = { ...detectedTags, ...newTags };
+  };
+
+  await renderToStringAsync(
+    <TagDetector setTags={setTags}>
+      <ThemeProvider>
+        <Router ssrPath={guideSlug}>
+          <Guide components={markdownComponents} />
+        </Router>
+      </ThemeProvider>
+    </TagDetector>,
+  );
+
+  return Object.keys(detectedTags);
+};
+
+const deriveGuideMetadata = ({
+  guide,
+  guidePairingByGroup,
+}: {
+  guide: GuideWithTranslations;
+  guidePairingByGroup: GuidePairingByGroup;
+}): DerivedGuideMetadata => {
+  const guideGroupId = getGuidePairingGroupId(guide);
+
+  return {
+    ...guide,
+    guideGroupId,
+    guideVariantLinks: guidePairingByGroup[guideGroupId] ?? null,
+  };
+};
+
+const renderGuideDisplayAttributes = async ({
+  guide,
+  guideComponents,
+  noDetectedTags,
+}: {
+  guide: GuideWithTranslations;
+  guideComponents: Record<string, MDXContent>;
+  noDetectedTags: boolean;
+}) => {
+  const Guide = guideComponents[guide.slug];
+
+  if (Guide == null) {
+    throw new Error(`Guide component not found for ${guide.slug}`);
+  }
+
+  return detectGuideTags(guide.slug, Guide, noDetectedTags);
+};
+
+const buildFinalGuides = async ({
+  guides,
+  guideComponents,
+  guidePairingByGroup,
+  noDetectedTags,
+}: {
+  guides: GuideWithTranslations[];
+  guideComponents: Record<string, MDXContent>;
+  guidePairingByGroup: GuidePairingByGroup;
+  noDetectedTags: boolean;
+}) => {
+  return pmap(
+    guides,
     async (guide) => {
-      let detectedTags = {};
+      const metadata = deriveGuideMetadata({
+        guide,
+        guidePairingByGroup,
+      });
 
-      const setTags = (tags: Partial<Record<string, boolean>>) => {
-        detectedTags = { ...detectedTags, ...tags };
-      };
-      const Guide = guideComponents[guide.slug];
-
-      if (Guide == null) {
-        throw new Error(`Guide component not found for ${guide.slug}`);
-      }
-
-      if (!noDetectedTags) {
-        await renderToStringAsync(
-          <TagDetector setTags={setTags}>
-            <ThemeProvider>
-              <Router ssrPath={guide.slug}>
-                <Guide components={markdownComponents} />
-              </Router>
-            </ThemeProvider>
-          </TagDetector>,
-        );
-      }
+      const displayAttributes = await renderGuideDisplayAttributes({
+        guide,
+        guideComponents,
+        noDetectedTags,
+      });
 
       return {
-        ...guide,
-        displayAttributes: Object.keys(detectedTags),
-        translations: getTranslations(guide),
+        ...metadata,
+        displayAttributes,
       };
     },
     { concurrency: 5 },
   );
+};
+
+const checkCompiledGuidesUpToDate = async (compiledGuides: string) => {
+  const existingGuidesString = await fs.readFile(GENERATED_GUIDES_PATH, {
+    encoding: "utf8",
+  });
+
+  if (compiledGuides !== existingGuidesString) {
+    console.error(
+      "Guide metadata is out of date. Please run `bun run build:guides` to update it.",
+    );
+    process.exit(1);
+  }
+};
+
+const writeCompiledGuides = async (compiledGuides: string) => {
+  await fs.mkdir(toNativeAbsolute("../src/__generated__"), {
+    recursive: true,
+  });
+  await fs.writeFile(GENERATED_GUIDES_PATH, compiledGuides);
+};
+
+const main = async ({
+  check,
+  noDetectedTags,
+}: {
+  check: boolean;
+  noDetectedTags: boolean;
+}) => {
+  const guideFiles = await getGuideFiles();
+  const { guides, guideComponents } = await parseGuideFiles(guideFiles);
+
+  validateGuideReferences(guides);
+  validateRemovedSlugs(guides);
+  validateDuplicateSlugs(guides);
+
+  const guidesWithTranslations = buildGuidesWithTranslations(guides);
+  const guidePairingByGroup = buildGuidePairingByGroup(guidesWithTranslations);
+
+  const finalGuides = await buildFinalGuides({
+    guides: guidesWithTranslations,
+    guideComponents,
+    guidePairingByGroup,
+    noDetectedTags,
+  });
 
   const compiledGuides = await generateGuideMetadata(finalGuides);
 
   if (check) {
-    const existingGuidesString = await fs.readFile(
-      toNativeAbsolute("../src/__generated__/guides.ts"),
-      { encoding: "utf8" },
-    );
-    if (compiledGuides !== existingGuidesString) {
-      console.error(
-        "Guide metadata is out of date. Please run `bun run build:guides` to update it.",
-      );
-      process.exit(1);
-    }
+    await checkCompiledGuidesUpToDate(compiledGuides);
   } else {
-    await fs.mkdir(toNativeAbsolute("../src/__generated__"), {
-      recursive: true,
-    });
-    await fs.writeFile(
-      toNativeAbsolute("../src/__generated__/guides.ts"),
-      compiledGuides,
-    );
+    await writeCompiledGuides(compiledGuides);
   }
 
   process.exit(0);

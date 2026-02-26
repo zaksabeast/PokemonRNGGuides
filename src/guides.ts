@@ -46,9 +46,11 @@ type ExternalMeta = tst.O.Overwrite<
       | "title"
       | "navDrawerTitle"
       | "categories"
+      | "section"
+      | "guideVariants"
+      | "guideKey"
       | "displayAttributes"
       | "isNew"
-      | "tags"
       | "type"
       | "isRoughDraft"
       | "hideFromNavDrawer"
@@ -74,8 +76,36 @@ export { guides, guideSlugs, categories } from "~/__generated__/guides";
 export type Guide = (typeof guides)[keyof typeof guides];
 export type GuideMeta = Guide["meta"];
 export type GuideSlug = GuideMeta["slug"];
-export type GuideTag = GuideMeta["tags"][number];
-export type GuideTags = Readonly<GuideMeta["tags"][number][]>;
+
+export type GamePageGuideCard = {
+  id: string;
+  guideKey: string;
+  title: string;
+  navDrawerTitle: string;
+  description: string;
+  retailSlug: GuideSlug | null;
+  cfwEmuSlug: GuideSlug | null;
+  isNew: boolean;
+  hideFromNavDrawer: boolean;
+  isRoughDraft: boolean;
+};
+
+export type GuidesBySection = {
+  info: GuideMeta[];
+  challenge: GuideMeta[];
+  guides: GamePageGuideCard[];
+  tool: GuideMeta[];
+  patch: GuideMeta[];
+};
+
+type GuideMetaWithCategory = GuideMeta & { category: Category };
+
+type GuideCardMap = Record<string, GamePageGuideCard>;
+
+type GuideVariantLinkPair = {
+  retail: GuideSlug | null;
+  cfwEmu: GuideSlug | null;
+};
 
 export const getGuide = (slug: GuideSlug) => {
   return guides[slug];
@@ -117,72 +147,170 @@ const routeToCategory = {
   ],
 } satisfies Partial<Record<GuideSlug, Category[]>>;
 
+const toolCategories = new Set<Category>([
+  "GBA Tools",
+  "NDS Tools",
+  "3DS Tools",
+  "Switch Tools",
+]);
+
 const isToolCategory = (category: Category) => {
-  return match(category)
-    .with("GBA Tools", () => true)
-    .with("NDS Tools", () => true)
-    .with("3DS Tools", () => true)
-    .with("Switch Tools", () => true)
-    .with("Black 2 and White 2", () => false)
-    .with("Black and White", () => false)
-    .with("Diamond, Pearl, and Platinum", () => false)
-    .with("HeartGold and SoulSilver", () => false)
-    .with("Legends Arceus", () => false)
-    .with("Ruby and Sapphire", () => false)
-    .with("FireRed and LeafGreen", () => false)
-    .with("Emerald", () => false)
-    .with("Gold, Silver, Crystal", () => false)
-    .with("X and Y", () => false)
-    .with("Omega Ruby and Alpha Sapphire", () => false)
-    .with("Sun and Moon", () => false)
-    .with("Ultra Sun and Ultra Moon", () => false)
-    .with("Sword and Shield", () => false)
-    .with("Brilliant Diamond and Shining Pearl", () => false)
-    .with("Gamecube", () => false)
-    .with("GBA Overview", () => false)
-    .with("GBA Technical Documentation", () => false)
-    .with("Game Hub", () => false)
-    .with("Home", () => false)
-    .with("Transporter and Dream Radar", () => false)
-    .with("USUM Challenges", () => false)
-    .with("User Settings", () => false)
+  return toolCategories.has(category);
+};
+
+const createEmptySectionedGuides = (): GuidesBySection => ({
+  info: [],
+  challenge: [],
+  guides: [],
+  tool: [],
+  patch: [],
+});
+
+const getCategoriesForSlug = (slug: GuideSlug) => {
+  return get(routeToCategory, slug) ?? [];
+};
+
+const getGuidesForCategories = (categories: Category[]) => {
+  return categories.flatMap(
+    (category) => guidesByCategoryWithMeta[category] ?? [],
+  );
+};
+
+const resolveGuideVariantLinks = (
+  guide: GuideMetaWithCategory,
+): GuideVariantLinkPair => {
+  const variants: readonly string[] = guide.guideVariants ?? [];
+  const links = guide.guideVariantLinks ?? null;
+
+  return {
+    retail: links?.retail ?? (variants.includes("retail") ? guide.slug : null),
+    cfwEmu: links?.cfwEmu ?? (variants.includes("cfw-emu") ? guide.slug : null),
+  };
+};
+
+const createGuideCard = (
+  guide: GuideMetaWithCategory,
+  variants: GuideVariantLinkPair,
+): GamePageGuideCard => ({
+  id: guide.guideGroupId,
+  guideKey: guide.guideKey,
+  title: guide.title,
+  navDrawerTitle: guide.navDrawerTitle,
+  description: guide.description,
+  retailSlug: variants.retail,
+  cfwEmuSlug: variants.cfwEmu,
+  isNew: guide.isNew,
+  hideFromNavDrawer: guide.hideFromNavDrawer,
+  isRoughDraft: guide.isRoughDraft,
+});
+
+const mergeGuideCard = (
+  existing: GamePageGuideCard,
+  variants: GuideVariantLinkPair,
+  guide: GuideMetaWithCategory,
+) => {
+  return {
+    ...existing,
+    retailSlug:
+      existing.retailSlug == null && variants.retail != null
+        ? variants.retail
+        : existing.retailSlug,
+    cfwEmuSlug:
+      existing.cfwEmuSlug == null && variants.cfwEmu != null
+        ? variants.cfwEmu
+        : existing.cfwEmuSlug,
+    isNew: existing.isNew || guide.isNew,
+    hideFromNavDrawer: existing.hideFromNavDrawer && guide.hideFromNavDrawer,
+    isRoughDraft: existing.isRoughDraft && guide.isRoughDraft,
+  };
+};
+
+const addNonGuideToSection = (
+  sectioned: GuidesBySection,
+  guide: GuideMetaWithCategory,
+) => {
+  return match(guide.section)
+    .with("info", () => ({
+      ...sectioned,
+      info: [...sectioned.info, guide],
+    }))
+    .with("challenge", () => ({
+      ...sectioned,
+      challenge: [...sectioned.challenge, guide],
+    }))
+    .with("patch", () => ({
+      ...sectioned,
+      patch: [...sectioned.patch, guide],
+    }))
+    .with("guide", () => sectioned)
     .exhaustive();
 };
 
-const guidesWithFlattenedTags = flatMap(
-  { ...guides, ...externalLinks },
-  (guide) => {
-    return guide.meta.tags.map((tag) => ({ ...guide.meta, tag }));
-  },
-);
-const guidesWithFlattenedCategories = guidesWithFlattenedTags.flatMap(
-  (guide) => {
-    return guide.categories.map((category) => ({ ...guide, category }));
-  },
-);
-const guideByCategory = groupBy(
-  guidesWithFlattenedCategories,
-  (guide) => guide.category,
-);
+const addGuideToCards = (
+  guideCardsById: GuideCardMap,
+  guide: GuideMetaWithCategory,
+) => {
+  const variants = resolveGuideVariantLinks(guide);
+  const existing = guideCardsById[guide.guideGroupId];
 
-export const getGuidesForSlug = (slug: GuideSlug) => {
-  const categories = get(routeToCategory, slug);
-  const guides =
-    categories?.flatMap((category) => guideByCategory[category]) ?? null;
-  return groupBy(guides, (guide) => {
+  if (existing == null) {
+    return {
+      ...guideCardsById,
+      [guide.guideGroupId]: createGuideCard(guide, variants),
+    };
+  }
+
+  return {
+    ...guideCardsById,
+    [guide.guideGroupId]: mergeGuideCard(existing, variants, guide),
+  };
+};
+
+const guidesByCategoryWithMeta = groupBy(
+  flatMap({ ...guides, ...externalLinks }, (guide) => {
+    return guide.meta.categories.map((category) => ({
+      ...guide.meta,
+      category,
+    }));
+  }),
+  (guide) => guide.category,
+) as Partial<Record<Category, GuideMetaWithCategory[]>>;
+
+export const getGuidesBySectionForSlug = (slug: GuideSlug): GuidesBySection => {
+  const categories = getCategoriesForSlug(slug);
+  const guides = getGuidesForCategories(categories);
+  let sectioned = createEmptySectionedGuides();
+  let guideCardsById: GuideCardMap = {};
+
+  guides.forEach((guide) => {
     if (isToolCategory(guide.category)) {
-      return "tool";
+      sectioned = {
+        ...sectioned,
+        tool: [...sectioned.tool, guide],
+      };
+      return;
     }
 
-    return guide.tag;
+    if (guide.section !== "guide") {
+      sectioned = addNonGuideToSection(sectioned, guide);
+      return;
+    }
+
+    guideCardsById = addGuideToCards(guideCardsById, guide);
   });
+
+  return {
+    ...sectioned,
+    guides: Object.values(guideCardsById),
+  };
 };
 
 export type CategorySlug = keyof typeof routeToCategory;
 
 export const categoryHasNewContent = (slug: CategorySlug) => {
-  const categories = get(routeToCategory, slug);
-  const guides =
-    categories?.flatMap((category) => guideByCategory[category]) ?? null;
+  const categories = get(routeToCategory, slug) ?? [];
+  const guides = categories.flatMap(
+    (category) => guidesByCategoryWithMeta[category] ?? [],
+  );
   return guides.some((guide) => guide.isNew);
 };

@@ -60,3 +60,4 @@ export {
 export { YouTubeTable } from "./youtubeTable";
 export { CopyToClipboardButton } from "./copyToClipboardButton";
 export { TextArea } from "./textArea";
+export { LinkButton } from "./linkButton";

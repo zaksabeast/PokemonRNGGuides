@@ -1,6 +1,6 @@
 import * as tst from "ts-toolbelt";
 import { guides, categories } from "./__generated__/guides";
-import { groupBy, flatMap, get } from "lodash-es";
+import { groupBy, flatMap, get, uniq } from "lodash-es";
 import { match } from "ts-pattern";
 import { Route } from "./routes/defs";
 
@@ -79,8 +79,11 @@ export type GamePageGuideCard = {
   title: string;
   navDrawerTitle: string;
   description: string;
+  displayAttributes: GuideMeta["displayAttributes"][number][];
   retailSlug: GuideSlug | null;
+  retailIsNew: boolean;
   cfwEmuSlug: GuideSlug | null;
+  cfwEmuIsNew: boolean;
   isNew: boolean;
   hideFromNavDrawer: boolean;
   isRoughDraft: boolean;
@@ -102,6 +105,8 @@ type GuideVariantLinkPair = {
   retail: GuideSlug | null;
   cfwEmu: GuideSlug | null;
 };
+
+type GuideVariant = "retail" | "cfw-emu";
 
 export const getGuide = (slug: GuideSlug) => {
   return guides[slug];
@@ -165,21 +170,34 @@ const resolveGuideVariantLinks = (
   };
 };
 
+const hasGuideVariant = (
+  guide: GuideMetaWithCategory,
+  variant: GuideVariant,
+) => {
+  const variants: readonly string[] = guide.guideVariants ?? [];
+  return variants.includes(variant);
+};
+
 const createGuideCard = (
   guide: GuideMetaWithCategory,
   variants: GuideVariantLinkPair,
-): GamePageGuideCard => ({
-  id: guide.guideGroupId,
-  guideKey: guide.guideKey,
-  title: guide.title,
-  navDrawerTitle: guide.navDrawerTitle,
-  description: guide.description,
-  retailSlug: variants.retail,
-  cfwEmuSlug: variants.cfwEmu,
-  isNew: guide.isNew,
-  hideFromNavDrawer: guide.hideFromNavDrawer,
-  isRoughDraft: guide.isRoughDraft,
-});
+): GamePageGuideCard => {
+  return {
+    id: guide.guideGroupId,
+    guideKey: guide.guideKey,
+    title: guide.title,
+    navDrawerTitle: guide.navDrawerTitle,
+    description: guide.description,
+    displayAttributes: [...guide.displayAttributes],
+    retailSlug: variants.retail,
+    retailIsNew: guide.isNew && hasGuideVariant(guide, "retail"),
+    cfwEmuSlug: variants.cfwEmu,
+    cfwEmuIsNew: guide.isNew && hasGuideVariant(guide, "cfw-emu"),
+    isNew: guide.isNew,
+    hideFromNavDrawer: guide.hideFromNavDrawer,
+    isRoughDraft: guide.isRoughDraft,
+  };
+};
 
 const mergeGuideCard = (
   existing: GamePageGuideCard,
@@ -188,14 +206,23 @@ const mergeGuideCard = (
 ) => {
   return {
     ...existing,
+    displayAttributes: uniq([
+      ...existing.displayAttributes,
+      ...guide.displayAttributes,
+    ]),
     retailSlug:
       existing.retailSlug == null && variants.retail != null
         ? variants.retail
         : existing.retailSlug,
+    retailIsNew:
+      existing.retailIsNew || (guide.isNew && hasGuideVariant(guide, "retail")),
     cfwEmuSlug:
       existing.cfwEmuSlug == null && variants.cfwEmu != null
         ? variants.cfwEmu
         : existing.cfwEmuSlug,
+    cfwEmuIsNew:
+      existing.cfwEmuIsNew ||
+      (guide.isNew && hasGuideVariant(guide, "cfw-emu")),
     isNew: existing.isNew || guide.isNew,
     hideFromNavDrawer: existing.hideFromNavDrawer && guide.hideFromNavDrawer,
     isRoughDraft: existing.isRoughDraft && guide.isRoughDraft,

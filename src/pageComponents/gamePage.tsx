@@ -3,17 +3,15 @@ import type { ReactNode, ComponentProps } from "react";
 import {
   Flex,
   Typography,
-  Grid,
   Card,
-  Divider,
   Tag,
   Icon,
   BadgeRibbon,
-  Button,
+  LinkButton,
 } from "~/components";
 import { getGuide, GuideMeta, getGuidesBySectionForSlug } from "~/guides";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { sortBy, startCase } from "lodash-es";
+import { sortBy } from "lodash-es";
 import { match } from "ts-pattern";
 import styled from "@emotion/styled";
 
@@ -60,85 +58,92 @@ const DisplayTag = styled(Tag)<{ tag: DisplayAttribute }>(({ tag }) => {
   };
 });
 
+const getDisplayAttributeLabel = (tag: DisplayAttribute) => {
+  return match(tag)
+    .with("new", () => "New")
+    .with("external-link", () => "External Link")
+    .with("web_tool", () => "Web Tool")
+    .with("video_guide", () => "Video")
+    .exhaustive();
+};
+
 const { Meta: CardMeta } = AntdCard;
 
-const GuideCard = styled(Card)(({ theme }) => ({
-  "& .ant-card-body": {
-    padding: 0,
-  },
-  "& .ant-ribbon-wrapper": {
-    height: "100%",
-    display: "flex",
-  },
-  "&:hover": {
-    boxShadow: theme.token.boxShadow,
-    transform: "scale(1.03)",
-  },
-}));
+const GuideCard = styled(Card, {
+  shouldForwardProp: (prop) => !prop.includes("$"),
+})<{ $isTop?: boolean; $isBottom?: boolean }>(
+  ({ theme, $isTop: $top, $isBottom: $bottom }) => ({
+    borderTopLeftRadius: $top ? 10 : 0,
+    borderTopRightRadius: $top ? 10 : 0,
+    borderBottomLeftRadius: $bottom ? 10 : 0,
+    borderBottomRightRadius: $bottom ? 10 : 0,
+    "& .ant-card-body": {
+      padding: 0,
+    },
+    "& .ant-ribbon-wrapper": {
+      height: "100%",
+      display: "flex",
+    },
+    "&:hover": {
+      borderRadius: 10,
+      boxShadow: theme.token.boxShadow,
+      zIndex: 1,
+      transform: "scale(1.03)",
+    },
+  }),
+);
 
-const CardBackground = styled.div({
-  position: "absolute",
-  top: 0,
-  left: 0,
-  display: "flex",
-  justifyContent: "flex-end",
-  width: "100%",
-  height: "100%",
+const GuideCardContent = styled(Flex)({
+  minHeight: 40,
   overflow: "hidden",
 });
 
-const InnerCardBackground = styled.div({
-  position: "absolute",
-  top: -12,
-  transform: "rotate(-35deg)",
-  paddingTop: 12,
+const PokeballContainer = styled.div({
+  transform: "rotate(-40deg) scale(1.2)",
+  transformOrigin: "center",
 });
-
-const GuideCardTopContent = ({ children }: { children?: ReactNode }) => {
-  return (
-    <Flex vertical minHeight={50} gap={4} height="100%">
-      <CardBackground>
-        <InnerCardBackground>
-          <Icon name="Pokeball" size={100} color="PrimaryBgHover" />
-        </InnerCardBackground>
-      </CardBackground>
-      {children}
-    </Flex>
-  );
-};
 
 const GuideCardFrame = ({
   cardId,
   title,
   isNew,
   cardProps,
-  topContent,
+  displayAttributesContent,
   bottomContent,
 }: {
   cardId: string;
   title: string;
   isNew: boolean;
   cardProps?: Partial<ComponentProps<typeof GuideCard>>;
-  topContent?: ReactNode;
+  displayAttributesContent?: ReactNode;
   bottomContent?: ReactNode;
 }) => {
   return (
     <GuideCard
       id={cardId}
       fullBody
-      borderColor="PrimaryBorderHover"
-      border={isNew ? "2px solid" : "1px solid"}
+      borderColor={isNew ? "PrimaryBorderHover" : undefined}
       {...(cardProps ?? {})}
     >
       <BadgeRibbon $show={isNew} text="New">
-        <Flex vertical justify="space-between" flex={1} p={24}>
-          <GuideCardTopContent>{topContent}</GuideCardTopContent>
-          <Flex vertical gap={bottomContent == null ? 0 : 12}>
-            <Divider />
-            <CardMeta title={title} />
-            {bottomContent}
+        <GuideCardContent
+          vertical
+          gap={12}
+          justify="space-between"
+          flex={1}
+          p={14}
+        >
+          <Flex gap={8} align="flex-start">
+            <PokeballContainer>
+              <Icon name="Pokeball" size={40} color="PrimaryBgHover" />
+            </PokeballContainer>
+            <Flex vertical gap={8} flex={1}>
+              <CardMeta title={title} />
+              {displayAttributesContent}
+            </Flex>
           </Flex>
-        </Flex>
+          {bottomContent}
+        </GuideCardContent>
       </BadgeRibbon>
     </GuideCard>
   );
@@ -162,6 +167,40 @@ const getSectionLabel = (section: string) => {
     .exhaustive();
 };
 
+const getUniqueDisplayTags = (
+  displayAttributes: ReadonlyArray<GuideMeta["displayAttributes"][number]>,
+): DisplayAttribute[] => {
+  const uniqueTags = new Set<DisplayAttribute>();
+
+  for (const tag of displayAttributes) {
+    if (tag != null && !isSectionDisplay(tag)) {
+      uniqueTags.add(tag);
+    }
+  }
+
+  return [...uniqueTags];
+};
+
+type DisplayTagsProps = {
+  displayTags: DisplayAttribute[];
+};
+
+const DisplayTags = ({ displayTags }: DisplayTagsProps) => {
+  if (displayTags.length === 0) {
+    return null;
+  }
+
+  return (
+    <Flex wrap>
+      {displayTags.map((tag) => (
+        <Flex key={tag}>
+          <DisplayTag tag={tag}>{getDisplayAttributeLabel(tag)}</DisplayTag>
+        </Flex>
+      ))}
+    </Flex>
+  );
+};
+
 export const GamePageComponent = () => {
   const route = useActiveRoute();
 
@@ -170,9 +209,6 @@ export const GamePageComponent = () => {
 
   return (
     <Flex vertical gap={12}>
-      <Typography.Title level={2} mb={2}>
-        Guides and Articles
-      </Typography.Title>
       {sectionDisplayOrder.map((section) => {
         if (section === "guides") {
           const filteredGuides = guidesBySection.guides.filter(
@@ -185,41 +221,54 @@ export const GamePageComponent = () => {
 
           return (
             <Flex key={section} vertical gap={12}>
-              <Typography.Title level={4} mb={2}>
+              <Typography.Title level={2} mb={2}>
                 {getSectionLabel(section)}
               </Typography.Title>
-              <Grid mobile={1} tablet={2} desktop={3}>
+              <Flex vertical>
                 {sortBy(filteredGuides, (guide) => guide.navDrawerTitle).map(
-                  (guide) => {
+                  (guide, index) => {
+                    const displayTags = getUniqueDisplayTags(
+                      guide.displayAttributes,
+                    );
+
                     return (
                       <GuideCardFrame
                         key={guide.id}
+                        cardProps={{
+                          $isTop: index === 0,
+                          $isBottom: index === filteredGuides.length - 1,
+                        }}
                         cardId={`guide-${guide.id}`}
                         title={guide.navDrawerTitle}
                         isNew={guide.isNew}
+                        displayAttributesContent={
+                          <DisplayTags displayTags={displayTags} />
+                        }
                         bottomContent={
                           <Flex gap={8} wrap>
-                            <Button
+                            <LinkButton
+                              href={guide.retailSlug ?? "/"}
                               trackerId={`guide-retail-${guide.id}`}
-                              href={guide.retailSlug ?? undefined}
                               disabled={guide.retailSlug == null}
+                              type={guide.retailIsNew ? "primary" : undefined}
                             >
                               Retail
-                            </Button>
-                            <Button
+                            </LinkButton>
+                            <LinkButton
+                              href={guide.cfwEmuSlug ?? "/"}
                               trackerId={`guide-cfw-emu-${guide.id}`}
-                              href={guide.cfwEmuSlug ?? undefined}
                               disabled={guide.cfwEmuSlug == null}
+                              type={guide.cfwEmuIsNew ? "primary" : undefined}
                             >
-                              CFW/Emu
-                            </Button>
+                              Emu
+                            </LinkButton>
                           </Flex>
                         }
                       />
                     );
                   },
                 )}
-              </Grid>
+              </Flex>
             </Flex>
           );
         }
@@ -235,12 +284,15 @@ export const GamePageComponent = () => {
 
         return (
           <Flex key={section} vertical gap={12}>
-            <Typography.Title level={4} mb={2}>
+            <Typography.Title level={2} mb={2}>
               {getSectionLabel(section)}
             </Typography.Title>
-            <Grid mobile={1} tablet={2} desktop={3}>
+            <Flex vertical>
               {sortBy(filteredGuides, (guide) => guide.navDrawerTitle).map(
-                (guide) => {
+                (guide, index) => {
+                  const displayTags = getUniqueDisplayTags(
+                    guide.displayAttributes,
+                  );
                   const { url, ...linkProps } = match(guide)
                     .with({ type: "baseGuide" }, (matched) => ({
                       url: matched.slug,
@@ -253,21 +305,19 @@ export const GamePageComponent = () => {
                       cardId={`guide-${url}`}
                       title={guide.navDrawerTitle}
                       isNew={guide.isNew}
-                      cardProps={linkProps}
-                      topContent={guide.displayAttributes
-                        // Seperate filter for TS to infer types from the null check
-                        .filter((tag) => tag !== null)
-                        .filter((tag) => !isSectionDisplay(tag))
-                        .map((tag) => (
-                          <Flex key={tag}>
-                            <DisplayTag tag={tag}>{startCase(tag)}</DisplayTag>
-                          </Flex>
-                        ))}
+                      cardProps={{
+                        ...linkProps,
+                        $isTop: index === 0,
+                        $isBottom: index === filteredGuides.length - 1,
+                      }}
+                      displayAttributesContent={
+                        <DisplayTags displayTags={displayTags} />
+                      }
                     />
                   );
                 },
               )}
-            </Grid>
+            </Flex>
           </Flex>
         );
       })}

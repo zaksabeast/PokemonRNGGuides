@@ -14,29 +14,7 @@ const InputContainer = styled.div<{ fullFlex?: boolean; textAlign?: "center" }>(
   ({ fullFlex, textAlign }) => ({
     flex: fullFlex ? 1 : undefined,
     ".ant-input": {
-      fontSize: 18,
-      borderTop: "none",
-      borderLeft: "none",
-      borderRight: "none",
-      outline: "none",
-      boxShadow: "none",
-      borderRadius: 0,
-      paddingTop: 0,
       textAlign,
-    },
-    ".ant-input-outlined.ant-input-status-error": {
-      borderTop: "none",
-      borderLeft: "none",
-      borderRight: "none",
-      ":focus": {
-        boxShadow: "none",
-      },
-    },
-    ".ant-input-group-addon": {
-      fontSize: 18,
-      backgroundColor: "unset",
-      border: "unset",
-      borderRadius: "unset",
     },
   }),
 );

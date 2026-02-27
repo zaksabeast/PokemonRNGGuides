@@ -17,20 +17,6 @@ import { Path, Paths } from "~/types";
 const SelectContainer = styled(Flex)({
   ".ant-select": {
     width: "100%",
-    outline: "none",
-    boxShadow: "none",
-    ".ant-select-selector": {
-      fontSize: 18,
-      borderTop: "none",
-      borderLeft: "none",
-      borderRight: "none",
-      outline: "none",
-      boxShadow: "none !important",
-      borderRadius: 0,
-    },
-    ".ant-select-selection-search-input": {
-      fontSize: 18,
-    },
   },
 });
 

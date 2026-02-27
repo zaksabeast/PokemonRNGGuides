@@ -3674,7 +3674,7 @@ export const guides = {
     meta: {
       categories: ["FireRed and LeafGreen"],
       section: "guide",
-      guideVariants: ["retail"],
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/frlg-gen3-sid/",
       isNew: false,
       title: "Find FireRed and LeafGreen SID",
@@ -3696,7 +3696,10 @@ export const guides = {
         zh: "/zh-frlg-gen3-sid/",
       },
       guideGroupId: "en:/frlg-gen3-sid/:FireRed and LeafGreen",
-      guideVariantLinks: { retail: "/frlg-gen3-sid/", cfwEmu: null },
+      guideVariantLinks: {
+        retail: "/frlg-gen3-sid/",
+        cfwEmu: "/frlg-gen3-sid/",
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
@@ -4235,7 +4238,7 @@ export const guides = {
     meta: {
       categories: ["Emerald"],
       section: "guide",
-      guideVariants: ["retail"],
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/gen3-sid/",
       isNew: false,
       title: "Find Emerald SID",
@@ -4256,7 +4259,7 @@ export const guides = {
         zh: "/zh-gen3-sid/",
       },
       guideGroupId: "en:/gen3-sid/:Emerald",
-      guideVariantLinks: { retail: "/gen3-sid/", cfwEmu: null },
+      guideVariantLinks: { retail: "/gen3-sid/", cfwEmu: "/gen3-sid/" },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
@@ -4760,7 +4763,7 @@ export const guides = {
     meta: {
       categories: ["FireRed and LeafGreen"],
       section: "guide",
-      guideVariants: ["retail"],
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/frlg-gen3-sid/",
       isNew: false,
       title: "Trova il tuo SID su Rosso Fuoco e Verde Foglia",
@@ -4838,7 +4841,7 @@ export const guides = {
     meta: {
       categories: ["Emerald"],
       section: "guide",
-      guideVariants: ["retail"],
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/gen3-sid/",
       isNew: false,
       title: "Trova il tuo SID su Smeraldo",
@@ -5089,7 +5092,7 @@ export const guides = {
     meta: {
       categories: ["Ruby and Sapphire"],
       section: "guide",
-      guideVariants: ["retail"],
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/rs-gen3-sid/",
       isNew: false,
       title: "Trova il tuo SID su Rubino e Zaffiro",
@@ -7445,7 +7448,7 @@ export const guides = {
     meta: {
       categories: ["Ruby and Sapphire"],
       section: "guide",
-      guideVariants: ["retail"],
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/rs-gen3-sid/",
       isNew: false,
       title: "Find Ruby and Sapphire SID",
@@ -7466,7 +7469,7 @@ export const guides = {
         zh: "/zh-rs-gen3-sid/",
       },
       guideGroupId: "en:/rs-gen3-sid/:Ruby and Sapphire",
-      guideVariantLinks: { retail: "/rs-gen3-sid/", cfwEmu: null },
+      guideVariantLinks: { retail: "/rs-gen3-sid/", cfwEmu: "/rs-gen3-sid/" },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
@@ -9779,7 +9782,7 @@ export const guides = {
     meta: {
       categories: ["FireRed and LeafGreen"],
       section: "guide",
-      guideVariants: ["retail"],
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/frlg-gen3-sid/",
       isNew: false,
       title: "查找第三世代 SID",
@@ -10078,7 +10081,7 @@ export const guides = {
     meta: {
       categories: ["Emerald"],
       section: "guide",
-      guideVariants: ["retail"],
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/gen3-sid/",
       isNew: false,
       title: "查找第三世代 SID",
@@ -10925,7 +10928,7 @@ export const guides = {
     meta: {
       categories: ["Ruby and Sapphire"],
       section: "guide",
-      guideVariants: ["retail"],
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/rs-gen3-sid/",
       isNew: false,
       title: "查找第三世代 SID",

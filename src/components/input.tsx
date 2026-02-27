@@ -10,9 +10,8 @@ import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
 
-const InputContainer = styled.div<{ fullFlex?: boolean; textAlign?: "center" }>(
-  ({ fullFlex, textAlign }) => ({
-    flex: fullFlex ? 1 : undefined,
+const InputContainer = styled.div<{ textAlign?: "center" }>(
+  ({ textAlign }) => ({
     ".ant-input": {
       textAlign,
     },
@@ -21,7 +20,6 @@ const InputContainer = styled.div<{ fullFlex?: boolean; textAlign?: "center" }>(
 
 type InputProps = tst.O.Merge<
   {
-    fullFlex?: boolean;
     autoFocus?: boolean;
     textAlign?: "center";
     errorMessage?: string;
@@ -30,7 +28,6 @@ type InputProps = tst.O.Merge<
 >;
 
 export const Input = ({
-  fullFlex,
   autoFocus,
   textAlign,
   status,
@@ -48,7 +45,7 @@ export const Input = ({
   }, [autoFocus]);
 
   return (
-    <InputContainer fullFlex={fullFlex} textAlign={textAlign}>
+    <InputContainer textAlign={textAlign}>
       <Tooltip color="red" title={errorMessage} placement="top">
         <AntdInput
           size="large"

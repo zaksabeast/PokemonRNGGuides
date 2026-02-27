@@ -1,15 +1,6 @@
 import { Flex } from "./flex";
-import { Icon } from "./icons";
 import { Typography } from "./typography";
-import styled from "@emotion/styled";
-import { Tooltip } from "antd";
-
-const LabelTd = styled.td({
-  whiteSpace: "nowrap",
-  paddingRight: 24,
-  paddingTop: 10,
-  paddingBottom: 10,
-});
+import { Form as AntdForm } from "antd";
 
 export type Field = {
   hide?: boolean;
@@ -31,52 +22,49 @@ type Props = {
   fields: Field[];
 };
 
+const MOBILE_LABEL_COL_WIDTH = "130px";
+const DEFAULT_LABEL_COL_WIDTH = "190px";
+
 export const FormFieldTable = ({ fields }: Props) => {
   return (
-    <table>
-      <tbody>
-        {fields.map(
-          ({ hide, key, label, tooltip, input, direction = "row" }) => {
-            if (hide) {
-              return null;
-            }
+    <AntdForm
+      component={false}
+      layout="horizontal"
+      labelAlign="left"
+      labelCol={{
+        xs: { flex: MOBILE_LABEL_COL_WIDTH },
+        md: { flex: DEFAULT_LABEL_COL_WIDTH },
+      }}
+      wrapperCol={{ flex: "1 1 0" }}
+      colon={false}
+    >
+      {fields.map(({ hide, key, label, tooltip, input, direction = "row" }) => {
+        if (hide) {
+          return null;
+        }
 
-            const labelWithTooltip =
-              tooltip == null ? (
-                label
-              ) : (
-                <Tooltip title={tooltip}>
-                  <Flex gap={8}>
-                    <div>{label}</div>
-                    <Icon name="InformationCircle" size={16} />
-                  </Flex>
-                </Tooltip>
-              );
+        const keyToUse = key == null ? label : key;
+        if (direction === "row") {
+          return (
+            <AntdForm.Item
+              key={keyToUse}
+              tooltip={tooltip}
+              label={<Typography.Text strong>{label}</Typography.Text>}
+            >
+              {input}
+            </AntdForm.Item>
+          );
+        }
 
-            const keyToUse = key == null ? label : key;
-            if (direction === "row") {
-              return (
-                <tr key={keyToUse}>
-                  <LabelTd>
-                    <Typography.Text strong>{labelWithTooltip}</Typography.Text>
-                  </LabelTd>
-                  <td>{input}</td>
-                </tr>
-              );
-            }
-            return (
-              <tr key={keyToUse}>
-                <LabelTd colSpan={2}>
-                  <Typography.Text strong>{labelWithTooltip}</Typography.Text>
-                  <Flex pl={30} vertical>
-                    {input}
-                  </Flex>
-                </LabelTd>
-              </tr>
-            );
-          },
-        )}
-      </tbody>
-    </table>
+        return (
+          <AntdForm.Item key={keyToUse} colon={false} tooltip={tooltip}>
+            <Flex vertical gap={4}>
+              <Typography.Text strong>{label}</Typography.Text>
+              {input}
+            </Flex>
+          </AntdForm.Item>
+        );
+      })}
+    </AntdForm>
   );
 };

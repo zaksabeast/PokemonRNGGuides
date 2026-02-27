@@ -113,6 +113,9 @@ export const getTheme = (config: ThemePalette): CustomTheme => {
       ...shadows,
     },
     components: {
+      Form: {
+        itemMarginBottom: 6,
+      },
       Menu: isLightMode
         ? {}
         : {

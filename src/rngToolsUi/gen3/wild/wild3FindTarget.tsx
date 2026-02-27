@@ -246,7 +246,6 @@ const getSetupFields = (
                 name="actions"
                 options={toOptions(possVals.actions, formatActionName)}
                 mode="multiple"
-                fullWidth={true}
                 selectAllNoneButtons={true}
               />
             ),
@@ -258,7 +257,6 @@ const getSetupFields = (
                 name="maps"
                 options={toOptions(possVals.maps, formatMapName)}
                 mode="multiple"
-                fullWidth={true}
                 selectAllNoneButtons={true}
               />
             ),

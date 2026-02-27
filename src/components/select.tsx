@@ -1,5 +1,4 @@
 import * as tst from "ts-toolbelt";
-import { ClassNames } from "@emotion/react";
 import styled from "@emotion/styled";
 import {
   Select as AntdSelect,
@@ -25,31 +24,17 @@ const SelectAllContainer = styled(Flex)({
 });
 
 type SelectProps<ValueType> = {
-  fullWidth?: boolean;
   fullFlex?: boolean;
   name?: string;
 } & AntdSelectProps<ValueType>;
 
 export const Select = <ValueType,>({
-  fullWidth,
   fullFlex,
   ...props
 }: SelectProps<ValueType>) => {
   return (
     <SelectContainer flex={fullFlex ? 1 : undefined}>
-      <ClassNames>
-        {({ css }) => (
-          <AntdSelect
-            size="large"
-            showSearch
-            {...props}
-            className={css({
-              width: fullWidth ? "100%" : undefined,
-              flex: fullFlex ? 1 : undefined,
-            })}
-          />
-        )}
-      </ClassNames>
+      <AntdSelect size="large" showSearch {...props} />
     </SelectContainer>
   );
 };

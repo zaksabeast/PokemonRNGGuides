@@ -64,6 +64,7 @@ const baseConfig = {
     "func-style": ["error", "expression"],
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "react/jsx-key": "error",
+    "react/jsx-boolean-value": ["error", "never"],
     "no-restricted-syntax": [
       "error",
       {

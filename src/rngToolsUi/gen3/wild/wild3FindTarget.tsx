@@ -246,7 +246,7 @@ const getSetupFields = (
                 name="actions"
                 options={toOptions(possVals.actions, formatActionName)}
                 mode="multiple"
-                selectAllNoneButtons={true}
+                selectAllNoneButtons
               />
             ),
           },
@@ -257,7 +257,7 @@ const getSetupFields = (
                 name="maps"
                 options={toOptions(possVals.maps, formatMapName)}
                 mode="multiple"
-                selectAllNoneButtons={true}
+                selectAllNoneButtons
               />
             ),
           },
@@ -268,7 +268,7 @@ const getSetupFields = (
                 name="leadIdxs"
                 options={leadsLabels}
                 mode="multiple"
-                selectAllNoneButtons={true}
+                selectAllNoneButtons
               />
             ),
           },
@@ -301,7 +301,7 @@ const getSetupFields = (
                         formatMassOutbreakStateName,
                       )}
                       mode="multiple"
-                      selectAllNoneButtons={true}
+                      selectAllNoneButtons
                     />
                   ),
                 },

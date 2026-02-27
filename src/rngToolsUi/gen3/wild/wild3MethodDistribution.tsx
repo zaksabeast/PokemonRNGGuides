@@ -18,6 +18,7 @@ import {
   RngToolSubmit,
   FormFieldTable,
   FormikRadio,
+  FormikSwitch,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatProbability } from "~/utils/formatProbability";
@@ -55,6 +56,8 @@ import { useWatch } from "react-hook-form";
 import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
 import { uniq } from "lodash-es";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { NewTabLink } from "~/components/newTabLink";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -71,7 +74,7 @@ const leadSpeedTypes = [
 const Validator = z.object({
   map: z.string(),
   action: z.enum(wild3Actions),
-  advance: z.number().int().min(0),
+  advance: z.number().int().min(0).max(0xffffffff),
   tid: z.number().int().min(0).max(0xffff),
   sid: z.number().int().min(0).max(0xffff),
   // Limitation: value in Select must be a primitive, so we use the index instead of Gen3Lead.
@@ -85,6 +88,8 @@ const Validator = z.object({
   feebasState: z.enum(wild3FeebasStates),
   roamerState: z.enum(wild3RoamerStates),
   massOutbreakState: z.enum(wild3MassOutbreakStates),
+  usingPaintingReseeding: z.boolean(),
+  initial_seed: z.number().min(0).max(0xffffffff),
 });
 
 type FormState = z.infer<typeof Validator>;
@@ -103,6 +108,8 @@ const getInitialValues = (): FormState => {
     feebasState: "NotInMap",
     roamerState: "Inactive",
     massOutbreakState: "Inactive",
+    usingPaintingReseeding: false,
+    initial_seed: 0,
   };
 };
 
@@ -144,6 +151,8 @@ const getFields = (
   leadType: Gen3Lead,
   leadSpeedType: LeadSpeedType,
   leadCycleSpeed: number,
+  usingPaintingReseeding: boolean,
+  equivalentInitialAdvs: number,
 ): Field[] => {
   const { actions, feebas_states, roamer_states, mass_outbreak_states } =
     getPossibleValuesForMap(mapId, action);
@@ -244,6 +253,7 @@ const getFields = (
     }
     fields.push({
       label: "",
+      key: "Cycle Count:",
       input: (
         <FormFieldTable
           fields={[
@@ -258,8 +268,40 @@ const getFields = (
   }
 
   fields.push({
-    label: "Advance",
+    label: (
+      <>
+        Using{" "}
+        <NewTabLink href="/emerald-painting-rng/">
+          Painting Reseeding
+        </NewTabLink>
+        ?
+      </>
+    ),
+    key: "usingPaintingReseeding",
+    input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
+  });
+
+  fields.push({
+    label: "Seed after Painting Reseeding",
+    input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
+    hide: !usingPaintingReseeding,
+  });
+
+  fields.push({
+    label: usingPaintingReseeding ? "Advances after reseeding" : "Advances",
     input: <FormikNumberInput<FormState> name="advance" numType="decimal" />,
+  });
+
+  fields.push({
+    label: "",
+    key: "Equivalent to Advances",
+    hide: !usingPaintingReseeding,
+    input: (
+      <>
+        Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
+        without reseeding
+      </>
+    ),
   });
 
   if (feebas_states.length > 1) {
@@ -323,6 +365,22 @@ export const Wild3MethodDistributionFields = () => {
   const roamerState = useWatch<FormState, "roamerState">({
     name: "roamerState",
   });
+  const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
+    name: "usingPaintingReseeding",
+  });
+  const initial_seed = useWatch<FormState, "initial_seed">({
+    name: "initial_seed",
+  });
+  const advance = useWatch<FormState, "advance">({
+    name: "advance",
+  });
+
+  const [equivalentInitialAdvs, setEquivalentInitialAdvs] = React.useState(0);
+  React.useEffect(() => {
+    rngTools.lcrng_distance(0, initial_seed).then((val) => {
+      setEquivalentInitialAdvs(val + advance);
+    });
+  }, [initial_seed, advance]);
 
   const fields = React.useMemo((): Field[] => {
     return getFields(
@@ -331,8 +389,18 @@ export const Wild3MethodDistributionFields = () => {
       gen3Leads[leadIdx],
       leadSpeedType,
       leadCycleSpeed,
+      usingPaintingReseeding,
+      equivalentInitialAdvs,
     );
-  }, [map, action, leadIdx, leadSpeedType, leadCycleSpeed]);
+  }, [
+    map,
+    action,
+    leadIdx,
+    leadSpeedType,
+    leadCycleSpeed,
+    usingPaintingReseeding,
+    equivalentInitialAdvs,
+  ]);
 
   React.useEffect(() => {
     const possVals = getPossibleValuesForMap(map, action);
@@ -490,10 +558,16 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
     [],
   );
 
-  const initial_seed = game === "emerald" ? 0 : 0x5a0;
-
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
+      const initial_seed = match({
+        usingPaintingReseeding: values.usingPaintingReseeding,
+        game,
+      })
+        .with({ usingPaintingReseeding: true }, () => values.initial_seed)
+        .with({ game: "emerald" }, () => 0)
+        .otherwise(() => 0x5a0);
+
       const opts: Wild3GeneratorOptions = {
         tid: values.tid,
         sid: values.sid,
@@ -534,7 +608,7 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
       setResults(uiResults);
       setCycleAtMoments(cycle_at_moments);
     },
-    [initial_seed],
+    [game],
   );
 
   const initialValues = React.useMemo(() => {

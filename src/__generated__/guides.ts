@@ -1435,7 +1435,7 @@ export const guides = {
       guideKey: "/emerald-overview/",
       isNew: false,
       title: "Emerald Overview",
-      navDrawerTitle: "Overview",
+      navDrawerTitle: "Emerald Overview",
       description:
         "Practical applications of RNG Manipulation and techniques in Pokémon Emerald.",
       slug: "/emerald-overview/",
@@ -3245,7 +3245,7 @@ export const guides = {
   },
   "/es-gba-methods-lead-impact/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-methods-lead-impact/",
@@ -3268,7 +3268,8 @@ export const guides = {
         es: "/es-gba-methods-lead-impact/",
         en: "/gba-methods-lead-impact/",
       },
-      guideGroupId: "es:/gba-methods-lead-impact/:GBA Technical Documentation",
+      guideGroupId:
+        "es:/gba-methods-lead-impact/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: ["web_tool"],
     },
@@ -3287,7 +3288,7 @@ export const guides = {
   },
   "/es-gba-methods/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-methods/",
@@ -3310,7 +3311,8 @@ export const guides = {
         en: "/gba-methods/",
         zh: "/zh-gba-methods/",
       },
-      guideGroupId: "es:/gba-methods/:GBA Technical Documentation",
+      guideGroupId:
+        "es:/gba-methods/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -3896,7 +3898,7 @@ export const guides = {
   },
   "/gba-methods-lead-impact/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-methods-lead-impact/",
@@ -3918,7 +3920,8 @@ export const guides = {
         es: "/es-gba-methods-lead-impact/",
         en: "/gba-methods-lead-impact/",
       },
-      guideGroupId: "en:/gba-methods-lead-impact/:GBA Technical Documentation",
+      guideGroupId:
+        "en:/gba-methods-lead-impact/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: ["web_tool"],
     },
@@ -3934,7 +3937,7 @@ export const guides = {
   },
   "/gba-methods/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-methods/",
@@ -3957,7 +3960,8 @@ export const guides = {
         en: "/gba-methods/",
         zh: "/zh-gba-methods/",
       },
-      guideGroupId: "en:/gba-methods/:GBA Technical Documentation",
+      guideGroupId:
+        "en:/gba-methods/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -3973,13 +3977,13 @@ export const guides = {
   },
   "/gba-overview/": {
     meta: {
-      categories: ["GBA Overview"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "getting_started",
       guideVariants: null,
       guideKey: "/gba-overview/",
       isNew: false,
       title: "GBA Overview",
-      navDrawerTitle: "Overview",
+      navDrawerTitle: "GBA Overview",
       description:
         "Particularities, key RNG concepts, and version differences of GBA games.",
       slug: "/gba-overview/",
@@ -3992,7 +3996,8 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Overview.mdx",
       translations: null,
-      guideGroupId: "en:/gba-overview/:GBA Overview",
+      guideGroupId:
+        "en:/gba-overview/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -4008,7 +4013,7 @@ export const guides = {
   },
   "/gba-pokerus-technical/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-pokerus-technical/",
@@ -4029,7 +4034,8 @@ export const guides = {
         en: "/gba-pokerus-technical/",
         zh: "/zh-gba-pokerus-technical/",
       },
-      guideGroupId: "en:/gba-pokerus-technical/:GBA Technical Documentation",
+      guideGroupId:
+        "en:/gba-pokerus-technical/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -4045,7 +4051,7 @@ export const guides = {
   },
   "/gba-vblank/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-vblank/",
@@ -4064,7 +4070,8 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Vblank.mdx",
       translations: { en: "/gba-vblank/", zh: "/zh-gba-vblank/" },
-      guideGroupId: "en:/gba-vblank/:GBA Technical Documentation",
+      guideGroupId:
+        "en:/gba-vblank/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -9864,7 +9871,7 @@ export const guides = {
   },
   "/zh-gba-methods/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-methods/",
@@ -9887,7 +9894,8 @@ export const guides = {
         en: "/gba-methods/",
         zh: "/zh-gba-methods/",
       },
-      guideGroupId: "zh:/gba-methods/:GBA Technical Documentation",
+      guideGroupId:
+        "zh:/gba-methods/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -9903,7 +9911,7 @@ export const guides = {
   },
   "/zh-gba-pokerus-technical/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-pokerus-technical/",
@@ -9924,7 +9932,8 @@ export const guides = {
         en: "/gba-pokerus-technical/",
         zh: "/zh-gba-pokerus-technical/",
       },
-      guideGroupId: "zh:/gba-pokerus-technical/:GBA Technical Documentation",
+      guideGroupId:
+        "zh:/gba-pokerus-technical/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -9943,7 +9952,7 @@ export const guides = {
   },
   "/zh-gba-vblank/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-vblank/",
@@ -9961,7 +9970,8 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Vblank.mdx",
       translations: { en: "/gba-vblank/", zh: "/zh-gba-vblank/" },
-      guideGroupId: "zh:/gba-vblank/:GBA Technical Documentation",
+      guideGroupId:
+        "zh:/gba-vblank/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },

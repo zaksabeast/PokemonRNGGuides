@@ -62,8 +62,6 @@ const categories = [
   "Sword and Shield",
   "Brilliant Diamond and Shining Pearl",
   "Legends Arceus",
-  "GBA Overview",
-  "GBA Technical Documentation",
   "GBA Tools",
   "NDS Tools",
   "3DS Tools",

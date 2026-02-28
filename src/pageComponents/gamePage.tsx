@@ -16,10 +16,7 @@ import { match } from "ts-pattern";
 import styled from "@emotion/styled";
 import { isRngGuideSection } from "~/guideSections";
 
-type DisplayAttribute =
-  | GuideMeta["displayAttributes"][number]
-  | "new"
-  | "external-link";
+type DisplayAttribute = GuideMeta["displayAttributes"][number] | "new";
 
 const sectionDisplayOrder = [
   "getting_started",
@@ -39,10 +36,6 @@ const DisplayTag = styled(Tag)<{ tag: DisplayAttribute }>(({ tag }) => {
     .with("new", () => ({
       color: "#AF52DE",
       backgroundColor: "rgba(175, 82, 222, 0.1)",
-    }))
-    .with("external-link", () => ({
-      color: "#30B0C7",
-      backgroundColor: "rgba(48, 176, 199, 0.1)",
     }))
     .with("web_tool", () => ({
       color: "#7E5BEF",
@@ -65,7 +58,6 @@ const DisplayTag = styled(Tag)<{ tag: DisplayAttribute }>(({ tag }) => {
 const getDisplayAttributeLabel = (tag: DisplayAttribute) => {
   return match(tag)
     .with("new", () => "New")
-    .with("external-link", () => "External Link")
     .with("web_tool", () => "Web Tool")
     .with("video_guide", () => "Video")
     .exhaustive();
@@ -116,7 +108,7 @@ const GuideCardFrame = ({
   bottomContent,
 }: {
   cardId: string;
-  title: string;
+  title: ReactNode;
   isNew: boolean;
   cardProps?: Partial<ComponentProps<typeof GuideCard>>;
   displayAttributesContent?: ReactNode;
@@ -255,17 +247,15 @@ export const GamePageComponent = () => {
                         bottomContent={
                           <Flex gap={8} wrap>
                             <LinkButton
-                              href={guide.retailSlug ?? "/"}
+                              link={guide.retailLink}
                               trackerId={`guide-retail-${guide.id}`}
-                              disabled={guide.retailSlug == null}
                               type={guide.retailIsNew ? "primary" : undefined}
                             >
                               Retail
                             </LinkButton>
                             <LinkButton
-                              href={guide.cfwEmuSlug ?? "/"}
+                              link={guide.cfwEmuLink}
                               trackerId={`guide-cfw-emu-${guide.id}`}
-                              disabled={guide.cfwEmuSlug == null}
                               type={guide.cfwEmuIsNew ? "primary" : undefined}
                             >
                               Emu
@@ -301,17 +291,29 @@ export const GamePageComponent = () => {
                   const displayTags = getUniqueDisplayTags(
                     guide.displayAttributes,
                   );
-                  const { url, ...linkProps } = match(guide)
+                  const { key, ...linkProps } = match(guide)
                     .with({ type: "baseGuide" }, (matched) => ({
-                      url: matched.slug,
+                      key: matched.slug,
                       slug: matched.slug,
+                    }))
+                    .with({ type: "externalLink" }, (matched) => ({
+                      key: matched.id,
+                      externalHref: matched.url,
+                      newTab: true,
                     }))
                     .exhaustive();
                   return (
                     <GuideCardFrame
-                      key={url}
-                      cardId={`guide-${url}`}
-                      title={guide.navDrawerTitle}
+                      key={key}
+                      cardId={`guide-${key}`}
+                      title={
+                        <>
+                          {guide.navDrawerTitle}
+                          {guide.type === "externalLink" && (
+                            <Icon name="OpenInNew" ml={8} />
+                          )}
+                        </>
+                      }
                       isNew={guide.isNew}
                       cardProps={{
                         ...linkProps,

@@ -6,7 +6,15 @@ import { MDXContent } from "mdx/types";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import z from "zod";
-import { difference, isArray, keyBy, groupBy, forEach } from "lodash-es";
+import {
+  difference,
+  isArray,
+  keyBy,
+  groupBy,
+  forEach,
+  partition,
+} from "lodash-es";
+import { type SlugOrExternalLink } from "../src/types/navigation";
 import { guides as existingGuides } from "../src/__generated__/guides";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -14,16 +22,19 @@ import { toNativeAbsolute } from "./path";
 import { formatRelativeUrl } from "../src/utils/formatRelativeUrl";
 import { renderToStringAsync } from "../src/entry-server";
 import { TagDetector } from "../src/components/tagDetector/tagDetector";
+import { type DetectableTag } from "../src/components/tagDetector/provider";
 import { markdownComponents } from "../src/markdownExports";
 import { Router } from "wouter";
 import { ThemeProvider } from "../src/theme/provider";
 import pmap from "p-map";
 import prettier from "prettier";
 import { match } from "ts-pattern";
+import * as tst from "ts-toolbelt";
 import {
   sections,
   rngGuideVariants,
   isRngGuideSection,
+  rngGuideSections,
 } from "../src/guideSections";
 
 dayjs.extend(utc);
@@ -169,7 +180,9 @@ const BaseGuideSchema = z
     isRoughDraft: z.boolean().default(false),
     section: GuideSectionSchema,
     variant: SingleOrMultipleSchema(GuideVariantSchema).optional(),
-    guideKey: SlugSchema.nullish()
+    guideKey: z
+      .string()
+      .nullish()
       .optional()
       .default(() => null),
     hideFromNavDrawer: z.boolean().default(false),
@@ -261,6 +274,54 @@ const GuideMetadataSchema = z
 type GuideMetadata = z.infer<typeof SingleGuideMetadataSchema>;
 type BaseGuideMetadata = Extract<GuideMetadata, { type: "baseGuide" }>;
 
+type BaseGuideSchemaType = z.infer<typeof BaseGuideSchema>;
+
+type Sections = (typeof sections)[number];
+type RngSections = (typeof rngGuideSections)[number];
+type NonRngSections = tst.U.Exclude<Sections, RngSections>;
+
+type ExternalLinkInput = tst.O.Merge<
+  tst.O.Pick<
+    BaseGuideSchemaType,
+    "addedOn" | "categories" | "navDrawerTitle" | "guideKey"
+  >,
+  {
+    url: string;
+    displayAttributes?: DetectableTag[];
+  } & (
+    | {
+        section: RngSections;
+        guideVariants: (typeof rngGuideVariants)[number][];
+      }
+    | {
+        section: NonRngSections;
+        guideVariants?: never;
+      }
+  )
+>;
+
+type ExternalLinkMetadata = tst.O.Merge<
+  tst.O.Omit<BaseGuideSchemaType, "slug" | "type">,
+  {
+    id: string;
+    type: "externalLink";
+    displayAttributes: DetectableTag[];
+    url: string;
+  }
+>;
+
+const externalGuides: ExternalLinkInput[] = [
+  {
+    addedOn: "2026-03-01",
+    categories: ["Black and White", "Black 2 and White 2"],
+    section: "tool",
+    navDrawerTitle: "Gen 5 web tool",
+    guideKey: "gen5-web-tool",
+    displayAttributes: ["web_tool"],
+    url: "https://niart120.github.io/5genSearch-web/",
+  },
+];
+
 const getGuideLanguage = (guide: GuideMetadata) => {
   return match(guide)
     .with({ type: "baseGuide" }, () => "en")
@@ -301,7 +362,7 @@ type GuideWithTranslations = GuideWithFile & {
 
 type GuidePairingByGroup = Record<
   string,
-  { retail: string | null; cfwEmu: string | null }
+  { retail: SlugOrExternalLink | null; cfwEmu: SlugOrExternalLink | null }
 >;
 
 type GuidePairing = GuidePairingByGroup[string];
@@ -311,6 +372,16 @@ type DerivedGuideMetadata = GuideWithTranslations & {
   guideGroupId: string;
   guideVariantLinks: GuidePairing | null;
 };
+
+type DerivedExternalLinkMetadata = ExternalLinkMetadata & {
+  translations: null;
+  guideGroupId: string;
+  guideVariantLinks: GuidePairing | null;
+  displayAttributes: string[];
+};
+
+type FinalGuideForEmit = DerivedGuideMetadata | DerivedExternalLinkMetadata;
+type GuidePairingSource = GuideWithTranslations | ExternalLinkMetadata;
 
 const GENERATED_GUIDES_PATH = toNativeAbsolute(
   "../src/__generated__/guides.ts",
@@ -329,39 +400,51 @@ const getGuidePairingGroupId = (guide: GuideWithTranslations) => {
   });
 };
 
+const getPairingGroupId = (guide: GuidePairingSource) => {
+  if (guide.type === "externalLink") {
+    return getGuideGroupId({
+      language: "en",
+      guideKey: guide.guideKey,
+      categories: guide.categories,
+    });
+  }
+
+  return getGuidePairingGroupId(guide);
+};
+
 const applyGuideVariantToPairing = ({
   pairing,
   variant,
-  guideSlug,
+  guideLink,
   groupId,
 }: {
   pairing: GuidePairing;
   variant: (typeof rngGuideVariants)[number];
-  guideSlug: string;
+  guideLink: SlugOrExternalLink;
   groupId: string;
 }): GuidePairing => {
   if (variant === "retail") {
-    if (pairing.retail != null && pairing.retail !== guideSlug) {
+    if (pairing.retail != null) {
       throw new Error(
-        `Duplicate retail guide variant for group ${groupId} (${pairing.retail}, ${guideSlug})`,
+        `Duplicate retail guide variant for group ${groupId} (${JSON.stringify(pairing.retail)}, ${JSON.stringify(guideLink)})`,
       );
     }
 
     return {
       ...pairing,
-      retail: guideSlug,
+      retail: guideLink,
     };
   }
 
-  if (pairing.cfwEmu != null && pairing.cfwEmu !== guideSlug) {
+  if (pairing.cfwEmu != null) {
     throw new Error(
-      `Duplicate cfw-emu guide variant for group ${groupId} (${pairing.cfwEmu}, ${guideSlug})`,
+      `Duplicate cfw-emu guide variant for group ${groupId} (${JSON.stringify(pairing.cfwEmu)}, ${JSON.stringify(guideLink)})`,
     );
   }
 
   return {
     ...pairing,
-    cfwEmu: guideSlug,
+    cfwEmu: guideLink,
   };
 };
 
@@ -403,15 +486,17 @@ const getEnGuide = (
   return foundGuide;
 };
 
-const generateGuideMetadata = async <T extends Record<string, unknown>>(
-  finalGuides: T[],
-) => {
+const generateGuideMetadata = async (finalGuides: FinalGuideForEmit[]) => {
+  const [externalGuides, internalGuides] = partition(
+    finalGuides,
+    (guide) => guide.type === "externalLink",
+  );
   const compiledGuides = `
   import React from 'react';
   import { memoize } from "lodash-es";
 
   export const guides = {
-    ${finalGuides
+    ${internalGuides
       .map(
         (guide) => `"${guide.slug}": {
           meta: ${JSON.stringify(guide)},
@@ -426,10 +511,14 @@ const generateGuideMetadata = async <T extends Record<string, unknown>>(
   } as const;
 
   export const guideSlugs = [
-    ${finalGuides.map((guide) => `"${guide.slug}"`).join(",\n")}
+    ${internalGuides.map((guide) => `"${guide.slug}"`).join(",\n")}
   ] as const;
 
   export const categories = ${JSON.stringify(emittedCategories)} as const;
+
+  export const externalGuides = [
+    ${externalGuides.map((guide) => JSON.stringify(guide)).join(",\n")}
+  ] as const;
 `;
 
   return prettier.format(compiledGuides, { parser: "typescript" });
@@ -558,37 +647,48 @@ const buildGuidesWithTranslations = (guides: GuideWithFile[]) => {
 };
 
 const buildGuidePairingByGroup = (
-  guidesWithTranslations: GuideWithTranslations[],
+  guides: GuidePairingSource[],
 ): GuidePairingByGroup => {
-  return guidesWithTranslations.reduce<GuidePairingByGroup>(
-    (pairingByGroup, guide) => {
-      if (guide.type !== "baseGuide" || !isRngGuideSection(guide.section)) {
-        return pairingByGroup;
-      }
+  return guides.reduce<GuidePairingByGroup>((pairingByGroup, guide) => {
+    if (!isRngGuideSection(guide.section)) {
+      return pairingByGroup;
+    }
 
-      const groupId = getGuidePairingGroupId(guide);
-      const initialPairing =
-        pairingByGroup[groupId] ?? createEmptyGuidePairing();
+    if (guide.type !== "baseGuide" && guide.type !== "externalLink") {
+      return pairingByGroup;
+    }
 
-      const nextPairing = (guide.guideVariants ?? []).reduce(
-        (pairing, variant) => {
-          return applyGuideVariantToPairing({
-            pairing,
-            variant,
-            guideSlug: guide.slug,
-            groupId,
-          });
-        },
-        initialPairing,
-      );
+    const groupId = getPairingGroupId(guide);
+    const initialPairing = pairingByGroup[groupId] ?? createEmptyGuidePairing();
 
-      return {
-        ...pairingByGroup,
-        [groupId]: nextPairing,
-      };
-    },
-    {},
-  );
+    const guideLink: SlugOrExternalLink = match(guide)
+      .with({ type: "externalLink" }, (matched) => ({
+        type: "externalLink" as const,
+        externalLink: matched.url,
+      }))
+      .with({ type: "baseGuide" }, (matched) => ({
+        type: "slug" as const,
+        slug: matched.slug,
+      }))
+      .exhaustive();
+
+    const nextPairing = (guide.guideVariants ?? []).reduce(
+      (pairing, variant) => {
+        return applyGuideVariantToPairing({
+          pairing,
+          variant,
+          guideLink,
+          groupId,
+        });
+      },
+      initialPairing,
+    );
+
+    return {
+      ...pairingByGroup,
+      [groupId]: nextPairing,
+    };
+  }, {});
 };
 
 const validateDuplicateSlugs = (guides: GuideWithFile[]) => {
@@ -698,6 +798,51 @@ const buildFinalGuides = async ({
   );
 };
 
+const getExternalLinks = () => {
+  return externalGuides.map((externalLink): ExternalLinkMetadata => {
+    if (
+      externalLink.addedOn != null &&
+      !dayjs(externalLink.addedOn).isValid()
+    ) {
+      throw new Error(
+        `Invalid addedOn date for external link ${externalLink.guideKey}: ${externalLink.addedOn}`,
+      );
+    }
+
+    return {
+      ...externalLink,
+      id: externalLink.url,
+      isNew: isNew(externalLink.addedOn),
+      translation: null,
+      canonical: null,
+      hideFromNavDrawer: false,
+      isRoughDraft: false,
+      title: externalLink.navDrawerTitle,
+      guideVariants: externalLink.guideVariants ?? null,
+      displayAttributes: externalLink.displayAttributes ?? [],
+      description: "",
+      layout: "guide",
+      type: "externalLink" as const,
+    };
+  });
+};
+
+const buildFinalExternalLinks = (
+  externalLinks: ExternalLinkMetadata[],
+  guidePairingByGroup: GuidePairingByGroup,
+): DerivedExternalLinkMetadata[] => {
+  return externalLinks.map((guide) => {
+    const guideGroupId = getPairingGroupId(guide);
+
+    return {
+      ...guide,
+      translations: null,
+      guideGroupId,
+      guideVariantLinks: guidePairingByGroup[guideGroupId] ?? null,
+    };
+  });
+};
+
 const checkCompiledGuidesUpToDate = async (compiledGuides: string) => {
   const existingGuidesString = await fs.readFile(GENERATED_GUIDES_PATH, {
     encoding: "utf8",
@@ -727,13 +872,17 @@ const main = async ({
 }) => {
   const guideFiles = await getGuideFiles();
   const { guides, guideComponents } = await parseGuideFiles(guideFiles);
+  const externalLinks = getExternalLinks();
 
   validateGuideReferences(guides);
   validateRemovedSlugs(guides);
   validateDuplicateSlugs(guides);
 
   const guidesWithTranslations = buildGuidesWithTranslations(guides);
-  const guidePairingByGroup = buildGuidePairingByGroup(guidesWithTranslations);
+  const guidePairingByGroup = buildGuidePairingByGroup([
+    ...guidesWithTranslations,
+    ...externalLinks,
+  ]);
 
   const finalGuides = await buildFinalGuides({
     guides: guidesWithTranslations,
@@ -741,8 +890,15 @@ const main = async ({
     guidePairingByGroup,
     noDetectedTags,
   });
+  const finalExternalLinks = buildFinalExternalLinks(
+    externalLinks,
+    guidePairingByGroup,
+  );
 
-  const compiledGuides = await generateGuideMetadata(finalGuides);
+  const compiledGuides = await generateGuideMetadata([
+    ...finalGuides,
+    ...finalExternalLinks,
+  ]);
 
   if (check) {
     await checkCompiledGuidesUpToDate(compiledGuides);

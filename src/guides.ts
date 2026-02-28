@@ -1,7 +1,15 @@
 import * as tst from "ts-toolbelt";
-import { guides, categories } from "./__generated__/guides";
+import { guides, categories, externalGuides } from "./__generated__/guides";
 import { groupBy, flatMap, get, uniq } from "lodash-es";
 import { Route } from "./routes/defs";
+import { SlugOrExternalLink } from "./types/navigation";
+
+export type InternalGuideMeta = tst.U.Exclude<
+  GuideMeta,
+  { type: "externalLink" }
+>;
+
+export type InternalGuide = Guide & { meta: InternalGuideMeta };
 
 export const categoryOwners: Record<Category, Route> = {
   Home: "/",
@@ -30,47 +38,14 @@ export const categoryOwners: Record<Category, Route> = {
   "Game Hub": "/",
 };
 
-type DisplayAttribute =
-  | GuideMeta["displayAttributes"][number]
-  | "external-link";
-
-type ExternalMeta = tst.O.Overwrite<
-  tst.O.Merge<
-    tst.O.Pick<
-      GuideMeta,
-      | "title"
-      | "navDrawerTitle"
-      | "categories"
-      | "section"
-      | "guideVariants"
-      | "guideKey"
-      | "displayAttributes"
-      | "isNew"
-      | "type"
-      | "isRoughDraft"
-      | "hideFromNavDrawer"
-    >,
-    { url: `https://${string}` }
-  >,
-  {
-    type: "external-link";
-    title: string;
-    displayAttributes: DisplayAttribute[];
-    navDrawerTitle?: string;
-    description?: string;
-  }
->;
-
-const externalLinks = {} as const satisfies Record<
-  `https://${string}`,
-  { meta: ExternalMeta }
->;
-
 export { guides, guideSlugs, categories } from "~/__generated__/guides";
 
 export type Guide = (typeof guides)[keyof typeof guides];
 export type GuideMeta = Guide["meta"];
-export type GuideSlug = GuideMeta["slug"];
+export type GuideSlug = tst.U.Exclude<
+  GuideMeta,
+  { type: "externalLink" }
+>["slug"];
 
 export type GamePageGuideCard = {
   id: string;
@@ -79,9 +54,9 @@ export type GamePageGuideCard = {
   navDrawerTitle: string;
   description: string;
   displayAttributes: GuideMeta["displayAttributes"][number][];
-  retailSlug: GuideSlug | null;
+  retailLink: SlugOrExternalLink | null;
   retailIsNew: boolean;
-  cfwEmuSlug: GuideSlug | null;
+  cfwEmuLink: SlugOrExternalLink | null;
   cfwEmuIsNew: boolean;
   isNew: boolean;
   hideFromNavDrawer: boolean;
@@ -89,26 +64,30 @@ export type GamePageGuideCard = {
   section: GuideMeta["section"];
 };
 
+type InternalOrExternalGuideMeta = GuideMeta | (typeof externalGuides)[number];
+
 export type GuidesBySection = {
   rng_technique: GamePageGuideCard[];
   pokemon_rng: GamePageGuideCard[];
   other_rng: GamePageGuideCard[];
-  getting_started: GuideMeta[];
-  supporting_info: GuideMeta[];
-  technical_info: GuideMeta[];
-  tool: GuideMeta[];
-  patch: GuideMeta[];
-  site_info: GuideMeta[];
-  challenge: GuideMeta[];
+  getting_started: InternalOrExternalGuideMeta[];
+  supporting_info: InternalOrExternalGuideMeta[];
+  technical_info: InternalOrExternalGuideMeta[];
+  tool: InternalOrExternalGuideMeta[];
+  patch: InternalOrExternalGuideMeta[];
+  site_info: InternalOrExternalGuideMeta[];
+  challenge: InternalOrExternalGuideMeta[];
 };
 
-type GuideMetaWithCategory = GuideMeta & { category: Category };
+type GuideMetaWithCategory = InternalOrExternalGuideMeta & {
+  category: Category;
+};
 
 type GuideCardMap = Record<string, GamePageGuideCard>;
 
 type GuideVariantLinkPair = {
-  retail: GuideSlug | null;
-  cfwEmu: GuideSlug | null;
+  retail: SlugOrExternalLink | null;
+  cfwEmu: SlugOrExternalLink | null;
 };
 
 type GuideVariant = "retail" | "cfw-emu";
@@ -155,18 +134,6 @@ const getGuidesForCategories = (categories: Category[]) => {
   );
 };
 
-const resolveGuideVariantLinks = (
-  guide: GuideMetaWithCategory,
-): GuideVariantLinkPair => {
-  const variants: readonly string[] = guide.guideVariants ?? [];
-  const links = guide.guideVariantLinks ?? null;
-
-  return {
-    retail: links?.retail ?? (variants.includes("retail") ? guide.slug : null),
-    cfwEmu: links?.cfwEmu ?? (variants.includes("cfw-emu") ? guide.slug : null),
-  };
-};
-
 const hasGuideVariant = (
   guide: GuideMetaWithCategory,
   variant: GuideVariant,
@@ -177,7 +144,7 @@ const hasGuideVariant = (
 
 const createGuideCard = (
   guide: GuideMetaWithCategory,
-  variants: GuideVariantLinkPair,
+  variants: GuideVariantLinkPair | null,
 ): GamePageGuideCard => {
   return {
     id: guide.guideGroupId,
@@ -186,9 +153,9 @@ const createGuideCard = (
     navDrawerTitle: guide.navDrawerTitle,
     description: guide.description,
     displayAttributes: [...guide.displayAttributes],
-    retailSlug: variants.retail,
+    retailLink: variants?.retail ?? null,
     retailIsNew: guide.isNew && hasGuideVariant(guide, "retail"),
-    cfwEmuSlug: variants.cfwEmu,
+    cfwEmuLink: variants?.cfwEmu ?? null,
     cfwEmuIsNew: guide.isNew && hasGuideVariant(guide, "cfw-emu"),
     isNew: guide.isNew,
     hideFromNavDrawer: guide.hideFromNavDrawer,
@@ -199,7 +166,7 @@ const createGuideCard = (
 
 const mergeGuideCard = (
   existing: GamePageGuideCard,
-  variants: GuideVariantLinkPair,
+  variants: GuideVariantLinkPair | null,
   guide: GuideMetaWithCategory,
 ) => {
   return {
@@ -208,16 +175,10 @@ const mergeGuideCard = (
       ...existing.displayAttributes,
       ...guide.displayAttributes,
     ]),
-    retailSlug:
-      existing.retailSlug == null && variants.retail != null
-        ? variants.retail
-        : existing.retailSlug,
+    retailLink: variants?.retail ?? existing.retailLink,
     retailIsNew:
       existing.retailIsNew || (guide.isNew && hasGuideVariant(guide, "retail")),
-    cfwEmuSlug:
-      existing.cfwEmuSlug == null && variants.cfwEmu != null
-        ? variants.cfwEmu
-        : existing.cfwEmuSlug,
+    cfwEmuLink: variants?.cfwEmu ?? existing.cfwEmuLink,
     cfwEmuIsNew:
       existing.cfwEmuIsNew ||
       (guide.isNew && hasGuideVariant(guide, "cfw-emu")),
@@ -231,7 +192,7 @@ const mergeRngGuides = (
   guides: GuideMetaWithCategory[],
 ): GamePageGuideCard[] => {
   const cardsById = guides.reduce<GuideCardMap>((acc, guide) => {
-    const variants = resolveGuideVariantLinks(guide);
+    const variants = guide.guideVariantLinks;
     const existing = acc[guide.guideGroupId];
 
     return {
@@ -246,12 +207,24 @@ const mergeRngGuides = (
   return Object.values(cardsById);
 };
 
-const guidesWithCategory = flatMap({ ...guides, ...externalLinks }, (guide) => {
+const internalGuidesWithCategory = flatMap(guides, (guide) => {
   return guide.meta.categories.map((category) => ({
     ...guide.meta,
     category,
   }));
 });
+
+const externalGuidesWithCategory = flatMap(externalGuides, (guide) => {
+  return guide.categories.map((category) => ({
+    ...guide,
+    category,
+  }));
+});
+
+const guidesWithCategory = [
+  ...internalGuidesWithCategory,
+  ...externalGuidesWithCategory,
+];
 
 const guidesByCategoryWithMeta = groupBy(
   guidesWithCategory,

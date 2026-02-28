@@ -8,6 +8,7 @@ import {
   MdCheckCircle,
   MdCheck,
   MdClose,
+  MdOpenInNew,
   MdRocketLaunch,
   MdUpdate,
   MdOutlineCampaign,
@@ -48,6 +49,7 @@ const icons = {
   OutlineCampaign: MdOutlineCampaign,
   StarSwirl: GiStarSwirl,
   ArrowUp: FaArrowUp,
+  OpenInNew: MdOpenInNew,
 } as const;
 
 export type IconName = keyof typeof icons;

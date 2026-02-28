@@ -12,6 +12,7 @@ type ExtraProps = {
   slug?: Route;
   externalHref?: string;
   fullBody?: boolean;
+  newTab?: boolean;
 };
 
 type LinkCardProps = tst.O.Merge<
@@ -24,6 +25,7 @@ const LinkCard = ({
   externalHref,
   fullBody,
   id,
+  newTab,
   onClick: _onClick,
   ...props
 }: LinkCardProps) => {
@@ -42,7 +44,11 @@ const LinkCard = ({
 
   if (externalHref != null) {
     return (
-      <BaseButton trackerId={`${id}-card-button`} href={externalHref}>
+      <BaseButton
+        trackerId={`${id}-card-button`}
+        href={externalHref}
+        newTab={newTab}
+      >
         <AntdCard onClick={onClick} {...props} />
       </BaseButton>
     );
@@ -52,6 +58,7 @@ const LinkCard = ({
     return (
       <Link
         href={slug}
+        newTab={newTab}
         height={fullBody ? "100%" : undefined}
         width={fullBody ? "100%" : undefined}
       >

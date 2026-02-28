@@ -104,7 +104,16 @@ export const MarkdownA = ({ href, children }: { href: string } & Props) => {
     return <Link href={internalHref.data}>{children}</Link>;
   }
 
-  return <a href={href}>{children}</a>;
+  try {
+    const parsedHref = new URL(href);
+    if (parsedHref.protocol === "https:") {
+      return <a href={href}>{children}</a>;
+    }
+  } catch {
+    // not a valid URL
+  }
+
+  return <>{children}</>;
 };
 
 export const MarkdownSummary = styled.summary({

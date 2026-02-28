@@ -1,27 +1,37 @@
-import { Route } from "~/routes/defs";
 import { Button } from "./button";
 import { Link } from "./link";
+import { Icon } from "./icons";
+import { SlugOrExternalLink } from "~/types/navigation";
 
 type LinkButtonProps = {
   trackerId: string;
-  href: Route;
-  disabled?: boolean;
   type?: React.ComponentProps<typeof Button>["type"];
   children?: React.ReactNode;
+  link: SlugOrExternalLink | null;
 };
 
-export const LinkButton = ({
-  trackerId,
-  href,
-  disabled,
-  type,
-  children,
-}: LinkButtonProps) => {
+export const LinkButton = ({ trackerId, link, ...props }: LinkButtonProps) => {
+  if (link == null) {
+    return <Button flex={1} trackerId={trackerId} disabled {...props} />;
+  }
+  if (link.type === "slug") {
+    return (
+      <Link href={link.slug} flex={1} display="flex">
+        <Button flex={1} trackerId={trackerId} {...props} />
+      </Link>
+    );
+  }
+
   return (
-    <Link href={href} flex={1} display="flex">
-      <Button flex={1} trackerId={trackerId} disabled={disabled} type={type}>
-        {children}
-      </Button>
-    </Link>
+    <Button
+      href={link.externalLink}
+      flex={1}
+      trackerId={trackerId}
+      iconPosition="end"
+      icon={<Icon name="OpenInNew" />}
+      target="_blank"
+      rel="noopener noreferrer"
+      {...props}
+    />
   );
 };

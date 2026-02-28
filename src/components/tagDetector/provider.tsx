@@ -1,6 +1,6 @@
 import React from "react";
 
-type DetectableTag = "web_tool" | "video_guide";
+export type DetectableTag = "web_tool" | "video_guide";
 
 type TagCollector = Partial<Record<DetectableTag, boolean>>;
 export type SetTags = (tag: TagCollector) => void;

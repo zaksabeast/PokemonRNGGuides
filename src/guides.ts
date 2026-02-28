@@ -246,15 +246,17 @@ const mergeRngGuides = (
   return Object.values(cardsById);
 };
 
+const guidesWithCategory = flatMap({ ...guides, ...externalLinks }, (guide) => {
+  return guide.meta.categories.map((category) => ({
+    ...guide.meta,
+    category,
+  }));
+});
+
 const guidesByCategoryWithMeta = groupBy(
-  flatMap({ ...guides, ...externalLinks }, (guide) => {
-    return guide.meta.categories.map((category) => ({
-      ...guide.meta,
-      category,
-    }));
-  }),
+  guidesWithCategory,
   (guide) => guide.category,
-) as Partial<Record<Category, GuideMetaWithCategory[]>>;
+);
 
 export const getGuidesBySectionForSlug = (slug: GuideSlug): GuidesBySection => {
   const categories = getCategoriesForSlug(slug);

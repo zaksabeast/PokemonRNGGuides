@@ -20,12 +20,13 @@ import { ThemeProvider } from "../src/theme/provider";
 import pmap from "p-map";
 import prettier from "prettier";
 import { match } from "ts-pattern";
+import {
+  sections,
+  rngGuideVariants,
+  isRngGuideSection,
+} from "../src/guideSections";
 
 dayjs.extend(utc);
-
-const guideSections = ["info", "challenge", "guide", "tool", "patch"] as const;
-
-const guideVariants = ["retail", "cfw-emu"] as const;
 
 // Only lower case letters, numbers, and hyphens
 const slugChars = /^[a-z0-9-]+$/;
@@ -37,8 +38,8 @@ const SlugSchema = z
     formatRelativeUrl({ url, leadingSlash: true, trailingSlash: true }),
   );
 
-const GuideSectionSchema = z.enum(guideSections);
-const GuideVariantSchema = z.enum(guideVariants);
+const GuideSectionSchema = z.enum(sections);
+const GuideVariantSchema = z.enum(rngGuideVariants);
 
 const layouts = ["titled", "guide"] as const;
 
@@ -190,7 +191,7 @@ const BaseGuideSchema = z
   })
   .transform(({ category, section, variant, guideKey, ...meta }) => {
     const normalizedVariants = variant ?? [];
-    const hasGuideSection = section === "guide";
+    const hasGuideSection = isRngGuideSection(section);
 
     if (hasGuideSection && normalizedVariants.length === 0) {
       throw new Error(
@@ -337,7 +338,7 @@ const applyGuideVariantToPairing = ({
   groupId,
 }: {
   pairing: GuidePairing;
-  variant: (typeof guideVariants)[number];
+  variant: (typeof rngGuideVariants)[number];
   guideSlug: string;
   groupId: string;
 }): GuidePairing => {
@@ -563,7 +564,7 @@ const buildGuidePairingByGroup = (
 ): GuidePairingByGroup => {
   return guidesWithTranslations.reduce<GuidePairingByGroup>(
     (pairingByGroup, guide) => {
-      if (guide.type !== "baseGuide" || guide.section !== "guide") {
+      if (guide.type !== "baseGuide" || !isRngGuideSection(guide.section)) {
         return pairingByGroup;
       }
 

@@ -1,7 +1,6 @@
 import * as tst from "ts-toolbelt";
 import { guides, categories } from "./__generated__/guides";
 import { groupBy, flatMap, get, uniq } from "lodash-es";
-import { match } from "ts-pattern";
 import { Route } from "./routes/defs";
 
 export const categoryOwners: Record<Category, Route> = {
@@ -87,14 +86,20 @@ export type GamePageGuideCard = {
   isNew: boolean;
   hideFromNavDrawer: boolean;
   isRoughDraft: boolean;
+  section: GuideMeta["section"];
 };
 
 export type GuidesBySection = {
-  info: GuideMeta[];
-  challenge: GuideMeta[];
-  guides: GamePageGuideCard[];
+  rng_technique: GamePageGuideCard[];
+  pokemon_rng: GamePageGuideCard[];
+  other_rng: GamePageGuideCard[];
+  getting_started: GuideMeta[];
+  supporting_info: GuideMeta[];
+  technical_info: GuideMeta[];
   tool: GuideMeta[];
   patch: GuideMeta[];
+  site_info: GuideMeta[];
+  challenge: GuideMeta[];
 };
 
 type GuideMetaWithCategory = GuideMeta & { category: Category };
@@ -139,14 +144,6 @@ const routeToCategory = {
     "Brilliant Diamond and Shining Pearl",
   ],
 } satisfies Partial<Record<GuideSlug, Category[]>>;
-
-const createEmptySectionedGuides = (): GuidesBySection => ({
-  info: [],
-  challenge: [],
-  guides: [],
-  tool: [],
-  patch: [],
-});
 
 const getCategoriesForSlug = (slug: GuideSlug) => {
   return get(routeToCategory, slug) ?? [];
@@ -196,6 +193,7 @@ const createGuideCard = (
     isNew: guide.isNew,
     hideFromNavDrawer: guide.hideFromNavDrawer,
     isRoughDraft: guide.isRoughDraft,
+    section: guide.section,
   };
 };
 
@@ -229,49 +227,23 @@ const mergeGuideCard = (
   };
 };
 
-const addNonGuideToSection = (
-  sectioned: GuidesBySection,
-  guide: GuideMetaWithCategory,
-) => {
-  return match(guide.section)
-    .with("info", () => ({
-      ...sectioned,
-      info: [...sectioned.info, guide],
-    }))
-    .with("challenge", () => ({
-      ...sectioned,
-      challenge: [...sectioned.challenge, guide],
-    }))
-    .with("patch", () => ({
-      ...sectioned,
-      patch: [...sectioned.patch, guide],
-    }))
-    .with("tool", () => ({
-      ...sectioned,
-      tool: [...sectioned.tool, guide],
-    }))
-    .with("guide", () => sectioned)
-    .exhaustive();
-};
+const mergeRngGuides = (
+  guides: GuideMetaWithCategory[],
+): GamePageGuideCard[] => {
+  const cardsById = guides.reduce<GuideCardMap>((acc, guide) => {
+    const variants = resolveGuideVariantLinks(guide);
+    const existing = acc[guide.guideGroupId];
 
-const addGuideToCards = (
-  guideCardsById: GuideCardMap,
-  guide: GuideMetaWithCategory,
-) => {
-  const variants = resolveGuideVariantLinks(guide);
-  const existing = guideCardsById[guide.guideGroupId];
-
-  if (existing == null) {
     return {
-      ...guideCardsById,
-      [guide.guideGroupId]: createGuideCard(guide, variants),
+      ...acc,
+      [guide.guideGroupId]:
+        existing == null
+          ? createGuideCard(guide, variants)
+          : mergeGuideCard(existing, variants, guide),
     };
-  }
+  }, {});
 
-  return {
-    ...guideCardsById,
-    [guide.guideGroupId]: mergeGuideCard(existing, variants, guide),
-  };
+  return Object.values(cardsById);
 };
 
 const guidesByCategoryWithMeta = groupBy(
@@ -287,21 +259,19 @@ const guidesByCategoryWithMeta = groupBy(
 export const getGuidesBySectionForSlug = (slug: GuideSlug): GuidesBySection => {
   const categories = getCategoriesForSlug(slug);
   const guides = getGuidesForCategories(categories);
-  let sectioned = createEmptySectionedGuides();
-  let guideCardsById: GuideCardMap = {};
-
-  guides.forEach((guide) => {
-    if (guide.section !== "guide") {
-      sectioned = addNonGuideToSection(sectioned, guide);
-      return;
-    }
-
-    guideCardsById = addGuideToCards(guideCardsById, guide);
-  });
+  const grouped = groupBy(guides, (guide) => guide.section);
 
   return {
-    ...sectioned,
-    guides: Object.values(guideCardsById),
+    rng_technique: mergeRngGuides(grouped.rng_technique ?? []),
+    pokemon_rng: mergeRngGuides(grouped.pokemon_rng ?? []),
+    other_rng: mergeRngGuides(grouped.other_rng ?? []),
+    getting_started: grouped.getting_started ?? [],
+    supporting_info: grouped.supporting_info ?? [],
+    technical_info: grouped.technical_info ?? [],
+    tool: grouped.tool ?? [],
+    patch: grouped.patch ?? [],
+    site_info: grouped.site_info ?? [],
+    challenge: grouped.challenge ?? [],
   };
 };
 

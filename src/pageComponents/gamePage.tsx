@@ -14,21 +14,25 @@ import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { sortBy } from "lodash-es";
 import { match } from "ts-pattern";
 import styled from "@emotion/styled";
+import { isRngGuideSection } from "~/guideSections";
 
 type DisplayAttribute =
   | GuideMeta["displayAttributes"][number]
   | "new"
   | "external-link";
 
-type PageSection = "info" | "challenge" | "guides" | "tool" | "patch";
-
-const sectionDisplayOrder: PageSection[] = [
-  "info",
-  "challenge",
-  "guides",
+const sectionDisplayOrder = [
+  "getting_started",
+  "pokemon_rng",
+  "other_rng",
+  "rng_technique",
+  "supporting_info",
+  "technical_info",
   "tool",
   "patch",
-];
+] as const;
+
+type PageSection = (typeof sectionDisplayOrder)[number];
 
 const DisplayTag = styled(Tag)<{ tag: DisplayAttribute }>(({ tag }) => {
   const colors = match(tag)
@@ -159,11 +163,14 @@ const getSectionLabel = (section: string) => {
   }
 
   return match<PageSection>(section)
-    .with("challenge", () => "Challenge")
-    .with("guides", () => "Guides")
-    .with("info", () => "Info")
     .with("tool", () => "Tools")
     .with("patch", () => "Patches")
+    .with("getting_started", () => "Getting Started")
+    .with("rng_technique", () => "RNG Techniques")
+    .with("pokemon_rng", () => "Pokemon RNG")
+    .with("other_rng", () => "Other RNG")
+    .with("supporting_info", () => "Supporting Info")
+    .with("technical_info", () => "Technical Info")
     .exhaustive();
 };
 
@@ -210,8 +217,9 @@ export const GamePageComponent = () => {
   return (
     <Flex vertical gap={12}>
       {sectionDisplayOrder.map((section) => {
-        if (section === "guides") {
-          const filteredGuides = guidesBySection.guides.filter(
+        if (isRngGuideSection(section)) {
+          const sectionGuides = guidesBySection[section];
+          const filteredGuides = sectionGuides.filter(
             (guide) => !guide.isRoughDraft && !guide.hideFromNavDrawer,
           );
 

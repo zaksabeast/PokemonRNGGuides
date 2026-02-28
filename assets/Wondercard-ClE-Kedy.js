@@ -1,0 +1,17 @@
+const n=`---
+title: "HeartGold and SoulSilver Wondercard RNG"
+navDrawerTitle: "Wondercard RNG"
+description: "How to RNG Wondercards"
+slug: "emulator-hgss-wondercard"
+category: "HeartGold and SoulSilver"
+isRoughDraft: true
+section: "pokemon_rng"
+variant: "cfw-emu"
+---
+
+For the future:
+
+- Explain how to import WC with PokeFinder to have EXACT values and avoid any mistake
+- Explain the right center to use
+- Explain that PID IS NOT DOABLE because of system tics.
+`;export{n as default};

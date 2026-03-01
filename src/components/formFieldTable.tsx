@@ -49,7 +49,11 @@ export const FormFieldTable = ({ fields }: Props) => {
             <AntdForm.Item
               key={keyToUse}
               tooltip={tooltip}
-              label={<Typography.Text strong>{label}</Typography.Text>}
+              label={
+                <Typography.Text strong whiteSpace="break-spaces">
+                  {label}
+                </Typography.Text>
+              }
             >
               {input}
             </AntdForm.Item>
@@ -59,7 +63,9 @@ export const FormFieldTable = ({ fields }: Props) => {
         return (
           <AntdForm.Item key={keyToUse} colon={false} tooltip={tooltip}>
             <Flex vertical gap={4}>
-              <Typography.Text strong>{label}</Typography.Text>
+              <Typography.Text strong whiteSpace="break-spaces">
+                {label}
+              </Typography.Text>
               {input}
             </Flex>
           </AntdForm.Item>

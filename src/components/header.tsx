@@ -45,10 +45,12 @@ export const Header = () => {
 
         <Flex align="center" gap={16}>
           <Button
-            trackerId="github_url"
-            href={settings.githubUrl}
-            icon={<Icon name="Github" size={20} />}
-          />
+            trackerId="contribute_url"
+            href={settings.discordUrl}
+            icon={<Icon name="Edit" size={20} />}
+          >
+            Contribute
+          </Button>
           <Button
             trackerId="discord_url"
             href={settings.discordUrl}

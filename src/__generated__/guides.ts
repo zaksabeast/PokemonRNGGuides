@@ -2826,7 +2826,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 6/DexNav.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-oras-dexnav/",
+        zh: "/zh-emulator-oras-dexnav/",
+      },
       guideGroupId: "en:/emulator-oras-dexnav/:Omega Ruby and Alpha Sapphire",
       guideVariantLinks: { retail: null, cfwEmu: "/emulator-oras-dexnav/" },
       displayAttributes: [],
@@ -9676,6 +9679,44 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-emulator-oras-dexnav/": {
+    meta: {
+      categories: ["Omega Ruby and Alpha Sapphire"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emulator-oras-dexnav/",
+      isNew: false,
+      title: "欧米伽红宝石与阿尔法蓝宝石 DexNav 乱数",
+      navDrawerTitle: "欧米伽红宝石与阿尔法蓝宝石 DexNav 乱数",
+      description:
+        "学习如何在《欧米伽红宝石 / 阿尔法蓝宝石》中利用 DexNav 功能进行宝可梦乱数。",
+      slug: "/zh-emulator-oras-dexnav/",
+      isRoughDraft: true,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-oras-dexnav/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/DexNav.mdx",
+      translations: {
+        en: "/emulator-oras-dexnav/",
+        zh: "/zh-emulator-oras-dexnav/",
+      },
+      guideGroupId: "zh:/emulator-oras-dexnav/:Omega Ruby and Alpha Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 6/DexNav.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/DexNav.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-emulator-rs-egg/": {
     meta: {
       categories: ["Ruby and Sapphire"],
@@ -11431,6 +11472,7 @@ export const guideSlugs = [
   "/zh-emulator-hgss-cute-charm/",
   "/zh-emulator-hgss-egg/",
   "/zh-emulator-hgss-stationary/",
+  "/zh-emulator-oras-dexnav/",
   "/zh-emulator-rs-egg/",
   "/zh-emulator-rs-stationary/",
   "/zh-emulator-rs-wishmaker/",

@@ -170,29 +170,41 @@ const MAX_ORDER_PRIORITY = 20;
 
 const BaseGuideSchema = z
   .object({
+    // Title shown at the top of the guide
     title: z.string(),
+    // Title shown outside the guide, such as game pages
     navDrawerTitle: z
       .string()
       .nullish()
       .optional()
       .default(() => null),
+    // Description of the guide link sharing
     description: z.string(),
+    // Game or game alias the guide belongs to
     category: SingleOrMultipleSchema(CategorySchema),
+    // URL slug for the guide, must be unique across all guides
     slug: SlugSchema,
+    // Whether the guide is a rough draft
     isRoughDraft: z.boolean().default(false),
+    // Groups guides on game pages
     section: GuideSectionSchema,
+    // Orders guides within sections
     orderPriority: z
       .number()
       .min(0)
       .max(MAX_ORDER_PRIORITY)
       .default(MAX_ORDER_PRIORITY),
+    // Specifies if a guide is for retail, cfw-emu, or both
     variant: SingleOrMultipleSchema(GuideVariantSchema).optional(),
+    // Links guides of different variants together, e.g. linking a retail guide to its cfw-emu counterpart
     guideKey: z
       .string()
       .nullish()
       .optional()
       .default(() => null),
+    // Hides from navigation
     hideFromNavDrawer: z.boolean().default(false),
+    // Date the guide was added, used to determine "new" status. Should be in ISO format (YYYY-MM-DD).
     addedOn: z
       .string()
       .nullish()
@@ -201,8 +213,11 @@ const BaseGuideSchema = z
       .refine((value) => value === null || dayjs(value).isValid(), {
         message: "Invalid date format",
       }),
+    // Unused for base guides
     translation: z.null().optional().default(null),
+    // Visual layout of the guide page
     layout: z.enum(layouts).default("guide"),
+    // Used for SEO when renaming slugs. Keep the original page/slug, hide the page, and set the new slug as canonical.
     canonical: SlugSchema.nullish()
       .optional()
       .default(() => null),

@@ -26,6 +26,8 @@ export const rngGuideSections = [
   "rng_technique",
 ] as const;
 
+export type RngGuideCard = (typeof rngGuideSections)[number];
+
 export const rngGuideVariants = ["retail", "cfw-emu"] as const;
 
 export const isRngGuideSection = (

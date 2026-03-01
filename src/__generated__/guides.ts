@@ -4,6 +4,7 @@ import { memoize } from "lodash-es";
 export const guides = {
   "/": {
     meta: {
+      id: "/",
       categories: ["Home"],
       section: "site_info",
       guideVariants: null,
@@ -36,6 +37,7 @@ export const guides = {
   },
   "/3ds-alt-settings/": {
     meta: {
+      id: "/3ds-alt-settings/",
       categories: ["HeartGold and SoulSilver", "Diamond, Pearl, and Platinum"],
       section: "tool",
       guideVariants: null,
@@ -69,6 +71,7 @@ export const guides = {
   },
   "/3ds-helper/": {
     meta: {
+      id: "/3ds-helper/",
       categories: [
         "Diamond, Pearl, and Platinum",
         "HeartGold and SoulSilver",
@@ -107,6 +110,7 @@ export const guides = {
   },
   "/about/": {
     meta: {
+      id: "/about/",
       categories: ["Home"],
       section: "site_info",
       guideVariants: null,
@@ -139,6 +143,7 @@ export const guides = {
   },
   "/azahar-setup/": {
     meta: {
+      id: "/azahar-setup/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -181,6 +186,7 @@ export const guides = {
   },
   "/bdsp-advance-rng/": {
     meta: {
+      id: "/bdsp-advance-rng/",
       categories: ["Brilliant Diamond and Shining Pearl"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -223,6 +229,7 @@ export const guides = {
   },
   "/bdsp-chatot/": {
     meta: {
+      id: "/bdsp-chatot/",
       categories: ["Brilliant Diamond and Shining Pearl"],
       section: "tool",
       guideVariants: null,
@@ -262,6 +269,7 @@ export const guides = {
   },
   "/bdsp-emulator-setup/": {
     meta: {
+      id: "/bdsp-emulator-setup/",
       categories: ["Brilliant Diamond and Shining Pearl"],
       section: "tool",
       guideVariants: null,
@@ -302,6 +310,7 @@ export const guides = {
   },
   "/bdsp-pokefinder/": {
     meta: {
+      id: "/bdsp-pokefinder/",
       categories: ["Brilliant Diamond and Shining Pearl"],
       section: "tool",
       guideVariants: null,
@@ -341,6 +350,7 @@ export const guides = {
   },
   "/black-2-and-white-2/": {
     meta: {
+      id: "/black-2-and-white-2/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -372,6 +382,7 @@ export const guides = {
   },
   "/black-and-white/": {
     meta: {
+      id: "/black-and-white/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -403,6 +414,7 @@ export const guides = {
   },
   "/brilliant-diamond-and-shining-pearl/": {
     meta: {
+      id: "/brilliant-diamond-and-shining-pearl/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -434,6 +446,7 @@ export const guides = {
   },
   "/bw2-egg/": {
     meta: {
+      id: "/bw2-egg/",
       categories: ["Black 2 and White 2"],
       section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -469,6 +482,7 @@ export const guides = {
   },
   "/cfw-bdsp-egg/": {
     meta: {
+      id: "/cfw-bdsp-egg/",
       categories: ["Brilliant Diamond and Shining Pearl"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -508,6 +522,7 @@ export const guides = {
   },
   "/cfw-bdsp-stationary/": {
     meta: {
+      id: "/cfw-bdsp-stationary/",
       categories: ["Brilliant Diamond and Shining Pearl"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -551,6 +566,7 @@ export const guides = {
   },
   "/cfw-bdsp-tidandsid/": {
     meta: {
+      id: "/cfw-bdsp-tidandsid/",
       categories: ["Brilliant Diamond and Shining Pearl"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -594,6 +610,7 @@ export const guides = {
   },
   "/cfw-bdsp-wild/": {
     meta: {
+      id: "/cfw-bdsp-wild/",
       categories: ["Brilliant Diamond and Shining Pearl"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -633,6 +650,7 @@ export const guides = {
   },
   "/challenge-usum-ta/": {
     meta: {
+      id: "/challenge-usum-ta/",
       categories: ["USUM Challenges"],
       section: "challenge",
       guideVariants: null,
@@ -665,6 +683,7 @@ export const guides = {
   },
   "/channel-jirachi/": {
     meta: {
+      id: "/channel-jirachi/",
       categories: ["Gamecube"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -699,6 +718,7 @@ export const guides = {
   },
   "/citrarng-setup/": {
     meta: {
+      id: "/citrarng-setup/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -742,6 +762,7 @@ export const guides = {
   },
   "/connect-dolphin-to-gba/": {
     meta: {
+      id: "/connect-dolphin-to-gba/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
@@ -780,6 +801,7 @@ export const guides = {
   },
   "/consistent-platinum-rng/": {
     meta: {
+      id: "/consistent-platinum-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -822,6 +844,7 @@ export const guides = {
   },
   "/crystal/": {
     meta: {
+      id: "/crystal/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -853,6 +876,7 @@ export const guides = {
   },
   "/de-retail-emerald-egg/": {
     meta: {
+      id: "/retail-emerald-egg/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -893,6 +917,7 @@ export const guides = {
   },
   "/delete-pokemon-save/": {
     meta: {
+      id: "/delete-pokemon-save/",
       categories: [
         "Ruby and Sapphire",
         "FireRed and LeafGreen",
@@ -948,6 +973,7 @@ export const guides = {
   },
   "/desmume-setup/": {
     meta: {
+      id: "/desmume-setup/",
       categories: [
         "Diamond, Pearl, and Platinum",
         "HeartGold and SoulSilver",
@@ -990,6 +1016,7 @@ export const guides = {
   },
   "/diamond-pearl-and-platinum/": {
     meta: {
+      id: "/diamond-pearl-and-platinum/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -1021,6 +1048,7 @@ export const guides = {
   },
   "/dppt-3ds-rng/": {
     meta: {
+      id: "/dppt-3ds-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "technical_info",
       guideVariants: null,
@@ -1053,6 +1081,7 @@ export const guides = {
   },
   "/dppt-advance-rng/": {
     meta: {
+      id: "/dppt-advance-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -1099,6 +1128,7 @@ export const guides = {
   },
   "/dppt-cute-charm/": {
     meta: {
+      id: "/dppt-cute-charm/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "supporting_info",
       guideVariants: null,
@@ -1131,6 +1161,7 @@ export const guides = {
   },
   "/dppt-initial-seed-retail/": {
     meta: {
+      id: "/dppt-initial-seed-retail/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -1176,6 +1207,7 @@ export const guides = {
   },
   "/dppt-initial-seed/": {
     meta: {
+      id: "/dppt-initial-seed/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -1218,6 +1250,7 @@ export const guides = {
   },
   "/dppt-pokeradar-rng/": {
     meta: {
+      id: "/dppt-pokeradar-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -1261,6 +1294,7 @@ export const guides = {
   },
   "/dppt-setup-rng/": {
     meta: {
+      id: "/dppt-setup-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -1300,6 +1334,7 @@ export const guides = {
   },
   "/dppt-tid-sid/": {
     meta: {
+      id: "/dppt-tid-sid/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "other_rng",
       guideVariants: ["retail"],
@@ -1335,6 +1370,7 @@ export const guides = {
   },
   "/dppt-wild/": {
     meta: {
+      id: "/dppt-wild/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -1374,6 +1410,7 @@ export const guides = {
   },
   "/dream-radar-patches/": {
     meta: {
+      id: "/dream-radar-patches/",
       categories: ["Transporter and Dream Radar"],
       section: "patch",
       guideVariants: null,
@@ -1410,6 +1447,7 @@ export const guides = {
   },
   "/e-tips-rng/": {
     meta: {
+      id: "/e-tips-rng/",
       categories: ["Emerald"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -1453,6 +1491,7 @@ export const guides = {
   },
   "/emerald-mirage-island/": {
     meta: {
+      id: "/emerald-mirage-island/",
       categories: ["Emerald"],
       section: "other_rng",
       guideVariants: ["retail"],
@@ -1495,6 +1534,7 @@ export const guides = {
   },
   "/emerald-overview/": {
     meta: {
+      id: "/emerald-overview/",
       categories: ["Emerald"],
       section: "getting_started",
       guideVariants: null,
@@ -1531,6 +1571,7 @@ export const guides = {
   },
   "/emerald-painting-rng/": {
     meta: {
+      id: "/emerald-painting-rng/",
       categories: ["Emerald"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -1569,6 +1610,7 @@ export const guides = {
   },
   "/emerald-pokerus-emu/": {
     meta: {
+      id: "/emerald-pokerus-emu/",
       categories: ["Emerald"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -1606,6 +1648,7 @@ export const guides = {
   },
   "/emerald-shiny-starter/": {
     meta: {
+      id: "/emerald-shiny-starter/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -1647,6 +1690,7 @@ export const guides = {
   },
   "/emerald-sid-feebas/": {
     meta: {
+      id: "/emerald-sid-feebas/",
       categories: ["Emerald"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -1688,6 +1732,7 @@ export const guides = {
   },
   "/emerald-static/": {
     meta: {
+      id: "/emerald-static/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -1726,6 +1771,7 @@ export const guides = {
   },
   "/emerald-tidsid-generator/": {
     meta: {
+      id: "/emerald-tidsid-generator/",
       categories: ["Emerald"],
       section: "other_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -1764,6 +1810,7 @@ export const guides = {
   },
   "/emerald-wild/": {
     meta: {
+      id: "/emerald-wild/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -1798,6 +1845,7 @@ export const guides = {
   },
   "/emerald/": {
     meta: {
+      id: "/emerald/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -1829,6 +1877,7 @@ export const guides = {
   },
   "/emulator-b2w2-dream-radar/": {
     meta: {
+      id: "/emulator-b2w2-dream-radar/",
       categories: ["Black 2 and White 2", "Transporter and Dream Radar"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -1868,6 +1917,7 @@ export const guides = {
   },
   "/emulator-b2w2-runasdate-inital-seed/": {
     meta: {
+      id: "/emulator-b2w2-runasdate-inital-seed/",
       categories: ["Black 2 and White 2"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -1910,6 +1960,7 @@ export const guides = {
   },
   "/emulator-b2w2-wild/": {
     meta: {
+      id: "/emulator-b2w2-wild/",
       categories: ["Black 2 and White 2"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -1945,6 +1996,7 @@ export const guides = {
   },
   "/emulator-bw-entralink/": {
     meta: {
+      id: "/emulator-bw-entralink/",
       categories: ["Black and White"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -1983,6 +2035,7 @@ export const guides = {
   },
   "/emulator-bw-find-ds-parameters/": {
     meta: {
+      id: "/emulator-bw-find-ds-parameters/",
       categories: ["Black and White"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -2021,6 +2074,7 @@ export const guides = {
   },
   "/emulator-bw-roamers/": {
     meta: {
+      id: "/emulator-bw-roamers/",
       categories: ["Black and White"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2059,6 +2113,7 @@ export const guides = {
   },
   "/emulator-bw-runasdate-initial-seed/": {
     meta: {
+      id: "/emulator-bw-runasdate-initial-seed/",
       categories: ["Black and White"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -2100,6 +2155,7 @@ export const guides = {
   },
   "/emulator-bw-white-forest/": {
     meta: {
+      id: "/emulator-bw-white-forest/",
       categories: ["Black and White"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2142,6 +2198,7 @@ export const guides = {
   },
   "/emulator-bw-wild/": {
     meta: {
+      id: "/emulator-bw-wild/",
       categories: ["Black and White"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2177,6 +2234,7 @@ export const guides = {
   },
   "/emulator-colosseum-general/": {
     meta: {
+      id: "/emulator-colosseum-general/",
       categories: ["Gamecube"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -2215,6 +2273,7 @@ export const guides = {
   },
   "/emulator-dppt-cute-charm/": {
     meta: {
+      id: "/emulator-dppt-cute-charm/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "supporting_info",
       guideVariants: null,
@@ -2251,6 +2310,7 @@ export const guides = {
   },
   "/emulator-dppt-egg/": {
     meta: {
+      id: "/emulator-dppt-egg/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2290,6 +2350,7 @@ export const guides = {
   },
   "/emulator-dppt-pokefinder-setup/": {
     meta: {
+      id: "/emulator-dppt-pokefinder-setup/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "tool",
       guideVariants: null,
@@ -2330,6 +2391,7 @@ export const guides = {
   },
   "/emulator-dppt-stationary/": {
     meta: {
+      id: "/emulator-dppt-stationary/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2374,6 +2436,7 @@ export const guides = {
   },
   "/emulator-dppt-tid-sid/": {
     meta: {
+      id: "/emulator-dppt-tid-sid/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -2417,6 +2480,7 @@ export const guides = {
   },
   "/emulator-emerald-egg/": {
     meta: {
+      id: "/emulator-emerald-egg/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2456,6 +2520,7 @@ export const guides = {
   },
   "/emulator-flrg-stationary-and-gift/": {
     meta: {
+      id: "/emulator-flrg-stationary-and-gift/",
       categories: ["FireRed and LeafGreen"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2499,6 +2564,7 @@ export const guides = {
   },
   "/emulator-frlg-egg/": {
     meta: {
+      id: "/emulator-frlg-egg/",
       categories: ["FireRed and LeafGreen"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2538,6 +2604,7 @@ export const guides = {
   },
   "/emulator-frlg-stationary/": {
     meta: {
+      id: "/emulator-frlg-stationary/",
       categories: ["FireRed and LeafGreen"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2577,6 +2644,7 @@ export const guides = {
   },
   "/emulator-frlg-wild-v2/": {
     meta: {
+      id: "/emulator-frlg-wild-v2/",
       categories: ["FireRed and LeafGreen"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2616,6 +2684,7 @@ export const guides = {
   },
   "/emulator-frlg-wild/": {
     meta: {
+      id: "/emulator-frlg-wild/",
       categories: ["FireRed and LeafGreen"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2658,6 +2727,7 @@ export const guides = {
   },
   "/emulator-hgss-breeding/": {
     meta: {
+      id: "/emulator-hgss-breeding/",
       categories: ["HeartGold and SoulSilver"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2699,6 +2769,7 @@ export const guides = {
   },
   "/emulator-hgss-cute-charm/": {
     meta: {
+      id: "/emulator-hgss-cute-charm/",
       categories: ["HeartGold and SoulSilver"],
       section: "supporting_info",
       guideVariants: null,
@@ -2734,6 +2805,7 @@ export const guides = {
   },
   "/emulator-hgss-egg/": {
     meta: {
+      id: "/emulator-hgss-egg/",
       categories: ["HeartGold and SoulSilver"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2773,6 +2845,7 @@ export const guides = {
   },
   "/emulator-hgss-special-wild/": {
     meta: {
+      id: "/emulator-hgss-special-wild/",
       categories: ["HeartGold and SoulSilver"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2814,6 +2887,7 @@ export const guides = {
   },
   "/emulator-hgss-stationary/": {
     meta: {
+      id: "/emulator-hgss-stationary/",
       categories: ["HeartGold and SoulSilver"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2859,6 +2933,7 @@ export const guides = {
   },
   "/emulator-hgss-tid-sid/": {
     meta: {
+      id: "/emulator-hgss-tid-sid/",
       categories: ["HeartGold and SoulSilver"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -2898,6 +2973,7 @@ export const guides = {
   },
   "/emulator-hgss-wild/": {
     meta: {
+      id: "/emulator-hgss-wild/",
       categories: ["HeartGold and SoulSilver"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2940,6 +3016,7 @@ export const guides = {
   },
   "/emulator-hgss-wondercard/": {
     meta: {
+      id: "/emulator-hgss-wondercard/",
       categories: ["HeartGold and SoulSilver"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -2978,6 +3055,7 @@ export const guides = {
   },
   "/emulator-oras-dexnav/": {
     meta: {
+      id: "/emulator-oras-dexnav/",
       categories: ["Omega Ruby and Alpha Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -3016,6 +3094,7 @@ export const guides = {
   },
   "/emulator-rs-dead-battery-stationary/": {
     meta: {
+      id: "/emulator-rs-dead-battery-stationary/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -3059,6 +3138,7 @@ export const guides = {
   },
   "/emulator-rs-egg/": {
     meta: {
+      id: "/emulator-rs-egg/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -3098,6 +3178,7 @@ export const guides = {
   },
   "/emulator-rs-live-battery-tid/": {
     meta: {
+      id: "/emulator-rs-live-battery-tid/",
       categories: ["Ruby and Sapphire"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -3138,6 +3219,7 @@ export const guides = {
   },
   "/emulator-rs-stationary/": {
     meta: {
+      id: "/emulator-rs-stationary/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -3183,6 +3265,7 @@ export const guides = {
   },
   "/emulator-rs-wild/": {
     meta: {
+      id: "/emulator-rs-wild/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -3225,6 +3308,7 @@ export const guides = {
   },
   "/emulator-rs-wishmaker/": {
     meta: {
+      id: "/emulator-rs-wishmaker/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -3270,6 +3354,7 @@ export const guides = {
   },
   "/emulator-sm-time-finder/": {
     meta: {
+      id: "/emulator-sm-time-finder/",
       categories: ["Sun and Moon"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -3308,6 +3393,7 @@ export const guides = {
   },
   "/emulator-usum-time-finder/": {
     meta: {
+      id: "/emulator-usum-time-finder/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -3346,6 +3432,7 @@ export const guides = {
   },
   "/es-delete-pokemon-save/": {
     meta: {
+      id: "/delete-pokemon-save/",
       categories: [
         "Ruby and Sapphire",
         "FireRed and LeafGreen",
@@ -3404,6 +3491,7 @@ export const guides = {
   },
   "/es-dppt-advance-rng/": {
     meta: {
+      id: "/dppt-advance-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -3447,6 +3535,7 @@ export const guides = {
   },
   "/es-gba-methods-lead-impact/": {
     meta: {
+      id: "/gba-methods-lead-impact/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
@@ -3491,6 +3580,7 @@ export const guides = {
   },
   "/es-gba-methods/": {
     meta: {
+      id: "/gba-methods/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
@@ -3532,6 +3622,7 @@ export const guides = {
   },
   "/es-gen2-celebi/": {
     meta: {
+      id: "/gen2-celebi/",
       categories: ["Gold, Silver, Crystal"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -3571,6 +3662,7 @@ export const guides = {
   },
   "/es-gen2-starters/": {
     meta: {
+      id: "/gen2-starters/",
       categories: ["Gold, Silver, Crystal"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -3610,6 +3702,7 @@ export const guides = {
   },
   "/es-gen3-glossary/": {
     meta: {
+      id: "/gen3-glossary/",
       categories: ["Emerald"],
       section: "getting_started",
       guideVariants: null,
@@ -3650,6 +3743,7 @@ export const guides = {
   },
   "/es-hgss-rng-advance/": {
     meta: {
+      id: "/hgss-rng-advance/",
       categories: ["HeartGold and SoulSilver"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -3693,6 +3787,7 @@ export const guides = {
   },
   "/es-install-pokereader/": {
     meta: {
+      id: "/install-pokereader/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -3744,6 +3839,7 @@ export const guides = {
   },
   "/experiments/": {
     meta: {
+      id: "/experiments/",
       categories: ["User Settings"],
       section: "site_info",
       guideVariants: null,
@@ -3775,6 +3871,7 @@ export const guides = {
   },
   "/fire-red-and-leaf-green/": {
     meta: {
+      id: "/fire-red-and-leaf-green/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -3806,6 +3903,7 @@ export const guides = {
   },
   "/fr-bdsp-advance-rng/": {
     meta: {
+      id: "/bdsp-advance-rng/",
       categories: ["Brilliant Diamond and Shining Pearl"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -3846,6 +3944,7 @@ export const guides = {
   },
   "/fr-install-capturesight/": {
     meta: {
+      id: "/install-capturesight/",
       categories: [
         "Sword and Shield",
         "Brilliant Diamond and Shining Pearl",
@@ -3893,6 +3992,7 @@ export const guides = {
   },
   "/frlg-gen3-sid/": {
     meta: {
+      id: "/frlg-gen3-sid/",
       categories: ["FireRed and LeafGreen"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -3932,6 +4032,7 @@ export const guides = {
   },
   "/frlg-seeding-bot/": {
     meta: {
+      id: "/frlg-seeding-bot/",
       categories: ["FireRed and LeafGreen"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -3974,6 +4075,7 @@ export const guides = {
   },
   "/frlg-static/": {
     meta: {
+      id: "/frlg-static/",
       categories: ["FireRed and LeafGreen"],
       section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -4012,6 +4114,7 @@ export const guides = {
   },
   "/frlg-tidsid-generator/": {
     meta: {
+      id: "/frlg-tidsid-generator/",
       categories: ["FireRed and LeafGreen"],
       section: "other_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -4050,6 +4153,7 @@ export const guides = {
   },
   "/frlg-tips-rng/": {
     meta: {
+      id: "/frlg-tips-rng/",
       categories: ["FireRed and LeafGreen"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -4092,6 +4196,7 @@ export const guides = {
   },
   "/gamecube/": {
     meta: {
+      id: "/gamecube/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -4123,6 +4228,7 @@ export const guides = {
   },
   "/gba-methods-lead-impact/": {
     meta: {
+      id: "/gba-methods-lead-impact/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
@@ -4163,6 +4269,7 @@ export const guides = {
   },
   "/gba-methods/": {
     meta: {
+      id: "/gba-methods/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
@@ -4204,6 +4311,7 @@ export const guides = {
   },
   "/gba-overview/": {
     meta: {
+      id: "/gba-overview/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "getting_started",
       guideVariants: null,
@@ -4241,6 +4349,7 @@ export const guides = {
   },
   "/gba-pokerus-technical/": {
     meta: {
+      id: "/gba-pokerus-technical/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
@@ -4280,6 +4389,7 @@ export const guides = {
   },
   "/gba-vblank/": {
     meta: {
+      id: "/gba-vblank/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
@@ -4313,6 +4423,7 @@ export const guides = {
   },
   "/gc-initial/": {
     meta: {
+      id: "/gc-initial/",
       categories: ["Gamecube"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -4352,6 +4463,7 @@ export const guides = {
   },
   "/gen2-celebi/": {
     meta: {
+      id: "/gen2-celebi/",
       categories: ["Gold, Silver, Crystal"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -4391,6 +4503,7 @@ export const guides = {
   },
   "/gen2-research/": {
     meta: {
+      id: "/gen2-research/",
       categories: ["Gold, Silver, Crystal"],
       section: "site_info",
       guideVariants: null,
@@ -4422,6 +4535,7 @@ export const guides = {
   },
   "/gen2-starters/": {
     meta: {
+      id: "/gen2-starters/",
       categories: ["Gold, Silver, Crystal"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -4460,6 +4574,7 @@ export const guides = {
   },
   "/gen3-glossary/": {
     meta: {
+      id: "/gen3-glossary/",
       categories: ["Emerald"],
       section: "getting_started",
       guideVariants: null,
@@ -4496,6 +4611,7 @@ export const guides = {
   },
   "/gen3-sid/": {
     meta: {
+      id: "/gen3-sid/",
       categories: ["Emerald"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -4534,6 +4650,7 @@ export const guides = {
   },
   "/heart-gold-and-soul-silver/": {
     meta: {
+      id: "/heart-gold-and-soul-silver/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -4565,6 +4682,7 @@ export const guides = {
   },
   "/help-translate/": {
     meta: {
+      id: "/help-translate/",
       categories: ["Home"],
       section: "site_info",
       guideVariants: null,
@@ -4597,6 +4715,7 @@ export const guides = {
   },
   "/hgss-3ds-rng/": {
     meta: {
+      id: "/hgss-3ds-rng/",
       categories: ["HeartGold and SoulSilver"],
       section: "technical_info",
       guideVariants: null,
@@ -4629,6 +4748,7 @@ export const guides = {
   },
   "/hgss-cute-charm/": {
     meta: {
+      id: "/hgss-cute-charm/",
       categories: ["HeartGold and SoulSilver"],
       section: "supporting_info",
       guideVariants: null,
@@ -4661,6 +4781,7 @@ export const guides = {
   },
   "/hgss-initial-seed/": {
     meta: {
+      id: "/hgss-initial-seed/",
       categories: ["HeartGold and SoulSilver"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -4703,6 +4824,7 @@ export const guides = {
   },
   "/hgss-rng-advance/": {
     meta: {
+      id: "/hgss-rng-advance/",
       categories: ["HeartGold and SoulSilver"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -4749,6 +4871,7 @@ export const guides = {
   },
   "/hgss-tid-sid/": {
     meta: {
+      id: "/hgss-tid-sid/",
       categories: ["HeartGold and SoulSilver"],
       section: "other_rng",
       guideVariants: ["retail"],
@@ -4784,6 +4907,7 @@ export const guides = {
   },
   "/install-capturesight/": {
     meta: {
+      id: "/install-capturesight/",
       categories: [
         "Sword and Shield",
         "Brilliant Diamond and Shining Pearl",
@@ -4828,6 +4952,7 @@ export const guides = {
   },
   "/install-pokereader-emu/": {
     meta: {
+      id: "/install-pokereader-emu/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -4871,6 +4996,7 @@ export const guides = {
   },
   "/install-pokereader/": {
     meta: {
+      id: "/install-pokereader/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -4919,6 +5045,7 @@ export const guides = {
   },
   "/it-e-tips-rng/": {
     meta: {
+      id: "/e-tips-rng/",
       categories: ["Emerald"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -4962,6 +5089,7 @@ export const guides = {
   },
   "/it-emerald-overview/": {
     meta: {
+      id: "/emerald-overview/",
       categories: ["Emerald"],
       section: "getting_started",
       guideVariants: null,
@@ -5001,6 +5129,7 @@ export const guides = {
   },
   "/it-emulator-emerald-egg/": {
     meta: {
+      id: "/emulator-emerald-egg/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -5044,6 +5173,7 @@ export const guides = {
   },
   "/it-frlg-gen3-sid/": {
     meta: {
+      id: "/frlg-gen3-sid/",
       categories: ["FireRed and LeafGreen"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -5084,6 +5214,7 @@ export const guides = {
   },
   "/it-gen3-glossary/": {
     meta: {
+      id: "/gen3-glossary/",
       categories: ["Emerald"],
       section: "getting_started",
       guideVariants: null,
@@ -5124,6 +5255,7 @@ export const guides = {
   },
   "/it-gen3-sid/": {
     meta: {
+      id: "/gen3-sid/",
       categories: ["Emerald"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -5163,6 +5295,7 @@ export const guides = {
   },
   "/it-install-pokereader/": {
     meta: {
+      id: "/install-pokereader/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -5214,6 +5347,7 @@ export const guides = {
   },
   "/it-pokereader/": {
     meta: {
+      id: "/pokereader/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -5260,6 +5394,7 @@ export const guides = {
   },
   "/it-retail-dppt-starter/": {
     meta: {
+      id: "/retail-dppt-starter/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -5300,6 +5435,7 @@ export const guides = {
   },
   "/it-retail-emerald-wild/": {
     meta: {
+      id: "/retail-emerald-wild/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -5341,6 +5477,7 @@ export const guides = {
   },
   "/it-retail-hgss-starter/": {
     meta: {
+      id: "/retail-hgss-starter/",
       categories: ["HeartGold and SoulSilver"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -5381,6 +5518,7 @@ export const guides = {
   },
   "/it-rs-gen3-sid/": {
     meta: {
+      id: "/rs-gen3-sid/",
       categories: ["Ruby and Sapphire"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -5420,6 +5558,7 @@ export const guides = {
   },
   "/legends-arceus/": {
     meta: {
+      id: "/legends-arceus/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -5451,6 +5590,7 @@ export const guides = {
   },
   "/meteor-jirachi/": {
     meta: {
+      id: "/meteor-jirachi/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -5493,6 +5633,7 @@ export const guides = {
   },
   "/mgba-setup/": {
     meta: {
+      id: "/mgba-setup/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
@@ -5530,6 +5671,7 @@ export const guides = {
   },
   "/misc-3ds-installing-pcalc/": {
     meta: {
+      id: "/misc-3ds-installing-pcalc/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -5573,6 +5715,7 @@ export const guides = {
   },
   "/misc-3ds-ips-luma-citra/": {
     meta: {
+      id: "/misc-3ds-ips-luma-citra/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -5620,6 +5763,7 @@ export const guides = {
   },
   "/misc-3ds-island-scan-sm/": {
     meta: {
+      id: "/misc-3ds-island-scan-sm/",
       categories: ["Sun and Moon"],
       section: "supporting_info",
       guideVariants: null,
@@ -5656,6 +5800,7 @@ export const guides = {
   },
   "/misc-3ds-island-scan-usum/": {
     meta: {
+      id: "/misc-3ds-island-scan-usum/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "supporting_info",
       guideVariants: null,
@@ -5693,6 +5838,7 @@ export const guides = {
   },
   "/misc-3ds-transporter-nature-tables/": {
     meta: {
+      id: "/misc-3ds-transporter-nature-tables/",
       categories: ["Transporter and Dream Radar"],
       section: "supporting_info",
       guideVariants: null,
@@ -5726,6 +5872,7 @@ export const guides = {
   },
   "/misc-dolphin-connect-vba/": {
     meta: {
+      id: "/misc-dolphin-connect-vba/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
@@ -5766,6 +5913,7 @@ export const guides = {
   },
   "/misc-dolphin-gba-bios/": {
     meta: {
+      id: "/misc-dolphin-gba-bios/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
@@ -5807,6 +5955,7 @@ export const guides = {
   },
   "/misc-sm-wild-spots/": {
     meta: {
+      id: "/misc-sm-wild-spots/",
       categories: ["Sun and Moon"],
       section: "supporting_info",
       guideVariants: null,
@@ -5839,6 +5988,7 @@ export const guides = {
   },
   "/mystic-timer/": {
     meta: {
+      id: "/mystic-timer/",
       categories: [
         "Ruby and Sapphire",
         "FireRed and LeafGreen",
@@ -5889,6 +6039,7 @@ export const guides = {
   },
   "/no-dolphin-patch/": {
     meta: {
+      id: "/no-dolphin-patch/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "patch",
       guideVariants: null,
@@ -5926,6 +6077,7 @@ export const guides = {
   },
   "/ntr-helper-usage/": {
     meta: {
+      id: "/ntr-helper-usage/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -5968,6 +6120,7 @@ export const guides = {
   },
   "/omega-ruby-and-alpha-sapphire/": {
     meta: {
+      id: "/omega-ruby-and-alpha-sapphire/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -5999,6 +6152,7 @@ export const guides = {
   },
   "/oras-mirage-spots/": {
     meta: {
+      id: "/oras-mirage-spots/",
       categories: ["Omega Ruby and Alpha Sapphire"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -6034,6 +6188,7 @@ export const guides = {
   },
   "/oras-remove-time-penalty/": {
     meta: {
+      id: "/oras-remove-time-penalty/",
       categories: ["Omega Ruby and Alpha Sapphire"],
       section: "supporting_info",
       guideVariants: null,
@@ -6071,6 +6226,7 @@ export const guides = {
   },
   "/pal-xd-eevee/": {
     meta: {
+      id: "/pal-xd-eevee/",
       categories: ["Gamecube"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -6109,6 +6265,7 @@ export const guides = {
   },
   "/pcalc-xy-friend-safari/": {
     meta: {
+      id: "/pcalc-xy-friend-safari/",
       categories: ["X and Y"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -6148,6 +6305,7 @@ export const guides = {
   },
   "/pcalc-xy-tid/": {
     meta: {
+      id: "/pcalc-xy-tid/",
       categories: ["X and Y"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -6183,6 +6341,7 @@ export const guides = {
   },
   "/pokefinder/": {
     meta: {
+      id: "/pokefinder/",
       categories: [
         "Ruby and Sapphire",
         "FireRed and LeafGreen",
@@ -6236,6 +6395,7 @@ export const guides = {
   },
   "/pokereader/": {
     meta: {
+      id: "/pokereader/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -6279,6 +6439,7 @@ export const guides = {
   },
   "/retail-bw-entralink/": {
     meta: {
+      id: "/retail-bw-entralink/",
       categories: ["Black and White"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -6314,6 +6475,7 @@ export const guides = {
   },
   "/retail-dppt-starter/": {
     meta: {
+      id: "/retail-dppt-starter/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -6353,6 +6515,7 @@ export const guides = {
   },
   "/retail-emerald-egg/": {
     meta: {
+      id: "/retail-emerald-egg/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -6392,6 +6555,7 @@ export const guides = {
   },
   "/retail-emerald-wild/": {
     meta: {
+      id: "/retail-emerald-wild/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -6435,6 +6599,7 @@ export const guides = {
   },
   "/retail-hgss-starter/": {
     meta: {
+      id: "/retail-hgss-starter/",
       categories: ["HeartGold and SoulSilver"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -6474,6 +6639,7 @@ export const guides = {
   },
   "/retail-oras-egg-mmsc/": {
     meta: {
+      id: "/retail-oras-egg-mmsc/",
       categories: ["Omega Ruby and Alpha Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -6517,6 +6683,7 @@ export const guides = {
   },
   "/retail-oras-egg-no-mmsc/": {
     meta: {
+      id: "/retail-oras-egg-no-mmsc/",
       categories: ["Omega Ruby and Alpha Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -6561,6 +6728,7 @@ export const guides = {
   },
   "/retail-oras-tid/": {
     meta: {
+      id: "/retail-oras-tid/",
       categories: ["Omega Ruby and Alpha Sapphire"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -6596,6 +6764,7 @@ export const guides = {
   },
   "/retail-rubysapphire-tid/": {
     meta: {
+      id: "/retail-rubysapphire-tid/",
       categories: ["Ruby and Sapphire"],
       section: "other_rng",
       guideVariants: ["retail"],
@@ -6638,6 +6807,7 @@ export const guides = {
   },
   "/retail-sm-egg-mmsc/": {
     meta: {
+      id: "/retail-sm-egg-mmsc/",
       categories: ["Sun and Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -6680,6 +6850,7 @@ export const guides = {
   },
   "/retail-sm-egg-no-mmsc/": {
     meta: {
+      id: "/retail-sm-egg-no-mmsc/",
       categories: ["Sun and Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -6725,6 +6896,7 @@ export const guides = {
   },
   "/retail-sm-egg-seed-no-cfw/": {
     meta: {
+      id: "/retail-sm-egg-seed-no-cfw/",
       categories: ["Sun and Moon"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -6767,6 +6939,7 @@ export const guides = {
   },
   "/retail-sm-fidget/": {
     meta: {
+      id: "/retail-sm-fidget/",
       categories: ["Sun and Moon"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -6806,6 +6979,7 @@ export const guides = {
   },
   "/retail-sm-initial-seed-clocks/": {
     meta: {
+      id: "/retail-sm-initial-seed-clocks/",
       categories: ["Sun and Moon"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -6845,6 +7019,7 @@ export const guides = {
   },
   "/retail-sm-island-scan/": {
     meta: {
+      id: "/retail-sm-island-scan/",
       categories: ["Sun and Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -6880,6 +7055,7 @@ export const guides = {
   },
   "/retail-sm-myster-gift/": {
     meta: {
+      id: "/retail-sm-myster-gift/",
       categories: ["Sun and Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -6915,6 +7091,7 @@ export const guides = {
   },
   "/retail-sm-no-cfw/": {
     meta: {
+      id: "/retail-sm-no-cfw/",
       categories: ["Sun and Moon"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -6954,6 +7131,7 @@ export const guides = {
   },
   "/retail-sm-sos/": {
     meta: {
+      id: "/retail-sm-sos/",
       categories: ["Sun and Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -6989,6 +7167,7 @@ export const guides = {
   },
   "/retail-sm-stationary/": {
     meta: {
+      id: "/retail-sm-stationary/",
       categories: ["Sun and Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -7024,6 +7203,7 @@ export const guides = {
   },
   "/retail-sm-timeleap/": {
     meta: {
+      id: "/retail-sm-timeleap/",
       categories: ["Sun and Moon"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -7063,6 +7243,7 @@ export const guides = {
   },
   "/retail-sm-timeline/": {
     meta: {
+      id: "/retail-sm-timeline/",
       categories: ["Sun and Moon"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -7100,6 +7281,7 @@ export const guides = {
   },
   "/retail-sm-wild/": {
     meta: {
+      id: "/retail-sm-wild/",
       categories: ["Sun and Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -7135,6 +7317,7 @@ export const guides = {
   },
   "/retail-swsh-get-seed-with-cfw/": {
     meta: {
+      id: "/retail-swsh-get-seed-with-cfw/",
       categories: ["Sword and Shield"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -7174,6 +7357,7 @@ export const guides = {
   },
   "/retail-swsh-get-seed-without-cfw/": {
     meta: {
+      id: "/retail-swsh-get-seed-without-cfw/",
       categories: ["Sword and Shield"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -7214,6 +7398,7 @@ export const guides = {
   },
   "/retail-swsh-raid/": {
     meta: {
+      id: "/retail-swsh-raid/",
       categories: ["Sword and Shield"],
       section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -7253,6 +7438,7 @@ export const guides = {
   },
   "/retail-usum-egg-mmsc/": {
     meta: {
+      id: "/retail-usum-egg-mmsc/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -7295,6 +7481,7 @@ export const guides = {
   },
   "/retail-usum-egg-no-mmsc/": {
     meta: {
+      id: "/retail-usum-egg-no-mmsc/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -7341,6 +7528,7 @@ export const guides = {
   },
   "/retail-usum-egg-seed-no-cfw/": {
     meta: {
+      id: "/retail-usum-egg-seed-no-cfw/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -7383,6 +7571,7 @@ export const guides = {
   },
   "/retail-usum-fidget/": {
     meta: {
+      id: "/retail-usum-fidget/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -7422,6 +7611,7 @@ export const guides = {
   },
   "/retail-usum-initial-seed-clocks/": {
     meta: {
+      id: "/retail-usum-initial-seed-clocks/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -7462,6 +7652,7 @@ export const guides = {
   },
   "/retail-usum-island-scan/": {
     meta: {
+      id: "/retail-usum-island-scan/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -7497,6 +7688,7 @@ export const guides = {
   },
   "/retail-usum-mystery-gift/": {
     meta: {
+      id: "/retail-usum-mystery-gift/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -7532,6 +7724,7 @@ export const guides = {
   },
   "/retail-usum-no-cfw/": {
     meta: {
+      id: "/retail-usum-no-cfw/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -7571,6 +7764,7 @@ export const guides = {
   },
   "/retail-usum-sos/": {
     meta: {
+      id: "/retail-usum-sos/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -7606,6 +7800,7 @@ export const guides = {
   },
   "/retail-usum-stationary/": {
     meta: {
+      id: "/retail-usum-stationary/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -7641,6 +7836,7 @@ export const guides = {
   },
   "/retail-usum-timeleap/": {
     meta: {
+      id: "/retail-usum-timeleap/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -7680,6 +7876,7 @@ export const guides = {
   },
   "/retail-usum-timeline/": {
     meta: {
+      id: "/retail-usum-timeline/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -7718,6 +7915,7 @@ export const guides = {
   },
   "/retail-usum-wild/": {
     meta: {
+      id: "/retail-usum-wild/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -7753,6 +7951,7 @@ export const guides = {
   },
   "/retail-usum-wormhole/": {
     meta: {
+      id: "/retail-usum-wormhole/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -7792,6 +7991,7 @@ export const guides = {
   },
   "/retail-xy-egg-mmsc/": {
     meta: {
+      id: "/retail-xy-egg-mmsc/",
       categories: ["X and Y"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -7834,6 +8034,7 @@ export const guides = {
   },
   "/retail-xy-egg-no-mmsc/": {
     meta: {
+      id: "/retail-xy-egg-no-mmsc/",
       categories: ["X and Y"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -7876,6 +8077,7 @@ export const guides = {
   },
   "/rs-battery/": {
     meta: {
+      id: "/rs-battery/",
       categories: ["Ruby and Sapphire"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -7916,6 +8118,7 @@ export const guides = {
   },
   "/rs-gen3-sid/": {
     meta: {
+      id: "/rs-gen3-sid/",
       categories: ["Ruby and Sapphire"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -7954,6 +8157,7 @@ export const guides = {
   },
   "/rs-initial-seed/": {
     meta: {
+      id: "/rs-initial-seed/",
       categories: ["Ruby and Sapphire"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -7992,6 +8196,7 @@ export const guides = {
   },
   "/rs-mirage-island/": {
     meta: {
+      id: "/rs-mirage-island/",
       categories: ["Ruby and Sapphire"],
       section: "other_rng",
       guideVariants: ["retail"],
@@ -8031,6 +8236,7 @@ export const guides = {
   },
   "/rs-pokefinder-setup/": {
     meta: {
+      id: "/rs-pokefinder-setup/",
       categories: ["Ruby and Sapphire"],
       section: "tool",
       guideVariants: null,
@@ -8066,6 +8272,7 @@ export const guides = {
   },
   "/rs-pokerus-emu/": {
     meta: {
+      id: "/rs-pokerus-emu/",
       categories: ["Ruby and Sapphire"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -8100,6 +8307,7 @@ export const guides = {
   },
   "/rs-pokerus-retail/": {
     meta: {
+      id: "/rs-pokerus-retail/",
       categories: ["Ruby and Sapphire"],
       section: "other_rng",
       guideVariants: ["retail"],
@@ -8138,6 +8346,7 @@ export const guides = {
   },
   "/rs-sid-feebas/": {
     meta: {
+      id: "/rs-sid-feebas/",
       categories: ["Ruby and Sapphire"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -8177,6 +8386,7 @@ export const guides = {
   },
   "/rs-static/": {
     meta: {
+      id: "/rs-static/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -8215,6 +8425,7 @@ export const guides = {
   },
   "/rs-tidsid-generator/": {
     meta: {
+      id: "/rs-tidsid-generator/",
       categories: ["Ruby and Sapphire"],
       section: "other_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -8253,6 +8464,7 @@ export const guides = {
   },
   "/rs-tips-rng/": {
     meta: {
+      id: "/rs-tips-rng/",
       categories: ["Ruby and Sapphire"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -8293,6 +8505,7 @@ export const guides = {
   },
   "/ruby-and-sapphire/": {
     meta: {
+      id: "/ruby-and-sapphire/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -8324,6 +8537,7 @@ export const guides = {
   },
   "/sos-call-rates/": {
     meta: {
+      id: "/sos-call-rates/",
       categories: ["Ultra Sun and Ultra Moon", "Sun and Moon"],
       section: "supporting_info",
       guideVariants: null,
@@ -8356,6 +8570,7 @@ export const guides = {
   },
   "/sun-and-moon/": {
     meta: {
+      id: "/sun-and-moon/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -8387,6 +8602,7 @@ export const guides = {
   },
   "/sword-and-shield/": {
     meta: {
+      id: "/sword-and-shield/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -8418,6 +8634,7 @@ export const guides = {
   },
   "/sysbot-lpa-mmo/": {
     meta: {
+      id: "/sysbot-lpa-mmo/",
       categories: ["Legends Arceus"],
       section: "tool",
       guideVariants: null,
@@ -8450,6 +8667,7 @@ export const guides = {
   },
   "/transporter-dream-radar/": {
     meta: {
+      id: "/transporter-dream-radar/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -8481,6 +8699,7 @@ export const guides = {
   },
   "/transporter-patches/": {
     meta: {
+      id: "/transporter-patches/",
       categories: ["Transporter and Dream Radar"],
       section: "patch",
       guideVariants: null,
@@ -8517,6 +8736,7 @@ export const guides = {
   },
   "/transporter-rng-offline/": {
     meta: {
+      id: "/transporter-rng-offline/",
       categories: ["Transporter and Dream Radar"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -8557,6 +8777,7 @@ export const guides = {
   },
   "/transporter-rng/": {
     meta: {
+      id: "/transporter-rng/",
       categories: ["Transporter and Dream Radar"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -8592,6 +8813,7 @@ export const guides = {
   },
   "/ultra-sun-and-ultra-moon/": {
     meta: {
+      id: "/ultra-sun-and-ultra-moon/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -8623,6 +8845,7 @@ export const guides = {
   },
   "/wishing-star-jirachi/": {
     meta: {
+      id: "/wishing-star-jirachi/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -8666,6 +8889,7 @@ export const guides = {
   },
   "/x-and-y/": {
     meta: {
+      id: "/x-and-y/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -8697,6 +8921,7 @@ export const guides = {
   },
   "/xdcolo-tidsid-generator/": {
     meta: {
+      id: "/xdcolo-tidsid-generator/",
       categories: ["Gamecube"],
       section: "other_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -8735,6 +8960,7 @@ export const guides = {
   },
   "/xy-friend-safari-patch/": {
     meta: {
+      id: "/xy-friend-safari-patch/",
       categories: ["X and Y"],
       section: "patch",
       guideVariants: null,
@@ -8771,6 +8997,7 @@ export const guides = {
   },
   "/xy-pokeradar/": {
     meta: {
+      id: "/xy-pokeradar/",
       categories: ["X and Y"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -8806,6 +9033,7 @@ export const guides = {
   },
   "/zh-3ds-alt-settings/": {
     meta: {
+      id: "/3ds-alt-settings/",
       categories: ["HeartGold and SoulSilver", "Diamond, Pearl, and Platinum"],
       section: "tool",
       guideVariants: null,
@@ -8843,6 +9071,7 @@ export const guides = {
   },
   "/zh-3ds-helper/": {
     meta: {
+      id: "/3ds-helper/",
       categories: [
         "Diamond, Pearl, and Platinum",
         "HeartGold and SoulSilver",
@@ -8885,6 +9114,7 @@ export const guides = {
   },
   "/zh-bw2-egg/": {
     meta: {
+      id: "/bw2-egg/",
       categories: ["Black 2 and White 2"],
       section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -8921,6 +9151,7 @@ export const guides = {
   },
   "/zh-channel-jirachi/": {
     meta: {
+      id: "/channel-jirachi/",
       categories: ["Gamecube"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -8956,6 +9187,7 @@ export const guides = {
   },
   "/zh-dppt-3ds-rng/": {
     meta: {
+      id: "/dppt-3ds-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "technical_info",
       guideVariants: null,
@@ -8991,6 +9223,7 @@ export const guides = {
   },
   "/zh-dppt-advance-rng/": {
     meta: {
+      id: "/dppt-advance-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -9033,6 +9266,7 @@ export const guides = {
   },
   "/zh-dppt-cute-charm/": {
     meta: {
+      id: "/dppt-cute-charm/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "supporting_info",
       guideVariants: null,
@@ -9068,6 +9302,7 @@ export const guides = {
   },
   "/zh-dppt-initial-seed-retail/": {
     meta: {
+      id: "/dppt-initial-seed-retail/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -9109,6 +9344,7 @@ export const guides = {
   },
   "/zh-dppt-initial-seed/": {
     meta: {
+      id: "/dppt-initial-seed/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -9147,6 +9383,7 @@ export const guides = {
   },
   "/zh-dppt-pokeradar-rng/": {
     meta: {
+      id: "/dppt-pokeradar-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -9188,6 +9425,7 @@ export const guides = {
   },
   "/zh-dppt-tid-sid/": {
     meta: {
+      id: "/dppt-tid-sid/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "other_rng",
       guideVariants: ["retail"],
@@ -9223,6 +9461,7 @@ export const guides = {
   },
   "/zh-dppt-wild/": {
     meta: {
+      id: "/dppt-wild/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
@@ -9261,6 +9500,7 @@ export const guides = {
   },
   "/zh-e-tips-rng/": {
     meta: {
+      id: "/e-tips-rng/",
       categories: ["Emerald"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -9303,6 +9543,7 @@ export const guides = {
   },
   "/zh-emerald-mirage-island/": {
     meta: {
+      id: "/emerald-mirage-island/",
       categories: ["Emerald"],
       section: "other_rng",
       guideVariants: ["retail"],
@@ -9342,6 +9583,7 @@ export const guides = {
   },
   "/zh-emerald-painting-rng/": {
     meta: {
+      id: "/emerald-painting-rng/",
       categories: ["Emerald"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -9380,6 +9622,7 @@ export const guides = {
   },
   "/zh-emerald-pokerus-emu/": {
     meta: {
+      id: "/emerald-pokerus-emu/",
       categories: ["Emerald"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -9418,6 +9661,7 @@ export const guides = {
   },
   "/zh-emerald-shiny-starter/": {
     meta: {
+      id: "/emerald-shiny-starter/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -9457,6 +9701,7 @@ export const guides = {
   },
   "/zh-emerald-sid-feebas/": {
     meta: {
+      id: "/emerald-sid-feebas/",
       categories: ["Emerald"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -9498,6 +9743,7 @@ export const guides = {
   },
   "/zh-emulator-b2w2-dream-radar/": {
     meta: {
+      id: "/emulator-b2w2-dream-radar/",
       categories: ["Black 2 and White 2", "Transporter and Dream Radar"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -9537,6 +9783,7 @@ export const guides = {
   },
   "/zh-emulator-b2w2-runasdate-inital-seed/": {
     meta: {
+      id: "/emulator-b2w2-runasdate-inital-seed/",
       categories: ["Black 2 and White 2"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -9582,6 +9829,7 @@ export const guides = {
   },
   "/zh-emulator-bw-entralink/": {
     meta: {
+      id: "/emulator-bw-entralink/",
       categories: ["Black and White"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -9620,6 +9868,7 @@ export const guides = {
   },
   "/zh-emulator-bw-find-ds-parameters/": {
     meta: {
+      id: "/emulator-bw-find-ds-parameters/",
       categories: ["Black and White"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -9661,6 +9910,7 @@ export const guides = {
   },
   "/zh-emulator-bw-roamers/": {
     meta: {
+      id: "/emulator-bw-roamers/",
       categories: ["Black and White"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -9699,6 +9949,7 @@ export const guides = {
   },
   "/zh-emulator-bw-runasdate-initial-seed/": {
     meta: {
+      id: "/emulator-bw-runasdate-initial-seed/",
       categories: ["Black and White"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -9743,6 +9994,7 @@ export const guides = {
   },
   "/zh-emulator-bw-white-forest/": {
     meta: {
+      id: "/emulator-bw-white-forest/",
       categories: ["Black and White"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -9782,6 +10034,7 @@ export const guides = {
   },
   "/zh-emulator-dppt-cute-charm/": {
     meta: {
+      id: "/emulator-dppt-cute-charm/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "supporting_info",
       guideVariants: null,
@@ -9821,6 +10074,7 @@ export const guides = {
   },
   "/zh-emulator-dppt-egg/": {
     meta: {
+      id: "/emulator-dppt-egg/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -9859,6 +10113,7 @@ export const guides = {
   },
   "/zh-emulator-dppt-stationary/": {
     meta: {
+      id: "/emulator-dppt-stationary/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -9901,6 +10156,7 @@ export const guides = {
   },
   "/zh-emulator-dppt-tid-sid/": {
     meta: {
+      id: "/emulator-dppt-tid-sid/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -9943,6 +10199,7 @@ export const guides = {
   },
   "/zh-emulator-emerald-egg/": {
     meta: {
+      id: "/emulator-emerald-egg/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -9982,6 +10239,7 @@ export const guides = {
   },
   "/zh-emulator-flrg-stationary-and-gift/": {
     meta: {
+      id: "/emulator-flrg-stationary-and-gift/",
       categories: ["FireRed and LeafGreen"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -10027,6 +10285,7 @@ export const guides = {
   },
   "/zh-emulator-frlg-egg/": {
     meta: {
+      id: "/emulator-frlg-egg/",
       categories: ["FireRed and LeafGreen"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -10065,6 +10324,7 @@ export const guides = {
   },
   "/zh-emulator-frlg-wild/": {
     meta: {
+      id: "/emulator-frlg-wild/",
       categories: ["FireRed and LeafGreen"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -10106,6 +10366,7 @@ export const guides = {
   },
   "/zh-emulator-hgss-cute-charm/": {
     meta: {
+      id: "/emulator-hgss-cute-charm/",
       categories: ["HeartGold and SoulSilver"],
       section: "supporting_info",
       guideVariants: null,
@@ -10144,6 +10405,7 @@ export const guides = {
   },
   "/zh-emulator-hgss-egg/": {
     meta: {
+      id: "/emulator-hgss-egg/",
       categories: ["HeartGold and SoulSilver"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -10182,6 +10444,7 @@ export const guides = {
   },
   "/zh-emulator-hgss-stationary/": {
     meta: {
+      id: "/emulator-hgss-stationary/",
       categories: ["HeartGold and SoulSilver"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -10261,6 +10524,7 @@ export const guides = {
   },
   "/zh-emulator-rs-egg/": {
     meta: {
+      id: "/emulator-rs-egg/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -10299,6 +10563,7 @@ export const guides = {
   },
   "/zh-emulator-rs-stationary/": {
     meta: {
+      id: "/emulator-rs-stationary/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -10340,6 +10605,7 @@ export const guides = {
   },
   "/zh-emulator-rs-wishmaker/": {
     meta: {
+      id: "/emulator-rs-wishmaker/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -10382,6 +10648,7 @@ export const guides = {
   },
   "/zh-frlg-gen3-sid/": {
     meta: {
+      id: "/frlg-gen3-sid/",
       categories: ["FireRed and LeafGreen"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -10421,6 +10688,7 @@ export const guides = {
   },
   "/zh-frlg-seeding-bot/": {
     meta: {
+      id: "/frlg-seeding-bot/",
       categories: ["FireRed and LeafGreen"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -10459,6 +10727,7 @@ export const guides = {
   },
   "/zh-gba-methods/": {
     meta: {
+      id: "/gba-methods/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
@@ -10500,6 +10769,7 @@ export const guides = {
   },
   "/zh-gba-pokerus-technical/": {
     meta: {
+      id: "/gba-pokerus-technical/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
@@ -10542,6 +10812,7 @@ export const guides = {
   },
   "/zh-gba-vblank/": {
     meta: {
+      id: "/gba-vblank/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "technical_info",
       guideVariants: null,
@@ -10578,6 +10849,7 @@ export const guides = {
   },
   "/zh-gc-initial/": {
     meta: {
+      id: "/gc-initial/",
       categories: ["Gamecube"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -10614,6 +10886,7 @@ export const guides = {
   },
   "/zh-gen2-celebi/": {
     meta: {
+      id: "/gen2-celebi/",
       categories: ["Gold, Silver, Crystal"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -10653,6 +10926,7 @@ export const guides = {
   },
   "/zh-gen2-starters/": {
     meta: {
+      id: "/gen2-starters/",
       categories: ["Gold, Silver, Crystal"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -10692,6 +10966,7 @@ export const guides = {
   },
   "/zh-gen3-sid/": {
     meta: {
+      id: "/gen3-sid/",
       categories: ["Emerald"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -10731,6 +11006,7 @@ export const guides = {
   },
   "/zh-hgss-3ds-rng/": {
     meta: {
+      id: "/hgss-3ds-rng/",
       categories: ["HeartGold and SoulSilver"],
       section: "technical_info",
       guideVariants: null,
@@ -10766,6 +11042,7 @@ export const guides = {
   },
   "/zh-hgss-cute-charm/": {
     meta: {
+      id: "/hgss-cute-charm/",
       categories: ["HeartGold and SoulSilver"],
       section: "supporting_info",
       guideVariants: null,
@@ -10801,6 +11078,7 @@ export const guides = {
   },
   "/zh-hgss-initial-seed/": {
     meta: {
+      id: "/hgss-initial-seed/",
       categories: ["HeartGold and SoulSilver"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -10839,6 +11117,7 @@ export const guides = {
   },
   "/zh-hgss-rng-advance/": {
     meta: {
+      id: "/hgss-rng-advance/",
       categories: ["HeartGold and SoulSilver"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -10881,6 +11160,7 @@ export const guides = {
   },
   "/zh-hgss-tid-sid/": {
     meta: {
+      id: "/hgss-tid-sid/",
       categories: ["HeartGold and SoulSilver"],
       section: "other_rng",
       guideVariants: ["retail"],
@@ -10916,6 +11196,7 @@ export const guides = {
   },
   "/zh-install-pokereader/": {
     meta: {
+      id: "/install-pokereader/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -10966,6 +11247,7 @@ export const guides = {
   },
   "/zh-meteor-jirachi/": {
     meta: {
+      id: "/meteor-jirachi/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -11004,6 +11286,7 @@ export const guides = {
   },
   "/zh-mgba-setup/": {
     meta: {
+      id: "/mgba-setup/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
@@ -11044,6 +11327,7 @@ export const guides = {
   },
   "/zh-misc-dolphin-gba-bios/": {
     meta: {
+      id: "/misc-dolphin-gba-bios/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
@@ -11087,6 +11371,7 @@ export const guides = {
   },
   "/zh-pal-xd-eevee/": {
     meta: {
+      id: "/pal-xd-eevee/",
       categories: ["Gamecube"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -11125,6 +11410,7 @@ export const guides = {
   },
   "/zh-retail-dppt-starter/": {
     meta: {
+      id: "/retail-dppt-starter/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -11165,6 +11451,7 @@ export const guides = {
   },
   "/zh-retail-emerald-egg/": {
     meta: {
+      id: "/retail-emerald-egg/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -11205,6 +11492,7 @@ export const guides = {
   },
   "/zh-retail-emerald-wild/": {
     meta: {
+      id: "/retail-emerald-wild/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -11245,6 +11533,7 @@ export const guides = {
   },
   "/zh-retail-hgss-starter/": {
     meta: {
+      id: "/retail-hgss-starter/",
       categories: ["HeartGold and SoulSilver"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
@@ -11285,6 +11574,7 @@ export const guides = {
   },
   "/zh-retail-oras-tid/": {
     meta: {
+      id: "/retail-oras-tid/",
       categories: ["Omega Ruby and Alpha Sapphire"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -11321,6 +11611,7 @@ export const guides = {
   },
   "/zh-retail-rubysapphire-tid/": {
     meta: {
+      id: "/retail-rubysapphire-tid/",
       categories: ["Ruby and Sapphire"],
       section: "other_rng",
       guideVariants: ["retail"],
@@ -11362,6 +11653,7 @@ export const guides = {
   },
   "/zh-retail-sm-egg-no-mmsc/": {
     meta: {
+      id: "/retail-sm-egg-no-mmsc/",
       categories: ["Sun and Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -11404,6 +11696,7 @@ export const guides = {
   },
   "/zh-retail-sm-timeline/": {
     meta: {
+      id: "/retail-sm-timeline/",
       categories: ["Sun and Moon"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -11442,6 +11735,7 @@ export const guides = {
   },
   "/zh-retail-usum-egg-no-mmsc/": {
     meta: {
+      id: "/retail-usum-egg-no-mmsc/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -11484,6 +11778,7 @@ export const guides = {
   },
   "/zh-retail-usum-timeline/": {
     meta: {
+      id: "/retail-usum-timeline/",
       categories: ["Ultra Sun and Ultra Moon"],
       section: "rng_technique",
       guideVariants: ["cfw-emu"],
@@ -11522,6 +11817,7 @@ export const guides = {
   },
   "/zh-rs-battery/": {
     meta: {
+      id: "/rs-battery/",
       categories: ["Ruby and Sapphire"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -11561,6 +11857,7 @@ export const guides = {
   },
   "/zh-rs-gen3-sid/": {
     meta: {
+      id: "/rs-gen3-sid/",
       categories: ["Ruby and Sapphire"],
       section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
@@ -11600,6 +11897,7 @@ export const guides = {
   },
   "/zh-rs-mirage-island/": {
     meta: {
+      id: "/rs-mirage-island/",
       categories: ["Ruby and Sapphire"],
       section: "other_rng",
       guideVariants: ["retail"],
@@ -11636,6 +11934,7 @@ export const guides = {
   },
   "/zh-rs-pokerus-emu/": {
     meta: {
+      id: "/rs-pokerus-emu/",
       categories: ["Ruby and Sapphire"],
       section: "other_rng",
       guideVariants: ["cfw-emu"],
@@ -11671,6 +11970,7 @@ export const guides = {
   },
   "/zh-rs-pokerus-retail/": {
     meta: {
+      id: "/rs-pokerus-retail/",
       categories: ["Ruby and Sapphire"],
       section: "other_rng",
       guideVariants: ["retail"],
@@ -11709,6 +12009,7 @@ export const guides = {
   },
   "/zh-rs-sid-feebas/": {
     meta: {
+      id: "/rs-sid-feebas/",
       categories: ["Ruby and Sapphire"],
       section: "rng_technique",
       guideVariants: ["retail"],
@@ -11747,6 +12048,7 @@ export const guides = {
   },
   "/zh-wishing-star-jirachi/": {
     meta: {
+      id: "/wishing-star-jirachi/",
       categories: ["Ruby and Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],

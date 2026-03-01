@@ -65,7 +65,9 @@ export type GamePageGuideCard = {
   section: GuideMeta["section"];
 };
 
-type InternalOrExternalGuideMeta = GuideMeta | (typeof externalGuides)[number];
+export type InternalOrExternalGuideMeta =
+  | GuideMeta
+  | (typeof externalGuides)[number];
 
 export type GuidesBySection = {
   rng_technique: GamePageGuideCard[];

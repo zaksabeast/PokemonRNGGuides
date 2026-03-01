@@ -230,6 +230,7 @@ const BaseGuideSchema = z
     }
 
     return {
+      id: meta.slug,
       categories: normalizeCategories(category),
       section,
       guideVariants: hasGuideSection ? normalizedVariants : null,
@@ -311,7 +312,6 @@ type ExternalLinkInput = tst.O.Merge<
 type ExternalLinkMetadata = tst.O.Merge<
   tst.O.Omit<BaseGuideSchemaType, "slug" | "type">,
   {
-    id: string;
     type: "externalLink";
     displayAttributes: DetectableTag[];
     url: string;

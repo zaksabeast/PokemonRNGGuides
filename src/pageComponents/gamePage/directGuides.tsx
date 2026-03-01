@@ -5,12 +5,10 @@ import { filterVisibleGuide, sortGuides } from "./utils";
 import { match } from "ts-pattern";
 import { GuideCardFrame } from "./guideCardFrame";
 
-type NonDraft = tst.U.Exclude<
+type VisibleNonRngGuide = tst.U.Exclude<
   InternalOrExternalGuideMeta,
-  { isRoughDraft: true }
+  { hideFromNavDrawer: true }
 >;
-
-type VisibleNonRngGuide = tst.U.Exclude<NonDraft, { hideFromNavDrawer: true }>;
 
 type DirectGuideCardProps = {
   isTop: boolean;

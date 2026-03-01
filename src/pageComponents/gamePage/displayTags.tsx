@@ -33,6 +33,10 @@ const DisplayTag = styled(Tag)<{ tag: DisplayAttribute }>(({ tag }) => {
       color: "#007AFF",
       backgroundColor: "rgba(0, 122, 255, 0.1)",
     }))
+    .with("rough_draft", () => ({
+      color: "#FF3B30",
+      backgroundColor: "rgba(255, 59, 48, 0.1)",
+    }))
     .exhaustive();
 
   return {
@@ -48,6 +52,7 @@ const getDisplayAttributeLabel = (tag: DisplayAttribute) => {
     .with("new", () => "New")
     .with("web_tool", () => "Web Tool")
     .with("video_guide", () => "Video")
+    .with("rough_draft", () => "Rough Draft")
     .exhaustive();
 };
 

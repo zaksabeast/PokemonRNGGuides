@@ -36,20 +36,25 @@ export const getSectionLabel = (section: string) => {
 };
 
 export const sortGuides = <
-  Guide extends { orderPriority: number; navDrawerTitle: string },
+  Guide extends {
+    orderPriority: number;
+    navDrawerTitle: string;
+    isRoughDraft: boolean;
+  },
 >(
   guides: Guide[],
 ): Guide[] => {
   return sortBy(guides, [
     (guide) => guide.orderPriority,
+    (guide) => guide.isRoughDraft,
     (guide) => guide.navDrawerTitle,
   ]);
 };
 
 export const filterVisibleGuide = <
-  Guide extends { isRoughDraft: boolean; hideFromNavDrawer: boolean },
+  Guide extends { hideFromNavDrawer: boolean },
 >(
   guide: Guide,
-): guide is Guide & { isRoughDraft: false; hideFromNavDrawer: false } => {
-  return !guide.isRoughDraft && !guide.hideFromNavDrawer;
+): guide is Guide & { hideFromNavDrawer: false } => {
+  return !guide.hideFromNavDrawer;
 };

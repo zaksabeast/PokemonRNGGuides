@@ -252,7 +252,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/bdsp-chatot/:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -508,7 +508,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/cfw-bdsp-egg/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Egg.mdx"),
@@ -593,7 +593,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/cfw-bdsp-tidandsid/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -636,7 +636,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/cfw-bdsp-wild/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Wild.mdx"),
@@ -1734,12 +1734,12 @@ export const guides = {
     meta: {
       id: "/emerald-static/",
       categories: ["Emerald"],
-      section: "pokemon_rng",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "wild",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/emerald-static/",
       isNew: false,
-      title: "Emerald Static3",
-      navDrawerTitle: "Emerald Static3",
+      title: "Static Tool",
+      navDrawerTitle: "Static Tool",
       description: "Static encounters in Emerald",
       slug: "/emerald-static/",
       isRoughDraft: true,
@@ -1752,12 +1752,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
       translations: null,
-      guideGroupId: "en:wild:Emerald",
-      guideVariantLinks: {
-        retail: { type: "slug", slug: "/emerald-static/" },
-        cfwEmu: { type: "slug", slug: "/emerald-static/" },
-      },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/emerald-static/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
@@ -1773,12 +1770,12 @@ export const guides = {
     meta: {
       id: "/emerald-tidsid-generator/",
       categories: ["Emerald"],
-      section: "other_rng",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "tid-sid",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/emerald-tidsid-generator/",
       isNew: false,
-      title: "Emerald TID and SID Generator",
-      navDrawerTitle: "Emerald TID and SID Generator",
+      title: "TID and SID Generator",
+      navDrawerTitle: "TID and SID Generator",
       description: "Generator for TID/SID in Emerald",
       slug: "/emerald-tidsid-generator/",
       isRoughDraft: true,
@@ -1791,12 +1788,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
-      guideGroupId: "en:tid-sid:Emerald",
-      guideVariantLinks: {
-        retail: { type: "slug", slug: "/emerald-tidsid-generator/" },
-        cfwEmu: { type: "slug", slug: "/emerald-tidsid-generator/" },
-      },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/emerald-tidsid-generator/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -1835,7 +1829,7 @@ export const guides = {
         retail: { type: "slug", slug: "/emerald-wild/" },
         cfwEmu: null,
       },
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx")),
     getRawFile: memoize(async () => {
@@ -1986,7 +1980,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-b2w2-wild/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
     getRawFile: memoize(async () => {
@@ -2224,7 +2218,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-bw-wild/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
     getRawFile: memoize(async () => {
@@ -2259,7 +2253,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-colosseum-general/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/Colosseum General Guide (Emu).mdx"),
@@ -2629,7 +2623,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-frlg-stationary/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -2752,7 +2746,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-breeding/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -2870,7 +2864,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-special-wild/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -2959,7 +2953,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-tid-sid/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/TID SID.mdx"),
@@ -2999,7 +2993,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-wild/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -3028,7 +3022,7 @@ export const guides = {
       slug: "/emulator-hgss-wondercard/",
       isRoughDraft: true,
       orderPriority: 20,
-      hideFromNavDrawer: false,
+      hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
       layout: "guide",
@@ -3041,7 +3035,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-wondercard/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Wondercard.mdx"),
@@ -3084,7 +3078,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-oras-dexnav/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/DexNav.mdx")),
     getRawFile: memoize(async () => {
@@ -3121,7 +3115,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-rs-dead-battery-stationary/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -3291,7 +3285,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-rs-wild/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -4077,12 +4071,12 @@ export const guides = {
     meta: {
       id: "/frlg-static/",
       categories: ["FireRed and LeafGreen"],
-      section: "pokemon_rng",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "wild",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/frlg-static/",
       isNew: false,
-      title: "FireRed and LeafGreen Static3",
-      navDrawerTitle: "FireRed and LeafGreen Static3",
+      title: "Static Tool",
+      navDrawerTitle: "Static Tool",
       description: "Static encounters in FireRed and LeafGreen",
       slug: "/frlg-static/",
       isRoughDraft: true,
@@ -4095,12 +4089,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
       translations: null,
-      guideGroupId: "en:wild:FireRed and LeafGreen",
-      guideVariantLinks: {
-        retail: { type: "slug", slug: "/frlg-static/" },
-        cfwEmu: { type: "slug", slug: "/frlg-static/" },
-      },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/frlg-static/:FireRed and LeafGreen",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
@@ -4116,12 +4107,12 @@ export const guides = {
     meta: {
       id: "/frlg-tidsid-generator/",
       categories: ["FireRed and LeafGreen"],
-      section: "other_rng",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "tid-sid",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/frlg-tidsid-generator/",
       isNew: false,
-      title: "FRLG TID and SID Generator",
-      navDrawerTitle: "FRLG TID and SID Generator",
+      title: "TID and SID Generator",
+      navDrawerTitle: "TID and SID Generator",
       description: "Generator for TID and SID in FRLG",
       slug: "/frlg-tidsid-generator/",
       isRoughDraft: true,
@@ -4134,12 +4125,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
-      guideGroupId: "en:tid-sid:FireRed and LeafGreen",
-      guideVariantLinks: {
-        retail: { type: "slug", slug: "/frlg-tidsid-generator/" },
-        cfwEmu: { type: "slug", slug: "/frlg-tidsid-generator/" },
-      },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/frlg-tidsid-generator/:FireRed and LeafGreen",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -4179,7 +4167,7 @@ export const guides = {
         retail: { type: "slug", slug: "/frlg-tips-rng/" },
         cfwEmu: { type: "slug", slug: "/frlg-tips-rng/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -4525,7 +4513,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/gen2-research/:Gold, Silver, Crystal",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/RngResearch.mdx")),
     getRawFile: memoize(async () => {
@@ -6465,7 +6453,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-bw-entralink/" },
         cfwEmu: null,
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Retail Entralink.mdx")),
     getRawFile: memoize(async () => {
@@ -8182,7 +8170,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/rs-initial-seed/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx"),
@@ -8258,7 +8246,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/rs-pokefinder-setup/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/PokeFinder Setup.mdx"),
@@ -8388,12 +8376,12 @@ export const guides = {
     meta: {
       id: "/rs-static/",
       categories: ["Ruby and Sapphire"],
-      section: "pokemon_rng",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "wild",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/rs-static/",
       isNew: false,
-      title: "Ruby and Sapphire Static3",
-      navDrawerTitle: "Ruby and Sapphire Static3",
+      title: "Static Tool",
+      navDrawerTitle: "Static Tool",
       description: "Static encounters in Ruby and Sapphire",
       slug: "/rs-static/",
       isRoughDraft: true,
@@ -8406,12 +8394,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
       translations: null,
-      guideGroupId: "en:wild:Ruby and Sapphire",
-      guideVariantLinks: {
-        retail: { type: "slug", slug: "/rs-static/" },
-        cfwEmu: { type: "slug", slug: "/rs-static/" },
-      },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/rs-static/:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
@@ -8427,12 +8412,12 @@ export const guides = {
     meta: {
       id: "/rs-tidsid-generator/",
       categories: ["Ruby and Sapphire"],
-      section: "other_rng",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "tid-sid",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/rs-tidsid-generator/",
       isNew: false,
-      title: "RS TID and SID Generator",
-      navDrawerTitle: "RS TID and SID Generator",
+      title: "TID and SID Generator",
+      navDrawerTitle: "TID and SID Generator",
       description: "Generator for TID and SID in RS",
       slug: "/rs-tidsid-generator/",
       isRoughDraft: true,
@@ -8445,12 +8430,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
-      guideGroupId: "en:tid-sid:Ruby and Sapphire",
-      guideVariantLinks: {
-        retail: { type: "slug", slug: "/rs-tidsid-generator/" },
-        cfwEmu: { type: "slug", slug: "/rs-tidsid-generator/" },
-      },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/rs-tidsid-generator/:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -8490,7 +8472,7 @@ export const guides = {
         retail: { type: "slug", slug: "/rs-tips-rng/" },
         cfwEmu: { type: "slug", slug: "/rs-tips-rng/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -8923,12 +8905,12 @@ export const guides = {
     meta: {
       id: "/xdcolo-tidsid-generator/",
       categories: ["Gamecube"],
-      section: "other_rng",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "tid-sid",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/xdcolo-tidsid-generator/",
       isNew: false,
-      title: "XD and Colo TID and SID Generator",
-      navDrawerTitle: "XD and Colo TID and SID Generator",
+      title: "TID and SID Generator",
+      navDrawerTitle: "TID and SID Generator",
       description: "Generator for TID and SID in XD and Colo",
       slug: "/xdcolo-tidsid-generator/",
       isRoughDraft: true,
@@ -8941,12 +8923,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
-      guideGroupId: "en:tid-sid:Gamecube",
-      guideVariantLinks: {
-        retail: { type: "slug", slug: "/xdcolo-tidsid-generator/" },
-        cfwEmu: { type: "slug", slug: "/xdcolo-tidsid-generator/" },
-      },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/xdcolo-tidsid-generator/:Gamecube",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),

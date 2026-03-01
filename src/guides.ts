@@ -180,7 +180,7 @@ const mergeGuideCard = (
       (guide.isNew && hasGuideVariant(guide, "cfw-emu")),
     isNew: existing.isNew || guide.isNew,
     hideFromNavDrawer: existing.hideFromNavDrawer && guide.hideFromNavDrawer,
-    isRoughDraft: existing.isRoughDraft && guide.isRoughDraft,
+    isRoughDraft: existing.isRoughDraft || guide.isRoughDraft,
   };
 };
 

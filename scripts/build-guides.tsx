@@ -797,9 +797,13 @@ const buildFinalGuides = async ({
         noDetectedTags,
       });
 
+      const isRoughDraft =
+        metadata.type === "baseGuide" && metadata.isRoughDraft;
+      const roughDraftAttribute = isRoughDraft ? ["rough_draft"] : [];
+
       return {
         ...metadata,
-        displayAttributes,
+        displayAttributes: [...displayAttributes, ...roughDraftAttribute],
       };
     },
     { concurrency: 5 },

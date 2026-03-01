@@ -166,6 +166,8 @@ const SingleOrMultipleSchema = <T extends z.ZodTypeAny>(schema: T) =>
     return isArray(value) ? value : [value];
   });
 
+const MAX_ORDER_PRIORITY = 20;
+
 const BaseGuideSchema = z
   .object({
     title: z.string(),
@@ -179,6 +181,11 @@ const BaseGuideSchema = z
     slug: SlugSchema,
     isRoughDraft: z.boolean().default(false),
     section: GuideSectionSchema,
+    orderPriority: z
+      .number()
+      .min(0)
+      .max(MAX_ORDER_PRIORITY)
+      .default(MAX_ORDER_PRIORITY),
     variant: SingleOrMultipleSchema(GuideVariantSchema).optional(),
     guideKey: z
       .string()
@@ -287,6 +294,7 @@ type ExternalLinkInput = tst.O.Merge<
   >,
   {
     url: string;
+    orderPriority?: number;
     displayAttributes?: DetectableTag[];
   } & (
     | {
@@ -820,6 +828,7 @@ const getExternalLinks = () => {
       title: externalLink.navDrawerTitle,
       guideVariants: externalLink.guideVariants ?? null,
       displayAttributes: externalLink.displayAttributes ?? [],
+      orderPriority: externalLink.orderPriority ?? MAX_ORDER_PRIORITY,
       description: "",
       layout: "guide",
       type: "externalLink" as const,

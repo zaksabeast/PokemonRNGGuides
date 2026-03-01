@@ -200,6 +200,17 @@ const DisplayTags = ({ displayTags }: DisplayTagsProps) => {
   );
 };
 
+const sortGuides = <
+  Guide extends { orderPriority: number; navDrawerTitle: string },
+>(
+  guides: Guide[],
+): Guide[] => {
+  return sortBy(guides, [
+    (guide) => guide.orderPriority,
+    (guide) => guide.navDrawerTitle,
+  ]);
+};
+
 export const GamePageComponent = () => {
   const route = useActiveRoute();
 
@@ -225,47 +236,45 @@ export const GamePageComponent = () => {
                 {getSectionLabel(section)}
               </Typography.Title>
               <Flex vertical>
-                {sortBy(filteredGuides, (guide) => guide.navDrawerTitle).map(
-                  (guide, index) => {
-                    const displayTags = getUniqueDisplayTags(
-                      guide.displayAttributes,
-                    );
+                {sortGuides(filteredGuides).map((guide, index) => {
+                  const displayTags = getUniqueDisplayTags(
+                    guide.displayAttributes,
+                  );
 
-                    return (
-                      <GuideCardFrame
-                        key={guide.id}
-                        cardProps={{
-                          $isTop: index === 0,
-                          $isBottom: index === filteredGuides.length - 1,
-                        }}
-                        cardId={`guide-${guide.id}`}
-                        title={guide.navDrawerTitle}
-                        isNew={guide.isNew}
-                        displayAttributesContent={
-                          <DisplayTags displayTags={displayTags} />
-                        }
-                        bottomContent={
-                          <Flex gap={8} wrap>
-                            <LinkButton
-                              link={guide.retailLink}
-                              trackerId={`guide-retail-${guide.id}`}
-                              type={guide.retailIsNew ? "primary" : undefined}
-                            >
-                              Retail
-                            </LinkButton>
-                            <LinkButton
-                              link={guide.cfwEmuLink}
-                              trackerId={`guide-cfw-emu-${guide.id}`}
-                              type={guide.cfwEmuIsNew ? "primary" : undefined}
-                            >
-                              Emu
-                            </LinkButton>
-                          </Flex>
-                        }
-                      />
-                    );
-                  },
-                )}
+                  return (
+                    <GuideCardFrame
+                      key={guide.id}
+                      cardProps={{
+                        $isTop: index === 0,
+                        $isBottom: index === filteredGuides.length - 1,
+                      }}
+                      cardId={`guide-${guide.id}`}
+                      title={guide.navDrawerTitle}
+                      isNew={guide.isNew}
+                      displayAttributesContent={
+                        <DisplayTags displayTags={displayTags} />
+                      }
+                      bottomContent={
+                        <Flex gap={8} wrap>
+                          <LinkButton
+                            link={guide.retailLink}
+                            trackerId={`guide-retail-${guide.id}`}
+                            type={guide.retailIsNew ? "primary" : undefined}
+                          >
+                            Retail
+                          </LinkButton>
+                          <LinkButton
+                            link={guide.cfwEmuLink}
+                            trackerId={`guide-cfw-emu-${guide.id}`}
+                            type={guide.cfwEmuIsNew ? "primary" : undefined}
+                          >
+                            Emu
+                          </LinkButton>
+                        </Flex>
+                      }
+                    />
+                  );
+                })}
               </Flex>
             </Flex>
           );
@@ -286,47 +295,45 @@ export const GamePageComponent = () => {
               {getSectionLabel(section)}
             </Typography.Title>
             <Flex vertical>
-              {sortBy(filteredGuides, (guide) => guide.navDrawerTitle).map(
-                (guide, index) => {
-                  const displayTags = getUniqueDisplayTags(
-                    guide.displayAttributes,
-                  );
-                  const { key, ...linkProps } = match(guide)
-                    .with({ type: "baseGuide" }, (matched) => ({
-                      key: matched.slug,
-                      slug: matched.slug,
-                    }))
-                    .with({ type: "externalLink" }, (matched) => ({
-                      key: matched.id,
-                      externalHref: matched.url,
-                      newTab: true,
-                    }))
-                    .exhaustive();
-                  return (
-                    <GuideCardFrame
-                      key={key}
-                      cardId={`guide-${key}`}
-                      title={
-                        <>
-                          {guide.navDrawerTitle}
-                          {guide.type === "externalLink" && (
-                            <Icon name="OpenInNew" ml={8} />
-                          )}
-                        </>
-                      }
-                      isNew={guide.isNew}
-                      cardProps={{
-                        ...linkProps,
-                        $isTop: index === 0,
-                        $isBottom: index === filteredGuides.length - 1,
-                      }}
-                      displayAttributesContent={
-                        <DisplayTags displayTags={displayTags} />
-                      }
-                    />
-                  );
-                },
-              )}
+              {sortGuides(filteredGuides).map((guide, index) => {
+                const displayTags = getUniqueDisplayTags(
+                  guide.displayAttributes,
+                );
+                const { key, ...linkProps } = match(guide)
+                  .with({ type: "baseGuide" }, (matched) => ({
+                    key: matched.slug,
+                    slug: matched.slug,
+                  }))
+                  .with({ type: "externalLink" }, (matched) => ({
+                    key: matched.id,
+                    externalHref: matched.url,
+                    newTab: true,
+                  }))
+                  .exhaustive();
+                return (
+                  <GuideCardFrame
+                    key={key}
+                    cardId={`guide-${key}`}
+                    title={
+                      <>
+                        {guide.navDrawerTitle}
+                        {guide.type === "externalLink" && (
+                          <Icon name="OpenInNew" ml={8} />
+                        )}
+                      </>
+                    }
+                    isNew={guide.isNew}
+                    cardProps={{
+                      ...linkProps,
+                      $isTop: index === 0,
+                      $isBottom: index === filteredGuides.length - 1,
+                    }}
+                    displayAttributesContent={
+                      <DisplayTags displayTags={displayTags} />
+                    }
+                  />
+                );
+              })}
             </Flex>
           </Flex>
         );

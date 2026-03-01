@@ -61,6 +61,7 @@ export type GamePageGuideCard = {
   isNew: boolean;
   hideFromNavDrawer: boolean;
   isRoughDraft: boolean;
+  orderPriority: number;
   section: GuideMeta["section"];
 };
 
@@ -147,20 +148,13 @@ const createGuideCard = (
   variants: GuideVariantLinkPair | null,
 ): GamePageGuideCard => {
   return {
+    ...guide,
     id: guide.guideGroupId,
-    guideKey: guide.guideKey,
-    title: guide.title,
-    navDrawerTitle: guide.navDrawerTitle,
-    description: guide.description,
     displayAttributes: [...guide.displayAttributes],
     retailLink: variants?.retail ?? null,
     retailIsNew: guide.isNew && hasGuideVariant(guide, "retail"),
     cfwEmuLink: variants?.cfwEmu ?? null,
     cfwEmuIsNew: guide.isNew && hasGuideVariant(guide, "cfw-emu"),
-    isNew: guide.isNew,
-    hideFromNavDrawer: guide.hideFromNavDrawer,
-    isRoughDraft: guide.isRoughDraft,
-    section: guide.section,
   };
 };
 

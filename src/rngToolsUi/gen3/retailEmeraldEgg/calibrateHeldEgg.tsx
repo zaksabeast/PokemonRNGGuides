@@ -7,8 +7,8 @@ import {
   FormikSelect,
   RngToolSubmit,
   Typography,
-  CalibrateTimerButton,
 } from "~/components";
+import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
 import {
   pokeNavTrainers,
   useHeldEggState,

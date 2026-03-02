@@ -6,8 +6,8 @@ import {
   RngToolSubmit,
   Field,
   FormikSelect,
-  Gen4Timer as Gen4TimerComponent,
 } from "~/components";
+import { Gen4Timer as Gen4TimerComponent } from "~/components/gen4Timer";
 import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
 import { ZodConsole } from "~/rngTools";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";

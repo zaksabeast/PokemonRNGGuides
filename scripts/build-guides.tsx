@@ -338,7 +338,7 @@ const externalGuides: ExternalLinkInput[] = [
     addedOn: "2026-03-01",
     categories: ["Black and White", "Black 2 and White 2"],
     section: "tool",
-    navDrawerTitle: "Gen 5 web tool",
+    navDrawerTitle: "niart120's Gen 5 web tool",
     guideKey: "gen5-web-tool",
     displayAttributes: ["web_tool"],
     url: "https://niart120.github.io/5genSearch-web/",

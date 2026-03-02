@@ -6,6 +6,9 @@ import { Icon } from "./icons";
 import { Flex } from "./flex";
 import { settings } from "~/settings";
 import { Link } from "./link";
+import { LinkButton } from "./linkButton";
+
+const CONTRIBUTE_LINK = { type: "slug", slug: "/contributing/" } as const;
 
 const StyledHeader = styled(Layout.Header)({
   zIndex: 100,
@@ -44,13 +47,13 @@ export const Header = () => {
         </Flex>
 
         <Flex align="center" gap={16}>
-          <Button
+          <LinkButton
             trackerId="contribute_url"
-            href={settings.discordUrl}
+            link={CONTRIBUTE_LINK}
             icon={<Icon name="Edit" size={20} />}
           >
             Contribute
-          </Button>
+          </LinkButton>
           <Button
             trackerId="discord_url"
             href={settings.discordUrl}

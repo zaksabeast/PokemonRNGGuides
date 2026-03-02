@@ -7,6 +7,7 @@ type LinkButtonProps = {
   trackerId: string;
   type?: React.ComponentProps<typeof Button>["type"];
   children?: React.ReactNode;
+  icon?: React.ReactNode;
   link: SlugOrExternalLink | null;
 };
 

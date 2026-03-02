@@ -1,4 +1,5 @@
 import React from "react";
+import { Input } from "antd";
 import {
   MarkdownBreak,
   MarkdownH1,
@@ -147,6 +148,7 @@ const nonTools = {
   TranslationHelperEditGuide,
   ToolTranslationButton,
   TranslationHelperSelectLanguage,
+  TextArea: Input.TextArea,
 };
 
 const tools = {

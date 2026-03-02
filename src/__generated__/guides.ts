@@ -842,6 +842,39 @@ export const guides = {
       return file.default;
     }),
   },
+  "/contributing/": {
+    meta: {
+      id: "/contributing/",
+      categories: ["Home"],
+      section: "site_info",
+      guideVariants: null,
+      guideKey: "/contributing/",
+      isNew: false,
+      title: "Contribute Pokémon RNG Guides",
+      navDrawerTitle: "Contributing",
+      description:
+        "Learn how to contribute Pokémon RNG guides, translations, and tools. Help improve tutorials for RNG manipulation across Pokémon games.",
+      slug: "/contributing/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Contributing.mdx",
+      translations: null,
+      guideGroupId: "en:/contributing/:Home",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/Contributing.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Contributing.mdx?raw");
+      return file.default;
+    }),
+  },
   "/crystal/": {
     meta: {
       id: "/crystal/",
@@ -10465,6 +10498,7 @@ export const guides = {
   },
   "/zh-emulator-oras-dexnav/": {
     meta: {
+      id: "/emulator-oras-dexnav/",
       categories: ["Omega Ruby and Alpha Sapphire"],
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
@@ -10476,6 +10510,7 @@ export const guides = {
         "学习如何在《欧米伽红宝石 / 阿尔法蓝宝石》中利用 DexNav 功能进行宝可梦乱数。",
       slug: "/zh-emulator-oras-dexnav/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-oras-dexnav/", language: "zh" },
@@ -12093,6 +12128,7 @@ export const guideSlugs = [
   "/citrarng-setup/",
   "/connect-dolphin-to-gba/",
   "/consistent-platinum-rng/",
+  "/contributing/",
   "/crystal/",
   "/de-retail-emerald-egg/",
   "/delete-pokemon-save/",

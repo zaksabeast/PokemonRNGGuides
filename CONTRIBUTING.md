@@ -1,4 +1,4 @@
-If you're interested in contributing, reach out on Discord in our [#discussion channel](https://discord.com/channels/285269328469950464/888240330628005898) to coordinate with us.
+If you're interested in contributing, reach out on Discord in our [#site-content channel](https://discord.com/channels/285269328469950464/888240330628005898) to coordinate with us.
 
 <details>
   <summary><b>Read this if you're interested in translating guides</b></summary>
@@ -7,7 +7,7 @@ If you're interested in contributing, reach out on Discord in our [#discussion c
 
 There are two ways to submit a translation:
 
-1. Send it to our Discord [#discussion channel](https://discord.com/channels/285269328469950464/888240330628005898)
+1. Send it to our Discord [#site-content channel](https://discord.com/channels/285269328469950464/888240330628005898)
 2. Submit a GitHub pull request
 
 If you send it to us in Discord, we'll take care of everything from there - you don't need to read the next section.
@@ -55,40 +55,178 @@ Follow our [Style Guide](./Style%20Guide.mdx) when writing the guide.
 ChatGPT can help with wording, grammar, and formatting. Feel free to use this prompt when writing guides:
 
 ```
-You’re helping to clean up and simplify guides for Pokémon RNG. The goal is to make them **clear, easy to follow, and concise**, without removing or adding any information. Here's the format to follow:
+You're helping clean up and simplify guides for Pokémon RNG.
 
-**Guide Format Template:**
+Your goal is to make the guide **clear, concise, and easy to follow**, while preserving **100% of the original meaning and information**.
 
-_INSERT THE CURRENT STYLE GUIDE HERE_
+---
 
-**Important Things to Keep in Mind:**
-- **NO nested bullets**. If there’s any nested list, flatten it, but keep the original content. Everything should be a simple list with no indentation.
-- **Keep the structure** exactly as shown in the template, including the bullet points, titles, and descriptions.
-- **Don’t add extra info or change anything** in the guide that isn’t already there.
-- **Don’t mess with images, links, or any formatting**. Leave them as-is.
-- Keep everything **casual and simple**, making it easier for people who are not native English speakers to understand.
-- Any "Note:" should be in a code block
+## Core Rules (Strict)
 
-**Context to Remember:**
-- Pokémon RNG is about exploiting the RNG to get perfect shiny Pokémon.
-- Citra, Lime3DS, and Azahar are 3DS emulators for computers and Android.
-- PCalc is an older software that shows RNG info for the 3DS.
-- PokeReader is a new, updated software for the 3DS that shows RNG info and hidden Pokémon data. It replaces PCalc and can also run on 3DS emulators.
-- RNG Reporter is an old calculator for predicting RNG in GBA, NDS, and GameCube games.
-- PokeFinder is a new calculator for predicting RNG in GBA, NDS, GameCube, and Switch games.
-- 3DSRNGTool is a computer calculator for predicting RNG in 3DS games.
-- A "Frame" is one advancement of the RNG.  Prefer the term "Advance" over "Frame".
-- "Final screen" is where you push the \`A\` button to generate a Pokémon.
-- "Initial seed" is the seed of the RNG.
-- A "PID" is a Personality ID that affects Pokémon properties, like shininess.
-- "PSV" is a Pokémon Shiny Value, derived from the PID. It's called "ESV" (Egg Shiny Value) for eggs.
-- "TID" is a trainer ID, and "SID" is a secret ID. Together they create the TSV (Trainer Shiny Value).
-- A Pokémon is shiny when the TSV and PSV match.
-- "IVs" are Individual Values that affect Pokémon strength.
-- Some RNGs involve "Chains", where you catch multiple Pokémon in a row.
-- NPCs can advance RNG and create noise that needs to be handled.
+1. **Do NOT remove, add, or reinterpret any information.**
+2. You **may reword sentences** for clarity and conciseness.
+3. You **may reorganize structure** to match the required format.
+4. You **may normalize terminology** (e.g., "Frame" → "Advance").
+5. **Do NOT break or modify links, images, or existing special formatting.**
 
-**Your job**: Take the guide text, simplify the wording, fix any structure, and **follow this format exactly**. Don’t change anything except to make it simpler and more concise. Don't add extra info or remove anything—just make it easier to follow!
+---
+
+## Priority Order
+
+When rules conflict, follow this order:
+
+1. Preserve meaning and all information.
+2. Apply formatting rules.
+3. Improve clarity and conciseness.
+
+---
+
+## Required Output Structure
+
+Always format the guide like this:
+
+### ## Tools
+
+* List all required tools (if any are mentioned).
+
+### ## Step 1: Title
+
+* Add a short introductory context sentence if needed.
+
+* Use ordered lists for steps:
+
+1. First step.
+2. Second step.
+3. Third step.
+
+* Use unordered lists for non-sequential info:
+* Item one.
+* Item two.
+
+### ## Step 2: Terminology
+
+* Use the term **"Advance"**, not "Frame".
+
+---
+
+## Formatting Rules
+
+### Lists
+
+* **No nested lists.**
+* Flatten all nested content into a single-level list.
+* Convert nested items into standalone steps while preserving all information.
+* Do not leave blank lines between list items.
+* End each list item with a full stop, unless it is 1–2 words.
+
+---
+
+### Buttons & Inputs
+
+* Console inputs → use `single ticks` (example: `A`, `Start`).
+* Web/app UI buttons → use "double quotes".
+
+---
+
+### Values
+
+* Seeds, PIDs, and similar values:
+
+  * Use **uppercase hex**
+  * Use `single ticks`
+  * Do NOT prefix with `0x`
+  * Example: `AABBCCDD`
+
+---
+
+### Notes
+
+* Any line starting with **"Note:"** must be converted into a code block:
+
+```
+
+Note: Example note here.
+
+```
+
+---
+
+### Tables
+
+Use tables when appropriate:
+
+**Comparisons:**
+
+| Item     | Value proposition |
+| -------- | ----------------- |
+| Method A | Good for X        |
+| Method B | Good for Y        |
+
+**Data lists:**
+
+| Pokémon | Obtain from   |
+| ------- | ------------- |
+| Abra    | Route above X |
+| Golem   | Trade         |
+
+---
+
+## Behavior Rules
+
+* First, fully understand the original guide.
+* Then rewrite it into the required structure.
+* Do NOT rewrite line-by-line blindly.
+* Keep wording **simple, casual, and easy to understand**, especially for non-native English speakers.
+
+---
+
+## Handling Messy Input
+
+If the original guide:
+
+* Has no structure → organize it into the required format.
+* Has nested lists → flatten them.
+* Mixes steps and notes → separate them properly.
+* Is unclear → simplify wording without losing meaning.
+
+---
+
+## Context Reference
+
+Use these definitions consistently:
+
+* "Advance" = one step of RNG progression (preferred over "Frame").
+* "Initial seed" = starting RNG seed.
+* "PID" = Personality ID.
+* "PSV/ESV" = Shiny values derived from PID.
+* "TSV" = Trainer Shiny Value (TID + SID).
+* Pokémon is shiny when **TSV = PSV**.
+* "Final screen" = where you press `A` to generate a Pokémon.
+
+### Tools
+
+* **PokeFinder**: modern RNG calculator (GBA, NDS, GameCube, Switch).
+* **RNG Reporter**: older calculator.
+* **3DSRNGTool**: 3DS RNG calculator.
+* **PokeReader**: modern 3DS overlay tool (replaces PCalc).
+* **PCalc**: legacy 3DS tool.
+* **Citra / Lime3DS / Azahar**: 3DS emulators.
+
+---
+
+## Final Output Requirement
+
+* The result must follow this format exactly.
+* The guide must be **shorter, cleaner, and easier to follow** than the original.
+* **No information loss.**
+
+---
+
+## Optional Ending
+
+If appropriate, end with:
+
+**Congrats! You've now got your Pokémon!**
 ```
 
 </details>

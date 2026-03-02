@@ -5,6 +5,7 @@ use crate::{
     GenderRatio,
     gen3::{
         SpeciesData, find_pid_paths_reverse_pid,
+        searcher_painter::Wild3PaintingAdvFinder,
         wild::{
             lcrng_distance,
             searcher::{
@@ -104,6 +105,10 @@ where
             .iter()
             .flat_map(|nature_gender_path| lvl_gen.extend_path_for_all_arcs(nature_gender_path))
             .flat_map(|lvl_path| encouter_idx_gen.extend_path_for_all_arcs(&lvl_path))
+            .filter(|encounter_path| {
+                lcrng_distance(opts.initial_seed, encounter_path.seed)
+                    >= opts.initial_advances as u32
+            })
             .collect_vec();
         if vec.is_empty() { None } else { Some(vec) }
     })
@@ -123,8 +128,8 @@ where
             .collect_vec();
         if vec.is_empty() { None } else { Some(vec) }
     })
-    .take(opts.max_result_count) // Limitation: No guaranteed to have at least 1 result with >0 % likelihood
     .filter(|vec| !vec.is_empty())
+    .take(opts.max_result_count) // Limitation: No guaranteed to have at least 1 result with >0 % likelihood
     .collect_vec()
 }
 
@@ -153,6 +158,7 @@ fn new_find_pid_paths_options(opts: &Wild3SearcherOptions) -> FindPidPathsOption
         initial_advances: opts.initial_advances,
         max_result_count: opts.max_result_count,
         max_advances: opts.max_advances,
+        painting_adv_finder: opts.painting_opts.as_ref().map(Wild3PaintingAdvFinder::new),
     }
 }
 
@@ -246,7 +252,7 @@ fn create_result(
                 .get_encounter(gen_opts.action, gen_res.encounter_idx)
                 .unwrap();
             let advance = lcrng_distance(opts.initial_seed, seed.seed) as usize;
-            Wild3SearcherResultMon::new(gen_res, &gen_opts, advance, encounter)
+            Wild3SearcherResultMon::new(gen_res, &gen_opts, seed.seed, advance, encounter)
         })
         .collect()
 }

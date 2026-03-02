@@ -48,18 +48,16 @@ pub fn generate_gen3_wild_distribution(
         ..opts.clone()
     };
 
-    let (gen_results, cycle_counter) = generate_gen3_wild(
-        Pokerng::with_advances(initial_seed, advances),
-        &opts,
-        game_data,
-    );
+    let rng = Pokerng::with_advances(initial_seed, advances);
+    let (gen_results, cycle_counter) = generate_gen3_wild(rng, &opts, game_data);
     let search_results = gen_results
         .iter()
         .map(|gen_res| {
             let encounter = game_data
                 .get_encounter(opts.action, gen_res.encounter_idx)
                 .unwrap();
-            let searcher_res = Wild3SearcherResultMon::new(gen_res, &opts, advances, encounter);
+            let searcher_res =
+                Wild3SearcherResultMon::new(gen_res, &opts, rng.seed(), advances, encounter);
             let cycle_data = calculate_cycle_data(
                 &searcher_res
                     .cycle_data_by_lead

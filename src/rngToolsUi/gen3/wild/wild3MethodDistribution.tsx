@@ -27,7 +27,6 @@ import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
-import { Static3Game } from "~/rngToolsUi/gen3/static/constants";
 import React from "react";
 import { z } from "zod";
 import { match } from "ts-pattern";
@@ -548,11 +547,7 @@ const convertSearcherResultsToUIResults = (
     });
 };
 
-type Props = {
-  game: Static3Game;
-};
-
-export const Wild3MethodDistribution = ({ game }: Props) => {
+export const Wild3MethodDistribution = () => {
   const [results, setResults] = React.useState<UiResult[]>([]);
   const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>(
     [],
@@ -560,13 +555,9 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
-      const initial_seed = match({
-        usingPaintingReseeding: values.usingPaintingReseeding,
-        game,
-      })
-        .with({ usingPaintingReseeding: true }, () => values.initial_seed)
-        .with({ game: "emerald" }, () => 0)
-        .otherwise(() => 0x5a0);
+      const initial_seed = values.usingPaintingReseeding
+        ? values.initial_seed
+        : 0;
 
       const opts: Wild3GeneratorOptions = {
         tid: values.tid,
@@ -608,7 +599,7 @@ export const Wild3MethodDistribution = ({ game }: Props) => {
       setResults(uiResults);
       setCycleAtMoments(cycle_at_moments);
     },
-    [game],
+    [],
   );
 
   const initialValues = React.useMemo(() => {

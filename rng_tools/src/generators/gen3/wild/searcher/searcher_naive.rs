@@ -55,7 +55,11 @@ fn search_wild3_naive_at_given_advance(
                         .get_encounter(gen_opts.action, gen_res.encounter_idx)
                         .unwrap();
                     results.push(Wild3SearcherResultMon::new(
-                        gen_res, &gen_opts, advance, encounter,
+                        gen_res,
+                        &gen_opts,
+                        rng.seed(),
+                        advance,
+                        encounter,
                     ));
                 });
         }

@@ -6,6 +6,7 @@ use crate::{
         Wild3SearcherCycleDataByLead, Wild3SearcherOptions, Wild3SearcherResultMon,
         search_wild3_naive,
     },
+    rng::lcrng::Pokerng,
 };
 #[test]
 fn test_search_wild3_cycle_methods_1_2_4() {
@@ -48,6 +49,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             nature: Nature::Naive,
             shiny: false,
             advance: 65,
+            seed: Pokerng::with_jump(options.initial_seed, 65).seed(),
             lead: Gen3Lead::Vanilla,
             map_idx: 0,
             hidden_power: HiddenPower::new(PokemonType::Psychic, 49),
@@ -71,6 +73,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             nature: Nature::Naive,
             shiny: false,
             advance: 65,
+            seed: Pokerng::with_jump(options.initial_seed, 65).seed(),
             lead: Gen3Lead::Vanilla,
             map_idx: 0,
             hidden_power: HiddenPower::new(PokemonType::Electric, 45),
@@ -94,6 +97,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             nature: Nature::Naive,
             shiny: false,
             advance: 65,
+            seed: Pokerng::with_jump(options.initial_seed, 65).seed(),
             lead: Gen3Lead::Vanilla,
             map_idx: 0,
             hidden_power: HiddenPower::new(PokemonType::Water, 60),

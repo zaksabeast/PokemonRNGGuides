@@ -31,7 +31,6 @@ import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
-import { Static3Game } from "~/rngToolsUi/gen3/static/constants";
 import React from "react";
 import { z } from "zod";
 import {
@@ -70,6 +69,8 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { useWatch } from "react-hook-form";
 import { atom, useAtom } from "jotai";
 import { NewTabLink } from "~/components/newTabLink";
+import { formatDuration } from "~/utils/formatDuration";
+import { formatHex } from "~/utils/formatHex";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 const rngManipulatedLeadPidAtom = atom(false);
@@ -111,9 +112,11 @@ const Validator = z
     feebasStates: z.array(z.enum(wild3FeebasStates)).min(1),
     methods: z.array(z.enum(gen3Methods)).min(1),
     usingPaintingReseeding: z.boolean(),
+    letSearcherFindPaintingSeed: z.boolean(),
     initial_seed: z.number().int().min(0).max(0xffffffff),
     initial_advances: z.number().int().min(0).max(0xffffffff),
-    min_advances_after_reseeding: z.number().int().min(0).max(0xffffffff),
+    min_adv_before_painting: z.number().int().min(0).max(0xffffffff),
+    min_adv_after_painting: z.number().int().min(0).max(0xffffffff),
     max_advances: z.number().int().min(0).max(0xffffffff),
     max_result_count: z.number().int().min(1),
     rngManipulatedLeadPid: z.boolean(),
@@ -139,9 +142,11 @@ const getInitialValues = (): FormState => {
     feebasStates: [...wild3FeebasStates],
     massOutbreakStates: [...wild3MassOutbreakStates],
     usingPaintingReseeding: false,
+    letSearcherFindPaintingSeed: true,
     initial_seed: 0,
     initial_advances: 1000,
-    min_advances_after_reseeding: 10000,
+    min_adv_before_painting: 1000,
+    min_adv_after_painting: 10000,
     max_advances: 10_000_000,
     max_result_count: 20,
     rngManipulatedLeadPid: false,
@@ -204,6 +209,7 @@ const getSetupFields = (
   filter_shiny: boolean,
   recommendedSetups: boolean,
   usingPaintingReseeding: boolean,
+  letSearcherFindPaintingSeed: boolean,
 ): Field[] => {
   const possVals = getPossibleValuesForSpecies(species);
 
@@ -353,35 +359,48 @@ const getSetupFields = (
       key: "usingPaintingReseeding",
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
-    ...(usingPaintingReseeding
-      ? [
-          {
-            label: "Seed after Painting Reseeding",
-            input: (
-              <FormikNumberInput<FormState> name="initial_seed" numType="hex" />
-            ),
-          },
-          {
-            label: "Min advances after reseeding",
-            input: (
-              <FormikNumberInput<FormState>
-                name="min_advances_after_reseeding"
-                numType="decimal"
-              />
-            ),
-          },
-        ]
-      : [
-          {
-            label: "Min advances",
-            input: (
-              <FormikNumberInput<FormState>
-                name="initial_advances"
-                numType="decimal"
-              />
-            ),
-          },
-        ]),
+
+    {
+      label: "Let searcher find painting seed?",
+      input: <FormikSwitch<FormState> name="letSearcherFindPaintingSeed" />,
+      hide: !usingPaintingReseeding,
+    },
+
+    {
+      label: "Seed after painting reseeding",
+      input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
+      hide: !(usingPaintingReseeding && !letSearcherFindPaintingSeed),
+    },
+    {
+      label: "Min advances before reseeding",
+      input: (
+        <FormikNumberInput<FormState>
+          name="min_adv_before_painting"
+          numType="decimal"
+        />
+      ),
+      hide: !(usingPaintingReseeding && letSearcherFindPaintingSeed),
+    },
+    {
+      label: "Min advances after reseeding",
+      input: (
+        <FormikNumberInput<FormState>
+          name="min_adv_after_painting"
+          numType="decimal"
+        />
+      ),
+      hide: !usingPaintingReseeding,
+    },
+    {
+      label: "Min advances",
+      input: (
+        <FormikNumberInput<FormState>
+          name="initial_advances"
+          numType="decimal"
+        />
+      ),
+      hide: usingPaintingReseeding,
+    },
     {
       label: usingPaintingReseeding
         ? "Max advances after reseeding"
@@ -389,6 +408,7 @@ const getSetupFields = (
       input: (
         <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
       ),
+      hide: !(usingPaintingReseeding && !letSearcherFindPaintingSeed),
     },
     {
       label: "Max result count",
@@ -451,6 +471,12 @@ export const SetupFilter = () => {
   const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
     name: "usingPaintingReseeding",
   });
+  const letSearcherFindPaintingSeed = useWatch<
+    FormState,
+    "letSearcherFindPaintingSeed"
+  >({
+    name: "letSearcherFindPaintingSeed",
+  });
 
   const fields = React.useMemo((): Field[] => {
     return getSetupFields(
@@ -458,8 +484,15 @@ export const SetupFilter = () => {
       filterShiny,
       recommendedSetups,
       usingPaintingReseeding,
+      letSearcherFindPaintingSeed,
     );
-  }, [species, filterShiny, recommendedSetups, usingPaintingReseeding]);
+  }, [
+    species,
+    filterShiny,
+    recommendedSetups,
+    usingPaintingReseeding,
+    letSearcherFindPaintingSeed,
+  ]);
 
   return (
     <Flex vertical gap={8}>
@@ -493,25 +526,75 @@ const getMethodLikelihoodColumValue = (
 const getResultSetupInfoColumns = ({
   rngManipulatedLeadPid,
   showMassOutbreak,
+  usesPainting,
 }: {
   rngManipulatedLeadPid: boolean;
   showMassOutbreak: boolean;
+  usesPainting: boolean;
 }): ResultColumn<ResultSetupInfo>[] => {
   const columns: ResultColumn<ResultSetupInfo>[] = [];
-  columns.push(
-    {
+  if (!usesPainting) {
+    columns.push({
       title: "Advances",
       dataIndex: "advance",
       monospace: true,
-      render: (adv) => {
-        const durInMinutes = (adv / 59.7275 / 60).toFixed(1);
+      render: (adv, { seed }) => {
+        const painting_seed = formatHex(seed);
+        const durInMinutes = formatDuration(adv / 59.7275);
         return (
-          <Tooltip title={`~${durInMinutes} min`}>
-            <div>{formatLargeInteger(adv)}</div>
+          <Tooltip
+            title={`Seed when performing the player action: ${painting_seed}. (~${durInMinutes} min)`}
+          >
+            {formatLargeInteger(adv)}
           </Tooltip>
         );
       },
-    },
+    });
+  } else {
+    columns.push({
+      title: "Advances",
+      type: "group",
+      columns: [
+        {
+          title: "Before Reseed",
+          dataIndex: "painting_advs",
+          monospace: true,
+          render: (painting_advs) => {
+            if (painting_advs == null) {
+              return "";
+            }
+
+            const adv = painting_advs.adv_before_painting;
+            return (
+              <Tooltip title={`Painting Seed: ${formatHex(adv, 2)}`}>
+                {formatLargeInteger(adv)}
+              </Tooltip>
+            );
+          },
+        },
+        {
+          title: "After Reseed",
+          dataIndex: "painting_advs",
+          monospace: true,
+          render: (painting_advs, { seed, actionName }) => {
+            if (painting_advs == null) {
+              return "";
+            }
+
+            return (
+              <Tooltip
+                title={`Seed at start of ${actionName}: ${formatHex(seed)}`}
+              >
+                {formatLargeInteger(painting_advs.adv_after_painting)}
+              </Tooltip>
+            );
+          },
+        },
+      ],
+    });
+  }
+
+  columns.push(
     { title: "Map", dataIndex: "mapName" },
     { title: "Player action", dataIndex: "actionName" },
     /*
@@ -716,7 +799,9 @@ const getResultSetupInfoColumns = ({
   return columns;
 };
 
-const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
+const getPidPathColumns = (
+  letSearcherFindPaintingSeed: boolean,
+): ResultColumn<PidPathResult>[] => {
   return [
     {
       title: "",
@@ -732,15 +817,38 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
         return formatProbability(resultSetupInfos[0]?.primaryLikelihood ?? 0);
       },
     },
+    ...(letSearcherFindPaintingSeed
+      ? [
+          {
+            title: "Painting?",
+            dataIndex: "paintingAdvs",
+            render: (paintingAdvs) => {
+              return paintingAdvs != null ? "Yes" : "No";
+            },
+          } as ResultColumn<PidPathResult>,
+        ]
+      : []),
     {
       title: "Advances",
       dataIndex: "earliestAdvance",
       monospace: true,
-      render: (adv) => {
-        const durInMinutes = (adv / 59.7275 / 60).toFixed(1);
+      render: (earliestAdvance, { paintingAdvs }) => {
+        if (paintingAdvs != null) {
+          const { adv_before_painting: before, adv_after_painting: after } =
+            paintingAdvs;
+          const title = `${formatDuration(before / 59.7275)} | ${formatDuration(after / 59.7275)}`;
+
+          return (
+            <Tooltip title={title}>
+              {formatLargeInteger(before)}
+              {" | "}~{formatLargeInteger(after)}
+            </Tooltip>
+          );
+        }
+
         return (
-          <Tooltip title={`~${durInMinutes} min`}>
-            <div>~{formatLargeInteger(adv)}</div>
+          <Tooltip title={formatDuration(earliestAdvance / 59.7275)}>
+            <>~{formatLargeInteger(earliestAdvance)}</>
           </Tooltip>
         );
       },
@@ -760,7 +868,7 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
       title: "PID",
       dataIndex: "pid",
       monospace: true,
-      render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
+      render: (pid) => formatHex(pid),
     },
     { title: "Ability", dataIndex: "ability" },
     { title: "Gender", dataIndex: "gender" },
@@ -790,10 +898,6 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
       dataIndex: "method",
     },
   ];
-};
-
-type Props = {
-  game: Static3Game;
 };
 
 const getMapSetupsConsideringStateSubsets = (
@@ -836,7 +940,16 @@ const convertResultsForPidPathToPidPathResult = async (
   results: Wild3SearcherResultMon[],
   mapSetups: Wild3MapSetups[],
   rngManipulatedLeadPid: boolean,
+  paintingAdvsCache: PaintingAdvsCache,
 ): Promise<PidPathResult | null> => {
+  // Limitation: The UI components only support that all results for the same PidPath
+  // requires painting, or none do. Having both only occurs in the rare cases that
+  // the results overlap DONT_USE_PAINTING_IF_BELOW_ADV threshold.
+  const hasPainting = results.some((res) => paintingAdvsCache.has(res.advance));
+  if (hasPainting) {
+    results = results.filter((res) => paintingAdvsCache.has(res.advance));
+  }
+
   if (results.length === 0) {
     return null;
   }
@@ -869,16 +982,28 @@ const convertResultsForPidPathToPidPathResult = async (
         mapName,
         actionName: formatActionName(res.action),
         primaryLikelihood,
+        painting_advs: paintingAdvsCache.get(res.advance),
       };
     }),
   );
 
   const earliestAdvance = Math.min(...results.map((res) => res.advance));
 
+  const paintingAdvs = paintingAdvsCache.get(earliestAdvance);
+
+  const valueForSorting =
+    paintingAdvs != null
+      ? paintingAdvs.adv_before_painting +
+        paintingAdvs.adv_after_painting +
+        200_000
+      : earliestAdvance;
+
   return {
     ...firstRes,
     ...firstRes.ivs,
     earliestAdvance,
+    paintingAdvs,
+    valueForSorting,
     uid: nextUid++,
     pidCycleCount: await rngTools.calculate_pid_speed(firstRes.pid),
     resultSetupInfos: orderBy(
@@ -894,6 +1019,13 @@ type PidPathResult = FlattenIvs<
     uid: number;
     pidCycleCount: number;
     earliestAdvance: number;
+    valueForSorting: number;
+    paintingAdvs:
+      | {
+          adv_before_painting: number;
+          adv_after_painting: number;
+        }
+      | undefined;
     resultSetupInfos: ResultSetupInfo[];
   }
 >;
@@ -903,9 +1035,50 @@ type ResultSetupInfo = Wild3SearcherResultMon & {
   mapName: string;
   actionName: string;
   primaryLikelihood: number;
+  painting_advs?: {
+    adv_before_painting: number;
+    adv_after_painting: number;
+  };
 };
 
-export const Wild3SearcherFindTarget = ({ game }: Props) => {
+type PaintingAdvsCache = Awaited<ReturnType<typeof createPaintingAdvsCache>>;
+
+const createPaintingAdvsCache = async (
+  opts: Wild3SearcherOptions["painting_opts"],
+  advs: number[],
+) => {
+  const map = new Map<
+    number,
+    {
+      adv_before_painting: number;
+      adv_after_painting: number;
+    }
+  >();
+
+  if (opts == null || advs.length === 0) {
+    return map;
+  }
+
+  const advsWithoutDupe = new Uint32Array(new Set(advs));
+  const painting_advs = await rngTools.find_fastest_painting_advs(
+    opts,
+    advsWithoutDupe,
+  );
+  if (painting_advs.length !== advsWithoutDupe.length) {
+    return map;
+  }
+
+  painting_advs.forEach((painting_adv, i) => {
+    if (painting_adv.adv_before_painting === 0) {
+      return;
+    }
+    map.set(advsWithoutDupe[i], painting_adv);
+  });
+
+  return map;
+};
+
+export const Wild3SearcherFindTarget = () => {
   const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
     [],
   );
@@ -913,32 +1086,47 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
     React.useState<PidPathResult | null>(null);
   const [rngManipulatedLeadPid] = useAtom(rngManipulatedLeadPidAtom);
 
+  const [letSearcherFindPaintingSeed, setLetSearcherFindPaintingSeed] =
+    React.useState<boolean>(false);
+
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
-      const initial_seed = match({
-        usingPaintingReseeding: values.usingPaintingReseeding,
-        game,
-      })
-        .with({ usingPaintingReseeding: true }, () => values.initial_seed)
-        .with({ game: "emerald" }, () => 0)
-        .otherwise(() => 0x5a0);
+      const initial_seed =
+        values.usingPaintingReseeding && !values.letSearcherFindPaintingSeed
+          ? values.initial_seed
+          : 0;
 
       const initial_advances = values.usingPaintingReseeding
-        ? values.min_advances_after_reseeding
+        ? values.min_adv_after_painting
         : values.initial_advances;
 
       const map_setups = getMapSetupsConsideringStateSubsets(values);
 
+      const painting_opts =
+        values.usingPaintingReseeding && values.letSearcherFindPaintingSeed
+          ? {
+              min_adv_before_painting: values.min_adv_before_painting,
+              min_adv_after_painting: values.min_adv_after_painting,
+            }
+          : null;
+
       const leadsToUse = values.recommendedSetups
         ? [...gen3Leads]
         : values.leadIdxs.map((i) => gen3Leads[i]);
+
+      // max_advances field is hidden when searching for painting seed.
+      // It's important to use a high max_advances value to ensure results
+      // if the naive searching approach is used (when searching common traits).
+      const max_advances =
+        painting_opts != null ? 10_000_000 : values.max_advances;
+
       const opts: Wild3SearcherOptions = {
         initial_seed,
         tid: values.tid,
         sid: values.sid,
         gender_ratio: genderRatioBySpecies[values.species],
         initial_advances,
-        max_advances: values.max_advances,
+        max_advances,
         max_result_count: values.max_result_count,
         filter: pkmFilterFieldsToRustInput(values),
         gen3_filter: gen3PkmFilterFieldsToRustInput(values, values.species),
@@ -948,9 +1136,18 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
         consider_cycles: true,
         consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
         generate_even_if_impossible: values.generate_even_if_impossible,
+        painting_opts,
       };
 
       const resultsByPidPath = await rngTools.search_wild3(opts);
+      const advs = resultsByPidPath
+        .map((pidPath) => pidPath.vec.map((res) => res.advance))
+        .flat();
+      const paintingAdvsCache = await createPaintingAdvsCache(
+        opts.painting_opts,
+        advs,
+      );
+      setLetSearcherFindPaintingSeed(painting_opts != null);
 
       const pidPathResults = await Promise.all(
         resultsByPidPath.map((results) =>
@@ -958,6 +1155,7 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
             results.vec,
             map_setups,
             values.rngManipulatedLeadPid,
+            paintingAdvsCache,
           ),
         ),
       );
@@ -965,12 +1163,12 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
       setPidPathResults(
         sortBy(
           pidPathResults.filter((el) => el != null),
-          "earliestAdvance",
+          "valueForSorting",
         ),
       );
       setSelectedPidPathResult(null);
     },
-    [game],
+    [],
   );
 
   const initialValues = React.useMemo(() => {
@@ -978,8 +1176,8 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
   }, []);
 
   const pidPathColumns = React.useMemo(() => {
-    return getPidPathColumns();
-  }, []);
+    return getPidPathColumns(letSearcherFindPaintingSeed);
+  }, [letSearcherFindPaintingSeed]);
 
   const resultSetupInfoColumns = React.useMemo(() => {
     const showMassOutbreak =
@@ -987,9 +1185,15 @@ export const Wild3SearcherFindTarget = ({ game }: Props) => {
       selectedPidPathResult.resultSetupInfos.some(
         (setup) => setup.mass_outbreak_state !== "Inactive",
       );
+    const usesPainting =
+      selectedPidPathResult?.resultSetupInfos.some(
+        (res) => res.painting_advs != null,
+      ) ?? false;
+
     return getResultSetupInfoColumns({
       rngManipulatedLeadPid,
       showMassOutbreak,
+      usesPainting,
     });
   }, [rngManipulatedLeadPid, selectedPidPathResult]);
 

@@ -1,0 +1,33 @@
+const t=`---
+- title: "Static Tool"
+  description: "Static encounters in Emerald"
+  slug: "emerald-static"
+  category: "Emerald"
+  section: "tool"
+  isRoughDraft: true
+- title: "Static Tool"
+  description: "Static encounters in Ruby and Sapphire"
+  slug: "rs-static"
+  category: "Ruby and Sapphire"
+  section: "tool"
+  isRoughDraft: true
+- title: "Static Tool"
+  description: "Static encounters in FireRed and LeafGreen"
+  slug: "frlg-static"
+  category: "FireRed and LeafGreen"
+  section: "tool"
+  isRoughDraft: true
+---
+
+<ShowIf slug="/emerald-static">
+  <Static3 game="emerald" />
+</ShowIf>
+
+<ShowIf slug="/rs-static">
+  <Static3 game="rs" />
+</ShowIf>
+
+<ShowIf slug="/frlg-static">
+  <Static3 game="frlg" />
+</ShowIf>
+`;export{t as default};

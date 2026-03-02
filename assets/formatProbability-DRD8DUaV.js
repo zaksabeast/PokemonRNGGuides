@@ -1,0 +1,1 @@
+const i=t=>{if(t<=0)return"0%";if(t>=1)return"100%";if(t<1e-30)return"~0%";const r=t*100;if(t>.1)return`${r.toFixed(1)}%`;const e=Math.log10(r);return`${r.toFixed(-Math.floor(e)+1)}%`};export{i as f};

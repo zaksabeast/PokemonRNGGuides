@@ -14,7 +14,7 @@ export type InternalGuide = Guide & { meta: InternalGuideMeta };
 export const categoryOwners: Record<Category, Route> = {
   Home: "/",
   "Gold, Silver, Crystal": "/crystal/",
-  "Transporter and Dream Radar": "/",
+  "Transporter and Dream Radar": "/transporter-dream-radar/",
   "Ruby and Sapphire": "/ruby-and-sapphire/",
   Gamecube: "/gamecube/",
   "FireRed and LeafGreen": "/fire-red-and-leaf-green/",

@@ -5,9 +5,9 @@ import {
   RngToolForm,
   RngToolSubmit,
   Field,
-  CalibrateTimerButton,
   Icon,
 } from "~/components";
+import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
 import { rngTools, Id4 } from "~/rngTools";
 import { denormalizeIdFilterOrDefault } from "~/types/id";
 import { z } from "zod";

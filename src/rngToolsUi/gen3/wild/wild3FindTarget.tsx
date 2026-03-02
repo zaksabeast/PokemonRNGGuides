@@ -20,6 +20,7 @@ import {
   Typography,
   ResultTable,
   Icon,
+  Link,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
@@ -68,7 +69,6 @@ import {
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { useWatch } from "react-hook-form";
 import { atom, useAtom } from "jotai";
-import { NewTabLink } from "~/components/newTabLink";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 
@@ -350,9 +350,9 @@ const getSetupFields = (
       label: (
         <>
           Using{" "}
-          <NewTabLink href="/emerald-painting-rng/">
+          <Link href="/emerald-painting-rng/" newTab>
             Painting Reseeding
-          </NewTabLink>
+          </Link>
           ?
         </>
       ),
@@ -708,7 +708,9 @@ const getResultSetupInfoColumns = ({
         title: (
           <div>
             {"Method Likelihood by "}
-            <NewTabLink href="/gba-methods-lead-impact/">Lead Speed</NewTabLink>
+            <Link href="/gba-methods-lead-impact/" newTab>
+              Lead Speed
+            </Link>
           </div>
         ),
         key: "methodLikelihoodByLeadSpeed",

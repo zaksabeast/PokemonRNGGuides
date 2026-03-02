@@ -1,12 +1,12 @@
 import React from "react";
 import {
-  CalibrateTimerButton,
   Field,
   FormikSelect,
   Icon,
   ResultColumn,
   RngToolForm,
 } from "~/components";
+import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
 import {
   Gen4StaticPokemon,
   RngDateTime,

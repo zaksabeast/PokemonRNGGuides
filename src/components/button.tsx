@@ -64,14 +64,19 @@ const _BaseButton = withCss(
   }),
 );
 
-type BaseButtonProps = { trackerId: string } & React.ComponentProps<
-  typeof _BaseButton
->;
+const NEW_TAB_PROPS = { target: "_blank", rel: "noopener noreferrer" };
+const SAME_TAB_PROPS = {};
+
+type BaseButtonProps = {
+  trackerId: string;
+  newTab?: boolean;
+} & React.ComponentProps<typeof _BaseButton>;
 
 export const BaseButton = ({
   trackerId,
   id: _id,
   onClick,
+  newTab,
   ...props
 }: BaseButtonProps) => {
   const id = _id ?? trackerId;
@@ -82,5 +87,11 @@ export const BaseButton = ({
     },
     [trackerId, onClick],
   );
-  return <_BaseButton {...props} id={id} onClick={trackedClick} />;
+
+  const linkProps =
+    props.href != null && newTab ? NEW_TAB_PROPS : SAME_TAB_PROPS;
+
+  return (
+    <_BaseButton {...props} id={id} onClick={trackedClick} {...linkProps} />
+  );
 };

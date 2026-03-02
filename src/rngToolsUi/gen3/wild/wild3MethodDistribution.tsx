@@ -19,6 +19,7 @@ import {
   FormFieldTable,
   FormikRadio,
   FormikSwitch,
+  Link,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatProbability } from "~/utils/formatProbability";
@@ -56,7 +57,6 @@ import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
 import { uniq } from "lodash-es";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import { NewTabLink } from "~/components/newTabLink";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -270,9 +270,9 @@ const getFields = (
     label: (
       <>
         Using{" "}
-        <NewTabLink href="/emerald-painting-rng/">
+        <Link href="/emerald-painting-rng/" newTab>
           Painting Reseeding
-        </NewTabLink>
+        </Link>
         ?
       </>
     ),

@@ -7,45 +7,7 @@ import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { Route } from "~/routes/defs";
 import { LanguageKey } from "~/guides";
 import { Link } from "./link";
-
-type LanguageItem = {
-  key: LanguageKey;
-  label: string;
-  type: "item";
-};
-
-const languages: LanguageItem[] = [
-  {
-    key: "en",
-    label: "English",
-    type: "item",
-  },
-  {
-    key: "es",
-    label: "Español",
-    type: "item",
-  },
-  {
-    key: "zh",
-    label: "简体中文",
-    type: "item",
-  },
-  {
-    key: "fr",
-    label: "Français",
-    type: "item",
-  },
-  {
-    key: "it",
-    label: "Italiano",
-    type: "item",
-  },
-  {
-    key: "de",
-    label: "Deutsch",
-    type: "item",
-  },
-];
+import { languages } from "~/types/language";
 
 type Props = {
   en: Route;

@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  CalibrateTimerButton,
   Field,
   Flex,
   ResultColumn,
@@ -8,6 +7,7 @@ import {
   Select,
   Typography,
 } from "~/components";
+import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
 import { PickupEggState, useHeldEggState, usePickupEggState } from "./state";
 import {
   rngTools,

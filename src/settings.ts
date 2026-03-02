@@ -25,9 +25,6 @@ const settingsSchema = z
       .string()
       .default("https://discord.com/servers/pokemonrng-285269328469950464"),
     supportUsPatreonUrl: z.string().default("http://patreon.com/pokemonrng"),
-    githubUrl: z
-      .string()
-      .default("https://github.com/zaksabeast/PokemonRNGGuides"),
     discordHallOfFameSupporters: CommaSeparatedString,
     patreonHallOfFameSupporters: CommaSeparatedString,
   })

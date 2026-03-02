@@ -4,8 +4,9 @@ import { memoize } from "lodash-es";
 export const guides = {
   "/": {
     meta: {
+      id: "/",
       categories: ["Home"],
-      section: "info",
+      section: "site_info",
       guideVariants: null,
       guideKey: "/",
       isNew: false,
@@ -15,6 +16,7 @@ export const guides = {
         "Learn retail and emulator RNG with our Pokémon guides and tools",
       slug: "/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -35,6 +37,7 @@ export const guides = {
   },
   "/3ds-alt-settings/": {
     meta: {
+      id: "/3ds-alt-settings/",
       categories: ["HeartGold and SoulSilver", "Diamond, Pearl, and Platinum"],
       section: "tool",
       guideVariants: null,
@@ -46,6 +49,7 @@ export const guides = {
         "Set 3DS system time without rebooting - useful for faster, more consistent Pokemon RNG attempts.",
       slug: "/3ds-alt-settings/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-07-03",
       translation: null,
@@ -57,7 +61,7 @@ export const guides = {
       guideGroupId:
         "en:/3ds-alt-settings/:Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS Alt Settings.mdx")),
     getRawFile: memoize(async () => {
@@ -67,6 +71,7 @@ export const guides = {
   },
   "/3ds-helper/": {
     meta: {
+      id: "/3ds-helper/",
       categories: [
         "Diamond, Pearl, and Platinum",
         "HeartGold and SoulSilver",
@@ -83,6 +88,7 @@ export const guides = {
         "Easier 3DS RNG without homebrew using precise timer starts.",
       slug: "/3ds-helper/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-07-03",
       translation: null,
@@ -94,7 +100,7 @@ export const guides = {
       guideGroupId:
         "en:/3ds-helper/:Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide"],
+      displayAttributes: ["video_guide", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS Helper.mdx")),
     getRawFile: memoize(async () => {
@@ -104,8 +110,9 @@ export const guides = {
   },
   "/about/": {
     meta: {
+      id: "/about/",
       categories: ["Home"],
-      section: "info",
+      section: "site_info",
       guideVariants: null,
       guideKey: "/about/",
       isNew: false,
@@ -115,6 +122,7 @@ export const guides = {
         "Learn retail and emulator RNG with our Pokémon guides and tools",
       slug: "/about/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -135,6 +143,7 @@ export const guides = {
   },
   "/azahar-setup/": {
     meta: {
+      id: "/azahar-setup/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -151,6 +160,7 @@ export const guides = {
       description: "Learn how to dump and install Pokemon CIAs on Azahar.",
       slug: "/azahar-setup/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
@@ -176,10 +186,11 @@ export const guides = {
   },
   "/bdsp-advance-rng/": {
     meta: {
+      id: "/bdsp-advance-rng/",
       categories: ["Brilliant Diamond and Shining Pearl"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/advance-rng/",
+      guideKey: "advance-rng",
       isNew: false,
       title: "Advancing the RNG in Brilliant Diamond and Shining Pearl",
       navDrawerTitle: "Advancing the RNG",
@@ -187,6 +198,7 @@ export const guides = {
         "How RNG advances work in Brilliant Diamond and Shining Pearl. Learn what advances the RNG and how to control it for perfect Pokémon.",
       slug: "/bdsp-advance-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -195,12 +207,12 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
       translations: { en: "/bdsp-advance-rng/", fr: "/fr-bdsp-advance-rng/" },
-      guideGroupId: "en:/advance-rng/:Brilliant Diamond and Shining Pearl",
+      guideGroupId: "en:advance-rng:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: {
-        retail: "/bdsp-advance-rng/",
-        cfwEmu: "/bdsp-advance-rng/",
+        retail: { type: "slug", slug: "/bdsp-advance-rng/" },
+        cfwEmu: { type: "slug", slug: "/bdsp-advance-rng/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_fr"],
     },
     Guide: React.lazy(
       () =>
@@ -217,10 +229,11 @@ export const guides = {
   },
   "/bdsp-chatot/": {
     meta: {
+      id: "/bdsp-chatot/",
       categories: ["Brilliant Diamond and Shining Pearl"],
-      section: "guide",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/chatot/",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/bdsp-chatot/",
       isNew: false,
       title: "How to Use Chatot for Brilliant Diamond and Shining Pearl",
       navDrawerTitle: "Chatot RNG Tool",
@@ -228,6 +241,7 @@ export const guides = {
         "How to use the chatot.pokemonrng.com website for RNG in Brilliant Diamond and Shining Pearl.",
       slug: "/bdsp-chatot/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -236,9 +250,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use Shiny's site.mdx",
       translations: null,
-      guideGroupId: "en:/chatot/:Brilliant Diamond and Shining Pearl",
-      guideVariantLinks: { retail: "/bdsp-chatot/", cfwEmu: "/bdsp-chatot/" },
-      displayAttributes: [],
+      guideGroupId: "en:/bdsp-chatot/:Brilliant Diamond and Shining Pearl",
+      guideVariantLinks: null,
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -255,6 +269,7 @@ export const guides = {
   },
   "/bdsp-emulator-setup/": {
     meta: {
+      id: "/bdsp-emulator-setup/",
       categories: ["Brilliant Diamond and Shining Pearl"],
       section: "tool",
       guideVariants: null,
@@ -266,6 +281,7 @@ export const guides = {
         "How to set up Ryujinx or Yuzu and Cheat Engine to RNG in Brilliant Diamond and Shining Pearl using lua scripts.",
       slug: "/bdsp-emulator-setup/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -294,6 +310,7 @@ export const guides = {
   },
   "/bdsp-pokefinder/": {
     meta: {
+      id: "/bdsp-pokefinder/",
       categories: ["Brilliant Diamond and Shining Pearl"],
       section: "tool",
       guideVariants: null,
@@ -305,6 +322,7 @@ export const guides = {
         "Step-by-step guide to set up PokeFinder for RNG abuse in Brilliant Diamond and Shining Pearl.",
       slug: "/bdsp-pokefinder/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -332,6 +350,7 @@ export const guides = {
   },
   "/black-2-and-white-2/": {
     meta: {
+      id: "/black-2-and-white-2/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -342,6 +361,7 @@ export const guides = {
       description: "Black 2 and White 2 Resources",
       slug: "/black-2-and-white-2/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -362,6 +382,7 @@ export const guides = {
   },
   "/black-and-white/": {
     meta: {
+      id: "/black-and-white/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -372,6 +393,7 @@ export const guides = {
       description: "Black and White Resources",
       slug: "/black-and-white/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -392,6 +414,7 @@ export const guides = {
   },
   "/brilliant-diamond-and-shining-pearl/": {
     meta: {
+      id: "/brilliant-diamond-and-shining-pearl/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -402,6 +425,7 @@ export const guides = {
       description: "Brilliant Diamond and Shining Pearl Resources",
       slug: "/brilliant-diamond-and-shining-pearl/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -422,10 +446,11 @@ export const guides = {
   },
   "/bw2-egg/": {
     meta: {
+      id: "/bw2-egg/",
       categories: ["Black 2 and White 2"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/egg/",
+      guideKey: "egg",
       isNew: false,
       title: "Black 2 and White 2 Egg RNG",
       navDrawerTitle: "Egg RNG",
@@ -433,6 +458,7 @@ export const guides = {
         "Learn how to RNG eggs from the Daycare in Black 2 and White 2 for shiny, high-IV Pokémon.",
       slug: "/bw2-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -441,9 +467,12 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 5/BW2 Egg.mdx",
       translations: { en: "/bw2-egg/", zh: "/zh-bw2-egg/" },
-      guideGroupId: "en:/egg/:Black 2 and White 2",
-      guideVariantLinks: { retail: "/bw2-egg/", cfwEmu: "/bw2-egg/" },
-      displayAttributes: [],
+      guideGroupId: "en:egg:Black 2 and White 2",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/bw2-egg/" },
+        cfwEmu: { type: "slug", slug: "/bw2-egg/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/BW2 Egg.mdx")),
     getRawFile: memoize(async () => {
@@ -453,8 +482,9 @@ export const guides = {
   },
   "/cfw-bdsp-egg/": {
     meta: {
+      id: "/cfw-bdsp-egg/",
       categories: ["Brilliant Diamond and Shining Pearl"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/cfw-bdsp-egg/",
       isNew: false,
@@ -464,6 +494,7 @@ export const guides = {
         "Learn how to RNG eggs in Brilliant Diamond and Shining Pearl on a CFW Switch for shiny perfect Pokemon.",
       slug: "/cfw-bdsp-egg/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -473,8 +504,11 @@ export const guides = {
       file: "guides/Brilliant Diamond and Shining Pearl/Egg.mdx",
       translations: null,
       guideGroupId: "en:/cfw-bdsp-egg/:Brilliant Diamond and Shining Pearl",
-      guideVariantLinks: { retail: null, cfwEmu: "/cfw-bdsp-egg/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/cfw-bdsp-egg/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Egg.mdx"),
@@ -488,8 +522,9 @@ export const guides = {
   },
   "/cfw-bdsp-stationary/": {
     meta: {
+      id: "/cfw-bdsp-stationary/",
       categories: ["Brilliant Diamond and Shining Pearl"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/cfw-bdsp-stationary/",
       isNew: false,
@@ -499,6 +534,7 @@ export const guides = {
         "Learn how to RNG flawless or shiny legendaries in Brilliant Diamond and Shining Pearl using CFW.",
       slug: "/cfw-bdsp-stationary/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -509,7 +545,10 @@ export const guides = {
       translations: null,
       guideGroupId:
         "en:/cfw-bdsp-stationary/:Brilliant Diamond and Shining Pearl",
-      guideVariantLinks: { retail: null, cfwEmu: "/cfw-bdsp-stationary/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/cfw-bdsp-stationary/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -527,8 +566,9 @@ export const guides = {
   },
   "/cfw-bdsp-tidandsid/": {
     meta: {
+      id: "/cfw-bdsp-tidandsid/",
       categories: ["Brilliant Diamond and Shining Pearl"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/cfw-bdsp-tidandsid/",
       isNew: false,
@@ -538,6 +578,7 @@ export const guides = {
         "Learn how to RNG your Trainer and Secret ID in Brilliant Diamond and Shining Pearl with CFW.",
       slug: "/cfw-bdsp-tidandsid/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -548,8 +589,11 @@ export const guides = {
       translations: null,
       guideGroupId:
         "en:/cfw-bdsp-tidandsid/:Brilliant Diamond and Shining Pearl",
-      guideVariantLinks: { retail: null, cfwEmu: "/cfw-bdsp-tidandsid/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/cfw-bdsp-tidandsid/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -566,8 +610,9 @@ export const guides = {
   },
   "/cfw-bdsp-wild/": {
     meta: {
+      id: "/cfw-bdsp-wild/",
       categories: ["Brilliant Diamond and Shining Pearl"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/cfw-bdsp-wild/",
       isNew: false,
@@ -577,6 +622,7 @@ export const guides = {
         "RNG wild Pokémon in Brilliant Diamond and Shining Pearl using CFW.",
       slug: "/cfw-bdsp-wild/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -586,8 +632,11 @@ export const guides = {
       file: "guides/Brilliant Diamond and Shining Pearl/Wild.mdx",
       translations: null,
       guideGroupId: "en:/cfw-bdsp-wild/:Brilliant Diamond and Shining Pearl",
-      guideVariantLinks: { retail: null, cfwEmu: "/cfw-bdsp-wild/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/cfw-bdsp-wild/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Wild.mdx"),
@@ -601,6 +650,7 @@ export const guides = {
   },
   "/challenge-usum-ta/": {
     meta: {
+      id: "/challenge-usum-ta/",
       categories: ["USUM Challenges"],
       section: "challenge",
       guideVariants: null,
@@ -612,6 +662,7 @@ export const guides = {
         "Join the leaderboard and earn rewards by completing challenges in USUM",
       slug: "/challenge-usum-ta/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -632,8 +683,9 @@ export const guides = {
   },
   "/channel-jirachi/": {
     meta: {
+      id: "/channel-jirachi/",
       categories: ["Gamecube"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/channel-jirachi/",
       isNew: false,
@@ -642,6 +694,7 @@ export const guides = {
       description: "Step-by-step guide to RNG the Channel Jirachi.",
       slug: "/channel-jirachi/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -651,8 +704,11 @@ export const guides = {
       file: "guides/Gamecube/Channel.mdx",
       translations: { en: "/channel-jirachi/", zh: "/zh-channel-jirachi/" },
       guideGroupId: "en:/channel-jirachi/:Gamecube",
-      guideVariantLinks: { retail: null, cfwEmu: "/channel-jirachi/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/channel-jirachi/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gamecube/Channel.mdx")),
     getRawFile: memoize(async () => {
@@ -662,6 +718,7 @@ export const guides = {
   },
   "/citrarng-setup/": {
     meta: {
+      id: "/citrarng-setup/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -679,6 +736,7 @@ export const guides = {
         "Set up Azahar, Lime3DS, or Citra for 3DS RNG, including cart dumping and installing game updates.",
       slug: "/citrarng-setup/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -704,6 +762,7 @@ export const guides = {
   },
   "/connect-dolphin-to-gba/": {
     meta: {
+      id: "/connect-dolphin-to-gba/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
@@ -715,6 +774,7 @@ export const guides = {
         "Learn how to redeem Jirachi or transfer your RNGs to a GBA game.",
       slug: "/connect-dolphin-to-gba/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -741,9 +801,10 @@ export const guides = {
   },
   "/consistent-platinum-rng/": {
     meta: {
+      id: "/consistent-platinum-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "info",
-      guideVariants: null,
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/consistent-platinum-rng/",
       isNew: false,
       title: "More consistent Platinum RNG",
@@ -752,6 +813,7 @@ export const guides = {
         "New research for more consistent Platinum RNG—get shiny, high-IV Pokémon more easily.",
       slug: "/consistent-platinum-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-07-03",
       translation: null,
@@ -761,7 +823,10 @@ export const guides = {
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Consistent Platinum RNG.mdx",
       translations: null,
       guideGroupId: "en:/consistent-platinum-rng/:Diamond, Pearl, and Platinum",
-      guideVariantLinks: null,
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/consistent-platinum-rng/" },
+        cfwEmu: { type: "slug", slug: "/consistent-platinum-rng/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -777,8 +842,42 @@ export const guides = {
       return file.default;
     }),
   },
+  "/contributing/": {
+    meta: {
+      id: "/contributing/",
+      categories: ["Home"],
+      section: "site_info",
+      guideVariants: null,
+      guideKey: "/contributing/",
+      isNew: false,
+      title: "Contribute Pokémon RNG Guides",
+      navDrawerTitle: "Contributing",
+      description:
+        "Learn how to contribute Pokémon RNG guides, translations, and tools. Help improve tutorials for RNG manipulation across Pokémon games.",
+      slug: "/contributing/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      type: "baseGuide",
+      file: "guides/Contributing.mdx",
+      translations: null,
+      guideGroupId: "en:/contributing/:Home",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/Contributing.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Contributing.mdx?raw");
+      return file.default;
+    }),
+  },
   "/crystal/": {
     meta: {
+      id: "/crystal/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -789,6 +888,7 @@ export const guides = {
       description: "Crystal Resources",
       slug: "/crystal/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -809,10 +909,11 @@ export const guides = {
   },
   "/de-retail-emerald-egg/": {
     meta: {
+      id: "/retail-emerald-egg/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
-      guideKey: "/emer-egg/",
+      guideKey: "emer-egg",
       isNew: false,
       title: "Retail Emerald Egg RNG",
       navDrawerTitle: "Ei RNG",
@@ -820,6 +921,7 @@ export const guides = {
         "Lerne, wie du in Pokémon Smaragd mit Hilfe der Pokemon-Pension, Eier RNG manipulieren kannst. Erhalte perfekte IVs, Wesen, und Shinies.",
       slug: "/de-retail-emerald-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-05-18",
       translation: { enSlug: "/retail-emerald-egg/", language: "de" },
@@ -832,9 +934,14 @@ export const guides = {
         en: "/retail-emerald-egg/",
         zh: "/zh-retail-emerald-egg/",
       },
-      guideGroupId: "de:/emer-egg/:Emerald",
+      guideGroupId: "de:emer-egg:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_de",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/de/Gen 3/Emerald/Retail Egg.mdx"),
@@ -848,6 +955,7 @@ export const guides = {
   },
   "/delete-pokemon-save/": {
     meta: {
+      id: "/delete-pokemon-save/",
       categories: [
         "Ruby and Sapphire",
         "FireRed and LeafGreen",
@@ -865,7 +973,7 @@ export const guides = {
         "Brilliant Diamond and Shining Pearl",
         "Legends Arceus",
       ],
-      section: "tool",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/delete-pokemon-save/",
       isNew: false,
@@ -874,6 +982,7 @@ export const guides = {
       description: "How to delete a Pokemon save file to start a new game.",
       slug: "/delete-pokemon-save/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -888,7 +997,7 @@ export const guides = {
       guideGroupId:
         "en:/delete-pokemon-save/:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Delete Save.mdx"),
@@ -902,6 +1011,7 @@ export const guides = {
   },
   "/desmume-setup/": {
     meta: {
+      id: "/desmume-setup/",
       categories: [
         "Diamond, Pearl, and Platinum",
         "HeartGold and SoulSilver",
@@ -918,6 +1028,7 @@ export const guides = {
         "Learn how to set up DeSmuME for RNG, including cart dumping, save extraction, and using lua scripts.",
       slug: "/desmume-setup/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -943,6 +1054,7 @@ export const guides = {
   },
   "/diamond-pearl-and-platinum/": {
     meta: {
+      id: "/diamond-pearl-and-platinum/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -953,6 +1065,7 @@ export const guides = {
       description: "Diamond, Pearl, and Platinum Resources",
       slug: "/diamond-pearl-and-platinum/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -973,8 +1086,9 @@ export const guides = {
   },
   "/dppt-3ds-rng/": {
     meta: {
+      id: "/dppt-3ds-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "info",
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/dppt-3ds-rng/",
       isNew: false,
@@ -984,6 +1098,7 @@ export const guides = {
         "Learn how to RNG using a 3DS in Diamond, Pearl, and Platinum for shiny, high-IV Pokémon.",
       slug: "/dppt-3ds-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-07-03",
       translation: null,
@@ -994,7 +1109,7 @@ export const guides = {
       translations: { en: "/dppt-3ds-rng/", zh: "/zh-dppt-3ds-rng/" },
       guideGroupId: "en:/dppt-3ds-rng/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide"],
+      displayAttributes: ["video_guide", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS RNG.mdx")),
     getRawFile: memoize(async () => {
@@ -1004,9 +1119,10 @@ export const guides = {
   },
   "/dppt-advance-rng/": {
     meta: {
+      id: "/dppt-advance-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "info",
-      guideVariants: null,
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/dppt-advance-rng/",
       isNew: false,
       title: "Advancing the RNG in Diamond, Pearl, and Platinum",
@@ -1015,6 +1131,7 @@ export const guides = {
         "Learn how to advance the RNG in Diamond, Pearl, and Platinum. This guide explains different methods like journal flips, Chatot chatters, and NPC actions.",
       slug: "/dppt-advance-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1028,8 +1145,11 @@ export const guides = {
         zh: "/zh-dppt-advance-rng/",
       },
       guideGroupId: "en:/dppt-advance-rng/:Diamond, Pearl, and Platinum",
-      guideVariantLinks: null,
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/dppt-advance-rng/" },
+        cfwEmu: { type: "slug", slug: "/dppt-advance-rng/" },
+      },
+      displayAttributes: ["translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -1046,8 +1166,9 @@ export const guides = {
   },
   "/dppt-cute-charm/": {
     meta: {
+      id: "/dppt-cute-charm/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/dppt-cute-charm/",
       isNew: false,
@@ -1057,6 +1178,7 @@ export const guides = {
         "Learn about how the Cute Charm glitch works in Diamond, Pearl, and Platinum.",
       slug: "/dppt-cute-charm/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1067,7 +1189,7 @@ export const guides = {
       translations: { en: "/dppt-cute-charm/", zh: "/zh-dppt-cute-charm/" },
       guideGroupId: "en:/dppt-cute-charm/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
     getRawFile: memoize(async () => {
@@ -1077,10 +1199,11 @@ export const guides = {
   },
   "/dppt-initial-seed-retail/": {
     meta: {
+      id: "/dppt-initial-seed-retail/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
-      guideKey: "/dppt-init-seed/",
+      guideKey: "dppt-init-seed",
       isNew: false,
       title: "Diamond, Pearl, and Platinum Retail Initial Seed RNG",
       navDrawerTitle: "Initial Seed RNG",
@@ -1088,6 +1211,7 @@ export const guides = {
         "Learn how to RNG your initial seed in Diamond, Pearl, and Platinum on a physical console.",
       slug: "/dppt-initial-seed-retail/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
       translation: null,
@@ -1099,12 +1223,12 @@ export const guides = {
         en: "/dppt-initial-seed-retail/",
         zh: "/zh-dppt-initial-seed-retail/",
       },
-      guideGroupId: "en:/dppt-init-seed/:Diamond, Pearl, and Platinum",
+      guideGroupId: "en:dppt-init-seed:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
-        retail: "/dppt-initial-seed-retail/",
-        cfwEmu: "/dppt-initial-seed/",
+        retail: { type: "slug", slug: "/dppt-initial-seed-retail/" },
+        cfwEmu: { type: "slug", slug: "/dppt-initial-seed/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -1121,10 +1245,11 @@ export const guides = {
   },
   "/dppt-initial-seed/": {
     meta: {
+      id: "/dppt-initial-seed/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
-      guideKey: "/dppt-init-seed/",
+      guideKey: "dppt-init-seed",
       isNew: false,
       title: "Diamond, Pearl, and Platinum Initial Seed RNG",
       navDrawerTitle: "Initial Seed RNG",
@@ -1132,6 +1257,7 @@ export const guides = {
         "Learn how to RNG your initial seed in Diamond, Pearl, and Platinum.",
       slug: "/dppt-initial-seed/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1140,12 +1266,12 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
       translations: { en: "/dppt-initial-seed/", zh: "/zh-dppt-initial-seed/" },
-      guideGroupId: "en:/dppt-init-seed/:Diamond, Pearl, and Platinum",
+      guideGroupId: "en:dppt-init-seed:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
-        retail: "/dppt-initial-seed-retail/",
-        cfwEmu: "/dppt-initial-seed/",
+        retail: { type: "slug", slug: "/dppt-initial-seed-retail/" },
+        cfwEmu: { type: "slug", slug: "/dppt-initial-seed/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -1162,10 +1288,11 @@ export const guides = {
   },
   "/dppt-pokeradar-rng/": {
     meta: {
+      id: "/dppt-pokeradar-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/pokeradar/",
+      guideKey: "pokeradar",
       isNew: false,
       title: "Diamond, Pearl, and Platinum PokeRadar RNG",
       navDrawerTitle: "PokeRadar RNG",
@@ -1173,6 +1300,7 @@ export const guides = {
         "Learn two different methods for RNG manipulation with the PokéRadar in Diamond, Pearl, and Platinum.",
       slug: "/dppt-pokeradar-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1184,12 +1312,12 @@ export const guides = {
         en: "/dppt-pokeradar-rng/",
         zh: "/zh-dppt-pokeradar-rng/",
       },
-      guideGroupId: "en:/pokeradar/:Diamond, Pearl, and Platinum",
+      guideGroupId: "en:pokeradar:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
-        retail: "/dppt-pokeradar-rng/",
-        cfwEmu: "/dppt-pokeradar-rng/",
+        retail: { type: "slug", slug: "/dppt-pokeradar-rng/" },
+        cfwEmu: { type: "slug", slug: "/dppt-pokeradar-rng/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -1204,10 +1332,11 @@ export const guides = {
   },
   "/dppt-setup-rng/": {
     meta: {
+      id: "/dppt-setup-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/honey-tree/",
+      guideKey: "honey-tree",
       isNew: false,
       title: "Diamond, Pearl, and Platinum Honey Tree RNG",
       navDrawerTitle: "Honey Tree RNG",
@@ -1215,6 +1344,7 @@ export const guides = {
         "Learn how to RNG Pokémon from Honey Trees in Diamond, Pearl, and Platinum for shiny and high-IV results.",
       slug: "/dppt-setup-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1223,10 +1353,10 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx",
       translations: null,
-      guideGroupId: "en:/honey-tree/:Diamond, Pearl, and Platinum",
+      guideGroupId: "en:honey-tree:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
-        retail: "/dppt-setup-rng/",
-        cfwEmu: "/dppt-setup-rng/",
+        retail: { type: "slug", slug: "/dppt-setup-rng/" },
+        cfwEmu: { type: "slug", slug: "/dppt-setup-rng/" },
       },
       displayAttributes: [],
     },
@@ -1242,10 +1372,11 @@ export const guides = {
   },
   "/dppt-tid-sid/": {
     meta: {
+      id: "/dppt-tid-sid/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["retail"],
-      guideKey: "/tid-sid/",
+      guideKey: "tid-sid",
       isNew: false,
       title: "Diamond, Pearl, & Platinum Cute Charm Glitch TID/SID RNG",
       navDrawerTitle: "Cute Charm & TID/SID RNG",
@@ -1253,6 +1384,7 @@ export const guides = {
         "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for Diamond, Pearl, & Platinum.",
       slug: "/dppt-tid-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-06-08",
       translation: null,
@@ -1261,12 +1393,12 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 4/Retail TID.mdx",
       translations: { en: "/dppt-tid-sid/", zh: "/zh-dppt-tid-sid/" },
-      guideGroupId: "en:/tid-sid/:Diamond, Pearl, and Platinum",
+      guideGroupId: "en:tid-sid:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
-        retail: "/dppt-tid-sid/",
-        cfwEmu: "/emulator-dppt-tid-sid/",
+        retail: { type: "slug", slug: "/dppt-tid-sid/" },
+        cfwEmu: { type: "slug", slug: "/emulator-dppt-tid-sid/" },
       },
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
     getRawFile: memoize(async () => {
@@ -1276,10 +1408,11 @@ export const guides = {
   },
   "/dppt-wild/": {
     meta: {
+      id: "/dppt-wild/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/wild/",
+      guideKey: "wild",
       isNew: false,
       title: "Diamond, Pearl, and Platinum Wild RNG Guide",
       navDrawerTitle: "Wild RNG",
@@ -1287,6 +1420,7 @@ export const guides = {
         "Learn how to RNG wild Pokémon in Diamond, Pearl, and Platinum for shiny and high-IV results.",
       slug: "/dppt-wild/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1295,9 +1429,12 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx",
       translations: { en: "/dppt-wild/", zh: "/zh-dppt-wild/" },
-      guideGroupId: "en:/wild/:Diamond, Pearl, and Platinum",
-      guideVariantLinks: { retail: "/dppt-wild/", cfwEmu: "/dppt-wild/" },
-      displayAttributes: [],
+      guideGroupId: "en:wild:Diamond, Pearl, and Platinum",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/dppt-wild/" },
+        cfwEmu: { type: "slug", slug: "/dppt-wild/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx"),
@@ -1311,6 +1448,7 @@ export const guides = {
   },
   "/dream-radar-patches/": {
     meta: {
+      id: "/dream-radar-patches/",
       categories: ["Transporter and Dream Radar"],
       section: "patch",
       guideVariants: null,
@@ -1322,6 +1460,7 @@ export const guides = {
         "Learn how to patch Pokémon Dream Radar on the 3DS to load saves from TWiLightMenu, nds-bootstrap, or emulators — no game cart needed.",
       slug: "/dream-radar-patches/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1346,9 +1485,10 @@ export const guides = {
   },
   "/e-tips-rng/": {
     meta: {
+      id: "/e-tips-rng/",
       categories: ["Emerald"],
-      section: "info",
-      guideVariants: null,
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/e-tips-rng/",
       isNew: false,
       title: "Emerald RNG Info",
@@ -1357,6 +1497,7 @@ export const guides = {
         "Learn how to advance the RNG and improve stability in Pokemon Emerald for consistent results.",
       slug: "/e-tips-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1370,8 +1511,11 @@ export const guides = {
         zh: "/zh-e-tips-rng/",
       },
       guideGroupId: "en:/e-tips-rng/:Emerald",
-      guideVariantLinks: null,
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/e-tips-rng/" },
+        cfwEmu: { type: "slug", slug: "/e-tips-rng/" },
+      },
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Basic Rules of RNG.mdx"),
@@ -1385,8 +1529,9 @@ export const guides = {
   },
   "/emerald-mirage-island/": {
     meta: {
+      id: "/emerald-mirage-island/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["retail"],
       guideKey: "/emerald-mirage-island/",
       isNew: false,
@@ -1396,6 +1541,7 @@ export const guides = {
         "Learn how to access Mirage Island in Pokémon Emerald by catching a Pokémon with the correct PID using RNG manipulation.",
       slug: "/emerald-mirage-island/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-04-11",
       translation: null,
@@ -1408,8 +1554,11 @@ export const guides = {
         zh: "/zh-emerald-mirage-island/",
       },
       guideGroupId: "en:/emerald-mirage-island/:Emerald",
-      guideVariantLinks: { retail: "/emerald-mirage-island/", cfwEmu: null },
-      displayAttributes: ["web_tool"],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/emerald-mirage-island/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Mirage Island.mdx"),
@@ -1423,17 +1572,19 @@ export const guides = {
   },
   "/emerald-overview/": {
     meta: {
+      id: "/emerald-overview/",
       categories: ["Emerald"],
-      section: "info",
+      section: "getting_started",
       guideVariants: null,
       guideKey: "/emerald-overview/",
       isNew: false,
       title: "Emerald Overview",
-      navDrawerTitle: "Overview",
+      navDrawerTitle: "Emerald Overview",
       description:
         "Practical applications of RNG Manipulation and techniques in Pokémon Emerald.",
       slug: "/emerald-overview/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
       translation: null,
@@ -1444,7 +1595,7 @@ export const guides = {
       translations: { en: "/emerald-overview/", it: "/it-emerald-overview/" },
       guideGroupId: "en:/emerald-overview/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Emerald Overview.mdx"),
@@ -1458,8 +1609,9 @@ export const guides = {
   },
   "/emerald-painting-rng/": {
     meta: {
+      id: "/emerald-painting-rng/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/emerald-painting-rng/",
       isNew: false,
@@ -1469,6 +1621,7 @@ export const guides = {
         "Learn how to reseed the RNG using paintings in Pokémon Emerald to get the Pokémon you want quickly, without the long wait.",
       slug: "/emerald-painting-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1481,8 +1634,11 @@ export const guides = {
         zh: "/zh-emerald-painting-rng/",
       },
       guideGroupId: "en:/emerald-painting-rng/:Emerald",
-      guideVariantLinks: { retail: null, cfwEmu: "/emerald-painting-rng/" },
-      displayAttributes: ["video_guide", "web_tool"],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emerald-painting-rng/" },
+      },
+      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Reseed RNG.mdx")),
     getRawFile: memoize(async () => {
@@ -1492,8 +1648,9 @@ export const guides = {
   },
   "/emerald-pokerus-emu/": {
     meta: {
+      id: "/emerald-pokerus-emu/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emerald-pokerus-emu/",
       isNew: false,
@@ -1502,6 +1659,7 @@ export const guides = {
       description: "How to be infected by Pokérus",
       slug: "/emerald-pokerus-emu/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-05-09",
       translation: null,
@@ -1514,8 +1672,11 @@ export const guides = {
         zh: "/zh-emerald-pokerus-emu/",
       },
       guideGroupId: "en:/emerald-pokerus-emu/:Emerald",
-      guideVariantLinks: { retail: null, cfwEmu: "/emerald-pokerus-emu/" },
-      displayAttributes: ["video_guide"],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emerald-pokerus-emu/" },
+      },
+      displayAttributes: ["video_guide", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Pokerus.mdx")),
     getRawFile: memoize(async () => {
@@ -1525,8 +1686,9 @@ export const guides = {
   },
   "/emerald-shiny-starter/": {
     meta: {
+      id: "/emerald-shiny-starter/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/emerald-shiny-starter/",
       isNew: false,
@@ -1535,6 +1697,7 @@ export const guides = {
       description: "Determine your SID by catching a shiny starter",
       slug: "/emerald-shiny-starter/",
       isRoughDraft: false,
+      orderPriority: 0,
       hideFromNavDrawer: false,
       addedOn: "2025-05-03",
       translation: null,
@@ -1547,8 +1710,11 @@ export const guides = {
         zh: "/zh-emerald-shiny-starter/",
       },
       guideGroupId: "en:/emerald-shiny-starter/:Emerald",
-      guideVariantLinks: { retail: "/emerald-shiny-starter/", cfwEmu: null },
-      displayAttributes: ["web_tool"],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/emerald-shiny-starter/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Shiny Starter.mdx"),
@@ -1562,8 +1728,9 @@ export const guides = {
   },
   "/emerald-sid-feebas/": {
     meta: {
+      id: "/emerald-sid-feebas/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "/emerald-sid-feebas/",
       isNew: false,
@@ -1572,6 +1739,7 @@ export const guides = {
       description: "How to find your Secret ID (SID) in Emerald using Feebas.",
       slug: "/emerald-sid-feebas/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-03-03",
       translation: null,
@@ -1584,8 +1752,11 @@ export const guides = {
         zh: "/zh-emerald-sid-feebas/",
       },
       guideGroupId: "en:/emerald-sid-feebas/:Emerald",
-      guideVariantLinks: { retail: "/emerald-sid-feebas/", cfwEmu: null },
-      displayAttributes: ["video_guide", "web_tool"],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/emerald-sid-feebas/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx"),
@@ -1599,16 +1770,18 @@ export const guides = {
   },
   "/emerald-static/": {
     meta: {
+      id: "/emerald-static/",
       categories: ["Emerald"],
-      section: "guide",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/wild/",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/emerald-static/",
       isNew: false,
-      title: "Emerald Static3",
-      navDrawerTitle: "Emerald Static3",
+      title: "Static Tool",
+      navDrawerTitle: "Static Tool",
       description: "Static encounters in Emerald",
       slug: "/emerald-static/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1617,12 +1790,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
       translations: null,
-      guideGroupId: "en:/wild/:Emerald",
-      guideVariantLinks: {
-        retail: "/emerald-static/",
-        cfwEmu: "/emerald-static/",
-      },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/emerald-static/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
@@ -1636,16 +1806,18 @@ export const guides = {
   },
   "/emerald-tidsid-generator/": {
     meta: {
+      id: "/emerald-tidsid-generator/",
       categories: ["Emerald"],
-      section: "guide",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/tid-sid/",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/emerald-tidsid-generator/",
       isNew: false,
-      title: "Emerald TID and SID Generator",
-      navDrawerTitle: "Emerald TID and SID Generator",
+      title: "TID and SID Generator",
+      navDrawerTitle: "TID and SID Generator",
       description: "Generator for TID/SID in Emerald",
       slug: "/emerald-tidsid-generator/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1654,12 +1826,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
-      guideGroupId: "en:/tid-sid/:Emerald",
-      guideVariantLinks: {
-        retail: "/emerald-tidsid-generator/",
-        cfwEmu: "/emerald-tidsid-generator/",
-      },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/emerald-tidsid-generator/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -1673,8 +1842,9 @@ export const guides = {
   },
   "/emerald-wild/": {
     meta: {
+      id: "/emerald-wild/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/emerald-wild/",
       isNew: false,
@@ -1683,6 +1853,7 @@ export const guides = {
       description: "Emerald Wild Searcher",
       slug: "/emerald-wild/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1692,8 +1863,11 @@ export const guides = {
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
       translations: null,
       guideGroupId: "en:/emerald-wild/:Emerald",
-      guideVariantLinks: { retail: "/emerald-wild/", cfwEmu: null },
-      displayAttributes: ["web_tool"],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/emerald-wild/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx")),
     getRawFile: memoize(async () => {
@@ -1703,6 +1877,7 @@ export const guides = {
   },
   "/emerald/": {
     meta: {
+      id: "/emerald/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -1713,6 +1888,7 @@ export const guides = {
       description: "Emerald Resources",
       slug: "/emerald/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1733,8 +1909,9 @@ export const guides = {
   },
   "/emulator-b2w2-dream-radar/": {
     meta: {
+      id: "/emulator-b2w2-dream-radar/",
       categories: ["Black 2 and White 2", "Transporter and Dream Radar"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-b2w2-dream-radar/",
       isNew: false,
@@ -1744,6 +1921,7 @@ export const guides = {
         "Learn how to RNG Level 5 Dream Ball legendary Pokémon with Hidden Abilities in Black 2 and White 2.",
       slug: "/emulator-b2w2-dream-radar/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1759,9 +1937,9 @@ export const guides = {
         "en:/emulator-b2w2-dream-radar/:Black 2 and White 2|Transporter and Dream Radar",
       guideVariantLinks: {
         retail: null,
-        cfwEmu: "/emulator-b2w2-dream-radar/",
+        cfwEmu: { type: "slug", slug: "/emulator-b2w2-dream-radar/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Dream Radar.mdx")),
     getRawFile: memoize(async () => {
@@ -1771,8 +1949,9 @@ export const guides = {
   },
   "/emulator-b2w2-runasdate-inital-seed/": {
     meta: {
+      id: "/emulator-b2w2-runasdate-inital-seed/",
       categories: ["Black 2 and White 2"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-b2w2-runasdate-inital-seed/",
       isNew: false,
@@ -1781,6 +1960,7 @@ export const guides = {
       description: "Learn how to RNG your initial seed in Black 2 and White 2.",
       slug: "/emulator-b2w2-runasdate-inital-seed/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1796,9 +1976,9 @@ export const guides = {
         "en:/emulator-b2w2-runasdate-inital-seed/:Black 2 and White 2",
       guideVariantLinks: {
         retail: null,
-        cfwEmu: "/emulator-b2w2-runasdate-inital-seed/",
+        cfwEmu: { type: "slug", slug: "/emulator-b2w2-runasdate-inital-seed/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
@@ -1812,8 +1992,9 @@ export const guides = {
   },
   "/emulator-b2w2-wild/": {
     meta: {
+      id: "/emulator-b2w2-wild/",
       categories: ["Black 2 and White 2"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-b2w2-wild/",
       isNew: false,
@@ -1823,6 +2004,7 @@ export const guides = {
         "Learn how to RNG wild Pokémon in Black 2 and White 2 for shiny and high-IV results.",
       slug: "/emulator-b2w2-wild/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1832,8 +2014,11 @@ export const guides = {
       file: "guides/Gen 5/Wild RNG Emu.mdx",
       translations: null,
       guideGroupId: "en:/emulator-b2w2-wild/:Black 2 and White 2",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-b2w2-wild/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-b2w2-wild/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
     getRawFile: memoize(async () => {
@@ -1843,8 +2028,9 @@ export const guides = {
   },
   "/emulator-bw-entralink/": {
     meta: {
+      id: "/emulator-bw-entralink/",
       categories: ["Black and White"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-entralink/",
       isNew: false,
@@ -1854,6 +2040,7 @@ export const guides = {
         "Learn how to RNG Pokémon exclusive to the Entralink in Black and White, including event-only encounters like Arceus.",
       slug: "/emulator-bw-entralink/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1866,8 +2053,11 @@ export const guides = {
         zh: "/zh-emulator-bw-entralink/",
       },
       guideGroupId: "en:/emulator-bw-entralink/:Black and White",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-bw-entralink/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-bw-entralink/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Entralink.mdx")),
     getRawFile: memoize(async () => {
@@ -1877,8 +2067,9 @@ export const guides = {
   },
   "/emulator-bw-find-ds-parameters/": {
     meta: {
+      id: "/emulator-bw-find-ds-parameters/",
       categories: ["Black and White"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-find-ds-parameters/",
       isNew: false,
@@ -1888,6 +2079,7 @@ export const guides = {
         "Learn how to find your DS parameters for successful RNG in Pokémon Black and White.",
       slug: "/emulator-bw-find-ds-parameters/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1902,9 +2094,9 @@ export const guides = {
       guideGroupId: "en:/emulator-bw-find-ds-parameters/:Black and White",
       guideVariantLinks: {
         retail: null,
-        cfwEmu: "/emulator-bw-find-ds-parameters/",
+        cfwEmu: { type: "slug", slug: "/emulator-bw-find-ds-parameters/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Find DS Parameters.mdx")),
     getRawFile: memoize(async () => {
@@ -1914,8 +2106,9 @@ export const guides = {
   },
   "/emulator-bw-roamers/": {
     meta: {
+      id: "/emulator-bw-roamers/",
       categories: ["Black and White"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-roamers/",
       isNew: false,
@@ -1925,6 +2118,7 @@ export const guides = {
         "Learn how to RNG Tornadus and Thundurus in Black and White for shiny and high-IV results.",
       slug: "/emulator-bw-roamers/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1937,8 +2131,11 @@ export const guides = {
         zh: "/zh-emulator-bw-roamers/",
       },
       guideGroupId: "en:/emulator-bw-roamers/:Black and White",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-bw-roamers/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-bw-roamers/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Roamers.mdx")),
     getRawFile: memoize(async () => {
@@ -1948,8 +2145,9 @@ export const guides = {
   },
   "/emulator-bw-runasdate-initial-seed/": {
     meta: {
+      id: "/emulator-bw-runasdate-initial-seed/",
       categories: ["Black and White"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-runasdate-initial-seed/",
       isNew: false,
@@ -1958,6 +2156,7 @@ export const guides = {
       description: "Learn how to RNG your initial seed in Black and White.",
       slug: "/emulator-bw-runasdate-initial-seed/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -1972,9 +2171,9 @@ export const guides = {
       guideGroupId: "en:/emulator-bw-runasdate-initial-seed/:Black and White",
       guideVariantLinks: {
         retail: null,
-        cfwEmu: "/emulator-bw-runasdate-initial-seed/",
+        cfwEmu: { type: "slug", slug: "/emulator-bw-runasdate-initial-seed/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
@@ -1988,8 +2187,9 @@ export const guides = {
   },
   "/emulator-bw-white-forest/": {
     meta: {
+      id: "/emulator-bw-white-forest/",
       categories: ["Black and White"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-white-forest/",
       isNew: false,
@@ -1999,6 +2199,7 @@ export const guides = {
         "Learn how to RNG Pokémon found exclusively in White Forest in Pokémon White for desired IVs, nature, and shininess.",
       slug: "/emulator-bw-white-forest/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2011,8 +2212,11 @@ export const guides = {
         zh: "/zh-emulator-bw-white-forest/",
       },
       guideGroupId: "en:/emulator-bw-white-forest/:Black and White",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-bw-white-forest/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-bw-white-forest/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/White Forest RNG (Emu).mdx"),
@@ -2026,8 +2230,9 @@ export const guides = {
   },
   "/emulator-bw-wild/": {
     meta: {
+      id: "/emulator-bw-wild/",
       categories: ["Black and White"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-wild/",
       isNew: false,
@@ -2037,6 +2242,7 @@ export const guides = {
         "Learn how to RNG wild Pokémon in Black and White for shiny and high-IV results.",
       slug: "/emulator-bw-wild/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2046,8 +2252,11 @@ export const guides = {
       file: "guides/Gen 5/Wild RNG Emu.mdx",
       translations: null,
       guideGroupId: "en:/emulator-bw-wild/:Black and White",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-bw-wild/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-bw-wild/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
     getRawFile: memoize(async () => {
@@ -2057,8 +2266,9 @@ export const guides = {
   },
   "/emulator-colosseum-general/": {
     meta: {
+      id: "/emulator-colosseum-general/",
       categories: ["Gamecube"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-colosseum-general/",
       isNew: false,
@@ -2067,6 +2277,7 @@ export const guides = {
       description: "RNG in Colosseum",
       slug: "/emulator-colosseum-general/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2078,9 +2289,9 @@ export const guides = {
       guideGroupId: "en:/emulator-colosseum-general/:Gamecube",
       guideVariantLinks: {
         retail: null,
-        cfwEmu: "/emulator-colosseum-general/",
+        cfwEmu: { type: "slug", slug: "/emulator-colosseum-general/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/Colosseum General Guide (Emu).mdx"),
@@ -2094,8 +2305,9 @@ export const guides = {
   },
   "/emulator-dppt-cute-charm/": {
     meta: {
+      id: "/emulator-dppt-cute-charm/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/emulator-dppt-cute-charm/",
       isNew: false,
@@ -2105,6 +2317,7 @@ export const guides = {
         "Learn about how the Cute Charm glitch works in Diamond, Pearl, and Platinum.",
       slug: "/emulator-dppt-cute-charm/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
@@ -2119,7 +2332,7 @@ export const guides = {
       guideGroupId:
         "en:/emulator-dppt-cute-charm/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
     getRawFile: memoize(async () => {
@@ -2129,8 +2342,9 @@ export const guides = {
   },
   "/emulator-dppt-egg/": {
     meta: {
+      id: "/emulator-dppt-egg/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-dppt-egg/",
       isNew: false,
@@ -2140,6 +2354,7 @@ export const guides = {
         "Learn how to RNG eggs from the Daycare in Diamond, Pearl, and Platinum for shiny, high-IV Pokémon.",
       slug: "/emulator-dppt-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2149,8 +2364,11 @@ export const guides = {
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx",
       translations: { en: "/emulator-dppt-egg/", zh: "/zh-emulator-dppt-egg/" },
       guideGroupId: "en:/emulator-dppt-egg/:Diamond, Pearl, and Platinum",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-dppt-egg/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-dppt-egg/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx"),
@@ -2164,6 +2382,7 @@ export const guides = {
   },
   "/emulator-dppt-pokefinder-setup/": {
     meta: {
+      id: "/emulator-dppt-pokefinder-setup/",
       categories: ["Diamond, Pearl, and Platinum"],
       section: "tool",
       guideVariants: null,
@@ -2175,6 +2394,7 @@ export const guides = {
         "Step-by-step guide to RNG Pokémon in Diamond, Pearl, and Platinum using PokeFinder.",
       slug: "/emulator-dppt-pokefinder-setup/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2203,8 +2423,9 @@ export const guides = {
   },
   "/emulator-dppt-stationary/": {
     meta: {
+      id: "/emulator-dppt-stationary/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-dppt-stationary/",
       isNew: false,
@@ -2214,6 +2435,7 @@ export const guides = {
         "Learn how to RNG static Pokémon in Diamond, Pearl, and Platinum for perfect IVs, natures, and shinies.",
       slug: "/emulator-dppt-stationary/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2227,8 +2449,11 @@ export const guides = {
       },
       guideGroupId:
         "en:/emulator-dppt-stationary/:Diamond, Pearl, and Platinum",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-dppt-stationary/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-dppt-stationary/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -2243,10 +2468,11 @@ export const guides = {
   },
   "/emulator-dppt-tid-sid/": {
     meta: {
+      id: "/emulator-dppt-tid-sid/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
-      guideKey: "/tid-sid/",
+      guideKey: "tid-sid",
       isNew: false,
       title: "Diamond, Pearl, and Platinum TID/SID RNG",
       navDrawerTitle: "TID/SID RNG",
@@ -2254,6 +2480,7 @@ export const guides = {
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Diamond, Pearl, and Platinum.",
       slug: "/emulator-dppt-tid-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2265,12 +2492,12 @@ export const guides = {
         en: "/emulator-dppt-tid-sid/",
         zh: "/zh-emulator-dppt-tid-sid/",
       },
-      guideGroupId: "en:/tid-sid/:Diamond, Pearl, and Platinum",
+      guideGroupId: "en:tid-sid:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
-        retail: "/dppt-tid-sid/",
-        cfwEmu: "/emulator-dppt-tid-sid/",
+        retail: { type: "slug", slug: "/dppt-tid-sid/" },
+        cfwEmu: { type: "slug", slug: "/emulator-dppt-tid-sid/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -2285,10 +2512,11 @@ export const guides = {
   },
   "/emulator-emerald-egg/": {
     meta: {
+      id: "/emulator-emerald-egg/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
-      guideKey: "/emer-egg/",
+      guideKey: "emer-egg",
       isNew: false,
       title: "Emerald Egg RNG",
       navDrawerTitle: "Egg RNG",
@@ -2296,6 +2524,7 @@ export const guides = {
         "Learn how to RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies.",
       slug: "/emulator-emerald-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-03-09",
       translation: null,
@@ -2308,12 +2537,17 @@ export const guides = {
         it: "/it-emulator-emerald-egg/",
         zh: "/zh-emulator-emerald-egg/",
       },
-      guideGroupId: "en:/emer-egg/:Emerald",
+      guideGroupId: "en:emer-egg:Emerald",
       guideVariantLinks: {
-        retail: "/retail-emerald-egg/",
-        cfwEmu: "/emulator-emerald-egg/",
+        retail: { type: "slug", slug: "/retail-emerald-egg/" },
+        cfwEmu: { type: "slug", slug: "/emulator-emerald-egg/" },
       },
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Egg RNG.mdx")),
     getRawFile: memoize(async () => {
@@ -2323,8 +2557,9 @@ export const guides = {
   },
   "/emulator-flrg-stationary-and-gift/": {
     meta: {
+      id: "/emulator-flrg-stationary-and-gift/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-flrg-stationary-and-gift/",
       isNew: false,
@@ -2334,6 +2569,7 @@ export const guides = {
         "Learn how to RNG shiny 6IV legendaries in Pokémon FireRed and LeafGreen using static encounters.",
       slug: "/emulator-flrg-stationary-and-gift/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2349,9 +2585,9 @@ export const guides = {
         "en:/emulator-flrg-stationary-and-gift/:FireRed and LeafGreen",
       guideVariantLinks: {
         retail: null,
-        cfwEmu: "/emulator-flrg-stationary-and-gift/",
+        cfwEmu: { type: "slug", slug: "/emulator-flrg-stationary-and-gift/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx"),
@@ -2365,8 +2601,9 @@ export const guides = {
   },
   "/emulator-frlg-egg/": {
     meta: {
+      id: "/emulator-frlg-egg/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-frlg-egg/",
       isNew: false,
@@ -2376,6 +2613,7 @@ export const guides = {
         "Learn how to RNG eggs in Pokémon FireRed and LeafGreen for perfect IVs, natures, and shinies.",
       slug: "/emulator-frlg-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2385,8 +2623,11 @@ export const guides = {
       file: "guides/Gen 3/FireRed and LeafGreen/Egg RNG.mdx",
       translations: { en: "/emulator-frlg-egg/", zh: "/zh-emulator-frlg-egg/" },
       guideGroupId: "en:/emulator-frlg-egg/:FireRed and LeafGreen",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-frlg-egg/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-frlg-egg/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/FireRed and LeafGreen/Egg RNG.mdx"),
@@ -2400,8 +2641,9 @@ export const guides = {
   },
   "/emulator-frlg-stationary/": {
     meta: {
+      id: "/emulator-frlg-stationary/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-frlg-stationary/",
       isNew: false,
@@ -2410,6 +2652,7 @@ export const guides = {
       description: "Static v2 RNG",
       slug: "/emulator-frlg-stationary/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2419,8 +2662,11 @@ export const guides = {
       file: "guides/Gen 3/FireRed and LeafGreen/Stationary v2 Emu.mdx",
       translations: null,
       guideGroupId: "en:/emulator-frlg-stationary/:FireRed and LeafGreen",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-frlg-stationary/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-frlg-stationary/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -2435,8 +2681,9 @@ export const guides = {
   },
   "/emulator-frlg-wild-v2/": {
     meta: {
+      id: "/emulator-frlg-wild-v2/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-frlg-wild-v2/",
       isNew: false,
@@ -2446,6 +2693,7 @@ export const guides = {
         "Learn how to RNG wild Pokemon in FireRed and LeafGreen using the Sweet Scent method.",
       slug: "/emulator-frlg-wild-v2/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
@@ -2455,7 +2703,10 @@ export const guides = {
       file: "guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx",
       translations: null,
       guideGroupId: "en:/emulator-frlg-wild-v2/:FireRed and LeafGreen",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-frlg-wild-v2/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-frlg-wild-v2/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -2470,8 +2721,9 @@ export const guides = {
   },
   "/emulator-frlg-wild/": {
     meta: {
+      id: "/emulator-frlg-wild/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-frlg-wild/",
       isNew: false,
@@ -2481,6 +2733,7 @@ export const guides = {
         "Learn how to RNG wild Pokemon in FireRed and LeafGreen using the Sweet Scent method.",
       slug: "/emulator-frlg-wild/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2493,8 +2746,11 @@ export const guides = {
         zh: "/zh-emulator-frlg-wild/",
       },
       guideGroupId: "en:/emulator-frlg-wild/:FireRed and LeafGreen",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-frlg-wild/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-frlg-wild/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx"),
@@ -2508,8 +2764,9 @@ export const guides = {
   },
   "/emulator-hgss-breeding/": {
     meta: {
+      id: "/emulator-hgss-breeding/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-hgss-breeding/",
       isNew: false,
@@ -2518,6 +2775,7 @@ export const guides = {
       description: "Breeding RNG",
       slug: "/emulator-hgss-breeding/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2527,8 +2785,11 @@ export const guides = {
       file: "guides/Gen 4/HeartGold and SoulSilver/Breeding RNG (Emu).mdx",
       translations: null,
       guideGroupId: "en:/emulator-hgss-breeding/:HeartGold and SoulSilver",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-hgss-breeding/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-hgss-breeding/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -2545,8 +2806,9 @@ export const guides = {
   },
   "/emulator-hgss-cute-charm/": {
     meta: {
+      id: "/emulator-hgss-cute-charm/",
       categories: ["HeartGold and SoulSilver"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/emulator-hgss-cute-charm/",
       isNew: false,
@@ -2556,6 +2818,7 @@ export const guides = {
         "Learn about how the Cute Charm glitch works in HeartGold and SoulSilver.",
       slug: "/emulator-hgss-cute-charm/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
@@ -2569,7 +2832,7 @@ export const guides = {
       },
       guideGroupId: "en:/emulator-hgss-cute-charm/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
     getRawFile: memoize(async () => {
@@ -2579,8 +2842,9 @@ export const guides = {
   },
   "/emulator-hgss-egg/": {
     meta: {
+      id: "/emulator-hgss-egg/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-hgss-egg/",
       isNew: false,
@@ -2590,6 +2854,7 @@ export const guides = {
         "Learn how to RNG eggs from the Daycare in HeartGold and SoulSilver for shiny, high-IV Pokémon.",
       slug: "/emulator-hgss-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2599,8 +2864,11 @@ export const guides = {
       file: "guides/Gen 4/HeartGold and SoulSilver/Egg.mdx",
       translations: { en: "/emulator-hgss-egg/", zh: "/zh-emulator-hgss-egg/" },
       guideGroupId: "en:/emulator-hgss-egg/:HeartGold and SoulSilver",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-hgss-egg/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-hgss-egg/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx"),
@@ -2614,8 +2882,9 @@ export const guides = {
   },
   "/emulator-hgss-special-wild/": {
     meta: {
+      id: "/emulator-hgss-special-wild/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-hgss-special-wild/",
       isNew: false,
@@ -2624,6 +2893,7 @@ export const guides = {
       description: "Special Wild RNG",
       slug: "/emulator-hgss-special-wild/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2635,9 +2905,9 @@ export const guides = {
       guideGroupId: "en:/emulator-hgss-special-wild/:HeartGold and SoulSilver",
       guideVariantLinks: {
         retail: null,
-        cfwEmu: "/emulator-hgss-special-wild/",
+        cfwEmu: { type: "slug", slug: "/emulator-hgss-special-wild/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -2654,8 +2924,9 @@ export const guides = {
   },
   "/emulator-hgss-stationary/": {
     meta: {
+      id: "/emulator-hgss-stationary/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-hgss-stationary/",
       isNew: false,
@@ -2665,6 +2936,7 @@ export const guides = {
         "Learn how to RNG static Pokémon in HeartGold and SoulSilver for perfect IVs, natures, and shinies.",
       slug: "/emulator-hgss-stationary/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2677,8 +2949,11 @@ export const guides = {
         zh: "/zh-emulator-hgss-stationary/",
       },
       guideGroupId: "en:/emulator-hgss-stationary/:HeartGold and SoulSilver",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-hgss-stationary/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-hgss-stationary/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -2695,8 +2970,9 @@ export const guides = {
   },
   "/emulator-hgss-tid-sid/": {
     meta: {
+      id: "/emulator-hgss-tid-sid/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-hgss-tid-sid/",
       isNew: false,
@@ -2706,6 +2982,7 @@ export const guides = {
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in HeartGold and SoulSilver.",
       slug: "/emulator-hgss-tid-sid/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2715,8 +2992,11 @@ export const guides = {
       file: "guides/Gen 4/HeartGold and SoulSilver/TID SID.mdx",
       translations: null,
       guideGroupId: "en:/emulator-hgss-tid-sid/:HeartGold and SoulSilver",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-hgss-tid-sid/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-hgss-tid-sid/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/TID SID.mdx"),
@@ -2730,8 +3010,9 @@ export const guides = {
   },
   "/emulator-hgss-wild/": {
     meta: {
+      id: "/emulator-hgss-wild/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-hgss-wild/",
       isNew: false,
@@ -2741,6 +3022,7 @@ export const guides = {
         "Learn how to RNG wild Pokémon in Diamond, Pearl, and Platinum for shiny and high-IV results.",
       slug: "/emulator-hgss-wild/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2750,8 +3032,11 @@ export const guides = {
       file: "guides/Gen 4/HeartGold and SoulSilver/Wild RNG - Emulator.mdx",
       translations: null,
       guideGroupId: "en:/emulator-hgss-wild/:HeartGold and SoulSilver",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-hgss-wild/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-hgss-wild/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -2768,8 +3053,9 @@ export const guides = {
   },
   "/emulator-hgss-wondercard/": {
     meta: {
+      id: "/emulator-hgss-wondercard/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-hgss-wondercard/",
       isNew: false,
@@ -2778,7 +3064,8 @@ export const guides = {
       description: "How to RNG Wondercards",
       slug: "/emulator-hgss-wondercard/",
       isRoughDraft: true,
-      hideFromNavDrawer: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
       layout: "guide",
@@ -2787,8 +3074,11 @@ export const guides = {
       file: "guides/Gen 4/HeartGold and SoulSilver/Wondercard.mdx",
       translations: null,
       guideGroupId: "en:/emulator-hgss-wondercard/:HeartGold and SoulSilver",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-hgss-wondercard/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-hgss-wondercard/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Wondercard.mdx"),
@@ -2802,8 +3092,9 @@ export const guides = {
   },
   "/emulator-oras-dexnav/": {
     meta: {
+      id: "/emulator-oras-dexnav/",
       categories: ["Omega Ruby and Alpha Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-oras-dexnav/",
       isNew: false,
@@ -2813,6 +3104,7 @@ export const guides = {
         "Learn how to RNG Pokémon using the DexNav feature in Omega Ruby and Alpha Sapphire.",
       slug: "/emulator-oras-dexnav/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2820,10 +3112,16 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 6/DexNav.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-oras-dexnav/",
+        zh: "/zh-emulator-oras-dexnav/",
+      },
       guideGroupId: "en:/emulator-oras-dexnav/:Omega Ruby and Alpha Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-oras-dexnav/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-oras-dexnav/" },
+      },
+      displayAttributes: ["rough_draft", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/DexNav.mdx")),
     getRawFile: memoize(async () => {
@@ -2833,8 +3131,9 @@ export const guides = {
   },
   "/emulator-rs-dead-battery-stationary/": {
     meta: {
+      id: "/emulator-rs-dead-battery-stationary/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-rs-dead-battery-stationary/",
       isNew: false,
@@ -2844,6 +3143,7 @@ export const guides = {
         "Learn how to RNG static Pokémon in Ruby and Sapphire for perfect IVs, natures, and shinies.",
       slug: "/emulator-rs-dead-battery-stationary/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2856,9 +3156,9 @@ export const guides = {
         "en:/emulator-rs-dead-battery-stationary/:Ruby and Sapphire",
       guideVariantLinks: {
         retail: null,
-        cfwEmu: "/emulator-rs-dead-battery-stationary/",
+        cfwEmu: { type: "slug", slug: "/emulator-rs-dead-battery-stationary/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -2875,8 +3175,9 @@ export const guides = {
   },
   "/emulator-rs-egg/": {
     meta: {
+      id: "/emulator-rs-egg/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-rs-egg/",
       isNew: false,
@@ -2886,6 +3187,7 @@ export const guides = {
         "Learn how to RNG eggs from the Daycare in Ruby and Sapphire for shiny, high-IV Pokémon.",
       slug: "/emulator-rs-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2895,8 +3197,11 @@ export const guides = {
       file: "guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx",
       translations: { en: "/emulator-rs-egg/", zh: "/zh-emulator-rs-egg/" },
       guideGroupId: "en:/emulator-rs-egg/:Ruby and Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-rs-egg/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-rs-egg/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx"),
@@ -2910,10 +3215,11 @@ export const guides = {
   },
   "/emulator-rs-live-battery-tid/": {
     meta: {
+      id: "/emulator-rs-live-battery-tid/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
-      guideKey: "/rs-tid/",
+      guideKey: "rs-tid",
       isNew: false,
       title: "Ruby and Sapphire TID RNG",
       navDrawerTitle: "TID RNG",
@@ -2921,6 +3227,7 @@ export const guides = {
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Ruby and Sapphire.",
       slug: "/emulator-rs-live-battery-tid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2929,10 +3236,10 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Live Battery TID RNG.mdx",
       translations: null,
-      guideGroupId: "en:/rs-tid/:Ruby and Sapphire",
+      guideGroupId: "en:rs-tid:Ruby and Sapphire",
       guideVariantLinks: {
-        retail: "/retail-rubysapphire-tid/",
-        cfwEmu: "/emulator-rs-live-battery-tid/",
+        retail: { type: "slug", slug: "/retail-rubysapphire-tid/" },
+        cfwEmu: { type: "slug", slug: "/emulator-rs-live-battery-tid/" },
       },
       displayAttributes: [],
     },
@@ -2949,8 +3256,9 @@ export const guides = {
   },
   "/emulator-rs-stationary/": {
     meta: {
+      id: "/emulator-rs-stationary/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-rs-stationary/",
       isNew: false,
@@ -2960,6 +3268,7 @@ export const guides = {
         "Learn how to RNG static Pokémon in Ruby and Sapphire for perfect IVs, natures, and shinies.",
       slug: "/emulator-rs-stationary/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -2972,8 +3281,11 @@ export const guides = {
         zh: "/zh-emulator-rs-stationary/",
       },
       guideGroupId: "en:/emulator-rs-stationary/:Ruby and Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-rs-stationary/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-rs-stationary/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -2990,8 +3302,9 @@ export const guides = {
   },
   "/emulator-rs-wild/": {
     meta: {
+      id: "/emulator-rs-wild/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-rs-wild/",
       isNew: false,
@@ -3001,6 +3314,7 @@ export const guides = {
         "Learn how to RNG wild Pokémon in Ruby and Sapphire for shiny and high-IV results.",
       slug: "/emulator-rs-wild/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -3010,8 +3324,11 @@ export const guides = {
       file: "guides/Gen 3/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx",
       translations: null,
       guideGroupId: "en:/emulator-rs-wild/:Ruby and Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-rs-wild/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-rs-wild/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -3028,8 +3345,9 @@ export const guides = {
   },
   "/emulator-rs-wishmaker/": {
     meta: {
+      id: "/emulator-rs-wishmaker/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-rs-wishmaker/",
       isNew: false,
@@ -3039,6 +3357,7 @@ export const guides = {
         "Learn how to RNG the Shiny Wishmaker Jirachi from the Colosseum Bonus Disc in Ruby and Sapphire.",
       slug: "/emulator-rs-wishmaker/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-04-18",
       translation: null,
@@ -3051,8 +3370,11 @@ export const guides = {
         zh: "/zh-emulator-rs-wishmaker/",
       },
       guideGroupId: "en:/emulator-rs-wishmaker/:Ruby and Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-rs-wishmaker/" },
-      displayAttributes: ["web_tool"],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-rs-wishmaker/" },
+      },
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -3069,8 +3391,9 @@ export const guides = {
   },
   "/emulator-sm-time-finder/": {
     meta: {
+      id: "/emulator-sm-time-finder/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-sm-time-finder/",
       isNew: false,
@@ -3079,6 +3402,7 @@ export const guides = {
       description: "Finding times to get specific RNG seeds.",
       slug: "/emulator-sm-time-finder/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -3088,7 +3412,10 @@ export const guides = {
       file: "guides/Gen 7/Time Finder.js (Citra).mdx",
       translations: null,
       guideGroupId: "en:/emulator-sm-time-finder/:Sun and Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/emulator-sm-time-finder/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emulator-sm-time-finder/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -3103,8 +3430,9 @@ export const guides = {
   },
   "/emulator-usum-time-finder/": {
     meta: {
+      id: "/emulator-usum-time-finder/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-usum-time-finder/",
       isNew: false,
@@ -3113,6 +3441,7 @@ export const guides = {
       description: "Finding times to get specific RNG seeds.",
       slug: "/emulator-usum-time-finder/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -3124,7 +3453,7 @@ export const guides = {
       guideGroupId: "en:/emulator-usum-time-finder/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
-        cfwEmu: "/emulator-usum-time-finder/",
+        cfwEmu: { type: "slug", slug: "/emulator-usum-time-finder/" },
       },
       displayAttributes: [],
     },
@@ -3140,6 +3469,7 @@ export const guides = {
   },
   "/es-delete-pokemon-save/": {
     meta: {
+      id: "/delete-pokemon-save/",
       categories: [
         "Ruby and Sapphire",
         "FireRed and LeafGreen",
@@ -3157,7 +3487,7 @@ export const guides = {
         "Brilliant Diamond and Shining Pearl",
         "Legends Arceus",
       ],
-      section: "tool",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/delete-pokemon-save/",
       isNew: false,
@@ -3166,6 +3496,7 @@ export const guides = {
       description: "Como eliminar partidas de Pokémon",
       slug: "/es-delete-pokemon-save/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/delete-pokemon-save/", language: "es" },
@@ -3180,7 +3511,7 @@ export const guides = {
       guideGroupId:
         "es:/delete-pokemon-save/:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es"],
     },
     Guide: React.lazy(
       () =>
@@ -3197,9 +3528,10 @@ export const guides = {
   },
   "/es-dppt-advance-rng/": {
     meta: {
+      id: "/dppt-advance-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "info",
-      guideVariants: null,
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/dppt-advance-rng/",
       isNew: false,
       title: "Avanzar el RNG en Diamante, Perla y Platino",
@@ -3208,6 +3540,7 @@ export const guides = {
         "Aprende cómo avanzar el RNG en Diamante, Perla y Platino. Esta guía explica diferentes métodos como pasar páginas del diario, los “chatters” de Chatot y las acciones de los NPC.",
       slug: "/es-dppt-advance-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/dppt-advance-rng/", language: "es" },
@@ -3222,7 +3555,7 @@ export const guides = {
       },
       guideGroupId: "es:/dppt-advance-rng/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -3239,8 +3572,9 @@ export const guides = {
   },
   "/es-gba-methods-lead-impact/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
-      section: "info",
+      id: "/gba-methods-lead-impact/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-methods-lead-impact/",
       isNew: false,
@@ -3251,6 +3585,7 @@ export const guides = {
         "Entender por qué la carta de salida influye en qué método de Wild se activa",
       slug: "/es-gba-methods-lead-impact/",
       isRoughDraft: false,
+      orderPriority: 2,
       hideFromNavDrawer: true,
       addedOn: "2025-06-18",
       translation: { enSlug: "/gba-methods-lead-impact/", language: "es" },
@@ -3262,9 +3597,10 @@ export const guides = {
         es: "/es-gba-methods-lead-impact/",
         en: "/gba-methods-lead-impact/",
       },
-      guideGroupId: "es:/gba-methods-lead-impact/:GBA Technical Documentation",
+      guideGroupId:
+        "es:/gba-methods-lead-impact/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_es"],
     },
     Guide: React.lazy(
       () =>
@@ -3281,8 +3617,9 @@ export const guides = {
   },
   "/es-gba-methods/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
-      section: "info",
+      id: "/gba-methods/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-methods/",
       isNew: false,
@@ -3292,6 +3629,7 @@ export const guides = {
         "Qué es un método, la razón por la que existen los métodos 1-4 y cómo afectan la generación de Pokémon.",
       slug: "/es-gba-methods/",
       isRoughDraft: false,
+      orderPriority: 1,
       hideFromNavDrawer: true,
       addedOn: "2025-04-08",
       translation: { enSlug: "/gba-methods/", language: "es" },
@@ -3304,9 +3642,10 @@ export const guides = {
         en: "/gba-methods/",
         zh: "/zh-gba-methods/",
       },
-      guideGroupId: "es:/gba-methods/:GBA Technical Documentation",
+      guideGroupId:
+        "es:/gba-methods/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/es/Gen 3/Emerald/GBA Methods.mdx"),
@@ -3320,8 +3659,9 @@ export const guides = {
   },
   "/es-gen2-celebi/": {
     meta: {
+      id: "/gen2-celebi/",
       categories: ["Gold, Silver, Crystal"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/gen2-celebi/",
       isNew: false,
@@ -3330,6 +3670,7 @@ export const guides = {
       description: "How to get a shiny Fairy",
       slug: "/es-gen2-celebi/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-03-02",
       translation: { enSlug: "/gen2-celebi/", language: "es" },
@@ -3344,7 +3685,12 @@ export const guides = {
       },
       guideGroupId: "es:/gen2-celebi/:Gold, Silver, Crystal",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_es",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/es/Gen 2/Celebi.mdx"),
@@ -3358,8 +3704,9 @@ export const guides = {
   },
   "/es-gen2-starters/": {
     meta: {
+      id: "/gen2-starters/",
       categories: ["Gold, Silver, Crystal"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/gen2-starters/",
       isNew: false,
@@ -3368,6 +3715,7 @@ export const guides = {
       description: "Learn how to RNG shiny starters in Pokémon Crystal.",
       slug: "/es-gen2-starters/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/gen2-starters/", language: "es" },
@@ -3382,7 +3730,12 @@ export const guides = {
       },
       guideGroupId: "es:/gen2-starters/:Gold, Silver, Crystal",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_es",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/es/Gen 2/Starter.mdx"),
@@ -3396,8 +3749,9 @@ export const guides = {
   },
   "/es-gen3-glossary/": {
     meta: {
+      id: "/gen3-glossary/",
       categories: ["Emerald"],
-      section: "info",
+      section: "getting_started",
       guideVariants: null,
       guideKey: "/gen3-glossary/",
       isNew: false,
@@ -3407,6 +3761,7 @@ export const guides = {
         "Lista de términos importantes relacionados a la manipulación del RNG de Pokémon en los juegos de Generación III.",
       slug: "/es-gen3-glossary/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-05-17",
       translation: { enSlug: "/gen3-glossary/", language: "es" },
@@ -3421,7 +3776,7 @@ export const guides = {
       },
       guideGroupId: "es:/gen3-glossary/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_it"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/es/Gen 3/Emerald/Glossary.mdx"),
@@ -3435,10 +3790,11 @@ export const guides = {
   },
   "/es-hgss-rng-advance/": {
     meta: {
+      id: "/hgss-rng-advance/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/advance-rng/",
+      guideKey: "advance-rng",
       isNew: false,
       title: "Avanzar el RNG en HeartGold y SoulSilver",
       navDrawerTitle: "Avanzar el RNG",
@@ -3446,6 +3802,7 @@ export const guides = {
         "Aprende cómo avanzar el RNG en HeartGold y SoulSilver. Esta guía explica diferentes métodos como los chatters de Chatot, la radio y las acciones de los NPC.",
       slug: "/es-hgss-rng-advance/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/hgss-rng-advance/", language: "es" },
@@ -3458,9 +3815,9 @@ export const guides = {
         en: "/hgss-rng-advance/",
         zh: "/zh-hgss-rng-advance/",
       },
-      guideGroupId: "es:/advance-rng/:HeartGold and SoulSilver",
+      guideGroupId: "es:advance-rng:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -3477,6 +3834,7 @@ export const guides = {
   },
   "/es-install-pokereader/": {
     meta: {
+      id: "/install-pokereader/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -3494,6 +3852,7 @@ export const guides = {
         "Aprende a instalar PokeReader en tu 3DS para ayudarte con el RNG y perfeccionar la caza de Pokémon.",
       slug: "/es-install-pokereader/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/install-pokereader/", language: "es" },
@@ -3510,7 +3869,7 @@ export const guides = {
       guideGroupId:
         "es:/install-pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -3527,8 +3886,9 @@ export const guides = {
   },
   "/experiments/": {
     meta: {
+      id: "/experiments/",
       categories: ["User Settings"],
-      section: "info",
+      section: "site_info",
       guideVariants: null,
       guideKey: "/experiments/",
       isNew: false,
@@ -3537,6 +3897,7 @@ export const guides = {
       description: "Help us test new features and provide feedback!",
       slug: "/experiments/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
@@ -3557,6 +3918,7 @@ export const guides = {
   },
   "/fire-red-and-leaf-green/": {
     meta: {
+      id: "/fire-red-and-leaf-green/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -3567,6 +3929,7 @@ export const guides = {
       description: "FireRed and LeafGreen Resources",
       slug: "/fire-red-and-leaf-green/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -3587,10 +3950,11 @@ export const guides = {
   },
   "/fr-bdsp-advance-rng/": {
     meta: {
+      id: "/bdsp-advance-rng/",
       categories: ["Brilliant Diamond and Shining Pearl"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/advance-rng/",
+      guideKey: "advance-rng",
       isNew: false,
       title:
         "Faire avancer la RNG sur pokemon Diamant Etincelant et Perle Scintillante",
@@ -3599,6 +3963,7 @@ export const guides = {
         "Comment les avances de RNG fonctionnent dans pokemon Diamand Etincelant et Perle Scintillante. Apprenez comment controler ces avances pour rencontrer des pokemon parfaits!",
       slug: "/fr-bdsp-advance-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/bdsp-advance-rng/", language: "fr" },
@@ -3607,9 +3972,9 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/fr/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
       translations: { en: "/bdsp-advance-rng/", fr: "/fr-bdsp-advance-rng/" },
-      guideGroupId: "fr:/advance-rng/:Brilliant Diamond and Shining Pearl",
+      guideGroupId: "fr:advance-rng:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_fr"],
     },
     Guide: React.lazy(
       () =>
@@ -3626,6 +3991,7 @@ export const guides = {
   },
   "/fr-install-capturesight/": {
     meta: {
+      id: "/install-capturesight/",
       categories: [
         "Sword and Shield",
         "Brilliant Diamond and Shining Pearl",
@@ -3641,6 +4007,7 @@ export const guides = {
         "Apprenez a installer CaptureSight sur votre Switch pour faciliter la manipulation de RNG et attraper des Pokemon parfaits !",
       slug: "/fr-install-capturesight/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/install-capturesight/", language: "fr" },
@@ -3655,7 +4022,7 @@ export const guides = {
       guideGroupId:
         "fr:/install-capturesight/:Brilliant Diamond and Shining Pearl|Legends Arceus|Sword and Shield",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_fr"],
     },
     Guide: React.lazy(
       () =>
@@ -3672,8 +4039,9 @@ export const guides = {
   },
   "/frlg-gen3-sid/": {
     meta: {
+      id: "/frlg-gen3-sid/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
       guideKey: "/frlg-gen3-sid/",
       isNew: false,
@@ -3683,6 +4051,7 @@ export const guides = {
         "Various methods to finding an SID in Firered and LeafGreen.",
       slug: "/frlg-gen3-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -3697,10 +4066,10 @@ export const guides = {
       },
       guideGroupId: "en:/frlg-gen3-sid/:FireRed and LeafGreen",
       guideVariantLinks: {
-        retail: "/frlg-gen3-sid/",
-        cfwEmu: "/frlg-gen3-sid/",
+        retail: { type: "slug", slug: "/frlg-gen3-sid/" },
+        cfwEmu: { type: "slug", slug: "/frlg-gen3-sid/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
     getRawFile: memoize(async () => {
@@ -3710,8 +4079,9 @@ export const guides = {
   },
   "/frlg-seeding-bot/": {
     meta: {
+      id: "/frlg-seeding-bot/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/frlg-seeding-bot/",
       isNew: false,
@@ -3721,6 +4091,7 @@ export const guides = {
         "Learn how to use the Initial Seed Bot in FireRed and LeafGreen for better control over your RNG results.",
       slug: "/frlg-seeding-bot/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -3730,8 +4101,11 @@ export const guides = {
       file: "guides/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx",
       translations: { en: "/frlg-seeding-bot/", zh: "/zh-frlg-seeding-bot/" },
       guideGroupId: "en:/frlg-seeding-bot/:FireRed and LeafGreen",
-      guideVariantLinks: { retail: null, cfwEmu: "/frlg-seeding-bot/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/frlg-seeding-bot/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -3748,16 +4122,18 @@ export const guides = {
   },
   "/frlg-static/": {
     meta: {
+      id: "/frlg-static/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/wild/",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/frlg-static/",
       isNew: false,
-      title: "FireRed and LeafGreen Static3",
-      navDrawerTitle: "FireRed and LeafGreen Static3",
+      title: "Static Tool",
+      navDrawerTitle: "Static Tool",
       description: "Static encounters in FireRed and LeafGreen",
       slug: "/frlg-static/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -3766,9 +4142,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
       translations: null,
-      guideGroupId: "en:/wild/:FireRed and LeafGreen",
-      guideVariantLinks: { retail: "/frlg-static/", cfwEmu: "/frlg-static/" },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/frlg-static/:FireRed and LeafGreen",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
@@ -3782,16 +4158,18 @@ export const guides = {
   },
   "/frlg-tidsid-generator/": {
     meta: {
+      id: "/frlg-tidsid-generator/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/tid-sid/",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/frlg-tidsid-generator/",
       isNew: false,
-      title: "FRLG TID and SID Generator",
-      navDrawerTitle: "FRLG TID and SID Generator",
+      title: "TID and SID Generator",
+      navDrawerTitle: "TID and SID Generator",
       description: "Generator for TID and SID in FRLG",
       slug: "/frlg-tidsid-generator/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -3800,12 +4178,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
-      guideGroupId: "en:/tid-sid/:FireRed and LeafGreen",
-      guideVariantLinks: {
-        retail: "/frlg-tidsid-generator/",
-        cfwEmu: "/frlg-tidsid-generator/",
-      },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/frlg-tidsid-generator/:FireRed and LeafGreen",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -3819,9 +4194,10 @@ export const guides = {
   },
   "/frlg-tips-rng/": {
     meta: {
+      id: "/frlg-tips-rng/",
       categories: ["FireRed and LeafGreen"],
-      section: "info",
-      guideVariants: null,
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/frlg-tips-rng/",
       isNew: false,
       title: "Basic rules of Gen 3 RNG",
@@ -3830,6 +4206,7 @@ export const guides = {
         "Learn how to advance the RNG and improve stability in Pokémon FireRed and LeafGreen for consistent results.",
       slug: "/frlg-tips-rng/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -3839,8 +4216,11 @@ export const guides = {
       file: "guides/Gen 3/FireRed and LeafGreen/Basic Rules of RNG.mdx",
       translations: null,
       guideGroupId: "en:/frlg-tips-rng/:FireRed and LeafGreen",
-      guideVariantLinks: null,
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/frlg-tips-rng/" },
+        cfwEmu: { type: "slug", slug: "/frlg-tips-rng/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -3857,6 +4237,7 @@ export const guides = {
   },
   "/gamecube/": {
     meta: {
+      id: "/gamecube/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -3867,6 +4248,7 @@ export const guides = {
       description: "Gamecube Resources",
       slug: "/gamecube/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -3887,8 +4269,9 @@ export const guides = {
   },
   "/gba-methods-lead-impact/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
-      section: "info",
+      id: "/gba-methods-lead-impact/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-methods-lead-impact/",
       isNew: false,
@@ -3898,6 +4281,7 @@ export const guides = {
         "Understanding why the lead impacts which Wild method is triggered",
       slug: "/gba-methods-lead-impact/",
       isRoughDraft: false,
+      orderPriority: 2,
       hideFromNavDrawer: false,
       addedOn: "2025-06-18",
       translation: null,
@@ -3909,9 +4293,10 @@ export const guides = {
         es: "/es-gba-methods-lead-impact/",
         en: "/gba-methods-lead-impact/",
       },
-      guideGroupId: "en:/gba-methods-lead-impact/:GBA Technical Documentation",
+      guideGroupId:
+        "en:/gba-methods-lead-impact/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_es"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/GBA Methods Part2.mdx"),
@@ -3925,8 +4310,9 @@ export const guides = {
   },
   "/gba-methods/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
-      section: "info",
+      id: "/gba-methods/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-methods/",
       isNew: false,
@@ -3936,6 +4322,7 @@ export const guides = {
         "What is a Method, the reason why Methods 1-4 exist, and how they impact Pokémon generation.",
       slug: "/gba-methods/",
       isRoughDraft: false,
+      orderPriority: 1,
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
       translation: null,
@@ -3948,9 +4335,10 @@ export const guides = {
         en: "/gba-methods/",
         zh: "/zh-gba-methods/",
       },
-      guideGroupId: "en:/gba-methods/:GBA Technical Documentation",
+      guideGroupId:
+        "en:/gba-methods/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/GBA Methods.mdx"),
@@ -3964,17 +4352,19 @@ export const guides = {
   },
   "/gba-overview/": {
     meta: {
-      categories: ["GBA Overview"],
-      section: "info",
+      id: "/gba-overview/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "getting_started",
       guideVariants: null,
       guideKey: "/gba-overview/",
       isNew: false,
       title: "GBA Overview",
-      navDrawerTitle: "Overview",
+      navDrawerTitle: "GBA Overview",
       description:
         "Particularities, key RNG concepts, and version differences of GBA games.",
       slug: "/gba-overview/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
       translation: null,
@@ -3983,7 +4373,8 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Overview.mdx",
       translations: null,
-      guideGroupId: "en:/gba-overview/:GBA Overview",
+      guideGroupId:
+        "en:/gba-overview/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: [],
     },
@@ -3999,8 +4390,9 @@ export const guides = {
   },
   "/gba-pokerus-technical/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
-      section: "info",
+      id: "/gba-pokerus-technical/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-pokerus-technical/",
       isNew: false,
@@ -4009,6 +4401,7 @@ export const guides = {
       description: "How Pokérus infection is triggered",
       slug: "/gba-pokerus-technical/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-05-13",
       translation: null,
@@ -4020,9 +4413,10 @@ export const guides = {
         en: "/gba-pokerus-technical/",
         zh: "/zh-gba-pokerus-technical/",
       },
-      guideGroupId: "en:/gba-pokerus-technical/:GBA Technical Documentation",
+      guideGroupId:
+        "en:/gba-pokerus-technical/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx"),
@@ -4036,8 +4430,9 @@ export const guides = {
   },
   "/gba-vblank/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
-      section: "info",
+      id: "/gba-vblank/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-vblank/",
       isNew: false,
@@ -4047,6 +4442,7 @@ export const guides = {
         "What are Vblanks in Emerald and their impact on Pokémon generation.",
       slug: "/gba-vblank/",
       isRoughDraft: false,
+      orderPriority: 0,
       hideFromNavDrawer: false,
       addedOn: "2025-04-08",
       translation: null,
@@ -4055,9 +4451,10 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Vblank.mdx",
       translations: { en: "/gba-vblank/", zh: "/zh-gba-vblank/" },
-      guideGroupId: "en:/gba-vblank/:GBA Technical Documentation",
+      guideGroupId:
+        "en:/gba-vblank/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Vblank.mdx")),
     getRawFile: memoize(async () => {
@@ -4067,8 +4464,9 @@ export const guides = {
   },
   "/gc-initial/": {
     meta: {
+      id: "/gc-initial/",
       categories: ["Gamecube"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/gc-initial/",
       isNew: false,
@@ -4078,6 +4476,7 @@ export const guides = {
         "How to use Dolphin to set up Initial Seed RNG for all GameCube games.",
       slug: "/gc-initial/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -4087,8 +4486,11 @@ export const guides = {
       file: "guides/Gamecube/Initial Seed RNG.mdx",
       translations: { en: "/gc-initial/", zh: "/zh-gc-initial/" },
       guideGroupId: "en:/gc-initial/:Gamecube",
-      guideVariantLinks: { retail: null, cfwEmu: "/gc-initial/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/gc-initial/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/Initial Seed RNG.mdx"),
@@ -4102,8 +4504,9 @@ export const guides = {
   },
   "/gen2-celebi/": {
     meta: {
+      id: "/gen2-celebi/",
       categories: ["Gold, Silver, Crystal"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/gen2-celebi/",
       isNew: false,
@@ -4113,6 +4516,7 @@ export const guides = {
         "Learn how to obtain a shiny Celebi in Pokémon Crystal using RNG manipulation.",
       slug: "/gen2-celebi/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-03-02",
       translation: null,
@@ -4126,8 +4530,16 @@ export const guides = {
         zh: "/zh-gen2-celebi/",
       },
       guideGroupId: "en:/gen2-celebi/:Gold, Silver, Crystal",
-      guideVariantLinks: { retail: null, cfwEmu: "/gen2-celebi/" },
-      displayAttributes: ["video_guide", "web_tool"],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/gen2-celebi/" },
+      },
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_es",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Celebi.mdx")),
     getRawFile: memoize(async () => {
@@ -4137,8 +4549,9 @@ export const guides = {
   },
   "/gen2-research/": {
     meta: {
+      id: "/gen2-research/",
       categories: ["Gold, Silver, Crystal"],
-      section: "info",
+      section: "site_info",
       guideVariants: null,
       guideKey: "/gen2-research/",
       isNew: false,
@@ -4147,6 +4560,7 @@ export const guides = {
       description: "Help research the Gen 2 RNG",
       slug: "/gen2-research/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -4157,7 +4571,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/gen2-research/:Gold, Silver, Crystal",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/RngResearch.mdx")),
     getRawFile: memoize(async () => {
@@ -4167,8 +4581,9 @@ export const guides = {
   },
   "/gen2-starters/": {
     meta: {
+      id: "/gen2-starters/",
       categories: ["Gold, Silver, Crystal"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/gen2-starters/",
       isNew: false,
@@ -4177,6 +4592,7 @@ export const guides = {
       description: "Learn how to RNG shiny starters in Pokémon Crystal.",
       slug: "/gen2-starters/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -4190,8 +4606,16 @@ export const guides = {
         zh: "/zh-gen2-starters/",
       },
       guideGroupId: "en:/gen2-starters/:Gold, Silver, Crystal",
-      guideVariantLinks: { retail: null, cfwEmu: "/gen2-starters/" },
-      displayAttributes: ["video_guide", "web_tool"],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/gen2-starters/" },
+      },
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_es",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/Starter.mdx")),
     getRawFile: memoize(async () => {
@@ -4201,8 +4625,9 @@ export const guides = {
   },
   "/gen3-glossary/": {
     meta: {
+      id: "/gen3-glossary/",
       categories: ["Emerald"],
-      section: "info",
+      section: "getting_started",
       guideVariants: null,
       guideKey: "/gen3-glossary/",
       isNew: false,
@@ -4212,6 +4637,7 @@ export const guides = {
         "List of important terms related to Pokémon RNG manipulation in Generation III games.",
       slug: "/gen3-glossary/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-05-17",
       translation: null,
@@ -4226,7 +4652,7 @@ export const guides = {
       },
       guideGroupId: "en:/gen3-glossary/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_it"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Glossary.mdx")),
     getRawFile: memoize(async () => {
@@ -4236,8 +4662,9 @@ export const guides = {
   },
   "/gen3-sid/": {
     meta: {
+      id: "/gen3-sid/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
       guideKey: "/gen3-sid/",
       isNew: false,
@@ -4246,6 +4673,7 @@ export const guides = {
       description: "Various methods to finding an SID in Emerald.",
       slug: "/gen3-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-03-03",
       translation: null,
@@ -4259,8 +4687,11 @@ export const guides = {
         zh: "/zh-gen3-sid/",
       },
       guideGroupId: "en:/gen3-sid/:Emerald",
-      guideVariantLinks: { retail: "/gen3-sid/", cfwEmu: "/gen3-sid/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/gen3-sid/" },
+        cfwEmu: { type: "slug", slug: "/gen3-sid/" },
+      },
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
     getRawFile: memoize(async () => {
@@ -4270,6 +4701,7 @@ export const guides = {
   },
   "/heart-gold-and-soul-silver/": {
     meta: {
+      id: "/heart-gold-and-soul-silver/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -4280,6 +4712,7 @@ export const guides = {
       description: "Heart Gold and Soul Silver Resources",
       slug: "/heart-gold-and-soul-silver/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -4300,8 +4733,9 @@ export const guides = {
   },
   "/help-translate/": {
     meta: {
+      id: "/help-translate/",
       categories: ["Home"],
-      section: "info",
+      section: "site_info",
       guideVariants: null,
       guideKey: "/help-translate/",
       isNew: false,
@@ -4311,6 +4745,7 @@ export const guides = {
         "Help us translate Pokémon guides and tools into your language",
       slug: "/help-translate/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -4331,8 +4766,9 @@ export const guides = {
   },
   "/hgss-3ds-rng/": {
     meta: {
+      id: "/hgss-3ds-rng/",
       categories: ["HeartGold and SoulSilver"],
-      section: "info",
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/hgss-3ds-rng/",
       isNew: false,
@@ -4342,6 +4778,7 @@ export const guides = {
         "Learn how to RNG using a 3DS in HeartGold and SoulSilver for shiny, high-IV Pokémon.",
       slug: "/hgss-3ds-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-07-03",
       translation: null,
@@ -4352,7 +4789,7 @@ export const guides = {
       translations: { en: "/hgss-3ds-rng/", zh: "/zh-hgss-3ds-rng/" },
       guideGroupId: "en:/hgss-3ds-rng/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide"],
+      displayAttributes: ["video_guide", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS RNG.mdx")),
     getRawFile: memoize(async () => {
@@ -4362,8 +4799,9 @@ export const guides = {
   },
   "/hgss-cute-charm/": {
     meta: {
+      id: "/hgss-cute-charm/",
       categories: ["HeartGold and SoulSilver"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/hgss-cute-charm/",
       isNew: false,
@@ -4373,6 +4811,7 @@ export const guides = {
         "Learn about how the Cute Charm glitch works in HeartGold and SoulSilver.",
       slug: "/hgss-cute-charm/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -4383,7 +4822,7 @@ export const guides = {
       translations: { en: "/hgss-cute-charm/", zh: "/zh-hgss-cute-charm/" },
       guideGroupId: "en:/hgss-cute-charm/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
     getRawFile: memoize(async () => {
@@ -4393,8 +4832,9 @@ export const guides = {
   },
   "/hgss-initial-seed/": {
     meta: {
+      id: "/hgss-initial-seed/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/hgss-initial-seed/",
       isNew: false,
@@ -4404,6 +4844,7 @@ export const guides = {
         "Learn how to RNG your initial seed in HeartGold and SoulSilver.",
       slug: "/hgss-initial-seed/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -4413,8 +4854,11 @@ export const guides = {
       file: "guides/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx",
       translations: { en: "/hgss-initial-seed/", zh: "/zh-hgss-initial-seed/" },
       guideGroupId: "en:/hgss-initial-seed/:HeartGold and SoulSilver",
-      guideVariantLinks: { retail: null, cfwEmu: "/hgss-initial-seed/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/hgss-initial-seed/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -4431,10 +4875,11 @@ export const guides = {
   },
   "/hgss-rng-advance/": {
     meta: {
+      id: "/hgss-rng-advance/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/advance-rng/",
+      guideKey: "advance-rng",
       isNew: false,
       title: "Advancing the RNG in HeartGold and SoulSilver",
       navDrawerTitle: "Advancing the RNG",
@@ -4442,6 +4887,7 @@ export const guides = {
         "Learn how to advance the RNG in HeartGold and SoulSilver. This guide explains different methods like Chatot chatters, radio, and NPC actions.",
       slug: "/hgss-rng-advance/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -4454,12 +4900,12 @@ export const guides = {
         en: "/hgss-rng-advance/",
         zh: "/zh-hgss-rng-advance/",
       },
-      guideGroupId: "en:/advance-rng/:HeartGold and SoulSilver",
+      guideGroupId: "en:advance-rng:HeartGold and SoulSilver",
       guideVariantLinks: {
-        retail: "/hgss-rng-advance/",
-        cfwEmu: "/hgss-rng-advance/",
+        retail: { type: "slug", slug: "/hgss-rng-advance/" },
+        cfwEmu: { type: "slug", slug: "/hgss-rng-advance/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -4476,10 +4922,11 @@ export const guides = {
   },
   "/hgss-tid-sid/": {
     meta: {
+      id: "/hgss-tid-sid/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["retail"],
-      guideKey: "/tid-sid/",
+      guideKey: "tid-sid",
       isNew: false,
       title: "HeartGold and SoulSilver Cute Charm Glitch TID/SID RNG",
       navDrawerTitle: "Cute Charm & TID/SID RNG",
@@ -4487,6 +4934,7 @@ export const guides = {
         "Learn how to use the Cute Charm Glitch and obtain a specific Trainer ID (TID) and Secret ID (SID) combo on Retail for HeartGold and SoulSilver.",
       slug: "/hgss-tid-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-06-08",
       translation: null,
@@ -4495,9 +4943,12 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 4/Retail TID.mdx",
       translations: { en: "/hgss-tid-sid/", zh: "/zh-hgss-tid-sid/" },
-      guideGroupId: "en:/tid-sid/:HeartGold and SoulSilver",
-      guideVariantLinks: { retail: "/hgss-tid-sid/", cfwEmu: null },
-      displayAttributes: ["video_guide", "web_tool"],
+      guideGroupId: "en:tid-sid:HeartGold and SoulSilver",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/hgss-tid-sid/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
     getRawFile: memoize(async () => {
@@ -4507,6 +4958,7 @@ export const guides = {
   },
   "/install-capturesight/": {
     meta: {
+      id: "/install-capturesight/",
       categories: [
         "Sword and Shield",
         "Brilliant Diamond and Shining Pearl",
@@ -4522,6 +4974,7 @@ export const guides = {
         "Learn how to install CaptureSight on your Switch to assist with RNG and perfect Pokémon hunting.",
       slug: "/install-capturesight/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -4536,7 +4989,7 @@ export const guides = {
       guideGroupId:
         "en:/install-capturesight/:Brilliant Diamond and Shining Pearl|Legends Arceus|Sword and Shield",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_fr"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/CaptureSight Install.mdx"),
@@ -4550,6 +5003,7 @@ export const guides = {
   },
   "/install-pokereader-emu/": {
     meta: {
+      id: "/install-pokereader-emu/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -4567,6 +5021,7 @@ export const guides = {
         "Learn how to install PokeReader on a 3DS emulator to assist with RNG and perfect Pokémon hunting.",
       slug: "/install-pokereader-emu/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -4592,6 +5047,7 @@ export const guides = {
   },
   "/install-pokereader/": {
     meta: {
+      id: "/install-pokereader/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -4609,6 +5065,7 @@ export const guides = {
         "Learn how to install PokeReader on your 3DS to assist with RNG and perfect Pokémon hunting.",
       slug: "/install-pokereader/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -4625,7 +5082,7 @@ export const guides = {
       guideGroupId:
         "en:/install-pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
@@ -4639,9 +5096,10 @@ export const guides = {
   },
   "/it-e-tips-rng/": {
     meta: {
+      id: "/e-tips-rng/",
       categories: ["Emerald"],
-      section: "info",
-      guideVariants: null,
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/e-tips-rng/",
       isNew: false,
       title: "Info sull'RNG di Smeraldo",
@@ -4650,6 +5108,7 @@ export const guides = {
         "Impara come avanzare l'RNG migliora la stabilità su Pokemon Smeraldo per risultati consistenti.",
       slug: "/it-e-tips-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/e-tips-rng/", language: "it" },
@@ -4664,7 +5123,7 @@ export const guides = {
       },
       guideGroupId: "it:/e-tips-rng/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -4681,8 +5140,9 @@ export const guides = {
   },
   "/it-emerald-overview/": {
     meta: {
+      id: "/emerald-overview/",
       categories: ["Emerald"],
-      section: "info",
+      section: "getting_started",
       guideVariants: null,
       guideKey: "/emerald-overview/",
       isNew: false,
@@ -4692,6 +5152,7 @@ export const guides = {
         "Applicazioni pratiche della manipolazione RNG e tecniche in Pokémon Smeraldo.",
       slug: "/it-emerald-overview/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-04-08",
       translation: { enSlug: "/emerald-overview/", language: "it" },
@@ -4702,7 +5163,7 @@ export const guides = {
       translations: { en: "/emerald-overview/", it: "/it-emerald-overview/" },
       guideGroupId: "it:/emerald-overview/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it"],
     },
     Guide: React.lazy(
       () =>
@@ -4719,10 +5180,11 @@ export const guides = {
   },
   "/it-emulator-emerald-egg/": {
     meta: {
+      id: "/emulator-emerald-egg/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
-      guideKey: "/emer-egg/",
+      guideKey: "emer-egg",
       isNew: false,
       title: "RNG UOVA SMERALDO",
       navDrawerTitle: "RNG UOVA SMERALDO",
@@ -4730,6 +5192,7 @@ export const guides = {
         "Learn how to RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies.",
       slug: "/it-emulator-emerald-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-03-09",
       translation: { enSlug: "/emulator-emerald-egg/", language: "it" },
@@ -4742,9 +5205,14 @@ export const guides = {
         it: "/it-emulator-emerald-egg/",
         zh: "/zh-emulator-emerald-egg/",
       },
-      guideGroupId: "it:/emer-egg/:Emerald",
+      guideGroupId: "it:emer-egg:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () =>
@@ -4761,8 +5229,9 @@ export const guides = {
   },
   "/it-frlg-gen3-sid/": {
     meta: {
+      id: "/frlg-gen3-sid/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
       guideKey: "/frlg-gen3-sid/",
       isNew: false,
@@ -4772,6 +5241,7 @@ export const guides = {
         "Vari metodi per trovare il tuo SID su Rosso Fuoco e Verde Foglia.",
       slug: "/it-frlg-gen3-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/frlg-gen3-sid/", language: "it" },
@@ -4786,7 +5256,7 @@ export const guides = {
       },
       guideGroupId: "it:/frlg-gen3-sid/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx"),
@@ -4800,8 +5270,9 @@ export const guides = {
   },
   "/it-gen3-glossary/": {
     meta: {
+      id: "/gen3-glossary/",
       categories: ["Emerald"],
-      section: "info",
+      section: "getting_started",
       guideVariants: null,
       guideKey: "/gen3-glossary/",
       isNew: false,
@@ -4811,6 +5282,7 @@ export const guides = {
         "List of important terms related to Pokémon RNG manipulation in Generation III games.",
       slug: "/it-gen3-glossary/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-05-17",
       translation: { enSlug: "/gen3-glossary/", language: "it" },
@@ -4825,7 +5297,7 @@ export const guides = {
       },
       guideGroupId: "it:/gen3-glossary/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_it"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 3/Emerald/Glossary.mdx"),
@@ -4839,8 +5311,9 @@ export const guides = {
   },
   "/it-gen3-sid/": {
     meta: {
+      id: "/gen3-sid/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
       guideKey: "/gen3-sid/",
       isNew: false,
@@ -4849,6 +5322,7 @@ export const guides = {
       description: "Vari metodi per trovare il tuo SID su Smeraldo.",
       slug: "/it-gen3-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-03-03",
       translation: { enSlug: "/gen3-sid/", language: "it" },
@@ -4863,7 +5337,7 @@ export const guides = {
       },
       guideGroupId: "it:/gen3-sid/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx"),
@@ -4877,6 +5351,7 @@ export const guides = {
   },
   "/it-install-pokereader/": {
     meta: {
+      id: "/install-pokereader/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -4894,6 +5369,7 @@ export const guides = {
         "Impara come installare PokeReader sul tuo 3DS per assisterti con l'RNG e cacciare Pokémon perfetti.",
       slug: "/it-install-pokereader/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/install-pokereader/", language: "it" },
@@ -4910,7 +5386,7 @@ export const guides = {
       guideGroupId:
         "it:/install-pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -4927,6 +5403,7 @@ export const guides = {
   },
   "/it-pokereader/": {
     meta: {
+      id: "/pokereader/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -4944,6 +5421,7 @@ export const guides = {
         "PokeReader è un plugin 3GX per 3DS che aggiunge uno strumento (emulator-style) come mettere in pausa il gioco, avanzare i frame e altro - perfetto per l'RNG manipulation negli hardware originali.",
       slug: "/it-pokereader/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/pokereader/", language: "it" },
@@ -4955,7 +5433,7 @@ export const guides = {
       guideGroupId:
         "it:/pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it"],
     },
     Guide: React.lazy(
       () =>
@@ -4972,8 +5450,9 @@ export const guides = {
   },
   "/it-retail-dppt-starter/": {
     meta: {
+      id: "/retail-dppt-starter/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/retail-dppt-starter/",
       isNew: false,
@@ -4983,6 +5462,7 @@ export const guides = {
         "Impara a manipolare l'RNG degli starter in Diamante, Perla e Platino per ottenere Pokémon shiny con IV alti.",
       slug: "/it-retail-dppt-starter/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-06-15",
       translation: { enSlug: "/retail-dppt-starter/", language: "it" },
@@ -4997,7 +5477,12 @@ export const guides = {
       },
       guideGroupId: "it:/retail-dppt-starter/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 4/Starters.mdx"),
@@ -5011,8 +5496,9 @@ export const guides = {
   },
   "/it-retail-emerald-wild/": {
     meta: {
+      id: "/retail-emerald-wild/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/retail-emerald-wild/",
       isNew: false,
@@ -5022,6 +5508,7 @@ export const guides = {
         "Impara come Manipolare l'RNG di Pokémon selvatici su Pokémon Smeraldo su una console originale per IV perfette, nature, cromatici.",
       slug: "/it-retail-emerald-wild/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/retail-emerald-wild/", language: "it" },
@@ -5036,7 +5523,7 @@ export const guides = {
       },
       guideGroupId: "it:/retail-emerald-wild/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -5051,8 +5538,9 @@ export const guides = {
   },
   "/it-retail-hgss-starter/": {
     meta: {
+      id: "/retail-hgss-starter/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/retail-hgss-starter/",
       isNew: false,
@@ -5062,6 +5550,7 @@ export const guides = {
         "Impara a manipolare l'RNG degli starter in HeartGold e SoulSilver per ottenere Pokémon shiny con IV alti.",
       slug: "/it-retail-hgss-starter/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-06-15",
       translation: { enSlug: "/retail-hgss-starter/", language: "it" },
@@ -5076,7 +5565,12 @@ export const guides = {
       },
       guideGroupId: "it:/retail-hgss-starter/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 4/Starters.mdx"),
@@ -5090,8 +5584,9 @@ export const guides = {
   },
   "/it-rs-gen3-sid/": {
     meta: {
+      id: "/rs-gen3-sid/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
       guideKey: "/rs-gen3-sid/",
       isNew: false,
@@ -5100,6 +5595,7 @@ export const guides = {
       description: "Vari metodi per trovare il tuo SID su Rubino e Zaffiro.",
       slug: "/it-rs-gen3-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/rs-gen3-sid/", language: "it" },
@@ -5114,7 +5610,7 @@ export const guides = {
       },
       guideGroupId: "it:/rs-gen3-sid/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx"),
@@ -5128,6 +5624,7 @@ export const guides = {
   },
   "/legends-arceus/": {
     meta: {
+      id: "/legends-arceus/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -5138,6 +5635,7 @@ export const guides = {
       description: "Legends Arceus Resources",
       slug: "/legends-arceus/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5158,8 +5656,9 @@ export const guides = {
   },
   "/meteor-jirachi/": {
     meta: {
+      id: "/meteor-jirachi/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/meteor-jirachi/",
       isNew: false,
@@ -5169,6 +5668,7 @@ export const guides = {
         "Learn how to RNG a Meteor Jirachi with different shinies than Wishmaker.",
       slug: "/meteor-jirachi/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-04-18",
       translation: null,
@@ -5178,8 +5678,11 @@ export const guides = {
       file: "guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
       translations: { en: "/meteor-jirachi/", zh: "/zh-meteor-jirachi/" },
       guideGroupId: "en:/meteor-jirachi/:Ruby and Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/meteor-jirachi/" },
-      displayAttributes: ["web_tool"],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/meteor-jirachi/" },
+      },
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -5196,6 +5699,7 @@ export const guides = {
   },
   "/mgba-setup/": {
     meta: {
+      id: "/mgba-setup/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
@@ -5207,6 +5711,7 @@ export const guides = {
         "Learn how to set up mGBA for GBA Pokémon RNG, including lua scripting support.",
       slug: "/mgba-setup/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-03-03",
       translation: null,
@@ -5218,7 +5723,7 @@ export const guides = {
       guideGroupId:
         "en:/mgba-setup/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/mGBA Setup.mdx"),
@@ -5232,6 +5737,7 @@ export const guides = {
   },
   "/misc-3ds-installing-pcalc/": {
     meta: {
+      id: "/misc-3ds-installing-pcalc/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -5249,6 +5755,7 @@ export const guides = {
         "Learn how to install PCalc on your 3DS to assist with RNG in Pokémon games like X/Y, ORAS, Sun/Moon, and USUM.",
       slug: "/misc-3ds-installing-pcalc/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
@@ -5274,6 +5781,7 @@ export const guides = {
   },
   "/misc-3ds-ips-luma-citra/": {
     meta: {
+      id: "/misc-3ds-ips-luma-citra/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -5281,17 +5789,18 @@ export const guides = {
         "Sun and Moon",
         "Ultra Sun and Ultra Moon",
       ],
-      section: "tool",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/misc-3ds-ips-luma-citra/",
       isNew: false,
       title:
         "How to Use IPS Patches on a 3DS or Emulator (Luma3DS, Azahar, Citra)",
-      navDrawerTitle: "IPS Patches",
+      navDrawerTitle: "Using IPS Patches",
       description:
         "Learn how to apply IPS patches like instant text and no outlines using Luma3DS, Azahar, or Citra. Includes 3DS setup, emulator mods, and a merge tool.",
       slug: "/misc-3ds-ips-luma-citra/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5320,8 +5829,9 @@ export const guides = {
   },
   "/misc-3ds-island-scan-sm/": {
     meta: {
+      id: "/misc-3ds-island-scan-sm/",
       categories: ["Sun and Moon"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/misc-3ds-island-scan-sm/",
       isNew: false,
@@ -5331,6 +5841,7 @@ export const guides = {
         "Check out an easy-to-use list of Island Scan Pokémon for Sun and Moon, organized by day and location for quick reference.",
       slug: "/misc-3ds-island-scan-sm/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5355,8 +5866,9 @@ export const guides = {
   },
   "/misc-3ds-island-scan-usum/": {
     meta: {
+      id: "/misc-3ds-island-scan-usum/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/misc-3ds-island-scan-usum/",
       isNew: false,
@@ -5367,6 +5879,7 @@ export const guides = {
         "Check out an easy-to-use list of Island Scan Pokémon for Ultra Sun and Ultra Moon, organized by day and location for quick reference.",
       slug: "/misc-3ds-island-scan-usum/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5391,8 +5904,9 @@ export const guides = {
   },
   "/misc-3ds-transporter-nature-tables/": {
     meta: {
+      id: "/misc-3ds-transporter-nature-tables/",
       categories: ["Transporter and Dream Radar"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/misc-3ds-transporter-nature-tables/",
       isNew: false,
@@ -5402,6 +5916,7 @@ export const guides = {
         "Quickly check what nature your Virtual Console Pokémon will get when using Pokémon Transporter.",
       slug: "/misc-3ds-transporter-nature-tables/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5423,6 +5938,7 @@ export const guides = {
   },
   "/misc-dolphin-connect-vba/": {
     meta: {
+      id: "/misc-dolphin-connect-vba/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
@@ -5434,6 +5950,7 @@ export const guides = {
         "Learn how to redeem Jirachi or transfer your RNGs to a GBA game.",
       slug: "/misc-dolphin-connect-vba/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
@@ -5462,6 +5979,7 @@ export const guides = {
   },
   "/misc-dolphin-gba-bios/": {
     meta: {
+      id: "/misc-dolphin-gba-bios/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
@@ -5473,6 +5991,7 @@ export const guides = {
         "Learn what the GBA BIOS is, why emulators like mGBA and VBA need it, and how to legally extract it from real hardware. Step-by-step guide included.",
       slug: "/misc-dolphin-gba-bios/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5487,7 +6006,7 @@ export const guides = {
       guideGroupId:
         "en:/misc-dolphin-gba-bios/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -5502,8 +6021,9 @@ export const guides = {
   },
   "/misc-sm-wild-spots/": {
     meta: {
+      id: "/misc-sm-wild-spots/",
       categories: ["Sun and Moon"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/misc-sm-wild-spots/",
       isNew: false,
@@ -5513,6 +6033,7 @@ export const guides = {
         "Where to place your character and the correction needed for each area to RNG wild Pokémon in Sun and Moon.",
       slug: "/misc-sm-wild-spots/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5533,6 +6054,7 @@ export const guides = {
   },
   "/mystic-timer/": {
     meta: {
+      id: "/mystic-timer/",
       categories: [
         "Ruby and Sapphire",
         "FireRed and LeafGreen",
@@ -5557,6 +6079,7 @@ export const guides = {
         "Mystic Timer is a mobile-friendly alternative to Eon Timer. Perfect for Gen 3, 4, and 7 Pokémon RNG on any device, including Mac, Linux, iOS, and Android.",
       slug: "/mystic-timer/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-03-18",
       translation: null,
@@ -5582,6 +6105,7 @@ export const guides = {
   },
   "/no-dolphin-patch/": {
     meta: {
+      id: "/no-dolphin-patch/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "patch",
       guideVariants: null,
@@ -5593,6 +6117,7 @@ export const guides = {
         "Use this patch to RNG the Wishmaker Jirachi without needing the Dolphin emulator.",
       slug: "/no-dolphin-patch/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-04-03",
       translation: null,
@@ -5618,6 +6143,7 @@ export const guides = {
   },
   "/ntr-helper-usage/": {
     meta: {
+      id: "/ntr-helper-usage/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -5634,6 +6160,7 @@ export const guides = {
       description: "Learn how to use the NTR Helper Tool in 3DSRNGTool.",
       slug: "/ntr-helper-usage/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
@@ -5659,6 +6186,7 @@ export const guides = {
   },
   "/omega-ruby-and-alpha-sapphire/": {
     meta: {
+      id: "/omega-ruby-and-alpha-sapphire/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -5669,6 +6197,7 @@ export const guides = {
       description: "Omega Ruby and Alpha Sapphire Resources",
       slug: "/omega-ruby-and-alpha-sapphire/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5689,8 +6218,9 @@ export const guides = {
   },
   "/oras-mirage-spots/": {
     meta: {
+      id: "/oras-mirage-spots/",
       categories: ["Omega Ruby and Alpha Sapphire"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/oras-mirage-spots/",
       isNew: false,
@@ -5700,6 +6230,7 @@ export const guides = {
         "Learn how to RNG access to any Mirage Spots in Omega Ruby and Alpha Sapphire for rare encounters and shiny Pokémon.",
       slug: "/oras-mirage-spots/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-03-14",
       translation: null,
@@ -5709,7 +6240,10 @@ export const guides = {
       file: "guides/Gen 6/Mirage Spot.mdx",
       translations: null,
       guideGroupId: "en:/oras-mirage-spots/:Omega Ruby and Alpha Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/oras-mirage-spots/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/oras-mirage-spots/" },
+      },
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/Mirage Spot.mdx")),
@@ -5720,9 +6254,10 @@ export const guides = {
   },
   "/oras-remove-time-penalty/": {
     meta: {
+      id: "/oras-remove-time-penalty/",
       categories: ["Omega Ruby and Alpha Sapphire"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      section: "supporting_info",
+      guideVariants: null,
       guideKey: "/oras-remove-time-penalty/",
       isNew: false,
       title: "Remove Time Penalties in Omega Ruby and Alpha Sapphire",
@@ -5731,6 +6266,7 @@ export const guides = {
         "Learn how to change the time in Omega Ruby and Alpha Sapphire without triggering time penalties.",
       slug: "/oras-remove-time-penalty/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-03-14",
       translation: null,
@@ -5741,7 +6277,7 @@ export const guides = {
       translations: null,
       guideGroupId:
         "en:/oras-remove-time-penalty/:Omega Ruby and Alpha Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/oras-remove-time-penalty/" },
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5756,8 +6292,9 @@ export const guides = {
   },
   "/pal-xd-eevee/": {
     meta: {
+      id: "/pal-xd-eevee/",
       categories: ["Gamecube"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/pal-xd-eevee/",
       isNew: false,
@@ -5766,6 +6303,7 @@ export const guides = {
       description: "How to RNG the starter Eevee with a PAL Pokemon XD.",
       slug: "/pal-xd-eevee/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5775,8 +6313,11 @@ export const guides = {
       file: "guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx",
       translations: { en: "/pal-xd-eevee/", zh: "/zh-pal-xd-eevee/" },
       guideGroupId: "en:/pal-xd-eevee/:Gamecube",
-      guideVariantLinks: { retail: null, cfwEmu: "/pal-xd-eevee/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/pal-xd-eevee/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx"),
@@ -5790,8 +6331,9 @@ export const guides = {
   },
   "/pcalc-xy-friend-safari/": {
     meta: {
+      id: "/pcalc-xy-friend-safari/",
       categories: ["X and Y"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/pcalc-xy-friend-safari/",
       isNew: false,
@@ -5801,6 +6343,7 @@ export const guides = {
         "Learn how to RNG shiny 6IV Pokémon from the Friend Safari in X and Y, including Ditto and other rare species.",
       slug: "/pcalc-xy-friend-safari/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5810,7 +6353,10 @@ export const guides = {
       file: "guides/Gen 6/Friend Safari RNG Guide.mdx",
       translations: null,
       guideGroupId: "en:/pcalc-xy-friend-safari/:X and Y",
-      guideVariantLinks: { retail: null, cfwEmu: "/pcalc-xy-friend-safari/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/pcalc-xy-friend-safari/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -5825,8 +6371,9 @@ export const guides = {
   },
   "/pcalc-xy-tid/": {
     meta: {
+      id: "/pcalc-xy-tid/",
       categories: ["X and Y"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/pcalc-xy-tid/",
       isNew: false,
@@ -5836,6 +6383,7 @@ export const guides = {
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in X and Y.",
       slug: "/pcalc-xy-tid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5845,7 +6393,10 @@ export const guides = {
       file: "guides/Gen 6/XY TID.mdx",
       translations: null,
       guideGroupId: "en:/pcalc-xy-tid/:X and Y",
-      guideVariantLinks: { retail: null, cfwEmu: "/pcalc-xy-tid/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/pcalc-xy-tid/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/XY TID.mdx")),
@@ -5856,6 +6407,7 @@ export const guides = {
   },
   "/pokefinder/": {
     meta: {
+      id: "/pokefinder/",
       categories: [
         "Ruby and Sapphire",
         "FireRed and LeafGreen",
@@ -5883,6 +6435,7 @@ export const guides = {
         "Pokefinder is a cross-platform RNG tool for Pokémon Generations 3-5 & 8. Supports shiny hunting, TID/SID RNG, breeding, and more. Works for emulators and real hardware.",
       slug: "/pokefinder/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
@@ -5908,6 +6461,7 @@ export const guides = {
   },
   "/pokereader/": {
     meta: {
+      id: "/pokereader/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -5925,6 +6479,7 @@ export const guides = {
         "PokeReader is a 3GX plugin for the 3DS that adds emulator-style tools like pausing, frame advancing, and overlays - perfect for RNG manipulation on real hardware.",
       slug: "/pokereader/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5936,7 +6491,7 @@ export const guides = {
       guideGroupId:
         "en:/pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/PokeReader.mdx"),
@@ -5950,8 +6505,9 @@ export const guides = {
   },
   "/retail-bw-entralink/": {
     meta: {
+      id: "/retail-bw-entralink/",
       categories: ["Black and White"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/retail-bw-entralink/",
       isNew: false,
@@ -5961,6 +6517,7 @@ export const guides = {
         "Learn how to RNG Pokémon exclusive to the Entralink in Black and White, including event-only encounters like Arceus.",
       slug: "/retail-bw-entralink/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -5970,8 +6527,11 @@ export const guides = {
       file: "guides/Gen 5/Retail Entralink.mdx",
       translations: null,
       guideGroupId: "en:/retail-bw-entralink/:Black and White",
-      guideVariantLinks: { retail: "/retail-bw-entralink/", cfwEmu: null },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-bw-entralink/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Retail Entralink.mdx")),
     getRawFile: memoize(async () => {
@@ -5981,8 +6541,9 @@ export const guides = {
   },
   "/retail-dppt-starter/": {
     meta: {
+      id: "/retail-dppt-starter/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/retail-dppt-starter/",
       isNew: false,
@@ -5992,6 +6553,7 @@ export const guides = {
         "Learn how to RNG starters in Diamond, Pearl, and Platinum for shiny, high-IV Pokémon.",
       slug: "/retail-dppt-starter/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-06-15",
       translation: null,
@@ -6005,8 +6567,16 @@ export const guides = {
         zh: "/zh-retail-dppt-starter/",
       },
       guideGroupId: "en:/retail-dppt-starter/:Diamond, Pearl, and Platinum",
-      guideVariantLinks: { retail: "/retail-dppt-starter/", cfwEmu: null },
-      displayAttributes: ["video_guide", "web_tool"],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-dppt-starter/" },
+        cfwEmu: null,
+      },
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
     getRawFile: memoize(async () => {
@@ -6016,10 +6586,11 @@ export const guides = {
   },
   "/retail-emerald-egg/": {
     meta: {
+      id: "/retail-emerald-egg/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
-      guideKey: "/emer-egg/",
+      guideKey: "emer-egg",
       isNew: false,
       title: "Retail Emerald Egg RNG",
       navDrawerTitle: "Egg RNG",
@@ -6027,6 +6598,7 @@ export const guides = {
         "Learn how to Retail RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies.",
       slug: "/retail-emerald-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-05-18",
       translation: null,
@@ -6039,12 +6611,17 @@ export const guides = {
         en: "/retail-emerald-egg/",
         zh: "/zh-retail-emerald-egg/",
       },
-      guideGroupId: "en:/emer-egg/:Emerald",
+      guideGroupId: "en:emer-egg:Emerald",
       guideVariantLinks: {
-        retail: "/retail-emerald-egg/",
-        cfwEmu: "/emulator-emerald-egg/",
+        retail: { type: "slug", slug: "/retail-emerald-egg/" },
+        cfwEmu: { type: "slug", slug: "/emulator-emerald-egg/" },
       },
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_de",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Retail Egg.mdx")),
     getRawFile: memoize(async () => {
@@ -6054,17 +6631,19 @@ export const guides = {
   },
   "/retail-emerald-wild/": {
     meta: {
+      id: "/retail-emerald-wild/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/retail-emerald-wild/",
       isNew: false,
       title: "Emerald Retail Wild RNG",
-      navDrawerTitle: "Retail Wild RNG",
+      navDrawerTitle: "Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in Pokémon Emerald on a retail console for perfect IVs, natures, and shinies.",
       slug: "/retail-emerald-wild/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6078,8 +6657,11 @@ export const guides = {
         zh: "/zh-retail-emerald-wild/",
       },
       guideGroupId: "en:/retail-emerald-wild/:Emerald",
-      guideVariantLinks: { retail: "/retail-emerald-wild/", cfwEmu: null },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-emerald-wild/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Retail Wild RNG.mdx"),
@@ -6093,8 +6675,9 @@ export const guides = {
   },
   "/retail-hgss-starter/": {
     meta: {
+      id: "/retail-hgss-starter/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/retail-hgss-starter/",
       isNew: false,
@@ -6104,6 +6687,7 @@ export const guides = {
         "Learn how to RNG starters in HeartGold and SoulSilver for shiny, high-IV Pokémon.",
       slug: "/retail-hgss-starter/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-06-15",
       translation: null,
@@ -6117,8 +6701,16 @@ export const guides = {
         zh: "/zh-retail-hgss-starter/",
       },
       guideGroupId: "en:/retail-hgss-starter/:HeartGold and SoulSilver",
-      guideVariantLinks: { retail: "/retail-hgss-starter/", cfwEmu: null },
-      displayAttributes: ["video_guide", "web_tool"],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-hgss-starter/" },
+        cfwEmu: null,
+      },
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
     getRawFile: memoize(async () => {
@@ -6128,8 +6720,9 @@ export const guides = {
   },
   "/retail-oras-egg-mmsc/": {
     meta: {
+      id: "/retail-oras-egg-mmsc/",
       categories: ["Omega Ruby and Alpha Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-oras-egg-mmsc/",
       isNew: false,
@@ -6140,6 +6733,7 @@ export const guides = {
         "Learn how to RNG eggs from the Daycare in Omega Ruby and Alpha Sapphire for shiny, high-IV Pokémon.",
       slug: "/retail-oras-egg-mmsc/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6149,7 +6743,10 @@ export const guides = {
       file: "guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
       translations: null,
       guideGroupId: "en:/retail-oras-egg-mmsc/:Omega Ruby and Alpha Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-oras-egg-mmsc/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-oras-egg-mmsc/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -6167,8 +6764,9 @@ export const guides = {
   },
   "/retail-oras-egg-no-mmsc/": {
     meta: {
+      id: "/retail-oras-egg-no-mmsc/",
       categories: ["Omega Ruby and Alpha Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-oras-egg-no-mmsc/",
       isNew: false,
@@ -6179,6 +6777,7 @@ export const guides = {
         "Learn how to RNG eggs from the Daycare in Omega Ruby and Alpha Sapphire for shiny, high-IV Pokémon.",
       slug: "/retail-oras-egg-no-mmsc/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6189,7 +6788,10 @@ export const guides = {
       translations: null,
       guideGroupId:
         "en:/retail-oras-egg-no-mmsc/:Omega Ruby and Alpha Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-oras-egg-no-mmsc/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-oras-egg-no-mmsc/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -6207,8 +6809,9 @@ export const guides = {
   },
   "/retail-oras-tid/": {
     meta: {
+      id: "/retail-oras-tid/",
       categories: ["Omega Ruby and Alpha Sapphire"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-oras-tid/",
       isNew: false,
@@ -6218,6 +6821,7 @@ export const guides = {
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Omega Ruby and Alpha Sapphire.",
       slug: "/retail-oras-tid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-04-13",
       translation: null,
@@ -6227,8 +6831,11 @@ export const guides = {
       file: "guides/Gen 6/ORAS TID.mdx",
       translations: { en: "/retail-oras-tid/", zh: "/zh-retail-oras-tid/" },
       guideGroupId: "en:/retail-oras-tid/:Omega Ruby and Alpha Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-oras-tid/" },
-      displayAttributes: ["video_guide", "web_tool"],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-oras-tid/" },
+      },
+      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/ORAS TID.mdx")),
     getRawFile: memoize(async () => {
@@ -6238,10 +6845,11 @@ export const guides = {
   },
   "/retail-rubysapphire-tid/": {
     meta: {
+      id: "/retail-rubysapphire-tid/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["retail"],
-      guideKey: "/rs-tid/",
+      guideKey: "rs-tid",
       isNew: false,
       title: "Ruby and Sapphire Retail TID RNG",
       navDrawerTitle: "TID RNG",
@@ -6249,6 +6857,7 @@ export const guides = {
         "Learn how to obtain your desired Trainer ID (TID) and Secret ID (SID) combo in Ruby and Sapphire.",
       slug: "/retail-rubysapphire-tid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6260,12 +6869,12 @@ export const guides = {
         en: "/retail-rubysapphire-tid/",
         zh: "/zh-retail-rubysapphire-tid/",
       },
-      guideGroupId: "en:/rs-tid/:Ruby and Sapphire",
+      guideGroupId: "en:rs-tid:Ruby and Sapphire",
       guideVariantLinks: {
-        retail: "/retail-rubysapphire-tid/",
-        cfwEmu: "/emulator-rs-live-battery-tid/",
+        retail: { type: "slug", slug: "/retail-rubysapphire-tid/" },
+        cfwEmu: { type: "slug", slug: "/emulator-rs-live-battery-tid/" },
       },
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx"),
@@ -6279,10 +6888,11 @@ export const guides = {
   },
   "/retail-sm-egg-mmsc/": {
     meta: {
+      id: "/retail-sm-egg-mmsc/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
-      guideKey: "/mm-sc-egg/",
+      guideKey: "mm-sc-egg",
       isNew: false,
       title: "Sun and Moon Egg RNG with Masuda and/or Shiny Charm",
       navDrawerTitle: "MM/SC Egg RNG",
@@ -6290,6 +6900,7 @@ export const guides = {
         "Learn how to RNG eggs from the Daycare in Sun and Moon for shiny, high-IV Pokémon.",
       slug: "/retail-sm-egg-mmsc/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6298,8 +6909,11 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
       translations: null,
-      guideGroupId: "en:/mm-sc-egg/:Sun and Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-sm-egg-mmsc/" },
+      guideGroupId: "en:mm-sc-egg:Sun and Moon",
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-sm-egg-mmsc/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -6317,8 +6931,9 @@ export const guides = {
   },
   "/retail-sm-egg-no-mmsc/": {
     meta: {
+      id: "/retail-sm-egg-no-mmsc/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-sm-egg-no-mmsc/",
       isNew: false,
@@ -6328,6 +6943,7 @@ export const guides = {
         "Learn how to RNG eggs from the Daycare in Sun and Moon for shiny, high-IV Pokémon.",
       slug: "/retail-sm-egg-no-mmsc/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6340,8 +6956,11 @@ export const guides = {
         zh: "/zh-retail-sm-egg-no-mmsc/",
       },
       guideGroupId: "en:/retail-sm-egg-no-mmsc/:Sun and Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-sm-egg-no-mmsc/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-sm-egg-no-mmsc/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -6358,8 +6977,9 @@ export const guides = {
   },
   "/retail-sm-egg-seed-no-cfw/": {
     meta: {
+      id: "/retail-sm-egg-seed-no-cfw/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "/retail-sm-egg-seed-no-cfw/",
       isNew: false,
@@ -6369,6 +6989,7 @@ export const guides = {
         "Find egg seeds for Egg RNG in Sun and Moon using the Magikarp Method — no CFW needed.",
       slug: "/retail-sm-egg-seed-no-cfw/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6379,7 +7000,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/retail-sm-egg-seed-no-cfw/:Sun and Moon",
       guideVariantLinks: {
-        retail: "/retail-sm-egg-seed-no-cfw/",
+        retail: { type: "slug", slug: "/retail-sm-egg-seed-no-cfw/" },
         cfwEmu: null,
       },
       displayAttributes: [],
@@ -6399,8 +7020,9 @@ export const guides = {
   },
   "/retail-sm-fidget/": {
     meta: {
+      id: "/retail-sm-fidget/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-sm-fidget/",
       isNew: false,
@@ -6410,6 +7032,7 @@ export const guides = {
         "Learn how to create a timeline with character fidgets in Sun and Moon.",
       slug: "/retail-sm-fidget/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6419,7 +7042,10 @@ export const guides = {
       file: "guides/Gen 7/Timeline With Fidget Guide.mdx",
       translations: null,
       guideGroupId: "en:/retail-sm-fidget/:Sun and Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-sm-fidget/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-sm-fidget/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -6434,8 +7060,9 @@ export const guides = {
   },
   "/retail-sm-initial-seed-clocks/": {
     meta: {
+      id: "/retail-sm-initial-seed-clocks/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "/retail-sm-initial-seed-clocks/",
       isNew: false,
@@ -6445,6 +7072,7 @@ export const guides = {
         "Learn how to find your initial seed in Sun and Moon using clock patterns — no custom firmware required.",
       slug: "/retail-sm-initial-seed-clocks/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6455,7 +7083,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/retail-sm-initial-seed-clocks/:Sun and Moon",
       guideVariantLinks: {
-        retail: "/retail-sm-initial-seed-clocks/",
+        retail: { type: "slug", slug: "/retail-sm-initial-seed-clocks/" },
         cfwEmu: null,
       },
       displayAttributes: [],
@@ -6472,8 +7100,9 @@ export const guides = {
   },
   "/retail-sm-island-scan/": {
     meta: {
+      id: "/retail-sm-island-scan/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-sm-island-scan/",
       isNew: false,
@@ -6483,6 +7112,7 @@ export const guides = {
         "Learn how to RNG Island Scan Pokémon in Sun and Moon — great for getting shinies in Apricorn Balls.",
       slug: "/retail-sm-island-scan/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6492,7 +7122,10 @@ export const guides = {
       file: "guides/Gen 7/Island Scan.mdx",
       translations: null,
       guideGroupId: "en:/retail-sm-island-scan/:Sun and Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-sm-island-scan/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-sm-island-scan/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Island Scan.mdx")),
@@ -6503,8 +7136,9 @@ export const guides = {
   },
   "/retail-sm-myster-gift/": {
     meta: {
+      id: "/retail-sm-myster-gift/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-sm-myster-gift/",
       isNew: false,
@@ -6514,6 +7148,7 @@ export const guides = {
         "Learn how to RNG Mystery Gift Pokémon in Sun and Moon for perfect IVs.",
       slug: "/retail-sm-myster-gift/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6523,7 +7158,10 @@ export const guides = {
       file: "guides/Gen 7/Mystery Gift.mdx",
       translations: null,
       guideGroupId: "en:/retail-sm-myster-gift/:Sun and Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-sm-myster-gift/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-sm-myster-gift/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Mystery Gift.mdx")),
@@ -6534,8 +7172,9 @@ export const guides = {
   },
   "/retail-sm-no-cfw/": {
     meta: {
+      id: "/retail-sm-no-cfw/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "/retail-sm-no-cfw/",
       isNew: false,
@@ -6545,6 +7184,7 @@ export const guides = {
         "RNG perfect Pokémon in Sun and Moon without using custom firmware.",
       slug: "/retail-sm-no-cfw/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6554,7 +7194,10 @@ export const guides = {
       file: "guides/Gen 7/RNGing Without Custom Firmware.mdx",
       translations: null,
       guideGroupId: "en:/retail-sm-no-cfw/:Sun and Moon",
-      guideVariantLinks: { retail: "/retail-sm-no-cfw/", cfwEmu: null },
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-sm-no-cfw/" },
+        cfwEmu: null,
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -6569,8 +7212,9 @@ export const guides = {
   },
   "/retail-sm-sos/": {
     meta: {
+      id: "/retail-sm-sos/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-sm-sos/",
       isNew: false,
@@ -6580,6 +7224,7 @@ export const guides = {
         "Learn how to RNG SOS battles in Sun and Moon for shinies, IVs, and hidden abilities.",
       slug: "/retail-sm-sos/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6589,7 +7234,10 @@ export const guides = {
       file: "guides/Gen 7/SOS RNG Guide.mdx",
       translations: null,
       guideGroupId: "en:/retail-sm-sos/:Sun and Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-sm-sos/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-sm-sos/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/SOS RNG Guide.mdx")),
@@ -6600,8 +7248,9 @@ export const guides = {
   },
   "/retail-sm-stationary/": {
     meta: {
+      id: "/retail-sm-stationary/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-sm-stationary/",
       isNew: false,
@@ -6611,6 +7260,7 @@ export const guides = {
         "Learn how to RNG static Pokémon in Sun and Moon for perfect IVs, natures, and shinies.",
       slug: "/retail-sm-stationary/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6620,7 +7270,10 @@ export const guides = {
       file: "guides/Gen 7/Stationary RNG.mdx",
       translations: null,
       guideGroupId: "en:/retail-sm-stationary/:Sun and Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-sm-stationary/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-sm-stationary/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Stationary RNG.mdx")),
@@ -6631,8 +7284,9 @@ export const guides = {
   },
   "/retail-sm-timeleap/": {
     meta: {
+      id: "/retail-sm-timeleap/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-sm-timeleap/",
       isNew: false,
@@ -6642,6 +7296,7 @@ export const guides = {
         "Learn how to leap onto a specific timeline in Sun and Moon to get the Pokemon you want.",
       slug: "/retail-sm-timeleap/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6651,7 +7306,10 @@ export const guides = {
       file: "guides/Gen 7/Timeline Leap Guide.mdx",
       translations: null,
       guideGroupId: "en:/retail-sm-timeleap/:Sun and Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-sm-timeleap/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-sm-timeleap/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -6666,8 +7324,9 @@ export const guides = {
   },
   "/retail-sm-timeline/": {
     meta: {
+      id: "/retail-sm-timeline/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-sm-timeline/",
       isNew: false,
@@ -6676,6 +7335,7 @@ export const guides = {
       description: "Learn how to create a timeline in Sun and Moon.",
       slug: "/retail-sm-timeline/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6688,8 +7348,11 @@ export const guides = {
         zh: "/zh-retail-sm-timeline/",
       },
       guideGroupId: "en:/retail-sm-timeline/:Sun and Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-sm-timeline/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-sm-timeline/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
     getRawFile: memoize(async () => {
@@ -6699,8 +7362,9 @@ export const guides = {
   },
   "/retail-sm-wild/": {
     meta: {
+      id: "/retail-sm-wild/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-sm-wild/",
       isNew: false,
@@ -6710,6 +7374,7 @@ export const guides = {
         "Learn how to RNG wild Pokémon in Sun and Moon for shiny and high-IV results.",
       slug: "/retail-sm-wild/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6719,7 +7384,10 @@ export const guides = {
       file: "guides/Gen 7/Wild RNG.mdx",
       translations: null,
       guideGroupId: "en:/retail-sm-wild/:Sun and Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-sm-wild/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-sm-wild/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Wild RNG.mdx")),
@@ -6730,10 +7398,11 @@ export const guides = {
   },
   "/retail-swsh-get-seed-with-cfw/": {
     meta: {
+      id: "/retail-swsh-get-seed-with-cfw/",
       categories: ["Sword and Shield"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
-      guideKey: "/raid-seed/",
+      guideKey: "raid-seed",
       isNew: false,
       title: "Sword and Shield find raid seed with custom firmware",
       navDrawerTitle: "Find Raid Seed",
@@ -6741,6 +7410,7 @@ export const guides = {
         "Learn how to find raid seeds in Sword and Shield using a Switch with custom firmware.",
       slug: "/retail-swsh-get-seed-with-cfw/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6749,10 +7419,10 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Sword and Shield/Get Raid Seed With CFW.mdx",
       translations: null,
-      guideGroupId: "en:/raid-seed/:Sword and Shield",
+      guideGroupId: "en:raid-seed:Sword and Shield",
       guideVariantLinks: {
-        retail: "/retail-swsh-get-seed-without-cfw/",
-        cfwEmu: "/retail-swsh-get-seed-with-cfw/",
+        retail: { type: "slug", slug: "/retail-swsh-get-seed-without-cfw/" },
+        cfwEmu: { type: "slug", slug: "/retail-swsh-get-seed-with-cfw/" },
       },
       displayAttributes: [],
     },
@@ -6768,10 +7438,11 @@ export const guides = {
   },
   "/retail-swsh-get-seed-without-cfw/": {
     meta: {
+      id: "/retail-swsh-get-seed-without-cfw/",
       categories: ["Sword and Shield"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
-      guideKey: "/raid-seed/",
+      guideKey: "raid-seed",
       isNew: false,
       title: "Sword and Shield - Find Raid Seed Without CFW",
       navDrawerTitle: "Find Raid Seed",
@@ -6779,6 +7450,7 @@ export const guides = {
         "Learn how to find raid seeds in Sword and Shield without custom firmware.",
       slug: "/retail-swsh-get-seed-without-cfw/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6787,10 +7459,10 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Sword and Shield/Get Raid Seed Without CFW.mdx",
       translations: null,
-      guideGroupId: "en:/raid-seed/:Sword and Shield",
+      guideGroupId: "en:raid-seed:Sword and Shield",
       guideVariantLinks: {
-        retail: "/retail-swsh-get-seed-without-cfw/",
-        cfwEmu: "/retail-swsh-get-seed-with-cfw/",
+        retail: { type: "slug", slug: "/retail-swsh-get-seed-without-cfw/" },
+        cfwEmu: { type: "slug", slug: "/retail-swsh-get-seed-with-cfw/" },
       },
       displayAttributes: [],
     },
@@ -6807,10 +7479,11 @@ export const guides = {
   },
   "/retail-swsh-raid/": {
     meta: {
+      id: "/retail-swsh-raid/",
       categories: ["Sword and Shield"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/raid/",
+      guideKey: "raid",
       isNew: false,
       title: "Sword and Shield Raid RNG",
       navDrawerTitle: "Raid RNG",
@@ -6818,6 +7491,7 @@ export const guides = {
         "Learn how to RNG raid Pokémon (including G-Max) in Sword and Shield Dens.",
       slug: "/retail-swsh-raid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6826,10 +7500,10 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Sword and Shield/Raid RNG.mdx",
       translations: null,
-      guideGroupId: "en:/raid/:Sword and Shield",
+      guideGroupId: "en:raid:Sword and Shield",
       guideVariantLinks: {
-        retail: "/retail-swsh-raid/",
-        cfwEmu: "/retail-swsh-raid/",
+        retail: { type: "slug", slug: "/retail-swsh-raid/" },
+        cfwEmu: { type: "slug", slug: "/retail-swsh-raid/" },
       },
       displayAttributes: [],
     },
@@ -6845,10 +7519,11 @@ export const guides = {
   },
   "/retail-usum-egg-mmsc/": {
     meta: {
+      id: "/retail-usum-egg-mmsc/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
-      guideKey: "/mm-sc-egg/",
+      guideKey: "mm-sc-egg",
       isNew: false,
       title: "Ultra Sun and Ultra Moon Egg RNG with Masuda and/or Shiny Charm",
       navDrawerTitle: "MM/SC Egg RNG",
@@ -6856,6 +7531,7 @@ export const guides = {
         "Learn how to RNG eggs from the Daycare in Ultra Sun and Ultra Moon for shiny, high-IV Pokémon.",
       slug: "/retail-usum-egg-mmsc/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6864,8 +7540,11 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
       translations: null,
-      guideGroupId: "en:/mm-sc-egg/:Ultra Sun and Ultra Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-usum-egg-mmsc/" },
+      guideGroupId: "en:mm-sc-egg:Ultra Sun and Ultra Moon",
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-egg-mmsc/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -6883,8 +7562,9 @@ export const guides = {
   },
   "/retail-usum-egg-no-mmsc/": {
     meta: {
+      id: "/retail-usum-egg-no-mmsc/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-usum-egg-no-mmsc/",
       isNew: false,
@@ -6895,6 +7575,7 @@ export const guides = {
         "Learn how to RNG eggs from the Daycare in Ultra Sun and Ultra Moon for shiny, high-IV Pokémon.",
       slug: "/retail-usum-egg-no-mmsc/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6907,8 +7588,11 @@ export const guides = {
         zh: "/zh-retail-usum-egg-no-mmsc/",
       },
       guideGroupId: "en:/retail-usum-egg-no-mmsc/:Ultra Sun and Ultra Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-usum-egg-no-mmsc/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-egg-no-mmsc/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -6925,8 +7609,9 @@ export const guides = {
   },
   "/retail-usum-egg-seed-no-cfw/": {
     meta: {
+      id: "/retail-usum-egg-seed-no-cfw/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "/retail-usum-egg-seed-no-cfw/",
       isNew: false,
@@ -6936,6 +7621,7 @@ export const guides = {
         "Find egg seeds for Egg RNG in Ultra Sun and Ultra Moon using the Magikarp Method — no CFW needed.",
       slug: "/retail-usum-egg-seed-no-cfw/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6946,7 +7632,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/retail-usum-egg-seed-no-cfw/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
-        retail: "/retail-usum-egg-seed-no-cfw/",
+        retail: { type: "slug", slug: "/retail-usum-egg-seed-no-cfw/" },
         cfwEmu: null,
       },
       displayAttributes: [],
@@ -6966,8 +7652,9 @@ export const guides = {
   },
   "/retail-usum-fidget/": {
     meta: {
+      id: "/retail-usum-fidget/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-usum-fidget/",
       isNew: false,
@@ -6977,6 +7664,7 @@ export const guides = {
         "Learn how to create a timeline with character fidgets in Ultra Sun and Ultra Moon.",
       slug: "/retail-usum-fidget/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -6986,7 +7674,10 @@ export const guides = {
       file: "guides/Gen 7/Timeline With Fidget Guide.mdx",
       translations: null,
       guideGroupId: "en:/retail-usum-fidget/:Ultra Sun and Ultra Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-usum-fidget/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-fidget/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7001,8 +7692,9 @@ export const guides = {
   },
   "/retail-usum-initial-seed-clocks/": {
     meta: {
+      id: "/retail-usum-initial-seed-clocks/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "/retail-usum-initial-seed-clocks/",
       isNew: false,
@@ -7012,6 +7704,7 @@ export const guides = {
         "Learn how to find your initial seed in Ultra Sun and Ultra Moon using clock patterns — no custom firmware required.",
       slug: "/retail-usum-initial-seed-clocks/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7023,7 +7716,7 @@ export const guides = {
       guideGroupId:
         "en:/retail-usum-initial-seed-clocks/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
-        retail: "/retail-usum-initial-seed-clocks/",
+        retail: { type: "slug", slug: "/retail-usum-initial-seed-clocks/" },
         cfwEmu: null,
       },
       displayAttributes: [],
@@ -7040,8 +7733,9 @@ export const guides = {
   },
   "/retail-usum-island-scan/": {
     meta: {
+      id: "/retail-usum-island-scan/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-usum-island-scan/",
       isNew: false,
@@ -7051,6 +7745,7 @@ export const guides = {
         "Learn how to RNG Island Scan Pokémon in Ultra Sun and Ultra Moon — great for getting shinies in Apricorn Balls.",
       slug: "/retail-usum-island-scan/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7060,7 +7755,10 @@ export const guides = {
       file: "guides/Gen 7/Island Scan.mdx",
       translations: null,
       guideGroupId: "en:/retail-usum-island-scan/:Ultra Sun and Ultra Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-usum-island-scan/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-island-scan/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Island Scan.mdx")),
@@ -7071,8 +7769,9 @@ export const guides = {
   },
   "/retail-usum-mystery-gift/": {
     meta: {
+      id: "/retail-usum-mystery-gift/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-usum-mystery-gift/",
       isNew: false,
@@ -7082,6 +7781,7 @@ export const guides = {
         "Learn how to RNG Mystery Gift Pokémon in Ultra Sun and Ultra Moon for perfect IVs.",
       slug: "/retail-usum-mystery-gift/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7091,7 +7791,10 @@ export const guides = {
       file: "guides/Gen 7/Mystery Gift.mdx",
       translations: null,
       guideGroupId: "en:/retail-usum-mystery-gift/:Ultra Sun and Ultra Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-usum-mystery-gift/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-mystery-gift/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Mystery Gift.mdx")),
@@ -7102,8 +7805,9 @@ export const guides = {
   },
   "/retail-usum-no-cfw/": {
     meta: {
+      id: "/retail-usum-no-cfw/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "/retail-usum-no-cfw/",
       isNew: false,
@@ -7113,6 +7817,7 @@ export const guides = {
         "RNG perfect Pokémon in Ultra Sun and Ultra Moon without using custom firmware.",
       slug: "/retail-usum-no-cfw/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7122,7 +7827,10 @@ export const guides = {
       file: "guides/Gen 7/RNGing Without Custom Firmware.mdx",
       translations: null,
       guideGroupId: "en:/retail-usum-no-cfw/:Ultra Sun and Ultra Moon",
-      guideVariantLinks: { retail: "/retail-usum-no-cfw/", cfwEmu: null },
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-usum-no-cfw/" },
+        cfwEmu: null,
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7137,8 +7845,9 @@ export const guides = {
   },
   "/retail-usum-sos/": {
     meta: {
+      id: "/retail-usum-sos/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-usum-sos/",
       isNew: false,
@@ -7148,6 +7857,7 @@ export const guides = {
         "Learn how to RNG SOS battles in Ultra Sun and Ultra Moon for shinies, IVs, and hidden abilities.",
       slug: "/retail-usum-sos/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7157,7 +7867,10 @@ export const guides = {
       file: "guides/Gen 7/SOS RNG Guide.mdx",
       translations: null,
       guideGroupId: "en:/retail-usum-sos/:Ultra Sun and Ultra Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-usum-sos/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-sos/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/SOS RNG Guide.mdx")),
@@ -7168,8 +7881,9 @@ export const guides = {
   },
   "/retail-usum-stationary/": {
     meta: {
+      id: "/retail-usum-stationary/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-usum-stationary/",
       isNew: false,
@@ -7179,6 +7893,7 @@ export const guides = {
         "Learn how to RNG static Pokémon in Ultra Sun and Ultra Moon for perfect IVs, natures, and shinies.",
       slug: "/retail-usum-stationary/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7188,7 +7903,10 @@ export const guides = {
       file: "guides/Gen 7/Stationary RNG.mdx",
       translations: null,
       guideGroupId: "en:/retail-usum-stationary/:Ultra Sun and Ultra Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-usum-stationary/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-stationary/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Stationary RNG.mdx")),
@@ -7199,8 +7917,9 @@ export const guides = {
   },
   "/retail-usum-timeleap/": {
     meta: {
+      id: "/retail-usum-timeleap/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-usum-timeleap/",
       isNew: false,
@@ -7210,6 +7929,7 @@ export const guides = {
         "Learn how to leap onto a specific timeline in Ultra Sun and Ultra Moon to get the Pokemon you want.",
       slug: "/retail-usum-timeleap/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7219,7 +7939,10 @@ export const guides = {
       file: "guides/Gen 7/Timeline Leap Guide.mdx",
       translations: null,
       guideGroupId: "en:/retail-usum-timeleap/:Ultra Sun and Ultra Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-usum-timeleap/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-timeleap/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7234,8 +7957,9 @@ export const guides = {
   },
   "/retail-usum-timeline/": {
     meta: {
+      id: "/retail-usum-timeline/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-usum-timeline/",
       isNew: false,
@@ -7245,6 +7969,7 @@ export const guides = {
         "Learn how to create a timeline in Ultra Sun and Ultra Moon.",
       slug: "/retail-usum-timeline/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7257,8 +7982,11 @@ export const guides = {
         zh: "/zh-retail-usum-timeline/",
       },
       guideGroupId: "en:/retail-usum-timeline/:Ultra Sun and Ultra Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-usum-timeline/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-timeline/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
     getRawFile: memoize(async () => {
@@ -7268,8 +7996,9 @@ export const guides = {
   },
   "/retail-usum-wild/": {
     meta: {
+      id: "/retail-usum-wild/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-usum-wild/",
       isNew: false,
@@ -7279,6 +8008,7 @@ export const guides = {
         "Learn how to RNG wild Pokémon in Ultra Sun and Ultra Moon for shiny and high-IV results.",
       slug: "/retail-usum-wild/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7288,7 +8018,10 @@ export const guides = {
       file: "guides/Gen 7/Wild RNG.mdx",
       translations: null,
       guideGroupId: "en:/retail-usum-wild/:Ultra Sun and Ultra Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-usum-wild/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-wild/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Wild RNG.mdx")),
@@ -7299,8 +8032,9 @@ export const guides = {
   },
   "/retail-usum-wormhole/": {
     meta: {
+      id: "/retail-usum-wormhole/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-usum-wormhole/",
       isNew: false,
@@ -7310,6 +8044,7 @@ export const guides = {
         "RNG legendary Pokémon found in Ultra Wormholes for perfect IVs, nature, and shininess.",
       slug: "/retail-usum-wormhole/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7319,7 +8054,10 @@ export const guides = {
       file: "guides/Gen 7/Stationary Wormhole RNG.mdx",
       translations: null,
       guideGroupId: "en:/retail-usum-wormhole/:Ultra Sun and Ultra Moon",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-usum-wormhole/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-usum-wormhole/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7334,8 +8072,9 @@ export const guides = {
   },
   "/retail-xy-egg-mmsc/": {
     meta: {
+      id: "/retail-xy-egg-mmsc/",
       categories: ["X and Y"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-xy-egg-mmsc/",
       isNew: false,
@@ -7345,6 +8084,7 @@ export const guides = {
         "Learn how to RNG eggs from the Daycare in X and Y for shiny, high-IV Pokémon.",
       slug: "/retail-xy-egg-mmsc/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7354,7 +8094,10 @@ export const guides = {
       file: "guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
       translations: null,
       guideGroupId: "en:/retail-xy-egg-mmsc/:X and Y",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-xy-egg-mmsc/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-xy-egg-mmsc/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7372,8 +8115,9 @@ export const guides = {
   },
   "/retail-xy-egg-no-mmsc/": {
     meta: {
+      id: "/retail-xy-egg-no-mmsc/",
       categories: ["X and Y"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-xy-egg-no-mmsc/",
       isNew: false,
@@ -7383,6 +8127,7 @@ export const guides = {
         "Learn how to RNG eggs from the Daycare in X and Y for shiny, high-IV Pokémon.",
       slug: "/retail-xy-egg-no-mmsc/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7392,7 +8137,10 @@ export const guides = {
       file: "guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       translations: null,
       guideGroupId: "en:/retail-xy-egg-no-mmsc/:X and Y",
-      guideVariantLinks: { retail: null, cfwEmu: "/retail-xy-egg-no-mmsc/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/retail-xy-egg-no-mmsc/" },
+      },
       displayAttributes: [],
     },
     Guide: React.lazy(
@@ -7410,9 +8158,10 @@ export const guides = {
   },
   "/rs-battery/": {
     meta: {
+      id: "/rs-battery/",
       categories: ["Ruby and Sapphire"],
-      section: "info",
-      guideVariants: null,
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/rs-battery/",
       isNew: false,
       title: "Ruby and Sapphire Live vs Dead Battery RNG",
@@ -7421,6 +8170,7 @@ export const guides = {
         "Learn the differences between RNG methods on Ruby and Sapphire with live and dead batteries, and how each impacts your Pokemon results.",
       slug: "/rs-battery/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7430,8 +8180,11 @@ export const guides = {
       file: "guides/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx",
       translations: { en: "/rs-battery/", zh: "/zh-rs-battery/" },
       guideGroupId: "en:/rs-battery/:Ruby and Sapphire",
-      guideVariantLinks: null,
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/rs-battery/" },
+        cfwEmu: { type: "slug", slug: "/rs-battery/" },
+      },
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -7446,8 +8199,9 @@ export const guides = {
   },
   "/rs-gen3-sid/": {
     meta: {
+      id: "/rs-gen3-sid/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
       guideKey: "/rs-gen3-sid/",
       isNew: false,
@@ -7456,6 +8210,7 @@ export const guides = {
       description: "Various methods to finding an SID in Ruby and Sapphire.",
       slug: "/rs-gen3-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7469,8 +8224,11 @@ export const guides = {
         zh: "/zh-rs-gen3-sid/",
       },
       guideGroupId: "en:/rs-gen3-sid/:Ruby and Sapphire",
-      guideVariantLinks: { retail: "/rs-gen3-sid/", cfwEmu: "/rs-gen3-sid/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/rs-gen3-sid/" },
+        cfwEmu: { type: "slug", slug: "/rs-gen3-sid/" },
+      },
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
     getRawFile: memoize(async () => {
@@ -7480,8 +8238,9 @@ export const guides = {
   },
   "/rs-initial-seed/": {
     meta: {
+      id: "/rs-initial-seed/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/rs-initial-seed/",
       isNew: false,
@@ -7490,6 +8249,7 @@ export const guides = {
       description: "Learn how to RNG your initial seed in Ruby and Sapphire.",
       slug: "/rs-initial-seed/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7499,8 +8259,11 @@ export const guides = {
       file: "guides/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx",
       translations: null,
       guideGroupId: "en:/rs-initial-seed/:Ruby and Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/rs-initial-seed/" },
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/rs-initial-seed/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx"),
@@ -7514,8 +8277,9 @@ export const guides = {
   },
   "/rs-mirage-island/": {
     meta: {
+      id: "/rs-mirage-island/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["retail"],
       guideKey: "/rs-mirage-island/",
       isNew: false,
@@ -7525,6 +8289,7 @@ export const guides = {
         "Learn how to access Mirage Island in Pokémon Emerald by catching a Pokémon with the correct PID using RNG manipulation.",
       slug: "/rs-mirage-island/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-04-11",
       translation: null,
@@ -7534,8 +8299,11 @@ export const guides = {
       file: "guides/Gen 3/Emerald/Mirage Island.mdx",
       translations: { en: "/rs-mirage-island/", zh: "/zh-rs-mirage-island/" },
       guideGroupId: "en:/rs-mirage-island/:Ruby and Sapphire",
-      guideVariantLinks: { retail: "/rs-mirage-island/", cfwEmu: null },
-      displayAttributes: ["web_tool"],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/rs-mirage-island/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Mirage Island.mdx"),
@@ -7549,8 +8317,9 @@ export const guides = {
   },
   "/rs-pokefinder-setup/": {
     meta: {
+      id: "/rs-pokefinder-setup/",
       categories: ["Ruby and Sapphire"],
-      section: "info",
+      section: "tool",
       guideVariants: null,
       guideKey: "/rs-pokefinder-setup/",
       isNew: false,
@@ -7559,6 +8328,7 @@ export const guides = {
       description: "How to set up PokeFinder",
       slug: "/rs-pokefinder-setup/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7569,7 +8339,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/rs-pokefinder-setup/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/PokeFinder Setup.mdx"),
@@ -7583,16 +8353,18 @@ export const guides = {
   },
   "/rs-pokerus-emu/": {
     meta: {
+      id: "/rs-pokerus-emu/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
-      guideKey: "/rs-pokerus/",
+      guideKey: "rs-pokerus",
       isNew: false,
       title: "Pokérus in Ruby & Sapphire",
       navDrawerTitle: "Pokérus",
       description: "How to be infected by Pokérus",
       slug: "/rs-pokerus-emu/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-05-09",
       translation: null,
@@ -7601,12 +8373,12 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Pokerus.mdx",
       translations: { en: "/rs-pokerus-emu/", zh: "/zh-rs-pokerus-emu/" },
-      guideGroupId: "en:/rs-pokerus/:Ruby and Sapphire",
+      guideGroupId: "en:rs-pokerus:Ruby and Sapphire",
       guideVariantLinks: {
-        retail: "/rs-pokerus-retail/",
-        cfwEmu: "/rs-pokerus-emu/",
+        retail: { type: "slug", slug: "/rs-pokerus-retail/" },
+        cfwEmu: { type: "slug", slug: "/rs-pokerus-emu/" },
       },
-      displayAttributes: ["video_guide"],
+      displayAttributes: ["video_guide", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Pokerus.mdx")),
     getRawFile: memoize(async () => {
@@ -7616,16 +8388,18 @@ export const guides = {
   },
   "/rs-pokerus-retail/": {
     meta: {
+      id: "/rs-pokerus-retail/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["retail"],
-      guideKey: "/rs-pokerus/",
+      guideKey: "rs-pokerus",
       isNew: false,
       title: "Pokérus in Ruby & Sapphire",
       navDrawerTitle: "Pokérus",
       description: "How to be infected by Pokérus",
       slug: "/rs-pokerus-retail/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-05-17",
       translation: null,
@@ -7634,12 +8408,12 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx",
       translations: { en: "/rs-pokerus-retail/", zh: "/zh-rs-pokerus-retail/" },
-      guideGroupId: "en:/rs-pokerus/:Ruby and Sapphire",
+      guideGroupId: "en:rs-pokerus:Ruby and Sapphire",
       guideVariantLinks: {
-        retail: "/rs-pokerus-retail/",
-        cfwEmu: "/rs-pokerus-emu/",
+        retail: { type: "slug", slug: "/rs-pokerus-retail/" },
+        cfwEmu: { type: "slug", slug: "/rs-pokerus-emu/" },
       },
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx"),
@@ -7653,8 +8427,9 @@ export const guides = {
   },
   "/rs-sid-feebas/": {
     meta: {
+      id: "/rs-sid-feebas/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "/rs-sid-feebas/",
       isNew: false,
@@ -7664,6 +8439,7 @@ export const guides = {
         "How to find your Secret ID (SID) in Ruby or Sapphire using Feebas.",
       slug: "/rs-sid-feebas/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7673,8 +8449,11 @@ export const guides = {
       file: "guides/Gen 3/Emerald/Find SID with Feebas.mdx",
       translations: { en: "/rs-sid-feebas/", zh: "/zh-rs-sid-feebas/" },
       guideGroupId: "en:/rs-sid-feebas/:Ruby and Sapphire",
-      guideVariantLinks: { retail: "/rs-sid-feebas/", cfwEmu: null },
-      displayAttributes: ["video_guide", "web_tool"],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/rs-sid-feebas/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx"),
@@ -7688,16 +8467,18 @@ export const guides = {
   },
   "/rs-static/": {
     meta: {
+      id: "/rs-static/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/wild/",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/rs-static/",
       isNew: false,
-      title: "Ruby and Sapphire Static3",
-      navDrawerTitle: "Ruby and Sapphire Static3",
+      title: "Static Tool",
+      navDrawerTitle: "Static Tool",
       description: "Static encounters in Ruby and Sapphire",
       slug: "/rs-static/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7706,9 +8487,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
       translations: null,
-      guideGroupId: "en:/wild/:Ruby and Sapphire",
-      guideVariantLinks: { retail: "/rs-static/", cfwEmu: "/rs-static/" },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/rs-static/:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
@@ -7722,16 +8503,18 @@ export const guides = {
   },
   "/rs-tidsid-generator/": {
     meta: {
+      id: "/rs-tidsid-generator/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/tid-sid/",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/rs-tidsid-generator/",
       isNew: false,
-      title: "RS TID and SID Generator",
-      navDrawerTitle: "RS TID and SID Generator",
+      title: "TID and SID Generator",
+      navDrawerTitle: "TID and SID Generator",
       description: "Generator for TID and SID in RS",
       slug: "/rs-tidsid-generator/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7740,12 +8523,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
-      guideGroupId: "en:/tid-sid/:Ruby and Sapphire",
-      guideVariantLinks: {
-        retail: "/rs-tidsid-generator/",
-        cfwEmu: "/rs-tidsid-generator/",
-      },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/rs-tidsid-generator/:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -7759,9 +8539,10 @@ export const guides = {
   },
   "/rs-tips-rng/": {
     meta: {
+      id: "/rs-tips-rng/",
       categories: ["Ruby and Sapphire"],
-      section: "info",
-      guideVariants: null,
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/rs-tips-rng/",
       isNew: false,
       title: "Ruby and Sapphire RNG Info",
@@ -7770,6 +8551,7 @@ export const guides = {
         "Learn how to advance the RNG and improve stability in Pokémon Ruby and Sapphire for consistent results.",
       slug: "/rs-tips-rng/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7779,8 +8561,11 @@ export const guides = {
       file: "guides/Gen 3/Ruby and Sapphire/Basic Rules of RNG.mdx",
       translations: null,
       guideGroupId: "en:/rs-tips-rng/:Ruby and Sapphire",
-      guideVariantLinks: null,
-      displayAttributes: [],
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/rs-tips-rng/" },
+        cfwEmu: { type: "slug", slug: "/rs-tips-rng/" },
+      },
+      displayAttributes: ["rough_draft"],
     },
     Guide: React.lazy(
       () =>
@@ -7795,6 +8580,7 @@ export const guides = {
   },
   "/ruby-and-sapphire/": {
     meta: {
+      id: "/ruby-and-sapphire/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -7805,6 +8591,7 @@ export const guides = {
       description: "Ruby and Sapphire Resources",
       slug: "/ruby-and-sapphire/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7825,8 +8612,9 @@ export const guides = {
   },
   "/sos-call-rates/": {
     meta: {
+      id: "/sos-call-rates/",
       categories: ["Ultra Sun and Ultra Moon", "Sun and Moon"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/sos-call-rates/",
       isNew: false,
@@ -7836,6 +8624,7 @@ export const guides = {
         "A searchable list of every Pokemon that can SOS and their call rates in Gen 7.",
       slug: "/sos-call-rates/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7856,6 +8645,7 @@ export const guides = {
   },
   "/sun-and-moon/": {
     meta: {
+      id: "/sun-and-moon/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -7866,6 +8656,7 @@ export const guides = {
       description: "Sun and Moon Resources",
       slug: "/sun-and-moon/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7886,6 +8677,7 @@ export const guides = {
   },
   "/sword-and-shield/": {
     meta: {
+      id: "/sword-and-shield/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -7896,6 +8688,7 @@ export const guides = {
       description: "Sword and Shield Resources",
       slug: "/sword-and-shield/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7916,9 +8709,10 @@ export const guides = {
   },
   "/sysbot-lpa-mmo/": {
     meta: {
+      id: "/sysbot-lpa-mmo/",
       categories: ["Legends Arceus"],
-      section: "guide",
-      guideVariants: ["cfw-emu"],
+      section: "tool",
+      guideVariants: null,
       guideKey: "/sysbot-lpa-mmo/",
       isNew: false,
       title: "Legends Arceus MMO RNG",
@@ -7927,6 +8721,7 @@ export const guides = {
         "Learn how to RNG MMOs in Legends Arceus using Sysbot and PermuteMMO for shiny Pokémon.",
       slug: "/sysbot-lpa-mmo/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7936,7 +8731,7 @@ export const guides = {
       file: "guides/Legends Arceus/MMO.mdx",
       translations: null,
       guideGroupId: "en:/sysbot-lpa-mmo/:Legends Arceus",
-      guideVariantLinks: { retail: null, cfwEmu: "/sysbot-lpa-mmo/" },
+      guideVariantLinks: null,
       displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Legends Arceus/MMO.mdx")),
@@ -7947,6 +8742,7 @@ export const guides = {
   },
   "/transporter-dream-radar/": {
     meta: {
+      id: "/transporter-dream-radar/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -7957,6 +8753,7 @@ export const guides = {
       description: "Pokemon Transporter and Dream Radar Resources",
       slug: "/transporter-dream-radar/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -7977,6 +8774,7 @@ export const guides = {
   },
   "/transporter-patches/": {
     meta: {
+      id: "/transporter-patches/",
       categories: ["Transporter and Dream Radar"],
       section: "patch",
       guideVariants: null,
@@ -7988,6 +8786,7 @@ export const guides = {
         "Learn how to patch Pokémon Transporter to work offline and load emulator or TWiLightMenu saves from the SD card.",
       slug: "/transporter-patches/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -8012,8 +8811,9 @@ export const guides = {
   },
   "/transporter-rng-offline/": {
     meta: {
+      id: "/transporter-rng-offline/",
       categories: ["Transporter and Dream Radar"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/transporter-rng-offline/",
       isNew: false,
@@ -8023,6 +8823,7 @@ export const guides = {
         "Use the offline patch to stabilize delay and make RNG with Pokémon Transporter more consistent.",
       slug: "/transporter-rng-offline/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -8032,7 +8833,10 @@ export const guides = {
       file: "guides/Transporter/Transporter with Offline Patch.mdx",
       translations: null,
       guideGroupId: "en:/transporter-rng-offline/:Transporter and Dream Radar",
-      guideVariantLinks: { retail: null, cfwEmu: "/transporter-rng-offline/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/transporter-rng-offline/" },
+      },
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(
@@ -8048,8 +8852,9 @@ export const guides = {
   },
   "/transporter-rng/": {
     meta: {
+      id: "/transporter-rng/",
       categories: ["Transporter and Dream Radar"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/transporter-rng/",
       isNew: false,
@@ -8059,6 +8864,7 @@ export const guides = {
         "Learn how to RNG your Virtual Console Pokémon so they transfer to Gen 7 with perfect 6IVs.",
       slug: "/transporter-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-05-08",
       translation: null,
@@ -8068,7 +8874,10 @@ export const guides = {
       file: "guides/Transporter/Transporter.mdx",
       translations: null,
       guideGroupId: "en:/transporter-rng/:Transporter and Dream Radar",
-      guideVariantLinks: { retail: null, cfwEmu: "/transporter-rng/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/transporter-rng/" },
+      },
       displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Transporter/Transporter.mdx")),
@@ -8079,6 +8888,7 @@ export const guides = {
   },
   "/ultra-sun-and-ultra-moon/": {
     meta: {
+      id: "/ultra-sun-and-ultra-moon/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -8089,6 +8899,7 @@ export const guides = {
       description: "Ultra Sun and Ultra Moon Resources",
       slug: "/ultra-sun-and-ultra-moon/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -8109,8 +8920,9 @@ export const guides = {
   },
   "/wishing-star-jirachi/": {
     meta: {
+      id: "/wishing-star-jirachi/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/wishing-star-jirachi/",
       isNew: false,
@@ -8120,6 +8932,7 @@ export const guides = {
         "Learn how to RNG the Wishing Star Jirachi from the Colosseum Bonus Disc in Ruby and Sapphire.",
       slug: "/wishing-star-jirachi/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-04-23",
       translation: null,
@@ -8132,8 +8945,11 @@ export const guides = {
         zh: "/zh-wishing-star-jirachi/",
       },
       guideGroupId: "en:/wishing-star-jirachi/:Ruby and Sapphire",
-      guideVariantLinks: { retail: null, cfwEmu: "/wishing-star-jirachi/" },
-      displayAttributes: ["video_guide"],
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/wishing-star-jirachi/" },
+      },
+      displayAttributes: ["video_guide", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -8148,6 +8964,7 @@ export const guides = {
   },
   "/x-and-y/": {
     meta: {
+      id: "/x-and-y/",
       categories: ["Game Hub"],
       section: "challenge",
       guideVariants: null,
@@ -8158,6 +8975,7 @@ export const guides = {
       description: "X and Y Resources",
       slug: "/x-and-y/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -8178,16 +8996,18 @@ export const guides = {
   },
   "/xdcolo-tidsid-generator/": {
     meta: {
+      id: "/xdcolo-tidsid-generator/",
       categories: ["Gamecube"],
-      section: "guide",
-      guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/tid-sid/",
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/xdcolo-tidsid-generator/",
       isNew: false,
-      title: "XD and Colo TID and SID Generator",
-      navDrawerTitle: "XD and Colo TID and SID Generator",
+      title: "TID and SID Generator",
+      navDrawerTitle: "TID and SID Generator",
       description: "Generator for TID and SID in XD and Colo",
       slug: "/xdcolo-tidsid-generator/",
       isRoughDraft: true,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -8196,12 +9016,9 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
-      guideGroupId: "en:/tid-sid/:Gamecube",
-      guideVariantLinks: {
-        retail: "/xdcolo-tidsid-generator/",
-        cfwEmu: "/xdcolo-tidsid-generator/",
-      },
-      displayAttributes: ["web_tool"],
+      guideGroupId: "en:/xdcolo-tidsid-generator/:Gamecube",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -8215,6 +9032,7 @@ export const guides = {
   },
   "/xy-friend-safari-patch/": {
     meta: {
+      id: "/xy-friend-safari-patch/",
       categories: ["X and Y"],
       section: "patch",
       guideVariants: null,
@@ -8226,6 +9044,7 @@ export const guides = {
         "How to use a game patch to unlock all Friend Safari Pokemon in Pokemon X and Y, including Ditto and Vivillon.",
       slug: "/xy-friend-safari-patch/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: null,
       translation: null,
@@ -8250,8 +9069,9 @@ export const guides = {
   },
   "/xy-pokeradar/": {
     meta: {
+      id: "/xy-pokeradar/",
       categories: ["X and Y"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/xy-pokeradar/",
       isNew: false,
@@ -8261,6 +9081,7 @@ export const guides = {
         "Learn how to RNG using the PokéRadar in X and Y for shiny Pokémon.",
       slug: "/xy-pokeradar/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: false,
       addedOn: "2025-03-24",
       translation: null,
@@ -8270,7 +9091,10 @@ export const guides = {
       file: "guides/Gen 6/PokeRadar.mdx",
       translations: null,
       guideGroupId: "en:/xy-pokeradar/:X and Y",
-      guideVariantLinks: { retail: null, cfwEmu: "/xy-pokeradar/" },
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/xy-pokeradar/" },
+      },
       displayAttributes: ["video_guide", "web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/PokeRadar.mdx")),
@@ -8281,6 +9105,7 @@ export const guides = {
   },
   "/zh-3ds-alt-settings/": {
     meta: {
+      id: "/3ds-alt-settings/",
       categories: ["HeartGold and SoulSilver", "Diamond, Pearl, and Platinum"],
       section: "tool",
       guideVariants: null,
@@ -8292,6 +9117,7 @@ export const guides = {
         "无需重启即可设置 3DS 系统时间 - 这对于更快速、更稳定地进行宝可梦乱数尝试很有用。",
       slug: "/zh-3ds-alt-settings/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-07-03",
       translation: { enSlug: "/3ds-alt-settings/", language: "zh" },
@@ -8303,7 +9129,7 @@ export const guides = {
       guideGroupId:
         "zh:/3ds-alt-settings/:Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/3DS Alt Settings.mdx"),
@@ -8317,6 +9143,7 @@ export const guides = {
   },
   "/zh-3ds-helper/": {
     meta: {
+      id: "/3ds-helper/",
       categories: [
         "Diamond, Pearl, and Platinum",
         "HeartGold and SoulSilver",
@@ -8333,6 +9160,7 @@ export const guides = {
         "Easier 3DS RNG without homebrew using precise timer starts.",
       slug: "/zh-3ds-helper/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-07-03",
       translation: { enSlug: "/3ds-helper/", language: "zh" },
@@ -8344,7 +9172,7 @@ export const guides = {
       guideGroupId:
         "zh:/3ds-helper/:Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide"],
+      displayAttributes: ["video_guide", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/3DS Helper.mdx"),
@@ -8358,10 +9186,11 @@ export const guides = {
   },
   "/zh-bw2-egg/": {
     meta: {
+      id: "/bw2-egg/",
       categories: ["Black 2 and White 2"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/egg/",
+      guideKey: "egg",
       isNew: false,
       title: "黑白2孵蛋乱数",
       navDrawerTitle: "黑白2孵蛋乱数",
@@ -8369,6 +9198,7 @@ export const guides = {
         "学习如何在黑白2的培育屋中进行孵蛋乱数，获取异色高个体宝可梦",
       slug: "/zh-bw2-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/bw2-egg/", language: "zh" },
@@ -8377,9 +9207,9 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 5/BW2 Egg.mdx",
       translations: { en: "/bw2-egg/", zh: "/zh-bw2-egg/" },
-      guideGroupId: "zh:/egg/:Black 2 and White 2",
+      guideGroupId: "zh:egg:Black 2 and White 2",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/BW2 Egg.mdx"),
@@ -8393,8 +9223,9 @@ export const guides = {
   },
   "/zh-channel-jirachi/": {
     meta: {
+      id: "/channel-jirachi/",
       categories: ["Gamecube"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/channel-jirachi/",
       isNew: false,
@@ -8403,6 +9234,7 @@ export const guides = {
       description: "一步步教你乱数出 Channel 基拉祈",
       slug: "/zh-channel-jirachi/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/channel-jirachi/", language: "zh" },
@@ -8413,7 +9245,7 @@ export const guides = {
       translations: { en: "/channel-jirachi/", zh: "/zh-channel-jirachi/" },
       guideGroupId: "zh:/channel-jirachi/:Gamecube",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gamecube/Channel.mdx"),
@@ -8427,8 +9259,9 @@ export const guides = {
   },
   "/zh-dppt-3ds-rng/": {
     meta: {
+      id: "/dppt-3ds-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "info",
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/dppt-3ds-rng/",
       isNew: false,
@@ -8437,6 +9270,7 @@ export const guides = {
       description: "学习如何通过乱数在珍钻白金获得异色、高个体宝可梦",
       slug: "/zh-dppt-3ds-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-07-03",
       translation: { enSlug: "/dppt-3ds-rng/", language: "zh" },
@@ -8447,7 +9281,7 @@ export const guides = {
       translations: { en: "/dppt-3ds-rng/", zh: "/zh-dppt-3ds-rng/" },
       guideGroupId: "zh:/dppt-3ds-rng/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide"],
+      displayAttributes: ["video_guide", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/3DS RNG.mdx"),
@@ -8461,9 +9295,10 @@ export const guides = {
   },
   "/zh-dppt-advance-rng/": {
     meta: {
+      id: "/dppt-advance-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "info",
-      guideVariants: null,
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/dppt-advance-rng/",
       isNew: false,
       title: "乱数的帧数推进方法",
@@ -8471,6 +9306,7 @@ export const guides = {
       description: "推进乱数帧数的不同方法及影响帧数的事件机制",
       slug: "/zh-dppt-advance-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/dppt-advance-rng/", language: "zh" },
@@ -8485,7 +9321,7 @@ export const guides = {
       },
       guideGroupId: "zh:/dppt-advance-rng/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -8502,8 +9338,9 @@ export const guides = {
   },
   "/zh-dppt-cute-charm/": {
     meta: {
+      id: "/dppt-cute-charm/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/dppt-cute-charm/",
       isNew: false,
@@ -8512,6 +9349,7 @@ export const guides = {
       description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",
       slug: "/zh-dppt-cute-charm/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/dppt-cute-charm/", language: "zh" },
@@ -8522,7 +9360,7 @@ export const guides = {
       translations: { en: "/dppt-cute-charm/", zh: "/zh-dppt-cute-charm/" },
       guideGroupId: "zh:/dppt-cute-charm/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
@@ -8536,16 +9374,18 @@ export const guides = {
   },
   "/zh-dppt-initial-seed-retail/": {
     meta: {
+      id: "/dppt-initial-seed-retail/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
-      guideKey: "/dppt-init-seed/",
+      guideKey: "dppt-init-seed",
       isNew: false,
       title: "钻石珍珠白金 实机初始种子乱数",
       navDrawerTitle: "钻石珍珠白金 实机初始种子乱数",
       description: "学习如何在实机上对钻石、珍珠与白金的初始种子进行乱数。",
       slug: "/zh-dppt-initial-seed-retail/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-04-08",
       translation: { enSlug: "/dppt-initial-seed-retail/", language: "zh" },
@@ -8557,9 +9397,9 @@ export const guides = {
         en: "/dppt-initial-seed-retail/",
         zh: "/zh-dppt-initial-seed-retail/",
       },
-      guideGroupId: "zh:/dppt-init-seed/:Diamond, Pearl, and Platinum",
+      guideGroupId: "zh:dppt-init-seed:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -8576,16 +9416,18 @@ export const guides = {
   },
   "/zh-dppt-initial-seed/": {
     meta: {
+      id: "/dppt-initial-seed/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
-      guideKey: "/dppt-init-seed/",
+      guideKey: "dppt-init-seed",
       isNew: false,
       title: "初始种子乱数",
       navDrawerTitle: "初始种子乱数",
       description: "如何在《钻石, 珍珠, 白金》中进行初始种子乱数",
       slug: "/zh-dppt-initial-seed/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/dppt-initial-seed/", language: "zh" },
@@ -8594,9 +9436,9 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
       translations: { en: "/dppt-initial-seed/", zh: "/zh-dppt-initial-seed/" },
-      guideGroupId: "zh:/dppt-init-seed/:Diamond, Pearl, and Platinum",
+      guideGroupId: "zh:dppt-init-seed:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -8613,16 +9455,18 @@ export const guides = {
   },
   "/zh-dppt-pokeradar-rng/": {
     meta: {
+      id: "/dppt-pokeradar-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/pokeradar/",
+      guideKey: "pokeradar",
       isNew: false,
       title: "宝可追踪乱数",
       navDrawerTitle: "宝可追踪乱数",
       description: "两种不同的宝可追踪乱数方法",
       slug: "/zh-dppt-pokeradar-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/dppt-pokeradar-rng/", language: "zh" },
@@ -8634,9 +9478,9 @@ export const guides = {
         en: "/dppt-pokeradar-rng/",
         zh: "/zh-dppt-pokeradar-rng/",
       },
-      guideGroupId: "zh:/pokeradar/:Diamond, Pearl, and Platinum",
+      guideGroupId: "zh:pokeradar:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -8653,16 +9497,18 @@ export const guides = {
   },
   "/zh-dppt-tid-sid/": {
     meta: {
+      id: "/dppt-tid-sid/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["retail"],
-      guideKey: "/tid-sid/",
+      guideKey: "tid-sid",
       isNew: false,
       title: "珍钻白金迷人之躯漏洞TID/SID乱数",
       navDrawerTitle: "珍钻白金迷人之躯漏洞TID/SID乱数",
       description: "学习如何在珍钻中通过乱数获得迷人之躯漏洞的TID/SID组合",
       slug: "/zh-dppt-tid-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-06-08",
       translation: { enSlug: "/dppt-tid-sid/", language: "zh" },
@@ -8671,9 +9517,9 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Retail TID.mdx",
       translations: { en: "/dppt-tid-sid/", zh: "/zh-dppt-tid-sid/" },
-      guideGroupId: "zh:/tid-sid/:Diamond, Pearl, and Platinum",
+      guideGroupId: "zh:tid-sid:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Retail TID.mdx"),
@@ -8687,16 +9533,18 @@ export const guides = {
   },
   "/zh-dppt-wild/": {
     meta: {
+      id: "/dppt-wild/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/wild/",
+      guideKey: "wild",
       isNew: false,
       title: "野生乱数",
       navDrawerTitle: "野生乱数",
       description: "野生乱数",
       slug: "/zh-dppt-wild/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/dppt-wild/", language: "zh" },
@@ -8705,9 +9553,9 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx",
       translations: { en: "/dppt-wild/", zh: "/zh-dppt-wild/" },
-      guideGroupId: "zh:/wild/:Diamond, Pearl, and Platinum",
+      guideGroupId: "zh:wild:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -8724,9 +9572,10 @@ export const guides = {
   },
   "/zh-e-tips-rng/": {
     meta: {
+      id: "/e-tips-rng/",
       categories: ["Emerald"],
-      section: "info",
-      guideVariants: null,
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/e-tips-rng/",
       isNew: false,
       title: "乱数介绍",
@@ -8734,6 +9583,7 @@ export const guides = {
       description: "如何推进乱数以及提高稳定性的技巧",
       slug: "/zh-e-tips-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/e-tips-rng/", language: "zh" },
@@ -8748,7 +9598,7 @@ export const guides = {
       },
       guideGroupId: "zh:/e-tips-rng/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -8765,8 +9615,9 @@ export const guides = {
   },
   "/zh-emerald-mirage-island/": {
     meta: {
+      id: "/emerald-mirage-island/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["retail"],
       guideKey: "/emerald-mirage-island/",
       isNew: false,
@@ -8775,6 +9626,7 @@ export const guides = {
       description: "通过捕捉具有特定 PID 的宝可梦以进入幻之岛",
       slug: "/zh-emerald-mirage-island/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-04-11",
       translation: { enSlug: "/emerald-mirage-island/", language: "zh" },
@@ -8788,7 +9640,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emerald-mirage-island/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -8803,8 +9655,9 @@ export const guides = {
   },
   "/zh-emerald-painting-rng/": {
     meta: {
+      id: "/emerald-painting-rng/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/emerald-painting-rng/",
       isNew: false,
@@ -8813,6 +9666,7 @@ export const guides = {
       description: "利用绘画重置乱数，从而快速获得目标宝可梦，而无需长时间等待",
       slug: "/zh-emerald-painting-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emerald-painting-rng/", language: "zh" },
@@ -8826,7 +9680,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emerald-painting-rng/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Reseed RNG.mdx"),
@@ -8840,8 +9694,9 @@ export const guides = {
   },
   "/zh-emerald-pokerus-emu/": {
     meta: {
+      id: "/emerald-pokerus-emu/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emerald-pokerus-emu/",
       isNew: false,
@@ -8850,6 +9705,7 @@ export const guides = {
       description: "如何感染宝可病毒",
       slug: "/zh-emerald-pokerus-emu/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-05-09",
       translation: { enSlug: "/emerald-pokerus-emu/", language: "zh" },
@@ -8863,7 +9719,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emerald-pokerus-emu/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide"],
+      displayAttributes: ["video_guide", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx"),
@@ -8877,8 +9733,9 @@ export const guides = {
   },
   "/zh-emerald-shiny-starter/": {
     meta: {
+      id: "/emerald-shiny-starter/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/emerald-shiny-starter/",
       isNew: false,
@@ -8887,6 +9744,7 @@ export const guides = {
       description: "通过捕捉异色御三家确定你的 SID",
       slug: "/zh-emerald-shiny-starter/",
       isRoughDraft: false,
+      orderPriority: 0,
       hideFromNavDrawer: true,
       addedOn: "2025-05-03",
       translation: { enSlug: "/emerald-shiny-starter/", language: "zh" },
@@ -8900,7 +9758,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emerald-shiny-starter/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -8915,8 +9773,9 @@ export const guides = {
   },
   "/zh-emerald-sid-feebas/": {
     meta: {
+      id: "/emerald-sid-feebas/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "/emerald-sid-feebas/",
       isNew: false,
@@ -8925,6 +9784,7 @@ export const guides = {
       description: "如何在《绿宝石》中利用丑丑鱼查找你的里ID (SID)。",
       slug: "/zh-emerald-sid-feebas/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-03-03",
       translation: { enSlug: "/emerald-sid-feebas/", language: "zh" },
@@ -8938,7 +9798,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emerald-sid-feebas/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -8955,8 +9815,9 @@ export const guides = {
   },
   "/zh-emulator-b2w2-dream-radar/": {
     meta: {
+      id: "/emulator-b2w2-dream-radar/",
       categories: ["Black 2 and White 2", "Transporter and Dream Radar"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-b2w2-dream-radar/",
       isNew: false,
@@ -8965,6 +9826,7 @@ export const guides = {
       description: "乱数获取等级5梦境球隐藏特性的传说宝可梦",
       slug: "/zh-emulator-b2w2-dream-radar/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-b2w2-dream-radar/", language: "zh" },
@@ -8979,7 +9841,7 @@ export const guides = {
       guideGroupId:
         "zh:/emulator-b2w2-dream-radar/:Black 2 and White 2|Transporter and Dream Radar",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/Dream Radar.mdx"),
@@ -8993,8 +9855,9 @@ export const guides = {
   },
   "/zh-emulator-b2w2-runasdate-inital-seed/": {
     meta: {
+      id: "/emulator-b2w2-runasdate-inital-seed/",
       categories: ["Black 2 and White 2"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-b2w2-runasdate-inital-seed/",
       isNew: false,
@@ -9003,6 +9866,7 @@ export const guides = {
       description: "学习如何在黑白2中乱数你的初始seed",
       slug: "/zh-emulator-b2w2-runasdate-inital-seed/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: {
@@ -9020,7 +9884,7 @@ export const guides = {
       guideGroupId:
         "zh:/emulator-b2w2-runasdate-inital-seed/:Black 2 and White 2",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9037,8 +9901,9 @@ export const guides = {
   },
   "/zh-emulator-bw-entralink/": {
     meta: {
+      id: "/emulator-bw-entralink/",
       categories: ["Black and White"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-entralink/",
       isNew: false,
@@ -9047,6 +9912,7 @@ export const guides = {
       description: "如何使用连入乱数获取心仪的宝可梦",
       slug: "/zh-emulator-bw-entralink/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-bw-entralink/", language: "zh" },
@@ -9060,7 +9926,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-bw-entralink/:Black and White",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/Entralink.mdx"),
@@ -9074,8 +9940,9 @@ export const guides = {
   },
   "/zh-emulator-bw-find-ds-parameters/": {
     meta: {
+      id: "/emulator-bw-find-ds-parameters/",
       categories: ["Black and White"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-find-ds-parameters/",
       isNew: false,
@@ -9084,6 +9951,7 @@ export const guides = {
       description: "获取你的 DS 参数以进行第五世代乱数。",
       slug: "/zh-emulator-bw-find-ds-parameters/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: {
@@ -9100,7 +9968,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-bw-find-ds-parameters/:Black and White",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/Find DS Parameters.mdx"),
@@ -9114,8 +9982,9 @@ export const guides = {
   },
   "/zh-emulator-bw-roamers/": {
     meta: {
+      id: "/emulator-bw-roamers/",
       categories: ["Black and White"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-roamers/",
       isNew: false,
@@ -9124,6 +9993,7 @@ export const guides = {
       description: "在模拟器中对第五世代的游走宝可梦进行乱数",
       slug: "/zh-emulator-bw-roamers/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-bw-roamers/", language: "zh" },
@@ -9137,7 +10007,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-bw-roamers/:Black and White",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/Roamers.mdx"),
@@ -9151,8 +10021,9 @@ export const guides = {
   },
   "/zh-emulator-bw-runasdate-initial-seed/": {
     meta: {
+      id: "/emulator-bw-runasdate-initial-seed/",
       categories: ["Black and White"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-runasdate-initial-seed/",
       isNew: false,
@@ -9161,6 +10032,7 @@ export const guides = {
       description: "学习如何在黑白中乱你的初始seed",
       slug: "/zh-emulator-bw-runasdate-initial-seed/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: {
@@ -9177,7 +10049,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-bw-runasdate-initial-seed/:Black and White",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9194,8 +10066,9 @@ export const guides = {
   },
   "/zh-emulator-bw-white-forest/": {
     meta: {
+      id: "/emulator-bw-white-forest/",
       categories: ["Black and White"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-white-forest/",
       isNew: false,
@@ -9204,6 +10077,7 @@ export const guides = {
       description: "白森林乱数",
       slug: "/zh-emulator-bw-white-forest/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-bw-white-forest/", language: "zh" },
@@ -9217,7 +10091,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-bw-white-forest/:Black and White",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9232,8 +10106,9 @@ export const guides = {
   },
   "/zh-emulator-dppt-cute-charm/": {
     meta: {
+      id: "/emulator-dppt-cute-charm/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/emulator-dppt-cute-charm/",
       isNew: false,
@@ -9242,6 +10117,7 @@ export const guides = {
       description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",
       slug: "/zh-emulator-dppt-cute-charm/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-dppt-cute-charm/", language: "zh" },
@@ -9256,7 +10132,7 @@ export const guides = {
       guideGroupId:
         "zh:/emulator-dppt-cute-charm/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
@@ -9270,8 +10146,9 @@ export const guides = {
   },
   "/zh-emulator-dppt-egg/": {
     meta: {
+      id: "/emulator-dppt-egg/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-dppt-egg/",
       isNew: false,
@@ -9280,6 +10157,7 @@ export const guides = {
       description: "如何在育婴屋进行乱数孵化",
       slug: "/zh-emulator-dppt-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-dppt-egg/", language: "zh" },
@@ -9290,7 +10168,7 @@ export const guides = {
       translations: { en: "/emulator-dppt-egg/", zh: "/zh-emulator-dppt-egg/" },
       guideGroupId: "zh:/emulator-dppt-egg/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9307,8 +10185,9 @@ export const guides = {
   },
   "/zh-emulator-dppt-stationary/": {
     meta: {
+      id: "/emulator-dppt-stationary/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-dppt-stationary/",
       isNew: false,
@@ -9317,6 +10196,7 @@ export const guides = {
       description: "如何在钻石珍珠和白金中对固定遇敌的宝可梦进行乱数",
       slug: "/zh-emulator-dppt-stationary/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-dppt-stationary/", language: "zh" },
@@ -9331,7 +10211,7 @@ export const guides = {
       guideGroupId:
         "zh:/emulator-dppt-stationary/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9348,10 +10228,11 @@ export const guides = {
   },
   "/zh-emulator-dppt-tid-sid/": {
     meta: {
+      id: "/emulator-dppt-tid-sid/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
-      guideKey: "/tid-sid/",
+      guideKey: "tid-sid",
       isNew: false,
       title: "钻石、珍珠与白金版 TID/SID 乱数",
       navDrawerTitle: "钻石、珍珠与白金版 TID/SID 乱数",
@@ -9359,6 +10240,7 @@ export const guides = {
         "了解如何在钻石、珍珠和白金版中通过模拟器获得你想要的训练家 ID（TID）与里 ID（SID）组合",
       slug: "/zh-emulator-dppt-tid-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-dppt-tid-sid/", language: "zh" },
@@ -9370,9 +10252,9 @@ export const guides = {
         en: "/emulator-dppt-tid-sid/",
         zh: "/zh-emulator-dppt-tid-sid/",
       },
-      guideGroupId: "zh:/tid-sid/:Diamond, Pearl, and Platinum",
+      guideGroupId: "zh:tid-sid:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9389,16 +10271,18 @@ export const guides = {
   },
   "/zh-emulator-emerald-egg/": {
     meta: {
+      id: "/emulator-emerald-egg/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
-      guideKey: "/emer-egg/",
+      guideKey: "emer-egg",
       isNew: false,
       title: "孵化乱数",
       navDrawerTitle: "孵化乱数",
       description: "通过培育屋进行乱数孵蛋",
       slug: "/zh-emulator-emerald-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-03-09",
       translation: { enSlug: "/emulator-emerald-egg/", language: "zh" },
@@ -9411,9 +10295,14 @@ export const guides = {
         it: "/it-emulator-emerald-egg/",
         zh: "/zh-emulator-emerald-egg/",
       },
-      guideGroupId: "zh:/emer-egg/:Emerald",
+      guideGroupId: "zh:emer-egg:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Egg RNG.mdx"),
@@ -9427,8 +10316,9 @@ export const guides = {
   },
   "/zh-emulator-flrg-stationary-and-gift/": {
     meta: {
+      id: "/emulator-flrg-stationary-and-gift/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-flrg-stationary-and-gift/",
       isNew: false,
@@ -9437,6 +10327,7 @@ export const guides = {
       description: "在《火红·叶绿》中获取闪光六项个体值的传说宝可梦",
       slug: "/zh-emulator-flrg-stationary-and-gift/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: {
@@ -9454,7 +10345,7 @@ export const guides = {
       guideGroupId:
         "zh:/emulator-flrg-stationary-and-gift/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9471,8 +10362,9 @@ export const guides = {
   },
   "/zh-emulator-frlg-egg/": {
     meta: {
+      id: "/emulator-frlg-egg/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-frlg-egg/",
       isNew: false,
@@ -9481,6 +10373,7 @@ export const guides = {
       description: "在火红/叶绿中进行蛋的乱数",
       slug: "/zh-emulator-frlg-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-frlg-egg/", language: "zh" },
@@ -9491,7 +10384,7 @@ export const guides = {
       translations: { en: "/emulator-frlg-egg/", zh: "/zh-emulator-frlg-egg/" },
       guideGroupId: "zh:/emulator-frlg-egg/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9508,8 +10401,9 @@ export const guides = {
   },
   "/zh-emulator-frlg-wild/": {
     meta: {
+      id: "/emulator-frlg-wild/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-frlg-wild/",
       isNew: false,
@@ -9518,6 +10412,7 @@ export const guides = {
       description: "在《火红·叶绿》中使用甜甜香气进行野生宝可梦的乱数",
       slug: "/zh-emulator-frlg-wild/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-frlg-wild/", language: "zh" },
@@ -9531,7 +10426,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-frlg-wild/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9548,8 +10443,9 @@ export const guides = {
   },
   "/zh-emulator-hgss-cute-charm/": {
     meta: {
+      id: "/emulator-hgss-cute-charm/",
       categories: ["HeartGold and SoulSilver"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/emulator-hgss-cute-charm/",
       isNew: false,
@@ -9558,6 +10454,7 @@ export const guides = {
       description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",
       slug: "/zh-emulator-hgss-cute-charm/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-hgss-cute-charm/", language: "zh" },
@@ -9571,7 +10468,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-hgss-cute-charm/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
@@ -9585,8 +10482,9 @@ export const guides = {
   },
   "/zh-emulator-hgss-egg/": {
     meta: {
+      id: "/emulator-hgss-egg/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-hgss-egg/",
       isNew: false,
@@ -9595,6 +10493,7 @@ export const guides = {
       description: "如何在培育屋进行孵化乱数",
       slug: "/zh-emulator-hgss-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-hgss-egg/", language: "zh" },
@@ -9605,7 +10504,7 @@ export const guides = {
       translations: { en: "/emulator-hgss-egg/", zh: "/zh-emulator-hgss-egg/" },
       guideGroupId: "zh:/emulator-hgss-egg/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9622,8 +10521,9 @@ export const guides = {
   },
   "/zh-emulator-hgss-stationary/": {
     meta: {
+      id: "/emulator-hgss-stationary/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-hgss-stationary/",
       isNew: false,
@@ -9632,6 +10532,7 @@ export const guides = {
       description: "定点宝可梦的乱数",
       slug: "/zh-emulator-hgss-stationary/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-hgss-stationary/", language: "zh" },
@@ -9645,7 +10546,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-hgss-stationary/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9660,10 +10561,51 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-emulator-oras-dexnav/": {
+    meta: {
+      id: "/emulator-oras-dexnav/",
+      categories: ["Omega Ruby and Alpha Sapphire"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emulator-oras-dexnav/",
+      isNew: false,
+      title: "欧米伽红宝石与阿尔法蓝宝石 DexNav 乱数",
+      navDrawerTitle: "欧米伽红宝石与阿尔法蓝宝石 DexNav 乱数",
+      description:
+        "学习如何在《欧米伽红宝石 / 阿尔法蓝宝石》中利用 DexNav 功能进行宝可梦乱数。",
+      slug: "/zh-emulator-oras-dexnav/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-oras-dexnav/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/DexNav.mdx",
+      translations: {
+        en: "/emulator-oras-dexnav/",
+        zh: "/zh-emulator-oras-dexnav/",
+      },
+      guideGroupId: "zh:/emulator-oras-dexnav/:Omega Ruby and Alpha Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: ["translation_zh"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 6/DexNav.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/DexNav.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-emulator-rs-egg/": {
     meta: {
+      id: "/emulator-rs-egg/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-rs-egg/",
       isNew: false,
@@ -9672,6 +10614,7 @@ export const guides = {
       description: "从培育屋乱数孵化宝可梦蛋",
       slug: "/zh-emulator-rs-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-rs-egg/", language: "zh" },
@@ -9682,7 +10625,7 @@ export const guides = {
       translations: { en: "/emulator-rs-egg/", zh: "/zh-emulator-rs-egg/" },
       guideGroupId: "zh:/emulator-rs-egg/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9699,8 +10642,9 @@ export const guides = {
   },
   "/zh-emulator-rs-stationary/": {
     meta: {
+      id: "/emulator-rs-stationary/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-rs-stationary/",
       isNew: false,
@@ -9709,6 +10653,7 @@ export const guides = {
       description: "在红宝石和蓝宝石中轻松乱数完美异色传说宝可梦",
       slug: "/zh-emulator-rs-stationary/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/emulator-rs-stationary/", language: "zh" },
@@ -9722,7 +10667,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-rs-stationary/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9739,8 +10684,9 @@ export const guides = {
   },
   "/zh-emulator-rs-wishmaker/": {
     meta: {
+      id: "/emulator-rs-wishmaker/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-rs-wishmaker/",
       isNew: false,
@@ -9750,6 +10696,7 @@ export const guides = {
         "学习如何在红宝石与蓝宝石中，通过圆形竞技场乱数出异色的许愿星基拉祈。",
       slug: "/zh-emulator-rs-wishmaker/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-04-18",
       translation: { enSlug: "/emulator-rs-wishmaker/", language: "zh" },
@@ -9763,7 +10710,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-rs-wishmaker/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9780,8 +10727,9 @@ export const guides = {
   },
   "/zh-frlg-gen3-sid/": {
     meta: {
+      id: "/frlg-gen3-sid/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
       guideKey: "/frlg-gen3-sid/",
       isNew: false,
@@ -9790,6 +10738,7 @@ export const guides = {
       description: "多种方法查找第三世代的SID",
       slug: "/zh-frlg-gen3-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/frlg-gen3-sid/", language: "zh" },
@@ -9804,7 +10753,7 @@ export const guides = {
       },
       guideGroupId: "zh:/frlg-gen3-sid/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx"),
@@ -9818,8 +10767,9 @@ export const guides = {
   },
   "/zh-frlg-seeding-bot/": {
     meta: {
+      id: "/frlg-seeding-bot/",
       categories: ["FireRed and LeafGreen"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/frlg-seeding-bot/",
       isNew: false,
@@ -9828,6 +10778,7 @@ export const guides = {
       description: "使用初始种子自动脚本，实现更高自由度的乱数控制",
       slug: "/zh-frlg-seeding-bot/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/frlg-seeding-bot/", language: "zh" },
@@ -9838,7 +10789,7 @@ export const guides = {
       translations: { en: "/frlg-seeding-bot/", zh: "/zh-frlg-seeding-bot/" },
       guideGroupId: "zh:/frlg-seeding-bot/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9855,8 +10806,9 @@ export const guides = {
   },
   "/zh-gba-methods/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
-      section: "info",
+      id: "/gba-methods/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-methods/",
       isNew: false,
@@ -9866,6 +10818,7 @@ export const guides = {
         "什么是方式、为什么会存在方式 1-4，以及它们如何影响宝可梦的生成。",
       slug: "/zh-gba-methods/",
       isRoughDraft: false,
+      orderPriority: 1,
       hideFromNavDrawer: true,
       addedOn: "2025-04-08",
       translation: { enSlug: "/gba-methods/", language: "zh" },
@@ -9878,9 +10831,10 @@ export const guides = {
         en: "/gba-methods/",
         zh: "/zh-gba-methods/",
       },
-      guideGroupId: "zh:/gba-methods/:GBA Technical Documentation",
+      guideGroupId:
+        "zh:/gba-methods/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/GBA Methods.mdx"),
@@ -9894,8 +10848,9 @@ export const guides = {
   },
   "/zh-gba-pokerus-technical/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
-      section: "info",
+      id: "/gba-pokerus-technical/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-pokerus-technical/",
       isNew: false,
@@ -9904,6 +10859,7 @@ export const guides = {
       description: "宝可病毒的触发机制",
       slug: "/zh-gba-pokerus-technical/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-05-13",
       translation: { enSlug: "/gba-pokerus-technical/", language: "zh" },
@@ -9915,9 +10871,10 @@ export const guides = {
         en: "/gba-pokerus-technical/",
         zh: "/zh-gba-pokerus-technical/",
       },
-      guideGroupId: "zh:/gba-pokerus-technical/:GBA Technical Documentation",
+      guideGroupId:
+        "zh:/gba-pokerus-technical/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9934,8 +10891,9 @@ export const guides = {
   },
   "/zh-gba-vblank/": {
     meta: {
-      categories: ["GBA Technical Documentation"],
-      section: "info",
+      id: "/gba-vblank/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/gba-vblank/",
       isNew: false,
@@ -9944,6 +10902,7 @@ export const guides = {
       description: "什么是 VBlank 以及它在宝可梦生成中的影响。",
       slug: "/zh-gba-vblank/",
       isRoughDraft: false,
+      orderPriority: 0,
       hideFromNavDrawer: true,
       addedOn: "2025-04-08",
       translation: { enSlug: "/gba-vblank/", language: "zh" },
@@ -9952,9 +10911,10 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Vblank.mdx",
       translations: { en: "/gba-vblank/", zh: "/zh-gba-vblank/" },
-      guideGroupId: "zh:/gba-vblank/:GBA Technical Documentation",
+      guideGroupId:
+        "zh:/gba-vblank/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Vblank.mdx"),
@@ -9968,8 +10928,9 @@ export const guides = {
   },
   "/zh-gc-initial/": {
     meta: {
+      id: "/gc-initial/",
       categories: ["Gamecube"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/gc-initial/",
       isNew: false,
@@ -9979,6 +10940,7 @@ export const guides = {
         "如何使用 Dolphin 设置适用于所有 GameCube 游戏的初始种子乱数",
       slug: "/zh-gc-initial/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/gc-initial/", language: "zh" },
@@ -9989,7 +10951,7 @@ export const guides = {
       translations: { en: "/gc-initial/", zh: "/zh-gc-initial/" },
       guideGroupId: "zh:/gc-initial/:Gamecube",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gamecube/Initial Seed RNG.mdx"),
@@ -10003,8 +10965,9 @@ export const guides = {
   },
   "/zh-gen2-celebi/": {
     meta: {
+      id: "/gen2-celebi/",
       categories: ["Gold, Silver, Crystal"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/gen2-celebi/",
       isNew: false,
@@ -10013,6 +10976,7 @@ export const guides = {
       description: "如何获得异色时拉比",
       slug: "/zh-gen2-celebi/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-03-02",
       translation: { enSlug: "/gen2-celebi/", language: "zh" },
@@ -10027,7 +10991,12 @@ export const guides = {
       },
       guideGroupId: "zh:/gen2-celebi/:Gold, Silver, Crystal",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_es",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 2/Celebi.mdx"),
@@ -10041,8 +11010,9 @@ export const guides = {
   },
   "/zh-gen2-starters/": {
     meta: {
+      id: "/gen2-starters/",
       categories: ["Gold, Silver, Crystal"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/gen2-starters/",
       isNew: false,
@@ -10051,6 +11021,7 @@ export const guides = {
       description: "在水晶里获得异色初始宝可梦",
       slug: "/zh-gen2-starters/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/gen2-starters/", language: "zh" },
@@ -10065,7 +11036,12 @@ export const guides = {
       },
       guideGroupId: "zh:/gen2-starters/:Gold, Silver, Crystal",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_es",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 2/Starter.mdx"),
@@ -10079,8 +11055,9 @@ export const guides = {
   },
   "/zh-gen3-sid/": {
     meta: {
+      id: "/gen3-sid/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
       guideKey: "/gen3-sid/",
       isNew: false,
@@ -10089,6 +11066,7 @@ export const guides = {
       description: "多种方法查找第三世代的SID",
       slug: "/zh-gen3-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-03-03",
       translation: { enSlug: "/gen3-sid/", language: "zh" },
@@ -10103,7 +11081,7 @@ export const guides = {
       },
       guideGroupId: "zh:/gen3-sid/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx"),
@@ -10117,8 +11095,9 @@ export const guides = {
   },
   "/zh-hgss-3ds-rng/": {
     meta: {
+      id: "/hgss-3ds-rng/",
       categories: ["HeartGold and SoulSilver"],
-      section: "info",
+      section: "technical_info",
       guideVariants: null,
       guideKey: "/hgss-3ds-rng/",
       isNew: false,
@@ -10127,6 +11106,7 @@ export const guides = {
       description: "学习如何通过乱数在心金魂银获得异色、高个体宝可梦",
       slug: "/zh-hgss-3ds-rng/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-07-03",
       translation: { enSlug: "/hgss-3ds-rng/", language: "zh" },
@@ -10137,7 +11117,7 @@ export const guides = {
       translations: { en: "/hgss-3ds-rng/", zh: "/zh-hgss-3ds-rng/" },
       guideGroupId: "zh:/hgss-3ds-rng/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide"],
+      displayAttributes: ["video_guide", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/3DS RNG.mdx"),
@@ -10151,8 +11131,9 @@ export const guides = {
   },
   "/zh-hgss-cute-charm/": {
     meta: {
+      id: "/hgss-cute-charm/",
       categories: ["HeartGold and SoulSilver"],
-      section: "info",
+      section: "supporting_info",
       guideVariants: null,
       guideKey: "/hgss-cute-charm/",
       isNew: false,
@@ -10161,6 +11142,7 @@ export const guides = {
       description: "如何通过ID乱数与迷人之躯进行高效的异色捕获",
       slug: "/zh-hgss-cute-charm/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/hgss-cute-charm/", language: "zh" },
@@ -10171,7 +11153,7 @@ export const guides = {
       translations: { en: "/hgss-cute-charm/", zh: "/zh-hgss-cute-charm/" },
       guideGroupId: "zh:/hgss-cute-charm/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
@@ -10185,8 +11167,9 @@ export const guides = {
   },
   "/zh-hgss-initial-seed/": {
     meta: {
+      id: "/hgss-initial-seed/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/hgss-initial-seed/",
       isNew: false,
@@ -10195,6 +11178,7 @@ export const guides = {
       description: "学习如何在《心金》和《魂银》中进行初始种子乱数。",
       slug: "/zh-hgss-initial-seed/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/hgss-initial-seed/", language: "zh" },
@@ -10205,7 +11189,7 @@ export const guides = {
       translations: { en: "/hgss-initial-seed/", zh: "/zh-hgss-initial-seed/" },
       guideGroupId: "zh:/hgss-initial-seed/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10222,16 +11206,18 @@ export const guides = {
   },
   "/zh-hgss-rng-advance/": {
     meta: {
+      id: "/hgss-rng-advance/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
-      guideKey: "/advance-rng/",
+      guideKey: "advance-rng",
       isNew: false,
       title: "推进乱数",
       navDrawerTitle: "推进乱数",
       description: "乱数推进的方法及影响乱数的机制",
       slug: "/zh-hgss-rng-advance/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/hgss-rng-advance/", language: "zh" },
@@ -10244,9 +11230,9 @@ export const guides = {
         en: "/hgss-rng-advance/",
         zh: "/zh-hgss-rng-advance/",
       },
-      guideGroupId: "zh:/advance-rng/:HeartGold and SoulSilver",
+      guideGroupId: "zh:advance-rng:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10263,16 +11249,18 @@ export const guides = {
   },
   "/zh-hgss-tid-sid/": {
     meta: {
+      id: "/hgss-tid-sid/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["retail"],
-      guideKey: "/tid-sid/",
+      guideKey: "tid-sid",
       isNew: false,
       title: "心金魂银迷人之躯漏洞TID/SID乱数",
       navDrawerTitle: "心金魂银迷人之躯漏洞TID/SID乱数",
       description: "学习如何在心金魂银中通过乱数获得迷人之躯漏洞的TID/SID组合",
       slug: "/zh-hgss-tid-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-06-08",
       translation: { enSlug: "/hgss-tid-sid/", language: "zh" },
@@ -10281,9 +11269,9 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Retail TID.mdx",
       translations: { en: "/hgss-tid-sid/", zh: "/zh-hgss-tid-sid/" },
-      guideGroupId: "zh:/tid-sid/:HeartGold and SoulSilver",
+      guideGroupId: "zh:tid-sid:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Retail TID.mdx"),
@@ -10297,6 +11285,7 @@ export const guides = {
   },
   "/zh-install-pokereader/": {
     meta: {
+      id: "/install-pokereader/",
       categories: [
         "Transporter and Dream Radar",
         "X and Y",
@@ -10313,6 +11302,7 @@ export const guides = {
       description: "在3DS上安装工具来帮助乱数宝可梦",
       slug: "/zh-install-pokereader/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/install-pokereader/", language: "zh" },
@@ -10329,7 +11319,7 @@ export const guides = {
       guideGroupId:
         "zh:/install-pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_es", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10346,8 +11336,9 @@ export const guides = {
   },
   "/zh-meteor-jirachi/": {
     meta: {
+      id: "/meteor-jirachi/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/meteor-jirachi/",
       isNew: false,
@@ -10356,6 +11347,7 @@ export const guides = {
       description: "学习如何乱数流星基拉祈，其异色判定与许愿星不同。",
       slug: "/zh-meteor-jirachi/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-04-18",
       translation: { enSlug: "/meteor-jirachi/", language: "zh" },
@@ -10366,7 +11358,7 @@ export const guides = {
       translations: { en: "/meteor-jirachi/", zh: "/zh-meteor-jirachi/" },
       guideGroupId: "zh:/meteor-jirachi/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10383,6 +11375,7 @@ export const guides = {
   },
   "/zh-mgba-setup/": {
     meta: {
+      id: "/mgba-setup/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
@@ -10394,6 +11387,7 @@ export const guides = {
         "Learn how to set up mGBA for GBA Pokémon RNG, including lua scripting support.",
       slug: "/zh-mgba-setup/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-03-03",
       translation: { enSlug: "/mgba-setup/", language: "zh" },
@@ -10405,7 +11399,7 @@ export const guides = {
       guideGroupId:
         "zh:/mgba-setup/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10422,6 +11416,7 @@ export const guides = {
   },
   "/zh-misc-dolphin-gba-bios/": {
     meta: {
+      id: "/misc-dolphin-gba-bios/",
       categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
       section: "tool",
       guideVariants: null,
@@ -10433,6 +11428,7 @@ export const guides = {
         "了解什么是GBA BIOS，为什么模拟器（如mGBA、VBA）需要它，以及如何从实机中合法提取它。",
       slug: "/zh-misc-dolphin-gba-bios/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/misc-dolphin-gba-bios/", language: "zh" },
@@ -10447,7 +11443,7 @@ export const guides = {
       guideGroupId:
         "zh:/misc-dolphin-gba-bios/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10464,8 +11460,9 @@ export const guides = {
   },
   "/zh-pal-xd-eevee/": {
     meta: {
+      id: "/pal-xd-eevee/",
       categories: ["Gamecube"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/pal-xd-eevee/",
       isNew: false,
@@ -10474,6 +11471,7 @@ export const guides = {
       description: "如何在 PAL 版宝可梦 XD 中乱数初始伊布",
       slug: "/zh-pal-xd-eevee/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/pal-xd-eevee/", language: "zh" },
@@ -10484,7 +11482,7 @@ export const guides = {
       translations: { en: "/pal-xd-eevee/", zh: "/zh-pal-xd-eevee/" },
       guideGroupId: "zh:/pal-xd-eevee/:Gamecube",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10501,8 +11499,9 @@ export const guides = {
   },
   "/zh-retail-dppt-starter/": {
     meta: {
+      id: "/retail-dppt-starter/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/retail-dppt-starter/",
       isNew: false,
@@ -10512,6 +11511,7 @@ export const guides = {
         "学习如何在钻石、珍珠和白金中进行初始宝可梦的乱数，以获得异色、高个体值的宝可梦。",
       slug: "/zh-retail-dppt-starter/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-06-15",
       translation: { enSlug: "/retail-dppt-starter/", language: "zh" },
@@ -10526,7 +11526,12 @@ export const guides = {
       },
       guideGroupId: "zh:/retail-dppt-starter/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Starters.mdx"),
@@ -10540,10 +11545,11 @@ export const guides = {
   },
   "/zh-retail-emerald-egg/": {
     meta: {
+      id: "/retail-emerald-egg/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
-      guideKey: "/emer-egg/",
+      guideKey: "emer-egg",
       isNew: false,
       title: "Retail Emerald Egg RNG",
       navDrawerTitle: "Retail Emerald Egg RNG",
@@ -10551,6 +11557,7 @@ export const guides = {
         "Learn how to Retail RNG eggs in Pokémon Emerald using the Daycare. Get perfect IVs, natures, and shinies.",
       slug: "/zh-retail-emerald-egg/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-05-18",
       translation: { enSlug: "/retail-emerald-egg/", language: "zh" },
@@ -10563,9 +11570,14 @@ export const guides = {
         en: "/retail-emerald-egg/",
         zh: "/zh-retail-emerald-egg/",
       },
-      guideGroupId: "zh:/emer-egg/:Emerald",
+      guideGroupId: "zh:emer-egg:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_de",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Retail Egg.mdx"),
@@ -10579,8 +11591,9 @@ export const guides = {
   },
   "/zh-retail-emerald-wild/": {
     meta: {
+      id: "/retail-emerald-wild/",
       categories: ["Emerald"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/retail-emerald-wild/",
       isNew: false,
@@ -10589,6 +11602,7 @@ export const guides = {
       description: "在真实主机上对野生宝可梦进行乱数操作",
       slug: "/zh-retail-emerald-wild/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/retail-emerald-wild/", language: "zh" },
@@ -10603,7 +11617,7 @@ export const guides = {
       },
       guideGroupId: "zh:/retail-emerald-wild/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10618,8 +11632,9 @@ export const guides = {
   },
   "/zh-retail-hgss-starter/": {
     meta: {
+      id: "/retail-hgss-starter/",
       categories: ["HeartGold and SoulSilver"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "/retail-hgss-starter/",
       isNew: false,
@@ -10629,6 +11644,7 @@ export const guides = {
         "学习如何在心金与魂银中进行初始宝可梦的乱数，以获得异色、高个体值的宝可梦。",
       slug: "/zh-retail-hgss-starter/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-06-15",
       translation: { enSlug: "/retail-hgss-starter/", language: "zh" },
@@ -10643,7 +11659,12 @@ export const guides = {
       },
       guideGroupId: "zh:/retail-hgss-starter/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Starters.mdx"),
@@ -10657,8 +11678,9 @@ export const guides = {
   },
   "/zh-retail-oras-tid/": {
     meta: {
+      id: "/retail-oras-tid/",
       categories: ["Omega Ruby and Alpha Sapphire"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-oras-tid/",
       isNew: false,
@@ -10668,6 +11690,7 @@ export const guides = {
         "学习如何在《欧米伽红宝石 / 阿尔法蓝宝石》中获取理想的训练家 ID（TID）与隐藏 ID（SID）组合。",
       slug: "/zh-retail-oras-tid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-04-13",
       translation: { enSlug: "/retail-oras-tid/", language: "zh" },
@@ -10678,7 +11701,7 @@ export const guides = {
       translations: { en: "/retail-oras-tid/", zh: "/zh-retail-oras-tid/" },
       guideGroupId: "zh:/retail-oras-tid/:Omega Ruby and Alpha Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 6/ORAS TID.mdx"),
@@ -10692,16 +11715,18 @@ export const guides = {
   },
   "/zh-retail-rubysapphire-tid/": {
     meta: {
+      id: "/retail-rubysapphire-tid/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["retail"],
-      guideKey: "/rs-tid/",
+      guideKey: "rs-tid",
       isNew: false,
       title: "红蓝宝石实机TID乱数指南",
       navDrawerTitle: "红蓝宝石实机TID乱数指南",
       description: "学习如何在红宝石和蓝宝石中获取你想要的TID和SID组合。",
       slug: "/zh-retail-rubysapphire-tid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/retail-rubysapphire-tid/", language: "zh" },
@@ -10713,9 +11738,9 @@ export const guides = {
         en: "/retail-rubysapphire-tid/",
         zh: "/zh-retail-rubysapphire-tid/",
       },
-      guideGroupId: "zh:/rs-tid/:Ruby and Sapphire",
+      guideGroupId: "zh:rs-tid:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10732,8 +11757,9 @@ export const guides = {
   },
   "/zh-retail-sm-egg-no-mmsc/": {
     meta: {
+      id: "/retail-sm-egg-no-mmsc/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-sm-egg-no-mmsc/",
       isNew: false,
@@ -10743,6 +11769,7 @@ export const guides = {
         "学习如何在《日月》中不依赖不同语言或闪耀呼符进行高个体异色宝可梦的孵蛋乱数。",
       slug: "/zh-retail-sm-egg-no-mmsc/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/retail-sm-egg-no-mmsc/", language: "zh" },
@@ -10756,7 +11783,7 @@ export const guides = {
       },
       guideGroupId: "zh:/retail-sm-egg-no-mmsc/:Sun and Moon",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10773,8 +11800,9 @@ export const guides = {
   },
   "/zh-retail-sm-timeline/": {
     meta: {
+      id: "/retail-sm-timeline/",
       categories: ["Sun and Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-sm-timeline/",
       isNew: false,
@@ -10783,6 +11811,7 @@ export const guides = {
       description: "学习如何在《日月》中创建时间线。",
       slug: "/zh-retail-sm-timeline/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/retail-sm-timeline/", language: "zh" },
@@ -10796,7 +11825,7 @@ export const guides = {
       },
       guideGroupId: "zh:/retail-sm-timeline/:Sun and Moon",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 7/Timeline Guide.mdx"),
@@ -10810,8 +11839,9 @@ export const guides = {
   },
   "/zh-retail-usum-egg-no-mmsc/": {
     meta: {
+      id: "/retail-usum-egg-no-mmsc/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-usum-egg-no-mmsc/",
       isNew: false,
@@ -10821,6 +11851,7 @@ export const guides = {
         "学习如何在《究极日月》中不依赖不同语言或闪耀呼符进行高个体异色宝可梦的孵蛋乱数。",
       slug: "/zh-retail-usum-egg-no-mmsc/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/retail-usum-egg-no-mmsc/", language: "zh" },
@@ -10834,7 +11865,7 @@ export const guides = {
       },
       guideGroupId: "zh:/retail-usum-egg-no-mmsc/:Ultra Sun and Ultra Moon",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10851,8 +11882,9 @@ export const guides = {
   },
   "/zh-retail-usum-timeline/": {
     meta: {
+      id: "/retail-usum-timeline/",
       categories: ["Ultra Sun and Ultra Moon"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["cfw-emu"],
       guideKey: "/retail-usum-timeline/",
       isNew: false,
@@ -10861,6 +11893,7 @@ export const guides = {
       description: "学习如何在《究极之日／究极之月》中创建时间线。",
       slug: "/zh-retail-usum-timeline/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/retail-usum-timeline/", language: "zh" },
@@ -10874,7 +11907,7 @@ export const guides = {
       },
       guideGroupId: "zh:/retail-usum-timeline/:Ultra Sun and Ultra Moon",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 7/Timeline Guide.mdx"),
@@ -10888,9 +11921,10 @@ export const guides = {
   },
   "/zh-rs-battery/": {
     meta: {
+      id: "/rs-battery/",
       categories: ["Ruby and Sapphire"],
-      section: "info",
-      guideVariants: null,
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "/rs-battery/",
       isNew: false,
       title: "红蓝宝石 电池有电 vs 无电 乱数对比",
@@ -10899,6 +11933,7 @@ export const guides = {
         "了解红宝石与蓝宝石在电池有电和电池耗尽情况下的乱数方法差异，以及这些差异如何影响宝可梦结果。",
       slug: "/zh-rs-battery/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/rs-battery/", language: "zh" },
@@ -10909,7 +11944,7 @@ export const guides = {
       translations: { en: "/rs-battery/", zh: "/zh-rs-battery/" },
       guideGroupId: "zh:/rs-battery/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10926,8 +11961,9 @@ export const guides = {
   },
   "/zh-rs-gen3-sid/": {
     meta: {
+      id: "/rs-gen3-sid/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail", "cfw-emu"],
       guideKey: "/rs-gen3-sid/",
       isNew: false,
@@ -10936,6 +11972,7 @@ export const guides = {
       description: "多种方法查找第三世代的SID",
       slug: "/zh-rs-gen3-sid/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/rs-gen3-sid/", language: "zh" },
@@ -10950,7 +11987,7 @@ export const guides = {
       },
       guideGroupId: "zh:/rs-gen3-sid/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx"),
@@ -10964,8 +12001,9 @@ export const guides = {
   },
   "/zh-rs-mirage-island/": {
     meta: {
+      id: "/rs-mirage-island/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["retail"],
       guideKey: "/rs-mirage-island/",
       isNew: false,
@@ -10974,6 +12012,7 @@ export const guides = {
       description: "通过捕捉具有特定 PID 的宝可梦以进入幻之岛",
       slug: "/zh-rs-mirage-island/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-04-11",
       translation: { enSlug: "/rs-mirage-island/", language: "zh" },
@@ -10984,7 +12023,7 @@ export const guides = {
       translations: { en: "/rs-mirage-island/", zh: "/zh-rs-mirage-island/" },
       guideGroupId: "zh:/rs-mirage-island/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10999,16 +12038,18 @@ export const guides = {
   },
   "/zh-rs-pokerus-emu/": {
     meta: {
+      id: "/rs-pokerus-emu/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["cfw-emu"],
-      guideKey: "/rs-pokerus/",
+      guideKey: "rs-pokerus",
       isNew: false,
       title: "红蓝宝石的宝可病毒",
       navDrawerTitle: "红蓝宝石的宝可病毒",
       description: "如何感染宝可病毒",
       slug: "/zh-rs-pokerus-emu/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-05-09",
       translation: { enSlug: "/rs-pokerus-emu/", language: "zh" },
@@ -11017,9 +12058,9 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx",
       translations: { en: "/rs-pokerus-emu/", zh: "/zh-rs-pokerus-emu/" },
-      guideGroupId: "zh:/rs-pokerus/:Ruby and Sapphire",
+      guideGroupId: "zh:rs-pokerus:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide"],
+      displayAttributes: ["video_guide", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx"),
@@ -11033,16 +12074,18 @@ export const guides = {
   },
   "/zh-rs-pokerus-retail/": {
     meta: {
+      id: "/rs-pokerus-retail/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "other_rng",
       guideVariants: ["retail"],
-      guideKey: "/rs-pokerus/",
+      guideKey: "rs-pokerus",
       isNew: false,
       title: "红宝石·蓝宝石中的宝可病毒",
       navDrawerTitle: "红宝石·蓝宝石中的宝可病毒",
       description: "如何感染宝可病毒",
       slug: "/zh-rs-pokerus-retail/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-05-17",
       translation: { enSlug: "/rs-pokerus-retail/", language: "zh" },
@@ -11051,9 +12094,9 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx",
       translations: { en: "/rs-pokerus-retail/", zh: "/zh-rs-pokerus-retail/" },
-      guideGroupId: "zh:/rs-pokerus/:Ruby and Sapphire",
+      guideGroupId: "zh:rs-pokerus:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11070,8 +12113,9 @@ export const guides = {
   },
   "/zh-rs-sid-feebas/": {
     meta: {
+      id: "/rs-sid-feebas/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "/rs-sid-feebas/",
       isNew: false,
@@ -11080,6 +12124,7 @@ export const guides = {
       description: "如何在《红宝石 / 蓝宝石》中利用丑丑鱼查找你的里ID (SID)。",
       slug: "/zh-rs-sid-feebas/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: null,
       translation: { enSlug: "/rs-sid-feebas/", language: "zh" },
@@ -11090,7 +12135,7 @@ export const guides = {
       translations: { en: "/rs-sid-feebas/", zh: "/zh-rs-sid-feebas/" },
       guideGroupId: "zh:/rs-sid-feebas/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11107,8 +12152,9 @@ export const guides = {
   },
   "/zh-wishing-star-jirachi/": {
     meta: {
+      id: "/wishing-star-jirachi/",
       categories: ["Ruby and Sapphire"],
-      section: "guide",
+      section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/wishing-star-jirachi/",
       isNew: false,
@@ -11118,6 +12164,7 @@ export const guides = {
         "学习如何在红宝石和蓝宝石中，通过圆形竞技场发放的许愿星基拉祈进行乱数。",
       slug: "/zh-wishing-star-jirachi/",
       isRoughDraft: false,
+      orderPriority: 20,
       hideFromNavDrawer: true,
       addedOn: "2025-04-23",
       translation: { enSlug: "/wishing-star-jirachi/", language: "zh" },
@@ -11131,7 +12178,7 @@ export const guides = {
       },
       guideGroupId: "zh:/wishing-star-jirachi/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide"],
+      displayAttributes: ["video_guide", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11171,6 +12218,7 @@ export const guideSlugs = [
   "/citrarng-setup/",
   "/connect-dolphin-to-gba/",
   "/consistent-platinum-rng/",
+  "/contributing/",
   "/crystal/",
   "/de-retail-emerald-egg/",
   "/delete-pokemon-save/",
@@ -11412,6 +12460,7 @@ export const guideSlugs = [
   "/zh-emulator-hgss-cute-charm/",
   "/zh-emulator-hgss-egg/",
   "/zh-emulator-hgss-stationary/",
+  "/zh-emulator-oras-dexnav/",
   "/zh-emulator-rs-egg/",
   "/zh-emulator-rs-stationary/",
   "/zh-emulator-rs-wishmaker/",
@@ -11477,4 +12526,31 @@ export const categories = [
   "USUM Challenges",
   "User Settings",
   "Game Hub",
+] as const;
+
+export const externalGuides = [
+  {
+    addedOn: "2026-03-01",
+    categories: ["Black and White", "Black 2 and White 2"],
+    section: "tool",
+    navDrawerTitle: "niart120's Gen 5 web tool",
+    guideKey: "gen5-web-tool",
+    displayAttributes: ["web_tool"],
+    url: "https://niart120.github.io/5genSearch-web/",
+    id: "https://niart120.github.io/5genSearch-web/",
+    isNew: true,
+    translation: null,
+    canonical: null,
+    hideFromNavDrawer: false,
+    isRoughDraft: false,
+    title: "niart120's Gen 5 web tool",
+    guideVariants: null,
+    orderPriority: 20,
+    description: "",
+    layout: "guide",
+    type: "externalLink",
+    translations: null,
+    guideGroupId: "en:gen5-web-tool:Black 2 and White 2|Black and White",
+    guideVariantLinks: null,
+  },
 ] as const;

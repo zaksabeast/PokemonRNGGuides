@@ -115,6 +115,7 @@ export const getTheme = (config: ThemePalette): CustomTheme => {
     components: {
       Form: {
         itemMarginBottom: 6,
+        labelHeight: "auto",
       },
       Menu: isLightMode
         ? {}

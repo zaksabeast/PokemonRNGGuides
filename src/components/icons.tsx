@@ -8,18 +8,17 @@ import {
   MdCheckCircle,
   MdCheck,
   MdClose,
-  MdRocketLaunch,
+  MdOpenInNew,
   MdUpdate,
-  MdOutlineCampaign,
+  MdEdit,
 } from "react-icons/md";
-import { AiOutlineSearch, AiOutlineMenu } from "react-icons/ai";
-import { FaGithub, FaDiscord, FaCoffee, FaRegCopy } from "react-icons/fa";
+import { AiOutlineSearch } from "react-icons/ai";
+import { FaDiscord, FaRegCopy } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold } from "react-icons/pi";
-import { FaHeart, FaPlay, FaFire, FaPatreon, FaArrowUp } from "react-icons/fa6";
+import { FaHeart, FaPlay, FaPatreon, FaArrowUp } from "react-icons/fa6";
 import { TbPokeball } from "react-icons/tb";
 import { IoIosInformationCircle } from "react-icons/io";
-import { GiStarSwirl } from "react-icons/gi";
 
 const icons = {
   AddCircleOutline: MdAddCircleOutline,
@@ -28,26 +27,21 @@ const icons = {
   Check: MdCheck,
   CheckCircle: MdCheckCircle,
   Close: MdClose,
-  Coffee: FaCoffee,
   Discord: FaDiscord,
-  Github: FaGithub,
   Heart: FaHeart,
   Language: IoLanguage,
-  Menu: AiOutlineMenu,
   PersonSimpleWalkBold: PiPersonSimpleWalkBold,
-  RocketLaunch: MdRocketLaunch,
   Sparkles: IoSparkles,
   Update: MdUpdate,
   Play: FaPlay,
-  Fire: FaFire,
   Pokeball: TbPokeball,
   OutlineSearch: AiOutlineSearch,
   InformationCircle: IoIosInformationCircle,
   Patreon: FaPatreon,
   Copy: FaRegCopy,
-  OutlineCampaign: MdOutlineCampaign,
-  StarSwirl: GiStarSwirl,
   ArrowUp: FaArrowUp,
+  OpenInNew: MdOpenInNew,
+  Edit: MdEdit,
 } as const;
 
 export type IconName = keyof typeof icons;

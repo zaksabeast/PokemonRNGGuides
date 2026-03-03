@@ -75,17 +75,10 @@ const emeraldWildGameData = getWild3EmeraldGameData();
 const rngManipulatedLeadPidAtom = atom(false);
 
 /*
-TODO: Investigate duplicate setup entries
-
 Possible UI improvements:
  - Display filter restrictiveness
- - Add Tooltip for Likelihood by lead speed columns.
- - Display warning if no maps or no leads are selected.
- - Display map names instead of formatted map IDs.
- - Disable gender field if only 1 possible gender, instead of hiding it.
  - Display ability names instead of First, Second, or Hidden.
- - Min/Max IVs should display the stat name.
- - Rename "None" to "Any" in filters.
+ - Min/Max IVs should have a tooltip displaying the stat name.
 */
 
 const Validator = z
@@ -565,13 +558,36 @@ const getResultSetupInfoColumns = ({
           if (cycle_data_by_lead == undefined) {
             return "";
           }
-          const least_likely_common =
+          const [least_likely, most_likely] =
             cycle_data_by_lead.common_lower_lead.method_probability <
             cycle_data_by_lead.common_upper_lead.method_probability
-              ? cycle_data_by_lead.common_lower_lead
-              : cycle_data_by_lead.common_upper_lead;
+              ? [
+                  cycle_data_by_lead.common_lower_lead,
+                  cycle_data_by_lead.common_upper_lead,
+                ]
+              : [
+                  cycle_data_by_lead.common_upper_lead,
+                  cycle_data_by_lead.common_lower_lead,
+                ];
 
-          return formatProbability(least_likely_common.method_probability);
+          const leastFormat = formatProbability(
+            least_likely.method_probability,
+          );
+          const mostFormat = formatProbability(most_likely.method_probability);
+
+          if (leastFormat === mostFormat) {
+            return leastFormat;
+          }
+
+          if (
+            least_likely.method_probability === 0 ||
+            most_likely.method_probability - least_likely.method_probability >
+              0.1
+          ) {
+            return `${leastFormat} - ${mostFormat}`;
+          }
+
+          return leastFormat;
         })();
 
         return (
@@ -804,7 +820,7 @@ const getMapSetupsConsideringStateSubsets = (
   const mapSetupsWithAllStates =
     emeraldWildGameData.mapSetupsBySpecies.get(values.species) ?? [];
   if (values.recommendedSetups) {
-    // TODO: remove not needed states. right now, the filtering systematically occurs in searcher_reverse even if the user doesn't want it.
+    // Filtering will be done in searcher_reverse to improve performance.
     return mapSetupsWithAllStates;
   }
 

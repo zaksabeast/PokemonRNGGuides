@@ -48,6 +48,7 @@ const DisplayTag = styled(Tag)<{ tag: DisplayAttribute }>(({ tag }) => {
     .with("translation_es", () => translationColors)
     .with("translation_it", () => translationColors)
     .with("translation_zh", () => translationColors)
+    .with("translation_en", () => translationColors)
     .exhaustive();
 
   return {
@@ -70,6 +71,7 @@ const getDisplayAttributeLabel = (tag: DisplayAttribute) => {
     .with("translation_es", () => languageByKey.es.label)
     .with("translation_it", () => languageByKey.it.label)
     .with("translation_zh", () => languageByKey.zh.label)
+    .with("translation_en", () => languageByKey.en.label)
     .exhaustive();
 };
 

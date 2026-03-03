@@ -6435,13 +6435,13 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 6/XY TID.mdx",
-      translations: null,
+      translations: { en: "/pcalc-xy-tid/", zh: "/zh-pcalc-xy-tid/" },
       guideGroupId: "en:/pcalc-xy-tid/:X and Y",
       guideVariantLinks: {
         retail: null,
         cfwEmu: { type: "slug", slug: "/pcalc-xy-tid/" },
       },
-      displayAttributes: ["translation_en"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/XY TID.mdx")),
     getRawFile: memoize(async () => {
@@ -11577,6 +11577,43 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-pcalc-xy-tid/": {
+    meta: {
+      id: "/pcalc-xy-tid/",
+      categories: ["X and Y"],
+      section: "other_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/pcalc-xy-tid/",
+      isNew: false,
+      title: "X 与 Y TID 乱数",
+      navDrawerTitle: "X 与 Y TID 乱数",
+      description:
+        "学习如何在《宝可梦 X／Y》中获取目标的训练家 ID（TID）与秘密 ID（SID）组合。",
+      slug: "/zh-pcalc-xy-tid/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/pcalc-xy-tid/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/XY TID.mdx",
+      translations: { en: "/pcalc-xy-tid/", zh: "/zh-pcalc-xy-tid/" },
+      guideGroupId: "zh:/pcalc-xy-tid/:X and Y",
+      guideVariantLinks: null,
+      displayAttributes: ["translation_en", "translation_zh"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 6/XY TID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/XY TID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-dppt-starter/": {
     meta: {
       id: "/retail-dppt-starter/",
@@ -12576,6 +12613,7 @@ export const guideSlugs = [
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
   "/zh-pal-xd-eevee/",
+  "/zh-pcalc-xy-tid/",
   "/zh-retail-dppt-starter/",
   "/zh-retail-emerald-egg/",
   "/zh-retail-emerald-wild/",

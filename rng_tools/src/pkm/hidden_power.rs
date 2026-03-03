@@ -7,7 +7,7 @@ use tsify_next::Tsify;
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct HiddenPowerFilter {
     pub active: bool,
-    // TODO: for performance, [bool, POKEMON_TYPE_COUNT] would be better
+    // Note: for performance, [bool, POKEMON_TYPE_COUNT] would be better
     pub pokemon_types: Vec<PokemonType>,
     pub min_bp: u8,
     pub max_bp: u8,

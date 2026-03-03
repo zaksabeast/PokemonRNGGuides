@@ -1,3 +1,4 @@
+use arrayvec::ArrayVec;
 use itertools::Itertools;
 
 use super::*;
@@ -198,6 +199,26 @@ pub fn search_wild3_reverse(opts: &Wild3SearcherOptions) -> Vec<Vec<Wild3Searche
     }
 }
 
+// To improve performance during the paths generation, Egg leads are considered as Vanilla because they give identical outcome.
+// However, once we reach the generator that considers cycle count, Egg and Vanilla must be treated separately.
+fn get_leads(seed_lead: Gen3Lead, opts: &Wild3SearcherOptions) -> ArrayVec<Gen3Lead, 2> {
+    let mut leads: ArrayVec<Gen3Lead, 2> = Default::default();
+    match seed_lead {
+        Gen3Lead::Vanilla => {
+            if opts.leads.contains(&Gen3Lead::Egg) {
+                leads.push(Gen3Lead::Egg);
+            }
+            if opts.leads.contains(&Gen3Lead::Vanilla) {
+                leads.push(Gen3Lead::Vanilla);
+            }
+        }
+        _ => {
+            leads.push(seed_lead);
+        }
+    }
+    leads
+}
+
 fn create_result(
     seed: &EncounterIdxPath,
     opts: &Wild3SearcherOptions,
@@ -220,33 +241,38 @@ fn create_result(
         Wild3FeebasState::NotInMap
     };
 
-    let gen_opts = Wild3GeneratorOptions {
-        tid: opts.tid,
-        sid: opts.sid,
-        map_idx,
-        action: seed.action,
-        methods: vec![seed.pid_path.method()],
-        lead: seed.lead(encounter_gender_ratio),
-        filter: opts.filter.clone(),
-        consider_cycles: opts.consider_cycles,
-        consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
-        generate_even_if_impossible: opts.generate_even_if_impossible,
-        gen3_filter: opts.gen3_filter.clone(),
-        roamer_state: Wild3RoamerState::Inactive,
-        mass_outbreak_state,
-        feebas_state,
-    };
+    get_leads(seed.lead(encounter_gender_ratio), &opts)
+        .into_iter()
+        .flat_map(|lead| {
+            let gen_opts = Wild3GeneratorOptions {
+                tid: opts.tid,
+                sid: opts.sid,
+                map_idx,
+                action: seed.action,
+                methods: vec![seed.pid_path.method()],
+                lead,
+                filter: opts.filter.clone(),
+                consider_cycles: opts.consider_cycles,
+                consider_rng_manipulated_lead_pid: opts.consider_rng_manipulated_lead_pid,
+                generate_even_if_impossible: opts.generate_even_if_impossible,
+                gen3_filter: opts.gen3_filter.clone(),
+                roamer_state: Wild3RoamerState::Inactive,
+                mass_outbreak_state,
+                feebas_state,
+            };
 
-    generate_gen3_wild(Pokerng::new(seed.seed), &gen_opts, &map_setups.map_data)
-        .0
-        .iter()
-        .map(|gen_res| {
-            let encounter = map_setups
-                .map_data
-                .get_encounter(gen_opts.action, gen_res.encounter_idx)
-                .unwrap();
-            let advance = lcrng_distance(opts.initial_seed, seed.seed) as usize;
-            Wild3SearcherResultMon::new(gen_res, &gen_opts, advance, encounter)
+            generate_gen3_wild(Pokerng::new(seed.seed), &gen_opts, &map_setups.map_data)
+                .0
+                .iter()
+                .map(|gen_res| {
+                    let encounter = map_setups
+                        .map_data
+                        .get_encounter(gen_opts.action, gen_res.encounter_idx)
+                        .unwrap();
+                    let advance = lcrng_distance(opts.initial_seed, seed.seed) as usize;
+                    Wild3SearcherResultMon::new(gen_res, &gen_opts, advance, encounter)
+                })
+                .collect_vec()
         })
         .collect()
 }

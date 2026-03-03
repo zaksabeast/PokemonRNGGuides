@@ -1,0 +1,59 @@
+const n=`---
+title: "X 与 Y TID 乱数"
+description: "学习如何在《宝可梦 X／Y》中获取目标的训练家 ID（TID）与秘密 ID（SID）组合。"
+slug: "zh-pcalc-xy-tid"
+translation:
+  enSlug: "pcalc-xy-tid"
+  language: "zh"
+---
+
+## 简介
+
+要对训练家 ID、秘密 ID 或训练家异色值进行乱数，你需要一个全新的存档。如需删除现有存档，请在标题画面按下 \`X + B + 方向键上\`。这会删除当前存档，并进入语言选择画面。
+
+如果你之后还想恢复原存档，请务必使用存档管理器（如 [Checkpoint](https://github.com/FlagBrew/Checkpoint/releases)）提前备份。
+
+## 工具
+
+- [一台安装了 PokeReader 的 3DS](/install-pokereader) 或 [安装了 PokeReader 的 Azahar 模拟器](/citrarng-setup)
+- [3DSRNGTool](https://github.com/wwwwwwzx/3DSRNGTool/releases)
+
+## 步骤 1：设置 3DSRNGTool
+
+1. 在右上角选择你的游戏版本。Seed 与 TSV 可保持为空。
+2. 在 \`ID 乱数\` 标签页中，输入你想要的 TID、SID 或 TSV。3DSRNGTool 支持搜索部分数字或完整数字，建议一次只针对一个目标进行乱数。
+3. 在 \`帧数范围\` 中，将起始值设为 \`0\`。
+
+## 步骤 2：游戏准备
+
+1. 选择游戏语言。
+2. 继续游戏流程，直到出现确认名字是否正确的画面。
+3. 在该画面按下 \`Start + Select\` 暂停游戏。
+4. 将 PokeReader 中显示的 4 个 TinyMT 种子输入到 3DSRNGTool 的 4 个输入框中。请直接使用 \`Tiny u32 seed\` 下方显示的数值。
+
+## 步骤 3：寻找目标帧
+
+3DSRNGTool 中的帧用于追踪 4 个被称为 tiny seed 的数值。这些种子会生成训练家信息，包括 TID、SID 与 TSV。每推进一次 tiny seed，就等同于推进一帧。请注意，这里的帧与 PokeReader 中显示的 MT 推进数不同。
+
+在 X/Y 中，tiny seed 会在序章过程中以随机速度推进，但推进顺序是固定的，因此可以被 3DSRNGTool 精确追踪。
+
+1. 在主窗口中点击 \`计算\`，生成可用于乱数的帧列表。
+2. 根据需要调整范围。目标帧越高，获取目标 TID／SID／TSV 所需时间越长。
+3. 如果目标帧过高，或当前初始种子无法生成该 TID／SID／TSV 组合，请按下\`Start + Select + L + R\` 进行软重置，以获取新的初始种子。
+
+## 步骤 4：推进 Tiny Seed
+
+1. 按下 \`Start\` 解除暂停，继续游戏。
+2. 确认角色选择后，进入下一画面。
+   - "(name)... Tres bien! What a fantastic name!"
+3. 在该画面中让 tiny seed 自然推进。
+   - 3DSRNGTool 中 "Frame" 显示的数值，与 PokeReader 中 "TinyMT seed" 下方的 "Advances" 数值是一致的。
+4. 当目标 TID／SID／TSV 距离当前 seed 约 12 帧时，按下 \`Start + Select\` 暂停游戏。
+5. 在暂停状态下按 \`Select\`，以手动推进帧数与 tiny seed。
+6. 到达目标帧后，按住 \`A\` 键，使游戏在该帧解除暂停，从而命中正确的 tiny seeds。
+7. 当你可以控制角色后，通过训练家卡片确认你获得的 TID 是否正确。
+
+## 特别鸣谢
+
+- 中文翻译：炫夜鳞、白希洛/Hakuhiro
+`;export{n as default};

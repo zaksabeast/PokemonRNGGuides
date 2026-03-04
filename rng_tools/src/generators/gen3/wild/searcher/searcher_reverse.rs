@@ -247,7 +247,7 @@ fn create_result(
         Wild3FeebasState::NotInMap
     };
 
-    get_leads(seed.lead(encounter_gender_ratio), &opts)
+    get_leads(seed.lead(encounter_gender_ratio), opts)
         .into_iter()
         .flat_map(|lead| {
             let gen_opts = Wild3GeneratorOptions {

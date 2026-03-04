@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 use arrayvec::ArrayVec;
 use itertools::Itertools;
 
@@ -9,6 +11,7 @@ use crate::{
         calculate_pid_speed, get_iv_filter_restrictiveness, get_iv1_filter_restrictiveness,
         get_iv2_filter_restrictiveness, get_pid_filter_restrictiveness, passes_pid_filter,
         reverse_find_pid_low_paths_from_pids,
+        searcher_painter::Wild3PaintingAdvFinder,
         wild::{
             lcrng_distance,
             searcher::{
@@ -38,13 +41,14 @@ pub struct FindPidPathsOptions {
     pub gen3_filter: Gen3PkmFilter,
     pub encounter_gender_ratio: GenderRatio,
     pub methods: Vec<Gen3Method>,
-    // explicit bool to improve performance
+    // explicit bool to improve performance, to avoid calling methods.contains() in the common case
     pub consider_all_methods_124: bool,
     pub tsv: u16,
     pub initial_seed: u32,
     pub max_result_count: usize,
     pub initial_advances: usize,
     pub max_advances: usize,
+    pub painting_adv_finder: Option<Wild3PaintingAdvFinder>,
 }
 
 impl Default for FindPidPathsOptions {
@@ -66,6 +70,7 @@ impl Default for FindPidPathsOptions {
             max_result_count: 1,
             initial_advances: Default::default(),
             max_advances: Default::default(),
+            painting_adv_finder: None,
         }
     }
 }
@@ -213,19 +218,38 @@ pub fn find_pid_paths_reverse_iv<const METHOD3: bool>(
     )
     .iter()
     .flat_map(|iv_path| extend_iv_path_to_pid_paths::<METHOD3>(opts, *iv_path))
-    .sorted_by(|pid_path1, pid_path2| {
-        // Limitation: initial_advances should be applied on the encounter_idx_seed, not the pid_seed
-        let dist1 = lcrng_distance(opts.initial_seed, pid_path1.seed)
-            .wrapping_sub(opts.initial_advances as u32);
-        let dist2 = lcrng_distance(opts.initial_seed, pid_path2.seed)
-            .wrapping_sub(opts.initial_advances as u32);
-
-        dist1
-            .cmp(&dist2)
-            .then_with(|| (pid_path1.method() as u8).cmp(&(pid_path2.method() as u8)))
-    })
+    .sorted_by(|pid_path1, pid_path2| compare_paths(opts, pid_path1, pid_path2))
     .collect::<Vec<_>>()
     .into_iter()
+}
+
+fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
+    match &opts.painting_adv_finder {
+        None => {
+            // We assume min_advances is respected. This is supposed to be valided by the caller.
+
+            // Limitation: distance should be calculated using encounter_idx_seed, not the pid_seed.
+            // But that this point, encounter_idx_seed isn't known yet.
+            lcrng_distance(opts.initial_seed, pid_path.seed)
+                .wrapping_sub(opts.initial_advances as u32)
+        }
+        Some(painting_adv_finder) => {
+            let fastest = painting_adv_finder.find_fastest_painting_adv_from_seed(pid_path.seed);
+            fastest
+                .adv_before_painting
+                .saturating_add(fastest.adv_after_painting)
+        }
+    }
+}
+
+fn compare_paths(opts: &FindPidPathsOptions, pid_path1: &PidPath, pid_path2: &PidPath) -> Ordering {
+    let dist1 = get_path_score(opts, pid_path1);
+
+    let dist2 = get_path_score(opts, pid_path2);
+
+    dist1
+        .cmp(&dist2)
+        .then_with(|| (pid_path1.method() as u8).cmp(&(pid_path2.method() as u8)))
 }
 
 fn is_subset(
@@ -270,17 +294,7 @@ pub fn find_pid_paths_reverse_pid<const METHOD3: bool>(
     reverse_find_pid_low_paths_from_pids(&wanted_pids)
         .iter()
         .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths(opts, pid_low_path))
-        .sorted_by(|pid_path1, pid_path2| {
-            // Limitation: initial_advances should be applied on the encounter_idx_seed, not the pid_seed
-            let dist1 = lcrng_distance(opts.initial_seed, pid_path1.seed)
-                .wrapping_sub(opts.initial_advances as u32);
-            let dist2 = lcrng_distance(opts.initial_seed, pid_path2.seed)
-                .wrapping_sub(opts.initial_advances as u32);
-
-            dist1
-                .cmp(&dist2)
-                .then_with(|| (pid_path1.method() as u8).cmp(&(pid_path2.method() as u8)))
-        })
+        .sorted_by(|pid_path1, pid_path2| compare_paths(opts, pid_path1, pid_path2))
         .collect::<Vec<_>>()
         .into_iter()
 }

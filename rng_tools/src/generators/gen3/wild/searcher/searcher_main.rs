@@ -11,6 +11,7 @@ use crate::{
     AbilityType, Gender, GenderRatio, HiddenPower, Ivs, Nature, PkmFilter, Species,
     gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, search_wild3_reverse,
+        searcher_painter::Wild3PaintingOpts,
         wild::{
             Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3MapGameData,
             Wild3SearcherCycleDataByLead, calculate_cycle_data_by_lead,
@@ -102,6 +103,7 @@ pub struct Wild3SearcherOptions {
     pub consider_cycles: bool,
     pub consider_rng_manipulated_lead_pid: bool,
     pub generate_even_if_impossible: bool,
+    pub painting_opts: Option<Wild3PaintingOpts>,
 }
 
 impl Default for Wild3SearcherOptions {
@@ -122,6 +124,7 @@ impl Default for Wild3SearcherOptions {
             consider_cycles: false,
             consider_rng_manipulated_lead_pid: false,
             generate_even_if_impossible: false,
+            painting_opts: None,
         }
     }
 }
@@ -150,6 +153,7 @@ pub struct Wild3SearcherResultMon {
 
     // from generator options
     pub advance: usize,
+    pub seed: u32,
     pub lead: Gen3Lead,
     pub map_idx: usize,
     pub action: Wild3Action,
@@ -162,6 +166,7 @@ impl Wild3SearcherResultMon {
     pub fn new(
         gen_res: &Wild3GeneratorResult,
         gen_opts: &Wild3GeneratorOptions,
+        seed: u32,
         advance: usize,
         encounter: &Wild3EncounterGameData,
     ) -> Wild3SearcherResultMon {
@@ -190,6 +195,7 @@ impl Wild3SearcherResultMon {
                 .gender_from_pid(gen_res.pid),
             hidden_power: HiddenPower::from_ivs(&gen_res.ivs),
             advance,
+            seed,
             map_idx: gen_opts.map_idx,
             lead: gen_opts.lead,
             action: gen_opts.action,

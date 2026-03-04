@@ -590,7 +590,7 @@ pub fn search_static4_methodk_seeds(
         }
         for advance in min_advance..=max_advance {
             let seed_time_opts = HgssSeedTime4Options {
-                seed: seed,
+                seed,
                 year: opts.year,
                 month: None,
                 second_range: Some(second_range.clone()),

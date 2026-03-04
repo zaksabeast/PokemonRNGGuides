@@ -7132,13 +7132,16 @@ export const guides = {
       canonical: "/retail-usum-initial-seed-clocks/",
       type: "baseGuide",
       file: "guides/Gen 7/Finding Initial Seed with Clocks.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-initial-seed-clocks/",
+        zh: "/zh-retail-sm-initial-seed-clocks/",
+      },
       guideGroupId: "en:/retail-sm-initial-seed-clocks/:Sun and Moon",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-sm-initial-seed-clocks/" },
         cfwEmu: null,
       },
-      displayAttributes: ["translation_en"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Finding Initial Seed with Clocks.mdx"),
@@ -7764,14 +7767,17 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 7/Finding Initial Seed with Clocks.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-initial-seed-clocks/",
+        zh: "/zh-retail-usum-initial-seed-clocks/",
+      },
       guideGroupId:
         "en:/retail-usum-initial-seed-clocks/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-usum-initial-seed-clocks/" },
         cfwEmu: null,
       },
-      displayAttributes: ["translation_en"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Finding Initial Seed with Clocks.mdx"),
@@ -11923,6 +11929,52 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-sm-initial-seed-clocks/": {
+    meta: {
+      id: "/retail-sm-initial-seed-clocks/",
+      categories: ["Sun and Moon"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/retail-sm-initial-seed-clocks/",
+      isNew: false,
+      title: "日 / 月 使用时钟寻找初始 Seed",
+      navDrawerTitle: "日 / 月 使用时钟寻找初始 Seed",
+      description:
+        "学习如何通过时钟指针的规律来寻找《日 / 月》的初始 Seed —— 无需破解系统。",
+      slug: "/zh-retail-sm-initial-seed-clocks/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/retail-sm-initial-seed-clocks/",
+        language: "zh",
+      },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Finding Initial Seed with Clocks.mdx",
+      translations: {
+        en: "/retail-sm-initial-seed-clocks/",
+        zh: "/zh-retail-sm-initial-seed-clocks/",
+      },
+      guideGroupId: "zh:/retail-sm-initial-seed-clocks/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: ["translation_en", "translation_zh"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Finding Initial Seed with Clocks.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Finding Initial Seed with Clocks.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-sm-timeline/": {
     meta: {
       id: "/retail-sm-timeline/",
@@ -12001,6 +12053,53 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-initial-seed-clocks/": {
+    meta: {
+      id: "/retail-usum-initial-seed-clocks/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/retail-usum-initial-seed-clocks/",
+      isNew: false,
+      title: "究极之日 / 究极之月 使用时钟寻找初始 Seed",
+      navDrawerTitle: "究极之日 / 究极之月 使用时钟寻找初始 Seed",
+      description:
+        "学习如何通过时钟指针的规律来寻找《究极之日 / 究极之月》的初始 Seed —— 无需破解系统。",
+      slug: "/zh-retail-usum-initial-seed-clocks/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/retail-usum-initial-seed-clocks/",
+        language: "zh",
+      },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Finding Initial Seed with Clocks.mdx",
+      translations: {
+        en: "/retail-usum-initial-seed-clocks/",
+        zh: "/zh-retail-usum-initial-seed-clocks/",
+      },
+      guideGroupId:
+        "zh:/retail-usum-initial-seed-clocks/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: ["translation_en", "translation_zh"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Finding Initial Seed with Clocks.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Finding Initial Seed with Clocks.mdx?raw"
       );
       return file.default;
     }),
@@ -12621,8 +12720,10 @@ export const guideSlugs = [
   "/zh-retail-oras-tid/",
   "/zh-retail-rubysapphire-tid/",
   "/zh-retail-sm-egg-no-mmsc/",
+  "/zh-retail-sm-initial-seed-clocks/",
   "/zh-retail-sm-timeline/",
   "/zh-retail-usum-egg-no-mmsc/",
+  "/zh-retail-usum-initial-seed-clocks/",
   "/zh-retail-usum-timeline/",
   "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",

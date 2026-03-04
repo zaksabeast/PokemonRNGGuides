@@ -20,6 +20,7 @@ const SplitGuideCard = ({ isTop, isBottom, guide }: SplitGuideCardProps) => {
       title={guide.navDrawerTitle}
       isNew={guide.isNew}
       displayAttributes={guide.displayAttributes}
+      translations={guide.translations}
       bottomContent={
         <Flex gap={8} wrap>
           <LinkButton

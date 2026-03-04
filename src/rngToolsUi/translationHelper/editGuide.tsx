@@ -2,7 +2,8 @@ import React from "react";
 import { Skeleton } from "antd";
 import { memoize, map, get } from "lodash-es";
 import { useTranslationState } from "./state";
-import { guides, GuideSlug, LanguageKey } from "~/guides";
+import { guides, GuideSlug } from "~/guides";
+import { LanguageKey } from "~/types/language";
 import {
   Flex,
   CopyToClipboardButton,

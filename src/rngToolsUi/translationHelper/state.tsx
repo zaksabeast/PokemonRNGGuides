@@ -1,5 +1,5 @@
 import { atom, useAtom } from "jotai";
-import { LanguageKey } from "~/guides";
+import { LanguageKey } from "~/types/language";
 import { Route } from "~/routes/defs";
 
 export type TranslationState =

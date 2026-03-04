@@ -1,5 +1,4 @@
 import React from "react";
-import { LanguageKey } from "~/guides";
 import { match } from "ts-pattern";
 import { translations as enTranslations, Translations } from "./en";
 import {
@@ -8,6 +7,7 @@ import {
 } from "./en/pokeNav";
 import { sortLocale } from "~/utils/sortLocale";
 import { memoize } from "lodash-es";
+import { LanguageKey } from "~/types/language";
 
 export type { Translations } from "./en";
 

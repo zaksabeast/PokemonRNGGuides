@@ -1,6 +1,6 @@
 import * as tst from "ts-toolbelt";
 import { Flex, Typography, Icon } from "~/components";
-import { InternalOrExternalGuideMeta } from "~/guides";
+import { InternalOrExternalGuideMeta, guideTranslationKeys } from "~/guides";
 import { filterVisibleGuide, sortGuides } from "./utils";
 import { match } from "ts-pattern";
 import { GuideCardFrame } from "./guideCardFrame";
@@ -43,6 +43,7 @@ const DirectGuideCard = ({ isTop, isBottom, guide }: DirectGuideCardProps) => {
         $isBottom: isBottom,
       }}
       displayAttributes={guide.displayAttributes}
+      translations={guideTranslationKeys(guide)}
     />
   );
 };

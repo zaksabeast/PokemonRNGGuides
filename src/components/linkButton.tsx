@@ -13,7 +13,7 @@ type LinkButtonProps = {
 
 export const LinkButton = ({ trackerId, link, ...props }: LinkButtonProps) => {
   if (link == null) {
-    return <Button flex={1} trackerId={trackerId} disabled {...props} />;
+    return <Button flex={1} trackerId={trackerId} ph={0} disabled {...props} />;
   }
   if (link.type === "slug") {
     return (

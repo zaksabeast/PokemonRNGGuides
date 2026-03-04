@@ -825,6 +825,7 @@ const buildFinalGuides = async ({
         displayAttributes: [
           ...displayAttributes,
           ...roughDraftAttribute,
+          "translation_en", // All guides are in English
           ...translations,
         ],
       };

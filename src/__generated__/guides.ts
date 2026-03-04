@@ -27,7 +27,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/:Home",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Home.mdx")),
     getRawFile: memoize(async () => {
@@ -61,7 +61,7 @@ export const guides = {
       guideGroupId:
         "en:/3ds-alt-settings/:Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS Alt Settings.mdx")),
     getRawFile: memoize(async () => {
@@ -100,7 +100,7 @@ export const guides = {
       guideGroupId:
         "en:/3ds-helper/:Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "translation_zh"],
+      displayAttributes: ["video_guide", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS Helper.mdx")),
     getRawFile: memoize(async () => {
@@ -133,7 +133,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/about/:Home",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/About.mdx")),
     getRawFile: memoize(async () => {
@@ -172,7 +172,7 @@ export const guides = {
       guideGroupId:
         "en:/azahar-setup/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Azahar Setup.mdx"),
@@ -212,7 +212,7 @@ export const guides = {
         retail: { type: "slug", slug: "/bdsp-advance-rng/" },
         cfwEmu: { type: "slug", slug: "/bdsp-advance-rng/" },
       },
-      displayAttributes: ["translation_fr"],
+      displayAttributes: ["translation_en", "translation_fr"],
     },
     Guide: React.lazy(
       () =>
@@ -252,7 +252,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/bdsp-chatot/:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: null,
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -293,7 +293,7 @@ export const guides = {
       guideGroupId:
         "en:/bdsp-emulator-setup/:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -333,7 +333,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/bdsp-pokefinder/:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -372,7 +372,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/black-2-and-white-2/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -404,7 +404,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/black-and-white/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -436,7 +436,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/brilliant-diamond-and-shining-pearl/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -472,7 +472,7 @@ export const guides = {
         retail: { type: "slug", slug: "/bw2-egg/" },
         cfwEmu: { type: "slug", slug: "/bw2-egg/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/BW2 Egg.mdx")),
     getRawFile: memoize(async () => {
@@ -508,7 +508,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/cfw-bdsp-egg/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Egg.mdx"),
@@ -549,7 +549,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/cfw-bdsp-stationary/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -593,7 +593,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/cfw-bdsp-tidandsid/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -636,7 +636,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/cfw-bdsp-wild/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Brilliant Diamond and Shining Pearl/Wild.mdx"),
@@ -673,7 +673,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/challenge-usum-ta/:USUM Challenges",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Challenges.mdx")),
     getRawFile: memoize(async () => {
@@ -708,7 +708,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/channel-jirachi/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gamecube/Channel.mdx")),
     getRawFile: memoize(async () => {
@@ -748,7 +748,7 @@ export const guides = {
       guideGroupId:
         "en:/citrarng-setup/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/CitraRNG Setup.mdx"),
@@ -786,7 +786,7 @@ export const guides = {
       guideGroupId:
         "en:/connect-dolphin-to-gba/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -827,7 +827,7 @@ export const guides = {
         retail: { type: "slug", slug: "/consistent-platinum-rng/" },
         cfwEmu: { type: "slug", slug: "/consistent-platinum-rng/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -867,7 +867,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/contributing/:Home",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Contributing.mdx")),
     getRawFile: memoize(async () => {
@@ -899,7 +899,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/crystal/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -939,6 +939,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_de",
         "translation_zh",
       ],
@@ -997,7 +998,7 @@ export const guides = {
       guideGroupId:
         "en:/delete-pokemon-save/:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es"],
+      displayAttributes: ["translation_en", "translation_es"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Delete Save.mdx"),
@@ -1040,7 +1041,7 @@ export const guides = {
       guideGroupId:
         "en:/desmume-setup/:Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Desmume Setup.mdx"),
@@ -1076,7 +1077,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/diamond-pearl-and-platinum/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -1109,7 +1110,7 @@ export const guides = {
       translations: { en: "/dppt-3ds-rng/", zh: "/zh-dppt-3ds-rng/" },
       guideGroupId: "en:/dppt-3ds-rng/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "translation_zh"],
+      displayAttributes: ["video_guide", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS RNG.mdx")),
     getRawFile: memoize(async () => {
@@ -1149,7 +1150,7 @@ export const guides = {
         retail: { type: "slug", slug: "/dppt-advance-rng/" },
         cfwEmu: { type: "slug", slug: "/dppt-advance-rng/" },
       },
-      displayAttributes: ["translation_es", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -1189,7 +1190,7 @@ export const guides = {
       translations: { en: "/dppt-cute-charm/", zh: "/zh-dppt-cute-charm/" },
       guideGroupId: "en:/dppt-cute-charm/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
     getRawFile: memoize(async () => {
@@ -1228,7 +1229,7 @@ export const guides = {
         retail: { type: "slug", slug: "/dppt-initial-seed-retail/" },
         cfwEmu: { type: "slug", slug: "/dppt-initial-seed/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -1271,7 +1272,7 @@ export const guides = {
         retail: { type: "slug", slug: "/dppt-initial-seed-retail/" },
         cfwEmu: { type: "slug", slug: "/dppt-initial-seed/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -1317,7 +1318,7 @@ export const guides = {
         retail: { type: "slug", slug: "/dppt-pokeradar-rng/" },
         cfwEmu: { type: "slug", slug: "/dppt-pokeradar-rng/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -1358,7 +1359,7 @@ export const guides = {
         retail: { type: "slug", slug: "/dppt-setup-rng/" },
         cfwEmu: { type: "slug", slug: "/dppt-setup-rng/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx"),
@@ -1398,7 +1399,12 @@ export const guides = {
         retail: { type: "slug", slug: "/dppt-tid-sid/" },
         cfwEmu: { type: "slug", slug: "/emulator-dppt-tid-sid/" },
       },
-      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_en",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
     getRawFile: memoize(async () => {
@@ -1434,7 +1440,7 @@ export const guides = {
         retail: { type: "slug", slug: "/dppt-wild/" },
         cfwEmu: { type: "slug", slug: "/dppt-wild/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx"),
@@ -1471,7 +1477,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/dream-radar-patches/:Transporter and Dream Radar",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Dream Radar Patches.mdx"),
@@ -1515,7 +1521,7 @@ export const guides = {
         retail: { type: "slug", slug: "/e-tips-rng/" },
         cfwEmu: { type: "slug", slug: "/e-tips-rng/" },
       },
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Basic Rules of RNG.mdx"),
@@ -1558,7 +1564,7 @@ export const guides = {
         retail: { type: "slug", slug: "/emerald-mirage-island/" },
         cfwEmu: null,
       },
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Mirage Island.mdx"),
@@ -1595,7 +1601,7 @@ export const guides = {
       translations: { en: "/emerald-overview/", it: "/it-emerald-overview/" },
       guideGroupId: "en:/emerald-overview/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it"],
+      displayAttributes: ["translation_en", "translation_it"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Emerald Overview.mdx"),
@@ -1638,7 +1644,12 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emerald-painting-rng/" },
       },
-      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_en",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Reseed RNG.mdx")),
     getRawFile: memoize(async () => {
@@ -1676,7 +1687,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emerald-pokerus-emu/" },
       },
-      displayAttributes: ["video_guide", "translation_zh"],
+      displayAttributes: ["video_guide", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Pokerus.mdx")),
     getRawFile: memoize(async () => {
@@ -1714,7 +1725,7 @@ export const guides = {
         retail: { type: "slug", slug: "/emerald-shiny-starter/" },
         cfwEmu: null,
       },
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Shiny Starter.mdx"),
@@ -1756,7 +1767,12 @@ export const guides = {
         retail: { type: "slug", slug: "/emerald-sid-feebas/" },
         cfwEmu: null,
       },
-      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_en",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx"),
@@ -1792,7 +1808,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/emerald-static/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "rough_draft"],
+      displayAttributes: ["web_tool", "rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
@@ -1828,7 +1844,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/emerald-tidsid-generator/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "rough_draft"],
+      displayAttributes: ["web_tool", "rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -1867,7 +1883,7 @@ export const guides = {
         retail: { type: "slug", slug: "/emerald-wild/" },
         cfwEmu: null,
       },
-      displayAttributes: ["web_tool", "rough_draft"],
+      displayAttributes: ["web_tool", "rough_draft", "translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx")),
     getRawFile: memoize(async () => {
@@ -1899,7 +1915,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/emerald/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -1939,7 +1955,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-b2w2-dream-radar/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Dream Radar.mdx")),
     getRawFile: memoize(async () => {
@@ -1978,7 +1994,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-b2w2-runasdate-inital-seed/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
@@ -2018,7 +2034,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-b2w2-wild/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
     getRawFile: memoize(async () => {
@@ -2057,7 +2073,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-bw-entralink/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Entralink.mdx")),
     getRawFile: memoize(async () => {
@@ -2096,7 +2112,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-bw-find-ds-parameters/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Find DS Parameters.mdx")),
     getRawFile: memoize(async () => {
@@ -2135,7 +2151,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-bw-roamers/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Roamers.mdx")),
     getRawFile: memoize(async () => {
@@ -2173,7 +2189,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-bw-runasdate-initial-seed/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx"),
@@ -2216,7 +2232,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-bw-white-forest/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 5/White Forest RNG (Emu).mdx"),
@@ -2256,7 +2272,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-bw-wild/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
     getRawFile: memoize(async () => {
@@ -2291,7 +2307,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-colosseum-general/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/Colosseum General Guide (Emu).mdx"),
@@ -2332,7 +2348,7 @@ export const guides = {
       guideGroupId:
         "en:/emulator-dppt-cute-charm/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
     getRawFile: memoize(async () => {
@@ -2368,7 +2384,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-dppt-egg/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx"),
@@ -2406,7 +2422,7 @@ export const guides = {
       guideGroupId:
         "en:/emulator-dppt-pokefinder-setup/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -2453,7 +2469,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-dppt-stationary/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -2497,7 +2513,7 @@ export const guides = {
         retail: { type: "slug", slug: "/dppt-tid-sid/" },
         cfwEmu: { type: "slug", slug: "/emulator-dppt-tid-sid/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -2545,6 +2561,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_it",
         "translation_zh",
       ],
@@ -2587,7 +2604,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-flrg-stationary-and-gift/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx"),
@@ -2627,7 +2644,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-frlg-egg/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/FireRed and LeafGreen/Egg RNG.mdx"),
@@ -2666,7 +2683,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-frlg-stationary/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -2707,7 +2724,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-frlg-wild-v2/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx"),
@@ -2750,7 +2767,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-frlg-wild/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx"),
@@ -2789,7 +2806,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-breeding/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -2832,7 +2849,7 @@ export const guides = {
       },
       guideGroupId: "en:/emulator-hgss-cute-charm/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
     getRawFile: memoize(async () => {
@@ -2868,7 +2885,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-egg/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx"),
@@ -2907,7 +2924,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-special-wild/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -2953,7 +2970,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-stationary/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -2996,7 +3013,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-tid-sid/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/TID SID.mdx"),
@@ -3036,7 +3053,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-wild/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -3078,7 +3095,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-wondercard/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Wondercard.mdx"),
@@ -3121,7 +3138,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-oras-dexnav/" },
       },
-      displayAttributes: ["rough_draft", "translation_zh"],
+      displayAttributes: ["rough_draft", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/DexNav.mdx")),
     getRawFile: memoize(async () => {
@@ -3158,7 +3175,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-rs-dead-battery-stationary/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -3201,7 +3218,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-rs-egg/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx"),
@@ -3241,7 +3258,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-rubysapphire-tid/" },
         cfwEmu: { type: "slug", slug: "/emulator-rs-live-battery-tid/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -3285,7 +3302,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-rs-stationary/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -3328,7 +3345,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-rs-wild/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -3374,7 +3391,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-rs-wishmaker/" },
       },
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -3416,7 +3433,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-sm-time-finder/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Time Finder.js (Citra).mdx"),
@@ -3455,7 +3472,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-usum-time-finder/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Time Finder.js (Citra).mdx"),
@@ -3511,7 +3528,7 @@ export const guides = {
       guideGroupId:
         "es:/delete-pokemon-save/:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es"],
+      displayAttributes: ["translation_en", "translation_es"],
     },
     Guide: React.lazy(
       () =>
@@ -3555,7 +3572,7 @@ export const guides = {
       },
       guideGroupId: "es:/dppt-advance-rng/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -3600,7 +3617,7 @@ export const guides = {
       guideGroupId:
         "es:/gba-methods-lead-impact/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "translation_es"],
+      displayAttributes: ["web_tool", "translation_en", "translation_es"],
     },
     Guide: React.lazy(
       () =>
@@ -3645,7 +3662,7 @@ export const guides = {
       guideGroupId:
         "es:/gba-methods/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/es/Gen 3/Emerald/GBA Methods.mdx"),
@@ -3688,6 +3705,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_es",
         "translation_zh",
       ],
@@ -3733,6 +3751,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_es",
         "translation_zh",
       ],
@@ -3776,7 +3795,7 @@ export const guides = {
       },
       guideGroupId: "es:/gen3-glossary/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_it"],
+      displayAttributes: ["translation_en", "translation_es", "translation_it"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/es/Gen 3/Emerald/Glossary.mdx"),
@@ -3817,7 +3836,7 @@ export const guides = {
       },
       guideGroupId: "es:advance-rng:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -3869,7 +3888,12 @@ export const guides = {
       guideGroupId:
         "es:/install-pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_it", "translation_zh"],
+      displayAttributes: [
+        "translation_en",
+        "translation_es",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () =>
@@ -3908,7 +3932,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/experiments/:User Settings",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Experiments.mdx")),
     getRawFile: memoize(async () => {
@@ -3940,7 +3964,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/fire-red-and-leaf-green/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -3974,7 +3998,7 @@ export const guides = {
       translations: { en: "/bdsp-advance-rng/", fr: "/fr-bdsp-advance-rng/" },
       guideGroupId: "fr:advance-rng:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: null,
-      displayAttributes: ["translation_fr"],
+      displayAttributes: ["translation_en", "translation_fr"],
     },
     Guide: React.lazy(
       () =>
@@ -4022,7 +4046,7 @@ export const guides = {
       guideGroupId:
         "fr:/install-capturesight/:Brilliant Diamond and Shining Pearl|Legends Arceus|Sword and Shield",
       guideVariantLinks: null,
-      displayAttributes: ["translation_fr"],
+      displayAttributes: ["translation_en", "translation_fr"],
     },
     Guide: React.lazy(
       () =>
@@ -4069,7 +4093,7 @@ export const guides = {
         retail: { type: "slug", slug: "/frlg-gen3-sid/" },
         cfwEmu: { type: "slug", slug: "/frlg-gen3-sid/" },
       },
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
     getRawFile: memoize(async () => {
@@ -4105,7 +4129,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/frlg-seeding-bot/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -4144,7 +4168,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/frlg-static/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "rough_draft"],
+      displayAttributes: ["web_tool", "rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
@@ -4180,7 +4204,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/frlg-tidsid-generator/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "rough_draft"],
+      displayAttributes: ["web_tool", "rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -4220,7 +4244,7 @@ export const guides = {
         retail: { type: "slug", slug: "/frlg-tips-rng/" },
         cfwEmu: { type: "slug", slug: "/frlg-tips-rng/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -4259,7 +4283,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/gamecube/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -4296,7 +4320,7 @@ export const guides = {
       guideGroupId:
         "en:/gba-methods-lead-impact/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "translation_es"],
+      displayAttributes: ["web_tool", "translation_en", "translation_es"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/GBA Methods Part2.mdx"),
@@ -4338,7 +4362,7 @@ export const guides = {
       guideGroupId:
         "en:/gba-methods/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/GBA Methods.mdx"),
@@ -4376,7 +4400,7 @@ export const guides = {
       guideGroupId:
         "en:/gba-overview/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/GBA Overview.mdx"),
@@ -4416,7 +4440,7 @@ export const guides = {
       guideGroupId:
         "en:/gba-pokerus-technical/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx"),
@@ -4454,7 +4478,7 @@ export const guides = {
       guideGroupId:
         "en:/gba-vblank/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Vblank.mdx")),
     getRawFile: memoize(async () => {
@@ -4490,7 +4514,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/gc-initial/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/Initial Seed RNG.mdx"),
@@ -4537,6 +4561,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_es",
         "translation_zh",
       ],
@@ -4571,7 +4596,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/gen2-research/:Gold, Silver, Crystal",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "rough_draft"],
+      displayAttributes: ["web_tool", "rough_draft", "translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 2/RngResearch.mdx")),
     getRawFile: memoize(async () => {
@@ -4613,6 +4638,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_es",
         "translation_zh",
       ],
@@ -4652,7 +4678,7 @@ export const guides = {
       },
       guideGroupId: "en:/gen3-glossary/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_it"],
+      displayAttributes: ["translation_en", "translation_es", "translation_it"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Glossary.mdx")),
     getRawFile: memoize(async () => {
@@ -4691,7 +4717,7 @@ export const guides = {
         retail: { type: "slug", slug: "/gen3-sid/" },
         cfwEmu: { type: "slug", slug: "/gen3-sid/" },
       },
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
     getRawFile: memoize(async () => {
@@ -4723,7 +4749,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/heart-gold-and-soul-silver/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -4756,7 +4782,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/help-translate/:Home",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Translations.mdx")),
     getRawFile: memoize(async () => {
@@ -4789,7 +4815,7 @@ export const guides = {
       translations: { en: "/hgss-3ds-rng/", zh: "/zh-hgss-3ds-rng/" },
       guideGroupId: "en:/hgss-3ds-rng/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "translation_zh"],
+      displayAttributes: ["video_guide", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/3DS RNG.mdx")),
     getRawFile: memoize(async () => {
@@ -4822,7 +4848,7 @@ export const guides = {
       translations: { en: "/hgss-cute-charm/", zh: "/zh-hgss-cute-charm/" },
       guideGroupId: "en:/hgss-cute-charm/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Cute Charm.mdx")),
     getRawFile: memoize(async () => {
@@ -4858,7 +4884,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/hgss-initial-seed/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -4905,7 +4931,7 @@ export const guides = {
         retail: { type: "slug", slug: "/hgss-rng-advance/" },
         cfwEmu: { type: "slug", slug: "/hgss-rng-advance/" },
       },
-      displayAttributes: ["translation_es", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -4948,7 +4974,12 @@ export const guides = {
         retail: { type: "slug", slug: "/hgss-tid-sid/" },
         cfwEmu: null,
       },
-      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_en",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 4/Retail TID.mdx")),
     getRawFile: memoize(async () => {
@@ -4989,7 +5020,7 @@ export const guides = {
       guideGroupId:
         "en:/install-capturesight/:Brilliant Diamond and Shining Pearl|Legends Arceus|Sword and Shield",
       guideVariantLinks: null,
-      displayAttributes: ["translation_fr"],
+      displayAttributes: ["translation_en", "translation_fr"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/CaptureSight Install.mdx"),
@@ -5033,7 +5064,7 @@ export const guides = {
       guideGroupId:
         "en:/install-pokereader-emu/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Emu PokeReader.mdx"),
@@ -5082,7 +5113,12 @@ export const guides = {
       guideGroupId:
         "en:/install-pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_it", "translation_zh"],
+      displayAttributes: [
+        "translation_en",
+        "translation_es",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/3DS PokeReader.mdx"),
@@ -5123,7 +5159,7 @@ export const guides = {
       },
       guideGroupId: "it:/e-tips-rng/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -5163,7 +5199,7 @@ export const guides = {
       translations: { en: "/emerald-overview/", it: "/it-emerald-overview/" },
       guideGroupId: "it:/emerald-overview/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it"],
+      displayAttributes: ["translation_en", "translation_it"],
     },
     Guide: React.lazy(
       () =>
@@ -5210,6 +5246,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_it",
         "translation_zh",
       ],
@@ -5256,7 +5293,7 @@ export const guides = {
       },
       guideGroupId: "it:/frlg-gen3-sid/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx"),
@@ -5297,7 +5334,7 @@ export const guides = {
       },
       guideGroupId: "it:/gen3-glossary/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_it"],
+      displayAttributes: ["translation_en", "translation_es", "translation_it"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 3/Emerald/Glossary.mdx"),
@@ -5337,7 +5374,7 @@ export const guides = {
       },
       guideGroupId: "it:/gen3-sid/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx"),
@@ -5386,7 +5423,12 @@ export const guides = {
       guideGroupId:
         "it:/install-pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_it", "translation_zh"],
+      displayAttributes: [
+        "translation_en",
+        "translation_es",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () =>
@@ -5433,7 +5475,7 @@ export const guides = {
       guideGroupId:
         "it:/pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it"],
+      displayAttributes: ["translation_en", "translation_it"],
     },
     Guide: React.lazy(
       () =>
@@ -5480,6 +5522,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_it",
         "translation_zh",
       ],
@@ -5523,7 +5566,7 @@ export const guides = {
       },
       guideGroupId: "it:/retail-emerald-wild/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -5568,6 +5611,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_it",
         "translation_zh",
       ],
@@ -5610,7 +5654,7 @@ export const guides = {
       },
       guideGroupId: "it:/rs-gen3-sid/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx"),
@@ -5646,7 +5690,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/legends-arceus/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -5682,7 +5726,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/meteor-jirachi/" },
       },
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -5723,7 +5767,7 @@ export const guides = {
       guideGroupId:
         "en:/mgba-setup/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/mGBA Setup.mdx"),
@@ -5767,7 +5811,7 @@ export const guides = {
       guideGroupId:
         "en:/misc-3ds-installing-pcalc/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/How to Install PCalc.mdx"),
@@ -5812,7 +5856,7 @@ export const guides = {
       guideGroupId:
         "en:/misc-3ds-ips-luma-citra/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["video_guide", "web_tool", "translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -5852,7 +5896,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/misc-3ds-island-scan-sm/:Sun and Moon",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Island Scan Pokemon SM.mdx"),
@@ -5890,7 +5934,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/misc-3ds-island-scan-usum/:Ultra Sun and Ultra Moon",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Island Scan Pokemon USUM.mdx"),
@@ -5928,7 +5972,7 @@ export const guides = {
       guideGroupId:
         "en:/misc-3ds-transporter-nature-tables/:Transporter and Dream Radar",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Transporter/Nature Table.mdx")),
     getRawFile: memoize(async () => {
@@ -5962,7 +6006,7 @@ export const guides = {
       guideGroupId:
         "en:/misc-dolphin-connect-vba/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -6006,7 +6050,7 @@ export const guides = {
       guideGroupId:
         "en:/misc-dolphin-gba-bios/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -6044,7 +6088,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/misc-sm-wild-spots/:Sun and Moon",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Wild Spots.mdx")),
     getRawFile: memoize(async () => {
@@ -6091,7 +6135,7 @@ export const guides = {
       guideGroupId:
         "en:/mystic-timer/:Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Timer.mdx"),
@@ -6129,7 +6173,7 @@ export const guides = {
       guideGroupId:
         "en:/no-dolphin-patch/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide"],
+      displayAttributes: ["video_guide", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/No Dolphin Patch.mdx"),
@@ -6172,7 +6216,7 @@ export const guides = {
       guideGroupId:
         "en:/ntr-helper-usage/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/NTR Helper Usage.mdx"),
@@ -6208,7 +6252,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/omega-ruby-and-alpha-sapphire/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -6244,7 +6288,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/oras-mirage-spots/" },
       },
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["video_guide", "web_tool", "translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/Mirage Spot.mdx")),
     getRawFile: memoize(async () => {
@@ -6278,7 +6322,7 @@ export const guides = {
       guideGroupId:
         "en:/oras-remove-time-penalty/:Omega Ruby and Alpha Sapphire",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 6/Remove Time Penalties.mdx"),
@@ -6317,7 +6361,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/pal-xd-eevee/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx"),
@@ -6357,7 +6401,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/pcalc-xy-friend-safari/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 6/Friend Safari RNG Guide.mdx"),
@@ -6391,13 +6435,13 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 6/XY TID.mdx",
-      translations: null,
+      translations: { en: "/pcalc-xy-tid/", zh: "/zh-pcalc-xy-tid/" },
       guideGroupId: "en:/pcalc-xy-tid/:X and Y",
       guideVariantLinks: {
         retail: null,
         cfwEmu: { type: "slug", slug: "/pcalc-xy-tid/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/XY TID.mdx")),
     getRawFile: memoize(async () => {
@@ -6447,7 +6491,7 @@ export const guides = {
       guideGroupId:
         "en:/pokefinder/:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/PokeFinder.mdx"),
@@ -6491,7 +6535,7 @@ export const guides = {
       guideGroupId:
         "en:/pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it"],
+      displayAttributes: ["translation_en", "translation_it"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/PokeReader.mdx"),
@@ -6531,7 +6575,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-bw-entralink/" },
         cfwEmu: null,
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Retail Entralink.mdx")),
     getRawFile: memoize(async () => {
@@ -6574,6 +6618,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_it",
         "translation_zh",
       ],
@@ -6619,6 +6664,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_de",
         "translation_zh",
       ],
@@ -6661,7 +6707,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-emerald-wild/" },
         cfwEmu: null,
       },
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Retail Wild RNG.mdx"),
@@ -6708,6 +6754,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_it",
         "translation_zh",
       ],
@@ -6747,7 +6794,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-oras-egg-mmsc/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -6792,7 +6839,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-oras-egg-no-mmsc/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -6835,7 +6882,12 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-oras-tid/" },
       },
-      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_en",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/ORAS TID.mdx")),
     getRawFile: memoize(async () => {
@@ -6874,7 +6926,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-rubysapphire-tid/" },
         cfwEmu: { type: "slug", slug: "/emulator-rs-live-battery-tid/" },
       },
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx"),
@@ -6914,7 +6966,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-sm-egg-mmsc/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -6960,7 +7012,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-sm-egg-no-mmsc/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -7003,7 +7055,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-sm-egg-seed-no-cfw/" },
         cfwEmu: null,
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -7046,7 +7098,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-sm-fidget/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Timeline With Fidget Guide.mdx"),
@@ -7086,7 +7138,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-sm-initial-seed-clocks/" },
         cfwEmu: null,
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Finding Initial Seed with Clocks.mdx"),
@@ -7126,7 +7178,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-sm-island-scan/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Island Scan.mdx")),
     getRawFile: memoize(async () => {
@@ -7162,7 +7214,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-sm-myster-gift/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Mystery Gift.mdx")),
     getRawFile: memoize(async () => {
@@ -7198,7 +7250,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-sm-no-cfw/" },
         cfwEmu: null,
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/RNGing Without Custom Firmware.mdx"),
@@ -7238,7 +7290,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-sm-sos/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/SOS RNG Guide.mdx")),
     getRawFile: memoize(async () => {
@@ -7274,7 +7326,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-sm-stationary/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Stationary RNG.mdx")),
     getRawFile: memoize(async () => {
@@ -7310,7 +7362,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-sm-timeleap/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Timeline Leap Guide.mdx"),
@@ -7352,7 +7404,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-sm-timeline/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
     getRawFile: memoize(async () => {
@@ -7388,7 +7440,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-sm-wild/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Wild RNG.mdx")),
     getRawFile: memoize(async () => {
@@ -7424,7 +7476,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-swsh-get-seed-without-cfw/" },
         cfwEmu: { type: "slug", slug: "/retail-swsh-get-seed-with-cfw/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Sword and Shield/Get Raid Seed With CFW.mdx"),
@@ -7464,7 +7516,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-swsh-get-seed-without-cfw/" },
         cfwEmu: { type: "slug", slug: "/retail-swsh-get-seed-with-cfw/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -7505,7 +7557,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-swsh-raid/" },
         cfwEmu: { type: "slug", slug: "/retail-swsh-raid/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Sword and Shield/Raid RNG.mdx"),
@@ -7545,7 +7597,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-egg-mmsc/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -7592,7 +7644,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-egg-no-mmsc/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -7635,7 +7687,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-usum-egg-seed-no-cfw/" },
         cfwEmu: null,
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -7678,7 +7730,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-fidget/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Timeline With Fidget Guide.mdx"),
@@ -7719,7 +7771,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-usum-initial-seed-clocks/" },
         cfwEmu: null,
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Finding Initial Seed with Clocks.mdx"),
@@ -7759,7 +7811,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-island-scan/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Island Scan.mdx")),
     getRawFile: memoize(async () => {
@@ -7795,7 +7847,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-mystery-gift/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Mystery Gift.mdx")),
     getRawFile: memoize(async () => {
@@ -7831,7 +7883,7 @@ export const guides = {
         retail: { type: "slug", slug: "/retail-usum-no-cfw/" },
         cfwEmu: null,
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/RNGing Without Custom Firmware.mdx"),
@@ -7871,7 +7923,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-sos/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/SOS RNG Guide.mdx")),
     getRawFile: memoize(async () => {
@@ -7907,7 +7959,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-stationary/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Stationary RNG.mdx")),
     getRawFile: memoize(async () => {
@@ -7943,7 +7995,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-timeleap/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Timeline Leap Guide.mdx"),
@@ -7986,7 +8038,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-timeline/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Timeline Guide.mdx")),
     getRawFile: memoize(async () => {
@@ -8022,7 +8074,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-wild/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/Wild RNG.mdx")),
     getRawFile: memoize(async () => {
@@ -8058,7 +8110,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-usum-wormhole/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 7/Stationary Wormhole RNG.mdx"),
@@ -8098,7 +8150,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-xy-egg-mmsc/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -8141,7 +8193,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/retail-xy-egg-no-mmsc/" },
       },
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -8184,7 +8236,7 @@ export const guides = {
         retail: { type: "slug", slug: "/rs-battery/" },
         cfwEmu: { type: "slug", slug: "/rs-battery/" },
       },
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -8228,7 +8280,7 @@ export const guides = {
         retail: { type: "slug", slug: "/rs-gen3-sid/" },
         cfwEmu: { type: "slug", slug: "/rs-gen3-sid/" },
       },
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Find SID.mdx")),
     getRawFile: memoize(async () => {
@@ -8263,7 +8315,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/rs-initial-seed/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx"),
@@ -8303,7 +8355,7 @@ export const guides = {
         retail: { type: "slug", slug: "/rs-mirage-island/" },
         cfwEmu: null,
       },
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Mirage Island.mdx"),
@@ -8339,7 +8391,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/rs-pokefinder-setup/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/PokeFinder Setup.mdx"),
@@ -8378,7 +8430,7 @@ export const guides = {
         retail: { type: "slug", slug: "/rs-pokerus-retail/" },
         cfwEmu: { type: "slug", slug: "/rs-pokerus-emu/" },
       },
-      displayAttributes: ["video_guide", "translation_zh"],
+      displayAttributes: ["video_guide", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Pokerus.mdx")),
     getRawFile: memoize(async () => {
@@ -8413,7 +8465,7 @@ export const guides = {
         retail: { type: "slug", slug: "/rs-pokerus-retail/" },
         cfwEmu: { type: "slug", slug: "/rs-pokerus-emu/" },
       },
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx"),
@@ -8453,7 +8505,12 @@ export const guides = {
         retail: { type: "slug", slug: "/rs-sid-feebas/" },
         cfwEmu: null,
       },
-      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_en",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Find SID with Feebas.mdx"),
@@ -8489,7 +8546,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/rs-static/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "rough_draft"],
+      displayAttributes: ["web_tool", "rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 Static.mdx"),
@@ -8525,7 +8582,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/rs-tidsid-generator/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "rough_draft"],
+      displayAttributes: ["web_tool", "rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -8565,7 +8622,7 @@ export const guides = {
         retail: { type: "slug", slug: "/rs-tips-rng/" },
         cfwEmu: { type: "slug", slug: "/rs-tips-rng/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: ["rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -8602,7 +8659,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/ruby-and-sapphire/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -8635,7 +8692,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/sos-call-rates/:Sun and Moon|Ultra Sun and Ultra Moon",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 7/SOS Call Rates.mdx")),
     getRawFile: memoize(async () => {
@@ -8667,7 +8724,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/sun-and-moon/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -8699,7 +8756,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/sword-and-shield/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -8732,7 +8789,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/sysbot-lpa-mmo/:Legends Arceus",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Legends Arceus/MMO.mdx")),
     getRawFile: memoize(async () => {
@@ -8764,7 +8821,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/transporter-dream-radar/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -8797,7 +8854,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/transporter-patches/:Transporter and Dream Radar",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Tools and Emulators/Transporter Patches.mdx"),
@@ -8837,7 +8894,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/transporter-rng-offline/" },
       },
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_en"],
     },
     Guide: React.lazy(
       () =>
@@ -8878,7 +8935,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/transporter-rng/" },
       },
-      displayAttributes: ["web_tool"],
+      displayAttributes: ["web_tool", "translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Transporter/Transporter.mdx")),
     getRawFile: memoize(async () => {
@@ -8910,7 +8967,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/ultra-sun-and-ultra-moon/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -8949,7 +9006,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/wishing-star-jirachi/" },
       },
-      displayAttributes: ["video_guide", "translation_zh"],
+      displayAttributes: ["video_guide", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -8986,7 +9043,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/x-and-y/:Game Hub",
       guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Hubs.mdx")),
     getRawFile: memoize(async () => {
@@ -9018,7 +9075,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/xdcolo-tidsid-generator/:Gamecube",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "rough_draft"],
+      displayAttributes: ["web_tool", "rough_draft", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx"),
@@ -9055,7 +9112,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:/xy-friend-safari-patch/:X and Y",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide"],
+      displayAttributes: ["video_guide", "translation_en"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Gen 6/Friend Safari Patch.mdx"),
@@ -9095,7 +9152,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/xy-pokeradar/" },
       },
-      displayAttributes: ["video_guide", "web_tool"],
+      displayAttributes: ["video_guide", "web_tool", "translation_en"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 6/PokeRadar.mdx")),
     getRawFile: memoize(async () => {
@@ -9129,7 +9186,7 @@ export const guides = {
       guideGroupId:
         "zh:/3ds-alt-settings/:Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/3DS Alt Settings.mdx"),
@@ -9172,7 +9229,7 @@ export const guides = {
       guideGroupId:
         "zh:/3ds-helper/:Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "translation_zh"],
+      displayAttributes: ["video_guide", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/3DS Helper.mdx"),
@@ -9209,7 +9266,7 @@ export const guides = {
       translations: { en: "/bw2-egg/", zh: "/zh-bw2-egg/" },
       guideGroupId: "zh:egg:Black 2 and White 2",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/BW2 Egg.mdx"),
@@ -9245,7 +9302,7 @@ export const guides = {
       translations: { en: "/channel-jirachi/", zh: "/zh-channel-jirachi/" },
       guideGroupId: "zh:/channel-jirachi/:Gamecube",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gamecube/Channel.mdx"),
@@ -9281,7 +9338,7 @@ export const guides = {
       translations: { en: "/dppt-3ds-rng/", zh: "/zh-dppt-3ds-rng/" },
       guideGroupId: "zh:/dppt-3ds-rng/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "translation_zh"],
+      displayAttributes: ["video_guide", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/3DS RNG.mdx"),
@@ -9321,7 +9378,7 @@ export const guides = {
       },
       guideGroupId: "zh:/dppt-advance-rng/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9360,7 +9417,7 @@ export const guides = {
       translations: { en: "/dppt-cute-charm/", zh: "/zh-dppt-cute-charm/" },
       guideGroupId: "zh:/dppt-cute-charm/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
@@ -9399,7 +9456,7 @@ export const guides = {
       },
       guideGroupId: "zh:dppt-init-seed:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9438,7 +9495,7 @@ export const guides = {
       translations: { en: "/dppt-initial-seed/", zh: "/zh-dppt-initial-seed/" },
       guideGroupId: "zh:dppt-init-seed:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9480,7 +9537,7 @@ export const guides = {
       },
       guideGroupId: "zh:pokeradar:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9519,7 +9576,12 @@ export const guides = {
       translations: { en: "/dppt-tid-sid/", zh: "/zh-dppt-tid-sid/" },
       guideGroupId: "zh:tid-sid:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_en",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Retail TID.mdx"),
@@ -9555,7 +9617,7 @@ export const guides = {
       translations: { en: "/dppt-wild/", zh: "/zh-dppt-wild/" },
       guideGroupId: "zh:wild:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9598,7 +9660,7 @@ export const guides = {
       },
       guideGroupId: "zh:/e-tips-rng/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9640,7 +9702,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emerald-mirage-island/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9680,7 +9742,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emerald-painting-rng/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Reseed RNG.mdx"),
@@ -9719,7 +9781,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emerald-pokerus-emu/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "translation_zh"],
+      displayAttributes: ["video_guide", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx"),
@@ -9758,7 +9820,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emerald-shiny-starter/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9798,7 +9860,12 @@ export const guides = {
       },
       guideGroupId: "zh:/emerald-sid-feebas/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_en",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () =>
@@ -9841,7 +9908,7 @@ export const guides = {
       guideGroupId:
         "zh:/emulator-b2w2-dream-radar/:Black 2 and White 2|Transporter and Dream Radar",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/Dream Radar.mdx"),
@@ -9884,7 +9951,7 @@ export const guides = {
       guideGroupId:
         "zh:/emulator-b2w2-runasdate-inital-seed/:Black 2 and White 2",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -9926,7 +9993,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-bw-entralink/:Black and White",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/Entralink.mdx"),
@@ -9968,7 +10035,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-bw-find-ds-parameters/:Black and White",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/Find DS Parameters.mdx"),
@@ -10007,7 +10074,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-bw-roamers/:Black and White",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 5/Roamers.mdx"),
@@ -10049,7 +10116,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-bw-runasdate-initial-seed/:Black and White",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10091,7 +10158,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-bw-white-forest/:Black and White",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10132,7 +10199,7 @@ export const guides = {
       guideGroupId:
         "zh:/emulator-dppt-cute-charm/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
@@ -10168,7 +10235,7 @@ export const guides = {
       translations: { en: "/emulator-dppt-egg/", zh: "/zh-emulator-dppt-egg/" },
       guideGroupId: "zh:/emulator-dppt-egg/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10211,7 +10278,7 @@ export const guides = {
       guideGroupId:
         "zh:/emulator-dppt-stationary/:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10254,7 +10321,7 @@ export const guides = {
       },
       guideGroupId: "zh:tid-sid:Diamond, Pearl, and Platinum",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10300,6 +10367,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_it",
         "translation_zh",
       ],
@@ -10345,7 +10413,7 @@ export const guides = {
       guideGroupId:
         "zh:/emulator-flrg-stationary-and-gift/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10384,7 +10452,7 @@ export const guides = {
       translations: { en: "/emulator-frlg-egg/", zh: "/zh-emulator-frlg-egg/" },
       guideGroupId: "zh:/emulator-frlg-egg/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10426,7 +10494,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-frlg-wild/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10468,7 +10536,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-hgss-cute-charm/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
@@ -10504,7 +10572,7 @@ export const guides = {
       translations: { en: "/emulator-hgss-egg/", zh: "/zh-emulator-hgss-egg/" },
       guideGroupId: "zh:/emulator-hgss-egg/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10546,7 +10614,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-hgss-stationary/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10589,7 +10657,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-oras-dexnav/:Omega Ruby and Alpha Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 6/DexNav.mdx"),
@@ -10625,7 +10693,7 @@ export const guides = {
       translations: { en: "/emulator-rs-egg/", zh: "/zh-emulator-rs-egg/" },
       guideGroupId: "zh:/emulator-rs-egg/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10667,7 +10735,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-rs-stationary/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10710,7 +10778,7 @@ export const guides = {
       },
       guideGroupId: "zh:/emulator-rs-wishmaker/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10753,7 +10821,7 @@ export const guides = {
       },
       guideGroupId: "zh:/frlg-gen3-sid/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx"),
@@ -10789,7 +10857,7 @@ export const guides = {
       translations: { en: "/frlg-seeding-bot/", zh: "/zh-frlg-seeding-bot/" },
       guideGroupId: "zh:/frlg-seeding-bot/:FireRed and LeafGreen",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10834,7 +10902,7 @@ export const guides = {
       guideGroupId:
         "zh:/gba-methods/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/GBA Methods.mdx"),
@@ -10874,7 +10942,7 @@ export const guides = {
       guideGroupId:
         "zh:/gba-pokerus-technical/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -10914,7 +10982,7 @@ export const guides = {
       guideGroupId:
         "zh:/gba-vblank/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Vblank.mdx"),
@@ -10951,7 +11019,7 @@ export const guides = {
       translations: { en: "/gc-initial/", zh: "/zh-gc-initial/" },
       guideGroupId: "zh:/gc-initial/:Gamecube",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gamecube/Initial Seed RNG.mdx"),
@@ -10994,6 +11062,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_es",
         "translation_zh",
       ],
@@ -11039,6 +11108,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_es",
         "translation_zh",
       ],
@@ -11081,7 +11151,7 @@ export const guides = {
       },
       guideGroupId: "zh:/gen3-sid/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx"),
@@ -11117,7 +11187,7 @@ export const guides = {
       translations: { en: "/hgss-3ds-rng/", zh: "/zh-hgss-3ds-rng/" },
       guideGroupId: "zh:/hgss-3ds-rng/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "translation_zh"],
+      displayAttributes: ["video_guide", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/3DS RNG.mdx"),
@@ -11153,7 +11223,7 @@ export const guides = {
       translations: { en: "/hgss-cute-charm/", zh: "/zh-hgss-cute-charm/" },
       guideGroupId: "zh:/hgss-cute-charm/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Cute Charm.mdx"),
@@ -11189,7 +11259,7 @@ export const guides = {
       translations: { en: "/hgss-initial-seed/", zh: "/zh-hgss-initial-seed/" },
       guideGroupId: "zh:/hgss-initial-seed/:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11232,7 +11302,7 @@ export const guides = {
       },
       guideGroupId: "zh:advance-rng:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_es", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11271,7 +11341,12 @@ export const guides = {
       translations: { en: "/hgss-tid-sid/", zh: "/zh-hgss-tid-sid/" },
       guideGroupId: "zh:tid-sid:HeartGold and SoulSilver",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_en",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 4/Retail TID.mdx"),
@@ -11319,7 +11394,12 @@ export const guides = {
       guideGroupId:
         "zh:/install-pokereader/:Omega Ruby and Alpha Sapphire|Sun and Moon|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
       guideVariantLinks: null,
-      displayAttributes: ["translation_es", "translation_it", "translation_zh"],
+      displayAttributes: [
+        "translation_en",
+        "translation_es",
+        "translation_it",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () =>
@@ -11358,7 +11438,7 @@ export const guides = {
       translations: { en: "/meteor-jirachi/", zh: "/zh-meteor-jirachi/" },
       guideGroupId: "zh:/meteor-jirachi/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11399,7 +11479,7 @@ export const guides = {
       guideGroupId:
         "zh:/mgba-setup/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11443,7 +11523,7 @@ export const guides = {
       guideGroupId:
         "zh:/misc-dolphin-gba-bios/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11482,7 +11562,7 @@ export const guides = {
       translations: { en: "/pal-xd-eevee/", zh: "/zh-pal-xd-eevee/" },
       guideGroupId: "zh:/pal-xd-eevee/:Gamecube",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11493,6 +11573,43 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gamecube/(XD) PAL Starter Eevee RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-pcalc-xy-tid/": {
+    meta: {
+      id: "/pcalc-xy-tid/",
+      categories: ["X and Y"],
+      section: "other_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/pcalc-xy-tid/",
+      isNew: false,
+      title: "X 与 Y TID 乱数",
+      navDrawerTitle: "X 与 Y TID 乱数",
+      description:
+        "学习如何在《宝可梦 X／Y》中获取目标的训练家 ID（TID）与秘密 ID（SID）组合。",
+      slug: "/zh-pcalc-xy-tid/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/pcalc-xy-tid/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/XY TID.mdx",
+      translations: { en: "/pcalc-xy-tid/", zh: "/zh-pcalc-xy-tid/" },
+      guideGroupId: "zh:/pcalc-xy-tid/:X and Y",
+      guideVariantLinks: null,
+      displayAttributes: ["translation_en", "translation_zh"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 6/XY TID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/XY TID.mdx?raw"
       );
       return file.default;
     }),
@@ -11529,6 +11646,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_it",
         "translation_zh",
       ],
@@ -11575,6 +11693,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_de",
         "translation_zh",
       ],
@@ -11617,7 +11736,7 @@ export const guides = {
       },
       guideGroupId: "zh:/retail-emerald-wild/:Emerald",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11662,6 +11781,7 @@ export const guides = {
       displayAttributes: [
         "video_guide",
         "web_tool",
+        "translation_en",
         "translation_it",
         "translation_zh",
       ],
@@ -11701,7 +11821,12 @@ export const guides = {
       translations: { en: "/retail-oras-tid/", zh: "/zh-retail-oras-tid/" },
       guideGroupId: "zh:/retail-oras-tid/:Omega Ruby and Alpha Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_en",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 6/ORAS TID.mdx"),
@@ -11740,7 +11865,7 @@ export const guides = {
       },
       guideGroupId: "zh:rs-tid:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11783,7 +11908,7 @@ export const guides = {
       },
       guideGroupId: "zh:/retail-sm-egg-no-mmsc/:Sun and Moon",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11825,7 +11950,7 @@ export const guides = {
       },
       guideGroupId: "zh:/retail-sm-timeline/:Sun and Moon",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 7/Timeline Guide.mdx"),
@@ -11865,7 +11990,7 @@ export const guides = {
       },
       guideGroupId: "zh:/retail-usum-egg-no-mmsc/:Ultra Sun and Ultra Moon",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11907,7 +12032,7 @@ export const guides = {
       },
       guideGroupId: "zh:/retail-usum-timeline/:Ultra Sun and Ultra Moon",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 7/Timeline Guide.mdx"),
@@ -11944,7 +12069,7 @@ export const guides = {
       translations: { en: "/rs-battery/", zh: "/zh-rs-battery/" },
       guideGroupId: "zh:/rs-battery/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_zh"],
+      displayAttributes: ["translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -11987,7 +12112,7 @@ export const guides = {
       },
       guideGroupId: "zh:/rs-gen3-sid/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["translation_it", "translation_zh"],
+      displayAttributes: ["translation_en", "translation_it", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Find SID.mdx"),
@@ -12023,7 +12148,7 @@ export const guides = {
       translations: { en: "/rs-mirage-island/", zh: "/zh-rs-mirage-island/" },
       guideGroupId: "zh:/rs-mirage-island/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -12060,7 +12185,7 @@ export const guides = {
       translations: { en: "/rs-pokerus-emu/", zh: "/zh-rs-pokerus-emu/" },
       guideGroupId: "zh:rs-pokerus:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "translation_zh"],
+      displayAttributes: ["video_guide", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () => import("~/../guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx"),
@@ -12096,7 +12221,7 @@ export const guides = {
       translations: { en: "/rs-pokerus-retail/", zh: "/zh-rs-pokerus-retail/" },
       guideGroupId: "zh:rs-pokerus:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["web_tool", "translation_zh"],
+      displayAttributes: ["web_tool", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -12135,7 +12260,12 @@ export const guides = {
       translations: { en: "/rs-sid-feebas/", zh: "/zh-rs-sid-feebas/" },
       guideGroupId: "zh:/rs-sid-feebas/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "web_tool", "translation_zh"],
+      displayAttributes: [
+        "video_guide",
+        "web_tool",
+        "translation_en",
+        "translation_zh",
+      ],
     },
     Guide: React.lazy(
       () =>
@@ -12178,7 +12308,7 @@ export const guides = {
       },
       guideGroupId: "zh:/wishing-star-jirachi/:Ruby and Sapphire",
       guideVariantLinks: null,
-      displayAttributes: ["video_guide", "translation_zh"],
+      displayAttributes: ["video_guide", "translation_en", "translation_zh"],
     },
     Guide: React.lazy(
       () =>
@@ -12483,6 +12613,7 @@ export const guideSlugs = [
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
   "/zh-pal-xd-eevee/",
+  "/zh-pcalc-xy-tid/",
   "/zh-retail-dppt-starter/",
   "/zh-retail-emerald-egg/",
   "/zh-retail-emerald-wild/",

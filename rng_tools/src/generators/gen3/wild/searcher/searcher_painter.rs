@@ -9,7 +9,9 @@ use itertools::Itertools;
 // The code currently only supports initial seed 0.
 const INITIAL_SEED: u32 = 0u32;
 
-const DONT_USE_PAINTING_IF_BELOW_ADV: u32 = 200_000; // Painting is only worth doing if wanted advances is >= 200_000.
+// Painting is only worth doing if wanted advances is >= 200_000.
+// The value must be the same as the one in in UI files.
+const DONT_USE_PAINTING_IF_BELOW_ADV: u32 = 200_000;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -65,7 +67,7 @@ impl Wild3PaintingAdvFinder {
     pub fn new(opts: &Wild3PaintingOpts) -> Wild3PaintingAdvFinder {
         Wild3PaintingAdvFinder {
             opts: opts.clone(),
-            lookup_table: create_loopuk_painting_table(opts),
+            lookup_table: create_lookup_painting_table(opts),
         }
     }
     pub fn find_fastest_painting_adv_from_seed(&self, wanted_seed: u32) -> Wild3PaintingAdvs {
@@ -84,11 +86,7 @@ impl Wild3PaintingAdvFinder {
         // Finds first element that is >= wanted_adv.
         let init_idx = self
             .lookup_table
-            .binary_search_by(|el| match el.min_adv_after_painting.cmp(&wanted_adv) {
-                Ordering::Equal => Ordering::Greater,
-                ord => ord,
-            })
-            .unwrap_err(); // Always error because we never return Ordering::Equal.
+            .partition_point(|el| el.min_adv_after_painting < wanted_adv);
 
         let mut current_best: Option<Wild3PaintingAdvs> = None;
         let mut current_score = 0xFFFF_FFFFu64;
@@ -152,7 +150,7 @@ impl Wild3PaintingAdvFinder {
     }
 }
 
-pub fn create_loopuk_painting_table(opts: &Wild3PaintingOpts) -> Vec<Wild3PaintingMinMaxAdvs> {
+pub fn create_lookup_painting_table(opts: &Wild3PaintingOpts) -> Vec<Wild3PaintingMinMaxAdvs> {
     let mut min_max_advs = (0..0x10000u32)
         .flat_map(|i| {
             let adv_state_right_after_painting = lcrng_distance(INITIAL_SEED, i);

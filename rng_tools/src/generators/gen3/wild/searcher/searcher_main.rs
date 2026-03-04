@@ -226,6 +226,3 @@ pub mod searcher_naive;
 
 #[path = "searcher_reverse.rs"]
 pub mod searcher_reverse;
-
-#[path = "searcher_painter.rs"]
-pub mod searcher_painter;

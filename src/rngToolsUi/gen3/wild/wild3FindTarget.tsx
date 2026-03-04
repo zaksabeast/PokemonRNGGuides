@@ -75,6 +75,10 @@ import { formatHex } from "~/utils/formatHex";
 const emeraldWildGameData = getWild3EmeraldGameData();
 const rngManipulatedLeadPidAtom = atom(false);
 
+// Painting is only worth doing if wanted advances is >= 200_000.
+// The value must be the same as the one in in rust searcher files.
+const DONT_USE_PAINTING_IF_BELOW_ADV = 200_000;
+
 /*
 TODO: Investigate duplicate setup entries
 
@@ -997,7 +1001,7 @@ const convertResultsForPidPathToPidPathResult = async (
     paintingAdvs != null
       ? paintingAdvs.adv_before_painting +
         paintingAdvs.adv_after_painting +
-        200_000
+        DONT_USE_PAINTING_IF_BELOW_ADV
       : earliestAdvance;
 
   return {

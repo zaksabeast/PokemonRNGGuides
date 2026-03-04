@@ -29,13 +29,17 @@ pub struct Gen5EntralinkPlusTimerSettings {
 }
 
 pub fn create(opts: &Gen5EntralinkPlusTimerSettings) -> [f32; 3] {
+    let calibrator = opts.console.to_calibrator();
+    let calibration = calibrator.to_ms(opts.calibration);
+    let entralink_calibration = calibrator.to_ms(opts.entralink_calibration);
+
     let phases = entralink_timer::create(
         opts.console,
         opts.min_time_ms,
         opts.target_delay,
         opts.target_second,
-        opts.calibration,
-        opts.entralink_calibration,
+        calibration,
+        entralink_calibration,
     );
 
     create_enhanded_entralink(

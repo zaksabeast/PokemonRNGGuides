@@ -816,18 +816,9 @@ const buildFinalGuides = async ({
         metadata.type === "baseGuide" && metadata.isRoughDraft;
       const roughDraftAttribute = isRoughDraft ? ["rough_draft"] : [];
 
-      const translations = Object.keys(metadata.translations ?? {})
-        .filter((lang) => lang !== "en")
-        .map((lang) => `translation_${lang}`);
-
       return {
         ...metadata,
-        displayAttributes: [
-          ...displayAttributes,
-          ...roughDraftAttribute,
-          "translation_en", // All guides are in English
-          ...translations,
-        ],
+        displayAttributes: [...displayAttributes, ...roughDraftAttribute],
       };
     },
     { concurrency: 5 },

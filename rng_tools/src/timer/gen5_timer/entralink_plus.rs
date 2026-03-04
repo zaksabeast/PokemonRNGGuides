@@ -73,7 +73,7 @@ mod test {
     #[test]
     fn test_create() {
         let settings = Gen5EntralinkPlusTimerSettings {
-            console: Console::ThreeDs,
+            console: Console::NdsSlot1,
             min_time_ms: 14000.0,
             target_delay: 1200.0,
             target_second: 50.0,
@@ -82,13 +82,13 @@ mod test {
             entralink_calibration: 256.0,
             frame_calibration: 0.0,
         };
-        assert_eq!(create(&settings), [30296.0, 19897.0, 119453.0]);
+        assert_eq!(create(&settings), [28803.0, 17367.0, 119453.0]);
     }
 
     #[test]
     fn test_calibrate() {
         let settings = Gen5EntralinkPlusTimerSettings {
-            console: Console::ThreeDs,
+            console: Console::NdsSlot1,
             min_time_ms: 14000.0,
             target_delay: 1200.0,
             target_second: 50.0,
@@ -101,6 +101,6 @@ mod test {
         assert_eq!(settings.calibration, -66.0);
         assert_eq!(settings.entralink_calibration, 255.0);
         assert_eq!(settings.frame_calibration, 1194.5306);
-        assert_eq!(create(&settings), [30325.0, 19869.0, 120647.0]);
+        assert_eq!(create(&settings), [29287.0, 16898.0, 120647.0]);
     }
 }

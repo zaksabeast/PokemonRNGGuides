@@ -90,7 +90,7 @@ mod test {
             target_second: 50.0,
         };
         let result = create(settings);
-        assert_eq!(result, [32849.0, 17350.0]);
+        assert_eq!(result, [32848.0, 17350.0]);
     }
 
     #[test]
@@ -106,6 +106,6 @@ mod test {
         let settings = calibrate(settings, 500.0);
         assert_eq!(settings.calibrated_delay, 400.0);
         let result = create(settings);
-        assert_eq!(result, [32866.0, 17333.0]);
+        assert_eq!(result, [32865.0, 17333.0]);
     }
 }

@@ -25,13 +25,16 @@ pub struct Gen5EntralinkTimerSettings {
 }
 
 fn create(settings: Gen5EntralinkTimerSettings) -> [f32; 2] {
+    let calibrator = settings.console.to_calibrator();
+    let calibration = calibrator.to_ms(settings.calibration);
+    let entralink_calibration = calibrator.to_ms(settings.entralink_calibration);
     entralink_timer::create(
         settings.console,
         settings.min_time_ms,
         settings.target_delay,
         settings.target_second,
-        settings.calibration,
-        settings.entralink_calibration,
+        calibration,
+        entralink_calibration,
     )
 }
 
@@ -43,7 +46,7 @@ fn calibrate(
     let mut calibration = settings.calibration;
     let mut entralink_calibration = settings.entralink_calibration;
     if hit_second != settings.target_second {
-        calibration += get_second_calibration(settings.console, settings.target_delay, hit_second);
+        calibration += get_second_calibration(settings.console, settings.target_second, hit_second);
     }
 
     if hit_delay != settings.target_delay {
@@ -80,29 +83,29 @@ mod test {
     #[test]
     fn test_create() {
         let settings = Gen5EntralinkTimerSettings {
-            console: Console::ThreeDs,
+            console: Console::NdsSlot1,
             min_time_ms: 14000.0,
             target_delay: 1200.0,
             target_second: 50.0,
-            calibration: 892.0,
+            calibration: -95.0,
             entralink_calibration: 256.0,
         };
-        assert_eq!(create(settings), [31283.0, 18910.0]);
+        assert_eq!(create(settings), [28803.0, 17367.0]);
     }
 
     #[test]
     fn test_calibrate() {
         let settings = Gen5EntralinkTimerSettings {
-            console: Console::ThreeDs,
+            console: Console::NdsSlot1,
             min_time_ms: 14000.0,
             target_delay: 1200.0,
             target_second: 50.0,
-            calibration: 892.0,
+            calibration: -95.0,
             entralink_calibration: 256.0,
         };
         let settings = calibrate(settings, 49.0, 1199.0);
-        assert_eq!(settings.calibration, 69721.0);
+        assert_eq!(settings.calibration, -66.0);
         assert_eq!(settings.entralink_calibration, 255.0);
-        assert_eq!(create(settings), [100112.0, -49918.0]);
+        assert_eq!(create(settings), [29287.0, 16898.0]);
     }
 }

@@ -6117,10 +6117,10 @@ export const guides = {
       guideVariants: null,
       guideKey: "/mystic-timer/",
       isNew: false,
-      title: "Mystic Timer - Online Pokémon RNG Timer for Gen 3, 4, and 7",
+      title: "Mystic Timer - Online Pokémon RNG Timer for Gens 3-7",
       navDrawerTitle: "Mystic Timer",
       description:
-        "Mystic Timer is a mobile-friendly alternative to Eon Timer. Perfect for Gen 3, 4, and 7 Pokémon RNG on any device, including Mac, Linux, iOS, and Android.",
+        "Mystic Timer is a mobile-friendly alternative to Eon Timer. Perfect for Gen 3, 4, 5, 6, and 7 Pokémon RNG on any device, including Mac, Linux, iOS, and Android.",
       slug: "/mystic-timer/",
       isRoughDraft: false,
       orderPriority: 20,

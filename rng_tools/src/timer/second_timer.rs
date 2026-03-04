@@ -1,7 +1,7 @@
 use super::min_time::to_minimum_length;
 
 pub fn create(min_time_ms: f32, target_second: f32, calibration: f32) -> f32 {
-    to_minimum_length(min_time_ms, target_second * 1000.0 + calibration + 200.0)
+    to_minimum_length(min_time_ms, target_second * 1000.0 + calibration + 200.0).floor()
 }
 
 pub fn calibrate(target_second: f32, hit_second: f32) -> f32 {

@@ -19,6 +19,7 @@ import { PiPersonSimpleWalkBold } from "react-icons/pi";
 import { FaHeart, FaPlay, FaPatreon, FaArrowUp } from "react-icons/fa6";
 import { TbPokeball } from "react-icons/tb";
 import { IoIosInformationCircle } from "react-icons/io";
+import { BsTranslate } from "react-icons/bs";
 
 const icons = {
   AddCircleOutline: MdAddCircleOutline,
@@ -42,6 +43,7 @@ const icons = {
   ArrowUp: FaArrowUp,
   OpenInNew: MdOpenInNew,
   Edit: MdEdit,
+  Translate: BsTranslate,
 } as const;
 
 export type IconName = keyof typeof icons;

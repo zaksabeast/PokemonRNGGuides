@@ -5,6 +5,7 @@ use crate::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3Action, Wild3EncounterIndex,
         Wild3SearcherOptions, Wild3SearcherResultMon, search_wild3_naive,
     },
+    rng::lcrng::Pokerng,
 };
 
 #[test]
@@ -20,6 +21,7 @@ fn test_search_wild3_naive_no_filter() {
     let expected_results = [
         Wild3SearcherResultMon {
             advance: 0,
+            seed: Pokerng::with_jump(options.initial_seed, 0).seed(),
             map_idx: 0,
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
             cycle_data_by_lead: None,
@@ -36,6 +38,7 @@ fn test_search_wild3_naive_no_filter() {
         },
         Wild3SearcherResultMon {
             advance: 1,
+            seed: Pokerng::with_jump(options.initial_seed, 1).seed(),
             map_idx: 0,
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot5),
             cycle_data_by_lead: None,
@@ -52,6 +55,7 @@ fn test_search_wild3_naive_no_filter() {
         },
         Wild3SearcherResultMon {
             advance: 2,
+            seed: Pokerng::with_jump(options.initial_seed, 2).seed(),
             map_idx: 0,
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
             cycle_data_by_lead: None,
@@ -110,6 +114,7 @@ fn test_search_wild3_naive_with_filter() {
     let expected_results = [
         Wild3SearcherResultMon {
             advance: 908,
+            seed: Pokerng::with_jump(options.initial_seed, 908).seed(),
             map_idx: 0,
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
             cycle_data_by_lead: None,
@@ -127,6 +132,7 @@ fn test_search_wild3_naive_with_filter() {
         },
         Wild3SearcherResultMon {
             advance: 3543,
+            seed: Pokerng::with_jump(options.initial_seed, 3543).seed(),
             map_idx: 0,
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
             cycle_data_by_lead: None,
@@ -144,6 +150,7 @@ fn test_search_wild3_naive_with_filter() {
         },
         Wild3SearcherResultMon {
             advance: 3577,
+            seed: Pokerng::with_jump(options.initial_seed, 3577).seed(),
             map_idx: 0,
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot6),
             cycle_data_by_lead: None,
@@ -185,6 +192,7 @@ fn test_search_wild3_naive_shiny() {
     };
     let expected_results = [Wild3SearcherResultMon {
         advance: 0,
+        seed: Pokerng::with_jump(options.initial_seed, 0).seed(),
         map_idx: 0,
         encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot4),
         cycle_data_by_lead: None,
@@ -216,6 +224,7 @@ fn test_search_wild3_naive_synchronize() {
     let expected_results = [
         Wild3SearcherResultMon {
             advance: 0,
+            seed: Pokerng::with_jump(options.initial_seed, 0).seed(),
             map_idx: 0,
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot4),
             cycle_data_by_lead: None,
@@ -232,6 +241,7 @@ fn test_search_wild3_naive_synchronize() {
         },
         Wild3SearcherResultMon {
             advance: 1,
+            seed: Pokerng::with_jump(options.initial_seed, 1).seed(),
             map_idx: 0,
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot9),
             cycle_data_by_lead: None,
@@ -248,6 +258,7 @@ fn test_search_wild3_naive_synchronize() {
         },
         Wild3SearcherResultMon {
             advance: 2,
+            seed: Pokerng::with_jump(options.initial_seed, 2).seed(),
             map_idx: 0,
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot7),
             cycle_data_by_lead: None,
@@ -302,6 +313,7 @@ fn test_search_wild3_naive_all_methods() {
             nature: Nature::Quiet,
             shiny: true,
             advance: 5022,
+            seed: Pokerng::with_jump(options.initial_seed, 5022).seed(),
             lead: Gen3Lead::Vanilla,
             map_idx: 0,
             hidden_power: HiddenPower::new(PokemonType::Poison, 40),
@@ -318,6 +330,7 @@ fn test_search_wild3_naive_all_methods() {
             nature: Nature::Quiet,
             shiny: true,
             advance: 5080,
+            seed: Pokerng::with_jump(options.initial_seed, 5080).seed(),
             lead: Gen3Lead::Vanilla,
             map_idx: 0,
             hidden_power: HiddenPower::new(PokemonType::Poison, 40),
@@ -358,6 +371,7 @@ fn test_search_wild3_naive_hidden_power() {
         nature: Nature::Serious,
         shiny: false,
         advance: 445,
+        seed: Pokerng::with_jump(options.initial_seed, 445).seed(),
         lead: Gen3Lead::Vanilla,
         map_idx: 0,
         hidden_power: HiddenPower::new(PokemonType::Flying, 68),
@@ -392,6 +406,7 @@ fn test_search_wild3_naive_max_size() {
         nature: Nature::Serious,
         shiny: false,
         advance: 121132,
+        seed: Pokerng::with_jump(options.initial_seed, 121132).seed(),
         lead: Gen3Lead::Vanilla,
         map_idx: 0,
         hidden_power: HiddenPower::new(PokemonType::Ground, 45),

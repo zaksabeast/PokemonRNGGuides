@@ -3,6 +3,7 @@ import { guides, categories, externalGuides } from "./__generated__/guides";
 import { groupBy, flatMap, get, uniq } from "lodash-es";
 import { Route } from "./routes/defs";
 import { SlugOrExternalLink } from "./types/navigation";
+import { LanguageKey, LanguageSchema } from "~/types/language";
 
 export type InternalGuideMeta = tst.U.Exclude<
   GuideMeta,
@@ -62,6 +63,7 @@ export type GamePageGuideCard = {
   hideFromNavDrawer: boolean;
   isRoughDraft: boolean;
   orderPriority: number;
+  translations: LanguageKey[];
   section: GuideMeta["section"];
 };
 
@@ -100,10 +102,6 @@ export const getGuide = (slug: GuideSlug) => {
 };
 
 export type Category = tst.L.UnionOf<typeof categories>;
-
-export type LanguageKey = tst.O.RequiredKeys<
-  tst.U.NonNullable<GuideMeta["translations"]>
->;
 
 const routeToCategory = {
   "/transporter-dream-radar/": ["Transporter and Dream Radar"],
@@ -145,6 +143,17 @@ const hasGuideVariant = (
   return variants.includes(variant);
 };
 
+export const guideTranslationKeys = <
+  Guide extends { translations?: GuideMeta["translations"] },
+>(
+  guide: Guide,
+): LanguageKey[] => {
+  const parsed = LanguageSchema.array().safeParse(
+    Object.keys(guide.translations ?? {}),
+  );
+  return parsed.success ? parsed.data : [];
+};
+
 const createGuideCard = (
   guide: GuideMetaWithCategory,
   variants: GuideVariantLinkPair | null,
@@ -152,6 +161,7 @@ const createGuideCard = (
   return {
     ...guide,
     id: guide.guideGroupId,
+    translations: guideTranslationKeys(guide),
     displayAttributes: [...guide.displayAttributes],
     retailLink: variants?.retail ?? null,
     retailIsNew: guide.isNew && hasGuideVariant(guide, "retail"),
@@ -164,12 +174,16 @@ const mergeGuideCard = (
   existing: GamePageGuideCard,
   variants: GuideVariantLinkPair | null,
   guide: GuideMetaWithCategory,
-) => {
+): GamePageGuideCard => {
   return {
     ...existing,
     displayAttributes: uniq([
       ...existing.displayAttributes,
       ...guide.displayAttributes,
+    ]),
+    translations: uniq([
+      ...existing.translations,
+      ...guideTranslationKeys(guide),
     ]),
     retailLink: variants?.retail ?? existing.retailLink,
     retailIsNew:

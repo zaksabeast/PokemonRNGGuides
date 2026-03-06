@@ -10,6 +10,7 @@ mod searcher_main; // includes searcher_naive and searcher_reverse
 pub use searcher_main::search_wild3;
 pub use searcher_main::searcher_naive::search_wild3_naive;
 pub use searcher_main::searcher_reverse::search_wild3_reverse;
+pub mod searcher_painter;
 
 pub use encounter_idx_path::*;
 pub use iv_path::*;

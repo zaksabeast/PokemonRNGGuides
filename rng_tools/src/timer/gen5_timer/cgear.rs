@@ -14,12 +14,13 @@ pub struct Gen5CGearTimerSettings {
 }
 
 fn create(settings: Gen5CGearTimerSettings) -> [f32; 2] {
+    let calibration = settings.console.to_calibrator().to_ms(settings.calibration);
     let [phase1, phase2] = delay_timer::create(
         settings.console,
         settings.min_time_ms,
         settings.target_delay,
         settings.target_second,
-        settings.calibration,
+        calibration,
     );
     [phase1.floor(), phase2.floor()]
 }
@@ -54,19 +55,19 @@ mod test {
     #[test]
     fn test_create() {
         let settings = Gen5CGearTimerSettings {
-            console: Console::ThreeDs,
+            console: Console::NdsSlot1,
             min_time_ms: 14000.0,
             target_delay: 1200.0,
             target_second: 50.0,
             calibration: -95.0,
         };
-        assert_eq!(create(settings), [30046.0, 20153.0]);
+        assert_eq!(create(settings), [28553.0, 21646.0]);
     }
 
     #[test]
     fn test_calibrate() {
         let settings = Gen5CGearTimerSettings {
-            console: Console::ThreeDs,
+            console: Console::NdsSlot1,
             min_time_ms: 14000.0,
             target_delay: 1200.0,
             target_second: 50.0,
@@ -74,6 +75,6 @@ mod test {
         };
         let settings = calibrate(settings, 1199.0);
         assert_eq!(settings.calibration, -96.0);
-        assert_eq!(create(settings), [30045.0, 20154.0]);
+        assert_eq!(create(settings), [28536.0, 21662.0]);
     }
 }

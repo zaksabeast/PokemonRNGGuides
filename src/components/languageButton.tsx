@@ -5,9 +5,8 @@ import { Icon } from "./icons";
 import { match } from "ts-pattern";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { Route } from "~/routes/defs";
-import { LanguageKey } from "~/guides";
 import { Link } from "./link";
-import { languages } from "~/types/language";
+import { LanguageKey, languages } from "~/types/language";
 
 type Props = {
   en: Route;

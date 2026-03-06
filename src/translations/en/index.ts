@@ -1,4 +1,4 @@
-import { LanguageKey } from "~/guides";
+import { LanguageKey } from "~/types/language";
 
 export const translations = {
   language: "en",

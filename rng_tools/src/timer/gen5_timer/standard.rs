@@ -13,11 +13,8 @@ pub struct Gen5StandardTimerSettings {
 }
 
 fn create(settings: Gen5StandardTimerSettings) -> f32 {
-    second_timer::create(
-        settings.min_time_ms,
-        settings.target_second,
-        settings.calibration,
-    )
+    let calibration = settings.console.to_calibrator().to_ms(settings.calibration);
+    second_timer::create(settings.min_time_ms, settings.target_second, calibration)
 }
 
 fn calibrate(settings: Gen5StandardTimerSettings, hit_second: f32) -> Gen5StandardTimerSettings {
@@ -52,24 +49,24 @@ mod test {
     #[test]
     fn test_create() {
         let settings = Gen5StandardTimerSettings {
-            console: Console::ThreeDs,
+            console: Console::NdsSlot1,
             min_time_ms: 14000.0,
             target_second: 50.0,
             calibration: -95.0,
         };
-        assert_eq!(create(settings), 50105.0);
+        assert_eq!(create(settings), 48612.0);
     }
 
     #[test]
     fn test_calibrate() {
         let settings = Gen5StandardTimerSettings {
-            console: Console::ThreeDs,
+            console: Console::NdsSlot1,
             min_time_ms: 14000.0,
             target_second: 50.0,
             calibration: -95.0,
         };
         let settings = calibrate(settings, 49.0);
         assert_eq!(settings.calibration, -66.0);
-        assert_eq!(create(settings), 50134.0);
+        assert_eq!(create(settings), 49096.0);
     }
 }

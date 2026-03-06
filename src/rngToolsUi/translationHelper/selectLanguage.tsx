@@ -1,6 +1,6 @@
 import { Select } from "~/components";
 import { useTranslationState } from "./state";
-import { LanguageKey } from "~/guides";
+import { LanguageKey } from "~/types/language";
 import { toOptions } from "~/utils/options";
 import { toUpper } from "lodash-es";
 

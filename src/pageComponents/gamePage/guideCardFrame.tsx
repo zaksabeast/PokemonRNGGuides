@@ -3,6 +3,7 @@ import type { ReactNode, ComponentProps } from "react";
 import { Flex, Card, Icon, BadgeRibbon } from "~/components";
 import styled from "@emotion/styled";
 import { DisplayAttribute, DisplayTags } from "./displayTags";
+import { LanguageKey } from "~/types/language";
 
 const { Meta: CardMeta } = AntdCard;
 
@@ -40,6 +41,16 @@ const PokeballContainer = styled.div({
   transformOrigin: "center",
 });
 
+type Props = {
+  cardId: string;
+  title: ReactNode;
+  isNew: boolean;
+  cardProps?: Partial<ComponentProps<typeof GuideCard>>;
+  displayAttributes: readonly DisplayAttribute[];
+  bottomContent?: ReactNode;
+  translations: LanguageKey[];
+};
+
 export const GuideCardFrame = ({
   cardId,
   title,
@@ -47,14 +58,8 @@ export const GuideCardFrame = ({
   cardProps,
   displayAttributes,
   bottomContent,
-}: {
-  cardId: string;
-  title: ReactNode;
-  isNew: boolean;
-  cardProps?: Partial<ComponentProps<typeof GuideCard>>;
-  displayAttributes: readonly DisplayAttribute[];
-  bottomContent?: ReactNode;
-}) => {
+  translations,
+}: Props) => {
   return (
     <GuideCard
       id={cardId}
@@ -76,7 +81,10 @@ export const GuideCardFrame = ({
             </PokeballContainer>
             <Flex vertical gap={8} flex={1}>
               <CardMeta title={title} />
-              <DisplayTags attributes={displayAttributes} />
+              <DisplayTags
+                attributes={displayAttributes}
+                translations={translations}
+              />
             </Flex>
           </Flex>
           {bottomContent}

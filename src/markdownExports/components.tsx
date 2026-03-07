@@ -104,6 +104,10 @@ export const MarkdownA = ({ href, children }: { href: string } & Props) => {
     return <Link href={internalHref.data}>{children}</Link>;
   }
 
+  if (href.startsWith("/downloads/")) {
+    return <a href={href}>{children}</a>;
+  }
+
   try {
     const parsedHref = new URL(href);
     if (parsedHref.protocol === "https:") {

@@ -1,15 +1,11 @@
 import { GenderRatio } from "~/rngTools";
-import { gender, getPossibleGenders } from "~/types/gender";
+import { getPossibleGenders } from "~/types/gender";
 import { useFormContext } from "~/hooks/form";
 import { useEffect } from "react";
 import { useWatch } from "react-hook-form";
-import { type PkmFilterFields } from "./pkmFilter";
-import { FormikSelect } from "./select";
-
-export const genderOptions = ([null, ...gender] as const).map((gen) => ({
-  label: gen ?? ("Any" as const),
-  value: gen,
-}));
+import { type PkmFilterFields } from "../pkmFilter";
+import { FormikSelect } from "../select";
+import { genderOptions } from "./options";
 
 const getGenderFilterOptions = (genderRatio?: GenderRatio) => {
   if (genderRatio == null) {

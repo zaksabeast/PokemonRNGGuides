@@ -13,7 +13,7 @@ import { gen3SpeciesOptions, species } from "~/types/species";
 import { nature } from "~/types/nature";
 import { gender } from "~/types/gender";
 import { natureOptions } from "~/components/pkmFilter";
-import { genderOptions } from "~/components/genderFilter";
+import { genderOptions } from "~/components/genderFilter/options";
 import { z } from "zod";
 import { translateOptions, Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";

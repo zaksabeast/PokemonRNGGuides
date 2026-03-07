@@ -51,6 +51,21 @@ pub struct Wild3PaintingAdvFinder {
 }
 
 #[wasm_bindgen]
+pub fn find_painting_advs_for_seed(opts: &Wild3PaintingOpts, seed: u32) -> Vec<Wild3PaintingAdvs> {
+    let wanted_advances = lcrng_distance(0, seed);
+    let finder = Wild3PaintingAdvFinder::new(opts);
+    finder
+        .lookup_table
+        .iter()
+        .map(|candidate| Wild3PaintingAdvs {
+            adv_before_painting: candidate.adv_before_painting,
+            adv_after_painting: wanted_advances
+                .wrapping_sub(candidate.adv_state_right_after_painting),
+        })
+        .collect()
+}
+
+#[wasm_bindgen]
 pub fn find_fastest_painting_advs(
     opts: &Wild3PaintingOpts,
     wanted_advances: Vec<usize>,

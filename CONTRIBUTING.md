@@ -1,58 +1,21 @@
 If you're interested in contributing, reach out on Discord in our [#site-content channel](https://discord.com/channels/285269328469950464/888240330628005898) to coordinate with us.
 
-<details>
-  <summary><b>Read this if you're interested in translating guides</b></summary>
-
 ## Submitting Translations
 
-There are two ways to submit a translation:
+1. Use our [translation helper](https://www.pokemonrng.com/help-translate/).
+2. Open a PR or send it in the Discord [#site-content channel](https://discord.com/channels/285269328469950464/888240330628005898).
 
-1. Send it to our Discord [#site-content channel](https://discord.com/channels/285269328469950464/888240330628005898)
-2. Submit a GitHub pull request
-
-If you send it to us in Discord, we'll take care of everything from there - you don't need to read the next section.
-
-## Submitting a pull request
-
-If you're submitting a pull request, create a new file in `guides/Translations/language_code`.
-
-For example, if you're `guides/Gen 4/Wild.mdx` to Spanish, create a file at `guides/Translations/es/Gen 4/Wild.mdx`.
-
-Next, add this info to the top of the file:
-
-```mdx
----
-- title: "Translated Title"
-  description: "Translated Description."
-  slug: "es-dppt-wild"
-  translation:
-    enSlug: "dppt-wild"
-    language: "es"
----
-```
-
-- `title` is the translated title
-- `description` is the translated description
-- `slug` is the English slug prefixed with the language code
-- `translation.enSlug` the English slug
-- `translation.language` the language code
-
-The translated contents should follow.
-
-After that, commit and submit the pull request!
-
-If you'd like to see an example, check out any of the files in `guides/Translated`.
-
-</details>
-
-<details>
-  <summary><b>Read this if you're interested in adding or editing guides</b></summary>
+If you'd like to see an example, check out any of the files in `guides/Translations`.
 
 ## Guide writing and updating
 
-Follow our [Style Guide](./Style%20Guide.mdx) when writing the guide.
+1. Write the guide using our [Style Guide](./Style%20Guide.mdx).
+2. Open a PR or send it in the Discord [#site-content channel](https://discord.com/channels/285269328469950464/888240330628005898).
 
-ChatGPT can help with wording, grammar, and formatting. Feel free to use this prompt when writing guides:
+<details>
+<summary>
+  ChatGPT can help with wording, grammar, and formatting. Feel free to use this prompt when writing guides:
+</summary>
 
 ```
 You're helping clean up and simplify guides for Pokémon RNG.
@@ -143,11 +106,9 @@ Always format the guide like this:
 
 * Any line starting with **"Note:"** must be converted into a code block:
 
-```
-
+\`\`\`
 Note: Example note here.
-
-```
+\`\`\`
 
 ---
 
@@ -231,10 +192,9 @@ If appropriate, end with:
 
 </details>
 
-<details>
-  <summary><b>Read this if you're interested in helping code</b></summary>
+## Dev contributions
 
-## Setting up
+### Setting up
 
 First, install these tools:
 
@@ -260,7 +220,7 @@ Finally, start the site:
 bun run dev
 ```
 
-### Additional Windows setup
+#### Additional Windows setup
 
 To avoid wrongly flagging unmodified files as modified, those git settings must be changed:
 
@@ -269,14 +229,14 @@ git config core.filemode false
 git config core.autocrlf input
 ```
 
-## Dev Workflow
+### Dev Workflow
 
 Rust workflow:
 
 1. Make rust changes and ensure tests are written to guarantee logic works as expected
 2. Run `cargo test` to make sure tests pass
 3. Run `cargo fmt` to format code
-4. Run `cargo clippy` to make sure changes don't violate repo rules
+4. Run `bun run lint` to make sure TS and rust changes don't violate repo rules
 5. Run `bun run dev` to build rust as wasm and load the web app
 
 TypeScript workflow:
@@ -290,7 +250,7 @@ If you run into problems with `bun run build:guides`, try `bun run build:guides:
 
 `bun run build:guides:force` is primarily for automatically resolving merge conflicts with `src/__generated/guides.ts`, or if changes were made to `build-guides.tsx` that aren't compatible with your current branch.
 
-## Helpful tips for VSCode users
+### Helpful tips for VSCode users
 
 Automatic formatting:
 
@@ -303,5 +263,3 @@ Other helpful plugins:
 - [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to view code violations without running commands
 - [MDX](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for mdx highlighting
 - [Bun](https://marketplace.visualstudio.com/items?itemName=oven.bun-vscode) for better bun integration
-
-</details>

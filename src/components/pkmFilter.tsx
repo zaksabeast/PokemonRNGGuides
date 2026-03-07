@@ -17,7 +17,7 @@ import {
 import { HiddenPowerInput } from "./hiddenPowerInput.component";
 import { StatsFilterSchema } from "../types/stat";
 import { Translations } from "~/translations";
-import { GenderFilter } from "./genderFilter.component";
+import { GenderFilter } from "./genderFilter";
 
 const sortedNatures = nature.toSorted();
 

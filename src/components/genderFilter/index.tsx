@@ -3,9 +3,9 @@ import { getPossibleGenders } from "~/types/gender";
 import { useFormContext } from "~/hooks/form";
 import { useEffect } from "react";
 import { useWatch } from "react-hook-form";
-import { type PkmFilterFields } from "./pkmFilter";
-import { FormikSelect } from "./select";
-import { genderOptions } from "./genderFilter";
+import { type PkmFilterFields } from "../pkmFilter";
+import { FormikSelect } from "../select";
+import { genderOptions } from "./options";
 
 const getGenderFilterOptions = (genderRatio?: GenderRatio) => {
   if (genderRatio == null) {

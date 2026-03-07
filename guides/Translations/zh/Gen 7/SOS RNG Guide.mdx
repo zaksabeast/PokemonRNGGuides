@@ -7,9 +7,9 @@
     language: "zh"
 - title: "《太阳/月亮》闯入对战呼唤乱数指南"
   description: "学习如何在《太阳/月亮》中通过闯入对战呼唤乱数获取异色宝可梦、高个体值（IVs）和隐藏特性。"
-  slug: "zh-retail-usum-sos"
+  slug: "zh-retail-sm-sos"
   translation:
-    enSlug: "retail-usum-sos"
+    enSlug: "retail-sm-sos"
     language: "zh"
 ---
 
@@ -20,7 +20,7 @@
 
 ## 推荐阅读
 
-<ShowIf slug="/retail-usum-sos">
+<ShowIf slug="/zh-retail-usum-sos">
 
 - [闯入对战呼唤概率表](/sos-call-rates)
 - [《究极之日》遭遇表](https://gist.github.com/SciresM/a539739085e24af55dffdf443cb70eb2)
@@ -29,7 +29,7 @@
 
 </ShowIf>
 
-<ShowIf slug="/retail-sm-sos">
+<ShowIf slug="/zh-retail-sm-sos">
 
 - [闯入对战呼唤概率表](/sos-call-rates)
 - [《太阳》遭遇表](https://gist.github.com/RichardPaulAstley/42fbabe24250969f22d18fe8b919c520)
@@ -50,6 +50,7 @@
 - 主乱数：决定个体值（IVs）、性格、性别及PID（包含异色判定）。
 
 闯入对战呼唤分为两类：
+
 1. 场上存在两只宝可梦，其中一只濒死。
 2. 最后一次呼唤失败，需使用道具触发新呼唤（稳定性更高，适合乱数操作）。
 
@@ -128,6 +129,7 @@
    ![结果分析](/images/UltraSun-UltraMoon/SOS/Results.png)
 
 4. 输入数据后，预判下回合呼唤结果：
+
    - 若闯入对战信息前两项均为`O`，则呼唤成功。
    - 否则，根据"推进值"确定下一有效呼唤索引。
    - 若上回合呼唤失败，下次搜索前务必勾选"最后呼唤失败"。

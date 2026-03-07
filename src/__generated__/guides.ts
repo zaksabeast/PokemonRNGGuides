@@ -6193,7 +6193,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 6/Mirage Spot.mdx",
-      translations: null,
+      translations: { en: "/oras-mirage-spots/", zh: "/zh-oras-mirage-spots/" },
       guideGroupId: "en:/oras-mirage-spots/:Omega Ruby and Alpha Sapphire",
       guideVariantLinks: {
         retail: null,
@@ -6306,7 +6306,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 6/Friend Safari RNG Guide.mdx",
-      translations: null,
+      translations: {
+        en: "/pcalc-xy-friend-safari/",
+        zh: "/zh-pcalc-xy-friend-safari/",
+      },
       guideGroupId: "en:/pcalc-xy-friend-safari/:X and Y",
       guideVariantLinks: {
         retail: null,
@@ -6681,7 +6684,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-oras-egg-mmsc/",
+        zh: "/zh-retail-oras-egg-mmsc/",
+      },
       guideGroupId: "en:/retail-oras-egg-mmsc/:Omega Ruby and Alpha Sapphire",
       guideVariantLinks: {
         retail: null,
@@ -7175,7 +7181,7 @@ export const guides = {
       canonical: "/retail-usum-sos/",
       type: "baseGuide",
       file: "guides/Gen 7/SOS RNG Guide.mdx",
-      translations: null,
+      translations: { en: "/retail-sm-sos/", zh: "/zh-retail-sm-sos/" },
       guideGroupId: "en:/retail-sm-sos/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7811,7 +7817,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 7/SOS RNG Guide.mdx",
-      translations: null,
+      translations: { en: "/retail-usum-sos/", zh: "/zh-retail-usum-sos/" },
       guideGroupId: "en:/retail-usum-sos/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -8038,7 +8044,10 @@ export const guides = {
       canonical: "/retail-oras-egg-mmsc/",
       type: "baseGuide",
       file: "guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-xy-egg-mmsc/",
+        zh: "/zh-retail-xy-egg-mmsc/",
+      },
       guideGroupId: "en:/retail-xy-egg-mmsc/:X and Y",
       guideVariantLinks: {
         retail: null,
@@ -8998,7 +9007,10 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 6/Friend Safari Patch.mdx",
-      translations: null,
+      translations: {
+        en: "/xy-friend-safari-patch/",
+        zh: "/zh-xy-friend-safari-patch/",
+      },
       guideGroupId: "en:/xy-friend-safari-patch/:X and Y",
       guideVariantLinks: null,
       displayAttributes: ["video_guide"],
@@ -9035,7 +9047,7 @@ export const guides = {
       canonical: null,
       type: "baseGuide",
       file: "guides/Gen 6/PokeRadar.mdx",
-      translations: null,
+      translations: { en: "/xy-pokeradar/", zh: "/zh-xy-pokeradar/" },
       guideGroupId: "en:/xy-pokeradar/:X and Y",
       guideVariantLinks: {
         retail: null,
@@ -11389,6 +11401,43 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-oras-mirage-spots/": {
+    meta: {
+      id: "/oras-mirage-spots/",
+      categories: ["Omega Ruby and Alpha Sapphire"],
+      section: "other_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/oras-mirage-spots/",
+      isNew: false,
+      title: "欧米伽红宝石与阿尔法蓝宝石幻之地点乱数",
+      navDrawerTitle: "欧米伽红宝石与阿尔法蓝宝石幻之地点乱数",
+      description:
+        "学习如何在《欧米伽红宝石 / 阿尔法蓝宝石》中乱数指定任意幻之地点，以遭遇稀有宝可梦与异色宝可梦。",
+      slug: "/zh-oras-mirage-spots/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-14",
+      translation: { enSlug: "/oras-mirage-spots/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/Mirage Spot.mdx",
+      translations: { en: "/oras-mirage-spots/", zh: "/zh-oras-mirage-spots/" },
+      guideGroupId: "zh:/oras-mirage-spots/:Omega Ruby and Alpha Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 6/Mirage Spot.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/Mirage Spot.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-pal-xd-eevee/": {
     meta: {
       id: "/pal-xd-eevee/",
@@ -11424,6 +11473,47 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gamecube/(XD) PAL Starter Eevee RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-pcalc-xy-friend-safari/": {
+    meta: {
+      id: "/pcalc-xy-friend-safari/",
+      categories: ["X and Y"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/pcalc-xy-friend-safari/",
+      isNew: false,
+      title: "X/Y 朋友狩猎区乱数指南",
+      navDrawerTitle: "X/Y 朋友狩猎区乱数指南",
+      description:
+        "学习如何在《宝可梦 X/Y》中通过朋友狩猎区乱数获取异色六V宝可梦，包括百变怪和其他稀有种类。",
+      slug: "/zh-pcalc-xy-friend-safari/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/pcalc-xy-friend-safari/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/Friend Safari RNG Guide.mdx",
+      translations: {
+        en: "/pcalc-xy-friend-safari/",
+        zh: "/zh-pcalc-xy-friend-safari/",
+      },
+      guideGroupId: "zh:/pcalc-xy-friend-safari/:X and Y",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 6/Friend Safari RNG Guide.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/Friend Safari RNG Guide.mdx?raw"
       );
       return file.default;
     }),
@@ -11629,6 +11719,51 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-oras-egg-mmsc/": {
+    meta: {
+      id: "/retail-oras-egg-mmsc/",
+      categories: ["Omega Ruby and Alpha Sapphire"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-oras-egg-mmsc/",
+      isNew: false,
+      title:
+        "在欧米伽红宝石与阿尔法蓝宝石中使用 Masuda 法或闪耀护符进行孵化乱数",
+      navDrawerTitle:
+        "在欧米伽红宝石与阿尔法蓝宝石中使用 Masuda 法或闪耀护符进行孵化乱数",
+      description:
+        "学习如何在欧米伽红宝石/阿尔法蓝宝石中，通过培育屋进行的孵化乱数，以获得异色或高个体值宝可梦。",
+      slug: "/zh-retail-oras-egg-mmsc/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-oras-egg-mmsc/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
+      translations: {
+        en: "/retail-oras-egg-mmsc/",
+        zh: "/zh-retail-oras-egg-mmsc/",
+      },
+      guideGroupId: "zh:/retail-oras-egg-mmsc/:Omega Ruby and Alpha Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-oras-tid/": {
     meta: {
       id: "/retail-oras-tid/",
@@ -11797,6 +11932,43 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-sm-sos/": {
+    meta: {
+      id: "/retail-sm-sos/",
+      categories: ["Sun and Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-sos/",
+      isNew: false,
+      title: "《太阳/月亮》闯入对战呼唤乱数指南",
+      navDrawerTitle: "《太阳/月亮》闯入对战呼唤乱数指南",
+      description:
+        "学习如何在《太阳/月亮》中通过闯入对战呼唤乱数获取异色宝可梦、高个体值（IVs）和隐藏特性。",
+      slug: "/zh-retail-sm-sos/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-sos/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/SOS RNG Guide.mdx",
+      translations: { en: "/retail-sm-sos/", zh: "/zh-retail-sm-sos/" },
+      guideGroupId: "zh:/retail-sm-sos/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/SOS RNG Guide.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/SOS RNG Guide.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-sm-timeline/": {
     meta: {
       id: "/retail-sm-timeline/",
@@ -11926,6 +12098,43 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-usum-sos/": {
+    meta: {
+      id: "/retail-usum-sos/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-sos/",
+      isNew: false,
+      title: "《究极之日/究极之月》闯入对战呼唤乱数指南",
+      navDrawerTitle: "《究极之日/究极之月》闯入对战呼唤乱数指南",
+      description:
+        "学习如何在《究极之日/究极之月》中通过闯入对战呼唤乱数获取异色宝可梦、高个体值（IVs）和隐藏特性。",
+      slug: "/zh-retail-usum-sos/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-sos/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/SOS RNG Guide.mdx",
+      translations: { en: "/retail-usum-sos/", zh: "/zh-retail-usum-sos/" },
+      guideGroupId: "zh:/retail-usum-sos/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/SOS RNG Guide.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/SOS RNG Guide.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-usum-timeline/": {
     meta: {
       id: "/retail-usum-timeline/",
@@ -11961,6 +12170,49 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/Timeline Guide.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-xy-egg-mmsc/": {
+    meta: {
+      id: "/retail-xy-egg-mmsc/",
+      categories: ["X and Y"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-xy-egg-mmsc/",
+      isNew: false,
+      title: "在X与Y中使用 Masuda 法或闪耀护符进行孵化乱数",
+      navDrawerTitle: "在X与Y中使用 Masuda 法或闪耀护符进行孵化乱数",
+      description:
+        "学习如何在X/Y中，通过培育屋进行的孵化乱数，以获得异色或高个体值宝可梦。",
+      slug: "/zh-retail-xy-egg-mmsc/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-xy-egg-mmsc/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
+      translations: {
+        en: "/retail-xy-egg-mmsc/",
+        zh: "/zh-retail-xy-egg-mmsc/",
+      },
+      guideGroupId: "zh:/retail-xy-egg-mmsc/:X and Y",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
       );
       return file.default;
     }),
@@ -12235,6 +12487,83 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Wishing Star Jirachi.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-xy-friend-safari-patch/": {
+    meta: {
+      id: "/xy-friend-safari-patch/",
+      categories: ["X and Y"],
+      section: "patch",
+      guideVariants: null,
+      guideKey: "/xy-friend-safari-patch/",
+      isNew: false,
+      title: "XY全朋友狩猎区补丁",
+      navDrawerTitle: "XY全朋友狩猎区补丁",
+      description:
+        "介绍如何使用游戏补丁在《宝可梦 X / Y》中解锁全部朋友狩猎区宝可梦，包括百变怪与花纹蝶。",
+      slug: "/zh-xy-friend-safari-patch/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/xy-friend-safari-patch/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/Friend Safari Patch.mdx",
+      translations: {
+        en: "/xy-friend-safari-patch/",
+        zh: "/zh-xy-friend-safari-patch/",
+      },
+      guideGroupId: "zh:/xy-friend-safari-patch/:X and Y",
+      guideVariantLinks: null,
+      displayAttributes: ["video_guide"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 6/Friend Safari Patch.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/Friend Safari Patch.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-xy-pokeradar/": {
+    meta: {
+      id: "/xy-pokeradar/",
+      categories: ["X and Y"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/xy-pokeradar/",
+      isNew: false,
+      title: "X 与 Y PokéRadar 乱数",
+      navDrawerTitle: "X 与 Y PokéRadar 乱数",
+      description:
+        "学习如何在《宝可梦 X / Y》中使用 PokéRadar 进行乱数，以获取异色宝可梦。",
+      slug: "/zh-xy-pokeradar/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-24",
+      translation: { enSlug: "/xy-pokeradar/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/PokeRadar.mdx",
+      translations: { en: "/xy-pokeradar/", zh: "/zh-xy-pokeradar/" },
+      guideGroupId: "zh:/xy-pokeradar/:X and Y",
+      guideVariantLinks: null,
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 6/PokeRadar.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/PokeRadar.mdx?raw"
       );
       return file.default;
     }),
@@ -12528,20 +12857,26 @@ export const guideSlugs = [
   "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",
   "/zh-misc-dolphin-gba-bios/",
+  "/zh-oras-mirage-spots/",
   "/zh-pal-xd-eevee/",
+  "/zh-pcalc-xy-friend-safari/",
   "/zh-pcalc-xy-tid/",
   "/zh-retail-dppt-starter/",
   "/zh-retail-emerald-egg/",
   "/zh-retail-emerald-wild/",
   "/zh-retail-hgss-starter/",
+  "/zh-retail-oras-egg-mmsc/",
   "/zh-retail-oras-tid/",
   "/zh-retail-rubysapphire-tid/",
   "/zh-retail-sm-egg-no-mmsc/",
   "/zh-retail-sm-initial-seed-clocks/",
+  "/zh-retail-sm-sos/",
   "/zh-retail-sm-timeline/",
   "/zh-retail-usum-egg-no-mmsc/",
   "/zh-retail-usum-initial-seed-clocks/",
+  "/zh-retail-usum-sos/",
   "/zh-retail-usum-timeline/",
+  "/zh-retail-xy-egg-mmsc/",
   "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",
   "/zh-rs-mirage-island/",
@@ -12549,6 +12884,8 @@ export const guideSlugs = [
   "/zh-rs-pokerus-retail/",
   "/zh-rs-sid-feebas/",
   "/zh-wishing-star-jirachi/",
+  "/zh-xy-friend-safari-patch/",
+  "/zh-xy-pokeradar/",
 ] as const;
 
 export const categories = [

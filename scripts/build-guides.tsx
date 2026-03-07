@@ -443,7 +443,11 @@ const getPairingGroupId = (guide: GuidePairingSource) => {
 };
 
 const computeFileHash = (content: Buffer | string): string => {
-  const buffer = typeof content === "string" ? Buffer.from(content) : content;
+  // Normalize to string and convert CRLF to LF for consistent hashing across platforms
+  let text = typeof content === "string" ? content : content.toString("utf-8");
+  text = text.replace(/\r\n/g, "\n");
+
+  const buffer = Buffer.from(text, "utf-8");
   return createHash("sha256").update(buffer).digest("hex");
 };
 

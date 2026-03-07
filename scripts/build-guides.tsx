@@ -14,6 +14,8 @@ import {
   groupBy,
   forEach,
   partition,
+  xor,
+  isEqual,
 } from "lodash-es";
 import { type SlugOrExternalLink } from "../src/types/navigation";
 import { guides as existingGuides } from "../src/__generated__/guides";
@@ -1008,28 +1010,38 @@ const checkCompiledGuidesUpToDate = async (
   }
 
   const previousHashes = await loadPreviousHashes();
-  const hashesMatch =
-    JSON.stringify(currentHashes) ===
-    JSON.stringify(
-      Object.fromEntries(
-        Object.entries(previousHashes).map(([slug, entry]) => [
-          slug,
-          entry.hash,
-        ]),
-      ),
-    );
+  const storedHashes = Object.fromEntries(
+    Object.entries(previousHashes).map(([slug, entry]) => [slug, entry.hash]),
+  );
+
+  const hashesMatch = isEqual(currentHashes, storedHashes);
 
   if (!hashesMatch) {
-    const storedHashes = Object.fromEntries(
-      Object.entries(previousHashes).map(([slug, entry]) => [slug, entry.hash]),
-    );
-
     // Find first mismatch for debugging
-    for (const [slug, currentHash] of Object.entries(currentHashes)) {
-      if (storedHashes[slug] !== currentHash) {
+    const currentSlugs = Object.keys(currentHashes).sort();
+    const storedSlugs = Object.keys(storedHashes).sort();
+
+    const diffSlugs = xor(storedSlugs, currentSlugs);
+    const missingInCurrent = diffSlugs.filter((s) => !currentHashes[s]);
+    const extraInCurrent = diffSlugs.filter((s) => !storedHashes[s]);
+
+    if (missingInCurrent.length > 0) {
+      console.error(
+        `Guides removed: ${missingInCurrent.slice(0, 3).join(", ")}${missingInCurrent.length > 3 ? ` (and ${missingInCurrent.length - 3} more)` : ""}`,
+      );
+    }
+
+    if (extraInCurrent.length > 0) {
+      console.error(
+        `Guides added: ${extraInCurrent.slice(0, 3).join(", ")}${extraInCurrent.length > 3 ? ` (and ${extraInCurrent.length - 3} more)` : ""}`,
+      );
+    }
+
+    for (const slug of currentSlugs) {
+      if (storedHashes[slug] !== currentHashes[slug]) {
         console.error(`First hash mismatch: ${slug}`);
         console.error(`  Stored: ${storedHashes[slug]?.substring(0, 16)}`);
-        console.error(`  Current: ${currentHash.substring(0, 16)}`);
+        console.error(`  Current: ${currentHashes[slug].substring(0, 16)}`);
         break;
       }
     }

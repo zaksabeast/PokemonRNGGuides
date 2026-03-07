@@ -405,7 +405,9 @@ const getFields = (
 };
 
 export const Wild3MethodDistributionFields = () => {
-  const { setFieldValue } = useFormContext<FormState>();
+  const { setFieldValue, reset } = useFormContext<FormState>();
+  reset();
+
   const map = useWatch<FormState, "map">({ name: "map" });
   const leadIdx = useWatch<FormState, "leadIdx">({
     name: "leadIdx",
@@ -688,8 +690,6 @@ export const Wild3MethodDistribution = ({
     console.log(1);
     return getInitialValues({ leadCycleSpeed, fixedData });
   }, [leadCycleSpeed, fixedData]);
-
-  console.log(initialValues);
 
   return (
     <>

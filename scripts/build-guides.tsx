@@ -1020,6 +1020,20 @@ const checkCompiledGuidesUpToDate = async (
     );
 
   if (!hashesMatch) {
+    const storedHashes = Object.fromEntries(
+      Object.entries(previousHashes).map(([slug, entry]) => [slug, entry.hash]),
+    );
+
+    // Find first mismatch for debugging
+    for (const [slug, currentHash] of Object.entries(currentHashes)) {
+      if (storedHashes[slug] !== currentHash) {
+        console.error(`First hash mismatch: ${slug}`);
+        console.error(`  Stored: ${storedHashes[slug]?.substring(0, 16)}`);
+        console.error(`  Current: ${currentHash.substring(0, 16)}`);
+        break;
+      }
+    }
+
     console.error(
       "Guide hashes are out of date. Please run `bun run build:guides` to update them.",
     );

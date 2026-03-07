@@ -166,6 +166,10 @@ const tools = {
     import("~/rngToolsUi/gen3/pidSpeedCalculator"),
     (mod) => mod.Gen3PidSpeedCalculator,
   ),
+  EmeraldSeedToAdvances: lazyLoad(
+    import("~/rngToolsUi/gen3/wild/seedToAdvances"),
+    (mod) => mod.EmeraldSeedToAdvances,
+  ),
   Gen3TidSidGenerator: lazyLoad(
     import("~/rngToolsUi/gen3/tidsid"),
     (mod) => mod.Gen3TidSidGenerator,

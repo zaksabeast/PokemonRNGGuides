@@ -72,6 +72,7 @@ const convertResultsForPidPathToPidPathResult = async (
       return {
         ...res,
         uid: nextUid++,
+        mapId: mapSetup.map_data.map_id,
         mapName,
         actionName: formatActionName(res.action),
         primaryLikelihood,

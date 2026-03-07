@@ -11,6 +11,10 @@ import { formatLeadName, formatMassOutbreakStateName } from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { PidPathResult, ResultSetupInfo } from "./wild3FindTarget";
+import {
+  Props as DistributionProps,
+  Wild3MethodDistribution,
+} from "./wild3MethodDistribution";
 
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
@@ -332,6 +336,27 @@ const getResultSetupInfoColumns = ({
   return columns;
 };
 
+const resultSetupInfoToDistributionProps = (
+  setup: ResultSetupInfo,
+): DistributionProps => {
+  return {
+    fixedData: {
+      map: setup.mapId,
+      action: setup.action,
+      advance: setup.advance,
+      tid: 0,
+      sid: 0,
+      lead: setup.lead,
+      roamerState: setup.roamer_state,
+      feebasState: setup.feebas_state,
+      massOutbreakState: setup.mass_outbreak_state,
+      initial_seed: setup.painting_advs?.adv_before_painting ?? 0,
+    },
+    leadCycleSpeed:
+      setup.cycle_data_by_lead?.ideal_lead.lead_pid_cycle_count ?? null,
+  };
+};
+
 export const Wild3ResultSetupInfos = ({
   selectedPidPathResult,
   rngManipulatedLeadPid,
@@ -357,11 +382,32 @@ export const Wild3ResultSetupInfos = ({
     });
   }, [rngManipulatedLeadPid, selectedPidPathResult]);
 
-  return selectedPidPathResult != null ? (
-    <ResultTable<ResultSetupInfo>
-      columns={resultSetupInfoColumns}
-      rowKey="uid"
-      dataSource={selectedPidPathResult.resultSetupInfos}
-    />
-  ) : null;
+  const [distributionProps, setDistributionProps] =
+    React.useState<DistributionProps | null>(null);
+
+  React.useEffect(() => {
+    setDistributionProps(null);
+  }, [selectedPidPathResult]);
+
+  if (selectedPidPathResult == null) {
+    return null;
+  }
+
+  return (
+    <>
+      <ResultTable<ResultSetupInfo>
+        columns={resultSetupInfoColumns}
+        rowKey="uid"
+        dataSource={selectedPidPathResult.resultSetupInfos}
+        rowSelection={{
+          type: "radio",
+          onSelect: (record) =>
+            setDistributionProps(resultSetupInfoToDistributionProps(record)),
+        }}
+      />
+      {distributionProps != null && (
+        <Wild3MethodDistribution {...distributionProps} />
+      )}
+    </>
+  );
 };

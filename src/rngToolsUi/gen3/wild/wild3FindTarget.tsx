@@ -96,6 +96,7 @@ export type PidPathResult = FlattenIvs<
 
 export type ResultSetupInfo = Wild3SearcherResultMon & {
   uid: number;
+  mapId: string;
   mapName: string;
   actionName: string;
   primaryLikelihood: number;

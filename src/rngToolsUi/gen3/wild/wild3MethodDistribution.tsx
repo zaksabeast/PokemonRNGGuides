@@ -8,6 +8,9 @@ import {
   CycleAtMoment,
   Wild3GeneratorOptions,
   Wild3Action,
+  Wild3MassOutbreakState,
+  Wild3FeebasState,
+  Wild3RoamerState,
 } from "~/rngTools";
 import {
   Field,
@@ -20,6 +23,7 @@ import {
   FormikRadio,
   FormikSwitch,
   Link,
+  Icon,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatProbability } from "~/utils/formatProbability";
@@ -57,6 +61,7 @@ import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
 import { uniq } from "lodash-es";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { Tooltip } from "antd";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -69,6 +74,23 @@ const leadSpeedTypes = [
   "From PID",
   "Custom",
 ] as const satisfies readonly LeadSpeedType[];
+
+export type Props = {
+  fixedData: {
+    map: string;
+    action: Wild3Action;
+    advance: number;
+    tid: number;
+    sid: number;
+    lead: Gen3Lead;
+    roamerState: Wild3RoamerState;
+    feebasState: Wild3FeebasState;
+    massOutbreakState: Wild3MassOutbreakState;
+    initial_seed: number;
+  } | null;
+
+  leadCycleSpeed: number | null;
+};
 
 const Validator = z.object({
   map: z.string(),
@@ -89,26 +111,46 @@ const Validator = z.object({
   massOutbreakState: z.enum(wild3MassOutbreakStates),
   usingPaintingReseeding: z.boolean(),
   initial_seed: z.number().min(0).max(0xffffffff),
+  hadPreselectedData: z.boolean(),
 });
 
 type FormState = z.infer<typeof Validator>;
 
-const getInitialValues = (): FormState => {
+const getInitialValues = ({ fixedData, leadCycleSpeed }: Props): FormState => {
+  const leadIdx =
+    fixedData != null
+      ? gen3Leads.findIndex(
+          (lead) => JSON.stringify(lead) === JSON.stringify(fixedData.lead),
+        )
+      : 0;
+
+  const leadSpeedType = match(leadCycleSpeed)
+    .with(null, () => "Average" as const)
+    .with(0, () => "Average" as const) // Egg
+    .with(18, () => "Fastest" as const)
+    .with(900, () => "Slowest" as const)
+    .with(775, () => "Average" as const)
+    .otherwise(() => "Custom" as const);
+
   return {
-    map: "MAP_ROUTE101",
-    action: "SweetScentLand",
-    tid: 0,
-    sid: 0,
-    advance: 0,
-    leadIdx: 0,
-    leadSpeedType: "Average",
+    map: fixedData?.map ?? "MAP_ROUTE101",
+    action: fixedData?.action ?? "SweetScentLand",
+    tid: fixedData?.tid ?? 0,
+    sid: fixedData?.sid ?? 0,
+    advance: fixedData?.advance ?? 0,
+    leadIdx: Math.max(leadIdx, 0),
+    leadSpeedType,
     leadPID: 0,
-    leadCycleSpeed: 0,
-    feebasState: "NotInMap",
-    roamerState: "Inactive",
-    massOutbreakState: "Inactive",
-    usingPaintingReseeding: false,
-    initial_seed: 0,
+    leadCycleSpeed: matchLeadCycleSpeed(leadSpeedType).otherwise(
+      () => leadCycleSpeed ?? 775,
+    ),
+    feebasState: fixedData?.feebasState ?? "NotInMap",
+    roamerState: fixedData?.roamerState ?? "Inactive",
+    massOutbreakState: fixedData?.massOutbreakState ?? "Inactive",
+    usingPaintingReseeding:
+      fixedData != null ? fixedData.initial_seed !== 0 : false,
+    initial_seed: fixedData?.initial_seed ?? 0,
+    hadPreselectedData: fixedData != null,
   };
 };
 
@@ -152,6 +194,7 @@ const getFields = (
   leadCycleSpeed: number,
   usingPaintingReseeding: boolean,
   equivalentInitialAdvs: number,
+  hadPreselectedData: boolean,
 ): Field[] => {
   const { actions, feebas_states, roamer_states, mass_outbreak_states } =
     getPossibleValuesForMap(mapId, action);
@@ -164,6 +207,7 @@ const getFields = (
           options={toOptions(emeraldWildGameData.maps, formatMapName)}
         />
       ),
+      hide: hadPreselectedData,
     },
   ];
 
@@ -180,14 +224,17 @@ const getFields = (
           options={toOptions(actions, formatActionName)}
         />
       ),
+      hide: hadPreselectedData,
     },
     {
       label: "TID",
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+      hide: hadPreselectedData,
     },
     {
       label: "SID",
       input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
+      hide: hadPreselectedData,
     },
     {
       label: "Lead",
@@ -198,12 +245,23 @@ const getFields = (
           options={leadsLabels}
         />
       ),
+      hide: hadPreselectedData,
     },
   );
 
   if (leadType !== "Egg") {
     fields.push({
-      label: "Lead Speed",
+      label: (
+        <>
+          <Link newTab href="/gba-methods-lead-impact/">
+            Lead Speed
+          </Link>{" "}
+          <Tooltip title="The PID of the first Pokémon in the party impacts the RNG.">
+            <Icon name="InformationCircle" size={16} />
+          </Tooltip>
+        </>
+      ),
+      key: "Lead Speed",
       input: (
         <FormikRadio<FormState>
           name="leadSpeedType"
@@ -278,23 +336,25 @@ const getFields = (
     ),
     key: "usingPaintingReseeding",
     input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
+    hide: hadPreselectedData,
   });
 
   fields.push({
     label: "Seed after Painting Reseeding",
     input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
-    hide: !usingPaintingReseeding,
+    hide: hadPreselectedData || !usingPaintingReseeding,
   });
 
   fields.push({
     label: usingPaintingReseeding ? "Advances after reseeding" : "Advances",
     input: <FormikNumberInput<FormState> name="advance" numType="decimal" />,
+    hide: hadPreselectedData,
   });
 
   fields.push({
     label: "",
     key: "Equivalent to Advances",
-    hide: !usingPaintingReseeding,
+    hide: hadPreselectedData || !usingPaintingReseeding,
     input: (
       <>
         Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
@@ -312,6 +372,7 @@ const getFields = (
           options={toOptions(feebas_states, formatFeebasStateName)}
         />
       ),
+      hide: hadPreselectedData,
     });
   }
 
@@ -324,6 +385,7 @@ const getFields = (
           options={toOptions(roamer_states, formatRoamerStateName)}
         />
       ),
+      hide: hadPreselectedData,
     });
   }
 
@@ -336,6 +398,7 @@ const getFields = (
           options={toOptions(mass_outbreak_states, formatMassOutbreakStateName)}
         />
       ),
+      hide: hadPreselectedData,
     });
   }
   return fields;
@@ -373,6 +436,9 @@ export const Wild3MethodDistributionFields = () => {
   const advance = useWatch<FormState, "advance">({
     name: "advance",
   });
+  const hadPreselectedData = useWatch<FormState, "hadPreselectedData">({
+    name: "hadPreselectedData",
+  });
 
   const [equivalentInitialAdvs, setEquivalentInitialAdvs] = React.useState(0);
   React.useEffect(() => {
@@ -390,6 +456,7 @@ export const Wild3MethodDistributionFields = () => {
       leadCycleSpeed,
       usingPaintingReseeding,
       equivalentInitialAdvs,
+      hadPreselectedData,
     );
   }, [
     map,
@@ -399,6 +466,7 @@ export const Wild3MethodDistributionFields = () => {
     leadCycleSpeed,
     usingPaintingReseeding,
     equivalentInitialAdvs,
+    hadPreselectedData,
   ]);
 
   React.useEffect(() => {
@@ -440,7 +508,10 @@ export const Wild3MethodDistributionFields = () => {
   return <FormFieldTable fields={fields} />;
 };
 
-const getColumns = (_t: Translations): ResultColumn<UiResult>[] => {
+const getColumns = (
+  _t: Translations,
+  hadPreselectedData: boolean,
+): ResultColumn<UiResult>[] => {
   const columns: ResultColumn<UiResult>[] = [
     {
       title: (
@@ -479,15 +550,26 @@ const getColumns = (_t: Translations): ResultColumn<UiResult>[] => {
       monospace: true,
       render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
     },
-    {
-      title: "Shiny",
-      dataIndex: "shiny",
-      render: (shiny: boolean) => (shiny ? "Yes" : "No"),
-    },
+    ...(hadPreselectedData
+      ? []
+      : [
+          {
+            title: "Shiny",
+            dataIndex: "shiny",
+            render: (shiny: boolean) => (shiny ? "Yes" : "No"),
+          } as const,
+        ]),
     ...ivColumns,
   ];
 
   return columns;
+};
+
+const matchLeadCycleSpeed = (leadSpeedType: LeadSpeedType) => {
+  return match(leadSpeedType)
+    .with("Fastest", () => 18)
+    .with("Slowest", () => 900)
+    .with("Average", () => 775);
 };
 
 const calculateLeadCycleSpeed = async (
@@ -495,10 +577,7 @@ const calculateLeadCycleSpeed = async (
   leadCycleSpeed: number,
   leadPID: number,
 ) => {
-  return match(leadSpeedType)
-    .with("Fastest", () => 18)
-    .with("Slowest", () => 900)
-    .with("Average", () => 775)
+  return matchLeadCycleSpeed(leadSpeedType)
     .with("Custom", () => leadCycleSpeed)
     .with("From PID", () => rngTools.calculate_pid_speed(leadPID))
     .exhaustive();
@@ -547,7 +626,10 @@ const convertSearcherResultsToUIResults = (
     });
 };
 
-export const Wild3MethodDistribution = () => {
+export const Wild3MethodDistribution = ({
+  leadCycleSpeed,
+  fixedData,
+}: Props) => {
   const [results, setResults] = React.useState<UiResult[]>([]);
   const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>(
     [],
@@ -603,15 +685,18 @@ export const Wild3MethodDistribution = () => {
   );
 
   const initialValues = React.useMemo(() => {
-    return getInitialValues();
-  }, []);
+    console.log(1);
+    return getInitialValues({ leadCycleSpeed, fixedData });
+  }, [leadCycleSpeed, fixedData]);
+
+  console.log(initialValues);
 
   return (
     <>
       <RngToolForm<FormState, UiResult>
-        getColumns={getColumns}
+        getColumns={(t) => getColumns(t, fixedData != null)}
         results={results}
-        validationSchema={Validator}
+        //validationSchema={Validator}
         initialValues={initialValues}
         onSubmit={onSubmit}
         submitTrackerId="wild3_method_distribution"

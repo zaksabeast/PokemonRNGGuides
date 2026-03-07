@@ -492,12 +492,11 @@ fn get_state_from_jseed(
         }
         LeadAbilities::CutecharmF | LeadAbilities::CutecharmM => {
             let gender_threshold = opts.encounter.species().gender_ratio();
-            let buffer: u32;
-            if lead == LeadAbilities::CutecharmF {
-                buffer = 25 * ((gender_threshold as u32 / 25) + 1);
+            let buffer = if lead == LeadAbilities::CutecharmF {
+                25 * ((gender_threshold as u32 / 25) + 1)
             } else {
-                buffer = 0;
-            }
+                0
+            };
             let nature_rand = rng.rand::<u16>() / 0xa3e;
             let nature = Nature::from(nature_rand as u8);
             let full_seed = rng.rand::<u32>();
@@ -739,12 +738,11 @@ fn get_state_from_kseed(
         }
         LeadAbilities::CutecharmF | LeadAbilities::CutecharmM => {
             let gender_threshold = opts.encounter.species().gender_ratio();
-            let buffer: u32;
-            if lead == LeadAbilities::CutecharmF {
-                buffer = 25 * ((gender_threshold as u32 / 25) + 1);
+            let buffer = if lead == LeadAbilities::CutecharmF {
+                25 * ((gender_threshold as u32 / 25) + 1)
             } else {
-                buffer = 0;
-            }
+                0
+            };
             let nature_rand = rng.rand::<u16>() % 25;
             let nature = Nature::from(nature_rand as u8);
             let full_seed = rng.rand::<u32>();

@@ -41,9 +41,16 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
     <MainLayout>
       <div ref={topRef} />
       <NavBreadcrumbs route={guideMeta.slug} />
-      <Typography.Title level={1} mt={0}>
-        {guideMeta.title}
-      </Typography.Title>
+
+      <Flex mb={20} vertical gap={14}>
+        <Typography.Title level={1} mt={0} mb={0}>
+          {guideMeta.title}
+        </Typography.Title>
+
+        {guideMeta.lastUpdated != null && (
+          <Typography.Text type="secondary">{`Last updated: ${guideMeta.lastUpdated} UTC`}</Typography.Text>
+        )}
+      </Flex>
 
       <Flex vertical gap={10}>
         <DiscordButtonContainer>
@@ -86,6 +93,7 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
       )}
 
       {children}
+
       <SmallScreenFab
         icon={<Icon name="ArrowUp" />}
         onClick={() => {

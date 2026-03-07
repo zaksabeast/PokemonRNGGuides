@@ -1,6 +1,7 @@
 import React from "react/jsx-runtime";
 import { Glob } from "bun";
 import fs from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { evaluate } from "@mdx-js/mdx";
 import { MDXContent } from "mdx/types";
 import remarkFrontmatter from "remark-frontmatter";
@@ -48,6 +49,10 @@ const SlugSchema = z
   .transform((url) =>
     formatRelativeUrl({ url, leadingSlash: true, trailingSlash: true }),
   );
+
+const DateSchema = z.string().refine((value) => dayjs(value).isValid(), {
+  message: "Invalid date format",
+});
 
 const GuideSectionSchema = z.enum(sections);
 const GuideVariantSchema = z.enum(rngGuideVariants);
@@ -206,13 +211,10 @@ const BaseGuideSchema = z
     hideFromNavDrawer: z.boolean().default(false),
     // Date the guide was added, used to determine "new" status. Should be in ISO format (YYYY-MM-DD).
     addedOn: z
-      .string()
+      .union([DateSchema, z.null()])
       .nullish()
       .optional()
-      .default(() => null)
-      .refine((value) => value === null || dayjs(value).isValid(), {
-        message: "Invalid date format",
-      }),
+      .default(() => null),
     // Unused for base guides
     translation: z.null().optional().default(null),
     // Visual layout of the guide page
@@ -253,6 +255,7 @@ const BaseGuideSchema = z
       isNew: isNew(meta.addedOn),
       ...meta,
       navDrawerTitle: meta.navDrawerTitle ?? meta.title,
+      lastUpdated: null as string | null,
       type: "baseGuide" as const,
     };
   });
@@ -279,6 +282,7 @@ const TranslatedGuideSchema = z
     ...meta,
     hideFromNavDrawer: true,
     navDrawerTitle: meta.navDrawerTitle ?? meta.title,
+    lastUpdated: null as string | null,
     type: "translatedGuide" as const,
   }));
 
@@ -409,6 +413,9 @@ type GuidePairingSource = GuideWithTranslations | ExternalLinkMetadata;
 const GENERATED_GUIDES_PATH = toNativeAbsolute(
   "../src/__generated__/guides.ts",
 );
+const GUIDE_HASHES_PATH = toNativeAbsolute(
+  "../src/__generated__/guideHashes.json",
+);
 
 const createEmptyGuidePairing = (): GuidePairing => ({
   retail: null,
@@ -433,6 +440,115 @@ const getPairingGroupId = (guide: GuidePairingSource) => {
   }
 
   return getGuidePairingGroupId(guide);
+};
+
+const computeFileHash = (content: Buffer | string): string => {
+  const buffer = typeof content === "string" ? Buffer.from(content) : content;
+  return createHash("sha256").update(buffer).digest("hex");
+};
+
+type GuideHashEntry = {
+  hash: string;
+  lastUpdated: string | null;
+};
+
+type GuideHashMap = Record<string, GuideHashEntry>;
+
+const loadPreviousHashes = async (): Promise<GuideHashMap> => {
+  try {
+    const content = await fs.readFile(GUIDE_HASHES_PATH, { encoding: "utf8" });
+    return JSON.parse(content);
+  } catch {
+    // File doesn't exist yet, return empty map
+    return {};
+  }
+};
+
+const buildGuideHashMap = async (
+  guideFiles: SitePageFile[],
+  guides: GuideWithFile[],
+): Promise<Record<string, string>> => {
+  const hashes: Record<string, string> = {};
+  const fileToGuides = new Map<string, GuideWithFile[]>();
+
+  // Group guides by file
+  for (const guide of guides) {
+    const guidesInFile = fileToGuides.get(guide.file) ?? [];
+    guidesInFile.push(guide);
+    fileToGuides.set(guide.file, guidesInFile);
+  }
+
+  // Compute hash per file and assign to all guides in that file
+  for (const { file, content } of guideFiles) {
+    const hash = computeFileHash(content);
+    const guidesInFile = fileToGuides.get(file) ?? [];
+    for (const guide of guidesInFile) {
+      hashes[guide.slug] = hash;
+    }
+  }
+
+  return hashes;
+};
+
+const applyUpdatedTimestamps = (
+  guides: GuideWithFile[],
+  previousHashes: GuideHashMap,
+  currentHashes: Record<string, string>,
+): GuideWithFile[] => {
+  const today = dayjs.utc().format("YYYY-MM-DD");
+
+  return guides.map((guide) => {
+    const previousEntry = previousHashes[guide.slug];
+    const currentHash = currentHashes[guide.slug];
+    const previousHash = previousEntry?.hash;
+
+    // If file has changed, update lastUpdated to today
+    if (previousHash !== currentHash && previousHash != null) {
+      const validated = DateSchema.parse(today);
+      return {
+        ...guide,
+        lastUpdated: validated,
+      };
+    }
+
+    // If file hasn't changed, restore the previous lastUpdated date
+    if (previousEntry?.lastUpdated != null && previousHash === currentHash) {
+      const validated = DateSchema.parse(previousEntry.lastUpdated);
+      return {
+        ...guide,
+        lastUpdated: validated,
+      };
+    }
+
+    // If this is a new guide (no previous entry), don't set lastUpdated
+    // It will be handled by the author via addedOn field
+    return guide;
+  });
+};
+
+const writePreviousHashes = async (
+  currentHashes: Record<string, string>,
+  guides: GuideWithFile[],
+) => {
+  const guidesBySlug = keyBy(guides, (guide) => guide.slug);
+  const hashMap: GuideHashMap = {};
+
+  // Build hash map with both hash and lastUpdated from current guides
+  for (const [slug, hash] of Object.entries(currentHashes)) {
+    const guide = guidesBySlug[slug];
+    hashMap[slug] = {
+      hash,
+      lastUpdated: guide?.lastUpdated ?? null,
+    };
+  }
+
+  await fs.mkdir(toNativeAbsolute("../src/__generated__"), {
+    recursive: true,
+  });
+  await fs.writeFile(
+    GUIDE_HASHES_PATH,
+    JSON.stringify(hashMap, null, 2) + "\n",
+  );
 };
 
 const applyGuideVariantToPairing = ({
@@ -848,6 +964,7 @@ const getExternalLinks = () => {
       guideVariants: externalLink.guideVariants ?? null,
       displayAttributes: externalLink.displayAttributes ?? [],
       orderPriority: externalLink.orderPriority ?? MAX_ORDER_PRIORITY,
+      lastUpdated: null,
       description: "",
       layout: "guide",
       type: "externalLink" as const,
@@ -871,7 +988,10 @@ const buildFinalExternalLinks = (
   });
 };
 
-const checkCompiledGuidesUpToDate = async (compiledGuides: string) => {
+const checkCompiledGuidesUpToDate = async (
+  compiledGuides: string,
+  currentHashes: Record<string, string>,
+) => {
   const existingGuidesString = await fs.readFile(GENERATED_GUIDES_PATH, {
     encoding: "utf8",
   });
@@ -879,6 +999,25 @@ const checkCompiledGuidesUpToDate = async (compiledGuides: string) => {
   if (compiledGuides !== existingGuidesString) {
     console.error(
       "Guide metadata is out of date. Please run `bun run build:guides` to update it.",
+    );
+    process.exit(1);
+  }
+
+  const previousHashes = await loadPreviousHashes();
+  const hashesMatch =
+    JSON.stringify(currentHashes) ===
+    JSON.stringify(
+      Object.fromEntries(
+        Object.entries(previousHashes).map(([slug, entry]) => [
+          slug,
+          entry.hash,
+        ]),
+      ),
+    );
+
+  if (!hashesMatch) {
+    console.error(
+      "Guide hashes are out of date. Please run `bun run build:guides` to update them.",
     );
     process.exit(1);
   }
@@ -902,11 +1041,23 @@ const main = async ({
   const { guides, guideComponents } = await parseGuideFiles(guideFiles);
   const externalLinks = getExternalLinks();
 
-  validateGuideReferences(guides);
-  validateRemovedSlugs(guides);
-  validateDuplicateSlugs(guides);
+  // Load previous hashes and compute current hashes
+  const previousHashes = await loadPreviousHashes();
+  const currentHashes = await buildGuideHashMap(guideFiles, guides);
 
-  const guidesWithTranslations = buildGuidesWithTranslations(guides);
+  // Apply lastUpdated timestamps based on hash changes
+  const guidesWithTimestamps = applyUpdatedTimestamps(
+    guides,
+    previousHashes,
+    currentHashes,
+  );
+
+  validateGuideReferences(guidesWithTimestamps);
+  validateRemovedSlugs(guidesWithTimestamps);
+  validateDuplicateSlugs(guidesWithTimestamps);
+
+  const guidesWithTranslations =
+    buildGuidesWithTranslations(guidesWithTimestamps);
   const guidePairingByGroup = buildGuidePairingByGroup([
     ...guidesWithTranslations,
     ...externalLinks,
@@ -929,9 +1080,11 @@ const main = async ({
   ]);
 
   if (check) {
-    await checkCompiledGuidesUpToDate(compiledGuides);
+    await checkCompiledGuidesUpToDate(compiledGuides, currentHashes);
   } else {
     await writeCompiledGuides(compiledGuides);
+    // Save the hashes and lastUpdated dates after successful write
+    await writePreviousHashes(currentHashes, guidesWithTimestamps);
   }
 
   process.exit(0);

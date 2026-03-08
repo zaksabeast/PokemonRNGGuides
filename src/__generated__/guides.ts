@@ -12924,7 +12924,7 @@ export const externalGuides = [
     displayAttributes: ["web_tool"],
     url: "https://niart120.github.io/5genSearch-web/",
     id: "https://niart120.github.io/5genSearch-web/",
-    isNew: true,
+    isNew: false,
     translation: null,
     canonical: null,
     hideFromNavDrawer: false,

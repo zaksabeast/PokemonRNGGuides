@@ -884,7 +884,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Contributing.mdx",
       translations: null,

@@ -1,16 +1,8 @@
 import { PrimitiveAtom, useAtom } from "jotai";
 import { RadioGroup } from "~/components";
-import { z } from "zod";
 import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-
-const Gen4ConsoleSchema = z.enum([
-  "NdsDsi",
-  "3dsNormalSettings",
-  "3dsAltSettings",
-]);
-
-export type Gen4Console = z.infer<typeof Gen4ConsoleSchema>;
+import { Gen4Console, Gen4ConsoleSchema } from "../gen4types";
 
 const getOptions = (t: Translations) => [
   { label: t["NDS/DSi"], value: "NdsDsi" as const },

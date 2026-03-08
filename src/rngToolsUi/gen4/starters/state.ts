@@ -1,9 +1,8 @@
 import { atom, useAtom } from "jotai";
-import { SearchStatic4Method1State } from "~/rngTools";
+import { Static4State } from "~/rngTools";
 import { createGen4TimerAtom } from "~/hooks/useGen4Timer";
 import { MinMaxStats } from "~/types";
-import { Gen4GameVersion } from "../gen4types";
-import { Gen4Console } from "../shared/consoleSelect";
+import { Gen4Console, Gen4GameVersion } from "../gen4types";
 
 export const dpptStarters = ["Turtwig", "Chimchar", "Piplup"] as const;
 export const hgssStarters = ["Chikorita", "Cyndaquil", "Totodile"] as const;
@@ -17,7 +16,11 @@ type State = {
   game: Gen4GameVersion;
   species: Gen4Starter;
   minMaxStats: MinMaxStats;
-  target: Omit<SearchStatic4Method1State, "ivs"> | null;
+  target:
+    | (Omit<Static4State["state"], "ivs"> & {
+        seed_time: Static4State["seed_time"];
+      })
+    | null;
 };
 
 export const starterAtom = atom<State>({

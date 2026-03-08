@@ -1,8 +1,7 @@
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
-use crate::{AbilityType, Gender, Ivs, Nature, PkmFilter, PkmState, Species, gen3_shiny};
-use itertools::iproduct;
+use crate::{AbilityType, Gender, Ivs, Nature, PkmFilter, PkmState, Species, gen3_shiny, iv_iter};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -58,46 +57,9 @@ pub struct Static3SearcherOptions {
 
 #[wasm_bindgen]
 pub fn gen3_static_searcher_states(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
-    let Ivs {
-        hp: min_hp,
-        atk: min_atk,
-        def: min_def,
-        spa: min_spa,
-        spd: min_spd,
-        spe: min_spe,
-    } = opts.filter.min_ivs;
-
-    let Ivs {
-        hp: max_hp,
-        atk: max_atk,
-        def: max_def,
-        spa: max_spa,
-        spd: max_spd,
-        spe: max_spe,
-    } = opts.filter.max_ivs;
-
-    iproduct!(
-        min_hp..=max_hp,
-        min_atk..=max_atk,
-        min_def..=max_def,
-        min_spa..=max_spa,
-        min_spd..=max_spd,
-        min_spe..=max_spe
-    )
-    .flat_map(|(hp, atk, def, spa, spd, spe)| {
-        search_gen3_static(
-            Ivs {
-                hp,
-                atk,
-                def,
-                spa,
-                spd,
-                spe,
-            },
-            opts,
-        )
-    })
-    .collect()
+    iv_iter(opts.filter.min_ivs, opts.filter.max_ivs)
+        .flat_map(|ivs| search_gen3_static(ivs, opts))
+        .collect()
 }
 
 fn search_gen3_static(mut ivs: Ivs, opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {

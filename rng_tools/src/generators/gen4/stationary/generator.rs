@@ -1,10 +1,9 @@
 use super::GameVersion;
-use super::LeadAbilities;
-use super::Static4Species;
-use super::dpt_method_jk;
-use super::hgss_method_jk;
+use super::LeadAbility;
 use crate::Characteristic;
 use crate::Ivs;
+use crate::Species;
+use crate::gen4::StaticMethod;
 use crate::rng::Rng;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
@@ -22,9 +21,9 @@ pub struct Gen4StaticOpts {
     pub max_advances: usize,
     pub filter: PkmFilter,
     pub filter_characteristic: Option<Characteristic>,
-    pub game: Option<GameVersion>,
-    pub encounter: Static4Species,
-    pub lead: LeadAbilities,
+    pub game: GameVersion,
+    pub species: Species,
+    pub lead: LeadAbility,
     pub seed: u32,
 }
 
@@ -80,7 +79,7 @@ fn generate_gen4_static(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4
         pid,
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
-        gender: opts.encounter.species().gender_from_pid(pid),
+        gender: opts.species.gender_from_pid(pid),
         characteristic: Characteristic::new(pid, &ivs),
         ivs,
         nature: Nature::from_pid(pid),
@@ -92,24 +91,24 @@ fn generate_gen4_static(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4
 fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4StaticPokemon> {
     let lead = opts.lead;
     {
-        if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
-            let gender_threshold = opts.encounter.species().gender_ratio();
+        if lead == LeadAbility::CutecharmF || lead == LeadAbility::CutecharmM {
+            let gender_threshold = opts.species.gender_ratio();
             let buffer = match opts.lead {
-                LeadAbilities::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
-                LeadAbilities::CutecharmM => 0,
-                LeadAbilities::Synchronize(_) => 0,
+                LeadAbility::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
+                LeadAbility::CutecharmM => 0,
+                LeadAbility::Synchronize(_) => 0,
                 _ => 0,
             };
             let target_gender = match opts.lead {
-                LeadAbilities::CutecharmF => Gender::Male,
-                LeadAbilities::CutecharmM => Gender::Female,
+                LeadAbility::CutecharmF => Gender::Male,
+                LeadAbility::CutecharmM => Gender::Female,
                 _ => Gender::Genderless,
             };
 
             if rng.rand::<u16>() % 3 != 0 {
                 let nature = (rng.rand::<u16>() % 25) as u8;
                 let pid = buffer + nature as u32;
-                let gender = opts.encounter.species().gender_from_pid(pid);
+                let gender = opts.species.gender_from_pid(pid);
                 if gender == target_gender {
                     let iv1 = rng.rand::<u16>();
                     let iv2 = rng.rand::<u16>();
@@ -130,7 +129,7 @@ fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
             }
         }
     }
-    if let LeadAbilities::Synchronize(nature) = opts.lead {
+    if let LeadAbility::Synchronize(nature) = opts.lead {
         if rng.rand::<u16>() % 2 == 0 {
             let mut pid: u32;
             let nature_value = nature as u32;
@@ -150,7 +149,7 @@ fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
                 pid,
                 shiny: gen3_shiny(pid, opts.tid, opts.sid),
                 ability: AbilityType::from_gen3_pid(pid),
-                gender: opts.encounter.species().gender_from_pid(pid),
+                gender: opts.species.gender_from_pid(pid),
                 characteristic: Characteristic::new(pid, &ivs),
                 ivs,
                 nature: Nature::from_pid(pid),
@@ -173,7 +172,7 @@ fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
     let iv1 = rng.rand::<u16>();
     let iv2 = rng.rand::<u16>();
     let ivs = Ivs::new_g3(iv1, iv2);
-    let gender = opts.encounter.species().gender_from_pid(pid);
+    let gender = opts.species.gender_from_pid(pid);
     let nature = Nature::from_pid(pid);
 
     let pkm = Gen4StaticPokemon {
@@ -192,24 +191,24 @@ fn generate_gen4_static_k(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
 fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Gen4StaticPokemon> {
     let lead = opts.lead;
     {
-        if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
-            let gender_threshold = opts.encounter.species().gender_ratio();
+        if lead == LeadAbility::CutecharmF || lead == LeadAbility::CutecharmM {
+            let gender_threshold = opts.species.gender_ratio();
             let buffer = match opts.lead {
-                LeadAbilities::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
-                LeadAbilities::CutecharmM => 0,
-                LeadAbilities::Synchronize(_) => 0,
+                LeadAbility::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
+                LeadAbility::CutecharmM => 0,
+                LeadAbility::Synchronize(_) => 0,
                 _ => 0,
             };
             let target_gender = match opts.lead {
-                LeadAbilities::CutecharmF => Gender::Male,
-                LeadAbilities::CutecharmM => Gender::Female,
+                LeadAbility::CutecharmF => Gender::Male,
+                LeadAbility::CutecharmM => Gender::Female,
                 _ => Gender::Genderless,
             };
 
             if rng.rand::<u16>() % 3 != 0 {
                 let nature = (rng.rand::<u16>() / 0xa3e) as u8;
                 let pid = buffer + nature as u32;
-                let gender = opts.encounter.species().gender_from_pid(pid);
+                let gender = opts.species.gender_from_pid(pid);
                 if gender == target_gender {
                     let iv1 = rng.rand::<u16>();
                     let iv2 = rng.rand::<u16>();
@@ -230,7 +229,7 @@ fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
             }
         }
     }
-    if let LeadAbilities::Synchronize(nature) = opts.lead {
+    if let LeadAbility::Synchronize(nature) = opts.lead {
         if rng.rand::<u16>() >> 15 == 0 {
             let mut pid: u32;
             let nature_value = nature as u32;
@@ -250,7 +249,7 @@ fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
                 pid,
                 shiny: gen3_shiny(pid, opts.tid, opts.sid),
                 ability: AbilityType::from_gen3_pid(pid),
-                gender: opts.encounter.species().gender_from_pid(pid),
+                gender: opts.species.gender_from_pid(pid),
                 characteristic: Characteristic::new(pid, &ivs),
                 ivs,
                 nature: Nature::from_pid(pid),
@@ -278,7 +277,7 @@ fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
         pid,
         shiny: gen3_shiny(pid, opts.tid, opts.sid),
         ability: AbilityType::from_gen3_pid(pid),
-        gender: opts.encounter.species().gender_from_pid(pid),
+        gender: opts.species.gender_from_pid(pid),
         characteristic: Characteristic::new(pid, &ivs),
         ivs,
         nature: Nature::from_pid(pid),
@@ -288,24 +287,10 @@ fn generate_gen4_static_j(rng: &mut Pokerng, opts: &Gen4StaticOpts) -> Option<Ge
 }
 
 fn generate_static4_state(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Option<Gen4StaticPokemon> {
-    let encounter = opts.encounter;
-    let species = encounter.species();
-    match opts.game {
-        Some(GameVersion::Diamond) | Some(GameVersion::Pearl) | Some(GameVersion::Platinum) => {
-            if dpt_method_jk(species) {
-                generate_gen4_static_j(rng, opts)
-            } else {
-                generate_gen4_static(rng, opts)
-            }
-        }
-        Some(GameVersion::HeartGold) | Some(GameVersion::SoulSilver) => {
-            if hgss_method_jk(species) {
-                generate_gen4_static_k(rng, opts)
-            } else {
-                generate_gen4_static(rng, opts)
-            }
-        }
-        _ => generate_gen4_static(rng, opts),
+    match StaticMethod::new(opts.game, opts.species) {
+        StaticMethod::One => generate_gen4_static(rng, opts),
+        StaticMethod::J => generate_gen4_static_j(rng, opts),
+        StaticMethod::K => generate_gen4_static_k(rng, opts),
     }
 }
 
@@ -349,9 +334,9 @@ mod test {
             sid: 54321,
             initial_advances: 0,
             max_advances: 10,
-            encounter: Static4Species::Turtwig,
-            game: Some(GameVersion::Platinum),
-            lead: LeadAbilities::None,
+            species: Species::Turtwig,
+            game: GameVersion::Platinum,
+            lead: LeadAbility::None,
             filter_characteristic: None,
             filter: PkmFilter::new_allow_all(),
         };
@@ -556,9 +541,9 @@ mod test {
             sid: 54321,
             initial_advances: 0,
             max_advances: 10,
-            encounter: Static4Species::Dialga,
-            game: Some(GameVersion::Platinum),
-            lead: LeadAbilities::None,
+            species: Species::Dialga,
+            game: GameVersion::Platinum,
+            lead: LeadAbility::None,
             filter_characteristic: None,
             filter: PkmFilter::new_allow_all(),
         };
@@ -763,9 +748,9 @@ mod test {
             sid: 54321,
             initial_advances: 0,
             max_advances: 10,
-            encounter: Static4Species::HoOh,
-            game: Some(GameVersion::HeartGold),
-            lead: LeadAbilities::None,
+            species: Species::HoOh,
+            game: GameVersion::HeartGold,
+            lead: LeadAbility::None,
             filter_characteristic: None,
             filter: PkmFilter::new_allow_all(),
         };
@@ -975,9 +960,9 @@ mod test {
                 sid: 54321,
                 initial_advances: 0,
                 max_advances: 10,
-                encounter: Static4Species::HoOh,
-                game: Some(GameVersion::HeartGold),
-                lead: LeadAbilities::Synchronize(Nature::Adamant),
+                species: Species::HoOh,
+                game: GameVersion::HeartGold,
+                lead: LeadAbility::Synchronize(Nature::Adamant),
                 filter_characteristic: None,
                 filter: PkmFilter::new_allow_all(),
             };
@@ -1182,9 +1167,9 @@ mod test {
                 sid: 54321,
                 initial_advances: 0,
                 max_advances: 10,
-                encounter: Static4Species::Dialga,
-                game: Some(GameVersion::Platinum),
-                lead: LeadAbilities::Synchronize(Nature::Adamant),
+                species: Species::Dialga,
+                game: GameVersion::Platinum,
+                lead: LeadAbility::Synchronize(Nature::Adamant),
                 filter_characteristic: None,
                 filter: PkmFilter::new_allow_all(),
             };
@@ -1394,9 +1379,9 @@ mod test {
                 sid: 54321,
                 initial_advances: 0,
                 max_advances: 10,
-                encounter: Static4Species::Snorlax,
-                game: Some(GameVersion::HeartGold),
-                lead: LeadAbilities::CutecharmM,
+                species: Species::Snorlax,
+                game: GameVersion::HeartGold,
+                lead: LeadAbility::CutecharmM,
                 filter_characteristic: None,
                 filter: PkmFilter::new_allow_all(),
             };
@@ -1600,9 +1585,9 @@ mod test {
                 sid: 54321,
                 initial_advances: 0,
                 max_advances: 10,
-                encounter: Static4Species::Drifloon,
-                game: Some(GameVersion::Platinum),
-                lead: LeadAbilities::CutecharmM,
+                species: Species::Drifloon,
+                game: GameVersion::Platinum,
+                lead: LeadAbility::CutecharmM,
                 filter_characteristic: None,
                 filter: PkmFilter::new_allow_all(),
             };

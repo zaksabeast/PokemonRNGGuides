@@ -116,7 +116,7 @@ const gameMenu = [
         href: "/diamond-pearl-and-platinum/",
       },
       {
-        label: "Heart Gold and Soul Silver",
+        label: "HeartGold and SoulSilver",
         href: "/heart-gold-and-soul-silver/",
       },
       { label: "Black and White", href: "/black-and-white/" },

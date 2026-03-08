@@ -22,6 +22,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Home.mdx",
       translations: null,
@@ -55,6 +56,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/3DS Alt Settings.mdx",
       translations: { en: "/3ds-alt-settings/", zh: "/zh-3ds-alt-settings/" },
@@ -94,6 +96,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/3DS Helper.mdx",
       translations: { en: "/3ds-helper/", zh: "/zh-3ds-helper/" },
@@ -128,6 +131,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/About.mdx",
       translations: null,
@@ -166,6 +170,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/Azahar Setup.mdx",
       translations: null,
@@ -204,6 +209,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
       translations: { en: "/bdsp-advance-rng/", fr: "/fr-bdsp-advance-rng/" },
@@ -247,6 +253,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use Shiny's site.mdx",
       translations: null,
@@ -287,6 +294,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Brilliant Diamond and Shining Pearl/BK - Emulator Setup.mdx",
       translations: null,
@@ -328,6 +336,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Brilliant Diamond and Shining Pearl/BK - How to use PokeFinder.mdx",
       translations: null,
@@ -367,6 +376,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -399,6 +409,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -431,6 +442,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -464,6 +476,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 5/BW2 Egg.mdx",
       translations: { en: "/bw2-egg/", zh: "/zh-bw2-egg/" },
@@ -500,6 +513,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Brilliant Diamond and Shining Pearl/Egg.mdx",
       translations: null,
@@ -540,6 +554,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Brilliant Diamond and Shining Pearl/Stationary.mdx",
       translations: null,
@@ -584,6 +599,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Brilliant Diamond and Shining Pearl/TID SID RNG.mdx",
       translations: null,
@@ -628,6 +644,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Brilliant Diamond and Shining Pearl/Wild.mdx",
       translations: null,
@@ -668,6 +685,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Challenges.mdx",
       translations: null,
@@ -700,6 +718,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gamecube/Channel.mdx",
       translations: { en: "/channel-jirachi/", zh: "/zh-channel-jirachi/" },
@@ -742,6 +761,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/CitraRNG Setup.mdx",
       translations: null,
@@ -780,6 +800,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/Connect Dolphin To GBA.mdx",
       translations: null,
@@ -819,6 +840,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Consistent Platinum RNG.mdx",
       translations: null,
@@ -862,6 +884,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Contributing.mdx",
       translations: null,
@@ -894,6 +917,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -927,6 +951,7 @@ export const guides = {
       translation: { enSlug: "/retail-emerald-egg/", language: "de" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/de/Gen 3/Emerald/Retail Egg.mdx",
       translations: {
@@ -983,6 +1008,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/Delete Save.mdx",
       translations: {
@@ -1029,6 +1055,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/Desmume Setup.mdx",
       translations: null,
@@ -1066,6 +1093,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -1099,6 +1127,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/3DS RNG.mdx",
       translations: { en: "/dppt-3ds-rng/", zh: "/zh-dppt-3ds-rng/" },
@@ -1132,6 +1161,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
       translations: {
@@ -1179,6 +1209,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Cute Charm.mdx",
       translations: { en: "/dppt-cute-charm/", zh: "/zh-dppt-cute-charm/" },
@@ -1212,6 +1243,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx",
       translations: {
@@ -1258,6 +1290,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
       translations: { en: "/dppt-initial-seed/", zh: "/zh-dppt-initial-seed/" },
@@ -1301,6 +1334,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx",
       translations: {
@@ -1345,6 +1379,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx",
       translations: null,
@@ -1385,6 +1420,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Retail TID.mdx",
       translations: { en: "/dppt-tid-sid/", zh: "/zh-dppt-tid-sid/" },
@@ -1421,6 +1457,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx",
       translations: { en: "/dppt-wild/", zh: "/zh-dppt-wild/" },
@@ -1461,6 +1498,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/Dream Radar Patches.mdx",
       translations: null,
@@ -1498,6 +1536,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Basic Rules of RNG.mdx",
       translations: {
@@ -1542,6 +1581,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Mirage Island.mdx",
       translations: {
@@ -1585,6 +1625,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Emerald Overview.mdx",
       translations: { en: "/emerald-overview/", it: "/it-emerald-overview/" },
@@ -1622,6 +1663,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Reseed RNG.mdx",
       translations: {
@@ -1660,6 +1702,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Pokerus.mdx",
       translations: {
@@ -1698,6 +1741,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Shiny Starter.mdx",
       translations: {
@@ -1740,6 +1784,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID with Feebas.mdx",
       translations: {
@@ -1782,6 +1827,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
       translations: null,
@@ -1818,6 +1864,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
@@ -1854,6 +1901,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
       translations: null,
@@ -1889,6 +1937,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -1922,6 +1971,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 5/Dream Radar.mdx",
       translations: {
@@ -1961,6 +2011,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
       translations: {
@@ -1992,19 +2043,20 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-b2w2-wild/",
-      isNew: false,
+      isNew: true,
       title: "Black 2 and White 2 Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in Black 2 and White 2 for shiny and high-IV results.",
       slug: "/emulator-b2w2-wild/",
-      isRoughDraft: true,
+      isRoughDraft: false,
       orderPriority: 20,
       hideFromNavDrawer: false,
-      addedOn: null,
+      addedOn: "2026-03-08",
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 5/Wild RNG Emu.mdx",
       translations: null,
@@ -2013,7 +2065,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-b2w2-wild/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
     getRawFile: memoize(async () => {
@@ -2041,6 +2093,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 5/Entralink.mdx",
       translations: {
@@ -2080,6 +2133,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 5/Find DS Parameters.mdx",
       translations: {
@@ -2119,6 +2173,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 5/Roamers.mdx",
       translations: {
@@ -2157,6 +2212,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/emulator-b2w2-runasdate-inital-seed/",
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
       translations: {
@@ -2200,6 +2256,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 5/White Forest RNG (Emu).mdx",
       translations: {
@@ -2230,19 +2287,20 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-wild/",
-      isNew: false,
+      isNew: true,
       title: "Black and White Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
         "Learn how to RNG wild Pokémon in Black and White for shiny and high-IV results.",
       slug: "/emulator-bw-wild/",
-      isRoughDraft: true,
+      isRoughDraft: false,
       orderPriority: 20,
       hideFromNavDrawer: false,
-      addedOn: null,
+      addedOn: "2026-03-08",
       translation: null,
       layout: "guide",
       canonical: "/emulator-b2w2-wild/",
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 5/Wild RNG Emu.mdx",
       translations: null,
@@ -2251,7 +2309,7 @@ export const guides = {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-bw-wild/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: [],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 5/Wild RNG Emu.mdx")),
     getRawFile: memoize(async () => {
@@ -2278,6 +2336,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gamecube/Colosseum General Guide (Emu).mdx",
       translations: null,
@@ -2318,6 +2377,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/dppt-cute-charm/",
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Cute Charm.mdx",
       translations: {
@@ -2355,6 +2415,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx",
       translations: { en: "/emulator-dppt-egg/", zh: "/zh-emulator-dppt-egg/" },
@@ -2395,6 +2456,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeFinder Setup.mdx",
       translations: null,
@@ -2436,6 +2498,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx",
       translations: {
@@ -2481,6 +2544,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx",
       translations: {
@@ -2525,6 +2589,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Egg RNG.mdx",
       translations: {
@@ -2565,6 +2630,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/FireRed and LeafGreen/Static RNG.mdx",
       translations: {
@@ -2609,6 +2675,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/FireRed and LeafGreen/Egg RNG.mdx",
       translations: { en: "/emulator-frlg-egg/", zh: "/zh-emulator-frlg-egg/" },
@@ -2648,6 +2715,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/FireRed and LeafGreen/Stationary v2 Emu.mdx",
       translations: null,
@@ -2689,6 +2757,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/emulator-frlg-wild/",
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx",
       translations: null,
@@ -2729,6 +2798,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/FireRed and LeafGreen/Wild RNG.mdx",
       translations: {
@@ -2771,6 +2841,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Breeding RNG (Emu).mdx",
       translations: null,
@@ -2814,6 +2885,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/hgss-cute-charm/",
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Cute Charm.mdx",
       translations: {
@@ -2850,6 +2922,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Egg.mdx",
       translations: { en: "/emulator-hgss-egg/", zh: "/zh-emulator-hgss-egg/" },
@@ -2889,6 +2962,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Special Wild Case (Emu).mdx",
       translations: null,
@@ -2932,6 +3006,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
       translations: {
@@ -2978,6 +3053,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/TID SID.mdx",
       translations: null,
@@ -3018,6 +3094,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Wild RNG - Emulator.mdx",
       translations: null,
@@ -3060,6 +3137,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Wondercard.mdx",
       translations: null,
@@ -3100,6 +3178,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 6/DexNav.mdx",
       translations: {
@@ -3139,6 +3218,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Dead Battery Stationary RNG  (Emulator).mdx",
       translations: null,
@@ -3183,6 +3263,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Egg RNG.mdx",
       translations: { en: "/emulator-rs-egg/", zh: "/zh-emulator-rs-egg/" },
@@ -3223,6 +3304,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Live Battery TID RNG.mdx",
       translations: null,
@@ -3264,6 +3346,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx",
       translations: {
@@ -3310,6 +3393,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/RSE Wild RNG - Dry Battery Emulator.mdx",
       translations: null,
@@ -3353,6 +3437,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
       translations: {
@@ -3398,9 +3483,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/emulator-usum-time-finder/",
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Time Finder.js (Citra).mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-sm-time-finder/",
+        zh: "/zh-emulator-sm-time-finder/",
+      },
       guideGroupId: "en:/emulator-sm-time-finder/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -3437,9 +3526,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Time Finder.js (Citra).mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-usum-time-finder/",
+        zh: "/zh-emulator-usum-time-finder/",
+      },
       guideGroupId: "en:/emulator-usum-time-finder/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -3492,6 +3585,7 @@ export const guides = {
       translation: { enSlug: "/delete-pokemon-save/", language: "es" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/es/Tools and Emulators/Delete Save.mdx",
       translations: {
@@ -3536,6 +3630,7 @@ export const guides = {
       translation: { enSlug: "/dppt-advance-rng/", language: "es" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/es/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
       translations: {
@@ -3581,6 +3676,7 @@ export const guides = {
       translation: { enSlug: "/gba-methods-lead-impact/", language: "es" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/es/Gen 3/Emerald/GBA Methods Part2.mdx",
       translations: {
@@ -3625,6 +3721,7 @@ export const guides = {
       translation: { enSlug: "/gba-methods/", language: "es" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/es/Gen 3/Emerald/GBA Methods.mdx",
       translations: {
@@ -3666,6 +3763,7 @@ export const guides = {
       translation: { enSlug: "/gen2-celebi/", language: "es" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/es/Gen 2/Celebi.mdx",
       translations: {
@@ -3706,6 +3804,7 @@ export const guides = {
       translation: { enSlug: "/gen2-starters/", language: "es" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/es/Gen 2/Starter.mdx",
       translations: {
@@ -3747,6 +3846,7 @@ export const guides = {
       translation: { enSlug: "/gen3-glossary/", language: "es" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/es/Gen 3/Emerald/Glossary.mdx",
       translations: {
@@ -3788,6 +3888,7 @@ export const guides = {
       translation: { enSlug: "/hgss-rng-advance/", language: "es" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/es/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
       translations: {
@@ -3838,6 +3939,7 @@ export const guides = {
       translation: { enSlug: "/install-pokereader/", language: "es" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/es/Tools and Emulators/3DS PokeReader.mdx",
       translations: {
@@ -3883,6 +3985,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Experiments.mdx",
       translations: null,
@@ -3915,6 +4018,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -3949,6 +4053,7 @@ export const guides = {
       translation: { enSlug: "/bdsp-advance-rng/", language: "fr" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/fr/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
       translations: { en: "/bdsp-advance-rng/", fr: "/fr-bdsp-advance-rng/" },
@@ -3993,6 +4098,7 @@ export const guides = {
       translation: { enSlug: "/install-capturesight/", language: "fr" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/fr/Tools and Emulators/CaptureSight Install.mdx",
       translations: {
@@ -4037,6 +4143,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID.mdx",
       translations: {
@@ -4077,6 +4184,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx",
       translations: { en: "/frlg-seeding-bot/", zh: "/zh-frlg-seeding-bot/" },
@@ -4119,6 +4227,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
       translations: null,
@@ -4155,6 +4264,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
@@ -4192,6 +4302,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/FireRed and LeafGreen/Basic Rules of RNG.mdx",
       translations: null,
@@ -4234,6 +4345,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -4267,6 +4379,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Methods Part2.mdx",
       translations: {
@@ -4308,6 +4421,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Methods.mdx",
       translations: {
@@ -4350,6 +4464,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Overview.mdx",
       translations: null,
@@ -4387,6 +4502,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx",
       translations: {
@@ -4428,6 +4544,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Vblank.mdx",
       translations: { en: "/gba-vblank/", zh: "/zh-gba-vblank/" },
@@ -4462,6 +4579,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gamecube/Initial Seed RNG.mdx",
       translations: { en: "/gc-initial/", zh: "/zh-gc-initial/" },
@@ -4502,6 +4620,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 2/Celebi.mdx",
       translations: {
@@ -4541,6 +4660,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 2/RngResearch.mdx",
       translations: null,
@@ -4573,6 +4693,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 2/Starter.mdx",
       translations: {
@@ -4613,6 +4734,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Glossary.mdx",
       translations: {
@@ -4649,6 +4771,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID.mdx",
       translations: {
@@ -4677,9 +4800,9 @@ export const guides = {
       guideVariants: null,
       guideKey: "/heart-gold-and-soul-silver/",
       isNew: false,
-      title: "Heart Gold and Soul Silver",
-      navDrawerTitle: "Heart Gold and Soul Silver",
-      description: "Heart Gold and Soul Silver Resources",
+      title: "HeartGold and SoulSilver",
+      navDrawerTitle: "HeartGold and SoulSilver",
+      description: "HeartGold and SoulSilver Resources",
       slug: "/heart-gold-and-soul-silver/",
       isRoughDraft: false,
       orderPriority: 20,
@@ -4688,6 +4811,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -4721,6 +4845,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Translations.mdx",
       translations: null,
@@ -4754,6 +4879,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/3DS RNG.mdx",
       translations: { en: "/hgss-3ds-rng/", zh: "/zh-hgss-3ds-rng/" },
@@ -4787,6 +4913,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Cute Charm.mdx",
       translations: { en: "/hgss-cute-charm/", zh: "/zh-hgss-cute-charm/" },
@@ -4820,6 +4947,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx",
       translations: { en: "/hgss-initial-seed/", zh: "/zh-hgss-initial-seed/" },
@@ -4863,6 +4991,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
       translations: {
@@ -4910,6 +5039,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 4/Retail TID.mdx",
       translations: { en: "/hgss-tid-sid/", zh: "/zh-hgss-tid-sid/" },
@@ -4950,6 +5080,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/CaptureSight Install.mdx",
       translations: {
@@ -4997,6 +5128,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/Emu PokeReader.mdx",
       translations: null,
@@ -5041,6 +5173,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/3DS PokeReader.mdx",
       translations: {
@@ -5084,6 +5217,7 @@ export const guides = {
       translation: { enSlug: "/e-tips-rng/", language: "it" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Basic Rules of RNG.mdx",
       translations: {
@@ -5128,6 +5262,7 @@ export const guides = {
       translation: { enSlug: "/emerald-overview/", language: "it" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Emerald Overview.mdx",
       translations: { en: "/emerald-overview/", it: "/it-emerald-overview/" },
@@ -5168,6 +5303,7 @@ export const guides = {
       translation: { enSlug: "/emulator-emerald-egg/", language: "it" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Emulator Egg RNG.mdx",
       translations: {
@@ -5212,6 +5348,7 @@ export const guides = {
       translation: { enSlug: "/frlg-gen3-sid/", language: "it" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Find SID.mdx",
       translations: {
@@ -5253,6 +5390,7 @@ export const guides = {
       translation: { enSlug: "/gen3-glossary/", language: "it" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Glossary.mdx",
       translations: {
@@ -5293,6 +5431,7 @@ export const guides = {
       translation: { enSlug: "/gen3-sid/", language: "it" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Find SID.mdx",
       translations: {
@@ -5340,6 +5479,7 @@ export const guides = {
       translation: { enSlug: "/install-pokereader/", language: "it" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Tools And Emulators/3DS PokeReader.mdx",
       translations: {
@@ -5392,6 +5532,7 @@ export const guides = {
       translation: { enSlug: "/pokereader/", language: "it" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Tools And Emulators/PokeReader.mdx",
       translations: { it: "/it-pokereader/", en: "/pokereader/" },
@@ -5433,6 +5574,7 @@ export const guides = {
       translation: { enSlug: "/retail-dppt-starter/", language: "it" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 4/Starters.mdx",
       translations: {
@@ -5474,6 +5616,7 @@ export const guides = {
       translation: { enSlug: "/retail-emerald-wild/", language: "it" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Retail Wild RNG.mdx",
       translations: {
@@ -5516,6 +5659,7 @@ export const guides = {
       translation: { enSlug: "/retail-hgss-starter/", language: "it" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 4/Starters.mdx",
       translations: {
@@ -5556,6 +5700,7 @@ export const guides = {
       translation: { enSlug: "/rs-gen3-sid/", language: "it" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Find SID.mdx",
       translations: {
@@ -5596,6 +5741,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -5629,6 +5775,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
       translations: { en: "/meteor-jirachi/", zh: "/zh-meteor-jirachi/" },
@@ -5672,6 +5819,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/mGBA Setup.mdx",
       translations: { en: "/mgba-setup/", zh: "/zh-mgba-setup/" },
@@ -5716,6 +5864,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/How to Install PCalc.mdx",
       translations: null,
@@ -5761,6 +5910,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/Using IPS Patches with Luma and Citra.mdx",
       translations: null,
@@ -5802,9 +5952,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Island Scan Pokemon SM.mdx",
-      translations: null,
+      translations: {
+        en: "/misc-3ds-island-scan-sm/",
+        zh: "/zh-misc-3ds-island-scan-sm/",
+      },
       guideGroupId: "en:/misc-3ds-island-scan-sm/:Sun and Moon",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -5840,9 +5994,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Island Scan Pokemon USUM.mdx",
-      translations: null,
+      translations: {
+        en: "/misc-3ds-island-scan-usum/",
+        zh: "/zh-misc-3ds-island-scan-usum/",
+      },
       guideGroupId: "en:/misc-3ds-island-scan-usum/:Ultra Sun and Ultra Moon",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -5877,6 +6035,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Transporter/Nature Table.mdx",
       translations: null,
@@ -5911,6 +6070,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/How to Connect Dolphin to VBA.mdx",
       translations: null,
@@ -5952,6 +6112,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/How to Extract GBA Bios.mdx",
       translations: {
@@ -5994,6 +6155,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 7/Wild Spots.mdx",
       translations: null,
@@ -6040,6 +6202,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/Timer.mdx",
       translations: null,
@@ -6078,6 +6241,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/No Dolphin Patch.mdx",
       translations: null,
@@ -6121,6 +6285,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/NTR Helper Usage.mdx",
       translations: null,
@@ -6158,6 +6323,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -6191,6 +6357,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 6/Mirage Spot.mdx",
       translations: { en: "/oras-mirage-spots/", zh: "/zh-oras-mirage-spots/" },
@@ -6227,9 +6394,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 6/Remove Time Penalties.mdx",
-      translations: null,
+      translations: {
+        en: "/oras-remove-time-penalty/",
+        zh: "/zh-oras-remove-time-penalty/",
+      },
       guideGroupId:
         "en:/oras-remove-time-penalty/:Omega Ruby and Alpha Sapphire",
       guideVariantLinks: null,
@@ -6264,6 +6435,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gamecube/(XD) PAL Starter Eevee RNG.mdx",
       translations: { en: "/pal-xd-eevee/", zh: "/zh-pal-xd-eevee/" },
@@ -6304,6 +6476,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 6/Friend Safari RNG Guide.mdx",
       translations: {
@@ -6347,6 +6520,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 6/XY TID.mdx",
       translations: { en: "/pcalc-xy-tid/", zh: "/zh-pcalc-xy-tid/" },
@@ -6399,6 +6573,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/PokeFinder.mdx",
       translations: null,
@@ -6443,6 +6618,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/PokeReader.mdx",
       translations: { it: "/it-pokereader/", en: "/pokereader/" },
@@ -6481,6 +6657,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 5/Retail Entralink.mdx",
       translations: null,
@@ -6517,6 +6694,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 4/Starters.mdx",
       translations: {
@@ -6534,6 +6712,43 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Gen 4/Starters.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/retail-dppt-static/": {
+    meta: {
+      id: "/retail-dppt-static/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "/retail-dppt-static/",
+      isNew: false,
+      title: "Diamond, Pearl, and Platinum Static RNG",
+      navDrawerTitle: "Static RNG",
+      description:
+        "Learn how to RNG static Pokémon in Diamond, Pearl, and Platinum for perfect IVs, natures, and shinies.",
+      slug: "/retail-dppt-static/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "baseGuide",
+      file: "guides/Gen 4/Retail Static.mdx",
+      translations: null,
+      guideGroupId: "en:/retail-dppt-static/:Diamond, Pearl, and Platinum",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-dppt-static/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Retail Static.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Retail Static.mdx?raw");
       return file.default;
     }),
   },
@@ -6557,6 +6772,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Retail Egg.mdx",
       translations: {
@@ -6597,6 +6813,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Retail Wild RNG.mdx",
       translations: {
@@ -6641,6 +6858,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 4/Starters.mdx",
       translations: {
@@ -6682,6 +6900,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -6729,9 +6948,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-oras-egg-no-mmsc/",
+        zh: "/zh-retail-oras-egg-no-mmsc/",
+      },
       guideGroupId:
         "en:/retail-oras-egg-no-mmsc/:Omega Ruby and Alpha Sapphire",
       guideVariantLinks: {
@@ -6773,6 +6996,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 6/ORAS TID.mdx",
       translations: { en: "/retail-oras-tid/", zh: "/zh-retail-oras-tid/" },
@@ -6809,6 +7033,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx",
       translations: {
@@ -6852,9 +7077,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-egg-mmsc/",
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-egg-mmsc/",
+        zh: "/zh-retail-sm-egg-mmsc/",
+      },
       guideGroupId: "en:mm-sc-egg:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -6895,6 +7124,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-egg-no-mmsc/",
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -6941,9 +7171,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-egg-seed-no-cfw/",
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-egg-seed-no-cfw/",
+        zh: "/zh-retail-sm-egg-seed-no-cfw/",
+      },
       guideGroupId: "en:/retail-sm-egg-seed-no-cfw/:Sun and Moon",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-sm-egg-seed-no-cfw/" },
@@ -6984,9 +7218,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-fidget/",
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline With Fidget Guide.mdx",
-      translations: null,
+      translations: { en: "/retail-sm-fidget/", zh: "/zh-retail-sm-fidget/" },
       guideGroupId: "en:/retail-sm-fidget/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7024,6 +7259,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-initial-seed-clocks/",
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 7/Finding Initial Seed with Clocks.mdx",
       translations: {
@@ -7067,9 +7303,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-island-scan/",
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Island Scan.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-island-scan/",
+        zh: "/zh-retail-sm-island-scan/",
+      },
       guideGroupId: "en:/retail-sm-island-scan/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7103,9 +7343,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-mystery-gift/",
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Mystery Gift.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-myster-gift/",
+        zh: "/zh-retail-sm-myster-gift/",
+      },
       guideGroupId: "en:/retail-sm-myster-gift/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7139,9 +7383,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-no-cfw/",
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/RNGing Without Custom Firmware.mdx",
-      translations: null,
+      translations: { en: "/retail-sm-no-cfw/", zh: "/zh-retail-sm-no-cfw/" },
       guideGroupId: "en:/retail-sm-no-cfw/:Sun and Moon",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-sm-no-cfw/" },
@@ -7179,6 +7424,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-sos/",
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 7/SOS RNG Guide.mdx",
       translations: { en: "/retail-sm-sos/", zh: "/zh-retail-sm-sos/" },
@@ -7215,9 +7461,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-stationary/",
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Stationary RNG.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-stationary/",
+        zh: "/zh-retail-sm-stationary/",
+      },
       guideGroupId: "en:/retail-sm-stationary/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7251,9 +7501,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-timeleap/",
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Leap Guide.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-timeleap/",
+        zh: "/zh-retail-sm-timeleap/",
+      },
       guideGroupId: "en:/retail-sm-timeleap/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7290,6 +7544,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-timeline/",
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Guide.mdx",
       translations: {
@@ -7329,9 +7584,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-wild/",
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Wild RNG.mdx",
-      translations: null,
+      translations: { en: "/retail-sm-wild/", zh: "/zh-retail-sm-wild/" },
       guideGroupId: "en:/retail-sm-wild/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7365,6 +7621,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Sword and Shield/Get Raid Seed With CFW.mdx",
       translations: null,
@@ -7405,6 +7662,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Sword and Shield/Get Raid Seed Without CFW.mdx",
       translations: null,
@@ -7446,6 +7704,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Sword and Shield/Raid RNG.mdx",
       translations: null,
@@ -7486,9 +7745,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-egg-mmsc/",
+        zh: "/zh-retail-usum-egg-mmsc/",
+      },
       guideGroupId: "en:mm-sc-egg:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -7530,6 +7793,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -7576,9 +7840,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-egg-seed-no-cfw/",
+        zh: "/zh-retail-usum-egg-seed-no-cfw/",
+      },
       guideGroupId: "en:/retail-usum-egg-seed-no-cfw/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-usum-egg-seed-no-cfw/" },
@@ -7619,9 +7887,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline With Fidget Guide.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-fidget/",
+        zh: "/zh-retail-usum-fidget/",
+      },
       guideGroupId: "en:/retail-usum-fidget/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -7659,6 +7931,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 7/Finding Initial Seed with Clocks.mdx",
       translations: {
@@ -7703,9 +7976,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Island Scan.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-island-scan/",
+        zh: "/zh-retail-usum-island-scan/",
+      },
       guideGroupId: "en:/retail-usum-island-scan/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -7739,9 +8016,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Mystery Gift.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-mystery-gift/",
+        zh: "/zh-retail-usum-mystery-gift/",
+      },
       guideGroupId: "en:/retail-usum-mystery-gift/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -7775,9 +8056,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/RNGing Without Custom Firmware.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-no-cfw/",
+        zh: "/zh-retail-usum-no-cfw/",
+      },
       guideGroupId: "en:/retail-usum-no-cfw/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-usum-no-cfw/" },
@@ -7815,6 +8100,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 7/SOS RNG Guide.mdx",
       translations: { en: "/retail-usum-sos/", zh: "/zh-retail-usum-sos/" },
@@ -7851,9 +8137,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Stationary RNG.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-stationary/",
+        zh: "/zh-retail-usum-stationary/",
+      },
       guideGroupId: "en:/retail-usum-stationary/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -7887,9 +8177,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Leap Guide.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-timeleap/",
+        zh: "/zh-retail-usum-timeleap/",
+      },
       guideGroupId: "en:/retail-usum-timeleap/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -7927,6 +8221,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Guide.mdx",
       translations: {
@@ -7966,9 +8261,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Wild RNG.mdx",
-      translations: null,
+      translations: { en: "/retail-usum-wild/", zh: "/zh-retail-usum-wild/" },
       guideGroupId: "en:/retail-usum-wild/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -8002,9 +8298,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Stationary Wormhole RNG.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-wormhole/",
+        zh: "/zh-retail-usum-wormhole/",
+      },
       guideGroupId: "en:/retail-usum-wormhole/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -8042,6 +8342,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-oras-egg-mmsc/",
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -8088,9 +8389,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-oras-egg-no-mmsc/",
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-xy-egg-no-mmsc/",
+        zh: "/zh-retail-xy-egg-no-mmsc/",
+      },
       guideGroupId: "en:/retail-xy-egg-no-mmsc/:X and Y",
       guideVariantLinks: {
         retail: null,
@@ -8131,6 +8436,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx",
       translations: { en: "/rs-battery/", zh: "/zh-rs-battery/" },
@@ -8171,6 +8477,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID.mdx",
       translations: {
@@ -8210,6 +8517,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Initial Seed RNG.mdx",
       translations: null,
@@ -8250,6 +8558,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Mirage Island.mdx",
       translations: { en: "/rs-mirage-island/", zh: "/zh-rs-mirage-island/" },
@@ -8289,6 +8598,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/PokeFinder Setup.mdx",
       translations: null,
@@ -8325,6 +8635,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Pokerus.mdx",
       translations: { en: "/rs-pokerus-emu/", zh: "/zh-rs-pokerus-emu/" },
@@ -8360,6 +8671,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx",
       translations: { en: "/rs-pokerus-retail/", zh: "/zh-rs-pokerus-retail/" },
@@ -8400,6 +8712,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID with Feebas.mdx",
       translations: { en: "/rs-sid-feebas/", zh: "/zh-rs-sid-feebas/" },
@@ -8439,6 +8752,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 Static.mdx",
       translations: null,
@@ -8475,6 +8789,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
@@ -8512,6 +8827,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Basic Rules of RNG.mdx",
       translations: null,
@@ -8552,6 +8868,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -8585,6 +8902,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 7/SOS Call Rates.mdx",
       translations: null,
@@ -8617,6 +8935,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -8649,6 +8968,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -8682,6 +9002,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Legends Arceus/MMO.mdx",
       translations: null,
@@ -8714,6 +9035,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -8747,6 +9069,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Tools and Emulators/Transporter Patches.mdx",
       translations: null,
@@ -8784,6 +9107,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Transporter/Transporter with Offline Patch.mdx",
       translations: null,
@@ -8825,6 +9149,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Transporter/Transporter.mdx",
       translations: null,
@@ -8860,6 +9185,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -8893,6 +9219,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Ruby and Sapphire/Wishing Star Jirachi.mdx",
       translations: {
@@ -8936,6 +9263,7 @@ export const guides = {
       translation: null,
       layout: "titled",
       canonical: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Hubs.mdx",
       translations: null,
@@ -8968,6 +9296,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 TID SID Generator.mdx",
       translations: null,
@@ -9005,6 +9334,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 6/Friend Safari Patch.mdx",
       translations: {
@@ -9045,6 +9375,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 6/PokeRadar.mdx",
       translations: { en: "/xy-pokeradar/", zh: "/zh-xy-pokeradar/" },
@@ -9081,6 +9412,7 @@ export const guides = {
       translation: { enSlug: "/3ds-alt-settings/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/3DS Alt Settings.mdx",
       translations: { en: "/3ds-alt-settings/", zh: "/zh-3ds-alt-settings/" },
@@ -9124,6 +9456,7 @@ export const guides = {
       translation: { enSlug: "/3ds-helper/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/3DS Helper.mdx",
       translations: { en: "/3ds-helper/", zh: "/zh-3ds-helper/" },
@@ -9162,6 +9495,7 @@ export const guides = {
       translation: { enSlug: "/bw2-egg/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 5/BW2 Egg.mdx",
       translations: { en: "/bw2-egg/", zh: "/zh-bw2-egg/" },
@@ -9198,6 +9532,7 @@ export const guides = {
       translation: { enSlug: "/channel-jirachi/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gamecube/Channel.mdx",
       translations: { en: "/channel-jirachi/", zh: "/zh-channel-jirachi/" },
@@ -9234,6 +9569,7 @@ export const guides = {
       translation: { enSlug: "/dppt-3ds-rng/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/3DS RNG.mdx",
       translations: { en: "/dppt-3ds-rng/", zh: "/zh-dppt-3ds-rng/" },
@@ -9270,6 +9606,7 @@ export const guides = {
       translation: { enSlug: "/dppt-advance-rng/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Advancing the RNG.mdx",
       translations: {
@@ -9313,6 +9650,7 @@ export const guides = {
       translation: { enSlug: "/dppt-cute-charm/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Cute Charm.mdx",
       translations: { en: "/dppt-cute-charm/", zh: "/zh-dppt-cute-charm/" },
@@ -9349,6 +9687,7 @@ export const guides = {
       translation: { enSlug: "/dppt-initial-seed-retail/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Retail Initial Seed.mdx",
       translations: {
@@ -9391,6 +9730,7 @@ export const guides = {
       translation: { enSlug: "/dppt-initial-seed/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Initial Seed RNG.mdx",
       translations: { en: "/dppt-initial-seed/", zh: "/zh-dppt-initial-seed/" },
@@ -9430,6 +9770,7 @@ export const guides = {
       translation: { enSlug: "/dppt-pokeradar-rng/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx",
       translations: {
@@ -9472,6 +9813,7 @@ export const guides = {
       translation: { enSlug: "/dppt-tid-sid/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Retail TID.mdx",
       translations: { en: "/dppt-tid-sid/", zh: "/zh-dppt-tid-sid/" },
@@ -9508,6 +9850,7 @@ export const guides = {
       translation: { enSlug: "/dppt-wild/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Wild.mdx",
       translations: { en: "/dppt-wild/", zh: "/zh-dppt-wild/" },
@@ -9547,6 +9890,7 @@ export const guides = {
       translation: { enSlug: "/e-tips-rng/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Basic Rules of RNG.mdx",
       translations: {
@@ -9590,6 +9934,7 @@ export const guides = {
       translation: { enSlug: "/emerald-mirage-island/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Mirage Island.mdx",
       translations: {
@@ -9630,6 +9975,7 @@ export const guides = {
       translation: { enSlug: "/emerald-painting-rng/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Reseed RNG.mdx",
       translations: {
@@ -9669,6 +10015,7 @@ export const guides = {
       translation: { enSlug: "/emerald-pokerus-emu/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx",
       translations: {
@@ -9708,6 +10055,7 @@ export const guides = {
       translation: { enSlug: "/emerald-shiny-starter/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Shiny Starter.mdx",
       translations: {
@@ -9748,6 +10096,7 @@ export const guides = {
       translation: { enSlug: "/emerald-sid-feebas/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID with Feebas.mdx",
       translations: {
@@ -9790,6 +10139,7 @@ export const guides = {
       translation: { enSlug: "/emulator-b2w2-dream-radar/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 5/Dream Radar.mdx",
       translations: {
@@ -9833,6 +10183,7 @@ export const guides = {
       },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
       translations: {
@@ -9876,6 +10227,7 @@ export const guides = {
       translation: { enSlug: "/emulator-bw-entralink/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 5/Entralink.mdx",
       translations: {
@@ -9918,6 +10270,7 @@ export const guides = {
       },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 5/Find DS Parameters.mdx",
       translations: {
@@ -9957,6 +10310,7 @@ export const guides = {
       translation: { enSlug: "/emulator-bw-roamers/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 5/Roamers.mdx",
       translations: {
@@ -9999,6 +10353,7 @@ export const guides = {
       },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
       translations: {
@@ -10041,6 +10396,7 @@ export const guides = {
       translation: { enSlug: "/emulator-bw-white-forest/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 5/White Forest RNG (Emu).mdx",
       translations: {
@@ -10081,6 +10437,7 @@ export const guides = {
       translation: { enSlug: "/emulator-dppt-cute-charm/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Cute Charm.mdx",
       translations: {
@@ -10121,6 +10478,7 @@ export const guides = {
       translation: { enSlug: "/emulator-dppt-egg/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx",
       translations: { en: "/emulator-dppt-egg/", zh: "/zh-emulator-dppt-egg/" },
@@ -10160,6 +10518,7 @@ export const guides = {
       translation: { enSlug: "/emulator-dppt-stationary/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Stationary.mdx",
       translations: {
@@ -10204,6 +10563,7 @@ export const guides = {
       translation: { enSlug: "/emulator-dppt-tid-sid/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/TID SID.mdx",
       translations: {
@@ -10246,6 +10606,7 @@ export const guides = {
       translation: { enSlug: "/emulator-emerald-egg/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Egg RNG.mdx",
       translations: {
@@ -10289,6 +10650,7 @@ export const guides = {
       },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/FireRed and LeafGreen/Static RNG.mdx",
       translations: {
@@ -10332,6 +10694,7 @@ export const guides = {
       translation: { enSlug: "/emulator-frlg-egg/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/FireRed and LeafGreen/Egg RNG.mdx",
       translations: { en: "/emulator-frlg-egg/", zh: "/zh-emulator-frlg-egg/" },
@@ -10371,6 +10734,7 @@ export const guides = {
       translation: { enSlug: "/emulator-frlg-wild/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/FireRed and LeafGreen/Wild RNG.mdx",
       translations: {
@@ -10413,6 +10777,7 @@ export const guides = {
       translation: { enSlug: "/emulator-hgss-cute-charm/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Cute Charm.mdx",
       translations: {
@@ -10452,6 +10817,7 @@ export const guides = {
       translation: { enSlug: "/emulator-hgss-egg/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Egg.mdx",
       translations: { en: "/emulator-hgss-egg/", zh: "/zh-emulator-hgss-egg/" },
@@ -10491,6 +10857,7 @@ export const guides = {
       translation: { enSlug: "/emulator-hgss-stationary/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
       translations: {
@@ -10534,6 +10901,7 @@ export const guides = {
       translation: { enSlug: "/emulator-oras-dexnav/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 6/DexNav.mdx",
       translations: {
@@ -10573,6 +10941,7 @@ export const guides = {
       translation: { enSlug: "/emulator-rs-egg/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Egg RNG.mdx",
       translations: { en: "/emulator-rs-egg/", zh: "/zh-emulator-rs-egg/" },
@@ -10612,6 +10981,7 @@ export const guides = {
       translation: { enSlug: "/emulator-rs-stationary/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Ruby & Sapphire Live Battery Stationary Abuse.mdx",
       translations: {
@@ -10655,6 +11025,7 @@ export const guides = {
       translation: { enSlug: "/emulator-rs-wishmaker/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
       translations: {
@@ -10678,6 +11049,88 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-emulator-sm-time-finder/": {
+    meta: {
+      id: "/emulator-sm-time-finder/",
+      categories: ["Sun and Moon"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emulator-sm-time-finder/",
+      isNew: false,
+      title: "日月 模拟器初始种子时间查找器（Citra）",
+      navDrawerTitle: "日月 模拟器初始种子时间查找器（Citra）",
+      description: "通过时间查找特定初始乱数种子的方法。",
+      slug: "/zh-emulator-sm-time-finder/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-sm-time-finder/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx",
+      translations: {
+        en: "/emulator-sm-time-finder/",
+        zh: "/zh-emulator-sm-time-finder/",
+      },
+      guideGroupId: "zh:/emulator-sm-time-finder/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emulator-usum-time-finder/": {
+    meta: {
+      id: "/emulator-usum-time-finder/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emulator-usum-time-finder/",
+      isNew: false,
+      title: "究极日月 模拟器初始种子时间查找器（Citra）",
+      navDrawerTitle: "究极日月 模拟器初始种子时间查找器（Citra）",
+      description: "通过时间查找特定初始乱数种子的方法。",
+      slug: "/zh-emulator-usum-time-finder/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-usum-time-finder/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx",
+      translations: {
+        en: "/emulator-usum-time-finder/",
+        zh: "/zh-emulator-usum-time-finder/",
+      },
+      guideGroupId: "zh:/emulator-usum-time-finder/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-frlg-gen3-sid/": {
     meta: {
       id: "/frlg-gen3-sid/",
@@ -10697,6 +11150,7 @@ export const guides = {
       translation: { enSlug: "/frlg-gen3-sid/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID.mdx",
       translations: {
@@ -10737,6 +11191,7 @@ export const guides = {
       translation: { enSlug: "/frlg-seeding-bot/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx",
       translations: { en: "/frlg-seeding-bot/", zh: "/zh-frlg-seeding-bot/" },
@@ -10777,6 +11232,7 @@ export const guides = {
       translation: { enSlug: "/gba-methods/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/GBA Methods.mdx",
       translations: {
@@ -10818,6 +11274,7 @@ export const guides = {
       translation: { enSlug: "/gba-pokerus-technical/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Pokerus Technical.mdx",
       translations: {
@@ -10861,6 +11318,7 @@ export const guides = {
       translation: { enSlug: "/gba-vblank/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Vblank.mdx",
       translations: { en: "/gba-vblank/", zh: "/zh-gba-vblank/" },
@@ -10899,6 +11357,7 @@ export const guides = {
       translation: { enSlug: "/gc-initial/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gamecube/Initial Seed RNG.mdx",
       translations: { en: "/gc-initial/", zh: "/zh-gc-initial/" },
@@ -10935,6 +11394,7 @@ export const guides = {
       translation: { enSlug: "/gen2-celebi/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 2/Celebi.mdx",
       translations: {
@@ -10975,6 +11435,7 @@ export const guides = {
       translation: { enSlug: "/gen2-starters/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 2/Starter.mdx",
       translations: {
@@ -11015,6 +11476,7 @@ export const guides = {
       translation: { enSlug: "/gen3-sid/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID.mdx",
       translations: {
@@ -11055,6 +11517,7 @@ export const guides = {
       translation: { enSlug: "/hgss-3ds-rng/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/3DS RNG.mdx",
       translations: { en: "/hgss-3ds-rng/", zh: "/zh-hgss-3ds-rng/" },
@@ -11091,6 +11554,7 @@ export const guides = {
       translation: { enSlug: "/hgss-cute-charm/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Cute Charm.mdx",
       translations: { en: "/hgss-cute-charm/", zh: "/zh-hgss-cute-charm/" },
@@ -11127,6 +11591,7 @@ export const guides = {
       translation: { enSlug: "/hgss-initial-seed/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx",
       translations: { en: "/hgss-initial-seed/", zh: "/zh-hgss-initial-seed/" },
@@ -11166,6 +11631,7 @@ export const guides = {
       translation: { enSlug: "/hgss-rng-advance/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Advancing the RNG.mdx",
       translations: {
@@ -11209,6 +11675,7 @@ export const guides = {
       translation: { enSlug: "/hgss-tid-sid/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Retail TID.mdx",
       translations: { en: "/hgss-tid-sid/", zh: "/zh-hgss-tid-sid/" },
@@ -11251,6 +11718,7 @@ export const guides = {
       translation: { enSlug: "/install-pokereader/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Tools and Emulators/3DS PokeReader.mdx",
       translations: {
@@ -11296,6 +11764,7 @@ export const guides = {
       translation: { enSlug: "/meteor-jirachi/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Shiny WISHMKR Jirachi with wishmaker-calc.mdx",
       translations: { en: "/meteor-jirachi/", zh: "/zh-meteor-jirachi/" },
@@ -11336,6 +11805,7 @@ export const guides = {
       translation: { enSlug: "/mgba-setup/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Tools and Emulators/mGBA Setup.mdx",
       translations: { en: "/mgba-setup/", zh: "/zh-mgba-setup/" },
@@ -11353,6 +11823,93 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Tools and Emulators/mGBA Setup.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-misc-3ds-island-scan-sm/": {
+    meta: {
+      id: "/misc-3ds-island-scan-sm/",
+      categories: ["Sun and Moon"],
+      section: "supporting_info",
+      guideVariants: null,
+      guideKey: "/misc-3ds-island-scan-sm/",
+      isNew: false,
+      title: "《太阳／月亮》岛屿扫描宝可梦一览（按星期与地点）",
+      navDrawerTitle: "《太阳／月亮》岛屿扫描宝可梦一览（按星期与地点）",
+      description:
+        "按星期与出现地点整理的《宝可梦 太阳／月亮》岛屿扫描宝可梦列表，方便快速查阅。",
+      slug: "/zh-misc-3ds-island-scan-sm/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/misc-3ds-island-scan-sm/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Island Scan Pokemon SM.mdx",
+      translations: {
+        en: "/misc-3ds-island-scan-sm/",
+        zh: "/zh-misc-3ds-island-scan-sm/",
+      },
+      guideGroupId: "zh:/misc-3ds-island-scan-sm/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 7/Island Scan Pokemon SM.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Island Scan Pokemon SM.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-misc-3ds-island-scan-usum/": {
+    meta: {
+      id: "/misc-3ds-island-scan-usum/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "supporting_info",
+      guideVariants: null,
+      guideKey: "/misc-3ds-island-scan-usum/",
+      isNew: false,
+      title: "《究极之日／究极之月》岛屿扫描宝可梦一览（按星期与地点）",
+      navDrawerTitle:
+        "《究极之日／究极之月》岛屿扫描宝可梦一览（按星期与地点）",
+      description:
+        "按星期与出现地点整理的《宝可梦 究极之日／究极之月》岛屿扫描宝可梦列表，方便快速查阅。",
+      slug: "/zh-misc-3ds-island-scan-usum/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/misc-3ds-island-scan-usum/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Island Scan Pokemon USUM.mdx",
+      translations: {
+        en: "/misc-3ds-island-scan-usum/",
+        zh: "/zh-misc-3ds-island-scan-usum/",
+      },
+      guideGroupId: "zh:/misc-3ds-island-scan-usum/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Island Scan Pokemon USUM.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Island Scan Pokemon USUM.mdx?raw"
       );
       return file.default;
     }),
@@ -11377,6 +11934,7 @@ export const guides = {
       translation: { enSlug: "/misc-dolphin-gba-bios/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Tools and Emulators/How to Extract GBA Bios.mdx",
       translations: {
@@ -11421,6 +11979,7 @@ export const guides = {
       translation: { enSlug: "/oras-mirage-spots/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 6/Mirage Spot.mdx",
       translations: { en: "/oras-mirage-spots/", zh: "/zh-oras-mirage-spots/" },
@@ -11434,6 +11993,49 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 6/Mirage Spot.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-oras-remove-time-penalty/": {
+    meta: {
+      id: "/oras-remove-time-penalty/",
+      categories: ["Omega Ruby and Alpha Sapphire"],
+      section: "supporting_info",
+      guideVariants: null,
+      guideKey: "/oras-remove-time-penalty/",
+      isNew: false,
+      title: "移除《欧米伽红宝石／阿尔法蓝宝石》的时间惩罚",
+      navDrawerTitle: "移除《欧米伽红宝石／阿尔法蓝宝石》的时间惩罚",
+      description:
+        "学习如何在《欧米伽红宝石／阿尔法蓝宝石》中更改时间而不触发时间惩罚。",
+      slug: "/zh-oras-remove-time-penalty/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-14",
+      translation: { enSlug: "/oras-remove-time-penalty/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/Remove Time Penalties.mdx",
+      translations: {
+        en: "/oras-remove-time-penalty/",
+        zh: "/zh-oras-remove-time-penalty/",
+      },
+      guideGroupId:
+        "zh:/oras-remove-time-penalty/:Omega Ruby and Alpha Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 6/Remove Time Penalties.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/Remove Time Penalties.mdx?raw"
       );
       return file.default;
     }),
@@ -11457,6 +12059,7 @@ export const guides = {
       translation: { enSlug: "/pal-xd-eevee/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gamecube/(XD) PAL Starter Eevee RNG.mdx",
       translations: { en: "/pal-xd-eevee/", zh: "/zh-pal-xd-eevee/" },
@@ -11497,6 +12100,7 @@ export const guides = {
       translation: { enSlug: "/pcalc-xy-friend-safari/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 6/Friend Safari RNG Guide.mdx",
       translations: {
@@ -11538,6 +12142,7 @@ export const guides = {
       translation: { enSlug: "/pcalc-xy-tid/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 6/XY TID.mdx",
       translations: { en: "/pcalc-xy-tid/", zh: "/zh-pcalc-xy-tid/" },
@@ -11575,6 +12180,7 @@ export const guides = {
       translation: { enSlug: "/retail-dppt-starter/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Starters.mdx",
       translations: {
@@ -11616,6 +12222,7 @@ export const guides = {
       translation: { enSlug: "/retail-emerald-egg/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Retail Egg.mdx",
       translations: {
@@ -11656,6 +12263,7 @@ export const guides = {
       translation: { enSlug: "/retail-emerald-wild/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx",
       translations: {
@@ -11698,6 +12306,7 @@ export const guides = {
       translation: { enSlug: "/retail-hgss-starter/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Starters.mdx",
       translations: {
@@ -11741,6 +12350,7 @@ export const guides = {
       translation: { enSlug: "/retail-oras-egg-mmsc/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -11760,6 +12370,51 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-oras-egg-no-mmsc/": {
+    meta: {
+      id: "/retail-oras-egg-no-mmsc/",
+      categories: ["Omega Ruby and Alpha Sapphire"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-oras-egg-no-mmsc/",
+      isNew: false,
+      title: "不使用 Masuda 法或闪耀护符的孵化乱数（ORAS）",
+      navDrawerTitle: "不使用 Masuda 法或闪耀护符的孵化乱数（ORAS）",
+      description:
+        "学习如何在《宝可梦 欧米伽红宝石／阿尔法蓝宝石》中通过培育屋进行孵化乱数，实现高个体或异色宝可梦孵化。",
+      slug: "/zh-retail-oras-egg-no-mmsc/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-oras-egg-no-mmsc/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      translations: {
+        en: "/retail-oras-egg-no-mmsc/",
+        zh: "/zh-retail-oras-egg-no-mmsc/",
+      },
+      guideGroupId:
+        "zh:/retail-oras-egg-no-mmsc/:Omega Ruby and Alpha Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
       );
       return file.default;
     }),
@@ -11784,6 +12439,7 @@ export const guides = {
       translation: { enSlug: "/retail-oras-tid/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 6/ORAS TID.mdx",
       translations: { en: "/retail-oras-tid/", zh: "/zh-retail-oras-tid/" },
@@ -11820,6 +12476,7 @@ export const guides = {
       translation: { enSlug: "/retail-rubysapphire-tid/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx",
       translations: {
@@ -11839,6 +12496,50 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 3/Ruby and Sapphire/Retail TID RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-egg-mmsc/": {
+    meta: {
+      id: "/retail-sm-egg-mmsc/",
+      categories: ["Sun and Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "mm-sc-egg",
+      isNew: false,
+      title: "日月 使用不同语言和/或闪耀呼符的孵蛋乱数",
+      navDrawerTitle: "日月 使用不同语言和/或闪耀呼符的孵蛋乱数",
+      description:
+        "学习如何在《日月》中使用闪耀呼符和/或不同语言亲代进行高个体异色宝可梦的孵蛋乱数。",
+      slug: "/zh-retail-sm-egg-mmsc/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-egg-mmsc/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
+      translations: {
+        en: "/retail-sm-egg-mmsc/",
+        zh: "/zh-retail-sm-egg-mmsc/",
+      },
+      guideGroupId: "zh:mm-sc-egg:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
       );
       return file.default;
     }),
@@ -11863,6 +12564,7 @@ export const guides = {
       translation: { enSlug: "/retail-sm-egg-no-mmsc/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -11882,6 +12584,89 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-egg-seed-no-cfw/": {
+    meta: {
+      id: "/retail-sm-egg-seed-no-cfw/",
+      categories: ["Sun and Moon"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/retail-sm-egg-seed-no-cfw/",
+      isNew: false,
+      title: "日月 实机获取孵蛋种子",
+      navDrawerTitle: "日月 实机获取孵蛋种子",
+      description: "使用鲤鱼王法在《日月》中获取孵蛋乱数种子，无需破解。",
+      slug: "/zh-retail-sm-egg-seed-no-cfw/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-egg-seed-no-cfw/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
+      translations: {
+        en: "/retail-sm-egg-seed-no-cfw/",
+        zh: "/zh-retail-sm-egg-seed-no-cfw/",
+      },
+      guideGroupId: "zh:/retail-sm-egg-seed-no-cfw/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-fidget/": {
+    meta: {
+      id: "/retail-sm-fidget/",
+      categories: ["Sun and Moon"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-fidget/",
+      isNew: false,
+      title: "日月 主角小动作时间线乱数",
+      navDrawerTitle: "日月 主角小动作时间线乱数",
+      description: "学习如何在《日月》中使用主角小动作建立时间线。",
+      slug: "/zh-retail-sm-fidget/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-fidget/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx",
+      translations: { en: "/retail-sm-fidget/", zh: "/zh-retail-sm-fidget/" },
+      guideGroupId: "zh:/retail-sm-fidget/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx?raw"
       );
       return file.default;
     }),
@@ -11909,6 +12694,7 @@ export const guides = {
       },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Finding Initial Seed with Clocks.mdx",
       translations: {
@@ -11928,6 +12714,129 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/Finding Initial Seed with Clocks.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-island-scan/": {
+    meta: {
+      id: "/retail-sm-island-scan/",
+      categories: ["Sun and Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-island-scan/",
+      isNew: false,
+      title: "《太阳／月亮》岛屿扫描乱数",
+      navDrawerTitle: "《太阳／月亮》岛屿扫描乱数",
+      description:
+        "学习如何在《太阳／月亮》中进行岛屿扫描乱数，非常适合用柑果球获取异色宝可梦。",
+      slug: "/zh-retail-sm-island-scan/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-island-scan/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Island Scan.mdx",
+      translations: {
+        en: "/retail-sm-island-scan/",
+        zh: "/zh-retail-sm-island-scan/",
+      },
+      guideGroupId: "zh:/retail-sm-island-scan/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Island Scan.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Island Scan.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-myster-gift/": {
+    meta: {
+      id: "/retail-sm-myster-gift/",
+      categories: ["Sun and Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-myster-gift/",
+      isNew: false,
+      title: "太阳和月亮神秘礼物乱数",
+      navDrawerTitle: "太阳和月亮神秘礼物乱数",
+      description:
+        "学习如何在太阳与月亮中对神秘礼物宝可梦进行乱数，以获得理想个体值。",
+      slug: "/zh-retail-sm-myster-gift/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-myster-gift/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Mystery Gift.mdx",
+      translations: {
+        en: "/retail-sm-myster-gift/",
+        zh: "/zh-retail-sm-myster-gift/",
+      },
+      guideGroupId: "zh:/retail-sm-myster-gift/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Mystery Gift.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Mystery Gift.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-no-cfw/": {
+    meta: {
+      id: "/retail-sm-no-cfw/",
+      categories: ["Sun and Moon"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/retail-sm-no-cfw/",
+      isNew: false,
+      title: "太阳和月亮 实机乱数",
+      navDrawerTitle: "太阳和月亮 实机乱数",
+      description:
+        "在不使用自制系统的情况下，于太阳与月亮中进行宝可梦个体值乱数。",
+      slug: "/zh-retail-sm-no-cfw/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-no-cfw/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx",
+      translations: { en: "/retail-sm-no-cfw/", zh: "/zh-retail-sm-no-cfw/" },
+      guideGroupId: "zh:/retail-sm-no-cfw/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx?raw"
       );
       return file.default;
     }),
@@ -11952,6 +12861,7 @@ export const guides = {
       translation: { enSlug: "/retail-sm-sos/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/SOS RNG Guide.mdx",
       translations: { en: "/retail-sm-sos/", zh: "/zh-retail-sm-sos/" },
@@ -11965,6 +12875,87 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/SOS RNG Guide.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-stationary/": {
+    meta: {
+      id: "/retail-sm-stationary/",
+      categories: ["Sun and Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-stationary/",
+      isNew: false,
+      title: "《太阳／月亮》定点宝可梦乱数",
+      navDrawerTitle: "《太阳／月亮》定点宝可梦乱数",
+      description:
+        "学习如何在《太阳／月亮》中进行定点宝可梦乱数，以获得理想的个体值、性格与异色。",
+      slug: "/zh-retail-sm-stationary/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-stationary/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Stationary RNG.mdx",
+      translations: {
+        en: "/retail-sm-stationary/",
+        zh: "/zh-retail-sm-stationary/",
+      },
+      guideGroupId: "zh:/retail-sm-stationary/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Stationary RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Stationary RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-timeleap/": {
+    meta: {
+      id: "/retail-sm-timeleap/",
+      categories: ["Sun and Moon"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-timeleap/",
+      isNew: false,
+      title: "日月 时间线跳跃乱数",
+      navDrawerTitle: "日月 时间线跳跃乱数",
+      description: "学习如何在《日月》中跳跃至特定时间线以获得目标宝可梦。",
+      slug: "/zh-retail-sm-timeleap/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-timeleap/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx",
+      translations: {
+        en: "/retail-sm-timeleap/",
+        zh: "/zh-retail-sm-timeleap/",
+      },
+      guideGroupId: "zh:/retail-sm-timeleap/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx?raw"
       );
       return file.default;
     }),
@@ -11988,6 +12979,7 @@ export const guides = {
       translation: { enSlug: "/retail-sm-timeline/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Timeline Guide.mdx",
       translations: {
@@ -12004,6 +12996,88 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/Timeline Guide.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-wild/": {
+    meta: {
+      id: "/retail-sm-wild/",
+      categories: ["Sun and Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-wild/",
+      isNew: false,
+      title: "《太阳／月亮》野生宝可梦乱数",
+      navDrawerTitle: "《太阳／月亮》野生宝可梦乱数",
+      description:
+        "学习如何在《太阳／月亮》中进行野生宝可梦乱数，以获得异色与高个体值结果。",
+      slug: "/zh-retail-sm-wild/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-wild/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Wild RNG.mdx",
+      translations: { en: "/retail-sm-wild/", zh: "/zh-retail-sm-wild/" },
+      guideGroupId: "zh:/retail-sm-wild/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Wild RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-egg-mmsc/": {
+    meta: {
+      id: "/retail-usum-egg-mmsc/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "mm-sc-egg",
+      isNew: false,
+      title: "究极日月 使用不同语言和/或闪耀呼符的孵蛋乱数",
+      navDrawerTitle: "究极日月 使用不同语言和/或闪耀呼符的孵蛋乱数",
+      description:
+        "学习如何在《究极日月》中使用闪耀呼符和/或不同语言亲代进行高个体异色宝可梦的孵蛋乱数。",
+      slug: "/zh-retail-usum-egg-mmsc/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-egg-mmsc/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
+      translations: {
+        en: "/retail-usum-egg-mmsc/",
+        zh: "/zh-retail-usum-egg-mmsc/",
+      },
+      guideGroupId: "zh:mm-sc-egg:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
       );
       return file.default;
     }),
@@ -12028,6 +13102,7 @@ export const guides = {
       translation: { enSlug: "/retail-usum-egg-no-mmsc/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -12047,6 +13122,93 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-egg-seed-no-cfw/": {
+    meta: {
+      id: "/retail-usum-egg-seed-no-cfw/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/retail-usum-egg-seed-no-cfw/",
+      isNew: false,
+      title: "究极日月 实机获取孵蛋种子",
+      navDrawerTitle: "究极日月 实机获取孵蛋种子",
+      description: "使用鲤鱼王法在《究极日月》中获取孵蛋乱数种子，无需破解。",
+      slug: "/zh-retail-usum-egg-seed-no-cfw/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-egg-seed-no-cfw/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
+      translations: {
+        en: "/retail-usum-egg-seed-no-cfw/",
+        zh: "/zh-retail-usum-egg-seed-no-cfw/",
+      },
+      guideGroupId: "zh:/retail-usum-egg-seed-no-cfw/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-fidget/": {
+    meta: {
+      id: "/retail-usum-fidget/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-fidget/",
+      isNew: false,
+      title: "究极日月 主角小动作时间线乱数",
+      navDrawerTitle: "究极日月 主角小动作时间线乱数",
+      description:
+        "学习如何在《究极之日／究极之月》中使用主角小动作建立时间线。",
+      slug: "/zh-retail-usum-fidget/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-fidget/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx",
+      translations: {
+        en: "/retail-usum-fidget/",
+        zh: "/zh-retail-usum-fidget/",
+      },
+      guideGroupId: "zh:/retail-usum-fidget/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx?raw"
       );
       return file.default;
     }),
@@ -12074,6 +13236,7 @@ export const guides = {
       },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Finding Initial Seed with Clocks.mdx",
       translations: {
@@ -12098,6 +13261,132 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-usum-island-scan/": {
+    meta: {
+      id: "/retail-usum-island-scan/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-island-scan/",
+      isNew: false,
+      title: "《究极之日／究极之月》岛屿扫描乱数",
+      navDrawerTitle: "《究极之日／究极之月》岛屿扫描乱数",
+      description:
+        "学习如何在《究极之日／究极之月》中进行岛屿扫描乱数，非常适合用柑果球获取异色宝可梦。",
+      slug: "/zh-retail-usum-island-scan/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-island-scan/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Island Scan.mdx",
+      translations: {
+        en: "/retail-usum-island-scan/",
+        zh: "/zh-retail-usum-island-scan/",
+      },
+      guideGroupId: "zh:/retail-usum-island-scan/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Island Scan.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Island Scan.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-mystery-gift/": {
+    meta: {
+      id: "/retail-usum-mystery-gift/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-mystery-gift/",
+      isNew: false,
+      title: "究极之日和究极之月神秘礼物乱数",
+      navDrawerTitle: "究极之日和究极之月神秘礼物乱数",
+      description:
+        "学习如何在究极之日与究极之月中对神秘礼物宝可梦进行乱数，以获得理想个体值。",
+      slug: "/zh-retail-usum-mystery-gift/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-mystery-gift/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Mystery Gift.mdx",
+      translations: {
+        en: "/retail-usum-mystery-gift/",
+        zh: "/zh-retail-usum-mystery-gift/",
+      },
+      guideGroupId: "zh:/retail-usum-mystery-gift/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Mystery Gift.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Mystery Gift.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-no-cfw/": {
+    meta: {
+      id: "/retail-usum-no-cfw/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/retail-usum-no-cfw/",
+      isNew: false,
+      title: "究极之日和究极之月 实机乱数",
+      navDrawerTitle: "究极之日和究极之月 实机乱数",
+      description:
+        "在不使用自制系统的情况下，于究极之日与究极之月中进行宝可梦个体值乱数。",
+      slug: "/zh-retail-usum-no-cfw/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-no-cfw/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx",
+      translations: {
+        en: "/retail-usum-no-cfw/",
+        zh: "/zh-retail-usum-no-cfw/",
+      },
+      guideGroupId: "zh:/retail-usum-no-cfw/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-usum-sos/": {
     meta: {
       id: "/retail-usum-sos/",
@@ -12118,6 +13407,7 @@ export const guides = {
       translation: { enSlug: "/retail-usum-sos/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/SOS RNG Guide.mdx",
       translations: { en: "/retail-usum-sos/", zh: "/zh-retail-usum-sos/" },
@@ -12131,6 +13421,88 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/SOS RNG Guide.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-stationary/": {
+    meta: {
+      id: "/retail-usum-stationary/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-stationary/",
+      isNew: false,
+      title: "《究极之日／究极之月》定点宝可梦乱数",
+      navDrawerTitle: "《究极之日／究极之月》定点宝可梦乱数",
+      description:
+        "学习如何在《究极之日／究极之月》中进行定点宝可梦乱数，以获得理想的个体值、性格与异色。",
+      slug: "/zh-retail-usum-stationary/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-stationary/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Stationary RNG.mdx",
+      translations: {
+        en: "/retail-usum-stationary/",
+        zh: "/zh-retail-usum-stationary/",
+      },
+      guideGroupId: "zh:/retail-usum-stationary/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Stationary RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Stationary RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-timeleap/": {
+    meta: {
+      id: "/retail-usum-timeleap/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-timeleap/",
+      isNew: false,
+      title: "究极日月 时间线跳跃乱数",
+      navDrawerTitle: "究极日月 时间线跳跃乱数",
+      description:
+        "学习如何在《究极之日／究极之月》中跳跃至特定时间线以获得目标宝可梦。",
+      slug: "/zh-retail-usum-timeleap/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-timeleap/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx",
+      translations: {
+        en: "/retail-usum-timeleap/",
+        zh: "/zh-retail-usum-timeleap/",
+      },
+      guideGroupId: "zh:/retail-usum-timeleap/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx?raw"
       );
       return file.default;
     }),
@@ -12154,6 +13526,7 @@ export const guides = {
       translation: { enSlug: "/retail-usum-timeline/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Timeline Guide.mdx",
       translations: {
@@ -12170,6 +13543,86 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/Timeline Guide.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-wild/": {
+    meta: {
+      id: "/retail-usum-wild/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-wild/",
+      isNew: false,
+      title: "《究极之日／究极之月》野生宝可梦乱数",
+      navDrawerTitle: "《究极之日／究极之月》野生宝可梦乱数",
+      description:
+        "学习如何在《究极之日／究极之月》中进行野生宝可梦乱数，以获得异色与高个体值结果。",
+      slug: "/zh-retail-usum-wild/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-wild/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Wild RNG.mdx",
+      translations: { en: "/retail-usum-wild/", zh: "/zh-retail-usum-wild/" },
+      guideGroupId: "zh:/retail-usum-wild/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Wild RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-wormhole/": {
+    meta: {
+      id: "/retail-usum-wormhole/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-wormhole/",
+      isNew: false,
+      title: "《究极之日／究极之月》究极之洞乱数",
+      navDrawerTitle: "《究极之日／究极之月》究极之洞乱数",
+      description:
+        "在《究极之日／究极之月》中，对究极之洞内出现的传说宝可梦进行乱数，以获得理想的个体值、性格与异色。",
+      slug: "/zh-retail-usum-wormhole/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-wormhole/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Stationary Wormhole RNG.mdx",
+      translations: {
+        en: "/retail-usum-wormhole/",
+        zh: "/zh-retail-usum-wormhole/",
+      },
+      guideGroupId: "zh:/retail-usum-wormhole/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 7/Stationary Wormhole RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Stationary Wormhole RNG.mdx?raw"
       );
       return file.default;
     }),
@@ -12194,6 +13647,7 @@ export const guides = {
       translation: { enSlug: "/retail-xy-egg-mmsc/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -12213,6 +13667,50 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-xy-egg-no-mmsc/": {
+    meta: {
+      id: "/retail-xy-egg-no-mmsc/",
+      categories: ["X and Y"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-xy-egg-no-mmsc/",
+      isNew: false,
+      title: "不使用 Masuda 法或闪耀护符的孵化乱数（XY）",
+      navDrawerTitle: "不使用 Masuda 法或闪耀护符的孵化乱数（XY）",
+      description:
+        "学习如何在《宝可梦 X/Y》中通过培育屋进行孵化乱数，实现高个体或异色宝可梦孵化。",
+      slug: "/zh-retail-xy-egg-no-mmsc/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-xy-egg-no-mmsc/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      translations: {
+        en: "/retail-xy-egg-no-mmsc/",
+        zh: "/zh-retail-xy-egg-no-mmsc/",
+      },
+      guideGroupId: "zh:/retail-xy-egg-no-mmsc/:X and Y",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
       );
       return file.default;
     }),
@@ -12237,6 +13735,7 @@ export const guides = {
       translation: { enSlug: "/rs-battery/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Live and Dry Battery.mdx",
       translations: { en: "/rs-battery/", zh: "/zh-rs-battery/" },
@@ -12276,6 +13775,7 @@ export const guides = {
       translation: { enSlug: "/rs-gen3-sid/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID.mdx",
       translations: {
@@ -12316,6 +13816,7 @@ export const guides = {
       translation: { enSlug: "/rs-mirage-island/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Mirage Island.mdx",
       translations: { en: "/rs-mirage-island/", zh: "/zh-rs-mirage-island/" },
@@ -12353,6 +13854,7 @@ export const guides = {
       translation: { enSlug: "/rs-pokerus-emu/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx",
       translations: { en: "/rs-pokerus-emu/", zh: "/zh-rs-pokerus-emu/" },
@@ -12389,6 +13891,7 @@ export const guides = {
       translation: { enSlug: "/rs-pokerus-retail/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Pokerus Retail.mdx",
       translations: { en: "/rs-pokerus-retail/", zh: "/zh-rs-pokerus-retail/" },
@@ -12428,6 +13931,7 @@ export const guides = {
       translation: { enSlug: "/rs-sid-feebas/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID with Feebas.mdx",
       translations: { en: "/rs-sid-feebas/", zh: "/zh-rs-sid-feebas/" },
@@ -12468,6 +13972,7 @@ export const guides = {
       translation: { enSlug: "/wishing-star-jirachi/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Ruby and Sapphire/Wishing Star Jirachi.mdx",
       translations: {
@@ -12511,6 +14016,7 @@ export const guides = {
       translation: { enSlug: "/xy-friend-safari-patch/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 6/Friend Safari Patch.mdx",
       translations: {
@@ -12551,6 +14057,7 @@ export const guides = {
       translation: { enSlug: "/xy-pokeradar/", language: "zh" },
       layout: "guide",
       canonical: null,
+      lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 6/PokeRadar.mdx",
       translations: { en: "/xy-pokeradar/", zh: "/zh-xy-pokeradar/" },
@@ -12734,6 +14241,7 @@ export const guideSlugs = [
   "/pokereader/",
   "/retail-bw-entralink/",
   "/retail-dppt-starter/",
+  "/retail-dppt-static/",
   "/retail-emerald-egg/",
   "/retail-emerald-wild/",
   "/retail-hgss-starter/",
@@ -12839,6 +14347,8 @@ export const guideSlugs = [
   "/zh-emulator-rs-egg/",
   "/zh-emulator-rs-stationary/",
   "/zh-emulator-rs-wishmaker/",
+  "/zh-emulator-sm-time-finder/",
+  "/zh-emulator-usum-time-finder/",
   "/zh-frlg-gen3-sid/",
   "/zh-frlg-seeding-bot/",
   "/zh-gba-methods/",
@@ -12856,8 +14366,11 @@ export const guideSlugs = [
   "/zh-install-pokereader/",
   "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",
+  "/zh-misc-3ds-island-scan-sm/",
+  "/zh-misc-3ds-island-scan-usum/",
   "/zh-misc-dolphin-gba-bios/",
   "/zh-oras-mirage-spots/",
+  "/zh-oras-remove-time-penalty/",
   "/zh-pal-xd-eevee/",
   "/zh-pcalc-xy-friend-safari/",
   "/zh-pcalc-xy-tid/",
@@ -12866,17 +14379,38 @@ export const guideSlugs = [
   "/zh-retail-emerald-wild/",
   "/zh-retail-hgss-starter/",
   "/zh-retail-oras-egg-mmsc/",
+  "/zh-retail-oras-egg-no-mmsc/",
   "/zh-retail-oras-tid/",
   "/zh-retail-rubysapphire-tid/",
+  "/zh-retail-sm-egg-mmsc/",
   "/zh-retail-sm-egg-no-mmsc/",
+  "/zh-retail-sm-egg-seed-no-cfw/",
+  "/zh-retail-sm-fidget/",
   "/zh-retail-sm-initial-seed-clocks/",
+  "/zh-retail-sm-island-scan/",
+  "/zh-retail-sm-myster-gift/",
+  "/zh-retail-sm-no-cfw/",
   "/zh-retail-sm-sos/",
+  "/zh-retail-sm-stationary/",
+  "/zh-retail-sm-timeleap/",
   "/zh-retail-sm-timeline/",
+  "/zh-retail-sm-wild/",
+  "/zh-retail-usum-egg-mmsc/",
   "/zh-retail-usum-egg-no-mmsc/",
+  "/zh-retail-usum-egg-seed-no-cfw/",
+  "/zh-retail-usum-fidget/",
   "/zh-retail-usum-initial-seed-clocks/",
+  "/zh-retail-usum-island-scan/",
+  "/zh-retail-usum-mystery-gift/",
+  "/zh-retail-usum-no-cfw/",
   "/zh-retail-usum-sos/",
+  "/zh-retail-usum-stationary/",
+  "/zh-retail-usum-timeleap/",
   "/zh-retail-usum-timeline/",
+  "/zh-retail-usum-wild/",
+  "/zh-retail-usum-wormhole/",
   "/zh-retail-xy-egg-mmsc/",
+  "/zh-retail-xy-egg-no-mmsc/",
   "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",
   "/zh-rs-mirage-island/",
@@ -12924,7 +14458,7 @@ export const externalGuides = [
     displayAttributes: ["web_tool"],
     url: "https://niart120.github.io/5genSearch-web/",
     id: "https://niart120.github.io/5genSearch-web/",
-    isNew: true,
+    isNew: false,
     translation: null,
     canonical: null,
     hideFromNavDrawer: false,
@@ -12932,6 +14466,7 @@ export const externalGuides = [
     title: "niart120's Gen 5 web tool",
     guideVariants: null,
     orderPriority: 20,
+    lastUpdated: null,
     description: "",
     layout: "guide",
     type: "externalLink",

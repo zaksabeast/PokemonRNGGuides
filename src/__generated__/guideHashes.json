@@ -395,6 +395,14 @@
     "hash": "8f100da34919a45649facaeffc6c2d15f1a783abdb0082cf69c977ff6e39797c",
     "lastUpdated": null
   },
+  "/zh-retail-oras-egg-no-mmsc/": {
+    "hash": "fb11c9b4361cbf3f4c1a0c8394ecfbb4fafe10230b226a6e71c8ec5643277644",
+    "lastUpdated": "2026-03-08"
+  },
+  "/zh-retail-xy-egg-no-mmsc/": {
+    "hash": "fb11c9b4361cbf3f4c1a0c8394ecfbb4fafe10230b226a6e71c8ec5643277644",
+    "lastUpdated": "2026-03-08"
+  },
   "/zh-retail-oras-tid/": {
     "hash": "324b9532fec8577f6f7dc111e8f98afa61b7c550e98cfd4ac757b28edb67ce5d",
     "lastUpdated": null
@@ -427,6 +435,10 @@
     "hash": "aee01e8464abd5b71873e8a1522cb858d1bdf1cc5775c6da2f2139dd93eec1e4",
     "lastUpdated": null
   },
+  "/zh-oras-remove-time-penalty/": {
+    "hash": "1e8e3d1731d2ef75417a9fc48945bd1204fde442392de0a960139659afdd7037",
+    "lastUpdated": null
+  },
   "/zh-xy-pokeradar/": {
     "hash": "4bb2b5e5ce45a86a8a4fa237495e5c497444dc5cde0031de52147d6bf5ffced2",
     "lastUpdated": null
@@ -451,6 +463,10 @@
     "hash": "950e51204914160b3a7e9cbd8a8c29470567a9f57a0ec3f3b0e92c153bfb9f9f",
     "lastUpdated": null
   },
+  "/zh-misc-3ds-island-scan-sm/": {
+    "hash": "a7fabb6de6d41b8480860ec496d86008860d87ed135b1475c3bc8588919edab8",
+    "lastUpdated": "2026-03-08"
+  },
   "/zh-retail-sm-sos/": {
     "hash": "5901e0eb90c3cde41de44faadf47b71d1fdeaa609d91a5e4b39697a969f7e21e",
     "lastUpdated": null
@@ -467,6 +483,70 @@
     "hash": "192928c46d202f63d3fa65c7c608ed067e3973fc12335222d71fd2b167e0f327",
     "lastUpdated": null
   },
+  "/zh-retail-sm-timeleap/": {
+    "hash": "7a459feb5dd3d63b4f75584c74da5d4c4e433e922e004a83460cfb2d15fee380",
+    "lastUpdated": null
+  },
+  "/zh-retail-usum-timeleap/": {
+    "hash": "7a459feb5dd3d63b4f75584c74da5d4c4e433e922e004a83460cfb2d15fee380",
+    "lastUpdated": null
+  },
+  "/zh-retail-sm-stationary/": {
+    "hash": "cde45b341793cca1fd288a44b8549cc6c939fe1ea0af75bb42979c989da922fe",
+    "lastUpdated": null
+  },
+  "/zh-retail-usum-stationary/": {
+    "hash": "cde45b341793cca1fd288a44b8549cc6c939fe1ea0af75bb42979c989da922fe",
+    "lastUpdated": null
+  },
+  "/zh-emulator-sm-time-finder/": {
+    "hash": "8ea313551df53de425017b48f70c0e1fb670528944b75a00b72fbd1945e6f724",
+    "lastUpdated": null
+  },
+  "/zh-emulator-usum-time-finder/": {
+    "hash": "8ea313551df53de425017b48f70c0e1fb670528944b75a00b72fbd1945e6f724",
+    "lastUpdated": null
+  },
+  "/zh-retail-sm-wild/": {
+    "hash": "d4ef10a2fb5f89395aa32b7e3a46c62a92d1089ca51c3918c5a977c7219efcc1",
+    "lastUpdated": null
+  },
+  "/zh-retail-usum-wild/": {
+    "hash": "d4ef10a2fb5f89395aa32b7e3a46c62a92d1089ca51c3918c5a977c7219efcc1",
+    "lastUpdated": null
+  },
+  "/zh-retail-sm-island-scan/": {
+    "hash": "aadf7284815c52569b10712b7e3081b1a9aa8c0ee6e6c574adc8bb4475181aaf",
+    "lastUpdated": null
+  },
+  "/zh-retail-usum-island-scan/": {
+    "hash": "aadf7284815c52569b10712b7e3081b1a9aa8c0ee6e6c574adc8bb4475181aaf",
+    "lastUpdated": null
+  },
+  "/zh-retail-sm-egg-seed-no-cfw/": {
+    "hash": "2b285d3fba02b9286d94b2f7f9a3bb98b98358fcf3819d3a25badc21c3a212a7",
+    "lastUpdated": null
+  },
+  "/zh-retail-usum-egg-seed-no-cfw/": {
+    "hash": "2b285d3fba02b9286d94b2f7f9a3bb98b98358fcf3819d3a25badc21c3a212a7",
+    "lastUpdated": null
+  },
+  "/zh-retail-sm-no-cfw/": {
+    "hash": "951f121231ce8087bac542759d8e6e84aa81cb78786be4256cdd171254d52925",
+    "lastUpdated": null
+  },
+  "/zh-retail-usum-no-cfw/": {
+    "hash": "951f121231ce8087bac542759d8e6e84aa81cb78786be4256cdd171254d52925",
+    "lastUpdated": null
+  },
+  "/zh-retail-sm-myster-gift/": {
+    "hash": "9fc4b00fa74fbd27a39095b3ae4e450802e159eafae79581af36c61b486ff96b",
+    "lastUpdated": null
+  },
+  "/zh-retail-usum-mystery-gift/": {
+    "hash": "9fc4b00fa74fbd27a39095b3ae4e450802e159eafae79581af36c61b486ff96b",
+    "lastUpdated": null
+  },
   "/zh-retail-sm-initial-seed-clocks/": {
     "hash": "221d02baed58766ea3399643f319b18b5d5bca780c65bd9b9a282d92a86a8d0a",
     "lastUpdated": null
@@ -474,6 +554,30 @@
   "/zh-retail-usum-initial-seed-clocks/": {
     "hash": "221d02baed58766ea3399643f319b18b5d5bca780c65bd9b9a282d92a86a8d0a",
     "lastUpdated": null
+  },
+  "/zh-retail-sm-egg-mmsc/": {
+    "hash": "ce6d5b0711a7847106258a83415ce9997dd36a06afe5ef2f614b38d1078df5c9",
+    "lastUpdated": "2026-03-08"
+  },
+  "/zh-retail-usum-egg-mmsc/": {
+    "hash": "ce6d5b0711a7847106258a83415ce9997dd36a06afe5ef2f614b38d1078df5c9",
+    "lastUpdated": "2026-03-08"
+  },
+  "/zh-misc-3ds-island-scan-usum/": {
+    "hash": "281aeb5eab20fa078168816d9a4acf993c2e2bfa2f37d6b784f13ff971078362",
+    "lastUpdated": "2026-03-08"
+  },
+  "/zh-retail-sm-fidget/": {
+    "hash": "1f4b1192b497f4e3d10a7b0dff02a4f8171217d05605bff5b6aa99cd2db4d813",
+    "lastUpdated": null
+  },
+  "/zh-retail-usum-fidget/": {
+    "hash": "1f4b1192b497f4e3d10a7b0dff02a4f8171217d05605bff5b6aa99cd2db4d813",
+    "lastUpdated": null
+  },
+  "/zh-retail-usum-wormhole/": {
+    "hash": "d1ae672650d7c61d9db71e72c422475080e2f6c29a9e4ac7e0f6470940d63b3d",
+    "lastUpdated": "2026-03-08"
   },
   "/zh-pal-xd-eevee/": {
     "hash": "e95b642f9c221a70c65e40020a49e79bd0dc9adda0b157c3307c14b068250509",
@@ -984,12 +1088,12 @@
     "lastUpdated": null
   },
   "/retail-oras-egg-no-mmsc/": {
-    "hash": "55e8b54ce47b591c01179afd865929c6b1d39d1567d4236cd994505eaa173aa9",
-    "lastUpdated": null
+    "hash": "9aade63b3f90e44a2e1b854e97ce67397fee69105a4895e9aafaa1139afbb79e",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-xy-egg-no-mmsc/": {
-    "hash": "55e8b54ce47b591c01179afd865929c6b1d39d1567d4236cd994505eaa173aa9",
-    "lastUpdated": null
+    "hash": "9aade63b3f90e44a2e1b854e97ce67397fee69105a4895e9aafaa1139afbb79e",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-oras-tid/": {
     "hash": "5a06ac19c090769168b30dd39b64fdb882b21d1d86ae82eba52b84328cc28bd4",
@@ -1024,8 +1128,8 @@
     "lastUpdated": null
   },
   "/oras-remove-time-penalty/": {
-    "hash": "c2f10e30efa954d1e4aa4eca516211f18df480a41257b0a51eb0ab0bb684a4dd",
-    "lastUpdated": null
+    "hash": "2179d427485931c33fa8db97b54fbf496724a6400b1dd5e5fa73a98b01de6ec8",
+    "lastUpdated": "2026-03-08"
   },
   "/xy-pokeradar/": {
     "hash": "3bb7b32d487395fe8431b03efda4783063cd10f8a3081048ff051ee447e1f26a",
@@ -1128,8 +1232,8 @@
     "lastUpdated": null
   },
   "/misc-3ds-island-scan-sm/": {
-    "hash": "fe00f71e1d52343de8fad4e5ebf30d5876e8f2d1c628bbaad804e45a721b4199",
-    "lastUpdated": null
+    "hash": "2f0697c42f1ccd59e8c22e9146c68c82e71f9aaa9c9dcae85156d20dab6e6975",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-sm-sos/": {
     "hash": "c6a5910058329a77d8b26084830bdb8f2efe2b3940fd3cc43f801743063061ef",
@@ -1148,72 +1252,72 @@
     "lastUpdated": null
   },
   "/retail-sm-timeleap/": {
-    "hash": "09635e632d0718e666beb67c543661492a1d4447911bc2f2e74f5b391822fe7d",
-    "lastUpdated": null
+    "hash": "067cc53446594fc798a5070d3571b47605b55d8f78663b786e62570f840febae",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-usum-timeleap/": {
-    "hash": "09635e632d0718e666beb67c543661492a1d4447911bc2f2e74f5b391822fe7d",
-    "lastUpdated": null
+    "hash": "067cc53446594fc798a5070d3571b47605b55d8f78663b786e62570f840febae",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-sm-stationary/": {
-    "hash": "e9f51798371ef008ac75b02a1ff8e0146f69ccd64960ad1ab77f6b06eec9f3ec",
-    "lastUpdated": null
+    "hash": "2dfadf84e77da6ebe3e000772a329dbc1b1a521bc3135f2ef6d92d6f696d405d",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-usum-stationary/": {
-    "hash": "e9f51798371ef008ac75b02a1ff8e0146f69ccd64960ad1ab77f6b06eec9f3ec",
-    "lastUpdated": null
+    "hash": "2dfadf84e77da6ebe3e000772a329dbc1b1a521bc3135f2ef6d92d6f696d405d",
+    "lastUpdated": "2026-03-08"
   },
   "/emulator-sm-time-finder/": {
-    "hash": "feb749570425761dfc006f46e8def6970aa91dfe19752c4f713bd3d0a86af644",
-    "lastUpdated": null
+    "hash": "0c518167ae3a28adcbbd2ae7b5eefa541699bf149e8cf0e9f4f07afc0e0b05ad",
+    "lastUpdated": "2026-03-08"
   },
   "/emulator-usum-time-finder/": {
-    "hash": "feb749570425761dfc006f46e8def6970aa91dfe19752c4f713bd3d0a86af644",
-    "lastUpdated": null
+    "hash": "0c518167ae3a28adcbbd2ae7b5eefa541699bf149e8cf0e9f4f07afc0e0b05ad",
+    "lastUpdated": "2026-03-08"
   },
   "/sos-call-rates/": {
     "hash": "c79222531695e8867a01a7599cc2f37c8e2307315ddab907659e4a4c7f336569",
     "lastUpdated": null
   },
   "/retail-sm-wild/": {
-    "hash": "829ec99708065905c55aaa458780add4429ee621b0c422c83890d1e9d7a93a6e",
-    "lastUpdated": null
+    "hash": "7900e23fefac3d767323a068a69eb084a3c035ef6984220b324d111c8b281fe4",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-usum-wild/": {
-    "hash": "829ec99708065905c55aaa458780add4429ee621b0c422c83890d1e9d7a93a6e",
-    "lastUpdated": null
+    "hash": "7900e23fefac3d767323a068a69eb084a3c035ef6984220b324d111c8b281fe4",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-sm-island-scan/": {
-    "hash": "31c71be24fab559af2b3cf9dcb758266279004dfe8900075c719561e94edd77f",
-    "lastUpdated": null
+    "hash": "2e421513a1ae1cf9d6ad8ff464bc754c20e8cd6031aa6bf6490198b674e81175",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-usum-island-scan/": {
-    "hash": "31c71be24fab559af2b3cf9dcb758266279004dfe8900075c719561e94edd77f",
-    "lastUpdated": null
+    "hash": "2e421513a1ae1cf9d6ad8ff464bc754c20e8cd6031aa6bf6490198b674e81175",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-sm-egg-seed-no-cfw/": {
-    "hash": "9aa27e40d3d167e8e4d6c9ccdeeba962068349bed6409714221bcf43adf05751",
-    "lastUpdated": null
+    "hash": "382c57d36e47c853667ec1f9768f4503bb03f4636a8e2006f70c28ceeba648bc",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-usum-egg-seed-no-cfw/": {
-    "hash": "9aa27e40d3d167e8e4d6c9ccdeeba962068349bed6409714221bcf43adf05751",
-    "lastUpdated": null
+    "hash": "382c57d36e47c853667ec1f9768f4503bb03f4636a8e2006f70c28ceeba648bc",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-sm-no-cfw/": {
-    "hash": "3c71750597e45545dcfcab48f2cfc061e69bf0a73192096c0f2558e82ac99516",
-    "lastUpdated": null
+    "hash": "fd3e0c1623bcad9ddecb781f6f981cc3fc40b72eaf7163d4575d12cf29333c75",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-usum-no-cfw/": {
-    "hash": "3c71750597e45545dcfcab48f2cfc061e69bf0a73192096c0f2558e82ac99516",
-    "lastUpdated": null
+    "hash": "fd3e0c1623bcad9ddecb781f6f981cc3fc40b72eaf7163d4575d12cf29333c75",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-sm-myster-gift/": {
-    "hash": "8da6b14590de29bb033eac0105031472c9f1ddc4bb4ca58bc8fdba91553489a0",
-    "lastUpdated": null
+    "hash": "c000a25bca74e8ba1cd941905e603e57cd0d97b0420c9c7cf38a51537a7a77bb",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-usum-mystery-gift/": {
-    "hash": "8da6b14590de29bb033eac0105031472c9f1ddc4bb4ca58bc8fdba91553489a0",
-    "lastUpdated": null
+    "hash": "c000a25bca74e8ba1cd941905e603e57cd0d97b0420c9c7cf38a51537a7a77bb",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-sm-initial-seed-clocks/": {
     "hash": "d6794759a265a93815cea80074b3d9e1e7a00401772c0b068c36fc54f04b4efb",
@@ -1224,28 +1328,28 @@
     "lastUpdated": null
   },
   "/retail-sm-egg-mmsc/": {
-    "hash": "7986540150e175d3757508dee48b691ec604c6ddf5ca01fe75543a45fe398211",
-    "lastUpdated": null
+    "hash": "2cffcf14539796da5379235371b634a5a72d15f787aea87d0f23677b78c2b857",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-usum-egg-mmsc/": {
-    "hash": "7986540150e175d3757508dee48b691ec604c6ddf5ca01fe75543a45fe398211",
-    "lastUpdated": null
+    "hash": "2cffcf14539796da5379235371b634a5a72d15f787aea87d0f23677b78c2b857",
+    "lastUpdated": "2026-03-08"
   },
   "/misc-3ds-island-scan-usum/": {
-    "hash": "ca6b0be8562e225c626fd0c67dfdda29d6a2de100a2eb75d0af2f58f607b4fd4",
-    "lastUpdated": null
+    "hash": "e3d1455609135f424e6a4e71236e54b18349bd32b991908becf66055a45b29ef",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-sm-fidget/": {
-    "hash": "339dd439ace6ea2573e2041e51bd8eecac129ea9d0b74635d878756da2cdf379",
-    "lastUpdated": null
+    "hash": "74b16fabb0082a12100d2c4efef2dc8ac40b446a6e262d7ff4886b7550c6c5e6",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-usum-fidget/": {
-    "hash": "339dd439ace6ea2573e2041e51bd8eecac129ea9d0b74635d878756da2cdf379",
-    "lastUpdated": null
+    "hash": "74b16fabb0082a12100d2c4efef2dc8ac40b446a6e262d7ff4886b7550c6c5e6",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-usum-wormhole/": {
-    "hash": "31103821e08f5a70a4a2e55297e690980b8abaab79968882f821fa77b5289a33",
-    "lastUpdated": null
+    "hash": "4245a68ffd410e58408e2dd53d4b75ce79b43d587ca69fa8a1933a0d559f5c03",
+    "lastUpdated": "2026-03-08"
   },
   "/pal-xd-eevee/": {
     "hash": "951b4cf842e50d18da59034758f83aeda8470d35d9de5b94bceebe037a843295",

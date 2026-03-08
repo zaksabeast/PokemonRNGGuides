@@ -3483,10 +3483,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/emulator-usum-time-finder/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Time Finder.js (Citra).mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-sm-time-finder/",
+        zh: "/zh-emulator-sm-time-finder/",
+      },
       guideGroupId: "en:/emulator-sm-time-finder/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -3523,10 +3526,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Time Finder.js (Citra).mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-usum-time-finder/",
+        zh: "/zh-emulator-usum-time-finder/",
+      },
       guideGroupId: "en:/emulator-usum-time-finder/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -5946,10 +5952,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Island Scan Pokemon SM.mdx",
-      translations: null,
+      translations: {
+        en: "/misc-3ds-island-scan-sm/",
+        zh: "/zh-misc-3ds-island-scan-sm/",
+      },
       guideGroupId: "en:/misc-3ds-island-scan-sm/:Sun and Moon",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -5985,10 +5994,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Island Scan Pokemon USUM.mdx",
-      translations: null,
+      translations: {
+        en: "/misc-3ds-island-scan-usum/",
+        zh: "/zh-misc-3ds-island-scan-usum/",
+      },
       guideGroupId: "en:/misc-3ds-island-scan-usum/:Ultra Sun and Ultra Moon",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -6382,10 +6394,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 6/Remove Time Penalties.mdx",
-      translations: null,
+      translations: {
+        en: "/oras-remove-time-penalty/",
+        zh: "/zh-oras-remove-time-penalty/",
+      },
       guideGroupId:
         "en:/oras-remove-time-penalty/:Omega Ruby and Alpha Sapphire",
       guideVariantLinks: null,
@@ -6933,10 +6948,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-oras-egg-no-mmsc/",
+        zh: "/zh-retail-oras-egg-no-mmsc/",
+      },
       guideGroupId:
         "en:/retail-oras-egg-no-mmsc/:Omega Ruby and Alpha Sapphire",
       guideVariantLinks: {
@@ -7059,10 +7077,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-egg-mmsc/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-egg-mmsc/",
+        zh: "/zh-retail-sm-egg-mmsc/",
+      },
       guideGroupId: "en:mm-sc-egg:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7150,10 +7171,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-egg-seed-no-cfw/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-egg-seed-no-cfw/",
+        zh: "/zh-retail-sm-egg-seed-no-cfw/",
+      },
       guideGroupId: "en:/retail-sm-egg-seed-no-cfw/:Sun and Moon",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-sm-egg-seed-no-cfw/" },
@@ -7194,10 +7218,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-fidget/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline With Fidget Guide.mdx",
-      translations: null,
+      translations: { en: "/retail-sm-fidget/", zh: "/zh-retail-sm-fidget/" },
       guideGroupId: "en:/retail-sm-fidget/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7279,10 +7303,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-island-scan/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Island Scan.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-island-scan/",
+        zh: "/zh-retail-sm-island-scan/",
+      },
       guideGroupId: "en:/retail-sm-island-scan/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7316,10 +7343,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-mystery-gift/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Mystery Gift.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-myster-gift/",
+        zh: "/zh-retail-sm-myster-gift/",
+      },
       guideGroupId: "en:/retail-sm-myster-gift/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7353,10 +7383,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-no-cfw/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/RNGing Without Custom Firmware.mdx",
-      translations: null,
+      translations: { en: "/retail-sm-no-cfw/", zh: "/zh-retail-sm-no-cfw/" },
       guideGroupId: "en:/retail-sm-no-cfw/:Sun and Moon",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-sm-no-cfw/" },
@@ -7431,10 +7461,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-stationary/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Stationary RNG.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-stationary/",
+        zh: "/zh-retail-sm-stationary/",
+      },
       guideGroupId: "en:/retail-sm-stationary/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7468,10 +7501,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-timeleap/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Leap Guide.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-sm-timeleap/",
+        zh: "/zh-retail-sm-timeleap/",
+      },
       guideGroupId: "en:/retail-sm-timeleap/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7548,10 +7584,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-wild/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Wild RNG.mdx",
-      translations: null,
+      translations: { en: "/retail-sm-wild/", zh: "/zh-retail-sm-wild/" },
       guideGroupId: "en:/retail-sm-wild/:Sun and Moon",
       guideVariantLinks: {
         retail: null,
@@ -7709,10 +7745,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-egg-mmsc/",
+        zh: "/zh-retail-usum-egg-mmsc/",
+      },
       guideGroupId: "en:mm-sc-egg:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -7801,10 +7840,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-egg-seed-no-cfw/",
+        zh: "/zh-retail-usum-egg-seed-no-cfw/",
+      },
       guideGroupId: "en:/retail-usum-egg-seed-no-cfw/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-usum-egg-seed-no-cfw/" },
@@ -7845,10 +7887,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline With Fidget Guide.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-fidget/",
+        zh: "/zh-retail-usum-fidget/",
+      },
       guideGroupId: "en:/retail-usum-fidget/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -7931,10 +7976,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Island Scan.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-island-scan/",
+        zh: "/zh-retail-usum-island-scan/",
+      },
       guideGroupId: "en:/retail-usum-island-scan/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -7968,10 +8016,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Mystery Gift.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-mystery-gift/",
+        zh: "/zh-retail-usum-mystery-gift/",
+      },
       guideGroupId: "en:/retail-usum-mystery-gift/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -8005,10 +8056,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/RNGing Without Custom Firmware.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-no-cfw/",
+        zh: "/zh-retail-usum-no-cfw/",
+      },
       guideGroupId: "en:/retail-usum-no-cfw/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-usum-no-cfw/" },
@@ -8083,10 +8137,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Stationary RNG.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-stationary/",
+        zh: "/zh-retail-usum-stationary/",
+      },
       guideGroupId: "en:/retail-usum-stationary/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -8120,10 +8177,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Leap Guide.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-timeleap/",
+        zh: "/zh-retail-usum-timeleap/",
+      },
       guideGroupId: "en:/retail-usum-timeleap/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -8201,10 +8261,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Wild RNG.mdx",
-      translations: null,
+      translations: { en: "/retail-usum-wild/", zh: "/zh-retail-usum-wild/" },
       guideGroupId: "en:/retail-usum-wild/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -8238,10 +8298,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 7/Stationary Wormhole RNG.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-usum-wormhole/",
+        zh: "/zh-retail-usum-wormhole/",
+      },
       guideGroupId: "en:/retail-usum-wormhole/:Ultra Sun and Ultra Moon",
       guideVariantLinks: {
         retail: null,
@@ -8326,10 +8389,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-oras-egg-no-mmsc/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
-      translations: null,
+      translations: {
+        en: "/retail-xy-egg-no-mmsc/",
+        zh: "/zh-retail-xy-egg-no-mmsc/",
+      },
       guideGroupId: "en:/retail-xy-egg-no-mmsc/:X and Y",
       guideVariantLinks: {
         retail: null,
@@ -10983,6 +11049,88 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-emulator-sm-time-finder/": {
+    meta: {
+      id: "/emulator-sm-time-finder/",
+      categories: ["Sun and Moon"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emulator-sm-time-finder/",
+      isNew: false,
+      title: "日月 模拟器初始种子时间查找器（Citra）",
+      navDrawerTitle: "日月 模拟器初始种子时间查找器（Citra）",
+      description: "通过时间查找特定初始乱数种子的方法。",
+      slug: "/zh-emulator-sm-time-finder/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-sm-time-finder/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx",
+      translations: {
+        en: "/emulator-sm-time-finder/",
+        zh: "/zh-emulator-sm-time-finder/",
+      },
+      guideGroupId: "zh:/emulator-sm-time-finder/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-emulator-usum-time-finder/": {
+    meta: {
+      id: "/emulator-usum-time-finder/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emulator-usum-time-finder/",
+      isNew: false,
+      title: "究极日月 模拟器初始种子时间查找器（Citra）",
+      navDrawerTitle: "究极日月 模拟器初始种子时间查找器（Citra）",
+      description: "通过时间查找特定初始乱数种子的方法。",
+      slug: "/zh-emulator-usum-time-finder/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-usum-time-finder/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx",
+      translations: {
+        en: "/emulator-usum-time-finder/",
+        zh: "/zh-emulator-usum-time-finder/",
+      },
+      guideGroupId: "zh:/emulator-usum-time-finder/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-frlg-gen3-sid/": {
     meta: {
       id: "/frlg-gen3-sid/",
@@ -11679,6 +11827,93 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-misc-3ds-island-scan-sm/": {
+    meta: {
+      id: "/misc-3ds-island-scan-sm/",
+      categories: ["Sun and Moon"],
+      section: "supporting_info",
+      guideVariants: null,
+      guideKey: "/misc-3ds-island-scan-sm/",
+      isNew: false,
+      title: "《太阳／月亮》岛屿扫描宝可梦一览（按星期与地点）",
+      navDrawerTitle: "《太阳／月亮》岛屿扫描宝可梦一览（按星期与地点）",
+      description:
+        "按星期与出现地点整理的《宝可梦 太阳／月亮》岛屿扫描宝可梦列表，方便快速查阅。",
+      slug: "/zh-misc-3ds-island-scan-sm/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/misc-3ds-island-scan-sm/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Island Scan Pokemon SM.mdx",
+      translations: {
+        en: "/misc-3ds-island-scan-sm/",
+        zh: "/zh-misc-3ds-island-scan-sm/",
+      },
+      guideGroupId: "zh:/misc-3ds-island-scan-sm/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 7/Island Scan Pokemon SM.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Island Scan Pokemon SM.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-misc-3ds-island-scan-usum/": {
+    meta: {
+      id: "/misc-3ds-island-scan-usum/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "supporting_info",
+      guideVariants: null,
+      guideKey: "/misc-3ds-island-scan-usum/",
+      isNew: false,
+      title: "《究极之日／究极之月》岛屿扫描宝可梦一览（按星期与地点）",
+      navDrawerTitle:
+        "《究极之日／究极之月》岛屿扫描宝可梦一览（按星期与地点）",
+      description:
+        "按星期与出现地点整理的《宝可梦 究极之日／究极之月》岛屿扫描宝可梦列表，方便快速查阅。",
+      slug: "/zh-misc-3ds-island-scan-usum/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/misc-3ds-island-scan-usum/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Island Scan Pokemon USUM.mdx",
+      translations: {
+        en: "/misc-3ds-island-scan-usum/",
+        zh: "/zh-misc-3ds-island-scan-usum/",
+      },
+      guideGroupId: "zh:/misc-3ds-island-scan-usum/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Island Scan Pokemon USUM.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Island Scan Pokemon USUM.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-misc-dolphin-gba-bios/": {
     meta: {
       id: "/misc-dolphin-gba-bios/",
@@ -11758,6 +11993,49 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 6/Mirage Spot.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-oras-remove-time-penalty/": {
+    meta: {
+      id: "/oras-remove-time-penalty/",
+      categories: ["Omega Ruby and Alpha Sapphire"],
+      section: "supporting_info",
+      guideVariants: null,
+      guideKey: "/oras-remove-time-penalty/",
+      isNew: false,
+      title: "移除《欧米伽红宝石／阿尔法蓝宝石》的时间惩罚",
+      navDrawerTitle: "移除《欧米伽红宝石／阿尔法蓝宝石》的时间惩罚",
+      description:
+        "学习如何在《欧米伽红宝石／阿尔法蓝宝石》中更改时间而不触发时间惩罚。",
+      slug: "/zh-oras-remove-time-penalty/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-14",
+      translation: { enSlug: "/oras-remove-time-penalty/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/Remove Time Penalties.mdx",
+      translations: {
+        en: "/oras-remove-time-penalty/",
+        zh: "/zh-oras-remove-time-penalty/",
+      },
+      guideGroupId:
+        "zh:/oras-remove-time-penalty/:Omega Ruby and Alpha Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 6/Remove Time Penalties.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/Remove Time Penalties.mdx?raw"
       );
       return file.default;
     }),
@@ -12096,6 +12374,51 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-oras-egg-no-mmsc/": {
+    meta: {
+      id: "/retail-oras-egg-no-mmsc/",
+      categories: ["Omega Ruby and Alpha Sapphire"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-oras-egg-no-mmsc/",
+      isNew: false,
+      title: "不使用 Masuda 法或闪耀护符的孵化乱数（ORAS）",
+      navDrawerTitle: "不使用 Masuda 法或闪耀护符的孵化乱数（ORAS）",
+      description:
+        "学习如何在《宝可梦 欧米伽红宝石／阿尔法蓝宝石》中通过培育屋进行孵化乱数，实现高个体或异色宝可梦孵化。",
+      slug: "/zh-retail-oras-egg-no-mmsc/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-oras-egg-no-mmsc/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      translations: {
+        en: "/retail-oras-egg-no-mmsc/",
+        zh: "/zh-retail-oras-egg-no-mmsc/",
+      },
+      guideGroupId:
+        "zh:/retail-oras-egg-no-mmsc/:Omega Ruby and Alpha Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-oras-tid/": {
     meta: {
       id: "/retail-oras-tid/",
@@ -12177,6 +12500,50 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-sm-egg-mmsc/": {
+    meta: {
+      id: "/retail-sm-egg-mmsc/",
+      categories: ["Sun and Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "mm-sc-egg",
+      isNew: false,
+      title: "日月 使用不同语言和/或闪耀呼符的孵蛋乱数",
+      navDrawerTitle: "日月 使用不同语言和/或闪耀呼符的孵蛋乱数",
+      description:
+        "学习如何在《日月》中使用闪耀呼符和/或不同语言亲代进行高个体异色宝可梦的孵蛋乱数。",
+      slug: "/zh-retail-sm-egg-mmsc/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-egg-mmsc/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
+      translations: {
+        en: "/retail-sm-egg-mmsc/",
+        zh: "/zh-retail-sm-egg-mmsc/",
+      },
+      guideGroupId: "zh:mm-sc-egg:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-sm-egg-no-mmsc/": {
     meta: {
       id: "/retail-sm-egg-no-mmsc/",
@@ -12217,6 +12584,89 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-egg-seed-no-cfw/": {
+    meta: {
+      id: "/retail-sm-egg-seed-no-cfw/",
+      categories: ["Sun and Moon"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/retail-sm-egg-seed-no-cfw/",
+      isNew: false,
+      title: "日月 实机获取孵蛋种子",
+      navDrawerTitle: "日月 实机获取孵蛋种子",
+      description: "使用鲤鱼王法在《日月》中获取孵蛋乱数种子，无需破解。",
+      slug: "/zh-retail-sm-egg-seed-no-cfw/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-egg-seed-no-cfw/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
+      translations: {
+        en: "/retail-sm-egg-seed-no-cfw/",
+        zh: "/zh-retail-sm-egg-seed-no-cfw/",
+      },
+      guideGroupId: "zh:/retail-sm-egg-seed-no-cfw/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-fidget/": {
+    meta: {
+      id: "/retail-sm-fidget/",
+      categories: ["Sun and Moon"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-fidget/",
+      isNew: false,
+      title: "日月 主角小动作时间线乱数",
+      navDrawerTitle: "日月 主角小动作时间线乱数",
+      description: "学习如何在《日月》中使用主角小动作建立时间线。",
+      slug: "/zh-retail-sm-fidget/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-fidget/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx",
+      translations: { en: "/retail-sm-fidget/", zh: "/zh-retail-sm-fidget/" },
+      guideGroupId: "zh:/retail-sm-fidget/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx?raw"
       );
       return file.default;
     }),
@@ -12268,6 +12718,129 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-sm-island-scan/": {
+    meta: {
+      id: "/retail-sm-island-scan/",
+      categories: ["Sun and Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-island-scan/",
+      isNew: false,
+      title: "《太阳／月亮》岛屿扫描乱数",
+      navDrawerTitle: "《太阳／月亮》岛屿扫描乱数",
+      description:
+        "学习如何在《太阳／月亮》中进行岛屿扫描乱数，非常适合用柑果球获取异色宝可梦。",
+      slug: "/zh-retail-sm-island-scan/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-island-scan/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Island Scan.mdx",
+      translations: {
+        en: "/retail-sm-island-scan/",
+        zh: "/zh-retail-sm-island-scan/",
+      },
+      guideGroupId: "zh:/retail-sm-island-scan/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Island Scan.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Island Scan.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-myster-gift/": {
+    meta: {
+      id: "/retail-sm-myster-gift/",
+      categories: ["Sun and Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-myster-gift/",
+      isNew: false,
+      title: "太阳和月亮神秘礼物乱数",
+      navDrawerTitle: "太阳和月亮神秘礼物乱数",
+      description:
+        "学习如何在太阳与月亮中对神秘礼物宝可梦进行乱数，以获得理想个体值。",
+      slug: "/zh-retail-sm-myster-gift/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-myster-gift/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Mystery Gift.mdx",
+      translations: {
+        en: "/retail-sm-myster-gift/",
+        zh: "/zh-retail-sm-myster-gift/",
+      },
+      guideGroupId: "zh:/retail-sm-myster-gift/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Mystery Gift.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Mystery Gift.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-no-cfw/": {
+    meta: {
+      id: "/retail-sm-no-cfw/",
+      categories: ["Sun and Moon"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/retail-sm-no-cfw/",
+      isNew: false,
+      title: "太阳和月亮 实机乱数",
+      navDrawerTitle: "太阳和月亮 实机乱数",
+      description:
+        "在不使用自制系统的情况下，于太阳与月亮中进行宝可梦个体值乱数。",
+      slug: "/zh-retail-sm-no-cfw/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-no-cfw/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx",
+      translations: { en: "/retail-sm-no-cfw/", zh: "/zh-retail-sm-no-cfw/" },
+      guideGroupId: "zh:/retail-sm-no-cfw/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-sm-sos/": {
     meta: {
       id: "/retail-sm-sos/",
@@ -12302,6 +12875,87 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/SOS RNG Guide.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-stationary/": {
+    meta: {
+      id: "/retail-sm-stationary/",
+      categories: ["Sun and Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-stationary/",
+      isNew: false,
+      title: "《太阳／月亮》定点宝可梦乱数",
+      navDrawerTitle: "《太阳／月亮》定点宝可梦乱数",
+      description:
+        "学习如何在《太阳／月亮》中进行定点宝可梦乱数，以获得理想的个体值、性格与异色。",
+      slug: "/zh-retail-sm-stationary/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-stationary/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Stationary RNG.mdx",
+      translations: {
+        en: "/retail-sm-stationary/",
+        zh: "/zh-retail-sm-stationary/",
+      },
+      guideGroupId: "zh:/retail-sm-stationary/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Stationary RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Stationary RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-sm-timeleap/": {
+    meta: {
+      id: "/retail-sm-timeleap/",
+      categories: ["Sun and Moon"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-timeleap/",
+      isNew: false,
+      title: "日月 时间线跳跃乱数",
+      navDrawerTitle: "日月 时间线跳跃乱数",
+      description: "学习如何在《日月》中跳跃至特定时间线以获得目标宝可梦。",
+      slug: "/zh-retail-sm-timeleap/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-timeleap/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx",
+      translations: {
+        en: "/retail-sm-timeleap/",
+        zh: "/zh-retail-sm-timeleap/",
+      },
+      guideGroupId: "zh:/retail-sm-timeleap/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx?raw"
       );
       return file.default;
     }),
@@ -12346,6 +13000,88 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-sm-wild/": {
+    meta: {
+      id: "/retail-sm-wild/",
+      categories: ["Sun and Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-sm-wild/",
+      isNew: false,
+      title: "《太阳／月亮》野生宝可梦乱数",
+      navDrawerTitle: "《太阳／月亮》野生宝可梦乱数",
+      description:
+        "学习如何在《太阳／月亮》中进行野生宝可梦乱数，以获得异色与高个体值结果。",
+      slug: "/zh-retail-sm-wild/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-sm-wild/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Wild RNG.mdx",
+      translations: { en: "/retail-sm-wild/", zh: "/zh-retail-sm-wild/" },
+      guideGroupId: "zh:/retail-sm-wild/:Sun and Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Wild RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-egg-mmsc/": {
+    meta: {
+      id: "/retail-usum-egg-mmsc/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "mm-sc-egg",
+      isNew: false,
+      title: "究极日月 使用不同语言和/或闪耀呼符的孵蛋乱数",
+      navDrawerTitle: "究极日月 使用不同语言和/或闪耀呼符的孵蛋乱数",
+      description:
+        "学习如何在《究极日月》中使用闪耀呼符和/或不同语言亲代进行高个体异色宝可梦的孵蛋乱数。",
+      slug: "/zh-retail-usum-egg-mmsc/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-egg-mmsc/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
+      translations: {
+        en: "/retail-usum-egg-mmsc/",
+        zh: "/zh-retail-usum-egg-mmsc/",
+      },
+      guideGroupId: "zh:mm-sc-egg:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-usum-egg-no-mmsc/": {
     meta: {
       id: "/retail-usum-egg-no-mmsc/",
@@ -12386,6 +13122,93 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-egg-seed-no-cfw/": {
+    meta: {
+      id: "/retail-usum-egg-seed-no-cfw/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/retail-usum-egg-seed-no-cfw/",
+      isNew: false,
+      title: "究极日月 实机获取孵蛋种子",
+      navDrawerTitle: "究极日月 实机获取孵蛋种子",
+      description: "使用鲤鱼王法在《究极日月》中获取孵蛋乱数种子，无需破解。",
+      slug: "/zh-retail-usum-egg-seed-no-cfw/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-egg-seed-no-cfw/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
+      translations: {
+        en: "/retail-usum-egg-seed-no-cfw/",
+        zh: "/zh-retail-usum-egg-seed-no-cfw/",
+      },
+      guideGroupId: "zh:/retail-usum-egg-seed-no-cfw/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-fidget/": {
+    meta: {
+      id: "/retail-usum-fidget/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-fidget/",
+      isNew: false,
+      title: "究极日月 主角小动作时间线乱数",
+      navDrawerTitle: "究极日月 主角小动作时间线乱数",
+      description:
+        "学习如何在《究极之日／究极之月》中使用主角小动作建立时间线。",
+      slug: "/zh-retail-usum-fidget/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-fidget/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx",
+      translations: {
+        en: "/retail-usum-fidget/",
+        zh: "/zh-retail-usum-fidget/",
+      },
+      guideGroupId: "zh:/retail-usum-fidget/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx?raw"
       );
       return file.default;
     }),
@@ -12438,6 +13261,132 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-usum-island-scan/": {
+    meta: {
+      id: "/retail-usum-island-scan/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-island-scan/",
+      isNew: false,
+      title: "《究极之日／究极之月》岛屿扫描乱数",
+      navDrawerTitle: "《究极之日／究极之月》岛屿扫描乱数",
+      description:
+        "学习如何在《究极之日／究极之月》中进行岛屿扫描乱数，非常适合用柑果球获取异色宝可梦。",
+      slug: "/zh-retail-usum-island-scan/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-island-scan/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Island Scan.mdx",
+      translations: {
+        en: "/retail-usum-island-scan/",
+        zh: "/zh-retail-usum-island-scan/",
+      },
+      guideGroupId: "zh:/retail-usum-island-scan/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Island Scan.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Island Scan.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-mystery-gift/": {
+    meta: {
+      id: "/retail-usum-mystery-gift/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-mystery-gift/",
+      isNew: false,
+      title: "究极之日和究极之月神秘礼物乱数",
+      navDrawerTitle: "究极之日和究极之月神秘礼物乱数",
+      description:
+        "学习如何在究极之日与究极之月中对神秘礼物宝可梦进行乱数，以获得理想个体值。",
+      slug: "/zh-retail-usum-mystery-gift/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-mystery-gift/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Mystery Gift.mdx",
+      translations: {
+        en: "/retail-usum-mystery-gift/",
+        zh: "/zh-retail-usum-mystery-gift/",
+      },
+      guideGroupId: "zh:/retail-usum-mystery-gift/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Mystery Gift.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Mystery Gift.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-no-cfw/": {
+    meta: {
+      id: "/retail-usum-no-cfw/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/retail-usum-no-cfw/",
+      isNew: false,
+      title: "究极之日和究极之月 实机乱数",
+      navDrawerTitle: "究极之日和究极之月 实机乱数",
+      description:
+        "在不使用自制系统的情况下，于究极之日与究极之月中进行宝可梦个体值乱数。",
+      slug: "/zh-retail-usum-no-cfw/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-no-cfw/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx",
+      translations: {
+        en: "/retail-usum-no-cfw/",
+        zh: "/zh-retail-usum-no-cfw/",
+      },
+      guideGroupId: "zh:/retail-usum-no-cfw/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-usum-sos/": {
     meta: {
       id: "/retail-usum-sos/",
@@ -12472,6 +13421,88 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 7/SOS RNG Guide.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-stationary/": {
+    meta: {
+      id: "/retail-usum-stationary/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-stationary/",
+      isNew: false,
+      title: "《究极之日／究极之月》定点宝可梦乱数",
+      navDrawerTitle: "《究极之日／究极之月》定点宝可梦乱数",
+      description:
+        "学习如何在《究极之日／究极之月》中进行定点宝可梦乱数，以获得理想的个体值、性格与异色。",
+      slug: "/zh-retail-usum-stationary/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-stationary/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Stationary RNG.mdx",
+      translations: {
+        en: "/retail-usum-stationary/",
+        zh: "/zh-retail-usum-stationary/",
+      },
+      guideGroupId: "zh:/retail-usum-stationary/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Stationary RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Stationary RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-timeleap/": {
+    meta: {
+      id: "/retail-usum-timeleap/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-timeleap/",
+      isNew: false,
+      title: "究极日月 时间线跳跃乱数",
+      navDrawerTitle: "究极日月 时间线跳跃乱数",
+      description:
+        "学习如何在《究极之日／究极之月》中跳跃至特定时间线以获得目标宝可梦。",
+      slug: "/zh-retail-usum-timeleap/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-timeleap/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx",
+      translations: {
+        en: "/retail-usum-timeleap/",
+        zh: "/zh-retail-usum-timeleap/",
+      },
+      guideGroupId: "zh:/retail-usum-timeleap/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx?raw"
       );
       return file.default;
     }),
@@ -12516,6 +13547,86 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-retail-usum-wild/": {
+    meta: {
+      id: "/retail-usum-wild/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-wild/",
+      isNew: false,
+      title: "《究极之日／究极之月》野生宝可梦乱数",
+      navDrawerTitle: "《究极之日／究极之月》野生宝可梦乱数",
+      description:
+        "学习如何在《究极之日／究极之月》中进行野生宝可梦乱数，以获得异色与高个体值结果。",
+      slug: "/zh-retail-usum-wild/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-wild/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: null,
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Wild RNG.mdx",
+      translations: { en: "/retail-usum-wild/", zh: "/zh-retail-usum-wild/" },
+      guideGroupId: "zh:/retail-usum-wild/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/zh/Gen 7/Wild RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-usum-wormhole/": {
+    meta: {
+      id: "/retail-usum-wormhole/",
+      categories: ["Ultra Sun and Ultra Moon"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-usum-wormhole/",
+      isNew: false,
+      title: "《究极之日／究极之月》究极之洞乱数",
+      navDrawerTitle: "《究极之日／究极之月》究极之洞乱数",
+      description:
+        "在《究极之日／究极之月》中，对究极之洞内出现的传说宝可梦进行乱数，以获得理想的个体值、性格与异色。",
+      slug: "/zh-retail-usum-wormhole/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-usum-wormhole/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 7/Stationary Wormhole RNG.mdx",
+      translations: {
+        en: "/retail-usum-wormhole/",
+        zh: "/zh-retail-usum-wormhole/",
+      },
+      guideGroupId: "zh:/retail-usum-wormhole/:Ultra Sun and Ultra Moon",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 7/Stationary Wormhole RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 7/Stationary Wormhole RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-retail-xy-egg-mmsc/": {
     meta: {
       id: "/retail-xy-egg-mmsc/",
@@ -12556,6 +13667,50 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-retail-xy-egg-no-mmsc/": {
+    meta: {
+      id: "/retail-xy-egg-no-mmsc/",
+      categories: ["X and Y"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/retail-xy-egg-no-mmsc/",
+      isNew: false,
+      title: "不使用 Masuda 法或闪耀护符的孵化乱数（XY）",
+      navDrawerTitle: "不使用 Masuda 法或闪耀护符的孵化乱数（XY）",
+      description:
+        "学习如何在《宝可梦 X/Y》中通过培育屋进行孵化乱数，实现高个体或异色宝可梦孵化。",
+      slug: "/zh-retail-xy-egg-no-mmsc/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-xy-egg-no-mmsc/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
+      translations: {
+        en: "/retail-xy-egg-no-mmsc/",
+        zh: "/zh-retail-xy-egg-no-mmsc/",
+      },
+      guideGroupId: "zh:/retail-xy-egg-no-mmsc/:X and Y",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx?raw"
       );
       return file.default;
     }),
@@ -13192,6 +14347,8 @@ export const guideSlugs = [
   "/zh-emulator-rs-egg/",
   "/zh-emulator-rs-stationary/",
   "/zh-emulator-rs-wishmaker/",
+  "/zh-emulator-sm-time-finder/",
+  "/zh-emulator-usum-time-finder/",
   "/zh-frlg-gen3-sid/",
   "/zh-frlg-seeding-bot/",
   "/zh-gba-methods/",
@@ -13209,8 +14366,11 @@ export const guideSlugs = [
   "/zh-install-pokereader/",
   "/zh-meteor-jirachi/",
   "/zh-mgba-setup/",
+  "/zh-misc-3ds-island-scan-sm/",
+  "/zh-misc-3ds-island-scan-usum/",
   "/zh-misc-dolphin-gba-bios/",
   "/zh-oras-mirage-spots/",
+  "/zh-oras-remove-time-penalty/",
   "/zh-pal-xd-eevee/",
   "/zh-pcalc-xy-friend-safari/",
   "/zh-pcalc-xy-tid/",
@@ -13219,17 +14379,38 @@ export const guideSlugs = [
   "/zh-retail-emerald-wild/",
   "/zh-retail-hgss-starter/",
   "/zh-retail-oras-egg-mmsc/",
+  "/zh-retail-oras-egg-no-mmsc/",
   "/zh-retail-oras-tid/",
   "/zh-retail-rubysapphire-tid/",
+  "/zh-retail-sm-egg-mmsc/",
   "/zh-retail-sm-egg-no-mmsc/",
+  "/zh-retail-sm-egg-seed-no-cfw/",
+  "/zh-retail-sm-fidget/",
   "/zh-retail-sm-initial-seed-clocks/",
+  "/zh-retail-sm-island-scan/",
+  "/zh-retail-sm-myster-gift/",
+  "/zh-retail-sm-no-cfw/",
   "/zh-retail-sm-sos/",
+  "/zh-retail-sm-stationary/",
+  "/zh-retail-sm-timeleap/",
   "/zh-retail-sm-timeline/",
+  "/zh-retail-sm-wild/",
+  "/zh-retail-usum-egg-mmsc/",
   "/zh-retail-usum-egg-no-mmsc/",
+  "/zh-retail-usum-egg-seed-no-cfw/",
+  "/zh-retail-usum-fidget/",
   "/zh-retail-usum-initial-seed-clocks/",
+  "/zh-retail-usum-island-scan/",
+  "/zh-retail-usum-mystery-gift/",
+  "/zh-retail-usum-no-cfw/",
   "/zh-retail-usum-sos/",
+  "/zh-retail-usum-stationary/",
+  "/zh-retail-usum-timeleap/",
   "/zh-retail-usum-timeline/",
+  "/zh-retail-usum-wild/",
+  "/zh-retail-usum-wormhole/",
   "/zh-retail-xy-egg-mmsc/",
+  "/zh-retail-xy-egg-no-mmsc/",
   "/zh-rs-battery/",
   "/zh-rs-gen3-sid/",
   "/zh-rs-mirage-island/",

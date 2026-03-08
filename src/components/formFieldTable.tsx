@@ -7,6 +7,7 @@ export type Field = {
   tooltip?: string;
   input: React.ReactNode;
   direction?: "row" | "column";
+  indent?: number;
 } & (
   | {
       label: React.ReactNode;
@@ -38,39 +39,55 @@ export const FormFieldTable = ({ fields }: Props) => {
       wrapperCol={{ flex: "1 1 0" }}
       colon={false}
     >
-      {fields.map(({ show, key, label, tooltip, input, direction = "row" }) => {
-        if (show === false) {
-          return null;
-        }
+      {fields.map(
+        ({
+          show,
+          key,
+          label,
+          tooltip,
+          input,
+          direction = "row",
+          indent = 0,
+        }) => {
+          if (show === false) {
+            return null;
+          }
 
-        const keyToUse = key == null ? label : key;
-        if (direction === "row") {
+          const keyToUse = key == null ? label : key;
+          if (direction === "row") {
+            return (
+              <AntdForm.Item
+                key={keyToUse}
+                tooltip={tooltip}
+                label={
+                  <Typography.Text strong whiteSpace="break-spaces">
+                    {label}
+                  </Typography.Text>
+                }
+                style={{ paddingLeft: `${indent * 20}px` }}
+              >
+                {input}
+              </AntdForm.Item>
+            );
+          }
+
           return (
             <AntdForm.Item
               key={keyToUse}
+              colon={false}
               tooltip={tooltip}
-              label={
+              style={{ paddingLeft: `${indent * 20}px` }}
+            >
+              <Flex vertical gap={4}>
                 <Typography.Text strong whiteSpace="break-spaces">
                   {label}
                 </Typography.Text>
-              }
-            >
-              {input}
+                {input}
+              </Flex>
             </AntdForm.Item>
           );
-        }
-
-        return (
-          <AntdForm.Item key={keyToUse} colon={false} tooltip={tooltip}>
-            <Flex vertical gap={4}>
-              <Typography.Text strong whiteSpace="break-spaces">
-                {label}
-              </Typography.Text>
-              {input}
-            </Flex>
-          </AntdForm.Item>
-        );
-      })}
+        },
+      )}
     </AntdForm>
   );
 };

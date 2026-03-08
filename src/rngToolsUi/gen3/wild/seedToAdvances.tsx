@@ -128,6 +128,7 @@ const MyFields = () => {
         label: "Find optimal painting seed?",
         input: <FormikSwitch<FormState> name="findOptimalSeed" />,
         show: usingPaintingReseeding,
+        indent: 1,
       },
       {
         label: "Painting seed",
@@ -135,6 +136,7 @@ const MyFields = () => {
           <FormikNumberInput<FormState> name="paintingSeed" numType="hex" />
         ),
         show: usingPaintingReseeding && !findOptimalSeed,
+        indent: 1,
       },
       {
         label: (
@@ -150,6 +152,7 @@ const MyFields = () => {
           <FormikNumberInput<FormState> name="minAdvBefore" numType="decimal" />
         ),
         show: usingPaintingReseeding && findOptimalSeed,
+        indent: 1,
       },
       {
         label: (
@@ -165,6 +168,7 @@ const MyFields = () => {
           <FormikNumberInput<FormState> name="minAdvAfter" numType="decimal" />
         ),
         show: usingPaintingReseeding && findOptimalSeed,
+        indent: 1,
       },
     ];
   }, [usingPaintingReseeding, findOptimalSeed]);

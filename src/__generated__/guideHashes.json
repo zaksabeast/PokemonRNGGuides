@@ -591,6 +591,14 @@
     "hash": "c99eee74c353529f75ba712d5b2e461d9e178871df8325c6905bc05540781303",
     "lastUpdated": null
   },
+  "/it-emulator-b2w2-wild/": {
+    "hash": "100f65e7c9169899c70b472dc7b81a5c106bed1407e5516abdc4374dd3f5436c",
+    "lastUpdated": null
+  },
+  "/it-emulator-bw-wild/": {
+    "hash": "100f65e7c9169899c70b472dc7b81a5c106bed1407e5516abdc4374dd3f5436c",
+    "lastUpdated": null
+  },
   "/it-e-tips-rng/": {
     "hash": "63b95e7593e5b85291f487ba90928abea4fbf687f43cf24aba67fbd3f54613bc",
     "lastUpdated": null
@@ -676,11 +684,11 @@
     "lastUpdated": null
   },
   "/emulator-b2w2-wild/": {
-    "hash": "fa7ba93cb15c8a992e341ea63efc790637d63b3f62369c2d6b0537aed3426f68",
+    "hash": "f1715e7b121f4afbd73d2ffcd284fc04588dddb9fe0421c8a0724fa312da7167",
     "lastUpdated": "2026-03-08"
   },
   "/emulator-bw-wild/": {
-    "hash": "fa7ba93cb15c8a992e341ea63efc790637d63b3f62369c2d6b0537aed3426f68",
+    "hash": "f1715e7b121f4afbd73d2ffcd284fc04588dddb9fe0421c8a0724fa312da7167",
     "lastUpdated": "2026-03-08"
   },
   "/bw2-egg/": {

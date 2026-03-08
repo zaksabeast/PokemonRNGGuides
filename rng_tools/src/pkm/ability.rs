@@ -21,4 +21,15 @@ impl AbilityType {
             AbilityType::Second
         }
     }
+
+    #[cfg(test)]
+    pub fn from_pokefinder_str(str: &str) -> Self {
+        let first = str.split_whitespace().next().unwrap();
+        match first {
+            "0:" => AbilityType::First,
+            "1:" => AbilityType::Second,
+            "h:" => AbilityType::Hidden,
+            _ => panic!("Unknown ability string: {}", str),
+        }
+    }
 }

@@ -1022,8 +1022,10 @@ const checkCompiledGuidesUpToDate = async (
     const storedSlugs = Object.keys(storedHashes).sort();
 
     const diffSlugs = xor(storedSlugs, currentSlugs);
-    const missingInCurrent = diffSlugs.filter((s) => !currentHashes[s]);
-    const extraInCurrent = diffSlugs.filter((s) => !storedHashes[s]);
+    const [missingInCurrent, extraInCurrent] = partition(
+      diffSlugs,
+      (slug) => !currentHashes[slug],
+    );
 
     if (missingInCurrent.length > 0) {
       console.error(

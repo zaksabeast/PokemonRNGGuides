@@ -839,13 +839,17 @@
     "hash": "41a390cc0757e6ad7f2bfa8137c2620539d7a326a209bfbe0e58cf035a5dc2ca",
     "lastUpdated": null
   },
+  "/retail-dppt-static/": {
+    "hash": "042a9a843ecb7292d7fbe00f09a124911de436b3a0e6f879b5e58a04af4566ef",
+    "lastUpdated": "2026-03-08"
+  },
   "/retail-dppt-starter/": {
-    "hash": "a88cd9676183fe3abbb0cb44cbdd18501d3ee3640d7c7182b99d4f860e10da9f",
-    "lastUpdated": null
+    "hash": "489f67f63c397cdd3c1e2a76c17bb2912da67270ec47f9a8a19051a308637e4c",
+    "lastUpdated": "2026-03-08"
   },
   "/retail-hgss-starter/": {
-    "hash": "a88cd9676183fe3abbb0cb44cbdd18501d3ee3640d7c7182b99d4f860e10da9f",
-    "lastUpdated": null
+    "hash": "489f67f63c397cdd3c1e2a76c17bb2912da67270ec47f9a8a19051a308637e4c",
+    "lastUpdated": "2026-03-08"
   },
   "/3ds-alt-settings/": {
     "hash": "547628cab00fb7333992b9a832ca19fdd11620be5de489a19c721181c10a1031",

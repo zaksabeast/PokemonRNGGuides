@@ -30,6 +30,8 @@ type Props<FormState extends GenericForm, Result> = {
   validationSchema?: z.ZodType<FormState>;
   submitButtonLabel?: string;
   formContainerId?: string;
+  filters?: React.ReactNode;
+  disableGenerate?: boolean;
 } & OneOf<{
   fields: Field[];
   getFields: (t: Translations) => Field[];
@@ -78,8 +80,10 @@ export const RngToolForm = <
   results,
   children,
   formContainerId,
-  allowReset = false,
+  filters,
   resetTrackerId,
+  allowReset = false,
+  disableGenerate = false,
   submitButtonLabel = "Generate",
   cancelButtonLabel = "Cancel",
   allowCancel = false,
@@ -124,7 +128,11 @@ export const RngToolForm = <
         <Form onSubmit={handleSubmit(onValidSubmit)} onReset={onReset}>
           <Flex vertical gap={8}>
             {fieldsReactNode}
-            <Button trackerId={submitTrackerId} htmlType="submit">
+            <Button
+              trackerId={submitTrackerId}
+              htmlType="submit"
+              disabled={disableGenerate}
+            >
               {translatedSubmitLabel}
             </Button>
             {allowCancel && cancelTrackerId != null && (
@@ -143,6 +151,12 @@ export const RngToolForm = <
             )}
           </Flex>
         </Form>
+
+        {filters != null && (
+          <Flex vertical gap={8} mt={24}>
+            {filters}
+          </Flex>
+        )}
 
         {columnsToUse != null && (
           <FormikResultTable<Result>

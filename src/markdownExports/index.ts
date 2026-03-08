@@ -192,10 +192,6 @@ const tools = {
     import("~/rngToolsUi/gen4/gen4stationary"),
     (mod) => mod.Static4Generator,
   ),
-  DpptSeed: lazyLoad(
-    import("~/rngToolsUi/gen4/dpptSeed"),
-    (mod) => mod.DpptSeed,
-  ),
   CalibrateId4: lazyLoad(
     import("~/rngToolsUi/gen4/id/calibrateId"),
     (mod) => mod.CalibrateId4,
@@ -283,6 +279,42 @@ const tools = {
   Starter4Setup: lazyLoad(
     import("~/rngToolsUi/gen4/starters"),
     (mod) => mod.Starter4Setup,
+  ),
+  Gen4StaticSetup: lazyLoad(
+    import("~/rngToolsUi/gen4/static/setup"),
+    (mod) => mod.Gen4StaticSetup,
+  ),
+  Static4ShowIf: lazyLoad(
+    import("~/rngToolsUi/gen4/static/showIf"),
+    (mod) => mod.Static4ShowIf,
+  ),
+  Static4Searcher: lazyLoad(
+    import("~/rngToolsUi/gen4/static/staticSearcher"),
+    (mod) => mod.Static4Searcher,
+  ),
+  Static4HitSeed: lazyLoad(
+    import("~/rngToolsUi/gen4/static/hitSeed"),
+    (mod) => mod.Static4HitSeed,
+  ),
+  Static4Timer: lazyLoad(
+    import("~/rngToolsUi/gen4/static/static4Timer"),
+    (mod) => mod.Static4Timer,
+  ),
+  Static4ConsoleSetDateString: lazyLoad(
+    import("~/rngToolsUi/gen4/static/static4Timer"),
+    (mod) => mod.Static4ConsoleSetDateString,
+  ),
+  Static4ChatotCount: lazyLoad(
+    import("~/rngToolsUi/gen4/static/stateText"),
+    (mod) => mod.Static4ChatotCount,
+  ),
+  Static4SyncNature: lazyLoad(
+    import("~/rngToolsUi/gen4/static/stateText"),
+    (mod) => mod.Static4SyncNature,
+  ),
+  Static4ShowIfLead: lazyLoad(
+    import("~/rngToolsUi/gen4/static/showIf"),
+    (mod) => mod.Static4ShowIfLead,
   ),
 };
 

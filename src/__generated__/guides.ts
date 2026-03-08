@@ -6679,7 +6679,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 4/Starters.mdx",
       translations: {
@@ -6697,6 +6697,43 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Gen 4/Starters.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/retail-dppt-static/": {
+    meta: {
+      id: "/retail-dppt-static/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "/retail-dppt-static/",
+      isNew: false,
+      title: "Diamond, Pearl, and Platinum Static RNG",
+      navDrawerTitle: "Static RNG",
+      description:
+        "Learn how to RNG static Pokémon in Diamond, Pearl, and Platinum for perfect IVs, natures, and shinies.",
+      slug: "/retail-dppt-static/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "baseGuide",
+      file: "guides/Gen 4/Retail Static.mdx",
+      translations: null,
+      guideGroupId: "en:/retail-dppt-static/:Diamond, Pearl, and Platinum",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-dppt-static/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Retail Static.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Retail Static.mdx?raw");
       return file.default;
     }),
   },
@@ -6806,7 +6843,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 4/Starters.mdx",
       translations: {
@@ -13049,6 +13086,7 @@ export const guideSlugs = [
   "/pokereader/",
   "/retail-bw-entralink/",
   "/retail-dppt-starter/",
+  "/retail-dppt-static/",
   "/retail-emerald-egg/",
   "/retail-emerald-wild/",
   "/retail-hgss-starter/",
@@ -13239,7 +13277,7 @@ export const externalGuides = [
     displayAttributes: ["web_tool"],
     url: "https://niart120.github.io/5genSearch-web/",
     id: "https://niart120.github.io/5genSearch-web/",
-    isNew: true,
+    isNew: false,
     translation: null,
     canonical: null,
     hideFromNavDrawer: false,

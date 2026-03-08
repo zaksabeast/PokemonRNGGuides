@@ -228,7 +228,7 @@ export const CalibrateStarter4 = () => {
           initial_advances: Math.max(targetAdvance - maxAdvances / 2, 0),
           max_advances: maxAdvances,
           game: getStarterGame(targetSpecies),
-          encounter: targetSpecies,
+          species: targetSpecies,
           lead: "None",
           seed: seedTime.seed,
           filter_characteristic: opts.filter_characteristic,

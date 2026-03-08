@@ -1,7 +1,8 @@
 import { match } from "ts-pattern";
-import { Characteristic, LeadAbilities, Nature } from "~/rngTools";
+import { Characteristic, LeadAbility, Nature } from "~/rngTools";
 import { toOptions } from "~/utils/options";
 import { startCase, sortBy } from "lodash-es";
+import { z } from "zod";
 
 export const Gen4GameVersions = [
   "Diamond",
@@ -12,6 +13,19 @@ export const Gen4GameVersions = [
 ] as const;
 
 export type Gen4GameVersion = (typeof Gen4GameVersions)[number];
+
+export const Gen4ConsoleSchema = z.enum([
+  "NdsDsi",
+  "3dsNormalSettings",
+  "3dsAltSettings",
+]);
+
+export type Gen4Console = z.infer<typeof Gen4ConsoleSchema>;
+
+export type Gen4GameAndConsole = {
+  game: Gen4GameVersion;
+  console: Gen4Console;
+};
 
 export const StaticEncounterSpecies = [
   "Turtwig",
@@ -80,7 +94,7 @@ export const leadAbilities = [
   "Synchronize",
 ] as const;
 
-type LeadKey = LeadAbilities extends infer T
+type LeadKey = LeadAbility extends infer T
   ? T extends string
     ? T
     : keyof T
@@ -91,8 +105,8 @@ type leadabilityinput = {
   synch_nature?: Nature;
 };
 
-export const getLeadAbility = (opts: leadabilityinput): LeadAbilities => {
-  return match<leadabilityinput, LeadAbilities>(opts)
+export const getLeadAbility = (opts: leadabilityinput): LeadAbility => {
+  return match<leadabilityinput, LeadAbility>(opts)
     .with({ lead: "Synchronize" }, (matched) => {
       if (matched.synch_nature === undefined) {
         throw new Error("Synchronize selected, but synch_nature is missing.");

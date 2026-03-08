@@ -239,7 +239,7 @@ const getFields = (
           options={toOptions(emeraldWildGameData.maps, formatMapName)}
         />
       ),
-      hide: hasPreselectedData,
+      show: !hasPreselectedData,
     },
   ];
 
@@ -256,17 +256,17 @@ const getFields = (
           options={toOptions(actions, formatActionName)}
         />
       ),
-      hide: hasPreselectedData,
+      show: !hasPreselectedData,
     },
     {
       label: "TID",
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-      hide: hasPreselectedData,
+      show: !hasPreselectedData,
     },
     {
       label: "SID",
       input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-      hide: hasPreselectedData,
+      show: !hasPreselectedData,
     },
     {
       label: "Lead",
@@ -277,7 +277,7 @@ const getFields = (
           options={leadsLabels}
         />
       ),
-      hide: hasPreselectedData,
+      show: !hasPreselectedData,
     },
   );
 
@@ -372,7 +372,7 @@ const getFields = (
     ),
     key: "usingPaintingReseeding",
     input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
-    hide: hasPreselectedData,
+    show: !hasPreselectedData,
   });
 
   fields.push({
@@ -384,7 +384,7 @@ const getFields = (
   fields.push({
     label: usingPaintingReseeding ? "Advances after reseeding" : "Advances",
     input: <FormikNumberInput<FormState> name="advance" numType="decimal" />,
-    hide: hasPreselectedData,
+    show: !hasPreselectedData,
   });
 
   fields.push({
@@ -408,7 +408,7 @@ const getFields = (
           options={toOptions(feebas_states, formatFeebasStateName)}
         />
       ),
-      hide: hasPreselectedData,
+      show: !hasPreselectedData,
     });
   }
 
@@ -421,7 +421,7 @@ const getFields = (
           options={toOptions(roamer_states, formatRoamerStateName)}
         />
       ),
-      hide: hasPreselectedData,
+      show: !hasPreselectedData,
     });
   }
 
@@ -434,7 +434,7 @@ const getFields = (
           options={toOptions(mass_outbreak_states, formatMassOutbreakStateName)}
         />
       ),
-      hide: hasPreselectedData,
+      show: !hasPreselectedData,
     });
   }
   return fields;

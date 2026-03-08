@@ -1,8 +1,6 @@
-import { OneOf } from "~/types";
 import { Flex } from "./flex";
 import { Typography } from "./typography";
 import { Form as AntdForm } from "antd";
-import { P } from "ts-pattern";
 
 export type Field = {
   tooltip?: string;

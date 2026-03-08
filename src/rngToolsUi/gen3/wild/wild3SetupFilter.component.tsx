@@ -205,7 +205,7 @@ const getSetupFields = (
           numType="decimal"
         />
       ),
-      show: usingPaintingReseeding,
+      show: !usingPaintingReseeding,
     },
     {
       label: usingPaintingReseeding

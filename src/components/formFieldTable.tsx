@@ -3,10 +3,10 @@ import { Typography } from "./typography";
 import { Form as AntdForm } from "antd";
 
 export type Field = {
+  show?: boolean;
   tooltip?: string;
   input: React.ReactNode;
   direction?: "row" | "column";
-  show?: boolean;
 } & (
   | {
       label: React.ReactNode;

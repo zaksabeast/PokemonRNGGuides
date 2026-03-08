@@ -80,6 +80,12 @@ impl RngDateTime {
     pub fn as_seconds_iterator(&mut self) -> SecondsIterator {
         SecondsIterator::new(self)
     }
+
+    #[cfg(test)]
+    pub fn from_pokefinder_str(str: &str) -> Option<Self> {
+        let datetime = NaiveDateTime::parse_from_str(str, "%Y-%m-%d %H:%M:%S").ok()?;
+        Some(Self::from(datetime))
+    }
 }
 
 impl From<NaiveDateTime> for RngDateTime {

@@ -1,3 +1,4 @@
+use itertools::iproduct;
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
 use std::ops::{Index, IndexMut};
@@ -200,6 +201,22 @@ impl Ivs {
             && self.spe >= min.spe
             && self.spe <= max.spe
     }
+
+    #[cfg(test)]
+    pub fn from_pokefinder_strs(parts: &[&str]) -> Self {
+        if parts.len() != 6 {
+            panic!("Expected 6 IVs, got {}", parts.len());
+        }
+
+        Self {
+            hp: parts[0].parse().unwrap(),
+            atk: parts[1].parse().unwrap(),
+            def: parts[2].parse().unwrap(),
+            spa: parts[3].parse().unwrap(),
+            spd: parts[4].parse().unwrap(),
+            spe: parts[5].parse().unwrap(),
+        }
+    }
 }
 
 impl std::fmt::Display for Ivs {
@@ -210,6 +227,43 @@ impl std::fmt::Display for Ivs {
             self.hp, self.atk, self.def, self.spa, self.spd, self.spe,
         )
     }
+}
+
+pub fn iv_iter(min_ivs: Ivs, max_ivs: Ivs) -> impl Iterator<Item = Ivs> {
+    let Ivs {
+        hp: min_hp,
+        atk: min_atk,
+        def: min_def,
+        spa: min_spa,
+        spd: min_spd,
+        spe: min_spe,
+    } = min_ivs;
+
+    let Ivs {
+        hp: max_hp,
+        atk: max_atk,
+        def: max_def,
+        spa: max_spa,
+        spd: max_spd,
+        spe: max_spe,
+    } = max_ivs;
+
+    iproduct!(
+        min_hp..=max_hp,
+        min_atk..=max_atk,
+        min_def..=max_def,
+        min_spa..=max_spa,
+        min_spd..=max_spd,
+        min_spe..=max_spe
+    )
+    .map(|(hp, atk, def, spa, spd, spe)| Ivs {
+        hp,
+        atk,
+        def,
+        spa,
+        spd,
+        spe,
+    })
 }
 
 #[derive(Debug, Clone, Copy, FromPrimitive)]

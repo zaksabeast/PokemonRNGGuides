@@ -1,0 +1,162 @@
+2A140353	51	CAAF0493	No	Adamant	1: Shell Armor	30	30	30	20	29	26	Steel	39	♂	Loves to eat
+AA140353	51	4AAF8493	No	Careful	1: Shell Armor	30	30	30	20	29	26	Steel	39	♂	Loves to eat
+4F10035F	49	8C6CE217	No	Relaxed	1: Shell Armor	30	30	30	22	29	29	Water	44	♀	Loves to eat
+CF10035F	49	0C6C6217	No	Mild	1: Shell Armor	30	30	30	22	29	29	Water	44	♀	Proud of its power
+CC0E0335	57	2D7A7C0E	No	Calm	0: Swift Swim	30	30	30	24	26	26	Fighting	59	♀	Sturdy body
+4C0E0335	57	AD7AFC0E	No	Hasty	0: Swift Swim	30	30	30	24	26	26	Fighting	59	♀	Loves to eat
+D80F0360	59	B63B80A4	No	Bashful	0: Swift Swim	30	30	30	24	28	26	Fighting	39	♂	Sturdy body
+580F0360	59	363B00A4	No	Brave	0: Swift Swim	30	30	30	24	28	26	Fighting	39	♂	Loves to eat
+EF100363	43	4FE6752E	No	Quiet	0: Swift Swim	30	30	30	24	31	21	Water	54	♂	Somewhat vain
+6F100363	43	CFE6F52E	No	Impish	0: Swift Swim	30	30	30	24	31	21	Water	54	♂	Somewhat vain
+780A0351	58	77B7E22F	No	Calm	1: Shell Armor	30	30	30	26	21	26	Steel	49	♂	Loves to eat
+F80A0351	58	F7B7622F	No	Hardy	1: Shell Armor	30	30	30	26	21	26	Steel	49	♂	Loves to eat
+39170364	46	4B2B636D	No	Lonely	1: Shell Armor	30	30	30	26	26	23	Flying	70	♂	Loves to eat
+B9170364	46	CB2BE36D	No	Quiet	1: Shell Armor	30	30	30	26	26	23	Flying	70	♂	Loves to eat
+130C0367	41	C48B9313	No	Mild	1: Shell Armor	30	30	30	28	28	22	Fighting	39	♀	Loves to eat
+930C0367	41	448B1313	No	Hardy	1: Shell Armor	30	30	30	28	28	22	Fighting	39	♀	Loves to eat
+6D09032F	43	AD7F336D	No	Bold	1: Shell Armor	30	30	30	31	25	20	Electric	44	♂	Mischievous
+ED09032F	43	2D7FB36D	No	Hardy	1: Shell Armor	30	30	30	31	25	20	Electric	44	♂	Mischievous
+AB070353	56	53D479E3	No	Jolly	1: Shell Armor	30	30	31	21	24	24	Rock	34	♂	Capable of taking hits
+2B070353	56	D3D4F9E3	No	Naughty	1: Shell Armor	30	30	31	21	24	24	Rock	34	♂	Capable of taking hits
+88060328	43	2B6882CE	No	Bashful	0: Swift Swim	30	30	31	25	22	23	Ghost	59	♂	Capable of taking hits
+08060328	43	AB6802CE	No	Careful	0: Swift Swim	30	30	31	25	22	23	Ghost	59	♂	Capable of taking hits
+8D02033D	59	463CCCE3	No	Docile	1: Shell Armor	30	30	31	26	22	27	Poison	70	♂	Capable of taking hits
+0D02033D	59	C63C4CE3	No	Hasty	1: Shell Armor	30	30	31	26	22	27	Poison	70	♂	Capable of taking hits
+CF150352	51	F169CA98	No	Hardy	0: Swift Swim	30	30	31	26	29	22	Fire	49	♂	Capable of taking hits
+4F150352	51	71694A98	No	Lax	0: Swift Swim	30	30	31	26	29	22	Fire	49	♂	Capable of taking hits
+1313037E	56	05946770	No	Jolly	0: Swift Swim	30	30	31	30	22	25	Poison	64	♂	Capable of taking hits
+9313037E	56	8594E770	No	Naughty	0: Swift Swim	30	30	31	30	22	25	Poison	64	♂	Capable of taking hits
+EF130335	49	67A577AD	No	Hardy	1: Shell Armor	30	30	31	30	22	29	Poison	64	♂	Capable of taking hits
+6F130335	49	E7A5F7AD	No	Mild	1: Shell Armor	30	30	31	30	22	29	Poison	64	♂	Capable of taking hits
+C80B0324	57	44517900	No	Bold	0: Swift Swim	30	31	30	20	25	24	Fire	34	♀	Likes to thrash about
+480B0324	57	C451F900	No	Gentle	0: Swift Swim	30	31	30	20	25	24	Fire	34	♀	Likes to thrash about
+3F0D0366	49	9469D897	No	Calm	1: Shell Armor	30	31	30	21	23	26	Electric	59	♂	Likes to thrash about
+BF0D0366	49	14695897	No	Naughty	1: Shell Armor	30	31	30	21	23	26	Electric	59	♂	Likes to thrash about
+9D0E037D	56	547FFFE7	No	Brave	1: Shell Armor	30	31	30	21	30	26	Rock	59	♂	Likes to thrash about
+1D0E037D	56	D47F7FE7	No	Relaxed	1: Shell Armor	30	31	30	21	30	26	Rock	59	♂	Likes to thrash about
+F7050376	43	6D54877C	No	Brave	0: Swift Swim	30	31	30	21	31	31	Ice	59	♂	Alert to sounds
+77050376	43	ED54077C	No	Relaxed	0: Swift Swim	30	31	30	21	31	31	Ice	59	♂	Alert to sounds
+E1020338	40	B0B516AD	No	Serious	1: Shell Armor	30	31	30	22	27	28	Fire	64	♂	Likes to thrash about
+61020338	40	30B596AD	No	Relaxed	1: Shell Armor	30	31	30	22	27	28	Fire	64	♂	Likes to thrash about
+9B0A0348	56	186FCB6B	No	Bold	1: Shell Armor	30	31	30	23	20	27	Ghost	49	♂	Likes to thrash about
+1B0A0348	56	986F4B6B	No	Timid	1: Shell Armor	30	31	30	23	20	27	Ghost	49	♂	Likes to thrash about
+2F060370	41	CC673B8C	No	Mild	0: Swift Swim	30	31	30	23	28	26	Rock	49	♂	Likes to thrash about
+AF060370	41	4C67BB8C	No	Hasty	0: Swift Swim	30	31	30	23	28	26	Rock	49	♂	Likes to thrash about
+AF100374	60	BF6BA992	No	Bashful	0: Swift Swim	30	31	30	23	28	31	Ghost	49	♂	Likes to thrash about
+2F100374	60	3F6B2992	No	Brave	0: Swift Swim	30	31	30	23	28	31	Ghost	49	♂	Likes to thrash about
+C60E0374	57	93CEBD91	No	Sassy	1: Shell Armor	30	31	30	26	21	24	Fire	44	♂	Likes to thrash about
+460E0374	57	13CE3D91	No	Docile	1: Shell Armor	30	31	30	26	21	24	Fire	44	♂	Likes to thrash about
+8D090357	53	85477DD1	No	Bashful	1: Shell Armor	30	31	30	28	31	31	Grass	59	♂	Likes to thrash about
+0D090357	53	0547FDD1	No	Jolly	1: Shell Armor	30	31	30	28	31	31	Grass	59	♂	Likes to thrash about
+AA13036B	59	DD3CDEF8	No	Lonely	0: Swift Swim	30	31	30	29	22	20	Rock	54	♂	Likes to thrash about
+2A13036B	59	5D3C5EF8	No	Timid	0: Swift Swim	30	31	30	29	22	20	Rock	54	♂	Likes to thrash about
+C405035F	50	4CE39A65	No	Jolly	1: Shell Armor	30	31	30	29	25	23	Ice	39	♂	Likes to thrash about
+4405035F	50	CCE31A65	No	Bashful	1: Shell Armor	30	31	30	29	25	23	Ice	39	♂	Likes to thrash about
+E9170369	45	5B125ECC	No	Sassy	0: Swift Swim	30	31	30	29	31	27	Ice	59	♂	Somewhat vain
+69170369	45	DB12DECC	No	Jolly	0: Swift Swim	30	31	30	29	31	27	Ice	59	♂	Likes to thrash about
+3A060365	41	6895BF44	No	Quiet	0: Swift Swim	30	31	30	30	26	22	Fighting	70	♂	Likes to thrash about
+BA060365	41	E8953F44	No	Sassy	0: Swift Swim	30	31	30	30	26	22	Fighting	70	♂	Likes to thrash about
+E00E0374	40	7E05B75D	No	Serious	1: Shell Armor	30	31	30	31	21	27	Ice	49	♂	Likes to thrash about
+600E0374	40	FE05375D	No	Quiet	1: Shell Armor	30	31	30	31	21	27	Ice	49	♂	Likes to thrash about
+75020323	44	0830A086	No	Hardy	0: Swift Swim	30	31	31	20	31	23	Grass	59	♂	Capable of taking hits
+F5020323	44	88302086	No	Bold	0: Swift Swim	30	31	31	20	31	23	Grass	59	♂	Capable of taking hits
+A10A0355	46	E8E3519C	No	Lonely	0: Swift Swim	30	31	31	22	23	30	Water	70	♂	Likes to thrash about
+210A0355	46	68E3D19C	No	Gentle	0: Swift Swim	30	31	31	22	23	30	Water	70	♂	Likes to thrash about
+4A16035F	40	460A8DE4	No	Naughty	0: Swift Swim	30	31	31	22	29	31	Grass	49	♂	Capable of taking hits
+CA16035F	40	C60A0DE4	No	Lax	0: Swift Swim	30	31	31	22	29	31	Grass	49	♂	Capable of taking hits
+3415033C	43	11920874	No	Quiet	0: Swift Swim	30	31	31	23	24	24	Bug	44	♂	Capable of taking hits
+B415033C	43	91928874	No	Impish	0: Swift Swim	30	31	31	23	24	24	Bug	44	♂	Likes to thrash about
+2013035F	57	DB701828	No	Calm	0: Swift Swim	30	31	31	23	25	31	Dragon	49	♂	Capable of taking hits
+A013035F	57	5B709828	No	Modest	0: Swift Swim	30	31	31	23	25	31	Dragon	49	♂	Capable of taking hits
+2408037D	43	176B001B	No	Sassy	1: Shell Armor	30	31	31	27	28	28	Bug	44	♀	Likes to thrash about
+A408037D	43	976B801B	No	Jolly	1: Shell Armor	30	31	31	27	28	28	Bug	44	♀	Likes to thrash about
+A8100332	53	1B585E16	No	Hasty	0: Swift Swim	30	31	31	27	29	28	Psychic	44	♀	Likes to thrash about
+28100332	53	9B58DE16	No	Brave	0: Swift Swim	30	31	31	27	29	28	Psychic	44	♀	Likes to thrash about
+F512034B	40	56EF5854	No	Quiet	0: Swift Swim	30	31	31	30	20	21	Ground	44	♂	Capable of taking hits
+7512034B	40	D6EFD854	No	Impish	0: Swift Swim	30	31	31	30	20	21	Ground	44	♂	Likes to thrash about
+080C0372	41	285D0F5A	No	Bashful	0: Swift Swim	31	30	30	21	30	27	Bug	59	♂	Takes plenty of siestas
+880C0372	41	A85D8F5A	No	Lax	0: Swift Swim	31	30	30	21	30	27	Bug	59	♂	Takes plenty of siestas
+090B032D	50	24F77FDE	No	Brave	0: Swift Swim	31	30	30	22	24	26	Fighting	49	♂	Takes plenty of siestas
+890B032D	50	A4F7FFDE	No	Bashful	0: Swift Swim	31	30	30	22	24	26	Fighting	49	♂	Takes plenty of siestas
+C3060323	57	857100EA	No	Bold	0: Swift Swim	31	30	30	22	28	24	Fighting	44	♂	Takes plenty of siestas
+43060323	57	057180EA	No	Hardy	0: Swift Swim	31	30	30	22	28	24	Fighting	44	♂	Takes plenty of siestas
+130F0375	51	309E8F92	No	Timid	0: Swift Swim	31	30	30	23	25	24	Electric	44	♂	Takes plenty of siestas
+930F0375	51	B09E0F92	No	Modest	0: Swift Swim	31	30	30	23	25	24	Electric	44	♂	Takes plenty of siestas
+57160326	44	DF84E1A6	No	Hasty	0: Swift Swim	31	30	30	26	22	29	Poison	64	♂	Takes plenty of siestas
+D7160326	44	5F8461A6	No	Calm	0: Swift Swim	31	30	30	26	22	29	Poison	64	♂	Takes plenty of siestas
+B609033E	49	1EF781E9	No	Naughty	1: Shell Armor	31	30	30	26	27	21	Water	64	♂	Takes plenty of siestas
+3609033E	49	9EF701E9	No	Lax	1: Shell Armor	31	30	30	26	27	21	Water	64	♂	Takes plenty of siestas
+A10A0342	49	937C51C6	No	Hardy	0: Swift Swim	31	30	30	26	30	29	Poison	64	♂	Takes plenty of siestas
+210A0342	49	137CD1C6	No	Calm	0: Swift Swim	31	30	30	26	30	29	Poison	64	♂	Takes plenty of siestas
+C1090373	57	D4ED457B	No	Hasty	1: Shell Armor	31	30	30	28	24	24	Fighting	34	♂	Takes plenty of siestas
+41090373	57	54EDC57B	No	Docile	1: Shell Armor	31	30	30	28	24	24	Fighting	34	♂	Takes plenty of siestas
+320C0353	40	141C242B	No	Serious	1: Shell Armor	31	30	30	28	31	24	Steel	54	♂	Somewhat vain
+B20C0353	40	941CA42B	No	Adamant	1: Shell Armor	31	30	30	28	31	24	Steel	54	♂	Somewhat vain
+E70C0345	42	1981071A	No	Serious	0: Swift Swim	31	30	30	29	26	28	Rock	54	♀	Takes plenty of siestas
+670C0345	42	9981871A	No	Adamant	0: Swift Swim	31	30	30	29	26	28	Rock	54	♀	Takes plenty of siestas
+44130360	46	20E4AC88	No	Jolly	0: Swift Swim	31	30	30	31	20	31	Bug	49	♂	Mischievous
+C4130360	46	A0E42C88	No	Bashful	0: Swift Swim	31	30	30	31	20	31	Bug	49	♂	Mischievous
+3B070346	46	5C252D3D	No	Timid	1: Shell Armor	31	30	30	31	26	31	Bug	70	♂	Alert to sounds
+BB070346	46	DC25AD3D	No	Lonely	1: Shell Armor	31	30	30	31	26	31	Bug	70	♂	Takes plenty of siestas
+F4060377	60	9B98CD80	No	Timid	0: Swift Swim	31	30	30	31	31	22	Electric	70	♂	Mischievous
+74060377	60	1B984D80	No	Rash	0: Swift Swim	31	30	30	31	31	22	Electric	70	♂	Takes plenty of siestas
+1E130339	53	22E7AA52	No	Serious	0: Swift Swim	31	30	31	20	31	31	Grass	59	♂	Somewhat vain
+9E130339	53	A2E72A52	No	Quiet	0: Swift Swim	31	30	31	20	31	31	Grass	59	♂	Somewhat vain
+D704033C	60	FBAEC3C6	No	Careful	0: Swift Swim	31	30	31	22	23	28	Fire	64	♂	Capable of taking hits
+5704033C	60	7BAE43C6	No	Relaxed	0: Swift Swim	31	30	31	22	23	28	Fire	64	♂	Takes plenty of siestas
+9C12036D	56	8E181591	No	Relaxed	1: Shell Armor	31	30	31	22	27	27	Grass	70	♂	Takes plenty of siestas
+1C12036D	56	0E189591	No	Brave	1: Shell Armor	31	30	31	22	27	27	Grass	70	♂	Takes plenty of siestas
+91100365	60	FF247A47	No	Naughty	1: Shell Armor	31	30	31	23	26	25	Ghost	64	♂	Capable of taking hits
+11100365	60	7F24FA47	No	Quirky	1: Shell Armor	31	30	31	23	26	25	Ghost	64	♂	Capable of taking hits
+1B0E035E	57	1C90A012	No	Timid	0: Swift Swim	31	30	31	25	28	31	Ghost	39	♀	Capable of taking hits
+9B0E035E	57	9C902012	No	Modest	0: Swift Swim	31	30	31	25	28	31	Ghost	39	♀	Capable of taking hits
+95170340	55	E9900EA2	No	Impish	0: Swift Swim	31	30	31	26	27	22	Fire	70	♂	Takes plenty of siestas
+15170340	55	69908EA2	No	Adamant	0: Swift Swim	31	30	31	26	27	22	Fire	70	♂	Takes plenty of siestas
+BE0C0384	42	F26BA811	No	Quirky	1: Shell Armor	31	30	31	28	25	23	Grass	39	♀	Takes plenty of siestas
+3E0C0384	42	726B2811	No	Impish	1: Shell Armor	31	30	31	28	25	23	Grass	39	♀	Takes plenty of siestas
+F509037F	46	59E00A4A	No	Sassy	0: Swift Swim	31	30	31	28	30	26	Flying	59	♂	Takes plenty of siestas
+7509037F	46	D9E08A4A	No	Jolly	0: Swift Swim	31	30	31	28	30	26	Flying	59	♂	Capable of taking hits
+B8100374	51	57585597	No	Gentle	1: Shell Armor	31	30	31	29	25	20	Psychic	34	♂	Takes plenty of siestas
+38100374	51	D758D597	No	Serious	1: Shell Armor	31	30	31	29	25	20	Psychic	34	♂	Capable of taking hits
+0508037C	40	63324B34	No	Hasty	0: Swift Swim	31	30	31	29	26	30	Bug	59	♂	Takes plenty of siestas
+8508037C	40	E332CB34	No	Brave	0: Swift Swim	31	30	31	29	26	30	Bug	59	♂	Takes plenty of siestas
+F3130363	50	488072DB	No	Jolly	1: Shell Armor	31	30	31	29	31	27	Dragon	59	♂	Somewhat vain
+73130363	50	C880F2DB	No	Naughty	1: Shell Armor	31	30	31	29	31	27	Dragon	59	♂	Somewhat vain
+750F0349	45	A361075C	No	Lax	0: Swift Swim	31	30	31	31	29	31	Dragon	49	♂	Capable of taking hits
+F50F0349	45	2361875C	No	Naughty	0: Swift Swim	31	30	31	31	29	31	Dragon	49	♂	Capable of taking hits
+B0160341	49	C534E745	No	Naughty	1: Shell Armor	31	30	31	31	31	22	Psychic	70	♂	Mischievous
+30160341	49	45346745	No	Jolly	1: Shell Armor	31	30	31	31	31	22	Psychic	70	♂	Somewhat vain
+27160336	55	916DA01E	No	Lax	0: Swift Swim	31	31	30	20	31	25	Grass	54	♀	Takes plenty of siestas
+A7160336	55	116D201E	No	Bashful	0: Swift Swim	31	31	30	20	31	25	Grass	54	♀	Somewhat vain
+BD060362	57	EBC5426D	No	Relaxed	1: Shell Armor	31	31	30	24	23	22	Fire	59	♂	Likes to thrash about
+3D060362	57	6BC5C26D	No	Brave	1: Shell Armor	31	31	30	24	23	22	Fire	59	♂	Likes to thrash about
+91070349	49	9B784846	No	Brave	0: Swift Swim	31	31	30	25	24	26	Rock	39	♂	Takes plenty of siestas
+11070349	49	1B78C846	No	Sassy	0: Swift Swim	31	31	30	25	24	26	Rock	39	♂	Takes plenty of siestas
+B8020356	59	9F65A641	No	Mild	1: Shell Armor	31	31	30	25	25	26	Psychic	39	♂	Takes plenty of siestas
+38020356	59	1F652641	No	Hardy	1: Shell Armor	31	31	30	25	25	26	Psychic	39	♂	Likes to thrash about
+BA0F0354	58	CDAA94FD	No	Mild	1: Shell Armor	31	31	30	25	31	31	Dragon	59	♂	Somewhat vain
+3A0F0354	58	4DAA14FD	No	Hardy	1: Shell Armor	31	31	30	25	31	31	Dragon	59	♂	Likes to thrash about
+F10C0327	46	386458C1	No	Quiet	1: Shell Armor	31	31	30	28	29	23	Grass	39	♂	Takes plenty of siestas
+710C0327	46	B864D8C1	No	Impish	1: Shell Armor	31	31	30	28	29	23	Grass	39	♂	Takes plenty of siestas
+C0070322	51	DA0B0BF0	No	Modest	0: Swift Swim	31	31	30	30	29	25	Grass	44	♂	Takes plenty of siestas
+40070322	51	5A0B8BF0	No	Timid	0: Swift Swim	31	31	30	30	29	25	Grass	44	♂	Takes plenty of siestas
+07080363	58	F04CCF66	No	Calm	0: Swift Swim	31	31	31	20	29	23	Electric	39	♂	Takes plenty of siestas
+87080363	58	704C4F66	No	Naughty	0: Swift Swim	31	31	31	20	29	23	Electric	39	♂	Takes plenty of siestas
+170B034D	57	33679D04	No	Calm	0: Swift Swim	31	31	31	21	27	29	Dark	54	♀	Takes plenty of siestas
+970B034D	57	B3671D04	No	Hardy	0: Swift Swim	31	31	31	21	27	29	Dark	54	♀	Takes plenty of siestas
+7E03032D	45	216EEC5D	No	Sassy	1: Shell Armor	31	31	31	22	25	26	Water	49	♂	Likes to thrash about
+FE03032D	45	A16E6C5D	No	Brave	1: Shell Armor	31	31	31	22	25	26	Water	49	♂	Likes to thrash about
+BE0B0369	60	E171C8F5	No	Jolly	1: Shell Armor	31	31	31	23	24	22	Bug	49	♂	Takes plenty of siestas
+3E0B0369	60	617148F5	No	Sassy	1: Shell Armor	31	31	31	23	24	22	Bug	49	♂	Takes plenty of siestas
+4B0F0379	59	37642202	No	Hasty	0: Swift Swim	31	31	31	23	25	25	Dark	44	♀	Capable of taking hits
+CB0F0379	59	B764A202	No	Brave	0: Swift Swim	31	31	31	23	25	25	Dark	44	♀	Takes plenty of siestas
+7E11032D	56	AAA4969E	No	Relaxed	0: Swift Swim	31	31	31	26	26	31	Ground	70	♂	Takes plenty of siestas
+FE11032D	56	2AA4169E	No	Mild	0: Swift Swim	31	31	31	26	26	31	Ground	70	♂	Capable of taking hits
+20050376	50	2B344200	No	Docile	0: Swift Swim	31	31	31	26	30	30	Flying	70	♀	Capable of taking hits
+A0050376	50	AB34C200	No	Sassy	0: Swift Swim	31	31	31	26	30	30	Flying	70	♀	Takes plenty of siestas
+8717037B	51	EA1736E1	No	Gentle	1: Shell Armor	31	31	31	26	31	23	Electric	70	♂	Somewhat vain
+0717037B	51	6A17B6E1	No	Mild	1: Shell Armor	31	31	31	26	31	23	Electric	70	♂	Somewhat vain
+D300037B	46	B0D478AC	No	Modest	0: Swift Swim	31	31	31	27	24	20	Bug	44	♂	Capable of taking hits
+5300037B	46	30D4F8AC	No	Timid	0: Swift Swim	31	31	31	27	24	20	Bug	44	♂	Capable of taking hits
+2B140324	59	091D3177	No	Lonely	1: Shell Armor	31	31	31	28	20	22	Flying	39	♂	Takes plenty of siestas
+AB140324	59	891DB177	No	Quiet	1: Shell Armor	31	31	31	28	20	22	Flying	39	♂	Takes plenty of siestas

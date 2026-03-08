@@ -13,3 +13,15 @@ pub enum Gender {
     Female = 1,
     Genderless = 2,
 }
+
+impl Gender {
+    #[cfg(test)]
+    pub fn from_pokefinder_str(str: &str) -> Self {
+        match str {
+            "♀" => Self::Female,
+            "♂" => Self::Male,
+            "-" => Self::Genderless,
+            _ => panic!("Unknown gender string: {}", str),
+        }
+    }
+}

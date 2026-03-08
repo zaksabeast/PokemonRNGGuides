@@ -1,0 +1,178 @@
+2D010373	28	000000AA	No	Calm	0: Aftermath	30	30	30	20	27	27	Water	59	♂	Sturdy body
+060F0325	28	000000AB	No	Gentle	1: Unburden	30	30	30	20	31	31	Water	59	♂	Alert to sounds
+60030380	22	000000AC	No	Sassy	0: Aftermath	30	30	30	22	24	24	Fighting	44	♂	Loves to eat
+DF0B033D	23	000000A8	No	Bashful	0: Aftermath	30	30	30	22	27	26	Steel	70	♂	Loves to eat
+CE120321	19	000000A2	No	Serious	0: Aftermath	30	30	30	22	29	28	Steel	44	♂	Loves to eat
+2301033A	5	000000A2	No	Serious	0: Aftermath	30	30	30	24	23	20	Steel	54	♂	Loves to eat
+A301033A	5	000000AE	No	Quirky	0: Aftermath	30	30	30	24	23	20	Steel	54	♂	Loves to eat
+AC05036D	27	000000AD	No	Careful	1: Unburden	30	30	30	24	23	25	Water	54	♂	Loves to eat
+C7000360	13	000000A4	No	Naive	0: Aftermath	30	30	30	24	24	26	Fighting	39	♂	Sturdy body
+47000360	13	00000098	No	Brave	0: Aftermath	30	30	30	24	24	26	Fighting	39	♂	Sturdy body
+430A0366	23	000000A1	No	Hasty	1: Unburden	30	30	30	25	26	22	Ground	59	♂	Loves to eat
+C30A0366	23	000000AD	No	Careful	1: Unburden	30	30	30	25	26	22	Ground	59	♂	Loves to eat
+5B0F0352	11	000000A5	No	Modest	1: Unburden	30	30	30	25	28	28	Ground	34	♂	Loves to eat
+DB060384	22	000000AD	No	Careful	1: Unburden	30	30	30	26	22	25	Flying	64	♂	Loves to eat
+54070372	11	000000A6	No	Mild	0: Aftermath	30	30	30	26	26	22	Fighting	70	♂	Loves to eat
+D4070372	11	0000009A	No	Naughty	0: Aftermath	30	30	30	26	26	22	Fighting	70	♂	Loves to eat
+C217036A	30	000000AC	No	Sassy	0: Aftermath	30	30	30	27	25	27	Ice	49	♂	Loves to eat
+1D160366	27	000000AB	No	Gentle	1: Unburden	30	30	30	29	23	27	Ice	59	♂	Loves to eat
+3B080364	12	000000A9	No	Rash	1: Unburden	30	30	30	29	31	24	Electric	54	♂	Somewhat vain
+1F0E037C	16	000000A6	No	Mild	0: Aftermath	30	30	31	20	20	26	Fighting	39	♂	Capable of taking hits
+9F0E037C	16	0000009A	No	Naughty	0: Aftermath	30	30	31	20	20	26	Fighting	39	♂	Capable of taking hits
+B40A0346	24	000000A9	No	Rash	1: Unburden	30	30	31	21	25	28	Psychic	34	♂	Capable of taking hits
+C70D0330	22	00000098	No	Brave	0: Aftermath	30	30	31	21	29	20	Psychic	34	♂	Capable of taking hits
+470D0330	22	000000A4	No	Naive	0: Aftermath	30	30	31	21	29	20	Psychic	34	♂	Capable of taking hits
+530C0327	14	000000AC	No	Sassy	0: Aftermath	30	30	31	21	31	22	Psychic	59	♂	Somewhat vain
+D1070322	19	000000A3	No	Jolly	1: Unburden	30	30	31	22	27	28	Fire	64	♂	Capable of taking hits
+510F033F	10	000000AE	No	Quirky	0: Aftermath	30	30	31	23	21	31	Dragon	49	♂	Capable of taking hits
+98060381	30	000000AB	No	Gentle	1: Unburden	30	30	31	23	23	20	Psychic	64	♂	Capable of taking hits
+5B050323	14	000000AB	No	Gentle	1: Unburden	30	30	31	23	25	29	Dragon	44	♂	Capable of taking hits
+DB050323	14	0000009F	No	Lax	1: Unburden	30	30	31	23	25	29	Dragon	44	♂	Capable of taking hits
+8108037B	20	00000098	No	Brave	0: Aftermath	30	30	31	23	28	31	Ghost	49	♂	Capable of taking hits
+ED17034F	12	000000A4	No	Naive	0: Aftermath	30	30	31	23	31	25	Dragon	64	♂	Capable of taking hits
+51120350	16	0000009A	No	Naughty	0: Aftermath	30	30	31	25	26	22	Rock	59	♂	Capable of taking hits
+B3150333	1	000000A0	No	Timid	0: Aftermath	30	30	31	25	29	29	Dragon	34	♂	Capable of taking hits
+190D035F	25	000000AD	No	Careful	1: Unburden	30	30	31	26	21	24	Fire	44	♂	Capable of taking hits
+7707036C	16	0000009D	No	Relaxed	1: Unburden	30	30	31	26	29	20	Fire	44	♂	Capable of taking hits
+F707036C	16	000000AA	No	Calm	0: Aftermath	30	30	31	26	29	20	Fire	44	♂	Capable of taking hits
+7C100364	20	0000009F	No	Lax	1: Unburden	30	30	31	26	29	21	Grass	44	♂	Capable of taking hits
+FC100364	20	000000AB	No	Gentle	1: Unburden	30	30	31	26	29	21	Grass	44	♂	Capable of taking hits
+B4090343	8	000000A2	No	Serious	0: Aftermath	30	30	31	27	27	21	Dragon	64	♂	Capable of taking hits
+2B120335	13	000000A8	No	Bashful	0: Aftermath	30	30	31	30	31	30	Fire	70	♂	Capable of taking hits
+1008035A	1	0000009A	No	Naughty	0: Aftermath	30	31	30	21	22	22	Rock	59	♂	Likes to thrash about
+FF12035D	26	000000A0	No	Timid	0: Aftermath	30	31	30	21	28	27	Ghost	39	♂	Likes to thrash about
+7F12035D	26	000000AD	No	Careful	1: Unburden	30	31	30	21	28	27	Ghost	39	♂	Likes to thrash about
+F1000347	25	00000099	No	Adamant	1: Unburden	30	31	30	22	20	30	Fighting	49	♂	Likes to thrash about
+5F010336	17	0000009F	No	Lax	1: Unburden	30	31	30	22	28	25	Poison	44	♂	Likes to thrash about
+DF010336	17	000000AC	No	Sassy	0: Aftermath	30	31	30	22	28	25	Poison	44	♂	Likes to thrash about
+900D0358	6	0000009E	No	Impish	0: Aftermath	30	31	30	23	20	30	Rock	49	♂	Likes to thrash about
+D5110320	8	000000A0	No	Timid	0: Aftermath	30	31	30	23	24	29	Ghost	44	♂	Likes to thrash about
+AC02036B	27	000000AC	No	Sassy	0: Aftermath	30	31	30	23	27	23	Ice	70	♂	Likes to thrash about
+450B035F	18	000000A6	No	Mild	0: Aftermath	30	31	30	24	29	28	Fire	34	♂	Likes to thrash about
+C50B035F	18	0000009A	No	Naughty	0: Aftermath	30	31	30	24	29	28	Fire	34	♂	Likes to thrash about
+A00F036D	26	000000A6	No	Mild	0: Aftermath	30	31	30	26	27	24	Fire	64	♂	Likes to thrash about
+49130357	30	0000009C	No	Docile	0: Aftermath	30	31	30	26	31	28	Fire	64	♂	Likes to thrash about
+C9130357	30	000000A9	No	Rash	1: Unburden	30	31	30	26	31	28	Fire	64	♂	Likes to thrash about
+3E030334	26	000000A8	No	Bashful	0: Aftermath	30	31	30	27	22	23	Ghost	70	♂	Likes to thrash about
+BE030334	26	0000009C	No	Docile	0: Aftermath	30	31	30	27	22	23	Ghost	70	♂	Likes to thrash about
+840E0329	22	000000A3	No	Jolly	1: Unburden	30	31	30	27	23	26	Electric	70	♂	Likes to thrash about
+F00F0343	4	000000A2	No	Serious	0: Aftermath	30	31	30	27	26	25	Ghost	64	♂	Likes to thrash about
+5304033D	1	00000097	No	Lonely	1: Unburden	30	31	30	27	31	29	Ice	64	♂	Likes to thrash about
+EF17032C	25	000000A2	No	Serious	0: Aftermath	30	31	30	28	24	23	Poison	39	♂	Likes to thrash about
+6F17032C	25	00000096	No	Hardy	0: Aftermath	30	31	30	28	24	23	Poison	39	♂	Likes to thrash about
+1D130364	27	000000AA	No	Calm	0: Aftermath	30	31	30	28	27	25	Grass	54	♂	Likes to thrash about
+AB0B0362	28	00000097	No	Lonely	1: Unburden	30	31	30	28	30	22	Fighting	59	♂	Likes to thrash about
+2B0B0362	28	000000A3	No	Jolly	1: Unburden	30	31	30	28	30	22	Fighting	59	♂	Likes to thrash about
+B1040379	22	0000009F	No	Lax	1: Unburden	30	31	30	28	31	30	Fire	59	♂	Somewhat vain
+B30D0380	29	0000009F	No	Lax	1: Unburden	30	31	30	29	20	21	Ghost	34	♂	Likes to thrash about
+330D0380	29	000000AC	No	Sassy	0: Aftermath	30	31	30	29	20	21	Ghost	34	♂	Likes to thrash about
+8912036F	5	00000099	No	Adamant	1: Unburden	30	31	30	29	22	22	Rock	59	♂	Likes to thrash about
+4E170332	29	000000A0	No	Timid	0: Aftermath	30	31	30	31	30	28	Rock	64	♂	Mischievous
+3F010368	24	000000A9	No	Rash	1: Unburden	30	31	31	20	29	31	Grass	39	♂	Likes to thrash about
+2D0B035A	3	00000098	No	Brave	0: Aftermath	30	31	31	21	20	20	Bug	34	♂	Capable of taking hits
+AD0B035A	3	000000A5	No	Modest	1: Unburden	30	31	31	21	20	20	Bug	34	♂	Likes to thrash about
+3C09036C	14	0000009C	No	Docile	0: Aftermath	30	31	31	21	26	30	Bug	59	♂	Likes to thrash about
+E4130332	7	000000A8	No	Bashful	0: Aftermath	30	31	31	22	21	24	Water	44	♂	Likes to thrash about
+1C080376	14	0000009E	No	Impish	0: Aftermath	30	31	31	22	31	22	Water	70	♂	Capable of taking hits
+470E0337	10	000000A5	No	Modest	1: Unburden	30	31	31	23	21	21	Dragon	44	♂	Likes to thrash about
+AD05036D	22	000000A7	No	Quiet	1: Unburden	30	31	31	23	25	20	Psychic	44	♂	Likes to thrash about
+24010372	14	0000009D	No	Relaxed	1: Unburden	30	31	31	24	25	29	Grass	34	♂	Likes to thrash about
+480A036B	20	000000A9	No	Rash	1: Unburden	30	31	31	25	24	26	Bug	39	♂	Likes to thrash about
+55060359	23	0000009D	No	Relaxed	1: Unburden	30	31	31	25	28	30	Bug	39	♂	Likes to thrash about
+6D120372	29	000000AC	No	Sassy	0: Aftermath	30	31	31	26	26	30	Flying	70	♂	Likes to thrash about
+2B03037B	27	000000A5	No	Modest	1: Unburden	30	31	31	27	23	20	Psychic	64	♂	Likes to thrash about
+AB03037B	27	00000098	No	Brave	0: Aftermath	30	31	31	27	23	20	Psychic	64	♂	Capable of taking hits
+A8080371	22	0000009B	No	Bold	1: Unburden	30	31	31	27	23	21	Dragon	64	♂	Likes to thrash about
+28080371	22	000000A8	No	Bashful	0: Aftermath	30	31	31	27	23	21	Dragon	64	♂	Likes to thrash about
+6D16036D	16	000000A3	No	Jolly	1: Unburden	30	31	31	31	22	20	Bug	64	♂	Likes to thrash about
+ED16036D	16	00000096	No	Hardy	0: Aftermath	30	31	31	31	22	20	Bug	64	♂	Likes to thrash about
+42040342	15	0000009F	No	Lax	1: Unburden	31	30	30	21	27	20	Electric	54	♂	Takes plenty of siestas
+7E0A0320	10	000000A0	No	Timid	0: Aftermath	31	30	30	21	27	25	Ice	54	♂	Takes plenty of siestas
+3E160327	10	000000AC	No	Sassy	0: Aftermath	31	30	30	22	21	25	Water	44	♂	Takes plenty of siestas
+3F100360	11	000000A5	No	Modest	1: Unburden	31	30	30	23	21	30	Electric	49	♂	Takes plenty of siestas
+5009037A	1	0000009B	No	Bold	1: Unburden	31	30	30	24	21	28	Steel	34	♂	Takes plenty of siestas
+80030383	8	0000009B	No	Bold	1: Unburden	31	30	30	24	25	27	Water	39	♂	Takes plenty of siestas
+A7050322	21	000000AB	No	Gentle	1: Unburden	31	30	30	24	26	28	Fighting	54	♂	Takes plenty of siestas
+1B170342	29	00000098	No	Brave	0: Aftermath	31	30	30	25	23	29	Ice	54	♂	Takes plenty of siestas
+AD140377	19	000000A2	No	Serious	0: Aftermath	31	30	30	25	27	31	Ice	59	♂	Takes plenty of siestas
+A4010343	6	000000A0	No	Timid	0: Aftermath	31	30	30	25	30	30	Rock	59	♂	Takes plenty of siestas
+24010343	6	000000AD	No	Careful	1: Unburden	31	30	30	25	30	30	Rock	59	♂	Takes plenty of siestas
+1000036C	25	00000097	No	Lonely	1: Unburden	31	30	30	26	23	21	Water	64	♂	Takes plenty of siestas
+9000036C	25	000000A3	No	Jolly	1: Unburden	31	30	30	26	23	21	Water	64	♂	Takes plenty of siestas
+E2140364	2	0000009A	No	Naughty	0: Aftermath	31	30	30	26	26	26	Fighting	70	♂	Takes plenty of siestas
+DC02036A	20	000000A2	No	Serious	0: Aftermath	31	30	30	28	23	26	Steel	59	♂	Takes plenty of siestas
+5C02036A	20	00000096	No	Hardy	0: Aftermath	31	30	30	28	23	26	Steel	59	♂	Takes plenty of siestas
+4108037A	2	000000AE	No	Quirky	0: Aftermath	31	30	30	28	25	30	Steel	39	♂	Takes plenty of siestas
+C108037A	2	000000A2	No	Serious	0: Aftermath	31	30	30	28	25	30	Steel	39	♂	Takes plenty of siestas
+0E160326	0	000000A8	No	Bashful	0: Aftermath	31	30	30	28	28	26	Fighting	39	♂	Takes plenty of siestas
+65120350	29	0000009A	No	Naughty	0: Aftermath	31	30	30	28	30	20	Fighting	54	♂	Takes plenty of siestas
+E5120350	29	000000A6	No	Mild	0: Aftermath	31	30	30	28	30	20	Fighting	54	♂	Takes plenty of siestas
+B7030324	19	000000A9	No	Rash	1: Unburden	31	30	30	29	23	21	Ice	54	♂	Takes plenty of siestas
+37030324	19	0000009C	No	Docile	0: Aftermath	31	30	30	29	23	21	Ice	54	♂	Takes plenty of siestas
+BB05033C	23	000000A7	No	Quiet	1: Unburden	31	30	30	30	31	26	Steel	70	♂	Somewhat vain
+3B05033C	23	0000009B	No	Bold	1: Unburden	31	30	30	30	31	26	Steel	70	♂	Somewhat vain
+BB07036A	3	000000A3	No	Jolly	1: Unburden	31	30	30	31	31	21	Ice	64	♂	Mischievous
+DF12037B	28	00000096	No	Hardy	0: Aftermath	31	30	31	20	21	29	Grass	34	♂	Takes plenty of siestas
+5F12037B	28	000000A2	No	Serious	0: Aftermath	31	30	31	20	21	29	Grass	34	♂	Takes plenty of siestas
+C711036E	11	0000009B	No	Bold	1: Unburden	31	30	31	21	27	31	Dragon	59	♂	Takes plenty of siestas
+92070351	9	000000A7	No	Quiet	1: Unburden	31	30	31	21	29	30	Psychic	39	♂	Takes plenty of siestas
+A00D0325	25	0000009E	No	Impish	0: Aftermath	31	30	31	21	31	31	Dragon	59	♂	Capable of taking hits
+BB000340	20	000000A6	No	Mild	0: Aftermath	31	30	31	22	30	22	Flying	70	♂	Takes plenty of siestas
+84070347	9	000000A2	No	Serious	0: Aftermath	31	30	31	23	22	26	Bug	70	♂	Takes plenty of siestas
+30090378	19	00000097	No	Lonely	1: Unburden	31	30	31	25	25	31	Dragon	39	♂	Capable of taking hits
+42100334	22	00000099	No	Adamant	1: Unburden	31	30	31	25	27	21	Dragon	54	♂	Takes plenty of siestas
+450E0374	8	000000A7	No	Quiet	1: Unburden	31	30	31	25	28	22	Bug	39	♂	Takes plenty of siestas
+C50E0374	8	0000009B	No	Bold	1: Unburden	31	30	31	25	28	22	Bug	39	♂	Takes plenty of siestas
+B10A0375	24	000000A9	No	Rash	1: Unburden	31	30	31	26	22	22	Flying	70	♂	Capable of taking hits
+500F0322	5	0000009E	No	Impish	0: Aftermath	31	30	31	26	30	25	Ground	64	♂	Capable of taking hits
+BD130338	22	0000009A	No	Naughty	0: Aftermath	31	30	31	29	25	23	Dragon	39	♂	Takes plenty of siestas
+22150341	23	000000AB	No	Gentle	1: Unburden	31	30	31	29	30	23	Ghost	59	♂	Takes plenty of siestas
+A2150341	23	0000009F	No	Lax	1: Unburden	31	30	31	29	30	23	Ghost	59	♂	Takes plenty of siestas
+630E0329	28	000000AD	No	Careful	1: Unburden	31	30	31	30	28	22	Flying	49	♂	Takes plenty of siestas
+FC050346	10	0000009D	No	Relaxed	1: Unburden	31	30	31	31	22	25	Ghost	64	♂	Capable of taking hits
+7C050346	10	000000AA	No	Calm	0: Aftermath	31	30	31	31	22	25	Ghost	64	♂	Capable of taking hits
+B60E0367	29	000000A5	No	Modest	1: Unburden	31	31	30	20	20	29	Poison	34	♂	Takes plenty of siestas
+470D0322	15	000000A7	No	Quiet	1: Unburden	31	31	30	21	20	23	Ghost	39	♂	Takes plenty of siestas
+C70D0322	15	0000009B	No	Bold	1: Unburden	31	31	30	21	20	23	Ghost	39	♂	Takes plenty of siestas
+4715035B	24	0000009A	No	Naughty	0: Aftermath	31	31	30	21	23	22	Psychic	59	♂	Takes plenty of siestas
+9005034A	14	000000AB	No	Gentle	1: Unburden	31	31	30	21	24	28	Rock	34	♂	Takes plenty of siestas
+E6160351	8	00000099	No	Adamant	1: Unburden	31	31	30	21	25	30	Psychic	39	♂	Takes plenty of siestas
+66160351	8	000000A5	No	Modest	1: Unburden	31	31	30	21	25	30	Psychic	39	♂	Takes plenty of siestas
+9D060324	26	000000A2	No	Serious	0: Aftermath	31	31	30	22	23	27	Grass	70	♂	Takes plenty of siestas
+1D060324	26	000000AE	No	Quirky	0: Aftermath	31	31	30	22	23	27	Grass	70	♂	Takes plenty of siestas
+70040354	14	000000AD	No	Careful	1: Unburden	31	31	30	22	29	20	Fire	44	♂	Takes plenty of siestas
+C70B0350	17	00000099	No	Adamant	1: Unburden	31	31	30	22	30	31	Poison	70	♂	Alert to sounds
+470B0350	17	000000A5	No	Modest	1: Unburden	31	31	30	22	30	31	Poison	70	♂	Alert to sounds
+80090375	29	0000009B	No	Bold	1: Unburden	31	31	30	23	27	21	Dragon	64	♂	Takes plenty of siestas
+00090375	29	000000A7	No	Quiet	1: Unburden	31	31	30	23	27	21	Dragon	64	♂	Takes plenty of siestas
+9F16036F	10	000000A9	No	Rash	1: Unburden	31	31	30	26	21	26	Fire	49	♂	Likes to thrash about
+68040337	21	000000A1	No	Hasty	1: Unburden	31	31	30	26	25	22	Fire	49	♂	Takes plenty of siestas
+3C0D0360	0	0000009C	No	Docile	0: Aftermath	31	31	30	27	29	26	Psychic	49	♂	Takes plenty of siestas
+56030348	28	000000AA	No	Calm	0: Aftermath	31	31	30	30	23	31	Grass	70	♂	Alert to sounds
+D6030348	28	0000009E	No	Impish	0: Aftermath	31	31	30	30	23	31	Grass	70	♂	Alert to sounds
+7D0F0342	19	0000009B	No	Bold	1: Unburden	31	31	30	30	30	24	Fighting	64	♂	Takes plenty of siestas
+FD0F0342	19	000000A8	No	Bashful	0: Aftermath	31	31	30	30	30	24	Fighting	64	♂	Takes plenty of siestas
+8C17034F	14	000000AB	No	Gentle	1: Unburden	31	31	30	31	20	30	Rock	49	♂	Mischievous
+0C17034F	14	0000009F	No	Lax	1: Unburden	31	31	30	31	20	30	Rock	49	♂	Mischievous
+FF11032D	22	000000A3	No	Jolly	1: Unburden	31	31	30	31	21	27	Dragon	49	♂	Likes to thrash about
+C1080340	16	00000098	No	Brave	0: Aftermath	31	31	30	31	29	30	Psychic	49	♂	Mischievous
+2405035D	21	0000009C	No	Docile	0: Aftermath	31	31	31	20	22	23	Ground	59	♂	Takes plenty of siestas
+A6110341	5	000000A1	No	Hasty	1: Unburden	31	31	31	21	25	27	Dark	39	♂	Takes plenty of siestas
+D012037B	12	00000097	No	Lonely	1: Unburden	31	31	31	21	31	26	Ice	59	♂	Likes to thrash about
+57060343	17	000000AA	No	Calm	0: Aftermath	31	31	31	22	26	28	Flying	64	♂	Capable of taking hits
+07020330	10	000000A6	No	Mild	0: Aftermath	31	31	31	22	27	21	Electric	64	♂	Takes plenty of siestas
+87020330	10	00000099	No	Adamant	1: Unburden	31	31	31	22	27	21	Electric	64	♂	Takes plenty of siestas
+6005033E	18	0000009E	No	Impish	0: Aftermath	31	31	31	23	25	26	Ice	49	♂	Capable of taking hits
+E005033E	18	000000AB	No	Gentle	1: Unburden	31	31	31	23	25	26	Ice	49	♂	Takes plenty of siestas
+C9160331	8	000000A8	No	Bashful	0: Aftermath	31	31	31	26	20	24	Flying	44	♂	Takes plenty of siestas
+49160331	8	0000009B	No	Bold	1: Unburden	31	31	31	26	20	24	Flying	44	♂	Takes plenty of siestas
+79170368	0	0000009F	No	Lax	1: Unburden	31	31	31	26	26	24	Flying	64	♂	Takes plenty of siestas
+6E0A0339	25	000000A9	No	Rash	1: Unburden	31	31	31	28	20	20	Flying	34	♂	Likes to thrash about
+DB100344	9	0000009C	No	Docile	0: Aftermath	31	31	31	28	21	30	Water	39	♂	Takes plenty of siestas
+5B100344	9	000000A8	No	Bashful	0: Aftermath	31	31	31	28	21	30	Water	39	♂	Takes plenty of siestas
+67030358	0	000000A9	No	Rash	1: Unburden	31	31	31	28	26	28	Flying	54	♂	Likes to thrash about
+BF0D034D	1	00000097	No	Lonely	1: Unburden	31	31	31	29	31	22	Ice	59	♂	Likes to thrash about
+510A0373	18	000000AE	No	Quirky	0: Aftermath	31	31	31	30	23	26	Water	70	♂	Takes plenty of siestas
+80040343	19	0000009D	No	Relaxed	1: Unburden	31	31	31	30	28	23	Ground	49	♂	Likes to thrash about
+A708035E	23	0000009B	No	Bold	1: Unburden	31	31	31	31	21	22	Ice	49	♂	Takes plenty of siestas
+230B0375	22	0000009C	No	Docile	0: Aftermath	31	31	31	31	21	23	Dark	49	♂	Takes plenty of siestas

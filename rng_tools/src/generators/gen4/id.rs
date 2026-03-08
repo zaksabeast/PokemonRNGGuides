@@ -1,4 +1,5 @@
-use super::{DpptSeedTime4, FindSeedTime4Options, calc_seed, dppt_find_seedtime};
+use super::calc_seed;
+use crate::gen4::seed_time4::{FindSeedTime4Options, SeedTime4, find_seedtime};
 use crate::rng::Rng;
 use crate::rng::mt::MT;
 use crate::{IdFilter, RngDateTime, gen3_tsv};
@@ -18,7 +19,7 @@ pub struct Id4Options {
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Id4 {
-    pub seed_time: DpptSeedTime4,
+    pub seed_time: SeedTime4,
     pub tid: u16,
     pub sid: u16,
     pub tsv: u16,
@@ -46,7 +47,7 @@ pub fn generate_dppt_ids(opts: Id4Options) -> Vec<Id4> {
 
             if filter.filter_gen3(tid, sid) {
                 results.push(Id4 {
-                    seed_time: DpptSeedTime4::new(seed, datetime.clone(), delay),
+                    seed_time: SeedTime4::new(seed, datetime.clone(), delay),
                     tid,
                     sid,
                     tsv: gen3_tsv(tid, sid),
@@ -94,7 +95,7 @@ pub fn search_dppt_ids(opts: Id4SearchOptions) -> Vec<Id4> {
                 let seed_time_opts =
                     FindSeedTime4Options::new(seed, opts.year, delay..=delay, opts.force_second);
 
-                let seed_time = dppt_find_seedtime(seed_time_opts);
+                let seed_time = find_seedtime(seed_time_opts);
 
                 if let Some(seed_time) = seed_time {
                     results.push(Id4 {
@@ -114,7 +115,7 @@ pub fn search_dppt_ids(opts: Id4SearchOptions) -> Vec<Id4> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{assert_list_eq, coin_flips, datetime};
+    use crate::{assert_list_eq, datetime};
 
     #[test]
     fn search() {
@@ -130,11 +131,10 @@ mod test {
             tid: 1234,
             sid: 12129,
             tsv: 1398,
-            seed_time: DpptSeedTime4 {
+            seed_time: SeedTime4 {
                 seed: 0x4e16001a,
                 datetime: datetime!(2021-01-01 22:19:58).unwrap(),
                 delay: 5,
-                coin_flips: coin_flips!("TTHTTHTHTTHHHHHHHTTH"),
             },
         }];
 
@@ -155,11 +155,10 @@ mod test {
             tid: 1234,
             sid: 12129,
             tsv: 1398,
-            seed_time: DpptSeedTime4 {
+            seed_time: SeedTime4 {
                 seed: 0x4e16001a,
                 datetime: datetime!(2021-01-01 22:47:30).unwrap(),
                 delay: 5,
-                coin_flips: coin_flips!("TTHTTHTHTTHHHHHHHTTH"),
             },
         }];
 
@@ -181,22 +180,20 @@ mod test {
                 tid: 1234,
                 sid: 11608,
                 tsv: 1329,
-                seed_time: DpptSeedTime4 {
+                seed_time: SeedTime4 {
                     seed: 0xa40b13f3,
                     datetime: datetime!(2021-03-23 11:58:37).unwrap(),
                     delay: 5086,
-                    coin_flips: coin_flips!("TTTTHTTTHHHHTHHTTHTT"),
                 },
             },
             Id4 {
                 tid: 1234,
                 sid: 22909,
                 tsv: 2997,
-                seed_time: DpptSeedTime4 {
+                seed_time: SeedTime4 {
                     seed: 0xb00b1662,
                     datetime: datetime!(2021-03-23 11:58:49).unwrap(),
                     delay: 5709,
-                    coin_flips: coin_flips!("TTHTTHTHTTTTHTTTTTHT"),
                 },
             },
         ];

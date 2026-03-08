@@ -207,7 +207,7 @@ export const Static4Generator = () => {
       tid: opts.tid,
       sid: opts.sid,
       game: opts.game,
-      encounter: opts.encounter,
+      species: opts.encounter,
       lead: getLeadAbility(opts),
       initial_advances: opts.initial_advances,
       max_advances: opts.max_advances,

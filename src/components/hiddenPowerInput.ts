@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const HiddenPowerSchema = z.object({
   active: z.boolean(),
-  pokemon_types: z.array(z.enum(pokemonTypes)),
+  pokemon_types: z.array(z.enum(pokemonTypes)).min(1),
   min_bp: z.number().min(30).max(70),
   max_bp: z.number().min(30).max(70),
 });

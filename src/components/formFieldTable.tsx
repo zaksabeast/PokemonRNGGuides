@@ -3,7 +3,7 @@ import { Typography } from "./typography";
 import { Form as AntdForm } from "antd";
 
 export type Field = {
-  hide?: boolean;
+  show?: boolean;
   tooltip?: string;
   input: React.ReactNode;
   direction?: "row" | "column";
@@ -38,8 +38,8 @@ export const FormFieldTable = ({ fields }: Props) => {
       wrapperCol={{ flex: "1 1 0" }}
       colon={false}
     >
-      {fields.map(({ hide, key, label, tooltip, input, direction = "row" }) => {
-        if (hide) {
+      {fields.map(({ show, key, label, tooltip, input, direction = "row" }) => {
+        if (show === false) {
           return null;
         }
 

@@ -189,7 +189,7 @@ const getFields = (game: Gen4GameVersion, t: Translations): Field[] => {
     },
     {
       // Only Platinum has a variable advance
-      hide: game !== "Platinum",
+      show: game === "Platinum",
       label: t["Target Advance"],
       input: (
         <FormikNumberInput<FormState>

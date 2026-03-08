@@ -15,6 +15,7 @@ import {
   Props as DistributionProps,
   Wild3MethodDistribution,
 } from "./wild3MethodDistribution";
+import { GBA_FPS } from "~/utils/consts";
 
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
@@ -54,10 +55,10 @@ const getResultSetupInfoColumns = ({
       monospace: true,
       render: (adv, { seed }) => {
         const painting_seed = formatHex(seed);
-        const durInMinutes = formatDuration(adv / 59.7275);
+        const durInMinutes = formatDuration(adv / GBA_FPS);
         return (
           <Tooltip
-            title={`Seed when performing the player action: ${painting_seed}. (~${durInMinutes} min)`}
+            title={`Seed when performing the player action: ${painting_seed}. (${durInMinutes})`}
           >
             {formatLargeInteger(adv)}
           </Tooltip>

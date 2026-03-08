@@ -31,6 +31,7 @@ import { TargetMon } from "./wild3TargetMon.component";
 import { searchWild3Target } from "./searchWild3Target";
 import { SetupFilter } from "./wild3SetupFilter.component";
 import { Wild3ResultSetupInfos } from "./resultSetupInfos";
+import { GBA_FPS } from "~/utils/consts";
 
 /*
 Possible UI improvements:
@@ -170,7 +171,7 @@ const getPidPathColumns = (
         if (paintingAdvs != null) {
           const { adv_before_painting: before, adv_after_painting: after } =
             paintingAdvs;
-          const title = `${formatDuration(before / 59.7275)} | ${formatDuration(after / 59.7275)}`;
+          const title = `${formatDuration(before / GBA_FPS)} | ${formatDuration(after / GBA_FPS)}`;
 
           return (
             <Tooltip title={title}>
@@ -181,7 +182,7 @@ const getPidPathColumns = (
         }
 
         return (
-          <Tooltip title={formatDuration(earliestAdvance / 59.7275)}>
+          <Tooltip title={formatDuration(earliestAdvance / GBA_FPS)}>
             <>~{formatLargeInteger(earliestAdvance)}</>
           </Tooltip>
         );

@@ -5,6 +5,7 @@ import { CaughtMon } from "./caughtMon";
 import { FormFieldTable } from "~/components/formFieldTable";
 import { TargetPokemon } from "./targetPokemon";
 import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
+import { MS_PER_GBA_FRAME } from "~/utils/consts";
 
 export type Game = "emerald" | "rs";
 export type Starter = "Mudkip" | "Torchic" | "Treecko";
@@ -30,7 +31,7 @@ export const ShinyHoennStarter = ({ game }: Props) => {
 
   const milliseconds = React.useMemo(() => {
     const advFromTimer = targetAdvance - calibrationAndOffset;
-    return [5000, Math.round((advFromTimer * 1000) / 59.7275)];
+    return [5000, Math.round(advFromTimer * MS_PER_GBA_FRAME)];
   }, [targetAdvance, calibrationAndOffset]);
 
   const fields = React.useMemo((): Field[] => {

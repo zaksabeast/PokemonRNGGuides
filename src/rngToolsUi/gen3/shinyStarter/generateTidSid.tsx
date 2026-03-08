@@ -13,6 +13,7 @@ import {
 import { Game } from "./index";
 import { rngTools, Gen3NearbySid, Gen3TidSidShinyResult } from "~/rngTools";
 import { useWatch } from "react-hook-form";
+import { GBA_FPS, MS_PER_GBA_FRAME } from "~/utils/consts";
 
 const Validator = z.object({
   offset: z.number().int().min(-999).max(999),
@@ -76,7 +77,7 @@ const columns: ResultColumn<Result>[] = [
     title: "Earliest Method-1 advance for shiny starter",
     dataIndex: "earliest_shiny_adv",
     render: (val) => {
-      const durInMinutes = (val / 59.7275 / 60).toFixed(1);
+      const durInMinutes = (val / GBA_FPS / 60).toFixed(1);
       return `${val} (~${durInMinutes} min)`;
     },
   },
@@ -88,7 +89,7 @@ export const GenerateTidSidRating = ({
   result: Gen3TidSidShinyResult;
 }) => {
   const durInMinutes = Math.round(
-    result.avg_adv_to_determine_sid / 59.7275 / 60,
+    result.avg_adv_to_determine_sid / GBA_FPS / 60,
   );
   const pct = result.avg_adv_to_determine_sid_percentile;
   const qualitativeRating = (() => {
@@ -142,7 +143,7 @@ const Fields = ({ idealAdvance }: FieldsProps) => {
 
   const milliseconds = (() => {
     const advFromTimer = idealAdvance - advFromOffset;
-    let milliseconds = Math.round((advFromTimer * 1000) / 59.7275);
+    let milliseconds = Math.round(advFromTimer * MS_PER_GBA_FRAME);
     if (milliseconds < 0) {
       milliseconds = 0;
     }

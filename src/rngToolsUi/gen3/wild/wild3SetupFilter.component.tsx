@@ -33,6 +33,7 @@ const getSetupFields = (
   letSearcherFindPaintingSeed: boolean,
 ): Field[] => {
   const possVals = getPossibleValuesForSpecies(species);
+  const showAdvancedSetups = !recommendedSetups;
 
   const fields: Field[] = [
     {
@@ -63,95 +64,79 @@ const getSetupFields = (
       label: "Recommended Setups?",
       input: <FormikSwitch<FormState> name="recommendedSetups" />,
     },
-    ...(recommendedSetups
-      ? []
-      : [
-          {
-            label: "Actions",
-            input: (
-              <FormikSelect<FormState, "actions">
-                name="actions"
-                options={toOptions(possVals.actions, formatActionName)}
-                mode="multiple"
-                selectAllNoneButtons
-              />
-            ),
-          },
-          {
-            label: "Maps",
-            input: (
-              <FormikSelect<FormState, "maps">
-                name="maps"
-                options={toOptions(possVals.maps, formatMapName)}
-                mode="multiple"
-                selectAllNoneButtons
-              />
-            ),
-          },
-          {
-            label: "Leads",
-            input: (
-              <FormikSelect<FormState, "leadIdxs">
-                name="leadIdxs"
-                options={leadsLabels}
-                mode="multiple"
-                selectAllNoneButtons
-              />
-            ),
-          },
-          ...(possVals.roamerStates.length > 1
-            ? [
-                {
-                  label: "Roamer states",
-                  input: (
-                    <FormikSelect<FormState, "roamerStates">
-                      name="roamerStates"
-                      options={toOptions(
-                        possVals.roamerStates,
-                        formatRoamerStateName,
-                      )}
-                      mode="multiple"
-                    />
-                  ),
-                },
-              ]
-            : []),
-          ...(possVals.massOutbreakStates.length > 1
-            ? [
-                {
-                  label: "Mass outbreak states",
-                  input: (
-                    <FormikSelect<FormState, "massOutbreakStates">
-                      name="massOutbreakStates"
-                      options={toOptions(
-                        possVals.massOutbreakStates,
-                        formatMassOutbreakStateName,
-                      )}
-                      mode="multiple"
-                      selectAllNoneButtons
-                    />
-                  ),
-                },
-              ]
-            : []),
-          ...(possVals.feebasStates.length > 1
-            ? [
-                {
-                  label: "Feebas states",
-                  input: (
-                    <FormikSelect<FormState, "feebasStates">
-                      name="feebasStates"
-                      options={toOptions(
-                        possVals.feebasStates,
-                        formatFeebasStateName,
-                      )}
-                      mode="multiple"
-                    />
-                  ),
-                },
-              ]
-            : []),
-        ]),
+    {
+      label: "Actions",
+      input: (
+        <FormikSelect<FormState, "actions">
+          name="actions"
+          options={toOptions(possVals.actions, formatActionName)}
+          mode="multiple"
+          selectAllNoneButtons
+        />
+      ),
+      show: showAdvancedSetups,
+    },
+    {
+      label: "Maps",
+      input: (
+        <FormikSelect<FormState, "maps">
+          name="maps"
+          options={toOptions(possVals.maps, formatMapName)}
+          mode="multiple"
+          selectAllNoneButtons
+        />
+      ),
+      show: showAdvancedSetups,
+    },
+    {
+      label: "Leads",
+      input: (
+        <FormikSelect<FormState, "leadIdxs">
+          name="leadIdxs"
+          options={leadsLabels}
+          mode="multiple"
+          selectAllNoneButtons
+        />
+      ),
+      show: showAdvancedSetups,
+    },
+    {
+      label: "Roamer states",
+      input: (
+        <FormikSelect<FormState, "roamerStates">
+          name="roamerStates"
+          options={toOptions(possVals.roamerStates, formatRoamerStateName)}
+          mode="multiple"
+        />
+      ),
+      show: showAdvancedSetups && possVals.roamerStates.length > 1,
+    },
+    {
+      label: "Mass outbreak states",
+      input: (
+        <FormikSelect<FormState, "massOutbreakStates">
+          name="massOutbreakStates"
+          options={toOptions(
+            possVals.massOutbreakStates,
+            formatMassOutbreakStateName,
+          )}
+          mode="multiple"
+          selectAllNoneButtons
+        />
+      ),
+      show: showAdvancedSetups && possVals.massOutbreakStates.length > 1,
+    },
+    {
+      label: "Feebas states",
+      input: (
+        <FormikSelect<FormState, "feebasStates">
+          name="feebasStates"
+          options={toOptions(possVals.feebasStates, formatFeebasStateName)}
+          mode="multiple"
+        />
+      ),
+      show: showAdvancedSetups && possVals.feebasStates.length > 1,
+    },
     {
       label: "Methods",
       input: (
@@ -184,13 +169,13 @@ const getSetupFields = (
     {
       label: "Let searcher find painting seed?",
       input: <FormikSwitch<FormState> name="letSearcherFindPaintingSeed" />,
-      hide: !usingPaintingReseeding,
+      show: usingPaintingReseeding,
     },
 
     {
       label: "Seed after painting reseeding",
       input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
-      hide: !(usingPaintingReseeding && !letSearcherFindPaintingSeed),
+      show: usingPaintingReseeding && !letSearcherFindPaintingSeed,
     },
     {
       label: "Min advances before reseeding",
@@ -200,7 +185,7 @@ const getSetupFields = (
           numType="decimal"
         />
       ),
-      hide: !(usingPaintingReseeding && letSearcherFindPaintingSeed),
+      show: usingPaintingReseeding && letSearcherFindPaintingSeed,
     },
     {
       label: "Min advances after reseeding",
@@ -210,7 +195,7 @@ const getSetupFields = (
           numType="decimal"
         />
       ),
-      hide: !usingPaintingReseeding,
+      show: usingPaintingReseeding,
     },
     {
       label: "Min advances",
@@ -220,7 +205,7 @@ const getSetupFields = (
           numType="decimal"
         />
       ),
-      hide: usingPaintingReseeding,
+      show: usingPaintingReseeding,
     },
     {
       label: usingPaintingReseeding
@@ -229,7 +214,7 @@ const getSetupFields = (
       input: (
         <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
       ),
-      hide: !(usingPaintingReseeding && !letSearcherFindPaintingSeed),
+      show: usingPaintingReseeding && !letSearcherFindPaintingSeed,
     },
     {
       label: "Max result count",

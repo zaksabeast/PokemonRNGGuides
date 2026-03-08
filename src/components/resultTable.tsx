@@ -12,6 +12,7 @@ export type SingleResultColumn<T> = keyof T extends string
         type?: "single";
         dataIndex: K;
         monospace?: boolean;
+        show?: boolean;
       } & (
         | {
             title: React.ReactNode;
@@ -31,6 +32,7 @@ export type SingleResultColumn<T> = keyof T extends string
 export type ResultColumnGroup<T> = {
   type: "group";
   columns: SingleResultColumn<T>[];
+  show?: boolean;
 } & (
   | {
       title: React.ReactNode;
@@ -87,6 +89,10 @@ export const ResultTable = <Record extends tst.O.Object>(
 
   const children = React.useMemo(() => {
     return columns.map((column) => {
+      if (column.show === false) {
+        return null;
+      }
+
       if (column.type === "group") {
         const groupKey = column.key == null ? column.title : column.key;
         return (

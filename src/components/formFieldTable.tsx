@@ -1,12 +1,14 @@
+import { OneOf } from "~/types";
 import { Flex } from "./flex";
 import { Typography } from "./typography";
 import { Form as AntdForm } from "antd";
+import { P } from "ts-pattern";
 
 export type Field = {
-  hide?: boolean;
   tooltip?: string;
   input: React.ReactNode;
   direction?: "row" | "column";
+  show?: boolean;
 } & (
   | {
       label: React.ReactNode;
@@ -38,8 +40,8 @@ export const FormFieldTable = ({ fields }: Props) => {
       wrapperCol={{ flex: "1 1 0" }}
       colon={false}
     >
-      {fields.map(({ hide, key, label, tooltip, input, direction = "row" }) => {
-        if (hide) {
+      {fields.map(({ show, key, label, tooltip, input, direction = "row" }) => {
+        if (show === false) {
           return null;
         }
 

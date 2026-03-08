@@ -283,7 +283,7 @@ const getFields = (
   fields.push({
     label: "Seed after Painting Reseeding",
     input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
-    hide: !usingPaintingReseeding,
+    show: usingPaintingReseeding,
   });
 
   fields.push({
@@ -294,7 +294,7 @@ const getFields = (
   fields.push({
     label: "",
     key: "Equivalent to Advances",
-    hide: !usingPaintingReseeding,
+    show: usingPaintingReseeding,
     input: (
       <>
         Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}

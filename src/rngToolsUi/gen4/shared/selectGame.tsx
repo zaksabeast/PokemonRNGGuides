@@ -2,7 +2,6 @@ import { PrimitiveAtom, useAtom } from "jotai";
 import { Gen4GameVersion } from "../gen4types";
 import { Select } from "~/components";
 import { toOptions } from "~/utils/options";
-import { startCase } from "lodash-es";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type SelectGameProps<State extends { game: Gen4GameVersion }> = {
@@ -16,7 +15,7 @@ export const SelectGame = <State extends { game: Gen4GameVersion }>({
 }: SelectGameProps<State>) => {
   const t = useActiveRouteTranslations();
   const formatGame = (game: Gen4GameVersion) => {
-    return startCase(t[game]);
+    return t[game];
   };
   const [state, setState] = useAtom(stateAtom);
   return (

@@ -377,7 +377,7 @@ const resultSetupInfoToDistributionProps = (
   setup: ResultSetupInfo,
   rngManipulatedLeadPid: boolean,
 ): DistributionProps => {
-  const leadCycleSpeed =
+  const idealLeadCycleSpeed =
     setup.cycle_data_by_lead?.ideal_lead.lead_pid_cycle_count ?? 0;
 
   return {
@@ -395,7 +395,7 @@ const resultSetupInfoToDistributionProps = (
       painting_advs: setup.painting_advs ?? null,
       wantedMethod: setup.method,
       wantedPID: setup.pid,
-      idealLeadCycleSpeed: leadCycleSpeed,
+      idealLeadCycleSpeed,
       usingIdealLeadCycleSpeed: rngManipulatedLeadPid,
     },
   };

@@ -128,7 +128,7 @@ const Validator = z.object({
   massOutbreakState: z.enum(wild3MassOutbreakStates),
   usingPaintingReseeding: z.boolean(),
   initial_seed: z.number().min(0).max(0xffffffff),
-  hadPreselectedData: z.boolean(),
+  hasPreselectedData: z.boolean(),
   wantedMethod: z.enum(gen3Methods).nullable(),
   wantedPID: z.number().min(0).max(0xffffffff).nullable(),
   idealLeadCycleSpeed: z
@@ -157,7 +157,7 @@ const getInitialValues = ({ fixedData }: Props): FormState => {
       massOutbreakState: "Inactive",
       usingPaintingReseeding: false,
       initial_seed: 0,
-      hadPreselectedData: false,
+      hasPreselectedData: false,
       wantedMethod: null,
       wantedPID: null,
       idealLeadCycleSpeed: 0,
@@ -181,7 +181,7 @@ const getInitialValues = ({ fixedData }: Props): FormState => {
     leadPID: 0,
     leadCycleSpeed,
     ...fixedData,
-    hadPreselectedData: true,
+    hasPreselectedData: true,
     usingPaintingReseeding: fixedData.initial_seed !== 0,
   };
 };
@@ -226,7 +226,7 @@ const getFields = (
   leadCycleSpeed: number,
   usingPaintingReseeding: boolean,
   equivalentInitialAdvs: number,
-  hadPreselectedData: boolean,
+  hasPreselectedData: boolean,
 ): Field[] => {
   const { actions, feebas_states, roamer_states, mass_outbreak_states } =
     getPossibleValuesForMap(mapId, action);
@@ -239,7 +239,7 @@ const getFields = (
           options={toOptions(emeraldWildGameData.maps, formatMapName)}
         />
       ),
-      hide: hadPreselectedData,
+      hide: hasPreselectedData,
     },
   ];
 
@@ -256,17 +256,17 @@ const getFields = (
           options={toOptions(actions, formatActionName)}
         />
       ),
-      hide: hadPreselectedData,
+      hide: hasPreselectedData,
     },
     {
       label: "TID",
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-      hide: hadPreselectedData,
+      hide: hasPreselectedData,
     },
     {
       label: "SID",
       input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
-      hide: hadPreselectedData,
+      hide: hasPreselectedData,
     },
     {
       label: "Lead",
@@ -277,7 +277,7 @@ const getFields = (
           options={leadsLabels}
         />
       ),
-      hide: hadPreselectedData,
+      hide: hasPreselectedData,
     },
   );
 
@@ -298,7 +298,7 @@ const getFields = (
         <FormikRadio<FormState>
           name="leadSpeedType"
           options={
-            hadPreselectedData
+            hasPreselectedData
               ? leadSpeedTypes.slice(0)
               : leadSpeedTypes.filter((el) => el !== "Ideal")
           }
@@ -372,25 +372,25 @@ const getFields = (
     ),
     key: "usingPaintingReseeding",
     input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
-    hide: hadPreselectedData,
+    hide: hasPreselectedData,
   });
 
   fields.push({
     label: "Seed after Painting Reseeding",
     input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
-    hide: hadPreselectedData || !usingPaintingReseeding,
+    hide: hasPreselectedData || !usingPaintingReseeding,
   });
 
   fields.push({
     label: usingPaintingReseeding ? "Advances after reseeding" : "Advances",
     input: <FormikNumberInput<FormState> name="advance" numType="decimal" />,
-    hide: hadPreselectedData,
+    hide: hasPreselectedData,
   });
 
   fields.push({
     label: "",
     key: "Equivalent to Advances",
-    hide: hadPreselectedData || !usingPaintingReseeding,
+    hide: hasPreselectedData || !usingPaintingReseeding,
     input: (
       <>
         Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
@@ -408,7 +408,7 @@ const getFields = (
           options={toOptions(feebas_states, formatFeebasStateName)}
         />
       ),
-      hide: hadPreselectedData,
+      hide: hasPreselectedData,
     });
   }
 
@@ -421,7 +421,7 @@ const getFields = (
           options={toOptions(roamer_states, formatRoamerStateName)}
         />
       ),
-      hide: hadPreselectedData,
+      hide: hasPreselectedData,
     });
   }
 
@@ -434,7 +434,7 @@ const getFields = (
           options={toOptions(mass_outbreak_states, formatMassOutbreakStateName)}
         />
       ),
-      hide: hadPreselectedData,
+      hide: hasPreselectedData,
     });
   }
   return fields;
@@ -477,8 +477,8 @@ export const Wild3MethodDistributionFields = ({
   const advance = useWatch<FormState, "advance">({
     name: "advance",
   });
-  const hadPreselectedData = useWatch<FormState, "hadPreselectedData">({
-    name: "hadPreselectedData",
+  const hasPreselectedData = useWatch<FormState, "hasPreselectedData">({
+    name: "hasPreselectedData",
   });
   const idealLeadCycleSpeed = useWatch<FormState, "idealLeadCycleSpeed">({
     name: "idealLeadCycleSpeed",
@@ -500,7 +500,7 @@ export const Wild3MethodDistributionFields = ({
       leadCycleSpeed,
       usingPaintingReseeding,
       equivalentInitialAdvs,
-      hadPreselectedData,
+      hasPreselectedData,
     );
   }, [
     map,
@@ -510,7 +510,7 @@ export const Wild3MethodDistributionFields = ({
     leadCycleSpeed,
     usingPaintingReseeding,
     equivalentInitialAdvs,
-    hadPreselectedData,
+    hasPreselectedData,
   ]);
 
   React.useEffect(() => {
@@ -800,10 +800,17 @@ export const Wild3MethodDistribution = ({ fixedData }: Props) => {
     return `Generate all possible Pokémon encounters at advances ${advs}`;
   }, [fixedData]);
 
+  const getColumnsProps = React.useCallback(
+    (t: Translations) => {
+      return getColumns(t, fixedData);
+    },
+    [fixedData],
+  );
+
   return (
     <>
       <RngToolForm<FormState, UiResult>
-        getColumns={(t) => getColumns(t, fixedData)}
+        getColumns={getColumnsProps}
         results={results}
         validationSchema={Validator}
         initialValues={initialValues}

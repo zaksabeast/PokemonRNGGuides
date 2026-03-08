@@ -1,5 +1,5 @@
 import { Wild3SearcherCycleData, Gen3Method } from "~/rngTools";
-import { ResultColumn, ResultTable, Icon, Link } from "~/components";
+import { ResultColumn, ResultTable, Icon, Link, Button } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
@@ -39,10 +39,12 @@ const getResultSetupInfoColumns = ({
   rngManipulatedLeadPid,
   showMassOutbreak,
   usesPainting,
+  onBreakdownClick,
 }: {
   rngManipulatedLeadPid: boolean;
   showMassOutbreak: boolean;
   usesPainting: boolean;
+  onBreakdownClick: (record: ResultSetupInfo) => void;
 }): ResultColumn<ResultSetupInfo>[] => {
   const columns: ResultColumn<ResultSetupInfo>[] = [];
   if (!usesPainting) {
@@ -145,6 +147,26 @@ const getResultSetupInfoColumns = ({
       : []),
   );
 
+  const breakdownClickCol = (btnName: string) =>
+    ({
+      key: "detailed_lead",
+      dataIndex: "cycle_data_by_lead",
+      render: (_cycle_data_by_lead: unknown, values: ResultSetupInfo) => {
+        return (
+          <Button
+            type="text"
+            color="PrimaryText"
+            trackerId="wild3_likelihood_breakdown"
+            onClick={() => {
+              onBreakdownClick(values);
+            }}
+          >
+            {btnName}
+          </Button>
+        );
+      },
+    }) as const;
+
   if (!rngManipulatedLeadPid) {
     columns.push({
       title: (
@@ -199,6 +221,17 @@ const getResultSetupInfoColumns = ({
         );
       },
     });
+
+    columns.push({
+      ...breakdownClickCol("Open Breakdown"),
+      title: (
+        <>
+          Method Likelihood
+          <br />
+          By Lead Speed
+        </>
+      ),
+    });
   }
 
   columns.push({
@@ -251,6 +284,10 @@ const getResultSetupInfoColumns = ({
         key: "methodLikelihoodByLeadSpeed",
         type: "group",
         columns: [
+          {
+            ...breakdownClickCol("Open"),
+            title: "Breakdown",
+          },
           {
             title: "Ideal",
             dataIndex: "cycle_data_by_lead",
@@ -338,7 +375,11 @@ const getResultSetupInfoColumns = ({
 
 const resultSetupInfoToDistributionProps = (
   setup: ResultSetupInfo,
+  rngManipulatedLeadPid: boolean,
 ): DistributionProps => {
+  const leadCycleSpeed =
+    setup.cycle_data_by_lead?.ideal_lead.lead_pid_cycle_count ?? 0;
+
   return {
     fixedData: {
       map: setup.mapId,
@@ -351,9 +392,11 @@ const resultSetupInfoToDistributionProps = (
       feebasState: setup.feebas_state,
       massOutbreakState: setup.mass_outbreak_state,
       initial_seed: setup.painting_advs?.adv_before_painting ?? 0,
+      wantedMethod: setup.method,
+      wantedPID: setup.pid,
+      idealLeadCycleSpeed: leadCycleSpeed,
+      usingIdealLeadCycleSpeed: rngManipulatedLeadPid,
     },
-    leadCycleSpeed:
-      setup.cycle_data_by_lead?.ideal_lead.lead_pid_cycle_count ?? null,
   };
 };
 
@@ -379,6 +422,15 @@ export const Wild3ResultSetupInfos = ({
       rngManipulatedLeadPid,
       showMassOutbreak,
       usesPainting,
+      onBreakdownClick: (record) => {
+        console.log(
+          "resultSetupInfoToDistributionProps",
+          resultSetupInfoToDistributionProps(record, rngManipulatedLeadPid),
+        );
+        setDistributionProps(
+          resultSetupInfoToDistributionProps(record, rngManipulatedLeadPid),
+        );
+      },
     });
   }, [rngManipulatedLeadPid, selectedPidPathResult]);
 
@@ -399,11 +451,6 @@ export const Wild3ResultSetupInfos = ({
         columns={resultSetupInfoColumns}
         rowKey="uid"
         dataSource={selectedPidPathResult.resultSetupInfos}
-        rowSelection={{
-          type: "radio",
-          onSelect: (record) =>
-            setDistributionProps(resultSetupInfoToDistributionProps(record)),
-        }}
       />
       {distributionProps != null && (
         <Wild3MethodDistribution {...distributionProps} />

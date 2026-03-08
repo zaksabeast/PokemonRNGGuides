@@ -56,18 +56,29 @@ import {
   leadsLabels,
   gen3Leads,
 } from "./utils";
-import { useWatch } from "react-hook-form";
+import { useForm, useFormState, useWatch } from "react-hook-form";
 import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
 import { uniq } from "lodash-es";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { Tooltip } from "antd";
+import { gen3Methods } from "~/types";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
-type LeadSpeedType = "Fastest" | "Average" | "Slowest" | "From PID" | "Custom";
+const AVERAGE_LEAD_CYCLE_SPEED = 775;
+const SLOWEST_LEAD_CYCLE_SPEED = 900;
+
+type LeadSpeedType =
+  | "Ideal"
+  | "Fastest"
+  | "Average"
+  | "Slowest"
+  | "From PID"
+  | "Custom";
 
 const leadSpeedTypes = [
+  "Ideal",
   "Fastest",
   "Average",
   "Slowest",
@@ -87,9 +98,11 @@ export type Props = {
     feebasState: Wild3FeebasState;
     massOutbreakState: Wild3MassOutbreakState;
     initial_seed: number;
+    wantedMethod: Gen3Method;
+    wantedPID: number;
+    idealLeadCycleSpeed: number;
+    usingIdealLeadCycleSpeed: boolean;
   } | null;
-
-  leadCycleSpeed: number | null;
 };
 
 const Validator = z.object({
@@ -105,52 +118,67 @@ const Validator = z.object({
     .max(gen3Leads.length - 1),
   leadSpeedType: z.enum(leadSpeedTypes),
   leadPID: z.number().min(0).max(0xffffffff),
-  leadCycleSpeed: z.number().min(18).max(900),
+  leadCycleSpeed: z.number().min(0).max(SLOWEST_LEAD_CYCLE_SPEED),
   feebasState: z.enum(wild3FeebasStates),
   roamerState: z.enum(wild3RoamerStates),
   massOutbreakState: z.enum(wild3MassOutbreakStates),
   usingPaintingReseeding: z.boolean(),
   initial_seed: z.number().min(0).max(0xffffffff),
   hadPreselectedData: z.boolean(),
+  wantedMethod: z.enum(gen3Methods).nullable(),
+  wantedPID: z.number().min(0).max(0xffffffff).nullable(),
+  idealLeadCycleSpeed: z
+    .number()
+    .min(0)
+    .max(SLOWEST_LEAD_CYCLE_SPEED)
+    .nullable(),
 });
 
 type FormState = z.infer<typeof Validator>;
 
-const getInitialValues = ({ fixedData, leadCycleSpeed }: Props): FormState => {
-  const leadIdx =
-    fixedData != null
-      ? gen3Leads.findIndex(
-          (lead) => JSON.stringify(lead) === JSON.stringify(fixedData.lead),
-        )
-      : 0;
+const getInitialValues = ({ fixedData }: Props): FormState => {
+  if (fixedData == null) {
+    return {
+      map: "MAP_ROUTE101",
+      action: "SweetScentLand",
+      tid: 0,
+      sid: 0,
+      advance: 0,
+      leadIdx: 0,
+      leadSpeedType: "Average",
+      leadPID: 0,
+      leadCycleSpeed: 0,
+      feebasState: "NotInMap",
+      roamerState: "Inactive",
+      massOutbreakState: "Inactive",
+      usingPaintingReseeding: false,
+      initial_seed: 0,
+      hadPreselectedData: false,
+      wantedMethod: null,
+      wantedPID: null,
+      idealLeadCycleSpeed: 0,
+    };
+  }
 
-  const leadSpeedType = match(leadCycleSpeed)
-    .with(null, () => "Average" as const)
-    .with(0, () => "Average" as const) // Egg
-    .with(18, () => "Fastest" as const)
-    .with(900, () => "Slowest" as const)
-    .with(775, () => "Average" as const)
-    .otherwise(() => "Custom" as const);
+  const leadIdx = gen3Leads.findIndex(
+    (lead) => JSON.stringify(lead) === JSON.stringify(fixedData.lead),
+  );
+
+  const leadSpeedType = fixedData.usingIdealLeadCycleSpeed
+    ? "Ideal"
+    : "Average";
+  const leadCycleSpeed = fixedData.usingIdealLeadCycleSpeed
+    ? fixedData.idealLeadCycleSpeed
+    : AVERAGE_LEAD_CYCLE_SPEED;
 
   return {
-    map: fixedData?.map ?? "MAP_ROUTE101",
-    action: fixedData?.action ?? "SweetScentLand",
-    tid: fixedData?.tid ?? 0,
-    sid: fixedData?.sid ?? 0,
-    advance: fixedData?.advance ?? 0,
     leadIdx: Math.max(leadIdx, 0),
     leadSpeedType,
     leadPID: 0,
-    leadCycleSpeed: matchLeadCycleSpeed(leadSpeedType).otherwise(
-      () => leadCycleSpeed ?? 775,
-    ),
-    feebasState: fixedData?.feebasState ?? "NotInMap",
-    roamerState: fixedData?.roamerState ?? "Inactive",
-    massOutbreakState: fixedData?.massOutbreakState ?? "Inactive",
-    usingPaintingReseeding:
-      fixedData != null ? fixedData.initial_seed !== 0 : false,
-    initial_seed: fixedData?.initial_seed ?? 0,
-    hadPreselectedData: fixedData != null,
+    leadCycleSpeed,
+    ...fixedData,
+    hadPreselectedData: true,
+    usingPaintingReseeding: fixedData.initial_seed !== 0,
   };
 };
 
@@ -265,7 +293,11 @@ const getFields = (
       input: (
         <FormikRadio<FormState>
           name="leadSpeedType"
-          options={leadSpeedTypes.slice(0)}
+          options={
+            hadPreselectedData
+              ? leadSpeedTypes.slice(0)
+              : leadSpeedTypes.filter((el) => el !== "Ideal")
+          }
         />
       ),
     });
@@ -404,10 +436,12 @@ const getFields = (
   return fields;
 };
 
-export const Wild3MethodDistributionFields = () => {
-  const { setFieldValue, reset } = useFormContext<FormState>();
-  reset();
-
+export const Wild3MethodDistributionFields = ({
+  onSubmit,
+}: {
+  onSubmit: (values: FormState) => void;
+}) => {
+  const { setFieldValue } = useFormContext<FormState>();
   const map = useWatch<FormState, "map">({ name: "map" });
   const leadIdx = useWatch<FormState, "leadIdx">({
     name: "leadIdx",
@@ -415,6 +449,23 @@ export const Wild3MethodDistributionFields = () => {
   const leadSpeedType = useWatch<FormState, "leadSpeedType">({
     name: "leadSpeedType",
   });
+
+  const { handleSubmit } = useForm<FormState>();
+
+  React.useEffect(() => {
+    console.log(leadSpeedType);
+    const a = handleSubmit(
+      async (values) => {
+        console.log("valid", values);
+        onSubmit(values);
+      },
+      async (...args) => {
+        console.log("invalid", args);
+      },
+    );
+    a();
+  }, [leadSpeedType, handleSubmit, onSubmit]);
+
   const leadCycleSpeed = useWatch<FormState, "leadCycleSpeed">({
     name: "leadCycleSpeed",
   });
@@ -440,6 +491,9 @@ export const Wild3MethodDistributionFields = () => {
   });
   const hadPreselectedData = useWatch<FormState, "hadPreselectedData">({
     name: "hadPreselectedData",
+  });
+  const idealLeadCycleSpeed = useWatch<FormState, "idealLeadCycleSpeed">({
+    name: "idealLeadCycleSpeed",
   });
 
   const [equivalentInitialAdvs, setEquivalentInitialAdvs] = React.useState(0);
@@ -500,21 +554,53 @@ export const Wild3MethodDistributionFields = () => {
   }, [map, action, feebasState, massOutbreakState, roamerState, setFieldValue]);
 
   React.useEffect(() => {
-    calculateLeadCycleSpeed(leadSpeedType, leadCycleSpeed, leadPID).then(
-      (leadCycleSpeed) => {
-        setFieldValue("leadCycleSpeed", leadCycleSpeed);
-      },
-    );
-  }, [setFieldValue, leadCycleSpeed, leadSpeedType, leadPID]);
+    calculateLeadCycleSpeed(
+      leadSpeedType,
+      leadCycleSpeed,
+      leadPID,
+      idealLeadCycleSpeed,
+    ).then((leadCycleSpeed) => {
+      setFieldValue("leadCycleSpeed", leadCycleSpeed);
+    });
+  }, [
+    setFieldValue,
+    leadCycleSpeed,
+    leadSpeedType,
+    leadPID,
+    idealLeadCycleSpeed,
+  ]);
 
   return <FormFieldTable fields={fields} />;
 };
 
 const getColumns = (
   _t: Translations,
-  hadPreselectedData: boolean,
+  fixedData: Props["fixedData"],
 ): ResultColumn<UiResult>[] => {
   const columns: ResultColumn<UiResult>[] = [
+    ...(fixedData != null
+      ? [
+          {
+            title: "",
+            key: "isWanted",
+            dataIndex: "pre_sweet_scent_cycle_ranges",
+            render: (_, values) => {
+              console.log(values.pid, fixedData.wantedPID, fixedData);
+              if (
+                values.pid !== fixedData.wantedPID ||
+                values.method !== fixedData.wantedMethod
+              ) {
+                return null;
+              }
+              return (
+                <Tooltip title="Target Pokémon">
+                  <Icon name="Pokeball" size={20} />
+                </Tooltip>
+              );
+            },
+          } as const as ResultColumn<UiResult>,
+        ]
+      : []),
     {
       title: (
         <>
@@ -552,7 +638,7 @@ const getColumns = (
       monospace: true,
       render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
     },
-    ...(hadPreselectedData
+    ...(fixedData != null
       ? []
       : [
           {
@@ -567,21 +653,19 @@ const getColumns = (
   return columns;
 };
 
-const matchLeadCycleSpeed = (leadSpeedType: LeadSpeedType) => {
-  return match(leadSpeedType)
-    .with("Fastest", () => 18)
-    .with("Slowest", () => 900)
-    .with("Average", () => 775);
-};
-
 const calculateLeadCycleSpeed = async (
   leadSpeedType: LeadSpeedType,
   leadCycleSpeed: number,
   leadPID: number,
+  idealLeadCycleSpeed: number | null,
 ) => {
-  return matchLeadCycleSpeed(leadSpeedType)
+  return match(leadSpeedType)
+    .with("Fastest", () => 18)
+    .with("Slowest", () => SLOWEST_LEAD_CYCLE_SPEED)
+    .with("Average", () => AVERAGE_LEAD_CYCLE_SPEED)
     .with("Custom", () => leadCycleSpeed)
     .with("From PID", () => rngTools.calculate_pid_speed(leadPID))
+    .with("Ideal", () => idealLeadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED) // Technically not possible to choose Ideal if idealLeadCycleSpeed is null.
     .exhaustive();
 };
 
@@ -628,81 +712,99 @@ const convertSearcherResultsToUIResults = (
     });
 };
 
-export const Wild3MethodDistribution = ({
-  leadCycleSpeed,
-  fixedData,
-}: Props) => {
+const calculate = async (values: FormState) => {
+  const initial_seed = values.usingPaintingReseeding ? values.initial_seed : 0;
+
+  const opts: Wild3GeneratorOptions = {
+    tid: values.tid,
+    sid: values.sid,
+    map_idx: 0,
+    action: values.action,
+    methods: ["Wild1", "Wild2", "Wild3", "Wild4", "Wild5"] as Gen3Method[],
+    lead: gen3Leads[values.leadIdx],
+    filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
+    gen3_filter: gen3PkmFilterFieldsToRustInput(
+      getGen3PkmFilterInitialValues(),
+      null,
+    ),
+    consider_cycles: true,
+    consider_rng_manipulated_lead_pid: true,
+    generate_even_if_impossible: true,
+    roamer_state: values.roamerState,
+    mass_outbreak_state: values.massOutbreakState,
+    feebas_state: values.feebasState,
+  };
+
+  const map_data = emeraldWildGameData.maps_data.find(
+    (table) => table.map_id === values.map,
+  );
+  if (map_data == null) {
+    return {
+      uiResults: [],
+      cycle_at_moments: [],
+    };
+  }
+
+  const { results, cycle_at_moments } =
+    await rngTools.generate_gen3_wild_distribution(
+      initial_seed,
+      values.advance,
+      opts,
+      map_data,
+      values.leadCycleSpeed,
+    );
+
+  return {
+    uiResults: convertSearcherResultsToUIResults(results),
+    cycle_at_moments,
+  };
+};
+
+export const Wild3MethodDistribution = ({ fixedData }: Props) => {
   const [results, setResults] = React.useState<UiResult[]>([]);
   const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>(
     [],
   );
 
+  const updateResults = React.useCallback(
+    (values: FormState) => {
+      console.log("updateRes", JSON.stringify(values));
+      calculate(values).then(({ uiResults, cycle_at_moments }) => {
+        setResults(uiResults);
+        setCycleAtMoments(cycle_at_moments);
+      });
+    },
+    [setResults, setCycleAtMoments],
+  );
+
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (values) => {
-      const initial_seed = values.usingPaintingReseeding
-        ? values.initial_seed
-        : 0;
-
-      const opts: Wild3GeneratorOptions = {
-        tid: values.tid,
-        sid: values.sid,
-        map_idx: 0,
-        action: values.action,
-        methods: ["Wild1", "Wild2", "Wild3", "Wild4", "Wild5"] as Gen3Method[],
-        lead: gen3Leads[values.leadIdx],
-        filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
-        gen3_filter: gen3PkmFilterFieldsToRustInput(
-          getGen3PkmFilterInitialValues(),
-          null,
-        ),
-        consider_cycles: true,
-        consider_rng_manipulated_lead_pid: true,
-        generate_even_if_impossible: true,
-        roamer_state: values.roamerState,
-        mass_outbreak_state: values.massOutbreakState,
-        feebas_state: values.feebasState,
-      };
-
-      const map_data = emeraldWildGameData.maps_data.find(
-        (table) => table.map_id === values.map,
-      );
-      if (map_data == null) {
-        return setResults([]);
-      }
-
-      const { results, cycle_at_moments } =
-        await rngTools.generate_gen3_wild_distribution(
-          initial_seed,
-          values.advance,
-          opts,
-          map_data,
-          values.leadCycleSpeed,
-        );
-      const uiResults = convertSearcherResultsToUIResults(results);
-
-      setResults(uiResults);
-      setCycleAtMoments(cycle_at_moments);
+      updateResults(values);
     },
-    [],
+    [updateResults],
   );
 
   const initialValues = React.useMemo(() => {
-    console.log(1);
-    return getInitialValues({ leadCycleSpeed, fixedData });
-  }, [leadCycleSpeed, fixedData]);
+    return getInitialValues({ fixedData });
+  }, [fixedData]);
+
+  React.useEffect(() => {
+    updateResults(initialValues);
+  }, [updateResults, initialValues]);
 
   return (
     <>
       <RngToolForm<FormState, UiResult>
-        getColumns={(t) => getColumns(t, fixedData != null)}
+        getColumns={(t) => getColumns(t, fixedData)}
         results={results}
-        //validationSchema={Validator}
+        validationSchema={Validator}
         initialValues={initialValues}
+        values={initialValues}
         onSubmit={onSubmit}
         submitTrackerId="wild3_method_distribution"
         rowKey="uid"
       >
-        <Wild3MethodDistributionFields />
+        <Wild3MethodDistributionFields onSubmit={updateResults} />
       </RngToolForm>
 
       <Wild3CycleAtMoments cycleAtMoments={cycleAtMoments} />

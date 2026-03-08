@@ -1,0 +1,46 @@
+const n=`---
+title: "移除《欧米伽红宝石／阿尔法蓝宝石》的时间惩罚"
+description: "学习如何在《欧米伽红宝石／阿尔法蓝宝石》中更改时间而不触发时间惩罚。"
+slug: "zh-oras-remove-time-penalty"
+translation:
+  enSlug: "oras-remove-time-penalty"
+  language: "zh"
+---
+
+当发生以下任意情况时，游戏会锁定所有与时间相关的事件 24 小时：
+
+- 存档在不同主机之间移动。
+- 卡带在一台主机上存档后，又在另一台主机上游玩。
+- 将实体主机上的存档复制到模拟器。
+- 调整实体主机的系统时间（模拟器不受影响）。
+
+在模拟器上调整时间是安全的，因为模拟器会被视为现实时间流逝，而不是修改主机设置。
+
+## 模拟器（Citra、Lime3DS、Azahar）
+
+1. 将模拟器的日期设置为早于你目标日期的时间。
+2. 启动游戏并存档。
+
+完成以上步骤后，你就可以将日期自由设置为任意未来日期，而不会触发时间惩罚。
+
+## 实机
+
+1. 将宝可梦游戏更新至最新版本。
+2. 将主机日期设置为早于你目标日期的时间。
+3. 启动游戏，存档，然后关闭游戏。
+4. 按照 [IPS 补丁指南](/zh-misc-3ds-ips-luma-citra) 启用 IPS 补丁功能。
+5. 如果尚不存在，请创建 Luma 补丁文件夹：
+   - 欧米伽红宝石：\`/luma/titles/000400000011C400/\`
+   - 阿尔法蓝宝石：\`/luma/titles/000400000011C500/\`
+6. 下载与你游戏版本对应的 \`code.ips\`，并复制到补丁文件夹中：
+   - [欧米伽红宝石 code.ips](/downloads/or-remove-time-penalty/code.ips)
+   - [阿尔法蓝宝石 code.ips](/downloads/as-remove-time-penalty/code.ips)
+
+如果之后遇到任何问题，请移除该补丁，并重新按以上步骤操作。
+
+## Credits
+
+- Zaksabeast for looking into this and making the time penality removal patch.
+- Rebel on Discord for helping test.
+- 中文翻译：炫夜鳞、白希洛/Hakuhiro
+`;export{n as default};

@@ -391,7 +391,8 @@ const resultSetupInfoToDistributionProps = (
       roamerState: setup.roamer_state,
       feebasState: setup.feebas_state,
       massOutbreakState: setup.mass_outbreak_state,
-      initial_seed: setup.painting_advs?.adv_before_painting ?? 0,
+      initial_seed: setup.initial_seed,
+      painting_advs: setup.painting_advs ?? null,
       wantedMethod: setup.method,
       wantedPID: setup.pid,
       idealLeadCycleSpeed: leadCycleSpeed,
@@ -423,10 +424,6 @@ export const Wild3ResultSetupInfos = ({
       showMassOutbreak,
       usesPainting,
       onBreakdownClick: (record) => {
-        console.log(
-          "resultSetupInfoToDistributionProps",
-          resultSetupInfoToDistributionProps(record, rngManipulatedLeadPid),
-        );
         setDistributionProps(
           resultSetupInfoToDistributionProps(record, rngManipulatedLeadPid),
         );

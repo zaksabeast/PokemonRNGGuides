@@ -56,7 +56,7 @@ import {
   leadsLabels,
   gen3Leads,
 } from "./utils";
-import { useForm, useFormState, useWatch } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
 import { uniq } from "lodash-es";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
@@ -98,6 +98,10 @@ export type Props = {
     feebasState: Wild3FeebasState;
     massOutbreakState: Wild3MassOutbreakState;
     initial_seed: number;
+    painting_advs: {
+      adv_before_painting: number;
+      adv_after_painting: number;
+    } | null;
     wantedMethod: Gen3Method;
     wantedPID: number;
     idealLeadCycleSpeed: number;
@@ -437,9 +441,9 @@ const getFields = (
 };
 
 export const Wild3MethodDistributionFields = ({
-  onSubmit,
+  clearResults,
 }: {
-  onSubmit: (values: FormState) => void;
+  clearResults: () => void;
 }) => {
   const { setFieldValue } = useFormContext<FormState>();
   const map = useWatch<FormState, "map">({ name: "map" });
@@ -449,22 +453,6 @@ export const Wild3MethodDistributionFields = ({
   const leadSpeedType = useWatch<FormState, "leadSpeedType">({
     name: "leadSpeedType",
   });
-
-  const { handleSubmit } = useForm<FormState>();
-
-  React.useEffect(() => {
-    console.log(leadSpeedType);
-    const a = handleSubmit(
-      async (values) => {
-        console.log("valid", values);
-        onSubmit(values);
-      },
-      async (...args) => {
-        console.log("invalid", args);
-      },
-    );
-    a();
-  }, [leadSpeedType, handleSubmit, onSubmit]);
 
   const leadCycleSpeed = useWatch<FormState, "leadCycleSpeed">({
     name: "leadCycleSpeed",
@@ -570,6 +558,10 @@ export const Wild3MethodDistributionFields = ({
     idealLeadCycleSpeed,
   ]);
 
+  React.useEffect(() => {
+    clearResults();
+  }, [leadSpeedType, clearResults]);
+
   return <FormFieldTable fields={fields} />;
 };
 
@@ -585,7 +577,6 @@ const getColumns = (
             key: "isWanted",
             dataIndex: "pre_sweet_scent_cycle_ranges",
             render: (_, values) => {
-              console.log(values.pid, fixedData.wantedPID, fixedData);
               if (
                 values.pid !== fixedData.wantedPID ||
                 values.method !== fixedData.wantedMethod
@@ -768,7 +759,6 @@ export const Wild3MethodDistribution = ({ fixedData }: Props) => {
 
   const updateResults = React.useCallback(
     (values: FormState) => {
-      console.log("updateRes", JSON.stringify(values));
       calculate(values).then(({ uiResults, cycle_at_moments }) => {
         setResults(uiResults);
         setCycleAtMoments(cycle_at_moments);
@@ -792,6 +782,24 @@ export const Wild3MethodDistribution = ({ fixedData }: Props) => {
     updateResults(initialValues);
   }, [updateResults, initialValues]);
 
+  const clearResults = React.useCallback(() => {
+    setResults([]);
+    setCycleAtMoments([]);
+  }, [setResults, setCycleAtMoments]);
+
+  const submitButtonLabel = React.useMemo(() => {
+    if (fixedData == null) {
+      return undefined;
+    }
+
+    const advs =
+      fixedData.painting_advs != null &&
+      fixedData.painting_advs.adv_before_painting !== 0
+        ? `${formatLargeInteger(fixedData.painting_advs.adv_before_painting)} | ${formatLargeInteger(fixedData.painting_advs.adv_after_painting)}`
+        : formatLargeInteger(fixedData.advance);
+    return `Generate all possible Pokémon encounters at advances ${advs}`;
+  }, [fixedData]);
+
   return (
     <>
       <RngToolForm<FormState, UiResult>
@@ -803,8 +811,9 @@ export const Wild3MethodDistribution = ({ fixedData }: Props) => {
         onSubmit={onSubmit}
         submitTrackerId="wild3_method_distribution"
         rowKey="uid"
+        submitButtonLabel={submitButtonLabel}
       >
-        <Wild3MethodDistributionFields onSubmit={updateResults} />
+        <Wild3MethodDistributionFields clearResults={clearResults} />
       </RngToolForm>
 
       <Wild3CycleAtMoments cycleAtMoments={cycleAtMoments} />

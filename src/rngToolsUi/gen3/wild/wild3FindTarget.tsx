@@ -100,6 +100,7 @@ export type ResultSetupInfo = Wild3SearcherResultMon & {
   mapName: string;
   actionName: string;
   primaryLikelihood: number;
+  initial_seed: number;
   painting_advs?: {
     adv_before_painting: number;
     adv_after_painting: number;

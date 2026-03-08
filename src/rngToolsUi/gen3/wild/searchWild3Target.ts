@@ -33,6 +33,7 @@ const convertResultsForPidPathToPidPathResult = async (
   results: Wild3SearcherResultMon[],
   mapSetups: Wild3MapSetups[],
   rngManipulatedLeadPid: boolean,
+  initial_seed: number,
   paintingAdvsCache: PaintingAdvsCache,
 ): Promise<PidPathResult | null> => {
   // Limitation: The UI components only support that all results for the same PidPath
@@ -76,6 +77,7 @@ const convertResultsForPidPathToPidPathResult = async (
         mapName,
         actionName: formatActionName(res.action),
         primaryLikelihood,
+        initial_seed,
         painting_advs: paintingAdvsCache.get(res.advance),
       };
     }),
@@ -240,6 +242,7 @@ export const searchWild3Target = async (values: FormState) => {
         results.vec,
         map_setups,
         values.rngManipulatedLeadPid,
+        initial_seed,
         paintingAdvsCache,
       ),
     ),

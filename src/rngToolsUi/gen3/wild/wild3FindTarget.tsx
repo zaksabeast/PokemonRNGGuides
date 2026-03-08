@@ -154,17 +154,14 @@ const getPidPathColumns = (
         return formatProbability(resultSetupInfos[0]?.primaryLikelihood ?? 0);
       },
     },
-    ...(letSearcherFindPaintingSeed
-      ? [
-          {
-            title: "Painting?",
-            dataIndex: "paintingAdvs",
-            render: (paintingAdvs) => {
-              return paintingAdvs != null ? "Yes" : "No";
-            },
-          } as ResultColumn<PidPathResult>,
-        ]
-      : []),
+    {
+      title: "Painting?",
+      dataIndex: "paintingAdvs",
+      render: (paintingAdvs) => {
+        return paintingAdvs != null ? "Yes" : "No";
+      },
+      show: letSearcherFindPaintingSeed,
+    },
     {
       title: "Advances",
       dataIndex: "earliestAdvance",

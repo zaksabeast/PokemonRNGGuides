@@ -15,15 +15,34 @@ const getTimerSettings = (
   ...settings,
 });
 
+export type Gen4CalibrateSettings = {
+  hit_delay: number;
+  second_offset?: number;
+};
+
 const calibrateTimer = async ({
   timer,
-  hit_delay,
+  calibration,
 }: {
   timer: Gen4TimerSettings;
-  hit_delay: number;
+  calibration: Gen4CalibrateSettings;
 }): Promise<Gen4TimerSettings> => {
   const current = getTimerSettings(timer);
-  const updated = await rngTools.calibrate_gen4_timer(current, hit_delay);
+
+  if (
+    calibration.hit_delay === current.target_delay &&
+    calibration.second_offset != null
+  ) {
+    return {
+      ...current,
+      target_second: current.target_second - calibration.second_offset,
+    };
+  }
+
+  const updated = await rngTools.calibrate_gen4_timer(
+    current,
+    calibration.hit_delay,
+  );
   return {
     console: updated.console,
     min_time_ms: capPrecision(updated.min_time_ms),
@@ -74,7 +93,7 @@ export const useGen4Timer = (timerAtom: Gen4TimerAtom) => {
       if (settings.hit_delay != null) {
         fullSettings = await calibrateTimer({
           timer: fullSettings,
-          hit_delay: settings.hit_delay,
+          calibration: { hit_delay: settings.hit_delay },
         });
       }
       const updatedMs = await rngTools.create_gen4_timer(fullSettings);
@@ -91,10 +110,10 @@ export const useGen4Timer = (timerAtom: Gen4TimerAtom) => {
   );
 
   const calibrate = React.useCallback(
-    async (hit_delay: number) => {
+    async (calibration: Gen4CalibrateSettings) => {
       const updated = await calibrateTimer({
         timer,
-        hit_delay,
+        calibration,
       });
       const updatedMs = await rngTools.create_gen4_timer(updated);
       const updatedState = {

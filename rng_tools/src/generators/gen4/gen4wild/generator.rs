@@ -3,7 +3,7 @@ use crate::GenderRatio;
 use crate::Ivs;
 use crate::Species;
 use crate::gen4::GameVersion;
-use crate::gen4::LeadAbilities;
+use crate::gen4::LeadAbility;
 use crate::rng::Rng;
 use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
@@ -19,7 +19,7 @@ pub struct Gen4SearcherOpts {
     pub filter: PkmFilter,
     pub game: GameVersion,
     pub encounter: Option<Vec<EncounterSlot>>,
-    pub lead: LeadAbilities,
+    pub lead: LeadAbility,
 }
 
 #[derive(Debug, PartialEq)]
@@ -100,17 +100,17 @@ fn gen4_method_j(
 
     let lead = opts.lead;
     {
-        if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
+        if lead == LeadAbility::CutecharmF || lead == LeadAbility::CutecharmM {
             let gender_threshold = slot.unwrap().species.gender_ratio();
             let buffer = match opts.lead {
-                LeadAbilities::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
-                LeadAbilities::CutecharmM => 0,
-                LeadAbilities::Synchronize(_) => 0,
-                LeadAbilities::None => 0,
+                LeadAbility::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
+                LeadAbility::CutecharmM => 0,
+                LeadAbility::Synchronize(_) => 0,
+                LeadAbility::None => 0,
             };
             let target_gender = match opts.lead {
-                LeadAbilities::CutecharmF => Gender::Male,
-                LeadAbilities::CutecharmM => Gender::Female,
+                LeadAbility::CutecharmF => Gender::Male,
+                LeadAbility::CutecharmM => Gender::Female,
                 _ => Gender::Genderless,
             };
 
@@ -138,7 +138,7 @@ fn gen4_method_j(
             }
         }
     }
-    if let LeadAbilities::Synchronize(nature) = opts.lead {
+    if let LeadAbility::Synchronize(nature) = opts.lead {
         if rng.rand::<u16>() >> 15 == 0 {
             let mut pid: u32;
             let nature_value = nature as u32;
@@ -206,17 +206,17 @@ fn gen4_method_k(
 
     let lead = opts.lead;
     {
-        if lead == LeadAbilities::CutecharmF || lead == LeadAbilities::CutecharmM {
+        if lead == LeadAbility::CutecharmF || lead == LeadAbility::CutecharmM {
             let gender_threshold = slot.unwrap().species.gender_ratio();
             let buffer = match opts.lead {
-                LeadAbilities::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
-                LeadAbilities::CutecharmM => 0,
-                LeadAbilities::Synchronize(_) => 0,
-                LeadAbilities::None => 0,
+                LeadAbility::CutecharmF => 25 * ((gender_threshold as u32 / 25) + 1),
+                LeadAbility::CutecharmM => 0,
+                LeadAbility::Synchronize(_) => 0,
+                LeadAbility::None => 0,
             };
             let target_gender = match opts.lead {
-                LeadAbilities::CutecharmF => Gender::Male,
-                LeadAbilities::CutecharmM => Gender::Female,
+                LeadAbility::CutecharmF => Gender::Male,
+                LeadAbility::CutecharmM => Gender::Female,
                 _ => Gender::Genderless,
             };
             if rng.rand::<u16>() % 3 != 0 {
@@ -243,7 +243,7 @@ fn gen4_method_k(
             }
         }
     }
-    if let LeadAbilities::Synchronize(nature) = opts.lead {
+    if let LeadAbility::Synchronize(nature) = opts.lead {
         if rng.rand::<u16>() % 2 == 0 {
             let mut pid: u32;
             let nature_value = nature as u32;
@@ -434,7 +434,7 @@ mod test {
             filter: PkmFilter::new_allow_all(),
             game: GameVersion::Pearl,
             encounter: None,
-            lead: LeadAbilities::None,
+            lead: LeadAbility::None,
         };
         let expected_results = [
             GeneratedPokemon {
@@ -720,7 +720,7 @@ mod test {
             filter: PkmFilter::new_allow_all(),
             game: GameVersion::HeartGold,
             encounter: None,
-            lead: LeadAbilities::None,
+            lead: LeadAbility::None,
         };
         let expected_results = [
             GeneratedPokemon {
@@ -1007,7 +1007,7 @@ mod test {
             filter: PkmFilter::new_allow_all(),
             game: GameVersion::HeartGold,
             encounter: None,
-            lead: LeadAbilities::CutecharmM,
+            lead: LeadAbility::CutecharmM,
         };
         let expected_results = [
             GeneratedPokemon {
@@ -1294,7 +1294,7 @@ mod test {
             filter: PkmFilter::new_allow_all(),
             game: GameVersion::HeartGold,
             encounter: None,
-            lead: LeadAbilities::Synchronize(Nature::Adamant),
+            lead: LeadAbility::Synchronize(Nature::Adamant),
         };
         let expected_results = [
             GeneratedPokemon {
@@ -1580,7 +1580,7 @@ mod test {
             filter: PkmFilter::new_allow_all(),
             game: GameVersion::Pearl,
             encounter: None,
-            lead: LeadAbilities::Synchronize(Nature::Adamant),
+            lead: LeadAbility::Synchronize(Nature::Adamant),
         };
         let expected_results = [
             GeneratedPokemon {
@@ -1865,7 +1865,7 @@ mod test {
             filter: PkmFilter::new_allow_all(),
             game: GameVersion::Pearl,
             encounter: None,
-            lead: LeadAbilities::CutecharmM,
+            lead: LeadAbility::CutecharmM,
         };
         let expected_results = [
             GeneratedPokemon {

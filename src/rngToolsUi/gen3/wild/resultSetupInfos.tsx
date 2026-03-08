@@ -136,15 +136,12 @@ const getResultSetupInfoColumns = ({
           .exhaustive();
       },
     },*/
-    ...(showMassOutbreak
-      ? ([
-          {
-            title: "Mass outbreak",
-            dataIndex: "mass_outbreak_state",
-            render: formatMassOutbreakStateName,
-          },
-        ] as const)
-      : []),
+    {
+      title: "Mass outbreak",
+      dataIndex: "mass_outbreak_state",
+      render: formatMassOutbreakStateName,
+      show: showMassOutbreak,
+    },
   );
 
   const breakdownClickCol = (btnName: string) =>

@@ -45,6 +45,38 @@ impl Nature {
         let idx: u8 = (*self).into();
         &NATURE_STAT_FACTORS[idx as usize]
     }
+
+    #[cfg(test)]
+    pub fn from_str(str: &str) -> Self {
+        match str {
+            "Hardy" => Nature::Hardy,
+            "Lonely" => Nature::Lonely,
+            "Brave" => Nature::Brave,
+            "Adamant" => Nature::Adamant,
+            "Naughty" => Nature::Naughty,
+            "Bold" => Nature::Bold,
+            "Docile" => Nature::Docile,
+            "Relaxed" => Nature::Relaxed,
+            "Impish" => Nature::Impish,
+            "Lax" => Nature::Lax,
+            "Timid" => Nature::Timid,
+            "Hasty" => Nature::Hasty,
+            "Serious" => Nature::Serious,
+            "Jolly" => Nature::Jolly,
+            "Naive" => Nature::Naive,
+            "Modest" => Nature::Modest,
+            "Mild" => Nature::Mild,
+            "Quiet" => Nature::Quiet,
+            "Bashful" => Nature::Bashful,
+            "Rash" => Nature::Rash,
+            "Calm" => Nature::Calm,
+            "Gentle" => Nature::Gentle,
+            "Sassy" => Nature::Sassy,
+            "Careful" => Nature::Careful,
+            "Quirky" => Nature::Quirky,
+            _ => Nature::Hardy,
+        }
+    }
 }
 
 impl Default for Nature {

@@ -9,8 +9,8 @@ import {
 } from "~/components";
 import {
   multiWorkerRngTools,
-  SearchStatic4Method1Opts,
-  SearchStatic4Method1State,
+  Static4State,
+  SearchStatic4Opts,
 } from "~/rngTools";
 import { z } from "zod";
 import {
@@ -43,7 +43,8 @@ import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
 
 type Result = FlattenIvs<
-  SearchStatic4Method1State & {
+  Static4State["state"] & {
+    seed_time: Static4State["seed_time"];
     key: string;
     second: number;
     seed: number;
@@ -188,7 +189,7 @@ const getFields = (game: Gen4GameVersion, t: Translations): Field[] => {
     },
     {
       // Only Platinum has a variable advance
-      hide: game !== "Platinum",
+      show: game === "Platinum",
       label: t["Target Advance"],
       input: (
         <FormikNumberInput<FormState>
@@ -216,13 +217,15 @@ const getFields = (game: Gen4GameVersion, t: Translations): Field[] => {
   ];
 };
 
-const mapResult = (res: SearchStatic4Method1State): Result => {
+const mapResult = (res: Static4State): Result => {
+  const { state, seed_time } = res;
   return {
-    ...flattenIvs(res),
-    key: `${res.seed_time.seed}-${res.pid}`,
-    second: res.seed_time.datetime.second,
-    seed: res.seed_time.seed,
-    delay: res.seed_time.delay,
+    ...flattenIvs(state),
+    seed_time,
+    key: `${seed_time.seed}-${state.pid}`,
+    second: seed_time.datetime.second,
+    seed: seed_time.seed,
+    delay: seed_time.delay,
   };
 };
 
@@ -233,7 +236,7 @@ export const PickStarter4 = () => {
     run: searchStarterSeeds,
     data: results,
     cancel,
-  } = useBatchedTool(multiWorkerRngTools.search_static4_method1_seeds, {
+  } = useBatchedTool(multiWorkerRngTools.search_static4, {
     map: mapResult,
   });
 
@@ -248,12 +251,14 @@ export const PickStarter4 = () => {
         species: opts.species,
         platinum_target_advance: opts.platinum_target_advance,
       });
-      const baseOpts: UndefinedToNull<SearchStatic4Method1Opts> = {
+      const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
         ...opts,
         min_advance: advance,
         max_advance: advance,
         force_second: opts.force_second,
         filter: pkmFilterFieldsToRustInput(opts),
+        lead: "None",
+        game,
       };
       const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
       const searchOpts = chunkedIvs.map(([minIvs, maxIvs]) => ({

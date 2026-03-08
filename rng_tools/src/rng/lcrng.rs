@@ -2,6 +2,7 @@ use super::rng_trait::{GetMaxRand, GetRand, Rng};
 use std::iter::{DoubleEndedIterator, Iterator, Rev, Skip};
 
 pub type Pokerng = Lcrng<0x6073, 0x41c64e6d, 0xa3561a1, 0xeeb9eb65>;
+pub type PokerngR = Lcrng<0xa3561a1, 0xeeb9eb65, 0x6073, 0x41c64e6d>;
 pub type Xdrng = Lcrng<0x269EC3, 0x343FD, 0xA170F641, 0xB9B33155>;
 
 pub const POKERNG_JUMP_TABLE: [(u32, u32); 32] = [
@@ -45,10 +46,6 @@ pub struct Lcrng<const ADD: u32, const MUL: u32, const P_ADD: u32, const P_MUL: 
 }
 
 impl Pokerng {
-    pub fn seed(&self) -> u32 {
-        self.state
-    }
-
     pub fn jump(&mut self, mut advances: usize) {
         for (mult, add) in POKERNG_JUMP_TABLE {
             if (advances & 1) != 0 {
@@ -72,12 +69,27 @@ impl Pokerng {
         self.prev_state();
         ret
     }
+
+    pub fn reverse(self) -> PokerngR {
+        PokerngR::new(self.state)
+    }
+}
+
+impl PokerngR {
+    pub fn reverse(self) -> Pokerng {
+        Pokerng::new(self.state)
+    }
 }
 
 impl<const A: u32, const M: u32, const PA: u32, const PM: u32> Lcrng<A, M, PA, PM> {
     pub fn new(seed: u32) -> Self {
         Self { state: seed }
     }
+
+    pub fn seed(&self) -> u32 {
+        self.state
+    }
+
     pub fn with_advances(seed: u32, advance: usize) -> Self {
         let mut rng = Self::new(seed);
         rng.advance(advance);

@@ -68,6 +68,43 @@ impl Characteristic {
 
         (((char_index as u8) * 5) + (max_iv % 5)).into()
     }
+
+    #[cfg(test)]
+    pub fn from_pokefinder_str(str: &str) -> Self {
+        match str {
+            "A little quick tempered" => Characteristic::ALittleQuickTempered,
+            "Alert to sounds" => Characteristic::AlertToSounds,
+            "Capable of taking hits" => Characteristic::CapableOfTakingHits,
+            "Good endurance" => Characteristic::GoodEndurance,
+            "Good perseverance" => Characteristic::GoodPerseverance,
+            "Hates to lose" => Characteristic::HatesToLose,
+            "Highly curious" => Characteristic::HighlyCurious,
+            "Highly persistent" => Characteristic::HighlyPersistent,
+            "Impetuous and silly" => Characteristic::ImpetuousAndSilly,
+            "Likes to fight" => Characteristic::LikesToFight,
+            "Likes to relax" => Characteristic::LikesToRelax,
+            "Likes to run" => Characteristic::LikesToRun,
+            "Likes to thrash about" => Characteristic::LikesToThrashAbout,
+            "Loves to eat" => Characteristic::LovesToEat,
+            "Mischievous" => Characteristic::Mischievous,
+            "Nods off a lot" => Characteristic::NodsOffALot,
+            "Often lost in thought" => Characteristic::OftenLostInThought,
+            "Proud of its power" => Characteristic::ProudOfItsPower,
+            "Quick tempered" => Characteristic::QuickTempered,
+            "Quick to flee" => Characteristic::QuickToFlee,
+            "Scatters things often" => Characteristic::ScattersThingsOften,
+            "Somewhat of a clown" => Characteristic::SomewhatOfAClown,
+            "Somewhat stubborn" => Characteristic::SomewhatStubborn,
+            "Somewhat vain" => Characteristic::SomewhatVain,
+            "Strong willed" => Characteristic::StrongWilled,
+            "Strongly defiant" => Characteristic::StronglyDefiant,
+            "Sturdy body" => Characteristic::SturdyBody,
+            "Takes plenty of siestas" => Characteristic::TakesPlentyOfSiestas,
+            "Thoroughly cunning" => Characteristic::ThoroughlyCunning,
+            "Very finicky" => Characteristic::VeryFinicky,
+            _ => panic!("Unknown characteristic string: {}", str),
+        }
+    }
 }
 
 #[cfg(test)]

@@ -2059,7 +2059,10 @@ export const guides = {
       lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 5/Wild RNG Emu.mdx",
-      translations: null,
+      translations: {
+        en: "/emulator-b2w2-wild/",
+        it: "/it-emulator-b2w2-wild/",
+      },
       guideGroupId: "en:/emulator-b2w2-wild/:Black 2 and White 2",
       guideVariantLinks: {
         retail: null,
@@ -2303,7 +2306,7 @@ export const guides = {
       lastUpdated: "2026-03-08",
       type: "baseGuide",
       file: "guides/Gen 5/Wild RNG Emu.mdx",
-      translations: null,
+      translations: { en: "/emulator-bw-wild/", it: "/it-emulator-bw-wild/" },
       guideGroupId: "en:/emulator-bw-wild/:Black and White",
       guideVariantLinks: {
         retail: null,
@@ -5279,6 +5282,85 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/it/Gen 3/Emerald/Emerald Overview.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-emulator-b2w2-wild/": {
+    meta: {
+      id: "/emulator-b2w2-wild/",
+      categories: ["Black 2 and White 2"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emulator-b2w2-wild/",
+      isNew: true,
+      title: "RNG Selvatico di Nero 2 e Bianco 2",
+      navDrawerTitle: "RNG Selvatico",
+      description:
+        "Impara come effettuare RNG Manipulation per Pokémon selvatici in Nero 2 e Bianco 2 per risultati shiny e IV alte.",
+      slug: "/it-emulator-b2w2-wild/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2026-03-08",
+      translation: { enSlug: "/emulator-b2w2-wild/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 5/Wild RNG Emu.mdx",
+      translations: {
+        en: "/emulator-b2w2-wild/",
+        it: "/it-emulator-b2w2-wild/",
+      },
+      guideGroupId: "it:/emulator-b2w2-wild/:Black 2 and White 2",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/it/Gen 5/Wild RNG Emu.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 5/Wild RNG Emu.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-emulator-bw-wild/": {
+    meta: {
+      id: "/emulator-bw-wild/",
+      categories: ["Black and White"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emulator-bw-wild/",
+      isNew: true,
+      title: "RNG Selvatico di Nero e Bianco",
+      navDrawerTitle: "RNG Selvatico",
+      description:
+        "Impara come effettuare RNG Manipulation per Pokémon selvatici in Nero e Bianco per risultati shiny e IV alte.",
+      slug: "/it-emulator-bw-wild/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2026-03-08",
+      translation: { enSlug: "/emulator-bw-wild/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-08",
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 5/Wild RNG Emu.mdx",
+      translations: { en: "/emulator-bw-wild/", it: "/it-emulator-bw-wild/" },
+      guideGroupId: "it:/emulator-bw-wild/:Black and White",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/it/Gen 5/Wild RNG Emu.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 5/Wild RNG Emu.mdx?raw"
       );
       return file.default;
     }),
@@ -11068,7 +11150,7 @@ export const guides = {
       translation: { enSlug: "/emulator-sm-time-finder/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx",
       translations: {
@@ -11109,7 +11191,7 @@ export const guides = {
       translation: { enSlug: "/emulator-usum-time-finder/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Time Finder.js (Citra).mdx",
       translations: {
@@ -12017,7 +12099,7 @@ export const guides = {
       translation: { enSlug: "/oras-remove-time-penalty/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 6/Remove Time Penalties.mdx",
       translations: {
@@ -12607,7 +12689,7 @@ export const guides = {
       translation: { enSlug: "/retail-sm-egg-seed-no-cfw/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
       translations: {
@@ -12650,7 +12732,7 @@ export const guides = {
       translation: { enSlug: "/retail-sm-fidget/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx",
       translations: { en: "/retail-sm-fidget/", zh: "/zh-retail-sm-fidget/" },
@@ -12738,7 +12820,7 @@ export const guides = {
       translation: { enSlug: "/retail-sm-island-scan/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Island Scan.mdx",
       translations: {
@@ -12779,7 +12861,7 @@ export const guides = {
       translation: { enSlug: "/retail-sm-myster-gift/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Mystery Gift.mdx",
       translations: {
@@ -12820,7 +12902,7 @@ export const guides = {
       translation: { enSlug: "/retail-sm-no-cfw/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx",
       translations: { en: "/retail-sm-no-cfw/", zh: "/zh-retail-sm-no-cfw/" },
@@ -12899,7 +12981,7 @@ export const guides = {
       translation: { enSlug: "/retail-sm-stationary/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Stationary RNG.mdx",
       translations: {
@@ -12939,7 +13021,7 @@ export const guides = {
       translation: { enSlug: "/retail-sm-timeleap/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx",
       translations: {
@@ -13020,7 +13102,7 @@ export const guides = {
       translation: { enSlug: "/retail-sm-wild/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Wild RNG.mdx",
       translations: { en: "/retail-sm-wild/", zh: "/zh-retail-sm-wild/" },
@@ -13145,7 +13227,7 @@ export const guides = {
       translation: { enSlug: "/retail-usum-egg-seed-no-cfw/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
       translations: {
@@ -13189,7 +13271,7 @@ export const guides = {
       translation: { enSlug: "/retail-usum-fidget/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Timeline With Fidget Guide.mdx",
       translations: {
@@ -13281,7 +13363,7 @@ export const guides = {
       translation: { enSlug: "/retail-usum-island-scan/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Island Scan.mdx",
       translations: {
@@ -13322,7 +13404,7 @@ export const guides = {
       translation: { enSlug: "/retail-usum-mystery-gift/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Mystery Gift.mdx",
       translations: {
@@ -13363,7 +13445,7 @@ export const guides = {
       translation: { enSlug: "/retail-usum-no-cfw/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/RNGing Without Custom Firmware.mdx",
       translations: {
@@ -13445,7 +13527,7 @@ export const guides = {
       translation: { enSlug: "/retail-usum-stationary/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Stationary RNG.mdx",
       translations: {
@@ -13486,7 +13568,7 @@ export const guides = {
       translation: { enSlug: "/retail-usum-timeleap/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Timeline Leap Guide.mdx",
       translations: {
@@ -13567,7 +13649,7 @@ export const guides = {
       translation: { enSlug: "/retail-usum-wild/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-08",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 7/Wild RNG.mdx",
       translations: { en: "/retail-usum-wild/", zh: "/zh-retail-usum-wild/" },
@@ -14207,6 +14289,8 @@ export const guideSlugs = [
   "/install-pokereader/",
   "/it-e-tips-rng/",
   "/it-emerald-overview/",
+  "/it-emulator-b2w2-wild/",
+  "/it-emulator-bw-wild/",
   "/it-emulator-emerald-egg/",
   "/it-frlg-gen3-sid/",
   "/it-gen3-glossary/",

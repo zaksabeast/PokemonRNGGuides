@@ -1,16 +1,13 @@
 import * as tst from "ts-toolbelt";
 import styled from "@emotion/styled";
-import {
-  Select as AntdSelect,
-  SelectProps as AntdSelectProps,
-  Tooltip,
-} from "antd";
+import { Select as AntdSelect, SelectProps as AntdSelectProps } from "antd";
 import { useField } from "~/hooks/form";
 import { GenericForm } from "~/types/form";
 import { Flex } from "./flex";
 import React from "react";
 import { Icon } from "./icons";
 import { Button } from "./button";
+import { Typography } from "./typography";
 import { Path, Paths } from "~/types";
 
 const SelectContainer = styled(Flex)({
@@ -103,7 +100,7 @@ export const FormikSelect = <
 }:
   | SingleFormikSelectProps<FormState, FieldKey>
   | MultiFormikSelectProps<FormState, FieldKey>) => {
-  const [{ value, onBlur }, { error }, { setValue }] =
+  const [{ value, onBlur }, { error, status }, { setValue }] =
     useField<Path<FormState, typeof name>>(name);
 
   const selectAllNoneDropdownRender = React.useCallback<
@@ -149,7 +146,7 @@ export const FormikSelect = <
     : undefined;
 
   return (
-    <Tooltip color="red" title={error} placement="top">
+    <>
       <Select
         {...props}
         name={String(name)}
@@ -159,7 +156,11 @@ export const FormikSelect = <
         // @ts-expect-error -- prop types guarantee this is correct
         value={value}
         dropdownRender={dropdownRender}
+        status={status}
       />
-    </Tooltip>
+      {error != null && (
+        <Typography.Text type="danger">{error}</Typography.Text>
+      )}
+    </>
   );
 };

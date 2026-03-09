@@ -4,7 +4,9 @@ import { capPrecision } from "~/utils/number";
 import { GenericForm } from "~/types/form";
 import { useField } from "~/hooks/form";
 import { match, P } from "ts-pattern";
-import { Tooltip } from "antd";
+import { Typography } from "./typography";
+import { Flex } from "./flex";
+import { InputProps as AntdInputProps } from "antd";
 import { Paths } from "~/types";
 import * as tst from "ts-toolbelt";
 
@@ -25,6 +27,7 @@ type NumberInputProps = {
   fullFlex?: boolean;
   name?: string;
   value?: number | null;
+  status?: AntdInputProps["status"];
   numType: "hex" | "decimal" | "float";
   onChange?: (value: number | null) => void;
   errorMessage?: string;
@@ -99,7 +102,7 @@ export const FormikNumberInput = <FormState extends GenericForm>({
   name,
   ...props
 }: FormikNumberInputProps<FormState>) => {
-  const [{ value, onBlur }, { error, touched }, { setValue }] = useField<
+  const [{ value, onBlur }, { error, status }, { setValue }] = useField<
     number | null
   >(name);
 
@@ -111,19 +114,18 @@ export const FormikNumberInput = <FormState extends GenericForm>({
   );
 
   return (
-    <Tooltip
-      title={touched && error != null ? error : undefined}
-      placement="top"
-      color="red"
-    >
+    <Flex vertical>
       <NumberInput
+        status={status}
         {...props}
         name={name}
-        errorMessage={error}
         onBlur={onBlur}
         onChange={onChange}
         value={value}
       />
-    </Tooltip>
+      {error != null && (
+        <Typography.Text type="danger">{error}</Typography.Text>
+      )}
+    </Flex>
   );
 };

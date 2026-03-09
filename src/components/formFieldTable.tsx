@@ -49,15 +49,7 @@ export const FormFieldTable = ({ fields }: Props) => {
       colon={false}
     >
       {fields.map(
-        ({
-          show,
-          key,
-          label,
-          tooltip,
-          input,
-          direction = "row",
-          indent = 0,
-        }) => {
+        ({ show, key, label, tooltip, input, direction = "row", indent }) => {
           if (show === false) {
             return null;
           }
@@ -68,12 +60,12 @@ export const FormFieldTable = ({ fields }: Props) => {
               <FormItem
                 key={keyToUse}
                 tooltip={tooltip}
+                indent={indent}
                 label={
                   <Typography.Text strong whiteSpace="break-spaces">
                     {label}
                   </Typography.Text>
                 }
-                style={{ paddingLeft: `${indent * 20}px` }}
               >
                 {input}
               </FormItem>
@@ -85,7 +77,7 @@ export const FormFieldTable = ({ fields }: Props) => {
               key={keyToUse}
               colon={false}
               tooltip={tooltip}
-              style={{ paddingLeft: `${indent * 20}px` }}
+              indent={indent}
             >
               <Flex vertical gap={4}>
                 <Typography.Text strong whiteSpace="break-spaces">

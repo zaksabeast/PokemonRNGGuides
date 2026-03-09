@@ -931,6 +931,52 @@ export const guides = {
       return file.default;
     }),
   },
+  "/de-e-tips-rng/": {
+    meta: {
+      id: "/e-tips-rng/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
+      guideKey: "/e-tips-rng/",
+      isNew: false,
+      title: "Smaragd RNG Info",
+      navDrawerTitle: "RNG Info",
+      description:
+        "Erfahre, wie man den RNG vorantreibt und die Stabilität in Pokémon Smaragd verbessert, um konstante Ergebnisse zu erzielen",
+      slug: "/de-e-tips-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/e-tips-rng/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-09",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Basic Rules of RNG.mdx",
+      translations: {
+        de: "/de-e-tips-rng/",
+        en: "/e-tips-rng/",
+        it: "/it-e-tips-rng/",
+        zh: "/zh-e-tips-rng/",
+      },
+      guideGroupId: "de:/e-tips-rng/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/de/Gen 3/Emerald/Basic Rules of RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Basic Rules of RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/de-retail-emerald-egg/": {
     meta: {
       id: "/retail-emerald-egg/",
@@ -1536,10 +1582,11 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-09",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Basic Rules of RNG.mdx",
       translations: {
+        de: "/de-e-tips-rng/",
         en: "/e-tips-rng/",
         it: "/it-e-tips-rng/",
         zh: "/zh-e-tips-rng/",
@@ -5224,6 +5271,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Basic Rules of RNG.mdx",
       translations: {
+        de: "/de-e-tips-rng/",
         en: "/e-tips-rng/",
         it: "/it-e-tips-rng/",
         zh: "/zh-e-tips-rng/",
@@ -9976,6 +10024,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Basic Rules of RNG.mdx",
       translations: {
+        de: "/de-e-tips-rng/",
         en: "/e-tips-rng/",
         it: "/it-e-tips-rng/",
         zh: "/zh-e-tips-rng/",
@@ -14184,6 +14233,7 @@ export const guideSlugs = [
   "/consistent-platinum-rng/",
   "/contributing/",
   "/crystal/",
+  "/de-e-tips-rng/",
   "/de-retail-emerald-egg/",
   "/delete-pokemon-save/",
   "/desmume-setup/",

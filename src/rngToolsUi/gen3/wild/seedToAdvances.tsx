@@ -16,6 +16,7 @@ import { formatDuration } from "~/utils/formatDuration";
 import { z } from "zod";
 import { useWatch } from "react-hook-form";
 import { Tooltip } from "antd";
+import { GBA_FPS } from "~/utils/consts";
 
 type Result = Wild3PaintingAdvs;
 
@@ -63,7 +64,7 @@ const getColumns = (): ResultColumn<Result>[] => {
       dataIndex: "adv_after_painting",
       render: (adv_after_painting, values) => {
         const durInAdvances = adv_after_painting + values.adv_before_painting;
-        return formatDuration(durInAdvances / 59.7275);
+        return formatDuration(durInAdvances / GBA_FPS);
       },
     },
   ];

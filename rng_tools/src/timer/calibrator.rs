@@ -1,18 +1,18 @@
 pub struct Calibrator {
-    framerate: f32,
+    ms_per_frame: f32,
 }
 
 impl Calibrator {
-    pub fn new(framerate: f32) -> Self {
-        Self { framerate }
+    pub fn new(ms_per_frame: f32) -> Self {
+        Self { ms_per_frame }
     }
 
     pub fn to_delays(&self, milliseconds: f32) -> f32 {
-        (milliseconds / self.framerate).floor()
+        (milliseconds / self.ms_per_frame).floor()
     }
 
     pub fn to_ms(&self, delays: f32) -> f32 {
-        delays * self.framerate
+        delays * self.ms_per_frame
     }
 
     pub fn create_calibration(&self, delays: f32, seconds: f32) -> f32 {

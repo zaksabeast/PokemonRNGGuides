@@ -22,12 +22,11 @@ import { useFormContext } from "~/hooks/form";
 import { match, P } from "ts-pattern";
 import { pickupIdToName, pickupItems } from "~/types/pickupItems";
 import { useWatch } from "react-hook-form";
+import { MS_PER_GBA_FRAME } from "~/utils/consts";
 
 const HAS_EMPTY_TV_NEWS_SLOT = true; // The tool assumes the player always has a empty TV News slot.
 const LEVEL_UP = false; // The tool assumes the player's Pokémon won't level-up after the battle.
 const POKERUS_TARGETS = [26923, 101199, 101236];
-const FPS = 59.7275;
-const MS_PER_FRAME = 1000 / FPS;
 
 type Column = Pokerus3GeneratorResult & {
   target_advance_before_pickup: number;
@@ -159,7 +158,7 @@ export const UpdateCalibrationBtn = ({
         const diffAdvWithTarget =
           colValues.advance_before_pickup -
           colValues.target_advance_before_pickup;
-        const diffMsWithTarget = (diffAdvWithTarget / 2) * MS_PER_FRAME; // divide by 2 because 2 advances per frame during battle
+        const diffMsWithTarget = (diffAdvWithTarget / 2) * MS_PER_GBA_FRAME; // divide by 2 because 2 advances per frame during battle
         setFieldValue(
           "calibration",
           calibration - Math.round(diffMsWithTarget),
@@ -199,8 +198,9 @@ export const Fields = () => {
       targetAdv / 2 + 506 - FRAME_START_TO_SWEET_SCENT;
     return [
       5000,
-      Math.round(MS_PER_FRAME * FRAME_START_TO_SWEET_SCENT),
-      Math.round(MS_PER_FRAME * FRAME_SWEET_SCENT_TO_BATTLE_END) + calibration,
+      Math.round(MS_PER_GBA_FRAME * FRAME_START_TO_SWEET_SCENT),
+      Math.round(MS_PER_GBA_FRAME * FRAME_SWEET_SCENT_TO_BATTLE_END) +
+        calibration,
     ];
   }, [targetAdv, calibration]);
 

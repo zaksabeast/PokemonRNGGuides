@@ -13,6 +13,7 @@ import { denormalizeIdFilter, IdFilterSchema } from "~/types/id";
 import { z } from "zod";
 import { useRsTidState } from "./rsTidState";
 import { useCurrentStep } from "~/components/stepper/state";
+import { GBA_FPS } from "~/utils/consts";
 
 type SelectButtonProps = {
   targetAdvance: number;
@@ -110,7 +111,7 @@ export const RsTidSidGenerator = () => {
 
     const updatedResults = results.map((res) => ({
       ...res,
-      time: formatTime(res.advance / 59.7275),
+      time: formatTime(res.advance / GBA_FPS),
       offset: 0,
     }));
 

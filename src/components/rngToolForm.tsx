@@ -26,6 +26,7 @@ export type RngToolSubmit<FormState extends GenericForm> = (
 type Props<FormState extends GenericForm, Result> = {
   submitTrackerId: string;
   initialValues: DefaultValues<FormState>;
+  values?: FormState;
   onSubmit: RngToolSubmit<FormState>;
   validationSchema?: z.ZodType<FormState>;
   submitButtonLabel?: string;
@@ -68,6 +69,7 @@ export const RngToolForm = <
 >({
   submitTrackerId,
   initialValues,
+  values,
   fields,
   validationSchema,
   getFields,
@@ -99,6 +101,7 @@ export const RngToolForm = <
         : standardSchemaResolver(validationSchema),
     resetOptions: { keepDirtyValues: false },
     defaultValues: initialValues,
+    values,
   });
 
   const translatedSubmitLabel =

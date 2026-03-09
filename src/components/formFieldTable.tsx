@@ -1,23 +1,32 @@
 import { Flex } from "./flex";
 import { Typography } from "./typography";
 import { Form as AntdForm } from "antd";
+import styled from "@emotion/styled";
+
+type IndentProps = {
+  indent?: number;
+};
+
+const FormItem = styled(AntdForm.Item)<IndentProps>(({ indent = 0 }) => ({
+  paddingLeft: `${indent * 20}px`,
+}));
 
 export type Field = {
   show?: boolean;
   tooltip?: string;
   input: React.ReactNode;
   direction?: "row" | "column";
-  indent?: number;
-} & (
-  | {
-      label: React.ReactNode;
-      key: string;
-    }
-  | {
-      label: string;
-      key?: undefined; // title will be used as the key
-    }
-);
+} & IndentProps &
+  (
+    | {
+        label: React.ReactNode;
+        key: string;
+      }
+    | {
+        label: string;
+        key?: undefined; // title will be used as the key
+      }
+  );
 
 type Props = {
   fields: Field[];
@@ -56,7 +65,7 @@ export const FormFieldTable = ({ fields }: Props) => {
           const keyToUse = key == null ? label : key;
           if (direction === "row") {
             return (
-              <AntdForm.Item
+              <FormItem
                 key={keyToUse}
                 tooltip={tooltip}
                 label={
@@ -67,12 +76,12 @@ export const FormFieldTable = ({ fields }: Props) => {
                 style={{ paddingLeft: `${indent * 20}px` }}
               >
                 {input}
-              </AntdForm.Item>
+              </FormItem>
             );
           }
 
           return (
-            <AntdForm.Item
+            <FormItem
               key={keyToUse}
               colon={false}
               tooltip={tooltip}
@@ -84,7 +93,7 @@ export const FormFieldTable = ({ fields }: Props) => {
                 </Typography.Text>
                 {input}
               </Flex>
-            </AntdForm.Item>
+            </FormItem>
           );
         },
       )}

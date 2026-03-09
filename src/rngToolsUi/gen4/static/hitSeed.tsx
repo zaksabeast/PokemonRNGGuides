@@ -42,7 +42,7 @@ const columns: ResultColumn<ResultRow>[] = [
     render: (_, target) => (
       <CalibrateTimerButton
         type="gen4"
-        hitDelay={target.delay}
+        calibration={{ hit_delay: target.delay }}
         timer={static4TimerAtom}
         trackerId="calibrate_gen4_static_hitseed"
         previousStepOnClick

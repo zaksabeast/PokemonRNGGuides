@@ -509,7 +509,7 @@ const applyUpdatedTimestamps = (
     const previousHash = previousEntry?.hash;
 
     // If file has changed, update lastUpdated to today
-    if (previousHash !== currentHash && previousHash != null) {
+    if (previousHash !== currentHash || previousHash == null) {
       const validated = DateSchema.parse(today);
       return {
         ...guide,

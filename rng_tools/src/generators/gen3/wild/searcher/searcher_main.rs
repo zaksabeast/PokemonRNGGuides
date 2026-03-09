@@ -152,6 +152,7 @@ pub struct Wild3SearcherResultMon {
     pub hidden_power: HiddenPower,
 
     // from generator options
+    /** advance is distance from initial_seed to seed. initial_seed is 0 if searcher finds painting seed */
     pub advance: usize,
     pub seed: u32,
     pub lead: Gen3Lead,

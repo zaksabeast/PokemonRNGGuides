@@ -2,25 +2,29 @@ import React from "react";
 import { Button } from "~/components";
 import { message } from "antd";
 import { Gen3TimerAtom, useGen3Timer } from "~/hooks/useGen3Timer";
-import { Gen4TimerAtom, useGen4Timer } from "~/hooks/useGen4Timer";
+import {
+  Gen4CalibrateSettings,
+  Gen4TimerAtom,
+  useGen4Timer,
+} from "~/hooks/useGen4Timer";
 import { match } from "ts-pattern";
 import { useCurrentStep } from "./stepper/state";
 
-type InnerCalibrateButtonProps = {
+type InnerCalibrateButtonProps<T> = {
   trackerId: string;
-  hitValue: number;
+  hitValue: T;
   previousStepOnClick?: boolean;
-  calibrate: (hitValue: number) => Promise<unknown>;
+  calibrate: (hitValue: T) => Promise<unknown>;
   onClick?: () => void;
 };
 
-const InnerCalibrateButton = ({
+const InnerCalibrateButton = <T,>({
   trackerId,
   hitValue,
   previousStepOnClick,
   calibrate,
   onClick: _onClick,
-}: InnerCalibrateButtonProps) => {
+}: InnerCalibrateButtonProps<T>) => {
   const [, setCurrentStep] = useCurrentStep();
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -81,7 +85,7 @@ const CalibrateGen3Button = ({
 
 type CalibrateGen4ButtonProps = {
   type: "gen4";
-  hitDelay: number;
+  calibration: Gen4CalibrateSettings;
   timer: Gen4TimerAtom;
   trackerId: string;
   previousStepOnClick?: boolean;
@@ -89,7 +93,7 @@ type CalibrateGen4ButtonProps = {
 };
 
 const CalibrateGen4Button = ({
-  hitDelay,
+  calibration,
   timer,
   trackerId,
   previousStepOnClick,
@@ -100,7 +104,7 @@ const CalibrateGen4Button = ({
   return (
     <InnerCalibrateButton
       trackerId={trackerId}
-      hitValue={hitDelay}
+      hitValue={calibration}
       calibrate={calibrate}
       previousStepOnClick={previousStepOnClick}
       onClick={onClick}

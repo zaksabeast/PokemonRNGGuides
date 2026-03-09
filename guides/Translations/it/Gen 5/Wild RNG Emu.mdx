@@ -1,0 +1,125 @@
+---
+- title: "RNG Selvatico di Nero 2 e Bianco 2"
+  navDrawerTitle: "RNG Selvatico"
+  description: "Impara come effettuare RNG Manipulation per Pokémon selvatici in Nero 2 e Bianco 2 per risultati shiny e IV alte."
+  slug: "it-emulator-b2w2-wild"
+  translation:
+    enSlug: "emulator-b2w2-wild"
+    language: "it"
+- title: "RNG Selvatico di Nero e Bianco"
+  navDrawerTitle: "RNG Selvatico"
+  description: "Impara come effettuare RNG Manipulation per Pokémon selvatici in Nero e Bianco per risultati shiny e IV alte."
+  slug: "it-emulator-bw-wild"
+  translation:
+    enSlug: "emulator-bw-wild"
+    language: "it"
+---
+
+## Tools
+
+- [PokeFinder](/pokefinder)
+- [Desmume](/desmume-setup)
+- [Un profilo di gioco configurato](/emulator-bw-find-ds-parameters)
+- Chatot con Schiamazzo
+- Un Pokémon con Profumino o o avere il miele in borsa
+
+## Step 1: Capire l'RNG della Gen 5
+
+Nella Gen 5, l'RNG è diviso in due sistemi separati.
+
+| Tipo RNG | Controlli                             |
+| -------- | ------------------------------------- |
+| PIDRNG   | Stato shiny, natura, genere, abilità. |
+| IVRNG    | Solo le IV del Pokémon.               |
+
+Devi controllarli entrambi per ottenere un Pokémon shiny con le IV desiderate.
+
+## Step 2: Scegliere e Preparare la tua posizione
+
+Vai nel percorso dove vuoi incontrare il Pokémon, con gli script già attivati.
+
+Questo ti permette di controllare quando la mappa è rumorosa, che è importante per l'RNG della Gen 5.
+
+Una volta che hai scelto la tua posizione e target:
+
+1. Salva il gioco.
+2. Chiudi l'emulatore.
+
+Per informazioni dettagliate sul comportamento degli NPC e un elenco di luoghi poco rumorosi, consultare [questa guida esterna sul comportamento degli NPC](https://docs.google.com/document/d/1Hxz24gvMLrt8Qk-_6tG50hEA0TI8fuCI6yqQwBckwR4/edit?usp=sharing).
+
+## Step 3: Cerca un Target Seed
+
+Apri PokeFinder e configura la ricerca.
+
+1. Vai nella scheda "Gen 5".
+2. Seleziona "Selvatici".
+3. Scegli il tuo profilo di gioco.
+4. Apri la scheda "Searcher".
+5. Seleziona un "Leader" se il primo Pokémon nella tua squadra ha una abilità lead.
+6. Imposta il valore di "Avanzamenti" al numero che intendi avanzare nel gioco.
+7. Scegli il tuo Pokémon target nella sezione Impostazioni.
+8. Configura valori desiderati in Filtri, come IV, genere, abilità, o natura.
+9. Aggiusta il range della data.
+10. Clicca "Cerca".
+
+## Step 4: Accendi il gioco nel Target Seed
+
+1. Usa `runasdate.exe` dalla [Guida Desmume](/desmume-setup) per accendere il gioco nella corretta data e orario.
+2. Entra nel gioco velocemente.
+3. Apri il menu immediatamente.
+
+```
+Assicurati di **non attivare il C-Gear quando entri nel gioco**, per evitare avanzamenti imprevedibili.
+```
+
+Il tuo initial seed dovrebbe combaciare con il tuo target.
+
+Se il seed è incorretto, ricontrolla i parametri del tuo profilo o la configurazione di runasdate.
+
+## Step 5: Avanzare il PIDRNG
+
+Usa questi metodi per incrementare gli avanzamenti LCRNG:
+
+- Chatot: Usa Schiamazzo per avanzare +1 ogni volta che controlli le sue info.
+- Salvare il gioco: Questo potrebbe essere utile per casi specifici come gli Starters.
+- Avanzamenti tramite NPC: Questo può essere complicato, ma può essere gestito in base alle condizioni meteorologiche per far incrementare rapidamente gli avanzamenti LCRNG.
+
+## Step 6: Avanzare l'IVRNG
+
+Usa questi metodi per incrementare gli avanzamenti IVRNG:
+
+- Camminare 128 passi aumenta l'IVRNG di un valore pari al numero di Pokémon nella tua squadra (esempio: con 6 Pokémon l'IVRNG avanza di 6).
+- Ritirare un Pokémon dal PC fa avanzare l'IVRNG di 7.
+- Anche lottare un Pokémon incrementa l'IVRNG, ma il resultato può essere imprevedibile.
+
+## Step 7: Innescare l'incontro
+
+Dopo aver raggiunto l'avanzamento PIDRNG e IVRNG corretto:
+
+1. Assicurati di essere sull'avanzamento target.
+2. Usa Profumino o il miele per iniziare l'incontro selvatico.
+
+```
+Usa i save states nelle aree rumorosi così da poter riprovare se hai mancato l'avanzamento target.
+```
+
+<Alert
+  type="warning"
+  showIcon
+  message="Se la posizione ha NPC che si muovono o condizioni meteorologiche, l'LCRNG continuerà ad avanzare durante l'animazione di Profumino/Miele."
+/>
+
+**Congratulazioni! Hai ora ottenuto il tuo Pokémon!**
+
+## Risoluzione dei problemi
+
+Questo significa che l'incontro non è avvenuto nell'avanzamento target, anche se i tuoi preparativi erano corretti.
+
+Non c'è una soluzione garantita. Devi aggiustare e calibrare finché non ottieni lo shiny corretto.
+
+Tuttavia, pescare non incrementa gli avanzamenti LCRNG, quindi puoi pescare senza nessun problema.
+
+## Crediti
+
+- Vlad per aver scritto la guida iniziale
+- Fiask per aver completato e tradotto la guida

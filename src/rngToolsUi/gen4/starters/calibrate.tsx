@@ -80,7 +80,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
     render: (_, target) => (
       <CalibrateTimerButton
         type="gen4"
-        hitDelay={target.delay}
+        calibration={{ hit_delay: target.delay }}
         timer={starterTimer}
         trackerId="calibrate_gen4_starter"
         previousStepOnClick

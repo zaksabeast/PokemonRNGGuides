@@ -1,5 +1,5 @@
 import { Wild3SearcherCycleData, Gen3Method } from "~/rngTools";
-import { ResultColumn, ResultTable, Icon, Link } from "~/components";
+import { ResultColumn, ResultTable, Icon, Link, Button } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
@@ -11,6 +11,10 @@ import { formatLeadName, formatMassOutbreakStateName } from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { PidPathResult, ResultSetupInfo } from "./wild3FindTarget";
+import {
+  Props as DistributionProps,
+  Wild3MethodDistribution,
+} from "./wild3MethodDistribution";
 
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
@@ -35,10 +39,12 @@ const getResultSetupInfoColumns = ({
   rngManipulatedLeadPid,
   showMassOutbreak,
   usesPainting,
+  onBreakdownClick,
 }: {
   rngManipulatedLeadPid: boolean;
   showMassOutbreak: boolean;
   usesPainting: boolean;
+  onBreakdownClick: (record: ResultSetupInfo) => void;
 }): ResultColumn<ResultSetupInfo>[] => {
   const columns: ResultColumn<ResultSetupInfo>[] = [];
   if (!usesPainting) {
@@ -138,6 +144,26 @@ const getResultSetupInfoColumns = ({
     },
   );
 
+  const breakdownClickCol = (btnName: string) =>
+    ({
+      key: "detailed_lead",
+      dataIndex: "cycle_data_by_lead",
+      render: (_cycle_data_by_lead: unknown, values: ResultSetupInfo) => {
+        return (
+          <Button
+            type="text"
+            color="PrimaryText"
+            trackerId="wild3_likelihood_breakdown"
+            onClick={() => {
+              onBreakdownClick(values);
+            }}
+          >
+            {btnName}
+          </Button>
+        );
+      },
+    }) as const;
+
   if (!rngManipulatedLeadPid) {
     columns.push({
       title: (
@@ -192,6 +218,17 @@ const getResultSetupInfoColumns = ({
         );
       },
     });
+
+    columns.push({
+      ...breakdownClickCol("Open Breakdown"),
+      title: (
+        <>
+          Method Likelihood
+          <br />
+          By Lead Speed
+        </>
+      ),
+    });
   }
 
   columns.push({
@@ -244,6 +281,10 @@ const getResultSetupInfoColumns = ({
         key: "methodLikelihoodByLeadSpeed",
         type: "group",
         columns: [
+          {
+            ...breakdownClickCol("Open"),
+            title: "Breakdown",
+          },
           {
             title: "Ideal",
             dataIndex: "cycle_data_by_lead",
@@ -329,6 +370,34 @@ const getResultSetupInfoColumns = ({
   return columns;
 };
 
+const resultSetupInfoToDistributionProps = (
+  setup: ResultSetupInfo,
+  rngManipulatedLeadPid: boolean,
+): DistributionProps => {
+  const idealLeadCycleSpeed =
+    setup.cycle_data_by_lead?.ideal_lead.lead_pid_cycle_count ?? 0;
+
+  return {
+    fixedData: {
+      map: setup.mapId,
+      action: setup.action,
+      advance: setup.advance,
+      tid: 0,
+      sid: 0,
+      lead: setup.lead,
+      roamerState: setup.roamer_state,
+      feebasState: setup.feebas_state,
+      massOutbreakState: setup.mass_outbreak_state,
+      initial_seed: setup.initial_seed,
+      painting_advs: setup.painting_advs ?? null,
+      wantedMethod: setup.method,
+      wantedPID: setup.pid,
+      idealLeadCycleSpeed,
+      usingIdealLeadCycleSpeed: rngManipulatedLeadPid,
+    },
+  };
+};
+
 export const Wild3ResultSetupInfos = ({
   selectedPidPathResult,
   rngManipulatedLeadPid,
@@ -351,14 +420,35 @@ export const Wild3ResultSetupInfos = ({
       rngManipulatedLeadPid,
       showMassOutbreak,
       usesPainting,
+      onBreakdownClick: (record) => {
+        setDistributionProps(
+          resultSetupInfoToDistributionProps(record, rngManipulatedLeadPid),
+        );
+      },
     });
   }, [rngManipulatedLeadPid, selectedPidPathResult]);
 
-  return selectedPidPathResult != null ? (
-    <ResultTable<ResultSetupInfo>
-      columns={resultSetupInfoColumns}
-      rowKey="uid"
-      dataSource={selectedPidPathResult.resultSetupInfos}
-    />
-  ) : null;
+  const [distributionProps, setDistributionProps] =
+    React.useState<DistributionProps | null>(null);
+
+  React.useEffect(() => {
+    setDistributionProps(null);
+  }, [selectedPidPathResult]);
+
+  if (selectedPidPathResult == null) {
+    return null;
+  }
+
+  return (
+    <>
+      <ResultTable<ResultSetupInfo>
+        columns={resultSetupInfoColumns}
+        rowKey="uid"
+        dataSource={selectedPidPathResult.resultSetupInfos}
+      />
+      {distributionProps != null && (
+        <Wild3MethodDistribution {...distributionProps} />
+      )}
+    </>
+  );
 };

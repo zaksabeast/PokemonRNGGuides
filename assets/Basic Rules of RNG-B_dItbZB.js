@@ -1,0 +1,39 @@
+const e=`---
+- title: "Smaragd RNG Info"
+  navDrawerTitle: "RNG Info"
+  description: "Erfahre, wie man den RNG vorantreibt und die Stabilität in Pokémon Smaragd verbessert, um konstante Ergebnisse zu erzielen"
+  slug: "de-e-tips-rng"
+  translation:
+    enSlug: "e-tips-rng"
+    language: "de"
+---
+
+## RNG Methoden
+
+- Für stationäre Pokemon: Method 1.
+- Für wilde Begegnungen: Method H-2.
+
+Die verschiedenen Methoden für wilde Begegnungen werden durch [vblank](/gba-vblank) verursacht, wobei H-2 am häufigsten vorkommt.
+
+### Gemälde-RNG
+
+Das Gemälde-RNG ist eine großartige Methode, um jeden gewünschten initial Seed zu erhalten. Es handelt sich um eine fortgeschrittenere Technik, die in [diesem Leitfaden](/emerald-painting-rng) behandelt wird.
+
+## Die RNG Advances beschleunigen
+
+### Kampfaufzeichnung
+
+Diese Methode hilft beim Seeding, indem der Zustand des RNG als initial Seed beibehalten wird. Nimm an einem Kampf in der Kampfzone teil und speichere ihn als Video. Das Video behält den Seed aus dem Kampf bei, sodass du ihn beim Laden als initial Seed festlegen kannst. Wenn dein Ziel beispielsweise 1 Million Advances entfernt ist, gehe auf 950.000, speichere ein Kampfvideo und beim Laden startest du bei 950.000 advances.
+
+Diese Methode ist zwar hilfreich, aber im Vergleich zum Gemälde-RNG etwas veraltet. Sie ist jedoch nützlich, wenn man einen bestimmten Advance mehrmals erzielen muss.
+
+### Im Kampf
+
+Im Kampf schreitet das RNG doppelt so schnell voran. Dies ist besonders nützlich für das RNG von wilden Pokemon
+
+## Credits
+
+- Chinesische Übersetzung: xuanyelin, Hakuhiro.
+- Italienische Übersetzung: Fiask.
+- Deutsche Übersetzung: Parasite.
+`;export{e as default};

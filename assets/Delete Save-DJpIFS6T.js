@@ -1,0 +1,56 @@
+const n=`---
+title: "如何删除宝可梦存档文件"
+description: "如何删除宝可梦存档文件以重新开始游戏"
+slug: "zh-delete-pokemon-save"
+translation:
+  enSlug: "delete-pokemon-save"
+  language: "zh"
+---
+
+本页面介绍了如何在所有卡带/实机上删除宝可梦存档以重新开始游戏，包括如何从《宝可梦巡护员》中领取多个玛纳霏蛋的方法。
+
+## GB/GBC卡带删除存档
+
+开始新游戏并保存，即可覆盖旧存档。
+
+## GBA卡带删除存档
+
+开始新游戏并保存，即可覆盖旧存档。
+
+也可在标题界面按住\`↑ + Select + B\`以删除存档。
+
+或在已刷自制固件的Wii上使用自制软件删除存档。
+
+- [Wii刷自制固件教程](https://wii.hacks.guide/).
+- [GBA联机线转存工具](https://github.com/FIX94/gba-link-cable-dumper).
+
+## DS卡带删除存档
+
+在标题界面按住\`↑ + Select + B\`以删除存档。
+
+### 《宝可梦巡护员》
+
+在《宝可梦巡护员》中，删除存档文件无法再次领取玛纳霏的蛋。
+
+但在[已破解的3DS](https://3ds.hacks.guide/)上可完全重置卡带。
+
+1. 插入《宝可梦巡护员》卡带，打开[FBI](https://github.com/Steveice10/FBI/releases) -> titles -> game.
+2. 选择 erase save data（删除存档数据）并按\`A\`。
+3. 若在传送玛纳霏的蛋前用[Checkpoint](https://github.com/BernardoGiordano/Checkpoint/releases)备份存档，即可反复领取玛纳霏的蛋。
+
+## 3DS卡带删除存档
+
+在标题界面按住\`↑ + B + X\`以删除存档。
+
+## Nintendo Switch删除存档
+
+1. 打开主界面，进入"系统设置"。
+2. 下滑选择"数据管理"。
+3. 选择"删除存档数据"。
+4. 选择要删除存档的游戏。
+5. 在提示时确认删除。
+
+## 特别鸣谢
+
+- 中文翻译：白希洛/Hakuhiro
+`;export{n as default};

@@ -140,6 +140,7 @@ const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
       key: "_getPkmFilterFields.hidden_power",
       direction: "column",
       input: <HiddenPowerInput<PkmFilterFields> name="filter_hidden_power" />,
+      indent: 1,
     }),
   ].filter((field) => field !== null);
 

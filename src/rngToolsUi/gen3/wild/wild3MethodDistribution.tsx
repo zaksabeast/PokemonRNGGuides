@@ -376,15 +376,17 @@ const getFields = (
   });
 
   fields.push({
-    label: "Seed after Painting Reseeding",
+    label: "Seed after reseeding",
     input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
     show: !hasPreselectedData && usingPaintingReseeding,
+    indent: 1,
   });
 
   fields.push({
     label: usingPaintingReseeding ? "Advances after reseeding" : "Advances",
     input: <FormikNumberInput<FormState> name="advance" numType="decimal" />,
     show: !hasPreselectedData,
+    indent: usingPaintingReseeding ? 1 : 0,
   });
 
   fields.push({
@@ -397,6 +399,7 @@ const getFields = (
         without reseeding
       </>
     ),
+    indent: 1,
   });
 
   if (feebas_states.length > 1) {

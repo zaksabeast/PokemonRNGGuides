@@ -1,12 +1,10 @@
-import {
-  Switch as AntdSwitch,
-  SwitchProps as AntdSwitchProps,
-  Tooltip,
-} from "antd";
+import { Switch as AntdSwitch, SwitchProps as AntdSwitchProps } from "antd";
 import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
 import { GenericForm } from "~/types/form";
 import { withCss } from "./withCss";
+import { Flex } from "./flex";
+import { Typography } from "./typography";
 import { Paths } from "~/types";
 
 export const Switch = withCss(AntdSwitch);
@@ -26,7 +24,7 @@ export const FormikSwitch = <FormState extends GenericForm>({
   const [{ value }, { error }, { setValue }] = useField<boolean>(name);
 
   return (
-    <Tooltip color="red" title={error} placement="top">
+    <Flex vertical align="start">
       <Switch
         data-name={name}
         onChange={(updatedValue, event) => {
@@ -36,6 +34,9 @@ export const FormikSwitch = <FormState extends GenericForm>({
         value={value}
         {...props}
       />
-    </Tooltip>
+      {error != null && (
+        <Typography.Text type="danger">{error}</Typography.Text>
+      )}
+    </Flex>
   );
 };

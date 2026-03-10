@@ -2,11 +2,12 @@ import {
   Radio as AntdRadio,
   RadioGroupProps as AntdRadioGroupProps,
   CheckboxOptionType,
-  Tooltip,
 } from "antd";
 import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
 import { GenericForm } from "~/types/form";
+import { Typography } from "./typography";
+import { Flex } from "./flex";
 import { withCss } from "./withCss";
 import { Path, Paths } from "~/types";
 
@@ -43,7 +44,7 @@ export const FormikRadio = <FormState extends GenericForm>({
     useField<Path<FormState, FieldKey>>(name);
 
   return (
-    <Tooltip color="red" title={error} placement="top">
+    <Flex vertical>
       <RadioGroup
         optionType="button"
         name={String(name)}
@@ -52,6 +53,9 @@ export const FormikRadio = <FormState extends GenericForm>({
         value={value}
         {...props}
       />
-    </Tooltip>
+      {error != null && (
+        <Typography.Text type="danger">{error}</Typography.Text>
+      )}
+    </Flex>
   );
 };

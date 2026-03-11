@@ -75,6 +75,7 @@ const getSetupFields = (
         />
       ),
       show: showAdvancedSetups,
+      indent: 1,
     },
     {
       label: "Maps",
@@ -87,6 +88,7 @@ const getSetupFields = (
         />
       ),
       show: showAdvancedSetups,
+      indent: 1,
     },
     {
       label: "Leads",
@@ -99,6 +101,7 @@ const getSetupFields = (
         />
       ),
       show: showAdvancedSetups,
+      indent: 1,
     },
     {
       label: "Roamer states",
@@ -110,6 +113,7 @@ const getSetupFields = (
         />
       ),
       show: showAdvancedSetups && possVals.roamerStates.length > 1,
+      indent: 1,
     },
     {
       label: "Mass outbreak states",
@@ -125,6 +129,7 @@ const getSetupFields = (
         />
       ),
       show: showAdvancedSetups && possVals.massOutbreakStates.length > 1,
+      indent: 1,
     },
     {
       label: "Feebas states",
@@ -136,6 +141,7 @@ const getSetupFields = (
         />
       ),
       show: showAdvancedSetups && possVals.feebasStates.length > 1,
+      indent: 1,
     },
     {
       label: "Methods",
@@ -170,12 +176,14 @@ const getSetupFields = (
       label: "Let searcher find painting seed?",
       input: <FormikSwitch<FormState> name="letSearcherFindPaintingSeed" />,
       show: usingPaintingReseeding,
+      indent: 1,
     },
 
     {
       label: "Seed after painting reseeding",
       input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
       show: usingPaintingReseeding && !letSearcherFindPaintingSeed,
+      indent: 1,
     },
     {
       label: "Min advances before reseeding",
@@ -186,6 +194,7 @@ const getSetupFields = (
         />
       ),
       show: usingPaintingReseeding && letSearcherFindPaintingSeed,
+      indent: 1,
     },
     {
       label: "Min advances after reseeding",
@@ -196,6 +205,7 @@ const getSetupFields = (
         />
       ),
       show: usingPaintingReseeding,
+      indent: 1,
     },
     {
       label: "Min advances",

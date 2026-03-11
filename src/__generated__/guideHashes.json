@@ -251,6 +251,10 @@
     "hash": "4324b73726a842850e1d053d745e71732bc040f02b555a0e9db2058c67b54239",
     "lastUpdated": null
   },
+  "/zh-gba-overview/": {
+    "hash": "38884d3ec1261a4fadacabcb6c2ac536b57063499b8138e3e4966f758486d5c4",
+    "lastUpdated": "2026-03-10"
+  },
   "/zh-emerald-shiny-starter/": {
     "hash": "a38dcb3d9419f6461adb9b02f8a347a976fb765e07db7b61f0e6e8a08d533983",
     "lastUpdated": null
@@ -454,6 +458,10 @@
   "/zh-misc-dolphin-gba-bios/": {
     "hash": "6209e879c868ef899ad77f56a5d3b56c6636f369c81748b7cb4fba7bc2b63f37",
     "lastUpdated": null
+  },
+  "/zh-delete-pokemon-save/": {
+    "hash": "f8459097a89b7c2b112e7ea9b50496d5f683aa4422134ed22443e140d88c8391",
+    "lastUpdated": "2026-03-10"
   },
   "/zh-mgba-setup/": {
     "hash": "688a52a366db09a1db27c2e062c7b878670717a90e1c964768fc53d5636f65de",
@@ -852,8 +860,8 @@
     "lastUpdated": null
   },
   "/gba-overview/": {
-    "hash": "a2cfd7322e5c9eb3e8fc5d648ed85406ad4ffbe286455dc7d978e68fe96ea3be",
-    "lastUpdated": null
+    "hash": "be8f0c9849b951402d1b6f6c458671c0c46a5d39bdef744b7c48c327b97c33cb",
+    "lastUpdated": "2026-03-10"
   },
   "/emerald-shiny-starter/": {
     "hash": "a392c90f2a0fc0a9f3b2c411207edfd899e25418ece89f600d1d999ebd32ca1b",
@@ -1196,8 +1204,8 @@
     "lastUpdated": null
   },
   "/delete-pokemon-save/": {
-    "hash": "1f77b78c5ed89cc3fb3d51163a4d217707eb830690e74bcc8683c4c03dc98e1b",
-    "lastUpdated": null
+    "hash": "f6a79ab09cbe5068fb0f1121e4e33fb4a38b1a23534919c880473e9625ccca34",
+    "lastUpdated": "2026-03-10"
   },
   "/pokereader/": {
     "hash": "57a01c10769e5f6fb06106113e670702489637a639b7ddb6c1070f01245734d0",

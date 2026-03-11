@@ -1099,12 +1099,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-10",
       type: "baseGuide",
       file: "guides/Tools and Emulators/Delete Save.mdx",
       translations: {
         en: "/delete-pokemon-save/",
         es: "/es-delete-pokemon-save/",
+        zh: "/zh-delete-pokemon-save/",
       },
       guideGroupId:
         "en:/delete-pokemon-save/:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
@@ -3690,6 +3691,7 @@ export const guides = {
       translations: {
         en: "/delete-pokemon-save/",
         es: "/es-delete-pokemon-save/",
+        zh: "/zh-delete-pokemon-save/",
       },
       guideGroupId:
         "es:/delete-pokemon-save/:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
@@ -4563,10 +4565,10 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-10",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Overview.mdx",
-      translations: null,
+      translations: { en: "/gba-overview/", zh: "/zh-gba-overview/" },
       guideGroupId:
         "en:/gba-overview/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
@@ -9733,6 +9735,67 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-delete-pokemon-save/": {
+    meta: {
+      id: "/delete-pokemon-save/",
+      categories: [
+        "Ruby and Sapphire",
+        "FireRed and LeafGreen",
+        "Emerald",
+        "Diamond, Pearl, and Platinum",
+        "HeartGold and SoulSilver",
+        "Black and White",
+        "Black 2 and White 2",
+        "Transporter and Dream Radar",
+        "X and Y",
+        "Omega Ruby and Alpha Sapphire",
+        "Sun and Moon",
+        "Ultra Sun and Ultra Moon",
+        "Sword and Shield",
+        "Brilliant Diamond and Shining Pearl",
+        "Legends Arceus",
+      ],
+      section: "supporting_info",
+      guideVariants: null,
+      guideKey: "/delete-pokemon-save/",
+      isNew: false,
+      title: "如何删除宝可梦存档文件",
+      navDrawerTitle: "如何删除宝可梦存档文件",
+      description: "如何删除宝可梦存档文件以重新开始游戏",
+      slug: "/zh-delete-pokemon-save/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/delete-pokemon-save/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-10",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Tools and Emulators/Delete Save.mdx",
+      translations: {
+        en: "/delete-pokemon-save/",
+        es: "/es-delete-pokemon-save/",
+        zh: "/zh-delete-pokemon-save/",
+      },
+      guideGroupId:
+        "zh:/delete-pokemon-save/:Black 2 and White 2|Black and White|Brilliant Diamond and Shining Pearl|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Legends Arceus|Omega Ruby and Alpha Sapphire|Ruby and Sapphire|Sun and Moon|Sword and Shield|Transporter and Dream Radar|Ultra Sun and Ultra Moon|X and Y",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/Delete Save.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Tools and Emulators/Delete Save.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-dppt-3ds-rng/": {
     meta: {
       id: "/dppt-3ds-rng/",
@@ -11435,6 +11498,45 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 3/Emerald/GBA Methods.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-gba-overview/": {
+    meta: {
+      id: "/gba-overview/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "getting_started",
+      guideVariants: null,
+      guideKey: "/gba-overview/",
+      isNew: false,
+      title: "GBA概述",
+      navDrawerTitle: "GBA概述",
+      description: "GBA游戏的特性、关键乱数概念与版本差异",
+      slug: "/zh-gba-overview/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-08",
+      translation: { enSlug: "/gba-overview/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-10",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Emerald/GBA Overview.mdx",
+      translations: { en: "/gba-overview/", zh: "/zh-gba-overview/" },
+      guideGroupId:
+        "zh:/gba-overview/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/zh/Gen 3/Emerald/GBA Overview.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/GBA Overview.mdx?raw"
       );
       return file.default;
     }),
@@ -14499,6 +14601,7 @@ export const guideSlugs = [
   "/zh-3ds-helper/",
   "/zh-bw2-egg/",
   "/zh-channel-jirachi/",
+  "/zh-delete-pokemon-save/",
   "/zh-dppt-3ds-rng/",
   "/zh-dppt-advance-rng/",
   "/zh-dppt-cute-charm/",
@@ -14540,6 +14643,7 @@ export const guideSlugs = [
   "/zh-frlg-gen3-sid/",
   "/zh-frlg-seeding-bot/",
   "/zh-gba-methods/",
+  "/zh-gba-overview/",
   "/zh-gba-pokerus-technical/",
   "/zh-gba-vblank/",
   "/zh-gc-initial/",

@@ -17,6 +17,7 @@ import {
 } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { GenericForm } from "~/types";
+import { Typography } from "antd";
 
 export type RngToolSubmit<FormState extends GenericForm> = (
   values: FormState,
@@ -125,12 +126,19 @@ export const RngToolForm = <
     });
   };
 
+  const hasErrors = Object.keys(form.formState.errors).length > 0;
+
   return (
     <FormProvider handleSubmit={handleSubmit} setValue={setValue} {...form}>
       <Flex vertical gap={16} id={formContainerId}>
         <Form onSubmit={handleSubmit(onValidSubmit)} onReset={onReset}>
           <Flex vertical gap={8}>
             {fieldsReactNode}
+            {hasErrors && (
+              <Typography.Text type="danger">
+                {t["At least 1 input field is invalid"]}
+              </Typography.Text>
+            )}
             <Button
               trackerId={submitTrackerId}
               htmlType="submit"

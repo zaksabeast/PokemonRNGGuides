@@ -1,6 +1,11 @@
 import { pokemonTypes } from "../types/pokemonTypes";
 import { HiddenPowerFilter } from "~/rngTools";
-import { FormikNumberInput, FormikSelect, FormFieldTable } from "~/components";
+import {
+  FormikNumberInput,
+  FormikSelect,
+  FormFieldTable,
+  FormikSwitch,
+} from "~/components";
 import { toOptions } from "~/utils/options";
 import { useField } from "~/hooks/form";
 import React from "react";
@@ -56,4 +61,28 @@ export const HiddenPowerInput = <FormState extends PkmFilterFields>({
     return <FormFieldTable fields={fields} />;
   }
   return null;
+};
+
+export const HiddenPowerSwitch = () => {
+  const [, , { setValue }] = useField<HiddenPowerFilter["pokemon_types"]>(
+    "filter_hidden_power.pokemon_types",
+  );
+
+  const resetHiddenPower = React.useCallback(
+    (active: boolean) => {
+      if (active) {
+        return;
+      }
+
+      setValue([]);
+    },
+    [setValue],
+  );
+
+  return (
+    <FormikSwitch<PkmFilterFields>
+      name="filter_hidden_power.active"
+      onChange={resetHiddenPower}
+    />
+  );
 };

@@ -14,7 +14,10 @@ import {
   defaultHiddenPowerFilter,
   HiddenPowerSchema,
 } from "./hiddenPowerInput";
-import { HiddenPowerInput } from "./hiddenPowerInput.component";
+import {
+  HiddenPowerInput,
+  HiddenPowerSwitch,
+} from "./hiddenPowerInput.component";
 import { StatsFilterSchema } from "../types/stat";
 import { Translations } from "~/translations";
 import { GenderFilter } from "./genderFilter";
@@ -131,15 +134,14 @@ const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
     }),
     optOut(props?.displayHiddenPower, {
       label: "Hidden Power",
-      input: (
-        <FormikSwitch<PkmFilterFields> name="filter_hidden_power.active" />
-      ),
+      input: <HiddenPowerSwitch />,
     }),
     optOut(props?.displayHiddenPower, {
       label: "",
       key: "_getPkmFilterFields.hidden_power",
       direction: "column",
       input: <HiddenPowerInput<PkmFilterFields> name="filter_hidden_power" />,
+      indent: 1,
     }),
   ].filter((field) => field !== null);
 

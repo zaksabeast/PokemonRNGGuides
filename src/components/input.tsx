@@ -2,13 +2,13 @@ import {
   Input as AntdInput,
   InputProps as AntdInputProps,
   InputRef,
-  Tooltip,
 } from "antd";
 import React from "react";
 import styled from "@emotion/styled";
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
+import { Typography } from "./typography";
 
 const InputContainer = styled.div<{ textAlign?: "center" }>(
   ({ textAlign }) => ({
@@ -30,13 +30,12 @@ type InputProps = tst.O.Merge<
 export const Input = ({
   autoFocus,
   textAlign,
-  status,
   errorMessage,
   ...props
 }: InputProps) => {
   const inputRef = React.useRef<InputRef>(null);
 
-  const _status = (status ?? errorMessage) != null ? "error" : undefined;
+  const _status = errorMessage != null ? "error" : undefined;
 
   React.useEffect(() => {
     if (autoFocus && inputRef.current != null) {
@@ -46,15 +45,16 @@ export const Input = ({
 
   return (
     <InputContainer textAlign={textAlign}>
-      <Tooltip color="red" title={errorMessage} placement="top">
-        <AntdInput
-          size="large"
-          ref={inputRef}
-          autoComplete="off"
-          {...props}
-          status={_status}
-        />
-      </Tooltip>
+      <AntdInput
+        size="large"
+        ref={inputRef}
+        autoComplete="off"
+        status={_status}
+        {...props}
+      />
+      {errorMessage != null && (
+        <Typography.Text type="danger">{errorMessage}</Typography.Text>
+      )}
     </InputContainer>
   );
 };
@@ -68,12 +68,14 @@ export const FormikInput = <FormState extends GenericForm>({
   name,
   ...props
 }: FormikInputProps<FormState>) => {
-  const [{ value, onBlur, onChange }, { error }] = useField<string>(name);
+  const [{ value, onBlur, onChange }, { error, status }] =
+    useField<string>(name);
   return (
     <Input
+      status={status}
+      errorMessage={error}
       {...props}
       name={name}
-      errorMessage={error}
       onBlur={onBlur}
       onChange={onChange}
       value={value}

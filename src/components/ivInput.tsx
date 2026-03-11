@@ -3,6 +3,9 @@ import { Flex } from "./flex";
 import { Ivs } from "~/rngTools";
 import { FormikNumberInput } from "./numberInput";
 import { z } from "zod";
+import { GlobalError, useFormState } from "react-hook-form";
+import { map, uniq } from "lodash-es";
+import { Typography } from "./typography";
 
 const IvSchema = z.number().int().min(0).max(31);
 
@@ -54,6 +57,9 @@ const SingleIvField = <
         name={`${parentName}.${stat}`}
         textAlign="center"
         numType="decimal"
+        // Explicitly unset errors and error statuses
+        status=""
+        errorMessage={null}
       />
     </Flex>
   );
@@ -72,14 +78,25 @@ export const IvInput = <
 >({
   name,
 }: Props<FormState, IvNullability>) => {
+  const { errors } = useFormState<FormState>();
+
+  const ivErrors = uniq(
+    map(errors[name], (error: GlobalError) => error.message),
+  );
+
   return (
-    <Flex gap={16}>
-      <SingleIvField<FormState, IvNullability> stat="hp" parentName={name} />
-      <SingleIvField<FormState, IvNullability> stat="atk" parentName={name} />
-      <SingleIvField<FormState, IvNullability> stat="def" parentName={name} />
-      <SingleIvField<FormState, IvNullability> stat="spa" parentName={name} />
-      <SingleIvField<FormState, IvNullability> stat="spd" parentName={name} />
-      <SingleIvField<FormState, IvNullability> stat="spe" parentName={name} />
+    <Flex vertical>
+      <Flex gap={16}>
+        <SingleIvField<FormState, IvNullability> stat="hp" parentName={name} />
+        <SingleIvField<FormState, IvNullability> stat="atk" parentName={name} />
+        <SingleIvField<FormState, IvNullability> stat="def" parentName={name} />
+        <SingleIvField<FormState, IvNullability> stat="spa" parentName={name} />
+        <SingleIvField<FormState, IvNullability> stat="spd" parentName={name} />
+        <SingleIvField<FormState, IvNullability> stat="spe" parentName={name} />
+      </Flex>
+      {ivErrors.length !== 0 && (
+        <Typography.Text type="danger">{ivErrors.join(", ")}</Typography.Text>
+      )}
     </Flex>
   );
 };

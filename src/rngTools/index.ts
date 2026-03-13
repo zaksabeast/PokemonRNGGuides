@@ -48,7 +48,7 @@ const getMaxWorkerCount = () => {
     return 2; // Firefox seems to over report hardwareConcurrency and has a stricter worker limit
   }
 
-  return 1; //NO_PROD return Math.max(1, Math.min(window.navigator.hardwareConcurrency, 8));
+  return Math.max(1, Math.min(window.navigator.hardwareConcurrency, 8));
 };
 
 let workerCount = 0;

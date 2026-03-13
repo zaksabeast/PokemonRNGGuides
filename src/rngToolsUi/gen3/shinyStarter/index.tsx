@@ -6,7 +6,6 @@ import { FormFieldTable } from "~/components/formFieldTable";
 import { TargetPokemon } from "./targetPokemon";
 import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
 import { MS_PER_GBA_FRAME } from "~/utils/consts";
-import { getIvRangeFromStats } from "~/types/statRange";
 
 export type Game = "emerald" | "rs";
 export type Starter = "Mudkip" | "Torchic" | "Treecko";
@@ -26,25 +25,6 @@ export const ShinyHoennStarter = ({ game }: Props) => {
     species: "Mudkip",
     minMaxStats: defaultMinMaxStats,
   });
-
-  //NO_PROD
-  setTimeout(async () => {
-    console.log(
-      await getIvRangeFromStats({
-        species: "Mudkip",
-        lvl: 10,
-        nature: "Adamant",
-        stats: {
-          hp: 31,
-          atk: 22,
-          def: 15,
-          spa: 14,
-          spd: 15,
-          spe: 13,
-        },
-      }),
-    );
-  }, 1000);
 
   // 9 adv for calibration to open the bag. 3 adv for offset between pressing A and generating the Pokémon
   const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(9 + 3);

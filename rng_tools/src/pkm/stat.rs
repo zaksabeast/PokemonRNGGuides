@@ -1,5 +1,4 @@
 use crate::{Ivs, Nature, NatureFactor};
-use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;

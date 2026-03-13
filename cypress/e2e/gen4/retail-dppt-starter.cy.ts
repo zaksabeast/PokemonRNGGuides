@@ -12,7 +12,7 @@ describe("rng tool", () => {
     testRngTool<
       Omit<
         PickStarterFormState,
-        "platinum_target_advance" | "filter_hidden_power" | "filter_stats"
+        "platinum_target_advance" | "filter_hidden_power"
       >
     >({
       parentSelector: "#step-1",

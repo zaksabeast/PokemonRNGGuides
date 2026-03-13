@@ -53,10 +53,3 @@ export const StatValuesSchema = z.object({
   spd: StatSchema,
   spe: StatSchema,
 });
-
-export const StatsFilterSchema = z.object({
-  lvl: z.number().min(1).max(99),
-  base_stats: StatValuesSchema,
-  min_stats: StatValuesSchema,
-  max_stats: StatValuesSchema,
-});

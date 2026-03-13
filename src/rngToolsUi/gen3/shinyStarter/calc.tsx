@@ -2,12 +2,12 @@ import type { Game, Starter, TargetStarter } from "./index";
 import type { FormState } from "./caughtMon";
 import { rngTools } from "~/rngTools";
 import { getStrictBaseStats } from "~/types/baseStats";
-import { MinMax } from "~/types/stat";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
 import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
+import { getIvRangeFromStats } from "~/types/statRange";
 
 export type CaughtMonResult = {
   advance: number;
@@ -67,32 +67,30 @@ export const getTargetPokemonDesc = async (
   return `${res.gender}, ${res.nature}, HP ${stats.hp}, ATK ${stats.atk}, DEF ${stats.def}, SPA ${stats.spa}, SPD ${stats.spd}, SPE ${stats.spe}`;
 };
 
-const getMinMaxStat = (
-  isMin: boolean,
-  selected: number,
-  { min, max }: MinMax,
-) => {
-  if (selected >= min && selected <= max) {
-    return selected;
-  }
-  return isMin ? min : max;
-};
-
 export const generateCaughtMonResults = async (
   game: Game,
   targetAdvance: number,
   targetStarter: TargetStarter,
   caughtMonValues: FormState,
 ): Promise<CaughtMonResult[]> => {
-  const { species: targetSpecies, minMaxStats } = targetStarter;
-  const [min_stats, max_stats] = [true, false].map((isMin) => ({
-    hp: getMinMaxStat(isMin, caughtMonValues.hpStat, minMaxStats.hp),
-    atk: getMinMaxStat(isMin, caughtMonValues.atkStat, minMaxStats.atk),
-    def: getMinMaxStat(isMin, caughtMonValues.defStat, minMaxStats.def),
-    spa: getMinMaxStat(isMin, caughtMonValues.spaStat, minMaxStats.spa),
-    spd: getMinMaxStat(isMin, caughtMonValues.spdStat, minMaxStats.spd),
-    spe: getMinMaxStat(isMin, caughtMonValues.speStat, minMaxStats.spe),
-  }));
+  const { species } = targetStarter;
+
+  const minMaxIvs = await getIvRangeFromStats({
+    species,
+    lvl: 5,
+    nature: caughtMonValues.nature,
+    stats: {
+      hp: caughtMonValues.hpStat,
+      atk: caughtMonValues.atkStat,
+      def: caughtMonValues.defStat,
+      spa: caughtMonValues.spaStat,
+      spd: caughtMonValues.spdStat,
+      spe: caughtMonValues.speStat,
+    },
+  });
+  if (minMaxIvs == null) {
+    return [];
+  }
 
   const opts = {
     offset: 0,
@@ -106,20 +104,13 @@ export const generateCaughtMonResults = async (
       gender: caughtMonValues.gender ?? null,
       ability: null,
       shiny: false,
-      stats: {
-        lvl: 5,
-        base_stats: getStrictBaseStats(targetSpecies),
-        min_stats,
-        max_stats,
-      },
-      min_ivs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
-      max_ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
+      ...minMaxIvs,
       hidden_power: defaultHiddenPowerFilter,
     },
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter
     bugged_roamer: false, // doesn't matter
-    species: targetSpecies, // doesn't matter
+    species, // doesn't matter
   } as const;
 
   const genResults = await rngTools.gen3_static_generator_states(opts);

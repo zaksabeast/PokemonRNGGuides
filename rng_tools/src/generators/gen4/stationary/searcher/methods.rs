@@ -610,13 +610,7 @@ mod tests {
                 game: GameVersion::Diamond,
                 species: Species::Drifloon,
                 filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
-                    ability: None,
-                    stats: None,
                     ..Default::default()
                 },
                 year: 2000,
@@ -641,13 +635,7 @@ mod tests {
                 species: Species::Drifloon,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
-                    ability: None,
-                    stats: None,
                     ..Default::default()
                 },
                 year: 2000,
@@ -673,13 +661,7 @@ mod tests {
                 species: Species::Drifloon,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
-                    ability: None,
-                    stats: None,
                     ..Default::default()
                 },
                 year: 2000,
@@ -705,13 +687,7 @@ mod tests {
                 species: Species::Drifloon,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
                     min_ivs: ivs!(30 / 30 / 30 / 25 / 25 / 20),
-                    max_ivs: Ivs::new_all31(),
-                    ability: None,
-                    stats: None,
                     ..Default::default()
                 },
                 year: 2000,
@@ -747,13 +723,7 @@ mod tests {
                 game: GameVersion::SoulSilver,
                 lead: Static4LeadInput::None,
                 filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
-                    ability: None,
-                    stats: None,
                     ..Default::default()
                 },
                 min_advance: 0,
@@ -778,13 +748,7 @@ mod tests {
                 game: GameVersion::SoulSilver,
                 lead: Static4LeadInput::Synchronize,
                 filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
                     min_ivs: ivs!(30 / 30 / 30 / 25 / 25 / 20),
-                    max_ivs: Ivs::new_all31(),
-                    ability: None,
-                    stats: None,
                     ..Default::default()
                 },
                 min_advance: 0,
@@ -815,13 +779,7 @@ mod tests {
                 game: GameVersion::SoulSilver,
                 lead: Static4LeadInput::CutecharmF,
                 filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
-                    ability: None,
-                    stats: None,
                     ..Default::default()
                 },
                 min_advance: 0,
@@ -847,13 +805,7 @@ mod tests {
                 game: GameVersion::SoulSilver,
                 lead: Static4LeadInput::CutecharmM,
                 filter: PkmFilter {
-                    shiny: false,
-                    nature: None,
-                    gender: None,
                     min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
-                    max_ivs: Ivs::new_all31(),
-                    ability: None,
-                    stats: None,
                     ..Default::default()
                 },
                 min_advance: 0,

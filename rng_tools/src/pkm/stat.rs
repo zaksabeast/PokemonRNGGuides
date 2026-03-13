@@ -77,6 +77,12 @@ pub fn calculate_min_ivs_from_stats(
 ) -> Option<Ivs> {
     let nature_factors = nature.stat_factor();
 
+    // Ex: stats.hp == 11
+    // Iv:      0,  1,  2,  3,  4,  5
+    // CalcHp   10, 10, 11, 11, 12, 12
+    // RetVal:  T,  T,  F,  F,  F,  F
+    // partition_point  ^
+
     let hp = ARRAY_0_31.partition_point(|iv| calculate_hp(base_stats.hp, *iv, 0, level) < stats.hp)
         as u8;
     let atk = ARRAY_0_31.partition_point(|iv| {
@@ -119,9 +125,10 @@ pub fn calculate_max_ivs_from_stats(
     let nature_factors = nature.stat_factor();
 
     // Ex: stats.hp == 11
-    // Stat:    12, 12, 12, 11, 11, 10
     // Iv:      31, 30, 29, 28, 27, 26
-    // RetVal:  T,  T,  T,  F
+    // CalcHp:  12, 12, 12, 11, 11, 10
+    // RetVal:  T,  T,  T,  F,  F,  F
+    // partition_point      ^
 
     let hp = ARRAY_31_0.partition_point(|iv| calculate_hp(base_stats.hp, *iv, 0, level) > stats.hp);
     let atk = ARRAY_31_0.partition_point(|iv| {

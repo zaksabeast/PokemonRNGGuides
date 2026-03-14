@@ -265,6 +265,7 @@ fn create_result(
                 roamer_state: Wild3RoamerState::Inactive,
                 mass_outbreak_state,
                 feebas_state,
+                lead_cycle_speed: opts.lead_cycle_speed,
             };
 
             generate_gen3_wild(Pokerng::new(seed.seed), &gen_opts, &map_setups.map_data)

@@ -32,6 +32,7 @@ import { searchWild3Target } from "./searchWild3Target";
 import { SetupFilter } from "./wild3SetupFilter.component";
 import { Wild3ResultSetupInfos } from "./resultSetupInfos";
 import { GBA_FPS } from "~/utils/consts";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3MethodDistribution";
 
 /*
 Possible UI improvements:
@@ -73,6 +74,8 @@ const Validator = z
     rngManipulatedLeadPid: z.boolean(),
     mergeSimilarResults: z.boolean(),
     generate_even_if_impossible: z.boolean(),
+    usingSpecificLeadCycleSpeed: z.boolean(),
+    specificLeadCycleSpeed: z.number().int().min(0).max(900),
   })
   .extend(pkmFilterSchema.shape)
   .extend(gen3PkmFilterSchema.shape);
@@ -131,6 +134,8 @@ const getInitialValues = (): FormState => {
     max_result_count: 20,
     rngManipulatedLeadPid: false,
     mergeSimilarResults: true,
+    usingSpecificLeadCycleSpeed: false,
+    specificLeadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
     generate_even_if_impossible: false,
     ...getPkmFilterInitialValues(),
     ...getGen3PkmFilterInitialValues(),

@@ -2,6 +2,7 @@ use crate::{GenderRatio, Species, StatsValue, stats};
 
 use GenderRatio::*;
 
+#[derive(Debug, PartialEq, Eq)]
 pub struct Personal {
     pub base_stats: StatsValue,
     pub gender_ratio: GenderRatio,

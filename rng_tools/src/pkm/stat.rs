@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct StatsValue {
     pub hp: u16,
@@ -55,8 +55,13 @@ pub fn calculate_non_hp(
 }
 
 #[wasm_bindgen]
-pub fn calculate_minmax_stats(species: Species, level: u8, is_min_stat: bool) -> StatsValue {
-    let base_stats = &species.base_personal().base_stats;
+pub fn calculate_minmax_stats(
+    species: Species,
+    form: Option<usize>,
+    level: u8,
+    is_min_stat: bool,
+) -> StatsValue {
+    let base_stats = &species.personal(form).base_stats;
 
     let iv = if is_min_stat { 0 } else { 31 };
     let nature_factor = if is_min_stat {
@@ -88,11 +93,12 @@ static ARRAY_31_0: [u8; 32] = [
 #[wasm_bindgen]
 pub fn calculate_min_ivs_from_stats(
     species: Species,
+    form: Option<usize>,
     level: u8,
     nature: Nature,
     stats: &StatsValue,
 ) -> Option<Ivs> {
-    let base_stats = &species.base_personal().base_stats;
+    let base_stats = &species.personal(form).base_stats;
     let nature_factors = nature.stat_factor();
 
     // Ex: stats.hp == 11
@@ -136,11 +142,12 @@ pub fn calculate_min_ivs_from_stats(
 #[wasm_bindgen]
 pub fn calculate_max_ivs_from_stats(
     species: Species,
+    form: Option<usize>,
     level: u8,
     nature: Nature,
     stats: &StatsValue,
 ) -> Option<Ivs> {
-    let base_stats = &species.base_personal().base_stats;
+    let base_stats = &species.personal(form).base_stats;
     let nature_factors = nature.stat_factor();
 
     // Ex: stats.hp == 11
@@ -183,12 +190,13 @@ pub fn calculate_max_ivs_from_stats(
 #[wasm_bindgen]
 pub fn calculate_stats(
     species: Species,
+    form: Option<usize>,
     level: u8,
     nature: Nature,
     ivs: &Ivs,
     evs: &StatsValue,
 ) -> StatsValue {
-    let base_stats = &species.base_personal().base_stats;
+    let base_stats = &species.personal(form).base_stats;
     let nature_factors = nature.stat_factor();
 
     StatsValue {
@@ -210,6 +218,7 @@ mod tests {
         assert_eq!(
             calculate_min_ivs_from_stats(
                 Species::Mudkip,
+                None,
                 10,
                 Nature::Adamant,
                 &StatsValue {
@@ -234,6 +243,7 @@ mod tests {
         assert_eq!(
             calculate_max_ivs_from_stats(
                 Species::Mudkip,
+                None,
                 10,
                 Nature::Adamant,
                 &StatsValue {
@@ -258,6 +268,7 @@ mod tests {
         assert_eq!(
             calculate_min_ivs_from_stats(
                 Species::Mudkip,
+                None,
                 10,
                 Nature::Adamant,
                 &StatsValue {
@@ -275,6 +286,7 @@ mod tests {
         assert_eq!(
             calculate_max_ivs_from_stats(
                 Species::Mudkip,
+                None,
                 10,
                 Nature::Adamant,
                 &StatsValue {
@@ -293,7 +305,7 @@ mod tests {
     #[test]
     fn test_mudkip_starter() {
         assert_eq!(
-            calculate_minmax_stats(Species::Mudkip, 5, true),
+            calculate_minmax_stats(Species::Mudkip, None, 5, true),
             StatsValue {
                 hp: 20,
                 atk: 10,
@@ -305,7 +317,7 @@ mod tests {
         );
 
         assert_eq!(
-            calculate_minmax_stats(Species::Mudkip, 5, false),
+            calculate_minmax_stats(Species::Mudkip, None, 5, false),
             StatsValue {
                 hp: 21,
                 atk: 14,

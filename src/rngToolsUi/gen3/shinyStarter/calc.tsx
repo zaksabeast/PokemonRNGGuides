@@ -57,6 +57,7 @@ export const getTargetPokemonDesc = async (
 
   const stats = await rngTools.calculate_stats(
     pokemonSpecies,
+    null,
     5,
     res.nature,
     res.ivs,

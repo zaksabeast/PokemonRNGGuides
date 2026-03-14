@@ -1028,6 +1028,13 @@ pub enum Species {
 }
 
 impl Species {
+    pub fn personal(&self, form: Option<usize>) -> &'static Personal {
+        match form {
+            Some(form) => get_form_personal(*self, form),
+            None => get_personal(*self),
+        }
+    }
+
     pub fn base_personal(&self) -> &'static Personal {
         get_personal(*self)
     }
@@ -1042,5 +1049,26 @@ impl Species {
 
     pub fn gender_from_pid(&self, pid: u32) -> Gender {
         self.gender_ratio().gender(pid as u8)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_species_personal() {
+        assert_eq!(
+            Species::Mudkip.personal(None),
+            Species::Mudkip.base_personal()
+        );
+    }
+
+    #[test]
+    fn test_species_form_personal() {
+        assert_eq!(
+            Species::Giratina.personal(Some(1)),
+            Species::Giratina.form_personal(1)
+        );
     }
 }

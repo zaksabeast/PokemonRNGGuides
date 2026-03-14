@@ -1,17 +1,24 @@
 import { Ivs, Nature, rngTools, Species, StatsValue } from "~/rngTools";
 import { MinMaxStats } from "~/types/stat";
 
-export const getStatRange = async (
-  species: Species,
-  levelRange: [number, number] = [5, 5],
-): Promise<MinMaxStats> => {
+export const getStatRange = async ({
+  species,
+  form = null,
+  levelRange = [5, 5],
+}: {
+  species: Species;
+  form?: number | null;
+  levelRange?: [number, number];
+}): Promise<MinMaxStats> => {
   const minStats = await rngTools.calculate_minmax_stats(
     species,
+    form,
     levelRange[0],
     true,
   );
   const maxStats = await rngTools.calculate_minmax_stats(
     species,
+    form,
     levelRange[1],
     false,
   );
@@ -28,17 +35,20 @@ export const getStatRange = async (
 
 export const getIvRangeFromStats = async ({
   species,
+  form = null,
   lvl,
   nature,
   stats,
 }: {
   species: Species;
+  form?: number | null;
   lvl: number;
   nature: Nature;
   stats: StatsValue;
 }): Promise<{ min_ivs: Ivs; max_ivs: Ivs } | null> => {
   const min_ivs = await rngTools.calculate_min_ivs_from_stats(
     species,
+    form,
     lvl,
     nature,
     stats,
@@ -49,6 +59,7 @@ export const getIvRangeFromStats = async ({
 
   const max_ivs = await rngTools.calculate_max_ivs_from_stats(
     species,
+    form,
     lvl,
     nature,
     stats,

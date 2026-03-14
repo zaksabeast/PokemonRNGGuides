@@ -219,7 +219,7 @@ export const CalibratePickupEgg = () => {
 
   React.useEffect(() => {
     const runAsync = async () => {
-      const stats = await getStatRange(targetSpecies);
+      const stats = await getStatRange({ species: targetSpecies });
       setMinMaxStats(stats);
     };
     runAsync();
@@ -231,6 +231,7 @@ export const CalibratePickupEgg = () => {
       const formattedResults = await pmap(potentialEggs, async (result) => {
         const stats = await rngTools.calculate_stats(
           targetSpecies,
+          null,
           5,
           targetNature,
           normalizeInheritedIvs(result.ivs),

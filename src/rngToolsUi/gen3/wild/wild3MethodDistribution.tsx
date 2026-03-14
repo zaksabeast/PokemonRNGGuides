@@ -66,7 +66,7 @@ import { gen3Methods } from "~/types";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
-const AVERAGE_LEAD_CYCLE_SPEED = 775;
+export const AVERAGE_LEAD_CYCLE_SPEED = 775;
 const SLOWEST_LEAD_CYCLE_SPEED = 900;
 
 type LeadSpeedType =
@@ -727,6 +727,7 @@ const calculate = async (values: FormState) => {
     roamer_state: values.roamerState,
     mass_outbreak_state: values.massOutbreakState,
     feebas_state: values.feebasState,
+    lead_cycle_speed: values.leadCycleSpeed,
   };
 
   const map_data = emeraldWildGameData.maps_data.find(
@@ -745,7 +746,6 @@ const calculate = async (values: FormState) => {
       values.advance,
       opts,
       map_data,
-      values.leadCycleSpeed,
     );
 
   return {

@@ -33,8 +33,9 @@ pub fn generate_gen3_wild_distribution(
     advances: usize,
     opts: &Wild3GeneratorOptions,
     game_data: &Wild3MapGameData,
-    lead_cycle_speed: usize,
 ) -> Wild3MethodDistributionResults {
+    let lead_cycle_speed = opts.lead_cycle_speed.unwrap_or(0);
+
     let opts = Wild3GeneratorOptions {
         consider_cycles: true,
         generate_even_if_impossible: true,
@@ -45,6 +46,7 @@ pub fn generate_gen3_wild_distribution(
             Gen3Method::Wild4,
             Gen3Method::Wild5,
         ],
+        lead_cycle_speed: opts.lead_cycle_speed,
         ..opts.clone()
     };
 
@@ -192,10 +194,11 @@ mod test {
     #[test]
     fn test_distribution_generator() {
         let opts = Wild3GeneratorOptions {
+            lead_cycle_speed: Some(700),
             ..Default::default()
         };
         let dist_results =
-            generate_gen3_wild_distribution(0, 44, &opts, &Wild3MapGameData::default(), 700);
+            generate_gen3_wild_distribution(0, 44, &opts, &Wild3MapGameData::default());
 
         let results = dist_results
             .results

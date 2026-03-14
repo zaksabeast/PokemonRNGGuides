@@ -44,6 +44,7 @@ fn search_wild3_naive_at_given_advance(
                 roamer_state: *roamer_state,
                 mass_outbreak_state: *mass_outbreak_state,
                 feebas_state: *feebas_state,
+                lead_cycle_speed: opts.lead_cycle_speed,
             };
 
             generate_gen3_wild(rng, &gen_opts, &map_setups.map_data)

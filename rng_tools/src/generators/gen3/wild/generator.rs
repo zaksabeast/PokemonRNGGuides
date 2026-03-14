@@ -35,6 +35,7 @@ pub struct Wild3GeneratorOptions {
     pub gen3_filter: Gen3PkmFilter,
     pub consider_cycles: bool,
     pub consider_rng_manipulated_lead_pid: bool,
+    pub lead_cycle_speed: Option<usize>,
     pub generate_even_if_impossible: bool,
     pub roamer_state: Wild3RoamerState,
     pub mass_outbreak_state: Wild3MassOutbreakState,
@@ -102,6 +103,7 @@ fn retain_methods_possible_to_trigger(
                 &res.cycle_range.unwrap(),
                 is_egg,
                 opts.consider_rng_manipulated_lead_pid,
+                opts.lead_cycle_speed,
             )
         });
     }

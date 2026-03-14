@@ -34,6 +34,7 @@ import { useCurrentStep } from "~/components/stepper/state";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { UndefinedToNull } from "~/types";
 import { chunkIvs } from "~/utils/chunkIvs";
+import { MonthSchema, monthToRustFilter } from "~/utils/time";
 
 type Result = FlattenIvs<
   Static4State["state"] & {
@@ -254,6 +255,7 @@ const Validator = z
     min_delay: z.number().int().min(0),
     max_delay: z.number().int().min(0),
     year: z.number().int().min(2000).max(2100),
+    month: MonthSchema,
     lead: LeadOptionsSchema,
     force_second: z.number().int().min(0).max(59).nullable(),
   })
@@ -265,6 +267,7 @@ const initialValues: FormState = {
   tid: 0,
   sid: 0,
   year: 2000,
+  month: "Any",
   species: "Abra",
   min_delay: 800,
   max_delay: 810,
@@ -430,6 +433,7 @@ export const Static4Searcher = () => {
         species: formattedSpecies,
         tid: opts.tid,
         year: opts.year,
+        month: monthToRustFilter(opts.month),
         lead: opts.lead,
         game,
       };

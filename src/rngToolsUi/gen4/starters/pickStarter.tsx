@@ -41,6 +41,7 @@ import { chunkIvs } from "~/utils/chunkIvs";
 import { UndefinedToNull } from "~/types";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
+import { MONTHS, MonthSchema, monthToRustFilter } from "~/utils/time";
 
 type Result = FlattenIvs<
   Static4State["state"] & {
@@ -77,6 +78,7 @@ const Validator = z
     tid: z.number().int().min(0).max(65535),
     sid: z.number().int().min(0).max(65535),
     year: z.number().int().min(2000).max(2100),
+    month: MonthSchema,
     species: z.enum(allStarters),
     min_delay: z.number().int().min(0),
     max_delay: z.number().int().min(0),
@@ -91,6 +93,7 @@ const dpptInitialValues: FormState = {
   tid: 0,
   sid: 0,
   year: 2000,
+  month: "Any",
   species: "Turtwig",
   min_delay: 600,
   max_delay: 1000,
@@ -176,6 +179,15 @@ const getFields = (game: Gen4GameVersion, t: Translations): Field[] => {
       input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
     },
     {
+      label: t["Month"],
+      input: (
+        <FormikSelect<FormState, "month">
+          name="month"
+          options={toOptions(MONTHS, (month) => t[month])}
+        />
+      ),
+    },
+    {
       label: t["Min Delay"],
       input: (
         <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
@@ -253,6 +265,7 @@ export const PickStarter4 = () => {
       });
       const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
         ...opts,
+        month: monthToRustFilter(opts.month),
         min_advance: advance,
         max_advance: advance,
         force_second: opts.force_second,

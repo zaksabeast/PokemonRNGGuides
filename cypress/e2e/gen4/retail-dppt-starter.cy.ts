@@ -20,6 +20,7 @@ describe("rng tool", () => {
         tid: "23997",
         sid: "9155",
         year: "2025",
+        month: { type: "select", value: "Any" },
         species: { type: "select", value: "Chimchar" },
         min_delay: "55",
         max_delay: "55",

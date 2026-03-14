@@ -1,6 +1,6 @@
 use super::base_state::{BaseStatic4State, Static4State};
 use crate::Species;
-use crate::gen4::seed_time4::{FindSeedTime4Options, find_seedtime};
+use crate::gen4::seed_time4::SeedTime4Options;
 use crate::gen4::{GameVersion, LeadAbility, StaticMethod};
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
@@ -31,6 +31,7 @@ pub struct SearchStatic4Opts {
     pub min_delay: u32,
     pub max_delay: u32,
     pub year: u32,
+    pub month: Option<u32>,
     pub force_second: Option<u32>,
     pub lead: Static4LeadInput,
 }
@@ -39,6 +40,7 @@ struct SeedFilters {
     min_advance: usize,
     max_advance: usize,
     year: u32,
+    month: Option<u32>,
     min_delay: u32,
     max_delay: u32,
     force_second: Option<u32>,
@@ -65,13 +67,15 @@ impl SeedFilters {
 
                 if hour < 24 && delay >= filters.min_delay && delay <= filters.max_delay {
                     // Found a match! Now verify with find_seedtime if needed
-                    let seed_time_opts = FindSeedTime4Options::new(
+                    let seed_time_opts = SeedTime4Options::new(
                         seed,
+                        1,
                         filters.year,
+                        filters.month,
                         filters.min_delay..=filters.max_delay,
                         filters.force_second,
                     );
-                    if let Some(seed_time) = find_seedtime(seed_time_opts) {
+                    if let Some(seed_time) = seed_time_opts.find_seedtime() {
                         let found_state = state.add_seedtime(advance, seed_time);
                         results.push(found_state);
                     }
@@ -91,6 +95,7 @@ impl From<&SearchStatic4Opts> for SeedFilters {
             min_advance: opts.min_advance,
             max_advance: opts.max_advance,
             year: opts.year,
+            month: opts.month,
             min_delay: opts.min_delay,
             max_delay: opts.max_delay,
             force_second: opts.force_second,
@@ -550,6 +555,7 @@ mod tests {
                 tid: 12345,
                 sid: 54321,
                 year: 2000,
+                month: None,
                 min_delay: 800,
                 max_delay: 900,
                 min_advance: 0,
@@ -576,6 +582,7 @@ mod tests {
                 tid: 12345,
                 sid: 54321,
                 year: 2000,
+                month: None,
                 min_delay: 800,
                 max_delay: 900,
                 min_advance: 40,
@@ -614,6 +621,7 @@ mod tests {
                     ..Default::default()
                 },
                 year: 2000,
+                month: None,
                 min_delay: 800,
                 max_delay: 900,
                 min_advance: 0,
@@ -639,6 +647,7 @@ mod tests {
                     ..Default::default()
                 },
                 year: 2000,
+                month: None,
                 min_delay: 800,
                 max_delay: 900,
                 min_advance: 0,
@@ -665,6 +674,7 @@ mod tests {
                     ..Default::default()
                 },
                 year: 2000,
+                month: None,
                 min_delay: 800,
                 max_delay: 900,
                 min_advance: 0,
@@ -691,6 +701,7 @@ mod tests {
                     ..Default::default()
                 },
                 year: 2000,
+                month: None,
                 min_delay: 800,
                 max_delay: 801,
                 min_advance: 0,
@@ -731,6 +742,7 @@ mod tests {
                 min_delay: 800,
                 max_delay: 900,
                 year: 2000,
+                month: None,
                 force_second: None,
             };
             let results = search_static4(&opts);
@@ -756,6 +768,7 @@ mod tests {
                 min_delay: 800,
                 max_delay: 801,
                 year: 2000,
+                month: None,
                 force_second: None,
             };
             let results = search_static4(&opts);
@@ -787,6 +800,7 @@ mod tests {
                 min_delay: 800,
                 max_delay: 900,
                 year: 2000,
+                month: None,
                 force_second: None,
             };
             let results = search_static4(&opts);
@@ -813,6 +827,7 @@ mod tests {
                 min_delay: 800,
                 max_delay: 900,
                 year: 2000,
+                month: None,
                 force_second: None,
             };
             let results = search_static4(&opts);

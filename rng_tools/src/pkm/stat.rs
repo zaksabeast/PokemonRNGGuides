@@ -1,4 +1,4 @@
-use crate::{Ivs, Nature, NatureFactor};
+use crate::{Ivs, Nature, NatureFactor, Species};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -12,6 +12,21 @@ pub struct StatsValue {
     pub spa: u16,
     pub spd: u16,
     pub spe: u16,
+}
+
+#[macro_export]
+macro_rules! stats {
+    ($hp:literal / $atk:literal / $def:literal / $spa:literal / $spd:literal / $spe:literal) => {{
+        const STATS: StatsValue = $crate::StatsValue {
+            hp: $hp,
+            atk: $atk,
+            def: $def,
+            spa: $spa,
+            spd: $spd,
+            spe: $spe,
+        };
+        STATS
+    }};
 }
 
 pub fn calculate_hp(base_stat: u16, iv: u8, ev: u16, level: u8) -> u16 {
@@ -40,7 +55,9 @@ pub fn calculate_non_hp(
 }
 
 #[wasm_bindgen]
-pub fn calculate_minmax_stats(base_stats: &StatsValue, level: u8, is_min_stat: bool) -> StatsValue {
+pub fn calculate_minmax_stats(species: Species, level: u8, is_min_stat: bool) -> StatsValue {
+    let base_stats = &species.base_personal().base_stats;
+
     let iv = if is_min_stat { 0 } else { 31 };
     let nature_factor = if is_min_stat {
         NatureFactor::Less
@@ -70,11 +87,12 @@ static ARRAY_31_0: [u8; 32] = [
 
 #[wasm_bindgen]
 pub fn calculate_min_ivs_from_stats(
-    base_stats: &StatsValue,
+    species: Species,
     level: u8,
     nature: Nature,
     stats: &StatsValue,
 ) -> Option<Ivs> {
+    let base_stats = &species.base_personal().base_stats;
     let nature_factors = nature.stat_factor();
 
     // Ex: stats.hp == 11
@@ -117,11 +135,12 @@ pub fn calculate_min_ivs_from_stats(
 
 #[wasm_bindgen]
 pub fn calculate_max_ivs_from_stats(
-    base_stats: &StatsValue,
+    species: Species,
     level: u8,
     nature: Nature,
     stats: &StatsValue,
 ) -> Option<Ivs> {
+    let base_stats = &species.base_personal().base_stats;
     let nature_factors = nature.stat_factor();
 
     // Ex: stats.hp == 11
@@ -163,12 +182,13 @@ pub fn calculate_max_ivs_from_stats(
 
 #[wasm_bindgen]
 pub fn calculate_stats(
-    base_stats: &StatsValue,
+    species: Species,
     level: u8,
     nature: Nature,
     ivs: &Ivs,
     evs: &StatsValue,
 ) -> StatsValue {
+    let base_stats = &species.base_personal().base_stats;
     let nature_factors = nature.stat_factor();
 
     StatsValue {
@@ -187,18 +207,9 @@ mod tests {
 
     #[test]
     fn test_calculate_minmax_ivs_from_stats() {
-        let base_stats = StatsValue {
-            hp: 50,
-            atk: 70,
-            def: 50,
-            spa: 50,
-            spd: 50,
-            spe: 40,
-        };
-
         assert_eq!(
             calculate_min_ivs_from_stats(
-                &base_stats,
+                Species::Mudkip,
                 10,
                 Nature::Adamant,
                 &StatsValue {
@@ -222,7 +233,7 @@ mod tests {
 
         assert_eq!(
             calculate_max_ivs_from_stats(
-                &base_stats,
+                Species::Mudkip,
                 10,
                 Nature::Adamant,
                 &StatsValue {
@@ -246,7 +257,7 @@ mod tests {
 
         assert_eq!(
             calculate_min_ivs_from_stats(
-                &base_stats,
+                Species::Mudkip,
                 10,
                 Nature::Adamant,
                 &StatsValue {
@@ -263,7 +274,7 @@ mod tests {
 
         assert_eq!(
             calculate_max_ivs_from_stats(
-                &base_stats,
+                Species::Mudkip,
                 10,
                 Nature::Adamant,
                 &StatsValue {
@@ -281,17 +292,8 @@ mod tests {
 
     #[test]
     fn test_mudkip_starter() {
-        let base_stats = StatsValue {
-            hp: 50,
-            atk: 70,
-            def: 50,
-            spa: 50,
-            spd: 50,
-            spe: 40,
-        };
-
         assert_eq!(
-            calculate_minmax_stats(&base_stats, 5, true),
+            calculate_minmax_stats(Species::Mudkip, 5, true),
             StatsValue {
                 hp: 20,
                 atk: 10,
@@ -303,7 +305,7 @@ mod tests {
         );
 
         assert_eq!(
-            calculate_minmax_stats(&base_stats, 5, false),
+            calculate_minmax_stats(Species::Mudkip, 5, false),
             StatsValue {
                 hp: 21,
                 atk: 14,
@@ -315,6 +317,7 @@ mod tests {
         );
 
         // Mudkip on advance 8000
+        let base_stats = &Species::Mudkip.base_personal().base_stats;
         assert_eq!(calculate_hp(base_stats.hp, 27, 0, 5), 21);
         assert_eq!(
             calculate_non_hp(base_stats.atk, 30, 0, 5, NatureFactor::Equal),

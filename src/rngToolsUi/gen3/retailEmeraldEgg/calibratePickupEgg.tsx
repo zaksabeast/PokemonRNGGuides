@@ -21,7 +21,6 @@ import {
 } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { getNullableIvColumns } from "~/rngToolsUi/shared/ivColumns";
-import { getLooseBaseStats } from "~/types/baseStats";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
 import { getStatRange } from "~/types/statRange";
@@ -228,17 +227,10 @@ export const CalibratePickupEgg = () => {
 
   React.useEffect(() => {
     const runAsync = async () => {
-      const baseStats = getLooseBaseStats(targetSpecies);
-
-      if (baseStats == null) {
-        setPotentialEggs([]);
-        return;
-      }
-
       const potentialEggs = await getPotentialEggs(state);
       const formattedResults = await pmap(potentialEggs, async (result) => {
         const stats = await rngTools.calculate_stats(
-          baseStats,
+          targetSpecies,
           5,
           targetNature,
           normalizeInheritedIvs(result.ivs),

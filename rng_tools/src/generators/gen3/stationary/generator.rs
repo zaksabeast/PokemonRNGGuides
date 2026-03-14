@@ -765,18 +765,8 @@ mod test {
     }
 
     mod stat_filter {
-        use crate::{calculate_max_ivs_from_stats, calculate_min_ivs_from_stats};
-
         use super::*;
-
-        const BASE_STATS: StatsValue = StatsValue {
-            hp: 50,
-            atk: 70,
-            def: 50,
-            spa: 50,
-            spd: 50,
-            spe: 40,
-        };
+        use crate::{calculate_max_ivs_from_stats, calculate_min_ivs_from_stats};
 
         #[test]
         fn finds_matching_pokemon() {
@@ -788,20 +778,22 @@ mod test {
                 spd: 9,
                 spe: 9,
             };
+
+            let species = Species::Mudkip;
             let opts = Static3GeneratorOptions {
                 offset: 0,
                 initial_advances: 0,
                 max_advances: 0,
                 seed: 0,
-                species: Species::Mudkip,
+                species,
                 bugged_roamer: false,
                 method4: false,
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    min_ivs: calculate_min_ivs_from_stats(&BASE_STATS, 5, Nature::Naive, &stats)
+                    min_ivs: calculate_min_ivs_from_stats(species, 5, Nature::Naive, &stats)
                         .unwrap(),
-                    max_ivs: calculate_max_ivs_from_stats(&BASE_STATS, 5, Nature::Naive, &stats)
+                    max_ivs: calculate_max_ivs_from_stats(species, 5, Nature::Naive, &stats)
                         .unwrap(),
                     ..Default::default()
                 },
@@ -837,20 +829,22 @@ mod test {
                 spd: 9,
                 spe: 9,
             };
+
+            let species = Species::Mudkip;
             let opts = Static3GeneratorOptions {
                 offset: 0,
                 initial_advances: 0,
                 max_advances: 0,
                 seed: 0,
-                species: Species::Mudkip,
+                species,
                 bugged_roamer: false,
                 method4: false,
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    min_ivs: calculate_min_ivs_from_stats(&BASE_STATS, 5, Nature::Naive, &stats)
+                    min_ivs: calculate_min_ivs_from_stats(species, 5, Nature::Naive, &stats)
                         .unwrap(),
-                    max_ivs: calculate_max_ivs_from_stats(&BASE_STATS, 5, Nature::Naive, &stats)
+                    max_ivs: calculate_max_ivs_from_stats(species, 5, Nature::Naive, &stats)
                         .unwrap(),
                     ..Default::default()
                 },
@@ -871,20 +865,21 @@ mod test {
                 spe: 8,
             };
 
+            let species = Species::Mudkip;
             let opts = Static3GeneratorOptions {
                 offset: 0,
                 initial_advances: 8000,
                 max_advances: 0,
                 seed: 0,
-                species: Species::Mudkip,
+                species,
                 bugged_roamer: false,
                 method4: false,
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    min_ivs: calculate_min_ivs_from_stats(&BASE_STATS, 5, Nature::Relaxed, &stats)
+                    min_ivs: calculate_min_ivs_from_stats(species, 5, Nature::Relaxed, &stats)
                         .unwrap(),
-                    max_ivs: calculate_max_ivs_from_stats(&BASE_STATS, 5, Nature::Relaxed, &stats)
+                    max_ivs: calculate_max_ivs_from_stats(species, 5, Nature::Relaxed, &stats)
                         .unwrap(),
                     ..Default::default()
                 },

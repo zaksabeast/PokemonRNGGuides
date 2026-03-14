@@ -5,6 +5,7 @@ mod gender;
 mod gender_ratio;
 mod hidden_power;
 mod nature;
+mod personal;
 mod pokemon_type;
 mod shiny;
 mod size;

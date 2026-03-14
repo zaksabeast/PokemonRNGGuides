@@ -1,4 +1,8 @@
-use super::{Gender, GenderRatio, get_species_gender_ratio};
+use super::Gender;
+use crate::{
+    GenderRatio,
+    pkm::personal::{Personal, get_form_personal, get_personal},
+};
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
@@ -1024,8 +1028,16 @@ pub enum Species {
 }
 
 impl Species {
+    pub fn base_personal(&self) -> &'static Personal {
+        get_personal(*self)
+    }
+
+    pub fn form_personal(&self, form: usize) -> &'static Personal {
+        get_form_personal(*self, form)
+    }
+
     pub fn gender_ratio(&self) -> GenderRatio {
-        get_species_gender_ratio(self)
+        self.base_personal().gender_ratio
     }
 
     pub fn gender_from_pid(&self, pid: u32) -> Gender {

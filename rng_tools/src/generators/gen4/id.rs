@@ -1,5 +1,5 @@
 use super::calc_seed;
-use crate::gen4::seed_time4::{FindSeedTime4Options, SeedTime4, find_seedtime};
+use crate::gen4::seed_time4::{SeedTime4, SeedTime4Options};
 use crate::rng::Rng;
 use crate::rng::mt::MT;
 use crate::{IdFilter, RngDateTime, gen3_tsv};
@@ -92,12 +92,16 @@ pub fn search_dppt_ids(opts: Id4SearchOptions) -> Vec<Id4> {
                     continue;
                 }
 
-                let seed_time_opts =
-                    FindSeedTime4Options::new(seed, opts.year, delay..=delay, opts.force_second);
+                let seed_time_opts = SeedTime4Options::new(
+                    seed,
+                    1,
+                    opts.year,
+                    None,
+                    delay..=delay,
+                    opts.force_second,
+                );
 
-                let seed_time = find_seedtime(seed_time_opts);
-
-                if let Some(seed_time) = seed_time {
+                if let Some(seed_time) = seed_time_opts.find_seedtime() {
                     results.push(Id4 {
                         seed_time,
                         tid,

@@ -17,13 +17,7 @@ import { z } from "zod";
 import { natureOptions } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { Gen4Starter, starterTimer, useStarterState } from "./state";
-import {
-  getStrictBaseStats,
-  maxIvs,
-  minIvs,
-  nature,
-  StatFieldsSchema,
-} from "~/types";
+import { nature, StatFieldsSchema } from "~/types";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { FormikRadio } from "~/components/radio";
 import { formatOffset } from "~/utils/offsetSymbol";
@@ -35,6 +29,7 @@ import { fromRngDateTime, toRngDateTime } from "~/utils/time";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
 import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
+import { getIvRangeFromStats } from "~/types/statRange";
 
 type Result = Gen4StaticPokemon & {
   key: string;
@@ -197,8 +192,6 @@ export const CalibrateStarter4 = () => {
       const minDelay = Math.max(targetDelay - 500, 0);
       const maxDelay = targetDelay + 500;
 
-      const baseStats = getStrictBaseStats(targetSpecies);
-
       const caughtStats: StatsValue = {
         hp: opts.hpStat,
         atk: opts.atkStat,
@@ -222,6 +215,17 @@ export const CalibrateStarter4 = () => {
       const maxAdvances = state.game === "Platinum" ? 40 : 20;
 
       const results = await pMap(seedTimes, async (seedTime) => {
+        const minMaxIvs = await getIvRangeFromStats({
+          species: targetSpecies,
+          lvl: opts.level,
+          nature: opts.nature,
+          stats: caughtStats,
+        });
+
+        if (minMaxIvs == null) {
+          return [];
+        }
+
         const states = await rngTools.generate_static4_states({
           tid: 0,
           sid: 0,
@@ -235,16 +239,9 @@ export const CalibrateStarter4 = () => {
           filter: {
             shiny: false,
             ability: null,
-            min_ivs: minIvs,
-            max_ivs: maxIvs,
+            ...minMaxIvs,
             nature: opts.nature,
             gender: opts.gender,
-            stats: {
-              lvl: opts.level,
-              base_stats: baseStats,
-              min_stats: caughtStats,
-              max_stats: caughtStats,
-            },
             hidden_power: defaultHiddenPowerFilter,
           },
         });

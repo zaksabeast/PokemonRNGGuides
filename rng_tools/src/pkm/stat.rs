@@ -14,15 +14,6 @@ pub struct StatsValue {
     pub spe: u16,
 }
 
-#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct StatFilter {
-    pub lvl: u8,
-    pub base_stats: StatsValue,
-    pub min_stats: StatsValue,
-    pub max_stats: StatsValue,
-}
-
 pub fn calculate_hp(base_stat: u16, iv: u8, ev: u16, level: u8) -> u16 {
     if base_stat == 1 {
         return 1; // Shedinja
@@ -67,6 +58,109 @@ pub fn calculate_minmax_stats(base_stats: &StatsValue, level: u8, is_min_stat: b
     }
 }
 
+static ARRAY_0_31: [u8; 32] = [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+    26, 27, 28, 29, 30, 31,
+];
+
+static ARRAY_31_0: [u8; 32] = [
+    31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8,
+    7, 6, 5, 4, 3, 2, 1, 0,
+];
+
+#[wasm_bindgen]
+pub fn calculate_min_ivs_from_stats(
+    base_stats: &StatsValue,
+    level: u8,
+    nature: Nature,
+    stats: &StatsValue,
+) -> Option<Ivs> {
+    let nature_factors = nature.stat_factor();
+
+    // Ex: stats.hp == 11
+    // Iv:      0,  1,  2,  3,  4,  5
+    // CalcHp   10, 10, 11, 11, 12, 12
+    // RetVal:  T,  T,  F,  F,  F,  F
+    // partition_point  ^
+
+    let hp = ARRAY_0_31.partition_point(|iv| calculate_hp(base_stats.hp, *iv, 0, level) < stats.hp)
+        as u8;
+    let atk = ARRAY_0_31.partition_point(|iv| {
+        calculate_non_hp(base_stats.atk, *iv, 0, level, nature_factors.atk) < stats.atk
+    }) as u8;
+    let def = ARRAY_0_31.partition_point(|iv| {
+        calculate_non_hp(base_stats.def, *iv, 0, level, nature_factors.def) < stats.def
+    }) as u8;
+    let spa = ARRAY_0_31.partition_point(|iv| {
+        calculate_non_hp(base_stats.spa, *iv, 0, level, nature_factors.spa) < stats.spa
+    }) as u8;
+    let spd = ARRAY_0_31.partition_point(|iv| {
+        calculate_non_hp(base_stats.spd, *iv, 0, level, nature_factors.spd) < stats.spd
+    }) as u8;
+    let spe = ARRAY_0_31.partition_point(|iv| {
+        calculate_non_hp(base_stats.spe, *iv, 0, level, nature_factors.spe) < stats.spe
+    }) as u8;
+
+    if hp > 31 || atk > 31 || def > 31 || spa > 31 || spd > 31 || spe > 31 {
+        None
+    } else {
+        Some(Ivs {
+            hp,
+            atk,
+            def,
+            spa,
+            spd,
+            spe,
+        })
+    }
+}
+
+#[wasm_bindgen]
+pub fn calculate_max_ivs_from_stats(
+    base_stats: &StatsValue,
+    level: u8,
+    nature: Nature,
+    stats: &StatsValue,
+) -> Option<Ivs> {
+    let nature_factors = nature.stat_factor();
+
+    // Ex: stats.hp == 11
+    // Iv:      31, 30, 29, 28, 27, 26
+    // CalcHp:  12, 12, 12, 11, 11, 10
+    // RetVal:  T,  T,  T,  F,  F,  F
+    // partition_point      ^
+
+    let hp = ARRAY_31_0.partition_point(|iv| calculate_hp(base_stats.hp, *iv, 0, level) > stats.hp);
+    let atk = ARRAY_31_0.partition_point(|iv| {
+        calculate_non_hp(base_stats.atk, *iv, 0, level, nature_factors.atk) > stats.atk
+    });
+    let def = ARRAY_31_0.partition_point(|iv| {
+        calculate_non_hp(base_stats.def, *iv, 0, level, nature_factors.def) > stats.def
+    });
+    let spa = ARRAY_31_0.partition_point(|iv| {
+        calculate_non_hp(base_stats.spa, *iv, 0, level, nature_factors.spa) > stats.spa
+    });
+    let spd = ARRAY_31_0.partition_point(|iv| {
+        calculate_non_hp(base_stats.spd, *iv, 0, level, nature_factors.spd) > stats.spd
+    });
+    let spe = ARRAY_31_0.partition_point(|iv| {
+        calculate_non_hp(base_stats.spe, *iv, 0, level, nature_factors.spe) > stats.spe
+    });
+
+    if hp > 31 || atk > 31 || def > 31 || spa > 31 || spd > 31 || spe > 31 {
+        None
+    } else {
+        Some(Ivs {
+            hp: ARRAY_31_0[hp],
+            atk: ARRAY_31_0[atk],
+            def: ARRAY_31_0[def],
+            spa: ARRAY_31_0[spa],
+            spd: ARRAY_31_0[spd],
+            spe: ARRAY_31_0[spe],
+        })
+    }
+}
+
 #[wasm_bindgen]
 pub fn calculate_stats(
     base_stats: &StatsValue,
@@ -90,6 +184,100 @@ pub fn calculate_stats(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_calculate_minmax_ivs_from_stats() {
+        let base_stats = StatsValue {
+            hp: 50,
+            atk: 70,
+            def: 50,
+            spa: 50,
+            spd: 50,
+            spe: 40,
+        };
+
+        assert_eq!(
+            calculate_min_ivs_from_stats(
+                &base_stats,
+                10,
+                Nature::Adamant,
+                &StatsValue {
+                    hp: 31,
+                    atk: 22,
+                    def: 15,
+                    spa: 14,
+                    spd: 15,
+                    spe: 13
+                }
+            ),
+            Some(Ivs {
+                hp: 10,
+                atk: 10,
+                def: 0,
+                spa: 10,
+                spd: 0,
+                spe: 0
+            })
+        );
+
+        assert_eq!(
+            calculate_max_ivs_from_stats(
+                &base_stats,
+                10,
+                Nature::Adamant,
+                &StatsValue {
+                    hp: 31,
+                    atk: 22,
+                    def: 15,
+                    spa: 14,
+                    spd: 15,
+                    spe: 13
+                }
+            ),
+            Some(Ivs {
+                hp: 19,
+                atk: 19,
+                def: 9,
+                spa: 19,
+                spd: 9,
+                spe: 9
+            })
+        );
+
+        assert_eq!(
+            calculate_min_ivs_from_stats(
+                &base_stats,
+                10,
+                Nature::Adamant,
+                &StatsValue {
+                    hp: 100,
+                    atk: 22,
+                    def: 15,
+                    spa: 14,
+                    spd: 15,
+                    spe: 13
+                }
+            ),
+            None
+        );
+
+        assert_eq!(
+            calculate_max_ivs_from_stats(
+                &base_stats,
+                10,
+                Nature::Adamant,
+                &StatsValue {
+                    hp: 10,
+                    atk: 22,
+                    def: 15,
+                    spa: 14,
+                    spd: 15,
+                    spe: 13
+                }
+            ),
+            None
+        );
+    }
 
     #[test]
     fn test_mudkip_starter() {

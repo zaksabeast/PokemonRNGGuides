@@ -18,7 +18,6 @@ import {
   HiddenPowerInput,
   HiddenPowerSwitch,
 } from "./hiddenPowerInput.component";
-import { StatsFilterSchema } from "../types/stat";
 import { Translations } from "~/translations";
 import { GenderFilter } from "./genderFilter";
 
@@ -57,7 +56,6 @@ export const pkmFilterSchema = z.object({
   filter_min_ivs: IvsSchema,
   filter_max_ivs: IvsSchema,
   filter_hidden_power: HiddenPowerSchema,
-  filter_stats: StatsFilterSchema.nullable(),
 });
 
 export const pkmFilterFieldsToRustInput = (
@@ -71,7 +69,6 @@ export const pkmFilterFieldsToRustInput = (
     max_ivs: fields.filter_max_ivs,
     ability: fields.filter_ability,
     hidden_power: fields.filter_hidden_power,
-    stats: null,
   };
 };
 
@@ -93,7 +90,6 @@ export const getPkmFilterInitialValues = (): PkmFilterFields => ({
   filter_gender: null,
   filter_ability: null,
   filter_hidden_power: defaultHiddenPowerFilter,
-  filter_stats: null,
 });
 
 const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>

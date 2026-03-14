@@ -3,6 +3,32 @@ import dayjs, { Dayjs } from "dayjs";
 import { z } from "zod";
 import utc from "dayjs/plugin/utc";
 
+export const MONTH = {
+  Any: 0,
+  January: 1,
+  February: 2,
+  March: 3,
+  April: 4,
+  May: 5,
+  June: 6,
+  July: 7,
+  August: 8,
+  September: 9,
+  October: 10,
+  November: 11,
+  December: 12,
+} as const;
+
+type Month = keyof typeof MONTH;
+
+export const MONTHS = Object.keys(MONTH) as Month[];
+
+export const MonthSchema = z.enum(MONTHS);
+
+export const monthToRustFilter = (month: Month): number | null => {
+  return month === "Any" ? null : MONTH[month];
+};
+
 dayjs.extend(utc);
 
 export const RngDateSchema: z.Schema<RngDate> = z.object({

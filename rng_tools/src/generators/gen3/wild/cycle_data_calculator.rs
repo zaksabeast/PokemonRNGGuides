@@ -55,6 +55,7 @@ impl Wild3SearcherCycleData {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3SearcherCycleDataByLead {
     pub post_sweet_scent_range: CycleAndModRange,
+    pub specified_lead: Option<Wild3SearcherCycleData>,
     pub slowest_lead: Wild3SearcherCycleData,
     pub fastest_lead: Wild3SearcherCycleData,
     pub ideal_lead: Wild3SearcherCycleData,
@@ -65,6 +66,7 @@ pub struct Wild3SearcherCycleDataByLead {
 pub fn calculate_cycle_data_by_lead(
     post_sweet_scent_range: &CycleAndModRange,
     egg_lead: bool,
+    specified_lead_cycle_speed: Option<usize>,
 ) -> Wild3SearcherCycleDataByLead {
     if egg_lead {
         // cycle_data is useful even with egg lead to know the likelihood of hitting the method.
@@ -72,6 +74,7 @@ pub fn calculate_cycle_data_by_lead(
 
         Wild3SearcherCycleDataByLead {
             post_sweet_scent_range: *post_sweet_scent_range,
+            specified_lead: Some(cycle_data.clone()),
             slowest_lead: cycle_data.clone(),
             fastest_lead: cycle_data.clone(),
             ideal_lead: cycle_data.clone(),
@@ -84,6 +87,8 @@ pub fn calculate_cycle_data_by_lead(
 
         Wild3SearcherCycleDataByLead {
             post_sweet_scent_range: *post_sweet_scent_range,
+            specified_lead: specified_lead_cycle_speed
+                .map(|spd| calculate_cycle_data(post_sweet_scent_range, spd)),
             slowest_lead: calculate_cycle_data(post_sweet_scent_range, SLOWEST_MODULO_CYCLE_24),
             fastest_lead: calculate_cycle_data(post_sweet_scent_range, FASTEST_MODULO_CYCLE_24),
             ideal_lead: calculate_cycle_data(post_sweet_scent_range, ideal_lead_pid_cycle_count),
@@ -117,9 +122,17 @@ pub fn is_method_possible_to_trigger(
     post_sweet_scent_mod_range: &CycleAndModRange,
     is_egg: bool,
     consider_rng_manipulated_lead_pid: bool,
+    lead_cycle_speed: Option<usize>,
 ) -> bool {
     if is_egg {
         return calculate_method_probability_from_mod_range(post_sweet_scent_mod_range, 0) > 0f64;
+    }
+
+    if let Some(lead_cycle_speed) = lead_cycle_speed {
+        return calculate_method_probability_from_mod_range(
+            post_sweet_scent_mod_range,
+            lead_cycle_speed,
+        ) > 0f64;
     }
 
     // if consider_rng_manipulated_lead_pid is false, all common lead PIDs must have a non-zero probability of hitting the method

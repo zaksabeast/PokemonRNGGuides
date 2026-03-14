@@ -12,7 +12,6 @@ describe("rng tool", () => {
         | "filter_ability"
         | "filter_gender"
         | "filter_hidden_power"
-        | "filter_stats"
       >
     >({
       url: "/transporter-rng",

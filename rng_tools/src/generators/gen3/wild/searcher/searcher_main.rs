@@ -102,6 +102,7 @@ pub struct Wild3SearcherOptions {
     pub methods: Vec<Gen3Method>,
     pub consider_cycles: bool,
     pub consider_rng_manipulated_lead_pid: bool,
+    pub lead_cycle_speed: Option<usize>,
     pub generate_even_if_impossible: bool,
     pub painting_opts: Option<Wild3PaintingOpts>,
 }
@@ -125,6 +126,7 @@ impl Default for Wild3SearcherOptions {
             consider_rng_manipulated_lead_pid: false,
             generate_even_if_impossible: false,
             painting_opts: None,
+            lead_cycle_speed: None,
         }
     }
 }
@@ -171,13 +173,10 @@ impl Wild3SearcherResultMon {
         advance: usize,
         encounter: &Wild3EncounterGameData,
     ) -> Wild3SearcherResultMon {
-        let cycle_data_by_lead = match gen_res.cycle_range {
-            Some(cycle_range) => {
-                let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);
-                Some(calculate_cycle_data_by_lead(&cycle_range, is_egg))
-            }
-            _ => None,
-        };
+        let cycle_data_by_lead = gen_res.cycle_range.map(|cycle_range| {
+            let is_egg = matches!(gen_opts.lead, Gen3Lead::Egg);
+            calculate_cycle_data_by_lead(&cycle_range, is_egg, gen_opts.lead_cycle_speed)
+        });
 
         Wild3SearcherResultMon {
             pid: gen_res.pid,

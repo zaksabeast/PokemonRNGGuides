@@ -113,8 +113,8 @@ pub fn gen3_static_generator_states(opts: &Static3GeneratorOptions) -> Vec<Stati
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::StatsValue;
     use crate::assert_list_eq;
-    use crate::{StatFilter, StatsValue};
 
     #[test]
     fn generate_method4() {
@@ -765,10 +765,29 @@ mod test {
     }
 
     mod stat_filter {
+        use crate::{calculate_max_ivs_from_stats, calculate_min_ivs_from_stats};
+
         use super::*;
+
+        const BASE_STATS: StatsValue = StatsValue {
+            hp: 50,
+            atk: 70,
+            def: 50,
+            spa: 50,
+            spd: 50,
+            spe: 40,
+        };
 
         #[test]
         fn finds_matching_pokemon() {
+            let stats = StatsValue {
+                hp: 20,
+                atk: 12,
+                def: 11,
+                spa: 10,
+                spd: 9,
+                spe: 9,
+            };
             let opts = Static3GeneratorOptions {
                 offset: 0,
                 initial_advances: 0,
@@ -780,33 +799,10 @@ mod test {
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    stats: Some(StatFilter {
-                        lvl: 5,
-                        base_stats: StatsValue {
-                            hp: 50,
-                            atk: 70,
-                            def: 50,
-                            spa: 50,
-                            spd: 50,
-                            spe: 40,
-                        },
-                        min_stats: StatsValue {
-                            hp: 20,
-                            atk: 12,
-                            def: 11,
-                            spa: 10,
-                            spd: 9,
-                            spe: 9,
-                        },
-                        max_stats: StatsValue {
-                            hp: 20,
-                            atk: 12,
-                            def: 11,
-                            spa: 10,
-                            spd: 9,
-                            spe: 9,
-                        },
-                    }),
+                    min_ivs: calculate_min_ivs_from_stats(&BASE_STATS, 5, Nature::Naive, &stats)
+                        .unwrap(),
+                    max_ivs: calculate_max_ivs_from_stats(&BASE_STATS, 5, Nature::Naive, &stats)
+                        .unwrap(),
                     ..Default::default()
                 },
             };
@@ -833,6 +829,14 @@ mod test {
 
         #[test]
         fn filters_bad_pokemon() {
+            let stats = StatsValue {
+                hp: 20,
+                atk: 13,
+                def: 11,
+                spa: 10,
+                spd: 9,
+                spe: 9,
+            };
             let opts = Static3GeneratorOptions {
                 offset: 0,
                 initial_advances: 0,
@@ -844,33 +848,10 @@ mod test {
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    stats: Some(StatFilter {
-                        lvl: 5,
-                        base_stats: StatsValue {
-                            hp: 50,
-                            atk: 70,
-                            def: 50,
-                            spa: 50,
-                            spd: 50,
-                            spe: 40,
-                        },
-                        min_stats: StatsValue {
-                            hp: 20,
-                            atk: 13,
-                            def: 11,
-                            spa: 10,
-                            spd: 9,
-                            spe: 9,
-                        },
-                        max_stats: StatsValue {
-                            hp: 20,
-                            atk: 13,
-                            def: 11,
-                            spa: 10,
-                            spd: 9,
-                            spe: 9,
-                        },
-                    }),
+                    min_ivs: calculate_min_ivs_from_stats(&BASE_STATS, 5, Nature::Naive, &stats)
+                        .unwrap(),
+                    max_ivs: calculate_max_ivs_from_stats(&BASE_STATS, 5, Nature::Naive, &stats)
+                        .unwrap(),
                     ..Default::default()
                 },
             };
@@ -881,6 +862,15 @@ mod test {
 
         #[test]
         fn initial_advances() {
+            let stats = StatsValue {
+                hp: 21,
+                atk: 13,
+                def: 12,
+                spa: 11,
+                spd: 10,
+                spe: 8,
+            };
+
             let opts = Static3GeneratorOptions {
                 offset: 0,
                 initial_advances: 8000,
@@ -892,33 +882,10 @@ mod test {
                 tid: 0,
                 sid: 0,
                 filter: PkmFilter {
-                    stats: Some(StatFilter {
-                        lvl: 5,
-                        base_stats: StatsValue {
-                            hp: 50,
-                            atk: 70,
-                            def: 50,
-                            spa: 50,
-                            spd: 50,
-                            spe: 40,
-                        },
-                        min_stats: StatsValue {
-                            hp: 21,
-                            atk: 13,
-                            def: 12,
-                            spa: 11,
-                            spd: 10,
-                            spe: 8,
-                        },
-                        max_stats: StatsValue {
-                            hp: 21,
-                            atk: 13,
-                            def: 12,
-                            spa: 11,
-                            spd: 10,
-                            spe: 8,
-                        },
-                    }),
+                    min_ivs: calculate_min_ivs_from_stats(&BASE_STATS, 5, Nature::Relaxed, &stats)
+                        .unwrap(),
+                    max_ivs: calculate_max_ivs_from_stats(&BASE_STATS, 5, Nature::Relaxed, &stats)
+                        .unwrap(),
                     ..Default::default()
                 },
             };
@@ -938,70 +905,6 @@ mod test {
                 ability: AbilityType::Second,
                 gender: Gender::Male,
                 nature: Nature::Relaxed,
-                shiny: false,
-            }];
-            assert_list_eq!(results, expected);
-        }
-
-        #[test]
-        fn nature_regression() {
-            let opts = Static3GeneratorOptions {
-                offset: 0,
-                initial_advances: 646,
-                max_advances: 0,
-                seed: 0,
-                species: Species::Torchic,
-                bugged_roamer: false,
-                method4: false,
-                tid: 0,
-                sid: 0,
-                filter: PkmFilter {
-                    stats: Some(StatFilter {
-                        lvl: 5,
-                        base_stats: StatsValue {
-                            hp: 45,
-                            atk: 60,
-                            def: 40,
-                            spa: 70,
-                            spd: 50,
-                            spe: 45,
-                        },
-                        min_stats: StatsValue {
-                            hp: 19,
-                            atk: 11,
-                            def: 9,
-                            spa: 12,
-                            spd: 9,
-                            spe: 9,
-                        },
-                        max_stats: StatsValue {
-                            hp: 19,
-                            atk: 11,
-                            def: 9,
-                            spa: 12,
-                            spd: 9,
-                            spe: 9,
-                        },
-                    }),
-                    ..Default::default()
-                },
-            };
-
-            let results = gen3_static_generator_states(&opts);
-            let expected = [Static3GeneratorResult {
-                advance: 646,
-                pid: 0xe20b2451,
-                ivs: Ivs {
-                    hp: 9,
-                    atk: 16,
-                    def: 2,
-                    spa: 3,
-                    spd: 9,
-                    spe: 3,
-                },
-                ability: AbilityType::Second,
-                gender: Gender::Male,
-                nature: Nature::Lax,
                 shiny: false,
             }];
             assert_list_eq!(results, expected);

@@ -225,7 +225,7 @@ export const searchWild3Target = async (values: FormState) => {
     consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
     generate_even_if_impossible: values.generate_even_if_impossible,
     painting_opts,
-    lead_cycle_speed: 1, //NO_PROD
+    lead_cycle_speed: null,
   };
 
   const resultsByPidPath = await rngTools.search_wild3(opts);

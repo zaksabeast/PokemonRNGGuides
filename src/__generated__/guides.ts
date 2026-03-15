@@ -7032,7 +7032,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-15",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Retail Egg.mdx",
       translations: {

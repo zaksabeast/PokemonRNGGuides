@@ -1,10 +1,12 @@
 mod ability;
+mod ability_type;
 mod characteristic;
 mod encounter;
 mod gender;
 mod gender_ratio;
 mod hidden_power;
 mod nature;
+mod personal;
 mod pokemon_type;
 mod shiny;
 mod size;
@@ -13,6 +15,7 @@ mod stat;
 
 use crate::Ivs;
 pub use ability::*;
+pub use ability_type::*;
 pub use characteristic::*;
 pub use encounter::*;
 pub use gender::*;

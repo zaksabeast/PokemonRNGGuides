@@ -20,7 +20,8 @@ fn dpt_method_jk(species: Species) -> bool {
             | Species::Heatran
             | Species::Dialga
             | Species::Palkia
-            | Species::Giratina
+            | Species::Giratina_Altered
+            | Species::Giratina_Origin
             | Species::Regice
             | Species::Regirock
             | Species::Registeel
@@ -28,7 +29,7 @@ fn dpt_method_jk(species: Species) -> bool {
             | Species::Azelf
             | Species::Drifloon
             | Species::Spiritomb
-            | Species::Rotom
+            | Species::Rotom_Normal
     )
 }
 
@@ -44,7 +45,7 @@ fn hgss_method_jk(species: Species) -> bool {
             | Species::Dialga
             | Species::Suicune
             | Species::Palkia
-            | Species::Giratina
+            | Species::Giratina_Origin
             | Species::Voltorb
             | Species::Snorlax
             | Species::Lapras

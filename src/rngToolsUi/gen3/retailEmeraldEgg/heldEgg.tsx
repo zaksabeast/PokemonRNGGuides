@@ -13,7 +13,7 @@ import {
 } from "~/components";
 import { useCurrentStep } from "~/components/stepper/state";
 import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
-import { gen3SpeciesOptions, species } from "~/types/species";
+import { getGen3SpeciesOptions, species } from "~/types/species";
 import { nature } from "~/types/nature";
 import { gender } from "~/types/gender";
 import { natureOptions } from "~/components/pkmFilter";
@@ -212,7 +212,7 @@ const getFields = (t: Translations): Field[] => {
       input: (
         <FormikSelect<FormState, "egg_species">
           name="egg_species"
-          options={gen3SpeciesOptions.byName}
+          options={getGen3SpeciesOptions().byName}
         />
       ),
     },

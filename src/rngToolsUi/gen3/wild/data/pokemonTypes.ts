@@ -370,7 +370,10 @@ const gen3TypesBySpecies = {
   Armaldo: ["Rock", "Bug"],
   Feebas: ["Water"],
   Milotic: ["Water"],
-  Castform: ["Normal"],
+  Castform_Normal: ["Normal"],
+  Castform_Sunny: ["Fire"],
+  Castform_Rainy: ["Water"],
+  Castform_Snowy: ["Ice"],
   Kecleon: ["Normal"],
   Shuppet: ["Ghost"],
   Banette: ["Ghost"],
@@ -405,7 +408,10 @@ const gen3TypesBySpecies = {
   Groudon: ["Ground"],
   Rayquaza: ["Dragon", "Flying"],
   Jirachi: ["Steel", "Psychic"],
-  Deoxys: ["Psychic"],
+  Deoxys_Normal: ["Psychic"],
+  Deoxys_Attack: ["Psychic"],
+  Deoxys_Defense: ["Psychic"],
+  Deoxys_Speed: ["Psychic"],
 } as const satisfies Partial<Record<Species, POKEMON_TYPE[]>>;
 
 export const doesSpeciesHaveType = (

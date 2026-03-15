@@ -32,7 +32,7 @@ import {
 } from "~/rngToolsUi/shared/ivColumns";
 import { useCurrentStep } from "~/components/stepper/state";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
-import { UndefinedToNull } from "~/types";
+import { formatSpeciesLabel, UndefinedToNull } from "~/types";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { MonthSchema, monthToRustFilter } from "~/utils/time";
 
@@ -45,10 +45,6 @@ type Result = FlattenIvs<
     delay: number;
   }
 >;
-
-type GiratinaOrigin = "Giratina (Origin Form)";
-type GiratinaAlternate = "Giratina (Alternate Form)";
-type G4Species = Species | GiratinaOrigin | GiratinaAlternate;
 
 const CommonDpptSpecies = [
   // Fossils
@@ -66,7 +62,7 @@ const CommonDpptSpecies = [
 
   // Stationary
   "Drifloon",
-  "Rotom",
+  "Rotom_Normal",
   "Spiritomb",
 
   // Legends
@@ -77,7 +73,7 @@ const CommonDpptSpecies = [
 
   // Events
   "Manaphy",
-] as const satisfies G4Species[];
+] as const satisfies Species[];
 
 const DiamondSpecies = (
   [
@@ -88,8 +84,8 @@ const DiamondSpecies = (
 
     // Legends
     "Dialga",
-    "Giratina (Alternate Form)",
-  ] as const satisfies G4Species[]
+    "Giratina_Altered",
+  ] as const satisfies Species[]
 ).sort();
 
 const PearlSpecies = (
@@ -101,8 +97,8 @@ const PearlSpecies = (
 
     // Legends
     "Palkia",
-    "Giratina (Alternate Form)",
-  ] as const satisfies G4Species[]
+    "Giratina_Altered",
+  ] as const satisfies Species[]
 ).sort();
 
 const PlatinumSpecies = (
@@ -119,13 +115,13 @@ const PlatinumSpecies = (
     "Regirock",
     "Regice",
     "Registeel",
-    "Giratina (Alternate Form)",
-    "Giratina (Origin Form)",
+    "Giratina_Altered",
+    "Giratina_Origin",
 
     // Events
     "Darkrai",
-    "Shaymin",
-  ] as const satisfies G4Species[]
+    "Shaymin_Land",
+  ] as const satisfies Species[]
 ).sort();
 
 const CommonHgSsSpecies = [
@@ -179,11 +175,11 @@ const CommonHgSsSpecies = [
   "Rayquaza",
   "Dialga",
   "Palkia",
-  "Giratina (Origin Form)",
+  "Giratina_Origin",
 
   // Events
   "Manaphy",
-] as const satisfies G4Species[];
+] as const satisfies Species[];
 
 const HeartGoldSpecies = (
   [
@@ -191,7 +187,7 @@ const HeartGoldSpecies = (
     "Ekans",
     "Latios",
     "Kyogre",
-  ] as const satisfies G4Species[]
+  ] as const satisfies Species[]
 ).sort();
 
 const SoulSilverSpecies = (
@@ -200,7 +196,7 @@ const SoulSilverSpecies = (
     "Sandshrew",
     "Latias",
     "Groudon",
-  ] as const satisfies G4Species[]
+  ] as const satisfies Species[]
 ).sort();
 
 const DiamondSpeciesSchema = z.enum(DiamondSpecies);
@@ -213,8 +209,6 @@ const SpeciesSchema = DiamondSpeciesSchema.or(PearlSpeciesSchema)
   .or(PlatinumSpeciesSchema)
   .or(HeartGoldSpeciesSchema)
   .or(SoulSilverSpeciesSchema);
-
-type Static4Species = z.infer<typeof SpeciesSchema>;
 
 type SelectButtonProps = {
   target: Result;
@@ -371,7 +365,7 @@ const getFields = (game: Gen4GameVersion) => {
       input: (
         <FormikSelect<FormState, "species">
           name="species"
-          options={toOptions(species)}
+          options={toOptions(species, formatSpeciesLabel)}
         />
       ),
     },
@@ -417,11 +411,6 @@ export const Static4Searcher = () => {
 
   const onSubmit = React.useCallback(
     async (opts: FormState) => {
-      const formattedSpecies = match<Static4Species, Species>(opts.species)
-        .with("Giratina (Origin Form)", () => "Giratina")
-        .with("Giratina (Alternate Form)", () => "Giratina")
-        .otherwise((spec) => spec);
-
       const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
         filter: pkmFilterFieldsToRustInput(opts),
         force_second: opts.force_second,
@@ -430,7 +419,7 @@ export const Static4Searcher = () => {
         max_delay: opts.max_delay,
         min_delay: opts.min_delay,
         sid: opts.sid,
-        species: formattedSpecies,
+        species: opts.species,
         tid: opts.tid,
         year: opts.year,
         month: monthToRustFilter(opts.month),

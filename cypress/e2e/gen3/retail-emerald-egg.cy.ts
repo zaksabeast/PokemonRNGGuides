@@ -90,6 +90,7 @@ describe("rng tool", () => {
     testRngTool<CalibratePickupFormState>({
       parentSelector: "#step-5",
       form: {
+        level: "5",
         hpStat: { type: "radio", value: "20" },
         atkStat: { type: "radio", value: "9" },
         defStat: { type: "radio", value: "10" },

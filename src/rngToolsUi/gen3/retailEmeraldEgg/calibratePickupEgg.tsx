@@ -2,6 +2,7 @@ import React from "react";
 import {
   Field,
   Flex,
+  FormikNumberInput,
   ResultColumn,
   RngToolForm,
   Select,
@@ -21,11 +22,14 @@ import {
 } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { getNullableIvColumns } from "~/rngToolsUi/shared/ivColumns";
-import { getLooseBaseStats } from "~/types/baseStats";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
-import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
+import {
+  defaultMinMaxStats,
+  MinMaxStats,
+  StatFieldsSchema,
+} from "~/types/stat";
 import { getStatRange } from "~/types/statRange";
-import { StatFields } from "~/components/statInput";
+import { z } from "zod";
 import pmap from "p-map";
 import { sortBy, startCase, mapValues } from "lodash-es";
 import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
@@ -33,7 +37,7 @@ import { ivMethods } from "./constants";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
-import { gen3SpeciesOptions } from "~/types/species";
+import { getGen3SpeciesOptions } from "~/types/species";
 import { natureOptions } from "~/components/pkmFilter";
 import { atom, useAtom } from "jotai";
 import { formatOffset } from "~/utils/offsetSymbol";
@@ -61,7 +65,7 @@ const HeldEggSpeciesSelect = () => {
   return (
     <Select<Species>
       name="species"
-      options={gen3SpeciesOptions.byName}
+      options={getGen3SpeciesOptions().byName}
       value={heldEgg.species}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, species: value }))}
     />
@@ -182,7 +186,13 @@ const getPotentialEggs = async (state: PickupEggState) => {
   return results.flat();
 };
 
-export type FormState = StatFields;
+const DEFAULT_EGG_LEVEL = 5;
+
+const Validator = StatFieldsSchema.extend({
+  level: z.number().int().min(1).max(100).nullable(),
+});
+
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
   hpStat: 0,
@@ -191,6 +201,7 @@ const initialValues: FormState = {
   spaStat: 0,
   spdStat: 0,
   speStat: 0,
+  level: DEFAULT_EGG_LEVEL,
 };
 
 export const CalibratePickupEgg = () => {
@@ -217,29 +228,34 @@ export const CalibratePickupEgg = () => {
   const targetSpecies = heldEgg.species;
   const targetNature = heldEgg.nature;
   const targetAdvance = state.targetAdvance;
+  const eggLevel =
+    filters.level == null || filters.level > 100 || filters.level < 1
+      ? null
+      : filters.level;
 
   React.useEffect(() => {
     const runAsync = async () => {
-      const stats = await getStatRange(targetSpecies);
+      if (eggLevel == null) {
+        return;
+      }
+
+      const stats = await getStatRange(targetSpecies, [eggLevel, eggLevel]);
       setMinMaxStats(stats);
     };
     runAsync();
-  }, [targetSpecies]);
+  }, [targetSpecies, eggLevel]);
 
   React.useEffect(() => {
     const runAsync = async () => {
-      const baseStats = getLooseBaseStats(targetSpecies);
-
-      if (baseStats == null) {
-        setPotentialEggs([]);
+      if (eggLevel == null) {
         return;
       }
 
       const potentialEggs = await getPotentialEggs(state);
       const formattedResults = await pmap(potentialEggs, async (result) => {
         const stats = await rngTools.calculate_stats(
-          baseStats,
-          5,
+          targetSpecies,
+          eggLevel,
           targetNature,
           normalizeInheritedIvs(result.ivs),
           { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
@@ -264,7 +280,7 @@ export const CalibratePickupEgg = () => {
     };
 
     runAsync();
-  }, [state, targetAdvance, targetSpecies, targetNature]);
+  }, [state, targetAdvance, targetSpecies, targetNature, eggLevel]);
 
   const fields = React.useMemo((): Field[] => {
     return [
@@ -276,7 +292,17 @@ export const CalibratePickupEgg = () => {
         label: t["Nature"],
         input: <HeldEggNatureSelect />,
       },
-      ...getStatFields<StatFields>(minMaxStats, t),
+      {
+        label: t["Level"],
+        input: (
+          <FormikNumberInput
+            name="level"
+            numType="decimal"
+            onChange={(level) => setFilters((prev) => ({ ...prev, level }))}
+          />
+        ),
+      },
+      ...getStatFields<FormState>(minMaxStats, t),
     ];
   }, [t, minMaxStats]);
 
@@ -344,6 +370,7 @@ export const CalibratePickupEgg = () => {
       <RngToolForm<FormState, Result>
         fields={fields}
         getColumns={getColumns}
+        validationSchema={Validator}
         results={dataSource}
         initialValues={initialValues}
         onSubmit={onSubmit}

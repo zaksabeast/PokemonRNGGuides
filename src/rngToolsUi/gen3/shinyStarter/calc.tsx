@@ -1,7 +1,6 @@
 import type { Game, Starter, TargetStarter } from "./index";
 import type { FormState } from "./caughtMon";
 import { rngTools } from "~/rngTools";
-import { getStrictBaseStats } from "~/types/baseStats";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
@@ -57,7 +56,7 @@ export const getTargetPokemonDesc = async (
   const res = genResults[0];
 
   const stats = await rngTools.calculate_stats(
-    getStrictBaseStats(pokemonSpecies),
+    pokemonSpecies,
     5,
     res.nature,
     res.ivs,

@@ -1024,8 +1024,8 @@
     "lastUpdated": "2026-03-09"
   },
   "/emerald-wild/": {
-    "hash": "1707492c7d41d2d3ecf01d7c6ed8b0c5ca33cdd6e93236fb0d20638329983dbb",
-    "lastUpdated": null
+    "hash": "a0ca8675918eee86ca3f7a5b5488834335748f41ca8f0a93c5de8c010662be55",
+    "lastUpdated": "2026-03-15"
   },
   "/gba-vblank/": {
     "hash": "070ad78154f7ca10d3fc473ad4357fc9aec7bdca691c8a38c5fe175e79670331",
@@ -1038,6 +1038,14 @@
   "/rs-pokerus-emu/": {
     "hash": "0b6eb3f6134edf651d1e1294584d3aa57d2bf46abd0020e24ff41c4af56562fc",
     "lastUpdated": null
+  },
+  "/emerald-wild-method-likelihood-calculator/": {
+    "hash": "e3519af7b4dd17b61001b188409bb43f9bdefe26dc9825292678151d3e26cdbb",
+    "lastUpdated": "2026-03-15"
+  },
+  "/emerald-painting-seed-searcher/": {
+    "hash": "c245bdd64d34044e30b73e4c26919f60d1bea071857244d121fb49dcf5d1d011",
+    "lastUpdated": "2026-03-15"
   },
   "/emerald-mirage-island/": {
     "hash": "f0e1185f5d9aa8f8fcf6b7d29101693249a74c27ec48b352f75715bf17fdaea5",

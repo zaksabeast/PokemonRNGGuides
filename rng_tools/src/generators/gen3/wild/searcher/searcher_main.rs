@@ -73,12 +73,7 @@ impl Wild3MapSetups {
 
         for encounter_game_data in encounter_game_datas {
             if encounter_game_data.species_data.species == species {
-                return Some(SpeciesData {
-                    species,
-                    gender_ratio: encounter_game_data.species_data.gender_ratio,
-                    is_electric_type: encounter_game_data.species_data.is_electric_type,
-                    is_steel_type: encounter_game_data.species_data.is_steel_type,
-                });
+                return Some(SpeciesData { species });
             }
         }
         None
@@ -189,7 +184,7 @@ impl Wild3SearcherResultMon {
             ability: AbilityType::from_gen3_pid(gen_res.pid),
             gender: encounter
                 .species_data
-                .gender_ratio
+                .gender_ratio()
                 .gender_from_pid(gen_res.pid),
             hidden_power: HiddenPower::from_ivs(&gen_res.ivs),
             advance,

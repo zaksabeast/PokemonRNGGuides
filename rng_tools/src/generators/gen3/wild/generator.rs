@@ -119,9 +119,9 @@ fn select_encounter_idx_ability_attract_type(
         .enumerate()
         .filter_map(|(i, slot)| {
             let attracted = if attract_steel {
-                slot.species_data.is_steel_type
+                slot.species_data.is_steel_type()
             } else {
-                slot.species_data.is_electric_type
+                slot.species_data.is_electric_type()
             };
             if attracted { Some(i) } else { None }
         })
@@ -316,7 +316,7 @@ pub fn generate_gen3_wild(
     let required_gender: Option<Gender>;
     let required_nature: Nature;
 
-    let encounter_gender_ratio = encounter.species_data.gender_ratio;
+    let encounter_gender_ratio = encounter.species_data.gender_ratio();
 
     match opts.lead {
         Gen3Lead::Egg => {

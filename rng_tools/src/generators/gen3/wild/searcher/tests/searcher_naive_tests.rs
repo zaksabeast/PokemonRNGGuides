@@ -34,6 +34,7 @@ fn test_search_wild3_naive_no_filter() {
             method: Gen3Method::Wild1,
             lead: Gen3Lead::Vanilla,
             hidden_power: HiddenPower::new(PokemonType::Water, 68),
+            species: Species::Shuckle,
             ..Default::default()
         },
         Wild3SearcherResultMon {
@@ -51,6 +52,7 @@ fn test_search_wild3_naive_no_filter() {
             method: Gen3Method::Wild1,
             lead: Gen3Lead::Vanilla,
             hidden_power: HiddenPower::new(PokemonType::Psychic, 53),
+            species: Species::Shuckle,
             ..Default::default()
         },
         Wild3SearcherResultMon {
@@ -68,6 +70,7 @@ fn test_search_wild3_naive_no_filter() {
             method: Gen3Method::Wild1,
             lead: Gen3Lead::Vanilla,
             hidden_power: HiddenPower::new(PokemonType::Ground, 52),
+            species: Species::Shuckle,
             ..Default::default()
         },
     ];
@@ -92,7 +95,7 @@ fn test_search_wild3_naive_with_filter() {
             ..Default::default()
         },
         gen3_filter: Gen3PkmFilter {
-            species: Some(Species::Abra),
+            species: Some(Species::Shuckle),
             ..Default::default()
         },
         ..Default::default()
@@ -101,15 +104,15 @@ fn test_search_wild3_naive_with_filter() {
     options.map_setups[0].map_data.slots_by_action[Wild3Action::SweetScentLand as usize]
         [EncounterSlot::Slot0 as usize]
         .species_data
-        .species = Species::Abra;
+        .species = Species::Shuckle;
     options.map_setups[0].map_data.slots_by_action[Wild3Action::SweetScentLand as usize]
         [EncounterSlot::Slot6 as usize]
         .species_data
-        .species = Species::Abra;
+        .species = Species::Shuckle;
     options.map_setups[0].map_data.slots_by_action[Wild3Action::SweetScentLand as usize]
         [EncounterSlot::Slot8 as usize]
         .species_data
-        .species = Species::Abra;
+        .species = Species::Shuckle;
 
     let expected_results = [
         Wild3SearcherResultMon {
@@ -127,7 +130,7 @@ fn test_search_wild3_naive_with_filter() {
             method: Gen3Method::Wild1,
             lead: Gen3Lead::Vanilla,
             hidden_power: HiddenPower::new(PokemonType::Ground, 63),
-            species: Species::Abra,
+            species: Species::Shuckle,
             ..Default::default()
         },
         Wild3SearcherResultMon {
@@ -145,7 +148,7 @@ fn test_search_wild3_naive_with_filter() {
             method: Gen3Method::Wild1,
             lead: Gen3Lead::Vanilla,
             hidden_power: HiddenPower::new(PokemonType::Fire, 43),
-            species: Species::Abra,
+            species: Species::Shuckle,
             ..Default::default()
         },
         Wild3SearcherResultMon {
@@ -163,7 +166,7 @@ fn test_search_wild3_naive_with_filter() {
             method: Gen3Method::Wild1,
             lead: Gen3Lead::Vanilla,
             hidden_power: HiddenPower::new(PokemonType::Fire, 43),
-            species: Species::Abra,
+            species: Species::Shuckle,
             ..Default::default()
         },
     ];
@@ -205,6 +208,7 @@ fn test_search_wild3_naive_shiny() {
         method: Gen3Method::Wild1,
         lead: Gen3Lead::Vanilla,
         hidden_power: HiddenPower::new(PokemonType::Water, 30),
+        species: Species::Shuckle,
         ..Default::default()
     }];
     let result = search_wild3_naive(&options);
@@ -237,6 +241,7 @@ fn test_search_wild3_naive_synchronize() {
             method: Gen3Method::Wild1,
             lead: Gen3Lead::Synchronize(Nature::Hardy),
             hidden_power: HiddenPower::new(PokemonType::Grass, 32),
+            species: Species::Shuckle,
             ..Default::default()
         },
         Wild3SearcherResultMon {
@@ -254,6 +259,7 @@ fn test_search_wild3_naive_synchronize() {
             method: Gen3Method::Wild1,
             lead: Gen3Lead::Synchronize(Nature::Hardy),
             hidden_power: HiddenPower::new(PokemonType::Bug, 38),
+            species: Species::Shuckle,
             ..Default::default()
         },
         Wild3SearcherResultMon {
@@ -271,6 +277,7 @@ fn test_search_wild3_naive_synchronize() {
             method: Gen3Method::Wild1,
             lead: Gen3Lead::Synchronize(Nature::Hardy),
             hidden_power: HiddenPower::new(PokemonType::Bug, 67),
+            species: Species::Shuckle,
             ..Default::default()
         },
     ];
@@ -317,6 +324,7 @@ fn test_search_wild3_naive_all_methods() {
             lead: Gen3Lead::Vanilla,
             map_idx: 0,
             hidden_power: HiddenPower::new(PokemonType::Poison, 40),
+            species: Species::Shuckle,
             ..Default::default()
         },
         Wild3SearcherResultMon {
@@ -334,6 +342,7 @@ fn test_search_wild3_naive_all_methods() {
             lead: Gen3Lead::Vanilla,
             map_idx: 0,
             hidden_power: HiddenPower::new(PokemonType::Poison, 40),
+            species: Species::Shuckle,
             ..Default::default()
         },
     ];
@@ -375,6 +384,7 @@ fn test_search_wild3_naive_hidden_power() {
         lead: Gen3Lead::Vanilla,
         map_idx: 0,
         hidden_power: HiddenPower::new(PokemonType::Flying, 68),
+        species: Species::Shuckle,
         ..Default::default()
     }];
     let result = search_wild3_naive(&options);
@@ -410,6 +420,7 @@ fn test_search_wild3_naive_max_size() {
         lead: Gen3Lead::Vanilla,
         map_idx: 0,
         hidden_power: HiddenPower::new(PokemonType::Ground, 45),
+        species: Species::Shuckle,
         ..Default::default()
     }];
     let result = search_wild3_naive(&options);

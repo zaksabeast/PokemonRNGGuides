@@ -9,8 +9,6 @@ import {
 } from "~/rngTools";
 import { uniq, union } from "lodash-es";
 import { species as allSpecies } from "~/types/species";
-import { genderRatioBySpecies } from "~/types/gender";
-import { doesSpeciesHaveType } from "./pokemonTypes";
 import {
   wild3Actions,
   wild3RoamerStates,
@@ -42,9 +40,6 @@ const jsonMonToSlot = (jsonMon: JsonMon) => {
     max_level: jsonMon.max_level,
     species_data: {
       species,
-      gender_ratio: genderRatioBySpecies[species],
-      is_electric_type: doesSpeciesHaveType(3, species, "Electric"),
-      is_steel_type: doesSpeciesHaveType(3, species, "Steel"),
     },
   };
 };

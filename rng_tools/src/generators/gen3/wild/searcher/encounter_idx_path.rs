@@ -183,9 +183,9 @@ impl<'a> Wild3MapSetupsForReverse<'a> {
                 .enumerate()
                 .filter_map(|(i, slot)| {
                     let attracted = if attract_steel {
-                        slot.species_data.is_steel_type
+                        slot.species_data.is_steel_type()
                     } else {
-                        slot.species_data.is_electric_type
+                        slot.species_data.is_electric_type()
                     };
                     if attracted { Some(i) } else { None }
                 })
@@ -326,7 +326,7 @@ fn permit_magnet_pull_arc(
 
     match species_data {
         None => false,
-        Some(species_data) => species_data.is_steel_type && leads.contains(&Gen3Lead::MagnetPull),
+        Some(species_data) => species_data.is_steel_type() && leads.contains(&Gen3Lead::MagnetPull),
     }
 }
 
@@ -343,7 +343,7 @@ fn permit_static_arc(
 
     match species_data {
         None => false,
-        Some(species_data) => species_data.is_electric_type && leads.contains(&Gen3Lead::Static),
+        Some(species_data) => species_data.is_electric_type() && leads.contains(&Gen3Lead::Static),
     }
 }
 

@@ -14,14 +14,12 @@ import { getStatRange } from "~/types/statRange";
 type Props = {
   game: Game;
   targetAdvance: number;
-  targetStarter: TargetStarter;
   setTargetStarter: (target: TargetStarter) => void;
 };
 
 export const TargetPokemon = ({
   game,
   targetAdvance,
-  targetStarter,
   setTargetStarter,
 }: Props) => {
   const [targetPokemonDesc, setTargetPokemonDesc] = React.useState<string>("");
@@ -35,15 +33,17 @@ export const TargetPokemon = ({
             name="targetStarter"
             optionType="button"
             onChange={async ({ target }) => {
+              // RadioGroup is not able to infer the value type, so we have to cast it
+              const species = target.value as TargetStarter["species"];
               setTargetStarter({
-                species: target.value,
-                minMaxStats: await getStatRange(target.value),
+                species,
+                minMaxStats: await getStatRange(species),
               });
 
               const desc = await getTargetPokemonDesc(
                 game,
                 targetAdvance,
-                targetStarter.species,
+                species,
               );
               setTargetPokemonDesc(desc);
             }}
@@ -53,7 +53,7 @@ export const TargetPokemon = ({
       },
       { label: "Info", input: targetPokemonDesc },
     ];
-  }, [game, targetAdvance, targetStarter, targetPokemonDesc, setTargetStarter]);
+  }, [game, targetAdvance, targetPokemonDesc, setTargetStarter]);
 
   return (
     <Flex id="target-pokemon-container" vertical gap={8} flex={1}>

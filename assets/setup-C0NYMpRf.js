@@ -1,0 +1,1 @@
+import{j as e,g as t,hq as s}from"./index-ofWR1TA9.js";import{S as o,G as a,a as m}from"./consoleSelect-DQ0u8GLZ.js";import"./startCase-C_v_Wu9k.js";const n=[{label:"Game",input:e.jsx(o,{stateAtom:s,games:a})},{label:"Console",input:e.jsx(m,{stateAtom:s})}],p=()=>e.jsx(t,{fields:n});export{p as Gen4IdSetup};

@@ -106,6 +106,7 @@ type FormikNumberInputProps<FormState extends GenericForm> = tst.O.Required<
 export const FormikNumberInput = <FormState extends GenericForm>({
   name,
   errorMessage,
+  onChange: _onChange,
   ...props
 }: FormikNumberInputProps<FormState>) => {
   const [{ value, onBlur }, { error, status }, { setValue }] = useField<
@@ -115,8 +116,9 @@ export const FormikNumberInput = <FormState extends GenericForm>({
   const onChange = React.useCallback(
     (value: number | null) => {
       setValue(value);
+      _onChange?.(value);
     },
-    [setValue],
+    [setValue, _onChange],
   );
 
   return (

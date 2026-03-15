@@ -101,6 +101,7 @@ pub fn calculate_cycle_data_by_lead(
     }
 }
 
+#[wasm_bindgen]
 pub fn calculate_cycle_data(
     post_sweet_scent_mod_range: &CycleAndModRange,
     lead_pid_cycle_count: usize,
@@ -207,6 +208,7 @@ fn calculate_pre_sweet_scent_cycle_range(
     CycleRange::from_start_end(pre_sweet_scent_start, pre_sweet_scent_end)
 }
 
+#[wasm_bindgen]
 pub fn calculate_method_probability(pre_sweet_scent_range: &CycleRange<usize>) -> f64 {
     if pre_sweet_scent_range.len == 0 {
         return 0.0;

@@ -19,6 +19,11 @@ pub enum GenderRatio {
 }
 
 #[wasm_bindgen]
+pub fn get_species_gender(species: &Species, pid: u32) -> Gender {
+    get_species_gender_ratio(species).gender_from_pid(pid)
+}
+
+#[wasm_bindgen]
 pub fn get_species_gender_ratio(species: &Species) -> GenderRatio {
     match species {
         Species::None => GenderRatio::Genderless,

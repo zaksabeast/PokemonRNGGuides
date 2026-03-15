@@ -95,6 +95,15 @@ pub struct Wild3SpecialEncounterGameData<T> {
     pub encounter_data: Wild3EncounterGameData,
 }
 
+#[wasm_bindgen]
+pub fn get_encounter_for_wild3_map_game_data(
+    map_data: Wild3MapGameData,
+    action: Wild3Action,
+    encounter_idx: Wild3EncounterIndex,
+) -> Option<Wild3EncounterGameData> {
+    map_data.get_encounter(action, encounter_idx).cloned()
+}
+
 impl Wild3MapGameData {
     pub fn get_encounter(
         &self,

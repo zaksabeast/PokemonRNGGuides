@@ -448,7 +448,10 @@ export const Wild3ResultSetupInfos = ({
         dataSource={selectedPidPathResult.resultSetupInfos}
       />
       {distributionProps != null && (
-        <Wild3MethodDistribution {...distributionProps} />
+        <Wild3MethodDistribution
+          {...distributionProps}
+          permitEnablingDebugOptions={false}
+        />
       )}
     </>
   );

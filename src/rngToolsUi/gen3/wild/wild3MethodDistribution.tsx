@@ -58,11 +58,11 @@ import {
 } from "./utils";
 import { useWatch } from "react-hook-form";
 import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
-import { uniq } from "lodash-es";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { Tooltip } from "antd";
 import { gen3Methods } from "~/types";
+import { getPossibleValuesForMap } from "./dataUtils";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -107,6 +107,7 @@ export type Props = {
     idealLeadCycleSpeed: number;
     usingIdealLeadCycleSpeed: boolean;
   } | null;
+  permitEnablingDebugOptions: boolean;
 };
 
 const Validator = z.object({
@@ -140,7 +141,7 @@ const Validator = z.object({
 
 type FormState = z.infer<typeof Validator>;
 
-const getInitialValues = ({ fixedData }: Props): FormState => {
+const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
   if (fixedData == null) {
     return {
       map: "MAP_ROUTE101",
@@ -183,38 +184,6 @@ const getInitialValues = ({ fixedData }: Props): FormState => {
     ...fixedData,
     hasPreselectedData: true,
     usingPaintingReseeding: fixedData.initial_seed !== 0,
-  };
-};
-
-const getPossibleValuesForMap = (mapId: string, action: Wild3Action) => {
-  const mapSetups = Array.from(emeraldWildGameData.mapSetupsBySpecies.values())
-    .flat()
-    .filter((mapSetup) => {
-      return mapSetup.map_data.map_id === mapId;
-    });
-
-  const mapSetupsForAction = mapSetups.filter((mapSetup) => {
-    return mapSetup.actions.includes(action);
-  });
-
-  const feebas_states = uniq(
-    mapSetupsForAction.flatMap((mapSetup) => mapSetup.feebas_states),
-  ).filter((state) => {
-    // fix issue where "Not in Map" is selectable even when in Route 119
-    // this is because of Tentacool which is both OldRod and SweetScentOnWater.
-    // SweetScentOnWater has the feebas_state NotInMap
-    return mapId !== "MAP_ROUTE119" || state !== "NotInMap";
-  });
-
-  return {
-    actions: uniq(mapSetups.flatMap((mapSetup) => mapSetup.actions)),
-    feebas_states,
-    roamer_states: uniq(
-      mapSetupsForAction.flatMap((mapSetup) => mapSetup.roamer_states),
-    ),
-    mass_outbreak_states: uniq(
-      mapSetupsForAction.flatMap((mapSetup) => mapSetup.mass_outbreak_states),
-    ),
   };
 };
 
@@ -754,7 +723,10 @@ const calculate = async (values: FormState) => {
   };
 };
 
-export const Wild3MethodDistribution = ({ fixedData }: Props) => {
+export const Wild3MethodDistribution = ({
+  fixedData,
+  permitEnablingDebugOptions,
+}: Props) => {
   const [results, setResults] = React.useState<UiResult[]>([]);
   const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>(
     [],
@@ -778,7 +750,7 @@ export const Wild3MethodDistribution = ({ fixedData }: Props) => {
   );
 
   const initialValues = React.useMemo(() => {
-    return getInitialValues({ fixedData });
+    return getInitialValues(fixedData);
   }, [fixedData]);
 
   React.useEffect(() => {
@@ -826,7 +798,9 @@ export const Wild3MethodDistribution = ({ fixedData }: Props) => {
         <Wild3MethodDistributionFields clearResults={clearResults} />
       </RngToolForm>
 
-      <Wild3CycleAtMoments cycleAtMoments={cycleAtMoments} />
+      {permitEnablingDebugOptions && (
+        <Wild3CycleAtMoments cycleAtMoments={cycleAtMoments} />
+      )}
     </>
   );
 };

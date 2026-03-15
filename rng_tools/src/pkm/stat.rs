@@ -1,4 +1,4 @@
-use crate::{Ivs, Nature, NatureFactor};
+use crate::{Ivs, Nature, NatureFactor, NatureStatFactor};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -40,21 +40,39 @@ pub fn calculate_non_hp(
 }
 
 #[wasm_bindgen]
-pub fn calculate_minmax_stats(base_stats: &StatsValue, level: u8, is_min_stat: bool) -> StatsValue {
+pub fn calculate_minmax_stats(
+    base_stats: &StatsValue,
+    level: u8,
+    is_min_stat: bool,
+    nature: Option<Nature>,
+) -> StatsValue {
     let iv = if is_min_stat { 0 } else { 31 };
-    let nature_factor = if is_min_stat {
-        NatureFactor::Less
-    } else {
-        NatureFactor::More
+
+    let nature_factors = match nature {
+        None => {
+            let fact = if is_min_stat {
+                NatureFactor::Less
+            } else {
+                NatureFactor::More
+            };
+            &NatureStatFactor {
+                atk: fact,
+                def: fact,
+                spa: fact,
+                spd: fact,
+                spe: fact,
+            }
+        }
+        Some(nature) => nature.stat_factor(),
     };
 
     StatsValue {
         hp: calculate_hp(base_stats.hp, iv, 0, level),
-        atk: calculate_non_hp(base_stats.atk, iv, 0, level, nature_factor),
-        def: calculate_non_hp(base_stats.def, iv, 0, level, nature_factor),
-        spa: calculate_non_hp(base_stats.spa, iv, 0, level, nature_factor),
-        spd: calculate_non_hp(base_stats.spd, iv, 0, level, nature_factor),
-        spe: calculate_non_hp(base_stats.spe, iv, 0, level, nature_factor),
+        atk: calculate_non_hp(base_stats.atk, iv, 0, level, nature_factors.atk),
+        def: calculate_non_hp(base_stats.def, iv, 0, level, nature_factors.def),
+        spa: calculate_non_hp(base_stats.spa, iv, 0, level, nature_factors.spa),
+        spd: calculate_non_hp(base_stats.spd, iv, 0, level, nature_factors.spd),
+        spe: calculate_non_hp(base_stats.spe, iv, 0, level, nature_factors.spe),
     }
 }
 
@@ -291,7 +309,7 @@ mod tests {
         };
 
         assert_eq!(
-            calculate_minmax_stats(&base_stats, 5, true),
+            calculate_minmax_stats(&base_stats, 5, true, None),
             StatsValue {
                 hp: 20,
                 atk: 10,
@@ -303,7 +321,7 @@ mod tests {
         );
 
         assert_eq!(
-            calculate_minmax_stats(&base_stats, 5, false),
+            calculate_minmax_stats(&base_stats, 5, false, None),
             StatsValue {
                 hp: 21,
                 atk: 14,

@@ -5,6 +5,7 @@ import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
 export const getStatRange = async (
   species: Species,
   levelRange: [number, number] = [5, 5],
+  nature: Nature | null = null,
 ): Promise<MinMaxStats> => {
   const baseStats = getLooseBaseStats(species);
 
@@ -16,11 +17,13 @@ export const getStatRange = async (
     baseStats,
     levelRange[0],
     true,
+    nature,
   );
   const maxStats = await rngTools.calculate_minmax_stats(
     baseStats,
     levelRange[1],
     false,
+    nature,
   );
 
   return {

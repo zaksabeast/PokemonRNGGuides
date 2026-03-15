@@ -212,7 +212,6 @@ export const searchWild3Target = async (values: FormState) => {
     initial_seed,
     tid: values.tid,
     sid: values.sid,
-    gender_ratio: genderRatioBySpecies[values.species],
     initial_advances,
     max_advances,
     max_result_count: values.max_result_count,

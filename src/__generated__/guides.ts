@@ -1780,6 +1780,43 @@ export const guides = {
       return file.default;
     }),
   },
+  "/emerald-painting-seed-searcher/": {
+    meta: {
+      id: "/emerald-painting-seed-searcher/",
+      categories: ["Emerald"],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/emerald-painting-seed-searcher/",
+      isNew: false,
+      title: "Painting Seed Searcher",
+      navDrawerTitle: "Painting Seed Searcher",
+      description: "Painting Seed Searcher",
+      slug: "/emerald-painting-seed-searcher/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-15",
+      type: "baseGuide",
+      file: "guides/Gen 3/Emerald/Seed To Advances.mdx",
+      translations: null,
+      guideGroupId: "en:/emerald-painting-seed-searcher/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Seed To Advances.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Seed To Advances.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/emerald-pokerus-emu/": {
     meta: {
       id: "/emerald-pokerus-emu/",
@@ -1979,6 +2016,44 @@ export const guides = {
       return file.default;
     }),
   },
+  "/emerald-wild-method-likelihood-calculator/": {
+    meta: {
+      id: "/emerald-wild-method-likelihood-calculator/",
+      categories: ["Emerald"],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/emerald-wild-method-likelihood-calculator/",
+      isNew: false,
+      title: "Wild Method Likelihood Calculator",
+      navDrawerTitle: "Wild Method Likelihood Calculator",
+      description: "Wild Method Likelihood Calculator",
+      slug: "/emerald-wild-method-likelihood-calculator/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-15",
+      type: "baseGuide",
+      file: "guides/Gen 3/Emerald/Method Likelihood Calculator.mdx",
+      translations: null,
+      guideGroupId: "en:/emerald-wild-method-likelihood-calculator/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Gen 3/Emerald/Method Likelihood Calculator.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Method Likelihood Calculator.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/emerald-wild/": {
     meta: {
       id: "/emerald-wild/",
@@ -1987,9 +2062,9 @@ export const guides = {
       guideVariants: ["retail"],
       guideKey: "/emerald-wild/",
       isNew: false,
-      title: "Emerald Wild Searcher",
-      navDrawerTitle: "Emerald Wild Searcher",
-      description: "Emerald Wild Searcher",
+      title: "Wild Searcher",
+      navDrawerTitle: "Wild Searcher",
+      description: "Wild Searcher",
       slug: "/emerald-wild/",
       isRoughDraft: true,
       orderPriority: 20,
@@ -1998,7 +2073,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-15",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
       translations: null,
@@ -14408,11 +14483,13 @@ export const guideSlugs = [
   "/emerald-mirage-island/",
   "/emerald-overview/",
   "/emerald-painting-rng/",
+  "/emerald-painting-seed-searcher/",
   "/emerald-pokerus-emu/",
   "/emerald-shiny-starter/",
   "/emerald-sid-feebas/",
   "/emerald-static/",
   "/emerald-tidsid-generator/",
+  "/emerald-wild-method-likelihood-calculator/",
   "/emerald-wild/",
   "/emerald/",
   "/emulator-b2w2-dream-radar/",

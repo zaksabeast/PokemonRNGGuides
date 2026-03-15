@@ -1,24 +1,17 @@
 import { Ivs, Nature, rngTools, Species, StatsValue } from "~/rngTools";
-import { getLooseBaseStats } from "~/types/baseStats";
-import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
+import { MinMaxStats } from "~/types/stat";
 
 export const getStatRange = async (
   species: Species,
   levelRange: [number, number] = [5, 5],
 ): Promise<MinMaxStats> => {
-  const baseStats = getLooseBaseStats(species);
-
-  if (baseStats == null) {
-    return defaultMinMaxStats;
-  }
-
   const minStats = await rngTools.calculate_minmax_stats(
-    baseStats,
+    species,
     levelRange[0],
     true,
   );
   const maxStats = await rngTools.calculate_minmax_stats(
-    baseStats,
+    species,
     levelRange[1],
     false,
   );
@@ -44,14 +37,8 @@ export const getIvRangeFromStats = async ({
   nature: Nature;
   stats: StatsValue;
 }): Promise<{ min_ivs: Ivs; max_ivs: Ivs } | null> => {
-  const baseStats = getLooseBaseStats(species);
-
-  if (baseStats == null) {
-    return null;
-  }
-
   const min_ivs = await rngTools.calculate_min_ivs_from_stats(
-    baseStats,
+    species,
     lvl,
     nature,
     stats,
@@ -61,7 +48,7 @@ export const getIvRangeFromStats = async ({
   }
 
   const max_ivs = await rngTools.calculate_max_ivs_from_stats(
-    baseStats,
+    species,
     lvl,
     nature,
     stats,

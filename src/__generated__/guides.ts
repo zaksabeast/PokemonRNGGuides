@@ -2140,7 +2140,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-b2w2-wild/",
-      isNew: true,
+      isNew: false,
       title: "Black 2 and White 2 Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
@@ -2387,7 +2387,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-wild/",
-      isNew: true,
+      isNew: false,
       title: "Black and White Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
@@ -5396,7 +5396,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-b2w2-wild/",
-      isNew: true,
+      isNew: false,
       title: "RNG Selvatico di Nero 2 e Bianco 2",
       navDrawerTitle: "RNG Selvatico",
       description:
@@ -5437,7 +5437,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "/emulator-bw-wild/",
-      isNew: true,
+      isNew: false,
       title: "RNG Selvatico di Nero e Bianco",
       navDrawerTitle: "RNG Selvatico",
       description:
@@ -6957,7 +6957,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-15",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Retail Egg.mdx",
       translations: {

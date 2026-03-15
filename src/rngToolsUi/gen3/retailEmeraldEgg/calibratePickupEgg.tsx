@@ -21,7 +21,6 @@ import {
 } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { getNullableIvColumns } from "~/rngToolsUi/shared/ivColumns";
-import { getLooseBaseStats } from "~/types/baseStats";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { defaultMinMaxStats, MinMaxStats } from "~/types/stat";
 import { getStatRange } from "~/types/statRange";
@@ -33,7 +32,7 @@ import { ivMethods } from "./constants";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
-import { gen3SpeciesOptions } from "~/types/species";
+import { getGen3SpeciesOptions } from "~/types/species";
 import { natureOptions } from "~/components/pkmFilter";
 import { atom, useAtom } from "jotai";
 import { formatOffset } from "~/utils/offsetSymbol";
@@ -61,7 +60,7 @@ const HeldEggSpeciesSelect = () => {
   return (
     <Select<Species>
       name="species"
-      options={gen3SpeciesOptions.byName}
+      options={getGen3SpeciesOptions().byName}
       value={heldEgg.species}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, species: value }))}
     />
@@ -228,17 +227,10 @@ export const CalibratePickupEgg = () => {
 
   React.useEffect(() => {
     const runAsync = async () => {
-      const baseStats = getLooseBaseStats(targetSpecies);
-
-      if (baseStats == null) {
-        setPotentialEggs([]);
-        return;
-      }
-
       const potentialEggs = await getPotentialEggs(state);
       const formattedResults = await pmap(potentialEggs, async (result) => {
         const stats = await rngTools.calculate_stats(
-          baseStats,
+          targetSpecies,
           5,
           targetNature,
           normalizeInheritedIvs(result.ivs),

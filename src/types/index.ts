@@ -1,5 +1,4 @@
 export * from "./ability";
-export * from "./baseStats";
 export * from "./encounterSlots";
 export * from "./form";
 export * from "./gender";

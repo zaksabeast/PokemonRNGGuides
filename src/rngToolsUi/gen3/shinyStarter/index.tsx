@@ -77,7 +77,6 @@ export const ShinyHoennStarter = ({ game }: Props) => {
           <TargetPokemon
             game={game}
             targetAdvance={targetAdvance}
-            targetStarter={targetStarter}
             setTargetStarter={setTargetStarter}
           />
           <CaughtMon

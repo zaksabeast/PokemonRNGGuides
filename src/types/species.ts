@@ -1,6 +1,6 @@
 import { Species } from "~/rngTools";
 import { toOptions } from "~/utils/options";
-import { sortBy } from "lodash-es";
+import { sortBy, memoize } from "lodash-es";
 
 export const species = [
   "None",
@@ -354,7 +354,10 @@ export const species = [
   "Armaldo",
   "Feebas",
   "Milotic",
-  "Castform",
+  "Castform_Normal",
+  "Castform_Sunny",
+  "Castform_Rainy",
+  "Castform_Snowy",
   "Kecleon",
   "Shuppet",
   "Banette",
@@ -389,7 +392,10 @@ export const species = [
   "Groudon",
   "Rayquaza",
   "Jirachi",
-  "Deoxys",
+  "Deoxys_Normal",
+  "Deoxys_Attack",
+  "Deoxys_Defense",
+  "Deoxys_Speed",
   "Turtwig",
   "Grotle",
   "Torterra",
@@ -415,8 +421,12 @@ export const species = [
   "Rampardos",
   "Shieldon",
   "Bastiodon",
-  "Burmy",
-  "Wormadam",
+  "Burmy_Plant",
+  "Burmy_Sandy",
+  "Burmy_Trash",
+  "Wormadam_Plant",
+  "Wormadam_Sandy",
+  "Wormadam_Trash",
   "Mothim",
   "Combee",
   "Vespiquen",
@@ -425,8 +435,10 @@ export const species = [
   "Floatzel",
   "Cherubi",
   "Cherrim",
-  "Shellos",
-  "Gastrodon",
+  "Shellos_West",
+  "Shellos_East",
+  "Gastrodon_West",
+  "Gastrodon_East",
   "Ambipom",
   "Drifloon",
   "Drifblim",
@@ -482,7 +494,12 @@ export const species = [
   "Probopass",
   "Dusknoir",
   "Froslass",
-  "Rotom",
+  "Rotom_Normal",
+  "Rotom_Heat",
+  "Rotom_Wash",
+  "Rotom_Frost",
+  "Rotom_Fan",
+  "Rotom_Mow",
   "Uxie",
   "Mesprit",
   "Azelf",
@@ -490,13 +507,32 @@ export const species = [
   "Palkia",
   "Heatran",
   "Regigigas",
-  "Giratina",
+  "Giratina_Altered",
+  "Giratina_Origin",
   "Cresselia",
   "Phione",
   "Manaphy",
   "Darkrai",
-  "Shaymin",
-  "Arceus",
+  "Shaymin_Land",
+  "Shaymin_Sky",
+  "Arceus_Normal",
+  "Arceus_Fighting",
+  "Arceus_Flying",
+  "Arceus_Poison",
+  "Arceus_Ground",
+  "Arceus_Rock",
+  "Arceus_Bug",
+  "Arceus_Ghost",
+  "Arceus_Steel",
+  "Arceus_Fire",
+  "Arceus_Water",
+  "Arceus_Grass",
+  "Arceus_Electric",
+  "Arceus_Psychic",
+  "Arceus_Ice",
+  "Arceus_Dragon",
+  "Arceus_Dark",
+  "Arceus_Fairy",
   "Victini",
   "Snivy",
   "Servine",
@@ -1016,27 +1052,132 @@ export const species = [
   "Annihilape",
 ] as const satisfies Species[];
 
-const gen3SpeciesByDex = toOptions(species.slice(1, 387));
-
-export const gen3SpeciesOptions = {
-  byDex: gen3SpeciesByDex,
-  byName: sortBy(gen3SpeciesByDex, (option) => option.label),
+const labelOverrides: Partial<Record<Species, string>> = {
+  Arceus_Bug: "Arceus (Bug)",
+  Arceus_Dark: "Arceus (Dark)",
+  Arceus_Dragon: "Arceus (Dragon)",
+  Arceus_Electric: "Arceus (Electric)",
+  Arceus_Fairy: "Arceus (Fairy)",
+  Arceus_Fighting: "Arceus (Fighting)",
+  Arceus_Fire: "Arceus (Fire)",
+  Arceus_Flying: "Arceus (Flying)",
+  Arceus_Ghost: "Arceus (Ghost)",
+  Arceus_Grass: "Arceus (Grass)",
+  Arceus_Ground: "Arceus (Ground)",
+  Arceus_Ice: "Arceus (Ice)",
+  Arceus_Normal: "Arceus (Normal)",
+  Arceus_Poison: "Arceus (Poison)",
+  Arceus_Psychic: "Arceus (Psychic)",
+  Arceus_Rock: "Arceus (Rock)",
+  Arceus_Steel: "Arceus (Steel)",
+  Arceus_Water: "Arceus (Water)",
+  BruteBonnet: "Brute Bonnet",
+  Burmy_Plant: "Burmy (Plant)",
+  Burmy_Sandy: "Burmy (Sandy)",
+  Burmy_Trash: "Burmy (Trash)",
+  Castform_Normal: "Castform (Normal)",
+  Castform_Rainy: "Castform (Rainy)",
+  Castform_Snowy: "Castform (Snowy)",
+  Castform_Sunny: "Castform (Sunny)",
+  ChienPao: "Chien-Pao",
+  ChiYu: "Chi-Yu",
+  Deoxys_Attack: "Deoxys (Attack)",
+  Deoxys_Defense: "Deoxys (Defense)",
+  Deoxys_Normal: "Deoxys (Normal)",
+  Deoxys_Speed: "Deoxys (Speed)",
+  FarfetchD: "Farfetch'd",
+  Flabebe: "Flabébé",
+  FlutterMane: "Flutter Mane",
+  Gastrodon_East: "Gastrodon (East)",
+  Gastrodon_West: "Gastrodon (West)",
+  Giratina_Altered: "Giratina (Altered)",
+  Giratina_Origin: "Giratina (Origin)",
+  GreatTusk: "Great Tusk",
+  HakamoO: "Hakamo-o",
+  HoOh: "Ho-Oh",
+  IronBundle: "Iron Bundle",
+  IronHands: "Iron Hands",
+  IronJugulis: "Iron Jugulis",
+  IronMoth: "Iron Moth",
+  IronThorns: "Iron Thorns",
+  IronTreads: "Iron Treads",
+  IronValiant: "Iron Valiant",
+  JangmoO: "Jangmo-o",
+  KommoO: "Kommo-o",
+  MimeJr: "Mime Jr.",
+  MrMime: "Mr. Mime",
+  MrRime: "Mr. Rime",
+  NidoranF: "Nidoran♀",
+  NidoranM: "Nidoran♂",
+  Porygon2: "Porygon2",
+  PorygonZ: "Porygon-Z",
+  RoaringMoon: "Roaring Moon",
+  Rotom_Fan: "Rotom (Fan)",
+  Rotom_Frost: "Rotom (Frost)",
+  Rotom_Heat: "Rotom (Heat)",
+  Rotom_Mow: "Rotom (Mow)",
+  Rotom_Normal: "Rotom (Normal)",
+  Rotom_Wash: "Rotom (Wash)",
+  SandyShocks: "Sandy Shocks",
+  ScreamTail: "Scream Tail",
+  Shaymin_Land: "Shaymin (Land)",
+  Shaymin_Sky: "Shaymin (Sky)",
+  Shellos_East: "Shellos (East)",
+  Shellos_West: "Shellos (West)",
+  SirfetchD: "Sirfetch'd",
+  SlitherWing: "Slither Wing",
+  TapuBulu: "Tapu Bulu",
+  TapuFini: "Tapu Fini",
+  TapuKoko: "Tapu Koko",
+  TapuLele: "Tapu Lele",
+  TingLu: "Ting-Lu",
+  TypeNull: "Type: Null",
+  WoChien: "Wo-Chien",
+  Wormadam_Plant: "Wormadam (Plant)",
+  Wormadam_Sandy: "Wormadam (Sandy)",
+  Wormadam_Trash: "Wormadam (Trash)",
 };
 
-const gen4SpeciesByDex = toOptions(species.slice(1, 494));
-const gen4SpeciesOptionsByName = sortBy(
-  gen4SpeciesByDex,
-  (option) => option.label,
-);
-
-export const gen4SpeciesOptions = {
-  byDex: gen4SpeciesByDex,
-  byName: gen4SpeciesOptionsByName,
-  byNameOptional: [
-    { label: "None", value: "None" } as const,
-    ...gen4SpeciesOptionsByName,
-  ],
+export const formatSpeciesLabel = (species: Species) => {
+  return labelOverrides[species] ?? species;
 };
+
+// Form variants are packed contiguously,
+// so these include species + forms
+const gen3End = 393;
+const gen4End = 529;
+
+export const getGen3SpeciesOptions = memoize(() => {
+  const gen3SpeciesByDex = toOptions(
+    species.slice(1, gen3End),
+    formatSpeciesLabel,
+  );
+
+  return {
+    byDex: gen3SpeciesByDex,
+    byName: sortBy(gen3SpeciesByDex, (option) => option.label),
+  };
+});
+
+export const getGen4SpeciesOptions = memoize(() => {
+  const gen4SpeciesByDex = toOptions(
+    species.slice(1, gen4End),
+    formatSpeciesLabel,
+  );
+  const gen4SpeciesOptionsByName = sortBy(
+    gen4SpeciesByDex,
+    (option) => option.label,
+  );
+
+  return {
+    byDex: gen4SpeciesByDex,
+    byName: gen4SpeciesOptionsByName,
+    byNameOptional: [
+      { label: "None", value: "None" } as const,
+      ...gen4SpeciesOptionsByName,
+    ],
+  };
+});
 
 const GEN3_SPECIES_WITH_VARIABLE_SIZE: Set<Species> = new Set([
   "Lotad",

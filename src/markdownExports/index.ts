@@ -188,10 +188,6 @@ const tools = {
     import("~/rngToolsUi/gen6/transporter/transporter"),
     (mod) => mod.Transporter,
   ),
-  Static4Generator: lazyLoad(
-    import("~/rngToolsUi/gen4/gen4stationary"),
-    (mod) => mod.Static4Generator,
-  ),
   CalibrateId4: lazyLoad(
     import("~/rngToolsUi/gen4/id/calibrateId"),
     (mod) => mod.CalibrateId4,

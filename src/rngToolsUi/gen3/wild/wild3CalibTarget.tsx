@@ -45,7 +45,7 @@ import {
 import { useWatch } from "react-hook-form";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
-import { getLooseBaseStats, nature_from_pid } from "~/types";
+import { nature_from_pid } from "~/types";
 import { formatHex } from "~/utils/formatHex";
 import {
   AVERAGE_LEAD_CYCLE_SPEED,
@@ -369,15 +369,11 @@ const resultToDisplayInfo = async (
   lead_cycle_speed: number,
 ) => {
   const { species } = encounter.species_data;
-  const baseStats = getLooseBaseStats(species);
-  if (baseStats == null) {
-    return null;
-  }
 
   const nature = nature_from_pid(res.pid);
 
   const stats = await rngTools.calculate_stats(
-    baseStats,
+    species,
     res.lvl,
     nature,
     res.ivs,

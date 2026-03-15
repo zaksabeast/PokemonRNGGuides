@@ -384,7 +384,7 @@ const resultToDisplayInfo = async (
     { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
   );
 
-  const gender = await rngTools.get_species_gender(species, res.pid);
+  const gender = await rngTools.get_species_gender_from_pid(species, res.pid);
   const { ivs } = res;
 
   const probabilityInfo = await getProbabilityInfo(res, lead_cycle_speed);

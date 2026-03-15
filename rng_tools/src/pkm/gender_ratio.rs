@@ -18,11 +18,6 @@ pub enum GenderRatio {
     SevenToOne = 225,
 }
 
-#[wasm_bindgen]
-pub fn get_species_gender(species: &Species, pid: u32) -> Gender {
-    get_species_gender_ratio(species).gender_from_pid(pid)
-}
-
 impl GenderRatio {
     pub fn gender(&self, rate: u8) -> Gender {
         match self {

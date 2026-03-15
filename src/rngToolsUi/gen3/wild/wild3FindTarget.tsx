@@ -8,7 +8,7 @@ import {
 } from "~/components/pkmFilter";
 import React from "react";
 import { z } from "zod";
-import { species, gen3Methods } from "~/types";
+import { gen3Methods } from "~/types";
 
 import { sortBy } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
@@ -31,6 +31,9 @@ import { TargetMon } from "./wild3TargetMon.component";
 import { searchWild3Target } from "./searchWild3Target";
 import { SetupFilter } from "./wild3SetupFilter.component";
 import { Wild3ResultSetupInfos } from "./resultSetupInfos";
+import { getWild3EmeraldGameData } from "./data/wild3GameData";
+
+const emeraldWildGameData = getWild3EmeraldGameData();
 import { GBA_FPS } from "~/utils/consts";
 
 /*
@@ -42,7 +45,7 @@ Possible UI improvements:
 
 const Validator = z
   .object({
-    species: z.enum(species),
+    species: z.enum(emeraldWildGameData.species),
     tid: z.number().int().min(0).max(0xffff),
     sid: z.number().int().min(0).max(0xffff),
     maps: z.array(z.string()).min(1),

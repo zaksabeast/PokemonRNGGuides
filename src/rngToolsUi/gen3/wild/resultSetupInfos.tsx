@@ -371,31 +371,29 @@ const getResultSetupInfoColumns = ({
   return columns;
 };
 
-const resultSetupInfoToDistributionProps = (
+const resultSetupInfoToDistributionFixedData = (
   setup: ResultSetupInfo,
   rngManipulatedLeadPid: boolean,
-): DistributionProps => {
+): DistributionProps["fixedData"] => {
   const idealLeadCycleSpeed =
     setup.cycle_data_by_lead?.ideal_lead.lead_pid_cycle_count ?? 0;
 
   return {
-    fixedData: {
-      map: setup.mapId,
-      action: setup.action,
-      advance: setup.advance,
-      tid: 0,
-      sid: 0,
-      lead: setup.lead,
-      roamerState: setup.roamer_state,
-      feebasState: setup.feebas_state,
-      massOutbreakState: setup.mass_outbreak_state,
-      initial_seed: setup.initial_seed,
-      painting_advs: setup.painting_advs ?? null,
-      wantedMethod: setup.method,
-      wantedPID: setup.pid,
-      idealLeadCycleSpeed,
-      usingIdealLeadCycleSpeed: rngManipulatedLeadPid,
-    },
+    map: setup.mapId,
+    action: setup.action,
+    advance: setup.advance,
+    tid: 0,
+    sid: 0,
+    lead: setup.lead,
+    roamerState: setup.roamer_state,
+    feebasState: setup.feebas_state,
+    massOutbreakState: setup.mass_outbreak_state,
+    initial_seed: setup.initial_seed,
+    painting_advs: setup.painting_advs ?? null,
+    wantedMethod: setup.method,
+    wantedPID: setup.pid,
+    idealLeadCycleSpeed,
+    usingIdealLeadCycleSpeed: rngManipulatedLeadPid,
   };
 };
 
@@ -422,18 +420,19 @@ export const Wild3ResultSetupInfos = ({
       showMassOutbreak,
       usesPainting,
       onBreakdownClick: (record) => {
-        setDistributionProps(
-          resultSetupInfoToDistributionProps(record, rngManipulatedLeadPid),
+        setDistributionFixedData(
+          resultSetupInfoToDistributionFixedData(record, rngManipulatedLeadPid),
         );
       },
     });
   }, [rngManipulatedLeadPid, selectedPidPathResult]);
 
-  const [distributionProps, setDistributionProps] =
-    React.useState<DistributionProps | null>(null);
+  const [distributionFixedData, setDistributionFixedData] = React.useState<
+    DistributionProps["fixedData"] | null
+  >(null);
 
   React.useEffect(() => {
-    setDistributionProps(null);
+    setDistributionFixedData(null);
   }, [selectedPidPathResult]);
 
   if (selectedPidPathResult == null) {
@@ -447,8 +446,11 @@ export const Wild3ResultSetupInfos = ({
         rowKey="uid"
         dataSource={selectedPidPathResult.resultSetupInfos}
       />
-      {distributionProps != null && (
-        <Wild3MethodDistribution {...distributionProps} />
+      {distributionFixedData != null && (
+        <Wild3MethodDistribution
+          fixedData={distributionFixedData}
+          permitEnablingDebugOptions={false}
+        />
       )}
     </>
   );

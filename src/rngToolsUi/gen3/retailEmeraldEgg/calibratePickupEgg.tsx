@@ -33,7 +33,7 @@ import { ivMethods } from "./constants";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { match, P } from "ts-pattern";
 import { Nullable } from "~/types/utils";
-import { gen3SpeciesOptions } from "~/types/species";
+import { getGen3SpeciesOptions } from "~/types/species";
 import { natureOptions } from "~/components/pkmFilter";
 import { atom, useAtom } from "jotai";
 import { formatOffset } from "~/utils/offsetSymbol";
@@ -61,7 +61,7 @@ const HeldEggSpeciesSelect = () => {
   return (
     <Select<Species>
       name="species"
-      options={gen3SpeciesOptions.byName}
+      options={getGen3SpeciesOptions().byName}
       value={heldEgg.species}
       onChange={(value) => setHeldEgg((prev) => ({ ...prev, species: value }))}
     />

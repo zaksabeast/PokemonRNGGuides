@@ -27,7 +27,7 @@ import { useId4State } from "./state";
 import { useCurrentStep } from "~/components/stepper/state";
 import { useFormContext } from "~/hooks/form";
 import { nature } from "~/types/nature";
-import { gen4SpeciesOptions, species } from "~/types/species";
+import { getGen4SpeciesOptions, species } from "~/types/species";
 import { natureOptions } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import {
@@ -280,7 +280,7 @@ const getFields = ({
       input: (
         <FormikSelect<FormState, "target_species">
           name="target_species"
-          options={gen4SpeciesOptions.byNameOptional}
+          options={getGen4SpeciesOptions().byNameOptional}
           disabled={maxShinyOdds}
         />
       ),

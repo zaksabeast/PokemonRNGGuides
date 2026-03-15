@@ -1,13 +1,26 @@
-use super::{Gender, GenderRatio, get_species_gender_ratio};
+use super::Gender;
+use crate::{
+    GenderRatio,
+    pkm::personal::{Personal, get_personal},
+};
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
+use wasm_bindgen::prelude::*;
+
+const FORM_SHIFT: u16 = 11;
+const SPECIES_MASK: u16 = (1 << FORM_SHIFT) - 1;
+
+const fn spec_form(species: u16, form: u16) -> u16 {
+    (form << FORM_SHIFT) | (species & SPECIES_MASK)
+}
 
 #[derive(
     Default, Clone, Copy, Debug, Eq, PartialEq, FromPrimitive, Tsify, Serialize, Deserialize,
 )]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 #[repr(u16)]
+#[allow(non_camel_case_types)]
 pub enum Species {
     #[default]
     None = 0,
@@ -361,7 +374,10 @@ pub enum Species {
     Armaldo = 348,
     Feebas = 349,
     Milotic = 350,
-    Castform = 351,
+    Castform_Normal = spec_form(351, 0),
+    Castform_Sunny = spec_form(351, 1),
+    Castform_Rainy = spec_form(351, 2),
+    Castform_Snowy = spec_form(351, 3),
     Kecleon = 352,
     Shuppet = 353,
     Banette = 354,
@@ -396,7 +412,10 @@ pub enum Species {
     Groudon = 383,
     Rayquaza = 384,
     Jirachi = 385,
-    Deoxys = 386,
+    Deoxys_Normal = spec_form(386, 0),
+    Deoxys_Attack = spec_form(386, 1),
+    Deoxys_Defense = spec_form(386, 2),
+    Deoxys_Speed = spec_form(386, 3),
     Turtwig = 387,
     Grotle = 388,
     Torterra = 389,
@@ -422,8 +441,12 @@ pub enum Species {
     Rampardos = 409,
     Shieldon = 410,
     Bastiodon = 411,
-    Burmy = 412,
-    Wormadam = 413,
+    Burmy_Plant = spec_form(412, 0),
+    Burmy_Sandy = spec_form(412, 1),
+    Burmy_Trash = spec_form(412, 2),
+    Wormadam_Plant = spec_form(413, 0),
+    Wormadam_Sandy = spec_form(413, 1),
+    Wormadam_Trash = spec_form(413, 2),
     Mothim = 414,
     Combee = 415,
     Vespiquen = 416,
@@ -432,8 +455,10 @@ pub enum Species {
     Floatzel = 419,
     Cherubi = 420,
     Cherrim = 421,
-    Shellos = 422,
-    Gastrodon = 423,
+    Shellos_West = spec_form(422, 0),
+    Shellos_East = spec_form(422, 1),
+    Gastrodon_West = spec_form(423, 0),
+    Gastrodon_East = spec_form(423, 1),
     Ambipom = 424,
     Drifloon = 425,
     Drifblim = 426,
@@ -489,7 +514,12 @@ pub enum Species {
     Probopass = 476,
     Dusknoir = 477,
     Froslass = 478,
-    Rotom = 479,
+    Rotom_Normal = spec_form(479, 0),
+    Rotom_Heat = spec_form(479, 1),
+    Rotom_Wash = spec_form(479, 2),
+    Rotom_Frost = spec_form(479, 3),
+    Rotom_Fan = spec_form(479, 4),
+    Rotom_Mow = spec_form(479, 5),
     Uxie = 480,
     Mesprit = 481,
     Azelf = 482,
@@ -497,13 +527,32 @@ pub enum Species {
     Palkia = 484,
     Heatran = 485,
     Regigigas = 486,
-    Giratina = 487,
+    Giratina_Altered = spec_form(487, 0),
+    Giratina_Origin = spec_form(487, 1),
     Cresselia = 488,
     Phione = 489,
     Manaphy = 490,
     Darkrai = 491,
-    Shaymin = 492,
-    Arceus = 493,
+    Shaymin_Land = spec_form(492, 0),
+    Shaymin_Sky = spec_form(492, 1),
+    Arceus_Normal = spec_form(493, 0),
+    Arceus_Fighting = spec_form(493, 1),
+    Arceus_Flying = spec_form(493, 2),
+    Arceus_Poison = spec_form(493, 3),
+    Arceus_Ground = spec_form(493, 4),
+    Arceus_Rock = spec_form(493, 5),
+    Arceus_Bug = spec_form(493, 6),
+    Arceus_Ghost = spec_form(493, 7),
+    Arceus_Steel = spec_form(493, 8),
+    Arceus_Fire = spec_form(493, 9),
+    Arceus_Water = spec_form(493, 10),
+    Arceus_Grass = spec_form(493, 11),
+    Arceus_Electric = spec_form(493, 12),
+    Arceus_Psychic = spec_form(493, 13),
+    Arceus_Ice = spec_form(493, 14),
+    Arceus_Dragon = spec_form(493, 15),
+    Arceus_Dark = spec_form(493, 16),
+    Arceus_Fairy = spec_form(493, 17),
     Victini = 494,
     Snivy = 495,
     Servine = 496,
@@ -1024,11 +1073,45 @@ pub enum Species {
 }
 
 impl Species {
+    fn spec_form(&self) -> (u16, u16) {
+        let raw = *self as u16;
+        (raw & SPECIES_MASK, raw >> FORM_SHIFT)
+    }
+
+    pub fn personal(&self) -> &'static Personal {
+        let (spec, form) = self.spec_form();
+        get_personal(spec, form)
+    }
+
     pub fn gender_ratio(&self) -> GenderRatio {
-        get_species_gender_ratio(self)
+        self.personal().gender_ratio
     }
 
     pub fn gender_from_pid(&self, pid: u32) -> Gender {
         self.gender_ratio().gender(pid as u8)
+    }
+}
+
+#[wasm_bindgen]
+pub fn get_species_gender_ratio(species: Species) -> GenderRatio {
+    species.personal().gender_ratio
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn get_form() {
+        assert_eq!(Species::Castform_Sunny.spec_form(), (351, 1));
+        assert_eq!(Species::Deoxys_Attack.spec_form(), (386, 1));
+        assert_eq!(Species::Burmy_Sandy.spec_form(), (412, 1));
+        assert_eq!(Species::Wormadam_Trash.spec_form(), (413, 2));
+    }
+
+    #[test]
+    fn get_personal() {
+        assert_eq!(Species::Deoxys_Attack.personal().base_stats.spe, 150);
+        assert_eq!(Species::Deoxys_Speed.personal().base_stats.spe, 180);
     }
 }

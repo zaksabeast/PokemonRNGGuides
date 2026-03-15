@@ -8,7 +8,7 @@ import {
 } from "~/components/pkmFilter";
 import React from "react";
 import { z } from "zod";
-import { species, gen3Methods } from "~/types";
+import { gen3Methods } from "~/types";
 
 import { sortBy } from "lodash-es";
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";

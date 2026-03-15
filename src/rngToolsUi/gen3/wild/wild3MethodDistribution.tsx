@@ -20,7 +20,6 @@ import {
   RngToolForm,
   RngToolSubmit,
   FormFieldTable,
-  FormikRadio,
   FormikSwitch,
   Link,
   Icon,
@@ -34,7 +33,6 @@ import {
 } from "~/components/pkmFilter";
 import React from "react";
 import { z } from "zod";
-import { match } from "ts-pattern";
 
 import { FlattenIvs, ivColumns } from "~/rngToolsUi/shared/ivColumns";
 import { Translations } from "~/translations";
@@ -63,28 +61,14 @@ import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { Tooltip } from "antd";
 import { gen3Methods } from "~/types";
 import { getPossibleValuesForMap } from "./dataUtils";
+import {
+  AVERAGE_LEAD_CYCLE_SPEED,
+  LeadCycleSpeedLabel,
+  LeadCycleSpeedSelector,
+  SLOWEST_LEAD_CYCLE_SPEED,
+} from "./leadCycleSpeedSelector";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
-
-export const AVERAGE_LEAD_CYCLE_SPEED = 775;
-const SLOWEST_LEAD_CYCLE_SPEED = 900;
-
-type LeadSpeedType =
-  | "Ideal"
-  | "Fastest"
-  | "Average"
-  | "Slowest"
-  | "From PID"
-  | "Custom";
-
-const leadSpeedTypes = [
-  "Ideal",
-  "Fastest",
-  "Average",
-  "Slowest",
-  "From PID",
-  "Custom",
-] as const satisfies readonly LeadSpeedType[];
 
 export type Props = {
   fixedData: {
@@ -121,8 +105,6 @@ const Validator = z.object({
     .number()
     .min(0)
     .max(gen3Leads.length - 1),
-  leadSpeedType: z.enum(leadSpeedTypes),
-  leadPID: z.number().min(0).max(0xffffffff),
   leadCycleSpeed: z.number().min(0).max(SLOWEST_LEAD_CYCLE_SPEED),
   feebasState: z.enum(wild3FeebasStates),
   roamerState: z.enum(wild3RoamerStates),
@@ -150,8 +132,6 @@ const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
       sid: 0,
       advance: 0,
       leadIdx: 0,
-      leadSpeedType: "Average",
-      leadPID: 0,
       leadCycleSpeed: 0,
       feebasState: "NotInMap",
       roamerState: "Inactive",
@@ -161,7 +141,7 @@ const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
       hasPreselectedData: false,
       wantedMethod: null,
       wantedPID: null,
-      idealLeadCycleSpeed: 0,
+      idealLeadCycleSpeed: null,
     };
   }
 
@@ -169,17 +149,12 @@ const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
     (lead) => JSON.stringify(lead) === JSON.stringify(fixedData.lead),
   );
 
-  const leadSpeedType = fixedData.usingIdealLeadCycleSpeed
-    ? "Ideal"
-    : "Average";
   const leadCycleSpeed = fixedData.usingIdealLeadCycleSpeed
     ? fixedData.idealLeadCycleSpeed
     : AVERAGE_LEAD_CYCLE_SPEED;
 
   return {
     leadIdx: Math.max(leadIdx, 0),
-    leadSpeedType,
-    leadPID: 0,
     leadCycleSpeed,
     ...fixedData,
     hasPreselectedData: true,
@@ -191,8 +166,7 @@ const getFields = (
   mapId: string,
   action: Wild3Action,
   leadType: Gen3Lead,
-  leadSpeedType: LeadSpeedType,
-  leadCycleSpeed: number,
+  idealLeadCycleSpeed: number | null,
   usingPaintingReseeding: boolean,
   equivalentInitialAdvs: number,
   hasPreselectedData: boolean,
@@ -252,79 +226,10 @@ const getFields = (
 
   if (leadType !== "Egg") {
     fields.push({
-      label: (
-        <>
-          <Link newTab href="/gba-methods-lead-impact/">
-            Lead Speed
-          </Link>{" "}
-          <Tooltip title="The PID of the first Pokémon in the party impacts the RNG.">
-            <Icon name="InformationCircle" size={16} />
-          </Tooltip>
-        </>
-      ),
+      label: <LeadCycleSpeedLabel />,
       key: "Lead Speed",
       input: (
-        <FormikRadio<FormState>
-          name="leadSpeedType"
-          options={
-            hasPreselectedData
-              ? leadSpeedTypes.slice(0)
-              : leadSpeedTypes.filter((el) => el !== "Ideal")
-          }
-        />
-      ),
-    });
-
-    if (leadSpeedType === "From PID") {
-      fields.push({
-        label: "",
-        key: "From PID",
-        input: (
-          <FormFieldTable
-            fields={[
-              {
-                label: "Lead PID:",
-                input: (
-                  <FormikNumberInput<FormState> name="leadPID" numType="hex" />
-                ),
-              },
-            ]}
-          />
-        ),
-      });
-    } else if (leadSpeedType === "Custom") {
-      fields.push({
-        label: "",
-        key: "Custom",
-        input: (
-          <FormFieldTable
-            fields={[
-              {
-                label: "PID modulo cycle count:",
-                input: (
-                  <FormikNumberInput<FormState>
-                    name="leadCycleSpeed"
-                    numType="decimal"
-                  />
-                ),
-              },
-            ]}
-          />
-        ),
-      });
-    }
-    fields.push({
-      label: "",
-      key: "Cycle Count:",
-      input: (
-        <FormFieldTable
-          fields={[
-            {
-              label: "Cycle Count:",
-              input: `${leadCycleSpeed} cycles`,
-            },
-          ]}
-        />
+        <LeadCycleSpeedSelector idealLeadCycleSpeed={idealLeadCycleSpeed} />
       ),
     });
   }
@@ -422,14 +327,10 @@ export const Wild3MethodDistributionFields = ({
   const leadIdx = useWatch<FormState, "leadIdx">({
     name: "leadIdx",
   });
-  const leadSpeedType = useWatch<FormState, "leadSpeedType">({
-    name: "leadSpeedType",
-  });
 
   const leadCycleSpeed = useWatch<FormState, "leadCycleSpeed">({
     name: "leadCycleSpeed",
   });
-  const leadPID = useWatch<FormState, "leadPID">({ name: "leadPID" });
   const action = useWatch<FormState, "action">({ name: "action" });
   const feebasState = useWatch<FormState, "feebasState">({
     name: "feebasState",
@@ -468,8 +369,7 @@ export const Wild3MethodDistributionFields = ({
       map,
       action,
       gen3Leads[leadIdx],
-      leadSpeedType,
-      leadCycleSpeed,
+      idealLeadCycleSpeed,
       usingPaintingReseeding,
       equivalentInitialAdvs,
       hasPreselectedData,
@@ -478,8 +378,7 @@ export const Wild3MethodDistributionFields = ({
     map,
     action,
     leadIdx,
-    leadSpeedType,
-    leadCycleSpeed,
+    idealLeadCycleSpeed,
     usingPaintingReseeding,
     equivalentInitialAdvs,
     hasPreselectedData,
@@ -514,25 +413,8 @@ export const Wild3MethodDistributionFields = ({
   }, [map, action, feebasState, massOutbreakState, roamerState, setFieldValue]);
 
   React.useEffect(() => {
-    calculateLeadCycleSpeed(
-      leadSpeedType,
-      leadCycleSpeed,
-      leadPID,
-      idealLeadCycleSpeed,
-    ).then((leadCycleSpeed) => {
-      setFieldValue("leadCycleSpeed", leadCycleSpeed);
-    });
-  }, [
-    setFieldValue,
-    leadCycleSpeed,
-    leadSpeedType,
-    leadPID,
-    idealLeadCycleSpeed,
-  ]);
-
-  React.useEffect(() => {
     clearResults();
-  }, [leadSpeedType, clearResults]);
+  }, [leadCycleSpeed, clearResults]);
 
   return <FormFieldTable fields={fields} />;
 };
@@ -614,22 +496,6 @@ const getColumns = (
   ];
 
   return columns;
-};
-
-const calculateLeadCycleSpeed = async (
-  leadSpeedType: LeadSpeedType,
-  leadCycleSpeed: number,
-  leadPID: number,
-  idealLeadCycleSpeed: number | null,
-) => {
-  return match(leadSpeedType)
-    .with("Fastest", () => 18)
-    .with("Slowest", () => SLOWEST_LEAD_CYCLE_SPEED)
-    .with("Average", () => AVERAGE_LEAD_CYCLE_SPEED)
-    .with("Custom", () => leadCycleSpeed)
-    .with("From PID", () => rngTools.calculate_pid_speed(leadPID))
-    .with("Ideal", () => idealLeadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED) // Technically not possible to choose Ideal if idealLeadCycleSpeed is null.
-    .exhaustive();
 };
 
 type UiResult = FlattenIvs<

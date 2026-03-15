@@ -3,7 +3,7 @@ use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
 use super::Wild3Action;
-use crate::{EncounterSlot, GenderRatio, Species};
+use crate::{EncounterSlot, GenderRatio, PokemonType, Species};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -53,14 +53,33 @@ pub struct Wild3EncounterGameData {
     pub species_data: SpeciesData,
 }
 
-#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SpeciesData {
     pub species: Species,
-    pub gender_ratio: GenderRatio,
-    pub is_electric_type: bool,
-    pub is_steel_type: bool,
-    // TODO for caughtMon searcher: stats
+}
+
+impl Default for SpeciesData {
+    fn default() -> Self {
+        Self {
+            species: Species::Shuckle,
+        } // Must have GenderRatio::OneToOne, not be electric nor steel type.
+    }
+}
+
+impl SpeciesData {
+    pub fn gender_ratio(&self) -> GenderRatio {
+        self.species.gender_ratio()
+    }
+    pub fn is_electric_type(&self) -> bool {
+        self.species
+            .personal()
+            .types
+            .contains(&PokemonType::Electric)
+    }
+    pub fn is_steel_type(&self) -> bool {
+        self.species.personal().types.contains(&PokemonType::Steel)
+    }
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Tsify, Serialize, Deserialize)]

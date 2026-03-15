@@ -1,5 +1,5 @@
 use crate::{
-    AbilityType, EncounterSlot, Gender, HiddenPower, Ivs, Nature, PkmFilter, PokemonType,
+    AbilityType, EncounterSlot, Gender, HiddenPower, Ivs, Nature, PkmFilter, PokemonType, Species,
     assert_list_eq,
     gen3::{
         CycleRange, Gen3Lead, Gen3Method, Wild3EncounterIndex, Wild3SearcherCycleData,
@@ -56,6 +56,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             lead: Gen3Lead::Vanilla,
             map_idx: 0,
             hidden_power: HiddenPower::new(PokemonType::Psychic, 49),
+            species: Species::Shuckle,
             ..Default::default()
         },
         Wild3SearcherResultMon {
@@ -81,6 +82,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             lead: Gen3Lead::Vanilla,
             map_idx: 0,
             hidden_power: HiddenPower::new(PokemonType::Electric, 45),
+            species: Species::Shuckle,
             ..Default::default()
         },
         Wild3SearcherResultMon {
@@ -106,6 +108,7 @@ fn test_search_wild3_cycle_methods_1_2_4() {
             lead: Gen3Lead::Vanilla,
             map_idx: 0,
             hidden_power: HiddenPower::new(PokemonType::Water, 60),
+            species: Species::Shuckle,
             ..Default::default()
         },
     ];

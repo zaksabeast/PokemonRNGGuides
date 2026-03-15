@@ -146,7 +146,7 @@ fn test_search_reverse_wild1_vanilla() {
             ..Default::default()
         },
         gen3_filter: Gen3PkmFilter {
-            species: Some(Species::Shuckle),
+            species: Some(Species::Pikachu),
             ..Default::default()
         },
         ..Default::default()
@@ -155,7 +155,7 @@ fn test_search_reverse_wild1_vanilla() {
     options.map_setups[0].map_data.slots_by_action[Wild3Action::SweetScentLand as usize]
         [EncounterSlot::Slot0 as usize]
         .species_data
-        .species = Species::Shuckle;
+        .species = Species::Pikachu;
 
     // Static seed: 081A6F6E
     // Wild seed: A4893D21
@@ -172,7 +172,7 @@ fn test_search_reverse_wild1_vanilla() {
         method: Gen3Method::Wild1,
         lead: Gen3Lead::Vanilla,
         hidden_power: HiddenPower::new(PokemonType::Ground, 63),
-        species: Species::Shuckle,
+        species: Species::Pikachu,
         ..Default::default()
     }];
     let result = search_wild3_reverse(&options)
@@ -195,7 +195,7 @@ fn test_search_reverse_wild2_synchronize_success() {
             ..Default::default()
         },
         gen3_filter: Gen3PkmFilter {
-            species: Some(Species::Shuckle),
+            species: Some(Species::Pikachu),
             ..Default::default()
         },
         ..Default::default()
@@ -203,8 +203,8 @@ fn test_search_reverse_wild2_synchronize_success() {
 
     let slots =
         &mut options.map_setups[0].map_data.slots_by_action[Wild3Action::SweetScentLand as usize];
-    slots[EncounterSlot::Slot1 as usize].species_data.species = Species::Shuckle;
-    slots[EncounterSlot::Slot5 as usize].species_data.species = Species::Shuckle;
+    slots[EncounterSlot::Slot1 as usize].species_data.species = Species::Pikachu;
+    slots[EncounterSlot::Slot5 as usize].species_data.species = Species::Pikachu;
     // Note: A seed also exists for Slot0
 
     // Wild seeds:
@@ -226,7 +226,7 @@ fn test_search_reverse_wild2_synchronize_success() {
             method: Gen3Method::Wild2,
             lead: Gen3Lead::Synchronize(Nature::Quirky),
             hidden_power: HiddenPower::new(PokemonType::Dark, 30),
-            species: Species::Shuckle,
+            species: Species::Pikachu,
             ..Default::default()
         },
         Wild3SearcherResultMon {
@@ -242,7 +242,7 @@ fn test_search_reverse_wild2_synchronize_success() {
             method: Gen3Method::Wild2,
             lead: Gen3Lead::Synchronize(Nature::Quirky),
             hidden_power: HiddenPower::new(PokemonType::Dark, 30),
-            species: Species::Shuckle,
+            species: Species::Pikachu,
             ..Default::default()
         },
     ];
@@ -266,7 +266,7 @@ fn test_search_reverse_wild4_cute_charm_success() {
             ..Default::default()
         },
         gen3_filter: Gen3PkmFilter {
-            species: Some(Species::Shuckle),
+            species: Some(Species::Pikachu),
             ..Default::default()
         },
         ..Default::default()
@@ -274,7 +274,7 @@ fn test_search_reverse_wild4_cute_charm_success() {
 
     let slots =
         &mut options.map_setups[0].map_data.slots_by_action[Wild3Action::SweetScentLand as usize];
-    slots[EncounterSlot::Slot1 as usize].species_data.species = Species::Shuckle;
+    slots[EncounterSlot::Slot1 as usize].species_data.species = Species::Pikachu;
     // Note: A seed also exists for Slot0
 
     // Wild seeds:
@@ -293,7 +293,7 @@ fn test_search_reverse_wild4_cute_charm_success() {
         method: Gen3Method::Wild4,
         lead: Gen3Lead::CuteCharm(Gender::Male),
         hidden_power: HiddenPower::new(PokemonType::Dark, 30),
-        species: Species::Shuckle,
+        species: Species::Pikachu,
         ..Default::default()
     }];
     let result = search_wild3_reverse(&options)
@@ -458,6 +458,7 @@ fn test_search_reverse_pid_spd() {
         method: Gen3Method::Wild3,
         lead: Gen3Lead::Vanilla,
         hidden_power: HiddenPower::new(PokemonType::Fire, 56),
+        species: Species::Shuckle,
         ..Default::default()
     }];
     let result = search_wild3_reverse(&options)

@@ -43,7 +43,7 @@ fn test_generate_wild3_with_filter() {
             ..Default::default()
         },
         gen3_filter: Gen3PkmFilter {
-            species: Some(Species::Abra),
+            species: Some(Species::Shuckle),
             ..Default::default()
         },
         ..Default::default()
@@ -53,15 +53,15 @@ fn test_generate_wild3_with_filter() {
     game_data.slots_by_action[Wild3Action::SweetScentLand as usize]
         [EncounterSlot::Slot0 as usize]
         .species_data
-        .species = Species::Abra;
+        .species = Species::Shuckle;
     game_data.slots_by_action[Wild3Action::SweetScentLand as usize]
         [EncounterSlot::Slot6 as usize]
         .species_data
-        .species = Species::Abra;
+        .species = Species::Shuckle;
     game_data.slots_by_action[Wild3Action::SweetScentLand as usize]
         [EncounterSlot::Slot8 as usize]
         .species_data
-        .species = Species::Abra;
+        .species = Species::Shuckle;
 
     let (result, _) = generate_gen3_wild(Pokerng::new(0xA4893D21), &options, &game_data);
     let expected_result = vec![Wild3GeneratorResult {
@@ -385,7 +385,7 @@ fn test_generate_wild3_magnet_pull() {
     game_data.slots_by_action[Wild3Action::SweetScentLand as usize]
         [EncounterSlot::Slot11 as usize]
         .species_data
-        .is_steel_type = true;
+        .species = Species::Steelix; // Steel type
 
     //magnet pull changed the slot for the steel type
     let (result, _) = generate_gen3_wild(Pokerng::new(0), &options, &game_data);
@@ -443,7 +443,7 @@ fn test_generate_wild3_static() {
     game_data.slots_by_action[Wild3Action::SweetScentLand as usize]
         [EncounterSlot::Slot11 as usize]
         .species_data
-        .is_electric_type = true;
+        .species = Species::Electabuzz; // Electric
 
     //magnet pull changed the slot for the electric type
     let (result, _) = generate_gen3_wild(Pokerng::new(0), &options, &game_data);

@@ -1,0 +1,19 @@
+const e=`---
+- title: "Painting Seed Searcher"
+  description: "Painting Seed Searcher"
+  slug: "emerald-painting-seed-searcher"
+  category: "Emerald"
+  section: "tool"
+---
+
+<Gist>
+  Calculate the fastest ways to set the RNG state to the target seed,
+  considering [Painting Reseeding](/emerald-painting-rng/).
+</Gist>
+
+<EmeraldSeedToAdvances />
+
+## Credits
+
+- RainingChain
+`;export{e as default};

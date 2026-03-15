@@ -5,11 +5,8 @@ import {
   Wild3SearcherOptions,
 } from "~/rngTools";
 import { pkmFilterFieldsToRustInput } from "~/components/pkmFilter";
-import { genderRatioBySpecies } from "~/types";
-
 import { orderBy, intersection } from "lodash-es";
 import { gen3PkmFilterFieldsToRustInput } from "~/components/gen3PkmFilter";
-
 import { gen3Leads, formatActionName, formatMapName } from "./utils";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 

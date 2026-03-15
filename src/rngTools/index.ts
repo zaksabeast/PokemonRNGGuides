@@ -160,7 +160,6 @@ export const rngTools = new Proxy(
       ) => {
         const tools = await getRngTools();
         const func = tools[functionName];
-        // @ts-expect-error -- Function signature makes sure this is correct
         return func(...args);
       };
     },

@@ -87,7 +87,7 @@ where
     let encounter_species_data = get_encounter_species_data(opts);
     let encounter_gender_ratio = encounter_species_data
         .as_ref()
-        .map(|data| data.gender_ratio)
+        .map(|data| data.gender_ratio())
         .unwrap_or(GenderRatio::Genderless);
 
     let nature_gender_gen = NatureGenderSeedGenerator::new(
@@ -144,7 +144,7 @@ fn get_encounter_species_data(opts: &Wild3SearcherOptions) -> Option<SpeciesData
 
 fn new_find_pid_paths_options(opts: &Wild3SearcherOptions) -> FindPidPathsOptions {
     let encounter_gender_ratio = get_encounter_species_data(opts)
-        .map(|data| data.gender_ratio)
+        .map(|data| data.gender_ratio())
         .unwrap_or(GenderRatio::Genderless);
     FindPidPathsOptions {
         filter: opts.filter.clone(),

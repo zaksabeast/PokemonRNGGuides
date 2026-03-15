@@ -47,7 +47,11 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
 import { getLooseBaseStats, nature_from_pid } from "~/types";
 import { formatHex } from "~/utils/formatHex";
-import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3MethodDistribution";
+import {
+  AVERAGE_LEAD_CYCLE_SPEED,
+  LeadCycleSpeedLabel,
+  LeadCycleSpeedSelector,
+} from "./leadCycleSpeedSelector";
 import { formatProbability } from "~/utils/formatProbability";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
@@ -150,16 +154,14 @@ const getFields = (
       ),
     },
     {
-      label: "Using Lead with Average Cycle Speed?",
+      label: "Using lead with average cycle speed?",
       input: <FormikSwitch<FormState> name="usingAverageLeadCycleSpeed" />,
       show: gen3Leads[leadIdx] !== "Egg",
     },
     {
-      label: "Lead Cycle Speed",
-      input: (
-        // TODO: replace with standalone component
-        <FormikNumberInput<FormState> name="leadCycleSpeed" numType="decimal" />
-      ),
+      label: <LeadCycleSpeedLabel />,
+      key: "LeadCycleSpeedLabel",
+      input: <LeadCycleSpeedSelector idealLeadCycleSpeed={null} />,
       show: gen3Leads[leadIdx] !== "Egg" && !usingAverageLeadCycleSpeed,
       indent: 1,
     },
@@ -313,6 +315,54 @@ export const Wild3CalibTargetFields = () => {
   return <FormFieldTable fields={fields} />;
 };
 
+const getProbabilityInfo = async (
+  res: Wild3GeneratorResult,
+  lead_cycle_speed: number,
+) => {
+  if (res.cycle_range == null) {
+    return null;
+  }
+
+  const info = await rngTools.calculate_cycle_data(
+    res.cycle_range,
+    lead_cycle_speed,
+  );
+
+  const ideal_lead_spd = await rngTools.calculate_ideal_lead_pid_cycle_count(
+    res.cycle_range,
+  );
+
+  const ideal_info = await rngTools.calculate_cycle_data(
+    res.cycle_range,
+    ideal_lead_spd,
+  );
+
+  const leadDesc =
+    lead_cycle_speed === AVERAGE_LEAD_CYCLE_SPEED
+      ? "with average lead cycle speed"
+      : `with lead cycle speed ${lead_cycle_speed}`;
+
+  const showIdealInfo =
+    info.method_probability < 0.99 && lead_cycle_speed != ideal_lead_spd;
+
+  return (
+    <>
+      <br />
+      <div>
+        {`${formatProbability(info.method_probability)} likelihood to hit
+      method ${res.method} ${leadDesc}.`}
+      </div>
+      {showIdealInfo && (
+        <div>
+          Note: Ideal lead cycle speed to hit the target Pokémon is{" "}
+          {ideal_lead_spd}. ({formatProbability(ideal_info.method_probability)}{" "}
+          likelihood)
+        </div>
+      )}
+    </>
+  );
+};
+
 const resultToDisplayInfo = async (
   res: Wild3GeneratorResult,
   encounter: Wild3EncounterGameData,
@@ -337,15 +387,7 @@ const resultToDisplayInfo = async (
   const gender = await rngTools.get_species_gender(species, res.pid);
   const { ivs } = res;
 
-  const info =
-    res.cycle_range != null
-      ? await rngTools.calculate_cycle_data(res.cycle_range, lead_cycle_speed)
-      : null;
-
-  const leadDesc =
-    lead_cycle_speed === AVERAGE_LEAD_CYCLE_SPEED
-      ? "with average lead cycle speed"
-      : `with lead cycle speed ${lead_cycle_speed}`;
+  const probabilityInfo = await getProbabilityInfo(res, lead_cycle_speed);
 
   return (
     <>
@@ -358,11 +400,7 @@ const resultToDisplayInfo = async (
         PID: {formatHex(res.pid)}, IVS: {ivs.hp}/{ivs.atk}/{ivs.def}/{ivs.spa}/
         {ivs.spd}/{ivs.spe}
       </div>
-      <div>
-        {info != null
-          ? `${formatProbability(info.method_probability)} likelihood to hit method ${res.method} ${leadDesc}`
-          : ""}
-      </div>
+      {probabilityInfo}
     </>
   );
 };

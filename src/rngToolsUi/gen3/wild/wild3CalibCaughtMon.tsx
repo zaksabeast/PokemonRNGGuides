@@ -344,6 +344,10 @@ export const Wild3CalibCaughtMon = ({
         },
       },
       {
+        title: "Method",
+        dataIndex: "method",
+      },
+      {
         title: (
           <>
             Method

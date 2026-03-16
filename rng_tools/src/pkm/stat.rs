@@ -59,6 +59,7 @@ pub fn calculate_minmax_stats(
     species: Species,
     level: u8,
     is_min_stat: bool,
+    evs: &StatsValue,
     nature: Option<Nature>,
 ) -> StatsValue {
     let base_stats = &species.personal().base_stats;
@@ -84,12 +85,12 @@ pub fn calculate_minmax_stats(
     };
 
     StatsValue {
-        hp: calculate_hp(base_stats.hp, iv, 0, level),
-        atk: calculate_non_hp(base_stats.atk, iv, 0, level, nature_factors.atk),
-        def: calculate_non_hp(base_stats.def, iv, 0, level, nature_factors.def),
-        spa: calculate_non_hp(base_stats.spa, iv, 0, level, nature_factors.spa),
-        spd: calculate_non_hp(base_stats.spd, iv, 0, level, nature_factors.spd),
-        spe: calculate_non_hp(base_stats.spe, iv, 0, level, nature_factors.spe),
+        hp: calculate_hp(base_stats.hp, iv, evs.hp, level),
+        atk: calculate_non_hp(base_stats.atk, iv, evs.atk, level, nature_factors.atk),
+        def: calculate_non_hp(base_stats.def, iv, evs.def, level, nature_factors.def),
+        spa: calculate_non_hp(base_stats.spa, iv, evs.spa, level, nature_factors.spa),
+        spd: calculate_non_hp(base_stats.spd, iv, evs.spd, level, nature_factors.spd),
+        spe: calculate_non_hp(base_stats.spe, iv, evs.spe, level, nature_factors.spe),
     }
 }
 
@@ -311,7 +312,19 @@ mod tests {
     #[test]
     fn test_mudkip_starter() {
         assert_eq!(
-            calculate_minmax_stats(Species::Mudkip, 5, true),
+            calculate_minmax_stats(
+                Species::Mudkip,
+                5,
+                true,
+                &StatsValue {
+                    hp: 0,
+                    atk: 0,
+                    def: 0,
+                    spa: 0,
+                    spd: 0,
+                    spe: 0
+                }
+            ),
             StatsValue {
                 hp: 20,
                 atk: 10,
@@ -323,7 +336,19 @@ mod tests {
         );
 
         assert_eq!(
-            calculate_minmax_stats(Species::Mudkip, 5, false),
+            calculate_minmax_stats(
+                Species::Mudkip,
+                5,
+                false,
+                &StatsValue {
+                    hp: 0,
+                    atk: 0,
+                    def: 0,
+                    spa: 0,
+                    spd: 0,
+                    spe: 0
+                }
+            ),
             StatsValue {
                 hp: 21,
                 atk: 14,

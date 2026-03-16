@@ -6,6 +6,7 @@ export const translations = {
   Nature: "Nature",
   Ability: "Ability",
   Gender: "Gender",
+  EVs: "EVs",
   "Min IVs": "Min IVs",
   "Max IVs": "Max IVs",
   "Minutes Before Target": "Minutes Before Target",

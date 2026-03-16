@@ -14,6 +14,19 @@ pub struct StatsValue {
     pub spe: u16,
 }
 
+impl StatsValue {
+    pub fn new_all0() -> StatsValue {
+        StatsValue {
+            hp: 0,
+            atk: 0,
+            def: 0,
+            spa: 0,
+            spd: 0,
+            spe: 0,
+        }
+    }
+}
+
 #[macro_export]
 macro_rules! stats {
     ($hp:literal / $atk:literal / $def:literal / $spa:literal / $spd:literal / $spe:literal) => {{
@@ -312,19 +325,7 @@ mod tests {
     #[test]
     fn test_mudkip_starter() {
         assert_eq!(
-            calculate_minmax_stats(
-                Species::Mudkip,
-                5,
-                true,
-                &StatsValue {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0
-                }
-            ),
+            calculate_minmax_stats(Species::Mudkip, 5, true, &StatsValue::new_all0(), None),
             StatsValue {
                 hp: 20,
                 atk: 10,
@@ -336,19 +337,7 @@ mod tests {
         );
 
         assert_eq!(
-            calculate_minmax_stats(
-                Species::Mudkip,
-                5,
-                false,
-                &StatsValue {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0
-                }
-            ),
+            calculate_minmax_stats(Species::Mudkip, 5, false, &StatsValue::new_all0(), None,),
             StatsValue {
                 hp: 21,
                 atk: 14,

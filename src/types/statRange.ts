@@ -5,16 +5,19 @@ export const getStatRange = async ({
   species,
   levelRange = [5, 5],
   evs = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+  nature = null,
 }: {
   species: Species;
   levelRange?: [number, number];
   evs?: StatsValue;
+  nature?: Nature | null;
 }): Promise<MinMaxStats> => {
   const minStats = await rngTools.calculate_minmax_stats(
     species,
     levelRange[0],
     true,
     evs,
+    nature,
   );
 
   const maxStats = await rngTools.calculate_minmax_stats(
@@ -22,6 +25,7 @@ export const getStatRange = async ({
     levelRange[1],
     false,
     evs,
+    nature,
   );
 
   return {

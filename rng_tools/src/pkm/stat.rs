@@ -1,4 +1,4 @@
-use crate::{Ivs, Nature, NatureFactor, Species};
+use crate::{Ivs, Nature, NatureFactor, NatureStatFactor, Species};
 use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
@@ -12,6 +12,19 @@ pub struct StatsValue {
     pub spa: u16,
     pub spd: u16,
     pub spe: u16,
+}
+
+impl StatsValue {
+    pub fn new_all0() -> StatsValue {
+        StatsValue {
+            hp: 0,
+            atk: 0,
+            def: 0,
+            spa: 0,
+            spd: 0,
+            spe: 0,
+        }
+    }
 }
 
 #[macro_export]
@@ -60,23 +73,37 @@ pub fn calculate_minmax_stats(
     level: u8,
     is_min_stat: bool,
     evs: &StatsValue,
+    nature: Option<Nature>,
 ) -> StatsValue {
     let base_stats = &species.personal().base_stats;
 
     let iv = if is_min_stat { 0 } else { 31 };
-    let nature_factor = if is_min_stat {
-        NatureFactor::Less
-    } else {
-        NatureFactor::More
+
+    let nature_factors = match nature {
+        None => {
+            let fact = if is_min_stat {
+                NatureFactor::Less
+            } else {
+                NatureFactor::More
+            };
+            &NatureStatFactor {
+                atk: fact,
+                def: fact,
+                spa: fact,
+                spd: fact,
+                spe: fact,
+            }
+        }
+        Some(nature) => nature.stat_factor(),
     };
 
     StatsValue {
         hp: calculate_hp(base_stats.hp, iv, evs.hp, level),
-        atk: calculate_non_hp(base_stats.atk, iv, evs.atk, level, nature_factor),
-        def: calculate_non_hp(base_stats.def, iv, evs.def, level, nature_factor),
-        spa: calculate_non_hp(base_stats.spa, iv, evs.spa, level, nature_factor),
-        spd: calculate_non_hp(base_stats.spd, iv, evs.spd, level, nature_factor),
-        spe: calculate_non_hp(base_stats.spe, iv, evs.spe, level, nature_factor),
+        atk: calculate_non_hp(base_stats.atk, iv, evs.atk, level, nature_factors.atk),
+        def: calculate_non_hp(base_stats.def, iv, evs.def, level, nature_factors.def),
+        spa: calculate_non_hp(base_stats.spa, iv, evs.spa, level, nature_factors.spa),
+        spd: calculate_non_hp(base_stats.spd, iv, evs.spd, level, nature_factors.spd),
+        spe: calculate_non_hp(base_stats.spe, iv, evs.spe, level, nature_factors.spe),
     }
 }
 
@@ -298,19 +325,7 @@ mod tests {
     #[test]
     fn test_mudkip_starter() {
         assert_eq!(
-            calculate_minmax_stats(
-                Species::Mudkip,
-                5,
-                true,
-                &StatsValue {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0
-                }
-            ),
+            calculate_minmax_stats(Species::Mudkip, 5, true, &StatsValue::new_all0(), None),
             StatsValue {
                 hp: 20,
                 atk: 10,
@@ -322,19 +337,7 @@ mod tests {
         );
 
         assert_eq!(
-            calculate_minmax_stats(
-                Species::Mudkip,
-                5,
-                false,
-                &StatsValue {
-                    hp: 0,
-                    atk: 0,
-                    def: 0,
-                    spa: 0,
-                    spd: 0,
-                    spe: 0
-                }
-            ),
+            calculate_minmax_stats(Species::Mudkip, 5, false, &StatsValue::new_all0(), None,),
             StatsValue {
                 hp: 21,
                 atk: 14,

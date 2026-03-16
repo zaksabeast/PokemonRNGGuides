@@ -43,6 +43,14 @@ export const formatActionName = (action: Wild3Action) => {
     .exhaustive();
 };
 
+export const isFishingAction = (action: Wild3Action) => {
+  return match(action)
+    .with("OldRod", () => true)
+    .with("GoodRod", () => true)
+    .with("SuperRod", () => true)
+    .otherwise(() => false);
+};
+
 export const cuteCharmGenders = [
   "Male",
   "Female",

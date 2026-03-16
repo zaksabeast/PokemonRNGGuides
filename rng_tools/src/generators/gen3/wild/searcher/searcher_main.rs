@@ -8,7 +8,7 @@ use super::super::{
     Wild3RoamerState, generate_gen3_wild,
 };
 use crate::{
-    AbilityType, Gender, GenderRatio, HiddenPower, Ivs, Nature, PkmFilter, Species,
+    AbilityType, Gender, HiddenPower, Ivs, Nature, PkmFilter, Species,
     gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, SpeciesData, search_wild3_reverse,
         searcher_painter::Wild3PaintingOpts,
@@ -86,7 +86,6 @@ pub struct Wild3SearcherOptions {
     pub initial_seed: u32,
     pub tid: u16,
     pub sid: u16,
-    pub gender_ratio: GenderRatio,
     pub initial_advances: usize,
     pub max_advances: usize,
     pub max_result_count: usize,
@@ -108,7 +107,6 @@ impl Default for Wild3SearcherOptions {
             initial_seed: 0,
             tid: 0,
             sid: 0,
-            gender_ratio: GenderRatio::default(),
             initial_advances: 0,
             max_advances: 0,
             max_result_count: 0,
@@ -212,6 +210,22 @@ pub struct VecWrapperForWasm {
 pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<VecWrapperForWasm> {
     search_wild3_reverse(opts)
         .into_iter()
+        .map(|vec| VecWrapperForWasm { vec })
+        .collect_vec()
+}
+
+#[wasm_bindgen]
+pub fn search_wild3_with_initial_advances_range(
+    opts: &Wild3SearcherOptions,
+    min_initial_seed: u32,
+    max_initial_seed: u32,
+) -> Vec<VecWrapperForWasm> {
+    (min_initial_seed..=max_initial_seed)
+        .flat_map(|initial_seed| {
+            let mut new_opts = opts.clone();
+            new_opts.initial_seed = initial_seed;
+            search_wild3_reverse(&new_opts)
+        })
         .map(|vec| VecWrapperForWasm { vec })
         .collect_vec()
 }

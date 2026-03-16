@@ -71,9 +71,10 @@ export const LeadCycleSpeedSelector = ({
   }>();
   const [leadSpeedType, setLeadSpeedType] =
     React.useState<LeadSpeedType>("Average");
-  const [leadCycleSpeedCustom, setLeadCycleSpeedCustom] =
-    React.useState<number>(AVERAGE_LEAD_CYCLE_SPEED);
-  const [leadPID, setLeadPID] = React.useState<number>(0);
+  const [leadCycleSpeedCustom, setLeadCycleSpeedCustom] = React.useState<
+    number | null
+  >(AVERAGE_LEAD_CYCLE_SPEED);
+  const [leadPID, setLeadPID] = React.useState<number | null>(0);
 
   const [computedLeadCycleSpeed, setComputedLeadCycleSpeed] =
     React.useState<number>(AVERAGE_LEAD_CYCLE_SPEED);
@@ -81,8 +82,8 @@ export const LeadCycleSpeedSelector = ({
   React.useEffect(() => {
     calculateLeadCycleSpeed(
       leadSpeedType,
-      leadCycleSpeedCustom,
-      leadPID,
+      leadCycleSpeedCustom ?? AVERAGE_LEAD_CYCLE_SPEED,
+      leadPID ?? 0,
       idealLeadCycleSpeed,
     ).then((val) => {
       setComputedLeadCycleSpeed(val);
@@ -104,7 +105,8 @@ export const LeadCycleSpeedSelector = ({
         <NumberInput
           name="leadPID"
           onChange={(val) => {
-            setLeadPID(clamp(val ?? 0, 0, 0xffffffff));
+            const val2 = val == null ? null : clamp(val, 0, 0xffffffff);
+            setLeadPID(val2);
           }}
           numType="hex"
           value={leadPID}
@@ -118,9 +120,8 @@ export const LeadCycleSpeedSelector = ({
         <NumberInput
           name="leadCycleSpeedCustom"
           onChange={(val) => {
-            setLeadCycleSpeedCustom(
-              clamp(val ?? AVERAGE_LEAD_CYCLE_SPEED, 18, 900),
-            );
+            const val2 = val == null ? null : clamp(val, 0, 900);
+            setLeadCycleSpeedCustom(val2);
           }}
           numType="decimal"
           value={leadCycleSpeedCustom}

@@ -19,7 +19,7 @@ import {
   HiddenPowerSwitch,
 } from "./hiddenPowerInput.component";
 import { Translations } from "~/translations";
-import { GenderFilter } from "./genderFilter";
+import { FormikGenderFilter } from "./genderFilter";
 
 const sortedNatures = nature.toSorted();
 
@@ -118,7 +118,12 @@ const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
     }),
     optOut(props?.displayGender, {
       label: t?.["Gender"] ?? "Gender",
-      input: <GenderFilter genderRatio={props.genderRatio} />,
+      input: (
+        <FormikGenderFilter<PkmFilterFields>
+          genderRatio={props.genderRatio}
+          name="filter_gender"
+        />
+      ),
     }),
     optOut(props?.displayIvs, {
       label: t?.["Min IVs"] ?? "Min IVs",

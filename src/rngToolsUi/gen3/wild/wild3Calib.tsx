@@ -6,8 +6,6 @@ import { MS_PER_GBA_FRAME } from "~/utils/consts";
 import { FormState as TargetSetup, Wild3CalibTarget } from "./wild3CalibTarget";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon";
 
-// NO_PROD
-
 export const Wild3Calib = () => {
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     null,

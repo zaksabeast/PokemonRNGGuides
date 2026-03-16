@@ -177,6 +177,7 @@ const getFields = (
       ),
       key: "usingPaintingReseeding",
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
+      show: false, // TODO: Support painting reseeding
     },
     {
       label: "Target painting seed",
@@ -184,14 +185,16 @@ const getFields = (
         <FormikNumberInput<FormState> name="targetPaintingSeed" numType="hex" />
       ),
       indent: 1,
-      show: usingPaintingReseeding,
+      //show: usingPaintingReseeding,
+      show: false, // TODO: Support painting reseeding
     },
     {
       label:
         "Battle video has been created after confirming that target painting seed was hit?",
       input: <FormikSwitch<FormState> name="isPaintingSeedConfirmed" />,
-      show: usingPaintingReseeding,
       indent: 1,
+      //show: usingPaintingReseeding,
+      show: false, // TODO: Support painting reseeding
     },
     {
       label: "Target Method",

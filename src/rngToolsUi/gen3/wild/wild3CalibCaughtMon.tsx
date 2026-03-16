@@ -409,9 +409,9 @@ export const Wild3CalibCaughtMon = ({
         submitButtonLabel="Find advances matching caught Pokémon"
         rowKey="uid"
       >
-        <div style={{ paddingLeft: "20px" }}>
+        <Flex vertical ml={20}>
           <Fields targetSetup={targetSetup} />
-        </div>
+        </Flex>
       </RngToolForm>
     </Flex>
   );

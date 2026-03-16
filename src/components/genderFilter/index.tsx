@@ -1,39 +1,45 @@
-import { GenderRatio } from "~/rngTools";
-import { useFormContext } from "~/hooks/form";
-import { useEffect } from "react";
-import { useWatch } from "react-hook-form";
-import { type PkmFilterFields } from "../pkmFilter";
+import { GenderRatio, Gender } from "~/rngTools";
+import React from "react";
 import { FormikSelect } from "../select";
 import { getGenderFilterOptions } from "./options";
+import { GenericForm, GuaranteeFormNameType } from "~/types";
+import { useField } from "~/hooks/form";
 
-export const GenderFilter = ({
-  genderRatio,
-  permitAny = true,
-}: {
+type FormikGenderFilterProps<FormState extends GenericForm> = {
   genderRatio?: GenderRatio;
   permitAny?: boolean;
-}) => {
-  const { setFieldValue } = useFormContext<PkmFilterFields>();
-  const filter_gender = useWatch<PkmFilterFields, "filter_gender">({
-    name: "filter_gender",
-  });
+  name: GuaranteeFormNameType<FormState, Gender | null>;
+};
 
-  const options = getGenderFilterOptions(genderRatio, permitAny);
+export const FormikGenderFilter = <FormState extends GenericForm>({
+  genderRatio,
+  permitAny = true,
+  name,
+}: FormikGenderFilterProps<FormState>) => {
+  const [{ value }, , { setValue }] = useField<Gender | null>(name);
 
-  useEffect(() => {
-    if (options.some((opt) => opt.value === filter_gender)) {
+  const options = React.useMemo(
+    () => getGenderFilterOptions(genderRatio, permitAny),
+    [genderRatio, permitAny],
+  );
+
+  React.useEffect(() => {
+    if (options.some((opt) => opt.value === value)) {
       return;
     }
+
     if (options.length === 0) {
       return;
     }
-    // Currently selected value is invalid.
-    setFieldValue("filter_gender", options[0].value);
-  }, [filter_gender, options, setFieldValue]);
 
+    // Currently selected value is invalid.
+    setValue(options[0].value);
+  }, [value, options, setValue]);
+
+  // No need to pass generic types since they're validated above
   return (
-    <FormikSelect<PkmFilterFields, "filter_gender">
-      name="filter_gender"
+    <FormikSelect
+      name={name}
       options={options}
       disabled={options.length <= 1}
     />

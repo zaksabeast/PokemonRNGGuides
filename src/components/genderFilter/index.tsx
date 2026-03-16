@@ -1,53 +1,45 @@
-import { GenderRatio } from "~/rngTools";
-import { getPossibleGenders } from "~/types/gender";
-import { useFormContext } from "~/hooks/form";
-import { useEffect } from "react";
-import { useWatch } from "react-hook-form";
-import { type PkmFilterFields } from "../pkmFilter";
+import { GenderRatio, Gender } from "~/rngTools";
+import React from "react";
 import { FormikSelect } from "../select";
-import { genderOptions } from "./options";
+import { getGenderFilterOptions } from "./options";
+import { GenericForm, GuaranteeFormNameType } from "~/types";
+import { useField } from "~/hooks/form";
 
-const getGenderFilterOptions = (genderRatio?: GenderRatio) => {
-  if (genderRatio == null) {
-    return genderOptions;
-  }
-
-  const possibleGenders = getPossibleGenders(genderRatio);
-  const permitNull = possibleGenders.length > 1;
-  return genderOptions.filter((option) => {
-    if (option.value == null) {
-      return permitNull;
-    }
-    return possibleGenders.includes(option.value);
-  });
+type FormikGenderFilterProps<FormState extends GenericForm> = {
+  genderRatio?: GenderRatio;
+  permitAny?: boolean;
+  name: GuaranteeFormNameType<FormState, Gender | null>;
 };
 
-export const GenderFilter = ({
+export const FormikGenderFilter = <FormState extends GenericForm>({
   genderRatio,
-}: {
-  genderRatio?: GenderRatio;
-}) => {
-  const { setFieldValue } = useFormContext<PkmFilterFields>();
-  const filter_gender = useWatch<PkmFilterFields, "filter_gender">({
-    name: "filter_gender",
-  });
+  permitAny = true,
+  name,
+}: FormikGenderFilterProps<FormState>) => {
+  const [{ value }, , { setValue }] = useField<Gender | null>(name);
 
-  const options = getGenderFilterOptions(genderRatio);
+  const options = React.useMemo(
+    () => getGenderFilterOptions(genderRatio, permitAny),
+    [genderRatio, permitAny],
+  );
 
-  useEffect(() => {
-    if (options.some((opt) => opt.value === filter_gender)) {
+  React.useEffect(() => {
+    if (options.some((opt) => opt.value === value)) {
       return;
     }
+
     if (options.length === 0) {
       return;
     }
-    // Currently selected value is invalid.
-    setFieldValue("filter_gender", options[0].value);
-  }, [filter_gender, options, setFieldValue]);
 
+    // Currently selected value is invalid.
+    setValue(options[0].value);
+  }, [value, options, setValue]);
+
+  // No need to pass generic types since they're validated above
   return (
-    <FormikSelect<PkmFilterFields, "filter_gender">
-      name="filter_gender"
+    <FormikSelect
+      name={name}
       options={options}
       disabled={options.length <= 1}
     />

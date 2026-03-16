@@ -256,7 +256,10 @@ export const PickStarter4 = () => {
 
   const onSubmit = React.useCallback(
     async (opts: FormState) => {
-      const minMaxStats = await getStatRange(opts.species, [5, 6]);
+      const minMaxStats = await getStatRange({
+        species: opts.species,
+        levelRange: [5, 6],
+      });
       setState((prev) => ({ ...prev, species: opts.species, minMaxStats }));
       const advance = getStarterAdvance({
         game,

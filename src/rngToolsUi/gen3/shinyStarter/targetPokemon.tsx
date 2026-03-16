@@ -37,7 +37,7 @@ export const TargetPokemon = ({
               const species = target.value as TargetStarter["species"];
               setTargetStarter({
                 species,
-                minMaxStats: await getStatRange(species),
+                minMaxStats: await getStatRange({ species }),
               });
 
               const desc = await getTargetPokemonDesc(

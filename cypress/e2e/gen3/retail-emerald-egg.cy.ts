@@ -87,7 +87,7 @@ describe("rng tool", () => {
 
     cy.get("#select_retail_emerald_pickup_egg").click();
 
-    testRngTool<CalibratePickupFormState>({
+    testRngTool<Omit<CalibratePickupFormState, "evs">>({
       parentSelector: "#step-5",
       form: {
         level: "5",

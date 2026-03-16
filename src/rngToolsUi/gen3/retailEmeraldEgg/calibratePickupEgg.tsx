@@ -8,6 +8,7 @@ import {
   Select,
   Typography,
 } from "~/components";
+import { EvInput, Evs, EvsSchema } from "~/components/evInput";
 import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
 import { PickupEggState, useHeldEggState, usePickupEggState } from "./state";
 import {
@@ -190,6 +191,7 @@ const DEFAULT_EGG_LEVEL = 5;
 
 const Validator = StatFieldsSchema.extend({
   level: z.number().int().min(1).max(100).nullable(),
+  evs: EvsSchema,
 });
 
 export type FormState = z.infer<typeof Validator>;
@@ -202,6 +204,14 @@ const initialValues: FormState = {
   spdStat: 0,
   speStat: 0,
   level: DEFAULT_EGG_LEVEL,
+  evs: {
+    hp: 0,
+    atk: 0,
+    def: 0,
+    spa: 0,
+    spd: 0,
+    spe: 0,
+  },
 };
 
 export const CalibratePickupEgg = () => {
@@ -239,11 +249,15 @@ export const CalibratePickupEgg = () => {
         return;
       }
 
-      const stats = await getStatRange(targetSpecies, [eggLevel, eggLevel]);
+      const stats = await getStatRange({
+        species: targetSpecies,
+        levelRange: [eggLevel, eggLevel],
+        evs: filters.evs,
+      });
       setMinMaxStats(stats);
     };
     runAsync();
-  }, [targetSpecies, eggLevel]);
+  }, [targetSpecies, eggLevel, filters.evs]);
 
   React.useEffect(() => {
     const runAsync = async () => {
@@ -258,7 +272,7 @@ export const CalibratePickupEgg = () => {
           eggLevel,
           targetNature,
           normalizeInheritedIvs(result.ivs),
-          { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+          filters.evs,
         );
         return {
           key: `${result.advance}-${result.method}`,
@@ -280,7 +294,23 @@ export const CalibratePickupEgg = () => {
     };
 
     runAsync();
-  }, [state, targetAdvance, targetSpecies, targetNature, eggLevel]);
+  }, [
+    state,
+    targetAdvance,
+    targetSpecies,
+    targetNature,
+    eggLevel,
+    filters.evs,
+  ]);
+
+  const updateLevelFilter = React.useCallback(
+    (level: number | null) => setFilters((prev) => ({ ...prev, level })),
+    [],
+  );
+  const updateEvFilters = React.useCallback(
+    (evs: Evs) => setFilters((prev) => ({ ...prev, evs })),
+    [],
+  );
 
   const fields = React.useMemo((): Field[] => {
     return [
@@ -298,13 +328,17 @@ export const CalibratePickupEgg = () => {
           <FormikNumberInput
             name="level"
             numType="decimal"
-            onChange={(level) => setFilters((prev) => ({ ...prev, level }))}
+            onChange={updateLevelFilter}
           />
         ),
       },
+      {
+        label: t["EVs"],
+        input: <EvInput<FormState> name="evs" onChange={updateEvFilters} />,
+      },
       ...getStatFields<FormState>(minMaxStats, t),
     ];
-  }, [t, minMaxStats]);
+  }, [t, minMaxStats, updateLevelFilter, updateEvFilters]);
 
   const dataSource = React.useMemo(() => {
     return potentialEggs.filter((result) => {

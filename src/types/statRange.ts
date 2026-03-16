@@ -1,19 +1,27 @@
 import { Ivs, Nature, rngTools, Species, StatsValue } from "~/rngTools";
 import { MinMaxStats } from "~/types/stat";
 
-export const getStatRange = async (
-  species: Species,
-  levelRange: [number, number] = [5, 5],
-): Promise<MinMaxStats> => {
+export const getStatRange = async ({
+  species,
+  levelRange = [5, 5],
+  evs = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+}: {
+  species: Species;
+  levelRange?: [number, number];
+  evs?: StatsValue;
+}): Promise<MinMaxStats> => {
   const minStats = await rngTools.calculate_minmax_stats(
     species,
     levelRange[0],
     true,
+    evs,
   );
+
   const maxStats = await rngTools.calculate_minmax_stats(
     species,
     levelRange[1],
     false,
+    evs,
   );
 
   return {

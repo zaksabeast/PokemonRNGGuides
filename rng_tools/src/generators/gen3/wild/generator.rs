@@ -6,10 +6,10 @@ use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned, is_method_poss
 use crate::{
     EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter,
     gen3::{
-        CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method, Gen3PkmFilter, Moment,
-        Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex, Wild3FeebasState,
-        Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, passes_pid_filter,
-        wild::lcrng_distance,
+        CycleAndModCount, CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method,
+        Gen3PkmFilter, Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
+        Wild3FeebasState, Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState,
+        passes_pid_filter, wild::lcrng_distance,
     },
     gen3_tsv, is_max_size,
     rng::{Rng, lcrng::Pokerng},
@@ -50,7 +50,7 @@ pub struct Wild3GeneratorResult {
     pub ivs: Ivs,
     pub lvl: u8,
     pub method: Gen3Method,
-    pub cycle_range: Option<CycleAndModRange>,
+    pub cycle_range: Option<CycleRange<CycleAndModCount>>,
 }
 
 impl Wild3GeneratorResult {
@@ -253,6 +253,16 @@ fn select_lvl(
     }
 
     encounter.min_level + lvl_incr
+}
+
+#[wasm_bindgen]
+pub fn generate_gen3_wild_wasm(
+    initial_seed: u32,
+    advances: usize,
+    opts: &Wild3GeneratorOptions,
+    map_data: &Wild3MapGameData,
+) -> Vec<Wild3GeneratorResult> {
+    generate_gen3_wild(Pokerng::with_jump(initial_seed, advances), opts, map_data).0
 }
 
 pub fn generate_gen3_wild(

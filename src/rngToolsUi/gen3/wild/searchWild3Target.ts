@@ -5,11 +5,8 @@ import {
   Wild3SearcherOptions,
 } from "~/rngTools";
 import { pkmFilterFieldsToRustInput } from "~/components/pkmFilter";
-import { genderRatioBySpecies } from "~/types";
-
 import { orderBy, intersection } from "lodash-es";
 import { gen3PkmFilterFieldsToRustInput } from "~/components/gen3PkmFilter";
-
 import { gen3Leads, formatActionName, formatMapName } from "./utils";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
@@ -212,7 +209,6 @@ export const searchWild3Target = async (values: FormState) => {
     initial_seed,
     tid: values.tid,
     sid: values.sid,
-    gender_ratio: genderRatioBySpecies[values.species],
     initial_advances,
     max_advances,
     max_result_count: values.max_result_count,

@@ -1097,6 +1097,11 @@ pub fn get_species_gender_ratio(species: Species) -> GenderRatio {
     species.personal().gender_ratio
 }
 
+#[wasm_bindgen]
+pub fn get_species_gender_from_pid(species: &Species, pid: u32) -> Gender {
+    species.gender_from_pid(pid)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

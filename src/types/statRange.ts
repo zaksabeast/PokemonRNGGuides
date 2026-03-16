@@ -10,7 +10,7 @@ export const getStatRange = async ({
   species: Species;
   levelRange?: [number, number];
   evs?: StatsValue;
-  nature: Nature | null;
+  nature?: Nature | null;
 }): Promise<MinMaxStats> => {
   const minStats = await rngTools.calculate_minmax_stats(
     species,

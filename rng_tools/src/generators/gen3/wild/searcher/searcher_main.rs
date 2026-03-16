@@ -226,7 +226,6 @@ pub fn search_wild3_with_initial_advances_range(
             new_opts.initial_seed = initial_seed;
             search_wild3_reverse(&new_opts)
         })
-        .into_iter()
         .map(|vec| VecWrapperForWasm { vec })
         .collect_vec()
 }

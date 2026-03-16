@@ -24,6 +24,7 @@ import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { gen3Methods, gender, StatFieldsSchema } from "~/types";
 import {
   Gen3Method,
+  get_species_gender_ratio,
   rngTools,
   Wild3EncounterGameData,
   Wild3MapSetups,
@@ -33,7 +34,7 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import type { FormState as TargetSetup } from "./wild3CalibTarget";
 import { gen3Leads, isFishingAction, wild3Actions } from "./utils";
 import { useWatch } from "react-hook-form";
-import { GenderFilter } from "~/components/genderFilter";
+import { FormikGenderFilter } from "~/components/genderFilter";
 import { getIvRangeFromStats, getStatRange } from "~/types/statRange";
 import uniq from "lodash-es/uniq";
 import {
@@ -49,7 +50,7 @@ const emeraldWildGameData = getWild3EmeraldGameData();
 const Validator = z
   .object({
     nature: z.enum(nature),
-    filter_gender: z.enum(gender),
+    gender: z.enum(gender),
     species: z.enum(emeraldWildGameData.species),
     lvl: z.number().min(1).max(100),
     // TODO ability
@@ -66,7 +67,7 @@ const initialValues: FormState = {
   spdStat: 0,
   speStat: 0,
   nature: "Adamant",
-  filter_gender: "Male", // Must be named filter_gender for GenderFilter component
+  gender: "Male",
   species: "Shuckle",
   lvl: 1,
 };
@@ -141,7 +142,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     filter: pkmFilterFieldsToRustInput({
       ...getPkmFilterInitialValues(),
       filter_nature: values.nature,
-      filter_gender: values.filter_gender,
+      filter_gender: values.gender,
       ...minMaxIvs,
     }),
     gen3_filter: gen3PkmFilterFieldsToRustInput(
@@ -266,7 +267,6 @@ const Fields = ({ targetSetup }: { targetSetup: TargetSetup }) => {
       return;
     }
 
-    const genderRatio = selectedSpeciesInfos[0].species_data.gender_ratio;
     const lvls = new Set<number>();
     selectedSpeciesInfos.forEach((info) => {
       for (let lvl = info.min_level; lvl <= info.max_level; lvl++) {
@@ -275,11 +275,16 @@ const Fields = ({ targetSetup }: { targetSetup: TargetSetup }) => {
     });
     const sortedLvls = Array.from(lvls).sort((lvl1, lvl2) => lvl1 - lvl2);
 
-    getStatRange(
-      selectedSpecies,
-      [selectedLvl, selectedLvl],
-      selectedNature,
-    ).then((minMaxStats) => {
+    Promise.all([
+      getStatRange({
+        species: selectedSpecies,
+        levelRange: [selectedLvl, selectedLvl],
+        nature: selectedNature,
+      }),
+      rngTools.get_species_gender_ratio(
+        selectedSpeciesInfos[0].species_data.species,
+      ),
+    ]).then(([minMaxStats, genderRatio]) => {
       setFields([
         speciesField,
         {
@@ -293,7 +298,13 @@ const Fields = ({ targetSetup }: { targetSetup: TargetSetup }) => {
         },
         {
           label: "Gender",
-          input: <GenderFilter genderRatio={genderRatio} permitAny={false} />,
+          input: (
+            <FormikGenderFilter<FormState>
+              name="gender"
+              genderRatio={genderRatio}
+              permitAny={false}
+            />
+          ),
         },
         {
           label: "Nature",

@@ -24,7 +24,6 @@ import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { gen3Methods, gender, StatFieldsSchema } from "~/types";
 import {
   Gen3Method,
-  get_species_gender_ratio,
   rngTools,
   Wild3EncounterGameData,
   Wild3MapSetups,

@@ -1,0 +1,1 @@
+import{o as t,n as m}from"./index-BmqJ6uML.js";const p={hp:{min:0,max:0},atk:{min:0,max:0},def:{min:0,max:0},spa:{min:0,max:0},spd:{min:0,max:0},spe:{min:0,max:0}},a=m().min(0).max(999),e=t({hpStat:a,atkStat:a,defStat:a,spaStat:a,spdStat:a,speStat:a});t({hp:a,atk:a,def:a,spa:a,spd:a,spe:a});export{e as S,p as d};

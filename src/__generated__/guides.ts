@@ -1570,6 +1570,44 @@ export const guides = {
       return file.default;
     }),
   },
+  "/dream-radar-cart-patches/": {
+    meta: {
+      id: "/dream-radar-cart-patches/",
+      categories: ["Transporter and Dream Radar"],
+      section: "patch",
+      guideVariants: null,
+      guideKey: "/dream-radar-cart-patches/",
+      isNew: false,
+      title: "Pokemon Dream Radar Gen 4 Cart Patches",
+      navDrawerTitle: "Gen 4 Cart Patches",
+      description:
+        "Trick Pokemon Dream Radar into thinking it has Diamond, Pearl, Platinum, HeartGold, or SoulSilver inserted to unlock Gen 4 Legendaries.",
+      slug: "/dream-radar-cart-patches/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-17",
+      type: "baseGuide",
+      file: "guides/Transporter/Gen 4 Cart Patches.mdx",
+      translations: null,
+      guideGroupId: "en:/dream-radar-cart-patches/:Transporter and Dream Radar",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Transporter/Gen 4 Cart Patches.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Transporter/Gen 4 Cart Patches.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/dream-radar-patches/": {
     meta: {
       id: "/dream-radar-patches/",
@@ -14478,6 +14516,7 @@ export const guideSlugs = [
   "/dppt-setup-rng/",
   "/dppt-tid-sid/",
   "/dppt-wild/",
+  "/dream-radar-cart-patches/",
   "/dream-radar-patches/",
   "/e-tips-rng/",
   "/emerald-mirage-island/",

@@ -108,7 +108,6 @@ const InnerGen4Timer = ({ timerSettings, onUpdate }: InnerProps) => {
     hasInited.current = true;
     initTimer({
       console: timerSettings.console,
-      is3ds: timerSettings.console === "ThreeDs",
       min_time_ms: timerSettings.minTimeMs,
       calibrated_delay: timerSettings.calibratedDelay,
       calibrated_second: timerSettings.calibratedSeconds,
@@ -123,7 +122,6 @@ const InnerGen4Timer = ({ timerSettings, onUpdate }: InnerProps) => {
         calibrated_delay: opts.calibratedDelay,
         calibrated_second: opts.calibratedSeconds,
         console: opts.console,
-        is3ds: opts.console === "ThreeDs",
         min_time_ms: opts.minTimeMs,
         target_delay: opts.targetDelay,
         target_second: opts.targetSeconds,

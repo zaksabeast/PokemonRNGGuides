@@ -16,20 +16,22 @@ pub enum GameVersion {
 fn dpt_method_jk(species: Species) -> bool {
     matches!(
         species,
-        Species::Regigigas
-            | Species::Heatran
+        Species::Azelf
+            | Species::Darkrai
             | Species::Dialga
-            | Species::Palkia
+            | Species::Drifloon
             | Species::Giratina_Altered
             | Species::Giratina_Origin
+            | Species::Heatran
+            | Species::Palkia
             | Species::Regice
+            | Species::Regigigas
             | Species::Regirock
             | Species::Registeel
-            | Species::Uxie
-            | Species::Azelf
-            | Species::Drifloon
-            | Species::Spiritomb
             | Species::Rotom_Normal
+            | Species::Shaymin_Land
+            | Species::Spiritomb
+            | Species::Uxie
     )
 }
 
@@ -42,10 +44,7 @@ fn hgss_method_jk(species: Species) -> bool {
             | Species::Zapdos
             | Species::Moltres
             | Species::Mewtwo
-            | Species::Dialga
             | Species::Suicune
-            | Species::Palkia
-            | Species::Giratina_Origin
             | Species::Voltorb
             | Species::Snorlax
             | Species::Lapras

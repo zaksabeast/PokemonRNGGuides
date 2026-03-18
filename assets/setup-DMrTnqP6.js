@@ -1,0 +1,1 @@
+import{j as t,g as o}from"./index-BsTu5YyI.js";import{s as e}from"./state-CAE3aRaq.js";import{S as s,a}from"./consoleSelect-CqdWXDd8.js";import"./startCase-BX0YiiC4.js";const m=["Diamond","Pearl","Platinum"],r=[{label:"Game",input:t.jsx(s,{stateAtom:e,games:m})},{label:"Console",input:t.jsx(a,{stateAtom:e})}],c=()=>t.jsx(o,{fields:r});export{c as Gen4StaticSetup};

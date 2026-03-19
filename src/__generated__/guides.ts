@@ -977,6 +977,49 @@ export const guides = {
       return file.default;
     }),
   },
+  "/de-emerald-mirage-island/": {
+    meta: {
+      id: "/emerald-mirage-island/",
+      categories: ["Emerald"],
+      section: "other_rng",
+      guideVariants: ["retail"],
+      guideKey: "/emerald-mirage-island/",
+      isNew: false,
+      title: "Wundereiland in Smaragd",
+      navDrawerTitle: "Wundereiland",
+      description:
+        "Lerne, wie du Wundereiland in Pokémon Smaragd betrittst, indem du ein Pokémon mit der richtigen PID mittels RNG-Manipulation fängst.",
+      slug: "/de-emerald-mirage-island/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-11",
+      translation: { enSlug: "/emerald-mirage-island/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-19",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Mirage Island.mdx",
+      translations: {
+        de: "/de-emerald-mirage-island/",
+        en: "/emerald-mirage-island/",
+        zh: "/zh-emerald-mirage-island/",
+      },
+      guideGroupId: "de:/emerald-mirage-island/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/de/Gen 3/Emerald/Mirage Island.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Mirage Island.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/de-emerald-overview/": {
     meta: {
       id: "/emerald-overview/",
@@ -1148,6 +1191,93 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/de/Gen 3/Emerald/Retail Egg.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/de-retail-emerald-wild/": {
+    meta: {
+      id: "/retail-emerald-wild/",
+      categories: ["Emerald"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "/retail-emerald-wild/",
+      isNew: false,
+      title: "Smaragd Retail Wild RNG",
+      navDrawerTitle: "Wild RNG",
+      description:
+        "Lerne, wie du wilde Pokémon in Pokémon Smaragd auf einer Retail-Konsole für perfekte IVs, Wesen und Shinies RNGst.",
+      slug: "/de-retail-emerald-wild/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/retail-emerald-wild/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-19",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Retail Wild RNG.mdx",
+      translations: {
+        de: "/de-retail-emerald-wild/",
+        it: "/it-retail-emerald-wild/",
+        en: "/retail-emerald-wild/",
+        zh: "/zh-retail-emerald-wild/",
+      },
+      guideGroupId: "de:/retail-emerald-wild/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/de/Gen 3/Emerald/Retail Wild RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Retail Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/de-rs-mirage-island/": {
+    meta: {
+      id: "/rs-mirage-island/",
+      categories: ["Ruby and Sapphire"],
+      section: "other_rng",
+      guideVariants: ["retail"],
+      guideKey: "/rs-mirage-island/",
+      isNew: false,
+      title: "Wundereiland in Rubin und Saphir",
+      navDrawerTitle: "Wundereiland",
+      description:
+        "Lerne, wie du Wundereiland in Pokémon Rubin und Saphir betrittst, indem du ein Pokémon mit der richtigen PID mittels RNG-Manipulation fängst.",
+      slug: "/de-rs-mirage-island/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-11",
+      translation: { enSlug: "/rs-mirage-island/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-19",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Mirage Island.mdx",
+      translations: {
+        de: "/de-rs-mirage-island/",
+        en: "/rs-mirage-island/",
+        zh: "/zh-rs-mirage-island/",
+      },
+      guideGroupId: "de:/rs-mirage-island/:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/de/Gen 3/Emerald/Mirage Island.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Mirage Island.mdx?raw"
       );
       return file.default;
     }),
@@ -1845,10 +1975,11 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-19",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Mirage Island.mdx",
       translations: {
+        de: "/de-emerald-mirage-island/",
         en: "/emerald-mirage-island/",
         zh: "/zh-emerald-mirage-island/",
       },
@@ -6056,6 +6187,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Retail Wild RNG.mdx",
       translations: {
+        de: "/de-retail-emerald-wild/",
         it: "/it-retail-emerald-wild/",
         en: "/retail-emerald-wild/",
         zh: "/zh-retail-emerald-wild/",
@@ -7249,10 +7381,11 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-19",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Retail Wild RNG.mdx",
       translations: {
+        de: "/de-retail-emerald-wild/",
         it: "/it-retail-emerald-wild/",
         en: "/retail-emerald-wild/",
         zh: "/zh-retail-emerald-wild/",
@@ -8994,10 +9127,14 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-19",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Mirage Island.mdx",
-      translations: { en: "/rs-mirage-island/", zh: "/zh-rs-mirage-island/" },
+      translations: {
+        de: "/de-rs-mirage-island/",
+        en: "/rs-mirage-island/",
+        zh: "/zh-rs-mirage-island/",
+      },
       guideGroupId: "en:/rs-mirage-island/:Ruby and Sapphire",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/rs-mirage-island/" },
@@ -10440,6 +10577,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Mirage Island.mdx",
       translations: {
+        de: "/de-emerald-mirage-island/",
         en: "/emerald-mirage-island/",
         zh: "/zh-emerald-mirage-island/",
       },
@@ -12855,6 +12993,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx",
       translations: {
+        de: "/de-retail-emerald-wild/",
         it: "/it-retail-emerald-wild/",
         en: "/retail-emerald-wild/",
         zh: "/zh-retail-emerald-wild/",
@@ -14407,7 +14546,11 @@ export const guides = {
       lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Mirage Island.mdx",
-      translations: { en: "/rs-mirage-island/", zh: "/zh-rs-mirage-island/" },
+      translations: {
+        de: "/de-rs-mirage-island/",
+        en: "/rs-mirage-island/",
+        zh: "/zh-rs-mirage-island/",
+      },
       guideGroupId: "zh:/rs-mirage-island/:Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: ["web_tool"],
@@ -14695,10 +14838,13 @@ export const guideSlugs = [
   "/contributing/",
   "/crystal/",
   "/de-e-tips-rng/",
+  "/de-emerald-mirage-island/",
   "/de-emerald-overview/",
   "/de-emerald-sid-feebas/",
   "/de-emulator-emerald-egg/",
   "/de-retail-emerald-egg/",
+  "/de-retail-emerald-wild/",
+  "/de-rs-mirage-island/",
   "/de-rs-sid-feebas/",
   "/delete-pokemon-save/",
   "/desmume-setup/",

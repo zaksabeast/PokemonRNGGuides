@@ -1,0 +1,62 @@
+const e=`---
+- title: "Wundereiland in Smaragd"
+  navDrawerTitle: "Wundereiland"
+  description: "Lerne, wie du Wundereiland in Pokémon Smaragd betrittst, indem du ein Pokémon mit der richtigen PID mittels RNG-Manipulation fängst."
+  slug: "de-emerald-mirage-island"
+  translation:
+    enSlug: "emerald-mirage-island"
+    language: "de"
+- title: "Wundereiland in Rubin und Saphir"
+  navDrawerTitle: "Wundereiland"
+  description: "Lerne, wie du Wundereiland in Pokémon Rubin und Saphir betrittst, indem du ein Pokémon mit der richtigen PID mittels RNG-Manipulation fängst."
+  slug: "de-rs-mirage-island"
+  translation:
+    enSlug: "rs-mirage-island"
+    language: "de"
+---
+
+<Gist>
+  Gist: Erreiche Wundereiland, indem du ein Pokémon mit der richtigen PID
+  fängst.
+</Gist>
+
+## Wundereiland
+
+Der Zugang zu Wundereiland ist der einzige Weg, um eine Lydzibeere zu erhalten. Die Insel ist nur zugänglich, wenn ein Pokémon im Team des Spielers eine PID besitzt, die einem bestimmten Muster entspricht. Dieses Muster ändert sich jeden Tag und hängt von der Anzahl der Tage ab, die seit der Erstellung des Spielstands vergangen sind.
+
+## Schritt 1: Anzahl der Tage seit Erstellung des Spielstands finden
+
+Wenn deine interne Batterie leer ist, ist dieser Schritt nicht notwendig.
+
+Sprich mit dem Wissenschaftler im Moosbach City Raumfahrtzentrum, um die Anzahl der gestarteten Raketen zu erfahren. Dies zeigt die Anzahl der Wochen an, die seit der Erstellung deines Spielstands vergangen sind.
+
+![Wissenschaftler im Moosbach City Raumfahrtzentrum](/images/Emerald/mirageIslandRocketLaunched.png)
+
+## Schritt 2: Ein Pokémon fangen, das dem PID-Muster entspricht
+
+1. Fülle das untenstehende Formular aus, um Ergebnisse anzuzeigen.
+2. Wähle bei einer aktiven Batterie ein Ergebnis aus, das 6 oder mehr Tage in der Zukunft liegt.
+3. Fange ein Pokémon mit Method-1 PID-Generierung auf dem Advance deines gewählten Ergebnisses. Kecleon wird empfohlen, aber jedes Method-1 Pokémon funktioniert.
+
+<ShowIf slug="/de-emerald-mirage-island">
+  <Gen3MirageIsland game="emerald" />
+</ShowIf>
+
+<ShowIf slug="/de-rs-mirage-island">
+  <Gen3MirageIsland game="rs" />
+</ShowIf>
+
+## Schritt 3: Wundereiland besuchen
+
+Versuche in den nächsten 6 Tagen, Wundereiland auf Route 130 zu besuchen. An einem dieser Tage sollte Wundereiland zugänglich sein.
+
+Viel Spaß mit deiner Lydzibeere!
+
+![Wissenschaftler im Moosbach City Raumfahrtzentrum](/images/Emerald/mirageIslandLiechiBerry.png)
+
+## Credits
+
+- Guide und Tools: RainingChain.
+- Chinesische Übersetzung: xuanyelin, Hakuhiro.
+- Deutsche Übersetzung: Parasite.
+`;export{e as default};

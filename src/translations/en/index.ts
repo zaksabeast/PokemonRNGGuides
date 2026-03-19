@@ -190,6 +190,16 @@ export const translations = {
   October: "October",
   November: "November",
   December: "December",
+  "Lead PID Speed Calculator": "Lead PID Speed Calculator",
+  Fastest: "Fastest",
+  Slowest: "Slowest",
+  "Very Fast": "Very Fast",
+  Slow: "Slow",
+  "Very Slow": "Very Slow",
+  Common: "Common",
+  "Speed: {speed} cycles ({cycles})": "Speed: {speed} cycles ({cycles})",
+  "Faster than {percent} of PIDs": "Faster than {percent} of PIDs.",
+  "Slower than {percent} of PIDs": "Slower than {percent} of PIDs.",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

@@ -1022,6 +1022,94 @@ export const guides = {
       return file.default;
     }),
   },
+  "/de-emerald-sid-feebas/": {
+    meta: {
+      id: "/emerald-sid-feebas/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/emerald-sid-feebas/",
+      isNew: false,
+      title: "SID mit Barschwa in Smaragd finden",
+      navDrawerTitle: "Finde SID mit Barschwa",
+      description:
+        "Wie du deine Secret ID (SID) in Smaragd mithilfe von Barschwa findest.",
+      slug: "/de-emerald-sid-feebas/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-03",
+      translation: { enSlug: "/emerald-sid-feebas/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-18",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Find SID with Feebas.mdx",
+      translations: {
+        de: "/de-emerald-sid-feebas/",
+        en: "/emerald-sid-feebas/",
+        zh: "/zh-emerald-sid-feebas/",
+      },
+      guideGroupId: "de:/emerald-sid-feebas/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/de/Gen 3/Emerald/Find SID with Feebas.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Find SID with Feebas.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/de-emulator-emerald-egg/": {
+    meta: {
+      id: "/emulator-emerald-egg/",
+      categories: ["Emerald"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "emer-egg",
+      isNew: false,
+      title: "Smaragd Ei-RNG",
+      navDrawerTitle: "Ei-RNG",
+      description:
+        "Lerne, wie du in Pokémon Smaragd Eier in der Pension RNGst. Erhalte perfekte IVs, Wesen und Shinies.",
+      slug: "/de-emulator-emerald-egg/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-09",
+      translation: { enSlug: "/emulator-emerald-egg/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-18",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Egg RNG.mdx",
+      translations: {
+        de: "/de-emulator-emerald-egg/",
+        en: "/emulator-emerald-egg/",
+        it: "/it-emulator-emerald-egg/",
+        zh: "/zh-emulator-emerald-egg/",
+      },
+      guideGroupId: "de:emer-egg:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/de/Gen 3/Emerald/Egg RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Egg RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/de-retail-emerald-egg/": {
     meta: {
       id: "/retail-emerald-egg/",
@@ -1060,6 +1148,51 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/de/Gen 3/Emerald/Retail Egg.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/de-rs-sid-feebas/": {
+    meta: {
+      id: "/rs-sid-feebas/",
+      categories: ["Ruby and Sapphire"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/rs-sid-feebas/",
+      isNew: false,
+      title: "SID mit Barschwa in Rubin und Saphir finden",
+      navDrawerTitle: "Finde SID mit Barschwa",
+      description:
+        "Wie du deine Secret ID (SID) in Rubin oder Saphir mithilfe von Barschwa findest.",
+      slug: "/de-rs-sid-feebas/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/rs-sid-feebas/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-18",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Find SID with Feebas.mdx",
+      translations: {
+        de: "/de-rs-sid-feebas/",
+        en: "/rs-sid-feebas/",
+        zh: "/zh-rs-sid-feebas/",
+      },
+      guideGroupId: "de:/rs-sid-feebas/:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/de/Gen 3/Emerald/Find SID with Feebas.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Find SID with Feebas.mdx?raw"
       );
       return file.default;
     }),
@@ -1577,7 +1710,7 @@ export const guides = {
       section: "patch",
       guideVariants: null,
       guideKey: "/dream-radar-cart-patches/",
-      isNew: false,
+      isNew: true,
       title: "Pokemon Dream Radar Gen 4 Cart Patches",
       navDrawerTitle: "Gen 4 Cart Patches",
       description:
@@ -1586,11 +1719,11 @@ export const guides = {
       isRoughDraft: false,
       orderPriority: 20,
       hideFromNavDrawer: false,
-      addedOn: null,
+      addedOn: "2026-03-17",
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-17",
+      lastUpdated: "2026-03-18",
       type: "baseGuide",
       file: "guides/Transporter/Gen 4 Cart Patches.mdx",
       translations: null,
@@ -1956,10 +2089,11 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-18",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID with Feebas.mdx",
       translations: {
+        de: "/de-emerald-sid-feebas/",
         en: "/emerald-sid-feebas/",
         zh: "/zh-emerald-sid-feebas/",
       },
@@ -2802,10 +2936,11 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-18",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Egg RNG.mdx",
       translations: {
+        de: "/de-emulator-emerald-egg/",
         en: "/emulator-emerald-egg/",
         it: "/it-emulator-emerald-egg/",
         zh: "/zh-emulator-emerald-egg/",
@@ -3896,6 +4031,7 @@ export const guides = {
       translations: {
         es: "/es-gba-methods-lead-impact/",
         en: "/gba-methods-lead-impact/",
+        zh: "/zh-gba-methods-lead-impact/",
       },
       guideGroupId:
         "es:/gba-methods-lead-impact/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
@@ -4593,12 +4729,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-18",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Methods Part2.mdx",
       translations: {
         es: "/es-gba-methods-lead-impact/",
         en: "/gba-methods-lead-impact/",
+        zh: "/zh-gba-methods-lead-impact/",
       },
       guideGroupId:
         "en:/gba-methods-lead-impact/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
@@ -5605,6 +5742,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Emulator Egg RNG.mdx",
       translations: {
+        de: "/de-emulator-emerald-egg/",
         en: "/emulator-emerald-egg/",
         it: "/it-emulator-emerald-egg/",
         zh: "/zh-emulator-emerald-egg/",
@@ -9010,10 +9148,14 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-18",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID with Feebas.mdx",
-      translations: { en: "/rs-sid-feebas/", zh: "/zh-rs-sid-feebas/" },
+      translations: {
+        de: "/de-rs-sid-feebas/",
+        en: "/rs-sid-feebas/",
+        zh: "/zh-rs-sid-feebas/",
+      },
       guideGroupId: "en:/rs-sid-feebas/:Ruby and Sapphire",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/rs-sid-feebas/" },
@@ -10460,6 +10602,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID with Feebas.mdx",
       translations: {
+        de: "/de-emerald-sid-feebas/",
         en: "/emerald-sid-feebas/",
         zh: "/zh-emerald-sid-feebas/",
       },
@@ -10970,6 +11113,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Egg RNG.mdx",
       translations: {
+        de: "/de-emulator-emerald-egg/",
         en: "/emulator-emerald-egg/",
         it: "/it-emulator-emerald-egg/",
         zh: "/zh-emulator-emerald-egg/",
@@ -11568,6 +11712,51 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 3/FireRed and LeafGreen/Initial Seed Botting.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-gba-methods-lead-impact/": {
+    meta: {
+      id: "/gba-methods-lead-impact/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "technical_info",
+      guideVariants: null,
+      guideKey: "/gba-methods-lead-impact/",
+      isNew: false,
+      title: "《绿宝石》野生生成方式中的队首影响",
+      navDrawerTitle: "《绿宝石》野生生成方式中的队首影响",
+      description: "解释为何队首影响会触发不同类型的野生生成方式",
+      slug: "/zh-gba-methods-lead-impact/",
+      isRoughDraft: false,
+      orderPriority: 2,
+      hideFromNavDrawer: true,
+      addedOn: "2025-06-18",
+      translation: { enSlug: "/gba-methods-lead-impact/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-18",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Gen 3/Emerald/GBA Methods Part2.mdx",
+      translations: {
+        es: "/es-gba-methods-lead-impact/",
+        en: "/gba-methods-lead-impact/",
+        zh: "/zh-gba-methods-lead-impact/",
+      },
+      guideGroupId:
+        "zh:/gba-methods-lead-impact/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 3/Emerald/GBA Methods Part2.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 3/Emerald/GBA Methods Part2.mdx?raw"
       );
       return file.default;
     }),
@@ -14333,7 +14522,11 @@ export const guides = {
       lastUpdated: null,
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID with Feebas.mdx",
-      translations: { en: "/rs-sid-feebas/", zh: "/zh-rs-sid-feebas/" },
+      translations: {
+        de: "/de-rs-sid-feebas/",
+        en: "/rs-sid-feebas/",
+        zh: "/zh-rs-sid-feebas/",
+      },
       guideGroupId: "zh:/rs-sid-feebas/:Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: ["video_guide", "web_tool"],
@@ -14503,7 +14696,10 @@ export const guideSlugs = [
   "/crystal/",
   "/de-e-tips-rng/",
   "/de-emerald-overview/",
+  "/de-emerald-sid-feebas/",
+  "/de-emulator-emerald-egg/",
   "/de-retail-emerald-egg/",
+  "/de-rs-sid-feebas/",
   "/delete-pokemon-save/",
   "/desmume-setup/",
   "/diamond-pearl-and-platinum/",
@@ -14758,6 +14954,7 @@ export const guideSlugs = [
   "/zh-emulator-usum-time-finder/",
   "/zh-frlg-gen3-sid/",
   "/zh-frlg-seeding-bot/",
+  "/zh-gba-methods-lead-impact/",
   "/zh-gba-methods/",
   "/zh-gba-overview/",
   "/zh-gba-pokerus-technical/",

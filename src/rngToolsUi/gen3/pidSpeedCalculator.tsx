@@ -4,6 +4,7 @@ import { rngTools } from "~/rngTools";
 import { match, P } from "ts-pattern";
 import { formatProbability } from "~/utils/formatProbability";
 import { NumberInput } from "~/components/numberInput";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const formatPct = (val: number) => {
   if (val > 0.999999) {
@@ -25,6 +26,7 @@ const formatPct = (val: number) => {
 };
 
 export const Gen3PidSpeedCalculator = () => {
+  const t = useActiveRouteTranslations();
   const [speed, setSpeed] = React.useState<number | null>(null);
   const [ranking, setRanking] = React.useState<number | null>(null);
 
@@ -34,22 +36,30 @@ export const Gen3PidSpeedCalculator = () => {
     }
 
     return match(speed)
-      .with(18, () => "Fastest")
-      .with(900, () => "Slowest")
+      .with(18, () => t["Fastest"])
+      .with(900, () => t["Slowest"])
       .otherwise(() => {
-        const fasterThan = `Faster than ${formatPct(1 - ranking)} of PIDs.`;
-        const slowerThan = `Slower than ${formatPct(ranking)} of PIDs.`;
+        const fasterThanPercent = formatPct(1 - ranking);
+        const slowerThanPercent = formatPct(ranking);
+        const fasterThan = t["Faster than {percent} of PIDs"].replace(
+          "{percent}",
+          fasterThanPercent,
+        );
+        const slowerThan = t["Slower than {percent} of PIDs"].replace(
+          "{percent}",
+          slowerThanPercent,
+        );
 
         const category = match(Math.floor(ranking * 100))
-          .with(0, () => `Very Fast`)
-          .with(1, () => `Very Fast`)
-          .with(98, () => `Slow`)
-          .with(P.number.between(99, 100), () => `Very Slow`)
-          .otherwise(() => `Common`);
+          .with(0, () => t["Very Fast"])
+          .with(1, () => t["Very Fast"])
+          .with(98, () => t["Slow"])
+          .with(P.number.between(99, 100), () => t["Very Slow"])
+          .otherwise(() => t["Common"]);
 
         return `${category}. ${ranking < 0.5 ? fasterThan : slowerThan}`;
       });
-  }, [speed, ranking]);
+  }, [t, speed, ranking]);
 
   const [value, setValue] = React.useState<number>(0);
   const fields = React.useMemo(() => {
@@ -83,13 +93,15 @@ export const Gen3PidSpeedCalculator = () => {
   return (
     <Flex vertical gap={16}>
       <Typography.Title level={5} mv={0}>
-        Lead PID Speed Calculator
+        {t["Lead PID Speed Calculator"]}
       </Typography.Title>
       <FormFieldTable fields={fields} />
 
       {speed !== null && (
         <Typography.Text strong>
-          Speed: {speed} cycles ({qualitativeSpeed})
+          {t["Speed: {speed} cycles ({cycles})"]
+            .replace("{speed}", speed.toString())
+            .replace("{cycles}", qualitativeSpeed.toString())}
         </Typography.Text>
       )}
     </Flex>

@@ -135,6 +135,10 @@
     "hash": "962c7539dab0c1c8d6f218afd5844ce79fd0596ef60cb2a7b19ef154e63f6f70",
     "lastUpdated": null
   },
+  "/de-emulator-emerald-egg/": {
+    "hash": "656f00791929f0e0e70bbd5e21162411fd495348b7e6f536ced4869b174327d8",
+    "lastUpdated": "2026-03-18"
+  },
   "/de-e-tips-rng/": {
     "hash": "71ebdfceb6dd40ac335eed4251e0e8808054dca44931483188646600ddcf49c4",
     "lastUpdated": "2026-03-09"
@@ -142,6 +146,14 @@
   "/de-emerald-overview/": {
     "hash": "332224a6d0a314d783bbae9a4fb957a5e3646cc115d222487a5fb80f041346e6",
     "lastUpdated": "2026-03-09"
+  },
+  "/de-emerald-sid-feebas/": {
+    "hash": "a3a59bd555cda8913857223bb6c2336143057385abea3cc30ed71f5d05fbb754",
+    "lastUpdated": "2026-03-18"
+  },
+  "/de-rs-sid-feebas/": {
+    "hash": "a3a59bd555cda8913857223bb6c2336143057385abea3cc30ed71f5d05fbb754",
+    "lastUpdated": "2026-03-18"
   },
   "/de-retail-emerald-egg/": {
     "hash": "6914cb9058c24b81574785dfd2a825246b2bf8515b8694ca79f6161359b4a86a",
@@ -226,6 +238,10 @@
   "/zh-rs-sid-feebas/": {
     "hash": "2641bb998212d74ffb5d3184f64ef16e35a3914ed318d1f09e0e440e57a1d4f3",
     "lastUpdated": null
+  },
+  "/zh-gba-methods-lead-impact/": {
+    "hash": "e0d062cd2acc0c7bae2276338e2ae669dfa93dcb7e35aeb0f12eb8ad2684463b",
+    "lastUpdated": "2026-03-18"
   },
   "/zh-retail-emerald-egg/": {
     "hash": "b14ed3da06151303485c67dd9bc5a96f80603e64ae11c4343d985f3b5faf80c1",
@@ -764,8 +780,8 @@
     "lastUpdated": null
   },
   "/emulator-emerald-egg/": {
-    "hash": "1cc416397491c163deb9bc8a0d3cd370b06982f501015939a6a724a84ba48872",
-    "lastUpdated": null
+    "hash": "dc5e5bcb663c53f5f8cd773e15a1ae6f2969cc62db49a47c0815f415f0715a7e",
+    "lastUpdated": "2026-03-18"
   },
   "/e-tips-rng/": {
     "hash": "47920acb81f8b25f51acbfdbc36721c826ddfe6943148be66d4f4c62b4ae146b",
@@ -828,16 +844,16 @@
     "lastUpdated": null
   },
   "/emerald-sid-feebas/": {
-    "hash": "f77cbd337fb19ead676e8d21f660ef4ad0b02b9d7a2597d3dbca2d0d136c34ca",
-    "lastUpdated": null
+    "hash": "19dd0fefcc384a087f234e0d4a1aa2ac75c32936d1aa6db0644c53893039e43d",
+    "lastUpdated": "2026-03-18"
   },
   "/rs-sid-feebas/": {
-    "hash": "f77cbd337fb19ead676e8d21f660ef4ad0b02b9d7a2597d3dbca2d0d136c34ca",
-    "lastUpdated": null
+    "hash": "19dd0fefcc384a087f234e0d4a1aa2ac75c32936d1aa6db0644c53893039e43d",
+    "lastUpdated": "2026-03-18"
   },
   "/gba-methods-lead-impact/": {
-    "hash": "83208c9eb1d1344822f239275f1a9cb0f41dd016790323e19e517e135ed24454",
-    "lastUpdated": null
+    "hash": "2d115b3b8b569d0113b2f0238054280d2e0d93f536ced30eaa32f95ca9721696",
+    "lastUpdated": "2026-03-18"
   },
   "/retail-emerald-egg/": {
     "hash": "90732ba4d51b7000aa6a126fd639fa2158362ff1901a6625813966002d796a43",
@@ -1112,8 +1128,8 @@
     "lastUpdated": null
   },
   "/dream-radar-cart-patches/": {
-    "hash": "869b82a016a742f9857171d7c562e4753f94430b2e9bded2e1e9b04db91c19d8",
-    "lastUpdated": "2026-03-17"
+    "hash": "e1c30e6d0880819afddc7495a7e90287bf97bb97d4f77b23104985943fa9ae6e",
+    "lastUpdated": "2026-03-18"
   },
   "/transporter-rng-offline/": {
     "hash": "9f8f04b577ce13fbe070bba14d79c21164034273b9e12a68ea34465461297dc4",

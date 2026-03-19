@@ -54,7 +54,7 @@ export const translations: Partial<Translations> = {
   SpD: "SpD",
   Spe: "Spe",
   Advance: "帧数",
-  Advances: "Advances",
+  Advances: "帧数",
   State: "State",
   "Max DV": "最大DV",
   "ADiv Index": "ADiv Index",

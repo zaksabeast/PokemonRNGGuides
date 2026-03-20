@@ -65,7 +65,7 @@ export const Gen3PidSpeedCalculator = () => {
   const fields = React.useMemo(() => {
     return [
       {
-        label: "Lead PID",
+        label: t["Lead PID"],
         input: (
           <NumberInput
             numType="hex"

@@ -1164,7 +1164,7 @@ export const guides = {
       title: "Retail Emerald Egg RNG",
       navDrawerTitle: "Ei RNG",
       description:
-        "Lerne, wie du in Pokémon Smaragd mit Hilfe der Pokemon-Pension, Eier RNG manipulieren kannst. Erhalte perfekte IVs, Wesen, und Shinies.",
+        "Lerne, wie du in Pokémon Smaragd mit Hilfe der Pokémon-Pension, Eier RNG manipulieren kannst. Erhalte perfekte IVs, Wesen, und Shinies.",
       slug: "/de-retail-emerald-egg/",
       isRoughDraft: false,
       orderPriority: 20,
@@ -1173,7 +1173,7 @@ export const guides = {
       translation: { enSlug: "/retail-emerald-egg/", language: "de" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-20",
       type: "translatedGuide",
       file: "guides/Translations/de/Gen 3/Emerald/Retail Egg.mdx",
       translations: {

@@ -44,6 +44,7 @@ import { getIvRangeFromStats } from "~/types/statRange";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { fromRngDateTime, toRngDateTime } from "~/utils/time";
 import { formatHex } from "~/utils/formatHex";
+import { useCurrentStep } from "~/components/stepper/state";
 
 type Result = Gen4StaticPokemon & {
   key: string;
@@ -91,6 +92,7 @@ type CalibrateStatic4AdvanceProps = {
 const CalibrateStatic4Advance = ({ result }: CalibrateStatic4AdvanceProps) => {
   const [, setState] = useStatic4State();
   const [messageApi, contextHolder] = message.useMessage();
+  const [, setCurrentStep] = useCurrentStep();
 
   return (
     <>
@@ -106,6 +108,7 @@ const CalibrateStatic4Advance = ({ result }: CalibrateStatic4AdvanceProps) => {
             ),
           }));
           messageApi.success("Calibrated");
+          setCurrentStep((step) => step - 1);
         }}
       >
         Calibrate Advance

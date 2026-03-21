@@ -11,6 +11,8 @@ import { LanguageKey } from "~/types/language";
 
 export type { Translations } from "./en";
 
+export type Translation = keyof Translations;
+
 const getTranslations = memoize(
   async (language: LanguageKey): Promise<Translations> => {
     const { translations } = await match(language)
@@ -56,7 +58,7 @@ export const translateOptions = <Value>({
 }: {
   sort?: boolean;
   t: Translations;
-  options: { label: keyof Translations; value: Value }[];
+  options: { label: Translation; value: Value }[];
 }) => {
   let noneIndex = -1;
   const opts = options.map((option, index) => {
@@ -87,7 +89,7 @@ export const translateColumns = <Value>({
   columns,
 }: {
   t: Translations;
-  columns: { title: keyof Translations; value: Value }[];
+  columns: { title: Translation; value: Value }[];
 }) => {
   return columns.map((option) => ({
     title: t[option.title],

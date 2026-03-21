@@ -316,6 +316,10 @@ const tools = {
     import("~/rngToolsUi/gen4/static/showIf"),
     (mod) => mod.Static4ShowIfLead,
   ),
+  Static4Calibrator: lazyLoad(
+    import("~/rngToolsUi/gen4/static/staticCalibrator"),
+    (mod) => mod.Static4Calibrator,
+  ),
 };
 
 export const markdownComponents = {

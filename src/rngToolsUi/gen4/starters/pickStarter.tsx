@@ -274,6 +274,7 @@ export const PickStarter4 = () => {
         force_second: opts.force_second,
         filter: pkmFilterFieldsToRustInput(opts),
         lead: "None",
+        offset: 0,
         game,
       };
       const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);

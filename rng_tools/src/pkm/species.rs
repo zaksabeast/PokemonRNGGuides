@@ -1090,6 +1090,13 @@ impl Species {
     pub fn gender_from_pid(&self, pid: u32) -> Gender {
         self.gender_ratio().gender(pid as u8)
     }
+
+    pub fn is_fixed_gender(&self) -> bool {
+        matches!(
+            self.gender_ratio(),
+            GenderRatio::MaleOnly | GenderRatio::FemaleOnly | GenderRatio::Genderless
+        )
+    }
 }
 
 #[wasm_bindgen]

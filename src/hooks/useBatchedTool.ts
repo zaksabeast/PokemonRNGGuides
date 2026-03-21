@@ -23,9 +23,9 @@ export type BatchableFunctionsOf<T> = {
   [K in BatchableFunctionNamesOf<T>]: T[K];
 };
 
-type UseBatchedToolOptions<Ret, MappedRet> = {
-  map?: (value: Ret) => MappedRet;
-  sortBy?: (value: MappedRet) => number;
+type UseBatchedToolOptions<Arg, Ret, MappedRet> = {
+  map?: (value: Ret, arg: Arg) => MappedRet;
+  sortBy?: ((value: MappedRet) => number) | ((value: MappedRet) => number)[];
 };
 
 type UseBatchToolResults<Arg, Ret> = {
@@ -48,7 +48,7 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
   {
     map = identity,
     sortBy: sortWith,
-  }: UseBatchedToolOptions<Ret, MappedRet> = {},
+  }: UseBatchedToolOptions<Arg, Ret, MappedRet> = {},
 ): UseBatchToolResults<Arg, MappedRet> => {
   const [progress, setProgress] = React.useState<{
     data: MappedRet[];
@@ -76,7 +76,12 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
 
         const sub = from(args)
           // Process each argument in parallel with a concurrency limit
-          .pipe(mergeMap(func, concurrency))
+          .pipe(
+            mergeMap(
+              (arg) => func(arg).then((results) => ({ arg, results })),
+              concurrency,
+            ),
+          )
           .pipe(
             // Called when the observable completes
             finalize(() => {
@@ -86,8 +91,8 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
           )
           .subscribe({
             // Called when each chunk is received
-            next: (val) => {
-              const mappedValues = val.map(map);
+            next: ({ arg, results: values }) => {
+              const mappedValues = values.map((val) => map(val, arg));
               const unsorted = [...results, ...mappedValues];
               results =
                 sortWith == null ? unsorted : sortBy(unsorted, sortWith);

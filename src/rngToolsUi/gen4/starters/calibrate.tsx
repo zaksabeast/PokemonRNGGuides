@@ -17,7 +17,7 @@ import { z } from "zod";
 import { natureOptions } from "~/components/pkmFilter";
 import { toOptions } from "~/utils/options";
 import { Gen4Starter, starterTimer, useStarterState } from "./state";
-import { nature, StatFieldsSchema } from "~/types";
+import { maleFemale, nature, StatFieldsSchema } from "~/types";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { FormikRadio } from "~/components/radio";
 import { formatOffset } from "~/utils/offsetSymbol";
@@ -42,13 +42,11 @@ type Result = Gen4StaticPokemon & {
   delay: number;
 };
 
-const starterGenders = ["Male", "Female"] as const;
-
 const Validator = z
   .object({
     level: z.number().int().min(1).max(100),
     nature: z.enum(nature),
-    gender: z.enum(starterGenders),
+    gender: z.enum(maleFemale),
     filter_characteristic: z.enum(characteristics),
   })
   .extend(StatFieldsSchema.shape);
@@ -153,7 +151,7 @@ export const CalibrateStarter4 = () => {
         input: (
           <FormikRadio<FormState>
             name="gender"
-            options={toOptions(starterGenders)}
+            options={toOptions(maleFemale)}
           />
         ),
       },
@@ -201,9 +199,22 @@ export const CalibrateStarter4 = () => {
         spe: opts.speStat,
       };
 
+      const minMaxIvs = await getIvRangeFromStats({
+        species: targetSpecies,
+        lvl: opts.level,
+        nature: opts.nature,
+        stats: caughtStats,
+      });
+
+      if (minMaxIvs == null) {
+        return [];
+      }
+
       const datetime = toRngDateTime(
         fromRngDateTime(targetDateTime).subtract(1, "seconds"),
       );
+
+      const maxAdvances = state.game === "Platinum" ? 40 : 20;
 
       const seedTimes = await rngTools.calc_gen4_seeds({
         datetime,
@@ -212,20 +223,7 @@ export const CalibrateStarter4 = () => {
         max_delay: maxDelay,
       });
 
-      const maxAdvances = state.game === "Platinum" ? 40 : 20;
-
       const results = await pMap(seedTimes, async (seedTime) => {
-        const minMaxIvs = await getIvRangeFromStats({
-          species: targetSpecies,
-          lvl: opts.level,
-          nature: opts.nature,
-          stats: caughtStats,
-        });
-
-        if (minMaxIvs == null) {
-          return [];
-        }
-
         const states = await rngTools.generate_static4_states({
           tid: 0,
           sid: 0,

@@ -17,7 +17,7 @@
 
 <Gist>Get shiny legend and gift Pokemon with perfect IVs and natures.</Gist>
 
-<Stepper titles={["Set up", "Pick a Pokemon", "Hit Seed", "Calibrate", "Hit Your Target"]}>
+<Stepper titles={["Set up", "Pick a Pokemon", "Get the Pokemon", "Calibrate Advances"]}>
 
 <Step step={0}>
 
@@ -88,7 +88,7 @@ Choose the game and console you're playing below then continue to the next step.
 | ---------------------------------------------------------------------- |
 | ![Confirm time screen](/images/HeartGold-SoulSilver/SetTimeScreen.jpg) |
 
-## Hit your target
+## Hit your seed
 
 <Static4ShowIf is3dsNormalSettings>
   [Learn how to use the 3DS Helper here](/3ds-helper).
@@ -112,11 +112,7 @@ Choose the game and console you're playing below then continue to the next step.
 
 <Static4Timer />
 
-</Step>
-
-<Step step={3}>
-
-## Calibrate
+## Calibrate the seed
 
 1. Click "Generate" below to generate a list of possible seeds you hit.
 2. Flip the coin in the Poketch and click the heads or tails buttons below to filter results.
@@ -136,27 +132,40 @@ Choose the game and console you're playing below then continue to the next step.
 
 <Static4HitSeed />
 
-</Step>
+## Get your Pokemon
 
-<Step step={4}>
+Follow these steps once you've hit your target seed.
 
-## Hit your target
-
-1. Open your party and view Chatot's summary this many times: **<Static4ChatotCount />**.
-2. Start the battle or collect your Pokemon.
-3. If you got your target, congratulations! If not, move on to the next section.
+1. Immediately open your party menu when the save loads.
+2. Open Chatot's summary screen **<Static4ChatotCount />** times. This advances the RNG to the correct position.
+3. Exit the party menu and catch or receive your target Pokémon.
 
 <Alert
   type="info"
   showIcon
-  message="Switching between two Chatot summaries is a faster way to hit your target!"
+  message="Switching between two Chatot summaries is faster than repeatedly opening and closing the same summary!"
 />
 
-## Calibrate Advances
+If you didn't get your target Pokemon and you're 100% sure you viewed the Chatot summary the correct number of times, move on to the next step to calibrate your advances.
 
-<Alert type="warning" showIcon message="Placeholder section" />
+</Step>
 
-This section is intended to calibrate your advances in case NPCs are causing you problems.
+<Step step={3}>
+
+### Calibrate Advances
+
+1. Check your Pokémon stats.
+2. Fill out the form below with the stats of the Pokémon you caught and click "Generate".
+3. Click "Calibrate Advance" to adjust your Chatot summary count, or use the "Calibrate Timer" to adjust your seed timing.
+4. Try to hit your target again.
+
+<Alert
+  type="info"
+  showIcon
+  message="If you can't find the Pokémon you hit, increase the advance range, delay range, and/or seconds range in the calibrator to expand your search."
+/>
+
+<Static4Calibrator />
 
 </Step>
 

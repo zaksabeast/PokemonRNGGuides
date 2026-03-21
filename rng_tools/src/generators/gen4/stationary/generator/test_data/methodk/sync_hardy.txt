@@ -1,0 +1,201 @@
+0	E	L 0	D3C5AA89	No	Hardy	1: Thick Fat	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+1	P	ML 29	31B05271	No	Hardy	1: Thick Fat	2	18	3	22	24	12	Fighting	44	♂	Somewhat stubborn
+2	E	M 57	60A1E414	No	Calm	0: Immunity	11	25	10	25	3	24	Psychic	53	♀	Highly curious
+3	E	M 55	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+4	K	M 44	D3C5AA89	No	Hardy	1: Thick Fat	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+5	K	L 8	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+6	E	M 49	91785DD6	No	Serious	0: Immunity	6	29	9	12	24	13	Ground	30	♂	Quick tempered
+7	K	ML 24	DFC5706A	No	Jolly	0: Immunity	4	20	14	0	25	20	Steel	32	♂	Strong willed
+8	E	H 88	618D27A6	No	Adamant	0: Immunity	18	20	5	29	19	24	Psychic	50	♂	Very finicky
+9	K	M 47	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+10	K	H 88	D3C5AA89	No	Hardy	1: Thick Fat	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+11	E	ML 33	7ABC993D	No	Quirky	1: Thick Fat	7	29	18	14	23	22	Fire	68	♂	Quick tempered
+12	P	ML 36	D3C5AA89	No	Hardy	1: Thick Fat	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+13	K	MH 78	B54BF009	No	Calm	1: Thick Fat	14	16	9	21	13	8	Psychic	30	♀	Mischievous
+14	K	H 83	D3C5AA89	No	Hardy	1: Thick Fat	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+15	K	ML 36	945CE0C6	No	Sassy	0: Immunity	27	17	19	18	22	31	Ground	68	♂	Alert to sounds
+16	K	H 93	D3C5AA89	No	Hardy	1: Thick Fat	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+17	K	M 54	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+18	K	ML 23	D3C5AA89	No	Hardy	1: Thick Fat	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+19	K	L 4	1C5CA855	No	Adamant	1: Thick Fat	2	18	8	17	1	26	Electric	36	♂	Alert to sounds
+20	E	MH 70	D3C5AA89	No	Hardy	1: Thick Fat	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+21	K	M 49	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+22	K	MH 73	AA8931AA	No	Mild	0: Immunity	5	30	20	31	16	10	Rock	46	♂	Mischievous
+23	P	M 51	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+24	P	L 1	D3C5AA89	No	Hardy	1: Thick Fat	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+25	P	ML 28	ABD4EBA6	No	Rash	0: Immunity	9	29	1	7	17	5	Dark	40	♂	Quick tempered
+26	E	M 56	8F382B2B	No	Bold	1: Thick Fat	0	21	13	11	16	0	Bug	40	♂	Likes to thrash about
+27	P	H 96	7B8EBFE1	No	Lonely	1: Thick Fat	31	3	0	6	16	4	Fighting	42	♂	Takes plenty of siestas
+28	P	H 98	79F040EC	No	Gentle	0: Immunity	17	13	1	5	23	21	Dark	50	♂	Hates to lose
+29	K	H 91	BFD1C848	No	Brave	0: Immunity	22	5	14	1	4	27	Ghost	38	♂	Impetuous and silly
+30	P	L 11	D3C5AA89	No	Hardy	1: Thick Fat	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+31	K	H 91	B54BF009	No	Calm	1: Thick Fat	14	16	9	21	13	8	Psychic	30	♀	Mischievous
+32	E	ML 32	BA84DFC5	No	Jolly	1: Thick Fat	20	0	25	5	24	1	Ghost	30	♂	Sturdy body
+33	P	L 8	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+34	K	M 57	D3C5AA89	No	Hardy	1: Thick Fat	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+35	P	L 11	FBB32428	No	Mild	0: Immunity	1	31	15	28	30	14	Flying	59	♂	Likes to thrash about
+36	P	H 88	BA84DFC5	No	Jolly	1: Thick Fat	20	0	25	5	24	1	Ghost	30	♂	Sturdy body
+37	P	M 43	2843F223	No	Naive	1: Thick Fat	20	18	9	27	18	0	Rock	61	♂	Thoroughly cunning
+38	E	M 55	D3C5AA89	No	Hardy	1: Thick Fat	10	31	16	22	0	25	Poison	42	♂	Likes to thrash about
+39	K	ML 32	DFC5706A	No	Jolly	0: Immunity	4	20	14	0	25	20	Steel	32	♂	Strong willed
+40	E	MH 61	47441306	No	Naughty	0: Immunity	18	23	21	4	0	12	Flying	31	♀	Likes to fight
+41	E	L 12	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+42	P	L 8	246211BA	No	Quiet	0: Immunity	0	4	19	30	9	4	Fire	42	♂	Highly curious
+43	P	L 2	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+44	E	MH 63	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+45	P	M 44	52181D87	No	Timid	1: Thick Fat	28	2	16	25	13	30	Electric	36	♂	Likes to run
+46	P	H 82	BE037D3A	No	Docile	0: Immunity	12	7	16	15	30	16	Rock	61	♂	Strong willed
+47	K	L 12	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+48	K	H 86	79F040EC	No	Gentle	0: Immunity	17	13	1	5	23	21	Dark	50	♂	Hates to lose
+49	P	H 99	DA00BE34	No	Bold	0: Immunity	10	3	28	30	23	5	Grass	62	♂	Highly curious
+50	K	H 86	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+51	K	L 1	DA00BE34	No	Bold	0: Immunity	10	3	28	30	23	5	Grass	62	♂	Highly curious
+52	P	L 2	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+53	P	ML 25	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+54	K	H 99	3DCD8D5B	No	Bashful	1: Thick Fat	19	28	1	5	8	17	Ghost	30	♂	Likes to fight
+55	K	MH 77	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+56	P	M 50	706ADA00	No	Mild	0: Immunity	5	30	23	20	14	4	Flying	54	♀	Proud of its power
+57	K	H 84	52181D87	No	Timid	1: Thick Fat	28	2	16	25	13	30	Electric	36	♂	Likes to run
+58	K	H 91	246211BA	No	Quiet	0: Immunity	0	4	19	30	9	4	Fire	42	♂	Highly curious
+59	P	H 94	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+60	P	H 81	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+61	P	M 51	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+62	E	H 99	4160B6A0	No	Careful	0: Immunity	22	17	5	0	28	9	Ground	30	♂	Hates to lose
+63	E	H 82	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+64	P	L 12	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+65	P	L 1	C3BE745F	No	Lonely	1: Thick Fat	1	3	24	4	6	21	Poison	51	♂	Good perseverance
+66	P	ML 34	A0B18793	No	Naive	1: Thick Fat	25	8	4	22	31	25	Water	60	♂	Somewhat vain
+67	K	M 47	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+68	E	MH 70	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+69	P	L 4	F0091636	No	Hardy	0: Immunity	11	10	13	16	9	14	Fire	36	♂	Mischievous
+70	K	MH 69	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+71	E	M 50	CC802462	No	Hasty	0: Immunity	4	30	9	29	13	2	Psychic	36	♂	Proud of its power
+72	K	MH 66	246211BA	No	Quiet	0: Immunity	0	4	19	30	9	4	Fire	42	♂	Highly curious
+73	K	L 18	34A9172E	No	Hardy	0: Immunity	19	12	11	11	2	6	Bug	68	♂	Likes to relax
+74	P	MH 70	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+75	K	H 85	4274A1E0	No	Sassy	0: Immunity	4	30	28	24	10	11	Flying	56	♂	Proud of its power
+76	P	H 80	745FAFD4	No	Jolly	0: Immunity	30	29	16	3	24	1	Ghost	40	♂	Loves to eat
+77	K	ML 27	9895E061	No	Serious	1: Thick Fat	17	7	1	13	4	26	Bug	36	♂	Alert to sounds
+78	E	M 49	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+79	K	MH 63	52181D87	No	Timid	1: Thick Fat	28	2	16	25	13	30	Electric	36	♂	Likes to run
+80	K	L 11	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+81	E	L 1	CC802462	No	Hasty	0: Immunity	4	30	9	29	13	2	Psychic	36	♂	Proud of its power
+82	K	MH 76	A855B7A2	No	Impish	0: Immunity	28	2	7	18	8	2	Fighting	49	♂	Scatters things often
+83	K	L 15	40ECBE03	No	Jolly	1: Thick Fat	16	15	30	13	1	17	Ice	33	♀	Sturdy body
+84	P	M 55	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+85	P	L 13	34A9172E	No	Hardy	0: Immunity	19	12	11	11	2	6	Bug	68	♂	Likes to relax
+86	P	ML 39	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+87	E	ML 24	34A9172E	No	Hardy	0: Immunity	19	12	11	11	2	6	Bug	68	♂	Likes to relax
+88	E	MH 73	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+89	K	ML 26	52181D87	No	Timid	1: Thick Fat	28	2	16	25	13	30	Electric	36	♂	Likes to run
+90	E	H 88	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+91	E	L 7	34A9172E	No	Hardy	0: Immunity	19	12	11	11	2	6	Bug	68	♂	Likes to relax
+92	E	L 19	11D2AD05	No	Hardy	1: Thick Fat	25	0	12	31	21	29	Ice	40	♀	Mischievous
+93	K	M 40	A1DA46F3	No	Serious	1: Thick Fat	21	7	23	8	3	4	Water	54	♂	Good endurance
+94	P	M 55	B4667ED9	No	Hardy	1: Thick Fat	25	20	29	9	31	26	Psychic	55	♂	Somewhat vain
+95	E	M 50	B4667ED9	No	Hardy	1: Thick Fat	25	20	29	9	31	26	Psychic	55	♂	Somewhat vain
+96	K	MH 74	F2232B0B	No	Lonely	1: Thick Fat	3	2	10	18	9	20	Steel	44	♀	Likes to run
+97	P	M 46	A1DA46F3	No	Serious	1: Thick Fat	21	7	23	8	3	4	Water	54	♂	Good endurance
+98	E	H 82	B4667ED9	No	Hardy	1: Thick Fat	25	20	29	9	31	26	Psychic	55	♂	Somewhat vain
+99	E	L 15	CB60A654	No	Lax	0: Immunity	2	2	16	19	21	2	Electric	47	♂	Somewhat vain
+100	E	MH 72	B4667ED9	No	Hardy	1: Thick Fat	25	20	29	9	31	26	Psychic	55	♂	Somewhat vain
+101	P	MH 64	7D3AF699	No	Quiet	1: Thick Fat	3	16	15	7	16	12	Bug	43	♂	Somewhat vain
+102	E	M 42	BE037D3A	No	Docile	0: Immunity	12	7	16	15	30	16	Rock	61	♂	Strong willed
+103	E	ML 29	F9C9D1B0	No	Hardy	0: Immunity	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+104	P	M 53	ECB46C56	No	Modest	0: Immunity	4	22	17	4	14	9	Poison	51	♂	A little quick tempered
+105	K	L 5	F9C9D1B0	No	Hardy	0: Immunity	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+106	P	L 7	B4667ED9	No	Hardy	1: Thick Fat	25	20	29	9	31	26	Psychic	55	♂	Somewhat vain
+107	P	MH 61	F9C9D1B0	No	Hardy	0: Immunity	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+108	E	ML 34	A6542843	No	Serious	1: Thick Fat	0	27	18	2	16	2	Fighting	49	♂	A little quick tempered
+109	K	M 56	BDF24106	No	Relaxed	0: Immunity	2	9	17	31	2	23	Steel	66	♀	Mischievous
+110	P	ML 25	7ED91119	No	Bold	1: Thick Fat	6	3	13	20	29	25	Grass	31	♀	Somewhat stubborn
+111	K	L 19	F9C9D1B0	No	Hardy	0: Immunity	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+112	P	ML 35	B4667ED9	No	Hardy	1: Thick Fat	25	20	29	9	31	26	Psychic	55	♂	Somewhat vain
+113	E	L 0	F9C9D1B0	No	Hardy	0: Immunity	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+114	E	MH 69	B4667ED9	No	Hardy	1: Thick Fat	25	20	29	9	31	26	Psychic	55	♂	Somewhat vain
+115	P	M 54	A1DA46F3	No	Serious	1: Thick Fat	21	7	23	8	3	4	Water	54	♂	Good endurance
+116	K	M 41	79F040EC	No	Gentle	0: Immunity	17	13	1	5	23	21	Dark	50	♂	Hates to lose
+117	P	H 93	BDF24106	No	Relaxed	0: Immunity	2	9	17	31	2	23	Steel	66	♀	Mischievous
+118	E	ML 23	70CBFC00	No	Serious	0: Immunity	31	4	0	3	11	15	Ice	66	♀	Takes plenty of siestas
+119	K	L 2	8ADFA38A	No	Brave	0: Immunity	14	1	29	15	3	5	Dragon	61	♂	Good perseverance
+120	E	M 53	6AC05DE8	No	Careful	0: Immunity	7	31	26	17	28	13	Ghost	34	♂	Likes to thrash about
+121	K	H 96	BDF24106	No	Relaxed	0: Immunity	2	9	17	31	2	23	Steel	66	♀	Mischievous
+122	E	MH 63	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+123	E	MH 70	4F33F251	No	Impish	1: Thick Fat	6	20	26	24	18	9	Flying	53	♂	Capable of taking hits
+124	E	H 91	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+125	K	H 93	C6C4ECB4	No	Calm	0: Immunity	9	4	14	23	12	25	Bug	42	♂	Likes to run
+126	E	L 2	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+127	K	H 81	F9C9D1B0	No	Hardy	0: Immunity	28	30	2	29	8	7	Bug	38	♂	Proud of its power
+128	K	L 17	DFBEF7BA	No	Lonely	0: Immunity	20	14	1	11	15	10	Psychic	66	♂	Loves to eat
+129	P	H 89	CB0507D2	No	Bold	0: Immunity	30	20	29	6	9	19	Grass	45	♂	Loves to eat
+130	K	M 55	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+131	E	H 80	44E587A9	No	Hasty	1: Thick Fat	18	30	1	24	18	5	Poison	52	♂	Proud of its power
+132	E	ML 37	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+133	E	L 11	ABD4EBA6	No	Rash	0: Immunity	9	29	1	7	17	5	Dark	40	♂	Quick tempered
+134	E	H 87	DFBEF7BA	No	Lonely	0: Immunity	20	14	1	11	15	10	Psychic	66	♂	Loves to eat
+135	P	ML 36	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+136	P	ML 36	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+137	K	ML 23	A1DA46F3	No	Serious	1: Thick Fat	21	7	23	8	3	4	Water	54	♂	Good endurance
+138	E	L 15	2C6F809F	No	Brave	1: Thick Fat	15	28	18	18	28	17	Poison	43	♂	Likes to fight
+139	K	ML 24	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+140	K	ML 34	184330AF	No	Lax	1: Thick Fat	7	23	10	30	3	1	Grass	64	♂	Highly curious
+141	P	MH 70	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+142	K	L 15	1240A58B	No	Gentle	1: Thick Fat	10	25	4	2	7	9	Grass	61	♂	Proud of its power
+143	P	ML 25	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+144	E	H 87	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+145	E	M 52	8ADFA38A	No	Brave	0: Immunity	14	1	29	15	3	5	Dragon	61	♂	Good perseverance
+146	P	L 1	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+147	P	ML 38	80973810	No	Hasty	0: Immunity	13	10	31	22	29	3	Grass	49	♀	Capable of taking hits
+148	K	ML 36	6F38D13E	No	Impish	0: Immunity	20	7	21	12	1	17	Grass	31	♂	Capable of taking hits
+149	P	M 57	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+150	K	M 47	C5CAF6C3	No	Calm	1: Thick Fat	16	20	29	17	27	3	Dragon	55	♂	Good perseverance
+151	E	ML 32	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+152	E	ML 34	EBAF9DA7	No	Rash	1: Thick Fat	3	5	20	7	22	21	Ghost	61	♂	Strongly defiant
+153	P	M 53	F83E008C	No	Modest	0: Immunity	22	29	8	12	13	5	Grass	30	♂	Quick tempered
+154	K	H 93	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+155	K	ML 33	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+156	K	ML 37	47441306	No	Naughty	0: Immunity	18	23	21	4	0	12	Flying	31	♀	Likes to fight
+157	E	M 56	4D34A5A5	No	Lax	1: Thick Fat	4	31	29	16	20	23	Ground	36	♂	Likes to thrash about
+158	P	ML 25	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+159	E	MH 75	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+160	E	L 1	C5CAF6C3	No	Calm	1: Thick Fat	16	20	29	17	27	3	Dragon	55	♂	Good perseverance
+161	E	H 91	109FD8F5	No	Gentle	1: Thick Fat	8	25	1	21	14	13	Steel	50	♂	Proud of its power
+162	E	MH 71	184330AF	No	Lax	1: Thick Fat	7	23	10	30	3	1	Grass	64	♂	Highly curious
+163	E	L 18	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+164	K	MH 70	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+165	K	M 44	9DA7AFD1	No	Impish	1: Thick Fat	15	29	26	5	20	3	Ghost	38	♂	Quick tempered
+166	K	MH 79	184330AF	No	Lax	1: Thick Fat	7	23	10	30	3	1	Grass	64	♂	Highly curious
+167	E	M 49	4D34A5A5	No	Lax	1: Thick Fat	4	31	29	16	20	23	Ground	36	♂	Likes to thrash about
+168	E	H 92	A3B6F83E	No	Timid	0: Immunity	5	12	13	2	28	10	Flying	45	♂	Hates to lose
+169	P	ML 36	7C831511	No	Bashful	1: Thick Fat	28	17	20	9	20	30	Rock	35	♀	Likes to run
+170	E	M 51	008CD6F2	No	Mild	0: Immunity	30	1	30	29	8	22	Rock	38	♂	Sturdy body
+171	P	MH 77	D6F24744	No	Bold	0: Immunity	12	4	0	1	30	30	Ground	55	♂	Strong willed
+172	K	M 51	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+173	K	ML 22	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+174	P	H 83	184330AF	No	Lax	1: Thick Fat	7	23	10	30	3	1	Grass	64	♂	Highly curious
+175	K	ML 36	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+176	K	M 59	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+177	K	ML 22	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+178	E	MH 71	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+179	P	L 1	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+180	K	MH 75	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+181	E	L 11	704AB585	No	Hardy	1: Thick Fat	25	30	25	7	13	24	Psychic	41	♂	Proud of its power
+182	P	MH 67	1240A58B	No	Gentle	1: Thick Fat	10	25	4	2	7	9	Grass	61	♂	Proud of its power
+183	E	M 50	79E344D1	No	Hardy	1: Thick Fat	16	13	6	5	10	17	Ghost	52	♂	Impetuous and silly
+184	P	ML 24	B889C6C4	No	Timid	0: Immunity	25	23	12	23	17	19	Dragon	46	♂	Loves to eat
+185	E	MH 65	79E344D1	No	Hardy	1: Thick Fat	16	13	6	5	10	17	Ghost	52	♂	Impetuous and silly
+186	K	L 17	E7F93018	No	Sassy	0: Immunity	1	26	8	13	9	5	Ice	31	♀	Likes to thrash about
+187	K	M 57	79E344D1	No	Hardy	1: Thick Fat	16	13	6	5	10	17	Ghost	52	♂	Impetuous and silly
+188	E	M 59	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+189	K	H 88	4D34A5A5	No	Lax	1: Thick Fat	4	31	29	16	20	23	Ground	36	♂	Likes to thrash about
+190	K	MH 71	A5A5A341	No	Careful	1: Thick Fat	20	9	19	31	29	4	Psychic	42	♂	Mischievous
+191	E	M 45	A1DA46F3	No	Serious	1: Thick Fat	21	7	23	8	3	4	Water	54	♂	Good endurance
+192	E	M 50	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+193	E	ML 24	7C831511	No	Bashful	1: Thick Fat	28	17	20	9	20	30	Rock	35	♀	Likes to run
+194	E	L 10	10610999	No	Bold	1: Thick Fat	16	18	18	20	2	11	Flying	59	♂	Highly curious
+195	E	L 17	8BF74522	No	Naive	0: Immunity	1	5	25	31	17	10	Ice	45	♂	Mischievous
+196	E	M 41	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run
+197	K	MH 74	79E344D1	No	Hardy	1: Thick Fat	16	13	6	5	10	17	Ghost	52	♂	Impetuous and silly
+198	P	M 56	A63B530E	No	Quiet	0: Immunity	22	2	27	5	27	20	Psychic	54	♀	Strongly defiant
+199	E	M 59	A1DA46F3	No	Serious	1: Thick Fat	21	7	23	8	3	4	Water	54	♂	Good endurance
+200	K	M 59	12A55395	No	Hardy	1: Thick Fat	24	4	11	2	19	25	Grass	63	♂	Likes to run

@@ -18,7 +18,7 @@ export const useField = <Value>(
     onBlur: () => void;
     onChange: (event: React.ChangeEvent | RadioChangeEvent) => void;
   },
-  { error?: string | undefined; touched?: boolean; status?: FieldStatus },
+  { error?: string | undefined; status?: FieldStatus },
   { setValue: (value: Value) => void },
 ] => {
   const {
@@ -29,18 +29,16 @@ export const useField = <Value>(
   });
 
   const errorMessage = get(formState.errors, `${name}.message`);
-  const touched = get(formState.touchedFields, name) === true;
-  const error = match({ errorMessage, touched })
-    .with({ touched: false }, () => undefined)
+  const error = match({ errorMessage })
     .with(
-      { touched: true, errorMessage: P.union(P.string, undefined) },
+      { errorMessage: P.union(P.string, undefined) },
       ({ errorMessage }) => errorMessage,
     )
     .otherwise(() => JSON.stringify(errorMessage));
 
   return [
     { value, onBlur, onChange },
-    { error, touched, status: error != null ? "error" : undefined },
+    { error, status: error != null ? "error" : undefined },
     { setValue: onChange },
   ];
 };

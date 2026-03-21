@@ -1,3 +1,4 @@
+mod game_logic;
 mod gen4wild;
 mod id;
 mod seed;

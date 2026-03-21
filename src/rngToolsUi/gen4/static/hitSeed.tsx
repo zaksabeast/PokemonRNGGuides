@@ -8,8 +8,9 @@ import {
   type ResultColumn,
   Icon,
   CalibrateTimerButton,
+  Field,
 } from "~/components";
-import { uniqueId } from "lodash-es";
+import { uniqueId, sortBy } from "lodash-es";
 import { z } from "zod";
 import { joinCoinFlips, shrinkCoinFlips } from "./coinFlipUtils";
 import { CoinFlipFilter } from "./coinFlipFilter";
@@ -18,6 +19,9 @@ type ResultRow = DpptSeedTime4 & {
   id: string;
   isTarget: boolean;
   flipDelay: boolean;
+  delayOffset: number;
+  secondOffset: number;
+  second: number;
 };
 
 type FormState = {
@@ -45,7 +49,6 @@ const columns: ResultColumn<ResultRow>[] = [
         calibration={{ hit_delay: target.delay }}
         timer={static4TimerAtom}
         trackerId="calibrate_gen4_static_hitseed"
-        previousStepOnClick
       />
     ),
   },
@@ -63,6 +66,16 @@ const columns: ResultColumn<ResultRow>[] = [
       flipDelay ? <Icon name="CheckCircle" color="Warning" size={30} /> : null,
   },
   {
+    title: "Delay Offset",
+    dataIndex: "delayOffset",
+    key: "delayOffset",
+  },
+  {
+    title: "Second Offset",
+    dataIndex: "secondOffset",
+    key: "secondOffset",
+  },
+  {
     title: "Seed",
     dataIndex: "seed",
     key: "seed",
@@ -74,6 +87,11 @@ const columns: ResultColumn<ResultRow>[] = [
     key: "delay",
   },
   {
+    title: "Second",
+    dataIndex: "second",
+    key: "second",
+  },
+  {
     title: "Coin Flips",
     dataIndex: "coin_flips",
     key: "coin_flips",
@@ -82,7 +100,7 @@ const columns: ResultColumn<ResultRow>[] = [
   },
 ];
 
-const fields = [
+const fields: Field[] = [
   {
     label: "Delay Offset",
     input: (
@@ -136,12 +154,19 @@ export const Static4HitSeed = () => {
           ...result,
           id: uniqueId(),
           isTarget: result.seed === seedTime.seed,
+          delayOffset: result.delay - targetDelay,
+          secondOffset,
+          second: result.datetime.second,
           flipDelay:
             secondOffset % 2 === 0 && targetDelay % 2 !== result.delay % 2,
         };
       });
+      const sortedResults = sortBy(mappedResults, [
+        (res) => Math.abs(res.delayOffset),
+        (res) => Math.abs(res.secondOffset),
+      ]);
 
-      setAllResults(mappedResults);
+      setAllResults(sortedResults);
       setState((prev) => ({ ...prev, coinFlipFilter: "" }));
     },
     [state, setState],

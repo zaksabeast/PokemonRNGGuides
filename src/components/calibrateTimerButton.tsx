@@ -14,6 +14,7 @@ type InnerCalibrateButtonProps<T> = {
   trackerId: string;
   hitValue: T;
   previousStepOnClick?: boolean;
+  label?: string;
   calibrate: (hitValue: T) => Promise<unknown>;
   onClick?: () => void;
 };
@@ -22,6 +23,7 @@ const InnerCalibrateButton = <T,>({
   trackerId,
   hitValue,
   previousStepOnClick,
+  label = "Calibrate",
   calibrate,
   onClick: _onClick,
 }: InnerCalibrateButtonProps<T>) => {
@@ -48,7 +50,7 @@ const InnerCalibrateButton = <T,>({
     <>
       {contextHolder}
       <Button trackerId={trackerId} onClick={onClick}>
-        Calibrate
+        {label}
       </Button>
     </>
   );
@@ -60,6 +62,7 @@ type CalibrateGen3ButtonProps = {
   timer: Gen3TimerAtom;
   trackerId: string;
   previousStepOnClick?: boolean;
+  label?: string;
   onClick?: () => void;
 };
 
@@ -68,6 +71,7 @@ const CalibrateGen3Button = ({
   timer,
   trackerId,
   previousStepOnClick,
+  label,
   onClick,
 }: CalibrateGen3ButtonProps) => {
   const { calibrate } = useGen3Timer(timer);
@@ -79,6 +83,7 @@ const CalibrateGen3Button = ({
       calibrate={calibrate}
       previousStepOnClick={previousStepOnClick}
       onClick={onClick}
+      label={label}
     />
   );
 };
@@ -89,6 +94,7 @@ type CalibrateGen4ButtonProps = {
   timer: Gen4TimerAtom;
   trackerId: string;
   previousStepOnClick?: boolean;
+  label?: string;
   onClick?: () => void;
 };
 
@@ -97,6 +103,7 @@ const CalibrateGen4Button = ({
   timer,
   trackerId,
   previousStepOnClick,
+  label,
   onClick,
 }: CalibrateGen4ButtonProps) => {
   const { calibrate } = useGen4Timer(timer);
@@ -108,6 +115,7 @@ const CalibrateGen4Button = ({
       calibrate={calibrate}
       previousStepOnClick={previousStepOnClick}
       onClick={onClick}
+      label={label}
     />
   );
 };

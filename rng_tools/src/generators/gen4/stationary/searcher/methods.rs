@@ -1,5 +1,6 @@
 use super::base_state::{BaseStatic4State, Static4State};
 use crate::Species;
+use crate::gen4::game_logic::{DpptLogic, GameSpecificLogic, HgssLogic};
 use crate::gen4::seed_time4::SeedTime4Options;
 use crate::gen4::{GameVersion, LeadAbility, StaticMethod};
 use crate::generators::utils::recover_poke_rng_iv;
@@ -26,6 +27,7 @@ pub struct SearchStatic4Opts {
     pub game: GameVersion,
     pub species: Species,
     pub filter: PkmFilter,
+    pub offset: usize,
     pub min_advance: usize,
     pub max_advance: usize,
     pub min_delay: u32,
@@ -37,6 +39,7 @@ pub struct SearchStatic4Opts {
 }
 
 struct SeedFilters {
+    offset: usize,
     min_advance: usize,
     max_advance: usize,
     year: u32,
@@ -57,7 +60,7 @@ impl SeedFilters {
         for state in states {
             let mut rng = Pokerng::new(state.seed).reverse();
 
-            rng.advance(min_advance);
+            rng.advance(self.offset.saturating_add(min_advance));
             let mut seed = rng.seed();
 
             for advance in min_advance..=max_advance {
@@ -92,6 +95,7 @@ impl SeedFilters {
 impl From<&SearchStatic4Opts> for SeedFilters {
     fn from(opts: &SearchStatic4Opts) -> Self {
         Self {
+            offset: opts.offset,
             min_advance: opts.min_advance,
             max_advance: opts.max_advance,
             year: opts.year,
@@ -100,35 +104,6 @@ impl From<&SearchStatic4Opts> for SeedFilters {
             max_delay: opts.max_delay,
             force_second: opts.force_second,
         }
-    }
-}
-
-trait GameSpecificLogic {
-    fn max(rand: u16, max: u16) -> u16;
-    fn sync_check(rand: u16) -> u16;
-}
-
-struct HgssLogic;
-
-impl GameSpecificLogic for HgssLogic {
-    fn max(rand: u16, max: u16) -> u16 {
-        rand % max
-    }
-
-    fn sync_check(rand: u16) -> u16 {
-        rand % 2
-    }
-}
-
-struct DpptLogic;
-
-impl GameSpecificLogic for DpptLogic {
-    fn max(rand: u16, max: u16) -> u16 {
-        rand / ((0xffff / max) + 1)
-    }
-
-    fn sync_check(rand: u16) -> u16 {
-        rand >> 15
     }
 }
 
@@ -550,10 +525,39 @@ mod tests {
         use crate::{assert_list_eq, ivs};
 
         #[test]
+        fn offset_10() {
+            let opts = SearchStatic4Opts {
+                tid: 12345,
+                sid: 54321,
+                offset: 10,
+                year: 2000,
+                month: None,
+                min_delay: 800,
+                max_delay: 900,
+                min_advance: 0,
+                max_advance: 30,
+                force_second: None,
+                game: GameVersion::Diamond,
+                species: Species::Omanyte,
+                lead: Static4LeadInput::None,
+                filter: PkmFilter {
+                    min_ivs: ivs!(30 / 30 / 30 / 20 / 20 / 20),
+                    ..Default::default()
+                },
+            };
+
+            let results = search_static4(&opts);
+            let expected = pokefinder!(LeadAbility::None, "test_data/method1/offset_10.txt");
+
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
         fn min_advance_0() {
             let opts = SearchStatic4Opts {
                 tid: 12345,
                 sid: 54321,
+                offset: 0,
                 year: 2000,
                 month: None,
                 min_delay: 800,
@@ -581,6 +585,7 @@ mod tests {
             let opts = SearchStatic4Opts {
                 tid: 12345,
                 sid: 54321,
+                offset: 0,
                 year: 2000,
                 month: None,
                 min_delay: 800,
@@ -613,6 +618,7 @@ mod tests {
             let opts = SearchStatic4Opts {
                 tid: 12345,
                 sid: 54321,
+                offset: 0,
                 lead: Static4LeadInput::None,
                 game: GameVersion::Diamond,
                 species: Species::Drifloon,
@@ -639,6 +645,7 @@ mod tests {
             let opts = SearchStatic4Opts {
                 tid: 12345,
                 sid: 54321,
+                offset: 0,
                 game: GameVersion::Diamond,
                 species: Species::Drifloon,
                 lead: Static4LeadInput::CutecharmM,
@@ -666,6 +673,7 @@ mod tests {
             let opts = SearchStatic4Opts {
                 tid: 12345,
                 sid: 54321,
+                offset: 0,
                 game: GameVersion::Diamond,
                 species: Species::Drifloon,
                 lead: Static4LeadInput::CutecharmF,
@@ -693,6 +701,7 @@ mod tests {
             let opts = SearchStatic4Opts {
                 tid: 12345,
                 sid: 54321,
+                offset: 0,
                 game: GameVersion::Diamond,
                 species: Species::Drifloon,
                 lead: Static4LeadInput::Synchronize,
@@ -730,6 +739,7 @@ mod tests {
             let opts = SearchStatic4Opts {
                 tid: 12345,
                 sid: 54321,
+                offset: 0,
                 species: Species::Snorlax,
                 game: GameVersion::SoulSilver,
                 lead: Static4LeadInput::None,
@@ -756,6 +766,7 @@ mod tests {
             let opts = SearchStatic4Opts {
                 tid: 12345,
                 sid: 54321,
+                offset: 0,
                 species: Species::Snorlax,
                 game: GameVersion::SoulSilver,
                 lead: Static4LeadInput::Synchronize,
@@ -788,6 +799,7 @@ mod tests {
             let opts = SearchStatic4Opts {
                 tid: 12345,
                 sid: 54321,
+                offset: 0,
                 species: Species::Snorlax,
                 game: GameVersion::SoulSilver,
                 lead: Static4LeadInput::CutecharmF,
@@ -815,6 +827,7 @@ mod tests {
             let opts = SearchStatic4Opts {
                 tid: 12345,
                 sid: 54321,
+                offset: 0,
                 species: Species::Snorlax,
                 game: GameVersion::SoulSilver,
                 lead: Static4LeadInput::CutecharmM,

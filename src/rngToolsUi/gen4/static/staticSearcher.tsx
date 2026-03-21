@@ -1,19 +1,18 @@
 import React from "react";
-import { match } from "ts-pattern";
-import { uniqueId } from "lodash-es";
+import { atom, useAtom } from "jotai";
+import { uniqueId, map, sortBy } from "lodash-es";
 import {
   FormikNumberInput,
   FormikSelect,
   ResultColumn,
   RngToolForm,
   Button,
+  Field,
 } from "~/components";
-import { toOptions } from "~/utils/options";
 import {
   multiWorkerRngTools,
   Static4State,
   SearchStatic4Opts,
-  Species,
   Static4LeadInput,
 } from "~/rngTools";
 import { z } from "zod";
@@ -23,7 +22,6 @@ import {
   pkmFilterFieldsToRustInput,
   pkmFilterSchema,
 } from "~/components/pkmFilter";
-import { Gen4GameVersion } from "../gen4types";
 import { useStatic4State } from "./state";
 import {
   flattenIvs,
@@ -35,6 +33,12 @@ import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { formatSpeciesLabel, UndefinedToNull } from "~/types";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { MonthSchema, monthToRustFilter } from "~/utils/time";
+import { Gen4GameVersion } from "../gen4types";
+import { getStatRange } from "~/types/statRange";
+import { defaultEncounter, Encounter, getGameEncounters } from "./encounters";
+import { useWatch } from "react-hook-form";
+import { useField } from "~/hooks/form";
+import { Translations } from "~/translations";
 
 type Result = FlattenIvs<
   Static4State["state"] & {
@@ -46,169 +50,7 @@ type Result = FlattenIvs<
   }
 >;
 
-const CommonDpptSpecies = [
-  // Fossils
-  "Omanyte",
-  "Kabuto",
-  "Aerodactyl",
-  "Lileep",
-  "Anorith",
-  "Cranidos",
-  "Shieldon",
-
-  // Gifts
-  "Eevee",
-  "Riolu",
-
-  // Stationary
-  "Drifloon",
-  "Rotom_Normal",
-  "Spiritomb",
-
-  // Legends
-  "Uxie",
-  "Azelf",
-  "Heatran",
-  "Regigigas",
-
-  // Events
-  "Manaphy",
-] as const satisfies Species[];
-
-const DiamondSpecies = (
-  [
-    ...CommonDpptSpecies,
-
-    // Gifts
-    "Happiny",
-
-    // Legends
-    "Dialga",
-    "Giratina_Altered",
-  ] as const satisfies Species[]
-).sort();
-
-const PearlSpecies = (
-  [
-    ...CommonDpptSpecies,
-
-    // Gifts
-    "Happiny",
-
-    // Legends
-    "Palkia",
-    "Giratina_Altered",
-  ] as const satisfies Species[]
-).sort();
-
-const PlatinumSpecies = (
-  [
-    ...CommonDpptSpecies,
-
-    // Gifts
-    "Porygon",
-    "Togepi",
-
-    // Legends
-    "Dialga",
-    "Palkia",
-    "Regirock",
-    "Regice",
-    "Registeel",
-    "Giratina_Altered",
-    "Giratina_Origin",
-
-    // Events
-    "Darkrai",
-    "Shaymin_Land",
-  ] as const satisfies Species[]
-).sort();
-
-const CommonHgSsSpecies = [
-  // Fossils
-  "Omanyte",
-  "Kabuto",
-  "Aerodactyl",
-  "Lileep",
-  "Anorith",
-  "Cranidos",
-  "Shieldon",
-  "Tentacool",
-
-  // Gifts
-  "Tentacool",
-  "Eevee",
-  "Dratini",
-  "Tyrogue",
-  "Mareep",
-  "Wooper",
-  "Slugma",
-
-  // Game Corner
-  "MrMime",
-  "Porygon",
-  "Abra",
-  "Ekans",
-  // Eevee
-  // Dratini
-
-  // Stationary
-  "Voltorb",
-  "Geodude",
-  "Koffing",
-  "Gyarados",
-  "Lapras",
-  "Electrode",
-  "Snorlax",
-  "Sudowoodo",
-
-  // Legends
-  "Articuno",
-  "Zapdos",
-  "Moltres",
-  "Mewtwo",
-  "Suicune",
-  "Lugia",
-  "HoOh",
-  "Latios",
-  "Kyogre",
-  "Rayquaza",
-  "Dialga",
-  "Palkia",
-  "Giratina_Origin",
-
-  // Events
-  "Manaphy",
-] as const satisfies Species[];
-
-const HeartGoldSpecies = (
-  [
-    ...CommonHgSsSpecies,
-    "Ekans",
-    "Latios",
-    "Kyogre",
-  ] as const satisfies Species[]
-).sort();
-
-const SoulSilverSpecies = (
-  [
-    ...CommonHgSsSpecies,
-    "Sandshrew",
-    "Latias",
-    "Groudon",
-  ] as const satisfies Species[]
-).sort();
-
-const DiamondSpeciesSchema = z.enum(DiamondSpecies);
-const PearlSpeciesSchema = z.enum(PearlSpecies);
-const PlatinumSpeciesSchema = z.enum(PlatinumSpecies);
-const HeartGoldSpeciesSchema = z.enum(HeartGoldSpecies);
-const SoulSilverSpeciesSchema = z.enum(SoulSilverSpecies);
-
-const SpeciesSchema = DiamondSpeciesSchema.or(PearlSpeciesSchema)
-  .or(PlatinumSpeciesSchema)
-  .or(HeartGoldSpeciesSchema)
-  .or(SoulSilverSpeciesSchema);
+const searchedEncounterAtom = atom<Encounter>(defaultEncounter);
 
 type SelectButtonProps = {
   target: Result;
@@ -217,11 +59,30 @@ type SelectButtonProps = {
 const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
   const [, setState] = useStatic4State();
+  const [{ isFixedGender, level, species, form }] = useAtom(
+    searchedEncounterAtom,
+  );
+
   return (
     <Button
       trackerId="select_gen4_static"
-      onClick={() => {
-        setState((prev) => ({ ...prev, target }));
+      onClick={async () => {
+        const minMaxStats = await getStatRange({
+          species,
+          levelRange: [level, level],
+        });
+        setState((prev) => ({
+          ...prev,
+          target: {
+            ...target,
+            isFixedGender,
+            species,
+            form,
+            level,
+            minMaxStats,
+          },
+          chatotSummaryCount: target.advance,
+        }));
         setCurrentStep((prev) => prev + 1);
       }}
     >
@@ -243,11 +104,14 @@ const Validator = z
   .object({
     tid: z.number().int().min(0).max(0xffff),
     sid: z.number().int().min(0).max(0xffff),
-    species: SpeciesSchema,
+    encounter_id: z
+      .string()
+      .refine((val) => val.length > 0, { message: "Encounter is required" }),
     min_advance: z.number().int().min(0),
     max_advance: z.number().int().min(0),
     min_delay: z.number().int().min(0),
     max_delay: z.number().int().min(0),
+    offset: z.number().int().min(0),
     year: z.number().int().min(2000).max(2100),
     month: MonthSchema,
     lead: LeadOptionsSchema,
@@ -262,11 +126,12 @@ const initialValues: FormState = {
   sid: 0,
   year: 2000,
   month: "Any",
-  species: "Abra",
+  encounter_id: "",
   min_delay: 800,
   max_delay: 810,
   min_advance: 0,
   max_advance: 100,
+  offset: 0,
   force_second: null,
   lead: "None",
   ...getPkmFilterInitialValues(),
@@ -314,70 +179,90 @@ const leadOptions = [
   { label: "Synchronize", value: "Synchronize" },
 ] satisfies { label: string; value: Static4LeadInput }[];
 
-const getFields = (game: Gen4GameVersion) => {
-  const species = match(game)
-    .with("Diamond", () => DiamondSpecies)
-    .with("Pearl", () => PearlSpecies)
-    .with("Platinum", () => PlatinumSpecies)
-    .with("HeartGold", () => HeartGoldSpecies)
-    .with("SoulSilver", () => SoulSilverSpecies)
-    .exhaustive();
+const OffsetField = ({ game }: { game: Gen4GameVersion }) => {
+  const [, , { setValue }] = useField<FormState["offset"]>("offset");
+  const encounterId = useWatch<Pick<FormState, "encounter_id">>({
+    name: "encounter_id",
+  });
+
+  React.useEffect(() => {
+    const encounters = getGameEncounters(game);
+    const encounter = encounters[encounterId];
+    const offset = encounter?.offset ?? 0;
+    setValue(offset);
+  }, [setValue, game, encounterId]);
+
+  return <FormikNumberInput<FormState> name="offset" numType="decimal" />;
+};
+
+const getFields = (t: Translations, game: Gen4GameVersion): Field[] => {
+  const encounters = getGameEncounters(game);
 
   return [
     {
-      label: "TID",
+      label: t["TID"],
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
     },
     {
-      label: "SID",
+      label: t["SID"],
       input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
     },
     {
-      label: "Year",
+      label: t["Year"],
       input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
     },
     {
-      label: "Min Delay",
+      label: t["Min Delay"],
       input: (
         <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
       ),
     },
     {
-      label: "Max Delay",
+      label: t["Max Delay"],
       input: (
         <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
       ),
     },
     {
-      label: "Min Advance",
+      label: t["Min Advance"],
       input: (
         <FormikNumberInput<FormState> name="min_advance" numType="decimal" />
       ),
     },
     {
-      label: "Max Advance",
+      label: t["Max Advance"],
       input: (
         <FormikNumberInput<FormState> name="max_advance" numType="decimal" />
       ),
     },
     {
-      label: "Species",
+      label: t["Offset"],
+      input: <OffsetField game={game} />,
+    },
+    {
+      label: t["Species"],
       input: (
-        <FormikSelect<FormState, "species">
-          name="species"
-          options={toOptions(species, formatSpeciesLabel)}
+        <FormikSelect<FormState, "encounter_id">
+          name="encounter_id"
+          options={sortBy(
+            map(encounters, (enc, id) => ({
+              label: enc.label ?? formatSpeciesLabel(enc.species),
+              value: id,
+            })),
+            (enc) => enc.label,
+          )}
         />
       ),
     },
     {
-      label: "Lead",
+      label: t["Lead"],
       input: (
         <FormikSelect<FormState, "lead"> name="lead" options={leadOptions} />
       ),
     },
-    ...getPkmFilterFields(),
+    ...getPkmFilterFields({}, t),
     {
-      label: "Force Second",
+      label: t["Force Second"],
       input: (
         <FormikNumberInput<FormState> name="force_second" numType="decimal" />
       ),
@@ -399,6 +284,7 @@ const mapResult = (res: Static4State): Result => {
 
 export const Static4Searcher = () => {
   const [state] = useStatic4State();
+  const [, setSearchedEncounter] = useAtom(searchedEncounterAtom);
   const game = state.game;
 
   const {
@@ -411,6 +297,15 @@ export const Static4Searcher = () => {
 
   const onSubmit = React.useCallback(
     async (opts: FormState) => {
+      const encounters = getGameEncounters(game);
+      const encounter = encounters[opts.encounter_id];
+
+      if (encounter == null) {
+        return;
+      }
+
+      setSearchedEncounter(encounter);
+
       const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
         filter: pkmFilterFieldsToRustInput(opts),
         force_second: opts.force_second,
@@ -418,8 +313,9 @@ export const Static4Searcher = () => {
         min_advance: opts.min_advance,
         max_delay: opts.max_delay,
         min_delay: opts.min_delay,
+        offset: opts.offset,
         sid: opts.sid,
-        species: opts.species,
+        species: encounter.species,
         tid: opts.tid,
         year: opts.year,
         month: monthToRustFilter(opts.month),
@@ -438,18 +334,21 @@ export const Static4Searcher = () => {
 
       await searchStaticSeeds(searchOpts);
     },
-    [game, searchStaticSeeds],
+    [game, setSearchedEncounter, searchStaticSeeds],
   );
 
-  const fields = React.useMemo(() => getFields(game), [game]);
+  const getTranslatedFields = React.useCallback(
+    (t: Translations) => getFields(t, game),
+    [game],
+  );
 
   return (
     <RngToolForm<FormState, Result>
-      fields={fields}
       columns={columns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}
+      getFields={getTranslatedFields}
       onSubmit={onSubmit}
       rowKey="key"
       submitTrackerId="search_gen4_static"

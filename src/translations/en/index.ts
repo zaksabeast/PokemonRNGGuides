@@ -201,6 +201,13 @@ export const translations = {
   "Faster than {percent} of PIDs": "Faster than {percent} of PIDs.",
   "Slower than {percent} of PIDs": "Slower than {percent} of PIDs.",
   "Lead PID": "Lead PID",
+  "Is Target": "Is Target",
+  Lead: "Lead",
+  "Min Advance": "Min Advance",
+  "Max Advance": "Max Advance",
+  "Delay Range ±": "Delay Range ±",
+  "Seconds Range ±": "Seconds Range ±",
+  "Advance Range ±": "Advance Range ±",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

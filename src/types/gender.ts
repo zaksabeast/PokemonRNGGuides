@@ -1,10 +1,12 @@
 import { match } from "ts-pattern";
 import { Gender, Species, GenderRatio } from "~/rngTools";
 
+export const maleFemale = ["Male", "Female"] as const;
+export const genderless = ["Genderless"] as const;
+
 export const gender = [
-  "Male",
-  "Female",
-  "Genderless",
+  ...maleFemale,
+  ...genderless,
 ] as const satisfies Gender[];
 
 export const genderRatioBySpecies = {

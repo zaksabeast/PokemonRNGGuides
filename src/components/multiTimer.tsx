@@ -40,6 +40,7 @@ type InnerProps = {
   setState: (state: HydrationLock<MultiTimerState>) => void;
   minutesBeforeTarget: number;
   milliseconds: number[];
+  labels?: React.ReactNode[];
   disableStart?: boolean;
   startButtonTrackerId: string;
   stopButtonTrackerId: string;
@@ -53,6 +54,7 @@ const InnerMultiTimer = ({
   disableStart = false,
   startButtonTrackerId,
   stopButtonTrackerId,
+  labels,
 }: InnerProps) => {
   const t = useActiveRouteTranslations();
   const [experimentalSync, setExperimentalSync] = React.useState(false);
@@ -248,6 +250,7 @@ const InnerMultiTimer = ({
             {displayTimerMs.map((ms, index) => (
               <Timer
                 key={index}
+                label={labels?.[index]}
                 expirationMs={ms}
                 countdownMs={countdownMs}
                 run={startTimeMs != null && index === currentTimerIndex}

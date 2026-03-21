@@ -88,7 +88,7 @@ export const Gen3PidSpeedCalculator = () => {
         ),
       },
     ];
-  }, [setSpeed, setRanking, value, setValue]);
+  }, [t, setSpeed, setRanking, value, setValue]);
 
   return (
     <Flex vertical gap={16}>

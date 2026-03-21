@@ -58,7 +58,7 @@ export const Timer = ({
       />
       {label != null && (
         <Flex justify="center" textAlign="center">
-          <Typography.Text fontSize={20} maxWidth={WIDTH}>
+          <Typography.Text fontSize={16} maxWidth={WIDTH}>
             {label}
           </Typography.Text>
         </Flex>

@@ -9,6 +9,7 @@ type Props = {
   run: boolean;
   onExpire?: () => void;
   onCountdown?: () => void;
+  label?: React.ReactNode;
 };
 
 export const Timer = ({
@@ -17,6 +18,7 @@ export const Timer = ({
   run,
   onExpire,
   onCountdown,
+  label,
 }: Props) => {
   const { msRemaining, start, stop } = useTimer({
     onExpire,
@@ -37,20 +39,30 @@ export const Timer = ({
   const percent = (remaining / expirationMs) * 100;
   const seconds = Math.floor(remaining / 1000);
   const milliseconds = remaining % 1000;
+  const WIDTH = 200;
 
   return (
-    <Progress
-      type="circle"
-      percent={percent}
-      size={200}
-      format={() => (
-        <Flex justify="center">
-          <Typography.Text strong fontSize={24} fontFamily="monospace">
-            {seconds.toString().padStart(2, "0")}:
-            {milliseconds.toString().padStart(3, "0")}
+    <Flex vertical>
+      <Progress
+        type="circle"
+        percent={percent}
+        size={WIDTH}
+        format={() => (
+          <Flex justify="center">
+            <Typography.Text strong fontSize={24} fontFamily="monospace">
+              {seconds.toString().padStart(2, "0")}:
+              {milliseconds.toString().padStart(3, "0")}
+            </Typography.Text>
+          </Flex>
+        )}
+      />
+      {label != null && (
+        <Flex justify="center" textAlign="center">
+          <Typography.Text fontSize={20} maxWidth={WIDTH}>
+            {label}
           </Typography.Text>
         </Flex>
       )}
-    />
+    </Flex>
   );
 };

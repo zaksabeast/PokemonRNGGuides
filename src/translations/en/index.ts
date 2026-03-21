@@ -200,6 +200,7 @@ export const translations = {
   "Speed: {speed} cycles ({cycles})": "Speed: {speed} cycles ({cycles})",
   "Faster than {percent} of PIDs": "Faster than {percent} of PIDs.",
   "Slower than {percent} of PIDs": "Slower than {percent} of PIDs.",
+  "Lead PID": "Lead PID",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

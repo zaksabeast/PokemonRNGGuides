@@ -7477,7 +7477,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-21",
+      lastUpdated: "2026-03-22",
       type: "baseGuide",
       file: "guides/Gen 4/Retail Static.mdx",
       translations: null,

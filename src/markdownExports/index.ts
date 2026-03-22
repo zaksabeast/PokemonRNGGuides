@@ -335,6 +335,10 @@ const tools = {
     () => import("~/rngToolsUi/gen4/static/staticCalibrator"),
     (mod) => mod.Static4Calibrator,
   ),
+  ChatterFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/static/chatterFilter"),
+    (mod) => mod.ChatterFilter,
+  ),
 };
 
 export const markdownComponents = {

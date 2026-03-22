@@ -1,4 +1,3 @@
-import { match } from "ts-pattern";
 import { Species } from "~/rngTools";
 import { Gen4GameVersion } from "../gen4types";
 
@@ -266,16 +265,18 @@ const SoulSilverEncounters = {
   "groudon-50": { species: "Groudon", level: 50, isFixedGender: true },
 } as const satisfies Record<string, Encounter>;
 
+const EncountersByGame = {
+  Diamond: DiamondEncounters,
+  Pearl: PearlEncounters,
+  Platinum: PlatinumEncounters,
+  HeartGold: HeartGoldEncounters,
+  SoulSilver: SoulSilverEncounters,
+} as const satisfies Record<Gen4GameVersion, Record<string, Encounter>>;
+
 export const getGameEncounters = (
   game: Gen4GameVersion,
-): Record<string, Encounter> => {
-  return match(game)
-    .with("Diamond", () => DiamondEncounters)
-    .with("Pearl", () => PearlEncounters)
-    .with("Platinum", () => PlatinumEncounters)
-    .with("HeartGold", () => HeartGoldEncounters)
-    .with("SoulSilver", () => SoulSilverEncounters)
-    .exhaustive();
+): Readonly<Record<string, Encounter>> => {
+  return EncountersByGame[game];
 };
 
 export const defaultEncounter = DiamondEncounters["eevee-5"];

@@ -208,6 +208,16 @@ export const translations = {
   "Delay Range ±": "Delay Range ±",
   "Seconds Range ±": "Seconds Range ±",
   "Advance Range ±": "Advance Range ±",
+  Roamers: "Roamers",
+  Pitch: "Pitch",
+  "Pitch Value": "Pitch Value",
+  Low: "Low",
+  "Medium-Low": "Medium-Low",
+  Medium: "Medium",
+  "Medium-High": "Medium-High",
+  High: "High",
+  "Advances Before Target": "Advances Before Target",
+  "Advances After Target": "Advances After Target",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

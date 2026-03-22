@@ -50,7 +50,10 @@ type Result = FlattenIvs<
   }
 >;
 
-const searchedEncounterAtom = atom<Encounter>(defaultEncounter);
+const searchedEncounterAtom = atom<Encounter & { advanceOffset: number }>({
+  ...defaultEncounter,
+  advanceOffset: 0,
+});
 
 type SelectButtonProps = {
   target: Result;
@@ -59,7 +62,7 @@ type SelectButtonProps = {
 const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
   const [, setState] = useStatic4State();
-  const [{ isFixedGender, level, species, form }] = useAtom(
+  const [{ isFixedGender, level, species, form, advanceOffset }] = useAtom(
     searchedEncounterAtom,
   );
 
@@ -80,6 +83,7 @@ const SelectButton = ({ target }: SelectButtonProps) => {
             form,
             level,
             minMaxStats,
+            advanceOffset,
           },
           chatotSummaryCount: target.advance,
         }));
@@ -304,7 +308,7 @@ export const Static4Searcher = () => {
         return;
       }
 
-      setSearchedEncounter(encounter);
+      setSearchedEncounter({ ...encounter, advanceOffset: opts.offset });
 
       const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
         filter: pkmFilterFieldsToRustInput(opts),

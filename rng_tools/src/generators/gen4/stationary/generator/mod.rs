@@ -20,6 +20,7 @@ pub struct Gen4StaticOpts {
     pub sid: u16,
     pub initial_advances: usize,
     pub max_advances: usize,
+    pub offset: usize,
     pub filter: PkmFilter,
     pub filter_characteristic: Option<Characteristic>,
     pub game: GameVersion,
@@ -156,6 +157,7 @@ fn generate_static4_state(opts: &Gen4StaticOpts, rng: &mut Pokerng) -> Gen4Stati
 pub fn generate_static4_states(opts: &Gen4StaticOpts) -> Vec<Gen4StaticPokemon> {
     let base_rng = Pokerng::new(opts.seed);
     StateIterator::new(base_rng)
+        .skip(opts.offset)
         .enumerate()
         .skip(opts.initial_advances)
         .take(opts.max_advances.wrapping_add(1))
@@ -237,6 +239,7 @@ mod test {
                 sid: 5678,
                 initial_advances: 0,
                 max_advances: 200,
+                offset: 0,
                 filter: PkmFilter::default(),
                 filter_characteristic: None,
                 game: GameVersion::Diamond,
@@ -256,6 +259,7 @@ mod test {
                 sid: 5678,
                 initial_advances: 200,
                 max_advances: 200,
+                offset: 0,
                 filter: PkmFilter::default(),
                 filter_characteristic: None,
                 game: GameVersion::Diamond,
@@ -265,6 +269,29 @@ mod test {
             };
             let results = generate_static4_states(&opts);
             let expected = pokefinder!(CHATOT_AND_ELM, "test_data/method1/initial_advances.txt");
+            assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn initial_advances_with_offset() {
+            let opts = Gen4StaticOpts {
+                tid: 1234,
+                sid: 5678,
+                initial_advances: 200,
+                max_advances: 200,
+                offset: 10,
+                filter: PkmFilter::default(),
+                filter_characteristic: None,
+                game: GameVersion::Diamond,
+                species: Species::Turtwig,
+                lead: LeadAbility::None,
+                seed: 0,
+            };
+            let results = generate_static4_states(&opts);
+            let expected = pokefinder!(
+                CHATOT_AND_ELM,
+                "test_data/method1/initial_advances_with_offset.txt"
+            );
             assert_list_eq!(results, expected);
         }
     }
@@ -279,6 +306,7 @@ mod test {
                 sid: 5678,
                 initial_advances: 0,
                 max_advances: 200,
+                offset: 0,
                 filter: PkmFilter::default(),
                 filter_characteristic: None,
                 game: GameVersion::Diamond,
@@ -298,6 +326,7 @@ mod test {
                 sid: 5678,
                 initial_advances: 0,
                 max_advances: 200,
+                offset: 0,
                 filter: PkmFilter::default(),
                 filter_characteristic: None,
                 game: GameVersion::Diamond,
@@ -317,6 +346,7 @@ mod test {
                 sid: 5678,
                 initial_advances: 0,
                 max_advances: 200,
+                offset: 0,
                 filter: PkmFilter::default(),
                 filter_characteristic: None,
                 game: GameVersion::Diamond,
@@ -336,6 +366,7 @@ mod test {
                 sid: 5678,
                 initial_advances: 0,
                 max_advances: 200,
+                offset: 0,
                 filter: PkmFilter::default(),
                 filter_characteristic: None,
                 game: GameVersion::Diamond,
@@ -355,6 +386,7 @@ mod test {
                 sid: 5678,
                 initial_advances: 0,
                 max_advances: 200,
+                offset: 0,
                 filter: PkmFilter::default(),
                 filter_characteristic: None,
                 game: GameVersion::Diamond,
@@ -378,6 +410,7 @@ mod test {
                 sid: 5678,
                 initial_advances: 0,
                 max_advances: 200,
+                offset: 0,
                 filter: PkmFilter::default(),
                 filter_characteristic: None,
                 game: GameVersion::SoulSilver,
@@ -397,6 +430,7 @@ mod test {
                 sid: 5678,
                 initial_advances: 0,
                 max_advances: 200,
+                offset: 0,
                 filter: PkmFilter::default(),
                 filter_characteristic: None,
                 game: GameVersion::SoulSilver,
@@ -416,6 +450,7 @@ mod test {
                 sid: 5678,
                 initial_advances: 0,
                 max_advances: 200,
+                offset: 0,
                 filter: PkmFilter::default(),
                 filter_characteristic: None,
                 game: GameVersion::SoulSilver,
@@ -435,6 +470,7 @@ mod test {
                 sid: 5678,
                 initial_advances: 0,
                 max_advances: 200,
+                offset: 0,
                 filter: PkmFilter::default(),
                 filter_characteristic: None,
                 game: GameVersion::SoulSilver,
@@ -454,6 +490,7 @@ mod test {
                 sid: 5678,
                 initial_advances: 0,
                 max_advances: 200,
+                offset: 0,
                 filter: PkmFilter::default(),
                 filter_characteristic: None,
                 game: GameVersion::SoulSilver,

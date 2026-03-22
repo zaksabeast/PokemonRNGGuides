@@ -105,219 +105,234 @@ const nonTools = {
 };
 
 const lazyLoad = <ImportRes, Props>(
-  importRes: Promise<ImportRes>,
+  importRes: () => Promise<ImportRes>,
   resolver: (tool: ImportRes) => React.ComponentType<Props>,
 ) => {
   return React.lazy(async () => {
-    const tool = await importRes;
+    const tool = await importRes();
     return { default: resolver(tool) };
   });
 };
 
 const tools = {
-  IpsMerger: lazyLoad(import("~/components/ipsMerger"), (mod) => mod.IpsMerger),
+  IpsMerger: lazyLoad(
+    () => import("~/components/ipsMerger"),
+    (mod) => mod.IpsMerger,
+  ),
   Gen2PokemonRng: lazyLoad(
-    import("~/rngToolsUi/gen2/crystalPokemon"),
+    () => import("~/rngToolsUi/gen2/crystalPokemon"),
     (mod) => mod.Gen2PokemonRng,
   ),
-  Gen2Rng: lazyLoad(import("~/rngToolsUi/gen2/gen2Rng"), (mod) => mod.Gen2Rng),
+  Gen2Rng: lazyLoad(
+    () => import("~/rngToolsUi/gen2/gen2Rng"),
+    (mod) => mod.Gen2Rng,
+  ),
   Gen3Pokerus: lazyLoad(
-    import("~/rngToolsUi/gen3/pokerus"),
+    () => import("~/rngToolsUi/gen3/pokerus"),
     (mod) => mod.Gen3Pokerus,
   ),
-  Gen3Sid: lazyLoad(import("~/rngToolsUi/gen3/sid"), (mod) => mod.Gen3Sid),
+  Gen3Sid: lazyLoad(
+    () => import("~/rngToolsUi/gen3/sid"),
+    (mod) => mod.Gen3Sid,
+  ),
   RsTidSidGenerator: lazyLoad(
-    import("~/rngToolsUi/gen3/rstid/rstid"),
+    () => import("~/rngToolsUi/gen3/rstid/rstid"),
     (mod) => mod.RsTidSidGenerator,
   ),
   RsTidTimer: lazyLoad(
-    import("~/rngToolsUi/gen3/rstid/searcher"),
+    () => import("~/rngToolsUi/gen3/rstid/searcher"),
     (mod) => mod.RsTidTimer,
   ),
   RsTidSearcher: lazyLoad(
-    import("~/rngToolsUi/gen3/rstid/searcher"),
+    () => import("~/rngToolsUi/gen3/rstid/searcher"),
     (mod) => mod.RsTidSearcher,
   ),
   Gen3MirageIsland: lazyLoad(
-    import("~/rngToolsUi/gen3/mirageIsland"),
+    () => import("~/rngToolsUi/gen3/mirageIsland"),
     (mod) => mod.Gen3MirageIsland,
   ),
   EmeraldHeldEgg: lazyLoad(
-    import("~/rngToolsUi/gen3/emeraldHeldEgg"),
+    () => import("~/rngToolsUi/gen3/emeraldHeldEgg"),
     (mod) => mod.EmeraldHeldEgg,
   ),
   EmeraldPickupEgg: lazyLoad(
-    import("~/rngToolsUi/gen3/emeraldPickupEgg"),
+    () => import("~/rngToolsUi/gen3/emeraldPickupEgg"),
     (mod) => mod.EmeraldPickupEgg,
   ),
   Static3: lazyLoad(
-    import("~/rngToolsUi/gen3/static/static3"),
+    () => import("~/rngToolsUi/gen3/static/static3"),
     (mod) => mod.Static3,
   ),
   Wild3SearcherFindTarget: lazyLoad(
-    import("~/rngToolsUi/gen3/wild/wild3FindTarget"),
+    () => import("~/rngToolsUi/gen3/wild/wild3FindTarget"),
     (mod) => mod.Wild3SearcherFindTarget,
   ),
   Wild3Calib: lazyLoad(
-    import("~/rngToolsUi/gen3/wild/wild3Calib"),
+    () => import("~/rngToolsUi/gen3/wild/wild3Calib"),
     (mod) => mod.Wild3Calib,
   ),
   Wild3MethodDistribution: lazyLoad(
-    import("~/rngToolsUi/gen3/wild/wild3MethodDistribution"),
+    () => import("~/rngToolsUi/gen3/wild/wild3MethodDistribution"),
     (mod) => mod.Wild3MethodDistribution,
   ),
   Gen3PidSpeedCalculator: lazyLoad(
-    import("~/rngToolsUi/gen3/pidSpeedCalculator"),
+    () => import("~/rngToolsUi/gen3/pidSpeedCalculator"),
     (mod) => mod.Gen3PidSpeedCalculator,
   ),
   EmeraldSeedToAdvances: lazyLoad(
-    import("~/rngToolsUi/gen3/wild/seedToAdvances"),
+    () => import("~/rngToolsUi/gen3/wild/seedToAdvances"),
     (mod) => mod.EmeraldSeedToAdvances,
   ),
   Gen3TidSidGenerator: lazyLoad(
-    import("~/rngToolsUi/gen3/tidsid"),
+    () => import("~/rngToolsUi/gen3/tidsid"),
     (mod) => mod.Gen3TidSidGenerator,
   ),
   OrAsMirageSpot: lazyLoad(
-    import("~/rngToolsUi/gen6/orasMirageSpot"),
+    () => import("~/rngToolsUi/gen6/orasMirageSpot"),
     (mod) => mod.OrAsMirageSpot,
   ),
   Gen4Timer: lazyLoad(
-    import("~/rngToolsUi/timer/gen4"),
+    () => import("~/rngToolsUi/timer/gen4"),
     (mod) => mod.Gen4Timer,
   ),
-  RngTimer: lazyLoad(import("~/rngToolsUi/timer"), (mod) => mod.RngTimer),
-  OrasId: lazyLoad(import("~/rngToolsUi/gen6/orasId"), (mod) => mod.OrasId),
+  RngTimer: lazyLoad(
+    () => import("~/rngToolsUi/timer"),
+    (mod) => mod.RngTimer,
+  ),
+  OrasId: lazyLoad(
+    () => import("~/rngToolsUi/gen6/orasId"),
+    (mod) => mod.OrasId,
+  ),
   Transporter: lazyLoad(
-    import("~/rngToolsUi/gen6/transporter/transporter"),
+    () => import("~/rngToolsUi/gen6/transporter/transporter"),
     (mod) => mod.Transporter,
   ),
   CalibrateId4: lazyLoad(
-    import("~/rngToolsUi/gen4/id/calibrateId"),
+    () => import("~/rngToolsUi/gen4/id/calibrateId"),
     (mod) => mod.CalibrateId4,
   ),
   Gen4IdSetup: lazyLoad(
-    import("~/rngToolsUi/gen4/id/setup"),
+    () => import("~/rngToolsUi/gen4/id/setup"),
     (mod) => mod.Gen4IdSetup,
   ),
   Id4ConsoleSetDateString: lazyLoad(
-    import("~/rngToolsUi/gen4/id/timer"),
+    () => import("~/rngToolsUi/gen4/id/timer"),
     (mod) => mod.Id4ConsoleSetDateString,
   ),
   Id4Searcher: lazyLoad(
-    import("~/rngToolsUi/gen4/id/idSearcher"),
+    () => import("~/rngToolsUi/gen4/id/idSearcher"),
     (mod) => mod.Id4Searcher,
   ),
   Id4Timer: lazyLoad(
-    import("~/rngToolsUi/gen4/id/timer"),
+    () => import("~/rngToolsUi/gen4/id/timer"),
     (mod) => mod.Id4Timer,
   ),
   XyPokeRadar: lazyLoad(
-    import("~/rngToolsUi/gen6/xyPokeRadar"),
+    () => import("~/rngToolsUi/gen6/xyPokeRadar"),
     (mod) => mod.XyPokeRadar,
   ),
   ShinyHoennStarter: lazyLoad(
-    import("~/rngToolsUi/gen3/shinyStarter"),
+    () => import("~/rngToolsUi/gen3/shinyStarter"),
     (mod) => mod.ShinyHoennStarter,
   ),
   GenerateHoennTidSid: lazyLoad(
-    import("~/rngToolsUi/gen3/shinyStarter/generateTidSid"),
+    () => import("~/rngToolsUi/gen3/shinyStarter/generateTidSid"),
     (mod) => mod.GenerateHoennTidSid,
   ),
   MultibootJirachi: lazyLoad(
-    import("~/rngToolsUi/gen3/multibootJirachi"),
+    () => import("~/rngToolsUi/gen3/multibootJirachi"),
     (mod) => mod.MultibootJirachi,
   ),
   PaintingReseed: lazyLoad(
-    import("~/rngToolsUi/gen3/paintingReseed"),
+    () => import("~/rngToolsUi/gen3/paintingReseed"),
     (mod) => mod.PaintingReseed,
   ),
   RetailEmeraldHeldEgg: lazyLoad(
-    import("~/rngToolsUi/gen3/retailEmeraldEgg/heldEgg"),
+    () => import("~/rngToolsUi/gen3/retailEmeraldEgg/heldEgg"),
     (mod) => mod.RetailEmeraldHeldEgg,
   ),
   PokeNavInput: lazyLoad(
-    import("~/rngToolsUi/gen3/retailEmeraldEgg/pokeNavTrainer"),
+    () => import("~/rngToolsUi/gen3/retailEmeraldEgg/pokeNavTrainer"),
     (mod) => mod.PokeNavInput,
   ),
   CalibrateHeldEgg: lazyLoad(
-    import("~/rngToolsUi/gen3/retailEmeraldEgg/calibrateHeldEgg"),
+    () => import("~/rngToolsUi/gen3/retailEmeraldEgg/calibrateHeldEgg"),
     (mod) => mod.CalibrateHeldEgg,
   ),
   CalibrateHeldEggTimer: lazyLoad(
-    import("~/rngToolsUi/gen3/retailEmeraldEgg/calibrateHeldEgg"),
+    () => import("~/rngToolsUi/gen3/retailEmeraldEgg/calibrateHeldEgg"),
     (mod) => mod.CalibrateHeldEggTimer,
   ),
   RetailEmeraldPickupEgg: lazyLoad(
-    import("~/rngToolsUi/gen3/retailEmeraldEgg/pickupEgg"),
+    () => import("~/rngToolsUi/gen3/retailEmeraldEgg/pickupEgg"),
     (mod) => mod.RetailEmeraldPickupEgg,
   ),
   CalibratePickupEgg: lazyLoad(
-    import("~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg"),
+    () => import("~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg"),
     (mod) => mod.CalibratePickupEgg,
   ),
   CalibratePickupEggTimer: lazyLoad(
-    import("~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg"),
+    () => import("~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg"),
     (mod) => mod.CalibratePickupEggTimer,
   ),
   CalibrateStarter4: lazyLoad(
-    import("~/rngToolsUi/gen4/starters"),
+    () => import("~/rngToolsUi/gen4/starters"),
     (mod) => mod.CalibrateStarter4,
   ),
   GetStarter4: lazyLoad(
-    import("~/rngToolsUi/gen4/starters"),
+    () => import("~/rngToolsUi/gen4/starters"),
     (mod) => mod.GetStarter4,
   ),
   PickStarter4: lazyLoad(
-    import("~/rngToolsUi/gen4/starters"),
+    () => import("~/rngToolsUi/gen4/starters"),
     (mod) => mod.PickStarter4,
   ),
   Starter4ConsoleSetDateString: lazyLoad(
-    import("~/rngToolsUi/gen4/starters/getStarter"),
+    () => import("~/rngToolsUi/gen4/starters/getStarter"),
     (mod) => mod.Starter4ConsoleSetDateString,
   ),
   Starter4Setup: lazyLoad(
-    import("~/rngToolsUi/gen4/starters"),
+    () => import("~/rngToolsUi/gen4/starters"),
     (mod) => mod.Starter4Setup,
   ),
   Gen4StaticSetup: lazyLoad(
-    import("~/rngToolsUi/gen4/static/setup"),
+    () => import("~/rngToolsUi/gen4/static/setup"),
     (mod) => mod.Gen4StaticSetup,
   ),
   Static4ShowIf: lazyLoad(
-    import("~/rngToolsUi/gen4/static/showIf"),
+    () => import("~/rngToolsUi/gen4/static/showIf"),
     (mod) => mod.Static4ShowIf,
   ),
   Static4Searcher: lazyLoad(
-    import("~/rngToolsUi/gen4/static/staticSearcher"),
+    () => import("~/rngToolsUi/gen4/static/staticSearcher"),
     (mod) => mod.Static4Searcher,
   ),
   Static4HitSeed: lazyLoad(
-    import("~/rngToolsUi/gen4/static/hitSeed"),
+    () => import("~/rngToolsUi/gen4/static/hitSeed"),
     (mod) => mod.Static4HitSeed,
   ),
   Static4Timer: lazyLoad(
-    import("~/rngToolsUi/gen4/static/static4Timer"),
+    () => import("~/rngToolsUi/gen4/static/static4Timer"),
     (mod) => mod.Static4Timer,
   ),
   Static4ConsoleSetDateString: lazyLoad(
-    import("~/rngToolsUi/gen4/static/static4Timer"),
+    () => import("~/rngToolsUi/gen4/static/static4Timer"),
     (mod) => mod.Static4ConsoleSetDateString,
   ),
   Static4ChatotCount: lazyLoad(
-    import("~/rngToolsUi/gen4/static/stateText"),
+    () => import("~/rngToolsUi/gen4/static/stateText"),
     (mod) => mod.Static4ChatotCount,
   ),
   Static4SyncNature: lazyLoad(
-    import("~/rngToolsUi/gen4/static/stateText"),
+    () => import("~/rngToolsUi/gen4/static/stateText"),
     (mod) => mod.Static4SyncNature,
   ),
   Static4ShowIfLead: lazyLoad(
-    import("~/rngToolsUi/gen4/static/showIf"),
+    () => import("~/rngToolsUi/gen4/static/showIf"),
     (mod) => mod.Static4ShowIfLead,
   ),
   Static4Calibrator: lazyLoad(
-    import("~/rngToolsUi/gen4/static/staticCalibrator"),
+    () => import("~/rngToolsUi/gen4/static/staticCalibrator"),
     (mod) => mod.Static4Calibrator,
   ),
 };

@@ -1065,6 +1065,89 @@ export const guides = {
       return file.default;
     }),
   },
+  "/de-emerald-pokerus-emu/": {
+    meta: {
+      id: "/emerald-pokerus-emu/",
+      categories: ["Emerald"],
+      section: "other_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emerald-pokerus-emu/",
+      isNew: false,
+      title: "Pokérus in Smaragd",
+      navDrawerTitle: "Pokérus",
+      description: "Wie man sich mit dem Pokérus infiziert",
+      slug: "/de-emerald-pokerus-emu/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-09",
+      translation: { enSlug: "/emerald-pokerus-emu/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-22",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Pokerus.mdx",
+      translations: {
+        de: "/de-emerald-pokerus-emu/",
+        en: "/emerald-pokerus-emu/",
+        zh: "/zh-emerald-pokerus-emu/",
+      },
+      guideGroupId: "de:/emerald-pokerus-emu/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["video_guide"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/de/Gen 3/Emerald/Pokerus.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Pokerus.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/de-emerald-shiny-starter/": {
+    meta: {
+      id: "/emerald-shiny-starter/",
+      categories: ["Emerald"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "/emerald-shiny-starter/",
+      isNew: false,
+      title: "Shiny Starter",
+      navDrawerTitle: "Shiny Starter",
+      description: "Bestimme deine SID, indem du einen Shiny Starter fängst",
+      slug: "/de-emerald-shiny-starter/",
+      isRoughDraft: false,
+      orderPriority: 0,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-03",
+      translation: { enSlug: "/emerald-shiny-starter/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-22",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Shiny Starter.mdx",
+      translations: {
+        de: "/de-emerald-shiny-starter/",
+        en: "/emerald-shiny-starter/",
+        zh: "/zh-emerald-shiny-starter/",
+      },
+      guideGroupId: "de:/emerald-shiny-starter/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/de/Gen 3/Emerald/Shiny Starter.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Shiny Starter.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/de-emerald-sid-feebas/": {
     meta: {
       id: "/emerald-sid-feebas/",
@@ -1149,6 +1232,50 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/de/Gen 3/Emerald/Egg RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/de-gba-overview/": {
+    meta: {
+      id: "/gba-overview/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "getting_started",
+      guideVariants: null,
+      guideKey: "/gba-overview/",
+      isNew: false,
+      title: "GBA Übersicht",
+      navDrawerTitle: "GBA Übersicht",
+      description:
+        "Besonderheiten, zentrale RNG-Konzepte und Versionsunterschiede der GBA-Spiele.",
+      slug: "/de-gba-overview/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-08",
+      translation: { enSlug: "/gba-overview/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-22",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/GBA Overview.mdx",
+      translations: {
+        de: "/de-gba-overview/",
+        en: "/gba-overview/",
+        zh: "/zh-gba-overview/",
+      },
+      guideGroupId:
+        "de:/gba-overview/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/de/Gen 3/Emerald/GBA Overview.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/GBA Overview.mdx?raw"
       );
       return file.default;
     }),
@@ -1278,6 +1405,47 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/de/Gen 3/Emerald/Mirage Island.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/de-rs-pokerus-emu/": {
+    meta: {
+      id: "/rs-pokerus-emu/",
+      categories: ["Ruby and Sapphire"],
+      section: "other_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "rs-pokerus",
+      isNew: false,
+      title: "Pokérus in Rubin und Saphir",
+      navDrawerTitle: "Pokérus",
+      description: "Wie man sich mit dem Pokérus infiziert",
+      slug: "/de-rs-pokerus-emu/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-05-09",
+      translation: { enSlug: "/rs-pokerus-emu/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-22",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Pokerus.mdx",
+      translations: {
+        de: "/de-rs-pokerus-emu/",
+        en: "/rs-pokerus-emu/",
+        zh: "/zh-rs-pokerus-emu/",
+      },
+      guideGroupId: "de:rs-pokerus:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: ["video_guide"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/de/Gen 3/Emerald/Pokerus.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Pokerus.mdx?raw"
       );
       return file.default;
     }),
@@ -2142,6 +2310,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Pokerus.mdx",
       translations: {
+        de: "/de-emerald-pokerus-emu/",
         en: "/emerald-pokerus-emu/",
         zh: "/zh-emerald-pokerus-emu/",
       },
@@ -2181,6 +2350,7 @@ export const guides = {
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Shiny Starter.mdx",
       translations: {
+        de: "/de-emerald-shiny-starter/",
         en: "/emerald-shiny-starter/",
         zh: "/zh-emerald-shiny-starter/",
       },
@@ -4949,7 +5119,11 @@ export const guides = {
       lastUpdated: "2026-03-10",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/GBA Overview.mdx",
-      translations: { en: "/gba-overview/", zh: "/zh-gba-overview/" },
+      translations: {
+        de: "/de-gba-overview/",
+        en: "/gba-overview/",
+        zh: "/zh-gba-overview/",
+      },
       guideGroupId:
         "en:/gba-overview/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
@@ -9211,7 +9385,11 @@ export const guides = {
       lastUpdated: null,
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Pokerus.mdx",
-      translations: { en: "/rs-pokerus-emu/", zh: "/zh-rs-pokerus-emu/" },
+      translations: {
+        de: "/de-rs-pokerus-emu/",
+        en: "/rs-pokerus-emu/",
+        zh: "/zh-rs-pokerus-emu/",
+      },
       guideGroupId: "en:rs-pokerus:Ruby and Sapphire",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/rs-pokerus-retail/" },
@@ -10706,6 +10884,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx",
       translations: {
+        de: "/de-emerald-pokerus-emu/",
         en: "/emerald-pokerus-emu/",
         zh: "/zh-emerald-pokerus-emu/",
       },
@@ -10746,6 +10925,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Shiny Starter.mdx",
       translations: {
+        de: "/de-emerald-shiny-starter/",
         en: "/emerald-shiny-starter/",
         zh: "/zh-emerald-shiny-starter/",
       },
@@ -12011,7 +12191,11 @@ export const guides = {
       lastUpdated: "2026-03-10",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/GBA Overview.mdx",
-      translations: { en: "/gba-overview/", zh: "/zh-gba-overview/" },
+      translations: {
+        de: "/de-gba-overview/",
+        en: "/gba-overview/",
+        zh: "/zh-gba-overview/",
+      },
       guideGroupId:
         "zh:/gba-overview/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
@@ -14635,7 +14819,11 @@ export const guides = {
       lastUpdated: "2026-03-20",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Pokerus.mdx",
-      translations: { en: "/rs-pokerus-emu/", zh: "/zh-rs-pokerus-emu/" },
+      translations: {
+        de: "/de-rs-pokerus-emu/",
+        en: "/rs-pokerus-emu/",
+        zh: "/zh-rs-pokerus-emu/",
+      },
       guideGroupId: "zh:rs-pokerus:Ruby and Sapphire",
       guideVariantLinks: null,
       displayAttributes: ["video_guide"],
@@ -14887,11 +15075,15 @@ export const guideSlugs = [
   "/de-e-tips-rng/",
   "/de-emerald-mirage-island/",
   "/de-emerald-overview/",
+  "/de-emerald-pokerus-emu/",
+  "/de-emerald-shiny-starter/",
   "/de-emerald-sid-feebas/",
   "/de-emulator-emerald-egg/",
+  "/de-gba-overview/",
   "/de-retail-emerald-egg/",
   "/de-retail-emerald-wild/",
   "/de-rs-mirage-island/",
+  "/de-rs-pokerus-emu/",
   "/de-rs-sid-feebas/",
   "/delete-pokemon-save/",
   "/desmume-setup/",

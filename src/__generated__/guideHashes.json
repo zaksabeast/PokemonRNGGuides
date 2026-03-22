@@ -143,6 +143,14 @@
     "hash": "71ebdfceb6dd40ac335eed4251e0e8808054dca44931483188646600ddcf49c4",
     "lastUpdated": "2026-03-09"
   },
+  "/de-emerald-pokerus-emu/": {
+    "hash": "be1a120133e695e80897f3c5370dd119ab42828c309b5188e8d5730d04d259e1",
+    "lastUpdated": "2026-03-22"
+  },
+  "/de-rs-pokerus-emu/": {
+    "hash": "be1a120133e695e80897f3c5370dd119ab42828c309b5188e8d5730d04d259e1",
+    "lastUpdated": "2026-03-22"
+  },
   "/de-emerald-mirage-island/": {
     "hash": "a602a1e27170ee2c3ba7a48aa923943f823a749c846d92afa10ca9ae0eed4421",
     "lastUpdated": "2026-03-19"
@@ -170,6 +178,14 @@
   "/de-retail-emerald-wild/": {
     "hash": "bf45e7d6cef00c3f967469aa1f08748781463e56834552d91de0c576516bc020",
     "lastUpdated": "2026-03-19"
+  },
+  "/de-gba-overview/": {
+    "hash": "7b5c86045ce46f00e3f1432ef6985497e53c30a21fec400890313f647e380f77",
+    "lastUpdated": "2026-03-22"
+  },
+  "/de-emerald-shiny-starter/": {
+    "hash": "23dacf868efa5494a38e243f60deea37fee57d918920670b2af82ca39d5eed34",
+    "lastUpdated": "2026-03-22"
   },
   "/zh-emulator-bw-roamers/": {
     "hash": "98907fb8d07e0af7ea2b6b5baf0d6aa8295436e663f67909f364adabd2145b68",
@@ -812,11 +828,11 @@
     "lastUpdated": null
   },
   "/emerald-pokerus-emu/": {
-    "hash": "0b6eb3f6134edf651d1e1294584d3aa57d2bf46abd0020e24ff41c4af56562fc",
+    "hash": "bf0e188ebc049eb1d2c28d03515e21d9a1756101f430a7890a42d62c557779c6",
     "lastUpdated": null
   },
   "/rs-pokerus-emu/": {
-    "hash": "0b6eb3f6134edf651d1e1294584d3aa57d2bf46abd0020e24ff41c4af56562fc",
+    "hash": "bf0e188ebc049eb1d2c28d03515e21d9a1756101f430a7890a42d62c557779c6",
     "lastUpdated": null
   },
   "/emerald-wild-method-likelihood-calculator/": {
@@ -900,11 +916,11 @@
     "lastUpdated": "2026-03-19"
   },
   "/gba-overview/": {
-    "hash": "be8f0c9849b951402d1b6f6c458671c0c46a5d39bdef744b7c48c327b97c33cb",
+    "hash": "48b82dc41b9723840627a335abc9aa72796449f5acab2473d847a310d00c6afd",
     "lastUpdated": "2026-03-10"
   },
   "/emerald-shiny-starter/": {
-    "hash": "a392c90f2a0fc0a9f3b2c411207edfd899e25418ece89f600d1d999ebd32ca1b",
+    "hash": "dfae86f0e362e3bcf4faa9ce25360d53a1449a6e7c7a2bc5ee17b1d33f0f04c6",
     "lastUpdated": null
   },
   "/emerald-static/": {

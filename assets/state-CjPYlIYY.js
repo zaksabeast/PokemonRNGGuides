@@ -1,0 +1,1 @@
+import{l as t,gn as a,m as o}from"./index-dDEf2Pkr.js";const s={console:"NdsDsi",game:"Diamond",target:null,coinFlipFilter:"",chatotSummaryCount:null},e=o(s),m=()=>t(e),n=a();export{n as a,e as s,m as u};

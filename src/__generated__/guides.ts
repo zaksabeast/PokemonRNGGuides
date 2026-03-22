@@ -800,10 +800,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-22",
       type: "baseGuide",
       file: "guides/Tools and Emulators/Connect Dolphin To GBA.mdx",
-      translations: null,
+      translations: {
+        en: "/connect-dolphin-to-gba/",
+        zh: "/zh-connect-dolphin-to-gba/",
+      },
       guideGroupId:
         "en:/connect-dolphin-to-gba/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
@@ -10305,6 +10308,50 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-connect-dolphin-to-gba/": {
+    meta: {
+      id: "/connect-dolphin-to-gba/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/connect-dolphin-to-gba/",
+      isNew: false,
+      title: "使 Dolphin 与 mGBA 联动",
+      navDrawerTitle: "使 Dolphin 与 mGBA 联动",
+      description: "学习如何领取基拉祈，或将你的乱数宝可梦传输至 GBA 游戏。",
+      slug: "/zh-connect-dolphin-to-gba/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/connect-dolphin-to-gba/", language: "zh" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-22",
+      type: "translatedGuide",
+      file: "guides/Translations/zh/Tools and Emulators/Connect Dolphin To GBA.mdx",
+      translations: {
+        en: "/connect-dolphin-to-gba/",
+        zh: "/zh-connect-dolphin-to-gba/",
+      },
+      guideGroupId:
+        "zh:/connect-dolphin-to-gba/:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/Connect Dolphin To GBA.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Tools and Emulators/Connect Dolphin To GBA.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-delete-pokemon-save/": {
     meta: {
       id: "/delete-pokemon-save/",
@@ -15298,6 +15345,7 @@ export const guideSlugs = [
   "/zh-3ds-helper/",
   "/zh-bw2-egg/",
   "/zh-channel-jirachi/",
+  "/zh-connect-dolphin-to-gba/",
   "/zh-delete-pokemon-save/",
   "/zh-desmume-setup/",
   "/zh-dppt-3ds-rng/",

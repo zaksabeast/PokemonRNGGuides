@@ -503,6 +503,10 @@
     "hash": "0fb0a218105bf5ed9e795300da367a78ad2aeb8420ac9490c30a5c31ce422500",
     "lastUpdated": "2026-03-20"
   },
+  "/zh-connect-dolphin-to-gba/": {
+    "hash": "ae4230215d80ba7c0d8cc72fb69e0df5a9f0fd9a17e6b3d80efee65331f4f55b",
+    "lastUpdated": "2026-03-22"
+  },
   "/zh-desmume-setup/": {
     "hash": "eb6996ac553d72b4b9b3f9ef2292d180c6b819588b20d69ccd57c1e362a4014c",
     "lastUpdated": "2026-03-20"
@@ -1236,8 +1240,8 @@
     "lastUpdated": null
   },
   "/connect-dolphin-to-gba/": {
-    "hash": "ea0965b174d182add656fddf0143b0b25955aa88b98815afc03868fc4e347fdf",
-    "lastUpdated": null
+    "hash": "d7ca3b7baca1528026476d13eb57f234ae2691f494156fb3e26dea99ec8372af",
+    "lastUpdated": "2026-03-22"
   },
   "/desmume-setup/": {
     "hash": "c243243bf691922196ee6ba7b987fe545161964029a380b25e58f8f81ae42d32",

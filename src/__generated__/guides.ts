@@ -1689,7 +1689,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-22",
       type: "baseGuide",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx",
       translations: {
@@ -10455,7 +10455,7 @@ export const guides = {
       translation: { enSlug: "/dppt-pokeradar-rng/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-20",
+      lastUpdated: "2026-03-22",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/PokeRadar.mdx",
       translations: {

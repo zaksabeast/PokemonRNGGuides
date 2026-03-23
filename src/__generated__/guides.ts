@@ -2126,6 +2126,85 @@ export const guides = {
       return file.default;
     }),
   },
+  "/emerald-advancing-rng-techniques/": {
+    meta: {
+      id: "/emerald-advancing-rng-techniques/",
+      categories: ["Emerald"],
+      section: "technical_info",
+      guideVariants: null,
+      guideKey: "/emerald-advancing-rng-techniques/",
+      isNew: false,
+      title: "Overview of RNG Advancing Techniques",
+      navDrawerTitle: "Overview of RNG Advancing Techniques",
+      description:
+        "Understanding the key concepts to speed up RNG manipulations with Painting Reseeding and Battle Video Reseeding.",
+      slug: "/emerald-advancing-rng-techniques/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-23",
+      type: "baseGuide",
+      file: "guides/Gen 3/Emerald/Advancing RNG Techniques.mdx",
+      translations: null,
+      guideGroupId: "en:/emerald-advancing-rng-techniques/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Advancing RNG Techniques.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Advancing RNG Techniques.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/emerald-battle-video/": {
+    meta: {
+      id: "/emerald-battle-video/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/emerald-battle-video/",
+      isNew: true,
+      title: "Battle Video",
+      navDrawerTitle: "Battle Video",
+      description:
+        "How to create an optimal Battle Video to save and restore the RNG state.",
+      slug: "/emerald-battle-video/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: "2026-03-24",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-23",
+      type: "baseGuide",
+      file: "guides/Gen 3/Emerald/Battle Video.mdx",
+      translations: null,
+      guideGroupId: "en:/emerald-battle-video/:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/emerald-battle-video/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Battle Video.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Battle Video.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/emerald-mirage-island/": {
     meta: {
       id: "/emerald-mirage-island/",
@@ -15147,6 +15226,8 @@ export const guideSlugs = [
   "/dream-radar-cart-patches/",
   "/dream-radar-patches/",
   "/e-tips-rng/",
+  "/emerald-advancing-rng-techniques/",
+  "/emerald-battle-video/",
   "/emerald-mirage-island/",
   "/emerald-overview/",
   "/emerald-painting-rng/",

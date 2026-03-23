@@ -216,7 +216,6 @@ export const translations = {
   Medium: "Medium",
   "Medium-High": "Medium-High",
   High: "High",
-  "Advances Before Target": "Advances Before Target",
   "Advances After Target": "Advances After Target",
 } as const;
 

@@ -1,0 +1,69 @@
+const e=`---
+- title: "RNG delle uova su Oro HeartGold e Argento Soulsilver"
+  navDrawerTitle: "Egg RNG"
+  description: "Impara come fare RNG Manipulation sulle uova della pensione in Oro HeartGold e Argento SoulSilver per shiny o Pokémon con IV alte."
+  slug: "it-emulator-hgss-egg"
+  translation:
+    enSlug: "emulator-hgss-egg"
+    language: "it"
+---
+
+## Strumenti
+
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
+- [Desmume](/desmume-setup)
+- [Script Lua](https://github.com/Real96/PokeLua/blob/main/Gen%204/DeSmuMe/HGSS_RNG_DeSmuMe.lua)
+- Uno Chatot con Schiamazzo (consigliati due)
+- Uno slot vuoto nella squadra
+
+## Step 1: Preparativi e RNG del PID
+
+Questo processo è diviso in due parti: **RNG del PID** e **RNG delle IV**.
+Consulta [questo sito](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_breeding) per maggiori informazioni sugli strumenti tenuti, eredità di Nature e IV.
+
+1. Posa entrambi i genitori nella pensione, tenendo conto dell'ordine in cui sono stati inseriti, le loro IV e Nature.
+2. Salva il gioco.
+3. Registra un suono con Schiamazzo (può essere anche vuoto; è sufficiente registrarlo).
+4. Apri PokeFinder → sezione Gen 4 → "Uova" → "Ricercatore".
+5. Inserisci tutti i dati richiesti.
+6. Usa genitori internazionali se vuoi il Metodo Masuda (maggiore probabilità di ottenere uno shiny).
+7. Imposta Delay minimo a 700.
+8. Imposta Delay massimo a quanto serve (incrementalo per spread più specifiche).
+9. Imposta Avanzamenti Allevamento a 0 / 0; ignora Avanzamenti Ritiro per adesso.
+10. Genera i risultati e scegli un target.
+11. Colpisci il suo Initial Seed usando [questa guida](/hgss-initial-seed).
+12. Genera l'uovo e salva davanti all'anziano della pensione.
+13. Fermati qui se ti serviva solo shiny, Natura, genere, o abilità. Congratulazioni, ce l'hai fatta!
+
+\`\`\`
+Si suggerisce di avere un Ditto 6IV se non stai mirando a mosse specifiche, così le IV non saranno un gran problema.
+
+\`\`\`
+
+\`\`\`
+Nota: Se vuoi essere sicuro, crea un save state, ritira l'uovo, verificalo con PKHeX, e ricarica lo state.
+
+\`\`\`
+
+## Step 2: RNG delle IV
+
+1. Ritorna su PokeFinder → "Searcher".
+2. Imposta Delay minimo a 700.
+3. Imposta Delay massimo a quanto serve (incrementalo per spread più specifiche).
+4. Imposta Avanzamenti Allevamento a 0 / 100000.
+5. Imposta Avanzamenti Ritiro minimi ad almeno \`il numero di erranti da catturare + 1\`.
+6. Imposta Avanzamenti Ritiro massimi a quanto serve (incrementalo per spread più specifiche).
+7. Inserisci le IV desiderate nel filtro.
+8. Genera resultati e scegli un target.
+9. Ottieni il seed iniziale nuovo.
+10. Advanza usando Chatot (o gli NPC se accetti rischi) finché non raggiungi l'esatto numero di Avanzamenti Ritiro.
+11. Crea un save state come backup.
+12. Chiudi il menu mentre spammi \`A\` per ricevere l'uovo senza eventuali Avanzamenti extra.
+13. Se dovessi mancarlo, ricarica lo state e ripeti dallo step 12.
+
+**Congratulazioni! Hai ottenuto il tuo Pokémon!**
+
+## Crediti
+
+- Fiask per aver completato e tradotto la guida
+`;export{e as default};

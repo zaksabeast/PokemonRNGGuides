@@ -9,6 +9,7 @@ export type Static4Target = Omit<RngToolStatic4State["state"], "ivs"> & {
   level: number;
   species: Species;
   form?: number;
+  advanceOffset: number;
   minMaxStats: MinMaxStats;
   isFixedGender: boolean;
 };

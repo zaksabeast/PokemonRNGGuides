@@ -17,7 +17,7 @@
 
 <Gist>Get shiny legend and gift Pokemon with perfect IVs and natures.</Gist>
 
-<Stepper titles={["Set up", "Pick a Pokemon", "Get the Pokemon", "Calibrate Advances"]}>
+<Stepper titles={["Set up", "Pick a Pokemon", "Hit your seed", "Get the Pokemon", "Calibrate"]}>
 
 <Step step={0}>
 
@@ -132,13 +132,17 @@ Choose the game and console you're playing below then continue to the next step.
 
 <Static4HitSeed />
 
+</Step>
+
+<Step step={3}>
+
 ## Get your Pokemon
 
 Follow these steps once you've hit your target seed.
 
-1. Immediately open your party menu when the save loads.
-2. Open Chatot's summary screen **<Static4ChatotCount />** times. This advances the RNG to the correct position.
-3. Exit the party menu and catch or receive your target Pokémon.
+1. **Immediately** open your party menu as fast as possible when the save loads.
+2. Open Chatot's summary screen **<Static4ChatotCount />** times to advance the RNG. **Optionally** verify the Chatter pitch below.
+3. Exit the party and catch or receive your target Pokémon.
 
 <Alert
   type="info"
@@ -148,9 +152,21 @@ Follow these steps once you've hit your target seed.
 
 If you didn't get your target Pokemon and you're 100% sure you viewed the Chatot summary the correct number of times, move on to the next step to calibrate your advances.
 
+## Optional: Verify Chatter Pitches
+
+This allows experienced RNGers to confirm their advances without calibrating.
+
+<Alert
+  type="warning"
+  showIcon
+  message="This isn't necessary and can be difficult to get right, so don't worry about it for your first few times."
+/>
+
+<ChatterFilter />
+
 </Step>
 
-<Step step={3}>
+<Step step={4}>
 
 ### Calibrate Advances
 

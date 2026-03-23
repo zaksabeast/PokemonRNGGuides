@@ -32,6 +32,7 @@ import {
   Icon,
   ResultColumn,
   RngToolForm,
+  Typography,
 } from "~/components";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
@@ -80,7 +81,7 @@ const initialValues: FormState = {
   nature: "Adamant",
   gender: "Male",
   filter_characteristic: "AlertToSounds",
-  delayRange: 100,
+  delayRange: 50,
   secondsRange: 1,
   advanceRange: 20,
 };
@@ -90,9 +91,21 @@ type CalibrateStatic4AdvanceProps = {
 };
 
 const CalibrateStatic4Advance = ({ result }: CalibrateStatic4AdvanceProps) => {
-  const [, setState] = useStatic4State();
+  const [state, setState] = useStatic4State();
   const [messageApi, contextHolder] = message.useMessage();
   const [, setCurrentStep] = useCurrentStep();
+
+  if (state.chatotSummaryCount == null) {
+    return null;
+  }
+
+  if (state.chatotSummaryCount < result.advanceOffset) {
+    return (
+      <Typography.Text type="danger">
+        Impossible target: Not enough advances to calibrate
+      </Typography.Text>
+    );
+  }
 
   return (
     <>
@@ -327,7 +340,7 @@ export const Static4Calibrator = () => {
 
       const seedTimes = await rngTools.calc_gen4_seeds({
         datetime,
-        seconds_increment: 2,
+        seconds_increment: 2 * opts.secondsRange,
         min_delay: minDelay,
         max_delay: maxDelay,
       });
@@ -342,13 +355,16 @@ export const Static4Calibrator = () => {
         species: target.species,
         game: state.game,
         initial_advances: Math.max(target.advance - opts.advanceRange, 0),
-        max_advances: target.advance + opts.advanceRange,
+        max_advances: 2 * opts.advanceRange,
+        offset: target.advanceOffset,
         lead: target.lead,
         filter: {
           shiny: false,
           ability: null,
           nature: opts.nature,
-          gender: opts.gender,
+          gender: state.target?.isFixedGender
+            ? state.target?.gender
+            : opts.gender,
           hidden_power: defaultHiddenPowerFilter,
           ...minMaxIvs,
         },

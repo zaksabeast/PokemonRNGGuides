@@ -227,6 +227,7 @@ export const CalibrateStarter4 = () => {
         const states = await rngTools.generate_static4_states({
           tid: 0,
           sid: 0,
+          offset: 0,
           initial_advances: Math.max(targetAdvance - maxAdvances / 2, 0),
           max_advances: maxAdvances,
           game: getStarterGame(targetSpecies),

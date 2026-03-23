@@ -707,6 +707,10 @@
     "hash": "6e89a00f0d6e363b8d24082c03261d3a66511a0e11ed845ceeaf90a2fd8afb2b",
     "lastUpdated": null
   },
+  "/it-emulator-hgss-egg/": {
+    "hash": "f5d9f5730bebc5b79d96359a4ab173c66ce37c330e39dc73ca314d0068f103d6",
+    "lastUpdated": "2026-03-23"
+  },
   "/it-pokereader/": {
     "hash": "201e154b12b3a75f4f1694069a8f6b633a55393d8d4516dcdbdf83ce9ed92d0d",
     "lastUpdated": null
@@ -1087,10 +1091,6 @@
     "hash": "7ddd5e834d48efcb153515dfe88abccc248c642e3ba3811f2b76b16e11c12ba0",
     "lastUpdated": null
   },
-  "/emulator-hgss-breeding/": {
-    "hash": "94a0988da7cc51b8fa3cddc2751b03a9c37dfd2d3c319969bf2f37e2eadac27e",
-    "lastUpdated": null
-  },
   "/emulator-hgss-special-wild/": {
     "hash": "c83b6aec8a0c7207bfea1df34a9237d0c9b5088cdc311bfbc194f5385df49e44",
     "lastUpdated": null
@@ -1099,9 +1099,13 @@
     "hash": "10eb8dc56ff8cce71f837ab86e5a4f4b7e70cdfaba5972c6c1ef3204350c14cb",
     "lastUpdated": null
   },
+  "/emulator-hgss-breeding/": {
+    "hash": "d5adb7bb85a0b56bf7f9d507aa7ab8a58a8afcb071a4572e315d038e3ee531da",
+    "lastUpdated": "2026-03-23"
+  },
   "/emulator-hgss-egg/": {
-    "hash": "df063defd8d537c46167af3a2dbc8d29b1735dc7fc1481636f016406092ad5b3",
-    "lastUpdated": null
+    "hash": "d5adb7bb85a0b56bf7f9d507aa7ab8a58a8afcb071a4572e315d038e3ee531da",
+    "lastUpdated": "2026-03-23"
   },
   "/emulator-hgss-wondercard/": {
     "hash": "098ac87650974f349a9440f7fbb192d88c26bff3ca3645fad7912e31a5315178",

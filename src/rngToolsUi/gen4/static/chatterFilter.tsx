@@ -15,27 +15,16 @@ import { useStatic4State } from "./state";
 type Result = ChatterState & { isTarget: boolean };
 
 const Validator = z.object({
-  advancesBeforeTarget: z.number().int().min(0),
   advancesAfterTarget: z.number().int().min(0),
 });
 
 type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  advancesBeforeTarget: 0,
-  advancesAfterTarget: 0,
+  advancesAfterTarget: 10,
 };
 
 const getFields = (t: Translations): Field[] => [
-  {
-    label: t["Advances Before Target"],
-    input: (
-      <FormikNumberInput<FormState>
-        name="advancesBeforeTarget"
-        numType="decimal"
-      />
-    ),
-  },
   {
     label: t["Advances After Target"],
     input: (
@@ -88,14 +77,9 @@ export const ChatterFilter = () => {
         return;
       }
 
-      const initialAdvances = Math.max(
-        target.advance - opts.advancesBeforeTarget,
-        0,
-      );
-
       const chatters = await rngTools.get_chatters({
-        initial_advances: initialAdvances,
-        max_advances: opts.advancesBeforeTarget + opts.advancesAfterTarget,
+        initial_advances: 0,
+        max_advances: target.advance + opts.advancesAfterTarget,
         seed: target.seed,
       });
       const chattersWithTarget = chatters.map((chatter) => ({

@@ -3563,35 +3563,33 @@ export const guides = {
       isNew: false,
       title: "HeartGold and Soulsilver Egg RNG",
       navDrawerTitle: "Egg RNG",
-      description: "Breeding RNG",
+      description:
+        "Learn how to RNG eggs from the Daycare in HeartGold and SoulSilver for shiny, high-IV Pokémon.",
       slug: "/emulator-hgss-breeding/",
-      isRoughDraft: true,
+      isRoughDraft: false,
       orderPriority: 20,
-      hideFromNavDrawer: false,
+      hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
       layout: "guide",
-      canonical: null,
-      lastUpdated: null,
+      canonical: "/emulator-hgss-egg/",
+      lastUpdated: "2026-03-23",
       type: "baseGuide",
-      file: "guides/Gen 4/HeartGold and SoulSilver/Breeding RNG (Emu).mdx",
+      file: "guides/Gen 4/HeartGold and SoulSilver/Egg.mdx",
       translations: null,
       guideGroupId: "en:/emulator-hgss-breeding/:HeartGold and SoulSilver",
       guideVariantLinks: {
         retail: null,
         cfwEmu: { type: "slug", slug: "/emulator-hgss-breeding/" },
       },
-      displayAttributes: ["rough_draft"],
+      displayAttributes: [],
     },
     Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Gen 4/HeartGold and SoulSilver/Breeding RNG (Emu).mdx"
-        ),
+      () => import("~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx"),
     ),
     getRawFile: memoize(async () => {
       const file = await import(
-        "~/../guides/Gen 4/HeartGold and SoulSilver/Breeding RNG (Emu).mdx?raw"
+        "~/../guides/Gen 4/HeartGold and SoulSilver/Egg.mdx?raw"
       );
       return file.default;
     }),
@@ -3653,10 +3651,14 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-23",
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Egg.mdx",
-      translations: { en: "/emulator-hgss-egg/", zh: "/zh-emulator-hgss-egg/" },
+      translations: {
+        en: "/emulator-hgss-egg/",
+        it: "/it-emulator-hgss-egg/",
+        zh: "/zh-emulator-hgss-egg/",
+      },
       guideGroupId: "en:/emulator-hgss-egg/:HeartGold and SoulSilver",
       guideVariantLinks: {
         retail: null,
@@ -6147,6 +6149,51 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/it/Gen 3/Emerald/Emulator Egg RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-emulator-hgss-egg/": {
+    meta: {
+      id: "/emulator-hgss-egg/",
+      categories: ["HeartGold and SoulSilver"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emulator-hgss-egg/",
+      isNew: false,
+      title: "RNG delle uova su Oro HeartGold e Argento Soulsilver",
+      navDrawerTitle: "Egg RNG",
+      description:
+        "Impara come fare RNG Manipulation sulle uova della pensione in Oro HeartGold e Argento SoulSilver per shiny o Pokémon con IV alte.",
+      slug: "/it-emulator-hgss-egg/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emulator-hgss-egg/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-23",
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 4/HeartGold and SoulSilver/Egg.mdx",
+      translations: {
+        en: "/emulator-hgss-egg/",
+        it: "/it-emulator-hgss-egg/",
+        zh: "/zh-emulator-hgss-egg/",
+      },
+      guideGroupId: "it:/emulator-hgss-egg/:HeartGold and SoulSilver",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Gen 4/HeartGold and SoulSilver/Egg.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 4/HeartGold and SoulSilver/Egg.mdx?raw"
       );
       return file.default;
     }),
@@ -11815,7 +11862,11 @@ export const guides = {
       lastUpdated: "2026-03-20",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Egg.mdx",
-      translations: { en: "/emulator-hgss-egg/", zh: "/zh-emulator-hgss-egg/" },
+      translations: {
+        en: "/emulator-hgss-egg/",
+        it: "/it-emulator-hgss-egg/",
+        zh: "/zh-emulator-hgss-egg/",
+      },
       guideGroupId: "zh:/emulator-hgss-egg/:HeartGold and SoulSilver",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -15323,6 +15374,7 @@ export const guideSlugs = [
   "/it-emulator-b2w2-wild/",
   "/it-emulator-bw-wild/",
   "/it-emulator-emerald-egg/",
+  "/it-emulator-hgss-egg/",
   "/it-frlg-gen3-sid/",
   "/it-gen3-glossary/",
   "/it-gen3-sid/",

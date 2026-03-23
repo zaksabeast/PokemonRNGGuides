@@ -4674,7 +4674,7 @@ export const guides = {
       translation: { enSlug: "/install-pokereader/", language: "es" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-23",
       type: "translatedGuide",
       file: "guides/Translations/es/Tools and Emulators/3DS PokeReader.mdx",
       translations: {

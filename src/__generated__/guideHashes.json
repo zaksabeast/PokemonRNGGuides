@@ -595,17 +595,13 @@
     "hash": "100f65e7c9169899c70b472dc7b81a5c106bed1407e5516abdc4374dd3f5436c",
     "lastUpdated": "2026-03-08"
   },
-  "/it-retail-dppt-starter/": {
-    "hash": "6e89a00f0d6e363b8d24082c03261d3a66511a0e11ed845ceeaf90a2fd8afb2b",
-    "lastUpdated": null
+  "/it-emulator-b2w2-runasdate-inital-seed/": {
+    "hash": "1dba3b9da601984ff3d575991024217a0e38511f5609ce8d0b0c03e107786e87",
+    "lastUpdated": "2026-03-24"
   },
-  "/it-retail-hgss-starter/": {
-    "hash": "6e89a00f0d6e363b8d24082c03261d3a66511a0e11ed845ceeaf90a2fd8afb2b",
-    "lastUpdated": null
-  },
-  "/it-emulator-hgss-egg/": {
-    "hash": "f5d9f5730bebc5b79d96359a4ab173c66ce37c330e39dc73ca314d0068f103d6",
-    "lastUpdated": "2026-03-23"
+  "/it-emulator-bw-runasdate-initial-seed/": {
+    "hash": "1dba3b9da601984ff3d575991024217a0e38511f5609ce8d0b0c03e107786e87",
+    "lastUpdated": "2026-03-24"
   },
   "/it-e-tips-rng/": {
     "hash": "63b95e7593e5b85291f487ba90928abea4fbf687f43cf24aba67fbd3f54613bc",
@@ -647,8 +643,12 @@
     "hash": "1a0a6419ec27e4d41ee8661b7aa546999d59feae188fe2170c3e97ecbaaa7be4",
     "lastUpdated": null
   },
-  "/es-install-pokereader/": {
-    "hash": "993973c90e2e95093ee6257386cd22c5fda2f3248506790db40fd078cbea4485",
+  "/it-hgss-initial-seed/": {
+    "hash": "1c634cbc3242370ddc4d0d460324392ecf607c3f302c0baca817e5df0d579024",
+    "lastUpdated": "2026-03-24"
+  },
+  "/it-emulator-hgss-egg/": {
+    "hash": "f5d9f5730bebc5b79d96359a4ab173c66ce37c330e39dc73ca314d0068f103d6",
     "lastUpdated": "2026-03-23"
   },
   "/es-delete-pokemon-save/": {
@@ -835,181 +835,9 @@
     "hash": "2cffcf14539796da5379235371b634a5a72d15f787aea87d0f23677b78c2b857",
     "lastUpdated": "2026-03-08"
   },
-  "/retail-usum-egg-mmsc/": {
-    "hash": "2cffcf14539796da5379235371b634a5a72d15f787aea87d0f23677b78c2b857",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-sm-egg-no-mmsc/": {
-    "hash": "465fd008a2ce8559a751c44e3058264decd694f3c68dc416d15323ceca2f4c73",
-    "lastUpdated": null
-  },
-  "/retail-usum-egg-no-mmsc/": {
-    "hash": "465fd008a2ce8559a751c44e3058264decd694f3c68dc416d15323ceca2f4c73",
-    "lastUpdated": null
-  },
-  "/retail-sm-initial-seed-clocks/": {
-    "hash": "d6794759a265a93815cea80074b3d9e1e7a00401772c0b068c36fc54f04b4efb",
-    "lastUpdated": null
-  },
-  "/retail-usum-initial-seed-clocks/": {
-    "hash": "d6794759a265a93815cea80074b3d9e1e7a00401772c0b068c36fc54f04b4efb",
-    "lastUpdated": null
-  },
-  "/retail-sm-egg-seed-no-cfw/": {
-    "hash": "382c57d36e47c853667ec1f9768f4503bb03f4636a8e2006f70c28ceeba648bc",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-usum-egg-seed-no-cfw/": {
-    "hash": "382c57d36e47c853667ec1f9768f4503bb03f4636a8e2006f70c28ceeba648bc",
-    "lastUpdated": "2026-03-08"
-  },
-  "/misc-3ds-island-scan-sm/": {
-    "hash": "2f0697c42f1ccd59e8c22e9146c68c82e71f9aaa9c9dcae85156d20dab6e6975",
-    "lastUpdated": "2026-03-08"
-  },
-  "/misc-3ds-island-scan-usum/": {
-    "hash": "e3d1455609135f424e6a4e71236e54b18349bd32b991908becf66055a45b29ef",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-sm-island-scan/": {
-    "hash": "2e421513a1ae1cf9d6ad8ff464bc754c20e8cd6031aa6bf6490198b674e81175",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-usum-island-scan/": {
-    "hash": "2e421513a1ae1cf9d6ad8ff464bc754c20e8cd6031aa6bf6490198b674e81175",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-sm-myster-gift/": {
-    "hash": "c000a25bca74e8ba1cd941905e603e57cd0d97b0420c9c7cf38a51537a7a77bb",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-usum-mystery-gift/": {
-    "hash": "c000a25bca74e8ba1cd941905e603e57cd0d97b0420c9c7cf38a51537a7a77bb",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-sm-no-cfw/": {
-    "hash": "fd3e0c1623bcad9ddecb781f6f981cc3fc40b72eaf7163d4575d12cf29333c75",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-usum-no-cfw/": {
-    "hash": "fd3e0c1623bcad9ddecb781f6f981cc3fc40b72eaf7163d4575d12cf29333c75",
-    "lastUpdated": "2026-03-08"
-  },
-  "/sos-call-rates/": {
-    "hash": "c79222531695e8867a01a7599cc2f37c8e2307315ddab907659e4a4c7f336569",
-    "lastUpdated": null
-  },
-  "/retail-sm-sos/": {
-    "hash": "c6a5910058329a77d8b26084830bdb8f2efe2b3940fd3cc43f801743063061ef",
-    "lastUpdated": null
-  },
-  "/retail-usum-sos/": {
-    "hash": "c6a5910058329a77d8b26084830bdb8f2efe2b3940fd3cc43f801743063061ef",
-    "lastUpdated": null
-  },
-  "/retail-sm-stationary/": {
-    "hash": "2dfadf84e77da6ebe3e000772a329dbc1b1a521bc3135f2ef6d92d6f696d405d",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-usum-stationary/": {
-    "hash": "2dfadf84e77da6ebe3e000772a329dbc1b1a521bc3135f2ef6d92d6f696d405d",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-usum-wormhole/": {
-    "hash": "4245a68ffd410e58408e2dd53d4b75ce79b43d587ca69fa8a1933a0d559f5c03",
-    "lastUpdated": "2026-03-08"
-  },
-  "/emulator-sm-time-finder/": {
-    "hash": "0c518167ae3a28adcbbd2ae7b5eefa541699bf149e8cf0e9f4f07afc0e0b05ad",
-    "lastUpdated": "2026-03-08"
-  },
-  "/emulator-usum-time-finder/": {
-    "hash": "0c518167ae3a28adcbbd2ae7b5eefa541699bf149e8cf0e9f4f07afc0e0b05ad",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-sm-timeline/": {
-    "hash": "d47e0ae5ab62c9d1f30e6f93227a9017718d0af76addd78a9bb2ba4bbcea2b83",
-    "lastUpdated": null
-  },
-  "/retail-usum-timeline/": {
-    "hash": "d47e0ae5ab62c9d1f30e6f93227a9017718d0af76addd78a9bb2ba4bbcea2b83",
-    "lastUpdated": null
-  },
-  "/retail-sm-timeleap/": {
-    "hash": "067cc53446594fc798a5070d3571b47605b55d8f78663b786e62570f840febae",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-usum-timeleap/": {
-    "hash": "067cc53446594fc798a5070d3571b47605b55d8f78663b786e62570f840febae",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-sm-fidget/": {
-    "hash": "74b16fabb0082a12100d2c4efef2dc8ac40b446a6e262d7ff4886b7550c6c5e6",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-usum-fidget/": {
-    "hash": "74b16fabb0082a12100d2c4efef2dc8ac40b446a6e262d7ff4886b7550c6c5e6",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-sm-wild/": {
-    "hash": "7900e23fefac3d767323a068a69eb084a3c035ef6984220b324d111c8b281fe4",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-usum-wild/": {
-    "hash": "7900e23fefac3d767323a068a69eb084a3c035ef6984220b324d111c8b281fe4",
-    "lastUpdated": "2026-03-08"
-  },
-  "/misc-sm-wild-spots/": {
-    "hash": "7bf90219fa871ab05cbd41d32ae42fd4ec54ed642a9be7693db30301d1145e91",
-    "lastUpdated": null
-  },
-  "/emulator-oras-dexnav/": {
-    "hash": "12210b9833a06eebca89b23fc7ce4c5c576a1c71b9480891a41390891774f281",
-    "lastUpdated": null
-  },
-  "/retail-oras-egg-mmsc/": {
-    "hash": "385d5514055e517e42a5156117967821c9cee3435cde862439c734c6b98cfa08",
-    "lastUpdated": null
-  },
-  "/retail-xy-egg-mmsc/": {
-    "hash": "385d5514055e517e42a5156117967821c9cee3435cde862439c734c6b98cfa08",
-    "lastUpdated": null
-  },
-  "/retail-oras-egg-no-mmsc/": {
-    "hash": "9aade63b3f90e44a2e1b854e97ce67397fee69105a4895e9aafaa1139afbb79e",
-    "lastUpdated": "2026-03-08"
-  },
-  "/retail-xy-egg-no-mmsc/": {
-    "hash": "9aade63b3f90e44a2e1b854e97ce67397fee69105a4895e9aafaa1139afbb79e",
-    "lastUpdated": "2026-03-08"
-  },
-  "/xy-friend-safari-patch/": {
-    "hash": "76949de116e11f2ad4366d5291ed9b62e8228aeb394f1735defb7926852b76f4",
-    "lastUpdated": null
-  },
-  "/pcalc-xy-friend-safari/": {
-    "hash": "993d6079fb8b2ae012f333342f314bebbc826943aa3c128f57787ded83371490",
-    "lastUpdated": null
-  },
-  "/oras-mirage-spots/": {
-    "hash": "b6f59bb6ec8fcac9f56cec2514deecb31b55918b0e0960111f587cae2d8d8a80",
-    "lastUpdated": null
-  },
-  "/retail-oras-tid/": {
-    "hash": "5a06ac19c090769168b30dd39b64fdb882b21d1d86ae82eba52b84328cc28bd4",
-    "lastUpdated": null
-  },
-  "/xy-pokeradar/": {
-    "hash": "3bb7b32d487395fe8431b03efda4783063cd10f8a3081048ff051ee447e1f26a",
-    "lastUpdated": null
-  },
-  "/oras-remove-time-penalty/": {
-    "hash": "2179d427485931c33fa8db97b54fbf496724a6400b1dd5e5fa73a98b01de6ec8",
-    "lastUpdated": "2026-03-08"
-  },
-  "/pcalc-xy-tid/": {
-    "hash": "6668aaf5e3329c800923c3b7e64f6c9f82672f9c98a58afc49324f8b036c9928",
-    "lastUpdated": null
+  "/emu-bw-egg/": {
+    "hash": "978cfb6505d99b0c4a4c2773c6eb920c310bea84f9b4f7894969d03d52920390",
+    "lastUpdated": "2026-03-24"
   },
   "/bw2-egg/": {
     "hash": "70788746b2c710ebe5ed6a7fd377689c081abcf8af26aa5870a03957ccf9a34f",
@@ -1036,12 +864,12 @@
     "lastUpdated": null
   },
   "/emulator-b2w2-runasdate-inital-seed/": {
-    "hash": "275f1186228e1934dec79290c411b27b80963218973b2246f3728a02c67b9f05",
-    "lastUpdated": null
+    "hash": "035a2384ca2ec6cf224f03c45d81233d0eec194c542b00f2801fbcd6686f97ab",
+    "lastUpdated": "2026-03-24"
   },
   "/emulator-bw-runasdate-initial-seed/": {
-    "hash": "275f1186228e1934dec79290c411b27b80963218973b2246f3728a02c67b9f05",
-    "lastUpdated": null
+    "hash": "035a2384ca2ec6cf224f03c45d81233d0eec194c542b00f2801fbcd6686f97ab",
+    "lastUpdated": "2026-03-24"
   },
   "/emulator-bw-white-forest/": {
     "hash": "fc6dc0a62821a392eb2214ebedf424d031f554497d3b49e8170c87f738f2070d",
@@ -1110,6 +938,18 @@
   "/hgss-rng-advance/": {
     "hash": "bd0d0a5587fb7f870ae516bc413f65fa79a2ce5daf74ab7e0aef188975068d4d",
     "lastUpdated": null
+  },
+  "/emulator-hgss-tid-sid/": {
+    "hash": "7ddd5e834d48efcb153515dfe88abccc248c642e3ba3811f2b76b16e11c12ba0",
+    "lastUpdated": null
+  },
+  "/emulator-hgss-special-wild/": {
+    "hash": "c83b6aec8a0c7207bfea1df34a9237d0c9b5088cdc311bfbc194f5385df49e44",
+    "lastUpdated": null
+  },
+  "/hgss-initial-seed/": {
+    "hash": "2a57c3d38ab2ede3081a990265f9ce5687a512d6ee9373613f6ccfc4aadc988a",
+    "lastUpdated": "2026-03-24"
   },
   "/emulator-hgss-breeding/": {
     "hash": "d5adb7bb85a0b56bf7f9d507aa7ab8a58a8afcb071a4572e315d038e3ee531da",

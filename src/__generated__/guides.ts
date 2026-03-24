@@ -2011,7 +2011,7 @@ export const guides = {
       section: "patch",
       guideVariants: null,
       guideKey: "/dream-radar-cart-patches/",
-      isNew: true,
+      isNew: false,
       title: "Pokemon Dream Radar Gen 4 Cart Patches",
       navDrawerTitle: "Gen 4 Cart Patches",
       description:
@@ -2678,6 +2678,43 @@ export const guides = {
       return file.default;
     }),
   },
+  "/emu-bw-egg/": {
+    meta: {
+      id: "/emu-bw-egg/",
+      categories: ["Black and White"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "egg",
+      isNew: true,
+      title: "Black and White Egg RNG",
+      navDrawerTitle: "Egg RNG",
+      description:
+        "Learn how to RNG eggs from the Daycare in Black and White for shiny, high-IV Pokémon.",
+      slug: "/emu-bw-egg/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: "2026-03-24",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-24",
+      type: "baseGuide",
+      file: "guides/Gen 5/BW Emu Egg RNG.mdx",
+      translations: null,
+      guideGroupId: "en:egg:Black and White",
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/emu-bw-egg/" },
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 5/BW Emu Egg RNG.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/BW Emu Egg RNG.mdx?raw");
+      return file.default;
+    }),
+  },
   "/emulator-b2w2-dream-radar/": {
     meta: {
       id: "/emulator-b2w2-dream-radar/",
@@ -2738,11 +2775,12 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-24",
       type: "baseGuide",
       file: "guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
       translations: {
         en: "/emulator-b2w2-runasdate-inital-seed/",
+        it: "/it-emulator-b2w2-runasdate-inital-seed/",
         zh: "/zh-emulator-b2w2-runasdate-inital-seed/",
       },
       guideGroupId:
@@ -2942,11 +2980,12 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/emulator-b2w2-runasdate-inital-seed/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-24",
       type: "baseGuide",
       file: "guides/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
       translations: {
         en: "/emulator-bw-runasdate-initial-seed/",
+        it: "/it-emulator-bw-runasdate-initial-seed/",
         zh: "/zh-emulator-bw-runasdate-initial-seed/",
       },
       guideGroupId: "en:/emulator-bw-runasdate-initial-seed/:Black and White",
@@ -5687,10 +5726,14 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-24",
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx",
-      translations: { en: "/hgss-initial-seed/", zh: "/zh-hgss-initial-seed/" },
+      translations: {
+        en: "/hgss-initial-seed/",
+        it: "/it-hgss-initial-seed/",
+        zh: "/zh-hgss-initial-seed/",
+      },
       guideGroupId: "en:/hgss-initial-seed/:HeartGold and SoulSilver",
       guideVariantLinks: {
         retail: null,
@@ -6028,6 +6071,55 @@ export const guides = {
       return file.default;
     }),
   },
+  "/it-emulator-b2w2-runasdate-inital-seed/": {
+    meta: {
+      id: "/emulator-b2w2-runasdate-inital-seed/",
+      categories: ["Black 2 and White 2"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emulator-b2w2-runasdate-inital-seed/",
+      isNew: false,
+      title: "RNG dell'Initial Seed in Nero 2 e Bianco 2",
+      navDrawerTitle: "RNG dell'Initial Seed",
+      description:
+        "Impara come manipolare il tuo initial seed in Nero 2 e Bianco 2.",
+      slug: "/it-emulator-b2w2-runasdate-inital-seed/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/emulator-b2w2-runasdate-inital-seed/",
+        language: "it",
+      },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-24",
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
+      translations: {
+        en: "/emulator-b2w2-runasdate-inital-seed/",
+        it: "/it-emulator-b2w2-runasdate-inital-seed/",
+        zh: "/zh-emulator-b2w2-runasdate-inital-seed/",
+      },
+      guideGroupId:
+        "it:/emulator-b2w2-runasdate-inital-seed/:Black 2 and White 2",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Gen 5/Using Runasdate to RNG Initial Seed.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 5/Using Runasdate to RNG Initial Seed.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/it-emulator-b2w2-wild/": {
     meta: {
       id: "/emulator-b2w2-wild/",
@@ -6065,6 +6157,54 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/it/Gen 5/Wild RNG Emu.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-emulator-bw-runasdate-initial-seed/": {
+    meta: {
+      id: "/emulator-bw-runasdate-initial-seed/",
+      categories: ["Black and White"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emulator-bw-runasdate-initial-seed/",
+      isNew: false,
+      title: "RNG dell'Initial Seed in Nero e Bianco",
+      navDrawerTitle: "RNG dell'Initial Seed",
+      description:
+        "Impara come manipolare il tuo initial seed in Nero e Bianco.",
+      slug: "/it-emulator-bw-runasdate-initial-seed/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/emulator-bw-runasdate-initial-seed/",
+        language: "it",
+      },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-24",
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
+      translations: {
+        en: "/emulator-bw-runasdate-initial-seed/",
+        it: "/it-emulator-bw-runasdate-initial-seed/",
+        zh: "/zh-emulator-bw-runasdate-initial-seed/",
+      },
+      guideGroupId: "it:/emulator-bw-runasdate-initial-seed/:Black and White",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Gen 5/Using Runasdate to RNG Initial Seed.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 5/Using Runasdate to RNG Initial Seed.mdx?raw"
       );
       return file.default;
     }),
@@ -6319,6 +6459,51 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-hgss-initial-seed/": {
+    meta: {
+      id: "/hgss-initial-seed/",
+      categories: ["HeartGold and SoulSilver"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/hgss-initial-seed/",
+      isNew: false,
+      title: "RNG dell'Initial Seed in Oro HeartGold e Argento SoulSilver",
+      navDrawerTitle: "RNG dell'Initial Seed",
+      description:
+        "Impara come manipolare il tuo initial seed in Oro HeartGold e Argento SoulSilver.",
+      slug: "/it-hgss-initial-seed/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/hgss-initial-seed/", language: "it" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-24",
+      type: "translatedGuide",
+      file: "guides/Translations/it/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx",
+      translations: {
+        en: "/hgss-initial-seed/",
+        it: "/it-hgss-initial-seed/",
+        zh: "/zh-hgss-initial-seed/",
+      },
+      guideGroupId: "it:/hgss-initial-seed/:HeartGold and SoulSilver",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/it/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx?raw"
       );
       return file.default;
     }),
@@ -11229,6 +11414,7 @@ export const guides = {
       file: "guides/Translations/zh/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
       translations: {
         en: "/emulator-b2w2-runasdate-inital-seed/",
+        it: "/it-emulator-b2w2-runasdate-inital-seed/",
         zh: "/zh-emulator-b2w2-runasdate-inital-seed/",
       },
       guideGroupId:
@@ -11399,6 +11585,7 @@ export const guides = {
       file: "guides/Translations/zh/Gen 5/Using Runasdate to RNG Initial Seed.mdx",
       translations: {
         en: "/emulator-bw-runasdate-initial-seed/",
+        it: "/it-emulator-bw-runasdate-initial-seed/",
         zh: "/zh-emulator-bw-runasdate-initial-seed/",
       },
       guideGroupId: "zh:/emulator-bw-runasdate-initial-seed/:Black and White",
@@ -12728,7 +12915,11 @@ export const guides = {
       lastUpdated: "2026-03-20",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx",
-      translations: { en: "/hgss-initial-seed/", zh: "/zh-hgss-initial-seed/" },
+      translations: {
+        en: "/hgss-initial-seed/",
+        it: "/it-hgss-initial-seed/",
+        zh: "/zh-hgss-initial-seed/",
+      },
       guideGroupId: "zh:/hgss-initial-seed/:HeartGold and SoulSilver",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -15291,6 +15482,7 @@ export const guideSlugs = [
   "/emerald-wild-method-likelihood-calculator/",
   "/emerald-wild/",
   "/emerald/",
+  "/emu-bw-egg/",
   "/emulator-b2w2-dream-radar/",
   "/emulator-b2w2-runasdate-inital-seed/",
   "/emulator-b2w2-wild/",
@@ -15371,13 +15563,16 @@ export const guideSlugs = [
   "/install-pokereader/",
   "/it-e-tips-rng/",
   "/it-emerald-overview/",
+  "/it-emulator-b2w2-runasdate-inital-seed/",
   "/it-emulator-b2w2-wild/",
+  "/it-emulator-bw-runasdate-initial-seed/",
   "/it-emulator-bw-wild/",
   "/it-emulator-emerald-egg/",
   "/it-emulator-hgss-egg/",
   "/it-frlg-gen3-sid/",
   "/it-gen3-glossary/",
   "/it-gen3-sid/",
+  "/it-hgss-initial-seed/",
   "/it-install-pokereader/",
   "/it-pokereader/",
   "/it-retail-dppt-starter/",

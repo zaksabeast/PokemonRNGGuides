@@ -1,0 +1,7 @@
+import{ii as t,j as n}from"./index-LvUs4p4f.js";const a={title:"Mystic Timer - Online Pokémon RNG Timer for Gens 3-7",navDrawerTitle:"Mystic Timer",description:"Mystic Timer is a mobile-friendly alternative to Eon Timer. Perfect for Gen 3, 4, 5, 6, and 7 Pokémon RNG on any device, including Mac, Linux, iOS, and Android.",slug:"mystic-timer",category:["GBA Tools","NDS Tools","3DS Tools"],section:"tool",addedOn:"2025-03-18"};function r(o){const e={a:"a",h3:"h3",li:"li",ul:"ul",...t(),...o.components},{RngTimer:i}=e;return i||s("RngTimer"),n.jsxs(n.Fragment,{children:[n.jsx(i,{}),`
+`,n.jsx(e.h3,{children:"Credits"}),`
+`,n.jsxs(e.ul,{children:[`
+`,n.jsxs(e.li,{children:["DasAmpharos for ",n.jsx(e.a,{href:"https://github.com/DasAmpharos/EonTimer",children:"Eon Timer"}),", which this code is a direct port of."]}),`
+`,n.jsxs(e.li,{children:["not-an-aardvark for their ",n.jsx(e.a,{href:"https://github.com/not-an-aardvark/rng-timer/",children:"web RNG timer"}),", which was another good reference."]}),`
+`,n.jsxs(e.li,{children:["The ",n.jsx(e.a,{href:"https://www.discord.gg/d8JuAvg",children:"Pokemon RNG Discord"})," for helping name the tool."]}),`
+`]})]})}function d(o={}){const{wrapper:e}={...t(),...o.components};return e?n.jsx(e,{...o,children:n.jsx(r,{...o})}):r(o)}function s(o,e){throw new Error("Expected component `"+o+"` to be defined: you likely forgot to import, pass, or provide it.")}export{d as default,a as frontmatter};

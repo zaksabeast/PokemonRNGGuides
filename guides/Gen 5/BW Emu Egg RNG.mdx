@@ -1,0 +1,51 @@
+---
+- title: "Black and White Egg RNG"
+  navDrawerTitle: "Egg RNG"
+  description: "Learn how to RNG eggs from the Daycare in Black and White for shiny, high-IV Pokémon."
+  slug: "emu-bw-egg"
+  category: "Black and White"
+  section: "pokemon_rng"
+  variant: "cfw-emu"
+  guideKey: "egg"
+---
+
+## Tools
+
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
+- [Desmume](/desmume-setup)
+- [Lua Scripts](https://github.com/Real96/PokeLua/blob/main/Gen%205/DeSmuMe/BW_RNG_DeSmuMe.lua)
+- A Chatot with Chatter (two recommended)
+- An empty party slot
+
+## Step 1: Setup
+
+Check [this website](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_breeding) for details on held items, inheritance, Nature, and IVs.
+
+1. Place both parents in the daycare, keeping track of their order, IVs, and Nature; use international parents if you want Masuda Method (higher shiny chance).
+2. Register a sound with Chatter (it can be empty; you only need it registered).
+3. Generate the egg and save in front of the daycare man.
+4. Open PokeFinder → Gen 5 tab → "Egg" → "Searcher".
+5. Enter all required data about the parents.
+6. Set all the filters for the egg (shininess, IVs, ability, etc.)
+7. Set Initial Advances to at least 10.
+8. Set Max Advances as needed (increase it for more specific spreads).
+9. Set the date range as needed (increase it for more specific spreads).
+10. Generate results and choose a target.
+
+```
+It is suggested to have a 6IV Ditto if you're not aiming for a specific moveset, so IVs won't be a huge problem.
+```
+
+## Step 2: RNG the egg
+
+1. Hit the target Initial Seed using [this guide](/emulator-bw-runasdate-initial-seed).
+2. Make a save state some advances before as a backup.
+3. Advance using Chatot (or NPCs if you accept risk) until you reach the correct Advance.
+4. Close the menu while spamming `A` to receive the egg without any extra Advances.
+5. If you miss or you need to calibrate, reload the save state and repeat from step 3.
+
+**Congrats! You've now got your Pokémon!**
+
+## Credits
+
+- Fiask for writing the guide.

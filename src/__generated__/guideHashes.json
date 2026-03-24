@@ -667,6 +667,14 @@
     "hash": "100f65e7c9169899c70b472dc7b81a5c106bed1407e5516abdc4374dd3f5436c",
     "lastUpdated": "2026-03-08"
   },
+  "/it-emulator-b2w2-runasdate-inital-seed/": {
+    "hash": "1dba3b9da601984ff3d575991024217a0e38511f5609ce8d0b0c03e107786e87",
+    "lastUpdated": "2026-03-24"
+  },
+  "/it-emulator-bw-runasdate-initial-seed/": {
+    "hash": "1dba3b9da601984ff3d575991024217a0e38511f5609ce8d0b0c03e107786e87",
+    "lastUpdated": "2026-03-24"
+  },
   "/it-e-tips-rng/": {
     "hash": "63b95e7593e5b85291f487ba90928abea4fbf687f43cf24aba67fbd3f54613bc",
     "lastUpdated": null
@@ -706,6 +714,10 @@
   "/it-retail-hgss-starter/": {
     "hash": "6e89a00f0d6e363b8d24082c03261d3a66511a0e11ed845ceeaf90a2fd8afb2b",
     "lastUpdated": null
+  },
+  "/it-hgss-initial-seed/": {
+    "hash": "1c634cbc3242370ddc4d0d460324392ecf607c3f302c0baca817e5df0d579024",
+    "lastUpdated": "2026-03-24"
   },
   "/it-emulator-hgss-egg/": {
     "hash": "f5d9f5730bebc5b79d96359a4ab173c66ce37c330e39dc73ca314d0068f103d6",
@@ -763,6 +775,10 @@
     "hash": "f1715e7b121f4afbd73d2ffcd284fc04588dddb9fe0421c8a0724fa312da7167",
     "lastUpdated": "2026-03-08"
   },
+  "/emu-bw-egg/": {
+    "hash": "1cf0736bfb33715fe5e7ff5a40cb12f8790f35e0a3a49b45a4fbcb01d6e7e487",
+    "lastUpdated": "2026-03-23"
+  },
   "/bw2-egg/": {
     "hash": "70788746b2c710ebe5ed6a7fd377689c081abcf8af26aa5870a03957ccf9a34f",
     "lastUpdated": null
@@ -780,12 +796,12 @@
     "lastUpdated": null
   },
   "/emulator-b2w2-runasdate-inital-seed/": {
-    "hash": "275f1186228e1934dec79290c411b27b80963218973b2246f3728a02c67b9f05",
-    "lastUpdated": null
+    "hash": "035a2384ca2ec6cf224f03c45d81233d0eec194c542b00f2801fbcd6686f97ab",
+    "lastUpdated": "2026-03-24"
   },
   "/emulator-bw-runasdate-initial-seed/": {
-    "hash": "275f1186228e1934dec79290c411b27b80963218973b2246f3728a02c67b9f05",
-    "lastUpdated": null
+    "hash": "035a2384ca2ec6cf224f03c45d81233d0eec194c542b00f2801fbcd6686f97ab",
+    "lastUpdated": "2026-03-24"
   },
   "/emulator-b2w2-dream-radar/": {
     "hash": "174126c16f6f9ba79718cf80f1619eac35ea3e491159087a87c3576fa0eb23fe",
@@ -1096,8 +1112,8 @@
     "lastUpdated": null
   },
   "/hgss-initial-seed/": {
-    "hash": "10eb8dc56ff8cce71f837ab86e5a4f4b7e70cdfaba5972c6c1ef3204350c14cb",
-    "lastUpdated": null
+    "hash": "2a57c3d38ab2ede3081a990265f9ce5687a512d6ee9373613f6ccfc4aadc988a",
+    "lastUpdated": "2026-03-24"
   },
   "/emulator-hgss-breeding/": {
     "hash": "d5adb7bb85a0b56bf7f9d507aa7ab8a58a8afcb071a4572e315d038e3ee531da",

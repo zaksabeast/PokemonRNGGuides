@@ -67,6 +67,7 @@ import {
   LeadCycleSpeedSelector,
   SLOWEST_LEAD_CYCLE_SPEED,
 } from "./leadCycleSpeedSelector";
+import { lcrng_distance } from "~/utils/lcrng";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -359,9 +360,8 @@ export const Wild3MethodDistributionFields = ({
 
   const [equivalentInitialAdvs, setEquivalentInitialAdvs] = React.useState(0);
   React.useEffect(() => {
-    rngTools.lcrng_distance(0, initial_seed).then((val) => {
-      setEquivalentInitialAdvs(val + advance);
-    });
+    const val = lcrng_distance(0, initial_seed);
+    setEquivalentInitialAdvs(val + advance);
   }, [initial_seed, advance]);
 
   const fields = React.useMemo((): Field[] => {

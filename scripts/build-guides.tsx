@@ -548,12 +548,20 @@ const writePreviousHashes = async (
     };
   }
 
+  // Sort keys for stable ordering across builds
+  const sortedHashMap = Object.keys(hashMap)
+    .sort()
+    .reduce((acc: GuideHashMap, key) => {
+      acc[key] = hashMap[key];
+      return acc;
+    }, {});
+
   await fs.mkdir(toNativeAbsolute("../src/__generated__"), {
     recursive: true,
   });
   await fs.writeFile(
     GUIDE_HASHES_PATH,
-    JSON.stringify(hashMap, null, 2) + "\n",
+    JSON.stringify(sortedHashMap, null, 2) + "\n",
   );
 };
 

@@ -279,7 +279,7 @@ const calculateWithoutBattle = (opts: FormState) => {
       opts.isUpdatingExisting
         ? "Close the Battle Video"
         : "Soft reset START+SELECT+A+B",
-      "End Battle Tower trainer opening phrase",
+      "Close Battle Tower trainer opening phrase",
     ],
     breakdown: [
       { name: "Game started", adv: 0, advSources: [] },
@@ -366,7 +366,7 @@ const calculateWithBattle = (opts: FormState) => {
       "Soft reset START+SELECT+A+B",
       "Trigger Sweet Scent",
       `End "Got away safely" message`,
-      "End Battle Tower trainer opening phrase",
+      "Close Battle Tower trainer opening phrase",
     ],
     breakdown: [
       { name: "Game started", adv: 0, advSources: [] },

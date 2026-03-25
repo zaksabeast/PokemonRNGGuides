@@ -7,21 +7,20 @@ import { Timer } from "./timer";
 import { RadioGroup } from "./radio";
 import { Select } from "./select";
 import firstBeepMp3 from "~/assets/first-beep.mp3";
-import secondBeepMp3 from "~/assets/second-beep.mp3";
-import experimentalBeeps from "~/assets/timer-6-beeps.mp3";
+import countdownBeepsAudio from "~/assets/timer-11-beeps.mp3";
 import { useAudio } from "~/hooks/useAudio";
+import { useCountdownBeeps } from "~/hooks/useCountdownBeeps";
+import { COUNTDOWN_INTERVAL_MS } from "~/hooks/useCanvasTimer";
 import { FormFieldTable } from "./formFieldTable";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { z } from "zod";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { useHydrate } from "~/hooks/useHydrate";
 import * as tst from "ts-toolbelt";
-import { Switch } from "./switch";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const MultiTimerStateSchema = z.object({
   showAllTimers: z.boolean(),
-  hardwareSyncSound: z.boolean(),
   maxBeepCount: z.number(),
 });
 
@@ -30,10 +29,11 @@ type MultiTimerState = z.infer<typeof MultiTimerStateSchema>;
 const multiTimerStateAtom = atomWithPersistence(
   "multiTimerState",
   MultiTimerStateSchema,
-  { showAllTimers: false, maxBeepCount: 5, hardwareSyncSound: false },
+  { showAllTimers: false, maxBeepCount: 5 },
 );
 
-const countdownIntervalMs = 500;
+const calculateOffset = (timers: number[], index: number) =>
+  timers.slice(0, index).reduce((sum, ms) => sum + ms, 0);
 
 type InnerProps = {
   state: MultiTimerState;
@@ -57,29 +57,38 @@ const InnerMultiTimer = ({
   labels,
 }: InnerProps) => {
   const t = useActiveRouteTranslations();
-  const [experimentalSync, setExperimentalSync] = React.useState(false);
   const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
-  const { playBeeps: playExperimentalBeeps, ...experimentalBeep } = useAudio({
-    url: experimentalBeeps,
-  });
-  const { playBeeps: playFirstBeeps, ...firstBeep } = useAudio({
-    url: firstBeepMp3,
-  });
-  const { playBeeps: playSecondBeeps, ...secondBeep } = useAudio({
-    url: secondBeepMp3,
-  });
   const keepAlive = useAudio({ url: firstBeepMp3 });
+
+  const countdownBeeps = React.useMemo(
+    () =>
+      Math.min(
+        Math.floor(
+          (milliseconds[currentTimerIndex] ?? 0) / COUNTDOWN_INTERVAL_MS,
+        ),
+        state.maxBeepCount,
+      ),
+    [milliseconds, currentTimerIndex, state.maxBeepCount],
+  );
+
+  const { playTrimmedBeeps, stopBeeps } = useCountdownBeeps({
+    audioUrl: countdownBeepsAudio,
+    countdownBeeps,
+  });
 
   const currentMs = milliseconds[currentTimerIndex] ?? 0;
   const nextMs = milliseconds[currentTimerIndex + 1] ?? 0;
-  const displayTimerMs = milliseconds.length === 0 ? [0] : milliseconds;
-  const countdownBeeps = Math.min(
-    Math.floor(currentMs / countdownIntervalMs),
-    state.maxBeepCount,
+  const displayTimerMs = React.useMemo(
+    () => (milliseconds.length === 0 ? [0] : milliseconds),
+    [milliseconds],
   );
-  const countdownMs = countdownBeeps * countdownIntervalMs;
+  const countdownMs = countdownBeeps * COUNTDOWN_INTERVAL_MS;
 
+  // Calculate when this timer starts in the global timeline (sum of all previous timers)
+  const timerStartOffset = calculateOffset(displayTimerMs, currentTimerIndex);
+
+  // Keep audio system alive with quiet beeps
   React.useEffect(() => {
     if (startTimeMs == null) {
       return () => {};
@@ -91,36 +100,29 @@ const InnerMultiTimer = ({
     return () => clearInterval(timer);
   }, [startTimeMs, keepAlive]);
 
-  const onCountdown = React.useCallback(() => {
-    if (experimentalSync) {
-      playExperimentalBeeps({ count: 1 });
+  // Play countdown beeps once at first countdown beep time
+  React.useEffect(() => {
+    if (startTimeMs == null) {
       return;
     }
-    playFirstBeeps({ count: countdownBeeps });
-  }, [playFirstBeeps, playExperimentalBeeps, experimentalSync, countdownBeeps]);
+
+    // First beep fires at: expirationMs - countdownMs
+    const delayUntilFirstBeep = currentMs - countdownMs;
+    const timeout = window.setTimeout(() => {
+      playTrimmedBeeps();
+    }, delayUntilFirstBeep);
+
+    return () => clearTimeout(timeout);
+  }, [startTimeMs, playTrimmedBeeps, currentMs, countdownMs]);
 
   const onExpire = React.useCallback(() => {
-    if (!experimentalSync) {
-      playSecondBeeps({ count: 1 });
-    }
-
     setCurrentTimerIndex((prev) => prev + 1);
 
     if (currentTimerIndex + 1 >= milliseconds.length) {
       setStartTimeMs(null);
       setCurrentTimerIndex(0);
     }
-  }, [
-    playSecondBeeps,
-    currentTimerIndex,
-    milliseconds.length,
-    experimentalSync,
-  ]);
-
-  React.useEffect(() => {
-    setStartTimeMs(null);
-    setCurrentTimerIndex(0);
-  }, [milliseconds]);
+  }, [currentTimerIndex, milliseconds.length]);
 
   const timerSettingFields = React.useMemo(
     () => [
@@ -149,55 +151,11 @@ const InnerMultiTimer = ({
         ),
       },
       {
-        label: t["Sync Optimization"],
-        tooltip:
-          "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
-        input: (
-          <Flex justify="flex-end">
-            <Switch
-              checked={state.hardwareSyncSound}
-              onChange={(checked) => {
-                setState(
-                  hydrationLock({
-                    ...state,
-                    hardwareSyncSound: checked,
-                  }),
-                );
-              }}
-            />
-          </Flex>
-        ),
-      },
-      {
-        label: t["Experimental Sync (Test)"],
-        tooltip:
-          "Enable only if beep timing is off. Improves audio sync on some devices by working around browser and Bluetooth quirks.",
-        input: (
-          <Flex justify="flex-end">
-            <Switch
-              checked={experimentalSync}
-              onChange={(checked) => {
-                setExperimentalSync(checked);
-                if (checked) {
-                  setState(
-                    hydrationLock({
-                      ...state,
-                      hardwareSyncSound: true,
-                      maxBeepCount: 5,
-                    }),
-                  );
-                }
-              }}
-            />
-          </Flex>
-        ),
-      },
-      {
         label: t["Beeps"],
         input: (
           <Select<number>
             name="countdownBeeps"
-            disabled={experimentalSync}
+            disabled={startTimeMs != null}
             value={state.maxBeepCount}
             onChange={(value) => {
               setState(
@@ -215,7 +173,7 @@ const InnerMultiTimer = ({
         ),
       },
     ],
-    [state, setState, experimentalSync, t],
+    [state, setState, startTimeMs, t],
   );
 
   return (
@@ -226,10 +184,11 @@ const InnerMultiTimer = ({
             <Timer
               expirationMs={currentMs}
               countdownMs={countdownMs}
+              startTimeMs={startTimeMs}
+              timerStartOffset={timerStartOffset}
               run={
                 startTimeMs != null && currentTimerIndex < milliseconds.length
               }
-              onCountdown={onCountdown}
               onExpire={onExpire}
             />
           </Flex>
@@ -247,17 +206,21 @@ const InnerMultiTimer = ({
       {state.showAllTimers && (
         <>
           <Flex wrap gap={16} justify="center" align="center">
-            {displayTimerMs.map((ms, index) => (
-              <Timer
-                key={index}
-                label={labels?.[index]}
-                expirationMs={ms}
-                countdownMs={countdownMs}
-                run={startTimeMs != null && index === currentTimerIndex}
-                onCountdown={onCountdown}
-                onExpire={onExpire}
-              />
-            ))}
+            {displayTimerMs.map((ms, index) => {
+              const offsetForTimer = calculateOffset(displayTimerMs, index);
+              return (
+                <Timer
+                  key={index}
+                  label={labels?.[index]}
+                  expirationMs={ms}
+                  countdownMs={index === currentTimerIndex ? countdownMs : 0}
+                  startTimeMs={startTimeMs}
+                  timerStartOffset={offsetForTimer}
+                  run={startTimeMs != null && index === currentTimerIndex}
+                  onExpire={onExpire}
+                />
+              );
+            })}
           </Flex>
           <Flex vertical gap={8}>
             <Typography.Title level={5} p={0} m={0}>
@@ -276,13 +239,12 @@ const InnerMultiTimer = ({
         }
         onClick={() => {
           const newStartTimeMs = startTimeMs == null ? performance.now() : null;
-          const newIsRunning = newStartTimeMs != null;
           setStartTimeMs(newStartTimeMs);
           setCurrentTimerIndex(0);
-          if (!newIsRunning) {
-            experimentalBeep.stopBeeps();
-            firstBeep.stopBeeps();
-            secondBeep.stopBeeps();
+          // Stop audio when timer is stopped
+          if (newStartTimeMs == null) {
+            stopBeeps();
+            keepAlive.stopBeeps();
           }
         }}
       >

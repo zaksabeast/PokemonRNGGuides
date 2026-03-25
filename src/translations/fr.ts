@@ -13,8 +13,6 @@ export const translations: Partial<Translations> = {
   No: "Non",
   "Display All Timers?": "Afficher tous les chronos ?",
   Beeps: "Bips",
-  "Sync Optimization": "Sync Optimization",
-  "Experimental Sync (Test)": "Experimental Sync (Test)",
   "Next Phase": "Étape suivante",
   "NDS/DSi": "NDS/DSi",
   "3DS (Normal Settings)": "3DS (Paramètres normaux)",

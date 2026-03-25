@@ -43,7 +43,7 @@ export const lcrng_distance = (start_num: number, end_num: number) => {
   let mask = 1n;
 
   for (const [mult, add] of POKERNG_JUMP_TABLE) {
-    if (start == end) {
+    if (start === end) {
       break;
     }
 

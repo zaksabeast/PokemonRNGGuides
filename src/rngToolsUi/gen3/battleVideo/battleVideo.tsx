@@ -11,23 +11,27 @@ import {
   FormikNumberInput,
   FormFieldTable,
   Icon,
+  FormikSelect,
 } from "~/components";
-import { GBA_FPS } from "~/utils/consts";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import { FormikConsoleFps } from "~/components/consoleFps";
 import InstructionsNoBattle from "./instructions_no_battle.mdx";
 import InstructionsWithBattle from "./instructions_with_battle.mdx";
 import InstructionsUpdatingExisting from "./instructions_updating_existing.mdx";
 import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 import { useWatch } from "react-hook-form";
 import { match } from "ts-pattern";
+import {
+  gen3ConsoleFpsMap,
+  gen3ConsoleOptions,
+  gen3Consoles,
+} from "~/types/console";
 
 type Mode = "noBattle" | "withBattle" | "updatingExisting";
 
 // No waiting in battle
 const ADV_MISC_NO_BATTLE = 100; // Advances before last input not caused by frames when not waiting in battle
 const MIN_ADV_FOR_BATTLE_VIDEO = 3300; // It takes 3300 adv to boot the game and make a battle video as fast as possible.
-const SAFETY_BUFFER_NO_BATTLE = 500; // Additional buffer for satefy
+const SAFETY_BUFFER_NO_BATTLE = 350; // Additional buffer for satefy
 
 // With waiting in battle
 const THRESHOLD_ADV_FOR_BATTLE = 15_000; // Waiting in battle is only considered if the waiting is greater than ~30 minutes.
@@ -41,7 +45,7 @@ const ADV_RUN_INPUT_TO_X1_SPEED_UP = 225; // After pressing A to run from battle
 
 // When updating existing battle video
 const ADV_MISC_UPDATE_EXISTING = 70; // Advances before last input not caused by frames when updating existing
-const SAFETY_BUFFER_UPDATE_EXISTING = 500; // Additional buffer for satefy
+const SAFETY_BUFFER_UPDATE_EXISTING = 350; // Additional buffer for satefy
 const MIN_ADV_FOR_UPDATING_EXISTING = 2500; // It takes 2500 adv to boot the game and make a battle video as fast as possible.
 
 // All
@@ -82,7 +86,7 @@ const Validator = z.object({
   targetAdvance: z.number().min(0).max(0xffff_ffff),
   isUpdatingExisting: z.boolean(),
   waitTimeExistingBattleVideo: z.number().min(0).max(0xffff_ffff),
-  consoleFps: z.number(),
+  console: z.enum(gen3Consoles),
   forFishing: z.boolean(),
   considerWaitingInBattle: z.boolean(),
   displayAdvancedBreakdown: z.boolean(),
@@ -96,28 +100,13 @@ const initialValues: FormState = {
   targetAdvance: 50_000,
   isUpdatingExisting: false,
   waitTimeExistingBattleVideo: 0,
-  consoleFps: GBA_FPS,
+  console: "GBA",
   forFishing: false,
   considerWaitingInBattle: true,
   displayAdvancedBreakdown: false,
   useRecommendedBuffer: true,
   specifiedBuffer: POST_BV_SWEET_SCENT_BUFFER + SAFETY_BUFFER_NO_BATTLE,
 };
-/*
-{
-  useRecommendedBuffer,
-  setUseRecommendedBuffer,
-  setDisplayAdvancedBreakdown,
-  isUpdatingExisting,
-  setIsUpdatingExisting,
-}: {
-  useRecommendedBuffer: boolean;
-  setUseRecommendedBuffer: (val: boolean) => void;
-  setDisplayAdvancedBreakdown: (val: boolean) => void;
-  isUpdatingExisting: boolean;
-  setIsUpdatingExisting: (val: boolean) => void;
-}
-  */
 
 const MyFields = ({
   setDisplayAdvancedBreakdown,
@@ -163,7 +152,12 @@ const MyFields = ({
       },
       {
         label: "Console",
-        input: <FormikConsoleFps<FormState> name="consoleFps" generation={3} />,
+        input: (
+          <FormikSelect<FormState, "console">
+            name="console"
+            options={gen3ConsoleOptions}
+          />
+        ),
       },
       {
         label: "Use recommended buffer to perform action?",
@@ -234,6 +228,7 @@ const columns: ResultColumn<BreakdownInfo>[] = [
 ];
 
 const calculateWithoutBattle = (opts: FormState) => {
+  const consoleFps = gen3ConsoleFpsMap[opts.console];
   const actionBufferPostVideo = opts.forFishing
     ? POST_BV_FISHING_BUFFER
     : POST_BV_SWEET_SCENT_BUFFER;
@@ -246,7 +241,7 @@ const calculateWithoutBattle = (opts: FormState) => {
     : opts.specifiedBuffer;
 
   const targetAdvance = opts.isUpdatingExisting
-    ? Math.floor((opts.waitTimeExistingBattleVideo / 1000) * opts.consoleFps)
+    ? Math.floor((opts.waitTimeExistingBattleVideo / 1000) * consoleFps)
     : opts.targetAdvance;
   const targetAdvAtVideo = targetAdvance - safetyBufferAdv;
 
@@ -279,9 +274,11 @@ const calculateWithoutBattle = (opts: FormState) => {
 
   return {
     submitError: "",
-    milliseconds: [5000, (advFromFrame / opts.consoleFps) * 1000],
+    milliseconds: [5000, (advFromFrame / consoleFps) * 1000],
     timerLabels: [
-      "Soft reset START+SELECT+A+B",
+      opts.isUpdatingExisting
+        ? "Close the Battle Video"
+        : "Soft reset START+SELECT+A+B",
       "End Battle Tower trainer opening phrase",
     ],
     breakdown: [
@@ -356,13 +353,14 @@ const calculateWithBattle = (opts: FormState) => {
   const frameFromFrameOutsideBattleAfter =
     advFromFrameOutsideBattleAfter - speedupLatency;
 
+  const consoleFps = gen3ConsoleFpsMap[opts.console];
   return {
     submitError: "",
     milliseconds: [
       5000,
-      (frameFromFrameOutsideBattleBefore / opts.consoleFps) * 1000, // boot -> trigger sweet scent
-      (frameInBattle / opts.consoleFps) * 1000, // battle start -> battle end
-      (frameFromFrameOutsideBattleAfter / opts.consoleFps) * 1000,
+      (frameFromFrameOutsideBattleBefore / consoleFps) * 1000, // boot -> trigger sweet scent
+      (frameInBattle / consoleFps) * 1000, // battle start -> battle end
+      (frameFromFrameOutsideBattleAfter / consoleFps) * 1000,
     ],
     timerLabels: [
       "Soft reset START+SELECT+A+B",
@@ -530,17 +528,29 @@ export const BattleVideo = () => {
             .with("noBattle", () => <InstructionsNoBattle />)
             .exhaustive()}
 
-          <div>
-            Battle Video will be created at advance ~
-            {formatLargeInteger(battleVideoInfo.battleVideoAdv)}. (Safety
-            buffer: {formatLargeInteger(battleVideoInfo.safetyBufferAdv)}{" "}
-            advances.)
-          </div>
-          {battleVideoInfo.mode !== "updatingExisting" && (
-            <div>
-              Target advance: {formatLargeInteger(battleVideoInfo.targetAdv)}.
-            </div>
-          )}
+          {match(battleVideoInfo.mode)
+            .with("updatingExisting", () => (
+              <div>
+                The new Battle Video will be created at ~
+                {formatLargeInteger(battleVideoInfo.battleVideoAdv)} additional
+                advances compared to the previous Battle Video. (Safety buffer:{" "}
+                {formatLargeInteger(battleVideoInfo.safetyBufferAdv)} advances.)
+              </div>
+            ))
+            .otherwise(() => (
+              <>
+                <div>
+                  Battle Video will be created at advance ~
+                  {formatLargeInteger(battleVideoInfo.battleVideoAdv)}. (Safety
+                  buffer: {formatLargeInteger(battleVideoInfo.safetyBufferAdv)}{" "}
+                  advances.)
+                </div>
+                <div>
+                  Target advance for the RNG manipulation:{" "}
+                  {formatLargeInteger(battleVideoInfo.targetAdv)}.
+                </div>
+              </>
+            ))}
         </>
       )}
 
@@ -549,7 +559,7 @@ export const BattleVideo = () => {
           milliseconds={milliseconds}
           labels={timerLabels}
           startButtonTrackerId="battle_video_timer_start"
-          stopButtonTrackerId="battle_video_timer_start"
+          stopButtonTrackerId="battle_video_timer_stop"
         />
       )}
     </>

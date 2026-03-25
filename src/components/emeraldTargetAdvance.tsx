@@ -6,6 +6,8 @@ import { NumberInput } from "./numberInput";
 import clamp from "lodash-es/clamp";
 import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
 import { match } from "ts-pattern";
+import { Flex } from "./flex";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 
 type FormikEmeraldTargetAdvanceProps<FormState extends GenericForm> = {
   name: GuaranteeFormNameType<FormState, number>;
@@ -14,9 +16,37 @@ type FormikEmeraldTargetAdvanceProps<FormState extends GenericForm> = {
 type Mode = "Advance" | "Seed";
 
 const opts = [
-  { label: "Advance", value: "Advance" as Mode },
-  { label: "Seed (hex)", value: "Seed" as Mode },
+  { label: "Advance", value: "Advance" satisfies Mode },
+  { label: "Seed (hex)", value: "Seed" satisfies Mode },
 ];
+
+const handleAdvance = (value: number | null) => {
+  // Sync: Advance → Seed
+  if (value === null) {
+    return null;
+  }
+
+  const adv_clamped = clamp(value, 0, 0xffffffff);
+  if (value !== adv_clamped) {
+    return adv_clamped;
+  }
+
+  return pokerng_with_jump(0, adv_clamped);
+};
+
+const handleSeed = (seed: number | null) => {
+  // Sync: Seed → Advance
+  if (seed === null) {
+    return null;
+  }
+
+  const seed_clamped = clamp(seed, 0, 0xffffffff);
+  if (seed !== seed_clamped) {
+    return seed_clamped;
+  }
+
+  return lcrng_distance(0, seed_clamped);
+};
 
 export const FormikEmeraldTargetAdvance = <FormState extends GenericForm>({
   name,
@@ -27,35 +57,14 @@ export const FormikEmeraldTargetAdvance = <FormState extends GenericForm>({
   const [seed, setSeed] = React.useState<number | null>(null);
 
   React.useEffect(() => {
-    if (value === null) {
-      return;
-    }
-
-    const adv_clamped = clamp(value, 0, 0xffffffff);
-    if (value !== adv_clamped) {
-      setValue(adv_clamped);
-      return;
-    }
-
-    const seed = pokerng_with_jump(0, adv_clamped);
-    setSeed(seed);
-  }, [setValue, value]);
-
-  React.useEffect(() => {
-    if (seed === null) {
-      return;
-    }
-    const seed_clamped = clamp(seed, 0, 0xffffffff);
-    if (seed !== seed_clamped) {
-      setSeed(seed_clamped);
-      return;
-    }
-    const adv = lcrng_distance(0, seed_clamped);
-    setValue(adv);
-  }, [seed, setValue]);
+    match(mode)
+      .with("Advance", () => setSeed(handleAdvance(value)))
+      .with("Seed", () => setValue(handleSeed(seed)))
+      .exhaustive();
+  }, [mode, value, seed, setValue]);
 
   return (
-    <>
+    <Flex vertical gap={4}>
       <Select options={opts} value={mode} onChange={setMode} />
       {match(mode)
         .with("Advance", () => (
@@ -64,10 +73,10 @@ export const FormikEmeraldTargetAdvance = <FormState extends GenericForm>({
         .with("Seed", () => (
           <>
             <NumberInput value={seed} numType="hex" onChange={setSeed} />
-            {value != null && `Advance: ${value}`}
+            {value != null && `Advance: ${formatLargeInteger(value)}`}
           </>
         ))
         .exhaustive()}
-    </>
+    </Flex>
   );
 };

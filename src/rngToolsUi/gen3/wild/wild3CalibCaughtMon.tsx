@@ -391,7 +391,7 @@ export const Wild3CalibCaughtMon = ({
             title: "Highest IV",
             dataIndex: "highestStatIds",
             render(highestStatIds, values) {
-              return `${values.highestIvMsg} (${highestStatIds.map((statId) => statId.toUpperCase()).join(", ")})`; //NO_PROD display string
+              return `${values.highestIvMsg} (${highestStatIds.map((statId) => statId.toUpperCase()).join(", ")})`;
             },
           },
         ],

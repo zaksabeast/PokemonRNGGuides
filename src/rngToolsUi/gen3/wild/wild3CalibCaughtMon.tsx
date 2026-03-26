@@ -43,6 +43,7 @@ import {
 import clamp from "lodash-es/clamp";
 import { Tooltip } from "antd";
 import { formatProbability } from "~/utils/formatProbability";
+import { Gen3IvRating, getGen3IvRating } from "../ivRater";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -83,7 +84,7 @@ export type CaughtMonResult = {
   score: number;
   probabilityHitMethodsAtAdvance: number;
   uid: number;
-};
+} & Gen3IvRating;
 
 const CONFIDENCE_RANGE = 3600; // We assume the player hits its target advance by more or less 1 minute
 
@@ -138,12 +139,14 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     initial_advances,
     max_advances: CONFIDENCE_RANGE * 2,
     max_result_count: 2 ** 32 - 1, // No limit
-    filter: pkmFilterFieldsToRustInput({
-      ...getPkmFilterInitialValues(),
-      filter_nature: values.nature,
-      filter_gender: values.gender,
+    filter: {
+      ...pkmFilterFieldsToRustInput({
+        ...getPkmFilterInitialValues(),
+        filter_nature: values.nature,
+        filter_gender: values.gender,
+      }),
       ...minMaxIvs,
-    }),
+    },
     gen3_filter: gen3PkmFilterFieldsToRustInput(
       {
         ...getGen3PkmFilterInitialValues(),
@@ -160,6 +163,8 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     painting_opts: null,
     lead_cycle_speed: targetSetup.leadCycleSpeed,
   };
+
+  console.log(opts);
 
   const resultsByPidPath =
     await rngTools.search_wild3_with_initial_advances_range(
@@ -191,6 +196,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
       score,
       probabilityHitMethodsAtAdvance,
       uid: nextUid++,
+      ...getGen3IvRating(result.ivs),
     };
   });
 
@@ -338,7 +344,6 @@ export const Wild3CalibCaughtMon = ({
 
   const columns = React.useMemo((): ResultColumn<CaughtMonResult>[] => {
     const columns: ResultColumn<CaughtMonResult>[] = [
-      { title: "Target", dataIndex: "targetAdvance" },
       {
         title: "Advance",
         dataIndex: "advance",
@@ -356,22 +361,43 @@ export const Wild3CalibCaughtMon = ({
       {
         title: "Method",
         dataIndex: "method",
-      },
-      {
-        title: (
-          <>
-            Method
-            <br />
-            Likelihood
-          </>
-        ),
-        key: "methodLikelihood",
-        dataIndex: "method",
         render(method, values) {
           const prob = formatProbability(values.probabilityHitMethodsAtAdvance);
           const title = `${prob} likelihood that the triggered method is ${method} if the hit advance is ${values.advance}`;
-          return <Tooltip title={title}>{prob}</Tooltip>;
+          return (
+            <>
+              {" "}
+              {method}
+              {" ("}
+              <Tooltip title={title}>{prob}</Tooltip>
+              {")"}
+            </>
+          );
         },
+      },
+      {
+        title: (
+          <Tooltip title="Rating from the stat judge in the building behind the Pokémon Center at the Battle Frontier.">
+            <div>
+              IV Rating <Icon name="InformationCircle" size={16} />
+            </div>
+          </Tooltip>
+        ),
+        key: "ivRating",
+        type: "group",
+        columns: [
+          {
+            title: "Sum IVs",
+            dataIndex: "sumIvsMsg",
+          },
+          {
+            title: "Highest IV",
+            dataIndex: "highestStatIds",
+            render(highestStatIds, values) {
+              return `${values.highestIvMsg} (${highestStatIds.map((statId) => statId.toUpperCase()).join(", ")})`; //NO_PROD display string
+            },
+          },
+        ],
       },
       {
         title: "",

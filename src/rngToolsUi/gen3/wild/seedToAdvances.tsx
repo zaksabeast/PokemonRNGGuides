@@ -17,6 +17,7 @@ import { z } from "zod";
 import { useWatch } from "react-hook-form";
 import { Tooltip } from "antd";
 import { GBA_FPS } from "~/utils/consts";
+import { lcrng_distance } from "~/utils/lcrng";
 
 type Result = Wild3PaintingAdvs;
 
@@ -184,28 +185,24 @@ export const EmeraldSeedToAdvances = () => {
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
     async (opts: FormState) => {
       if (!opts.usingPaintingReseeding) {
-        rngTools.lcrng_distance(0, opts.targetSeed).then((adv) => {
-          setResults([
-            {
-              adv_before_painting: 0,
-              adv_after_painting: adv,
-            },
-          ]);
-        });
+        const adv = lcrng_distance(0, opts.targetSeed);
+        setResults([
+          {
+            adv_before_painting: 0,
+            adv_after_painting: adv,
+          },
+        ]);
         return;
       }
 
       if (!opts.findOptimalSeed) {
-        rngTools
-          .lcrng_distance(opts.paintingSeed, opts.targetSeed)
-          .then((after) => {
-            setResults([
-              {
-                adv_before_painting: opts.paintingSeed,
-                adv_after_painting: after,
-              },
-            ]);
-          });
+        const after = lcrng_distance(opts.paintingSeed, opts.targetSeed);
+        setResults([
+          {
+            adv_before_painting: opts.paintingSeed,
+            adv_after_painting: after,
+          },
+        ]);
         return;
       }
 

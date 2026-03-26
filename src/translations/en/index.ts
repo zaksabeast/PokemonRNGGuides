@@ -14,8 +14,6 @@ export const translations = {
   No: "No",
   "Display All Timers?": "Display All Timers?",
   Beeps: "Beeps",
-  "Sync Optimization": "Sync Optimization",
-  "Experimental Sync (Test)": "Experimental Sync (Test)",
   "Next Phase": "Next Phase",
   "NDS/DSi": "NDS/DSi",
   "3DS (Normal Settings)": "3DS (Normal Settings)",

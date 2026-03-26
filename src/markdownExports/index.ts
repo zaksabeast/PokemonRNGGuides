@@ -163,6 +163,10 @@ const tools = {
     () => import("~/rngToolsUi/gen3/static/static3"),
     (mod) => mod.Static3,
   ),
+  BattleVideo: lazyLoad(
+    () => import("~/rngToolsUi/gen3/battleVideo/battleVideo"),
+    (mod) => mod.BattleVideo,
+  ),
   Wild3SearcherFindTarget: lazyLoad(
     () => import("~/rngToolsUi/gen3/wild/wild3FindTarget"),
     (mod) => mod.Wild3SearcherFindTarget,

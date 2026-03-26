@@ -456,6 +456,43 @@ export const guides = {
       return file.default;
     }),
   },
+  "/bw-emu-starter/": {
+    meta: {
+      id: "/bw-emu-starter/",
+      categories: ["Black and White"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "starter",
+      isNew: true,
+      title: "Black and White Starter RNG",
+      navDrawerTitle: "Starter RNG",
+      description:
+        "Learn how to RNG starters in Black and White for shiny, high-IV Pokémon.",
+      slug: "/bw-emu-starter/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: "2026-03-25",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-26",
+      type: "baseGuide",
+      file: "guides/Gen 5/BW Emu Starter.mdx",
+      translations: null,
+      guideGroupId: "en:starter:Black and White",
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/bw-emu-starter/" },
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 5/BW Emu Starter.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/BW Emu Starter.mdx?raw");
+      return file.default;
+    }),
+  },
   "/bw2-egg/": {
     meta: {
       id: "/bw2-egg/",
@@ -2122,6 +2159,85 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Gen 3/Emerald/Basic Rules of RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/emerald-advancing-rng-techniques/": {
+    meta: {
+      id: "/emerald-advancing-rng-techniques/",
+      categories: ["Emerald"],
+      section: "technical_info",
+      guideVariants: null,
+      guideKey: "/emerald-advancing-rng-techniques/",
+      isNew: false,
+      title: "Overview of RNG Advancing Techniques",
+      navDrawerTitle: "Overview of RNG Advancing Techniques",
+      description:
+        "Understanding the key concepts to speed up RNG manipulations with Painting Reseeding and Battle Video Reseeding.",
+      slug: "/emerald-advancing-rng-techniques/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-23",
+      type: "baseGuide",
+      file: "guides/Gen 3/Emerald/Advancing RNG Techniques.mdx",
+      translations: null,
+      guideGroupId: "en:/emerald-advancing-rng-techniques/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Advancing RNG Techniques.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Advancing RNG Techniques.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/emerald-battle-video/": {
+    meta: {
+      id: "/emerald-battle-video/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/emerald-battle-video/",
+      isNew: true,
+      title: "Battle Video",
+      navDrawerTitle: "Battle Video",
+      description:
+        "How to create an optimal Battle Video to save and restore the RNG state.",
+      slug: "/emerald-battle-video/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: "2026-03-24",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-23",
+      type: "baseGuide",
+      file: "guides/Gen 3/Emerald/Battle Video.mdx",
+      translations: null,
+      guideGroupId: "en:/emerald-battle-video/:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/emerald-battle-video/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Battle Video.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Battle Video.mdx?raw"
       );
       return file.default;
     }),
@@ -3871,7 +3987,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 6/DexNav.mdx",
       translations: {
@@ -4176,7 +4292,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/emulator-usum-time-finder/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Time Finder.js (Citra).mdx",
       translations: {
@@ -4219,7 +4335,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Time Finder.js (Citra).mdx",
       translations: {
@@ -4634,7 +4750,7 @@ export const guides = {
       translation: { enSlug: "/install-pokereader/", language: "es" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "translatedGuide",
       file: "guides/Translations/es/Tools and Emulators/3DS PokeReader.mdx",
       translations: {
@@ -5647,7 +5763,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-24",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Initial Seed RNG.mdx",
       translations: {
@@ -6550,7 +6666,7 @@ export const guides = {
       translation: { enSlug: "/retail-dppt-starter/", language: "it" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 4/Starters.mdx",
       translations: {
@@ -6636,7 +6752,7 @@ export const guides = {
       translation: { enSlug: "/retail-hgss-starter/", language: "it" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 4/Starters.mdx",
       translations: {
@@ -6929,7 +7045,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Island Scan Pokemon SM.mdx",
       translations: {
@@ -6971,7 +7087,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Island Scan Pokemon USUM.mdx",
       translations: {
@@ -7132,7 +7248,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Wild Spots.mdx",
       translations: null,
@@ -7334,7 +7450,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 6/Mirage Spot.mdx",
       translations: { en: "/oras-mirage-spots/", zh: "/zh-oras-mirage-spots/" },
@@ -7371,7 +7487,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 6/Remove Time Penalties.mdx",
       translations: {
@@ -7453,7 +7569,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 6/Friend Safari RNG Guide.mdx",
       translations: {
@@ -7497,7 +7613,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 6/XY TID.mdx",
       translations: { en: "/pcalc-xy-tid/", zh: "/zh-pcalc-xy-tid/" },
@@ -7878,7 +7994,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -7926,7 +8042,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -7974,7 +8090,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 6/ORAS TID.mdx",
       translations: { en: "/retail-oras-tid/", zh: "/zh-retail-oras-tid/" },
@@ -8102,7 +8218,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-egg-no-mmsc/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -8149,7 +8265,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-egg-seed-no-cfw/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
       translations: {
@@ -8196,7 +8312,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-fidget/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline With Fidget Guide.mdx",
       translations: { en: "/retail-sm-fidget/", zh: "/zh-retail-sm-fidget/" },
@@ -8237,7 +8353,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-initial-seed-clocks/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Finding Initial Seed with Clocks.mdx",
       translations: {
@@ -8281,7 +8397,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-island-scan/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Island Scan.mdx",
       translations: {
@@ -8321,7 +8437,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-mystery-gift/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Mystery Gift.mdx",
       translations: {
@@ -8361,7 +8477,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-no-cfw/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/RNGing Without Custom Firmware.mdx",
       translations: { en: "/retail-sm-no-cfw/", zh: "/zh-retail-sm-no-cfw/" },
@@ -8402,7 +8518,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-sos/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/SOS RNG Guide.mdx",
       translations: { en: "/retail-sm-sos/", zh: "/zh-retail-sm-sos/" },
@@ -8439,7 +8555,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-stationary/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Stationary RNG.mdx",
       translations: {
@@ -8479,7 +8595,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-timeleap/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Leap Guide.mdx",
       translations: {
@@ -8522,7 +8638,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-timeline/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Guide.mdx",
       translations: {
@@ -8562,7 +8678,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-usum-wild/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Wild RNG.mdx",
       translations: { en: "/retail-sm-wild/", zh: "/zh-retail-sm-wild/" },
@@ -8723,7 +8839,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG With Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -8771,7 +8887,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -8818,7 +8934,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/How to Find Egg Seeds Without Custom Firmware.mdx",
       translations: {
@@ -8865,7 +8981,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline With Fidget Guide.mdx",
       translations: {
@@ -8909,7 +9025,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Finding Initial Seed with Clocks.mdx",
       translations: {
@@ -8954,7 +9070,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Island Scan.mdx",
       translations: {
@@ -8994,7 +9110,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Mystery Gift.mdx",
       translations: {
@@ -9034,7 +9150,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/RNGing Without Custom Firmware.mdx",
       translations: {
@@ -9078,7 +9194,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/SOS RNG Guide.mdx",
       translations: { en: "/retail-usum-sos/", zh: "/zh-retail-usum-sos/" },
@@ -9115,7 +9231,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Stationary RNG.mdx",
       translations: {
@@ -9155,7 +9271,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Leap Guide.mdx",
       translations: {
@@ -9199,7 +9315,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Timeline Guide.mdx",
       translations: {
@@ -9239,7 +9355,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Wild RNG.mdx",
       translations: { en: "/retail-usum-wild/", zh: "/zh-retail-usum-wild/" },
@@ -9276,7 +9392,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/Stationary Wormhole RNG.mdx",
       translations: {
@@ -9320,7 +9436,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-oras-egg-mmsc/",
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 6/Egg RNG With Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -9367,7 +9483,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/retail-oras-egg-no-mmsc/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 6/Egg RNG Without Masuda Method or Shiny Charm.mdx",
       translations: {
@@ -9892,7 +10008,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 7/SOS Call Rates.mdx",
       translations: null,
@@ -10324,7 +10440,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 6/Friend Safari Patch.mdx",
       translations: {
@@ -10365,7 +10481,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-25",
       type: "baseGuide",
       file: "guides/Gen 6/PokeRadar.mdx",
       translations: { en: "/xy-pokeradar/", zh: "/zh-xy-pokeradar/" },
@@ -15349,6 +15465,7 @@ export const guideSlugs = [
   "/black-2-and-white-2/",
   "/black-and-white/",
   "/brilliant-diamond-and-shining-pearl/",
+  "/bw-emu-starter/",
   "/bw2-egg/",
   "/cfw-bdsp-egg/",
   "/cfw-bdsp-stationary/",
@@ -15389,6 +15506,8 @@ export const guideSlugs = [
   "/dream-radar-cart-patches/",
   "/dream-radar-patches/",
   "/e-tips-rng/",
+  "/emerald-advancing-rng-techniques/",
+  "/emerald-battle-video/",
   "/emerald-mirage-island/",
   "/emerald-overview/",
   "/emerald-painting-rng/",

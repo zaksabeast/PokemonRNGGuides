@@ -1,14 +1,29 @@
 import React from "react";
 import { Flex, Typography } from "~/components";
-import { Progress } from "antd";
-import { useTimer } from "~/hooks/useTimer";
+import { useCanvasTimer, CANVAS_SIZE } from "~/hooks/useCanvasTimer";
+import styled from "@emotion/styled";
+
+const CanvasContainer = styled.div({
+  position: "relative",
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+});
+
+const TimerCanvas = styled.canvas({
+  display: "block",
+  width: 200,
+  height: 200,
+  imageRendering: "crisp-edges",
+});
 
 type Props = {
   expirationMs: number;
   countdownMs: number;
   run: boolean;
+  startTimeMs?: number | null;
+  timerStartOffset?: number;
   onExpire?: () => void;
-  onCountdown?: () => void;
   label?: React.ReactNode;
 };
 
@@ -16,15 +31,17 @@ export const Timer = ({
   expirationMs,
   countdownMs,
   run,
+  startTimeMs,
+  timerStartOffset = 0,
   onExpire,
-  onCountdown,
   label,
 }: Props) => {
-  const { msRemaining, start, stop } = useTimer({
+  const { canvasRef, start, stop } = useCanvasTimer({
     onExpire,
-    onCountdown,
     expirationMs,
     countdownMs,
+    startTimeMs,
+    timerStartOffset,
   });
 
   React.useEffect(() => {
@@ -35,32 +52,14 @@ export const Timer = ({
     }
   }, [run, start, stop]);
 
-  const remaining = Math.floor(msRemaining);
-  const percent = (remaining / expirationMs) * 100;
-  const seconds = Math.floor(remaining / 1000);
-  const milliseconds = remaining % 1000;
-  const WIDTH = 200;
-
   return (
-    <Flex vertical>
-      <Progress
-        type="circle"
-        percent={percent}
-        size={WIDTH}
-        format={() => (
-          <Flex justify="center">
-            <Typography.Text strong fontSize={24} fontFamily="monospace">
-              {seconds.toString().padStart(2, "0")}:
-              {milliseconds.toString().padStart(3, "0")}
-            </Typography.Text>
-          </Flex>
-        )}
-      />
+    <Flex vertical align="center">
+      <CanvasContainer>
+        <TimerCanvas ref={canvasRef} width={CANVAS_SIZE} height={CANVAS_SIZE} />
+      </CanvasContainer>
       {label != null && (
-        <Flex justify="center" textAlign="center">
-          <Typography.Text fontSize={16} maxWidth={WIDTH}>
-            {label}
-          </Typography.Text>
+        <Flex justify="center" textAlign="center" maxWidth={CANVAS_SIZE}>
+          <Typography.Text fontSize={16}>{label}</Typography.Text>
         </Flex>
       )}
     </Flex>

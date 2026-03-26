@@ -164,8 +164,6 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     lead_cycle_speed: targetSetup.leadCycleSpeed,
   };
 
-  console.log(opts);
-
   const resultsByPidPath =
     await rngTools.search_wild3_with_initial_advances_range(
       opts,

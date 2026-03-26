@@ -364,7 +364,6 @@ export const Wild3CalibCaughtMon = ({
           const title = `${prob} likelihood that the triggered method is ${method} if the hit advance is ${values.advance}`;
           return (
             <>
-              {" "}
               {method}
               {" ("}
               <Tooltip title={title}>{prob}</Tooltip>

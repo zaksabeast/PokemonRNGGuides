@@ -1,0 +1,46 @@
+---
+- title: "Black and White Starter RNG"
+  navDrawerTitle: "Starter RNG"
+  description: "Learn how to RNG starters in Black and White for shiny, high-IV Pokémon."
+  slug: "bw-emu-starter"
+  category: "Black and White"
+  section: "pokemon_rng"
+  variant: "cfw-emu"
+  guideKey: "starter"
+  addedOn: "2026-03-25"
+---
+
+## Tools
+
+- [PokeFinder](https://github.com/Admiral-Fish/PokeFinder/releases)
+- [Desmume](/desmume-setup)
+- [Lua Scripts](https://github.com/Real96/PokeLua/blob/main/Gen%205/DeSmuMe/BW_RNG_DeSmuMe.lua)
+- [A configured game profile](/emulator-bw-find-ds-parameters)
+
+## Step 1: Setup
+
+Set up your target starter in PokeFinder.
+
+1. Save in front of the gift.
+2. Open PokeFinder → Gen 5 tab → "Static" → "Searcher".
+3. Set the correct starter and all the desired filters for it (shininess, IVs, ability, etc.).
+4. Set Initial Advances to at least 5.
+5. Set Max Advances as needed. Avoid setting it too high, as it can slow the process or make it impractical.
+6. Leave Min/Max IV Advances at 0.
+7. Generate results and choose a target.
+
+## Step 2: RNG the Starter
+
+Hit your seed and reach the correct Advance to receive the Pokémon.
+
+1. Hit the target Initial Seed using [this guide](/emulator-bw-runasdate-initial-seed).
+2. (Optional) Make a save state some advances before as a backup.
+3. Advance by saving the game repeatedly until you reach the target Advance.
+4. Close the menu and press `A` to open the gift and choose the starter.
+5. If you miss by accident, reload the save state and repeat from step 3; if no save state was made, repeat from step 1.
+
+**Congrats! You've now got your Pokémon!**
+
+## Credits
+
+- Fiask for writing this guide.

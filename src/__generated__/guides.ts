@@ -456,6 +456,43 @@ export const guides = {
       return file.default;
     }),
   },
+  "/bw-emu-starter/": {
+    meta: {
+      id: "/bw-emu-starter/",
+      categories: ["Black and White"],
+      section: "pokemon_rng",
+      guideVariants: ["cfw-emu"],
+      guideKey: "starter",
+      isNew: true,
+      title: "Black and White Starter RNG",
+      navDrawerTitle: "Starter RNG",
+      description:
+        "Learn how to RNG starters in Black and White for shiny, high-IV Pokémon.",
+      slug: "/bw-emu-starter/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: "2026-03-25",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-26",
+      type: "baseGuide",
+      file: "guides/Gen 5/BW Emu Starter.mdx",
+      translations: null,
+      guideGroupId: "en:starter:Black and White",
+      guideVariantLinks: {
+        retail: null,
+        cfwEmu: { type: "slug", slug: "/bw-emu-starter/" },
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 5/BW Emu Starter.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/BW Emu Starter.mdx?raw");
+      return file.default;
+    }),
+  },
   "/bw2-egg/": {
     meta: {
       id: "/bw2-egg/",
@@ -15428,6 +15465,7 @@ export const guideSlugs = [
   "/black-2-and-white-2/",
   "/black-and-white/",
   "/brilliant-diamond-and-shining-pearl/",
+  "/bw-emu-starter/",
   "/bw2-egg/",
   "/cfw-bdsp-egg/",
   "/cfw-bdsp-stationary/",

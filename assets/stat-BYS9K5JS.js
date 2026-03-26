@@ -1,0 +1,1 @@
+import{o as t,n as s}from"./index-DqxNkRAL.js";const p=["hp","atk","def","spa","spd","spe"],e={hp:{min:0,max:0},atk:{min:0,max:0},def:{min:0,max:0},spa:{min:0,max:0},spd:{min:0,max:0},spe:{min:0,max:0}},a=s().min(0).max(999),n=t({hpStat:a,atkStat:a,defStat:a,spaStat:a,spdStat:a,speStat:a});t({hp:a,atk:a,def:a,spa:a,spd:a,spe:a});export{n as S,e as d,p as s};

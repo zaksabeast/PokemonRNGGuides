@@ -2430,8 +2430,8 @@ export const guides = {
       guideVariants: null,
       guideKey: "/emerald-advancing-rng-techniques/",
       isNew: false,
-      title: "Overview of RNG Advancing Techniques",
-      navDrawerTitle: "Overview of RNG Advancing Techniques",
+      title: "RNG Advancing Techniques",
+      navDrawerTitle: "RNG Advancing Techniques",
       description:
         "Understanding the key concepts to speed up RNG manipulations with Painting Reseeding and Battle Video Reseeding.",
       slug: "/emerald-advancing-rng-techniques/",

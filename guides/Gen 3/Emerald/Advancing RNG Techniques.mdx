@@ -59,7 +59,7 @@ For example, to hit the final target advance of 100,000,000:
 
 Performing Painting Reseeding successfully requires a frame-perfect input. The number of advances to the RNG state depends on the exact timing of the button press. Doing it one frame too late or too early will completely change the outcome (ex: doing the technique at 44,571 frames instead of 44,572 sets the RNG state to 3,400,311,113 advances, instead of 99,966,396).
 
-After performing it, players need to validate whether they successfully hit their target framess before painting. If succesful, players then create a Battle Video to save and restore their RNG state in case they miss their target advances after painting for the Pokémon encounter. Note that the Battle Video can't also be used to speed up hitting the target frames before painting, because Battle Video only alters the RNG state, not the frame counter.
+After performing it, players need to validate whether they successfully hit their target frames before painting. If succesful, players then create a Battle Video to save and restore their RNG state in case they miss their target advances after painting for the Pokémon encounter. Note that the Battle Video can't also be used to speed up hitting the target frames before painting, because Battle Video only alters the RNG state, not the frame counter.
 
 Here's an example to understand Painting Reseeding with Battle Video for the target advance 100,000,000, which has "Frames before painting: 44,572" and "Advances after painting: 33,604".
 

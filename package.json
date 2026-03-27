@@ -31,7 +31,6 @@
     "preview": "vite preview",
     "test:e2e": "bunx cypress run --browser chrome",
     "test:rust": "cargo test --manifest-path rng_tools/Cargo.toml",
-    "cypress:open": "bunx cypress open",
     "prepare": "husky",
     "check": "bun run format && bun run lint && bun run test:rust"
   },
@@ -78,8 +77,6 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "babel-plugin-react-compiler": "^19.1.0-rc.2",
-    "cheerio": "^1.0.0",
-    "cypress": "^14.3.0",
     "eslint": "^9.19.0",
     "eslint-plugin-no-relative-import-paths": "^1.6.1",
     "eslint-plugin-react": "^7.37.5",

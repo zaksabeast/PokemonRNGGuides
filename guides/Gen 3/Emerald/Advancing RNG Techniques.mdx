@@ -1,5 +1,5 @@
 ---
-title: "Overview of RNG Advancing Techniques"
+title: "RNG Advancing Techniques"
 description: "Understanding the key concepts to speed up RNG manipulations with Painting Reseeding and Battle Video Reseeding."
 slug: "emerald-advancing-rng-techniques"
 category: "Emerald"
@@ -57,22 +57,24 @@ For example, to hit the final target advance of 100,000,000:
 - Frames before painting: 44,572 (which sets RNG state to 99,966,396 advances)
 - Advances after painting: 33,604 (which brings the RNG state to 100,000,000 advances)
 
-Performing Painting Reseeding successfully requires a frame-perfect input. The number of advances to the RNG state depends on the exact timing of the button press. Doing it one frame too late or too early will completely change the outcome (ex: doing the technique after 44,571 advances instead of 44,572 sets the RNG state to 3,400,311,113 advances, instead of 99,966,396).
+Performing Painting Reseeding successfully requires a frame-perfect input. The number of advances to the RNG state depends on the exact timing of the button press. Doing it one frame too late or too early will completely change the outcome (ex: doing the technique at 44,571 frames instead of 44,572 sets the RNG state to 3,400,311,113 advances, instead of 99,966,396).
 
-After performing it, players need to validate whether they successfully hit their target frames before painting. If succesful, players then create a Battle Video to save and restore their RNG state in case they miss their target advances after painting for the Pokémon encounter. Battle Video can also be used to help the target frames before painting.
+After performing it, players need to validate whether they successfully hit their target framess before painting. If succesful, players then create a Battle Video to save and restore their RNG state in case they miss their target advances after painting for the Pokémon encounter. Note that the Battle Video can't also be used to speed up hitting the target frames before painting, because Battle Video only alters the RNG state, not the frame counter.
 
 Here's an example to understand Painting Reseeding with Battle Video for the target advance 100,000,000, which has "Frames before painting: 44,572" and "Advances after painting: 33,604".
 
-1.  You wait 10.5 minutes (~42K advances), then create a Battle Video.
 1.  You go in front of the painting.
-1.  You watch your Battle Video. The RNG state is now at ~42K advances.
-1.  You wait 0.5 minutes and try to perform Painting Reseeding at advance 44,572.
+1.  You wait ~12 minutes and try to perform Painting Reseeding at frame 44,572.
 1.  You fly to Victory Road and catch a Pokemon. Based on the Pokémon stats, you determine whether you hit the target frames before painting. (Whether the caught Pokemon exists near the RNG advance 99,966,396).
-1.  If you failed, you calibrate, and go back to step 2.
-1.  If you succeed to hit your target frames before painting, you wait until the advance is close to the target (ex: ~99,998,000), and make a new Battle Video.
+1.  If you failed, you calibrate, and go back to step 1.
+1.  If you succeed to hit your target frames before painting, you wait until the advance is close to the target (ex: ~99,998,000), and make a Battle Video.
 1.  You go to the map where you want to encounter your wanted Pokémon.
 1.  You watch your Battle Video. The RNG state is now at ~99,998,000 advances.
 1.  You wait 0.5 minutes and trigger the Pokémon battle at advance 100,000,000.
 1.  If you miss your target, you watch the Battle Video again to set the RNG state back to 99,998,000 advances, and wait only 0.5 minute to try the encounter again.
 
 Check out the [Painting Reseeding detailed guide and webtool](/emerald-painting-rng).
+
+## Credits
+
+- German translation: Parasite.

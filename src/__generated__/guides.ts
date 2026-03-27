@@ -1017,6 +1017,95 @@ export const guides = {
       return file.default;
     }),
   },
+  "/de-emerald-advancing-rng-techniques/": {
+    meta: {
+      id: "/emerald-advancing-rng-techniques/",
+      categories: ["Emerald"],
+      section: "technical_info",
+      guideVariants: null,
+      guideKey: "/emerald-advancing-rng-techniques/",
+      isNew: false,
+      title: "Übersicht der RNG-Advancing-Techniken",
+      navDrawerTitle: "Übersicht der RNG-Advancing-Techniken",
+      description:
+        "Verständnis der wichtigsten Konzepte zur Beschleunigung von RNG-Manipulationen mit Painting Reseeding und Kampfaufzeichnungs-Reseeding.",
+      slug: "/de-emerald-advancing-rng-techniques/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: {
+        enSlug: "/emerald-advancing-rng-techniques/",
+        language: "de",
+      },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-27",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Advancing RNG Techniques.mdx",
+      translations: {
+        de: "/de-emerald-advancing-rng-techniques/",
+        en: "/emerald-advancing-rng-techniques/",
+      },
+      guideGroupId: "de:/emerald-advancing-rng-techniques/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/de/Gen 3/Emerald/Advancing RNG Techniques.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Advancing RNG Techniques.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/de-emerald-battle-video/": {
+    meta: {
+      id: "/emerald-battle-video/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/emerald-battle-video/",
+      isNew: true,
+      title: "Kampfaufzeichnung",
+      navDrawerTitle: "Kampfaufzeichnung",
+      description:
+        "So erstellst du eine optimale Kampfaufzeichnung, um den RNG-Zustand zu speichern und wiederherzustellen.",
+      slug: "/de-emerald-battle-video/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2026-03-24",
+      translation: { enSlug: "/emerald-battle-video/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-27",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Battle Video.mdx",
+      translations: {
+        de: "/de-emerald-battle-video/",
+        en: "/emerald-battle-video/",
+      },
+      guideGroupId: "de:/emerald-battle-video/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/de/Gen 3/Emerald/Battle Video.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Battle Video.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/de-emerald-mirage-island/": {
     meta: {
       id: "/emerald-mirage-island/",
@@ -1101,6 +1190,48 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/de/Gen 3/Emerald/Emerald Overview.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/de-emerald-painting-rng/": {
+    meta: {
+      id: "/emerald-painting-rng/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["cfw-emu"],
+      guideKey: "/emerald-painting-rng/",
+      isNew: false,
+      title: "RNG-Reseed mit Gemälden",
+      navDrawerTitle: "Gemälde RNG",
+      description:
+        "Lerne, wie du den RNG in Pokémon Smaragd mithilfe von Gemälden reseedest, um dein Wunsch-Pokémon ohne lange Wartezeiten zu erhalten.",
+      slug: "/de-emerald-painting-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/emerald-painting-rng/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-27",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Reseed RNG.mdx",
+      translations: {
+        de: "/de-emerald-painting-rng/",
+        en: "/emerald-painting-rng/",
+        zh: "/zh-emerald-painting-rng/",
+      },
+      guideGroupId: "de:/emerald-painting-rng/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: ["video_guide", "web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/de/Gen 3/Emerald/Reseed RNG.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Reseed RNG.mdx?raw"
       );
       return file.default;
     }),
@@ -1276,6 +1407,49 @@ export const guides = {
       return file.default;
     }),
   },
+  "/de-frlg-gen3-sid/": {
+    meta: {
+      id: "/frlg-gen3-sid/",
+      categories: ["FireRed and LeafGreen"],
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
+      guideKey: "/frlg-gen3-sid/",
+      isNew: false,
+      title: "Feuerrot und Blattgrün SID finden",
+      navDrawerTitle: "SID finden",
+      description:
+        "Verschiedene Methoden, um die SID in Feuerrot und Blattgrün zu finden.",
+      slug: "/de-frlg-gen3-sid/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/frlg-gen3-sid/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-27",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Find SID.mdx",
+      translations: {
+        de: "/de-frlg-gen3-sid/",
+        en: "/frlg-gen3-sid/",
+        it: "/it-frlg-gen3-sid/",
+        zh: "/zh-frlg-gen3-sid/",
+      },
+      guideGroupId: "de:/frlg-gen3-sid/:FireRed and LeafGreen",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/de/Gen 3/Emerald/Find SID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Find SID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/de-gba-overview/": {
     meta: {
       id: "/gba-overview/",
@@ -1316,6 +1490,48 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/de/Gen 3/Emerald/GBA Overview.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/de-gen3-sid/": {
+    meta: {
+      id: "/gen3-sid/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
+      guideKey: "/gen3-sid/",
+      isNew: false,
+      title: "Smaragd SID finden",
+      navDrawerTitle: "SID finden",
+      description: "Verschiedene Methoden, um die SID in Smaragd zu finden.",
+      slug: "/de-gen3-sid/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: "2025-03-03",
+      translation: { enSlug: "/gen3-sid/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-27",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Find SID.mdx",
+      translations: {
+        de: "/de-gen3-sid/",
+        en: "/gen3-sid/",
+        it: "/it-gen3-sid/",
+        zh: "/zh-gen3-sid/",
+      },
+      guideGroupId: "de:/gen3-sid/:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/de/Gen 3/Emerald/Find SID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Find SID.mdx?raw"
       );
       return file.default;
     }),
@@ -1402,6 +1618,49 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/de/Gen 3/Emerald/Retail Wild RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/de-rs-gen3-sid/": {
+    meta: {
+      id: "/rs-gen3-sid/",
+      categories: ["Ruby and Sapphire"],
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
+      guideKey: "/rs-gen3-sid/",
+      isNew: false,
+      title: "Rubin und Saphir SID finden",
+      navDrawerTitle: "SID finden",
+      description:
+        "Verschiedene Methoden, um die SID in Rubin und Saphir zu finden.",
+      slug: "/de-rs-gen3-sid/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/rs-gen3-sid/", language: "de" },
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-27",
+      type: "translatedGuide",
+      file: "guides/Translations/de/Gen 3/Emerald/Find SID.mdx",
+      translations: {
+        de: "/de-rs-gen3-sid/",
+        it: "/it-rs-gen3-sid/",
+        en: "/rs-gen3-sid/",
+        zh: "/zh-rs-gen3-sid/",
+      },
+      guideGroupId: "de:/rs-gen3-sid/:Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Translations/de/Gen 3/Emerald/Find SID.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/de/Gen 3/Emerald/Find SID.mdx?raw"
       );
       return file.default;
     }),
@@ -2171,8 +2430,8 @@ export const guides = {
       guideVariants: null,
       guideKey: "/emerald-advancing-rng-techniques/",
       isNew: false,
-      title: "Overview of RNG Advancing Techniques",
-      navDrawerTitle: "Overview of RNG Advancing Techniques",
+      title: "RNG Advancing Techniques",
+      navDrawerTitle: "RNG Advancing Techniques",
       description:
         "Understanding the key concepts to speed up RNG manipulations with Painting Reseeding and Battle Video Reseeding.",
       slug: "/emerald-advancing-rng-techniques/",
@@ -2186,7 +2445,10 @@ export const guides = {
       lastUpdated: "2026-03-27",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Advancing RNG Techniques.mdx",
-      translations: null,
+      translations: {
+        de: "/de-emerald-advancing-rng-techniques/",
+        en: "/emerald-advancing-rng-techniques/",
+      },
       guideGroupId: "en:/emerald-advancing-rng-techniques/:Emerald",
       guideVariantLinks: null,
       displayAttributes: [],
@@ -2221,10 +2483,13 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-23",
+      lastUpdated: "2026-03-27",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Battle Video.mdx",
-      translations: null,
+      translations: {
+        de: "/de-emerald-battle-video/",
+        en: "/emerald-battle-video/",
+      },
       guideGroupId: "en:/emerald-battle-video/:Emerald",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/emerald-battle-video/" },
@@ -2390,10 +2655,11 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-27",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Reseed RNG.mdx",
       translations: {
+        de: "/de-emerald-painting-rng/",
         en: "/emerald-painting-rng/",
         zh: "/zh-emerald-painting-rng/",
       },
@@ -4995,10 +5261,11 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-27",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID.mdx",
       translations: {
+        de: "/de-frlg-gen3-sid/",
         en: "/frlg-gen3-sid/",
         it: "/it-frlg-gen3-sid/",
         zh: "/zh-frlg-gen3-sid/",
@@ -5628,10 +5895,11 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-27",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID.mdx",
       translations: {
+        de: "/de-gen3-sid/",
         en: "/gen3-sid/",
         it: "/it-gen3-sid/",
         zh: "/zh-gen3-sid/",
@@ -6440,6 +6708,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Find SID.mdx",
       translations: {
+        de: "/de-frlg-gen3-sid/",
         en: "/frlg-gen3-sid/",
         it: "/it-frlg-gen3-sid/",
         zh: "/zh-frlg-gen3-sid/",
@@ -6523,6 +6792,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Find SID.mdx",
       translations: {
+        de: "/de-gen3-sid/",
         en: "/gen3-sid/",
         it: "/it-gen3-sid/",
         zh: "/zh-gen3-sid/",
@@ -6838,6 +7108,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 3/Emerald/Find SID.mdx",
       translations: {
+        de: "/de-rs-gen3-sid/",
         it: "/it-rs-gen3-sid/",
         en: "/rs-gen3-sid/",
         zh: "/zh-rs-gen3-sid/",
@@ -9612,10 +9883,11 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-27",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Find SID.mdx",
       translations: {
+        de: "/de-rs-gen3-sid/",
         it: "/it-rs-gen3-sid/",
         en: "/rs-gen3-sid/",
         zh: "/zh-rs-gen3-sid/",
@@ -11280,6 +11552,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Reseed RNG.mdx",
       translations: {
+        de: "/de-emerald-painting-rng/",
         en: "/emerald-painting-rng/",
         zh: "/zh-emerald-painting-rng/",
       },
@@ -12465,6 +12738,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID.mdx",
       translations: {
+        de: "/de-frlg-gen3-sid/",
         en: "/frlg-gen3-sid/",
         it: "/it-frlg-gen3-sid/",
         zh: "/zh-frlg-gen3-sid/",
@@ -12879,6 +13153,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID.mdx",
       translations: {
+        de: "/de-gen3-sid/",
         en: "/gen3-sid/",
         it: "/it-gen3-sid/",
         zh: "/zh-gen3-sid/",
@@ -15183,6 +15458,7 @@ export const guides = {
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Find SID.mdx",
       translations: {
+        de: "/de-rs-gen3-sid/",
         it: "/it-rs-gen3-sid/",
         en: "/rs-gen3-sid/",
         zh: "/zh-rs-gen3-sid/",
@@ -15520,15 +15796,21 @@ export const guideSlugs = [
   "/contributing/",
   "/crystal/",
   "/de-e-tips-rng/",
+  "/de-emerald-advancing-rng-techniques/",
+  "/de-emerald-battle-video/",
   "/de-emerald-mirage-island/",
   "/de-emerald-overview/",
+  "/de-emerald-painting-rng/",
   "/de-emerald-pokerus-emu/",
   "/de-emerald-shiny-starter/",
   "/de-emerald-sid-feebas/",
   "/de-emulator-emerald-egg/",
+  "/de-frlg-gen3-sid/",
   "/de-gba-overview/",
+  "/de-gen3-sid/",
   "/de-retail-emerald-egg/",
   "/de-retail-emerald-wild/",
+  "/de-rs-gen3-sid/",
   "/de-rs-mirage-island/",
   "/de-rs-pokerus-emu/",
   "/de-rs-sid-feebas/",

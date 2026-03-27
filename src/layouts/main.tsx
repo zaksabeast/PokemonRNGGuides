@@ -9,13 +9,10 @@ import {
   ListItem,
   Icon,
   IconName,
-  SupportModal,
-  Button,
 } from "~/components";
 import styled from "@emotion/styled";
 import { useScreenViewed } from "~/hooks/useScreenViewed";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
-import { useSupportModal } from "~/components/supportModal/state";
 import { settings } from "~/settings";
 import { match } from "ts-pattern";
 import { Color } from "@emotion/react";
@@ -115,7 +112,6 @@ const Footer = styled.footer(({ theme }) => ({
 
 export const MainLayout = ({ children, trackerName }: Props) => {
   const route = useActiveRoute();
-  const { openSupportModal } = useSupportModal();
   useScreenViewed(trackerName ?? route);
 
   return (
@@ -162,23 +158,11 @@ export const MainLayout = ({ children, trackerName }: Props) => {
                     </ListItem>
                   ))}
                 </List>
-                <Button
-                  trackerId="support_us_footer"
-                  icon={<Icon name="Heart" />}
-                  type="primary"
-                  backgroundColor="BrandSecondary"
-                  backgroundHoverColor="BrandSecondaryHover"
-                  size="middle"
-                  onClick={openSupportModal}
-                >
-                  Want your name here?
-                </Button>
               </Footer>
             )}
           </ContentContainer>
         </ContentLayout>
       </BodyContainer>
-      <SupportModal />
     </>
   );
 };

@@ -103,6 +103,14 @@
     "hash": "71ebdfceb6dd40ac335eed4251e0e8808054dca44931483188646600ddcf49c4",
     "lastUpdated": "2026-03-09"
   },
+  "/de-emerald-advancing-rng-techniques/": {
+    "hash": "e40bfd082352e6bf529e9873760838e13aad094e4fe91f93ee8c5ece86dbd0cd",
+    "lastUpdated": "2026-03-27"
+  },
+  "/de-emerald-battle-video/": {
+    "hash": "f0c43c7ce7db3b942c9ebd3dc088c1a3633db008031b6d55752f814cb812d2af",
+    "lastUpdated": "2026-03-27"
+  },
   "/de-emerald-mirage-island/": {
     "hash": "a602a1e27170ee2c3ba7a48aa923943f823a749c846d92afa10ca9ae0eed4421",
     "lastUpdated": "2026-03-19"
@@ -110,6 +118,10 @@
   "/de-emerald-overview/": {
     "hash": "332224a6d0a314d783bbae9a4fb957a5e3646cc115d222487a5fb80f041346e6",
     "lastUpdated": "2026-03-09"
+  },
+  "/de-emerald-painting-rng/": {
+    "hash": "7340c623680420f1d0a0637e85a9cbd50f44481c8a3b8550273cf0c851d9f1db",
+    "lastUpdated": "2026-03-27"
   },
   "/de-emerald-pokerus-emu/": {
     "hash": "be1a120133e695e80897f3c5370dd119ab42828c309b5188e8d5730d04d259e1",
@@ -127,9 +139,17 @@
     "hash": "656f00791929f0e0e70bbd5e21162411fd495348b7e6f536ced4869b174327d8",
     "lastUpdated": "2026-03-18"
   },
+  "/de-frlg-gen3-sid/": {
+    "hash": "35471371d80a156d0a37f527967d6a318c35347fab1df9095e0012f081b9ac21",
+    "lastUpdated": "2026-03-27"
+  },
   "/de-gba-overview/": {
     "hash": "7b5c86045ce46f00e3f1432ef6985497e53c30a21fec400890313f647e380f77",
     "lastUpdated": "2026-03-22"
+  },
+  "/de-gen3-sid/": {
+    "hash": "35471371d80a156d0a37f527967d6a318c35347fab1df9095e0012f081b9ac21",
+    "lastUpdated": "2026-03-27"
   },
   "/de-retail-emerald-egg/": {
     "hash": "9df2b9426c941f65cff955bb5260db2b909ddcf759c151219521160a412dd1f1",
@@ -138,6 +158,10 @@
   "/de-retail-emerald-wild/": {
     "hash": "bf45e7d6cef00c3f967469aa1f08748781463e56834552d91de0c576516bc020",
     "lastUpdated": "2026-03-19"
+  },
+  "/de-rs-gen3-sid/": {
+    "hash": "35471371d80a156d0a37f527967d6a318c35347fab1df9095e0012f081b9ac21",
+    "lastUpdated": "2026-03-27"
   },
   "/de-rs-mirage-island/": {
     "hash": "a602a1e27170ee2c3ba7a48aa923943f823a749c846d92afa10ca9ae0eed4421",
@@ -212,12 +236,12 @@
     "lastUpdated": "2026-03-09"
   },
   "/emerald-advancing-rng-techniques/": {
-    "hash": "819941f482c6977ddb53c4d837f468aee5547a02189a0c11f94586b68f76dd42",
-    "lastUpdated": "2026-03-23"
+    "hash": "e012ed7650f2d8dbd67c482b87c31efcee484c151d62855c4bb2ea603ffad131",
+    "lastUpdated": "2026-03-27"
   },
   "/emerald-battle-video/": {
-    "hash": "026a4fc97cf13b4275dd983a10beec64366501fff6f7fd629e418ecaae34ad91",
-    "lastUpdated": "2026-03-23"
+    "hash": "dc39fb639c70ee6a77c6bb83542de56e411e5eff33775c08eeff9ca35ac92952",
+    "lastUpdated": "2026-03-27"
   },
   "/emerald-mirage-island/": {
     "hash": "b52040630b8d54ea3a3826844323e2e23ce8baf47c8f507adc2e5ab3eebef979",
@@ -228,8 +252,8 @@
     "lastUpdated": null
   },
   "/emerald-painting-rng/": {
-    "hash": "ae14b6f41bac7311be85fa6d3d2c1cb4e72b104cdb83030331246644e16e4d73",
-    "lastUpdated": null
+    "hash": "cf5f31d5f2dee8484b784f827153d636d4a7616b2068d6889040d1566c59c065",
+    "lastUpdated": "2026-03-27"
   },
   "/emerald-painting-seed-searcher/": {
     "hash": "c245bdd64d34044e30b73e4c26919f60d1bea071857244d121fb49dcf5d1d011",
@@ -476,8 +500,8 @@
     "lastUpdated": null
   },
   "/frlg-gen3-sid/": {
-    "hash": "331e1135e57e14c19c7374b3351e155b193c2e0ec0d869053e1530bd49d7de38",
-    "lastUpdated": null
+    "hash": "1a809daf8b19055ae22b43f4a354eaa12a8da30841ba473b68fcbf74ba167e70",
+    "lastUpdated": "2026-03-27"
   },
   "/frlg-seeding-bot/": {
     "hash": "4fef074ad666552053c821d6df89317a531fd7c2cd482b30fdfff7240c6f1ee3",
@@ -540,8 +564,8 @@
     "lastUpdated": null
   },
   "/gen3-sid/": {
-    "hash": "331e1135e57e14c19c7374b3351e155b193c2e0ec0d869053e1530bd49d7de38",
-    "lastUpdated": null
+    "hash": "1a809daf8b19055ae22b43f4a354eaa12a8da30841ba473b68fcbf74ba167e70",
+    "lastUpdated": "2026-03-27"
   },
   "/heart-gold-and-soul-silver/": {
     "hash": "bc4bf1045180ee5e5c0de23feb87053b34bc6aeaf0a2361171d472e189087b49",
@@ -916,8 +940,8 @@
     "lastUpdated": null
   },
   "/rs-gen3-sid/": {
-    "hash": "331e1135e57e14c19c7374b3351e155b193c2e0ec0d869053e1530bd49d7de38",
-    "lastUpdated": null
+    "hash": "1a809daf8b19055ae22b43f4a354eaa12a8da30841ba473b68fcbf74ba167e70",
+    "lastUpdated": "2026-03-27"
   },
   "/rs-initial-seed/": {
     "hash": "74c8f194f3b9c520683a65a52ce937e1888f3e809ec9dea4f843b30ee1673762",

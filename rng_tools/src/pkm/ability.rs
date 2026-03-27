@@ -1,4 +1,9 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+use serde::{Deserialize, Serialize};
+use tsify_next::Tsify;
+use wasm_bindgen::prelude::*;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 #[repr(u16)]
 pub enum Ability {
     None,

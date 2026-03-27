@@ -186,7 +186,7 @@ const getSetupFields = (
       indent: 1,
     },
     {
-      label: "Min advances before reseeding",
+      label: "Min frames before reseeding",
       input: (
         <FormikNumberInput<FormState>
           name="min_adv_before_painting"

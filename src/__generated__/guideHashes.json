@@ -212,8 +212,8 @@
     "lastUpdated": "2026-03-09"
   },
   "/emerald-advancing-rng-techniques/": {
-    "hash": "819941f482c6977ddb53c4d837f468aee5547a02189a0c11f94586b68f76dd42",
-    "lastUpdated": "2026-03-23"
+    "hash": "572a28aab9bec827aa270c1f2be08d813c9e5bc73b07f08b69e79454e27747ef",
+    "lastUpdated": "2026-03-27"
   },
   "/emerald-battle-video/": {
     "hash": "026a4fc97cf13b4275dd983a10beec64366501fff6f7fd629e418ecaae34ad91",
@@ -226,6 +226,10 @@
   "/emerald-overview/": {
     "hash": "5fa56216638c0bc46ab2b7cce060935bcb54c0ce9a947983f33036ca82234fc2",
     "lastUpdated": null
+  },
+  "/emerald-painting-reseeding/": {
+    "hash": "7c8027f2ada767c056f101422d4e1c537bf0520c62b51c3091d34c813eacdbad",
+    "lastUpdated": "2026-03-27"
   },
   "/emerald-painting-rng/": {
     "hash": "ae14b6f41bac7311be85fa6d3d2c1cb4e72b104cdb83030331246644e16e4d73",

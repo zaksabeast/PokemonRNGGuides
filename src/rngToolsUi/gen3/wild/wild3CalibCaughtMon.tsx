@@ -15,6 +15,7 @@ import { Typography } from "~/components/typography";
 import { nature } from "~/types/nature";
 import { Button } from "~/components/button";
 import { toOptions } from "~/utils/options";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import {
   getPkmFilterInitialValues,
   natureOptions,
@@ -44,6 +45,8 @@ import clamp from "lodash-es/clamp";
 import { Tooltip } from "antd";
 import { formatProbability } from "~/utils/formatProbability";
 import { Gen3IvRating, getGen3IvRating } from "../ivRater";
+import { ability } from "~/types/ability";
+import { FormikAbilityFilter } from "~/components/abilityFilter/index";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -53,7 +56,7 @@ const Validator = z
     gender: z.enum(gender),
     species: z.enum(emeraldWildGameData.species),
     lvl: z.number().min(1).max(100),
-    // TODO ability
+    ability: z.enum(ability),
   })
   .extend(StatFieldsSchema.shape);
 
@@ -70,6 +73,7 @@ const initialValues: FormState = {
   gender: "Male",
   species: "Shuckle",
   lvl: 1,
+  ability: "First",
 };
 
 type Props = {
@@ -144,6 +148,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
         ...getPkmFilterInitialValues(),
         filter_nature: values.nature,
         filter_gender: values.gender,
+        filter_ability: values.ability,
       }),
       ...minMaxIvs,
     },
@@ -318,6 +323,16 @@ const Fields = ({ targetSetup }: { targetSetup: TargetSetup }) => {
             />
           ),
         },
+        {
+          label: "Ability",
+          input: (
+            <FormikAbilityFilter<FormState>
+              name="ability"
+              species={selectedSpecies}
+              permitAny={false}
+            />
+          ),
+        },
         ...getStatFields<FormState>(minMaxStats),
       ]);
     });
@@ -347,13 +362,14 @@ export const Wild3CalibCaughtMon = ({
         dataIndex: "advance",
         render: (val, values) => {
           const diffWithTarget = val - values.targetAdvance;
+          const valStr = formatLargeInteger(val);
+
           if (diffWithTarget === 0) {
-            return `${val}`;
+            return valStr;
           }
-          if (diffWithTarget > 0) {
-            return `${val} (+${diffWithTarget})`;
-          }
-          return `${val} (${diffWithTarget})`;
+          const sign = diffWithTarget > 0 ? "+" : "";
+
+          return `${valStr} (${sign}${formatLargeInteger(diffWithTarget)})`;
         },
       },
       {

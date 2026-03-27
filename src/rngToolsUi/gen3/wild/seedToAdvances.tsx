@@ -35,7 +35,7 @@ const getColumns = (): ResultColumn<Result>[] => {
     {
       title: (
         <>
-          Advances Before
+          Frames Before
           <br /> Painting Reseeding
         </>
       ),
@@ -144,7 +144,7 @@ const MyFields = () => {
         label: (
           <Tooltip title="To ensure there is enough time between booting the game and interacting with the painting.">
             <div>
-              Min advances before reseeding{" "}
+              Min frames before reseeding{" "}
               <Icon name="InformationCircle" size={16} />
             </div>
           </Tooltip>

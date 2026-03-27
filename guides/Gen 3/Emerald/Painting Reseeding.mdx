@@ -1,43 +1,53 @@
 ---
-- title: "Battle Video"
-  navDrawerTitle: "Battle Video"
-  description: "How to create an optimal Battle Video to save and restore the RNG state."
-  slug: "emerald-battle-video"
+- title: "Painting Reseeding"
+  navDrawerTitle: "Painting Reseeding"
+  description: "How to perform Painting Reseeding to quickly access very distant RNG states."
+  slug: "emerald-painting-reseeding"
   category: "Emerald"
   section: "rng_technique"
   variant: "retail"
-  addedOn: "2026-03-24"
+  addedOn: "2026-03-30"
 ---
 
 <Gist>
-  Gist: How to create an optimal Battle Video or update an existing one.
+  Gist: How to perform Painting Reseeding to quickly access very distant RNG states.
 </Gist>
 
-## Prerequisite
+## Prerequisites
 
-It is recommended to first read [Overview of RNG Advancing Techniques](/emerald-advancing-rng-techniques).
+- Access to the Battle Frontier.
+- Know how to create a [Battle Video](/emerald-battle-video).
+- Recommended: Having read [Overview of RNG Advancing Techniques](/emerald-advancing-rng-techniques).
 
 ## Overview
 
-Battle Video is a RNG technique to save and restore the RNG state. Using that technique, players only need to wait the full delay of their RNG manipulation once. Afterwards, each retry is very quick.
+Painting Reseeding is a RNG technique to make the RNG state jump by millions of advances instantly, giving access to
+RNG states that would normally not be reachable realistically.
 
-After winning or losing a battle at the Battle Frontier, players can record their battle. The RNG state at the start of the battle is saved into the battle record. Players can watch their battle anywhere by opening their trainer card and selecting "Battle Record". By doing so, the current RNG state is reseeded with the RNG state at the start of the recorded battle.
+By interacting with a painting in Lilycove contest hall, the RNG state is reseeded using the current visual frame counter. 
+The RNG state before interacting with the painting has no impact on the new RNG state. 
+Players don't need to have participated in a contest for the paintings to be accessible.
 
-The RNG state saved on the battle record must leave sufficient time to perform the action required by the RNG manipulation.
+### Validating
+Performing Painting Reseeding successfully requires a frame-perfect input.
+The new value of the RNG state depends on the exact timing of the button press.
+After performing it, players need to validate whether they successfully hit their target frames before painting.
 
-## Cases
+The best way to validate is to catch a high-level Pokémon in Victory Road, with an egg as the party lead. 
+The egg lead ensure that the caught Pokémon will be generated with [method Wild-1](/gba-methods-lead-impact).
+Afterwards, the stats and nature of the caught Pokémon can be used to calculate what was the actual hit painting frame.
+In some cases, multiple possible frames are could have been used to generate the caught Pokémon. 
+Talking with the stat judge in the Battle Frontier can help determine the real hit frame. 
+The stat judge says information about the sum of the IVs of a Pokémon, its highest stat and IV value.
 
-Battle Video is used 3 cases:
-
-- Creating a Battle Video from scratch.
-- Update an existing Battle Video because the current one has too much waiting.
-- Creating a Battle Video after successful Painting Reseeding.
-
-The 2 first cases are covered in this guide. Battle Video in the context of Painting Reseeding will be covered in another guide.
-
-Creating a Battle Video requires waiting for the RNG state to reach the wanted advance. The easiest way is to wait in front of the Battle Frontier clerk. However, it is also possible to do most of the waiting while in battle, which advanced the RNG twice as fast. The webtool supports both approaches.
+### Post-Validating
+After confirming that the wanted frames before painting was hit, players create a [Battle Video](/emerald-battle-video) 
+to save and restore their RNG state in case they miss their target advances after painting for the Pokémon encounter.
 
 ## Webtool and Instructions
+
+<EmeraldSeedToAdvances />
+
 
 <BattleVideo />
 

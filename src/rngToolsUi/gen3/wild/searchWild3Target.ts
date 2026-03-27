@@ -86,7 +86,7 @@ const convertResultsForPidPathToPidPathResult = async (
 
   const valueForSorting =
     paintingAdvs != null
-      ? paintingAdvs.adv_before_painting +
+      ? paintingAdvs.frame_before_painting +
         paintingAdvs.adv_after_painting +
         DONT_USE_PAINTING_IF_BELOW_ADV
       : earliestAdvance;
@@ -114,7 +114,7 @@ const createPaintingAdvsCache = async (
   const map = new Map<
     number,
     {
-      adv_before_painting: number;
+      frame_before_painting: number;
       adv_after_painting: number;
     }
   >();
@@ -133,7 +133,7 @@ const createPaintingAdvsCache = async (
   }
 
   painting_advs.forEach((painting_adv, i) => {
-    if (painting_adv.adv_before_painting === 0) {
+    if (painting_adv.frame_before_painting === 0) {
       return;
     }
     map.set(advsWithoutDupe[i], painting_adv);
@@ -191,7 +191,7 @@ export const searchWild3Target = async (values: FormState) => {
   const painting_opts =
     values.usingPaintingReseeding && values.letSearcherFindPaintingSeed
       ? {
-          min_adv_before_painting: values.min_adv_before_painting,
+          min_frame_before_painting: values.min_frame_before_painting,
           min_adv_after_painting: values.min_adv_after_painting,
         }
       : null;

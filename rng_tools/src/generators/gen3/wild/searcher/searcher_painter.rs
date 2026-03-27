@@ -5,6 +5,10 @@ use wasm_bindgen::prelude::*;
 use crate::{gen3::wild::lcrng_distance, rng::lcrng::Pokerng};
 use itertools::Itertools;
 
+// 1 frame wait before painting is worth 15 advances after painting.
+// The reason is that it takes x15 more time to retry painting manip than the pokemon encounter.
+pub const FRAME_BEFORE_SCORE_MULT: u64 = 15;
+
 // The code currently only supports initial seed 0.
 const INITIAL_SEED: u32 = 0u32;
 
@@ -15,13 +19,13 @@ const DONT_USE_PAINTING_IF_BELOW_ADV: u32 = 200_000;
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3PaintingAdvs {
-    pub adv_before_painting: u32,
+    pub frame_before_painting: u32,
     pub adv_after_painting: u32,
 }
 
 impl Wild3PaintingAdvs {
     pub fn get_resulting_seed(&self) -> u32 {
-        let mut rng = Pokerng::new(self.adv_before_painting);
+        let mut rng = Pokerng::new(self.frame_before_painting);
         rng.jump(self.adv_after_painting as usize);
         rng.seed()
     }
@@ -33,13 +37,13 @@ pub struct Wild3PaintingOpts {
     /** only used to penalize the score of results requiring a counter overflow.
     Ex: Getting painting adv=5 actually requires 0x1_0000_0005 advances.
      */
-    pub min_adv_before_painting: u32,
+    pub min_frame_before_painting: u32,
     pub min_adv_after_painting: u32,
 }
 
 #[derive(Debug)]
 pub struct Wild3PaintingMinMaxAdvs {
-    pub adv_before_painting: u32,
+    pub frame_before_painting: u32,
     pub adv_state_right_after_painting: u32,
     pub min_adv_after_painting: u32,
 }
@@ -58,7 +62,7 @@ pub fn find_painting_advs_for_seed(opts: &Wild3PaintingOpts, seed: u32) -> Vec<W
         .lookup_table
         .iter()
         .map(|candidate| Wild3PaintingAdvs {
-            adv_before_painting: candidate.adv_before_painting,
+            frame_before_painting: candidate.frame_before_painting,
             adv_after_painting: wanted_advances
                 .wrapping_sub(candidate.adv_state_right_after_painting),
         })
@@ -88,11 +92,11 @@ impl Wild3PaintingAdvFinder {
         self.find_fastest_painting_adv(lcrng_distance(INITIAL_SEED, wanted_seed))
     }
     pub fn find_fastest_painting_adv(&self, wanted_adv: u32) -> Wild3PaintingAdvs {
-        if wanted_adv >= self.opts.min_adv_before_painting
+        if wanted_adv >= self.opts.min_frame_before_painting
             && wanted_adv < DONT_USE_PAINTING_IF_BELOW_ADV
         {
             return Wild3PaintingAdvs {
-                adv_before_painting: 0,
+                frame_before_painting: 0,
                 adv_after_painting: wanted_adv,
             };
         }
@@ -115,23 +119,24 @@ impl Wild3PaintingAdvFinder {
 
             let candidate = &self.lookup_table[idx];
             let candidate_advs = Wild3PaintingAdvs {
-                adv_before_painting: candidate.adv_before_painting,
+                frame_before_painting: candidate.frame_before_painting,
                 adv_after_painting: wanted_adv
                     .wrapping_sub(candidate.adv_state_right_after_painting),
             };
             let adv_after_painting =
                 wanted_adv.wrapping_sub(candidate.adv_state_right_after_painting);
 
-            let additional_adv_before_painting =
-                if candidate.adv_before_painting < self.opts.min_adv_before_painting {
+            let additional_frame_before_painting =
+                if candidate.frame_before_painting < self.opts.min_frame_before_painting {
                     // Not enough time to do painting. We need to wait until it overflows back to 0.
                     0x1_0000_0000u64
                 } else {
                     0
                 };
 
-            let candidate_score = candidate.adv_before_painting as u64
-                + additional_adv_before_painting
+            let candidate_score = (candidate.frame_before_painting as u64
+                + additional_frame_before_painting)
+                .saturating_mul(FRAME_BEFORE_SCORE_MULT)
                 + adv_after_painting as u64;
 
             match current_best {
@@ -145,8 +150,8 @@ impl Wild3PaintingAdvFinder {
                         current_best = Some(candidate_advs);
                     } else {
                         // All future candidates will have a higher adv_after_painting, but possibly
-                        // a lower adv_before_painting.
-                        // If even with the lowest possible adv_before_painting (0), the score is still worse,
+                        // a lower frame_before_painting.
+                        // If even with the lowest possible frame_before_painting (0), the score is still worse,
                         // we can stop early.
                         let score_lower_bound_for_future_candidates = adv_after_painting as u64;
                         if score_lower_bound_for_future_candidates > current_score {
@@ -158,7 +163,7 @@ impl Wild3PaintingAdvFinder {
         }
 
         current_best.unwrap_or(Wild3PaintingAdvs {
-            adv_before_painting: 0,
+            frame_before_painting: 0,
             adv_after_painting: wanted_adv,
         })
     }
@@ -172,7 +177,7 @@ pub fn create_lookup_painting_table(opts: &Wild3PaintingOpts) -> Vec<Wild3Painti
                 adv_state_right_after_painting.wrapping_add(opts.min_adv_after_painting);
 
             vec![Wild3PaintingMinMaxAdvs {
-                adv_before_painting: i,
+                frame_before_painting: i,
                 adv_state_right_after_painting,
                 min_adv_after_painting,
             }]
@@ -183,7 +188,7 @@ pub fn create_lookup_painting_table(opts: &Wild3PaintingOpts) -> Vec<Wild3Painti
 
     /*
     min_max_advs = {
-        {adv_before_painting = 345, adv_state_right_after_painting = 678, min_adv_after_painting = 1678,
+        {frame_before_painting = 345, adv_state_right_after_painting = 678, min_adv_after_painting = 1678,
             This means reseeding after 345 advances will set the rng to (adv = 678), and it starts respecting min_adv_after_painting at (adv = 1678).
     }
     */
@@ -213,13 +218,13 @@ mod test {
         assert_eq!(
             find_fastest_painting_adv_for_test(
                 &Wild3PaintingOpts {
-                    min_adv_before_painting: 0,
+                    min_frame_before_painting: 0,
                     min_adv_after_painting: 0,
                 },
                 lcrng_distance(0, 0x91291100) // 100_000_000
             ),
             Wild3PaintingAdvs {
-                adv_before_painting: 0xae1c, // 44572
+                frame_before_painting: 0xae1c, // 44572
                 adv_after_painting: 33604,
             }
         );
@@ -227,13 +232,13 @@ mod test {
         assert_eq!(
             find_fastest_painting_adv_for_test(
                 &Wild3PaintingOpts {
-                    min_adv_before_painting: 0,
+                    min_frame_before_painting: 0,
                     min_adv_after_painting: 1000,
                 },
                 lcrng_distance(0, 0x183C26F6) // 12345678
             ),
             Wild3PaintingAdvs {
-                adv_before_painting: 0xfb9a, // 64410
+                frame_before_painting: 0xfb9a, // 64410
                 adv_after_painting: 35740,
             }
         );
@@ -241,13 +246,13 @@ mod test {
         assert_eq!(
             find_fastest_painting_adv_for_test(
                 &Wild3PaintingOpts {
-                    min_adv_before_painting: 0,
+                    min_frame_before_painting: 0,
                     min_adv_after_painting: 0,
                 },
                 10_000
             ),
             Wild3PaintingAdvs {
-                adv_before_painting: 0,
+                frame_before_painting: 0,
                 adv_after_painting: 10_000,
             }
         );
@@ -255,13 +260,13 @@ mod test {
         assert_eq!(
             find_fastest_painting_adv_for_test(
                 &Wild3PaintingOpts {
-                    min_adv_before_painting: 10_001,
+                    min_frame_before_painting: 10_001,
                     min_adv_after_painting: 0,
                 },
                 10_000
             ),
             Wild3PaintingAdvs {
-                adv_before_painting: 24691,
+                frame_before_painting: 24691,
                 adv_after_painting: 9999,
             }
         );

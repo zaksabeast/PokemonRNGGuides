@@ -11,7 +11,7 @@ use crate::{
         calculate_pid_speed, get_iv_filter_restrictiveness, get_iv1_filter_restrictiveness,
         get_iv2_filter_restrictiveness, get_pid_filter_restrictiveness, passes_pid_filter,
         reverse_find_pid_low_paths_from_pids,
-        searcher_painter::Wild3PaintingAdvFinder,
+        searcher_painter::{FRAME_BEFORE_SCORE_MULT, Wild3PaintingAdvFinder},
         wild::{
             lcrng_distance,
             searcher::{
@@ -236,7 +236,8 @@ fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
         Some(painting_adv_finder) => {
             let fastest = painting_adv_finder.find_fastest_painting_adv_from_seed(pid_path.seed);
             fastest
-                .adv_before_painting
+                .frame_before_painting
+                .saturating_mul(FRAME_BEFORE_SCORE_MULT as u32)
                 .saturating_add(fastest.adv_after_painting)
         }
     }

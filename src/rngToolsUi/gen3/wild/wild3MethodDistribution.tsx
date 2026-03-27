@@ -84,7 +84,7 @@ export type Props = {
     massOutbreakState: Wild3MassOutbreakState;
     initial_seed: number;
     painting_advs: {
-      adv_before_painting: number;
+      frame_before_painting: number;
       adv_after_painting: number;
     } | null;
     wantedMethod: Gen3Method;
@@ -635,8 +635,8 @@ export const Wild3MethodDistribution = ({
 
     const advs =
       fixedData.painting_advs != null &&
-      fixedData.painting_advs.adv_before_painting !== 0
-        ? `${formatLargeInteger(fixedData.painting_advs.adv_before_painting)} | ${formatLargeInteger(fixedData.painting_advs.adv_after_painting)}`
+      fixedData.painting_advs.frame_before_painting !== 0
+        ? `${formatLargeInteger(fixedData.painting_advs.frame_before_painting)} | ${formatLargeInteger(fixedData.painting_advs.adv_after_painting)}`
         : formatLargeInteger(fixedData.advance);
     return `Generate all possible Pokémon encounters at advances ${advs}`;
   }, [fixedData]);

@@ -69,7 +69,7 @@ const Validator = z
     letSearcherFindPaintingSeed: z.boolean(),
     initial_seed: z.number().int().min(0).max(0xffffffff),
     initial_advances: z.number().int().min(0).max(0xffffffff),
-    min_adv_before_painting: z.number().int().min(0).max(0xffffffff),
+    min_frame_before_painting: z.number().int().min(0).max(0xffffffff),
     min_adv_after_painting: z.number().int().min(0).max(0xffffffff),
     max_advances: z.number().int().min(0).max(0xffffffff),
     max_result_count: z.number().int().min(1),
@@ -90,7 +90,7 @@ export type PidPathResult = FlattenIvs<
     valueForSorting: number;
     paintingAdvs:
       | {
-          adv_before_painting: number;
+          frame_before_painting: number;
           adv_after_painting: number;
         }
       | undefined;
@@ -106,7 +106,7 @@ export type ResultSetupInfo = Wild3SearcherResultMon & {
   primaryLikelihood: number;
   initial_seed: number;
   painting_advs?: {
-    adv_before_painting: number;
+    frame_before_painting: number;
     adv_after_painting: number;
   };
 };
@@ -128,7 +128,7 @@ const getInitialValues = (): FormState => {
     letSearcherFindPaintingSeed: true,
     initial_seed: 0,
     initial_advances: 1000,
-    min_adv_before_painting: 1000,
+    min_frame_before_painting: 1000,
     min_adv_after_painting: 10000,
     max_advances: 10_000_000,
     max_result_count: 20,
@@ -172,7 +172,7 @@ const getPidPathColumns = (
       monospace: true,
       render: (earliestAdvance, { paintingAdvs }) => {
         if (paintingAdvs != null) {
-          const { adv_before_painting: before, adv_after_painting: after } =
+          const { frame_before_painting: before, adv_after_painting: after } =
             paintingAdvs;
           const title = `${formatDuration(before / GBA_FPS)} | ${formatDuration(after / GBA_FPS)}`;
 

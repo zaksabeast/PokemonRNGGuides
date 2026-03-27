@@ -79,7 +79,7 @@ const getResultSetupInfoColumns = ({
               return "";
             }
 
-            const adv = painting_advs.adv_before_painting;
+            const adv = painting_advs.frame_before_painting;
             return (
               <Tooltip title={`Painting Seed: ${formatHex(adv, 2)}`}>
                 {formatLargeInteger(adv)}

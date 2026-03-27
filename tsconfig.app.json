@@ -27,5 +27,5 @@
       "rng_tools": ["rng_tools/pkg"]
     }
   },
-  "include": ["src", "cypress"]
+  "include": ["src"]
 }

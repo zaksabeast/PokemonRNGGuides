@@ -1,4 +1,4 @@
-import { Flex, Card, Typography, Grid, BadgeRibbon } from "~/components";
+import { Flex, Card, Grid, BadgeRibbon } from "~/components";
 import { Route } from "~/routes/defs";
 import styled from "@emotion/styled";
 import { categoryHasNewContent } from "~/guides";
@@ -166,17 +166,6 @@ const Container = styled(Flex)(({ theme }) => {
   };
 });
 
-const FeaturedChallengeContainer = styled(Flex)(({ theme }) => ({
-  justifyContent: "space-around",
-  alignItems: "center",
-  gap: 8,
-  padding: 24,
-  height: "100%",
-  [theme.mediaQueries.down("mobile")]: {
-    flexDirection: "column",
-  },
-}));
-
 const LogoImg = styled.img({
   width: "50%",
   height: "50%",
@@ -186,21 +175,6 @@ const LogoImg = styled.img({
 export const HomePageComponent = () => {
   return (
     <Container gap={24} vertical>
-      <Flex>
-        <GameCard
-          id="featured-challenge"
-          borderColor="PrimaryBorder"
-          border="2px solid"
-          slug="/challenge-usum-ta/"
-          fullBody
-        >
-          <FeaturedChallengeContainer>
-            <Typography.Title level={2}>Featured Challenge</Typography.Title>
-            <img src={ultraMoonLogoSrc} />
-          </FeaturedChallengeContainer>
-        </GameCard>
-      </Flex>
-
       <Grid mobile={1} tablet={2} desktop={3}>
         {games.map((game) => (
           <GameCard

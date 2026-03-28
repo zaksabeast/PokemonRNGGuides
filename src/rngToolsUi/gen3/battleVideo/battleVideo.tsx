@@ -10,13 +10,13 @@ import {
   FormikSwitch,
   FormikNumberInput,
   FormFieldTable,
-  Icon,
   FormikSelect,
 } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import InstructionsNoBattle from "./instructions_no_battle.mdx";
-import InstructionsWithBattle from "./instructions_with_battle.mdx";
-import InstructionsUpdatingExisting from "./instructions_updating_existing.mdx";
+import InstructionsNoBattleNoExisting from "./instructions_no_battle_no_existing.mdx";
+import InstructionsWithBattleNoExisting from "./instructions_with_battle_no_existing.mdx";
+import InstructionsNoBattleWithExisting from "./instructions_no_battle_with_existing.mdx";
+import InstructionsWithBattleWithExisting from "./instructions_with_battle_with_existing.mdx";
 import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 import { useWatch } from "react-hook-form";
 import { match } from "ts-pattern";
@@ -26,14 +26,12 @@ import {
   gen3Consoles,
 } from "~/types/console";
 
-type Mode = "noBattle" | "withBattle" | "updatingExisting";
-
 // No waiting in battle
 const ADV_MISC_NO_BATTLE = 100; // Advances before last input not caused by frames when not waiting in battle
 const MIN_ADV_FOR_BATTLE_VIDEO = 3300; // It takes 3300 adv to boot the game and make a battle video as fast as possible.
 const SAFETY_BUFFER_NO_BATTLE = 350; // Additional buffer for satefy
 
-// With waiting in battle
+// With waiting in battle (new or updating existing are about the same)
 const THRESHOLD_ADV_FOR_BATTLE = 5 * 3600; // Waiting in battle is only considered if the waiting is greater than 5 minutes.
 const MIN_ADV_FOR_BATTLE = 6800; // It takes 6800 adv to start a wild battle, end it immediately, and make a battle video.
 const SWEET_SCENT_TARGET = 1500; // It takes about 1500 advances to boot the game and start a battle.
@@ -43,10 +41,10 @@ const SAFETY_BUFFER_BATTLE = 1000; // Additional buffer for satefy
 const ADV_SWEET_SCENT_INPUT_TO_X2_SPEED_UP = 400; // After pressing A on Sweet Scent, it takes 400 advances until RNG advances by 2 every frame.
 const ADV_RUN_INPUT_TO_X1_SPEED_UP = 225; // After pressing A to run from battle, it takes 225 advances until RNG advances stops advancing by 2 every frame.
 
-// When updating existing battle video
+// When updating existing battle video not in battle
 const ADV_MISC_UPDATE_EXISTING = 70; // Advances before last input not caused by frames when updating existing
 const SAFETY_BUFFER_UPDATE_EXISTING = 350; // Additional buffer for satefy
-const MIN_ADV_FOR_UPDATING_EXISTING = 2500; // It takes 2500 adv to boot the game and make a battle video as fast as possible.
+const MIN_ADV_FOR_UPDATING_EXISTING = 2500; // It takes 2500 adv to watch battle video then make a new battle video as fast as possible.
 
 // All
 const POST_BV_SWEET_SCENT_BUFFER = 600; // It takes about 600 advances to close the battle video and trigger Sweet Scent.
@@ -85,7 +83,7 @@ type BreakdownInfo = {
 const Validator = z.object({
   targetAdvance: z.number().min(0).max(0xffff_ffff),
   isUpdatingExisting: z.boolean(),
-  waitTimeExistingBattleVideo: z.number().min(0).max(0xffff_ffff),
+  existingBattleVideoAdv: z.number().min(0).max(0xffff_ffff),
   console: z.enum(gen3Consoles),
   forFishing: z.boolean(),
   considerWaitingInBattle: z.boolean(),
@@ -99,13 +97,13 @@ type FormState = z.infer<typeof Validator>;
 const initialValues: FormState = {
   targetAdvance: 50_000,
   isUpdatingExisting: false,
-  waitTimeExistingBattleVideo: 0,
   console: "GBA",
   forFishing: false,
   considerWaitingInBattle: true,
   displayAdvancedBreakdown: false,
   useRecommendedBuffer: true,
   specifiedBuffer: POST_BV_SWEET_SCENT_BUFFER + SAFETY_BUFFER_NO_BATTLE,
+  existingBattleVideoAdv: 0,
 };
 
 const MyFields = ({
@@ -123,27 +121,18 @@ const MyFields = ({
   const fields = React.useMemo(() => {
     return [
       {
+        label: "Target",
+        input: <FormikEmeraldTargetAdvance<FormState> name="targetAdvance" />,
+      },
+      {
         label: "Is updating existing Battle Video?",
         input: <FormikSwitch<FormState> name="isUpdatingExisting" />,
       },
       {
-        label: "Target",
-        input: <FormikEmeraldTargetAdvance<FormState> name="targetAdvance" />,
-        show: !isUpdatingExisting,
-      },
-      {
-        label: (
-          <>
-            Wait time (in ms) to hit target using the existing Battle Video
-            <Tooltip title="When doing RNG manipulation attempts, how long to wait before performing the action.">
-              <Icon name="InformationCircle" size={16} />
-            </Tooltip>
-          </>
-        ),
-        key: "waitTime",
+        label: "Existing Battle Video advances (approximative)",
         input: (
           <FormikNumberInput<FormState>
-            name="waitTimeExistingBattleVideo"
+            name="existingBattleVideoAdv"
             numType="decimal"
           />
         ),
@@ -240,9 +229,8 @@ const calculateWithoutBattle = (opts: FormState) => {
     ? actionBufferPostVideo + safetyBufferNoAction
     : opts.specifiedBuffer;
 
-  const targetAdvance = opts.isUpdatingExisting
-    ? Math.floor((opts.waitTimeExistingBattleVideo / 1000) * consoleFps)
-    : opts.targetAdvance;
+  const initialAdv = opts.isUpdatingExisting ? opts.existingBattleVideoAdv : 0;
+  const targetAdvance = opts.targetAdvance - initialAdv;
   const targetAdvAtVideo = targetAdvance - safetyBufferAdv;
 
   if (
@@ -282,10 +270,16 @@ const calculateWithoutBattle = (opts: FormState) => {
       "Close Battle Tower trainer opening phrase",
     ],
     breakdown: [
-      { name: "Game started", adv: 0, advSources: [] },
+      opts.isUpdatingExisting
+        ? {
+            name: "Watch existing Battle Video",
+            adv: initialAdv,
+            advSources: [],
+          }
+        : { name: "Game started", adv: 0, advSources: [] },
       {
         name: "Last player input to create Battle Video",
-        adv: targetAdvAtInput,
+        adv: initialAdv + targetAdvAtInput,
         advSources: [
           { name: "Frames (VBlank)", adv: advFromFrame },
           { name: "Other RNG advances", adv: advMisc },
@@ -293,14 +287,14 @@ const calculateWithoutBattle = (opts: FormState) => {
       },
       {
         name: "Battle Video created",
-        adv: targetAdvAtVideo,
+        adv: initialAdv + targetAdvAtVideo,
         advSources: [
           { name: "Frames (VBlank) & Other", adv: OFFSET_DIALOGUE_TO_BV },
         ],
       },
       {
         name: "Target",
-        adv: targetAdvance,
+        adv: initialAdv + targetAdvance,
         advSources: opts.useRecommendedBuffer
           ? [
               { name: "Performing action", adv: actionBufferPostVideo },
@@ -310,10 +304,12 @@ const calculateWithoutBattle = (opts: FormState) => {
       },
     ],
     battleVideoInfo: {
+      initialAdv,
       battleVideoAdv: targetAdvAtVideo,
       safetyBufferAdv,
       targetAdv: targetAdvance,
-      mode: (opts.isUpdatingExisting ? "updatingExisting" : "noBattle") as Mode,
+      withBattle: false,
+      isUpdatingExisting: opts.isUpdatingExisting,
     },
   };
 };
@@ -326,7 +322,10 @@ const calculateWithBattle = (opts: FormState) => {
   const safetyBufferAdv = opts.useRecommendedBuffer
     ? actionBufferPostVideo + SAFETY_BUFFER_BATTLE
     : opts.specifiedBuffer;
-  const targetAdvAtVideo = opts.targetAdvance - safetyBufferAdv;
+
+  const initialAdv = opts.isUpdatingExisting ? opts.existingBattleVideoAdv : 0;
+  const targetAdvance = opts.targetAdvance - initialAdv;
+  const targetAdvAtVideo = targetAdvance - safetyBufferAdv;
   const targetAdvAtInput = targetAdvAtVideo - OFFSET_DIALOGUE_TO_BV;
 
   // To reach targetAdvAtInput, there are 3 types of advances: "frame outside battle", "advance in battle" and misc.
@@ -363,23 +362,34 @@ const calculateWithBattle = (opts: FormState) => {
       (frameFromFrameOutsideBattleAfter / consoleFps) * 1000,
     ],
     timerLabels: [
-      "Soft reset START+SELECT+A+B",
+      opts.isUpdatingExisting
+        ? "Close the Battle Video"
+        : "Soft reset START+SELECT+A+B",
       "Trigger Sweet Scent",
       `End "Got away safely" message`,
       "Close Battle Tower trainer opening phrase",
     ],
     breakdown: [
-      { name: "Game started", adv: 0, advSources: [] },
+      opts.isUpdatingExisting
+        ? {
+            name: "Watch existing Battle Video",
+            adv: initialAdv,
+            advSources: [],
+          }
+        : { name: "Game started", adv: 0, advSources: [] },
       {
         name: "Player input to trigger Sweet Scent",
-        adv: SWEET_SCENT_TARGET,
+        adv: initialAdv + SWEET_SCENT_TARGET,
         advSources: [
           { name: "Frames (VBlank) & Others", adv: SWEET_SCENT_TARGET },
         ],
       },
       {
         name: "Battle started",
-        adv: SWEET_SCENT_TARGET + ADV_SWEET_SCENT_INPUT_TO_X2_SPEED_UP,
+        adv:
+          initialAdv +
+          SWEET_SCENT_TARGET +
+          ADV_SWEET_SCENT_INPUT_TO_X2_SPEED_UP,
         advSources: [
           {
             name: "Frames (VBlank) & Others",
@@ -390,6 +400,7 @@ const calculateWithBattle = (opts: FormState) => {
       {
         name: "Player input to run from battle",
         adv:
+          initialAdv +
           SWEET_SCENT_TARGET +
           ADV_SWEET_SCENT_INPUT_TO_X2_SPEED_UP +
           advFromBattle -
@@ -404,6 +415,7 @@ const calculateWithBattle = (opts: FormState) => {
       {
         name: "Battle ended",
         adv:
+          initialAdv +
           SWEET_SCENT_TARGET +
           ADV_SWEET_SCENT_INPUT_TO_X2_SPEED_UP +
           advFromBattle,
@@ -417,7 +429,7 @@ const calculateWithBattle = (opts: FormState) => {
 
       {
         name: "Last player input to create Battle Video",
-        adv: targetAdvAtInput,
+        adv: initialAdv + targetAdvAtInput,
         advSources: [
           {
             name: "Frames (VBlank)",
@@ -432,14 +444,14 @@ const calculateWithBattle = (opts: FormState) => {
       },
       {
         name: "Battle Video created",
-        adv: targetAdvAtVideo,
+        adv: initialAdv + targetAdvAtVideo,
         advSources: [
           { name: "Frames (VBlank) & Other", adv: OFFSET_DIALOGUE_TO_BV },
         ],
       },
       {
         name: "Target",
-        adv: opts.targetAdvance,
+        adv: initialAdv + targetAdvance,
         advSources: opts.useRecommendedBuffer
           ? [
               { name: "Time for action", adv: actionBufferPostVideo },
@@ -449,19 +461,23 @@ const calculateWithBattle = (opts: FormState) => {
       },
     ],
     battleVideoInfo: {
+      initialAdv,
       battleVideoAdv: targetAdvAtVideo,
       safetyBufferAdv,
       targetAdv: opts.targetAdvance,
-      mode: "withBattle" as Mode,
+      withBattle: true,
+      isUpdatingExisting: opts.isUpdatingExisting,
     },
   };
 };
 
 const calculate = (opts: FormState) => {
+  const initialAdv = opts.isUpdatingExisting ? opts.existingBattleVideoAdv : 0;
+  const targetAdvance = opts.targetAdvance - initialAdv;
+
   if (
-    opts.isUpdatingExisting ||
     !opts.considerWaitingInBattle ||
-    opts.targetAdvance < THRESHOLD_ADV_FOR_BATTLE
+    targetAdvance < THRESHOLD_ADV_FOR_BATTLE
   ) {
     return calculateWithoutBattle(opts);
   }
@@ -479,10 +495,12 @@ export const BattleVideo = () => {
     React.useState(false);
 
   const [battleVideoInfo, setBattleVideoInfo] = React.useState<{
+    initialAdv: number;
     battleVideoAdv: number;
     safetyBufferAdv: number;
     targetAdv: number;
-    mode: Mode;
+    withBattle: boolean;
+    isUpdatingExisting: boolean;
   } | null>(null);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
@@ -522,35 +540,45 @@ export const BattleVideo = () => {
 
       {battleVideoInfo != null && (
         <>
-          {match(battleVideoInfo.mode)
-            .with("withBattle", () => <InstructionsWithBattle />)
-            .with("updatingExisting", () => <InstructionsUpdatingExisting />)
-            .with("noBattle", () => <InstructionsNoBattle />)
+          {match(battleVideoInfo)
+            .with({ withBattle: false, isUpdatingExisting: false }, () => (
+              <InstructionsNoBattleNoExisting />
+            ))
+            .with({ withBattle: false, isUpdatingExisting: true }, () => (
+              <InstructionsNoBattleWithExisting />
+            ))
+            .with({ withBattle: true, isUpdatingExisting: false }, () => (
+              <InstructionsWithBattleNoExisting />
+            ))
+            .with({ withBattle: true, isUpdatingExisting: true }, () => (
+              <InstructionsWithBattleWithExisting />
+            ))
             .exhaustive()}
 
-          {match(battleVideoInfo.mode)
-            .with("updatingExisting", () => (
-              <div>
-                The new Battle Video will be created at ~
-                {formatLargeInteger(battleVideoInfo.battleVideoAdv)} additional
-                advances compared to the previous Battle Video. (Safety buffer:{" "}
-                {formatLargeInteger(battleVideoInfo.safetyBufferAdv)} advances.)
-              </div>
-            ))
-            .otherwise(() => (
+          <div>
+            Battle Video will be created at advance ~
+            {formatLargeInteger(battleVideoInfo.battleVideoAdv)}.
+            {battleVideoInfo.isUpdatingExisting && (
               <>
-                <div>
-                  Battle Video will be created at advance ~
-                  {formatLargeInteger(battleVideoInfo.battleVideoAdv)}. (Safety
-                  buffer: {formatLargeInteger(battleVideoInfo.safetyBufferAdv)}{" "}
-                  advances.)
-                </div>
-                <div>
-                  Target advance for the RNG manipulation:{" "}
-                  {formatLargeInteger(battleVideoInfo.targetAdv)}.
-                </div>
+                {" "}
+                (+
+                {formatLargeInteger(
+                  battleVideoInfo.battleVideoAdv - battleVideoInfo.initialAdv,
+                )}{" "}
+                advances compared to the previous Battle Video)
               </>
-            ))}
+            )}
+          </div>
+
+          <div>
+            Safety buffer: {formatLargeInteger(battleVideoInfo.safetyBufferAdv)}{" "}
+            advances.
+          </div>
+
+          <div>
+            Target advance for the RNG manipulation:{" "}
+            {formatLargeInteger(battleVideoInfo.targetAdv)}.
+          </div>
         </>
       )}
 

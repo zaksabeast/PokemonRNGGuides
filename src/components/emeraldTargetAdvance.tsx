@@ -1,7 +1,6 @@
 import React from "react";
 import { GenericForm, GuaranteeFormNameType } from "~/types";
 import { useField } from "~/hooks/form";
-import { Select } from "./select";
 import { NumberInput } from "./numberInput";
 import clamp from "lodash-es/clamp";
 import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";

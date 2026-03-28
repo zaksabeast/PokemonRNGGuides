@@ -15,7 +15,6 @@ import { ConfigProvider } from "antd";
 import { themePalette, getTheme } from "~/theme/index";
 import { getGuide } from "~/guides";
 import { HelmetProvider, HelmetDataContext } from "@dr.pogodin/react-helmet";
-// @ts-expect-error -- react-dom/server is a commonjs module for some reason.  react-dom/server.browser doesn't have proper types, but works as expected.
 import { renderToReadableStream as _renderToReadableStream } from "react-dom/server.browser";
 
 // Type hack to get the correct type for renderToReadableStream

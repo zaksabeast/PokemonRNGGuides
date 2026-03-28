@@ -118,13 +118,15 @@ export const MarkdownA = ({ href, children }: { href: string } & Props) => {
     return <a href={href}>{children}</a>;
   }
 
+  let parsedHref: URL | null = null;
   try {
-    const parsedHref = new URL(href);
-    if (parsedHref.protocol === "https:") {
-      return <a href={href}>{children}</a>;
-    }
+    parsedHref = new URL(href);
   } catch {
     // not a valid URL
+  }
+
+  if (parsedHref?.protocol === "https:") {
+    return <a href={href}>{children}</a>;
   }
 
   return <>{children}</>;

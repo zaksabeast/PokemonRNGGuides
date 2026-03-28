@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import path from "path";
-import react from "@vitejs/plugin-react";
-import babel from "vite-plugin-babel";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
 import mdx from "@mdx-js/rollup";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
@@ -17,10 +17,7 @@ export default defineConfig({
     }),
     react(),
     babel({
-      babelConfig: {
-        presets: ["@babel/preset-typescript"],
-        plugins: [["babel-plugin-react-compiler", {}]],
-      },
+      presets: ["@babel/preset-typescript", reactCompilerPreset()],
     }),
     wasm(),
     VitePWA({
@@ -58,14 +55,13 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    // Minimum browsers that support top-level await (required for WASM)
+    target: ["chrome89", "edge89", "firefox89", "safari15"],
+  },
   worker: {
     plugins: () => [wasm()],
     format: "es",
-  },
-  esbuild: {
-    supported: {
-      "top-level-await": true, //browsers can handle top-level-await features
-    },
   },
   resolve: {
     alias: {

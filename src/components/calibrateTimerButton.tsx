@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "~/components";
+import { Button } from "./button";
 import { message } from "antd";
 import { Gen3TimerAtom, useGen3Timer } from "~/hooks/useGen3Timer";
 import {

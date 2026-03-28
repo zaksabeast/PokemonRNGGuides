@@ -11,6 +11,101 @@ const RING_COLOR_FLASH = "#FFD700"; // Gold for flash feedback
 const BACKGROUND_COLOR = "#f0f0f0"; // Light gray background ring
 const TEXT_COLOR = "#000"; // Black text
 
+// Draw text (only called when milliseconds value changes noticeably)
+const drawText = ({
+  remaining,
+  canvasRef,
+  contextRef,
+}: {
+  remaining: number;
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
+  contextRef: React.RefObject<CanvasRenderingContext2D | null>;
+}) => {
+  const canvas = canvasRef.current;
+  if (canvas === null) {
+    return;
+  }
+
+  let ctx = contextRef.current;
+  if (ctx === null) {
+    ctx = canvas.getContext("2d");
+    if (ctx === null) {
+      return;
+    }
+    contextRef.current = ctx;
+  }
+
+  const CENTER = CANVAS_SIZE / 2;
+  const flooredRemaining = Math.floor(remaining);
+  const seconds = Math.floor(flooredRemaining / 1000);
+  const milliseconds = flooredRemaining % 1000;
+  const text = `${seconds.toString().padStart(2, "0")}:${milliseconds.toString().padStart(3, "0")}`;
+
+  ctx.font = "700 24px Menlo, Monaco, 'Courier New', monospace";
+  ctx.fillStyle = TEXT_COLOR;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, CENTER, CENTER);
+};
+
+// Draw progress ring every frame for smooth animation
+const drawRing = ({
+  remaining,
+  currentTime,
+  expirationMs,
+  canvasRef,
+  contextRef,
+  lastFlashTimeRef,
+}: {
+  remaining: number;
+  currentTime: number;
+  expirationMs: number;
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
+  contextRef: React.RefObject<CanvasRenderingContext2D | null>;
+  lastFlashTimeRef: React.RefObject<number>;
+}) => {
+  const canvas = canvasRef.current;
+  if (canvas === null) {
+    return;
+  }
+
+  let ctx = contextRef.current;
+  if (ctx === null) {
+    ctx = canvas.getContext("2d");
+    if (ctx === null) {
+      return;
+    }
+    contextRef.current = ctx;
+  }
+
+  const CENTER = CANVAS_SIZE / 2;
+  const RADIUS = 85;
+  const LINE_WIDTH = 8;
+
+  ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+
+  // Draw background circle
+  ctx.beginPath();
+  ctx.arc(CENTER, CENTER, RADIUS, 0, Math.PI * 2);
+  ctx.strokeStyle = BACKGROUND_COLOR;
+  ctx.lineWidth = LINE_WIDTH;
+  ctx.stroke();
+
+  // Draw progress ring - use bright color if recently flashed
+  const isFlashing = currentTime - lastFlashTimeRef.current < FLASH_DURATION;
+  const ringColor = isFlashing ? RING_COLOR_FLASH : RING_COLOR_ACTIVE;
+
+  const percent = Math.max(0, remaining / expirationMs);
+  const endAngle = -Math.PI / 2 + percent * Math.PI * 2;
+
+  ctx.beginPath();
+  ctx.arc(CENTER, CENTER, RADIUS, -Math.PI / 2, endAngle);
+  ctx.strokeStyle = ringColor;
+  ctx.lineWidth = LINE_WIDTH;
+  ctx.lineCap = "round";
+  ctx.stroke();
+};
+
 type CanvasTimerConfig = {
   expirationMs: number;
   countdownMs?: number;
@@ -44,119 +139,46 @@ export const useCanvasTimer = ({
     onExpireRef.current = onExpire;
   }, [onExpire]);
 
-  // Draw progress ring every frame for smooth animation
-  const drawRing = React.useCallback(
-    (remaining: number, currentTime: number) => {
-      const canvas = canvasRef.current;
-      if (canvas === null) {
-        return;
-      }
-
-      let ctx = contextRef.current;
-      if (ctx === null) {
-        ctx = canvas.getContext("2d");
-        if (ctx === null) {
-          return;
-        }
-        contextRef.current = ctx;
-      }
-
-      const CENTER = CANVAS_SIZE / 2;
-      const RADIUS = 85;
-      const LINE_WIDTH = 8;
-
-      ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
-
-      // Draw background circle
-      ctx.beginPath();
-      ctx.arc(CENTER, CENTER, RADIUS, 0, Math.PI * 2);
-      ctx.strokeStyle = BACKGROUND_COLOR;
-      ctx.lineWidth = LINE_WIDTH;
-      ctx.stroke();
-
-      // Draw progress ring - use bright color if recently flashed
-      const isFlashing = currentTime - lastFlashTime.current < FLASH_DURATION;
-      const ringColor = isFlashing ? RING_COLOR_FLASH : RING_COLOR_ACTIVE;
-
-      const percent = Math.max(0, remaining / expirationMs);
-      const endAngle = -Math.PI / 2 + percent * Math.PI * 2;
-
-      ctx.beginPath();
-      ctx.arc(CENTER, CENTER, RADIUS, -Math.PI / 2, endAngle);
-      ctx.strokeStyle = ringColor;
-      ctx.lineWidth = LINE_WIDTH;
-      ctx.lineCap = "round";
-      ctx.stroke();
-    },
-    [expirationMs],
-  );
-
-  // Draw text (only called when milliseconds value changes noticeably)
-  const drawText = React.useCallback((remaining: number) => {
-    const canvas = canvasRef.current;
-    if (canvas === null) {
+  const tick = (now: number) => {
+    if (startTime.current == null) {
       return;
     }
 
-    let ctx = contextRef.current;
-    if (ctx === null) {
-      ctx = canvas.getContext("2d");
-      if (ctx === null) {
-        return;
-      }
-      contextRef.current = ctx;
+    // Calculate elapsed time, accounting for this timer's offset in the sequence
+    const elapsed = now - startTime.current - timerStartOffset;
+    const remaining = Math.max(expirationMs - elapsed, 0);
+    msRemaining.current = remaining;
+
+    // Always draw ring for smooth animation
+    drawRing({
+      remaining,
+      currentTime: now,
+      expirationMs,
+      canvasRef,
+      contextRef,
+      lastFlashTimeRef: lastFlashTime,
+    });
+
+    // Redraw text only if milliseconds changed by 50ms or more
+    const flooredRemaining = Math.floor(remaining);
+    if (
+      lastRenderedMs.current === -1 ||
+      Math.abs(flooredRemaining - lastRenderedMs.current) >= UPDATE_INTERVAL_MS
+    ) {
+      lastRenderedMs.current = flooredRemaining;
     }
 
-    const CENTER = CANVAS_SIZE / 2;
-    const flooredRemaining = Math.floor(remaining);
-    const seconds = Math.floor(flooredRemaining / 1000);
-    const milliseconds = flooredRemaining % 1000;
-    const text = `${seconds.toString().padStart(2, "0")}:${milliseconds.toString().padStart(3, "0")}`;
+    // Always redraw text after checking if it changed (prevents flicker)
+    drawText({ remaining, canvasRef, contextRef });
 
-    ctx.font = "700 24px Menlo, Monaco, 'Courier New', monospace";
-    ctx.fillStyle = TEXT_COLOR;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(text, CENTER, CENTER);
-  }, []);
+    if (remaining <= 0) {
+      return;
+    }
 
-  const tick = React.useCallback(
-    (now: number) => {
-      if (startTime.current == null) {
-        return;
-      }
+    frameId.current = requestAnimationFrame(tick);
+  };
 
-      // Calculate elapsed time, accounting for this timer's offset in the sequence
-      const elapsed = now - startTime.current - timerStartOffset;
-      const remaining = Math.max(expirationMs - elapsed, 0);
-      msRemaining.current = remaining;
-
-      // Always draw ring for smooth animation
-      drawRing(remaining, now);
-
-      // Redraw text only if milliseconds changed by 50ms or more
-      const flooredRemaining = Math.floor(remaining);
-      if (
-        lastRenderedMs.current === -1 ||
-        Math.abs(flooredRemaining - lastRenderedMs.current) >=
-          UPDATE_INTERVAL_MS
-      ) {
-        lastRenderedMs.current = flooredRemaining;
-      }
-
-      // Always redraw text after checking if it changed (prevents flicker)
-      drawText(remaining);
-
-      if (remaining <= 0) {
-        return;
-      }
-
-      frameId.current = requestAnimationFrame(tick);
-    },
-    [expirationMs, drawRing, drawText, timerStartOffset],
-  );
-
-  const start = React.useCallback(() => {
+  const start = () => {
     // Stop any existing animation
     if (frameId.current != null) {
       cancelAnimationFrame(frameId.current);
@@ -197,9 +219,9 @@ export const useCanvasTimer = ({
     beepTimeouts.current.push(expiryTimeout);
 
     frameId.current = requestAnimationFrame(tick);
-  }, [tick, expirationMs, countdownMs, startTimeMs]);
+  };
 
-  const stop = React.useCallback(() => {
+  const stop = () => {
     if (frameId.current != null) {
       cancelAnimationFrame(frameId.current);
     }
@@ -216,9 +238,16 @@ export const useCanvasTimer = ({
     contextRef.current = null; // Clear cached context on stop
 
     // Draw final state
-    drawRing(expirationMs, performance.now());
-    drawText(expirationMs);
-  }, [expirationMs, drawRing, drawText]);
+    drawRing({
+      remaining: expirationMs,
+      currentTime: performance.now(),
+      expirationMs,
+      canvasRef,
+      contextRef,
+      lastFlashTimeRef: lastFlashTime,
+    });
+    drawText({ remaining: expirationMs, canvasRef, contextRef });
+  };
 
   React.useEffect(() => {
     return () => {
@@ -243,14 +272,20 @@ export const useCanvasTimer = ({
     canvas.height = CANVAS_SIZE;
 
     // Initial render
-    drawRing(expirationMs, performance.now());
-    drawText(expirationMs);
-  }, [expirationMs, drawRing, drawText]);
+    drawRing({
+      remaining: expirationMs,
+      currentTime: performance.now(),
+      expirationMs,
+      canvasRef,
+      contextRef,
+      lastFlashTimeRef: lastFlashTime,
+    });
+    drawText({ remaining: expirationMs, canvasRef, contextRef });
+  }, [expirationMs]);
 
   return {
     canvasRef,
     isRunning,
-    msRemaining: msRemaining.current,
     start,
     stop,
   };

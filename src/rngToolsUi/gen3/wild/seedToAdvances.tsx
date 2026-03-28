@@ -40,8 +40,8 @@ const getColumns = (): ResultColumn<Result>[] => {
     {
       title: (
         <>
-          Frames Before
-          <br /> Painting Reseeding
+          Frames before
+          <br /> reseeding
         </>
       ),
       key: "frame_before_painting",
@@ -55,8 +55,25 @@ const getColumns = (): ResultColumn<Result>[] => {
     {
       title: (
         <>
-          Advances After
-          <br /> Painting Reseeding
+          RNG state after <br />
+          reseeding <br />
+          (in advances)
+        </>
+      ),
+      key: "frame_before_painting",
+      dataIndex: "frame_before_painting",
+      render: (frame_before_painting) => {
+        return frame_before_painting === 0
+          ? "-"
+          : formatLargeInteger(lcrng_distance(0, frame_before_painting));
+      },
+    },
+    {
+      title: (
+        <>
+          Additional advances <br />
+          after reseeding <br />
+          to hit target
         </>
       ),
       key: "adv_after_painting",
@@ -82,13 +99,13 @@ const getColumns = (): ResultColumn<Result>[] => {
         const wait_before_bv = Math.floor(adv_after_painting / bv_wait_divider);
 
         if (values.frame_before_painting === 0) {
-          const time_for_bv = 3600 * 3; // 3 minutes to create battle video + additional buffer
+          const time_for_bv = 3600 * 3; // ~3 minutes to create battle video. +0.5 min additional buffer
 
           const total = wait_before_bv + time_for_bv;
           return formatDuration(total / GBA_FPS);
         }
 
-        const time_for_validating_painting = 3600 * 3; // 3 minutes / attempt to create battle video + catching high-level pokemon
+        const time_for_validating_painting = 3600 * 5; // ~4.5 minutes / attempt to create battle video + catching high-level pokemon. +0.5min buffer.
 
         const total =
           (values.frame_before_painting + time_for_validating_painting) *
@@ -105,8 +122,8 @@ const Validator = z.object({
   findOptimalSeed: z.boolean(),
   // Permit over 0xFFFF even if not possible with painting. It's still useful to support for other type of reseeding or for emulator users.
   paintingSeed: z.number().int().min(0).max(0xffffffff),
-  minAdvBefore: z.number().int().min(0).max(0xffffffff),
-  minAdvAfter: z.number().int().min(0).max(0xffffffff),
+  min_frame_before_painting: z.number().int().min(0).max(0xffffffff),
+  min_adv_after_painting: z.number().int().min(0).max(0xffffffff),
 });
 
 export type FormState = z.infer<typeof Validator>;
@@ -116,8 +133,8 @@ const initialValues: FormState = {
   usingPaintingReseeding: true,
   findOptimalSeed: true,
   paintingSeed: 0,
-  minAdvBefore: 1000,
-  minAdvAfter: 10000,
+  min_frame_before_painting: 800, // Assuming dead battery.
+  min_adv_after_painting: 7000, // About 4800 advances from painting to battle video. then 2200 advances buffer.
 };
 
 const MyFields = () => {
@@ -178,9 +195,12 @@ const MyFields = () => {
             </div>
           </Tooltip>
         ),
-        key: "minAdvBefore",
+        key: "min_frame_before_painting",
         input: (
-          <FormikNumberInput<FormState> name="minAdvBefore" numType="decimal" />
+          <FormikNumberInput<FormState>
+            name="min_frame_before_painting"
+            numType="decimal"
+          />
         ),
         show: usingPaintingReseeding && findOptimalSeed,
         indent: 1,
@@ -194,9 +214,12 @@ const MyFields = () => {
             </div>
           </Tooltip>
         ),
-        key: "minAdvAfter",
+        key: "min_adv_after_painting",
         input: (
-          <FormikNumberInput<FormState> name="minAdvAfter" numType="decimal" />
+          <FormikNumberInput<FormState>
+            name="min_adv_after_painting"
+            numType="decimal"
+          />
         ),
         show: usingPaintingReseeding && findOptimalSeed,
         indent: 1,
@@ -249,8 +272,8 @@ export const EmeraldSeedToAdvances = () => {
               return true;
             }
             return (
-              res.frame_before_painting >= opts.minAdvBefore &&
-              res.adv_after_painting >= opts.minAdvAfter
+              res.frame_before_painting >= opts.min_frame_before_painting &&
+              res.adv_after_painting >= opts.min_adv_after_painting
             );
           });
           results.sort((lhs, rhs) => {

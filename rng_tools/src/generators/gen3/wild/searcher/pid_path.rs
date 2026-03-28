@@ -224,21 +224,28 @@ pub fn find_pid_paths_reverse_iv<const METHOD3: bool>(
 }
 
 fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
-    match &opts.painting_adv_finder {
-        None => {
-            // We assume min_advances is respected. This is supposed to be valided by the caller.
+    // Limitation: score should be calculated using encounter_idx_seed, not the pid_seed.
+    // But that this point, encounter_idx_seed isn't known yet. In most cases, the impact is minimal.
 
-            // Limitation: distance should be calculated using encounter_idx_seed, not the pid_seed.
-            // But that this point, encounter_idx_seed isn't known yet.
-            lcrng_distance(opts.initial_seed, pid_path.seed)
-                .wrapping_sub(opts.initial_advances as u32)
-        }
+    // We assume min_advances is respected. This is supposed to be valided by the caller.
+    let score_without_painting =
+        lcrng_distance(opts.initial_seed, pid_path.seed).wrapping_sub(opts.initial_advances as u32);
+
+    match &opts.painting_adv_finder {
+        None => score_without_painting,
         Some(painting_adv_finder) => {
-            let fastest = painting_adv_finder.find_fastest_painting_adv_from_seed(pid_path.seed);
-            fastest
-                .frame_before_painting
-                .saturating_mul(FRAME_BEFORE_SCORE_MULT as u32)
-                .saturating_add(fastest.adv_after_painting)
+            const PAINTING_PEN: u32 = 3600u32 * 10 / 2; // to account the time for performing in average 10 painting attempts
+
+            let score_with_painting = {
+                let fastest =
+                    painting_adv_finder.find_fastest_painting_adv_from_seed(pid_path.seed);
+                fastest
+                    .frame_before_painting
+                    .saturating_mul(FRAME_BEFORE_SCORE_MULT as u32)
+                    .saturating_add(fastest.adv_after_painting)
+                    .saturating_add(PAINTING_PEN)
+            };
+            std::cmp::min(score_without_painting, score_with_painting)
         }
     }
 }

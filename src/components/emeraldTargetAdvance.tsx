@@ -8,6 +8,9 @@ import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
 import { match } from "ts-pattern";
 import { Flex } from "./flex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { RadioGroup } from "./radio";
+import { RadioChangeEvent } from "antd";
+import { formatHex } from "~/utils/formatHex";
 
 type FormikEmeraldTargetAdvanceProps<FormState extends GenericForm> = {
   name: GuaranteeFormNameType<FormState, number>;
@@ -63,12 +66,27 @@ export const FormikEmeraldTargetAdvance = <FormState extends GenericForm>({
       .exhaustive();
   }, [mode, value, seed, setValue]);
 
+  const onChange = React.useCallback(
+    (evt: RadioChangeEvent) => {
+      setMode(evt.target.value as Mode);
+    },
+    [setMode],
+  );
+
   return (
     <Flex vertical gap={4}>
-      <Select options={opts} value={mode} onChange={setMode} />
+      <RadioGroup
+        options={opts}
+        value={mode}
+        onChange={onChange}
+        optionType="button"
+      />
       {match(mode)
         .with("Advance", () => (
-          <NumberInput value={value} numType="decimal" onChange={setValue} />
+          <>
+            <NumberInput value={value} numType="decimal" onChange={setValue} />
+            {seed != null && `Seed: ${formatHex(seed)}`}
+          </>
         ))
         .with("Seed", () => (
           <>

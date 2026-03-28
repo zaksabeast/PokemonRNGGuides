@@ -20,9 +20,9 @@ import { GBA_FPS } from "~/utils/consts";
 import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
 import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 
-// 1 frame wait before painting is worth 15 advances after painting.
-// The reason is that it takes x15 more time to retry painting manip than the pokemon encounter.
-const FRAME_BEFORE_SCORE_MULT = 15;
+const THRESHOLD_ADV_FOR_BATTLE_FOR_BATTLE_VIDEO = 5 * 3600;
+const AVG_RETRY_PER_ATTEMPT = 10;
+const FRAME_BEFORE_SCORE_MULT = 20;
 
 type Result = Wild3PaintingAdvs;
 
@@ -66,11 +66,35 @@ const getColumns = (): ResultColumn<Result>[] => {
       },
     },
     {
-      title: "Wait Duration",
+      title: (
+        <>
+          Time to create Battle Video <br />
+          assuming {AVG_RETRY_PER_ATTEMPT} painting attempts
+        </>
+      ),
+      key: "manipDur",
       dataIndex: "adv_after_painting",
       render: (adv_after_painting, values) => {
-        const durInAdvances = adv_after_painting + values.frame_before_painting;
-        return formatDuration(durInAdvances / GBA_FPS);
+        const bv_wait_divider =
+          adv_after_painting > THRESHOLD_ADV_FOR_BATTLE_FOR_BATTLE_VIDEO
+            ? 2
+            : 1;
+        const wait_before_bv = Math.floor(adv_after_painting / bv_wait_divider);
+
+        if (values.frame_before_painting === 0) {
+          const time_for_bv = 3600 * 3; // 3 minutes to create battle video + additional buffer
+
+          const total = wait_before_bv + time_for_bv;
+          return formatDuration(total / GBA_FPS);
+        }
+
+        const time_for_validating_painting = 3600 * 3; // 3 minutes / attempt to create battle video + catching high-level pokemon
+
+        const total =
+          (values.frame_before_painting + time_for_validating_painting) *
+            AVG_RETRY_PER_ATTEMPT +
+          wait_before_bv;
+        return formatDuration(total / GBA_FPS);
       },
     },
   ];
@@ -88,8 +112,8 @@ const Validator = z.object({
 export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  targetAdvance: 10_000,
-  usingPaintingReseeding: false,
+  targetAdvance: 1_000_000,
+  usingPaintingReseeding: true,
   findOptimalSeed: true,
   paintingSeed: 0,
   minAdvBefore: 1000,

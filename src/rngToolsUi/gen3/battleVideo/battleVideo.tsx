@@ -34,7 +34,7 @@ const MIN_ADV_FOR_BATTLE_VIDEO = 3300; // It takes 3300 adv to boot the game and
 const SAFETY_BUFFER_NO_BATTLE = 350; // Additional buffer for satefy
 
 // With waiting in battle
-const THRESHOLD_ADV_FOR_BATTLE = 15_000; // Waiting in battle is only considered if the waiting is greater than ~30 minutes.
+const THRESHOLD_ADV_FOR_BATTLE = 5 * 3600; // Waiting in battle is only considered if the waiting is greater than 5 minutes.
 const MIN_ADV_FOR_BATTLE = 6800; // It takes 6800 adv to start a wild battle, end it immediately, and make a battle video.
 const SWEET_SCENT_TARGET = 1500; // It takes about 1500 advances to boot the game and start a battle.
 const POST_BATTLE_BUFFER = 1800; // Buffer to add flexbility to the timing of the battle start

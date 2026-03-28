@@ -5,9 +5,12 @@ use wasm_bindgen::prelude::*;
 use crate::{gen3::wild::lcrng_distance, rng::lcrng::Pokerng};
 use itertools::Itertools;
 
-// 1 frame wait before painting is worth 15 advances after painting.
-// The reason is that it takes x15 more time to retry painting manip than the pokemon encounter.
-pub const FRAME_BEFORE_SCORE_MULT: u64 = 15;
+// 1 frame wait before painting is worth 20 advances after painting.
+// This assumes it takes in average 10 attempts to hit the target painting frame, and
+// the player waits in battle (x2 speedup) for the advances after painting.
+// For each painting manip, all frames must be waited. For pokemon encounter manip
+// (after painting reseeding), battle video can be used so each attempt is constant (~30s).
+pub const FRAME_BEFORE_SCORE_MULT: u64 = 20;
 
 // The code currently only supports initial seed 0.
 const INITIAL_SEED: u32 = 0u32;

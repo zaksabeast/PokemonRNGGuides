@@ -456,6 +456,40 @@ export const guides = {
       return file.default;
     }),
   },
+  "/bw-calibration/": {
+    meta: {
+      id: "/bw-calibration/",
+      categories: ["Black and White"],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/bw-calibration/",
+      isNew: true,
+      title: "Black and White Calibration Helper",
+      navDrawerTitle: "Calibration Helper",
+      description:
+        "A tool to help with calibrating your RNG setup for Black and White.",
+      slug: "/bw-calibration/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: "2026-03-28",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-28",
+      type: "baseGuide",
+      file: "guides/Gen 5/Calibration.mdx",
+      translations: null,
+      guideGroupId: "en:/bw-calibration/:Black and White",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Calibration.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/Calibration.mdx?raw");
+      return file.default;
+    }),
+  },
   "/bw-emu-starter/": {
     meta: {
       id: "/bw-emu-starter/",
@@ -490,6 +524,40 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Gen 5/BW Emu Starter.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Gen 5/BW Emu Starter.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/bw2-calibration/": {
+    meta: {
+      id: "/bw2-calibration/",
+      categories: ["Black 2 and White 2"],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "/bw2-calibration/",
+      isNew: true,
+      title: "Black 2 and White 2 Calibration Helper",
+      navDrawerTitle: "Calibration Helper",
+      description:
+        "A tool to help with calibrating your RNG setup for Black 2 and White 2.",
+      slug: "/bw2-calibration/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: "2026-03-28",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-28",
+      type: "baseGuide",
+      file: "guides/Gen 5/Calibration.mdx",
+      translations: null,
+      guideGroupId: "en:/bw2-calibration/:Black 2 and White 2",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 5/Calibration.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/Calibration.mdx?raw");
       return file.default;
     }),
   },
@@ -15741,7 +15809,9 @@ export const guideSlugs = [
   "/black-2-and-white-2/",
   "/black-and-white/",
   "/brilliant-diamond-and-shining-pearl/",
+  "/bw-calibration/",
   "/bw-emu-starter/",
+  "/bw2-calibration/",
   "/bw2-egg/",
   "/cfw-bdsp-egg/",
   "/cfw-bdsp-stationary/",

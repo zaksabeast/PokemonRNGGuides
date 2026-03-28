@@ -3,6 +3,9 @@ import { Typography, Flex, Image, Link } from "~/components";
 import styled from "@emotion/styled";
 import { formatRelativeUrl } from "~/utils/formatRelativeUrl";
 import { RouteSchema } from "~/routes/defs";
+import { get } from "lodash-es";
+import { guides } from "~/guides";
+import { usePageLanguage } from "~/markdownExports/languageContext";
 
 type Props = { children: React.ReactNode };
 
@@ -97,11 +100,18 @@ export const MarkdownImage = ({ src, alt }: { src: string; alt: string }) => (
 );
 
 export const MarkdownA = ({ href, children }: { href: string } & Props) => {
+  const currentLanguage = usePageLanguage();
+
   const internalHref = RouteSchema.safeParse(
     formatRelativeUrl({ url: href, leadingSlash: true, trailingSlash: true }),
   );
   if (internalHref.success) {
-    return <Link href={internalHref.data}>{children}</Link>;
+    const linkedGuide = guides[internalHref.data];
+    const translations = linkedGuide?.meta?.translations;
+    const translatedSlug = get(translations, currentLanguage);
+    const finalHref =
+      translatedSlug != null ? translatedSlug : internalHref.data;
+    return <Link href={finalHref}>{children}</Link>;
   }
 
   if (href.startsWith("/downloads/")) {

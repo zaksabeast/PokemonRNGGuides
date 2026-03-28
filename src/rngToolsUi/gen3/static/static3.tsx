@@ -21,6 +21,6 @@ const getItems = (game: Static3Game): TabsProps["items"] => [
 ];
 
 export const Static3 = ({ game = "emerald" }: Props) => {
-  const items = React.useMemo(() => getItems(game), [game]);
+  const items = getItems(game);
   return <Tabs defaultActiveKey="search" items={items} />;
 };

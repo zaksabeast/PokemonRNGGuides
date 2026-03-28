@@ -12,6 +12,7 @@ import {
   FormFieldTable,
   Icon,
   FormikSelect,
+  Field,
 } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import InstructionsNoBattle from "./instructions_no_battle.mdx";
@@ -120,82 +121,80 @@ const MyFields = ({
     name: "isUpdatingExisting",
   });
 
-  const fields = React.useMemo(() => {
-    return [
-      {
-        label: "Is updating existing Battle Video?",
-        input: <FormikSwitch<FormState> name="isUpdatingExisting" />,
-      },
-      {
-        label: "Target",
-        input: <FormikEmeraldTargetAdvance<FormState> name="targetAdvance" />,
-        show: !isUpdatingExisting,
-      },
-      {
-        label: (
-          <>
-            Wait time (in ms) to hit target using the existing Battle Video
-            <Tooltip title="When doing RNG manipulation attempts, how long to wait before performing the action.">
-              <Icon name="InformationCircle" size={16} />
-            </Tooltip>
-          </>
-        ),
-        key: "waitTime",
-        input: (
-          <FormikNumberInput<FormState>
-            name="waitTimeExistingBattleVideo"
-            numType="decimal"
-          />
-        ),
-        indent: 1,
-        show: isUpdatingExisting,
-      },
-      {
-        label: "Console",
-        input: (
-          <FormikSelect<FormState, "console">
-            name="console"
-            options={gen3ConsoleOptions}
-          />
-        ),
-      },
-      {
-        label: "Use recommended buffer to perform action?",
-        input: <FormikSwitch<FormState> name="useRecommendedBuffer" />,
-      },
-      {
-        label: "Leave sufficient buffer for fishing?",
-        input: <FormikSwitch<FormState> name="forFishing" />,
-        indent: 1,
-        show: useRecommendedBuffer,
-      },
-      {
-        label: "Buffer (advance)",
-        input: (
-          <FormikNumberInput<FormState>
-            name="specifiedBuffer"
-            numType="decimal"
-          />
-        ),
-        indent: 1,
-        show: !useRecommendedBuffer,
-      },
-      {
-        label: "Consider waiting in battle?",
-        input: <FormikSwitch<FormState> name="considerWaitingInBattle" />,
-        show: !isUpdatingExisting,
-      },
-      {
-        label: "Display advanced breakdown?",
-        input: (
-          <FormikSwitch<FormState>
-            name="displayAdvancedBreakdown"
-            onChange={setDisplayAdvancedBreakdown}
-          />
-        ),
-      },
-    ];
-  }, [isUpdatingExisting, setDisplayAdvancedBreakdown, useRecommendedBuffer]);
+  const fields: Field[] = [
+    {
+      label: "Is updating existing Battle Video?",
+      input: <FormikSwitch<FormState> name="isUpdatingExisting" />,
+    },
+    {
+      label: "Target",
+      input: <FormikEmeraldTargetAdvance<FormState> name="targetAdvance" />,
+      show: !isUpdatingExisting,
+    },
+    {
+      label: (
+        <>
+          Wait time (in ms) to hit target using the existing Battle Video
+          <Tooltip title="When doing RNG manipulation attempts, how long to wait before performing the action.">
+            <Icon name="InformationCircle" size={16} />
+          </Tooltip>
+        </>
+      ),
+      key: "waitTime",
+      input: (
+        <FormikNumberInput<FormState>
+          name="waitTimeExistingBattleVideo"
+          numType="decimal"
+        />
+      ),
+      indent: 1,
+      show: isUpdatingExisting,
+    },
+    {
+      label: "Console",
+      input: (
+        <FormikSelect<FormState, "console">
+          name="console"
+          options={gen3ConsoleOptions}
+        />
+      ),
+    },
+    {
+      label: "Use recommended buffer to perform action?",
+      input: <FormikSwitch<FormState> name="useRecommendedBuffer" />,
+    },
+    {
+      label: "Leave sufficient buffer for fishing?",
+      input: <FormikSwitch<FormState> name="forFishing" />,
+      indent: 1,
+      show: useRecommendedBuffer,
+    },
+    {
+      label: "Buffer (advance)",
+      input: (
+        <FormikNumberInput<FormState>
+          name="specifiedBuffer"
+          numType="decimal"
+        />
+      ),
+      indent: 1,
+      show: !useRecommendedBuffer,
+    },
+    {
+      label: "Consider waiting in battle?",
+      input: <FormikSwitch<FormState> name="considerWaitingInBattle" />,
+      show: !isUpdatingExisting,
+    },
+    {
+      label: "Display advanced breakdown?",
+      input: (
+        <FormikSwitch<FormState>
+          name="displayAdvancedBreakdown"
+          onChange={setDisplayAdvancedBreakdown}
+        />
+      ),
+    },
+  ];
 
   return <FormFieldTable fields={fields} />;
 };
@@ -485,7 +484,7 @@ export const BattleVideo = () => {
     mode: Mode;
   } | null>(null);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const {
       submitError,
       milliseconds,
@@ -498,11 +497,11 @@ export const BattleVideo = () => {
     setTimerLabels(timerLabels);
     setBreakdown(breakdown);
     setBattleVideoInfo(battleVideoInfo);
-  }, []);
+  };
 
-  const displayedProps = React.useMemo(() => {
-    return displayAdvancedBreakdown ? { results: breakdown, columns } : {};
-  }, [breakdown, displayAdvancedBreakdown]);
+  const displayedProps = displayAdvancedBreakdown
+    ? { results: breakdown, columns }
+    : {};
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Flex, FormFieldTable } from "~/components";
+import { Typography, Flex, FormFieldTable, Field } from "~/components";
 import { rngTools } from "~/rngTools";
 import { match, P } from "ts-pattern";
 import { formatProbability } from "~/utils/formatProbability";
@@ -30,65 +30,61 @@ export const Gen3PidSpeedCalculator = () => {
   const [speed, setSpeed] = React.useState<number | null>(null);
   const [ranking, setRanking] = React.useState<number | null>(null);
 
-  const qualitativeSpeed = React.useMemo(() => {
-    if (speed === null || ranking === null) {
-      return "";
-    }
+  const qualitativeSpeed = match({ speed, ranking })
+    .with({ speed: 18 }, () => t["Fastest"])
+    .with({ speed: 900 }, () => t["Slowest"])
+    .otherwise(({ speed, ranking }) => {
+      if (speed == null || ranking == null) {
+        return "";
+      }
 
-    return match(speed)
-      .with(18, () => t["Fastest"])
-      .with(900, () => t["Slowest"])
-      .otherwise(() => {
-        const fasterThanPercent = formatPct(1 - ranking);
-        const slowerThanPercent = formatPct(ranking);
-        const fasterThan = t["Faster than {percent} of PIDs"].replace(
-          "{percent}",
-          fasterThanPercent,
-        );
-        const slowerThan = t["Slower than {percent} of PIDs"].replace(
-          "{percent}",
-          slowerThanPercent,
-        );
+      const fasterThanPercent = formatPct(1 - ranking);
+      const slowerThanPercent = formatPct(ranking);
+      const fasterThan = t["Faster than {percent} of PIDs"].replace(
+        "{percent}",
+        fasterThanPercent,
+      );
+      const slowerThan = t["Slower than {percent} of PIDs"].replace(
+        "{percent}",
+        slowerThanPercent,
+      );
 
-        const category = match(Math.floor(ranking * 100))
-          .with(0, () => t["Very Fast"])
-          .with(1, () => t["Very Fast"])
-          .with(98, () => t["Slow"])
-          .with(P.number.between(99, 100), () => t["Very Slow"])
-          .otherwise(() => t["Common"]);
+      const category = match(Math.floor(ranking * 100))
+        .with(0, () => t["Very Fast"])
+        .with(1, () => t["Very Fast"])
+        .with(98, () => t["Slow"])
+        .with(P.number.between(99, 100), () => t["Very Slow"])
+        .otherwise(() => t["Common"]);
 
-        return `${category}. ${ranking < 0.5 ? fasterThan : slowerThan}`;
-      });
-  }, [t, speed, ranking]);
+      return `${category}. ${ranking < 0.5 ? fasterThan : slowerThan}`;
+    });
 
   const [value, setValue] = React.useState<number>(0);
-  const fields = React.useMemo(() => {
-    return [
-      {
-        label: t["Lead PID"],
-        input: (
-          <NumberInput
-            numType="hex"
-            value={value}
-            onChange={async (pid) => {
-              if (pid == null || pid < 0) {
-                pid = 0;
-              } else if (pid > 0xffffffff) {
-                pid = 0xffffffff;
-              }
-              setValue(pid);
+  const fields: Field[] = [
+    {
+      label: t["Lead PID"],
+      input: (
+        <NumberInput
+          numType="hex"
+          value={value}
+          onChange={async (pid) => {
+            if (pid == null || pid < 0) {
+              pid = 0;
+            } else if (pid > 0xffffffff) {
+              pid = 0xffffffff;
+            }
+            setValue(pid);
 
-              const pidSpeed = await rngTools.calculate_pid_speed(pid);
-              const ranking =
-                await rngTools.calculate_pid_speed_ranking(pidSpeed);
-              setSpeed(pidSpeed);
-              setRanking(ranking);
-            }}
-          />
-        ),
-      },
-    ];
-  }, [t, setSpeed, setRanking, value, setValue]);
+            const pidSpeed = await rngTools.calculate_pid_speed(pid);
+            const ranking =
+              await rngTools.calculate_pid_speed_ranking(pidSpeed);
+            setSpeed(pidSpeed);
+            setRanking(ranking);
+          }}
+        />
+      ),
+    },
+  ];
 
   return (
     <Flex vertical gap={16}>

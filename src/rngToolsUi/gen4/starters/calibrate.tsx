@@ -144,136 +144,126 @@ export const CalibrateStarter4 = () => {
   const targetSpecies = state.species;
   const minMaxStats = state.minMaxStats;
 
-  const fields = React.useMemo((): Field[] => {
-    return [
-      {
-        label: t["Gender"],
-        input: (
-          <FormikRadio<FormState>
-            name="gender"
-            options={toOptions(maleFemale)}
-          />
-        ),
-      },
-      {
-        label: t["Nature"],
-        input: (
-          <FormikSelect<FormState, "nature">
-            name="nature"
-            options={natureOptions.required}
-          />
-        ),
-      },
-      {
-        label: t["Characteristic"],
-        input: (
-          <FormikSelect<FormState, "filter_characteristic">
-            name="filter_characteristic"
-            options={Characteristic4Options}
-          />
-        ),
-      },
-      {
-        label: t["Level"],
-        input: (
-          <FormikRadio<FormState> name="level" options={toOptions([5, 6])} />
-        ),
-      },
-      ...getStatFields<FormState>(minMaxStats, t),
-    ];
-  }, [minMaxStats, t]);
-
-  const columns = React.useMemo(() => getColumns(t), [t]);
-
-  const onSubmit = React.useCallback(
-    async (opts: FormState) => {
-      const minDelay = Math.max(targetDelay - 500, 0);
-      const maxDelay = targetDelay + 500;
-
-      const caughtStats: StatsValue = {
-        hp: opts.hpStat,
-        atk: opts.atkStat,
-        def: opts.defStat,
-        spa: opts.spaStat,
-        spd: opts.spdStat,
-        spe: opts.speStat,
-      };
-
-      const minMaxIvs = await getIvRangeFromStats({
-        species: targetSpecies,
-        lvl: opts.level,
-        nature: opts.nature,
-        stats: caughtStats,
-      });
-
-      if (minMaxIvs == null) {
-        return [];
-      }
-
-      const datetime = toRngDateTime(
-        fromRngDateTime(targetDateTime).subtract(1, "seconds"),
-      );
-
-      const maxAdvances = state.game === "Platinum" ? 40 : 20;
-
-      const seedTimes = await rngTools.calc_gen4_seeds({
-        datetime,
-        seconds_increment: 2,
-        min_delay: minDelay,
-        max_delay: maxDelay,
-      });
-
-      const results = await pMap(seedTimes, async (seedTime) => {
-        const states = await rngTools.generate_static4_states({
-          tid: 0,
-          sid: 0,
-          offset: 0,
-          initial_advances: Math.max(targetAdvance - maxAdvances / 2, 0),
-          max_advances: maxAdvances,
-          game: getStarterGame(targetSpecies),
-          species: targetSpecies,
-          lead: "None",
-          seed: seedTime.seed,
-          filter_characteristic: opts.filter_characteristic,
-          filter: {
-            shiny: false,
-            ability: null,
-            ...minMaxIvs,
-            nature: opts.nature,
-            gender: opts.gender,
-            hidden_power: defaultHiddenPowerFilter,
-          },
-        });
-        return states.map((state): Result => {
-          const secondOffset = seedTime.datetime.second - targetDateTime.second;
-          return {
-            ...state,
-            seed: seedTime.seed,
-            delay: seedTime.delay,
-            advanceOffset: state.advance - targetAdvance,
-            flipDelay:
-              secondOffset % 2 === 0 && targetDelay % 2 !== seedTime.delay % 2,
-            key: `${seedTime.seed}-${state.pid}`,
-            delayOffset: seedTime.delay - targetDelay,
-            second: seedTime.datetime.second,
-            secondOffset,
-          };
-        });
-      });
-
-      const sortedResults = sortBy(results.flat(), [
-        (res) => Math.abs(res.advanceOffset),
-        (res) => Math.abs(res.delayOffset),
-      ]);
-      setResults(sortedResults);
+  const fields: Field[] = [
+    {
+      label: t["Gender"],
+      input: (
+        <FormikRadio<FormState> name="gender" options={toOptions(maleFemale)} />
+      ),
     },
-    [targetAdvance, targetDelay, targetDateTime, targetSpecies, state.game],
-  );
+    {
+      label: t["Nature"],
+      input: (
+        <FormikSelect<FormState, "nature">
+          name="nature"
+          options={natureOptions.required}
+        />
+      ),
+    },
+    {
+      label: t["Characteristic"],
+      input: (
+        <FormikSelect<FormState, "filter_characteristic">
+          name="filter_characteristic"
+          options={Characteristic4Options}
+        />
+      ),
+    },
+    {
+      label: t["Level"],
+      input: (
+        <FormikRadio<FormState> name="level" options={toOptions([5, 6])} />
+      ),
+    },
+    ...getStatFields<FormState>(minMaxStats, t),
+  ];
+
+  const onSubmit = async (opts: FormState) => {
+    const minDelay = Math.max(targetDelay - 500, 0);
+    const maxDelay = targetDelay + 500;
+
+    const caughtStats: StatsValue = {
+      hp: opts.hpStat,
+      atk: opts.atkStat,
+      def: opts.defStat,
+      spa: opts.spaStat,
+      spd: opts.spdStat,
+      spe: opts.speStat,
+    };
+
+    const minMaxIvs = await getIvRangeFromStats({
+      species: targetSpecies,
+      lvl: opts.level,
+      nature: opts.nature,
+      stats: caughtStats,
+    });
+
+    if (minMaxIvs == null) {
+      return [];
+    }
+
+    const datetime = toRngDateTime(
+      fromRngDateTime(targetDateTime).subtract(1, "seconds"),
+    );
+
+    const maxAdvances = state.game === "Platinum" ? 40 : 20;
+
+    const seedTimes = await rngTools.calc_gen4_seeds({
+      datetime,
+      seconds_increment: 2,
+      min_delay: minDelay,
+      max_delay: maxDelay,
+    });
+
+    const results = await pMap(seedTimes, async (seedTime) => {
+      const states = await rngTools.generate_static4_states({
+        tid: 0,
+        sid: 0,
+        offset: 0,
+        initial_advances: Math.max(targetAdvance - maxAdvances / 2, 0),
+        max_advances: maxAdvances,
+        game: getStarterGame(targetSpecies),
+        species: targetSpecies,
+        lead: "None",
+        seed: seedTime.seed,
+        filter_characteristic: opts.filter_characteristic,
+        filter: {
+          shiny: false,
+          ability: null,
+          ...minMaxIvs,
+          nature: opts.nature,
+          gender: opts.gender,
+          hidden_power: defaultHiddenPowerFilter,
+        },
+      });
+      return states.map((state): Result => {
+        const secondOffset = seedTime.datetime.second - targetDateTime.second;
+        return {
+          ...state,
+          seed: seedTime.seed,
+          delay: seedTime.delay,
+          advanceOffset: state.advance - targetAdvance,
+          flipDelay:
+            secondOffset % 2 === 0 && targetDelay % 2 !== seedTime.delay % 2,
+          key: `${seedTime.seed}-${state.pid}`,
+          delayOffset: seedTime.delay - targetDelay,
+          second: seedTime.datetime.second,
+          secondOffset,
+        };
+      });
+    });
+
+    const sortedResults = sortBy(results.flat(), [
+      (res) => Math.abs(res.advanceOffset),
+      (res) => Math.abs(res.delayOffset),
+    ]);
+    setResults(sortedResults);
+  };
 
   return (
     <RngToolForm<FormState, Result>
       fields={fields}
-      columns={columns}
+      getColumns={getColumns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

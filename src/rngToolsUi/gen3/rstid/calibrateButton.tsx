@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "~/components";
 import { message } from "antd";
 import { Gen3TimerAtom, useGen3Timer } from "~/hooks/useGen3Timer";
@@ -12,10 +11,10 @@ export const CalibrateButton = ({ hitAdvance, timer }: Props) => {
   const [messageApi, contextHolder] = message.useMessage();
   const { calibrate } = useGen3Timer(timer);
 
-  const onClick = React.useCallback(async () => {
+  const onClick = async () => {
     await calibrate(hitAdvance);
     messageApi.success("Calibrated timer");
-  }, [calibrate, hitAdvance, messageApi]);
+  };
 
   return (
     <>

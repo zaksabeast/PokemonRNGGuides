@@ -72,24 +72,22 @@ export const Gen5CalibrationResults = () => {
     setInput("");
   }, [input]);
 
-  const timer0Counts = React.useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const { timer0 } of rows) {
-      counts.set(timer0, (counts.get(timer0) ?? 0) + 1);
-    }
-    return [...counts.entries()].map(([timer0, count]) => ({ timer0, count }));
-  }, [rows]);
+  const counts = new Map<string, number>();
+  for (const { timer0 } of rows) {
+    counts.set(timer0, (counts.get(timer0) ?? 0) + 1);
+  }
+  const timer0Counts = [...counts.entries()].map(([timer0, count]) => ({
+    timer0,
+    count,
+  }));
 
-  const clipboardText = React.useMemo(() => {
-    let text = "Seconds\tVCount\tTimer0\tGxStat\tVFrame\n";
-    for (const row of rows) {
-      text +=
-        [row.seconds, row.vCount, row.timer0, row.gxStat, row.vFrame].join(
-          "\t",
-        ) + "\n";
-    }
-    return text;
-  }, [rows]);
+  let text = "Seconds\tVCount\tTimer0\tGxStat\tVFrame\n";
+  for (const row of rows) {
+    text +=
+      [row.seconds, row.vCount, row.timer0, row.gxStat, row.vFrame].join("\t") +
+      "\n";
+  }
+  const clipboardText = text;
 
   return (
     <Flex vertical gap={8}>

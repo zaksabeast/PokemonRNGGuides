@@ -65,24 +65,21 @@ type Props = {
 export const Gen3Sid = ({ game }: Props) => {
   const [results, setResults] = React.useState<GeneratorResult[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const generate =
-        game === "rs"
-          ? rngTools.rs_sid_from_feebas_seed
-          : rngTools.emerald_sid_from_feebas_seed;
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const generate =
+      game === "rs"
+        ? rngTools.rs_sid_from_feebas_seed
+        : rngTools.emerald_sid_from_feebas_seed;
 
-      const results = await generate(
-        opts.tid,
-        opts.feebasSeed,
-        opts.initialAdvances,
-        opts.maxAdvances,
-      );
+    const results = await generate(
+      opts.tid,
+      opts.feebasSeed,
+      opts.initialAdvances,
+      opts.maxAdvances,
+    );
 
-      setResults([...results].map(({ sid }) => ({ sid })));
-    },
-    [game],
-  );
+    setResults([...results].map(({ sid }) => ({ sid })));
+  };
 
   return (
     <RngToolForm<FormState, GeneratorResult>

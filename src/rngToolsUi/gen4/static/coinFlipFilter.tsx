@@ -14,28 +14,25 @@ const CoinButton = styled(Button)({
 
 export const CoinFlipFilter = () => {
   const [state, setState] = useStatic4State();
-  const handleAddHeads = React.useCallback(() => {
+  const handleAddHeads = () => {
     setState((prev) => ({
       ...prev,
       coinFlipFilter: sanitizeFlips(`${prev.coinFlipFilter}, H`),
     }));
-  }, [setState]);
+  };
 
-  const handleAddTails = React.useCallback(() => {
+  const handleAddTails = () => {
     setState((prev) => ({
       ...prev,
       coinFlipFilter: sanitizeFlips(`${prev.coinFlipFilter}, T`),
     }));
-  }, [setState]);
+  };
 
-  const onInputChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) =>
-      setState((prev) => ({
-        ...prev,
-        coinFlipFilter: event.target.value,
-      })),
-    [setState],
-  );
+  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setState((prev) => ({
+      ...prev,
+      coinFlipFilter: event.target.value,
+    }));
 
   return (
     <Flex vertical gap={8}>

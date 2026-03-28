@@ -16,7 +16,6 @@ import { natureOptions } from "~/components/pkmFilter";
 import { genderOptions } from "~/components/genderFilter/options";
 import { z } from "zod";
 import { translateOptions, Translations } from "~/translations";
-import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const getColumns = (t: Translations): ResultColumn<Gen3HeldEgg>[] => {
   return [
@@ -207,36 +206,30 @@ type Props = {
 };
 
 export const EmeraldHeldEgg = ({ lua = false }: Props) => {
-  const t = useActiveRouteTranslations();
-  const fields = React.useMemo(() => getFields(t), [t]);
-  const columns = React.useMemo(() => getColumns(t), [t]);
   const [results, setResults] = React.useState<Gen3HeldEgg[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const results = await rngTools.emerald_egg_held_states({
-        ...opts,
-        has_lightning_rod: false,
-        has_roamer: false,
-        registered_trainers: [],
-        lua_adjustment: lua,
-        filter_impossible_to_hit: false,
-        filters: {
-          shiny: opts.filter_shiny,
-          nature: opts.filter_nature,
-          gender: opts.filter_gender,
-        },
-      });
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const results = await rngTools.emerald_egg_held_states({
+      ...opts,
+      has_lightning_rod: false,
+      has_roamer: false,
+      registered_trainers: [],
+      lua_adjustment: lua,
+      filter_impossible_to_hit: false,
+      filters: {
+        shiny: opts.filter_shiny,
+        nature: opts.filter_nature,
+        gender: opts.filter_gender,
+      },
+    });
 
-      setResults(results);
-    },
-    [lua],
-  );
+    setResults(results);
+  };
 
   return (
     <RngToolForm<FormState, Gen3HeldEgg>
-      fields={fields}
-      columns={columns}
+      getFields={getFields}
+      getColumns={getColumns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

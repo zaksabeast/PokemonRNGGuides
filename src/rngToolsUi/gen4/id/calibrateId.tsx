@@ -88,70 +88,64 @@ export const CalibrateId4 = () => {
 
   const targetTid = target?.tid;
 
-  const getFields = React.useCallback(
-    (t: Translations): Field[] => {
-      const targetTidText = t["Target TID"];
-      const noneText = t["None"];
-      return [
-        {
-          label: `${targetTidText}: ${targetTid ?? noneText}`,
-          input: null,
-        },
-        {
-          label: t["Obtained TID"],
-          input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-        },
-      ];
-    },
-    [targetTid],
-  );
+  const getFields = (t: Translations): Field[] => {
+    const targetTidText = t["Target TID"];
+    const noneText = t["None"];
+    return [
+      {
+        label: `${targetTidText}: ${targetTid ?? noneText}`,
+        input: null,
+      },
+      {
+        label: t["Obtained TID"],
+        input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
+      },
+    ];
+  };
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      if (target == null) {
-        return;
-      }
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    if (target == null) {
+      return;
+    }
 
-      const { datetime: targetDateTime, delay: targetDelay } = target.seed_time;
+    const { datetime: targetDateTime, delay: targetDelay } = target.seed_time;
 
-      const minDelay = targetDelay - 1000;
-      const maxDelay = targetDelay + 1000;
+    const minDelay = targetDelay - 1000;
+    const maxDelay = targetDelay + 1000;
 
-      const results = await rngTools.generate_dppt_ids({
-        datetime: targetDateTime,
-        min_delay: minDelay,
-        max_delay: maxDelay,
-        filter: denormalizeIdFilterOrDefault({
-          type: "tid",
-          value0: opts.tid,
-          value1: null,
-        }),
-      });
+    const results = await rngTools.generate_dppt_ids({
+      datetime: targetDateTime,
+      min_delay: minDelay,
+      max_delay: maxDelay,
+      filter: denormalizeIdFilterOrDefault({
+        type: "tid",
+        value0: opts.tid,
+        value1: null,
+      }),
+    });
 
-      const sortedResults = sortBy(results, (result) =>
-        Math.abs(result.seed_time.delay - targetDelay),
-      );
+    const sortedResults = sortBy(results, (result) =>
+      Math.abs(result.seed_time.delay - targetDelay),
+    );
 
-      const formattedResults = sortedResults.map((result) => {
-        const secondOffset =
-          result.seed_time.datetime.second - targetDateTime.second;
-        return {
-          ...result,
-          seed: result.seed_time.seed,
-          flipDelay:
-            secondOffset % 2 === 0 &&
-            targetDelay % 2 !== result.seed_time.delay % 2,
-          delayOffset: result.seed_time.delay - targetDelay,
-          delay: result.seed_time.delay,
-          seconds: result.seed_time.datetime.second,
-          secondOffset,
-        };
-      });
+    const formattedResults = sortedResults.map((result) => {
+      const secondOffset =
+        result.seed_time.datetime.second - targetDateTime.second;
+      return {
+        ...result,
+        seed: result.seed_time.seed,
+        flipDelay:
+          secondOffset % 2 === 0 &&
+          targetDelay % 2 !== result.seed_time.delay % 2,
+        delayOffset: result.seed_time.delay - targetDelay,
+        delay: result.seed_time.delay,
+        seconds: result.seed_time.datetime.second,
+        secondOffset,
+      };
+    });
 
-      setResults(formattedResults);
-    },
-    [target],
-  );
+    setResults(formattedResults);
+  };
 
   return (
     <RngToolForm<FormState, Result>

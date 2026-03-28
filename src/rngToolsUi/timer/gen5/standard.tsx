@@ -1,4 +1,3 @@
-import React from "react";
 import { Skeleton } from "antd";
 import {
   FormikNumberInput,
@@ -106,53 +105,50 @@ export const InnerGen5StandardTimer = ({
   initialSettings,
   onUpdate,
 }: InnerProps) => {
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts, { setValue }) => {
-      let updatedOpts = opts;
-      let settings = {
+  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
+    let updatedOpts = opts;
+    let settings = {
+      console: opts.console,
+      min_time_ms: opts.minTimeMs,
+      target_second: opts.targetSecond,
+      calibration: opts.calibration,
+    };
+
+    if (opts.secondHit != null) {
+      settings = await rngTools.calibrate_gen5_standard_timer(
+        settings,
+        opts.secondHit,
+      );
+      settings = {
         console: opts.console,
-        min_time_ms: opts.minTimeMs,
-        target_second: opts.targetSecond,
-        calibration: opts.calibration,
+        min_time_ms: capPrecision(settings.min_time_ms),
+        target_second: capPrecision(settings.target_second),
+        calibration: capPrecision(settings.calibration),
+      };
+      updatedOpts = {
+        console: settings.console,
+        minTimeMs: settings.min_time_ms,
+        targetSecond: settings.target_second,
+        calibration: settings.calibration,
+        secondHit: null,
       };
 
-      if (opts.secondHit != null) {
-        settings = await rngTools.calibrate_gen5_standard_timer(
-          settings,
-          opts.secondHit,
-        );
-        settings = {
-          console: opts.console,
-          min_time_ms: capPrecision(settings.min_time_ms),
-          target_second: capPrecision(settings.target_second),
-          calibration: capPrecision(settings.calibration),
-        };
-        updatedOpts = {
-          console: settings.console,
-          minTimeMs: settings.min_time_ms,
-          targetSecond: settings.target_second,
-          calibration: settings.calibration,
-          secondHit: null,
-        };
+      setValue("console", updatedOpts.console);
+      setValue("minTimeMs", updatedOpts.minTimeMs);
+      setValue("targetSecond", updatedOpts.targetSecond);
+      setValue("calibration", updatedOpts.calibration);
+      setValue("secondHit", updatedOpts.secondHit);
+    }
 
-        setValue("console", updatedOpts.console);
-        setValue("minTimeMs", updatedOpts.minTimeMs);
-        setValue("targetSecond", updatedOpts.targetSecond);
-        setValue("calibration", updatedOpts.calibration);
-        setValue("secondHit", updatedOpts.secondHit);
-      }
-
-      const milliseconds = await rngTools.create_gen5_standard_timer(settings);
-      setTimer(
-        hydrationLock({
-          milliseconds: [...milliseconds],
-          minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
-        }),
-      );
-      onUpdate(hydrationLock(updatedOpts));
-    },
-    [onUpdate, setTimer],
-  );
+    const milliseconds = await rngTools.create_gen5_standard_timer(settings);
+    setTimer(
+      hydrationLock({
+        milliseconds: [...milliseconds],
+        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
+      }),
+    );
+    onUpdate(hydrationLock(updatedOpts));
+  };
 
   return (
     <Flex vertical gap={12}>

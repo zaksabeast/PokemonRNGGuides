@@ -59,66 +59,62 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
   const [error, setError] = React.useState<unknown>(null);
   const subRef = React.useRef<Subscription | null>(null);
 
-  const run = React.useCallback(
-    (args: Arg[]) => {
-      return new Promise<MappedRet[]>((resolve) => {
-        subRef.current?.unsubscribe(); // Cancel an active observable
-        setLoading(true);
-        setError(null);
-        setProgress({
-          data: [],
-          finishedChunks: 0,
-          totalChunks: args.length,
-        });
-        let results: MappedRet[] = [];
-
-        const concurrency = 8;
-
-        const sub = from(args)
-          // Process each argument in parallel with a concurrency limit
-          .pipe(
-            mergeMap(
-              (arg) => func(arg).then((results) => ({ arg, results })),
-              concurrency,
-            ),
-          )
-          .pipe(
-            // Called when the observable completes
-            finalize(() => {
-              setLoading(false);
-              resolve(results);
-            }),
-          )
-          .subscribe({
-            // Called when each chunk is received
-            next: ({ arg, results: values }) => {
-              const mappedValues = values.map((val) => map(val, arg));
-              const unsorted = [...results, ...mappedValues];
-              results =
-                sortWith == null ? unsorted : sortBy(unsorted, sortWith);
-              setProgress((prev) => ({
-                data: results,
-                finishedChunks: prev.finishedChunks + 1,
-                totalChunks: prev.totalChunks,
-              }));
-            },
-            // Called on error
-            error: (err) => {
-              setError(err);
-              setLoading(false);
-            },
-          });
-
-        subRef.current = sub;
+  const run = (args: Arg[]) => {
+    return new Promise<MappedRet[]>((resolve) => {
+      subRef.current?.unsubscribe(); // Cancel an active observable
+      setLoading(true);
+      setError(null);
+      setProgress({
+        data: [],
+        finishedChunks: 0,
+        totalChunks: args.length,
       });
-    },
-    [func, map, sortWith],
-  );
+      let results: MappedRet[] = [];
 
-  const cancel = React.useCallback(() => {
+      const concurrency = 8;
+
+      const sub = from(args)
+        // Process each argument in parallel with a concurrency limit
+        .pipe(
+          mergeMap(
+            (arg) => func(arg).then((results) => ({ arg, results })),
+            concurrency,
+          ),
+        )
+        .pipe(
+          // Called when the observable completes
+          finalize(() => {
+            setLoading(false);
+            resolve(results);
+          }),
+        )
+        .subscribe({
+          // Called when each chunk is received
+          next: ({ arg, results: values }) => {
+            const mappedValues = values.map((val) => map(val, arg));
+            const unsorted = [...results, ...mappedValues];
+            results = sortWith == null ? unsorted : sortBy(unsorted, sortWith);
+            setProgress((prev) => ({
+              data: results,
+              finishedChunks: prev.finishedChunks + 1,
+              totalChunks: prev.totalChunks,
+            }));
+          },
+          // Called on error
+          error: (err) => {
+            setError(err);
+            setLoading(false);
+          },
+        });
+
+      subRef.current = sub;
+    });
+  };
+
+  const cancel = () => {
     subRef.current?.unsubscribe();
     setLoading(false);
-  }, []);
+  };
 
   return {
     run,

@@ -19,7 +19,6 @@ import { z } from "zod";
 import { IvsSchema } from "~/components/ivInput";
 import { HexSchema } from "~/utils/number";
 import { Translations } from "~/translations";
-import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type Result = FlattenIvs<Egg3PickupState>;
 
@@ -111,12 +110,9 @@ const getFields = (t: Translations): Field[] => {
 };
 
 export const EmeraldPickupEgg = () => {
-  const t = useActiveRouteTranslations();
-  const fields = React.useMemo(() => getFields(t), [t]);
-  const columns = React.useMemo(() => getColumns(t), [t]);
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const results = await rngTools.emerald_egg_pickup_states({
       ...opts,
       parent_ivs: [opts.parent1_ivs, opts.parent2_ivs],
@@ -127,12 +123,12 @@ export const EmeraldPickupEgg = () => {
     });
 
     setResults(results.map(flattenIvs));
-  }, []);
+  };
 
   return (
     <RngToolForm<FormState, Result>
-      fields={fields}
-      columns={columns}
+      getFields={getFields}
+      getColumns={getColumns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

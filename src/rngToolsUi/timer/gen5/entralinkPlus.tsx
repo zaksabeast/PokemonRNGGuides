@@ -1,4 +1,3 @@
-import React from "react";
 import { Skeleton } from "antd";
 import {
   FormikNumberInput,
@@ -155,80 +154,77 @@ const InnerGen5EntralinkPlusTimer = ({
   initialSettings,
   onUpdate,
 }: InnerProps) => {
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts, { setValue }) => {
-      let updatedOpts = opts;
-      let settings: Gen5EntralinkPlusTimerSettings = {
+  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
+    let updatedOpts = opts;
+    let settings: Gen5EntralinkPlusTimerSettings = {
+      console: opts.console,
+      min_time_ms: opts.minTimeMs,
+      target_delay: opts.targetDelay,
+      target_second: opts.targetSecond,
+      target_advances: opts.targetAdvance,
+      calibration: opts.calibration,
+      entralink_calibration: opts.entralinkCalibration,
+      frame_calibration: opts.frameCalibration,
+    };
+
+    if (
+      opts.secondHit != null &&
+      opts.delayHit != null &&
+      opts.advanceHit != null
+    ) {
+      settings = await rngTools.calibrate_gen5_entralink_plus_timer(
+        settings,
+        opts.secondHit,
+        opts.delayHit,
+        opts.advanceHit,
+      );
+      settings = {
         console: opts.console,
-        min_time_ms: opts.minTimeMs,
-        target_delay: opts.targetDelay,
-        target_second: opts.targetSecond,
-        target_advances: opts.targetAdvance,
-        calibration: opts.calibration,
-        entralink_calibration: opts.entralinkCalibration,
-        frame_calibration: opts.frameCalibration,
+        min_time_ms: capPrecision(settings.min_time_ms),
+        target_delay: capPrecision(settings.target_delay),
+        target_second: capPrecision(settings.target_second),
+        target_advances: capPrecision(settings.target_advances),
+        calibration: capPrecision(settings.calibration),
+        entralink_calibration: capPrecision(settings.entralink_calibration),
+        frame_calibration: capPrecision(settings.frame_calibration),
+      };
+      updatedOpts = {
+        console: settings.console,
+        minTimeMs: settings.min_time_ms,
+        targetDelay: settings.target_delay,
+        targetSecond: settings.target_second,
+        targetAdvance: settings.target_advances,
+        calibration: settings.calibration,
+        entralinkCalibration: settings.entralink_calibration,
+        frameCalibration: settings.frame_calibration,
+        delayHit: null,
+        secondHit: null,
+        advanceHit: null,
       };
 
-      if (
-        opts.secondHit != null &&
-        opts.delayHit != null &&
-        opts.advanceHit != null
-      ) {
-        settings = await rngTools.calibrate_gen5_entralink_plus_timer(
-          settings,
-          opts.secondHit,
-          opts.delayHit,
-          opts.advanceHit,
-        );
-        settings = {
-          console: opts.console,
-          min_time_ms: capPrecision(settings.min_time_ms),
-          target_delay: capPrecision(settings.target_delay),
-          target_second: capPrecision(settings.target_second),
-          target_advances: capPrecision(settings.target_advances),
-          calibration: capPrecision(settings.calibration),
-          entralink_calibration: capPrecision(settings.entralink_calibration),
-          frame_calibration: capPrecision(settings.frame_calibration),
-        };
-        updatedOpts = {
-          console: settings.console,
-          minTimeMs: settings.min_time_ms,
-          targetDelay: settings.target_delay,
-          targetSecond: settings.target_second,
-          targetAdvance: settings.target_advances,
-          calibration: settings.calibration,
-          entralinkCalibration: settings.entralink_calibration,
-          frameCalibration: settings.frame_calibration,
-          delayHit: null,
-          secondHit: null,
-          advanceHit: null,
-        };
+      setValue("console", updatedOpts.console);
+      setValue("minTimeMs", updatedOpts.minTimeMs);
+      setValue("targetDelay", updatedOpts.targetDelay);
+      setValue("targetSecond", updatedOpts.targetSecond);
+      setValue("targetAdvance", updatedOpts.targetAdvance);
+      setValue("calibration", updatedOpts.calibration);
+      setValue("entralinkCalibration", updatedOpts.entralinkCalibration);
+      setValue("frameCalibration", updatedOpts.frameCalibration);
+      setValue("delayHit", updatedOpts.delayHit);
+      setValue("secondHit", updatedOpts.secondHit);
+      setValue("advanceHit", updatedOpts.advanceHit);
+    }
 
-        setValue("console", updatedOpts.console);
-        setValue("minTimeMs", updatedOpts.minTimeMs);
-        setValue("targetDelay", updatedOpts.targetDelay);
-        setValue("targetSecond", updatedOpts.targetSecond);
-        setValue("targetAdvance", updatedOpts.targetAdvance);
-        setValue("calibration", updatedOpts.calibration);
-        setValue("entralinkCalibration", updatedOpts.entralinkCalibration);
-        setValue("frameCalibration", updatedOpts.frameCalibration);
-        setValue("delayHit", updatedOpts.delayHit);
-        setValue("secondHit", updatedOpts.secondHit);
-        setValue("advanceHit", updatedOpts.advanceHit);
-      }
-
-      const milliseconds =
-        await rngTools.create_gen5_entralink_plus_timer(settings);
-      setTimer(
-        hydrationLock({
-          milliseconds: [...milliseconds],
-          minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
-        }),
-      );
-      onUpdate(hydrationLock(updatedOpts));
-    },
-    [onUpdate, setTimer],
-  );
+    const milliseconds =
+      await rngTools.create_gen5_entralink_plus_timer(settings);
+    setTimer(
+      hydrationLock({
+        milliseconds: [...milliseconds],
+        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
+      }),
+    );
+    onUpdate(hydrationLock(updatedOpts));
+  };
 
   return (
     <Flex vertical gap={12}>

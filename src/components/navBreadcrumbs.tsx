@@ -1,4 +1,3 @@
-import React from "react";
 import { Breadcrumb, BreadcrumbProps } from "antd";
 import { guides, getGuide, categoryOwners } from "~/guides";
 import { Route, RouteSchema } from "~/routes/defs";
@@ -80,10 +79,7 @@ type Props = {
 };
 
 export const NavBreadcrumbs = ({ route }: Props) => {
-  const breadcrumbItems = React.useMemo(
-    () => getBreadcrumbs({ route, origin: route, count: 0 }),
-    [route],
-  );
+  const breadcrumbItems = getBreadcrumbs({ route, origin: route, count: 0 });
 
   if (route === "/") {
     return null;

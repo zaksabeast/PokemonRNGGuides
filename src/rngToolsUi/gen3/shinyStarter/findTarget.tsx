@@ -1,4 +1,3 @@
-import React from "react";
 import { z } from "zod";
 import {
   RngToolForm,
@@ -38,19 +37,16 @@ const fields: Field[] = [
 ];
 
 export const FindTargetAdvance = ({ game, setTargetAdvance }: Props) => {
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const targetAdvance = await findTargetAdvanceForShinyPokemon(
-        game,
-        opts.tid,
-        opts.sid,
-      );
-      if (targetAdvance !== null) {
-        setTargetAdvance(targetAdvance);
-      }
-    },
-    [setTargetAdvance, game],
-  );
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const targetAdvance = await findTargetAdvanceForShinyPokemon(
+      game,
+      opts.tid,
+      opts.sid,
+    );
+    if (targetAdvance !== null) {
+      setTargetAdvance(targetAdvance);
+    }
+  };
 
   return (
     <RngToolForm<FormState, never[]>

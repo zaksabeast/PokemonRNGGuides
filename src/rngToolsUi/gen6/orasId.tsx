@@ -127,7 +127,7 @@ const getFields = (t: Translations): Field[] => [
 export const OrasId = () => {
   const [results, setResults] = React.useState<Gen6Id[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const results = await rngTools.generate_oras_id({
       start_seed: opts.seed,
       only_start_seed: opts.only_current_seed,
@@ -138,7 +138,7 @@ export const OrasId = () => {
     });
 
     setResults(results);
-  }, []);
+  };
 
   return (
     <RngToolForm<FormState, Gen6Id>

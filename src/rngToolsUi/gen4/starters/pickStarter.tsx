@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   Field,
@@ -254,50 +253,41 @@ export const PickStarter4 = () => {
 
   const game = state.game;
 
-  const onSubmit = React.useCallback(
-    async (opts: FormState) => {
-      const minMaxStats = await getStatRange({
-        species: opts.species,
-        levelRange: [5, 6],
-      });
-      setState((prev) => ({ ...prev, species: opts.species, minMaxStats }));
-      const advance = getStarterAdvance({
-        game,
-        species: opts.species,
-        platinum_target_advance: opts.platinum_target_advance,
-      });
-      const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
-        ...opts,
-        month: monthToRustFilter(opts.month),
-        min_advance: advance,
-        max_advance: advance,
-        force_second: opts.force_second,
-        filter: pkmFilterFieldsToRustInput(opts),
-        lead: "None",
-        offset: 0,
-        game,
-      };
-      const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
-      const searchOpts = chunkedIvs.map(([minIvs, maxIvs]) => ({
-        ...baseOpts,
-        filter: {
-          ...baseOpts.filter,
-          min_ivs: minIvs,
-          max_ivs: maxIvs,
-        },
-      }));
-      await searchStarterSeeds(searchOpts);
-    },
-    [game, setState, searchStarterSeeds],
-  );
+  const onSubmit = async (opts: FormState) => {
+    const minMaxStats = await getStatRange({
+      species: opts.species,
+      levelRange: [5, 6],
+    });
+    setState((prev) => ({ ...prev, species: opts.species, minMaxStats }));
+    const advance = getStarterAdvance({
+      game,
+      species: opts.species,
+      platinum_target_advance: opts.platinum_target_advance,
+    });
+    const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
+      ...opts,
+      month: monthToRustFilter(opts.month),
+      min_advance: advance,
+      max_advance: advance,
+      force_second: opts.force_second,
+      filter: pkmFilterFieldsToRustInput(opts),
+      lead: "None",
+      offset: 0,
+      game,
+    };
+    const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
+    const searchOpts = chunkedIvs.map(([minIvs, maxIvs]) => ({
+      ...baseOpts,
+      filter: {
+        ...baseOpts.filter,
+        min_ivs: minIvs,
+        max_ivs: maxIvs,
+      },
+    }));
+    await searchStarterSeeds(searchOpts);
+  };
 
-  const { fields, columns } = React.useMemo(
-    () => ({
-      fields: getFields(game, t),
-      columns: getColumns(t),
-    }),
-    [game, t],
-  );
+  const fields = getFields(game, t);
   const initialValues = match(game)
     .with("Diamond", "Pearl", "Platinum", () => dpptInitialValues)
     .with("HeartGold", "SoulSilver", () => hgssInitialValues)
@@ -306,7 +296,7 @@ export const PickStarter4 = () => {
   return (
     <RngToolForm<FormState, Result>
       fields={fields}
-      columns={columns}
+      getColumns={getColumns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

@@ -10,7 +10,6 @@ import {
   Link,
 } from "~/components";
 import { toOptions } from "~/utils/options";
-import React from "react";
 import { gen3Methods } from "~/types";
 
 import {
@@ -263,21 +262,13 @@ export const SetupFilter = () => {
     name: "letSearcherFindPaintingSeed",
   });
 
-  const fields = React.useMemo((): Field[] => {
-    return getSetupFields(
-      species,
-      filterShiny,
-      recommendedSetups,
-      usingPaintingReseeding,
-      letSearcherFindPaintingSeed,
-    );
-  }, [
+  const fields: Field[] = getSetupFields(
     species,
     filterShiny,
     recommendedSetups,
     usingPaintingReseeding,
     letSearcherFindPaintingSeed,
-  ]);
+  );
 
   return (
     <Flex vertical gap={8}>

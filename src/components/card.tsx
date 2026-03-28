@@ -29,18 +29,15 @@ const LinkCard = ({
   onClick: _onClick,
   ...props
 }: LinkCardProps) => {
-  const onClick: React.MouseEventHandler<HTMLDivElement> = React.useCallback(
-    (event) => {
-      if (_onClick == null && slug == null && externalHref == null) {
-        return;
-      }
+  const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    if (_onClick == null && slug == null && externalHref == null) {
+      return;
+    }
 
-      _onClick?.(event);
+    _onClick?.(event);
 
-      track("Card Clicked", { id });
-    },
-    [slug, externalHref, id, _onClick],
-  );
+    track("Card Clicked", { id });
+  };
 
   if (externalHref != null) {
     return (

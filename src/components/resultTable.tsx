@@ -3,7 +3,7 @@ import { Typography } from "./typography";
 import { Table, TableProps } from "antd";
 import { ClassNames } from "@emotion/react";
 import * as tst from "ts-toolbelt";
-import { useFormContext } from "~/hooks/form";
+import { useFormContext, useFormState } from "react-hook-form";
 import { identity } from "lodash-es";
 
 export type SingleResultColumn<T> = keyof T extends string
@@ -83,36 +83,32 @@ type FormikResultTableProps<Record extends tst.O.Object> = tst.O.Overwrite<
 export const ResultTable = <Record extends tst.O.Object>(
   props: FormikResultTableProps<Record>,
 ) => {
-  const columns = React.useMemo(() => {
-    return (props.columns ?? []).map(applyMonospace);
-  }, [props.columns]);
+  const columns = (props.columns ?? []).map(applyMonospace);
 
-  const children = React.useMemo(() => {
-    return columns.map((column) => {
-      if (column.show === false) {
-        return null;
-      }
+  const children = columns.map((column) => {
+    if (column.show === false) {
+      return null;
+    }
 
-      if (column.type === "group") {
-        const groupKey = column.key == null ? column.title : column.key;
-        return (
-          <Table.ColumnGroup title={column.title} key={groupKey}>
-            {column.columns.map((subColumn) => {
-              const colKey =
-                subColumn.key == null
-                  ? subColumn.dataIndex + " " + subColumn.title
-                  : subColumn.key;
-              return <Table.Column {...subColumn} key={colKey} />;
-            })}
-          </Table.ColumnGroup>
-        );
-      }
+    if (column.type === "group") {
+      const groupKey = column.key == null ? column.title : column.key;
+      return (
+        <Table.ColumnGroup title={column.title} key={groupKey}>
+          {column.columns.map((subColumn) => {
+            const colKey =
+              subColumn.key == null
+                ? subColumn.dataIndex + " " + subColumn.title
+                : subColumn.key;
+            return <Table.Column {...subColumn} key={colKey} />;
+          })}
+        </Table.ColumnGroup>
+      );
+    }
 
-      const colKey =
-        column.key == null ? column.dataIndex + " " + column.title : column.key;
-      return <Table.Column {...column} key={colKey} />;
-    });
-  }, [columns]);
+    const colKey =
+      column.key == null ? column.dataIndex + " " + column.title : column.key;
+    return <Table.Column {...column} key={colKey} />;
+  });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { columns: _, ...propsWithColumns } = props;
@@ -145,6 +141,7 @@ export const ResultTable = <Record extends tst.O.Object>(
 export const FormikResultTable = <Record extends tst.O.Object>(
   props: FormikResultTableProps<Record>,
 ) => {
-  const { isSubmitting } = useFormContext();
+  const { control } = useFormContext();
+  const { isSubmitting } = useFormState({ control });
   return <ResultTable {...props} loading={isSubmitting} />;
 };

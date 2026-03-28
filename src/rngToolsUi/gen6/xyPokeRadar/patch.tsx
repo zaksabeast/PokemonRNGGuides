@@ -1,4 +1,3 @@
-import React from "react";
 import { Flex, Icon } from "~/components";
 import { PokeRadarPatch } from "~/rngTools";
 import { keyBy } from "lodash-es";
@@ -17,13 +16,10 @@ type PokeRadarPatchesProps = {
 const centerPatch: PokeRadarPatch = { x: 4, y: 4, state: "Empty" };
 
 export const PokeRadarPatches = ({ patches }: PokeRadarPatchesProps) => {
-  const patchesByCoords: Record<string, PokeRadarPatch> = React.useMemo(
-    () => ({
-      ...keyBy(patches, (patch) => `${patch.x}_${patch.y}`),
-      "4_4": centerPatch,
-    }),
-    [patches],
-  );
+  const patchesByCoords: Record<string, PokeRadarPatch> = {
+    ...keyBy(patches, (patch) => `${patch.x}_${patch.y}`),
+    "4_4": centerPatch,
+  };
   const gridDimension = new Array(9).fill(null);
   return (
     <Flex vertical>

@@ -82,73 +82,67 @@ export const MultibootJirachi = ({ jirachi }: Props) => {
   const [results, setResults] = React.useState<Result[]>([]);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
-  const getFields = React.useCallback(
-    (t: Translations): Field[] => [
-      {
-        label: t["Search Hours"],
-        input: <FormikNumberInput<FormState> name="hours" numType="decimal" />,
-      },
-      ...getPkmFilterFields<FormState>({
-        displayAbility: false,
-        displayGender: false,
-      }),
-      {
-        label: t["Save file"],
-        input: (
-          <Flex width="100%">
-            <FileUpload
-              id="multiboot_jirachi_save"
-              flex={1}
-              onUpload={async ([file]) => setSave(file)}
-            />
-          </Flex>
-        ),
-      },
-    ],
-    [],
-  );
-
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      try {
-        const results = await rngTools.search_mb_jirachi_times({
-          save: [...save],
-          hours: opts.hours,
-          jirachi_type: jirachi,
-          filter: pkmFilterFieldsToRustInput(opts),
-        });
-        setErrorMessage(null);
-        setResults(
-          results.map((result) => ({
-            seed: result.seed,
-            pid: result.jirachi.pid,
-            shiny: result.jirachi.shiny,
-            ...result.jirachi.ivs,
-            ...result.save_time,
-          })),
-        );
-      } catch (err) {
-        const parsedError = JirachiSaveErrorSchema.safeParse(err);
-
-        const message = match(parsedError)
-          .with({ success: false }, () => "Unknown error!")
-          .with(
-            { data: { InvalidSave: "InvalidLength" } },
-            () => "Invalid save length!",
-          )
-          .with(
-            { data: { InvalidSave: "InvalidMagic" } },
-            () => "Invalid save (magic)!",
-          )
-          .with({ data: "NeedToSaveAgain" }, () => "Need to save again!")
-          .exhaustive();
-
-        setResults([]);
-        setErrorMessage(message);
-      }
+  const getFields = (t: Translations): Field[] => [
+    {
+      label: t["Search Hours"],
+      input: <FormikNumberInput<FormState> name="hours" numType="decimal" />,
     },
-    [save, jirachi],
-  );
+    ...getPkmFilterFields<FormState>({
+      displayAbility: false,
+      displayGender: false,
+    }),
+    {
+      label: t["Save file"],
+      input: (
+        <Flex width="100%">
+          <FileUpload
+            id="multiboot_jirachi_save"
+            flex={1}
+            onUpload={async ([file]) => setSave(file)}
+          />
+        </Flex>
+      ),
+    },
+  ];
+
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    try {
+      const results = await rngTools.search_mb_jirachi_times({
+        save: [...save],
+        hours: opts.hours,
+        jirachi_type: jirachi,
+        filter: pkmFilterFieldsToRustInput(opts),
+      });
+      setErrorMessage(null);
+      setResults(
+        results.map((result) => ({
+          seed: result.seed,
+          pid: result.jirachi.pid,
+          shiny: result.jirachi.shiny,
+          ...result.jirachi.ivs,
+          ...result.save_time,
+        })),
+      );
+    } catch (err) {
+      const parsedError = JirachiSaveErrorSchema.safeParse(err);
+
+      const message = match(parsedError)
+        .with({ success: false }, () => "Unknown error!")
+        .with(
+          { data: { InvalidSave: "InvalidLength" } },
+          () => "Invalid save length!",
+        )
+        .with(
+          { data: { InvalidSave: "InvalidMagic" } },
+          () => "Invalid save (magic)!",
+        )
+        .with({ data: "NeedToSaveAgain" }, () => "Need to save again!")
+        .exhaustive();
+
+      setResults([]);
+      setErrorMessage(message);
+    }
+  };
 
   return (
     <Flex vertical gap={16}>

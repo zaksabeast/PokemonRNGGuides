@@ -183,24 +183,21 @@ export const GenerateHoennTidSid = ({ game }: Props) => {
     null,
   );
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const seed = game === "emerald" ? 0 : 0x5a0;
-      const rng_res = await rngTools.gen3_calculate_tidsid_shiny_for_tid(
-        seed,
-        idealAdvance,
-        opts.tid,
-      );
-      const res = rng_res.nearby_sids.map((res) => {
-        return { ...res, tid_gen_target_adv: idealAdvance };
-      });
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const seed = game === "emerald" ? 0 : 0x5a0;
+    const rng_res = await rngTools.gen3_calculate_tidsid_shiny_for_tid(
+      seed,
+      idealAdvance,
+      opts.tid,
+    );
+    const res = rng_res.nearby_sids.map((res) => {
+      return { ...res, tid_gen_target_adv: idealAdvance };
+    });
 
-      setResult(rng_res);
+    setResult(rng_res);
 
-      setFormResults(res);
-    },
-    [game, idealAdvance, setResult, setFormResults],
-  );
+    setFormResults(res);
+  };
 
   return (
     <Flex vertical>

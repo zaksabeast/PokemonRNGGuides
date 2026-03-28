@@ -53,31 +53,28 @@ export const NumberInput = ({
   const isExternallyControlled = React.useRef(externalValue !== undefined);
   const [internalValue, setInternalValue] = React.useState<number | null>(null);
 
-  const _onChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = event.target.value;
+  const _onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
 
-      setIsNegative(value.includes("-"));
+    setIsNegative(value.includes("-"));
 
-      if (value.length === 0 || value === "-") {
-        onChange?.(null);
-        if (!isExternallyControlled.current) {
-          setInternalValue(null);
-        }
-        return;
+    if (value.length === 0 || value === "-") {
+      onChange?.(null);
+      if (!isExternallyControlled.current) {
+        setInternalValue(null);
       }
+      return;
+    }
 
-      const deserialized = deserialize(value);
+    const deserialized = deserialize(value);
 
-      if (!isNaN(deserialized)) {
-        onChange?.(deserialized);
-        if (!isExternallyControlled.current) {
-          setInternalValue(deserialized);
-        }
+    if (!isNaN(deserialized)) {
+      onChange?.(deserialized);
+      if (!isExternallyControlled.current) {
+        setInternalValue(deserialized);
       }
-    },
-    [deserialize, onChange],
-  );
+    }
+  };
 
   const value = externalValue === undefined ? internalValue : externalValue;
 
@@ -117,13 +114,10 @@ export const FormikNumberInput = <FormState extends GenericForm>({
     number | null
   >(name);
 
-  const onChange = React.useCallback(
-    (value: number | null) => {
-      setValue(value);
-      _onChange?.(value);
-    },
-    [setValue, _onChange],
-  );
+  const onChange = (value: number | null) => {
+    setValue(value);
+    _onChange?.(value);
+  };
 
   return (
     <Flex vertical>

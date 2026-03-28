@@ -167,7 +167,7 @@ export const XyPokeRadar = () => {
     PokeRadarPatch[]
   >([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const results = await rngTools.generate_poke_radar_states({
       state: [opts.state0, opts.state1, opts.state2, opts.state3],
       initial_advances: opts.initial_advances,
@@ -180,7 +180,7 @@ export const XyPokeRadar = () => {
     });
 
     setResults(results);
-  }, []);
+  };
 
   return (
     <>

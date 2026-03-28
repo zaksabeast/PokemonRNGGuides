@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "./button";
 import { message } from "antd";
 import { Gen3TimerAtom, useGen3Timer } from "~/hooks/useGen3Timer";
@@ -30,21 +29,14 @@ const InnerCalibrateButton = <T,>({
   const [, setCurrentStep] = useCurrentStep();
   const [messageApi, contextHolder] = message.useMessage();
 
-  const onClick = React.useCallback(async () => {
+  const onClick = async () => {
     await calibrate(hitValue);
     if (previousStepOnClick) {
       setCurrentStep((step) => step - 1);
     }
     messageApi.success("Calibrated timer");
     _onClick?.();
-  }, [
-    calibrate,
-    hitValue,
-    messageApi,
-    previousStepOnClick,
-    setCurrentStep,
-    _onClick,
-  ]);
+  };
 
   return (
     <>

@@ -1,11 +1,19 @@
 import { List, Divider } from "antd";
-import { Typography, Flex, Image, Link } from "~/components";
+import {
+  Typography,
+  Flex,
+  Image,
+  Link,
+  Alert,
+  type AlertProps,
+} from "~/components";
 import styled from "@emotion/styled";
 import { formatRelativeUrl } from "~/utils/formatRelativeUrl";
 import { RouteSchema } from "~/routes/defs";
 import { get } from "lodash-es";
 import { guides } from "~/guides";
 import { usePageLanguage } from "~/markdownExports/languageContext";
+import type React from "react";
 
 type Props = { children: React.ReactNode };
 
@@ -150,3 +158,31 @@ export const MarkdownSummary = styled.summary({
     transform: "rotate(90deg)",
   },
 });
+
+const Blockquote = styled.blockquote(({ theme }) => ({
+  borderLeft: "4px solid",
+  borderColor: theme.token.colorBorder,
+  paddingLeft: 16,
+  margin: 0,
+}));
+
+const ALERT_CONFIG: Partial<Record<string, AlertProps>> = {
+  NOTE: { type: "info", message: "Note" },
+  WARNING: { type: "warning", message: "Warning" },
+  TIP: { type: "tip", message: "Tip" },
+  CAUTION: { type: "error", message: "Caution" },
+};
+
+export const MarkdownBlockquote = ({
+  children,
+  "alert-type": alertType,
+}: { "alert-type"?: string } & Props) => {
+  const alertProps =
+    alertType != null ? (ALERT_CONFIG[alertType] ?? null) : null;
+
+  if (alertProps != null) {
+    return <Alert showIcon description={children} {...alertProps} />;
+  }
+
+  return <Blockquote>{children}</Blockquote>;
+};

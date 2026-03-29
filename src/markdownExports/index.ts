@@ -17,6 +17,7 @@ import {
   MarkdownOList,
   MarkdownA,
   MarkdownSummary,
+  MarkdownBlockquote,
 } from "./components";
 import {
   Flex,
@@ -101,6 +102,7 @@ const nonTools = {
   TranslationHelperEditGuide,
   ToolTranslationButton,
   TranslationHelperSelectLanguage,
+  blockquote: MarkdownBlockquote,
   TextArea: Input.TextArea,
 };
 

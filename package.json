@@ -93,6 +93,7 @@
     "sirv": "^3.0.1",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.57.2",
+    "unist-util-visit": "^5.1.0",
     "vite": "^8.0.3",
     "vite-plugin-pwa": "^1.2.0",
     "vite-plugin-wasm": "^3.4.1"

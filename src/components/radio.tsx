@@ -13,16 +13,13 @@ import { Path, Paths } from "~/types";
 
 export const RadioGroup = withCss(AntdRadio.Group);
 
-type FormikRadioOptions<OptionValues extends string | number> =
+type FormikRadioOptions<OptionValues> =
   | OptionValues[]
   | CheckboxOptionType<OptionValues>[];
 
 type FormikRadioProps<
   FormState extends GenericForm,
-  FieldKey extends Paths<FormState, string | number | null> = Paths<
-    FormState,
-    string | number | null
-  >,
+  FieldKey extends Paths<FormState>,
 > = tst.O.Overwrite<
   tst.O.Omit<tst.O.Required<AntdRadioGroupProps, "name">, "onChange">,
   {
@@ -35,11 +32,13 @@ type FormikRadioProps<
   }
 >;
 
-export const FormikRadio = <FormState extends GenericForm>({
+export const FormikRadio = <
+  FormState extends GenericForm,
+  FieldKey extends Paths<FormState>,
+>({
   name,
   ...props
-}: FormikRadioProps<FormState>) => {
-  type FieldKey = typeof name;
+}: FormikRadioProps<FormState, FieldKey>) => {
   const [{ value, onChange, onBlur }, { error }] =
     useField<Path<FormState, FieldKey>>(name);
 

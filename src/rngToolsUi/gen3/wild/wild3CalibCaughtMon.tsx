@@ -55,7 +55,7 @@ const Validator = z
     gender: z.enum(gender),
     species: z.enum(emeraldWildGameData.species),
     lvl: z.number().min(1).max(100),
-    ability: z.enum(ability),
+    ability: z.enum(ability).nullable(),
   })
   .extend(StatFieldsSchema.shape);
 

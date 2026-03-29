@@ -1,0 +1,7 @@
+import{t as e}from"./jsx-runtime-4Jp-jQG6.js";import{d as t}from"./index-IIWtMu3s.js";var n=e(),r={title:`Glosario`,navDrawerTitle:`Glosario`,description:`Lista de términos importantes relacionados a la manipulación del RNG de Pokémon en los juegos de Generación III.`,slug:`es-gen3-glossary`,translation:{enSlug:`gen3-glossary`,language:`es`}};function i(e){let r={h2:`h2`,li:`li`,p:`p`,ul:`ul`,...t(),...e.components},{Gist:i,Glossary:a}=r;return i||o(`Gist`,!0),a||o(`Glossary`,!0),(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(i,{children:(0,n.jsx)(r.p,{children:`Lo esencial: Lista de términos importantes relacionados a la manipulación del
+RNG de Pokémon en los juegos de Generación III.`})}),`
+`,(0,n.jsx)(a,{jsonFileId:`es-gen3`}),`
+`,(0,n.jsx)(r.h2,{children:`Credits`}),`
+`,(0,n.jsxs)(r.ul,{children:[`
+`,(0,n.jsx)(r.li,{children:`El Terapagos Mexicano for the Spanish translation.`}),`
+`]})]})}function a(e={}){let{wrapper:r}={...t(),...e.components};return r?(0,n.jsx)(r,{...e,children:(0,n.jsx)(i,{...e})}):i(e)}function o(e,t){throw Error(`Expected `+(t?`component`:`object`)+" `"+e+"` to be defined: you likely forgot to import, pass, or provide it.")}export{a as default,r as frontmatter};

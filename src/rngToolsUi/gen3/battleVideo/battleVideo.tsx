@@ -129,7 +129,7 @@ const MyFields = ({
         input: <FormikSwitch<FormState> name="isUpdatingExisting" />,
       },
       {
-        label: "Existing Battle Video advances (approximative)",
+        label: "Existing Battle Video advances",
         input: (
           <FormikNumberInput<FormState>
             name="existingBattleVideoAdv"

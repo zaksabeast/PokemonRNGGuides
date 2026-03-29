@@ -11,4 +11,4 @@ const args = check ? ["fmt", "--check"] : ["fmt"];
 const cwd = path.join(__dirname, "..", "rng_tools");
 const cmd = spawn("cargo", args, { stdio: "inherit", cwd });
 
-cmd.on("exit", (code) => process.exit(code));
+cmd.on("exit", (code) => process.exit(code ?? 1));

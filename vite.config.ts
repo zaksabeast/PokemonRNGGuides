@@ -1,26 +1,111 @@
 import { defineConfig } from "vite";
 import path from "path";
-import react from "@vitejs/plugin-react";
-import babel from "vite-plugin-babel";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
 import mdx from "@mdx-js/rollup";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import remarkGfm from "remark-gfm";
 import { VitePWA } from "vite-plugin-pwa";
 import wasm from "vite-plugin-wasm";
+import { visit } from "unist-util-visit";
+import type { Plugin } from "unified";
+import type { Root, PhrasingContent } from "mdast";
+
+type AlertType = "NOTE" | "TIP" | "WARNING" | "CAUTION" | "IMPORTANT";
+type AlertHeader = `[!${AlertType}]`;
+
+const BLOCKQUOTE_HEADER_MAP = {
+  "[!NOTE]": "NOTE",
+  "[!TIP]": "TIP",
+  "[!WARNING]": "WARNING",
+  "[!CAUTION]": "CAUTION",
+  "[!IMPORTANT]": "IMPORTANT",
+} as const satisfies Record<AlertHeader, AlertType>;
+
+const getAlertHeader = (
+  text: string,
+): { type: AlertType; header: AlertHeader } | null => {
+  for (const [header, type] of Object.entries(BLOCKQUOTE_HEADER_MAP) as [
+    AlertHeader,
+    AlertType,
+  ][]) {
+    if (text.startsWith(header)) {
+      return { type, header };
+    }
+  }
+
+  return null;
+};
+
+const remarkGithubAlerts: Plugin<[], Root> = () => {
+  return (tree) => {
+    visit(tree, "blockquote", (node) => {
+      const first = node.children?.[0];
+
+      if (first?.type === "paragraph" && first.children?.[0]?.type === "text") {
+        const text = first.children[0].value;
+        const alertHeader = getAlertHeader(text);
+
+        // Strip the alert header from the first text node if present
+        if (alertHeader != null) {
+          const stripped = text
+            .slice(alertHeader.header.length)
+            .replace(/^\n/, "");
+          first.children[0].value = stripped;
+        }
+
+        // Convert all \n in every text node to break nodes across the blockquote
+        for (const child of node.children) {
+          if (child.type === "paragraph") {
+            child.children = child.children.flatMap(
+              (phrasingChild): PhrasingContent[] => {
+                if (
+                  phrasingChild.type !== "text" ||
+                  !phrasingChild.value.includes("\n")
+                ) {
+                  return [phrasingChild];
+                }
+                return phrasingChild.value
+                  .split("\n")
+                  .flatMap((line, i, lines): PhrasingContent[] => {
+                    const isLast = i === lines.length - 1;
+                    return isLast
+                      ? [{ type: "text", value: line }]
+                      : [{ type: "text", value: line }, { type: "break" }];
+                  });
+              },
+            );
+          }
+        }
+
+        if (alertHeader != null) {
+          node.data = {
+            hName: "blockquote",
+            hProperties: {
+              "alert-type": alertHeader.type,
+            },
+          };
+        }
+      }
+    });
+  };
+};
 
 export default defineConfig({
   plugins: [
     mdx({
       providerImportSource: "@mdx-js/react",
-      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkGfm],
+      remarkPlugins: [
+        remarkFrontmatter,
+        remarkMdxFrontmatter,
+        remarkGithubAlerts,
+        remarkGfm,
+      ],
     }),
     react(),
     babel({
-      babelConfig: {
-        presets: ["@babel/preset-typescript"],
-        plugins: [["babel-plugin-react-compiler", {}]],
-      },
+      presets: ["@babel/preset-typescript", reactCompilerPreset()],
     }),
     wasm(),
     VitePWA({
@@ -58,14 +143,13 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    // Minimum browsers that support top-level await (required for WASM)
+    target: ["chrome89", "edge89", "firefox89", "safari15"],
+  },
   worker: {
     plugins: () => [wasm()],
     format: "es",
-  },
-  esbuild: {
-    supported: {
-      "top-level-await": true, //browsers can handle top-level-await features
-    },
   },
   resolve: {
     alias: {

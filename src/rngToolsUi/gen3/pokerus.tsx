@@ -351,88 +351,79 @@ const formatAdvDiff = (hit: number, target: number) => {
 export const Gen3Pokerus = () => {
   const [results, setResults] = React.useState<Column[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (values) => {
-      setResults(await generateResults(values));
+  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+    setResults(await generateResults(values));
+  };
+
+  const onClickUpdateCalibrationBtn = () => setResults([]);
+
+  const columns: ResultColumn<Column>[] = [
+    {
+      title: "Target (Pickup | Pokérus)",
+      dataIndex: "target_advance_before_pickup",
+      render: (target_advance_before_pickup) => {
+        const target =
+          target_advance_before_pickup > POKERUS_TARGETS[0]
+            ? POKERUS_TARGETS[1]
+            : POKERUS_TARGETS[0];
+        return `${target_advance_before_pickup} | ${target}`;
+      },
     },
-    [setResults],
-  );
+    {
+      title: "Hit (Pickup | Pokérus)",
+      dataIndex: "advance_before_pickup",
+      render: (advance_before_pickup, values) => {
+        if (advance_before_pickup === values.target_advance_before_pickup) {
+          return "Pokérus";
+        }
 
-  const onClickUpdateCalibrationBtn = React.useCallback(
-    () => setResults([]),
-    [setResults],
-  );
+        const pickupAdv = formatAdvDiff(
+          advance_before_pickup,
+          values.target_advance_before_pickup,
+        );
 
-  const columns = React.useMemo(
-    (): ResultColumn<Column>[] => [
-      {
-        title: "Target (Pickup | Pokérus)",
-        dataIndex: "target_advance_before_pickup",
-        render: (target_advance_before_pickup) => {
-          const target =
-            target_advance_before_pickup > POKERUS_TARGETS[0]
-              ? POKERUS_TARGETS[1]
-              : POKERUS_TARGETS[0];
-          return `${target_advance_before_pickup} | ${target}`;
-        },
+        const pokerusTarget =
+          values.target_advance_before_pickup > POKERUS_TARGETS[0]
+            ? POKERUS_TARGETS[1]
+            : POKERUS_TARGETS[0];
+
+        const pokerusAdv = formatAdvDiff(
+          values.advance_before_pokerus,
+          pokerusTarget,
+        );
+
+        return `${pickupAdv} | ${pokerusAdv}`;
       },
-      {
-        title: "Hit (Pickup | Pokérus)",
-        dataIndex: "advance_before_pickup",
-        render: (advance_before_pickup, values) => {
-          if (advance_before_pickup === values.target_advance_before_pickup) {
-            return "Pokérus";
-          }
-
-          const pickupAdv = formatAdvDiff(
-            advance_before_pickup,
-            values.target_advance_before_pickup,
-          );
-
-          const pokerusTarget =
-            values.target_advance_before_pickup > POKERUS_TARGETS[0]
-              ? POKERUS_TARGETS[1]
-              : POKERUS_TARGETS[0];
-
-          const pokerusAdv = formatAdvDiff(
-            values.advance_before_pokerus,
-            pokerusTarget,
-          );
-
-          return `${pickupAdv} | ${pokerusAdv}`;
-        },
+    },
+    {
+      title: "",
+      dataIndex: "advance_before_pokerus",
+      render: (_val, values) => {
+        return (
+          <UpdateCalibrationBtn
+            colValues={values}
+            onClick={onClickUpdateCalibrationBtn}
+          />
+        );
       },
-      {
-        title: "",
-        dataIndex: "advance_before_pokerus",
-        render: (_val, values) => {
-          return (
-            <UpdateCalibrationBtn
-              colValues={values}
-              onClick={onClickUpdateCalibrationBtn}
-            />
-          );
-        },
-      },
+    },
 
-      {
-        title: "Pickup Items",
-        dataIndex: "pickup_items",
-        render: (val) => {
-          const items = val
-            .map((itemId, pokemonSlot) => {
-              if (itemId === "None") {
-                return null;
-              }
-              return `${pokemonSlot + 1}: ${pickupIdToName(itemId)}`;
-            })
-            .filter((txt) => txt != null);
-          return items.length === 0 ? "No items" : items.join(", ");
-        },
+    {
+      title: "Pickup Items",
+      dataIndex: "pickup_items",
+      render: (val) => {
+        const items = val
+          .map((itemId, pokemonSlot) => {
+            if (itemId === "None") {
+              return null;
+            }
+            return `${pokemonSlot + 1}: ${pickupIdToName(itemId)}`;
+          })
+          .filter((txt) => txt != null);
+        return items.length === 0 ? "No items" : items.join(", ");
       },
-    ],
-    [onClickUpdateCalibrationBtn],
-  );
+    },
+  ];
 
   return (
     <Flex vertical>

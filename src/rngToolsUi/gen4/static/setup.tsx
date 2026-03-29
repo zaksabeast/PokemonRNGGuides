@@ -1,4 +1,3 @@
-import React from "react";
 import { Field, FormFieldTable } from "~/components";
 import { static4Atom } from "./state";
 import { type Gen4GameVersion } from "../gen4types";
@@ -23,6 +22,6 @@ const getFields = (t: Translations): Field[] => [
 
 export const Gen4StaticSetup = () => {
   const t = useActiveRouteTranslations();
-  const fields = React.useMemo(() => getFields(t), [t]);
+  const fields = getFields(t);
   return <FormFieldTable fields={fields} />;
 };

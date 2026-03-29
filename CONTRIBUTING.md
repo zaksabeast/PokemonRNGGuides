@@ -104,11 +104,33 @@ Always format the guide like this:
 
 ### Notes
 
-* Any line starting with **"Note:"** must be converted into a code block:
+* Extract notes from the original guide and convert them to GitHub alert syntax based on their purpose:
+  * **TIP**: Positive, optimization or time-saving advice.
+  * **NOTE**: Optional clarification or background info.
+  * **IMPORTANT**: Required knowledge to succeed, and may cause issues if skipped.
+  * **WARNING**: Action that will cause problems if skipped.
+  * **CAUTION**: Issue already encountered by the user. Use sparingly.
 
-\`\`\`
-Note: Example note here.
-\`\`\`
+* Format alerts like this:
+
+```
+
+> [!TIP]
+> Save time by doing this instead.
+
+> [!NOTE]
+> This guide is interactive.
+
+> [!IMPORTANT]
+> Make a save state before proceeding.
+
+> [!WARNING]
+> Don't do this, it will corrupt your save.
+
+> [!CAUTION]
+> This RNG is not possible with your current settings.
+
+```
 
 ---
 

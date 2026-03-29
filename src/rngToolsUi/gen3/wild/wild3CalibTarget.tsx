@@ -273,21 +273,13 @@ export const Wild3CalibTargetFields = () => {
     name: "usingAverageLeadCycleSpeed",
   });
 
-  const fields = React.useMemo((): Field[] => {
-    return getFields(
-      map,
-      action,
-      usingPaintingReseeding,
-      leadIdx,
-      usingAverageLeadCycleSpeed,
-    );
-  }, [
+  const fields = getFields(
     map,
     action,
     usingPaintingReseeding,
     leadIdx,
     usingAverageLeadCycleSpeed,
-  ]);
+  );
 
   React.useEffect(() => {
     const { actions, feebas_states, mass_outbreak_states, roamer_states } =
@@ -418,94 +410,83 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
   const [targetComputed, setTargetComputed] =
     React.useState<React.ReactNode>(null);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (values) => {
-      const targetPaintingSeed = values.usingPaintingReseeding
-        ? values.targetPaintingSeed
-        : 0;
+  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+    const targetPaintingSeed = values.usingPaintingReseeding
+      ? values.targetPaintingSeed
+      : 0;
 
-      const lead_cycle_speed = getLeadCycleSpeed(values);
+    const lead_cycle_speed = getLeadCycleSpeed(values);
 
-      const opts: Wild3GeneratorOptions = {
-        tid: 0,
-        sid: 0,
-        map_idx: 0,
-        action: values.action,
-        methods: [values.targetMethod] as Gen3Method[],
-        lead: gen3Leads[values.leadIdx],
-        filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
-        gen3_filter: gen3PkmFilterFieldsToRustInput(
-          getGen3PkmFilterInitialValues(),
-          null,
-        ),
-        consider_cycles: true,
-        consider_rng_manipulated_lead_pid: true,
-        generate_even_if_impossible: true,
-        roamer_state: values.roamerState,
-        mass_outbreak_state: values.massOutbreakState,
-        feebas_state: values.feebasState,
-        lead_cycle_speed,
-      };
+    const opts: Wild3GeneratorOptions = {
+      tid: 0,
+      sid: 0,
+      map_idx: 0,
+      action: values.action,
+      methods: [values.targetMethod] as Gen3Method[],
+      lead: gen3Leads[values.leadIdx],
+      filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
+      gen3_filter: gen3PkmFilterFieldsToRustInput(
+        getGen3PkmFilterInitialValues(),
+        null,
+      ),
+      consider_cycles: true,
+      consider_rng_manipulated_lead_pid: true,
+      generate_even_if_impossible: true,
+      roamer_state: values.roamerState,
+      mass_outbreak_state: values.massOutbreakState,
+      feebas_state: values.feebasState,
+      lead_cycle_speed,
+    };
 
-      const map_data = emeraldWildGameData.maps_data.find(
-        (table) => table.map_id === values.map,
-      );
-      if (map_data == null) {
-        setTargetSetup(null);
-        return setTargetComputed(null);
-      }
-
-      const results = await rngTools.generate_gen3_wild_wasm(
-        targetPaintingSeed,
-        values.targetAdvance,
-        opts,
-        map_data,
-      );
-
-      if (results.length === 0) {
-        setTargetSetup(null);
-        return setTargetComputed(null);
-      }
-
-      const result = results[0];
-      const encounter = await rngTools.get_encounter_for_wild3_map_game_data(
-        map_data,
-        values.action,
-        result.encounter_idx,
-      );
-      if (encounter == null) {
-        setTargetSetup(null);
-        return setTargetComputed(null);
-      }
-
-      const info = await resultToDisplayInfo(
-        result,
-        encounter,
-        lead_cycle_speed,
-      );
-      setTargetComputed(info);
-      setTargetSetup(values);
-    },
-    [setTargetSetup, setTargetComputed],
-  );
-
-  const initialValues = React.useMemo(() => {
-    return getInitialValues();
-  }, []);
-
-  const resultAsField = React.useMemo(() => {
-    if (targetComputed == null) {
-      return null;
+    const map_data = emeraldWildGameData.maps_data.find(
+      (table) => table.map_id === values.map,
+    );
+    if (map_data == null) {
+      setTargetSetup(null);
+      return setTargetComputed(null);
     }
 
-    const fields: Field[] = [
-      {
-        label: "Target Pokémon",
-        input: targetComputed,
-      },
-    ];
-    return <FormFieldTable fields={fields} />;
-  }, [targetComputed]);
+    const results = await rngTools.generate_gen3_wild_wasm(
+      targetPaintingSeed,
+      values.targetAdvance,
+      opts,
+      map_data,
+    );
+
+    if (results.length === 0) {
+      setTargetSetup(null);
+      return setTargetComputed(null);
+    }
+
+    const result = results[0];
+    const encounter = await rngTools.get_encounter_for_wild3_map_game_data(
+      map_data,
+      values.action,
+      result.encounter_idx,
+    );
+    if (encounter == null) {
+      setTargetSetup(null);
+      return setTargetComputed(null);
+    }
+
+    const info = await resultToDisplayInfo(result, encounter, lead_cycle_speed);
+    setTargetComputed(info);
+    setTargetSetup(values);
+  };
+
+  const initialValues = getInitialValues();
+
+  const resultAsField =
+    targetComputed == null ? null : (
+      <FormFieldTable
+        fields={[
+          {
+            label: "Target Pokémon",
+            input: targetComputed,
+          },
+        ]}
+      />
+    );
 
   return (
     <>

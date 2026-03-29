@@ -299,52 +299,46 @@ export const Static4Searcher = () => {
     map: mapResult,
   });
 
-  const onSubmit = React.useCallback(
-    async (opts: FormState) => {
-      const encounters = getGameEncounters(game);
-      const encounter = encounters[opts.encounter_id];
+  const onSubmit = async (opts: FormState) => {
+    const encounters = getGameEncounters(game);
+    const encounter = encounters[opts.encounter_id];
 
-      if (encounter == null) {
-        return;
-      }
+    if (encounter == null) {
+      return;
+    }
 
-      setSearchedEncounter({ ...encounter, advanceOffset: opts.offset });
+    setSearchedEncounter({ ...encounter, advanceOffset: opts.offset });
 
-      const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
-        filter: pkmFilterFieldsToRustInput(opts),
-        force_second: opts.force_second,
-        max_advance: opts.max_advance,
-        min_advance: opts.min_advance,
-        max_delay: opts.max_delay,
-        min_delay: opts.min_delay,
-        offset: opts.offset,
-        sid: opts.sid,
-        species: encounter.species,
-        tid: opts.tid,
-        year: opts.year,
-        month: monthToRustFilter(opts.month),
-        lead: opts.lead,
-        game,
-      };
-      const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
-      const searchOpts = chunkedIvs.map(([minIvs, maxIvs]) => ({
-        ...baseOpts,
-        filter: {
-          ...baseOpts.filter,
-          min_ivs: minIvs,
-          max_ivs: maxIvs,
-        },
-      }));
+    const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
+      filter: pkmFilterFieldsToRustInput(opts),
+      force_second: opts.force_second,
+      max_advance: opts.max_advance,
+      min_advance: opts.min_advance,
+      max_delay: opts.max_delay,
+      min_delay: opts.min_delay,
+      offset: opts.offset,
+      sid: opts.sid,
+      species: encounter.species,
+      tid: opts.tid,
+      year: opts.year,
+      month: monthToRustFilter(opts.month),
+      lead: opts.lead,
+      game,
+    };
+    const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
+    const searchOpts = chunkedIvs.map(([minIvs, maxIvs]) => ({
+      ...baseOpts,
+      filter: {
+        ...baseOpts.filter,
+        min_ivs: minIvs,
+        max_ivs: maxIvs,
+      },
+    }));
 
-      await searchStaticSeeds(searchOpts);
-    },
-    [game, setSearchedEncounter, searchStaticSeeds],
-  );
+    await searchStaticSeeds(searchOpts);
+  };
 
-  const getTranslatedFields = React.useCallback(
-    (t: Translations) => getFields(t, game),
-    [game],
-  );
+  const getTranslatedFields = (t: Translations) => getFields(t, game);
 
   return (
     <RngToolForm<FormState, Result>

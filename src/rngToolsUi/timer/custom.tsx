@@ -222,17 +222,14 @@ export const CustomTimer = () => {
     setTimerSettings(updated);
   };
 
-  const onCancel = React.useCallback(
-    (timerId: number) => {
-      setTimerSettings((prev) => {
-        return {
-          ...prev,
-          timers: prev.timers.filter((timer) => timer.timerId !== timerId),
-        };
-      });
-    },
-    [setTimerSettings],
-  );
+  const onCancel = (timerId: number) => {
+    setTimerSettings((prev) => {
+      return {
+        ...prev,
+        timers: prev.timers.filter((timer) => timer.timerId !== timerId),
+      };
+    });
+  };
 
   const addTimer = () => {
     setTimerSettings((prev): AllTimerSettings => {

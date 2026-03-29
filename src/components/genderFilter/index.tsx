@@ -39,10 +39,7 @@ export const FormikGenderFilter = <FormState extends GenericForm>({
 }: FormikGenderFilterProps<FormState>) => {
   const [{ value }, , { setValue }] = useField<Gender | null>(name);
 
-  const options = React.useMemo(
-    () => getGenderFilterOptions(species, permitAny),
-    [species, permitAny],
-  );
+  const options = getGenderFilterOptions(species, permitAny);
 
   React.useEffect(() => {
     if (options.some((opt) => opt.value === value)) {

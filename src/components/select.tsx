@@ -103,43 +103,38 @@ export const FormikSelect = <
   const [{ value, onBlur }, { error, status }, { setValue }] =
     useField<Path<FormState, typeof name>>(name);
 
-  const selectAllNoneDropdownRender = React.useCallback<
-    (menu: React.ReactElement) => React.ReactElement
-  >(
-    (menu: React.ReactElement) => {
-      return (
-        <>
-          <SelectAllContainer>
-            <div>
-              <Button
-                type="text"
-                trackerId="select-all-button"
-                onClick={() => {
-                  const newVals = props.options.map(({ value }) => value);
-                  // @ts-expect-error -- prop types guarantee this is correct
-                  setValue(newVals);
-                }}
-              >
-                <Icon name="AddCircleOutline" /> Select All
-              </Button>
-            </div>
-            <div>
-              <Button
-                type="text"
-                trackerId="select-none-button"
+  const selectAllNoneDropdownRender = (menu: React.ReactElement) => {
+    return (
+      <>
+        <SelectAllContainer>
+          <div>
+            <Button
+              type="text"
+              trackerId="select-all-button"
+              onClick={() => {
+                const newVals = props.options.map(({ value }) => value);
                 // @ts-expect-error -- prop types guarantee this is correct
-                onClick={() => setValue([])}
-              >
-                <Icon name="Block" /> Select None
-              </Button>
-            </div>
-          </SelectAllContainer>
-          {menu}
-        </>
-      );
-    },
-    [props.options, setValue],
-  );
+                setValue(newVals);
+              }}
+            >
+              <Icon name="AddCircleOutline" /> Select All
+            </Button>
+          </div>
+          <div>
+            <Button
+              type="text"
+              trackerId="select-none-button"
+              // @ts-expect-error -- prop types guarantee this is correct
+              onClick={() => setValue([])}
+            >
+              <Icon name="Block" /> Select None
+            </Button>
+          </div>
+        </SelectAllContainer>
+        {menu}
+      </>
+    );
+  };
 
   const dropdownRender = selectAllNoneButtons
     ? selectAllNoneDropdownRender

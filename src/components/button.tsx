@@ -32,13 +32,10 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const id = _id ?? trackerId;
-  const trackedClick = React.useCallback<tst.U.NonNullable<typeof onClick>>(
-    (event) => {
-      track("Button clicked", { id: trackerId });
-      onClick?.(event);
-    },
-    [trackerId, onClick],
-  );
+  const trackedClick: tst.U.NonNullable<typeof onClick> = (event) => {
+    track("Button clicked", { id: trackerId });
+    onClick?.(event);
+  };
   return (
     <StyledButton
       id={id}
@@ -80,13 +77,10 @@ export const BaseButton = ({
   ...props
 }: BaseButtonProps) => {
   const id = _id ?? trackerId;
-  const trackedClick = React.useCallback<tst.U.NonNullable<typeof onClick>>(
-    (event) => {
-      track("Button clicked", { id: trackerId });
-      onClick?.(event);
-    },
-    [trackerId, onClick],
-  );
+  const trackedClick: tst.U.NonNullable<typeof onClick> = (event) => {
+    track("Button clicked", { id: trackerId });
+    onClick?.(event);
+  };
 
   const linkProps =
     props.href != null && newTab ? NEW_TAB_PROPS : SAME_TAB_PROPS;

@@ -1,4 +1,3 @@
-import React from "react";
 import { Skeleton } from "antd";
 import {
   FormikNumberInput,
@@ -108,57 +107,54 @@ const InnerGen5CGearTimer = ({
   initialSettings,
   onUpdate,
 }: InnerProps) => {
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts, { setValue }) => {
-      let updatedOpts = opts;
-      let settings = {
+  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
+    let updatedOpts = opts;
+    let settings = {
+      console: opts.console,
+      min_time_ms: opts.minTimeMs,
+      target_delay: opts.targetDelay,
+      target_second: opts.targetSecond,
+      calibration: opts.calibration,
+    };
+
+    if (opts.delayHit != null) {
+      settings = await rngTools.calibrate_gen5_cgear_timer(
+        settings,
+        opts.delayHit,
+      );
+      settings = {
         console: opts.console,
-        min_time_ms: opts.minTimeMs,
-        target_delay: opts.targetDelay,
-        target_second: opts.targetSecond,
-        calibration: opts.calibration,
+        min_time_ms: capPrecision(settings.min_time_ms),
+        target_delay: capPrecision(settings.target_delay),
+        target_second: capPrecision(settings.target_second),
+        calibration: capPrecision(settings.calibration),
+      };
+      updatedOpts = {
+        console: settings.console,
+        minTimeMs: settings.min_time_ms,
+        targetDelay: settings.target_delay,
+        targetSecond: settings.target_second,
+        calibration: settings.calibration,
+        delayHit: null,
       };
 
-      if (opts.delayHit != null) {
-        settings = await rngTools.calibrate_gen5_cgear_timer(
-          settings,
-          opts.delayHit,
-        );
-        settings = {
-          console: opts.console,
-          min_time_ms: capPrecision(settings.min_time_ms),
-          target_delay: capPrecision(settings.target_delay),
-          target_second: capPrecision(settings.target_second),
-          calibration: capPrecision(settings.calibration),
-        };
-        updatedOpts = {
-          console: settings.console,
-          minTimeMs: settings.min_time_ms,
-          targetDelay: settings.target_delay,
-          targetSecond: settings.target_second,
-          calibration: settings.calibration,
-          delayHit: null,
-        };
+      setValue("console", updatedOpts.console);
+      setValue("minTimeMs", updatedOpts.minTimeMs);
+      setValue("targetDelay", updatedOpts.targetDelay);
+      setValue("targetSecond", updatedOpts.targetSecond);
+      setValue("calibration", updatedOpts.calibration);
+      setValue("delayHit", updatedOpts.delayHit);
+    }
 
-        setValue("console", updatedOpts.console);
-        setValue("minTimeMs", updatedOpts.minTimeMs);
-        setValue("targetDelay", updatedOpts.targetDelay);
-        setValue("targetSecond", updatedOpts.targetSecond);
-        setValue("calibration", updatedOpts.calibration);
-        setValue("delayHit", updatedOpts.delayHit);
-      }
-
-      const milliseconds = await rngTools.create_gen5_cgear_timer(settings);
-      setTimer(
-        hydrationLock({
-          milliseconds: [...milliseconds],
-          minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
-        }),
-      );
-      onUpdate(hydrationLock(updatedOpts));
-    },
-    [onUpdate, setTimer],
-  );
+    const milliseconds = await rngTools.create_gen5_cgear_timer(settings);
+    setTimer(
+      hydrationLock({
+        milliseconds: [...milliseconds],
+        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
+      }),
+    );
+    onUpdate(hydrationLock(updatedOpts));
+  };
 
   return (
     <Flex vertical gap={12}>

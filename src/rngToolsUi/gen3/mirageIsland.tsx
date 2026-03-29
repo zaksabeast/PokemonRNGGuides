@@ -120,20 +120,14 @@ export const Gen3MirageIsland = ({ game = "emerald" }: Props) => {
   const [results, setResults] = React.useState<MirageIslandResult[]>([]);
   const [resultsBattery, setResultsBattery] = React.useState<Battery>("Live");
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (values) => {
-      const { battery } = values;
-      const res = await generateResults(game, values);
-      setResults(res);
-      setResultsBattery(battery);
-    },
-    [game],
-  );
+  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+    const { battery } = values;
+    const res = await generateResults(game, values);
+    setResults(res);
+    setResultsBattery(battery);
+  };
 
-  const columns = React.useMemo(
-    () => getColumns(game, resultsBattery),
-    [game, resultsBattery],
-  );
+  const columns = getColumns(game, resultsBattery);
 
   return (
     <RngToolForm<FormState, MirageIslandResult>

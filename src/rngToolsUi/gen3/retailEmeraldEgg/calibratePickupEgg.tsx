@@ -77,13 +77,11 @@ const HeldEggNatureSelect = () => {
   const t = useActiveRouteTranslations();
   const [heldEgg, setHeldEgg] = useCurrentlyHeldEgg();
 
-  const options = React.useMemo(() => {
-    return translateOptions({
-      t,
-      options: natureOptions.required,
-      sort: true,
-    });
-  }, [t]);
+  const options = translateOptions({
+    t,
+    options: natureOptions.required,
+    sort: true,
+  });
 
   return (
     <Select<Nature>
@@ -303,60 +301,49 @@ export const CalibratePickupEgg = () => {
     filters.evs,
   ]);
 
-  const updateLevelFilter = React.useCallback(
-    (level: number | null) => setFilters((prev) => ({ ...prev, level })),
-    [],
-  );
-  const updateEvFilters = React.useCallback(
-    (evs: Evs) => setFilters((prev) => ({ ...prev, evs })),
-    [],
-  );
+  const updateLevelFilter = (level: number | null) =>
+    setFilters((prev) => ({ ...prev, level }));
+  const updateEvFilters = (evs: Evs) =>
+    setFilters((prev) => ({ ...prev, evs }));
 
-  const fields = React.useMemo((): Field[] => {
-    return [
-      {
-        label: t["Species"],
-        input: <HeldEggSpeciesSelect />,
-      },
-      {
-        label: t["Nature"],
-        input: <HeldEggNatureSelect />,
-      },
-      {
-        label: t["Level"],
-        input: (
-          <FormikNumberInput
-            name="level"
-            numType="decimal"
-            onChange={updateLevelFilter}
-          />
-        ),
-      },
-      {
-        label: t["EVs"],
-        input: <EvInput<FormState> name="evs" onChange={updateEvFilters} />,
-      },
-      ...getStatFields<FormState>(minMaxStats, t),
-    ];
-  }, [t, minMaxStats, updateLevelFilter, updateEvFilters]);
+  const fields: Field[] = [
+    {
+      label: t["Species"],
+      input: <HeldEggSpeciesSelect />,
+    },
+    {
+      label: t["Nature"],
+      input: <HeldEggNatureSelect />,
+    },
+    {
+      label: t["Level"],
+      input: (
+        <FormikNumberInput
+          name="level"
+          numType="decimal"
+          onChange={updateLevelFilter}
+        />
+      ),
+    },
+    {
+      label: t["EVs"],
+      input: <EvInput<FormState> name="evs" onChange={updateEvFilters} />,
+    },
+    ...getStatFields<FormState>(minMaxStats, t),
+  ];
 
-  const dataSource = React.useMemo(() => {
-    return potentialEggs.filter((result) => {
-      return (
-        (result.hp === filters.hpStat || !hasKnownIv(result.ivs.hp)) &&
-        (result.atk === filters.atkStat || !hasKnownIv(result.ivs.atk)) &&
-        (result.def === filters.defStat || !hasKnownIv(result.ivs.def)) &&
-        (result.spa === filters.spaStat || !hasKnownIv(result.ivs.spa)) &&
-        (result.spd === filters.spdStat || !hasKnownIv(result.ivs.spd)) &&
-        (result.spe === filters.speStat || !hasKnownIv(result.ivs.spe))
-      );
-    });
-  }, [potentialEggs, filters]);
+  const dataSource = potentialEggs.filter((result) => {
+    return (
+      (result.hp === filters.hpStat || !hasKnownIv(result.ivs.hp)) &&
+      (result.atk === filters.atkStat || !hasKnownIv(result.ivs.atk)) &&
+      (result.def === filters.defStat || !hasKnownIv(result.ivs.def)) &&
+      (result.spa === filters.spaStat || !hasKnownIv(result.ivs.spa)) &&
+      (result.spd === filters.spdStat || !hasKnownIv(result.ivs.spd)) &&
+      (result.spe === filters.speStat || !hasKnownIv(result.ivs.spe))
+    );
+  });
 
-  const onSubmit = React.useCallback(
-    async (opts: FormState) => setFilters(opts),
-    [],
-  );
+  const onSubmit = async (opts: FormState) => setFilters(opts);
 
   const target = potentialEggs.find(
     (egg) => egg.advance === targetAdvance && egg.method === state.targetMethod,

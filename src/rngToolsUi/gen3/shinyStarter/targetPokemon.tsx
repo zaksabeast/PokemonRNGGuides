@@ -24,36 +24,34 @@ export const TargetPokemon = ({
 }: Props) => {
   const [targetPokemonDesc, setTargetPokemonDesc] = React.useState<string>("");
 
-  const fields: Field[] = React.useMemo(() => {
-    return [
-      {
-        label: "Starter",
-        input: (
-          <RadioGroup
-            name="targetStarter"
-            optionType="button"
-            onChange={async ({ target }) => {
-              // RadioGroup is not able to infer the value type, so we have to cast it
-              const species = target.value as TargetStarter["species"];
-              setTargetStarter({
-                species,
-                minMaxStats: await getStatRange({ species }),
-              });
+  const fields: Field[] = [
+    {
+      label: "Starter",
+      input: (
+        <RadioGroup
+          name="targetStarter"
+          optionType="button"
+          onChange={async ({ target }) => {
+            // RadioGroup is not able to infer the value type, so we have to cast it
+            const species = target.value as TargetStarter["species"];
+            setTargetStarter({
+              species,
+              minMaxStats: await getStatRange({ species }),
+            });
 
-              const desc = await getTargetPokemonDesc(
-                game,
-                targetAdvance,
-                species,
-              );
-              setTargetPokemonDesc(desc);
-            }}
-            options={toOptions(["Mudkip", "Torchic", "Treecko"])}
-          />
-        ),
-      },
-      { label: "Info", input: targetPokemonDesc },
-    ];
-  }, [game, targetAdvance, targetPokemonDesc, setTargetStarter]);
+            const desc = await getTargetPokemonDesc(
+              game,
+              targetAdvance,
+              species,
+            );
+            setTargetPokemonDesc(desc);
+          }}
+          options={toOptions(["Mudkip", "Torchic", "Treecko"])}
+        />
+      ),
+    },
+    { label: "Info", input: targetPokemonDesc },
+  ];
 
   return (
     <Flex id="target-pokemon-container" vertical gap={8} flex={1}>

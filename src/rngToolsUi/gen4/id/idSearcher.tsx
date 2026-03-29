@@ -307,16 +307,12 @@ const Id4SearcherFields = () => {
   const idType = useWatch<FormState, "id_type">({
     name: "id_type",
   });
-  const fields = React.useMemo(
-    () =>
-      getFields({
-        t,
-        idType,
-        maxShinyOdds,
-        reset,
-      }),
-    [t, idType, maxShinyOdds, reset],
-  );
+  const fields = getFields({
+    t,
+    idType,
+    maxShinyOdds,
+    reset,
+  });
   return <FormFieldTable fields={fields} />;
 };
 
@@ -338,60 +334,55 @@ export const Id4Searcher = () => {
 
   const [idType, setIdType] = React.useState<IdType>(defaultIdType);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      try {
-        const interestedTsvs = opts.max_shiny_odds
-          ? maxShinyOddsCuteCharmTsvs
-          : getCuteCharmTsvs({
-              targetGender: opts.target_gender,
-              ratio:
-                opts.target_species === "None"
-                  ? null
-                  : await rngTools.get_species_gender_ratio(
-                      opts.target_species,
-                    ),
-              nature: opts.target_nature === "None" ? null : opts.target_nature,
-            });
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    try {
+      const interestedTsvs = opts.max_shiny_odds
+        ? maxShinyOddsCuteCharmTsvs
+        : getCuteCharmTsvs({
+            targetGender: opts.target_gender,
+            ratio:
+              opts.target_species === "None"
+                ? null
+                : await rngTools.get_species_gender_ratio(opts.target_species),
+            nature: opts.target_nature === "None" ? null : opts.target_nature,
+          });
 
-        const idFilter = match<FormState, IdFilter>(opts)
-          .with({ id_type: "Cute Charm", tid: null }, () => ({
-            Tsvs: interestedTsvs,
-          }))
-          .with({ id_type: "Cute Charm", tid: P.not(null) }, (matched) => ({
-            TidTsvs: {
-              tid: matched.tid,
-              tsvs: interestedTsvs,
-            },
-          }))
-          .with({ id_type: "Any TID" }, () =>
-            denormalizeIdFilterOrDefault(opts.id_filter),
-          )
-          .exhaustive();
+      const idFilter = match<FormState, IdFilter>(opts)
+        .with({ id_type: "Cute Charm", tid: null }, () => ({
+          Tsvs: interestedTsvs,
+        }))
+        .with({ id_type: "Cute Charm", tid: P.not(null) }, (matched) => ({
+          TidTsvs: {
+            tid: matched.tid,
+            tsvs: interestedTsvs,
+          },
+        }))
+        .with({ id_type: "Any TID" }, () =>
+          denormalizeIdFilterOrDefault(opts.id_filter),
+        )
+        .exhaustive();
 
-        const chunked = chunkRange([opts.min_delay, opts.max_delay], 200);
-        const searchOpts: UndefinedToNull<Id4SearchOptions>[] = chunked.map(
-          ([min_delay, max_delay]) => ({
-            year: opts.year,
-            min_delay,
-            max_delay,
-            filter: idFilter,
-            force_second: opts.force_second,
-          }),
-        );
-        await searchDpptIds(searchOpts);
+      const chunked = chunkRange([opts.min_delay, opts.max_delay], 200);
+      const searchOpts: UndefinedToNull<Id4SearchOptions>[] = chunked.map(
+        ([min_delay, max_delay]) => ({
+          year: opts.year,
+          min_delay,
+          max_delay,
+          filter: idFilter,
+          force_second: opts.force_second,
+        }),
+      );
+      await searchDpptIds(searchOpts);
 
-        setIdType(opts.id_type);
-      } catch (error) {
-        messageApi.error(
-          `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
-        );
-      }
-    },
-    [searchDpptIds, messageApi],
-  );
+      setIdType(opts.id_type);
+    } catch (error) {
+      messageApi.error(
+        `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+    }
+  };
 
-  const columns = React.useMemo(() => getColumns({ t, idType }), [t, idType]);
+  const columns = getColumns({ t, idType });
 
   return (
     <RngToolForm<FormState, Result>

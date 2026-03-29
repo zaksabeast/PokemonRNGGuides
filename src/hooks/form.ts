@@ -3,7 +3,6 @@ import {
   useController,
   useFormContext as useRHFormContext,
 } from "react-hook-form";
-import { get } from "lodash-es";
 import { match, P } from "ts-pattern";
 import { GenericForm } from "~/types";
 import * as tst from "ts-toolbelt";
@@ -23,18 +22,12 @@ export const useField = <Value>(
 ] => {
   const {
     field: { value, onBlur, onChange },
-    formState,
-  } = useController({
-    name,
-  });
+    fieldState: { error: fieldError },
+  } = useController({ name });
 
-  const errorMessage = get(formState.errors, `${name}.message`);
-  const error = match({ errorMessage })
-    .with(
-      { errorMessage: P.union(P.string, undefined) },
-      ({ errorMessage }) => errorMessage,
-    )
-    .otherwise(() => JSON.stringify(errorMessage));
+  const error = match(fieldError?.message)
+    .with(P.union(P.string, undefined), (msg) => msg)
+    .otherwise((msg) => JSON.stringify(msg));
 
   return [
     { value, onBlur, onChange },
@@ -44,14 +37,9 @@ export const useField = <Value>(
 };
 
 export const useFormContext = <FormState extends GenericForm>() => {
-  const {
-    formState: { isSubmitting },
-    setValue,
-    reset,
-  } = useRHFormContext<FormState>();
+  const { setValue, reset } = useRHFormContext<FormState>();
 
   return {
-    isSubmitting,
     setFieldValue: setValue,
     reset,
   };

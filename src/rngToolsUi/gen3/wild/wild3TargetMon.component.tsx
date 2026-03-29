@@ -48,9 +48,7 @@ export const TargetMon = () => {
     name: "species",
   });
 
-  const fields = React.useMemo((): Field[] => {
-    return getTargetMonFields(species);
-  }, [species]);
+  const fields = getTargetMonFields(species);
 
   // when user changes species, select all the possible setup values
   React.useEffect(() => {

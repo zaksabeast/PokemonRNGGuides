@@ -94,7 +94,7 @@ const getFields = (t: Translations): Field[] => [
 export const Gen2Rng = () => {
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const results = await rngTools.gen2_generate_rng_states(
       opts.div >>> 8,
       opts.div & 0xff,
@@ -111,7 +111,7 @@ export const Gen2Rng = () => {
         div: (add_div << 8) | sub_div,
       })),
     );
-  }, []);
+  };
 
   return (
     <RngToolForm<FormState, Result>

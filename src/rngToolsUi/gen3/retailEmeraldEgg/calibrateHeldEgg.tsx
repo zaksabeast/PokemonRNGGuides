@@ -236,42 +236,36 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
     targetCalibration,
   ]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const filteredEggs =
-        filters == null
-          ? []
-          : potentialEggs.filter(
-              (egg) =>
-                egg.match_call === filters.pokeNavCall &&
-                // Intentionally using `==` to compare undefined and null
-                egg.nature == filters.nature &&
-                egg.gender == filters.gender,
-            );
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const filteredEggs =
+      filters == null
+        ? []
+        : potentialEggs.filter(
+            (egg) =>
+              egg.match_call === filters.pokeNavCall &&
+              // Intentionally using `==` to compare undefined and null
+              egg.nature == filters.nature &&
+              egg.gender == filters.gender,
+          );
 
-      if (!firstFilter.current) {
-        setPreviousOffsets(filteredEggs.map((egg) => egg.offset));
-      }
-
-      setFilters(opts);
-      firstFilter.current = false;
-    },
-    [filters, potentialEggs],
-  );
-
-  const dataSource = React.useMemo(() => {
-    if (filters == null) {
-      return [];
+    if (!firstFilter.current) {
+      setPreviousOffsets(filteredEggs.map((egg) => egg.offset));
     }
 
-    return potentialEggs.filter(
-      (egg) =>
-        egg.match_call === filters.pokeNavCall &&
-        // Intentionally using `==` to compare undefined and null
-        egg.nature == filters.nature &&
-        egg.gender == filters.gender,
-    );
-  }, [potentialEggs, filters]);
+    setFilters(opts);
+    firstFilter.current = false;
+  };
+
+  const dataSource =
+    filters == null
+      ? []
+      : potentialEggs.filter(
+          (egg) =>
+            egg.match_call === filters.pokeNavCall &&
+            // Intentionally using `==` to compare undefined and null
+            egg.nature == filters.nature &&
+            egg.gender == filters.gender,
+        );
 
   const matchCall = state.target?.match_call;
   const targetCall =
@@ -279,17 +273,14 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
       ? t["None"]
       : `${t["Target Call"]}: ${translatedTrainers.withoutTitle[matchCall]}`;
 
-  const { fields, columns } = React.useMemo(() => {
-    const fields = getFields({
-      t,
-      translatedTrainers: translatedTrainers.withoutTitle,
-    });
-    const columns = getColumns({
-      t,
-      translatedTrainers: translatedTrainers.withoutTitle,
-    });
-    return { fields, columns };
-  }, [t, translatedTrainers.withoutTitle]);
+  const fields = getFields({
+    t,
+    translatedTrainers: translatedTrainers.withoutTitle,
+  });
+  const columns = getColumns({
+    t,
+    translatedTrainers: translatedTrainers.withoutTitle,
+  });
 
   return (
     <Flex vertical gap={16} width="100%">

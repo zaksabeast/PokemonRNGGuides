@@ -14,6 +14,7 @@ import {
   FormProvider,
   UseFormSetValue,
   DefaultValues,
+  useFormState,
 } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { GenericForm } from "~/types";
@@ -94,7 +95,7 @@ export const RngToolForm = <
   onCancel,
 }: Props<FormState, Result>) => {
   const t = useActiveRouteTranslations();
-  const { handleSubmit, setValue, ...form } = useForm<FormState>({
+  const { handleSubmit, setValue, control, ...form } = useForm<FormState>({
     mode: "onTouched",
     resolver:
       validationSchema === undefined
@@ -104,6 +105,7 @@ export const RngToolForm = <
     defaultValues: initialValues,
     values,
   });
+  const { errors } = useFormState({ control });
 
   const translatedSubmitLabel =
     submitButtonLabel === "Generate" ? t["Generate"] : submitButtonLabel;
@@ -126,10 +128,15 @@ export const RngToolForm = <
     });
   };
 
-  const hasErrors = Object.keys(form.formState.errors).length > 0;
+  const hasErrors = Object.keys(errors).length > 0;
 
   return (
-    <FormProvider handleSubmit={handleSubmit} setValue={setValue} {...form}>
+    <FormProvider
+      handleSubmit={handleSubmit}
+      setValue={setValue}
+      control={control}
+      {...form}
+    >
       <Flex vertical gap={16} id={formContainerId}>
         <Form onSubmit={handleSubmit(onValidSubmit)} onReset={onReset}>
           <Flex vertical gap={8}>

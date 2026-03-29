@@ -98,7 +98,7 @@ const formatTime = (seconds: number): string => {
 export const RsTidSidGenerator = () => {
   const [results, setResults] = React.useState<RsTidTarget[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const results = await rngTools.gen3_tidsid_states({
       offset: opts.offset,
       initial_advances: opts.initial_advances,
@@ -116,7 +116,7 @@ export const RsTidSidGenerator = () => {
     }));
 
     setResults(updatedResults);
-  }, []);
+  };
 
   return (
     <RngToolForm<FormState, RsTidTarget>

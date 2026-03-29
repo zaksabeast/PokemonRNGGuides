@@ -137,7 +137,7 @@ const getFields = (t: Translations): Field[] => [
 export const Transporter = () => {
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const results = await rngTools.generate_transporter({
       seed: opts.seed,
       initial_advances: opts.initial_advances,
@@ -159,7 +159,7 @@ export const Transporter = () => {
     });
 
     setResults(results.map(flattenIvs));
-  }, []);
+  };
 
   return (
     <RngToolForm<FormState, Result>

@@ -134,47 +134,41 @@ export const RetailEmeraldPickupEgg = () => {
   const [results, setResults] = React.useState<Result[]>([]);
   const [, setPickupEggState] = usePickupEggState();
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const parentIvs: [NullableIvs, NullableIvs] = [
-        opts.parent1_ivs,
-        opts.parent2_ivs,
-      ];
-      const methodResults = await pmap(
-        ivMethods,
-        async (method) => {
-          const spreads = await rngTools.emerald_egg_pickup_states({
-            ...opts,
-            delay: 0,
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const parentIvs: [NullableIvs, NullableIvs] = [
+      opts.parent1_ivs,
+      opts.parent2_ivs,
+    ];
+    const methodResults = await pmap(
+      ivMethods,
+      async (method) => {
+        const spreads = await rngTools.emerald_egg_pickup_states({
+          ...opts,
+          delay: 0,
+          method,
+          parent_ivs: parentIvs,
+          filter: {
+            max_ivs: opts.filter_max_ivs,
+            min_ivs: opts.filter_min_ivs,
+          },
+        });
+        return spreads.map((spread) =>
+          flattenIvs({
+            ...spread,
             method,
-            parent_ivs: parentIvs,
-            filter: {
-              max_ivs: opts.filter_max_ivs,
-              min_ivs: opts.filter_min_ivs,
-            },
-          });
-          return spreads.map((spread) =>
-            flattenIvs({
-              ...spread,
-              method,
-              key: `${method}-${spread.advance}`,
-            }),
-          );
-        },
-        { concurrency: 3 },
-      );
+            key: `${method}-${spread.advance}`,
+          }),
+        );
+      },
+      { concurrency: 3 },
+    );
 
-      const flattenedResults = methodResults.flat();
-      const sortedResults = sortBy(
-        flattenedResults,
-        (result) => result.advance,
-      );
+    const flattenedResults = methodResults.flat();
+    const sortedResults = sortBy(flattenedResults, (result) => result.advance);
 
-      setResults(sortedResults);
-      setPickupEggState((prev) => ({ ...prev, seed: opts.seed, parentIvs }));
-    },
-    [setPickupEggState],
-  );
+    setResults(sortedResults);
+    setPickupEggState((prev) => ({ ...prev, seed: opts.seed, parentIvs }));
+  };
 
   return (
     <RngToolForm<FormState, Result>

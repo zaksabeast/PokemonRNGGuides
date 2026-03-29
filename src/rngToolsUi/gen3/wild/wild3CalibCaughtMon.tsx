@@ -346,98 +346,92 @@ export const Wild3CalibCaughtMon = ({
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
   const { targetMethod, targetAdvance } = targetSetup;
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (values) => {
-      setResults(await searchCaughtMon(values, targetSetup));
+  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+    setResults(await searchCaughtMon(values, targetSetup));
+  };
+
+  const columns: ResultColumn<CaughtMonResult>[] = [
+    {
+      title: "Advance",
+      dataIndex: "advance",
+      render: (val, values) => {
+        const diffWithTarget = val - values.targetAdvance;
+        if (diffWithTarget === 0) {
+          return `${val}`;
+        }
+        if (diffWithTarget > 0) {
+          return `${val} (+${diffWithTarget})`;
+        }
+        return `${val} (${diffWithTarget})`;
+      },
     },
-    [setResults, targetSetup],
-  );
-
-  const columns = React.useMemo((): ResultColumn<CaughtMonResult>[] => {
-    const columns: ResultColumn<CaughtMonResult>[] = [
-      {
-        title: "Advance",
-        dataIndex: "advance",
-        render: (val, values) => {
-          const diffWithTarget = val - values.targetAdvance;
-          if (diffWithTarget === 0) {
-            return `${val}`;
-          }
-          if (diffWithTarget > 0) {
-            return `${val} (+${diffWithTarget})`;
-          }
-          return `${val} (${diffWithTarget})`;
-        },
+    {
+      title: "Method",
+      dataIndex: "method",
+      render(method, values) {
+        const prob = formatProbability(values.probabilityHitMethodsAtAdvance);
+        const title = `${prob} likelihood that the triggered method is ${method} if the hit advance is ${values.advance}`;
+        return (
+          <>
+            {method}
+            {" ("}
+            <Tooltip title={title}>{prob}</Tooltip>
+            {")"}
+          </>
+        );
       },
-      {
-        title: "Method",
-        dataIndex: "method",
-        render(method, values) {
-          const prob = formatProbability(values.probabilityHitMethodsAtAdvance);
-          const title = `${prob} likelihood that the triggered method is ${method} if the hit advance is ${values.advance}`;
-          return (
-            <>
-              {method}
-              {" ("}
-              <Tooltip title={title}>{prob}</Tooltip>
-              {")"}
-            </>
-          );
+    },
+    {
+      title: (
+        <Tooltip title="Rating from the stat judge in the building behind the Pokémon Center at the Battle Frontier.">
+          <div>
+            IV Rating <Icon name="InformationCircle" size={16} />
+          </div>
+        </Tooltip>
+      ),
+      key: "ivRating",
+      type: "group",
+      columns: [
+        {
+          title: "Sum IVs",
+          dataIndex: "sumIvsMsg",
         },
-      },
-      {
-        title: (
-          <Tooltip title="Rating from the stat judge in the building behind the Pokémon Center at the Battle Frontier.">
-            <div>
-              IV Rating <Icon name="InformationCircle" size={16} />
-            </div>
-          </Tooltip>
-        ),
-        key: "ivRating",
-        type: "group",
-        columns: [
-          {
-            title: "Sum IVs",
-            dataIndex: "sumIvsMsg",
+        {
+          title: "Highest IV",
+          dataIndex: "highestStatIds",
+          render(highestStatIds, values) {
+            return `${values.highestIvMsg} (${highestStatIds.map((statId) => statId.toUpperCase()).join(", ")})`;
           },
-          {
-            title: "Highest IV",
-            dataIndex: "highestStatIds",
-            render(highestStatIds, values) {
-              return `${values.highestIvMsg} (${highestStatIds.map((statId) => statId.toUpperCase()).join(", ")})`;
-            },
-          },
-        ],
-      },
-      {
-        title: "",
-        dataIndex: "advance",
-        render(advance, values) {
-          if (
-            values.advance === targetAdvance &&
-            values.method === targetMethod
-          ) {
-            return "Target Pokémon";
-          }
-
-          return (
-            <Button
-              type="text"
-              color="PrimaryText"
-              trackerId="wild3CalibCaughtMon_adv"
-              onClick={() => {
-                setLatestHitAdv(advance);
-                setResults([]);
-              }}
-            >
-              <Icon name="Update" size={20} /> Update Calibration
-            </Button>
-          );
         },
+      ],
+    },
+    {
+      title: "",
+      dataIndex: "advance",
+      render(advance, values) {
+        if (
+          values.advance === targetAdvance &&
+          values.method === targetMethod
+        ) {
+          return "Target Pokémon";
+        }
+
+        return (
+          <Button
+            type="text"
+            color="PrimaryText"
+            trackerId="wild3CalibCaughtMon_adv"
+            onClick={() => {
+              setLatestHitAdv(advance);
+              setResults([]);
+            }}
+          >
+            <Icon name="Update" size={20} /> Update Calibration
+          </Button>
+        );
       },
-    ];
-    return columns;
-  }, [setLatestHitAdv, setResults, targetMethod, targetAdvance]);
+    },
+  ];
 
   return (
     <Flex vertical gap={8}>

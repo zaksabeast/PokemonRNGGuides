@@ -70,26 +70,23 @@ export const ChatterFilter = () => {
   const [state] = useStatic4State();
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback(
-    async (opts: FormState) => {
-      const target = state.target;
-      if (target == null) {
-        return;
-      }
+  const onSubmit = async (opts: FormState) => {
+    const target = state.target;
+    if (target == null) {
+      return;
+    }
 
-      const chatters = await rngTools.get_chatters({
-        initial_advances: 0,
-        max_advances: target.advance + opts.advancesAfterTarget,
-        seed: target.seed,
-      });
-      const chattersWithTarget = chatters.map((chatter) => ({
-        ...chatter,
-        isTarget: chatter.advance === target.advance,
-      }));
-      setResults(chattersWithTarget);
-    },
-    [state.target],
-  );
+    const chatters = await rngTools.get_chatters({
+      initial_advances: 0,
+      max_advances: target.advance + opts.advancesAfterTarget,
+      seed: target.seed,
+    });
+    const chattersWithTarget = chatters.map((chatter) => ({
+      ...chatter,
+      isTarget: chatter.advance === target.advance,
+    }));
+    setResults(chattersWithTarget);
+  };
 
   return (
     <RngToolForm<FormState, Result>

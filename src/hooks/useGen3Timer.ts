@@ -1,4 +1,3 @@
-import React from "react";
 import { atom, useAtom } from "jotai";
 import { Gen3TimerSettings, rngTools } from "~/rngTools";
 import { capPrecision } from "~/utils/number";
@@ -53,35 +52,29 @@ export type Gen3TimerAtom = ReturnType<typeof createGen3TimerAtom>;
 export const useGen3Timer = (timerAtom: Gen3TimerAtom) => {
   const [{ ms, targetAdvance, calibration }, setState] = useAtom(timerAtom);
 
-  const initTimer = React.useCallback(
-    async (settings: Partial<Gen3TimerSettings>) => {
-      const fullSettings = getTimerSettings(settings);
-      const updated = await rngTools.create_gen3_timer(fullSettings);
-      setState({
-        ms: [...updated],
-        targetAdvance: fullSettings.target_frame,
-        calibration: fullSettings.calibration,
-      });
-    },
-    [setState],
-  );
+  const initTimer = async (settings: Partial<Gen3TimerSettings>) => {
+    const fullSettings = getTimerSettings(settings);
+    const updated = await rngTools.create_gen3_timer(fullSettings);
+    setState({
+      ms: [...updated],
+      targetAdvance: fullSettings.target_frame,
+      calibration: fullSettings.calibration,
+    });
+  };
 
-  const calibrate = React.useCallback(
-    async (hitAdvance: number) => {
-      const updated = await calibrateTimer({
-        targetAdvance,
-        calibration,
-        hitAdvance,
-      });
-      const updatedMs = await rngTools.create_gen3_timer(updated);
-      setState({
-        ms: [...updatedMs],
-        targetAdvance: updated.target_frame,
-        calibration: updated.calibration,
-      });
-    },
-    [targetAdvance, calibration, setState],
-  );
+  const calibrate = async (hitAdvance: number) => {
+    const updated = await calibrateTimer({
+      targetAdvance,
+      calibration,
+      hitAdvance,
+    });
+    const updatedMs = await rngTools.create_gen3_timer(updated);
+    setState({
+      ms: [...updatedMs],
+      targetAdvance: updated.target_frame,
+      calibration: updated.calibration,
+    });
+  };
 
   return { ms, targetAdvance, initTimer, calibrate };
 };

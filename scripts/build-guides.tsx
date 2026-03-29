@@ -526,8 +526,7 @@ const applyUpdatedTimestamps = (
       };
     }
 
-    // If this is a new guide (no previous entry), don't set lastUpdated
-    // It will be handled by the author via addedOn field
+    // Guide existed before but had no lastUpdated stored — leave it as null
     return guide;
   });
 };

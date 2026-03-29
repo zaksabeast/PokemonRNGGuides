@@ -1,4 +1,3 @@
-import React from "react";
 import { Skeleton } from "antd";
 import { Button, Switch, Flex, Typography, List, ListItem } from "~/components";
 import {
@@ -47,25 +46,19 @@ export const PokeNavInput = () => {
   const [lockedState, setRegisteredTrainers] = useRegisteredTrainers();
   const { hydrated, client } = useHydrate(lockedState);
 
-  const handleSelectAll = React.useCallback(
-    () =>
-      setRegisteredTrainers(
-        hydrationLock({
-          registeredTrainers: pokeNavTrainers,
-        }),
-      ),
-    [setRegisteredTrainers],
-  );
+  const handleSelectAll = () =>
+    setRegisteredTrainers(
+      hydrationLock({
+        registeredTrainers: pokeNavTrainers,
+      }),
+    );
 
-  const handleDeselectAll = React.useCallback(
-    () =>
-      setRegisteredTrainers(
-        hydrationLock({
-          registeredTrainers: [],
-        }),
-      ),
-    [setRegisteredTrainers],
-  );
+  const handleDeselectAll = () =>
+    setRegisteredTrainers(
+      hydrationLock({
+        registeredTrainers: [],
+      }),
+    );
 
   if (!hydrated) {
     return <Skeleton />;

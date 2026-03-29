@@ -82,31 +82,28 @@ export const RsTidSearcher = () => {
   const [results, setResults] = React.useState<Result[]>([]);
   const [state] = useRsTidState();
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const results = await rngTools.gen3_tidsid_states({
-        offset: opts.offset,
-        initial_advances: opts.initial_advances,
-        max_advances: opts.max_advances,
-        version_options: {
-          Rs: "DeadBattery",
-        },
-        filter: denormalizeIdFilter({
-          type: "tid",
-          value0: opts.hit_tid,
-          value1: null,
-        }),
-      });
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const results = await rngTools.gen3_tidsid_states({
+      offset: opts.offset,
+      initial_advances: opts.initial_advances,
+      max_advances: opts.max_advances,
+      version_options: {
+        Rs: "DeadBattery",
+      },
+      filter: denormalizeIdFilter({
+        type: "tid",
+        value0: opts.hit_tid,
+        value1: null,
+      }),
+    });
 
-      const updatedResults = results.map((res) => ({
-        ...res,
-        offset: state.targetAdvance - res.advance,
-      }));
+    const updatedResults = results.map((res) => ({
+      ...res,
+      offset: state.targetAdvance - res.advance,
+    }));
 
-      setResults(updatedResults);
-    },
-    [state],
-  );
+    setResults(updatedResults);
+  };
 
   return (
     <RngToolForm<FormState, Result>

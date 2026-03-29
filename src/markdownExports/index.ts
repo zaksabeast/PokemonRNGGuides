@@ -17,6 +17,7 @@ import {
   MarkdownOList,
   MarkdownA,
   MarkdownSummary,
+  MarkdownBlockquote,
 } from "./components";
 import {
   Flex,
@@ -101,6 +102,7 @@ const nonTools = {
   TranslationHelperEditGuide,
   ToolTranslationButton,
   TranslationHelperSelectLanguage,
+  blockquote: MarkdownBlockquote,
   TextArea: Input.TextArea,
 };
 
@@ -342,6 +344,10 @@ const tools = {
   ChatterFilter: lazyLoad(
     () => import("~/rngToolsUi/gen4/static/chatterFilter"),
     (mod) => mod.ChatterFilter,
+  ),
+  Gen5CalibrationResults: lazyLoad(
+    () => import("~/rngToolsUi/gen5/calibrationResults/calibrationResults"),
+    (mod) => mod.Gen5CalibrationResults,
   ),
 };
 

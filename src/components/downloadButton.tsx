@@ -12,6 +12,12 @@ export const DownloadButton = ({ data, trackerId }: Props) => {
     return URL.createObjectURL(blob);
   }, [data]);
 
+  React.useEffect(() => {
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [url]);
+
   return (
     <Button trackerId={trackerId} download="merged.ips" href={url}>
       Download Merged Ips

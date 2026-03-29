@@ -1,4 +1,3 @@
-import React from "react";
 import { atom, useAtom } from "jotai";
 import { Gen4TimerSettings, rngTools } from "~/rngTools";
 import { capPrecision } from "~/utils/number";
@@ -83,49 +82,43 @@ export type Gen4TimerAtom = ReturnType<typeof createGen4TimerAtom>;
 export const useGen4Timer = (timerAtom: Gen4TimerAtom) => {
   const [{ ms, timer, is3ds }, setState] = useAtom(timerAtom);
 
-  const initTimer = React.useCallback(
-    async (
-      settings: Partial<
-        Gen4TimerSettings & { is3ds: boolean; hit_delay?: number | null }
-      >,
-    ) => {
-      let fullSettings = getTimerSettings(settings);
-      if (settings.hit_delay != null) {
-        fullSettings = await calibrateTimer({
-          timer: fullSettings,
-          calibration: { hit_delay: settings.hit_delay },
-        });
-      }
-      const updatedMs = await rngTools.create_gen4_timer(fullSettings);
-      const updatedIs3ds = settings.is3ds ?? is3ds;
-      const updated = {
-        is3ds: updatedIs3ds,
-        ms: getMs(updatedMs, updatedIs3ds),
+  const initTimer = async (
+    settings: Partial<
+      Gen4TimerSettings & { is3ds: boolean; hit_delay?: number | null }
+    >,
+  ) => {
+    let fullSettings = getTimerSettings(settings);
+    if (settings.hit_delay != null) {
+      fullSettings = await calibrateTimer({
         timer: fullSettings,
-      };
-      setState(updated);
-      return updated;
-    },
-    [setState, is3ds],
-  );
-
-  const calibrate = React.useCallback(
-    async (calibration: Gen4CalibrateSettings) => {
-      const updated = await calibrateTimer({
-        timer,
-        calibration,
+        calibration: { hit_delay: settings.hit_delay },
       });
-      const updatedMs = await rngTools.create_gen4_timer(updated);
-      const updatedState = {
-        is3ds,
-        ms: getMs(updatedMs, is3ds),
-        timer: updated,
-      };
-      setState(updatedState);
-      return updatedState;
-    },
-    [timer, is3ds, setState],
-  );
+    }
+    const updatedMs = await rngTools.create_gen4_timer(fullSettings);
+    const updatedIs3ds = settings.is3ds ?? is3ds;
+    const updated = {
+      is3ds: updatedIs3ds,
+      ms: getMs(updatedMs, updatedIs3ds),
+      timer: fullSettings,
+    };
+    setState(updated);
+    return updated;
+  };
+
+  const calibrate = async (calibration: Gen4CalibrateSettings) => {
+    const updated = await calibrateTimer({
+      timer,
+      calibration,
+    });
+    const updatedMs = await rngTools.create_gen4_timer(updated);
+    const updatedState = {
+      is3ds,
+      ms: getMs(updatedMs, is3ds),
+      timer: updated,
+    };
+    setState(updatedState);
+    return updatedState;
+  };
 
   return { ms, initTimer, calibrate };
 };

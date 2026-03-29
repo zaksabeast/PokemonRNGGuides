@@ -71,26 +71,20 @@ import { lcrng_distance } from "~/utils/lcrng";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
-export type Props = {
-  fixedData: {
-    map: string;
-    action: Wild3Action;
-    advance: number;
-    tid: number;
-    sid: number;
-    lead: Gen3Lead;
-    roamerState: Wild3RoamerState;
-    feebasState: Wild3FeebasState;
-    massOutbreakState: Wild3MassOutbreakState;
-    initial_seed: number;
-    painting_advs: {
-      frame_before_painting: number;
-      adv_after_painting: number;
-    } | null;
-    wantedMethod: Gen3Method;
-    wantedPID: number;
-    idealLeadCycleSpeed: number;
-    usingIdealLeadCycleSpeed: boolean;
+type FixedData = {
+  map: string;
+  action: Wild3Action;
+  advance: number;
+  tid: number;
+  sid: number;
+  lead: Gen3Lead;
+  roamerState: Wild3RoamerState;
+  feebasState: Wild3FeebasState;
+  massOutbreakState: Wild3MassOutbreakState;
+  initial_seed: number;
+  painting_advs: {
+    frame_before_painting: number;
+    adv_after_painting: number;
   } | null;
   wantedMethod: Gen3Method;
   wantedPID: number;
@@ -594,8 +588,8 @@ const getSubmitButtonLabel = (fixedData: FixedData | null) => {
 
   const advs =
     fixedData.painting_advs != null &&
-    fixedData.painting_advs.adv_before_painting !== 0
-      ? `${formatLargeInteger(fixedData.painting_advs.adv_before_painting)} | ${formatLargeInteger(fixedData.painting_advs.adv_after_painting)}`
+    fixedData.painting_advs.frame_before_painting !== 0
+      ? `${formatLargeInteger(fixedData.painting_advs.frame_before_painting)} | ${formatLargeInteger(fixedData.painting_advs.adv_after_painting)}`
       : formatLargeInteger(fixedData.advance);
   return `Generate all possible Pokémon encounters at advances ${advs}`;
 };
@@ -634,25 +628,9 @@ export const Wild3MethodDistribution = ({
     setCycleAtMoments([]);
   };
 
-  const submitButtonLabel = React.useMemo(() => {
-    if (fixedData == null) {
-      return undefined;
-    }
-
-    const advs =
-      fixedData.painting_advs != null &&
-      fixedData.painting_advs.frame_before_painting !== 0
-        ? `${formatLargeInteger(fixedData.painting_advs.frame_before_painting)} | ${formatLargeInteger(fixedData.painting_advs.adv_after_painting)}`
-        : formatLargeInteger(fixedData.advance);
-    return `Generate all possible Pokémon encounters at advances ${advs}`;
-  }, [fixedData]);
-
-  const getColumnsProps = React.useCallback(
-    (t: Translations) => {
-      return getColumns(t, fixedData);
-    },
-    [fixedData],
-  );
+  const getColumnsProps = (t: Translations) => {
+    return getColumns(t, fixedData);
+  };
 
   return (
     <>

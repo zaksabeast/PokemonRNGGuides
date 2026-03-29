@@ -119,73 +119,71 @@ const MyFields = ({
     name: "isUpdatingExisting",
   });
 
-  const fields = React.useMemo(() => {
-    return [
-      {
-        label: "Target",
-        input: <FormikEmeraldTargetAdvance<FormState> name="targetAdvance" />,
-      },
-      {
-        label: "Is updating existing Battle Video?",
-        input: <FormikSwitch<FormState> name="isUpdatingExisting" />,
-      },
-      {
-        label: "Existing Battle Video advances",
-        input: (
-          <FormikNumberInput<FormState>
-            name="existingBattleVideoAdv"
-            numType="decimal"
-          />
-        ),
-        indent: 1,
-        show: isUpdatingExisting,
-      },
-      {
-        label: "Console",
-        input: (
-          <FormikSelect<FormState, "console">
-            name="console"
-            options={gen3ConsoleOptions}
-          />
-        ),
-      },
-      {
-        label: "Use recommended buffer to perform action?",
-        input: <FormikSwitch<FormState> name="useRecommendedBuffer" />,
-      },
-      {
-        label: "Leave sufficient buffer for fishing?",
-        input: <FormikSwitch<FormState> name="forFishing" />,
-        indent: 1,
-        show: useRecommendedBuffer,
-      },
-      {
-        label: "Buffer (advance)",
-        input: (
-          <FormikNumberInput<FormState>
-            name="specifiedBuffer"
-            numType="decimal"
-          />
-        ),
-        indent: 1,
-        show: !useRecommendedBuffer,
-      },
-      {
-        label: "Consider waiting in battle?",
-        input: <FormikSwitch<FormState> name="considerWaitingInBattle" />,
-        show: !isUpdatingExisting,
-      },
-      {
-        label: "Display advanced breakdown?",
-        input: (
-          <FormikSwitch<FormState>
-            name="displayAdvancedBreakdown"
-            onChange={setDisplayAdvancedBreakdown}
-          />
-        ),
-      },
-    ];
-  }, [isUpdatingExisting, setDisplayAdvancedBreakdown, useRecommendedBuffer]);
+  const fields: Field[] = [
+    {
+      label: "Target",
+      input: <FormikEmeraldTargetAdvance<FormState> name="targetAdvance" />,
+    },
+    {
+      label: "Is updating existing Battle Video?",
+      input: <FormikSwitch<FormState> name="isUpdatingExisting" />,
+    },
+    {
+      label: "Existing Battle Video advances",
+      input: (
+        <FormikNumberInput<FormState>
+          name="existingBattleVideoAdv"
+          numType="decimal"
+        />
+      ),
+      indent: 1,
+      show: isUpdatingExisting,
+    },
+    {
+      label: "Console",
+      input: (
+        <FormikSelect<FormState, "console">
+          name="console"
+          options={gen3ConsoleOptions}
+        />
+      ),
+    },
+    {
+      label: "Use recommended buffer to perform action?",
+      input: <FormikSwitch<FormState> name="useRecommendedBuffer" />,
+    },
+    {
+      label: "Leave sufficient buffer for fishing?",
+      input: <FormikSwitch<FormState> name="forFishing" />,
+      indent: 1,
+      show: useRecommendedBuffer,
+    },
+    {
+      label: "Buffer (advance)",
+      input: (
+        <FormikNumberInput<FormState>
+          name="specifiedBuffer"
+          numType="decimal"
+        />
+      ),
+      indent: 1,
+      show: !useRecommendedBuffer,
+    },
+    {
+      label: "Consider waiting in battle?",
+      input: <FormikSwitch<FormState> name="considerWaitingInBattle" />,
+      show: !isUpdatingExisting,
+    },
+    {
+      label: "Display advanced breakdown?",
+      input: (
+        <FormikSwitch<FormState>
+          name="displayAdvancedBreakdown"
+          onChange={setDisplayAdvancedBreakdown}
+        />
+      ),
+    },
+  ];
 
   return <FormFieldTable fields={fields} />;
 };

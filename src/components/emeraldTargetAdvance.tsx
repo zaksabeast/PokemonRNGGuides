@@ -65,12 +65,9 @@ export const FormikEmeraldTargetAdvance = <FormState extends GenericForm>({
       .exhaustive();
   }, [mode, value, seed, setValue]);
 
-  const onChange = React.useCallback(
-    (evt: RadioChangeEvent) => {
-      setMode(evt.target.value as Mode);
-    },
-    [setMode],
-  );
+  const onChange = (evt: RadioChangeEvent) => {
+    setMode(evt.target.value as Mode);
+  };
 
   return (
     <Flex vertical gap={4}>

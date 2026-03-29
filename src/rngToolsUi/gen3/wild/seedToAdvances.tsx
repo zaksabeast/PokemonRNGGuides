@@ -146,87 +146,83 @@ const MyFields = () => {
     name: "findOptimalSeed",
   });
 
-  const fields = React.useMemo(() => {
-    return [
-      {
-        label: (
-          <Tooltip title="Possible player actions are Sweet Scent, fishing, and Rock Smash.">
-            <div>
-              Target at start of the player action{" "}
-              <Icon name="InformationCircle" size={16} />
-            </div>
-          </Tooltip>
-        ),
-        key: "targetSeed",
-        input: <FormikEmeraldTargetAdvance name="targetAdvance" />,
-      },
-      {
-        label: (
-          <>
-            Using{" "}
-            <Link href="/emerald-painting-rng/" newTab>
-              Painting Reseeding
-            </Link>
-            ?
-          </>
-        ),
-        key: "usingPaintingReseeding",
-        input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
-      },
-      {
-        label: "Find optimal painting seed?",
-        input: <FormikSwitch<FormState> name="findOptimalSeed" />,
-        show: usingPaintingReseeding,
-        indent: 1,
-      },
-      {
-        label: "Painting seed",
-        input: (
-          <FormikNumberInput<FormState> name="paintingSeed" numType="hex" />
-        ),
-        show: usingPaintingReseeding && !findOptimalSeed,
-        indent: 1,
-      },
-      {
-        label: (
-          <Tooltip title="To ensure there is enough time between booting the game and interacting with the painting.">
-            <div>
-              Min frames before reseeding{" "}
-              <Icon name="InformationCircle" size={16} />
-            </div>
-          </Tooltip>
-        ),
-        key: "min_frame_before_painting",
-        input: (
-          <FormikNumberInput<FormState>
-            name="min_frame_before_painting"
-            numType="decimal"
-          />
-        ),
-        show: usingPaintingReseeding && findOptimalSeed,
-        indent: 1,
-      },
-      {
-        label: (
-          <Tooltip title="To ensure there is enough time between interacting with the painting, catching a Pokémon to validate the seed, and starting a battle video.">
-            <div>
-              Min advances after reseeding{" "}
-              <Icon name="InformationCircle" size={16} />
-            </div>
-          </Tooltip>
-        ),
-        key: "min_adv_after_painting",
-        input: (
-          <FormikNumberInput<FormState>
-            name="min_adv_after_painting"
-            numType="decimal"
-          />
-        ),
-        show: usingPaintingReseeding && findOptimalSeed,
-        indent: 1,
-      },
-    ];
-  }, [usingPaintingReseeding, findOptimalSeed]);
+  const fields: Field[] = [
+    {
+      label: (
+        <Tooltip title="Possible player actions are Sweet Scent, fishing, and Rock Smash.">
+          <div>
+            Target at start of the player action{" "}
+            <Icon name="InformationCircle" size={16} />
+          </div>
+        </Tooltip>
+      ),
+      key: "targetSeed",
+      input: <FormikEmeraldTargetAdvance name="targetAdvance" />,
+    },
+    {
+      label: (
+        <>
+          Using{" "}
+          <Link href="/emerald-painting-rng/" newTab>
+            Painting Reseeding
+          </Link>
+          ?
+        </>
+      ),
+      key: "usingPaintingReseeding",
+      input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
+    },
+    {
+      label: "Find optimal painting seed?",
+      input: <FormikSwitch<FormState> name="findOptimalSeed" />,
+      show: usingPaintingReseeding,
+      indent: 1,
+    },
+    {
+      label: "Painting seed",
+      input: <FormikNumberInput<FormState> name="paintingSeed" numType="hex" />,
+      show: usingPaintingReseeding && !findOptimalSeed,
+      indent: 1,
+    },
+    {
+      label: (
+        <Tooltip title="To ensure there is enough time between booting the game and interacting with the painting.">
+          <div>
+            Min frames before reseeding{" "}
+            <Icon name="InformationCircle" size={16} />
+          </div>
+        </Tooltip>
+      ),
+      key: "min_frame_before_painting",
+      input: (
+        <FormikNumberInput<FormState>
+          name="min_frame_before_painting"
+          numType="decimal"
+        />
+      ),
+      show: usingPaintingReseeding && findOptimalSeed,
+      indent: 1,
+    },
+    {
+      label: (
+        <Tooltip title="To ensure there is enough time between interacting with the painting, catching a Pokémon to validate the seed, and starting a battle video.">
+          <div>
+            Min advances after reseeding{" "}
+            <Icon name="InformationCircle" size={16} />
+          </div>
+        </Tooltip>
+      ),
+      key: "min_adv_after_painting",
+      input: (
+        <FormikNumberInput<FormState>
+          name="min_adv_after_painting"
+          numType="decimal"
+        />
+      ),
+      show: usingPaintingReseeding && findOptimalSeed,
+      indent: 1,
+    },
+  ];
 
   return <FormFieldTable fields={fields} />;
 };
@@ -234,85 +230,83 @@ const MyFields = () => {
 export const EmeraldSeedToAdvances = () => {
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts: FormState) => {
-      if (!opts.usingPaintingReseeding) {
-        setResults([
-          {
-            frame_before_painting: 0,
-            adv_after_painting: opts.targetAdvance,
-          },
-        ]);
-        return;
-      }
+  const onSubmit: RngToolSubmit<FormState> = async (opts: FormState) => {
+    if (!opts.usingPaintingReseeding) {
+      setResults([
+        {
+          frame_before_painting: 0,
+          adv_after_painting: opts.targetAdvance,
+        },
+      ]);
+      return;
+    }
 
-      if (!opts.findOptimalSeed) {
-        const targetSeed = pokerng_with_jump(0, opts.targetAdvance);
-        const after = lcrng_distance(opts.paintingSeed, targetSeed);
-        setResults([
-          {
-            frame_before_painting: opts.paintingSeed,
-            adv_after_painting: after,
-          },
-        ]);
-        return;
-      }
-
-      const painting_opts: Wild3PaintingOpts = {
-        min_frame_before_painting: 0,
-        min_adv_after_painting: 0,
-      };
-
+    if (!opts.findOptimalSeed) {
       const targetSeed = pokerng_with_jump(0, opts.targetAdvance);
-      rngTools
-        .find_painting_advs_for_seed(painting_opts, targetSeed)
-        .then((results) => {
-          results = results.filter((res) => {
-            if (res.frame_before_painting === 0) {
-              return true;
-            }
-            return (
-              res.frame_before_painting >= opts.min_frame_before_painting &&
-              res.adv_after_painting >= opts.min_adv_after_painting
-            );
-          });
-          results.sort((lhs, rhs) => {
-            // Painting Seed = 0 goes first.
-            if (lhs.frame_before_painting === 0) {
-              return -1;
-            }
-            if (rhs.frame_before_painting === 0) {
-              return 1;
-            }
-            const durA =
-              lhs.frame_before_painting * FRAME_BEFORE_SCORE_MULT +
-              lhs.adv_after_painting;
-            const durB =
-              rhs.frame_before_painting * FRAME_BEFORE_SCORE_MULT +
-              rhs.adv_after_painting;
-            return durA - durB;
-          });
-          setResults(results);
+      const after = lcrng_distance(opts.paintingSeed, targetSeed);
+      setResults([
+        {
+          frame_before_painting: opts.paintingSeed,
+          adv_after_painting: after,
+        },
+      ]);
+      return;
+    }
+
+    const painting_opts: Wild3PaintingOpts = {
+      min_frame_before_painting: 0,
+      min_adv_after_painting: 0,
+    };
+
+    const targetSeed = pokerng_with_jump(0, opts.targetAdvance);
+    rngTools
+      .find_painting_advs_for_seed(painting_opts, targetSeed)
+      .then((results) => {
+        results = results.filter((res) => {
+          if (res.frame_before_painting === 0) {
+            return true;
+          }
+          return (
+            res.frame_before_painting >= opts.min_frame_before_painting &&
+            res.adv_after_painting >= opts.min_adv_after_painting
+          );
         });
         results.sort((lhs, rhs) => {
           // Painting Seed = 0 goes first.
-          if (lhs.adv_before_painting === 0) {
+          if (lhs.frame_before_painting === 0) {
             return -1;
           }
-          if (rhs.adv_before_painting === 0) {
+          if (rhs.frame_before_painting === 0) {
             return 1;
           }
-          const durA = lhs.adv_before_painting + lhs.adv_after_painting;
-          const durB = rhs.adv_before_painting + rhs.adv_after_painting;
+          const durA =
+            lhs.frame_before_painting * FRAME_BEFORE_SCORE_MULT +
+            lhs.adv_after_painting;
+          const durB =
+            rhs.frame_before_painting * FRAME_BEFORE_SCORE_MULT +
+            rhs.adv_after_painting;
           return durA - durB;
         });
         setResults(results);
       });
+    results.sort((lhs, rhs) => {
+      // Painting Seed = 0 goes first.
+      if (lhs.adv_before_painting === 0) {
+        return -1;
+      }
+      if (rhs.adv_before_painting === 0) {
+        return 1;
+      }
+      const durA = lhs.adv_before_painting + lhs.adv_after_painting;
+      const durB = rhs.adv_before_painting + rhs.adv_after_painting;
+      return durA - durB;
+    });
+    setResults(results);
   };
 
   return (
     <RngToolForm<FormState, Result>
-      columns={columns}
+      getColumns={getColumns}
       rowKey="frame_before_painting"
       results={results}
       initialValues={initialValues}

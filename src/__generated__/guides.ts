@@ -992,7 +992,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-03-29",
       type: "baseGuide",
       file: "guides/Contributing.mdx",
       translations: null,

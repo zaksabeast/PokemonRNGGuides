@@ -1,26 +1,47 @@
-import { GenderRatio, Gender } from "~/rngTools";
+import { Gender, Species } from "~/rngTools";
 import React from "react";
-import { FormikSelect } from "../select";
-import { getGenderFilterOptions } from "./options";
-import { GenericForm, GuaranteeFormNameType } from "~/types";
+import { genderOptions } from "./options";
+import {
+  GenericForm,
+  GuaranteeFormNameType,
+  genderRatioBySpecies,
+  getPossibleGenders,
+} from "~/types";
 import { useField } from "~/hooks/form";
+import { FormikRadio } from "../radio";
 
 type FormikGenderFilterProps<FormState extends GenericForm> = {
-  genderRatio?: GenderRatio;
+  species?: Species;
   permitAny?: boolean;
   name: GuaranteeFormNameType<FormState, Gender | null>;
 };
 
+const getGenderFilterOptions = (species?: Species, permitAny = true) => {
+  if (species == null) {
+    return genderOptions;
+  }
+
+  const genderRatio = genderRatioBySpecies[species];
+  const possibleGenders = getPossibleGenders(genderRatio);
+  permitAny = permitAny && possibleGenders.length > 1;
+  return genderOptions.filter((option) => {
+    if (option.value == null) {
+      return permitAny;
+    }
+    return possibleGenders.includes(option.value);
+  });
+};
+
 export const FormikGenderFilter = <FormState extends GenericForm>({
-  genderRatio,
+  species,
   permitAny = true,
   name,
 }: FormikGenderFilterProps<FormState>) => {
   const [{ value }, , { setValue }] = useField<Gender | null>(name);
 
   const options = React.useMemo(
-    () => getGenderFilterOptions(genderRatio, permitAny),
-    [genderRatio, permitAny],
+    () => getGenderFilterOptions(species, permitAny),
+    [species, permitAny],
   );
 
   React.useEffect(() => {
@@ -36,12 +57,8 @@ export const FormikGenderFilter = <FormState extends GenericForm>({
     setValue(options[0].value);
   }, [value, options, setValue]);
 
-  // No need to pass generic types since they're validated above
   return (
-    <FormikSelect
-      name={name}
-      options={options}
-      disabled={options.length <= 1}
-    />
+    // @ts-expect-error -- prop types guarantee this is correct
+    <FormikRadio name={name} options={options} />
   );
 };

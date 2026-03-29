@@ -288,10 +288,7 @@ const Fields = ({ targetSetup }: { targetSetup: TargetSetup }) => {
         levelRange: [selectedLvl, selectedLvl],
         nature: selectedNature,
       }),
-      rngTools.get_species_gender_ratio(
-        selectedSpeciesInfos[0].species_data.species,
-      ),
-    ]).then(([minMaxStats, genderRatio]) => {
+    ]).then(([minMaxStats]) => {
       setFields([
         speciesField,
         {
@@ -308,7 +305,7 @@ const Fields = ({ targetSetup }: { targetSetup: TargetSetup }) => {
           input: (
             <FormikGenderFilter<FormState>
               name="gender"
-              genderRatio={genderRatio}
+              species={selectedSpecies}
               permitAny={false}
             />
           ),
@@ -329,6 +326,8 @@ const Fields = ({ targetSetup }: { targetSetup: TargetSetup }) => {
               name="ability"
               species={selectedSpecies}
               permitAny={false}
+              displayHiddenAbility={false}
+              mergeFirstSecondIfSameAbility
             />
           ),
         },

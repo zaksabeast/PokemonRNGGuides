@@ -10,7 +10,7 @@ import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
 import { getPkmFilterFields } from "~/components/pkmFilter";
 import React from "react";
-import { genderRatioBySpecies, gen3SpeciesHasVariableSize } from "~/types";
+import { gen3SpeciesHasVariableSize } from "~/types";
 import { getGen3PkmFilterFields } from "~/components/gen3PkmFilter";
 
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
@@ -21,8 +21,6 @@ import { FormState } from "./wild3FindTarget";
 const emeraldWildGameData = getWild3EmeraldGameData();
 
 const getTargetMonFields = (species: Species): Field[] => {
-  const genderRatio = genderRatioBySpecies[species];
-
   const targetMonFields: Field[] = [
     {
       label: "Species",
@@ -33,7 +31,10 @@ const getTargetMonFields = (species: Species): Field[] => {
         />
       ),
     },
-    ...getPkmFilterFields({ genderRatio }),
+    ...getPkmFilterFields({
+      species,
+      displayHiddenAbility: false,
+    }),
     ...getGen3PkmFilterFields({
       max_size: gen3SpeciesHasVariableSize(species),
     }),

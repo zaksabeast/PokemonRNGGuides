@@ -117,7 +117,6 @@ export const translations: Partial<Translations> = {
   "Target Nature": "Target Nature",
   "Target Species": "Target Species",
   "Optional TID": "Optional TID",
-  "Target TID": "Target TID",
   None: "None",
   "Obtained TID": "Obtained TID",
   Hours: "Hours",

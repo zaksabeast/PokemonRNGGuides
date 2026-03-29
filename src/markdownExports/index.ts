@@ -281,6 +281,14 @@ const tools = {
     () => import("~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg"),
     (mod) => mod.CalibratePickupEggTimer,
   ),
+  Id4Tid: lazyLoad(
+    () => import("~/rngToolsUi/gen4/id/id4Tid"),
+    (mod) => mod.Id4Tid,
+  ),
+  Id4Sid: lazyLoad(
+    () => import("~/rngToolsUi/gen4/id/id4Tid"),
+    (mod) => mod.Id4Sid,
+  ),
   CalibrateStarter4: lazyLoad(
     () => import("~/rngToolsUi/gen4/starters"),
     (mod) => mod.CalibrateStarter4,

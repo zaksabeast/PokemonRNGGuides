@@ -63,6 +63,10 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
     dataIndex: "tid",
   },
   {
+    title: t["SID"],
+    dataIndex: "sid",
+  },
+  {
     title: t["Delay"],
     dataIndex: "delay",
   },
@@ -86,16 +90,8 @@ export const CalibrateId4 = () => {
   const [{ target }] = useId4State();
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const targetTid = target?.tid;
-
   const getFields = (t: Translations): Field[] => {
-    const targetTidText = t["Target TID"];
-    const noneText = t["None"];
     return [
-      {
-        label: `${targetTidText}: ${targetTid ?? noneText}`,
-        input: null,
-      },
       {
         label: t["Obtained TID"],
         input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,

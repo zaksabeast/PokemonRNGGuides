@@ -172,6 +172,7 @@ const InnerMultiTimer = ({
         <>
           <Flex vertical gap={16} justify="center" align="center">
             <Timer
+              label={labels?.[currentTimerIndex]}
               expirationMs={currentMs}
               countdownMs={countdownMs}
               startTimeMs={startTimeMs}
@@ -184,7 +185,8 @@ const InnerMultiTimer = ({
           </Flex>
           <Flex vertical gap={8}>
             <Typography.Title level={5} p={0} m={0}>
-              {t["Next Phase"]}: {nextMs == null ? "None" : nextMs / 1000}
+              {t["Next Phase"]}:{" "}
+              {nextMs == null ? "None" : (nextMs / 1000).toFixed(3)}
             </Typography.Title>
             <Typography.Title level={5} p={0} m={0}>
               {t["Minutes Before Target"]}: {minutesBeforeTarget}
@@ -195,7 +197,7 @@ const InnerMultiTimer = ({
 
       {state.showAllTimers && (
         <>
-          <Flex wrap gap={16} justify="center" align="center">
+          <Flex wrap gap={16} justify="center" align="flex-start">
             {displayTimerMs.map((ms, index) => {
               const offsetForTimer = calculateOffset(displayTimerMs, index);
               return (

@@ -25,6 +25,15 @@ const deserializers = {
   float: (str: string) => capPrecision(parseInt(str, 10)),
 };
 
+const inputModes = {
+  hex: "text",
+  decimal: "numeric",
+  float: "decimal",
+} satisfies Record<
+  NumberInputProps["numType"],
+  React.HTMLAttributes<HTMLInputElement>["inputMode"]
+>;
+
 type NumberInputProps = {
   disabled?: boolean;
   fullFlex?: boolean;
@@ -84,7 +93,13 @@ export const NumberInput = ({
     .otherwise((matched) => serialize(matched.value ?? null));
 
   return (
-    <Input {...props} name={name} onChange={_onChange} value={displayedValue} />
+    <Input
+      {...props}
+      name={name}
+      onChange={_onChange}
+      value={displayedValue}
+      inputMode={inputModes[numType]}
+    />
   );
 };
 

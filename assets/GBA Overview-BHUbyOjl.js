@@ -1,0 +1,57 @@
+var e=`---
+- title: "GBA Übersicht"
+  navDrawerTitle: "GBA Übersicht"
+  description: "Besonderheiten, zentrale RNG-Konzepte und Versionsunterschiede der GBA-Spiele."
+  slug: "de-gba-overview"
+  translation:
+    enSlug: "gba-overview"
+    language: "de"
+---
+
+<Gist>
+  Besonderheiten, zentrale RNG-Konzepte und Versionsunterschiede der GBA-Spiele.
+</Gist>
+
+### Besonderheiten der GBA RNG Manipulation
+
+In GBA-Spielen advanced der RNG mit jedem Video-Frame (alle 1/60 Sekunde). Das bedeutet, dass RNG Manipulation ein Drücken von A mit einer Präzision von 1/60 Sekunde erfordert, was es schwieriger macht als in der DS-Generation.
+
+RNG Manipulation für sehr seltene Traits kann langes Warten erfordern (1h+ pro Attempt). Glücklicherweise gibt es fortgeschrittene Techniken, um [RNG Advances zu beschleunigen](/e-tips-rng).
+
+[vblanks](/gba-vblank) können schwer vorhersehbare RNG Advances während der Pokémon-Generation verursachen und das Ergebnis unerwartet verändern. Diese unerwarteten Advances sind die Ursache für die Unterschiede zwischen den [Methods 1-4](/gba-methods).
+
+Dennoch gibt es gute Gründe für RNG Manipulation in GBA-Spielen, vor allem:
+
+- Einzige Möglichkeit, alle Ribbons auf einem Pokémon zu erhalten.
+- Einzige Möglichkeit, Shiny Mew und Shiny Deoxys zu erhalten.
+
+### Überblick über die GBA RNG Mechanismen
+
+Es gibt nur 1 Typ von RNG für die Pokémon-Generation. Er wird verwendet, um die PID (welche Wesen, Fähigkeiten, Shininess bestimmt) und die IVs zu generieren.
+
+Shininess hängt von PID, TID und SID ab. Das bedeutet, du musst [deine SID kennen](/gen3-sid), um ein Shiny Pokémon zu RNGn.
+
+### Zentrale Unterschiede zwischen den GBA-Spielen
+
+| Spiel                                | Initial Seed                                                       | Nützlich für                                                                                    |
+| ------------------------------------ | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| [Pokémon Smaragd](/emerald-overview) | Normalerweise 0                                                    | Am einfachsten für RNG von Static, Wild, und Ei Pokémon                                         |
+| Rubin & Saphir                       | Mit voller Batterie: Zufällig.<br/>Mit leerer Batterie: Normal 5A0 | Zugriff auf Level 45 Groudon und Kyogre                                                         |
+| Feuerrot & Blattgrün                 | Zufällig                                                           | Einziger Weg für Shiny Mewtu und Icognito<br/>Einfachster Weg für Shiny Arktos, Zapdos, Lavados |
+
+### Konsolen-Interoperabilität
+
+Pokémon können zwischen GBA- und GameCube-Games getauscht werden.
+
+GameCube-Games sind besonders nützlich für:
+
+- Einzige Möglichkeit, [Shiny Jirachi](/emulator-rs-wishmaker) zu erhalten.
+- Erhalt von Entei, Raikou, Suicune mit seltenen Traits ist einfacher als auf GBA-Games.
+
+Pokémon können von GBA auf DS-Games übertragen werden, aber nicht umgekehrt.
+
+## Credits
+
+- Chinesische Übersetzung: Hakuhiro.
+- Deutsche Übersetzung: Parasite.
+`;export{e as default};

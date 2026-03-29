@@ -1,0 +1,1 @@
+import{F as e,P as t}from"./useGen4Timer-CZ3USEUo.js";var n=[`hp`,`atk`,`def`,`spa`,`spd`,`spe`],r={hp:{min:0,max:0},atk:{min:0,max:0},def:{min:0,max:0},spa:{min:0,max:0},spd:{min:0,max:0},spe:{min:0,max:0}},i=t().min(0).max(999),a=e({hpStat:i,atkStat:i,defStat:i,spaStat:i,spdStat:i,speStat:i});e({hp:i,atk:i,def:i,spa:i,spd:i,spe:i});export{r as n,n as r,a as t};

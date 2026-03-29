@@ -1,0 +1,179 @@
+var e=`---
+- title: "Diamond, Pearl, and Platinum Static RNG"
+  navDrawerTitle: "Static RNG"
+  description: "Learn how to RNG static Pokémon in Diamond, Pearl, and Platinum for perfect IVs, natures, and shinies."
+  slug: "retail-dppt-static"
+  category: "Diamond, Pearl, and Platinum"
+  section: "pokemon_rng"
+  variant: "retail"
+  isRoughDraft: true
+---
+
+> [!NOTE]
+> This guide is interactive and updates instructions based on your settings!
+
+<Gist>Get shiny legend and gift Pokemon with perfect IVs and natures.</Gist>
+
+<Stepper titles={["Set up", "Pick a Pokemon", "Hit your seed", "Get the Pokemon", "Calibrate"]}>
+
+<Step step={0}>
+
+## Set up
+
+Choose the game and console you're playing below then continue to the next step.
+
+<Gen4StaticSetup />
+
+<Static4ShowIf is3dsNormalSettings>
+  [Learn how to use the 3DS Helper here](/3ds-helper).
+</Static4ShowIf>
+
+<Static4ShowIf is3dsAltSettings>
+  [Download the 3DS Alt Settings app here](/3ds-alt-settings).
+</Static4ShowIf>
+
+</Step>
+
+<Step step={1}>
+
+## Pick a Pokemon
+
+1. Fill out the tool below to find a starter that suits you.
+2. If you can't find a Pokemon you like, you can increase the min and max delays. This will increase the time to get the Pokemon.
+
+<Static4Searcher />
+
+</Step>
+
+<Step step={2}>
+
+## Prepare the save
+
+1. If you're on Platinum, set your console date to **12/31/2099** on NDS or **12/31/2050** on 3DS.
+2. Your party should have:
+
+   <Static4ShowIfLead lead="None">
+
+   - At least one Chatot with Chatter (two is optimal).
+   - A lead Pokémon without sync or cute charm.
+
+   </Static4ShowIfLead>
+
+   <Static4ShowIfLead lead="Cutecharm">
+
+   - At least one Chatot with Chatter (two is optimal).
+   - A lead Pokémon with the Cute Charm ability for your trainer's ID
+
+   </Static4ShowIfLead>
+
+   <Static4ShowIfLead lead="Synchronize">
+
+   - At least one Chatot with Chatter (two is optimal).
+   - A lead Pokémon with the Synchronize ability and <Static4SyncNature /> nature.
+
+   </Static4ShowIfLead>
+
+3. Switch your Poketch to the Coin Flip app.
+4. Save in front of the Pokemon you want to RNG.
+
+## Prepare the console
+
+1. Set your console date to **<Static4ConsoleSetDateString format="date" />**.
+2. Start setting your console time to **<Static4ConsoleSetDateString format="time" />**, but don't confirm it just yet.
+
+| Confirm time screen                                                    |
+| ---------------------------------------------------------------------- |
+| ![Confirm time screen](/images/HeartGold-SoulSilver/SetTimeScreen.jpg) |
+
+## Hit your seed
+
+<Static4ShowIf is3dsNormalSettings>
+  [Learn how to use the 3DS Helper here](/3ds-helper).
+</Static4ShowIf>
+
+1. Simultaneously press \`A\` to set the console time and start the timer below.
+2. <Static4ShowIf is3dsNormalSettings>
+     Exit the settings on your console, restart your console, and start the
+     game.
+   </Static4ShowIf>
+   <Static4ShowIf is3dsAltSettings>
+     Press \`Start\` to exit the Alt Settings on your console, then start the
+     game.
+   </Static4ShowIf>
+   <Static4ShowIf isNdsDsi>
+     Exit the settings on your console and restart your console.
+   </Static4ShowIf>
+3. When the first timer ends, <Static4ShowIf is3dsNormalSettings is3dsAltSettings>press \`L + R + Start + Select\` to soft reset the game.</Static4ShowIf><Static4ShowIf isNdsDsi>press \`A\` to start the game.</Static4ShowIf>
+4. Get to the screen where you load your save.
+5. Immediately press \`A\` when the second timer to goes off.
+
+<Static4Timer />
+
+## Calibrate the seed
+
+1. Click "Generate" below to generate a list of possible seeds you hit.
+2. Flip the coin in the Poketch and click the heads or tails buttons below to filter results.
+3. If you have one result left and it isn't your target seed, click "Calibrate".
+4. Try to hit your target again.
+5. If the "Flip Delay" column is checked for the Pokemon you hit, take one of these actions:
+   - For **Any game**, insert a GBA cart
+   - For **HeartGold and SoulSilver**, use the touch screen to press the down and up arrows on the continue screen.
+   - For **Diamond, Pearl, and Platinum**, click "New Game", then press \`B\` to return to the continue screen.
+   - If you've flipped the delay, you need to keep flipping it every time.
+
+> [!TIP]
+> If you don't see your seed, increase the delay and second offsets and try again.
+
+<Static4HitSeed />
+
+</Step>
+
+<Step step={3}>
+
+## Get your Pokemon
+
+Follow these steps once you've hit your target seed.
+
+1. **Immediately** open your party menu as fast as possible when the save loads.
+2. Open Chatot's summary screen **<Static4ChatotCount />** times to advance the RNG. **Optionally** verify the Chatter pitch below.
+3. Exit the party and catch or receive your target Pokémon.
+
+> [!TIP]
+> Switching between two Chatot summaries is faster than repeatedly opening and closing the same summary!
+
+If you didn't get your target Pokemon and you're 100% sure you viewed the Chatot summary the correct number of times, move on to the next step to calibrate your advances.
+
+## Optional: Verify Chatter Pitches
+
+This allows experienced RNGers to confirm their advances without calibrating.
+
+> [!NOTE]
+> This isn't necessary and can be difficult to get right, so don't worry about it for your first few times.
+
+<ChatterFilter />
+
+</Step>
+
+<Step step={4}>
+
+### Calibrate Advances
+
+1. Check your Pokémon stats.
+2. Fill out the form below with the stats of the Pokémon you caught and click "Generate".
+3. Click "Calibrate Advance" to adjust your Chatot summary count, or use the "Calibrate Timer" to adjust your seed timing.
+4. Try to hit your target again.
+
+> [!TIP]
+> If you can't find the Pokémon you hit, increase the advance range, delay range, and/or seconds range in the calibrator to expand your search.
+
+<Static4Calibrator />
+
+</Step>
+
+</Stepper>
+
+## Credits
+
+- Sorendog and Zaksabeast for writing this tool
+- Thanks to all [PokeFinder](https://github.com/Admiral-Fish/PokeFinder) contributors, whose work this tool is built upon.
+`;export{e as default};

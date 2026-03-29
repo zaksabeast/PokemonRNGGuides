@@ -109,6 +109,10 @@ export const Wild3CycleAtMoments = ({ cycleAtMoments }: Props) => {
         const diff_increment_with_compare = increment - compareIncrement;
         return {
           ...cycleAtMoment,
+          // No stable unique key can be derived from the data.
+          // Array indexes can conflict with previously calculated data, and batched results mean indexes could be unstable between results.
+          // Re-rendering with a new uid is safe because this is a read-only display table — row remounting has no side effects.
+          // eslint-disable-next-line react-hooks/purity -- uid is only used as a React row key for DOM reconciliation.
           uid: Math.random(),
           diff_cycle_with_compare: cycleAtMoment.cycle - compareInfo.cycle,
           increment,
@@ -117,6 +121,10 @@ export const Wild3CycleAtMoments = ({ cycleAtMoments }: Props) => {
       }
       return {
         ...cycleAtMoment,
+        // No stable unique key can be derived from the data.
+        // Array indexes can conflict with previously calculated data, and batched results mean indexes could be unstable between results.
+        // Re-rendering with a new uid is safe because this is a read-only display table — row remounting has no side effects.
+        // eslint-disable-next-line react-hooks/purity -- uid is only used as a React row key for DOM reconciliation.
         uid: Math.random(),
         increment,
         diff_cycle_with_compare: null,

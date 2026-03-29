@@ -116,40 +116,37 @@ const InnerGen4Timer = ({ timerSettings, onUpdate }: InnerProps) => {
     });
   }, [initTimer, timerSettings]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts, { setValue }) => {
-      const newTimer = await initTimer({
-        calibrated_delay: opts.calibratedDelay,
-        calibrated_second: opts.calibratedSeconds,
-        console: opts.console,
-        min_time_ms: opts.minTimeMs,
-        target_delay: opts.targetDelay,
-        target_second: opts.targetSeconds,
-        hit_delay: opts.delayHit,
-      });
+  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
+    const newTimer = await initTimer({
+      calibrated_delay: opts.calibratedDelay,
+      calibrated_second: opts.calibratedSeconds,
+      console: opts.console,
+      min_time_ms: opts.minTimeMs,
+      target_delay: opts.targetDelay,
+      target_second: opts.targetSeconds,
+      hit_delay: opts.delayHit,
+    });
 
-      const updates = {
-        calibratedDelay: newTimer.timer.calibrated_delay,
-        calibratedSeconds: newTimer.timer.calibrated_second,
-        console: newTimer.timer.console,
-        delayHit: null,
-        minTimeMs: newTimer.timer.min_time_ms,
-        targetDelay: newTimer.timer.target_delay,
-        targetSeconds: newTimer.timer.target_second,
-      };
+    const updates = {
+      calibratedDelay: newTimer.timer.calibrated_delay,
+      calibratedSeconds: newTimer.timer.calibrated_second,
+      console: newTimer.timer.console,
+      delayHit: null,
+      minTimeMs: newTimer.timer.min_time_ms,
+      targetDelay: newTimer.timer.target_delay,
+      targetSeconds: newTimer.timer.target_second,
+    };
 
-      setValue("calibratedDelay", updates.calibratedDelay);
-      setValue("calibratedSeconds", updates.calibratedSeconds);
-      setValue("console", updates.console);
-      setValue("delayHit", updates.delayHit);
-      setValue("minTimeMs", updates.minTimeMs);
-      setValue("targetDelay", updates.targetDelay);
-      setValue("targetSeconds", updates.targetSeconds);
+    setValue("calibratedDelay", updates.calibratedDelay);
+    setValue("calibratedSeconds", updates.calibratedSeconds);
+    setValue("console", updates.console);
+    setValue("delayHit", updates.delayHit);
+    setValue("minTimeMs", updates.minTimeMs);
+    setValue("targetDelay", updates.targetDelay);
+    setValue("targetSeconds", updates.targetSeconds);
 
-      onUpdate(hydrationLock(updates));
-    },
-    [initTimer, onUpdate],
-  );
+    onUpdate(hydrationLock(updates));
+  };
 
   return (
     <Gen4TimerComponent

@@ -10,7 +10,7 @@ type Props = {
 
 export const ThemeProvider = ({ children }: Props) => {
   const [themeMode] = useThemeMode();
-  const theme = React.useMemo(() => getTheme(themeMode), [themeMode]);
+  const theme = getTheme(themeMode);
   return (
     <EmotionThemeProvider theme={theme}>
       <ConfigProvider theme={theme}>{children}</ConfigProvider>

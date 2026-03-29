@@ -106,22 +106,20 @@ const TranslateTools = ({ selectedLanguage }: TranslateToolsProps) => {
     setTranslations(rawTranslations);
   }, [rawTranslations]);
 
-  const fields: Field[] = React.useMemo(() => {
-    return map(rawTranslations, (value, key) => ({
-      label: key,
-      input: (
-        <Input
-          defaultValue={value}
-          onChange={(event) =>
-            setTranslations((prev) => ({
-              ...prev,
-              [key]: event.target.value,
-            }))
-          }
-        />
-      ),
-    }));
-  }, [rawTranslations]);
+  const fields: Field[] = map(rawTranslations, (value, key) => ({
+    label: key,
+    input: (
+      <Input
+        defaultValue={value}
+        onChange={(event) =>
+          setTranslations((prev) => ({
+            ...prev,
+            [key]: event.target.value,
+          }))
+        }
+      />
+    ),
+  }));
 
   return (
     <Flex vertical gap={16}>

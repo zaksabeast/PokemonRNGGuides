@@ -14,26 +14,16 @@ export const Stepper = React.memo(
     const hasRendered = React.useRef(false);
     const scrollRef = React.useRef<HTMLDivElement | null>(null);
 
-    const previousStep = React.useCallback(
-      () => setCurrentStep((prev) => prev - 1),
-      [setCurrentStep],
-    );
-    const nextStep = React.useCallback(
-      () => setCurrentStep((prev) => prev + 1),
-      [setCurrentStep],
-    );
-
-    const scrollToDiv = React.useCallback(() => {
-      scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, []);
+    const previousStep = () => setCurrentStep((prev) => prev - 1);
+    const nextStep = () => setCurrentStep((prev) => prev + 1);
 
     React.useEffect(() => {
       // Don't scroll on initial render since there might be content
       // above the stepper that we don't want to scroll past.
       if (hasRendered.current) {
-        scrollToDiv();
+        scrollRef.current?.scrollIntoView({ behavior: "smooth" });
       }
-    }, [currentStep, scrollToDiv]);
+    }, [currentStep]);
 
     React.useEffect(() => {
       hasRendered.current = true;

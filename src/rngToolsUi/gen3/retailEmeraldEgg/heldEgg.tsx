@@ -63,7 +63,7 @@ const SelectButton = ({ result }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
   const [, setState] = useHeldEggState();
 
-  const onClick = React.useCallback(() => {
+  const onClick = () => {
     setState((prev) => ({
       ...prev,
       target: {
@@ -74,7 +74,7 @@ const SelectButton = ({ result }: SelectButtonProps) => {
       },
     }));
     setCurrentStep((prev) => prev + 1);
-  }, [result, setState, setCurrentStep]);
+  };
 
   return (
     <Button trackerId="select_retail_emerald_held_egg" onClick={onClick}>
@@ -286,42 +286,38 @@ const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const [, setState] = useHeldEggState();
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const results = await rngTools.emerald_egg_held_states({
-        ...opts,
-        delay: 0,
-        registered_trainers: registeredTrainers,
-        lua_adjustment: true,
-        min_redraw: 0,
-        max_redraw: 100,
-        initial_advances: 2000,
-        filter_impossible_to_hit: true,
-        filters: {
-          shiny: opts.filter_shiny,
-          nature: opts.filter_nature,
-          gender: opts.filter_gender,
-        },
-      });
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const results = await rngTools.emerald_egg_held_states({
+      ...opts,
+      delay: 0,
+      registered_trainers: registeredTrainers,
+      lua_adjustment: true,
+      min_redraw: 0,
+      max_redraw: 100,
+      initial_advances: 2000,
+      filter_impossible_to_hit: true,
+      filters: {
+        shiny: opts.filter_shiny,
+        nature: opts.filter_nature,
+        gender: opts.filter_gender,
+      },
+    });
 
-      setResults(
-        results.map((result) => ({
-          ...result,
-          time: approximateGen3FrameTime(result.advance),
-          key: `${result.advance}-${result.pid}`,
-        })),
-      );
+    setResults(
+      results.map((result) => ({
+        ...result,
+        time: approximateGen3FrameTime(result.advance),
+        key: `${result.advance}-${result.pid}`,
+      })),
+    );
 
-      setState((prev) => ({ ...prev, eggSettings: opts }));
-    },
-    [registeredTrainers, setState],
-  );
+    setState((prev) => ({ ...prev, eggSettings: opts }));
+  };
 
-  const columns = React.useMemo(
-    () =>
-      getColumns({ t, translatedTrainers: translatedTrainers.withoutTitle }),
-    [t, translatedTrainers],
-  );
+  const columns = getColumns({
+    t,
+    translatedTrainers: translatedTrainers.withoutTitle,
+  });
 
   return (
     <RngToolForm<FormState, Result>

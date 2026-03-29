@@ -404,28 +404,25 @@ export const Wild3ResultSetupInfos = ({
   selectedPidPathResult: PidPathResult | null;
   rngManipulatedLeadPid: boolean;
 }) => {
-  const resultSetupInfoColumns = React.useMemo(() => {
-    const showMassOutbreak =
-      selectedPidPathResult != null &&
-      selectedPidPathResult.resultSetupInfos.some(
-        (setup) => setup.mass_outbreak_state !== "Inactive",
+  const showMassOutbreak =
+    selectedPidPathResult != null &&
+    selectedPidPathResult.resultSetupInfos.some(
+      (setup) => setup.mass_outbreak_state !== "Inactive",
+    );
+  const usesPainting =
+    selectedPidPathResult?.resultSetupInfos.some(
+      (res) => res.painting_advs != null,
+    ) ?? false;
+  const resultSetupInfoColumns = getResultSetupInfoColumns({
+    rngManipulatedLeadPid,
+    showMassOutbreak,
+    usesPainting,
+    onBreakdownClick: (record) => {
+      setDistributionFixedData(
+        resultSetupInfoToDistributionFixedData(record, rngManipulatedLeadPid),
       );
-    const usesPainting =
-      selectedPidPathResult?.resultSetupInfos.some(
-        (res) => res.painting_advs != null,
-      ) ?? false;
-
-    return getResultSetupInfoColumns({
-      rngManipulatedLeadPid,
-      showMassOutbreak,
-      usesPainting,
-      onBreakdownClick: (record) => {
-        setDistributionFixedData(
-          resultSetupInfoToDistributionFixedData(record, rngManipulatedLeadPid),
-        );
-      },
-    });
-  }, [rngManipulatedLeadPid, selectedPidPathResult]);
+    },
+  });
 
   const [distributionFixedData, setDistributionFixedData] = React.useState<
     DistributionProps["fixedData"] | null

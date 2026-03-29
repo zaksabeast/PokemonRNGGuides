@@ -31,8 +31,7 @@ const baseConfig = {
     "no-relative-import-paths": noRelativeImportPaths,
   },
   rules: {
-    ...reactHooks.configs.recommended.rules,
-    "react-hooks/react-compiler": "error",
+    ...reactHooks.configs["recommended-latest"].rules,
     "id-length": [
       "error",
       {

@@ -1,4 +1,3 @@
-import React from "react";
 import { uniqueId } from "lodash-es";
 import { match } from "ts-pattern";
 import { z } from "zod";
@@ -290,94 +289,87 @@ export const Static4Calibrator = () => {
     map: mapResult,
   });
 
-  const fields = React.useMemo(
-    () =>
-      getFields({
-        t,
-        isFixedGender: state.target?.isFixedGender ?? false,
-        minMaxStats: state.target?.minMaxStats ?? defaultMinMaxStats,
-      }),
-    [t, state.target?.minMaxStats, state.target?.isFixedGender],
-  );
+  const fields = getFields({
+    t,
+    isFixedGender: state.target?.isFixedGender ?? false,
+    minMaxStats: state.target?.minMaxStats ?? defaultMinMaxStats,
+  });
 
-  const onSubmit = React.useCallback(
-    async (opts: FormState) => {
-      if (state.target == null) {
-        return;
-      }
+  const onSubmit = async (opts: FormState) => {
+    if (state.target == null) {
+      return;
+    }
 
-      const target = state.target;
+    const target = state.target;
 
-      const caughtStats: StatsValue = {
-        hp: opts.hpStat,
-        atk: opts.atkStat,
-        def: opts.defStat,
-        spa: opts.spaStat,
-        spd: opts.spdStat,
-        spe: opts.speStat,
-      };
+    const caughtStats: StatsValue = {
+      hp: opts.hpStat,
+      atk: opts.atkStat,
+      def: opts.defStat,
+      spa: opts.spaStat,
+      spd: opts.spdStat,
+      spe: opts.speStat,
+    };
 
-      const minMaxIvs = await getIvRangeFromStats({
-        species: target.species,
-        lvl: target.level,
+    const minMaxIvs = await getIvRangeFromStats({
+      species: target.species,
+      lvl: target.level,
+      nature: opts.nature,
+      stats: caughtStats,
+    });
+
+    if (minMaxIvs == null) {
+      return [];
+    }
+
+    const { datetime: targetDateTime, delay: targetDelay } =
+      state.target.seed_time;
+
+    const datetime = toRngDateTime(
+      fromRngDateTime(targetDateTime).subtract(opts.secondsRange, "seconds"),
+    );
+
+    const minDelay = Math.max(targetDelay - opts.delayRange, 0);
+    const maxDelay = targetDelay + opts.delayRange;
+
+    const seedTimes = await rngTools.calc_gen4_seeds({
+      datetime,
+      seconds_increment: 2 * opts.secondsRange,
+      min_delay: minDelay,
+      max_delay: maxDelay,
+    });
+
+    const batchedOpts = seedTimes.map((seedTime) => ({
+      // Additional info for mapping results
+      target,
+      seedTime,
+
+      // Used by generate_static4_states
+      seed: seedTime.seed,
+      species: target.species,
+      game: state.game,
+      initial_advances: Math.max(target.advance - opts.advanceRange, 0),
+      max_advances: 2 * opts.advanceRange,
+      offset: target.advanceOffset,
+      lead: target.lead,
+      filter: {
+        shiny: false,
+        ability: null,
         nature: opts.nature,
-        stats: caughtStats,
-      });
+        gender: state.target?.isFixedGender
+          ? state.target?.gender
+          : opts.gender,
+        hidden_power: defaultHiddenPowerFilter,
+        ...minMaxIvs,
+      },
+      filter_characteristic: opts.filter_characteristic,
+      // Doesn't matter for calibration
+      tid: 0,
+      sid: 0,
+    }));
 
-      if (minMaxIvs == null) {
-        return [];
-      }
-
-      const { datetime: targetDateTime, delay: targetDelay } =
-        state.target.seed_time;
-
-      const datetime = toRngDateTime(
-        fromRngDateTime(targetDateTime).subtract(opts.secondsRange, "seconds"),
-      );
-
-      const minDelay = Math.max(targetDelay - opts.delayRange, 0);
-      const maxDelay = targetDelay + opts.delayRange;
-
-      const seedTimes = await rngTools.calc_gen4_seeds({
-        datetime,
-        seconds_increment: 2 * opts.secondsRange,
-        min_delay: minDelay,
-        max_delay: maxDelay,
-      });
-
-      const batchedOpts = seedTimes.map((seedTime) => ({
-        // Additional info for mapping results
-        target,
-        seedTime,
-
-        // Used by generate_static4_states
-        seed: seedTime.seed,
-        species: target.species,
-        game: state.game,
-        initial_advances: Math.max(target.advance - opts.advanceRange, 0),
-        max_advances: 2 * opts.advanceRange,
-        offset: target.advanceOffset,
-        lead: target.lead,
-        filter: {
-          shiny: false,
-          ability: null,
-          nature: opts.nature,
-          gender: state.target?.isFixedGender
-            ? state.target?.gender
-            : opts.gender,
-          hidden_power: defaultHiddenPowerFilter,
-          ...minMaxIvs,
-        },
-        filter_characteristic: opts.filter_characteristic,
-        // Doesn't matter for calibration
-        tid: 0,
-        sid: 0,
-      }));
-
-      await generateStatic4States(batchedOpts);
-    },
-    [state.game, state.target, generateStatic4States],
-  );
+    await generateStatic4States(batchedOpts);
+  };
 
   return (
     <RngToolForm<FormState, Result>

@@ -1,4 +1,3 @@
-import React from "react";
 import { Skeleton } from "antd";
 import {
   FormikNumberInput,
@@ -129,64 +128,61 @@ const InnerGen5EntralinkTimer = ({
   initialSettings,
   onUpdate,
 }: InnerProps) => {
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts, { setValue }) => {
-      let updatedOpts = opts;
-      let settings: Gen5EntralinkTimerSettings = {
+  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
+    let updatedOpts = opts;
+    let settings: Gen5EntralinkTimerSettings = {
+      console: opts.console,
+      min_time_ms: opts.minTimeMs,
+      target_delay: opts.targetDelay,
+      target_second: opts.targetSecond,
+      calibration: opts.calibration,
+      entralink_calibration: opts.entralinkCalibration,
+    };
+
+    if (opts.secondHit != null && opts.delayHit != null) {
+      settings = await rngTools.calibrate_gen5_entralink_timer(
+        settings,
+        opts.secondHit,
+        opts.delayHit,
+      );
+      settings = {
         console: opts.console,
-        min_time_ms: opts.minTimeMs,
-        target_delay: opts.targetDelay,
-        target_second: opts.targetSecond,
-        calibration: opts.calibration,
-        entralink_calibration: opts.entralinkCalibration,
+        min_time_ms: capPrecision(settings.min_time_ms),
+        target_delay: capPrecision(settings.target_delay),
+        target_second: capPrecision(settings.target_second),
+        calibration: capPrecision(settings.calibration),
+        entralink_calibration: capPrecision(settings.entralink_calibration),
+      };
+      updatedOpts = {
+        console: settings.console,
+        minTimeMs: settings.min_time_ms,
+        targetDelay: settings.target_delay,
+        targetSecond: settings.target_second,
+        calibration: settings.calibration,
+        entralinkCalibration: settings.entralink_calibration,
+        delayHit: null,
+        secondHit: null,
       };
 
-      if (opts.secondHit != null && opts.delayHit != null) {
-        settings = await rngTools.calibrate_gen5_entralink_timer(
-          settings,
-          opts.secondHit,
-          opts.delayHit,
-        );
-        settings = {
-          console: opts.console,
-          min_time_ms: capPrecision(settings.min_time_ms),
-          target_delay: capPrecision(settings.target_delay),
-          target_second: capPrecision(settings.target_second),
-          calibration: capPrecision(settings.calibration),
-          entralink_calibration: capPrecision(settings.entralink_calibration),
-        };
-        updatedOpts = {
-          console: settings.console,
-          minTimeMs: settings.min_time_ms,
-          targetDelay: settings.target_delay,
-          targetSecond: settings.target_second,
-          calibration: settings.calibration,
-          entralinkCalibration: settings.entralink_calibration,
-          delayHit: null,
-          secondHit: null,
-        };
+      setValue("console", updatedOpts.console);
+      setValue("minTimeMs", updatedOpts.minTimeMs);
+      setValue("targetDelay", updatedOpts.targetDelay);
+      setValue("targetSecond", updatedOpts.targetSecond);
+      setValue("calibration", updatedOpts.calibration);
+      setValue("entralinkCalibration", updatedOpts.entralinkCalibration);
+      setValue("delayHit", updatedOpts.delayHit);
+      setValue("secondHit", updatedOpts.secondHit);
+    }
 
-        setValue("console", updatedOpts.console);
-        setValue("minTimeMs", updatedOpts.minTimeMs);
-        setValue("targetDelay", updatedOpts.targetDelay);
-        setValue("targetSecond", updatedOpts.targetSecond);
-        setValue("calibration", updatedOpts.calibration);
-        setValue("entralinkCalibration", updatedOpts.entralinkCalibration);
-        setValue("delayHit", updatedOpts.delayHit);
-        setValue("secondHit", updatedOpts.secondHit);
-      }
-
-      const milliseconds = await rngTools.create_gen5_entralink_timer(settings);
-      setTimer(
-        hydrationLock({
-          milliseconds: [...milliseconds],
-          minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
-        }),
-      );
-      onUpdate(hydrationLock(updatedOpts));
-    },
-    [onUpdate, setTimer],
-  );
+    const milliseconds = await rngTools.create_gen5_entralink_timer(settings);
+    setTimer(
+      hydrationLock({
+        milliseconds: [...milliseconds],
+        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
+      }),
+    );
+    onUpdate(hydrationLock(updatedOpts));
+  };
 
   return (
     <Flex vertical gap={12}>

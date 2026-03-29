@@ -1,4 +1,3 @@
-import React from "react";
 import { Skeleton } from "antd";
 import {
   FormikNumberInput,
@@ -104,49 +103,46 @@ const InnerGen3Timer = ({
   initialSettings,
   onUpdate,
 }: InnerProps) => {
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts, { setValue }) => {
-      let updatedOpts = opts;
-      let settings = {
+  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
+    let updatedOpts = opts;
+    let settings = {
+      console: opts.console,
+      pre_timer: opts.preTimer,
+      target_frame: opts.targetFrame,
+      calibration: opts.calibration,
+    };
+
+    if (opts.frameHit != null) {
+      settings = await rngTools.calibrate_gen3_timer(settings, opts.frameHit);
+      settings = {
         console: opts.console,
-        pre_timer: opts.preTimer,
-        target_frame: opts.targetFrame,
-        calibration: opts.calibration,
+        pre_timer: capPrecision(settings.pre_timer),
+        target_frame: capPrecision(settings.target_frame),
+        calibration: capPrecision(settings.calibration),
       };
+      updatedOpts = {
+        console: settings.console,
+        preTimer: settings.pre_timer,
+        targetFrame: settings.target_frame,
+        calibration: settings.calibration,
+        frameHit: null,
+      };
+      setValue("console", updatedOpts.console);
+      setValue("preTimer", updatedOpts.preTimer);
+      setValue("targetFrame", updatedOpts.targetFrame);
+      setValue("calibration", updatedOpts.calibration);
+      setValue("frameHit", updatedOpts.frameHit);
+    }
 
-      if (opts.frameHit != null) {
-        settings = await rngTools.calibrate_gen3_timer(settings, opts.frameHit);
-        settings = {
-          console: opts.console,
-          pre_timer: capPrecision(settings.pre_timer),
-          target_frame: capPrecision(settings.target_frame),
-          calibration: capPrecision(settings.calibration),
-        };
-        updatedOpts = {
-          console: settings.console,
-          preTimer: settings.pre_timer,
-          targetFrame: settings.target_frame,
-          calibration: settings.calibration,
-          frameHit: null,
-        };
-        setValue("console", updatedOpts.console);
-        setValue("preTimer", updatedOpts.preTimer);
-        setValue("targetFrame", updatedOpts.targetFrame);
-        setValue("calibration", updatedOpts.calibration);
-        setValue("frameHit", updatedOpts.frameHit);
-      }
-
-      const milliseconds = await rngTools.create_gen3_timer(settings);
-      setTimer(
-        hydrationLock({
-          milliseconds: [...milliseconds],
-          minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
-        }),
-      );
-      onUpdate(hydrationLock(updatedOpts));
-    },
-    [onUpdate, setTimer],
-  );
+    const milliseconds = await rngTools.create_gen3_timer(settings);
+    setTimer(
+      hydrationLock({
+        milliseconds: [...milliseconds],
+        minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
+      }),
+    );
+    onUpdate(hydrationLock(updatedOpts));
+  };
 
   return (
     <Flex vertical gap={12}>

@@ -11,7 +11,7 @@ import countdownBeepsAudio from "~/assets/timer-11-beeps.mp3";
 import { useAudio } from "~/hooks/useAudio";
 import { useCountdownBeeps } from "~/hooks/useCountdownBeeps";
 import { COUNTDOWN_INTERVAL_MS } from "~/hooks/useCanvasTimer";
-import { FormFieldTable } from "./formFieldTable";
+import { Field, FormFieldTable } from "./formFieldTable";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { z } from "zod";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
@@ -59,17 +59,13 @@ const InnerMultiTimer = ({
   const t = useActiveRouteTranslations();
   const [startTimeMs, setStartTimeMs] = React.useState<number | null>(null);
   const [currentTimerIndex, setCurrentTimerIndex] = React.useState(0);
-  const keepAlive = useAudio({ url: firstBeepMp3 });
+  const { playBeeps: playKeepAlive, stopBeeps: stopKeepAlive } = useAudio({
+    url: firstBeepMp3,
+  });
 
-  const countdownBeeps = React.useMemo(
-    () =>
-      Math.min(
-        Math.floor(
-          (milliseconds[currentTimerIndex] ?? 0) / COUNTDOWN_INTERVAL_MS,
-        ),
-        state.maxBeepCount,
-      ),
-    [milliseconds, currentTimerIndex, state.maxBeepCount],
+  const countdownBeeps = Math.min(
+    Math.floor((milliseconds[currentTimerIndex] ?? 0) / COUNTDOWN_INTERVAL_MS),
+    state.maxBeepCount,
   );
 
   const { playTrimmedBeeps, stopBeeps } = useCountdownBeeps({
@@ -79,10 +75,7 @@ const InnerMultiTimer = ({
 
   const currentMs = milliseconds[currentTimerIndex] ?? 0;
   const nextMs = milliseconds[currentTimerIndex + 1] ?? 0;
-  const displayTimerMs = React.useMemo(
-    () => (milliseconds.length === 0 ? [0] : milliseconds),
-    [milliseconds],
-  );
+  const displayTimerMs = milliseconds.length === 0 ? [0] : milliseconds;
   const countdownMs = countdownBeeps * COUNTDOWN_INTERVAL_MS;
 
   // Calculate when this timer starts in the global timeline (sum of all previous timers)
@@ -94,11 +87,11 @@ const InnerMultiTimer = ({
       return () => {};
     }
     const timer = setInterval(
-      () => keepAlive.playBeeps({ count: 1, gain: 0.001 }),
+      () => playKeepAlive({ count: 1, gain: 0.001 }),
       1000,
     );
     return () => clearInterval(timer);
-  }, [startTimeMs, keepAlive]);
+  }, [startTimeMs, playKeepAlive]);
 
   // Play countdown beeps once at first countdown beep time
   React.useEffect(() => {
@@ -115,66 +108,63 @@ const InnerMultiTimer = ({
     return () => clearTimeout(timeout);
   }, [startTimeMs, playTrimmedBeeps, currentMs, countdownMs]);
 
-  const onExpire = React.useCallback(() => {
+  const onExpire = () => {
     setCurrentTimerIndex((prev) => prev + 1);
 
     if (currentTimerIndex + 1 >= milliseconds.length) {
       setStartTimeMs(null);
       setCurrentTimerIndex(0);
     }
-  }, [currentTimerIndex, milliseconds.length]);
+  };
 
-  const timerSettingFields = React.useMemo(
-    () => [
-      {
-        label: t["Display All Timers?"],
-        input: (
-          <Flex justify="flex-end">
-            <RadioGroup
-              name="timerDisplay"
-              optionType="button"
-              value={state.showAllTimers ? "showAllTimers" : "showCurrentTimer"}
-              onChange={({ target }) => {
-                setState(
-                  hydrationLock({
-                    ...state,
-                    showAllTimers: target.value === "showAllTimers",
-                  }),
-                );
-              }}
-              options={[
-                { label: t["Yes"], value: "showAllTimers" },
-                { label: t["No"], value: "showCurrentTimer" },
-              ]}
-            />
-          </Flex>
-        ),
-      },
-      {
-        label: t["Beeps"],
-        input: (
-          <Select<number>
-            name="countdownBeeps"
-            disabled={startTimeMs != null}
-            value={state.maxBeepCount}
-            onChange={(value) => {
+  const timerSettingFields: Field[] = [
+    {
+      label: t["Display All Timers?"],
+      input: (
+        <Flex justify="flex-end">
+          <RadioGroup
+            name="timerDisplay"
+            optionType="button"
+            value={state.showAllTimers ? "showAllTimers" : "showCurrentTimer"}
+            onChange={({ target }) => {
               setState(
                 hydrationLock({
                   ...state,
-                  maxBeepCount: value,
+                  showAllTimers: target.value === "showAllTimers",
                 }),
               );
             }}
-            options={new Array(11).fill(0).map((_, index) => ({
-              label: (index + 1).toString(),
-              value: index,
-            }))}
+            options={[
+              { label: t["Yes"], value: "showAllTimers" },
+              { label: t["No"], value: "showCurrentTimer" },
+            ]}
           />
-        ),
-      },
-    ],
-    [state, setState, startTimeMs, t],
-  );
+        </Flex>
+      ),
+    },
+    {
+      label: t["Beeps"],
+      input: (
+        <Select<number>
+          name="countdownBeeps"
+          disabled={startTimeMs != null}
+          value={state.maxBeepCount}
+          onChange={(value) => {
+            setState(
+              hydrationLock({
+                ...state,
+                maxBeepCount: value,
+              }),
+            );
+          }}
+          options={new Array(11).fill(0).map((_, index) => ({
+            label: (index + 1).toString(),
+            value: index,
+          }))}
+        />
+      ),
+    },
+  ];
 
   return (
     <Flex vertical gap={24}>
@@ -182,6 +172,7 @@ const InnerMultiTimer = ({
         <>
           <Flex vertical gap={16} justify="center" align="center">
             <Timer
+              label={labels?.[currentTimerIndex]}
               expirationMs={currentMs}
               countdownMs={countdownMs}
               startTimeMs={startTimeMs}
@@ -194,7 +185,8 @@ const InnerMultiTimer = ({
           </Flex>
           <Flex vertical gap={8}>
             <Typography.Title level={5} p={0} m={0}>
-              {t["Next Phase"]}: {nextMs == null ? "None" : nextMs / 1000}
+              {t["Next Phase"]}:{" "}
+              {nextMs == null ? "None" : (nextMs / 1000).toFixed(3)}
             </Typography.Title>
             <Typography.Title level={5} p={0} m={0}>
               {t["Minutes Before Target"]}: {minutesBeforeTarget}
@@ -205,7 +197,7 @@ const InnerMultiTimer = ({
 
       {state.showAllTimers && (
         <>
-          <Flex wrap gap={16} justify="center" align="center">
+          <Flex wrap gap={16} justify="center" align="flex-start">
             {displayTimerMs.map((ms, index) => {
               const offsetForTimer = calculateOffset(displayTimerMs, index);
               return (
@@ -244,7 +236,7 @@ const InnerMultiTimer = ({
           // Stop audio when timer is stopped
           if (newStartTimeMs == null) {
             stopBeeps();
-            keepAlive.stopBeeps();
+            stopKeepAlive();
           }
         }}
       >

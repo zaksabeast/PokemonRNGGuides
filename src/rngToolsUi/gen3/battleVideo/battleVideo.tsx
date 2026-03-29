@@ -11,6 +11,7 @@ import {
   FormikNumberInput,
   FormFieldTable,
   FormikSelect,
+  Field,
 } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import InstructionsNoBattleNoExisting from "./instructions_no_battle_no_existing.mdx";
@@ -503,7 +504,7 @@ export const BattleVideo = () => {
     isUpdatingExisting: boolean;
   } | null>(null);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const {
       submitError,
       milliseconds,
@@ -516,11 +517,11 @@ export const BattleVideo = () => {
     setTimerLabels(timerLabels);
     setBreakdown(breakdown);
     setBattleVideoInfo(battleVideoInfo);
-  }, []);
+  };
 
-  const displayedProps = React.useMemo(() => {
-    return displayAdvancedBreakdown ? { results: breakdown, columns } : {};
-  }, [breakdown, displayAdvancedBreakdown]);
+  const displayedProps = displayAdvancedBreakdown
+    ? { results: breakdown, columns }
+    : {};
 
   return (
     <>

@@ -121,56 +121,51 @@ export const Static4HitSeed = () => {
 
   const coinFlipFilter = state.coinFlipFilter;
 
-  const filteredResults = React.useMemo(() => {
-    return allResults.filter((result) => {
-      if (coinFlipFilter.length === 0) {
-        return true;
-      }
+  const filteredResults = allResults.filter((result) => {
+    if (coinFlipFilter.length === 0) {
+      return true;
+    }
 
-      const coinFlipString = joinCoinFlips(shrinkCoinFlips(result.coin_flips));
-      return coinFlipString.includes(coinFlipFilter);
+    const coinFlipString = joinCoinFlips(shrinkCoinFlips(result.coin_flips));
+    return coinFlipString.includes(coinFlipFilter);
+  });
+
+  const onSubmit: RngToolSubmit<FormState> = async (formState) => {
+    if (state.target == null) {
+      return;
+    }
+
+    const seedTime = state.target.seed_time;
+    const searchResults = await rngTools.calc_dppt_seedtimes({
+      seedtime: seedTime,
+      delay_offset: formState.delayOffset,
+      second_offset: formState.secondOffset,
     });
-  }, [allResults, coinFlipFilter]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (formState) => {
-      if (state.target == null) {
-        return;
-      }
+    const { datetime: targetDateTime, delay: targetDelay } =
+      state.target.seed_time;
 
-      const seedTime = state.target.seed_time;
-      const searchResults = await rngTools.calc_dppt_seedtimes({
-        seedtime: seedTime,
-        delay_offset: formState.delayOffset,
-        second_offset: formState.secondOffset,
-      });
+    const mappedResults = searchResults.map((result) => {
+      const secondOffset = result.datetime.second - targetDateTime.second;
+      return {
+        ...result,
+        id: uniqueId(),
+        isTarget: result.seed === seedTime.seed,
+        delayOffset: result.delay - targetDelay,
+        secondOffset,
+        second: result.datetime.second,
+        flipDelay:
+          secondOffset % 2 === 0 && targetDelay % 2 !== result.delay % 2,
+      };
+    });
+    const sortedResults = sortBy(mappedResults, [
+      (res) => Math.abs(res.delayOffset),
+      (res) => Math.abs(res.secondOffset),
+    ]);
 
-      const { datetime: targetDateTime, delay: targetDelay } =
-        state.target.seed_time;
-
-      const mappedResults = searchResults.map((result) => {
-        const secondOffset = result.datetime.second - targetDateTime.second;
-        return {
-          ...result,
-          id: uniqueId(),
-          isTarget: result.seed === seedTime.seed,
-          delayOffset: result.delay - targetDelay,
-          secondOffset,
-          second: result.datetime.second,
-          flipDelay:
-            secondOffset % 2 === 0 && targetDelay % 2 !== result.delay % 2,
-        };
-      });
-      const sortedResults = sortBy(mappedResults, [
-        (res) => Math.abs(res.delayOffset),
-        (res) => Math.abs(res.secondOffset),
-      ]);
-
-      setAllResults(sortedResults);
-      setState((prev) => ({ ...prev, coinFlipFilter: "" }));
-    },
-    [state, setState],
-  );
+    setAllResults(sortedResults);
+    setState((prev) => ({ ...prev, coinFlipFilter: "" }));
+  };
 
   return (
     <RngToolForm<FormState, ResultRow>

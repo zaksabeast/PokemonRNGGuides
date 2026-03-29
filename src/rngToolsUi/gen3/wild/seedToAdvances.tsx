@@ -8,6 +8,7 @@ import {
   FormikSwitch,
   FormFieldTable,
   Icon,
+  Field,
 } from "~/components";
 import React from "react";
 import { formatHex } from "~/utils/formatHex";
@@ -231,7 +232,6 @@ const MyFields = () => {
 };
 
 export const EmeraldSeedToAdvances = () => {
-  const columns = React.useMemo(() => getColumns(), []);
   const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
@@ -294,9 +294,21 @@ export const EmeraldSeedToAdvances = () => {
           });
           setResults(results);
         });
-    },
-    [setResults],
-  );
+        results.sort((lhs, rhs) => {
+          // Painting Seed = 0 goes first.
+          if (lhs.adv_before_painting === 0) {
+            return -1;
+          }
+          if (rhs.adv_before_painting === 0) {
+            return 1;
+          }
+          const durA = lhs.adv_before_painting + lhs.adv_after_painting;
+          const durB = rhs.adv_before_painting + rhs.adv_after_painting;
+          return durA - durB;
+        });
+        setResults(results);
+      });
+  };
 
   return (
     <RngToolForm<FormState, Result>

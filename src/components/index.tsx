@@ -33,7 +33,7 @@ export { LanguageButton } from "./languageButton";
 export { Timer } from "./timer";
 export { MultiTimer } from "./multiTimer";
 export { FormikIdFilter } from "./idFilter";
-export { Alert } from "./alert";
+export { Alert, type AlertProps } from "./alert";
 export { FileUpload } from "./fileUpload";
 export { Card } from "./card";
 export { Tag } from "./tag";

@@ -4,9 +4,10 @@ import { message } from "antd";
 
 type Props = {
   text: string;
+  disabled?: boolean;
 };
 
-export const CopyToClipboardButton = ({ text }: Props) => {
+export const CopyToClipboardButton = ({ text, disabled }: Props) => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleCopy = () => {
@@ -22,6 +23,7 @@ export const CopyToClipboardButton = ({ text }: Props) => {
         type="primary"
         icon={<Icon name="Copy" />}
         onClick={handleCopy}
+        disabled={disabled}
       >
         Copy to Clipboard
       </Button>

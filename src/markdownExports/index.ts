@@ -17,6 +17,7 @@ import {
   MarkdownOList,
   MarkdownA,
   MarkdownSummary,
+  MarkdownBlockquote,
 } from "./components";
 import {
   Flex,
@@ -101,6 +102,7 @@ const nonTools = {
   TranslationHelperEditGuide,
   ToolTranslationButton,
   TranslationHelperSelectLanguage,
+  blockquote: MarkdownBlockquote,
   TextArea: Input.TextArea,
 };
 
@@ -279,6 +281,14 @@ const tools = {
     () => import("~/rngToolsUi/gen3/retailEmeraldEgg/calibratePickupEgg"),
     (mod) => mod.CalibratePickupEggTimer,
   ),
+  Id4Tid: lazyLoad(
+    () => import("~/rngToolsUi/gen4/id/id4Tid"),
+    (mod) => mod.Id4Tid,
+  ),
+  Id4Sid: lazyLoad(
+    () => import("~/rngToolsUi/gen4/id/id4Tid"),
+    (mod) => mod.Id4Sid,
+  ),
   CalibrateStarter4: lazyLoad(
     () => import("~/rngToolsUi/gen4/starters"),
     (mod) => mod.CalibrateStarter4,
@@ -342,6 +352,10 @@ const tools = {
   ChatterFilter: lazyLoad(
     () => import("~/rngToolsUi/gen4/static/chatterFilter"),
     (mod) => mod.ChatterFilter,
+  ),
+  Gen5CalibrationResults: lazyLoad(
+    () => import("~/rngToolsUi/gen5/calibrationResults/calibrationResults"),
+    (mod) => mod.Gen5CalibrationResults,
   ),
 };
 

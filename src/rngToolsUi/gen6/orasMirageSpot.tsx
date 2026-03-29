@@ -3,7 +3,6 @@ import {
   FormikNumberInput,
   ResultColumn,
   RngToolForm,
-  RngToolSubmit,
   Field,
   FormikSelect,
 } from "~/components";
@@ -130,11 +129,10 @@ const getFields = (t: Translations): Field[] => [
 export const OrAsMirageSpot = () => {
   const [results, setResults] = React.useState<MirageSpot[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(async (opts) => {
+  const onSubmit = async (opts: FormState) => {
     const results = await rngTools.generate_mirage_spots(opts);
-
     setResults(results);
-  }, []);
+  };
 
   return (
     <RngToolForm<FormState, MirageSpot>

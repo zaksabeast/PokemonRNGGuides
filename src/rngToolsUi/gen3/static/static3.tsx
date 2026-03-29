@@ -1,7 +1,6 @@
 import { Tabs, TabsProps } from "antd";
 import { Static3Searcher } from "~/rngToolsUi/gen3/static/staticSearcher";
 import { Static3Generator } from "~/rngToolsUi/gen3/static/staticGenerator";
-import React from "react";
 import { Static3Game } from "~/rngToolsUi/gen3/static/constants";
 
 type Props = {
@@ -22,6 +21,6 @@ const getItems = (game: Static3Game): TabsProps["items"] => [
 ];
 
 export const Static3 = ({ game = "emerald" }: Props) => {
-  const items = React.useMemo(() => getItems(game), [game]);
+  const items = getItems(game);
   return <Tabs defaultActiveKey="search" items={items} />;
 };

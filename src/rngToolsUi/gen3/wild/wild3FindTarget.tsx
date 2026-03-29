@@ -251,34 +251,27 @@ export const Wild3SearcherFindTarget = () => {
   const [rngManipulatedLeadPid, setRngManipulatedLeadPid] =
     React.useState<boolean>(false);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (values) => {
-      const pidPathResults = await searchWild3Target(values);
+  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+    const pidPathResults = await searchWild3Target(values);
 
-      setLetSearcherFindPaintingSeed(
-        values.usingPaintingReseeding && values.letSearcherFindPaintingSeed,
-      );
+    setLetSearcherFindPaintingSeed(
+      values.usingPaintingReseeding && values.letSearcherFindPaintingSeed,
+    );
 
-      setRngManipulatedLeadPid(values.rngManipulatedLeadPid);
+    setRngManipulatedLeadPid(values.rngManipulatedLeadPid);
 
-      setPidPathResults(
-        sortBy(
-          pidPathResults.filter((el) => el != null),
-          "valueForSorting",
-        ),
-      );
-      setSelectedPidPathResult(null);
-    },
-    [],
-  );
+    setPidPathResults(
+      sortBy(
+        pidPathResults.filter((el) => el != null),
+        "valueForSorting",
+      ),
+    );
+    setSelectedPidPathResult(null);
+  };
 
-  const initialValues = React.useMemo(() => {
-    return getInitialValues();
-  }, []);
+  const initialValues = getInitialValues();
 
-  const pidPathColumns = React.useMemo(() => {
-    return getPidPathColumns(letSearcherFindPaintingSeed);
-  }, [letSearcherFindPaintingSeed]);
+  const pidPathColumns = getPidPathColumns(letSearcherFindPaintingSeed);
 
   return (
     <>

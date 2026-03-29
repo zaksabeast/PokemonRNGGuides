@@ -92,6 +92,14 @@ export type Props = {
     idealLeadCycleSpeed: number;
     usingIdealLeadCycleSpeed: boolean;
   } | null;
+  wantedMethod: Gen3Method;
+  wantedPID: number;
+  idealLeadCycleSpeed: number;
+  usingIdealLeadCycleSpeed: boolean;
+};
+
+export type Props = {
+  fixedData: FixedData | null;
   permitEnablingDebugOptions: boolean;
 };
 
@@ -364,25 +372,15 @@ export const Wild3MethodDistributionFields = ({
     setEquivalentInitialAdvs(val + advance);
   }, [initial_seed, advance]);
 
-  const fields = React.useMemo((): Field[] => {
-    return getFields(
-      map,
-      action,
-      gen3Leads[leadIdx],
-      idealLeadCycleSpeed,
-      usingPaintingReseeding,
-      equivalentInitialAdvs,
-      hasPreselectedData,
-    );
-  }, [
+  const fields: Field[] = getFields(
     map,
     action,
-    leadIdx,
+    gen3Leads[leadIdx],
     idealLeadCycleSpeed,
     usingPaintingReseeding,
     equivalentInitialAdvs,
     hasPreselectedData,
-  ]);
+  );
 
   React.useEffect(() => {
     const possVals = getPossibleValuesForMap(map, action);
@@ -589,6 +587,19 @@ const calculate = async (values: FormState) => {
   };
 };
 
+const getSubmitButtonLabel = (fixedData: FixedData | null) => {
+  if (fixedData == null) {
+    return undefined;
+  }
+
+  const advs =
+    fixedData.painting_advs != null &&
+    fixedData.painting_advs.adv_before_painting !== 0
+      ? `${formatLargeInteger(fixedData.painting_advs.adv_before_painting)} | ${formatLargeInteger(fixedData.painting_advs.adv_after_painting)}`
+      : formatLargeInteger(fixedData.advance);
+  return `Generate all possible Pokémon encounters at advances ${advs}`;
+};
+
 export const Wild3MethodDistribution = ({
   fixedData,
   permitEnablingDebugOptions,
@@ -608,25 +619,20 @@ export const Wild3MethodDistribution = ({
     [setResults, setCycleAtMoments],
   );
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (values) => {
-      updateResults(values);
-    },
-    [updateResults],
-  );
+  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+    updateResults(values);
+  };
 
-  const initialValues = React.useMemo(() => {
-    return getInitialValues(fixedData);
-  }, [fixedData]);
+  const initialValues = getInitialValues(fixedData);
 
   React.useEffect(() => {
     updateResults(initialValues);
   }, [updateResults, initialValues]);
 
-  const clearResults = React.useCallback(() => {
+  const clearResults = () => {
     setResults([]);
     setCycleAtMoments([]);
-  }, [setResults, setCycleAtMoments]);
+  };
 
   const submitButtonLabel = React.useMemo(() => {
     if (fixedData == null) {
@@ -659,7 +665,7 @@ export const Wild3MethodDistribution = ({
         onSubmit={onSubmit}
         submitTrackerId="wild3_method_distribution"
         rowKey="uid"
-        submitButtonLabel={submitButtonLabel}
+        submitButtonLabel={getSubmitButtonLabel(fixedData)}
       >
         <Wild3MethodDistributionFields clearResults={clearResults} />
       </RngToolForm>

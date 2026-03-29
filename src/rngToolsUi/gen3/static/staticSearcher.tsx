@@ -117,20 +117,17 @@ type Props = {
 export const Static3Searcher = ({ game }: Props) => {
   const [results, setResults] = React.useState<Result[]>([]);
 
-  const fields = React.useMemo(() => getFields(game), [game]);
+  const fields = getFields(game);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const results = await rngTools.gen3_static_searcher_states({
-        ...opts,
-        bugged_roamer: game !== "emerald" && opts.roamer,
-        filter: pkmFilterFieldsToRustInput(opts),
-      });
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const results = await rngTools.gen3_static_searcher_states({
+      ...opts,
+      bugged_roamer: game !== "emerald" && opts.roamer,
+      filter: pkmFilterFieldsToRustInput(opts),
+    });
 
-      setResults(results.map(flattenIvs));
-    },
-    [game],
-  );
+    setResults(results.map(flattenIvs));
+  };
 
   return (
     <RngToolForm<FormState, Result>

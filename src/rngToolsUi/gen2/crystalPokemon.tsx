@@ -12,7 +12,6 @@ import { rngTools, type Gen2Spread, type DivParams } from "~/rngTools";
 import { Translations } from "~/translations";
 import { z } from "zod";
 import { HexSchema } from "~/utils/number";
-import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 const YesIcon = () => <Icon name="CheckCircle" color="Success" size={20} />;
 
@@ -131,39 +130,33 @@ type Props = {
 };
 
 export const Gen2PokemonRng = ({ type }: Props) => {
-  const t = useActiveRouteTranslations();
-  const fields = React.useMemo(() => getFields(t), [t]);
-  const columns = React.useMemo(() => getColumns(t), [t]);
   const [results, setResults] = React.useState<Gen2Spread[]>([]);
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      const generator =
-        type === "starter"
-          ? rngTools.crystal_generate_starters
-          : rngTools.crystal_generate_celebi;
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    const generator =
+      type === "starter"
+        ? rngTools.crystal_generate_starters
+        : rngTools.crystal_generate_celebi;
 
-      const config: DivParams = {
-        adiv: opts.div >>> 8,
-        sdiv: opts.div & 0xff,
-        adiv_index: opts.adivIndex,
-        sdiv_index: opts.sdivIndex,
-        state: opts.state,
-      };
-      const results = await generator(
-        config,
-        opts.startAdvance,
-        opts.startAdvance + opts.advanceCount,
-        opts.filter,
-      );
-      setResults(results);
-    },
-    [type],
-  );
+    const config: DivParams = {
+      adiv: opts.div >>> 8,
+      sdiv: opts.div & 0xff,
+      adiv_index: opts.adivIndex,
+      sdiv_index: opts.sdivIndex,
+      state: opts.state,
+    };
+    const results = await generator(
+      config,
+      opts.startAdvance,
+      opts.startAdvance + opts.advanceCount,
+      opts.filter,
+    );
+    setResults(results);
+  };
 
   return (
     <RngToolForm<FormState, Gen2Spread>
-      fields={fields}
-      columns={columns}
+      getFields={getFields}
+      getColumns={getColumns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

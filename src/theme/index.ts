@@ -113,6 +113,10 @@ export const getTheme = (config: ThemePalette): CustomTheme => {
       ...shadows,
     },
     components: {
+      Alert: {
+        withDescriptionPadding: "12px 16px",
+        lineHeight: 1.4,
+      },
       Form: {
         itemMarginBottom: 6,
         labelHeight: "auto",

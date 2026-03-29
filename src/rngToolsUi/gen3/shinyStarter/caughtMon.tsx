@@ -49,88 +49,75 @@ export const CaughtMon = ({
 }: Props) => {
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
 
-  const onSubmit = React.useCallback<RngToolSubmit<FormState>>(
-    async (opts) => {
-      setResults(
-        await generateCaughtMonResults(
-          game,
-          targetAdvance,
-          targetStarter,
-          opts,
-        ),
-      );
+  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
+    setResults(
+      await generateCaughtMonResults(game, targetAdvance, targetStarter, opts),
+    );
+  };
+
+  const columns: ResultColumn<CaughtMonResult>[] = [
+    { title: "Target", dataIndex: "targetAdvance" },
+    {
+      title: "Advance",
+      dataIndex: "advance",
+      render: (val, values) => {
+        const diffWithTarget = val - values.targetAdvance;
+        if (diffWithTarget === 0) {
+          return `${val}`;
+        }
+        if (diffWithTarget > 0) {
+          return `${val} (+${diffWithTarget})`;
+        }
+        return `${val} (${diffWithTarget})`;
+      },
     },
-    [game, targetAdvance, targetStarter, setResults],
-  );
+    {
+      title: "",
+      dataIndex: "advance",
+      render(advance, values) {
+        if (values.advance === values.targetAdvance) {
+          return "Shiny if correct SID";
+        }
 
-  const columns = React.useMemo((): ResultColumn<CaughtMonResult>[] => {
-    const columns: ResultColumn<CaughtMonResult>[] = [
-      { title: "Target", dataIndex: "targetAdvance" },
-      {
-        title: "Advance",
-        dataIndex: "advance",
-        render: (val, values) => {
-          const diffWithTarget = val - values.targetAdvance;
-          if (diffWithTarget === 0) {
-            return `${val}`;
-          }
-          if (diffWithTarget > 0) {
-            return `${val} (+${diffWithTarget})`;
-          }
-          return `${val} (${diffWithTarget})`;
-        },
+        return (
+          <Button
+            type="text"
+            color="PrimaryText"
+            trackerId="shinyStarter_adv"
+            onClick={() => {
+              setLatestHitAdv(advance);
+              setResults([]);
+            }}
+          >
+            <Icon name="Update" size={20} /> Update Calibration
+          </Button>
+        );
       },
-      {
-        title: "",
-        dataIndex: "advance",
-        render(advance, values) {
-          if (values.advance === values.targetAdvance) {
-            return "Shiny if correct SID";
-          }
-
-          return (
-            <Button
-              type="text"
-              color="PrimaryText"
-              trackerId="shinyStarter_adv"
-              onClick={() => {
-                setLatestHitAdv(advance);
-                setResults([]);
-              }}
-            >
-              <Icon name="Update" size={20} /> Update Calibration
-            </Button>
-          );
-        },
-      },
-    ];
-    return columns;
-  }, [setLatestHitAdv, setResults]);
+    },
+  ];
 
   const { minMaxStats } = targetStarter;
-  const fields = React.useMemo((): Field[] => {
-    return [
-      {
-        label: "Gender",
-        input: (
-          <FormikRadio<FormState>
-            name="gender"
-            options={toOptions(["Male", "Female"] as const)}
-          />
-        ),
-      },
-      {
-        label: "Nature",
-        input: (
-          <FormikSelect<FormState, "nature">
-            name="nature"
-            options={natureOptions.required}
-          />
-        ),
-      },
-      ...getStatFields<FormState>(minMaxStats),
-    ];
-  }, [minMaxStats]);
+  const fields: Field[] = [
+    {
+      label: "Gender",
+      input: (
+        <FormikRadio<FormState>
+          name="gender"
+          options={toOptions(["Male", "Female"] as const)}
+        />
+      ),
+    },
+    {
+      label: "Nature",
+      input: (
+        <FormikSelect<FormState, "nature">
+          name="nature"
+          options={natureOptions.required}
+        />
+      ),
+    },
+    ...getStatFields<FormState>(minMaxStats),
+  ];
 
   return (
     <Flex vertical gap={8}>

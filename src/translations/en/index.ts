@@ -116,7 +116,6 @@ export const translations = {
   "Target Nature": "Target Nature",
   "Target Species": "Target Species",
   "Optional TID": "Optional TID",
-  "Target TID": "Target TID",
   None: "None",
   "Obtained TID": "Obtained TID",
   Hours: "Hours",
@@ -215,6 +214,11 @@ export const translations = {
   "Medium-High": "Medium-High",
   High: "High",
   "Advances After Target": "Advances After Target",
+  Note: "Note",
+  Warning: "Warning",
+  Tip: "Tip",
+  Caution: "Caution",
+  Important: "Important",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

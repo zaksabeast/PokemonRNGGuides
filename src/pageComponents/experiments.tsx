@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Flex,
   Field,
@@ -63,14 +62,10 @@ export const ExperimentsPageComponent = () => {
   const theme = useTheme();
   const [pallete, _setPallete] = useThemeMode();
 
-  const setPallete = React.useMemo(
-    () =>
-      throttle(
-        (partial: Partial<ThemePalette>) =>
-          _setPallete((old) => ({ ...old, ...partial })),
-        25,
-      ),
-    [_setPallete],
+  const setPallete = throttle(
+    (partial: Partial<ThemePalette>) =>
+      _setPallete((old) => ({ ...old, ...partial })),
+    25,
   );
 
   const fields: Field[] = [

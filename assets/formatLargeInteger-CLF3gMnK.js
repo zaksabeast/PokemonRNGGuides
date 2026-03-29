@@ -1,0 +1,1 @@
+var e=e=>e.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,`,`);export{e as t};

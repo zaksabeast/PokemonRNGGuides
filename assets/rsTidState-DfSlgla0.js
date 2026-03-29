@@ -1,0 +1,1 @@
+import{o as e,s as t}from"./useGen4Timer-CAsrdamd.js";var n=t({targetAdvance:0,desiredIds:{tid:0,sid:0}}),r=()=>e(n);export{r as t};

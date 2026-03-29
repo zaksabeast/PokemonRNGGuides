@@ -1,0 +1,62 @@
+var e=`---
+title: "时拉比"
+description: "学习如何在《宝可梦 水晶版》中通过乱数操作获得异色时拉比"
+slug: "zh-gen2-celebi"
+translation:
+  enSlug: "gen2-celebi"
+  language: "zh"
+---
+
+> [!WARNING]
+> 高度实验性！
+> 二代乱数还未完善。预计需要多次尝试！
+
+## 所需工具
+
+- [PokeReader](/zh-install-pokereader)
+
+## 视频教程
+
+<YouTubeVideo id="wTpI7MV_f4U" />
+
+## 文字教程
+
+1. 在栎树林祠堂前存档，以防需要复位游戏。
+2. 按 \`A\` 键与祠堂交互，并在 \`Player put in the GS Ball.\` 这段文本下等待。
+3. 进入 PokeReader 的 RNG 界面，等待直到停止显示 \`Finding ADIV Index\` 和 \`Finding SDIV Index\` 。
+4. 按住 \`L + R\` 键暂停 PokeReader。
+5. 将 PokeReader 上的信息输入下方的乱数工具中，然后点击 \`计算\`。
+6. 持续按 \`L\` 键推进帧数，直到 PokeReader 显示的 \`帧数\` 与下方计算的某一列 \`帧数\` 匹配。
+7. 当 PokeReader 中的 "帧数" 与工具中显示的某一帧数一致时停止操作。
+   - （可选）如果你使用的是模拟器，可以使用即时存档以防失败复位。
+8. 当推进到目标帧数时，按 \`A\` 键触发战斗。 **请勿在进入战斗之前进行任何操作！**
+9. 如果遇到目标宝可梦，恭喜你成功了！如果没有，继续多次尝试！很快就能成功。
+
+### 实用妙招
+
+- 该方法稳定性较差！请做好多次尝试的准备！
+- 在第二世代中仅使用 \`L + R\` 暂停与推进，不要使用 \`Start + Select\`，后者会乱数产生波动！
+- 按下 \`A\` 键到时拉比出现前，不要按任何按键。
+  - 切换画面或在此期间按下按键都会使乱数产生波动！
+- 3DS 会立即响应按键，而 Game Boy 需要几帧的响应时间。
+  - 过快按下 \`A\` 可能只会解除暂停，却不会触发对战。
+- 不要长按 \`A\` 键，按下时长略长于一帧即可。
+
+## 乱数工具
+
+<Gen2PokemonRng type="celebi" />
+
+## 安装完之后呢？
+
+现在你可以使用 Transporter 对时拉比进行乱数操作，刷出完美个体值！
+
+- [Transporter 乱数教程](/transporter-rng)
+- [Easier Transporter RNG method using an offline patch](/transporter-rng-offline)
+
+## 特别鸣谢
+
+- 多年来研究第二世代乱数的大佬们：Admiral Fish, EzPzStreamz, Zep, Real, Amab, wwwwwwzx, Vlad, Bambo_Rambo, Lincoln, Shiny_Sylveon, and Zaksabeast.
+- Zaksabeast 研究出当前乱数方法并制作了工具。
+- Discord 上的 Shiny_Sylveon、El Terapagos Mexicano 与 Lord Timothy 协助测试。
+- 中文翻译：白希洛/Hakuhiro
+`;export{e as default};

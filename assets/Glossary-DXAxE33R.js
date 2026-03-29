@@ -1,0 +1,22 @@
+var e=`---
+- title: "Glossary"
+  navDrawerTitle: "Glossary"
+  description: "List of important terms related to Pokémon RNG manipulation in Generation III games."
+  slug: "gen3-glossary"
+  category: "Emerald"
+  section: "getting_started"
+  addedOn: "2025-05-17"
+---
+
+<Gist>
+  Gist: List of important terms related to Pokémon RNG manipulation in
+  Generation III games.
+</Gist>
+
+<Glossary jsonFileId="gen3" />
+
+## Credits
+
+- Fiask for the Italian translation.
+- El Terapagos Mexicano for the Spanish translation.
+`;export{e as default};

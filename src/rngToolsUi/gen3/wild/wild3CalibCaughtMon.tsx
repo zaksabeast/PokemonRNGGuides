@@ -15,7 +15,6 @@ import { Typography } from "~/components/typography";
 import { nature } from "~/types/nature";
 import { Button } from "~/components/button";
 import { toOptions } from "~/utils/options";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import {
   getPkmFilterInitialValues,
   natureOptions,
@@ -46,7 +45,7 @@ import { Tooltip } from "antd";
 import { formatProbability } from "~/utils/formatProbability";
 import { Gen3IvRating, getGen3IvRating } from "../ivRater";
 import { ability } from "~/types/ability";
-import { FormikAbilityFilter } from "~/components/abilityFilter/index";
+import { FormikAbilityFilter } from "~/components/abilityFilter";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -362,14 +361,13 @@ export const Wild3CalibCaughtMon = ({
         dataIndex: "advance",
         render: (val, values) => {
           const diffWithTarget = val - values.targetAdvance;
-          const valStr = formatLargeInteger(val);
-
           if (diffWithTarget === 0) {
-            return valStr;
+            return `${val}`;
           }
-          const sign = diffWithTarget > 0 ? "+" : "";
-
-          return `${valStr} (${sign}${formatLargeInteger(diffWithTarget)})`;
+          if (diffWithTarget > 0) {
+            return `${val} (+${diffWithTarget})`;
+          }
+          return `${val} (${diffWithTarget})`;
         },
       },
       {

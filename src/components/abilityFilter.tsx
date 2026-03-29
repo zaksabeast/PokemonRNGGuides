@@ -1,7 +1,6 @@
-import { AbilityType, Species } from "~/rngTools";
+import { AbilityType, Species, rngTools } from "~/rngTools";
 import React from "react";
-import { FormikRadio } from "../radio";
-import { getAbilityFilterOptions } from "./options";
+import { FormikRadio } from "./radio";
 import { GenericForm, GuaranteeFormNameType } from "~/types";
 import { useField } from "~/hooks/form";
 
@@ -9,6 +8,37 @@ type FormikAbilityFilterProps<FormState extends GenericForm> = {
   species: Species;
   permitAny?: boolean;
   name: GuaranteeFormNameType<FormState, AbilityType | null>;
+};
+
+const getAbilityFilterOptions = async (species: Species, permitAny = true) => {
+  const possibleAbilities = await rngTools.get_species_abilities(species);
+
+  const opts: { label: string; value: AbilityType | null }[] = [];
+
+  if (permitAny || possibleAbilities.length === 0) {
+    opts.push({
+      label: "Any",
+      value: null,
+    });
+  }
+
+  if (possibleAbilities.length > 0) {
+    opts.push({
+      label: possibleAbilities[0],
+      value: "First",
+    });
+  }
+  if (
+    possibleAbilities.length > 1 &&
+    possibleAbilities[1] !== possibleAbilities[0]
+  ) {
+    opts.push({
+      label: possibleAbilities[1],
+      value: "Second",
+    });
+  }
+
+  return opts;
 };
 
 export const FormikAbilityFilter = <FormState extends GenericForm>({

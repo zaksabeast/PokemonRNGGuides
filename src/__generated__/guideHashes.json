@@ -240,8 +240,8 @@
     "lastUpdated": "2026-03-27"
   },
   "/emerald-battle-video/": {
-    "hash": "26ce4cd95ed98cd2da91213c13b0fa87357b0c23d70763674df7827d9682c6d9",
-    "lastUpdated": "2026-03-29"
+    "hash": "dc39fb639c70ee6a77c6bb83542de56e411e5eff33775c08eeff9ca35ac92952",
+    "lastUpdated": "2026-03-27"
   },
   "/emerald-mirage-island/": {
     "hash": "b52040630b8d54ea3a3826844323e2e23ce8baf47c8f507adc2e5ab3eebef979",
@@ -251,17 +251,13 @@
     "hash": "5fa56216638c0bc46ab2b7cce060935bcb54c0ce9a947983f33036ca82234fc2",
     "lastUpdated": null
   },
-  "/emerald-painting-reseeding/": {
-    "hash": "e4cb503e49a820de64058de00ac16d57503c8fc6bbcec058c276bd6cfcdc9012",
-    "lastUpdated": "2026-03-29"
-  },
   "/emerald-painting-rng/": {
     "hash": "cf5f31d5f2dee8484b784f827153d636d4a7616b2068d6889040d1566c59c065",
     "lastUpdated": "2026-03-27"
   },
   "/emerald-painting-seed-searcher/": {
-    "hash": "1445c9f72a0eca62d7404a8d4672265a91c10979dd26292d8191372d4acf186c",
-    "lastUpdated": "2026-03-29"
+    "hash": "c245bdd64d34044e30b73e4c26919f60d1bea071857244d121fb49dcf5d1d011",
+    "lastUpdated": "2026-03-15"
   },
   "/emerald-pokerus-emu/": {
     "hash": "bf0e188ebc049eb1d2c28d03515e21d9a1756101f430a7890a42d62c557779c6",

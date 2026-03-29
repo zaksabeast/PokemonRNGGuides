@@ -2483,7 +2483,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-29",
+      lastUpdated: "2026-03-27",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Battle Video.mdx",
       translations: {
@@ -2594,47 +2594,6 @@ export const guides = {
       return file.default;
     }),
   },
-  "/emerald-painting-reseeding/": {
-    meta: {
-      id: "/emerald-painting-reseeding/",
-      categories: ["Emerald"],
-      section: "rng_technique",
-      guideVariants: ["retail"],
-      guideKey: "/emerald-painting-reseeding/",
-      isNew: false,
-      title: "Painting Reseeding",
-      navDrawerTitle: "Painting Reseeding",
-      description:
-        "How to perform Painting Reseeding to quickly access very distant RNG states.",
-      slug: "/emerald-painting-reseeding/",
-      isRoughDraft: true,
-      orderPriority: 20,
-      hideFromNavDrawer: false,
-      addedOn: null,
-      translation: null,
-      layout: "guide",
-      canonical: null,
-      lastUpdated: "2026-03-29",
-      type: "baseGuide",
-      file: "guides/Gen 3/Emerald/Painting Reseeding.mdx",
-      translations: null,
-      guideGroupId: "en:/emerald-painting-reseeding/:Emerald",
-      guideVariantLinks: {
-        retail: { type: "slug", slug: "/emerald-painting-reseeding/" },
-        cfwEmu: null,
-      },
-      displayAttributes: ["rough_draft"],
-    },
-    Guide: React.lazy(
-      () => import("~/../guides/Gen 3/Emerald/Painting Reseeding.mdx"),
-    ),
-    getRawFile: memoize(async () => {
-      const file = await import(
-        "~/../guides/Gen 3/Emerald/Painting Reseeding.mdx?raw"
-      );
-      return file.default;
-    }),
-  },
   "/emerald-painting-rng/": {
     meta: {
       id: "/emerald-painting-rng/",
@@ -2695,7 +2654,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-29",
+      lastUpdated: "2026-03-15",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Seed To Advances.mdx",
       translations: null,
@@ -15833,7 +15792,6 @@ export const guideSlugs = [
   "/emerald-battle-video/",
   "/emerald-mirage-island/",
   "/emerald-overview/",
-  "/emerald-painting-reseeding/",
   "/emerald-painting-rng/",
   "/emerald-painting-seed-searcher/",
   "/emerald-pokerus-emu/",

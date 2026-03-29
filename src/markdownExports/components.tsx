@@ -14,6 +14,7 @@ import { get } from "lodash-es";
 import { guides } from "~/guides";
 import { usePageLanguage } from "~/markdownExports/languageContext";
 import type React from "react";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type Props = { children: React.ReactNode };
 
@@ -166,22 +167,48 @@ const Blockquote = styled.blockquote(({ theme }) => ({
   margin: 0,
 }));
 
-const ALERT_CONFIG: Partial<Record<string, AlertProps>> = {
+const ALERT_CONFIG = {
   NOTE: { type: "info", message: "Note" },
   WARNING: { type: "warning", message: "Warning" },
   TIP: { type: "tip", message: "Tip" },
   CAUTION: { type: "error", message: "Caution" },
+  IMPORTANT: { type: "important", message: "Important" },
+} as const satisfies Record<string, Pick<AlertProps, "type" | "message">>;
+
+const isAlertType = (
+  alertType?: string,
+): alertType is keyof typeof ALERT_CONFIG => {
+  if (alertType == null) {
+    return false;
+  }
+
+  return alertType in ALERT_CONFIG;
+};
+
+const getAlertProps = (alertType?: string) => {
+  if (isAlertType(alertType)) {
+    return ALERT_CONFIG[alertType];
+  }
+
+  return null;
 };
 
 export const MarkdownBlockquote = ({
   children,
   "alert-type": alertType,
 }: { "alert-type"?: string } & Props) => {
-  const alertProps =
-    alertType != null ? (ALERT_CONFIG[alertType] ?? null) : null;
+  const t = useActiveRouteTranslations();
+  const alertProps = getAlertProps(alertType);
 
   if (alertProps != null) {
-    return <Alert showIcon description={children} {...alertProps} />;
+    return (
+      <Alert
+        showIcon
+        description={children}
+        type={alertProps.type}
+        message={t[alertProps.message]}
+      />
+    );
   }
 
   return <Blockquote>{children}</Blockquote>;

@@ -215,6 +215,11 @@ export const translations = {
   "Medium-High": "Medium-High",
   High: "High",
   "Advances After Target": "Advances After Target",
+  Note: "Note",
+  Warning: "Warning",
+  Tip: "Tip",
+  Caution: "Caution",
+  Important: "Important",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

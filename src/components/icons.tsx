@@ -14,6 +14,7 @@ import {
   MdOutlineTipsAndUpdates,
   MdOutlineInfo,
 } from "react-icons/md";
+import { BiMessageAltError } from "react-icons/bi";
 import { TiWarningOutline } from "react-icons/ti";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaDiscord, FaRegCopy } from "react-icons/fa";
@@ -51,6 +52,7 @@ const icons = {
   InfoOutline: MdOutlineInfo,
   WarningOutline: TiWarningOutline,
   CautionOutline: PiWarningOctagonBold,
+  MessageOutline: BiMessageAltError,
 } as const;
 
 export type IconName = keyof typeof icons;

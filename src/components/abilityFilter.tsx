@@ -4,7 +4,6 @@ import { FormikRadio } from "./radio";
 import { GenericForm, GuaranteeFormNameType } from "~/types";
 import { useField } from "~/hooks/form";
 import { ability } from "~/types/ability";
-import { PkmFilterFields } from "./pkmFilter";
 
 type FormikAbilityFilterProps<FormState extends GenericForm> = {
   name: GuaranteeFormNameType<FormState, AbilityType | null>;

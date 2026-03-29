@@ -516,7 +516,7 @@ export const guides = {
       translations: null,
       guideGroupId: "en:starter:Black and White",
       guideVariantLinks: {
-        retail: null,
+        retail: { type: "slug", slug: "/retail-bw-starter/" },
         cfwEmu: { type: "slug", slug: "/bw-emu-starter/" },
       },
       displayAttributes: [],
@@ -8103,6 +8103,43 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Gen 5/Retail Entralink.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Gen 5/Retail Entralink.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/retail-bw-starter/": {
+    meta: {
+      id: "/retail-bw-starter/",
+      categories: ["Black and White"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "starter",
+      isNew: true,
+      title: "Black and White Starter RNG",
+      navDrawerTitle: "Starter RNG",
+      description:
+        "Learn how to RNG starters in Black and White for shiny, high-IV Pokémon.",
+      slug: "/retail-bw-starter/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: "2026-03-29",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-03-29",
+      type: "baseGuide",
+      file: "guides/Gen 5/BW Retail Starter.mdx",
+      translations: null,
+      guideGroupId: "en:starter:Black and White",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-bw-starter/" },
+        cfwEmu: { type: "slug", slug: "/bw-emu-starter/" },
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 5/BW Retail Starter.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 5/BW Retail Starter.mdx?raw");
       return file.default;
     }),
   },
@@ -15992,6 +16029,7 @@ export const guideSlugs = [
   "/pokefinder/",
   "/pokereader/",
   "/retail-bw-entralink/",
+  "/retail-bw-starter/",
   "/retail-dppt-starter/",
   "/retail-dppt-static/",
   "/retail-emerald-egg/",

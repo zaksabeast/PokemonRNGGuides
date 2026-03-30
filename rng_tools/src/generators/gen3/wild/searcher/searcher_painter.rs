@@ -10,7 +10,8 @@ use itertools::Itertools;
 // the player waits in battle (x2 speedup) for the advances after painting.
 // For each painting manip, all frames must be waited. For pokemon encounter manip
 // (after painting reseeding), battle video can be used so each attempt is constant (~30s).
-pub const FRAME_BEFORE_SCORE_MULT: u64 = 20;
+pub const ATTEMPT_PER_PAINTING: u64 = 10;
+pub const WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP: u64 = 2;
 
 // The code currently only supports initial seed 0.
 const INITIAL_SEED: u32 = 0u32;
@@ -137,10 +138,14 @@ impl Wild3PaintingAdvFinder {
                     0
                 };
 
+            // TODO centralize the score (time) to do painting
+            let candidate_score_from_after =
+                adv_after_painting as u64 / WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP;
+
             let candidate_score = (candidate.frame_before_painting as u64
                 + additional_frame_before_painting)
-                .saturating_mul(FRAME_BEFORE_SCORE_MULT)
-                + adv_after_painting as u64;
+                .saturating_mul(ATTEMPT_PER_PAINTING)
+                + candidate_score_from_after;
 
             match current_best {
                 None => {
@@ -156,7 +161,7 @@ impl Wild3PaintingAdvFinder {
                         // a lower frame_before_painting.
                         // If even with the lowest possible frame_before_painting (0), the score is still worse,
                         // we can stop early.
-                        let score_lower_bound_for_future_candidates = adv_after_painting as u64;
+                        let score_lower_bound_for_future_candidates = candidate_score_from_after;
                         if score_lower_bound_for_future_candidates > current_score {
                             break;
                         }
@@ -170,6 +175,16 @@ impl Wild3PaintingAdvFinder {
             adv_after_painting: wanted_adv,
         })
     }
+}
+
+pub fn evaluate_time_to_perform_painting(
+    frame_before_painting: u64,
+    adv_after_painting: u32,
+) -> u64 {
+    let candidate_score = (candidate.frame_before_painting as u64
+        + additional_frame_before_painting)
+        .saturating_mul(ATTEMPT_PER_PAINTING)
+        + candidate_score_from_after;
 }
 
 pub fn create_lookup_painting_table(opts: &Wild3PaintingOpts) -> Vec<Wild3PaintingMinMaxAdvs> {

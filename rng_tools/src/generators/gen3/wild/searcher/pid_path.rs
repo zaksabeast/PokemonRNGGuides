@@ -11,7 +11,9 @@ use crate::{
         calculate_pid_speed, get_iv_filter_restrictiveness, get_iv1_filter_restrictiveness,
         get_iv2_filter_restrictiveness, get_pid_filter_restrictiveness, passes_pid_filter,
         reverse_find_pid_low_paths_from_pids,
-        searcher_painter::{FRAME_BEFORE_SCORE_MULT, Wild3PaintingAdvFinder},
+        searcher_painter::{
+            ATTEMPT_PER_PAINTING, WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP, Wild3PaintingAdvFinder,
+        },
         wild::{
             lcrng_distance,
             searcher::{
@@ -223,27 +225,33 @@ pub fn find_pid_paths_reverse_iv<const METHOD3: bool>(
     .into_iter()
 }
 
+// TODO centralize the score (time) to do painting
+
 fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
     // Limitation: score should be calculated using encounter_idx_seed, not the pid_seed.
     // But that this point, encounter_idx_seed isn't known yet. In most cases, the impact is minimal.
 
+    const BATTLE_VIDEO_PEN: u32 = 3600u32 * 3; // ~3min overhead to perform battle video
+
     // We assume min_advances is respected. This is supposed to be valided by the caller.
-    let score_without_painting =
-        lcrng_distance(opts.initial_seed, pid_path.seed).wrapping_sub(opts.initial_advances as u32);
+    let score_without_painting = lcrng_distance(opts.initial_seed, pid_path.seed)
+        .wrapping_sub(opts.initial_advances as u32)
+        / WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP as u32
+        + BATTLE_VIDEO_PEN;
 
     match &opts.painting_adv_finder {
         None => score_without_painting,
         Some(painting_adv_finder) => {
-            const PAINTING_PEN: u32 = 3600u32 * 10 / 2; // to account the time for performing in average 10 painting attempts
+            const PAINTING_PEN: u32 = 3600u32 * 5; // ~5min to perform a painting attempt
 
             let score_with_painting = {
                 let fastest =
                     painting_adv_finder.find_fastest_painting_adv_from_seed(pid_path.seed);
-                fastest
-                    .frame_before_painting
-                    .saturating_mul(FRAME_BEFORE_SCORE_MULT as u32)
-                    .saturating_add(fastest.adv_after_painting)
-                    .saturating_add(PAINTING_PEN)
+                (fastest.frame_before_painting + PAINTING_PEN)
+                    .saturating_mul(ATTEMPT_PER_PAINTING as u32)
+                    .saturating_add(
+                        fastest.adv_after_painting / WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP as u32,
+                    )
             };
             std::cmp::min(score_without_painting, score_with_painting)
         }

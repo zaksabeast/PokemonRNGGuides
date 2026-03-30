@@ -21,6 +21,8 @@ import { GBA_FPS } from "~/utils/consts";
 import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
 import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 
+//NO_PROD
+
 const THRESHOLD_ADV_FOR_BATTLE_FOR_BATTLE_VIDEO = 5 * 3600;
 const AVG_RETRY_PER_ATTEMPT = 10;
 const FRAME_BEFORE_SCORE_MULT = 20;
@@ -291,14 +293,14 @@ export const EmeraldSeedToAdvances = () => {
       });
     results.sort((lhs, rhs) => {
       // Painting Seed = 0 goes first.
-      if (lhs.adv_before_painting === 0) {
+      if (lhs.frame_before_painting === 0) {
         return -1;
       }
-      if (rhs.adv_before_painting === 0) {
+      if (rhs.frame_before_painting === 0) {
         return 1;
       }
-      const durA = lhs.adv_before_painting + lhs.adv_after_painting;
-      const durB = rhs.adv_before_painting + rhs.adv_after_painting;
+      const durA = lhs.frame_before_painting + lhs.adv_after_painting;
+      const durB = rhs.frame_before_painting + rhs.adv_after_painting;
       return durA - durB;
     });
     setResults(results);

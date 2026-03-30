@@ -84,12 +84,17 @@ const convertResultsForPidPathToPidPathResult = async (
 
   const paintingAdvs = paintingAdvsCache.get(earliestAdvance);
 
+  // TODO centralize the score (time) to do painting
+  const ATTEMPT_PER_PAINTING = 10;
+  const WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP = 2;
+
   const valueForSorting =
     paintingAdvs != null
-      ? paintingAdvs.frame_before_painting +
-        paintingAdvs.adv_after_painting +
+      ? paintingAdvs.frame_before_painting * ATTEMPT_PER_PAINTING +
+        paintingAdvs.adv_after_painting /
+          WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP +
         DONT_USE_PAINTING_IF_BELOW_ADV
-      : earliestAdvance;
+      : earliestAdvance / WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP;
 
   return {
     ...firstRes,

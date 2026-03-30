@@ -44,6 +44,8 @@ import clamp from "lodash-es/clamp";
 import { Tooltip } from "antd";
 import { formatProbability } from "~/utils/formatProbability";
 import { Gen3IvRating, getGen3IvRating } from "../ivRater";
+import { ability } from "~/types/ability";
+import { FormikAbilityFilter } from "~/components/abilityFilter";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -53,7 +55,7 @@ const Validator = z
     gender: z.enum(gender),
     species: z.enum(emeraldWildGameData.species),
     lvl: z.number().min(1).max(100),
-    // TODO ability
+    ability: z.enum(ability).nullable(),
   })
   .extend(StatFieldsSchema.shape);
 
@@ -70,6 +72,7 @@ const initialValues: FormState = {
   gender: "Male",
   species: "Shuckle",
   lvl: 1,
+  ability: "First",
 };
 
 type Props = {
@@ -144,6 +147,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
         ...getPkmFilterInitialValues(),
         filter_nature: values.nature,
         filter_gender: values.gender,
+        filter_ability: values.ability,
       }),
       ...minMaxIvs,
     },
@@ -284,10 +288,7 @@ const Fields = ({ targetSetup }: { targetSetup: TargetSetup }) => {
         levelRange: [selectedLvl, selectedLvl],
         nature: selectedNature,
       }),
-      rngTools.get_species_gender_ratio(
-        selectedSpeciesInfos[0].species_data.species,
-      ),
-    ]).then(([minMaxStats, genderRatio]) => {
+    ]).then(([minMaxStats]) => {
       setFields([
         speciesField,
         {
@@ -304,7 +305,7 @@ const Fields = ({ targetSetup }: { targetSetup: TargetSetup }) => {
           input: (
             <FormikGenderFilter<FormState>
               name="gender"
-              genderRatio={genderRatio}
+              species={selectedSpecies}
               permitAny={false}
             />
           ),
@@ -315,6 +316,18 @@ const Fields = ({ targetSetup }: { targetSetup: TargetSetup }) => {
             <FormikSelect<FormState, "nature">
               name="nature"
               options={natureOptions.required}
+            />
+          ),
+        },
+        {
+          label: "Ability",
+          input: (
+            <FormikAbilityFilter<FormState>
+              name="ability"
+              species={selectedSpecies}
+              permitAny={false}
+              displayHiddenAbility={false}
+              mergeFirstSecondIfSameAbility
             />
           ),
         },

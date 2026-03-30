@@ -1,4 +1,5 @@
 use super::Gender;
+use crate::Ability;
 use crate::{
     GenderRatio,
     pkm::personal::{Personal, get_personal},
@@ -1097,6 +1098,11 @@ impl Species {
             GenderRatio::MaleOnly | GenderRatio::FemaleOnly | GenderRatio::Genderless
         )
     }
+}
+
+#[wasm_bindgen]
+pub fn get_species_abilities(species: Species) -> Vec<Ability> {
+    species.personal().abilities.to_vec()
 }
 
 #[wasm_bindgen]

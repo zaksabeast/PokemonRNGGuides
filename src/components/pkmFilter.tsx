@@ -1,4 +1,4 @@
-import { GenderRatio, PkmFilter } from "~/rngTools";
+import { PkmFilter, Species } from "~/rngTools";
 import { Field } from "~/components/formFieldTable";
 import { FormikSwitch } from "~/components/switch";
 import { FormikSelect } from "~/components/select";
@@ -20,6 +20,7 @@ import {
 } from "./hiddenPowerInput.component";
 import { Translations } from "~/translations";
 import { FormikGenderFilter } from "./genderFilter";
+import { FormikAbilityFilter } from "./abilityFilter";
 
 const sortedNatures = nature.toSorted();
 
@@ -36,11 +37,6 @@ export const natureOptions = {
   required: requiredNatureOptions,
   optional: optionalNatureOptions,
 };
-
-export const abilityOptions = ([null, ...ability] as const).map((abil) => ({
-  label: abil ?? ("Any" as const),
-  value: abil,
-}));
 
 export type PkmFilterFields = {
   [Key in keyof PkmFilter as `filter_${Key}`]: undefined extends PkmFilter[Key]
@@ -76,10 +72,11 @@ type Props = {
   displayShiny?: boolean;
   displayNature?: boolean;
   displayAbility?: boolean;
+  displayHiddenAbility?: boolean;
   displayGender?: boolean;
   displayIvs?: boolean;
   displayHiddenPower?: boolean;
-  genderRatio?: GenderRatio;
+  species?: Species;
 };
 
 export const getPkmFilterInitialValues = (): PkmFilterFields => ({
@@ -110,9 +107,11 @@ const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
     optOut(props?.displayAbility, {
       label: t?.["Ability"] ?? "Ability",
       input: (
-        <FormikSelect<PkmFilterFields, "filter_ability">
+        <FormikAbilityFilter<PkmFilterFields>
           name="filter_ability"
-          options={abilityOptions}
+          species={props?.species}
+          permitAny
+          displayHiddenAbility={props?.displayHiddenAbility}
         />
       ),
     }),
@@ -120,7 +119,7 @@ const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
       label: t?.["Gender"] ?? "Gender",
       input: (
         <FormikGenderFilter<PkmFilterFields>
-          genderRatio={props.genderRatio}
+          species={props.species}
           name="filter_gender"
         />
       ),

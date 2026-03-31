@@ -16,15 +16,18 @@ pub const WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP: u64 = 2;
 // The code currently only supports initial seed 0.
 const INITIAL_SEED: u32 = 0u32;
 
-// Painting is only worth doing if wanted advances is >= 200_000.
-// The value must be the same as the one in in UI files.
-const DONT_USE_PAINTING_IF_BELOW_ADV: u32 = 200_000;
-
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3PaintingAdvs {
     pub frame_before_painting: u32,
     pub adv_after_painting: u32,
+}
+
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Wild3PaintingAdvsAndDur {
+    pub advs: Wild3PaintingAdvs,
+    pub wait_dur: u32,
 }
 
 impl Wild3PaintingAdvs {
@@ -59,16 +62,34 @@ pub struct Wild3PaintingAdvFinder {
 }
 
 #[wasm_bindgen]
-pub fn find_painting_advs_for_seed(opts: &Wild3PaintingOpts, seed: u32) -> Vec<Wild3PaintingAdvs> {
+pub fn find_painting_advs_for_seed(
+    opts: &Wild3PaintingOpts,
+    seed: u32,
+) -> Vec<Wild3PaintingAdvsAndDur> {
     let wanted_advances = lcrng_distance(0, seed);
     let finder = Wild3PaintingAdvFinder::new(opts);
     finder
         .lookup_table
         .iter()
-        .map(|candidate| Wild3PaintingAdvs {
-            frame_before_painting: candidate.frame_before_painting,
-            adv_after_painting: wanted_advances
-                .wrapping_sub(candidate.adv_state_right_after_painting),
+        .map(|candidate| {
+            let adv_after_painting =
+                wanted_advances.wrapping_sub(candidate.adv_state_right_after_painting);
+
+            let wait_dur = if candidate.frame_before_painting == 0 {
+                evaluate_time_to_perform_battle_video(adv_after_painting)
+            } else {
+                evaluate_time_to_perform_painting(
+                    candidate.frame_before_painting,
+                    adv_after_painting,
+                )
+            };
+            Wild3PaintingAdvsAndDur {
+                advs: Wild3PaintingAdvs {
+                    frame_before_painting: candidate.frame_before_painting,
+                    adv_after_painting,
+                },
+                wait_dur,
+            }
         })
         .collect()
 }
@@ -96,22 +117,40 @@ impl Wild3PaintingAdvFinder {
         self.find_fastest_painting_adv(lcrng_distance(INITIAL_SEED, wanted_seed))
     }
     pub fn find_fastest_painting_adv(&self, wanted_adv: u32) -> Wild3PaintingAdvs {
-        if wanted_adv >= self.opts.min_frame_before_painting
-            && wanted_adv < DONT_USE_PAINTING_IF_BELOW_ADV
-        {
-            return Wild3PaintingAdvs {
+        let (best_paint_advs, paint_score) =
+            self.find_fastest_painting_adv_with_painting(wanted_adv);
+
+        let non_paint_score = evaluate_time_to_perform_battle_video(wanted_adv);
+
+        match best_paint_advs {
+            None => Wild3PaintingAdvs {
                 frame_before_painting: 0,
                 adv_after_painting: wanted_adv,
-            };
+            },
+            Some(best_paint_advs) => {
+                if paint_score < non_paint_score {
+                    best_paint_advs
+                } else {
+                    Wild3PaintingAdvs {
+                        frame_before_painting: 0,
+                        adv_after_painting: wanted_adv,
+                    }
+                }
+            }
         }
+    }
 
+    fn find_fastest_painting_adv_with_painting(
+        &self,
+        wanted_adv: u32,
+    ) -> (Option<Wild3PaintingAdvs>, u32) {
         // Finds first element that is >= wanted_adv.
         let init_idx = self
             .lookup_table
             .partition_point(|el| el.min_adv_after_painting < wanted_adv);
 
         let mut current_best: Option<Wild3PaintingAdvs> = None;
-        let mut current_score = 0xFFFF_FFFFu64;
+        let mut current_score = 0xFFFF_FFFFu32;
 
         for dist in 1..=self.lookup_table.len() {
             let idx = if dist <= init_idx {
@@ -130,22 +169,14 @@ impl Wild3PaintingAdvFinder {
             let adv_after_painting =
                 wanted_adv.wrapping_sub(candidate.adv_state_right_after_painting);
 
-            let additional_frame_before_painting =
-                if candidate.frame_before_painting < self.opts.min_frame_before_painting {
-                    // Not enough time to do painting. We need to wait until it overflows back to 0.
-                    0x1_0000_0000u64
-                } else {
-                    0
-                };
+            if candidate.frame_before_painting < self.opts.min_frame_before_painting {
+                continue;
+            }
 
-            // TODO centralize the score (time) to do painting
-            let candidate_score_from_after =
-                adv_after_painting as u64 / WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP;
-
-            let candidate_score = (candidate.frame_before_painting as u64
-                + additional_frame_before_painting)
-                .saturating_mul(ATTEMPT_PER_PAINTING)
-                + candidate_score_from_after;
+            let candidate_score = evaluate_time_to_perform_painting(
+                candidate.frame_before_painting,
+                adv_after_painting,
+            );
 
             match current_best {
                 None => {
@@ -161,7 +192,8 @@ impl Wild3PaintingAdvFinder {
                         // a lower frame_before_painting.
                         // If even with the lowest possible frame_before_painting (0), the score is still worse,
                         // we can stop early.
-                        let score_lower_bound_for_future_candidates = candidate_score_from_after;
+                        let score_lower_bound_for_future_candidates =
+                            evaluate_time_to_perform_painting(0, adv_after_painting);
                         if score_lower_bound_for_future_candidates > current_score {
                             break;
                         }
@@ -170,21 +202,32 @@ impl Wild3PaintingAdvFinder {
             }
         }
 
-        current_best.unwrap_or(Wild3PaintingAdvs {
-            frame_before_painting: 0,
-            adv_after_painting: wanted_adv,
-        })
+        (current_best, current_score)
     }
 }
 
+#[wasm_bindgen]
 pub fn evaluate_time_to_perform_painting(
-    frame_before_painting: u64,
+    frame_before_painting: u32,
     adv_after_painting: u32,
-) -> u64 {
-    let candidate_score = (candidate.frame_before_painting as u64
-        + additional_frame_before_painting)
-        .saturating_mul(ATTEMPT_PER_PAINTING)
-        + candidate_score_from_after;
+) -> u32 {
+    const TIME_FOR_VALIDATING_PAINTING: u64 = 3600 * 5; // ~4.5 minutes to create battle video + catching high-level pokemon. +0.5 min buffer.
+    let total_time_before =
+        (frame_before_painting as u64 + TIME_FOR_VALIDATING_PAINTING) * ATTEMPT_PER_PAINTING;
+    let total_time_after = adv_after_painting as u64 / 2; // assumes waiting in battle
+
+    let ret_u64 = total_time_before + total_time_after;
+    if ret_u64 > u32::MAX as u64 {
+        u32::MAX
+    } else {
+        ret_u64 as u32
+    }
+}
+
+#[wasm_bindgen]
+pub fn evaluate_time_to_perform_battle_video(adv_after_painting: u32) -> u32 {
+    const TIME_FOR_CREATING_BATTLE_VIDEO: u32 = 3600 * 3; // ~3 minutes
+    adv_after_painting / 2 + TIME_FOR_CREATING_BATTLE_VIDEO
 }
 
 pub fn create_lookup_painting_table(opts: &Wild3PaintingOpts) -> Vec<Wild3PaintingMinMaxAdvs> {

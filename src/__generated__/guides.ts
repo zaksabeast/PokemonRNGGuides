@@ -1139,7 +1139,7 @@ export const guides = {
       section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "/emerald-battle-video/",
-      isNew: true,
+      isNew: false,
       title: "Kampfaufzeichnung",
       navDrawerTitle: "Kampfaufzeichnung",
       description:
@@ -2538,7 +2538,7 @@ export const guides = {
       section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "/emerald-battle-video/",
-      isNew: true,
+      isNew: false,
       title: "Battle Video",
       navDrawerTitle: "Battle Video",
       description:
@@ -3056,7 +3056,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "egg",
-      isNew: true,
+      isNew: false,
       title: "Black and White Egg RNG",
       navDrawerTitle: "Egg RNG",
       description:
@@ -4149,7 +4149,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-31",
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
       translations: {
@@ -12505,7 +12505,7 @@ export const guides = {
       translation: { enSlug: "/emulator-hgss-stationary/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-20",
+      lastUpdated: "2026-03-31",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
       translations: {

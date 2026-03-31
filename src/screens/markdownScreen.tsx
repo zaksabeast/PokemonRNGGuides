@@ -45,20 +45,17 @@ const loading = (
 export const MarkdownScreen = () => {
   const route = useActiveRoute();
   const { Guide, meta } = getGuide(route);
+
+  const content = (
+    <React.Suspense fallback={loading}>
+      <Guide />
+    </React.Suspense>
+  );
+
   return match(meta.layout)
-    .with("guide", () => (
-      <GuideLayout guideMeta={meta}>
-        <React.Suspense fallback={loading}>
-          <Guide />
-        </React.Suspense>
-      </GuideLayout>
-    ))
+    .with("guide", () => <GuideLayout guideMeta={meta}>{content}</GuideLayout>)
     .with("titled", () => (
-      <TitledLayout guideMeta={meta}>
-        <React.Suspense fallback={loading}>
-          <Guide />
-        </React.Suspense>
-      </TitledLayout>
+      <TitledLayout guideMeta={meta}>{content}</TitledLayout>
     ))
     .exhaustive();
 };

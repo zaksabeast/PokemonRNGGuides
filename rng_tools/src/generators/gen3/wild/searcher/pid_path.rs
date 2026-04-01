@@ -224,11 +224,10 @@ pub fn find_pid_paths_reverse_iv<const METHOD3: bool>(
 }
 
 fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
-    // Limitation: score should be calculated using encounter_idx_seed, not the pid_seed.
-    // But that this point, encounter_idx_seed isn't known yet. In most cases, the impact is minimal.
-
     // We assume min_advances is respected. This is supposed to be valided by the caller.
 
+    // Limitation: score should be calculated using encounter_idx_seed, not the pid_seed.
+    // But that this point, encounter_idx_seed isn't known yet. In most cases, the impact is minimal.
     match &opts.painting_adv_finder {
         None => lcrng_distance(opts.initial_seed, pid_path.seed),
         Some(painting_adv_finder) => {

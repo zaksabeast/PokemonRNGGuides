@@ -15,6 +15,7 @@ import { Typography } from "~/components/typography";
 import { nature } from "~/types/nature";
 import { Button } from "~/components/button";
 import { toOptions } from "~/utils/options";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import {
   getPkmFilterInitialValues,
   natureOptions,
@@ -356,13 +357,14 @@ export const Wild3CalibCaughtMon = ({
       dataIndex: "advance",
       render: (val, values) => {
         const diffWithTarget = val - values.targetAdvance;
+        const valStr = formatLargeInteger(val);
+
         if (diffWithTarget === 0) {
-          return `${val}`;
+          return valStr;
         }
-        if (diffWithTarget > 0) {
-          return `${val} (+${diffWithTarget})`;
-        }
-        return `${val} (${diffWithTarget})`;
+        const sign = diffWithTarget > 0 ? "+" : "";
+
+        return `${valStr} (${sign}${formatLargeInteger(diffWithTarget)})`;
       },
     },
     {

@@ -224,20 +224,16 @@ pub fn find_pid_paths_reverse_iv<const METHOD3: bool>(
 }
 
 fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
-    match &opts.painting_adv_finder {
-        None => {
-            // We assume min_advances is respected. This is supposed to be valided by the caller.
+    // We assume min_advances is respected. This is supposed to be valided by the caller.
 
-            // Limitation: distance should be calculated using encounter_idx_seed, not the pid_seed.
-            // But that this point, encounter_idx_seed isn't known yet.
-            lcrng_distance(opts.initial_seed, pid_path.seed)
-                .wrapping_sub(opts.initial_advances as u32)
-        }
+    // Limitation: score should be calculated using encounter_idx_seed, not the pid_seed.
+    // But that this point, encounter_idx_seed isn't known yet. In most cases, the impact is minimal.
+    match &opts.painting_adv_finder {
+        None => lcrng_distance(opts.initial_seed, pid_path.seed),
         Some(painting_adv_finder) => {
-            let fastest = painting_adv_finder.find_fastest_painting_adv_from_seed(pid_path.seed);
-            fastest
-                .adv_before_painting
-                .saturating_add(fastest.adv_after_painting)
+            painting_adv_finder
+                .find_fastest_adv_considering_painting_from_seed(pid_path.seed)
+                .wait_dur
         }
     }
 }

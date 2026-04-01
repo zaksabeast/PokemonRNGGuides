@@ -2551,7 +2551,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-27",
+      lastUpdated: "2026-03-31",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Battle Video.mdx",
       translations: {
@@ -2722,7 +2722,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-15",
+      lastUpdated: "2026-03-31",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Seed To Advances.mdx",
       translations: null,

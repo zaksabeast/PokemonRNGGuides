@@ -72,14 +72,10 @@ const getResultSetupInfoColumns = ({
       columns: [
         {
           title: "Before Reseed",
-          dataIndex: "painting_advs",
+          dataIndex: "advs",
           monospace: true,
-          render: (painting_advs) => {
-            if (painting_advs == null) {
-              return "";
-            }
-
-            const adv = painting_advs.adv_before_painting;
+          render: (advs) => {
+            const adv = advs.frame_before_painting;
             return (
               <Tooltip title={`Painting Seed: ${formatHex(adv, 2)}`}>
                 {formatLargeInteger(adv)}
@@ -89,18 +85,14 @@ const getResultSetupInfoColumns = ({
         },
         {
           title: "After Reseed",
-          dataIndex: "painting_advs",
+          dataIndex: "advs",
           monospace: true,
-          render: (painting_advs, { seed, actionName }) => {
-            if (painting_advs == null) {
-              return "";
-            }
-
+          render: (advs, { seed, actionName }) => {
             return (
               <Tooltip
                 title={`Seed at start of ${actionName}: ${formatHex(seed)}`}
               >
-                {formatLargeInteger(painting_advs.adv_after_painting)}
+                {formatLargeInteger(advs.adv_after_painting)}
               </Tooltip>
             );
           },
@@ -389,7 +381,7 @@ const resultSetupInfoToDistributionFixedData = (
     feebasState: setup.feebas_state,
     massOutbreakState: setup.mass_outbreak_state,
     initial_seed: setup.initial_seed,
-    painting_advs: setup.painting_advs ?? null,
+    painting_advs: setup.advs.frame_before_painting === 0 ? null : setup.advs,
     wantedMethod: setup.method,
     wantedPID: setup.pid,
     idealLeadCycleSpeed,
@@ -411,7 +403,7 @@ export const Wild3ResultSetupInfos = ({
     );
   const usesPainting =
     selectedPidPathResult?.resultSetupInfos.some(
-      (res) => res.painting_advs != null,
+      (res) => res.advs.frame_before_painting !== 0,
     ) ?? false;
   const resultSetupInfoColumns = getResultSetupInfoColumns({
     rngManipulatedLeadPid,

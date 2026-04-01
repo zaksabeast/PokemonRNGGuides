@@ -147,7 +147,7 @@ export const MultibootJirachi = ({ jirachi }: Props) => {
   return (
     <Flex vertical gap={16}>
       {errorMessage != null && (
-        <Alert showIcon type="error" message={errorMessage} />
+        <Alert showIcon type="error" title={errorMessage} />
       )}
       <RngToolForm<FormState, Result>
         getFields={getFields}

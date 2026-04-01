@@ -37,8 +37,7 @@ app.use("*all", async (req, res) => {
       .replace("<!--injected-meta-tags-->", rendered.metaTags)
       .replace(
         `<!--injected-styles-->`,
-        `<style data-emotion>${rendered.emotionStyles}</style>
-        <style>${rendered.antdStyles.light}${rendered.antdStyles.dark}</style>`,
+        `<style>${rendered.antdStyles}</style>`,
       )
       .replace(`<!--app-html-->`, rendered.html)
       .replace('<html lang="en">', `<html lang="${rendered.lang}">`);

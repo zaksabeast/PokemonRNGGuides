@@ -6,12 +6,7 @@ declare module "@emotion/react" {
   export type ScreenSize = "mobile" | "tablet" | "desktop";
 
   export type CustomTheme = {
-    token: {
-      colorBrandSecondary: string;
-      colorBrandSecondaryHover: string;
-      colorBrandSecondaryBg: string;
-      colorBrandSecondaryBorder: string;
-    } & AliasToken;
+    token: AliasToken;
     components: Partial<ThemeConfig["components"]>;
     mediaQueries: {
       up: (size: ScreenSize) => string;
@@ -19,7 +14,7 @@ declare module "@emotion/react" {
     };
   };
 
-  type CompleteTheme = tst.O.Merge<
+  export type CompleteTheme = tst.O.Merge<
     tst.O.Required<
       tst.O.Overwrite<ThemeConfig, { token: CustomTheme["token"] }>,
       "token"

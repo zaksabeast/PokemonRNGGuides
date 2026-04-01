@@ -103,7 +103,7 @@ export const FormikSelect = <
   const [{ value, onBlur }, { error, status }, { setValue }] =
     useField<Path<FormState, typeof name>>(name);
 
-  const selectAllNoneDropdownRender = (menu: React.ReactElement) => {
+  const selectAllNonePopupRender = (menu: React.ReactElement) => {
     return (
       <>
         <SelectAllContainer>
@@ -136,8 +136,8 @@ export const FormikSelect = <
     );
   };
 
-  const dropdownRender = selectAllNoneButtons
-    ? selectAllNoneDropdownRender
+  const popupRender = selectAllNoneButtons
+    ? selectAllNonePopupRender
     : undefined;
 
   return (
@@ -150,7 +150,7 @@ export const FormikSelect = <
         onChange={(value) => setValue(value)}
         // @ts-expect-error -- prop types guarantee this is correct
         value={value}
-        dropdownRender={dropdownRender}
+        popupRender={popupRender}
         status={status}
       />
       {error != null && (

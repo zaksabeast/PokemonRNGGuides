@@ -19,44 +19,18 @@ const { render }: EntryServer =
 
 const main = async () => {
   const { antdStyles } = await render("/");
-  const lightFileName = `light-${md5(antdStyles.light).slice(0, 8)}.css`;
-  const darkFileName = `dark-${md5(antdStyles.dark).slice(0, 8)}.css`;
-  const lightCssFile = toNativeAbsolute(`../dist/assets/${lightFileName}`);
-  const darkCssFile = toNativeAbsolute(`../dist/assets/${darkFileName}`);
-  fs.writeFileSync(lightCssFile, antdStyles.light);
-  fs.writeFileSync(darkCssFile, antdStyles.dark);
+  const cssFileName = `ant-css-${md5(antdStyles).slice(0, 8)}.css`;
+  const cssPath = toNativeAbsolute(`../dist/assets/${cssFileName}`);
+  fs.writeFileSync(cssPath, antdStyles);
 
   for (const url of routes) {
-    const { html, emotionStyles, metaTags, lang } = await render(url);
-
-    const journey = `<script data-grow-initializer="">
-    !(function () {
-      window.growMe ||
-        ((window.growMe = function (e) {
-          window.growMe._.push(e);
-        }),
-        (window.growMe._ = []));
-      var e = document.createElement("script");
-      (e.type = "text/javascript"),
-        (e.src = "https://faves.grow.me/main.js"),
-        (e.defer = !0),
-        e.setAttribute(
-          "data-grow-faves-site-id",
-          "U2l0ZTo4NmZkZDY5Yi0wYTNlLTQ5ODEtYmVlNS0yNWQzZTFmYjY1NmU="
-        );
-      var t = document.getElementsByTagName("script")[0];
-      t.parentNode.insertBefore(e, t);
-    })();
-  </script>
-`;
+    const { html, metaTags, lang } = await render(url);
 
     const result = template
-      .replace("<!--injected-meta-tags-->", [metaTags, journey].join("\n"))
+      .replace("<!--injected-meta-tags-->", metaTags)
       .replace(
         `<!--injected-styles-->`,
-        `<style data-emotion>${emotionStyles}</style>
-        <link rel="stylesheet" href="/assets/${lightFileName}" />
-        <link rel="stylesheet" href="/assets/${darkFileName}" />`,
+        `<link rel="stylesheet" href="/assets/${cssFileName}" />`,
       )
       .replace(`<!--app-html-->`, html)
       .replace('<html lang="en">', `<html lang="${lang}">`);

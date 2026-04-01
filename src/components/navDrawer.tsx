@@ -25,6 +25,7 @@ const NewTag = () => {
       textAlign="center"
       color="TextLightSolid"
       backgroundColor="Primary"
+      mr={8}
     >
       New
     </Tag>

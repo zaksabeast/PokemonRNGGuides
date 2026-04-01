@@ -206,7 +206,7 @@ export const MarkdownBlockquote = ({
         showIcon
         description={children}
         type={alertProps.type}
-        message={t[alertProps.message]}
+        title={t[alertProps.message]}
       />
     );
   }

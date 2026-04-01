@@ -2,6 +2,7 @@ import {
   Radio as AntdRadio,
   RadioGroupProps as AntdRadioGroupProps,
   CheckboxOptionType,
+  RadioChangeEvent as AntdRadioChangeEvent,
 } from "antd";
 import { useField } from "~/hooks/form";
 import * as tst from "ts-toolbelt";
@@ -11,11 +12,40 @@ import { Flex } from "./flex";
 import { withCss } from "./withCss";
 import { Path, Paths } from "~/types";
 
-export const RadioGroup = withCss(AntdRadio.Group);
-
-type FormikRadioOptions<OptionValues extends string | number> =
+type RadioOptions<OptionValues extends string | number> =
   | OptionValues[]
   | CheckboxOptionType<OptionValues>[];
+
+export type RadioChangeEvent<OptionValues extends string | number> =
+  tst.O.Overwrite<
+    AntdRadioChangeEvent,
+    {
+      target: tst.O.Required<
+        tst.O.Overwrite<
+          AntdRadioChangeEvent["target"],
+          { value: OptionValues }
+        >,
+        "value"
+      >;
+    }
+  >;
+
+type RadioGroupProps<OptionValues extends string | number> = tst.O.Overwrite<
+  AntdRadioGroupProps,
+  {
+    options: RadioOptions<OptionValues> | Readonly<RadioOptions<OptionValues>>;
+    onChange?: (evt: RadioChangeEvent<OptionValues>) => void;
+  }
+>;
+
+const _RadioGroup = withCss(AntdRadio.Group);
+
+export const RadioGroup = <OptionValues extends string | number>(
+  props: RadioGroupProps<OptionValues>,
+) => {
+  // @ts-expect-error - Antd doesn't like readonly types, but they're fine
+  return <_RadioGroup {...props} />;
+};
 
 type FormikRadioProps<
   FormState extends GenericForm,
@@ -27,7 +57,7 @@ type FormikRadioProps<
   tst.O.Omit<tst.O.Required<AntdRadioGroupProps, "name">, "onChange">,
   {
     name: FieldKey;
-    options: FormikRadioOptions<
+    options: RadioOptions<
       Path<FormState, FieldKey> extends string | number | null
         ? tst.U.Exclude<Path<FormState, FieldKey>, null>
         : never

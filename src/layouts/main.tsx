@@ -4,7 +4,6 @@ import {
   Flex,
   Header,
   DesktopDrawer,
-  Loading,
   List,
   ListItem,
   Icon,
@@ -126,22 +125,7 @@ export const MainLayout = ({ children, trackerName }: Props) => {
         </DesktopNavDrawerContainer>
         <ContentLayout>
           <ContentContainer>
-            <Main>
-              <React.Suspense
-                fallback={
-                  <Flex
-                    height="100%"
-                    width="100%"
-                    justify="center"
-                    align="center"
-                  >
-                    <Loading />
-                  </Flex>
-                }
-              >
-                {children}
-              </React.Suspense>
-            </Main>
+            <Main>{children}</Main>
             {settings.hallOfFameSupporters.length === 0 && <BottomSpace />}
             {settings.hallOfFameSupporters.length > 0 && (
               <Footer>

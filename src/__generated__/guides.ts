@@ -4149,7 +4149,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-03-31",
       type: "baseGuide",
       file: "guides/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
       translations: {
@@ -12505,7 +12505,7 @@ export const guides = {
       translation: { enSlug: "/emulator-hgss-stationary/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-20",
+      lastUpdated: "2026-03-31",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 4/HeartGold and SoulSilver/Stationary RNG Emu.mdx",
       translations: {

@@ -404,8 +404,8 @@
     "lastUpdated": null
   },
   "/emulator-hgss-stationary/": {
-    "hash": "b32ea6dcf97d0a2e3bc853cd9074f3642565244058a701aad22be6f2b95addea",
-    "lastUpdated": null
+    "hash": "6f62c972bf5e3b71712b5247fcb07c9c4a06d2d353e5e887d95a9053a12527a8",
+    "lastUpdated": "2026-03-31"
   },
   "/emulator-hgss-tid-sid/": {
     "hash": "7ddd5e834d48efcb153515dfe88abccc248c642e3ba3811f2b76b16e11c12ba0",
@@ -1204,8 +1204,8 @@
     "lastUpdated": "2026-03-20"
   },
   "/zh-emulator-hgss-stationary/": {
-    "hash": "76f8853f65d28b5c16ae8e9c9251255c6037e87e3cc7ab8c2a5d876a7194a4e3",
-    "lastUpdated": "2026-03-20"
+    "hash": "f01f0932ff32aed696a88f2049e6c80668c8006d80958fb08e9f8ac40a8ed9b5",
+    "lastUpdated": "2026-03-31"
   },
   "/zh-emulator-oras-dexnav/": {
     "hash": "bc108067f975750ae5a27444b8b25537764253e41ad3b4863a5644fc076a2ef7",

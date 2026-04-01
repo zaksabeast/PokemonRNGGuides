@@ -79,7 +79,8 @@ export const GuideCardFrame = ({
             <PokeballContainer>
               <Icon name="Pokeball" size={40} color="PrimaryBgHover" />
             </PokeballContainer>
-            <Flex vertical gap={8} flex={1}>
+            {/* width={0} forces ellipsis for long titles */}
+            <Flex vertical gap={8} flex={1} width={0}>
               <CardMeta title={title} />
               <DisplayTags
                 attributes={displayAttributes}

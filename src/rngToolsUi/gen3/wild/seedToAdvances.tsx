@@ -219,7 +219,7 @@ export const EmeraldSeedToAdvances = () => {
             frame_before_painting: 0,
             adv_after_painting: opts.targetAdvance,
           },
-          wait_dur: await rngTools.evaluate_time_to_perform_battle_video(
+          wait_dur: await rngTools.evaluate_dur_to_perform_battle_video(
             opts.targetAdvance,
           ),
         },
@@ -236,7 +236,7 @@ export const EmeraldSeedToAdvances = () => {
             frame_before_painting: opts.paintingSeed,
             adv_after_painting: after,
           },
-          wait_dur: await rngTools.evaluate_time_to_perform_painting(
+          wait_dur: await rngTools.evaluate_dur_to_perform_painting(
             opts.paintingSeed,
             after,
           ),
@@ -252,7 +252,7 @@ export const EmeraldSeedToAdvances = () => {
 
     const targetSeed = pokerng_with_jump(0, opts.targetAdvance);
     rngTools
-      .find_painting_advs_for_seed(painting_opts, targetSeed)
+      .find_all_painting_advs_for_seed(painting_opts, targetSeed)
       .then((results) => {
         results = results.filter((res) => {
           if (res.advs.frame_before_painting === 0) {

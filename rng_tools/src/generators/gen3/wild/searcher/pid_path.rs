@@ -11,10 +11,7 @@ use crate::{
         calculate_pid_speed, get_iv_filter_restrictiveness, get_iv1_filter_restrictiveness,
         get_iv2_filter_restrictiveness, get_pid_filter_restrictiveness, passes_pid_filter,
         reverse_find_pid_low_paths_from_pids,
-        searcher_painter::{
-            Wild3PaintingAdvFinder, evaluate_time_to_perform_battle_video,
-            evaluate_time_to_perform_painting,
-        },
+        searcher_painter::Wild3PaintingAdvFinder,
         wild::{
             lcrng_distance,
             searcher::{
@@ -231,22 +228,13 @@ fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
     // But that this point, encounter_idx_seed isn't known yet. In most cases, the impact is minimal.
 
     // We assume min_advances is respected. This is supposed to be valided by the caller.
-    let adv_no_painting = lcrng_distance(opts.initial_seed, pid_path.seed);
-    let score_without_painting = evaluate_time_to_perform_battle_video(adv_no_painting);
 
     match &opts.painting_adv_finder {
-        None => score_without_painting,
+        None => lcrng_distance(opts.initial_seed, pid_path.seed),
         Some(painting_adv_finder) => {
-            let score_with_painting = {
-                let fastest =
-                    painting_adv_finder.find_fastest_painting_adv_from_seed(pid_path.seed);
-
-                evaluate_time_to_perform_painting(
-                    fastest.frame_before_painting,
-                    fastest.adv_after_painting,
-                )
-            };
-            std::cmp::min(score_without_painting, score_with_painting)
+            painting_adv_finder
+                .find_fastest_adv_considering_painting_from_seed(pid_path.seed)
+                .wait_dur
         }
     }
 }

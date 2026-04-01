@@ -82,6 +82,7 @@ type FixedData = {
   feebasState: Wild3FeebasState;
   massOutbreakState: Wild3MassOutbreakState;
   initial_seed: number;
+  /** must only be provided if painting is used */
   painting_advs: {
     frame_before_painting: number;
     adv_after_painting: number;

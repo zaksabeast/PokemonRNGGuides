@@ -1,4 +1,4 @@
-import { Wild3SearcherResultMon } from "~/rngTools";
+import { Wild3PaintingAdvsAndDur, Wild3SearcherResultMon } from "~/rngTools";
 import { ResultColumn, RngToolForm, RngToolSubmit } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
@@ -83,33 +83,24 @@ const Validator = z
 export type FormState = z.infer<typeof Validator>;
 
 export type PidPathResult = FlattenIvs<
-  Wild3SearcherResultMon & {
-    uid: number;
-    pidCycleCount: number;
-    earliestAdvance: number;
-    valueForSorting: number;
-    paintingAdvs:
-      | {
-          frame_before_painting: number;
-          adv_after_painting: number;
-        }
-      | undefined;
-    resultSetupInfos: ResultSetupInfo[];
-  }
+  Wild3SearcherResultMon &
+    Wild3PaintingAdvsAndDur & {
+      uid: number;
+      pidCycleCount: number;
+      earliestAdvance: number;
+      resultSetupInfos: ResultSetupInfo[];
+    }
 >;
 
-export type ResultSetupInfo = Wild3SearcherResultMon & {
-  uid: number;
-  mapId: string;
-  mapName: string;
-  actionName: string;
-  primaryLikelihood: number;
-  initial_seed: number;
-  painting_advs?: {
-    frame_before_painting: number;
-    adv_after_painting: number;
+export type ResultSetupInfo = Wild3SearcherResultMon &
+  Wild3PaintingAdvsAndDur & {
+    uid: number;
+    mapId: string;
+    mapName: string;
+    actionName: string;
+    primaryLikelihood: number;
+    initial_seed: number;
   };
-};
 
 const getInitialValues = (): FormState => {
   return {
@@ -140,9 +131,7 @@ const getInitialValues = (): FormState => {
   };
 };
 
-const getPidPathColumns = (
-  letSearcherFindPaintingSeed: boolean,
-): ResultColumn<PidPathResult>[] => {
+const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
   return [
     {
       title: "",
@@ -159,36 +148,18 @@ const getPidPathColumns = (
       },
     },
     {
-      title: "Painting?",
-      dataIndex: "paintingAdvs",
-      render: (paintingAdvs) => {
-        return paintingAdvs != null ? "Yes" : "No";
-      },
-      show: letSearcherFindPaintingSeed,
-    },
-    {
       title: "Advances",
-      dataIndex: "earliestAdvance",
+      dataIndex: "advs",
       monospace: true,
-      render: (earliestAdvance, { paintingAdvs }) => {
-        if (paintingAdvs != null) {
-          const { frame_before_painting: before, adv_after_painting: after } =
-            paintingAdvs;
-          const title = `${formatDuration(before / GBA_FPS)} | ${formatDuration(after / GBA_FPS)}`;
+      render: (advs, { wait_dur }) => {
+        const { frame_before_painting: before, adv_after_painting: after } =
+          advs;
 
-          return (
-            <Tooltip title={title}>
-              {formatLargeInteger(before)}
-              {" | "}~{formatLargeInteger(after)}
-            </Tooltip>
-          );
-        }
-
-        return (
-          <Tooltip title={formatDuration(earliestAdvance / GBA_FPS)}>
-            <>~{formatLargeInteger(earliestAdvance)}</>
-          </Tooltip>
-        );
+        const text =
+          (before !== 0 ? `${formatLargeInteger(before)} | ` : "") +
+          `~${formatLargeInteger(after)}`;
+        const title = formatDuration(wait_dur / GBA_FPS);
+        return <Tooltip title={title}>{text}</Tooltip>;
       },
     },
     { title: "Nature", dataIndex: "nature" },
@@ -245,25 +216,18 @@ export const Wild3SearcherFindTarget = () => {
   const [selectedPidPathResult, setSelectedPidPathResult] =
     React.useState<PidPathResult | null>(null);
 
-  const [letSearcherFindPaintingSeed, setLetSearcherFindPaintingSeed] =
-    React.useState<boolean>(false);
-
   const [rngManipulatedLeadPid, setRngManipulatedLeadPid] =
     React.useState<boolean>(false);
 
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const pidPathResults = await searchWild3Target(values);
 
-    setLetSearcherFindPaintingSeed(
-      values.usingPaintingReseeding && values.letSearcherFindPaintingSeed,
-    );
-
     setRngManipulatedLeadPid(values.rngManipulatedLeadPid);
 
     setPidPathResults(
       sortBy(
         pidPathResults.filter((el) => el != null),
-        "valueForSorting",
+        "wait_dur",
       ),
     );
     setSelectedPidPathResult(null);
@@ -271,7 +235,7 @@ export const Wild3SearcherFindTarget = () => {
 
   const initialValues = getInitialValues();
 
-  const pidPathColumns = getPidPathColumns(letSearcherFindPaintingSeed);
+  const pidPathColumns = getPidPathColumns();
 
   return (
     <>

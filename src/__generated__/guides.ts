@@ -497,7 +497,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["cfw-emu"],
       guideKey: "starter",
-      isNew: true,
+      isNew: false,
       title: "Black and White Starter RNG",
       navDrawerTitle: "Starter RNG",
       description:

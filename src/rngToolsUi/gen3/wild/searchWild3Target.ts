@@ -3,6 +3,7 @@ import {
   Wild3SearcherResultMon,
   Wild3MapSetups,
   Wild3SearcherOptions,
+  Wild3PaintingAdvsAndDur,
 } from "~/rngTools";
 import { pkmFilterFieldsToRustInput } from "~/components/pkmFilter";
 import { orderBy, intersection } from "lodash-es";
@@ -20,21 +21,25 @@ const emeraldWildGameData = getWild3EmeraldGameData();
 
 let nextUid = 0;
 
-type PaintingAdvsCache = Awaited<ReturnType<typeof createPaintingAdvsCache>>;
+type FastestAdvsCache = Awaited<ReturnType<typeof createFastestAdvsCache>>;
 
 const convertResultsForPidPathToPidPathResult = async (
   results: Wild3SearcherResultMon[],
   mapSetups: Wild3MapSetups[],
   rngManipulatedLeadPid: boolean,
   initial_seed: number,
-  paintingAdvsCache: PaintingAdvsCache,
+  getAdvsFromCache: FastestAdvsCache,
 ): Promise<PidPathResult | null> => {
   // Limitation: The UI components only support that all results for the same PidPath
   // requires painting, or none do. Having both only occurs in the rare cases that
   // the results overlap DONT_USE_PAINTING_IF_BELOW_ADV threshold.
-  const hasPainting = results.some((res) => paintingAdvsCache.has(res.advance));
+  const hasPainting = results.some(
+    (res) => getAdvsFromCache(res.advance).advs.frame_before_painting !== 0,
+  );
   if (hasPainting) {
-    results = results.filter((res) => paintingAdvsCache.has(res.advance));
+    results = results.filter(
+      (res) => getAdvsFromCache(res.advance).advs.frame_before_painting !== 0,
+    );
   }
 
   if (results.length === 0) {
@@ -71,33 +76,18 @@ const convertResultsForPidPathToPidPathResult = async (
         actionName: formatActionName(res.action),
         primaryLikelihood,
         initial_seed,
-        painting_advs: paintingAdvsCache.get(res.advance),
+        ...getAdvsFromCache(res.advance),
       };
     }),
   );
 
   const earliestAdvance = Math.min(...results.map((res) => res.advance));
 
-  const paintingAdvs = paintingAdvsCache.get(earliestAdvance);
-
-  // TODO centralize the score (time) to do painting
-  const ATTEMPT_PER_PAINTING = 10;
-  const WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP = 2;
-
-  const valueForSorting =
-    paintingAdvs != null
-      ? paintingAdvs.frame_before_painting * ATTEMPT_PER_PAINTING +
-        paintingAdvs.adv_after_painting /
-          WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP +
-        DONT_USE_PAINTING_IF_BELOW_ADV
-      : earliestAdvance / WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP;
-
   return {
     ...firstRes,
     ...firstRes.ivs,
     earliestAdvance,
-    paintingAdvs,
-    valueForSorting,
+    ...getAdvsFromCache(earliestAdvance),
     uid: nextUid++,
     pidCycleCount: await rngTools.calculate_pid_speed(firstRes.pid),
     resultSetupInfos: orderBy(
@@ -108,39 +98,42 @@ const convertResultsForPidPathToPidPathResult = async (
   };
 };
 
-const createPaintingAdvsCache = async (
+const createFastestAdvsCache = async (
   opts: Wild3SearcherOptions["painting_opts"],
   advs: number[],
 ) => {
-  const map = new Map<
-    number,
-    {
-      frame_before_painting: number;
-      adv_after_painting: number;
-    }
-  >();
+  const fallbackFunc = (adv: number): Wild3PaintingAdvsAndDur => {
+    return {
+      advs: {
+        frame_before_painting: 0,
+        adv_after_painting: adv,
+      },
+      wait_dur: adv,
+    };
+  };
 
   if (opts == null || advs.length === 0) {
-    return map;
+    return fallbackFunc;
   }
 
   const advsWithoutDupe = new Uint32Array(new Set(advs));
-  const painting_advs = await rngTools.find_fastest_painting_advs(
+  const fastestAdvs = await rngTools.find_fastest_advs_considering_painting(
     opts,
     advsWithoutDupe,
   );
-  if (painting_advs.length !== advsWithoutDupe.length) {
-    return map;
+  if (fastestAdvs.length !== advsWithoutDupe.length) {
+    return fallbackFunc;
   }
 
-  painting_advs.forEach((painting_adv, i) => {
-    if (painting_adv.frame_before_painting === 0) {
-      return;
-    }
-    map.set(advsWithoutDupe[i], painting_adv);
+  const map = new Map<number, Wild3PaintingAdvsAndDur>();
+
+  fastestAdvs.forEach((fastestAdv, i) => {
+    map.set(advsWithoutDupe[i], fastestAdv);
   });
 
-  return map;
+  return (adv: number): Wild3PaintingAdvsAndDur => {
+    return map.get(adv) ?? fallbackFunc(adv);
+  };
 };
 
 const getMapSetupsConsideringStateSubsets = (
@@ -229,7 +222,7 @@ export const searchWild3Target = async (values: FormState) => {
   const advs = resultsByPidPath
     .map((pidPath) => pidPath.vec.map((res) => res.advance))
     .flat();
-  const paintingAdvsCache = await createPaintingAdvsCache(
+  const fastestAdvsCache = await createFastestAdvsCache(
     opts.painting_opts,
     advs,
   );
@@ -241,7 +234,7 @@ export const searchWild3Target = async (values: FormState) => {
         map_setups,
         values.rngManipulatedLeadPid,
         initial_seed,
-        paintingAdvsCache,
+        fastestAdvsCache,
       ),
     ),
   );

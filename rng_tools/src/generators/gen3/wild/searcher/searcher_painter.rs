@@ -62,7 +62,7 @@ pub struct Wild3PaintingAdvFinder {
 }
 
 #[wasm_bindgen]
-pub fn find_painting_advs_for_seed(
+pub fn find_all_painting_advs_for_seed(
     opts: &Wild3PaintingOpts,
     seed: u32,
 ) -> Vec<Wild3PaintingAdvsAndDur> {
@@ -76,9 +76,9 @@ pub fn find_painting_advs_for_seed(
                 wanted_advances.wrapping_sub(candidate.adv_state_right_after_painting);
 
             let wait_dur = if candidate.frame_before_painting == 0 {
-                evaluate_time_to_perform_battle_video(adv_after_painting)
+                evaluate_dur_to_perform_battle_video(adv_after_painting)
             } else {
-                evaluate_time_to_perform_painting(
+                evaluate_dur_to_perform_painting(
                     candidate.frame_before_painting,
                     adv_after_painting,
                 )
@@ -95,14 +95,14 @@ pub fn find_painting_advs_for_seed(
 }
 
 #[wasm_bindgen]
-pub fn find_fastest_painting_advs(
+pub fn find_fastest_advs_considering_painting(
     opts: &Wild3PaintingOpts,
     wanted_advances: Vec<usize>,
-) -> Vec<Wild3PaintingAdvs> {
+) -> Vec<Wild3PaintingAdvsAndDur> {
     let finder = Wild3PaintingAdvFinder::new(opts);
     wanted_advances
         .into_iter()
-        .map(|wanted_adv| finder.find_fastest_painting_adv(wanted_adv as u32))
+        .map(|wanted_adv| finder.find_fastest_adv_considering_painting(wanted_adv as u32))
         .collect_vec()
 }
 
@@ -113,37 +113,39 @@ impl Wild3PaintingAdvFinder {
             lookup_table: create_lookup_painting_table(opts),
         }
     }
-    pub fn find_fastest_painting_adv_from_seed(&self, wanted_seed: u32) -> Wild3PaintingAdvs {
-        self.find_fastest_painting_adv(lcrng_distance(INITIAL_SEED, wanted_seed))
+    pub fn find_fastest_adv_considering_painting_from_seed(
+        &self,
+        wanted_seed: u32,
+    ) -> Wild3PaintingAdvsAndDur {
+        self.find_fastest_adv_considering_painting(lcrng_distance(INITIAL_SEED, wanted_seed))
     }
-    pub fn find_fastest_painting_adv(&self, wanted_adv: u32) -> Wild3PaintingAdvs {
-        let (best_paint_advs, paint_score) =
-            self.find_fastest_painting_adv_with_painting(wanted_adv);
+    pub fn find_fastest_adv_considering_painting(
+        &self,
+        wanted_adv: u32,
+    ) -> Wild3PaintingAdvsAndDur {
+        let best_paint = self.find_fastest_adv_with_painting(wanted_adv);
 
-        let non_paint_score = evaluate_time_to_perform_battle_video(wanted_adv);
-
-        match best_paint_advs {
-            None => Wild3PaintingAdvs {
+        let non_paint = Wild3PaintingAdvsAndDur {
+            advs: Wild3PaintingAdvs {
                 frame_before_painting: 0,
                 adv_after_painting: wanted_adv,
             },
-            Some(best_paint_advs) => {
-                if paint_score < non_paint_score {
-                    best_paint_advs
+            wait_dur: evaluate_dur_to_perform_battle_video(wanted_adv),
+        };
+
+        match best_paint {
+            None => non_paint,
+            Some(best_paint) => {
+                if best_paint.wait_dur < non_paint.wait_dur {
+                    best_paint
                 } else {
-                    Wild3PaintingAdvs {
-                        frame_before_painting: 0,
-                        adv_after_painting: wanted_adv,
-                    }
+                    non_paint
                 }
             }
         }
     }
 
-    fn find_fastest_painting_adv_with_painting(
-        &self,
-        wanted_adv: u32,
-    ) -> (Option<Wild3PaintingAdvs>, u32) {
+    fn find_fastest_adv_with_painting(&self, wanted_adv: u32) -> Option<Wild3PaintingAdvsAndDur> {
         // Finds first element that is >= wanted_adv.
         let init_idx = self
             .lookup_table
@@ -173,7 +175,7 @@ impl Wild3PaintingAdvFinder {
                 continue;
             }
 
-            let candidate_score = evaluate_time_to_perform_painting(
+            let candidate_score = evaluate_dur_to_perform_painting(
                 candidate.frame_before_painting,
                 adv_after_painting,
             );
@@ -193,7 +195,7 @@ impl Wild3PaintingAdvFinder {
                         // If even with the lowest possible frame_before_painting (0), the score is still worse,
                         // we can stop early.
                         let score_lower_bound_for_future_candidates =
-                            evaluate_time_to_perform_painting(0, adv_after_painting);
+                            evaluate_dur_to_perform_painting(0, adv_after_painting);
                         if score_lower_bound_for_future_candidates > current_score {
                             break;
                         }
@@ -202,12 +204,15 @@ impl Wild3PaintingAdvFinder {
             }
         }
 
-        (current_best, current_score)
+        current_best.map(|current_best| Wild3PaintingAdvsAndDur {
+            advs: current_best,
+            wait_dur: current_score,
+        })
     }
 }
 
 #[wasm_bindgen]
-pub fn evaluate_time_to_perform_painting(
+pub fn evaluate_dur_to_perform_painting(
     frame_before_painting: u32,
     adv_after_painting: u32,
 ) -> u32 {
@@ -225,7 +230,7 @@ pub fn evaluate_time_to_perform_painting(
 }
 
 #[wasm_bindgen]
-pub fn evaluate_time_to_perform_battle_video(adv_after_painting: u32) -> u32 {
+pub fn evaluate_dur_to_perform_battle_video(adv_after_painting: u32) -> u32 {
     const TIME_FOR_CREATING_BATTLE_VIDEO: u32 = 3600 * 3; // ~3 minutes
     adv_after_painting / 2 + TIME_FOR_CREATING_BATTLE_VIDEO
 }
@@ -264,11 +269,11 @@ mod test {
     pub fn find_fastest_painting_adv_for_test(
         opts: &Wild3PaintingOpts,
         wanted_adv: u32,
-    ) -> Wild3PaintingAdvs {
+    ) -> Wild3PaintingAdvsAndDur {
         let finder = Wild3PaintingAdvFinder::new(opts);
-        let fastest = finder.find_fastest_painting_adv(wanted_adv);
+        let fastest = finder.find_fastest_adv_considering_painting(wanted_adv);
 
-        let resulting_adv = lcrng_distance(INITIAL_SEED, fastest.get_resulting_seed());
+        let resulting_adv = lcrng_distance(INITIAL_SEED, fastest.advs.get_resulting_seed());
         assert_eq!(resulting_adv, wanted_adv);
 
         return fastest;
@@ -284,9 +289,12 @@ mod test {
                 },
                 lcrng_distance(0, 0x91291100) // 100_000_000
             ),
-            Wild3PaintingAdvs {
-                frame_before_painting: 0xae1c, // 44572
-                adv_after_painting: 33604,
+            Wild3PaintingAdvsAndDur {
+                advs: Wild3PaintingAdvs {
+                    frame_before_painting: 5625,
+                    adv_after_painting: 168585,
+                },
+                wait_dur: 320542,
             }
         );
 
@@ -298,9 +306,12 @@ mod test {
                 },
                 lcrng_distance(0, 0x183C26F6) // 12345678
             ),
-            Wild3PaintingAdvs {
-                frame_before_painting: 0xfb9a, // 64410
-                adv_after_painting: 35740,
+            Wild3PaintingAdvsAndDur {
+                advs: Wild3PaintingAdvs {
+                    frame_before_painting: 12467,
+                    adv_after_painting: 381965,
+                },
+                wait_dur: 495652,
             }
         );
 
@@ -312,23 +323,29 @@ mod test {
                 },
                 10_000
             ),
-            Wild3PaintingAdvs {
-                frame_before_painting: 0,
-                adv_after_painting: 10_000,
+            Wild3PaintingAdvsAndDur {
+                advs: Wild3PaintingAdvs {
+                    frame_before_painting: 0,
+                    adv_after_painting: 10_000,
+                },
+                wait_dur: 15800,
             }
         );
 
         assert_eq!(
             find_fastest_painting_adv_for_test(
                 &Wild3PaintingOpts {
-                    min_frame_before_painting: 10_001,
+                    min_frame_before_painting: 0,
                     min_adv_after_painting: 0,
                 },
-                10_000
+                400_000
             ),
-            Wild3PaintingAdvs {
-                frame_before_painting: 24691,
-                adv_after_painting: 9999,
+            Wild3PaintingAdvsAndDur {
+                advs: Wild3PaintingAdvs {
+                    frame_before_painting: 0,
+                    adv_after_painting: 400000,
+                },
+                wait_dur: 210800,
             }
         );
     }

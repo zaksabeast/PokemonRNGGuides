@@ -1,0 +1,1 @@
+import{o as e,s as t,t as n}from"./useGen4Timer-DB01Dbu9.js";var r=t({console:`NdsDsi`,game:`Diamond`,target:null,coinFlipFilter:``,chatotSummaryCount:null}),i=()=>e(r),a=n();export{a as n,i as r,r as t};

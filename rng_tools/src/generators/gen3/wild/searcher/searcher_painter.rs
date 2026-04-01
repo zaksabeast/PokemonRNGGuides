@@ -214,7 +214,7 @@ pub fn evaluate_dur_to_perform_painting(
     const TIME_FOR_VALIDATING_PAINTING: u64 = 3600 * 5; // ~4.5 minutes to create battle video + catching high-level pokemon. +0.5 min buffer.
     let total_time_before =
         (frame_before_painting as u64 + TIME_FOR_VALIDATING_PAINTING) * ATTEMPT_PER_PAINTING;
-    let total_time_after = adv_after_painting as u64 / 2; // assumes waiting in battle
+    let total_time_after = adv_after_painting as u64 / WAIT_IN_BATTLE_FOR_BATTLE_VIDEO_SPEEDUP;
 
     let ret_u64 = total_time_before + total_time_after;
     if ret_u64 > u32::MAX as u64 {

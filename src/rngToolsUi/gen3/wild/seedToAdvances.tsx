@@ -61,7 +61,7 @@ const getColumns = (): ResultColumn<Result>[] => {
           (in advances)
         </>
       ),
-      key: "frame_before_painting",
+      key: "rng_state_after",
       dataIndex: "advs",
       render: (advs) => {
         return advs.frame_before_painting === 0
@@ -77,7 +77,7 @@ const getColumns = (): ResultColumn<Result>[] => {
           to hit target
         </>
       ),
-      key: "adv_after_painting",
+      key: "additional_adv_after_painting",
       dataIndex: "advs",
       render: (advs) => {
         return formatLargeInteger(advs.adv_after_painting);

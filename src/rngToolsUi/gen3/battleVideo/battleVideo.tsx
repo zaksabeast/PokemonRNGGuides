@@ -172,7 +172,6 @@ const MyFields = ({
     {
       label: "Consider waiting in battle?",
       input: <FormikSwitch<FormState> name="considerWaitingInBattle" />,
-      show: !isUpdatingExisting,
     },
     {
       label: "Display advanced breakdown?",
@@ -461,7 +460,7 @@ const calculateWithBattle = (opts: FormState) => {
     ],
     battleVideoInfo: {
       initialAdv,
-      battleVideoAdv: targetAdvAtVideo,
+      battleVideoAdv: targetAdvAtVideo + initialAdv,
       safetyBufferAdv,
       targetAdv: opts.targetAdvance,
       withBattle: true,

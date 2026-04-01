@@ -8,7 +8,6 @@ import { match } from "ts-pattern";
 import { Flex } from "./flex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { RadioGroup } from "./radio";
-import { RadioChangeEvent } from "antd";
 import { formatHex } from "~/utils/formatHex";
 
 type FormikEmeraldTargetAdvanceProps<FormState extends GenericForm> = {
@@ -18,9 +17,9 @@ type FormikEmeraldTargetAdvanceProps<FormState extends GenericForm> = {
 type Mode = "Advance" | "Seed";
 
 const opts = [
-  { label: "Advance", value: "Advance" satisfies Mode },
-  { label: "Seed (hex)", value: "Seed" satisfies Mode },
-];
+  { label: "Advance", value: "Advance" },
+  { label: "Seed (hex)", value: "Seed" },
+] as const;
 
 const handleAdvance = (value: number | null) => {
   // Sync: Advance → Seed
@@ -65,16 +64,12 @@ export const FormikEmeraldTargetAdvance = <FormState extends GenericForm>({
       .exhaustive();
   }, [mode, value, seed, setValue]);
 
-  const onChange = (evt: RadioChangeEvent) => {
-    setMode(evt.target.value as Mode);
-  };
-
   return (
     <Flex vertical gap={4}>
-      <RadioGroup
+      <RadioGroup<Mode>
         options={opts}
         value={mode}
-        onChange={onChange}
+        onChange={(evt) => setMode(evt.target.value)}
         optionType="button"
       />
       {match(mode)

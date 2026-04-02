@@ -128,8 +128,8 @@
     "lastUpdated": "2026-03-09"
   },
   "/de-emerald-painting-rng/": {
-    "hash": "7340c623680420f1d0a0637e85a9cbd50f44481c8a3b8550273cf0c851d9f1db",
-    "lastUpdated": "2026-03-27"
+    "hash": "e7c55423d893f63471aecf523c89ca733a69ad20b031145aaf8357f01718a577",
+    "lastUpdated": "2026-04-01"
   },
   "/de-emerald-pokerus-emu/": {
     "hash": "be1a120133e695e80897f3c5370dd119ab42828c309b5188e8d5730d04d259e1",
@@ -259,13 +259,17 @@
     "hash": "5fa56216638c0bc46ab2b7cce060935bcb54c0ce9a947983f33036ca82234fc2",
     "lastUpdated": null
   },
+  "/emerald-painting-reseeding/": {
+    "hash": "74b700a98ef8339cbcdacf4612b7a7aa7b3214bcae1f2dfd7213f257c73d0bda",
+    "lastUpdated": "2026-04-01"
+  },
   "/emerald-painting-rng/": {
-    "hash": "cf5f31d5f2dee8484b784f827153d636d4a7616b2068d6889040d1566c59c065",
-    "lastUpdated": "2026-03-27"
+    "hash": "883e445350d7375f9cfc8c1b2ed1040b21a17d48851109e8758621aa85c4609c",
+    "lastUpdated": "2026-04-01"
   },
   "/emerald-painting-seed-searcher/": {
-    "hash": "226e538445b625b5693e2803ec78c10fb2d15aa34236f65f5707ebd55cc3a322",
-    "lastUpdated": "2026-03-31"
+    "hash": "d08d71bb9d337d00542955ab575d0a5ef24e54f21f38349100c27f78676a3060",
+    "lastUpdated": "2026-04-01"
   },
   "/emerald-pokerus-emu/": {
     "hash": "bf0e188ebc049eb1d2c28d03515e21d9a1756101f430a7890a42d62c557779c6",
@@ -1120,8 +1124,8 @@
     "lastUpdated": null
   },
   "/zh-emerald-painting-rng/": {
-    "hash": "4eadba53a1773ac73d9aad44c506a2cef6b84337a29e1bdec06782ef6228140e",
-    "lastUpdated": null
+    "hash": "49e182d29f7531dab02743f43d62df2e79958bf6c5d118c9622260b401940b2b",
+    "lastUpdated": "2026-04-01"
   },
   "/zh-emerald-pokerus-emu/": {
     "hash": "366fd0bd015d34108525dcf0171753998b0fc81481df2d5c4c0db12a7ff51b05",

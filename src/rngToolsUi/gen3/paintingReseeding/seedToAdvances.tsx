@@ -13,6 +13,7 @@ import {
   FormFieldTable,
   Icon,
   Field,
+  Button,
 } from "~/components";
 import React from "react";
 import { formatHex } from "~/utils/formatHex";
@@ -27,8 +28,28 @@ import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 
 type Result = Wild3PaintingAdvsAndDur;
 
-const getColumns = (): ResultColumn<Result>[] => {
+const getColumns = (
+  onSelected: Props["onSelected"],
+): ResultColumn<Result>[] => {
   return [
+    {
+      title: "",
+      key: "Select",
+      dataIndex: "advs",
+      show: onSelected != null,
+      render: (advs) => {
+        return (
+          <Button
+            trackerId="seedToAdvance_onSelect"
+            onClick={() => {
+              onSelected?.(advs.frame_before_painting, advs.adv_after_painting);
+            }}
+          >
+            Select
+          </Button>
+        );
+      },
+    },
     {
       title: "Painting Seed",
       dataIndex: "advs",
@@ -208,7 +229,11 @@ const MyFields = () => {
   return <FormFieldTable fields={fields} />;
 };
 
-export const EmeraldSeedToAdvances = () => {
+type Props = {
+  onSelected?: (before: number, after: number) => void;
+};
+
+export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
   const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit: RngToolSubmit<FormState> = async (opts: FormState) => {
@@ -279,7 +304,7 @@ export const EmeraldSeedToAdvances = () => {
 
   return (
     <RngToolForm<FormState, Result>
-      getColumns={getColumns}
+      getColumns={() => getColumns(onSelected)}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

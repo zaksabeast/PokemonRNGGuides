@@ -34,6 +34,15 @@ export const defaultMinMaxStats: MinMaxStats = {
   spe: { min: 0, max: 0 },
 };
 
+export const createAllStats0 = () => ({
+  hp: 0,
+  atk: 0,
+  def: 0,
+  spa: 0,
+  spd: 0,
+  spe: 0,
+});
+
 const StatSchema = z.number().min(0).max(999);
 
 export const StatFieldsSchema = z.object({

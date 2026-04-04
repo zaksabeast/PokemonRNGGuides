@@ -222,7 +222,7 @@ const BaseGuideSchema = z
     // Visual layout of the guide page
     layout: z.enum(layouts).default("guide"),
     // Used for SEO when renaming slugs. Keep the original page/slug, hide the page, and set the new slug as canonical.
-    canonical: SlugSchema.nullish().optional(),
+    canonical: SlugSchema.optional(),
   })
   .transform(({ category, section, variant, ...meta }) => {
     const normalizedVariants = variant ?? [];
@@ -276,7 +276,7 @@ const TranslatedGuideSchema = z
       enSlug: SlugSchema,
       language: z.enum(["es", "zh", "fr", "it", "de"]),
     }),
-    canonical: SlugSchema.nullish().optional(),
+    canonical: SlugSchema.optional(),
   })
   .transform((meta) => ({
     ...meta,
@@ -330,10 +330,11 @@ type ExternalLinkInput = tst.O.Merge<
 >;
 
 type ExternalLinkMetadata = tst.O.Merge<
-  tst.O.Omit<BaseGuideSchemaType, "slug" | "type">,
+  tst.O.Omit<BaseGuideSchemaType, "slug" | "type" | "canonical">,
   {
     type: "externalLink";
     displayAttributes: DetectableTag[];
+    canonical: null;
     url: string;
   }
 >;
@@ -858,10 +859,11 @@ const validateDuplicateSlugs = (guides: GuideWithFile[]) => {
   );
 };
 
-// Final canonical value should be null if not set, to simplify downstream logic
-// We need to keep it undefined in frontmatter to distinguish between explicitly setting canonical to null vs not setting it at all
-const canonicalOrNull = (guide: GuideWithFile): string | null => {
-  return guide.canonical === undefined ? null : guide.canonical;
+const applySelfCanonical = (guide: GuideWithFile): GuideWithFile => {
+  return {
+    ...guide,
+    canonical: guide.canonical ?? guide.slug,
+  };
 };
 
 const applyAutoCanonicalSlugsPreSort = (
@@ -871,26 +873,27 @@ const applyAutoCanonicalSlugsPreSort = (
 
   const result = Object.entries(guidesByFile).flatMap(([_, fileGuides]) => {
     if (fileGuides.length <= 1) {
-      return fileGuides.map((guide) => ({
-        ...guide,
-        canonical: canonicalOrNull(guide),
-      }));
+      return fileGuides.map(applySelfCanonical);
     }
 
     // fileGuides are in original file order (before global sort)
     // Use the first guide's slug as the canonical target for all others
     const firstSlug = fileGuides[0].slug;
     return fileGuides.map((guide, index) => {
-      // Only apply auto canonical if not explicitly set in frontmatter
-      if (index > 0 && guide.canonical === undefined) {
-        return {
-          ...guide,
-          canonical: firstSlug,
-        };
+      // If canonical is already set in frontmatter, skip auto assignment
+      if (guide.canonical != null) {
+        return guide;
       }
+
+      // If it's the first guide in the file, set canonical to itself
+      if (index === 0) {
+        return applySelfCanonical(guide);
+      }
+
+      // For subsequent guides in the same file, set canonical to the first guide's slug
       return {
         ...guide,
-        canonical: canonicalOrNull(guide),
+        canonical: firstSlug,
       };
     });
   });

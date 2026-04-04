@@ -76,7 +76,7 @@ const Validator = z.object({
   isPaintingSeedConfirmed: z.boolean(),
   targetPaintingSeed: z.number().min(0).max(0xffffffff),
 
-  targetMethod: z.enum(supportedGen3Methods),
+  targetMethod: z.enum(supportedGen3Methods).nullable(),
   targetAdvance: z.number().int().min(0).max(0xffffffff),
 
   usingAverageLeadCycleSpeed: z.boolean(),

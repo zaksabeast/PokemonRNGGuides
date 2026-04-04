@@ -45,7 +45,7 @@ type Props<FormState extends GenericForm, Result> = {
       columns: ResultColumn<Result>[];
       getColumns: (t: Translations) => ResultColumn<Result>[];
     }> & {
-      results: Result[];
+      results: Result[] | null;
     }
   > &
   AllOrNone<{
@@ -176,7 +176,7 @@ export const RngToolForm = <
           </Flex>
         )}
 
-        {columnsToUse != null && (
+        {columnsToUse != null && results != null && (
           <FormikResultTable<Result>
             columns={columnsToUse}
             rowKey={rowKey}

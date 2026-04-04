@@ -95,9 +95,9 @@ const Validator = z.object({
 
 type FormState = z.infer<typeof Validator>;
 
-const initialValues: FormState = {
-  targetAdvance: 50_000,
-  isUpdatingExisting: false,
+const createInitialValues = (fixedData: Props["fixedData"]): FormState => ({
+  targetAdvance: fixedData?.targetAdvance ?? 50_000,
+  isUpdatingExisting: fixedData?.isUpdatingExisting ?? false,
   console: "GBA",
   forFishing: false,
   considerWaitingInBattle: true,
@@ -105,12 +105,14 @@ const initialValues: FormState = {
   useRecommendedBuffer: true,
   specifiedBuffer: POST_BV_SWEET_SCENT_BUFFER + SAFETY_BUFFER_NO_BATTLE,
   existingBattleVideoAdv: 0,
-};
+});
 
 const MyFields = ({
   setDisplayAdvancedBreakdown,
+  fixedData,
 }: {
   setDisplayAdvancedBreakdown: (val: boolean) => void;
+  fixedData: Props["fixedData"];
 }) => {
   const useRecommendedBuffer = useWatch<FormState, "useRecommendedBuffer">({
     name: "useRecommendedBuffer",
@@ -118,15 +120,25 @@ const MyFields = ({
   const isUpdatingExisting = useWatch<FormState, "isUpdatingExisting">({
     name: "isUpdatingExisting",
   });
+  const targetAdvance = useWatch<FormState, "targetAdvance">({
+    name: "targetAdvance",
+  });
 
   const fields: Field[] = [
     {
       label: "Target",
       input: <FormikEmeraldTargetAdvance<FormState> name="targetAdvance" />,
+      show: fixedData == null,
+    },
+    {
+      label: "Target Advance",
+      input: formatLargeInteger(targetAdvance),
+      show: fixedData != null,
     },
     {
       label: "Is updating existing Battle Video?",
       input: <FormikSwitch<FormState> name="isUpdatingExisting" />,
+      show: fixedData == null,
     },
     {
       label: "Existing Battle Video advances",
@@ -483,7 +495,14 @@ const calculate = (opts: FormState) => {
   return calculateWithBattle(opts);
 };
 
-export const BattleVideo = () => {
+export type Props = {
+  fixedData?: {
+    targetAdvance: number;
+    isUpdatingExisting: boolean;
+  };
+};
+
+export const BattleVideo = ({ fixedData }: Props) => {
   const [milliseconds, setMilliseconds] = React.useState<number[]>([]);
   const [timerLabels, setTimerLabels] = React.useState<string[]>([]);
   const [submitError, setSubmitError] = React.useState("");
@@ -520,6 +539,8 @@ export const BattleVideo = () => {
     ? { results: breakdown, columns }
     : {};
 
+  const initialValues = createInitialValues(fixedData);
+
   return (
     <>
       <RngToolForm<FormState, BreakdownInfo>
@@ -527,9 +548,13 @@ export const BattleVideo = () => {
         validationSchema={Validator}
         onSubmit={onSubmit}
         submitTrackerId="battle_video_calc_timer"
+        submitButtonLabel="Generate Battle Video timers and instructions"
         {...displayedProps}
       >
-        <MyFields setDisplayAdvancedBreakdown={setDisplayAdvancedBreakdown} />
+        <MyFields
+          setDisplayAdvancedBreakdown={setDisplayAdvancedBreakdown}
+          fixedData={fixedData}
+        />
       </RngToolForm>
 
       {submitError !== "" && (

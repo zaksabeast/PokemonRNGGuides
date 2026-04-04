@@ -63,7 +63,7 @@ const getColumns = (
       title: (
         <>
           Frames before
-          <br /> reseeding
+          <br /> painting
         </>
       ),
       key: "frame_before_painting",
@@ -78,7 +78,7 @@ const getColumns = (
       title: (
         <>
           RNG state after <br />
-          reseeding <br />
+          painting <br />
           (in advances)
         </>
       ),
@@ -94,7 +94,7 @@ const getColumns = (
       title: (
         <>
           Additional advances <br />
-          after reseeding <br />
+          after painting <br />
           to hit target
         </>
       ),
@@ -151,9 +151,9 @@ const MyFields = () => {
   const fields: Field[] = [
     {
       label: (
-        <Tooltip title="Possible player actions are Sweet Scent, fishing, and Rock Smash.">
+        <Tooltip title="Ex: Target advance to generate the wanted Pokémon.">
           <div>
-            Target at start of the player action{" "}
+            Target of the RNG manipulation{" "}
             <Icon name="InformationCircle" size={16} />
           </div>
         </Tooltip>
@@ -190,7 +190,7 @@ const MyFields = () => {
       label: (
         <Tooltip title="To ensure there is enough time between booting the game and interacting with the painting.">
           <div>
-            Min frames before reseeding{" "}
+            Min frames before painting{" "}
             <Icon name="InformationCircle" size={16} />
           </div>
         </Tooltip>
@@ -207,9 +207,9 @@ const MyFields = () => {
     },
     {
       label: (
-        <Tooltip title="To ensure there is enough time between interacting with the painting, catching a Pokémon to validate the seed, and starting a battle video.">
+        <Tooltip title="To ensure there is enough time between interacting with the painting, and creating a Battle Video.">
           <div>
-            Min advances after reseeding{" "}
+            Min advances after painting{" "}
             <Icon name="InformationCircle" size={16} />
           </div>
         </Tooltip>
@@ -234,7 +234,7 @@ type Props = {
 };
 
 export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
-  const [results, setResults] = React.useState<Result[]>([]);
+  const [results, setResults] = React.useState<Result[] | null>(null);
 
   const onSubmit: RngToolSubmit<FormState> = async (opts: FormState) => {
     if (!opts.usingPaintingReseeding) {
@@ -302,9 +302,17 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
       });
   };
 
+  const onSelectedAndClear =
+    onSelected == null
+      ? undefined
+      : (before: number, after: number) => {
+          setResults(null);
+          onSelected(before, after);
+        };
+
   return (
     <RngToolForm<FormState, Result>
-      getColumns={() => getColumns(onSelected)}
+      getColumns={() => getColumns(onSelectedAndClear)}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}

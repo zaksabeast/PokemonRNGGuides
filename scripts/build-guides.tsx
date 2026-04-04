@@ -222,9 +222,7 @@ const BaseGuideSchema = z
     // Visual layout of the guide page
     layout: z.enum(layouts).default("guide"),
     // Used for SEO when renaming slugs. Keep the original page/slug, hide the page, and set the new slug as canonical.
-    canonical: SlugSchema.nullish()
-      .optional()
-      .default(() => null),
+    canonical: SlugSchema.nullish().optional(),
   })
   .transform(({ category, section, variant, ...meta }) => {
     const normalizedVariants = variant ?? [];
@@ -260,6 +258,7 @@ const BaseGuideSchema = z
       navDrawerTitle,
       lastUpdated: null as string | null,
       type: "baseGuide" as const,
+      canonical: meta.canonical,
     };
   });
 
@@ -277,9 +276,7 @@ const TranslatedGuideSchema = z
       enSlug: SlugSchema,
       language: z.enum(["es", "zh", "fr", "it", "de"]),
     }),
-    canonical: SlugSchema.nullish()
-      .optional()
-      .default(() => null),
+    canonical: SlugSchema.nullish().optional(),
   })
   .transform((meta) => ({
     ...meta,
@@ -287,6 +284,7 @@ const TranslatedGuideSchema = z
     navDrawerTitle: meta.navDrawerTitle ?? meta.title,
     lastUpdated: null as string | null,
     type: "translatedGuide" as const,
+    canonical: meta.canonical,
   }));
 
 const SingleGuideMetadataSchema = z.union([
@@ -718,10 +716,14 @@ const parseGuideFiles = async (guideFiles: SitePageFile[]) => {
     }
   }
 
-  guides.sort((lhs, rhs) => lhs.slug.localeCompare(rhs.slug));
+  // Apply auto-assigned canonical slugs for multi-guide files
+  // This must be done before sorting to preserve original file order
+  const guidesWithAutoCanonical = applyAutoCanonicalSlugsPreSort(guides);
+
+  guidesWithAutoCanonical.sort((lhs, rhs) => lhs.slug.localeCompare(rhs.slug));
 
   return {
-    guides,
+    guides: guidesWithAutoCanonical,
     guideComponents,
   };
 };
@@ -854,6 +856,83 @@ const validateDuplicateSlugs = (guides: GuideWithFile[]) => {
       }
     },
   );
+};
+
+// Final canonical value should be null if not set, to simplify downstream logic
+// We need to keep it undefined in frontmatter to distinguish between explicitly setting canonical to null vs not setting it at all
+const canonicalOrNull = (guide: GuideWithFile): string | null => {
+  return guide.canonical === undefined ? null : guide.canonical;
+};
+
+const applyAutoCanonicalSlugsPreSort = (
+  guides: GuideWithFile[],
+): GuideWithFile[] => {
+  const guidesByFile = groupBy(guides, (guide) => guide.file);
+
+  const result = Object.entries(guidesByFile).flatMap(([_, fileGuides]) => {
+    if (fileGuides.length <= 1) {
+      return fileGuides.map((guide) => ({
+        ...guide,
+        canonical: canonicalOrNull(guide),
+      }));
+    }
+
+    // fileGuides are in original file order (before global sort)
+    // Use the first guide's slug as the canonical target for all others
+    const firstSlug = fileGuides[0].slug;
+    return fileGuides.map((guide, index) => {
+      // Only apply auto canonical if not explicitly set in frontmatter
+      if (index > 0 && guide.canonical === undefined) {
+        return {
+          ...guide,
+          canonical: firstSlug,
+        };
+      }
+      return {
+        ...guide,
+        canonical: canonicalOrNull(guide),
+      };
+    });
+  });
+
+  return result;
+};
+
+const validateCanonicalUnchanged = (guides: GuideWithFile[]): void => {
+  const guidesBySlug = keyBy(existingGuides, (guide) => guide.meta.slug);
+
+  for (const guide of guides) {
+    const previousGuide = guidesBySlug[guide.slug];
+
+    if (
+      previousGuide.meta.canonical !== null &&
+      previousGuide.meta.canonical !== guide.canonical
+    ) {
+      throw new Error(
+        `Canonical slug changed for ${guide.slug}. Previous: ${previousGuide.meta.canonical}, Current: ${guide.canonical}`,
+      );
+    }
+  }
+};
+
+const validateCanonicalCircularity = (guides: GuideWithFile[]): void => {
+  const canonicalTargets = new Set(
+    guides
+      .filter((guide) => guide.canonical != null)
+      .map((guide) => guide.canonical),
+  );
+
+  for (const guide of guides) {
+    if (
+      guide.canonical != null &&
+      canonicalTargets.has(guide.slug) &&
+      guide.canonical !== guide.slug
+    ) {
+      throw new Error(
+        `Guide ${guide.slug} both has canonical set AND is referenced as a canonical`,
+      );
+    }
+  }
 };
 
 const detectGuideTags = async (
@@ -1093,9 +1172,11 @@ const main = async ({
     currentHashes,
   );
 
+  validateCanonicalUnchanged(guidesWithTimestamps);
   validateGuideReferences(guidesWithTimestamps);
   validateRemovedSlugs(guidesWithTimestamps);
   validateDuplicateSlugs(guidesWithTimestamps);
+  validateCanonicalCircularity(guidesWithTimestamps);
 
   const guidesWithTranslations =
     buildGuidesWithTranslations(guidesWithTimestamps);

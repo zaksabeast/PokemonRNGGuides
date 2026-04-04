@@ -8,6 +8,7 @@ import {
   Icon,
   FormFieldTable,
   FormikRadio,
+  FormikNumberInput,
 } from "~/components";
 import { FormikSelect } from "~/components/select";
 import { RngToolSubmit } from "~/components/rngToolForm";
@@ -22,10 +23,19 @@ import {
   pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
-import { gen3Methods, gender, StatFieldsSchema } from "~/types";
+import {
+  createAllStats0,
+  gen3Methods,
+  gender,
+  StatFieldsSchema,
+} from "~/types";
 import {
   Gen3Method,
+  Ivs,
+  Nature,
   rngTools,
+  Species,
+  StatsValue,
   Wild3EncounterGameData,
   Wild3MapSetups,
   Wild3SearcherOptions,
@@ -47,6 +57,7 @@ import { formatProbability } from "~/utils/formatProbability";
 import { Gen3IvRating, getGen3IvRating } from "../ivRater";
 import { ability } from "~/types/ability";
 import { FormikAbilityFilter } from "~/components/abilityFilter";
+import { useFormContext } from "~/hooks/form";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -57,6 +68,7 @@ const Validator = z
     species: z.enum(emeraldWildGameData.species),
     lvl: z.number().min(1).max(100),
     ability: z.enum(ability).nullable(),
+    rareCandy: z.number().min(0).max(99),
   })
   .extend(StatFieldsSchema.shape);
 
@@ -74,6 +86,7 @@ const initialValues: FormState = {
   species: "Shuckle",
   lvl: 1,
   ability: "First",
+  rareCandy: 1,
 };
 
 type Props = {
@@ -88,6 +101,8 @@ export type CaughtMonResult = {
   score: number;
   probabilityHitMethodsAtAdvance: number;
   uid: number;
+  statsWithRareCandy: StatsValue;
+  ivs: Ivs;
 } & Gen3IvRating;
 
 const CONFIDENCE_RANGE = 3600; // We assume the player hits its target advance by more or less 1 minute
@@ -200,12 +215,22 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
       probabilityHitMethodsAtAdvance,
       uid: nextUid++,
       ...getGen3IvRating(result.ivs),
+      statsWithRareCandy: createAllStats0(),
+      ivs: result.ivs,
     };
   });
 
-  return list.sort((res1, res2) => {
+  list.sort((res1, res2) => {
     return res1.score - res2.score;
   });
+
+  return updateResultsForRareCandy(
+    list,
+    values.species,
+    values.lvl,
+    values.nature,
+    values.rareCandy,
+  );
 };
 
 const getPossibleEncountersForMap = (targetSetup: TargetSetup) => {
@@ -244,12 +269,36 @@ const getPossibleEncountersForMap = (targetSetup: TargetSetup) => {
   return list;
 };
 
-const Fields = ({ targetSetup }: { targetSetup: TargetSetup }) => {
+const Fields = ({
+  targetSetup,
+  onRareCandyChange,
+}: {
+  targetSetup: TargetSetup;
+  onRareCandyChange: (
+    species: Species,
+    lvl: number,
+    nature: Nature,
+    rareCandy: number,
+  ) => void;
+}) => {
+  const { setFieldValue } = useFormContext<FormState>();
+
   const selectedSpecies = useWatch<FormState, "species">({ name: "species" });
   const selectedLvl = useWatch<FormState, "lvl">({ name: "lvl" });
   const selectedNature = useWatch<FormState, "nature">({ name: "nature" });
+  const rareCandy = useWatch<FormState, "rareCandy">({ name: "rareCandy" });
 
   const [fields, setFields] = React.useState<Field[]>([]);
+
+  React.useEffect(() => {
+    onRareCandyChange(selectedSpecies, selectedLvl, selectedNature, rareCandy);
+  }, [
+    onRareCandyChange,
+    rareCandy,
+    selectedLvl,
+    selectedNature,
+    selectedSpecies,
+  ]);
 
   React.useEffect(() => {
     const encounters = getPossibleEncountersForMap(targetSetup);
@@ -333,17 +382,75 @@ const Fields = ({ targetSetup }: { targetSetup: TargetSetup }) => {
           ),
         },
         ...getStatFields<FormState>(minMaxStats),
+        {
+          label: "Rare Candy",
+          input: (
+            <Flex dir="row">
+              <Button
+                trackerId="wild3_calib_set_rare_candy_to_1"
+                onClick={() => {
+                  setFieldValue("rareCandy", 1);
+                }}
+              >
+                {" =1 "}
+              </Button>
+              <FormikNumberInput<FormState>
+                name="rareCandy"
+                numType="decimal"
+              />
+              <Button
+                trackerId="wild3_calib_add_rare_candy"
+                onClick={() => {
+                  setFieldValue("rareCandy", Math.min(rareCandy + 1, 99));
+                }}
+              >
+                {" +1 "}
+              </Button>
+            </Flex>
+          ),
+        },
       ]);
     });
-  }, [targetSetup, selectedSpecies, selectedLvl, selectedNature]);
+  }, [
+    targetSetup,
+    selectedSpecies,
+    selectedLvl,
+    selectedNature,
+    setFieldValue,
+    rareCandy,
+  ]);
 
   return <FormFieldTable fields={fields} />;
+};
+
+const updateResultsForRareCandy = async (
+  results: CaughtMonResult[],
+  species: Species,
+  initialLvl: number,
+  nature: Nature,
+  rareCandy: number,
+) => {
+  return Promise.all(
+    results.map(async (res) => {
+      return {
+        ...res,
+        statsWithRareCandy: await rngTools.calculate_stats(
+          species,
+          Math.min(initialLvl + rareCandy, 100),
+          nature,
+          res.ivs,
+          createAllStats0(),
+        ),
+      };
+    }),
+  );
 };
 
 export const Wild3CalibCaughtMon = ({
   targetSetup,
   setLatestHitAdv,
 }: Props) => {
+  const [lastRareCandyValue, setLastRareCandyValue] = React.useState(1);
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
   const { targetMethod, targetAdvance } = targetSetup;
 
@@ -352,6 +459,55 @@ export const Wild3CalibCaughtMon = ({
   };
 
   const columns: ResultColumn<CaughtMonResult>[] = [
+    {
+      title: "Remove",
+      dataIndex: "advance",
+      render: (_, values) => {
+        return (
+          <Button
+            type="text"
+            color="PrimaryText"
+            trackerId="Wild3CalibCaughtMon_remove"
+            onClick={() => {
+              setResults(results.filter((res) => res !== values));
+            }}
+          >
+            <Icon name="Close" />
+          </Button>
+        );
+      },
+    },
+    {
+      title: (
+        <>
+          Update <br /> Calibration
+        </>
+      ),
+      key: "Update Calibration",
+      dataIndex: "advance",
+      render(advance, values) {
+        if (
+          values.advance === targetAdvance &&
+          values.method === targetMethod
+        ) {
+          return "Target Pokémon";
+        }
+
+        return (
+          <Button
+            type="text"
+            color="PrimaryText"
+            trackerId="wild3CalibCaughtMon_adv"
+            onClick={() => {
+              setLatestHitAdv(advance);
+              setResults([]);
+            }}
+          >
+            <Icon name="Update" size={20} />
+          </Button>
+        );
+      },
+    },
     {
       title: "Advance",
       dataIndex: "advance",
@@ -384,6 +540,54 @@ export const Wild3CalibCaughtMon = ({
       },
     },
     {
+      title: `Stats with x${lastRareCandyValue ?? 0} Rare Candy`,
+      type: "group",
+      columns: [
+        {
+          title: "HP",
+          dataIndex: "statsWithRareCandy",
+          render(statsWithRareCandy) {
+            return statsWithRareCandy.hp;
+          },
+        },
+        {
+          title: "Atk",
+          dataIndex: "statsWithRareCandy",
+          render(statsWithRareCandy) {
+            return statsWithRareCandy.atk;
+          },
+        },
+        {
+          title: "Def",
+          dataIndex: "statsWithRareCandy",
+          render(statsWithRareCandy) {
+            return statsWithRareCandy.def;
+          },
+        },
+        {
+          title: "SpA",
+          dataIndex: "statsWithRareCandy",
+          render(statsWithRareCandy) {
+            return statsWithRareCandy.spa;
+          },
+        },
+        {
+          title: "SpD",
+          dataIndex: "statsWithRareCandy",
+          render(statsWithRareCandy) {
+            return statsWithRareCandy.spd;
+          },
+        },
+        {
+          title: "Spe",
+          dataIndex: "statsWithRareCandy",
+          render(statsWithRareCandy) {
+            return statsWithRareCandy.spe;
+          },
+        },
+      ],
+    },
+    {
       title: (
         <Tooltip title="Rating from the stat judge in the building behind the Pokémon Center at the Battle Frontier.">
           <div>
@@ -407,33 +611,23 @@ export const Wild3CalibCaughtMon = ({
         },
       ],
     },
-    {
-      title: "",
-      dataIndex: "advance",
-      render(advance, values) {
-        if (
-          values.advance === targetAdvance &&
-          values.method === targetMethod
-        ) {
-          return "Target Pokémon";
-        }
-
-        return (
-          <Button
-            type="text"
-            color="PrimaryText"
-            trackerId="wild3CalibCaughtMon_adv"
-            onClick={() => {
-              setLatestHitAdv(advance);
-              setResults([]);
-            }}
-          >
-            <Icon name="Update" size={20} /> Update Calibration
-          </Button>
-        );
-      },
-    },
   ];
+
+  const onRareCandyChange = async (
+    species: Species,
+    lvl: number,
+    nature: Nature,
+    rareCandy: number,
+  ) => {
+    if (lastRareCandyValue === rareCandy) {
+      return;
+    }
+    setLastRareCandyValue(rareCandy);
+
+    setResults(
+      await updateResultsForRareCandy(results, species, lvl, nature, rareCandy),
+    );
+  };
 
   return (
     <Flex vertical gap={8}>
@@ -452,7 +646,10 @@ export const Wild3CalibCaughtMon = ({
         rowKey="uid"
       >
         <Flex vertical ml={20}>
-          <Fields targetSetup={targetSetup} />
+          <Fields
+            targetSetup={targetSetup}
+            onRareCandyChange={onRareCandyChange}
+          />
         </Flex>
       </RngToolForm>
     </Flex>

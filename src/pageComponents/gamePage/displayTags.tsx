@@ -7,11 +7,6 @@ import { languageByKey, LanguageKey } from "~/types/language";
 
 export type DisplayAttribute = GuideMeta["displayAttributes"][number] | "new";
 
-const translationColors = {
-  color: "#00B894",
-  backgroundColor: "rgba(0, 184, 148, 0.1)",
-} as const;
-
 const DisplayTag = styled(Tag)<{ tag: DisplayAttribute | "translated" }>(({
   tag,
 }) => {
@@ -32,15 +27,16 @@ const DisplayTag = styled(Tag)<{ tag: DisplayAttribute | "translated" }>(({
       color: "#FF3B30",
       backgroundColor: "rgba(255, 59, 48, 0.1)",
     }))
-    .with("translated", () => translationColors)
+    .with("translated", () => ({
+      color: "#00B894",
+      backgroundColor: "rgba(0, 184, 148, 0.1)",
+    }))
     .exhaustive();
 
   return {
     ...colors,
     marginRight: 0,
-    borderRadius: 20,
     border: 0,
-    boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.04)",
   };
 });
 

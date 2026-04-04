@@ -175,6 +175,8 @@ const SingleOrMultipleSchema = <T extends z.ZodTypeAny>(schema: T) =>
 
 const MAX_ORDER_PRIORITY = 20;
 
+const DifficultySchema = z.enum(["easy", "medium", "hard"]);
+
 const BaseGuideSchema = z
   .object({
     // Title shown at the top of the guide
@@ -201,6 +203,10 @@ const BaseGuideSchema = z
       .min(0)
       .max(MAX_ORDER_PRIORITY)
       .default(MAX_ORDER_PRIORITY),
+    // Difficulty level of the guide, used for display and ordering on game pages
+    difficulty: DifficultySchema.nullable()
+      .optional()
+      .default(() => null),
     // Specifies if a guide is for retail, cfw-emu, or both
     variant: SingleOrMultipleSchema(GuideVariantSchema).optional(),
     // Links guides of different variants together, e.g. linking a retail guide to its cfw-emu counterpart
@@ -312,7 +318,7 @@ type NonRngSections = tst.U.Exclude<Sections, RngSections>;
 type ExternalLinkInput = tst.O.Merge<
   tst.O.Pick<
     BaseGuideSchemaType,
-    "addedOn" | "categories" | "navDrawerTitle" | "guideKey"
+    "addedOn" | "categories" | "navDrawerTitle" | "guideKey" | "difficulty"
   >,
   {
     url: string;
@@ -348,6 +354,7 @@ const externalGuides: ExternalLinkInput[] = [
     guideKey: "gen5-web-tool",
     displayAttributes: ["web_tool"],
     url: "https://niart120.github.io/5genSearch-web/",
+    difficulty: null,
   },
 ];
 

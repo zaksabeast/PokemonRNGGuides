@@ -21,6 +21,7 @@ const SplitGuideCard = ({ isTop, isBottom, guide }: SplitGuideCardProps) => {
       isNew={guide.isNew}
       displayAttributes={guide.displayAttributes}
       translations={guide.translations}
+      difficulty={guide.difficulty}
       bottomContent={
         <Flex gap={8} wrap>
           <LinkButton

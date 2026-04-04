@@ -747,6 +747,22 @@ const validateGuideReferences = (guides: GuideWithFile[]) => {
         `Canonical slug ${guide.canonical} for ${guide.slug} not found`,
       );
     }
+
+    // Make sure canonical targets that are base guides are not hidden from navigation
+    if (
+      guide.canonical != null &&
+      // Allow guides to reference themselves
+      guide.canonical !== guide.slug &&
+      // Only apply to base guides, not translations
+      guide.translation == null
+    ) {
+      const canonicalGuide = guidesBySlug[guide.canonical];
+      if (canonicalGuide?.hideFromNavDrawer) {
+        throw new Error(
+          `Canonical slug ${guide.canonical} for ${guide.slug} is hidden from nav drawer`,
+        );
+      }
+    }
   }
 };
 

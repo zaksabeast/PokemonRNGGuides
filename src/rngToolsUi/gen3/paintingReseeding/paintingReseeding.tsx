@@ -1,8 +1,12 @@
 import { MultiTimer } from "~/components/multiTimer";
 import { EmeraldSeedToAdvances } from "./seedToAdvances";
 import { useState } from "react";
-import { Gen3Console, gen3ConsoleFpsMap } from "~/types/console";
-import { Flex } from "~/components";
+import {
+  Gen3Console,
+  gen3ConsoleFpsMap,
+  gen3ConsoleOptions,
+} from "~/types/console";
+import { Field, Flex, FormFieldTable, Select } from "~/components";
 
 import Instructions_0_createBattleVideo from "./instructions_0_createBattleVideo.mdx";
 import Instructions_1_validateFrame from "./instructions_1_validateFrame.mdx";
@@ -16,14 +20,16 @@ import { formatHex } from "~/utils/formatHex";
 export const PaintingReseedingTimers = ({
   frame_before_painting,
   consoleType,
+  calibration,
 }: {
   frame_before_painting: number;
   consoleType: Gen3Console;
+  calibration: number;
 }) => {
   const fps = gen3ConsoleFpsMap[consoleType];
+  console.log("fps", fps);
   const msPerFrame = 1000 / fps;
-  const calib = 30;
-  const timeAtPaintingInteract = frame_before_painting - calib;
+  const timeAtPaintingInteract = frame_before_painting - calibration;
   const TIME_TO_CREATE_BATTLE_VIDEO = 3600 * 4.5;
 
   const millisecondsCreateVideo = [
@@ -60,7 +66,7 @@ export const PaintingReseedingTimers = ({
         stopButtonTrackerId="painting_battle_video_timer_stop"
       />
 
-      <h2>Validate the painting frame that was hit</h2>
+      <h2>Validate that the painting frame was hit</h2>
       <Instructions_1_validateFrame />
       <MultiTimer
         milliseconds={millisecondsValidateFrame}
@@ -92,54 +98,111 @@ const createTargetSetup = (frame_before_painting: number): TargetSetup => {
 };
 
 export const EmeraldPaintingReseeding = () => {
-  const [paintingAdvs, setPaintingAdvs] = useState<{
+  const [targetPaintingAdvs, setTargetPaintingAdvs] = useState<{
     before: number;
     after: number;
   } | null>(null);
 
+  const [battleVideoAdvAfterPainting, setBattleVideoAdvAfterPainting] =
+    useState<number | null>(null);
+  const [calibration, setCalibration] = useState<number>(30);
+  const [consoleType, setConsoleType] = useState<Gen3Console>("GBA");
+
   const targetSetup =
-    paintingAdvs === null || paintingAdvs.before === 0
+    targetPaintingAdvs === null || targetPaintingAdvs.before === 0
       ? null
-      : createTargetSetup(paintingAdvs.before);
+      : createTargetSetup(targetPaintingAdvs.before);
+
+  const consoleField: Field = {
+    label: "Console",
+    input: (
+      <Select<Gen3Console>
+        name="console"
+        value={consoleType}
+        options={gen3ConsoleOptions}
+        onSelect={(val) => {
+          setConsoleType(val);
+        }}
+      />
+    ),
+  };
 
   return (
     <Flex vertical gap={20}>
       <h2>Selecting the target painting frame and advance</h2>
+      <div>
+        Fill the fields, press Generate and select the row with the smallest
+        time to create Battle Video.
+      </div>
+      <FormFieldTable fields={[consoleField]} />
       <EmeraldSeedToAdvances
         onSelected={(before, after) => {
-          setPaintingAdvs({ before, after });
+          setTargetPaintingAdvs({ before, after });
         }}
+        alwaysShowAdvancedSettings={false}
       />
 
-      {paintingAdvs?.before === 0 && (
+      {targetPaintingAdvs?.before === 0 && (
         <>
           <h2>Create Battle Video (without Painting Reseeding)</h2>
           <BattleVideo
+            key={`${targetPaintingAdvs.after}-${consoleType}`}
             fixedData={{
-              targetAdvance: paintingAdvs.after,
+              targetAdvance: targetPaintingAdvs.after,
+              consoleType,
               isUpdatingExisting: false,
+              existingBattleVideoAdv: 0,
+              isAfterPainting: false,
             }}
           />
         </>
       )}
 
-      {paintingAdvs !== null && paintingAdvs.before !== 0 && (
+      {targetPaintingAdvs !== null && targetPaintingAdvs.before !== 0 && (
         <PaintingReseedingTimers
-          consoleType="GBA"
-          frame_before_painting={paintingAdvs.before}
+          consoleType={consoleType}
+          frame_before_painting={targetPaintingAdvs.before}
+          calibration={calibration}
         />
       )}
 
       {targetSetup != null && (
         <Wild3CalibCaughtMon
           targetSetup={targetSetup}
-          setLatestHitAdv={() => {
-            /*NO_PROD */
+          setLatestHitAdv={(hitAdv) => {
+            if (targetPaintingAdvs == null) {
+              return;
+            }
+            const before = hitAdv; // NO_PROD missing attribute
+            const after = hitAdv;
+
+            const distBefore = targetPaintingAdvs.before - before;
+            if (distBefore !== 0) {
+              setBattleVideoAdvAfterPainting(after);
+            } else {
+              setCalibration(calibration + distBefore); // NO_PROD check if + or -
+            }
           }}
         />
       )}
 
       {targetSetup != null && <Instructions_2_validateFrame />}
+
+      {battleVideoAdvAfterPainting !== null && targetPaintingAdvs !== null && (
+        <>
+          <h2>Update Battle Video</h2>
+          <BattleVideo
+            key={`${targetPaintingAdvs.after}-${consoleType}-${battleVideoAdvAfterPainting}`}
+            fixedData={{
+              consoleType,
+              targetAdvance: targetPaintingAdvs.after,
+              isUpdatingExisting: true,
+              existingBattleVideoAdv: battleVideoAdvAfterPainting,
+              isAfterPainting: true,
+            }}
+          />
+        </>
+      )}
     </Flex>
   );
 };

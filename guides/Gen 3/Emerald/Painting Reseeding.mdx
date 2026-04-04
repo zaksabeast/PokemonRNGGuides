@@ -33,9 +33,9 @@ This technique requires a frame-perfect input. Players need to validate whether 
 
 ### Steps Overview
 
- - **Step 1:** Select the target frame before painting and advance after painting.
- - **Step 2:** Interact with the painting, create a Battle Video and validate whether the target frame before painting was hit.
- - **Step 3:** Update the Battle Video.
+ - **Step 1:** Select the target frame before painting and advance after painting. Combined together, they will set the RNG state to its target advance for the RNG manipulation.
+ - **Step 2:** Interact with the painting, create a Battle Video and validate whether the target frame before painting was hit. This step must be repeated until the target is hit.
+ - **Step 3:** Update the Battle Video to bring it closer to the final target advance, to reduce the wait time for each RNG manipulation attempt.
 
 
 ## Webtool and Instructions

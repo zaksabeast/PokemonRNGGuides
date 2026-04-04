@@ -22,6 +22,7 @@ import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 import { useWatch } from "react-hook-form";
 import { match } from "ts-pattern";
 import {
+  Gen3Console,
   gen3ConsoleFpsMap,
   gen3ConsoleOptions,
   gen3Consoles,
@@ -98,13 +99,13 @@ type FormState = z.infer<typeof Validator>;
 const createInitialValues = (fixedData: Props["fixedData"]): FormState => ({
   targetAdvance: fixedData?.targetAdvance ?? 50_000,
   isUpdatingExisting: fixedData?.isUpdatingExisting ?? false,
-  console: "GBA",
+  console: fixedData?.consoleType ?? "GBA",
   forFishing: false,
   considerWaitingInBattle: true,
   displayAdvancedBreakdown: false,
   useRecommendedBuffer: true,
   specifiedBuffer: POST_BV_SWEET_SCENT_BUFFER + SAFETY_BUFFER_NO_BATTLE,
-  existingBattleVideoAdv: 0,
+  existingBattleVideoAdv: fixedData?.existingBattleVideoAdv ?? 0,
 });
 
 const MyFields = ({
@@ -126,12 +127,21 @@ const MyFields = ({
 
   const fields: Field[] = [
     {
+      label: fixedData?.isAfterPainting
+        ? "Existing Battle Video advances after painting"
+        : "Existing Battle Video advances",
+      input: formatLargeInteger(fixedData?.existingBattleVideoAdv ?? 0),
+      show: fixedData?.isUpdatingExisting === true,
+    },
+    {
       label: "Target",
       input: <FormikEmeraldTargetAdvance<FormState> name="targetAdvance" />,
       show: fixedData == null,
     },
     {
-      label: "Target Advance",
+      label: fixedData?.isAfterPainting
+        ? "Target advance after painting"
+        : "Target advance",
       input: formatLargeInteger(targetAdvance),
       show: fixedData != null,
     },
@@ -149,7 +159,7 @@ const MyFields = ({
         />
       ),
       indent: 1,
-      show: isUpdatingExisting,
+      show: isUpdatingExisting && fixedData == null,
     },
     {
       label: "Console",
@@ -159,6 +169,7 @@ const MyFields = ({
           options={gen3ConsoleOptions}
         />
       ),
+      show: fixedData?.consoleType == null,
     },
     {
       label: "Use recommended buffer to perform action?",
@@ -363,6 +374,7 @@ const calculateWithBattle = (opts: FormState) => {
     advFromFrameOutsideBattleAfter - speedupLatency;
 
   const consoleFps = gen3ConsoleFpsMap[opts.console];
+  console.log("consoleFps", consoleFps);
   return {
     submitError: "",
     milliseconds: [
@@ -499,6 +511,9 @@ export type Props = {
   fixedData?: {
     targetAdvance: number;
     isUpdatingExisting: boolean;
+    existingBattleVideoAdv: number;
+    isAfterPainting: boolean;
+    consoleType?: Gen3Console;
   };
 };
 

@@ -390,7 +390,6 @@ const Fields = ({
           input: (
             <Flex dir="row">
               <Button
-                size="small"
                 trackerId="wild3_calib_set_rare_candy_to_1"
                 onClick={() => {
                   setFieldValue("rareCandy", 1);

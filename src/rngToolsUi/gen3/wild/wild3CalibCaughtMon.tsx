@@ -472,7 +472,6 @@ export const Wild3CalibCaughtMon = ({
       render: (_, values) => {
         return (
           <Button
-            size="small"
             type="text"
             color="PrimaryText"
             trackerId="Wild3CalibCaughtMon_remove"
@@ -503,7 +502,6 @@ export const Wild3CalibCaughtMon = ({
 
         return (
           <Button
-            size="small"
             type="text"
             color="PrimaryText"
             trackerId="wild3CalibCaughtMon_adv"

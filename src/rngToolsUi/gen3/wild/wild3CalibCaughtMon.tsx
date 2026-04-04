@@ -8,6 +8,7 @@ import {
   Icon,
   FormFieldTable,
   FormikRadio,
+  FormikSwitch,
   FormikNumberInput,
 } from "~/components";
 import { FormikSelect } from "~/components/select";
@@ -68,6 +69,7 @@ const Validator = z
     species: z.enum(emeraldWildGameData.species),
     lvl: z.number().min(1).max(100),
     ability: z.enum(ability).nullable(),
+    generate_even_if_impossible: z.boolean(),
     rareCandy: z.number().min(0).max(99),
   })
   .extend(StatFieldsSchema.shape);
@@ -86,6 +88,7 @@ const initialValues: FormState = {
   species: "Shuckle",
   lvl: 1,
   ability: "First",
+  generate_even_if_impossible: false,
   rareCandy: 1,
 };
 
@@ -179,7 +182,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     methods: gen3Methods,
     consider_cycles: true,
     consider_rng_manipulated_lead_pid: true,
-    generate_even_if_impossible: true,
+    generate_even_if_impossible: values.generate_even_if_impossible,
     painting_opts: null,
     lead_cycle_speed: targetSetup.leadCycleSpeed,
   };
@@ -408,6 +411,10 @@ const Fields = ({
               </Button>
             </Flex>
           ),
+        },
+        {
+          label: "Display results with 0% likelihood",
+          input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
         },
       ]);
     });

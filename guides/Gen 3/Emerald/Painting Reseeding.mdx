@@ -1,0 +1,51 @@
+---
+- title: "Painting Reseeding"
+  navDrawerTitle: "Painting Reseeding"
+  description: "How to perform Painting Reseeding to quickly access very distant RNG states."
+  slug: "emerald-painting-reseeding"
+  guideKey: "emerald-painting"
+  category: "Emerald"
+  section: "rng_technique"
+  variant: "retail"
+  addedOn: "2026-03-30"
+---
+
+<Gist>
+  Gist: How to perform Painting Reseeding to quickly access very distant RNG states.
+</Gist>
+
+## Prerequisites
+
+- Access to the Battle Frontier.
+- Owning a Egg Pokémon and a Pokémon knowing Sweet Scent.
+- Recommended: A Master Ball or a Pokémon knowing False Swipe.
+- Recommended: 5+ Rare Candies.
+- Recommended: Having read [Overview of RNG Advancing Techniques](/emerald-advancing-rng-techniques).
+
+## General Overview
+
+Painting Reseeding is a RNG technique to make the RNG state jump by millions of advances instantly, giving access to
+RNG states that would normally not be reachable realistically.
+
+By interacting with a painting in Lilycove contest hall, the RNG state is reseeded using the current visual frame counter. Players don't need to have participated in a contest for the paintings to be accessible.
+
+This technique requires a frame-perfect input. Players need to validate whether they successfully did the technique by catching a high-level Pokémon.
+
+### Steps Overview
+
+ - **Step 1:** Select the target frame before painting and advance after painting. Combined together, they will set the RNG state to its target advance for the RNG manipulation.
+ - **Step 2:** Interact with the painting, create a Battle Video and validate whether the target frame before painting was hit. This step must be repeated until the target is hit.
+ - **Step 3:** Update the Battle Video to bring it closer to the final target advance, to reduce the wait time for each RNG manipulation attempt.
+
+
+## Webtool and Instructions
+
+<EmeraldPaintingReseeding />
+
+## Technical Info
+- The RNG state before interacting with the painting has no impact on the new RNG state. It is not possible to use Battle Video to speedup the wait before interacting with the painting.
+- The Egg Pokémon lead ensures that the caught Pokémon for validation will be generated with [method Wild-1](/gba-methods-lead-impact).
+
+## Credits
+
+- RainingChain

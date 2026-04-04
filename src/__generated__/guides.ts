@@ -1282,7 +1282,7 @@ export const guides = {
       translation: { enSlug: "/emerald-painting-rng/", language: "de" },
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-27",
+      lastUpdated: "2026-04-01",
       type: "translatedGuide",
       file: "guides/Translations/de/Gen 3/Emerald/Reseed RNG.mdx",
       translations: {
@@ -2662,6 +2662,47 @@ export const guides = {
       return file.default;
     }),
   },
+  "/emerald-painting-reseeding/": {
+    meta: {
+      id: "/emerald-painting-reseeding/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "/emerald-painting-reseeding/",
+      isNew: true,
+      title: "Painting Reseeding",
+      navDrawerTitle: "Painting Reseeding",
+      description:
+        "How to perform Painting Reseeding to quickly access very distant RNG states.",
+      slug: "/emerald-painting-reseeding/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      hideFromNavDrawer: false,
+      addedOn: "2026-03-30",
+      translation: null,
+      layout: "guide",
+      canonical: null,
+      lastUpdated: "2026-04-03",
+      type: "baseGuide",
+      file: "guides/Gen 3/Emerald/Painting Reseeding.mdx",
+      translations: null,
+      guideGroupId: "en:/emerald-painting-reseeding/:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/emerald-painting-reseeding/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Painting Reseeding.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Painting Reseeding.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/emerald-painting-rng/": {
     meta: {
       id: "/emerald-painting-rng/",
@@ -2670,10 +2711,10 @@ export const guides = {
       guideVariants: ["cfw-emu"],
       guideKey: "/emerald-painting-rng/",
       isNew: false,
-      title: "Reseed the RNG using paintings",
-      navDrawerTitle: "Painting RNG",
+      title: "Painting Reseeding",
+      navDrawerTitle: "Painting Reseeding",
       description:
-        "Learn how to reseed the RNG using paintings in Pokémon Emerald to get the Pokémon you want quickly, without the long wait.",
+        "How to perform Painting Reseeding to quickly access very distant RNG states.",
       slug: "/emerald-painting-rng/",
       isRoughDraft: false,
       orderPriority: 20,
@@ -2682,7 +2723,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-27",
+      lastUpdated: "2026-04-03",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Reseed RNG.mdx",
       translations: {
@@ -2722,7 +2763,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: null,
-      lastUpdated: "2026-03-31",
+      lastUpdated: "2026-04-01",
       type: "baseGuide",
       file: "guides/Gen 3/Emerald/Seed To Advances.mdx",
       translations: null,
@@ -11612,7 +11653,7 @@ export const guides = {
       translation: { enSlug: "/emerald-painting-rng/", language: "zh" },
       layout: "guide",
       canonical: null,
-      lastUpdated: null,
+      lastUpdated: "2026-04-01",
       type: "translatedGuide",
       file: "guides/Translations/zh/Gen 3/Emerald/Reseed RNG.mdx",
       translations: {
@@ -15899,6 +15940,7 @@ export const guideSlugs = [
   "/emerald-battle-video/",
   "/emerald-mirage-island/",
   "/emerald-overview/",
+  "/emerald-painting-reseeding/",
   "/emerald-painting-rng/",
   "/emerald-painting-seed-searcher/",
   "/emerald-pokerus-emu/",

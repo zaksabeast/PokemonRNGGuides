@@ -22,6 +22,7 @@ import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 import { useWatch } from "react-hook-form";
 import { match } from "ts-pattern";
 import {
+  Gen3Console,
   gen3ConsoleFpsMap,
   gen3ConsoleOptions,
   gen3Consoles,
@@ -95,22 +96,24 @@ const Validator = z.object({
 
 type FormState = z.infer<typeof Validator>;
 
-const initialValues: FormState = {
-  targetAdvance: 50_000,
-  isUpdatingExisting: false,
-  console: "GBA",
+const createInitialValues = (fixedData: Props["fixedData"]): FormState => ({
+  targetAdvance: fixedData?.targetAdvance ?? 50_000,
+  isUpdatingExisting: fixedData?.isUpdatingExisting ?? false,
+  console: fixedData?.consoleType ?? "GBA",
   forFishing: false,
   considerWaitingInBattle: true,
   displayAdvancedBreakdown: false,
   useRecommendedBuffer: true,
   specifiedBuffer: POST_BV_SWEET_SCENT_BUFFER + SAFETY_BUFFER_NO_BATTLE,
-  existingBattleVideoAdv: 0,
-};
+  existingBattleVideoAdv: fixedData?.existingBattleVideoAdv ?? 0,
+});
 
 const MyFields = ({
   setDisplayAdvancedBreakdown,
+  fixedData,
 }: {
   setDisplayAdvancedBreakdown: (val: boolean) => void;
+  fixedData: Props["fixedData"];
 }) => {
   const useRecommendedBuffer = useWatch<FormState, "useRecommendedBuffer">({
     name: "useRecommendedBuffer",
@@ -118,15 +121,34 @@ const MyFields = ({
   const isUpdatingExisting = useWatch<FormState, "isUpdatingExisting">({
     name: "isUpdatingExisting",
   });
+  const targetAdvance = useWatch<FormState, "targetAdvance">({
+    name: "targetAdvance",
+  });
 
   const fields: Field[] = [
     {
+      label: fixedData?.isAfterPainting
+        ? "Existing Battle Video advances after painting"
+        : "Existing Battle Video advances",
+      input: formatLargeInteger(fixedData?.existingBattleVideoAdv ?? 0),
+      show: fixedData?.isUpdatingExisting === true,
+    },
+    {
       label: "Target",
       input: <FormikEmeraldTargetAdvance<FormState> name="targetAdvance" />,
+      show: fixedData == null,
+    },
+    {
+      label: fixedData?.isAfterPainting
+        ? "Target advance after painting"
+        : "Target advance",
+      input: formatLargeInteger(targetAdvance),
+      show: fixedData != null,
     },
     {
       label: "Is updating existing Battle Video?",
       input: <FormikSwitch<FormState> name="isUpdatingExisting" />,
+      show: fixedData == null,
     },
     {
       label: "Existing Battle Video advances",
@@ -137,7 +159,7 @@ const MyFields = ({
         />
       ),
       indent: 1,
-      show: isUpdatingExisting,
+      show: isUpdatingExisting && fixedData == null,
     },
     {
       label: "Console",
@@ -147,6 +169,7 @@ const MyFields = ({
           options={gen3ConsoleOptions}
         />
       ),
+      show: fixedData?.consoleType == null,
     },
     {
       label: "Use recommended buffer to perform action?",
@@ -351,6 +374,7 @@ const calculateWithBattle = (opts: FormState) => {
     advFromFrameOutsideBattleAfter - speedupLatency;
 
   const consoleFps = gen3ConsoleFpsMap[opts.console];
+  console.log("consoleFps", consoleFps);
   return {
     submitError: "",
     milliseconds: [
@@ -483,7 +507,17 @@ const calculate = (opts: FormState) => {
   return calculateWithBattle(opts);
 };
 
-export const BattleVideo = () => {
+export type Props = {
+  fixedData?: {
+    targetAdvance: number;
+    isUpdatingExisting: boolean;
+    existingBattleVideoAdv: number;
+    isAfterPainting: boolean;
+    consoleType?: Gen3Console;
+  };
+};
+
+export const BattleVideo = ({ fixedData }: Props) => {
   const [milliseconds, setMilliseconds] = React.useState<number[]>([]);
   const [timerLabels, setTimerLabels] = React.useState<string[]>([]);
   const [submitError, setSubmitError] = React.useState("");
@@ -520,6 +554,8 @@ export const BattleVideo = () => {
     ? { results: breakdown, columns }
     : {};
 
+  const initialValues = createInitialValues(fixedData);
+
   return (
     <>
       <RngToolForm<FormState, BreakdownInfo>
@@ -527,9 +563,13 @@ export const BattleVideo = () => {
         validationSchema={Validator}
         onSubmit={onSubmit}
         submitTrackerId="battle_video_calc_timer"
+        submitButtonLabel="Generate Battle Video timers and instructions"
         {...displayedProps}
       >
-        <MyFields setDisplayAdvancedBreakdown={setDisplayAdvancedBreakdown} />
+        <MyFields
+          setDisplayAdvancedBreakdown={setDisplayAdvancedBreakdown}
+          fixedData={fixedData}
+        />
       </RngToolForm>
 
       {submitError !== "" && (

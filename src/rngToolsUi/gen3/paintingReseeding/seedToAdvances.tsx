@@ -13,6 +13,7 @@ import {
   FormFieldTable,
   Icon,
   Field,
+  Button,
 } from "~/components";
 import React from "react";
 import { formatHex } from "~/utils/formatHex";
@@ -27,8 +28,28 @@ import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 
 type Result = Wild3PaintingAdvsAndDur;
 
-const getColumns = (): ResultColumn<Result>[] => {
+const getColumns = (
+  onSelected: Props["onSelected"],
+): ResultColumn<Result>[] => {
   return [
+    {
+      title: "",
+      key: "Select",
+      dataIndex: "advs",
+      show: onSelected != null,
+      render: (advs) => {
+        return (
+          <Button
+            trackerId="seedToAdvance_onSelect"
+            onClick={() => {
+              onSelected?.(advs.frame_before_painting, advs.adv_after_painting);
+            }}
+          >
+            Select
+          </Button>
+        );
+      },
+    },
     {
       title: "Painting Seed",
       dataIndex: "advs",
@@ -42,7 +63,7 @@ const getColumns = (): ResultColumn<Result>[] => {
       title: (
         <>
           Frames before
-          <br /> reseeding
+          <br /> painting
         </>
       ),
       key: "frame_before_painting",
@@ -57,7 +78,7 @@ const getColumns = (): ResultColumn<Result>[] => {
       title: (
         <>
           RNG state after <br />
-          reseeding <br />
+          painting <br />
           (in advances)
         </>
       ),
@@ -73,7 +94,7 @@ const getColumns = (): ResultColumn<Result>[] => {
       title: (
         <>
           Additional advances <br />
-          after reseeding <br />
+          after painting <br />
           to hit target
         </>
       ),
@@ -106,6 +127,7 @@ const Validator = z.object({
   paintingSeed: z.number().int().min(0).max(0xffffffff),
   min_frame_before_painting: z.number().int().min(0).max(0xffffffff),
   min_adv_after_painting: z.number().int().min(0).max(0xffffffff),
+  showAdvancedSettings: z.boolean(),
 });
 
 export type FormState = z.infer<typeof Validator>;
@@ -117,28 +139,42 @@ const initialValues: FormState = {
   paintingSeed: 0,
   min_frame_before_painting: 800, // Assuming dead battery.
   min_adv_after_painting: 7000, // About 4800 advances from painting to battle video. then 2200 advances buffer.
+  showAdvancedSettings: false,
 };
 
-const MyFields = () => {
+const MyFields = ({
+  alwaysShowAdvancedSettings,
+}: {
+  alwaysShowAdvancedSettings: boolean;
+}) => {
   const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
     name: "usingPaintingReseeding",
   });
   const findOptimalSeed = useWatch<FormState, "findOptimalSeed">({
     name: "findOptimalSeed",
   });
+  const showAdvancedSettings = useWatch<FormState, "showAdvancedSettings">({
+    name: "showAdvancedSettings",
+  });
+  const showAdvanced = showAdvancedSettings || alwaysShowAdvancedSettings;
 
   const fields: Field[] = [
     {
       label: (
-        <Tooltip title="Possible player actions are Sweet Scent, fishing, and Rock Smash.">
+        <Tooltip title="Ex: Target advance to generate the wanted Pokémon.">
           <div>
-            Target at start of the player action{" "}
+            Target of the RNG manipulation{" "}
             <Icon name="InformationCircle" size={16} />
           </div>
         </Tooltip>
       ),
       key: "targetSeed",
       input: <FormikEmeraldTargetAdvance name="targetAdvance" />,
+    },
+    {
+      label: "Show advanced settings?",
+      input: <FormikSwitch<FormState> name="showAdvancedSettings" />,
+      show: !alwaysShowAdvancedSettings,
     },
     {
       label: (
@@ -152,24 +188,25 @@ const MyFields = () => {
       ),
       key: "usingPaintingReseeding",
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
+      show: alwaysShowAdvancedSettings,
     },
     {
       label: "Find optimal painting seed?",
       input: <FormikSwitch<FormState> name="findOptimalSeed" />,
-      show: usingPaintingReseeding,
+      show: usingPaintingReseeding && showAdvanced,
       indent: 1,
     },
     {
       label: "Painting seed",
       input: <FormikNumberInput<FormState> name="paintingSeed" numType="hex" />,
-      show: usingPaintingReseeding && !findOptimalSeed,
+      show: usingPaintingReseeding && !findOptimalSeed && showAdvanced,
       indent: 1,
     },
     {
       label: (
         <Tooltip title="To ensure there is enough time between booting the game and interacting with the painting.">
           <div>
-            Min frames before reseeding{" "}
+            Min frames before painting{" "}
             <Icon name="InformationCircle" size={16} />
           </div>
         </Tooltip>
@@ -181,14 +218,14 @@ const MyFields = () => {
           numType="decimal"
         />
       ),
-      show: usingPaintingReseeding && findOptimalSeed,
+      show: usingPaintingReseeding && findOptimalSeed && showAdvanced,
       indent: 1,
     },
     {
       label: (
-        <Tooltip title="To ensure there is enough time between interacting with the painting, catching a Pokémon to validate the seed, and starting a battle video.">
+        <Tooltip title="To ensure there is enough time between interacting with the painting, and creating a Battle Video.">
           <div>
-            Min advances after reseeding{" "}
+            Min advances after painting{" "}
             <Icon name="InformationCircle" size={16} />
           </div>
         </Tooltip>
@@ -200,7 +237,7 @@ const MyFields = () => {
           numType="decimal"
         />
       ),
-      show: usingPaintingReseeding && findOptimalSeed,
+      show: usingPaintingReseeding && findOptimalSeed && showAdvanced,
       indent: 1,
     },
   ];
@@ -208,7 +245,15 @@ const MyFields = () => {
   return <FormFieldTable fields={fields} />;
 };
 
-export const EmeraldSeedToAdvances = () => {
+type Props = {
+  onSelected?: (before: number, after: number) => void;
+  alwaysShowAdvancedSettings?: boolean;
+};
+
+export const EmeraldSeedToAdvances = ({
+  onSelected,
+  alwaysShowAdvancedSettings = true,
+}: Props) => {
   const [results, setResults] = React.useState<Result[]>([]);
 
   const onSubmit: RngToolSubmit<FormState> = async (opts: FormState) => {
@@ -279,14 +324,14 @@ export const EmeraldSeedToAdvances = () => {
 
   return (
     <RngToolForm<FormState, Result>
-      getColumns={getColumns}
+      getColumns={() => getColumns(onSelected)}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="emerald_seed_to_advances"
     >
-      <MyFields />
+      <MyFields alwaysShowAdvancedSettings={alwaysShowAdvancedSettings} />
     </RngToolForm>
   );
 };

@@ -186,8 +186,12 @@ const tools = {
     (mod) => mod.Gen3PidSpeedCalculator,
   ),
   EmeraldSeedToAdvances: lazyLoad(
-    () => import("~/rngToolsUi/gen3/wild/seedToAdvances"),
+    () => import("~/rngToolsUi/gen3/paintingReseeding/seedToAdvances"),
     (mod) => mod.EmeraldSeedToAdvances,
+  ),
+  EmeraldPaintingReseeding: lazyLoad(
+    () => import("~/rngToolsUi/gen3/paintingReseeding/paintingReseeding"),
+    (mod) => mod.EmeraldPaintingReseeding,
   ),
   Gen3TidSidGenerator: lazyLoad(
     () => import("~/rngToolsUi/gen3/tidsid"),
@@ -249,9 +253,9 @@ const tools = {
     () => import("~/rngToolsUi/gen3/multibootJirachi"),
     (mod) => mod.MultibootJirachi,
   ),
-  PaintingReseed: lazyLoad(
-    () => import("~/rngToolsUi/gen3/paintingReseed"),
-    (mod) => mod.PaintingReseed,
+  PaintingSeedToEmuTimer: lazyLoad(
+    () => import("~/rngToolsUi/gen3/paintingReseeding/paintingSeedToEmuTimer"),
+    (mod) => mod.PaintingSeedToEmuTimer,
   ),
   RetailEmeraldHeldEgg: lazyLoad(
     () => import("~/rngToolsUi/gen3/retailEmeraldEgg/heldEgg"),

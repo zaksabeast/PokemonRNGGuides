@@ -209,12 +209,6 @@ const BaseGuideSchema = z
       .default(() => null),
     // Specifies if a guide is for retail, cfw-emu, or both
     variant: SingleOrMultipleSchema(GuideVariantSchema).optional(),
-    // Links guides of different variants together, e.g. linking a retail guide to its cfw-emu counterpart
-    guideKey: z
-      .string()
-      .nullish()
-      .optional()
-      .default(() => null),
     // Hides from navigation
     hideFromNavDrawer: z.boolean().default(false),
     // Date the guide was added, used to determine "new" status. Should be in ISO format (YYYY-MM-DD).
@@ -232,7 +226,7 @@ const BaseGuideSchema = z
       .optional()
       .default(() => null),
   })
-  .transform(({ category, section, variant, guideKey, ...meta }) => {
+  .transform(({ category, section, variant, ...meta }) => {
     const normalizedVariants = variant ?? [];
     const hasGuideSection = isRngGuideSection(section);
 
@@ -248,21 +242,22 @@ const BaseGuideSchema = z
       );
     }
 
-    if (!hasGuideSection && guideKey != null) {
-      throw new Error(
-        `guideKey is only allowed for section: guide (${meta.slug}).`,
-      );
-    }
+    const navDrawerTitle = meta.navDrawerTitle ?? meta.title;
 
     return {
       id: meta.slug,
       categories: normalizeCategories(category),
       section,
       guideVariants: hasGuideSection ? normalizedVariants : null,
-      guideKey: guideKey ?? meta.slug,
+      // Guide keys are used to link two guides together (e.g. retail and cfw-emu variants).
+      // If we hide a guide from the nav drawer, use the unique slug to avoid conflicts.
+      // Otherwise, use the rough draft status and title so same-named guides are grouped together.
+      guideKey: meta.hideFromNavDrawer
+        ? meta.slug
+        : [meta.isRoughDraft, navDrawerTitle].join("-"),
       isNew: isNew(meta.addedOn),
       ...meta,
-      navDrawerTitle: meta.navDrawerTitle ?? meta.title,
+      navDrawerTitle,
       lastUpdated: null as string | null,
       type: "baseGuide" as const,
     };

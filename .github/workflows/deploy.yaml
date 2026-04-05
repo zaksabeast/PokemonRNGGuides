@@ -46,9 +46,9 @@ jobs:
       - name: Install prebuilt wasm-pack
         run: |
           set -e
-          VERSION=0.12.1
+          VERSION=0.14.0
           ARTIFACT=wasm-pack-v${VERSION}-x86_64-unknown-linux-musl
-          URL="https://github.com/rustwasm/wasm-pack/releases/download/v${VERSION}/${ARTIFACT}.tar.gz"
+          URL="https://github.com/wasm-bindgen/wasm-pack/releases/download/v${VERSION}/${ARTIFACT}.tar.gz"
           SHA_URL="${URL}.sha256"
 
           echo "Downloading wasm-pack ${VERSION}..."

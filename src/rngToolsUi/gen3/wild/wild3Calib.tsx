@@ -1,15 +1,22 @@
-import React from "react";
-import { Flex, MultiTimer, Field, Input } from "~/components";
+import React, { useState } from "react";
+import { Flex, MultiTimer, Field, Input, Select } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
 import { MS_PER_GBA_FRAME } from "~/utils/consts";
 
 import { FormState as TargetSetup, Wild3CalibTarget } from "./wild3CalibTarget";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon";
+import {
+  Gen3Console,
+  gen3ConsoleFpsMap,
+  gen3ConsoleOptions,
+} from "~/types/console";
 
 export const Wild3Calib = () => {
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     null,
   );
+
+  const [consoleType, setConsoleType] = useState<Gen3Console>("GBA");
 
   /** calibration is always for target advance after painting. 
       calibration is not used if the painting seed is not confirmed */
@@ -19,6 +26,7 @@ export const Wild3Calib = () => {
     targetSetup !== null &&
     (!targetSetup.usingPaintingReseeding ||
       targetSetup.isPaintingSeedConfirmed);
+
   const setLatestHitAdv = calibrationIsActive
     ? (hitAdv: {
         frame_before_painting: number;
@@ -36,7 +44,10 @@ export const Wild3Calib = () => {
 
   const advFromTimer = targetForTimer - initialAdv - calibrationAndOffset;
 
-  const milliseconds = [5000, Math.round(advFromTimer * MS_PER_GBA_FRAME)]; //NO_PROD console
+  const milliseconds = [
+    5000,
+    Math.round((advFromTimer / gen3ConsoleFpsMap[consoleType]) * 1000),
+  ];
   const labels = [
     initialAdv > 0 ? "Close the Battle Video" : "Soft reset START+SELECT+A+B",
     "Trigger Sweet Scent",
@@ -70,6 +81,19 @@ export const Wild3Calib = () => {
                   setCalibrationAndOffset(Number.isFinite(num) ? num : 0);
                 }}
                 value={calibrationAndOffset}
+              />
+            ),
+          },
+          {
+            label: "Console",
+            input: (
+              <Select<Gen3Console>
+                name="console"
+                value={consoleType}
+                options={gen3ConsoleOptions}
+                onSelect={(val) => {
+                  setConsoleType(val);
+                }}
               />
             ),
           },

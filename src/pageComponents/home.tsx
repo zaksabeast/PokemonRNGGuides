@@ -1,4 +1,4 @@
-import { Flex, Card, Grid, BadgeRibbon } from "~/components";
+import { Flex, Card, Grid, BadgeRibbon, Typography } from "~/components";
 import { Route } from "~/routes/defs";
 import styled from "@emotion/styled";
 import { categoryHasNewContent } from "~/guides";
@@ -33,6 +33,7 @@ import sapphireLogoSrc from "~/assets/logos/sapphire_logo.webp";
 import crystalLogoSrc from "~/assets/logos/crystal.webp";
 import transporterLogoSrc from "~/assets/logos/transporter_logo.webp";
 import dreamRadarLogoSrc from "~/assets/logos/dream_radar_logo.webp";
+import jirachiSrc from "~/assets/jirachi.webp";
 
 type Game = {
   name: string;
@@ -166,15 +167,56 @@ const Container = styled(Flex)(({ theme }) => {
   };
 });
 
+const TimerContent = styled(Flex)(({ theme }) => ({
+  alignItems: "center",
+  justifyContent: "center",
+  flex: 1,
+  gap: 16,
+  [theme.mediaQueries.down("mobile")]: {
+    flexDirection: "column",
+    gap: 12,
+  },
+}));
+
+const TimerTextContent = styled(Flex)(({ theme }) => ({
+  [theme.mediaQueries.down("mobile")]: {
+    alignItems: "center",
+    flexDirection: "column",
+    textAlign: "center",
+  },
+}));
+
 const LogoImg = styled.img({
   width: "50%",
   height: "50%",
   objectFit: "contain",
 });
 
+const TimerLogo = styled.img({
+  maxWidth: 110,
+});
+
 export const HomePageComponent = () => {
   return (
     <Container gap={24} vertical>
+      <Card
+        id="home-welcome-card"
+        fullBody
+        slug="/mystic-timer/"
+        borderColor="PrimaryBorder"
+        border="2px solid"
+      >
+        <TimerContent>
+          <TimerLogo src={jirachiSrc} alt="Jirachi" />
+          <TimerTextContent vertical>
+            <Typography.Title level={3} m={0}>
+              Mystic Timer
+            </Typography.Title>
+            <Typography.Text>Web-based • Frame-accurate</Typography.Text>
+          </TimerTextContent>
+        </TimerContent>
+      </Card>
+
       <Grid mobile={1} tablet={2} desktop={3}>
         {games.map((game) => (
           <GameCard

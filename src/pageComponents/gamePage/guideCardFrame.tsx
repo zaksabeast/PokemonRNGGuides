@@ -1,9 +1,10 @@
 import { Card as AntdCard } from "antd";
 import type { ReactNode, ComponentProps } from "react";
-import { Flex, Card, Icon, BadgeRibbon } from "~/components";
+import { Flex, Card, Icon, BadgeRibbon, Typography } from "~/components";
 import styled from "@emotion/styled";
 import { DisplayAttribute, DisplayTags } from "./displayTags";
 import { LanguageKey } from "~/types/language";
+import { Difficulty, DifficultyTag } from "./difficultyTag";
 
 const { Meta: CardMeta } = AntdCard;
 
@@ -41,6 +42,26 @@ const PokeballContainer = styled.div({
   transformOrigin: "center",
 });
 
+type GuideCardTitleProps = {
+  title: ReactNode;
+  difficulty: Difficulty | null;
+  isNew: boolean;
+};
+
+const GuideCardTitle = ({ title, difficulty, isNew }: GuideCardTitleProps) => {
+  return (
+    <Flex gap={4} align="center" width="100%" justify="space-between">
+      <Typography.Text fontSize={16} ellipsis>
+        {title}
+      </Typography.Text>
+      {/* Right padding to avoid overlapping with the `new` tag */}
+      <Flex mr={isNew ? 30 : 0}>
+        <DifficultyTag difficulty={difficulty} />
+      </Flex>
+    </Flex>
+  );
+};
+
 type Props = {
   cardId: string;
   title: ReactNode;
@@ -49,6 +70,7 @@ type Props = {
   displayAttributes: readonly DisplayAttribute[];
   bottomContent?: ReactNode;
   translations: LanguageKey[];
+  difficulty: Difficulty | null;
 };
 
 export const GuideCardFrame = ({
@@ -59,6 +81,7 @@ export const GuideCardFrame = ({
   displayAttributes,
   bottomContent,
   translations,
+  difficulty,
 }: Props) => {
   return (
     <GuideCard
@@ -81,7 +104,15 @@ export const GuideCardFrame = ({
             </PokeballContainer>
             {/* width={0} forces ellipsis for long titles */}
             <Flex vertical gap={8} flex={1} width={0}>
-              <CardMeta title={title} />
+              <CardMeta
+                title={
+                  <GuideCardTitle
+                    title={title}
+                    difficulty={difficulty}
+                    isNew={isNew}
+                  />
+                }
+              />
               <DisplayTags
                 attributes={displayAttributes}
                 translations={translations}

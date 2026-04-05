@@ -27,7 +27,7 @@ const guideTree: TreeDataNode[] = map(guidesByCategory, (guides, category) => ({
       title: (
         <Flex gap={16}>
           <Typography.Text>{guide.meta.title}</Typography.Text>
-          <Flex>
+          <Flex gap={8}>
             {Object.keys(guide.meta.translations ?? {})
               ?.filter((language) => language !== "en")
               .map((language) => (

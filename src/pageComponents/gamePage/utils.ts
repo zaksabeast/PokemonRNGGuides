@@ -1,5 +1,6 @@
 import { sortBy } from "lodash-es";
 import { match } from "ts-pattern";
+import { Difficulty } from "./difficultyTag";
 
 export const sectionDisplayOrder = [
   "getting_started",
@@ -35,17 +36,28 @@ export const getSectionLabel = (section: string) => {
     .exhaustive();
 };
 
+const getDifficultyDisplayOrder = (difficulty: Difficulty | null): number => {
+  return match(difficulty)
+    .with("easy", () => 0)
+    .with("medium", () => 1)
+    .with("hard", () => 2)
+    .with(null, () => 3)
+    .exhaustive();
+};
+
 export const sortGuides = <
   Guide extends {
     orderPriority: number;
     navDrawerTitle: string;
     isRoughDraft: boolean;
+    difficulty: Difficulty | null;
   },
 >(
   guides: Guide[],
 ): Guide[] => {
   return sortBy(guides, [
     (guide) => guide.orderPriority,
+    (guide) => getDifficultyDisplayOrder(guide.difficulty),
     (guide) => guide.isRoughDraft,
     (guide) => guide.navDrawerTitle,
   ]);

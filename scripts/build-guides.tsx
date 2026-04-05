@@ -175,6 +175,8 @@ const SingleOrMultipleSchema = <T extends z.ZodTypeAny>(schema: T) =>
 
 const MAX_ORDER_PRIORITY = 20;
 
+const DifficultySchema = z.enum(["easy", "medium", "hard"]);
+
 const BaseGuideSchema = z
   .object({
     // Title shown at the top of the guide
@@ -201,14 +203,12 @@ const BaseGuideSchema = z
       .min(0)
       .max(MAX_ORDER_PRIORITY)
       .default(MAX_ORDER_PRIORITY),
-    // Specifies if a guide is for retail, cfw-emu, or both
-    variant: SingleOrMultipleSchema(GuideVariantSchema).optional(),
-    // Links guides of different variants together, e.g. linking a retail guide to its cfw-emu counterpart
-    guideKey: z
-      .string()
-      .nullish()
+    // Difficulty level of the guide, used for display and ordering on game pages
+    difficulty: DifficultySchema.nullable()
       .optional()
       .default(() => null),
+    // Specifies if a guide is for retail, cfw-emu, or both
+    variant: SingleOrMultipleSchema(GuideVariantSchema).optional(),
     // Hides from navigation
     hideFromNavDrawer: z.boolean().default(false),
     // Date the guide was added, used to determine "new" status. Should be in ISO format (YYYY-MM-DD).
@@ -222,11 +222,9 @@ const BaseGuideSchema = z
     // Visual layout of the guide page
     layout: z.enum(layouts).default("guide"),
     // Used for SEO when renaming slugs. Keep the original page/slug, hide the page, and set the new slug as canonical.
-    canonical: SlugSchema.nullish()
-      .optional()
-      .default(() => null),
+    canonical: SlugSchema.optional(),
   })
-  .transform(({ category, section, variant, guideKey, ...meta }) => {
+  .transform(({ category, section, variant, ...meta }) => {
     const normalizedVariants = variant ?? [];
     const hasGuideSection = isRngGuideSection(section);
 
@@ -242,23 +240,25 @@ const BaseGuideSchema = z
       );
     }
 
-    if (!hasGuideSection && guideKey != null) {
-      throw new Error(
-        `guideKey is only allowed for section: guide (${meta.slug}).`,
-      );
-    }
+    const navDrawerTitle = meta.navDrawerTitle ?? meta.title;
 
     return {
       id: meta.slug,
       categories: normalizeCategories(category),
       section,
       guideVariants: hasGuideSection ? normalizedVariants : null,
-      guideKey: guideKey ?? meta.slug,
+      // Guide keys are used to link two guides together (e.g. retail and cfw-emu variants).
+      // If we hide a guide from the nav drawer, use the unique slug to avoid conflicts.
+      // Otherwise, use the rough draft status and title so same-named guides are grouped together.
+      guideKey: meta.hideFromNavDrawer
+        ? meta.slug
+        : [meta.isRoughDraft, navDrawerTitle].join("-"),
       isNew: isNew(meta.addedOn),
       ...meta,
-      navDrawerTitle: meta.navDrawerTitle ?? meta.title,
+      navDrawerTitle,
       lastUpdated: null as string | null,
       type: "baseGuide" as const,
+      canonical: meta.canonical,
     };
   });
 
@@ -276,9 +276,7 @@ const TranslatedGuideSchema = z
       enSlug: SlugSchema,
       language: z.enum(["es", "zh", "fr", "it", "de"]),
     }),
-    canonical: SlugSchema.nullish()
-      .optional()
-      .default(() => null),
+    canonical: SlugSchema.optional(),
   })
   .transform((meta) => ({
     ...meta,
@@ -286,6 +284,7 @@ const TranslatedGuideSchema = z
     navDrawerTitle: meta.navDrawerTitle ?? meta.title,
     lastUpdated: null as string | null,
     type: "translatedGuide" as const,
+    canonical: meta.canonical,
   }));
 
 const SingleGuideMetadataSchema = z.union([
@@ -312,7 +311,7 @@ type NonRngSections = tst.U.Exclude<Sections, RngSections>;
 type ExternalLinkInput = tst.O.Merge<
   tst.O.Pick<
     BaseGuideSchemaType,
-    "addedOn" | "categories" | "navDrawerTitle" | "guideKey"
+    "addedOn" | "categories" | "navDrawerTitle" | "guideKey" | "difficulty"
   >,
   {
     url: string;
@@ -331,10 +330,11 @@ type ExternalLinkInput = tst.O.Merge<
 >;
 
 type ExternalLinkMetadata = tst.O.Merge<
-  tst.O.Omit<BaseGuideSchemaType, "slug" | "type">,
+  tst.O.Omit<BaseGuideSchemaType, "slug" | "type" | "canonical">,
   {
     type: "externalLink";
     displayAttributes: DetectableTag[];
+    canonical: null;
     url: string;
   }
 >;
@@ -348,6 +348,7 @@ const externalGuides: ExternalLinkInput[] = [
     guideKey: "gen5-web-tool",
     displayAttributes: ["web_tool"],
     url: "https://niart120.github.io/5genSearch-web/",
+    difficulty: null,
   },
 ];
 
@@ -716,10 +717,14 @@ const parseGuideFiles = async (guideFiles: SitePageFile[]) => {
     }
   }
 
-  guides.sort((lhs, rhs) => lhs.slug.localeCompare(rhs.slug));
+  // Apply auto-assigned canonical slugs for multi-guide files
+  // This must be done before sorting to preserve original file order
+  const guidesWithAutoCanonical = applyAutoCanonicalSlugsPreSort(guides);
+
+  guidesWithAutoCanonical.sort((lhs, rhs) => lhs.slug.localeCompare(rhs.slug));
 
   return {
-    guides,
+    guides: guidesWithAutoCanonical,
     guideComponents,
   };
 };
@@ -741,6 +746,22 @@ const validateGuideReferences = (guides: GuideWithFile[]) => {
       throw new Error(
         `Canonical slug ${guide.canonical} for ${guide.slug} not found`,
       );
+    }
+
+    // Make sure canonical targets that are base guides are not hidden from navigation
+    if (
+      guide.canonical != null &&
+      // Allow guides to reference themselves
+      guide.canonical !== guide.slug &&
+      // Only apply to base guides, not translations
+      guide.translation == null
+    ) {
+      const canonicalGuide = guidesBySlug[guide.canonical];
+      if (canonicalGuide?.hideFromNavDrawer) {
+        throw new Error(
+          `Canonical slug ${guide.canonical} for ${guide.slug} is hidden from nav drawer`,
+        );
+      }
     }
   }
 };
@@ -852,6 +873,85 @@ const validateDuplicateSlugs = (guides: GuideWithFile[]) => {
       }
     },
   );
+};
+
+const applySelfCanonical = (guide: GuideWithFile): GuideWithFile => {
+  return {
+    ...guide,
+    canonical: guide.canonical ?? guide.slug,
+  };
+};
+
+const applyAutoCanonicalSlugsPreSort = (
+  guides: GuideWithFile[],
+): GuideWithFile[] => {
+  const guidesByFile = groupBy(guides, (guide) => guide.file);
+
+  const result = Object.entries(guidesByFile).flatMap(([_, fileGuides]) => {
+    if (fileGuides.length <= 1) {
+      return fileGuides.map(applySelfCanonical);
+    }
+
+    // fileGuides are in original file order (before global sort)
+    // Use the first guide's slug as the canonical target for all others
+    const firstSlug = fileGuides[0].slug;
+    return fileGuides.map((guide, index) => {
+      // If canonical is already set in frontmatter, skip auto assignment
+      if (guide.canonical != null) {
+        return guide;
+      }
+
+      // If it's the first guide in the file, set canonical to itself
+      if (index === 0) {
+        return applySelfCanonical(guide);
+      }
+
+      // For subsequent guides in the same file, set canonical to the first guide's slug
+      return {
+        ...guide,
+        canonical: firstSlug,
+      };
+    });
+  });
+
+  return result;
+};
+
+const validateCanonicalUnchanged = (guides: GuideWithFile[]): void => {
+  const guidesBySlug = keyBy(existingGuides, (guide) => guide.meta.slug);
+
+  for (const guide of guides) {
+    const previousGuide = guidesBySlug[guide.slug];
+
+    if (
+      previousGuide.meta.canonical !== null &&
+      previousGuide.meta.canonical !== guide.canonical
+    ) {
+      throw new Error(
+        `Canonical slug changed for ${guide.slug}. Previous: ${previousGuide.meta.canonical}, Current: ${guide.canonical}`,
+      );
+    }
+  }
+};
+
+const validateCanonicalCircularity = (guides: GuideWithFile[]): void => {
+  const canonicalTargets = new Set(
+    guides
+      .filter((guide) => guide.canonical != null)
+      .map((guide) => guide.canonical),
+  );
+
+  for (const guide of guides) {
+    if (
+      guide.canonical != null &&
+      canonicalTargets.has(guide.slug) &&
+      guide.canonical !== guide.slug
+    ) {
+      throw new Error(
+        `Guide ${guide.slug} both has canonical set AND is referenced as a canonical`,
+      );
+    }
+  }
 };
 
 const detectGuideTags = async (
@@ -1091,9 +1191,11 @@ const main = async ({
     currentHashes,
   );
 
+  validateCanonicalUnchanged(guidesWithTimestamps);
   validateGuideReferences(guidesWithTimestamps);
   validateRemovedSlugs(guidesWithTimestamps);
   validateDuplicateSlugs(guidesWithTimestamps);
+  validateCanonicalCircularity(guidesWithTimestamps);
 
   const guidesWithTranslations =
     buildGuidesWithTranslations(guidesWithTimestamps);

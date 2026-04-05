@@ -10,7 +10,7 @@ import styled from "@emotion/styled";
 import { CustomTimer } from "./custom";
 
 const TimerSkeleton = styled(Skeleton.Node)({
-  "&& .ant-skeleton-image": {
+  "&& .ant-skeleton-node": {
     width: "100%",
     height: 300,
     borderRadius: 20,

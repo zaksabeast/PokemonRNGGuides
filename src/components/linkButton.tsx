@@ -28,7 +28,7 @@ export const LinkButton = ({ trackerId, link, ...props }: LinkButtonProps) => {
       href={link.externalLink}
       flex={1}
       trackerId={trackerId}
-      iconPosition="end"
+      iconPlacement="end"
       icon={<Icon name="OpenInNew" />}
       target="_blank"
       rel="noopener noreferrer"

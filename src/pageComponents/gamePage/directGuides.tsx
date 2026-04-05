@@ -44,6 +44,7 @@ const DirectGuideCard = ({ isTop, isBottom, guide }: DirectGuideCardProps) => {
       }}
       displayAttributes={guide.displayAttributes}
       translations={guideTranslationKeys(guide)}
+      difficulty={guide.difficulty}
     />
   );
 };

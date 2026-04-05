@@ -83,7 +83,7 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
         <Alert
           type="warning"
           showIcon
-          message="This is a rough draft!"
+          title="This is a rough draft!"
           description="Everything on this page is a work in progress!"
         />
       )}

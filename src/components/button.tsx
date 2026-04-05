@@ -50,14 +50,20 @@ export const Button = ({
 
 const _BaseButton = withCss(
   styled(AntdButton)({
-    whiteSpace: "unset",
-    padding: "unset",
-    border: "unset",
-    background: "unset",
-    textAlign: "unset",
-    width: "unset",
-    height: "unset",
-    boxShadow: "unset",
+    "&&&": {
+      whiteSpace: "unset",
+      padding: "unset",
+      border: "unset",
+      background: "unset",
+      textAlign: "unset",
+      width: "unset",
+      height: "unset",
+      boxShadow: "unset",
+      "&:hover": {
+        border: "unset",
+        boxShadow: "unset",
+      },
+    },
   }),
 );
 

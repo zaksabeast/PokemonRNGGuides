@@ -222,7 +222,7 @@ First, install these tools:
 
 - [bun](https://bun.sh/)
 - [rust](https://www.rust-lang.org/tools/install)
-- [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)
+- [wasm-pack](https://wasm-bindgen.github.io/wasm-pack/installer/)
 - (Windows only) [Required linker](https://stackoverflow.com/a/55603112)
 
 Next, install dependencies:

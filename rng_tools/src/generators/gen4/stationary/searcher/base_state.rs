@@ -22,6 +22,9 @@ pub struct BaseStatic4State {
 }
 
 impl BaseStatic4State {
+    /// All parameters are tightly coupled inputs needed to construct the complete state.
+    /// Wrapping them in a struct would add boilerplate without improving clarity.
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         seed: u32,
         species: Species,

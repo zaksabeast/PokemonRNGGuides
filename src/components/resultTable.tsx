@@ -75,6 +75,9 @@ const applyMonospaceSingleColumn = <Record extends tst.O.Object>(
   };
 };
 
+// eslint-disable-next-line id-length
+const TABLE_SCROLL = { x: true } as const;
+
 type FormikResultTableProps<Record extends tst.O.Object> = tst.O.Overwrite<
   TableProps<Record>,
   { columns: ResultColumn<Record>[] }
@@ -117,13 +120,11 @@ export const ResultTable = <Record extends tst.O.Object>(
     <ClassNames>
       {({ css }) => (
         <Table
+          scroll={TABLE_SCROLL}
           {...propsWithColumns}
           className={css({
             "&&&": {
               width: "100%",
-              ".ant-table-container": {
-                overflowX: "scroll",
-              },
               ".ant-table-cell": {
                 whiteSpace: "nowrap",
                 width: "auto",

@@ -1,4 +1,5 @@
 import * as tst from "ts-toolbelt";
+import { match } from "ts-pattern";
 import { guides, categories, externalGuides } from "./__generated__/guides";
 import { groupBy, flatMap, get, uniq } from "lodash-es";
 import { Route } from "./routes/defs";
@@ -65,6 +66,7 @@ export type GamePageGuideCard = {
   orderPriority: number;
   translations: LanguageKey[];
   section: GuideMeta["section"];
+  difficulty: GuideMeta["difficulty"] | null;
 };
 
 export type InternalOrExternalGuideMeta =
@@ -175,8 +177,25 @@ const mergeGuideCard = (
   variants: GuideVariantLinkPair | null,
   guide: GuideMetaWithCategory,
 ): GamePageGuideCard => {
+  const isRetail = hasGuideVariant(guide, "retail");
+  const isCfwEmu = hasGuideVariant(guide, "cfw-emu");
+
+  const difficulty = match({
+    isRetail,
+    isCfwEmu,
+    existingDifficulty: existing.difficulty,
+    difficulty: guide.difficulty,
+  })
+    .with({ isRetail: true }, (matched) => matched.difficulty)
+    .with(
+      { isCfwEmu: true, existingDifficulty: null },
+      (matched) => matched.difficulty,
+    )
+    .otherwise(({ existingDifficulty }) => existingDifficulty);
+
   return {
     ...existing,
+    orderPriority: Math.min(existing.orderPriority, guide.orderPriority),
     displayAttributes: uniq([
       ...existing.displayAttributes,
       ...guide.displayAttributes,
@@ -186,15 +205,13 @@ const mergeGuideCard = (
       ...guideTranslationKeys(guide),
     ]),
     retailLink: variants?.retail ?? existing.retailLink,
-    retailIsNew:
-      existing.retailIsNew || (guide.isNew && hasGuideVariant(guide, "retail")),
+    retailIsNew: existing.retailIsNew || (guide.isNew && isRetail),
     cfwEmuLink: variants?.cfwEmu ?? existing.cfwEmuLink,
-    cfwEmuIsNew:
-      existing.cfwEmuIsNew ||
-      (guide.isNew && hasGuideVariant(guide, "cfw-emu")),
+    cfwEmuIsNew: existing.cfwEmuIsNew || (guide.isNew && isCfwEmu),
     isNew: existing.isNew || guide.isNew,
     hideFromNavDrawer: existing.hideFromNavDrawer && guide.hideFromNavDrawer,
     isRoughDraft: existing.isRoughDraft || guide.isRoughDraft,
+    difficulty,
   };
 };
 

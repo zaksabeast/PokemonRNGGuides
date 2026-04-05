@@ -922,13 +922,11 @@ const validateCanonicalUnchanged = (guides: GuideWithFile[]): void => {
 
   for (const guide of guides) {
     const previousGuide = guidesBySlug[guide.slug];
+    const previousCanonical = previousGuide?.meta.canonical;
 
-    if (
-      previousGuide.meta.canonical !== null &&
-      previousGuide.meta.canonical !== guide.canonical
-    ) {
+    if (previousCanonical != null && previousCanonical !== guide.canonical) {
       throw new Error(
-        `Canonical slug changed for ${guide.slug}. Previous: ${previousGuide.meta.canonical}, Current: ${guide.canonical}`,
+        `Canonical slug changed for ${guide.slug}. Previous: ${previousCanonical}, Current: ${guide.canonical}`,
       );
     }
   }

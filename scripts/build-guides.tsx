@@ -924,6 +924,7 @@ const validateCanonicalUnchanged = (guides: GuideWithFile[]): void => {
     const previousGuide = guidesBySlug[guide.slug];
 
     if (
+      previousGuide != null &&
       previousGuide.meta.canonical !== null &&
       previousGuide.meta.canonical !== guide.canonical
     ) {

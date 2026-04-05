@@ -167,12 +167,13 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     return [];
   }
 
+  const max_advances = BATTLE_VIDEO_CONFIDENCE_RANGE * 2;
   const opts: Wild3SearcherOptions = {
     initial_seed,
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter
     initial_advances,
-    max_advances: BATTLE_VIDEO_CONFIDENCE_RANGE * 2,
+    max_advances,
     max_result_count: 2 ** 32 - 1, // No limit
     filter: {
       ...pkmFilterFieldsToRustInput({
@@ -221,48 +222,52 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
   const list = resultsBySeed
     .map((results, seedIncr) => {
       const seed = seedIncr + min_initial_seed;
-      return results.map((result) => {
-        const probabilityHitMethodsAtAdvance =
-          result.cycle_data_by_lead?.specified_lead?.method_probability ?? 0;
-        const scoreHitMethodsAtAdvance = clamp(
-          probabilityHitMethodsAtAdvance,
-          0.01,
-          1,
-        );
+      return results
+        .filter((result) => {
+          return result.advance <= max_advances;
+        })
+        .map((result) => {
+          const probabilityHitMethodsAtAdvance =
+            result.cycle_data_by_lead?.specified_lead?.method_probability ?? 0;
+          const scoreHitMethodsAtAdvance = clamp(
+            probabilityHitMethodsAtAdvance,
+            0.01,
+            1,
+          );
 
-        const distanceFromTargetAfter = Math.abs(
-          targetSetup.targetAdvance - result.advance,
-        );
-        const distanceFromTargetBefore = Math.abs(
-          targetSetup.targetFrameBeforePainting - seed,
-        );
-        const distanceFromTargetScore =
-          distanceFromTargetAfter ** 1.25 + distanceFromTargetBefore ** 1.5;
-        // after has more chance to fluctuate than before.
-        // distance = 100:  scoreAfter = ~300, scoreBefore = 1000
+          const distanceFromTargetAfter = Math.abs(
+            targetSetup.targetAdvance - result.advance,
+          );
+          const distanceFromTargetBefore = Math.abs(
+            targetSetup.targetFrameBeforePainting - seed,
+          );
+          const distanceFromTargetScore =
+            distanceFromTargetAfter ** 1.25 + distanceFromTargetBefore ** 1.5;
+          // after has more chance to fluctuate than before.
+          // distance = 100:  scoreAfter = ~300, scoreBefore = 1000
 
-        const score = distanceFromTargetScore / scoreHitMethodsAtAdvance;
+          const score = distanceFromTargetScore / scoreHitMethodsAtAdvance;
 
-        return {
-          advance: {
-            frame_before_painting: seed,
-            adv_after_painting: result.advance,
-          },
-          targetAdvance: {
-            frame_before_painting: targetSetup.targetFrameBeforePainting,
-            adv_after_painting: targetSetup.targetAdvance,
-          },
-          method: result.method,
-          score,
-          probabilityHitMethodsAtAdvance,
-          distanceFromTargetAfter,
-          distanceFromTargetBefore,
-          uid: nextUid++,
-          ...getGen3IvRating(result.ivs),
-          statsWithRareCandy: createAllStats0(),
-          ivs: result.ivs,
-        };
-      });
+          return {
+            advance: {
+              frame_before_painting: seed,
+              adv_after_painting: result.advance,
+            },
+            targetAdvance: {
+              frame_before_painting: targetSetup.targetFrameBeforePainting,
+              adv_after_painting: targetSetup.targetAdvance,
+            },
+            method: result.method,
+            score,
+            probabilityHitMethodsAtAdvance,
+            distanceFromTargetAfter,
+            distanceFromTargetBefore,
+            uid: nextUid++,
+            ...getGen3IvRating(result.ivs),
+            statsWithRareCandy: createAllStats0(),
+            ivs: result.ivs,
+          };
+        });
     })
     .flat();
 

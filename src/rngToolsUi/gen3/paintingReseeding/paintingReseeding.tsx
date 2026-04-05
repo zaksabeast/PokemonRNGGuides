@@ -17,6 +17,8 @@ import { Wild3CalibCaughtMon } from "../wild/wild3CalibCaughtMon";
 import { BattleVideo } from "../battleVideo/battleVideo";
 import { formatHex } from "~/utils/formatHex";
 
+const TIME_TO_CREATE_BATTLE_VIDEO = 3600 * 4.5;
+
 export const PaintingReseedingTimers = ({
   frame_before_painting,
   consoleType,
@@ -27,10 +29,9 @@ export const PaintingReseedingTimers = ({
   calibration: number;
 }) => {
   const fps = gen3ConsoleFpsMap[consoleType];
-  console.log("fps", fps);
+
   const msPerFrame = 1000 / fps;
   const timeAtPaintingInteract = frame_before_painting - calibration;
-  const TIME_TO_CREATE_BATTLE_VIDEO = 3600 * 4.5;
 
   const millisecondsCreateVideo = [
     5000,
@@ -89,11 +90,13 @@ const createTargetSetup = (frame_before_painting: number): TargetSetup => {
     usingRngManipulatedLead: false,
     usingPaintingReseeding: true,
     isPaintingSeedConfirmed: false,
-    targetPaintingSeed: frame_before_painting,
+    targetFrameBeforePainting: frame_before_painting,
     targetMethod: null,
     targetAdvance: 1000,
     usingAverageLeadCycleSpeed: true,
     leadCycleSpeed: 0,
+    usingBattleVideoWithoutPainting: false,
+    existingBattleVideoAdv: TIME_TO_CREATE_BATTLE_VIDEO, //NO_PROD
   };
 };
 
@@ -105,7 +108,8 @@ export const EmeraldPaintingReseeding = () => {
 
   const [battleVideoAdvAfterPainting, setBattleVideoAdvAfterPainting] =
     useState<number | null>(null);
-  const [calibration, setCalibration] = useState<number>(30);
+  const [calibrationForPainting, setCalibrationForPainting] =
+    useState<number>(30);
   const [consoleType, setConsoleType] = useState<Gen3Console>("GBA");
 
   const targetSetup =
@@ -162,7 +166,7 @@ export const EmeraldPaintingReseeding = () => {
         <PaintingReseedingTimers
           consoleType={consoleType}
           frame_before_painting={targetPaintingAdvs.before}
-          calibration={calibration}
+          calibration={calibrationForPainting}
         />
       )}
 
@@ -173,14 +177,13 @@ export const EmeraldPaintingReseeding = () => {
             if (targetPaintingAdvs == null) {
               return;
             }
-            const before = hitAdv; // NO_PROD missing attribute
-            const after = hitAdv;
 
-            const distBefore = targetPaintingAdvs.before - before;
+            const distBefore =
+              targetPaintingAdvs.before - hitAdv.frame_before_painting;
             if (distBefore !== 0) {
-              setBattleVideoAdvAfterPainting(after);
+              setBattleVideoAdvAfterPainting(hitAdv.adv_after_painting);
             } else {
-              setCalibration(calibration + distBefore); // NO_PROD check if + or -
+              setCalibrationForPainting(calibrationForPainting + distBefore);
             }
           }}
         />

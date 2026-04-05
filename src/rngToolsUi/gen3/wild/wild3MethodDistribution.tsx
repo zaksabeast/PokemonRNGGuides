@@ -23,6 +23,7 @@ import {
   FormikSwitch,
   Link,
   Icon,
+  Flex,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatProbability } from "~/utils/formatProbability";
@@ -68,6 +69,7 @@ import {
   SLOWEST_LEAD_CYCLE_SPEED,
 } from "./leadCycleSpeedSelector";
 import { lcrng_distance } from "~/utils/lcrng";
+import { formatHex } from "~/utils/formatHex";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -174,6 +176,7 @@ const getFields = (
   usingPaintingReseeding: boolean,
   equivalentInitialAdvs: number,
   hasPreselectedData: boolean,
+  initial_seed: number,
 ): Field[] => {
   const { actions, feebas_states, roamer_states, mass_outbreak_states } =
     getPossibleValuesForMap(mapId, action);
@@ -254,8 +257,13 @@ const getFields = (
   });
 
   fields.push({
-    label: "Seed after painting",
-    input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
+    label: "Frame before painting (decimal)",
+    input: (
+      <Flex vertical>
+        <FormikNumberInput<FormState> name="initial_seed" numType="decimal" />
+        Painting seed (hex): {formatHex(initial_seed ?? 0, 2)}
+      </Flex>
+    ),
     show: !hasPreselectedData && usingPaintingReseeding,
     indent: 1,
   });
@@ -375,6 +383,7 @@ export const Wild3MethodDistributionFields = ({
     usingPaintingReseeding,
     equivalentInitialAdvs,
     hasPreselectedData,
+    initial_seed,
   );
 
   React.useEffect(() => {

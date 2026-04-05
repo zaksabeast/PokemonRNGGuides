@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Flex, MultiTimer, Field, Input, Select } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
-import { MS_PER_GBA_FRAME } from "~/utils/consts";
-
 import { FormState as TargetSetup, Wild3CalibTarget } from "./wild3CalibTarget";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon";
 import {

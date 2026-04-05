@@ -59,6 +59,7 @@ import { Gen3IvRating, getGen3IvRating } from "../ivRater";
 import { ability } from "~/types/ability";
 import { FormikAbilityFilter } from "~/components/abilityFilter";
 import { useFormContext } from "~/hooks/form";
+import { match, P } from "ts-pattern";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -94,31 +95,43 @@ const initialValues: FormState = {
 
 type Props = {
   targetSetup: TargetSetup;
-  setLatestHitAdv: (hitAdv: number) => void;
+  setLatestHitAdv?: (hitAdv: {
+    frame_before_painting: number;
+    adv_after_painting: number;
+  }) => void;
 };
 
 export type CaughtMonResult = {
-  advance: number;
-  targetAdvance: number;
+  advance: {
+    frame_before_painting: number;
+    adv_after_painting: number;
+  };
+  targetAdvance: {
+    frame_before_painting: number;
+    adv_after_painting: number;
+  };
   method: Gen3Method;
   score: number;
   probabilityHitMethodsAtAdvance: number;
+  distanceFromTargetAfter: number;
+  distanceFromTargetBefore: number;
   uid: number;
   statsWithRareCandy: StatsValue;
   ivs: Ivs;
 } & Gen3IvRating;
 
-const CONFIDENCE_RANGE = 3600; // We assume the player hits its target advance by more or less 1 minute
+const BATTLE_VIDEO_CONFIDENCE_RANGE = 3600; // We assume the player hits its target advance by more or less 1 minute
+const PAINTING_CONFIDENCE_RANGE = 600; // We assume the player hits its target advance by more or less 10s
 
 let nextUid = 0;
 
 const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
   const initial_seed = targetSetup.usingPaintingReseeding
-    ? targetSetup.targetPaintingSeed
+    ? targetSetup.targetFrameBeforePainting
     : 0;
 
   const initial_advances = Math.max(
-    targetSetup.targetAdvance - CONFIDENCE_RANGE,
+    targetSetup.targetAdvance - BATTLE_VIDEO_CONFIDENCE_RANGE,
     0,
   );
 
@@ -159,7 +172,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter
     initial_advances,
-    max_advances: CONFIDENCE_RANGE * 2,
+    max_advances: BATTLE_VIDEO_CONFIDENCE_RANGE * 2,
     max_result_count: 2 ** 32 - 1, // No limit
     filter: {
       ...pkmFilterFieldsToRustInput({
@@ -187,41 +200,71 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     lead_cycle_speed: targetSetup.leadCycleSpeed,
   };
 
-  const resultsByPidPath =
+  const [min_initial_seed, max_initial_seed] =
+    !targetSetup.usingPaintingReseeding || targetSetup.isPaintingSeedConfirmed
+      ? [initial_seed, initial_seed]
+      : [
+          Math.max(0, initial_seed - PAINTING_CONFIDENCE_RANGE),
+          Math.min(0xffff, initial_seed + PAINTING_CONFIDENCE_RANGE),
+        ];
+
+  const wrappedResultsBySeed =
     await rngTools.search_wild3_with_initial_advances_range(
       opts,
-      initial_seed,
-      initial_seed,
+      min_initial_seed,
+      max_initial_seed,
     );
-  const results = resultsByPidPath.map((pidPath) => pidPath.vec).flat();
+  const resultsBySeed = wrappedResultsBySeed.map(
+    (wrappedRes) => wrappedRes.vec,
+  );
 
-  const list = results.map((result) => {
-    const probabilityHitMethodsAtAdvance =
-      result.cycle_data_by_lead?.specified_lead?.method_probability ?? 0;
-    const scoreHitMethodsAtAdvance = clamp(
-      probabilityHitMethodsAtAdvance,
-      0.01,
-      1,
-    );
+  const list = resultsBySeed
+    .map((results, seedIncr) => {
+      const seed = seedIncr + min_initial_seed;
+      return results.map((result) => {
+        const probabilityHitMethodsAtAdvance =
+          result.cycle_data_by_lead?.specified_lead?.method_probability ?? 0;
+        const scoreHitMethodsAtAdvance = clamp(
+          probabilityHitMethodsAtAdvance,
+          0.01,
+          1,
+        );
 
-    const distanceFromTarget = Math.abs(
-      targetSetup.targetAdvance - result.advance,
-    );
+        const distanceFromTargetAfter = Math.abs(
+          targetSetup.targetAdvance - result.advance,
+        );
+        const distanceFromTargetBefore = Math.abs(
+          targetSetup.targetFrameBeforePainting - seed,
+        );
+        const distanceFromTargetScore =
+          distanceFromTargetAfter ** 1.25 + distanceFromTargetBefore ** 1.5;
+        // after has more chance to fluctuate than before.
+        // distance = 100:  scoreAfter = ~300, scoreBefore = 1000
 
-    const score = distanceFromTarget / scoreHitMethodsAtAdvance;
+        const score = distanceFromTargetScore / scoreHitMethodsAtAdvance;
 
-    return {
-      advance: result.advance,
-      targetAdvance: targetSetup.targetAdvance,
-      method: result.method,
-      score,
-      probabilityHitMethodsAtAdvance,
-      uid: nextUid++,
-      ...getGen3IvRating(result.ivs),
-      statsWithRareCandy: createAllStats0(),
-      ivs: result.ivs,
-    };
-  });
+        return {
+          advance: {
+            frame_before_painting: seed,
+            adv_after_painting: result.advance,
+          },
+          targetAdvance: {
+            frame_before_painting: targetSetup.targetFrameBeforePainting,
+            adv_after_painting: targetSetup.targetAdvance,
+          },
+          method: result.method,
+          score,
+          probabilityHitMethodsAtAdvance,
+          distanceFromTargetAfter,
+          distanceFromTargetBefore,
+          uid: nextUid++,
+          ...getGen3IvRating(result.ivs),
+          statsWithRareCandy: createAllStats0(),
+          ivs: result.ivs,
+        };
+      });
+    })
+    .flat();
 
   list.sort((res1, res2) => {
     return res1.score - res2.score;
@@ -459,13 +502,123 @@ export const Wild3CalibCaughtMon = ({
 }: Props) => {
   const [lastRareCandyValue, setLastRareCandyValue] = React.useState(1);
   const [results, setResults] = React.useState<CaughtMonResult[]>([]);
-  const { targetMethod, targetAdvance } = targetSetup;
+  const {
+    targetMethod,
+    targetAdvance,
+    targetFrameBeforePainting: targetFrameBeforePaintingInput,
+    usingPaintingReseeding,
+  } = targetSetup;
+
+  const targetFrameBeforePainting = usingPaintingReseeding
+    ? targetFrameBeforePaintingInput
+    : 0;
 
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     setResults(await searchCaughtMon(values, targetSetup));
   };
 
+  const getAdvDiffTxt = (
+    result: CaughtMonResult,
+    prop: "adv_after_painting" | "frame_before_painting",
+  ) => {
+    const diffWithTarget = result.advance[prop] - result.targetAdvance[prop];
+    const valStr = formatLargeInteger(result.advance[prop]);
+
+    if (diffWithTarget === 0) {
+      return valStr;
+    }
+    const sign = diffWithTarget > 0 ? "+" : "";
+
+    return `${valStr} (${sign}${formatLargeInteger(diffWithTarget)})`;
+  };
+
   const columns: ResultColumn<CaughtMonResult>[] = [
+    {
+      title: (
+        <>
+          Update <br /> Calibration
+        </>
+      ),
+      key: "Update Calibration",
+      dataIndex: "advance",
+      show: setLatestHitAdv != null,
+      render(advance, values) {
+        if (
+          values.advance.adv_after_painting === targetAdvance &&
+          values.advance.frame_before_painting === targetFrameBeforePainting &&
+          values.method === targetMethod
+        ) {
+          return "Target Pokémon";
+        }
+
+        return (
+          <Button
+            type="text"
+            color="PrimaryText"
+            trackerId="wild3CalibCaughtMon_adv"
+            onClick={() => {
+              setLatestHitAdv?.(advance);
+              setResults([]);
+            }}
+          >
+            <Icon name="Update" size={20} />
+          </Button>
+        );
+      },
+    },
+    {
+      title: (
+        <>
+          Frame before <br /> painting
+        </>
+      ),
+      key: "frame_before_painting",
+      dataIndex: "advance",
+      show: usingPaintingReseeding,
+      render: (_, values) => {
+        return getAdvDiffTxt(values, "frame_before_painting");
+      },
+    },
+    {
+      title: usingPaintingReseeding ? (
+        <>
+          Advance after <br /> painting
+        </>
+      ) : (
+        "Advance"
+      ),
+      key: "frame_after_painting",
+      dataIndex: "advance",
+      render: (_, values) => {
+        return getAdvDiffTxt(values, "adv_after_painting");
+      },
+    },
+    {
+      title: (
+        <>
+          Confidence <br /> Rating
+        </>
+      ),
+      key: "Confidence Rating",
+      dataIndex: "score",
+      render(score, values) {
+        const ratingTxt = match(score)
+          .with(P.number.between(0, 500), () => "Very High")
+          .with(P.number.between(500, 1000), () => "High")
+          .with(P.number.between(1000, 2000), () => "Medium")
+          .with(P.number.between(2000, 10000), () => "Low")
+          .otherwise(() => "Very Low");
+
+        const { method } = values;
+        const prob = formatProbability(values.probabilityHitMethodsAtAdvance);
+
+        const dist =
+          values.distanceFromTargetBefore + values.distanceFromTargetAfter;
+
+        const title = `Distance from target: ${dist} advances. Method ${method} (${prob} likelihood)`;
+        return <Tooltip title={title}>{ratingTxt}</Tooltip>;
+      },
+    },
     {
       title: "Remove",
       dataIndex: "advance",
@@ -481,68 +634,6 @@ export const Wild3CalibCaughtMon = ({
           >
             <Icon name="Close" />
           </Button>
-        );
-      },
-    },
-    {
-      title: (
-        <>
-          Update <br /> Calibration
-        </>
-      ),
-      key: "Update Calibration",
-      dataIndex: "advance",
-      render(advance, values) {
-        if (
-          values.advance === targetAdvance &&
-          values.method === targetMethod
-        ) {
-          return "Target Pokémon";
-        }
-
-        return (
-          <Button
-            type="text"
-            color="PrimaryText"
-            trackerId="wild3CalibCaughtMon_adv"
-            onClick={() => {
-              setLatestHitAdv(advance);
-              setResults([]);
-            }}
-          >
-            <Icon name="Update" size={20} />
-          </Button>
-        );
-      },
-    },
-    {
-      title: "Advance",
-      dataIndex: "advance",
-      render: (val, values) => {
-        const diffWithTarget = val - values.targetAdvance;
-        const valStr = formatLargeInteger(val);
-
-        if (diffWithTarget === 0) {
-          return valStr;
-        }
-        const sign = diffWithTarget > 0 ? "+" : "";
-
-        return `${valStr} (${sign}${formatLargeInteger(diffWithTarget)})`;
-      },
-    },
-    {
-      title: "Method",
-      dataIndex: "method",
-      render(method, values) {
-        const prob = formatProbability(values.probabilityHitMethodsAtAdvance);
-        const title = `${prob} likelihood that the triggered method is ${method} if the hit advance is ${values.advance}`;
-        return (
-          <>
-            {method}
-            {" ("}
-            <Tooltip title={title}>{prob}</Tooltip>
-            {")"}
-          </>
         );
       },
     },

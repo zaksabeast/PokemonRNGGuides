@@ -61,45 +61,29 @@ const emeraldWildGameData = getWild3EmeraldGameData();
 // Wild3 is currently bugged.
 const supportedGen3Methods = ["Wild1", "Wild2", "Wild4"] as Gen3Method[];
 
-const Validator = z
-  .object({
-    map: z.string(),
-    feebasState: z.enum(wild3FeebasStates),
-    roamerState: z.enum(wild3RoamerStates),
-    massOutbreakState: z.enum(wild3MassOutbreakStates),
-    action: z.enum(wild3Actions),
-    // Limitation: value in Select must be a primitive, so we use the index instead of Gen3Lead.
-    leadIdx: z
-      .number()
-      .min(0)
-      .max(gen3Leads.length - 1),
-    usingRngManipulatedLead: z.boolean(),
-    usingPaintingReseeding: z.boolean(),
-    isPaintingSeedConfirmed: z.boolean(),
-    targetFrameBeforePainting: z.number().min(1).max(0xffff),
-    usingBattleVideoWithoutPainting: z.boolean(), // with painting, battle video is always used.
-    existingBattleVideoAdv: z.number().min(1).max(0xffffffff),
-    targetMethod: z.enum(supportedGen3Methods),
-    targetAdvance: z.number().int().min(0).max(0xffffffff),
+const Validator = z.object({
+  map: z.string(),
+  feebasState: z.enum(wild3FeebasStates),
+  roamerState: z.enum(wild3RoamerStates),
+  massOutbreakState: z.enum(wild3MassOutbreakStates),
+  action: z.enum(wild3Actions),
+  // Limitation: value in Select must be a primitive, so we use the index instead of Gen3Lead.
+  leadIdx: z
+    .number()
+    .min(0)
+    .max(gen3Leads.length - 1),
+  usingRngManipulatedLead: z.boolean(),
+  usingPaintingReseeding: z.boolean(),
+  isPaintingSeedConfirmed: z.boolean(),
+  targetFrameBeforePainting: z.number().min(1).max(0xffff),
+  usingBattleVideoWithoutPainting: z.boolean(), // with painting, battle video is always used.
+  existingBattleVideoAdv: z.number().min(1).max(0xffffffff),
+  targetMethod: z.enum(supportedGen3Methods),
+  targetAdvance: z.number().int().min(0).max(0xffffffff),
 
-    usingAverageLeadCycleSpeed: z.boolean(),
-    leadCycleSpeed: z.number().int().min(0).max(900),
-  })
-  .refine(
-    (values) => {
-      if (
-        !values.usingPaintingReseeding &&
-        !values.usingBattleVideoWithoutPainting
-      ) {
-        return true;
-      }
-      return values.existingBattleVideoAdv <= values.targetAdvance;
-    },
-    {
-      message:
-        "Battle Video advance must be equal or less than the target advance.", //NO_PROD doesn't work.
-    },
-  );
+  usingAverageLeadCycleSpeed: z.boolean(),
+  leadCycleSpeed: z.number().int().min(0).max(900),
+});
 
 type Props = {
   setTargetSetup: (targetSetup: FormState | null) => void;

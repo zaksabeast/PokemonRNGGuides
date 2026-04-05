@@ -195,6 +195,7 @@ const mergeGuideCard = (
 
   return {
     ...existing,
+    orderPriority: Math.min(existing.orderPriority, guide.orderPriority),
     displayAttributes: uniq([
       ...existing.displayAttributes,
       ...guide.displayAttributes,

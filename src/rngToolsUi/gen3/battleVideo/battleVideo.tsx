@@ -374,7 +374,7 @@ const calculateWithBattle = (opts: FormState) => {
     advFromFrameOutsideBattleAfter - speedupLatency;
 
   const consoleFps = gen3ConsoleFpsMap[opts.console];
-  console.log("consoleFps", consoleFps);
+
   return {
     submitError: "",
     milliseconds: [

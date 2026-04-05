@@ -242,9 +242,9 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
             targetSetup.targetFrameBeforePainting - seed,
           );
           const distanceFromTargetScore =
-            distanceFromTargetAfter ** 1.25 + distanceFromTargetBefore ** 1.5;
+            distanceFromTargetAfter + distanceFromTargetBefore ** 1.5;
           // after has more chance to fluctuate than before.
-          // distance = 100:  scoreAfter = ~300, scoreBefore = 1000
+          // distance = 100 => scoreBefore = 1000
 
           const score = distanceFromTargetScore / scoreHitMethodsAtAdvance;
 

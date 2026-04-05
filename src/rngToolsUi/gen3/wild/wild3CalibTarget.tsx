@@ -15,6 +15,7 @@ import {
   FormFieldTable,
   FormikSwitch,
   Link,
+  Flex,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
@@ -60,28 +61,45 @@ const emeraldWildGameData = getWild3EmeraldGameData();
 // Wild3 is currently bugged.
 const supportedGen3Methods = ["Wild1", "Wild2", "Wild4"] as Gen3Method[];
 
-const Validator = z.object({
-  map: z.string(),
-  feebasState: z.enum(wild3FeebasStates),
-  roamerState: z.enum(wild3RoamerStates),
-  massOutbreakState: z.enum(wild3MassOutbreakStates),
-  action: z.enum(wild3Actions),
-  // Limitation: value in Select must be a primitive, so we use the index instead of Gen3Lead.
-  leadIdx: z
-    .number()
-    .min(0)
-    .max(gen3Leads.length - 1),
-  usingRngManipulatedLead: z.boolean(),
-  usingPaintingReseeding: z.boolean(),
-  isPaintingSeedConfirmed: z.boolean(),
-  targetPaintingSeed: z.number().min(0).max(0xffffffff),
+const Validator = z
+  .object({
+    map: z.string(),
+    feebasState: z.enum(wild3FeebasStates),
+    roamerState: z.enum(wild3RoamerStates),
+    massOutbreakState: z.enum(wild3MassOutbreakStates),
+    action: z.enum(wild3Actions),
+    // Limitation: value in Select must be a primitive, so we use the index instead of Gen3Lead.
+    leadIdx: z
+      .number()
+      .min(0)
+      .max(gen3Leads.length - 1),
+    usingRngManipulatedLead: z.boolean(),
+    usingPaintingReseeding: z.boolean(),
+    isPaintingSeedConfirmed: z.boolean(),
+    targetFrameBeforePainting: z.number().min(1).max(0xffff),
+    usingBattleVideoWithoutPainting: z.boolean(), // with painting, battle video is always used.
+    existingBattleVideoAdv: z.number().min(1).max(0xffffffff),
+    targetMethod: z.enum(supportedGen3Methods),
+    targetAdvance: z.number().int().min(0).max(0xffffffff),
 
-  targetMethod: z.enum(supportedGen3Methods),
-  targetAdvance: z.number().int().min(0).max(0xffffffff),
-
-  usingAverageLeadCycleSpeed: z.boolean(),
-  leadCycleSpeed: z.number().int().min(0).max(900),
-});
+    usingAverageLeadCycleSpeed: z.boolean(),
+    leadCycleSpeed: z.number().int().min(0).max(900),
+  })
+  .refine(
+    (values) => {
+      if (
+        !values.usingPaintingReseeding &&
+        !values.usingBattleVideoWithoutPainting
+      ) {
+        return true;
+      }
+      return values.existingBattleVideoAdv <= values.targetAdvance;
+    },
+    {
+      message:
+        "Battle Video advance must be equal or less than the target advance.", //NO_PROD doesn't work.
+    },
+  );
 
 type Props = {
   setTargetSetup: (targetSetup: FormState | null) => void;
@@ -100,7 +118,9 @@ const getInitialValues = (): FormState => {
     usingRngManipulatedLead: false,
     usingPaintingReseeding: false,
     isPaintingSeedConfirmed: false,
-    targetPaintingSeed: 0,
+    usingBattleVideoWithoutPainting: false,
+    existingBattleVideoAdv: 1, //NO_PROD
+    targetFrameBeforePainting: 1,
     targetAdvance: 1000,
     targetMethod: "Wild1",
     usingAverageLeadCycleSpeed: true,
@@ -108,13 +128,25 @@ const getInitialValues = (): FormState => {
   };
 };
 
-const getFields = (
-  mapId: string,
-  action: Wild3Action,
-  usingPaintingReseeding: boolean,
-  leadIdx: number,
-  usingAverageLeadCycleSpeed: boolean,
-): Field[] => {
+const getFields = ({
+  mapId,
+  action,
+  usingPaintingReseeding,
+  leadIdx,
+  usingAverageLeadCycleSpeed,
+  isPaintingSeedConfirmed,
+  usingBattleVideoWithoutPainting,
+  targetFrameBeforePainting,
+}: {
+  mapId: string;
+  action: Wild3Action;
+  usingPaintingReseeding: boolean;
+  leadIdx: number;
+  usingAverageLeadCycleSpeed: boolean;
+  isPaintingSeedConfirmed: boolean;
+  usingBattleVideoWithoutPainting: boolean;
+  targetFrameBeforePainting: number;
+}): Field[] => {
   const { actions, feebas_states, roamer_states, mass_outbreak_states } =
     getPossibleValuesForMap(mapId, action);
   const fields: Field[] = [
@@ -177,24 +209,54 @@ const getFields = (
       ),
       key: "usingPaintingReseeding",
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
-      show: false, // TODO: Support painting reseeding
     },
     {
-      label: "Target painting seed",
+      label: "Target frame before painting (decimal)",
       input: (
-        <FormikNumberInput<FormState> name="targetPaintingSeed" numType="hex" />
+        <Flex vertical>
+          <FormikNumberInput<FormState>
+            name="targetFrameBeforePainting"
+            numType="decimal"
+          />
+          Painting seed (hex): {formatHex(targetFrameBeforePainting ?? 0, 2)}
+        </Flex>
       ),
       indent: 1,
-      //show: usingPaintingReseeding,
-      show: false, // TODO: Support painting reseeding
+      show: usingPaintingReseeding,
     },
     {
-      label:
-        "Battle video has been created after confirming that target painting seed was hit?",
+      label: "Target frame before painting was confirmed to be hit?", //NO_PROD
       input: <FormikSwitch<FormState> name="isPaintingSeedConfirmed" />,
       indent: 1,
-      //show: usingPaintingReseeding,
-      show: false, // TODO: Support painting reseeding
+      show: usingPaintingReseeding,
+    },
+    {
+      label: "Advances between painting and Battle Video",
+      input: (
+        <FormikNumberInput<FormState>
+          name="existingBattleVideoAdv"
+          numType="decimal"
+        />
+      ),
+      indent: 1,
+      show: usingPaintingReseeding,
+    },
+
+    {
+      label: "Using Battle Video?",
+      input: <FormikSwitch<FormState> name="usingBattleVideoWithoutPainting" />,
+      show: !usingPaintingReseeding,
+    },
+    {
+      label: "Battle Video advance",
+      input: (
+        <FormikNumberInput<FormState>
+          name="existingBattleVideoAdv"
+          numType="decimal"
+        />
+      ),
+      show: !usingPaintingReseeding && usingBattleVideoWithoutPainting,
+      indent: 1,
     },
     {
       label: "Target Method",
@@ -204,10 +266,13 @@ const getFields = (
           options={toOptions(supportedGen3Methods)}
         />
       ),
+      show: usingPaintingReseeding ? isPaintingSeedConfirmed : true,
     },
     {
       label: usingPaintingReseeding
-        ? "Advances after reseeding to hit target"
+        ? isPaintingSeedConfirmed
+          ? "Advances after painting to hit target"
+          : "Advances after painting for calibration"
         : "Target advances",
       input: (
         <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
@@ -269,17 +334,30 @@ export const Wild3CalibTargetFields = () => {
   const usingAverageLeadCycleSpeed = useWatch<
     FormState,
     "usingAverageLeadCycleSpeed"
-  >({
-    name: "usingAverageLeadCycleSpeed",
-  });
+  >({ name: "usingAverageLeadCycleSpeed" });
+  const isPaintingSeedConfirmed = useWatch<
+    FormState,
+    "isPaintingSeedConfirmed"
+  >({ name: "isPaintingSeedConfirmed" });
+  const usingBattleVideoWithoutPainting = useWatch<
+    FormState,
+    "usingBattleVideoWithoutPainting"
+  >({ name: "usingBattleVideoWithoutPainting" });
+  const targetFrameBeforePainting = useWatch<
+    FormState,
+    "targetFrameBeforePainting"
+  >({ name: "targetFrameBeforePainting" });
 
-  const fields = getFields(
-    map,
+  const fields = getFields({
+    mapId: map,
     action,
     usingPaintingReseeding,
     leadIdx,
     usingAverageLeadCycleSpeed,
-  );
+    isPaintingSeedConfirmed,
+    usingBattleVideoWithoutPainting,
+    targetFrameBeforePainting,
+  });
 
   React.useEffect(() => {
     const { actions, feebas_states, mass_outbreak_states, roamer_states } =
@@ -407,13 +485,23 @@ const getLeadCycleSpeed = (values: FormState) => {
 };
 
 export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
-  const [targetComputed, setTargetComputed] =
+  const [resultReactNode, setResultReactNode] =
     React.useState<React.ReactNode>(null);
 
-  const onSubmit: RngToolSubmit<FormState> = async (values) => {
-    const targetPaintingSeed = values.usingPaintingReseeding
-      ? values.targetPaintingSeed
-      : 0;
+  //NO_PROD battle video advance
+
+  const onSubmit: RngToolSubmit<FormState> = async (rawValues) => {
+    const values: FormState = {
+      ...rawValues,
+    };
+    // reset hidden fields to their default values
+    if (!rawValues.usingPaintingReseeding) {
+      values.isPaintingSeedConfirmed = false;
+      values.targetFrameBeforePainting = 0;
+      if (!rawValues.usingBattleVideoWithoutPainting) {
+        rawValues.existingBattleVideoAdv = 0;
+      }
+    }
 
     const lead_cycle_speed = getLeadCycleSpeed(values);
 
@@ -443,11 +531,11 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
     );
     if (map_data == null) {
       setTargetSetup(null);
-      return setTargetComputed(null);
+      return setResultReactNode(null);
     }
 
     const results = await rngTools.generate_gen3_wild_wasm(
-      targetPaintingSeed,
+      values.targetFrameBeforePainting,
       values.targetAdvance,
       opts,
       map_data,
@@ -455,7 +543,7 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
 
     if (results.length === 0) {
       setTargetSetup(null);
-      return setTargetComputed(null);
+      return setResultReactNode(null);
     }
 
     const result = results[0];
@@ -466,27 +554,42 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
     );
     if (encounter == null) {
       setTargetSetup(null);
-      return setTargetComputed(null);
+      return setResultReactNode(null);
     }
 
-    const info = await resultToDisplayInfo(result, encounter, lead_cycle_speed);
-    setTargetComputed(info);
+    if (!values.usingPaintingReseeding || values.isPaintingSeedConfirmed) {
+      const info = await resultToDisplayInfo(
+        result,
+        encounter,
+        lead_cycle_speed,
+      );
+      setResultReactNode(
+        <FormFieldTable
+          fields={[
+            {
+              label: "Target Pokémon",
+              input: info,
+            },
+          ]}
+        />,
+      );
+    } else {
+      setResultReactNode(
+        <FormFieldTable
+          fields={[
+            {
+              label: "Objective",
+              input:
+                "Confirm whether you hit or not your target frame before painting.",
+            },
+          ]}
+        />,
+      );
+    }
     setTargetSetup(values);
   };
 
   const initialValues = getInitialValues();
-
-  const resultAsField =
-    targetComputed == null ? null : (
-      <FormFieldTable
-        fields={[
-          {
-            label: "Target Pokémon",
-            input: targetComputed,
-          },
-        ]}
-      />
-    );
 
   return (
     <>
@@ -496,11 +599,11 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
         onSubmit={onSubmit}
         submitTrackerId="wild3_calib_target"
         rowKey="uid"
-        submitButtonLabel="Calculate Target Pokémon"
+        submitButtonLabel="Calculate Target"
       >
         <Wild3CalibTargetFields />
       </RngToolForm>
-      {resultAsField}
+      {resultReactNode}
     </>
   );
 };

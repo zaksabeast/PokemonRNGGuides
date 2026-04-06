@@ -153,12 +153,9 @@ const MyFields = ({
       show: fixedData == null,
     },
     {
-      label: "Existing Battle Video advances",
+      label: "Existing Battle Video",
       input: (
-        <FormikNumberInput<FormState>
-          name="existingBattleVideoAdv"
-          numType="decimal"
-        />
+        <FormikEmeraldTargetAdvance<FormState> name="existingBattleVideoAdv" />
       ),
       indent: 1,
       show: isUpdatingExisting && fixedData == null,

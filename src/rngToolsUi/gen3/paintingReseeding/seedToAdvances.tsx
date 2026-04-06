@@ -178,12 +178,11 @@ const MyFields = () => {
       indent: 1,
     },
     {
-      label: "Advance after painting",
+      label: "Advances after painting",
       input: (
-        <FormikNumberDecimalHexInput<FormState>
-          initialNumType="decimal"
+        <FormikNumberInput<FormState>
+          numType="decimal"
           name="advAfterPainting"
-          byteCount={4}
         />
       ),
       show: alreadyKnowPaintingFrameAndAdv,

@@ -1,7 +1,7 @@
 import React from "react";
 import { Input, Typography, Flex } from "~/components";
 
-export const PaintingReseed = () => {
+export const PaintingSeedToEmuTimer = () => {
   const [seed, setSeed] = React.useState<number | null>(null);
 
   return (

@@ -26,6 +26,7 @@ import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
 import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 import { match } from "ts-pattern";
 import { FormikNumberDecimalHexInput } from "~/components/numberInput";
+import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
 
 type Result = Wild3PaintingAdvsAndDur & { uid: number };
 
@@ -44,6 +45,7 @@ const Validator = z.object({
   min_frame_before_painting: z.number().int().min(0).max(0xffffffff),
   max_frame_before_painting: z.number().int().min(0).max(0xffffffff),
   min_adv_after_painting: z.number().int().min(0).max(0xffffffff),
+  max_result_count: z.number().int(),
   showAdvancedSettings: z.boolean(),
   sortBy: z.enum(sortByList),
 });
@@ -59,6 +61,7 @@ const initialValues: FormState = {
   max_frame_before_painting: 0xffff,
   min_adv_after_painting: 7000, // About 4800 advances from painting to battle video. then 2200 advances buffer.
   showAdvancedSettings: false,
+  max_result_count: 100,
   sortBy: "time",
 };
 
@@ -145,6 +148,17 @@ const MyFields = () => {
     name: "showAdvancedSettings",
   });
 
+  const frameBeforePainting = useWatch<FormState, "frameBeforePainting">({
+    name: "frameBeforePainting",
+  });
+  const advAfterPainting = useWatch<FormState, "advAfterPainting">({
+    name: "advAfterPainting",
+  });
+  const resultingTargetTxt = formatEmeraldTargetFromPainting(
+    frameBeforePainting ?? 0,
+    advAfterPainting ?? 0,
+  );
+
   const fields: Field[] = [
     {
       label: "I already know my painting frame and advance",
@@ -155,22 +169,30 @@ const MyFields = () => {
       label: "Frame before painting",
       input: (
         <FormikNumberDecimalHexInput<FormState>
+          initialNumType="decimal"
           name="frameBeforePainting"
           byteCount={2}
         />
       ),
-      show: alreadyKnowPaintingFrameAndAdv && showAdvanced,
+      show: alreadyKnowPaintingFrameAndAdv,
       indent: 1,
     },
     {
       label: "Advance after painting",
       input: (
         <FormikNumberDecimalHexInput<FormState>
+          initialNumType="decimal"
           name="advAfterPainting"
           byteCount={4}
         />
       ),
-      show: alreadyKnowPaintingFrameAndAdv && showAdvanced,
+      show: alreadyKnowPaintingFrameAndAdv,
+      indent: 1,
+    },
+    {
+      label: "Resulting Target",
+      input: resultingTargetTxt,
+      show: alreadyKnowPaintingFrameAndAdv,
       indent: 1,
     },
     {
@@ -182,12 +204,14 @@ const MyFields = () => {
           </div>
         </Tooltip>
       ),
+      show: !alreadyKnowPaintingFrameAndAdv,
       key: "targetSeed",
       input: <FormikEmeraldTargetAdvance name="targetAdvance" />,
     },
     {
       label: "Show advanced settings?",
       input: <FormikSwitch<FormState> name="showAdvancedSettings" />,
+      show: !alreadyKnowPaintingFrameAndAdv,
     },
     {
       label: (
@@ -233,6 +257,17 @@ const MyFields = () => {
       input: (
         <FormikNumberInput<FormState>
           name="min_adv_after_painting"
+          numType="decimal"
+        />
+      ),
+      show: !alreadyKnowPaintingFrameAndAdv && showAdvanced,
+      indent: 1,
+    },
+    {
+      label: "Max result count",
+      input: (
+        <FormikNumberInput<FormState>
+          name="max_result_count"
           numType="decimal"
         />
       ),
@@ -333,6 +368,7 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
             )
             .exhaustive();
         });
+        results = results.slice(0, opts.max_result_count);
         setResults(
           results.map((res) => ({
             ...res,

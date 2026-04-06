@@ -60,6 +60,7 @@ import { ability } from "~/types/ability";
 import { FormikAbilityFilter } from "~/components/abilityFilter";
 import { useFormContext } from "~/hooks/form";
 import { match, P } from "ts-pattern";
+import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -195,7 +196,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     map_setups: [map_setup],
     methods: gen3Methods,
     consider_cycles: true,
-    consider_rng_manipulated_lead_pid: true,
+    consider_rng_manipulated_lead_pid: false,
     generate_even_if_impossible: values.generate_even_if_impossible,
     painting_opts: null,
     lead_cycle_speed: targetSetup.leadCycleSpeed,
@@ -412,15 +413,6 @@ const Fields = ({
           ),
         },
         {
-          label: "Nature",
-          input: (
-            <FormikSelect<FormState, "nature">
-              name="nature"
-              options={natureOptions.required}
-            />
-          ),
-        },
-        {
           label: "Ability",
           input: (
             <FormikAbilityFilter<FormState>
@@ -429,6 +421,15 @@ const Fields = ({
               permitAny={false}
               displayHiddenAbility={false}
               mergeFirstSecondIfSameAbility
+            />
+          ),
+        },
+        {
+          label: "Nature",
+          input: (
+            <FormikSelect<FormState, "nature">
+              name="nature"
+              options={natureOptions.required}
             />
           ),
         },
@@ -512,6 +513,7 @@ export const Wild3CalibCaughtMon = ({
     targetAdvance,
     targetFrameBeforePainting: targetFrameBeforePaintingInput,
     usingPaintingReseeding,
+    isPaintingSeedConfirmed,
   } = targetSetup;
 
   const targetFrameBeforePainting = usingPaintingReseeding
@@ -530,7 +532,11 @@ export const Wild3CalibCaughtMon = ({
     const valStr = formatLargeInteger(result.advance[prop]);
 
     if (diffWithTarget === 0) {
-      return valStr;
+      const suffix =
+        prop === "frame_before_painting" && !isPaintingSeedConfirmed
+          ? " (Target)"
+          : "";
+      return `${valStr}${suffix}`;
     }
     const sign = diffWithTarget > 0 ? "+" : "";
 
@@ -595,7 +601,12 @@ export const Wild3CalibCaughtMon = ({
       key: "frame_after_painting",
       dataIndex: "advance",
       render: (_, values) => {
-        return getAdvDiffTxt(values, "adv_after_painting");
+        const diffTxt = getAdvDiffTxt(values, "adv_after_painting");
+        const title = formatEmeraldTargetFromPainting(
+          values.advance.frame_before_painting,
+          values.advance.adv_after_painting,
+        );
+        return <Tooltip title={title}>{diffTxt}</Tooltip>;
       },
     },
     {

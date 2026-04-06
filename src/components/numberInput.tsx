@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Input } from "./input";
 import { capPrecision } from "~/utils/number";
 import { GenericForm } from "~/types/form";
@@ -9,7 +9,6 @@ import { InputProps as AntdInputProps } from "antd";
 import { Paths } from "~/types";
 import * as tst from "ts-toolbelt";
 import { formatHex } from "~/utils/formatHex";
-import { Select } from "./select";
 import { RadioGroup } from "./radio";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 
@@ -153,10 +152,13 @@ export const FormikNumberInput = <FormState extends GenericForm>({
   );
 };
 
+type NumType = "hex" | "decimal";
+
 type FormikNumberDecimalHexInputProps<FormState extends GenericForm> = Omit<
   FormikNumberInputProps<FormState>,
   "numType"
 > & {
+  initialNumType: NumType;
   byteCount: number;
 };
 
@@ -165,6 +167,7 @@ export const FormikNumberDecimalHexInput = <FormState extends GenericForm>({
   errorMessage,
   onChange: _onChange,
   byteCount,
+  initialNumType,
   ...props
 }: FormikNumberDecimalHexInputProps<FormState>) => {
   const [{ value, onBlur }, { error, status }, { setValue }] = useField<
@@ -176,8 +179,7 @@ export const FormikNumberDecimalHexInput = <FormState extends GenericForm>({
     _onChange?.(value);
   };
 
-  type NumType = "hex" | "decimal";
-  const [numType, setNumType] = useState<NumType>("decimal");
+  const [numType, setNumType] = React.useState<NumType>(initialNumType);
   const options = [
     { label: "Decimal", value: "decimal" } as const,
     { label: "Hex", value: "hex" } as const,

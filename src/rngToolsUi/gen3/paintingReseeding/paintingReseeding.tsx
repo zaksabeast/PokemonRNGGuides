@@ -16,6 +16,7 @@ import { gen3Leads } from "../wild/utils";
 import { Wild3CalibCaughtMon } from "../wild/wild3CalibCaughtMon";
 import { BattleVideo } from "../battleVideo/battleVideo";
 import { formatHex } from "~/utils/formatHex";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 
 const FRAME_BATTLE_VIDEO_TO_SWEET_SCENT = 60 * 10; // ~10s
 const NON_VBLANK_ADV_BATTLE_VIDEO_TO_SWEET_SCENT = 210;
@@ -65,31 +66,33 @@ export const PaintingReseedingTimers = ({
   ];
   const labelsValidateFrame = ["Close the Battle Video", "Trigger Sweet Scent"];
 
-  const calibrationField: Field = {
-    label: "Calibration + Offset (advance)",
-    input: (
-      <NumberInput
-        value={calibration}
-        numType="decimal"
-        onChange={(val) => setCalibration(val ?? 0)}
-      />
-    ),
-  };
+  const fields: Field[] = [
+    {
+      label: "Target frame before painting",
+      input: `${formatLargeInteger(frame_before_painting)} (Seed: ${formatHex(frame_before_painting, 2)})`,
+    },
+    {
+      label: "Battle Video created at",
+      input: `~${formatLargeInteger(existingBattleVideoAdv)} advances after painting.`,
+    },
+    {
+      label: "Calibration + Offset (advance)",
+      input: (
+        <NumberInput
+          value={calibration}
+          numType="decimal"
+          onChange={(val) => setCalibration(val ?? 0)}
+        />
+      ),
+    },
+  ];
 
   return (
     <>
       <h2>Interact with the painting and create the Battle Video</h2>
       <Instructions_0_createBattleVideo />
 
-      <div>
-        Target frame before painting: {frame_before_painting} (Seed:{" "}
-        {formatHex(frame_before_painting, 2)})
-      </div>
-      <div>
-        Battle Video created at ~{existingBattleVideoAdv} advances after
-        painting.
-      </div>
-      <FormFieldTable fields={[calibrationField]} />
+      <FormFieldTable fields={fields} />
       <MultiTimer
         milliseconds={millisecondsCreateVideo}
         labels={labelsCreateVideo}
@@ -178,7 +181,6 @@ export const EmeraldPaintingReseeding = () => {
         onSelected={(before, after) => {
           setTargetPaintingAdvs({ before, after });
         }}
-        alwaysShowAdvancedSettings={false}
       />
 
       {targetPaintingAdvs?.before === 0 && (
@@ -216,7 +218,7 @@ export const EmeraldPaintingReseeding = () => {
             }
 
             const distBefore =
-              targetPaintingAdvs.before - hitAdv.frame_before_painting;
+              hitAdv.frame_before_painting - targetPaintingAdvs.before;
             if (distBefore === 0) {
               setBattleVideoAdvAfterPaintingConfirmed(
                 hitAdv.adv_after_painting -

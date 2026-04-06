@@ -1,0 +1,1 @@
+import{r as e,t}from"./consts-CA_cwTi1.js";var n=[`GBA`,`NDS`,`mGBA_60`,`mGBA_Native`],r={GBA:t,NDS:e,mGBA_60:60,mGBA_Native:t},i=[{label:`GBA`,value:`GBA`},{label:`NDS - GBA Slot`,value:`NDS`},{label:`mGBA (60 FPS target)`,value:`mGBA_60`},{label:`mGBA (Native FPS target)`,value:`mGBA_Native`}];export{i as n,n as r,r as t};

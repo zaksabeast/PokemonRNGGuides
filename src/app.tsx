@@ -9,12 +9,14 @@ import { PageLanguageContext } from "~/markdownExports/languageContext";
 import { NeedsUpdateNotification } from "~/swRefresh/notification";
 import { useActiveRoute } from "./hooks/useActiveRoute";
 import { getGuide } from "./guides";
+import { useUpdateHydration } from "./hooks/useHydrate";
 
 type Props = {
   updateSw: (reloadPage: boolean) => void;
 };
 
 export const App = ({ updateSw }: Props) => {
+  useUpdateHydration();
   const route = useActiveRoute();
   const currentLanguage = getGuide(route).meta.translation?.language ?? "en";
 

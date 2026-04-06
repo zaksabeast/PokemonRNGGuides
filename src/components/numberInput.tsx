@@ -106,21 +106,22 @@ export const NumberInput = ({
   );
 };
 
-type FormikNumberInputProps<FormState extends GenericForm> = tst.O.Required<
-  tst.O.Overwrite<
-    NumberInputProps,
-    {
-      name: Paths<FormState, number | null>;
-      /*
+export type FormikNumberInputProps<FormState extends GenericForm> =
+  tst.O.Required<
+    tst.O.Overwrite<
+      NumberInputProps,
+      {
+        name: Paths<FormState, number | null>;
+        /*
         - undefined: defaults to form errors
         - null: explicitly no error
         - string: custom error message
       */
-      errorMessage?: string | null;
-    }
-  >,
-  "name"
->;
+        errorMessage?: string | null;
+      }
+    >,
+    "name"
+  >;
 
 export const FormikNumberInput = <FormState extends GenericForm>({
   name,
@@ -148,89 +149,6 @@ export const FormikNumberInput = <FormState extends GenericForm>({
         value={value}
         errorMessage={errorMessage === null ? undefined : error}
       />
-    </Flex>
-  );
-};
-
-type NumType = "hex" | "decimal";
-
-type FormikNumberDecimalHexInputProps<FormState extends GenericForm> = Omit<
-  FormikNumberInputProps<FormState>,
-  "numType"
-> & {
-  initialNumType: NumType;
-  byteCount: number;
-};
-
-export const FormikNumberDecimalHexInput = <FormState extends GenericForm>({
-  name,
-  errorMessage,
-  onChange: _onChange,
-  byteCount,
-  initialNumType,
-  ...props
-}: FormikNumberDecimalHexInputProps<FormState>) => {
-  const [{ value, onBlur }, { error, status }, { setValue }] = useField<
-    number | null
-  >(name);
-
-  const onChange = (value: number | null) => {
-    setValue(value);
-    _onChange?.(value);
-  };
-
-  const [numType, setNumType] = React.useState<NumType>(initialNumType);
-  const options = [
-    { label: "Decimal", value: "decimal" } as const,
-    { label: "Hex", value: "hex" } as const,
-  ];
-
-  return (
-    <Flex vertical gap={4}>
-      <RadioGroup
-        value={numType}
-        options={options}
-        onChange={(val) => {
-          setNumType(val.target.value as "hex" | "decimal");
-        }}
-        optionType="button"
-      />
-      {match(numType)
-        .with("hex", () => {
-          return (
-            <>
-              <NumberInput
-                status={status}
-                {...props}
-                numType="hex"
-                name={name}
-                onBlur={onBlur}
-                onChange={onChange}
-                value={value}
-                errorMessage={errorMessage === null ? undefined : error}
-              />
-              {value != null && `Decimal: ${formatLargeInteger(value)}`}
-            </>
-          );
-        })
-        .with("decimal", () => {
-          return (
-            <>
-              <NumberInput
-                status={status}
-                {...props}
-                numType="decimal"
-                name={name}
-                onBlur={onBlur}
-                onChange={onChange}
-                value={value}
-                errorMessage={errorMessage === null ? undefined : error}
-              />
-              {value != null && `Hex: ${formatHex(value, byteCount)}`}
-            </>
-          );
-        })
-        .exhaustive()}
     </Flex>
   );
 };

@@ -206,6 +206,10 @@ pub struct VecWrapperForWasm {
     pub vec: Vec<Wild3SearcherResultMon>,
 }
 
+/**
+ *  The returned vector contains the results by pid_path
+ * (all the results that give the same Pokémon outcome are grouped together).
+ * */
 #[wasm_bindgen]
 pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<VecWrapperForWasm> {
     search_wild3_reverse(opts)
@@ -214,6 +218,10 @@ pub fn search_wild3(opts: &Wild3SearcherOptions) -> Vec<VecWrapperForWasm> {
         .collect_vec()
 }
 
+/**
+ *  The returned vector contains the results by distance from min_initial_seed.
+ *  Ex: vector[4] contains the results for seed min_initial_seed + 4.
+ * */
 #[wasm_bindgen]
 pub fn search_wild3_with_initial_advances_range(
     opts: &Wild3SearcherOptions,
@@ -221,10 +229,13 @@ pub fn search_wild3_with_initial_advances_range(
     max_initial_seed: u32,
 ) -> Vec<VecWrapperForWasm> {
     (min_initial_seed..=max_initial_seed)
-        .flat_map(|initial_seed| {
+        .map(|initial_seed| {
             let mut new_opts = opts.clone();
             new_opts.initial_seed = initial_seed;
             search_wild3_reverse(&new_opts)
+                .into_iter()
+                .flatten()
+                .collect()
         })
         .map(|vec| VecWrapperForWasm { vec })
         .collect_vec()

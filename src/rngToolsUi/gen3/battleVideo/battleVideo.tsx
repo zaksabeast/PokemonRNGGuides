@@ -35,8 +35,10 @@ const SAFETY_BUFFER_NO_BATTLE = 350; // Additional buffer for satefy
 
 // With waiting in battle (new or updating existing are about the same)
 const THRESHOLD_ADV_FOR_BATTLE = 5 * 3600; // Waiting in battle is only considered if the waiting is greater than 5 minutes.
-const MIN_ADV_FOR_BATTLE = 6800; // It takes 6800 adv to start a wild battle, end it immediately, and make a battle video.
-const SWEET_SCENT_TARGET = 1500; // It takes about 1500 advances to boot the game and start a battle.
+const MIN_ADV_FOR_BATTLE_NEW = 6000; // It takes 6000 adv to start a wild battle, end it immediately, and make a battle video.
+const MIN_ADV_FOR_BATTLE_UPDATE = 5000; // It takes 5000 adv to start a wild battle, end it immediately, and make a battle video.
+const SWEET_SCENT_TARGET_NEW = 1500; // It takes about 1500 advances to boot the game and start a battle.
+const SWEET_SCENT_TARGET_UPDATE = 600; // It takes about 600 advances to close battle video and start a battle.
 const POST_BATTLE_BUFFER = 1800; // Buffer to add flexbility to the timing of the battle start
 const ADV_MISC_BATTLE = 300; // Advances before last input not caused by frames when waiting in battle
 const SAFETY_BUFFER_BATTLE = 1000; // Additional buffer for satefy
@@ -349,15 +351,19 @@ const calculateWithBattle = (opts: FormState) => {
   const targetAdvAtVideo = targetAdvance - safetyBufferAdv;
   const targetAdvAtInput = targetAdvAtVideo - OFFSET_DIALOGUE_TO_BV;
 
+  const minAdvForBattle = opts.isUpdatingExisting
+    ? MIN_ADV_FOR_BATTLE_UPDATE
+    : MIN_ADV_FOR_BATTLE_NEW;
+
   // To reach targetAdvAtInput, there are 3 types of advances: "frame outside battle", "advance in battle" and misc.
   // misc is always ADV_MISC_BATTLE.
-  // "frame outside battle" is at the minimum MIN_ADV_FOR_BATTLE. As small as possible for best speed up.
+  // "frame outside battle" is at the minimum minAdvForBattle. As small as possible for best speed up.
   //     However, making it too small means that the player must start and end the battle exactly at the right time, which is not feasible.
   //     We add POST_BATTLE_BUFFER for flexibility. (instead of waiting 15 sec in battle, we wait 30 sec at battle frontier)
   //     "frame outside battle" is split in tow parts: before battle (POST_BOOT_SWEET_SCENT_BUFFER) and after battle (the rest)
   // the rest of advances comes from "advance in battle".
 
-  const advFromFrameOutsideBattle = MIN_ADV_FOR_BATTLE + POST_BATTLE_BUFFER;
+  const advFromFrameOutsideBattle = minAdvForBattle + POST_BATTLE_BUFFER;
   const advFromBattle =
     targetAdvAtInput - ADV_MISC_BATTLE - advFromFrameOutsideBattle;
   const frameInBattleAtX2Rate = Math.floor(advFromBattle / 2);
@@ -366,9 +372,12 @@ const calculateWithBattle = (opts: FormState) => {
     ADV_SWEET_SCENT_INPUT_TO_X2_SPEED_UP - ADV_RUN_INPUT_TO_X1_SPEED_UP;
   const frameInBattle = frameInBattleAtX2Rate + speedupLatency;
 
-  const frameFromFrameOutsideBattleBefore = SWEET_SCENT_TARGET;
+  const sweetScentTarget = opts.isUpdatingExisting
+    ? SWEET_SCENT_TARGET_UPDATE
+    : SWEET_SCENT_TARGET_NEW;
+  const frameFromFrameOutsideBattleBefore = sweetScentTarget;
   const advFromFrameOutsideBattleAfter =
-    advFromFrameOutsideBattle - SWEET_SCENT_TARGET;
+    advFromFrameOutsideBattle - sweetScentTarget;
 
   const frameFromFrameOutsideBattleAfter =
     advFromFrameOutsideBattleAfter - speedupLatency;
@@ -401,17 +410,15 @@ const calculateWithBattle = (opts: FormState) => {
         : { name: "Game started", adv: 0, advSources: [] },
       {
         name: "Player input to trigger Sweet Scent",
-        adv: initialAdv + SWEET_SCENT_TARGET,
+        adv: initialAdv + sweetScentTarget,
         advSources: [
-          { name: "Frames (VBlank) & Others", adv: SWEET_SCENT_TARGET },
+          { name: "Frames (VBlank) & Others", adv: sweetScentTarget },
         ],
       },
       {
         name: "Battle started",
         adv:
-          initialAdv +
-          SWEET_SCENT_TARGET +
-          ADV_SWEET_SCENT_INPUT_TO_X2_SPEED_UP,
+          initialAdv + sweetScentTarget + ADV_SWEET_SCENT_INPUT_TO_X2_SPEED_UP,
         advSources: [
           {
             name: "Frames (VBlank) & Others",
@@ -423,7 +430,7 @@ const calculateWithBattle = (opts: FormState) => {
         name: "Player input to run from battle",
         adv:
           initialAdv +
-          SWEET_SCENT_TARGET +
+          sweetScentTarget +
           ADV_SWEET_SCENT_INPUT_TO_X2_SPEED_UP +
           advFromBattle -
           ADV_RUN_INPUT_TO_X1_SPEED_UP,
@@ -438,7 +445,7 @@ const calculateWithBattle = (opts: FormState) => {
         name: "Battle ended",
         adv:
           initialAdv +
-          SWEET_SCENT_TARGET +
+          sweetScentTarget +
           ADV_SWEET_SCENT_INPUT_TO_X2_SPEED_UP +
           advFromBattle,
         advSources: [
@@ -457,7 +464,7 @@ const calculateWithBattle = (opts: FormState) => {
             name: "Frames (VBlank)",
             adv:
               targetAdvAtInput -
-              (SWEET_SCENT_TARGET +
+              (sweetScentTarget +
                 ADV_SWEET_SCENT_INPUT_TO_X2_SPEED_UP +
                 advFromBattle),
           },

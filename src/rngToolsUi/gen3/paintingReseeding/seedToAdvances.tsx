@@ -25,7 +25,7 @@ import { GBA_FPS } from "~/utils/consts";
 import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
 import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 import { match } from "ts-pattern";
-import { FormikNumberDecimalHexInput } from "~/components/numberInput";
+import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
 
 type Result = Wild3PaintingAdvsAndDur & { uid: number };
@@ -168,11 +168,7 @@ const MyFields = () => {
     {
       label: "Frame before painting",
       input: (
-        <FormikNumberDecimalHexInput<FormState>
-          initialNumType="decimal"
-          name="frameBeforePainting"
-          byteCount={2}
-        />
+        <FormikEmeraldFrameBeforePaintingInput<FormState> name="frameBeforePainting" />
       ),
       show: alreadyKnowPaintingFrameAndAdv,
       indent: 1,

@@ -68,7 +68,7 @@ import {
   SLOWEST_LEAD_CYCLE_SPEED,
 } from "./leadCycleSpeedSelector";
 import { lcrng_distance } from "~/utils/lcrng";
-import { FormikNumberDecimalHexInput } from "~/components/numberInput";
+import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -257,11 +257,7 @@ const getFields = (
   fields.push({
     label: "Frame before painting",
     input: (
-      <FormikNumberDecimalHexInput<FormState>
-        initialNumType="decimal"
-        name="initial_seed"
-        byteCount={4}
-      />
+      <FormikEmeraldFrameBeforePaintingInput<FormState> name="initial_seed" />
     ),
     show: !hasPreselectedData && usingPaintingReseeding,
     indent: 1,

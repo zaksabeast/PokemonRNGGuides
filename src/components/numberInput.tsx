@@ -186,7 +186,7 @@ export const FormikNumberDecimalHexInput = <FormState extends GenericForm>({
   ];
 
   return (
-    <Flex dir="row" align="center" gap={10}>
+    <Flex vertical gap={4}>
       <RadioGroup
         value={numType}
         options={options}

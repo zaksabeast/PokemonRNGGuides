@@ -1,0 +1,1 @@
+import{r as e}from"./index-CndXGoE5.js";var t=()=>{var t;let[n]=e();return((t=n.target)==null?void 0:t.tid)??`???`},n=()=>{var t;let[n]=e();return((t=n.target)==null?void 0:t.sid)??`???`};export{n as Id4Sid,t as Id4Tid};

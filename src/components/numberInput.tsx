@@ -103,21 +103,22 @@ export const NumberInput = ({
   );
 };
 
-type FormikNumberInputProps<FormState extends GenericForm> = tst.O.Required<
-  tst.O.Overwrite<
-    NumberInputProps,
-    {
-      name: Paths<FormState, number | null>;
-      /*
+export type FormikNumberInputProps<FormState extends GenericForm> =
+  tst.O.Required<
+    tst.O.Overwrite<
+      NumberInputProps,
+      {
+        name: Paths<FormState, number | null>;
+        /*
         - undefined: defaults to form errors
         - null: explicitly no error
         - string: custom error message
       */
-      errorMessage?: string | null;
-    }
-  >,
-  "name"
->;
+        errorMessage?: string | null;
+      }
+    >,
+    "name"
+  >;
 
 export const FormikNumberInput = <FormState extends GenericForm>({
   name,

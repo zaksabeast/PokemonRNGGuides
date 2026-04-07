@@ -103,7 +103,7 @@ const getInitialValues = (): FormState => {
     usingPaintingReseeding: false,
     isPaintingSeedConfirmed: false,
     usingBattleVideoWithoutPainting: false,
-    existingBattleVideoAdv: 1, //NO_PROD
+    existingBattleVideoAdv: 1,
     targetFrameBeforePainting: 1,
     targetAdvance: 1000,
     targetMethod: "Wild1",
@@ -209,7 +209,7 @@ const getFields = ({
       show: usingPaintingReseeding,
     },
     {
-      label: "Target frame before painting was confirmed to be hit?", //NO_PROD
+      label: "Target frame before painting was confirmed to be hit?",
       input: <FormikSwitch<FormState> name="isPaintingSeedConfirmed" />,
       indent: 1,
       show: usingPaintingReseeding,
@@ -471,8 +471,6 @@ const getLeadCycleSpeed = (values: FormState) => {
 export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
   const [resultReactNode, setResultReactNode] =
     React.useState<React.ReactNode>(null);
-
-  //NO_PROD battle video advance
 
   const onSubmit: RngToolSubmit<FormState> = async (rawValues) => {
     const values: FormState = {

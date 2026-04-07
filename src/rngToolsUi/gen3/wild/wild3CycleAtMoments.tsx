@@ -1,4 +1,4 @@
-import { CycleAtMoment } from "~/rngTools";
+import { CycleAtMoment, Moment } from "~/rngTools";
 import {
   Field,
   ResultColumn,
@@ -9,12 +9,25 @@ import {
 import React from "react";
 import { z } from "zod";
 import { TextArea } from "~/components/textArea";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 
-type UiResultCycleAtMoment = CycleAtMoment & {
+type UiResultCycleAtMoment = {
   uid: number;
-  increment: number;
-  diff_cycle_with_compare: number | null;
-  diff_increment_with_compare: number | null;
+  moment: Moment;
+  dataFromJson: {
+    cycle: number;
+    frame: number;
+    cycleFromSweetScent: number;
+    cycleFromSweetScentIncrement: number;
+  };
+  dataFromTool: {
+    cycleFromSweetScent: number;
+    cycleFromSweetScentIncrement: number;
+  };
+  dataDiff: {
+    cycleFromSweetScent: number;
+    cycleFromSweetScentIncrement: number;
+  };
 };
 
 const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
@@ -23,63 +36,151 @@ const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
     dataIndex: "moment",
   },
   {
+    type: "group",
     title: (
       <>
-        Cycle from
+        Data from
         <br />
-        Sweet Scent start
+        JSON generated
+        <br />
+        by emulator (lua)
       </>
     ),
-    dataIndex: "cycle",
-    key: "cycle",
-    render: (cycle, values) => {
-      if (values.diff_cycle_with_compare === null) {
-        return `${cycle}`;
-      }
-
-      const sign = values.diff_cycle_with_compare > 0 ? "+" : "";
-      return `${cycle} (${sign}${values.diff_cycle_with_compare})`;
-    },
+    key: "dataFromJson_group",
+    columns: [
+      {
+        title: "Frame",
+        key: "dataFromJson_Frame",
+        dataIndex: "dataFromJson",
+        render: (dataFromJson) => {
+          return formatLargeInteger(dataFromJson.frame);
+        },
+      },
+      {
+        title: "Cycle",
+        key: "dataFromJson_Cycle",
+        dataIndex: "dataFromJson",
+        render: (dataFromJson) => {
+          return formatLargeInteger(dataFromJson.cycle);
+        },
+      },
+      {
+        title: (
+          <>
+            Cycle from
+            <br />
+            Sweet Scent start
+            <br />
+            excluding Vblank
+          </>
+        ),
+        key: "dataFromJson_CycleSweetScent",
+        dataIndex: "dataFromJson",
+        render: (dataFromJson) => {
+          return formatLargeInteger(dataFromJson.cycleFromSweetScent);
+        },
+      },
+      {
+        title: "Increment",
+        key: "dataFromJson_Increment",
+        dataIndex: "dataFromJson",
+        render: (dataFromJson) => {
+          return `+${formatLargeInteger(dataFromJson.cycleFromSweetScentIncrement)}`;
+        },
+      },
+    ],
   },
   {
-    title: "Increment",
-    dataIndex: "increment",
-    render: (increment, values) => {
-      if (values.diff_increment_with_compare === null) {
-        return `${increment}`;
-      }
-
-      const sign = values.diff_increment_with_compare > 0 ? "+" : "";
-      return `${increment} (${sign}${values.diff_increment_with_compare})`;
-    },
+    type: "group",
+    title: "Webtool difference with JSON",
+    columns: [
+      {
+        title: (
+          <>
+            Cycle from
+            <br />
+            Sweet Scent start
+            <br />
+            excluding Vblank
+          </>
+        ),
+        key: "dataDiff_CycleSweetScent",
+        dataIndex: "dataDiff",
+        render: (dataDiff) => {
+          return formatLargeInteger(dataDiff.cycleFromSweetScent);
+        },
+      },
+      {
+        title: "Increment",
+        key: "dataDiff_Increment",
+        dataIndex: "dataDiff",
+        render: (dataDiff) => {
+          return `+${formatLargeInteger(dataDiff.cycleFromSweetScentIncrement)}`;
+        },
+      },
+    ],
   },
 ];
 
-const compareCycleAtMomentsSchema = z.object({
-  advanceAtSweetScentWildEncounter: z.number().optional(),
-  cycleAtSweetScentWildEncounter: z.number().optional(),
+const cycleAtMomentsFromJsonSchema = z.object({
   cycleAtMoments: z.array(
     z.object({
       moment: z.string(),
       cycle: z.number(),
+      frame: z.number(),
+      adv: z.number(),
     }),
   ),
 });
 
+export type CompareCycleAtMomentsFromJson = z.infer<
+  typeof cycleAtMomentsFromJsonSchema
+>;
+
 const parseCompareCycleAtMoments = (input: string) => {
   try {
     const info = JSON.parse(input);
-    return compareCycleAtMomentsSchema.parse(info);
+    return cycleAtMomentsFromJsonSchema.parse(info);
   } catch {
     return null;
   }
 };
 
 type Props = {
-  cycleAtMoments: CycleAtMoment[];
+  cycleAtMomentsFromTool: CycleAtMoment[];
 };
 
-export const Wild3CycleAtMoments = ({ cycleAtMoments }: Props) => {
+let nextUid = 0;
+
+const createUiResultCycleAtMomentsFromJson = (
+  dataFromJson: CompareCycleAtMomentsFromJson,
+) => {
+  /* 
+  Example:
+  {
+    "cycleAtMoments":[
+      {"moment":"SweetScentWildEncounter", "cycle":54797, "frame":2026, "adv":2044},
+      {"moment":"ChooseWildMonIndex_Land_Random", "cycle":94959, "frame":2026, "adv":2044},
+      {"moment":"ChooseWildMonLevel_RandomLvl", "cycle":95604, "frame":2026, "adv":2045},
+      {"moment":"PickWildMonNature_RandomTestSynchro", "cycle":163443, "frame":2026, "adv":2046},
+      {"moment":"CreateMonWithNature_RandomPidLowFirst", "cycle":164611, "frame":2026, "adv":2047},
+      {"moment":"CreateMonWithNature_RandomPidLowLast", "cycle":164711, "frame":2026, "adv":2048},
+      {"moment":"CreateMonWithNature_RandomPidHighLast", "cycle":167676, "frame":2026, "adv":2054},
+      {"moment":"VblankIntr_End", "cycle":50235, "frame":2027, "adv":2056},
+      {"moment":"CreateBoxMon_RandomIvs1", "cycle":60589, "frame":2027, "adv":2056},
+      {"moment":"CreateBoxMon_RandomIvs2", "cycle":102544, "frame":2027, "adv":2057},
+    ],
+    "method":"Wild2",
+  }
+  */
+  const camNoVblank = dataFromJson.cycleAtMoments.filter(
+    (cam) => cam.moment !== "VblankIntr_End",
+  );
+
+  return c;
+};
+
+export const Wild3CycleAtMoments = ({ cycleAtMomentsFromTool }: Props) => {
   const [compareCycleAtMomentsStr, setCompareCycleAtMomentsStr] =
     React.useState("");
 
@@ -87,18 +188,16 @@ export const Wild3CycleAtMoments = ({ cycleAtMoments }: Props) => {
     React.useState(false);
 
   const uiResultsCycleAtMoment = React.useMemo(() => {
-    const compareCycleAtMoments = parseCompareCycleAtMoments(
-      compareCycleAtMomentsStr,
-    );
-    return cycleAtMoments.map((cycleAtMoment, idx) => {
-      const prevInfo = idx === 0 ? undefined : cycleAtMoments[idx - 1];
-      const compareInfo = compareCycleAtMoments?.cycleAtMoments.find(
+    const dataFromJson = parseCompareCycleAtMoments(compareCycleAtMomentsStr);
+    return cycleAtMomentsFromTool.map((cycleAtMoment, idx) => {
+      const prevInfo = idx === 0 ? undefined : cycleAtMomentsFromTool[idx - 1];
+      const compareInfo = dataFromJson?.cycleAtMoments.find(
         (cac) => cac.moment === cycleAtMoment.moment,
       );
       const comparePrevCycle =
         idx === 0
           ? 0
-          : compareCycleAtMoments?.cycleAtMoments.find(
+          : dataFromJson?.cycleAtMoments.find(
               (cac) => cac.moment === prevInfo?.moment,
             )?.cycle;
 
@@ -109,11 +208,7 @@ export const Wild3CycleAtMoments = ({ cycleAtMoments }: Props) => {
         const diff_increment_with_compare = increment - compareIncrement;
         return {
           ...cycleAtMoment,
-          // No stable unique key can be derived from the data.
-          // Array indexes can conflict with previously calculated data, and batched results mean indexes could be unstable between results.
-          // Re-rendering with a new uid is safe because this is a read-only display table — row remounting has no side effects.
-          // eslint-disable-next-line react-hooks/purity -- uid is only used as a React row key for DOM reconciliation.
-          uid: Math.random(),
+          uid: nextUid++,
           diff_cycle_with_compare: cycleAtMoment.cycle - compareInfo.cycle,
           increment,
           diff_increment_with_compare,
@@ -121,11 +216,7 @@ export const Wild3CycleAtMoments = ({ cycleAtMoments }: Props) => {
       }
       return {
         ...cycleAtMoment,
-        // No stable unique key can be derived from the data.
-        // Array indexes can conflict with previously calculated data, and batched results mean indexes could be unstable between results.
-        // Re-rendering with a new uid is safe because this is a read-only display table — row remounting has no side effects.
-        // eslint-disable-next-line react-hooks/purity -- uid is only used as a React row key for DOM reconciliation.
-        uid: Math.random(),
+        uid: nextUid++,
         increment,
         diff_cycle_with_compare: null,
         diff_increment_with_compare: null,

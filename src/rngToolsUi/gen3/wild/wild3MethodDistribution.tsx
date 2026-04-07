@@ -650,7 +650,7 @@ export const Wild3MethodDistribution = ({
       </RngToolForm>
 
       {permitEnablingDebugOptions && (
-        <Wild3CycleAtMoments cycleAtMoments={cycleAtMoments} />
+        <Wild3CycleAtMoments cycleAtMomentsFromTool={cycleAtMoments} />
       )}
     </>
   );

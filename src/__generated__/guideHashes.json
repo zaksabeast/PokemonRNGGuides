@@ -129,7 +129,7 @@
   },
   "/de-emerald-painting-rng/": {
     "hash": "e7c55423d893f63471aecf523c89ca733a69ad20b031145aaf8357f01718a577",
-    "lastUpdated": "2026-04-01"
+    "lastUpdated": "2026-04-06"
   },
   "/de-emerald-pokerus-emu/": {
     "hash": "be1a120133e695e80897f3c5370dd119ab42828c309b5188e8d5730d04d259e1",
@@ -224,8 +224,8 @@
     "lastUpdated": null
   },
   "/dppt-tid-sid/": {
-    "hash": "040f4f2418ca18a92e10c84d80fd0009ed77a78340ed42ac3ec5e5c557bf4b56",
-    "lastUpdated": "2026-03-29"
+    "hash": "33df833a69830e55077c76fe5215b97f75ec712b491754c56311be39a4dd4ab5",
+    "lastUpdated": "2026-04-07"
   },
   "/dppt-wild/": {
     "hash": "aeb881560a0f42098e4a691d6dfcfc4a49927a0213b2b7a5c960aac9da31ce58",
@@ -264,8 +264,8 @@
     "lastUpdated": "2026-04-06"
   },
   "/emerald-painting-rng/": {
-    "hash": "77917a35e0522e8c06741ef441544bc7f8c52fcb53fd89ec766c972e51e9e1a7",
-    "lastUpdated": "2026-04-05"
+    "hash": "41121661da63a47afeccbce17104c1473a1d4585147cb4d5982ad61c3b620714",
+    "lastUpdated": "2026-04-06"
   },
   "/emerald-painting-seed-searcher/": {
     "hash": "ff30267f4943841894bcda9e53ca1911995dd3a5140bca60002df12aa0411e80",
@@ -604,8 +604,8 @@
     "lastUpdated": null
   },
   "/hgss-tid-sid/": {
-    "hash": "040f4f2418ca18a92e10c84d80fd0009ed77a78340ed42ac3ec5e5c557bf4b56",
-    "lastUpdated": "2026-03-29"
+    "hash": "33df833a69830e55077c76fe5215b97f75ec712b491754c56311be39a4dd4ab5",
+    "lastUpdated": "2026-04-07"
   },
   "/install-capturesight/": {
     "hash": "acf0cdf304196b7719bc0821271b378975706791c58bfe712c963ca542150f20",
@@ -788,12 +788,12 @@
     "lastUpdated": "2026-03-29"
   },
   "/retail-dppt-starter/": {
-    "hash": "b5a6dcacd4586e407b6e36b1638c72dd51253b2c23ced43c78b812758a8c1a35",
-    "lastUpdated": "2026-03-08"
+    "hash": "4cb3223462647e8ee6b934aeb2845da6bcb77c2c9938bc1c3bfa830f3fad5bf8",
+    "lastUpdated": "2026-04-07"
   },
   "/retail-dppt-static/": {
-    "hash": "c461bd0913b921751b509fa10c955be7341ff5231f55982f71d86687337c3891",
-    "lastUpdated": "2026-04-04"
+    "hash": "6d5434a39968421592cd046b482316a207eedf3fc626f60f3cbc66feae503131",
+    "lastUpdated": "2026-04-07"
   },
   "/retail-emerald-egg/": {
     "hash": "a760d5ed0920513d58d923a68b14f3d8f543bfc65823f6bb0e836e96c3953316",
@@ -804,8 +804,8 @@
     "lastUpdated": "2026-03-19"
   },
   "/retail-hgss-starter/": {
-    "hash": "b5a6dcacd4586e407b6e36b1638c72dd51253b2c23ced43c78b812758a8c1a35",
-    "lastUpdated": "2026-03-08"
+    "hash": "4cb3223462647e8ee6b934aeb2845da6bcb77c2c9938bc1c3bfa830f3fad5bf8",
+    "lastUpdated": "2026-04-07"
   },
   "/retail-oras-egg-mmsc/": {
     "hash": "385d5514055e517e42a5156117967821c9cee3435cde862439c734c6b98cfa08",
@@ -1125,7 +1125,7 @@
   },
   "/zh-emerald-painting-rng/": {
     "hash": "49e182d29f7531dab02743f43d62df2e79958bf6c5d118c9622260b401940b2b",
-    "lastUpdated": "2026-04-01"
+    "lastUpdated": "2026-04-06"
   },
   "/zh-emerald-pokerus-emu/": {
     "hash": "366fd0bd015d34108525dcf0171753998b0fc81481df2d5c4c0db12a7ff51b05",

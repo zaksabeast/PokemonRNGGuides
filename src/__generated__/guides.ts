@@ -2785,7 +2785,7 @@ export const guides = {
       title: "Reseed the RNG using paintings",
       navDrawerTitle: "Painting Reseeding",
       description:
-        "How to perform Painting Reseeding to quickly access very distant RNG states.",
+        "Learn how to reseed the RNG using paintings in Pokémon Emerald to get the Pokémon you want quickly, without the long wait.",
       slug: "/emerald-painting-rng/",
       isRoughDraft: false,
       orderPriority: 20,
@@ -2794,7 +2794,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-04-06",
+      lastUpdated: "2026-04-07",
       type: "baseGuide",
       canonical: "/emerald-painting-rng/",
       file: "guides/Gen 3/Emerald/Reseed RNG.mdx",

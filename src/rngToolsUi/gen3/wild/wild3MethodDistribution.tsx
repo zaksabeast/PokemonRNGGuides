@@ -68,6 +68,7 @@ import {
   SLOWEST_LEAD_CYCLE_SPEED,
 } from "./leadCycleSpeedSelector";
 import { lcrng_distance } from "~/utils/lcrng";
+import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -254,14 +255,16 @@ const getFields = (
   });
 
   fields.push({
-    label: "Seed after reseeding",
-    input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
+    label: "Frame before painting",
+    input: (
+      <FormikEmeraldFrameBeforePaintingInput<FormState> name="initial_seed" />
+    ),
     show: !hasPreselectedData && usingPaintingReseeding,
     indent: 1,
   });
 
   fields.push({
-    label: usingPaintingReseeding ? "Advances after reseeding" : "Advances",
+    label: usingPaintingReseeding ? "Advances after painting" : "Advances",
     input: <FormikNumberInput<FormState> name="advance" numType="decimal" />,
     show: !hasPreselectedData,
     indent: usingPaintingReseeding ? 1 : 0,
@@ -274,7 +277,7 @@ const getFields = (
     input: (
       <>
         Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
-        without reseeding
+        without painting reseeding
       </>
     ),
     indent: 1,

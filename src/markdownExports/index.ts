@@ -189,6 +189,10 @@ const tools = {
     () => import("~/rngToolsUi/gen3/paintingReseeding/seedToAdvances"),
     (mod) => mod.EmeraldSeedToAdvances,
   ),
+  EmeraldPaintingReseeding: lazyLoad(
+    () => import("~/rngToolsUi/gen3/paintingReseeding/paintingReseeding"),
+    (mod) => mod.EmeraldPaintingReseeding,
+  ),
   Gen3TidSidGenerator: lazyLoad(
     () => import("~/rngToolsUi/gen3/tidsid"),
     (mod) => mod.Gen3TidSidGenerator,

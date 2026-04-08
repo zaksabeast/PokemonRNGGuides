@@ -2732,6 +2732,48 @@ export const guides = {
       return file.default;
     }),
   },
+  "/emerald-painting-reseeding/": {
+    meta: {
+      id: "/emerald-painting-reseeding/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "false-Painting Reseeding",
+      isNew: true,
+      title: "Painting Reseeding",
+      navDrawerTitle: "Painting Reseeding",
+      description:
+        "How to perform Painting Reseeding to quickly access very distant RNG states.",
+      slug: "/emerald-painting-reseeding/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: "2026-04-07",
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-04-08",
+      type: "baseGuide",
+      canonical: "/emerald-painting-reseeding/",
+      file: "guides/Gen 3/Emerald/Painting Reseeding.mdx",
+      translations: null,
+      guideGroupId: "en:false-Painting Reseeding:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/emerald-painting-reseeding/" },
+        cfwEmu: { type: "slug", slug: "/emerald-painting-rng/" },
+      },
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/Painting Reseeding.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/Painting Reseeding.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/emerald-painting-rng/": {
     meta: {
       id: "/emerald-painting-rng/",
@@ -2752,7 +2794,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-04-06",
+      lastUpdated: "2026-04-07",
       type: "baseGuide",
       canonical: "/emerald-painting-rng/",
       file: "guides/Gen 3/Emerald/Reseed RNG.mdx",
@@ -2763,7 +2805,7 @@ export const guides = {
       },
       guideGroupId: "en:false-Painting Reseeding:Emerald",
       guideVariantLinks: {
-        retail: null,
+        retail: { type: "slug", slug: "/emerald-painting-reseeding/" },
         cfwEmu: { type: "slug", slug: "/emerald-painting-rng/" },
       },
       displayAttributes: ["video_guide", "web_tool"],
@@ -2793,7 +2835,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-03-31",
+      lastUpdated: "2026-04-06",
       type: "baseGuide",
       canonical: "/emerald-painting-seed-searcher/",
       file: "guides/Gen 3/Emerald/Seed To Advances.mdx",
@@ -16283,6 +16325,7 @@ export const guideSlugs = [
   "/emerald-battle-video/",
   "/emerald-mirage-island/",
   "/emerald-overview/",
+  "/emerald-painting-reseeding/",
   "/emerald-painting-rng/",
   "/emerald-painting-seed-searcher/",
   "/emerald-pokerus-emu/",

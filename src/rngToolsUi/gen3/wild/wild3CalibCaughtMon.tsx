@@ -8,6 +8,7 @@ import {
   Icon,
   FormFieldTable,
   FormikRadio,
+  FormikSwitch,
   FormikNumberInput,
 } from "~/components";
 import { FormikSelect } from "~/components/select";
@@ -59,6 +60,7 @@ import { ability } from "~/types/ability";
 import { FormikAbilityFilter } from "~/components/abilityFilter";
 import { useFormContext } from "~/hooks/form";
 import { match, P } from "ts-pattern";
+import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -69,6 +71,7 @@ const Validator = z
     species: z.enum(emeraldWildGameData.species),
     lvl: z.number().min(1).max(100),
     ability: z.enum(ability).nullable(),
+    generate_even_if_impossible: z.boolean(),
     rareCandy: z.number().min(0).max(99),
   })
   .extend(StatFieldsSchema.shape);
@@ -87,6 +90,7 @@ const initialValues: FormState = {
   species: "Shuckle",
   lvl: 1,
   ability: "First",
+  generate_even_if_impossible: false,
   rareCandy: 1,
 };
 
@@ -164,12 +168,13 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     return [];
   }
 
+  const max_advances = BATTLE_VIDEO_CONFIDENCE_RANGE * 2;
   const opts: Wild3SearcherOptions = {
     initial_seed,
     tid: 0, // doesn't matter
     sid: 0, // doesn't matter
     initial_advances,
-    max_advances: BATTLE_VIDEO_CONFIDENCE_RANGE * 2,
+    max_advances,
     max_result_count: 2 ** 32 - 1, // No limit
     filter: {
       ...pkmFilterFieldsToRustInput({
@@ -191,9 +196,8 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     map_setups: [map_setup],
     methods: gen3Methods,
     consider_cycles: true,
-    consider_rng_manipulated_lead_pid: true,
-    generate_even_if_impossible: false,
-    //NO_PROD merge conflict
+    consider_rng_manipulated_lead_pid: false,
+    generate_even_if_impossible: values.generate_even_if_impossible,
     painting_opts: null,
     lead_cycle_speed: targetSetup.leadCycleSpeed,
   };
@@ -219,48 +223,52 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
   const list = resultsBySeed
     .map((results, seedIncr) => {
       const seed = seedIncr + min_initial_seed;
-      return results.map((result) => {
-        const probabilityHitMethodsAtAdvance =
-          result.cycle_data_by_lead?.specified_lead?.method_probability ?? 0;
-        const scoreHitMethodsAtAdvance = clamp(
-          probabilityHitMethodsAtAdvance,
-          0.01,
-          1,
-        );
+      return results
+        .filter((result) => {
+          return result.advance <= max_advances;
+        })
+        .map((result) => {
+          const probabilityHitMethodsAtAdvance =
+            result.cycle_data_by_lead?.specified_lead?.method_probability ?? 0;
+          const scoreHitMethodsAtAdvance = clamp(
+            probabilityHitMethodsAtAdvance,
+            0.01,
+            1,
+          );
 
-        const distanceFromTargetAfter = Math.abs(
-          targetSetup.targetAdvance - result.advance,
-        );
-        const distanceFromTargetBefore = Math.abs(
-          targetSetup.targetFrameBeforePainting - seed,
-        );
-        const distanceFromTargetScore =
-          distanceFromTargetAfter ** 1.25 + distanceFromTargetBefore ** 1.5;
-        // after has more chance to fluctuate than before.
-        // distance = 100:  scoreAfter = ~300, scoreBefore = 1000
+          const distanceFromTargetAfter = Math.abs(
+            targetSetup.targetAdvance - result.advance,
+          );
+          const distanceFromTargetBefore = Math.abs(
+            targetSetup.targetFrameBeforePainting - seed,
+          );
+          const distanceFromTargetScore =
+            distanceFromTargetAfter + distanceFromTargetBefore ** 1.5;
+          // after has more chance to fluctuate than before.
+          // distance = 100 => scoreBefore = 1000
 
-        const score = distanceFromTargetScore / scoreHitMethodsAtAdvance;
+          const score = distanceFromTargetScore / scoreHitMethodsAtAdvance;
 
-        return {
-          advance: {
-            frame_before_painting: seed,
-            adv_after_painting: result.advance,
-          },
-          targetAdvance: {
-            frame_before_painting: targetSetup.targetFrameBeforePainting,
-            adv_after_painting: targetSetup.targetAdvance,
-          },
-          method: result.method,
-          score,
-          probabilityHitMethodsAtAdvance,
-          distanceFromTargetAfter,
-          distanceFromTargetBefore,
-          uid: nextUid++,
-          ...getGen3IvRating(result.ivs),
-          statsWithRareCandy: createAllStats0(),
-          ivs: result.ivs,
-        };
-      });
+          return {
+            advance: {
+              frame_before_painting: seed,
+              adv_after_painting: result.advance,
+            },
+            targetAdvance: {
+              frame_before_painting: targetSetup.targetFrameBeforePainting,
+              adv_after_painting: targetSetup.targetAdvance,
+            },
+            method: result.method,
+            score,
+            probabilityHitMethodsAtAdvance,
+            distanceFromTargetAfter,
+            distanceFromTargetBefore,
+            uid: nextUid++,
+            ...getGen3IvRating(result.ivs),
+            statsWithRareCandy: createAllStats0(),
+            ivs: result.ivs,
+          };
+        });
     })
     .flat();
 
@@ -405,15 +413,6 @@ const Fields = ({
           ),
         },
         {
-          label: "Nature",
-          input: (
-            <FormikSelect<FormState, "nature">
-              name="nature"
-              options={natureOptions.required}
-            />
-          ),
-        },
-        {
           label: "Ability",
           input: (
             <FormikAbilityFilter<FormState>
@@ -422,6 +421,15 @@ const Fields = ({
               permitAny={false}
               displayHiddenAbility={false}
               mergeFirstSecondIfSameAbility
+            />
+          ),
+        },
+        {
+          label: "Nature",
+          input: (
+            <FormikSelect<FormState, "nature">
+              name="nature"
+              options={natureOptions.required}
             />
           ),
         },
@@ -452,6 +460,10 @@ const Fields = ({
               </Button>
             </Flex>
           ),
+        },
+        {
+          label: "Display results with 0% likelihood",
+          input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
         },
       ]);
     });
@@ -501,6 +513,7 @@ export const Wild3CalibCaughtMon = ({
     targetAdvance,
     targetFrameBeforePainting: targetFrameBeforePaintingInput,
     usingPaintingReseeding,
+    isPaintingSeedConfirmed,
   } = targetSetup;
 
   const targetFrameBeforePainting = usingPaintingReseeding
@@ -519,7 +532,11 @@ export const Wild3CalibCaughtMon = ({
     const valStr = formatLargeInteger(result.advance[prop]);
 
     if (diffWithTarget === 0) {
-      return valStr;
+      const suffix =
+        prop === "frame_before_painting" && !isPaintingSeedConfirmed
+          ? " (Target)"
+          : "";
+      return `${valStr}${suffix}`;
     }
     const sign = diffWithTarget > 0 ? "+" : "";
 
@@ -537,7 +554,11 @@ export const Wild3CalibCaughtMon = ({
       dataIndex: "advance",
       show: setLatestHitAdv != null,
       render(advance, values) {
+        const isTryingToGetATargetPokemon =
+          !usingPaintingReseeding || isPaintingSeedConfirmed;
+
         if (
+          isTryingToGetATargetPokemon &&
           values.advance.adv_after_painting === targetAdvance &&
           values.advance.frame_before_painting === targetFrameBeforePainting &&
           values.method === targetMethod
@@ -584,7 +605,12 @@ export const Wild3CalibCaughtMon = ({
       key: "frame_after_painting",
       dataIndex: "advance",
       render: (_, values) => {
-        return getAdvDiffTxt(values, "adv_after_painting");
+        const diffTxt = getAdvDiffTxt(values, "adv_after_painting");
+        const title = formatEmeraldTargetFromPainting(
+          values.advance.frame_before_painting,
+          values.advance.adv_after_painting,
+        );
+        return <Tooltip title={title}>{diffTxt}</Tooltip>;
       },
     },
     {

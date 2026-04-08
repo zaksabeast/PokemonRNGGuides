@@ -78,7 +78,7 @@ const Validator = z.object({
   targetFrameBeforePainting: z.number().min(1).max(0xffff),
   usingBattleVideoWithoutPainting: z.boolean(), // with painting, battle video is always used.
   existingBattleVideoAdv: z.number().min(1).max(0xffffffff),
-  targetMethod: z.enum(supportedGen3Methods).nullable(),
+  targetMethod: z.enum(supportedGen3Methods),
   targetAdvance: z.number().int().min(0).max(0xffffffff),
 
   usingAverageLeadCycleSpeed: z.boolean(),
@@ -492,7 +492,7 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
       sid: 0,
       map_idx: 0,
       action: values.action,
-      methods: [values.targetMethod] as Gen3Method[],
+      methods: [values.targetMethod],
       lead: gen3Leads[values.leadIdx],
       filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
       gen3_filter: gen3PkmFilterFieldsToRustInput(

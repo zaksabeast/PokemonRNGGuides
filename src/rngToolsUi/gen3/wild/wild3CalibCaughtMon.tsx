@@ -554,7 +554,11 @@ export const Wild3CalibCaughtMon = ({
       dataIndex: "advance",
       show: setLatestHitAdv != null,
       render(advance, values) {
+        const isTryingToGetATargetPokemon =
+          !usingPaintingReseeding || isPaintingSeedConfirmed;
+
         if (
+          isTryingToGetATargetPokemon &&
           values.advance.adv_after_painting === targetAdvance &&
           values.advance.frame_before_painting === targetFrameBeforePainting &&
           values.method === targetMethod

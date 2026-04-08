@@ -124,7 +124,7 @@ const createTargetSetup = (frame_before_painting: number): TargetSetup => {
     usingPaintingReseeding: true,
     isPaintingSeedConfirmed: false,
     targetFrameBeforePainting: frame_before_painting,
-    targetMethod: null,
+    targetMethod: "Wild1", // Doesn't matter. Won't be used.
     targetAdvance:
       APPROX_ADV_PAINTING_TO_BATTLE_VIDEO +
       APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT,

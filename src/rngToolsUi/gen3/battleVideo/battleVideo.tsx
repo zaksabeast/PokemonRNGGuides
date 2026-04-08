@@ -98,7 +98,7 @@ const Validator = z.object({
 
 type FormState = z.infer<typeof Validator>;
 
-const createInitialValues = (fixedData: Props["fixedData"]): FormState => ({
+const createInitialValues = (fixedData?: FixedData): FormState => ({
   targetAdvance: fixedData?.targetAdvance ?? 50_000,
   isUpdatingExisting: fixedData?.isUpdatingExisting ?? false,
   console: fixedData?.consoleType ?? "GBA",
@@ -511,14 +511,16 @@ const calculate = (opts: FormState) => {
   return calculateWithBattle(opts);
 };
 
+type FixedData = {
+  targetAdvance: number;
+  isUpdatingExisting: boolean;
+  existingBattleVideoAdv: number;
+  isAfterPainting: boolean;
+  consoleType?: Gen3Console;
+};
+
 export type Props = {
-  fixedData?: {
-    targetAdvance: number;
-    isUpdatingExisting: boolean;
-    existingBattleVideoAdv: number;
-    isAfterPainting: boolean;
-    consoleType?: Gen3Console;
-  };
+  fixedData?: FixedData;
 };
 
 export const BattleVideo = ({ fixedData }: Props) => {

@@ -13,7 +13,7 @@ import { formatLargeInteger } from "~/utils/formatLargeInteger";
 
 type UiResultCycleAtMoment = {
   uid: number;
-  moment: Moment;
+  moment: string;
   dataFromJson: {
     cycle: number;
     frame: number;
@@ -133,11 +133,9 @@ const cycleAtMomentsFromJsonSchema = z.object({
   ),
 });
 
-export type CompareCycleAtMomentsFromJson = z.infer<
-  typeof cycleAtMomentsFromJsonSchema
->;
+export type CycleAtMomentsJson = z.infer<typeof cycleAtMomentsFromJsonSchema>;
 
-const parseCompareCycleAtMoments = (input: string) => {
+const parseCycleAtMomentsJsonStr = (input: string) => {
   try {
     const info = JSON.parse(input);
     return cycleAtMomentsFromJsonSchema.parse(info);
@@ -152,8 +150,63 @@ type Props = {
 
 let nextUid = 0;
 
-const createUiResultCycleAtMomentsFromJson = (
-  dataFromJson: CompareCycleAtMomentsFromJson,
+const createEmptyUiResultCycleAtMoments = (
+  json: CycleAtMomentsJson | null,
+  cycleAtMomentsFromToolForFallback: CycleAtMoment[],
+) => {
+  const moments =
+    json == null
+      ? cycleAtMomentsFromToolForFallback.map((cam) => cam.moment)
+      : json.cycleAtMoments
+          .filter((cam) => cam.moment !== "VblankIntr_End")
+          .map((cam) => cam.moment);
+
+  return moments.map((moment) => {
+    return {
+      uid: nextUid++,
+      moment,
+      dataFromJson: {
+        cycle: 0,
+        frame: 0,
+        cycleFromSweetScent: 0,
+        cycleFromSweetScentIncrement: 0,
+      },
+      dataFromTool: {
+        cycleFromSweetScent: 0,
+        cycleFromSweetScentIncrement: 0,
+      },
+      dataDiff: {
+        cycleFromSweetScent: 0,
+        cycleFromSweetScentIncrement: 0,
+      },
+    };
+  });
+};
+
+const createUiResultCycleAtMoments = (
+  json: CycleAtMomentsJson | null,
+  cycleAtMomentsFromTool: CycleAtMoment[],
+) => {
+  const uiResults = createEmptyUiResultCycleAtMoments(
+    json,
+    cycleAtMomentsFromTool,
+  );
+
+  if (json != null) {
+    fillDataFromJson(uiResults, json);
+  }
+
+  fillDataFromTool(uiResults, cycleAtMomentsFromTool);
+};
+
+const fillDataFromTool = (
+  uiResults: UiResultCycleAtMoment[],
+  cycleAtMomentsFromTool: CycleAtMoment[],
+) => {};
+
+const fillDataFromJson = (
+  uiResults: UiResultCycleAtMoment[],
+  json: CycleAtMomentsJson,
 ) => {
   /* 
   Example:
@@ -161,23 +214,56 @@ const createUiResultCycleAtMomentsFromJson = (
     "cycleAtMoments":[
       {"moment":"SweetScentWildEncounter", "cycle":54797, "frame":2026, "adv":2044},
       {"moment":"ChooseWildMonIndex_Land_Random", "cycle":94959, "frame":2026, "adv":2044},
-      {"moment":"ChooseWildMonLevel_RandomLvl", "cycle":95604, "frame":2026, "adv":2045},
-      {"moment":"PickWildMonNature_RandomTestSynchro", "cycle":163443, "frame":2026, "adv":2046},
-      {"moment":"CreateMonWithNature_RandomPidLowFirst", "cycle":164611, "frame":2026, "adv":2047},
-      {"moment":"CreateMonWithNature_RandomPidLowLast", "cycle":164711, "frame":2026, "adv":2048},
-      {"moment":"CreateMonWithNature_RandomPidHighLast", "cycle":167676, "frame":2026, "adv":2054},
       {"moment":"VblankIntr_End", "cycle":50235, "frame":2027, "adv":2056},
       {"moment":"CreateBoxMon_RandomIvs1", "cycle":60589, "frame":2027, "adv":2056},
       {"moment":"CreateBoxMon_RandomIvs2", "cycle":102544, "frame":2027, "adv":2057},
     ],
     "method":"Wild2",
   }
+  returns
+   [
+     {"moment":"SweetScentWildEncounter", "cycle":54797, "frame":2026, "adv":2044},
+     {"moment":"ChooseWildMonIndex_Land_Random", "cycle":94959, "frame":2026, "adv":2044},
+     ...
+     {"moment":"CreateBoxMon_RandomIvs1", "cycle":60589 + (280896 - 50235), "frame":2027, "adv":2056},
+     {"moment":"CreateBoxMon_RandomIvs2", "cycle":102544 + (280896 - 50235), "frame":2027, "adv":2057},
+   ]
   */
-  const camNoVblank = dataFromJson.cycleAtMoments.filter(
-    (cam) => cam.moment !== "VblankIntr_End",
-  );
 
-  return c;
+  const VBLANK_FREQ = 280_896;
+  json.cycleAtMoments.forEach((cam) => {
+    if (cam.moment === "VblankIntr_End") {
+      return;
+    }
+
+    const previousVblanksIncr = json.cycleAtMoments
+      .filter((vblank) => {
+        return vblank.moment === "VblankIntr_End" && vblank.frame < cam.frame;
+      })
+      .map((vblank) => {
+        return VBLANK_FREQ - vblank.cycle;
+      })
+      .reduce((prev, cur) => prev + cur, 0);
+
+    const uiResultIdx = uiResults.findIndex(
+      (uiRes) => uiRes.moment === cam.moment,
+    );
+    if (uiResultIdx === -1) {
+      return;
+    }
+
+    const { dataFromJson } = uiResults[uiResultIdx];
+    dataFromJson.cycle = cam.cycle;
+    dataFromJson.frame = cam.frame;
+    dataFromJson.cycleFromSweetScent = cam.cycle + previousVblanksIncr;
+    dataFromJson.cycleFromSweetScentIncrement = 0;
+
+    if (uiResultIdx !== 0) {
+      dataFromJson.cycleFromSweetScentIncrement =
+        dataFromJson.cycleFromSweetScent -
+        uiResults[uiResultIdx - 1].dataFromJson.cycleFromSweetScent;
+    }
+  });
 };
 
 export const Wild3CycleAtMoments = ({ cycleAtMomentsFromTool }: Props) => {
@@ -188,7 +274,12 @@ export const Wild3CycleAtMoments = ({ cycleAtMomentsFromTool }: Props) => {
     React.useState(false);
 
   const uiResultsCycleAtMoment = React.useMemo(() => {
-    const dataFromJson = parseCompareCycleAtMoments(compareCycleAtMomentsStr);
+    const json = parseCycleAtMomentsJsonStr(compareCycleAtMomentsStr);
+    const uiResults = createUiResultCycleAtMoments(
+      json,
+      cycleAtMomentsFromTool,
+    );
+
     return cycleAtMomentsFromTool.map((cycleAtMoment, idx) => {
       const prevInfo = idx === 0 ? undefined : cycleAtMomentsFromTool[idx - 1];
       const compareInfo = dataFromJson?.cycleAtMoments.find(

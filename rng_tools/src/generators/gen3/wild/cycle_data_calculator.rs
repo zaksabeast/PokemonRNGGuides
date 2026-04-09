@@ -215,22 +215,21 @@ pub fn calculate_method_probability(pre_sweet_scent_range: &CycleRange<usize>) -
         return 0.0;
     }
 
-    // Constant probability in the range 45K - 65K cycles (over-simplification of the real probability)
-    let overlap_start = std::cmp::max(
-        pre_sweet_scent_range.start,
-        MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE - 10_000,
-    );
-    let overlap_end = std::cmp::min(
-        pre_sweet_scent_range.end(),
-        MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE + 10_000,
-    );
+    const MIN_PRE_SWEET_SCENT_CYCLE: usize = MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE - 10_000;
+    const MAX_PRE_SWEET_SCENT_CYCLE: usize = MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE + 20_000;
+    const PRE_SWEET_SCENT_CYCLE_RANGE: usize =
+        MAX_PRE_SWEET_SCENT_CYCLE - MIN_PRE_SWEET_SCENT_CYCLE;
+
+    // Constant probability in the range 45K - 75K cycles (over-simplification of the real probability)
+    let overlap_start = std::cmp::max(pre_sweet_scent_range.start, MIN_PRE_SWEET_SCENT_CYCLE);
+    let overlap_end = std::cmp::min(pre_sweet_scent_range.end(), MAX_PRE_SWEET_SCENT_CYCLE);
 
     if overlap_end <= overlap_start {
         return 0.0; // No overlap
     }
 
     let overlap_len = overlap_end - overlap_start;
-    overlap_len as f64 / (65_000 - 45_000) as f64
+    overlap_len as f64 / PRE_SWEET_SCENT_CYCLE_RANGE as f64
 }
 
 pub fn calculate_method_probability_from_mod_range(

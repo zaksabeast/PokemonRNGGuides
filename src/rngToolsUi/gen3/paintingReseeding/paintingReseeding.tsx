@@ -11,7 +11,7 @@ import { Field, Flex, FormFieldTable, NumberInput, Select } from "~/components";
 import Instructions_0_createBattleVideo from "./instructions_0_createBattleVideo.mdx";
 import Instructions_1_validateFrame from "./instructions_1_validateFrame.mdx";
 import Instructions_2_validateFrame from "./instructions_2_validateFrame.mdx";
-import { FormState as TargetSetup } from "../wild/wild3CalibTarget";
+import { TargetSetup as TargetSetup } from "../wild/wild3CalibTarget";
 import { gen3Leads } from "../wild/utils";
 import { Wild3CalibCaughtMon } from "../wild/wild3CalibCaughtMon";
 import { BattleVideo } from "../battleVideo/battleVideo";
@@ -135,11 +135,22 @@ const createTargetSetup = (frame_before_painting: number): TargetSetup => {
   };
 };
 
-export const EmeraldPaintingReseeding = () => {
+type Props = {
+    targetPaintingAdvs?:{
+        before:number;
+        after:number;
+    },
+    consoleType?:Gen3Console;
+};
+
+export const EmeraldPaintingReseeding = ({
+    targetPaintingAdvs:targetPaintingAdvsProp,
+    consoleType:consoleTypeProp,
+} : Props) => {
   const [targetPaintingAdvs, setTargetPaintingAdvs] = useState<{
     before: number;
     after: number;
-  } | null>(null);
+  } | null>(targetPaintingAdvsProp ?? null);
 
   const [
     battleVideoAdvAfterPaintingConfirmed,
@@ -148,7 +159,7 @@ export const EmeraldPaintingReseeding = () => {
   const [calibrationForPainting, setCalibrationForPainting] = useState<number>(
     DEFAULT_CALIB_FOR_PAINTING,
   );
-  const [consoleType, setConsoleType] = useState<Gen3Console>("GBA");
+  const [consoleType, setConsoleType] = useState<Gen3Console>(consoleTypeProp ?? "GBA");
 
   const targetSetup =
     targetPaintingAdvs === null || targetPaintingAdvs.before === 0
@@ -171,17 +182,21 @@ export const EmeraldPaintingReseeding = () => {
 
   return (
     <Flex vertical gap={20}>
-      <h2>Selecting the target painting frame and advance</h2>
-      <div>
-        Fill the fields, press Generate and select the row with the smallest
-        time to create Battle Video.
-      </div>
-      <FormFieldTable fields={[consoleField]} />
-      <EmeraldSeedToAdvances
-        onSelected={(before, after) => {
-          setTargetPaintingAdvs({ before, after });
-        }}
-      />
+      {targetPaintingAdvsProp == null && <>
+        <h2>Selecting the target painting frame and advance</h2>
+        <div>
+          Fill the fields, press Generate and select the row with the smallest
+          time to create Battle Video.
+        </div>
+       </>}
+      {consoleTypeProp == null && <FormFieldTable fields={[consoleField]} />}
+      {targetPaintingAdvsProp == null && <>
+        <EmeraldSeedToAdvances
+          onSelected={(before, after) => {
+            setTargetPaintingAdvs({ before, after });
+          }}
+        />
+      </>}
 
       {targetPaintingAdvs?.before === 0 && (
         <>

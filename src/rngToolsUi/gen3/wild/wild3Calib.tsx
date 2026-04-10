@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Flex, MultiTimer, Field, Input, Select } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
-import { FormState as TargetSetup, Wild3CalibTarget } from "./wild3CalibTarget";
+import { TargetSetup as TargetSetup, Wild3CalibTarget } from "./wild3CalibTarget";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon";
 import {
   Gen3Console,
@@ -16,7 +16,7 @@ export const Wild3Calib = () => {
 
   const [consoleType, setConsoleType] = useState<Gen3Console>("GBA");
 
-  /** calibration is always for target advance after painting. 
+  /** calibration is always for target advance after painting.
       calibration is not used if the painting seed is not confirmed */
   const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(0);
 

@@ -8,26 +8,59 @@
   isRoughDraft: true
 ---
 
-## Searcher
+## General Overview
 
-**Use case**: Determine the best setup (map, advance, lead) to obtain the wanted target Pokémon.
+Here are some important key facts and concept to RNG manipulate Pokémon wild encounters:
+- Manipulating wild encounter only requires 1 frame-perfect input.
+- Calibrating is reliable and fast.
+- It is the only way to get Ditto in Emerald.
+
+- Limitation: Not all Pokémon stats and natures combinations are possible. Most notably, a Pokémon with 6 perfects IVs generated from a wild ecnounter can only have the natures NO_PROD and it can only be shiny for <NO_PROD specific TID/SID combo.
+   - Egg Pokémon don't have this limitation.
+   - The shininess restriction can be bypassed with ACE to temporarily change your TID/SID.
+- Limitation: The Pokémon generated from a specific setup and input sequence is not always the same. There are typically 3 possible outcomes (known as [methods](/gba-methods)): Wild-1, Wild-2, Wild-4. Carefully choosing your lead Pokémon can increase the likelikhood of hitting a specific method.
+
+## Steps Overview
+
+- **Step 1:** Determine the best setup (map, advance, lead) to obtain the wanted target Pokémon.
+- **Step 2:** Optional: Create a Battle Video (possibly combined with Painting Reseeding) to speedup RNG manipulation attempts.
+- **Step 3:** Catch Pokémon and calibrate until obtaining the target Pokémon.
+
+
+<Stepper titles={["Find Best Setup", "Create Battle Video", "Catch and Calibrate"]}>
+
+<Step step={0}>
+
+### Find Best Setup
+
+Determine the best setup (map, advance, lead) to obtain the wanted target Pokémon.
 
 <Wild3SearcherFindTarget />
 
-<br />
+</Step>
 
-## Target Calibration
+<Step step={1}>
+
+### Create Battle Video
+
+<EmeraldPaintingReseeding_WithTargetSetup />
+
+</Step>
+
+
+<Step step={2}>
+
+### Catch and Calibrate
 
 <Wild3Calib />
+
+</Step>
 
 ## Coming soon
 
 - Fix a bug causing some Wild5 method results to be missing.
-- Support calibrating painting seeds.
 - Add support for Latios and Latias.
 - Add support for Safari Zone.
-- Add a textual guide for the Emerald Wild Searcher.
-- Improve performance.
 
 ## Credits
 

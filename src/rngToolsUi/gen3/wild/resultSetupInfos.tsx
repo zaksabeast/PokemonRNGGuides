@@ -7,7 +7,7 @@ import { match, P } from "ts-pattern";
 
 import { Tooltip } from "antd";
 
-import { formatLeadName, formatMassOutbreakStateName } from "./utils";
+import { formatLeadName, formatMassOutbreakStateName, gen3Leads } from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { PidPathResult, ResultSetupInfo } from "./wild3FindTarget";
@@ -16,6 +16,8 @@ import {
   Wild3MethodDistribution,
 } from "./wild3MethodDistribution";
 import { GBA_FPS } from "~/utils/consts";
+import { TargetSetup } from "./wild3CalibTarget";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
 
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
@@ -105,7 +107,7 @@ const getResultSetupInfoColumns = ({
     { title: "Map", dataIndex: "mapName" },
     { title: "Player action", dataIndex: "actionName" },
     /*
-    TODO: Support roamer and fishing in Feebas tile to catch non-Feebas Pokémon. 
+    TODO: Support roamer and fishing in Feebas tile to catch non-Feebas Pokémon.
     {
       title: "Roamer",
       dataIndex: "roamer_state",
@@ -389,13 +391,44 @@ const resultSetupInfoToDistributionFixedData = (
   };
 };
 
-export const Wild3ResultSetupInfos = ({
-  selectedPidPathResult,
-  rngManipulatedLeadPid,
-}: {
+type Props = {
   selectedPidPathResult: PidPathResult | null;
   rngManipulatedLeadPid: boolean;
-}) => {
+  setTargetSetup:(targetSetup:TargetSetup) => void;
+};
+
+const setupInfoToTargetSetup = (setupInfo:ResultSetupInfo) : TargetSetup => {
+    return {
+        map: setupInfo.map, //NO_PROD
+        action: setupInfo.action,
+        feebasState: setupInfo.feebas_state,
+        roamerState: setupInfo.roamer_state,
+        massOutbreakState: setupInfo.mass_outbreak_state,
+
+        targetFrameBeforePainting:  setupInfo.advs.frame_before_painting,
+        targetAdvance: setupInfo.advs.adv_after_painting,
+        targetMethod: setupInfo.method,
+
+        leadIdx: gen3Leads.findIndex(lead => JSON.stringify(lead) === JSON.stringify(setupInfo.lead)),
+        usingPaintingReseeding: setupInfo.advs.frame_before_painting !== 0,
+
+        // unknown at this point
+        usingBattleVideoWithoutPainting: false,
+        existingBattleVideoAdv: 0,
+        usingRngManipulatedLead: false,
+        usingAverageLeadCycleSpeed: true,
+        leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+
+        // unused
+        isPaintingSeedConfirmed: false,
+    };
+};
+
+export const Wild3ResultSetupInfos = ({
+  setTargetSetup,
+  selectedPidPathResult,
+  rngManipulatedLeadPid,
+}: Props) => {
   const showMassOutbreak =
     selectedPidPathResult != null &&
     selectedPidPathResult.resultSetupInfos.some(
@@ -406,6 +439,7 @@ export const Wild3ResultSetupInfos = ({
       (res) => res.advs.frame_before_painting !== 0,
     ) ?? false;
   const resultSetupInfoColumns = getResultSetupInfoColumns({
+    setTargetSetup,
     rngManipulatedLeadPid,
     showMassOutbreak,
     usesPainting,
@@ -428,12 +462,17 @@ export const Wild3ResultSetupInfos = ({
     return null;
   }
 
+  const onClickResultRow = setTargetSetup == null ? undefined : (setupInfo:ResultSetupInfo) => {
+    setTargetSetup(setupInfoToTargetSetup(setupInfo));
+  };
+
   return (
     <>
       <ResultTable<ResultSetupInfo>
         columns={resultSetupInfoColumns}
         rowKey="uid"
         dataSource={selectedPidPathResult.resultSetupInfos}
+        onClickResultRow={onClickResultRow}
       />
       {distributionFixedData != null && (
         <Wild3MethodDistribution

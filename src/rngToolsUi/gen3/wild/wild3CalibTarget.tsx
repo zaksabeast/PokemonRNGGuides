@@ -61,7 +61,7 @@ const emeraldWildGameData = getWild3EmeraldGameData();
 // Wild3 is currently bugged.
 const supportedGen3Methods = ["Wild1", "Wild2", "Wild4"] as Gen3Method[];
 
-const Validator = z.object({
+export const TargetSetupSchema = z.object({
   map: z.string(),
   feebasState: z.enum(wild3FeebasStates),
   roamerState: z.enum(wild3RoamerStates),
@@ -86,12 +86,12 @@ const Validator = z.object({
 });
 
 type Props = {
-  setTargetSetup: (targetSetup: FormState | null) => void;
+  setTargetSetup: (targetSetup: TargetSetup | null) => void;
 };
 
-export type FormState = z.infer<typeof Validator>;
+export type TargetSetup = z.infer<typeof TargetSetupSchema>;
 
-const getInitialValues = (): FormState => {
+export const getInitialValues = (): TargetSetup => {
   return {
     map: "MAP_ROUTE101",
     action: "SweetScentLand",
@@ -137,7 +137,7 @@ const getFields = ({
     {
       label: "Map",
       input: (
-        <FormikSelect<FormState, "map">
+        <FormikSelect<TargetSetup, "map">
           name="map"
           options={toOptions(emeraldWildGameData.maps, formatMapName)}
         />
@@ -153,7 +153,7 @@ const getFields = ({
     {
       label: "Player action",
       input: (
-        <FormikSelect<FormState, "action">
+        <FormikSelect<TargetSetup, "action">
           name="action"
           options={toOptions(actions, formatActionName)}
         />
@@ -162,7 +162,7 @@ const getFields = ({
     {
       label: "Lead",
       input: (
-        <FormikSelect<FormState, "leadIdx">
+        <FormikSelect<TargetSetup, "leadIdx">
           name="leadIdx"
           // Limitation: value must be a primitive, so we use the index instead of Gen3Lead.
           options={leadsLabels}
@@ -171,7 +171,7 @@ const getFields = ({
     },
     {
       label: "Using lead with average cycle speed?",
-      input: <FormikSwitch<FormState> name="usingAverageLeadCycleSpeed" />,
+      input: <FormikSwitch<TargetSetup> name="usingAverageLeadCycleSpeed" />,
       show: gen3Leads[leadIdx] !== "Egg",
     },
     {
@@ -192,13 +192,13 @@ const getFields = ({
         </>
       ),
       key: "usingPaintingReseeding",
-      input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
+      input: <FormikSwitch<TargetSetup> name="usingPaintingReseeding" />,
     },
     {
       label: "Target frame before painting (decimal)",
       input: (
         <Flex vertical>
-          <FormikNumberInput<FormState>
+          <FormikNumberInput<TargetSetup>
             name="targetFrameBeforePainting"
             numType="decimal"
           />
@@ -210,14 +210,14 @@ const getFields = ({
     },
     {
       label: "Target frame before painting was confirmed to be hit?",
-      input: <FormikSwitch<FormState> name="isPaintingSeedConfirmed" />,
+      input: <FormikSwitch<TargetSetup> name="isPaintingSeedConfirmed" />,
       indent: 1,
       show: usingPaintingReseeding,
     },
     {
       label: "Advances between painting and Battle Video",
       input: (
-        <FormikNumberInput<FormState>
+        <FormikNumberInput<TargetSetup>
           name="existingBattleVideoAdv"
           numType="decimal"
         />
@@ -228,13 +228,13 @@ const getFields = ({
 
     {
       label: "Using Battle Video?",
-      input: <FormikSwitch<FormState> name="usingBattleVideoWithoutPainting" />,
+      input: <FormikSwitch<TargetSetup> name="usingBattleVideoWithoutPainting" />,
       show: !usingPaintingReseeding,
     },
     {
       label: "Battle Video advance",
       input: (
-        <FormikNumberInput<FormState>
+        <FormikNumberInput<TargetSetup>
           name="existingBattleVideoAdv"
           numType="decimal"
         />
@@ -245,7 +245,7 @@ const getFields = ({
     {
       label: "Target Method",
       input: (
-        <FormikSelect<FormState, "targetMethod">
+        <FormikSelect<TargetSetup, "targetMethod">
           name="targetMethod"
           options={toOptions(supportedGen3Methods)}
         />
@@ -259,13 +259,13 @@ const getFields = ({
           : "Advances after painting for calibration"
         : "Target advances",
       input: (
-        <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
+        <FormikNumberInput<TargetSetup> name="targetAdvance" numType="decimal" />
       ),
     },
     {
       label: "Feebas state",
       input: (
-        <FormikSelect<FormState, "feebasState">
+        <FormikSelect<TargetSetup, "feebasState">
           name="feebasState"
           options={toOptions(feebas_states, formatFeebasStateName)}
         />
@@ -275,7 +275,7 @@ const getFields = ({
     {
       label: "Roamer state",
       input: (
-        <FormikSelect<FormState, "roamerState">
+        <FormikSelect<TargetSetup, "roamerState">
           name="roamerState"
           options={toOptions(roamer_states, formatRoamerStateName)}
         />
@@ -285,7 +285,7 @@ const getFields = ({
     {
       label: "Mass outbreak state",
       input: (
-        <FormikSelect<FormState, "massOutbreakState">
+        <FormikSelect<TargetSetup, "massOutbreakState">
           name="massOutbreakState"
           options={toOptions(mass_outbreak_states, formatMassOutbreakStateName)}
         />
@@ -297,38 +297,38 @@ const getFields = ({
 };
 
 export const Wild3CalibTargetFields = () => {
-  const { setFieldValue } = useFormContext<FormState>();
-  const map = useWatch<FormState, "map">({ name: "map" });
-  const action = useWatch<FormState, "action">({ name: "action" });
-  const feebasState = useWatch<FormState, "feebasState">({
+  const { setFieldValue } = useFormContext<TargetSetup>();
+  const map = useWatch<TargetSetup, "map">({ name: "map" });
+  const action = useWatch<TargetSetup, "action">({ name: "action" });
+  const feebasState = useWatch<TargetSetup, "feebasState">({
     name: "feebasState",
   });
-  const massOutbreakState = useWatch<FormState, "massOutbreakState">({
+  const massOutbreakState = useWatch<TargetSetup, "massOutbreakState">({
     name: "massOutbreakState",
   });
-  const roamerState = useWatch<FormState, "roamerState">({
+  const roamerState = useWatch<TargetSetup, "roamerState">({
     name: "roamerState",
   });
-  const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
+  const usingPaintingReseeding = useWatch<TargetSetup, "usingPaintingReseeding">({
     name: "usingPaintingReseeding",
   });
-  const leadIdx = useWatch<FormState, "leadIdx">({
+  const leadIdx = useWatch<TargetSetup, "leadIdx">({
     name: "leadIdx",
   });
   const usingAverageLeadCycleSpeed = useWatch<
-    FormState,
+    TargetSetup,
     "usingAverageLeadCycleSpeed"
   >({ name: "usingAverageLeadCycleSpeed" });
   const isPaintingSeedConfirmed = useWatch<
-    FormState,
+    TargetSetup,
     "isPaintingSeedConfirmed"
   >({ name: "isPaintingSeedConfirmed" });
   const usingBattleVideoWithoutPainting = useWatch<
-    FormState,
+    TargetSetup,
     "usingBattleVideoWithoutPainting"
   >({ name: "usingBattleVideoWithoutPainting" });
   const targetFrameBeforePainting = useWatch<
-    FormState,
+    TargetSetup,
     "targetFrameBeforePainting"
   >({ name: "targetFrameBeforePainting" });
 
@@ -458,7 +458,7 @@ const resultToDisplayInfo = async (
   );
 };
 
-const getLeadCycleSpeed = (values: FormState) => {
+const getLeadCycleSpeed = (values: TargetSetup) => {
   if (gen3Leads[values.leadIdx] === "Egg") {
     return 0;
   }
@@ -472,8 +472,8 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
   const [resultReactNode, setResultReactNode] =
     React.useState<React.ReactNode>(null);
 
-  const onSubmit: RngToolSubmit<FormState> = async (rawValues) => {
-    const values: FormState = {
+  const onSubmit: RngToolSubmit<TargetSetup> = async (rawValues) => {
+    const values: TargetSetup = {
       ...rawValues,
     };
     // reset hidden fields to their default values
@@ -575,8 +575,8 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
 
   return (
     <>
-      <RngToolForm<FormState, never>
-        validationSchema={Validator}
+      <RngToolForm<TargetSetup, never>
+        validationSchema={TargetSetupSchema}
         initialValues={initialValues}
         onSubmit={onSubmit}
         submitTrackerId="wild3_calib_target"

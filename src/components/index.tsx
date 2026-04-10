@@ -57,6 +57,7 @@ export {
   MediaTableCell,
 } from "./mediaTable";
 export { YouTubeTable } from "./youtubeTable";
+export { EqualColumnTable } from "./equalColumnTable";
 export { CopyToClipboardButton } from "./copyToClipboardButton";
 export { TextArea } from "./textArea";
 export { LinkButton } from "./linkButton";

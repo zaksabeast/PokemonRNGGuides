@@ -37,6 +37,7 @@ import {
   MediaTableRow,
   MediaTableCell,
   YouTubeTable,
+  EqualColumnTable,
 } from "~/components";
 import { Glossary } from "~/pageComponents/glossary";
 import { Gen7SosList } from "~/pageComponents/gen7Sos/sosList";
@@ -98,6 +99,7 @@ const nonTools = {
   Id4ShowIf,
   WhatNext,
   YouTubeTable,
+  EqualColumnTable,
   TranslationHelperSelectGuide,
   TranslationHelperEditGuide,
   ToolTranslationButton,

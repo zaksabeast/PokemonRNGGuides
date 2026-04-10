@@ -1,7 +1,6 @@
 import React from "react";
-import { ChatterPitch, ChatterState } from "rng_tools/pkg/rng_tools";
 import { z } from "zod";
-import { rngTools } from "~/rngTools";
+import { ChatterPitch, ChatterState, rngTools } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,

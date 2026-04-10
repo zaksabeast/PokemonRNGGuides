@@ -1,4 +1,4 @@
-import { LeadAbility } from "rng_tools/pkg/rng_tools";
+import { LeadAbility } from "~/rngTools";
 import { Gen4ShowIf, Gen4ShowIfProps } from "../shared/gen4ShowIf";
 import { Static4State, useStatic4State } from "./state";
 import { match, P } from "ts-pattern";

@@ -67,7 +67,7 @@ import {
   LeadCycleSpeedSelector,
   SLOWEST_LEAD_CYCLE_SPEED,
 } from "./leadCycleSpeedSelector";
-import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
+import { lcrng_distance } from "~/utils/lcrng";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -580,10 +580,7 @@ const calculate = async (values: FormState) => {
   return {
     uiResults: convertSearcherResultsToUIResults(results),
     cycle_at_moments,
-    advanceAtSweetScent: lcrng_distance(
-      0,
-      pokerng_with_jump(initial_seed, values.advance),
-    ),
+    advanceAtSweetScent: lcrng_distance(0, initial_seed) + values.advance,
   };
 };
 
@@ -605,7 +602,9 @@ export const Wild3MethodDistribution = ({
   permitEnablingDebugOptions,
 }: Props) => {
   const [results, setResults] = React.useState<UiResult[]>([]);
-  const [leadCycleSpeed, setLeadCycleSpeed] = React.useState(0);
+  const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(
+    null,
+  );
   const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>(
     [],
   );
@@ -615,9 +614,12 @@ export const Wild3MethodDistribution = ({
     (values: FormState) => {
       calculate(values).then(
         ({ uiResults, cycle_at_moments, advanceAtSweetScent }) => {
+          const isEggLead = gen3Leads[values.leadIdx] === "Egg";
+          const leadCycleSpeed = isEggLead ? null : values.leadCycleSpeed;
+
           setResults(uiResults);
           setCycleAtMoments(cycle_at_moments);
-          setLeadCycleSpeed(values.leadCycleSpeed);
+          setLeadCycleSpeed(leadCycleSpeed);
           setAdvanceAtSweetScent(advanceAtSweetScent);
         },
       );

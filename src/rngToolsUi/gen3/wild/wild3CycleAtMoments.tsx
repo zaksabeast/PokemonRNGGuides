@@ -13,7 +13,6 @@ import { z } from "zod";
 import { TextArea } from "~/components/textArea";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { gen3Methods } from "~/types";
-import { ConsoleSetDateString } from "~/rngToolsUi/gen4/shared/consoleDateStrings";
 
 const VBLANK_FREQ = 280_896;
 const MOST_PROBABLE_CYCLE_AT_SWEET_SCENT = 55_000;
@@ -180,7 +179,7 @@ const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
     ],
   },
   {
-    // Repeat the column so it also appears next to the Difference columns.
+    // Repeat the column so it also appears next to the Difference columns, to help compare.
     title: "Moment",
     key: "Moment2",
     dataIndex: "moment",
@@ -188,6 +187,7 @@ const uiCycleAtMomentColumns: ResultColumn<UiResultCycleAtMoment>[] = [
 ];
 
 const cycleAtMomentsFromJsonSchema = z.object({
+  version: z.string(),
   cycleAtMoments: z.array(
     z.object({
       moment: z.string(),
@@ -214,7 +214,8 @@ const parseCycleAtMomentsJsonStr = (input: string) => {
 
 type Props = {
   cycleAtMomentsFromTool: CycleAtMoment[];
-  leadCycleSpeed: number;
+  /** leadCycleSpeedFromTool is null if egg lead */
+  leadCycleSpeed: number | null;
   advanceAtSweetScent: number;
 };
 
@@ -269,7 +270,7 @@ const createEmptyUiResult = (
 const createUiResult = async (
   compareCycleAtMomentsStr: string,
   cycleAtMomentsFromTool: CycleAtMoment[],
-  leadCycleSpeedFromTool: number,
+  leadCycleSpeedFromTool: number | null,
   advanceAtSweetScent: number,
 ) => {
   const json = parseCycleAtMomentsJsonStr(compareCycleAtMomentsStr);
@@ -286,15 +287,17 @@ const createUiResult = async (
       uiResult.errorMsg = `Error: The advance used in the emulator ${uiResult.advanceAtSweetScent} doesn't match the advance provided on the webtool ${advanceAtSweetScent}.`;
     }
 
-    const leadPIDFromJson = parseInt(json.leadPID, 16);
+    if (leadCycleSpeedFromTool !== null) {
+      const leadPIDFromJson = parseInt(json.leadPID, 16);
 
-    const leadCycleSpeedFromJson = isNaN(leadPIDFromJson)
-      ? 0
-      : await rngTools.calculate_pid_speed(leadPIDFromJson);
+      const leadCycleSpeedFromJson = isNaN(leadPIDFromJson)
+        ? 0
+        : await rngTools.calculate_pid_speed(leadPIDFromJson);
 
-    if (leadCycleSpeedFromJson !== leadCycleSpeedFromTool) {
-      uiResult.errorMsg =
-        "Error: The lead used in the emulator doesn't match the lead provided on the webtool.";
+      if (leadCycleSpeedFromJson !== leadCycleSpeedFromTool) {
+        uiResult.errorMsg =
+          "Error: The lead used in the emulator doesn't match the lead provided on the webtool.";
+      }
     }
   }
 

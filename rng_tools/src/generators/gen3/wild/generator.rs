@@ -404,7 +404,7 @@ pub fn generate_gen3_wild(
     let mut skip_method5_counter = 0;
     let mut last_generated_method5: Option<Wild3GeneratorResult> = None;
     let mut pid: u32;
-    cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLowFirst); //NO_PROD too early
+    cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLowFirst);
 
     loop {
         let pid_low = rand_next_u16(&mut rng, "pid_low", 1) as u32;

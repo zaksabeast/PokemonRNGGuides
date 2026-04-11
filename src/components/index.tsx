@@ -7,7 +7,7 @@ export { Typography } from "./typography";
 export { DesktopDrawer } from "./navDrawer";
 export { PixelImage } from "./pixelImage";
 export { Loading } from "./loading";
-export { Image } from "./image";
+export { Image, type ImageProps } from "./image";
 export { MetaTags } from "./metaTags";
 export { List, ListItem } from "./list";
 export { FormikInput, Input } from "./input";

@@ -82,6 +82,7 @@ const nonTools = {
   Text: MarkdownParagraph,
   YouTubeVideo,
   PixelImage,
+  Image: MarkdownImage,
   Alert,
   Countdown,
   Flex,

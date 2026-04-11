@@ -17,6 +17,11 @@ translation:
 ## 第一步：设置 PokeFinder
 
 1. 打开 PokeFinder，选择第三世代野生乱数。
+   - <Image
+       alt="Gen 3 Wild Pokémon"
+       src="/images/Emerald/Wild/Step-1.1.webp"
+       maxHeight={300}
+     />
 2. 如果要获取异色，请选择包含 TID/SID 的个人资料。
    - 如果不知道 SID，可参考[这个教程](/gen3-sid)
 3. 将方式设为 Wild 2。
@@ -26,24 +31,57 @@ translation:
 7. 使用筛选器找到你想要的宝可梦。
 8. 点击计算结果，在结果中寻找合适的目标。
 
+![PokeFinder Settings](/images/Emerald/Wild/Step-1.2-1.8.webp)
+
 ## 第二步：设置 Mystic Timer
 
-1. 打开 Mystic Timer。
+1. 打开 [Mystic Timer](/mystic-timer).
 2. 切换到 Gen 3 选项卡。
 3. 选择你使用的主机类型。
 4. 在 Target Frame 栏输入 PokeFinder 提供的目标帧数。
 5. 点击 "Set Timer"，然后点击 "Start" 开始计时。
+
+<Image
+  alt="Mystic Timer Settings"
+  src="/images/Emerald/Wild/Step-2.webp"
+  maxHeight={350}
+/>
 
 ## 第三步：校准
 
 1. 当计时器第一次归零时，按 Start + Select + A + B 重置游戏。
 2. 进入游戏菜单，打开队伍界面。
 3. 选中带有甜甜香气的宝可梦，将光标悬停在该招式上。
+   - <Flex gap={16}>
+       <Image
+         pixelated
+         alt="Stand in target area"
+         src="/images/Emerald/Wild/Step-3.2.webp"
+         minHeight={200}
+       />
+       <Image
+         pixelated
+         alt="Hover over Sweet Scent"
+         src="/images/Emerald/Wild/Step-3.3.webp"
+         minHeight={200}
+       />
+     </Flex>
 4. 等待第二次倒计时结束后，立刻按 A 释放甜甜香气。
 5. 捕获遇到的宝可梦，并在 PokeFinder 的 IV calculator中输入它的个体值。
 6. 在遇敌种类选项中选择任何，然后点击生成。（若无结果请更改方式Wild 1或4）
+   - <Image
+       alt="IV Calculator"
+       src="/images/Emerald/Wild/Step-3.5-3.6.webp"
+       maxHeight={300}
+     />
 7. 在结果中找到你刚捕获的宝可梦，并将实际帧数输入 Mystic Timer 进行修正
 8. 点击 Update 保存校准结果。
+
+   - <Image
+       alt="Set Timer again"
+       src="/images/Emerald/Wild/Step-3.8-3.9.webp"
+       maxHeight={350}
+     />
 
 ## 第四步：执行乱数
 
@@ -52,6 +90,9 @@ translation:
 如果推进数误差在 1~2 之间，可直接重试，无需调整计时器。
 如果误差较大，可适当调整 Mystic Timer 设定值，优化计时精度。
 
+<Image pixelated alt="Shiny Pokémon" src="/images/Emerald/Wild/Step-4.webp" />
+
 ## 特别鸣谢
 
 - 中文翻译：炫夜鳞、白希洛/Hakuhiro
+- Screenshots: Fiask.

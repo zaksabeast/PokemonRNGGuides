@@ -1,0 +1,47 @@
+var e=`---
+- title: "Smaragd Übersicht"
+  navDrawerTitle: "Smaragd Übersicht"
+  description: "Praktische Anwendungen der RNG-Manipulation und Techniken in Pokemon Smaragd."
+  slug: "de-emerald-overview"
+  translation:
+    enSlug: "emerald-overview"
+    language: "de"
+---
+
+<Gist>
+  Gist: Praktische Anwendungen der RNG-Manipulation und Techniken in Pokemon
+  Smaragd.
+</Gist>
+
+### Praktische Anwendungen der RNG-Manipulation
+
+- Pokémon mit seltenen Eigenschaften erhalten (z. B. Schillernd, perfekte IVs, Wesen, Fähigkeit):
+  - Statische Pokémon (am einfachsten zu RNGen, einzige Möglichkeit, die meisten Legendären Pokémon zu RNGen).
+  - [Wilde Pokémon](/retail-emerald-wild) (einzige Möglichkeit, Ditto zu RNGen).
+  - [Ei-Pokémon](/retail-emerald-egg) (kürzere Wartezeit für perfekte Pokémon).
+- [Zugang zu Wundereiland](/emerald-mirage-island) (einzige Möglichkeit, Lydzibeeren zu erhalten).
+- Kampfzone-Teams für einfachere Gold-Symbole vorhersagen.
+- [Pokérus erhalten](/emerald-pokerus-emu), was insbesondere erforderlich ist, um optimale Pokémon mit niedrigem Level zu erhalten, wie z. B. Level 5 Farbeagle mit Drachenwut.
+- Erhalte große Loturzel und Samurzel, um sie den Brüdern in Xeneroville zu zeigen.
+
+### Techniken zur Manipulation von RNG
+
+- [Finde deine SID](/gen3-sid), die für die RNG-Manipulation eines schillerndes Pokémon erforderlich ist.
+- Manipulieren deiner TID/SID, um die Wartezeit für bestimmte schillernde Pokémon zu verkürzen.
+- Verkürzen der Wartezeit, um hohe RNG-Advances zu erreichen:
+  - [Zurücksetzen der RNG-Advances mit Gemälden](/emerald-painting-rng).
+  - [Speichern und Wiederherstellen der RNG-Advances mit Kampfaufzeichnungen](/e-tips-rng).
+- Manipulation der Pokémon-Generierung mit Arbitrary Code Execution (ACE).
+- Verbessern der Konsistenz der Pokémon-Generierung, indem Wild-1 mit einem Lead-Pokémon mit einem PID unter 25 erzwungen wird.
+- Bestimmen der PID eines Pokémon anhand seiner IVs.
+
+### Weitere interessante Artikel
+
+- [Übersicht über die Manipulation des GBA-RNG](/gba-overview).
+
+### Credits
+
+- RainingChain für das Mitwirken an dieser Seite.
+- Fiask für die italienische Übersetzung.
+- Parasite für die deutsche Übersetzung.
+`;export{e as default};

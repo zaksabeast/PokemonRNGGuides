@@ -1,0 +1,1 @@
+import{ea as e}from"./components-jST98Wg5.js";var t=0;function n(n){var r=++t;return e(n)+r}export{n as t};

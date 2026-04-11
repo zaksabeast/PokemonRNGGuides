@@ -260,6 +260,10 @@ const tools = {
     () => import("~/rngToolsUi/gen3/paintingReseeding/paintingSeedToEmuTimer"),
     (mod) => mod.PaintingSeedToEmuTimer,
   ),
+  RetailEmeraldEggStateText: lazyLoad(
+    () => import("~/rngToolsUi/gen3/retailEmeraldEgg/stateText"),
+    (mod) => mod.RetailEmeraldEggStateText,
+  ),
   RetailEmeraldHeldEgg: lazyLoad(
     () => import("~/rngToolsUi/gen3/retailEmeraldEgg/heldEgg"),
     (mod) => mod.RetailEmeraldHeldEgg,

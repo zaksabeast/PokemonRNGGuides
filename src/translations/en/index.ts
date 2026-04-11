@@ -73,6 +73,9 @@ export const translations = {
   "The two don't seem to like each other":
     "The two don't seem to like each other",
   Calibration: "Calibration",
+  "Calibration Override": "Calibration Override",
+  "Do not touch unless you know what you're doing":
+    "Do not touch unless you know what you're doing",
   "Initial advances": "Initial advances",
   "Max advances": "Max advances",
   "Min redraw": "Min redraw",
@@ -205,6 +208,7 @@ export const translations = {
   "Delay Range ±": "Delay Range ±",
   "Seconds Range ±": "Seconds Range ±",
   "Advance Range ±": "Advance Range ±",
+  "PokeDex Range ±": "PokeDex Range ±",
   Roamers: "Roamers",
   Pitch: "Pitch",
   "Pitch Value": "Pitch Value",
@@ -219,6 +223,14 @@ export const translations = {
   Tip: "Tip",
   Caution: "Caution",
   Important: "Important",
+  "Pickup method": "Pickup method",
+  "Emerald Bred": "Emerald Bred",
+  "Emerald Bred Split": "Emerald Bred Split",
+  "Emerald Bred Alternate": "Emerald Bred Alternate",
+  "Wrong PokeDex Count": "Wrong PokeDex Count",
+  "Wrong Calibration": "Wrong Calibration",
+  "Has Egg": "Has Egg",
+  "PokeDex Offset": "PokeDex Offset",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

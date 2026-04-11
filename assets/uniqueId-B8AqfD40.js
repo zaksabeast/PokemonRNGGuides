@@ -1,0 +1,1 @@
+import{$i as e}from"./components-BGr8KySV.js";var t=0;function n(n){var r=++t;return e(n)+r}export{n as t};

@@ -57,7 +57,7 @@ fn test_generate_wild3_cycle_method_3_no_rng_lead_pid() {
     };
 
     let (result, _) = generate_gen3_wild(
-        Pokerng::with_advances(0, 3012),
+        Pokerng::with_advances(0, 3013),
         &options,
         &Wild3MapGameData::default(),
     );
@@ -79,6 +79,14 @@ fn test_generate_wild3_cycle_method_5() {
         &Wild3MapGameData::default(),
     );
     let expected_result = vec![
+        Wild3GeneratorResult {
+            encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot5),
+            pid: 1946911046,
+            ivs: Ivs::new(4, 29, 8, 25, 7, 14),
+            method: Gen3Method::Wild5,
+            cycle_range: Some(CycleRange::new(119019, 80, 20212)),
+            ..Default::default()
+        },
         Wild3GeneratorResult {
             encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot5),
             pid: 26625321,

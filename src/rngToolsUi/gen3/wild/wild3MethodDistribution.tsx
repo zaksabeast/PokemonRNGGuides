@@ -67,7 +67,7 @@ import {
   LeadCycleSpeedSelector,
   SLOWEST_LEAD_CYCLE_SPEED,
 } from "./leadCycleSpeedSelector";
-import { lcrng_distance } from "~/utils/lcrng";
+import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -565,6 +565,7 @@ const calculate = async (values: FormState) => {
     return {
       uiResults: [],
       cycle_at_moments: [],
+      advanceAtSweetScent: 0,
     };
   }
 
@@ -579,6 +580,10 @@ const calculate = async (values: FormState) => {
   return {
     uiResults: convertSearcherResultsToUIResults(results),
     cycle_at_moments,
+    advanceAtSweetScent: lcrng_distance(
+      0,
+      pokerng_with_jump(initial_seed, values.advance),
+    ),
   };
 };
 
@@ -600,16 +605,22 @@ export const Wild3MethodDistribution = ({
   permitEnablingDebugOptions,
 }: Props) => {
   const [results, setResults] = React.useState<UiResult[]>([]);
+  const [leadCycleSpeed, setLeadCycleSpeed] = React.useState(0);
   const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>(
     [],
   );
+  const [advanceAtSweetScent, setAdvanceAtSweetScent] = React.useState(0);
 
   const updateResults = React.useCallback(
     (values: FormState) => {
-      calculate(values).then(({ uiResults, cycle_at_moments }) => {
-        setResults(uiResults);
-        setCycleAtMoments(cycle_at_moments);
-      });
+      calculate(values).then(
+        ({ uiResults, cycle_at_moments, advanceAtSweetScent }) => {
+          setResults(uiResults);
+          setCycleAtMoments(cycle_at_moments);
+          setLeadCycleSpeed(values.leadCycleSpeed);
+          setAdvanceAtSweetScent(advanceAtSweetScent);
+        },
+      );
     },
     [setResults, setCycleAtMoments],
   );
@@ -650,7 +661,11 @@ export const Wild3MethodDistribution = ({
       </RngToolForm>
 
       {permitEnablingDebugOptions && (
-        <Wild3CycleAtMoments cycleAtMomentsFromTool={cycleAtMoments} />
+        <Wild3CycleAtMoments
+          leadCycleSpeed={leadCycleSpeed}
+          cycleAtMomentsFromTool={cycleAtMoments}
+          advanceAtSweetScent={advanceAtSweetScent}
+        />
       )}
     </>
   );

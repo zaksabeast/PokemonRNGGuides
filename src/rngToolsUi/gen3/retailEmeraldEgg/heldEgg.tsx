@@ -105,9 +105,9 @@ const getColumns = ({
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
   {
-    title: t["PokeDex"],
+    title: t["Pokedex"],
     dataIndex: "redraws",
-    render: (redraws) => `${t["PokeDex"]} x${redraws}`,
+    render: (redraws) => `${t["Pokedex"]} x${redraws}`,
   },
   {
     title: t["Match call"],

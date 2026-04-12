@@ -61,7 +61,7 @@ const getColumns = ({
     dataIndex: "advance",
     render: (_, result) => {
       if (result.redraws != null && result.redraws !== target?.redraws) {
-        return <Tag color="Error">{t["Wrong PokeDex Count"]}</Tag>;
+        return <Tag color="Error">{t["Wrong Pokedex Count"]}</Tag>;
       }
 
       if (result.calibration !== target?.calibration) {
@@ -96,12 +96,12 @@ const getColumns = ({
     render: formatOffset,
   },
   {
-    title: t["PokeDex Offset"],
+    title: t["Pokedex Offset"],
     dataIndex: "redrawOffset",
     render: (offset) => (offset == null ? t["None"] : formatOffset(offset)),
   },
   {
-    title: t["PokeDex"],
+    title: t["Pokedex"],
     dataIndex: "redraws",
     render: (redraws) => (redraws == null ? "?" : redraws),
   },
@@ -235,7 +235,7 @@ const getFields = ({
       ),
     },
     {
-      label: t["PokeDex Range ±"],
+      label: t["Pokedex Range ±"],
       input: (
         <FormikNumberInput<FormState> name="redrawRange" numType="decimal" />
       ),

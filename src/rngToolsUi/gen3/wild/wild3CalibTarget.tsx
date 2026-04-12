@@ -91,7 +91,7 @@ type Props = {
 
 export type TargetSetup = z.infer<typeof TargetSetupSchema>;
 
-export const getInitialValues = (): TargetSetup => {
+const getInitialValues = (): TargetSetup => {
   return {
     map: "MAP_ROUTE101",
     action: "SweetScentLand",
@@ -228,7 +228,9 @@ const getFields = ({
 
     {
       label: "Using Battle Video?",
-      input: <FormikSwitch<TargetSetup> name="usingBattleVideoWithoutPainting" />,
+      input: (
+        <FormikSwitch<TargetSetup> name="usingBattleVideoWithoutPainting" />
+      ),
       show: !usingPaintingReseeding,
     },
     {
@@ -259,7 +261,10 @@ const getFields = ({
           : "Advances after painting for calibration"
         : "Target advances",
       input: (
-        <FormikNumberInput<TargetSetup> name="targetAdvance" numType="decimal" />
+        <FormikNumberInput<TargetSetup>
+          name="targetAdvance"
+          numType="decimal"
+        />
       ),
     },
     {
@@ -309,7 +314,10 @@ export const Wild3CalibTargetFields = () => {
   const roamerState = useWatch<TargetSetup, "roamerState">({
     name: "roamerState",
   });
-  const usingPaintingReseeding = useWatch<TargetSetup, "usingPaintingReseeding">({
+  const usingPaintingReseeding = useWatch<
+    TargetSetup,
+    "usingPaintingReseeding"
+  >({
     name: "usingPaintingReseeding",
   });
   const leadIdx = useWatch<TargetSetup, "leadIdx">({

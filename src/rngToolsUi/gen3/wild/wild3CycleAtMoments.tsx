@@ -466,10 +466,6 @@ export const Wild3CycleAtMoments = ({
   leadCycleSpeed,
   advanceAtSweetScent,
 }: Props) => {
-  cycleAtMomentsFromTool = [
-    { moment: "SweetScentWildEncounter", cycle: 0 },
-    ...cycleAtMomentsFromTool,
-  ];
   const [compareCycleAtMomentsStr, setCompareCycleAtMomentsStr] =
     React.useState("");
 
@@ -479,9 +475,13 @@ export const Wild3CycleAtMoments = ({
   const [uiResult, setUiResult] = React.useState(createEmptyUiResult(null, []));
 
   React.useEffect(() => {
+    const cyclesWithSweetScent = [
+      { moment: "SweetScentWildEncounter" as const, cycle: 0 },
+      ...cycleAtMomentsFromTool,
+    ];
     createUiResult(
       compareCycleAtMomentsStr,
-      cycleAtMomentsFromTool,
+      cyclesWithSweetScent,
       leadCycleSpeed,
       advanceAtSweetScent,
     ).then((uiResult) => {
@@ -489,7 +489,7 @@ export const Wild3CycleAtMoments = ({
     });
   }, [
     compareCycleAtMomentsStr,
-    JSON.stringify(cycleAtMomentsFromTool),
+    cycleAtMomentsFromTool,
     leadCycleSpeed,
     setUiResult,
     advanceAtSweetScent,

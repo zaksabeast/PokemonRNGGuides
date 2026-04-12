@@ -37,6 +37,7 @@ import {
   MediaTableRow,
   MediaTableCell,
   YouTubeTable,
+  EqualColumnTable,
 } from "~/components";
 import { Glossary } from "~/pageComponents/glossary";
 import { Gen7SosList } from "~/pageComponents/gen7Sos/sosList";
@@ -81,6 +82,7 @@ const nonTools = {
   Text: MarkdownParagraph,
   YouTubeVideo,
   PixelImage,
+  Image: MarkdownImage,
   Alert,
   Countdown,
   Flex,
@@ -98,6 +100,7 @@ const nonTools = {
   Id4ShowIf,
   WhatNext,
   YouTubeTable,
+  EqualColumnTable,
   TranslationHelperSelectGuide,
   TranslationHelperEditGuide,
   ToolTranslationButton,
@@ -189,6 +192,10 @@ const tools = {
     () => import("~/rngToolsUi/gen3/paintingReseeding/seedToAdvances"),
     (mod) => mod.EmeraldSeedToAdvances,
   ),
+  EmeraldPaintingReseeding: lazyLoad(
+    () => import("~/rngToolsUi/gen3/paintingReseeding/paintingReseeding"),
+    (mod) => mod.EmeraldPaintingReseeding,
+  ),
   Gen3TidSidGenerator: lazyLoad(
     () => import("~/rngToolsUi/gen3/tidsid"),
     (mod) => mod.Gen3TidSidGenerator,
@@ -252,6 +259,10 @@ const tools = {
   PaintingSeedToEmuTimer: lazyLoad(
     () => import("~/rngToolsUi/gen3/paintingReseeding/paintingSeedToEmuTimer"),
     (mod) => mod.PaintingSeedToEmuTimer,
+  ),
+  RetailEmeraldEggStateText: lazyLoad(
+    () => import("~/rngToolsUi/gen3/retailEmeraldEgg/stateText"),
+    (mod) => mod.RetailEmeraldEggStateText,
   ),
   RetailEmeraldHeldEgg: lazyLoad(
     () => import("~/rngToolsUi/gen3/retailEmeraldEgg/heldEgg"),

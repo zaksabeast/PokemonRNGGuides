@@ -1,10 +1,9 @@
 {
   "files": [],
   "compilerOptions": {
-    "baseUrl": "./",
     "paths": {
-      "~/*": ["src/*"],
-      "rng_tools": ["rng_tools/pkg"]
+      "~/*": ["./src/*"],
+      "rng_tools": ["./rng_tools/pkg"]
     }
   },
   "references": [

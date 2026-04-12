@@ -52,8 +52,9 @@ addedOn: "2025-05-18"
    - Slugma with Flame Body is in Fiery Path, just North of Mauville.
 2. Buy at least 3 normal repels from Verdanturf.
 3. Go to the Daycare and withdraw any Pokemon currently there.
-4. Stand in front of the top right edge of the white path on Route 118.
-5. Use the first repel.
+4. Make sure both parent Pokemon are over 400xp away from leveling up. **The RNG will fail if they level up in the daycare!**
+5. Stand in front of the top right edge of the white path on Route 118.
+6. Use the first repel.
 
 ![White Path](/images/Emerald/Retail-Egg/start-point.webp)
 
@@ -96,9 +97,21 @@ If you are using a Ditto with a genderless or male parent, enter the information
 1. Make sure the Lightning Rod Pokemon is in the front of your party and save.
 2. Start the timer below.
 3. When first timer goes off, soft reset your game and load your save as fast as possible.
-4. Walk back and forth on the two tiles in front of the PokeCenter for 9 steps.
-5. Open the PokeDex however many times the tool below says.
-6. Take 1 step on the same two tiles when the timer goes off.
+4. Walk back and forth on the two tiles in front of the PokeCenter for 9 steps. **DO NOT** move anywhere else.
+   - <Flex gap={16}>
+       <Image
+         pixelated
+         alt="Tile 1"
+         src="/images/Emerald/Retail-Egg/tile1.webp"
+       />
+       <Image
+         pixelated
+         alt="Tile 2"
+         src="/images/Emerald/Retail-Egg/tile2.webp"
+       />
+     </Flex>
+5. Open and close the Pokedex this many times: **<RetailEmeraldEggStateText item="pokedex" />**
+6. Take 1 step on the **same two tiles** when the timer goes off.
 7. If you received a PokeNav call that matches your expected call and the Daycare man has an egg, save the game. If not, scroll down to the "Calibrate" section.
 
 <CalibrateHeldEggTimer />
@@ -111,7 +124,14 @@ If you are using a Ditto with a genderless or male parent, enter the information
 4. Press "Calibrate" on the egg with the offset closest to 0 to adjust the timer.
 5. Restart the PID RNG process.
 
-  <CalibrateHeldEgg />
+> [!TIP]
+> No results? You may be outside the search window or miscounted Pokedex opens.
+>
+> - **Advance range:** expands how far from your target the tool searches.
+> - **Pokedex range:** checks nearby counts if you miscounted openings.
+
+<CalibrateHeldEgg />
+
 </Step>
 
 <Step step={4}>

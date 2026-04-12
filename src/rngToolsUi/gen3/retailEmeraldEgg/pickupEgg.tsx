@@ -7,6 +7,7 @@ import {
   RngToolForm,
   RngToolSubmit,
   Button,
+  FormikSelect,
 } from "~/components";
 import { rngTools, Egg3PickupState, Gen3PickupMethod } from "~/rngTools";
 import { maxIvs, minIvs } from "~/types/ivs";
@@ -25,9 +26,9 @@ import { HexSchema } from "~/utils/number";
 import { usePickupEggState } from "./state";
 import { useCurrentStep } from "~/components/stepper/state";
 import pmap from "p-map";
-import { sortBy, startCase } from "lodash-es";
+import { sortBy } from "lodash-es";
 import { approximateGen3FrameTime } from "~/utils/approximateGen3FrameTime";
-import { ivMethods } from "./constants";
+import { getIvMethodOptions, ivMethodLabels, ivMethods } from "./constants";
 import { Translations } from "~/translations";
 
 type Result = FlattenIvs<
@@ -64,7 +65,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Method"],
     dataIndex: "method",
-    render: (method) => startCase(method),
+    render: (method) => t[ivMethodLabels[method]],
   },
   ...getInheritedIvColumns(t),
   {
@@ -77,6 +78,7 @@ const Validator = z.object({
   seed: HexSchema(0xffffffff),
   initial_advances: z.number().int().min(0),
   max_advances: z.number().int().min(0),
+  methods: z.enum(ivMethods).array().nonempty(),
   parent1_ivs: NullableIvsSchema,
   parent2_ivs: NullableIvsSchema,
   filter_min_ivs: IvsSchema,
@@ -89,6 +91,7 @@ const initialValues: FormState = {
   seed: 0,
   initial_advances: 1000,
   max_advances: 10000,
+  methods: ivMethods,
   parent1_ivs: maxIvs,
   parent2_ivs: maxIvs,
   filter_min_ivs: minIvs,
@@ -110,6 +113,16 @@ const getFields = (t: Translations): Field[] => [
     label: t["Max advances"],
     input: (
       <FormikNumberInput<FormState> name="max_advances" numType="decimal" />
+    ),
+  },
+  {
+    label: t["Pickup method"],
+    input: (
+      <FormikSelect<FormState, "methods">
+        name="methods"
+        mode="multiple"
+        options={getIvMethodOptions(t)}
+      />
     ),
   },
   {
@@ -140,7 +153,7 @@ export const RetailEmeraldPickupEgg = () => {
       opts.parent2_ivs,
     ];
     const methodResults = await pmap(
-      ivMethods,
+      opts.methods,
       async (method) => {
         const spreads = await rngTools.emerald_egg_pickup_states({
           ...opts,

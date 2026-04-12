@@ -185,7 +185,7 @@ const getSetupFields = (
       indent: 1,
     },
     {
-      label: "Min frames before reseeding",
+      label: "Min frames before painting",
       input: (
         <FormikNumberInput<FormState>
           name="min_frame_before_painting"
@@ -196,7 +196,7 @@ const getSetupFields = (
       indent: 1,
     },
     {
-      label: "Min advances after reseeding",
+      label: "Min advances after painting",
       input: (
         <FormikNumberInput<FormState>
           name="min_adv_after_painting"
@@ -218,7 +218,7 @@ const getSetupFields = (
     },
     {
       label: usingPaintingReseeding
-        ? "Max advances after reseeding"
+        ? "Max advances after painting"
         : "Max advances",
       input: (
         <FormikNumberInput<FormState> name="max_advances" numType="decimal" />

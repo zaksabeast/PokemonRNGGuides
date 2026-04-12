@@ -3,6 +3,7 @@ import {
   Typography,
   Flex,
   Image,
+  type ImageProps,
   Link,
   Alert,
   type AlertProps,
@@ -102,9 +103,9 @@ export const MarkdownCode = ({ children }: Props) => {
   return <_Code>{children}</_Code>;
 };
 
-export const MarkdownImage = ({ src, alt }: { src: string; alt: string }) => (
+export const MarkdownImage = (props: Partial<ImageProps>) => (
   <Flex justify="center">
-    <Image src={src} alt={alt} />
+    <Image {...props} />
   </Flex>
 );
 

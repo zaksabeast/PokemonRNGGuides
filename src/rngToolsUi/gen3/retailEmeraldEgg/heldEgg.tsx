@@ -105,9 +105,9 @@ const getColumns = ({
     render: (shiny) => (shiny ? "Yes" : "No"),
   },
   {
-    title: t["PokeDex"],
+    title: t["Pokedex"],
     dataIndex: "redraws",
-    render: (redraws) => `${t["PokeDex"]} x${redraws}`,
+    render: (redraws) => `${t["Pokedex"]} x${redraws}`,
   },
   {
     title: t["Match call"],
@@ -300,6 +300,7 @@ const InnerRetailEmeraldHeldEgg = ({ registeredTrainers }: InnerProps) => {
         shiny: opts.filter_shiny,
         nature: opts.filter_nature,
         gender: opts.filter_gender,
+        match_call: null,
       },
     });
 

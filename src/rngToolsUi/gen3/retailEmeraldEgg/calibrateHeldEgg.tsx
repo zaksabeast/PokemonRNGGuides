@@ -7,24 +7,22 @@ import {
   FormikSelect,
   RngToolSubmit,
   Typography,
+  FormikNumberInput,
+  Icon,
+  Tag,
+  FormikRadio,
 } from "~/components";
+import { z } from "zod";
 import { CalibrateTimerButton } from "~/components/calibrateTimerButton";
 import {
+  HeldEggState,
   pokeNavTrainers,
   useHeldEggState,
   useRegisteredTrainers,
 } from "./state";
-import {
-  rngTools,
-  Gen3HeldEgg,
-  PokeNavTrainer,
-  Nature,
-  NoEggMatchCall,
-  Gender,
-} from "~/rngTools";
-import { uniqBy, sortBy } from "lodash-es";
+import { rngTools, Gen3HeldEgg, PokeNavTrainer } from "~/rngTools";
+import { sortBy, uniqueId } from "lodash-es";
 import { natureOptions } from "~/components/pkmFilter";
-import { genderOptions } from "~/components/genderFilter/options";
 import { toOptions } from "~/utils/options";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
@@ -33,40 +31,83 @@ import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
 import { Gen3Timer } from "~/components/gen3Timer";
 import { formatOffset } from "~/utils/offsetSymbol";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { useWatch } from "~/hooks/form";
 import { Translations, usePokeNavTranslations } from "~/translations";
 import { PokeNavTrainerTranslations } from "~/translations/en/pokeNav";
 import { sortLocale } from "~/utils/sortLocale";
+import { gender, nature } from "~/types";
 
 const timerAtom = createGen3TimerAtom();
 
-type Result = tst.O.Merge<
-  tst.O.Required<Partial<Gen3HeldEgg>, "advance" | "match_call">,
-  { offset: number }
+type Result = tst.O.Nullable<
+  tst.O.Merge<
+    tst.O.Required<Partial<Gen3HeldEgg>, "advance" | "match_call">,
+    { id: string; advanceOffset: number; redrawOffset: number | null }
+  >,
+  "redraws"
 >;
 
 const getColumns = ({
   t,
+  target,
   translatedTrainers,
 }: {
   t: Translations;
+  target: Gen3HeldEgg | null;
   translatedTrainers: PokeNavTrainerTranslations;
 }): ResultColumn<Result>[] => [
   {
     title: t["Calibrate"],
     dataIndex: "advance",
-    render: (_, result) => (
-      <CalibrateTimerButton
-        type="gen3"
-        hitAdvance={result.advance}
-        timer={timerAtom}
-        trackerId="calibrate_retail_emerald_held_egg"
-      />
-    ),
+    render: (_, result) => {
+      if (result.redraws != null && result.redraws !== target?.redraws) {
+        return <Tag color="Error">{t["Wrong Pokedex Count"]}</Tag>;
+      }
+
+      if (result.calibration !== target?.calibration) {
+        return <Tag color="Error">{t["Wrong Calibration"]}</Tag>;
+      }
+
+      return (
+        <CalibrateTimerButton
+          type="gen3"
+          hitAdvance={result.advance}
+          timer={timerAtom}
+          trackerId="calibrate_retail_emerald_held_egg"
+        />
+      );
+    },
   },
   {
-    title: t["Offset"],
-    dataIndex: "offset",
+    key: "isTarget",
+    title: t["Is Target"],
+    dataIndex: "advance",
+    render: (_, result) =>
+      result.calibration === target?.calibration &&
+      result.advance === target?.advance &&
+      result.match_call === target?.match_call &&
+      result.redraws === target?.redraws ? (
+        <Icon name="CheckCircle" color="Success" size={30} />
+      ) : null,
+  },
+  {
+    title: t["Advance Offset"],
+    dataIndex: "advanceOffset",
     render: formatOffset,
+  },
+  {
+    title: t["Pokedex Offset"],
+    dataIndex: "redrawOffset",
+    render: (offset) => (offset == null ? t["None"] : formatOffset(offset)),
+  },
+  {
+    title: t["Pokedex"],
+    dataIndex: "redraws",
+    render: (redraws) => (redraws == null ? "?" : redraws),
+  },
+  {
+    title: t["Advance"],
+    dataIndex: "advance",
   },
   {
     title: t["Nature"],
@@ -80,16 +121,64 @@ const getColumns = ({
   },
 ];
 
-export type FormState = {
-  nature: Nature | null;
-  gender: Gender | null;
-  pokeNavCall: PokeNavTrainer;
-};
+const Validator = z.object({
+  pokeNavCall: z.enum([...pokeNavTrainers, "None"]),
+  hasEgg: z.enum(["true", "false"]),
+  gender: z.enum(gender),
+  nature: z.enum(nature),
+  advanceRange: z.number().min(0),
+  redrawRange: z.number().min(0),
+  calibration: z.number().nullable(),
+});
+
+export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  nature: null,
-  gender: null,
+  nature: "Adamant",
+  gender: "Male",
+  hasEgg: "true",
   pokeNavCall: "None",
+  advanceRange: 1000,
+  redrawRange: 0,
+  calibration: null,
+};
+
+const HatchedGenderField = ({ t }: { t: Translations }) => {
+  const { hasEgg } = useWatch({
+    names: { hasEgg: true },
+    validationSchema: Validator,
+  });
+  const hatchedGenderOptions = gender.map((option) => ({
+    label: t[option],
+    value: option,
+  }));
+
+  return (
+    <FormikSelect<FormState, "gender">
+      name="gender"
+      disabled={hasEgg !== "true"}
+      options={hatchedGenderOptions}
+    />
+  );
+};
+
+const HatchedNatureField = ({ t }: { t: Translations }) => {
+  const { hasEgg } = useWatch({
+    names: { hasEgg: true },
+    validationSchema: Validator,
+  });
+  const hatchedNatureOptions = natureOptions.required.map((option) => ({
+    label: t[option.label],
+    value: option.value,
+  }));
+
+  return (
+    <FormikSelect<FormState, "nature">
+      name="nature"
+      disabled={hasEgg !== "true"}
+      options={hatchedNatureOptions}
+    />
+  );
 };
 
 const getFields = ({
@@ -99,16 +188,6 @@ const getFields = ({
   t: Translations;
   translatedTrainers: PokeNavTrainerTranslations;
 }): Field[] => {
-  const hatchedNatureOptions = natureOptions.optional.map((option) => ({
-    label: option.value === null ? t["No Egg"] : t[option.label],
-    value: option.value,
-  }));
-
-  const hatchedGenderOptions = genderOptions.map((option) => ({
-    label: option.value === null ? t["No Egg"] : t[option.label],
-    value: option.value,
-  }));
-
   const unsortedTrainerOptions = toOptions(
     pokeNavTrainers,
     (name) => translatedTrainers[name],
@@ -130,24 +209,83 @@ const getFields = ({
       ),
     },
     {
-      label: t["Hatched Nature"],
+      label: t["Has Egg"],
       input: (
-        <FormikSelect<FormState, "nature">
-          name="nature"
-          options={hatchedNatureOptions}
+        <FormikRadio<FormState>
+          name="hasEgg"
+          options={[
+            { label: t["Yes"], value: "true" },
+            { label: t["No"], value: "false" },
+          ]}
         />
       ),
     },
     {
+      label: t["Hatched Nature"],
+      input: <HatchedNatureField t={t} />,
+    },
+    {
       label: t["Hatched Gender"],
+      input: <HatchedGenderField t={t} />,
+    },
+    {
+      label: t["Advance Range ±"],
       input: (
-        <FormikSelect<FormState, "gender">
-          name="gender"
-          options={hatchedGenderOptions}
+        <FormikNumberInput<FormState> name="advanceRange" numType="decimal" />
+      ),
+    },
+    {
+      label: t["Pokedex Range ±"],
+      input: (
+        <FormikNumberInput<FormState> name="redrawRange" numType="decimal" />
+      ),
+    },
+    {
+      label: t["Calibration Override"],
+      input: (
+        <FormikNumberInput<FormState>
+          name="calibration"
+          numType="decimal"
+          placeholder={t["Do not touch unless you know what you're doing"]}
         />
       ),
     },
   ];
+};
+
+const calcNoEggs = async ({
+  filters,
+  maxAdvances,
+  initialAdvances,
+  target,
+  state,
+  registeredTrainers,
+}: {
+  filters: FormState;
+  maxAdvances: number;
+  initialAdvances: number;
+  target: Gen3HeldEgg;
+  state: HeldEggState;
+  registeredTrainers: PokeNavTrainer[];
+}) => {
+  const calibration = filters.calibration ?? target.calibration;
+  const callResults = await rngTools.generate_no_egg_match_calls({
+    has_roamer: target.has_roamer,
+    calibration,
+    has_lightning_rod: state.eggSettings.has_lightning_rod,
+    max_advances: maxAdvances,
+    registered_trainers: registeredTrainers,
+    seed: state.seed,
+    initial_advances: initialAdvances,
+    match_call_filter: filters.pokeNavCall,
+  });
+
+  return callResults.map((result) => ({
+    ...result,
+    calibration,
+    redraws: null,
+    offset: result.advance - target.advance,
+  }));
 };
 
 type InnerProps = {
@@ -156,122 +294,79 @@ type InnerProps = {
 
 const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   const [state] = useHeldEggState();
-  const firstFilter = React.useRef(true);
   const t = useActiveRouteTranslations();
   const translatedTrainers = usePokeNavTranslations(t.language);
-  const [previousOffsets, setPreviousOffsets] = React.useState<number[]>([]);
-  const [potentialEggs, setPotentialEggs] = React.useState<Result[]>([]);
-  const [filters, setFilters] = React.useState<FormState | null>(null);
+  const [{ results, previousOffsets }, setResults] = React.useState<{
+    results: Result[] | null;
+    previousOffsets: number[] | null;
+  }>({ results: null, previousOffsets: null });
 
-  const targetAdvance = state.target?.advance ?? 0;
-  const targetRedraws = state.target?.redraws ?? 0;
-  const targetCalibration = state.target?.calibration ?? 0;
+  const onSubmit: RngToolSubmit<FormState> = async (filters) => {
+    const target = state.target;
 
-  React.useEffect(() => {
-    const runAsync = async () => {
-      const maxAdvances = 200;
-      const initialAdvances = Math.max(targetAdvance - 100, 0);
-
-      const eggResults = await rngTools.emerald_egg_held_states({
-        ...state.eggSettings,
-        // preset
-        // Target calibration takes roamer into consideration
-        has_roamer: false,
-        tid: 0,
-        sid: 0,
-        delay: 0,
-        registered_trainers: registeredTrainers,
-        lua_adjustment: true,
-        min_redraw: targetRedraws,
-        max_redraw: targetRedraws,
-        calibration: targetCalibration,
-        initial_advances: initialAdvances,
-        max_advances: maxAdvances,
-        filter_impossible_to_hit: false,
-        filters: {
-          shiny: false,
-          nature: null,
-          gender: null,
-        },
+    if (target == null) {
+      setResults({
+        results: [],
+        previousOffsets:
+          results?.map((egg) => egg.advanceOffset).slice(0, 20) ?? [],
       });
-
-      const callResults = await rngTools.generate_no_egg_match_calls({
-        // Target calibration takes roamer into consideration
-        has_roamer: false,
-        calibration: targetCalibration,
-        has_lightning_rod: state.eggSettings.has_lightning_rod,
-        max_advances: maxAdvances,
-        redraws: targetRedraws,
-        registered_trainers: registeredTrainers,
-        seed: state.seed,
-        initial_advances: initialAdvances,
-      });
-
-      // uniqBy keeps the first of two duplicates
-      // So merging egg results first ensures call results are only kept if they do not have an egg
-      const merged: (Gen3HeldEgg | NoEggMatchCall)[] = [
-        ...eggResults,
-        ...callResults,
-      ];
-      const results = sortBy(
-        uniqBy(merged, (res) => res.advance),
-        (res) => res.advance,
-      );
-
-      setPotentialEggs(
-        results.map((result) => ({
-          ...result,
-          offset: result.advance - targetAdvance,
-        })),
-      );
-    };
-
-    runAsync();
-  }, [
-    targetAdvance,
-    registeredTrainers,
-    state.seed,
-    state.eggSettings,
-    targetRedraws,
-    targetCalibration,
-  ]);
-
-  const onSubmit: RngToolSubmit<FormState> = async (opts) => {
-    const filteredEggs =
-      filters == null
-        ? []
-        : potentialEggs.filter(
-            (egg) =>
-              egg.match_call === filters.pokeNavCall &&
-              // Intentionally using `==` to compare undefined and null
-              egg.nature == filters.nature &&
-              egg.gender == filters.gender,
-          );
-
-    if (!firstFilter.current) {
-      setPreviousOffsets(filteredEggs.map((egg) => egg.offset));
+      return;
     }
 
-    setFilters(opts);
-    firstFilter.current = false;
+    const maxAdvances = filters.advanceRange * 2;
+    const initialAdvances = Math.max(target.advance - filters.advanceRange, 0);
+
+    const eggResults =
+      filters.hasEgg === "true"
+        ? await rngTools.emerald_egg_held_states({
+            ...state.eggSettings,
+            has_roamer: target.has_roamer,
+            // preset
+            tid: 0,
+            sid: 0,
+            delay: 0,
+            registered_trainers: registeredTrainers,
+            lua_adjustment: true,
+            min_redraw: Math.max(target.redraws - filters.redrawRange, 0),
+            max_redraw: target.redraws + filters.redrawRange,
+            calibration: filters.calibration ?? target.calibration,
+            initial_advances: initialAdvances,
+            max_advances: maxAdvances,
+            filter_impossible_to_hit: false,
+            filters: {
+              shiny: false,
+              nature: filters.nature,
+              gender: filters.gender,
+              match_call: filters.pokeNavCall,
+            },
+          })
+        : await calcNoEggs({
+            filters,
+            maxAdvances,
+            initialAdvances,
+            target,
+            state,
+            registeredTrainers,
+          });
+
+    const offsetResults = eggResults.map((result) => ({
+      ...result,
+      redrawOffset:
+        result.redraws != null ? result.redraws - target.redraws : null,
+      advanceOffset: result.advance - target.advance,
+      id: uniqueId(),
+    }));
+    const sortedResults: Result[] = sortBy(offsetResults, [
+      (res) => Math.abs(res.advanceOffset),
+      (res) => Math.abs(res.redrawOffset ?? 0),
+    ]);
+
+    setResults({
+      results: sortedResults,
+      previousOffsets:
+        results?.map((egg) => egg.advanceOffset).slice(0, 20) ?? [],
+    });
   };
-
-  const dataSource =
-    filters == null
-      ? []
-      : potentialEggs.filter(
-          (egg) =>
-            egg.match_call === filters.pokeNavCall &&
-            // Intentionally using `==` to compare undefined and null
-            egg.nature == filters.nature &&
-            egg.gender == filters.gender,
-        );
-
-  const matchCall = state.target?.match_call;
-  const targetCall =
-    matchCall === "None" || matchCall == null
-      ? t["None"]
-      : `${t["Target Call"]}: ${translatedTrainers.withoutTitle[matchCall]}`;
 
   const fields = getFields({
     t,
@@ -279,33 +374,30 @@ const InnerCalibrateHeldEgg = ({ registeredTrainers }: InnerProps) => {
   });
   const columns = getColumns({
     t,
+    target: state.target,
     translatedTrainers: translatedTrainers.withoutTitle,
   });
 
   return (
     <Flex vertical gap={16} width="100%">
-      <Flex vertical gap={8}>
-        <Typography.Title level={5} mv={0}>
-          {t["Target Call"]}: {targetCall}
-        </Typography.Title>
-        <Typography.Title level={5} mv={0}>
-          {t["Target Nature"]}: {state.target?.nature}
-        </Typography.Title>
-      </Flex>
-
       <Typography.Text mv={0}>
-        {t["Previous offsets"]}: {previousOffsets.join(", ")}
+        {t["Previous offsets"]}:{" "}
+        {previousOffsets == null || previousOffsets.length === 0
+          ? t["None"]
+          : previousOffsets.join(", ")}
       </Typography.Text>
 
       <RngToolForm<FormState, Result>
         fields={fields}
         columns={columns}
-        results={dataSource}
+        results={results ?? []}
         initialValues={initialValues}
+        validationSchema={Validator}
+        disableGenerate={state.target == null}
         onSubmit={onSubmit}
         submitTrackerId="filter_retail_emerald_held_egg"
         submitButtonLabel="Find advances matching eggs"
-        rowKey="advance"
+        rowKey="id"
       />
     </Flex>
   );
@@ -326,32 +418,13 @@ export const CalibrateHeldEgg = () => {
 
 export const CalibrateHeldEggTimer = () => {
   const [state] = useHeldEggState();
-  const t = useActiveRouteTranslations();
-  const translatedTrainers = usePokeNavTranslations(t.language);
   const targetAdvance = state.target?.advance ?? 0;
-  const redraws = state.target?.redraws ?? 0;
-  const matchCall = state.target?.match_call;
-  const targetCall =
-    matchCall === "None" || matchCall == null
-      ? "None"
-      : translatedTrainers.withoutTitle[matchCall];
 
   return (
-    <Flex vertical gap={16} width="100%">
-      <Flex vertical gap={8}>
-        <Typography.Title level={5} mv={0}>
-          {t["Number of times to open the PokeDex"]}: {redraws}
-        </Typography.Title>
-        <Typography.Title level={5} mv={0}>
-          {t["Target caller"]}: {targetCall}
-        </Typography.Title>
-      </Flex>
-
-      <Gen3Timer
-        trackerId="retail_emerald_held_egg"
-        targetAdvance={targetAdvance}
-        timer={timerAtom}
-      />
-    </Flex>
+    <Gen3Timer
+      trackerId="retail_emerald_held_egg"
+      targetAdvance={targetAdvance}
+      timer={timerAtom}
+    />
   );
 };

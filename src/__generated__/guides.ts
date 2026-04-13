@@ -8433,7 +8433,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Legend, Gift, and Fossil RNG",
-      isNew: true,
+      isNew: false,
       title: "Diamond, Pearl, and Platinum Legend, Gift, and Fossil RNG Guide",
       navDrawerTitle: "Legend, Gift, and Fossil RNG",
       description:

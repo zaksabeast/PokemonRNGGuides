@@ -10,12 +10,14 @@ pub const BASE_LEAD_PID_MOD_24_CYCLES: usize = calc_modulo_cycle_unsigned(BASE_L
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[allow(non_camel_case_types)]
 pub enum Moment {
+    SweetScentWildEncounter,
     ChooseWildMonIndex_Land_Random,
     ChooseWildMonLevel_RandomLvl,
     PickWildMonNature_RandomTestSynchro,
     CreateWildMon_RandomTestCuteCharm,
     PickWildMonNature_RandomPickNature,
     CreateMonWithNature_RandomPidLowFirst,
+    CreateMonWithNature_RandomPidLowLast,
     CreateMonWithNature_RandomPidHighLast,
     CreateBoxMon_RandomIvs1,
     CreateBoxMon_RandomIvs2,

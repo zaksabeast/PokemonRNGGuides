@@ -425,7 +425,6 @@ pub fn generate_gen3_wild(
                 results.push(gen_mon_wild3);
             }
         }
-        cycle_counter.add_cycle(method3_range);
 
         let pid_high = rand_next_u16(&mut rng, "pid_high", 1) as u32;
         pid = (pid_high << 16) | pid_low;
@@ -440,9 +439,13 @@ pub fn generate_gen3_wild(
         };
 
         if good_nature && good_gender {
+            cycle_counter.on_moment_reached(Moment::CreateMonWithNature_RandomPidLowLast);
+
+            cycle_counter.add_cycle(method3_range);
             // cycle increment done after the loop
             break;
         }
+        cycle_counter.add_cycle(method3_range);
 
         // between CreateMonWithNature_pidhigh and CreateMonWithNature_pidlow (retry)
         let retry_pid_cycle = if good_nature { 140 } else { 158 }; // 18 cycles to check gender

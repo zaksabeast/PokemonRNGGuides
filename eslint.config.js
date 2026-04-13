@@ -70,7 +70,18 @@ const baseConfig = {
         selector: "VariableDeclarator > FunctionExpression",
         message: "Use arrow functions instead of function expressions.",
       },
+      {
+        selector: "Property > FunctionExpression",
+        message:
+          "Use arrow functions for object properties: prefer `prop: () => {}` instead of `prop: function() {}`.",
+      },
+      {
+        selector: "Property[method=true]",
+        message:
+          "Use arrow functions for object methods: prefer `prop: () => {}` instead of method shorthand `prop() {}`.",
+      },
     ],
+    eqeqeq: ["error", "always", { null: "ignore" }],
     "no-restricted-imports": [
       "error",
       {
@@ -127,6 +138,13 @@ const baseConfig = {
         allowNullableString: false,
         allowNullableNumber: false,
         allowAny: false,
+      },
+    ],
+    "no-param-reassign": [
+      "error",
+      {
+        props: true,
+        ignorePropertyModificationsFor: ["acc", "accumulator"],
       },
     ],
   },

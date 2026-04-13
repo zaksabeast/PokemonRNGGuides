@@ -24,12 +24,13 @@ let nextUid = 0;
 type FastestAdvsCache = Awaited<ReturnType<typeof createFastestAdvsCache>>;
 
 const convertResultsForPidPathToPidPathResult = async (
-  results: Wild3SearcherResultMon[],
+  originalResults: Wild3SearcherResultMon[],
   mapSetups: Wild3MapSetups[],
   rngManipulatedLeadPid: boolean,
   initial_seed: number,
   getAdvsFromCache: FastestAdvsCache,
 ): Promise<PidPathResult | null> => {
+  let results = [...originalResults];
   // Limitation: The UI components only support that all results for the same PidPath
   // requires painting, or none do. Having both only occurs in the rare cases that
   // the results overlap DONT_USE_PAINTING_IF_BELOW_ADV threshold.

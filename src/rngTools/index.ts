@@ -76,7 +76,7 @@ const spawnRngToolWorker = async (): Promise<RngToolWorker> => {
     worker.addEventListener(
       "message",
       (message) => {
-        if (message?.data?.ready == true) {
+        if (message?.data?.ready === true) {
           controller.abort();
           resolve(void 0);
         }

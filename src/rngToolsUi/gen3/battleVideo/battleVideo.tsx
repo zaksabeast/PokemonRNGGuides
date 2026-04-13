@@ -217,7 +217,7 @@ const columns: ResultColumn<BreakdownInfo>[] = [
   {
     title: "Advance at moment",
     dataIndex: "adv",
-    render(val, values) {
+    render: (val, values) => {
       const plus = values.advSources.reduce((prev, cur) => prev + cur.adv, 0);
       const plusText = values.advSources.map((src) => (
         <div key={src.name}>

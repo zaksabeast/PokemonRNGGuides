@@ -23,10 +23,10 @@ const getGenderFilterOptions = (species?: Species, permitAny = true) => {
 
   const genderRatio = genderRatioBySpecies[species];
   const possibleGenders = getPossibleGenders(genderRatio);
-  permitAny = permitAny && possibleGenders.length > 1;
+  const safePermitAny = permitAny && possibleGenders.length > 1;
   return genderOptions.filter((option) => {
     if (option.value == null) {
-      return permitAny;
+      return safePermitAny;
     }
     return possibleGenders.includes(option.value);
   });

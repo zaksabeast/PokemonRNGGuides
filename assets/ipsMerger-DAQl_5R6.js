@@ -1,0 +1,1 @@
+import{B as e}from"./components-DSv7_Q1n.js";export{e as IpsMerger};

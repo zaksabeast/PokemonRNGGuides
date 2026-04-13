@@ -1,0 +1,1 @@
+import{$i as e}from"./components-DSv7_Q1n.js";var t=0;function n(n){var r=++t;return e(n)+r}export{n as t};

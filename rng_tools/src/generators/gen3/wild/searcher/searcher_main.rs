@@ -1,6 +1,6 @@
 use itertools::{Itertools, iproduct};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use super::super::{

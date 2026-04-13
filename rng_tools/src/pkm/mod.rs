@@ -28,7 +28,7 @@ pub use shiny::*;
 pub use size::*;
 pub use species::*;
 pub use stat::*;
-use tsify_next::Tsify;
+use tsify::Tsify;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]

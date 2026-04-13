@@ -112,7 +112,7 @@ const callRngToolInTempWorker = async <
   FuncName extends BatchableFunctionNamesOf<AdjustedRngTools>,
 >(
   functionName: FuncName,
-  ...args: tst.F.Parameters<AdjustedRngTools[FuncName]>
+  ...args: unknown[]
 ): Promise<tst.F.Return<AdjustedRngTools[FuncName]>> => {
   const rngToolWorker = await spawnRngToolWorker();
   const tool = rngToolWorker.tools[functionName];
@@ -137,10 +137,7 @@ export const multiWorkerRngTools = new Proxy(
       return (
         ...args: tst.F.Parameters<AdjustedRngTools[typeof functionName]>
       ) => {
-        return callRngToolInTempWorker(
-          functionName as BatchableFunctionNamesOf<AdjustedRngTools>,
-          ...args,
-        );
+        return callRngToolInTempWorker(functionName, ...args);
       };
     },
   },
@@ -160,7 +157,6 @@ export const rngTools = new Proxy(
       ) => {
         const tools = await getRngTools();
         const func = tools[functionName];
-        // @ts-expect-error -- Function signature makes sure this is correct
         return func(...args);
       };
     },

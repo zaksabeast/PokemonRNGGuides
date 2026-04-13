@@ -3,7 +3,7 @@ use crate::rng::StateIterator;
 use crate::rng::{Rng, mt::MT};
 use crate::{AbilityType, G6Idx, Gender, IvFilter, Ivs, Nature, Species};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]

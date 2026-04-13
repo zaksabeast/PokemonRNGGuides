@@ -2,7 +2,7 @@ use itertools::iproduct;
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
 use std::ops::{Index, IndexMut};
-use tsify_next::Tsify;
+use tsify::Tsify;
 
 macro_rules! impl_index_g3idx {
     ($ty:ty, $item:ty) => {

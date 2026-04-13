@@ -6,7 +6,7 @@ use crate::{
 };
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 const FORM_SHIFT: u16 = 11;

@@ -1,0 +1,1 @@
+import{ia as e}from"./components-DGXF6tYE.js";var t=0;function n(n){var r=++t;return e(n)+r}export{n as t};

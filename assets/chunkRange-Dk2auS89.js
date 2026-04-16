@@ -1,0 +1,1 @@
+var e=([e,t],n)=>{if(e===t)return[[e,t]];let r=[];for(let i=e;i<t;i+=n)r.push([i,Math.min(i+n,t)]);return r};export{e as t};

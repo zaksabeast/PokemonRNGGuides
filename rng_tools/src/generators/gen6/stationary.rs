@@ -1,7 +1,7 @@
 use crate::pkm::gen6_psv;
 use crate::rng::StateIterator;
 use crate::rng::{Rng, mt::MT};
-use crate::{AbilityType, G6Idx, Gender, IvFilter, Ivs, Nature, Species};
+use crate::{AbilityType, G5Idx, Gender, IvFilter, Ivs, Nature, Species};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
@@ -185,7 +185,7 @@ fn generate_state(rng: &mut MT, advance: usize, opts: &GenerateOpts) -> Stationa
     let mut i = 0;
     while i < opts.perfect_iv_count {
         let set_idx = rng.rand_max(6) as usize;
-        let iv_idx = G6Idx::from(set_idx as u8);
+        let iv_idx = G5Idx::from(set_idx as u8);
         if !set_ivs[set_idx] {
             result.ivs[iv_idx] = 31;
             set_ivs[set_idx] = true;
@@ -194,7 +194,7 @@ fn generate_state(rng: &mut MT, advance: usize, opts: &GenerateOpts) -> Stationa
     }
 
     for (i, is_iv_set) in set_ivs.iter().enumerate() {
-        let idx = G6Idx::from(i as u8);
+        let idx = G5Idx::from(i as u8);
         if !is_iv_set {
             result.ivs[idx] = (rng.rand::<u32>() >> 27) as u8;
         }

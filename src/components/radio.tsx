@@ -11,6 +11,9 @@ import { Typography } from "./typography";
 import { Flex } from "./flex";
 import { withCss } from "./withCss";
 import { Path, Paths } from "~/types";
+import { PrimitiveAtom, useAtom } from "jotai";
+import { Translation } from "~/translations";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type RadioOptions<OptionValues extends string | number> =
   | OptionValues[]
@@ -87,5 +90,41 @@ export const FormikRadio = <FormState extends GenericForm>({
         <Typography.Text type="danger">{error}</Typography.Text>
       )}
     </Flex>
+  );
+};
+
+type AtomRadioProps<
+  State,
+  Option extends { label: Translation; value: string | number },
+> = {
+  options: Option[];
+  atom: PrimitiveAtom<State>;
+  getValue: (state: State) => Option["value"];
+  nextState: (state: State, option: Option["value"]) => State;
+};
+
+export const AtomRadio = <
+  State,
+  Option extends { label: Translation; value: string | number },
+>({
+  atom,
+  options,
+  getValue,
+  nextState,
+  ...props
+}: AtomRadioProps<State, Option>) => {
+  const t = useActiveRouteTranslations();
+  const [state, setState] = useAtom(atom);
+
+  return (
+    <RadioGroup
+      optionType="button"
+      value={getValue(state)}
+      options={options.map((opt) => ({ ...opt, label: t[opt.label] }))}
+      onChange={(event) =>
+        setState(nextState(state, event.target.value as Option["value"]))
+      }
+      {...props}
+    />
   );
 };

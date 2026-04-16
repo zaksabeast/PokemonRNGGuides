@@ -55,6 +55,10 @@
     "hash": "7a4a5084206ad0490284841dd7822d7584836fa8d972e87c96f7425959cfac38",
     "lastUpdated": "2026-03-26"
   },
+  "/bw-find-ds-parameters/": {
+    "hash": "4fb3c1a08bed7ecdf0ed1b2da321fa2a0aa7aa26a5abaf59c33c9639914c9959",
+    "lastUpdated": "2026-04-16"
+  },
   "/bw2-calibration/": {
     "hash": "67a952212629076472fc98118b0118db11149783648ded9e48a93c69acdd60de",
     "lastUpdated": "2026-03-28"
@@ -62,6 +66,10 @@
   "/bw2-egg/": {
     "hash": "8be7516bd4002b3ad4bf6f37af45a46d8a38ca2b65c5ab731ee7cbeaea5e0f99",
     "lastUpdated": null
+  },
+  "/bw2-find-ds-parameters/": {
+    "hash": "4fb3c1a08bed7ecdf0ed1b2da321fa2a0aa7aa26a5abaf59c33c9639914c9959",
+    "lastUpdated": "2026-04-16"
   },
   "/cfw-bdsp-egg/": {
     "hash": "c72e6a054c5b3b9a9c8585933fa2fc7f6ab19d20126f00b6653d884d17a164d8",
@@ -690,6 +698,10 @@
   "/it-rs-gen3-sid/": {
     "hash": "142a0d67573b8058ddb6d62716052c2267d6a01a11d10e9b07fc11749c633f87",
     "lastUpdated": null
+  },
+  "/iv-calculator/": {
+    "hash": "1d0b44f7e8c7b7b5c7675c7e1a78c74fb3b5c3925b148be961744469216fd85f",
+    "lastUpdated": "2026-04-13"
   },
   "/legends-arceus/": {
     "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",

@@ -368,6 +368,18 @@ const tools = {
     () => import("~/rngToolsUi/gen5/calibrationResults/calibrationResults"),
     (mod) => mod.Gen5CalibrationResults,
   ),
+  IvCalc: lazyLoad(
+    () => import("~/rngToolsUi/ivCalc/ivCalc"),
+    (mod) => mod.IvCalc,
+  ),
+  Profile5Calibrator: lazyLoad(
+    () => import("~/rngToolsUi/gen5/profileSearcher/calibrator"),
+    (mod) => mod.Profile5Calibrator,
+  ),
+  Profile5Setup: lazyLoad(
+    () => import("~/rngToolsUi/gen5/profileSearcher/setup"),
+    (mod) => mod.Profile5Setup,
+  ),
 };
 
 export const markdownComponents = {

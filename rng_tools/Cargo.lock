@@ -180,6 +180,7 @@ dependencies = [
  "chrono",
  "itertools",
  "num_enum",
+ "once_cell",
  "serde",
  "serde-wasm-bindgen",
  "tsify",

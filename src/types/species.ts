@@ -1146,6 +1146,7 @@ export const formatSpeciesLabel = (species: Species) => {
 // so these include species + forms
 const gen3End = 393;
 const gen4End = 529;
+const gen5End = 649;
 
 export const getGen3SpeciesOptions = memoize(() => {
   const gen3SpeciesByDex = toOptions(
@@ -1175,6 +1176,26 @@ export const getGen4SpeciesOptions = memoize(() => {
     byNameOptional: [
       { label: "None", value: "None" } as const,
       ...gen4SpeciesOptionsByName,
+    ],
+  };
+});
+
+export const getGen5SpeciesOptions = memoize(() => {
+  const gen5SpeciesByDex = toOptions(
+    species.slice(1, gen5End),
+    formatSpeciesLabel,
+  );
+  const gen5SpeciesOptionsByName = sortBy(
+    gen5SpeciesByDex,
+    (option) => option.label,
+  );
+
+  return {
+    byDex: gen5SpeciesByDex,
+    byName: gen5SpeciesOptionsByName,
+    byNameOptional: [
+      { label: "None", value: "None" } as const,
+      ...gen5SpeciesOptionsByName,
     ],
   };
 });

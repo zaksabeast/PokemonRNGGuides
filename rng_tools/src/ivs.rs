@@ -1,40 +1,8 @@
+use crate::impl_stat_index;
+use crate::pkm::{G3Idx, G5Idx};
 use itertools::iproduct;
-use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
-use std::ops::{Index, IndexMut};
 use tsify::Tsify;
-
-macro_rules! impl_index_g3idx {
-    ($ty:ty, $item:ty) => {
-        impl std::ops::Index<G3Idx> for $ty {
-            type Output = $item;
-
-            fn index(&self, index: G3Idx) -> &Self::Output {
-                match index {
-                    G3Idx::Hp => &self.hp,
-                    G3Idx::Atk => &self.atk,
-                    G3Idx::Def => &self.def,
-                    G3Idx::Spe => &self.spe,
-                    G3Idx::Spa => &self.spa,
-                    G3Idx::Spd => &self.spd,
-                }
-            }
-        }
-
-        impl std::ops::IndexMut<G3Idx> for $ty {
-            fn index_mut(&mut self, index: G3Idx) -> &mut Self::Output {
-                match index {
-                    G3Idx::Hp => &mut self.hp,
-                    G3Idx::Atk => &mut self.atk,
-                    G3Idx::Def => &mut self.def,
-                    G3Idx::Spe => &mut self.spe,
-                    G3Idx::Spa => &mut self.spa,
-                    G3Idx::Spd => &mut self.spd,
-                }
-            }
-        }
-    };
-}
 
 #[cfg(test)]
 #[macro_export]
@@ -266,21 +234,13 @@ pub fn iv_iter(min_ivs: Ivs, max_ivs: Ivs) -> impl Iterator<Item = Ivs> {
     })
 }
 
-#[derive(Debug, Clone, Copy, FromPrimitive)]
-#[repr(u8)]
-pub enum G3Idx {
-    #[num_enum(default)]
-    Hp = 0,
-    Atk = 1,
-    Def = 2,
-    Spe = 3,
-    Spa = 4,
-    Spd = 5,
-}
+impl_stat_index!(G3Idx, Ivs, u8);
+impl_stat_index!(G3Idx, PartialIvs, Option<u8>);
+impl_stat_index!(G3Idx, InheritedIvs, InheritedIv);
 
-impl_index_g3idx!(Ivs, u8);
-impl_index_g3idx!(PartialIvs, Option<u8>);
-impl_index_g3idx!(InheritedIvs, InheritedIv);
+impl_stat_index!(G5Idx, Ivs, u8);
+impl_stat_index!(G5Idx, PartialIvs, Option<u8>);
+impl_stat_index!(G5Idx, InheritedIvs, InheritedIv);
 
 impl From<Ivs> for InheritedIvs {
     fn from(ivs: Ivs) -> Self {
@@ -304,46 +264,6 @@ impl From<Ivs> for PartialIvs {
             spa: ivs.spa.into(),
             spd: ivs.spd.into(),
             spe: ivs.spe.into(),
-        }
-    }
-}
-
-#[derive(Debug, Clone, Copy, FromPrimitive)]
-#[repr(u8)]
-pub enum G6Idx {
-    #[num_enum(default)]
-    Hp = 0,
-    Atk = 1,
-    Def = 2,
-    Spa = 3,
-    Spd = 4,
-    Spe = 5,
-}
-
-impl Index<G6Idx> for Ivs {
-    type Output = u8;
-
-    fn index(&self, index: G6Idx) -> &u8 {
-        match index {
-            G6Idx::Hp => &self.hp,
-            G6Idx::Atk => &self.atk,
-            G6Idx::Def => &self.def,
-            G6Idx::Spe => &self.spe,
-            G6Idx::Spa => &self.spa,
-            G6Idx::Spd => &self.spd,
-        }
-    }
-}
-
-impl IndexMut<G6Idx> for Ivs {
-    fn index_mut(&mut self, index: G6Idx) -> &mut u8 {
-        match index {
-            G6Idx::Hp => &mut self.hp,
-            G6Idx::Atk => &mut self.atk,
-            G6Idx::Def => &mut self.def,
-            G6Idx::Spe => &mut self.spe,
-            G6Idx::Spa => &mut self.spa,
-            G6Idx::Spd => &mut self.spd,
         }
     }
 }

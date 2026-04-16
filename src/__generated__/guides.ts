@@ -2739,7 +2739,7 @@ export const guides = {
       section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "false-Painting Reseeding",
-      isNew: true,
+      isNew: false,
       title: "Painting Reseeding",
       navDrawerTitle: "Painting Reseeding",
       description:
@@ -3688,7 +3688,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-04-16",
       type: "baseGuide",
       canonical: "/emulator-dppt-egg/",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx",

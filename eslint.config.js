@@ -10,14 +10,21 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const getLanguageOptions = (tsConfig) => ({
+const baseLanguageOptions = {
   ecmaVersion: 2020,
   globals: globals.browser,
   parser: tseslint.parser,
   parserOptions: {
+    sourceType: "module",
+  },
+};
+
+const getTypeCheckedLanguageOptions = (tsConfig) => ({
+  ...baseLanguageOptions,
+  parserOptions: {
+    ...baseLanguageOptions.parserOptions,
     project: tsConfig,
     tsconfigRootDir: __dirname,
-    sourceType: "module",
   },
 });
 
@@ -151,15 +158,23 @@ const baseConfig = {
 };
 
 export default tseslint.config(
-  { ignores: ["dist", "src/graphql/__generated__", "rng_tools"] },
+  {
+    ignores: ["dist", "src/graphql/__generated__", "rng_tools"],
+  },
   {
     ...baseConfig,
     files: ["src/**/*.{ts,tsx}"],
-    languageOptions: getLanguageOptions("./tsconfig.app.json"),
+    ignores: ["src/**/*.test.{ts,tsx}"],
+    languageOptions: getTypeCheckedLanguageOptions("./tsconfig.app.json"),
+  },
+  {
+    ...baseConfig,
+    files: ["src/**/*.test.{ts,tsx}"],
+    languageOptions: getTypeCheckedLanguageOptions("./tsconfig.test.json"),
   },
   {
     ...baseConfig,
     files: ["vite.config.ts"],
-    languageOptions: getLanguageOptions("./tsconfig.node.json"),
+    languageOptions: getTypeCheckedLanguageOptions("./tsconfig.node.json"),
   },
 );

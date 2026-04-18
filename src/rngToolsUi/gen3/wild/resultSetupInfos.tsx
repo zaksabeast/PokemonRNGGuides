@@ -176,15 +176,15 @@ const getResultSetupInfoColumns = ({
           }
           const [least_likely, most_likely] =
             cycle_data_by_lead.common_lower_lead.method_probability <
-            cycle_data_by_lead.common_upper_lead.method_probability
+              cycle_data_by_lead.common_upper_lead.method_probability
               ? [
-                  cycle_data_by_lead.common_lower_lead,
-                  cycle_data_by_lead.common_upper_lead,
-                ]
+                cycle_data_by_lead.common_lower_lead,
+                cycle_data_by_lead.common_upper_lead,
+              ]
               : [
-                  cycle_data_by_lead.common_upper_lead,
-                  cycle_data_by_lead.common_lower_lead,
-                ];
+                cycle_data_by_lead.common_upper_lead,
+                cycle_data_by_lead.common_lower_lead,
+              ];
 
           const leastFormat = formatProbability(
             least_likely.method_probability,
@@ -198,7 +198,7 @@ const getResultSetupInfoColumns = ({
           if (
             least_likely.method_probability === 0 ||
             most_likely.method_probability - least_likely.method_probability >
-              0.1
+            0.1
           ) {
             return `${leastFormat} - ${mostFormat}`;
           }
@@ -246,9 +246,9 @@ const getResultSetupInfoColumns = ({
           }
           if (
             cycle_data_by_lead.ideal_lead.method_probability ===
-              cycle_data_by_lead.slowest_lead.method_probability &&
+            cycle_data_by_lead.slowest_lead.method_probability &&
             cycle_data_by_lead.ideal_lead.method_probability ===
-              cycle_data_by_lead.fastest_lead.method_probability
+            cycle_data_by_lead.fastest_lead.method_probability
           ) {
             return "Any";
           }
@@ -329,7 +329,7 @@ const getResultSetupInfoColumns = ({
               }
               const least_likely_common =
                 cycle_data_by_lead.common_lower_lead.method_probability <
-                cycle_data_by_lead.common_upper_lead.method_probability
+                  cycle_data_by_lead.common_upper_lead.method_probability
                   ? cycle_data_by_lead.common_lower_lead
                   : cycle_data_by_lead.common_upper_lead;
               return getMethodLikelihoodColumValue(
@@ -394,34 +394,34 @@ const resultSetupInfoToDistributionFixedData = (
 type Props = {
   selectedPidPathResult: PidPathResult | null;
   rngManipulatedLeadPid: boolean;
-  setTargetSetup:(targetSetup:TargetSetup) => void;
+  setTargetSetup: (targetSetup: TargetSetup) => void;
 };
 
-const setupInfoToTargetSetup = (setupInfo:ResultSetupInfo) : TargetSetup => {
-    return {
-        map: setupInfo.map, //NO_PROD
-        action: setupInfo.action,
-        feebasState: setupInfo.feebas_state,
-        roamerState: setupInfo.roamer_state,
-        massOutbreakState: setupInfo.mass_outbreak_state,
+const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
+  return {
+    map: setupInfo.mapId,
+    action: setupInfo.action,
+    feebasState: setupInfo.feebas_state,
+    roamerState: setupInfo.roamer_state,
+    massOutbreakState: setupInfo.mass_outbreak_state,
 
-        targetFrameBeforePainting:  setupInfo.advs.frame_before_painting,
-        targetAdvance: setupInfo.advs.adv_after_painting,
-        targetMethod: setupInfo.method,
+    targetFrameBeforePainting: setupInfo.advs.frame_before_painting,
+    targetAdvance: setupInfo.advs.adv_after_painting,
+    targetMethod: setupInfo.method,
 
-        leadIdx: gen3Leads.findIndex(lead => JSON.stringify(lead) === JSON.stringify(setupInfo.lead)),
-        usingPaintingReseeding: setupInfo.advs.frame_before_painting !== 0,
+    leadIdx: gen3Leads.findIndex(lead => JSON.stringify(lead) === JSON.stringify(setupInfo.lead)),
+    usingPaintingReseeding: setupInfo.advs.frame_before_painting !== 0,
 
-        // unknown at this point
-        usingBattleVideoWithoutPainting: false,
-        existingBattleVideoAdv: 0,
-        usingRngManipulatedLead: false,
-        usingAverageLeadCycleSpeed: true,
-        leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+    // unknown at this point
+    usingBattleVideoWithoutPainting: false,
+    existingBattleVideoAdv: 0,
+    usingRngManipulatedLead: false,
+    usingAverageLeadCycleSpeed: true,
+    leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
 
-        // unused
-        isPaintingSeedConfirmed: false,
-    };
+    // unused
+    isPaintingSeedConfirmed: false,
+  };
 };
 
 export const Wild3ResultSetupInfos = ({
@@ -439,7 +439,6 @@ export const Wild3ResultSetupInfos = ({
       (res) => res.advs.frame_before_painting !== 0,
     ) ?? false;
   const resultSetupInfoColumns = getResultSetupInfoColumns({
-    setTargetSetup,
     rngManipulatedLeadPid,
     showMassOutbreak,
     usesPainting,
@@ -462,7 +461,7 @@ export const Wild3ResultSetupInfos = ({
     return null;
   }
 
-  const onClickResultRow = setTargetSetup == null ? undefined : (setupInfo:ResultSetupInfo) => {
+  const onClickResultRow = setTargetSetup == null ? undefined : (setupInfo: ResultSetupInfo) => {
     setTargetSetup(setupInfoToTargetSetup(setupInfo));
   };
 
@@ -472,7 +471,12 @@ export const Wild3ResultSetupInfos = ({
         columns={resultSetupInfoColumns}
         rowKey="uid"
         dataSource={selectedPidPathResult.resultSetupInfos}
-        onClickResultRow={onClickResultRow}
+        rowSelection={{
+          type: "radio",
+          onSelect: () => {
+            console.log('win', setTargetSetup);
+          } //onClickResultRow,
+        }}
       />
       {distributionFixedData != null && (
         <Wild3MethodDistribution

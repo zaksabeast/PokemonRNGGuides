@@ -136,21 +136,23 @@ const createTargetSetup = (frame_before_painting: number): TargetSetup => {
 };
 
 type Props = {
-    targetPaintingAdvs?:{
-        before:number;
-        after:number;
-    },
-    consoleType?:Gen3Console;
+  targetPaintingAdvs?: {
+    before: number;
+    after: number;
+  },
+  consoleType?: Gen3Console;
 };
 
 export const EmeraldPaintingReseeding = ({
-    targetPaintingAdvs:targetPaintingAdvsProp,
-    consoleType:consoleTypeProp,
-} : Props) => {
+  targetPaintingAdvs: targetPaintingAdvsProp,
+  consoleType: consoleTypeProp,
+}: Props) => {
   const [targetPaintingAdvs, setTargetPaintingAdvs] = useState<{
     before: number;
     after: number;
   } | null>(targetPaintingAdvsProp ?? null);
+
+  console.log(targetPaintingAdvs, targetPaintingAdvsProp);
 
   const [
     battleVideoAdvAfterPaintingConfirmed,
@@ -188,7 +190,7 @@ export const EmeraldPaintingReseeding = ({
           Fill the fields, press Generate and select the row with the smallest
           time to create Battle Video.
         </div>
-       </>}
+      </>}
       {consoleTypeProp == null && <FormFieldTable fields={[consoleField]} />}
       {targetPaintingAdvsProp == null && <>
         <EmeraldSeedToAdvances
@@ -237,7 +239,7 @@ export const EmeraldPaintingReseeding = ({
             if (distBefore === 0) {
               setBattleVideoAdvAfterPaintingConfirmed(
                 hitAdv.adv_after_painting -
-                  APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT,
+                APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT,
               );
             } else {
               setCalibrationForPainting(calibrationForPainting + distBefore);

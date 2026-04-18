@@ -196,6 +196,14 @@ const tools = {
     () => import("~/rngToolsUi/gen3/paintingReseeding/paintingReseeding"),
     (mod) => mod.EmeraldPaintingReseeding,
   ),
+  EmeraldPaintingReseeding_WithTargetSetup: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3"),
+    (mod) => mod.EmeraldPaintingReseeding_WithTargetSetup,
+  ),
+  Wild3SearcherFindTarget_WithSetTargetSetup: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3"),
+    (mod) => mod.Wild3SearcherFindTarget_WithSetTargetSetup,
+  ),
   Gen3TidSidGenerator: lazyLoad(
     () => import("~/rngToolsUi/gen3/tidsid"),
     (mod) => mod.Gen3TidSidGenerator,

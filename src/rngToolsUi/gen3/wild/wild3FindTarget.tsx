@@ -85,12 +85,12 @@ export type FormState = z.infer<typeof Validator>;
 
 export type PidPathResult = FlattenIvs<
   Wild3SearcherResultMon &
-    Wild3PaintingAdvsAndDur & {
-      uid: number;
-      pidCycleCount: number;
-      earliestAdvance: number;
-      resultSetupInfos: ResultSetupInfo[];
-    }
+  Wild3PaintingAdvsAndDur & {
+    uid: number;
+    pidCycleCount: number;
+    earliestAdvance: number;
+    resultSetupInfos: ResultSetupInfo[];
+  }
 >;
 
 export type ResultSetupInfo = Wild3SearcherResultMon &
@@ -211,12 +211,12 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
 };
 
 type Props = {
-    setTargetSetup:(targetSetup:TargetSetup) => void;
+  setTargetSetup: (targetSetup: TargetSetup) => void;
 };
 
 export const Wild3SearcherFindTarget = ({
-    setTargetSetup,
-}:Props) => {
+  setTargetSetup,
+}: Props) => {
   const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
     [],
   );
@@ -244,6 +244,7 @@ export const Wild3SearcherFindTarget = ({
 
   const pidPathColumns = getPidPathColumns();
 
+  console.log('setTargetSetup2', setTargetSetup);
   return (
     <>
       <RngToolForm<FormState, PidPathResult>

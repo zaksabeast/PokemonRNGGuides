@@ -1,6 +1,6 @@
 use super::Gender;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]

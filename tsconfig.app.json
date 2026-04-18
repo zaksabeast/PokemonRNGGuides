@@ -26,5 +26,6 @@
       "rng_tools": ["./rng_tools/pkg"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts"]
 }

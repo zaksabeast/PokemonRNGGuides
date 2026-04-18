@@ -10,6 +10,11 @@ import { z } from "zod";
 import * as tst from "ts-toolbelt";
 import { UndefinedToNull, UndefinedToNullForList } from "~/types/utils";
 import {
+  attachTerminateToPromise,
+  CancellationError,
+  type CancellablePromise,
+} from "~/utils/cancellablePromise";
+import {
   BatchableFunctionNamesOf,
   BatchableFunctionsOf,
 } from "~/hooks/useBatchedTool";
@@ -53,43 +58,110 @@ const getMaxWorkerCount = () => {
 
 let workerCount = 0;
 
-const waitUntilAvailable = async (): Promise<void> => {
+const throwIfCancelled = (signal?: AbortSignal): void => {
+  if (signal?.aborted) {
+    throw new CancellationError("Worker request was cancelled");
+  }
+};
+
+const waitUntilAvailable = async (signal?: AbortSignal): Promise<void> => {
   const maxWorkers = getMaxWorkerCount();
   while (workerCount >= maxWorkers) {
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    throwIfCancelled(signal);
+    await new Promise<void>((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        signal?.removeEventListener("abort", handleAbort);
+        resolve();
+      }, 100);
+
+      const handleAbort = () => {
+        clearTimeout(timeoutId);
+        signal?.removeEventListener("abort", handleAbort);
+        reject(new CancellationError("Worker request was cancelled"));
+      };
+
+      signal?.addEventListener("abort", handleAbort, { once: true });
+    });
   }
 };
 
 /**
  * Spawns a new worker for rng_tools and waits for it to be ready.
  */
-const spawnRngToolWorker = async (): Promise<RngToolWorker> => {
-  await waitUntilAvailable();
+const spawnRngToolWorker = async (
+  signal?: AbortSignal,
+): Promise<RngToolWorker> => {
+  await waitUntilAvailable(signal);
+  throwIfCancelled(signal);
 
   workerCount += 1;
   const worker = new Worker(new URL("./worker", import.meta.url), {
     type: "module",
   });
 
-  await new Promise((resolve) => {
-    const controller = new AbortController();
-    worker.addEventListener(
-      "message",
-      (message) => {
-        if (message?.data?.ready == true) {
-          controller.abort();
-          resolve(void 0);
+  try {
+    await new Promise<void>((resolve, reject) => {
+      const controller = new AbortController();
+      let isSettled = false;
+
+      const settle = (callback: () => void) => {
+        if (isSettled) {
+          return;
         }
-      },
-      { signal: controller.signal },
-    );
-  });
+
+        isSettled = true;
+        controller.abort();
+        signal?.removeEventListener("abort", handleAbort);
+        callback();
+      };
+
+      // Handle worker startup errors
+      const handleWorkerError = () => {
+        settle(() => {
+          reject(new Error("Worker initialization failed"));
+        });
+      };
+
+      const handleAbort = () => {
+        settle(() => {
+          reject(new CancellationError("Worker request was cancelled"));
+        });
+      };
+
+      signal?.addEventListener("abort", handleAbort, { once: true });
+
+      worker.addEventListener(
+        "message",
+        (message) => {
+          if (message?.data?.ready === true) {
+            settle(() => {
+              resolve();
+            });
+          }
+        },
+        { signal: controller.signal },
+      );
+
+      worker.addEventListener("error", handleWorkerError, {
+        signal: controller.signal,
+      });
+    });
+  } catch (error) {
+    worker.terminate();
+    workerCount -= 1;
+    throw error;
+  }
+
+  let isTerminated = false;
 
   return {
     tools: wrap<AdjustedRngTools>(worker),
     terminate: () => {
-      worker.terminate();
-      workerCount -= 1;
+      if (!isTerminated) {
+        isTerminated = true;
+        worker.terminate();
+        workerCount -= 1;
+      }
     },
   };
 };
@@ -104,23 +176,48 @@ export const ZodConsole = z.enum([
 
 /**
  * Calls a function from rng_tools in a temporary worker.
+ * Returns a promise with a terminate() method that kills the worker.
  *
  * @example
- * const res = await callRngToolInTempWorker("search_dppt_ids", opts);
+ * const promise = callRngToolInTempWorker("search_dppt_ids", opts);
+ * // Later, if needed: promise.terminate?.();
  */
-const callRngToolInTempWorker = async <
+const callRngToolInTempWorker = <
   FuncName extends BatchableFunctionNamesOf<AdjustedRngTools>,
 >(
   functionName: FuncName,
-  ...args: tst.F.Parameters<AdjustedRngTools[FuncName]>
-): Promise<tst.F.Return<AdjustedRngTools[FuncName]>> => {
-  const rngToolWorker = await spawnRngToolWorker();
-  const tool = rngToolWorker.tools[functionName];
-  // @ts-expect-error -- Function signature makes sure this is correct
-  const result = await tool(...args);
-  rngToolWorker.terminate();
-  // @ts-expect-error -- Function signature makes sure this is correct
-  return result;
+  ...args: unknown[]
+): CancellablePromise<tst.F.Return<AdjustedRngTools[FuncName]>> => {
+  const controller = new AbortController();
+  let rngToolWorker: RngToolWorker | null = null;
+
+  const promise = (async () => {
+    rngToolWorker = await spawnRngToolWorker(controller.signal);
+    throwIfCancelled(controller.signal);
+
+    try {
+      const tool = rngToolWorker.tools[functionName];
+      // @ts-expect-error -- Distributed union type from comlink makes this complex to type correctly
+      const result = await tool(...(args as Parameters<typeof tool>));
+      return result as tst.F.Return<AdjustedRngTools[FuncName]>;
+    } catch (error) {
+      if (controller.signal.aborted) {
+        throw new CancellationError("Worker request was cancelled");
+      }
+
+      throw error;
+    } finally {
+      rngToolWorker?.terminate();
+    }
+  })();
+
+  return attachTerminateToPromise({
+    promise,
+    terminate: () => {
+      controller.abort();
+      rngToolWorker?.terminate();
+    },
+  });
 };
 
 /**
@@ -137,10 +234,7 @@ export const multiWorkerRngTools = new Proxy(
       return (
         ...args: tst.F.Parameters<AdjustedRngTools[typeof functionName]>
       ) => {
-        return callRngToolInTempWorker(
-          functionName as BatchableFunctionNamesOf<AdjustedRngTools>,
-          ...args,
-        );
+        return callRngToolInTempWorker(functionName, ...args);
       };
     },
   },
@@ -160,7 +254,6 @@ export const rngTools = new Proxy(
       ) => {
         const tools = await getRngTools();
         const func = tools[functionName];
-        // @ts-expect-error -- Function signature makes sure this is correct
         return func(...args);
       };
     },

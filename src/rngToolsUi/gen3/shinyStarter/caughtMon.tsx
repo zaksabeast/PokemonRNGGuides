@@ -74,7 +74,7 @@ export const CaughtMon = ({
     {
       title: "",
       dataIndex: "advance",
-      render(advance, values) {
+      render: (advance, values) => {
         if (values.advance === values.targetAdvance) {
           return "Shiny if correct SID";
         }

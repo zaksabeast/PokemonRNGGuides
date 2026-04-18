@@ -9,6 +9,10 @@ import { Icon } from "./icons";
 import { Button } from "./button";
 import { Typography } from "./typography";
 import { Path, Paths } from "~/types";
+import { PrimitiveAtom, useAtom } from "jotai";
+import { toOptions } from "~/utils/options";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import { Translation } from "~/translations";
 
 const SelectContainer = styled(Flex)({
   ".ant-select": {
@@ -157,5 +161,31 @@ export const FormikSelect = <
         <Typography.Text type="danger">{error}</Typography.Text>
       )}
     </>
+  );
+};
+
+type AtomSelectProps<State, Option> = {
+  options: Option[] | Readonly<Option[]>;
+  atom: PrimitiveAtom<State>;
+  getValue: (state: State) => Option;
+  nextState: (state: State, option: Option) => State;
+};
+
+export const AtomSelect = <State, Option extends Translation>({
+  options,
+  atom,
+  getValue,
+  nextState,
+}: AtomSelectProps<State, Option>) => {
+  const t = useActiveRouteTranslations();
+  const format = (option: Option) => t[option];
+  const [state, setState] = useAtom(atom);
+
+  return (
+    <Select<Option>
+      options={toOptions(options, format)}
+      value={getValue(state)}
+      onChange={(option) => setState((prev) => nextState(prev, option))}
+    />
   );
 };

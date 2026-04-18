@@ -1,6 +1,6 @@
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use super::{Wild3GeneratorOptions, generate_gen3_wild};

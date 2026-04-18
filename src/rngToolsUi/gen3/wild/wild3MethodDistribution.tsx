@@ -568,6 +568,7 @@ const calculate = async (values: FormState) => {
     return {
       uiResults: [],
       cycle_at_moments: [],
+      advanceAtSweetScent: 0,
     };
   }
 
@@ -582,6 +583,7 @@ const calculate = async (values: FormState) => {
   return {
     uiResults: convertSearcherResultsToUIResults(results),
     cycle_at_moments,
+    advanceAtSweetScent: lcrng_distance(0, initial_seed) + values.advance,
   };
 };
 
@@ -603,16 +605,27 @@ export const Wild3MethodDistribution = ({
   permitEnablingDebugOptions,
 }: Props) => {
   const [results, setResults] = React.useState<UiResult[]>([]);
+  const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(
+    null,
+  );
   const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>(
     [],
   );
+  const [advanceAtSweetScent, setAdvanceAtSweetScent] = React.useState(0);
 
   const updateResults = React.useCallback(
     (values: FormState) => {
-      calculate(values).then(({ uiResults, cycle_at_moments }) => {
-        setResults(uiResults);
-        setCycleAtMoments(cycle_at_moments);
-      });
+      calculate(values).then(
+        ({ uiResults, cycle_at_moments, advanceAtSweetScent }) => {
+          const isEggLead = gen3Leads[values.leadIdx] === "Egg";
+          const leadCycleSpeed = isEggLead ? null : values.leadCycleSpeed;
+
+          setResults(uiResults);
+          setCycleAtMoments(cycle_at_moments);
+          setLeadCycleSpeed(leadCycleSpeed);
+          setAdvanceAtSweetScent(advanceAtSweetScent);
+        },
+      );
     },
     [setResults, setCycleAtMoments],
   );
@@ -653,7 +666,11 @@ export const Wild3MethodDistribution = ({
       </RngToolForm>
 
       {permitEnablingDebugOptions && (
-        <Wild3CycleAtMoments cycleAtMoments={cycleAtMoments} />
+        <Wild3CycleAtMoments
+          leadCycleSpeed={leadCycleSpeed}
+          cycleAtMomentsFromTool={cycleAtMoments}
+          advanceAtSweetScent={advanceAtSweetScent}
+        />
       )}
     </>
   );

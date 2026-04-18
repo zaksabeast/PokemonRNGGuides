@@ -1,6 +1,6 @@
 use num_enum::{FromPrimitive, IntoPrimitive};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 
 #[derive(
     Clone, Copy, Debug, Eq, PartialEq, FromPrimitive, IntoPrimitive, Tsify, Serialize, Deserialize,

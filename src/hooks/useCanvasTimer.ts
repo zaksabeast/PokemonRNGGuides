@@ -32,6 +32,8 @@ const drawText = ({
     if (ctx === null) {
       return;
     }
+
+    // eslint-disable-next-line -- We expect react refs to be mutable
     contextRef.current = ctx;
   }
 
@@ -75,6 +77,8 @@ const drawRing = ({
     if (ctx === null) {
       return;
     }
+
+    // eslint-disable-next-line -- We expect react refs to be mutable
     contextRef.current = ctx;
   }
 

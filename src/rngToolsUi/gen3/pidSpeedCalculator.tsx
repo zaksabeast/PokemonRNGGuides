@@ -68,14 +68,15 @@ export const Gen3PidSpeedCalculator = () => {
           numType="hex"
           value={value}
           onChange={async (pid) => {
-            if (pid == null || pid < 0) {
-              pid = 0;
-            } else if (pid > 0xffffffff) {
-              pid = 0xffffffff;
+            let newPid = pid;
+            if (newPid == null || newPid < 0) {
+              newPid = 0;
+            } else if (newPid > 0xffffffff) {
+              newPid = 0xffffffff;
             }
-            setValue(pid);
+            setValue(newPid);
 
-            const pidSpeed = await rngTools.calculate_pid_speed(pid);
+            const pidSpeed = await rngTools.calculate_pid_speed(newPid);
             const ranking =
               await rngTools.calculate_pid_speed_ranking(pidSpeed);
             setSpeed(pidSpeed);

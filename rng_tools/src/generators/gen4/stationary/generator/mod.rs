@@ -10,7 +10,7 @@ use crate::rng::StateIterator;
 use crate::rng::lcrng::Pokerng;
 use crate::{AbilityType, Gender, Nature, PkmFilter, PkmState, gen3_shiny};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

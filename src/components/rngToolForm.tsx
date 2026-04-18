@@ -18,7 +18,7 @@ import {
 } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { GenericForm } from "~/types";
-import { Typography } from "antd";
+import { Typography, Progress } from "antd";
 
 export type RngToolSubmit<FormState extends GenericForm> = (
   values: FormState,
@@ -35,6 +35,8 @@ type Props<FormState extends GenericForm, Result> = {
   formContainerId?: string;
   filters?: React.ReactNode;
   disableGenerate?: boolean;
+  additionalButtons?: React.ReactNode;
+  progressPercent?: number;
 } & OneOf<{
   fields: Field[];
   getFields: (t: Translations) => Field[];
@@ -86,6 +88,8 @@ export const RngToolForm = <
   formContainerId,
   filters,
   resetTrackerId,
+  additionalButtons,
+  progressPercent,
   allowReset = false,
   disableGenerate = false,
   submitButtonLabel = "Generate",
@@ -153,6 +157,7 @@ export const RngToolForm = <
             >
               {translatedSubmitLabel}
             </Button>
+            {additionalButtons}
             {allowCancel && cancelTrackerId != null && (
               <Button
                 trackerId={cancelTrackerId}
@@ -173,6 +178,12 @@ export const RngToolForm = <
         {filters != null && (
           <Flex vertical gap={8} mt={24}>
             {filters}
+          </Flex>
+        )}
+
+        {progressPercent != null && (
+          <Flex mv={8} flex={1}>
+            <Progress percent={progressPercent} size={["100%", 12]} />
           </Flex>
         )}
 

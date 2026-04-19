@@ -1,0 +1,38 @@
+import{t as e}from"./jsx-runtime-MrBVUj-r.js";import{d as t}from"./index-CvakMO0A.js";var n=e(),r=[{title:`Avanzar el RNG en Diamante, Perla y Platino`,navDrawerTitle:`Avanzar el RNG`,description:`Aprende cómo avanzar el RNG en Diamante, Perla y Platino. Esta guía explica diferentes métodos como pasar páginas del diario, los “chatters” de Chatot y las acciones de los NPC.`,slug:`es-dppt-advance-rng`,translation:{enSlug:`dppt-advance-rng`,language:`es`}}];function i(e){let r={code:`code`,h2:`h2`,img:`img`,li:`li`,p:`p`,ul:`ul`,...t(),...e.components};return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(r.p,{children:`Esto explica las diferentes formas de avanzar el RNG en Diamante, Perla y Platino. Los mejores métodos son usar a Chatot o el diario, pero hay otras opciones si no están disponibles.`}),`
+`,(0,n.jsx)(r.h2,{children:`Charada de Chatot`}),`
+`,(0,n.jsxs)(r.ul,{children:[`
+`,(0,n.jsx)(r.li,{children:`Necesitas un Chatot con el movimiento Charada y un sonido grabado personalizado de la Charada para usar este método. Acceder a la página de resumen de Chatot avanza el RNG por 1.`}),`
+`,(0,n.jsx)(r.li,{children:`No necesitas escuchar todo el sonido de la Charada completo; solo ver el resumen funciona.`}),`
+`,(0,n.jsxs)(r.li,{children:[`Para acelerar las cosas, ten 2 Chatots en tu equipo y alterna entre sus resúmenes presionando `,(0,n.jsx)(r.code,{children:`arriba`}),` y `,(0,n.jsx)(r.code,{children:`abajo`}),`.`]}),`
+`]}),`
+`,(0,n.jsx)(r.h2,{children:`Movimiento del personaje`}),`
+`,(0,n.jsxs)(r.ul,{children:[`
+`,(0,n.jsx)(r.li,{children:`Dar un paso o girar en áreas donde aparezcan Pokémon salvajes (hierba, agua o cuevas) avanza el RNG por 1 cada paso o giro.`}),`
+`,(0,n.jsx)(r.li,{children:`Caminar al menos 128 pasos avanza el RNG por el número de Pokémon en tu equipo.`}),`
+`,(0,n.jsx)(r.li,{children:`Hay un contador de pasos que comienza en 0, e incrementa a 128, después se vuelve a resetear a 0. Este contador es registrado, así que si cargas tu juego al 127 y avanzas 1 paso, el RNG avanza por el número de Pokémon en tu equipo.`}),`
+`,(0,n.jsx)(r.li,{children:`No es recomendable utilizar este método a menos que otras opciones no estén disponibles.`}),`
+`]}),`
+`,(0,n.jsx)(r.h2,{children:`Movimiento de personajes no jugables`}),`
+`,(0,n.jsxs)(r.ul,{children:[`
+`,(0,n.jsx)(r.li,{children:`Cualquier NPC que se mueva de forma aleatoria (girarse o caminar) avanza el RNG por 1 por cada movimiento. Si el NPC hace ambas, el avance del RNG será de 2.`}),`
+`,(0,n.jsx)(r.li,{children:`Los NPC fuera de la pantalla aún avanzarán el RNG si están en la misma área, así que intenta capturar un Pokémon donde haya pocos NPC.`}),`
+`,(0,n.jsx)(r.li,{children:`Puedes usar el BuscaPelea para detener el movimiento de los NPC.`}),`
+`,(0,n.jsxs)(r.li,{children:[`Si no puedes prevenir el movimiento de los NPC, presiona `,(0,n.jsx)(r.code,{children:`X`}),` para acceder al menú tan pronto como entres al juego. Esto congela a todos los NPC en el lugar y detiene avances innecesarios.`]}),`
+`]}),`
+`,(0,n.jsx)(r.h2,{children:`Hojeadas del diario`}),`
+`,(0,n.jsxs)(r.ul,{children:[`
+`,(0,n.jsxs)(r.li,{children:[`Cuando el diario muestra `,(0,n.jsx)(r.code,{children:`Capturé un (Pokémon) (tiempo)`}),`, el RNG avanza por 2.`]}),`
+`,(0,n.jsx)(r.li,{children:`Hojeando el diario a otra página con una entrada similar avanza el RNG por 2.`}),`
+`,(0,n.jsxs)(r.li,{children:[`Mientras que el diario tenga una entrada de `,(0,n.jsx)(r.code,{children:`Capturé un (Pokémon) (tiempo)`}),`, el RNG avanza por 2, sin importar cuántas más entradas tenga.`]}),`
+`]}),`
+`,(0,n.jsx)(r.p,{children:(0,n.jsx)(r.img,{src:`/images/Diamond-Pearl-Platinum/Advance-RNG/Journal.png`,alt:`journal`})}),`
+`,(0,n.jsx)(r.h2,{children:`Errante activo`}),`
+`,(0,n.jsxs)(r.ul,{children:[`
+`,(0,n.jsx)(r.li,{children:`Tener un errante activo en el juego avanza el RNG inicial por uno o dos por cada errante activo.`}),`
+`,(0,n.jsx)(r.li,{children:`Estos avances son necesarios de considerar para alcanzar tu avance objetivo.`}),`
+`,(0,n.jsx)(r.li,{children:`Dependiendo del número de errantes activos, tendrás que planear un avance inicial mínimo más alto para prevenir pasar de tu objetivo.`}),`
+`]}),`
+`,(0,n.jsx)(r.h2,{children:`Credits`}),`
+`,(0,n.jsxs)(r.ul,{children:[`
+`,(0,n.jsx)(r.li,{children:`Spanish translation: El Terapagos Mexicano.`}),`
+`]})]})}function a(e={}){let{wrapper:r}={...t(),...e.components};return r?(0,n.jsx)(r,{...e,children:(0,n.jsx)(i,{...e})}):i(e)}export{a as default,r as frontmatter};

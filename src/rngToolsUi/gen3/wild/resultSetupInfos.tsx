@@ -162,10 +162,10 @@ const getResultSetupInfoColumns = ({
   if (!rngManipulatedLeadPid) {
     columns.push({
       title: (
-        <>
+        <span>
           Method <br />
           Likelihood
-        </>
+        </span>
       ),
       key: "<>Method <br />Likelihood</>",
       dataIndex: "cycle_data_by_lead",
@@ -217,11 +217,11 @@ const getResultSetupInfoColumns = ({
     columns.push({
       ...breakdownClickCol("Open Breakdown"),
       title: (
-        <>
+        <span>
           Method Likelihood
           <br />
           By Lead Speed
-        </>
+        </span>
       ),
     });
   }
@@ -462,6 +462,7 @@ export const Wild3ResultSetupInfos = ({
   }
 
   const onClickResultRow = setTargetSetup == null ? undefined : (setupInfo: ResultSetupInfo) => {
+    console.log('win2');
     setTargetSetup(setupInfoToTargetSetup(setupInfo));
   };
 
@@ -473,9 +474,7 @@ export const Wild3ResultSetupInfos = ({
         dataSource={selectedPidPathResult.resultSetupInfos}
         rowSelection={{
           type: "radio",
-          onSelect: () => {
-            console.log('win', setTargetSetup);
-          } //onClickResultRow,
+          onSelect: onClickResultRow
         }}
       />
       {distributionFixedData != null && (

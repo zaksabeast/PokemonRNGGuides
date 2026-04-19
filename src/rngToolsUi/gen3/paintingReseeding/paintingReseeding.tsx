@@ -30,6 +30,7 @@ const APPROX_ADV_PAINTING_TO_BATTLE_VIDEO =
   FRAME_PAINTING_TO_BATTLE_VIDEO + NON_VBLANK_ADV_PAINTING_TO_BATTLE_VIDEO;
 
 const DEFAULT_CALIB_FOR_PAINTING = 30;
+const MIN_ADV_FOR_BATTLE_VIDEO = 6000; // Otherwise, the tool will say that the advance is too small.
 
 export const PaintingReseedingTimers = ({
   frame_before_painting,
@@ -72,7 +73,7 @@ export const PaintingReseedingTimers = ({
       input: `${formatLargeInteger(frame_before_painting)} (Seed: ${formatHex(frame_before_painting, 2)})`,
     },
     {
-      label: "Battle Video created at",
+      label: "Battle Video will be created at",
       input: `~${formatLargeInteger(existingBattleVideoAdv)} advances after painting.`,
     },
     {
@@ -152,8 +153,6 @@ export const EmeraldPaintingReseeding = ({
     after: number;
   } | null>(targetPaintingAdvsProp ?? null);
 
-  console.log(targetPaintingAdvs, targetPaintingAdvsProp);
-
   const [
     battleVideoAdvAfterPaintingConfirmed,
     setBattleVideoAdvAfterPaintingConfirmed,
@@ -182,6 +181,8 @@ export const EmeraldPaintingReseeding = ({
     ),
   };
 
+  console.log('targetPaintingAdvs?.before', targetPaintingAdvs?.before);
+
   return (
     <Flex vertical gap={20}>
       {targetPaintingAdvsProp == null && <>
@@ -200,7 +201,7 @@ export const EmeraldPaintingReseeding = ({
         />
       </>}
 
-      {targetPaintingAdvs?.before === 0 && (
+      {targetPaintingAdvs?.before === 0 && targetPaintingAdvs?.after >= MIN_ADV_FOR_BATTLE_VIDEO && (
         <>
           <h2>Create Battle Video (without Painting Reseeding)</h2>
           <BattleVideo
@@ -214,6 +215,10 @@ export const EmeraldPaintingReseeding = ({
             }}
           />
         </>
+      )}
+
+      {targetPaintingAdvs?.before === 0 && targetPaintingAdvs?.after < MIN_ADV_FOR_BATTLE_VIDEO && (
+        <>No need to create Battle Video, because the number of advances is very small. Go to the next step.</>
       )}
 
       {targetPaintingAdvs !== null && targetPaintingAdvs.before !== 0 && (

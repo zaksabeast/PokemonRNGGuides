@@ -38,7 +38,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
           second_offset: target.secondOffset,
         }}
         timer={idTimerAtom}
-        previousStepOnClick
+        lastStepOnClick={1}
       />
     ),
   },

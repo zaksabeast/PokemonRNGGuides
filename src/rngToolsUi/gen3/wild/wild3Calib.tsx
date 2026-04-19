@@ -9,9 +9,13 @@ import {
   gen3ConsoleOptions,
 } from "~/types/console";
 
-export const Wild3Calib = () => {
+type Props = {
+  targetSetup?: TargetSetup;
+};
+
+export const Wild3Calib = ({ targetSetup: targetSetupProp }: Props) => {
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
-    null,
+    targetSetupProp ?? null,
   );
 
   const [consoleType, setConsoleType] = useState<Gen3Console>("GBA");
@@ -27,13 +31,13 @@ export const Wild3Calib = () => {
 
   const setLatestHitAdv = calibrationIsActive
     ? (hitAdv: {
-        frame_before_painting: number;
-        adv_after_painting: number;
-      }) => {
-        setCalibrationAndOffset(
-          calibrationAndOffset + hitAdv.adv_after_painting - targetForTimer,
-        );
-      }
+      frame_before_painting: number;
+      adv_after_painting: number;
+    }) => {
+      setCalibrationAndOffset(
+        calibrationAndOffset + hitAdv.adv_after_painting - targetForTimer,
+      );
+    }
     : undefined;
 
   const targetForTimer = targetSetup?.targetAdvance ?? 0;
@@ -54,53 +58,53 @@ export const Wild3Calib = () => {
   const fields: Field[] =
     targetSetup != null
       ? [
-          {
-            label: "Target advance",
-            input: <>{targetSetup.targetAdvance}</>,
-            show: !targetSetup.usingPaintingReseeding,
-          },
-          {
-            label: "Target frame before painting",
-            input: <>{targetSetup.targetFrameBeforePainting}</>,
-            show: targetSetup.usingPaintingReseeding,
-          },
-          {
-            label: "Target advance after painting",
-            input: <>{targetSetup.targetAdvance}</>,
-            show: targetSetup.usingPaintingReseeding,
-          },
-          {
-            label: "Calibration + Offset (advance)",
-            input: (
-              <Input
-                name="offset"
-                onChange={(event) => {
-                  const num = Number(event.target.value);
-                  setCalibrationAndOffset(Number.isFinite(num) ? num : 0);
-                }}
-                value={calibrationAndOffset}
-              />
-            ),
-          },
-          {
-            label: "Console",
-            input: (
-              <Select<Gen3Console>
-                name="console"
-                value={consoleType}
-                options={gen3ConsoleOptions}
-                onSelect={(val) => {
-                  setConsoleType(val);
-                }}
-              />
-            ),
-          },
-        ]
+        {
+          label: "Target advance",
+          input: <>{targetSetup.targetAdvance}</>,
+          show: !targetSetup.usingPaintingReseeding,
+        },
+        {
+          label: "Target frame before painting",
+          input: <>{targetSetup.targetFrameBeforePainting}</>,
+          show: targetSetup.usingPaintingReseeding,
+        },
+        {
+          label: "Target advance after painting",
+          input: <>{targetSetup.targetAdvance}</>,
+          show: targetSetup.usingPaintingReseeding,
+        },
+        {
+          label: "Calibration + Offset (advance)",
+          input: (
+            <Input
+              name="offset"
+              onChange={(event) => {
+                const num = Number(event.target.value);
+                setCalibrationAndOffset(Number.isFinite(num) ? num : 0);
+              }}
+              value={calibrationAndOffset}
+            />
+          ),
+        },
+        {
+          label: "Console",
+          input: (
+            <Select<Gen3Console>
+              name="console"
+              value={consoleType}
+              options={gen3ConsoleOptions}
+              onSelect={(val) => {
+                setConsoleType(val);
+              }}
+            />
+          ),
+        },
+      ]
       : [];
 
   return (
     <Flex gap={32} vertical>
-      <Wild3CalibTarget setTargetSetup={setTargetSetup} />
+      {targetSetupProp == null && <Wild3CalibTarget setTargetSetup={setTargetSetup} />}
 
       {targetSetup !== null && (
         <>

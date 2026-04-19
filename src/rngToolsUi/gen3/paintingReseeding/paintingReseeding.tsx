@@ -142,11 +142,13 @@ type Props = {
     after: number;
   },
   consoleType?: Gen3Console;
+  setBattleVideoAdvAfterPainting?: (adv: number) => void;
 };
 
 export const EmeraldPaintingReseeding = ({
   targetPaintingAdvs: targetPaintingAdvsProp,
   consoleType: consoleTypeProp,
+  setBattleVideoAdvAfterPainting,
 }: Props) => {
   const [targetPaintingAdvs, setTargetPaintingAdvs] = useState<{
     before: number;
@@ -180,8 +182,6 @@ export const EmeraldPaintingReseeding = ({
       />
     ),
   };
-
-  console.log('targetPaintingAdvs?.before', targetPaintingAdvs?.before);
 
   return (
     <Flex vertical gap={20}>
@@ -241,11 +241,11 @@ export const EmeraldPaintingReseeding = ({
 
             const distBefore =
               hitAdv.frame_before_painting - targetPaintingAdvs.before;
-            if (distBefore === 0) {
-              setBattleVideoAdvAfterPaintingConfirmed(
-                hitAdv.adv_after_painting -
-                APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT,
-              );
+            if (distBefore === 0) { // Painting frame was hit
+              const battleVideoAdvAfterPainting = hitAdv.adv_after_painting -
+                APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT;
+              setBattleVideoAdvAfterPaintingConfirmed(battleVideoAdvAfterPainting);
+              setBattleVideoAdvAfterPainting?.(battleVideoAdvAfterPainting);
             } else {
               setCalibrationForPainting(calibrationForPainting + distBefore);
             }

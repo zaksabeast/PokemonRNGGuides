@@ -206,9 +206,9 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     !targetSetup.usingPaintingReseeding || targetSetup.isPaintingSeedConfirmed
       ? [initial_seed, initial_seed]
       : [
-          Math.max(0, initial_seed - PAINTING_CONFIDENCE_RANGE),
-          Math.min(0xffff, initial_seed + PAINTING_CONFIDENCE_RANGE),
-        ];
+        Math.max(0, initial_seed - PAINTING_CONFIDENCE_RANGE),
+        Math.min(0xffff, initial_seed + PAINTING_CONFIDENCE_RANGE),
+      ];
 
   const wrappedResultsBySeed =
     await rngTools.search_wild3_with_initial_advances_range(
@@ -216,6 +216,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
       min_initial_seed,
       max_initial_seed,
     );
+  console.log(opts, min_initial_seed, max_initial_seed);
   const resultsBySeed = wrappedResultsBySeed.map(
     (wrappedRes) => wrappedRes.vec,
   );
@@ -546,9 +547,9 @@ export const Wild3CalibCaughtMon = ({
   const columns: ResultColumn<CaughtMonResult>[] = [
     {
       title: (
-        <>
+        <span>
           Update <br /> Calibration
-        </>
+        </span>
       ),
       key: "Update Calibration",
       dataIndex: "advance",
@@ -583,9 +584,9 @@ export const Wild3CalibCaughtMon = ({
     },
     {
       title: (
-        <>
+        <span>
           Frame before <br /> painting
-        </>
+        </span>
       ),
       key: "frame_before_painting",
       dataIndex: "advance",
@@ -596,9 +597,9 @@ export const Wild3CalibCaughtMon = ({
     },
     {
       title: usingPaintingReseeding ? (
-        <>
+        <span>
           Advance after <br /> painting
-        </>
+        </span>
       ) : (
         "Advance"
       ),
@@ -615,9 +616,9 @@ export const Wild3CalibCaughtMon = ({
     },
     {
       title: (
-        <>
+        <span>
           Confidence <br /> Rating
-        </>
+        </span>
       ),
       key: "Confidence Rating",
       dataIndex: "score",

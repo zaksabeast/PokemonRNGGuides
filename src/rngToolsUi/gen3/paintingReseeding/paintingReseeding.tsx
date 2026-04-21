@@ -6,7 +6,7 @@ import {
   gen3ConsoleFpsMap,
   gen3ConsoleOptions,
 } from "~/types/console";
-import { Field, Flex, FormFieldTable, NumberInput, Select } from "~/components";
+import { Button, Field, Flex, FormFieldTable, NumberInput, Select } from "~/components";
 
 import Instructions_0_createBattleVideo from "./instructions_0_createBattleVideo.mdx";
 import Instructions_1_validateFrame from "./instructions_1_validateFrame.mdx";
@@ -14,9 +14,11 @@ import Instructions_2_validateFrame from "./instructions_2_validateFrame.mdx";
 import { TargetSetup as TargetSetup } from "../wild/wild3CalibTarget";
 import { gen3Leads } from "../wild/utils";
 import { Wild3CalibCaughtMon } from "../wild/wild3CalibCaughtMon";
-import { BattleVideo } from "../battleVideo/battleVideo";
+import { BattleVideo, BattleVideoInfo } from "../battleVideo/battleVideo";
 import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import React from "react";
+import { Wild3Action } from "~/rngTools";
 
 const FRAME_BATTLE_VIDEO_TO_SWEET_SCENT = 60 * 10; // ~10s
 const NON_VBLANK_ADV_BATTLE_VIDEO_TO_SWEET_SCENT = 210;
@@ -74,7 +76,7 @@ export const PaintingReseedingTimers = ({
     },
     {
       label: "Battle Video will be created at",
-      input: `~${formatLargeInteger(existingBattleVideoAdv)} advances after painting.`,
+      input: `~${formatLargeInteger(existingBattleVideoAdv)} additional advances after painting.`,
     },
     {
       label: "Calibration + Offset (advance)",
@@ -113,7 +115,7 @@ export const PaintingReseedingTimers = ({
   );
 };
 
-const createTargetSetup = (frame_before_painting: number): TargetSetup => {
+const createTargetSetupAtVictoryRoad = (frame_before_painting: number): TargetSetup => {
   return {
     map: "MAP_VICTORY_ROAD_1F",
     feebasState: "NotInMap",
@@ -142,13 +144,15 @@ type Props = {
     after: number;
   },
   consoleType?: Gen3Console;
-  setBattleVideoAdvAfterPainting?: (adv: number) => void;
+  onBattleVideoCreated?: (info: BattleVideoInfo) => void;
+  targetAction?: Wild3Action;
 };
 
 export const EmeraldPaintingReseeding = ({
   targetPaintingAdvs: targetPaintingAdvsProp,
   consoleType: consoleTypeProp,
-  setBattleVideoAdvAfterPainting,
+  onBattleVideoCreated,
+  targetAction,
 }: Props) => {
   const [targetPaintingAdvs, setTargetPaintingAdvs] = useState<{
     before: number;
@@ -164,10 +168,10 @@ export const EmeraldPaintingReseeding = ({
   );
   const [consoleType, setConsoleType] = useState<Gen3Console>(consoleTypeProp ?? "GBA");
 
-  const targetSetup =
+  const targetSetupAtVictoryRoad =
     targetPaintingAdvs === null || targetPaintingAdvs.before === 0
       ? null
-      : createTargetSetup(targetPaintingAdvs.before);
+      : createTargetSetupAtVictoryRoad(targetPaintingAdvs.before);
 
   const consoleField: Field = {
     label: "Console",
@@ -181,6 +185,31 @@ export const EmeraldPaintingReseeding = ({
         }}
       />
     ),
+  };
+
+  const setLatestHitAdv = (hitAdv: { frame_before_painting: number, adv_after_painting: number }) => {
+    if (targetPaintingAdvs == null) {
+      return;
+    }
+
+    const distBefore =
+      hitAdv.frame_before_painting - targetPaintingAdvs.before;
+    if (distBefore === 0) { // Painting frame was hit
+      const battleVideoAdvAfterPainting = hitAdv.adv_after_painting -
+        APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT;
+
+      setBattleVideoAdvAfterPaintingConfirmed(battleVideoAdvAfterPainting);
+    } else {
+      setCalibrationForPainting(calibrationForPainting + distBefore);
+    }
+  };
+
+  const setBattleVideoAdv = (onBattleVideoCreated == null || targetPaintingAdvs == null) ? undefined : (adv: number | null) => {
+    onBattleVideoCreated({
+      targetPaintingAdvs,
+      battleVideoAdvAfterPainting: adv ?? 0,
+      consoleType: adv == null ? null : consoleType,
+    });
   };
 
   return (
@@ -212,48 +241,46 @@ export const EmeraldPaintingReseeding = ({
               isUpdatingExisting: false,
               existingBattleVideoAdv: 0,
               isAfterPainting: false,
+              action: targetAction,
             }}
+            setBattleVideoAdv={setBattleVideoAdv}
           />
         </>
       )}
 
-      {targetPaintingAdvs?.before === 0 && targetPaintingAdvs?.after < MIN_ADV_FOR_BATTLE_VIDEO && (
-        <>No need to create Battle Video, because the number of advances is very small. Go to the next step.</>
+      {setBattleVideoAdv != null && targetPaintingAdvs?.before === 0 && targetPaintingAdvs?.after < MIN_ADV_FOR_BATTLE_VIDEO && (
+        <Flex>
+          <div>No need to create Battle Video, because the number of advances is very small.</div>
+          <Button trackerId="wild3_battle_video_skip" onClick={() => {
+            setBattleVideoAdv(null);
+          }}>Go to next step (no Battle Video created)</Button>
+        </Flex>
       )}
 
       {targetPaintingAdvs !== null && targetPaintingAdvs.before !== 0 && (
         <PaintingReseedingTimers
           consoleType={consoleType}
-          existingBattleVideoAdv={targetSetup?.existingBattleVideoAdv ?? 0}
+          existingBattleVideoAdv={targetSetupAtVictoryRoad?.existingBattleVideoAdv ?? 0}
           frame_before_painting={targetPaintingAdvs.before}
           calibration={calibrationForPainting}
           setCalibration={setCalibrationForPainting}
         />
       )}
 
-      {targetSetup != null && (
+      {targetSetupAtVictoryRoad != null && (
         <Wild3CalibCaughtMon
-          targetSetup={targetSetup}
-          setLatestHitAdv={(hitAdv) => {
-            if (targetPaintingAdvs == null) {
-              return;
-            }
-
-            const distBefore =
-              hitAdv.frame_before_painting - targetPaintingAdvs.before;
-            if (distBefore === 0) { // Painting frame was hit
-              const battleVideoAdvAfterPainting = hitAdv.adv_after_painting -
-                APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT;
-              setBattleVideoAdvAfterPaintingConfirmed(battleVideoAdvAfterPainting);
-              setBattleVideoAdvAfterPainting?.(battleVideoAdvAfterPainting);
-            } else {
-              setCalibrationForPainting(calibrationForPainting + distBefore);
-            }
-          }}
+          targetSetup={targetSetupAtVictoryRoad}
+          setLatestHitAdv={setLatestHitAdv}
         />
       )}
 
-      {targetSetup != null && <Instructions_2_validateFrame />}
+      {targetSetupAtVictoryRoad != null && <Instructions_2_validateFrame />}
+
+      {battleVideoAdvAfterPaintingConfirmed == null && targetSetupAtVictoryRoad != null && <Flex>
+        <Button trackerId="wild3_painting_force_calib" onClick={() => {
+          setBattleVideoAdvAfterPaintingConfirmed(APPROX_ADV_PAINTING_TO_BATTLE_VIDEO);
+        }}>Assume painting frame was hit</Button>
+      </Flex>}
 
       {battleVideoAdvAfterPaintingConfirmed !== null &&
         targetPaintingAdvs !== null && (
@@ -267,10 +294,13 @@ export const EmeraldPaintingReseeding = ({
                 isUpdatingExisting: true,
                 existingBattleVideoAdv: battleVideoAdvAfterPaintingConfirmed,
                 isAfterPainting: true,
+                action: targetAction,
               }}
+              setBattleVideoAdv={setBattleVideoAdv}
             />
           </>
         )}
+
     </Flex>
   );
 };

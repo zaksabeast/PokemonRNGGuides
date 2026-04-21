@@ -462,7 +462,6 @@ export const Wild3ResultSetupInfos = ({
   }
 
   const onClickResultRow = setTargetSetup == null ? undefined : (setupInfo: ResultSetupInfo) => {
-    console.log('win2');
     setTargetSetup(setupInfoToTargetSetup(setupInfo));
   };
 

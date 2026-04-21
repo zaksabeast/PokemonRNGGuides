@@ -54,6 +54,8 @@ import {
   LeadCycleSpeedSelector,
 } from "./leadCycleSpeedSelector";
 import { formatProbability } from "~/utils/formatProbability";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { BattleVideoInfo } from "../paintingReseeding/paintingReseeding";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -87,11 +89,13 @@ export const TargetSetupSchema = z.object({
 
 type Props = {
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
+  battleVideoInfo?: BattleVideoInfo;
 };
 
 export type TargetSetup = z.infer<typeof TargetSetupSchema>;
 
-const getInitialValues = (): TargetSetup => {
+const getInitialValues = (battleVideoInfo?: BattleVideoInfo): TargetSetup => {
+  const usingPaintingReseeding = (battleVideoInfo?.targetPaintingAdvs.before ?? 0) > 0;
   return {
     map: "MAP_ROUTE101",
     action: "SweetScentLand",
@@ -100,12 +104,12 @@ const getInitialValues = (): TargetSetup => {
     massOutbreakState: "Inactive",
     leadIdx: 0,
     usingRngManipulatedLead: false,
-    usingPaintingReseeding: false,
-    isPaintingSeedConfirmed: false,
-    usingBattleVideoWithoutPainting: false,
-    existingBattleVideoAdv: 1,
-    targetFrameBeforePainting: 1,
-    targetAdvance: 1000,
+    usingPaintingReseeding,
+    isPaintingSeedConfirmed: usingPaintingReseeding && battleVideoInfo != null,
+    usingBattleVideoWithoutPainting: !usingPaintingReseeding && (battleVideoInfo?.battleVideoAdvAfterPainting ?? 0) > 0,
+    existingBattleVideoAdv: Math.max(battleVideoInfo?.battleVideoAdvAfterPainting ?? 1, 1),
+    targetFrameBeforePainting: Math.max(battleVideoInfo?.targetPaintingAdvs.before ?? 1, 1),
+    targetAdvance: battleVideoInfo?.targetPaintingAdvs.after ?? 1000,
     targetMethod: "Wild1",
     usingAverageLeadCycleSpeed: true,
     leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
@@ -121,6 +125,7 @@ const getFields = ({
   isPaintingSeedConfirmed,
   usingBattleVideoWithoutPainting,
   targetFrameBeforePainting,
+  battleVideoInfo,
 }: {
   mapId: string;
   action: Wild3Action;
@@ -130,6 +135,7 @@ const getFields = ({
   isPaintingSeedConfirmed: boolean;
   usingBattleVideoWithoutPainting: boolean;
   targetFrameBeforePainting: number;
+  battleVideoInfo?: BattleVideoInfo;
 }): Field[] => {
   const { actions, feebas_states, roamer_states, mass_outbreak_states } =
     getPossibleValuesForMap(mapId, action);
@@ -193,26 +199,35 @@ const getFields = ({
       ),
       key: "usingPaintingReseeding",
       input: <FormikSwitch<TargetSetup> name="usingPaintingReseeding" />,
+      show: battleVideoInfo == null,
     },
     {
       label: "Target frame before painting (decimal)",
-      input: (
-        <Flex vertical>
-          <FormikNumberInput<TargetSetup>
-            name="targetFrameBeforePainting"
-            numType="decimal"
-          />
-          Painting seed (hex): {formatHex(targetFrameBeforePainting ?? 0, 2)}
-        </Flex>
-      ),
+      input: <Flex vertical>
+        <FormikNumberInput<TargetSetup>
+          name="targetFrameBeforePainting"
+          numType="decimal"
+        />
+        Painting seed (hex): {formatHex(targetFrameBeforePainting ?? 0, 2)}
+      </Flex>,
       indent: 1,
-      show: usingPaintingReseeding,
+      show: usingPaintingReseeding && battleVideoInfo == null,
+    },
+    {
+      label: "Target frame before painting (decimal)",
+      input: formatLargeInteger(battleVideoInfo?.targetPaintingAdvs?.before ?? 0),
+      show: (battleVideoInfo?.targetPaintingAdvs?.before ?? 0) > 0,
     },
     {
       label: "Target frame before painting was confirmed to be hit?",
       input: <FormikSwitch<TargetSetup> name="isPaintingSeedConfirmed" />,
       indent: 1,
-      show: usingPaintingReseeding,
+      show: usingPaintingReseeding && battleVideoInfo == null,
+    },
+    {
+      label: "Advances between painting and Battle Video",
+      input: formatLargeInteger(battleVideoInfo?.battleVideoAdvAfterPainting ?? 0),
+      show: (battleVideoInfo?.battleVideoAdvAfterPainting ?? 0) > 0,
     },
     {
       label: "Advances between painting and Battle Video",
@@ -223,7 +238,7 @@ const getFields = ({
         />
       ),
       indent: 1,
-      show: usingPaintingReseeding,
+      show: usingPaintingReseeding && battleVideoInfo == null,
     },
 
     {
@@ -231,7 +246,7 @@ const getFields = ({
       input: (
         <FormikSwitch<TargetSetup> name="usingBattleVideoWithoutPainting" />
       ),
-      show: !usingPaintingReseeding,
+      show: !usingPaintingReseeding && battleVideoInfo == null,
     },
     {
       label: "Battle Video advance",
@@ -241,7 +256,7 @@ const getFields = ({
           numType="decimal"
         />
       ),
-      show: !usingPaintingReseeding && usingBattleVideoWithoutPainting,
+      show: !usingPaintingReseeding && usingBattleVideoWithoutPainting && battleVideoInfo == null,
       indent: 1,
     },
     {
@@ -260,11 +275,11 @@ const getFields = ({
           ? "Advances after painting to hit target"
           : "Advances after painting for calibration"
         : "Target advances",
-      input: (
+      input: (battleVideoInfo == null ?
         <FormikNumberInput<TargetSetup>
           name="targetAdvance"
           numType="decimal"
-        />
+        /> : formatLargeInteger(battleVideoInfo.targetPaintingAdvs.after)
       ),
     },
     {
@@ -301,7 +316,11 @@ const getFields = ({
   return fields;
 };
 
-export const Wild3CalibTargetFields = () => {
+export const Wild3CalibTargetFields = ({
+  battleVideoInfo,
+}: {
+  battleVideoInfo?: BattleVideoInfo;
+}) => {
   const { setFieldValue } = useFormContext<TargetSetup>();
   const map = useWatch<TargetSetup, "map">({ name: "map" });
   const action = useWatch<TargetSetup, "action">({ name: "action" });
@@ -349,6 +368,7 @@ export const Wild3CalibTargetFields = () => {
     isPaintingSeedConfirmed,
     usingBattleVideoWithoutPainting,
     targetFrameBeforePainting,
+    battleVideoInfo,
   });
 
   React.useEffect(() => {
@@ -476,7 +496,10 @@ const getLeadCycleSpeed = (values: TargetSetup) => {
     : values.leadCycleSpeed;
 };
 
-export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
+export const Wild3CalibTarget = ({
+  setTargetSetup,
+  battleVideoInfo,
+}: Props) => {
   const [resultReactNode, setResultReactNode] =
     React.useState<React.ReactNode>(null);
 
@@ -579,7 +602,7 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
     setTargetSetup(values);
   };
 
-  const initialValues = getInitialValues();
+  const initialValues = getInitialValues(battleVideoInfo);
 
   return (
     <>
@@ -591,7 +614,7 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
         rowKey="uid"
         submitButtonLabel="Calculate Target"
       >
-        <Wild3CalibTargetFields />
+        <Wild3CalibTargetFields battleVideoInfo={battleVideoInfo} />
       </RngToolForm>
       {resultReactNode}
     </>

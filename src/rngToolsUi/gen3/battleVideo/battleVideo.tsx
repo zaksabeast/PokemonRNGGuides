@@ -1,4 +1,4 @@
-import { Tooltip } from "antd";
+import { Flex, Tooltip } from "antd";
 import React from "react";
 import z from "zod";
 import {
@@ -12,6 +12,7 @@ import {
   FormFieldTable,
   FormikSelect,
   Field,
+  Button,
 } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import InstructionsNoBattleNoExisting from "./instructions_no_battle_no_existing.mdx";
@@ -27,6 +28,9 @@ import {
   gen3ConsoleOptions,
   gen3Consoles,
 } from "~/types/console";
+import { BattleVideoInfo } from "../paintingReseeding/paintingReseeding";
+import { Wild3Action } from "~/rngTools";
+import { isFishingAction } from "../wild/utils";
 
 // No waiting in battle
 const ADV_MISC_NO_BATTLE = 100; // Advances before last input not caused by frames when not waiting in battle
@@ -102,7 +106,7 @@ const createInitialValues = (fixedData?: FixedData): FormState => ({
   targetAdvance: fixedData?.targetAdvance ?? 50_000,
   isUpdatingExisting: fixedData?.isUpdatingExisting ?? false,
   console: fixedData?.consoleType ?? "GBA",
-  forFishing: false,
+  forFishing: isFishingAction(fixedData?.action ?? "SweetScentLand"),
   considerWaitingInBattle: true,
   displayAdvancedBreakdown: false,
   useRecommendedBuffer: true,
@@ -127,12 +131,14 @@ const MyFields = ({
     name: "targetAdvance",
   });
 
+  const existingBattleVideoAdv = fixedData?.existingBattleVideoAdv ?? 0;
+
   const fields: Field[] = [
     {
       label: fixedData?.isAfterPainting
         ? "Existing Battle Video advances after painting"
         : "Existing Battle Video advances",
-      input: formatLargeInteger(fixedData?.existingBattleVideoAdv ?? 0),
+      input: formatLargeInteger(existingBattleVideoAdv),
       show: fixedData?.isUpdatingExisting === true,
     },
     {
@@ -144,7 +150,7 @@ const MyFields = ({
       label: fixedData?.isAfterPainting
         ? "Target advance after painting"
         : "Target advance",
-      input: formatLargeInteger(targetAdvance),
+      input: formatLargeInteger(targetAdvance) + (fixedData?.isUpdatingExisting ? ` (+${formatLargeInteger(targetAdvance - existingBattleVideoAdv)})` : ``),
       show: fixedData != null,
     },
     {
@@ -178,7 +184,7 @@ const MyFields = ({
       label: "Leave sufficient buffer for fishing?",
       input: <FormikSwitch<FormState> name="forFishing" />,
       indent: 1,
-      show: useRecommendedBuffer,
+      show: useRecommendedBuffer && fixedData?.action == null,
     },
     {
       label: "Buffer (advance)",
@@ -292,10 +298,10 @@ const calculateWithoutBattle = (opts: FormState) => {
     breakdown: [
       opts.isUpdatingExisting
         ? {
-            name: "Watch existing Battle Video",
-            adv: initialAdv,
-            advSources: [],
-          }
+          name: "Watch existing Battle Video",
+          adv: initialAdv,
+          advSources: [],
+        }
         : { name: "Game started", adv: 0, advSources: [] },
       {
         name: "Last player input to create Battle Video",
@@ -317,17 +323,17 @@ const calculateWithoutBattle = (opts: FormState) => {
         adv: initialAdv + targetAdvance,
         advSources: opts.useRecommendedBuffer
           ? [
-              { name: "Performing action", adv: actionBufferPostVideo },
-              { name: "Safety buffer", adv: safetyBufferNoAction },
-            ]
+            { name: "Performing action", adv: actionBufferPostVideo },
+            { name: "Safety buffer", adv: safetyBufferNoAction },
+          ]
           : [{ name: "Specified buffer", adv: safetyBufferAdv }],
       },
     ],
     battleVideoInfo: {
       initialAdv,
-      battleVideoAdv: targetAdvAtVideo,
+      battleVideoAdv: initialAdv + targetAdvAtVideo,
       safetyBufferAdv,
-      targetAdv: targetAdvance,
+      targetAdv: initialAdv + targetAdvance,
       withBattle: false,
       isUpdatingExisting: opts.isUpdatingExisting,
     },
@@ -400,10 +406,10 @@ const calculateWithBattle = (opts: FormState) => {
     breakdown: [
       opts.isUpdatingExisting
         ? {
-            name: "Watch existing Battle Video",
-            adv: initialAdv,
-            advSources: [],
-          }
+          name: "Watch existing Battle Video",
+          adv: initialAdv,
+          advSources: [],
+        }
         : { name: "Game started", adv: 0, advSources: [] },
       {
         name: "Player input to trigger Sweet Scent",
@@ -480,9 +486,9 @@ const calculateWithBattle = (opts: FormState) => {
         adv: initialAdv + targetAdvance,
         advSources: opts.useRecommendedBuffer
           ? [
-              { name: "Time for action", adv: actionBufferPostVideo },
-              { name: "Safety buffer", adv: POST_BATTLE_BUFFER },
-            ]
+            { name: "Time for action", adv: actionBufferPostVideo },
+            { name: "Safety buffer", adv: POST_BATTLE_BUFFER },
+          ]
           : [{ name: "Specified buffer", adv: safetyBufferAdv }],
       },
     ],
@@ -517,13 +523,24 @@ type FixedData = {
   existingBattleVideoAdv: number;
   isAfterPainting: boolean;
   consoleType?: Gen3Console;
+  action?: Wild3Action;
+};
+
+export type BattleVideoInfo = {
+  targetPaintingAdvs: {
+    before: number;
+    after: number;
+  };
+  battleVideoAdvAfterPainting: number;
+  consoleType: Gen3Console | null;
 };
 
 export type Props = {
   fixedData?: FixedData;
+  setBattleVideoAdv?: (adv: number | null) => void;
 };
 
-export const BattleVideo = ({ fixedData }: Props) => {
+export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
   const [milliseconds, setMilliseconds] = React.useState<number[]>([]);
   const [timerLabels, setTimerLabels] = React.useState<string[]>([]);
   const [submitError, setSubmitError] = React.useState("");
@@ -548,12 +565,20 @@ export const BattleVideo = ({ fixedData }: Props) => {
       timerLabels,
       breakdown,
       battleVideoInfo,
-    } = await calculate(opts);
+    } = calculate(opts);
     setSubmitError(submitError);
     setMilliseconds(milliseconds);
     setTimerLabels(timerLabels);
     setBreakdown(breakdown);
     setBattleVideoInfo(battleVideoInfo);
+
+    console.log({
+      submitError,
+      milliseconds,
+      timerLabels,
+      breakdown,
+      battleVideoInfo,
+    }, opts);
   };
 
   const displayedProps = displayAdvancedBreakdown
@@ -634,6 +659,22 @@ export const BattleVideo = ({ fixedData }: Props) => {
           stopButtonTrackerId="battle_video_timer_stop"
         />
       )}
+
+      {setBattleVideoAdv != null && <Flex gap={10}>
+        <br />
+        <div>Step outcome: </div>
+        {(battleVideoInfo || initialValues.isUpdatingExisting) && <Button trackerId="wild3_battle_video_created" onClick={() => {
+          if (battleVideoInfo != null) {
+            setBattleVideoAdv(battleVideoInfo.battleVideoAdv);
+          } else {
+            setBattleVideoAdv(initialValues.existingBattleVideoAdv);
+          }
+        }}>Battle Video was created</Button>}
+
+        <Button trackerId="wild3_battle_video_skip" onClick={() => {
+          setBattleVideoAdv(null);
+        }}>Skip (no Battle Video created)</Button>
+      </Flex>}
     </>
   );
 };

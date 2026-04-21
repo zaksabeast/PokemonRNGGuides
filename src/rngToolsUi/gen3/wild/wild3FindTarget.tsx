@@ -244,7 +244,6 @@ export const Wild3SearcherFindTarget = ({
 
   const pidPathColumns = getPidPathColumns();
 
-  console.log('setTargetSetup2', setTargetSetup);
   return (
     <>
       <RngToolForm<FormState, PidPathResult>

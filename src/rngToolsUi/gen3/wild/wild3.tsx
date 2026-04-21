@@ -2,7 +2,7 @@ import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { TargetSetupSchema, TargetSetup } from "./wild3CalibTarget";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
-import { EmeraldPaintingReseeding, BattleVideoInfo } from "../paintingReseeding/paintingReseeding";
+import { EmeraldPaintingReseeding } from "../paintingReseeding/paintingReseeding";
 import { Wild3SearcherFindTarget } from "./wild3FindTarget";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import z from "zod";
@@ -12,6 +12,7 @@ import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { useCurrentStep } from "~/components/stepper/state";
 import { Wild3Calib } from "./wild3Calib";
 import { Gen3Console, gen3Consoles } from "~/types/console";
+import { BattleVideoInfo } from "../battleVideo/battleVideo";
 
 /*
 Possible user flows: 
@@ -20,7 +21,7 @@ Possible user flows:
  - Step 1: Target advance without painting. Create battle video.
  - Step 1: Target advance with painting. Can't update battle video because too close to target.
  - Step 1: Target advance with painting. Can update battle video.
- - Skip Step 1. Step 2: Battle video no painting.
+ - Skip Step 1. Step 2: Battle video without painting.
  - Skip Step 1. Step 2: Painting. Can't update battle video because too close to target.
  - Skip Step 1. Step 2: Painting. Can update battle video.
  - Skip Step 1 & 2.
@@ -59,6 +60,7 @@ const battleVideoInfo = atomWithPersistence(
 export const useTargetSetup = () => useAtom(targetSetup);
 export const useBattleVideoInfo = () => useAtom(battleVideoInfo);
 
+// Step 1: Vanilla Wild3SearcherFindTarget
 export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
   const [step, setStep] = useCurrentStep();
   const [targetSetup, setTargetSetup] = useTargetSetup();
@@ -87,9 +89,10 @@ export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
   return <Wild3SearcherFindTarget setTargetSetup={handleSetTargetSetup} />;
 };
 
-/** This component has 2 modes:
- * 1) Step 1 (targetSetup) is completed. The target adv is provided to the component, and the fields are read-only.
- * 2) Step 1 is not completed. The user must input the target adv in the fields of the component.
+/** Step 2: Painting + Battle Video
+ * This component has 2 modes:
+ * 1) Step 1 (targetSetup) is not completed. The user must input the target advs in the fields of the component. 
+ * 2) Step 1 (targetSetup) is completed. The target advs are provided to the component, and the fields are read-only.
  **/
 export const EmeraldPaintingReseeding_WithTargetSetup = () => {
   const [targetSetupLock] = useTargetSetup();
@@ -101,20 +104,22 @@ export const EmeraldPaintingReseeding_WithTargetSetup = () => {
   if (!targetSetupHydrate.hydrated || !battleVideoHydrate.hydrated) {
     return <Skeleton />;
   }
+
   const { targetSetup } = targetSetupHydrate.client;
 
-  const targetPaintingAdvs = targetSetup == null ? undefined : {
+  if (targetSetup == null) {
+    return <EmeraldPaintingReseeding />
+  }
+
+  const targetPaintingAdvs = {
     before: targetSetup.targetFrameBeforePainting,
     after: targetSetup.targetAdvance,
   };
 
   const infoPrevStep = (() => {
-    if (!targetPaintingAdvs)
-      return null;
-
     const isUsingPainting = targetPaintingAdvs.before !== 0;
     return <Flex vertical>
-      <h3>Info from previous step</h3>
+      <h3>Info from the previous step</h3>
       <FormFieldTable fields={isUsingPainting ? [
         {
           label: "Target frame before painting",
@@ -126,7 +131,7 @@ export const EmeraldPaintingReseeding_WithTargetSetup = () => {
         },
       ] : [
         {
-          label: "Target Advance",
+          label: "Target advance",
           input: formatLargeInteger(targetPaintingAdvs.after),
         },
       ]} />
@@ -134,7 +139,8 @@ export const EmeraldPaintingReseeding_WithTargetSetup = () => {
   })();
 
   const [step, setStep] = useCurrentStep();
-  const onBattleVideoCreated = (battleVideoInfo: BattleVideoInfo) => {
+
+  const onBattleVideoCreatedOrSkipped = (battleVideoInfo: BattleVideoInfo) => {
     setBattleVideoInfo(hydrationLock({
       battleVideoInfo,
     }));
@@ -146,8 +152,8 @@ export const EmeraldPaintingReseeding_WithTargetSetup = () => {
     <EmeraldPaintingReseeding
       key={JSON.stringify(targetPaintingAdvs)}
       targetPaintingAdvs={targetPaintingAdvs}
-      onBattleVideoCreated={onBattleVideoCreated}
-      targetAction={targetSetup?.action} />
+      onBattleVideoCreatedOrSkipped={onBattleVideoCreatedOrSkipped}
+      targetAction={targetSetup.action} />
   </Flex>);
 };
 
@@ -164,13 +170,30 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
   const { targetSetup } = targetSetupHydrate.client;
   const { battleVideoInfo } = battleVideoHydrate.client;
 
-  // console.log('wild3', targetSetup, battleVideoInfo);
+  // To simplify the code, Wild3Calib is not adapted to support battle video info without target setup.
+  // The downside is that it forces the user to input twice their battle video advances.
+  if (targetSetup == null) {
+    return <Wild3Calib />
+  }
+
+  // If painting is required, step 2 (creating battle video) can't be skipped.
+  if (battleVideoInfo == null && targetSetup.targetFrameBeforePainting !== 0) {
+    return "You must complete the previous step.";
+  }
+
+  // If step 2 is skipped, we assume that battle video was not created.
+  const battleVideoInfoWithFallback: BattleVideoInfo = battleVideoInfo || {
+    targetPaintingAdvs: {
+      before: targetSetup.targetFrameBeforePainting,
+      after: targetSetup.targetAdvance,
+    },
+    battleVideoAdvAfterPainting: 0,
+    consoleType: null,
+  };
 
   return <Wild3Calib
-    key={JSON.stringify(targetSetup ?? null) + JSON.stringify(battleVideoInfo ?? null)}
-    targetSetup={targetSetup ?? undefined}
-    battleVideoInfo={battleVideoInfo ?? undefined}
+    key={JSON.stringify(targetSetup) + JSON.stringify(battleVideoInfoWithFallback)}
+    targetSetup={targetSetup}
+    battleVideoInfo={battleVideoInfoWithFallback}
   />;
 }
-
-//NO_PROD no hook when battle video is created without painting.

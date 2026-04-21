@@ -42,7 +42,7 @@ import {
   Wild3SearcherOptions,
 } from "~/rngTools";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
-import type { TargetSetup as TargetSetup } from "./wild3CalibTarget";
+import type { TargetSetup } from "./wild3CalibTarget";
 import { gen3Leads, isFishingAction, wild3Actions } from "./utils";
 import { useWatch } from "react-hook-form";
 import { FormikGenderFilter } from "~/components/genderFilter";

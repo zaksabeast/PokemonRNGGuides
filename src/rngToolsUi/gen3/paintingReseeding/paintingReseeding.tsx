@@ -11,7 +11,7 @@ import { Button, Field, Flex, FormFieldTable, NumberInput, Select } from "~/comp
 import Instructions_0_createBattleVideo from "./instructions_0_createBattleVideo.mdx";
 import Instructions_1_validateFrame from "./instructions_1_validateFrame.mdx";
 import Instructions_2_validateFrame from "./instructions_2_validateFrame.mdx";
-import { TargetSetup as TargetSetup } from "../wild/wild3CalibTarget";
+import { TargetSetup } from "../wild/wild3CalibTarget";
 import { gen3Leads } from "../wild/utils";
 import { Wild3CalibCaughtMon } from "../wild/wild3CalibCaughtMon";
 import { BattleVideo, BattleVideoInfo } from "../battleVideo/battleVideo";
@@ -19,6 +19,7 @@ import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import React from "react";
 import { Wild3Action } from "~/rngTools";
+import { AllOrNone } from "~/types";
 
 const FRAME_BATTLE_VIDEO_TO_SWEET_SCENT = 60 * 10; // ~10s
 const NON_VBLANK_ADV_BATTLE_VIDEO_TO_SWEET_SCENT = 210;
@@ -138,20 +139,18 @@ const createTargetSetupAtVictoryRoad = (frame_before_painting: number): TargetSe
   };
 };
 
-type Props = {
-  targetPaintingAdvs?: {
+type Props = AllOrNone<{
+  targetPaintingAdvs: {
     before: number;
     after: number;
   },
-  consoleType?: Gen3Console;
-  onBattleVideoCreated?: (info: BattleVideoInfo) => void;
-  targetAction?: Wild3Action;
-};
+  onBattleVideoCreatedOrSkipped: (info: BattleVideoInfo) => void;
+  targetAction: Wild3Action;
+}>;
 
 export const EmeraldPaintingReseeding = ({
   targetPaintingAdvs: targetPaintingAdvsProp,
-  consoleType: consoleTypeProp,
-  onBattleVideoCreated,
+  onBattleVideoCreatedOrSkipped,
   targetAction,
 }: Props) => {
   const [targetPaintingAdvs, setTargetPaintingAdvs] = useState<{
@@ -163,10 +162,11 @@ export const EmeraldPaintingReseeding = ({
     battleVideoAdvAfterPaintingConfirmed,
     setBattleVideoAdvAfterPaintingConfirmed,
   ] = useState<number | null>(null);
+
   const [calibrationForPainting, setCalibrationForPainting] = useState<number>(
     DEFAULT_CALIB_FOR_PAINTING,
   );
-  const [consoleType, setConsoleType] = useState<Gen3Console>(consoleTypeProp ?? "GBA");
+  const [consoleType, setConsoleType] = useState<Gen3Console>("GBA");
 
   const targetSetupAtVictoryRoad =
     targetPaintingAdvs === null || targetPaintingAdvs.before === 0
@@ -204,8 +204,8 @@ export const EmeraldPaintingReseeding = ({
     }
   };
 
-  const setBattleVideoAdv = (onBattleVideoCreated == null || targetPaintingAdvs == null) ? undefined : (adv: number | null) => {
-    onBattleVideoCreated({
+  const setBattleVideoAdv = (onBattleVideoCreatedOrSkipped == null || targetPaintingAdvs == null) ? undefined : (adv: number | null) => {
+    onBattleVideoCreatedOrSkipped({
       targetPaintingAdvs,
       battleVideoAdvAfterPainting: adv ?? 0,
       consoleType: adv == null ? null : consoleType,
@@ -221,7 +221,7 @@ export const EmeraldPaintingReseeding = ({
           time to create Battle Video.
         </div>
       </>}
-      {consoleTypeProp == null && <FormFieldTable fields={[consoleField]} />}
+      <FormFieldTable fields={[consoleField]} />
       {targetPaintingAdvsProp == null && <>
         <EmeraldSeedToAdvances
           onSelected={(before, after) => {

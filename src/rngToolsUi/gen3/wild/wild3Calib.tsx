@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { Flex, MultiTimer, Field, Input, Select, NumberInput } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
-import { TargetSetup as TargetSetup, Wild3CalibTarget } from "./wild3CalibTarget";
+import { TargetSetup, Wild3CalibTarget } from "./wild3CalibTarget";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon";
 import {
   Gen3Console,
   gen3ConsoleFpsMap,
   gen3ConsoleOptions,
 } from "~/types/console";
-import { BattleVideoInfo } from "../paintingReseeding/paintingReseeding";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
+import { formatActionName, formatLeadName, formatLeadNameFromIdx, formatMapName } from "./utils";
+import { BattleVideoInfo } from "../battleVideo/battleVideo";
+import { AllOrNone } from "~/types";
 
-type Props = {
-  targetSetup?: TargetSetup;
-  battleVideoInfo?: BattleVideoInfo;
-};
+type Props = AllOrNone<{
+  targetSetup: TargetSetup;
+  battleVideoInfo: BattleVideoInfo;
+}>;
 
 export const Wild3Calib = ({
   targetSetup: targetSetupProp,
@@ -127,9 +129,73 @@ export const Wild3Calib = ({
     show: battleVideoInfoProp?.consoleType == null,
   });
 
+  const fieldsFromPrevStep: Field[] = targetSetupProp == null ? [] : [
+    {
+      label: "Map",
+      input: formatMapName(targetSetupProp.map),
+      indent: 1,
+    },
+    {
+      label: "Player action",
+      input: formatActionName(targetSetupProp.action),
+      indent: 1,
+    },
+    {
+      label: "Lead",
+      input: formatLeadNameFromIdx(targetSetupProp.leadIdx),
+      indent: 1,
+    },
+    {
+      label: "Lead Cycle Speed",
+      input: targetSetupProp.usingAverageLeadCycleSpeed ? "Average" : targetSetupProp.leadCycleSpeed,
+      indent: 1,
+    },
+    {
+      label: "Target Method",
+      input: targetSetupProp.targetMethod,
+      indent: 1,
+    }
+  ];
+
+  if (targetSetupProp != null && battleVideoInfoProp != null) {
+    const usingPaintingReseeding = battleVideoInfoProp.targetPaintingAdvs.before > 0;
+    const usingBattleVideoWithoutPainting = !usingPaintingReseeding && battleVideoInfoProp.battleVideoAdvAfterPainting > 0;
+
+    fieldsFromPrevStep.push(
+      {
+        label: "Target frame before painting (decimal)",
+        input: formatLargeInteger(battleVideoInfoProp.targetPaintingAdvs.before),
+        indent: 1,
+        show: usingPaintingReseeding,
+      },
+      {
+        label: "Advances between painting and Battle Video",
+        input: battleVideoInfoProp.battleVideoAdvAfterPainting,
+        indent: 1,
+        show: usingPaintingReseeding,
+      },
+
+      {
+        label: "Battle Video advance",
+        input: formatLargeInteger(battleVideoInfoProp.battleVideoAdvAfterPainting),
+        show: usingBattleVideoWithoutPainting,
+        indent: 1,
+      },
+      {
+        label: usingPaintingReseeding ? "Target advances after painting" : "Target advances",
+        input: formatLargeInteger(battleVideoInfoProp.targetPaintingAdvs.after),
+        show: usingPaintingReseeding
+      });
+  }
+
   return (
     <Flex gap={32} vertical>
-      {targetSetupProp == null && <Wild3CalibTarget setTargetSetup={setTargetSetup} battleVideoInfo={battleVideoInfoProp} />}
+      {targetSetupProp == null && <Wild3CalibTarget setTargetSetup={setTargetSetup} />}
+
+      {targetSetupProp != null && <div>
+        <h3>Info from previous steps</h3>
+        <FormFieldTable fields={fieldsFromPrevStep} />
+      </div>}
 
       {targetSetup !== null && (
         <>

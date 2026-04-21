@@ -15,29 +15,31 @@ import { z } from "zod";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
 import { createGen4TimerAtom, useGen4Timer } from "~/hooks/useGen4Timer";
+import { useStateHistory } from "~/hooks/useStateHistory";
+import { UndoButton } from "./undoButton";
 
 const timerStateAtom = createGen4TimerAtom();
 
 const FormStateSchema = z.object({
   console: ZodConsole,
-  minTimeMs: ZodSerializedDecimal,
-  calibratedDelay: ZodSerializedDecimal,
-  calibratedSeconds: ZodSerializedDecimal,
-  targetDelay: ZodSerializedDecimal,
-  targetSeconds: ZodSerializedDecimal,
-  delayHit: ZodSerializedOptional(ZodSerializedDecimal),
+  min_time_ms: ZodSerializedDecimal,
+  calibrated_delay: ZodSerializedDecimal,
+  calibrated_second: ZodSerializedDecimal,
+  target_delay: ZodSerializedDecimal,
+  target_second: ZodSerializedDecimal,
+  delay_hit: ZodSerializedOptional(ZodSerializedDecimal),
 });
 
 export type FormState = z.infer<typeof FormStateSchema>;
 
 const defaultValues: FormState = {
   console: "NdsSlot1",
-  minTimeMs: 14000,
-  calibratedDelay: 500,
-  calibratedSeconds: 14,
-  targetDelay: 600,
-  targetSeconds: 50,
-  delayHit: null,
+  min_time_ms: 14000,
+  calibrated_delay: 500,
+  calibrated_second: 14,
+  target_delay: 600,
+  target_second: 50,
+  delay_hit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -62,33 +64,33 @@ const fields: Field[] = [
   },
   {
     label: "Min Time (ms)",
-    input: <FormikNumberInput<FormState> name="minTimeMs" numType="float" />,
+    input: <FormikNumberInput<FormState> name="min_time_ms" numType="float" />,
   },
   {
     label: "Calibrated Delay",
     input: (
-      <FormikNumberInput<FormState> name="calibratedDelay" numType="float" />
+      <FormikNumberInput<FormState> name="calibrated_delay" numType="float" />
     ),
   },
   {
     label: "Calibrated Seconds",
     input: (
-      <FormikNumberInput<FormState> name="calibratedSeconds" numType="float" />
+      <FormikNumberInput<FormState> name="calibrated_second" numType="float" />
     ),
   },
   {
     label: "Target Delay",
-    input: <FormikNumberInput<FormState> name="targetDelay" numType="float" />,
+    input: <FormikNumberInput<FormState> name="target_delay" numType="float" />,
   },
   {
     label: "Target Seconds",
     input: (
-      <FormikNumberInput<FormState> name="targetSeconds" numType="float" />
+      <FormikNumberInput<FormState> name="target_second" numType="float" />
     ),
   },
   {
     label: "Delay Hit",
-    input: <FormikNumberInput<FormState> name="delayHit" numType="float" />,
+    input: <FormikNumberInput<FormState> name="delay_hit" numType="float" />,
   },
 ];
 
@@ -106,46 +108,39 @@ const InnerGen4Timer = ({ timerSettings, onUpdate }: InnerProps) => {
       return;
     }
     hasInited.current = true;
-    initTimer({
-      console: timerSettings.console,
-      min_time_ms: timerSettings.minTimeMs,
-      calibrated_delay: timerSettings.calibratedDelay,
-      calibrated_second: timerSettings.calibratedSeconds,
-      target_delay: timerSettings.targetDelay,
-      target_second: timerSettings.targetSeconds,
-    });
+    initTimer(timerSettings);
   }, [initTimer, timerSettings]);
 
+  const updateTimerSettings = async (formState: FormState) => {
+    const newTimer = await initTimer(formState);
+
+    onUpdate(
+      hydrationLock({
+        ...newTimer.timer,
+        delay_hit: null,
+      }),
+    );
+
+    return newTimer.timer;
+  };
+
+  const history = useStateHistory({
+    initialSettings: timerSettings,
+    updateTimerSettings,
+  });
+
   const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
-    const newTimer = await initTimer({
-      calibrated_delay: opts.calibratedDelay,
-      calibrated_second: opts.calibratedSeconds,
-      console: opts.console,
-      min_time_ms: opts.minTimeMs,
-      target_delay: opts.targetDelay,
-      target_second: opts.targetSeconds,
-      hit_delay: opts.delayHit,
-    });
+    const updatedTimer = await updateTimerSettings(opts);
 
-    const updates = {
-      calibratedDelay: newTimer.timer.calibrated_delay,
-      calibratedSeconds: newTimer.timer.calibrated_second,
-      console: newTimer.timer.console,
-      delayHit: null,
-      minTimeMs: newTimer.timer.min_time_ms,
-      targetDelay: newTimer.timer.target_delay,
-      targetSeconds: newTimer.timer.target_second,
-    };
+    setValue("calibrated_delay", updatedTimer.calibrated_delay);
+    setValue("calibrated_second", updatedTimer.calibrated_second);
+    setValue("console", updatedTimer.console);
+    setValue("delay_hit", null);
+    setValue("min_time_ms", updatedTimer.min_time_ms);
+    setValue("target_delay", updatedTimer.target_delay);
+    setValue("target_second", updatedTimer.target_second);
 
-    setValue("calibratedDelay", updates.calibratedDelay);
-    setValue("calibratedSeconds", updates.calibratedSeconds);
-    setValue("console", updates.console);
-    setValue("delayHit", updates.delayHit);
-    setValue("minTimeMs", updates.minTimeMs);
-    setValue("targetDelay", updates.targetDelay);
-    setValue("targetSeconds", updates.targetSeconds);
-
-    onUpdate(hydrationLock(updates));
+    history.addIfNew({ ...updatedTimer, delay_hit: null });
   };
 
   return (
@@ -161,6 +156,21 @@ const InnerGen4Timer = ({ timerSettings, onUpdate }: InnerProps) => {
           onSubmit={onSubmit}
           submitTrackerId="set_gen4_timer"
           submitButtonLabel="Set Timer"
+          additionalButtons={
+            <UndoButton
+              history={history}
+              trackerId="undo_gen4_calibration"
+              fields={{
+                console: true,
+                min_time_ms: true,
+                calibrated_delay: true,
+                calibrated_second: true,
+                target_delay: true,
+                target_second: true,
+                delay_hit: true,
+              }}
+            />
+          }
         />
       }
     />

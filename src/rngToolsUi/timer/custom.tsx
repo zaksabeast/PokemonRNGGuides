@@ -19,11 +19,11 @@ import { useWatch } from "react-hook-form";
 import { P, match } from "ts-pattern";
 
 const SingleTimerSettingsSchema = z.object({
-  timerId: z.number(),
+  timer_id: z.number(),
   target: z.number(),
   calibration: z.number(),
   hit: z.number().nullable(),
-  targetType: z.enum(["ms", "advances", "seed_hex"]),
+  target_type: z.enum(["ms", "advances", "seed_hex"]),
 });
 
 type SingleTimerSettings = z.infer<typeof SingleTimerSettingsSchema>;
@@ -38,16 +38,16 @@ const initialAllTimerSettings: AllTimerSettings = {
   timers: [],
 };
 
-const initialValues: Omit<SingleTimerSettings, "timerId"> = {
+const initialValues: Omit<SingleTimerSettings, "timer_id"> = {
   target: 0,
   calibration: 0.0,
   hit: null,
-  targetType: "ms",
+  target_type: "ms",
 };
 
 const CustomTimerSettings = () => {
-  const targetType = useWatch<SingleTimerSettings, "targetType">({
-    name: "targetType",
+  const targetType = useWatch<SingleTimerSettings, "target_type">({
+    name: "target_type",
   });
   const numType = targetType === "seed_hex" ? "hex" : "float";
 
@@ -55,8 +55,8 @@ const CustomTimerSettings = () => {
     {
       label: "Target Type",
       input: (
-        <FormikSelect<SingleTimerSettings, "targetType">
-          name="targetType"
+        <FormikSelect<SingleTimerSettings, "target_type">
+          name="target_type"
           options={[
             { label: "Milliseconds", value: "ms" },
             { label: "Advances", value: "advances" },
@@ -95,7 +95,7 @@ const CustomTimerSettings = () => {
 
 const calibrate = async (console: Console, settings: SingleTimerSettings) => {
   const hit = settings.hit ?? 0;
-  const calibration = await match(settings.targetType)
+  const calibration = await match(settings.target_type)
     .with("ms", () => settings.target - hit + settings.calibration)
     .with(P.union("advances", "seed_hex"), async () => {
       const updated = await rngTools.calibrate_gen3_timer(
@@ -117,7 +117,7 @@ const calibrate = async (console: Console, settings: SingleTimerSettings) => {
 const create = async (console: Console, settings: SingleTimerSettings) => {
   const target = settings.target;
 
-  return match(settings.targetType)
+  return match(settings.target_type)
     .with("ms", () => settings.target + settings.calibration)
     .with(P.union("advances", "seed_hex"), async () => {
       const updated = await rngTools.create_gen3_timer({
@@ -143,7 +143,7 @@ const TimerSettings = ({ timerId, onSubmit, onCancel }: TimerSettingsProps) => {
     <RngToolForm<SingleTimerSettings, number[]>
       initialValues={{
         ...initialValues,
-        timerId,
+        timer_id: timerId,
       }}
       onSubmit={onSubmit}
       submitTrackerId="set_custom_timer"
@@ -164,7 +164,7 @@ const updateTimer = (
   updated: SingleTimerSettings,
 ): AllTimerSettings => {
   const timers = timerSettings.timers.map((timer) => {
-    if (timer.timerId === updated.timerId) {
+    if (timer.timer_id === updated.timer_id) {
       return updated;
     }
     return timer;
@@ -183,21 +183,22 @@ export const CustomTimer = () => {
   );
   const [milliseconds, setMilliseconds] = React.useState<number[]>([]);
 
-  React.useEffect(() => {
-    const update = async () => {
-      const timers = await Promise.all(
-        timerSettings.timers.map(async (timer) => {
-          const ms = await create(timerSettings.console, timer);
-          return {
-            ...timer,
-            ms,
-          };
-        }),
-      );
+  const updateMilliseconds = async (settings: AllTimerSettings) => {
+    const timers = await Promise.all(
+      settings.timers.map(async (timer) => {
+        const ms = await create(settings.console, timer);
+        return {
+          ...timer,
+          ms,
+        };
+      }),
+    );
 
-      setMilliseconds(timers.map((timer) => timer.ms));
-    };
-    update();
+    setMilliseconds(timers.map((timer) => timer.ms));
+  };
+
+  React.useEffect(() => {
+    updateMilliseconds(timerSettings);
   }, [timerSettings]);
 
   const onSubmit: RngToolSubmit<SingleTimerSettings> = async (
@@ -226,7 +227,7 @@ export const CustomTimer = () => {
     setTimerSettings((prev) => {
       return {
         ...prev,
-        timers: prev.timers.filter((timer) => timer.timerId !== timerId),
+        timers: prev.timers.filter((timer) => timer.timer_id !== timerId),
       };
     });
   };
@@ -237,7 +238,7 @@ export const CustomTimer = () => {
         ...prev,
         timers: [
           ...prev.timers,
-          { timerId: currentTimerId++, ...initialValues },
+          { timer_id: currentTimerId++, ...initialValues },
         ],
       };
     });
@@ -275,9 +276,9 @@ export const CustomTimer = () => {
 
       {timerSettings.timers.map((timer) => {
         return (
-          <Card id={`custom_timer_${timer.timerId}`} key={timer.timerId}>
+          <Card id={`custom_timer_${timer.timer_id}`} key={timer.timer_id}>
             <TimerSettings
-              timerId={timer.timerId}
+              timerId={timer.timer_id}
               onSubmit={onSubmit}
               onCancel={onCancel}
             />

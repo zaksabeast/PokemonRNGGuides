@@ -24,7 +24,6 @@ import { Wild3CalibCaughtMon } from "../wild/wild3CalibCaughtMon";
 import { BattleVideo, BattleVideoInfo } from "../battleVideo/battleVideo";
 import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import React from "react";
 import { Wild3Action } from "~/rngTools";
 import { AllOrNone } from "~/types";
 
@@ -202,7 +201,7 @@ export const EmeraldPaintingReseeding = ({
           });
         };
 
-  const inputForm = (
+  const inputForm = () => (
     <>
       <h2>Selecting the target painting frame and advance</h2>
       <div>
@@ -218,42 +217,42 @@ export const EmeraldPaintingReseeding = ({
   );
 
   if (targetPaintingAdvs == null) {
-    return inputForm;
+    return inputForm();
   }
 
-  const infoFromPrevStep =
-    targetPaintingAdvsProp != null &&
-    (() => {
-      const isUsingPainting = targetPaintingAdvsProp.before !== 0;
-      return (
-        <Flex vertical>
-          <h3>Info from the previous step</h3>
-          <FormFieldTable
-            fields={
-              isUsingPainting
-                ? [
-                    {
-                      label: "Target frame before painting",
-                      input: formatLargeInteger(targetPaintingAdvsProp.before),
-                    },
-                    {
-                      label: "Target advance after painting",
-                      input: formatLargeInteger(targetPaintingAdvsProp.after),
-                    },
-                  ]
-                : [
-                    {
-                      label: "Target advance",
-                      input: formatLargeInteger(targetPaintingAdvsProp.after),
-                    },
-                  ]
-            }
-          />
-        </Flex>
-      );
-    })();
+  const infoFromPrevStep = () => {
+    if (targetPaintingAdvsProp == null) return null;
 
-  const content = (() => {
+    const isUsingPainting = targetPaintingAdvsProp.before !== 0;
+    return (
+      <Flex vertical>
+        <h3>Info from the previous step</h3>
+        <FormFieldTable
+          fields={
+            isUsingPainting
+              ? [
+                  {
+                    label: "Target frame before painting",
+                    input: formatLargeInteger(targetPaintingAdvsProp.before),
+                  },
+                  {
+                    label: "Target advance after painting",
+                    input: formatLargeInteger(targetPaintingAdvsProp.after),
+                  },
+                ]
+              : [
+                  {
+                    label: "Target advance",
+                    input: formatLargeInteger(targetPaintingAdvsProp.after),
+                  },
+                ]
+          }
+        />
+      </Flex>
+    );
+  };
+
+  const content = () => {
     // case 1: no painting
     if (targetPaintingAdvs.before === 0) {
       // case 1a: not enough time for battle video
@@ -377,13 +376,13 @@ export const EmeraldPaintingReseeding = ({
         {updateBattleVideo}
       </>
     );
-  })();
+  };
 
   return (
     <Flex vertical gap={20}>
-      {targetPaintingAdvsProp == null ? inputForm : infoFromPrevStep}
+      {targetPaintingAdvsProp == null ? inputForm() : infoFromPrevStep()}
 
-      {content}
+      {content()}
     </Flex>
   );
 };

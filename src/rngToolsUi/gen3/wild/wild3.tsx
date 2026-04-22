@@ -14,30 +14,30 @@ import { BattleVideoInfo } from "../battleVideo/battleVideo";
 
 /*
 Possible user flows: 
- - Step 1: Low target advance without painting. (Too low to create battle video)
- - Step 1: Target advance without painting. Skip creating battle video.
- - Step 1: Target advance without painting. Create battle video.
- - Step 1: Target advance with painting. Can't update battle video because too close to target.
- - Step 1: Target advance with painting. Can update battle video.
- - Skip Step 1. Step 2: Battle video without painting.
- - Skip Step 1. Step 2: Painting. Can't update battle video because too close to target.
- - Skip Step 1. Step 2: Painting. Can update battle video.
- - Skip Step 1 & 2. Step 3.
- - Step 1. Skip 2. Without painting. => Assumes no battle video was created.
- - Step 1. Skip 2. With painting. => Blocking error.
+ - Step 1: Low target advance without painting. Step 2: Too low to create battle video, so must skip.
+ - Step 1: Target advance without painting. Step 2: Press "Skip creating battle video".
+ - Step 1: Target advance without painting. Step 2: Skip the step without confirming. Step 3: Assumes no battle video was created.
+ - Step 1: Target advance without painting. Step 2: Create battle video.
+ - Step 1: Target advance with painting. Step 2: Create battle video but can't update battle video because too close to target.
+ - Step 1: Target advance with painting. Step 2: Can create and update battle video.
+ - Step 1: Target advance with painting. Step 2: Skip battle video (either with or without button). Step 3: Blocked.
+ - Skip Step 1. Step 2: Battle video without painting. Step 3: Must provide target and battle video info.
+ - Skip Step 1. Step 2: Painting. Can create but can't update battle video because too close to target. Step 3: Must provide target and battle video info.
+ - Skip Step 1. Step 2: Painting. Can create and update battle video. Step 3: Must provide target and battle video info.
+ - Skip Step 1 & 2. Step 3: Must provide target and battle video info.
 */
 
-const TargetSetupNullableSchema = z.object({
+const TargetSetupAtomSchema = z.object({
   targetSetup: z.object().extend(TargetSetupSchema.shape).nullable(),
 });
 
-const targetSetup = atomWithPersistence(
+const targetSetupAtom = atomWithPersistence(
   "emerald_wild_targetSetup",
-  TargetSetupNullableSchema,
+  TargetSetupAtomSchema,
   { targetSetup: null },
 );
 
-const battleVideoInfo = atomWithPersistence(
+const battleVideoInfoAtom = atomWithPersistence(
   "emerald_wild_battleVideoInfo",
   z.object({
     battleVideoInfo: z
@@ -56,8 +56,8 @@ const battleVideoInfo = atomWithPersistence(
   },
 );
 
-export const useTargetSetup = () => useAtom(targetSetup);
-export const useBattleVideoInfo = () => useAtom(battleVideoInfo);
+export const useTargetSetup = () => useAtom(targetSetupAtom);
+export const useBattleVideoInfo = () => useAtom(battleVideoInfoAtom);
 
 // Step 1: Vanilla Wild3SearcherFindTarget
 export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
@@ -97,17 +97,17 @@ export const EmeraldPaintingReseeding_WithTargetSetup = () => {
   const [targetSetupLock] = useTargetSetup();
   const targetSetupHydrate = useHydrate(targetSetupLock);
 
-  const [battleVideoAdvAfterPainting, setBattleVideoInfo] =
-    useBattleVideoInfo();
-  const battleVideoHydrate = useHydrate(battleVideoAdvAfterPainting);
+  const [battleVideoInfo, setBattleVideoInfo] = useBattleVideoInfo();
+  const battleVideoInfoHydrate = useHydrate(battleVideoInfo);
 
-  if (!targetSetupHydrate.hydrated || !battleVideoHydrate.hydrated) {
+  if (!targetSetupHydrate.hydrated || !battleVideoInfoHydrate.hydrated) {
     return <Skeleton />;
   }
 
   const { targetSetup } = targetSetupHydrate.client;
 
   if (targetSetup == null) {
+    // If step 1 isn't completed, step 2 info isn't forwarded to step 3, to simplify the code.
     return <EmeraldPaintingReseeding />;
   }
 

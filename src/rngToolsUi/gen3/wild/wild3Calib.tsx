@@ -18,7 +18,6 @@ import {
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import {
   formatActionName,
-  formatLeadName,
   formatLeadNameFromIdx,
   formatMapName,
 } from "./utils";
@@ -38,6 +37,12 @@ export const Wild3Calib = ({
     targetSetupProp ?? null,
   );
 
+  const inputForm = () => <Wild3CalibTarget setTargetSetup={setTargetSetup} />;
+
+  if (targetSetup == null) {
+    return inputForm();
+  }
+
   const [consoleType, setConsoleType] = useState<Gen3Console>(
     battleVideoInfoProp?.consoleType ?? "GBA",
   );
@@ -47,7 +52,6 @@ export const Wild3Calib = ({
   const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(0);
 
   const calibrationIsActive =
-    targetSetup !== null &&
     battleVideoInfoProp == null &&
     (!targetSetup.usingPaintingReseeding ||
       targetSetup.isPaintingSeedConfirmed);
@@ -63,12 +67,12 @@ export const Wild3Calib = ({
       }
     : undefined;
 
-  const targetForTimer = targetSetup?.targetAdvance ?? 0;
+  const targetForTimer = targetSetup.targetAdvance;
 
   const initialAdvFromProp =
     battleVideoInfoProp?.battleVideoAdvAfterPainting ??
-    targetSetup?.existingBattleVideoAdv ??
-    0;
+    targetSetup.existingBattleVideoAdv;
+
   const [initialAdv, setInitialAdv] = React.useState(initialAdvFromProp);
 
   const advFromTimer = targetForTimer - initialAdv - calibrationAndOffset;
@@ -82,122 +86,115 @@ export const Wild3Calib = ({
     "Trigger Sweet Scent",
   ];
 
-  const fields: Field[] =
-    targetSetup != null
-      ? [
-          {
-            label: "Battle Video advance",
-            input: formatLargeInteger(initialAdv),
-            show: !targetSetup.usingPaintingReseeding && initialAdvFromProp > 0,
-          },
-          {
-            label: "Target advance",
-            input:
-              formatLargeInteger(targetSetup.targetAdvance) +
-              (initialAdv > 0
-                ? ` (+${formatLargeInteger(targetSetup.targetAdvance - initialAdv)} from Battle Video)`
-                : ``),
-            show: !targetSetup.usingPaintingReseeding,
-          },
-          {
-            label: "Target frame before painting",
-            input: formatLargeInteger(targetSetup.targetFrameBeforePainting),
-            show: targetSetup.usingPaintingReseeding,
-          },
-          {
-            label: "Battle Video advance",
-            input: formatLargeInteger(initialAdv),
-            show: targetSetup.usingPaintingReseeding && initialAdvFromProp > 0,
-          },
-          {
-            // This means battleVideoInfoProp.battleVideoAdvAfterPainting hasn't been set.
-            label: "Battle Video advance",
-            input: (
-              <NumberInput
-                numType="decimal"
-                onChange={(val) => setInitialAdv(val ?? 0)}
-              />
-            ),
-            show:
-              initialAdvFromProp === 0 && targetSetup.usingPaintingReseeding,
-          },
-          {
-            label: "Target advance after painting",
-            input: `${formatLargeInteger(targetSetup.targetAdvance)} (+${formatLargeInteger(targetSetup.targetAdvance - initialAdv)} from Battle Video)`,
-            show: targetSetup.usingPaintingReseeding,
-          },
-          {
-            label: "Calibration + Offset (advance)",
-            input: (
-              <Input
-                name="offset"
-                onChange={(event) => {
-                  const num = Number(event.target.value);
-                  setCalibrationAndOffset(Number.isFinite(num) ? num : 0);
-                }}
-                value={calibrationAndOffset}
-              />
-            ),
-          },
-        ]
-      : [];
+  const fields: Field[] = [
+    {
+      label: "Battle Video advance",
+      input: formatLargeInteger(initialAdv),
+      show: !targetSetup.usingPaintingReseeding && initialAdvFromProp > 0,
+    },
+    {
+      label: "Target advance",
+      input:
+        formatLargeInteger(targetSetup.targetAdvance) +
+        (initialAdv > 0
+          ? ` (+${formatLargeInteger(targetSetup.targetAdvance - initialAdv)} from Battle Video)`
+          : ``),
+      show: !targetSetup.usingPaintingReseeding,
+    },
+    {
+      label: "Target frame before painting",
+      input: formatLargeInteger(targetSetup.targetFrameBeforePainting),
+      show: targetSetup.usingPaintingReseeding,
+    },
+    {
+      label: "Battle Video advance",
+      input: formatLargeInteger(initialAdv),
+      show: targetSetup.usingPaintingReseeding && initialAdvFromProp > 0,
+    },
+    {
+      // This means battleVideoInfoProp.battleVideoAdvAfterPainting hasn't been set.
+      label: "Battle Video advance",
+      input: (
+        <NumberInput
+          numType="decimal"
+          onChange={(val) => setInitialAdv(val ?? 0)}
+        />
+      ),
+      show: initialAdvFromProp === 0 && targetSetup.usingPaintingReseeding,
+    },
+    {
+      label: "Target advance after painting",
+      input: `${formatLargeInteger(targetSetup.targetAdvance)} (+${formatLargeInteger(targetSetup.targetAdvance - initialAdv)} from Battle Video)`,
+      show: targetSetup.usingPaintingReseeding,
+    },
+    {
+      label: "Console",
+      input: (
+        <Select<Gen3Console>
+          name="console"
+          value={consoleType}
+          options={gen3ConsoleOptions}
+          onSelect={(val) => {
+            setConsoleType(val);
+          }}
+        />
+      ),
+      show: battleVideoInfoProp?.consoleType == null,
+    },
+    {
+      label: "Calibration + Offset (advance)",
+      input: (
+        <Input
+          name="offset"
+          onChange={(event) => {
+            const num = Number(event.target.value);
+            setCalibrationAndOffset(Number.isFinite(num) ? num : 0);
+          }}
+          value={calibrationAndOffset}
+        />
+      ),
+    },
+  ];
 
-  fields.push({
-    label: "Console",
-    input: (
-      <Select<Gen3Console>
-        name="console"
-        value={consoleType}
-        options={gen3ConsoleOptions}
-        onSelect={(val) => {
-          setConsoleType(val);
-        }}
-      />
-    ),
-    show: battleVideoInfoProp?.consoleType == null,
-  });
+  const infoFromPrevStep = () => {
+    if (targetSetupProp == null) {
+      return null;
+    }
 
-  const fieldsFromPrevStep: Field[] =
-    targetSetupProp == null
-      ? []
-      : [
-          {
-            label: "Map",
-            input: formatMapName(targetSetupProp.map),
-            indent: 1,
-          },
-          {
-            label: "Player action",
-            input: formatActionName(targetSetupProp.action),
-            indent: 1,
-          },
-          {
-            label: "Lead",
-            input: formatLeadNameFromIdx(targetSetupProp.leadIdx),
-            indent: 1,
-          },
-          {
-            label: "Lead Cycle Speed",
-            input: targetSetupProp.usingAverageLeadCycleSpeed
-              ? "Average"
-              : targetSetupProp.leadCycleSpeed,
-            indent: 1,
-          },
-          {
-            label: "Target Method",
-            input: targetSetupProp.targetMethod,
-            indent: 1,
-          },
-        ];
-
-  if (targetSetupProp != null && battleVideoInfoProp != null) {
     const usingPaintingReseeding =
       battleVideoInfoProp.targetPaintingAdvs.before > 0;
     const usingBattleVideoWithoutPainting =
       !usingPaintingReseeding &&
       battleVideoInfoProp.battleVideoAdvAfterPainting > 0;
 
-    fieldsFromPrevStep.push(
+    const fieldsFromPrevStep: Field[] = [
+      {
+        label: "Map",
+        input: formatMapName(targetSetupProp.map),
+        indent: 1,
+      },
+      {
+        label: "Player action",
+        input: formatActionName(targetSetupProp.action),
+        indent: 1,
+      },
+      {
+        label: "Lead",
+        input: formatLeadNameFromIdx(targetSetupProp.leadIdx),
+        indent: 1,
+      },
+      {
+        label: "Lead Cycle Speed",
+        input: targetSetupProp.usingAverageLeadCycleSpeed
+          ? "Average"
+          : targetSetupProp.leadCycleSpeed,
+        indent: 1,
+      },
+      {
+        label: "Target Method",
+        input: targetSetupProp.targetMethod,
+        indent: 1,
+      },
       {
         label: "Target frame before painting (decimal)",
         input: formatLargeInteger(
@@ -228,37 +225,31 @@ export const Wild3Calib = ({
         input: formatLargeInteger(battleVideoInfoProp.targetPaintingAdvs.after),
         show: usingPaintingReseeding,
       },
+    ];
+
+    return (
+      <div>
+        <h3>Info from previous steps</h3>
+        <FormFieldTable fields={fieldsFromPrevStep} />
+      </div>
     );
-  }
+  };
 
   return (
     <Flex gap={32} vertical>
-      {targetSetupProp == null && (
-        <Wild3CalibTarget setTargetSetup={setTargetSetup} />
-      )}
+      {targetSetupProp == null ? inputForm() : infoFromPrevStep()}
 
-      {targetSetupProp != null && (
-        <div>
-          <h3>Info from previous steps</h3>
-          <FormFieldTable fields={fieldsFromPrevStep} />
-        </div>
-      )}
-
-      {targetSetup !== null && (
-        <>
-          <FormFieldTable fields={fields} />
-          <MultiTimer
-            milliseconds={milliseconds}
-            labels={labels}
-            startButtonTrackerId="start_wild3_calib_timer"
-            stopButtonTrackerId="stop_wild3_calib_timer"
-          />
-          <Wild3CalibCaughtMon
-            targetSetup={targetSetup}
-            setLatestHitAdv={setLatestHitAdv}
-          />
-        </>
-      )}
+      <FormFieldTable fields={fields} />
+      <MultiTimer
+        milliseconds={milliseconds}
+        labels={labels}
+        startButtonTrackerId="start_wild3_calib_timer"
+        stopButtonTrackerId="stop_wild3_calib_timer"
+      />
+      <Wild3CalibCaughtMon
+        targetSetup={targetSetup}
+        setLatestHitAdv={setLatestHitAdv}
+      />
     </Flex>
   );
 };

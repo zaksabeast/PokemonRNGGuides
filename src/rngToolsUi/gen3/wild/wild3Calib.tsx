@@ -39,10 +39,6 @@ export const Wild3Calib = ({
 
   const inputForm = () => <Wild3CalibTarget setTargetSetup={setTargetSetup} />;
 
-  if (targetSetup == null) {
-    return inputForm();
-  }
-
   const [consoleType, setConsoleType] = useState<Gen3Console>(
     battleVideoInfoProp?.consoleType ?? "GBA",
   );
@@ -52,6 +48,7 @@ export const Wild3Calib = ({
   const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(0);
 
   const calibrationIsActive =
+    targetSetup != null &&
     battleVideoInfoProp == null &&
     (!targetSetup.usingPaintingReseeding ||
       targetSetup.isPaintingSeedConfirmed);
@@ -67,13 +64,18 @@ export const Wild3Calib = ({
       }
     : undefined;
 
-  const targetForTimer = targetSetup.targetAdvance;
+  const targetForTimer = targetSetup?.targetAdvance ?? 0;
 
   const initialAdvFromProp =
     battleVideoInfoProp?.battleVideoAdvAfterPainting ??
-    targetSetup.existingBattleVideoAdv;
+    targetSetup?.existingBattleVideoAdv ??
+    0;
 
   const [initialAdv, setInitialAdv] = React.useState(initialAdvFromProp);
+
+  if (targetSetup == null) {
+    return inputForm();
+  }
 
   const advFromTimer = targetForTimer - initialAdv - calibrationAndOffset;
 

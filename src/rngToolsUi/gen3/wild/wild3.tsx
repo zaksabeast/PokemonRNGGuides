@@ -94,6 +94,8 @@ export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
  * 2) Step 1 (targetSetup) is completed. The target advs are provided to the component, and the fields are read-only.
  **/
 export const EmeraldPaintingReseeding_WithTargetSetup = () => {
+  const [step, setStep] = useCurrentStep();
+
   const [targetSetupLock] = useTargetSetup();
   const targetSetupHydrate = useHydrate(targetSetupLock);
 
@@ -115,8 +117,6 @@ export const EmeraldPaintingReseeding_WithTargetSetup = () => {
     before: targetSetup.targetFrameBeforePainting,
     after: targetSetup.targetAdvance,
   };
-
-  const [step, setStep] = useCurrentStep();
 
   const onBattleVideoCreatedOrSkipped = (battleVideoInfo: BattleVideoInfo) => {
     setBattleVideoInfo(

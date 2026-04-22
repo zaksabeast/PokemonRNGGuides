@@ -216,12 +216,10 @@ export const EmeraldPaintingReseeding = ({
     </>
   );
 
-  if (targetPaintingAdvs == null) {
-    return inputForm();
-  }
-
   const infoFromPrevStep = () => {
-    if (targetPaintingAdvsProp == null) return null;
+    if (targetPaintingAdvsProp == null) {
+      return null;
+    }
 
     const isUsingPainting = targetPaintingAdvsProp.before !== 0;
     return (
@@ -253,6 +251,10 @@ export const EmeraldPaintingReseeding = ({
   };
 
   const content = () => {
+    if (targetPaintingAdvs == null) {
+      return null;
+    }
+
     // case 1: no painting
     if (targetPaintingAdvs.before === 0) {
       // case 1a: not enough time for battle video
@@ -381,6 +383,8 @@ export const EmeraldPaintingReseeding = ({
   return (
     <Flex vertical gap={20}>
       {targetPaintingAdvsProp == null ? inputForm() : infoFromPrevStep()}
+
+      <FormFieldTable fields={[consoleField]} />
 
       {content()}
     </Flex>

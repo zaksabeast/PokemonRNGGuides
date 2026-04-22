@@ -28,7 +28,6 @@ import {
   gen3ConsoleOptions,
   gen3Consoles,
 } from "~/types/console";
-import { BattleVideoInfo } from "../paintingReseeding/paintingReseeding";
 import { Wild3Action } from "~/rngTools";
 import { isFishingAction } from "../wild/utils";
 

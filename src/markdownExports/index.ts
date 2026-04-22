@@ -53,7 +53,6 @@ import { TranslationHelperSelectGuide } from "~/rngToolsUi/translationHelper/sel
 import { TranslationHelperEditGuide } from "~/rngToolsUi/translationHelper/editGuide";
 import { ToolTranslationButton } from "~/rngToolsUi/translationHelper/toolTranslations";
 import { TranslationHelperSelectLanguage } from "~/rngToolsUi/translationHelper/selectLanguage";
-import { Wild3Calib } from "~/rngToolsUi/gen3/wild/wild3Calib";
 
 const nonTools = {
   br: MarkdownBreak,

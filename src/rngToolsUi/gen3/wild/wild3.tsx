@@ -116,28 +116,6 @@ export const EmeraldPaintingReseeding_WithTargetSetup = () => {
     after: targetSetup.targetAdvance,
   };
 
-  const infoPrevStep = (() => {
-    const isUsingPainting = targetPaintingAdvs.before !== 0;
-    return <Flex vertical>
-      <h3>Info from the previous step</h3>
-      <FormFieldTable fields={isUsingPainting ? [
-        {
-          label: "Target frame before painting",
-          input: formatLargeInteger(targetPaintingAdvs.before),
-        },
-        {
-          label: "Target advance after painting",
-          input: formatLargeInteger(targetPaintingAdvs.after),
-        },
-      ] : [
-        {
-          label: "Target advance",
-          input: formatLargeInteger(targetPaintingAdvs.after),
-        },
-      ]} />
-    </Flex>;
-  })();
-
   const [step, setStep] = useCurrentStep();
 
   const onBattleVideoCreatedOrSkipped = (battleVideoInfo: BattleVideoInfo) => {
@@ -148,7 +126,6 @@ export const EmeraldPaintingReseeding_WithTargetSetup = () => {
   };
 
   return (<Flex vertical gap={40}>
-    {infoPrevStep}
     <EmeraldPaintingReseeding
       key={JSON.stringify(targetPaintingAdvs)}
       targetPaintingAdvs={targetPaintingAdvs}

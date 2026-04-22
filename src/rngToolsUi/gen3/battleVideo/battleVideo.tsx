@@ -571,14 +571,6 @@ export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
     setTimerLabels(timerLabels);
     setBreakdown(breakdown);
     setBattleVideoInfo(battleVideoInfo);
-
-    console.log({
-      submitError,
-      milliseconds,
-      timerLabels,
-      breakdown,
-      battleVideoInfo,
-    }, opts);
   };
 
   const displayedProps = displayAdvancedBreakdown

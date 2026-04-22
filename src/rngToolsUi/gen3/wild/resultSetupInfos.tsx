@@ -7,7 +7,11 @@ import { match, P } from "ts-pattern";
 
 import { Tooltip } from "antd";
 
-import { formatLeadName, formatMassOutbreakStateName, gen3Leads } from "./utils";
+import {
+  formatLeadName,
+  formatMassOutbreakStateName,
+  gen3Leads,
+} from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { PidPathResult, ResultSetupInfo } from "./wild3FindTarget";
@@ -176,15 +180,15 @@ const getResultSetupInfoColumns = ({
           }
           const [least_likely, most_likely] =
             cycle_data_by_lead.common_lower_lead.method_probability <
-              cycle_data_by_lead.common_upper_lead.method_probability
+            cycle_data_by_lead.common_upper_lead.method_probability
               ? [
-                cycle_data_by_lead.common_lower_lead,
-                cycle_data_by_lead.common_upper_lead,
-              ]
+                  cycle_data_by_lead.common_lower_lead,
+                  cycle_data_by_lead.common_upper_lead,
+                ]
               : [
-                cycle_data_by_lead.common_upper_lead,
-                cycle_data_by_lead.common_lower_lead,
-              ];
+                  cycle_data_by_lead.common_upper_lead,
+                  cycle_data_by_lead.common_lower_lead,
+                ];
 
           const leastFormat = formatProbability(
             least_likely.method_probability,
@@ -198,7 +202,7 @@ const getResultSetupInfoColumns = ({
           if (
             least_likely.method_probability === 0 ||
             most_likely.method_probability - least_likely.method_probability >
-            0.1
+              0.1
           ) {
             return `${leastFormat} - ${mostFormat}`;
           }
@@ -246,9 +250,9 @@ const getResultSetupInfoColumns = ({
           }
           if (
             cycle_data_by_lead.ideal_lead.method_probability ===
-            cycle_data_by_lead.slowest_lead.method_probability &&
+              cycle_data_by_lead.slowest_lead.method_probability &&
             cycle_data_by_lead.ideal_lead.method_probability ===
-            cycle_data_by_lead.fastest_lead.method_probability
+              cycle_data_by_lead.fastest_lead.method_probability
           ) {
             return "Any";
           }
@@ -329,7 +333,7 @@ const getResultSetupInfoColumns = ({
               }
               const least_likely_common =
                 cycle_data_by_lead.common_lower_lead.method_probability <
-                  cycle_data_by_lead.common_upper_lead.method_probability
+                cycle_data_by_lead.common_upper_lead.method_probability
                   ? cycle_data_by_lead.common_lower_lead
                   : cycle_data_by_lead.common_upper_lead;
               return getMethodLikelihoodColumValue(
@@ -409,7 +413,9 @@ const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
     targetAdvance: setupInfo.advs.adv_after_painting,
     targetMethod: setupInfo.method,
 
-    leadIdx: gen3Leads.findIndex(lead => JSON.stringify(lead) === JSON.stringify(setupInfo.lead)),
+    leadIdx: gen3Leads.findIndex(
+      (lead) => JSON.stringify(lead) === JSON.stringify(setupInfo.lead),
+    ),
     usingPaintingReseeding: setupInfo.advs.frame_before_painting !== 0,
 
     // unknown at this point
@@ -461,9 +467,12 @@ export const Wild3ResultSetupInfos = ({
     return null;
   }
 
-  const onClickResultRow = setTargetSetup == null ? undefined : (setupInfo: ResultSetupInfo) => {
-    setTargetSetup(setupInfoToTargetSetup(setupInfo));
-  };
+  const onClickResultRow =
+    setTargetSetup == null
+      ? undefined
+      : (setupInfo: ResultSetupInfo) => {
+          setTargetSetup(setupInfoToTargetSetup(setupInfo));
+        };
 
   return (
     <>
@@ -473,7 +482,7 @@ export const Wild3ResultSetupInfos = ({
         dataSource={selectedPidPathResult.resultSetupInfos}
         rowSelection={{
           type: "radio",
-          onSelect: onClickResultRow
+          onSelect: onClickResultRow,
         }}
       />
       {distributionFixedData != null && (

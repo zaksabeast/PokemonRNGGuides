@@ -85,12 +85,12 @@ export type FormState = z.infer<typeof Validator>;
 
 export type PidPathResult = FlattenIvs<
   Wild3SearcherResultMon &
-  Wild3PaintingAdvsAndDur & {
-    uid: number;
-    pidCycleCount: number;
-    earliestAdvance: number;
-    resultSetupInfos: ResultSetupInfo[];
-  }
+    Wild3PaintingAdvsAndDur & {
+      uid: number;
+      pidCycleCount: number;
+      earliestAdvance: number;
+      resultSetupInfos: ResultSetupInfo[];
+    }
 >;
 
 export type ResultSetupInfo = Wild3SearcherResultMon &
@@ -214,9 +214,7 @@ type Props = {
   setTargetSetup: (targetSetup: TargetSetup) => void;
 };
 
-export const Wild3SearcherFindTarget = ({
-  setTargetSetup,
-}: Props) => {
+export const Wild3SearcherFindTarget = ({ setTargetSetup }: Props) => {
   const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
     [],
   );

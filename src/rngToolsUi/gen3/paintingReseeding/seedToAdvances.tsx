@@ -377,11 +377,11 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
     onSelected == null
       ? undefined
       : (row: Result) => {
-        onSelected(
-          row.advs.frame_before_painting,
-          row.advs.adv_after_painting,
-        );
-      };
+          onSelected(
+            row.advs.frame_before_painting,
+            row.advs.adv_after_painting,
+          );
+        };
 
   return (
     <RngToolForm<FormState, Result>

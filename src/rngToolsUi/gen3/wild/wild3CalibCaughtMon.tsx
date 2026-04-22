@@ -206,9 +206,9 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
     !targetSetup.usingPaintingReseeding || targetSetup.isPaintingSeedConfirmed
       ? [initial_seed, initial_seed]
       : [
-        Math.max(0, initial_seed - PAINTING_CONFIDENCE_RANGE),
-        Math.min(0xffff, initial_seed + PAINTING_CONFIDENCE_RANGE),
-      ];
+          Math.max(0, initial_seed - PAINTING_CONFIDENCE_RANGE),
+          Math.min(0xffff, initial_seed + PAINTING_CONFIDENCE_RANGE),
+        ];
 
   const wrappedResultsBySeed =
     await rngTools.search_wild3_with_initial_advances_range(
@@ -216,7 +216,6 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
       min_initial_seed,
       max_initial_seed,
     );
-  console.log(opts, min_initial_seed, max_initial_seed);
   const resultsBySeed = wrappedResultsBySeed.map(
     (wrappedRes) => wrappedRes.vec,
   );

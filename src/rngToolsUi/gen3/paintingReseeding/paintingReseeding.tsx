@@ -6,7 +6,14 @@ import {
   gen3ConsoleFpsMap,
   gen3ConsoleOptions,
 } from "~/types/console";
-import { Button, Field, Flex, FormFieldTable, NumberInput, Select } from "~/components";
+import {
+  Button,
+  Field,
+  Flex,
+  FormFieldTable,
+  NumberInput,
+  Select,
+} from "~/components";
 
 import Instructions_0_createBattleVideo from "./instructions_0_createBattleVideo.mdx";
 import Instructions_1_validateFrame from "./instructions_1_validateFrame.mdx";
@@ -76,8 +83,8 @@ export const PaintingReseedingTimers = ({
       input: `${formatLargeInteger(frame_before_painting)} (Seed: ${formatHex(frame_before_painting, 2)})`,
     },
     {
-      label: "Battle Video will be created at",
-      input: `~${formatLargeInteger(existingBattleVideoAdv)} additional advances after painting.`,
+      label: "Battle Video created at",
+      input: `~${formatLargeInteger(existingBattleVideoAdv)} advances after painting.`,
     },
     {
       label: "Calibration + Offset (advance)",
@@ -116,7 +123,9 @@ export const PaintingReseedingTimers = ({
   );
 };
 
-const createTargetSetupAtVictoryRoad = (frame_before_painting: number): TargetSetup => {
+const createTargetSetupAtVictoryRoad = (
+  frame_before_painting: number,
+): TargetSetup => {
   return {
     map: "MAP_VICTORY_ROAD_1F",
     feebasState: "NotInMap",
@@ -143,7 +152,7 @@ type Props = AllOrNone<{
   targetPaintingAdvs: {
     before: number;
     after: number;
-  },
+  };
   onBattleVideoCreatedOrSkipped: (info: BattleVideoInfo) => void;
   targetAction: Wild3Action;
 }>;
@@ -168,8 +177,6 @@ export const EmeraldPaintingReseeding = ({
   );
   const [consoleType, setConsoleType] = useState<Gen3Console>("GBA");
 
-
-
   const consoleField: Field = {
     label: "Console",
     input: (
@@ -184,147 +191,192 @@ export const EmeraldPaintingReseeding = ({
     ),
   };
 
-  const setLatestHitAdv = (hitAdv: { frame_before_painting: number, adv_after_painting: number }) => {
-    if (targetPaintingAdvs == null) {
-      return;
-    }
+  const setBattleVideoAdv =
+    onBattleVideoCreatedOrSkipped == null || targetPaintingAdvs == null
+      ? undefined
+      : (adv: number | null) => {
+          onBattleVideoCreatedOrSkipped({
+            targetPaintingAdvs,
+            battleVideoAdvAfterPainting: adv ?? 0,
+            consoleType: adv == null ? null : consoleType,
+          });
+        };
 
-    const distBefore =
-      hitAdv.frame_before_painting - targetPaintingAdvs.before;
-    if (distBefore === 0) { // Painting frame was hit
-      const battleVideoAdvAfterPainting = hitAdv.adv_after_painting -
-        APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT;
-
-      setBattleVideoAdvAfterPaintingConfirmed(battleVideoAdvAfterPainting);
-    } else {
-      setCalibrationForPainting(calibrationForPainting + distBefore);
-    }
-  };
-
-  const setBattleVideoAdv = (onBattleVideoCreatedOrSkipped == null || targetPaintingAdvs == null) ? undefined : (adv: number | null) => {
-    onBattleVideoCreatedOrSkipped({
-      targetPaintingAdvs,
-      battleVideoAdvAfterPainting: adv ?? 0,
-      consoleType: adv == null ? null : consoleType,
-    });
-  };
-
-  const inputForm = <>
-    <h2>Selecting the target painting frame and advance</h2>
-    <div>
-      Fill the fields, press Generate and select the row with the smallest
-      time to create Battle Video.
-    </div>
-    <EmeraldSeedToAdvances
-      onSelected={(before, after) => {
-        setTargetPaintingAdvs({ before, after });
-      }}
-    />
-  </>;
+  const inputForm = (
+    <>
+      <h2>Selecting the target painting frame and advance</h2>
+      <div>
+        Fill the fields, press Generate and select the row with the smallest
+        time to create Battle Video.
+      </div>
+      <EmeraldSeedToAdvances
+        onSelected={(before, after) => {
+          setTargetPaintingAdvs({ before, after });
+        }}
+      />
+    </>
+  );
 
   if (targetPaintingAdvs == null) {
     return inputForm;
   }
 
-
-  const infoFromPrevStep = targetPaintingAdvsProp != null && (() => {
-    const isUsingPainting = targetPaintingAdvsProp.before !== 0;
-    return <Flex vertical>
-      <h3>Info from the previous step</h3>
-      <FormFieldTable fields={isUsingPainting ? [
-        {
-          label: "Target frame before painting",
-          input: formatLargeInteger(targetPaintingAdvsProp.before),
-        },
-        {
-          label: "Target advance after painting",
-          input: formatLargeInteger(targetPaintingAdvsProp.after),
-        },
-      ] : [
-        {
-          label: "Target advance",
-          input: formatLargeInteger(targetPaintingAdvsProp.after),
-        },
-      ]} />
-    </Flex>;
-  })();
+  const infoFromPrevStep =
+    targetPaintingAdvsProp != null &&
+    (() => {
+      const isUsingPainting = targetPaintingAdvsProp.before !== 0;
+      return (
+        <Flex vertical>
+          <h3>Info from the previous step</h3>
+          <FormFieldTable
+            fields={
+              isUsingPainting
+                ? [
+                    {
+                      label: "Target frame before painting",
+                      input: formatLargeInteger(targetPaintingAdvsProp.before),
+                    },
+                    {
+                      label: "Target advance after painting",
+                      input: formatLargeInteger(targetPaintingAdvsProp.after),
+                    },
+                  ]
+                : [
+                    {
+                      label: "Target advance",
+                      input: formatLargeInteger(targetPaintingAdvsProp.after),
+                    },
+                  ]
+            }
+          />
+        </Flex>
+      );
+    })();
 
   const content = (() => {
     // case 1: no painting
     if (targetPaintingAdvs.before === 0) {
       // case 1a: not enough time for battle video
       if (targetPaintingAdvs.after < MIN_ADV_FOR_BATTLE_VIDEO) {
-        return (<Flex>
-          <div>No need to create Battle Video, because the number of advances is very small.</div>
-          {setBattleVideoAdv != null && <Button trackerId="wild3_battle_video_skip" onClick={() => {
-            setBattleVideoAdv(null);
-          }}>Go to next step (no Battle Video created)</Button>}
-        </Flex>);
+        return (
+          <Flex>
+            <div>
+              No need to create Battle Video, because the number of advances is
+              very small.
+            </div>
+            {setBattleVideoAdv != null && (
+              <Button
+                trackerId="wild3_battle_video_skip"
+                onClick={() => {
+                  setBattleVideoAdv(null);
+                }}
+              >
+                Go to next step (no Battle Video created)
+              </Button>
+            )}
+          </Flex>
+        );
       }
 
       // case 1b: enough time for battle video
-      return (<>
-        <h2>Create Battle Video (without Painting Reseeding)</h2>
+      return (
+        <>
+          <h2>Create Battle Video (without Painting Reseeding)</h2>
+          <BattleVideo
+            key={`${targetPaintingAdvs.after}-${consoleType}`}
+            fixedData={{
+              targetAdvance: targetPaintingAdvs.after,
+              isUpdatingExisting: false,
+              existingBattleVideoAdv: 0,
+              isAfterPainting: false,
+              action: targetAction,
+            }}
+            setBattleVideoAdv={setBattleVideoAdv}
+          />
+        </>
+      );
+    }
+
+    // case 2: painting
+    const targetSetupAtVictoryRoad = createTargetSetupAtVictoryRoad(
+      targetPaintingAdvs.before,
+    );
+
+    const setLatestHitAdv = (hitAdv: {
+      frame_before_painting: number;
+      adv_after_painting: number;
+    }) => {
+      const distBefore =
+        hitAdv.frame_before_painting - targetPaintingAdvs.before;
+      if (distBefore === 0) {
+        // Painting frame was hit
+        const battleVideoAdvAfterPainting =
+          hitAdv.adv_after_painting - APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT;
+
+        setBattleVideoAdvAfterPaintingConfirmed(battleVideoAdvAfterPainting);
+      } else {
+        setCalibrationForPainting(calibrationForPainting + distBefore);
+      }
+    };
+
+    const calibPaintingFrame = (
+      <>
+        <PaintingReseedingTimers
+          consoleType={consoleType}
+          existingBattleVideoAdv={APPROX_ADV_PAINTING_TO_BATTLE_VIDEO}
+          frame_before_painting={targetPaintingAdvs.before}
+          calibration={calibrationForPainting}
+          setCalibration={setCalibrationForPainting}
+        />
+
+        <Wild3CalibCaughtMon
+          targetSetup={targetSetupAtVictoryRoad}
+          setLatestHitAdv={setLatestHitAdv}
+        />
+
+        <Instructions_2_validateFrame />
+
+        {battleVideoAdvAfterPaintingConfirmed == null && (
+          <Flex>
+            <Button
+              trackerId="wild3_painting_force_calib"
+              onClick={() => {
+                setBattleVideoAdvAfterPaintingConfirmed(
+                  APPROX_ADV_PAINTING_TO_BATTLE_VIDEO,
+                );
+              }}
+            >
+              Skip validating that the frame before painting was hit
+            </Button>
+          </Flex>
+        )}
+      </>
+    );
+
+    const updateBattleVideo = battleVideoAdvAfterPaintingConfirmed && (
+      <>
+        <h2>Update Battle Video</h2>
         <BattleVideo
-          key={`${targetPaintingAdvs.after}-${consoleType}`}
+          key={`${targetPaintingAdvs.after}-${consoleType}-${battleVideoAdvAfterPaintingConfirmed}`}
           fixedData={{
+            consoleType,
             targetAdvance: targetPaintingAdvs.after,
-            isUpdatingExisting: false,
-            existingBattleVideoAdv: 0,
-            isAfterPainting: false,
+            isUpdatingExisting: true,
+            existingBattleVideoAdv: battleVideoAdvAfterPaintingConfirmed,
+            isAfterPainting: true,
             action: targetAction,
           }}
           setBattleVideoAdv={setBattleVideoAdv}
         />
-      </>);
-    }
+      </>
+    );
 
-    // case 2: painting
-    const targetSetupAtVictoryRoad = createTargetSetupAtVictoryRoad(targetPaintingAdvs.before);
-
-    const calibPaintingFrame = (<>
-      <PaintingReseedingTimers
-        consoleType={consoleType}
-        existingBattleVideoAdv={APPROX_ADV_PAINTING_TO_BATTLE_VIDEO}
-        frame_before_painting={targetPaintingAdvs.before}
-        calibration={calibrationForPainting}
-        setCalibration={setCalibrationForPainting}
-      />
-
-      <Wild3CalibCaughtMon
-        targetSetup={targetSetupAtVictoryRoad}
-        setLatestHitAdv={setLatestHitAdv}
-      />
-
-      <Instructions_2_validateFrame />
-
-      {battleVideoAdvAfterPaintingConfirmed == null && <Flex>
-        <Button trackerId="wild3_painting_force_calib" onClick={() => {
-          setBattleVideoAdvAfterPaintingConfirmed(APPROX_ADV_PAINTING_TO_BATTLE_VIDEO);
-        }}>Skip validating that the frame before painting was hit</Button>
-      </Flex>}
-    </>);
-
-    const updateBattleVideo = battleVideoAdvAfterPaintingConfirmed && <>
-      <h2>Update Battle Video</h2>
-      <BattleVideo
-        key={`${targetPaintingAdvs.after}-${consoleType}-${battleVideoAdvAfterPaintingConfirmed}`}
-        fixedData={{
-          consoleType,
-          targetAdvance: targetPaintingAdvs.after,
-          isUpdatingExisting: true,
-          existingBattleVideoAdv: battleVideoAdvAfterPaintingConfirmed,
-          isAfterPainting: true,
-          action: targetAction,
-        }}
-        setBattleVideoAdv={setBattleVideoAdv}
-      />
-    </>;
-
-    return <>
-      {calibPaintingFrame}
-      {updateBattleVideo}
-    </>
+    return (
+      <>
+        {calibPaintingFrame}
+        {updateBattleVideo}
+      </>
+    );
   })();
 
   return (

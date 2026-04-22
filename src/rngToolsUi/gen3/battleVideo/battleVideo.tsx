@@ -150,7 +150,11 @@ const MyFields = ({
       label: fixedData?.isAfterPainting
         ? "Target advance after painting"
         : "Target advance",
-      input: formatLargeInteger(targetAdvance) + (fixedData?.isUpdatingExisting ? ` (+${formatLargeInteger(targetAdvance - existingBattleVideoAdv)})` : ``),
+      input:
+        formatLargeInteger(targetAdvance) +
+        (fixedData?.isUpdatingExisting
+          ? ` (+${formatLargeInteger(targetAdvance - existingBattleVideoAdv)})`
+          : ``),
       show: fixedData != null,
     },
     {
@@ -298,10 +302,10 @@ const calculateWithoutBattle = (opts: FormState) => {
     breakdown: [
       opts.isUpdatingExisting
         ? {
-          name: "Watch existing Battle Video",
-          adv: initialAdv,
-          advSources: [],
-        }
+            name: "Watch existing Battle Video",
+            adv: initialAdv,
+            advSources: [],
+          }
         : { name: "Game started", adv: 0, advSources: [] },
       {
         name: "Last player input to create Battle Video",
@@ -323,9 +327,9 @@ const calculateWithoutBattle = (opts: FormState) => {
         adv: initialAdv + targetAdvance,
         advSources: opts.useRecommendedBuffer
           ? [
-            { name: "Performing action", adv: actionBufferPostVideo },
-            { name: "Safety buffer", adv: safetyBufferNoAction },
-          ]
+              { name: "Performing action", adv: actionBufferPostVideo },
+              { name: "Safety buffer", adv: safetyBufferNoAction },
+            ]
           : [{ name: "Specified buffer", adv: safetyBufferAdv }],
       },
     ],
@@ -406,10 +410,10 @@ const calculateWithBattle = (opts: FormState) => {
     breakdown: [
       opts.isUpdatingExisting
         ? {
-          name: "Watch existing Battle Video",
-          adv: initialAdv,
-          advSources: [],
-        }
+            name: "Watch existing Battle Video",
+            adv: initialAdv,
+            advSources: [],
+          }
         : { name: "Game started", adv: 0, advSources: [] },
       {
         name: "Player input to trigger Sweet Scent",
@@ -486,9 +490,9 @@ const calculateWithBattle = (opts: FormState) => {
         adv: initialAdv + targetAdvance,
         advSources: opts.useRecommendedBuffer
           ? [
-            { name: "Time for action", adv: actionBufferPostVideo },
-            { name: "Safety buffer", adv: POST_BATTLE_BUFFER },
-          ]
+              { name: "Time for action", adv: actionBufferPostVideo },
+              { name: "Safety buffer", adv: POST_BATTLE_BUFFER },
+            ]
           : [{ name: "Specified buffer", adv: safetyBufferAdv }],
       },
     ],
@@ -652,21 +656,35 @@ export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
         />
       )}
 
-      {setBattleVideoAdv != null && <Flex gap={10}>
-        <br />
-        <div>Step outcome: </div>
-        {(battleVideoInfo || initialValues.isUpdatingExisting) && <Button trackerId="wild3_battle_video_created" onClick={() => {
-          if (battleVideoInfo != null) {
-            setBattleVideoAdv(battleVideoInfo.battleVideoAdv);
-          } else {
-            setBattleVideoAdv(initialValues.existingBattleVideoAdv);
-          }
-        }}>Battle Video was created</Button>}
+      {setBattleVideoAdv != null && (
+        <Flex gap={10}>
+          <br />
+          <div>Step outcome: </div>
+          {(battleVideoInfo || initialValues.isUpdatingExisting) && (
+            <Button
+              trackerId="wild3_battle_video_created"
+              onClick={() => {
+                if (battleVideoInfo != null) {
+                  setBattleVideoAdv(battleVideoInfo.battleVideoAdv);
+                } else {
+                  setBattleVideoAdv(initialValues.existingBattleVideoAdv);
+                }
+              }}
+            >
+              Battle Video was created
+            </Button>
+          )}
 
-        <Button trackerId="wild3_battle_video_skip" onClick={() => {
-          setBattleVideoAdv(null);
-        }}>Skip (no Battle Video created)</Button>
-      </Flex>}
+          <Button
+            trackerId="wild3_battle_video_skip"
+            onClick={() => {
+              setBattleVideoAdv(null);
+            }}
+          >
+            Skip (no Battle Video created)
+          </Button>
+        </Flex>
+      )}
     </>
   );
 };

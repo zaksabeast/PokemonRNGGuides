@@ -20,7 +20,7 @@ import {
   Wild3MethodDistribution,
 } from "./wild3MethodDistribution";
 import { GBA_FPS } from "~/utils/consts";
-import { TargetSetup } from "./wild3CalibTarget";
+import { TargetSetup } from "./wild3CalibTargetSetupInput";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
 
 const getMethodLikelihoodColumValue = (

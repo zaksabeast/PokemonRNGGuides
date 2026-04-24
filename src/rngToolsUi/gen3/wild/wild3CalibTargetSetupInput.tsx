@@ -5,6 +5,10 @@ import {
   Wild3Action,
   Wild3GeneratorResult,
   Wild3EncounterGameData,
+  Wild3FeebasState,
+  Wild3RoamerState,
+  Wild3MassOutbreakState,
+  Gen3Lead,
 } from "~/rngTools";
 import {
   Field,
@@ -74,10 +78,7 @@ export const TargetSetupSchema = z.object({
     .max(gen3Leads.length - 1),
   usingRngManipulatedLead: z.boolean(),
   usingPaintingReseeding: z.boolean(),
-  isPaintingSeedConfirmed: z.boolean(),
   targetFrameBeforePainting: z.number().min(1).max(0xffff),
-  usingBattleVideoWithoutPainting: z.boolean(), // with painting, battle video is always used.
-  existingBattleVideoAdv: z.number().min(1).max(0xffffffff),
   targetMethod: z.enum(supportedGen3Methods),
   targetAdvance: z.number().int().min(0).max(0xffffffff),
 
@@ -86,12 +87,25 @@ export const TargetSetupSchema = z.object({
 });
 
 type Props = {
-  setTargetSetup: (targetSetup: TargetSetup | null) => void;
+  setTargetSetup: (targetSetup: TargetSetup | null, targetDisplayInfo:React.ReactNode) => void;
 };
 
-export type TargetSetup = z.infer<typeof TargetSetupSchema>;
+export type TargetSetup = {
+  map: string;
+  action: Wild3Action;
+  feebasState: Wild3FeebasState;
+  roamerState: Wild3RoamerState;
+  massOutbreakState: Wild3MassOutbreakState;
+  lead: Gen3Lead;
+  targetPaintingAdvs: { before: number; after: number };
+  targetMethod: Gen3Method;
+  usingAverageLeadCycleSpeed: boolean;
+  leadCycleSpeed: number;
+};
 
-const getInitialValues = (): TargetSetup => {
+export type FormState = z.infer<typeof TargetSetupSchema>;
+
+const getInitialValues = (): FormState => {
   return {
     map: "MAP_ROUTE101",
     action: "SweetScentLand",
@@ -101,14 +115,33 @@ const getInitialValues = (): TargetSetup => {
     leadIdx: 0,
     usingRngManipulatedLead: false,
     usingPaintingReseeding: false,
-    isPaintingSeedConfirmed: false,
-    usingBattleVideoWithoutPainting: false,
-    existingBattleVideoAdv: 1,
     targetFrameBeforePainting: 1,
     targetAdvance: 1000,
     targetMethod: "Wild1",
     usingAverageLeadCycleSpeed: true,
     leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+  };
+};
+
+const convertFormStateValuesToTargetSetup = (
+  values: FormState,
+): TargetSetup => {
+  return {
+    map: values.map,
+    action: values.action,
+    feebasState: values.feebasState,
+    roamerState: values.roamerState,
+    massOutbreakState: values.massOutbreakState,
+    lead: gen3Leads[values.leadIdx],
+    targetPaintingAdvs: {
+      before: values.usingPaintingReseeding
+        ? values.targetFrameBeforePainting
+        : 0,
+      after: values.targetAdvance,
+    },
+    targetMethod: values.targetMethod,
+    usingAverageLeadCycleSpeed: values.usingAverageLeadCycleSpeed,
+    leadCycleSpeed: values.leadCycleSpeed,
   };
 };
 
@@ -137,7 +170,7 @@ const getFields = ({
     {
       label: "Map",
       input: (
-        <FormikSelect<TargetSetup, "map">
+        <FormikSelect<FormState, "map">
           name="map"
           options={toOptions(emeraldWildGameData.maps, formatMapName)}
         />
@@ -153,7 +186,7 @@ const getFields = ({
     {
       label: "Player action",
       input: (
-        <FormikSelect<TargetSetup, "action">
+        <FormikSelect<FormState, "action">
           name="action"
           options={toOptions(actions, formatActionName)}
         />
@@ -162,7 +195,7 @@ const getFields = ({
     {
       label: "Lead",
       input: (
-        <FormikSelect<TargetSetup, "leadIdx">
+        <FormikSelect<FormState, "leadIdx">
           name="leadIdx"
           // Limitation: value must be a primitive, so we use the index instead of Gen3Lead.
           options={leadsLabels}
@@ -171,7 +204,7 @@ const getFields = ({
     },
     {
       label: "Using lead with average cycle speed?",
-      input: <FormikSwitch<TargetSetup> name="usingAverageLeadCycleSpeed" />,
+      input: <FormikSwitch<FormState> name="usingAverageLeadCycleSpeed" />,
       show: gen3Leads[leadIdx] !== "Egg",
     },
     {
@@ -192,13 +225,13 @@ const getFields = ({
         </>
       ),
       key: "usingPaintingReseeding",
-      input: <FormikSwitch<TargetSetup> name="usingPaintingReseeding" />,
+      input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
     {
       label: "Target frame before painting (decimal)",
       input: (
         <Flex vertical>
-          <FormikNumberInput<TargetSetup>
+          <FormikNumberInput<FormState>
             name="targetFrameBeforePainting"
             numType="decimal"
           />
@@ -210,14 +243,14 @@ const getFields = ({
     },
     {
       label: "Target frame before painting was confirmed to be hit?",
-      input: <FormikSwitch<TargetSetup> name="isPaintingSeedConfirmed" />,
+      input: <FormikSwitch<FormState> name="isPaintingSeedConfirmed" />,
       indent: 1,
       show: usingPaintingReseeding,
     },
     {
-      label: "Advances between painting and Battle Video",
+      label: "Advances between painting and existing Battle Video",
       input: (
-        <FormikNumberInput<TargetSetup>
+        <FormikNumberInput<FormState>
           name="existingBattleVideoAdv"
           numType="decimal"
         />
@@ -228,15 +261,13 @@ const getFields = ({
 
     {
       label: "Using Battle Video?",
-      input: (
-        <FormikSwitch<TargetSetup> name="usingBattleVideoWithoutPainting" />
-      ),
+      input: <FormikSwitch<FormState> name="usingBattleVideoWithoutPainting" />,
       show: !usingPaintingReseeding,
     },
     {
       label: "Battle Video advance",
       input: (
-        <FormikNumberInput<TargetSetup>
+        <FormikNumberInput<FormState>
           name="existingBattleVideoAdv"
           numType="decimal"
         />
@@ -247,7 +278,7 @@ const getFields = ({
     {
       label: "Target Method",
       input: (
-        <FormikSelect<TargetSetup, "targetMethod">
+        <FormikSelect<FormState, "targetMethod">
           name="targetMethod"
           options={toOptions(supportedGen3Methods)}
         />
@@ -261,16 +292,13 @@ const getFields = ({
           : "Advances after painting for calibration"
         : "Target advances",
       input: (
-        <FormikNumberInput<TargetSetup>
-          name="targetAdvance"
-          numType="decimal"
-        />
+        <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
       ),
     },
     {
       label: "Feebas state",
       input: (
-        <FormikSelect<TargetSetup, "feebasState">
+        <FormikSelect<FormState, "feebasState">
           name="feebasState"
           options={toOptions(feebas_states, formatFeebasStateName)}
         />
@@ -280,7 +308,7 @@ const getFields = ({
     {
       label: "Roamer state",
       input: (
-        <FormikSelect<TargetSetup, "roamerState">
+        <FormikSelect<FormState, "roamerState">
           name="roamerState"
           options={toOptions(roamer_states, formatRoamerStateName)}
         />
@@ -290,7 +318,7 @@ const getFields = ({
     {
       label: "Mass outbreak state",
       input: (
-        <FormikSelect<TargetSetup, "massOutbreakState">
+        <FormikSelect<FormState, "massOutbreakState">
           name="massOutbreakState"
           options={toOptions(mass_outbreak_states, formatMassOutbreakStateName)}
         />
@@ -301,42 +329,39 @@ const getFields = ({
   return fields;
 };
 
-export const Wild3CalibTargetFields = () => {
-  const { setFieldValue } = useFormContext<TargetSetup>();
-  const map = useWatch<TargetSetup, "map">({ name: "map" });
-  const action = useWatch<TargetSetup, "action">({ name: "action" });
-  const feebasState = useWatch<TargetSetup, "feebasState">({
+export const Wild3CalibTargetSetupInputFields = () => {
+  const { setFieldValue } = useFormContext<FormState>();
+  const map = useWatch<FormState, "map">({ name: "map" });
+  const action = useWatch<FormState, "action">({ name: "action" });
+  const feebasState = useWatch<FormState, "feebasState">({
     name: "feebasState",
   });
-  const massOutbreakState = useWatch<TargetSetup, "massOutbreakState">({
+  const massOutbreakState = useWatch<FormState, "massOutbreakState">({
     name: "massOutbreakState",
   });
-  const roamerState = useWatch<TargetSetup, "roamerState">({
+  const roamerState = useWatch<FormState, "roamerState">({
     name: "roamerState",
   });
-  const usingPaintingReseeding = useWatch<
-    TargetSetup,
-    "usingPaintingReseeding"
-  >({
+  const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
     name: "usingPaintingReseeding",
   });
-  const leadIdx = useWatch<TargetSetup, "leadIdx">({
+  const leadIdx = useWatch<FormState, "leadIdx">({
     name: "leadIdx",
   });
   const usingAverageLeadCycleSpeed = useWatch<
-    TargetSetup,
+    FormState,
     "usingAverageLeadCycleSpeed"
   >({ name: "usingAverageLeadCycleSpeed" });
   const isPaintingSeedConfirmed = useWatch<
-    TargetSetup,
+    FormState,
     "isPaintingSeedConfirmed"
   >({ name: "isPaintingSeedConfirmed" });
   const usingBattleVideoWithoutPainting = useWatch<
-    TargetSetup,
+    FormState,
     "usingBattleVideoWithoutPainting"
   >({ name: "usingBattleVideoWithoutPainting" });
   const targetFrameBeforePainting = useWatch<
-    TargetSetup,
+    FormState,
     "targetFrameBeforePainting"
   >({ name: "targetFrameBeforePainting" });
 
@@ -428,6 +453,17 @@ const getProbabilityInfo = async (
   );
 };
 
+
+const getLeadCycleSpeed = (values: TargetSetup) => {
+  if (values.lead === "Egg") {
+    return 0;
+  }
+
+  return values.usingAverageLeadCycleSpeed
+    ? AVERAGE_LEAD_CYCLE_SPEED
+    : values.leadCycleSpeed;
+};
+
 const resultToDisplayInfo = async (
   res: Wild3GeneratorResult,
   encounter: Wild3EncounterGameData,
@@ -466,32 +502,9 @@ const resultToDisplayInfo = async (
   );
 };
 
-const getLeadCycleSpeed = (values: TargetSetup) => {
-  if (gen3Leads[values.leadIdx] === "Egg") {
-    return 0;
-  }
-
-  return values.usingAverageLeadCycleSpeed
-    ? AVERAGE_LEAD_CYCLE_SPEED
-    : values.leadCycleSpeed;
-};
-
-export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
-  const [resultReactNode, setResultReactNode] =
-    React.useState<React.ReactNode>(null);
-
-  const onSubmit: RngToolSubmit<TargetSetup> = async (rawValues) => {
-    const values: TargetSetup = {
-      ...rawValues,
-    };
-    // reset hidden fields to their default values
-    if (!rawValues.usingPaintingReseeding) {
-      values.isPaintingSeedConfirmed = false;
-      values.targetFrameBeforePainting = 0;
-      if (!rawValues.usingBattleVideoWithoutPainting) {
-        values.existingBattleVideoAdv = 0;
-      }
-    }
+export const Wild3CalibTargetSetupInput = ({ setTargetSetup }: Props) => {
+  const onSubmit: RngToolSubmit<FormState> = async (rawValues) => {
+    const values = convertFormStateValuesToTargetSetup(rawValues);
 
     const lead_cycle_speed = getLeadCycleSpeed(values);
 
@@ -501,7 +514,7 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
       map_idx: 0,
       action: values.action,
       methods: [values.targetMethod],
-      lead: gen3Leads[values.leadIdx],
+      lead: values.lead,,
       filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
       gen3_filter: gen3PkmFilterFieldsToRustInput(
         getGen3PkmFilterInitialValues(),
@@ -520,20 +533,18 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
       (table) => table.map_id === values.map,
     );
     if (map_data == null) {
-      setTargetSetup(null);
-      return setResultReactNode(null);
+      return setTargetSetup(null, null);
     }
 
     const results = await rngTools.generate_gen3_wild_wasm(
-      values.targetFrameBeforePainting,
-      values.targetAdvance,
+      values.targetPaintingAdvs.before,
+      values.targetPaintingAdvs.after,
       opts,
       map_data,
     );
 
     if (results.length === 0) {
-      setTargetSetup(null);
-      return setResultReactNode(null);
+      return setTargetSetup(null, null);
     }
 
     const result = results[0];
@@ -543,57 +554,24 @@ export const Wild3CalibTarget = ({ setTargetSetup }: Props) => {
       result.encounter_idx,
     );
     if (encounter == null) {
-      setTargetSetup(null);
-      return setResultReactNode(null);
+      return setTargetSetup(null, null);
     }
 
-    if (!values.usingPaintingReseeding || values.isPaintingSeedConfirmed) {
-      const info = await resultToDisplayInfo(
-        result,
-        encounter,
-        lead_cycle_speed,
-      );
-      setResultReactNode(
-        <FormFieldTable
-          fields={[
-            {
-              label: "Target Pokémon",
-              input: info,
-            },
-          ]}
-        />,
-      );
-    } else {
-      setResultReactNode(
-        <FormFieldTable
-          fields={[
-            {
-              label: "Objective",
-              input:
-                "Confirm whether you hit or not your target frame before painting.",
-            },
-          ]}
-        />,
-      );
-    }
-    setTargetSetup(values);
+    setTargetSetup(values, await resultToDisplayInfo(result,);
   };
 
   const initialValues = getInitialValues();
 
   return (
-    <>
-      <RngToolForm<TargetSetup, never>
-        validationSchema={TargetSetupSchema}
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        submitTrackerId="wild3_calib_target"
-        rowKey="uid"
-        submitButtonLabel="Calculate Target"
-      >
-        <Wild3CalibTargetFields />
-      </RngToolForm>
-      {resultReactNode}
-    </>
+    <RngToolForm<FormState, never>
+      validationSchema={TargetSetupSchema}
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      submitTrackerId="wild3_calib_target"
+      rowKey="uid"
+      submitButtonLabel="Calculate Target"
+    >
+      <Wild3CalibTargetSetupInputFields />
+    </RngToolForm>
   );
 };

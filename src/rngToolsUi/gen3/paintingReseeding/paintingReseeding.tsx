@@ -18,7 +18,7 @@ import {
 import Instructions_0_createBattleVideo from "./instructions_0_createBattleVideo.mdx";
 import Instructions_1_validateFrame from "./instructions_1_validateFrame.mdx";
 import Instructions_2_validateFrame from "./instructions_2_validateFrame.mdx";
-import { TargetSetup } from "../wild/wild3CalibTarget";
+import { TargetSetup } from "../wild/wild3CalibTargetSetupInput";
 import { gen3Leads } from "../wild/utils";
 import { Wild3CalibCaughtMon } from "../wild/wild3CalibCaughtMon";
 import { BattleVideo, BattleVideoInfo } from "../battleVideo/battleVideo";
@@ -124,27 +124,34 @@ export const PaintingReseedingTimers = ({
 
 const createTargetSetupAtVictoryRoad = (
   frame_before_painting: number,
-): TargetSetup => {
-  return {
+): { targetSetup: TargetSetup; battleVideoInfo: BattleVideoInfo } => {
+  const targetPaintingAdvs = {
+    before: frame_before_painting,
+    after:
+      APPROX_ADV_PAINTING_TO_BATTLE_VIDEO +
+      APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT,
+  };
+
+  const targetSetup: TargetSetup = {
     map: "MAP_VICTORY_ROAD_1F",
     feebasState: "NotInMap",
     roamerState: "Inactive",
     massOutbreakState: "Inactive",
     action: "SweetScentLand",
-    leadIdx: gen3Leads.indexOf("Egg"),
-    usingRngManipulatedLead: false,
-    usingPaintingReseeding: true,
-    isPaintingSeedConfirmed: false,
-    targetFrameBeforePainting: frame_before_painting,
-    targetMethod: "Wild1", // Doesn't matter. Won't be used.
-    targetAdvance:
-      APPROX_ADV_PAINTING_TO_BATTLE_VIDEO +
-      APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT,
-    usingAverageLeadCycleSpeed: true,
-    leadCycleSpeed: 0,
-    usingBattleVideoWithoutPainting: false,
-    existingBattleVideoAdv: APPROX_ADV_PAINTING_TO_BATTLE_VIDEO,
+    lead: "Egg",
+    targetPaintingAdvs,
+    targetMethod,
+    usingAverageLeadCycleSpeed,
+    leadCycleSpeed,
   };
+
+  const battleVideoInfo: BattleVideoInfo = {
+    targetPaintingAdvs,
+    battleVideoAdvAfterPainting: APPROX_ADV_PAINTING_TO_BATTLE_VIDEO,
+    consoleType: null,
+  };
+
+  return { targetSetup, battleVideoInfo };
 };
 
 type Props = AllOrNone<{

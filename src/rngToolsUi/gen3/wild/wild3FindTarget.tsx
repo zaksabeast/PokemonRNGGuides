@@ -35,7 +35,7 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 import { GBA_FPS } from "~/utils/consts";
-import { TargetSetup } from "./wild3CalibTarget";
+import { TargetSetup } from "./wild3CalibTargetSetupInput";
 
 /*
 Possible UI improvements:

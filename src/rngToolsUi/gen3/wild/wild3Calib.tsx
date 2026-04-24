@@ -8,7 +8,10 @@ import {
   NumberInput,
 } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
-import { TargetSetup, Wild3CalibTarget } from "./wild3CalibTarget";
+import {
+  TargetSetup,
+  Wild3CalibTargetSetupInput,
+} from "./wild3CalibTargetSetupInput";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon";
 import {
   Gen3Console,
@@ -18,6 +21,7 @@ import {
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import {
   formatActionName,
+  formatLeadName,
   formatLeadNameFromIdx,
   formatMapName,
 } from "./utils";
@@ -36,11 +40,15 @@ export const Wild3Calib = ({
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     targetSetupProp ?? null,
   );
+  const [battleVideoInfo, setBattleVideoInfo] =
+    React.useState<BattleVideoInfo | null>(battleVideoInfoProp ?? null);
 
-  const inputForm = () => <Wild3CalibTarget setTargetSetup={setTargetSetup} />;
+  const inputForm = () => (
+    <Wild3CalibTargetSetupInput setTargetSetup={setTargetSetup} />
+  );
 
   const [consoleType, setConsoleType] = useState<Gen3Console>(
-    battleVideoInfoProp?.consoleType ?? "GBA",
+    battleVideoInfo?.consoleType ?? "GBA",
   );
 
   /** calibration is always for target advance after painting.
@@ -64,8 +72,9 @@ export const Wild3Calib = ({
       }
     : undefined;
 
-  const targetForTimer = targetSetup?.targetAdvance ?? 0;
+  const targetForTimer = targetSetup?.targetPaintingAdvs.after ?? 0;
 
+  //NO_PROD
   const initialAdvFromProp =
     battleVideoInfoProp?.battleVideoAdvAfterPainting ??
     targetSetup?.existingBattleVideoAdv ??
@@ -88,6 +97,7 @@ export const Wild3Calib = ({
     "Trigger Sweet Scent",
   ];
 
+  //NO_PROD
   const fields: Field[] = [
     {
       label: "Battle Video advance",
@@ -182,7 +192,7 @@ export const Wild3Calib = ({
       },
       {
         label: "Lead",
-        input: formatLeadNameFromIdx(targetSetupProp.leadIdx),
+        input: formatLeadName(targetSetupProp.lead),
         indent: 1,
       },
       {
@@ -206,8 +216,10 @@ export const Wild3Calib = ({
         show: usingPaintingReseeding,
       },
       {
-        label: "Advances between painting and Battle Video",
-        input: battleVideoInfoProp.battleVideoAdvAfterPainting,
+        label: "Advances between painting and existing Battle Video",
+        input: formatLargeInteger(
+          battleVideoInfoProp.battleVideoAdvAfterPainting,
+        ),
         indent: 1,
         show: usingPaintingReseeding,
       },

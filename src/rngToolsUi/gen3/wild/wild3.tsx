@@ -1,5 +1,5 @@
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
-import { TargetSetupSchema, TargetSetup } from "./wild3CalibTarget";
+import { TargetSetupSchema, TargetSetup } from "./wild3CalibTargetSetupInput";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
 import { EmeraldPaintingReseeding } from "../paintingReseeding/paintingReseeding";

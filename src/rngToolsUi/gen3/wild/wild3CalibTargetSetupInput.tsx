@@ -65,7 +65,7 @@ const emeraldWildGameData = getWild3EmeraldGameData();
 // Wild3 is currently bugged.
 const supportedGen3Methods = ["Wild1", "Wild2", "Wild4"] as Gen3Method[];
 
-export const TargetSetupSchema = z.object({
+const Validator = z.object({
   map: z.string(),
   feebasState: z.enum(wild3FeebasStates),
   roamerState: z.enum(wild3RoamerStates),
@@ -103,7 +103,7 @@ export type TargetSetup = {
   leadCycleSpeed: number;
 };
 
-export type FormState = z.infer<typeof TargetSetupSchema>;
+export type FormState = z.infer<typeof Validator>;
 
 const getInitialValues = (): FormState => {
   return {
@@ -564,7 +564,7 @@ export const Wild3CalibTargetSetupInput = ({ setTargetSetup }: Props) => {
 
   return (
     <RngToolForm<FormState, never>
-      validationSchema={TargetSetupSchema}
+      validationSchema={Validator}
       initialValues={initialValues}
       onSubmit={onSubmit}
       submitTrackerId="wild3_calib_target"

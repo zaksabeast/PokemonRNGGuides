@@ -122,38 +122,6 @@ export const PaintingReseedingTimers = ({
   );
 };
 
-const createTargetSetupAtVictoryRoad = (
-  frame_before_painting: number,
-): { targetSetup: TargetSetup; battleVideoInfo: BattleVideoInfo } => {
-  const targetPaintingAdvs = {
-    before: frame_before_painting,
-    after:
-      APPROX_ADV_PAINTING_TO_BATTLE_VIDEO +
-      APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT,
-  };
-
-  const targetSetup: TargetSetup = {
-    map: "MAP_VICTORY_ROAD_1F",
-    feebasState: "NotInMap",
-    roamerState: "Inactive",
-    massOutbreakState: "Inactive",
-    action: "SweetScentLand",
-    lead: "Egg",
-    targetPaintingAdvs,
-    targetMethod,
-    usingAverageLeadCycleSpeed,
-    leadCycleSpeed,
-  };
-
-  const battleVideoInfo: BattleVideoInfo = {
-    targetPaintingAdvs,
-    battleVideoAdvAfterPainting: APPROX_ADV_PAINTING_TO_BATTLE_VIDEO,
-    consoleType: null,
-  };
-
-  return { targetSetup, battleVideoInfo };
-};
-
 type Props = AllOrNone<{
   targetPaintingAdvs: {
     before: number;

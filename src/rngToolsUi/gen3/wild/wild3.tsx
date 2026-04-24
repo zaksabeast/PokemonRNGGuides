@@ -1,5 +1,5 @@
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
-import { TargetSetupSchema, TargetSetup } from "./wild3CalibTargetSetupInput";
+import { Validator, TargetSetup } from "./wild3CalibTargetSetupInput";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
 import { EmeraldPaintingReseeding } from "../paintingReseeding/paintingReseeding";
@@ -11,6 +11,14 @@ import { useCurrentStep } from "~/components/stepper/state";
 import { Wild3Calib } from "./wild3Calib";
 import { gen3Consoles } from "~/types/console";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
+import {
+  gen3LeadSchema,
+  wild3Actions,
+  wild3FeebasStates,
+  wild3MassOutbreakStates,
+  wild3RoamerStates,
+} from "./utils";
+import { gen3Methods } from "~/types";
 
 /*
 Possible user flows: 
@@ -28,7 +36,24 @@ Possible user flows:
 */
 
 const TargetSetupAtomSchema = z.object({
-  targetSetup: z.object().extend(TargetSetupSchema.shape).nullable(),
+  targetSetup: z
+    .object({
+      map: z.string(),
+      feebasState: z.enum(wild3FeebasStates),
+      roamerState: z.enum(wild3RoamerStates),
+      massOutbreakState: z.enum(wild3MassOutbreakStates),
+      action: z.enum(wild3Actions),
+      // Limitation: value in Select must be a primitive, so we use the index instead of Gen3Lead.
+      lead: gen3LeadSchema,
+      targetPaintingAdvs: z.object({
+        before: z.number().int().min(0).max(0xffffffff),
+        after: z.number().int().min(0).max(0xffffffff),
+      }),
+      targetMethod: z.enum(gen3Methods),
+      usingAverageLeadCycleSpeed: z.boolean(),
+      leadCycleSpeed: z.number().int().min(0).max(900),
+    })
+    .nullable(),
 });
 
 const targetSetupAtom = atomWithPersistence(
@@ -65,7 +90,7 @@ export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
   const [targetSetup, setTargetSetup] = useTargetSetup();
   const { hydrated } = useHydrate(targetSetup);
 
-  const [_, setBattleVideoInfo] = useBattleVideoInfo();
+  const [, setBattleVideoInfo] = useBattleVideoInfo();
 
   if (!hydrated) {
     return <Skeleton />;
@@ -113,11 +138,6 @@ export const EmeraldPaintingReseeding_WithTargetSetup = () => {
     return <EmeraldPaintingReseeding />;
   }
 
-  const targetPaintingAdvs = {
-    before: targetSetup.targetFrameBeforePainting,
-    after: targetSetup.targetAdvance,
-  };
-
   const onBattleVideoCreatedOrSkipped = (battleVideoInfo: BattleVideoInfo) => {
     setBattleVideoInfo(
       hydrationLock({
@@ -130,8 +150,8 @@ export const EmeraldPaintingReseeding_WithTargetSetup = () => {
   return (
     <Flex vertical gap={40}>
       <EmeraldPaintingReseeding
-        key={JSON.stringify(targetPaintingAdvs)}
-        targetPaintingAdvs={targetPaintingAdvs}
+        key={JSON.stringify(targetSetup.targetPaintingAdvs)}
+        targetPaintingAdvs={targetSetup.targetPaintingAdvs}
         onBattleVideoCreatedOrSkipped={onBattleVideoCreatedOrSkipped}
         targetAction={targetSetup.action}
       />
@@ -159,16 +179,13 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
   }
 
   // If painting is required, step 2 (creating battle video) can't be skipped.
-  if (battleVideoInfo == null && targetSetup.targetFrameBeforePainting !== 0) {
+  if (battleVideoInfo == null && targetSetup.targetPaintingAdvs.before !== 0) {
     return "You must complete the previous step.";
   }
 
   // If step 2 is skipped, we assume that battle video was not created.
-  const battleVideoInfoWithFallback: BattleVideoInfo = battleVideoInfo || {
-    targetPaintingAdvs: {
-      before: targetSetup.targetFrameBeforePainting,
-      after: targetSetup.targetAdvance,
-    },
+  const battleVideoInfoWithFallback: BattleVideoInfo = battleVideoInfo ?? {
+    targetPaintingAdvs: targetSetup.targetPaintingAdvs,
     battleVideoAdvAfterPainting: 0,
     consoleType: null,
   };

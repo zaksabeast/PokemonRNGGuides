@@ -40,10 +40,11 @@ import {
   Wild3EncounterGameData,
   Wild3MapSetups,
   Wild3SearcherOptions,
+  Wild3SearcherResultMon,
 } from "~/rngTools";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import type { TargetSetup } from "./wild3CalibTargetSetupInput";
-import { gen3Leads, isFishingAction, wild3Actions } from "./utils";
+import { isFishingAction, wild3Actions } from "./utils";
 import { useWatch } from "react-hook-form";
 import { FormikGenderFilter } from "~/components/genderFilter";
 import { getIvRangeFromStats, getStatRange } from "~/types/statRange";
@@ -61,6 +62,7 @@ import { FormikAbilityFilter } from "~/components/abilityFilter";
 import { useFormContext } from "~/hooks/form";
 import { match, P } from "ts-pattern";
 import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
+import { pokerng_with_jump } from "~/utils/lcrng";
 
 export const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -125,7 +127,7 @@ export const BATTLE_VIDEO_CONFIDENCE_RANGE = 3600; // We assume the player hits 
 
 let nextUid = 0;
 
-const createWild3SearcherOptions = async (
+export const createWild3SearcherOptions = async (
   values: FormState,
   targetSetup: TargetSetup,
 ) => {
@@ -205,79 +207,67 @@ const createWild3SearcherOptions = async (
   return opts;
 };
 
+export const createUiResultBase = (
+  result: Wild3SearcherResultMon,
+  targetSetup: TargetSetup,
+) => {
+  return {
+    advance: {
+      frame_before_painting: pokerng_with_jump(
+        result.seed,
+        2 ** 32 - result.advance,
+      ), // equivalent to reversing <result.advance> advances
+      adv_after_painting: result.advance,
+    },
+    targetAdvance: {
+      frame_before_painting: targetSetup.targetPaintingAdvs.before,
+      adv_after_painting: targetSetup.targetPaintingAdvs.after,
+    },
+    method: result.method,
+    uid: nextUid++,
+    ...getGen3IvRating(result.ivs),
+    statsWithRareCandy: createAllStats0(),
+    ivs: result.ivs,
+  };
+};
+
 const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
   const opts = await createWild3SearcherOptions(values, targetSetup);
   if (opts === null) {
     return [];
   }
 
-  const [min_initial_seed, max_initial_seed] =
-    !targetSetup.usingPaintingReseeding || targetSetup.isPaintingSeedConfirmed
-      ? [initial_seed, initial_seed]
-      : [
-          Math.max(0, initial_seed - PAINTING_CONFIDENCE_RANGE),
-          Math.min(0xffff, initial_seed + PAINTING_CONFIDENCE_RANGE),
-        ];
+  const wrappedResultsBySeed = await rngTools.search_wild3(opts);
 
-  const wrappedResultsBySeed =
-    await rngTools.search_wild3_with_initial_advances_range(
-      opts,
-      min_initial_seed,
-      max_initial_seed,
-    );
-  const resultsBySeed = wrappedResultsBySeed.map(
+  const resultsBySeed = wrappedResultsBySeed.flatMap(
     (wrappedRes) => wrappedRes.vec,
   );
 
   const list = resultsBySeed
-    .map((results, seedIncr) => {
-      const seed = seedIncr + min_initial_seed;
-      return results
-        .filter((result) => {
-          return result.advance <= max_advances;
-        })
-        .map((result) => {
-          const probabilityHitMethodsAtAdvance =
-            result.cycle_data_by_lead?.specified_lead?.method_probability ?? 0;
-          const scoreHitMethodsAtAdvance = clamp(
-            probabilityHitMethodsAtAdvance,
-            0.01,
-            1,
-          );
+    .filter((result) => {
+      return result.advance <= opts.max_advances;
+    })
+    .map((result) => {
+      const probabilityHitMethodsAtAdvance =
+        result.cycle_data_by_lead?.specified_lead?.method_probability ?? 0;
+      const scoreHitMethodsAtAdvance = clamp(
+        probabilityHitMethodsAtAdvance,
+        0.01,
+        1,
+      );
 
-          const distanceFromTargetAfter = Math.abs(
-            targetSetup.targetAdvance - result.advance,
-          );
-          const distanceFromTargetBefore = Math.abs(
-            targetSetup.targetFrameBeforePainting - seed,
-          );
-          const distanceFromTargetScore =
-            distanceFromTargetAfter + distanceFromTargetBefore ** 1.5;
-          // after has more chance to fluctuate than before.
-          // distance = 100 => scoreBefore = 1000
+      const distanceFromTargetAfter = Math.abs(
+        targetSetup.targetPaintingAdvs.after - result.advance,
+      );
+      const score = distanceFromTargetAfter / scoreHitMethodsAtAdvance;
 
-          const score = distanceFromTargetScore / scoreHitMethodsAtAdvance;
-
-          return {
-            advance: {
-              frame_before_painting: seed,
-              adv_after_painting: result.advance,
-            },
-            targetAdvance: {
-              frame_before_painting: targetSetup.targetFrameBeforePainting,
-              adv_after_painting: targetSetup.targetAdvance,
-            },
-            method: result.method,
-            score,
-            probabilityHitMethodsAtAdvance,
-            distanceFromTargetAfter,
-            distanceFromTargetBefore,
-            uid: nextUid++,
-            ...getGen3IvRating(result.ivs),
-            statsWithRareCandy: createAllStats0(),
-            ivs: result.ivs,
-          };
-        });
+      return {
+        ...createUiResultBase(result, targetSetup),
+        score,
+        probabilityHitMethodsAtAdvance,
+        distanceFromTargetAfter,
+        distanceFromTargetBefore: 0,
+      };
     })
     .flat();
 
@@ -509,6 +499,33 @@ export const updateResultsForRareCandy = async (
       };
     }),
   );
+};
+
+export const confidenceRatingColumn: ResultColumn<CaughtMonResult> = {
+  title: (
+    <span>
+      Confidence <br /> Rating
+    </span>
+  ),
+  key: "Confidence Rating",
+  dataIndex: "score",
+  render: (score, values) => {
+    const ratingTxt = match(score)
+      .with(P.number.between(0, 500), () => "Very High")
+      .with(P.number.between(500, 1000), () => "High")
+      .with(P.number.between(1000, 2000), () => "Medium")
+      .with(P.number.between(2000, 10000), () => "Low")
+      .otherwise(() => "Very Low");
+
+    const { method } = values;
+    const prob = formatProbability(values.probabilityHitMethodsAtAdvance);
+
+    const dist =
+      values.distanceFromTargetBefore + values.distanceFromTargetAfter;
+
+    const title = `Distance from target: ${dist} advances. Method ${method} (${prob} likelihood)`;
+    return <Tooltip title={title}>{ratingTxt}</Tooltip>;
+  },
 };
 
 export const ivInfoColumns = (

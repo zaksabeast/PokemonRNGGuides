@@ -19,12 +19,7 @@ import {
   gen3ConsoleOptions,
 } from "~/types/console";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
-import {
-  formatActionName,
-  formatLeadName,
-  formatLeadNameFromIdx,
-  formatMapName,
-} from "./utils";
+import { formatActionName, formatLeadName, formatMapName } from "./utils";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { AllOrNone } from "~/types";
 
@@ -40,8 +35,9 @@ export const Wild3Calib = ({
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     targetSetupProp ?? null,
   );
-  const [battleVideoInfo, setBattleVideoInfo] =
-    React.useState<BattleVideoInfo | null>(battleVideoInfoProp ?? null);
+  const [battleVideoInfo] = React.useState<BattleVideoInfo | null>(
+    battleVideoInfoProp ?? null,
+  );
 
   const inputForm = () => (
     <Wild3CalibTargetSetupInput setTargetSetup={setTargetSetup} />
@@ -55,30 +51,19 @@ export const Wild3Calib = ({
       calibration is not used if the painting seed is not confirmed */
   const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(0);
 
-  const calibrationIsActive =
-    targetSetup != null &&
-    battleVideoInfoProp == null &&
-    (!targetSetup.usingPaintingReseeding ||
-      targetSetup.isPaintingSeedConfirmed);
-
-  const setLatestHitAdv = calibrationIsActive
-    ? (hitAdv: {
-        frame_before_painting: number;
-        adv_after_painting: number;
-      }) => {
-        setCalibrationAndOffset(
-          calibrationAndOffset + hitAdv.adv_after_painting - targetForTimer,
-        );
-      }
-    : undefined;
+  const setLatestHitAdv = (hitAdv: {
+    frame_before_painting: number;
+    adv_after_painting: number;
+  }) => {
+    setCalibrationAndOffset(
+      calibrationAndOffset + hitAdv.adv_after_painting - targetForTimer,
+    );
+  };
 
   const targetForTimer = targetSetup?.targetPaintingAdvs.after ?? 0;
 
-  //NO_PROD
   const initialAdvFromProp =
-    battleVideoInfoProp?.battleVideoAdvAfterPainting ??
-    targetSetup?.existingBattleVideoAdv ??
-    0;
+    battleVideoInfoProp?.battleVideoAdvAfterPainting ?? 0;
 
   const [initialAdv, setInitialAdv] = React.useState(initialAdvFromProp);
 
@@ -97,31 +82,32 @@ export const Wild3Calib = ({
     "Trigger Sweet Scent",
   ];
 
-  //NO_PROD
+  const usingPaintingReseeding = targetSetup.targetPaintingAdvs.before > 0;
+
   const fields: Field[] = [
     {
       label: "Battle Video advance",
       input: formatLargeInteger(initialAdv),
-      show: !targetSetup.usingPaintingReseeding && initialAdvFromProp > 0,
+      show: !usingPaintingReseeding && initialAdvFromProp > 0,
     },
     {
       label: "Target advance",
       input:
-        formatLargeInteger(targetSetup.targetAdvance) +
+        formatLargeInteger(targetSetup.targetPaintingAdvs.after) +
         (initialAdv > 0
-          ? ` (+${formatLargeInteger(targetSetup.targetAdvance - initialAdv)} from Battle Video)`
+          ? ` (+${formatLargeInteger(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`
           : ``),
-      show: !targetSetup.usingPaintingReseeding,
+      show: !usingPaintingReseeding,
     },
     {
       label: "Target frame before painting",
-      input: formatLargeInteger(targetSetup.targetFrameBeforePainting),
-      show: targetSetup.usingPaintingReseeding,
+      input: formatLargeInteger(targetSetup.targetPaintingAdvs.before),
+      show: usingPaintingReseeding,
     },
     {
       label: "Battle Video advance",
       input: formatLargeInteger(initialAdv),
-      show: targetSetup.usingPaintingReseeding && initialAdvFromProp > 0,
+      show: usingPaintingReseeding && initialAdvFromProp > 0,
     },
     {
       // This means battleVideoInfoProp.battleVideoAdvAfterPainting hasn't been set.
@@ -132,12 +118,12 @@ export const Wild3Calib = ({
           onChange={(val) => setInitialAdv(val ?? 0)}
         />
       ),
-      show: initialAdvFromProp === 0 && targetSetup.usingPaintingReseeding,
+      show: initialAdvFromProp === 0 && usingPaintingReseeding,
     },
     {
       label: "Target advance after painting",
-      input: `${formatLargeInteger(targetSetup.targetAdvance)} (+${formatLargeInteger(targetSetup.targetAdvance - initialAdv)} from Battle Video)`,
-      show: targetSetup.usingPaintingReseeding,
+      input: `${formatLargeInteger(targetSetup.targetPaintingAdvs.after)} (+${formatLargeInteger(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`,
+      show: usingPaintingReseeding,
     },
     {
       label: "Console",

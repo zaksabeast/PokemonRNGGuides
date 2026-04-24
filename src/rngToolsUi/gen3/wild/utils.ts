@@ -8,7 +8,8 @@ import {
 } from "~/rngTools";
 import { startCase } from "lodash-es";
 import { match, P } from "ts-pattern";
-import { nature } from "~/types";
+import { gender, nature } from "~/types";
+import z from "zod";
 
 export const formatMapName = (label: string) => {
   return label
@@ -99,6 +100,19 @@ export const gen3Leads = [
   ...nature.map((nat) => ({ Synchronize: nat })),
 ] as const satisfies readonly Gen3Lead[];
 
+export const gen3LeadSchema = z
+  .enum(["Vanilla", "Egg", "MagnetPull", "Static", "HustleVitalSpiritPressure"])
+  .or(
+    z.object({
+      CuteCharm: z.enum(gender),
+    }),
+  )
+  .or(
+    z.object({
+      Synchronize: z.enum(nature),
+    }),
+  );
+
 export const formatLeadName = (lead: Gen3Lead) => {
   return match(lead)
     .with("Vanilla", () => "Ordinary lead")
@@ -115,10 +129,6 @@ export const formatLeadName = (lead: Gen3Lead) => {
     .with("Static", () => "Static")
     .with("HustleVitalSpiritPressure", () => "Hustle, Vital Spirit or Pressure")
     .exhaustive();
-};
-
-export const formatLeadNameFromIdx = (leadIdx: number) => {
-  return formatLeadName(gen3Leads[leadIdx]);
 };
 
 export const leadsLabels = gen3Leads.map((lead, i) => ({

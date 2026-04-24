@@ -7,11 +7,7 @@ import { match, P } from "ts-pattern";
 
 import { Tooltip } from "antd";
 
-import {
-  formatLeadName,
-  formatMassOutbreakStateName,
-  gen3Leads,
-} from "./utils";
+import { formatLeadName, formatMassOutbreakStateName } from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { PidPathResult, ResultSetupInfo } from "./wild3FindTarget";
@@ -408,25 +404,16 @@ const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
     feebasState: setupInfo.feebas_state,
     roamerState: setupInfo.roamer_state,
     massOutbreakState: setupInfo.mass_outbreak_state,
-
-    targetFrameBeforePainting: setupInfo.advs.frame_before_painting,
-    targetAdvance: setupInfo.advs.adv_after_painting,
+    targetPaintingAdvs: {
+      before: setupInfo.advs.frame_before_painting,
+      after: setupInfo.advs.adv_after_painting,
+    },
     targetMethod: setupInfo.method,
-
-    leadIdx: gen3Leads.findIndex(
-      (lead) => JSON.stringify(lead) === JSON.stringify(setupInfo.lead),
-    ),
-    usingPaintingReseeding: setupInfo.advs.frame_before_painting !== 0,
-
-    // unknown at this point
-    usingBattleVideoWithoutPainting: false,
-    existingBattleVideoAdv: 0,
-    usingRngManipulatedLead: false,
-    usingAverageLeadCycleSpeed: true,
-    leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+    lead: setupInfo.lead,
 
     // unused
-    isPaintingSeedConfirmed: false,
+    usingAverageLeadCycleSpeed: true,
+    leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
   };
 };
 

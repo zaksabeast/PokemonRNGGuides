@@ -87,7 +87,10 @@ const Validator = z.object({
 });
 
 type Props = {
-  setTargetSetup: (targetSetup: TargetSetup | null, targetDisplayInfo:React.ReactNode) => void;
+  setTargetSetup: (
+    targetSetup: TargetSetup | null,
+    targetDisplayInfo: React.ReactNode,
+  ) => void;
 };
 
 export type TargetSetup = {
@@ -151,8 +154,6 @@ const getFields = ({
   usingPaintingReseeding,
   leadIdx,
   usingAverageLeadCycleSpeed,
-  isPaintingSeedConfirmed,
-  usingBattleVideoWithoutPainting,
   targetFrameBeforePainting,
 }: {
   mapId: string;
@@ -160,8 +161,6 @@ const getFields = ({
   usingPaintingReseeding: boolean;
   leadIdx: number;
   usingAverageLeadCycleSpeed: boolean;
-  isPaintingSeedConfirmed: boolean;
-  usingBattleVideoWithoutPainting: boolean;
   targetFrameBeforePainting: number;
 }): Field[] => {
   const { actions, feebas_states, roamer_states, mass_outbreak_states } =
@@ -242,40 +241,6 @@ const getFields = ({
       show: usingPaintingReseeding,
     },
     {
-      label: "Target frame before painting was confirmed to be hit?",
-      input: <FormikSwitch<FormState> name="isPaintingSeedConfirmed" />,
-      indent: 1,
-      show: usingPaintingReseeding,
-    },
-    {
-      label: "Advances between painting and existing Battle Video",
-      input: (
-        <FormikNumberInput<FormState>
-          name="existingBattleVideoAdv"
-          numType="decimal"
-        />
-      ),
-      indent: 1,
-      show: usingPaintingReseeding,
-    },
-
-    {
-      label: "Using Battle Video?",
-      input: <FormikSwitch<FormState> name="usingBattleVideoWithoutPainting" />,
-      show: !usingPaintingReseeding,
-    },
-    {
-      label: "Battle Video advance",
-      input: (
-        <FormikNumberInput<FormState>
-          name="existingBattleVideoAdv"
-          numType="decimal"
-        />
-      ),
-      show: !usingPaintingReseeding && usingBattleVideoWithoutPainting,
-      indent: 1,
-    },
-    {
       label: "Target Method",
       input: (
         <FormikSelect<FormState, "targetMethod">
@@ -283,13 +248,10 @@ const getFields = ({
           options={toOptions(supportedGen3Methods)}
         />
       ),
-      show: usingPaintingReseeding ? isPaintingSeedConfirmed : true,
     },
     {
       label: usingPaintingReseeding
-        ? isPaintingSeedConfirmed
-          ? "Advances after painting to hit target"
-          : "Advances after painting for calibration"
+        ? "Target advances after painting"
         : "Target advances",
       input: (
         <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
@@ -352,14 +314,6 @@ export const Wild3CalibTargetSetupInputFields = () => {
     FormState,
     "usingAverageLeadCycleSpeed"
   >({ name: "usingAverageLeadCycleSpeed" });
-  const isPaintingSeedConfirmed = useWatch<
-    FormState,
-    "isPaintingSeedConfirmed"
-  >({ name: "isPaintingSeedConfirmed" });
-  const usingBattleVideoWithoutPainting = useWatch<
-    FormState,
-    "usingBattleVideoWithoutPainting"
-  >({ name: "usingBattleVideoWithoutPainting" });
   const targetFrameBeforePainting = useWatch<
     FormState,
     "targetFrameBeforePainting"
@@ -371,8 +325,6 @@ export const Wild3CalibTargetSetupInputFields = () => {
     usingPaintingReseeding,
     leadIdx,
     usingAverageLeadCycleSpeed,
-    isPaintingSeedConfirmed,
-    usingBattleVideoWithoutPainting,
     targetFrameBeforePainting,
   });
 
@@ -453,7 +405,6 @@ const getProbabilityInfo = async (
   );
 };
 
-
 const getLeadCycleSpeed = (values: TargetSetup) => {
   if (values.lead === "Egg") {
     return 0;
@@ -503,18 +454,18 @@ const resultToDisplayInfo = async (
 };
 
 export const Wild3CalibTargetSetupInput = ({ setTargetSetup }: Props) => {
-  const onSubmit: RngToolSubmit<FormState> = async (rawValues) => {
-    const values = convertFormStateValuesToTargetSetup(rawValues);
+  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+    const targetSetup = convertFormStateValuesToTargetSetup(values);
 
-    const lead_cycle_speed = getLeadCycleSpeed(values);
+    const lead_cycle_speed = getLeadCycleSpeed(targetSetup);
 
     const opts: Wild3GeneratorOptions = {
       tid: 0,
       sid: 0,
       map_idx: 0,
-      action: values.action,
-      methods: [values.targetMethod],
-      lead: values.lead,,
+      action: targetSetup.action,
+      methods: [targetSetup.targetMethod],
+      lead: targetSetup.lead,
       filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
       gen3_filter: gen3PkmFilterFieldsToRustInput(
         getGen3PkmFilterInitialValues(),
@@ -523,22 +474,22 @@ export const Wild3CalibTargetSetupInput = ({ setTargetSetup }: Props) => {
       consider_cycles: true,
       consider_rng_manipulated_lead_pid: true,
       generate_even_if_impossible: true,
-      roamer_state: values.roamerState,
-      mass_outbreak_state: values.massOutbreakState,
-      feebas_state: values.feebasState,
+      roamer_state: targetSetup.roamerState,
+      mass_outbreak_state: targetSetup.massOutbreakState,
+      feebas_state: targetSetup.feebasState,
       lead_cycle_speed,
     };
 
     const map_data = emeraldWildGameData.maps_data.find(
-      (table) => table.map_id === values.map,
+      (table) => table.map_id === targetSetup.map,
     );
     if (map_data == null) {
       return setTargetSetup(null, null);
     }
 
     const results = await rngTools.generate_gen3_wild_wasm(
-      values.targetPaintingAdvs.before,
-      values.targetPaintingAdvs.after,
+      targetSetup.targetPaintingAdvs.before,
+      targetSetup.targetPaintingAdvs.after,
       opts,
       map_data,
     );
@@ -550,14 +501,17 @@ export const Wild3CalibTargetSetupInput = ({ setTargetSetup }: Props) => {
     const result = results[0];
     const encounter = await rngTools.get_encounter_for_wild3_map_game_data(
       map_data,
-      values.action,
+      targetSetup.action,
       result.encounter_idx,
     );
     if (encounter == null) {
       return setTargetSetup(null, null);
     }
 
-    setTargetSetup(values, await resultToDisplayInfo(result,);
+    setTargetSetup(
+      targetSetup,
+      await resultToDisplayInfo(result, encounter, lead_cycle_speed),
+    );
   };
 
   const initialValues = getInitialValues();

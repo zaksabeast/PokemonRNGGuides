@@ -18,14 +18,12 @@ import {
 import Instructions_0_createBattleVideo from "./instructions_0_createBattleVideo.mdx";
 import Instructions_1_validateFrame from "./instructions_1_validateFrame.mdx";
 import Instructions_2_validateFrame from "./instructions_2_validateFrame.mdx";
-import { TargetSetup } from "../wild/wild3CalibTargetSetupInput";
-import { gen3Leads } from "../wild/utils";
-import { Wild3CalibCaughtMon } from "../wild/wild3CalibCaughtMon";
 import { BattleVideo, BattleVideoInfo } from "../battleVideo/battleVideo";
 import { formatHex } from "~/utils/formatHex";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { Wild3Action } from "~/rngTools";
 import { AllOrNone } from "~/types";
+import { Wild3CalibCaughtMonForPainting } from "../wild/wild3CalibCaughtMonForPainting";
 
 const FRAME_BATTLE_VIDEO_TO_SWEET_SCENT = 60 * 10; // ~10s
 const NON_VBLANK_ADV_BATTLE_VIDEO_TO_SWEET_SCENT = 210;
@@ -274,16 +272,18 @@ export const EmeraldPaintingReseeding = ({
     }
 
     // case 2: painting
-    const targetSetupAtVictoryRoad = createTargetSetupAtVictoryRoad(
-      targetPaintingAdvs.before,
-    );
-
+    const targetAdvForPaintingCalib = {
+      before: targetPaintingAdvs.before,
+      after:
+        APPROX_ADV_PAINTING_TO_BATTLE_VIDEO +
+        APPROX_ADV_BATTLE_VIDEO_TO_SWEET_SCENT,
+    };
     const setLatestHitAdv = (hitAdv: {
       frame_before_painting: number;
       adv_after_painting: number;
     }) => {
       const distBefore =
-        hitAdv.frame_before_painting - targetPaintingAdvs.before;
+        hitAdv.frame_before_painting - targetAdvForPaintingCalib.before;
       if (distBefore === 0) {
         // Painting frame was hit
         const battleVideoAdvAfterPainting =
@@ -300,13 +300,13 @@ export const EmeraldPaintingReseeding = ({
         <PaintingReseedingTimers
           consoleType={consoleType}
           existingBattleVideoAdv={APPROX_ADV_PAINTING_TO_BATTLE_VIDEO}
-          frame_before_painting={targetPaintingAdvs.before}
+          frame_before_painting={targetAdvForPaintingCalib.before}
           calibration={calibrationForPainting}
           setCalibration={setCalibrationForPainting}
         />
 
-        <Wild3CalibCaughtMon
-          targetSetup={targetSetupAtVictoryRoad}
+        <Wild3CalibCaughtMonForPainting
+          targetPaintingAdvs={targetAdvForPaintingCalib}
           setLatestHitAdv={setLatestHitAdv}
         />
 
@@ -329,7 +329,7 @@ export const EmeraldPaintingReseeding = ({
       </>
     );
 
-    const updateBattleVideo = battleVideoAdvAfterPaintingConfirmed && (
+    const updateBattleVideo = battleVideoAdvAfterPaintingConfirmed != null && (
       <>
         <h2>Update Battle Video</h2>
         <BattleVideo

@@ -520,8 +520,9 @@ export const confidenceRatingColumn: ResultColumn<CaughtMonResult> = {
     const { method } = values;
     const prob = formatProbability(values.probabilityHitMethodsAtAdvance);
 
-    const dist =
-      values.distanceFromTargetBefore + values.distanceFromTargetAfter;
+    const dist = formatLargeInteger(
+      values.distanceFromTargetBefore + values.distanceFromTargetAfter,
+    );
 
     const title = `Distance from target: ${dist} advances. Method ${method} (${prob} likelihood)`;
     return <Tooltip title={title}>{ratingTxt}</Tooltip>;
@@ -699,32 +700,7 @@ export const Wild3CalibCaughtMon = ({
         return <Tooltip title={title}>{diffTxt}</Tooltip>;
       },
     },
-    {
-      title: (
-        <span>
-          Confidence <br /> Rating
-        </span>
-      ),
-      key: "Confidence Rating",
-      dataIndex: "score",
-      render: (score, values) => {
-        const ratingTxt = match(score)
-          .with(P.number.between(0, 500), () => "Very High")
-          .with(P.number.between(500, 1000), () => "High")
-          .with(P.number.between(1000, 2000), () => "Medium")
-          .with(P.number.between(2000, 10000), () => "Low")
-          .otherwise(() => "Very Low");
-
-        const { method } = values;
-        const prob = formatProbability(values.probabilityHitMethodsAtAdvance);
-
-        const dist =
-          values.distanceFromTargetBefore + values.distanceFromTargetAfter;
-
-        const title = `Distance from target: ${dist} advances. Method ${method} (${prob} likelihood)`;
-        return <Tooltip title={title}>{ratingTxt}</Tooltip>;
-      },
-    },
+    confidenceRatingColumn,
     {
       title: "Remove",
       dataIndex: "advance",

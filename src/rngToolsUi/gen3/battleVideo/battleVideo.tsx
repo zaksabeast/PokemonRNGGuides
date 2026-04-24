@@ -659,7 +659,7 @@ export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
         <Flex gap={10}>
           <br />
           <div>Step outcome: </div>
-          {(battleVideoInfo || initialValues.isUpdatingExisting) && (
+          {(battleVideoInfo != null || initialValues.isUpdatingExisting) && (
             <Button
               trackerId="wild3_battle_video_created"
               onClick={() => {

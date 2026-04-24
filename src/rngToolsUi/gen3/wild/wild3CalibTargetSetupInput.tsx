@@ -388,8 +388,7 @@ const getProbabilityInfo = async (
     info.method_probability < 0.99 && lead_cycle_speed !== ideal_lead_spd;
 
   return (
-    <>
-      <br />
+    <Flex ml={30}>
       <div>
         {`${formatProbability(info.method_probability)} likelihood to hit
       method ${res.method} ${leadDesc}.`}
@@ -401,7 +400,7 @@ const getProbabilityInfo = async (
           likelihood)
         </div>
       )}
-    </>
+    </Flex>
   );
 };
 

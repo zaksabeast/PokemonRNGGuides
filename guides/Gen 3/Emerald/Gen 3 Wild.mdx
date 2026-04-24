@@ -10,22 +10,22 @@
 
 ## General Overview
 
-Here are some important key facts and concept to RNG manipulate Pokémon wild encounters:
-- Manipulating wild encounter only requires 1 frame-perfect input.
-- Calibrating is reliable and fast.
-- It is the only way to get Ditto in Emerald.
+Wild Pokémon are encountered by using the Sweet Scent move, fishing or using Rock Smash. Manipulating wild encounter only requires 1 frame-perfect input and calibrating is fast and reliable.
 
-- Limitation: Not all Pokémon stats and natures combinations are possible. Most notably, a Pokémon with 6 perfects IVs generated from a wild ecnounter can only have the natures NO_PROD and it can only be shiny for <NO_PROD specific TID/SID combo.
-   - Egg Pokémon don't have this limitation.
-   - The shininess restriction can be bypassed with ACE to temporarily change your TID/SID.
-- Limitation: The Pokémon generated from a specific setup and input sequence is not always the same. There are typically 3 possible outcomes (known as [methods](/gba-methods)): Wild-1, Wild-2, Wild-4. Carefully choosing your lead Pokémon can increase the likelikhood of hitting a specific method.
+There are some canveats however:
+
+- Not all Pokémon stats and natures combinations are possible. Most notably, a Pokémon with 6 perfects IVs generated from a wild encounter have only 9 possible natures (Calm, Careful, Docile, Hardy, Lax, Modest, Naive, Rash, Timid) and it can only be shiny for 16 specific PSV (TID/SID combo).
+  - The shininess restriction can be bypassed with ACE by temporarily changing your TID/SID.
+  - [RNG-manipulated Egg Pokémon](/retail-emerald-egg) don't have nature and shininess restrictions.
+- The Pokémon generated from a specific setup and input sequence is not always the same. There are typically 3 possible outcomes (known as [methods](/gba-methods)): Wild-1, Wild-2, Wild-4. Carefully choosing your [lead Pokémon](/gba-methods-lead-impact) can increase the likelikhood of hitting a specific method.
 
 ## Steps Overview
 
-- **Step 1:** Determine the best setup (map, advance, lead) to obtain the wanted target Pokémon.
+- **Step 1:** Determine the best setup (map, advance, lead) to obtain the target Pokémon.
 - **Step 2:** Optional: Create a Battle Video (possibly combined with Painting Reseeding) to speedup RNG manipulation attempts.
 - **Step 3:** Catch Pokémon and calibrate until obtaining the target Pokémon.
 
+If you already know your target advance and setup, you can skip to Step 2 directly. If you have already created a Battle Video, skip to Step 3.
 
 <Stepper titles={["Find Best Setup", "Create Battle Video", "Catch and Calibrate"]}>
 
@@ -33,9 +33,16 @@ Here are some important key facts and concept to RNG manipulate Pokémon wild en
 
 ### Find Best Setup
 
-Determine the best setup (map, advance, lead) to obtain the wanted target Pokémon.
+Determine the best setup (map, advance, lead) to obtain the target Pokémon.
 
-<Wild3SearcherFindTarget />
+1. Fill the criterias of the Target Pokémon (ex: shiny, IVs, nature).
+1. Specify the considered setups (ex: maps, leads).
+1. Press Generate to create a list of Pokémon respecting the criterias.
+1. Select a Target Pokémon, ideally one with high Likelihood and low advances.
+1. Select one of the setups for the selected Target Pokémon, ideally one with high Likelihood.
+   - The same Target Pokémon often has multiple ways to be obtained, some easier and more reliable than others.
+
+<Wild3SearcherFindTarget_WithSetTargetSetup />
 
 </Step>
 
@@ -47,14 +54,15 @@ Determine the best setup (map, advance, lead) to obtain the wanted target Pokém
 
 </Step>
 
-
 <Step step={2}>
 
 ### Catch and Calibrate
 
-<Wild3Calib />
+<Wild3Calib_WithTargetSetupAndBattleVideo />
 
 </Step>
+
+</ Stepper>
 
 ## Coming soon
 

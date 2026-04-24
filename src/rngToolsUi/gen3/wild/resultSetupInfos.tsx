@@ -7,7 +7,11 @@ import { match, P } from "ts-pattern";
 
 import { Tooltip } from "antd";
 
-import { formatLeadName, formatMassOutbreakStateName, gen3Leads } from "./utils";
+import {
+  formatLeadName,
+  formatMassOutbreakStateName,
+  gen3Leads,
+} from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { PidPathResult, ResultSetupInfo } from "./wild3FindTarget";
@@ -16,7 +20,7 @@ import {
   Wild3MethodDistribution,
 } from "./wild3MethodDistribution";
 import { GBA_FPS } from "~/utils/consts";
-import { TargetSetup } from "./wild3CalibTarget";
+import { TargetSetup } from "./wild3CalibTargetSetupInput";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
 
 const getMethodLikelihoodColumValue = (
@@ -162,10 +166,10 @@ const getResultSetupInfoColumns = ({
   if (!rngManipulatedLeadPid) {
     columns.push({
       title: (
-        <>
+        <span>
           Method <br />
           Likelihood
-        </>
+        </span>
       ),
       key: "<>Method <br />Likelihood</>",
       dataIndex: "cycle_data_by_lead",
@@ -217,11 +221,11 @@ const getResultSetupInfoColumns = ({
     columns.push({
       ...breakdownClickCol("Open Breakdown"),
       title: (
-        <>
+        <span>
           Method Likelihood
           <br />
           By Lead Speed
-        </>
+        </span>
       ),
     });
   }
@@ -394,34 +398,36 @@ const resultSetupInfoToDistributionFixedData = (
 type Props = {
   selectedPidPathResult: PidPathResult | null;
   rngManipulatedLeadPid: boolean;
-  setTargetSetup:(targetSetup:TargetSetup) => void;
+  setTargetSetup: (targetSetup: TargetSetup) => void;
 };
 
-const setupInfoToTargetSetup = (setupInfo:ResultSetupInfo) : TargetSetup => {
-    return {
-        map: setupInfo.map, //NO_PROD
-        action: setupInfo.action,
-        feebasState: setupInfo.feebas_state,
-        roamerState: setupInfo.roamer_state,
-        massOutbreakState: setupInfo.mass_outbreak_state,
+const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
+  return {
+    map: setupInfo.mapId,
+    action: setupInfo.action,
+    feebasState: setupInfo.feebas_state,
+    roamerState: setupInfo.roamer_state,
+    massOutbreakState: setupInfo.mass_outbreak_state,
 
-        targetFrameBeforePainting:  setupInfo.advs.frame_before_painting,
-        targetAdvance: setupInfo.advs.adv_after_painting,
-        targetMethod: setupInfo.method,
+    targetFrameBeforePainting: setupInfo.advs.frame_before_painting,
+    targetAdvance: setupInfo.advs.adv_after_painting,
+    targetMethod: setupInfo.method,
 
-        leadIdx: gen3Leads.findIndex(lead => JSON.stringify(lead) === JSON.stringify(setupInfo.lead)),
-        usingPaintingReseeding: setupInfo.advs.frame_before_painting !== 0,
+    leadIdx: gen3Leads.findIndex(
+      (lead) => JSON.stringify(lead) === JSON.stringify(setupInfo.lead),
+    ),
+    usingPaintingReseeding: setupInfo.advs.frame_before_painting !== 0,
 
-        // unknown at this point
-        usingBattleVideoWithoutPainting: false,
-        existingBattleVideoAdv: 0,
-        usingRngManipulatedLead: false,
-        usingAverageLeadCycleSpeed: true,
-        leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+    // unknown at this point
+    usingBattleVideoWithoutPainting: false,
+    existingBattleVideoAdv: 0,
+    usingRngManipulatedLead: false,
+    usingAverageLeadCycleSpeed: true,
+    leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
 
-        // unused
-        isPaintingSeedConfirmed: false,
-    };
+    // unused
+    isPaintingSeedConfirmed: false,
+  };
 };
 
 export const Wild3ResultSetupInfos = ({
@@ -439,7 +445,6 @@ export const Wild3ResultSetupInfos = ({
       (res) => res.advs.frame_before_painting !== 0,
     ) ?? false;
   const resultSetupInfoColumns = getResultSetupInfoColumns({
-    setTargetSetup,
     rngManipulatedLeadPid,
     showMassOutbreak,
     usesPainting,
@@ -462,9 +467,12 @@ export const Wild3ResultSetupInfos = ({
     return null;
   }
 
-  const onClickResultRow = setTargetSetup == null ? undefined : (setupInfo:ResultSetupInfo) => {
-    setTargetSetup(setupInfoToTargetSetup(setupInfo));
-  };
+  const onClickResultRow =
+    setTargetSetup == null
+      ? undefined
+      : (setupInfo: ResultSetupInfo) => {
+          setTargetSetup(setupInfoToTargetSetup(setupInfo));
+        };
 
   return (
     <>
@@ -472,7 +480,10 @@ export const Wild3ResultSetupInfos = ({
         columns={resultSetupInfoColumns}
         rowKey="uid"
         dataSource={selectedPidPathResult.resultSetupInfos}
-        onClickResultRow={onClickResultRow}
+        rowSelection={{
+          type: "radio",
+          onSelect: onClickResultRow,
+        }}
       />
       {distributionFixedData != null && (
         <Wild3MethodDistribution

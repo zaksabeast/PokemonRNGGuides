@@ -117,6 +117,10 @@ export const formatLeadName = (lead: Gen3Lead) => {
     .exhaustive();
 };
 
+export const formatLeadNameFromIdx = (leadIdx: number) => {
+  return formatLeadName(gen3Leads[leadIdx]);
+};
+
 export const leadsLabels = gen3Leads.map((lead, i) => ({
   label: formatLeadName(lead),
   value: i,

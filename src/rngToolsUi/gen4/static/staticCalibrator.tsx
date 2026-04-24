@@ -55,6 +55,7 @@ type Result = Gen4StaticPokemon & {
   secondOffset: number;
   delayOffset: number;
   seed: number;
+  delay: number;
 };
 
 const Validator = z
@@ -142,7 +143,15 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
         .with({ isCorrectSeed: false }, () => (
           <CalibrateTimerButton
             type="gen4"
-            calibration={{ hit_delay: res.seedDelay }}
+            calibration={{
+              hit_delay: res.delay,
+              ...(res.secondOffset !== 0
+                ? {
+                    second_offset: res.secondOffset,
+                  }
+                : {}),
+            }}
+            lastStepOnClick={2}
             label="Calibrate Timer"
             timer={static4TimerAtom}
             trackerId="calibrate_gen4_static_calibrator"
@@ -264,6 +273,7 @@ const mapResult = (
     key: uniqueId(),
     seed: seedTime.seed,
     seedDelay: targetSeedTime.delay,
+    delay: seedTime.delay,
     secondOffset,
     delayOffset,
     advanceOffset,

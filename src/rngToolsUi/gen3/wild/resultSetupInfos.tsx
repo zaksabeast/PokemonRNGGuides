@@ -171,7 +171,7 @@ const getResultSetupInfoColumns = ({
       dataIndex: "cycle_data_by_lead",
       render: (cycle_data_by_lead, values) => {
         const text = (() => {
-          if (cycle_data_by_lead == undefined) {
+          if (cycle_data_by_lead === undefined) {
             return "";
           }
           const [least_likely, most_likely] =
@@ -238,7 +238,7 @@ const getResultSetupInfoColumns = ({
         title: "Ideal Lead Speed",
         dataIndex: "cycle_data_by_lead",
         render: (cycle_data_by_lead, values) => {
-          if (cycle_data_by_lead == undefined) {
+          if (cycle_data_by_lead === undefined) {
             return "";
           }
           if (values.lead === "Egg") {
@@ -284,7 +284,7 @@ const getResultSetupInfoColumns = ({
             title: "Ideal",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead == undefined) {
+              if (cycle_data_by_lead === undefined) {
                 return "";
               }
               return getMethodLikelihoodColumValue(
@@ -304,7 +304,7 @@ const getResultSetupInfoColumns = ({
             key: "methodLikelihoodFastest",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead == undefined) {
+              if (cycle_data_by_lead === undefined) {
                 return "";
               }
               return getMethodLikelihoodColumValue(
@@ -324,7 +324,7 @@ const getResultSetupInfoColumns = ({
             key: "methodLikelihoodCommon",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead == undefined) {
+              if (cycle_data_by_lead === undefined) {
                 return "";
               }
               const least_likely_common =
@@ -349,7 +349,7 @@ const getResultSetupInfoColumns = ({
             key: "methodLikelihoodSlowest",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
-              if (cycle_data_by_lead == undefined) {
+              if (cycle_data_by_lead === undefined) {
                 return "";
               }
               return getMethodLikelihoodColumValue(

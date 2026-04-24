@@ -6,7 +6,7 @@ use crate::{
 use itertools::iproduct;
 use serde::{Deserialize, Serialize};
 use std::ops::RangeInclusive;
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

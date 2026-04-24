@@ -12,7 +12,7 @@ import { useCurrentStep } from "./stepper/state";
 type InnerCalibrateButtonProps<T> = {
   trackerId: string;
   hitValue: T;
-  previousStepOnClick?: boolean;
+  lastStepOnClick?: number;
   label?: string;
   calibrate: (hitValue: T) => Promise<unknown>;
   onClick?: () => void;
@@ -21,7 +21,7 @@ type InnerCalibrateButtonProps<T> = {
 const InnerCalibrateButton = <T,>({
   trackerId,
   hitValue,
-  previousStepOnClick,
+  lastStepOnClick: previousStepOnClick,
   label = "Calibrate",
   calibrate,
   onClick: _onClick,
@@ -31,8 +31,8 @@ const InnerCalibrateButton = <T,>({
 
   const onClick = async () => {
     await calibrate(hitValue);
-    if (previousStepOnClick) {
-      setCurrentStep((step) => step - 1);
+    if (previousStepOnClick != null) {
+      setCurrentStep((step) => step - previousStepOnClick);
     }
     messageApi.success("Calibrated timer");
     _onClick?.();
@@ -53,7 +53,7 @@ type CalibrateGen3ButtonProps = {
   hitAdvance: number;
   timer: Gen3TimerAtom;
   trackerId: string;
-  previousStepOnClick?: boolean;
+  lastStepOnClick?: number;
   label?: string;
   onClick?: () => void;
 };
@@ -62,7 +62,7 @@ const CalibrateGen3Button = ({
   hitAdvance,
   timer,
   trackerId,
-  previousStepOnClick,
+  lastStepOnClick,
   label,
   onClick,
 }: CalibrateGen3ButtonProps) => {
@@ -73,7 +73,7 @@ const CalibrateGen3Button = ({
       trackerId={trackerId}
       hitValue={hitAdvance}
       calibrate={calibrate}
-      previousStepOnClick={previousStepOnClick}
+      lastStepOnClick={lastStepOnClick}
       onClick={onClick}
       label={label}
     />
@@ -85,7 +85,7 @@ type CalibrateGen4ButtonProps = {
   calibration: Gen4CalibrateSettings;
   timer: Gen4TimerAtom;
   trackerId: string;
-  previousStepOnClick?: boolean;
+  lastStepOnClick?: number;
   label?: string;
   onClick?: () => void;
 };
@@ -94,7 +94,7 @@ const CalibrateGen4Button = ({
   calibration,
   timer,
   trackerId,
-  previousStepOnClick,
+  lastStepOnClick,
   label,
   onClick,
 }: CalibrateGen4ButtonProps) => {
@@ -105,7 +105,7 @@ const CalibrateGen4Button = ({
       trackerId={trackerId}
       hitValue={calibration}
       calibrate={calibrate}
-      previousStepOnClick={previousStepOnClick}
+      lastStepOnClick={lastStepOnClick}
       onClick={onClick}
       label={label}
     />

@@ -4,7 +4,7 @@ use crate::rng::Rng;
 use crate::rng::tinymt::TinyMT;
 use chrono::{Days, NaiveDate};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 const MIRAGE_SPOT_NAMES: [&str; 34] = [

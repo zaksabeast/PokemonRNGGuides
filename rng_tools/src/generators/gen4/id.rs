@@ -4,7 +4,7 @@ use crate::rng::Rng;
 use crate::rng::mt::MT;
 use crate::{IdFilter, RngDateTime, gen3_tsv};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

@@ -84,14 +84,14 @@ export const useGen4Timer = (timerAtom: Gen4TimerAtom) => {
 
   const initTimer = async (
     settings: Partial<
-      Gen4TimerSettings & { is3ds: boolean; hit_delay?: number | null }
+      Gen4TimerSettings & { is3ds: boolean; delay_hit?: number | null }
     >,
   ) => {
     let fullSettings = getTimerSettings(settings);
-    if (settings.hit_delay != null) {
+    if (settings.delay_hit != null) {
       fullSettings = await calibrateTimer({
         timer: fullSettings,
-        calibration: { hit_delay: settings.hit_delay },
+        calibration: { hit_delay: settings.delay_hit },
       });
     }
     const updatedMs = await rngTools.create_gen4_timer(fullSettings);

@@ -50,8 +50,10 @@ const applyMonospace = <Record extends tst.O.Object>(
   column: ResultColumn<Record>,
 ) => {
   if (column.type === "group") {
-    column.columns = column.columns.map(applyMonospaceSingleColumn);
-    return column;
+    return {
+      ...column,
+      columns: column.columns.map(applyMonospaceSingleColumn),
+    };
   }
   return applyMonospaceSingleColumn(column);
 };

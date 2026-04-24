@@ -1,7 +1,7 @@
 use crate::rng::lcrng::Pokerng;
 use crate::rng::{Rng, StateIterator};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 // Pokérus generator and searcher for Ruby & Sapphire with dead battery

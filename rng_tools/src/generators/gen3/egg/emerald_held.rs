@@ -4,7 +4,7 @@ use crate::rng::{Rng, StateIterator};
 use crate::{Gender, Species, gen3_shiny};
 use num_enum::FromPrimitive;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 fn apply_roamer(calibration: usize, has_roamer: bool) -> usize {

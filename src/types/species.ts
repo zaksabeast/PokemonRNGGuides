@@ -1142,42 +1142,31 @@ export const formatSpeciesLabel = (species: Species) => {
   return labelOverrides[species] ?? species;
 };
 
+const createLazyOptions = (end: number) => {
+  return memoize(() => {
+    const speciesByDex = toOptions(species.slice(1, end), formatSpeciesLabel);
+    const speciesOptionsByName = sortBy(speciesByDex, (option) => option.label);
+
+    return {
+      byDex: speciesByDex,
+      byName: speciesOptionsByName,
+      byNameOptional: [
+        { label: "None", value: "None" } as const,
+        ...speciesOptionsByName,
+      ],
+    };
+  });
+};
+
 // Form variants are packed contiguously,
 // so these include species + forms
 const gen3End = 393;
 const gen4End = 529;
+const gen5End = 649;
 
-export const getGen3SpeciesOptions = memoize(() => {
-  const gen3SpeciesByDex = toOptions(
-    species.slice(1, gen3End),
-    formatSpeciesLabel,
-  );
-
-  return {
-    byDex: gen3SpeciesByDex,
-    byName: sortBy(gen3SpeciesByDex, (option) => option.label),
-  };
-});
-
-export const getGen4SpeciesOptions = memoize(() => {
-  const gen4SpeciesByDex = toOptions(
-    species.slice(1, gen4End),
-    formatSpeciesLabel,
-  );
-  const gen4SpeciesOptionsByName = sortBy(
-    gen4SpeciesByDex,
-    (option) => option.label,
-  );
-
-  return {
-    byDex: gen4SpeciesByDex,
-    byName: gen4SpeciesOptionsByName,
-    byNameOptional: [
-      { label: "None", value: "None" } as const,
-      ...gen4SpeciesOptionsByName,
-    ],
-  };
-});
+export const getGen3SpeciesOptions = createLazyOptions(gen3End);
+export const getGen4SpeciesOptions = createLazyOptions(gen4End);
+export const getGen5SpeciesOptions = createLazyOptions(gen5End);
 
 const GEN3_SPECIES_WITH_VARIABLE_SIZE: Set<Species> = new Set([
   "Lotad",

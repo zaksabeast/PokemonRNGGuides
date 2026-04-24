@@ -553,7 +553,7 @@ export const Wild3CalibCaughtMon = ({
       key: "Update Calibration",
       dataIndex: "advance",
       show: setLatestHitAdv != null,
-      render(advance, values) {
+      render: (advance, values) => {
         const isTryingToGetATargetPokemon =
           !usingPaintingReseeding || isPaintingSeedConfirmed;
 
@@ -621,7 +621,7 @@ export const Wild3CalibCaughtMon = ({
       ),
       key: "Confidence Rating",
       dataIndex: "score",
-      render(score, values) {
+      render: (score, values) => {
         const ratingTxt = match(score)
           .with(P.number.between(0, 500), () => "Very High")
           .with(P.number.between(500, 1000), () => "High")
@@ -664,42 +664,42 @@ export const Wild3CalibCaughtMon = ({
         {
           title: "HP",
           dataIndex: "statsWithRareCandy",
-          render(statsWithRareCandy) {
+          render: (statsWithRareCandy) => {
             return statsWithRareCandy.hp;
           },
         },
         {
           title: "Atk",
           dataIndex: "statsWithRareCandy",
-          render(statsWithRareCandy) {
+          render: (statsWithRareCandy) => {
             return statsWithRareCandy.atk;
           },
         },
         {
           title: "Def",
           dataIndex: "statsWithRareCandy",
-          render(statsWithRareCandy) {
+          render: (statsWithRareCandy) => {
             return statsWithRareCandy.def;
           },
         },
         {
           title: "SpA",
           dataIndex: "statsWithRareCandy",
-          render(statsWithRareCandy) {
+          render: (statsWithRareCandy) => {
             return statsWithRareCandy.spa;
           },
         },
         {
           title: "SpD",
           dataIndex: "statsWithRareCandy",
-          render(statsWithRareCandy) {
+          render: (statsWithRareCandy) => {
             return statsWithRareCandy.spd;
           },
         },
         {
           title: "Spe",
           dataIndex: "statsWithRareCandy",
-          render(statsWithRareCandy) {
+          render: (statsWithRareCandy) => {
             return statsWithRareCandy.spe;
           },
         },
@@ -723,7 +723,7 @@ export const Wild3CalibCaughtMon = ({
         {
           title: "Highest IV",
           dataIndex: "highestStatIds",
-          render(highestStatIds, values) {
+          render: (highestStatIds, values) => {
             return `${values.highestIvMsg} (${highestStatIds.map((statId) => statId.toUpperCase()).join(", ")})`;
           },
         },

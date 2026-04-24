@@ -7,7 +7,7 @@ use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
 use crate::{Ivs, Nature, PkmFilter, iv_iter, rng::lcrng::Pokerng};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]

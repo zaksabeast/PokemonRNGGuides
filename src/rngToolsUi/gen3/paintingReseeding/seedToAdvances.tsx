@@ -325,7 +325,7 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
     rngTools
       .find_all_painting_advs_for_seed(painting_opts, targetSeed)
       .then((results) => {
-        results = results.filter((res) => {
+        const filteredResults = results.filter((res) => {
           if (res.advs.frame_before_painting === 0) {
             return true;
           }
@@ -340,7 +340,7 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
             res.advs.adv_after_painting >= opts.min_adv_after_painting
           );
         });
-        results.sort((lhs, rhs) => {
+        filteredResults.sort((lhs, rhs) => {
           // Painting Seed = 0 goes first.
           if (lhs.advs.frame_before_painting === 0) {
             return -1;
@@ -363,9 +363,9 @@ export const EmeraldSeedToAdvances = ({ onSelected }: Props) => {
             )
             .exhaustive();
         });
-        results = results.slice(0, opts.max_result_count);
+        const limitedResults = filteredResults.slice(0, opts.max_result_count);
         setResults(
-          results.map((res) => ({
+          limitedResults.map((res) => ({
             ...res,
             uid: nextUid++,
           })),

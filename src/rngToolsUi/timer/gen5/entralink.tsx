@@ -13,12 +13,14 @@ import {
   ZodSerializedDecimal,
   ZodSerializedOptional,
 } from "~/utils/number";
-import { Gen5EntralinkTimerSettings, rngTools, ZodConsole } from "~/rngTools";
+import { rngTools, ZodConsole } from "~/rngTools";
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
 import { useTimerSettings } from "~/state/timerSettings";
 import { z } from "zod";
 import { useHydrate } from "~/hooks/useHydrate";
 import { hydrationLock, HydrationLock } from "~/utils/hydration";
+import { useStateHistory } from "~/hooks/useStateHistory";
+import { UndoButton } from "../undoButton";
 
 const TimerStateSchema = z.object({
   milliseconds: z.array(z.number()),
@@ -38,26 +40,26 @@ const timerStateAtom = atomWithPersistence(
 
 const FormStateSchema = z.object({
   console: ZodConsole,
-  minTimeMs: ZodSerializedDecimal,
-  targetDelay: ZodSerializedDecimal,
-  targetSecond: ZodSerializedDecimal,
+  min_time_ms: ZodSerializedDecimal,
+  target_delay: ZodSerializedDecimal,
+  target_second: ZodSerializedDecimal,
   calibration: ZodSerializedDecimal,
-  entralinkCalibration: ZodSerializedDecimal,
-  delayHit: ZodSerializedOptional(ZodSerializedDecimal),
-  secondHit: ZodSerializedOptional(ZodSerializedDecimal),
+  entralink_calibration: ZodSerializedDecimal,
+  delay_hit: ZodSerializedOptional(ZodSerializedDecimal),
+  second_hit: ZodSerializedOptional(ZodSerializedDecimal),
 });
 
 export type FormState = z.infer<typeof FormStateSchema>;
 
 const initialValues: FormState = {
   console: "NdsSlot1",
-  minTimeMs: 14000,
-  targetDelay: 1200,
-  targetSecond: 50,
+  min_time_ms: 14000,
+  target_delay: 1200,
+  target_second: 50,
   calibration: -95,
-  entralinkCalibration: 256,
-  delayHit: null,
-  secondHit: null,
+  entralink_calibration: 256,
+  delay_hit: null,
+  second_hit: null,
 };
 
 const timerSettingsAtom = atomWithPersistence(
@@ -82,15 +84,17 @@ const fields: Field[] = [
   },
   {
     label: "Min Time (ms)",
-    input: <FormikNumberInput<FormState> name="minTimeMs" numType="float" />,
+    input: <FormikNumberInput<FormState> name="min_time_ms" numType="float" />,
   },
   {
     label: "Target Delay",
-    input: <FormikNumberInput<FormState> name="targetDelay" numType="float" />,
+    input: <FormikNumberInput<FormState> name="target_delay" numType="float" />,
   },
   {
     label: "Target Second",
-    input: <FormikNumberInput<FormState> name="targetSecond" numType="float" />,
+    input: (
+      <FormikNumberInput<FormState> name="target_second" numType="float" />
+    ),
   },
   {
     label: "Calibration",
@@ -100,18 +104,18 @@ const fields: Field[] = [
     label: "Entralink Calibration",
     input: (
       <FormikNumberInput<FormState>
-        name="entralinkCalibration"
+        name="entralink_calibration"
         numType="float"
       />
     ),
   },
   {
     label: "Delay Hit",
-    input: <FormikNumberInput<FormState> name="delayHit" numType="float" />,
+    input: <FormikNumberInput<FormState> name="delay_hit" numType="float" />,
   },
   {
     label: "Second Hit",
-    input: <FormikNumberInput<FormState> name="secondHit" numType="float" />,
+    input: <FormikNumberInput<FormState> name="second_hit" numType="float" />,
   },
 ];
 
@@ -128,60 +132,54 @@ const InnerGen5EntralinkTimer = ({
   initialSettings,
   onUpdate,
 }: InnerProps) => {
-  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
-    let updatedOpts = opts;
-    let settings: Gen5EntralinkTimerSettings = {
-      console: opts.console,
-      min_time_ms: opts.minTimeMs,
-      target_delay: opts.targetDelay,
-      target_second: opts.targetSecond,
-      calibration: opts.calibration,
-      entralink_calibration: opts.entralinkCalibration,
-    };
-
-    if (opts.secondHit != null && opts.delayHit != null) {
-      settings = await rngTools.calibrate_gen5_entralink_timer(
-        settings,
-        opts.secondHit,
-        opts.delayHit,
-      );
-      settings = {
-        console: opts.console,
-        min_time_ms: capPrecision(settings.min_time_ms),
-        target_delay: capPrecision(settings.target_delay),
-        target_second: capPrecision(settings.target_second),
-        calibration: capPrecision(settings.calibration),
-        entralink_calibration: capPrecision(settings.entralink_calibration),
-      };
-      updatedOpts = {
-        console: settings.console,
-        minTimeMs: settings.min_time_ms,
-        targetDelay: settings.target_delay,
-        targetSecond: settings.target_second,
-        calibration: settings.calibration,
-        entralinkCalibration: settings.entralink_calibration,
-        delayHit: null,
-        secondHit: null,
-      };
-
-      setValue("console", updatedOpts.console);
-      setValue("minTimeMs", updatedOpts.minTimeMs);
-      setValue("targetDelay", updatedOpts.targetDelay);
-      setValue("targetSecond", updatedOpts.targetSecond);
-      setValue("calibration", updatedOpts.calibration);
-      setValue("entralinkCalibration", updatedOpts.entralinkCalibration);
-      setValue("delayHit", updatedOpts.delayHit);
-      setValue("secondHit", updatedOpts.secondHit);
-    }
-
-    const milliseconds = await rngTools.create_gen5_entralink_timer(settings);
+  const updateTimerSettings = async (formState: FormState) => {
+    const milliseconds = await rngTools.create_gen5_entralink_timer(formState);
     setTimer(
       hydrationLock({
         milliseconds: [...milliseconds],
         minutesBeforeTarget: await rngTools.minutes_before(milliseconds),
       }),
     );
-    onUpdate(hydrationLock(updatedOpts));
+    onUpdate(hydrationLock(formState));
+  };
+
+  const history = useStateHistory({
+    initialSettings,
+    updateTimerSettings,
+  });
+
+  const onSubmit: RngToolSubmit<FormState> = async (opts, { setValue }) => {
+    let settings = opts;
+
+    if (opts.second_hit != null && opts.delay_hit != null) {
+      const calibrated = await rngTools.calibrate_gen5_entralink_timer(
+        settings,
+        opts.second_hit,
+        opts.delay_hit,
+      );
+      settings = {
+        console: opts.console,
+        min_time_ms: capPrecision(calibrated.min_time_ms),
+        target_delay: capPrecision(calibrated.target_delay),
+        target_second: capPrecision(calibrated.target_second),
+        calibration: capPrecision(calibrated.calibration),
+        entralink_calibration: capPrecision(calibrated.entralink_calibration),
+        delay_hit: null,
+        second_hit: null,
+      };
+
+      setValue("console", settings.console);
+      setValue("min_time_ms", settings.min_time_ms);
+      setValue("target_delay", settings.target_delay);
+      setValue("target_second", settings.target_second);
+      setValue("calibration", settings.calibration);
+      setValue("entralink_calibration", settings.entralink_calibration);
+      setValue("delay_hit", settings.delay_hit);
+      setValue("second_hit", settings.second_hit);
+    }
+
+    await updateTimerSettings(settings);
+    history.addIfNew(settings);
   };
 
   return (
@@ -199,6 +197,22 @@ const InnerGen5EntralinkTimer = ({
         onSubmit={onSubmit}
         submitTrackerId="set_gen5_entralink_timer"
         submitButtonLabel="Set Timer"
+        additionalButtons={
+          <UndoButton
+            history={history}
+            trackerId="undo_gen5_entralink_calibration"
+            fields={{
+              console: true,
+              min_time_ms: true,
+              target_delay: true,
+              target_second: true,
+              calibration: true,
+              entralink_calibration: true,
+              delay_hit: true,
+              second_hit: true,
+            }}
+          />
+        }
       />
     </Flex>
   );

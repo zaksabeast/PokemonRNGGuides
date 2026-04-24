@@ -544,6 +544,48 @@ export const guides = {
       return file.default;
     }),
   },
+  "/bw-find-ds-parameters/": {
+    meta: {
+      id: "/bw-find-ds-parameters/",
+      categories: ["Black and White"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "true-DS Parameters",
+      isNew: false,
+      title: "How To Find DS Parameters in Black and White",
+      navDrawerTitle: "DS Parameters",
+      description:
+        "Learn how to find your DS parameters for successful RNG in Pokémon Black and White.",
+      slug: "/bw-find-ds-parameters/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-04-16",
+      type: "baseGuide",
+      canonical: "/bw-find-ds-parameters/",
+      file: "guides/Gen 5/Retail Find DS Parameters.mdx",
+      translations: null,
+      guideGroupId: "en:true-DS Parameters:Black and White",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/bw-find-ds-parameters/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 5/Retail Find DS Parameters.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 5/Retail Find DS Parameters.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/bw2-calibration/": {
     meta: {
       id: "/bw2-calibration/",
@@ -614,6 +656,48 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Gen 5/BW2 Egg.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Gen 5/BW2 Egg.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/bw2-find-ds-parameters/": {
+    meta: {
+      id: "/bw2-find-ds-parameters/",
+      categories: ["Black 2 and White 2"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "true-DS Parameters",
+      isNew: false,
+      title: "How To Find DS Parameters in Black 2 and White 2",
+      navDrawerTitle: "DS Parameters",
+      description:
+        "Learn how to find your DS parameters for successful RNG in Pokémon Black 2 and White 2.",
+      slug: "/bw2-find-ds-parameters/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-04-16",
+      type: "baseGuide",
+      canonical: "/bw-find-ds-parameters/",
+      file: "guides/Gen 5/Retail Find DS Parameters.mdx",
+      translations: null,
+      guideGroupId: "en:true-DS Parameters:Black 2 and White 2",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/bw2-find-ds-parameters/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 5/Retail Find DS Parameters.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 5/Retail Find DS Parameters.mdx?raw"
+      );
       return file.default;
     }),
   },
@@ -2739,7 +2823,7 @@ export const guides = {
       section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "false-Painting Reseeding",
-      isNew: true,
+      isNew: false,
       title: "Painting Reseeding",
       navDrawerTitle: "Painting Reseeding",
       description:
@@ -3316,7 +3400,7 @@ export const guides = {
       addedOn: "2026-03-08",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-03-16",
+      lastUpdated: "2026-04-21",
       type: "baseGuide",
       canonical: "/emulator-b2w2-wild/",
       file: "guides/Gen 5/Wild RNG Emu.mdx",
@@ -3571,7 +3655,7 @@ export const guides = {
       translation: null,
       layout: "guide",
       canonical: "/emulator-b2w2-wild/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-04-21",
       type: "baseGuide",
       file: "guides/Gen 5/Wild RNG Emu.mdx",
       translations: { en: "/emulator-bw-wild/", it: "/it-emulator-bw-wild/" },
@@ -3688,7 +3772,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-04-16",
       type: "baseGuide",
       canonical: "/emulator-dppt-egg/",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Egg.mdx",
@@ -6715,7 +6799,7 @@ export const guides = {
       addedOn: "2026-03-08",
       translation: { enSlug: "/emulator-b2w2-wild/", language: "it" },
       layout: "guide",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-04-21",
       type: "translatedGuide",
       canonical: "/it-emulator-b2w2-wild/",
       file: "guides/Translations/it/Gen 5/Wild RNG Emu.mdx",
@@ -6807,7 +6891,7 @@ export const guides = {
       translation: { enSlug: "/emulator-bw-wild/", language: "it" },
       layout: "guide",
       canonical: "/it-emulator-b2w2-wild/",
-      lastUpdated: "2026-03-08",
+      lastUpdated: "2026-04-21",
       type: "translatedGuide",
       file: "guides/Translations/it/Gen 5/Wild RNG Emu.mdx",
       translations: { en: "/emulator-bw-wild/", it: "/it-emulator-bw-wild/" },
@@ -7367,6 +7451,53 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/it/Gen 3/Emerald/Find SID.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/iv-calculator/": {
+    meta: {
+      id: "/iv-calculator/",
+      categories: [
+        "Ruby and Sapphire",
+        "FireRed and LeafGreen",
+        "Emerald",
+        "Diamond, Pearl, and Platinum",
+        "HeartGold and SoulSilver",
+        "Black and White",
+        "Black 2 and White 2",
+      ],
+      section: "tool",
+      guideVariants: null,
+      guideKey: "true-IV Calculator",
+      isNew: false,
+      title: "IV Calculator",
+      navDrawerTitle: "IV Calculator",
+      description: "IV Calculator",
+      slug: "/iv-calculator/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-04-13",
+      type: "baseGuide",
+      canonical: "/iv-calculator/",
+      file: "guides/Tools and Emulators/IV Calc.mdx",
+      translations: null,
+      guideGroupId:
+        "en:true-IV Calculator:Black 2 and White 2|Black and White|Diamond, Pearl, and Platinum|Emerald|FireRed and LeafGreen|HeartGold and SoulSilver|Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Tools and Emulators/IV Calc.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Tools and Emulators/IV Calc.mdx?raw"
       );
       return file.default;
     }),
@@ -8433,7 +8564,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Legend, Gift, and Fossil RNG",
-      isNew: true,
+      isNew: false,
       title: "Diamond, Pearl, and Platinum Legend, Gift, and Fossil RNG Guide",
       navDrawerTitle: "Legend, Gift, and Fossil RNG",
       description:
@@ -16274,8 +16405,10 @@ export const guideSlugs = [
   "/brilliant-diamond-and-shining-pearl/",
   "/bw-calibration/",
   "/bw-emu-starter/",
+  "/bw-find-ds-parameters/",
   "/bw2-calibration/",
   "/bw2-egg/",
+  "/bw2-find-ds-parameters/",
   "/cfw-bdsp-egg/",
   "/cfw-bdsp-stationary/",
   "/cfw-bdsp-tidandsid/",
@@ -16433,6 +16566,7 @@ export const guideSlugs = [
   "/it-retail-emerald-wild/",
   "/it-retail-hgss-starter/",
   "/it-rs-gen3-sid/",
+  "/iv-calculator/",
   "/legends-arceus/",
   "/meteor-jirachi/",
   "/mgba-setup/",

@@ -55,6 +55,10 @@
     "hash": "7a4a5084206ad0490284841dd7822d7584836fa8d972e87c96f7425959cfac38",
     "lastUpdated": "2026-03-26"
   },
+  "/bw-find-ds-parameters/": {
+    "hash": "4fb3c1a08bed7ecdf0ed1b2da321fa2a0aa7aa26a5abaf59c33c9639914c9959",
+    "lastUpdated": "2026-04-16"
+  },
   "/bw2-calibration/": {
     "hash": "67a952212629076472fc98118b0118db11149783648ded9e48a93c69acdd60de",
     "lastUpdated": "2026-03-28"
@@ -62,6 +66,10 @@
   "/bw2-egg/": {
     "hash": "8be7516bd4002b3ad4bf6f37af45a46d8a38ca2b65c5ab731ee7cbeaea5e0f99",
     "lastUpdated": null
+  },
+  "/bw2-find-ds-parameters/": {
+    "hash": "4fb3c1a08bed7ecdf0ed1b2da321fa2a0aa7aa26a5abaf59c33c9639914c9959",
+    "lastUpdated": "2026-04-16"
   },
   "/cfw-bdsp-egg/": {
     "hash": "c72e6a054c5b3b9a9c8585933fa2fc7f6ab19d20126f00b6653d884d17a164d8",
@@ -316,8 +324,8 @@
     "lastUpdated": "2026-03-24"
   },
   "/emulator-b2w2-wild/": {
-    "hash": "557d387ee32f75b7f4de81abba7592a513a97174ac7704decaaec4ee161f93e1",
-    "lastUpdated": "2026-03-16"
+    "hash": "cbc5233e854453f972c0a67540480282e691e6472c6751cd21a8bf0ac146eb93",
+    "lastUpdated": "2026-04-21"
   },
   "/emulator-bw-entralink/": {
     "hash": "475f012c1c65747311ac62c4c8946c3d3d3f52782540b293fc0b94360028e24e",
@@ -340,8 +348,8 @@
     "lastUpdated": null
   },
   "/emulator-bw-wild/": {
-    "hash": "557d387ee32f75b7f4de81abba7592a513a97174ac7704decaaec4ee161f93e1",
-    "lastUpdated": "2026-03-08"
+    "hash": "cbc5233e854453f972c0a67540480282e691e6472c6751cd21a8bf0ac146eb93",
+    "lastUpdated": "2026-04-21"
   },
   "/emulator-colosseum-general/": {
     "hash": "0af20f4470f4569e8c389141844545bd7907c010858cd788b9f92d01bde03211",
@@ -352,8 +360,8 @@
     "lastUpdated": "2026-04-04"
   },
   "/emulator-dppt-egg/": {
-    "hash": "f5e0400969bcd44a25365c1667c01bacc39436a1138a2a94d12b37251dd3f1c2",
-    "lastUpdated": null
+    "hash": "e22ec620af0ad0102812d5311e0eddd5593511b41bb27f9b7d28a6ac3f0eea5f",
+    "lastUpdated": "2026-04-16"
   },
   "/emulator-dppt-pokefinder-setup/": {
     "hash": "db805288bd59a9381bd7a527b83b39ceabbac69b6242e01b7485314f0f56843c",
@@ -632,16 +640,16 @@
     "lastUpdated": "2026-03-24"
   },
   "/it-emulator-b2w2-wild/": {
-    "hash": "63591af15aabb2405ec8d75f39d7297382b2c356027f6b5efbcb88c8a91d7de7",
-    "lastUpdated": "2026-03-08"
+    "hash": "375d9ebf9fbfc4dbeed4d09e6f0fef1a3dd018e01e7a98fb608627df8cbd66e2",
+    "lastUpdated": "2026-04-21"
   },
   "/it-emulator-bw-runasdate-initial-seed/": {
     "hash": "1dba3b9da601984ff3d575991024217a0e38511f5609ce8d0b0c03e107786e87",
     "lastUpdated": "2026-03-24"
   },
   "/it-emulator-bw-wild/": {
-    "hash": "63591af15aabb2405ec8d75f39d7297382b2c356027f6b5efbcb88c8a91d7de7",
-    "lastUpdated": "2026-03-08"
+    "hash": "375d9ebf9fbfc4dbeed4d09e6f0fef1a3dd018e01e7a98fb608627df8cbd66e2",
+    "lastUpdated": "2026-04-21"
   },
   "/it-emulator-emerald-egg/": {
     "hash": "c6fe41ed8345fc87aebfad40b4975a84049fc8b4acee00b62a3099c606437406",
@@ -690,6 +698,10 @@
   "/it-rs-gen3-sid/": {
     "hash": "142a0d67573b8058ddb6d62716052c2267d6a01a11d10e9b07fc11749c633f87",
     "lastUpdated": null
+  },
+  "/iv-calculator/": {
+    "hash": "1d0b44f7e8c7b7b5c7675c7e1a78c74fb3b5c3925b148be961744469216fd85f",
+    "lastUpdated": "2026-04-13"
   },
   "/legends-arceus/": {
     "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",

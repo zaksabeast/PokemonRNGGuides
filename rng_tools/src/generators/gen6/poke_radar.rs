@@ -1,7 +1,7 @@
 use super::utils::{Gen6SlotType, find_item};
 use crate::rng::{Rng, StateIterator, tinymt::TinyMT};
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]

@@ -76,7 +76,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
         calibration={{ hit_delay: target.delay }}
         timer={starterTimer}
         trackerId="calibrate_gen4_starter"
-        previousStepOnClick
+        lastStepOnClick={1}
       />
     ),
   },

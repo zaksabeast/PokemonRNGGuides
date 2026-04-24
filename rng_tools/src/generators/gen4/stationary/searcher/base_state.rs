@@ -3,7 +3,7 @@ use crate::{
     gen4::{LeadAbility, seed_time4::SeedTime4},
 };
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]

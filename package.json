@@ -21,7 +21,7 @@
     "minimize-css": "bunx postcss dist/assets/*.css --replace",
     "lint": "bun run lint:rust && bun run lint:ts",
     "lint:ts": "bun run build:rng_tools && bun run lint:ts:types && bun run build:guides:check && bun run lint:ts:code && bun run lint:ts:format",
-    "lint:ts:code": "eslint .",
+    "lint:ts:code": "bunx --bun eslint .",
     "lint:ts:format": "bun prettier . --check",
     "lint:ts:types": "bun tsc -b",
     "lint:ts:links": "find guides -name \\*.mdx -print0 | xargs -0 -n1 bun run markdown-link-check -c markdown-link-check.config.json -q",

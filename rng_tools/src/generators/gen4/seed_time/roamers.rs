@@ -2,7 +2,7 @@ use crate::Species;
 use crate::rng::Rng;
 use crate::rng::lcrng::Pokerng;
 use serde::{Deserialize, Serialize};
-use tsify_next::Tsify;
+use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize, Copy)]

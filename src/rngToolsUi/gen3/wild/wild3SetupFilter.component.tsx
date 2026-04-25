@@ -23,6 +23,7 @@ import {
 import { useWatch } from "react-hook-form";
 import { FormState } from "./wild3FindTarget";
 import { getPossibleValuesForSpecies } from "./wild3TargetMon";
+import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 
 const getSetupFields = (
   species: Species,
@@ -179,8 +180,10 @@ const getSetupFields = (
     },
 
     {
-      label: "Seed after painting reseeding",
-      input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
+      label: "Frame before painting (Painting seed)",
+      input: (
+        <FormikEmeraldFrameBeforePaintingInput<FormState> name="initial_seed" />
+      ),
       show: usingPaintingReseeding && !letSearcherFindPaintingSeed,
       indent: 1,
     },

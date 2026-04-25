@@ -619,12 +619,11 @@ export const Wild3CalibCaughtMon = ({
     setResults(await searchCaughtMon(values, targetSetup));
   };
 
-  const getAdvDiffTxt = (
-    result: CaughtMonResult,
-    prop: "adv_after_painting" | "frame_before_painting",
-  ) => {
-    const diffWithTarget = result.advance[prop] - result.targetAdvance[prop];
-    const valStr = formatLargeInteger(result.advance[prop]);
+  const getAdvDiffTxt = (result: CaughtMonResult) => {
+    const diffWithTarget =
+      result.advance.adv_after_painting -
+      result.targetAdvance.adv_after_painting;
+    const valStr = formatLargeInteger(result.advance.adv_after_painting);
 
     if (diffWithTarget === 0) {
       return `${valStr} (Target)`;
@@ -669,19 +668,6 @@ export const Wild3CalibCaughtMon = ({
       },
     },
     {
-      title: (
-        <span>
-          Frame before <br /> painting
-        </span>
-      ),
-      key: "frame_before_painting",
-      dataIndex: "advance",
-      show: usingPaintingReseeding,
-      render: (_, values) => {
-        return getAdvDiffTxt(values, "frame_before_painting");
-      },
-    },
-    {
       title: usingPaintingReseeding ? (
         <span>
           Advance after <br /> painting
@@ -692,7 +678,7 @@ export const Wild3CalibCaughtMon = ({
       key: "frame_after_painting",
       dataIndex: "advance",
       render: (_, values) => {
-        const diffTxt = getAdvDiffTxt(values, "adv_after_painting");
+        const diffTxt = getAdvDiffTxt(values);
         const title = formatEmeraldTargetFromPainting(
           values.advance.frame_before_painting,
           values.advance.adv_after_painting,

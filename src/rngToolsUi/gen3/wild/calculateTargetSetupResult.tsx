@@ -63,7 +63,7 @@ const getProbabilityInfo = async (
     info.method_probability < 0.99 && lead_cycle_speed !== ideal_lead_spd;
 
   return (
-    <Flex mt={10}>
+    <Flex mt={10} vertical>
       <div>
         {`${formatProbability(info.method_probability)} likelihood to hit
       method ${res.method} ${leadDesc}.`}
@@ -170,7 +170,7 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 
   return (
-    <>
+    <Flex vertical>
       <div>
         {species}, Lvl {res.lvl}, {gender}, {abilityStr}, {nature}, HP{" "}
         {stats.hp}, ATK {stats.atk}, DEF {stats.def}, SPA {stats.spa}, SPD{" "}
@@ -181,6 +181,6 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
         {ivs.spd}/{ivs.spe}
       </div>
       {probabilityInfo}
-    </>
+    </Flex>
   );
 };

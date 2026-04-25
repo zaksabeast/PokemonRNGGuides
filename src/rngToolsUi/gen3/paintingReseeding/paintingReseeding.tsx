@@ -150,12 +150,14 @@ type Props = AllOrNone<{
   };
   onBattleVideoCreatedOrSkipped: (info: BattleVideoInfo) => void;
   targetAction: Wild3Action;
+  clearAll?: () => void;
 }>;
 
 export const EmeraldPaintingReseeding = ({
   targetPaintingAdvs: targetPaintingAdvsProp,
   onBattleVideoCreatedOrSkipped,
   targetAction,
+  clearAll,
 }: Props) => {
   const [targetPaintingAdvs, setTargetPaintingAdvs] = useState<{
     before: number;
@@ -211,27 +213,40 @@ export const EmeraldPaintingReseeding = ({
     return (
       <Flex vertical>
         <h3>Info from the previous step</h3>
-        <FormFieldTable
-          fields={
-            isUsingPainting
-              ? [
-                  {
-                    label: "Target frame before painting",
-                    input: formatLargeInteger(targetPaintingAdvsProp.before),
-                  },
-                  {
-                    label: "Target advance after painting",
-                    input: formatLargeInteger(targetPaintingAdvsProp.after),
-                  },
-                ]
-              : [
-                  {
-                    label: "Target advance",
-                    input: formatLargeInteger(targetPaintingAdvsProp.after),
-                  },
-                ]
-          }
-        />
+        <Flex ml={20} vertical>
+          <FormFieldTable
+            fields={
+              isUsingPainting
+                ? [
+                    {
+                      label: "Target frame before painting",
+                      input: `${formatLargeInteger(targetPaintingAdvsProp.before)} (Seed: ${formatHex(targetPaintingAdvsProp.before, 2)})`,
+                    },
+                    {
+                      label: "Target advance after painting",
+                      input: formatLargeInteger(targetPaintingAdvsProp.after),
+                    },
+                  ]
+                : [
+                    {
+                      label: "Target advance",
+                      input: formatLargeInteger(targetPaintingAdvsProp.after),
+                    },
+                  ]
+            }
+          />
+          {clearAll != null && (
+            <Button
+              trackerId="paintingReseeding_clearAll"
+              danger
+              maxWidth={150}
+              size="small"
+              onClick={clearAll}
+            >
+              Clear All
+            </Button>
+          )}
+        </Flex>
       </Flex>
     );
   };

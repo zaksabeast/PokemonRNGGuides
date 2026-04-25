@@ -137,7 +137,7 @@ const MyFields = ({
       label: fixedData?.isAfterPainting
         ? "Existing Battle Video advances after painting"
         : "Existing Battle Video advances",
-      input: formatLargeInteger(existingBattleVideoAdv),
+      input: "~" + formatLargeInteger(existingBattleVideoAdv),
       show: fixedData?.isUpdatingExisting === true,
     },
     {

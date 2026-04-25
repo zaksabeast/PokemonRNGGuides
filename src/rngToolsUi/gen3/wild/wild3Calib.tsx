@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, MultiTimer, Field, Input, Select } from "~/components";
+import { Flex, MultiTimer, Field, Input, Select, Button } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
 import {
   TargetSetup,
@@ -20,15 +20,18 @@ import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { AllOrNone } from "~/types";
 import { BattleVideoInfoInput } from "./wild3CalibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
+import { formatHex } from "~/utils/formatHex";
 
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
   battleVideoInfo: BattleVideoInfo;
+  clearAll?: () => void;
 }>;
 
 export const Wild3Calib = ({
   targetSetup: targetSetupProp,
   battleVideoInfo: battleVideoInfoProp,
+  clearAll,
 }: Props) => {
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     targetSetupProp ?? null,
@@ -48,13 +51,24 @@ export const Wild3Calib = ({
   const [battleVideoInfo, setBattleVideoInfo] =
     React.useState<BattleVideoInfo | null>(battleVideoInfoProp ?? null);
 
-  const [consoleType, setConsoleType] = React.useState<Gen3Console>(
-    battleVideoInfo?.consoleType ?? "GBA",
-  );
+  const [consoleTypeFromInput, setConsoleTypeFromInput] =
+    React.useState<Gen3Console>("GBA");
   const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(0);
 
   const targetSetupInputForm = () => (
-    <Wild3CalibTargetSetupInput setTargetSetup={setTargetSetup} />
+    <Flex vertical gap={10}>
+      <Wild3CalibTargetSetupInput setTargetSetup={setTargetSetup} />
+      {targetSetupResult != null && (
+        <FormFieldTable
+          fields={[
+            {
+              label: "Target Pokémon",
+              input: targetSetupResult,
+            },
+          ]}
+        />
+      )}
+    </Flex>
   );
 
   if (targetSetup == null) {
@@ -72,9 +86,11 @@ export const Wild3Calib = ({
 
   const targetForTimer = targetSetup?.targetPaintingAdvs.after ?? 0;
 
-  const initialAdv = battleVideoInfoProp?.battleVideoAdvAfterPainting ?? 0;
+  const initialAdv = battleVideoInfo?.battleVideoAdvAfterPainting ?? 0;
 
   const advFromTimer = targetForTimer - initialAdv - calibrationAndOffset;
+
+  const consoleType = battleVideoInfo?.consoleType ?? consoleTypeFromInput;
 
   const milliseconds = [
     5000,
@@ -98,18 +114,26 @@ export const Wild3Calib = ({
     );
   };
 
-  const consoleProp = battleVideoInfo?.consoleType;
+  const consoleProp = battleVideoInfoProp?.consoleType;
   const calibFields: Field[] = [
+    // consoleType has 3 possible sources:
+    //  - battleVideoInfoProp.consoleType
+    //  - battleVideoInfoInput (if battleVideoInfoProp == null)
+    //  - here if (battleVideoInfoProp != null but battleVideoInfoProp.consoleType is null)
+
+    // Don't show Console field if battleVideoInfoProp == null because it's already shown in battleVideoInfoInput
     {
       label: "Console",
+      show: battleVideoInfoProp != null,
       input:
-        consoleProp == null ? (
+        battleVideoInfoProp != null &&
+        battleVideoInfoProp.consoleType == null ? (
           <Select<Gen3Console>
             name="console"
-            value={consoleType}
+            value={consoleTypeFromInput}
             options={gen3ConsoleOptions}
             onSelect={(val) => {
-              setConsoleType(val);
+              setConsoleTypeFromInput(val);
             }}
           />
         ) : (
@@ -142,9 +166,6 @@ export const Wild3Calib = ({
 
     const usingPaintingReseeding =
       battleVideoInfoProp.targetPaintingAdvs.before > 0;
-    const usingBattleVideoWithoutPainting =
-      !usingPaintingReseeding &&
-      battleVideoInfoProp.battleVideoAdvAfterPainting > 0;
 
     const fields: Field[] = [
       {
@@ -171,26 +192,16 @@ export const Wild3Calib = ({
         input: targetSetupProp.targetMethod,
       },
       {
-        label: "Target frame before painting (decimal)",
-        input: formatLargeInteger(
-          battleVideoInfoProp.targetPaintingAdvs.before,
-        ),
+        label: "Target frame before painting",
+        input: `${formatLargeInteger(battleVideoInfoProp.targetPaintingAdvs.before)} (Seed: ${formatHex(battleVideoInfoProp.targetPaintingAdvs.before, 2)})`,
         show: usingPaintingReseeding,
       },
-      {
-        label: "Advances between painting and existing Battle Video",
-        input: formatLargeInteger(
-          battleVideoInfoProp.battleVideoAdvAfterPainting,
-        ),
-        show: usingPaintingReseeding,
-      },
-
       {
         label: "Battle Video advance",
         input: formatLargeInteger(
           battleVideoInfoProp.battleVideoAdvAfterPainting,
         ),
-        show: usingBattleVideoWithoutPainting,
+        show: battleVideoInfoProp.battleVideoAdvAfterPainting > 0,
       },
       {
         label: "Target advance",
@@ -208,7 +219,7 @@ export const Wild3Calib = ({
       },
       {
         label: "Target Pokémon",
-        input: targetSetupResult, //NO_PROD indent.
+        input: targetSetupResult,
       },
     ];
 
@@ -218,6 +229,17 @@ export const Wild3Calib = ({
         <Flex ml={20} vertical>
           <FormFieldTable fields={fields} />
         </Flex>
+        {clearAll != null && (
+          <Button
+            trackerId="wild3Calib_clearAll"
+            danger
+            maxWidth={150}
+            size="small"
+            onClick={clearAll}
+          >
+            Clear All
+          </Button>
+        )}
       </div>
     );
   };

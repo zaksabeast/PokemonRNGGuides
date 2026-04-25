@@ -15,7 +15,6 @@ import {
   FormFieldTable,
   FormikSwitch,
   Link,
-  Flex,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
@@ -38,13 +37,13 @@ import {
 import { useWatch } from "react-hook-form";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
-import { formatHex } from "~/utils/formatHex";
 import {
   AVERAGE_LEAD_CYCLE_SPEED,
   LeadCycleSpeedLabel,
   LeadCycleSpeedSelector,
 } from "./leadCycleSpeedSelector";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
+import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -138,14 +137,12 @@ const getFields = ({
   usingPaintingReseeding,
   leadIdx,
   usingAverageLeadCycleSpeed,
-  targetFrameBeforePainting,
 }: {
   mapId: string;
   action: Wild3Action;
   usingPaintingReseeding: boolean;
   leadIdx: number;
   usingAverageLeadCycleSpeed: boolean;
-  targetFrameBeforePainting: number;
 }): Field[] => {
   const { actions, feebas_states, roamer_states, mass_outbreak_states } =
     getPossibleValuesForMap(mapId, action);
@@ -211,15 +208,9 @@ const getFields = ({
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
     {
-      label: "Target frame before painting (decimal)",
+      label: "Target frame before painting",
       input: (
-        <Flex vertical>
-          <FormikNumberInput<FormState>
-            name="targetFrameBeforePainting"
-            numType="decimal"
-          />
-          Painting seed (hex): {formatHex(targetFrameBeforePainting ?? 0, 2)}
-        </Flex>
+        <FormikEmeraldFrameBeforePaintingInput<FormState> name="targetFrameBeforePainting" />
       ),
       indent: 1,
       show: usingPaintingReseeding,
@@ -298,10 +289,6 @@ export const Wild3CalibTargetSetupInputFields = () => {
     FormState,
     "usingAverageLeadCycleSpeed"
   >({ name: "usingAverageLeadCycleSpeed" });
-  const targetFrameBeforePainting = useWatch<
-    FormState,
-    "targetFrameBeforePainting"
-  >({ name: "targetFrameBeforePainting" });
 
   const fields = getFields({
     mapId: map,
@@ -309,7 +296,6 @@ export const Wild3CalibTargetSetupInputFields = () => {
     usingPaintingReseeding,
     leadIdx,
     usingAverageLeadCycleSpeed,
-    targetFrameBeforePainting,
   });
 
   React.useEffect(() => {

@@ -3203,7 +3203,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-04-25",
+      lastUpdated: "2026-03-15",
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",

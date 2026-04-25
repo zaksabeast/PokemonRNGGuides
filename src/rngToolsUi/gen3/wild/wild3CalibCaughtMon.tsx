@@ -1,6 +1,7 @@
 import React from "react";
 import { z } from "zod";
 import {
+  RngToolForm,
   Field,
   Flex,
   ResultColumn,
@@ -11,6 +12,8 @@ import {
   FormikNumberInput,
 } from "~/components";
 import { FormikSelect } from "~/components/select";
+import { RngToolSubmit } from "~/components/rngToolForm";
+import { Typography } from "~/components/typography";
 import { nature } from "~/types/nature";
 import { Button } from "~/components/button";
 import { toOptions } from "~/utils/options";
@@ -37,11 +40,10 @@ import {
   Wild3EncounterGameData,
   Wild3MapSetups,
   Wild3SearcherOptions,
-  Wild3SearcherResultMon,
 } from "~/rngTools";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
-import type { TargetSetup } from "./wild3CalibTargetSetupInput";
-import { isFishingAction, wild3Actions } from "./utils";
+import type { FormState as TargetSetup } from "./wild3CalibTarget";
+import { gen3Leads, isFishingAction, wild3Actions } from "./utils";
 import { useWatch } from "react-hook-form";
 import { FormikGenderFilter } from "~/components/genderFilter";
 import { getIvRangeFromStats, getStatRange } from "~/types/statRange";
@@ -50,6 +52,7 @@ import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
 } from "~/components/gen3PkmFilter";
+import clamp from "lodash-es/clamp";
 import { Tooltip } from "antd";
 import { formatProbability } from "~/utils/formatProbability";
 import { Gen3IvRating, getGen3IvRating } from "../ivRater";
@@ -57,11 +60,11 @@ import { ability } from "~/types/ability";
 import { FormikAbilityFilter } from "~/components/abilityFilter";
 import { useFormContext } from "~/hooks/form";
 import { match, P } from "ts-pattern";
-import { pokerng_with_jump } from "~/utils/lcrng";
+import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
 
-export const emeraldWildGameData = getWild3EmeraldGameData();
+const emeraldWildGameData = getWild3EmeraldGameData();
 
-export const Validator = z
+const Validator = z
   .object({
     nature: z.enum(nature),
     gender: z.enum(gender),
@@ -75,7 +78,7 @@ export const Validator = z
 
 export type FormState = z.infer<typeof Validator>;
 
-export const initialValues: FormState = {
+const initialValues: FormState = {
   hpStat: 0,
   atkStat: 0,
   defStat: 0,
@@ -89,6 +92,14 @@ export const initialValues: FormState = {
   ability: "First",
   generate_even_if_impossible: false,
   rareCandy: 1,
+};
+
+type Props = {
+  targetSetup: TargetSetup;
+  setLatestHitAdv?: (hitAdv: {
+    frame_before_painting: number;
+    adv_after_painting: number;
+  }) => void;
 };
 
 export type CaughtMonResult = {
@@ -110,18 +121,18 @@ export type CaughtMonResult = {
   ivs: Ivs;
 } & Gen3IvRating;
 
-export const BATTLE_VIDEO_CONFIDENCE_RANGE = 3600; // We assume the player hits its target advance by more or less 1 minute
+const BATTLE_VIDEO_CONFIDENCE_RANGE = 3600; // We assume the player hits its target advance by more or less 1 minute
+const PAINTING_CONFIDENCE_RANGE = 600; // We assume the player hits its target advance by more or less 10s
 
 let nextUid = 0;
 
-export const createWild3SearcherOptions = async (
-  values: FormState,
-  targetSetup: TargetSetup,
-) => {
-  const initial_seed = targetSetup.targetPaintingAdvs.before;
+const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
+  const initial_seed = targetSetup.usingPaintingReseeding
+    ? targetSetup.targetFrameBeforePainting
+    : 0;
 
   const initial_advances = Math.max(
-    targetSetup.targetPaintingAdvs.after - BATTLE_VIDEO_CONFIDENCE_RANGE,
+    targetSetup.targetAdvance - BATTLE_VIDEO_CONFIDENCE_RANGE,
     0,
   );
 
@@ -129,7 +140,7 @@ export const createWild3SearcherOptions = async (
     (map) => map.map_id === targetSetup.map,
   );
   if (map_data == null) {
-    return null;
+    return [];
   }
   const map_setup: Wild3MapSetups = {
     map_data,
@@ -154,7 +165,7 @@ export const createWild3SearcherOptions = async (
   });
 
   if (minMaxIvs == null) {
-    return null;
+    return [];
   }
 
   const max_advances = BATTLE_VIDEO_CONFIDENCE_RANGE * 2;
@@ -181,7 +192,7 @@ export const createWild3SearcherOptions = async (
       },
       values.species,
     ),
-    leads: [targetSetup.lead],
+    leads: [gen3Leads[targetSetup.leadIdx]],
     map_setups: [map_setup],
     methods: gen3Methods,
     consider_cycles: true,
@@ -191,34 +202,90 @@ export const createWild3SearcherOptions = async (
     lead_cycle_speed: targetSetup.leadCycleSpeed,
   };
 
-  return opts;
+  const [min_initial_seed, max_initial_seed] =
+    !targetSetup.usingPaintingReseeding || targetSetup.isPaintingSeedConfirmed
+      ? [initial_seed, initial_seed]
+      : [
+          Math.max(0, initial_seed - PAINTING_CONFIDENCE_RANGE),
+          Math.min(0xffff, initial_seed + PAINTING_CONFIDENCE_RANGE),
+        ];
+
+  const wrappedResultsBySeed =
+    await rngTools.search_wild3_with_initial_advances_range(
+      opts,
+      min_initial_seed,
+      max_initial_seed,
+    );
+  const resultsBySeed = wrappedResultsBySeed.map(
+    (wrappedRes) => wrappedRes.vec,
+  );
+
+  const list = resultsBySeed
+    .map((results, seedIncr) => {
+      const seed = seedIncr + min_initial_seed;
+      return results
+        .filter((result) => {
+          return result.advance <= max_advances;
+        })
+        .map((result) => {
+          const probabilityHitMethodsAtAdvance =
+            result.cycle_data_by_lead?.specified_lead?.method_probability ?? 0;
+          const scoreHitMethodsAtAdvance = clamp(
+            probabilityHitMethodsAtAdvance,
+            0.01,
+            1,
+          );
+
+          const distanceFromTargetAfter = Math.abs(
+            targetSetup.targetAdvance - result.advance,
+          );
+          const distanceFromTargetBefore = Math.abs(
+            targetSetup.targetFrameBeforePainting - seed,
+          );
+          const distanceFromTargetScore =
+            distanceFromTargetAfter + distanceFromTargetBefore ** 1.5;
+          // after has more chance to fluctuate than before.
+          // distance = 100 => scoreBefore = 1000
+
+          const score = distanceFromTargetScore / scoreHitMethodsAtAdvance;
+
+          return {
+            advance: {
+              frame_before_painting: seed,
+              adv_after_painting: result.advance,
+            },
+            targetAdvance: {
+              frame_before_painting: targetSetup.targetFrameBeforePainting,
+              adv_after_painting: targetSetup.targetAdvance,
+            },
+            method: result.method,
+            score,
+            probabilityHitMethodsAtAdvance,
+            distanceFromTargetAfter,
+            distanceFromTargetBefore,
+            uid: nextUid++,
+            ...getGen3IvRating(result.ivs),
+            statsWithRareCandy: createAllStats0(),
+            ivs: result.ivs,
+          };
+        });
+    })
+    .flat();
+
+  list.sort((res1, res2) => {
+    return res1.score - res2.score;
+  });
+
+  return updateResultsForRareCandy(
+    list,
+    values.species,
+    values.lvl,
+    values.nature,
+    values.rareCandy,
+  );
 };
 
-export const createUiResultBase = (
-  result: Wild3SearcherResultMon,
-  targetSetup: TargetSetup,
-) => {
-  return {
-    advance: {
-      frame_before_painting: pokerng_with_jump(
-        result.seed,
-        2 ** 32 - result.advance,
-      ), // equivalent to reversing <result.advance> advances
-      adv_after_painting: result.advance,
-    },
-    targetAdvance: {
-      frame_before_painting: targetSetup.targetPaintingAdvs.before,
-      adv_after_painting: targetSetup.targetPaintingAdvs.after,
-    },
-    method: result.method,
-    uid: nextUid++,
-    ...getGen3IvRating(result.ivs),
-    statsWithRareCandy: createAllStats0(),
-    ivs: result.ivs,
-  };
-};
-
-export const getPossibleEncountersForMap = (targetSetup: TargetSetup) => {
+const getPossibleEncountersForMap = (targetSetup: TargetSetup) => {
   const map_data = emeraldWildGameData.maps_data.find(
     (map) => map.map_id === targetSetup.map,
   );
@@ -254,7 +321,7 @@ export const getPossibleEncountersForMap = (targetSetup: TargetSetup) => {
   return list;
 };
 
-export const Fields = ({
+const Fields = ({
   targetSetup,
   onRareCandyChange,
 }: {
@@ -412,7 +479,7 @@ export const Fields = ({
   return <FormFieldTable fields={fields} />;
 };
 
-export const updateResultsForRareCandy = async (
+const updateResultsForRareCandy = async (
   results: CaughtMonResult[],
   species: Species,
   initialLvl: number,
@@ -435,107 +502,274 @@ export const updateResultsForRareCandy = async (
   );
 };
 
-export const confidenceRatingColumn: ResultColumn<CaughtMonResult> = {
-  title: (
-    <span>
-      Confidence <br /> Rating
-    </span>
-  ),
-  key: "Confidence Rating",
-  dataIndex: "score",
-  render: (score, values) => {
-    const ratingTxt = match(score)
-      .with(P.number.between(0, 500), () => "Very High")
-      .with(P.number.between(500, 1000), () => "High")
-      .with(P.number.between(1000, 2000), () => "Medium")
-      .with(P.number.between(2000, 10000), () => "Low")
-      .otherwise(() => "Very Low");
+export const Wild3CalibCaughtMon = ({
+  targetSetup,
+  setLatestHitAdv,
+}: Props) => {
+  const [lastRareCandyValue, setLastRareCandyValue] = React.useState(1);
+  const [results, setResults] = React.useState<CaughtMonResult[]>([]);
+  const {
+    targetMethod,
+    targetAdvance,
+    targetFrameBeforePainting: targetFrameBeforePaintingInput,
+    usingPaintingReseeding,
+    isPaintingSeedConfirmed,
+  } = targetSetup;
 
-    const { method } = values;
-    const prob = formatProbability(values.probabilityHitMethodsAtAdvance);
+  const targetFrameBeforePainting = usingPaintingReseeding
+    ? targetFrameBeforePaintingInput
+    : 0;
 
-    const dist = formatLargeInteger(
-      values.distanceFromTargetBefore + values.distanceFromTargetAfter,
+  const onSubmit: RngToolSubmit<FormState> = async (values) => {
+    setResults(await searchCaughtMon(values, targetSetup));
+  };
+
+  const getAdvDiffTxt = (
+    result: CaughtMonResult,
+    prop: "adv_after_painting" | "frame_before_painting",
+  ) => {
+    const diffWithTarget = result.advance[prop] - result.targetAdvance[prop];
+    const valStr = formatLargeInteger(result.advance[prop]);
+
+    if (diffWithTarget === 0) {
+      const suffix =
+        prop === "frame_before_painting" && !isPaintingSeedConfirmed
+          ? " (Target)"
+          : "";
+      return `${valStr}${suffix}`;
+    }
+    const sign = diffWithTarget > 0 ? "+" : "";
+
+    return `${valStr} (${sign}${formatLargeInteger(diffWithTarget)})`;
+  };
+
+  const columns: ResultColumn<CaughtMonResult>[] = [
+    {
+      title: (
+        <>
+          Update <br /> Calibration
+        </>
+      ),
+      key: "Update Calibration",
+      dataIndex: "advance",
+      show: setLatestHitAdv != null,
+      render: (advance, values) => {
+        const isTryingToGetATargetPokemon =
+          !usingPaintingReseeding || isPaintingSeedConfirmed;
+
+        if (
+          isTryingToGetATargetPokemon &&
+          values.advance.adv_after_painting === targetAdvance &&
+          values.advance.frame_before_painting === targetFrameBeforePainting &&
+          values.method === targetMethod
+        ) {
+          return "Target Pokémon";
+        }
+
+        return (
+          <Button
+            type="text"
+            color="PrimaryText"
+            trackerId="wild3CalibCaughtMon_adv"
+            onClick={() => {
+              setLatestHitAdv?.(advance);
+              setResults([]);
+            }}
+          >
+            <Icon name="Update" size={20} />
+          </Button>
+        );
+      },
+    },
+    {
+      title: (
+        <>
+          Frame before <br /> painting
+        </>
+      ),
+      key: "frame_before_painting",
+      dataIndex: "advance",
+      show: usingPaintingReseeding,
+      render: (_, values) => {
+        return getAdvDiffTxt(values, "frame_before_painting");
+      },
+    },
+    {
+      title: usingPaintingReseeding ? (
+        <>
+          Advance after <br /> painting
+        </>
+      ) : (
+        "Advance"
+      ),
+      key: "frame_after_painting",
+      dataIndex: "advance",
+      render: (_, values) => {
+        const diffTxt = getAdvDiffTxt(values, "adv_after_painting");
+        const title = formatEmeraldTargetFromPainting(
+          values.advance.frame_before_painting,
+          values.advance.adv_after_painting,
+        );
+        return <Tooltip title={title}>{diffTxt}</Tooltip>;
+      },
+    },
+    {
+      title: (
+        <>
+          Confidence <br /> Rating
+        </>
+      ),
+      key: "Confidence Rating",
+      dataIndex: "score",
+      render: (score, values) => {
+        const ratingTxt = match(score)
+          .with(P.number.between(0, 500), () => "Very High")
+          .with(P.number.between(500, 1000), () => "High")
+          .with(P.number.between(1000, 2000), () => "Medium")
+          .with(P.number.between(2000, 10000), () => "Low")
+          .otherwise(() => "Very Low");
+
+        const { method } = values;
+        const prob = formatProbability(values.probabilityHitMethodsAtAdvance);
+
+        const dist =
+          values.distanceFromTargetBefore + values.distanceFromTargetAfter;
+
+        const title = `Distance from target: ${dist} advances. Method ${method} (${prob} likelihood)`;
+        return <Tooltip title={title}>{ratingTxt}</Tooltip>;
+      },
+    },
+    {
+      title: "Remove",
+      dataIndex: "advance",
+      render: (_, values) => {
+        return (
+          <Button
+            type="text"
+            color="PrimaryText"
+            trackerId="Wild3CalibCaughtMon_remove"
+            onClick={() => {
+              setResults(results.filter((res) => res !== values));
+            }}
+          >
+            <Icon name="Close" />
+          </Button>
+        );
+      },
+    },
+    {
+      title: `Stats with x${lastRareCandyValue ?? 0} Rare Candy`,
+      type: "group",
+      columns: [
+        {
+          title: "HP",
+          dataIndex: "statsWithRareCandy",
+          render: (statsWithRareCandy) => {
+            return statsWithRareCandy.hp;
+          },
+        },
+        {
+          title: "Atk",
+          dataIndex: "statsWithRareCandy",
+          render: (statsWithRareCandy) => {
+            return statsWithRareCandy.atk;
+          },
+        },
+        {
+          title: "Def",
+          dataIndex: "statsWithRareCandy",
+          render: (statsWithRareCandy) => {
+            return statsWithRareCandy.def;
+          },
+        },
+        {
+          title: "SpA",
+          dataIndex: "statsWithRareCandy",
+          render: (statsWithRareCandy) => {
+            return statsWithRareCandy.spa;
+          },
+        },
+        {
+          title: "SpD",
+          dataIndex: "statsWithRareCandy",
+          render: (statsWithRareCandy) => {
+            return statsWithRareCandy.spd;
+          },
+        },
+        {
+          title: "Spe",
+          dataIndex: "statsWithRareCandy",
+          render: (statsWithRareCandy) => {
+            return statsWithRareCandy.spe;
+          },
+        },
+      ],
+    },
+    {
+      title: (
+        <Tooltip title="Rating from the stat judge in the building behind the Pokémon Center at the Battle Frontier.">
+          <div>
+            IV Rating <Icon name="InformationCircle" size={16} />
+          </div>
+        </Tooltip>
+      ),
+      key: "ivRating",
+      type: "group",
+      columns: [
+        {
+          title: "Sum IVs",
+          dataIndex: "sumIvsMsg",
+        },
+        {
+          title: "Highest IV",
+          dataIndex: "highestStatIds",
+          render: (highestStatIds, values) => {
+            return `${values.highestIvMsg} (${highestStatIds.map((statId) => statId.toUpperCase()).join(", ")})`;
+          },
+        },
+      ],
+    },
+  ];
+
+  const onRareCandyChange = async (
+    species: Species,
+    lvl: number,
+    nature: Nature,
+    rareCandy: number,
+  ) => {
+    if (lastRareCandyValue === rareCandy) {
+      return;
+    }
+    setLastRareCandyValue(rareCandy);
+
+    setResults(
+      await updateResultsForRareCandy(results, species, lvl, nature, rareCandy),
     );
+  };
 
-    const title = `Distance from target: ${dist} advances. Method ${method} (${prob} likelihood)`;
-    return <Tooltip title={title}>{ratingTxt}</Tooltip>;
-  },
+  return (
+    <Flex vertical gap={8}>
+      <Typography.Title level={5} p={0} m={0}>
+        Caught Pokémon
+      </Typography.Title>
+      <RngToolForm<FormState, CaughtMonResult>
+        formContainerId="generate-wild3-caught"
+        columns={columns}
+        results={results}
+        initialValues={initialValues}
+        validationSchema={Validator}
+        onSubmit={onSubmit}
+        submitTrackerId="generate_wild3_caught"
+        submitButtonLabel="Find advances matching caught Pokémon"
+        rowKey="uid"
+      >
+        <Flex vertical ml={20}>
+          <Fields
+            targetSetup={targetSetup}
+            onRareCandyChange={onRareCandyChange}
+          />
+        </Flex>
+      </RngToolForm>
+    </Flex>
+  );
 };
-
-export const ivInfoColumns = (
-  lastRareCandyValue: number,
-): ResultColumn<CaughtMonResult>[] => [
-  {
-    title: `Stats with x${lastRareCandyValue ?? 0} Rare Candy`,
-    type: "group",
-    columns: [
-      {
-        title: "HP",
-        dataIndex: "statsWithRareCandy",
-        render: (statsWithRareCandy) => {
-          return statsWithRareCandy.hp;
-        },
-      },
-      {
-        title: "Atk",
-        dataIndex: "statsWithRareCandy",
-        render: (statsWithRareCandy) => {
-          return statsWithRareCandy.atk;
-        },
-      },
-      {
-        title: "Def",
-        dataIndex: "statsWithRareCandy",
-        render: (statsWithRareCandy) => {
-          return statsWithRareCandy.def;
-        },
-      },
-      {
-        title: "SpA",
-        dataIndex: "statsWithRareCandy",
-        render: (statsWithRareCandy) => {
-          return statsWithRareCandy.spa;
-        },
-      },
-      {
-        title: "SpD",
-        dataIndex: "statsWithRareCandy",
-        render: (statsWithRareCandy) => {
-          return statsWithRareCandy.spd;
-        },
-      },
-      {
-        title: "Spe",
-        dataIndex: "statsWithRareCandy",
-        render: (statsWithRareCandy) => {
-          return statsWithRareCandy.spe;
-        },
-      },
-    ],
-  },
-  {
-    title: (
-      <Tooltip title="Rating from the stat judge in the building behind the Pokémon Center at the Battle Frontier.">
-        <div>
-          IV Rating <Icon name="InformationCircle" size={16} />
-        </div>
-      </Tooltip>
-    ),
-    key: "ivRating",
-    type: "group",
-    columns: [
-      {
-        title: "Sum IVs",
-        dataIndex: "sumIvsMsg",
-      },
-      {
-        title: "Highest IV",
-        dataIndex: "highestStatIds",
-        render: (highestStatIds, values) => {
-          return `${values.highestIvMsg} (${highestStatIds.map((statId) => statId.toUpperCase()).join(", ")})`;
-        },
-      },
-    ],
-  },
-];

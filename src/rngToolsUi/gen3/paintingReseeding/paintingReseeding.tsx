@@ -344,6 +344,7 @@ export const EmeraldPaintingReseeding = ({
           <Flex>
             <Button
               trackerId="wild3_painting_force_calib"
+              danger
               onClick={() => {
                 setBattleVideoAdvAfterPaintingConfirmed(
                   APPROX_ADV_PAINTING_TO_BATTLE_VIDEO,

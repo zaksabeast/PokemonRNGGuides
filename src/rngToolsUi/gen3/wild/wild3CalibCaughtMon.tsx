@@ -1,7 +1,6 @@
 import React from "react";
 import { z } from "zod";
 import {
-  RngToolForm,
   Field,
   Flex,
   ResultColumn,
@@ -12,8 +11,6 @@ import {
   FormikNumberInput,
 } from "~/components";
 import { FormikSelect } from "~/components/select";
-import { RngToolSubmit } from "~/components/rngToolForm";
-import { Typography } from "~/components/typography";
 import { nature } from "~/types/nature";
 import { Button } from "~/components/button";
 import { toOptions } from "~/utils/options";
@@ -53,7 +50,6 @@ import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
 } from "~/components/gen3PkmFilter";
-import clamp from "lodash-es/clamp";
 import { Tooltip } from "antd";
 import { formatProbability } from "~/utils/formatProbability";
 import { Gen3IvRating, getGen3IvRating } from "../ivRater";
@@ -61,7 +57,6 @@ import { ability } from "~/types/ability";
 import { FormikAbilityFilter } from "~/components/abilityFilter";
 import { useFormContext } from "~/hooks/form";
 import { match, P } from "ts-pattern";
-import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
 import { pokerng_with_jump } from "~/utils/lcrng";
 
 export const emeraldWildGameData = getWild3EmeraldGameData();
@@ -94,14 +89,6 @@ export const initialValues: FormState = {
   ability: "First",
   generate_even_if_impossible: false,
   rareCandy: 1,
-};
-
-type Props = {
-  targetSetup: TargetSetup;
-  setLatestHitAdv?: (hitAdv: {
-    frame_before_painting: number;
-    adv_after_painting: number;
-  }) => void;
 };
 
 export type CaughtMonResult = {
@@ -229,59 +216,6 @@ export const createUiResultBase = (
     statsWithRareCandy: createAllStats0(),
     ivs: result.ivs,
   };
-};
-
-const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
-  const opts = await createWild3SearcherOptions(values, targetSetup);
-  if (opts === null) {
-    return [];
-  }
-
-  const wrappedResultsBySeed = await rngTools.search_wild3(opts);
-
-  const resultsBySeed = wrappedResultsBySeed.flatMap(
-    (wrappedRes) => wrappedRes.vec,
-  );
-
-  const list = resultsBySeed
-    .filter((result) => {
-      return result.advance <= opts.initial_advances + opts.max_advances;
-    })
-    .map((result) => {
-      const probabilityHitMethodsAtAdvance =
-        result.cycle_data_by_lead?.specified_lead?.method_probability ?? 0;
-      const scoreHitMethodsAtAdvance = clamp(
-        probabilityHitMethodsAtAdvance,
-        0.01,
-        1,
-      );
-
-      const distanceFromTargetAfter = Math.abs(
-        targetSetup.targetPaintingAdvs.after - result.advance,
-      );
-      const score = distanceFromTargetAfter / scoreHitMethodsAtAdvance;
-
-      return {
-        ...createUiResultBase(result, targetSetup),
-        score,
-        probabilityHitMethodsAtAdvance,
-        distanceFromTargetAfter,
-        distanceFromTargetBefore: 0,
-      };
-    })
-    .flat();
-
-  list.sort((res1, res2) => {
-    return res1.score - res2.score;
-  });
-
-  return updateResultsForRareCandy(
-    list,
-    values.species,
-    values.lvl,
-    values.nature,
-    values.rareCandy,
-  );
 };
 
 export const getPossibleEncountersForMap = (targetSetup: TargetSetup) => {
@@ -605,148 +539,3 @@ export const ivInfoColumns = (
     ],
   },
 ];
-
-export const Wild3CalibCaughtMon = ({
-  targetSetup,
-  setLatestHitAdv,
-}: Props) => {
-  const [lastRareCandyValue, setLastRareCandyValue] = React.useState(1);
-  const [results, setResults] = React.useState<CaughtMonResult[]>([]);
-  const { targetMethod, targetPaintingAdvs } = targetSetup;
-  const usingPaintingReseeding = targetSetup.targetPaintingAdvs.before > 0;
-
-  const onSubmit: RngToolSubmit<FormState> = async (values) => {
-    setResults(await searchCaughtMon(values, targetSetup));
-  };
-
-  const getAdvDiffTxt = (result: CaughtMonResult) => {
-    const diffWithTarget =
-      result.advance.adv_after_painting -
-      result.targetAdvance.adv_after_painting;
-    const valStr = formatLargeInteger(result.advance.adv_after_painting);
-
-    if (diffWithTarget === 0) {
-      return `${valStr} (Target)`;
-    }
-    const sign = diffWithTarget > 0 ? "+" : "";
-
-    return `${valStr} (${sign}${formatLargeInteger(diffWithTarget)})`;
-  };
-
-  const columns: ResultColumn<CaughtMonResult>[] = [
-    {
-      title: (
-        <span>
-          Update <br /> Calibration
-        </span>
-      ),
-      key: "Update Calibration",
-      dataIndex: "advance",
-      show: setLatestHitAdv != null,
-      render: (advance, values) => {
-        if (
-          values.advance.frame_before_painting === targetPaintingAdvs.before &&
-          values.advance.adv_after_painting === targetPaintingAdvs.after &&
-          values.method === targetMethod
-        ) {
-          return "Target Pokémon";
-        }
-
-        return (
-          <Button
-            type="text"
-            color="PrimaryText"
-            trackerId="wild3CalibCaughtMon_adv"
-            onClick={() => {
-              setLatestHitAdv?.(advance);
-              setResults([]);
-            }}
-          >
-            <Icon name="Update" size={20} />
-          </Button>
-        );
-      },
-    },
-    {
-      title: usingPaintingReseeding ? (
-        <span>
-          Advance after <br /> painting
-        </span>
-      ) : (
-        "Advance"
-      ),
-      key: "frame_after_painting",
-      dataIndex: "advance",
-      render: (_, values) => {
-        const diffTxt = getAdvDiffTxt(values);
-        const title = formatEmeraldTargetFromPainting(
-          values.advance.frame_before_painting,
-          values.advance.adv_after_painting,
-        );
-        return <Tooltip title={title}>{diffTxt}</Tooltip>;
-      },
-    },
-    confidenceRatingColumn,
-    {
-      title: "Remove",
-      dataIndex: "advance",
-      render: (_, values) => {
-        return (
-          <Button
-            type="text"
-            color="PrimaryText"
-            trackerId="Wild3CalibCaughtMon_remove"
-            onClick={() => {
-              setResults(results.filter((res) => res !== values));
-            }}
-          >
-            <Icon name="Close" />
-          </Button>
-        );
-      },
-    },
-    ...ivInfoColumns(lastRareCandyValue),
-  ];
-
-  const onRareCandyChange = async (
-    species: Species,
-    lvl: number,
-    nature: Nature,
-    rareCandy: number,
-  ) => {
-    if (lastRareCandyValue === rareCandy) {
-      return;
-    }
-    setLastRareCandyValue(rareCandy);
-
-    setResults(
-      await updateResultsForRareCandy(results, species, lvl, nature, rareCandy),
-    );
-  };
-
-  return (
-    <Flex vertical gap={8}>
-      <Typography.Title level={5} p={0} m={0}>
-        Caught Pokémon
-      </Typography.Title>
-      <RngToolForm<FormState, CaughtMonResult>
-        formContainerId="generate-wild3-caught"
-        columns={columns}
-        results={results}
-        initialValues={initialValues}
-        validationSchema={Validator}
-        onSubmit={onSubmit}
-        submitTrackerId="generate_wild3_caught"
-        submitButtonLabel="Find advances matching caught Pokémon"
-        rowKey="uid"
-      >
-        <Flex vertical ml={20}>
-          <Fields
-            targetSetup={targetSetup}
-            onRareCandyChange={onRareCandyChange}
-          />
-        </Flex>
-      </RngToolForm>
-    </Flex>
-  );
-};

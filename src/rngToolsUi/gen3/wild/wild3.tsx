@@ -21,7 +21,7 @@ import {
 import { gen3Methods } from "~/types";
 
 /*
-Possible user flows (for testing): 
+Possible user flows (documentation for testing): 
  - Case 1) Step 1: Low target advance without painting. Step 2: Too low to create battle video, so must skip.
       Step1: Abra, no filter, adv 1005, Wild1. (Abra, Lvl 7, Male, InnerFocus, Lonely, HP 21, ATK 8, DEF 7, SPA 20, SPD 14, SPE 18)
       Step2: Skip.
@@ -58,7 +58,6 @@ const TargetSetupAtomSchema = z.object({
       roamerState: z.enum(wild3RoamerStates),
       massOutbreakState: z.enum(wild3MassOutbreakStates),
       action: z.enum(wild3Actions),
-      // Limitation: value in Select must be a primitive, so we use the index instead of Gen3Lead.
       lead: gen3LeadSchema,
       targetPaintingAdvs: z.object({
         before: z.number().int().min(0).max(0xffffffff),

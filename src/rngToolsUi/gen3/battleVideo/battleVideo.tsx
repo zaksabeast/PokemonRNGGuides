@@ -1,4 +1,4 @@
-import { Flex, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import React from "react";
 import z from "zod";
 import {
@@ -13,6 +13,7 @@ import {
   FormikSelect,
   Field,
   Button,
+  Flex,
 } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import InstructionsNoBattleNoExisting from "./instructions_no_battle_no_existing.mdx";
@@ -662,8 +663,7 @@ export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
       )}
 
       {setBattleVideoAdv != null && (
-        <Flex gap={10}>
-          <br />
+        <Flex gap={10} mt={20}>
           <div>Step outcome: </div>
           {(battleVideoInfo != null || initialValues.isUpdatingExisting) && (
             <Button

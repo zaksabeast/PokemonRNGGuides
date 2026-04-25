@@ -5,7 +5,7 @@ import {
   TargetSetup,
   Wild3CalibTargetSetupInput,
 } from "./wild3CalibTargetSetupInput";
-import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon";
+import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon.component";
 import {
   Gen3Console,
   gen3ConsoleFpsMap,
@@ -251,17 +251,26 @@ export const Wild3Calib = ({
     );
   };
 
+  const inputForms = () => {
+    return (
+      <>
+        {targetSetupInputForm()}
+        {battleVideoInfoInputForm()}
+      </>
+    );
+  };
+
   const usingBattleVideo =
     (battleVideoInfo?.battleVideoAdvAfterPainting ?? 0) > 0;
+
   return (
     <Flex gap={32} vertical>
-      {targetSetupProp == null && targetSetupInputForm()}
-      {battleVideoInfoProp == null && battleVideoInfoInputForm()}
-      {infoFromPrevSteps()}
+      {targetSetupProp == null ? inputForms() : infoFromPrevSteps()}
 
       {canDoCalib && (
         <>
           <FormFieldTable fields={calibFields} />
+
           {displayInstructions &&
             (usingBattleVideo ? (
               <Instructions_calib_with_battle_video />

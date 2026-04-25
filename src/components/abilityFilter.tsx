@@ -3,7 +3,7 @@ import React from "react";
 import { FormikRadio } from "./radio";
 import { GenericForm, GuaranteeFormNameType } from "~/types";
 import { useField } from "~/hooks/form";
-import { ability } from "~/types/ability";
+import { ability12, ability12H } from "~/types/ability";
 
 type FormikAbilityFilterProps<FormState extends GenericForm> = {
   name: GuaranteeFormNameType<FormState, AbilityType | null>;
@@ -16,10 +16,18 @@ type FormikAbilityFilterProps<FormState extends GenericForm> = {
   displayHiddenAbility?: boolean;
 };
 
-const abilityOptionsIfNoSpecies = ([null, ...ability] as const).map((abil) => ({
-  label: abil ?? ("Any" as const),
-  value: abil,
-}));
+const formatAbility = (ability: AbilityType | null) => ({
+  label: ability ?? "Any",
+  value: ability,
+});
+
+const ability12OptionsIfNoSpecies = ([null, ...ability12] as const).map(
+  formatAbility,
+);
+
+const ability12HOptionsIfNoSpecies = ([null, ...ability12H] as const).map(
+  formatAbility,
+);
 
 const getAbilityFilterOptions = async (
   species: Species,
@@ -80,7 +88,7 @@ export const FormikAbilityFilter = <FormState extends GenericForm>({
   name,
   species,
   permitAny = true,
-  displayHiddenAbility = true,
+  displayHiddenAbility = false,
   mergeFirstSecondIfSameAbility = false,
 }: FormikAbilityFilterProps<FormState>) => {
   const [{ value }, , { setValue }] = useField<AbilityType | null>(name);
@@ -117,12 +125,16 @@ export const FormikAbilityFilter = <FormState extends GenericForm>({
     });
   }, [mergeFirstSecondIfSameAbility, permitAny, setValue, species, value]);
 
-  if (species == null || displayHiddenAbility) {
+  if (species == null) {
     return (
       <FormikRadio<FormState>
         name={name}
         // @ts-expect-error -- prop types guarantee this is correct
-        options={abilityOptionsIfNoSpecies}
+        options={
+          displayHiddenAbility
+            ? ability12HOptionsIfNoSpecies
+            : ability12OptionsIfNoSpecies
+        }
       />
     );
   }

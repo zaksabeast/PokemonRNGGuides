@@ -4,7 +4,7 @@ import { FormikSwitch } from "~/components/switch";
 import { FormikSelect } from "~/components/select";
 import { nature } from "~/types/nature";
 import { IvInput, IvsSchema } from "~/components/ivInput";
-import { ability } from "~/types/ability";
+import { ability12H } from "~/types/ability";
 import { gender } from "~/types/gender";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { z } from "zod";
@@ -47,7 +47,7 @@ export type PkmFilterFields = {
 export const pkmFilterSchema = z.object({
   filter_shiny: z.boolean(),
   filter_nature: z.enum(nature).nullable(),
-  filter_ability: z.enum(ability).nullable(),
+  filter_ability: z.enum(ability12H).nullable(),
   filter_gender: z.enum(gender).nullable(),
   filter_min_ivs: IvsSchema,
   filter_max_ivs: IvsSchema,

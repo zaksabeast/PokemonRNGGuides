@@ -247,6 +247,7 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
       targetSetup={targetSetup}
       battleVideoInfo={battleVideoInfoWithFallback}
       clearAll={clearAll}
+      displayInstructions
     />
   );
 };

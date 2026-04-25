@@ -22,16 +22,22 @@ import { BattleVideoInfoInput } from "./wild3CalibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { formatHex } from "~/utils/formatHex";
 
+import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
+import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
+import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
+
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
   battleVideoInfo: BattleVideoInfo;
   clearAll?: () => void;
+  displayInstructions?: boolean;
 }>;
 
 export const Wild3Calib = ({
   targetSetup: targetSetupProp,
   battleVideoInfo: battleVideoInfoProp,
   clearAll,
+  displayInstructions = true,
 }: Props) => {
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     targetSetupProp ?? null,
@@ -57,6 +63,7 @@ export const Wild3Calib = ({
 
   const targetSetupInputForm = () => (
     <Flex vertical gap={10}>
+      {displayInstructions && <Instructions_calib_skip_setup />}
       <Wild3CalibTargetSetupInput setTargetSetup={setTargetSetup} />
       {targetSetupResult != null && (
         <FormFieldTable
@@ -244,6 +251,8 @@ export const Wild3Calib = ({
     );
   };
 
+  const usingBattleVideo =
+    (battleVideoInfo?.battleVideoAdvAfterPainting ?? 0) > 0;
   return (
     <Flex gap={32} vertical>
       {targetSetupProp == null && targetSetupInputForm()}
@@ -253,6 +262,13 @@ export const Wild3Calib = ({
       {canDoCalib && (
         <>
           <FormFieldTable fields={calibFields} />
+          {displayInstructions &&
+            (usingBattleVideo ? (
+              <Instructions_calib_with_battle_video />
+            ) : (
+              <Instructions_calib_without_battle_video />
+            ))}
+
           <MultiTimer
             milliseconds={milliseconds}
             labels={labels}

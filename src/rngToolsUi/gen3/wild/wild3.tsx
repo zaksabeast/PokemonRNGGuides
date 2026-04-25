@@ -23,6 +23,7 @@ import { gen3Methods } from "~/types";
 /*
 Possible user flows: 
  - Step 1: Low target advance without painting. Step 2: Too low to create battle video, so must skip.
+    Step1: Abra, no filter, adv 1005, Wild1. Step2: Skip. Step3: Nincada, Lvl 6, Female, Adamant, 19/12/16/8/9/10
  - Step 1: Target advance without painting. Step 2: Press "Skip creating battle video".
  - Step 1: Target advance without painting. Step 2: Skip the step without confirming. Step 3: Assumes no battle video was created.
  - Step 1: Target advance without painting. Step 2: Create battle video.

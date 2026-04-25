@@ -1,10 +1,6 @@
 import {
-  rngTools,
   Gen3Method,
-  Wild3GeneratorOptions,
   Wild3Action,
-  Wild3GeneratorResult,
-  Wild3EncounterGameData,
   Wild3FeebasState,
   Wild3RoamerState,
   Wild3MassOutbreakState,
@@ -23,16 +19,8 @@ import {
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
-import {
-  getPkmFilterInitialValues,
-  pkmFilterFieldsToRustInput,
-} from "~/components/pkmFilter";
 import React from "react";
 import { z } from "zod";
-import {
-  gen3PkmFilterFieldsToRustInput,
-  getGen3PkmFilterInitialValues,
-} from "~/components/gen3PkmFilter";
 
 import {
   formatMapName,
@@ -50,14 +38,13 @@ import {
 import { useWatch } from "react-hook-form";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
-import { nature_from_pid } from "~/types";
 import { formatHex } from "~/utils/formatHex";
 import {
   AVERAGE_LEAD_CYCLE_SPEED,
   LeadCycleSpeedLabel,
   LeadCycleSpeedSelector,
 } from "./leadCycleSpeedSelector";
-import { formatProbability } from "~/utils/formatProbability";
+import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -87,10 +74,7 @@ const Validator = z.object({
 });
 
 type Props = {
-  setTargetSetup: (
-    targetSetup: TargetSetup | null,
-    targetDisplayInfo: React.ReactNode,
-  ) => void;
+  setTargetSetup: (targetSetup: TargetSetup | null) => void;
 };
 
 export type TargetSetup = {
@@ -357,160 +341,11 @@ export const Wild3CalibTargetSetupInputFields = () => {
   return <FormFieldTable fields={fields} />;
 };
 
-const getProbabilityInfo = async (
-  res: Wild3GeneratorResult,
-  lead_cycle_speed: number,
-) => {
-  if (res.cycle_range == null) {
-    return null;
-  }
-
-  const info = await rngTools.calculate_cycle_data(
-    res.cycle_range,
-    lead_cycle_speed,
-  );
-
-  const ideal_lead_spd = await rngTools.calculate_ideal_lead_pid_cycle_count(
-    res.cycle_range,
-  );
-
-  const ideal_info = await rngTools.calculate_cycle_data(
-    res.cycle_range,
-    ideal_lead_spd,
-  );
-
-  const leadDesc =
-    lead_cycle_speed === AVERAGE_LEAD_CYCLE_SPEED
-      ? "with average lead cycle speed"
-      : `with lead cycle speed ${lead_cycle_speed}`;
-
-  const showIdealInfo =
-    info.method_probability < 0.99 && lead_cycle_speed !== ideal_lead_spd;
-
-  return (
-    <Flex ml={30}>
-      <div>
-        {`${formatProbability(info.method_probability)} likelihood to hit
-      method ${res.method} ${leadDesc}.`}
-      </div>
-      {showIdealInfo && (
-        <div>
-          Note: Ideal lead cycle speed to hit the target Pokémon is{" "}
-          {ideal_lead_spd}. ({formatProbability(ideal_info.method_probability)}{" "}
-          likelihood)
-        </div>
-      )}
-    </Flex>
-  );
-};
-
-const getLeadCycleSpeed = (values: TargetSetup) => {
-  if (values.lead === "Egg") {
-    return 0;
-  }
-
-  return values.usingAverageLeadCycleSpeed
-    ? AVERAGE_LEAD_CYCLE_SPEED
-    : values.leadCycleSpeed;
-};
-
-const resultToDisplayInfo = async (
-  res: Wild3GeneratorResult,
-  encounter: Wild3EncounterGameData,
-  lead_cycle_speed: number,
-) => {
-  const { species } = encounter.species_data;
-
-  const nature = nature_from_pid(res.pid);
-
-  const stats = await rngTools.calculate_stats(
-    species,
-    res.lvl,
-    nature,
-    res.ivs,
-    { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
-  );
-
-  const gender = await rngTools.get_species_gender_from_pid(species, res.pid);
-  const { ivs } = res;
-
-  const probabilityInfo = await getProbabilityInfo(res, lead_cycle_speed);
-
-  return (
-    <>
-      <div>
-        {species}, Lvl {res.lvl}, {gender}, {nature}, HP {stats.hp}, ATK{" "}
-        {stats.atk}, DEF {stats.def}, SPA {stats.spa}, SPD {stats.spd}, SPE{" "}
-        {stats.spe}
-      </div>
-      <div>
-        PID: {formatHex(res.pid)}, IVS: {ivs.hp}/{ivs.atk}/{ivs.def}/{ivs.spa}/
-        {ivs.spd}/{ivs.spe}
-      </div>
-      {probabilityInfo}
-    </>
-  );
-};
-
 export const Wild3CalibTargetSetupInput = ({ setTargetSetup }: Props) => {
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
-
-    const lead_cycle_speed = getLeadCycleSpeed(targetSetup);
-
-    const opts: Wild3GeneratorOptions = {
-      tid: 0,
-      sid: 0,
-      map_idx: 0,
-      action: targetSetup.action,
-      methods: [targetSetup.targetMethod],
-      lead: targetSetup.lead,
-      filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
-      gen3_filter: gen3PkmFilterFieldsToRustInput(
-        getGen3PkmFilterInitialValues(),
-        null,
-      ),
-      consider_cycles: true,
-      consider_rng_manipulated_lead_pid: true,
-      generate_even_if_impossible: true,
-      roamer_state: targetSetup.roamerState,
-      mass_outbreak_state: targetSetup.massOutbreakState,
-      feebas_state: targetSetup.feebasState,
-      lead_cycle_speed,
-    };
-
-    const map_data = emeraldWildGameData.maps_data.find(
-      (table) => table.map_id === targetSetup.map,
-    );
-    if (map_data == null) {
-      return setTargetSetup(null, null);
-    }
-
-    const results = await rngTools.generate_gen3_wild_wasm(
-      targetSetup.targetPaintingAdvs.before,
-      targetSetup.targetPaintingAdvs.after,
-      opts,
-      map_data,
-    );
-
-    if (results.length === 0) {
-      return setTargetSetup(null, null);
-    }
-
-    const result = results[0];
-    const encounter = await rngTools.get_encounter_for_wild3_map_game_data(
-      map_data,
-      targetSetup.action,
-      result.encounter_idx,
-    );
-    if (encounter == null) {
-      return setTargetSetup(null, null);
-    }
-
-    setTargetSetup(
-      targetSetup,
-      await resultToDisplayInfo(result, encounter, lead_cycle_speed),
-    );
+    const uiResult = await calculateTargetSetupResult(targetSetup);
+    setTargetSetup(uiResult == null ? null : targetSetup);
   };
 
   const initialValues = getInitialValues();

@@ -13,3 +13,8 @@ interface Window {
 }
 
 declare const window: Window;
+
+declare module "*.mdx" {
+  import * as React from "react";
+  export default React.ComponentType<void>;
+}

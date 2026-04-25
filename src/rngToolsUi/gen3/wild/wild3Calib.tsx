@@ -1,27 +1,21 @@
-import React, { useState } from "react";
-import {
-  Flex,
-  MultiTimer,
-  Field,
-  Input,
-  Select,
-  NumberInput,
-} from "~/components";
+import React from "react";
+import { Flex, MultiTimer, Field, Input } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
 import {
   TargetSetup,
   Wild3CalibTargetSetupInput,
 } from "./wild3CalibTargetSetupInput";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon";
+import { gen3ConsoleFpsMap } from "~/types/console";
 import {
-  Gen3Console,
-  gen3ConsoleFpsMap,
-  gen3ConsoleOptions,
-} from "~/types/console";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
+  formatLargeInteger,
+  formatLargeIntegerWithSign,
+} from "~/utils/formatLargeInteger";
 import { formatActionName, formatLeadName, formatMapName } from "./utils";
 import { BattleVideoInfo } from "../battleVideo/battleVideo";
 import { AllOrNone } from "~/types";
+import { BattleVideoInfoInput } from "./wild3CalibBattleVideoInfoInput";
+import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
@@ -35,21 +29,30 @@ export const Wild3Calib = ({
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     targetSetupProp ?? null,
   );
-  const [battleVideoInfo] = React.useState<BattleVideoInfo | null>(
-    battleVideoInfoProp ?? null,
-  );
 
-  const inputForm = () => (
+  const [targetSetupResult, setTargetSetupResult] =
+    React.useState<React.ReactNode>(null);
+
+  React.useEffect(() => {
+    if (targetSetup == null) {
+      return setTargetSetupResult(null);
+    }
+
+    calculateTargetSetupResult(targetSetup).then(setTargetSetupResult);
+  }, [targetSetup]);
+
+  const [battleVideoInfo, setBattleVideoInfo] =
+    React.useState<BattleVideoInfo | null>(battleVideoInfoProp ?? null);
+
+  const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(0);
+
+  const targetSetupInputForm = () => (
     <Wild3CalibTargetSetupInput setTargetSetup={setTargetSetup} />
   );
 
-  const [consoleType, setConsoleType] = useState<Gen3Console>(
-    battleVideoInfo?.consoleType ?? "GBA",
-  );
-
-  /** calibration is always for target advance after painting.
-      calibration is not used if the painting seed is not confirmed */
-  const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(0);
+  if (targetSetup == null) {
+    return targetSetupInputForm();
+  }
 
   const setLatestHitAdv = (hitAdv: {
     frame_before_painting: number;
@@ -62,83 +65,37 @@ export const Wild3Calib = ({
 
   const targetForTimer = targetSetup?.targetPaintingAdvs.after ?? 0;
 
-  const initialAdvFromProp =
-    battleVideoInfoProp?.battleVideoAdvAfterPainting ?? 0;
-
-  const [initialAdv, setInitialAdv] = React.useState(initialAdvFromProp);
-
-  if (targetSetup == null) {
-    return inputForm();
-  }
+  const initialAdv = battleVideoInfoProp?.battleVideoAdvAfterPainting ?? 0;
 
   const advFromTimer = targetForTimer - initialAdv - calibrationAndOffset;
 
   const milliseconds = [
     5000,
-    Math.round((advFromTimer / gen3ConsoleFpsMap[consoleType]) * 1000),
+    Math.round(
+      (advFromTimer /
+        gen3ConsoleFpsMap[battleVideoInfo?.consoleType ?? "GBA"]) *
+        1000,
+    ),
   ];
   const labels = [
     initialAdv > 0 ? "Close the Battle Video" : "Soft reset START+SELECT+A+B",
     "Trigger Sweet Scent",
   ];
 
-  const usingPaintingReseeding = targetSetup.targetPaintingAdvs.before > 0;
+  const battleVideoInfoInputForm = () => {
+    if (targetSetup == null) {
+      return null;
+    }
 
-  const fields: Field[] = [
-    {
-      label: "Battle Video advance",
-      input: formatLargeInteger(initialAdv),
-      show: !usingPaintingReseeding && initialAdvFromProp > 0,
-    },
-    {
-      label: "Target advance",
-      input:
-        formatLargeInteger(targetSetup.targetPaintingAdvs.after) +
-        (initialAdv > 0
-          ? ` (+${formatLargeInteger(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`
-          : ``),
-      show: !usingPaintingReseeding,
-    },
-    {
-      label: "Target frame before painting",
-      input: formatLargeInteger(targetSetup.targetPaintingAdvs.before),
-      show: usingPaintingReseeding,
-    },
-    {
-      label: "Battle Video advance",
-      input: formatLargeInteger(initialAdv),
-      show: usingPaintingReseeding && initialAdvFromProp > 0,
-    },
-    {
-      // This means battleVideoInfoProp.battleVideoAdvAfterPainting hasn't been set.
-      label: "Battle Video advance",
-      input: (
-        <NumberInput
-          numType="decimal"
-          onChange={(val) => setInitialAdv(val ?? 0)}
-        />
-      ),
-      show: initialAdvFromProp === 0 && usingPaintingReseeding,
-    },
-    {
-      label: "Target advance after painting",
-      input: `${formatLargeInteger(targetSetup.targetPaintingAdvs.after)} (+${formatLargeInteger(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`,
-      show: usingPaintingReseeding,
-    },
-    {
-      label: "Console",
-      input: (
-        <Select<Gen3Console>
-          name="console"
-          value={consoleType}
-          options={gen3ConsoleOptions}
-          onSelect={(val) => {
-            setConsoleType(val);
-          }}
-        />
-      ),
-      show: battleVideoInfoProp?.consoleType == null,
-    },
+    return (
+      <BattleVideoInfoInput
+        targetPaintingAdvs={targetSetup.targetPaintingAdvs}
+        setBattleVideoInfo={setBattleVideoInfo}
+      />
+    );
+  };
+
+  const calibFields: Field[] = [
     {
       label: "Calibration + Offset (advance)",
       input: (
@@ -154,7 +111,10 @@ export const Wild3Calib = ({
     },
   ];
 
-  const infoFromPrevStep = () => {
+  const canDoCalib =
+    battleVideoInfo != null || targetSetup.targetPaintingAdvs.before === 0;
+
+  const infoFromPrevSteps = () => {
     if (targetSetupProp == null) {
       return null;
     }
@@ -165,7 +125,7 @@ export const Wild3Calib = ({
       !usingPaintingReseeding &&
       battleVideoInfoProp.battleVideoAdvAfterPainting > 0;
 
-    const fieldsFromPrevStep: Field[] = [
+    const fields: Field[] = [
       {
         label: "Map",
         input: formatMapName(targetSetupProp.map),
@@ -219,37 +179,56 @@ export const Wild3Calib = ({
         indent: 1,
       },
       {
-        label: usingPaintingReseeding
-          ? "Target advances after painting"
-          : "Target advances",
-        input: formatLargeInteger(battleVideoInfoProp.targetPaintingAdvs.after),
+        label: "Target advance",
+        input:
+          formatLargeInteger(targetSetup.targetPaintingAdvs.after) +
+          (initialAdv > 0
+            ? ` (${formatLargeIntegerWithSign(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`
+            : ``),
+        show: !usingPaintingReseeding,
+        indent: 1,
+      },
+      {
+        label: "Target advance after painting",
+        input: `${formatLargeInteger(targetSetup.targetPaintingAdvs.after)} (${formatLargeIntegerWithSign(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`,
         show: usingPaintingReseeding,
+        indent: 1,
+      },
+      {
+        label: "Target Pokémon",
+        input: targetSetupResult, //NO_PROD indent.
       },
     ];
 
     return (
       <div>
         <h3>Info from previous steps</h3>
-        <FormFieldTable fields={fieldsFromPrevStep} />
+        <FormFieldTable fields={fields} />
       </div>
     );
   };
 
   return (
     <Flex gap={32} vertical>
-      {targetSetupProp == null ? inputForm() : infoFromPrevStep()}
+      {targetSetupProp == null && targetSetupInputForm()}
+      {battleVideoInfoProp == null && battleVideoInfoInputForm()}
+      {infoFromPrevSteps()}
 
-      <FormFieldTable fields={fields} />
-      <MultiTimer
-        milliseconds={milliseconds}
-        labels={labels}
-        startButtonTrackerId="start_wild3_calib_timer"
-        stopButtonTrackerId="stop_wild3_calib_timer"
-      />
-      <Wild3CalibCaughtMon
-        targetSetup={targetSetup}
-        setLatestHitAdv={setLatestHitAdv}
-      />
+      {canDoCalib && (
+        <>
+          <FormFieldTable fields={calibFields} />
+          <MultiTimer
+            milliseconds={milliseconds}
+            labels={labels}
+            startButtonTrackerId="start_wild3_calib_timer"
+            stopButtonTrackerId="stop_wild3_calib_timer"
+          />
+          <Wild3CalibCaughtMon
+            targetSetup={targetSetup}
+            setLatestHitAdv={setLatestHitAdv}
+          />
+        </>
+      )}
     </Flex>
   );
 };

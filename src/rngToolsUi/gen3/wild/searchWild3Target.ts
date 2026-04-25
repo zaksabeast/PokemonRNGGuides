@@ -102,11 +102,12 @@ const convertResultsForPidPathToPidPathResult = async (
 const createFastestAdvsCache = async (
   opts: Wild3SearcherOptions["painting_opts"],
   advs: number[],
+  initial_seed: number,
 ) => {
   const fallbackFunc = (adv: number): Wild3PaintingAdvsAndDur => {
     return {
       advs: {
-        frame_before_painting: 0,
+        frame_before_painting: initial_seed,
         adv_after_painting: adv,
       },
       wait_dur: adv,
@@ -226,6 +227,7 @@ export const searchWild3Target = async (values: FormState) => {
   const fastestAdvsCache = await createFastestAdvsCache(
     opts.painting_opts,
     advs,
+    initial_seed,
   );
 
   const pidPathResults = await Promise.all(

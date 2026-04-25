@@ -60,7 +60,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
   if (opts == null) {
     return [];
   }
-  debugger;
+
   const min_initial_seed = Math.max(
     0,
     opts.initial_seed - PAINTING_CONFIDENCE_RANGE,

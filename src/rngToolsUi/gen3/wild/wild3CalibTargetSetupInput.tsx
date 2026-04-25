@@ -208,7 +208,7 @@ const getFields = ({
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
     {
-      label: "Target frame before painting",
+      label: "Target frame before painting (Painting seed)",
       input: (
         <FormikEmeraldFrameBeforePaintingInput<FormState> name="targetFrameBeforePainting" />
       ),

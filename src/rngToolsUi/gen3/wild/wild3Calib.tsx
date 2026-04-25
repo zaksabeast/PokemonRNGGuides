@@ -224,23 +224,23 @@ export const Wild3Calib = ({
     ];
 
     return (
-      <div>
+      <Flex vertical>
         <h3>Info from previous steps</h3>
         <Flex ml={20} vertical>
           <FormFieldTable fields={fields} />
+          {clearAll != null && (
+            <Button
+              trackerId="wild3Calib_clearAll"
+              danger
+              maxWidth={150}
+              size="small"
+              onClick={clearAll}
+            >
+              Clear All
+            </Button>
+          )}
         </Flex>
-        {clearAll != null && (
-          <Button
-            trackerId="wild3Calib_clearAll"
-            danger
-            maxWidth={150}
-            size="small"
-            onClick={clearAll}
-          >
-            Clear All
-          </Button>
-        )}
-      </div>
+      </Flex>
     );
   };
 

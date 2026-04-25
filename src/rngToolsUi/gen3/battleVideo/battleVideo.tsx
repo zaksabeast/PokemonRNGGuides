@@ -679,7 +679,11 @@ export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
                 }
               }}
             >
-              Battle Video was created
+              Battle Video was created at advance{" ~"}
+              {formatLargeInteger(
+                battleVideoInfo?.battleVideoAdv ??
+                  initialValues.existingBattleVideoAdv,
+              )}
             </Button>
           )}
 

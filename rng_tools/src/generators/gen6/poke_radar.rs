@@ -45,7 +45,7 @@ impl PokeRadarPatch {
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct PokeRadarOptions {
-    pub state: [u32; 4],
+    pub seed: u32,
     pub party_count: usize,
     pub initial_advances: usize,
     pub max_advances: usize,
@@ -183,6 +183,9 @@ fn generate_poke_radar_state(
             patch.x = PokeRadarPatch::x(direction, ring, location);
             patch.y = PokeRadarPatch::y(direction, ring, location);
 
+            // Default to Bad; update to Good/Shiny if good rate check passes
+            patch.state = PokeRadarPatchState::Bad;
+
             if rng.rand_max(100) < GOOD_RATE[ring as usize] {
                 rng.next();
                 let chance: u64 = match result.boosted || opts.chain >= 40 {
@@ -218,7 +221,7 @@ fn generate_poke_radar_state(
 
 #[wasm_bindgen]
 pub fn generate_poke_radar_states(opts: PokeRadarOptions) -> PokeRadarResult {
-    let rng = TinyMT::from_state(opts.state);
+    let rng = TinyMT::new(opts.seed);
     let states = StateIterator::new(rng)
         .enumerate()
         .skip(opts.initial_advances)
@@ -252,12 +255,156 @@ mod test {
     use super::*;
     use crate::assert_list_eq;
 
+    #[derive(Debug, PartialEq)]
+    struct TinyFinderState {
+        advance: usize,
+        shiny: bool,
+        music: PokeRadarMusic,
+        state: [u32; 4],
+    }
+
+    impl From<PokeRadarNoChainState> for TinyFinderState {
+        fn from(state: PokeRadarNoChainState) -> Self {
+            TinyFinderState {
+                advance: state.advance,
+                shiny: state.shiny,
+                music: state.music,
+                state: state.state,
+            }
+        }
+    }
+
+    impl From<PokeRadarChainState> for TinyFinderState {
+        fn from(state: PokeRadarChainState) -> Self {
+            TinyFinderState {
+                advance: state.advance,
+                shiny: state.shiny,
+                music: state.music,
+                state: state.state,
+            }
+        }
+    }
+
+    #[derive(Debug, PartialEq)]
+    struct TinyFinderNoChainState {
+        advance: usize,
+        sync: bool,
+        slot: u8,
+        music: PokeRadarMusic,
+        state: [u32; 4],
+    }
+
+    impl From<PokeRadarNoChainState> for TinyFinderNoChainState {
+        fn from(state: PokeRadarNoChainState) -> Self {
+            TinyFinderNoChainState {
+                advance: state.advance,
+                sync: state.sync,
+                slot: state.slot,
+                music: state.music,
+                state: state.state,
+            }
+        }
+    }
+
+    fn parse_tinyfinder(str: &str) -> Vec<TinyFinderState> {
+        str.lines()
+            .map(|raw_line| {
+                let line = raw_line.trim();
+
+                if line.is_empty() {
+                    panic!("Empty line in TinyFinder data");
+                }
+
+                let mut parts = line.split("\t");
+                let advance: usize = parts.next().unwrap().parse().unwrap();
+                let shiny: bool = parts.next().unwrap() == "True";
+                let music_str = parts.next().unwrap();
+                let mut state: [u32; 4] = [
+                    u32::from_str_radix(parts.next().unwrap(), 16).unwrap(),
+                    u32::from_str_radix(parts.next().unwrap(), 16).unwrap(),
+                    u32::from_str_radix(parts.next().unwrap(), 16).unwrap(),
+                    u32::from_str_radix(parts.next().unwrap(), 16).unwrap(),
+                ];
+                state.reverse();
+
+                let music = match music_str {
+                    "M" => PokeRadarMusic::M,
+                    "A" => PokeRadarMusic::A,
+                    "-" => PokeRadarMusic::None,
+                    _ => panic!("Unknown music string: {}", music_str),
+                };
+
+                TinyFinderState {
+                    advance,
+                    shiny,
+                    music,
+                    state,
+                }
+            })
+            .collect()
+    }
+
+    fn parse_tinyfinder_no_chain(str: &str) -> Vec<TinyFinderNoChainState> {
+        str.lines()
+            .map(|raw_line| {
+                let line = raw_line.trim();
+
+                if line.is_empty() {
+                    panic!("Empty line in TinyFinder no-chain data");
+                }
+
+                let mut parts = line.split("\t");
+                let advance: usize = parts.next().unwrap().parse().unwrap();
+                let sync: bool = parts.next().unwrap() == "True";
+                let slot: u8 = parts.next().unwrap().parse().unwrap();
+                let _species = parts.next().unwrap(); // Not used in tests
+                let _level = parts.next().unwrap(); // Not used in tests
+                let music_str = parts.next().unwrap();
+                let _held_item = parts.next().unwrap(); // Not used in tests
+                let mut state: [u32; 4] = [
+                    u32::from_str_radix(parts.next().unwrap(), 16).unwrap(),
+                    u32::from_str_radix(parts.next().unwrap(), 16).unwrap(),
+                    u32::from_str_radix(parts.next().unwrap(), 16).unwrap(),
+                    u32::from_str_radix(parts.next().unwrap(), 16).unwrap(),
+                ];
+                state.reverse();
+
+                let music = match music_str {
+                    "M" => PokeRadarMusic::M,
+                    "A" => PokeRadarMusic::A,
+                    "-" => PokeRadarMusic::None,
+                    _ => panic!("Unknown music string: {}", music_str),
+                };
+
+                TinyFinderNoChainState {
+                    advance,
+                    sync,
+                    slot,
+                    music,
+                    state,
+                }
+            })
+            .collect()
+    }
+
+    macro_rules! tinyfinder {
+        ($file:expr) => {
+            parse_tinyfinder(include_str!($file))
+        };
+    }
+
+    macro_rules! tinyfinder_no_chain {
+        ($file:expr) => {
+            parse_tinyfinder_no_chain(include_str!($file))
+        };
+    }
+
     #[test]
     fn poke_radar_no_filter_no_chain_no_party() {
         let opts = PokeRadarOptions {
-            state: [0x304ACD77, 0x03D159CC, 0x69689233, 0x342C0F10],
+            seed: 0xaabbccdd,
             initial_advances: 0,
-            max_advances: 10,
+            max_advances: 100,
             party_count: 1,
             chain: 0,
             bonus_music: false,
@@ -265,369 +412,12 @@ mod test {
             filter_slot: None,
         };
         let results = generate_poke_radar_states(opts);
-        let expected = [
-            PokeRadarNoChainState {
-                advance: 0,
-                sync: false,
-                slot: 6,
-                music: PokeRadarMusic::M,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 4,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 1,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 0,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                ],
-                state: [0x304ACD77, 0x03D159CC, 0x69689233, 0x342C0F10],
-            },
-            PokeRadarNoChainState {
-                advance: 1,
-                sync: false,
-                slot: 10,
-                music: PokeRadarMusic::M,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 5,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 1,
-                        y: 0,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                ],
-                state: [0x03D159CC, 0x69689233, 0x53190B98, 0xC12F0300],
-            },
-            PokeRadarNoChainState {
-                advance: 2,
-                sync: false,
-                slot: 6,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 3,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0x69689233, 0xDC691A76, 0xD1911BB6, 0xEB59C229],
-            },
-            PokeRadarNoChainState {
-                advance: 3,
-                sync: false,
-                slot: 7,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 3,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                ],
-                state: [0xDC691A76, 0xD1911BB6, 0xBFED1415, 0x33449728],
-            },
-            PokeRadarNoChainState {
-                advance: 4,
-                sync: false,
-                slot: 5,
-                music: PokeRadarMusic::M,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0xD1911BB6, 0x309D05FB, 0xCDCCCD60, 0x7CD9E2C3],
-            },
-            PokeRadarNoChainState {
-                advance: 5,
-                sync: true,
-                slot: 2,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                ],
-                state: [0x309D05FB, 0x42BCDC8E, 0xD8A2DE68, 0xB7F466D5],
-            },
-            PokeRadarNoChainState {
-                advance: 6,
-                sync: true,
-                slot: 9,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 4,
-                        y: 5,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 6,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 8,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0x42BCDC8E, 0xD8A2DE68, 0xD2F76927, 0x138B5C98],
-            },
-            PokeRadarNoChainState {
-                advance: 7,
-                sync: false,
-                slot: 2,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 3,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 6,
-                        state: Empty,
-                    },
-                ],
-                state: [0xD8A2DE68, 0x5D8778C9, 0xF0791F5C, 0xC3754E97],
-            },
-            PokeRadarNoChainState {
-                advance: 8,
-                sync: true,
-                slot: 3,
-                music: PokeRadarMusic::M,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 6,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 8,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0x5D8778C9, 0x7F090EB2, 0x4B125918, 0xBD2A23DB],
-            },
-            PokeRadarNoChainState {
-                advance: 9,
-                sync: true,
-                slot: 3,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 3,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 6,
-                        state: Empty,
-                    },
-                ],
-                state: [0x7F090EB2, 0xC46248F6, 0x2BD2C2BA, 0x591B4393],
-            },
-        ];
+        let expected = tinyfinder_no_chain!("test_data/poke_radar_no_filter_no_chain_no_party.txt");
         if let PokeRadarResult::NoChain(results) = results {
+            let results = results
+                .into_iter()
+                .map(TinyFinderNoChainState::from)
+                .collect::<Vec<_>>();
             assert_list_eq!(results, expected);
         } else {
             panic!("Expected NoChain result");
@@ -637,9 +427,9 @@ mod test {
     #[test]
     fn poke_radar_no_filter_no_chain_party() {
         let opts = PokeRadarOptions {
-            state: [0x304ACD77, 0x03D159CC, 0x69689233, 0x342C0F10],
+            seed: 0xaabbccdd,
             initial_advances: 0,
-            max_advances: 10,
+            max_advances: 100,
             party_count: 5,
             chain: 0,
             bonus_music: false,
@@ -647,369 +437,12 @@ mod test {
             filter_slot: None,
         };
         let results = generate_poke_radar_states(opts);
-        let expected = [
-            PokeRadarNoChainState {
-                advance: 0,
-                sync: false,
-                slot: 6,
-                music: PokeRadarMusic::M,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 4,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 1,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 0,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                ],
-                state: [0x304ACD77, 0x03D159CC, 0x69689233, 0x342C0F10],
-            },
-            PokeRadarNoChainState {
-                advance: 1,
-                sync: false,
-                slot: 10,
-                music: PokeRadarMusic::M,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 5,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 1,
-                        y: 0,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                ],
-                state: [0x03D159CC, 0x69689233, 0x53190B98, 0xC12F0300],
-            },
-            PokeRadarNoChainState {
-                advance: 2,
-                sync: false,
-                slot: 6,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 3,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0x69689233, 0xDC691A76, 0xD1911BB6, 0xEB59C229],
-            },
-            PokeRadarNoChainState {
-                advance: 3,
-                sync: false,
-                slot: 7,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 3,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                ],
-                state: [0xDC691A76, 0xD1911BB6, 0xBFED1415, 0x33449728],
-            },
-            PokeRadarNoChainState {
-                advance: 4,
-                sync: false,
-                slot: 5,
-                music: PokeRadarMusic::M,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0xD1911BB6, 0x309D05FB, 0xCDCCCD60, 0x7CD9E2C3],
-            },
-            PokeRadarNoChainState {
-                advance: 5,
-                sync: true,
-                slot: 2,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                ],
-                state: [0x309D05FB, 0x42BCDC8E, 0xD8A2DE68, 0xB7F466D5],
-            },
-            PokeRadarNoChainState {
-                advance: 6,
-                sync: true,
-                slot: 9,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 4,
-                        y: 5,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 6,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 8,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0x42BCDC8E, 0xD8A2DE68, 0xD2F76927, 0x138B5C98],
-            },
-            PokeRadarNoChainState {
-                advance: 7,
-                sync: false,
-                slot: 2,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 3,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 6,
-                        state: Empty,
-                    },
-                ],
-                state: [0xD8A2DE68, 0x5D8778C9, 0xF0791F5C, 0xC3754E97],
-            },
-            PokeRadarNoChainState {
-                advance: 8,
-                sync: true,
-                slot: 3,
-                music: PokeRadarMusic::M,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 6,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 8,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0x5D8778C9, 0x7F090EB2, 0x4B125918, 0xBD2A23DB],
-            },
-            PokeRadarNoChainState {
-                advance: 9,
-                sync: true,
-                slot: 3,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 3,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 6,
-                        state: Empty,
-                    },
-                ],
-                state: [0x7F090EB2, 0xC46248F6, 0x2BD2C2BA, 0x591B4393],
-            },
-        ];
+        let expected = tinyfinder_no_chain!("test_data/poke_radar_no_filter_no_chain_party.txt");
         if let PokeRadarResult::NoChain(results) = results {
+            let results = results
+                .into_iter()
+                .map(TinyFinderNoChainState::from)
+                .collect::<Vec<_>>();
             assert_list_eq!(results, expected);
         } else {
             panic!("Expected NoChain result");
@@ -1019,7 +452,7 @@ mod test {
     #[test]
     fn poke_radar_filter_chain_party() {
         let opts = PokeRadarOptions {
-            state: [0x304ACD77, 0x03D159CC, 0x69689233, 0x342C0F10],
+            seed: 0xaabbccdd,
             initial_advances: 15000,
             max_advances: 15000,
             party_count: 5,
@@ -1029,281 +462,12 @@ mod test {
             filter_slot: None,
         };
         let results = generate_poke_radar_states(opts);
-        let expected = [
-            PokeRadarChainState {
-                advance: 16718,
-                shiny: true,
-                music: PokeRadarMusic::M,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 5,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 5,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 1,
-                        state: Shiny,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 4,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Empty,
-                    },
-                ],
-                state: [0x027F3932, 0xBD3278F6, 0x82A5E8B0, 0xB4C4ACAE],
-            },
-            PokeRadarChainState {
-                advance: 16721,
-                shiny: true,
-                music: PokeRadarMusic::None,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 5,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 2,
-                        state: Shiny,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 4,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 0,
-                        y: 5,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0xC6449083, 0x425F8A93, 0x464B94FF, 0x9F6C7C1F],
-            },
-            PokeRadarChainState {
-                advance: 16724,
-                shiny: true,
-                music: PokeRadarMusic::M,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Shiny,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 4,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 1,
-                        y: 5,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 8,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 1,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0x1ABDF9C0, 0x40B7D205, 0xCBD89A51, 0x8564D8A9],
-            },
-            PokeRadarChainState {
-                advance: 24407,
-                shiny: true,
-                music: PokeRadarMusic::None,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 5,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 6,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 1,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 0,
-                        state: Shiny,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 1,
-                        state: Empty,
-                    },
-                ],
-                state: [0x112A335B, 0xA49A53BB, 0x5A37B667, 0x32EDDA89],
-            },
-            PokeRadarChainState {
-                advance: 24409,
-                shiny: true,
-                music: PokeRadarMusic::None,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 4,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 1,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 0,
-                        state: Shiny,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 1,
-                        state: Empty,
-                    },
-                ],
-                state: [0x5A37B667, 0xF2C97A67, 0x64A709E0, 0x13A77899],
-            },
-            PokeRadarChainState {
-                advance: 24410,
-                shiny: true,
-                music: PokeRadarMusic::M,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 5,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 6,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 1,
-                        state: Shiny,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 1,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                ],
-                state: [0xF2C97A67, 0xEBD7180E, 0xD2B9653F, 0x4E9E8AF5],
-            },
-            PokeRadarChainState {
-                advance: 24412,
-                shiny: true,
-                music: PokeRadarMusic::M,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 6,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 1,
-                        state: Shiny,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 1,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                ],
-                state: [0x5DC974D1, 0x4CF8330B, 0x9B1E2951, 0xF11E7701],
-            },
-            PokeRadarChainState {
-                advance: 24415,
-                shiny: true,
-                music: PokeRadarMusic::M,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 5,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 2,
-                        state: Shiny,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 4,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 4,
-                        y: 6,
-                        state: Empty,
-                    },
-                ],
-                state: [0x92FDD273, 0x116FF956, 0x13F0AE9C, 0xCA6E992A],
-            },
-        ];
+        let expected = tinyfinder!("test_data/poke_radar_filter_chain_party.txt");
         if let PokeRadarResult::WithChain(results) = results {
+            let results = results
+                .into_iter()
+                .map(TinyFinderState::from)
+                .collect::<Vec<_>>();
             assert_list_eq!(results, expected);
         } else {
             panic!("Expected WithChain result");
@@ -1313,9 +477,9 @@ mod test {
     #[test]
     fn poke_radar_no_filter_chain_party() {
         let opts = PokeRadarOptions {
-            state: [0x304ACD77, 0x03D159CC, 0x69689233, 0x342C0F10],
+            seed: 0xaabbccdd,
             initial_advances: 15000,
-            max_advances: 6,
+            max_advances: 100,
             party_count: 5,
             chain: 4,
             bonus_music: false,
@@ -1323,213 +487,12 @@ mod test {
             filter_slot: None,
         };
         let results = generate_poke_radar_states(opts);
-        let expected = [
-            PokeRadarChainState {
-                advance: 15000,
-                shiny: false,
-                music: PokeRadarMusic::M,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 5,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 6,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 4,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 0,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0x8292558A, 0x026C9D5F, 0x3B3E9D20, 0xE258208E],
-            },
-            PokeRadarChainState {
-                advance: 15001,
-                shiny: false,
-                music: PokeRadarMusic::None,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 6,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 0,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 3,
-                        state: Empty,
-                    },
-                ],
-                state: [0x026C9D5F, 0x3B3E9D20, 0x9F7BA61F, 0xDF34CED6],
-            },
-            PokeRadarChainState {
-                advance: 15002,
-                shiny: false,
-                music: PokeRadarMusic::None,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 7,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 8,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 5,
-                        state: Empty,
-                    },
-                ],
-                state: [0x3B3E9D20, 0x100BB7F1, 0x470E61BF, 0x5AD4431D],
-            },
-            PokeRadarChainState {
-                advance: 15003,
-                shiny: false,
-                music: PokeRadarMusic::None,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 5,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 4,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 0,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 6,
-                        state: Empty,
-                    },
-                ],
-                state: [0x100BB7F1, 0xC87E7051, 0x86C9A6AD, 0xC3F3BF21],
-            },
-            PokeRadarChainState {
-                advance: 15004,
-                shiny: false,
-                music: PokeRadarMusic::M,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 5,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 6,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Empty,
-                    },
-                ],
-                state: [0xC87E7051, 0x86C9A6AD, 0xD8CA3B17, 0x41CEC3A6],
-            },
-            PokeRadarChainState {
-                advance: 15005,
-                shiny: false,
-                music: PokeRadarMusic::M,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 6,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 0,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 6,
-                        state: Empty,
-                    },
-                ],
-                state: [0x86C9A6AD, 0xD8CA3B17, 0x84D7163D, 0x5BAF9448],
-            },
-        ];
+        let expected = tinyfinder!("test_data/poke_radar_no_filter_chain_party.txt");
         if let PokeRadarResult::WithChain(results) = results {
+            let results = results
+                .into_iter()
+                .map(TinyFinderState::from)
+                .collect::<Vec<_>>();
             assert_list_eq!(results, expected);
         } else {
             panic!("Expected WithChain result");
@@ -1539,9 +502,9 @@ mod test {
     #[test]
     fn poke_radar_filter_slot() {
         let opts = PokeRadarOptions {
-            state: [0x304ACD77, 0x03D159CC, 0x69689233, 0x342C0F10],
+            seed: 0xaabbccdd,
             initial_advances: 0,
-            max_advances: 10,
+            max_advances: 100,
             party_count: 1,
             chain: 0,
             bonus_music: false,
@@ -1549,81 +512,12 @@ mod test {
             filter_slot: Some(3),
         };
         let results = generate_poke_radar_states(opts);
-        let expected = [
-            PokeRadarNoChainState {
-                advance: 8,
-                sync: true,
-                slot: 3,
-                music: PokeRadarMusic::M,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 6,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 8,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0x5D8778C9, 0x7F090EB2, 0x4B125918, 0xBD2A23DB],
-            },
-            PokeRadarNoChainState {
-                advance: 9,
-                sync: true,
-                slot: 3,
-                music: PokeRadarMusic::None,
-                shiny: false,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 3,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 7,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 6,
-                        state: Empty,
-                    },
-                ],
-                state: [0x7F090EB2, 0xC46248F6, 0x2BD2C2BA, 0x591B4393],
-            },
-        ];
+        let expected = tinyfinder_no_chain!("test_data/poke_radar_filter_slot.txt");
         if let PokeRadarResult::NoChain(results) = results {
+            let results = results
+                .into_iter()
+                .map(TinyFinderNoChainState::from)
+                .collect::<Vec<_>>();
             assert_list_eq!(results, expected);
         } else {
             panic!("Expected NoChain result");
@@ -1633,9 +527,9 @@ mod test {
     #[test]
     fn do_not_filter_slot_on_chain() {
         let opts = PokeRadarOptions {
-            state: [0x304ACD77, 0x03D159CC, 0x69689233, 0x342C0F10],
+            seed: 0xaabbccdd,
             initial_advances: 15000,
-            max_advances: 6,
+            max_advances: 100,
             party_count: 5,
             chain: 4,
             bonus_music: false,
@@ -1643,213 +537,12 @@ mod test {
             filter_slot: Some(10),
         };
         let results = generate_poke_radar_states(opts);
-        let expected = [
-            PokeRadarChainState {
-                advance: 15000,
-                shiny: false,
-                music: PokeRadarMusic::M,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 5,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 6,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 4,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 0,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 4,
-                        state: Empty,
-                    },
-                ],
-                state: [0x8292558A, 0x026C9D5F, 0x3B3E9D20, 0xE258208E],
-            },
-            PokeRadarChainState {
-                advance: 15001,
-                shiny: false,
-                music: PokeRadarMusic::None,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 6,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 0,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 3,
-                        state: Empty,
-                    },
-                ],
-                state: [0x026C9D5F, 0x3B3E9D20, 0x9F7BA61F, 0xDF34CED6],
-            },
-            PokeRadarChainState {
-                advance: 15002,
-                shiny: false,
-                music: PokeRadarMusic::None,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 2,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 7,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 8,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 5,
-                        state: Empty,
-                    },
-                ],
-                state: [0x3B3E9D20, 0x100BB7F1, 0x470E61BF, 0x5AD4431D],
-            },
-            PokeRadarChainState {
-                advance: 15003,
-                shiny: false,
-                music: PokeRadarMusic::None,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 5,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 4,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 7,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 0,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 6,
-                        state: Empty,
-                    },
-                ],
-                state: [0x100BB7F1, 0xC87E7051, 0x86C9A6AD, 0xC3F3BF21],
-            },
-            PokeRadarChainState {
-                advance: 15004,
-                shiny: false,
-                music: PokeRadarMusic::M,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 5,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 3,
-                        y: 2,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 1,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 6,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 2,
-                        state: Empty,
-                    },
-                ],
-                state: [0xC87E7051, 0x86C9A6AD, 0xD8CA3B17, 0x41CEC3A6],
-            },
-            PokeRadarChainState {
-                advance: 15005,
-                shiny: false,
-                music: PokeRadarMusic::M,
-                boosted: false,
-                patches: [
-                    PokeRadarPatch {
-                        x: 5,
-                        y: 3,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 6,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 2,
-                        y: 7,
-                        state: Empty,
-                    },
-                    PokeRadarPatch {
-                        x: 8,
-                        y: 0,
-                        state: Good,
-                    },
-                    PokeRadarPatch {
-                        x: 6,
-                        y: 6,
-                        state: Empty,
-                    },
-                ],
-                state: [0x86C9A6AD, 0xD8CA3B17, 0x84D7163D, 0x5BAF9448],
-            },
-        ];
+        let expected = tinyfinder!("test_data/do_not_filter_slot_on_chain.txt");
         if let PokeRadarResult::WithChain(results) = results {
+            let results = results
+                .into_iter()
+                .map(TinyFinderState::from)
+                .collect::<Vec<_>>();
             assert_list_eq!(results, expected);
         } else {
             panic!("Expected WithChain result");
@@ -1868,6 +561,623 @@ mod test {
 
         for i in 50..100 {
             assert_eq!(PokeRadarMusic::new(i), PokeRadarMusic::M);
+        }
+    }
+
+    #[test]
+    fn generates_chain_patches() {
+        let opts = PokeRadarOptions {
+            seed: 0xaabbccdd,
+            initial_advances: 0,
+            max_advances: 20,
+            party_count: 5,
+            chain: 4,
+            bonus_music: false,
+            filter_shiny: false,
+            filter_slot: None,
+        };
+        let results = generate_poke_radar_states(opts);
+        let expected = [
+            [
+                PokeRadarPatch {
+                    x: 5,
+                    y: 3,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 2,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 8,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 1,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 5,
+                    y: 3,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 6,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 7,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 5,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 3,
+                    y: 3,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 5,
+                    y: 2,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 8,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 1,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 4,
+                    y: 3,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 7,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 5,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 3,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 6,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 7,
+                    y: 4,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 7,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 6,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 5,
+                    y: 3,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 7,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 5,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 3,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 6,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 6,
+                    y: 7,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 0,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 2,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 5,
+                    y: 4,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 6,
+                    y: 4,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 7,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 8,
+                    y: 0,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 3,
+                    y: 3,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 3,
+                    y: 4,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 6,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 0,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 2,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 3,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 5,
+                    y: 6,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 6,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 2,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 2,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 5,
+                    y: 4,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 6,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 7,
+                    y: 1,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 5,
+                    y: 8,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 2,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 4,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 1,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 2,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 2,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 5,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 6,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 3,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 4,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 3,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 5,
+                    y: 4,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 6,
+                    y: 2,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 7,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 1,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 6,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 3,
+                    y: 4,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 3,
+                    y: 2,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 3,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 4,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 3,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 3,
+                    y: 5,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 3,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 1,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 1,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 6,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 5,
+                    y: 3,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 4,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 5,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 4,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 5,
+                    y: 4,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 3,
+                    y: 3,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 3,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 1,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 1,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 6,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 4,
+                    y: 5,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 4,
+                    y: 6,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 2,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 3,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 5,
+                    y: 2,
+                    state: Empty,
+                },
+            ],
+            [
+                PokeRadarPatch {
+                    x: 3,
+                    y: 4,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 2,
+                    y: 3,
+                    state: Bad,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 4,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 0,
+                    y: 5,
+                    state: Good,
+                },
+                PokeRadarPatch {
+                    x: 1,
+                    y: 7,
+                    state: Empty,
+                },
+            ],
+        ];
+        if let PokeRadarResult::WithChain(results) = results {
+            let results = results
+                .into_iter()
+                .map(|res| res.patches)
+                .collect::<Vec<_>>();
+            assert_list_eq!(results, expected);
+        } else {
+            panic!("Expected WithChain result");
+        }
+    }
+
+    #[test]
+    fn generates_shiny_patches() {
+        let opts = PokeRadarOptions {
+            seed: 0xaabbccdd,
+            initial_advances: 15000,
+            max_advances: 15000,
+            party_count: 5,
+            chain: 4,
+            bonus_music: false,
+            filter_shiny: true,
+            filter_slot: None,
+        };
+        let results = generate_poke_radar_states(opts);
+        let expected = [[
+            PokeRadarPatch {
+                x: 3,
+                y: 4,
+                state: Bad,
+            },
+            PokeRadarPatch {
+                x: 2,
+                y: 6,
+                state: Good,
+            },
+            PokeRadarPatch {
+                x: 7,
+                y: 6,
+                state: Shiny,
+            },
+            PokeRadarPatch {
+                x: 2,
+                y: 0,
+                state: Good,
+            },
+            PokeRadarPatch {
+                x: 2,
+                y: 2,
+                state: Empty,
+            },
+        ]];
+        if let PokeRadarResult::WithChain(results) = results {
+            let results = results
+                .into_iter()
+                .map(|res| res.patches)
+                .collect::<Vec<_>>();
+            assert_list_eq!(results, expected);
+        } else {
+            panic!("Expected WithChain result");
         }
     }
 }

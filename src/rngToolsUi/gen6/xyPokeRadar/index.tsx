@@ -82,10 +82,7 @@ const getNoChainColumns = (t: Translations): ResultColumn<LooseColumns>[] => [
 ];
 
 const Validator = z.object({
-  state3: HexSchema(0xffffffff),
-  state2: HexSchema(0xffffffff),
-  state1: HexSchema(0xffffffff),
-  state0: HexSchema(0xffffffff),
+  seed: HexSchema(0xffffffff),
   party_count: z.number().int().min(1).max(6),
   initial_advances: z.number().int().min(0),
   max_advances: z.number().int().min(0),
@@ -97,10 +94,7 @@ const Validator = z.object({
 export type FormState = z.infer<typeof Validator>;
 
 const initialValues: FormState = {
-  state3: 0,
-  state2: 0,
-  state1: 0,
-  state0: 0,
+  seed: 0,
   party_count: 1,
   initial_advances: 0,
   max_advances: 0,
@@ -111,20 +105,8 @@ const initialValues: FormState = {
 
 const fields: Field[] = [
   {
-    label: "State[3]",
-    input: <FormikNumberInput<FormState> name="state3" numType="hex" />,
-  },
-  {
-    label: "State[2]",
-    input: <FormikNumberInput<FormState> name="state2" numType="hex" />,
-  },
-  {
-    label: "State[1]",
-    input: <FormikNumberInput<FormState> name="state1" numType="hex" />,
-  },
-  {
-    label: "State[0]",
-    input: <FormikNumberInput<FormState> name="state0" numType="hex" />,
+    label: "Seed",
+    input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
   },
   {
     label: "Initial Advances",
@@ -169,7 +151,7 @@ export const XyPokeRadar = () => {
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
     const results = await rngTools.generate_poke_radar_states({
-      state: [opts.state0, opts.state1, opts.state2, opts.state3],
+      seed: opts.seed,
       initial_advances: opts.initial_advances,
       max_advances: opts.max_advances,
       party_count: opts.party_count,

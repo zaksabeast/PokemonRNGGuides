@@ -1,6 +1,6 @@
 import { MultiTimer } from "~/components/multiTimer";
 import { EmeraldSeedToAdvances } from "./seedToAdvances";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Gen3Console,
   gen3ConsoleFpsMap,
@@ -42,16 +42,21 @@ const MIN_ADV_FOR_BATTLE_VIDEO = 6000; // Otherwise, the tool will say that the 
 export const PaintingReseedingTimers = ({
   frame_before_painting,
   existingBattleVideoAdv,
-  consoleType,
+  consoleType: consoleTypeProp,
+  setConsoleType: setConsoleTypeProp,
   calibration,
   setCalibration,
 }: {
   frame_before_painting: number;
   existingBattleVideoAdv: number;
-  consoleType: Gen3Console;
+  consoleType?: Gen3Console | null;
+  setConsoleType: (consoleType: Gen3Console) => void;
   calibration: number;
   setCalibration: (calibration: number) => void;
 }) => {
+  const [consoleType, setConsoleType] = React.useState<Gen3Console>(
+    consoleTypeProp ?? "GBA",
+  );
   const fps = gen3ConsoleFpsMap[consoleType];
 
   const msPerFrame = 1000 / fps;
@@ -82,6 +87,24 @@ export const PaintingReseedingTimers = ({
     {
       label: "Battle Video created at",
       input: `~${formatLargeInteger(existingBattleVideoAdv)} advances after painting.`,
+    },
+    {
+      label: "Console",
+      input:
+        consoleTypeProp == null ? (
+          <Select<Gen3Console>
+            name="console"
+            value={consoleType}
+            options={gen3ConsoleOptions}
+            onSelect={(val) => {
+              setConsoleType(val);
+              setConsoleTypeProp(val);
+            }}
+          />
+        ) : (
+          (gen3ConsoleOptions.find((opt) => opt.value === consoleTypeProp)
+            ?.label ?? "")
+        ),
     },
     {
       label: "Calibration + Offset (advance)",
@@ -144,29 +167,19 @@ export const EmeraldPaintingReseeding = ({
     setBattleVideoAdvAfterPaintingConfirmed,
   ] = useState<number | null>(null);
 
+  const [consoleType, setConsoleType] = React.useState<Gen3Console>("GBA");
+
   const [calibrationForPainting, setCalibrationForPainting] = useState<number>(
     DEFAULT_CALIB_FOR_PAINTING,
   );
-  const [consoleType, setConsoleType] = useState<Gen3Console>("GBA");
-
-  const consoleField: Field = {
-    label: "Console",
-    input: (
-      <Select<Gen3Console>
-        name="console"
-        value={consoleType}
-        options={gen3ConsoleOptions}
-        onSelect={(val) => {
-          setConsoleType(val);
-        }}
-      />
-    ),
-  };
 
   const setBattleVideoAdv =
     onBattleVideoCreatedOrSkipped == null || targetPaintingAdvs == null
       ? undefined
-      : (adv: number | null) => {
+      : (adv: number | null, consoleType: Gen3Console | null) => {
+          if (consoleType != null) {
+            setConsoleType(consoleType);
+          }
           onBattleVideoCreatedOrSkipped({
             targetPaintingAdvs,
             battleVideoAdvAfterPainting: adv ?? 0,
@@ -242,7 +255,7 @@ export const EmeraldPaintingReseeding = ({
               <Button
                 trackerId="wild3_battle_video_skip"
                 onClick={() => {
-                  setBattleVideoAdv(null);
+                  setBattleVideoAdv(null, null);
                 }}
               >
                 Go to next step (no Battle Video created)
@@ -298,11 +311,11 @@ export const EmeraldPaintingReseeding = ({
     const calibPaintingFrame = (
       <>
         <PaintingReseedingTimers
-          consoleType={consoleType}
           existingBattleVideoAdv={APPROX_ADV_PAINTING_TO_BATTLE_VIDEO}
           frame_before_painting={targetAdvForPaintingCalib.before}
           calibration={calibrationForPainting}
           setCalibration={setCalibrationForPainting}
+          setConsoleType={setConsoleType}
         />
 
         <Wild3CalibCaughtMonForPainting
@@ -358,8 +371,6 @@ export const EmeraldPaintingReseeding = ({
   return (
     <Flex vertical gap={20}>
       {targetPaintingAdvsProp == null ? inputForm() : infoFromPrevStep()}
-
-      <FormFieldTable fields={[consoleField]} />
 
       {content()}
     </Flex>

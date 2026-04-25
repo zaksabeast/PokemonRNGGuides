@@ -1,5 +1,6 @@
 import {
   rngTools,
+  Species,
   Wild3GeneratorOptions,
   Wild3GeneratorResult,
 } from "~/rngTools";
@@ -54,13 +55,15 @@ const getProbabilityInfo = async (
   const leadDesc =
     lead_cycle_speed === AVERAGE_LEAD_CYCLE_SPEED
       ? "with average lead cycle speed"
-      : `with lead cycle speed ${lead_cycle_speed}`;
+      : lead_cycle_speed === 0
+        ? "with Egg lead"
+        : `with lead cycle speed ${lead_cycle_speed}`;
 
   const showIdealInfo =
     info.method_probability < 0.99 && lead_cycle_speed !== ideal_lead_spd;
 
   return (
-    <Flex ml={30}>
+    <Flex mt={10}>
       <div>
         {`${formatProbability(info.method_probability)} likelihood to hit
       method ${res.method} ${leadDesc}.`}
@@ -74,6 +77,26 @@ const getProbabilityInfo = async (
       )}
     </Flex>
   );
+};
+
+/** Example of return values: Sturdy, Sturdy (1), Sturdy (2), First, Second */
+const getAbilityDisplayStr = async (species: Species, pid: number) => {
+  const abilities = await rngTools.get_species_abilities(species);
+  const abilityType = await rngTools.get_ability_type_from_gen3_pid(pid);
+
+  const suffix =
+    abilities[0] === abilities[1]
+      ? ` (${abilityType === "First" ? 1 : 2})`
+      : ``;
+  if (abilityType === "First") {
+    return abilities[0] == null ? abilityType : `${abilities[0]}${suffix}`;
+  }
+  if (abilityType === "Second") {
+    return abilities[0] == null && abilities[1] == null
+      ? abilityType
+      : `${abilities[1] ?? abilities[0]}${suffix}`;
+  }
+  return "";
 };
 
 export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
@@ -144,13 +167,14 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
   const { ivs } = res;
 
   const probabilityInfo = await getProbabilityInfo(res, lead_cycle_speed);
+  const abilityStr = await getAbilityDisplayStr(species, res.pid);
 
   return (
     <>
       <div>
-        {species}, Lvl {res.lvl}, {gender}, {nature}, HP {stats.hp}, ATK{" "}
-        {stats.atk}, DEF {stats.def}, SPA {stats.spa}, SPD {stats.spd}, SPE{" "}
-        {stats.spe}
+        {species}, Lvl {res.lvl}, {gender}, {abilityStr}, {nature}, HP{" "}
+        {stats.hp}, ATK {stats.atk}, DEF {stats.def}, SPA {stats.spa}, SPD{" "}
+        {stats.spd}, SPE {stats.spe}
       </div>
       <div>
         PID: {formatHex(res.pid)}, IVS: {ivs.hp}/{ivs.atk}/{ivs.def}/{ivs.spa}/

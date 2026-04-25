@@ -339,6 +339,7 @@ const calculateWithoutBattle = (opts: FormState) => {
       targetAdv: initialAdv + targetAdvance,
       withBattle: false,
       isUpdatingExisting: opts.isUpdatingExisting,
+      consoleType: opts.console,
     },
   };
 };
@@ -502,6 +503,7 @@ const calculateWithBattle = (opts: FormState) => {
       targetAdv: opts.targetAdvance,
       withBattle: true,
       isUpdatingExisting: opts.isUpdatingExisting,
+      consoleType: opts.console,
     },
   };
 };
@@ -540,7 +542,10 @@ export type BattleVideoInfo = {
 
 export type Props = {
   fixedData?: FixedData;
-  setBattleVideoAdv?: (adv: number | null) => void;
+  setBattleVideoAdv?: (
+    adv: number | null,
+    consoleType: Gen3Console | null,
+  ) => void;
 };
 
 export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
@@ -559,6 +564,7 @@ export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
     targetAdv: number;
     withBattle: boolean;
     isUpdatingExisting: boolean;
+    consoleType: Gen3Console | null;
   } | null>(null);
 
   const onSubmit: RngToolSubmit<FormState> = async (opts) => {
@@ -664,9 +670,12 @@ export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
               trackerId="wild3_battle_video_created"
               onClick={() => {
                 if (battleVideoInfo != null) {
-                  setBattleVideoAdv(battleVideoInfo.battleVideoAdv);
+                  setBattleVideoAdv(
+                    battleVideoInfo.battleVideoAdv,
+                    battleVideoInfo.consoleType,
+                  );
                 } else {
-                  setBattleVideoAdv(initialValues.existingBattleVideoAdv);
+                  setBattleVideoAdv(initialValues.existingBattleVideoAdv, null);
                 }
               }}
             >
@@ -677,7 +686,7 @@ export const BattleVideo = ({ fixedData, setBattleVideoAdv }: Props) => {
           <Button
             trackerId="wild3_battle_video_skip"
             onClick={() => {
-              setBattleVideoAdv(null);
+              setBattleVideoAdv(null, null);
             }}
           >
             Skip (no Battle Video created)

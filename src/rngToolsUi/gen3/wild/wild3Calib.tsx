@@ -1,12 +1,16 @@
 import React from "react";
-import { Flex, MultiTimer, Field, Input } from "~/components";
+import { Flex, MultiTimer, Field, Input, Select } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
 import {
   TargetSetup,
   Wild3CalibTargetSetupInput,
 } from "./wild3CalibTargetSetupInput";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon";
-import { gen3ConsoleFpsMap } from "~/types/console";
+import {
+  Gen3Console,
+  gen3ConsoleFpsMap,
+  gen3ConsoleOptions,
+} from "~/types/console";
 import {
   formatLargeInteger,
   formatLargeIntegerWithSign,
@@ -44,6 +48,9 @@ export const Wild3Calib = ({
   const [battleVideoInfo, setBattleVideoInfo] =
     React.useState<BattleVideoInfo | null>(battleVideoInfoProp ?? null);
 
+  const [consoleType, setConsoleType] = React.useState<Gen3Console>(
+    battleVideoInfo?.consoleType ?? "GBA",
+  );
   const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(0);
 
   const targetSetupInputForm = () => (
@@ -71,11 +78,7 @@ export const Wild3Calib = ({
 
   const milliseconds = [
     5000,
-    Math.round(
-      (advFromTimer /
-        gen3ConsoleFpsMap[battleVideoInfo?.consoleType ?? "GBA"]) *
-        1000,
-    ),
+    Math.round((advFromTimer / gen3ConsoleFpsMap[consoleType]) * 1000),
   ];
   const labels = [
     initialAdv > 0 ? "Close the Battle Video" : "Soft reset START+SELECT+A+B",
@@ -95,7 +98,25 @@ export const Wild3Calib = ({
     );
   };
 
+  const consoleProp = battleVideoInfo?.consoleType;
   const calibFields: Field[] = [
+    {
+      label: "Console",
+      input:
+        consoleProp == null ? (
+          <Select<Gen3Console>
+            name="console"
+            value={consoleType}
+            options={gen3ConsoleOptions}
+            onSelect={(val) => {
+              setConsoleType(val);
+            }}
+          />
+        ) : (
+          (gen3ConsoleOptions.find((opt) => opt.value === consoleProp)?.label ??
+          "")
+        ),
+    },
     {
       label: "Calibration + Offset (advance)",
       input: (
@@ -129,36 +150,31 @@ export const Wild3Calib = ({
       {
         label: "Map",
         input: formatMapName(targetSetupProp.map),
-        indent: 1,
       },
       {
         label: "Player action",
         input: formatActionName(targetSetupProp.action),
-        indent: 1,
       },
       {
         label: "Lead",
         input: formatLeadName(targetSetupProp.lead),
-        indent: 1,
       },
       {
         label: "Lead Cycle Speed",
         input: targetSetupProp.usingAverageLeadCycleSpeed
           ? "Average"
           : targetSetupProp.leadCycleSpeed,
-        indent: 1,
+        show: targetSetupProp.lead !== "Egg",
       },
       {
         label: "Target Method",
         input: targetSetupProp.targetMethod,
-        indent: 1,
       },
       {
         label: "Target frame before painting (decimal)",
         input: formatLargeInteger(
           battleVideoInfoProp.targetPaintingAdvs.before,
         ),
-        indent: 1,
         show: usingPaintingReseeding,
       },
       {
@@ -166,7 +182,6 @@ export const Wild3Calib = ({
         input: formatLargeInteger(
           battleVideoInfoProp.battleVideoAdvAfterPainting,
         ),
-        indent: 1,
         show: usingPaintingReseeding,
       },
 
@@ -176,7 +191,6 @@ export const Wild3Calib = ({
           battleVideoInfoProp.battleVideoAdvAfterPainting,
         ),
         show: usingBattleVideoWithoutPainting,
-        indent: 1,
       },
       {
         label: "Target advance",
@@ -186,13 +200,11 @@ export const Wild3Calib = ({
             ? ` (${formatLargeIntegerWithSign(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`
             : ``),
         show: !usingPaintingReseeding,
-        indent: 1,
       },
       {
         label: "Target advance after painting",
         input: `${formatLargeInteger(targetSetup.targetPaintingAdvs.after)} (${formatLargeIntegerWithSign(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`,
         show: usingPaintingReseeding,
-        indent: 1,
       },
       {
         label: "Target Pokémon",
@@ -203,7 +215,9 @@ export const Wild3Calib = ({
     return (
       <div>
         <h3>Info from previous steps</h3>
-        <FormFieldTable fields={fields} />
+        <Flex ml={20} vertical>
+          <FormFieldTable fields={fields} />
+        </Flex>
       </div>
     );
   };

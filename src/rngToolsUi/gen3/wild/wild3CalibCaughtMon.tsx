@@ -245,7 +245,7 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
 
   const list = resultsBySeed
     .filter((result) => {
-      return result.advance <= opts.max_advances;
+      return result.advance <= opts.initial_advances + opts.max_advances;
     })
     .map((result) => {
       const probabilityHitMethodsAtAdvance =

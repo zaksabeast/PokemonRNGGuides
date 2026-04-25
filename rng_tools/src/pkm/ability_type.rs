@@ -33,3 +33,8 @@ impl AbilityType {
         }
     }
 }
+
+#[wasm_bindgen]
+pub fn get_ability_type_from_gen3_pid(pid: u32) -> AbilityType {
+    AbilityType::from_gen3_pid(pid)
+}

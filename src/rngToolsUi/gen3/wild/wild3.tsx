@@ -23,9 +23,12 @@ import { gen3Methods } from "~/types";
 /*
 Possible user flows: 
  - Step 1: Low target advance without painting. Step 2: Too low to create battle video, so must skip.
-    Step1: Abra, no filter, adv 1005, Wild1. Step2: Skip. Step3: Nincada, Lvl 6, Female, Adamant, 19/12/16/8/9/10
+      Step1: Abra, no filter, adv 1005, Wild1. Step2: Skip. Step3: Whismur, Lvl 6, Female, Hasty, Soundproof, 24/12/7/11/9/9, adv 1027
  - Step 1: Target advance without painting. Step 2: Press "Skip creating battle video".
+      Step1: Abra, no filter, min adv 10000, adv 10004, Wild1 (Abra, Lvl 8, Male, Careful, HP 22, ATK 10, DEF 9, SPA 19, SPD 16, SPE 21). 
+      Step2: Skip. Step3: Zubat, Lvl 7, Female, Serious, 23/12/11/9/12/14, adv 10008
  - Step 1: Target advance without painting. Step 2: Skip the step without confirming. Step 3: Assumes no battle video was created.
+      Idem
  - Step 1: Target advance without painting. Step 2: Create battle video.
  - Step 1: Target advance with painting. Step 2: Create battle video but can't update battle video because too close to target.
  - Step 1: Target advance with painting. Step 2: Can create and update battle video.

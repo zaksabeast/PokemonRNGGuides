@@ -1,0 +1,5 @@
+import{t as e}from"./jsx-runtime-MrBVUj-r.js";import{d as t}from"./index-DYKm3G_o.js";var n=e(),r=[{title:`IV Calculator`,navDrawerTitle:`IV Calculator`,description:`IV Calculator`,slug:`iv-calculator`,category:[`GBA Tools`,`NDS Tools`],section:`tool`,isRoughDraft:!0}];function i(e){let r={a:`a`,h2:`h2`,li:`li`,ul:`ul`,...t(),...e.components},{IvCalc:i}=r;return i||o(`IvCalc`,!0),(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(i,{}),`
+`,(0,n.jsx)(r.h2,{children:`Credits`}),`
+`,(0,n.jsxs)(r.ul,{children:[`
+`,(0,n.jsxs)(r.li,{children:[`Thanks to all `,(0,n.jsx)(r.a,{href:`https://github.com/Admiral-Fish/PokeFinder`,children:`PokeFinder`}),` contributors, whose work this tool is built upon.`]}),`
+`]})]})}function a(e={}){let{wrapper:r}={...t(),...e.components};return r?(0,n.jsx)(r,{...e,children:(0,n.jsx)(i,{...e})}):i(e)}function o(e,t){throw Error(`Expected `+(t?`component`:`object`)+" `"+e+"` to be defined: you likely forgot to import, pass, or provide it.")}export{a as default,r as frontmatter};

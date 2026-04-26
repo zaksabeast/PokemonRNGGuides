@@ -1,0 +1,65 @@
+---
+title: "无需海豚模拟器的补丁"
+description: "使用此补丁即可对许愿星基拉祈进行乱数操作，无需依赖海豚模拟器。"
+slug: "zh-no-dolphin-patch"
+translation:
+  enSlug: "No Dolphin Patch"
+  language: "zh"
+---
+
+## 所需工具
+
+- 一款 GBA 模拟器，例如 [mGBA](https://mgba.io/downloads.html#desktop-os-1)
+- [无需海豚模拟器的补丁](https://github.com/zaksabeast/Multiboot-Jirachi-Patches/releases/latest)
+- 基拉祈多引导 ROM 文件 (如许愿星版本 `client.bin`)
+
+## 简介
+
+该补丁可让你无需使用海豚模拟器，获取多引导版本的许愿星基拉祈。补丁绕过了 GameCube 主机的连接限制，仅需 GBA 模拟器即可完成操作。
+
+## 视频教程
+
+<YouTubeVideo id="X_XV3EgzSIc" />
+
+## 步骤 1：下载补丁
+
+1. 从[无需海豚模拟器的补丁的发布页面](https://github.com/zaksabeast/Multiboot-Jirachi-Patches/releases/latest)下载 `patches.zip`。
+2. 解压该压缩包以获取 `patches` 文件夹。
+3. 参考下方表格为你的模拟器选择合适的补丁。
+
+| 模拟器 | 多引导 ROM        | 补丁文件                   |
+| -------- | -------------------- | ---------------------------- |
+| mGBA     | Wishmaker Jirachi    | `mgba/client.ips`            |
+| mGBA     | Meteor Jirachi       | `mgba/client.2003_1112.ips`  |
+| mGBA     | Wishing Star Jirachi | `mgba/sample0519.ips`        |
+| Other    | Wishmaker Jirachi    | `other/client.ips`           |
+| Other    | Meteor Jirachi       | `other/client.2003_1112.ips` |
+| Other    | Wishing Star Jirachi | `other/sample0519.ips`       |
+
+```
+注意：若 'other' 补丁无法生效，即使使用的不是 mGBA 模拟器，也请尝试使用 'mGBA' 补丁。
+```
+
+## 步骤 2：应用补丁
+
+1. 访问这个 [IPS 补丁工具网页](https://www.marcrobledo.com/RomPatcher.js/)。
+2. 分别上传多引导 ROM 文件（例如 `client.bin`）与补丁文件。
+3. 点击 `Apply Patch` 并下载打好补丁的 ROM 文件（例如 `client.patched.bin`）。
+
+## 步骤 3：加载已打补丁的 ROM
+
+1. 将你的红宝石 / 蓝宝石存档重命名，与补丁后的 ROM 文件名称保持一致（例如 `client.patched.sav`）。
+2. 在模拟器中加载已打补丁的 ROM 文件。
+3. 确认配信领取流程正常完成。
+
+## 步骤 4：在存档内确认基拉祈
+
+1. 传输完成后，将存档文件重命名恢复为原始名称。
+2. 在模拟器中运行红宝石或蓝宝石 ROM。
+3. 查看队伍，确认已获得基拉祈。
+
+恭喜！你现已无需海豚模拟器，成功获取基拉祈！
+
+## 特别鸣谢
+
+- 中文翻译：白希洛/Hakuhiro

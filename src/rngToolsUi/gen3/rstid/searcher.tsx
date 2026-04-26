@@ -22,6 +22,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Calibrate",
     dataIndex: "advance",
+    disableVerticalPadding: true,
     render: (_, result) => (
       <CalibrateButton hitAdvance={result.advance} timer={timerAtom} />
     ),

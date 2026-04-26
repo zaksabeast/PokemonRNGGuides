@@ -11296,7 +11296,7 @@ export const guides = {
       addedOn: "2025-03-24",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-03-25",
+      lastUpdated: "2026-04-26",
       type: "baseGuide",
       canonical: "/xy-pokeradar/",
       file: "guides/Gen 6/PokeRadar.mdx",

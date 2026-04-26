@@ -35,7 +35,11 @@ export const Select = <ValueType,>({
 }: SelectProps<ValueType>) => {
   return (
     <SelectContainer flex={fullFlex ? 1 : undefined}>
-      <AntdSelect size="large" showSearch {...props} />
+      <AntdSelect
+        size="large"
+        showSearch={{ optionFilterProp: "label" }}
+        {...props}
+      />
     </SelectContainer>
   );
 };

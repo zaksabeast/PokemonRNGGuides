@@ -175,6 +175,12 @@ export const EmeraldPaintingReseeding = ({
     DEFAULT_CALIB_FOR_PAINTING,
   );
 
+  React.useEffect(() => {
+    setTargetPaintingAdvs(targetPaintingAdvsProp ?? null);
+    setBattleVideoAdvAfterPaintingConfirmed(null);
+    setCalibrationForPainting(DEFAULT_CALIB_FOR_PAINTING);
+  }, [targetPaintingAdvsProp]);
+
   const setBattleVideoAdv =
     onBattleVideoCreatedOrSkipped == null || targetPaintingAdvs == null
       ? undefined
@@ -261,7 +267,7 @@ export const EmeraldPaintingReseeding = ({
       // case 1a: not enough time for battle video
       if (targetPaintingAdvs.after < MIN_ADV_FOR_BATTLE_VIDEO) {
         return (
-          <Flex>
+          <Flex vertical gap={20}>
             <div>
               No need to create Battle Video, because the number of advances is
               very small.

@@ -177,7 +177,6 @@ export const EmeraldPaintingReseeding_WithTargetSetup = () => {
   return (
     <Flex vertical gap={40}>
       <EmeraldPaintingReseeding
-        key={JSON.stringify(targetSetup.targetPaintingAdvs)}
         targetPaintingAdvs={targetSetup.targetPaintingAdvs}
         onBattleVideoCreatedOrSkipped={onBattleVideoCreatedOrSkipped}
         targetAction={targetSetup.action}
@@ -239,10 +238,6 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
 
   return (
     <Wild3Calib
-      key={
-        JSON.stringify(targetSetup) +
-        JSON.stringify(battleVideoInfoWithFallback)
-      }
       targetSetup={targetSetup}
       battleVideoInfo={battleVideoInfoWithFallback}
       clearAll={clearAll}

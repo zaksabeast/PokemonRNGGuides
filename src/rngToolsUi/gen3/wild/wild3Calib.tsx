@@ -43,6 +43,10 @@ export const Wild3Calib = ({
     targetSetupProp ?? null,
   );
 
+  React.useEffect(() => {
+    setTargetSetup(targetSetupProp ?? null);
+  }, [targetSetupProp]);
+
   const [targetSetupResult, setTargetSetupResult] =
     React.useState<React.ReactNode>(null);
 
@@ -56,6 +60,10 @@ export const Wild3Calib = ({
 
   const [battleVideoInfo, setBattleVideoInfo] =
     React.useState<BattleVideoInfo | null>(battleVideoInfoProp ?? null);
+
+  React.useEffect(() => {
+    setBattleVideoInfo(battleVideoInfoProp ?? null);
+  }, [battleVideoInfoProp]);
 
   const [consoleTypeFromInput, setConsoleTypeFromInput] =
     React.useState<Gen3Console>("GBA");
@@ -77,10 +85,6 @@ export const Wild3Calib = ({
       )}
     </Flex>
   );
-
-  if (targetSetup == null) {
-    return targetSetupInputForm();
-  }
 
   const setLatestHitAdv = (hitAdv: {
     frame_before_painting: number;
@@ -164,7 +168,7 @@ export const Wild3Calib = ({
   ];
 
   const canDoCalib =
-    battleVideoInfo != null || targetSetup.targetPaintingAdvs.before === 0;
+    battleVideoInfo != null || targetSetup?.targetPaintingAdvs.before === 0;
 
   const infoFromPrevSteps = () => {
     if (targetSetupProp == null) {
@@ -213,15 +217,15 @@ export const Wild3Calib = ({
       {
         label: "Target advance",
         input:
-          formatLargeInteger(targetSetup.targetPaintingAdvs.after) +
+          formatLargeInteger(targetSetupProp.targetPaintingAdvs.after) +
           (initialAdv > 0
-            ? ` (${formatLargeIntegerWithSign(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`
+            ? ` (${formatLargeIntegerWithSign(targetSetupProp.targetPaintingAdvs.after - initialAdv)} from Battle Video)`
             : ``),
         show: !usingPaintingReseeding,
       },
       {
         label: "Target advance after painting",
-        input: `${formatLargeInteger(targetSetup.targetPaintingAdvs.after)} (${formatLargeIntegerWithSign(targetSetup.targetPaintingAdvs.after - initialAdv)} from Battle Video)`,
+        input: `${formatLargeInteger(targetSetupProp.targetPaintingAdvs.after)} (${formatLargeIntegerWithSign(targetSetupProp.targetPaintingAdvs.after - initialAdv)} from Battle Video)`,
         show: usingPaintingReseeding,
       },
       {
@@ -267,7 +271,7 @@ export const Wild3Calib = ({
     <Flex gap={32} vertical>
       {targetSetupProp == null ? inputForms() : infoFromPrevSteps()}
 
-      {canDoCalib && (
+      {canDoCalib && targetSetup != null && (
         <>
           <FormFieldTable fields={calibFields} />
 

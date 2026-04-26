@@ -53,10 +53,6 @@ const getAbilityFilterOptions = async (
     return [
       ...(permitAny ? [any] : []),
       {
-        label: "Any",
-        value: null,
-      },
-      {
         label: possibleAbilities[0] + " (1)",
         value: "First" as const,
       },

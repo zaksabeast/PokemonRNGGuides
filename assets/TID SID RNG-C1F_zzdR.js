@@ -1,0 +1,11 @@
+import{t as e}from"./jsx-runtime-MrBVUj-r.js";import{d as t}from"./index-B5eGYVya.js";var n=e(),r={title:`Brilliant Diamond and Shining Pearl TID/SID RNG`,navDrawerTitle:`TID/SID RNG`,description:`Learn how to RNG your Trainer and Secret ID in Brilliant Diamond and Shining Pearl with CFW.`,slug:`cfw-bdsp-tidandsid`,category:`Brilliant Diamond and Shining Pearl`,isRoughDraft:!0,section:`other_rng`,variant:`cfw-emu`};function i(e){let r={a:`a`,code:`code`,h2:`h2`,li:`li`,p:`p`,ul:`ul`,...t(),...e.components};return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(r.p,{children:`This guide will help you RNG the TID/SID combination of your choice. Both are linked, so one frame will give both TID and SID. Make sure to read the Basic Knowledge guides, especially the PokeFinder guide, since it will be used here.`}),`
+`,(0,n.jsx)(r.h2,{children:`Tools`}),`
+`,(0,n.jsxs)(r.ul,{children:[`
+`,(0,n.jsx)(r.li,{children:(0,n.jsx)(r.a,{href:`/pokefinder`,children:`PokeFinder`})}),`
+`,(0,n.jsx)(r.li,{children:`CaptureSight`}),`
+`]}),`
+`,(0,n.jsx)(r.p,{children:`Open your game. Use CaptureSight to get the states. Open PokeFinder, go to the Gen 8 tab, and click on TID/SID.`}),`
+`,(0,n.jsx)(r.p,{children:`Generate the results. Remember, this is a slow RNG, so avoid going for too high frames. No delay is needed for this RNG.`}),`
+`,(0,n.jsxs)(r.p,{children:[`The TID/SID is generated when you press `,(0,n.jsx)(r.code,{children:`Yes`}),` after entering your name. States are frozen at the name screen, so hit your target when you select your player's hair and style.`]}),`
+`,(0,n.jsx)(r.p,{children:`To advance states, watch the Munchlax in the intro blinking; this allows for +1 advancement.`}),`
+`,(0,n.jsx)(r.p,{children:`You can also advance your states by +5 or +6 by returning to the Hat menu after selecting your name. This helps you reach your target faster.`})]})}function a(e={}){let{wrapper:r}={...t(),...e.components};return r?(0,n.jsx)(r,{...e,children:(0,n.jsx)(i,{...e})}):i(e)}export{a as default,r as frontmatter};

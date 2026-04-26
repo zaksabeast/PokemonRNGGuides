@@ -140,6 +140,10 @@ const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
       label: "",
       key: "_getPkmFilterFields.hidden_power",
       direction: "column",
+      showWhen: {
+        fieldName: "filter_hidden_power.active",
+        when: (active: unknown) => active === true,
+      },
       input: <HiddenPowerInput<PkmFilterFields> name="filter_hidden_power" />,
       indent: 1,
     }),

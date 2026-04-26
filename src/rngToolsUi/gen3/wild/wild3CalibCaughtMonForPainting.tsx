@@ -11,18 +11,17 @@ import clamp from "lodash-es/clamp";
 import { Tooltip } from "antd";
 import { getGen3IvRating } from "../ivRater";
 import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
-
 import {
-  Validator,
+  validator,
   FormState,
   initialValues,
   CaughtMonResult,
   createWild3SearcherOptions,
   updateResultsForRareCandy,
-  Fields,
   ivInfoColumns,
   confidenceRatingColumn,
 } from "./wild3CalibCaughtMon";
+import { Fields } from "./wild3CalibCaughtMon.component";
 
 type Props = {
   targetPaintingAdvs: { before: number; after: number };
@@ -272,7 +271,7 @@ export const Wild3CalibCaughtMonForPainting = ({
         columns={columns}
         results={results}
         initialValues={initialValues}
-        validationSchema={Validator}
+        validationSchema={validator}
         onSubmit={onSubmit}
         submitTrackerId="generate_wild3_caught"
         submitButtonLabel="Find advances matching caught Pokémon"

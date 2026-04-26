@@ -1,26 +1,11 @@
-import React from "react";
 import { z } from "zod";
-import {
-  Field,
-  Flex,
-  ResultColumn,
-  Icon,
-  FormFieldTable,
-  FormikRadio,
-  FormikSwitch,
-  FormikNumberInput,
-} from "~/components";
-import { FormikSelect } from "~/components/select";
+import { ResultColumn, Icon } from "~/components";
 import { nature } from "~/types/nature";
-import { Button } from "~/components/button";
-import { toOptions } from "~/utils/options";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import {
   getPkmFilterInitialValues,
-  natureOptions,
   pkmFilterFieldsToRustInput,
 } from "~/components/pkmFilter";
-import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import {
   createAllStats0,
   gen3Methods,
@@ -42,10 +27,7 @@ import {
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import type { TargetSetup } from "./wild3CalibTargetSetupInput";
 import { isFishingAction, wild3Actions } from "./utils";
-import { useWatch } from "react-hook-form";
-import { FormikGenderFilter } from "~/components/genderFilter";
-import { getIvRangeFromStats, getStatRange } from "~/types/statRange";
-import uniq from "lodash-es/uniq";
+import { getIvRangeFromStats } from "~/types/statRange";
 import {
   gen3PkmFilterFieldsToRustInput,
   getGen3PkmFilterInitialValues,
@@ -54,14 +36,12 @@ import { Tooltip } from "antd";
 import { formatProbability } from "~/utils/formatProbability";
 import { Gen3IvRating, getGen3IvRating } from "../ivRater";
 import { ability } from "~/types/ability";
-import { FormikAbilityFilter } from "~/components/abilityFilter";
-import { useFormContext } from "~/hooks/form";
 import { match, P } from "ts-pattern";
 import { pokerng_with_jump } from "~/utils/lcrng";
 
 export const emeraldWildGameData = getWild3EmeraldGameData();
 
-export const Validator = z
+export const validator = z
   .object({
     nature: z.enum(nature),
     gender: z.enum(gender),
@@ -73,7 +53,7 @@ export const Validator = z
   })
   .extend(StatFieldsSchema.shape);
 
-export type FormState = z.infer<typeof Validator>;
+export type FormState = z.infer<typeof validator>;
 
 export const initialValues: FormState = {
   hpStat: 0,
@@ -252,164 +232,6 @@ export const getPossibleEncountersForMap = (targetSetup: TargetSetup) => {
     );
   }
   return list;
-};
-
-export const Fields = ({
-  targetSetup,
-  onRareCandyChange,
-}: {
-  targetSetup: TargetSetup;
-  onRareCandyChange: (
-    species: Species,
-    lvl: number,
-    nature: Nature,
-    rareCandy: number,
-  ) => void;
-}) => {
-  const { setFieldValue } = useFormContext<FormState>();
-
-  const selectedSpecies = useWatch<FormState, "species">({ name: "species" });
-  const selectedLvl = useWatch<FormState, "lvl">({ name: "lvl" });
-  const selectedNature = useWatch<FormState, "nature">({ name: "nature" });
-  const rareCandy = useWatch<FormState, "rareCandy">({ name: "rareCandy" });
-
-  const [fields, setFields] = React.useState<Field[]>([]);
-
-  React.useEffect(() => {
-    onRareCandyChange(selectedSpecies, selectedLvl, selectedNature, rareCandy);
-  }, [
-    onRareCandyChange,
-    rareCandy,
-    selectedLvl,
-    selectedNature,
-    selectedSpecies,
-  ]);
-
-  React.useEffect(() => {
-    const encounters = getPossibleEncountersForMap(targetSetup);
-    const speciesList = uniq(
-      encounters.map((enc) => enc.species_data.species),
-    ).toSorted();
-    const selectedSpeciesInfos = encounters.filter(
-      (enc) => enc.species_data.species === selectedSpecies,
-    );
-
-    const speciesField: Field = {
-      label: "Species",
-      input: (
-        <FormikRadio<FormState>
-          name="species"
-          options={toOptions(speciesList)}
-        />
-      ),
-    };
-
-    if (selectedSpeciesInfos.length === 0) {
-      setFields([speciesField]);
-      return;
-    }
-
-    const lvls = new Set<number>();
-    selectedSpeciesInfos.forEach((info) => {
-      for (let lvl = info.min_level; lvl <= info.max_level; lvl++) {
-        lvls.add(lvl);
-      }
-    });
-    const sortedLvls = Array.from(lvls).sort((lvl1, lvl2) => lvl1 - lvl2);
-
-    Promise.all([
-      getStatRange({
-        species: selectedSpecies,
-        levelRange: [selectedLvl, selectedLvl],
-        nature: selectedNature,
-      }),
-    ]).then(([minMaxStats]) => {
-      setFields([
-        speciesField,
-        {
-          label: "Level",
-          input: (
-            <FormikRadio<FormState>
-              name="lvl"
-              options={toOptions(sortedLvls)}
-            />
-          ),
-        },
-        {
-          label: "Gender",
-          input: (
-            <FormikGenderFilter<FormState>
-              name="gender"
-              species={selectedSpecies}
-              permitAny={false}
-            />
-          ),
-        },
-        {
-          label: "Ability",
-          input: (
-            <FormikAbilityFilter<FormState>
-              name="ability"
-              species={selectedSpecies}
-              permitAny={false}
-              displayHiddenAbility={false}
-              mergeFirstSecondIfSameAbility
-            />
-          ),
-        },
-        {
-          label: "Nature",
-          input: (
-            <FormikSelect<FormState, "nature">
-              name="nature"
-              options={natureOptions.required}
-            />
-          ),
-        },
-        ...getStatFields<FormState>(minMaxStats),
-        {
-          label: "Rare Candy",
-          input: (
-            <Flex dir="row">
-              <Button
-                trackerId="wild3_calib_set_rare_candy_to_1"
-                onClick={() => {
-                  setFieldValue("rareCandy", 1);
-                }}
-              >
-                {" =1 "}
-              </Button>
-              <FormikNumberInput<FormState>
-                name="rareCandy"
-                numType="decimal"
-              />
-              <Button
-                trackerId="wild3_calib_add_rare_candy"
-                onClick={() => {
-                  setFieldValue("rareCandy", Math.min(rareCandy + 1, 99));
-                }}
-              >
-                {" +1 "}
-              </Button>
-            </Flex>
-          ),
-        },
-        {
-          label: "Display results with 0% likelihood",
-          input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
-        },
-      ]);
-    });
-  }, [
-    targetSetup,
-    selectedSpecies,
-    selectedLvl,
-    selectedNature,
-    setFieldValue,
-    rareCandy,
-  ]);
-
-  return <FormFieldTable fields={fields} />;
 };
 
 export const updateResultsForRareCandy = async (

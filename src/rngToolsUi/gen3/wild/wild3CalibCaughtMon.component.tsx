@@ -39,7 +39,7 @@ import {
   initialValues,
   ivInfoColumns,
   updateResultsForRareCandy,
-  Validator,
+  validator,
 } from "./wild3CalibCaughtMon";
 
 export const Fields = ({
@@ -105,13 +105,11 @@ export const Fields = ({
     });
     const sortedLvls = Array.from(lvls).sort((lvl1, lvl2) => lvl1 - lvl2);
 
-    Promise.all([
-      getStatRange({
-        species: selectedSpecies,
-        levelRange: [selectedLvl, selectedLvl],
-        nature: selectedNature,
-      }),
-    ]).then(([minMaxStats]) => {
+    getStatRange({
+      species: selectedSpecies,
+      levelRange: [selectedLvl, selectedLvl],
+      nature: selectedNature,
+    }).then((minMaxStats) => {
       setFields([
         speciesField,
         {
@@ -389,7 +387,7 @@ export const Wild3CalibCaughtMon = ({
         columns={columns}
         results={results}
         initialValues={initialValues}
-        validationSchema={Validator}
+        validationSchema={validator}
         onSubmit={onSubmit}
         submitTrackerId="generate_wild3_caught"
         submitButtonLabel="Find advances matching caught Pokémon"

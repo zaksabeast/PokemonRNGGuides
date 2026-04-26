@@ -1,4 +1,4 @@
-import { Species } from "~/rngTools";
+import { Gen3Method, Species } from "~/rngTools";
 import {
   Field,
   FormikNumberInput,
@@ -10,7 +10,6 @@ import {
   Link,
 } from "~/components";
 import { toOptions } from "~/utils/options";
-import { gen3Methods } from "~/types";
 
 import {
   formatActionName,
@@ -23,6 +22,13 @@ import {
 import { useWatch } from "react-hook-form";
 import { FormState } from "./wild3FindTarget";
 import { getPossibleValuesForSpecies } from "./wild3TargetMon";
+import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
+
+const supportedGen3Methods = [
+  "Wild1",
+  "Wild2",
+  "Wild4",
+] as const satisfies Gen3Method[];
 
 const getSetupFields = (
   species: Species,
@@ -147,7 +153,7 @@ const getSetupFields = (
       input: (
         <FormikSelect<FormState, "methods">
           name="methods"
-          options={toOptions(gen3Methods)}
+          options={toOptions(supportedGen3Methods)}
           mode="multiple"
         />
       ),
@@ -179,8 +185,10 @@ const getSetupFields = (
     },
 
     {
-      label: "Seed after painting reseeding",
-      input: <FormikNumberInput<FormState> name="initial_seed" numType="hex" />,
+      label: "Frame before painting (Painting seed)",
+      input: (
+        <FormikEmeraldFrameBeforePaintingInput<FormState> name="initial_seed" />
+      ),
       show: usingPaintingReseeding && !letSearcherFindPaintingSeed,
       indent: 1,
     },

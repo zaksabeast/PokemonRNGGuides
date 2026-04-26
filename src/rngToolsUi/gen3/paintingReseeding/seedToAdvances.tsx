@@ -78,10 +78,10 @@ const getColumns = (): ResultColumn<Result>[] => {
     },
     {
       title: (
-        <>
+        <span>
           Frames before
           <br /> painting
-        </>
+        </span>
       ),
       key: "frame_before_painting",
       dataIndex: "advs",
@@ -93,11 +93,11 @@ const getColumns = (): ResultColumn<Result>[] => {
     },
     {
       title: (
-        <>
+        <span>
           RNG state after <br />
           painting <br />
           (in advances)
-        </>
+        </span>
       ),
       key: "rng_state_after",
       dataIndex: "advs",
@@ -109,11 +109,11 @@ const getColumns = (): ResultColumn<Result>[] => {
     },
     {
       title: (
-        <>
+        <span>
           Additional advances <br />
           after painting <br />
           to hit target
-        </>
+        </span>
       ),
       key: "additional_adv_after_painting",
       dataIndex: "advs",
@@ -123,10 +123,10 @@ const getColumns = (): ResultColumn<Result>[] => {
     },
     {
       title: (
-        <>
+        <span>
           Time to create Battle Video <br />
           assuming 10 painting attempts
-        </>
+        </span>
       ),
       key: "wait_dur",
       dataIndex: "wait_dur",
@@ -166,7 +166,7 @@ const MyFields = () => {
       input: <FormikSwitch<FormState> name="alreadyKnowPaintingFrameAndAdv" />,
     },
     {
-      label: "Frame before painting",
+      label: "Frame before painting (Painting seed)",
       input: (
         <FormikEmeraldFrameBeforePaintingInput<FormState> name="frameBeforePainting" />
       ),

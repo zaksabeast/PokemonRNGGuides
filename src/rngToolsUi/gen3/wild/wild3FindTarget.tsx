@@ -35,6 +35,7 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 import { GBA_FPS } from "~/utils/consts";
+import { TargetSetup } from "./wild3CalibTargetSetupInput";
 
 /*
 Possible UI improvements:
@@ -209,7 +210,11 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
   ];
 };
 
-export const Wild3SearcherFindTarget = () => {
+type Props = {
+  setTargetSetup: (targetSetup: TargetSetup) => void;
+};
+
+export const Wild3SearcherFindTarget = ({ setTargetSetup }: Props) => {
   const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
     [],
   );
@@ -257,6 +262,7 @@ export const Wild3SearcherFindTarget = () => {
       <Wild3ResultSetupInfos
         selectedPidPathResult={selectedPidPathResult}
         rngManipulatedLeadPid={rngManipulatedLeadPid}
+        setTargetSetup={setTargetSetup}
       />
     </>
   );

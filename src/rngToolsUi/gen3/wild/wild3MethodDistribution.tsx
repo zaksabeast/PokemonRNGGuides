@@ -255,7 +255,7 @@ const getFields = (
   });
 
   fields.push({
-    label: "Frame before painting",
+    label: "Frame before painting (Painting seed)",
     input: (
       <FormikEmeraldFrameBeforePaintingInput<FormState> name="initial_seed" />
     ),

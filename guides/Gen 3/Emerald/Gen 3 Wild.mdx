@@ -8,26 +8,76 @@
   isRoughDraft: true
 ---
 
-## Searcher
+## General Overview
 
-**Use case**: Determine the best setup (map, advance, lead) to obtain the wanted target Pokémon.
+Wild Pokémon are encountered by using the Sweet Scent move, fishing or using Rock Smash. Manipulating wild encounter only requires 1 frame-perfect input. Calibrating is fast and reliable.
+Wild Pokémon can be captured with the Pokéball of your choice.
 
-<Wild3SearcherFindTarget />
+There are some canveats however:
 
-<br />
+- Not all Pokémon stats and natures combinations are possible. Most notably, a Pokémon with 6 perfects IVs generated from a wild encounter can have only 9 possible natures (Calm, Careful, Docile, Hardy, Lax, Modest, Naive, Rash, Timid) and it can only be shiny for 16 specific PSV (TID/SID combo).
+  - The shininess restriction can be bypassed with ACE by temporarily changing your TID/SID.
+  - [RNG-manipulated Egg Pokémon](/retail-emerald-egg) don't have nature and shininess restrictions.
+- The Pokémon generated from a specific setup and input sequence is not always the same. There are typically 3 possible outcomes (known as [methods](/gba-methods)): Wild-1, Wild-2, Wild-4. Carefully choosing your [lead Pokémon](/gba-methods-lead-impact) can increase the likelikhood of hitting a specific method.
 
-## Target Calibration
+## Steps Overview
 
-<Wild3Calib />
+- **Step 1:** Determine the best setup (map, advance, lead) to obtain the target Pokémon.
+- **Step 2:** Optional: Create a Battle Video (possibly combined with Painting Reseeding) to speedup RNG manipulation attempts.
+- **Step 3:** Catch Pokémon and calibrate until obtaining the target Pokémon.
+
+If you already know your target advance and setup, you can skip to Step 2 directly. If you have already created a Battle Video, skip to Step 3.
+
+<Stepper titles={["Find Best Setup", "Create Battle Video", "Catch and Calibrate"]}>
+
+<Step step={0}>
+
+### Find Best Setup
+
+Determine the best setup (map, advance, lead) to obtain the target Pokémon.
+
+1. Fill the criterias of the Target Pokémon (ex: shiny, IVs, nature).
+1. Specify the considered setups (ex: considered maps, leads, mass outbreaks).
+   - TID/SID are only relevant if aiming for a shiny Pokémon. How to [find your SID](/gen3-sid/).
+1. Press "Generate" to create a list of Pokémon respecting the criterias.
+1. Select a Target Pokémon, ideally one with high Likelihood and low advances.
+1. Select one of the setups for the selected Target Pokémon, ideally one with high Likelihood.
+   - The same Target Pokémon often has multiple ways to be obtained, some easier and more reliable than others.
+
+<Wild3SearcherFindTarget_WithSetTargetSetup />
+
+</Step>
+
+<Step step={1}>
+
+### Create Battle Video
+
+Battle Video is a RNG technique to save and restore the RNG state. Using that technique, players only need to wait the full delay of their RNG manipulation once. Afterwards, each retry is very quick.
+
+After winning or losing a battle at the Battle Frontier, players can record their battle. The RNG state at the start of the battle is saved into the battle record. Players can watch their battle anywhere by opening their trainer card and selecting "Battle Record". By doing so, the current RNG state is reseeded with the RNG state at the start of the recorded battle.
+
+Creating a Battle Video is optional if Painting Reseeding is not used.
+
+<EmeraldPaintingReseeding_WithTargetSetup />
+
+</Step>
+
+<Step step={2}>
+
+### Catch and Calibrate
+
+<Wild3Calib_WithTargetSetupAndBattleVideo />
+
+</Step>
+
+</ Stepper>
 
 ## Coming soon
 
-- Fix a bug causing some Wild5 method results to be missing.
-- Support calibrating painting seeds.
+- Improve the documentation when hitting the target advance but not the correct method.
+- Add support for Wild3 and Wild5 methods.
 - Add support for Latios and Latias.
 - Add support for Safari Zone.
-- Add a textual guide for the Emerald Wild Searcher.
-- Improve performance.
 
 ## Credits
 

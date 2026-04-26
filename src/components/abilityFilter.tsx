@@ -51,6 +51,7 @@ const getAbilityFilterOptions = async (
       ];
     }
     return [
+      ...(permitAny ? [any] : []),
       {
         label: "Any",
         value: null,

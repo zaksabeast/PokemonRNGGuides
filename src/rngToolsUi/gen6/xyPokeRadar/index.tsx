@@ -105,7 +105,7 @@ const initialValues: FormState = {
 
 const fields: Field[] = [
   {
-    label: "Seed",
+    label: "Tiny u32 Seed",
     input: <FormikNumberInput<FormState> name="seed" numType="hex" />,
   },
   {

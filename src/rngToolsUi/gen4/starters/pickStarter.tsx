@@ -129,6 +129,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Select"],
     dataIndex: "key",
+    disableVerticalPadding: true,
     render: (_, target) => <SelectButton target={target} />,
   },
   {

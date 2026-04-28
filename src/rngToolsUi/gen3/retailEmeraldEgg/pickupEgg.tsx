@@ -59,6 +59,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Select"],
     dataIndex: "advance",
+    disableVerticalPadding: true,
     render: (_, result) => <SelectButton result={result} />,
   },
   { title: t["Time"], dataIndex: "advance", render: approximateGen3FrameTime },

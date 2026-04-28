@@ -13,6 +13,7 @@ export type SingleResultColumn<T> = keyof T extends string
         dataIndex: K;
         monospace?: boolean;
         show?: boolean;
+        disableVerticalPadding?: boolean;
       } & (
         | {
             title: React.ReactNode;
@@ -112,7 +113,15 @@ export const ResultTable = <Record extends tst.O.Object>(
 
     const colKey =
       column.key == null ? column.dataIndex + " " + column.title : column.key;
-    return <Table.Column {...column} key={colKey} />;
+    return (
+      <Table.Column
+        {...column}
+        key={colKey}
+        className={
+          column.disableVerticalPadding ? "disable-vertical-padding" : undefined
+        }
+      />
+    );
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -130,6 +139,13 @@ export const ResultTable = <Record extends tst.O.Object>(
               ".ant-table-cell": {
                 whiteSpace: "nowrap",
                 width: "auto",
+              },
+              "& span": {
+                verticalAlign: "middle",
+              },
+              ".disable-vertical-padding": {
+                paddingTop: 0,
+                paddingBottom: 0,
               },
             },
           })}

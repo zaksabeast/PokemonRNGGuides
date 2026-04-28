@@ -17,12 +17,10 @@ type Props<FormState extends PkmFilterFields> = {
   name: Paths<FormState, HiddenPowerFilter> & "filter_hidden_power";
 };
 
-export const HiddenPowerInput = <FormState extends PkmFilterFields>({
-  name,
-}: Props<FormState>) => {
-  const [{ value: active }] = useField<HiddenPowerFilter["active"]>(
-    `${name}.active`,
-  );
+export const HiddenPowerInput = <FormState extends PkmFilterFields>(
+  // Keeping props to make sure form state is compatible
+  _props: Props<FormState>,
+) => {
   const fields = [
     {
       label: "Type",
@@ -54,10 +52,7 @@ export const HiddenPowerInput = <FormState extends PkmFilterFields>({
     },
   ];
 
-  if (active === true) {
-    return <FormFieldTable fields={fields} />;
-  }
-  return null;
+  return <FormFieldTable fields={fields} />;
 };
 
 export const HiddenPowerSwitch = () => {

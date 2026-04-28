@@ -140,6 +140,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Calibrate"],
     dataIndex: "advance",
+    disableVerticalPadding: true,
     render: (_, result) => (
       <CalibrateTimerButton
         type="gen3"

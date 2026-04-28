@@ -93,6 +93,7 @@ const getColumns = ({
   {
     title: t["Select"],
     dataIndex: "advance",
+    disableVerticalPadding: true,
     render: (_, result) => <SelectButton result={result} />,
   },
   {

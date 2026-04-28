@@ -145,6 +145,7 @@ const columns: ResultColumn<Result>[] = [
   {
     title: "Select",
     dataIndex: "key",
+    disableVerticalPadding: true,
     render: (_, target) => <SelectButton target={target} />,
   },
   {

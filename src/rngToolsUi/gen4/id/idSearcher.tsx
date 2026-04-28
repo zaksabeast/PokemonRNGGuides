@@ -107,6 +107,7 @@ const getColumns = ({
     {
       title: t["Select"],
       dataIndex: "seed",
+      disableVerticalPadding: true,
       render: (_, target) => <SelectButton target={target} />,
     },
     {

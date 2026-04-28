@@ -134,6 +134,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   {
     title: t["Calibrate"],
     dataIndex: "key",
+    disableVerticalPadding: true,
     render: (_, res) =>
       match(res)
         .with({ isCorrectSeed: true, isTarget: true }, () => null)

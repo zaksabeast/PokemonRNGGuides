@@ -35,7 +35,7 @@ import {
 import { Tooltip } from "antd";
 import { formatProbability } from "~/utils/formatProbability";
 import { Gen3IvRating, getGen3IvRating } from "../ivRater";
-import { ability } from "~/types/ability";
+import { ability12 } from "~/types/ability";
 import { match, P } from "ts-pattern";
 import { pokerng_with_jump } from "~/utils/lcrng";
 
@@ -47,7 +47,7 @@ export const validator = z
     gender: z.enum(gender),
     species: z.enum(emeraldWildGameData.species),
     lvl: z.number().min(1).max(100),
-    ability: z.enum(ability).nullable(),
+    ability: z.enum(ability12).nullable(),
     generate_even_if_impossible: z.boolean(),
     rareCandy: z.number().min(0).max(99),
   })

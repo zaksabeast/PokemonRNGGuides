@@ -104,8 +104,8 @@
     "lastUpdated": "2026-03-22"
   },
   "/consistent-platinum-rng/": {
-    "hash": "d49bd395859b8734e3dc551466abdc2d28d1d607ef94d95b4aff686ec87bb1f5",
-    "lastUpdated": null
+    "hash": "cf312f145d5f76466e27fe6c08d23f94a4ea9db696b432256edbca03348f4b4a",
+    "lastUpdated": "2026-04-28"
   },
   "/contributing/": {
     "hash": "ef8b44d4e29ba9f4162ff3a87a06c28c692e5f6e14798e9a198ee62d082f6c29",
@@ -752,8 +752,8 @@
     "lastUpdated": null
   },
   "/no-dolphin-patch/": {
-    "hash": "297be68811bdcc7efca4acaa26150bbbc1ede96e0b6b865d7e90b40f72fdc67e",
-    "lastUpdated": null
+    "hash": "76594e710897275595ce75219e1b53c58f1e705a5ee16ede58248a7ffc9fbd9b",
+    "lastUpdated": "2026-04-28"
   },
   "/ntr-helper-usage/": {
     "hash": "4735c7bd654fa4969f7d90ca1d349688c0dcb799314da395f4930a6eb8916746",
@@ -1087,6 +1087,10 @@
     "hash": "ae4230215d80ba7c0d8cc72fb69e0df5a9f0fd9a17e6b3d80efee65331f4f55b",
     "lastUpdated": "2026-03-22"
   },
+  "/zh-consistent-platinum-rng/": {
+    "hash": "398c99eacdf38b65a76b6c95fdabcc85380c2cb7b55ee7a7b84a06c4ec35bb01",
+    "lastUpdated": "2026-04-28"
+  },
   "/zh-delete-pokemon-save/": {
     "hash": "f8459097a89b7c2b112e7ea9b50496d5f683aa4422134ed22443e140d88c8391",
     "lastUpdated": "2026-03-10"
@@ -1334,6 +1338,10 @@
   "/zh-misc-dolphin-gba-bios/": {
     "hash": "0fb0a218105bf5ed9e795300da367a78ad2aeb8420ac9490c30a5c31ce422500",
     "lastUpdated": "2026-03-20"
+  },
+  "/zh-no-dolphin-patch/": {
+    "hash": "f802480c796fed0dcbb959648639e61607f6c94c1eda0a2c1217992e359bf1f5",
+    "lastUpdated": "2026-04-28"
   },
   "/zh-oras-mirage-spots/": {
     "hash": "3cb95323834d5fcbb5cc52c19dbc3ce23c65978d042273064d8977e7ff31a352",

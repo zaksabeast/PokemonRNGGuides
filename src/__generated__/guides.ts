@@ -1057,11 +1057,14 @@ export const guides = {
       addedOn: "2025-07-03",
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-04-28",
       type: "baseGuide",
       canonical: "/consistent-platinum-rng/",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Consistent Platinum RNG.mdx",
-      translations: null,
+      translations: {
+        en: "/consistent-platinum-rng/",
+        zh: "/zh-consistent-platinum-rng/",
+      },
       guideGroupId:
         "en:false-Consistent Platinum RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
@@ -8033,11 +8036,11 @@ export const guides = {
       addedOn: "2025-04-03",
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-04-28",
       type: "baseGuide",
       canonical: "/no-dolphin-patch/",
       file: "guides/Tools and Emulators/No Dolphin Patch.mdx",
-      translations: null,
+      translations: { en: "/no-dolphin-patch/", zh: "/zh-no-dolphin-patch/" },
       guideGroupId:
         "en:false-No Dolphin Patch:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
       guideVariantLinks: null,
@@ -11521,6 +11524,52 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-consistent-platinum-rng/": {
+    meta: {
+      id: "/consistent-platinum-rng/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
+      guideKey: "false-Consistent Platinum RNG",
+      isNew: false,
+      title: "更稳定的白金乱数",
+      navDrawerTitle: "更稳定的白金乱数",
+      description:
+        "针对白金乱数的全新更稳定优化，更容易获得异色高个体的宝可梦。",
+      slug: "/zh-consistent-platinum-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2025-07-03",
+      translation: { enSlug: "/consistent-platinum-rng/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-04-28",
+      type: "translatedGuide",
+      canonical: "/zh-consistent-platinum-rng/",
+      file: "guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Consistent Platinum RNG.mdx",
+      translations: {
+        en: "/consistent-platinum-rng/",
+        zh: "/zh-consistent-platinum-rng/",
+      },
+      guideGroupId:
+        "zh:false-Consistent Platinum RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Consistent Platinum RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Gen 4/Diamond, Pearl, and Platinum/Consistent Platinum RNG.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-delete-pokemon-save/": {
     meta: {
       id: "/delete-pokemon-save/",
@@ -14209,6 +14258,49 @@ export const guides = {
       return file.default;
     }),
   },
+  "/zh-no-dolphin-patch/": {
+    meta: {
+      id: "/no-dolphin-patch/",
+      categories: ["Ruby and Sapphire", "FireRed and LeafGreen", "Emerald"],
+      section: "patch",
+      guideVariants: null,
+      guideKey: "false-No Dolphin Patch",
+      isNew: false,
+      title: "无需海豚模拟器的补丁",
+      navDrawerTitle: "无需海豚模拟器的补丁",
+      description:
+        "使用此补丁即可对许愿星基拉祈进行乱数操作，无需依赖海豚模拟器。",
+      slug: "/zh-no-dolphin-patch/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2025-04-03",
+      translation: { enSlug: "/no-dolphin-patch/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-04-28",
+      type: "translatedGuide",
+      canonical: "/zh-no-dolphin-patch/",
+      file: "guides/Translations/zh/Tools and Emulators/No Dolphin Patch.mdx",
+      translations: { en: "/no-dolphin-patch/", zh: "/zh-no-dolphin-patch/" },
+      guideGroupId:
+        "zh:false-No Dolphin Patch:Emerald|FireRed and LeafGreen|Ruby and Sapphire",
+      guideVariantLinks: null,
+      displayAttributes: ["video_guide"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Tools and Emulators/No Dolphin Patch.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Tools and Emulators/No Dolphin Patch.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/zh-oras-mirage-spots/": {
     meta: {
       id: "/oras-mirage-spots/",
@@ -16663,6 +16755,7 @@ export const guideSlugs = [
   "/zh-bw2-egg/",
   "/zh-channel-jirachi/",
   "/zh-connect-dolphin-to-gba/",
+  "/zh-consistent-platinum-rng/",
   "/zh-delete-pokemon-save/",
   "/zh-desmume-setup/",
   "/zh-dppt-3ds-rng/",
@@ -16725,6 +16818,7 @@ export const guideSlugs = [
   "/zh-misc-3ds-island-scan-sm/",
   "/zh-misc-3ds-island-scan-usum/",
   "/zh-misc-dolphin-gba-bios/",
+  "/zh-no-dolphin-patch/",
   "/zh-oras-mirage-spots/",
   "/zh-oras-remove-time-penalty/",
   "/zh-pal-xd-eevee/",

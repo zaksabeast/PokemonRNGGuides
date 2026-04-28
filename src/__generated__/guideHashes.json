@@ -20,8 +20,8 @@
     "lastUpdated": null
   },
   "/bdsp-advance-rng/": {
-    "hash": "629e9e05c94bdd78410d0b03c350c56d7fb854ccef0a77e686eeb59778b95b26",
-    "lastUpdated": null
+    "hash": "ad1981be0f5e961ab83b3858a7b6dee676d39df9b77fcb0ce2713868f96981d1",
+    "lastUpdated": "2026-04-28"
   },
   "/bdsp-chatot/": {
     "hash": "12a8f77afd072ee315febe59d57d618d4d887c90e625779b3117fdfbee9f58a7",
@@ -1068,12 +1068,16 @@
     "lastUpdated": "2026-04-26"
   },
   "/zh-3ds-alt-settings/": {
-    "hash": "24865e9c1b1363d00d5836ad1022721a6d337ee93f52a40967c875af586eaba5",
-    "lastUpdated": "2026-03-20"
+    "hash": "73e10a7a0b995fe8c8901861ca4e3a33f6fe73d7774f7b38ec5252dc0ec5439c",
+    "lastUpdated": "2026-04-28"
   },
   "/zh-3ds-helper/": {
     "hash": "b552390d883a355e9c77070d346431bdfd3a73fec050854a1f7a6d2fdef9095a",
     "lastUpdated": null
+  },
+  "/zh-bdsp-advance-rng/": {
+    "hash": "028d2eeff6669731313b420d75f8de3f18027f08521ed74e6a55a27c6d4bde5e",
+    "lastUpdated": "2026-04-28"
   },
   "/zh-bw2-egg/": {
     "hash": "ae505050bc0a3b0c30c6a396becabd176bcb4cd93a2389e97c69a247614b1269",
@@ -1088,7 +1092,7 @@
     "lastUpdated": "2026-03-22"
   },
   "/zh-consistent-platinum-rng/": {
-    "hash": "398c99eacdf38b65a76b6c95fdabcc85380c2cb7b55ee7a7b84a06c4ec35bb01",
+    "hash": "c8cc3503bc2b50487e02bdf4fba25aa8d5350d40184c41eb12559164affe74ed",
     "lastUpdated": "2026-04-28"
   },
   "/zh-delete-pokemon-save/": {
@@ -1284,8 +1288,8 @@
     "lastUpdated": "2026-03-20"
   },
   "/zh-gen2-celebi/": {
-    "hash": "c07334eb8767a7abd4191b6373323a6cb19f5a4beabf8bbdf3a50108f3df936a",
-    "lastUpdated": "2026-03-20"
+    "hash": "9f0d519621a6ec9350b75666d67f0f2327a83f5072ac3ebe589fd230d5e8204f",
+    "lastUpdated": "2026-04-28"
   },
   "/zh-gen2-starters/": {
     "hash": "f4ceb79a08bf487dd402b4199362b0bb6321fe41a1299eddd03e8933e618b3a1",
@@ -1316,8 +1320,8 @@
     "lastUpdated": "2026-04-10"
   },
   "/zh-install-pokereader/": {
-    "hash": "15e7c6d408aee27fbe645a2adf9ffb1cc3108139b6b16e36e51b0e5014afb37e",
-    "lastUpdated": null
+    "hash": "0ce50cd6e1490c9aacb2784a157d623dc9c8d0c2483eae8c3cd7b97865cd5397",
+    "lastUpdated": "2026-04-28"
   },
   "/zh-meteor-jirachi/": {
     "hash": "ed36c3bb0a0602e35b501ff39d062c1e6af45f33cc266665b2930be8fc75f569",

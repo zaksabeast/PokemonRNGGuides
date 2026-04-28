@@ -214,11 +214,15 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-04-28",
       type: "baseGuide",
       canonical: "/bdsp-advance-rng/",
       file: "guides/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
-      translations: { en: "/bdsp-advance-rng/", fr: "/fr-bdsp-advance-rng/" },
+      translations: {
+        en: "/bdsp-advance-rng/",
+        fr: "/fr-bdsp-advance-rng/",
+        zh: "/zh-bdsp-advance-rng/",
+      },
       guideGroupId:
         "en:false-Advancing the RNG:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: {
@@ -5458,7 +5462,11 @@ export const guides = {
       type: "translatedGuide",
       canonical: "/fr-bdsp-advance-rng/",
       file: "guides/Translations/fr/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
-      translations: { en: "/bdsp-advance-rng/", fr: "/fr-bdsp-advance-rng/" },
+      translations: {
+        en: "/bdsp-advance-rng/",
+        fr: "/fr-bdsp-advance-rng/",
+        zh: "/zh-bdsp-advance-rng/",
+      },
       guideGroupId:
         "fr:false-Advancing the RNG:Brilliant Diamond and Shining Pearl",
       guideVariantLinks: null,
@@ -11337,7 +11345,7 @@ export const guides = {
       addedOn: "2025-07-03",
       translation: { enSlug: "/3ds-alt-settings/", language: "zh" },
       layout: "guide",
-      lastUpdated: "2026-03-20",
+      lastUpdated: "2026-04-28",
       type: "translatedGuide",
       canonical: "/zh-3ds-alt-settings/",
       file: "guides/Translations/zh/Gen 4/3DS Alt Settings.mdx",
@@ -11398,6 +11406,53 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/zh/Gen 4/3DS Helper.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/zh-bdsp-advance-rng/": {
+    meta: {
+      id: "/bdsp-advance-rng/",
+      categories: ["Brilliant Diamond and Shining Pearl"],
+      section: "rng_technique",
+      guideVariants: ["retail", "cfw-emu"],
+      guideKey: "false-Advancing the RNG",
+      isNew: false,
+      title: "晶灿钻石／明亮珍珠的帧数推进",
+      navDrawerTitle: "晶灿钻石／明亮珍珠的帧数推进",
+      description:
+        "晶灿钻石与明亮珍珠的帧数推进原理。了解哪些行为会消耗帧数，以及如何通过乱数操作来获取完美宝可梦。",
+      slug: "/zh-bdsp-advance-rng/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: null,
+      translation: { enSlug: "/bdsp-advance-rng/", language: "zh" },
+      layout: "guide",
+      lastUpdated: "2026-04-28",
+      type: "translatedGuide",
+      canonical: "/zh-bdsp-advance-rng/",
+      file: "guides/Translations/zh/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx",
+      translations: {
+        en: "/bdsp-advance-rng/",
+        fr: "/fr-bdsp-advance-rng/",
+        zh: "/zh-bdsp-advance-rng/",
+      },
+      guideGroupId:
+        "zh:false-Advancing the RNG:Brilliant Diamond and Shining Pearl",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/zh/Brilliant Diamond and Shining Pearl/Advancing the RNG.mdx?raw"
       );
       return file.default;
     }),
@@ -13673,7 +13728,7 @@ export const guides = {
       addedOn: "2025-03-02",
       translation: { enSlug: "/gen2-celebi/", language: "zh" },
       layout: "guide",
-      lastUpdated: "2026-03-20",
+      lastUpdated: "2026-04-28",
       type: "translatedGuide",
       canonical: "/zh-gen2-celebi/",
       file: "guides/Translations/zh/Gen 2/Celebi.mdx",
@@ -14011,7 +14066,7 @@ export const guides = {
       addedOn: null,
       translation: { enSlug: "/install-pokereader/", language: "zh" },
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-04-28",
       type: "translatedGuide",
       canonical: "/zh-install-pokereader/",
       file: "guides/Translations/zh/Tools and Emulators/3DS PokeReader.mdx",
@@ -16752,6 +16807,7 @@ export const guideSlugs = [
   "/xy-pokeradar/",
   "/zh-3ds-alt-settings/",
   "/zh-3ds-helper/",
+  "/zh-bdsp-advance-rng/",
   "/zh-bw2-egg/",
   "/zh-channel-jirachi/",
   "/zh-connect-dolphin-to-gba/",

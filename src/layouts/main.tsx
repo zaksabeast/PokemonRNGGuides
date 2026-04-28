@@ -15,6 +15,7 @@ import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { settings } from "~/settings";
 import { match } from "ts-pattern";
 import { Color } from "@emotion/react";
+import { useMaxWidthEnabled } from "~/state/contentMaxWidth";
 
 type SupporterType = (typeof settings)["hallOfFameSupporters"][number]["type"];
 
@@ -81,21 +82,23 @@ const BodyContainer = styled.div({
   display: "flex",
 });
 
-const ContentContainer = styled.div(({ theme }) => ({
-  height: "100%",
-  width: "100%",
-  maxWidth: 750,
-  display: "flex",
-  flexDirection: "column",
-  gap: 32,
-  paddingTop: 24,
-  [theme.mediaQueries.up("tablet")]: {
-    width: "90%",
-  },
-  [theme.mediaQueries.up("desktop")]: {
-    width: "80%",
-  },
-}));
+const ContentContainer = styled.div<{ $useMaxWidth: boolean }>(
+  ({ theme, $useMaxWidth }) => ({
+    height: "100%",
+    width: "100%",
+    maxWidth: $useMaxWidth ? 750 : "none",
+    display: "flex",
+    flexDirection: "column",
+    gap: 32,
+    paddingTop: 24,
+    [theme.mediaQueries.up("tablet")]: {
+      width: $useMaxWidth ? "90%" : "100%",
+    },
+    [theme.mediaQueries.up("desktop")]: {
+      width: $useMaxWidth ? "80%" : "100%",
+    },
+  }),
+);
 
 const BottomSpace = styled.div({
   paddingBottom: 32,
@@ -111,7 +114,12 @@ const Footer = styled.footer(({ theme }) => ({
 
 export const MainLayout = ({ children, trackerName }: Props) => {
   const route = useActiveRoute();
+  const [maxWidthEnabled, setMaxWidthEnabled] = useMaxWidthEnabled();
   useScreenViewed(trackerName ?? route);
+
+  React.useEffect(() => {
+    setMaxWidthEnabled(true);
+  }, [route, setMaxWidthEnabled]);
 
   return (
     <>
@@ -124,7 +132,7 @@ export const MainLayout = ({ children, trackerName }: Props) => {
           </Flex>
         </DesktopNavDrawerContainer>
         <ContentLayout>
-          <ContentContainer>
+          <ContentContainer $useMaxWidth={maxWidthEnabled}>
             <Main>{children}</Main>
             {settings.hallOfFameSupporters.length === 0 && <BottomSpace />}
             {settings.hallOfFameSupporters.length > 0 && (

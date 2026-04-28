@@ -1,0 +1,1 @@
+var e=e=>{if(e<=0)return`0%`;if(e>=1)return`100%`;if(e<1e-30)return`~0%`;let t=e*100;if(e>.1)return`${t.toFixed(1)}%`;let n=Math.log10(t);return`${t.toFixed(-Math.floor(n)+1)}%`};export{e as t};

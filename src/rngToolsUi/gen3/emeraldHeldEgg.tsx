@@ -11,9 +11,8 @@ import {
 import { rngTools, Gen3HeldEgg } from "~/rngTools";
 import { getGen3SpeciesOptions, species } from "~/types/species";
 import { nature } from "~/types/nature";
-import { gender } from "~/types/gender";
+import { gender, genderOptions } from "~/types/gender";
 import { natureOptions } from "~/components/pkmFilter";
-import { genderOptions } from "~/components/genderFilter/options";
 import { z } from "zod";
 import { translateOptions, Translations } from "~/translations";
 

@@ -5,7 +5,7 @@ import { FormikSelect } from "~/components/select";
 import { nature } from "~/types/nature";
 import { IvInput, IvsSchema } from "~/components/ivInput";
 import { ability } from "~/types/ability";
-import { gender } from "~/types/gender";
+import { gender, getGenderFilterOptions } from "~/types/gender";
 import { maxIvs, minIvs } from "~/types/ivs";
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
@@ -19,8 +19,8 @@ import {
   HiddenPowerSwitch,
 } from "./hiddenPowerInput.component";
 import { Translations } from "~/translations";
-import { FormikGenderFilter } from "./genderFilter";
 import { FormikAbilityFilter } from "./abilityFilter";
+import { FormikRadio } from "./radio";
 
 const sortedNatures = nature.toSorted();
 
@@ -118,9 +118,9 @@ const _getPkmFilterFields = (props: Props = {}, t?: Translations): Field[] =>
     optOut(props?.displayGender, {
       label: t?.["Gender"] ?? "Gender",
       input: (
-        <FormikGenderFilter<PkmFilterFields>
-          species={props.species}
+        <FormikRadio
           name="filter_gender"
+          options={getGenderFilterOptions(props.species)}
         />
       ),
     }),

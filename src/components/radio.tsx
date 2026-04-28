@@ -14,10 +14,11 @@ import { Path, Paths } from "~/types";
 import { PrimitiveAtom, useAtom } from "jotai";
 import { Translation } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
+import React from "react";
+import isEqual from "lodash-es/isEqual";
 
 type RadioOptions<OptionValues extends string | number> =
-  | OptionValues[]
-  | CheckboxOptionType<OptionValues>[];
+  CheckboxOptionType<OptionValues>[];
 
 export type RadioChangeEvent<OptionValues extends string | number> =
   tst.O.Overwrite<
@@ -70,11 +71,20 @@ type FormikRadioProps<
 
 export const FormikRadio = <FormState extends GenericForm>({
   name,
+  options,
   ...props
 }: FormikRadioProps<FormState>) => {
   type FieldKey = typeof name;
-  const [{ value, onChange, onBlur }, { error }] =
+  const [{ value, onChange, onBlur }, { error }, { setValue }] =
     useField<Path<FormState, FieldKey>>(name);
+
+  React.useEffect(() => {
+    if (options != null && options.length > 0) {
+      if (options.find((opt) => isEqual(opt.value, value)) == null) {
+        setValue(options[0].value);
+      }
+    }
+  }, [options, setValue, value]);
 
   return (
     <Flex vertical>
@@ -84,6 +94,7 @@ export const FormikRadio = <FormState extends GenericForm>({
         onBlur={onBlur}
         onChange={onChange}
         value={value}
+        options={options}
         {...props}
       />
       {error != null && (

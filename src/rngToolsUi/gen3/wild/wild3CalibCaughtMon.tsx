@@ -28,6 +28,7 @@ import {
   createAllStats0,
   gen3Methods,
   gender,
+  getGenderFilterOptions,
   StatFieldsSchema,
 } from "~/types";
 import {
@@ -45,7 +46,6 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import type { FormState as TargetSetup } from "./wild3CalibTarget";
 import { gen3Leads, isFishingAction, wild3Actions } from "./utils";
 import { useWatch } from "react-hook-form";
-import { FormikGenderFilter } from "~/components/genderFilter";
 import { getIvRangeFromStats, getStatRange } from "~/types/statRange";
 import uniq from "lodash-es/uniq";
 import {
@@ -405,10 +405,9 @@ const Fields = ({
         {
           label: "Gender",
           input: (
-            <FormikGenderFilter<FormState>
+            <FormikRadio
               name="gender"
-              species={selectedSpecies}
-              permitAny={false}
+              options={getGenderFilterOptions(selectedSpecies, false)}
             />
           ),
         },

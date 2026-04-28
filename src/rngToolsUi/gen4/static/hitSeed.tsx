@@ -43,6 +43,7 @@ const columns: ResultColumn<ResultRow>[] = [
   {
     title: "Calibrate",
     dataIndex: "id",
+    disableVerticalPadding: true,
     render: (_, target) => (
       <CalibrateTimerButton
         type="gen4"

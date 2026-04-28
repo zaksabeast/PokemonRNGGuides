@@ -13,6 +13,8 @@ export const translations = {
   Yes: "Yes",
   No: "No",
   "Display All Timers?": "Display All Timers?",
+  "Start Timer": "Start Timer",
+  "Stop Timer": "Stop Timer",
   Beeps: "Beeps",
   "Next Phase": "Next Phase",
   "NDS/DSi": "NDS/DSi",

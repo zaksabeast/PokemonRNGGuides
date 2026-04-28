@@ -240,7 +240,7 @@ const InnerMultiTimer = ({
           }
         }}
       >
-        {startTimeMs == null ? "Start" : "Stop"}
+        {startTimeMs == null ? t["Start Timer"] : t["Stop Timer"]}
       </Button>
     </Flex>
   );

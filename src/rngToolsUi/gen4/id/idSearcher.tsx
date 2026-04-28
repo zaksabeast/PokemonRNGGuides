@@ -107,6 +107,7 @@ const getColumns = ({
     {
       title: t["Select"],
       dataIndex: "seed",
+      disableVerticalPadding: true,
       render: (_, target) => <SelectButton target={target} />,
     },
     {
@@ -144,17 +145,17 @@ const getColumns = ({
       dataIndex: "targetGender",
     },
     {
-      title: t["Natures"],
-      dataIndex: "natures",
-      render: (natures) => natures.join(", "),
-    },
-    {
       title: t["Gender Ratios"],
       dataIndex: "genderRatios",
       render: (genderRatios) =>
         genderRatios.length === 0
           ? "All"
           : genderRatios.map(formatGenderRatio).join(", "),
+    },
+    {
+      title: t["Natures"],
+      dataIndex: "natures",
+      render: (natures) => natures.join(", "),
     },
     ...endColumns,
   ];

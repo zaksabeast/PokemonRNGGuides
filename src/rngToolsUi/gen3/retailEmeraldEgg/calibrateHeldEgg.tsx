@@ -59,6 +59,7 @@ const getColumns = ({
   {
     title: t["Calibrate"],
     dataIndex: "advance",
+    disableVerticalPadding: true,
     render: (_, result) => {
       if (result.redraws != null && result.redraws !== target?.redraws) {
         return <Tag color="Error">{t["Wrong Pokedex Count"]}</Tag>;

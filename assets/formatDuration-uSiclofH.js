@@ -1,0 +1,1 @@
+var e=e=>{let t=e/60;return t<1e3?`~${t.toFixed(1)} min`:`~${(t/60).toFixed(0)} h`};export{e as t};

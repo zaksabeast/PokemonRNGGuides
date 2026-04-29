@@ -1068,3 +1068,24 @@ export const getPossibleGenders = (
     .with("MaleOnly", () => ["Male"] as const)
     .otherwise(() => ["Female", "Male"] as const);
 };
+
+export const genderOptions = ([null, ...gender] as const).map((gen) => ({
+  label: gen ?? ("Any" as const),
+  value: gen,
+}));
+
+export const getGenderFilterOptions = (species?: Species, permitAny = true) => {
+  if (species == null) {
+    return genderOptions;
+  }
+
+  const genderRatio = genderRatioBySpecies[species];
+  const possibleGenders = getPossibleGenders(genderRatio);
+  const safePermitAny = permitAny && possibleGenders.length > 1;
+  return genderOptions.filter((option) => {
+    if (option.value == null) {
+      return safePermitAny;
+    }
+    return possibleGenders.includes(option.value);
+  });
+};

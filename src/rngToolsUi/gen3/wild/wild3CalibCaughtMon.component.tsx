@@ -21,7 +21,6 @@ import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { Nature, rngTools, Species } from "~/rngTools";
 import type { TargetSetup } from "./wild3CalibTargetSetupInput";
 import { useWatch } from "react-hook-form";
-import { FormikGenderFilter } from "~/components/genderFilter";
 import { getStatRange } from "~/types/statRange";
 import uniq from "lodash-es/uniq";
 import clamp from "lodash-es/clamp";
@@ -41,6 +40,7 @@ import {
   updateResultsForRareCandy,
   validator,
 } from "./wild3CalibCaughtMon";
+import { getGenderFilterOptions } from "~/types";
 
 export const Fields = ({
   targetSetup,
@@ -124,10 +124,9 @@ export const Fields = ({
         {
           label: "Gender",
           input: (
-            <FormikGenderFilter<FormState>
+            <FormikRadio
               name="gender"
-              species={selectedSpecies}
-              permitAny={false}
+              options={getGenderFilterOptions(selectedSpecies, false)}
             />
           ),
         },

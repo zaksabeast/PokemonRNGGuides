@@ -25,6 +25,7 @@ import { formatHex } from "~/utils/formatHex";
 import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
+import Instructions_calib_wrong_method from "./instructions_calib_wrong_method.mdx";
 
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
@@ -274,14 +275,12 @@ export const Wild3Calib = ({
       {canDoCalib && targetSetup != null && (
         <>
           <FormFieldTable fields={calibFields} />
-
           {displayInstructions &&
             (usingBattleVideo ? (
               <Instructions_calib_with_battle_video />
             ) : (
               <Instructions_calib_without_battle_video />
             ))}
-
           <MultiTimer
             milliseconds={milliseconds}
             labels={labels}
@@ -292,6 +291,9 @@ export const Wild3Calib = ({
             targetSetup={targetSetup}
             setLatestHitAdv={setLatestHitAdv}
           />
+          // NO_PROD, only show if hit target adv. show breakdowntoo. //
+          [12.%-12%] clciakble in same pr // highlight edd lead. //
+          <Instructions_calib_wrong_method />
         </>
       )}
     </Flex>

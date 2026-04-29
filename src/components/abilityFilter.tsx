@@ -4,6 +4,7 @@ import { FormikRadio } from "./radio";
 import { GenericForm, GuaranteeFormNameType } from "~/types";
 import { useField } from "~/hooks/form";
 import { ability12, ability12H } from "~/types/ability";
+import { abilities } from "~/translations/en/abilities";
 
 type FormikAbilityFilterProps<FormState extends GenericForm> = {
   name: GuaranteeFormNameType<FormState, AbilityType | null>;
@@ -35,25 +36,28 @@ const getAbilityFilterOptions = async (
   mergeFirstSecondIfSameAbility: boolean,
 ) => {
   const possibleAbilities = await rngTools.get_species_abilities(species);
+  const formattedAbilities = possibleAbilities.map(
+    (ability) => abilities[ability],
+  );
 
   const any = {
     label: "Any",
     value: null,
   };
 
-  if (possibleAbilities.length === 0) {
+  if (formattedAbilities.length === 0) {
     return [any];
   }
 
   if (
-    possibleAbilities.length === 1 ||
-    (possibleAbilities.length === 2 &&
-      possibleAbilities[1] === possibleAbilities[0])
+    formattedAbilities.length === 1 ||
+    (formattedAbilities.length === 2 &&
+      formattedAbilities[1] === formattedAbilities[0])
   ) {
     if (mergeFirstSecondIfSameAbility) {
       return [
         {
-          label: possibleAbilities[0],
+          label: formattedAbilities[0],
           value: null,
         },
       ];
@@ -61,11 +65,11 @@ const getAbilityFilterOptions = async (
     return [
       ...(permitAny ? [any] : []),
       {
-        label: possibleAbilities[0] + " (1)",
+        label: formattedAbilities[0] + " (1)",
         value: "First" as const,
       },
       {
-        label: possibleAbilities[0] + " (2)",
+        label: formattedAbilities[0] + " (2)",
         value: "Second" as const,
       },
     ];
@@ -74,11 +78,11 @@ const getAbilityFilterOptions = async (
   return [
     ...(permitAny ? [any] : []),
     {
-      label: possibleAbilities[0],
+      label: formattedAbilities[0],
       value: "First" as const,
     },
     {
-      label: possibleAbilities[1],
+      label: formattedAbilities[1],
       value: "Second" as const,
     },
   ];

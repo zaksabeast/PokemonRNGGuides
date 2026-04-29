@@ -1,6 +1,7 @@
 import {
   Button,
   Field,
+  FormFieldTable,
   FormikNumberInput,
   FormikSelect,
   ResultColumn,
@@ -41,6 +42,7 @@ import { UndefinedToNull } from "~/types";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
 import { MONTHS, MonthSchema, monthToRustFilter } from "~/utils/time";
+import { useWatch } from "~/hooks/form";
 
 type Result = FlattenIvs<
   Static4State["state"] & {
@@ -160,12 +162,23 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   },
 ];
 
-const getFields = (game: Gen4GameVersion, t: Translations): Field[] => {
+type FieldsProps = {
+  game: Gen4GameVersion;
+  t: Translations;
+};
+
+const Fields = ({ game, t }: FieldsProps) => {
+  const watched = useWatch({
+    validationSchema: Validator,
+    names: { species: true },
+  });
+
   const starters = match(game)
     .with("Diamond", "Pearl", "Platinum", () => dpptStarters)
     .with("HeartGold", "SoulSilver", () => hgssStarters)
     .exhaustive();
-  return [
+
+  const fields: Field[] = [
     {
       label: t["TID"],
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
@@ -219,7 +232,7 @@ const getFields = (game: Gen4GameVersion, t: Translations): Field[] => {
         />
       ),
     },
-    ...getPkmFilterFields({}, t),
+    ...getPkmFilterFields({ species: watched.species ?? undefined }, t),
     {
       label: t["Force Second"],
       input: (
@@ -227,6 +240,8 @@ const getFields = (game: Gen4GameVersion, t: Translations): Field[] => {
       ),
     },
   ];
+
+  return <FormFieldTable fields={fields} />;
 };
 
 const mapResult = (res: Static4State): Result => {
@@ -288,7 +303,6 @@ export const PickStarter4 = () => {
     await searchStarterSeeds(searchOpts);
   };
 
-  const fields = getFields(game, t);
   const initialValues = match(game)
     .with("Diamond", "Pearl", "Platinum", () => dpptInitialValues)
     .with("HeartGold", "SoulSilver", () => hgssInitialValues)
@@ -296,10 +310,10 @@ export const PickStarter4 = () => {
 
   return (
     <RngToolForm<FormState, Result>
-      fields={fields}
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
+      values={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
       rowKey="key"
@@ -309,6 +323,8 @@ export const PickStarter4 = () => {
       submitButtonLabel={t["Generate"]}
       cancelButtonLabel={t["Cancel"]}
       onCancel={cancel}
-    />
+    >
+      <Fields game={game} t={t} />
+    </RngToolForm>
   );
 };

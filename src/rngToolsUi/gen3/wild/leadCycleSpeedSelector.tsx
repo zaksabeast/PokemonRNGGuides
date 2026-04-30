@@ -11,6 +11,7 @@ import { Tooltip } from "antd";
 import { match } from "ts-pattern";
 import React from "react";
 import clamp from "lodash-es/clamp";
+import { toOptions } from "~/utils/options";
 
 type LeadSpeedType =
   | "Ideal"
@@ -145,11 +146,11 @@ export const LeadCycleSpeedSelector = ({
           setLeadSpeedType(evt.target.value);
         }}
         value={leadSpeedType}
-        options={
+        options={toOptions(
           idealLeadCycleSpeed != null
             ? leadSpeedTypes.slice(0)
-            : leadSpeedTypes.filter((el) => el !== "Ideal")
-        }
+            : leadSpeedTypes.filter((el) => el !== "Ideal"),
+        )}
       />
       <br />
       <br />

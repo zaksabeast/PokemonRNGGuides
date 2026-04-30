@@ -21,11 +21,29 @@ import { AllOrNone } from "~/types";
 import { BattleVideoInfoInput } from "./wild3CalibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { formatHex } from "~/utils/formatHex";
+import {
+  CycleAtMoment,
+  Gen3Method,
+  rngTools,
+  Wild3GeneratorOptions,
+} from "~/rngTools";
+import {
+  getPkmFilterInitialValues,
+  pkmFilterFieldsToRustInput,
+} from "~/components/pkmFilter";
+import {
+  gen3PkmFilterFieldsToRustInput,
+  getGen3PkmFilterInitialValues,
+} from "~/components/gen3PkmFilter";
+import { lcrng_distance } from "~/utils/lcrng";
 
 import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
 import Instructions_calib_wrong_method from "./instructions_calib_wrong_method.mdx";
+import { emeraldWildGameData } from "./wild3CalibCaughtMon";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
+import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
 
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
@@ -69,6 +87,77 @@ export const Wild3Calib = ({
   const [consoleTypeFromInput, setConsoleTypeFromInput] =
     React.useState<Gen3Console>("GBA");
   const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(0);
+  const [hasHitTargetAdv, setHasHitTargetAdv] = React.useState(false);
+  const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>(
+    [],
+  );
+
+  React.useEffect(() => {
+    setHasHitTargetAdv(false);
+    setCycleAtMoments([]);
+  }, [targetSetup]);
+
+  React.useEffect(() => {
+    if (!hasHitTargetAdv || targetSetup == null) {
+      setCycleAtMoments([]);
+      return;
+    }
+
+    let active = true;
+
+    const leadCycleSpeed =
+      targetSetup.lead === "Egg"
+        ? 0
+        : targetSetup.usingAverageLeadCycleSpeed
+          ? AVERAGE_LEAD_CYCLE_SPEED
+          : targetSetup.leadCycleSpeed;
+
+    const opts: Wild3GeneratorOptions = {
+      tid: 0,
+      sid: 0,
+      map_idx: 0,
+      action: targetSetup.action,
+      methods: [targetSetup.targetMethod],
+      lead: targetSetup.lead,
+      filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
+      gen3_filter: gen3PkmFilterFieldsToRustInput(
+        getGen3PkmFilterInitialValues(),
+        null,
+      ),
+      consider_cycles: true,
+      consider_rng_manipulated_lead_pid: true,
+      generate_even_if_impossible: true,
+      roamer_state: targetSetup.roamerState,
+      mass_outbreak_state: targetSetup.massOutbreakState,
+      feebas_state: targetSetup.feebasState,
+      lead_cycle_speed: leadCycleSpeed,
+    };
+
+    const mapData = emeraldWildGameData.maps_data.find(
+      (table) => table.map_id === targetSetup.map,
+    );
+    if (mapData == null) {
+      setCycleAtMoments([]);
+      return;
+    }
+
+    rngTools
+      .generate_gen3_wild_distribution(
+        targetSetup.targetPaintingAdvs.before,
+        targetSetup.targetPaintingAdvs.after,
+        opts,
+        mapData,
+      )
+      .then(({ cycle_at_moments }) => {
+        if (active) {
+          setCycleAtMoments(cycle_at_moments);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [hasHitTargetAdv, targetSetup]);
 
   const targetSetupInputForm = () => (
     <Flex vertical gap={10}>
@@ -87,10 +176,20 @@ export const Wild3Calib = ({
     </Flex>
   );
 
-  const setLatestHitAdv = (hitAdv: {
-    frame_before_painting: number;
-    adv_after_painting: number;
-  }) => {
+  const setLatestHitAdv = (
+    hitAdv: {
+      frame_before_painting: number;
+      adv_after_painting: number;
+    },
+    hitMethod: Gen3Method,
+  ) => {
+    if (
+      hitAdv.adv_after_painting === targetSetup?.targetPaintingAdvs.after &&
+      hitMethod === targetSetup?.targetMethod
+    ) {
+      setHasHitTargetAdv(true);
+    }
+
     setCalibrationAndOffset(
       calibrationAndOffset + hitAdv.adv_after_painting - targetForTimer,
     );
@@ -291,9 +390,25 @@ export const Wild3Calib = ({
             targetSetup={targetSetup}
             setLatestHitAdv={setLatestHitAdv}
           />
-          // NO_PROD, only show if hit target adv. show breakdowntoo. //
-          [12.%-12%] clciakble in same pr // highlight edd lead. //
-          <Instructions_calib_wrong_method />
+          {hasHitTargetAdv && (
+            <>
+              <Instructions_calib_wrong_method />
+              <Wild3CycleAtMoments
+                leadCycleSpeed={
+                  targetSetup.lead === "Egg"
+                    ? null
+                    : targetSetup.usingAverageLeadCycleSpeed
+                      ? AVERAGE_LEAD_CYCLE_SPEED
+                      : targetSetup.leadCycleSpeed
+                }
+                cycleAtMomentsFromTool={cycleAtMoments}
+                advanceAtSweetScent={
+                  lcrng_distance(0, targetSetup.targetPaintingAdvs.before) +
+                  targetSetup.targetPaintingAdvs.after
+                }
+              />
+            </>
+          )}
         </>
       )}
     </Flex>

@@ -18,7 +18,7 @@ import { toOptions } from "~/utils/options";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { natureOptions } from "~/components/pkmFilter";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
-import { Nature, rngTools, Species } from "~/rngTools";
+import { Gen3Method, Nature, rngTools, Species } from "~/rngTools";
 import type { TargetSetup } from "./wild3CalibTargetSetupInput";
 import { useWatch } from "react-hook-form";
 import { FormikGenderFilter } from "~/components/genderFilter";
@@ -253,10 +253,13 @@ const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
 
 type Props = {
   targetSetup: TargetSetup;
-  setLatestHitAdv?: (hitAdv: {
-    frame_before_painting: number;
-    adv_after_painting: number;
-  }) => void;
+  setLatestHitAdv?: (
+    hitAdv: {
+      frame_before_painting: number;
+      adv_after_painting: number;
+    },
+    hitMethod: Gen3Method,
+  ) => void;
 };
 
 export const Wild3CalibCaughtMon = ({
@@ -311,7 +314,7 @@ export const Wild3CalibCaughtMon = ({
             color="PrimaryText"
             trackerId="wild3CalibCaughtMon_adv"
             onClick={() => {
-              setLatestHitAdv?.(advance);
+              setLatestHitAdv?.(advance, values.method);
               setResults([]);
             }}
           >

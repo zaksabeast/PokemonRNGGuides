@@ -89,7 +89,7 @@ type FixedData = {
     adv_after_painting: number;
   } | null;
   wantedMethod: Gen3Method;
-  wantedPID: number;
+  wantedPID: number | null;
   idealLeadCycleSpeed: number;
   usingIdealLeadCycleSpeed: boolean;
 };

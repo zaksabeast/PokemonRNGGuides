@@ -27,7 +27,6 @@ import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
 import Instructions_calib_wrong_method from "./instructions_calib_wrong_method.mdx";
-import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
 import {
   Wild3MethodDistribution,
   type Props as Wild3MethodDistributionProps,
@@ -67,10 +66,8 @@ const targetSetupToMethodDistributionFixedData = (
           },
     wantedMethod: targetSetup.targetMethod,
     wantedPID: null,
-    idealLeadCycleSpeed: targetSetup.usingAverageLeadCycleSpeed
-      ? AVERAGE_LEAD_CYCLE_SPEED
-      : targetSetup.leadCycleSpeed,
-    usingIdealLeadCycleSpeed: !targetSetup.usingAverageLeadCycleSpeed,
+    idealLeadCycleSpeed: null,
+    usingIdealLeadCycleSpeed: false,
   };
 };
 
@@ -354,7 +351,7 @@ export const Wild3Calib = ({
               <Instructions_calib_wrong_method />
               <Wild3MethodDistribution
                 fixedData={methodDistributionFixedData}
-                permitEnablingDebugOptions={true}
+                permitEnablingDebugOptions
               />
             </>
           )}

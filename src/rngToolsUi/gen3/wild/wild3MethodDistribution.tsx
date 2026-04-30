@@ -89,8 +89,8 @@ type FixedData = {
     adv_after_painting: number;
   } | null;
   wantedMethod: Gen3Method;
-  wantedPID: number | null;
-  idealLeadCycleSpeed: number;
+  wantedPID: number | null; // This is to support Wild5. It should be replaced by a PID reroll count.
+  idealLeadCycleSpeed: number | null;
   usingIdealLeadCycleSpeed: boolean;
 };
 
@@ -155,7 +155,7 @@ const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
   );
 
   const leadCycleSpeed = fixedData.usingIdealLeadCycleSpeed
-    ? fixedData.idealLeadCycleSpeed
+    ? (fixedData.idealLeadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED)
     : AVERAGE_LEAD_CYCLE_SPEED;
 
   return {

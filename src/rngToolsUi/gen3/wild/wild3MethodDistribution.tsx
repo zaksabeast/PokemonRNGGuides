@@ -428,7 +428,8 @@ const getColumns = (
             dataIndex: "pre_sweet_scent_cycle_ranges",
             render: (_, values) => {
               if (
-                values.pid !== fixedData.wantedPID ||
+                (fixedData.wantedPID !== null &&
+                  values.pid !== fixedData.wantedPID) ||
                 values.method !== fixedData.wantedMethod
               ) {
                 return null;

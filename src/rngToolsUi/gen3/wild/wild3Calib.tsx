@@ -138,7 +138,7 @@ export const Wild3Calib = ({
   ) => {
     if (
       hitAdv.adv_after_painting === targetSetup?.targetPaintingAdvs.after &&
-      hitMethod === targetSetup?.targetMethod
+      hitMethod !== targetSetup?.targetMethod
     ) {
       setHasHitTargetAdv(true);
     }

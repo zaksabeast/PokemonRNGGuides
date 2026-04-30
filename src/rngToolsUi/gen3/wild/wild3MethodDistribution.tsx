@@ -617,6 +617,7 @@ export const Wild3MethodDistribution = ({
     (values: FormState) => {
       calculate(values).then(
         ({ uiResults, cycle_at_moments, advanceAtSweetScent }) => {
+          console.log(values, cycle_at_moments);
           const isEggLead = gen3Leads[values.leadIdx] === "Egg";
           const leadCycleSpeed = isEggLead ? null : values.leadCycleSpeed;
 

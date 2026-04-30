@@ -40,6 +40,7 @@ Some commands build or touch generated WASM/Rust artifacts. Run the smallest rel
 
 ## Frontend Guidelines
 
+- Don't use React.useMemo and React.useEffect except if it's necessary. The project uses the react compiler that automatically wraps the code with useMemo and useEffect.
 - Match the app's existing UI conventions and component library in `src/components`.
 - Keep tool screens practical and workflow-oriented rather than marketing-like.
 - Avoid unnecessary layout churn and unrelated visual redesigns.

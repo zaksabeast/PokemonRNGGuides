@@ -281,7 +281,11 @@ export const Wild3CalibCaughtMon = ({
     const valStr = formatLargeInteger(result.advance.adv_after_painting);
 
     if (diffWithTarget === 0) {
-      return `${valStr} (Target)`;
+      const suffix =
+        result.method === targetMethod
+          ? `(Target)`
+          : `(Target advance but wrong method)`;
+      return `${valStr} ${suffix}`;
     }
     const sign = diffWithTarget > 0 ? "+" : "";
 

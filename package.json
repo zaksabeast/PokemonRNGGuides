@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "bun run scripts/dev-server",
-    "dev": "bun run build:rng_tools && bun run start",
+    "dev": "bun run build:rng_tools && bun run scripts/dev-server",
     "format": "bun run format:ts && bun run format:rust",
     "format:ts": "bun prettier . --write",
     "format:rust": "bun run scripts/format-rust",

@@ -11,23 +11,32 @@ export const Gen3PidSpeedInput = <FormState extends Gen3PkmFilterFields>(
   // Keeping props to make sure form state is compatible
   _props: Props<FormState>,
 ) => {
+  const { setFieldValue } = useFormContext<FormState>();
   const fields: Field[] = [
     {
-      label: "Min cycle count",
+      label: "",
+      key:"pidSpeed",
       input: (
-        <FormikNumberInput<Gen3PkmFilterFields>
-          name="filter_pid_speed.min_cycle_count"
-          numType="decimal"
-        />
-      ),
-    },
-    {
-      label: "Max cycle count",
-      input: (
-        <FormikNumberInput<Gen3PkmFilterFields>
-          name="filter_pid_speed.max_cycle_count"
-          numType="decimal"
-        />
+        <Flex gap={20}>
+            <Button trackerId="pidSpeed_min" onClick={() => {
+                setFieldValue("filter_pid_speed.min_cycle_count", 18);
+                setFieldValue("filter_pid_speed.max_cycle_count", 18);
+            }}>Fastest</Button>
+            <Button trackerId="pidSpeed_min" onClick={() => {
+                setFieldValue("filter_pid_speed.min_cycle_count", 900);
+                setFieldValue("filter_pid_speed.min_cycle_count", 900);
+            }}>Slowest</Button>
+            <Flex>
+                Range:
+                <FormikNumberInput<Gen3PkmFilterFields>
+                name="filter_pid_speed.min_cycle_count"
+                numType="decimal"
+                />
+                <FormikNumberInput<Gen3PkmFilterFields>
+            name="filter_pid_speed.max_cycle_count"
+            numType="decimal"
+            </Flex>
+        </Flex>
       ),
     },
   ];

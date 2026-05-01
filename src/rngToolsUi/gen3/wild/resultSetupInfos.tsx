@@ -294,14 +294,8 @@ const getResultSetupInfoColumns = ({
             },
           },
           {
-            title: (
-              <Tooltip title="Lead PID speed equal to 18 cycles">
-                <div>
-                  Fastest <Icon name="InformationCircle" size={16} />
-                </div>
-              </Tooltip>
-            ),
-            key: "methodLikelihoodFastest",
+            title: "Fastest",
+            tooltip:"Lead PID speed equal to 18 cycles",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead === undefined) {
@@ -314,14 +308,8 @@ const getResultSetupInfoColumns = ({
             },
           },
           {
-            title: (
-              <Tooltip title="Lead PID speed between 608 and 868 cycles (99.9% of all PIDs)">
-                <div>
-                  Common <Icon name="InformationCircle" size={16} />
-                </div>
-              </Tooltip>
-            ),
-            key: "methodLikelihoodCommon",
+            title: "Common",
+            tooltip:"Lead PID speed between 608 and 868 cycles (99.9% of all PIDs)",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead === undefined) {
@@ -339,14 +327,8 @@ const getResultSetupInfoColumns = ({
             },
           },
           {
-            title: (
-              <Tooltip title="Lead PID speed equal to 900 cycles">
-                <div>
-                  Slowest <Icon name="InformationCircle" size={16} />
-                </div>
-              </Tooltip>
-            ),
-            key: "methodLikelihoodSlowest",
+            title: "Slowest",
+            tooltip:"Lead PID speed equal to 900 cycles",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead === undefined) {

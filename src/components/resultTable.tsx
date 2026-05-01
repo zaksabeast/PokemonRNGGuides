@@ -14,6 +14,7 @@ export type SingleResultColumn<T> = keyof T extends string
         monospace?: boolean;
         show?: boolean;
         disableVerticalPadding?: boolean;
+        tooltip?: React.Node;
       } & (
         | {
             title: React.ReactNode;
@@ -34,6 +35,7 @@ export type ResultColumnGroup<T> = {
   type: "group";
   columns: SingleResultColumn<T>[];
   show?: boolean;
+  tooltip?: React.Node;
 } & (
   | {
       title: React.ReactNode;
@@ -91,6 +93,14 @@ export const ResultTable = <Record extends tst.O.Object>(
 ) => {
   const columns = (props.columns ?? []).map(applyMonospace);
 
+    const titleWithTooltip = (title:React.Node, tooltip?:React.Node) => {
+      if (tooltip == null){
+        return title;
+      }
+      return <Tooltip title={tooltip}>
+            {title}{" "}<Icon name="InformationCircle" size={16} />
+      </Tooltip>
+    };
   const children = columns.map((column) => {
     if (column.show === false) {
       return null;
@@ -99,13 +109,13 @@ export const ResultTable = <Record extends tst.O.Object>(
     if (column.type === "group") {
       const groupKey = column.key == null ? column.title : column.key;
       return (
-        <Table.ColumnGroup title={column.title} key={groupKey}>
+        <Table.ColumnGroup title={titleWithTooltip(column.title, column.tooltip)} key={groupKey}>
           {column.columns.map((subColumn) => {
             const colKey =
               subColumn.key == null
                 ? subColumn.dataIndex + " " + subColumn.title
                 : subColumn.key;
-            return <Table.Column {...subColumn} key={colKey} />;
+            return <Table.Column {...subColumn} title={titleWithTooltip(subColumn.title, subColumn.tooltip)} key={colKey} />;
           })}
         </Table.ColumnGroup>
       );

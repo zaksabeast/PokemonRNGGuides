@@ -39,11 +39,11 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
 import {
   AVERAGE_LEAD_CYCLE_SPEED,
-  LeadCycleSpeedLabel,
   LeadCycleSpeedSelector,
 } from "./leadCycleSpeedSelector";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
-import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
+import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";import { leadCycleSpeedLabel } from "./wild3Labels";
+3
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -183,28 +183,20 @@ const getFields = ({
       ),
     },
     {
-      label: "Using lead with average cycle speed?",
+      label: "Using lead with average cycle speed PID?",
+      ...leadCycleSpeedTooltip(),
       input: <FormikSwitch<FormState> name="usingAverageLeadCycleSpeed" />,
       show: gen3Leads[leadIdx] !== "Egg",
     },
     {
-      label: <LeadCycleSpeedLabel />,
-      key: "LeadCycleSpeedLabel",
+      label:"Lead Cycle Speed",
       input: <LeadCycleSpeedSelector idealLeadCycleSpeed={null} />,
       show: gen3Leads[leadIdx] !== "Egg" && !usingAverageLeadCycleSpeed,
       indent: 1,
     },
     {
-      label: (
-        <>
-          Using{" "}
-          <Link href="/emerald-painting-rng/" newTab>
-            Painting Reseeding
-          </Link>
-          ?
-        </>
-      ),
-      key: "usingPaintingReseeding",
+
+      ...usingPaintingReseeding(),
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
     {

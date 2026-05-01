@@ -191,16 +191,9 @@ const MyFields = () => {
       indent: 1,
     },
     {
-      label: (
-        <Tooltip title="Ex: Target advance to generate the wanted Pokémon.">
-          <div>
-            Target of the RNG manipulation{" "}
-            <Icon name="InformationCircle" size={16} />
-          </div>
-        </Tooltip>
-      ),
+      label: "Target of the RNG manipulation",
+      tooltip:"Ex: Target advance to generate the wanted Pokémon.",
       show: !alreadyKnowPaintingFrameAndAdv,
-      key: "targetSeed",
       input: <FormikEmeraldTargetAdvance name="targetAdvance" />,
     },
     {
@@ -209,15 +202,7 @@ const MyFields = () => {
       show: !alreadyKnowPaintingFrameAndAdv,
     },
     {
-      label: (
-        <Tooltip title="To ensure there is enough time between booting the game and interacting with the painting.">
-          <div>
-            Min frames before painting{" "}
-            <Icon name="InformationCircle" size={16} />
-          </div>
-        </Tooltip>
-      ),
-      key: "min_frame_before_painting",
+      ...minFramesBeforePainting(),
       input: (
         <FormikNumberInput<FormState>
           name="min_frame_before_painting"
@@ -240,16 +225,8 @@ const MyFields = () => {
       indent: 1,
     },
     {
-      label: (
-        <Tooltip title="To ensure there is enough time between interacting with the painting, and creating a Battle Video.">
-          <div>
-            Min advances after painting{" "}
-            <Icon name="InformationCircle" size={16} />
-          </div>
-        </Tooltip>
-      ),
-      key: "min_adv_after_painting",
       input: (
+        ...minAdvsAfterPainting(),
         <FormikNumberInput<FormState>
           name="min_adv_after_painting"
           numType="decimal"

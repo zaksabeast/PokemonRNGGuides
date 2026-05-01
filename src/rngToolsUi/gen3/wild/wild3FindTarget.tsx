@@ -142,6 +142,7 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
     },
     {
       title: "Likelihood",
+      tooltip:<>Likelihood that you will obtain the target Pokémon if you hit the target advance (Likelihood that the triggered <Link newTab href="/gba-methods">method</Link> at the target advance is the right one).</>,
       dataIndex: "resultSetupInfos",
       key: "best_likelihood",
       render: (resultSetupInfos) => {
@@ -200,6 +201,7 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
     },
     {
       title: "PID speed",
+      tooltip:<>For advanced users. Number of cycles for the processor to perform the operation (PID modulo 25). Learn more about <Link newTab href="/gba-methods-lead-impact">Methods & Leads</Link></>
       dataIndex: "pidCycleCount",
       render: (pidCycleCount) => `${pidCycleCount} cycles`,
     },

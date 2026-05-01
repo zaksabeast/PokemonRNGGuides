@@ -337,13 +337,8 @@ export const ivInfoColumns = (
     ],
   },
   {
-    title: (
-      <Tooltip title="Rating from the stat judge in the building behind the Pokémon Center at the Battle Frontier.">
-        <div>
-          IV Rating <Icon name="InformationCircle" size={16} />
-        </div>
-      </Tooltip>
-    ),
+    title: "IV Rating",
+    tooltip:"Rating from the stat judge in the building behind the Pokémon Center at the Battle Frontier.",
     key: "ivRating",
     type: "group",
     columns: [

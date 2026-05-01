@@ -42,31 +42,29 @@ const getSetupFields = (
 
   const fields: Field[] = [
     {
-      label: "Target Species",
+      label: "Target species",
       input: species,
     },
     {
       label: "TID",
-      input: (
+      input: filter_shiny ? (
         <FormikNumberInput<FormState>
           name="tid"
           numType="decimal"
-          disabled={!filter_shiny}
-        />
+        />) : <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokémon is not shiny.">N/A</TooltipWithIcon>
       ),
     },
     {
       label: "SID",
-      input: (
+      input: filter_shiny ? (
         <FormikNumberInput<FormState>
           name="sid"
           numType="decimal"
-          disabled={!filter_shiny}
-        />
+        /> : <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokémon is not shiny.">N/A</TooltipWithIcon>
       ),
     },
     {
-      label: "Recommended Setups?",
+      label: "Recommended setups?",
       input: <FormikSwitch<FormState> name="recommendedSetups" />,
     },
     {
@@ -150,6 +148,7 @@ const getSetupFields = (
     },
     {
       label: "Methods",
+      tooltip:<>For advanced users. Learn more about <Link newTab href="/gba-methods">methods</Link><>,
       input: (
         <FormikSelect<FormState, "methods">
           name="methods"
@@ -158,22 +157,9 @@ const getSetupFields = (
         />
       ),
     },
-    {
-      label: "RNG-manipulated lead PID",
-      input: <FormikSwitch<FormState> name="rngManipulatedLeadPid" />,
-    },
 
     {
-      label: (
-        <>
-          Using{" "}
-          <Link href="/emerald-painting-rng/" newTab>
-            Painting Reseeding
-          </Link>
-          ?
-        </>
-      ),
-      key: "usingPaintingReseeding",
+        ...usingPaintingReseeding(),
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
 
@@ -193,7 +179,7 @@ const getSetupFields = (
       indent: 1,
     },
     {
-      label: "Min frames before painting",
+    ...minFramesBeforePainting(),
       input: (
         <FormikNumberInput<FormState>
           name="min_frame_before_painting"
@@ -204,7 +190,7 @@ const getSetupFields = (
       indent: 1,
     },
     {
-      label: "Min advances after painting",
+        ...minAdvsAfterPainting(),
       input: (
         <FormikNumberInput<FormState>
           name="min_adv_after_painting"
@@ -216,6 +202,7 @@ const getSetupFields = (
     },
     {
       label: "Min advances",
+      tooltip: "To ensure there is enough time between booting the game and triggering the wild encounter.",
       input: (
         <FormikNumberInput<FormState>
           name="initial_advances"
@@ -245,6 +232,11 @@ const getSetupFields = (
     {
       label: "Display results with 0% likelihood",
       input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
+    },
+    {
+      label: "RNG-manipulated lead PID",
+      tooltip:<>For advanced users. Whether to consider setups that require catching a specific lead Pokémon with RNG-manipulation, then catching your real target Pokémon using that lead. Learn more about <Link newTab href="/gba-methods-lead-impact">Methods & Leads</Link></>,
+      input: <FormikSwitch<FormState> name="rngManipulatedLeadPid" />,
     },
   ];
   return fields;

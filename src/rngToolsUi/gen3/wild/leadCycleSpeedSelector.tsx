@@ -30,19 +30,6 @@ const leadSpeedTypes = [
   "Custom",
 ] as const satisfies readonly LeadSpeedType[];
 
-export const LeadCycleSpeedLabel = () => {
-  return (
-    <>
-      <Link newTab href="/gba-methods-lead-impact/">
-        Lead Speed
-      </Link>{" "}
-      <Tooltip title="The PID of the first Pokémon in the party impacts the RNG.">
-        <Icon name="InformationCircle" size={16} />
-      </Tooltip>
-    </>
-  );
-};
-
 export const AVERAGE_LEAD_CYCLE_SPEED = 775;
 export const SLOWEST_LEAD_CYCLE_SPEED = 900;
 

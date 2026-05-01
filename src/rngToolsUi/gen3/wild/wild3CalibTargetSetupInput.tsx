@@ -14,7 +14,6 @@ import {
   RngToolSubmit,
   FormFieldTable,
   FormikSwitch,
-  Link,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
@@ -42,8 +41,11 @@ import {
   LeadCycleSpeedSelector,
 } from "./leadCycleSpeedSelector";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
-import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";import { leadCycleSpeedLabel } from "./wild3Labels";
-3
+import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
+import {
+  leadCycleSpeedTooltip,
+  usingPaintingReseedingLabel as usingPaintingReseedingLabel,
+} from "./wild3Labels";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -189,14 +191,13 @@ const getFields = ({
       show: gen3Leads[leadIdx] !== "Egg",
     },
     {
-      label:"Lead Cycle Speed",
+      label: "Lead Cycle Speed",
       input: <LeadCycleSpeedSelector idealLeadCycleSpeed={null} />,
       show: gen3Leads[leadIdx] !== "Egg" && !usingAverageLeadCycleSpeed,
       indent: 1,
     },
     {
-
-      ...usingPaintingReseeding(),
+      ...usingPaintingReseedingLabel(),
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
     {

@@ -10,7 +10,6 @@ import {
   FormikNumberInput,
   FormikSwitch,
   FormFieldTable,
-  Icon,
   Field,
   FormikRadio,
 } from "~/components";
@@ -20,13 +19,16 @@ import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatDuration } from "~/utils/formatDuration";
 import { z } from "zod";
 import { useWatch } from "react-hook-form";
-import { Tooltip } from "antd";
 import { GBA_FPS } from "~/utils/consts";
 import { lcrng_distance, pokerng_with_jump } from "~/utils/lcrng";
 import { FormikEmeraldTargetAdvance } from "~/components/emeraldTargetAdvance";
 import { match } from "ts-pattern";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
+import {
+  minAdvsAfterPaintingLabel,
+  minFramesBeforePaintingLabel,
+} from "~/rngToolsUi/gen3/wild/wild3Labels";
 
 type Result = Wild3PaintingAdvsAndDur & { uid: number };
 
@@ -192,7 +194,7 @@ const MyFields = () => {
     },
     {
       label: "Target of the RNG manipulation",
-      tooltip:"Ex: Target advance to generate the wanted Pokémon.",
+      tooltip: "Ex: Target advance to generate the wanted Pokémon.",
       show: !alreadyKnowPaintingFrameAndAdv,
       input: <FormikEmeraldTargetAdvance name="targetAdvance" />,
     },
@@ -202,7 +204,7 @@ const MyFields = () => {
       show: !alreadyKnowPaintingFrameAndAdv,
     },
     {
-      ...minFramesBeforePainting(),
+      ...minFramesBeforePaintingLabel(),
       input: (
         <FormikNumberInput<FormState>
           name="min_frame_before_painting"
@@ -225,8 +227,8 @@ const MyFields = () => {
       indent: 1,
     },
     {
+      ...minAdvsAfterPaintingLabel(),
       input: (
-        ...minAdvsAfterPainting(),
         <FormikNumberInput<FormState>
           name="min_adv_after_painting"
           numType="decimal"

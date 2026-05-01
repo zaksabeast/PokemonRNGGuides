@@ -10,6 +10,7 @@ import {
   Link,
 } from "~/components";
 import { toOptions } from "~/utils/options";
+import { Tooltip } from "antd";
 
 import {
   formatActionName,
@@ -23,6 +24,11 @@ import { useWatch } from "react-hook-form";
 import { FormState } from "./wild3FindTarget";
 import { getPossibleValuesForSpecies } from "./wild3TargetMon";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
+import {
+  minAdvsAfterPaintingLabel,
+  minFramesBeforePaintingLabel,
+  usingPaintingReseedingLabel,
+} from "./wild3Labels";
 
 const supportedGen3Methods = [
   "Wild1",
@@ -48,19 +54,21 @@ const getSetupFields = (
     {
       label: "TID",
       input: filter_shiny ? (
-        <FormikNumberInput<FormState>
-          name="tid"
-          numType="decimal"
-        />) : <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokémon is not shiny.">N/A</TooltipWithIcon>
+        <FormikNumberInput<FormState> name="tid" numType="decimal" />
+      ) : (
+        <Tooltip title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
+          <span>N/A</span>
+        </Tooltip>
       ),
     },
     {
       label: "SID",
       input: filter_shiny ? (
-        <FormikNumberInput<FormState>
-          name="sid"
-          numType="decimal"
-        /> : <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokémon is not shiny.">N/A</TooltipWithIcon>
+        <FormikNumberInput<FormState> name="sid" numType="decimal" />
+      ) : (
+        <Tooltip title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
+          <span>N/A</span>
+        </Tooltip>
       ),
     },
     {
@@ -148,7 +156,14 @@ const getSetupFields = (
     },
     {
       label: "Methods",
-      tooltip:<>For advanced users. Learn more about <Link newTab href="/gba-methods">methods</Link><>,
+      tooltip: (
+        <>
+          For advanced users. Learn more about{" "}
+          <Link newTab href="/gba-methods/">
+            methods
+          </Link>
+        </>
+      ),
       input: (
         <FormikSelect<FormState, "methods">
           name="methods"
@@ -159,7 +174,7 @@ const getSetupFields = (
     },
 
     {
-        ...usingPaintingReseeding(),
+      ...usingPaintingReseedingLabel(),
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
 
@@ -179,7 +194,7 @@ const getSetupFields = (
       indent: 1,
     },
     {
-    ...minFramesBeforePainting(),
+      ...minFramesBeforePaintingLabel(),
       input: (
         <FormikNumberInput<FormState>
           name="min_frame_before_painting"
@@ -190,7 +205,7 @@ const getSetupFields = (
       indent: 1,
     },
     {
-        ...minAdvsAfterPainting(),
+      ...minAdvsAfterPaintingLabel(),
       input: (
         <FormikNumberInput<FormState>
           name="min_adv_after_painting"
@@ -202,7 +217,8 @@ const getSetupFields = (
     },
     {
       label: "Min advances",
-      tooltip: "To ensure there is enough time between booting the game and triggering the wild encounter.",
+      tooltip:
+        "To ensure there is enough time between booting the game and triggering the wild encounter.",
       input: (
         <FormikNumberInput<FormState>
           name="initial_advances"
@@ -235,7 +251,16 @@ const getSetupFields = (
     },
     {
       label: "RNG-manipulated lead PID",
-      tooltip:<>For advanced users. Whether to consider setups that require catching a specific lead Pokémon with RNG-manipulation, then catching your real target Pokémon using that lead. Learn more about <Link newTab href="/gba-methods-lead-impact">Methods & Leads</Link></>,
+      tooltip: (
+        <>
+          For advanced users. Whether to consider setups that require catching a
+          specific lead Pokemon with RNG-manipulation, then catching your real
+          target Pokemon using that lead. Learn more about{" "}
+          <Link newTab href="/gba-methods-lead-impact/">
+            Methods & Leads
+          </Link>
+        </>
+      ),
       input: <FormikSwitch<FormState> name="rngManipulatedLeadPid" />,
     },
   ];

@@ -21,7 +21,6 @@ import {
   RngToolSubmit,
   FormFieldTable,
   FormikSwitch,
-  Link,
   Icon,
 } from "~/components";
 import { toOptions } from "~/utils/options";
@@ -68,7 +67,10 @@ import {
 } from "./leadCycleSpeedSelector";
 import { lcrng_distance } from "~/utils/lcrng";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
-import { leadCycleSpeedTooltip } from "./wild3Labels";
+import {
+  leadCycleSpeedTooltip,
+  usingPaintingReseedingLabel as usingPaintingReseedingLabel,
+} from "./wild3Labels";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -231,7 +233,7 @@ const getFields = (
 
   if (leadType !== "Egg") {
     fields.push({
-      label:"Lead Cycle Speed",
+      label: "Lead Cycle Speed",
       ...leadCycleSpeedTooltip(),
       input: (
         <LeadCycleSpeedSelector idealLeadCycleSpeed={idealLeadCycleSpeed} />
@@ -240,7 +242,7 @@ const getFields = (
   }
 
   fields.push({
-      ...usingPaintingReseeding(),
+    ...usingPaintingReseedingLabel(),
     input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     show: !hasPreselectedData,
   });
@@ -441,7 +443,8 @@ const getColumns = (
         </>
       ),
       key: "Cycle at start",
-      tooltip:"Processor cycle counter when reaching start of the Pokémon generation.",
+      tooltip:
+        "Processor cycle counter when reaching start of the Pokémon generation.",
       dataIndex: "pre_sweet_scent_cycle_ranges",
       render: (pre_sweet_scent_cycle_ranges) => {
         if (pre_sweet_scent_cycle_ranges.length === 0) {

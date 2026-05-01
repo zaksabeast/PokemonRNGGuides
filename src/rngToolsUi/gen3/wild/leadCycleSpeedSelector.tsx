@@ -1,13 +1,6 @@
 import { rngTools } from "~/rngTools";
 import { useFormContext } from "~/hooks/form";
-import {
-  FormFieldTable,
-  Icon,
-  Link,
-  NumberInput,
-  RadioGroup,
-} from "~/components";
-import { Tooltip } from "antd";
+import { FormFieldTable, NumberInput, RadioGroup } from "~/components";
 import { match } from "ts-pattern";
 import React from "react";
 import clamp from "lodash-es/clamp";

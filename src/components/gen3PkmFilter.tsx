@@ -64,14 +64,21 @@ const _getGen3PkmFilterFields = (opts: FieldOpts = {}): Field[] =>
     }),
     optIn(opts?.max_size, {
       label: "Max size",
-      tooltip:"To show to the Sootopolis City's brothers.",
+      tooltip: "To show to the Sootopolis City's brothers.",
       input: <FormikSwitch<Gen3PkmFilterFields> name="filter_max_size" />,
     }),
     optOut(opts?.pid_speed, {
       label: "PID cycle speed",
-      tooltip:<>
-        For advanced users. Owning Pokémon with very low or very high PID cycle speed is used to influence the triggered method of wild encounters. Learn more about <Link newTab href="/gba-methods-lead-impact">Methods & Leads</Link>
-        </>,
+      tooltip: (
+        <>
+          For advanced users. Owning Pokémon with very low or very high PID
+          cycle speed is used to influence the triggered method of wild
+          encounters. Learn more about{" "}
+          <Link newTab href="/gba-methods-lead-impact/">
+            Methods & Leads
+          </Link>
+        </>
+      ),
       input: (
         <FormikSwitch<Gen3PkmFilterFields> name="filter_pid_speed.active" />
       ),

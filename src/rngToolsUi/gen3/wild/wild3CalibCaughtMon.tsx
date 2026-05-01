@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ResultColumn, Icon } from "~/components";
+import { ResultColumn } from "~/components";
 import { nature } from "~/types/nature";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import {
@@ -338,7 +338,8 @@ export const ivInfoColumns = (
   },
   {
     title: "IV Rating",
-    tooltip:"Rating from the stat judge in the building behind the Pokémon Center at the Battle Frontier.",
+    tooltip:
+      "Rating from the stat judge in the building behind the Pokémon Center at the Battle Frontier.",
     key: "ivRating",
     type: "group",
     columns: [

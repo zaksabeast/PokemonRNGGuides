@@ -1,5 +1,5 @@
 import { Wild3SearcherCycleData, Gen3Method } from "~/rngTools";
-import { ResultColumn, ResultTable, Icon, Link, Button } from "~/components";
+import { ResultColumn, ResultTable, Link, Button } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
@@ -295,7 +295,7 @@ const getResultSetupInfoColumns = ({
           },
           {
             title: "Fastest",
-            tooltip:"Lead PID speed equal to 18 cycles",
+            tooltip: "Lead PID speed equal to 18 cycles",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead === undefined) {
@@ -309,7 +309,8 @@ const getResultSetupInfoColumns = ({
           },
           {
             title: "Common",
-            tooltip:"Lead PID speed between 608 and 868 cycles (99.9% of all PIDs)",
+            tooltip:
+              "Lead PID speed between 608 and 868 cycles (99.9% of all PIDs)",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead === undefined) {
@@ -328,7 +329,7 @@ const getResultSetupInfoColumns = ({
           },
           {
             title: "Slowest",
-            tooltip:"Lead PID speed equal to 900 cycles",
+            tooltip: "Lead PID speed equal to 900 cycles",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead === undefined) {

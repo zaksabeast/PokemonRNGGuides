@@ -1,5 +1,11 @@
 import { Wild3PaintingAdvsAndDur, Wild3SearcherResultMon } from "~/rngTools";
-import { ResultColumn, RngToolForm, RngToolSubmit } from "~/components";
+import {
+  Flex,
+  Icon,
+  ResultColumn,
+  RngToolForm,
+  RngToolSubmit,
+} from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
 import {
@@ -145,7 +151,28 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
       dataIndex: "resultSetupInfos",
       key: "best_likelihood",
       render: (resultSetupInfos) => {
-        return formatProbability(resultSetupInfos[0]?.primaryLikelihood ?? 0);
+        const text = formatProbability(
+          resultSetupInfos[0]?.primaryLikelihood ?? 0,
+        );
+        const isVeryReliableSetup = resultSetupInfos.some(
+          (res) =>
+            res.lead === "Egg" &&
+            res.method === "Wild1" &&
+            res.primaryLikelihood === 1,
+        );
+
+        if (!isVeryReliableSetup) {
+          return text;
+        }
+
+        return (
+          <Tooltip title="Very reliable setup">
+            <Flex align="center" gap={4}>
+              {text}
+              <Icon name="Star" />
+            </Flex>
+          </Tooltip>
+        );
       },
     },
     {

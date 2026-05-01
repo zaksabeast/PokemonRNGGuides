@@ -20,7 +20,13 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { FaDiscord, FaRegCopy } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold, PiWarningOctagonBold } from "react-icons/pi";
-import { FaHeart, FaPlay, FaPatreon, FaArrowUp } from "react-icons/fa6";
+import {
+  FaHeart,
+  FaPlay,
+  FaPatreon,
+  FaArrowUp,
+  FaStar,
+} from "react-icons/fa6";
 import { TbPokeball } from "react-icons/tb";
 import { IoIosInformationCircle } from "react-icons/io";
 import { BsTranslate } from "react-icons/bs";
@@ -37,6 +43,7 @@ const icons = {
   Language: IoLanguage,
   PersonSimpleWalkBold: PiPersonSimpleWalkBold,
   Sparkles: IoSparkles,
+  Star: FaStar,
   Update: MdUpdate,
   Play: FaPlay,
   Pokeball: TbPokeball,

@@ -1,11 +1,11 @@
 import React from "react";
 import { Typography } from "./typography";
 import { Table, TableProps, Tooltip } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 import { ClassNames } from "@emotion/react";
 import * as tst from "ts-toolbelt";
 import { useFormContext, useFormState } from "react-hook-form";
 import { identity } from "lodash-es";
-import { Icon } from "./icons";
 
 export type SingleResultColumn<T> = keyof T extends string
   ? {
@@ -103,7 +103,7 @@ export const ResultTable = <Record extends tst.O.Object>(
     }
     return (
       <Tooltip title={tooltip}>
-        {title} <Icon name="InformationCircle" size={16} />
+        {title} <QuestionCircleOutlined />
       </Tooltip>
     );
   };
@@ -142,6 +142,7 @@ export const ResultTable = <Record extends tst.O.Object>(
       <Table.Column
         {...column}
         key={colKey}
+        title={titleWithTooltip(column.title, column.tooltip)}
         className={
           column.disableVerticalPadding ? "disable-vertical-padding" : undefined
         }

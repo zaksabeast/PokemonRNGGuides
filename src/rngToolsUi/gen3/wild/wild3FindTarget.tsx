@@ -217,6 +217,7 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
           <Link newTab href="/gba-methods-lead-impact/">
             Methods & Leads
           </Link>
+          .
         </>
       ),
       dataIndex: "pidCycleCount",

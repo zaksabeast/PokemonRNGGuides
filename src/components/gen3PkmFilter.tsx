@@ -77,6 +77,7 @@ const _getGen3PkmFilterFields = (opts: FieldOpts = {}): Field[] =>
           <Link newTab href="/gba-methods-lead-impact/">
             Methods & Leads
           </Link>
+          .
         </>
       ),
       input: (

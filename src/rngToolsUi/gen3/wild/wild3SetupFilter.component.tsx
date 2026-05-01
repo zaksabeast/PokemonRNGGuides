@@ -162,6 +162,7 @@ const getSetupFields = (
           <Link newTab href="/gba-methods/">
             methods
           </Link>
+          .
         </>
       ),
       input: (
@@ -259,6 +260,7 @@ const getSetupFields = (
           <Link newTab href="/gba-methods-lead-impact/">
             Methods & Leads
           </Link>
+          .
         </>
       ),
       input: <FormikSwitch<FormState> name="rngManipulatedLeadPid" />,

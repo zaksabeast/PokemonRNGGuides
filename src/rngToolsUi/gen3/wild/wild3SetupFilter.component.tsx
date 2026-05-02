@@ -11,7 +11,6 @@ import {
   TooltipWithIcon,
 } from "~/components";
 import { toOptions } from "~/utils/options";
-import { Tooltip } from "antd";
 
 import {
   formatActionName,
@@ -43,6 +42,7 @@ const getSetupFields = (
   recommendedSetups: boolean,
   usingPaintingReseeding: boolean,
   letSearcherFindPaintingSeed: boolean,
+  showAdvancedPaintingSettings: boolean,
 ): Field[] => {
   const possVals = getPossibleValuesForSpecies(species);
   const showAdvancedSetups = !recommendedSetups;
@@ -196,6 +196,12 @@ const getSetupFields = (
       indent: 1,
     },
     {
+      label: "Show advanced painting settings?",
+      input: <FormikSwitch<FormState> name="showAdvancedPaintingSettings" />,
+      show: usingPaintingReseeding,
+      indent: 1,
+    },
+    {
       ...minFramesBeforePaintingLabel(),
       input: (
         <FormikNumberInput<FormState>
@@ -203,8 +209,11 @@ const getSetupFields = (
           numType="decimal"
         />
       ),
-      show: usingPaintingReseeding && letSearcherFindPaintingSeed,
-      indent: 1,
+      show:
+        usingPaintingReseeding &&
+        letSearcherFindPaintingSeed &&
+        showAdvancedPaintingSettings,
+      indent: 2,
     },
     {
       ...minAdvsAfterPaintingLabel(),
@@ -214,8 +223,8 @@ const getSetupFields = (
           numType="decimal"
         />
       ),
-      show: usingPaintingReseeding,
-      indent: 1,
+      show: usingPaintingReseeding && showAdvancedPaintingSettings,
+      indent: 2,
     },
     {
       label: "Min advances",
@@ -289,6 +298,12 @@ export const SetupFilter = () => {
   >({
     name: "letSearcherFindPaintingSeed",
   });
+  const showAdvancedPaintingSettings = useWatch<
+    FormState,
+    "showAdvancedPaintingSettings"
+  >({
+    name: "showAdvancedPaintingSettings",
+  });
 
   const fields: Field[] = getSetupFields(
     species,
@@ -296,6 +311,7 @@ export const SetupFilter = () => {
     recommendedSetups,
     usingPaintingReseeding,
     letSearcherFindPaintingSeed,
+    showAdvancedPaintingSettings,
   );
 
   return (

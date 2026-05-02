@@ -38,7 +38,7 @@ const getColumns = (t: Translations): ResultColumn<Gen3HeldEgg>[] => {
 };
 
 const Validator = z.object({
-  delay: z.number().int().min(0),
+  delay: z.number().int(),
   initial_advances: z.number().int().min(0),
   max_advances: z.number().int().min(0),
   female_has_everstone: z.boolean(),

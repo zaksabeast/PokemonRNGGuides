@@ -8,6 +8,7 @@ import {
   RngToolForm,
   Button,
   Field,
+  FormFieldTable,
 } from "~/components";
 import {
   multiWorkerRngTools,
@@ -36,9 +37,8 @@ import { MonthSchema, monthToRustFilter } from "~/utils/time";
 import { Gen4GameVersion } from "../gen4types";
 import { getStatRange } from "~/types/statRange";
 import { defaultEncounter, Encounter, getGameEncounters } from "./encounters";
-import { useWatch } from "react-hook-form";
-import { useField } from "~/hooks/form";
-import { Translations } from "~/translations";
+import { useField, useWatch } from "~/hooks/form";
+import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
 type Result = FlattenIvs<
   Static4State["state"] & {
@@ -184,26 +184,33 @@ const leadOptions = [
   { label: "Synchronize", value: "Synchronize" },
 ] satisfies { label: string; value: Static4LeadInput }[];
 
-const OffsetField = ({ game }: { game: Gen4GameVersion }) => {
+type OffsetFieldProps = { game: Gen4GameVersion; encounter: Encounter | null };
+
+const OffsetField = ({ game, encounter }: OffsetFieldProps) => {
   const [, , { setValue }] = useField<FormState["offset"]>("offset");
-  const encounterId = useWatch<Pick<FormState, "encounter_id">>({
-    name: "encounter_id",
-  });
 
   React.useEffect(() => {
-    const encounters = getGameEncounters(game);
-    const encounter = encounters[encounterId];
     const offset = encounter?.offset ?? 0;
     setValue(offset);
-  }, [setValue, game, encounterId]);
+  }, [setValue, game, encounter]);
 
   return <FormikNumberInput<FormState> name="offset" numType="decimal" />;
 };
 
-const getFields = (t: Translations, game: Gen4GameVersion): Field[] => {
-  const encounters = getGameEncounters(game);
+type FieldsProps = {
+  game: Gen4GameVersion;
+};
 
-  return [
+const Fields = ({ game }: FieldsProps) => {
+  const t = useActiveRouteTranslations();
+  const { encounter_id } = useWatch({
+    validationSchema: Validator,
+    names: { encounter_id: true },
+  });
+  const encounters = getGameEncounters(game);
+  const encounter = encounter_id == null ? null : encounters[encounter_id];
+
+  const fields: Field[] = [
     {
       label: t["TID"],
       input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
@@ -242,7 +249,7 @@ const getFields = (t: Translations, game: Gen4GameVersion): Field[] => {
     },
     {
       label: t["Offset"],
-      input: <OffsetField game={game} />,
+      input: <OffsetField game={game} encounter={encounter} />,
     },
     {
       label: t["Species"],
@@ -265,7 +272,7 @@ const getFields = (t: Translations, game: Gen4GameVersion): Field[] => {
         <FormikSelect<FormState, "lead"> name="lead" options={leadOptions} />
       ),
     },
-    ...getPkmFilterFields({}, t),
+    ...getPkmFilterFields({ species: encounter?.species }, t),
     {
       label: t["Force Second"],
       input: (
@@ -273,6 +280,8 @@ const getFields = (t: Translations, game: Gen4GameVersion): Field[] => {
       ),
     },
   ];
+
+  return <FormFieldTable fields={fields} />;
 };
 
 const mapResult = (res: Static4State): Result => {
@@ -339,21 +348,20 @@ export const Static4Searcher = () => {
     await searchStaticSeeds(searchOpts);
   };
 
-  const getTranslatedFields = (t: Translations) => getFields(t, game);
-
   return (
     <RngToolForm<FormState, Result>
       columns={columns}
       results={results}
       initialValues={initialValues}
       validationSchema={Validator}
-      getFields={getTranslatedFields}
       onSubmit={onSubmit}
       rowKey="key"
       submitTrackerId="search_gen4_static"
       allowCancel
       cancelTrackerId="cancel_gen4_static"
       onCancel={cancel}
-    />
+    >
+      <Fields game={game} />
+    </RngToolForm>
   );
 };

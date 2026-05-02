@@ -28,10 +28,16 @@ import { AllOrNone } from "~/types";
 import { BattleVideoInfoInput } from "./wild3CalibBattleVideoInfoInput";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { formatHex } from "~/utils/formatHex";
+import { Gen3Method } from "~/rngTools";
 
 import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
+import Instructions_calib_wrong_method from "./instructions_calib_wrong_method.mdx";
+import {
+  Wild3MethodDistribution,
+  type Props as Wild3MethodDistributionProps,
+} from "./wild3MethodDistribution";
 import { Wild3Action } from "../../../../rng_tools/pkg/rng_tools";
 
 type CalibOffset = {
@@ -76,6 +82,38 @@ type Props = AllOrNone<{
   displayInstructions?: boolean;
 }>;
 
+const targetSetupToMethodDistributionFixedData = (
+  targetSetup: TargetSetup | null,
+): Wild3MethodDistributionProps["fixedData"] => {
+  if (targetSetup == null) {
+    return null;
+  }
+
+  return {
+    map: targetSetup.map,
+    action: targetSetup.action,
+    advance: targetSetup.targetPaintingAdvs.after,
+    tid: 0,
+    sid: 0,
+    lead: targetSetup.lead,
+    roamerState: targetSetup.roamerState,
+    feebasState: targetSetup.feebasState,
+    massOutbreakState: targetSetup.massOutbreakState,
+    initial_seed: targetSetup.targetPaintingAdvs.before,
+    painting_advs:
+      targetSetup.targetPaintingAdvs.before === 0
+        ? null
+        : {
+            frame_before_painting: targetSetup.targetPaintingAdvs.before,
+            adv_after_painting: targetSetup.targetPaintingAdvs.after,
+          },
+    wantedMethod: targetSetup.targetMethod,
+    wantedPID: null,
+    idealLeadCycleSpeed: null,
+    usingIdealLeadCycleSpeed: false,
+  };
+};
+
 export const Wild3Calib = ({
   targetSetup: targetSetupProp,
   battleVideoInfo: battleVideoInfoProp,
@@ -114,6 +152,11 @@ export const Wild3Calib = ({
   const [humanInputDelay, setHumanInputDelay] = React.useState<number | null>(
     0,
   );
+  const [hasHitTargetAdv, setHasHitTargetAdv] = React.useState(false);
+
+  React.useEffect(() => {
+    setHasHitTargetAdv(false);
+  }, [targetSetup]);
 
   const targetSetupInputForm = () => (
     <Flex vertical gap={10}>
@@ -132,10 +175,20 @@ export const Wild3Calib = ({
     </Flex>
   );
 
-  const setLatestHitAdv = (hitAdv: {
-    frame_before_painting: number;
-    adv_after_painting: number;
-  }) => {
+  const setLatestHitAdv = (
+    hitAdv: {
+      frame_before_painting: number;
+      adv_after_painting: number;
+    },
+    hitMethod: Gen3Method,
+  ) => {
+    if (
+      hitAdv.adv_after_painting === targetSetup?.targetPaintingAdvs.after &&
+      hitMethod !== targetSetup?.targetMethod
+    ) {
+      setHasHitTargetAdv(true);
+    }
+
     setHumanInputDelay(
       (humanInputDelay ?? 0) + hitAdv.adv_after_painting - targetForTimer,
     );
@@ -329,6 +382,9 @@ export const Wild3Calib = ({
   const usingBattleVideo =
     (battleVideoInfo?.battleVideoAdvAfterPainting ?? 0) > 0;
 
+  const methodDistributionFixedData =
+    targetSetupToMethodDistributionFixedData(targetSetup);
+
   return (
     <Flex gap={32} vertical>
       {targetSetupProp == null ? inputForms() : infoFromPrevSteps()}
@@ -336,14 +392,12 @@ export const Wild3Calib = ({
       {canDoCalib && targetSetup != null && (
         <>
           <FormFieldTable fields={calibFields} />
-
           {displayInstructions &&
             (usingBattleVideo ? (
               <Instructions_calib_with_battle_video />
             ) : (
               <Instructions_calib_without_battle_video />
             ))}
-
           <MultiTimer
             milliseconds={milliseconds}
             labels={labels}
@@ -354,6 +408,15 @@ export const Wild3Calib = ({
             targetSetup={targetSetup}
             setLatestHitAdv={setLatestHitAdv}
           />
+          {hasHitTargetAdv && (
+            <>
+              <Instructions_calib_wrong_method />
+              <Wild3MethodDistribution
+                fixedData={methodDistributionFixedData}
+                permitEnablingDebugOptions
+              />
+            </>
+          )}
         </>
       )}
     </Flex>

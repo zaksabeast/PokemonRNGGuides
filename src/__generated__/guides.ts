@@ -2981,6 +2981,51 @@ export const guides = {
       return file.default;
     }),
   },
+  "/emerald-rng-with-ace/": {
+    meta: {
+      id: "/emerald-rng-with-ace/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "false-RNG With ACE",
+      isNew: true,
+      title: "Pokémon Emerald RNG with ACE Guide (Seed Manipulation & Setup)",
+      navDrawerTitle: "RNG With ACE",
+      description:
+        "Step-by-step guide to RNG manipulation in Pokémon Emerald using ACE. Learn how to set custom seeds, generate targets, calibrate advances, and reliably hit perfect Pokémon.",
+      slug: "/emerald-rng-with-ace/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: "2026-05-05",
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-05-05",
+      type: "baseGuide",
+      canonical: "/emerald-rng-with-ace/",
+      file: "guides/Gen 3/Emerald/RNG With Ace.mdx",
+      translations: {
+        en: "/emerald-rng-with-ace/",
+        it: "/it-emerald-rng-with-ace/",
+      },
+      guideGroupId: "en:false-RNG With ACE:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/emerald-rng-with-ace/" },
+        cfwEmu: null,
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/RNG With Ace.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/RNG With Ace.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/emerald-shiny-starter/": {
     meta: {
       id: "/emerald-shiny-starter/",
@@ -6734,6 +6779,50 @@ export const guides = {
     getRawFile: memoize(async () => {
       const file = await import(
         "~/../guides/Translations/it/Gen 3/Emerald/Emerald Overview.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
+  "/it-emerald-rng-with-ace/": {
+    meta: {
+      id: "/emerald-rng-with-ace/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "false-RNG With ACE",
+      isNew: true,
+      title:
+        "Guida RNG con ACE in Pokémon Emerald (Manipolazione del Seed e Setup)",
+      navDrawerTitle: "RNG con ACE",
+      description:
+        "Guida passo passo alla manipolazione dell’RNG in Pokémon Emerald tramite ACE. Scopri come impostare seed personalizzati, generare target, calibrare gli avanzamenti e ottenere Pokémon perfetti in modo affidabile.",
+      slug: "/it-emerald-rng-with-ace/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-05-05",
+      translation: { enSlug: "/emerald-rng-with-ace/", language: "it" },
+      layout: "guide",
+      lastUpdated: "2026-05-05",
+      type: "translatedGuide",
+      canonical: "/it-emerald-rng-with-ace/",
+      file: "guides/Translations/it/Gen 3/Emerald/RNG With Ace.mdx",
+      translations: {
+        en: "/emerald-rng-with-ace/",
+        it: "/it-emerald-rng-with-ace/",
+      },
+      guideGroupId: "it:false-RNG With ACE:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/it/Gen 3/Emerald/RNG With Ace.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/RNG With Ace.mdx?raw"
       );
       return file.default;
     }),
@@ -16629,6 +16718,7 @@ export const guideSlugs = [
   "/emerald-painting-rng/",
   "/emerald-painting-seed-searcher/",
   "/emerald-pokerus-emu/",
+  "/emerald-rng-with-ace/",
   "/emerald-shiny-starter/",
   "/emerald-sid-feebas/",
   "/emerald-static/",
@@ -16717,6 +16807,7 @@ export const guideSlugs = [
   "/install-pokereader/",
   "/it-e-tips-rng/",
   "/it-emerald-overview/",
+  "/it-emerald-rng-with-ace/",
   "/it-emulator-b2w2-runasdate-inital-seed/",
   "/it-emulator-b2w2-wild/",
   "/it-emulator-bw-runasdate-initial-seed/",

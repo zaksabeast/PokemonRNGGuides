@@ -283,6 +283,10 @@
     "hash": "c38d4aeb3d57feb51f4f97433237d6c26353a5cc95d437bc73419f2bd039866e",
     "lastUpdated": null
   },
+  "/emerald-rng-with-ace/": {
+    "hash": "48142a8a856004022b36127bf3edb85f44f4c22c9f9b77bc1075ae3a7ec098f5",
+    "lastUpdated": "2026-05-05"
+  },
   "/emerald-shiny-starter/": {
     "hash": "fb733095940da068290fadd409617102e7108f2a6ca342333847b5f84f6090fa",
     "lastUpdated": "2026-04-11"
@@ -634,6 +638,10 @@
   "/it-emerald-overview/": {
     "hash": "14581c77990f1d0534ece07b175c43a15e4e622b32d823101601821ced84ea74",
     "lastUpdated": "2026-05-02"
+  },
+  "/it-emerald-rng-with-ace/": {
+    "hash": "5837ff3eae2a1983c21e4c121f18e8c2569976bc4b291eb7b7837d1f87df999d",
+    "lastUpdated": "2026-05-05"
   },
   "/it-emulator-b2w2-runasdate-inital-seed/": {
     "hash": "1dba3b9da601984ff3d575991024217a0e38511f5609ce8d0b0c03e107786e87",

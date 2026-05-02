@@ -12,6 +12,7 @@ Guidance for AI coding agents working in this repository.
 ## Commands
 
 Run the smallest practical command for the change.
+Don't run formatting (bun prettier) and linting unless the task explicitly requires it.
 
 ### Fast Feedback
 

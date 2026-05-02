@@ -25,7 +25,8 @@ Possible user flows (documentation for testing):
  - Case 1) Step 1: Low target advance without painting. Step 2: Too low to create battle video, so must skip.
       Step1: Abra, no filter, adv 1005, Wild1. (Abra, Lvl 7, Male, InnerFocus, Lonely, HP 21, ATK 8, DEF 7, SPA 20, SPD 14, SPE 18)
       Step2: Skip.
-      Step3: Whismur, Lvl 6, Female, Hasty, Soundproof, 24/12/7/11/9/9, adv 1027
+      Step3: Wild1 bad adv: Whismur, Lvl 6, Female, Hasty, Soundproof, 24/12/7/11/9/9, adv 1027
+             Wild2 target adv: Abra, Lvl 7, Male, InnerFocus, Lonely, HP 21, ATK 8, DEF 8, SPA 20, SPD 14, SPE 17
  - Case 2) Step 1: Target advance without painting. Step 2: Press "Skip creating battle video".
       Step1: Abra, no filter, min adv 10000, select adv 10004, Wild1 (Abra, Lvl 8, Male, Careful, HP 22, ATK 10, DEF 9, SPA 19, SPD 16, SPE 21). 
       Step2: Skip. 

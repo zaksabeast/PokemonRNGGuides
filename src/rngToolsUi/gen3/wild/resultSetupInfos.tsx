@@ -1,5 +1,12 @@
 import { Wild3SearcherCycleData, Gen3Method } from "~/rngTools";
-import { ResultColumn, ResultTable, Icon, Link, Button } from "~/components";
+import {
+  ResultColumn,
+  ResultTable,
+  Icon,
+  Link,
+  Button,
+  Flex,
+} from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
@@ -205,10 +212,16 @@ const getResultSetupInfoColumns = ({
 
           return leastFormat;
         })();
+        const isVeryReliableSetup =
+          text === "100%" && values.lead === "Egg" && values.method === "Wild1";
+        const title = `Method ${values.method}${isVeryReliableSetup ? " (Very reliable setup)" : ""}`;
 
         return (
-          <Tooltip title={`Method ${values.method}`}>
-            <div>{text}</div>
+          <Tooltip title={title}>
+            <Flex align="center" gap={4}>
+              {text}
+              {isVeryReliableSetup && <Icon name="Star" />}
+            </Flex>
           </Tooltip>
         );
       },

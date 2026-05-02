@@ -9,13 +9,14 @@ import {
   Icon,
   IconName,
 } from "~/components";
-import styled from "@emotion/styled";
 import { useScreenViewed } from "~/hooks/useScreenViewed";
 import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { settings } from "~/settings";
 import { match } from "ts-pattern";
 import { Color } from "@emotion/react";
 import { useMaxWidthEnabled } from "~/state/contentMaxWidth";
+import styled from "@emotion/styled";
+import { styledPropGuard } from "~/utils/styled";
 
 type SupporterType = (typeof settings)["hallOfFameSupporters"][number]["type"];
 
@@ -82,23 +83,24 @@ const BodyContainer = styled.div({
   display: "flex",
 });
 
-const ContentContainer = styled.div<{ $useMaxWidth: boolean }>(
-  ({ theme, $useMaxWidth }) => ({
-    height: "100%",
-    width: "100%",
-    maxWidth: $useMaxWidth ? 750 : "none",
-    display: "flex",
-    flexDirection: "column",
-    gap: 32,
-    paddingTop: 24,
-    [theme.mediaQueries.up("tablet")]: {
-      width: $useMaxWidth ? "90%" : "100%",
-    },
-    [theme.mediaQueries.up("desktop")]: {
-      width: $useMaxWidth ? "80%" : "100%",
-    },
-  }),
-);
+const ContentContainer = styled(
+  "div",
+  styledPropGuard,
+)<{ $useMaxWidth: boolean }>(({ theme, $useMaxWidth }) => ({
+  height: "100%",
+  width: "100%",
+  maxWidth: $useMaxWidth ? 750 : "none",
+  display: "flex",
+  flexDirection: "column",
+  gap: 32,
+  paddingTop: 24,
+  [theme.mediaQueries.up("tablet")]: {
+    width: $useMaxWidth ? "90%" : "100%",
+  },
+  [theme.mediaQueries.up("desktop")]: {
+    width: $useMaxWidth ? "80%" : "100%",
+  },
+}));
 
 const BottomSpace = styled.div({
   paddingBottom: 32,

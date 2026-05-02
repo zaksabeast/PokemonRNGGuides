@@ -132,8 +132,8 @@
     "lastUpdated": "2026-03-19"
   },
   "/de-emerald-overview/": {
-    "hash": "bc959590c7909877b8b89e0d8a2f90e736f15af39ef839481a620bf62d1bd796",
-    "lastUpdated": "2026-04-27"
+    "hash": "d50c811d7d4cd59caff12f96c3ac88b2b8ea0837975a58a0aa7cf6bd8b97b222",
+    "lastUpdated": "2026-05-02"
   },
   "/de-emerald-painting-rng/": {
     "hash": "e7c55423d893f63471aecf523c89ca733a69ad20b031145aaf8357f01718a577",
@@ -169,10 +169,6 @@
   },
   "/de-retail-emerald-egg/": {
     "hash": "08790cb46adab22f98ce6f50c380c51347e054c369e68a01ed6c368a68cf87f4",
-    "lastUpdated": "2026-04-11"
-  },
-  "/de-retail-emerald-wild/": {
-    "hash": "a147676b29a04989a5f53121e7c0a54a4de6f7c35507581c5b901a2e9b672392",
     "lastUpdated": "2026-04-11"
   },
   "/de-rs-gen3-sid/": {
@@ -264,7 +260,7 @@
     "lastUpdated": "2026-03-19"
   },
   "/emerald-overview/": {
-    "hash": "6322015570f7c0b100928fb04850c900a592631fab8b30e8f20c1753a9893a68",
+    "hash": "33f2674f3ba4048dc03a9ad7c4680b98a1f3b1d130d791102a2350aca40ccedc",
     "lastUpdated": "2026-05-02"
   },
   "/emerald-painting-reseeding/": {
@@ -304,8 +300,8 @@
     "lastUpdated": "2026-03-15"
   },
   "/emerald-wild/": {
-    "hash": "276a8a14ad63fabb8f9a9021015712722a03b482f7d5fd5837fd70ad0a81be50",
-    "lastUpdated": "2026-04-26"
+    "hash": "1aa4b1055b608d53aa5692702533a3bcf212305f7f572dd036be1fd8856c1125",
+    "lastUpdated": "2026-05-02"
   },
   "/emerald/": {
     "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
@@ -632,8 +628,8 @@
     "lastUpdated": null
   },
   "/it-emerald-overview/": {
-    "hash": "6ffcef4c62dd237f9c7a0fbd809c1a0437bd463e8ab47c39384d639026a47904",
-    "lastUpdated": "2026-04-27"
+    "hash": "14581c77990f1d0534ece07b175c43a15e4e622b32d823101601821ced84ea74",
+    "lastUpdated": "2026-05-02"
   },
   "/it-emulator-b2w2-runasdate-inital-seed/": {
     "hash": "1dba3b9da601984ff3d575991024217a0e38511f5609ce8d0b0c03e107786e87",
@@ -686,10 +682,6 @@
   "/it-retail-dppt-starter/": {
     "hash": "ecf16f1bcaac54f98e5119973698a50457e696df038974c2717587ac4361ec04",
     "lastUpdated": "2026-04-10"
-  },
-  "/it-retail-emerald-wild/": {
-    "hash": "7de18f6428f94e02aff9bd44cb5f8bce82cd5e2fc8e8831f3bb5109ed836b31c",
-    "lastUpdated": "2026-04-11"
   },
   "/it-retail-hgss-starter/": {
     "hash": "ecf16f1bcaac54f98e5119973698a50457e696df038974c2717587ac4361ec04",
@@ -809,10 +801,6 @@
   },
   "/retail-emerald-egg/": {
     "hash": "664dbb082f0728c419625e8fd194087e6dfd836eb915ef718ee1ad51a1c57053",
-    "lastUpdated": "2026-04-11"
-  },
-  "/retail-emerald-wild/": {
-    "hash": "fdb313e0c66a459409b01a695120714b3b0641502cb4c063de21dedf358f5769",
     "lastUpdated": "2026-04-11"
   },
   "/retail-hgss-starter/": {
@@ -1144,7 +1132,7 @@
     "lastUpdated": null
   },
   "/zh-emerald-overview/": {
-    "hash": "da3340089a1b6ee51a5ec46c8f27e3a474b0c5eac10be86476f340ed8dcc6408",
+    "hash": "863e6f5ab4a52cc864cb5dcb02e0a099138fe96e8a4528014fd61a77cd361a84",
     "lastUpdated": "2026-05-02"
   },
   "/zh-emerald-painting-rng/": {
@@ -1378,10 +1366,6 @@
   "/zh-retail-emerald-egg/": {
     "hash": "a57ff7173505e4e989fb45ea573a3639b4b8e76f8ecab56ddad355a1727d62e5",
     "lastUpdated": "2026-05-02"
-  },
-  "/zh-retail-emerald-wild/": {
-    "hash": "54b70d832e6087f5fd67a7f55a93823d332a5083c370fbecc9b9818fee42fc7b",
-    "lastUpdated": "2026-04-11"
   },
   "/zh-retail-hgss-starter/": {
     "hash": "28849cdcf4d32498b9d24a2e0d22c821673b3a264bd28e5d895033ac6a862779",

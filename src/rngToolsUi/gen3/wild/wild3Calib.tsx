@@ -1,5 +1,12 @@
 import React from "react";
-import { Flex, MultiTimer, Field, Input, Select, Button } from "~/components";
+import {
+  Flex,
+  MultiTimer,
+  Field,
+  Select,
+  Button,
+  NumberInput,
+} from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
 import {
   TargetSetup,
@@ -25,6 +32,23 @@ import { formatHex } from "~/utils/formatHex";
 import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
+
+const CALIB_OFFSET_BY_ACTION = {
+  fishing: {
+    offset: 4,
+    calibNoBattleVideo: 17, //assuming x2 fishing attempts, (+3 per attempt)
+    calibBattleVideo: 11, //assuming x2 fishing attempts.
+  },
+  sweetScent: {
+    offset: 264, // 264 advances between pressing A and reaching SweetScent function.
+    calibNoBattleVideo: 10, // ~10 non-vblank advances between booting and triggering SweetScent. exact number depends on map encounter table and dynamic actors.
+    calibBattleVideo: 4, // 4 non-vblank advances between watching battle video and triggering SweetScent.
+  },
+};
+Current advance: 1,695
+Current frame: 1,675
+Non-Vblank RNG update: 20
+
 
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
@@ -67,7 +91,10 @@ export const Wild3Calib = ({
 
   const [consoleTypeFromInput, setConsoleTypeFromInput] =
     React.useState<Gen3Console>("GBA");
-  const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(0);
+
+  const [humanInputDelay, setHumanInputDelay] = React.useState<number | null>(
+    0,
+  );
 
   const targetSetupInputForm = () => (
     <Flex vertical gap={10}>
@@ -90,8 +117,8 @@ export const Wild3Calib = ({
     frame_before_painting: number;
     adv_after_painting: number;
   }) => {
-    setCalibrationAndOffset(
-      calibrationAndOffset + hitAdv.adv_after_painting - targetForTimer,
+    setHumanInputDelay(
+      (humanInputDelay ?? 0) + hitAdv.adv_after_painting - targetForTimer,
     );
   };
 
@@ -99,7 +126,19 @@ export const Wild3Calib = ({
 
   const initialAdv = battleVideoInfo?.battleVideoAdvAfterPainting ?? 0;
 
-  const advFromTimer = targetForTimer - initialAdv - calibrationAndOffset;
+  const calibInfo =
+    targetSetup?.action === "SweetScentLand"
+      ? CALIB_OFFSET_BY_ACTION.sweetScent
+      : CALIB_OFFSET_BY_ACTION.fishing;
+  const calibration =
+    initialAdv > 0 ? calibInfo.calibBattleVideo : calibInfo.calibNoBattleVideo;
+
+  const advFromTimer =
+    targetForTimer -
+    initialAdv -
+    (humanInputDelay ?? 0) -
+    calibInfo.offset -
+    calibration;
 
   const consoleType = battleVideoInfo?.consoleType ?? consoleTypeFromInput;
 
@@ -153,15 +192,25 @@ export const Wild3Calib = ({
         ),
     },
     {
-      label: "Calibration + Offset (advance)",
+      label: "Calibration",
+      input: calibration + " advances",
+      tooltip: "Number of RNG advances not caused by frames. (Ex: NPC moving)",
+    },
+    {
+      label: "Offset",
+      input: calibInfo.offset + " advances",
+      tooltip:
+        "Number of RNG advances between the last player input and when the Pokémon generation occurs.",
+    },
+    {
+      label: "Human Input Delay (advance)",
+      tooltip:
+        "Number of RNG advances caused by human reaction time between the timer ending and pressing the input.",
       input: (
-        <Input
-          name="offset"
-          onChange={(event) => {
-            const num = Number(event.target.value);
-            setCalibrationAndOffset(Number.isFinite(num) ? num : 0);
-          }}
-          value={calibrationAndOffset}
+        <NumberInput
+          numType="decimal"
+          onChange={setHumanInputDelay}
+          value={humanInputDelay}
         />
       ),
     },

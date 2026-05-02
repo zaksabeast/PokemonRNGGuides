@@ -264,8 +264,8 @@
     "lastUpdated": "2026-03-19"
   },
   "/emerald-overview/": {
-    "hash": "c424080bb9a0d1e707c3da047e29c1fe15fb58592c283cc2811812cf542a4dbd",
-    "lastUpdated": "2026-04-27"
+    "hash": "6322015570f7c0b100928fb04850c900a592631fab8b30e8f20c1753a9893a68",
+    "lastUpdated": "2026-05-02"
   },
   "/emerald-painting-reseeding/": {
     "hash": "779c473d27c323df4c5970828589bfafbcb4fa47c2fa2feb5d4aa855f4cdc082",
@@ -1143,6 +1143,10 @@
     "hash": "86d879d277aab2cddedac10355d6cf6dc61c385ceadd7751580878a082966fcb",
     "lastUpdated": null
   },
+  "/zh-emerald-overview/": {
+    "hash": "da3340089a1b6ee51a5ec46c8f27e3a474b0c5eac10be86476f340ed8dcc6408",
+    "lastUpdated": "2026-05-02"
+  },
   "/zh-emerald-painting-rng/": {
     "hash": "49e182d29f7531dab02743f43d62df2e79958bf6c5d118c9622260b401940b2b",
     "lastUpdated": "2026-04-06"
@@ -1204,8 +1208,8 @@
     "lastUpdated": "2026-04-10"
   },
   "/zh-emulator-emerald-egg/": {
-    "hash": "af363278a9a04c63e9ccee8c4a7d94c45e1dd613b49fa0dd7f940f047bec661b",
-    "lastUpdated": "2026-03-20"
+    "hash": "b83e6e2a20f310250d78b489be2ec8e08cfda02525ff2cfa1315755a6b234c67",
+    "lastUpdated": "2026-05-02"
   },
   "/zh-emulator-flrg-stationary-and-gift/": {
     "hash": "d55a7a979fb5594b5bf46eac453607ff36eec0fc661407de5244f9f0139502e8",
@@ -1372,8 +1376,8 @@
     "lastUpdated": "2026-04-10"
   },
   "/zh-retail-emerald-egg/": {
-    "hash": "2613dbd312560cbcfdeeebf71d2219d76ffb5943fe7d8254e1518f85e37d456a",
-    "lastUpdated": "2026-04-11"
+    "hash": "a57ff7173505e4e989fb45ea573a3639b4b8e76f8ecab56ddad355a1727d62e5",
+    "lastUpdated": "2026-05-02"
   },
   "/zh-retail-emerald-wild/": {
     "hash": "54b70d832e6087f5fd67a7f55a93823d332a5083c370fbecc9b9818fee42fc7b",
@@ -1516,8 +1520,8 @@
     "lastUpdated": "2026-03-20"
   },
   "/zh-rs-battery/": {
-    "hash": "320acdac1d2c3898dd626b392bad03e697574f3a34f3e4a5c6bbbc75cfb86298",
-    "lastUpdated": "2026-03-20"
+    "hash": "937f1062469862c4ef32cd7179a0033800c162dca532829b2103ab7bef92db3c",
+    "lastUpdated": "2026-05-02"
   },
   "/zh-rs-gen3-sid/": {
     "hash": "e2c37fc01901a1a787368db35ffa51714ea1ba9c14c1769f025784659a87e6df",

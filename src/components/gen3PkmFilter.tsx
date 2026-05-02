@@ -71,7 +71,7 @@ const _getGen3PkmFilterFields = (opts: FieldOpts = {}): Field[] =>
       label: "PID cycle speed",
       tooltip: (
         <>
-          For advanced users. Owning Pokémon with very low or very high PID
+          For advanced users. Owning Pokémon with very fast or very low PID
           cycle speed is used to influence the triggered method of wild
           encounters. Learn more about{" "}
           <Link newTab href="/gba-methods-lead-impact/">
@@ -80,20 +80,7 @@ const _getGen3PkmFilterFields = (opts: FieldOpts = {}): Field[] =>
           .
         </>
       ),
-      input: (
-        <FormikSwitch<Gen3PkmFilterFields> name="filter_pid_speed.active" />
-      ),
-    }),
-    optOut(opts?.pid_speed, {
-      label: "",
-      key: "_getGen3PkmFilterFields.pid_speed",
-      direction: "column",
-      showWhen: {
-        fieldName: "filter_pid_speed.active",
-        when: (active: unknown) => active === true,
-      },
       input: <Gen3PidSpeedInput<Gen3PkmFilterFields> name="filter_pid_speed" />,
-      indent: 1,
     }),
   ].filter((field) => field !== null);
 

@@ -69,7 +69,7 @@ import { lcrng_distance } from "~/utils/lcrng";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 import {
   leadCycleSpeedTooltip,
-  usingPaintingReseedingLabel as usingPaintingReseedingLabel,
+  usingPaintingReseedingLabel,
 } from "./wild3Labels";
 
 const emeraldWildGameData = getWild3EmeraldGameData();

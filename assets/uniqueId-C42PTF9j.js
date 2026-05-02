@@ -1,0 +1,1 @@
+import{aa as e}from"./components-ndcpESCg.js";var t=0;function n(n){var r=++t;return e(n)+r}export{n as t};

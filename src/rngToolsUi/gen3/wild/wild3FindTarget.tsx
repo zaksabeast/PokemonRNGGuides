@@ -145,7 +145,7 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
       tooltip: (
         <>
           Likelihood that you will obtain the target Pokemon if you hit the
-          target advance (Likelihood that the triggered{" "}
+          target advance. (Likelihood that the triggered{" "}
           <Link newTab href="/gba-methods/">
             method
           </Link>{" "}

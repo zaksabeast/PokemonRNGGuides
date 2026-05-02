@@ -8,6 +8,7 @@ import {
   Flex,
   Typography,
   Link,
+  TooltipWithIcon,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { Tooltip } from "antd";
@@ -56,9 +57,9 @@ const getSetupFields = (
       input: filter_shiny ? (
         <FormikNumberInput<FormState> name="tid" numType="decimal" />
       ) : (
-        <Tooltip title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
-          <span>N/A</span>
-        </Tooltip>
+        <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
+          N/A
+        </TooltipWithIcon>
       ),
     },
     {
@@ -66,9 +67,9 @@ const getSetupFields = (
       input: filter_shiny ? (
         <FormikNumberInput<FormState> name="sid" numType="decimal" />
       ) : (
-        <Tooltip title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
-          <span>N/A</span>
-        </Tooltip>
+        <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
+          N/A
+        </TooltipWithIcon>
       ),
     },
     {

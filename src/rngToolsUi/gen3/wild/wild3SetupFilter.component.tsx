@@ -33,7 +33,9 @@ import {
 const supportedGen3Methods = [
   "Wild1",
   "Wild2",
+  "Wild3",
   "Wild4",
+  // TODO: Support Wild5
 ] as const satisfies Gen3Method[];
 
 const getSetupFields = (

@@ -32,23 +32,42 @@ import { formatHex } from "~/utils/formatHex";
 import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
+import { Wild3Action } from "../../../../rng_tools/pkg/rng_tools";
+
+type CalibOffset = {
+  offset: number; // between pressing A and reaching SweetScent function.
+  calibNoBattleVideo: number; // non-vblank advances between booting and triggering SweetScent. exact number depends on map encounter table and dynamic actors.
+  calibBattleVideo: number; // non-vblank advances between watching battle video and triggering SweetScent.
+};
+
+const FISHING_CALIB_OFFSET: CalibOffset = {
+  offset: 4,
+  // assuming x2 fishing attempts and using SELECT to activate rod, (+3 advs per attempt)
+  calibNoBattleVideo: 17,
+  calibBattleVideo: 11,
+};
 
 const CALIB_OFFSET_BY_ACTION = {
-  fishing: {
-    offset: 4,
-    calibNoBattleVideo: 17, //assuming x2 fishing attempts, (+3 per attempt)
-    calibBattleVideo: 11, //assuming x2 fishing attempts.
+  OldRod: FISHING_CALIB_OFFSET,
+  GoodRod: FISHING_CALIB_OFFSET,
+  SuperRod: FISHING_CALIB_OFFSET,
+  SweetScentLand: {
+    offset: 264,
+    calibNoBattleVideo: 10,
+    calibBattleVideo: 4,
   },
-  sweetScent: {
-    offset: 264, // 264 advances between pressing A and reaching SweetScent function.
-    calibNoBattleVideo: 10, // ~10 non-vblank advances between booting and triggering SweetScent. exact number depends on map encounter table and dynamic actors.
-    calibBattleVideo: 4, // 4 non-vblank advances between watching battle video and triggering SweetScent.
+  SweetScentWater: {
+    offset: 354,
+    calibNoBattleVideo: 10,
+    calibBattleVideo: 4,
   },
-};
-Current advance: 1,695
-Current frame: 1,675
-Non-Vblank RNG update: 20
-
+  RockSmash: {
+    // assuming interacting with the rock from the overworld
+    offset: 301,
+    calibNoBattleVideo: 10,
+    calibBattleVideo: 4,
+  },
+} as const satisfies Record<Wild3Action, CalibOffset>;
 
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
@@ -126,19 +145,13 @@ export const Wild3Calib = ({
 
   const initialAdv = battleVideoInfo?.battleVideoAdvAfterPainting ?? 0;
 
-  const calibInfo =
-    targetSetup?.action === "SweetScentLand"
-      ? CALIB_OFFSET_BY_ACTION.sweetScent
-      : CALIB_OFFSET_BY_ACTION.fishing;
-  const calibration =
-    initialAdv > 0 ? calibInfo.calibBattleVideo : calibInfo.calibNoBattleVideo;
+  const { offset, calibBattleVideo, calibNoBattleVideo } =
+    CALIB_OFFSET_BY_ACTION[targetSetup?.action ?? "SweetScentLand"];
+
+  const calibration = initialAdv > 0 ? calibBattleVideo : calibNoBattleVideo;
 
   const advFromTimer =
-    targetForTimer -
-    initialAdv -
-    (humanInputDelay ?? 0) -
-    calibInfo.offset -
-    calibration;
+    targetForTimer - initialAdv - (humanInputDelay ?? 0) - offset - calibration;
 
   const consoleType = battleVideoInfo?.consoleType ?? consoleTypeFromInput;
 
@@ -198,7 +211,7 @@ export const Wild3Calib = ({
     },
     {
       label: "Offset",
-      input: calibInfo.offset + " advances",
+      input: offset + " advances",
       tooltip:
         "Number of RNG advances between the last player input and when the Pokémon generation occurs.",
     },

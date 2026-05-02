@@ -148,13 +148,18 @@ const getFields = ({
 }): Field[] => {
   const { actions, feebas_states, roamer_states, mass_outbreak_states } =
     getPossibleValuesForMap(mapId, action);
+
+  const supportedMaps = emeraldWildGameData.maps.filter((map) => {
+    return !map.includes("SAFARI"); // TODO: Support Safari maps
+  });
+
   const fields: Field[] = [
     {
       label: "Map",
       input: (
         <FormikSelect<FormState, "map">
           name="map"
-          options={toOptions(emeraldWildGameData.maps, formatMapName)}
+          options={toOptions(supportedMaps, formatMapName)}
         />
       ),
     },

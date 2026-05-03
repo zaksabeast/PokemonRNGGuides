@@ -78,6 +78,7 @@ const convertResultsForPidPathToPidPathResult = async (
         actionName: formatActionName(res.action),
         primaryLikelihood,
         initial_seed,
+        rock_smash_rate: mapSetup.map_data.rock_smash_rate,
         ...getAdvsFromCache(res.advance),
       };
     }),
@@ -250,4 +251,16 @@ export const searchWild3Target = async (values: FormState) => {
   );
 
   return pidPathResults;
+};
+
+export const setupRequiresWhiteFlute = (
+  seed: number,
+  rockSmashEncounterRate: number,
+): boolean => {
+  const rate = rockSmashEncounterRate * 16;
+  const whiteFluteRate = rate + Math.floor(rate / 2);
+  const nextSeed = (Math.imul(seed, 0x41c64e6d) + 0x6073) >>> 0;
+  const encounterRand = (nextSeed >>> 16) % 2880;
+
+  return encounterRand >= rate && encounterRand < whiteFluteRate;
 };

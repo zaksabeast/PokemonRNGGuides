@@ -46,6 +46,7 @@ const createTargetSetupAtVictoryRoad = (targetPaintingAdvs: {
     targetMethod: "Wild1", // Unused
     usingAverageLeadCycleSpeed: false,
     leadCycleSpeed: 0,
+    requiresWhiteFlute: false, // Unused
   };
 };
 

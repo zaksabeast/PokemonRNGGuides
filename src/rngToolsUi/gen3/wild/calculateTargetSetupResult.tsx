@@ -117,7 +117,7 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
     consider_cycles: true,
     consider_rng_manipulated_lead_pid: true,
     generate_even_if_impossible: true,
-    using_white_flute: true,
+    using_white_flute: targetSetup.requiresWhiteFlute,
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
@@ -128,7 +128,7 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
     (table) => table.map_id === targetSetup.map,
   );
   if (map_data == null) {
-    return null;
+    return { content: null, hasEncounter: false };
   }
 
   const results = await rngTools.generate_gen3_wild_wasm(
@@ -139,7 +139,15 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
   );
 
   if (results.length === 0) {
-    return null;
+    if (targetSetup.action === "RockSmash") {
+      return {
+        content: (
+          <div>No Pokémon encounter when using Rock Smash with that setup.</div>
+        ),
+        hasEncounter: false,
+      };
+    }
+    return { content: null, hasEncounter: false };
   }
 
   const res = results[0];
@@ -149,7 +157,7 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
     res.encounter_idx,
   );
   if (encounter == null) {
-    return null;
+    return { content: null, hasEncounter: false };
   }
 
   const { species } = encounter.species_data;
@@ -170,18 +178,21 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
   const probabilityInfo = await getProbabilityInfo(res, lead_cycle_speed);
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 
-  return (
-    <Flex vertical>
-      <div>
-        {species}, Lvl {res.lvl}, {gender}, {abilityStr}, {nature}, HP{" "}
-        {stats.hp}, ATK {stats.atk}, DEF {stats.def}, SPA {stats.spa}, SPD{" "}
-        {stats.spd}, SPE {stats.spe}
-      </div>
-      <div>
-        PID: {formatHex(res.pid)}, IVS: {ivs.hp}/{ivs.atk}/{ivs.def}/{ivs.spa}/
-        {ivs.spd}/{ivs.spe}
-      </div>
-      {probabilityInfo}
-    </Flex>
-  );
+  return {
+    content: (
+      <Flex vertical>
+        <div>
+          {species}, Lvl {res.lvl}, {gender}, {abilityStr}, {nature}, HP{" "}
+          {stats.hp}, ATK {stats.atk}, DEF {stats.def}, SPA {stats.spa}, SPD{" "}
+          {stats.spd}, SPE {stats.spe}
+        </div>
+        <div>
+          PID: {formatHex(res.pid)}, IVS: {ivs.hp}/{ivs.atk}/{ivs.def}/{ivs.spa}
+          /{ivs.spd}/{ivs.spe}
+        </div>
+        {probabilityInfo}
+      </Flex>
+    ),
+    hasEncounter: true,
+  };
 };

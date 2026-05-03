@@ -108,6 +108,7 @@ export type ResultSetupInfo = Wild3SearcherResultMon &
     actionName: string;
     primaryLikelihood: number;
     initial_seed: number;
+    rock_smash_rate: number;
   };
 
 const getInitialValues = (): FormState => {

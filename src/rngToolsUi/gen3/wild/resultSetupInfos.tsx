@@ -25,6 +25,7 @@ import {
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3CalibTargetSetupInput";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
+import { setupRequiresWhiteFlute } from "./searchWild3Target";
 
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
@@ -48,11 +49,13 @@ const getMethodLikelihoodColumValue = (
 const getResultSetupInfoColumns = ({
   rngManipulatedLeadPid,
   showMassOutbreak,
+  showRequiresWhiteFlute,
   usesPainting,
   onBreakdownClick,
 }: {
   rngManipulatedLeadPid: boolean;
   showMassOutbreak: boolean;
+  showRequiresWhiteFlute: boolean;
   usesPainting: boolean;
   onBreakdownClick: (record: ResultSetupInfo) => void;
 }): ResultColumn<ResultSetupInfo>[] => {
@@ -113,6 +116,24 @@ const getResultSetupInfoColumns = ({
   columns.push(
     { title: "Map", dataIndex: "mapName" },
     { title: "Player action", dataIndex: "actionName" },
+    {
+      title: (
+        <span>
+          Requires
+          <br />
+          White Flute?
+        </span>
+      ),
+      key: "requiresWhiteFlute",
+      dataIndex: "action",
+      render: (action, setupInfo) =>
+        action === "RockSmash"
+          ? setupRequiresWhiteFlute(setupInfo.seed, setupInfo.rock_smash_rate)
+            ? "Yes"
+            : "No"
+          : "N/A",
+      show: showRequiresWhiteFlute,
+    },
     /*
     TODO: Support roamer and fishing in Feebas tile to catch non-Feebas Pokémon.
     {
@@ -427,6 +448,9 @@ const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
     // unused
     usingAverageLeadCycleSpeed: true,
     leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+    requiresWhiteFlute:
+      setupInfo.action === "RockSmash" &&
+      setupRequiresWhiteFlute(setupInfo.seed, setupInfo.rock_smash_rate),
   };
 };
 
@@ -440,6 +464,10 @@ export const Wild3ResultSetupInfos = ({
     selectedPidPathResult.resultSetupInfos.some(
       (setup) => setup.mass_outbreak_state !== "Inactive",
     );
+  const showRequiresWhiteFlute =
+    selectedPidPathResult?.resultSetupInfos.some(
+      (setup) => setup.action === "RockSmash",
+    ) ?? false;
   const usesPainting =
     selectedPidPathResult?.resultSetupInfos.some(
       (res) => res.advs.frame_before_painting !== 0,
@@ -447,6 +475,7 @@ export const Wild3ResultSetupInfos = ({
   const resultSetupInfoColumns = getResultSetupInfoColumns({
     rngManipulatedLeadPid,
     showMassOutbreak,
+    showRequiresWhiteFlute,
     usesPainting,
     onBreakdownClick: (record) => {
       setDistributionFixedData(

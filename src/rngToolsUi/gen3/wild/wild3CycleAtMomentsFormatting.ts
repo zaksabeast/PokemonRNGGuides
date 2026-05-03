@@ -9,6 +9,8 @@ import { z } from "zod";
 import { gen3Methods } from "~/types";
 
 export const VBLANK_FREQ = 280_896;
+
+// TODO: Improve accuracy for RockSmash and Fishing by using a distinct distribution.
 export const MOST_PROBABLE_CYCLE_AT_SWEET_SCENT = 55_000;
 export const MOST_PROBABLE_VBLANK_CYCLE = 60_000;
 

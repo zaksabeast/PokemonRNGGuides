@@ -1,6 +1,7 @@
 import {
   rngTools,
   Species,
+  Wild3Action,
   Wild3GeneratorOptions,
   Wild3GeneratorResult,
 } from "~/rngTools";
@@ -32,6 +33,7 @@ const getLeadCycleSpeed = (values: TargetSetup) => {
 
 const getProbabilityInfo = async (
   res: Wild3GeneratorResult,
+  action: Wild3Action,
   lead_cycle_speed: number,
 ) => {
   if (res.cycle_range == null) {
@@ -40,6 +42,7 @@ const getProbabilityInfo = async (
 
   const info = await rngTools.calculate_cycle_data(
     res.cycle_range,
+    action,
     lead_cycle_speed,
   );
 
@@ -49,6 +52,7 @@ const getProbabilityInfo = async (
 
   const ideal_info = await rngTools.calculate_cycle_data(
     res.cycle_range,
+    action,
     ideal_lead_spd,
   );
 
@@ -175,7 +179,11 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
   const gender = await rngTools.get_species_gender_from_pid(species, res.pid);
   const { ivs } = res;
 
-  const probabilityInfo = await getProbabilityInfo(res, lead_cycle_speed);
+  const probabilityInfo = await getProbabilityInfo(
+    res,
+    targetSetup.action,
+    lead_cycle_speed,
+  );
   const abilityStr = await getAbilityDisplayStr(species, res.pid);
 
   return {

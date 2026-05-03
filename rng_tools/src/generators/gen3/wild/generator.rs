@@ -125,6 +125,7 @@ fn retain_methods_possible_to_trigger(
         results.retain(|res| {
             is_method_possible_to_trigger(
                 &res.cycle_range.unwrap(),
+                opts.action,
                 is_egg,
                 opts.consider_rng_manipulated_lead_pid,
                 opts.lead_cycle_speed,

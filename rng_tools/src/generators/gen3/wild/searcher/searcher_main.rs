@@ -99,6 +99,7 @@ pub struct Wild3SearcherOptions {
     pub lead_cycle_speed: Option<usize>,
     pub generate_even_if_impossible: bool,
     pub painting_opts: Option<Wild3PaintingOpts>,
+    pub using_white_flute: bool,
 }
 
 impl Default for Wild3SearcherOptions {
@@ -120,6 +121,7 @@ impl Default for Wild3SearcherOptions {
             generate_even_if_impossible: false,
             painting_opts: None,
             lead_cycle_speed: None,
+            using_white_flute: true,
         }
     }
 }

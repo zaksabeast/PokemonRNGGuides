@@ -556,6 +556,7 @@ const calculate = async (values: FormState) => {
     consider_cycles: true,
     consider_rng_manipulated_lead_pid: true,
     generate_even_if_impossible: true,
+    using_white_flute: true,
     roamer_state: values.roamerState,
     mass_outbreak_state: values.massOutbreakState,
     feebas_state: values.feebasState,

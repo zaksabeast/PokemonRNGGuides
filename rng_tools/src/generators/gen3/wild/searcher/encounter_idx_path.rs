@@ -177,6 +177,7 @@ pub struct EncounterIdxPathGenerator<'a> {
     mass_outbreak_setups: Vec<(usize, Wild3MassOutbreakState)>,
     actions: Vec<Wild3Action>,
     species_data: Option<SpeciesData>,
+    using_white_flute: bool,
 }
 
 struct Wild3MapSetupsForReverse<'a> {
@@ -234,6 +235,7 @@ impl<'a> EncounterIdxPathGenerator<'a> {
         leads: &[Gen3Lead],
         map_setups: &'a [Wild3MapSetups],
         species_data: Option<SpeciesData>,
+        using_white_flute: bool,
     ) -> Self {
         let actions: Vec<Wild3Action> = map_setups
             .iter()
@@ -278,6 +280,7 @@ impl<'a> EncounterIdxPathGenerator<'a> {
             mass_outbreak_setups,
             actions,
             species_data: species_data.clone(),
+            using_white_flute,
         }
     }
 
@@ -292,6 +295,7 @@ impl<'a> EncounterIdxPathGenerator<'a> {
                     &self.map_setups,
                     &self.species_data,
                     &self.actions,
+                    self.using_white_flute,
                 ),
                 EncounterIdxToLvlArc::MassOutbreakSuccess(_) => {
                     extend_path_for_mass_outbreak(lvl_path, &self.mass_outbreak_setups)
@@ -448,6 +452,7 @@ fn extend_path_for_slot_vanilla(
     maps_setups_for_rev: &[Wild3MapSetupsForReverse],
     species_data: &Option<SpeciesData>,
     actions: &[Wild3Action],
+    using_white_flute: bool,
 ) -> Vec<EncounterIdxPath> {
     let mut rng = Pokerng::new(lvl_path.seed);
 
@@ -480,6 +485,7 @@ fn extend_path_for_slot_vanilla(
                         if !does_rock_smash_have_encounter(
                             &mut rng,
                             map_setups_for_rev.map_setups.map_data.rock_smash_rate,
+                            using_white_flute,
                         ) {
                             return None;
                         }
@@ -497,11 +503,17 @@ fn extend_path_for_slot_vanilla(
         .collect()
 }
 
-fn does_rock_smash_have_encounter(rng: &mut Pokerng, rock_smash_rate: u32) -> bool {
+fn does_rock_smash_have_encounter(
+    rng: &mut Pokerng,
+    rock_smash_rate: u32,
+    using_white_flute: bool,
+) -> bool {
     let encounter_rand = (rng.prev_rand() % 2880) as u32;
 
     let mut rate = rock_smash_rate * 16;
-    rate += rate / 2; // White Flute
+    if using_white_flute {
+        rate += rate / 2;
+    }
 
     encounter_rand < rate
 }

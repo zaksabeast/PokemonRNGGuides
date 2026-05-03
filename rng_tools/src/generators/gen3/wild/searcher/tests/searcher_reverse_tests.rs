@@ -521,3 +521,37 @@ fn test_search_reverse_wild3_rock_smash() {
         .collect_vec();
     assert!(result.is_empty());
 }
+
+#[test]
+fn test_search_reverse_wild3_rock_smash_white_flute() {
+    let mut options = Wild3SearcherOptions {
+        initial_advances: 2040529972 - 100, // seed = 0x20 minus 100 adv
+        max_advances: 200,
+        methods: vec![Gen3Method::Wild1],
+        max_result_count: 1,
+        leads: vec![Gen3Lead::Vanilla],
+        filter: PkmFilter {
+            nature: Some(Nature::from_pid(662075637)),
+            min_ivs: Ivs::new(7, 25, 18, 3, 21, 6),
+            max_ivs: Ivs::new(7, 25, 18, 3, 21, 6),
+            ..Default::default()
+        },
+        generate_even_if_impossible: true,
+        using_white_flute: true,
+        ..Default::default()
+    };
+
+    options.map_setups[0].actions = vec![Wild3Action::RockSmash];
+    let result = search_wild3_reverse(&options)
+        .into_iter()
+        .flatten()
+        .collect_vec();
+    assert!(!result.is_empty());
+
+    options.using_white_flute = false;
+    let result = search_wild3_reverse(&options)
+        .into_iter()
+        .flatten()
+        .collect_vec();
+    assert!(result.is_empty());
+}

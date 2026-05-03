@@ -549,6 +549,28 @@ fn test_generate_wild3_rock_smash() {
 }
 
 #[test]
+fn test_generate_wild3_rock_smash_white_flute() {
+    let mut options = Wild3GeneratorOptions {
+        action: Wild3Action::RockSmash,
+        methods: vec![Gen3Method::Wild1],
+        generate_even_if_impossible: true,
+        using_white_flute: true,
+        ..Default::default()
+    };
+
+    let game_data = Wild3MapGameData::default();
+
+    let (result, _) = generate_gen3_wild(Pokerng::new(20), &options, &game_data);
+    assert!(!result.is_empty());
+    println!("{:?}", result[0]);
+    assert!(result.is_empty());
+
+    options.using_white_flute = false;
+    let (result, _) = generate_gen3_wild(Pokerng::new(20), &options, &game_data);
+    assert!(result.is_empty());
+}
+
+#[test]
 fn test_generate_wild3_mass_outbreak() {
     let mut options = Wild3GeneratorOptions {
         action: Wild3Action::SweetScentLand,

@@ -22,7 +22,7 @@ Limitation: When generating Wild5, only 1 vblank is supported. There's a very sm
 pub const INFINITE_CYCLE: usize = 10_000_000;
 pub const VBLANK_FREQ: usize = 280_896;
 
-#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3GeneratorOptions {
     pub tid: u16,
@@ -40,7 +40,30 @@ pub struct Wild3GeneratorOptions {
     pub roamer_state: Wild3RoamerState,
     pub mass_outbreak_state: Wild3MassOutbreakState,
     pub feebas_state: Wild3FeebasState,
-    //pub has_white_flute_for_rock_smash: bool, //NO_PROD
+    pub using_white_flute: bool,
+}
+
+impl Default for Wild3GeneratorOptions {
+    fn default() -> Self {
+        Self {
+            tid: 0,
+            sid: 0,
+            map_idx: 0,
+            action: Wild3Action::default(),
+            methods: vec![],
+            lead: Gen3Lead::default(),
+            filter: PkmFilter::default(),
+            gen3_filter: Gen3PkmFilter::default(),
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
+            lead_cycle_speed: None,
+            generate_even_if_impossible: false,
+            roamer_state: Wild3RoamerState::default(),
+            mass_outbreak_state: Wild3MassOutbreakState::default(),
+            feebas_state: Wild3FeebasState::default(),
+            using_white_flute: true,
+        }
+    }
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Tsify, Serialize, Deserialize)]
@@ -150,7 +173,9 @@ fn select_encounter_idx(
     if opts.action == Wild3Action::RockSmash {
         // In RockSmashWildEncounter() -> WildEncounterCheck()
         let mut rate = map_data.rock_smash_rate * 16;
-        rate += rate / 2; // White Flute
+        if opts.using_white_flute {
+            rate += rate / 2;
+        }
 
         if rand_next_u16(rng, "select_encounter_idx.rock_smash_odds_check", 2880) % 2880
             >= rate as u16

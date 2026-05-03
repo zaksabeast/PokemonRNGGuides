@@ -161,6 +161,14 @@ const getSetupFields = (
       indent: 1,
     },
     {
+      label: "Using White Flute",
+      tooltip:
+        "White Flute greatly increases the odds of encountering Pokémon when using Rock Smash. It can be obtained from the Glass Workshop in Route 113.",
+      input: <FormikSwitch<FormState> name="using_white_flute" />,
+      show: showAdvancedSetups && possVals.actions.includes("RockSmash"),
+      indent: 1,
+    },
+    {
       label: "RNG-manipulated lead PID",
       input: <FormikSwitch<FormState> name="rngManipulatedLeadPid" />,
     },

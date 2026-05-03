@@ -117,6 +117,7 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
     consider_cycles: true,
     consider_rng_manipulated_lead_pid: true,
     generate_even_if_impossible: true,
+    using_white_flute: true,
     roamer_state: targetSetup.roamerState,
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,

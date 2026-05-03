@@ -563,7 +563,6 @@ fn test_generate_wild3_rock_smash_white_flute() {
     let (result, _) = generate_gen3_wild(Pokerng::new(20), &options, &game_data);
     assert!(!result.is_empty());
     println!("{:?}", result[0]);
-    assert!(result.is_empty());
 
     options.using_white_flute = false;
     let (result, _) = generate_gen3_wild(Pokerng::new(20), &options, &game_data);

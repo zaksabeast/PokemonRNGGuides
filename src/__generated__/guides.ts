@@ -17042,7 +17042,7 @@ export const externalGuides = [
     url: "https://pokemoncompletion.com/BattleFacilities/Emerald/RngManipulation",
     difficulty: null,
     id: "https://pokemoncompletion.com/BattleFacilities/Emerald/RngManipulation",
-    isNew: true,
+    isNew: false,
     translation: null,
     canonical: null,
     hideFromNavDrawer: false,

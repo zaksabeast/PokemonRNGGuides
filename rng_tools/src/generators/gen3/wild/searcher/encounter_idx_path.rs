@@ -481,14 +481,14 @@ fn extend_path_for_slot_vanilla(
                         }
                     }
 
-                    if *action == Wild3Action::RockSmash {
-                        if !does_rock_smash_have_encounter(
+                    if *action == Wild3Action::RockSmash
+                        && !does_rock_smash_have_encounter(
                             &mut rng,
                             map_setups_for_rev.map_setups.map_data.rock_smash_rate,
                             using_white_flute,
-                        ) {
-                            return None;
-                        }
+                        )
+                    {
+                        return None;
                     }
 
                     Some(EncounterIdxPath::new(

@@ -253,7 +253,7 @@ export const searchWild3Target = async (values: FormState) => {
   return pidPathResults;
 };
 
-export const setupRequiresWhiteFlute = (
+export const doesRockSmashSetupRequireWhiteFlute = (
   seed: number,
   rockSmashEncounterRate: number,
 ): boolean => {

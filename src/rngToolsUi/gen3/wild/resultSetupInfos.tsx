@@ -25,7 +25,7 @@ import {
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3CalibTargetSetupInput";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
-import { setupRequiresWhiteFlute } from "./searchWild3Target";
+import { doesRockSmashSetupRequireWhiteFlute } from "./searchWild3Target";
 
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
@@ -128,7 +128,10 @@ const getResultSetupInfoColumns = ({
       dataIndex: "action",
       render: (action, setupInfo) =>
         action === "RockSmash"
-          ? setupRequiresWhiteFlute(setupInfo.seed, setupInfo.rock_smash_rate)
+          ? doesRockSmashSetupRequireWhiteFlute(
+              setupInfo.seed,
+              setupInfo.rock_smash_rate,
+            )
             ? "Yes"
             : "No"
           : "N/A",
@@ -444,13 +447,16 @@ const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
     },
     targetMethod: setupInfo.method,
     lead: setupInfo.lead,
+    requiresWhiteFlute:
+      setupInfo.action === "RockSmash" &&
+      doesRockSmashSetupRequireWhiteFlute(
+        setupInfo.seed,
+        setupInfo.rock_smash_rate,
+      ),
 
     // unused
     usingAverageLeadCycleSpeed: true,
     leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
-    requiresWhiteFlute:
-      setupInfo.action === "RockSmash" &&
-      setupRequiresWhiteFlute(setupInfo.seed, setupInfo.rock_smash_rate),
   };
 };
 

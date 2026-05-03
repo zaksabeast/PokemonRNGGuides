@@ -467,3 +467,57 @@ fn test_search_reverse_pid_spd() {
         .collect_vec();
     assert_eq!(result, expected_results);
 }
+
+#[test]
+fn test_search_reverse_wild3_rock_smash() {
+    let mut options = Wild3SearcherOptions {
+        methods: vec![Gen3Method::Wild1],
+        max_result_count: 1,
+        leads: vec![Gen3Lead::Vanilla],
+        filter: PkmFilter {
+            nature: Some(Nature::Calm),
+            min_ivs: Ivs::new(11, 25, 10, 25, 3, 24),
+            max_ivs: Ivs::new(11, 25, 10, 25, 3, 24),
+            ..Default::default()
+        },
+        gen3_filter: Gen3PkmFilter {
+            species: Some(Species::Shuckle),
+            ..Default::default()
+        },
+        generate_even_if_impossible: true,
+        ..Default::default()
+    };
+
+    options.map_setups[0].actions = vec![Wild3Action::RockSmash];
+
+    let expected_results = [Wild3SearcherResultMon {
+        encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
+        pid: 1621222420,
+        advance: 0,
+        seed: options.initial_seed,
+        shiny: false,
+        nature: Nature::Calm,
+        ability: AbilityType::First,
+        ivs: Ivs::new(11, 25, 10, 25, 3, 24),
+        gender: Gender::Female,
+        method: Gen3Method::Wild1,
+        lead: Gen3Lead::Vanilla,
+        hidden_power: HiddenPower::new(PokemonType::Psychic, 53),
+        species: Species::Shuckle,
+        action: Wild3Action::RockSmash,
+        ..Default::default()
+    }];
+    let result = search_wild3_reverse(&options)
+        .into_iter()
+        .flatten()
+        .collect_vec();
+    assert_eq!(result, expected_results);
+
+    // test no encounter
+    options.initial_advances = 2;
+    let result = search_wild3_reverse(&options)
+        .into_iter()
+        .flatten()
+        .collect_vec();
+    assert!(result.is_empty());
+}

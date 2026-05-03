@@ -157,6 +157,8 @@ const getSetupFields = (
           mode="multiple"
         />
       ),
+      show: showAdvancedSetups,
+      indent: 1,
     },
     {
       label: "RNG-manipulated lead PID",

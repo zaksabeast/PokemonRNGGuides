@@ -15,6 +15,18 @@ use crate::{
     },
     rng::lcrng::Pokerng,
 };
+#[derive(Default, Debug, PartialEq, Clone, Copy)]
+/** seed when sweet scent is triggered (state right before Roamer test) */
+pub struct EncounterPath {
+    pub seed: u32,
+    pub map_setups_idx: usize,
+    pub action: Wild3Action,
+    pub encounter_idx_to_lvl_arc: EncounterIdxToLvlArc,
+    pub lvl_to_nature_gender_arc: LvlToNatureGenderArc,
+    pub nature_gender_to_pid_arc: NatureGenderToPidArc,
+    pub pid_path: PidPath,
+    pub debug_lvl_path: Option<LvlPath>,
+}
 
 #[derive(Default, Debug, PartialEq, Clone, Copy)]
 /** seed when sweet scent is triggered (state right before Roamer test) */
@@ -464,6 +476,15 @@ fn extend_path_for_slot_vanilla(
                         }
                     }
 
+                    if *action == Wild3Action::RockSmash {
+                        if !does_rock_smash_have_encounter(
+                            &mut rng,
+                            map_setups_for_rev.map_setups.map_data.rock_smash_rate,
+                        ) {
+                            return None;
+                        }
+                    }
+
                     Some(EncounterIdxPath::new(
                         rng.seed(),
                         map_setups_for_rev.map_setups_idx,
@@ -474,6 +495,15 @@ fn extend_path_for_slot_vanilla(
                 })
         })
         .collect()
+}
+
+fn does_rock_smash_have_encounter(rng: &mut Pokerng, rock_smash_rate: u32) -> bool {
+    let encounter_rand = (rng.prev_rand() % 2880) as u32;
+
+    let mut rate = rock_smash_rate * 16;
+    rate += rate / 2; // White Flute
+
+    encounter_rand < rate
 }
 
 fn extend_path_for_magnet_pull(

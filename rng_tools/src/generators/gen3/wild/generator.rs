@@ -40,6 +40,7 @@ pub struct Wild3GeneratorOptions {
     pub roamer_state: Wild3RoamerState,
     pub mass_outbreak_state: Wild3MassOutbreakState,
     pub feebas_state: Wild3FeebasState,
+    //pub has_white_flute_for_rock_smash: bool, //NO_PROD
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Tsify, Serialize, Deserialize)]

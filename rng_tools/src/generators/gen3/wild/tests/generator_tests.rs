@@ -521,6 +521,34 @@ fn test_generate_wild3_hustle() {
 }
 
 #[test]
+fn test_generate_wild3_rock_smash() {
+    let options = Wild3GeneratorOptions {
+        action: Wild3Action::RockSmash,
+        methods: vec![Gen3Method::Wild1],
+        generate_even_if_impossible: true,
+        ..Default::default()
+    };
+
+    let game_data = Wild3MapGameData::default();
+
+    let (result, _) = generate_gen3_wild(Pokerng::with_advances(0, 2), &options, &game_data);
+    assert!(result.is_empty());
+
+    let (result, _) = generate_gen3_wild(Pokerng::new(0), &options, &game_data);
+
+    assert_eq!(
+        result,
+        vec![Wild3GeneratorResult {
+            encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot1),
+            pid: 1621222420,
+            ivs: Ivs::new(11, 25, 10, 25, 3, 24),
+            method: Gen3Method::Wild1,
+            ..Default::default()
+        }]
+    );
+}
+
+#[test]
 fn test_generate_wild3_mass_outbreak() {
     let mut options = Wild3GeneratorOptions {
         action: Wild3Action::SweetScentLand,

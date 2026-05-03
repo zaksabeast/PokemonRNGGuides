@@ -142,6 +142,8 @@ const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
         ? jsonMonToSlot(emerald_wild_special_encounters.feebas.mon)
         : null;
 
+      const rock_smash_rate = map.rock_smash_mons?.encounter_rate ?? 0;
+
       return [
         {
           map_id: map.map,
@@ -149,6 +151,7 @@ const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
           roamers,
           mass_outbreaks,
           feebas,
+          rock_smash_rate,
         },
       ];
     });

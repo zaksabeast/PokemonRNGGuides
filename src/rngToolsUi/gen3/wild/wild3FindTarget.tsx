@@ -108,8 +108,7 @@ export type ResultSetupInfo = Wild3SearcherResultMon &
     actionName: string;
     primaryLikelihood: number;
     initial_seed: number;
-    // TODO: Replace rock_smash_rate with requiresWhiteFlute:boolean;
-    rock_smash_rate: number;
+    requiresWhiteFlute: boolean;
   };
 
 const getInitialValues = (): FormState => {

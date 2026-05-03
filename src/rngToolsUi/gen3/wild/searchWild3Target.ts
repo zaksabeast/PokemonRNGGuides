@@ -78,7 +78,12 @@ const convertResultsForPidPathToPidPathResult = async (
         actionName: formatActionName(res.action),
         primaryLikelihood,
         initial_seed,
-        rock_smash_rate: mapSetup.map_data.rock_smash_rate,
+        requiresWhiteFlute:
+          res.action === "RockSmash" &&
+          doesRockSmashSetupRequireWhiteFlute(
+            res.seed,
+            mapSetup.map_data.rock_smash_rate,
+          ),
         ...getAdvsFromCache(res.advance),
       };
     }),

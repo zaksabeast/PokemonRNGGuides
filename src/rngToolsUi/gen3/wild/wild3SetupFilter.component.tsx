@@ -8,6 +8,7 @@ import {
   Flex,
   Typography,
   Link,
+  TooltipWithIcon,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 
@@ -23,11 +24,18 @@ import { useWatch } from "react-hook-form";
 import { FormState } from "./wild3FindTarget";
 import { getPossibleValuesForSpecies } from "./wild3TargetMon";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
+import {
+  minAdvsAfterPaintingLabel,
+  minFramesBeforePaintingLabel,
+  usingPaintingReseedingLabel,
+} from "./wild3Labels";
 
 const supportedGen3Methods = [
   "Wild1",
   "Wild2",
+  "Wild3",
   "Wild4",
+  // TODO: Support Wild5
 ] as const satisfies Gen3Method[];
 
 const getSetupFields = (
@@ -36,37 +44,38 @@ const getSetupFields = (
   recommendedSetups: boolean,
   usingPaintingReseeding: boolean,
   letSearcherFindPaintingSeed: boolean,
+  showAdvancedPaintingSettings: boolean,
 ): Field[] => {
   const possVals = getPossibleValuesForSpecies(species);
   const showAdvancedSetups = !recommendedSetups;
 
   const fields: Field[] = [
     {
-      label: "Target Species",
+      label: "Target species",
       input: species,
     },
     {
       label: "TID",
-      input: (
-        <FormikNumberInput<FormState>
-          name="tid"
-          numType="decimal"
-          disabled={!filter_shiny}
-        />
+      input: filter_shiny ? (
+        <FormikNumberInput<FormState> name="tid" numType="decimal" />
+      ) : (
+        <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
+          N/A
+        </TooltipWithIcon>
       ),
     },
     {
       label: "SID",
-      input: (
-        <FormikNumberInput<FormState>
-          name="sid"
-          numType="decimal"
-          disabled={!filter_shiny}
-        />
+      input: filter_shiny ? (
+        <FormikNumberInput<FormState> name="sid" numType="decimal" />
+      ) : (
+        <TooltipWithIcon title="The only impact of TID/SID is shininess and the target Pokemon is not shiny.">
+          N/A
+        </TooltipWithIcon>
       ),
     },
     {
-      label: "Recommended Setups?",
+      label: "Recommended setups?",
       input: <FormikSwitch<FormState> name="recommendedSetups" />,
     },
     {
@@ -150,6 +159,15 @@ const getSetupFields = (
     },
     {
       label: "Methods",
+      tooltip: (
+        <>
+          For advanced users. Learn more about{" "}
+          <Link newTab href="/gba-methods/">
+            methods
+          </Link>
+          .
+        </>
+      ),
       input: (
         <FormikSelect<FormState, "methods">
           name="methods"
@@ -158,22 +176,9 @@ const getSetupFields = (
         />
       ),
     },
-    {
-      label: "RNG-manipulated lead PID",
-      input: <FormikSwitch<FormState> name="rngManipulatedLeadPid" />,
-    },
 
     {
-      label: (
-        <>
-          Using{" "}
-          <Link href="/emerald-painting-rng/" newTab>
-            Painting Reseeding
-          </Link>
-          ?
-        </>
-      ),
-      key: "usingPaintingReseeding",
+      ...usingPaintingReseedingLabel(),
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
 
@@ -193,29 +198,40 @@ const getSetupFields = (
       indent: 1,
     },
     {
-      label: "Min frames before painting",
+      label: "Show advanced painting settings?",
+      input: <FormikSwitch<FormState> name="showAdvancedPaintingSettings" />,
+      show: usingPaintingReseeding,
+      indent: 1,
+    },
+    {
+      ...minFramesBeforePaintingLabel(),
       input: (
         <FormikNumberInput<FormState>
           name="min_frame_before_painting"
           numType="decimal"
         />
       ),
-      show: usingPaintingReseeding && letSearcherFindPaintingSeed,
-      indent: 1,
+      show:
+        usingPaintingReseeding &&
+        letSearcherFindPaintingSeed &&
+        showAdvancedPaintingSettings,
+      indent: 2,
     },
     {
-      label: "Min advances after painting",
+      ...minAdvsAfterPaintingLabel(),
       input: (
         <FormikNumberInput<FormState>
           name="min_adv_after_painting"
           numType="decimal"
         />
       ),
-      show: usingPaintingReseeding,
-      indent: 1,
+      show: usingPaintingReseeding && showAdvancedPaintingSettings,
+      indent: 2,
     },
     {
       label: "Min advances",
+      tooltip:
+        "To ensure there is enough time between booting the game and triggering the wild encounter.",
       input: (
         <FormikNumberInput<FormState>
           name="initial_advances"
@@ -246,6 +262,21 @@ const getSetupFields = (
       label: "Display results with 0% likelihood",
       input: <FormikSwitch<FormState> name="generate_even_if_impossible" />,
     },
+    {
+      label: "RNG-manipulated lead PID",
+      tooltip: (
+        <>
+          For advanced users. Whether to consider setups that require catching a
+          specific lead Pokemon with RNG-manipulation, then catching your real
+          target Pokemon using that lead. Learn more about{" "}
+          <Link newTab href="/gba-methods-lead-impact/">
+            Methods & Leads
+          </Link>
+          .
+        </>
+      ),
+      input: <FormikSwitch<FormState> name="rngManipulatedLeadPid" />,
+    },
   ];
   return fields;
 };
@@ -269,6 +300,12 @@ export const SetupFilter = () => {
   >({
     name: "letSearcherFindPaintingSeed",
   });
+  const showAdvancedPaintingSettings = useWatch<
+    FormState,
+    "showAdvancedPaintingSettings"
+  >({
+    name: "showAdvancedPaintingSettings",
+  });
 
   const fields: Field[] = getSetupFields(
     species,
@@ -276,6 +313,7 @@ export const SetupFilter = () => {
     recommendedSetups,
     usingPaintingReseeding,
     letSearcherFindPaintingSeed,
+    showAdvancedPaintingSettings,
   );
 
   return (

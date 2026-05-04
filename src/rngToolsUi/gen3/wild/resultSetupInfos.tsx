@@ -30,19 +30,18 @@ const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
   method: Gen3Method,
 ) => {
-  const probAsTxt = formatProbability(cycleData.method_probability);
+  const content = formatProbability(cycleData.method_probability);
   const end =
     cycleData.pre_sweet_scent_cycle_range.start +
     cycleData.pre_sweet_scent_cycle_range.len;
-  const rangeAsTxt =
+  const tooltip =
     end === 0
       ? `Method ${method} can't be triggered.`
       : `Method ${method} is triggered if the cycle counter is between ${cycleData.pre_sweet_scent_cycle_range.start} and ${end}.`;
-  return (
-    <Tooltip title={rangeAsTxt}>
-      <div>{probAsTxt}</div>
-    </Tooltip>
-  );
+  return {
+    tooltip: tooltip,
+    content,
+  };
 };
 
 const getResultSetupInfoColumns = ({
@@ -146,25 +145,31 @@ const getResultSetupInfoColumns = ({
     },
   );
 
-  const breakdownClickCol = (btnName: string) =>
-    ({
-      key: "detailed_lead",
-      dataIndex: "cycle_data_by_lead",
-      render: (_cycle_data_by_lead: unknown, values: ResultSetupInfo) => {
-        return (
-          <Button
-            type="text"
-            color="PrimaryText"
-            trackerId="wild3_likelihood_breakdown"
-            onClick={() => {
-              onBreakdownClick(values);
-            }}
-          >
-            {btnName}
-          </Button>
-        );
-      },
-    }) as const;
+  const breakdownBtn = (
+    btnContent: {
+      content: React.ReactNode;
+      tooltip: string;
+    },
+    values: ResultSetupInfo,
+  ) => (
+    <Tooltip title={btnContent.tooltip}>
+      <Button
+        type="text"
+        color="PrimaryText"
+        trackerId="wild3_likelihood_breakdown"
+        onClick={() => {
+          onBreakdownClick(values);
+        }}
+      >
+        {btnContent.content}
+      </Button>
+    </Tooltip>
+  );
+
+  const tooltipHelper = (btnContent: {
+    content: React.ReactNode;
+    tooltip: string;
+  }) => <Tooltip title={btnContent.tooltip}>{btnContent.content}</Tooltip>;
 
   if (!rngManipulatedLeadPid) {
     columns.push({
@@ -216,26 +221,19 @@ const getResultSetupInfoColumns = ({
           text === "100%" && values.lead === "Egg" && values.method === "Wild1";
         const title = `Method ${values.method}${isVeryReliableSetup ? " (Very reliable setup)" : ""}`;
 
-        return (
-          <Tooltip title={title}>
-            <Flex align="center" gap={4}>
-              {text}
-              {isVeryReliableSetup && <Icon name="Star" />}
-            </Flex>
-          </Tooltip>
+        return breakdownBtn(
+          {
+            content: (
+              <Flex align="center" gap={4}>
+                {text}
+                {isVeryReliableSetup && <Icon name="Star" />}
+              </Flex>
+            ),
+            tooltip: title,
+          },
+          values,
         );
       },
-    });
-
-    columns.push({
-      ...breakdownClickCol("Open Breakdown"),
-      title: (
-        <span>
-          Method Likelihood
-          <br />
-          By Lead Speed
-        </span>
-      ),
     });
   }
 
@@ -290,51 +288,41 @@ const getResultSetupInfoColumns = ({
         type: "group",
         columns: [
           {
-            ...breakdownClickCol("Open"),
-            title: "Breakdown",
-          },
-          {
             title: "Ideal",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead === undefined) {
                 return "";
               }
-              return getMethodLikelihoodColumValue(
-                cycle_data_by_lead.ideal_lead,
-                values.method,
+              return breakdownBtn(
+                getMethodLikelihoodColumValue(
+                  cycle_data_by_lead.ideal_lead,
+                  values.method,
+                ),
+                values,
               );
             },
           },
           {
-            title: (
-              <Tooltip title="Lead PID speed equal to 18 cycles">
-                <div>
-                  Fastest <Icon name="InformationCircle" size={16} />
-                </div>
-              </Tooltip>
-            ),
-            key: "methodLikelihoodFastest",
+            title: "Fastest",
+            tooltip: "Lead PID speed equal to 18 cycles",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead === undefined) {
                 return "";
               }
-              return getMethodLikelihoodColumValue(
-                cycle_data_by_lead.fastest_lead,
-                values.method,
+              return tooltipHelper(
+                getMethodLikelihoodColumValue(
+                  cycle_data_by_lead.fastest_lead,
+                  values.method,
+                ),
               );
             },
           },
           {
-            title: (
-              <Tooltip title="Lead PID speed between 608 and 868 cycles (99.9% of all PIDs)">
-                <div>
-                  Common <Icon name="InformationCircle" size={16} />
-                </div>
-              </Tooltip>
-            ),
-            key: "methodLikelihoodCommon",
+            title: "Common",
+            tooltip:
+              "Lead PID speed between 608 and 868 cycles (99.9% of all PIDs)",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead === undefined) {
@@ -345,29 +333,27 @@ const getResultSetupInfoColumns = ({
                 cycle_data_by_lead.common_upper_lead.method_probability
                   ? cycle_data_by_lead.common_lower_lead
                   : cycle_data_by_lead.common_upper_lead;
-              return getMethodLikelihoodColumValue(
-                least_likely_common,
-                values.method,
+              return tooltipHelper(
+                getMethodLikelihoodColumValue(
+                  least_likely_common,
+                  values.method,
+                ),
               );
             },
           },
           {
-            title: (
-              <Tooltip title="Lead PID speed equal to 900 cycles">
-                <div>
-                  Slowest <Icon name="InformationCircle" size={16} />
-                </div>
-              </Tooltip>
-            ),
-            key: "methodLikelihoodSlowest",
+            title: "Slowest",
+            tooltip: "Lead PID speed equal to 900 cycles",
             dataIndex: "cycle_data_by_lead",
             render: (cycle_data_by_lead, values) => {
               if (cycle_data_by_lead === undefined) {
                 return "";
               }
-              return getMethodLikelihoodColumValue(
-                cycle_data_by_lead.slowest_lead,
-                values.method,
+              return tooltipHelper(
+                getMethodLikelihoodColumValue(
+                  cycle_data_by_lead.slowest_lead,
+                  values.method,
+                ),
               );
             },
           },

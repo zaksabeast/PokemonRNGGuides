@@ -14,7 +14,6 @@ import {
   RngToolSubmit,
   FormFieldTable,
   FormikSwitch,
-  Link,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
@@ -39,11 +38,14 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
 import {
   AVERAGE_LEAD_CYCLE_SPEED,
-  LeadCycleSpeedLabel,
   LeadCycleSpeedSelector,
 } from "./leadCycleSpeedSelector";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
+import {
+  leadCycleSpeedTooltip,
+  usingPaintingReseedingLabel as usingPaintingReseedingLabel,
+} from "./wild3Labels";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -146,13 +148,18 @@ const getFields = ({
 }): Field[] => {
   const { actions, feebas_states, roamer_states, mass_outbreak_states } =
     getPossibleValuesForMap(mapId, action);
+
+  const supportedMaps = emeraldWildGameData.maps.filter((map) => {
+    return !map.includes("SAFARI"); // TODO: Support Safari maps
+  });
+
   const fields: Field[] = [
     {
       label: "Map",
       input: (
         <FormikSelect<FormState, "map">
           name="map"
-          options={toOptions(emeraldWildGameData.maps, formatMapName)}
+          options={toOptions(supportedMaps, formatMapName)}
         />
       ),
     },
@@ -183,28 +190,19 @@ const getFields = ({
       ),
     },
     {
-      label: "Using lead with average cycle speed?",
+      label: "Using lead with average cycle speed PID?",
+      ...leadCycleSpeedTooltip(),
       input: <FormikSwitch<FormState> name="usingAverageLeadCycleSpeed" />,
       show: gen3Leads[leadIdx] !== "Egg",
     },
     {
-      label: <LeadCycleSpeedLabel />,
-      key: "LeadCycleSpeedLabel",
+      label: "Lead Cycle Speed",
       input: <LeadCycleSpeedSelector idealLeadCycleSpeed={null} />,
       show: gen3Leads[leadIdx] !== "Egg" && !usingAverageLeadCycleSpeed,
       indent: 1,
     },
     {
-      label: (
-        <>
-          Using{" "}
-          <Link href="/emerald-painting-rng/" newTab>
-            Painting Reseeding
-          </Link>
-          ?
-        </>
-      ),
-      key: "usingPaintingReseeding",
+      ...usingPaintingReseedingLabel(),
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
     {

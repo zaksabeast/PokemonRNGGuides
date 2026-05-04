@@ -18,7 +18,7 @@ export type Field = {
     fieldName: string;
     when: (value: unknown) => boolean;
   };
-  tooltip?: string;
+  tooltip?: React.ReactNode;
   input: React.ReactNode;
   direction?: "row" | "column";
 } & IndentProps &

@@ -1,7 +1,12 @@
-import { Wild3PaintingAdvsAndDur, Wild3SearcherResultMon } from "~/rngTools";
+import {
+  Wild3Action,
+  Wild3PaintingAdvsAndDur,
+  Wild3SearcherResultMon,
+} from "~/rngTools";
 import {
   Flex,
   Icon,
+  Link,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
@@ -26,7 +31,6 @@ import {
 
 import {
   gen3Leads,
-  wild3Actions,
   wild3RoamerStates,
   wild3MassOutbreakStates,
   wild3FeebasStates,
@@ -46,9 +50,17 @@ import { TargetSetup } from "./wild3CalibTargetSetupInput";
 /*
 Possible UI improvements:
  - Display filter restrictiveness
- - Display ability names instead of First, Second, or Hidden.
  - Min/Max IVs should have a tooltip displaying the stat name.
 */
+
+const supportWild3Actions: Wild3Action[] = [
+  "SweetScentLand",
+  "SweetScentWater",
+  "OldRod",
+  "GoodRod",
+  "SuperRod",
+  // "RockSmash", // TODO: Support Rock Smash
+];
 
 const Validator = z
   .object({
@@ -67,13 +79,14 @@ const Validator = z
           .max(gen3Leads.length - 1),
       )
       .min(1),
-    actions: z.array(z.enum(wild3Actions)).min(1),
+    actions: z.array(z.enum(supportWild3Actions)).min(1),
     roamerStates: z.array(z.enum(wild3RoamerStates)).min(1),
     massOutbreakStates: z.array(z.enum(wild3MassOutbreakStates)).min(1),
     feebasStates: z.array(z.enum(wild3FeebasStates)).min(1),
     methods: z.array(z.enum(gen3Methods)).min(1),
     usingPaintingReseeding: z.boolean(),
     letSearcherFindPaintingSeed: z.boolean(),
+    showAdvancedPaintingSettings: z.boolean(),
     initial_seed: z.number().int().min(0).max(0xffffffff),
     initial_advances: z.number().int().min(0).max(0xffffffff),
     min_frame_before_painting: z.number().int().min(0).max(0xffffffff),
@@ -118,12 +131,13 @@ const getInitialValues = (): FormState => {
     leadIdxs: gen3Leads.map((_, i) => i),
     recommendedSetups: true,
     methods: ["Wild1", "Wild2", "Wild4"],
-    actions: [...wild3Actions],
+    actions: [...supportWild3Actions],
     roamerStates: [...wild3RoamerStates],
     feebasStates: [...wild3FeebasStates],
     massOutbreakStates: [...wild3MassOutbreakStates],
     usingPaintingReseeding: false,
     letSearcherFindPaintingSeed: true,
+    showAdvancedPaintingSettings: false,
     initial_seed: 0,
     initial_advances: 1000,
     min_frame_before_painting: 800,
@@ -148,6 +162,16 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
     },
     {
       title: "Likelihood",
+      tooltip: (
+        <>
+          Likelihood that you will obtain the target Pokemon if you hit the
+          target advance. (Likelihood that the triggered{" "}
+          <Link newTab href="/gba-methods/">
+            method
+          </Link>{" "}
+          at the target advance is the right one).
+        </>
+      ),
       dataIndex: "resultSetupInfos",
       key: "best_likelihood",
       render: (resultSetupInfos) => {
@@ -227,6 +251,16 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
     },
     {
       title: "PID speed",
+      tooltip: (
+        <>
+          For advanced users. Number of cycles for the processor to perform the
+          operation (PID modulo 25). Learn more about{" "}
+          <Link newTab href="/gba-methods-lead-impact/">
+            Methods & Leads
+          </Link>
+          .
+        </>
+      ),
       dataIndex: "pidCycleCount",
       render: (pidCycleCount) => `${pidCycleCount} cycles`,
     },

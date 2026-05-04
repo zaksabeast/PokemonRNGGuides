@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ResultColumn, Icon } from "~/components";
+import { ResultColumn } from "~/components";
 import { nature } from "~/types/nature";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import {
@@ -167,6 +167,7 @@ export const createWild3SearcherOptions = async (
     consider_cycles: true,
     consider_rng_manipulated_lead_pid: false,
     generate_even_if_impossible: values.generate_even_if_impossible,
+    using_white_flute: targetSetup.requiresWhiteFlute,
     painting_opts: null,
     lead_cycle_speed: targetSetup.leadCycleSpeed,
   };
@@ -337,13 +338,9 @@ export const ivInfoColumns = (
     ],
   },
   {
-    title: (
-      <Tooltip title="Rating from the stat judge in the building behind the Pokémon Center at the Battle Frontier.">
-        <div>
-          IV Rating <Icon name="InformationCircle" size={16} />
-        </div>
-      </Tooltip>
-    ),
+    title: "IV Rating",
+    tooltip:
+      "Rating from the stat judge in the building behind the Pokémon Center at the Battle Frontier.",
     key: "ivRating",
     type: "group",
     columns: [

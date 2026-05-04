@@ -1,13 +1,6 @@
 import { rngTools } from "~/rngTools";
 import { useFormContext } from "~/hooks/form";
-import {
-  FormFieldTable,
-  Icon,
-  Link,
-  NumberInput,
-  RadioGroup,
-} from "~/components";
-import { Tooltip } from "antd";
+import { FormFieldTable, NumberInput, RadioGroup } from "~/components";
 import { match } from "ts-pattern";
 import React from "react";
 import clamp from "lodash-es/clamp";
@@ -29,19 +22,6 @@ const leadSpeedTypes = [
   "From PID",
   "Custom",
 ] as const satisfies readonly LeadSpeedType[];
-
-export const LeadCycleSpeedLabel = () => {
-  return (
-    <>
-      <Link newTab href="/gba-methods-lead-impact/">
-        Lead Speed
-      </Link>{" "}
-      <Tooltip title="The PID of the first Pokémon in the party impacts the RNG.">
-        <Icon name="InformationCircle" size={16} />
-      </Tooltip>
-    </>
-  );
-};
 
 export const AVERAGE_LEAD_CYCLE_SPEED = 775;
 export const SLOWEST_LEAD_CYCLE_SPEED = 900;

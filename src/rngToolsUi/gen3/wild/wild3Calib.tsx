@@ -1,5 +1,12 @@
 import React from "react";
-import { Flex, MultiTimer, Field, Input, Select, Button } from "~/components";
+import {
+  Flex,
+  MultiTimer,
+  Field,
+  Select,
+  Button,
+  NumberInput,
+} from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
 import {
   TargetSetup,
@@ -31,6 +38,42 @@ import {
   Wild3MethodDistribution,
   type Props as Wild3MethodDistributionProps,
 } from "./wild3MethodDistribution";
+import { Wild3Action } from "../../../../rng_tools/pkg/rng_tools";
+
+type CalibOffset = {
+  offset: number; // between pressing A and reaching SweetScent function.
+  calibNoBattleVideo: number; // non-vblank advances between booting and triggering SweetScent. exact number depends on map encounter table and dynamic actors.
+  calibBattleVideo: number; // non-vblank advances between watching battle video and triggering SweetScent.
+};
+
+const FISHING_CALIB_OFFSET: CalibOffset = {
+  offset: 4,
+  // assuming x2 fishing attempts and using SELECT to activate rod, (+3 advs per attempt)
+  calibNoBattleVideo: 17,
+  calibBattleVideo: 11,
+};
+
+const CALIB_OFFSET_BY_ACTION = {
+  OldRod: FISHING_CALIB_OFFSET,
+  GoodRod: FISHING_CALIB_OFFSET,
+  SuperRod: FISHING_CALIB_OFFSET,
+  SweetScentLand: {
+    offset: 264,
+    calibNoBattleVideo: 10,
+    calibBattleVideo: 4,
+  },
+  SweetScentWater: {
+    offset: 354,
+    calibNoBattleVideo: 10,
+    calibBattleVideo: 4,
+  },
+  RockSmash: {
+    // assuming interacting with the rock from the overworld
+    offset: 301,
+    calibNoBattleVideo: 10,
+    calibBattleVideo: 4,
+  },
+} as const satisfies Record<Wild3Action, CalibOffset>;
 
 type Props = AllOrNone<{
   targetSetup: TargetSetup;
@@ -80,6 +123,8 @@ export const Wild3Calib = ({
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     targetSetupProp ?? null,
   );
+  const [targetSetupHasEncounter, setTargetSetupHasEncounter] =
+    React.useState(false);
 
   React.useEffect(() => {
     setTargetSetup(targetSetupProp ?? null);
@@ -90,10 +135,16 @@ export const Wild3Calib = ({
 
   React.useEffect(() => {
     if (targetSetup == null) {
+      setTargetSetupHasEncounter(false);
       return setTargetSetupResult(null);
     }
 
-    calculateTargetSetupResult(targetSetup).then(setTargetSetupResult);
+    calculateTargetSetupResult(targetSetup).then(
+      ({ content, hasEncounter }) => {
+        setTargetSetupResult(content);
+        setTargetSetupHasEncounter(hasEncounter);
+      },
+    );
   }, [targetSetup]);
 
   const [battleVideoInfo, setBattleVideoInfo] =
@@ -105,7 +156,10 @@ export const Wild3Calib = ({
 
   const [consoleTypeFromInput, setConsoleTypeFromInput] =
     React.useState<Gen3Console>("GBA");
-  const [calibrationAndOffset, setCalibrationAndOffset] = React.useState(0);
+
+  const [humanInputDelay, setHumanInputDelay] = React.useState<number | null>(
+    0,
+  );
   const [hasHitTargetAdv, setHasHitTargetAdv] = React.useState(false);
 
   React.useEffect(() => {
@@ -143,8 +197,8 @@ export const Wild3Calib = ({
       setHasHitTargetAdv(true);
     }
 
-    setCalibrationAndOffset(
-      calibrationAndOffset + hitAdv.adv_after_painting - targetForTimer,
+    setHumanInputDelay(
+      (humanInputDelay ?? 0) + hitAdv.adv_after_painting - targetForTimer,
     );
   };
 
@@ -152,7 +206,13 @@ export const Wild3Calib = ({
 
   const initialAdv = battleVideoInfo?.battleVideoAdvAfterPainting ?? 0;
 
-  const advFromTimer = targetForTimer - initialAdv - calibrationAndOffset;
+  const { offset, calibBattleVideo, calibNoBattleVideo } =
+    CALIB_OFFSET_BY_ACTION[targetSetup?.action ?? "SweetScentLand"];
+
+  const calibration = initialAdv > 0 ? calibBattleVideo : calibNoBattleVideo;
+
+  const advFromTimer =
+    targetForTimer - initialAdv - (humanInputDelay ?? 0) - offset - calibration;
 
   const consoleType = battleVideoInfo?.consoleType ?? consoleTypeFromInput;
 
@@ -166,7 +226,7 @@ export const Wild3Calib = ({
   ];
 
   const battleVideoInfoInputForm = () => {
-    if (targetSetup == null) {
+    if (targetSetup == null || !targetSetupHasEncounter) {
       return null;
     }
 
@@ -206,15 +266,25 @@ export const Wild3Calib = ({
         ),
     },
     {
-      label: "Calibration + Offset (advance)",
+      label: "Calibration",
+      input: calibration + " advances",
+      tooltip: "Number of RNG advances not caused by frames. (Ex: NPC moving)",
+    },
+    {
+      label: "Offset",
+      input: offset + " advances",
+      tooltip:
+        "Number of RNG advances between the last player input and when the Pokémon generation occurs.",
+    },
+    {
+      label: "Human Input Delay (advance)",
+      tooltip:
+        "Number of RNG advances caused by human reaction time between the timer ending and pressing the input.",
       input: (
-        <Input
-          name="offset"
-          onChange={(event) => {
-            const num = Number(event.target.value);
-            setCalibrationAndOffset(Number.isFinite(num) ? num : 0);
-          }}
-          value={calibrationAndOffset}
+        <NumberInput
+          numType="decimal"
+          onChange={setHumanInputDelay}
+          value={humanInputDelay}
         />
       ),
     },
@@ -239,6 +309,11 @@ export const Wild3Calib = ({
       {
         label: "Player action",
         input: formatActionName(targetSetupProp.action),
+      },
+      {
+        label: "Requires White Flute?",
+        input: targetSetupProp.requiresWhiteFlute ? "Yes" : "No",
+        show: targetSetupProp.action === "RockSmash",
       },
       {
         label: "Lead",
@@ -327,7 +402,7 @@ export const Wild3Calib = ({
     <Flex gap={32} vertical>
       {targetSetupProp == null ? inputForms() : infoFromPrevSteps()}
 
-      {canDoCalib && targetSetup != null && (
+      {canDoCalib && targetSetup != null && targetSetupHasEncounter && (
         <>
           <FormFieldTable fields={calibFields} />
           {displayInstructions &&

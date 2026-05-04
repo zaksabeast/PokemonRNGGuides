@@ -4,6 +4,7 @@ import {
   Wild3MapSetups,
   Wild3SearcherOptions,
   Wild3PaintingAdvsAndDur,
+  Gen3Method,
 } from "~/rngTools";
 import { pkmFilterFieldsToRustInput } from "~/components/pkmFilter";
 import { orderBy, intersection } from "lodash-es";
@@ -77,6 +78,12 @@ const convertResultsForPidPathToPidPathResult = async (
         actionName: formatActionName(res.action),
         primaryLikelihood,
         initial_seed,
+        requiresWhiteFlute:
+          res.action === "RockSmash" &&
+          doesRockSmashSetupRequireWhiteFlute(
+            res.seed,
+            mapSetup.map_data.rock_smash_rate,
+          ),
         ...getAdvsFromCache(res.advance),
       };
     }),
@@ -183,6 +190,9 @@ export const searchWild3Target = async (values: FormState) => {
     : values.initial_advances;
 
   const map_setups = getMapSetupsConsideringStateSubsets(values);
+  const methods = values.recommendedSetups
+    ? (["Wild1", "Wild2", "Wild4"] as Gen3Method[])
+    : values.methods;
 
   const painting_opts =
     values.usingPaintingReseeding && values.letSearcherFindPaintingSeed
@@ -212,10 +222,13 @@ export const searchWild3Target = async (values: FormState) => {
     gen3_filter: gen3PkmFilterFieldsToRustInput(values, values.species),
     leads: leadsToUse,
     map_setups,
-    methods: values.methods,
+    methods,
     consider_cycles: true,
     consider_rng_manipulated_lead_pid: values.rngManipulatedLeadPid,
     generate_even_if_impossible: values.generate_even_if_impossible,
+    using_white_flute: values.recommendedSetups
+      ? true
+      : values.using_white_flute,
     painting_opts,
     lead_cycle_speed: null,
   };
@@ -243,4 +256,16 @@ export const searchWild3Target = async (values: FormState) => {
   );
 
   return pidPathResults;
+};
+
+export const doesRockSmashSetupRequireWhiteFlute = (
+  seed: number,
+  rockSmashEncounterRate: number,
+): boolean => {
+  const rate = rockSmashEncounterRate * 16;
+  const whiteFluteRate = rate + Math.floor(rate / 2);
+  const nextSeed = (Math.imul(seed, 0x41c64e6d) + 0x6073) >>> 0;
+  const encounterRand = (nextSeed >>> 16) % 2880;
+
+  return encounterRand >= rate && encounterRand < whiteFluteRate;
 };

@@ -66,6 +66,7 @@ pub fn generate_gen3_wild_distribution(
                     .as_ref()
                     .unwrap()
                     .post_sweet_scent_range,
+                opts.action,
                 lead_cycle_speed,
             );
             (searcher_res, cycle_data)

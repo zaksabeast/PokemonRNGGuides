@@ -25,7 +25,11 @@ export const getPossibleValuesForMap = (mapId: string, action: Wild3Action) => {
   });
 
   return {
-    actions: uniq(mapSetups.flatMap((mapSetup) => mapSetup.actions)),
+    actions: uniq(mapSetups.flatMap((mapSetup) => mapSetup.actions)).filter(
+      (action) => {
+        return action !== "RockSmash"; // TODO: Support Rock Smash
+      },
+    ) as Wild3Action[],
     feebas_states,
     roamer_states: uniq(
       mapSetupsForAction.flatMap((mapSetup) => mapSetup.roamer_states),

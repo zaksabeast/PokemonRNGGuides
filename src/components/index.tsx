@@ -68,3 +68,4 @@ export { TextArea } from "./textArea";
 export { LinkButton } from "./linkButton";
 export { MinMaxContainer } from "./minMaxContainer";
 export { FormikTextArea } from "./textArea";
+export { TooltipWithIcon } from "./tooltipWithIcon";

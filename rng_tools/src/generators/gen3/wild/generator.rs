@@ -22,7 +22,7 @@ Limitation: When generating Wild5, only 1 vblank is supported. There's a very sm
 pub const INFINITE_CYCLE: usize = 10_000_000;
 pub const VBLANK_FREQ: usize = 280_896;
 
-#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3GeneratorOptions {
     pub tid: u16,
@@ -40,6 +40,30 @@ pub struct Wild3GeneratorOptions {
     pub roamer_state: Wild3RoamerState,
     pub mass_outbreak_state: Wild3MassOutbreakState,
     pub feebas_state: Wild3FeebasState,
+    pub using_white_flute: bool,
+}
+
+impl Default for Wild3GeneratorOptions {
+    fn default() -> Self {
+        Self {
+            tid: 0,
+            sid: 0,
+            map_idx: 0,
+            action: Wild3Action::default(),
+            methods: vec![],
+            lead: Gen3Lead::default(),
+            filter: PkmFilter::default(),
+            gen3_filter: Gen3PkmFilter::default(),
+            consider_cycles: false,
+            consider_rng_manipulated_lead_pid: false,
+            lead_cycle_speed: None,
+            generate_even_if_impossible: false,
+            roamer_state: Wild3RoamerState::default(),
+            mass_outbreak_state: Wild3MassOutbreakState::default(),
+            feebas_state: Wild3FeebasState::default(),
+            using_white_flute: true,
+        }
+    }
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Tsify, Serialize, Deserialize)]
@@ -101,6 +125,7 @@ fn retain_methods_possible_to_trigger(
         results.retain(|res| {
             is_method_possible_to_trigger(
                 &res.cycle_range.unwrap(),
+                opts.action,
                 is_egg,
                 opts.consider_rng_manipulated_lead_pid,
                 opts.lead_cycle_speed,
@@ -145,12 +170,28 @@ fn select_encounter_idx(
     opts: &Wild3GeneratorOptions,
     map_data: &Wild3MapGameData,
     cycle_counter: &mut CycleCounter,
-) -> Wild3EncounterIndex {
+) -> Option<Wild3EncounterIndex> {
+    if opts.action == Wild3Action::RockSmash {
+        // In RockSmashWildEncounter() -> WildEncounterCheck()
+        let mut rate = map_data.rock_smash_rate * 16;
+        if opts.using_white_flute {
+            rate += rate / 2;
+        }
+
+        if rand_next_u16(rng, "select_encounter_idx.rock_smash_odds_check", 2880) % 2880
+            >= rate as u16
+        {
+            return None;
+        }
+    }
+
+    // In SweetScentWildEncounter()
     if opts.action == Wild3Action::SweetScentLand || opts.action == Wild3Action::SweetScentWater {
+        // In TryStartRoamerEncounter()
         match opts.roamer_state {
             Wild3RoamerState::ActiveInMapLatias | Wild3RoamerState::ActiveInMapLatios => {
                 if rand_next_u16(rng, "select_encounter_idx.roamer_state", 4) % 4 == 0 {
-                    return Wild3EncounterIndex::Roamer(opts.roamer_state);
+                    return Some(Wild3EncounterIndex::Roamer(opts.roamer_state));
                 }
             }
             _ => {}
@@ -158,25 +199,28 @@ fn select_encounter_idx(
     }
 
     if opts.action == Wild3Action::SweetScentLand {
+        // In DoMassOutbreakEncounterTest()
         match opts.mass_outbreak_state {
             Wild3MassOutbreakState::Inactive | Wild3MassOutbreakState::ActiveNotInMap => {
                 // nothing to do
             }
             _ => {
                 if rand_next_u16(rng, "select_encounter_idx.mass_outbreak_state", 100) % 100 < 50 {
-                    return Wild3EncounterIndex::MassOutbreak(opts.mass_outbreak_state);
+                    return Some(Wild3EncounterIndex::MassOutbreak(opts.mass_outbreak_state));
                 }
             }
         }
     }
 
+    // In CheckFeebas()
     if opts.feebas_state == Wild3FeebasState::OnFeebasTile
         && opts.action.is_fishing()
         && rand_next_u16(rng, "select_encounter_idx.OnFeebasTile", 100) % 100 <= 49
     {
-        return Wild3EncounterIndex::Feebas;
+        return Some(Wild3EncounterIndex::Feebas);
     }
 
+    // In TryGenerateWildMon()
     match opts.lead {
         Gen3Lead::MagnetPull => {
             if opts.action == Wild3Action::SweetScentLand
@@ -184,7 +228,7 @@ fn select_encounter_idx(
             {
                 let slots = &map_data.slots_by_action[opts.action as usize];
                 if let Some(idx) = select_encounter_idx_ability_attract_type(rng, slots, true) {
-                    return idx;
+                    return Some(idx);
                 }
             }
         }
@@ -195,7 +239,7 @@ fn select_encounter_idx(
             {
                 let slots = &map_data.slots_by_action[opts.action as usize];
                 if let Some(idx) = select_encounter_idx_ability_attract_type(rng, slots, false) {
-                    return idx;
+                    return Some(idx);
                 }
             }
         }
@@ -210,7 +254,17 @@ fn select_encounter_idx(
             cycle_counter.add(12059, 32);
         }
     }
-    cycle_counter.on_moment_reached(Moment::ChooseWildMonIndex_Land_Random);
+
+    let moment = match opts.action {
+        Wild3Action::SweetScentLand => Moment::ChooseWildMonIndex_Land_Random,
+        Wild3Action::SweetScentWater | Wild3Action::RockSmash => {
+            Moment::ChooseWildMonIndex_WaterRock_Random
+        }
+        Wild3Action::OldRod | Wild3Action::GoodRod | Wild3Action::SuperRod => {
+            Moment::ChooseWildMonIndex_Fishing_Random
+        }
+    };
+    cycle_counter.on_moment_reached(moment);
 
     let encounter_rand_val =
         rand_next_u16(rng, "select_encounter_idx.encounter_rand_val", 100) as u32;
@@ -225,7 +279,7 @@ fn select_encounter_idx(
 
     cycle_counter.add_cycle(calc_modulo_cycle_unsigned(encounter_rand_val, 100));
 
-    Wild3EncounterIndex::Slot(encounter_slot)
+    Some(Wild3EncounterIndex::Slot(encounter_slot))
 }
 
 fn select_lvl(
@@ -275,7 +329,12 @@ pub fn generate_gen3_wild(
     let mut cycle_counter = CycleCounter::default();
 
     let encounter_idx = select_encounter_idx(&mut rng, opts, map_data, &mut cycle_counter);
+    if encounter_idx.is_none() {
+        // no encounter
+        return (results, cycle_counter); // empty
+    }
 
+    let encounter_idx = encounter_idx.unwrap();
     let encounter = map_data.get_encounter(opts.action, encounter_idx);
     if encounter.is_none() {
         // impossible to trigger in-game

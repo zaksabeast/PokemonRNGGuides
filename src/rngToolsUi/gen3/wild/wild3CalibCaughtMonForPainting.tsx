@@ -11,6 +11,7 @@ import clamp from "lodash-es/clamp";
 import { Tooltip } from "antd";
 import { getGen3IvRating } from "../ivRater";
 import { formatEmeraldTargetFromPainting } from "~/utils/formatEmeraldTargetFromPainting";
+import { formatHex } from "~/utils/formatHex";
 import {
   validator,
   FormState,
@@ -46,6 +47,7 @@ const createTargetSetupAtVictoryRoad = (targetPaintingAdvs: {
     targetMethod: "Wild1", // Unused
     usingAverageLeadCycleSpeed: false,
     leadCycleSpeed: 0,
+    requiresWhiteFlute: false, // Unused
   };
 };
 
@@ -203,7 +205,16 @@ export const Wild3CalibCaughtMonForPainting = ({
       key: "frame_before_painting",
       dataIndex: "advance",
       render: (_, values) => {
-        return getAdvDiffTxt(values, "frame_before_painting");
+        const diffTxt = getAdvDiffTxt(values, "frame_before_painting");
+        return (
+          <Tooltip
+            title={
+              "Seed: " + formatHex(values.advance.frame_before_painting, 2)
+            }
+          >
+            {diffTxt}
+          </Tooltip>
+        );
       },
     },
     {

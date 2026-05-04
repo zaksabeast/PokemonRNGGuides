@@ -47,6 +47,12 @@ pub enum Wild3FeebasState {
 
 #[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Wild3SafariPokeblock {
+    pub flavors: [bool; 5], // Spicy, Dry, Sweet, Bitter, Sour
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3EncounterGameData {
     pub min_level: u8,
     pub max_level: u8,
@@ -105,6 +111,7 @@ pub struct Wild3MapGameData {
     pub roamers: Vec<Wild3SpecialEncounterGameData<Wild3RoamerState>>,
     pub mass_outbreaks: Vec<Wild3SpecialEncounterGameData<Wild3MassOutbreakState>>,
     pub feebas: Option<Wild3EncounterGameData>,
+    pub is_safari: bool,
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -173,6 +180,7 @@ impl Default for Wild3MapGameData {
             roamers: vec![],
             feebas: None,
             mass_outbreaks: vec![],
+            is_safari: false,
         }
     }
 }

@@ -4,12 +4,13 @@ use wasm_bindgen::prelude::*;
 
 use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned, is_method_possible_to_trigger};
 use crate::{
-    EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter,
+    EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, NATURE_STAT_FACTORS, Nature, PkmFilter,
+    PokeblockFlavorCompatibility,
     gen3::{
         CycleAndModCount, CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method,
         Gen3PkmFilter, Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
         Wild3FeebasState, Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState,
-        passes_pid_filter, wild::lcrng_distance,
+        Wild3SafariPokeblock, passes_pid_filter, wild::lcrng_distance,
     },
     gen3_tsv, is_max_size,
     rng::{Rng, lcrng::Pokerng},
@@ -40,6 +41,8 @@ pub struct Wild3GeneratorOptions {
     pub roamer_state: Wild3RoamerState,
     pub mass_outbreak_state: Wild3MassOutbreakState,
     pub feebas_state: Wild3FeebasState,
+    //TODO: Fix the code that was broken when adding safari_pokeblock.
+    pub safari_pokeblock: Option<Wild3SafariPokeblock>,
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Tsify, Serialize, Deserialize)]
@@ -255,6 +258,76 @@ fn select_lvl(
     encounter.min_level + lvl_incr
 }
 
+fn pick_wild_mon_nature_safari(
+    rng: &mut Pokerng,
+    pokeblock: &Option<Wild3SafariPokeblock>,
+) -> Option<Nature> {
+    if let Some(pokeblock) = pokeblock {
+        if rand_next_u16(rng, "test_safari_zone_pokeblock", 100) % 100 < 80 {
+            let mut natures: [Nature; NATURE_COUNT] = [
+                Nature::Hardy,
+                Nature::Lonely,
+                Nature::Brave,
+                Nature::Adamant,
+                Nature::Naughty,
+                Nature::Bold,
+                Nature::Docile,
+                Nature::Relaxed,
+                Nature::Impish,
+                Nature::Lax,
+                Nature::Timid,
+                Nature::Hasty,
+                Nature::Serious,
+                Nature::Jolly,
+                Nature::Naive,
+                Nature::Modest,
+                Nature::Mild,
+                Nature::Quiet,
+                Nature::Bashful,
+                Nature::Rash,
+                Nature::Calm,
+                Nature::Gentle,
+                Nature::Sassy,
+                Nature::Careful,
+                Nature::Quirky,
+            ];
+            for i in 0..(NATURE_COUNT - 1) {
+                for j in 1..NATURE_COUNT {
+                    if rand_next_u16(rng, "test_safari_zone_pokeblock", 2) & 1 == 1 {
+                        natures.swap(i, j);
+                    }
+                }
+            }
+
+            return natures.into_iter().find(|nature| {
+                let score: i32 = pokeblock
+                    .flavors
+                    .iter()
+                    .enumerate()
+                    .map(|(flavor, has_flavor)| {
+                        if *has_flavor {
+                            let compatibility = NATURE_STAT_FACTORS[*nature as usize][flavor];
+                            match compatibility {
+                                PokeblockFlavorCompatibility::Yes => 1,
+                                PokeblockFlavorCompatibility::No => -1,
+
+                                PokeblockFlavorCompatibility::Neutral => 0,
+                            }
+                        } else {
+                            0
+                        }
+                    })
+                    .sum();
+                score > 0
+            });
+        } else {
+            None
+        }
+    } else {
+        None
+    }
+}
+
 #[wasm_bindgen]
 pub fn generate_gen3_wild_wasm(
     initial_seed: u32,
@@ -313,9 +386,6 @@ pub fn generate_gen3_wild(
         return (results, cycle_counter); // empty
     }
 
-    let required_gender: Option<Gender>;
-    let required_nature: Nature;
-
     let encounter_gender_ratio = encounter.species_data.gender_ratio();
 
     match opts.lead {
@@ -348,55 +418,56 @@ pub fn generate_gen3_wild(
         ((nature_rand_val % 25) as u8).into()
     };
 
-    match (opts.lead, encounter_gender_ratio.has_multiple_genders()) {
-        (Gen3Lead::Synchronize(lead_nature), _) => {
-            required_gender = None;
+    let required_gender = (|| {
+        match (opts.lead, encounter_gender_ratio.has_multiple_genders()) {
+            (Gen3Lead::CuteCharm(lead_gender), true) => {
+                cycle_counter.on_moment_reached(Moment::CreateWildMon_RandomTestCuteCharm);
 
-            cycle_counter.add_cycle(5763);
+                let cute_charm_rand_val = rand_next_u16(&mut rng, "cute_charm_rand_val", 3);
 
-            cycle_counter.on_moment_reached(Moment::PickWildMonNature_RandomTestSynchro);
+                // between CreateWildMon_CuteCharmRandom and PickWildMonNature_pickRandom
+                cycle_counter.add_cycle(calc_modulo_cycle_unsigned(cute_charm_rand_val as u32, 3));
 
-            // PickWildMonNature: Random() % 2 == 0
-            if (rand_next_u16(&mut rng, "PickWildMonNature", 2) & 1) == 0 {
-                required_nature = lead_nature;
-                // between PickWildMonNature and CreateMonWithNature_pidlow
-                cycle_counter.add(389, 17);
-            } else {
-                cycle_counter.add_cycle(96);
-                required_nature = pick_random_wild_mon_nature(&mut cycle_counter, &mut rng);
-            }
-        }
-        (Gen3Lead::CuteCharm(lead_gender), true) => {
-            cycle_counter.on_moment_reached(Moment::CreateWildMon_RandomTestCuteCharm);
-
-            let cute_charm_rand_val = rand_next_u16(&mut rng, "cute_charm_rand_val", 3);
-
-            // between CreateWildMon_CuteCharmRandom and PickWildMonNature_pickRandom
-            cycle_counter.add_cycle(calc_modulo_cycle_unsigned(cute_charm_rand_val as u32, 3));
-
-            if cute_charm_rand_val % 3 != 0 {
-                required_gender = Some(if lead_gender == Gender::Female {
-                    Gender::Male
+                if cute_charm_rand_val % 3 != 0 {
+                    cycle_counter.add(8786 + 44, 8);
+                    return Some(if lead_gender == Gender::Female {
+                        Gender::Male
+                    } else {
+                        Gender::Female
+                    });
                 } else {
-                    Gender::Female
-                });
-                cycle_counter.add(8786 + 44, 8);
-            } else {
-                required_gender = None;
-                cycle_counter.add_cycle(5863);
+                    cycle_counter.add_cycle(5863);
+                    return None;
+                }
             }
-            // between PickWildMonNature_pickRandom and CreateMonWithGenderNatureLetter_pidlow
-            required_nature = pick_random_wild_mon_nature(&mut cycle_counter, &mut rng);
+            _ => {
+                cycle_counter.add_cycle(5763);
+                return None;
+            }
         }
-        _ => {
-            required_gender = None;
+    })();
 
-            cycle_counter.add_cycle(5763);
-
-            // between PickWildMonNature_pickRandom and CreateMonWithNature_pidlow
-            required_nature = pick_random_wild_mon_nature(&mut cycle_counter, &mut rng);
+    // PickWildMonNature()
+    let required_nature = (|| {
+        if let Some(nature) = pick_wild_mon_nature_safari(&mut rng, &opts.safari_pokeblock) {
+            return nature;
         }
-    }
+        match opts.lead {
+            Gen3Lead::Synchronize(lead_nature) => {
+                cycle_counter.on_moment_reached(Moment::PickWildMonNature_RandomTestSynchro);
+                // PickWildMonNature: Random() % 2 == 0
+                if (rand_next_u16(&mut rng, "PickWildMonNature", 2) & 1) == 0 {
+                    // between PickWildMonNature and CreateMonWithNature_pidlow
+                    cycle_counter.add(389, 17);
+                    return lead_nature;
+                }
+            }
+            _ => {}
+        }
+
+        cycle_counter.add_cycle(96);
+        return pick_random_wild_mon_nature(&mut cycle_counter, &mut rng);
+    })();
 
     let methods_contains_wild3 = opts.methods.contains(&Gen3Method::Wild3);
     let methods_contains_wild5 = opts.methods.contains(&Gen3Method::Wild5);

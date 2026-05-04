@@ -149,6 +149,7 @@ const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
           roamers,
           mass_outbreaks,
           feebas,
+          is_safari: map.map.includes("SAFARI"),
         },
       ];
     });

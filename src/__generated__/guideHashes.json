@@ -171,6 +171,10 @@
     "hash": "08790cb46adab22f98ce6f50c380c51347e054c369e68a01ed6c368a68cf87f4",
     "lastUpdated": "2026-04-11"
   },
+  "/de-retail-emerald-wild/": {
+    "hash": "a2ea2fbb96c76c8bd42ef4ad7453c0863f14f7d4726380ee734fddb5763c7a3c",
+    "lastUpdated": "2026-05-04"
+  },
   "/de-rs-gen3-sid/": {
     "hash": "35471371d80a156d0a37f527967d6a318c35347fab1df9095e0012f081b9ac21",
     "lastUpdated": "2026-03-27"
@@ -300,8 +304,8 @@
     "lastUpdated": "2026-03-15"
   },
   "/emerald-wild/": {
-    "hash": "1aa4b1055b608d53aa5692702533a3bcf212305f7f572dd036be1fd8856c1125",
-    "lastUpdated": "2026-05-02"
+    "hash": "a2ea2fbb96c76c8bd42ef4ad7453c0863f14f7d4726380ee734fddb5763c7a3c",
+    "lastUpdated": "2026-05-04"
   },
   "/emerald/": {
     "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
@@ -683,6 +687,10 @@
     "hash": "ecf16f1bcaac54f98e5119973698a50457e696df038974c2717587ac4361ec04",
     "lastUpdated": "2026-04-10"
   },
+  "/it-retail-emerald-wild/": {
+    "hash": "a2ea2fbb96c76c8bd42ef4ad7453c0863f14f7d4726380ee734fddb5763c7a3c",
+    "lastUpdated": "2026-05-04"
+  },
   "/it-retail-hgss-starter/": {
     "hash": "ecf16f1bcaac54f98e5119973698a50457e696df038974c2717587ac4361ec04",
     "lastUpdated": "2026-04-10"
@@ -802,6 +810,10 @@
   "/retail-emerald-egg/": {
     "hash": "664dbb082f0728c419625e8fd194087e6dfd836eb915ef718ee1ad51a1c57053",
     "lastUpdated": "2026-04-11"
+  },
+  "/retail-emerald-wild/": {
+    "hash": "a2ea2fbb96c76c8bd42ef4ad7453c0863f14f7d4726380ee734fddb5763c7a3c",
+    "lastUpdated": "2026-05-04"
   },
   "/retail-hgss-starter/": {
     "hash": "cac914cd39781d2a8e3ede66c76318af5462a81abfcd94516fc6b464b6582fec",
@@ -1366,6 +1378,10 @@
   "/zh-retail-emerald-egg/": {
     "hash": "a57ff7173505e4e989fb45ea573a3639b4b8e76f8ecab56ddad355a1727d62e5",
     "lastUpdated": "2026-05-02"
+  },
+  "/zh-retail-emerald-wild/": {
+    "hash": "a2ea2fbb96c76c8bd42ef4ad7453c0863f14f7d4726380ee734fddb5763c7a3c",
+    "lastUpdated": "2026-05-04"
   },
   "/zh-retail-hgss-starter/": {
     "hash": "28849cdcf4d32498b9d24a2e0d22c821673b3a264bd28e5d895033ac6a862779",

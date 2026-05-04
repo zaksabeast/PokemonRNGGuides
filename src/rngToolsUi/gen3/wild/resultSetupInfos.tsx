@@ -47,11 +47,13 @@ const getMethodLikelihoodColumValue = (
 const getResultSetupInfoColumns = ({
   rngManipulatedLeadPid,
   showMassOutbreak,
+  showRequiresWhiteFlute,
   usesPainting,
   onBreakdownClick,
 }: {
   rngManipulatedLeadPid: boolean;
   showMassOutbreak: boolean;
+  showRequiresWhiteFlute: boolean;
   usesPainting: boolean;
   onBreakdownClick: (record: ResultSetupInfo) => void;
 }): ResultColumn<ResultSetupInfo>[] => {
@@ -112,6 +114,24 @@ const getResultSetupInfoColumns = ({
   columns.push(
     { title: "Map", dataIndex: "mapName" },
     { title: "Player action", dataIndex: "actionName" },
+    {
+      title: (
+        <span>
+          Requires
+          <br />
+          White Flute?
+        </span>
+      ),
+      key: "requiresWhiteFlute",
+      dataIndex: "action",
+      render: (action, setupInfo) =>
+        action === "RockSmash"
+          ? setupInfo.requiresWhiteFlute
+            ? "Yes"
+            : "No"
+          : "N/A",
+      show: showRequiresWhiteFlute,
+    },
     /*
     TODO: Support roamer and fishing in Feebas tile to catch non-Feebas Pokémon.
     {
@@ -409,6 +429,7 @@ const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
     },
     targetMethod: setupInfo.method,
     lead: setupInfo.lead,
+    requiresWhiteFlute: setupInfo.requiresWhiteFlute,
 
     // unused
     usingAverageLeadCycleSpeed: true,
@@ -426,6 +447,10 @@ export const Wild3ResultSetupInfos = ({
     selectedPidPathResult.resultSetupInfos.some(
       (setup) => setup.mass_outbreak_state !== "Inactive",
     );
+  const showRequiresWhiteFlute =
+    selectedPidPathResult?.resultSetupInfos.some(
+      (setup) => setup.action === "RockSmash",
+    ) ?? false;
   const usesPainting =
     selectedPidPathResult?.resultSetupInfos.some(
       (res) => res.advs.frame_before_painting !== 0,
@@ -433,6 +458,7 @@ export const Wild3ResultSetupInfos = ({
   const resultSetupInfoColumns = getResultSetupInfoColumns({
     rngManipulatedLeadPid,
     showMassOutbreak,
+    showRequiresWhiteFlute,
     usesPainting,
     onBreakdownClick: (record) => {
       setDistributionFixedData(

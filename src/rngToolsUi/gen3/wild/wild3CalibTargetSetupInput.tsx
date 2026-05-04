@@ -69,6 +69,7 @@ const Validator = z.object({
   targetFrameBeforePainting: z.number().min(1).max(0xffff),
   targetMethod: z.enum(supportedGen3Methods),
   targetAdvance: z.number().int().min(0).max(0xffffffff),
+  requiresWhiteFlute: z.boolean(),
 
   usingAverageLeadCycleSpeed: z.boolean(),
   leadCycleSpeed: z.number().int().min(0).max(900),
@@ -89,6 +90,7 @@ export type TargetSetup = {
   targetMethod: Gen3Method;
   usingAverageLeadCycleSpeed: boolean;
   leadCycleSpeed: number;
+  requiresWhiteFlute: boolean;
 };
 
 export type FormState = z.infer<typeof Validator>;
@@ -106,6 +108,7 @@ const getInitialValues = (): FormState => {
     targetFrameBeforePainting: 1,
     targetAdvance: 1000,
     targetMethod: "Wild1",
+    requiresWhiteFlute: false,
     usingAverageLeadCycleSpeed: true,
     leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
   };
@@ -130,6 +133,8 @@ const convertFormStateValuesToTargetSetup = (
     targetMethod: values.targetMethod,
     usingAverageLeadCycleSpeed: values.usingAverageLeadCycleSpeed,
     leadCycleSpeed: values.leadCycleSpeed,
+    requiresWhiteFlute:
+      values.action === "RockSmash" && values.requiresWhiteFlute,
   };
 };
 
@@ -178,6 +183,11 @@ const getFields = ({
           options={toOptions(actions, formatActionName)}
         />
       ),
+    },
+    {
+      label: "Using White Flute?",
+      input: <FormikSwitch<FormState> name="requiresWhiteFlute" />,
+      show: action === "RockSmash",
     },
     {
       label: "Lead",
@@ -328,8 +338,8 @@ export const Wild3CalibTargetSetupInputFields = () => {
 export const Wild3CalibTargetSetupInput = ({ setTargetSetup }: Props) => {
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
-    const uiResult = await calculateTargetSetupResult(targetSetup);
-    setTargetSetup(uiResult == null ? null : targetSetup);
+    const { content } = await calculateTargetSetupResult(targetSetup);
+    setTargetSetup(content == null ? null : targetSetup);
   };
 
   const initialValues = getInitialValues();

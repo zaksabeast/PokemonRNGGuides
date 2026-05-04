@@ -22,6 +22,7 @@ import {
   FormFieldTable,
   FormikSwitch,
   Icon,
+  Typography,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatProbability } from "~/utils/formatProbability";
@@ -113,6 +114,7 @@ const Validator = z.object({
     .min(0)
     .max(gen3Leads.length - 1),
   leadCycleSpeed: z.number().min(0).max(SLOWEST_LEAD_CYCLE_SPEED),
+  usingWhiteFlute: z.boolean(),
   feebasState: z.enum(wild3FeebasStates),
   roamerState: z.enum(wild3RoamerStates),
   massOutbreakState: z.enum(wild3MassOutbreakStates),
@@ -140,6 +142,7 @@ const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
       advance: 0,
       leadIdx: 0,
       leadCycleSpeed: 0,
+      usingWhiteFlute: true,
       feebasState: "NotInMap",
       roamerState: "Inactive",
       massOutbreakState: "Inactive",
@@ -164,6 +167,7 @@ const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
     leadIdx: Math.max(leadIdx, 0),
     leadCycleSpeed,
     ...fixedData,
+    usingWhiteFlute: true,
     hasPreselectedData: true,
     usingPaintingReseeding: fixedData.initial_seed !== 0,
   };
@@ -212,6 +216,11 @@ const getFields = (
         />
       ),
       show: !hasPreselectedData,
+    },
+    {
+      label: "Using White Flute?",
+      input: <FormikSwitch<FormState> name="usingWhiteFlute" />,
+      show: !hasPreselectedData && action === "RockSmash",
     },
     {
       label: "TID",
@@ -556,6 +565,7 @@ const calculate = async (values: FormState) => {
     consider_cycles: true,
     consider_rng_manipulated_lead_pid: true,
     generate_even_if_impossible: true,
+    using_white_flute: values.usingWhiteFlute,
     roamer_state: values.roamerState,
     mass_outbreak_state: values.massOutbreakState,
     feebas_state: values.feebasState,
@@ -570,6 +580,7 @@ const calculate = async (values: FormState) => {
       uiResults: [],
       cycle_at_moments: [],
       advanceAtSweetScent: 0,
+      hasError: true,
     };
   }
 
@@ -585,6 +596,7 @@ const calculate = async (values: FormState) => {
     uiResults: convertSearcherResultsToUIResults(results),
     cycle_at_moments,
     advanceAtSweetScent: lcrng_distance(0, initial_seed) + values.advance,
+    hasError: false,
   };
 };
 
@@ -605,6 +617,7 @@ export const Wild3MethodDistribution = ({
   fixedData,
   permitEnablingDebugOptions,
 }: Props) => {
+  const [hasError, setHasError] = React.useState(true);
   const [results, setResults] = React.useState<UiResult[]>([]);
   const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(
     null,
@@ -617,7 +630,7 @@ export const Wild3MethodDistribution = ({
   const updateResults = React.useCallback(
     (values: FormState) => {
       calculate(values).then(
-        ({ uiResults, cycle_at_moments, advanceAtSweetScent }) => {
+        ({ uiResults, cycle_at_moments, advanceAtSweetScent, hasError }) => {
           const isEggLead = gen3Leads[values.leadIdx] === "Egg";
           const leadCycleSpeed = isEggLead ? null : values.leadCycleSpeed;
 
@@ -625,6 +638,7 @@ export const Wild3MethodDistribution = ({
           setCycleAtMoments(cycle_at_moments);
           setLeadCycleSpeed(leadCycleSpeed);
           setAdvanceAtSweetScent(advanceAtSweetScent);
+          setHasError(hasError);
         },
       );
     },
@@ -665,6 +679,12 @@ export const Wild3MethodDistribution = ({
       >
         <Wild3MethodDistributionFields clearResults={clearResults} />
       </RngToolForm>
+
+      {!hasError && results.length === 0 && (
+        <Typography.Text strong fontSize={16}>
+          Result: No Pokémon encounter when using that setup.
+        </Typography.Text>
+      )}
 
       {permitEnablingDebugOptions && (
         <Wild3CycleAtMoments

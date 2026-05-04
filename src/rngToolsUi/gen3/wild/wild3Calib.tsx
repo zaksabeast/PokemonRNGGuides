@@ -123,6 +123,8 @@ export const Wild3Calib = ({
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     targetSetupProp ?? null,
   );
+  const [targetSetupHasEncounter, setTargetSetupHasEncounter] =
+    React.useState(false);
 
   React.useEffect(() => {
     setTargetSetup(targetSetupProp ?? null);
@@ -133,10 +135,16 @@ export const Wild3Calib = ({
 
   React.useEffect(() => {
     if (targetSetup == null) {
+      setTargetSetupHasEncounter(false);
       return setTargetSetupResult(null);
     }
 
-    calculateTargetSetupResult(targetSetup).then(setTargetSetupResult);
+    calculateTargetSetupResult(targetSetup).then(
+      ({ content, hasEncounter }) => {
+        setTargetSetupResult(content);
+        setTargetSetupHasEncounter(hasEncounter);
+      },
+    );
   }, [targetSetup]);
 
   const [battleVideoInfo, setBattleVideoInfo] =
@@ -218,7 +226,7 @@ export const Wild3Calib = ({
   ];
 
   const battleVideoInfoInputForm = () => {
-    if (targetSetup == null) {
+    if (targetSetup == null || !targetSetupHasEncounter) {
       return null;
     }
 
@@ -301,6 +309,11 @@ export const Wild3Calib = ({
       {
         label: "Player action",
         input: formatActionName(targetSetupProp.action),
+      },
+      {
+        label: "Requires White Flute?",
+        input: targetSetupProp.requiresWhiteFlute ? "Yes" : "No",
+        show: targetSetupProp.action === "RockSmash",
       },
       {
         label: "Lead",
@@ -389,7 +402,7 @@ export const Wild3Calib = ({
     <Flex gap={32} vertical>
       {targetSetupProp == null ? inputForms() : infoFromPrevSteps()}
 
-      {canDoCalib && targetSetup != null && (
+      {canDoCalib && targetSetup != null && targetSetupHasEncounter && (
         <>
           <FormFieldTable fields={calibFields} />
           {displayInstructions &&

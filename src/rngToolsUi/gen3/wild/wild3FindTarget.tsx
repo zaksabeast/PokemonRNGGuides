@@ -96,6 +96,7 @@ const Validator = z
     rngManipulatedLeadPid: z.boolean(),
     mergeSimilarResults: z.boolean(),
     generate_even_if_impossible: z.boolean(),
+    using_white_flute: z.boolean(),
   })
   .extend(pkmFilterSchema.shape)
   .extend(gen3PkmFilterSchema.shape);
@@ -120,6 +121,7 @@ export type ResultSetupInfo = Wild3SearcherResultMon &
     actionName: string;
     primaryLikelihood: number;
     initial_seed: number;
+    requiresWhiteFlute: boolean;
   };
 
 const getInitialValues = (): FormState => {
@@ -147,6 +149,7 @@ const getInitialValues = (): FormState => {
     rngManipulatedLeadPid: false,
     mergeSimilarResults: true,
     generate_even_if_impossible: false,
+    using_white_flute: true,
     ...getPkmFilterInitialValues(),
     ...getGen3PkmFilterInitialValues(),
   };

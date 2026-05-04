@@ -167,6 +167,7 @@ export const createWild3SearcherOptions = async (
     consider_cycles: true,
     consider_rng_manipulated_lead_pid: false,
     generate_even_if_impossible: values.generate_even_if_impossible,
+    using_white_flute: targetSetup.requiresWhiteFlute,
     painting_opts: null,
     lead_cycle_speed: targetSetup.leadCycleSpeed,
   };

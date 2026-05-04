@@ -41,7 +41,6 @@ pub struct Wild3GeneratorOptions {
     pub roamer_state: Wild3RoamerState,
     pub mass_outbreak_state: Wild3MassOutbreakState,
     pub feebas_state: Wild3FeebasState,
-    //TODO: Fix the code that was broken when adding safari_pokeblock.
     pub safari_pokeblock: Option<Wild3SafariPokeblock>,
 }
 

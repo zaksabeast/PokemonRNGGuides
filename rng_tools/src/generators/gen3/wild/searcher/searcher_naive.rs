@@ -1,3 +1,5 @@
+use crate::{NATURE_COUNT, gen3::Wild3SafariPokeblock};
+
 use super::*;
 
 pub fn search_wild3_naive(opts: &Wild3SearcherOptions) -> Vec<Wild3SearcherResultMon> {
@@ -19,6 +21,24 @@ fn search_wild3_naive_at_given_advance(
 ) -> Vec<Wild3SearcherResultMon> {
     let mut results: Vec<Wild3SearcherResultMon> = vec![];
 
+    let mut pokeblock_states: Vec<Option<Wild3SafariPokeblock>> = vec![None];
+    if opts.using_safari_pokeblock {
+        let mut add_pokeblock = |nature: Nature| {
+            let pokeblock = Wild3SafariPokeblock::from_nature(nature);
+            if pokeblock.is_some() {
+                pokeblock_states.push(pokeblock);
+            }
+        };
+
+        if let Some(nature) = opts.filter.nature {
+            add_pokeblock(nature);
+        } else {
+            for i in 0..(NATURE_COUNT as u8) {
+                add_pokeblock(i.into());
+            }
+        }
+    }
+
     let lead_encounter_products = iproduct!(opts.leads.iter(), opts.map_setups.iter().enumerate());
 
     for (lead, (map_idx, map_setups)) in lead_encounter_products {
@@ -26,9 +46,12 @@ fn search_wild3_naive_at_given_advance(
             &map_setups.actions,
             &map_setups.roamer_states,
             &map_setups.mass_outbreak_states,
-            &map_setups.feebas_states
+            &map_setups.feebas_states,
+            &pokeblock_states,
         );
-        for (action, roamer_state, mass_outbreak_state, feebas_state) in map_state_products {
+        for (action, roamer_state, mass_outbreak_state, feebas_state, pokeblock) in
+            map_state_products
+        {
             let gen_opts = Wild3GeneratorOptions {
                 tid: opts.tid,
                 sid: opts.sid,
@@ -44,6 +67,7 @@ fn search_wild3_naive_at_given_advance(
                 roamer_state: *roamer_state,
                 mass_outbreak_state: *mass_outbreak_state,
                 feebas_state: *feebas_state,
+                safari_pokeblock: pokeblock.clone(),
                 lead_cycle_speed: opts.lead_cycle_speed,
             };
 

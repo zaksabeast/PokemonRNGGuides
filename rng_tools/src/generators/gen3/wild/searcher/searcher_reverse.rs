@@ -265,6 +265,7 @@ fn create_result(
                 roamer_state: Wild3RoamerState::Inactive,
                 mass_outbreak_state,
                 feebas_state,
+                safari_pokeblock: None,
                 lead_cycle_speed: opts.lead_cycle_speed,
             };
 

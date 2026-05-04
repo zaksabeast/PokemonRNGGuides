@@ -15,18 +15,6 @@ use crate::{
     },
     rng::lcrng::Pokerng,
 };
-#[derive(Default, Debug, PartialEq, Clone, Copy)]
-/** seed when sweet scent is triggered (state right before Roamer test) */
-pub struct EncounterPath {
-    pub seed: u32,
-    pub map_setups_idx: usize,
-    pub action: Wild3Action,
-    pub encounter_idx_to_lvl_arc: EncounterIdxToLvlArc,
-    pub lvl_to_nature_gender_arc: LvlToNatureGenderArc,
-    pub nature_gender_to_pid_arc: NatureGenderToPidArc,
-    pub pid_path: PidPath,
-    pub debug_lvl_path: Option<LvlPath>,
-}
 
 #[derive(Default, Debug, PartialEq, Clone, Copy)]
 /** seed when sweet scent is triggered (state right before Roamer test) */

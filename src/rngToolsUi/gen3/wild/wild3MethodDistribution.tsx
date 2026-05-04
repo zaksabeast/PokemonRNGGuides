@@ -682,7 +682,7 @@ export const Wild3MethodDistribution = ({
 
       {!hasError && results.length === 0 && (
         <Typography.Text strong fontSize={16}>
-          Result: No Pokémon encounter when using Rock Smash with that setup.
+          Result: No Pokémon encounter when using that setup.
         </Typography.Text>
       )}
 

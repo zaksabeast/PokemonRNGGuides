@@ -97,8 +97,12 @@ where
         opts.filter.gender,
     );
     let lvl_gen = LvlPathGenerator::new(&opts.leads);
-    let encouter_idx_gen =
-        EncounterIdxPathGenerator::new(&opts.leads, &opts.map_setups, encounter_species_data);
+    let encouter_idx_gen = EncounterIdxPathGenerator::new(
+        &opts.leads,
+        &opts.map_setups,
+        encounter_species_data,
+        opts.using_white_flute,
+    );
 
     iter.filter_map(|pid_path| {
         let vec = nature_gender_gen
@@ -267,6 +271,7 @@ fn create_result(
                 feebas_state,
                 safari_pokeblock: None,
                 lead_cycle_speed: opts.lead_cycle_speed,
+                using_white_flute: opts.using_white_flute,
             };
 
             generate_gen3_wild(Pokerng::new(seed.seed), &gen_opts, &map_setups.map_data)

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-use super::{CycleRange, VBLANK_FREQ};
+use super::{CycleRange, VBLANK_FREQ, Wild3Action};
 use crate::gen3::{
     COMMON_LEAD_RANGE, CycleAndModRange, FASTEST_MODULO_CYCLE_24, SLOWEST_MODULO_CYCLE_24,
 };
@@ -65,12 +65,13 @@ pub struct Wild3SearcherCycleDataByLead {
 
 pub fn calculate_cycle_data_by_lead(
     post_sweet_scent_range: &CycleAndModRange,
+    action: Wild3Action,
     egg_lead: bool,
     specified_lead_cycle_speed: Option<usize>,
 ) -> Wild3SearcherCycleDataByLead {
     if egg_lead {
         // cycle_data is useful even with egg lead to know the likelihood of hitting the method.
-        let cycle_data = calculate_cycle_data(post_sweet_scent_range, 0);
+        let cycle_data = calculate_cycle_data(post_sweet_scent_range, action, 0);
 
         Wild3SearcherCycleDataByLead {
             post_sweet_scent_range: *post_sweet_scent_range,
@@ -88,15 +89,32 @@ pub fn calculate_cycle_data_by_lead(
         Wild3SearcherCycleDataByLead {
             post_sweet_scent_range: *post_sweet_scent_range,
             specified_lead: specified_lead_cycle_speed
-                .map(|spd| calculate_cycle_data(post_sweet_scent_range, spd)),
-            slowest_lead: calculate_cycle_data(post_sweet_scent_range, SLOWEST_MODULO_CYCLE_24),
-            fastest_lead: calculate_cycle_data(post_sweet_scent_range, FASTEST_MODULO_CYCLE_24),
-            ideal_lead: calculate_cycle_data(post_sweet_scent_range, ideal_lead_pid_cycle_count),
+                .map(|spd| calculate_cycle_data(post_sweet_scent_range, action, spd)),
+            slowest_lead: calculate_cycle_data(
+                post_sweet_scent_range,
+                action,
+                SLOWEST_MODULO_CYCLE_24,
+            ),
+            fastest_lead: calculate_cycle_data(
+                post_sweet_scent_range,
+                action,
+                FASTEST_MODULO_CYCLE_24,
+            ),
+            ideal_lead: calculate_cycle_data(
+                post_sweet_scent_range,
+                action,
+                ideal_lead_pid_cycle_count,
+            ),
             common_lower_lead: calculate_cycle_data(
                 post_sweet_scent_range,
+                action,
                 COMMON_LEAD_RANGE.start,
             ),
-            common_upper_lead: calculate_cycle_data(post_sweet_scent_range, COMMON_LEAD_RANGE.end),
+            common_upper_lead: calculate_cycle_data(
+                post_sweet_scent_range,
+                action,
+                COMMON_LEAD_RANGE.end,
+            ),
         }
     }
 }
@@ -104,13 +122,14 @@ pub fn calculate_cycle_data_by_lead(
 #[wasm_bindgen]
 pub fn calculate_cycle_data(
     post_sweet_scent_mod_range: &CycleAndModRange,
+    action: Wild3Action,
     lead_pid_cycle_count: usize,
 ) -> Wild3SearcherCycleData {
     let post_sweet_scent_range =
         post_sweet_scent_mod_range.apply_mod_cycle_count(lead_pid_cycle_count);
     let pre_sweet_scent_cycle_range =
         calculate_pre_sweet_scent_cycle_range(&post_sweet_scent_range);
-    let method_probability = calculate_method_probability(&pre_sweet_scent_cycle_range);
+    let method_probability = calculate_method_probability(&pre_sweet_scent_cycle_range, action);
 
     Wild3SearcherCycleData {
         lead_pid_cycle_count,
@@ -121,17 +140,20 @@ pub fn calculate_cycle_data(
 
 pub fn is_method_possible_to_trigger(
     post_sweet_scent_mod_range: &CycleAndModRange,
+    action: Wild3Action,
     is_egg: bool,
     consider_rng_manipulated_lead_pid: bool,
     lead_cycle_speed: Option<usize>,
 ) -> bool {
     if is_egg {
-        return calculate_method_probability_from_mod_range(post_sweet_scent_mod_range, 0) > 0f64;
+        return calculate_method_probability_from_mod_range(post_sweet_scent_mod_range, action, 0)
+            > 0f64;
     }
 
     if let Some(lead_cycle_speed) = lead_cycle_speed {
         return calculate_method_probability_from_mod_range(
             post_sweet_scent_mod_range,
+            action,
             lead_cycle_speed,
         ) > 0f64;
     }
@@ -140,10 +162,12 @@ pub fn is_method_possible_to_trigger(
     if !consider_rng_manipulated_lead_pid {
         return calculate_method_probability_from_mod_range(
             post_sweet_scent_mod_range,
+            action,
             COMMON_LEAD_RANGE.start,
         ) > 0f64
             && calculate_method_probability_from_mod_range(
                 post_sweet_scent_mod_range,
+                action,
                 COMMON_LEAD_RANGE.end,
             ) > 0f64;
     }
@@ -156,10 +180,14 @@ pub fn is_method_possible_to_trigger(
         return true;
     }
 
-    calculate_method_probability_from_mod_range(post_sweet_scent_mod_range, FASTEST_MODULO_CYCLE_24)
-        > 0f64
+    calculate_method_probability_from_mod_range(
+        post_sweet_scent_mod_range,
+        action,
+        FASTEST_MODULO_CYCLE_24,
+    ) > 0f64
         || calculate_method_probability_from_mod_range(
             post_sweet_scent_mod_range,
+            action,
             SLOWEST_MODULO_CYCLE_24,
         ) > 0f64
 }
@@ -210,34 +238,43 @@ fn calculate_pre_sweet_scent_cycle_range(
 }
 
 #[wasm_bindgen]
-pub fn calculate_method_probability(pre_sweet_scent_range: &CycleRange<usize>) -> f64 {
+pub fn calculate_method_probability(
+    pre_sweet_scent_range: &CycleRange<usize>,
+    action: Wild3Action,
+) -> f64 {
     if pre_sweet_scent_range.len == 0 {
         return 0.0;
     }
 
-    const MIN_PRE_SWEET_SCENT_CYCLE: usize = MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE - 10_000;
-    const MAX_PRE_SWEET_SCENT_CYCLE: usize = MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE + 20_000;
-    const PRE_SWEET_SCENT_CYCLE_RANGE: usize =
-        MAX_PRE_SWEET_SCENT_CYCLE - MIN_PRE_SWEET_SCENT_CYCLE;
+    let min_pre_sweet_scent_cycle = match action {
+        Wild3Action::RockSmash => 30_000,
+        _ => MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE - 10_000,
+    };
+    let max_pre_sweet_scent_cycle = match action {
+        Wild3Action::RockSmash => 75_000,
+        _ => MOST_PROBABLE_PRE_SWEET_SCENT_CYCLE + 20_000,
+    };
+    let pre_sweet_scent_cycle_range = max_pre_sweet_scent_cycle - min_pre_sweet_scent_cycle;
 
-    // Constant probability in the range 45K - 75K cycles (over-simplification of the real probability)
-    let overlap_start = std::cmp::max(pre_sweet_scent_range.start, MIN_PRE_SWEET_SCENT_CYCLE);
-    let overlap_end = std::cmp::min(pre_sweet_scent_range.end(), MAX_PRE_SWEET_SCENT_CYCLE);
+    // Constant probability in the range (over-simplification of the real probability)
+    let overlap_start = std::cmp::max(pre_sweet_scent_range.start, min_pre_sweet_scent_cycle);
+    let overlap_end = std::cmp::min(pre_sweet_scent_range.end(), max_pre_sweet_scent_cycle);
 
     if overlap_end <= overlap_start {
         return 0.0; // No overlap
     }
 
     let overlap_len = overlap_end - overlap_start;
-    overlap_len as f64 / PRE_SWEET_SCENT_CYCLE_RANGE as f64
+    overlap_len as f64 / pre_sweet_scent_cycle_range as f64
 }
 
 pub fn calculate_method_probability_from_mod_range(
     post_sweet_scent_mod_range: &CycleAndModRange,
+    action: Wild3Action,
     pid_cycle_count: usize,
 ) -> f64 {
     let post_sweet_scent_range = post_sweet_scent_mod_range.apply_mod_cycle_count(pid_cycle_count);
     let pre_sweet_scent_cycle_range =
         calculate_pre_sweet_scent_cycle_range(&post_sweet_scent_range);
-    calculate_method_probability(&pre_sweet_scent_cycle_range)
+    calculate_method_probability(&pre_sweet_scent_cycle_range, action)
 }

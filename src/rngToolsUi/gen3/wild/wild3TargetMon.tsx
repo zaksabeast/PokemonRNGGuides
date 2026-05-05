@@ -1,4 +1,4 @@
-import { Species } from "~/rngTools";
+import { Species, Wild3Action } from "~/rngTools";
 import { uniq } from "lodash-es";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 const emeraldWildGameData = getWild3EmeraldGameData();
@@ -7,8 +7,14 @@ export const getPossibleValuesForSpecies = (species: Species) => {
   const setups = emeraldWildGameData.mapSetupsBySpecies.get(species) ?? [];
 
   return {
-    maps: setups.map((setup) => setup.map_data.map_id),
-    actions: uniq(setups.flatMap((setup) => setup.actions)),
+    maps: setups
+      .map((setup) => setup.map_data.map_id)
+      .filter((map) => {
+        return !map.includes("SAFARI"); // TODO: Support Safari maps
+      }),
+    actions: uniq(setups.flatMap((setup) => setup.actions)).filter((action) => {
+      return action !== "RockSmash"; // TODO: Support Rock Smash
+    }) as Wild3Action[],
     roamerStates: uniq(setups.flatMap((setup) => setup.roamer_states)),
     massOutbreakStates: uniq(
       setups.flatMap((setup) => setup.mass_outbreak_states),

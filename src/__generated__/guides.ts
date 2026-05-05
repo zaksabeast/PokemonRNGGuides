@@ -1361,7 +1361,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: { enSlug: "/emerald-overview/", language: "de" },
       layout: "guide",
-      lastUpdated: "2026-04-27",
+      lastUpdated: "2026-05-02",
       type: "translatedGuide",
       canonical: "/de-emerald-overview/",
       file: "guides/Translations/de/Gen 3/Emerald/Emerald Overview.mdx",
@@ -1783,11 +1783,11 @@ export const guides = {
   },
   "/de-retail-emerald-wild/": {
     meta: {
-      id: "/retail-emerald-wild/",
+      id: "/de-retail-emerald-wild/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
-      guideKey: "false-Wild RNG",
+      guideKey: "/de-retail-emerald-wild/",
       isNew: false,
       title: "Smaragd Retail Wild RNG",
       navDrawerTitle: "Wild RNG",
@@ -1799,30 +1799,23 @@ export const guides = {
       difficulty: null,
       hideFromNavDrawer: true,
       addedOn: null,
-      translation: { enSlug: "/retail-emerald-wild/", language: "de" },
+      translation: null,
       layout: "guide",
-      lastUpdated: "2026-04-11",
-      type: "translatedGuide",
-      canonical: "/de-retail-emerald-wild/",
-      file: "guides/Translations/de/Gen 3/Emerald/Retail Wild RNG.mdx",
-      translations: {
-        de: "/de-retail-emerald-wild/",
-        it: "/it-retail-emerald-wild/",
-        en: "/retail-emerald-wild/",
-        zh: "/zh-retail-emerald-wild/",
+      lastUpdated: "2026-05-04",
+      type: "baseGuide",
+      canonical: "/emerald-wild/",
+      file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
+      translations: null,
+      guideGroupId: "en:/de-retail-emerald-wild/:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/de-retail-emerald-wild/" },
+        cfwEmu: null,
       },
-      guideGroupId: "de:false-Wild RNG:Emerald",
-      guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["web_tool"],
     },
-    Guide: React.lazy(
-      () =>
-        import("~/../guides/Translations/de/Gen 3/Emerald/Retail Wild RNG.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx")),
     getRawFile: memoize(async () => {
-      const file = await import(
-        "~/../guides/Translations/de/Gen 3/Emerald/Retail Wild RNG.mdx?raw"
-      );
+      const file = await import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx?raw");
       return file.default;
     }),
   },
@@ -3199,30 +3192,31 @@ export const guides = {
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
-      guideKey: "true-Wild Searcher",
+      guideKey: "false-Wild RNG",
       isNew: false,
-      title: "Wild Searcher",
-      navDrawerTitle: "Wild Searcher",
-      description: "Wild Searcher",
+      title: "Pokemon Emerald Wild RNG",
+      navDrawerTitle: "Wild RNG",
+      description:
+        "How to RNG wild Pokémon in Pokémon Emerald on a retail console for perfect IVs, natures, and shinies.",
       slug: "/emerald-wild/",
-      isRoughDraft: true,
+      isRoughDraft: false,
       orderPriority: 20,
       difficulty: null,
       hideFromNavDrawer: false,
-      addedOn: null,
+      addedOn: "2025-05-04",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-04-26",
+      lastUpdated: "2026-05-04",
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
       translations: null,
-      guideGroupId: "en:true-Wild Searcher:Emerald",
+      guideGroupId: "en:false-Wild RNG:Emerald",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/emerald-wild/" },
         cfwEmu: null,
       },
-      displayAttributes: ["web_tool", "rough_draft"],
+      displayAttributes: ["web_tool"],
     },
     Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx")),
     getRawFile: memoize(async () => {
@@ -6717,7 +6711,7 @@ export const guides = {
       addedOn: "2025-04-08",
       translation: { enSlug: "/emerald-overview/", language: "it" },
       layout: "guide",
-      lastUpdated: "2026-04-27",
+      lastUpdated: "2026-05-02",
       type: "translatedGuide",
       canonical: "/it-emerald-overview/",
       file: "guides/Translations/it/Gen 3/Emerald/Emerald Overview.mdx",
@@ -7340,11 +7334,11 @@ export const guides = {
   },
   "/it-retail-emerald-wild/": {
     meta: {
-      id: "/retail-emerald-wild/",
+      id: "/it-retail-emerald-wild/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
-      guideKey: "false-Wild RNG",
+      guideKey: "/it-retail-emerald-wild/",
       isNew: false,
       title: "RNG Retail di Selvatici su Smeraldo",
       navDrawerTitle: "RNG Retail di Selvatici su Smeraldo",
@@ -7356,30 +7350,23 @@ export const guides = {
       difficulty: null,
       hideFromNavDrawer: true,
       addedOn: null,
-      translation: { enSlug: "/retail-emerald-wild/", language: "it" },
+      translation: null,
       layout: "guide",
-      lastUpdated: "2026-04-11",
-      type: "translatedGuide",
-      canonical: "/it-retail-emerald-wild/",
-      file: "guides/Translations/it/Gen 3/Emerald/Retail Wild RNG.mdx",
-      translations: {
-        de: "/de-retail-emerald-wild/",
-        it: "/it-retail-emerald-wild/",
-        en: "/retail-emerald-wild/",
-        zh: "/zh-retail-emerald-wild/",
+      lastUpdated: "2026-05-04",
+      type: "baseGuide",
+      canonical: "/emerald-wild/",
+      file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
+      translations: null,
+      guideGroupId: "en:/it-retail-emerald-wild/:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/it-retail-emerald-wild/" },
+        cfwEmu: null,
       },
-      guideGroupId: "it:false-Wild RNG:Emerald",
-      guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["web_tool"],
     },
-    Guide: React.lazy(
-      () =>
-        import("~/../guides/Translations/it/Gen 3/Emerald/Retail Wild RNG.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx")),
     getRawFile: memoize(async () => {
-      const file = await import(
-        "~/../guides/Translations/it/Gen 3/Emerald/Retail Wild RNG.mdx?raw"
-      );
+      const file = await import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx?raw");
       return file.default;
     }),
   },
@@ -8658,44 +8645,35 @@ export const guides = {
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
-      guideKey: "false-Wild RNG",
+      guideKey: "/retail-emerald-wild/",
       isNew: false,
       title: "Emerald Retail Wild RNG",
-      navDrawerTitle: "Wild RNG",
+      navDrawerTitle: "Emerald Retail Wild RNG",
       description:
-        "Learn how to RNG wild Pokémon in Pokémon Emerald on a retail console for perfect IVs, natures, and shinies.",
+        "How to RNG wild Pokémon in Pokémon Emerald on a retail console for perfect IVs, natures, and shinies.",
       slug: "/retail-emerald-wild/",
       isRoughDraft: false,
       orderPriority: 20,
       difficulty: null,
-      hideFromNavDrawer: false,
+      hideFromNavDrawer: true,
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-04-11",
+      lastUpdated: "2026-05-04",
       type: "baseGuide",
-      canonical: "/retail-emerald-wild/",
-      file: "guides/Gen 3/Emerald/Retail Wild RNG.mdx",
-      translations: {
-        de: "/de-retail-emerald-wild/",
-        it: "/it-retail-emerald-wild/",
-        en: "/retail-emerald-wild/",
-        zh: "/zh-retail-emerald-wild/",
-      },
-      guideGroupId: "en:false-Wild RNG:Emerald",
+      canonical: "/emerald-wild/",
+      file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
+      translations: null,
+      guideGroupId: "en:/retail-emerald-wild/:Emerald",
       guideVariantLinks: {
         retail: { type: "slug", slug: "/retail-emerald-wild/" },
         cfwEmu: null,
       },
-      displayAttributes: [],
+      displayAttributes: ["web_tool"],
     },
-    Guide: React.lazy(
-      () => import("~/../guides/Gen 3/Emerald/Retail Wild RNG.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx")),
     getRawFile: memoize(async () => {
-      const file = await import(
-        "~/../guides/Gen 3/Emerald/Retail Wild RNG.mdx?raw"
-      );
+      const file = await import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx?raw");
       return file.default;
     }),
   },
@@ -14699,11 +14677,11 @@ export const guides = {
   },
   "/zh-retail-emerald-wild/": {
     meta: {
-      id: "/retail-emerald-wild/",
+      id: "/zh-retail-emerald-wild/",
       categories: ["Emerald"],
       section: "pokemon_rng",
       guideVariants: ["retail"],
-      guideKey: "false-Wild RNG",
+      guideKey: "/zh-retail-emerald-wild/",
       isNew: false,
       title: "实机野生乱数",
       navDrawerTitle: "实机野生乱数",
@@ -14714,30 +14692,23 @@ export const guides = {
       difficulty: null,
       hideFromNavDrawer: true,
       addedOn: null,
-      translation: { enSlug: "/retail-emerald-wild/", language: "zh" },
+      translation: null,
       layout: "guide",
-      lastUpdated: "2026-04-11",
-      type: "translatedGuide",
-      canonical: "/zh-retail-emerald-wild/",
-      file: "guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx",
-      translations: {
-        de: "/de-retail-emerald-wild/",
-        it: "/it-retail-emerald-wild/",
-        en: "/retail-emerald-wild/",
-        zh: "/zh-retail-emerald-wild/",
+      lastUpdated: "2026-05-04",
+      type: "baseGuide",
+      canonical: "/emerald-wild/",
+      file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
+      translations: null,
+      guideGroupId: "en:/zh-retail-emerald-wild/:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/zh-retail-emerald-wild/" },
+        cfwEmu: null,
       },
-      guideGroupId: "zh:false-Wild RNG:Emerald",
-      guideVariantLinks: null,
-      displayAttributes: [],
+      displayAttributes: ["web_tool"],
     },
-    Guide: React.lazy(
-      () =>
-        import("~/../guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx"),
-    ),
+    Guide: React.lazy(() => import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx")),
     getRawFile: memoize(async () => {
-      const file = await import(
-        "~/../guides/Translations/zh/Gen 3/Emerald/Retail Wild RNG.mdx?raw"
-      );
+      const file = await import("~/../guides/Gen 3/Emerald/Gen 3 Wild.mdx?raw");
       return file.default;
     }),
   },
@@ -17042,7 +17013,7 @@ export const externalGuides = [
     url: "https://pokemoncompletion.com/BattleFacilities/Emerald/RngManipulation",
     difficulty: null,
     id: "https://pokemoncompletion.com/BattleFacilities/Emerald/RngManipulation",
-    isNew: true,
+    isNew: false,
     translation: null,
     canonical: null,
     hideFromNavDrawer: false,

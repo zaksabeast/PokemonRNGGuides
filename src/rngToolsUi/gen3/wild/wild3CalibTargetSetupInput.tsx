@@ -14,7 +14,6 @@ import {
   RngToolSubmit,
   FormFieldTable,
   FormikSwitch,
-  Link,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
@@ -39,11 +38,14 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
 import {
   AVERAGE_LEAD_CYCLE_SPEED,
-  LeadCycleSpeedLabel,
   LeadCycleSpeedSelector,
 } from "./leadCycleSpeedSelector";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
+import {
+  leadCycleSpeedTooltip,
+  usingPaintingReseedingLabel as usingPaintingReseedingLabel,
+} from "./wild3Labels";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -67,6 +69,7 @@ const Validator = z.object({
   targetFrameBeforePainting: z.number().min(1).max(0xffff),
   targetMethod: z.enum(supportedGen3Methods),
   targetAdvance: z.number().int().min(0).max(0xffffffff),
+  requiresWhiteFlute: z.boolean(),
 
   usingAverageLeadCycleSpeed: z.boolean(),
   leadCycleSpeed: z.number().int().min(0).max(900),
@@ -87,6 +90,7 @@ export type TargetSetup = {
   targetMethod: Gen3Method;
   usingAverageLeadCycleSpeed: boolean;
   leadCycleSpeed: number;
+  requiresWhiteFlute: boolean;
 };
 
 export type FormState = z.infer<typeof Validator>;
@@ -104,6 +108,7 @@ const getInitialValues = (): FormState => {
     targetFrameBeforePainting: 1,
     targetAdvance: 1000,
     targetMethod: "Wild1",
+    requiresWhiteFlute: false,
     usingAverageLeadCycleSpeed: true,
     leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
   };
@@ -128,6 +133,8 @@ const convertFormStateValuesToTargetSetup = (
     targetMethod: values.targetMethod,
     usingAverageLeadCycleSpeed: values.usingAverageLeadCycleSpeed,
     leadCycleSpeed: values.leadCycleSpeed,
+    requiresWhiteFlute:
+      values.action === "RockSmash" && values.requiresWhiteFlute,
   };
 };
 
@@ -146,13 +153,18 @@ const getFields = ({
 }): Field[] => {
   const { actions, feebas_states, roamer_states, mass_outbreak_states } =
     getPossibleValuesForMap(mapId, action);
+
+  const supportedMaps = emeraldWildGameData.maps.filter((map) => {
+    return !map.includes("SAFARI"); // TODO: Support Safari maps
+  });
+
   const fields: Field[] = [
     {
       label: "Map",
       input: (
         <FormikSelect<FormState, "map">
           name="map"
-          options={toOptions(emeraldWildGameData.maps, formatMapName)}
+          options={toOptions(supportedMaps, formatMapName)}
         />
       ),
     },
@@ -173,6 +185,11 @@ const getFields = ({
       ),
     },
     {
+      label: "Using White Flute?",
+      input: <FormikSwitch<FormState> name="requiresWhiteFlute" />,
+      show: action === "RockSmash",
+    },
+    {
       label: "Lead",
       input: (
         <FormikSelect<FormState, "leadIdx">
@@ -183,28 +200,19 @@ const getFields = ({
       ),
     },
     {
-      label: "Using lead with average cycle speed?",
+      label: "Using lead with average cycle speed PID?",
+      ...leadCycleSpeedTooltip(),
       input: <FormikSwitch<FormState> name="usingAverageLeadCycleSpeed" />,
       show: gen3Leads[leadIdx] !== "Egg",
     },
     {
-      label: <LeadCycleSpeedLabel />,
-      key: "LeadCycleSpeedLabel",
+      label: "Lead Cycle Speed",
       input: <LeadCycleSpeedSelector idealLeadCycleSpeed={null} />,
       show: gen3Leads[leadIdx] !== "Egg" && !usingAverageLeadCycleSpeed,
       indent: 1,
     },
     {
-      label: (
-        <>
-          Using{" "}
-          <Link href="/emerald-painting-rng/" newTab>
-            Painting Reseeding
-          </Link>
-          ?
-        </>
-      ),
-      key: "usingPaintingReseeding",
+      ...usingPaintingReseedingLabel(),
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
     {
@@ -330,8 +338,8 @@ export const Wild3CalibTargetSetupInputFields = () => {
 export const Wild3CalibTargetSetupInput = ({ setTargetSetup }: Props) => {
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
-    const uiResult = await calculateTargetSetupResult(targetSetup);
-    setTargetSetup(uiResult == null ? null : targetSetup);
+    const { content } = await calculateTargetSetupResult(targetSetup);
+    setTargetSetup(content == null ? null : targetSetup);
   };
 
   const initialValues = getInitialValues();

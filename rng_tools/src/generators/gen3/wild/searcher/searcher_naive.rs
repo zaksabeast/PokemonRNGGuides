@@ -69,6 +69,7 @@ fn search_wild3_naive_at_given_advance(
                 feebas_state: *feebas_state,
                 safari_pokeblock: pokeblock.clone(),
                 lead_cycle_speed: opts.lead_cycle_speed,
+                using_white_flute: opts.using_white_flute,
             };
 
             generate_gen3_wild(rng, &gen_opts, &map_setups.map_data)

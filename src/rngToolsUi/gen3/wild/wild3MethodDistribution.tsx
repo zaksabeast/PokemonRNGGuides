@@ -21,8 +21,8 @@ import {
   RngToolSubmit,
   FormFieldTable,
   FormikSwitch,
-  Link,
   Icon,
+  Typography,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatProbability } from "~/utils/formatProbability";
@@ -63,12 +63,15 @@ import { gen3Methods } from "~/types";
 import { getPossibleValuesForMap } from "./dataUtils";
 import {
   AVERAGE_LEAD_CYCLE_SPEED,
-  LeadCycleSpeedLabel,
   LeadCycleSpeedSelector,
   SLOWEST_LEAD_CYCLE_SPEED,
 } from "./leadCycleSpeedSelector";
 import { lcrng_distance } from "~/utils/lcrng";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
+import {
+  leadCycleSpeedTooltip,
+  usingPaintingReseedingLabel,
+} from "./wild3Labels";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -111,6 +114,7 @@ const Validator = z.object({
     .min(0)
     .max(gen3Leads.length - 1),
   leadCycleSpeed: z.number().min(0).max(SLOWEST_LEAD_CYCLE_SPEED),
+  usingWhiteFlute: z.boolean(),
   feebasState: z.enum(wild3FeebasStates),
   roamerState: z.enum(wild3RoamerStates),
   massOutbreakState: z.enum(wild3MassOutbreakStates),
@@ -138,6 +142,7 @@ const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
       advance: 0,
       leadIdx: 0,
       leadCycleSpeed: 0,
+      usingWhiteFlute: true,
       feebasState: "NotInMap",
       roamerState: "Inactive",
       massOutbreakState: "Inactive",
@@ -162,6 +167,7 @@ const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
     leadIdx: Math.max(leadIdx, 0),
     leadCycleSpeed,
     ...fixedData,
+    usingWhiteFlute: true,
     hasPreselectedData: true,
     usingPaintingReseeding: fixedData.initial_seed !== 0,
   };
@@ -178,13 +184,18 @@ const getFields = (
 ): Field[] => {
   const { actions, feebas_states, roamer_states, mass_outbreak_states } =
     getPossibleValuesForMap(mapId, action);
+
+  const supportedMaps = emeraldWildGameData.maps.filter((map) => {
+    return !map.includes("SAFARI"); // TODO: Support Safari maps
+  });
+
   const fields: Field[] = [
     {
       label: "Map",
       input: (
         <FormikSelect<FormState, "map">
           name="map"
-          options={toOptions(emeraldWildGameData.maps, formatMapName)}
+          options={toOptions(supportedMaps, formatMapName)}
         />
       ),
       show: !hasPreselectedData,
@@ -205,6 +216,11 @@ const getFields = (
         />
       ),
       show: !hasPreselectedData,
+    },
+    {
+      label: "Using White Flute?",
+      input: <FormikSwitch<FormState> name="usingWhiteFlute" />,
+      show: !hasPreselectedData && action === "RockSmash",
     },
     {
       label: "TID",
@@ -231,8 +247,8 @@ const getFields = (
 
   if (leadType !== "Egg") {
     fields.push({
-      label: <LeadCycleSpeedLabel />,
-      key: "Lead Speed",
+      label: "Lead Cycle Speed",
+      ...leadCycleSpeedTooltip(),
       input: (
         <LeadCycleSpeedSelector idealLeadCycleSpeed={idealLeadCycleSpeed} />
       ),
@@ -240,16 +256,7 @@ const getFields = (
   }
 
   fields.push({
-    label: (
-      <>
-        Using{" "}
-        <Link href="/emerald-painting-rng/" newTab>
-          Painting Reseeding
-        </Link>
-        ?
-      </>
-    ),
-    key: "usingPaintingReseeding",
+    ...usingPaintingReseedingLabel(),
     input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     show: !hasPreselectedData,
   });
@@ -451,6 +458,8 @@ const getColumns = (
         </>
       ),
       key: "Cycle at start",
+      tooltip:
+        "Processor cycle counter when reaching start of the Pokémon generation.",
       dataIndex: "pre_sweet_scent_cycle_ranges",
       render: (pre_sweet_scent_cycle_ranges) => {
         if (pre_sweet_scent_cycle_ranges.length === 0) {
@@ -556,6 +565,7 @@ const calculate = async (values: FormState) => {
     consider_cycles: true,
     consider_rng_manipulated_lead_pid: true,
     generate_even_if_impossible: true,
+    using_white_flute: values.usingWhiteFlute,
     roamer_state: values.roamerState,
     mass_outbreak_state: values.massOutbreakState,
     feebas_state: values.feebasState,
@@ -570,6 +580,7 @@ const calculate = async (values: FormState) => {
       uiResults: [],
       cycle_at_moments: [],
       advanceAtSweetScent: 0,
+      hasError: true,
     };
   }
 
@@ -585,6 +596,7 @@ const calculate = async (values: FormState) => {
     uiResults: convertSearcherResultsToUIResults(results),
     cycle_at_moments,
     advanceAtSweetScent: lcrng_distance(0, initial_seed) + values.advance,
+    hasError: false,
   };
 };
 
@@ -605,6 +617,7 @@ export const Wild3MethodDistribution = ({
   fixedData,
   permitEnablingDebugOptions,
 }: Props) => {
+  const [hasError, setHasError] = React.useState(true);
   const [results, setResults] = React.useState<UiResult[]>([]);
   const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(
     null,
@@ -617,7 +630,7 @@ export const Wild3MethodDistribution = ({
   const updateResults = React.useCallback(
     (values: FormState) => {
       calculate(values).then(
-        ({ uiResults, cycle_at_moments, advanceAtSweetScent }) => {
+        ({ uiResults, cycle_at_moments, advanceAtSweetScent, hasError }) => {
           const isEggLead = gen3Leads[values.leadIdx] === "Egg";
           const leadCycleSpeed = isEggLead ? null : values.leadCycleSpeed;
 
@@ -625,6 +638,7 @@ export const Wild3MethodDistribution = ({
           setCycleAtMoments(cycle_at_moments);
           setLeadCycleSpeed(leadCycleSpeed);
           setAdvanceAtSweetScent(advanceAtSweetScent);
+          setHasError(hasError);
         },
       );
     },
@@ -665,6 +679,12 @@ export const Wild3MethodDistribution = ({
       >
         <Wild3MethodDistributionFields clearResults={clearResults} />
       </RngToolForm>
+
+      {!hasError && results.length === 0 && (
+        <Typography.Text strong fontSize={16}>
+          Result: No Pokémon encounter when using that setup.
+        </Typography.Text>
+      )}
 
       {permitEnablingDebugOptions && (
         <Wild3CycleAtMoments

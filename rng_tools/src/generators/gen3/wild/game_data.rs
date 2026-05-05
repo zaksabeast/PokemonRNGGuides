@@ -132,6 +132,7 @@ pub struct Wild3MapGameData {
     pub roamers: Vec<Wild3SpecialEncounterGameData<Wild3RoamerState>>,
     pub mass_outbreaks: Vec<Wild3SpecialEncounterGameData<Wild3MassOutbreakState>>,
     pub feebas: Option<Wild3EncounterGameData>,
+    pub rock_smash_rate: u32,
     pub is_safari: bool,
 }
 
@@ -201,6 +202,7 @@ impl Default for Wild3MapGameData {
             roamers: vec![],
             feebas: None,
             mass_outbreaks: vec![],
+            rock_smash_rate: 20,
             is_safari: false,
         }
     }

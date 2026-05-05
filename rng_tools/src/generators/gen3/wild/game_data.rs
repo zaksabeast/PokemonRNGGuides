@@ -4,8 +4,8 @@ use wasm_bindgen::prelude::*;
 
 use super::Wild3Action;
 use crate::{
-    EncounterSlot, GenderRatio, NATURE_STAT_FACTORS, Nature, PokeblockFlavorCompatibility,
-    PokemonType, Species,
+    EncounterSlot, GenderRatio, NATURE_COUNT, NATURE_STAT_FACTORS, Nature,
+    PokeblockFlavorCompatibility, PokemonType, Species,
 };
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -48,28 +48,16 @@ pub enum Wild3FeebasState {
     InMapButNotOnFeebasTile,
 }
 
-#[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Wild3SafariPokeblock {
-    pub flavors: [bool; 5], // Spicy, Dry, Sweet, Bitter, Sour
-}
-
-impl Wild3SafariPokeblock {
-    /** This pokeblock guarantees obtaining the wanted nature. */
-    pub fn from_nature(nature: Nature) -> Option<Wild3SafariPokeblock> {
-        // if all neutrals, it's impossible to force that nature.
-        if NATURE_STAT_FACTORS[nature as usize]
-            .iter()
-            .all(|val| *val == PokeblockFlavorCompatibility::Neutral)
-        {
-            return None;
-        }
-
-        Some(Wild3SafariPokeblock {
-            flavors: NATURE_STAT_FACTORS[nature as usize]
-                .map(|val| val != PokeblockFlavorCompatibility::No),
-        })
-    }
+pub enum Wild3SafariPokeblock {
+    FromFlavor {
+        flavors: [bool; 5], // Spicy, Dry, Sweet, Bitter, Sour
+    },
+    FromNatures {
+        wanted_natures: [bool; NATURE_COUNT],
+        flavor_count: u32,
+    },
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Tsify, Serialize, Deserialize)]

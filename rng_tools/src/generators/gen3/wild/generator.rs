@@ -64,6 +64,7 @@ impl Default for Wild3GeneratorOptions {
             mass_outbreak_state: Wild3MassOutbreakState::default(),
             feebas_state: Wild3FeebasState::default(),
             using_white_flute: true,
+            safari_pokeblock: None,
         }
     }
 }
@@ -315,69 +316,80 @@ fn pick_wild_mon_nature_safari(
     rng: &mut Pokerng,
     pokeblock: &Option<Wild3SafariPokeblock>,
 ) -> Option<Nature> {
-    if let Some(pokeblock) = pokeblock {
-        if rand_next_u16(rng, "test_safari_zone_pokeblock", 100) % 100 < 80 {
-            let mut natures: [Nature; NATURE_COUNT] = [
-                Nature::Hardy,
-                Nature::Lonely,
-                Nature::Brave,
-                Nature::Adamant,
-                Nature::Naughty,
-                Nature::Bold,
-                Nature::Docile,
-                Nature::Relaxed,
-                Nature::Impish,
-                Nature::Lax,
-                Nature::Timid,
-                Nature::Hasty,
-                Nature::Serious,
-                Nature::Jolly,
-                Nature::Naive,
-                Nature::Modest,
-                Nature::Mild,
-                Nature::Quiet,
-                Nature::Bashful,
-                Nature::Rash,
-                Nature::Calm,
-                Nature::Gentle,
-                Nature::Sassy,
-                Nature::Careful,
-                Nature::Quirky,
-            ];
-            for i in 0..(NATURE_COUNT - 1) {
-                for j in 1..NATURE_COUNT {
-                    if rand_next_u16(rng, "test_safari_zone_pokeblock", 2) & 1 == 1 {
-                        natures.swap(i, j);
-                    }
-                }
+    if pokeblock.is_none() {
+        return None;
+    }
+
+    if rand_next_u16(rng, "test_safari_zone_pokeblock", 100) % 100 >= 80 {
+        return None;
+    }
+
+    let mut natures: [Nature; NATURE_COUNT] = [
+        Nature::Hardy,
+        Nature::Lonely,
+        Nature::Brave,
+        Nature::Adamant,
+        Nature::Naughty,
+        Nature::Bold,
+        Nature::Docile,
+        Nature::Relaxed,
+        Nature::Impish,
+        Nature::Lax,
+        Nature::Timid,
+        Nature::Hasty,
+        Nature::Serious,
+        Nature::Jolly,
+        Nature::Naive,
+        Nature::Modest,
+        Nature::Mild,
+        Nature::Quiet,
+        Nature::Bashful,
+        Nature::Rash,
+        Nature::Calm,
+        Nature::Gentle,
+        Nature::Sassy,
+        Nature::Careful,
+        Nature::Quirky,
+    ];
+    for i in 0..(NATURE_COUNT - 1) {
+        for j in 1..NATURE_COUNT {
+            if rand_next_u16(rng, "test_safari_zone_pokeblock", 2) & 1 == 1 {
+                natures.swap(i, j);
             }
-
-            return natures.into_iter().find(|nature| {
-                let score: i32 = pokeblock
-                    .flavors
-                    .iter()
-                    .enumerate()
-                    .map(|(flavor, has_flavor)| {
-                        if *has_flavor {
-                            let compatibility = NATURE_STAT_FACTORS[*nature as usize][flavor];
-                            match compatibility {
-                                PokeblockFlavorCompatibility::Yes => 1,
-                                PokeblockFlavorCompatibility::No => -1,
-
-                                PokeblockFlavorCompatibility::Neutral => 0,
-                            }
-                        } else {
-                            0
-                        }
-                    })
-                    .sum();
-                score > 0
-            });
-        } else {
-            None
         }
-    } else {
-        None
+    }
+
+    let pokeblock = pokeblock.unwrap();
+    match pokeblock {
+        Wild3SafariPokeblock::FromFlavor { flavors } => natures.into_iter().find(|nature| {
+            let score: i32 = flavors
+                .iter()
+                .enumerate()
+                .map(|(flavor, has_flavor)| {
+                    if *has_flavor {
+                        let compatibility = NATURE_STAT_FACTORS[*nature as usize][flavor];
+                        match compatibility {
+                            PokeblockFlavorCompatibility::Yes => 1,
+                            PokeblockFlavorCompatibility::No => -1,
+
+                            PokeblockFlavorCompatibility::Neutral => 0,
+                        }
+                    } else {
+                        0
+                    }
+                })
+                .sum();
+            score > 0
+        }),
+        Wild3SafariPokeblock::FromNatures {
+            wanted_natures,
+            flavor_count,
+        } => {
+            // Determine if by using at most <flavor_count> flavors, we can force getting any of the wanted natures.
+            // If yes, return that wanted nature. Otherwise, return the first nature which will be filtered out later.
+
+            Some(natures[0])
+        }
     }
 }
 

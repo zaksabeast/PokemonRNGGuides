@@ -1,0 +1,1 @@
+import{t as e}from"./battleVideo-v7fDfg-c.js";export{e as BattleVideo};

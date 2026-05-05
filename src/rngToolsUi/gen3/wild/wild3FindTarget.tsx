@@ -1,8 +1,4 @@
-import {
-  Wild3Action,
-  Wild3PaintingAdvsAndDur,
-  Wild3SearcherResultMon,
-} from "~/rngTools";
+import { Wild3PaintingAdvsAndDur, Wild3SearcherResultMon } from "~/rngTools";
 import {
   Flex,
   Icon,
@@ -34,6 +30,7 @@ import {
   wild3RoamerStates,
   wild3MassOutbreakStates,
   wild3FeebasStates,
+  wild3Actions,
 } from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
@@ -53,15 +50,6 @@ Possible UI improvements:
  - Min/Max IVs should have a tooltip displaying the stat name.
 */
 
-const supportWild3Actions: Wild3Action[] = [
-  "SweetScentLand",
-  "SweetScentWater",
-  "OldRod",
-  "GoodRod",
-  "SuperRod",
-  // "RockSmash", // TODO: Support Rock Smash
-];
-
 const Validator = z
   .object({
     species: z.enum(emeraldWildGameData.species),
@@ -79,7 +67,7 @@ const Validator = z
           .max(gen3Leads.length - 1),
       )
       .min(1),
-    actions: z.array(z.enum(supportWild3Actions)).min(1),
+    actions: z.array(z.enum(wild3Actions)).min(1),
     roamerStates: z.array(z.enum(wild3RoamerStates)).min(1),
     massOutbreakStates: z.array(z.enum(wild3MassOutbreakStates)).min(1),
     feebasStates: z.array(z.enum(wild3FeebasStates)).min(1),
@@ -133,7 +121,7 @@ const getInitialValues = (): FormState => {
     leadIdxs: gen3Leads.map((_, i) => i),
     recommendedSetups: true,
     methods: ["Wild1", "Wild2", "Wild4"],
-    actions: [...supportWild3Actions],
+    actions: [...wild3Actions],
     roamerStates: [...wild3RoamerStates],
     feebasStates: [...wild3FeebasStates],
     massOutbreakStates: [...wild3MassOutbreakStates],

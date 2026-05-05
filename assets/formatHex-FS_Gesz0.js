@@ -1,0 +1,1 @@
+var e=(e,t=4)=>e.toString(16).padStart(t*2,`0`).toUpperCase();export{e as t};

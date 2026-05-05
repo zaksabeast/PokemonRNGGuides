@@ -1,0 +1,1 @@
+import{t as e}from"./battleVideo-DEGv_G8N.js";export{e as BattleVideo};

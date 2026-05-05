@@ -61,7 +61,6 @@ const CommonDpptEncounters = {
   // Legends
   "uxie-50": { species: "Uxie", level: 50, isFixedGender: true },
   "azelf-50": { species: "Azelf", level: 50, isFixedGender: true },
-  "heatran-70": { species: "Heatran", level: 70, isFixedGender: false },
 
   // Events
   "manaphy-1": { species: "Manaphy", level: 1, isFixedGender: true },
@@ -91,6 +90,7 @@ const DiamondEncounters = {
     level: 70,
     isFixedGender: true,
   },
+  "heatran-70": { species: "Heatran", level: 70, isFixedGender: false },
   "regigigas-70": { species: "Regigigas", level: 70, isFixedGender: true },
 } as const satisfies Record<string, Encounter>;
 
@@ -118,6 +118,7 @@ const PearlEncounters = {
     level: 70,
     isFixedGender: true,
   },
+  "heatran-70": { species: "Heatran", level: 70, isFixedGender: false },
   "regigigas-70": { species: "Regigigas", level: 70, isFixedGender: true },
 } as const satisfies Record<string, Encounter>;
 
@@ -145,6 +146,7 @@ const PlatinumEncounters = {
   "regice-30": { species: "Regice", level: 30, isFixedGender: true },
   "registeel-30": { species: "Registeel", level: 30, isFixedGender: true },
   "regigigas-1": { species: "Regigigas", level: 1, isFixedGender: true },
+  "heatran-50": { species: "Heatran", level: 50, isFixedGender: false },
   "giratina-alt-47": {
     species: "Giratina_Altered",
     form: 0,

@@ -5,12 +5,14 @@ import styled from "@emotion/styled";
 import { DisplayAttribute, DisplayTags } from "./displayTags";
 import { LanguageKey } from "~/types/language";
 import { Difficulty, DifficultyTag } from "./difficultyTag";
+import { styledPropGuard } from "~/utils/styled";
 
 const { Meta: CardMeta } = AntdCard;
 
-const GuideCard = styled(Card, {
-  shouldForwardProp: (prop) => !prop.includes("$"),
-})<{ $isTop?: boolean; $isBottom?: boolean }>(
+const GuideCard = styled(
+  Card,
+  styledPropGuard,
+)<{ $isTop?: boolean; $isBottom?: boolean }>(
   ({ theme, $isTop: $top, $isBottom: $bottom }) => ({
     borderTopLeftRadius: $top ? 10 : 0,
     borderTopRightRadius: $top ? 10 : 0,

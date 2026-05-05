@@ -7,7 +7,7 @@
     "start": "bun run scripts/dev-server",
     "dev": "bun run build:rng_tools && bun run start",
     "format": "bun run format:ts && bun run format:rust",
-    "format:ts": "bun prettier . --write",
+    "format:ts": "bun prettier . --write --list-different",
     "format:rust": "bun run scripts/format-rust",
     "build": "bun run build:client && bun run build:prerender && bun run minimize-css",
     "build:client": "NODE_ENV=production bunx --bun vite build && cp dist/index.html dist/404.html && cp dist/sw.js dist/sw.ts",
@@ -31,9 +31,9 @@
     "lint:rust:format": "bun run scripts/format-rust --check",
     "preview": "vite preview",
     "test:e2e": "bunx cypress run --browser chrome",
-    "test:rust": "cargo +1.86.0 test --manifest-path rng_tools/Cargo.toml",
+    "test:rust": "cargo +1.86.0 test --manifest-path rng_tools/Cargo.toml --quiet",
     "prepare": "husky",
-    "check": "bun run format && bun run lint && bun run test:rust"
+    "check": "bun run build:guides && bun run format && bun run lint && bun run test:rust"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.11.11",

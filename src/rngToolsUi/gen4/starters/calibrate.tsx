@@ -200,7 +200,8 @@ export const CalibrateStarter4 = () => {
     });
 
     if (minMaxIvs == null) {
-      return [];
+      setResults([]);
+      return;
     }
 
     const datetime = toRngDateTime(

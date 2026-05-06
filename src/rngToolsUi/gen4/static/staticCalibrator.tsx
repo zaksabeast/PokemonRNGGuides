@@ -301,6 +301,7 @@ export const Static4Calibrator = () => {
     run: generateStatic4States,
     data: results,
     cancel,
+    reset,
   } = useBatchedTool(multiWorkerRngTools.generate_static4_states, {
     sortBy,
     map: mapResult,
@@ -330,7 +331,8 @@ export const Static4Calibrator = () => {
     });
 
     if (minMaxIvs == null) {
-      return [];
+      reset();
+      return;
     }
 
     const { datetime: targetDateTime, delay: targetDelay } =

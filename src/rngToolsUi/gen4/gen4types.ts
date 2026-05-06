@@ -156,8 +156,8 @@ export const Characteristic4Options = sortBy(
     return (
       match(characteristic)
         // These two were mistranslated from Japanese in Gen 4 and 5
-        .with("TakesPlentyOfSiestas", () => "Often dozes off")
-        .with("NodsOffALot", () => "Often scatters things")
+        .with("TakesPlentyOfSiestas", () => "Often Dozes Off")
+        .with("NodsOffALot", () => "Often Scatters Things")
         .otherwise(startCase)
     );
   }),

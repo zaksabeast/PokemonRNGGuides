@@ -4,8 +4,8 @@ use wasm_bindgen::prelude::*;
 
 use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned, is_method_possible_to_trigger};
 use crate::{
-    EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, NATURE_STAT_FACTORS, Nature, PkmFilter,
-    PokeblockFlavorCompatibility,
+    EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature, PERTINENT_POKEBLOCKS_BY_NATURE,
+    POKEBLOCK_NATURE_STAT_FACTORS, PkmFilter,
     gen3::{
         CycleAndModCount, CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method,
         Gen3PkmFilter, Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
@@ -324,7 +324,7 @@ fn pick_wild_mon_nature_safari(
         return None;
     }
 
-    let mut natures: [Nature; NATURE_COUNT] = [
+    let mut all_natures_by_priority: [Nature; NATURE_COUNT] = [
         Nature::Hardy,
         Nature::Lonely,
         Nature::Brave,
@@ -354,41 +354,71 @@ fn pick_wild_mon_nature_safari(
     for i in 0..(NATURE_COUNT - 1) {
         for j in 1..NATURE_COUNT {
             if rand_next_u16(rng, "test_safari_zone_pokeblock", 2) & 1 == 1 {
-                natures.swap(i, j);
+                all_natures_by_priority.swap(i, j);
             }
         }
     }
 
-    let pokeblock = pokeblock.unwrap();
-    match pokeblock {
-        Wild3SafariPokeblock::FromFlavor { flavors } => natures.into_iter().find(|nature| {
-            let score: i32 = flavors
-                .iter()
-                .enumerate()
-                .map(|(flavor, has_flavor)| {
-                    if *has_flavor {
-                        let compatibility = NATURE_STAT_FACTORS[*nature as usize][flavor];
-                        match compatibility {
-                            PokeblockFlavorCompatibility::Yes => 1,
-                            PokeblockFlavorCompatibility::No => -1,
+    let mut natures_by_priority: [Nature; 20] = Default::default();
+    let mut next_idx = 0_usize;
 
-                            PokeblockFlavorCompatibility::Neutral => 0,
-                        }
-                    } else {
-                        0
-                    }
-                })
-                .sum();
-            score > 0
-        }),
-        Wild3SafariPokeblock::FromNatures {
-            wanted_natures,
+    all_natures_by_priority.iter().for_each(|nature| {
+        // Those natures are never selected because their score can't be over 0. This is to improve performance.
+        if matches!(
+            nature,
+            Nature::Hardy | Nature::Docile | Nature::Serious | Nature::Bashful | Nature::Quirky
+        ) {
+            return;
+        }
+        natures_by_priority[next_idx] = *nature;
+        next_idx += 1;
+    });
+
+    let has_positive_score = |nature: Nature, flavors: &[bool; 5]| -> bool {
+        let score = flavors
+            .iter()
+            .enumerate()
+            .map(|(flavor, has_flavor)| {
+                if *has_flavor {
+                    POKEBLOCK_NATURE_STAT_FACTORS[nature as usize][flavor]
+                } else {
+                    0
+                }
+            })
+            .sum::<i32>();
+        score > 0
+    };
+
+    let get_nature_from_flavors = |flavors: &[bool; 5]| -> Option<Nature> {
+        natures_by_priority
+            .into_iter()
+            .find(|nature| has_positive_score(*nature, flavors))
+    };
+
+    let pokeblock = pokeblock.as_ref().unwrap();
+    match pokeblock {
+        Wild3SafariPokeblock::FromFlavor { flavors } => get_nature_from_flavors(flavors),
+        Wild3SafariPokeblock::FromNature {
+            wanted_nature,
             flavor_count,
         } => {
-            // Determine if by using at most <flavor_count> flavors, we can force getting any of the wanted natures.
-            // If yes, return that wanted nature. Otherwise, return the first nature which will be filtered out later.
+            let skip_count = match flavor_count {
+                4 => 0,
+                3 => 1,
+                2 => 4,
+                _ => 7,
+            };
 
-            Some(natures[0])
+            let success = PERTINENT_POKEBLOCKS_BY_NATURE[*wanted_nature as usize]
+                .iter()
+                .skip(skip_count)
+                .any(|&flavors| get_nature_from_flavors(&flavors) == Some(*wanted_nature));
+
+            if success {
+                Some(*wanted_nature)
+            } else {
+                Some(natures_by_priority[0]) // will be filtered out later
+            }
         }
     }
 }

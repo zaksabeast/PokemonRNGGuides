@@ -100,7 +100,7 @@ pub struct Wild3SearcherOptions {
     pub generate_even_if_impossible: bool,
     pub painting_opts: Option<Wild3PaintingOpts>,
     pub using_white_flute: bool,
-    pub using_safari_pokeblock: bool,
+    pub safari_pokeblock_max_flavor_count: u8,
 }
 
 impl Default for Wild3SearcherOptions {
@@ -123,7 +123,7 @@ impl Default for Wild3SearcherOptions {
             painting_opts: None,
             lead_cycle_speed: None,
             using_white_flute: true,
-            using_safari_pokeblock: true,
+            safari_pokeblock_max_flavor_count: 2, // Max possible count solo
         }
     }
 }

@@ -22,12 +22,12 @@ fn search_wild3_naive_at_given_advance(
     let mut results: Vec<Wild3SearcherResultMon> = vec![];
 
     let mut pokeblock_states: Vec<Option<Wild3SafariPokeblock>> = vec![None];
-    if opts.using_safari_pokeblock {
+    if opts.safari_pokeblock_max_flavor_count != 0 {
         let mut add_pokeblock = |nature: Nature| {
-            let pokeblock = Wild3SafariPokeblock::from_nature(nature);
-            if pokeblock.is_some() {
-                pokeblock_states.push(pokeblock);
-            }
+            pokeblock_states.push(Some(Wild3SafariPokeblock::FromNature {
+                wanted_nature: nature,
+                flavor_count: opts.safari_pokeblock_max_flavor_count,
+            }));
         };
 
         if let Some(nature) = opts.filter.nature {

@@ -1,239 +1,366 @@
-#[derive(Copy, Clone, Debug, PartialEq)]
-pub enum PokeblockFlavorCompatibility {
-    Yes,
-    Neutral,
-    No,
-}
-/*
-const s8 gPokeblockFlavorCompatibilityTable[NUM_NATURES * FLAVOR_COUNT] =
-{
-     // Spicy,  Dry, Sweet, Bitter, Sour
-          0,      0,    0,     0,     0, // Hardy
-          1,      0,    0,     0,    -1, // Lonely
-          1,      0,   -1,     0,     0, // Brave
-          1,     -1,    0,     0,     0, // Adamant
-          1,      0,    0,    -1,     0, // Naughty
-         -1,      0,    0,     0,     1, // Bold
-          0,      0,    0,     0,     0, // Docile
-          0,      0,   -1,     0,     1, // Relaxed
-          0,     -1,    0,     0,     1, // Impish
-          0,      0,    0,    -1,     1, // Lax
-         -1,      0,    1,     0,     0, // Timid
-          0,      0,    1,     0,    -1, // Hasty
-          0,      0,    0,     0,     0, // Serious
-          0,     -1,    1,     0,     0, // Jolly
-          0,      0,    1,    -1,     0, // Naive
-         -1,      1,    0,     0,     0, // Modest
-          0,      1,    0,     0,    -1, // Mild
-          0,      1,   -1,     0,     0, // Quiet
-          0,      0,    0,     0,     0, // Bashful
-          0,      1,    0,    -1,     0, // Rash
-         -1,      0,    0,     1,     0, // Calm
-          0,      0,    0,     1,    -1, // Gentle
-          0,      0,   -1,     1,     0, // Sassy
-          0,     -1,    0,     1,     0, // Careful
-          0,      0,    0,     0,     0  // Quirky
-};
-*/
-pub const NATURE_STAT_FACTORS: [[PokeblockFlavorCompatibility; 5]; 25] = [
+pub const POKEBLOCK_NATURE_STAT_FACTORS: [[i32; 5]; 25] = [
     /*Hardy */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [0, 0, 0, 0, 0],
     /*Lonely */
-    [
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::No,
-    ],
+    [1, 0, 0, 0, -1],
     /*Brave */
-    [
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [1, 0, -1, 0, 0],
     /*Adamant */
-    [
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [1, -1, 0, 0, 0],
     /*Naughty */
-    [
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [1, 0, 0, -1, 0],
     /*Bold */
-    [
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Yes,
-    ],
+    [-1, 0, 0, 0, 1],
     /*Docile */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [0, 0, 0, 0, 0],
     /*Relaxed */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Yes,
-    ],
+    [0, 0, -1, 0, 1],
     /*Impish */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Yes,
-    ],
+    [0, -1, 0, 0, 1],
     /*Lax */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Yes,
-    ],
+    [0, 0, 0, -1, 1],
     /*Timid */
-    [
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [-1, 0, 1, 0, 0],
     /*Hasty */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::No,
-    ],
+    [0, 0, 1, 0, -1],
     /*Serious */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [0, 0, 0, 0, 0],
     /*Jolly */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [0, -1, 1, 0, 0],
     /*Naive */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [0, 0, 1, -1, 0],
     /*Modest */
-    [
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [-1, 1, 0, 0, 0],
     /*Mild */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::No,
-    ],
+    [0, 1, 0, 0, -1],
     /*Quiet */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [0, 1, -1, 0, 0],
     /*Bashful */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [0, 0, 0, 0, 0],
     /*Rash */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [0, 1, 0, -1, 0],
     /*Calm */
-    [
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [-1, 0, 0, 1, 0],
     /*Gentle */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::No,
-    ],
+    [0, 0, 0, 1, -1],
     /*Sassy */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [0, 0, -1, 1, 0],
     /*Careful */
-    [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::No,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Yes,
-        PokeblockFlavorCompatibility::Neutral,
-    ],
+    [0, -1, 0, 1, 0],
     /*Quirky */
+    [0, 0, 0, 0, 0],
+];
+
+/*
+Generate PERTINENT_POKEBLOCKS_BY_NATURE:
+
+(() => {
+    const factorForNatures = [
+        [0, 0, 0, 0, 0],
+        [1, 0, 0, 0, -1],
+        [1, 0, -1, 0, 0],
+        [1, -1, 0, 0, 0],
+        [1, 0, 0, -1, 0],
+        [-1, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0],
+        [0, 0, -1, 0, 1],
+        [0, -1, 0, 0, 1],
+        [0, 0, 0, -1, 1],
+        [-1, 0, 1, 0, 0],
+        [0, 0, 1, 0, -1],
+        [0, 0, 0, 0, 0],
+        [0, -1, 1, 0, 0],
+        [0, 0, 1, -1, 0],
+        [-1, 1, 0, 0, 0],
+        [0, 1, 0, 0, -1],
+        [0, 1, -1, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 1, 0, -1, 0],
+        [-1, 0, 0, 1, 0],
+        [0, 0, 0, 1, -1],
+        [0, 0, -1, 1, 0],
+        [0, -1, 0, 1, 0],
+        [0, 0, 0, 0, 0]
+    ];
+
+    const data = factorForNatures.map(factorForNature => {
+        return [7,6,5,3,4,2,1,0].map(bitsVal => {
+            const zeros = [
+                !!((bitsVal >> 0) & 1),
+                !!((bitsVal >> 1) & 1),
+                !!((bitsVal >> 2) & 1),
+                false, // doesn't matter
+                false, // doesn't matter
+            ];
+            let zeroCount = 0;
+            return factorForNature.map(factor => {
+                if (factor === 1)
+                    return true;
+                if (factor === -1)
+                    return false;
+                const val = zeros[zeroCount];
+                zeroCount++;
+                return val;
+            });
+        });
+    });
+
+    console.log(JSON.stringify(data));
+})();
+
+*/
+
+// PERTINENT_POKEBLOCKS_BY_NATURE[nature][pokeblock_idx][flavor]
+// The elements are ordered from most flavors to fewest flavors.
+pub const PERTINENT_POKEBLOCKS_BY_NATURE: [[[bool; 5]; 8]; 25] = [
     [
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
-        PokeblockFlavorCompatibility::Neutral,
+        [true, true, true, false, false],
+        [false, true, true, false, false],
+        [true, false, true, false, false],
+        [true, true, false, false, false],
+        [false, false, true, false, false],
+        [false, true, false, false, false],
+        [true, false, false, false, false],
+        [false, false, false, false, false],
+    ],
+    [
+        [true, true, true, true, false],
+        [true, false, true, true, false],
+        [true, true, false, true, false],
+        [true, true, true, false, false],
+        [true, false, false, true, false],
+        [true, false, true, false, false],
+        [true, true, false, false, false],
+        [true, false, false, false, false],
+    ],
+    [
+        [true, true, false, true, true],
+        [true, false, false, true, true],
+        [true, true, false, false, true],
+        [true, true, false, true, false],
+        [true, false, false, false, true],
+        [true, false, false, true, false],
+        [true, true, false, false, false],
+        [true, false, false, false, false],
+    ],
+    [
+        [true, false, true, true, true],
+        [true, false, false, true, true],
+        [true, false, true, false, true],
+        [true, false, true, true, false],
+        [true, false, false, false, true],
+        [true, false, false, true, false],
+        [true, false, true, false, false],
+        [true, false, false, false, false],
+    ],
+    [
+        [true, true, true, false, true],
+        [true, false, true, false, true],
+        [true, true, false, false, true],
+        [true, true, true, false, false],
+        [true, false, false, false, true],
+        [true, false, true, false, false],
+        [true, true, false, false, false],
+        [true, false, false, false, false],
+    ],
+    [
+        [false, true, true, true, true],
+        [false, false, true, true, true],
+        [false, true, false, true, true],
+        [false, true, true, false, true],
+        [false, false, false, true, true],
+        [false, false, true, false, true],
+        [false, true, false, false, true],
+        [false, false, false, false, true],
+    ],
+    [
+        [true, true, true, false, false],
+        [false, true, true, false, false],
+        [true, false, true, false, false],
+        [true, true, false, false, false],
+        [false, false, true, false, false],
+        [false, true, false, false, false],
+        [true, false, false, false, false],
+        [false, false, false, false, false],
+    ],
+    [
+        [true, true, false, true, true],
+        [false, true, false, true, true],
+        [true, false, false, true, true],
+        [true, true, false, false, true],
+        [false, false, false, true, true],
+        [false, true, false, false, true],
+        [true, false, false, false, true],
+        [false, false, false, false, true],
+    ],
+    [
+        [true, false, true, true, true],
+        [false, false, true, true, true],
+        [true, false, false, true, true],
+        [true, false, true, false, true],
+        [false, false, false, true, true],
+        [false, false, true, false, true],
+        [true, false, false, false, true],
+        [false, false, false, false, true],
+    ],
+    [
+        [true, true, true, false, true],
+        [false, true, true, false, true],
+        [true, false, true, false, true],
+        [true, true, false, false, true],
+        [false, false, true, false, true],
+        [false, true, false, false, true],
+        [true, false, false, false, true],
+        [false, false, false, false, true],
+    ],
+    [
+        [false, true, true, true, true],
+        [false, false, true, true, true],
+        [false, true, true, false, true],
+        [false, true, true, true, false],
+        [false, false, true, false, true],
+        [false, false, true, true, false],
+        [false, true, true, false, false],
+        [false, false, true, false, false],
+    ],
+    [
+        [true, true, true, true, false],
+        [false, true, true, true, false],
+        [true, false, true, true, false],
+        [true, true, true, false, false],
+        [false, false, true, true, false],
+        [false, true, true, false, false],
+        [true, false, true, false, false],
+        [false, false, true, false, false],
+    ],
+    [
+        [true, true, true, false, false],
+        [false, true, true, false, false],
+        [true, false, true, false, false],
+        [true, true, false, false, false],
+        [false, false, true, false, false],
+        [false, true, false, false, false],
+        [true, false, false, false, false],
+        [false, false, false, false, false],
+    ],
+    [
+        [true, false, true, true, true],
+        [false, false, true, true, true],
+        [true, false, true, false, true],
+        [true, false, true, true, false],
+        [false, false, true, false, true],
+        [false, false, true, true, false],
+        [true, false, true, false, false],
+        [false, false, true, false, false],
+    ],
+    [
+        [true, true, true, false, true],
+        [false, true, true, false, true],
+        [true, false, true, false, true],
+        [true, true, true, false, false],
+        [false, false, true, false, true],
+        [false, true, true, false, false],
+        [true, false, true, false, false],
+        [false, false, true, false, false],
+    ],
+    [
+        [false, true, true, true, true],
+        [false, true, false, true, true],
+        [false, true, true, false, true],
+        [false, true, true, true, false],
+        [false, true, false, false, true],
+        [false, true, false, true, false],
+        [false, true, true, false, false],
+        [false, true, false, false, false],
+    ],
+    [
+        [true, true, true, true, false],
+        [false, true, true, true, false],
+        [true, true, false, true, false],
+        [true, true, true, false, false],
+        [false, true, false, true, false],
+        [false, true, true, false, false],
+        [true, true, false, false, false],
+        [false, true, false, false, false],
+    ],
+    [
+        [true, true, false, true, true],
+        [false, true, false, true, true],
+        [true, true, false, false, true],
+        [true, true, false, true, false],
+        [false, true, false, false, true],
+        [false, true, false, true, false],
+        [true, true, false, false, false],
+        [false, true, false, false, false],
+    ],
+    [
+        [true, true, true, false, false],
+        [false, true, true, false, false],
+        [true, false, true, false, false],
+        [true, true, false, false, false],
+        [false, false, true, false, false],
+        [false, true, false, false, false],
+        [true, false, false, false, false],
+        [false, false, false, false, false],
+    ],
+    [
+        [true, true, true, false, true],
+        [false, true, true, false, true],
+        [true, true, false, false, true],
+        [true, true, true, false, false],
+        [false, true, false, false, true],
+        [false, true, true, false, false],
+        [true, true, false, false, false],
+        [false, true, false, false, false],
+    ],
+    [
+        [false, true, true, true, true],
+        [false, false, true, true, true],
+        [false, true, false, true, true],
+        [false, true, true, true, false],
+        [false, false, false, true, true],
+        [false, false, true, true, false],
+        [false, true, false, true, false],
+        [false, false, false, true, false],
+    ],
+    [
+        [true, true, true, true, false],
+        [false, true, true, true, false],
+        [true, false, true, true, false],
+        [true, true, false, true, false],
+        [false, false, true, true, false],
+        [false, true, false, true, false],
+        [true, false, false, true, false],
+        [false, false, false, true, false],
+    ],
+    [
+        [true, true, false, true, true],
+        [false, true, false, true, true],
+        [true, false, false, true, true],
+        [true, true, false, true, false],
+        [false, false, false, true, true],
+        [false, true, false, true, false],
+        [true, false, false, true, false],
+        [false, false, false, true, false],
+    ],
+    [
+        [true, false, true, true, true],
+        [false, false, true, true, true],
+        [true, false, false, true, true],
+        [true, false, true, true, false],
+        [false, false, false, true, true],
+        [false, false, true, true, false],
+        [true, false, false, true, false],
+        [false, false, false, true, false],
+    ],
+    [
+        [true, true, true, false, false],
+        [false, true, true, false, false],
+        [true, false, true, false, false],
+        [true, true, false, false, false],
+        [false, false, true, false, false],
+        [false, true, false, false, false],
+        [true, false, false, false, false],
+        [false, false, false, false, false],
     ],
 ];

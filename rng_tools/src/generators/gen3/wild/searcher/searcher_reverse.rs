@@ -59,12 +59,17 @@ EncounterIdxPath(MapSetup)
 LvlPath
     Vanilla
     Hustle
-NatureGenderPath
+GenderPath
     Vanilla
-    SynchronizeSuccess
-    SynchronizeFailure
     CuteCharmSuccess
     CuteCharmFailure
+NaturePath
+    Vanilla
+    SafariNatureSuccess
+    SafariNatureFailureSynchronizeSuccess
+    SafariNatureFailureSynchronizeFailure
+    SynchronizeSuccess
+    SynchronizeFailure
 PidPath (knows Iv arc)
     WithoutVBlank
     WithVBLankBetweenPid

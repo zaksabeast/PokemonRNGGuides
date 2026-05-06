@@ -1,7 +1,8 @@
 mod encounter_idx_path;
+mod gender_path;
 mod iv_path;
 mod lvl_path;
-mod nature_gender_path;
+mod nature_path;
 mod pid_low_path;
 mod pid_path;
 
@@ -13,9 +14,10 @@ pub use searcher_main::searcher_reverse::search_wild3_reverse;
 pub mod searcher_painter;
 
 pub use encounter_idx_path::*;
+pub use gender_path::*;
 pub use iv_path::*;
 pub use lvl_path::*;
-pub use nature_gender_path::*;
+pub use nature_path::*;
 pub use pid_low_path::*;
 pub use pid_path::*;
 pub use searcher_main::*;

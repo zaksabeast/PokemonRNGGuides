@@ -1,0 +1,1 @@
+import{r as e,t}from"./react-DFI7aX18.js";var n=`Diamond`,r=e({game:n,munchlaxLocations:null,targetLocation:`FloaromaMeadow`,initialSeed:null,targetAdvance:null,honeyTreeMap:{showTrees:!0,showRecommended:!0,showMunchlax:!0}}),i=()=>t(r);export{r as n,i as r,n as t};

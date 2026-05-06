@@ -12,7 +12,6 @@ type PokeRadarPatchesProps = {
   patches: PokeRadarPatch[];
 };
 
-// eslint-disable-next-line id-length
 const centerPatch: PokeRadarPatch = { x: 4, y: 4, state: "Empty" };
 
 export const PokeRadarPatches = ({ patches }: PokeRadarPatchesProps) => {
@@ -38,7 +37,6 @@ export const PokeRadarPatches = ({ patches }: PokeRadarPatchesProps) => {
               justify="center"
             >
               {match(patchesByCoords[`${posX}_${posY}`])
-                // eslint-disable-next-line id-length
                 .with({ x: 4, y: 4 }, () => (
                   <Icon size="80%" name="PersonSimpleWalkBold" />
                 ))

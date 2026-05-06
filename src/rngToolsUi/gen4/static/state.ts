@@ -6,6 +6,8 @@ import { MinMaxStats } from "~/types";
 
 export type Static4Target = Omit<RngToolStatic4State["state"], "ivs"> & {
   seed_time: RngToolStatic4State["seed_time"];
+  encounterMinLevel: number;
+  encounterMaxLevel: number;
   level: number;
   species: Species;
   form?: number;

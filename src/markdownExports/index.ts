@@ -38,6 +38,7 @@ import {
   MediaTableCell,
   YouTubeTable,
   EqualColumnTable,
+  Pixelate,
 } from "~/components";
 import { Glossary } from "~/pageComponents/glossary";
 import { Gen7SosList } from "~/pageComponents/gen7Sos/sosList";
@@ -107,6 +108,7 @@ const nonTools = {
   TranslationHelperSelectLanguage,
   blockquote: MarkdownBlockquote,
   TextArea: Input.TextArea,
+  Pixelate,
 };
 
 const lazyLoad = <ImportRes, Props>(
@@ -372,9 +374,9 @@ const tools = {
     () => import("~/rngToolsUi/gen4/static/staticCalibrator"),
     (mod) => mod.Static4Calibrator,
   ),
-  ChatterFilter: lazyLoad(
+  Static4ChatterFilter: lazyLoad(
     () => import("~/rngToolsUi/gen4/static/chatterFilter"),
-    (mod) => mod.ChatterFilter,
+    (mod) => mod.Static4ChatterFilter,
   ),
   Gen5CalibrationResults: lazyLoad(
     () => import("~/rngToolsUi/gen5/calibrationResults/calibrationResults"),
@@ -391,6 +393,34 @@ const tools = {
   Profile5Setup: lazyLoad(
     () => import("~/rngToolsUi/gen5/profileSearcher/setup"),
     (mod) => mod.Profile5Setup,
+  ),
+  HoneyTreeChatotFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/chatotFilter"),
+    (mod) => mod.HoneyTreeChatotFilter,
+  ),
+  HoneyTreeTidSid: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/tidSid"),
+    (mod) => mod.HoneyTreeTidSid,
+  ),
+  HoneyTreeCoinClipper: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/coinFlipper"),
+    (mod) => mod.HoneyTreeCoinClipper,
+  ),
+  HoneyTreeFindEncounter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/findEncounter"),
+    (mod) => mod.HoneyTreeFindEncounter,
+  ),
+  HoneyTreeShowIf: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/showIf"),
+    (mod) => mod.HoneyTreeShowIf,
+  ),
+  HoneyTreeMap: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/map"),
+    (mod) => mod.HoneyTreeMap,
+  ),
+  HoneyTreeTargetTree: lazyLoad(
+    () => import("~/rngToolsUi/gen4/honeyTree/targetTree"),
+    (mod) => mod.HoneyTreeTargetTree,
   ),
 };
 

@@ -36,7 +36,12 @@ import { chunkIvs } from "~/utils/chunkIvs";
 import { MonthSchema, monthToRustFilter } from "~/utils/time";
 import { Gen4GameVersion } from "../gen4types";
 import { getStatRange } from "~/types/statRange";
-import { defaultEncounter, Encounter, getGameEncounters } from "./encounters";
+import {
+  defaultEncounter,
+  getGameEncounters as getStaticEncounters,
+} from "../encounters/static";
+import { getGameEncounters as getHoneyEncounters } from "../encounters/honey";
+import { type Encounter } from "../encounters/encounter";
 import { useField, useWatch } from "~/hooks/form";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 
@@ -62,9 +67,8 @@ type SelectButtonProps = {
 const SelectButton = ({ target }: SelectButtonProps) => {
   const [, setCurrentStep] = useCurrentStep();
   const [, setState] = useStatic4State();
-  const [{ isFixedGender, level, species, form, advanceOffset }] = useAtom(
-    searchedEncounterAtom,
-  );
+  const [{ isFixedGender, minLevel, maxLevel, species, form, advanceOffset }] =
+    useAtom(searchedEncounterAtom);
 
   return (
     <Button
@@ -72,7 +76,7 @@ const SelectButton = ({ target }: SelectButtonProps) => {
       onClick={async () => {
         const minMaxStats = await getStatRange({
           species,
-          levelRange: [level, level],
+          levelRange: [minLevel, maxLevel],
         });
         setState((prev) => ({
           ...prev,
@@ -81,7 +85,8 @@ const SelectButton = ({ target }: SelectButtonProps) => {
             isFixedGender,
             species,
             form,
-            level,
+            encounterMinLevel: minLevel,
+            encounterMaxLevel: maxLevel,
             minMaxStats,
             advanceOffset,
           },
@@ -199,15 +204,16 @@ const OffsetField = ({ game, encounter }: OffsetFieldProps) => {
 
 type FieldsProps = {
   game: Gen4GameVersion;
+  getEncounters: (game: Gen4GameVersion) => Record<string, Encounter>;
 };
 
-const Fields = ({ game }: FieldsProps) => {
+const Fields = ({ game, getEncounters }: FieldsProps) => {
   const t = useActiveRouteTranslations();
   const { encounter_id } = useWatch({
     validationSchema: Validator,
     names: { encounter_id: true },
   });
-  const encounters = getGameEncounters(game);
+  const encounters = getEncounters(game);
   const encounter = encounter_id == null ? null : encounters[encounter_id];
 
   const fields: Field[] = [
@@ -296,10 +302,16 @@ const mapResult = (res: Static4State): Result => {
   };
 };
 
-export const Static4Searcher = () => {
+type Static4SearcherProps = {
+  honey?: boolean;
+};
+
+export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
   const [state] = useStatic4State();
   const [, setSearchedEncounter] = useAtom(searchedEncounterAtom);
   const game = state.game;
+
+  const getEncounters = honey ? getHoneyEncounters : getStaticEncounters;
 
   const {
     run: searchStaticSeeds,
@@ -310,7 +322,7 @@ export const Static4Searcher = () => {
   });
 
   const onSubmit = async (opts: FormState) => {
-    const encounters = getGameEncounters(game);
+    const encounters = getEncounters(game);
     const encounter = encounters[opts.encounter_id];
 
     if (encounter == null) {
@@ -333,6 +345,8 @@ export const Static4Searcher = () => {
       year: opts.year,
       month: monthToRustFilter(opts.month),
       lead: opts.lead,
+      encounter_min_level: encounter.minLevel,
+      encounter_max_level: encounter.maxLevel,
       game,
     };
     const chunkedIvs = chunkIvs(opts.filter_min_ivs, opts.filter_max_ivs);
@@ -361,7 +375,7 @@ export const Static4Searcher = () => {
       cancelTrackerId="cancel_gen4_static"
       onCancel={cancel}
     >
-      <Fields game={game} />
+      <Fields game={game} getEncounters={getEncounters} />
     </RngToolForm>
   );
 };

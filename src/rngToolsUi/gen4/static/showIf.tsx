@@ -10,13 +10,14 @@ export const Static4ShowIf = (props: Omit<Static4ShowIfProps, "state">) => {
   return <Gen4ShowIf state={state} {...props} />;
 };
 
-type NormalizedLead = "Cutecharm" | "Synchronize" | "None";
+type NormalizedLead = "Cutecharm" | "Synchronize" | "None" | "Pressure";
 
 const normalizeTargetLead = (lead: LeadAbility): NormalizedLead => {
   return match<LeadAbility, NormalizedLead>(lead)
     .with("CutecharmF", () => "Cutecharm")
     .with("CutecharmM", () => "Cutecharm")
     .with("None", () => "None")
+    .with("Pressure", () => "Pressure")
     .with({ Synchronize: P.any }, () => "Synchronize")
     .exhaustive();
 };

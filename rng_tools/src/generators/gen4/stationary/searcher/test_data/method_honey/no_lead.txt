@@ -1,0 +1,250 @@
+FB090373	28	Leftovers	7: Munchlax	5	2B97D038	No	Adamant	0: Pickup	30	30	30	20	22	27	Flying	59	♂	Sturdy body
+B20B0330	22	Leftovers	7: Munchlax	5	1484A672	No	Relaxed	0: Pickup	30	30	30	20	31	28	Steel	54	♂	Somewhat vain
+060F0325	26	Leftovers	7: Munchlax	7	D767D4F9	No	Rash	1: Thick Fat	30	30	30	20	31	31	Water	59	♂	Somewhat vain
+81160328	18	Leftovers	7: Munchlax	7	7CD87467	No	Lax	1: Thick Fat	30	30	30	21	27	31	Ice	59	♂	Alert to sounds
+AE00034B	13	Leftovers	7: Munchlax	12	176A3190	No	Sassy	0: Pickup	30	30	30	21	30	26	Ground	59	♂	Strong willed
+E0030380	6	Leftovers	7: Munchlax	7	62145156	No	Timid	0: Pickup	30	30	30	22	24	24	Fighting	44	♂	Loves to eat
+4E120321	5	Leftovers	7: Munchlax	14	FC614CEC	No	Mild	0: Pickup	30	30	30	22	29	28	Steel	44	♂	Loves to eat
+1D0B0330	7	Leftovers	7: Munchlax	8	9D5662FE	No	Hardy	0: Pickup	30	30	30	23	20	30	Ground	49	♂	Loves to eat
+9D0B0330	19	Leftovers	7: Munchlax	8	1D56E2FE	No	Calm	0: Pickup	30	30	30	23	20	30	Ground	49	♂	Loves to eat
+160D0377	14	Leftovers	7: Munchlax	6	FE600F6C	No	Bashful	0: Pickup	30	30	30	23	28	26	Ground	49	♂	Sturdy body
+2C05036D	23	Leftovers	7: Munchlax	14	6EDC48C0	No	Naughty	0: Pickup	30	30	30	24	23	25	Water	54	♂	Loves to eat
+2C05036D	13	Leftovers	7: Munchlax	9	6EDC48C0	No	Naughty	0: Pickup	30	30	30	24	23	25	Water	54	♂	Loves to eat
+4607032F	8	Leftovers	7: Munchlax	13	223A9FA9	No	Bold	1: Thick Fat	30	30	30	24	28	20	Fighting	34	♂	Loves to eat
+D80F0360	7	Leftovers	7: Munchlax	14	B63B80A4	No	Bashful	0: Pickup	30	30	30	24	28	26	Fighting	39	♂	Sturdy body
+D80F0360	1	Leftovers	7: Munchlax	9	B63B80A4	No	Bashful	0: Pickup	30	30	30	24	28	26	Fighting	39	♂	Sturdy body
+6F100363	25	Leftovers	7: Munchlax	5	CFE6F52E	No	Impish	0: Pickup	30	30	30	24	31	21	Water	54	♂	Somewhat vain
+71090323	5	Leftovers	7: Munchlax	9	69907AAA	No	Mild	0: Pickup	30	30	30	25	24	22	Ground	39	♂	Loves to eat
+1600036B	9	Leftovers	7: Munchlax	15	44616828	No	Rash	0: Pickup	30	30	30	25	25	30	Electric	39	♂	Loves to eat
+D50E0350	29	Leftovers	7: Munchlax	10	8C961DF4	No	Impish	0: Pickup	30	30	30	26	22	26	Fighting	70	♂	Sturdy body
+1210037E	7	Leftovers	7: Munchlax	11	05431F89	No	Modest	1: Thick Fat	30	30	30	26	25	20	Steel	44	♂	Loves to eat
+CC06037A	16	Leftovers	7: Munchlax	15	721D64B1	No	Calm	1: Thick Fat	30	30	30	27	25	27	Ice	49	♂	Loves to eat
+4C06037A	10	Leftovers	7: Munchlax	5	F21DE4B1	No	Hasty	1: Thick Fat	30	30	30	27	25	27	Ice	49	♂	Proud of its power
+7908034A	30	Leftovers	7: Munchlax	7	17FF2543	No	Serious	1: Thick Fat	30	30	30	29	23	25	Ice	54	♂	Proud of its power
+9D160366	13	Leftovers	7: Munchlax	14	5913428C	No	Rash	0: Pickup	30	30	30	29	23	27	Ice	59	♂	Sturdy body
+9D160366	11	Leftovers	7: Munchlax	8	5913428C	No	Rash	0: Pickup	30	30	30	29	23	27	Ice	59	♂	Sturdy body
+BB080364	8	Leftovers	7: Munchlax	6	4B0F4CC4	No	Quiet	0: Pickup	30	30	30	29	31	24	Electric	54	♂	Somewhat vain
+6D09032F	21	Leftovers	7: Munchlax	6	AD7F336D	No	Bold	1: Thick Fat	30	30	30	31	25	20	Electric	44	♂	Mischievous
+6D09032F	3	Leftovers	7: Munchlax	12	AD7F336D	No	Bold	1: Thick Fat	30	30	30	31	25	20	Electric	44	♂	Mischievous
+7A14032E	5	Leftovers	7: Munchlax	5	9BF808AA	No	Lonely	0: Pickup	30	30	31	20	24	24	Fighting	34	♂	Capable of taking hits
+AB070353	6	Leftovers	7: Munchlax	7	53D479E3	No	Jolly	1: Thick Fat	30	30	31	21	24	24	Rock	34	♂	Capable of taking hits
+C70D0330	8	Leftovers	7: Munchlax	13	173DE5F6	No	Lax	0: Pickup	30	30	31	21	29	20	Psychic	34	♂	Capable of taking hits
+D30C0327	2	Leftovers	7: Munchlax	9	61F95074	No	Serious	0: Pickup	30	30	31	21	31	22	Psychic	59	♂	Capable of taking hits
+FC080330	30	Leftovers	7: Munchlax	10	1FFFFB7F	No	Lax	1: Thick Fat	30	30	31	22	21	25	Grass	44	♂	Capable of taking hits
+D1070322	5	Leftovers	7: Munchlax	8	8C488452	No	Docile	0: Pickup	30	30	31	22	27	28	Fire	64	♂	Capable of taking hits
+B0080378	30	Leftovers	7: Munchlax	10	E3F892F4	No	Bold	0: Pickup	30	30	31	22	30	20	Fighting	64	♂	Capable of taking hits
+B0080378	26	Leftovers	7: Munchlax	11	E3F892F4	No	Bold	0: Pickup	30	30	31	22	30	20	Fighting	64	♂	Capable of taking hits
+B0080378	24	Leftovers	7: Munchlax	12	E3F892F4	No	Bold	0: Pickup	30	30	31	22	30	20	Fighting	64	♂	Capable of taking hits
+30080378	0	Leftovers	7: Munchlax	5	63F812F4	No	Naive	0: Pickup	30	30	31	22	30	20	Fighting	64	♂	Capable of taking hits
+8108037B	18	Leftovers	7: Munchlax	6	1AFF9738	No	Impish	0: Pickup	30	30	31	23	28	31	Ghost	49	♂	Capable of taking hits
+6D17034F	10	Leftovers	7: Munchlax	11	13AB18CD	No	Lax	1: Thick Fat	30	30	31	23	31	25	Dragon	64	♂	Somewhat vain
+6D17034F	2	Leftovers	7: Munchlax	10	13AB18CD	No	Lax	1: Thick Fat	30	30	31	23	31	25	Dragon	64	♂	Somewhat vain
+2C080338	7	Leftovers	7: Munchlax	6	7159B487	No	Brave	1: Thick Fat	30	30	31	25	22	31	Ghost	59	♂	Capable of taking hits
+55030329	0	Leftovers	7: Munchlax	15	3D84A530	No	Mild	0: Pickup	30	30	31	25	29	27	Dragon	39	♂	Capable of taking hits
+990D035F	21	Leftovers	7: Munchlax	13	6F622B36	No	Mild	0: Pickup	30	30	31	26	21	24	Fire	44	♂	Capable of taking hits
+190D035F	23	Leftovers	7: Munchlax	12	EF62AB36	No	Relaxed	0: Pickup	30	30	31	26	21	24	Fire	44	♂	Capable of taking hits
+0D02033D	21	Leftovers	7: Munchlax	11	C63C4CE3	No	Hasty	1: Thick Fat	30	30	31	26	22	27	Poison	70	♂	Capable of taking hits
+0D02033D	9	Leftovers	7: Munchlax	15	C63C4CE3	No	Hasty	1: Thick Fat	30	30	31	26	22	27	Poison	70	♂	Capable of taking hits
+AB12034C	9	Leftovers	7: Munchlax	9	F99B23CC	No	Adamant	0: Pickup	30	30	31	26	27	22	Fire	70	♂	Capable of taking hits
+7C100364	16	Leftovers	7: Munchlax	15	60776CCE	No	Quirky	0: Pickup	30	30	31	26	29	21	Grass	44	♂	Capable of taking hits
+FC100364	6	Leftovers	7: Munchlax	5	E077ECCE	No	Modest	0: Pickup	30	30	31	26	29	21	Grass	44	♂	Capable of taking hits
+D903035F	5	Leftovers	7: Munchlax	7	35637300	No	Brave	0: Pickup	30	30	31	27	28	22	Rock	49	♀	Capable of taking hits
+D903035F	1	Leftovers	7: Munchlax	14	35637300	No	Brave	0: Pickup	30	30	31	27	28	22	Rock	49	♀	Capable of taking hits
+2005035A	8	Leftovers	7: Munchlax	9	8802874A	No	Relaxed	0: Pickup	30	30	31	27	31	30	Psychic	70	♂	Capable of taking hits
+CF0E0365	12	Leftovers	7: Munchlax	13	212D7776	No	Bold	0: Pickup	30	30	31	29	27	22	Psychic	59	♂	Capable of taking hits
+9313037E	22	Leftovers	7: Munchlax	10	8594E770	No	Naughty	0: Pickup	30	30	31	30	22	25	Poison	64	♂	Capable of taking hits
+C4110326	9	Leftovers	7: Munchlax	15	B368090C	No	Quirky	0: Pickup	30	31	30	20	24	29	Poison	34	♀	Likes to thrash about
+C4110326	1	Leftovers	7: Munchlax	8	B368090C	No	Quirky	0: Pickup	30	31	30	20	24	29	Poison	34	♀	Likes to thrash about
+22010375	3	Leftovers	7: Munchlax	13	2165EA90	No	Serious	0: Pickup	30	31	30	21	23	21	Ice	54	♂	Likes to thrash about
+3F0D0366	25	Leftovers	7: Munchlax	5	9469D897	No	Calm	1: Thick Fat	30	31	30	21	23	26	Electric	59	♂	Likes to thrash about
+F7050376	7	Leftovers	7: Munchlax	5	6D54877C	No	Brave	0: Pickup	30	31	30	21	31	31	Ice	59	♂	Alert to sounds
+F1000347	17	Leftovers	7: Munchlax	5	228FC01B	No	Gentle	1: Thick Fat	30	31	30	22	20	30	Fighting	49	♀	Likes to thrash about
+71000347	15	Leftovers	7: Munchlax	8	A28F401B	No	Lonely	1: Thick Fat	30	31	30	22	20	30	Fighting	49	♀	Likes to thrash about
+20020376	17	Leftovers	7: Munchlax	10	51F74B34	No	Modest	0: Pickup	30	31	30	22	25	20	Fire	44	♂	Likes to thrash about
+61020338	28	Leftovers	7: Munchlax	13	30B596AD	No	Relaxed	1: Thick Fat	30	31	30	22	27	28	Fire	64	♂	Likes to thrash about
+61020338	22	Leftovers	7: Munchlax	8	30B596AD	No	Relaxed	1: Thick Fat	30	31	30	22	27	28	Fire	64	♂	Likes to thrash about
+DF010336	3	Leftovers	7: Munchlax	13	E29BF995	No	Naive	1: Thick Fat	30	31	30	22	28	25	Poison	44	♂	Likes to thrash about
+04030377	27	Leftovers	7: Munchlax	14	C2371FD8	No	Hasty	0: Pickup	30	31	30	22	31	28	Fire	64	♂	Somewhat vain
+84030377	3	Leftovers	7: Munchlax	6	42379FD8	No	Docile	0: Pickup	30	31	30	22	31	28	Fire	64	♂	Somewhat vain
+900D0358	2	Leftovers	7: Munchlax	8	5A6AB154	No	Brave	0: Pickup	30	31	30	23	20	30	Rock	49	♂	Likes to thrash about
+FA0D0345	7	Leftovers	7: Munchlax	11	25FB88C6	No	Quiet	0: Pickup	30	31	30	23	24	21	Ghost	44	♂	Likes to thrash about
+2C02036B	21	Leftovers	7: Munchlax	7	649A3C15	No	Hardy	1: Thick Fat	30	31	30	23	27	23	Ice	70	♀	Likes to thrash about
+2C02036B	11	Leftovers	7: Munchlax	14	649A3C15	No	Hardy	1: Thick Fat	30	31	30	23	27	23	Ice	70	♀	Likes to thrash about
+A302036A	11	Leftovers	7: Munchlax	14	D4379A9F	No	Bold	1: Thick Fat	30	31	30	24	21	27	Grass	39	♂	Likes to thrash about
+A302036A	9	Leftovers	7: Munchlax	7	D4379A9F	No	Bold	1: Thick Fat	30	31	30	24	21	27	Grass	39	♂	Likes to thrash about
+28130373	13	Leftovers	7: Munchlax	11	66A2EC69	No	Timid	1: Thick Fat	30	31	30	24	25	26	Fire	39	♂	Likes to thrash about
+AE120374	14	Leftovers	7: Munchlax	14	4401C7C8	No	Bashful	0: Pickup	30	31	30	25	29	31	Ice	39	♂	Likes to thrash about
+FF12032A	6	Leftovers	7: Munchlax	11	3D3E05B2	No	Mild	0: Pickup	30	31	30	26	26	30	Fighting	70	♂	Likes to thrash about
+49130357	14	Leftovers	7: Munchlax	15	42A357AE	No	Calm	0: Pickup	30	31	30	26	31	28	Fire	64	♂	Somewhat vain
+C9130357	10	Leftovers	7: Munchlax	5	C2A3D7AE	No	Hasty	0: Pickup	30	31	30	26	31	28	Fire	64	♂	Somewhat vain
+040E0329	20	Leftovers	7: Munchlax	9	05733B7D	No	Quirky	1: Thick Fat	30	31	30	27	23	26	Electric	70	♂	Likes to thrash about
+840E0329	4	Leftovers	7: Munchlax	11	8573BB7D	No	Modest	1: Thick Fat	30	31	30	27	23	26	Electric	70	♂	Likes to thrash about
+E5160380	12	Leftovers	7: Munchlax	8	A70AC7A8	No	Rash	0: Pickup	30	31	30	27	26	31	Ghost	70	♂	Likes to thrash about
+0A03035A	29	Leftovers	7: Munchlax	15	701DD83D	No	Bashful	1: Thick Fat	30	31	30	28	24	22	Fighting	39	♂	Likes to thrash about
+31040379	14	Leftovers	7: Munchlax	9	E44A0ADD	No	Bashful	1: Thick Fat	30	31	30	28	31	30	Fire	59	♂	Somewhat vain
+DA070371	9	Leftovers	7: Munchlax	5	6132AAC9	No	Careful	1: Thick Fat	30	31	30	29	22	25	Ghost	54	♂	Likes to thrash about
+C405035F	26	Leftovers	7: Munchlax	10	4CE39A65	No	Jolly	1: Thick Fat	30	31	30	29	25	23	Ice	39	♂	Likes to thrash about
+5011036C	25	Leftovers	7: Munchlax	10	4AB03D56	No	Sassy	0: Pickup	30	31	30	30	25	31	Grass	49	♂	Likes to thrash about
+5011036C	13	Leftovers	7: Munchlax	8	4AB03D56	No	Sassy	0: Pickup	30	31	30	30	25	31	Grass	49	♂	Likes to thrash about
+D011036C	19	Leftovers	7: Munchlax	5	CAB0BD56	No	Jolly	0: Pickup	30	31	30	30	25	31	Grass	49	♂	Alert to sounds
+C8040365	23	Leftovers	7: Munchlax	6	54E9B5ED	No	Bold	1: Thick Fat	30	31	30	30	31	29	Grass	64	♂	Somewhat vain
+CE170332	7	Leftovers	7: Munchlax	7	E6F20D97	No	Gentle	1: Thick Fat	30	31	30	31	30	28	Rock	64	♂	Mischievous
+B1050376	30	Leftovers	7: Munchlax	15	B08191E5	No	Lax	1: Thick Fat	30	31	31	20	28	31	Ground	39	♂	Likes to thrash about
+3F010368	0	Leftovers	7: Munchlax	6	C560CDAA	No	Impish	0: Pickup	30	31	31	20	29	31	Grass	39	♂	Capable of taking hits
+3C09036C	10	Leftovers	7: Munchlax	12	3E9D8B93	No	Hardy	1: Thick Fat	30	31	31	21	26	30	Bug	59	♂	Likes to thrash about
+870B0373	10	Leftovers	7: Munchlax	5	BCA68242	No	Bold	0: Pickup	30	31	31	22	25	23	Grass	49	♂	Likes to thrash about
+470E0337	0	Leftovers	7: Munchlax	15	A1038467	No	Naughty	1: Thick Fat	30	31	31	23	21	21	Dragon	44	♂	Likes to thrash about
+E30D034E	30	Leftovers	7: Munchlax	9	99BAF3D2	No	Serious	0: Pickup	30	31	31	23	23	20	Psychic	64	♂	Likes to thrash about
+E30D034E	14	Leftovers	7: Munchlax	8	99BAF3D2	No	Serious	0: Pickup	30	31	31	23	23	20	Psychic	64	♂	Likes to thrash about
+3415033C	29	Leftovers	7: Munchlax	12	11920874	No	Quiet	0: Pickup	30	31	31	23	24	24	Bug	44	♂	Capable of taking hits
+B415033C	27	Leftovers	7: Munchlax	13	91928874	No	Impish	0: Pickup	30	31	31	23	24	24	Bug	44	♂	Likes to thrash about
+FC08037C	30	Leftovers	7: Munchlax	8	429A1092	No	Quiet	0: Pickup	30	31	31	23	24	26	Bug	49	♂	Likes to thrash about
+BA0B034C	22	Leftovers	7: Munchlax	5	2AF7BB6A	No	Quiet	0: Pickup	30	31	31	23	29	28	Psychic	44	♂	Likes to thrash about
+B40F0381	9	Leftovers	7: Munchlax	11	81D2DD18	No	Quirky	0: Pickup	30	31	31	23	30	31	Steel	70	♀	Capable of taking hits
+B40F0381	7	Leftovers	7: Munchlax	5	81D2DD18	No	Quirky	0: Pickup	30	31	31	23	30	31	Steel	70	♀	Capable of taking hits
+340F0381	21	Leftovers	7: Munchlax	6	01D25D18	No	Impish	0: Pickup	30	31	31	23	30	31	Steel	70	♀	Likes to thrash about
+340F0381	15	Leftovers	7: Munchlax	6	01D25D18	No	Impish	0: Pickup	30	31	31	23	30	31	Steel	70	♀	Likes to thrash about
+860A034E	16	Leftovers	7: Munchlax	11	115D6DE4	No	Brave	0: Pickup	30	31	31	25	23	29	Dragon	54	♂	Likes to thrash about
+860A034E	0	Leftovers	7: Munchlax	10	115D6DE4	No	Brave	0: Pickup	30	31	31	25	23	29	Dragon	54	♂	Likes to thrash about
+080D0343	29	Leftovers	7: Munchlax	13	092C14B0	No	Quirky	0: Pickup	30	31	31	25	25	29	Dragon	34	♂	Likes to thrash about
+080D0343	15	Leftovers	7: Munchlax	13	092C14B0	No	Quirky	0: Pickup	30	31	31	25	25	29	Dragon	34	♂	Likes to thrash about
+D5060359	1	Leftovers	7: Munchlax	10	C7CA47FF	No	Serious	1: Thick Fat	30	31	31	25	28	30	Bug	39	♂	Likes to thrash about
+55060359	9	Leftovers	7: Munchlax	6	47CAC7FF	No	Relaxed	1: Thick Fat	30	31	31	25	28	30	Bug	39	♂	Likes to thrash about
+55060359	3	Leftovers	7: Munchlax	12	47CAC7FF	No	Relaxed	1: Thick Fat	30	31	31	25	28	30	Bug	39	♂	Likes to thrash about
+A4050357	22	Leftovers	7: Munchlax	15	E7B87A41	No	Quiet	1: Thick Fat	30	31	31	26	27	24	Water	64	♂	Likes to thrash about
+2B03037B	23	Leftovers	7: Munchlax	13	9B0D7447	No	Modest	1: Thick Fat	30	31	31	27	23	20	Psychic	64	♂	Likes to thrash about
+28080371	16	Leftovers	7: Munchlax	6	BC0B673C	No	Relaxed	0: Pickup	30	31	31	27	23	21	Dragon	64	♂	Capable of taking hits
+3E14032D	12	Leftovers	7: Munchlax	9	9CC77534	No	Naive	0: Pickup	30	31	31	28	24	28	Flying	34	♂	Capable of taking hits
+170A0360	30	Leftovers	7: Munchlax	12	1142573C	No	Bold	0: Pickup	30	31	31	28	28	31	Ground	39	♂	Capable of taking hits
+7512034B	16	Leftovers	7: Munchlax	5	D6EFD854	No	Impish	0: Pickup	30	31	31	30	20	21	Ground	44	♂	Likes to thrash about
+AC0B0373	1	Leftovers	7: Munchlax	9	9EE8A96F	No	Bold	1: Thick Fat	30	31	31	30	28	26	Flying	49	♂	Likes to thrash about
+CF0C0352	6	Leftovers	7: Munchlax	15	28307C83	No	Bashful	1: Thick Fat	30	31	31	31	25	26	Psychic	49	♂	Likes to thrash about
+67100371	23	Leftovers	7: Munchlax	14	A9BBFF75	No	Impish	1: Thick Fat	31	30	30	20	28	30	Fighting	39	♂	Takes plenty of siestas
+67100371	21	Leftovers	7: Munchlax	5	A9BBFF75	No	Impish	1: Thick Fat	31	30	30	20	28	30	Fighting	39	♂	Takes plenty of siestas
+1E140333	17	Leftovers	7: Munchlax	13	373EDFEC	No	Hasty	0: Pickup	31	30	30	21	23	25	Ice	54	♂	Takes plenty of siestas
+1E140333	15	Leftovers	7: Munchlax	15	373EDFEC	No	Hasty	0: Pickup	31	30	30	21	23	25	Ice	54	♂	Takes plenty of siestas
+1E140333	9	Leftovers	7: Munchlax	8	373EDFEC	No	Hasty	0: Pickup	31	30	30	21	23	25	Ice	54	♂	Takes plenty of siestas
+C2040342	11	Leftovers	7: Munchlax	14	E5C8103B	No	Rash	1: Thick Fat	31	30	30	21	27	20	Electric	54	♂	Takes plenty of siestas
+BC01033A	28	Leftovers	7: Munchlax	11	38B6D3ED	No	Lonely	1: Thick Fat	31	30	30	21	27	23	Ice	59	♂	Takes plenty of siestas
+080C0372	27	Leftovers	7: Munchlax	10	285D0F5A	No	Bashful	0: Pickup	31	30	30	21	30	27	Bug	59	♂	Takes plenty of siestas
+080C0372	23	Leftovers	7: Munchlax	5	285D0F5A	No	Bashful	0: Pickup	31	30	30	21	30	27	Bug	59	♂	Takes plenty of siestas
+880C0372	19	Leftovers	7: Munchlax	11	A85D8F5A	No	Lax	0: Pickup	31	30	30	21	30	27	Bug	59	♂	Takes plenty of siestas
+3E160327	4	Leftovers	7: Munchlax	8	E658CC8F	No	Modest	1: Thick Fat	31	30	30	22	21	25	Water	44	♂	Takes plenty of siestas
+890B032D	24	Leftovers	7: Munchlax	15	A4F7FFDE	No	Bashful	0: Pickup	31	30	30	22	24	26	Fighting	49	♂	Takes plenty of siestas
+890B032D	4	Leftovers	7: Munchlax	11	A4F7FFDE	No	Bashful	0: Pickup	31	30	30	22	24	26	Fighting	49	♂	Takes plenty of siestas
+F2160371	26	Leftovers	7: Munchlax	11	CA04C289	No	Brave	1: Thick Fat	31	30	30	23	30	28	Rock	64	♂	Takes plenty of siestas
+27050322	19	Leftovers	7: Munchlax	15	6052156C	No	Sassy	0: Pickup	31	30	30	24	26	28	Fighting	54	♂	Takes plenty of siestas
+0506037D	29	Leftovers	7: Munchlax	8	A0557203	No	Relaxed	1: Thick Fat	31	30	30	25	25	24	Electric	34	♀	Takes plenty of siestas
+8506037D	19	Leftovers	7: Munchlax	5	2055F203	No	Brave	1: Thick Fat	31	30	30	25	25	24	Electric	34	♀	Takes plenty of siestas
+AD140377	15	Leftovers	7: Munchlax	11	7FFA861B	No	Jolly	1: Thick Fat	31	30	30	25	27	31	Ice	59	♀	Alert to sounds
+B6070358	0	Leftovers	7: Munchlax	11	3A9910B6	No	Naive	0: Pickup	31	30	30	26	21	28	Steel	44	♂	Takes plenty of siestas
+57160326	16	Leftovers	7: Munchlax	10	DF84E1A6	No	Hasty	0: Pickup	31	30	30	26	22	29	Poison	64	♂	Takes plenty of siestas
+57160326	8	Leftovers	7: Munchlax	15	DF84E1A6	No	Hasty	0: Pickup	31	30	30	26	22	29	Poison	64	♂	Takes plenty of siestas
+9000036C	15	Leftovers	7: Munchlax	15	8D74F8BD	No	Lax	1: Thick Fat	31	30	30	26	23	21	Water	64	♂	Takes plenty of siestas
+AA03035C	8	Leftovers	7: Munchlax	10	7090C356	No	Relaxed	0: Pickup	31	30	30	27	28	26	Rock	49	♂	Takes plenty of siestas
+AA03035C	0	Leftovers	7: Munchlax	7	7090C356	No	Relaxed	0: Pickup	31	30	30	27	28	26	Rock	49	♂	Takes plenty of siestas
+0D0F0329	11	Leftovers	7: Munchlax	13	6C55B5F2	No	Mild	0: Pickup	31	30	30	27	30	30	Rock	70	♂	Takes plenty of siestas
+5C02036A	2	Leftovers	7: Munchlax	10	0209EF9E	No	Careful	0: Pickup	31	30	30	28	23	26	Steel	59	♂	Takes plenty of siestas
+C1090373	27	Leftovers	7: Munchlax	11	D4ED457B	No	Hasty	1: Thick Fat	31	30	30	28	24	24	Fighting	34	♂	Takes plenty of siestas
+C1090373	13	Leftovers	7: Munchlax	6	D4ED457B	No	Hasty	1: Thick Fat	31	30	30	28	24	24	Fighting	34	♂	Takes plenty of siestas
+C108037A	0	Leftovers	7: Munchlax	8	7DCE623B	No	Jolly	1: Thick Fat	31	30	30	28	25	30	Steel	39	♂	Takes plenty of siestas
+800B035A	23	Leftovers	7: Munchlax	15	90B614AE	No	Hardy	0: Pickup	31	30	30	29	25	24	Electric	34	♂	Takes plenty of siestas
+670C0345	14	Leftovers	7: Munchlax	13	9981871A	No	Adamant	0: Pickup	31	30	30	29	26	28	Rock	54	♀	Takes plenty of siestas
+ED05033C	4	Leftovers	7: Munchlax	11	4148F552	No	Lax	0: Pickup	31	30	30	30	27	22	Steel	70	♂	Takes plenty of siestas
+BB05033C	11	Leftovers	7: Munchlax	5	B5C3D75A	No	Gentle	0: Pickup	31	30	30	30	31	26	Steel	70	♂	Takes plenty of siestas
+BB05033C	9	Leftovers	7: Munchlax	7	B5C3D75A	No	Gentle	0: Pickup	31	30	30	30	31	26	Steel	70	♂	Takes plenty of siestas
+3B05033C	19	Leftovers	7: Munchlax	9	35C3575A	No	Bold	0: Pickup	31	30	30	30	31	26	Steel	70	♂	Somewhat vain
+BB070346	6	Leftovers	7: Munchlax	12	DC25AD3D	No	Lonely	1: Thick Fat	31	30	30	31	26	31	Bug	70	♂	Takes plenty of siestas
+74060377	10	Leftovers	7: Munchlax	7	1B984D80	No	Rash	0: Pickup	31	30	30	31	31	22	Electric	70	♂	Takes plenty of siestas
+C600034D	21	Leftovers	7: Munchlax	10	0BF76156	No	Hasty	0: Pickup	31	30	31	20	23	28	Fire	54	♂	Takes plenty of siestas
+E515037C	24	Leftovers	7: Munchlax	14	33378110	No	Hasty	0: Pickup	31	30	31	20	29	23	Grass	39	♀	Capable of taking hits
+6515037C	30	Leftovers	7: Munchlax	14	B3370110	No	Mild	0: Pickup	31	30	31	20	29	23	Grass	39	♀	Capable of taking hits
+6515037C	10	Leftovers	7: Munchlax	15	B3370110	No	Mild	0: Pickup	31	30	31	20	29	23	Grass	39	♀	Capable of taking hits
+35110354	15	Leftovers	7: Munchlax	11	B457E8C5	No	Lonely	1: Thick Fat	31	30	31	21	27	26	Psychic	59	♂	Takes plenty of siestas
+2B030368	26	Leftovers	7: Munchlax	14	2DECB2FA	No	Lax	0: Pickup	31	30	31	21	30	20	Bug	54	♂	Takes plenty of siestas
+2B030368	14	Leftovers	7: Munchlax	11	2DECB2FA	No	Lax	0: Pickup	31	30	31	21	30	20	Bug	54	♂	Takes plenty of siestas
+2B030368	4	Leftovers	7: Munchlax	7	2DECB2FA	No	Lax	0: Pickup	31	30	31	21	30	20	Bug	54	♂	Takes plenty of siestas
+A00D0325	13	Leftovers	7: Munchlax	6	5AC39B8B	No	Naughty	1: Thick Fat	31	30	31	21	31	31	Dragon	59	♂	Alert to sounds
+9C12036D	6	Leftovers	7: Munchlax	8	8E181591	No	Relaxed	1: Thick Fat	31	30	31	22	27	27	Grass	70	♂	Takes plenty of siestas
+1C12036D	22	Leftovers	7: Munchlax	10	0E189591	No	Brave	1: Thick Fat	31	30	31	22	27	27	Grass	70	♂	Takes plenty of siestas
+1C12036D	4	Leftovers	7: Munchlax	10	0E189591	No	Brave	1: Thick Fat	31	30	31	22	27	27	Grass	70	♂	Takes plenty of siestas
+07070371	26	Leftovers	7: Munchlax	12	AF0C1AB0	No	Naive	0: Pickup	31	30	31	22	28	23	Ground	49	♂	Capable of taking hits
+3B000340	4	Leftovers	7: Munchlax	9	27C20A1B	No	Calm	1: Thick Fat	31	30	31	22	30	22	Flying	70	♀	Takes plenty of siestas
+4A170359	11	Leftovers	7: Munchlax	10	1AB32D69	No	Timid	1: Thick Fat	31	30	31	23	22	22	Bug	70	♂	Capable of taking hits
+FF0E0372	7	Leftovers	7: Munchlax	12	59FB20F3	No	Calm	1: Thick Fat	31	30	31	25	25	24	Psychic	34	♂	Takes plenty of siestas
+C2100334	16	Leftovers	7: Munchlax	11	A0C13FA0	No	Gentle	0: Pickup	31	30	31	25	27	21	Dragon	54	♂	Takes plenty of siestas
+9B0E035E	17	Leftovers	7: Munchlax	14	9C902012	No	Modest	0: Pickup	31	30	31	25	28	31	Ghost	39	♀	Capable of taking hits
+95170340	29	Leftovers	7: Munchlax	10	E9900EA2	No	Impish	0: Pickup	31	30	31	26	27	22	Fire	70	♂	Takes plenty of siestas
+95170340	11	Leftovers	7: Munchlax	8	E9900EA2	No	Impish	0: Pickup	31	30	31	26	27	22	Fire	70	♂	Takes plenty of siestas
+95170340	3	Leftovers	7: Munchlax	5	E9900EA2	No	Impish	0: Pickup	31	30	31	26	27	22	Fire	70	♂	Takes plenty of siestas
+C206035E	21	Leftovers	7: Munchlax	9	CFFE1DFF	No	Timid	1: Thick Fat	31	30	31	27	30	22	Bug	70	♂	Capable of taking hits
+BE0C0384	16	Leftovers	7: Munchlax	15	F26BA811	No	Quirky	1: Thick Fat	31	30	31	28	25	23	Grass	39	♀	Takes plenty of siestas
+3705037E	4	Leftovers	7: Munchlax	15	13F8C667	No	Careful	1: Thick Fat	31	30	31	28	29	23	Grass	39	♂	Capable of taking hits
+B705037E	16	Leftovers	7: Munchlax	5	93F84667	No	Adamant	1: Thick Fat	31	30	31	28	29	23	Grass	39	♂	Capable of taking hits
+B705037E	14	Leftovers	7: Munchlax	12	93F84667	No	Adamant	1: Thick Fat	31	30	31	28	29	23	Grass	39	♂	Capable of taking hits
+F70E0377	4	Leftovers	7: Munchlax	13	20A739EA	No	Hardy	0: Pickup	31	30	31	29	22	28	Bug	54	♂	Takes plenty of siestas
+A1160322	18	Leftovers	7: Munchlax	14	EB632468	No	Rash	0: Pickup	31	30	31	29	24	30	Bug	39	♂	Takes plenty of siestas
+BD130338	20	Leftovers	7: Munchlax	13	2A469949	No	Impish	1: Thick Fat	31	30	31	29	25	23	Dragon	39	♂	Takes plenty of siestas
+0508037C	20	Leftovers	7: Munchlax	6	63324B34	No	Hasty	0: Pickup	31	30	31	29	26	30	Bug	59	♂	Takes plenty of siestas
+22150341	11	Leftovers	7: Munchlax	12	E0B37364	No	Bashful	0: Pickup	31	30	31	29	30	23	Ghost	59	♂	Takes plenty of siestas
+22150341	9	Leftovers	7: Munchlax	15	E0B37364	No	Bashful	0: Pickup	31	30	31	29	30	23	Ghost	59	♂	Takes plenty of siestas
+E30E0329	2	Leftovers	7: Munchlax	7	6FB735B2	No	Timid	0: Pickup	31	30	31	30	28	22	Flying	49	♂	Takes plenty of siestas
+630E0329	26	Leftovers	7: Munchlax	13	EFB7B5B2	No	Lonely	0: Pickup	31	30	31	30	28	22	Flying	49	♂	Takes plenty of siestas
+B30D0375	6	Leftovers	7: Munchlax	15	AA127EBA	No	Timid	0: Pickup	31	30	31	31	24	28	Bug	44	♂	Capable of taking hits
+F50F0349	13	Leftovers	7: Munchlax	7	2361875C	No	Naughty	0: Pickup	31	30	31	31	29	31	Dragon	49	♂	Capable of taking hits
+43150324	2	Leftovers	7: Munchlax	12	71BBD28C	No	Modest	0: Pickup	31	31	30	20	21	22	Fire	39	♂	Takes plenty of siestas
+C3150324	10	Leftovers	7: Munchlax	14	F1BB528C	No	Calm	0: Pickup	31	31	30	20	21	22	Fire	39	♂	Takes plenty of siestas
+C3150324	0	Leftovers	7: Munchlax	5	F1BB528C	No	Calm	0: Pickup	31	31	30	20	21	22	Fire	39	♂	Takes plenty of siestas
+3D0C0377	28	Leftovers	7: Munchlax	9	E7AEA895	No	Quiet	1: Thick Fat	31	31	30	20	29	24	Fire	34	♂	Takes plenty of siestas
+A8070364	16	Leftovers	7: Munchlax	8	7465F8FB	No	Docile	1: Thick Fat	31	31	30	20	31	29	Grass	54	♂	Somewhat vain
+470D0322	5	Leftovers	7: Munchlax	6	B5B57AF4	No	Jolly	0: Pickup	31	31	30	21	20	23	Ghost	39	♂	Takes plenty of siestas
+00090375	25	Leftovers	7: Munchlax	7	B4797C96	No	Bold	0: Pickup	31	31	30	23	27	21	Dragon	64	♂	Takes plenty of siestas
+13130359	0	Leftovers	7: Munchlax	6	1148AC93	No	Bashful	1: Thick Fat	31	31	30	24	27	27	Grass	59	♂	Takes plenty of siestas
+91070349	17	Leftovers	7: Munchlax	6	9B784846	No	Brave	0: Pickup	31	31	30	25	24	26	Rock	39	♂	Takes plenty of siestas
+91070349	1	Leftovers	7: Munchlax	5	9B784846	No	Brave	0: Pickup	31	31	30	25	24	26	Rock	39	♂	Takes plenty of siestas
+38020356	1	Leftovers	7: Munchlax	9	1F652641	No	Hardy	1: Thick Fat	31	31	30	25	25	26	Psychic	39	♂	Likes to thrash about
+6213033D	19	Leftovers	7: Munchlax	14	45373FD0	No	Calm	0: Pickup	31	31	30	25	26	27	Ghost	59	♂	Takes plenty of siestas
+6213033D	7	Leftovers	7: Munchlax	13	45373FD0	No	Calm	0: Pickup	31	31	30	25	26	27	Ghost	59	♂	Takes plenty of siestas
+3A0F0354	10	Leftovers	7: Munchlax	10	4DAA14FD	No	Hardy	1: Thick Fat	31	31	30	25	31	31	Dragon	59	♂	Likes to thrash about
+9F16036F	2	Leftovers	7: Munchlax	6	C5BE8E4F	No	Careful	1: Thick Fat	31	31	30	26	21	26	Fire	49	♂	Takes plenty of siestas
+1F16036F	6	Leftovers	7: Munchlax	8	45BE0E4F	No	Relaxed	1: Thick Fat	31	31	30	26	21	26	Fire	49	♂	Likes to thrash about
+E8040337	9	Leftovers	7: Munchlax	7	F4483E9D	No	Hardy	1: Thick Fat	31	31	30	26	25	22	Fire	49	♂	Likes to thrash about
+00020379	13	Leftovers	7: Munchlax	13	B643A486	No	Quiet	0: Pickup	31	31	30	26	25	24	Fire	44	♂	Takes plenty of siestas
+980E0328	10	Leftovers	7: Munchlax	5	91F26CCD	No	Timid	1: Thick Fat	31	31	30	26	27	27	Grass	70	♂	Likes to thrash about
+2C0E0365	6	Leftovers	7: Munchlax	15	BF9E4252	No	Sassy	0: Pickup	31	31	30	26	30	28	Fighting	64	♂	Takes plenty of siestas
+AC0E0365	28	Leftovers	7: Munchlax	15	3F9EC252	No	Quiet	0: Pickup	31	31	30	26	30	28	Fighting	64	♂	Takes plenty of siestas
+400E0356	0	Leftovers	7: Munchlax	15	4C91F768	No	Sassy	0: Pickup	31	31	30	27	21	24	Psychic	44	♂	Takes plenty of siestas
+390D037B	23	Leftovers	7: Munchlax	7	18BBE812	No	Lonely	0: Pickup	31	31	30	27	28	20	Rock	44	♀	Takes plenty of siestas
+D6030348	24	Leftovers	7: Munchlax	7	53C95F2A	No	Lonely	0: Pickup	31	31	30	30	23	31	Grass	70	♂	Takes plenty of siestas
+40070322	29	Leftovers	7: Munchlax	9	5A0B8BF0	No	Timid	0: Pickup	31	31	30	30	29	25	Grass	44	♂	Takes plenty of siestas
+40070322	25	Leftovers	7: Munchlax	9	5A0B8BF0	No	Timid	0: Pickup	31	31	30	30	29	25	Grass	44	♂	Takes plenty of siestas
+40070322	13	Leftovers	7: Munchlax	12	5A0B8BF0	No	Timid	0: Pickup	31	31	30	30	29	25	Grass	44	♂	Takes plenty of siestas
+7F11032D	16	Leftovers	7: Munchlax	14	0EF81527	No	Quiet	1: Thick Fat	31	31	30	31	21	27	Dragon	49	♂	Likes to thrash about
+FF11032D	14	Leftovers	7: Munchlax	15	8EF89527	No	Impish	1: Thick Fat	31	31	30	31	21	27	Dragon	49	♂	Takes plenty of siestas
+C1080340	10	Leftovers	7: Munchlax	7	14F58059	No	Sassy	1: Thick Fat	31	31	30	31	29	30	Psychic	49	♂	Takes plenty of siestas
+C1080340	4	Leftovers	7: Munchlax	11	14F58059	No	Sassy	1: Thick Fat	31	31	30	31	29	30	Psychic	49	♂	Takes plenty of siestas
+41080340	12	Leftovers	7: Munchlax	6	94F50059	No	Brave	1: Thick Fat	31	31	30	31	29	30	Psychic	49	♂	Takes plenty of siestas
+4C140366	10	Leftovers	7: Munchlax	13	404AAB16	No	Hasty	0: Pickup	31	31	31	20	21	28	Water	34	♀	Takes plenty of siestas
+0A0A0352	16	Leftovers	7: Munchlax	8	7D031FCC	No	Careful	0: Pickup	31	31	31	20	31	27	Electric	59	♂	Takes plenty of siestas
+D012037B	4	Leftovers	7: Munchlax	8	13E19E10	No	Bashful	0: Pickup	31	31	31	21	31	26	Ice	59	♀	Somewhat vain
+FD050320	30	Leftovers	7: Munchlax	11	FCBCBA84	No	Careful	0: Pickup	31	31	31	23	22	28	Bug	64	♂	Capable of taking hits
+7D050320	10	Leftovers	7: Munchlax	8	7CBC3A84	No	Relaxed	0: Pickup	31	31	31	23	22	28	Bug	64	♂	Takes plenty of siestas
+BE0B0369	16	Leftovers	7: Munchlax	7	E171C8F5	No	Jolly	1: Thick Fat	31	31	31	23	24	22	Bug	49	♂	Takes plenty of siestas
+3E0B0369	22	Leftovers	7: Munchlax	10	617148F5	No	Sassy	1: Thick Fat	31	31	31	23	24	22	Bug	49	♂	Takes plenty of siestas
+0808037D	14	Leftovers	7: Munchlax	14	AD4E9B28	No	Gentle	0: Pickup	31	31	31	24	24	27	Ground	39	♂	Capable of taking hits
+17040367	27	Leftovers	7: Munchlax	13	B6A938F4	No	Lonely	0: Pickup	31	31	31	24	29	31	Electric	39	♂	Takes plenty of siestas
+280F037A	21	Leftovers	7: Munchlax	13	5A795B5C	No	Lax	0: Pickup	31	31	31	25	30	20	Bug	54	♂	Takes plenty of siestas
+A80F037A	15	Leftovers	7: Munchlax	15	DA79DB5C	No	Hardy	0: Pickup	31	31	31	25	30	20	Bug	54	♂	Capable of taking hits
+A80F037A	3	Leftovers	7: Munchlax	8	DA79DB5C	No	Hardy	0: Pickup	31	31	31	25	30	20	Bug	54	♂	Capable of taking hits
+2F170378	17	Leftovers	7: Munchlax	8	B97C795B	No	Mild	1: Thick Fat	31	31	31	26	20	24	Flying	44	♂	Takes plenty of siestas
+F10B0343	25	Leftovers	7: Munchlax	14	E3CB1C46	No	Adamant	0: Pickup	31	31	31	26	26	24	Flying	64	♂	Takes plenty of siestas
+7E11032D	20	Leftovers	7: Munchlax	8	AAA4969E	No	Relaxed	0: Pickup	31	31	31	26	26	31	Ground	70	♂	Takes plenty of siestas
+8717037B	27	Leftovers	7: Munchlax	9	EA1736E1	No	Gentle	1: Thick Fat	31	31	31	26	31	23	Electric	70	♂	Somewhat vain
+8717037B	11	Leftovers	7: Munchlax	13	EA1736E1	No	Gentle	1: Thick Fat	31	31	31	26	31	23	Electric	70	♂	Somewhat vain
+30040322	27	Leftovers	7: Munchlax	9	23483B51	No	Serious	1: Thick Fat	31	31	31	27	20	26	Bug	49	♂	Likes to thrash about
+2B140324	27	Leftovers	7: Munchlax	14	091D3177	No	Lonely	1: Thick Fat	31	31	31	28	20	22	Flying	39	♂	Takes plenty of siestas
+510A0373	6	Leftovers	7: Munchlax	14	F96EAD1F	No	Jolly	1: Thick Fat	31	31	31	30	23	26	Water	70	♂	Takes plenty of siestas
+510A0373	2	Leftovers	7: Munchlax	6	F96EAD1F	No	Jolly	1: Thick Fat	31	31	31	30	23	26	Water	70	♂	Takes plenty of siestas
+5C080330	29	Leftovers	7: Munchlax	14	DB7F3D5C	No	Lax	0: Pickup	31	31	31	30	23	30	Water	70	♂	Takes plenty of siestas
+230B0375	8	Leftovers	7: Munchlax	12	458FC0E5	No	Impish	1: Thick Fat	31	31	31	31	21	23	Dark	49	♂	Mischievous
+3701034F	27	Leftovers	7: Munchlax	7	08B46B66	No	Brave	0: Pickup	31	31	31	31	28	28	Bug	44	♂	Mischievous

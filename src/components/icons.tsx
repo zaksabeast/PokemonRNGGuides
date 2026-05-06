@@ -13,6 +13,8 @@ import {
   MdEdit,
   MdOutlineTipsAndUpdates,
   MdOutlineInfo,
+  MdZoomIn,
+  MdZoomOut,
 } from "react-icons/md";
 import { BiMessageAltError } from "react-icons/bi";
 import { TiWarningOutline } from "react-icons/ti";
@@ -21,9 +23,10 @@ import { FaDiscord, FaRegCopy } from "react-icons/fa";
 import { IoLanguage, IoSparkles } from "react-icons/io5";
 import { PiPersonSimpleWalkBold, PiWarningOctagonBold } from "react-icons/pi";
 import { FaHeart, FaPlay, FaPatreon, FaArrowUp, FaStar } from "react-icons/fa6";
-import { TbPokeball } from "react-icons/tb";
+import { TbEar, TbPokeball } from "react-icons/tb";
 import { IoIosInformationCircle } from "react-icons/io";
 import { BsTranslate } from "react-icons/bs";
+import { RiTreeLine, RiResetLeftLine } from "react-icons/ri";
 
 const icons = {
   AddCircleOutline: MdAddCircleOutline,
@@ -54,6 +57,11 @@ const icons = {
   WarningOutline: TiWarningOutline,
   CautionOutline: PiWarningOctagonBold,
   MessageOutline: BiMessageAltError,
+  Ear: TbEar,
+  TreeLine: RiTreeLine,
+  ZoomIn: MdZoomIn,
+  ZoomOut: MdZoomOut,
+  Reset: RiResetLeftLine,
 } as const;
 
 export type IconName = keyof typeof icons;

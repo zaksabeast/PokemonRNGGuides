@@ -215,10 +215,6 @@
     "hash": "19ff75a33101c8889949e2e612bc7aac8300d98044695ee9b625a130891c2b3c",
     "lastUpdated": "2026-04-04"
   },
-  "/dppt-honey-tree-npcs/": {
-    "hash": "b9c83f8506cc9a1805ace0a1d0527eb283ff2d0158e759979f3848e1adc0d14a",
-    "lastUpdated": "2026-05-06"
-  },
   "/dppt-initial-seed-retail/": {
     "hash": "5dfe6b11ea1d72ce87e29e1c0b42c38f8499561e53797571eb46c85786af87ab",
     "lastUpdated": null
@@ -232,8 +228,8 @@
     "lastUpdated": "2026-03-22"
   },
   "/dppt-setup-rng/": {
-    "hash": "26ca973fdb98fbe7a156e4677fe52f16454ffa460e69420d3e8d5662840d256e",
-    "lastUpdated": "2026-05-05"
+    "hash": "9a437475f1978f1bbda0d1c2761393f40dcea4e0c3d76d0b1f309c8c4f6c513a",
+    "lastUpdated": null
   },
   "/dppt-tid-sid/": {
     "hash": "bad07350e16c3c02af33a99ffaff356fcbd3776c442c6536ac61ca34f6462bbf",
@@ -811,21 +807,13 @@
     "hash": "a1e496f5ff9a195c18513e487be18fa15a77aa7cb75dbb18c13656979dac52a2",
     "lastUpdated": "2026-03-29"
   },
-  "/retail-dppt-honey-pokemon/": {
-    "hash": "8bb958ac76553ee5ad99b317ff0fd5f223f60b2f9f8a284d9085da270fc0fcbc",
-    "lastUpdated": "2026-05-05"
-  },
-  "/retail-dppt-honey-tree/": {
-    "hash": "7785060ee92b90b2275f4d2a2cdea28706fdf75b59c7782584854fd829dd936f",
-    "lastUpdated": "2026-05-05"
-  },
   "/retail-dppt-starter/": {
     "hash": "cac914cd39781d2a8e3ede66c76318af5462a81abfcd94516fc6b464b6582fec",
     "lastUpdated": "2026-04-10"
   },
   "/retail-dppt-static/": {
-    "hash": "8bb958ac76553ee5ad99b317ff0fd5f223f60b2f9f8a284d9085da270fc0fcbc",
-    "lastUpdated": "2026-05-05"
+    "hash": "6d5434a39968421592cd046b482316a207eedf3fc626f60f3cbc66feae503131",
+    "lastUpdated": "2026-04-07"
   },
   "/retail-emerald-egg/": {
     "hash": "664dbb082f0728c419625e8fd194087e6dfd836eb915ef718ee1ad51a1c57053",

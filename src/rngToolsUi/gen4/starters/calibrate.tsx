@@ -228,12 +228,6 @@ export const CalibrateStarter4 = () => {
         species: targetSpecies,
         lead: "None",
         seed: seedTime.seed,
-        // Starters will always be level 5
-        // If the user levels up to 6, that only impacts their stats, not their encounter level
-        // If we ever combine starter 4 and static 4 some day (and we should), we need to keep this in mind
-        encounter_min_level: 5,
-        encounter_max_level: 5,
-        filter_level: 5,
         filter_characteristic: opts.filter_characteristic,
         filter: {
           shiny: false,

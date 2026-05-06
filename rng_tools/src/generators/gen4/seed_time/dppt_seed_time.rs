@@ -18,12 +18,12 @@ pub struct DpptSeedTime4 {
 }
 
 impl DpptSeedTime4 {
-    pub fn new(seed: u32, datetime: RngDateTime, delay: u32, coin_flip_count: usize) -> Self {
+    pub fn new(seed: u32, datetime: RngDateTime, delay: u32) -> Self {
         Self {
             seed,
             datetime,
             delay,
-            coin_flips: coin_flips(seed, coin_flip_count),
+            coin_flips: coin_flips(seed),
         }
     }
 }
@@ -34,7 +34,6 @@ pub struct DpptSeedTimeSearchOpts {
     pub seedtime: SeedTime4,
     pub delay_offset: i32,
     pub second_offset: i32,
-    pub coin_flip_count: usize,
 }
 
 impl DpptSeedTimeSearchOpts {
@@ -63,12 +62,7 @@ pub fn calc_dppt_seedtimes(opts: DpptSeedTimeSearchOpts) -> Vec<DpptSeedTime4> {
             let datetime = RngDateTime::from(offset_datetime);
             let delay = opts.seedtime.delay.wrapping_add(delay_offset as u32);
             let seed = calc_seed(&datetime, delay);
-            results.push(DpptSeedTime4::new(
-                seed,
-                datetime,
-                delay,
-                opts.coin_flip_count,
-            ));
+            results.push(DpptSeedTime4::new(seed, datetime, delay));
         }
     }
 
@@ -124,7 +118,6 @@ mod test {
                 },
                 delay_offset: 5,
                 second_offset: 5,
-                coin_flip_count: 20,
             };
             let results = calc_dppt_seedtimes(opts);
             let expected = pokefinder!("test_data/calc_dppt_seedtimes/matches_pokefinder.txt");

@@ -26,8 +26,10 @@ export type RngToolSubmit<FormState extends GenericForm> = (
 ) => Promise<unknown>;
 
 type Props<FormState extends GenericForm, Result> = {
+  submitTrackerId: string;
   initialValues: DefaultValues<FormState>;
   values?: FormState;
+  onSubmit: RngToolSubmit<FormState>;
   validationSchema?: z.ZodType<FormState>;
   submitButtonLabel?: string;
   formContainerId?: string;
@@ -52,7 +54,6 @@ type Props<FormState extends GenericForm, Result> = {
     rowKey: keyof Result;
     onClickResultRow?: (record: Result) => void;
   }> &
-  AllOrNone<{ submitTrackerId: string; onSubmit: RngToolSubmit<FormState> }> &
   FeatureConfig<
     "allowReset",
     { resetTrackerId: string; onReset?: () => void }
@@ -78,6 +79,7 @@ export const RngToolForm = <
   getFields,
   columns,
   getColumns,
+  onSubmit,
   onReset,
   onClickResultRow,
   rowKey,
@@ -90,7 +92,6 @@ export const RngToolForm = <
   progressPercent,
   allowReset = false,
   disableGenerate = false,
-  onSubmit = async () => {},
   submitButtonLabel = "Generate",
   cancelButtonLabel = "Cancel",
   allowCancel = false,
@@ -149,15 +150,13 @@ export const RngToolForm = <
                 {t["At least 1 input field is invalid"]}
               </Typography.Text>
             )}
-            {submitTrackerId != null && (
-              <Button
-                trackerId={submitTrackerId}
-                htmlType="submit"
-                disabled={disableGenerate}
-              >
-                {translatedSubmitLabel}
-              </Button>
-            )}
+            <Button
+              trackerId={submitTrackerId}
+              htmlType="submit"
+              disabled={disableGenerate}
+            >
+              {translatedSubmitLabel}
+            </Button>
             {additionalButtons}
             {allowCancel && cancelTrackerId != null && (
               <Button

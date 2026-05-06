@@ -12,13 +12,8 @@ import {
 } from "~/components";
 import { uniqueId, sortBy } from "lodash-es";
 import { z } from "zod";
-import {
-  shrinkCoinFlips,
-  matchesCoinFlipFilter,
-} from "../shared/coinFlipUtils";
-import { CoinFlipFilter } from "../shared/coinFlipFilter";
-
-const COIN_FLIPS = 20;
+import { joinCoinFlips, shrinkCoinFlips } from "./coinFlipUtils";
+import { CoinFlipFilter } from "./coinFlipFilter";
 
 type ResultRow = DpptSeedTime4 & {
   id: string;
@@ -101,7 +96,8 @@ const columns: ResultColumn<ResultRow>[] = [
     title: "Coin Flips",
     dataIndex: "coin_flips",
     key: "coin_flips",
-    render: (coinFlips: CoinFlip[]) => shrinkCoinFlips(coinFlips).join(", "),
+    render: (coinFlips: CoinFlip[]) =>
+      joinCoinFlips(shrinkCoinFlips(coinFlips)),
   },
 ];
 
@@ -124,9 +120,16 @@ export const Static4HitSeed = () => {
   const [state, setState] = useStatic4State();
   const [allResults, setAllResults] = React.useState<ResultRow[]>([]);
 
-  const filteredResults = allResults.filter((result) =>
-    matchesCoinFlipFilter(result.coin_flips, state.coinFlipFilter),
-  );
+  const coinFlipFilter = state.coinFlipFilter;
+
+  const filteredResults = allResults.filter((result) => {
+    if (coinFlipFilter.length === 0) {
+      return true;
+    }
+
+    const coinFlipString = joinCoinFlips(shrinkCoinFlips(result.coin_flips));
+    return coinFlipString.includes(coinFlipFilter);
+  });
 
   const onSubmit: RngToolSubmit<FormState> = async (formState) => {
     if (state.target == null) {
@@ -138,7 +141,6 @@ export const Static4HitSeed = () => {
       seedtime: seedTime,
       delay_offset: formState.delayOffset,
       second_offset: formState.secondOffset,
-      coin_flip_count: COIN_FLIPS,
     });
 
     const { datetime: targetDateTime, delay: targetDelay } =
@@ -174,17 +176,7 @@ export const Static4HitSeed = () => {
       initialValues={initialValues}
       validationSchema={Validator}
       disableGenerate={state.target == null}
-      filters={
-        <CoinFlipFilter
-          maxCoinFlips={COIN_FLIPS}
-          coinFlipFilter={state.coinFlipFilter}
-          onCoinFlipFilterChange={(value) =>
-            setState((prev) => ({ ...prev, coinFlipFilter: value }))
-          }
-          headsTrackerId="hit_seed_add_heads"
-          tailsTrackerId="hit_seed_add_tails"
-        />
-      }
+      filters={<CoinFlipFilter />}
       onSubmit={onSubmit}
       rowKey="id"
       submitTrackerId="hit_seed_search"

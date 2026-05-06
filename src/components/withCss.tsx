@@ -43,7 +43,6 @@ type CustomStyles = {
   display?: React.CSSProperties["display"];
 
   color?: Color;
-  hoverColor?: Color;
   backgroundColor?: Color;
   backgroundHoverColor?: Color;
   borderColor?: Color;
@@ -87,7 +86,6 @@ const styleProps = [
   "border",
   "display",
   "color",
-  "hoverColor",
   "backgroundColor",
   "backgroundHoverColor",
   "borderColor",
@@ -129,7 +127,6 @@ const styleConverter = ({
   border,
   display,
   color,
-  hoverColor,
   backgroundColor,
   backgroundHoverColor,
   borderColor,
@@ -180,8 +177,6 @@ const styleConverter = ({
       borderColor:
         borderColor == null ? undefined : theme.token[`color${borderColor}`],
       "&:hover": {
-        color:
-          hoverColor == null ? undefined : theme.token[`color${hoverColor}`],
         backgroundColor:
           backgroundHoverColor == null
             ? undefined

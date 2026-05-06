@@ -1,15 +1,12 @@
-mod calc_level;
 mod chatter;
 mod game_logic;
 mod gen4wild;
-mod honey_tree;
 mod id;
 mod seed;
 mod seed_time;
 mod stationary;
 
 pub use gen4wild::*;
-pub use honey_tree::*;
 pub use id::*;
 pub use seed::*;
 pub use seed_time::*;

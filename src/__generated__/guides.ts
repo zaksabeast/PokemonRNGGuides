@@ -2253,48 +2253,6 @@ export const guides = {
       return file.default;
     }),
   },
-  "/dppt-honey-tree-npcs/": {
-    meta: {
-      id: "/dppt-honey-tree-npcs/",
-      categories: ["Diamond, Pearl, and Platinum"],
-      section: "supporting_info",
-      guideVariants: null,
-      guideKey: "true-Honey Tree NPCs",
-      isNew: false,
-      title: "Honey Tree NPCs in Diamond, Pearl, and Platinum",
-      navDrawerTitle: "Honey Tree NPCs",
-      description:
-        "View a list of Honey Tree NPCs for easier RNG in Diamond, Pearl, and Platinum.",
-      slug: "/dppt-honey-tree-npcs/",
-      isRoughDraft: true,
-      orderPriority: 20,
-      difficulty: null,
-      hideFromNavDrawer: false,
-      addedOn: null,
-      translation: null,
-      layout: "guide",
-      lastUpdated: "2026-05-06",
-      type: "baseGuide",
-      canonical: "/dppt-honey-tree-npcs/",
-      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Honey Tree NPCs.mdx",
-      translations: null,
-      guideGroupId: "en:true-Honey Tree NPCs:Diamond, Pearl, and Platinum",
-      guideVariantLinks: null,
-      displayAttributes: ["rough_draft"],
-    },
-    Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Honey Tree NPCs.mdx"
-        ),
-    ),
-    getRawFile: memoize(async () => {
-      const file = await import(
-        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Honey Tree NPCs.mdx?raw"
-      );
-      return file.default;
-    }),
-  },
   "/dppt-initial-seed-retail/": {
     meta: {
       id: "/dppt-initial-seed-retail/",
@@ -2438,8 +2396,8 @@ export const guides = {
     meta: {
       id: "/dppt-setup-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "other_rng",
-      guideVariants: ["cfw-emu"],
+      section: "pokemon_rng",
+      guideVariants: ["retail", "cfw-emu"],
       guideKey: "false-Honey Tree RNG",
       isNew: false,
       title: "Diamond, Pearl, and Platinum Honey Tree RNG",
@@ -2454,14 +2412,14 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-05-05",
+      lastUpdated: null,
       type: "baseGuide",
       canonical: "/dppt-setup-rng/",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx",
       translations: null,
       guideGroupId: "en:false-Honey Tree RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
-        retail: null,
+        retail: { type: "slug", slug: "/dppt-setup-rng/" },
         cfwEmu: { type: "slug", slug: "/dppt-setup-rng/" },
       },
       displayAttributes: [],
@@ -8647,89 +8605,6 @@ export const guides = {
       return file.default;
     }),
   },
-  "/retail-dppt-honey-pokemon/": {
-    meta: {
-      id: "/retail-dppt-honey-pokemon/",
-      categories: ["Diamond, Pearl, and Platinum"],
-      section: "pokemon_rng",
-      guideVariants: ["retail"],
-      guideKey: "true-Honey Pokémon RNG",
-      isNew: false,
-      title: "Diamond, Pearl, and Platinum Honey Pokémon RNG Guide",
-      navDrawerTitle: "Honey Pokémon RNG",
-      description:
-        "Learn how to RNG honey Pokémon in Diamond, Pearl, and Platinum for perfect IVs, natures, and shinies.",
-      slug: "/retail-dppt-honey-pokemon/",
-      isRoughDraft: true,
-      orderPriority: 3,
-      difficulty: null,
-      hideFromNavDrawer: false,
-      addedOn: null,
-      translation: null,
-      layout: "guide",
-      lastUpdated: "2026-05-05",
-      type: "baseGuide",
-      canonical: "/retail-dppt-static/",
-      file: "guides/Gen 4/Retail Static.mdx",
-      translations: null,
-      guideGroupId: "en:true-Honey Pokémon RNG:Diamond, Pearl, and Platinum",
-      guideVariantLinks: {
-        retail: { type: "slug", slug: "/retail-dppt-honey-pokemon/" },
-        cfwEmu: null,
-      },
-      displayAttributes: ["web_tool", "rough_draft"],
-    },
-    Guide: React.lazy(() => import("~/../guides/Gen 4/Retail Static.mdx")),
-    getRawFile: memoize(async () => {
-      const file = await import("~/../guides/Gen 4/Retail Static.mdx?raw");
-      return file.default;
-    }),
-  },
-  "/retail-dppt-honey-tree/": {
-    meta: {
-      id: "/retail-dppt-honey-tree/",
-      categories: ["Diamond, Pearl, and Platinum"],
-      section: "other_rng",
-      guideVariants: ["retail"],
-      guideKey: "true-Honey Tree RNG",
-      isNew: false,
-      title: "Diamond, Pearl, and Platinum Honey Tree RNG",
-      navDrawerTitle: "Honey Tree RNG",
-      description:
-        "Get any Honey Tree Pokémon, including Munchlax and Combee, in Diamond, Pearl, and Platinum.",
-      slug: "/retail-dppt-honey-tree/",
-      isRoughDraft: true,
-      orderPriority: 20,
-      difficulty: null,
-      hideFromNavDrawer: false,
-      addedOn: null,
-      translation: null,
-      layout: "guide",
-      lastUpdated: "2026-05-05",
-      type: "baseGuide",
-      canonical: "/retail-dppt-honey-tree/",
-      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Retail Honey Tree.mdx",
-      translations: null,
-      guideGroupId: "en:true-Honey Tree RNG:Diamond, Pearl, and Platinum",
-      guideVariantLinks: {
-        retail: { type: "slug", slug: "/retail-dppt-honey-tree/" },
-        cfwEmu: null,
-      },
-      displayAttributes: ["web_tool", "rough_draft"],
-    },
-    Guide: React.lazy(
-      () =>
-        import(
-          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Retail Honey Tree.mdx"
-        ),
-    ),
-    getRawFile: memoize(async () => {
-      const file = await import(
-        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Retail Honey Tree.mdx?raw"
-      );
-      return file.default;
-    }),
-  },
   "/retail-dppt-starter/": {
     meta: {
       id: "/retail-dppt-starter/",
@@ -8792,7 +8667,7 @@ export const guides = {
       addedOn: "2026-04-05",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-05-05",
+      lastUpdated: "2026-04-07",
       type: "baseGuide",
       canonical: "/retail-dppt-static/",
       file: "guides/Gen 4/Retail Static.mdx",
@@ -16826,7 +16701,6 @@ export const guideSlugs = [
   "/dppt-3ds-rng/",
   "/dppt-advance-rng/",
   "/dppt-cute-charm/",
-  "/dppt-honey-tree-npcs/",
   "/dppt-initial-seed-retail/",
   "/dppt-initial-seed/",
   "/dppt-pokeradar-rng/",
@@ -16975,8 +16849,6 @@ export const guideSlugs = [
   "/pokereader/",
   "/retail-bw-entralink/",
   "/retail-bw-starter/",
-  "/retail-dppt-honey-pokemon/",
-  "/retail-dppt-honey-tree/",
   "/retail-dppt-starter/",
   "/retail-dppt-static/",
   "/retail-emerald-egg/",

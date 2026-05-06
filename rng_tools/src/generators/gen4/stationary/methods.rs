@@ -13,21 +13,6 @@ pub enum GameVersion {
     SoulSilver,
 }
 
-fn dpt_method_honey(species: Species) -> bool {
-    matches!(
-        species,
-        Species::Wurmple
-            | Species::Combee
-            | Species::Burmy_Plant
-            | Species::Cherubi
-            | Species::Aipom
-            | Species::Heracross
-            | Species::Munchlax
-            | Species::Silcoon
-            | Species::Cascoon
-    )
-}
-
 fn dpt_method_jk(species: Species) -> bool {
     matches!(
         species,
@@ -77,7 +62,6 @@ pub enum StaticMethod {
     One,
     J,
     K,
-    Honey,
 }
 
 impl StaticMethod {
@@ -87,11 +71,6 @@ impl StaticMethod {
                 if dpt_method_jk(species) =>
             {
                 StaticMethod::J
-            }
-            GameVersion::Diamond | GameVersion::Pearl | GameVersion::Platinum
-                if dpt_method_honey(species) =>
-            {
-                StaticMethod::Honey
             }
             GameVersion::HeartGold | GameVersion::SoulSilver if hgss_method_jk(species) => {
                 StaticMethod::K
@@ -110,5 +89,4 @@ pub enum LeadAbility {
     CutecharmF,
     CutecharmM,
     Synchronize(Nature),
-    Pressure,
 }

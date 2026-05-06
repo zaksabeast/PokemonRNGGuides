@@ -49,8 +49,6 @@ const baseConfig = {
           "z", // zod
           "_", // placeholder
           "t", // translation
-          "x", // coordinates
-          "y", // coordinates
         ],
       },
     ],

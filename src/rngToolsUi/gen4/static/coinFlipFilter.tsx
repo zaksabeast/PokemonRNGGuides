@@ -1,7 +1,7 @@
 import { useStatic4State } from "./state";
 import { Button, Input, Flex, PixelImage } from "~/components";
 import styled from "@emotion/styled";
-import { sanitizeFlips } from "../shared/coinFlipUtils";
+import { sanitizeFlips } from "./coinFlipUtils";
 import React from "react";
 
 const CoinButton = styled(Button)({

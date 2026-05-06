@@ -1,0 +1,1 @@
+var e=[`EmeraldBred`,`EmeraldBredSplit`,`EmeraldBredAlternate`],t={EmeraldBred:`Emerald Bred`,EmeraldBredSplit:`Emerald Bred Split`,EmeraldBredAlternate:`Emerald Bred Alternate`},n=n=>e.map(e=>({label:n[t[e]],value:e}));export{t as n,e as r,n as t};

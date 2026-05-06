@@ -1,0 +1,1 @@
+import{t as e}from"./useGen4Timer-BXfi83Ii.js";import{r as t,t as n}from"./react-DFI7aX18.js";var r=t({console:`NdsDsi`,game:`Diamond`,target:null,coinFlipFilter:``,chatotSummaryCount:null}),i=()=>n(r),a=e();export{a as n,i as r,r as t};

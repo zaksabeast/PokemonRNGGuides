@@ -81,6 +81,7 @@ const applyMonospaceSingleColumn = <Record extends tst.O.Object>(
   };
 };
 
+// eslint-disable-next-line id-length
 const TABLE_SCROLL = { x: true } as const;
 
 type FormikResultTableProps<Record extends tst.O.Object> = tst.O.Overwrite<

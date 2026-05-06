@@ -1,12 +1,9 @@
 import { Field, FormFieldTable, AtomSelect } from "~/components";
 import { static4Atom } from "./state";
-import { type Gen4GameVersion } from "../gen4types";
+import { DpPt } from "../gen4types";
 import { Gen4ConsoleSelect } from "../shared/consoleSelect";
 import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
-
-// Use Gen4GameVersions once we add hgss support
-const SupportedVersions: Gen4GameVersion[] = ["Diamond", "Pearl", "Platinum"];
 
 const getFields = (t: Translations): Field[] => [
   {
@@ -14,7 +11,7 @@ const getFields = (t: Translations): Field[] => [
     input: (
       <AtomSelect
         atom={static4Atom}
-        options={SupportedVersions}
+        options={DpPt}
         getValue={(state) => state.game}
         nextState={(prev, game) => ({ ...prev, game })}
       />

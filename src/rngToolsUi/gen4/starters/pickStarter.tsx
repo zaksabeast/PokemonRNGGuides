@@ -285,6 +285,8 @@ export const PickStarter4 = () => {
       month: monthToRustFilter(opts.month),
       min_advance: advance,
       max_advance: advance,
+      encounter_max_level: 5,
+      encounter_min_level: 5,
       force_second: opts.force_second,
       filter: pkmFilterFieldsToRustInput(opts),
       lead: "None",

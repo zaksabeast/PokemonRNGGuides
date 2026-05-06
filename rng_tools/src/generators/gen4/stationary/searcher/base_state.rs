@@ -19,6 +19,7 @@ pub struct BaseStatic4State {
     pub shiny: bool,
     pub characteristic: Characteristic,
     pub lead: LeadAbility,
+    pub level: u8,
 }
 
 impl BaseStatic4State {
@@ -29,6 +30,7 @@ impl BaseStatic4State {
         seed: u32,
         species: Species,
         nature: Nature,
+        level: u8,
         pid: u32,
         tid: u16,
         sid: u16,
@@ -41,6 +43,7 @@ impl BaseStatic4State {
             nature,
             pid,
             lead,
+            level,
             advance: 0,
             shiny: gen3_shiny(pid, tid, sid),
             ability: AbilityType::from_gen3_pid(pid),

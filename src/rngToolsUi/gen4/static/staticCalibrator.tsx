@@ -1,4 +1,4 @@
-import { uniqueId } from "lodash-es";
+import { uniqueId, range } from "lodash-es";
 import { match } from "ts-pattern";
 import { z } from "zod";
 import {
@@ -14,7 +14,6 @@ import {
   defaultMinMaxStats,
   gender,
   maleFemale,
-  MinMaxStats,
   nature,
   StatFieldsSchema,
   UndefinedToNull,
@@ -25,6 +24,7 @@ import {
   Button,
   CalibrateTimerButton,
   Field,
+  FormFieldTable,
   FormikNumberInput,
   FormikRadio,
   FormikSelect,
@@ -62,6 +62,7 @@ const Validator = z
   .object({
     nature: z.enum(nature),
     gender: z.enum(gender),
+    filter_level: z.number().int().min(1).max(100),
     filter_characteristic: z.enum(characteristics),
     delayRange: z.number().min(0),
     secondsRange: z.number().min(0),
@@ -70,21 +71,6 @@ const Validator = z
   .extend(StatFieldsSchema.shape);
 
 export type FormState = z.infer<typeof Validator>;
-
-const initialValues: FormState = {
-  hpStat: 0,
-  atkStat: 0,
-  defStat: 0,
-  spaStat: 0,
-  spdStat: 0,
-  speStat: 0,
-  nature: "Adamant",
-  gender: "Male",
-  filter_characteristic: "AlertToSounds",
-  delayRange: 50,
-  secondsRange: 1,
-  advanceRange: 20,
-};
 
 type CalibrateStatic4AdvanceProps = {
   result: Result;
@@ -196,54 +182,74 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
 
 type FieldProps = {
   t: Translations;
-  minMaxStats: MinMaxStats;
-  isFixedGender: boolean;
+  target: Static4Target | null;
 };
 
-const getFields = ({ t, isFixedGender, minMaxStats }: FieldProps): Field[] => [
-  {
-    label: t["Gender"],
-    show: !isFixedGender,
-    input: (
-      <FormikRadio<FormState> name="gender" options={toOptions(maleFemale)} />
-    ),
-  },
-  {
-    label: t["Nature"],
-    input: (
-      <FormikSelect<FormState, "nature">
-        name="nature"
-        options={natureOptions.required}
-      />
-    ),
-  },
-  {
-    label: t["Characteristic"],
-    input: (
-      <FormikSelect<FormState, "filter_characteristic">
-        name="filter_characteristic"
-        options={Characteristic4Options}
-      />
-    ),
-  },
-  ...getStatFields<FormState>(minMaxStats, t),
-  {
-    label: t["Delay Range ±"],
-    input: <FormikNumberInput<FormState> name="delayRange" numType="decimal" />,
-  },
-  {
-    label: t["Seconds Range ±"],
-    input: (
-      <FormikNumberInput<FormState> name="secondsRange" numType="decimal" />
-    ),
-  },
-  {
-    label: t["Advance Range ±"],
-    input: (
-      <FormikNumberInput<FormState> name="advanceRange" numType="decimal" />
-    ),
-  },
-];
+const Fields = ({ t, target }: FieldProps) => {
+  const isFixedGender = target?.isFixedGender ?? false;
+  const minMaxStats = target?.minMaxStats ?? defaultMinMaxStats;
+  const minLevel = target?.encounterMinLevel ?? 1;
+  const maxLevel = target?.encounterMaxLevel ?? 1;
+
+  const fields: Field[] = [
+    {
+      label: t["Gender"],
+      show: !isFixedGender,
+      input: (
+        <FormikRadio<FormState> name="gender" options={toOptions(maleFemale)} />
+      ),
+    },
+    {
+      label: t["Nature"],
+      input: (
+        <FormikSelect<FormState, "nature">
+          name="nature"
+          options={natureOptions.required}
+        />
+      ),
+    },
+    {
+      label: t["Characteristic"],
+      input: (
+        <FormikSelect<FormState, "filter_characteristic">
+          name="filter_characteristic"
+          options={Characteristic4Options}
+        />
+      ),
+    },
+    {
+      label: t["Level"],
+      show: minLevel !== maxLevel,
+      input: (
+        <FormikRadio<FormState>
+          name="filter_level"
+          options={toOptions(range(minLevel, maxLevel + 1))}
+        />
+      ),
+    },
+    ...getStatFields<FormState>(minMaxStats, t),
+    {
+      label: t["Delay Range ±"],
+      input: (
+        <FormikNumberInput<FormState> name="delayRange" numType="decimal" />
+      ),
+    },
+    {
+      label: t["Seconds Range ±"],
+      input: (
+        <FormikNumberInput<FormState> name="secondsRange" numType="decimal" />
+      ),
+    },
+    {
+      label: t["Advance Range ±"],
+      input: (
+        <FormikNumberInput<FormState> name="advanceRange" numType="decimal" />
+      ),
+    },
+  ];
+
+  return <FormFieldTable fields={fields} />;
+};
 
 const sortBy = [
   (result: Result) => result.advanceOffset,
@@ -300,12 +306,6 @@ export const Static4Calibrator = () => {
     map: mapResult,
   });
 
-  const fields = getFields({
-    t,
-    isFixedGender: state.target?.isFixedGender ?? false,
-    minMaxStats: state.target?.minMaxStats ?? defaultMinMaxStats,
-  });
-
   const onSubmit = async (opts: FormState) => {
     if (state.target == null) {
       return;
@@ -324,7 +324,7 @@ export const Static4Calibrator = () => {
 
     const minMaxIvs = await getIvRangeFromStats({
       species: target.species,
-      lvl: target.level,
+      lvl: opts.filter_level,
       nature: opts.nature,
       stats: caughtStats,
     });
@@ -350,51 +350,79 @@ export const Static4Calibrator = () => {
       max_delay: maxDelay,
     });
 
-    const batchedOpts = seedTimes.map((seedTime) => ({
-      // Additional info for mapping results
-      target,
-      seedTime,
+    const batchedOpts = seedTimes.map(
+      (
+        seedTime,
+      ): UndefinedToNull<Gen4StaticOpts> & {
+        target: Static4Target;
+        seedTime: SeedTime4;
+      } => ({
+        // Additional info for mapping results
+        target,
+        seedTime,
 
-      // Used by generate_static4_states
-      seed: seedTime.seed,
-      species: target.species,
-      game: state.game,
-      initial_advances: Math.max(target.advance - opts.advanceRange, 0),
-      max_advances: 2 * opts.advanceRange,
-      offset: target.advanceOffset,
-      lead: target.lead,
-      filter: {
-        shiny: false,
-        ability: null,
-        nature: opts.nature,
-        gender: state.target?.isFixedGender
-          ? state.target?.gender
-          : opts.gender,
-        hidden_power: defaultHiddenPowerFilter,
-        ...minMaxIvs,
-      },
-      filter_characteristic: opts.filter_characteristic,
-      // Doesn't matter for calibration
-      tid: 0,
-      sid: 0,
-    }));
+        // Used by generate_static4_states
+        seed: seedTime.seed,
+        species: target.species,
+        game: state.game,
+        initial_advances: Math.max(target.advance - opts.advanceRange, 0),
+        max_advances: 2 * opts.advanceRange,
+        offset: target.advanceOffset,
+        lead: target.lead,
+        encounter_min_level: target.encounterMinLevel,
+        encounter_max_level: target.encounterMaxLevel,
+        filter_level: opts.filter_level,
+        filter: {
+          shiny: false,
+          ability: null,
+          nature: opts.nature,
+          gender: state.target?.isFixedGender
+            ? state.target?.gender
+            : opts.gender,
+          hidden_power: defaultHiddenPowerFilter,
+          ...minMaxIvs,
+        },
+        filter_characteristic: opts.filter_characteristic,
+        // Doesn't matter for calibration
+        tid: 0,
+        sid: 0,
+      }),
+    );
 
     await generateStatic4States(batchedOpts);
+  };
+
+  const initialValues: FormState = {
+    hpStat: 0,
+    atkStat: 0,
+    defStat: 0,
+    spaStat: 0,
+    spdStat: 0,
+    speStat: 0,
+    nature: "Adamant",
+    gender: "Male",
+    filter_level: state.target?.level ?? 1,
+    filter_characteristic: "AlertToSounds",
+    delayRange: 50,
+    secondsRange: 1,
+    advanceRange: 20,
   };
 
   return (
     <RngToolForm<FormState, Result>
       allowCancel
-      fields={fields}
       getColumns={getColumns}
       results={results}
       initialValues={initialValues}
+      values={initialValues}
       validationSchema={Validator}
       onSubmit={onSubmit}
       onCancel={cancel}
       rowKey="key"
       submitTrackerId="calibrate_static4"
       cancelTrackerId="cancel_calibrate_static4"
-    />
+    >
+      <Fields t={t} target={state.target} />
+    </RngToolForm>
   );
 };

@@ -29,6 +29,7 @@ import Luxio from "~/assets/box-sprites/luxio.png";
 import Marill from "~/assets/box-sprites/marill.png";
 import Marshtomp from "~/assets/box-sprites/marshtomp.png";
 import Monferno from "~/assets/box-sprites/monferno.png";
+import Munchlax from "~/assets/box-sprites/munchlax.png";
 import Onix from "~/assets/box-sprites/onix.png";
 import Pidgeot from "~/assets/box-sprites/pidgeot.png";
 import Prinplup from "~/assets/box-sprites/prinplup.png";
@@ -80,6 +81,7 @@ const image = {
   Marill,
   Marshtomp,
   Monferno,
+  Munchlax,
   Onix,
   Pidgeot,
   Prinplup,
@@ -108,8 +110,9 @@ const _PixelImage = styled.img({
 
 type Props = {
   name: keyof typeof image;
+  className?: string;
 };
 
-export const PixelImage = ({ name }: Props) => {
-  return <_PixelImage src={image[name]} />;
+export const PixelImage = ({ name, className }: Props) => {
+  return <_PixelImage src={image[name]} className={className} />;
 };

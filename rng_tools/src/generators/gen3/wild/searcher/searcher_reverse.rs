@@ -59,12 +59,14 @@ EncounterIdxPath(MapSetup)
 LvlPath
     Vanilla
     Hustle
-GenderPath
+NatureGenderPath
     Vanilla
     CuteCharmSuccess
+    CuteCharmSuccessSafariNatureSuccess
+    CuteCharmSuccessSafariNatureFailure
     CuteCharmFailure
-NaturePath
-    Vanilla
+    CuteCharmFailureSafariNatureSuccess
+    CuteCharmFailureSafariNatureFailure
     SafariNatureSuccess
     SafariNatureFailureSynchronizeSuccess
     SafariNatureFailureSynchronizeFailure

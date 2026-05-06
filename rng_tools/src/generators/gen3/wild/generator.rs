@@ -312,10 +312,10 @@ fn select_lvl(
     encounter.min_level + lvl_incr
 }
 
-fn pick_wild_mon_nature_safari(
+pub fn pick_wild_mon_nature_safari(
     rng: &mut Pokerng,
     pokeblock: &Option<Wild3SafariPokeblock>,
-) -> Option<Nature> {
+) -> Option<(Nature, Option<[bool; 5]>)> {
     if pokeblock.is_none() {
         return None;
     }
@@ -389,15 +389,18 @@ fn pick_wild_mon_nature_safari(
         score > 0
     };
 
-    let get_nature_from_flavors = |flavors: &[bool; 5]| -> Option<Nature> {
+    let get_nature_from_flavors = |flavors: &[bool; 5]| -> Nature {
         natures_by_priority
             .into_iter()
             .find(|nature| has_positive_score(*nature, flavors))
+            .unwrap_or(natures_by_priority[0])
     };
 
     let pokeblock = pokeblock.as_ref().unwrap();
     match pokeblock {
-        Wild3SafariPokeblock::FromFlavor { flavors } => get_nature_from_flavors(flavors),
+        Wild3SafariPokeblock::FromFlavor { flavors } => {
+            Some((get_nature_from_flavors(flavors), Some(*flavors)))
+        }
         Wild3SafariPokeblock::FromNature {
             wanted_nature,
             flavor_count,
@@ -409,15 +412,15 @@ fn pick_wild_mon_nature_safari(
                 _ => 7,
             };
 
-            let success = PERTINENT_POKEBLOCKS_BY_NATURE[*wanted_nature as usize]
+            let pokeblock = PERTINENT_POKEBLOCKS_BY_NATURE[*wanted_nature as usize]
                 .iter()
                 .skip(skip_count)
-                .any(|&flavors| get_nature_from_flavors(&flavors) == Some(*wanted_nature));
+                .find(|&flavors| get_nature_from_flavors(&flavors) == *wanted_nature);
 
-            if success {
-                Some(*wanted_nature)
+            if let Some(pokeblock) = pokeblock {
+                Some((*wanted_nature, Some(*pokeblock)))
             } else {
-                Some(natures_by_priority[0]) // will be filtered out later
+                Some((natures_by_priority[0], None)) // will be filtered out later
             }
         }
     }
@@ -549,7 +552,7 @@ pub fn generate_gen3_wild(
 
     // PickWildMonNature()
     let required_nature = (|| {
-        if let Some(nature) = pick_wild_mon_nature_safari(&mut rng, &opts.safari_pokeblock) {
+        if let Some((nature, _)) = pick_wild_mon_nature_safari(&mut rng, &opts.safari_pokeblock) {
             return nature;
         }
         match opts.lead {

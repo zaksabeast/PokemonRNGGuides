@@ -84,6 +84,18 @@ PidLowPath (doesn't know Iv arc)
     WithVBLank
 */
 
+/*
+
+let safari_status = if opts.map_setups.iter().all(|map| !map.map_data.is_safari) {
+    InSafariMapStates::Never
+} else if opts.map_setups.iter().all(|map| map.map_data.is_safari) {
+    InSafariMapStates::Always
+} else {
+    InSafariMapStates::Sometimes
+};
+
+*/
+
 fn extend_pid_paths_to_results<I>(
     opts: &Wild3SearcherOptions,
     iter: I,

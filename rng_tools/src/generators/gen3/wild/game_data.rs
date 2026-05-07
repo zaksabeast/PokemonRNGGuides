@@ -121,6 +121,7 @@ pub struct Wild3MapGameData {
     pub feebas: Option<Wild3EncounterGameData>,
     pub rock_smash_rate: u32,
     pub is_safari: bool,
+    pub actions_with_safari_pokeblock: Vec<Wild3Action>,
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -191,6 +192,7 @@ impl Default for Wild3MapGameData {
             mass_outbreaks: vec![],
             rock_smash_rate: 20,
             is_safari: false,
+            actions_with_safari_pokeblock: vec![],
         }
     }
 }

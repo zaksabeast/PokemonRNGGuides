@@ -44,7 +44,7 @@ type Ngpa = NatureGenderToPidArc;
 //NO_PROD splitin 2: in_safari_map and pokeblock
 pub enum InSafariMapStates {
     Never,
-    Some,
+    Sometimes,
     Always,
 }
 
@@ -73,13 +73,13 @@ impl NatureGenderSeedGenerator {
         if permit_vanilla_arc(leads) {
             if matches!(
                 safari_status,
-                InSafariMapStates::Some | InSafariMapStates::Never
+                InSafariMapStates::Sometimes | InSafariMapStates::Never
             ) {
                 arcs.push(Ngpa::Vanilla)
             }
             if matches!(
                 safari_status,
-                InSafariMapStates::Some | InSafariMapStates::Always
+                InSafariMapStates::Sometimes | InSafariMapStates::Always
             ) {
                 arcs.push(Ngpa::SafSuc_NoBlk);
                 arcs.push(Ngpa::SafSuc_WBlk);
@@ -90,14 +90,14 @@ impl NatureGenderSeedGenerator {
         if permit_synchronize_arc(leads) {
             if matches!(
                 safari_status,
-                InSafariMapStates::Some | InSafariMapStates::Never
+                InSafariMapStates::Sometimes | InSafariMapStates::Never
             ) {
                 arcs.push(Ngpa::SyncSuc);
                 arcs.push(Ngpa::SyncFail);
             }
             if matches!(
                 safari_status,
-                InSafariMapStates::Some | InSafariMapStates::Always
+                InSafariMapStates::Sometimes | InSafariMapStates::Always
             ) {
                 arcs.push(Ngpa::SafFail_SyncSuc);
                 arcs.push(Ngpa::SafFail_SyncFail);
@@ -111,14 +111,14 @@ impl NatureGenderSeedGenerator {
         if encounter_gender_ratio.has_multiple_genders() && permit_cute_charm_arc_type(leads) {
             if matches!(
                 safari_status,
-                InSafariMapStates::Some | InSafariMapStates::Never
+                InSafariMapStates::Sometimes | InSafariMapStates::Never
             ) {
                 arcs.push(Ngpa::CcFail);
                 arcs.push(Ngpa::CcSuc);
             }
             if matches!(
                 safari_status,
-                InSafariMapStates::Some | InSafariMapStates::Always
+                InSafariMapStates::Sometimes | InSafariMapStates::Always
             ) {
                 arcs.push(Ngpa::CcSuc_SafSuc_NoBlk);
                 arcs.push(Ngpa::CcSuc_SafSuc_WBlk);

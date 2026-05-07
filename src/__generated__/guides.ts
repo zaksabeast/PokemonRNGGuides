@@ -4424,7 +4424,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-05-07",
       type: "baseGuide",
       canonical: "/emulator-hgss-special-wild/",
       file: "guides/Gen 4/HeartGold and SoulSilver/Special Wild Case (Emu).mdx",

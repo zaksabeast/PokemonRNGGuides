@@ -2273,7 +2273,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-05-06",
+      lastUpdated: "2026-05-07",
       type: "baseGuide",
       canonical: "/dppt-honey-tree-npcs/",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Honey Tree NPCs.mdx",

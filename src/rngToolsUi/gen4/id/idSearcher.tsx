@@ -331,6 +331,7 @@ export const Id4Searcher = () => {
   const {
     run: searchDpptIds,
     data: results,
+    progressPercent,
     cancel,
   } = useBatchedTool(multiWorkerRngTools.search_dppt_ids, { map: mapResult });
 
@@ -397,6 +398,7 @@ export const Id4Searcher = () => {
       allowCancel
       cancelTrackerId="cancel_dppt_id"
       onCancel={cancel}
+      progressPercent={progressPercent}
     >
       {contextHolder}
       <Id4SearcherFields />

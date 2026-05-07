@@ -316,6 +316,7 @@ export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
   const {
     run: searchStaticSeeds,
     data: results,
+    progressPercent,
     cancel,
   } = useBatchedTool(multiWorkerRngTools.search_static4, {
     map: mapResult,
@@ -374,6 +375,7 @@ export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
       allowCancel
       cancelTrackerId="cancel_gen4_static"
       onCancel={cancel}
+      progressPercent={progressPercent}
     >
       <Fields game={game} getEncounters={getEncounters} />
     </RngToolForm>

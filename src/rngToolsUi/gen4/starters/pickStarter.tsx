@@ -262,6 +262,7 @@ export const PickStarter4 = () => {
   const {
     run: searchStarterSeeds,
     data: results,
+    progressPercent,
     cancel,
   } = useBatchedTool(multiWorkerRngTools.search_static4, {
     map: mapResult,
@@ -325,6 +326,7 @@ export const PickStarter4 = () => {
       submitButtonLabel={t["Generate"]}
       cancelButtonLabel={t["Cancel"]}
       onCancel={cancel}
+      progressPercent={progressPercent}
     >
       <Fields game={game} t={t} />
     </RngToolForm>

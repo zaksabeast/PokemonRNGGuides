@@ -300,6 +300,7 @@ export const Static4Calibrator = () => {
   const {
     run: generateStatic4States,
     data: results,
+    progressPercent,
     cancel,
     reset,
   } = useBatchedTool(multiWorkerRngTools.generate_static4_states, {
@@ -423,6 +424,7 @@ export const Static4Calibrator = () => {
       rowKey="key"
       submitTrackerId="calibrate_static4"
       cancelTrackerId="cancel_calibrate_static4"
+      progressPercent={progressPercent}
     >
       <Fields t={t} target={state.target} />
     </RngToolForm>

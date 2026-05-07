@@ -69,10 +69,18 @@ fn permit_hustle_arc_for_path(nature_gender_path: &NatureGenderPath) -> bool {
     // Cant' be Hustle and another ability at the same time
     !matches!(
         nature_gender_path.nature_gender_arc,
-        NatureGenderToPidArc::SynchronizeFailure
-            | NatureGenderToPidArc::SynchronizeSuccess
-            | NatureGenderToPidArc::CuteCharmSuccess
-            | NatureGenderToPidArc::CuteCharmFailure
+        NatureGenderToPidArc::CcSuc
+            | NatureGenderToPidArc::CcSuc_SafSuc_NoBlk
+            | NatureGenderToPidArc::CcSuc_SafSuc_WBlk
+            | NatureGenderToPidArc::CcSuc_SafFail
+            | NatureGenderToPidArc::CcFail
+            | NatureGenderToPidArc::CcFail_SafSuc_NoBlk
+            | NatureGenderToPidArc::CcFail_SafSuc_WBlk
+            | NatureGenderToPidArc::CcFail_SafFail
+            | NatureGenderToPidArc::SafFail_SyncSuc
+            | NatureGenderToPidArc::SafFail_SyncFail
+            | NatureGenderToPidArc::SyncSuc
+            | NatureGenderToPidArc::SyncFail
     )
 }
 

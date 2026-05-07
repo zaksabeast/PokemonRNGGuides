@@ -1,6 +1,9 @@
 use crate::{
     Gender, GenderRatio, Nature,
-    gen3::{Gen3Lead, Wild3SafariPokeblock, pick_wild_mon_nature_safari, wild::searcher::PidPath},
+    gen3::{
+        ConsideredSafariPokeblocks, Gen3Lead, Wild3SafariPokeblock, pick_wild_mon_nature_safari,
+        wild::searcher::PidPath,
+    },
     rng::lcrng::Pokerng,
 };
 
@@ -8,13 +11,13 @@ use crate::{
 /** right before PickWildMonNature_RandomPickNature or PickWildMonNature_RandomTestSynchro or CreateWildMon_RandomTestCuteCharm */
 pub struct NatureGenderPath {
     pub seed: u32,
-    pub nature_gender_arc: Nga,
+    pub nature_gender_arc: Ngpa,
     pub pid_path: PidPath,
 }
 
 #[derive(Default, Debug, Clone, Copy, PartialEq)]
 #[allow(non_camel_case_types)]
-pub enum Nga {
+pub enum NatureGenderToPidArc {
     #[default]
     Vanilla,
     CcSuc,
@@ -34,18 +37,23 @@ pub enum Nga {
     SyncFail,
 }
 
-pub enum SafariStatus {
-    Always,
-    Some,
+//NO_PROD rendu a map, il faut filtrer si safari
+//NO_PROD rendu a action+ map, il faut filtrer si safari block accessible.
+
+type Ngpa = NatureGenderToPidArc;
+//NO_PROD splitin 2: in_safari_map and pokeblock
+pub enum InSafariMapStates {
     Never,
+    Some,
+    Always,
 }
 
 pub struct NatureGenderSeedGenerator {
-    arcs: Vec<Nga>,
+    arcs: Vec<Ngpa>,
     permit_all: bool,
     encounter_gender_ratio: GenderRatio,
     leads: Vec<Gen3Lead>,
-    safari_status: SafariStatus,
+    considered_safari_pokeblocks: ConsideredSafariPokeblocks,
 }
 
 impl NatureGenderSeedGenerator {
@@ -54,31 +62,45 @@ impl NatureGenderSeedGenerator {
         encounter_gender_ratio: GenderRatio,
         wanted_nature: Option<Nature>,
         wanted_gender: Option<Gender>,
-        safari_status: SafariStatus,
+        safari_status: InSafariMapStates,
+        considered_safari_pokeblocks: ConsideredSafariPokeblocks,
     ) -> Self {
-        let mut arcs: Vec<Nga> = vec![];
+        let mut arcs: Vec<Ngpa> = vec![];
 
         let mut permit_all = true;
 
+        //NO_PROD valid that all arcs are possible
         if permit_vanilla_arc(leads) {
-            if matches!(safari_status, SafariStatus::Some | SafariStatus::Never) {
-                arcs.push(Nga::Vanilla)
+            if matches!(
+                safari_status,
+                InSafariMapStates::Some | InSafariMapStates::Never
+            ) {
+                arcs.push(Ngpa::Vanilla)
             }
-            if matches!(safari_status, SafariStatus::Some | SafariStatus::Always) {
-                arcs.push(Nga::SafSuc_NoBlk);
-                arcs.push(Nga::SafSuc_WBlk);
-                arcs.push(Nga::SafFail);
+            if matches!(
+                safari_status,
+                InSafariMapStates::Some | InSafariMapStates::Always
+            ) {
+                arcs.push(Ngpa::SafSuc_NoBlk);
+                arcs.push(Ngpa::SafSuc_WBlk);
+                arcs.push(Ngpa::SafFail);
             }
         }
 
         if permit_synchronize_arc(leads) {
-            if matches!(safari_status, SafariStatus::Some | SafariStatus::Never) {
-                arcs.push(Nga::SyncSuc);
-                arcs.push(Nga::SyncFail);
+            if matches!(
+                safari_status,
+                InSafariMapStates::Some | InSafariMapStates::Never
+            ) {
+                arcs.push(Ngpa::SyncSuc);
+                arcs.push(Ngpa::SyncFail);
             }
-            if matches!(safari_status, SafariStatus::Some | SafariStatus::Always) {
-                arcs.push(Nga::SafFail_SyncSuc);
-                arcs.push(Nga::SafFail_SyncFail);
+            if matches!(
+                safari_status,
+                InSafariMapStates::Some | InSafariMapStates::Always
+            ) {
+                arcs.push(Ngpa::SafFail_SyncSuc);
+                arcs.push(Ngpa::SafFail_SyncFail);
             }
 
             if !has_all_synchronize_natures(leads, wanted_nature) {
@@ -87,17 +109,23 @@ impl NatureGenderSeedGenerator {
         }
 
         if encounter_gender_ratio.has_multiple_genders() && permit_cute_charm_arc_type(leads) {
-            if matches!(safari_status, SafariStatus::Some | SafariStatus::Never) {
-                arcs.push(Nga::CcFail);
-                arcs.push(Nga::CcSuc);
+            if matches!(
+                safari_status,
+                InSafariMapStates::Some | InSafariMapStates::Never
+            ) {
+                arcs.push(Ngpa::CcFail);
+                arcs.push(Ngpa::CcSuc);
             }
-            if matches!(safari_status, SafariStatus::Some | SafariStatus::Always) {
-                arcs.push(Nga::CcSuc_SafSuc_NoBlk);
-                arcs.push(Nga::CcSuc_SafSuc_WBlk);
-                arcs.push(Nga::CcSuc_SafFail);
-                arcs.push(Nga::CcFail_SafSuc_NoBlk);
-                arcs.push(Nga::CcFail_SafSuc_WBlk);
-                arcs.push(Nga::CcFail_SafFail);
+            if matches!(
+                safari_status,
+                InSafariMapStates::Some | InSafariMapStates::Always
+            ) {
+                arcs.push(Ngpa::CcSuc_SafSuc_NoBlk);
+                arcs.push(Ngpa::CcSuc_SafSuc_WBlk);
+                arcs.push(Ngpa::CcSuc_SafFail);
+                arcs.push(Ngpa::CcFail_SafSuc_NoBlk);
+                arcs.push(Ngpa::CcFail_SafSuc_WBlk);
+                arcs.push(Ngpa::CcFail_SafFail);
             }
 
             if !has_all_cute_charm_genders(leads, wanted_gender) {
@@ -110,7 +138,7 @@ impl NatureGenderSeedGenerator {
             permit_all,
             encounter_gender_ratio,
             leads: leads.to_vec(),
-            safari_status,
+            considered_safari_pokeblocks,
         }
     }
 
@@ -119,7 +147,7 @@ impl NatureGenderSeedGenerator {
             .iter()
             .flat_map(|arc| {
                 if !self.permit_all {
-                    if matches!(*arc, Nga::SyncSuc | Nga::SafFail_SyncSuc)
+                    if matches!(*arc, Ngpa::SyncSuc | Ngpa::SafFail_SyncSuc)
                         && !permit_synchronize_success_arc_for_path(&self.leads, pid_path)
                     {
                         return vec![];
@@ -127,10 +155,10 @@ impl NatureGenderSeedGenerator {
 
                     if matches!(
                         *arc,
-                        Nga::CcSuc
-                            | Nga::CcSuc_SafSuc_NoBlk
-                            | Nga::CcSuc_SafSuc_WBlk
-                            | Nga::CcSuc_SafFail
+                        Ngpa::CcSuc
+                            | Ngpa::CcSuc_SafSuc_NoBlk
+                            | Ngpa::CcSuc_SafSuc_WBlk
+                            | Ngpa::CcSuc_SafFail
                     ) && !permit_cute_charm_success_arc_for_path(
                         &self.leads,
                         self.encounter_gender_ratio,
@@ -140,7 +168,12 @@ impl NatureGenderSeedGenerator {
                     }
                 }
 
-                extend_path_for_arc(self.encounter_gender_ratio, pid_path, *arc)
+                extend_path_for_arc(
+                    self.encounter_gender_ratio,
+                    self.considered_safari_pokeblocks,
+                    pid_path,
+                    *arc,
+                )
             })
             .collect()
     }
@@ -224,8 +257,9 @@ fn permit_cute_charm_success_arc_for_path(
 
 fn extend_path_for_arc(
     encounter_gender_ratio: GenderRatio,
+    considered_safari_pokeblocks: ConsideredSafariPokeblocks,
     pid_path: &PidPath,
-    arc: Nga,
+    arc: Ngpa,
 ) -> Vec<NatureGenderPath> {
     let mut nature_gender_seeds: Vec<u32> = vec![];
 
@@ -244,7 +278,7 @@ fn extend_path_for_arc(
         let mut copy_rng = rng_nat.clone();
         let pokeblock = Wild3SafariPokeblock::FromNature {
             wanted_nature: resulting_nature,
-            flavor_count: 3, //NO_PROD
+            considered_safari_pokeblocks,
         };
         let res = pick_wild_mon_nature_safari(&mut copy_rng, &Some(pokeblock));
 
@@ -255,18 +289,18 @@ fn extend_path_for_arc(
     };
 
     match arc {
-        Nga::Vanilla
-        | Nga::CcFail
-        | Nga::CcFail_SafSuc_NoBlk
-        | Nga::CcFail_SafSuc_WBlk
-        | Nga::CcFail_SafFail
-        | Nga::SafSuc_NoBlk
-        | Nga::SafSuc_WBlk
-        | Nga::SafFail
-        | Nga::SafFail_SyncSuc
-        | Nga::SafFail_SyncFail
-        | Nga::SyncSuc
-        | Nga::SyncFail => {
+        Ngpa::Vanilla
+        | Ngpa::CcFail
+        | Ngpa::CcFail_SafSuc_NoBlk
+        | Ngpa::CcFail_SafSuc_WBlk
+        | Ngpa::CcFail_SafFail
+        | Ngpa::SafSuc_NoBlk
+        | Ngpa::SafSuc_WBlk
+        | Ngpa::SafFail
+        | Ngpa::SafFail_SyncSuc
+        | Ngpa::SafFail_SyncFail
+        | Ngpa::SyncSuc
+        | Ngpa::SyncFail => {
             // E D C B A 9 8 7 6 5 4 3 2 1 0 : reverse advances (pid_path.seed is at 0)
             //   x       x             x     : RandomPickNature is nature
             //       y-y                     : PID is nature
@@ -280,8 +314,8 @@ fn extend_path_for_arc(
 
                 // This checks that the method gives the wanted result.
                 let random_selected_correct_nature = match arc {
-                    Nga::SyncSuc | Nga::SafFail_SyncSuc => true,
-                    Nga::SafSuc_WBlk | Nga::CcFail_SafSuc_WBlk => safari_success(&mut rng_nat),
+                    Ngpa::SyncSuc | Ngpa::SafFail_SyncSuc => true,
+                    Ngpa::SafSuc_WBlk | Ngpa::CcFail_SafSuc_WBlk => safari_success(&mut rng_nat),
                     _ => {
                         let pick_wild_mon_nature: Nature =
                             ((rng_nat.prev_rand() % 25) as u8).into();
@@ -293,28 +327,28 @@ fn extend_path_for_arc(
                 // Order: Synchronize -> Safari -> CuteCharm
 
                 let synchro_is_correct = match arc {
-                    Nga::SyncSuc | Nga::SafFail_SyncSuc => (rng_nat.prev_rand() % 2) == 0,
-                    Nga::SyncFail | Nga::SafFail_SyncFail => (rng_nat.prev_rand() % 2) == 1,
+                    Ngpa::SyncSuc | Ngpa::SafFail_SyncSuc => (rng_nat.prev_rand() % 2) == 0,
+                    Ngpa::SyncFail | Ngpa::SafFail_SyncFail => (rng_nat.prev_rand() % 2) == 1,
                     _ => true,
                 };
 
                 let safari_is_correct = match arc {
-                    Nga::CcFail_SafSuc_NoBlk
-                    | Nga::CcFail_SafSuc_WBlk
-                    | Nga::SafSuc_NoBlk
-                    | Nga::SafSuc_WBlk => (rng_nat.prev_rand() % 100) < 80,
-                    Nga::CcFail_SafFail
-                    | Nga::SafFail
-                    | Nga::SafFail_SyncSuc
-                    | Nga::SafFail_SyncFail => (rng_nat.prev_rand() % 100) >= 80,
+                    Ngpa::CcFail_SafSuc_NoBlk
+                    | Ngpa::CcFail_SafSuc_WBlk
+                    | Ngpa::SafSuc_NoBlk
+                    | Ngpa::SafSuc_WBlk => (rng_nat.prev_rand() % 100) < 80,
+                    Ngpa::CcFail_SafFail
+                    | Ngpa::SafFail
+                    | Ngpa::SafFail_SyncSuc
+                    | Ngpa::SafFail_SyncFail => (rng_nat.prev_rand() % 100) >= 80,
                     _ => true,
                 };
 
                 let cute_charm_is_correct = match arc {
-                    Nga::CcFail
-                    | Nga::CcFail_SafSuc_NoBlk
-                    | Nga::CcFail_SafSuc_WBlk
-                    | Nga::CcFail_SafFail => (rng_nat.prev_rand() % 3) == 0,
+                    Ngpa::CcFail
+                    | Ngpa::CcFail_SafSuc_NoBlk
+                    | Ngpa::CcFail_SafSuc_WBlk
+                    | Ngpa::CcFail_SafFail => (rng_nat.prev_rand() % 3) == 0,
                     _ => true, // CcSuc is in another function
                 };
 
@@ -338,12 +372,12 @@ fn extend_path_for_arc(
                 rng.prev_rand();
             }
         }
-        Nga::CcSuc | Nga::CcSuc_SafSuc_NoBlk | Nga::CcSuc_SafSuc_WBlk | Nga::CcSuc_SafFail => {
+        Ngpa::CcSuc | Ngpa::CcSuc_SafSuc_NoBlk | Ngpa::CcSuc_SafSuc_WBlk | Ngpa::CcSuc_SafFail => {
             loop {
                 let mut rng_nat = rng;
 
                 let random_selected_correct_nature = match arc {
-                    Nga::CcSuc_SafSuc_WBlk => safari_success(&mut rng_nat),
+                    Ngpa::CcSuc_SafSuc_WBlk => safari_success(&mut rng_nat),
                     _ => {
                         let pick_wild_mon_nature: Nature =
                             ((rng_nat.prev_rand() % 25) as u8).into();
@@ -352,10 +386,10 @@ fn extend_path_for_arc(
                 };
 
                 let safari_is_correct = match arc {
-                    Nga::CcSuc_SafSuc_NoBlk | Nga::CcSuc_SafSuc_WBlk => {
+                    Ngpa::CcSuc_SafSuc_NoBlk | Ngpa::CcSuc_SafSuc_WBlk => {
                         (rng_nat.prev_rand() % 100) < 80
                     }
-                    Nga::CcSuc_SafFail => (rng_nat.prev_rand() % 100) >= 80,
+                    Ngpa::CcSuc_SafFail => (rng_nat.prev_rand() % 100) >= 80,
                     _ => true,
                 };
 

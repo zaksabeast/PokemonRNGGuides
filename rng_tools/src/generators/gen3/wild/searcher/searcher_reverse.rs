@@ -5,7 +5,7 @@ use super::*;
 use crate::{
     GenderRatio,
     gen3::{
-        SpeciesData, find_pid_paths_reverse_pid,
+        InSafariMapStates, SpeciesData, find_pid_paths_reverse_pid,
         searcher_painter::Wild3PaintingAdvFinder,
         wild::{
             lcrng_distance,
@@ -102,6 +102,8 @@ where
         encounter_gender_ratio,
         opts.filter.nature,
         opts.filter.gender,
+        InSafariMapStates::Never,
+        opts.considered_safari_pokeblocks,
     );
     let lvl_gen = LvlPathGenerator::new(&opts.leads);
     let encouter_idx_gen = EncounterIdxPathGenerator::new(

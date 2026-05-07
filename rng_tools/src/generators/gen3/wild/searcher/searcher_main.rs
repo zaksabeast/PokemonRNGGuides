@@ -80,6 +80,16 @@ impl Wild3MapSetups {
     }
 }
 
+#[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+#[repr(u8)]
+pub enum ConsideredSafariPokeblocks {
+    #[default]
+    None,
+    SoloOnly,
+    All,
+}
+
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Wild3SearcherOptions {
@@ -100,7 +110,7 @@ pub struct Wild3SearcherOptions {
     pub generate_even_if_impossible: bool,
     pub painting_opts: Option<Wild3PaintingOpts>,
     pub using_white_flute: bool,
-    pub safari_pokeblock_max_flavor_count: u8,
+    pub considered_safari_pokeblocks: ConsideredSafariPokeblocks,
 }
 
 impl Default for Wild3SearcherOptions {
@@ -123,7 +133,7 @@ impl Default for Wild3SearcherOptions {
             painting_opts: None,
             lead_cycle_speed: None,
             using_white_flute: true,
-            safari_pokeblock_max_flavor_count: 2, // Max possible count solo
+            considered_safari_pokeblocks: ConsideredSafariPokeblocks::default(),
         }
     }
 }

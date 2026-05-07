@@ -3,7 +3,9 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use super::Wild3Action;
-use crate::{EncounterSlot, GenderRatio, NATURE_COUNT, Nature, PokemonType, Species};
+use crate::{
+    EncounterSlot, GenderRatio, Nature, PokemonType, Species, gen3::ConsideredSafariPokeblocks,
+};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -49,11 +51,11 @@ pub enum Wild3FeebasState {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Wild3SafariPokeblock {
     FromFlavor {
-        flavors: [bool; 5], // Spicy, Dry, Sweet, Bitter, Sour
+        flavors: [u8; 5], // Spicy, Dry, Sweet, Bitter, Sour
     },
     FromNature {
         wanted_nature: Nature,
-        flavor_count: u8,
+        considered_safari_pokeblocks: ConsideredSafariPokeblocks,
     },
 }
 

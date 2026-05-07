@@ -55,10 +55,20 @@ impl EncounterIdxPath {
 
     pub fn lead(&self, encounter_gender_ratio: GenderRatio) -> Gen3Lead {
         match self.nature_gender_to_pid_arc {
-            NatureGenderToPidArc::SynchronizeFailure | NatureGenderToPidArc::SynchronizeSuccess => {
+            NatureGenderToPidArc::SafFail_SyncSuc
+            | NatureGenderToPidArc::SafFail_SyncFail
+            | NatureGenderToPidArc::SyncSuc
+            | NatureGenderToPidArc::SyncFail => {
                 return Gen3Lead::Synchronize(self.pid_path.nature());
             }
-            NatureGenderToPidArc::CuteCharmFailure | NatureGenderToPidArc::CuteCharmSuccess => {
+            NatureGenderToPidArc::CcSuc
+            | NatureGenderToPidArc::CcSuc_SafSuc_NoBlk
+            | NatureGenderToPidArc::CcSuc_SafSuc_WBlk
+            | NatureGenderToPidArc::CcSuc_SafFail
+            | NatureGenderToPidArc::CcFail
+            | NatureGenderToPidArc::CcFail_SafSuc_NoBlk
+            | NatureGenderToPidArc::CcFail_SafSuc_WBlk
+            | NatureGenderToPidArc::CcFail_SafFail => {
                 let encounter_gender = encounter_gender_ratio.gender_from_pid(self.pid_path.pid());
                 let cute_charm_gender = if encounter_gender == Gender::Male {
                     Gender::Female

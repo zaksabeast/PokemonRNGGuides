@@ -313,9 +313,9 @@ fn select_lvl(
 }
 
 pub fn pick_wild_mon_nature_safari(
-    rng: &mut Pokerng,
+    mut rng: &mut Pokerng,
     pokeblock: &Option<Wild3SafariPokeblock>,
-) -> Option<(Nature, Option<[bool; 5]>)> {
+) -> Option<(Nature, Option<[u8; 5]>)> {
     if pokeblock.is_none() {
         return None;
     }
@@ -324,6 +324,13 @@ pub fn pick_wild_mon_nature_safari(
         return None;
     }
 
+    Some(calculate_nature_from_safari_pokeblock(&mut rng, pokeblock))
+}
+
+pub fn calculate_nature_from_safari_pokeblock(
+    rng: &mut Pokerng,
+    pokeblock: &Option<Wild3SafariPokeblock>,
+) -> (Nature, Option<[u8; 5]>) {
     let mut all_natures_by_priority: [Nature; NATURE_COUNT] = [
         Nature::Hardy,
         Nature::Lonely,
@@ -374,22 +381,18 @@ pub fn pick_wild_mon_nature_safari(
         next_idx += 1;
     });
 
-    let has_positive_score = |nature: Nature, flavors: &[bool; 5]| -> bool {
+    let has_positive_score = |nature: Nature, flavors: &[u8; 5]| -> bool {
         let score = flavors
             .iter()
             .enumerate()
-            .map(|(flavor, has_flavor)| {
-                if *has_flavor {
-                    POKEBLOCK_NATURE_STAT_FACTORS[nature as usize][flavor]
-                } else {
-                    0
-                }
+            .map(|(flavor, flavor_val)| {
+                (*flavor_val as i32) * POKEBLOCK_NATURE_STAT_FACTORS[nature as usize][flavor]
             })
             .sum::<i32>();
         score > 0
     };
 
-    let get_nature_from_flavors = |flavors: &[bool; 5]| -> Nature {
+    let get_nature_from_flavors = |flavors: &[u8; 5]| -> Nature {
         natures_by_priority
             .into_iter()
             .find(|nature| has_positive_score(*nature, flavors))
@@ -399,28 +402,20 @@ pub fn pick_wild_mon_nature_safari(
     let pokeblock = pokeblock.as_ref().unwrap();
     match pokeblock {
         Wild3SafariPokeblock::FromFlavor { flavors } => {
-            Some((get_nature_from_flavors(flavors), Some(*flavors)))
+            (get_nature_from_flavors(flavors), Some(*flavors))
         }
         Wild3SafariPokeblock::FromNature {
             wanted_nature,
-            flavor_count,
+            considered_safari_pokeblocks, //NO_PROD dont always use PERTINENT_POKEBLOCKS_BY_NATURE
         } => {
-            let skip_count = match flavor_count {
-                4 => 0,
-                3 => 1,
-                2 => 4,
-                _ => 7,
-            };
-
             let pokeblock = PERTINENT_POKEBLOCKS_BY_NATURE[*wanted_nature as usize]
                 .iter()
-                .skip(skip_count)
                 .find(|&flavors| get_nature_from_flavors(&flavors) == *wanted_nature);
 
             if let Some(pokeblock) = pokeblock {
-                Some((*wanted_nature, Some(*pokeblock)))
+                (*wanted_nature, Some(*pokeblock))
             } else {
-                Some((natures_by_priority[0], None)) // will be filtered out later
+                (natures_by_priority[0], None) // will be filtered out later
             }
         }
     }
@@ -564,11 +559,11 @@ pub fn generate_gen3_wild(
                     cycle_counter.add(389, 17);
                     return lead_nature;
                 }
+                cycle_counter.add_cycle(96);
             }
             _ => {}
         }
 
-        cycle_counter.add_cycle(96);
         return pick_random_wild_mon_nature(&mut cycle_counter, &mut rng);
     })();
 

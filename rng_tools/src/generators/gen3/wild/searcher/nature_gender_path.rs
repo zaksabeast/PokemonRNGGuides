@@ -23,7 +23,7 @@ pub enum NatureGenderToPidArc {
     CcSuc,
     CcSuc_SafSuc_NoBlk,
     CcSuc_SafSuc_WBlk,
-    CcSuc_SafFail, // Failure is for the Random() < 80
+    CcSuc_SafFail,
     CcFail,
     CcFail_SafSuc_NoBlk,
     CcFail_SafSuc_WBlk,
@@ -36,11 +36,119 @@ pub enum NatureGenderToPidArc {
     SyncSuc,
     SyncFail,
 }
+type Ngpa = NatureGenderToPidArc;
+
+impl NatureGenderToPidArc {
+    pub fn is_in_safari_map(&self) -> bool {
+        matches!(
+            self,
+            Ngpa::CcSuc_SafSuc_NoBlk |
+            Ngpa::CcSuc_SafSuc_WBlk |
+            Ngpa::CcSuc_SafFail |
+            Ngpa::CcFail_SafSuc_NoBlk |
+            Ngpa::CcFail_SafSuc_WBlk |
+            Ngpa::CcFail_SafFail |
+            Ngpa::SafSuc_NoBlk |
+            Ngpa::SafSuc_WBlk |
+            Ngpa::SafFail |
+            Ngpa::SafFail_SyncSuc |
+            Ngpa::SafFail_SyncFail
+        )
+    }
+    pub fn is_safari_success(&self) -> bool {
+        matches!(
+            self,
+            Ngpa::CcSuc_SafSuc_NoBlk |
+            Ngpa::CcSuc_SafSuc_WBlk |
+            Ngpa::CcFail_SafSuc_NoBlk |
+            Ngpa::CcFail_SafSuc_WBlk |
+            Ngpa::SafSuc_NoBlk |
+            Ngpa::SafSuc_WBlk |
+        )
+    }
+    pub fn is_safari_fail(&self) -> bool {
+        self.is_in_safari_map() && !self.is_safari_success()
+    }
+    pub fn uses_safari_pokeblock(&self) -> bool {
+        matches!(
+            self,
+            Ngpa::CcSuc_SafSuc_WBlk |
+            Ngpa::CcFail_SafSuc_WBlk |
+            Ngpa::SafSuc_WBlk |
+        )
+    }
+    pub fn uses_safari_pokeblock(&self) -> bool {
+        matches!(
+            self,
+            Vanilla |
+            CcSuc |
+            CcSuc_SafSuc_NoBlk |
+            CcSuc_SafSuc_WBlk |
+            CcSuc_SafFail |
+            CcFail |
+            CcFail_SafSuc_NoBlk |
+            CcFail_SafSuc_WBlk |
+            CcFail_SafFail |
+            SafSuc_NoBlk |
+            SafSuc_WBlk |
+            SafFail |
+            SafFail_SyncSuc |
+            SafFail_SyncFail |
+            SyncSuc |
+            SyncFail |
+        )
+    }
+    pub fn has_synchronize_lead(&self) -> bool {
+        matches!(
+            self,
+            SafFail_SyncSuc |
+            SafFail_SyncFail |
+            SyncSuc |
+            SyncFail |
+        )
+    }
+    pub fn is_synchronize_success(&self) -> bool {
+        matches!(
+            self,
+            SafFail_SyncSuc |
+            SyncSuc |
+        )
+    }
+    pub fn is_synchronize_fail(&self) -> bool {
+        self.has_synchronize_lead() && !self.is_synchronize_success()
+    }
+    pub fn has_cute_charm_lead(&self) -> bool {
+        matches!(
+            self,
+            CcSuc |
+            CcSuc_SafSuc_NoBlk |
+            CcSuc_SafSuc_WBlk |
+            CcSuc_SafFail |
+            CcFail |
+            CcFail_SafSuc_NoBlk |
+            CcFail_SafSuc_WBlk |
+            CcFail_SafFail |
+        )
+    }
+    pub fn is_cute_charm_success(&self) -> bool {
+        matches!(
+            self,
+            CcSuc |
+            CcSuc_SafSuc_NoBlk |
+            CcSuc_SafSuc_WBlk |
+            CcSuc_SafFail |
+        )
+    }
+
+    pub fn is_cute_charm_fail(&self) -> bool {
+        self.has_cute_charm_lead() && !self.is_cute_charm_success()
+    }
+}
+
 
 //NO_PROD rendu a map, il faut filtrer si safari
 //NO_PROD rendu a action+ map, il faut filtrer si safari block accessible.
 
-type Ngpa = NatureGenderToPidArc;
 //NO_PROD splitin 2: in_safari_map and pokeblock
 pub enum InSafariMapStates {
     Never,
@@ -147,19 +255,13 @@ impl NatureGenderSeedGenerator {
             .iter()
             .flat_map(|arc| {
                 if !self.permit_all {
-                    if matches!(*arc, Ngpa::SyncSuc | Ngpa::SafFail_SyncSuc)
+                    if arc.is_synchronize_success()
                         && !permit_synchronize_success_arc_for_path(&self.leads, pid_path)
                     {
                         return vec![];
                     }
 
-                    if matches!(
-                        *arc,
-                        Ngpa::CcSuc
-                            | Ngpa::CcSuc_SafSuc_NoBlk
-                            | Ngpa::CcSuc_SafSuc_WBlk
-                            | Ngpa::CcSuc_SafFail
-                    ) && !permit_cute_charm_success_arc_for_path(
+                    if arc.is_cute_charm_success() && !permit_cute_charm_success_arc_for_path(
                         &self.leads,
                         self.encounter_gender_ratio,
                         pid_path,
@@ -271,7 +373,7 @@ fn extend_path_for_arc(
     let resulting_nature = Nature::from_pid(pid);
     let resulting_gender = encounter_gender_ratio.gender_from_pid(pid);
 
-    let safari_success = |rng_nat: &mut Pokerng| -> bool {
+    let does_safari_pokeblock_give_wanted_nature = |rng_nat: &mut Pokerng| -> bool {
         for _ in 0..576 {
             rng_nat.prev_rand();
         }
@@ -288,130 +390,89 @@ fn extend_path_for_arc(
         }
     };
 
-    match arc {
-        Ngpa::Vanilla
-        | Ngpa::CcFail
-        | Ngpa::CcFail_SafSuc_NoBlk
-        | Ngpa::CcFail_SafSuc_WBlk
-        | Ngpa::CcFail_SafFail
-        | Ngpa::SafSuc_NoBlk
-        | Ngpa::SafSuc_WBlk
-        | Ngpa::SafFail
-        | Ngpa::SafFail_SyncSuc
-        | Ngpa::SafFail_SyncFail
-        | Ngpa::SyncSuc
-        | Ngpa::SyncFail => {
-            // E D C B A 9 8 7 6 5 4 3 2 1 0 : reverse advances (pid_path.seed is at 0)
-            //   x       x             x     : RandomPickNature is nature
-            //       y-y                     : PID is nature
-            // If RandomPickNature is D, then Pokemon is generated with PID from B-A, which means advance 0 is never reached.
-            // If RandomPickNature is 9 or 2, then Pokemon is generated with PID from 0 (pid_path.seed).
+    let is_nature_correct = |rng_nat: &mut Pokerng| -> bool {
+        // 3 possible methods: synchronize, pokeblock, random % 25
 
-            loop {
-                let mut rng_nat = rng;
+        if arc.is_synchronize_success() {
+            true
+        } else if arc.uses_safari_pokeblock() {
+            does_safari_pokeblock_give_wanted_nature(&mut rng_nat)
+        } else {
+            let pick_wild_mon_nature: Nature =
+                ((rng_nat.prev_rand() % 25) as u8).into();
+            pick_wild_mon_nature == resulting_nature
+        }
+    };
 
-                // 3 possible methods: synchronize, pokeblock, random % 25
+    let is_synchronize_correct = |rng_nat: &mut Pokerng| -> bool {
+        if arc.is_synchronize_success() {
+            (rng_nat.prev_rand() % 2) == 0
+        } else if arc.is_synchronize_fail() {
+            (rng_nat.prev_rand() % 2) == 1
+        } else {
+            true
+        }
+    };
 
-                // This checks that the method gives the wanted result.
-                let random_selected_correct_nature = match arc {
-                    Ngpa::SyncSuc | Ngpa::SafFail_SyncSuc => true,
-                    Ngpa::SafSuc_WBlk | Ngpa::CcFail_SafSuc_WBlk => safari_success(&mut rng_nat),
-                    _ => {
-                        let pick_wild_mon_nature: Nature =
-                            ((rng_nat.prev_rand() % 25) as u8).into();
-                        pick_wild_mon_nature == resulting_nature
-                    }
-                };
+    let is_safari_correct = |rng_nat: &mut Pokerng| -> bool {
+        if arc.is_safari_success() {
+            (rng_nat.prev_rand() % 100) < 80
+        } else if arc.is_safari_fail(){
+            (rng_nat.prev_rand() % 100) >= 80
+        } else {
+            true
+        }
+    };
 
-                // This checks that the wanted method was choosen.
-                // Order: Synchronize -> Safari -> CuteCharm
+    let is_cute_charm_correct = |rng_nat: &mut Pokerng| -> bool {
+        if arc.is_cute_charm_success() {
+            (rng_nat.prev_rand() % 3) != 0
+        } else if arc.is_cute_charm_fail() {
+            (rng_nat.prev_rand() % 3) == 0
+        else {
+            true
+        }
+    };
 
-                let synchro_is_correct = match arc {
-                    Ngpa::SyncSuc | Ngpa::SafFail_SyncSuc => (rng_nat.prev_rand() % 2) == 0,
-                    Ngpa::SyncFail | Ngpa::SafFail_SyncFail => (rng_nat.prev_rand() % 2) == 1,
-                    _ => true,
-                };
 
-                let safari_is_correct = match arc {
-                    Ngpa::CcFail_SafSuc_NoBlk
-                    | Ngpa::CcFail_SafSuc_WBlk
-                    | Ngpa::SafSuc_NoBlk
-                    | Ngpa::SafSuc_WBlk => (rng_nat.prev_rand() % 100) < 80,
-                    Ngpa::CcFail_SafFail
-                    | Ngpa::SafFail
-                    | Ngpa::SafFail_SyncSuc
-                    | Ngpa::SafFail_SyncFail => (rng_nat.prev_rand() % 100) >= 80,
-                    _ => true,
-                };
+    // E D C B A 9 8 7 6 5 4 3 2 1 0 : reverse advances (pid_path.seed is at 0)
+    //   x       x             x     : RandomPickNature is nature
+    //       y-y                     : PID is nature
+    // If RandomPickNature is D, then Pokemon is generated with PID from B-A, which means advance 0 is never reached.
+    // If RandomPickNature is 9 or 2, then Pokemon is generated with PID from 0 (pid_path.seed).
 
-                let cute_charm_is_correct = match arc {
-                    Ngpa::CcFail
-                    | Ngpa::CcFail_SafSuc_NoBlk
-                    | Ngpa::CcFail_SafSuc_WBlk
-                    | Ngpa::CcFail_SafFail => (rng_nat.prev_rand() % 3) == 0,
-                    _ => true, // CcSuc is in another function
-                };
+    loop {
+        let mut rng_nat = rng;
 
-                if random_selected_correct_nature
-                    && synchro_is_correct
-                    && safari_is_correct
-                    && cute_charm_is_correct
-                {
-                    nature_gender_seeds.push(rng_nat.seed());
-                }
+        // This checks ensures that the RNG state will make the code execute the same way as the arc predicted.
+        if is_nature_correct(&mut rng_nat)
+            && is_synchronize_correct(&mut rng_nat)
+            && is_safari_correct(&mut rng_nat)
+            && is_cute_charm_correct(&mut rng_nat)
+        {
+            nature_gender_seeds.push(rng_nat.seed());
+        }
 
-                let mut rng_pid = rng;
-                let prev_pid = ((rng_pid.prev_rand() as u32) << 16) | (rng_pid.prev_rand() as u32);
-                let prev_nature = Nature::from_pid(prev_pid);
 
-                if prev_nature == resulting_nature {
-                    break;
-                }
+        // Limitation: Wild5 are not supported.
+        let mut rng_pid = rng;
+        let prev_pid = ((rng_pid.prev_rand() as u32) << 16) | (rng_pid.prev_rand() as u32);
+        let prev_nature = Nature::from_pid(prev_pid);
 
-                rng.prev_rand();
-                rng.prev_rand();
+        if !arc.is_cute_charm_success() {
+            if prev_nature == resulting_nature {
+                break;
+            }
+        } else {
+            let prev_gender = encounter_gender_ratio.gender_from_pid(prev_pid);
+
+            if prev_nature == resulting_nature && prev_gender == resulting_gender {
+                break;
             }
         }
-        Ngpa::CcSuc | Ngpa::CcSuc_SafSuc_NoBlk | Ngpa::CcSuc_SafSuc_WBlk | Ngpa::CcSuc_SafFail => {
-            loop {
-                let mut rng_nat = rng;
 
-                let random_selected_correct_nature = match arc {
-                    Ngpa::CcSuc_SafSuc_WBlk => safari_success(&mut rng_nat),
-                    _ => {
-                        let pick_wild_mon_nature: Nature =
-                            ((rng_nat.prev_rand() % 25) as u8).into();
-                        pick_wild_mon_nature == resulting_nature
-                    }
-                };
-
-                let safari_is_correct = match arc {
-                    Ngpa::CcSuc_SafSuc_NoBlk | Ngpa::CcSuc_SafSuc_WBlk => {
-                        (rng_nat.prev_rand() % 100) < 80
-                    }
-                    Ngpa::CcSuc_SafFail => (rng_nat.prev_rand() % 100) >= 80,
-                    _ => true,
-                };
-
-                let cute_charm_was_success = (rng_nat.prev_rand() % 3) != 0;
-
-                if random_selected_correct_nature && safari_is_correct && cute_charm_was_success {
-                    nature_gender_seeds.push(rng_nat.seed());
-                }
-
-                let mut rng_pid = rng;
-                let prev_pid = ((rng_pid.prev_rand() as u32) << 16) | (rng_pid.prev_rand() as u32);
-                let prev_nature = Nature::from_pid(prev_pid);
-                let prev_gender = encounter_gender_ratio.gender_from_pid(prev_pid);
-
-                if prev_nature == resulting_nature && prev_gender == resulting_gender {
-                    break;
-                }
-
-                rng.prev_rand();
-                rng.prev_rand();
-            }
-        }
+        rng.prev_rand();
+        rng.prev_rand();
     }
 
     nature_gender_seeds

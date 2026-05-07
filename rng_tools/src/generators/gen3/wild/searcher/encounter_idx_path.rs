@@ -445,6 +445,21 @@ fn extend_path_for_mass_outbreak(
         .collect()
 }
 
+fn filter_paths_with_safari_mismatch(lvl_path: &LvlPath, map_setups:&Wild3MapSetups, action:Option<Wild3Action>){
+    if lvl_path.nature_gender_to_pid_arc.is_in_safari_map() != map_setup.map_data.is_safari {
+        return false;
+    }
+
+    if let Some(action) = action {
+        if lvl_path.nature_gender_to_pid_arc.uses_safari_pokeblock() &&
+            !map_setups.map_data.actions_with_safari_pokeblock.contains(action) {
+            // Ex: Trying to use RockSmash with Pokeblock, but there's no feeder near rocks.
+            return false;
+        }
+    }
+    return true;
+}
+
 fn extend_path_for_slot_vanilla(
     lvl_path: &LvlPath,
     maps_setups_for_rev: &[Wild3MapSetupsForReverse],
@@ -466,6 +481,14 @@ fn extend_path_for_slot_vanilla(
             maps_setups_for_rev
                 .iter()
                 .filter_map(move |map_setups_for_rev| {
+                    if !filter_paths_with_safari_mismatch(lvl_path, map_setups_for_rev.map_setups, Some(*action)){
+                        return None;
+                    }
+
+                    // No need to filter if the action is possible, because it's done indirectly by checking the
+                    // the species. Limitation: We assume that if an action is permitted in a map, it's permitted in
+                    // every map.
+
                     let encounter = map_setups_for_rev
                         .map_setups
                         .map_data

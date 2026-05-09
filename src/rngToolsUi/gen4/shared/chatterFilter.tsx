@@ -247,7 +247,15 @@ const isIndexInRange = (index: number, ranges: IndexRange[]): boolean => {
   return ranges.some(({ start, end }) => index >= start && index <= end);
 };
 
-const markResultsWithChatter = (results: Result[], filter: MiniPitch[]) => {
+const markResultsWithChatter = ({
+  results,
+  filter,
+  pageSize,
+}: {
+  results: Result[];
+  filter: MiniPitch[];
+  pageSize: number;
+}) => {
   const indicies = findSubArrayIndices(
     results,
     filter,
@@ -255,24 +263,22 @@ const markResultsWithChatter = (results: Result[], filter: MiniPitch[]) => {
   );
 
   const hasMatch = indicies.length > 0;
-  const startIndex = hasMatch ? indicies[0].start : null;
-  const possibleResults =
-    startIndex == null ? results : results.slice(startIndex);
-
-  const markedResults = possibleResults.map((result, index): Result => {
-    const adjustedIndex = index + (startIndex ?? 0);
+  const markedResults = results.map((result, index): Result => {
     return {
       ...result,
       status:
-        result.status === null && isIndexInRange(adjustedIndex, indicies)
+        result.status === null && isIndexInRange(index, indicies)
           ? "Heard"
           : result.status,
     };
   });
 
+  const endIndex = hasMatch ? indicies[0].end : 0;
+
   return {
     hasMatch,
     markedResults,
+    autoCurrentPage: Math.max(1, Math.ceil((endIndex + 1) / pageSize)),
   };
 };
 
@@ -324,6 +330,11 @@ const ChatterFilterButtons = ({
   );
 };
 
+type PageSettings = {
+  currentPage: number;
+  pageSize: number;
+};
+
 type ChatterFilterBaseProps = {
   seed: number | null;
   targetAdvance: number | null;
@@ -337,6 +348,10 @@ export const ChatterFilterBase = ({
 }: ChatterFilterBaseProps) => {
   const [filter, setFilter] = React.useState<MiniPitch[]>([]);
   const [results, setResults] = React.useState<Result[]>([]);
+  const [pageSettings, setPageSettings] = React.useState<PageSettings>({
+    currentPage: 1,
+    pageSize: 10,
+  });
 
   React.useEffect(() => {
     setFilter([]);
@@ -391,7 +406,22 @@ export const ChatterFilterBase = ({
     setResults(chattersWithTarget);
   };
 
-  const { hasMatch, markedResults } = markResultsWithChatter(results, filter);
+  const { hasMatch, markedResults, autoCurrentPage } = markResultsWithChatter({
+    results,
+    filter,
+    pageSize: pageSettings.pageSize,
+  });
+
+  React.useEffect(
+    () => {
+      setPageSettings((prev) => ({
+        ...prev,
+        currentPage: autoCurrentPage,
+      }));
+    },
+    // Trigger this on any filter change
+    [filter, autoCurrentPage],
+  );
 
   const initialValues: FormState = {
     minAdvance: 0,
@@ -418,6 +448,13 @@ export const ChatterFilterBase = ({
           )}
         </>
       }
+      pagination={{
+        current: pageSettings.currentPage,
+        pageSize: pageSettings.pageSize,
+        onChange: (currentPage, pageSize) => {
+          setPageSettings((prev) => ({ ...prev, currentPage, pageSize }));
+        },
+      }}
       getColumns={getColumns}
       getFields={getFields}
       results={markedResults}

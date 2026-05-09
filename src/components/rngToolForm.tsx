@@ -17,7 +17,7 @@ import {
 } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { GenericForm } from "~/types";
-import { Typography, Progress } from "antd";
+import { Typography, Progress, type TablePaginationConfig } from "antd";
 
 export type RngToolSubmit<FormState extends GenericForm> = (
   values: FormState,
@@ -34,6 +34,7 @@ type Props<FormState extends GenericForm, Result> = {
   disableGenerate?: boolean;
   additionalButtons?: React.ReactNode;
   progressPercent?: number;
+  pagination?: TablePaginationConfig;
 } & OneOf<{
   fields: Field[];
   getFields: (t: Translations) => Field[];
@@ -94,6 +95,7 @@ export const RngToolForm = <
   cancelButtonLabel = "Cancel",
   allowCancel = false,
   cancelTrackerId,
+  pagination,
   onCancel,
 }: Props<FormState, Result>) => {
   const t = useActiveRouteTranslations();
@@ -192,6 +194,7 @@ export const RngToolForm = <
             columns={columnsToUse}
             rowKey={rowKey}
             dataSource={results}
+            pagination={pagination}
             rowSelection={
               onClickResultRow == null
                 ? undefined

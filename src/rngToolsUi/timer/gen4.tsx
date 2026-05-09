@@ -6,6 +6,10 @@ import {
   RngToolSubmit,
   Field,
   FormikSelect,
+  Alert,
+  Link,
+  Typography,
+  Flex,
 } from "~/components";
 import { Gen4Timer as Gen4TimerComponent } from "~/components/gen4Timer";
 import { ZodSerializedDecimal, ZodSerializedOptional } from "~/utils/number";
@@ -150,28 +154,47 @@ const InnerGen4Timer = ({ timerSettings, onUpdate }: InnerProps) => {
       trackerId="mystic_timer_gen4"
       is3ds={timerSettings.console === "ThreeDs"}
       fields={
-        <RngToolForm<FormState, number[]>
-          fields={fields}
-          initialValues={timerSettings}
-          onSubmit={onSubmit}
-          submitTrackerId="set_gen4_timer"
-          submitButtonLabel="Set Timer"
-          additionalButtons={
-            <UndoButton
-              history={history}
-              trackerId="undo_gen4_calibration"
-              fields={{
-                console: true,
-                min_time_ms: true,
-                calibrated_delay: true,
-                calibrated_second: true,
-                target_delay: true,
-                target_second: true,
-                delay_hit: true,
-              }}
-            />
-          }
-        />
+        <>
+          <RngToolForm<FormState, number[]>
+            fields={fields}
+            initialValues={timerSettings}
+            onSubmit={onSubmit}
+            submitTrackerId="set_gen4_timer"
+            submitButtonLabel="Set Timer"
+            additionalButtons={
+              <UndoButton
+                history={history}
+                trackerId="undo_gen4_calibration"
+                fields={{
+                  console: true,
+                  min_time_ms: true,
+                  calibrated_delay: true,
+                  calibrated_second: true,
+                  target_delay: true,
+                  target_second: true,
+                  delay_hit: true,
+                }}
+              />
+            }
+          />
+          <Alert
+            type="tip"
+            showIcon
+            title="Want easier 3ds RNG?"
+            mt={12}
+            description={
+              <Flex vertical>
+                <Typography.Text>
+                  Set the console to 3ds and click "Set Timer" to see the 3ds
+                  helper.
+                </Typography.Text>
+                <Link href="/3ds-helper/">
+                  View the 3ds Helper guide for more details.
+                </Link>
+              </Flex>
+            }
+          />
+        </>
       }
     />
   );

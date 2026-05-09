@@ -19,6 +19,7 @@ import {
   NumberInput,
   MinMaxContainer,
   Typography,
+  Alert,
 } from "~/components";
 import { findSubArrayIndices, IndexRange } from "~/utils/findIndexBy";
 import { uniqueId } from "lodash-es";
@@ -234,9 +235,10 @@ const markResultsWithChatter = (results: Result[], filter: MiniPitch[]) => {
     isRelativePitchEqual,
   );
 
-  const startIndex = indicies.length > 0 ? indicies[0].start : 0;
+  const hasMatch = indicies.length > 0;
+  const startIndex = hasMatch ? indicies[0].start : 0;
   const possibleResults = results.slice(startIndex);
-  return possibleResults.map((result, index): Result => {
+  const markedResults = possibleResults.map((result, index): Result => {
     const adjustedIndex = index + startIndex - 1; // -1 since relativeChatters is offset by 1 from results
     return {
       ...result,
@@ -246,6 +248,11 @@ const markResultsWithChatter = (results: Result[], filter: MiniPitch[]) => {
           : result.status,
     };
   });
+
+  return {
+    hasMatch,
+    markedResults,
+  };
 };
 
 type ChatterFilterButtonsProps = {
@@ -363,7 +370,7 @@ export const RelativeChatterFilterBase = ({
     setResults(chattersWithTarget);
   };
 
-  const markedResults = markResultsWithChatter(results, filter);
+  const { hasMatch, markedResults } = markResultsWithChatter(results, filter);
 
   const initialValues: FormState = {
     minAdvance: 0,
@@ -380,6 +387,14 @@ export const RelativeChatterFilterBase = ({
             setPitches={setFilter}
             onClickPitch={(pitch) => setFilter((prev) => [...prev, pitch])}
           />
+          {filter.length > 0 && !hasMatch && (
+            <Alert
+              showIcon
+              type="error"
+              title="No matches found"
+              description="A pitch may be incorrect, or the advance range may be too small. Try increasing the advance range."
+            />
+          )}
         </>
       }
       getColumns={getColumns}

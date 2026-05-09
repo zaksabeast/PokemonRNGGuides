@@ -22,7 +22,11 @@ import {
 } from "~/components";
 import { findSubArrayIndices, IndexRange } from "~/utils/findIndexBy";
 import { uniqueId } from "lodash-es";
-import { getRelativeChatters, type RelativeChatter } from "./chatterUtils";
+import {
+  getRelativeChatters,
+  isRelativePitchEqual,
+  MiniPitch,
+} from "./chatterUtils";
 
 const loadAudioBuffer = async (
   ctx: AudioContext,
@@ -215,19 +219,8 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => [
   },
 ];
 
-type MiniPitch = "L" | "S" | "H";
-
 const isMiniPitch = (char: string): char is MiniPitch =>
   char === "L" || char === "S" || char === "H";
-
-const MINI_PITCH_MAP = {
-  // eslint-disable-next-line id-length
-  L: "Lower",
-  // eslint-disable-next-line id-length
-  S: "Same",
-  // eslint-disable-next-line id-length
-  H: "Higher",
-} as const satisfies Record<MiniPitch, RelativeChatter>;
 
 const isIndexInRange = (index: number, ranges: IndexRange[]): boolean => {
   return ranges.some(({ start, end }) => index >= start && index <= end);
@@ -238,7 +231,7 @@ const markResultsWithChatter = (results: Result[], filter: MiniPitch[]) => {
   const indicies = findSubArrayIndices(
     relativeChatters,
     filter,
-    (first, second) => first === MINI_PITCH_MAP[second],
+    isRelativePitchEqual,
   );
 
   const startIndex = indicies.length > 0 ? indicies[0].start : 0;

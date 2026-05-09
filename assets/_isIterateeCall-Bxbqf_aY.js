@@ -1,0 +1,1 @@
+import{_a as e}from"./components-BvA9Yik0.js";import{c as t,i as n}from"./_MapCache-Bkj_4lZR.js";import{a as r}from"./_arrayIncludesWith-mySAHdBJ.js";function i(i,a,o){if(!t(o))return!1;var s=typeof a;return(s==`number`?r(o)&&e(a,o.length):s==`string`&&a in o)?n(o[a],i):!1}export{i as t};

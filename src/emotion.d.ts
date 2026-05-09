@@ -3,7 +3,7 @@ import { AliasToken } from "antd/es/theme/internal";
 import * as tst from "ts-toolbelt";
 
 declare module "@emotion/react" {
-  export type ScreenSize = "mobile" | "tablet" | "desktop";
+  export type ScreenSize = "mobile" | "smallTablet" | "tablet" | "desktop";
 
   export type CustomTheme = {
     token: AliasToken;

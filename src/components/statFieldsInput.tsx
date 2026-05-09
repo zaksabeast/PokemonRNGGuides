@@ -19,6 +19,11 @@ const SingleField = ({ parentName, stat }: SingleFieldProps) => {
   return (
     <FormikNumberInput
       name={`${parentName}.${stat}`}
+      prefix={
+        <Typography.Text color="TextDisabled" width={30}>
+          {stat.toUpperCase()}
+        </Typography.Text>
+      }
       textAlign="center"
       numType="decimal"
       // Explicitly unset errors and error statuses
@@ -67,7 +72,7 @@ export const StatFieldsInput = <
 
   return (
     <Flex vertical>
-      <Grid mobile={3} tablet={6} gap={4}>
+      <Grid mobile={2} smallTablet={3} tablet={6} gap={4}>
         <SingleField stat="hp" parentName={name} />
         <SingleField stat="atk" parentName={name} />
         <SingleField stat="def" parentName={name} />

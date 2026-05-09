@@ -25,7 +25,7 @@ const DiscordButtonContainer = styled(Flex)(({ theme }) => ({
   gap: 10,
   flexDirection: "column",
   width: "fit-content",
-  [theme.mediaQueries.up("mobile")]: {
+  [theme.mediaQueries.up("smallTablet")]: {
     flexDirection: "row",
   },
 }));

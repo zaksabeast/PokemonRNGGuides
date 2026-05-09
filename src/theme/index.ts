@@ -13,7 +13,8 @@ const screenSizeMap = {
   // md: 768,
   // lg: 992,
   // xl: 1200,
-  mobile: 768,
+  mobile: 576,
+  smallTablet: 768,
   tablet: 992,
   desktop: 1200,
 };
@@ -86,6 +87,10 @@ export const getTheme = (): CompleteTheme => {
       up: (size: ScreenSize) => {
         return match(size)
           .with("mobile", () => `@media (min-width: ${screenSizeMap.mobile}px)`)
+          .with(
+            "smallTablet",
+            () => `@media (min-width: ${screenSizeMap.smallTablet}px)`,
+          )
           .with("tablet", () => `@media (min-width: ${screenSizeMap.tablet}px)`)
           .with(
             "desktop",
@@ -97,7 +102,11 @@ export const getTheme = (): CompleteTheme => {
         return match(size)
           .with(
             "mobile",
-            () => `@media (max-width: ${screenSizeMap.mobile - 1}px)`,
+            () => `@media (max-width: ${screenSizeMap.smallTablet - 1}px)`,
+          )
+          .with(
+            "smallTablet",
+            () => `@media (max-width: ${screenSizeMap.tablet - 1}px)`,
           )
           .with(
             "tablet",

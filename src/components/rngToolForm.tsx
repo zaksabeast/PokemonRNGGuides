@@ -1,6 +1,5 @@
 import React from "react";
 import { Flex } from "./flex";
-import { Form } from "./form";
 import { FormFieldTable, Field } from "./formFieldTable";
 import { Button } from "./button";
 import { FormikResultTable, ResultColumn } from "./resultTable";
@@ -141,7 +140,7 @@ export const RngToolForm = <
       {...form}
     >
       <Flex vertical gap={16} id={formContainerId}>
-        <Form onSubmit={handleSubmit(onValidSubmit)} onReset={onReset}>
+        <form onSubmit={handleSubmit(onValidSubmit)} onReset={onReset}>
           <Flex vertical gap={8}>
             {fieldsReactNode}
             {hasErrors && (
@@ -174,7 +173,7 @@ export const RngToolForm = <
               </Button>
             )}
           </Flex>
-        </Form>
+        </form>
 
         {filters != null && (
           <Flex vertical gap={8} mt={24}>

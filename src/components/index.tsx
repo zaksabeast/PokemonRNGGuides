@@ -17,7 +17,6 @@ export {
   FormikNumberInput,
   NumberInput,
 } from "./numberInput";
-export { Form } from "./form";
 export { FormFieldTable, type Field } from "./formFieldTable";
 export {
   FormikResultTable,

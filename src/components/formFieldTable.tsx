@@ -105,15 +105,17 @@ export const FormFieldTable = ({ fields }: Props) => {
       wrapperCol={{ flex: "1 1 0" }}
       colon={false}
     >
-      {fields.map((field) => {
-        if (field.showWhen != null) {
-          return (
-            <WatchedFormFieldRow {...field} key={field.key ?? field.label} />
-          );
-        }
+      <Flex vertical gap={8} pb={8} overflowX="auto">
+        {fields.map((field) => {
+          if (field.showWhen != null) {
+            return (
+              <WatchedFormFieldRow {...field} key={field.key ?? field.label} />
+            );
+          }
 
-        return <FormFieldRow {...field} key={field.key ?? field.label} />;
-      })}
+          return <FormFieldRow {...field} key={field.key ?? field.label} />;
+        })}
+      </Flex>
     </AntdForm>
   );
 };

@@ -1,11 +1,11 @@
-import { ChatterFilterBase } from "../shared/chatterFilter";
+import { RelativeChatterFilterBase } from "../shared/relativeChatterFilter";
 import { useHoneyTreeState } from "./state";
 
 export const HoneyTreeChatotFilter = () => {
   const [state] = useHoneyTreeState();
 
   return (
-    <ChatterFilterBase
+    <RelativeChatterFilterBase
       seed={state.initialSeed}
       targetAdvance={state.targetAdvance}
       submitTrackerId="honey_tree_chatter_filter"

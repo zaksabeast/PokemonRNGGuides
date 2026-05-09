@@ -1,4 +1,4 @@
-import { ChatterFilterBase } from "../shared/chatterFilter";
+import { RelativeChatterFilterBase } from "../shared/relativeChatterFilter";
 import { useStatic4State } from "./state";
 
 export const Static4ChatterFilter = () => {
@@ -6,7 +6,7 @@ export const Static4ChatterFilter = () => {
   const target = state.target;
 
   return (
-    <ChatterFilterBase
+    <RelativeChatterFilterBase
       seed={target?.seed ?? null}
       targetAdvance={target?.advance ?? null}
       submitTrackerId="static4_chatter_filter"

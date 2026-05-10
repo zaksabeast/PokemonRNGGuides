@@ -44,7 +44,7 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
 
       <Flex mb={20} vertical gap={14}>
         <Typography.Title level={1} mt={0} mb={0}>
-          {guideMeta.title}
+          {guideMeta.navDrawerTitle}
         </Typography.Title>
 
         {guideMeta.lastUpdated != null && (

@@ -4,6 +4,7 @@ import {
   FormFieldTable,
   FormikNumberInput,
   FormikSelect,
+  MinMaxContainer,
   ResultColumn,
   RngToolForm,
 } from "~/components";
@@ -180,12 +181,14 @@ const Fields = ({ game, t }: FieldsProps) => {
 
   const fields: Field[] = [
     {
-      label: t["TID"],
-      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-    },
-    {
-      label: t["SID"],
-      input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
+      label: t["TID / SID"],
+      input: (
+        <MinMaxContainer
+          min={<FormikNumberInput<FormState> name="tid" numType="decimal" />}
+          max={<FormikNumberInput<FormState> name="sid" numType="decimal" />}
+          delimeter="/"
+        />
+      ),
     },
     {
       label: t["Year"],
@@ -201,15 +204,16 @@ const Fields = ({ game, t }: FieldsProps) => {
       ),
     },
     {
-      label: t["Min Delay"],
+      label: t["Delay"],
       input: (
-        <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Max Delay"],
-      input: (
-        <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+        <MinMaxContainer
+          min={
+            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+          }
+          max={
+            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+          }
+        />
       ),
     },
     {

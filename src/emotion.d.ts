@@ -1,29 +1,24 @@
-import { ThemeConfig } from "antd";
 import { AliasToken } from "antd/es/theme/internal";
 import * as tst from "ts-toolbelt";
+
+type Tokens = Record<
+  tst.U.Select<keyof AliasToken, `boxShadow${string}` | `color${string}`>,
+  string
+> & {
+  layoutHeaderHeight: string;
+};
 
 declare module "@emotion/react" {
   export type ScreenSize = "mobile" | "smallTablet" | "tablet" | "desktop";
 
-  export type CustomTheme = {
-    token: AliasToken;
-    components: Partial<ThemeConfig["components"]>;
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+  export interface Theme extends CustomTheme {
+    token: Tokens;
     mediaQueries: {
       up: (size: ScreenSize) => string;
       down: (size: ScreenSize) => string;
     };
-  };
-
-  export type CompleteTheme = tst.O.Merge<
-    tst.O.Required<
-      tst.O.Overwrite<ThemeConfig, { token: CustomTheme["token"] }>,
-      "token"
-    >,
-    { mediaQueries: CustomTheme["mediaQueries"] }
-  >;
-
-  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-  export interface Theme extends CompleteTheme {}
+  }
 
   export type Color = tst.S.Replace<
     tst.U.Select<keyof Theme["token"], `color${string}`>,

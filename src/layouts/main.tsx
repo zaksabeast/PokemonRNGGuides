@@ -46,14 +46,14 @@ const ContentLayout = styled.div(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  height: `calc(100% - ${theme.components?.Layout?.headerHeight})`,
+  height: `calc(100% - ${theme.token.layoutHeaderHeight})`,
   width: "100%",
   gap: 24,
   boxSizing: "border-box",
   paddingLeft: SIDE_MARGIN,
   paddingRight: SIDE_MARGIN,
   overflowY: "scroll",
-  marginTop: theme.components?.Layout?.headerHeight,
+  marginTop: theme.token.layoutHeaderHeight,
 }));
 
 const Main = styled.main({
@@ -66,11 +66,11 @@ const Main = styled.main({
 const DesktopNavDrawerContainer = styled.div(({ theme }) => ({
   display: "none",
   flexDirection: "column",
-  height: `calc(100% - ${theme.components?.Layout?.headerHeight})`,
+  height: `calc(100% - ${theme.token.layoutHeaderHeight})`,
   width: "100%",
-  marginTop: theme.components?.Layout?.headerHeight,
+  marginTop: theme.token.layoutHeaderHeight,
   maxWidth: 300,
-  backgroundColor: theme.token.colorBgContainer,
+  backgroundColor: "var(--ant-color-bg-container)",
   borderRight: `1px solid ${theme.token.colorBorder}`,
   [theme.mediaQueries.up("desktop")]: {
     display: "flex",
@@ -110,7 +110,7 @@ const Footer = styled.footer(({ theme }) => ({
   width: "100%",
   paddingTop: 24,
   paddingBottom: 36,
-  backgroundColor: theme.token.colorBgContainer,
+  backgroundColor: "unset",
   borderTop: `1px solid ${theme.token.colorBorder}`,
 }));
 

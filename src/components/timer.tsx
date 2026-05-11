@@ -1,7 +1,12 @@
 import React from "react";
 import { Flex, Typography } from "~/components";
-import { useCanvasTimer, CANVAS_SIZE } from "~/hooks/useCanvasTimer";
+import {
+  useCanvasTimer,
+  CANVAS_SIZE,
+  type TimerColors,
+} from "~/hooks/useCanvasTimer";
 import styled from "@emotion/styled";
+import { useComputedCssVar } from "~/hooks/useComputedCssVar";
 
 const CanvasContainer = styled.div({
   position: "relative",
@@ -36,12 +41,20 @@ export const Timer = ({
   onExpire,
   label,
 }: Props) => {
+  const colors: TimerColors = {
+    background: useComputedCssVar("--ant-color-fill-content-hover") ?? "",
+    ringActive: useComputedCssVar("--ant-color-info") ?? "",
+    ringFlash: useComputedCssVar("--ant-color-warning-active") ?? "",
+    text: useComputedCssVar("--ant-color-text") ?? "",
+  };
+
   const { canvasRef, start, stop } = useCanvasTimer({
     onExpire,
     expirationMs,
     countdownMs,
     startTimeMs,
     timerStartOffset,
+    colors,
   });
 
   React.useEffect(() => {

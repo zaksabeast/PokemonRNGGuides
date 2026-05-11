@@ -1,0 +1,153 @@
+import { match } from "ts-pattern";
+import { type Theme, type ScreenSize } from "@emotion/react";
+
+const screenSizeMap = {
+  // Ant Design breakpoints
+  // sm: 576,
+  // md: 768,
+  // lg: 992,
+  // xl: 1200,
+  mobile: 576,
+  smallTablet: 768,
+  tablet: 992,
+  desktop: 1200,
+};
+
+export const emotionTheme: Theme = {
+  token: {
+    layoutHeaderHeight: "var(--ant-layout-header-height)",
+    boxShadow: "var(--ant-box-shadow)",
+    boxShadowSecondary: "var(--ant-box-shadow-secondary)",
+    boxShadowTertiary: "var(--ant-box-shadow-tertiary)",
+    colorInfoBorder: "var(--ant-color-info-border)",
+    colorFillContentHover: "var(--ant-color-fill-content-hover)",
+    colorFillAlter: "var(--ant-color-fill-alter)",
+    colorFillContent: "var(--ant-color-fill-content)",
+    colorBgContainerDisabled: "var(--ant-color-bg-container-disabled)",
+    colorBgTextHover: "var(--ant-color-bg-text-hover)",
+    colorBgTextActive: "var(--ant-color-bg-text-active)",
+    colorBorderBg: "var(--ant-color-border-bg)",
+    colorSplit: "var(--ant-color-split)",
+    colorTextPlaceholder: "var(--ant-color-text-placeholder)",
+    colorTextDisabled: "var(--ant-color-text-disabled)",
+    colorTextHeading: "var(--ant-color-text-heading)",
+    colorTextLabel: "var(--ant-color-text-label)",
+    colorTextDescription: "var(--ant-color-text-description)",
+    colorTextLightSolid: "var(--ant-color-text-light-solid)",
+    colorIcon: "var(--ant-color-icon)",
+    colorIconHover: "var(--ant-color-icon-hover)",
+    colorHighlight: "var(--ant-color-highlight)",
+    colorWarningOutline: "var(--ant-color-warning-outline)",
+    colorErrorOutline: "var(--ant-color-error-outline)",
+    colorPrimary: "var(--ant-color-primary)",
+    colorSuccess: "var(--ant-color-success)",
+    colorWarning: "var(--ant-color-warning)",
+    colorError: "var(--ant-color-error)",
+    colorLinkActive: "var(--ant-color-link-active)",
+    colorInfo: "var(--ant-color-info)",
+    colorTextBase: "var(--ant-color-text-base)",
+    colorBgBase: "var(--ant-color-bg-base)",
+    colorLink: "var(--ant-color-link)",
+    colorWhite: "var(--ant-color-white)",
+    colorBgMask: "var(--ant-color-bg-mask)",
+    colorText: "var(--ant-color-text)",
+    colorTextSecondary: "var(--ant-color-text-secondary)",
+    colorTextTertiary: "var(--ant-color-text-tertiary)",
+    colorTextQuaternary: "var(--ant-color-text-quaternary)",
+    colorBorder: "var(--ant-color-border)",
+    colorBorderSecondary: "var(--ant-color-border-secondary)",
+    colorBorderDisabled: "var(--ant-color-border-disabled)",
+    colorFill: "var(--ant-color-fill)",
+    colorFillSecondary: "var(--ant-color-fill-secondary)",
+    colorFillTertiary: "var(--ant-color-fill-tertiary)",
+    colorFillQuaternary: "var(--ant-color-fill-quaternary)",
+    colorBgLayout: "var(--ant-color-bg-layout)",
+    colorBgContainer: "var(--ant-color-bg-container)",
+    colorBgElevated: "var(--ant-color-bg-elevated)",
+    colorBgSpotlight: "var(--ant-color-bg-spotlight)",
+    colorBgBlur: "var(--ant-color-bg-blur)",
+    colorBgSolid: "var(--ant-color-bg-solid)",
+    colorBgSolidActive: "var(--ant-color-bg-solid-active)",
+    colorLinkHover: "var(--ant-color-link-hover)",
+    colorBgSolidHover: "var(--ant-color-bg-solid-hover)",
+    colorPrimaryBg: "var(--ant-color-primary-bg)",
+    colorPrimaryBgHover: "var(--ant-color-primary-bg-hover)",
+    colorPrimaryBorder: "var(--ant-color-primary-border)",
+    colorPrimaryBorderHover: "var(--ant-color-primary-border-hover)",
+    colorPrimaryHover: "var(--ant-color-primary-hover)",
+    colorPrimaryActive: "var(--ant-color-primary-active)",
+    colorPrimaryTextHover: "var(--ant-color-primary-text-hover)",
+    colorPrimaryText: "var(--ant-color-primary-text)",
+    colorPrimaryTextActive: "var(--ant-color-primary-text-active)",
+    colorSuccessBg: "var(--ant-color-success-bg)",
+    colorSuccessBgHover: "var(--ant-color-success-bg-hover)",
+    colorSuccessBorder: "var(--ant-color-success-border)",
+    colorSuccessBorderHover: "var(--ant-color-success-border-hover)",
+    colorSuccessHover: "var(--ant-color-success-hover)",
+    colorSuccessActive: "var(--ant-color-success-active)",
+    colorSuccessTextHover: "var(--ant-color-success-text-hover)",
+    colorSuccessText: "var(--ant-color-success-text)",
+    colorSuccessTextActive: "var(--ant-color-success-text-active)",
+    colorWarningBg: "var(--ant-color-warning-bg)",
+    colorInfoTextActive: "var(--ant-color-info-text-active)",
+    colorWarningBgHover: "var(--ant-color-warning-bg-hover)",
+    colorWarningBorder: "var(--ant-color-warning-border)",
+    colorWarningBorderHover: "var(--ant-color-warning-border-hover)",
+    colorWarningHover: "var(--ant-color-warning-hover)",
+    colorWarningActive: "var(--ant-color-warning-active)",
+    colorWarningTextHover: "var(--ant-color-warning-text-hover)",
+    colorWarningText: "var(--ant-color-warning-text)",
+    colorWarningTextActive: "var(--ant-color-warning-text-active)",
+    colorErrorBg: "var(--ant-color-error-bg)",
+    colorErrorBgHover: "var(--ant-color-error-bg-hover)",
+    colorErrorBgFilledHover: "var(--ant-color-error-bg-filled-hover)",
+    colorErrorBgActive: "var(--ant-color-error-bg-active)",
+    colorErrorBorder: "var(--ant-color-error-border)",
+    colorErrorBorderHover: "var(--ant-color-error-border-hover)",
+    colorErrorHover: "var(--ant-color-error-hover)",
+    colorErrorActive: "var(--ant-color-error-active)",
+    colorErrorTextHover: "var(--ant-color-error-text-hover)",
+    colorErrorText: "var(--ant-color-error-text)",
+    colorErrorTextActive: "var(--ant-color-error-text-active)",
+    colorInfoBg: "var(--ant-color-info-bg)",
+    colorInfoBgHover: "var(--ant-color-info-bg-hover)",
+    colorInfoText: "var(--ant-color-info-text)",
+    colorInfoBorderHover: "var(--ant-color-info-border-hover)",
+    colorInfoHover: "var(--ant-color-info-hover)",
+    colorInfoActive: "var(--ant-color-info-active)",
+    colorInfoTextHover: "var(--ant-color-info-text-hover)",
+  },
+  mediaQueries: {
+    up: (size: ScreenSize) => {
+      return match(size)
+        .with("mobile", () => `@media (min-width: ${screenSizeMap.mobile}px)`)
+        .with(
+          "smallTablet",
+          () => `@media (min-width: ${screenSizeMap.smallTablet}px)`,
+        )
+        .with("tablet", () => `@media (min-width: ${screenSizeMap.tablet}px)`)
+        .with("desktop", () => `@media (min-width: ${screenSizeMap.desktop}px)`)
+        .exhaustive();
+    },
+    down: (size: ScreenSize) => {
+      return match(size)
+        .with(
+          "mobile",
+          () => `@media (max-width: ${screenSizeMap.smallTablet - 1}px)`,
+        )
+        .with(
+          "smallTablet",
+          () => `@media (max-width: ${screenSizeMap.tablet - 1}px)`,
+        )
+        .with(
+          "tablet",
+          () => `@media (max-width: ${screenSizeMap.tablet - 1}px)`,
+        )
+        .with(
+          "desktop",
+          () => `@media (max-width: ${screenSizeMap.desktop - 1}px)`,
+        )
+        .exhaustive();
+    },
+  },
+};

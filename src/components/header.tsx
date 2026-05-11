@@ -50,7 +50,7 @@ export const Header = () => {
       >
         <Flex align="center">
           <Link href="/" display="flex">
-            <BaseButton trackerId="home" ml={18}>
+            <BaseButton trackerId="home">
               <Typography.Title level={4} mv={0} mr={0}>
                 Pokemon RNG
               </Typography.Title>

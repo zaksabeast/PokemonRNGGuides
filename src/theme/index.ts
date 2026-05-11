@@ -24,6 +24,7 @@ export const getTheme = ({
     algorithm,
     token: {
       colorPrimary: tempThemeColor ?? "#6200EE", // consider "#40a9ff",
+      colorLink: tempThemeColor ?? "#6200EE",
     },
   });
 

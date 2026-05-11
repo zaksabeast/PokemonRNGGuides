@@ -8,7 +8,7 @@ export const tempThemeColorAtom = atom<string | null>(null);
 
 export const useThemeMode = () => {
   const [themeMode, setThemeMode] = React.useState<ThemeMode>(
-    ssrLocalStorage.getItem("theme") === "light" ? "light" : "dark",
+    ssrLocalStorage.getItem("theme") === "dark" ? "dark" : "light",
   );
 
   useThemeSwitch(setThemeMode);

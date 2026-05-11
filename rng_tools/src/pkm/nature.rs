@@ -36,6 +36,8 @@ pub enum Nature {
     Quirky = 24,
 }
 
+pub const NATURE_COUNT: usize = 25;
+
 impl Nature {
     pub fn from_pid(pid: u32) -> Self {
         ((pid % 25) as u8).into()

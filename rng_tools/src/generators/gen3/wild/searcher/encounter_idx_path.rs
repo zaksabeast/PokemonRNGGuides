@@ -54,30 +54,24 @@ impl EncounterIdxPath {
     }
 
     pub fn lead(&self, encounter_gender_ratio: GenderRatio) -> Gen3Lead {
-        match self.nature_gender_to_pid_arc {
-            NatureGenderToPidArc::SynchronizeFailure | NatureGenderToPidArc::SynchronizeSuccess => {
-                return Gen3Lead::Synchronize(self.pid_path.nature());
+        if self.nature_gender_to_pid_arc.has_synchronize_lead() {
+            Gen3Lead::Synchronize(self.pid_path.nature())
+        } else if self.nature_gender_to_pid_arc.has_cute_charm_lead() {
+            let encounter_gender = encounter_gender_ratio.gender_from_pid(self.pid_path.pid());
+            let cute_charm_gender = if encounter_gender == Gender::Male {
+                Gender::Female
+            } else {
+                Gender::Male
+            };
+            Gen3Lead::CuteCharm(cute_charm_gender)
+        } else if self.lvl_to_nature_gender_arc == LvlToNatureGenderArc::Hustle {
+            Gen3Lead::HustleVitalSpiritPressure
+        } else {
+            match self.encounter_idx_to_lvl_arc {
+                EncounterIdxToLvlArc::SlotMagnetPullSuccess => Gen3Lead::MagnetPull,
+                EncounterIdxToLvlArc::SlotStaticSuccess => Gen3Lead::Static,
+                _ => Gen3Lead::Vanilla,
             }
-            NatureGenderToPidArc::CuteCharmFailure | NatureGenderToPidArc::CuteCharmSuccess => {
-                let encounter_gender = encounter_gender_ratio.gender_from_pid(self.pid_path.pid());
-                let cute_charm_gender = if encounter_gender == Gender::Male {
-                    Gender::Female
-                } else {
-                    Gender::Male
-                };
-                return Gen3Lead::CuteCharm(cute_charm_gender);
-            }
-            _ => {}
-        }
-
-        if matches!(self.lvl_to_nature_gender_arc, LvlToNatureGenderArc::Hustle) {
-            return Gen3Lead::HustleVitalSpiritPressure;
-        }
-
-        match self.encounter_idx_to_lvl_arc {
-            EncounterIdxToLvlArc::SlotMagnetPullSuccess => Gen3Lead::MagnetPull,
-            EncounterIdxToLvlArc::SlotStaticSuccess => Gen3Lead::Static,
-            _ => Gen3Lead::Vanilla,
         }
     }
 
@@ -423,16 +417,44 @@ fn extend_path_for_mass_outbreak(
 
     mass_outbreak_setups
         .iter()
-        .map(|(map_setups_idx, mass_outbreak_state)| {
-            EncounterIdxPath::new(
+        .filter_map(|(map_setups_idx, mass_outbreak_state)| {
+            if lvl_path.nature_gender_to_pid_arc.is_in_safari_map() {
+                // no mass outbreak in safari maps
+                return None;
+            }
+
+            Some(EncounterIdxPath::new(
                 rng.seed(),
                 *map_setups_idx,
                 Wild3Action::SweetScentLand,
                 EncounterIdxToLvlArc::MassOutbreakSuccess(*mass_outbreak_state),
                 lvl_path,
-            )
+            ))
         })
         .collect()
+}
+
+fn filter_paths_with_safari_mismatch(
+    lvl_path: &LvlPath,
+    map_setups: &Wild3MapSetups,
+    action: Option<Wild3Action>,
+) -> bool {
+    if lvl_path.nature_gender_to_pid_arc.is_in_safari_map() != map_setups.map_data.is_safari {
+        return false;
+    }
+
+    if let Some(action) = action {
+        if lvl_path.nature_gender_to_pid_arc.uses_safari_pokeblock()
+            && !map_setups
+                .map_data
+                .actions_with_safari_pokeblock
+                .contains(&action)
+        {
+            // Ex: Trying to use RockSmash with Pokeblock, but there's no feeder near rocks.
+            return false;
+        }
+    }
+    true
 }
 
 fn extend_path_for_slot_vanilla(
@@ -456,6 +478,18 @@ fn extend_path_for_slot_vanilla(
             maps_setups_for_rev
                 .iter()
                 .filter_map(move |map_setups_for_rev| {
+                    if !filter_paths_with_safari_mismatch(
+                        lvl_path,
+                        map_setups_for_rev.map_setups,
+                        Some(*action),
+                    ) {
+                        return None;
+                    }
+
+                    // No need to filter if the action is possible, because it's done indirectly by checking the
+                    // the species. Limitation: We assume that if an action is permitted in a map, it's permitted in
+                    // every map (which is currently the case).
+
                     let encounter = map_setups_for_rev
                         .map_setups
                         .map_data
@@ -514,6 +548,14 @@ fn extend_path_for_magnet_pull(
     maps_setups_for_rev
         .iter()
         .filter_map(|map_setups_for_rev| {
+            if !filter_paths_with_safari_mismatch(
+                lvl_path,
+                map_setups_for_rev.map_setups,
+                Some(Wild3Action::SweetScentLand),
+            ) {
+                return None;
+            }
+
             let attracted_idxs = &map_setups_for_rev.magnet_pull_attracted_indexes;
             if attracted_idxs.is_empty() {
                 return None;
@@ -557,6 +599,14 @@ fn extend_path_for_static(
             actions.iter().filter_map(|action| {
                 if *action != Wild3Action::SweetScentLand && *action != Wild3Action::SweetScentWater
                 {
+                    return None;
+                }
+
+                if !filter_paths_with_safari_mismatch(
+                    lvl_path,
+                    map_setups_for_rev.map_setups,
+                    Some(*action),
+                ) {
                     return None;
                 }
 
@@ -610,6 +660,9 @@ fn extend_path_for_feebas(
                 .contains(&Wild3FeebasState::OnFeebasTile)
             {
                 return None;
+            }
+            if lvl_path.nature_gender_to_pid_arc.is_in_safari_map() {
+                return None; // No feebas in safari
             }
 
             let action = map_setups_for_rev

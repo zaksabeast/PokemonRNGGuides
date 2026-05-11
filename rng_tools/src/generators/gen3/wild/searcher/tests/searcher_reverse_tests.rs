@@ -1,11 +1,21 @@
 use super::*;
 use crate::{
     EncounterSlot, PokemonType,
-    gen3::{FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SpecialEncounterGameData},
+    gen3::{
+        FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3PidSpeedFilter, Wild3SpecialEncounterGameData,
+        search_wild3_naive,
+    },
 };
 
 mod utils;
 use utils::{pid_paths_to_string, strs_to_string};
+
+fn search_wild3_reverse_flatten(opts: &Wild3SearcherOptions) -> Vec<Wild3SearcherResultMon> {
+    search_wild3_reverse(opts)
+        .into_iter()
+        .flatten()
+        .collect_vec()
+}
 
 #[test]
 fn test_search_find_pid_paths_by_step_filter() {
@@ -175,10 +185,7 @@ fn test_search_reverse_wild1_vanilla() {
         species: Species::Pikachu,
         ..Default::default()
     }];
-    let result = search_wild3_reverse(&options)
-        .into_iter()
-        .flatten()
-        .collect_vec();
+    let result = search_wild3_reverse_flatten(&options);
     assert_eq!(result, expected_results);
 }
 
@@ -246,10 +253,7 @@ fn test_search_reverse_wild2_synchronize_success() {
             ..Default::default()
         },
     ];
-    let result = search_wild3_reverse(&options)
-        .into_iter()
-        .flatten()
-        .collect_vec();
+    let result = search_wild3_reverse_flatten(&options);
     assert_eq!(result, expected_results);
 }
 
@@ -296,10 +300,7 @@ fn test_search_reverse_wild4_cute_charm_success() {
         species: Species::Pikachu,
         ..Default::default()
     }];
-    let result = search_wild3_reverse(&options)
-        .into_iter()
-        .flatten()
-        .collect_vec();
+    let result = search_wild3_reverse_flatten(&options);
     assert_eq!(result, expected_results);
 }
 
@@ -359,10 +360,7 @@ fn test_search_reverse_wild3_mass_outbreak() {
         mass_outbreak_state: Wild3MassOutbreakState::Route102Seedot,
         ..Default::default()
     }];
-    let result = search_wild3_reverse(&options)
-        .into_iter()
-        .flatten()
-        .collect_vec();
+    let result = search_wild3_reverse_flatten(&options);
     assert_eq!(result, expected_results);
 }
 
@@ -412,10 +410,7 @@ fn test_search_reverse_wild3_feebas() {
         action: Wild3Action::SuperRod,
         ..Default::default()
     }];
-    let result = search_wild3_reverse(&options)
-        .into_iter()
-        .flatten()
-        .collect_vec();
+    let result = search_wild3_reverse_flatten(&options);
     assert_eq!(result, expected_results);
 }
 
@@ -461,10 +456,7 @@ fn test_search_reverse_pid_spd() {
         species: Species::Shuckle,
         ..Default::default()
     }];
-    let result = search_wild3_reverse(&options)
-        .into_iter()
-        .flatten()
-        .collect_vec();
+    let result = search_wild3_reverse_flatten(&options);
     assert_eq!(result, expected_results);
 }
 
@@ -507,18 +499,12 @@ fn test_search_reverse_wild3_rock_smash() {
         action: Wild3Action::RockSmash,
         ..Default::default()
     }];
-    let result = search_wild3_reverse(&options)
-        .into_iter()
-        .flatten()
-        .collect_vec();
+    let result = search_wild3_reverse_flatten(&options);
     assert_eq!(result, expected_results);
 
     // test no encounter
     options.initial_advances = 2;
-    let result = search_wild3_reverse(&options)
-        .into_iter()
-        .flatten()
-        .collect_vec();
+    let result = search_wild3_reverse_flatten(&options);
     assert!(result.is_empty());
 }
 
@@ -542,16 +528,126 @@ fn test_search_reverse_wild3_rock_smash_white_flute() {
     };
 
     options.map_setups[0].actions = vec![Wild3Action::RockSmash];
-    let result = search_wild3_reverse(&options)
-        .into_iter()
-        .flatten()
-        .collect_vec();
+    let result = search_wild3_reverse_flatten(&options);
     assert!(!result.is_empty());
 
     options.using_white_flute = false;
-    let result = search_wild3_reverse(&options)
-        .into_iter()
-        .flatten()
-        .collect_vec();
+    let result = search_wild3_reverse_flatten(&options);
     assert!(result.is_empty());
+}
+
+fn create_safari_southeast_map_setups() -> Vec<Wild3MapSetups> {
+    let encounter = |min_level, max_level, species| Wild3EncounterGameData {
+        min_level,
+        max_level,
+        species_data: SpeciesData { species },
+    };
+
+    vec![Wild3MapSetups {
+        map_data: Wild3MapGameData {
+            map_id: "MAP_SAFARI_ZONE_SOUTHEAST".to_string(),
+            slots_by_action: vec![
+                vec![
+                    encounter(33, 33, Species::Sunkern),
+                    encounter(34, 34, Species::Mareep),
+                    encounter(35, 35, Species::Sunkern),
+                    encounter(36, 36, Species::Mareep),
+                    encounter(34, 34, Species::Aipom),
+                    encounter(33, 33, Species::Spinarak),
+                    encounter(35, 35, Species::Hoothoot),
+                    encounter(34, 34, Species::Snubbull),
+                    encounter(36, 36, Species::Stantler),
+                    encounter(37, 37, Species::Gligar),
+                    encounter(39, 39, Species::Stantler),
+                    encounter(40, 40, Species::Gligar),
+                ],
+                vec![],
+                vec![],
+                vec![],
+                vec![],
+                vec![],
+            ],
+            is_safari: true,
+            rock_smash_rate: 0,
+            actions_with_safari_pokeblock: vec![
+                Wild3Action::SweetScentLand,
+                Wild3Action::SweetScentWater,
+                Wild3Action::OldRod,
+                Wild3Action::GoodRod,
+                Wild3Action::SuperRod,
+            ],
+            ..Default::default()
+        },
+        ..Default::default()
+    }]
+}
+
+#[test]
+fn test_search_reverse_wild3_safari_egg_gligar_has_result() {
+    let options = Wild3SearcherOptions {
+        initial_advances: 5000,
+        max_advances: 2000,
+        max_result_count: 1,
+        filter: PkmFilter {
+            nature: Some(Nature::from_pid(0xEEC476DC)),
+            min_ivs: Ivs::new(10, 31, 28, 26, 0, 16),
+            max_ivs: Ivs::new(10, 31, 28, 26, 0, 16),
+            ..Default::default()
+        },
+        gen3_filter: Gen3PkmFilter {
+            species: Some(Species::Gligar),
+            ..Default::default()
+        },
+        leads: vec![Gen3Lead::Egg],
+        map_setups: create_safari_southeast_map_setups(),
+        methods: vec![Gen3Method::Wild1],
+        consider_cycles: true,
+        consider_rng_manipulated_lead_pid: true,
+        generate_even_if_impossible: true,
+        using_white_flute: true,
+        considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::None,
+        ..Default::default()
+    };
+
+    let result_naive = search_wild3_naive(&options);
+    assert!(!result_naive.is_empty());
+
+    let result = search_wild3_reverse_flatten(&options);
+    assert!(!result.is_empty());
+}
+
+#[test]
+fn test_search_reverse_wild3_safari_cute_charm_pokeblock_hoothoot_has_result() {
+    let options = Wild3SearcherOptions {
+        initial_seed: 6297,
+        initial_advances: 190000,
+        max_advances: 2000,
+        max_result_count: 99999,
+        filter: PkmFilter {
+            nature: Some(Nature::Jolly),
+            gender: Some(Gender::Male),
+            min_ivs: Ivs::new(30, 24, 3, 20, 14, 9),
+            max_ivs: Ivs::new(30, 24, 3, 20, 14, 9),
+            ability: Some(AbilityType::Second),
+            ..Default::default()
+        },
+        gen3_filter: Gen3PkmFilter {
+            lvl: Some(35),
+            species: Some(Species::Hoothoot),
+            ..Default::default()
+        },
+        leads: vec![Gen3Lead::CuteCharm(Gender::Female)],
+        map_setups: create_safari_southeast_map_setups(),
+        methods: vec![Gen3Method::Wild4],
+        consider_cycles: true,
+        lead_cycle_speed: Some(18),
+        considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::Specific([0, 0, 1, 0, 0]),
+        ..Default::default()
+    };
+
+    let result = search_wild3_naive(&options);
+    assert!(!result.is_empty());
+
+    let result = search_wild3_reverse_flatten(&options);
+    assert!(!result.is_empty());
 }

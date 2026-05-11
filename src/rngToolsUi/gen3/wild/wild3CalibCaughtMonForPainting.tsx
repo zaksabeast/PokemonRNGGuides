@@ -48,6 +48,7 @@ const createTargetSetupAtVictoryRoad = (targetPaintingAdvs: {
     usingAverageLeadCycleSpeed: false,
     leadCycleSpeed: 0,
     requiresWhiteFlute: false, // Unused
+    safariPokeblock: null,
   };
 };
 

@@ -19,6 +19,7 @@ import {
   wild3RoamerStates,
 } from "./utils";
 import { gen3Methods } from "~/types";
+import { pokeblockSchema } from "~/types/pokeblock";
 
 /*
 Possible user flows (documentation for testing): 
@@ -67,7 +68,8 @@ const TargetSetupAtomSchema = z.object({
       targetMethod: z.enum(gen3Methods),
       usingAverageLeadCycleSpeed: z.boolean(),
       leadCycleSpeed: z.number().int().min(0).max(900),
-      requiresWhiteFlute: z.boolean().default(false),
+      requiresWhiteFlute: z.boolean(),
+      safariPokeblock: pokeblockSchema,
     })
     .nullable(),
 });

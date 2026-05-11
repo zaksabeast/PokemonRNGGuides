@@ -4,6 +4,8 @@ use crate::{EncounterSlot, PokemonType};
 mod utils;
 use utils::{pid_paths_to_string, strs_to_string};
 
+// cargo test test_search_perf_find_pid_paths_by_step --release
+
 #[test]
 fn test_search_perf_find_pid_paths_by_step() {
     if cfg!(debug_assertions) {

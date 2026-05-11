@@ -136,7 +136,7 @@ pub fn extend_pid_low_path_to_pid_paths(
         }
     }
 
-    // To improve performance for the common case where consider_all_methods_124 is true, we filter by consider_all_methods_124 at the end.
+    // To improve performance for the common case, we assume that consider_all_methods_124 is true. Later, we will filter unwanted methods.
     if !opts.consider_all_methods_124 {
         pid_paths.retain(|pid_path| opts.methods.contains(&pid_path.method()));
     }

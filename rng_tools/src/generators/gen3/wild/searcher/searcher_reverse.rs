@@ -5,7 +5,7 @@ use super::*;
 use crate::{
     GenderRatio,
     gen3::{
-        SpeciesData, find_pid_paths_reverse_pid,
+        SpeciesData, Wild3InSafariMapStatus, create_pokeblock_gen_opt, find_pid_paths_reverse_pid,
         searcher_painter::Wild3PaintingAdvFinder,
         wild::{
             lcrng_distance,
@@ -60,11 +60,22 @@ LvlPath
     Vanilla
     Hustle
 NatureGenderPath
-    Vanilla
-    SynchronizeSuccess
-    SynchronizeFailure
-    CuteCharmSuccess
-    CuteCharmFailure
+    Vailla
+    Ccuc
+    Ccuc_SafSuc_NoBlk
+    Ccuc_SafSuc_WBlk
+    Ccuc_SafFail
+    Ccail
+    Ccail_SafSuc_NoBlk
+    Ccail_SafSuc_WBlk
+    Ccail_SafFail
+    SaSuc_NoBlk
+    SaSuc_WBlk
+    SaFail
+    SaFail_SyncSuc
+    SaFail_SyncFail
+    SycSuc
+    SycFail
 PidPath (knows Iv arc)
     WithoutVBlank
     WithVBLankBetweenPid
@@ -90,14 +101,24 @@ where
         .map(|data| data.gender_ratio())
         .unwrap_or(GenderRatio::Genderless);
 
+    let safari_status = if opts.map_setups.iter().all(|map| !map.map_data.is_safari) {
+        Wild3InSafariMapStatus::Never
+    } else if opts.map_setups.iter().all(|map| map.map_data.is_safari) {
+        Wild3InSafariMapStatus::Always
+    } else {
+        Wild3InSafariMapStatus::Sometimes
+    };
+
     let nature_gender_gen = NatureGenderSeedGenerator::new(
         &opts.leads,
         encounter_gender_ratio,
         opts.filter.nature,
         opts.filter.gender,
+        safari_status,
+        opts.considered_safari_pokeblocks,
     );
     let lvl_gen = LvlPathGenerator::new(&opts.leads);
-    let encouter_idx_gen = EncounterIdxPathGenerator::new(
+    let encounter_idx_gen = EncounterIdxPathGenerator::new(
         &opts.leads,
         &opts.map_setups,
         encounter_species_data,
@@ -105,20 +126,33 @@ where
     );
 
     iter.filter_map(|pid_path| {
-        let vec = nature_gender_gen
-            .extend_path_for_all_arcs(&pid_path)
+        let nat_gender_paths = nature_gender_gen.extend_path_for_all_arcs(&pid_path);
+
+        let lvl_paths = nat_gender_paths
             .iter()
             .flat_map(|nature_gender_path| lvl_gen.extend_path_for_all_arcs(nature_gender_path))
-            .flat_map(|lvl_path| encouter_idx_gen.extend_path_for_all_arcs(&lvl_path))
+            .collect_vec();
+
+        let encounter_paths = lvl_paths
+            .iter()
+            .flat_map(|lvl_path| {
+                let encounter_paths = encounter_idx_gen.extend_path_for_all_arcs(lvl_path);
+                encounter_paths
+            })
             .filter(|encounter_path| {
                 lcrng_distance(opts.initial_seed, encounter_path.seed)
                     >= opts.initial_advances as u32
             })
             .collect_vec();
-        if vec.is_empty() { None } else { Some(vec) }
+
+        if encounter_paths.is_empty() {
+            None
+        } else {
+            Some(encounter_paths)
+        }
     })
     .filter_map(|encounter_idx_paths| {
-        let vec = encounter_idx_paths
+        let results = encounter_idx_paths
             .iter()
             .flat_map(|encounter_idx_path| {
                 let map_setups = &opts.map_setups[encounter_idx_path.map_setups_idx];
@@ -131,10 +165,14 @@ where
                 )
             })
             .collect_vec();
-        if vec.is_empty() { None } else { Some(vec) }
+
+        if results.is_empty() {
+            None
+        } else {
+            Some(results)
+        }
     })
-    .filter(|vec| !vec.is_empty())
-    .take(opts.max_result_count) // Limitation: No guaranteed to have at least 1 result with >0 % likelihood
+    .take(opts.max_result_count)
     .collect_vec()
 }
 
@@ -230,13 +268,13 @@ fn get_leads(seed_lead: Gen3Lead, opts: &Wild3SearcherOptions) -> ArrayVec<Gen3L
 }
 
 fn create_result(
-    seed: &EncounterIdxPath,
+    path: &EncounterIdxPath,
     opts: &Wild3SearcherOptions,
     map_setups: &Wild3MapSetups,
     map_idx: usize,
     encounter_gender_ratio: GenderRatio,
 ) -> Vec<Wild3SearcherResultMon> {
-    let mass_outbreak_state = match seed.encounter_idx_to_lvl_arc {
+    let mass_outbreak_state = match path.encounter_idx_to_lvl_arc {
         EncounterIdxToLvlArc::MassOutbreakSuccess(mass_outbreak_state) => mass_outbreak_state,
         _ => Wild3MassOutbreakState::Inactive,
     };
@@ -251,15 +289,24 @@ fn create_result(
         Wild3FeebasState::NotInMap
     };
 
-    get_leads(seed.lead(encounter_gender_ratio), opts)
+    let safari_pokeblock = if path.nature_gender_to_pid_arc.uses_safari_pokeblock() {
+        Some(create_pokeblock_gen_opt(
+            opts.considered_safari_pokeblocks,
+            Nature::from_pid(path.pid_path.pid()),
+        ))
+    } else {
+        None
+    };
+
+    get_leads(path.lead(encounter_gender_ratio), opts)
         .into_iter()
         .flat_map(|lead| {
             let gen_opts = Wild3GeneratorOptions {
                 tid: opts.tid,
                 sid: opts.sid,
                 map_idx,
-                action: seed.action,
-                methods: vec![seed.pid_path.method()],
+                action: path.action,
+                methods: vec![path.pid_path.method()],
                 lead,
                 filter: opts.filter.clone(),
                 consider_cycles: opts.consider_cycles,
@@ -269,11 +316,12 @@ fn create_result(
                 roamer_state: Wild3RoamerState::Inactive,
                 mass_outbreak_state,
                 feebas_state,
+                safari_pokeblock: safari_pokeblock.clone(),
                 lead_cycle_speed: opts.lead_cycle_speed,
                 using_white_flute: opts.using_white_flute,
             };
 
-            generate_gen3_wild(Pokerng::new(seed.seed), &gen_opts, &map_setups.map_data)
+            generate_gen3_wild(Pokerng::new(path.seed), &gen_opts, &map_setups.map_data)
                 .0
                 .iter()
                 .map(|gen_res| {
@@ -281,8 +329,8 @@ fn create_result(
                         .map_data
                         .get_encounter(gen_opts.action, gen_res.encounter_idx)
                         .unwrap();
-                    let advance = lcrng_distance(opts.initial_seed, seed.seed) as usize;
-                    Wild3SearcherResultMon::new(gen_res, &gen_opts, seed.seed, advance, encounter)
+                    let advance = lcrng_distance(opts.initial_seed, path.seed) as usize;
+                    Wild3SearcherResultMon::new(gen_res, &gen_opts, path.seed, advance, encounter)
                 })
                 .collect_vec()
         })

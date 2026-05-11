@@ -1,6 +1,7 @@
 import React from "react";
 import { match } from "ts-pattern";
 import Chatter900 from "~/assets/chatter-900.wav";
+import { getSharedAudioContext } from "~/utils/sharedAudio";
 import { z } from "zod";
 import { ChatterPitch, ChatterState, rngTools } from "~/rngTools";
 import { Translations } from "~/translations";
@@ -81,42 +82,27 @@ const playBuffer = (
 };
 
 const useChatterAudio = () => {
-  const audioCtx = React.useMemo(() => {
-    if (typeof window === "undefined") {
-      return null;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-
-    return new AudioContext();
-  }, []);
   const cachedBufferRef = React.useRef<AudioBuffer | null>(null);
 
-  const ensureBuffer = React.useCallback(async () => {
-    if (cachedBufferRef.current == null && audioCtx != null) {
-      cachedBufferRef.current = await loadAudioBuffer(audioCtx, Chatter900);
+  const ensureBuffer = React.useCallback(async (ctx: AudioContext) => {
+    if (cachedBufferRef.current == null) {
+      cachedBufferRef.current = await loadAudioBuffer(ctx, Chatter900);
     }
     return cachedBufferRef.current;
-  }, [audioCtx]);
+  }, []);
 
   const play = React.useCallback(
     async (rate: number) => {
       try {
-        const base = await ensureBuffer();
-
-        if (audioCtx == null || base == null) {
-          return;
-        }
-
-        const pitched = await resampleBuffer(audioCtx, base, rate);
-
-        playBuffer(audioCtx, pitched, 1.0);
+        const ctx = getSharedAudioContext();
+        const base = await ensureBuffer(ctx);
+        const pitched = await resampleBuffer(ctx, base, rate);
+        playBuffer(ctx, pitched, 1.0);
       } catch {
         // ignore errors
       }
     },
-    [audioCtx, ensureBuffer],
+    [ensureBuffer],
   );
 
   return { playChatter: play };

@@ -1,22 +1,8 @@
 import React from "react";
+import { getSharedAudioContext } from "~/utils/sharedAudio";
 
 const TOTAL_BEEPS = 11;
 const COUNTDOWN_INTERVAL_MS = 500;
-
-// Singleton AudioContext instance shared across all useCountdownBeeps hooks
-let sharedAudioContext: AudioContext | null = null;
-
-const getOrCreateAudioContext = (): AudioContext | null => {
-  if (sharedAudioContext !== null) {
-    return sharedAudioContext;
-  }
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  if (typeof AudioContext !== "undefined") {
-    sharedAudioContext = new AudioContext();
-  }
-  return sharedAudioContext;
-};
 
 type UseCountdownBeepsConfig = {
   audioUrl: string;
@@ -35,7 +21,7 @@ export const useCountdownBeeps = ({
   // Initialize AudioContext (using singleton) and load audio buffer once on component mount
   React.useEffect(() => {
     if (audioContextRef.current === null) {
-      audioContextRef.current = getOrCreateAudioContext();
+      audioContextRef.current = getSharedAudioContext();
     }
 
     // Load and decode audio buffer once
@@ -71,21 +57,8 @@ export const useCountdownBeeps = ({
 
   // Play countdown beeps with Web Audio API trimming using cached buffer
   const playTrimmedBeeps = React.useCallback(async () => {
-    const audioContext = audioContextRef.current;
-    if (audioContext === null) {
-      return;
-    }
-
-    // Resume AudioContext if suspended (user interaction requirement)
-    if (audioContext.state === "suspended") {
-      try {
-        await audioContext.resume();
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error("Failed to resume AudioContext:", error);
-        return;
-      }
-    }
+    const audioContext = getSharedAudioContext();
+    audioContextRef.current = audioContext;
 
     // Stop any existing source before playing new one
     if (beepsSource.current !== null) {

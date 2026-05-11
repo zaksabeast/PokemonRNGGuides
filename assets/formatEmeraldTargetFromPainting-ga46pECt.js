@@ -1,0 +1,1 @@
+import{t as e}from"./formatLargeInteger-CMOKBbKM.js";import{n as t,t as n}from"./lcrng-CpWG0aKu.js";import{t as r}from"./formatHex-M5Lmnb28.js";var i=(i,a)=>{let o=(n(0,i)+a)%2**32,s=t(0,o);return`Advance: ${e(o)}. (Seed: ${r(s,4)})`};export{i as t};

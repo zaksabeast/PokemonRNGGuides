@@ -23,8 +23,8 @@ export const getTheme = ({
   const tokens = themeTools.getDesignToken({
     algorithm,
     token: {
-      colorPrimary: tempThemeColor ?? "#6200EE", // consider "#40a9ff",
-      colorLink: tempThemeColor ?? "#6200EE",
+      colorPrimary: tempThemeColor ?? "#7e3ff2", // consider "#40a9ff",
+      colorLink: tempThemeColor ?? "#7e3ff2",
     },
   });
 

@@ -6,6 +6,9 @@ import {
 } from "antd";
 import { type ThemeMode } from "./themeMode";
 
+export const primaryColor = "#7e3ff2"; // consider "#40a9ff"
+export const metaTagThemeColor = "#722ed1";
+
 type GetThemeProps = {
   /** Temporary theme color for experimental purposes */
   tempThemeColor?: string | null;
@@ -23,8 +26,8 @@ export const getTheme = ({
   const tokens = themeTools.getDesignToken({
     algorithm,
     token: {
-      colorPrimary: tempThemeColor ?? "#7e3ff2", // consider "#40a9ff",
-      colorLink: tempThemeColor ?? "#7e3ff2",
+      colorPrimary: tempThemeColor ?? primaryColor,
+      colorLink: tempThemeColor ?? primaryColor,
     },
   });
 

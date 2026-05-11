@@ -6,6 +6,16 @@ type Tokens = Record<
   string
 > & {
   layoutHeaderHeight: string;
+  colorGuideTagNew: string;
+  colorGuideTagNewBg: string;
+  colorGuideTagWebTool: string;
+  colorGuideTagWebToolBg: string;
+  colorGuideTagVideoGuide: string;
+  colorGuideTagVideoGuideBg: string;
+  colorGuideTagRoughDraft: string;
+  colorGuideTagRoughDraftBg: string;
+  colorGuideTagTranslated: string;
+  colorGuideTagTranslatedBg: string;
 };
 
 declare module "@emotion/react" {

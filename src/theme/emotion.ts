@@ -116,6 +116,17 @@ export const emotionTheme: Theme = {
     colorInfoHover: "var(--ant-color-info-hover)",
     colorInfoActive: "var(--ant-color-info-active)",
     colorInfoTextHover: "var(--ant-color-info-text-hover)",
+
+    colorGuideTagNew: "#AF52DE",
+    colorGuideTagNewBg: "rgba(175, 82, 222, 0.1)",
+    colorGuideTagWebTool: "#7E5BEF",
+    colorGuideTagWebToolBg: "rgba(126, 91, 239, 0.08)",
+    colorGuideTagVideoGuide: "#007AFF",
+    colorGuideTagVideoGuideBg: "rgba(0, 122, 255, 0.1)",
+    colorGuideTagRoughDraft: "#FF3B30",
+    colorGuideTagRoughDraftBg: "rgba(255, 59, 48, 0.1)",
+    colorGuideTagTranslated: "#00B894",
+    colorGuideTagTranslatedBg: "rgba(0, 184, 148, 0.1)",
   },
   mediaQueries: {
     up: (size: ScreenSize) => {

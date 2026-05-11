@@ -1,0 +1,1 @@
+import{Ga as e}from"./components-DCN545vR.js";var t=0;function n(n){var r=++t;return e(n)+r}export{n as t};

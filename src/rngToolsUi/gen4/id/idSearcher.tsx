@@ -40,7 +40,7 @@ import { FormikRadio } from "~/components/radio";
 import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
 import { match, P } from "ts-pattern";
 import { chunkRange } from "~/utils/chunkRange";
-import { UndefinedToNull } from "~/types";
+import { RustOption } from "~/types";
 import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "react-hook-form";
@@ -368,7 +368,7 @@ export const Id4Searcher = () => {
         .exhaustive();
 
       const chunked = chunkRange([opts.min_delay, opts.max_delay], 200);
-      const searchOpts: UndefinedToNull<Id4SearchOptions>[] = chunked.map(
+      const searchOpts: RustOption<Id4SearchOptions>[] = chunked.map(
         ([min_delay, max_delay]) => ({
           year: opts.year,
           min_delay,

@@ -32,7 +32,7 @@ import {
 } from "~/rngToolsUi/shared/ivColumns";
 import { useCurrentStep } from "~/components/stepper/state";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
-import { formatSpeciesLabel, UndefinedToNull } from "~/types";
+import { formatSpeciesLabel, RustOption } from "~/types";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { MonthSchema, monthToRustFilter } from "~/utils/time";
 import { Gen4GameVersion } from "../gen4types";
@@ -343,7 +343,7 @@ export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
 
     setSearchedEncounter({ ...encounter, advanceOffset: opts.offset });
 
-    const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
+    const baseOpts: RustOption<SearchStatic4Opts> = {
       filter: pkmFilterFieldsToRustInput(opts),
       force_second: opts.force_second,
       max_advance: opts.max_advance,

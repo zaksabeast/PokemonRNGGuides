@@ -19,19 +19,21 @@ export type FeatureConfig<
       { [key in Feature]?: false }
     >;
 
-type UndefinedToNullForType<T> = undefined extends T
-  ? tst.U.Exclude<T, undefined> | null
-  : T;
+type _Option<T> = undefined extends T
+  ? T | null | undefined
+  : null extends T
+    ? T | null | undefined
+    : T;
 
-export type UndefinedToNull<T> = T extends tst.O.Object
+export type RustOption<T> = T extends tst.O.Object
   ? {
-      [K in keyof T]: UndefinedToNull<T[K]>;
+      [K in keyof T]: RustOption<T[K]>;
     }
-  : UndefinedToNullForType<T>;
-
-export type UndefinedToNullForList<T extends tst.L.List> = {
-  [K in keyof T]: UndefinedToNull<T[K]>;
-};
+  : T extends tst.L.List
+    ? {
+        [K in keyof T]: RustOption<T[K]>;
+      }
+    : _Option<T>;
 
 export type Nullable<T> = T extends tst.O.Object
   ? { [key in keyof T]: T[key] | null }

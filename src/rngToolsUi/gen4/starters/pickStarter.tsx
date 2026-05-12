@@ -39,7 +39,7 @@ import { getStatRange } from "~/types/statRange";
 import { Gen4GameVersion } from "../gen4types";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { chunkIvs } from "~/utils/chunkIvs";
-import { UndefinedToNull } from "~/types";
+import { RustOption } from "~/types";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
 import { MONTHS, MonthSchema, monthToRustFilter } from "~/utils/time";
@@ -285,7 +285,7 @@ export const PickStarter4 = () => {
       species: opts.species,
       platinum_target_advance: opts.platinum_target_advance,
     });
-    const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
+    const baseOpts: RustOption<SearchStatic4Opts> = {
       ...opts,
       month: monthToRustFilter(opts.month),
       min_advance: advance,

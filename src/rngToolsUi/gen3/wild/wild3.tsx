@@ -65,7 +65,6 @@ const TargetSetupAtomSchema = z.object({
         after: z.number().int().min(0).max(0xffffffff),
       }),
       targetMethod: z.enum(gen3Methods),
-      usingAverageLeadCycleSpeed: z.boolean(),
       leadCycleSpeed: z.number().int().min(0).max(900),
       requiresWhiteFlute: z.boolean().default(false),
     })

@@ -88,7 +88,6 @@ export type TargetSetup = {
   lead: Gen3Lead;
   targetPaintingAdvs: { before: number; after: number };
   targetMethod: Gen3Method;
-  usingAverageLeadCycleSpeed: boolean;
   leadCycleSpeed: number;
   requiresWhiteFlute: boolean;
 };
@@ -131,8 +130,9 @@ const convertFormStateValuesToTargetSetup = (
       after: values.targetAdvance,
     },
     targetMethod: values.targetMethod,
-    usingAverageLeadCycleSpeed: values.usingAverageLeadCycleSpeed,
-    leadCycleSpeed: values.leadCycleSpeed,
+    leadCycleSpeed: values.usingAverageLeadCycleSpeed
+      ? AVERAGE_LEAD_CYCLE_SPEED
+      : values.leadCycleSpeed,
     requiresWhiteFlute:
       values.action === "RockSmash" && values.requiresWhiteFlute,
   };

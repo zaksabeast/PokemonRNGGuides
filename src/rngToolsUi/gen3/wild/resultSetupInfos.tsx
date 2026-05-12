@@ -416,7 +416,10 @@ type Props = {
   setTargetSetup: (targetSetup: TargetSetup) => void;
 };
 
-const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
+const setupInfoToTargetSetup = (
+  setupInfo: ResultSetupInfo,
+  leadCycleSpeed: number,
+): TargetSetup => {
   return {
     map: setupInfo.mapId,
     action: setupInfo.action,
@@ -430,10 +433,7 @@ const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
     targetMethod: setupInfo.method,
     lead: setupInfo.lead,
     requiresWhiteFlute: setupInfo.requiresWhiteFlute,
-
-    // unused
-    usingAverageLeadCycleSpeed: true,
-    leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+    leadCycleSpeed,
   };
 };
 
@@ -475,6 +475,9 @@ export const Wild3ResultSetupInfos = ({
     setDistributionFixedData(null);
   }, [selectedPidPathResult]);
 
+  const [selectedTargetSetup, setSelectedTargetSetup] =
+    React.useState<TargetSetup | null>(null);
+
   if (selectedPidPathResult == null) {
     return null;
   }
@@ -483,9 +486,23 @@ export const Wild3ResultSetupInfos = ({
     setTargetSetup == null
       ? undefined
       : (setupInfo: ResultSetupInfo) => {
-          setTargetSetup(setupInfoToTargetSetup(setupInfo));
+          const targetSetup = setupInfoToTargetSetup(
+            setupInfo,
+            AVERAGE_LEAD_CYCLE_SPEED,
+          );
+          setTargetSetup(targetSetup);
+          setSelectedTargetSetup(targetSetup);
         };
 
+  const setLeadCycleSpeed =
+    selectedTargetSetup == null
+      ? undefined
+      : (leadCycleSpeed: number) => {
+          setTargetSetup({
+            ...selectedTargetSetup,
+            leadCycleSpeed,
+          });
+        };
   return (
     <>
       <ResultTable<ResultSetupInfo>
@@ -501,6 +518,7 @@ export const Wild3ResultSetupInfos = ({
         <Wild3MethodDistribution
           fixedData={distributionFixedData}
           permitEnablingDebugOptions={false}
+          setLeadCycleSpeed={setLeadCycleSpeed}
         />
       )}
     </>

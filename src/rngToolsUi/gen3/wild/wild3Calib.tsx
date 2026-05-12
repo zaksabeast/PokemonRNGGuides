@@ -39,6 +39,7 @@ import {
   type Props as Wild3MethodDistributionProps,
 } from "./wild3MethodDistribution";
 import { Wild3Action } from "../../../../rng_tools/pkg/rng_tools";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
 
 type CalibOffset = {
   offset: number; // between pressing A and reaching SweetScent function.
@@ -321,9 +322,10 @@ export const Wild3Calib = ({
       },
       {
         label: "Lead Cycle Speed",
-        input: targetSetupProp.usingAverageLeadCycleSpeed
-          ? "Average"
-          : targetSetupProp.leadCycleSpeed,
+        input:
+          targetSetupProp.leadCycleSpeed === AVERAGE_LEAD_CYCLE_SPEED
+            ? "Average"
+            : targetSetupProp.leadCycleSpeed,
         show: targetSetupProp.lead !== "Egg",
       },
       {

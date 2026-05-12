@@ -23,6 +23,7 @@ import {
   FormikSwitch,
   Icon,
   Typography,
+  Button,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatProbability } from "~/utils/formatProbability";
@@ -100,6 +101,7 @@ type FixedData = {
 export type Props = {
   fixedData: FixedData | null;
   permitEnablingDebugOptions: boolean;
+  setLeadCycleSpeed?: (leadCycleSpeed: number) => void;
 };
 
 const Validator = z.object({
@@ -616,6 +618,7 @@ const getSubmitButtonLabel = (fixedData: FixedData | null) => {
 export const Wild3MethodDistribution = ({
   fixedData,
   permitEnablingDebugOptions,
+  setLeadCycleSpeed: setLeadCycleSpeedProp,
 }: Props) => {
   const [hasError, setHasError] = React.useState(true);
   const [results, setResults] = React.useState<UiResult[]>([]);
@@ -684,6 +687,17 @@ export const Wild3MethodDistribution = ({
         <Typography.Text strong fontSize={16}>
           Result: No Pokémon encounter when using that setup.
         </Typography.Text>
+      )}
+      {setLeadCycleSpeedProp != null && (
+        <Button
+          trackerId="Wild3MethodDistribution_setLeadCycleSpeedProp"
+          onClick={() => {
+            setLeadCycleSpeedProp(leadCycleSpeed ?? 0);
+          }}
+        >
+          {" "}
+          Select that lead
+        </Button>
       )}
 
       {permitEnablingDebugOptions && (

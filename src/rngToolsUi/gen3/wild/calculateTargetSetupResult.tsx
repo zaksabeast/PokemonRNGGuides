@@ -26,9 +26,7 @@ const getLeadCycleSpeed = (values: TargetSetup) => {
     return 0;
   }
 
-  return values.usingAverageLeadCycleSpeed
-    ? AVERAGE_LEAD_CYCLE_SPEED
-    : values.leadCycleSpeed;
+  return values.leadCycleSpeed;
 };
 
 const getProbabilityInfo = async (

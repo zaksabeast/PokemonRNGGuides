@@ -97,6 +97,7 @@ export const LeadCycleSpeedSelector = ({
     },
     {
       label: "Cycle count for operation (PID modulo 25):",
+      key: "Cycle count for operation - Custom",
       input: (
         <NumberInput
           name="leadCycleSpeedCustom"
@@ -112,6 +113,7 @@ export const LeadCycleSpeedSelector = ({
     },
     {
       label: "Cycle count for operation (PID modulo 25):",
+      key: "Cycle count for operation - Not Custom",
       input: `${computedLeadCycleSpeed} cycles`,
       show: leadSpeedType !== "Custom",
     },

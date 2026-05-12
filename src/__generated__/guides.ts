@@ -3030,7 +3030,7 @@ export const guides = {
       section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "false-RNG With ACE",
-      isNew: true,
+      isNew: false,
       title: "Pokémon Emerald RNG with ACE Guide (Seed Manipulation & Setup)",
       navDrawerTitle: "RNG With ACE",
       description:
@@ -3280,7 +3280,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Wild RNG",
-      isNew: true,
+      isNew: false,
       title: "Pokemon Emerald Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
@@ -6832,7 +6832,7 @@ export const guides = {
       section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "false-RNG With ACE",
-      isNew: true,
+      isNew: false,
       title:
         "Guida RNG con ACE in Pokémon Emerald (Manipolazione del Seed e Setup)",
       navDrawerTitle: "RNG con ACE",

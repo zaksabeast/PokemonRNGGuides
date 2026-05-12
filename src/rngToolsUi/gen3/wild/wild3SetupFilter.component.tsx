@@ -9,6 +9,7 @@ import {
   Typography,
   Link,
   TooltipWithIcon,
+  FormikRadio,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 
@@ -37,6 +38,12 @@ const supportedGen3Methods = [
   "Wild4",
   // TODO: Support Wild5
 ] as const satisfies Gen3Method[];
+
+const supportedConsideredSafariPokeblocks = [
+  { label: "None", value: "None" as const },
+  { label: "Only those easily obtainable", value: "SoloOnly" as const },
+  //TODO: Support Pokeblock requiring trades
+];
 
 const getSetupFields = (
   species: Species,
@@ -118,6 +125,27 @@ const getSetupFields = (
       indent: 1,
     },
     {
+      label: "Using White Flute",
+      tooltip:
+        "White Flute greatly increases the odds of encountering Pokémon when using Rock Smash. It can be obtained from the Glass Workshop in Route 113.",
+      input: <FormikSwitch<FormState> name="using_white_flute" />,
+      show: showAdvancedSetups && possVals.actions.includes("RockSmash"),
+      indent: 1,
+    },
+    {
+      label: "Considered Pokéblocks",
+      tooltip:
+        "Putting a Pokéblock in a Pokéblock feeder in the Safari Zone increases the likehood encountering Pokémon with a particular nature.",
+      input: (
+        <FormikRadio<FormState>
+          name="considered_safari_pokeblocks"
+          options={supportedConsideredSafariPokeblocks}
+        />
+      ),
+      show: showAdvancedSetups && possVals.is_safari_pokeblock_usable,
+      indent: 1,
+    },
+    {
       label: "Roamer states",
       input: (
         <FormikSelect<FormState, "roamerStates">
@@ -176,14 +204,6 @@ const getSetupFields = (
         />
       ),
       show: showAdvancedSetups,
-      indent: 1,
-    },
-    {
-      label: "Using White Flute",
-      tooltip:
-        "White Flute greatly increases the odds of encountering Pokémon when using Rock Smash. It can be obtained from the Glass Workshop in Route 113.",
-      input: <FormikSwitch<FormState> name="using_white_flute" />,
-      show: showAdvancedSetups && possVals.actions.includes("RockSmash"),
       indent: 1,
     },
 

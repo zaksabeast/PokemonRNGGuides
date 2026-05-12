@@ -1,3 +1,4 @@
+#[allow(clippy::too_many_arguments)]
 mod generators;
 mod id;
 mod ivs;

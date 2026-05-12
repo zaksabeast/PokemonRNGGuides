@@ -3,9 +3,7 @@ use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 use super::Wild3Action;
-use crate::{
-    EncounterSlot, GenderRatio, Nature, PokemonType, Species, gen3::ConsideredSafariPokeblocks,
-};
+use crate::{EncounterSlot, GenderRatio, Nature, PokemonType, Species};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
@@ -49,13 +47,11 @@ pub enum Wild3FeebasState {
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
-pub enum Wild3SafariPokeblock {
-    FromFlavor {
-        flavors: [u8; 5], // Spicy, Dry, Sweet, Bitter, Sour
-    },
-    FromNature {
+pub enum Wild3SafariPokeblockGenOpt {
+    Specific([u8; 5]), // Spicy, Dry, Sweet, Bitter, Sour
+    ForSearching {
         wanted_nature: Nature,
-        considered_safari_pokeblocks: ConsideredSafariPokeblocks,
+        consider_all_safari_pokeblocks: bool,
     },
 }
 
@@ -121,7 +117,7 @@ pub struct Wild3MapGameData {
     pub feebas: Option<Wild3EncounterGameData>,
     pub rock_smash_rate: u32,
     pub is_safari: bool,
-    pub actions_with_safari_pokeblock: Vec<Wild3Action>,
+    pub actions_with_safari_pokeblock: Vec<Wild3Action>, // Not all actions have a pokeblock feeder nearby
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Tsify, Serialize, Deserialize)]

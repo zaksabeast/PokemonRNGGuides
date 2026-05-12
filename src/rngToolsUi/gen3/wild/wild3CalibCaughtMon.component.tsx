@@ -199,7 +199,7 @@ export const Fields = ({
 
 const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
   const opts = await createWild3SearcherOptions(values, targetSetup);
-  if (opts === null) {
+  if (opts == null) {
     return [];
   }
 

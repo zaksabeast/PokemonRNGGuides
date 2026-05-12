@@ -170,6 +170,12 @@ export const createWild3SearcherOptions = async (
     using_white_flute: targetSetup.requiresWhiteFlute,
     painting_opts: null,
     lead_cycle_speed: targetSetup.leadCycleSpeed,
+    considered_safari_pokeblocks:
+      targetSetup.safariPokeblock == null
+        ? "None"
+        : {
+            Specific: targetSetup.safariPokeblock,
+          },
   };
 
   return opts;

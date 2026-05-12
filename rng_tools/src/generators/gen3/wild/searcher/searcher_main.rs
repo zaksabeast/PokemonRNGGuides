@@ -80,14 +80,19 @@ impl Wild3MapSetups {
     }
 }
 
+/**
+ * When searching a target setup, Wild3SafariPokeblockSearchOpt should be None, SoloOnly or All.
+ * When calibrating, Wild3SafariPokeblockSearchOpt should be None or Specific.
+ */
 #[derive(Debug, Default, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 #[repr(u8)]
-pub enum ConsideredSafariPokeblocks {
+pub enum Wild3SafariPokeblockSearchOpt {
     #[default]
     None,
     SoloOnly,
     All,
+    Specific([u8; 5]),
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
@@ -110,7 +115,7 @@ pub struct Wild3SearcherOptions {
     pub generate_even_if_impossible: bool,
     pub painting_opts: Option<Wild3PaintingOpts>,
     pub using_white_flute: bool,
-    pub considered_safari_pokeblocks: ConsideredSafariPokeblocks,
+    pub considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt,
 }
 
 impl Default for Wild3SearcherOptions {
@@ -133,7 +138,7 @@ impl Default for Wild3SearcherOptions {
             painting_opts: None,
             lead_cycle_speed: None,
             using_white_flute: true,
-            considered_safari_pokeblocks: ConsideredSafariPokeblocks::default(),
+            considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt::default(),
         }
     }
 }
@@ -146,8 +151,8 @@ pub struct Wild3SearcherResultMon {
     pub method: Gen3Method,
     pub encounter_idx: Wild3EncounterIndex,
     pub lvl: u8,
-
     pub cycle_data_by_lead: Option<Wild3SearcherCycleDataByLead>,
+    pub used_safari_pokeblock: Option<[u8; 5]>,
 
     pub species: Species,
 
@@ -197,6 +202,7 @@ impl Wild3SearcherResultMon {
             encounter_idx: gen_res.encounter_idx,
             lvl: gen_res.lvl,
             cycle_data_by_lead,
+            used_safari_pokeblock: gen_res.used_safari_pokeblock,
             species: encounter.species_data.species,
             shiny: gen3_shiny(gen_res.pid, gen_opts.tid, gen_opts.sid),
             nature: Nature::from_pid(gen_res.pid),

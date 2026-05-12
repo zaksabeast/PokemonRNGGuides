@@ -38,6 +38,8 @@ type UseBatchToolResults<Arg, Ret> = {
   run: (args: Arg[]) => Promise<Ret[]>;
   /** Cancel the current operation */
   cancel: () => void;
+  /** Reset the current results and error state */
+  reset: () => void;
   /** The streamed data returned from the function, updated as new results are available. */
   data: Ret[];
   /** Whether the function is currently running. */
@@ -160,6 +162,11 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
     setLoading(false);
   };
 
+  const reset = () => {
+    setProgress({ data: [], finishedChunks: 0, totalChunks: 0 });
+    setError(null);
+  };
+
   // Cleanup on unmount
   React.useEffect(() => {
     return () => {
@@ -171,6 +178,7 @@ export const useBatchedTool = <Arg, Ret, MappedRet = Ret>(
   return {
     run,
     cancel,
+    reset,
     data: progress.data,
     loading,
     error,

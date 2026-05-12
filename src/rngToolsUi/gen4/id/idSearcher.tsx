@@ -328,10 +328,12 @@ const mapResult = (res: Id4): Result => ({
 export const Id4Searcher = () => {
   const t = useActiveRouteTranslations();
   const [messageApi, contextHolder] = message.useMessage();
-  const { run: searchDpptIds, data: results } = useBatchedTool(
-    multiWorkerRngTools.search_dppt_ids,
-    { map: mapResult },
-  );
+  const {
+    run: searchDpptIds,
+    data: results,
+    progressPercent,
+    cancel,
+  } = useBatchedTool(multiWorkerRngTools.search_dppt_ids, { map: mapResult });
 
   const [idType, setIdType] = React.useState<IdType>(defaultIdType);
 
@@ -393,6 +395,10 @@ export const Id4Searcher = () => {
       validationSchema={Validator}
       onSubmit={onSubmit}
       submitTrackerId="search_dppt_id"
+      allowCancel
+      cancelTrackerId="cancel_dppt_id"
+      onCancel={cancel}
+      progressPercent={progressPercent}
     >
       {contextHolder}
       <Id4SearcherFields />

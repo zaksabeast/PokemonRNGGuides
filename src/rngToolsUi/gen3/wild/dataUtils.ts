@@ -25,17 +25,18 @@ export const getPossibleValuesForMap = (mapId: string, action: Wild3Action) => {
   });
 
   return {
-    actions: uniq(mapSetups.flatMap((mapSetup) => mapSetup.actions)).filter(
-      (action) => {
-        return action !== "RockSmash"; // TODO: Support Rock Smash
-      },
-    ) as Wild3Action[],
+    actions: uniq(mapSetups.flatMap((mapSetup) => mapSetup.actions)),
     feebas_states,
     roamer_states: uniq(
       mapSetupsForAction.flatMap((mapSetup) => mapSetup.roamer_states),
     ),
     mass_outbreak_states: uniq(
       mapSetupsForAction.flatMap((mapSetup) => mapSetup.mass_outbreak_states),
+    ),
+    canUsePokeblock: mapSetups.some(
+      (mapSetup) =>
+        mapSetup.map_data.is_safari &&
+        mapSetup.map_data.actions_with_safari_pokeblock.includes(action),
     ),
   };
 };

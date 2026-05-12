@@ -183,20 +183,25 @@ pub static PERTINENT_POKEBLOCKS_BY_NATURE: LazyLock<[Vec<[u8; 5]>; 25]> = LazyLo
     let solo_pokeblocks = ALL_SOLO_POKEBLOCKS
         .iter()
         .map(|els: &[u8; 5]| {
-            let mut list_nums: Vec<u8> = els.into_iter().map(|x| *x).filter(|x| *x != 0).collect();
+            let mut list_nums: Vec<u8> = els.iter().copied().filter(|&x| x != 0).collect();
             list_nums.sort();
             list_nums.dedup();
 
-            return els.map(|x| {
+            els.map(|x| {
                 if x == 0 {
                     0
                 } else {
                     (list_nums.iter().position(|n| *n == x).unwrap_or(0) + 1) as u8
                 }
-            });
+            })
         })
         .sorted()
         .dedup()
+        .sorted_by(|fst, snd| {
+            let fst_count = fst.iter().filter(|&&val| val != 0).count();
+            let snd_count = snd.iter().filter(|&&val| val != 0).count();
+            fst_count.cmp(&snd_count)
+        })
         .collect::<Vec<_>>();
 
     let res: [Vec<[u8; 5]>; 25] = POKEBLOCK_NATURE_STAT_FACTORS.map(|nature_factors| {
@@ -204,14 +209,14 @@ pub static PERTINENT_POKEBLOCKS_BY_NATURE: LazyLock<[Vec<[u8; 5]>; 25]> = LazyLo
             return vec![];
         }
 
-        return solo_pokeblocks
+        solo_pokeblocks
             .clone()
             .into_iter()
             .filter(|pb_flavors| {
-                let pb_good_flavor_idx = nature_factors.iter().position(|x| *x == 1).unwrap_or(0);
+                let pb_good_flavor_idx = nature_factors.iter().position(|&x| x == 1).unwrap_or(0);
                 let pb_good_flavor_val = pb_flavors[pb_good_flavor_idx];
 
-                let pb_bad_flavor_idx = nature_factors.iter().position(|x| *x == -1).unwrap_or(0);
+                let pb_bad_flavor_idx = nature_factors.iter().position(|&x| x == -1).unwrap_or(0);
                 let pb_bad_flavor_val = pb_flavors[pb_bad_flavor_idx];
 
                 if pb_good_flavor_val == 0 || pb_good_flavor_val <= pb_bad_flavor_val {
@@ -220,14 +225,12 @@ pub static PERTINENT_POKEBLOCKS_BY_NATURE: LazyLock<[Vec<[u8; 5]>; 25]> = LazyLo
 
                 // The logic could be improved to avoid redundant/useless pokeblocks to improve performance.
 
-                return true;
+                true
             })
-            .collect::<Vec<[u8; 5]>>();
+            .collect::<Vec<[u8; 5]>>()
     });
 
-    println!("{:?}", res);
-
-    return res;
+    res
 });
 
 #[cfg(test)]
@@ -248,48 +251,13 @@ mod test {
                     [1, 0, 1, 0, 0],
                     [1, 0, 2, 0, 0],
                     [1, 1, 0, 0, 0],
-                    [1, 1, 0, 2, 0],
                     [2, 0, 0, 1, 0],
                     [2, 0, 1, 0, 0],
-                    [2, 0, 1, 1, 0],
-                    [2, 1, 0, 0, 0]
+                    [2, 1, 0, 0, 0],
+                    [1, 1, 0, 2, 0],
+                    [2, 0, 1, 1, 0]
                 ]
             );
         }
     }
 }
-
-/*
-    const relevantPokeblocksByNature =
-    console.log('Data when permitting only solo pokeblock');
-    console.log(JSON.stringify(relevantPokeblocksByNature));
-
-    console.log('Data when permitting any pokeblock');
-    const data = factorForNatures.map(factorForNature => {
-        return [7,6,5,3,4,2,1,0].map(bitsVal => {
-            const zeros = [
-                !!((bitsVal >> 0) & 1),
-                !!((bitsVal >> 1) & 1),
-                !!((bitsVal >> 2) & 1),
-                false, // doesn't matter
-                false, // doesn't matter
-            ];
-            let zeroCount = 0;
-            return factorForNature.map(factor => {
-                if (factor === 1)
-                    return 1;
-                if (factor === -1)
-                    return 0;
-                const val = zeros[zeroCount];
-                zeroCount++;
-                return val ? 2;
-            });
-        });
-    });
-    console.log(JSON.stringify(data));
-})();
-
-*/
-
-// PERTINENT_POKEBLOCKS_BY_NATURE[nature][pokeblock_idx][flavor]
-// The elements are ordered from most flavors to fewest flavors.

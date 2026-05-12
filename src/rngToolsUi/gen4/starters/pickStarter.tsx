@@ -262,6 +262,7 @@ export const PickStarter4 = () => {
   const {
     run: searchStarterSeeds,
     data: results,
+    progressPercent,
     cancel,
   } = useBatchedTool(multiWorkerRngTools.search_static4, {
     map: mapResult,
@@ -285,6 +286,8 @@ export const PickStarter4 = () => {
       month: monthToRustFilter(opts.month),
       min_advance: advance,
       max_advance: advance,
+      encounter_max_level: 5,
+      encounter_min_level: 5,
       force_second: opts.force_second,
       filter: pkmFilterFieldsToRustInput(opts),
       lead: "None",
@@ -323,6 +326,7 @@ export const PickStarter4 = () => {
       submitButtonLabel={t["Generate"]}
       cancelButtonLabel={t["Cancel"]}
       onCancel={cancel}
+      progressPercent={progressPercent}
     >
       <Fields game={game} t={t} />
     </RngToolForm>

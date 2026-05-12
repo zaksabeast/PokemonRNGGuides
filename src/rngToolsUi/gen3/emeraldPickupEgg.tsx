@@ -27,7 +27,7 @@ const getColumns = (t: Translations): ResultColumn<Result>[] => {
 };
 
 const Validator = z.object({
-  delay: z.number().int().min(0),
+  delay: z.number().int(),
   seed: HexSchema(0xffffffff),
   initial_advances: z.number().int().min(0),
   max_advances: z.number().int().min(0),

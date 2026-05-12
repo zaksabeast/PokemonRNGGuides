@@ -1,8 +1,4 @@
-import {
-  Wild3Action,
-  Wild3PaintingAdvsAndDur,
-  Wild3SearcherResultMon,
-} from "~/rngTools";
+import { Wild3PaintingAdvsAndDur, Wild3SearcherResultMon } from "~/rngTools";
 import {
   Flex,
   Icon,
@@ -34,6 +30,7 @@ import {
   wild3RoamerStates,
   wild3MassOutbreakStates,
   wild3FeebasStates,
+  wild3Actions,
 } from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
@@ -46,21 +43,13 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 const emeraldWildGameData = getWild3EmeraldGameData();
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3CalibTargetSetupInput";
+import { Pokeblock, wild3SafariPokeblockSearchOpt } from "~/types/pokeblock";
 
 /*
 Possible UI improvements:
  - Display filter restrictiveness
  - Min/Max IVs should have a tooltip displaying the stat name.
 */
-
-const supportWild3Actions: Wild3Action[] = [
-  "SweetScentLand",
-  "SweetScentWater",
-  "OldRod",
-  "GoodRod",
-  "SuperRod",
-  // "RockSmash", // TODO: Support Rock Smash
-];
 
 const Validator = z
   .object({
@@ -79,7 +68,7 @@ const Validator = z
           .max(gen3Leads.length - 1),
       )
       .min(1),
-    actions: z.array(z.enum(supportWild3Actions)).min(1),
+    actions: z.array(z.enum(wild3Actions)).min(1),
     roamerStates: z.array(z.enum(wild3RoamerStates)).min(1),
     massOutbreakStates: z.array(z.enum(wild3MassOutbreakStates)).min(1),
     feebasStates: z.array(z.enum(wild3FeebasStates)).min(1),
@@ -97,6 +86,7 @@ const Validator = z
     mergeSimilarResults: z.boolean(),
     generate_even_if_impossible: z.boolean(),
     using_white_flute: z.boolean(),
+    considered_safari_pokeblocks: z.enum(wild3SafariPokeblockSearchOpt),
   })
   .extend(pkmFilterSchema.shape)
   .extend(gen3PkmFilterSchema.shape);
@@ -122,6 +112,7 @@ export type ResultSetupInfo = Wild3SearcherResultMon &
     primaryLikelihood: number;
     initial_seed: number;
     requiresWhiteFlute: boolean;
+    requiredPokeblock: Pokeblock | null;
   };
 
 const getInitialValues = (): FormState => {
@@ -133,7 +124,7 @@ const getInitialValues = (): FormState => {
     leadIdxs: gen3Leads.map((_, i) => i),
     recommendedSetups: true,
     methods: ["Wild1", "Wild2", "Wild4"],
-    actions: [...supportWild3Actions],
+    actions: [...wild3Actions],
     roamerStates: [...wild3RoamerStates],
     feebasStates: [...wild3FeebasStates],
     massOutbreakStates: [...wild3MassOutbreakStates],
@@ -150,6 +141,7 @@ const getInitialValues = (): FormState => {
     mergeSimilarResults: true,
     generate_even_if_impossible: false,
     using_white_flute: true,
+    considered_safari_pokeblocks: "SoloOnly",
     ...getPkmFilterInitialValues(),
     ...getGen3PkmFilterInitialValues(),
   };

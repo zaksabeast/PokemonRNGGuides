@@ -202,6 +202,30 @@ pub fn calc_gen4_seeds(opts: Seed4CalcOpts) -> Vec<SeedTime4> {
         .collect()
 }
 
+pub fn seedtime4_iter(
+    delay_range: RangeInclusive<u32>,
+    year: u32,
+    month: Option<u32>,
+    second_range: Option<RangeInclusive<u32>>,
+) -> impl Iterator<Item = SeedTime4> {
+    let cloned_delays = delay_range.clone();
+    iproduct!(cloned_delays, 0..=0xff_u32, 0..24_u32).filter_map(move |(delay, ab, cd)| {
+        let seed = ((ab << 24) | (cd << 16))
+            .wrapping_add(delay)
+            .wrapping_add(year)
+            .wrapping_sub(2000);
+        SeedTime4Options {
+            seed,
+            year,
+            month,
+            limit: 1,
+            second_range: second_range.clone(),
+            delay_range: delay_range.clone(),
+        }
+        .find_seedtime()
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -1801,7 +1801,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-05-04",
+      lastUpdated: "2026-05-10",
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
@@ -2253,6 +2253,48 @@ export const guides = {
       return file.default;
     }),
   },
+  "/dppt-honey-tree-npcs/": {
+    meta: {
+      id: "/dppt-honey-tree-npcs/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "supporting_info",
+      guideVariants: null,
+      guideKey: "true-Honey Tree NPCs",
+      isNew: false,
+      title: "Honey Tree NPCs in Diamond, Pearl, and Platinum",
+      navDrawerTitle: "Honey Tree NPCs",
+      description:
+        "View a list of Honey Tree NPCs for easier RNG in Diamond, Pearl, and Platinum.",
+      slug: "/dppt-honey-tree-npcs/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-05-07",
+      type: "baseGuide",
+      canonical: "/dppt-honey-tree-npcs/",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Honey Tree NPCs.mdx",
+      translations: null,
+      guideGroupId: "en:true-Honey Tree NPCs:Diamond, Pearl, and Platinum",
+      guideVariantLinks: null,
+      displayAttributes: ["rough_draft"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Honey Tree NPCs.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Honey Tree NPCs.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/dppt-initial-seed-retail/": {
     meta: {
       id: "/dppt-initial-seed-retail/",
@@ -2396,8 +2438,8 @@ export const guides = {
     meta: {
       id: "/dppt-setup-rng/",
       categories: ["Diamond, Pearl, and Platinum"],
-      section: "pokemon_rng",
-      guideVariants: ["retail", "cfw-emu"],
+      section: "other_rng",
+      guideVariants: ["cfw-emu"],
       guideKey: "false-Honey Tree RNG",
       isNew: false,
       title: "Diamond, Pearl, and Platinum Honey Tree RNG",
@@ -2412,14 +2454,14 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-05-05",
       type: "baseGuide",
       canonical: "/dppt-setup-rng/",
       file: "guides/Gen 4/Diamond, Pearl, and Platinum/Honey.mdx",
       translations: null,
       guideGroupId: "en:false-Honey Tree RNG:Diamond, Pearl, and Platinum",
       guideVariantLinks: {
-        retail: { type: "slug", slug: "/dppt-setup-rng/" },
+        retail: null,
         cfwEmu: { type: "slug", slug: "/dppt-setup-rng/" },
       },
       displayAttributes: [],
@@ -2981,6 +3023,51 @@ export const guides = {
       return file.default;
     }),
   },
+  "/emerald-rng-with-ace/": {
+    meta: {
+      id: "/emerald-rng-with-ace/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "false-RNG With ACE",
+      isNew: true,
+      title: "Pokémon Emerald RNG with ACE Guide (Seed Manipulation & Setup)",
+      navDrawerTitle: "RNG With ACE",
+      description:
+        "Step-by-step guide to RNG manipulation in Pokémon Emerald using ACE. Learn how to set custom seeds, generate targets, calibrate advances, and reliably hit perfect Pokémon.",
+      slug: "/emerald-rng-with-ace/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: "2026-05-05",
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-05-05",
+      type: "baseGuide",
+      canonical: "/emerald-rng-with-ace/",
+      file: "guides/Gen 3/Emerald/RNG With Ace.mdx",
+      translations: {
+        en: "/emerald-rng-with-ace/",
+        it: "/it-emerald-rng-with-ace/",
+      },
+      guideGroupId: "en:false-RNG With ACE:Emerald",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/emerald-rng-with-ace/" },
+        cfwEmu: null,
+      },
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () => import("~/../guides/Gen 3/Emerald/RNG With Ace.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 3/Emerald/RNG With Ace.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/emerald-shiny-starter/": {
     meta: {
       id: "/emerald-shiny-starter/",
@@ -3193,7 +3280,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Wild RNG",
-      isNew: false,
+      isNew: true,
       title: "Pokemon Emerald Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:
@@ -3203,10 +3290,10 @@ export const guides = {
       orderPriority: 20,
       difficulty: null,
       hideFromNavDrawer: false,
-      addedOn: "2025-05-04",
+      addedOn: "2026-05-05",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-05-04",
+      lastUpdated: "2026-05-10",
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
@@ -4337,7 +4424,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: null,
+      lastUpdated: "2026-05-07",
       type: "baseGuide",
       canonical: "/emulator-hgss-special-wild/",
       file: "guides/Gen 4/HeartGold and SoulSilver/Special Wild Case (Emu).mdx",
@@ -6738,6 +6825,50 @@ export const guides = {
       return file.default;
     }),
   },
+  "/it-emerald-rng-with-ace/": {
+    meta: {
+      id: "/emerald-rng-with-ace/",
+      categories: ["Emerald"],
+      section: "rng_technique",
+      guideVariants: ["retail"],
+      guideKey: "false-RNG With ACE",
+      isNew: true,
+      title:
+        "Guida RNG con ACE in Pokémon Emerald (Manipolazione del Seed e Setup)",
+      navDrawerTitle: "RNG con ACE",
+      description:
+        "Guida passo passo alla manipolazione dell’RNG in Pokémon Emerald tramite ACE. Scopri come impostare seed personalizzati, generare target, calibrare gli avanzamenti e ottenere Pokémon perfetti in modo affidabile.",
+      slug: "/it-emerald-rng-with-ace/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: true,
+      addedOn: "2026-05-05",
+      translation: { enSlug: "/emerald-rng-with-ace/", language: "it" },
+      layout: "guide",
+      lastUpdated: "2026-05-05",
+      type: "translatedGuide",
+      canonical: "/it-emerald-rng-with-ace/",
+      file: "guides/Translations/it/Gen 3/Emerald/RNG With Ace.mdx",
+      translations: {
+        en: "/emerald-rng-with-ace/",
+        it: "/it-emerald-rng-with-ace/",
+      },
+      guideGroupId: "it:false-RNG With ACE:Emerald",
+      guideVariantLinks: null,
+      displayAttributes: [],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Translations/it/Gen 3/Emerald/RNG With Ace.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Translations/it/Gen 3/Emerald/RNG With Ace.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/it-emulator-b2w2-runasdate-inital-seed/": {
     meta: {
       id: "/emulator-b2w2-runasdate-inital-seed/",
@@ -7352,7 +7483,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-05-04",
+      lastUpdated: "2026-05-10",
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
@@ -8516,6 +8647,89 @@ export const guides = {
       return file.default;
     }),
   },
+  "/retail-dppt-honey-pokemon/": {
+    meta: {
+      id: "/retail-dppt-honey-pokemon/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "true-Honey Pokémon RNG",
+      isNew: false,
+      title: "Diamond, Pearl, and Platinum Honey Pokémon RNG Guide",
+      navDrawerTitle: "Honey Pokémon RNG",
+      description:
+        "Learn how to RNG honey Pokémon in Diamond, Pearl, and Platinum for perfect IVs, natures, and shinies.",
+      slug: "/retail-dppt-honey-pokemon/",
+      isRoughDraft: true,
+      orderPriority: 3,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-05-09",
+      type: "baseGuide",
+      canonical: "/retail-dppt-static/",
+      file: "guides/Gen 4/Retail Static.mdx",
+      translations: null,
+      guideGroupId: "en:true-Honey Pokémon RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-dppt-honey-pokemon/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Retail Static.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Retail Static.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/retail-dppt-honey-tree/": {
+    meta: {
+      id: "/retail-dppt-honey-tree/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "other_rng",
+      guideVariants: ["retail"],
+      guideKey: "true-Honey Tree RNG",
+      isNew: false,
+      title: "Diamond, Pearl, and Platinum Honey Tree RNG",
+      navDrawerTitle: "Honey Tree RNG",
+      description:
+        "Get any Honey Tree Pokémon, including Munchlax and Combee, in Diamond, Pearl, and Platinum.",
+      slug: "/retail-dppt-honey-tree/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-05-05",
+      type: "baseGuide",
+      canonical: "/retail-dppt-honey-tree/",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Retail Honey Tree.mdx",
+      translations: null,
+      guideGroupId: "en:true-Honey Tree RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-dppt-honey-tree/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(
+      () =>
+        import(
+          "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Retail Honey Tree.mdx"
+        ),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Retail Honey Tree.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/retail-dppt-starter/": {
     meta: {
       id: "/retail-dppt-starter/",
@@ -8578,7 +8792,7 @@ export const guides = {
       addedOn: "2026-04-05",
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-04-07",
+      lastUpdated: "2026-05-09",
       type: "baseGuide",
       canonical: "/retail-dppt-static/",
       file: "guides/Gen 4/Retail Static.mdx",
@@ -8659,7 +8873,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-05-04",
+      lastUpdated: "2026-05-10",
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
@@ -14694,7 +14908,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-05-04",
+      lastUpdated: "2026-05-10",
       type: "baseGuide",
       canonical: "/emerald-wild/",
       file: "guides/Gen 3/Emerald/Gen 3 Wild.mdx",
@@ -16612,6 +16826,7 @@ export const guideSlugs = [
   "/dppt-3ds-rng/",
   "/dppt-advance-rng/",
   "/dppt-cute-charm/",
+  "/dppt-honey-tree-npcs/",
   "/dppt-initial-seed-retail/",
   "/dppt-initial-seed/",
   "/dppt-pokeradar-rng/",
@@ -16629,6 +16844,7 @@ export const guideSlugs = [
   "/emerald-painting-rng/",
   "/emerald-painting-seed-searcher/",
   "/emerald-pokerus-emu/",
+  "/emerald-rng-with-ace/",
   "/emerald-shiny-starter/",
   "/emerald-sid-feebas/",
   "/emerald-static/",
@@ -16717,6 +16933,7 @@ export const guideSlugs = [
   "/install-pokereader/",
   "/it-e-tips-rng/",
   "/it-emerald-overview/",
+  "/it-emerald-rng-with-ace/",
   "/it-emulator-b2w2-runasdate-inital-seed/",
   "/it-emulator-b2w2-wild/",
   "/it-emulator-bw-runasdate-initial-seed/",
@@ -16758,6 +16975,8 @@ export const guideSlugs = [
   "/pokereader/",
   "/retail-bw-entralink/",
   "/retail-bw-starter/",
+  "/retail-dppt-honey-pokemon/",
+  "/retail-dppt-honey-tree/",
   "/retail-dppt-starter/",
   "/retail-dppt-static/",
   "/retail-emerald-egg/",

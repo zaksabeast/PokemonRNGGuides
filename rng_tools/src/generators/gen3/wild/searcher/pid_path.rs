@@ -34,6 +34,8 @@ pub struct PidPath {
     pub seed: u32,
     pub pid_to_iv_arc: PidToIvArc,
     pub iv_arc: IvFromStartArc,
+    #[cfg(debug_assertions)]
+    pub adv: u32,
 }
 
 pub struct FindPidPathsOptions {
@@ -89,22 +91,24 @@ impl PidPath {
             seed,
             pid_to_iv_arc,
             iv_arc,
+            #[cfg(debug_assertions)]
+            adv: lcrng_distance(0, seed),
         }
     }
 
     pub fn from_method(seed: u32, method: Gen3Method) -> Self {
-        Self {
+        Self::new(
             seed,
-            pid_to_iv_arc: match method {
+            match method {
                 Gen3Method::Wild3 => PidToIvArc::WithVBlankBetweenPid,
                 Gen3Method::Wild2 => PidToIvArc::WithVBlankBetweenPidIv,
                 _ => PidToIvArc::WithoutVBlank,
             },
-            iv_arc: match method {
+            match method {
                 Gen3Method::Wild4 => IvFromStartArc::WithVBlank,
                 _ => IvFromStartArc::WithoutVBlank,
             },
-        }
+        )
     }
     pub fn calc_method(iv_arc: IvFromStartArc, pid_to_iv_arc: PidToIvArc) -> Gen3Method {
         match (iv_arc, pid_to_iv_arc) {
@@ -349,7 +353,8 @@ pub fn extend_iv_path_to_pid_paths<const METHOD3: bool>(
             }
         }
     }
-    // To improve performance for the common case where consider_all_methods_124 is true, we filter by consider_all_methods_124 at the end.
+
+    // To improve performance for the common case, we previously assumed that consider_all_methods_124 was true. We need to filter here.
     if !opts.consider_all_methods_124 {
         pid_paths.retain(|pid_path| opts.methods.contains(&pid_path.method()));
     }

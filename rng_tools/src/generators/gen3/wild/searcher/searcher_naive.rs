@@ -1,7 +1,4 @@
-use crate::{
-    NATURE_COUNT,
-    gen3::{InSafariMapStates, Wild3SafariPokeblock},
-};
+use crate::{NATURE_COUNT, gen3::Wild3SafariPokeblockGenOpt};
 
 use super::*;
 
@@ -24,25 +21,33 @@ fn search_wild3_naive_at_given_advance(
 ) -> Vec<Wild3SearcherResultMon> {
     let mut results: Vec<Wild3SearcherResultMon> = vec![];
 
-    let safari_pokeblocks_if_map_has_feeder = {
-        let mut states: Vec<Option<Wild3SafariPokeblock>> = vec![None];
-        if opts.considered_safari_pokeblocks != ConsideredSafariPokeblocks::None {
-            let mut add_pokeblock = |nature: Nature| {
-                states.push(Some(Wild3SafariPokeblock::FromNature {
-                    wanted_nature: nature,
-                    considered_safari_pokeblocks: opts.considered_safari_pokeblocks,
-                }));
-            };
+    let safari_pokeblock_gen_opts_if_map_has_feeder = {
+        match opts.considered_safari_pokeblocks {
+            Wild3SafariPokeblockSearchOpt::Specific(pokeblock) => {
+                vec![Some(Wild3SafariPokeblockGenOpt::Specific(pokeblock))]
+            }
+            Wild3SafariPokeblockSearchOpt::None => {
+                vec![None]
+            }
+            _ => {
+                let to_pokeblock = |nature: Nature| {
+                    Some(Wild3SafariPokeblockGenOpt::ForSearching {
+                        wanted_nature: nature,
+                        consider_all_safari_pokeblocks: opts.considered_safari_pokeblocks
+                            == Wild3SafariPokeblockSearchOpt::All,
+                    })
+                };
 
-            if let Some(nature) = opts.filter.nature {
-                add_pokeblock(nature);
-            } else {
-                for i in 0..(NATURE_COUNT as u8) {
-                    add_pokeblock(i.into());
+                if let Some(nature) = opts.filter.nature {
+                    vec![None, to_pokeblock(nature)]
+                } else {
+                    (0..NATURE_COUNT)
+                        .map(|i| to_pokeblock((i as u8).into()))
+                        .chain(std::iter::once(None))
+                        .collect_vec()
                 }
             }
         }
-        states
     };
 
     let lead_encounter_products = iproduct!(opts.leads.iter(), opts.map_setups.iter().enumerate());
@@ -59,9 +64,9 @@ fn search_wild3_naive_at_given_advance(
                 && map_setups
                     .map_data
                     .actions_with_safari_pokeblock
-                    .contains(&action)
+                    .contains(action)
             {
-                safari_pokeblocks_if_map_has_feeder.clone()
+                safari_pokeblock_gen_opts_if_map_has_feeder.clone()
             } else {
                 vec![None]
             };

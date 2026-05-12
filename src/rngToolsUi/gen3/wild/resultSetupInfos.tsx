@@ -25,6 +25,7 @@ import {
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3CalibTargetSetupInput";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
+import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
 
 const getMethodLikelihoodColumValue = (
   cycleData: Wild3SearcherCycleData,
@@ -47,12 +48,14 @@ const getMethodLikelihoodColumValue = (
 const getResultSetupInfoColumns = ({
   rngManipulatedLeadPid,
   showMassOutbreak,
+  showRequiredPokeblock,
   showRequiresWhiteFlute,
   usesPainting,
   onBreakdownClick,
 }: {
   rngManipulatedLeadPid: boolean;
   showMassOutbreak: boolean;
+  showRequiredPokeblock: boolean;
   showRequiresWhiteFlute: boolean;
   usesPainting: boolean;
   onBreakdownClick: (record: ResultSetupInfo) => void;
@@ -131,6 +134,14 @@ const getResultSetupInfoColumns = ({
             : "No"
           : "N/A",
       show: showRequiresWhiteFlute,
+    },
+    {
+      title: "Pokéblock",
+      dataIndex: "requiredPokeblock",
+      render: (requiredPokeblock) => (
+        <Wild3PokeblockDescription pokeblock={requiredPokeblock} />
+      ),
+      show: showRequiredPokeblock,
     },
     /*
     TODO: Support roamer and fishing in Feebas tile to catch non-Feebas Pokémon.
@@ -407,6 +418,8 @@ const resultSetupInfoToDistributionFixedData = (
     wantedPID: setup.pid,
     idealLeadCycleSpeed,
     usingIdealLeadCycleSpeed: rngManipulatedLeadPid,
+    usingWhiteFlute: setup.requiresWhiteFlute,
+    safariPokeblock: null,
   };
 };
 
@@ -430,6 +443,7 @@ const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
     targetMethod: setupInfo.method,
     lead: setupInfo.lead,
     requiresWhiteFlute: setupInfo.requiresWhiteFlute,
+    safariPokeblock: setupInfo.used_safari_pokeblock ?? null,
 
     // unused
     usingAverageLeadCycleSpeed: true,
@@ -451,6 +465,10 @@ export const Wild3ResultSetupInfos = ({
     selectedPidPathResult?.resultSetupInfos.some(
       (setup) => setup.action === "RockSmash",
     ) ?? false;
+  const showRequiredPokeblock =
+    selectedPidPathResult?.resultSetupInfos.some(
+      (setup) => setup.requiredPokeblock != null,
+    ) ?? false;
   const usesPainting =
     selectedPidPathResult?.resultSetupInfos.some(
       (res) => res.advs.frame_before_painting !== 0,
@@ -458,6 +476,7 @@ export const Wild3ResultSetupInfos = ({
   const resultSetupInfoColumns = getResultSetupInfoColumns({
     rngManipulatedLeadPid,
     showMassOutbreak,
+    showRequiredPokeblock,
     showRequiresWhiteFlute,
     usesPainting,
     onBreakdownClick: (record) => {

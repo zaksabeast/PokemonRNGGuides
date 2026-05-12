@@ -1,8 +1,8 @@
 use crate::{
     Gender, GenderRatio, Nature,
     gen3::{
-        ConsideredSafariPokeblocks, Gen3Lead, Wild3SafariPokeblock, pick_wild_mon_nature_safari,
-        wild::searcher::PidPath,
+        Gen3Lead, Wild3SafariPokeblockGenOpt, Wild3SafariPokeblockSearchOpt,
+        calculate_nature_from_safari_pokeblock, wild::searcher::PidPath,
     },
     rng::lcrng::Pokerng,
 };
@@ -15,6 +15,11 @@ pub struct NatureGenderPath {
     pub pid_path: PidPath,
 }
 
+/**
+Cc = CuteCharm, Suc=Success, Saf=Safari 80% check, NoBlk=No safari pokeblock, WBlk=With safari pokeblock, Sync=Synchronize
+It's not possible to split the nature_gender step into 2 steps (nature then gender), because the stopping criteria for PID
+reroll depends on the gender in the Cute Charm case.
+*/
 #[derive(Default, Debug, Clone, Copy, PartialEq)]
 #[allow(non_camel_case_types)]
 pub enum NatureGenderToPidArc {
@@ -42,28 +47,28 @@ impl NatureGenderToPidArc {
     pub fn is_in_safari_map(&self) -> bool {
         matches!(
             self,
-            Ngpa::CcSuc_SafSuc_NoBlk |
-            Ngpa::CcSuc_SafSuc_WBlk |
-            Ngpa::CcSuc_SafFail |
-            Ngpa::CcFail_SafSuc_NoBlk |
-            Ngpa::CcFail_SafSuc_WBlk |
-            Ngpa::CcFail_SafFail |
-            Ngpa::SafSuc_NoBlk |
-            Ngpa::SafSuc_WBlk |
-            Ngpa::SafFail |
-            Ngpa::SafFail_SyncSuc |
-            Ngpa::SafFail_SyncFail
+            Ngpa::CcSuc_SafSuc_NoBlk
+                | Ngpa::CcSuc_SafSuc_WBlk
+                | Ngpa::CcSuc_SafFail
+                | Ngpa::CcFail_SafSuc_NoBlk
+                | Ngpa::CcFail_SafSuc_WBlk
+                | Ngpa::CcFail_SafFail
+                | Ngpa::SafSuc_NoBlk
+                | Ngpa::SafSuc_WBlk
+                | Ngpa::SafFail
+                | Ngpa::SafFail_SyncSuc
+                | Ngpa::SafFail_SyncFail
         )
     }
     pub fn is_safari_success(&self) -> bool {
         matches!(
             self,
-            Ngpa::CcSuc_SafSuc_NoBlk |
-            Ngpa::CcSuc_SafSuc_WBlk |
-            Ngpa::CcFail_SafSuc_NoBlk |
-            Ngpa::CcFail_SafSuc_WBlk |
-            Ngpa::SafSuc_NoBlk |
-            Ngpa::SafSuc_WBlk |
+            Ngpa::CcSuc_SafSuc_NoBlk
+                | Ngpa::CcSuc_SafSuc_WBlk
+                | Ngpa::CcFail_SafSuc_NoBlk
+                | Ngpa::CcFail_SafSuc_WBlk
+                | Ngpa::SafSuc_NoBlk
+                | Ngpa::SafSuc_WBlk
         )
     }
     pub fn is_safari_fail(&self) -> bool {
@@ -72,47 +77,17 @@ impl NatureGenderToPidArc {
     pub fn uses_safari_pokeblock(&self) -> bool {
         matches!(
             self,
-            Ngpa::CcSuc_SafSuc_WBlk |
-            Ngpa::CcFail_SafSuc_WBlk |
-            Ngpa::SafSuc_WBlk |
-        )
-    }
-    pub fn uses_safari_pokeblock(&self) -> bool {
-        matches!(
-            self,
-            Vanilla |
-            CcSuc |
-            CcSuc_SafSuc_NoBlk |
-            CcSuc_SafSuc_WBlk |
-            CcSuc_SafFail |
-            CcFail |
-            CcFail_SafSuc_NoBlk |
-            CcFail_SafSuc_WBlk |
-            CcFail_SafFail |
-            SafSuc_NoBlk |
-            SafSuc_WBlk |
-            SafFail |
-            SafFail_SyncSuc |
-            SafFail_SyncFail |
-            SyncSuc |
-            SyncFail |
+            Ngpa::CcSuc_SafSuc_WBlk | Ngpa::CcFail_SafSuc_WBlk | Ngpa::SafSuc_WBlk
         )
     }
     pub fn has_synchronize_lead(&self) -> bool {
         matches!(
             self,
-            SafFail_SyncSuc |
-            SafFail_SyncFail |
-            SyncSuc |
-            SyncFail |
+            Ngpa::SafFail_SyncSuc | Ngpa::SafFail_SyncFail | Ngpa::SyncSuc | Ngpa::SyncFail
         )
     }
     pub fn is_synchronize_success(&self) -> bool {
-        matches!(
-            self,
-            SafFail_SyncSuc |
-            SyncSuc |
-        )
+        matches!(self, Ngpa::SafFail_SyncSuc | Ngpa::SyncSuc)
     }
     pub fn is_synchronize_fail(&self) -> bool {
         self.has_synchronize_lead() && !self.is_synchronize_success()
@@ -120,23 +95,20 @@ impl NatureGenderToPidArc {
     pub fn has_cute_charm_lead(&self) -> bool {
         matches!(
             self,
-            CcSuc |
-            CcSuc_SafSuc_NoBlk |
-            CcSuc_SafSuc_WBlk |
-            CcSuc_SafFail |
-            CcFail |
-            CcFail_SafSuc_NoBlk |
-            CcFail_SafSuc_WBlk |
-            CcFail_SafFail |
+            Ngpa::CcSuc
+                | Ngpa::CcSuc_SafSuc_NoBlk
+                | Ngpa::CcSuc_SafSuc_WBlk
+                | Ngpa::CcSuc_SafFail
+                | Ngpa::CcFail
+                | Ngpa::CcFail_SafSuc_NoBlk
+                | Ngpa::CcFail_SafSuc_WBlk
+                | Ngpa::CcFail_SafFail
         )
     }
     pub fn is_cute_charm_success(&self) -> bool {
         matches!(
             self,
-            CcSuc |
-            CcSuc_SafSuc_NoBlk |
-            CcSuc_SafSuc_WBlk |
-            CcSuc_SafFail |
+            Ngpa::CcSuc | Ngpa::CcSuc_SafSuc_NoBlk | Ngpa::CcSuc_SafSuc_WBlk | Ngpa::CcSuc_SafFail
         )
     }
 
@@ -145,12 +117,7 @@ impl NatureGenderToPidArc {
     }
 }
 
-
-//NO_PROD rendu a map, il faut filtrer si safari
-//NO_PROD rendu a action+ map, il faut filtrer si safari block accessible.
-
-//NO_PROD splitin 2: in_safari_map and pokeblock
-pub enum InSafariMapStates {
+pub enum Wild3InSafariMapStatus {
     Never,
     Sometimes,
     Always,
@@ -161,7 +128,7 @@ pub struct NatureGenderSeedGenerator {
     permit_all: bool,
     encounter_gender_ratio: GenderRatio,
     leads: Vec<Gen3Lead>,
-    considered_safari_pokeblocks: ConsideredSafariPokeblocks,
+    considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt,
 }
 
 impl NatureGenderSeedGenerator {
@@ -170,42 +137,50 @@ impl NatureGenderSeedGenerator {
         encounter_gender_ratio: GenderRatio,
         wanted_nature: Option<Nature>,
         wanted_gender: Option<Gender>,
-        safari_status: InSafariMapStates,
-        considered_safari_pokeblocks: ConsideredSafariPokeblocks,
+        safari_status: Wild3InSafariMapStatus,
+        considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt,
     ) -> Self {
         let mut arcs: Vec<Ngpa> = vec![];
 
         let mut permit_all = true;
 
-        //NO_PROD valid that all arcs are possible
         if permit_vanilla_arc(leads) {
             if matches!(
                 safari_status,
-                InSafariMapStates::Sometimes | InSafariMapStates::Never
+                Wild3InSafariMapStatus::Sometimes | Wild3InSafariMapStatus::Never
             ) {
                 arcs.push(Ngpa::Vanilla)
             }
             if matches!(
                 safari_status,
-                InSafariMapStates::Sometimes | InSafariMapStates::Always
+                Wild3InSafariMapStatus::Sometimes | Wild3InSafariMapStatus::Always
             ) {
-                arcs.push(Ngpa::SafSuc_NoBlk);
-                arcs.push(Ngpa::SafSuc_WBlk);
                 arcs.push(Ngpa::SafFail);
+
+                if !matches!(
+                    considered_safari_pokeblocks,
+                    Wild3SafariPokeblockSearchOpt::Specific(_)
+                ) {
+                    arcs.push(Ngpa::SafSuc_NoBlk);
+                }
+
+                if considered_safari_pokeblocks != Wild3SafariPokeblockSearchOpt::None {
+                    arcs.push(Ngpa::SafSuc_WBlk);
+                }
             }
         }
 
         if permit_synchronize_arc(leads) {
             if matches!(
                 safari_status,
-                InSafariMapStates::Sometimes | InSafariMapStates::Never
+                Wild3InSafariMapStatus::Sometimes | Wild3InSafariMapStatus::Never
             ) {
                 arcs.push(Ngpa::SyncSuc);
                 arcs.push(Ngpa::SyncFail);
             }
             if matches!(
                 safari_status,
-                InSafariMapStates::Sometimes | InSafariMapStates::Always
+                Wild3InSafariMapStatus::Sometimes | Wild3InSafariMapStatus::Always
             ) {
                 arcs.push(Ngpa::SafFail_SyncSuc);
                 arcs.push(Ngpa::SafFail_SyncFail);
@@ -219,21 +194,31 @@ impl NatureGenderSeedGenerator {
         if encounter_gender_ratio.has_multiple_genders() && permit_cute_charm_arc_type(leads) {
             if matches!(
                 safari_status,
-                InSafariMapStates::Sometimes | InSafariMapStates::Never
+                Wild3InSafariMapStatus::Sometimes | Wild3InSafariMapStatus::Never
             ) {
                 arcs.push(Ngpa::CcFail);
                 arcs.push(Ngpa::CcSuc);
             }
+
             if matches!(
                 safari_status,
-                InSafariMapStates::Sometimes | InSafariMapStates::Always
+                Wild3InSafariMapStatus::Sometimes | Wild3InSafariMapStatus::Always
             ) {
-                arcs.push(Ngpa::CcSuc_SafSuc_NoBlk);
-                arcs.push(Ngpa::CcSuc_SafSuc_WBlk);
                 arcs.push(Ngpa::CcSuc_SafFail);
-                arcs.push(Ngpa::CcFail_SafSuc_NoBlk);
-                arcs.push(Ngpa::CcFail_SafSuc_WBlk);
                 arcs.push(Ngpa::CcFail_SafFail);
+
+                if !matches!(
+                    considered_safari_pokeblocks,
+                    Wild3SafariPokeblockSearchOpt::Specific(_)
+                ) {
+                    arcs.push(Ngpa::CcSuc_SafSuc_NoBlk);
+                    arcs.push(Ngpa::CcFail_SafSuc_NoBlk);
+                }
+
+                if considered_safari_pokeblocks != Wild3SafariPokeblockSearchOpt::None {
+                    arcs.push(Ngpa::CcFail_SafSuc_WBlk);
+                    arcs.push(Ngpa::CcSuc_SafSuc_WBlk);
+                }
             }
 
             if !has_all_cute_charm_genders(leads, wanted_gender) {
@@ -261,11 +246,13 @@ impl NatureGenderSeedGenerator {
                         return vec![];
                     }
 
-                    if arc.is_cute_charm_success() && !permit_cute_charm_success_arc_for_path(
-                        &self.leads,
-                        self.encounter_gender_ratio,
-                        pid_path,
-                    ) {
+                    if arc.is_cute_charm_success()
+                        && !permit_cute_charm_success_arc_for_path(
+                            &self.leads,
+                            self.encounter_gender_ratio,
+                            pid_path,
+                        )
+                    {
                         return vec![];
                     }
                 }
@@ -331,6 +318,7 @@ fn permit_synchronize_arc(leads: &[Gen3Lead]) -> bool {
         .any(|lead| matches!(*lead, Gen3Lead::Synchronize(_)))
 }
 
+// Ex: The path states that the nature is Adamant and that Synchronize was a success. If lead can't be Synchronize Adamant, then that path is invalid.
 fn permit_synchronize_success_arc_for_path(leads: &[Gen3Lead], pid_path: &PidPath) -> bool {
     let encounter_nature = pid_path.nature();
     leads.iter().any(|lead| match *lead {
@@ -345,6 +333,7 @@ fn permit_cute_charm_arc_type(leads: &[Gen3Lead]) -> bool {
         .any(|lead| matches!(*lead, Gen3Lead::CuteCharm(_)))
 }
 
+// Ex: The path states that the gender is Male and that Cute Charm was a success. If lead can't be Cute Charm Female, then that path is invalid.
 fn permit_cute_charm_success_arc_for_path(
     leads: &[Gen3Lead],
     encounter_gender_ratio: GenderRatio,
@@ -357,10 +346,26 @@ fn permit_cute_charm_success_arc_for_path(
     })
 }
 
+pub fn create_pokeblock_gen_opt(
+    pokeblock_search_opt: Wild3SafariPokeblockSearchOpt,
+    wanted_nature: Nature,
+) -> Wild3SafariPokeblockGenOpt {
+    match pokeblock_search_opt {
+        Wild3SafariPokeblockSearchOpt::Specific(pokeblock) => {
+            Wild3SafariPokeblockGenOpt::Specific(pokeblock)
+        }
+        _ => Wild3SafariPokeblockGenOpt::ForSearching {
+            wanted_nature,
+            consider_all_safari_pokeblocks: pokeblock_search_opt
+                == Wild3SafariPokeblockSearchOpt::All,
+        },
+    }
+}
+
 fn extend_path_for_arc(
     encounter_gender_ratio: GenderRatio,
-    considered_safari_pokeblocks: ConsideredSafariPokeblocks,
-    pid_path: &PidPath,
+    considered_safari_pokeblocks: Wild3SafariPokeblockSearchOpt,
+    pid_path: &PidPath, // pid_path.seed is the AdvBefore at for last CreateMonWithGenderNatureLetter_pidlow
     arc: Ngpa,
 ) -> Vec<NatureGenderPath> {
     let mut nature_gender_seeds: Vec<u32> = vec![];
@@ -374,32 +379,24 @@ fn extend_path_for_arc(
     let resulting_gender = encounter_gender_ratio.gender_from_pid(pid);
 
     let does_safari_pokeblock_give_wanted_nature = |rng_nat: &mut Pokerng| -> bool {
-        for _ in 0..576 {
-            rng_nat.prev_rand();
-        }
-        let mut copy_rng = rng_nat.clone();
-        let pokeblock = Wild3SafariPokeblock::FromNature {
-            wanted_nature: resulting_nature,
-            considered_safari_pokeblocks,
-        };
-        let res = pick_wild_mon_nature_safari(&mut copy_rng, &Some(pokeblock));
+        rng_nat.reverse_jump(300);
 
-        match res {
-            Some((nature, _)) => nature == resulting_nature,
-            _ => false,
-        }
+        let mut copy_rng = *rng_nat;
+        let pokeblock_gen_opt =
+            create_pokeblock_gen_opt(considered_safari_pokeblocks, resulting_nature);
+        let (pokeblock_nature, _) =
+            calculate_nature_from_safari_pokeblock(&mut copy_rng, &pokeblock_gen_opt);
+
+        pokeblock_nature == resulting_nature
     };
 
     let is_nature_correct = |rng_nat: &mut Pokerng| -> bool {
-        // 3 possible methods: synchronize, pokeblock, random % 25
-
         if arc.is_synchronize_success() {
             true
         } else if arc.uses_safari_pokeblock() {
-            does_safari_pokeblock_give_wanted_nature(&mut rng_nat)
+            does_safari_pokeblock_give_wanted_nature(rng_nat)
         } else {
-            let pick_wild_mon_nature: Nature =
-                ((rng_nat.prev_rand() % 25) as u8).into();
+            let pick_wild_mon_nature: Nature = ((rng_nat.prev_rand() % 25) as u8).into();
             pick_wild_mon_nature == resulting_nature
         }
     };
@@ -417,7 +414,7 @@ fn extend_path_for_arc(
     let is_safari_correct = |rng_nat: &mut Pokerng| -> bool {
         if arc.is_safari_success() {
             (rng_nat.prev_rand() % 100) < 80
-        } else if arc.is_safari_fail(){
+        } else if arc.is_safari_fail() {
             (rng_nat.prev_rand() % 100) >= 80
         } else {
             true
@@ -429,17 +426,18 @@ fn extend_path_for_arc(
             (rng_nat.prev_rand() % 3) != 0
         } else if arc.is_cute_charm_fail() {
             (rng_nat.prev_rand() % 3) == 0
-        else {
+        } else {
             true
         }
     };
 
-
     // E D C B A 9 8 7 6 5 4 3 2 1 0 : reverse advances (pid_path.seed is at 0)
-    //   x       x             x     : RandomPickNature is nature
-    //       y-y                     : PID is nature
-    // If RandomPickNature is D, then Pokemon is generated with PID from B-A, which means advance 0 is never reached.
-    // If RandomPickNature is 9 or 2, then Pokemon is generated with PID from 0 (pid_path.seed).
+    //   x       x             x     : x represents when is_nature_correct() && ... returns true
+    //       y-y                     : y-y represents a PID that returns the same nature as pid_path
+    // If the nature is generated at adv 9 or 2, then Pokemon PID will reroll until reaching adv 0 (pid_path.seed). We want those results.
+    // If the nature is generated at D, then Pokemon PID will reroll until reaching adv (B-A), which means adv 0 is never reached. We don't want that result.
+    // The strategy is to add results and stop the loop when we reach a PID that returns the same nature as pid_path.
+    // In the case of Cute Charm, the logic is the same, but taking into account gender as well.
 
     loop {
         let mut rng_nat = rng;
@@ -453,7 +451,6 @@ fn extend_path_for_arc(
             nature_gender_seeds.push(rng_nat.seed());
         }
 
-
         // Limitation: Wild5 are not supported.
         let mut rng_pid = rng;
         let prev_pid = ((rng_pid.prev_rand() as u32) << 16) | (rng_pid.prev_rand() as u32);
@@ -461,13 +458,13 @@ fn extend_path_for_arc(
 
         if !arc.is_cute_charm_success() {
             if prev_nature == resulting_nature {
-                break;
+                break; // All further seeds won't reach pid_path. 
             }
         } else {
             let prev_gender = encounter_gender_ratio.gender_from_pid(prev_pid);
 
             if prev_nature == resulting_nature && prev_gender == resulting_gender {
-                break;
+                break; // All further seeds won't reach pid_path. 
             }
         }
 

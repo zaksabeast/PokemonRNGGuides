@@ -23,6 +23,7 @@ import {
   FormikSwitch,
   Icon,
   Typography,
+  FormikWild3Pokeblock,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatProbability } from "~/utils/formatProbability";
@@ -72,6 +73,7 @@ import {
   leadCycleSpeedTooltip,
   usingPaintingReseedingLabel,
 } from "./wild3Labels";
+import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -95,6 +97,8 @@ type FixedData = {
   wantedPID: number | null; // This is to support Wild5. It should be replaced by a PID reroll count.
   idealLeadCycleSpeed: number | null;
   usingIdealLeadCycleSpeed: boolean;
+  usingWhiteFlute: boolean;
+  safariPokeblock: Pokeblock | null;
 };
 
 export type Props = {
@@ -128,6 +132,7 @@ const Validator = z.object({
     .min(0)
     .max(SLOWEST_LEAD_CYCLE_SPEED)
     .nullable(),
+  safariPokeblock: pokeblockSchema,
 });
 
 type FormState = z.infer<typeof Validator>;
@@ -152,6 +157,7 @@ const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
       wantedMethod: null,
       wantedPID: null,
       idealLeadCycleSpeed: null,
+      safariPokeblock: null,
     };
   }
 
@@ -167,7 +173,6 @@ const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
     leadIdx: Math.max(leadIdx, 0),
     leadCycleSpeed,
     ...fixedData,
-    usingWhiteFlute: true,
     hasPreselectedData: true,
     usingPaintingReseeding: fixedData.initial_seed !== 0,
   };
@@ -182,12 +187,13 @@ const getFields = (
   equivalentInitialAdvs: number,
   hasPreselectedData: boolean,
 ): Field[] => {
-  const { actions, feebas_states, roamer_states, mass_outbreak_states } =
-    getPossibleValuesForMap(mapId, action);
-
-  const supportedMaps = emeraldWildGameData.maps.filter((map) => {
-    return !map.includes("SAFARI"); // TODO: Support Safari maps
-  });
+  const {
+    actions,
+    feebas_states,
+    roamer_states,
+    mass_outbreak_states,
+    canUsePokeblock,
+  } = getPossibleValuesForMap(mapId, action);
 
   const fields: Field[] = [
     {
@@ -195,7 +201,7 @@ const getFields = (
       input: (
         <FormikSelect<FormState, "map">
           name="map"
-          options={toOptions(supportedMaps, formatMapName)}
+          options={toOptions(emeraldWildGameData.maps, formatMapName)}
         />
       ),
       show: !hasPreselectedData,
@@ -221,6 +227,11 @@ const getFields = (
       label: "Using White Flute?",
       input: <FormikSwitch<FormState> name="usingWhiteFlute" />,
       show: !hasPreselectedData && action === "RockSmash",
+    },
+    {
+      label: "Using Pokéblock?",
+      input: <FormikWild3Pokeblock<FormState> name="safariPokeblock" />,
+      show: !hasPreselectedData && canUsePokeblock,
     },
     {
       label: "TID",
@@ -498,6 +509,7 @@ const getColumns = (
             render: (shiny: boolean) => (shiny ? "Yes" : "No"),
           } as const,
         ]),
+    { title: "Nature", dataIndex: "nature" },
     ...ivColumns,
   ];
 
@@ -570,6 +582,12 @@ const calculate = async (values: FormState) => {
     mass_outbreak_state: values.massOutbreakState,
     feebas_state: values.feebasState,
     lead_cycle_speed: values.leadCycleSpeed,
+    safari_pokeblock:
+      values.safariPokeblock !== null
+        ? {
+            Specific: values.safariPokeblock,
+          }
+        : null,
   };
 
   const map_data = emeraldWildGameData.maps_data.find(

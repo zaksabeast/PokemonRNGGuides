@@ -105,7 +105,7 @@ export const FormFieldTable = ({ fields }: Props) => {
       wrapperCol={{ flex: "1 1 0" }}
       colon={false}
     >
-      <Flex vertical gap={8} pb={8}>
+      <Flex vertical gap={8}>
         {fields.map((field) => {
           if (field.showWhen != null) {
             return (

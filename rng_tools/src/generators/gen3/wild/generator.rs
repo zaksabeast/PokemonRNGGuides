@@ -4,8 +4,8 @@ use wasm_bindgen::prelude::*;
 
 use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned, is_method_possible_to_trigger};
 use crate::{
-    EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature, PERTINENT_POKEBLOCKS_BY_NATURE,
-    POKEBLOCK_NATURE_STAT_FACTORS, PkmFilter,
+    EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
+    PERTINENT_SOLO_POKEBLOCKS_BY_NATURE, POKEBLOCK_NATURE_STAT_FACTORS, PkmFilter,
     gen3::{
         CycleAndModCount, CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method,
         Gen3PkmFilter, Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
@@ -391,18 +391,20 @@ pub fn calculate_nature_from_safari_pokeblock(
         next_idx += 1;
     });
 
-
     match pokeblock_gen_opt {
-        Wild3SafariPokeblockGenOpt::Specific(flavors) => {
-            (calculate_nature_from_pokeblock(flavors), Some(*flavors))
-        }
+        Wild3SafariPokeblockGenOpt::Specific(flavors) => (
+            calculate_nature_from_pokeblock(&natures_by_priority, flavors),
+            Some(*flavors),
+        ),
         Wild3SafariPokeblockGenOpt::ForSearching {
             wanted_nature,
             consider_all_safari_pokeblocks: _, // TODO: Support all Pokeblocks.
         } => {
-            let pokeblock = PERTINENT_POKEBLOCKS_BY_NATURE[*wanted_nature as usize]
+            let pokeblock = PERTINENT_SOLO_POKEBLOCKS_BY_NATURE[*wanted_nature as usize]
                 .iter()
-                .find(|&flavors| calculate_nature_from_pokeblock(flavors) == *wanted_nature);
+                .find(|&flavors| {
+                    calculate_nature_from_pokeblock(&natures_by_priority, flavors) == *wanted_nature
+                });
 
             if let Some(pokeblock) = pokeblock {
                 (*wanted_nature, Some(*pokeblock))
@@ -424,15 +426,12 @@ fn pokeblock_has_positive_score(nature: Nature, flavors: &[u8; 5]) -> bool {
     score > 0
 }
 
-
-pub fn calculate_nature_from_pokeblock(
-    nature_list:&[Nature],
-    pokeblock: [u8;5],
-) -> Nature {
+pub fn calculate_nature_from_pokeblock(nature_list: &[Nature], pokeblock: &[u8; 5]) -> Nature {
     nature_list
-            .into_iter()
-            .find(|nature| pokeblock_has_positive_score(*nature, flavors))
-            .unwrap_or(nature_list[0])
+        .iter()
+        .copied()
+        .find(|&nature| pokeblock_has_positive_score(nature, pokeblock))
+        .unwrap_or(nature_list[0])
 }
 
 #[wasm_bindgen]

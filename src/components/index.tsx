@@ -78,3 +78,4 @@ export {
   type MapFeature,
 } from "./interactableMap";
 export { Pixelate } from "./pixelate";
+export { FormikWild3Pokeblock } from "./wild3Pokeblock";

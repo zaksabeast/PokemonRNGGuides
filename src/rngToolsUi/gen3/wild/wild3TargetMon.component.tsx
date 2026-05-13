@@ -21,19 +21,13 @@ import { FormState } from "./wild3FindTarget";
 const emeraldWildGameData = getWild3EmeraldGameData();
 
 const getTargetMonFields = (species: Species): Field[] => {
-  const supportedSpecies = emeraldWildGameData.species.filter((species) => {
-    // TODO : Support Safari maps
-    const possVals = getPossibleValuesForSpecies(species);
-    return possVals.maps.length > 0;
-  });
-
   const targetMonFields: Field[] = [
     {
       label: "Species",
       input: (
         <FormikSelect<FormState, "species">
           name="species"
-          options={toOptions(supportedSpecies)}
+          options={toOptions(emeraldWildGameData.species)}
         />
       ),
     },

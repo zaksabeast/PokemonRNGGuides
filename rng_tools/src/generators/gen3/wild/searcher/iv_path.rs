@@ -273,11 +273,10 @@ pub fn find_iv_paths_from_iv2_seed(
     let iv1_wild1235 = rng.prev_rand();
     let iv1_wild4 = rng.prev_rand();
 
-    let wild1235_good = /*opts.consider_method123
-        && */passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild1235);
+    // To improve performance for the common case, we assume that consider_all_methods_124 is true. Later, we will filter unwanted methods.
+    let wild1235_good = passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild1235);
 
-    let wild4_good = /*opts.consider_method4
-        && */passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild4);
+    let wild4_good = passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild4);
     if !wild1235_good && !wild4_good {
         return None;
     }

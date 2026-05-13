@@ -3,8 +3,8 @@ use crate::{
     gen3::{
         Gen3Lead, Gen3Method, Gen3PkmFilter, Wild3Action, Wild3EncounterGameData,
         Wild3EncounterIndex, Wild3FeebasState, Wild3GeneratorOptions, Wild3GeneratorResult,
-        Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SpecialEncounterGameData,
-        generate_gen3_wild,
+        Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState, Wild3SafariPokeblockGenOpt,
+        Wild3SpecialEncounterGameData, generate_gen3_wild,
     },
     rng::lcrng::Pokerng,
 };
@@ -608,6 +608,75 @@ fn test_generate_wild3_mass_outbreak() {
         result[0].encounter_idx,
         Wild3EncounterIndex::MassOutbreak(Wild3MassOutbreakState::Route102Seedot)
     ));
+}
+
+#[test]
+fn test_generate_wild3_safari_pokeblock_from_flavor() {
+    let mut game_data = Wild3MapGameData::default();
+    game_data.is_safari = true;
+    game_data.actions_with_safari_pokeblock = vec![Wild3Action::SweetScentLand];
+
+    let mut options = Wild3GeneratorOptions {
+        methods: vec![Gen3Method::Wild1],
+        ..Default::default()
+    };
+    let rng = Pokerng::with_advances(0, 3003);
+
+    let (result_without_pokeblock, _) = generate_gen3_wild(rng, &options, &game_data);
+
+    options.safari_pokeblock = Some(Wild3SafariPokeblockGenOpt::Specific([1, 0, 0, 2, 0]));
+
+    let (result_with_pokeblock, _) = generate_gen3_wild(rng, &options, &game_data);
+
+    let expected_result_with_pokeblock = vec![Wild3GeneratorResult {
+        encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot9),
+        pid: 0x30B8_861B,
+        ivs: Ivs::new(28, 9, 19, 2, 17, 28),
+        method: Gen3Method::Wild1,
+        used_safari_pokeblock: Some([1, 0, 0, 2, 0]),
+        ..Default::default()
+    }];
+    assert_ne!(result_with_pokeblock, result_without_pokeblock);
+    assert_eq!(result_with_pokeblock, expected_result_with_pokeblock);
+}
+
+#[test]
+fn test_generate_wild3_safari_pokeblock_from_nature() {
+    let mut game_data = Wild3MapGameData::default();
+    game_data.is_safari = true;
+    game_data.actions_with_safari_pokeblock = vec![Wild3Action::SweetScentLand];
+
+    let wanted_nature = Nature::Impish;
+    let mut options = Wild3GeneratorOptions {
+        methods: vec![Gen3Method::Wild1],
+        filter: PkmFilter {
+            nature: Some(wanted_nature),
+            ..Default::default()
+        },
+        ..Default::default()
+    };
+
+    let rng = Pokerng::with_advances(0, 2);
+
+    let (result_without_pokeblock, _) = generate_gen3_wild(rng, &options, &game_data);
+
+    options.safari_pokeblock = Some(Wild3SafariPokeblockGenOpt::ForSearching {
+        wanted_nature,
+        consider_all_safari_pokeblocks: false,
+    });
+
+    let (result_with_pokeblock, _) = generate_gen3_wild(rng, &options, &game_data);
+
+    let expected_result_with_pokeblock = vec![Wild3GeneratorResult {
+        encounter_idx: Wild3EncounterIndex::Slot(EncounterSlot::Slot0),
+        pid: 0xF38C_114E,
+        ivs: Ivs::new(11, 19, 1, 26, 17, 24),
+        method: Gen3Method::Wild1,
+        used_safari_pokeblock: Some([0, 0, 0, 0, 1]),
+        ..Default::default()
+    }];
+    assert_ne!(result_with_pokeblock, result_without_pokeblock);
+    assert_eq!(result_with_pokeblock, expected_result_with_pokeblock);
 }
 
 /*

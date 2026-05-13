@@ -12,11 +12,7 @@ import { gen3PkmFilterFieldsToRustInput } from "~/components/gen3PkmFilter";
 import { gen3Leads, formatActionName, formatMapName } from "./utils";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
-import type {
-  FormState,
-  PidPathResult,
-  ResultSetupInfo,
-} from "./wild3FindTarget.tsx";
+import type { FormState, PidPathResult } from "./wild3FindTarget.tsx";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -50,7 +46,7 @@ const convertResultsForPidPathToPidPathResult = async (
 
   const firstRes = results[0];
 
-  const resultSetupInfos: ResultSetupInfo[] = await Promise.all(
+  const resultSetupInfos = await Promise.all(
     results.map((res) => {
       const mapSetup = mapSetups[res.map_idx];
       const mapName = formatMapName(mapSetup.map_data.map_id);
@@ -85,6 +81,7 @@ const convertResultsForPidPathToPidPathResult = async (
             mapSetup.map_data.rock_smash_rate,
           ),
         ...getAdvsFromCache(res.advance),
+        requiredPokeblock: res.used_safari_pokeblock ?? null,
       };
     }),
   );
@@ -231,6 +228,7 @@ export const searchWild3Target = async (values: FormState) => {
       : values.using_white_flute,
     painting_opts,
     lead_cycle_speed: null,
+    considered_safari_pokeblocks: values.considered_safari_pokeblocks,
   };
 
   const resultsByPidPath = await rngTools.search_wild3(opts);

@@ -129,7 +129,7 @@ export const MainLayout = ({ children, trackerName }: Props) => {
 
       <BodyContainer>
         <DesktopNavDrawerContainer>
-          <Flex flex={1} vertical p={16} overflowY="scroll">
+          <Flex flex={1} vertical p={16} overflowY="auto">
             <DesktopDrawer />
           </Flex>
         </DesktopNavDrawerContainer>

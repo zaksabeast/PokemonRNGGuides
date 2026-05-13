@@ -1,0 +1,1 @@
+import{t as e}from"./intersection-C3loRGYq.js";import{n as t,r as n}from"./constants-2zpv_gJ0.js";var r=({game:r,locations:i})=>{if(i==null)return null;let a=e(i,t);if(a.length>0)return{type:`NoNpc`,locations:a};let o=e(i,n(r));return o.length>0?{type:`VsSeeker`,locations:o}:null};export{r as t};

@@ -1,0 +1,1 @@
+import{Ra as e}from"./components-CHNTN7N_.js";var t=0;function n(n){var r=++t;return e(n)+r}export{n as t};

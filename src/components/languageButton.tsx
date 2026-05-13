@@ -7,6 +7,11 @@ import { useActiveRoute } from "~/hooks/useActiveRoute";
 import { Route } from "~/routes/defs";
 import { Link } from "./link";
 import { LanguageKey, languages } from "~/types/language";
+import styled from "@emotion/styled";
+
+const StyledLink = styled(Link)({
+  fontWeight: "normal",
+});
 
 type Props = {
   en: Route;
@@ -40,9 +45,9 @@ export const LanguageButton = (props: Props) => {
       return {
         key: lang.key,
         label: (
-          <Link href={slug} key={lang.key}>
+          <StyledLink href={slug} key={lang.key}>
             {lang.label}
-          </Link>
+          </StyledLink>
         ),
       };
     })

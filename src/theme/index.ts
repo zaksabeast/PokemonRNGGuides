@@ -6,7 +6,7 @@ import {
 } from "antd";
 import { type ThemeMode } from "./themeMode";
 
-export const primaryColor = "#7e3ff2"; // consider "#40a9ff"
+const primaryColor = "#9933ff";
 export const metaTagThemeColor = "#722ed1";
 
 type GetThemeProps = {
@@ -20,14 +20,16 @@ export const getTheme = ({
   tempThemeColor,
   UNSAFE_mode: mode = "light",
 }: GetThemeProps = {}): ThemeConfig => {
-  const algorithm =
-    mode === "light" ? themeTools.defaultAlgorithm : themeTools.darkAlgorithm;
+  const isLightMode = mode === "light";
+  const algorithm = isLightMode
+    ? themeTools.defaultAlgorithm
+    : themeTools.darkAlgorithm;
 
   const tokens = themeTools.getDesignToken({
     algorithm,
     token: {
       colorPrimary: tempThemeColor ?? primaryColor,
-      colorLink: tempThemeColor ?? primaryColor,
+      colorLink: tempThemeColor ?? (isLightMode ? primaryColor : "#ad5cff"),
     },
   });
 
@@ -56,16 +58,23 @@ export const getTheme = ({
         withDescriptionPadding: "12px 16px",
         lineHeight: 1.4,
       },
+      Button: isLightMode
+        ? undefined
+        : {
+            colorText: tokens.colorLink,
+            primaryColor: "#111827",
+          },
       Form: {
         itemMarginBottom: 6,
         labelHeight: "auto",
       },
       Layout: {
         headerHeight: "64px",
-        headerBg: mode === "light" ? "rgba(255, 255, 255, 0.6)" : "#000",
+        headerBg: isLightMode ? "rgba(255, 255, 255, 0.6)" : "#000",
       },
       Menu: {
-        itemSelectedColor: mode === "light" ? "#6200ee" : tokens.colorText,
+        subMenuItemSelectedColor: tokens.colorLink,
+        itemSelectedColor: isLightMode ? "#6200ee" : tokens.colorText,
       },
     },
   };

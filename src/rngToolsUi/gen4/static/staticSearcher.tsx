@@ -9,6 +9,7 @@ import {
   Button,
   Field,
   FormFieldTable,
+  MinMaxContainer,
 } from "~/components";
 import {
   multiWorkerRngTools,
@@ -31,7 +32,7 @@ import {
 } from "~/rngToolsUi/shared/ivColumns";
 import { useCurrentStep } from "~/components/stepper/state";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
-import { formatSpeciesLabel, UndefinedToNull } from "~/types";
+import { formatSpeciesLabel, RustOption } from "~/types";
 import { chunkIvs } from "~/utils/chunkIvs";
 import { MonthSchema, monthToRustFilter } from "~/utils/time";
 import { Gen4GameVersion } from "../gen4types";
@@ -218,39 +219,49 @@ const Fields = ({ game, getEncounters }: FieldsProps) => {
 
   const fields: Field[] = [
     {
-      label: t["TID"],
-      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-    },
-    {
-      label: t["SID"],
-      input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
+      label: t["TID / SID"],
+      input: (
+        <MinMaxContainer
+          min={<FormikNumberInput<FormState> name="tid" numType="decimal" />}
+          max={<FormikNumberInput<FormState> name="sid" numType="decimal" />}
+          delimeter="/"
+        />
+      ),
     },
     {
       label: t["Year"],
       input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
     },
     {
-      label: t["Min Delay"],
+      label: t["Delay"],
       input: (
-        <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+        <MinMaxContainer
+          min={
+            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+          }
+          max={
+            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+          }
+        />
       ),
     },
     {
-      label: t["Max Delay"],
+      label: t["Advance"],
       input: (
-        <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Min Advance"],
-      input: (
-        <FormikNumberInput<FormState> name="min_advance" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Max Advance"],
-      input: (
-        <FormikNumberInput<FormState> name="max_advance" numType="decimal" />
+        <MinMaxContainer
+          min={
+            <FormikNumberInput<FormState>
+              name="min_advance"
+              numType="decimal"
+            />
+          }
+          max={
+            <FormikNumberInput<FormState>
+              name="max_advance"
+              numType="decimal"
+            />
+          }
+        />
       ),
     },
     {
@@ -332,7 +343,7 @@ export const Static4Searcher = ({ honey = false }: Static4SearcherProps) => {
 
     setSearchedEncounter({ ...encounter, advanceOffset: opts.offset });
 
-    const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
+    const baseOpts: RustOption<SearchStatic4Opts> = {
       filter: pkmFilterFieldsToRustInput(opts),
       force_second: opts.force_second,
       max_advance: opts.max_advance,

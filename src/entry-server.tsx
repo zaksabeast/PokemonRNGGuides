@@ -52,11 +52,29 @@ const renderAntdStyles = () => {
         /* Adjust selector to target the affected buttons */
         -webkit-tap-highlight-color: transparent;
       }`;
-  const antdStyles = extractStyle((node) => (
-    <ConfigProvider theme={getTheme()}>{node}</ConfigProvider>
+  const antdLightStyles = extractStyle((node) => (
+    <ConfigProvider
+      theme={getTheme({ UNSAFE_mode: "light" })}
+      wave={{ disabled: true }}
+    >
+      {node}
+    </ConfigProvider>
   ));
 
-  return `${resetStyles}${antdStyles}`;
+  const antdDarkStyles = extractStyle((node) => (
+    <ConfigProvider
+      theme={getTheme({ UNSAFE_mode: "dark" })}
+      wave={{ disabled: true }}
+    >
+      {node}
+    </ConfigProvider>
+  ));
+
+  const antdScopedDarkStyles = antdDarkStyles
+    .replaceAll("._,:root", '._[data-theme="dark"],:root[data-theme="dark"]')
+    .replaceAll("css-var-_R_397_", 'css-var-_R_397_[data-theme="dark"]');
+
+  return `${resetStyles}${antdLightStyles}${antdScopedDarkStyles}`;
 };
 
 const antdStyles = renderAntdStyles();

@@ -42,6 +42,11 @@ export const Stepper = React.memo(
           current={currentStep}
           size="small"
           items={items}
+          styles={{
+            // Unfortunately this can't be set in the theme config
+            // and it can't be set with classnames...
+            itemTitle: { color: "var(--ant-color-text)" },
+          }}
         />
         {children}
         <Flex justify="space-between" align="center">

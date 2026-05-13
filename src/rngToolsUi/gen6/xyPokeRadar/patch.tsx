@@ -4,9 +4,9 @@ import { keyBy } from "lodash-es";
 import { match } from "ts-pattern";
 import styled from "@emotion/styled";
 
-const PokeRadarPatchBlock = styled(Flex)({
-  backgroundColor: "#ebf5e4",
-});
+const PokeRadarPatchBlock = styled(Flex)(({ theme }) => ({
+  backgroundColor: theme.token.colorSuccessBg,
+}));
 
 type PokeRadarPatchesProps = {
   patches: PokeRadarPatch[];

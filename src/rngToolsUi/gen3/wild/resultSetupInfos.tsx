@@ -419,7 +419,7 @@ const resultSetupInfoToDistributionFixedData = (
     idealLeadCycleSpeed,
     usingIdealLeadCycleSpeed: rngManipulatedLeadPid,
     usingWhiteFlute: setup.requiresWhiteFlute,
-    safariPokeblock: null,
+    safariPokeblock: setup.used_safari_pokeblock ?? null,
   };
 };
 

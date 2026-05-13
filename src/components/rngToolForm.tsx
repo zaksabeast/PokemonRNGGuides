@@ -1,6 +1,5 @@
 import React from "react";
 import { Flex } from "./flex";
-import { Form } from "./form";
 import { FormFieldTable, Field } from "./formFieldTable";
 import { Button } from "./button";
 import { FormikResultTable, ResultColumn } from "./resultTable";
@@ -18,7 +17,7 @@ import {
 } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { GenericForm } from "~/types";
-import { Typography, Progress } from "antd";
+import { Typography, Progress, type TablePaginationConfig } from "antd";
 
 export type RngToolSubmit<FormState extends GenericForm> = (
   values: FormState,
@@ -35,6 +34,7 @@ type Props<FormState extends GenericForm, Result> = {
   disableGenerate?: boolean;
   additionalButtons?: React.ReactNode;
   progressPercent?: number;
+  pagination?: TablePaginationConfig;
 } & OneOf<{
   fields: Field[];
   getFields: (t: Translations) => Field[];
@@ -95,6 +95,7 @@ export const RngToolForm = <
   cancelButtonLabel = "Cancel",
   allowCancel = false,
   cancelTrackerId,
+  pagination,
   onCancel,
 }: Props<FormState, Result>) => {
   const t = useActiveRouteTranslations();
@@ -141,7 +142,7 @@ export const RngToolForm = <
       {...form}
     >
       <Flex vertical gap={16} id={formContainerId}>
-        <Form onSubmit={handleSubmit(onValidSubmit)} onReset={onReset}>
+        <form onSubmit={handleSubmit(onValidSubmit)} onReset={onReset}>
           <Flex vertical gap={8}>
             {fieldsReactNode}
             {hasErrors && (
@@ -174,7 +175,7 @@ export const RngToolForm = <
               </Button>
             )}
           </Flex>
-        </Form>
+        </form>
 
         {filters != null && (
           <Flex vertical gap={8} mt={24}>
@@ -193,6 +194,7 @@ export const RngToolForm = <
             columns={columnsToUse}
             rowKey={rowKey}
             dataSource={results}
+            pagination={pagination}
             rowSelection={
               onClickResultRow == null
                 ? undefined

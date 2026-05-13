@@ -288,6 +288,7 @@ export const translations = {
   "Coin Flips": "Coin Flips",
   "Coin Flip Count": "Coin Flip Count",
   "Target/Heard": "Target/Heard",
+  "TID / SID": "TID / SID",
 } as const;
 
 export type Translations = Record<keyof typeof translations, string> & {

@@ -4,8 +4,7 @@ use wasm_bindgen::prelude::*;
 
 use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned, is_method_possible_to_trigger};
 use crate::{
-    EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
-    PERTINENT_SOLO_POKEBLOCKS_BY_NATURE, POKEBLOCK_NATURE_STAT_FACTORS, PkmFilter,
+    EncounterSlot, Gender, GenderRatio, Ivs, Nature, PkmFilter,
     gen3::{
         CycleAndModCount, CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method,
         Gen3PkmFilter, Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
@@ -322,116 +321,6 @@ fn select_lvl(
     }
 
     encounter.min_level + lvl_incr
-}
-
-fn pick_wild_mon_nature_safari(
-    rng: &mut Pokerng,
-    pokeblock_gen_opt: &Option<Wild3SafariPokeblockGenOpt>,
-) -> Option<(Nature, Option<[u8; 5]>)> {
-    if rand_next_u16(rng, "test_safari_zone_pokeblock", 100) % 100 >= 80 {
-        return None;
-    }
-
-    pokeblock_gen_opt
-        .as_ref()
-        .map(|pokeblock_gen_opt| calculate_nature_from_safari_pokeblock(rng, pokeblock_gen_opt))
-}
-
-pub fn calculate_nature_from_safari_pokeblock(
-    rng: &mut Pokerng,
-    pokeblock_gen_opt: &Wild3SafariPokeblockGenOpt,
-) -> (Nature, Option<[u8; 5]>) {
-    let mut all_natures_by_priority: [Nature; NATURE_COUNT] = [
-        Nature::Hardy,
-        Nature::Lonely,
-        Nature::Brave,
-        Nature::Adamant,
-        Nature::Naughty,
-        Nature::Bold,
-        Nature::Docile,
-        Nature::Relaxed,
-        Nature::Impish,
-        Nature::Lax,
-        Nature::Timid,
-        Nature::Hasty,
-        Nature::Serious,
-        Nature::Jolly,
-        Nature::Naive,
-        Nature::Modest,
-        Nature::Mild,
-        Nature::Quiet,
-        Nature::Bashful,
-        Nature::Rash,
-        Nature::Calm,
-        Nature::Gentle,
-        Nature::Sassy,
-        Nature::Careful,
-        Nature::Quirky,
-    ];
-    for i in 0..(NATURE_COUNT - 1) {
-        for j in (i + 1)..NATURE_COUNT {
-            if rand_next_u16(rng, "test_safari_zone_pokeblock", 2) & 1 == 1 {
-                all_natures_by_priority.swap(i, j);
-            }
-        }
-    }
-
-    let mut natures_by_priority: [Nature; 20] = Default::default();
-    let mut next_idx = 0_usize;
-
-    all_natures_by_priority.iter().for_each(|nature| {
-        // Those natures are never selected because their score can't be over 0. This is to improve performance.
-        if matches!(
-            nature,
-            Nature::Hardy | Nature::Docile | Nature::Serious | Nature::Bashful | Nature::Quirky
-        ) {
-            return;
-        }
-        natures_by_priority[next_idx] = *nature;
-        next_idx += 1;
-    });
-
-    match pokeblock_gen_opt {
-        Wild3SafariPokeblockGenOpt::Specific(flavors) => (
-            calculate_nature_from_pokeblock(&natures_by_priority, flavors),
-            Some(*flavors),
-        ),
-        Wild3SafariPokeblockGenOpt::ForSearching {
-            wanted_nature,
-            consider_all_safari_pokeblocks: _, // TODO: Support all Pokeblocks.
-        } => {
-            let pokeblock = PERTINENT_SOLO_POKEBLOCKS_BY_NATURE[*wanted_nature as usize]
-                .iter()
-                .find(|&flavors| {
-                    calculate_nature_from_pokeblock(&natures_by_priority, flavors) == *wanted_nature
-                });
-
-            if let Some(pokeblock) = pokeblock {
-                (*wanted_nature, Some(*pokeblock))
-            } else {
-                (natures_by_priority[0], None) // will be filtered out later
-            }
-        }
-    }
-}
-
-fn pokeblock_has_positive_score(nature: Nature, flavors: &[u8; 5]) -> bool {
-    let score = flavors
-        .iter()
-        .enumerate()
-        .map(|(flavor, flavor_val)| {
-            (*flavor_val as i32) * POKEBLOCK_NATURE_STAT_FACTORS[nature as usize][flavor]
-        })
-        .sum::<i32>();
-    score > 0
-}
-
-pub fn calculate_nature_from_pokeblock(nature_list: &[Nature], pokeblock: &[u8; 5]) -> Nature {
-    nature_list
-        .iter()
-        .copied()
-        .find(|&nature| pokeblock_has_positive_score(nature, pokeblock))
-        .unwrap_or(nature_list[0])
 }
 
 #[wasm_bindgen]

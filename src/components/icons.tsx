@@ -15,6 +15,8 @@ import {
   MdOutlineInfo,
   MdZoomIn,
   MdZoomOut,
+  MdOutlineLightMode,
+  MdOutlineDarkMode,
 } from "react-icons/md";
 import { BiMessageAltError } from "react-icons/bi";
 import { TiWarningOutline } from "react-icons/ti";
@@ -62,6 +64,8 @@ const icons = {
   ZoomIn: MdZoomIn,
   ZoomOut: MdZoomOut,
   Reset: RiResetLeftLine,
+  LightMode: MdOutlineLightMode,
+  DarkMode: MdOutlineDarkMode,
 } as const;
 
 export type IconName = keyof typeof icons;

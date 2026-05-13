@@ -61,6 +61,7 @@ type SharedNumberInputProps = {
   textAlign?: "center";
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  prefix?: React.ReactNode;
 };
 
 export type NumberInputProps = Omit<

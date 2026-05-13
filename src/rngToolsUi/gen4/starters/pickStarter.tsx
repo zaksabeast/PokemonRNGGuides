@@ -4,6 +4,7 @@ import {
   FormFieldTable,
   FormikNumberInput,
   FormikSelect,
+  MinMaxContainer,
   ResultColumn,
   RngToolForm,
 } from "~/components";
@@ -38,7 +39,7 @@ import { getStatRange } from "~/types/statRange";
 import { Gen4GameVersion } from "../gen4types";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { chunkIvs } from "~/utils/chunkIvs";
-import { UndefinedToNull } from "~/types";
+import { RustOption } from "~/types";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { Translations } from "~/translations";
 import { MONTHS, MonthSchema, monthToRustFilter } from "~/utils/time";
@@ -180,12 +181,14 @@ const Fields = ({ game, t }: FieldsProps) => {
 
   const fields: Field[] = [
     {
-      label: t["TID"],
-      input: <FormikNumberInput<FormState> name="tid" numType="decimal" />,
-    },
-    {
-      label: t["SID"],
-      input: <FormikNumberInput<FormState> name="sid" numType="decimal" />,
+      label: t["TID / SID"],
+      input: (
+        <MinMaxContainer
+          min={<FormikNumberInput<FormState> name="tid" numType="decimal" />}
+          max={<FormikNumberInput<FormState> name="sid" numType="decimal" />}
+          delimeter="/"
+        />
+      ),
     },
     {
       label: t["Year"],
@@ -201,15 +204,16 @@ const Fields = ({ game, t }: FieldsProps) => {
       ),
     },
     {
-      label: t["Min Delay"],
+      label: t["Delay"],
       input: (
-        <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Max Delay"],
-      input: (
-        <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+        <MinMaxContainer
+          min={
+            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+          }
+          max={
+            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+          }
+        />
       ),
     },
     {
@@ -281,7 +285,7 @@ export const PickStarter4 = () => {
       species: opts.species,
       platinum_target_advance: opts.platinum_target_advance,
     });
-    const baseOpts: UndefinedToNull<SearchStatic4Opts> = {
+    const baseOpts: RustOption<SearchStatic4Opts> = {
       ...opts,
       month: monthToRustFilter(opts.month),
       min_advance: advance,

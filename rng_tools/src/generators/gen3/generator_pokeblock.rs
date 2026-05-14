@@ -8,7 +8,7 @@ mod test {
         NATURE_COUNT, Nature, PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE,
         PERTINENT_SOLO_POKEBLOCKS_BY_NATURE, POKEBLOCK_NATURE_STAT_FACTORS,
     };
-    use std::collections::{HashMap, HashSet};
+    use std::collections::{BTreeMap, HashSet};
 
     use arrayvec::ArrayVec;
     use serde::{Deserialize, Serialize};
@@ -408,11 +408,11 @@ mod test {
         })
     }
 
-    fn generate_all_pokeblocks() -> HashMap<[u8; 5], PokeblockCreationInfo> {
+    fn generate_all_pokeblocks() -> BTreeMap<[u8; 5], PokeblockCreationInfo> {
         let mut map = generate_all_solo_pokeblocks();
         let mut berries: [u8; 4] = [NO_BERRY, NO_BERRY, NO_BERRY, NO_BERRY];
 
-        let calc_and_try_add = |map: &mut HashMap<[u8; 5], PokeblockCreationInfo>,
+        let calc_and_try_add = |map: &mut BTreeMap<[u8; 5], PokeblockCreationInfo>,
                                 info: PokeblockCreationInfo| {
             let pokeblock = calculate_pokeblock(&info);
             map.entry(pokeblock).or_insert(info);
@@ -460,7 +460,7 @@ mod test {
         map
     }
 
-    fn generate_all_solo_pokeblocks() -> HashMap<[u8; 5], PokeblockCreationInfo> {
+    fn generate_all_solo_pokeblocks() -> BTreeMap<[u8; 5], PokeblockCreationInfo> {
         let npcs_list: [BlenderNpcs; 5] = [
             BlenderNpcs::Npc0,
             BlenderNpcs::Npc1,
@@ -471,7 +471,7 @@ mod test {
 
         let map_state_products = iproduct!(&npcs_list, 0..BERRY_COUNT);
 
-        let mut map = HashMap::<[u8; 5], PokeblockCreationInfo>::new();
+        let mut map = BTreeMap::<[u8; 5], PokeblockCreationInfo>::new();
         for (&npcs, player_berry_idx) in map_state_products {
             let player_berry = &BERRIES[player_berry_idx as usize];
             if !player_berry.is_accessible_solo {
@@ -549,7 +549,7 @@ mod test {
         nature_lists: &[Vec<Nature>],
         wanted_nature: Nature,
         pokeblocks: &[[u8; 5]],
-    ) -> HashMap<[u8; 5], Vec<bool>> {
+    ) -> BTreeMap<[u8; 5], Vec<bool>> {
         pokeblocks
             .iter()
             .map(|pokeblock| {
@@ -562,7 +562,7 @@ mod test {
     }
 
     fn merge_coverages(
-        coverages: &HashMap<[u8; 5], Vec<bool>>,
+        coverages: &BTreeMap<[u8; 5], Vec<bool>>,
         nature_list_len: usize,
     ) -> Vec<bool> {
         (0..nature_list_len)
@@ -604,7 +604,7 @@ mod test {
 
     fn calculate_smallest_subset_with_max_coverage(
         mut current_coverage: Vec<bool>,
-        coverage_by_pokeblock: &HashMap<[u8; 5], Vec<bool>>,
+        coverage_by_pokeblock: &BTreeMap<[u8; 5], Vec<bool>>,
     ) -> Vec<[u8; 5]> {
         let mut subset: Vec<[u8; 5]> = vec![];
 
@@ -659,7 +659,7 @@ mod test {
     }
 
     fn get_pokeblock_creation_info_of_pertinent_pokeblocks()
-    -> HashMap<[u8; 5], PokeblockCreationInfo> {
+    -> BTreeMap<[u8; 5], PokeblockCreationInfo> {
         let pertinent_pokeblocks = PERTINENT_SOLO_POKEBLOCKS_BY_NATURE
             .iter()
             .flatten()
@@ -679,20 +679,28 @@ mod test {
     #[test]
     #[ignore]
     fn test_generate_pertinent_pokeblocks() {
-        assert_eq!(
-            PERTINENT_SOLO_POKEBLOCKS_BY_NATURE
-                .clone()
-                .into_iter()
-                .collect_vec(),
-            get_pertinent_pokeblocks(true)
-        );
-        assert_eq!(
-            PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE
-                .clone()
-                .into_iter()
-                .collect_vec(),
-            get_pertinent_pokeblocks(false)
-        );
+        for solo_only in [true, false] {
+            let pokeblocks = get_pertinent_pokeblocks(solo_only);
+            let expected_result = if solo_only {
+                &PERTINENT_SOLO_POKEBLOCKS_BY_NATURE
+            } else {
+                &PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE
+            };
+            let name = if solo_only {
+                "PERTINENT_SOLO_POKEBLOCKS_BY_NATURE"
+            } else {
+                "PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE"
+            };
+
+            if (*expected_result).clone().into_iter().collect_vec() != pokeblocks {
+                let str = format!("{:?}", pokeblocks);
+                let str = str.replace("]], [[", "]], vec![[");
+                let str = str.replace("[]", "vec![]");
+
+                println!("{}", str);
+                assert!(false, "{} has changed.", name);
+            }
+        }
 
         let info_str = format!(
             "pokeblockCreationInfos = {:?}",

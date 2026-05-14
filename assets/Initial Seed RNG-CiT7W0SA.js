@@ -1,0 +1,75 @@
+var e=`---
+- title: "RNG dell'Initial Seed in Oro HeartGold e Argento SoulSilver"
+  navDrawerTitle: "RNG dell'Initial Seed"
+  description: "Impara come manipolare il tuo initial seed in Oro HeartGold e Argento SoulSilver."
+  slug: "it-hgss-initial-seed"
+  translation:
+    enSlug: "hgss-initial-seed"
+    language: "it"
+---
+
+\`\`\`
+Questa guida presuppone che tu abbia già trovato un target seed. Hai bisogno del target seed e del delay prima di iniziare a seguire questa guida.
+\`\`\`
+
+## Strumenti
+
+- [Desmume](/desmume-setup)
+- [RunAsDate](https://www.nirsoft.net/utils/run_as_date.html)
+
+### Cos'è RunAsDate?
+
+RunAsDate è uno strumento di Nirsoft che consente a qualsiasi programma di essere eseguito con un orario da te impostato. È utile per L'RNG di Gen 4 e ti aiuta a ottenere il tuo seed facilmente.
+
+## Prepara RunAsDate
+
+1. Avvia RunAsDate.
+2. Imposta RunAsDate come è mostrato nell'immagine mostrata qua sotto.
+
+![Setup](/images/HeartGold-SoulSilver/Initial-Seed/Setup.png)
+
+\`\`\`
+Non dovrai mai cambiarlo di nuovo. Questo è il setup universale di RunAsDate per l'RNG (Gen 3, 4, or 5), quindi hai quasi finito!
+\`\`\`
+
+3. Seleziona il programma con cui vuoi falsificare la data/ora tramite il pulsante \`Browse...\`.
+4. Imposta la data e ora alla data data da PokeFinder per ottenere il seed.
+5. Clicca \`Run\`, e Desmume dovrebbe avviarsi.
+
+## Ottenere il target seed
+
+\`\`\`
+Crea save states spesso durante questo processo.
+\`\`\`
+
+1. Carica gli script lua.
+2. Clicca \`A\` per arrivare velocemente alla schermata "Continua".
+3. Metti in pausa il tuo emulatore con \`Ctrl + P\`.
+4. Crea save states spesso in caso sbagli qualcosa.
+5. Riprendi il tuo gioco, e non fare nulla finché non arrivi vicino al tuo target delay.
+6. Una volta vicino, metti in pausa il tuo emulatore.
+7. Crea un altro save state (non sai mai cosa succederà!).
+8. Premi \`N\` per avanzare il gioco un frame video alla volta per incrementare il delay di 1.
+9. Quando sei sul delay target, tieni premuto \`A\` mentre riprendi il tuo gioco.
+
+## Risoluzione dei problemi
+
+Ogni tanto, anche se hai premuto \`A\` al delay corretto, il delay attuale può essere +/-1 rispetto a quello che avresti voluto. Questo può succedere in Gen 4, dove i delay possono sempre essere sempre pari o sempre dispari. Usa uno di questi metodi per cambiare la parità del delay.
+
+### Cambiare l'anno
+
+Chiudi il tuo emulatore e cambia l'anno in RunAsDate di uno prima o dopo rispetto all'anno attuale. Questo cambio aggiusterà il delay. Verifica il nuovo delay con PokeFinder nella finestra "Seed to Time" cambiando l'anno. Una volta aggiustato, riavvia Desmume con RunAsDate e carica un save state. Potrai dunque fare RNG per il nuovo delay.
+
+### Caricare un gioco GBA
+
+Caricare un gioco GBA nello slot GBA nell'emulatore cambierà la parità del delay.
+
+### Schermata Continua
+
+Nella schermata per scegliere se continuare la partita, Premi la freccia in basso sul touchscreen inferiore per abbassare lo schermo, poi premi la freccia in alto per riportarlo in alto. Questo cambierà la parità del delay.
+
+## Crediti
+
+- Traduzione cinese: xuanyelin, Hakuhiro.
+- Traduzione italiana: Fiask
+`;export{e as default};

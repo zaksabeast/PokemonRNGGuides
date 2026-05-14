@@ -422,6 +422,10 @@ const tools = {
     () => import("~/rngToolsUi/gen4/honeyTree/targetTree"),
     (mod) => mod.HoneyTreeTargetTree,
   ),
+  StandaloneChatterFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/standaloneChatterFilter"),
+    (mod) => mod.StandaloneChatterFilter,
+  ),
 };
 
 export const markdownComponents = {

@@ -14,7 +14,6 @@ import {
   ResultColumn,
   RngToolForm,
   Input,
-  NumberInput,
   MinMaxContainer,
   Typography,
   Alert,
@@ -156,8 +155,10 @@ type Result = ChatterState & {
 };
 
 const Validator = z.object({
+  seed: z.number().int().min(0).max(0xffffffff),
   minAdvance: z.number().int().min(0),
   maxAdvance: z.number().int().min(0),
+  targetAdvance: z.number().int().min(0).nullable(),
 });
 
 type FormState = z.infer<typeof Validator>;
@@ -321,16 +322,25 @@ type PageSettings = {
   pageSize: number;
 };
 
-type ChatterFilterBaseProps = {
-  seed: number | null;
-  targetAdvance: number | null;
-  submitTrackerId: string;
-};
+type ChatterFilterBaseProps =
+  | {
+      seed: number | null;
+      targetAdvance: number | null;
+      submitTrackerId: string;
+      mode: "embedded";
+    }
+  | {
+      seed?: null;
+      targetAdvance?: null;
+      submitTrackerId: string;
+      mode: "standalone";
+    };
 
 export const ChatterFilterBase = ({
   seed,
   targetAdvance,
   submitTrackerId,
+  mode,
 }: ChatterFilterBaseProps) => {
   const [filter, setFilter] = React.useState<MiniPitch[]>([]);
   const [results, setResults] = React.useState<Result[]>([]);
@@ -348,12 +358,15 @@ export const ChatterFilterBase = ({
     {
       label: t["Seed"],
       input: (
-        <NumberInput
-          disabled
+        <FormikNumberInput<FormState>
           name="seed"
           numType="hex"
-          errorMessage={seed == null ? "Find your seed first" : undefined}
-          value={seed}
+          disabled={mode === "embedded"}
+          errorMessage={
+            seed == null && mode === "embedded"
+              ? "Find your seed first"
+              : undefined
+          }
         />
       ),
     },
@@ -370,23 +383,30 @@ export const ChatterFilterBase = ({
         />
       ),
     },
+    {
+      label: t["Target Advance"],
+      show: mode === "standalone",
+      input: (
+        <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
+      ),
+    },
   ];
 
   const onSubmit = async (opts: FormState) => {
-    if (seed == null || targetAdvance == null) {
+    if (opts.targetAdvance == null) {
       return;
     }
 
     const chatters = await rngTools.get_chatters({
       initial_advances: opts.minAdvance,
       max_advances: Math.max(opts.maxAdvance - opts.minAdvance, 0),
-      seed: seed,
+      seed: opts.seed,
     });
     const chattersWithTarget = chatters.map(
       (chatter): Result => ({
         ...chatter,
         id: uniqueId(),
-        status: chatter.advance === targetAdvance ? "Target" : null,
+        status: chatter.advance === opts.targetAdvance ? "Target" : null,
       }),
     );
     setResults(chattersWithTarget);
@@ -410,8 +430,10 @@ export const ChatterFilterBase = ({
   );
 
   const initialValues: FormState = {
+    seed: seed ?? 0,
     minAdvance: 0,
     maxAdvance: (targetAdvance ?? 0) + 10,
+    targetAdvance: targetAdvance ?? 0,
   };
 
   return (
@@ -449,7 +471,9 @@ export const ChatterFilterBase = ({
       validationSchema={Validator}
       onSubmit={onSubmit}
       rowKey="advance"
-      disableGenerate={seed == null || targetAdvance == null}
+      disableGenerate={
+        mode === "embedded" && (seed == null || targetAdvance == null)
+      }
       submitTrackerId={submitTrackerId}
     />
   );

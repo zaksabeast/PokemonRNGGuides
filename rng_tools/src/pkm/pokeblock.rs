@@ -226,7 +226,7 @@ pub static PERTINENT_SOLO_POKEBLOCKS_BY_NATURE: LazyLock<[Vec<[u8; 5]>; 25]> =
 // cargo test --release test_generate_pertinent_custom_pokeblocks_by_nature -- --include-ignored
 pub static PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE: LazyLock<[Vec<[u8; 5]>; 25]> =
     LazyLock::new(|| {
-        let custom_only: [Vec<[u8; 5]>; 25] = [
+        [
             vec![],
             vec![
                 [1, 1, 1, 1, 0],
@@ -352,17 +352,5 @@ pub static PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE: LazyLock<[Vec<[u8; 5]>; 25]> =
                 [1, 0, 1, 1, 0],
             ],
             vec![],
-        ];
-
-        // prepend PERTINENT_SOLO_POKEBLOCKS_BY_NATURE
-        PERTINENT_SOLO_POKEBLOCKS_BY_NATURE
-            .clone()
-            .into_iter()
-            .zip(custom_only.iter())
-            .map(|(mut solo, custom)| {
-                solo.extend(custom);
-                solo
-            })
-            .collect_array()
-            .unwrap()
+        ]
     });

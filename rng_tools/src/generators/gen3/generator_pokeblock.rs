@@ -1,6 +1,8 @@
 #[cfg(test)]
 mod test {
     use itertools::{Itertools, iproduct};
+    use std::collections::hash_map::DefaultHasher;
+    use std::hash::{Hash, Hasher};
 
     use crate::{
         NATURE_COUNT, Nature, PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE,
@@ -178,6 +180,8 @@ mod test {
         Npc3,
         BlendMaster,
     }
+
+    #[derive(Debug)]
     enum PokeblockCreationInfo {
         Npc {
             npcs: BlenderNpcs,
@@ -654,17 +658,15 @@ mod test {
             .collect_vec()
     }
 
-    fn get_pokeblock_creation_info_of_pertinent_pokeblocks(
-        pertinent_pokeblocks: Vec<[u8; 5]>,
-    ) -> HashMap<[u8; 5], PokeblockCreationInfo> {
-        let pertinent_pokeblocks = HashSet::<[u8;5]>::new();
-            
-            PERTINENT_SOLO_POKEBLOCKS_BY_NATURE.iter().flatten().chain(other)
-            for pokeblocks in PERTINENT_SOLO_POKEBLOCKS_BY_NATURE {
-                pertinent_pokeblocks.
-            }
-        };
-        
+    fn get_pokeblock_creation_info_of_pertinent_pokeblocks()
+    -> HashMap<[u8; 5], PokeblockCreationInfo> {
+        let pertinent_pokeblocks = PERTINENT_SOLO_POKEBLOCKS_BY_NATURE
+            .iter()
+            .flatten()
+            .chain(PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE.iter().flatten())
+            .cloned()
+            .collect::<HashSet<[u8; 5]>>();
+
         let all_map = generate_all_pokeblocks();
 
         all_map
@@ -677,23 +679,33 @@ mod test {
     #[test]
     #[ignore]
     fn test_generate_pertinent_pokeblocks() {
-        assert_list_eq!(
+        assert_eq!(
             PERTINENT_SOLO_POKEBLOCKS_BY_NATURE
                 .clone()
                 .into_iter()
                 .collect_vec(),
             get_pertinent_pokeblocks(true)
         );
-        assert_list_eq!(
+        assert_eq!(
             PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE
                 .clone()
                 .into_iter()
                 .collect_vec(),
             get_pertinent_pokeblocks(false)
         );
-        println!("PERTINENT_SOLO_POKEBLOCKS_BY_NATURE = {:?}", get_pokeblock_creation_info_of_pertinent_pokeblocks(pertinent_pokeblocks))
 
-        println!("pokeblockCreationInfos = {:?}", get_pokeblock_creation_info_of_pertinent_pokeblocks(pertinent_pokeblocks))
-        assert!(false);
+        let info_str = format!(
+            "pokeblockCreationInfos = {:?}",
+            get_pokeblock_creation_info_of_pertinent_pokeblocks()
+        );
+
+        let mut hasher = DefaultHasher::new();
+        info_str.hash(&mut hasher);
+
+        // Change the expected hash value at the same time as changing the content of pokeblock.ts
+        if hasher.finish() != 0 {
+            println!("{}", info_str);
+            assert!(false, "pokeblockCreationInfos content has changed.");
+        }
     }
 }

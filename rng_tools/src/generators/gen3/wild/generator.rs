@@ -416,17 +416,19 @@ pub fn calculate_nature_from_safari_pokeblock(
         }
         Wild3SafariPokeblockGenOpt::ForSearching {
             wanted_nature,
-            consider_all_safari_pokeblocks, // TODO: Support all Pokeblocks.
+            consider_all_safari_pokeblocks,
         } => {
-            let pokeblocks_by_nature = if *consider_all_safari_pokeblocks {
-                &PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE
+            let wanted_nature_idx = *wanted_nature as usize;
+            let pokeblock = if *consider_all_safari_pokeblocks {
+                PERTINENT_SOLO_POKEBLOCKS_BY_NATURE[wanted_nature_idx]
+                    .iter()
+                    .chain(PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE[wanted_nature_idx].iter())
+                    .find(|&flavors| get_nature_from_flavors(flavors) == *wanted_nature)
             } else {
-                &PERTINENT_SOLO_POKEBLOCKS_BY_NATURE
+                PERTINENT_SOLO_POKEBLOCKS_BY_NATURE[wanted_nature_idx]
+                    .iter()
+                    .find(|&flavors| get_nature_from_flavors(flavors) == *wanted_nature)
             };
-
-            let pokeblock = pokeblocks_by_nature[*wanted_nature as usize]
-                .iter()
-                .find(|&flavors| get_nature_from_flavors(flavors) == *wanted_nature);
 
             if let Some(pokeblock) = pokeblock {
                 (*wanted_nature, Some(*pokeblock))

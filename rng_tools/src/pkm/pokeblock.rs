@@ -354,6 +354,7 @@ pub static PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE: LazyLock<[Vec<[u8; 5]>; 25]> =
             vec![],
         ];
 
+        // prepend PERTINENT_SOLO_POKEBLOCKS_BY_NATURE
         PERTINENT_SOLO_POKEBLOCKS_BY_NATURE
             .clone()
             .into_iter()

@@ -1,9 +1,13 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, default};
 
 use arrayvec::ArrayVec;
-use itertools::Itertools;
+use itertools::{Itertools, iproduct};
+use serde::{Deserialize, Serialize};
+use tsify::Tsify;
 
-use crate::{Nature, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE, POKEBLOCK_NATURE_STAT_FACTORS};
+use crate::{
+    NATURE_COUNT, Nature, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE, POKEBLOCK_NATURE_STAT_FACTORS,
+};
 
 /*
 enum BerryType {
@@ -16,69 +20,91 @@ enum BerryType {
 
 pub struct Berry {
     pub name: BerryName,
+    pub internal_no: u8,
     /** flavors already applied negative impact on other flavors */
     pub flavors: [i8; 5],
+    pub is_accessible_solo: bool,
 }
 
 impl Berry {
-    pub const fn new(name: BerryName, flavors: [i8; 5]) -> Berry {
+    pub const fn new(
+        name: BerryName,
+        internal_no: u8,
+        flavors: [i8; 5],
+        is_accessible_solo: bool,
+    ) -> Berry {
         Berry {
-            name: name,
+            name,
+            internal_no,
             flavors,
+            is_accessible_solo,
         }
+    }
+    pub fn get_idx_from_name(name: BerryName) -> u8 {
+        BERRIES
+            .iter()
+            .enumerate()
+            .find_map(
+                |(idx, berry)| {
+                    if berry.name == name { Some(idx) } else { None }
+                },
+            )
+            .unwrap_or(0) as u8
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum BerryName {
-    Aspear,
-    Belue,
-    Bluk,
     Cheri,
     Chesto,
-    Cornn,
-    Figy,
-    Grepa,
-    Hondew,
-    Iapapa,
-    Kelpsy,
-    Lansat,
-    Leppa,
-    Liechi,
-    Lum,
-    Magost,
-    Nanab,
-    Nomel,
-    Oran,
-    Pamtre,
     Pecha,
+    Rawst,
+    Aspear,
+    Leppa,
+    Oran,
     Persim,
+    Lum,
+    Sitrus,
+    Figy,
+    Wiki,
+    Mago,
+    Aguav,
+    Iapapa,
+    Razz,
+    Bluk,
+    Nanab,
+    Wepear,
     Pinap,
     Pomeg,
+    Kelpsy,
     Qualot,
-    Rabuta,
-    Rawst,
-    Razz,
-    Sitrus,
-    Spelon,
-    Starf,
+    Hondew,
+    Grepa,
     Tamato,
-    Wepear,
-    Aguav,
-    Mago,
-    Wiki,
-    Durin,
+    Cornn,
+    Magost,
+    Rabuta,
+    Nomel,
+    Spelon,
+    Pamtre,
     Watmel,
-    Apicot,
+    Durin,
+    Belue,
+    Liechi,
     Ganlon,
-    Petaya,
     Salac,
+    Petaya,
+    Apicot,
+    Lansat,
+    Starf,
+    Enigma,
     Pumkin,
     Drash,
-    Chilan,
-    Strib,
     Eggant,
+    Strib,
+    Chilan,
     Nutpea,
-    Enigma,
     Ginema,
     Kuo,
     Yago,
@@ -86,74 +112,270 @@ pub enum BerryName {
     Niniku,
     Topo,
 }
-
 const BERRIES: [Berry; 55] = [
-    Berry::new(BerryName::Aspear, [0, 0, 0, -1, 1]),
-    Berry::new(BerryName::Belue, [1, 0, 0, -4, 3]),
-    Berry::new(BerryName::Bluk, [-1, 0, 1, 0, 0]),
-    Berry::new(BerryName::Cheri, [1, 0, 0, 0, -1]),
-    Berry::new(BerryName::Chesto, [-1, 1, 0, 0, 0]),
-    Berry::new(BerryName::Cornn, [-2, 1, 1, 0, 0]),
-    Berry::new(BerryName::Figy, [1, 0, 0, 0, -1]),
-    Berry::new(BerryName::Grepa, [-1, 0, 1, -1, 1]),
-    Berry::new(BerryName::Hondew, [0, 1, -1, 1, -1]),
-    Berry::new(BerryName::Iapapa, [0, 0, 0, -1, 1]),
-    Berry::new(BerryName::Kelpsy, [-1, 1, -1, 0, 1]),
-    Berry::new(BerryName::Lansat, [0, 0, 0, 0, 0]),
-    Berry::new(BerryName::Leppa, [1, -1, 0, 0, 0]),
-    Berry::new(BerryName::Liechi, [4, -4, 4, -1, -3]),
-    Berry::new(BerryName::Lum, [0, 0, 0, 0, 0]),
-    Berry::new(BerryName::Magost, [0, -2, 1, 1, 0]),
-    Berry::new(BerryName::Nanab, [0, -1, 0, 1, 0]),
-    Berry::new(BerryName::Nomel, [1, 0, 0, -2, 1]),
-    Berry::new(BerryName::Oran, [0, 0, 0, 0, 0]),
-    Berry::new(BerryName::Pamtre, [-4, 3, 1, 0, 0]),
-    Berry::new(BerryName::Pecha, [0, -1, 1, 0, 0]),
-    Berry::new(BerryName::Persim, [0, 0, 0, 0, 0]),
-    Berry::new(BerryName::Pinap, [1, 0, 0, -1, 0]),
-    Berry::new(BerryName::Pomeg, [1, -1, 0, 1, -1]),
-    Berry::new(BerryName::Qualot, [1, -1, 1, -1, 0]),
-    Berry::new(BerryName::Rabuta, [0, 0, -2, 1, 1]),
-    Berry::new(BerryName::Rawst, [0, 0, -1, 1, 0]),
-    Berry::new(BerryName::Razz, [0, 1, 0, 0, -1]),
-    Berry::new(BerryName::Sitrus, [0, 0, 0, 0, 0]),
-    Berry::new(BerryName::Spelon, [3, 1, 0, 0, -4]),
-    Berry::new(BerryName::Starf, [0, 0, 0, 0, 0]),
-    Berry::new(BerryName::Tamato, [1, 1, 0, 0, -2]),
-    Berry::new(BerryName::Wepear, [0, 0, -1, 0, 1]),
+    Berry::new(BerryName::Aspear, 5, [0, 0, 0, -1, 1], true),
+    Berry::new(BerryName::Belue, 35, [1, 0, 0, -4, 3], true),
+    Berry::new(BerryName::Bluk, 17, [-1, 0, 1, 0, 0], true),
+    Berry::new(BerryName::Cheri, 1, [1, 0, 0, 0, -1], true),
+    Berry::new(BerryName::Chesto, 2, [-1, 1, 0, 0, 0], true),
+    Berry::new(BerryName::Cornn, 27, [-2, 1, 1, 0, 0], true),
+    Berry::new(BerryName::Figy, 11, [1, 0, 0, 0, -1], true),
+    Berry::new(BerryName::Grepa, 25, [-1, 0, 1, -1, 1], true),
+    Berry::new(BerryName::Hondew, 24, [0, 1, -1, 1, -1], true),
+    Berry::new(BerryName::Iapapa, 15, [0, 0, 0, -1, 1], true),
+    Berry::new(BerryName::Kelpsy, 22, [-1, 1, -1, 0, 1], true),
+    Berry::new(BerryName::Lansat, 41, [0, 0, 0, 0, 0], true),
+    Berry::new(BerryName::Leppa, 6, [1, -1, 0, 0, 0], true),
+    Berry::new(BerryName::Liechi, 36, [4, -4, 4, -1, -3], true),
+    Berry::new(BerryName::Lum, 9, [0, 0, 0, 0, 0], true),
+    Berry::new(BerryName::Magost, 28, [0, -2, 1, 1, 0], true),
+    Berry::new(BerryName::Nanab, 18, [0, -1, 0, 1, 0], true),
+    Berry::new(BerryName::Nomel, 30, [1, 0, 0, -2, 1], true),
+    Berry::new(BerryName::Oran, 7, [0, 0, 0, 0, 0], true),
+    Berry::new(BerryName::Pamtre, 32, [-4, 3, 1, 0, 0], true),
+    Berry::new(BerryName::Pecha, 3, [0, -1, 1, 0, 0], true),
+    Berry::new(BerryName::Persim, 8, [0, 0, 0, 0, 0], true),
+    Berry::new(BerryName::Pinap, 20, [1, 0, 0, -1, 0], true),
+    Berry::new(BerryName::Pomeg, 21, [1, -1, 0, 1, -1], true),
+    Berry::new(BerryName::Qualot, 23, [1, -1, 1, -1, 0], true),
+    Berry::new(BerryName::Rabuta, 29, [0, 0, -2, 1, 1], true),
+    Berry::new(BerryName::Rawst, 4, [0, 0, -1, 1, 0], true),
+    Berry::new(BerryName::Razz, 16, [0, 1, 0, 0, -1], true),
+    Berry::new(BerryName::Sitrus, 10, [0, 0, 0, 0, 0], true),
+    Berry::new(BerryName::Spelon, 31, [3, 1, 0, 0, -4], true),
+    Berry::new(BerryName::Starf, 42, [0, 0, 0, 0, 0], true),
+    Berry::new(BerryName::Tamato, 26, [1, 1, 0, 0, -2], true),
+    Berry::new(BerryName::Wepear, 19, [0, 0, -1, 0, 1], true),
     // Latios/Latias
-    Berry::new(BerryName::Durin, [0, 0, -4, 3, 1]),
-    Berry::new(BerryName::Watmel, [0, -4, 3, 1, 0]),
-    // TrainerID
-    Berry::new(BerryName::Aguav, [0, 0, -1, 1, 0]),
-    Berry::new(BerryName::Mago, [0, -1, 1, 0, 0]),
-    Berry::new(BerryName::Wiki, [-1, 1, 0, 0, 0]),
+    Berry::new(BerryName::Durin, 34, [0, 0, -4, 3, 1], false),
+    Berry::new(BerryName::Watmel, 33, [0, -4, 3, 1, 0], false),
+    // Trainer ID
+    Berry::new(BerryName::Aguav, 14, [0, 0, -1, 1, 0], false),
+    Berry::new(BerryName::Mago, 13, [0, -1, 1, 0, 0], false),
+    Berry::new(BerryName::Wiki, 12, [-1, 1, 0, 0, 0], false),
     // XD/Colloseum
-    Berry::new(BerryName::Apicot, [-4, 4, 0, -4, 4]),
-    Berry::new(BerryName::Ganlon, [-4, 4, -4, 4, 0]),
-    Berry::new(BerryName::Petaya, [4, 0, -4, 4, -4]),
-    Berry::new(BerryName::Salac, [0, -4, 4, -4, 4]),
+    Berry::new(BerryName::Apicot, 40, [-4, 4, 0, -4, 4], false),
+    Berry::new(BerryName::Ganlon, 37, [-4, 4, -4, 4, 0], false),
+    Berry::new(BerryName::Petaya, 39, [4, 0, -4, 4, -4], false),
+    Berry::new(BerryName::Salac, 38, [0, -4, 4, -4, 4], false),
     // English R/S e-reader
-    Berry::new(BerryName::Pumkin, [0, 0, 0, -4, 4]),
-    Berry::new(BerryName::Drash, [0, -4, 4, 0, 0]),
-    Berry::new(BerryName::Chilan, [3, -3, 3, 0, -3]),
-    Berry::new(BerryName::Strib, [3, 0, -3, 3, -3]),
-    Berry::new(BerryName::Eggant, [-4, 4, 0, 0, 0]),
-    Berry::new(BerryName::Nutpea, [0, 0, 0, 0, 0]),
+    Berry::new(BerryName::Pumkin, 43, [0, 0, 0, -4, 4], false),
+    Berry::new(BerryName::Drash, 43, [0, -4, 4, 0, 0], false),
+    Berry::new(BerryName::Chilan, 43, [3, -3, 3, 0, -3], false),
+    Berry::new(BerryName::Strib, 43, [3, 0, -3, 3, -3], false),
+    Berry::new(BerryName::Eggant, 43, [-4, 4, 0, 0, 0], false),
+    Berry::new(BerryName::Nutpea, 43, [0, 0, 0, 0, 0], false),
     // Japanese
-    Berry::new(BerryName::Enigma, [0, 0, 0, 0, 0]),
-    Berry::new(BerryName::Ginema, [-3, 3, 0, -3, 3]),
-    Berry::new(BerryName::Kuo, [0, 0, 0, 0, 0]),
-    Berry::new(BerryName::Yago, [0, 0, -4, 4, 0]),
-    Berry::new(BerryName::Touga, [4, 0, 0, 0, -4]),
-    Berry::new(BerryName::Niniku, [-3, 3, -3, 3, 0]),
-    Berry::new(BerryName::Topo, [0, -3, 3, -3, 3]),
+    Berry::new(BerryName::Enigma, 43, [0, 0, 0, 0, 0], false),
+    Berry::new(BerryName::Ginema, 43, [-3, 3, 0, -3, 3], false),
+    Berry::new(BerryName::Kuo, 43, [0, 0, 0, 0, 0], false),
+    Berry::new(BerryName::Yago, 43, [0, 0, -4, 4, 0], false),
+    Berry::new(BerryName::Touga, 43, [4, 0, 0, 0, -4], false),
+    Berry::new(BerryName::Niniku, 43, [-3, 3, -3, 3, 0], false),
+    Berry::new(BerryName::Topo, 43, [0, -3, 3, -3, 3], false),
 ];
+
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+enum BlenderNpcs {
+    Npc0,
+    Npc1,
+    Npc2,
+    Npc3,
+    BlendMaster,
+}
+enum PokeblockCreationInfo {
+    Npc {
+        npcs: BlenderNpcs,
+        player_berry_idx: u8,
+    },
+    Multiplayer {
+        berries: [u8; 4],
+    },
+    Grey {
+        pokeblock: [u8; 5],
+    },
+}
+
+impl PokeblockCreationInfo {
+    pub fn get_berries(&self) -> [u8; 4] {
+        match self {
+            PokeblockCreationInfo::Multiplayer { berries } => berries.clone(),
+
+            PokeblockCreationInfo::Grey { pokeblock: _ } => [0, 0, NO_BERRY, NO_BERRY],
+
+            PokeblockCreationInfo::Npc {
+                npcs,
+                player_berry_idx,
+            } => {
+                let player_berry = &BERRIES[*player_berry_idx as usize];
+                let (npc1, npc2, npc3, master) =
+                    match (&player_berry.name, player_berry.internal_no % 5) {
+                        (BerryName::Cheri, _) => (
+                            BerryName::Aspear,
+                            BerryName::Rawst,
+                            BerryName::Pecha,
+                            BerryName::Spelon,
+                        ),
+                        (BerryName::Chesto, _) => (
+                            BerryName::Cheri,
+                            BerryName::Aspear,
+                            BerryName::Rawst,
+                            BerryName::Pamtre,
+                        ),
+                        (BerryName::Pecha, _) => (
+                            BerryName::Chesto,
+                            BerryName::Cheri,
+                            BerryName::Aspear,
+                            BerryName::Watmel,
+                        ),
+                        (BerryName::Rawst, _) => (
+                            BerryName::Pecha,
+                            BerryName::Chesto,
+                            BerryName::Cheri,
+                            BerryName::Durin,
+                        ),
+                        (BerryName::Aspear, _) => (
+                            BerryName::Rawst,
+                            BerryName::Pecha,
+                            BerryName::Chesto,
+                            BerryName::Belue,
+                        ),
+                        (BerryName::Spelon, _) => (
+                            BerryName::Cheri,
+                            BerryName::Pecha,
+                            BerryName::Rawst,
+                            BerryName::Tamato,
+                        ),
+                        (BerryName::Pamtre, _) => (
+                            BerryName::Chesto,
+                            BerryName::Rawst,
+                            BerryName::Aspear,
+                            BerryName::Cornn,
+                        ),
+                        (BerryName::Watmel, _) => (
+                            BerryName::Pecha,
+                            BerryName::Aspear,
+                            BerryName::Cheri,
+                            BerryName::Magost,
+                        ),
+                        (BerryName::Durin, _) => (
+                            BerryName::Rawst,
+                            BerryName::Cheri,
+                            BerryName::Chesto,
+                            BerryName::Rabuta,
+                        ),
+                        (BerryName::Belue, _) => (
+                            BerryName::Aspear,
+                            BerryName::Chesto,
+                            BerryName::Pecha,
+                            BerryName::Nomel,
+                        ),
+                        (BerryName::Enigma, _) => (
+                            BerryName::Cheri,
+                            BerryName::Pecha,
+                            BerryName::Rawst,
+                            BerryName::Spelon,
+                        ),
+                        (
+                            BerryName::Pumkin
+                            | BerryName::Drash
+                            | BerryName::Eggant
+                            | BerryName::Nutpea
+                            | BerryName::Ginema
+                            | BerryName::Kuo
+                            | BerryName::Yago
+                            | BerryName::Niniku
+                            | BerryName::Topo,
+                            _,
+                        ) => (
+                            BerryName::Cheri,
+                            BerryName::Pecha,
+                            BerryName::Rawst,
+                            player_berry.name.clone(), // Impossible in-game
+                        ),
+                        (BerryName::Strib | BerryName::Chilan | BerryName::Touga, _) => (
+                            BerryName::Chesto,
+                            BerryName::Rawst,
+                            BerryName::Aspear,
+                            player_berry.name.clone(), // Impossible in-game
+                        ),
+                        (_, 0) => (
+                            BerryName::Aspear,
+                            BerryName::Chesto,
+                            BerryName::Pecha,
+                            BerryName::Belue,
+                        ),
+                        (_, 1) => (
+                            BerryName::Cheri,
+                            BerryName::Pecha,
+                            BerryName::Rawst,
+                            BerryName::Spelon,
+                        ),
+                        (_, 2) => (
+                            BerryName::Chesto,
+                            BerryName::Rawst,
+                            BerryName::Aspear,
+                            BerryName::Pamtre,
+                        ),
+                        (_, 3) => (
+                            BerryName::Pecha,
+                            BerryName::Aspear,
+                            BerryName::Cheri,
+                            BerryName::Watmel,
+                        ),
+                        (_, 4) => (
+                            BerryName::Rawst,
+                            BerryName::Cheri,
+                            BerryName::Chesto,
+                            BerryName::Durin,
+                        ),
+                        _ => panic!("Impossible to reach"),
+                    };
+
+                match npcs {
+                    BlenderNpcs::Npc0 => [*player_berry_idx, NO_BERRY, NO_BERRY, NO_BERRY],
+                    BlenderNpcs::Npc1 => [
+                        *player_berry_idx,
+                        Berry::get_idx_from_name(npc1),
+                        NO_BERRY,
+                        NO_BERRY,
+                    ],
+                    BlenderNpcs::Npc2 => [
+                        *player_berry_idx,
+                        Berry::get_idx_from_name(npc1),
+                        Berry::get_idx_from_name(npc2),
+                        NO_BERRY,
+                    ],
+                    BlenderNpcs::Npc3 => [
+                        *player_berry_idx,
+                        Berry::get_idx_from_name(npc1),
+                        Berry::get_idx_from_name(npc2),
+                        Berry::get_idx_from_name(npc3),
+                    ],
+                    BlenderNpcs::BlendMaster => [
+                        *player_berry_idx,
+                        Berry::get_idx_from_name(master),
+                        NO_BERRY,
+                        NO_BERRY,
+                    ],
+                }
+            }
+        }
+    }
+}
 
 const BERRY_COUNT: u8 = BERRIES.len() as u8;
 const NO_BERRY: u8 = BERRY_COUNT;
 
-fn calculate_pokeblock(berry_idxs: [u8; 4]) -> [u8; 5] {
+fn calculate_pokeblock(info: &PokeblockCreationInfo) -> [u8; 5] {
+    match info {
+        PokeblockCreationInfo::Grey { pokeblock } => *pokeblock,
+        _ => calculate_pokeblock_from_berries(info.get_berries()),
+    }
+}
+
+fn calculate_pokeblock_from_berries(berry_idxs: [u8; 4]) -> [u8; 5] {
     let mut flavors = [0i16; 5];
 
     for (i, sum) in flavors.iter_mut().enumerate() {
@@ -188,38 +410,15 @@ fn calculate_pokeblock(berry_idxs: [u8; 4]) -> [u8; 5] {
     })
 }
 
-fn generate_all_pokeblocks() -> HashMap<[u8; 5], [u8; 4]> {
-    let mut map = HashMap::<[u8; 5], [u8; 4]>::new();
+fn generate_all_pokeblocks() -> HashMap<[u8; 5], PokeblockCreationInfo> {
+    let mut map = generate_all_solo_pokeblocks();
     let mut berries: [u8; 4] = [NO_BERRY, NO_BERRY, NO_BERRY, NO_BERRY];
 
-    let calc_and_try_add = |map: &mut HashMap<[u8; 5], [u8; 4]>, berries: [u8; 4]| {
-        let pokeblock = calculate_pokeblock(berries);
-        map.entry(pokeblock).or_insert(berries);
-        //NO_PROD only keep the easiest to obtain berries. ex: no GC
+    let calc_and_try_add = |map: &mut HashMap<[u8; 5], PokeblockCreationInfo>,
+                            info: PokeblockCreationInfo| {
+        let pokeblock = calculate_pokeblock(&info);
+        map.entry(pokeblock).or_insert(info);
     };
-
-    for berry_0 in 0..BERRY_COUNT {
-        berries[0] = berry_0;
-        calc_and_try_add(&mut map, berries);
-
-        for berry_1 in (berry_0 + 1)..BERRY_COUNT {
-            berries[1] = berry_1;
-            calc_and_try_add(&mut map, berries);
-
-            for berry_2 in (berry_1 + 1)..BERRY_COUNT {
-                berries[2] = berry_2;
-                calc_and_try_add(&mut map, berries);
-
-                for berry_3 in (berry_2 + 1)..BERRY_COUNT {
-                    berries[3] = berry_3;
-                    calc_and_try_add(&mut map, berries);
-                }
-                berries[3] = NO_BERRY;
-            }
-            berries[2] = NO_BERRY;
-        }
-        berries[1] = NO_BERRY;
-    }
 
     const BLACK_POKEBLOCKS: [[u8; 5]; 10] = [
         [0, 0, 1, 1, 1],
@@ -234,9 +433,61 @@ fn generate_all_pokeblocks() -> HashMap<[u8; 5], [u8; 4]> {
         [1, 1, 1, 0, 0],
     ];
     for pokeblock in BLACK_POKEBLOCKS {
-        map.entry(pokeblock).or_insert([0, 0, NO_BERRY, NO_BERRY]);
+        calc_and_try_add(&mut map, PokeblockCreationInfo::Grey { pokeblock });
     }
 
+    for berry_0 in 0..BERRY_COUNT {
+        berries[0] = berry_0;
+        calc_and_try_add(&mut map, PokeblockCreationInfo::Multiplayer { berries });
+
+        for berry_1 in (berry_0 + 1)..BERRY_COUNT {
+            berries[1] = berry_1;
+            calc_and_try_add(&mut map, PokeblockCreationInfo::Multiplayer { berries });
+
+            for berry_2 in (berry_1 + 1)..BERRY_COUNT {
+                berries[2] = berry_2;
+                calc_and_try_add(&mut map, PokeblockCreationInfo::Multiplayer { berries });
+
+                for berry_3 in (berry_2 + 1)..BERRY_COUNT {
+                    berries[3] = berry_3;
+                    calc_and_try_add(&mut map, PokeblockCreationInfo::Multiplayer { berries });
+                }
+                berries[3] = NO_BERRY;
+            }
+            berries[2] = NO_BERRY;
+        }
+        berries[1] = NO_BERRY;
+    }
+
+    map
+}
+
+fn generate_all_solo_pokeblocks() -> HashMap<[u8; 5], PokeblockCreationInfo> {
+    let npcs_list: [BlenderNpcs; 5] = [
+        BlenderNpcs::Npc0,
+        BlenderNpcs::Npc1,
+        BlenderNpcs::Npc2,
+        BlenderNpcs::Npc3,
+        BlenderNpcs::BlendMaster, // important to be last, so other npcs are prioritized
+    ];
+
+    let map_state_products = iproduct!(&npcs_list, 0..BERRY_COUNT);
+
+    let mut map = HashMap::<[u8; 5], PokeblockCreationInfo>::new();
+    for (&npcs, player_berry_idx) in map_state_products {
+        let player_berry = &BERRIES[player_berry_idx as usize];
+        if !player_berry.is_accessible_solo {
+            continue;
+        }
+
+        let info = PokeblockCreationInfo::Npc {
+            npcs,
+            player_berry_idx,
+        };
+        let berries = info.get_berries();
+        let pokeblock = calculate_pokeblock_from_berries(berries);
+        map.entry(pokeblock).or_insert(info);
+    }
     map
 }
 
@@ -316,39 +567,36 @@ fn merge_coverages(coverages: &HashMap<[u8; 5], Vec<bool>>, nature_list_len: usi
         .collect_vec()
 }
 
-fn get_pertinent_custom_pokeblocks(wanted_nature: Nature) -> Vec<[u8; 5]> {
+fn get_pertinent_pokeblocks_for_nature(wanted_nature: Nature, solo_only: bool) -> Vec<[u8; 5]> {
+    if POKEBLOCK_NATURE_STAT_FACTORS[wanted_nature as usize]
+        .iter()
+        .all(|f| *f == 0)
+    {
+        return vec![];
+    }
+
     let nature_lists = generate_all_nature_lists(wanted_nature);
-    let pokeblocks_map = generate_all_pokeblocks();
+    let pokeblocks_map = if solo_only {
+        generate_all_solo_pokeblocks()
+    } else {
+        generate_all_pokeblocks()
+    };
 
-    let custom_pokeblocks = pokeblocks_map.keys().cloned().collect_vec();
-    let solo_pokeblocks = &PERTINENT_SOLO_POKEBLOCKS_BY_NATURE[wanted_nature as usize];
+    let coverage_by_custom_pokeblock = {
+        let custom_pokeblocks = pokeblocks_map.keys().cloned().collect_vec();
+        get_pokeblocks_coverage(&nature_lists, wanted_nature, &custom_pokeblocks)
+    };
 
-    let mut coverage_by_custom_pokeblock =
-        get_pokeblocks_coverage(&nature_lists, wanted_nature, &custom_pokeblocks);
-    let coverage_by_solo_pokeblock =
-        get_pokeblocks_coverage(&nature_lists, wanted_nature, &solo_pokeblocks);
+    let initial_coverage = if solo_only {
+        vec![false; nature_lists.len()]
+    } else {
+        let solo_pokeblocks = &PERTINENT_SOLO_POKEBLOCKS_BY_NATURE[wanted_nature as usize];
+        let solo_coverage_by_berry =
+            get_pokeblocks_coverage(&nature_lists, wanted_nature, &solo_pokeblocks);
+        merge_coverages(&solo_coverage_by_berry, nature_lists.len())
+    };
 
-    let coverage_all_solo_pokeblocks =
-        merge_coverages(&coverage_by_solo_pokeblock, nature_lists.len());
-    /*
-    let custom_coverage_all_berries =
-        merge_coverages(&custom_coverage_by_berry, nature_lists.len());
-
-    println!(
-        "solo_coverage_all_berries: {}",
-        solo_coverage_all_berries.iter().filter(|x| **x).count()
-    );
-    println!(
-        "custom_coverage_all_berries: {}",
-        custom_coverage_all_berries.iter().filter(|x| **x).count()
-    );
-    println!("count: {}", nature_lists.len(),);
-    */
-
-    calculate_smallest_subset_with_max_coverage(
-        coverage_all_solo_pokeblocks,
-        &coverage_by_custom_pokeblock,
-    )
+    calculate_smallest_subset_with_max_coverage(initial_coverage, &coverage_by_custom_pokeblock)
 }
 
 fn calculate_smallest_subset_with_max_coverage(
@@ -401,21 +649,37 @@ fn calculate_smallest_subset_with_max_coverage(
     }
 }
 
+fn get_pertinent_pokeblocks(solo_only: bool) -> Vec<Vec<[u8; 5]>> {
+    (0..NATURE_COUNT)
+        .map(|nat| get_pertinent_pokeblocks_for_nature((nat as u8).into(), solo_only))
+        .collect_vec()
+}
+
 #[cfg(test)]
 mod test {
     use itertools::Itertools;
 
     use super::*;
-    use crate::{NATURE_COUNT, assert_list_eq};
+    use crate::{NATURE_COUNT, PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, assert_list_eq};
 
-    // cargo test --release test_generate_pertinent_custom_pokeblocks_by_nature -- --include-ignored
+    // cargo test --release test_generate_pertinent_pokeblocks -- --include-ignored
     #[test]
     #[ignore]
-    fn test_generate_pertinent_custom_pokeblocks_by_nature() {
-        let pertinent_custom_pokeblocks_by_nature = (0..NATURE_COUNT)
-            .map(|nat| get_pertinent_custom_pokeblocks((nat as u8).into()))
-            .collect_vec();
-        println!("{:?}", pertinent_custom_pokeblocks_by_nature);
+    fn test_generate_pertinent_pokeblocks() {
+        assert_list_eq!(
+            PERTINENT_SOLO_POKEBLOCKS_BY_NATURE
+                .clone()
+                .into_iter()
+                .collect_vec(),
+            get_pertinent_pokeblocks(true)
+        );
+        assert_list_eq!(
+            PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE
+                .clone()
+                .into_iter()
+                .collect_vec(),
+            get_pertinent_pokeblocks(false)
+        );
 
         assert!(false);
     }

@@ -6,7 +6,7 @@ mod test {
 
     use crate::{
         NATURE_COUNT, Nature, PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE,
-        PERTINENT_SOLO_POKEBLOCKS_BY_NATURE, POKEBLOCK_NATURE_STAT_FACTORS, assert_list_eq,
+        PERTINENT_SOLO_POKEBLOCKS_BY_NATURE, POKEBLOCK_NATURE_STAT_FACTORS,
     };
     use std::collections::{HashMap, HashSet};
 

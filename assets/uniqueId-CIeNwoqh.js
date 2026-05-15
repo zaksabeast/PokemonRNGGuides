@@ -1,0 +1,1 @@
+import{ka as e}from"./index.esm-Dmsc20Dp.js";var t=0;function n(n){var r=++t;return e(n)+r}export{n as t};

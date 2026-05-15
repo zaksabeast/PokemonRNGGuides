@@ -95,6 +95,10 @@
     "hash": "03bdf907aa8cf7e478c812ba176f7adba92adaae3c11ef8780f370b6fdd8e28c",
     "lastUpdated": null
   },
+  "/chatot-pitch-finder/": {
+    "hash": "42fabcf8ff1ef893645fd703c86b08234703835b656dbc7404f1e5c8dc3fe7d6",
+    "lastUpdated": "2026-05-14"
+  },
   "/citrarng-setup/": {
     "hash": "9ca239daf106beb6f8fb383cade00ac87e718760da7650bd62d653f8a77e119d",
     "lastUpdated": null
@@ -208,8 +212,8 @@
     "lastUpdated": null
   },
   "/dppt-advance-rng/": {
-    "hash": "cd815490e9dcd0cd9737cc563f1e93ff958fb5f709617ca714b9ccdd876a6c40",
-    "lastUpdated": null
+    "hash": "d6feaf0f35c39ac0216abedb5168c30781518d59e5cca37a20616902f460c6c4",
+    "lastUpdated": "2026-05-14"
   },
   "/dppt-cute-charm/": {
     "hash": "19ff75a33101c8889949e2e612bc7aac8300d98044695ee9b625a130891c2b3c",
@@ -480,8 +484,8 @@
     "lastUpdated": null
   },
   "/es-dppt-advance-rng/": {
-    "hash": "24a78c2a209736243d09c169d21e42d637b50263e4acdaa78cdd1b8d015f3322",
-    "lastUpdated": null
+    "hash": "827a09ffb3a1f1a4f54dd0b90916a6016801a37a357341cf70ca8adeca823ad9",
+    "lastUpdated": "2026-05-14"
   },
   "/es-gba-methods-lead-impact/": {
     "hash": "9e30bc24be5656fba1c91849f2ae71e9411032cb4010911005dac49de0608f19",
@@ -504,8 +508,8 @@
     "lastUpdated": null
   },
   "/es-hgss-rng-advance/": {
-    "hash": "397786abe6d6ec34152a3cd9f99df342e0d7371415359291f601b2e462606ee1",
-    "lastUpdated": null
+    "hash": "4414ae43ee57326ff8af258ef950fc04a1f9e318144f0da00906d1a3dd0534c2",
+    "lastUpdated": "2026-05-14"
   },
   "/es-install-pokereader/": {
     "hash": "993973c90e2e95093ee6257386cd22c5fda2f3248506790db40fd078cbea4485",
@@ -616,8 +620,8 @@
     "lastUpdated": "2026-03-25"
   },
   "/hgss-rng-advance/": {
-    "hash": "08ae852eaf16ed332dc675762400fd562e868b3c578d9299a622131db5c34c68",
-    "lastUpdated": null
+    "hash": "092ef2e88a1aa0d1d32221ab0df6dd255524a2e9c31df421acefe8de1377ea16",
+    "lastUpdated": "2026-05-14"
   },
   "/hgss-tid-sid/": {
     "hash": "82614bbbfc60528c524f2b03acf5a78e2372b8713b54d4d62c68b1bacc32450c",
@@ -827,6 +831,10 @@
     "hash": "beed93017096a40df29796b2e405933236287182d0ed1997f502b5b7b95de6a2",
     "lastUpdated": "2026-05-11"
   },
+  "/retail-dppt-swarm/": {
+    "hash": "d42eb6449a23cf1f8a86e4f84d4627d1b2598639a20cc3586739f13279b708c3",
+    "lastUpdated": "2026-05-15"
+  },
   "/retail-emerald-egg/": {
     "hash": "664dbb082f0728c419625e8fd194087e6dfd836eb915ef718ee1ad51a1c57053",
     "lastUpdated": "2026-04-11"
@@ -838,6 +846,10 @@
   "/retail-hgss-starter/": {
     "hash": "cac914cd39781d2a8e3ede66c76318af5462a81abfcd94516fc6b464b6582fec",
     "lastUpdated": "2026-04-10"
+  },
+  "/retail-hgss-swarm/": {
+    "hash": "d42eb6449a23cf1f8a86e4f84d4627d1b2598639a20cc3586739f13279b708c3",
+    "lastUpdated": "2026-05-15"
   },
   "/retail-oras-egg-mmsc/": {
     "hash": "385d5514055e517e42a5156117967821c9cee3435cde862439c734c6b98cfa08",
@@ -1031,6 +1043,10 @@
     "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
     "lastUpdated": "2026-03-08"
   },
+  "/sinnoh-map/": {
+    "hash": "a2b84306b18cadc5b3f70b8d07625b102cb04ed95a8346ad5f358e0c7719383c",
+    "lastUpdated": "2026-05-15"
+  },
   "/sos-call-rates/": {
     "hash": "c79222531695e8867a01a7599cc2f37c8e2307315ddab907659e4a4c7f336569",
     "lastUpdated": "2026-03-25"
@@ -1128,8 +1144,8 @@
     "lastUpdated": null
   },
   "/zh-dppt-advance-rng/": {
-    "hash": "f09f57472fd4cb1dbc321e845a0970c2161b163eefa7367107704b0698487fd4",
-    "lastUpdated": null
+    "hash": "ef4570c70345c16a513db20ba14e6d724fc0fc8ac36b3f40fa66f24806b4f9fb",
+    "lastUpdated": "2026-05-14"
   },
   "/zh-dppt-cute-charm/": {
     "hash": "93b7c6478b9b78dd55a3df40dae25525d472385aa3936a75217dee3f9ff6196c",
@@ -1336,8 +1352,8 @@
     "lastUpdated": "2026-03-20"
   },
   "/zh-hgss-rng-advance/": {
-    "hash": "7c3d6b699054887a5d3a12495d523ebc476e3fd4a4709792ad3b284cbbe92dde",
-    "lastUpdated": "2026-03-20"
+    "hash": "67542ba5c9a03303ef1544fa3207e305fa527d547f680735788a18f2738ca076",
+    "lastUpdated": "2026-05-14"
   },
   "/zh-hgss-tid-sid/": {
     "hash": "1c9941413a4ac3a1d1d87b47fb582c10f950558205928cb5b7aad90eb6fc1839",

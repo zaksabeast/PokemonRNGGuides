@@ -6,6 +6,7 @@ import Beedrill from "~/assets/box-sprites/beedrill.png";
 import Bellsprout from "~/assets/box-sprites/bellsprout.png";
 import Bulbasaur from "~/assets/box-sprites/bulbasaur.png";
 import Charmander from "~/assets/box-sprites/charmander.png";
+import Chatot from "~/assets/box-sprites/chatot.png";
 import Chesnaught from "~/assets/box-sprites/chesnaught.png";
 import Chikorita from "~/assets/box-sprites/chikorita.png";
 import Combusken from "~/assets/box-sprites/combusken.png";
@@ -58,6 +59,7 @@ const image = {
   Bellsprout,
   Bulbasaur,
   Charmander,
+  Chatot,
   Chesnaught,
   Chikorita,
   Combusken,

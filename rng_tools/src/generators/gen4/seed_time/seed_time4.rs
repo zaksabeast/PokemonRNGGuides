@@ -36,22 +36,28 @@ struct SeedTime4SingleMonthOptions {
     pub limit: usize,
 }
 
-fn calc_seedtime_for_month(opts: SeedTime4SingleMonthOptions) -> Vec<SeedTime4> {
-    let year = opts.year.clamp(2000, 2100);
-    let month = opts.month.clamp(1, 12);
-    let ab = opts.seed >> 24;
-    let cd = (opts.seed >> 16) & 0xff;
-    let efgh = opts.seed & 0xffff;
+pub(crate) fn calc_delay_from_seed(seed: u32, year: u32) -> u32 {
+    let cd = (seed >> 16) & 0xff;
+    let efgh = seed & 0xffff;
 
-    // Allow overflow seeds by setting hour to 23 and adjusting for delay
-    let hour = if cd > 23 { 23 } else { cd };
-    let delay = match cd > 23 {
+    match cd > 23 {
         true => efgh
             .wrapping_add(2000)
             .wrapping_sub(year)
             .wrapping_add(cd.wrapping_sub(23).wrapping_mul(0x10000)),
         false => efgh.wrapping_add(2000).wrapping_sub(year),
-    };
+    }
+}
+
+fn calc_seedtime_for_month(opts: SeedTime4SingleMonthOptions) -> Vec<SeedTime4> {
+    let year = opts.year.clamp(2000, 2100);
+    let month = opts.month.clamp(1, 12);
+    let ab = opts.seed >> 24;
+    let cd = (opts.seed >> 16) & 0xff;
+
+    // Allow overflow seeds by setting hour to 23 and adjusting for delay
+    let hour = if cd > 23 { 23 } else { cd };
+    let delay = calc_delay_from_seed(opts.seed, year);
 
     if !opts.delay_range.contains(&delay) {
         return vec![];
@@ -229,6 +235,20 @@ pub fn seedtime4_iter(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    mod calc_delay_from_seed {
+        use super::*;
+        use crate::datetime;
+
+        #[test]
+        fn removes_year_offset_from_low_bits() {
+            let datetime = datetime!(2026-05-14 12:34:30).unwrap();
+            let seed = calc_seed(&datetime, 1749);
+
+            assert_eq!(seed & 0xffff, 1775);
+            assert_eq!(super::calc_delay_from_seed(seed, datetime.year), 1749);
+        }
+    }
 
     mod calc_seedtime4 {
         use super::*;

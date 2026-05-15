@@ -176,6 +176,9 @@ const gameMenu = [
 const StyledMenu = styled(Menu)({
   "&&&.ant-menu-root": {
     border: 0,
+    "& a": {
+      fontWeight: "normal",
+    },
   },
 });
 

@@ -9,6 +9,7 @@ export const Static4ChatterFilter = () => {
     <ChatterFilterBase
       seed={target?.seed ?? null}
       targetAdvance={target?.advance ?? null}
+      mode="embedded"
       submitTrackerId="static4_chatter_filter"
     />
   );

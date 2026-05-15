@@ -74,6 +74,9 @@ export {
   MapKeepScale,
   MapGlow,
   MapMarker,
+  type MapCaptureConfig,
+  type MapCaptureMode,
+  type MapCapturedGeometry,
   type Point,
   type MapFeature,
 } from "./interactableMap";

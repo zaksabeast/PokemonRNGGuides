@@ -47,6 +47,10 @@ const renderAntdStyles = () => {
         -webkit-tap-highlight-color: transparent;
       }
 
+      a {
+        font-weight: 600;
+      }
+
       button,
       .ant-btn {
         /* Adjust selector to target the affected buttons */

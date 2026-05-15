@@ -2,7 +2,7 @@ use super::base_state::{BaseStatic4State, Static4State};
 use crate::Species;
 use crate::gen4::calc_level::{LevelCalculator, ReversedHoneyLevel, SetLevel};
 use crate::gen4::game_logic::{DpptLogic, GameSpecificLogic, HgssLogic};
-use crate::gen4::seed_time4::SeedTime4Options;
+use crate::gen4::seed_time4::{SeedTime4Options, calc_delay_from_seed};
 use crate::gen4::{GameVersion, LeadAbility, StaticMethod};
 use crate::generators::utils::recover_poke_rng_iv;
 use crate::rng::Rng;
@@ -69,11 +69,10 @@ impl SeedFilters {
             let mut seed = rng.seed();
 
             for advance in min_advance..=max_advance {
-                // Fast path: check if seed's bits encode a valid time (PokeFinder approach)
-                let hour = (seed >> 16) & 0xFF;
-                let delay = seed & 0xFFFF;
+                // Quick delay precheck before resolving the full seed time.
+                let delay = calc_delay_from_seed(seed, filters.year);
 
-                if hour < 24 && delay >= filters.min_delay && delay <= filters.max_delay {
+                if delay >= filters.min_delay && delay <= filters.max_delay {
                     // Found a match! Now verify with find_seedtime if needed
                     let seed_time_opts = SeedTime4Options::new(
                         seed,
@@ -686,7 +685,7 @@ mod tests {
 
     mod method1 {
         use super::*;
-        use crate::{assert_list_eq, ivs};
+        use crate::{assert_list_eq, datetime, ivs};
 
         #[test]
         fn offset_10() {
@@ -778,6 +777,38 @@ mod tests {
                 pokefinder_static!(LeadAbility::None, "test_data/method1/min_advance_40.txt");
 
             assert_list_eq!(results, expected);
+        }
+
+        #[test]
+        fn delay_range_uses_decoded_delay() {
+            let datetime = datetime!(2026-05-14 12:34:30).unwrap();
+            let seed = crate::gen4::calc_seed(&datetime, 1749);
+            let state = BaseStatic4State::new(
+                seed,
+                Species::Omanyte,
+                Nature::Hardy,
+                1,
+                0,
+                12345,
+                54321,
+                ivs!(0 / 0 / 0 / 0 / 0 / 0),
+                LeadAbility::None,
+            );
+
+            let results = SeedFilters {
+                offset: 0,
+                min_advance: 0,
+                max_advance: 0,
+                year: datetime.year,
+                month: Some(datetime.month),
+                min_delay: 800,
+                max_delay: 1750,
+                force_second: Some(datetime.second),
+            }
+            .filter(std::iter::once(state));
+
+            assert_eq!(results.len(), 1);
+            assert_eq!(results[0].seed_time.delay, 1749);
         }
     }
 

@@ -8851,6 +8851,44 @@ export const guides = {
       return file.default;
     }),
   },
+  "/retail-dppt-swarm/": {
+    meta: {
+      id: "/retail-dppt-swarm/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "true-Swarm RNG",
+      isNew: false,
+      title: "Diamond, Pearl, and Platinum Swarm RNG",
+      navDrawerTitle: "Swarm RNG",
+      description:
+        "Learn how to RNG Swarm Pokémon in Diamond, Pearl, and Platinum for shiny, high-IV Pokémon.",
+      slug: "/retail-dppt-swarm/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-05-15",
+      type: "baseGuide",
+      canonical: "/retail-hgss-swarm/",
+      file: "guides/Gen 4/Swarm.mdx",
+      translations: null,
+      guideGroupId: "en:true-Swarm RNG:Diamond, Pearl, and Platinum",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-dppt-swarm/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Swarm.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Swarm.mdx?raw");
+      return file.default;
+    }),
+  },
   "/retail-emerald-egg/": {
     meta: {
       id: "/retail-emerald-egg/",
@@ -8970,6 +9008,44 @@ export const guides = {
     Guide: React.lazy(() => import("~/../guides/Gen 4/Starters.mdx")),
     getRawFile: memoize(async () => {
       const file = await import("~/../guides/Gen 4/Starters.mdx?raw");
+      return file.default;
+    }),
+  },
+  "/retail-hgss-swarm/": {
+    meta: {
+      id: "/retail-hgss-swarm/",
+      categories: ["HeartGold and SoulSilver"],
+      section: "pokemon_rng",
+      guideVariants: ["retail"],
+      guideKey: "true-Swarm RNG",
+      isNew: false,
+      title: "HeartGold and SoulSilver Swarm RNG",
+      navDrawerTitle: "Swarm RNG",
+      description:
+        "Learn how to RNG Swarm Pokémon in HeartGold and SoulSilver for shiny, high-IV Pokémon.",
+      slug: "/retail-hgss-swarm/",
+      isRoughDraft: true,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: null,
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-05-15",
+      type: "baseGuide",
+      canonical: "/retail-hgss-swarm/",
+      file: "guides/Gen 4/Swarm.mdx",
+      translations: null,
+      guideGroupId: "en:true-Swarm RNG:HeartGold and SoulSilver",
+      guideVariantLinks: {
+        retail: { type: "slug", slug: "/retail-hgss-swarm/" },
+        cfwEmu: null,
+      },
+      displayAttributes: ["web_tool", "rough_draft"],
+    },
+    Guide: React.lazy(() => import("~/../guides/Gen 4/Swarm.mdx")),
+    getRawFile: memoize(async () => {
+      const file = await import("~/../guides/Gen 4/Swarm.mdx?raw");
       return file.default;
     }),
   },
@@ -17061,9 +17137,11 @@ export const guideSlugs = [
   "/retail-dppt-honey-tree/",
   "/retail-dppt-starter/",
   "/retail-dppt-static/",
+  "/retail-dppt-swarm/",
   "/retail-emerald-egg/",
   "/retail-emerald-wild/",
   "/retail-hgss-starter/",
+  "/retail-hgss-swarm/",
   "/retail-oras-egg-mmsc/",
   "/retail-oras-egg-no-mmsc/",
   "/retail-oras-tid/",

@@ -430,6 +430,10 @@ const tools = {
     () => import("~/rngToolsUi/gen4/standaloneChatterFilter"),
     (mod) => mod.StandaloneChatterFilter,
   ),
+  SelectSwarm4Target: lazyLoad(
+    () => import("~/rngToolsUi/gen4/swarm/selectTarget"),
+    (mod) => mod.SelectSwarm4Target,
+  ),
 };
 
 export const markdownComponents = {

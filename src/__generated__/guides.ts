@@ -11035,6 +11035,47 @@ export const guides = {
       return file.default;
     }),
   },
+  "/sinnoh-map/": {
+    meta: {
+      id: "/sinnoh-map/",
+      categories: ["Diamond, Pearl, and Platinum"],
+      section: "supporting_info",
+      guideVariants: null,
+      guideKey: "false-Interactive Sinnoh Map",
+      isNew: true,
+      title: "Interactive Sinnoh Map",
+      navDrawerTitle: "Interactive Sinnoh Map",
+      description:
+        "Interactive Sinnoh maps for Diamond, Pearl, and Platinum featuring touch-friendly navigation, highlighted areas, toggle-able markers, and more.",
+      slug: "/sinnoh-map/",
+      isRoughDraft: false,
+      orderPriority: 20,
+      difficulty: null,
+      hideFromNavDrawer: false,
+      addedOn: "2026-05-14",
+      translation: null,
+      layout: "guide",
+      lastUpdated: "2026-05-15",
+      type: "baseGuide",
+      canonical: "/sinnoh-map/",
+      file: "guides/Gen 4/Diamond, Pearl, and Platinum/Sinnoh Map.mdx",
+      translations: null,
+      guideGroupId:
+        "en:false-Interactive Sinnoh Map:Diamond, Pearl, and Platinum",
+      guideVariantLinks: null,
+      displayAttributes: ["web_tool"],
+    },
+    Guide: React.lazy(
+      () =>
+        import("~/../guides/Gen 4/Diamond, Pearl, and Platinum/Sinnoh Map.mdx"),
+    ),
+    getRawFile: memoize(async () => {
+      const file = await import(
+        "~/../guides/Gen 4/Diamond, Pearl, and Platinum/Sinnoh Map.mdx?raw"
+      );
+      return file.default;
+    }),
+  },
   "/sos-call-rates/": {
     meta: {
       id: "/sos-call-rates/",
@@ -17071,6 +17112,7 @@ export const guideSlugs = [
   "/rs-tidsid-generator/",
   "/rs-tips-rng/",
   "/ruby-and-sapphire/",
+  "/sinnoh-map/",
   "/sos-call-rates/",
   "/sun-and-moon/",
   "/sword-and-shield/",

@@ -10,6 +10,7 @@ import {
   MapMarker,
   type Point,
   type MapFeature,
+  type MapCaptureConfig,
 } from "~/components";
 import styled from "@emotion/styled";
 import { type HoneyTreeLocation } from "~/rngTools";
@@ -723,7 +724,7 @@ type HoneyTreeMarkerProps = {
   isRecommended: boolean;
   isMunchlax: boolean;
   location: HoneyTreeLocation;
-  onClick: () => void;
+  onClick?: (() => void) | null;
 };
 
 const HoneyTreeMarker = ({
@@ -738,7 +739,7 @@ const HoneyTreeMarker = ({
       p={4}
       borderRadius={50}
       pr={isRecommended || isMunchlax ? 10 : 4}
-      onClick={onClick}
+      onClick={onClick ?? undefined}
     >
       <Icon name="TreeLine" color="Warning" size={20} />
       {isMunchlax && (
@@ -757,15 +758,20 @@ const HoneyTreeMarker = ({
 
 type SinnohMapProps = {
   features?: MapFeature[];
+  capture?: MapCaptureConfig;
   honeyTree?: {
     show: boolean;
     recommendedTrees: HoneyTreeLocation[];
     munchlaxTrees: HoneyTreeLocation[];
-    onClickHoneyTree: (location: HoneyTreeLocation) => void;
+    onClickHoneyTree?: (location: HoneyTreeLocation) => void;
   };
 };
 
-export const SinnohMap = ({ features = [], honeyTree }: SinnohMapProps) => {
+export const SinnohMap = ({
+  features = [],
+  capture,
+  honeyTree,
+}: SinnohMapProps) => {
   const honeyTreeFeatures = !honeyTree?.show
     ? []
     : HONEY_TREES.map(
@@ -780,7 +786,11 @@ export const SinnohMap = ({ features = [], honeyTree }: SinnohMapProps) => {
                   tree.location,
                 )}
                 location={tree.location}
-                onClick={() => honeyTree.onClickHoneyTree(tree.location)}
+                onClick={
+                  honeyTree.onClickHoneyTree == null
+                    ? null
+                    : () => honeyTree.onClickHoneyTree?.(tree.location)
+                }
               />
             </MapKeepScale>
           ),
@@ -803,6 +813,7 @@ export const SinnohMap = ({ features = [], honeyTree }: SinnohMapProps) => {
     <InteractableMap
       src={Sinnoh}
       alt="Sinnoh Map"
+      capture={capture}
       features={[...citiesAndRoutes, ...honeyTreeFeatures, ...features]}
     />
   );

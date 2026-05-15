@@ -1,3 +1,4 @@
+import { settings } from "~/settings";
 import { Button } from "../button";
 import { Card } from "../card";
 import { CopyToClipboardButton } from "../copyToClipboardButton";
@@ -73,11 +74,18 @@ export const CaptureControls = ({
       <Flex vertical gap={16}>
         <Flex vertical gap={4}>
           <Typography.Title level={4} mb={0} mt={0}>
-            Map Marker Submission
+            Draw mode
           </Typography.Title>
           <Typography.Paragraph mb={0}>
-            Choose a point or polygon, click the map to place coordinates, then
-            copy the JSON output.
+            Draw markers on the map, copy the generated JSON, and send it to{" "}
+            <a
+              href={settings.siteContentDiscordUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              #site-content on Discord
+            </a>
+            !
           </Typography.Paragraph>
         </Flex>
 

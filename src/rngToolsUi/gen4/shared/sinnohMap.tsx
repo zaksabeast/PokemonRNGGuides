@@ -708,6 +708,48 @@ const HONEY_TREES: HoneyTreeFeature[] = [
   { x: 54.7, y: 67.0, location: "Route209" },
 ];
 
+const CHATOT_LOCATIONS: (Point & { games: ("dp" | "pt")[] })[] = [
+  {
+    x: 80.0,
+    y: 75.0,
+    games: ["dp", "pt"],
+  },
+  {
+    x: 35.0,
+    y: 42.0,
+    games: ["dp", "pt"],
+  },
+  {
+    x: 89.8,
+    y: 45.0,
+    games: ["dp"],
+  },
+  {
+    x: 70.6,
+    y: 83.0,
+    games: ["pt"],
+  },
+  {
+    x: 10.9,
+    y: 73.2,
+    games: ["pt"],
+  },
+];
+
+const getChatotFeature = (point: Point): MapFeature => ({
+  type: "point",
+  point,
+  node: (
+    <MapKeepScale>
+      <MapMarker trackerId={`chatot-${point.x}-${point.y}`} p={4}>
+        <SpriteContainer>
+          <Sprite name="Chatot" />
+        </SpriteContainer>
+      </MapMarker>
+    </MapKeepScale>
+  ),
+});
+
 const SpriteContainer = styled.div({
   width: 22,
   height: 22,
@@ -759,6 +801,8 @@ const HoneyTreeMarker = ({
 type SinnohMapProps = {
   features?: MapFeature[];
   capture?: MapCaptureConfig;
+  dpChatot?: boolean;
+  ptChatot?: boolean;
   honeyTree?: {
     show: boolean;
     recommendedTrees: HoneyTreeLocation[];
@@ -770,6 +814,8 @@ type SinnohMapProps = {
 export const SinnohMap = ({
   features = [],
   capture,
+  dpChatot,
+  ptChatot,
   honeyTree,
 }: SinnohMapProps) => {
   const honeyTreeFeatures = !honeyTree?.show
@@ -797,6 +843,12 @@ export const SinnohMap = ({
         }),
       );
 
+  const chatotFeatures = CHATOT_LOCATIONS.filter((location) => {
+    const showDp = dpChatot && location.games.includes("dp");
+    const showPt = ptChatot && location.games.includes("pt");
+    return showDp || showPt;
+  }).map(getChatotFeature);
+
   const citiesAndRoutes = CITIES_AND_ROUTES.map(
     ({ points, label }): MapFeature => ({
       type: "polygon",
@@ -814,7 +866,12 @@ export const SinnohMap = ({
       src={Sinnoh}
       alt="Sinnoh Map"
       capture={capture}
-      features={[...citiesAndRoutes, ...honeyTreeFeatures, ...features]}
+      features={[
+        ...citiesAndRoutes,
+        ...honeyTreeFeatures,
+        ...chatotFeatures,
+        ...features,
+      ]}
     />
   );
 };

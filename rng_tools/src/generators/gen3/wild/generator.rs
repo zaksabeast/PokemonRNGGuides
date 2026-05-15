@@ -750,7 +750,7 @@ fn generate_gen3_wild_method2(
         rand_next_u16(&mut rng, "iv2_wild2", 1),
     );
 
-    create_if_passes_filter(&gen_data, pid, ivs, Gen3Method::Wild2, cycle_range)
+    create_if_passes_filter(gen_data, pid, ivs, Gen3Method::Wild2, cycle_range)
 }
 
 fn generate_gen3_wild_method3(
@@ -796,7 +796,7 @@ fn generate_gen3_wild_method4(
 
     let ivs = Ivs::new_g3(iv1, rand_next_u16(&mut rng, "iv2_wild4", 1));
 
-    create_if_passes_filter(&gen_data, pid, ivs, Gen3Method::Wild4, cycle_range)
+    create_if_passes_filter(gen_data, pid, ivs, Gen3Method::Wild4, cycle_range)
 }
 
 fn generate_gen3_wild_method5(
@@ -840,7 +840,7 @@ fn generate_gen3_wild_method5(
 
     (
         retry_count,
-        create_if_passes_filter(&gen_data, pid, ivs, Gen3Method::Wild5, cycle_range),
+        create_if_passes_filter(gen_data, pid, ivs, Gen3Method::Wild5, cycle_range),
     )
 }
 

@@ -1,9 +1,38 @@
+use serde::{Deserialize, Serialize};
+use tsify::Tsify;
+
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub enum BlenderNpcs {
+    Npc0,
+    Npc1,
+    Npc2,
+    Npc3,
+    BlendMaster,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub enum PokeblockCreationInfo {
+    Npc {
+        npcs: BlenderNpcs,
+        player_berry_idx: u8,
+    },
+    Multiplayer {
+        berries: [u8; 4],
+    },
+    Grey {
+        pokeblock: [u8; 5],
+    },
+}
+
 #[cfg(test)]
 mod test {
     use itertools::{Itertools, iproduct};
     use std::collections::hash_map::DefaultHasher;
     use std::hash::{Hash, Hasher};
 
+    use super::*;
     use crate::{
         NATURE_COUNT, Nature, PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE,
         PERTINENT_SOLO_POKEBLOCKS_BY_NATURE, POKEBLOCK_NATURE_STAT_FACTORS,
@@ -11,8 +40,6 @@ mod test {
     use std::collections::{BTreeMap, HashSet};
 
     use arrayvec::ArrayVec;
-    use serde::{Deserialize, Serialize};
-    use tsify::Tsify;
 
     pub struct Berry {
         pub name: BerryName,
@@ -170,30 +197,6 @@ mod test {
         Berry::new(BerryName::Niniku, 43, [-3, 3, -3, 3, 0], false),
         Berry::new(BerryName::Topo, 43, [0, -3, 3, -3, 3], false),
     ];
-
-    #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
-    #[tsify(into_wasm_abi, from_wasm_abi)]
-    enum BlenderNpcs {
-        Npc0,
-        Npc1,
-        Npc2,
-        Npc3,
-        BlendMaster,
-    }
-
-    #[derive(Debug)]
-    enum PokeblockCreationInfo {
-        Npc {
-            npcs: BlenderNpcs,
-            player_berry_idx: u8,
-        },
-        Multiplayer {
-            berries: [u8; 4],
-        },
-        Grey {
-            pokeblock: [u8; 5],
-        },
-    }
 
     impl PokeblockCreationInfo {
         pub fn get_berries(&self) -> [u8; 4] {
@@ -694,7 +697,7 @@ mod test {
 
             if (*expected_result).clone().into_iter().collect_vec() != pokeblocks {
                 let str = format!("{:?}", pokeblocks);
-                let str = str.replace("]], [[", "]], vec![[");
+                let str = str.replace("], [[", "], vec![[");
                 let str = str.replace("[]", "vec![]");
 
                 println!("{}", str);
@@ -711,8 +714,10 @@ mod test {
         info_str.hash(&mut hasher);
 
         // Change the expected hash value at the same time as changing the content of pokeblock.ts
-        if hasher.finish() != 0 {
+        let hash_val = hasher.finish();
+        if hasher.finish() != 951967883377131328 {
             println!("{}", info_str);
+            println!("hash_val = {}", hash_val);
             assert!(false, "pokeblockCreationInfos content has changed.");
         }
     }

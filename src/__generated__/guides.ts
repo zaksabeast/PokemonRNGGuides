@@ -3280,7 +3280,7 @@ export const guides = {
       section: "pokemon_rng",
       guideVariants: ["retail"],
       guideKey: "false-Wild RNG",
-      isNew: true,
+      isNew: false,
       title: "Pokemon Emerald Wild RNG",
       navDrawerTitle: "Wild RNG",
       description:

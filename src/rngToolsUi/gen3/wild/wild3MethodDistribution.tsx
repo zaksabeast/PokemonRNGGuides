@@ -562,6 +562,11 @@ const convertSearcherResultsToUIResults = (
 const calculate = async (values: FormState) => {
   const initial_seed = values.usingPaintingReseeding ? values.initial_seed : 0;
 
+  const { canUsePokeblock } = getPossibleValuesForMap(
+    values.map,
+    values.action,
+  );
+
   const opts: Wild3GeneratorOptions = {
     tid: values.tid,
     sid: values.sid,
@@ -583,7 +588,7 @@ const calculate = async (values: FormState) => {
     feebas_state: values.feebasState,
     lead_cycle_speed: values.leadCycleSpeed,
     safari_pokeblock:
-      values.safariPokeblock !== null
+      canUsePokeblock && values.safariPokeblock !== null
         ? {
             Specific: values.safariPokeblock,
           }

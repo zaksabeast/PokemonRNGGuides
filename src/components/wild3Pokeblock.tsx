@@ -14,7 +14,7 @@ import {
   pokeblockCreationInfos,
   pokeblockFlavorNames,
 } from "~/types/pokeblock";
-import { match } from "ts-pattern";
+import { match, P } from "ts-pattern";
 import { Flex } from "./flex";
 import { TooltipWithIcon } from "./tooltipWithIcon";
 
@@ -77,8 +77,19 @@ const getPokeblockCreationInfoText = (pokeblock: Pokeblock) => {
   if (info == null) {
     return "";
   }
-  if ("Npc" in info) {
-    const { npcs, player_berry_idx } = info["Npc"];
+
+  const exists = P.not(P.nullish);
+  const formattedInfo = match(info)
+    .with({ Npc: exists }, ({ Npc }) => ({ type: "Npc" as const, ...Npc }))
+    .with({ Grey: exists }, ({ Grey }) => ({ type: "Grey" as const, ...Grey }))
+    .with({ Multiplayer: exists }, ({ Multiplayer }) => ({
+      type: "Multiplayer" as const,
+      ...Multiplayer,
+    }))
+    .exhaustive();
+
+  if (formattedInfo.type === "Npc") {
+    const { npcs, player_berry_idx } = formattedInfo;
     const withWho = match(npcs)
       .with("Npc0", () => "solo")
       .with("Npc1", () => "with 1 NPC")
@@ -88,17 +99,20 @@ const getPokeblockCreationInfoText = (pokeblock: Pokeblock) => {
       .exhaustive();
     return `Created by playing Berry Blender ${withWho}, and blending a ${berryNames[player_berry_idx]} berry.`;
   }
-  if ("Grey" in info) {
+
+  if (formattedInfo.type === "Grey") {
     return "1/10 chance to be created by playing Berry Blender with another player, when both players provide the same berry.";
   }
-  if ("Multiplayer" in info) {
-    const { berries } = info["Multiplayer"];
+
+  if (formattedInfo.type === "Multiplayer") {
+    const { berries } = formattedInfo;
     const berryToBlendNames = berries
       .filter((berry) => berry < berryNames.length)
       .map((berry) => berryNames[berry]);
 
-    return `Created by playing Berry Blender with ${berryToBlendNames.length} other players, and blending the berries: ${berryToBlendNames.join(", ")}.`;
+    return `Created by playing Berry Blender with ${berryToBlendNames.length - 1} other players, and blending the berries: ${berryToBlendNames.join(", ")}.`;
   }
+
   return "";
 };
 

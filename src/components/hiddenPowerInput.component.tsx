@@ -8,16 +8,19 @@ import {
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useField } from "~/hooks/form";
-import { PkmFilterFields } from "./pkmFilter";
 import { Paths } from "~/types";
 
 const HIDDEN_POWER_TYPES = pokemonTypes.filter((type) => type !== "Normal");
 
-type Props<FormState extends PkmFilterFields> = {
+type HiddenPowerFields = {
+  filter_hidden_power: HiddenPowerFilter;
+};
+
+type Props<FormState extends HiddenPowerFields> = {
   name: Paths<FormState, HiddenPowerFilter> & "filter_hidden_power";
 };
 
-export const HiddenPowerInput = <FormState extends PkmFilterFields>(
+export const HiddenPowerInput = <FormState extends HiddenPowerFields>(
   // Keeping props to make sure form state is compatible
   _props: Props<FormState>,
 ) => {
@@ -25,7 +28,7 @@ export const HiddenPowerInput = <FormState extends PkmFilterFields>(
     {
       label: "Type",
       input: (
-        <FormikSelect<PkmFilterFields, "filter_hidden_power.pokemon_types">
+        <FormikSelect<HiddenPowerFields, "filter_hidden_power.pokemon_types">
           name="filter_hidden_power.pokemon_types"
           options={toOptions(HIDDEN_POWER_TYPES)}
           mode="multiple"
@@ -35,7 +38,7 @@ export const HiddenPowerInput = <FormState extends PkmFilterFields>(
     {
       label: "Min power",
       input: (
-        <FormikNumberInput<PkmFilterFields>
+        <FormikNumberInput<HiddenPowerFields>
           name="filter_hidden_power.min_bp"
           numType="decimal"
         />
@@ -44,7 +47,7 @@ export const HiddenPowerInput = <FormState extends PkmFilterFields>(
     {
       label: "Max power",
       input: (
-        <FormikNumberInput<PkmFilterFields>
+        <FormikNumberInput<HiddenPowerFields>
           name="filter_hidden_power.max_bp"
           numType="decimal"
         />
@@ -69,7 +72,7 @@ export const HiddenPowerSwitch = () => {
   };
 
   return (
-    <FormikSwitch<PkmFilterFields>
+    <FormikSwitch<HiddenPowerFields>
       name="filter_hidden_power.active"
       onChange={resetHiddenPower}
     />

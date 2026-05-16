@@ -31,6 +31,7 @@ import {
 } from "~/types/stat";
 import { getStatRange } from "~/types/statRange";
 import { z } from "zod";
+import { defaultHiddenPowerFilter } from "~/components/hiddenPowerInput";
 import pmap from "p-map";
 import { sortBy, startCase, mapValues } from "lodash-es";
 import { createGen3TimerAtom } from "~/hooks/useGen3Timer";
@@ -174,10 +175,9 @@ const getPotentialEggs = async (state: PickupEggState) => {
         initial_advances: Math.max(state.targetAdvance - 100, 0),
         max_advances: 200,
         delay: 0,
-        filter: {
-          min_ivs: minIvs,
-          max_ivs: maxIvs,
-        },
+        filter_min_ivs: minIvs,
+        filter_max_ivs: maxIvs,
+        filter_hidden_power: defaultHiddenPowerFilter,
       });
       return spreads.map((spread) => ({ ...spread, method }));
     },

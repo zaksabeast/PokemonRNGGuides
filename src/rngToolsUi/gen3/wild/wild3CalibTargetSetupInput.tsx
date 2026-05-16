@@ -219,7 +219,12 @@ const getFields = ({
     },
     {
       label: "Lead Cycle Speed",
-      input: <LeadCycleSpeedSelector idealLeadCycleSpeed={null} />,
+      input: (
+        <LeadCycleSpeedSelector
+          idealLeadCycleSpeed={null}
+          idealLeadSelected={false}
+        />
+      ),
       show: gen3Leads[leadIdx] !== "Egg" && !usingAverageLeadCycleSpeed,
       indent: 1,
     },

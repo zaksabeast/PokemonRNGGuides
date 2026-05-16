@@ -45,14 +45,17 @@ const calculateLeadCycleSpeed = async (
 
 export const LeadCycleSpeedSelector = ({
   idealLeadCycleSpeed,
+  idealLeadSelected,
 }: {
   idealLeadCycleSpeed: number | null;
+  idealLeadSelected: boolean;
 }) => {
   const { setFieldValue } = useFormContext<{
     leadCycleSpeed: number;
   }>();
-  const [leadSpeedType, setLeadSpeedType] =
-    React.useState<LeadSpeedType>("Average");
+  const [leadSpeedType, setLeadSpeedType] = React.useState<LeadSpeedType>(
+    idealLeadSelected && idealLeadCycleSpeed != null ? "Ideal" : "Average",
+  );
   const [leadCycleSpeedCustom, setLeadCycleSpeedCustom] = React.useState<
     number | null
   >(AVERAGE_LEAD_CYCLE_SPEED);

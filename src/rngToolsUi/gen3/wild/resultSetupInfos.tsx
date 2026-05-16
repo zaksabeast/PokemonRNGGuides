@@ -4,7 +4,6 @@ import {
   ResultTable,
   Icon,
   Link,
-  Button,
   Flex,
   FormFieldTable,
   Switch,
@@ -53,14 +52,12 @@ const getResultSetupInfoColumns = ({
   showRequiredPokeblock,
   showRequiresWhiteFlute,
   usesPainting,
-  onBreakdownClick,
 }: {
   rngManipulatedLeadPid: boolean;
   showMassOutbreak: boolean;
   showRequiredPokeblock: boolean;
   showRequiresWhiteFlute: boolean;
   usesPainting: boolean;
-  onBreakdownClick: (record: ResultSetupInfo) => void;
 }): ResultColumn<ResultSetupInfo>[] => {
   const columns: ResultColumn<ResultSetupInfo>[] = [];
   if (!usesPainting) {
@@ -403,7 +400,7 @@ const resultSetupInfoToDistributionFixedData = (
 type Props = {
   selectedPidPathResult: PidPathResult | null;
   rngManipulatedLeadPid: boolean;
-  setTargetSetup: (targetSetup: TargetSetup, goNextStep: boolean) => void;
+  setTargetSetup: (targetSetup: TargetSetup) => void;
 };
 
 const setupInfoToTargetSetup = (
@@ -456,10 +453,6 @@ export const Wild3ResultSetupInfos = ({
     showRequiredPokeblock,
     showRequiresWhiteFlute,
     usesPainting,
-    onBreakdownClick: (setupInfo) => {
-      setSelectedResultSetupInfo(setupInfo);
-      setDisplayBreakdown(true);
-    },
   });
 
   const [displayBreakdown, setDisplayBreakdown] = React.useState(false);
@@ -482,7 +475,7 @@ export const Wild3ResultSetupInfos = ({
       setupInfo,
       AVERAGE_LEAD_CYCLE_SPEED,
     );
-    setTargetSetup(targetSetup, false);
+    setTargetSetup(targetSetup);
   };
 
   const setLeadCycleSpeed =
@@ -491,7 +484,6 @@ export const Wild3ResultSetupInfos = ({
       : (leadCycleSpeed: number) => {
           setTargetSetup(
             setupInfoToTargetSetup(selectedResultSetupInfo, leadCycleSpeed),
-            true,
           );
         };
 
@@ -502,7 +494,6 @@ export const Wild3ResultSetupInfos = ({
           selectedResultSetupInfo,
           rngManipulatedLeadPid,
         );
-  console.log(distributionFixedData, selectedResultSetupInfo);
 
   return (
     <>

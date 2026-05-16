@@ -103,7 +103,6 @@ export const useBattleVideoInfo = () => useAtom(battleVideoInfoAtom);
 
 // Step 1: Vanilla Wild3SearcherFindTarget
 export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
-  const [step, setStep] = useCurrentStep();
   const [targetSetup, setTargetSetup] = useTargetSetup();
   const { hydrated } = useHydrate(targetSetup);
 
@@ -113,10 +112,7 @@ export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
     return <Skeleton />;
   }
 
-  const handleSetTargetSetup = (
-    targetSetup: TargetSetup,
-    goNextStep: boolean,
-  ) => {
+  const handleSetTargetSetup = (targetSetup: TargetSetup) => {
     setTargetSetup(
       hydrationLock({
         targetSetup,
@@ -127,10 +123,6 @@ export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
         battleVideoInfo: null,
       }),
     );
-
-    if (goNextStep) {
-      setStep(step + 1);
-    }
   };
 
   return <Wild3SearcherFindTarget setTargetSetup={handleSetTargetSetup} />;

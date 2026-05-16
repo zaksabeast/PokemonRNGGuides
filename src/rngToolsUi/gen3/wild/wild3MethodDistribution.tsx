@@ -56,7 +56,6 @@ import {
   leadsLabels,
   gen3Leads,
 } from "./utils";
-import { useWatch } from "react-hook-form";
 import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
@@ -75,6 +74,7 @@ import {
   usingPaintingReseedingLabel,
 } from "./wild3Labels";
 import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
+import { useWatch } from "react-hook-form";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -108,7 +108,7 @@ export type Props = {
   setLeadCycleSpeed?: (leadCycleSpeed: number) => void;
 };
 
-const Validator = z.object({
+const validationSchema = z.object({
   map: z.string(),
   action: z.enum(wild3Actions),
   advance: z.number().int().min(0).max(0xffffffff),
@@ -137,9 +137,12 @@ const Validator = z.object({
   safariPokeblock: pokeblockSchema,
 });
 
-type FormState = z.infer<typeof Validator>;
+type FormState = z.infer<typeof validationSchema>;
 
-const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
+const getInitialValues = (
+  fixedData: Props["fixedData"],
+  leadCycleSpeed: number,
+): FormState => {
   if (fixedData == null) {
     return {
       map: "MAP_ROUTE101",
@@ -148,7 +151,7 @@ const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
       sid: 0,
       advance: 0,
       leadIdx: 0,
-      leadCycleSpeed: 0,
+      leadCycleSpeed,
       usingWhiteFlute: true,
       feebasState: "NotInMap",
       roamerState: "Inactive",
@@ -167,10 +170,6 @@ const getInitialValues = (fixedData: Props["fixedData"]): FormState => {
     (lead) => JSON.stringify(lead) === JSON.stringify(fixedData.lead),
   );
 
-  const leadCycleSpeed = fixedData.usingIdealLeadCycleSpeed
-    ? (fixedData.idealLeadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED)
-    : AVERAGE_LEAD_CYCLE_SPEED;
-
   return {
     leadIdx: Math.max(leadIdx, 0),
     leadCycleSpeed,
@@ -188,6 +187,7 @@ const getFields = (
   usingPaintingReseeding: boolean,
   equivalentInitialAdvs: number,
   hasPreselectedData: boolean,
+  usingIdealLeadCycleSpeed: boolean,
 ): Field[] => {
   const {
     actions,
@@ -263,7 +263,10 @@ const getFields = (
       label: "Lead Cycle Speed",
       ...leadCycleSpeedTooltip(),
       input: (
-        <LeadCycleSpeedSelector idealLeadCycleSpeed={idealLeadCycleSpeed} />
+        <LeadCycleSpeedSelector
+          idealLeadCycleSpeed={idealLeadCycleSpeed}
+          idealLeadSelected={usingIdealLeadCycleSpeed}
+        />
       ),
     });
   }
@@ -345,9 +348,11 @@ const getFields = (
 };
 
 export const Wild3MethodDistributionFields = ({
-  clearResults,
+  onLeadCycleSpeedChanged,
+  usingIdealLeadCycleSpeed,
 }: {
-  clearResults: () => void;
+  onLeadCycleSpeedChanged: (leadCycleSpeed: number) => void;
+  usingIdealLeadCycleSpeed: boolean;
 }) => {
   const { setFieldValue } = useFormContext<FormState>();
   const map = useWatch<FormState, "map">({ name: "map" });
@@ -398,6 +403,7 @@ export const Wild3MethodDistributionFields = ({
     usingPaintingReseeding,
     equivalentInitialAdvs,
     hasPreselectedData,
+    usingIdealLeadCycleSpeed,
   );
 
   React.useEffect(() => {
@@ -429,8 +435,8 @@ export const Wild3MethodDistributionFields = ({
   }, [map, action, feebasState, massOutbreakState, roamerState, setFieldValue]);
 
   React.useEffect(() => {
-    clearResults();
-  }, [leadCycleSpeed, clearResults]);
+    onLeadCycleSpeedChanged(leadCycleSpeed);
+  }, [leadCycleSpeed, onLeadCycleSpeedChanged]);
 
   return <FormFieldTable fields={fields} />;
 };
@@ -670,7 +676,11 @@ export const Wild3MethodDistribution = ({
     updateResults(values);
   };
 
-  const initialValues = getInitialValues(fixedData);
+  const initialLeadCycleSpeed = fixedData?.usingIdealLeadCycleSpeed
+    ? (fixedData.idealLeadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED)
+    : AVERAGE_LEAD_CYCLE_SPEED;
+
+  const initialValues = getInitialValues(fixedData, initialLeadCycleSpeed);
 
   React.useEffect(() => {
     updateResults(initialValues);
@@ -685,12 +695,22 @@ export const Wild3MethodDistribution = ({
     return getColumns(t, fixedData);
   };
 
+  const onLeadCycleSpeedChanged = (leadCycleSpeed: number) => {
+    if (fixedData == null) {
+      clearResults();
+    } else {
+      const values = getInitialValues(fixedData, leadCycleSpeed);
+      updateResults(values);
+      setLeadCycleSpeedProp?.(leadCycleSpeed);
+    }
+  };
+
   return (
     <>
       <RngToolForm<FormState, UiResult>
         getColumns={getColumnsProps}
         results={results}
-        validationSchema={Validator}
+        validationSchema={validationSchema}
         initialValues={initialValues}
         values={initialValues}
         onSubmit={onSubmit}
@@ -698,24 +718,18 @@ export const Wild3MethodDistribution = ({
         rowKey="uid"
         submitButtonLabel={getSubmitButtonLabel(fixedData)}
       >
-        <Wild3MethodDistributionFields clearResults={clearResults} />
+        <Wild3MethodDistributionFields
+          onLeadCycleSpeedChanged={onLeadCycleSpeedChanged}
+          usingIdealLeadCycleSpeed={
+            fixedData?.usingIdealLeadCycleSpeed ?? false
+          }
+        />
       </RngToolForm>
 
       {!hasError && results.length === 0 && (
         <Typography.Text strong fontSize={16}>
           Result: No Pokémon encounter when using that setup.
         </Typography.Text>
-      )}
-      {setLeadCycleSpeedProp != null && (
-        <Button
-          trackerId="Wild3MethodDistribution_setLeadCycleSpeedProp"
-          onClick={() => {
-            setLeadCycleSpeedProp(leadCycleSpeed ?? 0);
-          }}
-        >
-          {" "}
-          Select that lead and go to next step
-        </Button>
       )}
 
       {permitEnablingDebugOptions && (

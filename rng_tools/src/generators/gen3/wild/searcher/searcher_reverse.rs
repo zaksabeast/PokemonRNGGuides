@@ -136,6 +136,7 @@ where
         let encounter_paths = lvl_paths
             .iter()
             .flat_map(|lvl_path| {
+                #[allow(clippy::let_and_return)] // Intermediate value is useful for debugging.
                 let encounter_paths = encounter_idx_gen.extend_path_for_all_arcs(lvl_path);
                 encounter_paths
             })

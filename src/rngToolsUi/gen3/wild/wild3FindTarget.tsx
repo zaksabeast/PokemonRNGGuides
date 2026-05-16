@@ -43,6 +43,7 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 const emeraldWildGameData = getWild3EmeraldGameData();
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3CalibTargetSetupInput";
+import { Pokeblock, wild3SafariPokeblockSearchOpt } from "~/types/pokeblock";
 
 /*
 Possible UI improvements:
@@ -85,6 +86,7 @@ const Validator = z
     mergeSimilarResults: z.boolean(),
     generate_even_if_impossible: z.boolean(),
     using_white_flute: z.boolean(),
+    considered_safari_pokeblocks: z.enum(wild3SafariPokeblockSearchOpt),
   })
   .extend(pkmFilterSchema.shape)
   .extend(gen3PkmFilterSchema.shape);
@@ -110,6 +112,7 @@ export type ResultSetupInfo = Wild3SearcherResultMon &
     primaryLikelihood: number;
     initial_seed: number;
     requiresWhiteFlute: boolean;
+    requiredPokeblock: Pokeblock | null;
   };
 
 const getInitialValues = (): FormState => {
@@ -138,6 +141,7 @@ const getInitialValues = (): FormState => {
     mergeSimilarResults: true,
     generate_even_if_impossible: false,
     using_white_flute: true,
+    considered_safari_pokeblocks: "SoloOnly",
     ...getPkmFilterInitialValues(),
     ...getGen3PkmFilterInitialValues(),
   };

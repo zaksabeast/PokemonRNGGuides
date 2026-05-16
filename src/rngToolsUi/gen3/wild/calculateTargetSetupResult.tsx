@@ -124,6 +124,12 @@ export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
     mass_outbreak_state: targetSetup.massOutbreakState,
     feebas_state: targetSetup.feebasState,
     lead_cycle_speed,
+    safari_pokeblock:
+      targetSetup.safariPokeblock != null
+        ? {
+            Specific: targetSetup.safariPokeblock,
+          }
+        : null,
   };
 
   const map_data = emeraldWildGameData.maps_data.find(

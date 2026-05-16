@@ -14,6 +14,7 @@ import {
   RngToolSubmit,
   FormFieldTable,
   FormikSwitch,
+  FormikWild3Pokeblock,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { useFormContext } from "~/hooks/form";
@@ -46,6 +47,7 @@ import {
   leadCycleSpeedTooltip,
   usingPaintingReseedingLabel as usingPaintingReseedingLabel,
 } from "./wild3Labels";
+import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -73,6 +75,7 @@ const Validator = z.object({
 
   usingAverageLeadCycleSpeed: z.boolean(),
   leadCycleSpeed: z.number().int().min(0).max(900),
+  safariPokeblock: pokeblockSchema,
 });
 
 type Props = {
@@ -90,6 +93,7 @@ export type TargetSetup = {
   targetMethod: Gen3Method;
   leadCycleSpeed: number;
   requiresWhiteFlute: boolean;
+  safariPokeblock: Pokeblock | null;
 };
 
 export type FormState = z.infer<typeof Validator>;
@@ -110,6 +114,7 @@ const getInitialValues = (): FormState => {
     requiresWhiteFlute: false,
     usingAverageLeadCycleSpeed: true,
     leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+    safariPokeblock: null,
   };
 };
 
@@ -135,6 +140,7 @@ const convertFormStateValuesToTargetSetup = (
       : values.leadCycleSpeed,
     requiresWhiteFlute:
       values.action === "RockSmash" && values.requiresWhiteFlute,
+    safariPokeblock: values.safariPokeblock,
   };
 };
 
@@ -151,12 +157,13 @@ const getFields = ({
   leadIdx: number;
   usingAverageLeadCycleSpeed: boolean;
 }): Field[] => {
-  const { actions, feebas_states, roamer_states, mass_outbreak_states } =
-    getPossibleValuesForMap(mapId, action);
-
-  const supportedMaps = emeraldWildGameData.maps.filter((map) => {
-    return !map.includes("SAFARI"); // TODO: Support Safari maps
-  });
+  const {
+    actions,
+    feebas_states,
+    roamer_states,
+    mass_outbreak_states,
+    canUsePokeblock,
+  } = getPossibleValuesForMap(mapId, action);
 
   const fields: Field[] = [
     {
@@ -164,7 +171,7 @@ const getFields = ({
       input: (
         <FormikSelect<FormState, "map">
           name="map"
-          options={toOptions(supportedMaps, formatMapName)}
+          options={toOptions(emeraldWildGameData.maps, formatMapName)}
         />
       ),
     },
@@ -188,6 +195,11 @@ const getFields = ({
       label: "Using White Flute?",
       input: <FormikSwitch<FormState> name="requiresWhiteFlute" />,
       show: action === "RockSmash",
+    },
+    {
+      label: "Using Pokéblock?",
+      input: <FormikWild3Pokeblock<FormState> name="safariPokeblock" />,
+      show: canUsePokeblock,
     },
     {
       label: "Lead",

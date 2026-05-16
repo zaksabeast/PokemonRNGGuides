@@ -25,7 +25,7 @@ const DiscordButtonContainer = styled(Flex)(({ theme }) => ({
   gap: 10,
   flexDirection: "column",
   width: "fit-content",
-  [theme.mediaQueries.up("mobile")]: {
+  [theme.mediaQueries.up("smallTablet")]: {
     flexDirection: "row",
   },
 }));
@@ -44,7 +44,7 @@ export const GuideLayout = ({ guideMeta, children }: Props) => {
 
       <Flex mb={20} vertical gap={14}>
         <Typography.Title level={1} mt={0} mb={0}>
-          {guideMeta.title}
+          {guideMeta.navDrawerTitle}
         </Typography.Title>
 
         {guideMeta.lastUpdated != null && (

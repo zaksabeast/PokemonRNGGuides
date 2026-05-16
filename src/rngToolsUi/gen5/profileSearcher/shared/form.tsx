@@ -8,7 +8,7 @@ import {
 } from "~/rngTools";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import { chunkRange } from "~/utils/chunkRange";
-import { UndefinedToNull } from "~/types";
+import { RustOption } from "~/types";
 import { addRngTime } from "~/utils/time";
 import { Profile5ValidatorFormState } from "./validator";
 import { profile5Columns } from "./columns";
@@ -32,7 +32,7 @@ const mapFormState = ({
   state: Profile5SearcherState;
   minVFrame: number;
   maxVFrame: number;
-}): UndefinedToNull<Omit<ProfileSearcher5, "validator">> => {
+}): RustOption<Omit<ProfileSearcher5, "validator">> => {
   return {
     mac: opts.mac.toString(),
     max_timer0: opts.max_timer0,
@@ -55,7 +55,7 @@ const mapFormState = ({
 
 export type ValidatorMapper<FormState> = (
   opts: FormState,
-) => UndefinedToNull<ProfileSearcher5["validator"]>;
+) => RustOption<ProfileSearcher5["validator"]>;
 
 const chunkFormState = <FormState extends Profile5ValidatorFormState>({
   opts,
@@ -65,10 +65,10 @@ const chunkFormState = <FormState extends Profile5ValidatorFormState>({
   opts: FormState;
   state: Profile5SearcherState;
   mapValidator: ValidatorMapper<FormState>;
-}): UndefinedToNull<ProfileSearcher5>[] => {
+}): RustOption<ProfileSearcher5>[] => {
   const chunks = chunkRange([opts.min_v_frame, opts.max_v_frame], 2);
   return chunks.map(
-    ([minVFrame, maxVFrame]): UndefinedToNull<ProfileSearcher5> => ({
+    ([minVFrame, maxVFrame]): RustOption<ProfileSearcher5> => ({
       ...mapFormState({ opts, state, minVFrame, maxVFrame }),
       validator: mapValidator(opts),
     }),

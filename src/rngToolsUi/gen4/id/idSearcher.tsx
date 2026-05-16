@@ -11,6 +11,7 @@ import {
   FormikSwitch,
   FormFieldTable,
   FormikIdFilter,
+  MinMaxContainer,
 } from "~/components";
 import { useBatchedTool } from "~/hooks/useBatchedTool";
 import {
@@ -39,7 +40,7 @@ import { FormikRadio } from "~/components/radio";
 import { denormalizeIdFilterOrDefault, IdFilterSchema } from "~/types/id";
 import { match, P } from "ts-pattern";
 import { chunkRange } from "~/utils/chunkRange";
-import { UndefinedToNull } from "~/types";
+import { RustOption } from "~/types";
 import { Translations } from "~/translations";
 import { useActiveRouteTranslations } from "~/hooks/useActiveRoute";
 import { useWatch } from "react-hook-form";
@@ -212,15 +213,16 @@ const getFields = ({
       input: <FormikNumberInput<FormState> name="year" numType="decimal" />,
     },
     {
-      label: t["Min Delay"],
+      label: t["Delay"],
       input: (
-        <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
-      ),
-    },
-    {
-      label: t["Max Delay"],
-      input: (
-        <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+        <MinMaxContainer
+          min={
+            <FormikNumberInput<FormState> name="min_delay" numType="decimal" />
+          }
+          max={
+            <FormikNumberInput<FormState> name="max_delay" numType="decimal" />
+          }
+        />
       ),
     },
     {
@@ -366,7 +368,7 @@ export const Id4Searcher = () => {
         .exhaustive();
 
       const chunked = chunkRange([opts.min_delay, opts.max_delay], 200);
-      const searchOpts: UndefinedToNull<Id4SearchOptions>[] = chunked.map(
+      const searchOpts: RustOption<Id4SearchOptions>[] = chunked.map(
         ([min_delay, max_delay]) => ({
           year: opts.year,
           min_delay,

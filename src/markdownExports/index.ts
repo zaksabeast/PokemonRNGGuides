@@ -422,6 +422,18 @@ const tools = {
     () => import("~/rngToolsUi/gen4/honeyTree/targetTree"),
     (mod) => mod.HoneyTreeTargetTree,
   ),
+  StandaloneSinnohMap: lazyLoad(
+    () => import("~/rngToolsUi/gen4/standaloneSinnohMap"),
+    (mod) => mod.StandaloneSinnohMap,
+  ),
+  StandaloneChatterFilter: lazyLoad(
+    () => import("~/rngToolsUi/gen4/standaloneChatterFilter"),
+    (mod) => mod.StandaloneChatterFilter,
+  ),
+  SelectSwarm4Target: lazyLoad(
+    () => import("~/rngToolsUi/gen4/swarm/selectTarget"),
+    (mod) => mod.SelectSwarm4Target,
+  ),
 };
 
 export const markdownComponents = {

@@ -4,32 +4,34 @@ import styled from "@emotion/styled";
 import { uniq } from "lodash-es";
 import { GuideMeta } from "~/guides";
 import { languageByKey, LanguageKey } from "~/types/language";
+import { styledPropGuard } from "~/utils/styled";
 
 export type DisplayAttribute = GuideMeta["displayAttributes"][number] | "new";
 
-const DisplayTag = styled(Tag)<{ tag: DisplayAttribute | "translated" }>(({
-  tag,
-}) => {
+const DisplayTag = styled(
+  Tag,
+  styledPropGuard,
+)<{ tag: DisplayAttribute | "translated" }>(({ tag, theme }) => {
   const colors = match(tag)
     .with("new", () => ({
-      color: "#AF52DE",
-      backgroundColor: "rgba(175, 82, 222, 0.1)",
+      color: theme.token.colorGuideTagNew,
+      backgroundColor: theme.token.colorGuideTagNewBg,
     }))
     .with("web_tool", () => ({
-      color: "#7E5BEF",
-      backgroundColor: "rgba(126, 91, 239, 0.08)",
+      color: theme.token.colorGuideTagWebTool,
+      backgroundColor: theme.token.colorGuideTagWebToolBg,
     }))
     .with("video_guide", () => ({
-      color: "#007AFF",
-      backgroundColor: "rgba(0, 122, 255, 0.1)",
+      color: theme.token.colorGuideTagVideoGuide,
+      backgroundColor: theme.token.colorGuideTagVideoGuideBg,
     }))
     .with("rough_draft", () => ({
-      color: "#FF3B30",
-      backgroundColor: "rgba(255, 59, 48, 0.1)",
+      color: theme.token.colorGuideTagRoughDraft,
+      backgroundColor: theme.token.colorGuideTagRoughDraftBg,
     }))
     .with("translated", () => ({
-      color: "#00B894",
-      backgroundColor: "rgba(0, 184, 148, 0.1)",
+      color: theme.token.colorGuideTagTranslated,
+      backgroundColor: theme.token.colorGuideTagTranslatedBg,
     }))
     .exhaustive();
 

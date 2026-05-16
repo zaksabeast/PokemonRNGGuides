@@ -8,7 +8,9 @@ type Props = {
 
 export const DownloadButton = ({ data, trackerId }: Props) => {
   const url = React.useMemo(() => {
-    const blob = new Blob([data], { type: "application/octet-stream" });
+    const blob = new Blob([new Uint8Array(data)], {
+      type: "application/octet-stream",
+    });
     return URL.createObjectURL(blob);
   }, [data]);
 

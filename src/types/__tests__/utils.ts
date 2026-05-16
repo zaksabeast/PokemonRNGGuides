@@ -1,4 +1,11 @@
-import { OneOf, AllOrNone, FeatureConfig, Paths, Path } from "../utils";
+import {
+  OneOf,
+  AllOrNone,
+  FeatureConfig,
+  Paths,
+  Path,
+  RustOption,
+} from "../utils";
 import { check, Pass } from "~/typeTest";
 
 export const OneOfTest = () => {
@@ -199,5 +206,60 @@ export const PathWithArrayTest = () => {
 export const PathSelectArrayTest = () => {
   type Result = Path<{ array: number[]; foo: { bar: boolean } }, "array">;
   type Expected = number[];
+  check<Result, Expected>(Pass);
+};
+
+export const RustOptionNonOptionalPrimitiveTest = () => {
+  type Result = RustOption<string>;
+  type Expected = string;
+  check<Result, Expected>(Pass);
+};
+
+export const RustOptionUndefinedPrimitiveTest = () => {
+  type Result = RustOption<string | undefined>;
+  type Expected = string | null | undefined;
+  check<Result, Expected>(Pass);
+};
+
+export const RustOptionNullPrimitiveTest = () => {
+  type Result = RustOption<string | null>;
+  type Expected = string | null | undefined;
+  check<Result, Expected>(Pass);
+};
+
+export const RustOptionObjectTest = () => {
+  type Result = RustOption<{
+    name: string;
+    age: number | undefined;
+    location:
+      | {
+          city: string;
+          country: string | null;
+        }
+      | undefined;
+  }>;
+  type Expected = {
+    name: string;
+    age: number | null | undefined;
+    location:
+      | {
+          city: string;
+          country: string | null | undefined;
+        }
+      | null
+      | undefined;
+  };
+  check<Result, Expected>(Pass);
+};
+
+export const RustOptionArrayTest = () => {
+  type Result = RustOption<{ name: string; age: number | undefined }[]>;
+  type Expected = { name: string; age: number | null | undefined }[];
+  check<Result, Expected>(Pass);
+};
+
+export const RustOptionTupleTest = () => {
+  type Result = RustOption<[string, number | undefined]>;
+  type Expected = [string, number | null | undefined];
   check<Result, Expected>(Pass);
 };

@@ -39,6 +39,7 @@ import {
   type Props as Wild3MethodDistributionProps,
 } from "./wild3MethodDistribution";
 import { Wild3Action } from "../../../../rng_tools/pkg/rng_tools";
+import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
 
 type CalibOffset = {
@@ -112,6 +113,8 @@ const targetSetupToMethodDistributionFixedData = (
     wantedPID: null,
     idealLeadCycleSpeed: null,
     usingIdealLeadCycleSpeed: false,
+    usingWhiteFlute: targetSetup.requiresWhiteFlute,
+    safariPokeblock: targetSetup.safariPokeblock,
   };
 };
 
@@ -315,6 +318,16 @@ export const Wild3Calib = ({
         label: "Requires White Flute?",
         input: targetSetupProp.requiresWhiteFlute ? "Yes" : "No",
         show: targetSetupProp.action === "RockSmash",
+      },
+      {
+        label: "Pokéblock",
+        input:
+          targetSetupProp.safariPokeblock !== null ? (
+            <Wild3PokeblockDescription
+              pokeblock={targetSetupProp.safariPokeblock}
+            />
+          ) : null,
+        show: targetSetupProp.safariPokeblock !== null,
       },
       {
         label: "Lead",

@@ -1,29 +1,34 @@
-import { ThemeConfig } from "antd";
 import { AliasToken } from "antd/es/theme/internal";
 import * as tst from "ts-toolbelt";
 
-declare module "@emotion/react" {
-  export type ScreenSize = "mobile" | "tablet" | "desktop";
+type Tokens = Record<
+  tst.U.Select<keyof AliasToken, `boxShadow${string}` | `color${string}`>,
+  string
+> & {
+  layoutHeaderHeight: string;
+  colorGuideTagNew: string;
+  colorGuideTagNewBg: string;
+  colorGuideTagWebTool: string;
+  colorGuideTagWebToolBg: string;
+  colorGuideTagVideoGuide: string;
+  colorGuideTagVideoGuideBg: string;
+  colorGuideTagRoughDraft: string;
+  colorGuideTagRoughDraftBg: string;
+  colorGuideTagTranslated: string;
+  colorGuideTagTranslatedBg: string;
+};
 
-  export type CustomTheme = {
-    token: AliasToken;
-    components: Partial<ThemeConfig["components"]>;
+declare module "@emotion/react" {
+  export type ScreenSize = "mobile" | "smallTablet" | "tablet" | "desktop";
+
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+  export interface Theme extends CustomTheme {
+    token: Tokens;
     mediaQueries: {
       up: (size: ScreenSize) => string;
       down: (size: ScreenSize) => string;
     };
-  };
-
-  export type CompleteTheme = tst.O.Merge<
-    tst.O.Required<
-      tst.O.Overwrite<ThemeConfig, { token: CustomTheme["token"] }>,
-      "token"
-    >,
-    { mediaQueries: CustomTheme["mediaQueries"] }
-  >;
-
-  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-  export interface Theme extends CompleteTheme {}
+  }
 
   export type Color = tst.S.Replace<
     tst.U.Select<keyof Theme["token"], `color${string}`>,

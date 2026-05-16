@@ -80,11 +80,37 @@ const createSortedArrayWithoutDuplicates = <T extends string>(array: T[]) => {
   return uniq(array).sort((lhs, rhs) => lhs.localeCompare(rhs));
 };
 
-const UNUSED_MAPS = [
+const EMERALD_UNUSED_MAPS = [
   "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP1",
   "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP2",
   "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP3",
 ];
+
+const EMERALD_ACTIONS_WITH_POKEBLOCK_FEEDER_BY_MAP = {
+  MAP_SAFARI_ZONE_SOUTH: ["SweetScentLand"],
+  MAP_SAFARI_ZONE_SOUTHEAST: [
+    "SweetScentLand",
+    "SweetScentWater",
+    "OldRod",
+    "GoodRod",
+    "SuperRod",
+  ],
+  MAP_SAFARI_ZONE_SOUTHWEST: [
+    "SweetScentWater",
+    "OldRod",
+    "GoodRod",
+    "SuperRod",
+  ],
+  MAP_SAFARI_ZONE_NORTH: ["SweetScentLand"],
+  MAP_SAFARI_ZONE_NORTHEAST: ["SweetScentLand"],
+  MAP_SAFARI_ZONE_NORTHWEST: [
+    "SweetScentLand",
+    "SweetScentWater",
+    "OldRod",
+    "GoodRod",
+    "SuperRod",
+  ],
+} as Record<string, Wild3Action[]>;
 
 const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
   const wild3RoamerStatesSchema = z.enum(wild3RoamerStates);
@@ -102,7 +128,7 @@ const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
       ) {
         return [];
       }
-      if (UNUSED_MAPS.includes(map.map)) {
+      if (EMERALD_UNUSED_MAPS.includes(map.map)) {
         return [];
       }
 
@@ -151,7 +177,10 @@ const generateWild3EmeraldMapsData = (): Wild3MapGameData[] => {
           roamers,
           mass_outbreaks,
           feebas,
+          is_safari: map.map.includes("SAFARI"),
           rock_smash_rate,
+          actions_with_safari_pokeblock:
+            EMERALD_ACTIONS_WITH_POKEBLOCK_FEEDER_BY_MAP[map.map] ?? [],
         },
       ];
     });

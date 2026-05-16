@@ -16,7 +16,7 @@ import {
   maleFemale,
   nature,
   StatFieldsSchema,
-  UndefinedToNull,
+  RustOption,
 } from "~/types";
 import { Translations } from "~/translations";
 import { message } from "antd";
@@ -262,7 +262,7 @@ const mapResult = (
   {
     seedTime,
     target,
-  }: UndefinedToNull<Gen4StaticOpts> & {
+  }: RustOption<Gen4StaticOpts> & {
     seedTime: SeedTime4;
     target: Static4Target;
   },
@@ -356,7 +356,7 @@ export const Static4Calibrator = () => {
     const batchedOpts = seedTimes.map(
       (
         seedTime,
-      ): UndefinedToNull<Gen4StaticOpts> & {
+      ): RustOption<Gen4StaticOpts> & {
         target: Static4Target;
         seedTime: SeedTime4;
       } => ({

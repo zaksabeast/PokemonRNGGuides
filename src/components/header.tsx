@@ -7,6 +7,18 @@ import { Flex } from "./flex";
 import { settings } from "~/settings";
 import { Link } from "./link";
 import { LinkButton } from "./linkButton";
+import { setTheme, type ThemeMode } from "~/theme/themeMode";
+import { styledPropGuard } from "~/utils/styled";
+
+const ShowIfTheme = styled(
+  "div",
+  styledPropGuard,
+)<{ $themeMode: ThemeMode }>(({ $themeMode }) => ({
+  [`[data-theme="${$themeMode}"] &`]: {
+    display: "flex",
+  },
+  display: "none",
+}));
 
 const CONTRIBUTE_LINK = { type: "slug", slug: "/contributing/" } as const;
 
@@ -38,7 +50,7 @@ export const Header = () => {
       >
         <Flex align="center">
           <Link href="/" display="flex">
-            <BaseButton trackerId="home" ml={18}>
+            <BaseButton trackerId="home">
               <Typography.Title level={4} mv={0} mr={0}>
                 Pokemon RNG
               </Typography.Title>
@@ -46,7 +58,7 @@ export const Header = () => {
           </Link>
         </Flex>
 
-        <Flex align="center" gap={16}>
+        <Flex align="center" gap={8}>
           <LinkButton
             trackerId="contribute_url"
             link={CONTRIBUTE_LINK}
@@ -54,6 +66,20 @@ export const Header = () => {
           >
             Contribute
           </LinkButton>
+          <ShowIfTheme $themeMode="light">
+            <Button
+              trackerId="switch_to_dark_mode"
+              onClick={() => setTheme("dark")}
+              icon={<Icon name="DarkMode" size={20} />}
+            />
+          </ShowIfTheme>
+          <ShowIfTheme $themeMode="dark">
+            <Button
+              trackerId="switch_to_light_mode"
+              onClick={() => setTheme("light")}
+              icon={<Icon name="LightMode" size={20} />}
+            />
+          </ShowIfTheme>
           <Button
             trackerId="discord_url"
             href={settings.discordUrl}

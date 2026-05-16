@@ -6,12 +6,17 @@ import {
   Typography,
   Button,
   Select,
+  Input,
   Link,
 } from "~/components";
-import { Menu } from "antd";
+import { Menu, ColorPicker } from "antd";
 import { settings } from "~/settings";
+import { tempThemeColorAtom } from "~/theme/tempThemeColor";
+import { useAtom } from "jotai";
 
 export const ExperimentsPageComponent = () => {
+  const [tempThemeColor, setTempThemeColor] = useAtom(tempThemeColorAtom);
+
   const sampleComponents: Field[] = [
     {
       label: "Buttons",
@@ -38,6 +43,14 @@ export const ExperimentsPageComponent = () => {
         <>
           <Link href="/experiments/">Example link</Link> with surrounding text
         </>
+      ),
+    },
+    {
+      label: "Input",
+      input: (
+        <Flex gap={8}>
+          <Input placeholder="Placeholder" />
+        </Flex>
       ),
     },
     {
@@ -88,13 +101,21 @@ export const ExperimentsPageComponent = () => {
 
   return (
     <Flex vertical gap={32}>
-      <Flex vertical>
+      <Flex vertical gap={16}>
         <Typography.Title level={2}>Dark Mode</Typography.Title>
         <Typography.Text>
           Help us find light and dark theme colors that are easy on the eyes.
           Post screenshots and colors{" "}
           <a href={settings.discordUrl}>on Discord</a>.
         </Typography.Text>
+
+        <Flex gap={8} align="center">
+          <Typography.Text fontSize={16}>Primary Color</Typography.Text>
+          <ColorPicker
+            value={tempThemeColor}
+            onChange={(color) => setTempThemeColor(color.toHexString())}
+          />
+        </Flex>
       </Flex>
 
       <Flex vertical gap={16}>

@@ -21,6 +21,11 @@ const settingsSchema = z
     amplitudeApiKey: z.string(),
     isDev: z.boolean().default(false),
     discordUrl: z.string().default("https://www.discord.gg/d8JuAvg"),
+    siteContentDiscordUrl: z
+      .string()
+      .default(
+        "https://discord.com/channels/285269328469950464/888240330628005898",
+      ),
     supportUsDiscordUrl: z
       .string()
       .default("https://discord.com/servers/pokemonrng-285269328469950464"),

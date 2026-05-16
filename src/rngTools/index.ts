@@ -8,7 +8,7 @@ import { Remote, wrap } from "comlink";
 
 import { z } from "zod";
 import * as tst from "ts-toolbelt";
-import { UndefinedToNull, UndefinedToNullForList } from "~/types/utils";
+import { RustOption } from "~/types/utils";
 import {
   attachTerminateToPromise,
   CancellationError,
@@ -33,7 +33,7 @@ type FunctionsOf<T> = {
 type AdjustFunctionArgs<Fn extends tst.F.Function> = Fn extends (
   ...args: infer Args
 ) => infer Ret
-  ? (...args: UndefinedToNullForList<Args>) => Ret
+  ? (...args: RustOption<Args>) => Ret
   : never;
 
 type AdjustAllFunctionArgs<T> = {
@@ -254,22 +254,22 @@ export const rngTools = new Proxy(
       ) => {
         const tools = await getRngTools();
         const func = tools[functionName];
-        return func(...args);
+        // Casting as unknown[] fixes complex union errors.
+        // The type signature guarantees this is used correctly.
+        return func(...(args as unknown[]));
       };
     },
   },
 ) as Remote<AdjustedRngTools>;
 
-export type PkmFilter = UndefinedToNull<RngTools.PkmFilter>;
+export type PkmFilter = RustOption<RngTools.PkmFilter>;
 
-export type Wild3MapSetups = UndefinedToNull<RngTools.Wild3MapSetups>;
+export type Wild3MapSetups = RustOption<RngTools.Wild3MapSetups>;
 
-export type Wild3MapGameData = UndefinedToNull<RngTools.Wild3MapGameData>;
+export type Wild3MapGameData = RustOption<RngTools.Wild3MapGameData>;
 
-export type Wild3SearcherOptions =
-  UndefinedToNull<RngTools.Wild3SearcherOptions>;
+export type Wild3SearcherOptions = RustOption<RngTools.Wild3SearcherOptions>;
 
-export type Gen3PkmFilter = UndefinedToNull<RngTools.Gen3PkmFilter>;
+export type Gen3PkmFilter = RustOption<RngTools.Gen3PkmFilter>;
 
-export type Wild3GeneratorOptions =
-  UndefinedToNull<RngTools.Wild3GeneratorOptions>;
+export type Wild3GeneratorOptions = RustOption<RngTools.Wild3GeneratorOptions>;

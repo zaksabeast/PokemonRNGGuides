@@ -1,5 +1,6 @@
 import { GenericForm, GuaranteeFormNameType } from "~/types/form";
 import { Flex } from "./flex";
+import { Grid } from "./grid";
 import { Ivs } from "~/rngTools";
 import { FormikNumberInput } from "./numberInput";
 import { GlobalError, useFormState, useWatch } from "react-hook-form";
@@ -16,16 +17,19 @@ type SingleFieldProps = {
 
 const SingleField = ({ parentName, stat }: SingleFieldProps) => {
   return (
-    <Flex minWidth={50}>
-      <FormikNumberInput
-        name={`${parentName}.${stat}`}
-        textAlign="center"
-        numType="decimal"
-        // Explicitly unset errors and error statuses
-        status=""
-        errorMessage={null}
-      />
-    </Flex>
+    <FormikNumberInput
+      name={`${parentName}.${stat}`}
+      prefix={
+        <Typography.Text color="TextDisabled" width={30}>
+          {stat.toUpperCase()}
+        </Typography.Text>
+      }
+      textAlign="center"
+      numType="decimal"
+      // Explicitly unset errors and error statuses
+      status=""
+      errorMessage={null}
+    />
   );
 };
 
@@ -68,14 +72,14 @@ export const StatFieldsInput = <
 
   return (
     <Flex vertical>
-      <Flex gap={16}>
+      <Grid mobile={2} smallTablet={3} tablet={6} gap={4}>
         <SingleField stat="hp" parentName={name} />
         <SingleField stat="atk" parentName={name} />
         <SingleField stat="def" parentName={name} />
         <SingleField stat="spa" parentName={name} />
         <SingleField stat="spd" parentName={name} />
         <SingleField stat="spe" parentName={name} />
-      </Flex>
+      </Grid>
       {fieldErrors.length !== 0 && (
         <Typography.Text type="danger">
           {fieldErrors.join(", ")}

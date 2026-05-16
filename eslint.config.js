@@ -28,6 +28,23 @@ const getTypeCheckedLanguageOptions = (tsConfig) => ({
   },
 });
 
+const arrowFunctionRestrictions = [
+  {
+    selector: "VariableDeclarator > FunctionExpression",
+    message: "Use arrow functions instead of function expressions.",
+  },
+  {
+    selector: "Property > FunctionExpression",
+    message:
+      "Use arrow functions for object properties: prefer `prop: () => {}` instead of `prop: function() {}`.",
+  },
+  {
+    selector: "Property[method=true]",
+    message:
+      "Use arrow functions for object methods: prefer `prop: () => {}` instead of method shorthand `prop() {}`.",
+  },
+];
+
 const baseConfig = {
   extends: [js.configs.recommended, ...tseslint.configs.recommended],
   plugins: {
@@ -75,19 +92,16 @@ const baseConfig = {
     "react/jsx-boolean-value": ["error", "never"],
     "no-restricted-syntax": [
       "error",
+      ...arrowFunctionRestrictions,
       {
-        selector: "VariableDeclarator > FunctionExpression",
-        message: "Use arrow functions instead of function expressions.",
+        selector: "Literal[value=/^#(?:[0-9a-fA-F]{3}){1,2}$/]",
+        message:
+          "Avoid hardcoded color strings. Use CSS variables or emotion theme values.",
       },
       {
-        selector: "Property > FunctionExpression",
+        selector: "CallExpression[callee.name=/^(rgb|rgba|hsl|hsla)$/]",
         message:
-          "Use arrow functions for object properties: prefer `prop: () => {}` instead of `prop: function() {}`.",
-      },
-      {
-        selector: "Property[method=true]",
-        message:
-          "Use arrow functions for object methods: prefer `prop: () => {}` instead of method shorthand `prop() {}`.",
+          "Avoid hardcoded color functions. Use CSS variables or emotion theme values.",
       },
     ],
     eqeqeq: ["error", "always", { null: "ignore" }],
@@ -178,5 +192,11 @@ export default tseslint.config(
     ...baseConfig,
     files: ["vite.config.ts"],
     languageOptions: getTypeCheckedLanguageOptions("./tsconfig.node.json"),
+  },
+  {
+    files: ["src/theme/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-syntax": ["error", ...arrowFunctionRestrictions],
+    },
   },
 );

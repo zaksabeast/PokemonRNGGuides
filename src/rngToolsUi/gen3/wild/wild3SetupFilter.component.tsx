@@ -30,6 +30,7 @@ import {
   minFramesBeforePaintingLabel,
   usingPaintingReseedingLabel,
 } from "./wild3Labels";
+import { wild3SafariPokeblockSearchOptLabels } from "~/types/pokeblock";
 
 const supportedGen3Methods = [
   "Wild1",
@@ -38,12 +39,6 @@ const supportedGen3Methods = [
   "Wild4",
   // TODO: Support Wild5
 ] as const satisfies Gen3Method[];
-
-const supportedConsideredSafariPokeblocks = [
-  { label: "None", value: "None" as const },
-  { label: "Only those easily obtainable", value: "SoloOnly" as const },
-  //TODO: Support Pokeblock requiring trades
-];
 
 const getSetupFields = (
   species: Species,
@@ -139,7 +134,7 @@ const getSetupFields = (
       input: (
         <FormikRadio<FormState>
           name="considered_safari_pokeblocks"
-          options={supportedConsideredSafariPokeblocks}
+          options={wild3SafariPokeblockSearchOptLabels}
         />
       ),
       show: showAdvancedSetups && possVals.is_safari_pokeblock_usable,

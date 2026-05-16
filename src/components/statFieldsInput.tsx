@@ -3,12 +3,38 @@ import { Flex } from "./flex";
 import { Grid } from "./grid";
 import { Ivs } from "~/rngTools";
 import { FormikNumberInput } from "./numberInput";
-import { GlobalError, useFormState, useWatch } from "react-hook-form";
-import { map, uniq } from "lodash-es";
+import { useFormState, useWatch } from "react-hook-form";
+import { uniq } from "lodash-es";
 import { Typography } from "./typography";
 import React from "react";
+import { z } from "zod";
 
 type StatFieldRecord = Record<keyof Ivs, number | null>;
+
+// The entire field or individual IVs can have error messages,
+// so we need to handle both cases.
+// The error message can either be a string or an object with the same keys as Ivs, where each key has a message string.
+const errorSchema = z.object({ message: z.string() });
+const errorObjectSchema = z.record(z.string(), errorSchema);
+const errorsSchema = z.union([errorObjectSchema, errorSchema]).optional();
+
+const getErrorMessages = (error: unknown): string[] => {
+  const parsedErrors = errorsSchema.safeParse(error);
+
+  if (!parsedErrors.success) {
+    return ["Unknown error"];
+  }
+
+  if (parsedErrors.data == null) {
+    return [];
+  }
+
+  if (typeof parsedErrors.data.message === "string") {
+    return [parsedErrors.data.message];
+  }
+
+  return Object.values(parsedErrors.data).flatMap(getErrorMessages);
+};
 
 type SingleFieldProps = {
   parentName: string;
@@ -66,9 +92,7 @@ export const StatFieldsInput = <
     }
   }, [watchedValue, onChange]);
 
-  const fieldErrors = uniq(
-    map(errors[name], (error: GlobalError) => error.message),
-  );
+  const fieldErrors = uniq(getErrorMessages(errors[name]));
 
   return (
     <Flex vertical>

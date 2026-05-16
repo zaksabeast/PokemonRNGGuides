@@ -4,7 +4,8 @@ use wasm_bindgen::prelude::*;
 
 use super::{calc_modulo_cycle_signed, calc_modulo_cycle_unsigned, is_method_possible_to_trigger};
 use crate::{
-    EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature, PERTINENT_POKEBLOCKS_BY_NATURE,
+    EncounterSlot, Gender, GenderRatio, Ivs, NATURE_COUNT, Nature,
+    PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE, PERTINENT_SOLO_POKEBLOCKS_BY_NATURE,
     POKEBLOCK_NATURE_STAT_FACTORS, PkmFilter,
     gen3::{
         CycleAndModCount, CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method,
@@ -415,11 +416,19 @@ pub fn calculate_nature_from_safari_pokeblock(
         }
         Wild3SafariPokeblockGenOpt::ForSearching {
             wanted_nature,
-            consider_all_safari_pokeblocks: _, // TODO: Support all Pokeblocks.
+            consider_all_safari_pokeblocks,
         } => {
-            let pokeblock = PERTINENT_POKEBLOCKS_BY_NATURE[*wanted_nature as usize]
-                .iter()
-                .find(|&flavors| get_nature_from_flavors(flavors) == *wanted_nature);
+            let wanted_nature_idx = *wanted_nature as usize;
+            let pokeblock = if *consider_all_safari_pokeblocks {
+                PERTINENT_SOLO_POKEBLOCKS_BY_NATURE[wanted_nature_idx]
+                    .iter()
+                    .chain(PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE[wanted_nature_idx].iter())
+                    .find(|&flavors| get_nature_from_flavors(flavors) == *wanted_nature)
+            } else {
+                PERTINENT_SOLO_POKEBLOCKS_BY_NATURE[wanted_nature_idx]
+                    .iter()
+                    .find(|&flavors| get_nature_from_flavors(flavors) == *wanted_nature)
+            };
 
             if let Some(pokeblock) = pokeblock {
                 (*wanted_nature, Some(*pokeblock))
@@ -741,7 +750,7 @@ fn generate_gen3_wild_method2(
         rand_next_u16(&mut rng, "iv2_wild2", 1),
     );
 
-    create_if_passes_filter(&gen_data, pid, ivs, Gen3Method::Wild2, cycle_range)
+    create_if_passes_filter(gen_data, pid, ivs, Gen3Method::Wild2, cycle_range)
 }
 
 fn generate_gen3_wild_method3(
@@ -787,7 +796,7 @@ fn generate_gen3_wild_method4(
 
     let ivs = Ivs::new_g3(iv1, rand_next_u16(&mut rng, "iv2_wild4", 1));
 
-    create_if_passes_filter(&gen_data, pid, ivs, Gen3Method::Wild4, cycle_range)
+    create_if_passes_filter(gen_data, pid, ivs, Gen3Method::Wild4, cycle_range)
 }
 
 fn generate_gen3_wild_method5(
@@ -831,7 +840,7 @@ fn generate_gen3_wild_method5(
 
     (
         retry_count,
-        create_if_passes_filter(&gen_data, pid, ivs, Gen3Method::Wild5, cycle_range),
+        create_if_passes_filter(gen_data, pid, ivs, Gen3Method::Wild5, cycle_range),
     )
 }
 

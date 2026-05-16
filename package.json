@@ -32,7 +32,6 @@
     "preview": "vite preview",
     "test:e2e": "bunx cypress run --browser chrome",
     "test:rust": "cargo +1.86.0 test --manifest-path rng_tools/Cargo.toml --quiet",
-    "prepare": "husky",
     "check": "bun run build:guides && bun run format && bun run lint && bun run test:rust"
   },
   "dependencies": {
@@ -85,7 +84,6 @@
     "eslint-plugin-react-hooks": "7.0.1",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
-    "husky": "^9.1.7",
     "markdown-link-check": "3.12.2",
     "postcss": "^8.5.3",
     "postcss-cli": "^11.0.1",

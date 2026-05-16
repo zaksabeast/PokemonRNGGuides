@@ -63,6 +63,15 @@ impl InheritedIv {
             _ => min == 0 && max == 31,
         }
     }
+
+    pub fn value(&self) -> Option<u8> {
+        match self {
+            InheritedIv::Random(iv) => Some(*iv),
+            InheritedIv::Parent1(Some(iv)) => Some(*iv),
+            InheritedIv::Parent2(Some(iv)) => Some(*iv),
+            _ => None,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Tsify, Serialize, Deserialize)]
@@ -88,6 +97,17 @@ impl InheritedIvs {
         ]
         .iter()
         .all(|&x| x)
+    }
+
+    pub fn try_as_ivs(&self) -> Option<Ivs> {
+        Some(Ivs {
+            hp: self.hp.value()?,
+            atk: self.atk.value()?,
+            def: self.def.value()?,
+            spa: self.spa.value()?,
+            spd: self.spd.value()?,
+            spe: self.spe.value()?,
+        })
     }
 }
 

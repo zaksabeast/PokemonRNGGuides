@@ -267,7 +267,7 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
 };
 
 type Props = {
-  setTargetSetup: (targetSetup: TargetSetup) => void;
+  setTargetSetup: (targetSetup: TargetSetup, goNextStep: boolean) => void;
 };
 
 export const Wild3SearcherFindTarget = ({ setTargetSetup }: Props) => {

@@ -23,6 +23,7 @@ const leadSpeedTypes = [
   "Custom",
 ] as const satisfies readonly LeadSpeedType[];
 
+export const FASTEST_LEAD_CYCLE_SPEED = 18;
 export const AVERAGE_LEAD_CYCLE_SPEED = 775;
 export const SLOWEST_LEAD_CYCLE_SPEED = 900;
 
@@ -33,7 +34,7 @@ const calculateLeadCycleSpeed = async (
   idealLeadCycleSpeed: number | null,
 ) => {
   return match(leadSpeedType)
-    .with("Fastest", () => 18)
+    .with("Fastest", () => FASTEST_LEAD_CYCLE_SPEED)
     .with("Slowest", () => SLOWEST_LEAD_CYCLE_SPEED)
     .with("Average", () => AVERAGE_LEAD_CYCLE_SPEED)
     .with("Custom", () => leadCycleSpeedCustom)

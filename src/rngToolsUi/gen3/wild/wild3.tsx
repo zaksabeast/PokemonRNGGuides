@@ -113,7 +113,10 @@ export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
     return <Skeleton />;
   }
 
-  const handleSetTargetSetup = (targetSetup: TargetSetup) => {
+  const handleSetTargetSetup = (
+    targetSetup: TargetSetup,
+    goNextStep: boolean,
+  ) => {
     setTargetSetup(
       hydrationLock({
         targetSetup,
@@ -124,7 +127,10 @@ export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
         battleVideoInfo: null,
       }),
     );
-    setStep(step + 1);
+
+    if (goNextStep) {
+      setStep(step + 1);
+    }
   };
 
   return <Wild3SearcherFindTarget setTargetSetup={handleSetTargetSetup} />;

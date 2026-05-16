@@ -40,7 +40,12 @@ import {
 } from "./wild3MethodDistribution";
 import { Wild3Action } from "../../../../rng_tools/pkg/rng_tools";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
-import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
+import {
+  AVERAGE_LEAD_CYCLE_SPEED,
+  FASTEST_LEAD_CYCLE_SPEED,
+  SLOWEST_LEAD_CYCLE_SPEED,
+} from "./leadCycleSpeedSelector";
+import { match } from "ts-pattern";
 
 type CalibOffset = {
   offset: number; // between pressing A and reaching SweetScent function.
@@ -297,6 +302,14 @@ export const Wild3Calib = ({
   const canDoCalib =
     battleVideoInfo != null || targetSetup?.targetPaintingAdvs.before === 0;
 
+  const leadCycleSpeedToText = (spd: number) => {
+    return match(spd)
+      .with(AVERAGE_LEAD_CYCLE_SPEED, () => `Average (${spd})`)
+      .with(FASTEST_LEAD_CYCLE_SPEED, () => `Fastest (${spd})`)
+      .with(SLOWEST_LEAD_CYCLE_SPEED, () => `Slowest (${spd})`)
+      .otherwise(() => `${spd}`);
+  };
+
   const infoFromPrevSteps = () => {
     if (targetSetupProp == null) {
       return null;
@@ -335,10 +348,7 @@ export const Wild3Calib = ({
       },
       {
         label: "Lead Cycle Speed",
-        input:
-          targetSetupProp.leadCycleSpeed === AVERAGE_LEAD_CYCLE_SPEED
-            ? "Average"
-            : targetSetupProp.leadCycleSpeed,
+        input: leadCycleSpeedToText(targetSetupProp.leadCycleSpeed),
         show: targetSetupProp.lead !== "Egg",
       },
       {

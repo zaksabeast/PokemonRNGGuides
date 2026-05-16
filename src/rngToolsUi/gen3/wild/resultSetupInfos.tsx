@@ -6,6 +6,8 @@ import {
   Link,
   Button,
   Flex,
+  FormFieldTable,
+  Switch,
 } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
@@ -176,27 +178,6 @@ const getResultSetupInfoColumns = ({
     },
   );
 
-  const breakdownBtn = (
-    btnContent: {
-      content: React.ReactNode;
-      tooltip: string;
-    },
-    values: ResultSetupInfo,
-  ) => (
-    <Tooltip title={btnContent.tooltip}>
-      <Button
-        type="text"
-        color="PrimaryText"
-        trackerId="wild3_likelihood_breakdown"
-        onClick={() => {
-          onBreakdownClick(values);
-        }}
-      >
-        {btnContent.content}
-      </Button>
-    </Tooltip>
-  );
-
   const tooltipHelper = (btnContent: {
     content: React.ReactNode;
     tooltip: string;
@@ -252,18 +233,15 @@ const getResultSetupInfoColumns = ({
           text === "100%" && values.lead === "Egg" && values.method === "Wild1";
         const title = `Method ${values.method}${isVeryReliableSetup ? " (Very reliable setup)" : ""}`;
 
-        return breakdownBtn(
-          {
-            content: (
-              <Flex align="center" gap={4}>
-                {text}
-                {isVeryReliableSetup && <Icon name="Star" />}
-              </Flex>
-            ),
-            tooltip: title,
-          },
-          values,
-        );
+        return tooltipHelper({
+          content: (
+            <Flex align="center" gap={4}>
+              {text}
+              {isVeryReliableSetup && <Icon name="Star" />}
+            </Flex>
+          ),
+          tooltip: title,
+        });
       },
     });
   }
@@ -325,12 +303,11 @@ const getResultSetupInfoColumns = ({
               if (cycle_data_by_lead === undefined) {
                 return "";
               }
-              return breakdownBtn(
+              return tooltipHelper(
                 getMethodLikelihoodColumValue(
                   cycle_data_by_lead.ideal_lead,
                   values.method,
                 ),
-                values,
               );
             },
           },
@@ -426,7 +403,7 @@ const resultSetupInfoToDistributionFixedData = (
 type Props = {
   selectedPidPathResult: PidPathResult | null;
   rngManipulatedLeadPid: boolean;
-  setTargetSetup: (targetSetup: TargetSetup) => void;
+  setTargetSetup: (targetSetup: TargetSetup, goNextStep: boolean) => void;
 };
 
 const setupInfoToTargetSetup = (
@@ -479,49 +456,54 @@ export const Wild3ResultSetupInfos = ({
     showRequiredPokeblock,
     showRequiresWhiteFlute,
     usesPainting,
-    onBreakdownClick: (record) => {
-      setDistributionFixedData(
-        resultSetupInfoToDistributionFixedData(record, rngManipulatedLeadPid),
-      );
+    onBreakdownClick: (setupInfo) => {
+      setSelectedResultSetupInfo(setupInfo);
+      setDisplayBreakdown(true);
     },
   });
 
-  const [distributionFixedData, setDistributionFixedData] = React.useState<
-    DistributionProps["fixedData"] | null
-  >(null);
+  const [displayBreakdown, setDisplayBreakdown] = React.useState(false);
+
+  const [selectedResultSetupInfo, setSelectedResultSetupInfo] =
+    React.useState<ResultSetupInfo | null>(null);
 
   React.useEffect(() => {
-    setDistributionFixedData(null);
-  }, [selectedPidPathResult]);
-
-  const [selectedTargetSetup, setSelectedTargetSetup] =
-    React.useState<TargetSetup | null>(null);
+    setSelectedResultSetupInfo(null);
+  }, [selectedPidPathResult, setSelectedResultSetupInfo]);
 
   if (selectedPidPathResult == null) {
     return null;
   }
 
-  const onClickResultRow =
-    setTargetSetup == null
-      ? undefined
-      : (setupInfo: ResultSetupInfo) => {
-          const targetSetup = setupInfoToTargetSetup(
-            setupInfo,
-            AVERAGE_LEAD_CYCLE_SPEED,
-          );
-          setTargetSetup(targetSetup);
-          setSelectedTargetSetup(targetSetup);
-        };
+  const onClickResultRow = (setupInfo: ResultSetupInfo) => {
+    setSelectedResultSetupInfo(setupInfo);
+
+    const targetSetup = setupInfoToTargetSetup(
+      setupInfo,
+      AVERAGE_LEAD_CYCLE_SPEED,
+    );
+    setTargetSetup(targetSetup, false);
+  };
 
   const setLeadCycleSpeed =
-    selectedTargetSetup == null
+    selectedResultSetupInfo == null
       ? undefined
       : (leadCycleSpeed: number) => {
-          setTargetSetup({
-            ...selectedTargetSetup,
-            leadCycleSpeed,
-          });
+          setTargetSetup(
+            setupInfoToTargetSetup(selectedResultSetupInfo, leadCycleSpeed),
+            true,
+          );
         };
+
+  const distributionFixedData =
+    selectedResultSetupInfo == null
+      ? null
+      : resultSetupInfoToDistributionFixedData(
+          selectedResultSetupInfo,
+          rngManipulatedLeadPid,
+        );
+  console.log(distributionFixedData, selectedResultSetupInfo);
+
   return (
     <>
       <ResultTable<ResultSetupInfo>
@@ -534,11 +516,30 @@ export const Wild3ResultSetupInfos = ({
         }}
       />
       {distributionFixedData != null && (
-        <Wild3MethodDistribution
-          fixedData={distributionFixedData}
-          permitEnablingDebugOptions={false}
-          setLeadCycleSpeed={setLeadCycleSpeed}
-        />
+        <Flex vertical>
+          {!rngManipulatedLeadPid && (
+            <FormFieldTable
+              fields={[
+                {
+                  label: "Display lead cycle speed calibration?",
+                  input: (
+                    <Switch
+                      onChange={setDisplayBreakdown}
+                      value={displayBreakdown}
+                    />
+                  ),
+                },
+              ]}
+            />
+          )}
+          {(rngManipulatedLeadPid || displayBreakdown) && (
+            <Wild3MethodDistribution
+              fixedData={distributionFixedData}
+              permitEnablingDebugOptions={false}
+              setLeadCycleSpeed={setLeadCycleSpeed}
+            />
+          )}
+        </Flex>
       )}
     </>
   );

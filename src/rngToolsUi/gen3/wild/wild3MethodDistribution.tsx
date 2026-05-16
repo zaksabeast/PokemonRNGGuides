@@ -714,7 +714,7 @@ export const Wild3MethodDistribution = ({
           }}
         >
           {" "}
-          Select that lead
+          Select that lead and go to next step
         </Button>
       )}
 

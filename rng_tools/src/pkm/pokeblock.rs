@@ -53,6 +53,8 @@ pub const POKEBLOCK_NATURE_STAT_FACTORS: [[i32; 5]; 25] = [
     [0, 0, 0, 0, 0],
 ];
 
+// Generated from
+// cargo test --release test_generate_pertinent_custom_pokeblocks_by_nature -- --include-ignored
 pub static PERTINENT_SOLO_POKEBLOCKS_BY_NATURE: LazyLock<[Vec<[u8; 5]>; 25]> =
     LazyLock::new(|| {
         [
@@ -204,7 +206,7 @@ pub static PERTINENT_SOLO_POKEBLOCKS_BY_NATURE: LazyLock<[Vec<[u8; 5]>; 25]> =
         ]
     });
 
-// Generate from
+// Generated from
 // cargo test --release test_generate_pertinent_custom_pokeblocks_by_nature -- --include-ignored
 pub static PERTINENT_CUSTOM_POKEBLOCKS_BY_NATURE: LazyLock<[Vec<[u8; 5]>; 25]> =
     LazyLock::new(|| {

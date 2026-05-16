@@ -33,6 +33,8 @@ export const wild3SafariPokeblockSearchOptLabels = [
 
 export const pokeblockFlavorNames = ["Spicy", "Dry", "Sweet", "Bitter", "Sour"];
 
+// Generated from
+// cargo test --release test_generate_pertinent_custom_pokeblocks_by_nature -- --include-ignored
 export const pokeblockCreationInfos = new Map<string, PokeblockCreationInfo>([
   ["00001", { Npc: { npcs: "Npc0", player_berry_idx: 0 } }],
   ["00010", { Npc: { npcs: "Npc0", player_berry_idx: 16 } }],
@@ -71,6 +73,7 @@ export const pokeblockCreationInfos = new Map<string, PokeblockCreationInfo>([
   ["20110", { Npc: { npcs: "Npc2", player_berry_idx: 23 } }],
 ]);
 
+// The order must match the order in generator_pokeblock.rs
 export const berryNames = [
   "Aspear",
   "Belue",

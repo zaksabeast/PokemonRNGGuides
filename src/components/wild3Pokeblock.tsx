@@ -89,7 +89,7 @@ const getPokeblockCreationInfoText = (pokeblock: Pokeblock) => {
     return `Created by playing Berry Blender ${withWho}, and blending a ${berryNames[player_berry_idx]} berry.`;
   }
   if ("Grey" in info) {
-    return "1/10 chance to be created by playing Berry Blender with another player, when both players provide a Cheri Berry.";
+    return "1/10 chance to be created by playing Berry Blender with another player, when both players provide the same berry.";
   }
   if ("Multiplayer" in info) {
     const { berries } = info["Multiplayer"];

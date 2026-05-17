@@ -51,12 +51,7 @@ const emeraldWildGameData = getWild3EmeraldGameData();
 
 export type FixedData = {
   targetSetup: TargetSetup;
-  tid: number;
-  sid: number;
-  wantedPID: number | null; // This is to support Wild5. It should be replaced by a PID reroll count.
   idealLeadCycleSpeed: number | null;
-  usingIdealLeadCycleSpeed: boolean;
-  showTarget: boolean;
 };
 
 export type Props = {
@@ -67,51 +62,12 @@ export type Props = {
 };
 
 type FormState = {
-  map: string;
-  action: TargetSetup["action"];
-  advance: number;
-  leadIdx: number;
   leadCycleSpeed: number;
-  usingWhiteFlute: boolean;
-  feebasState: TargetSetup["feebasState"];
-  roamerState: TargetSetup["roamerState"];
-  massOutbreakState: TargetSetup["massOutbreakState"];
-  usingPaintingReseeding: boolean;
-  initial_seed: number;
-  hasPreselectedData: boolean;
-  wantedMethod: Gen3Method | null;
-  safariPokeblock: TargetSetup["safariPokeblock"];
-};
-
-const getInitialValues = (fixedData: FixedData, leadCycleSpeed: number) => {
-  const { targetSetup } = fixedData;
-  const leadIdx = gen3Leads.findIndex(
-    (lead) => JSON.stringify(lead) === JSON.stringify(targetSetup.lead),
-  );
-
-  return {
-    map: targetSetup.map,
-    action: targetSetup.action,
-    advance: targetSetup.targetPaintingAdvs.after,
-    leadIdx: Math.max(leadIdx, 0),
-    leadCycleSpeed,
-    usingWhiteFlute: targetSetup.requiresWhiteFlute,
-    feebasState: targetSetup.feebasState,
-    roamerState: targetSetup.roamerState,
-    massOutbreakState: targetSetup.massOutbreakState,
-    initial_seed: targetSetup.targetPaintingAdvs.before,
-    hasPreselectedData: true,
-    usingPaintingReseeding: targetSetup.targetPaintingAdvs.before !== 0,
-    wantedMethod: targetSetup.targetMethod,
-    safariPokeblock: targetSetup.safariPokeblock,
-  };
 };
 
 const getLeadCycleSpeedFields = (
   leadType: Gen3Lead,
   idealLeadCycleSpeed: number | null,
-  usingIdealLeadCycleSpeed: boolean,
-  setLeadCycleSpeed: (spd: number) => void,
 ): Field[] => {
   if (leadType === "Egg") {
     return [];
@@ -122,11 +78,7 @@ const getLeadCycleSpeedFields = (
       label: "Lead Cycle Speed",
       ...leadCycleSpeedTooltip(),
       input: (
-        <LeadCycleSpeedSelector
-          idealLeadCycleSpeed={idealLeadCycleSpeed}
-          idealLeadSelected={usingIdealLeadCycleSpeed}
-          setLeadCycleSpeed={setLeadCycleSpeed}
-        />
+        <LeadCycleSpeedSelector idealLeadCycleSpeed={idealLeadCycleSpeed} />
       ),
     },
   ];
@@ -135,26 +87,20 @@ const getLeadCycleSpeedFields = (
 export const Wild3MethodDistributionFields = ({
   onLeadCycleSpeedChanged,
   idealLeadCycleSpeed,
-  usingIdealLeadCycleSpeed,
+  fixedData,
 }: {
   onLeadCycleSpeedChanged: (leadCycleSpeed: number) => void;
   idealLeadCycleSpeed: number | null;
   usingIdealLeadCycleSpeed: boolean;
+  fixedData: FixedData;
 }) => {
-  const { setFieldValue } = useFormContext<FormState>();
-  const leadIdx = useWatch<FormState, "leadIdx">({
-    name: "leadIdx",
-  });
-
   const leadCycleSpeed = useWatch<FormState, "leadCycleSpeed">({
     name: "leadCycleSpeed",
   });
 
   const fields: Field[] = getLeadCycleSpeedFields(
-    gen3Leads[leadIdx],
+    fixedData.targetSetup.lead,
     idealLeadCycleSpeed,
-    usingIdealLeadCycleSpeed,
-    (spd) => setFieldValue("leadCycleSpeed", spd),
   );
 
   React.useEffect(() => {
@@ -169,29 +115,21 @@ const getColumns = (
   fixedData: FixedData,
 ): ResultColumn<UiResult>[] => {
   const columns: ResultColumn<UiResult>[] = [
-    ...(fixedData.showTarget
-      ? [
-          {
-            title: "",
-            key: "isWanted",
-            dataIndex: "pre_sweet_scent_cycle_ranges",
-            render: (_, values) => {
-              if (
-                (fixedData.wantedPID !== null &&
-                  values.pid !== fixedData.wantedPID) ||
-                values.method !== fixedData.targetSetup.targetMethod
-              ) {
-                return null;
-              }
-              return (
-                <Tooltip title="Target Pokémon">
-                  <Icon name="Pokeball" size={20} />
-                </Tooltip>
-              );
-            },
-          } as const as ResultColumn<UiResult>,
-        ]
-      : []),
+    {
+      title: "",
+      key: "isWanted",
+      dataIndex: "pre_sweet_scent_cycle_ranges",
+      render: (_, values) => {
+        if (values.method !== fixedData.targetSetup.targetMethod) {
+          return null;
+        }
+        return (
+          <Tooltip title="Target Pokémon">
+            <Icon name="Pokeball" size={20} />
+          </Tooltip>
+        );
+      },
+    },
     {
       title: (
         <>
@@ -231,15 +169,6 @@ const getColumns = (
       monospace: true,
       render: (pid) => pid.toString(16).padStart(8, "0").toUpperCase(),
     },
-    ...(fixedData.showTarget
-      ? []
-      : [
-          {
-            title: "Shiny",
-            dataIndex: "shiny",
-            render: (shiny: boolean) => (shiny ? "Yes" : "No"),
-          } as const,
-        ]),
     { title: "Nature", dataIndex: "nature" },
     ...ivColumns,
   ];
@@ -290,21 +219,24 @@ const convertSearcherResultsToUIResults = (
     });
 };
 
-const calculate = async (values: FormState, fixedData: FixedData) => {
-  const initial_seed = values.usingPaintingReseeding ? values.initial_seed : 0;
+const calculate = async (
+  fixedData: FixedData,
+  overwriteLeadCycleSpeed: number,
+) => {
+  const { targetSetup } = fixedData;
 
   const { canUsePokeblock } = getPossibleValuesForMap(
-    values.map,
-    values.action,
+    targetSetup.map,
+    targetSetup.action,
   );
 
   const opts: Wild3GeneratorOptions = {
-    tid: fixedData.tid,
-    sid: fixedData.sid,
+    tid: 0,
+    sid: 0,
     map_idx: 0,
-    action: values.action,
+    action: targetSetup.action,
     methods: ["Wild1", "Wild2", "Wild3", "Wild4", "Wild5"] as Gen3Method[],
-    lead: gen3Leads[values.leadIdx],
+    lead: targetSetup.lead,
     filter: pkmFilterFieldsToRustInput(getPkmFilterInitialValues()),
     gen3_filter: gen3PkmFilterFieldsToRustInput(
       getGen3PkmFilterInitialValues(),
@@ -313,21 +245,21 @@ const calculate = async (values: FormState, fixedData: FixedData) => {
     consider_cycles: true,
     consider_rng_manipulated_lead_pid: true,
     generate_even_if_impossible: true,
-    using_white_flute: values.usingWhiteFlute,
-    roamer_state: values.roamerState,
-    mass_outbreak_state: values.massOutbreakState,
-    feebas_state: values.feebasState,
-    lead_cycle_speed: values.leadCycleSpeed,
+    using_white_flute: targetSetup.requiresWhiteFlute,
+    roamer_state: targetSetup.roamerState,
+    mass_outbreak_state: targetSetup.massOutbreakState,
+    feebas_state: targetSetup.feebasState,
+    lead_cycle_speed: overwriteLeadCycleSpeed,
     safari_pokeblock:
-      canUsePokeblock && values.safariPokeblock !== null
+      canUsePokeblock && targetSetup.safariPokeblock !== null
         ? {
-            Specific: values.safariPokeblock,
+            Specific: targetSetup.safariPokeblock,
           }
         : null,
   };
 
   const map_data = emeraldWildGameData.maps_data.find(
-    (table) => table.map_id === values.map,
+    (table) => table.map_id === targetSetup.map,
   );
   if (map_data == null) {
     return {
@@ -340,8 +272,8 @@ const calculate = async (values: FormState, fixedData: FixedData) => {
 
   const { results, cycle_at_moments } =
     await rngTools.generate_gen3_wild_distribution(
-      initial_seed,
-      values.advance,
+      targetSetup.targetPaintingAdvs.before,
+      targetSetup.targetPaintingAdvs.after,
       opts,
       map_data,
     );
@@ -349,7 +281,9 @@ const calculate = async (values: FormState, fixedData: FixedData) => {
   return {
     uiResults: convertSearcherResultsToUIResults(results),
     cycle_at_moments,
-    advanceAtSweetScent: lcrng_distance(0, initial_seed) + values.advance,
+    advanceAtSweetScent:
+      lcrng_distance(0, targetSetup.targetPaintingAdvs.before) +
+      targetSetup.targetPaintingAdvs.after,
     hasError: false,
   };
 };
@@ -391,7 +325,7 @@ export const Wild3MethodDistribution = ({
 
   const updateResults = React.useCallback(
     (values: FormState) => {
-      calculate(values, fixedData).then(
+      calculate(fixedData, values.leadCycleSpeed).then(
         ({ uiResults, cycle_at_moments, advanceAtSweetScent, hasError }) => {
           setResults(uiResults);
           setCycleAtMoments(cycle_at_moments);
@@ -415,7 +349,7 @@ export const Wild3MethodDistribution = ({
       : fixedData.targetSetup.leadCycleSpeed);
 
   const initialValues = React.useMemo(
-    () => getInitialValues(fixedData, initialLeadCycleSpeed),
+    () => ({ leadCycleSpeed: initialLeadCycleSpeed }),
     [fixedData, initialLeadCycleSpeed],
   );
 
@@ -447,6 +381,7 @@ export const Wild3MethodDistribution = ({
         submitButtonLabel={getSubmitButtonLabel(fixedData)}
       >
         <Wild3MethodDistributionFields
+          fixedData={fixedData}
           onLeadCycleSpeedChanged={onLeadCycleSpeedChanged}
           idealLeadCycleSpeed={fixedData.idealLeadCycleSpeed}
           usingIdealLeadCycleSpeed={fixedData.usingIdealLeadCycleSpeed}

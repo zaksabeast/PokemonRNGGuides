@@ -371,19 +371,13 @@ const getResultSetupInfoColumns = ({
 
 const resultSetupInfoToDistributionFixedData = (
   setup: ResultSetupInfo,
-  rngManipulatedLeadPid: boolean,
 ): DistributionFixedData => {
   const idealLeadCycleSpeed =
     setup.cycle_data_by_lead?.ideal_lead.lead_pid_cycle_count ?? 0;
 
   return {
     targetSetup: setupInfoToTargetSetup(setup, AVERAGE_LEAD_CYCLE_SPEED),
-    tid: 0,
-    sid: 0,
-    wantedPID: setup.pid,
     idealLeadCycleSpeed,
-    usingIdealLeadCycleSpeed: rngManipulatedLeadPid,
-    showTarget: true,
   };
 };
 
@@ -480,10 +474,7 @@ export const Wild3ResultSetupInfos = ({
   const distributionFixedData =
     selectedResultSetupInfo == null
       ? null
-      : resultSetupInfoToDistributionFixedData(
-          selectedResultSetupInfo,
-          rngManipulatedLeadPid,
-        );
+      : resultSetupInfoToDistributionFixedData(selectedResultSetupInfo);
 
   return (
     <>

@@ -98,12 +98,7 @@ const targetSetupToMethodDistributionFixedData = (
 
   return {
     targetSetup,
-    tid: 0,
-    sid: 0,
-    wantedPID: null,
     idealLeadCycleSpeed: null,
-    usingIdealLeadCycleSpeed: false,
-    showTarget: true,
   };
 };
 
@@ -419,7 +414,7 @@ export const Wild3Calib = ({
     (battleVideoInfo?.battleVideoAdvAfterPainting ?? 0) > 0;
 
   const methodDistributionFixedData =
-    targetSetupToMethodDistributionFixedData(targetSetup);
+    targetSetupToMethodDistributionFixedData(targetSetup); //NO_PROD
 
   // Quick "change lead cycle speed" is only available when doing step 1-2-3.
   // If the user starts at step 3, a lead cycle speed field is already displayed.

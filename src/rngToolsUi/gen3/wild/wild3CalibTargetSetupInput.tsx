@@ -6,6 +6,7 @@ import {
   Wild3MassOutbreakState,
   Gen3Lead,
 } from "~/rngTools";
+import { lcrng_distance } from "~/utils/lcrng";
 import {
   Field,
   FormikNumberInput,
@@ -48,6 +49,7 @@ import {
   usingPaintingReseedingLabel as usingPaintingReseedingLabel,
 } from "./wild3Labels";
 import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -150,14 +152,14 @@ const getFields = ({
   usingPaintingReseeding,
   leadIdx,
   usingAverageLeadCycleSpeed,
-  setLeadCycleSpeed,
+  equivalentInitialAdvs,
 }: {
   mapId: string;
   action: Wild3Action;
   usingPaintingReseeding: boolean;
   leadIdx: number;
   usingAverageLeadCycleSpeed: boolean;
-  setLeadCycleSpeed: (spd: number) => void;
+  equivalentInitialAdvs: number;
 }): Field[] => {
   const {
     actions,
@@ -221,13 +223,7 @@ const getFields = ({
     },
     {
       label: "Lead Cycle Speed",
-      input: (
-        <LeadCycleSpeedSelector
-          idealLeadCycleSpeed={null}
-          idealLeadSelected={false}
-          setLeadCycleSpeed={setLeadCycleSpeed}
-        />
-      ),
+      input: <LeadCycleSpeedSelector idealLeadCycleSpeed={null} />,
       show: gen3Leads[leadIdx] !== "Egg" && !usingAverageLeadCycleSpeed,
       indent: 1,
     },
@@ -259,6 +255,18 @@ const getFields = ({
       input: (
         <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
       ),
+    },
+    {
+      label: "",
+      key: "Equivalent to Advances",
+      show: usingPaintingReseeding,
+      input: (
+        <>
+          Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
+          without painting reseeding
+        </>
+      ),
+      indent: 1,
     },
     {
       label: "Feebas state",
@@ -317,6 +325,18 @@ export const Wild3CalibTargetSetupInputFields = () => {
     FormState,
     "usingAverageLeadCycleSpeed"
   >({ name: "usingAverageLeadCycleSpeed" });
+  const targetFrameBeforePainting = useWatch<
+    FormState,
+    "targetFrameBeforePainting"
+  >({
+    name: "targetFrameBeforePainting",
+  });
+  const targetAdvance = useWatch<FormState, "targetAdvance">({
+    name: "targetAdvance",
+  });
+
+  const equivalentInitialAdvs =
+    lcrng_distance(0, targetFrameBeforePainting) + targetAdvance;
 
   const fields = getFields({
     mapId: map,
@@ -324,7 +344,7 @@ export const Wild3CalibTargetSetupInputFields = () => {
     usingPaintingReseeding,
     leadIdx,
     usingAverageLeadCycleSpeed,
-    setLeadCycleSpeed: (spd) => setFieldValue("leadCycleSpeed", spd),
+    equivalentInitialAdvs,
   });
 
   React.useEffect(() => {

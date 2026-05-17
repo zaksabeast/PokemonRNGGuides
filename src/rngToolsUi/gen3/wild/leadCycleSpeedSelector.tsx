@@ -1,4 +1,5 @@
 import { rngTools } from "~/rngTools";
+import { useFormContext } from "~/hooks/form";
 import { FormFieldTable, NumberInput, RadioGroup } from "~/components";
 import { match } from "ts-pattern";
 import React from "react";
@@ -44,16 +45,14 @@ const calculateLeadCycleSpeed = async (
 
 export const LeadCycleSpeedSelector = ({
   idealLeadCycleSpeed,
-  idealLeadSelected,
-  setLeadCycleSpeed,
 }: {
   idealLeadCycleSpeed: number | null;
-  idealLeadSelected: boolean;
-  setLeadCycleSpeed: (spd: number) => void;
 }) => {
-  const [leadSpeedType, setLeadSpeedType] = React.useState<LeadSpeedType>(
-    idealLeadSelected && idealLeadCycleSpeed != null ? "Ideal" : "Average",
-  );
+  const { setFieldValue } = useFormContext<{
+    leadCycleSpeed: number;
+  }>();
+  const [leadSpeedType, setLeadSpeedType] =
+    React.useState<LeadSpeedType>("Average");
   const [leadCycleSpeedCustom, setLeadCycleSpeedCustom] = React.useState<
     number | null
   >(AVERAGE_LEAD_CYCLE_SPEED);
@@ -70,7 +69,7 @@ export const LeadCycleSpeedSelector = ({
       idealLeadCycleSpeed,
     ).then((val) => {
       setComputedLeadCycleSpeed(val);
-      setLeadCycleSpeed(val);
+      setFieldValue("leadCycleSpeed", val);
     });
   }, [
     idealLeadCycleSpeed,
@@ -78,7 +77,7 @@ export const LeadCycleSpeedSelector = ({
     leadPID,
     leadSpeedType,
     setComputedLeadCycleSpeed,
-    setLeadCycleSpeed,
+    setFieldValue,
   ]);
 
   const fields = [
@@ -99,7 +98,6 @@ export const LeadCycleSpeedSelector = ({
     },
     {
       label: "Cycle count for operation (PID modulo 25):",
-      key: "Cycle count for operation - Custom",
       input: (
         <NumberInput
           name="leadCycleSpeedCustom"
@@ -115,7 +113,6 @@ export const LeadCycleSpeedSelector = ({
     },
     {
       label: "Cycle count for operation (PID modulo 25):",
-      key: "Cycle count for operation - Not Custom",
       input: `${computedLeadCycleSpeed} cycles`,
       show: leadSpeedType !== "Custom",
     },

@@ -150,12 +150,14 @@ const getFields = ({
   usingPaintingReseeding,
   leadIdx,
   usingAverageLeadCycleSpeed,
+  setLeadCycleSpeed,
 }: {
   mapId: string;
   action: Wild3Action;
   usingPaintingReseeding: boolean;
   leadIdx: number;
   usingAverageLeadCycleSpeed: boolean;
+  setLeadCycleSpeed: (spd: number) => void;
 }): Field[] => {
   const {
     actions,
@@ -223,6 +225,7 @@ const getFields = ({
         <LeadCycleSpeedSelector
           idealLeadCycleSpeed={null}
           idealLeadSelected={false}
+          setLeadCycleSpeed={setLeadCycleSpeed}
         />
       ),
       show: gen3Leads[leadIdx] !== "Egg" && !usingAverageLeadCycleSpeed,
@@ -321,6 +324,7 @@ export const Wild3CalibTargetSetupInputFields = () => {
     usingPaintingReseeding,
     leadIdx,
     usingAverageLeadCycleSpeed,
+    setLeadCycleSpeed: (spd) => setFieldValue("leadCycleSpeed", spd),
   });
 
   React.useEffect(() => {

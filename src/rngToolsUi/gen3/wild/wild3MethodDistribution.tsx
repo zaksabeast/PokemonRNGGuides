@@ -106,6 +106,8 @@ export type Props = {
   fixedData: FixedData | null;
   permitEnablingDebugOptions: boolean;
   setLeadCycleSpeed?: (leadCycleSpeed: number) => void;
+  displaySelectLeadButton?: boolean;
+  leadCycleSpeed?: number | null;
 };
 
 const validationSchema = z.object({
@@ -188,6 +190,7 @@ const getFields = (
   equivalentInitialAdvs: number,
   hasPreselectedData: boolean,
   usingIdealLeadCycleSpeed: boolean,
+  setLeadCycleSpeed: (spd: number) => void,
 ): Field[] => {
   const {
     actions,
@@ -266,6 +269,7 @@ const getFields = (
         <LeadCycleSpeedSelector
           idealLeadCycleSpeed={idealLeadCycleSpeed}
           idealLeadSelected={usingIdealLeadCycleSpeed}
+          setLeadCycleSpeed={setLeadCycleSpeed}
         />
       ),
     });
@@ -404,6 +408,7 @@ export const Wild3MethodDistributionFields = ({
     equivalentInitialAdvs,
     hasPreselectedData,
     usingIdealLeadCycleSpeed,
+    (spd) => setFieldValue("leadCycleSpeed", spd),
   );
 
   React.useEffect(() => {
@@ -648,27 +653,36 @@ export const Wild3MethodDistribution = ({
   fixedData,
   permitEnablingDebugOptions,
   setLeadCycleSpeed: setLeadCycleSpeedProp,
+  displaySelectLeadButton,
+  leadCycleSpeed: leadCycleSpeedProp,
 }: Props) => {
   const [hasError, setHasError] = React.useState(true);
   const [results, setResults] = React.useState<UiResult[]>([]);
   const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(
-    null,
+    leadCycleSpeedProp ?? null,
   );
+
+  React.useEffect(() => {
+    setLeadCycleSpeed(leadCycleSpeedProp ?? null);
+  }, [leadCycleSpeedProp]);
+
   const [cycleAtMoments, setCycleAtMoments] = React.useState<CycleAtMoment[]>(
     [],
   );
   const [advanceAtSweetScent, setAdvanceAtSweetScent] = React.useState(0);
 
+  const calcLeadCycleSpd = (values: FormState) => {
+    const isEggLead = gen3Leads[values.leadIdx] === "Egg";
+    return isEggLead ? null : values.leadCycleSpeed;
+  };
+
   const updateResults = React.useCallback(
     (values: FormState) => {
       calculate(values).then(
         ({ uiResults, cycle_at_moments, advanceAtSweetScent, hasError }) => {
-          const isEggLead = gen3Leads[values.leadIdx] === "Egg";
-          const leadCycleSpeed = isEggLead ? null : values.leadCycleSpeed;
-
           setResults(uiResults);
           setCycleAtMoments(cycle_at_moments);
-          setLeadCycleSpeed(leadCycleSpeed);
+          setLeadCycleSpeed(calcLeadCycleSpd(values));
           setAdvanceAtSweetScent(advanceAtSweetScent);
           setHasError(hasError);
         },
@@ -681,20 +695,26 @@ export const Wild3MethodDistribution = ({
     updateResults(values);
   };
 
-  const initialLeadCycleSpeed = fixedData?.usingIdealLeadCycleSpeed
-    ? (fixedData.idealLeadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED)
-    : AVERAGE_LEAD_CYCLE_SPEED;
+  const initialLeadCycleSpeed =
+    leadCycleSpeedProp ??
+    (fixedData?.usingIdealLeadCycleSpeed
+      ? (fixedData.idealLeadCycleSpeed ?? AVERAGE_LEAD_CYCLE_SPEED)
+      : AVERAGE_LEAD_CYCLE_SPEED);
 
   const initialValues = getInitialValues(fixedData, initialLeadCycleSpeed);
-
-  React.useEffect(() => {
-    updateResults(initialValues);
-  }, [updateResults, initialValues]);
 
   const clearResults = () => {
     setResults([]);
     setCycleAtMoments([]);
   };
+
+  React.useEffect(() => {
+    if (fixedData != null) {
+      updateResults(initialValues);
+    } else {
+      clearResults();
+    }
+  }, [updateResults, initialValues, fixedData]);
 
   const getColumnsProps = (t: Translations) => {
     return getColumns(t, fixedData);
@@ -705,8 +725,11 @@ export const Wild3MethodDistribution = ({
       clearResults();
     } else {
       const values = getInitialValues(fixedData, leadCycleSpeed);
+      setLeadCycleSpeed(calcLeadCycleSpd(values));
       updateResults(values);
-      setLeadCycleSpeedProp?.(leadCycleSpeed);
+      if (!displaySelectLeadButton) {
+        setLeadCycleSpeedProp?.(leadCycleSpeed);
+      }
     }
   };
 
@@ -736,6 +759,20 @@ export const Wild3MethodDistribution = ({
           Result: No Pokémon encounter when using that setup.
         </Typography.Text>
       )}
+
+      {displaySelectLeadButton &&
+        setLeadCycleSpeedProp != null &&
+        leadCycleSpeedProp !== leadCycleSpeed && (
+          <Button
+            trackerId="Wild3MethodDistribution_setLeadCycleSpeedProp"
+            onClick={() => {
+              setLeadCycleSpeedProp(leadCycleSpeed ?? 0);
+            }}
+          >
+            {" "}
+            Select that lead for calibration
+          </Button>
+        )}
 
       {permitEnablingDebugOptions && (
         <Wild3CycleAtMoments

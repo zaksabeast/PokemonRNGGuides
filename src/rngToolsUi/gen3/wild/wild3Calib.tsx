@@ -171,6 +171,14 @@ export const Wild3Calib = ({
   );
   const [hasHitTargetAdv, setHasHitTargetAdv] = React.useState(false);
 
+  const [overwriteLeadCycleSpeed, setOverwriteLeadCycleSpeed] = React.useState<
+    number | null
+  >(null);
+
+  React.useEffect(() => {
+    setOverwriteLeadCycleSpeed(null);
+  }, [targetSetupProp]);
+
   React.useEffect(() => {
     setHasHitTargetAdv(false);
   }, [targetSetup]);
@@ -297,6 +305,11 @@ export const Wild3Calib = ({
         />
       ),
     },
+    {
+      label: "Lead Cycle Speed",
+      input: overwriteLeadCycleSpeed,
+      show: overwriteLeadCycleSpeed !== null,
+    },
   ];
 
   const canDoCalib =
@@ -304,7 +317,7 @@ export const Wild3Calib = ({
 
   const leadCycleSpeedToText = (spd: number) => {
     return match(spd)
-      .with(AVERAGE_LEAD_CYCLE_SPEED, () => `Average (${spd})`)
+      .with(AVERAGE_LEAD_CYCLE_SPEED, () => `Average`)
       .with(FASTEST_LEAD_CYCLE_SPEED, () => `Fastest (${spd})`)
       .with(SLOWEST_LEAD_CYCLE_SPEED, () => `Slowest (${spd})`)
       .otherwise(() => `${spd}`);
@@ -349,7 +362,8 @@ export const Wild3Calib = ({
       {
         label: "Lead Cycle Speed",
         input: leadCycleSpeedToText(targetSetupProp.leadCycleSpeed),
-        show: targetSetupProp.lead !== "Egg",
+        show:
+          targetSetupProp.lead !== "Egg" && overwriteLeadCycleSpeed === null,
       },
       {
         label: "Target Method",
@@ -423,6 +437,21 @@ export const Wild3Calib = ({
   const methodDistributionFixedData =
     targetSetupToMethodDistributionFixedData(targetSetup);
 
+  // Quick "change lead cycle speed" is only available when doing step 1-2-3.
+  // If the user starts at step 3, a lead cycle speed field is already displayed.
+  const setLeadCycleSpeed =
+    targetSetupProp == null
+      ? undefined
+      : (leadCycleSpeed: number) => {
+          setOverwriteLeadCycleSpeed(leadCycleSpeed);
+          if (targetSetup != null) {
+            setTargetSetup({
+              ...targetSetup,
+              leadCycleSpeed,
+            });
+          }
+        };
+
   return (
     <Flex gap={32} vertical>
       {targetSetupProp == null ? inputForms() : infoFromPrevSteps()}
@@ -446,12 +475,15 @@ export const Wild3Calib = ({
             targetSetup={targetSetup}
             setLatestHitAdv={setLatestHitAdv}
           />
-          {hasHitTargetAdv && (
+          {!hasHitTargetAdv && (
             <>
               <Instructions_calib_wrong_method />
               <Wild3MethodDistribution
                 fixedData={methodDistributionFixedData}
                 permitEnablingDebugOptions
+                setLeadCycleSpeed={setLeadCycleSpeed}
+                displaySelectLeadButton
+                leadCycleSpeed={overwriteLeadCycleSpeed}
               />
             </>
           )}

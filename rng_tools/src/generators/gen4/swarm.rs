@@ -59,7 +59,7 @@ pub enum SwarmRoute {
     VioletCity,
 }
 
-const DPPT_ROUTES: [SwarmRoute; 28] = [
+pub const DPPT_ROUTES: [SwarmRoute; 28] = [
     SwarmRoute::Route201,
     SwarmRoute::Route202,
     SwarmRoute::Route203,
@@ -90,7 +90,7 @@ const DPPT_ROUTES: [SwarmRoute; 28] = [
     SwarmRoute::FuegoIronworks,
 ];
 
-const HGSS_ROUTES: [SwarmRoute; 20] = [
+pub const HGSS_ROUTES: [SwarmRoute; 20] = [
     SwarmRoute::Route1,
     SwarmRoute::Route3,
     SwarmRoute::Route9,

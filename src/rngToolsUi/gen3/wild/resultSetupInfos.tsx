@@ -20,7 +20,7 @@ import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { PidPathResult, ResultSetupInfo } from "./wild3FindTarget";
 import {
-  Props as DistributionProps,
+  type FixedData as DistributionFixedData,
   Wild3MethodDistribution,
 } from "./wild3MethodDistribution";
 import { GBA_FPS } from "~/utils/consts";
@@ -372,28 +372,18 @@ const getResultSetupInfoColumns = ({
 const resultSetupInfoToDistributionFixedData = (
   setup: ResultSetupInfo,
   rngManipulatedLeadPid: boolean,
-): DistributionProps["fixedData"] => {
+): DistributionFixedData => {
   const idealLeadCycleSpeed =
     setup.cycle_data_by_lead?.ideal_lead.lead_pid_cycle_count ?? 0;
 
   return {
-    map: setup.mapId,
-    action: setup.action,
-    advance: setup.advance,
+    targetSetup: setupInfoToTargetSetup(setup, AVERAGE_LEAD_CYCLE_SPEED),
     tid: 0,
     sid: 0,
-    lead: setup.lead,
-    roamerState: setup.roamer_state,
-    feebasState: setup.feebas_state,
-    massOutbreakState: setup.mass_outbreak_state,
-    initial_seed: setup.initial_seed,
-    painting_advs: setup.advs.frame_before_painting === 0 ? null : setup.advs,
-    wantedMethod: setup.method,
     wantedPID: setup.pid,
     idealLeadCycleSpeed,
     usingIdealLeadCycleSpeed: rngManipulatedLeadPid,
-    usingWhiteFlute: setup.requiresWhiteFlute,
-    safariPokeblock: setup.used_safari_pokeblock ?? null,
+    showTarget: true,
   };
 };
 

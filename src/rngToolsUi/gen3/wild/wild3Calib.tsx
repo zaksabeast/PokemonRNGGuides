@@ -35,8 +35,8 @@ import Instructions_calib_with_battle_video from "./instructions_calib_with_batt
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
 import Instructions_calib_wrong_method from "./instructions_calib_wrong_method.mdx";
 import {
+  type FixedData as Wild3MethodDistributionFixedData,
   Wild3MethodDistribution,
-  type Props as Wild3MethodDistributionProps,
 } from "./wild3MethodDistribution";
 import { Wild3Action } from "../../../../rng_tools/pkg/rng_tools";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
@@ -91,35 +91,19 @@ type Props = AllOrNone<{
 
 const targetSetupToMethodDistributionFixedData = (
   targetSetup: TargetSetup | null,
-): Wild3MethodDistributionProps["fixedData"] => {
+): Wild3MethodDistributionFixedData | null => {
   if (targetSetup == null) {
     return null;
   }
 
   return {
-    map: targetSetup.map,
-    action: targetSetup.action,
-    advance: targetSetup.targetPaintingAdvs.after,
+    targetSetup,
     tid: 0,
     sid: 0,
-    lead: targetSetup.lead,
-    roamerState: targetSetup.roamerState,
-    feebasState: targetSetup.feebasState,
-    massOutbreakState: targetSetup.massOutbreakState,
-    initial_seed: targetSetup.targetPaintingAdvs.before,
-    painting_advs:
-      targetSetup.targetPaintingAdvs.before === 0
-        ? null
-        : {
-            frame_before_painting: targetSetup.targetPaintingAdvs.before,
-            adv_after_painting: targetSetup.targetPaintingAdvs.after,
-          },
-    wantedMethod: targetSetup.targetMethod,
     wantedPID: null,
     idealLeadCycleSpeed: null,
     usingIdealLeadCycleSpeed: false,
-    usingWhiteFlute: targetSetup.requiresWhiteFlute,
-    safariPokeblock: targetSetup.safariPokeblock,
+    showTarget: true,
   };
 };
 
@@ -475,7 +459,7 @@ export const Wild3Calib = ({
             targetSetup={targetSetup}
             setLatestHitAdv={setLatestHitAdv}
           />
-          {!hasHitTargetAdv && (
+          {!hasHitTargetAdv && methodDistributionFixedData != null && (
             <>
               <Instructions_calib_wrong_method />
               <Wild3MethodDistribution

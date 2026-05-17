@@ -186,6 +186,10 @@ const tools = {
     () => import("~/rngToolsUi/gen3/wild/wild3MethodDistribution"),
     (mod) => mod.Wild3MethodDistribution,
   ),
+  Wild3MethodDistributionStandalone: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3MethodDistributionStandalone"),
+    (mod) => mod.Wild3MethodDistributionStandalone,
+  ),
   Gen3PidSpeedCalculator: lazyLoad(
     () => import("~/rngToolsUi/gen3/pidSpeedCalculator"),
     (mod) => mod.Gen3PidSpeedCalculator,

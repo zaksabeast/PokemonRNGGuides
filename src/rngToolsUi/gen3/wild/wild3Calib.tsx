@@ -482,7 +482,6 @@ export const Wild3Calib = ({
                 fixedData={methodDistributionFixedData}
                 permitEnablingDebugOptions
                 setLeadCycleSpeed={setLeadCycleSpeed}
-                displaySelectLeadButton
                 leadCycleSpeed={overwriteLeadCycleSpeed}
               />
             </>

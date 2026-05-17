@@ -24,7 +24,6 @@ import {
   Icon,
   Typography,
   FormikWild3Pokeblock,
-  Button,
 } from "~/components";
 import { toOptions } from "~/utils/options";
 import { formatProbability } from "~/utils/formatProbability";
@@ -106,7 +105,6 @@ export type Props = {
   fixedData: FixedData | null;
   permitEnablingDebugOptions: boolean;
   setLeadCycleSpeed?: (leadCycleSpeed: number) => void;
-  displaySelectLeadButton?: boolean;
   leadCycleSpeed?: number | null;
 };
 
@@ -653,7 +651,6 @@ export const Wild3MethodDistribution = ({
   fixedData,
   permitEnablingDebugOptions,
   setLeadCycleSpeed: setLeadCycleSpeedProp,
-  displaySelectLeadButton,
   leadCycleSpeed: leadCycleSpeedProp,
 }: Props) => {
   const [hasError, setHasError] = React.useState(true);
@@ -727,9 +724,7 @@ export const Wild3MethodDistribution = ({
       const values = getInitialValues(fixedData, leadCycleSpeed);
       setLeadCycleSpeed(calcLeadCycleSpd(values));
       updateResults(values);
-      if (!displaySelectLeadButton) {
-        setLeadCycleSpeedProp?.(leadCycleSpeed);
-      }
+      setLeadCycleSpeedProp?.(leadCycleSpeed);
     }
   };
 
@@ -759,20 +754,6 @@ export const Wild3MethodDistribution = ({
           Result: No Pokémon encounter when using that setup.
         </Typography.Text>
       )}
-
-      {displaySelectLeadButton &&
-        setLeadCycleSpeedProp != null &&
-        leadCycleSpeedProp !== leadCycleSpeed && (
-          <Button
-            trackerId="Wild3MethodDistribution_setLeadCycleSpeedProp"
-            onClick={() => {
-              setLeadCycleSpeedProp(leadCycleSpeed ?? 0);
-            }}
-          >
-            {" "}
-            Select that lead for calibration
-          </Button>
-        )}
 
       {permitEnablingDebugOptions && (
         <Wild3CycleAtMoments

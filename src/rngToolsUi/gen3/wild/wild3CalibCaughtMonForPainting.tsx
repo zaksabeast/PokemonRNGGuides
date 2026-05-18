@@ -45,7 +45,6 @@ const createTargetSetupAtVictoryRoad = (targetPaintingAdvs: {
     lead: "Egg",
     targetPaintingAdvs,
     targetMethod: "Wild1", // Unused
-    leadCycleSpeed: 0,
     requiresWhiteFlute: false, // Unused
     safariPokeblock: null,
   };

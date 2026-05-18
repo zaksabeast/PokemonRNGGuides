@@ -197,8 +197,16 @@ export const Fields = ({
   return <FormFieldTable fields={fields} />;
 };
 
-const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
-  const opts = await createWild3SearcherOptions(values, targetSetup);
+const searchCaughtMon = async (
+  values: FormState,
+  targetSetup: TargetSetup,
+  leadCycleSpeed: number,
+) => {
+  const opts = await createWild3SearcherOptions(
+    values,
+    targetSetup,
+    leadCycleSpeed,
+  );
   if (opts == null) {
     return [];
   }
@@ -259,10 +267,12 @@ type Props = {
     },
     hitMethod: Gen3Method,
   ) => void;
+  leadCycleSpeed: number;
 };
 
 export const Wild3CalibCaughtMon = ({
   targetSetup,
+  leadCycleSpeed,
   setLatestHitAdv,
 }: Props) => {
   const [lastRareCandyValue, setLastRareCandyValue] = React.useState(1);
@@ -271,7 +281,7 @@ export const Wild3CalibCaughtMon = ({
   const usingPaintingReseeding = targetSetup.targetPaintingAdvs.before > 0;
 
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
-    setResults(await searchCaughtMon(values, targetSetup));
+    setResults(await searchCaughtMon(values, targetSetup, leadCycleSpeed));
   };
 
   const getAdvDiffTxt = (result: CaughtMonResult) => {

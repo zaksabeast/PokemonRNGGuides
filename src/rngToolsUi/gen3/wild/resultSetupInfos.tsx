@@ -19,13 +19,9 @@ import { formatLeadName, formatMassOutbreakStateName } from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { PidPathResult, ResultSetupInfo } from "./wild3FindTarget";
-import {
-  type FixedData as DistributionFixedData,
-  Wild3MethodDistribution,
-} from "./wild3MethodDistribution";
+import { Wild3MethodDistribution } from "./wild3MethodDistribution";
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3CalibTargetSetupInput";
-import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
 
 const getMethodLikelihoodColumValue = (
@@ -369,28 +365,14 @@ const getResultSetupInfoColumns = ({
   return columns;
 };
 
-const resultSetupInfoToDistributionFixedData = (
-  setup: ResultSetupInfo,
-): DistributionFixedData => {
-  const idealLeadCycleSpeed =
-    setup.cycle_data_by_lead?.ideal_lead.lead_pid_cycle_count ?? 0;
-
-  return {
-    targetSetup: setupInfoToTargetSetup(setup, AVERAGE_LEAD_CYCLE_SPEED),
-    idealLeadCycleSpeed,
-  };
-};
-
 type Props = {
   selectedPidPathResult: PidPathResult | null;
   rngManipulatedLeadPid: boolean;
   setTargetSetup: (targetSetup: TargetSetup) => void;
+  setLeadCycleSpeed: (leadCycleSpeed: number) => void;
 };
 
-const setupInfoToTargetSetup = (
-  setupInfo: ResultSetupInfo,
-  leadCycleSpeed: number,
-): TargetSetup => {
+const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
   return {
     map: setupInfo.mapId,
     action: setupInfo.action,
@@ -405,7 +387,6 @@ const setupInfoToTargetSetup = (
     lead: setupInfo.lead,
     requiresWhiteFlute: setupInfo.requiresWhiteFlute,
     safariPokeblock: setupInfo.used_safari_pokeblock ?? null,
-    leadCycleSpeed,
   };
 };
 
@@ -413,6 +394,7 @@ export const Wild3ResultSetupInfos = ({
   setTargetSetup,
   selectedPidPathResult,
   rngManipulatedLeadPid,
+  setLeadCycleSpeed: setLeadCycleSpeedProp,
 }: Props) => {
   const showMassOutbreak =
     selectedPidPathResult != null &&
@@ -448,6 +430,8 @@ export const Wild3ResultSetupInfos = ({
     setSelectedResultSetupInfo(null);
   }, [selectedPidPathResult, setSelectedResultSetupInfo]);
 
+  const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(0);
+
   if (selectedPidPathResult == null) {
     return null;
   }
@@ -455,26 +439,19 @@ export const Wild3ResultSetupInfos = ({
   const onClickResultRow = (setupInfo: ResultSetupInfo) => {
     setSelectedResultSetupInfo(setupInfo);
 
-    const targetSetup = setupInfoToTargetSetup(
-      setupInfo,
-      AVERAGE_LEAD_CYCLE_SPEED,
-    );
+    const targetSetup = setupInfoToTargetSetup(setupInfo);
     setTargetSetup(targetSetup);
   };
 
-  const setLeadCycleSpeed =
-    selectedResultSetupInfo == null
-      ? undefined
-      : (leadCycleSpeed: number) => {
-          setTargetSetup(
-            setupInfoToTargetSetup(selectedResultSetupInfo, leadCycleSpeed),
-          );
-        };
-
-  const distributionFixedData =
+  const selectedTargetSetup =
     selectedResultSetupInfo == null
       ? null
-      : resultSetupInfoToDistributionFixedData(selectedResultSetupInfo);
+      : setupInfoToTargetSetup(selectedResultSetupInfo);
+
+  const setLeadCycleSpeedBoth = (spd: number) => {
+    setLeadCycleSpeed(spd);
+    setLeadCycleSpeedProp(spd);
+  };
 
   return (
     <>
@@ -487,7 +464,7 @@ export const Wild3ResultSetupInfos = ({
           onSelect: onClickResultRow,
         }}
       />
-      {distributionFixedData != null && (
+      {selectedTargetSetup != null && (
         <Flex vertical>
           {!rngManipulatedLeadPid && (
             <FormFieldTable
@@ -506,9 +483,10 @@ export const Wild3ResultSetupInfos = ({
           )}
           {(rngManipulatedLeadPid || displayBreakdown) && (
             <Wild3MethodDistribution
-              fixedData={distributionFixedData}
+              targetSetup={selectedTargetSetup}
               permitEnablingDebugOptions={false}
-              setLeadCycleSpeed={setLeadCycleSpeed}
+              setLeadCycleSpeed={setLeadCycleSpeedBoth}
+              leadCycleSpeed={leadCycleSpeed}
             />
           )}
         </Flex>

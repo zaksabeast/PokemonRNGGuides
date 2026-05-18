@@ -268,9 +268,13 @@ const getPidPathColumns = (): ResultColumn<PidPathResult>[] => {
 
 type Props = {
   setTargetSetup: (targetSetup: TargetSetup) => void;
+  setLeadCycleSpeed: (leadCycleSpeed: number) => void;
 };
 
-export const Wild3SearcherFindTarget = ({ setTargetSetup }: Props) => {
+export const Wild3SearcherFindTarget = ({
+  setTargetSetup,
+  setLeadCycleSpeed,
+}: Props) => {
   const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
     [],
   );
@@ -319,6 +323,7 @@ export const Wild3SearcherFindTarget = ({ setTargetSetup }: Props) => {
         selectedPidPathResult={selectedPidPathResult}
         rngManipulatedLeadPid={rngManipulatedLeadPid}
         setTargetSetup={setTargetSetup}
+        setLeadCycleSpeed={setLeadCycleSpeed}
       />
     </>
   );

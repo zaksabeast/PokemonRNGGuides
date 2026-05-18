@@ -20,6 +20,7 @@ import {
 } from "./utils";
 import { gen3Methods } from "~/types";
 import { pokeblockSchema } from "~/types/pokeblock";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
 
 /*
 Possible user flows (documentation for testing): 
@@ -52,7 +53,7 @@ Possible user flows (documentation for testing):
       Route 116, Sweet Scent, Ordinary Lead, Custom speed 100, advs 2,582 | ~19,887, wild1 (Abra, Lvl 7, Male, Synchronize, Modest, HP 22, ATK 8, DEF 9, SPA 23, SPD 14, SPE 19)
 */
 
-const TargetSetupAtomSchema = z.object({
+const targetSetupAtomSchema = z.object({
   targetSetup: z
     .object({
       map: z.string(),
@@ -66,7 +67,6 @@ const TargetSetupAtomSchema = z.object({
         after: z.number().int().min(0).max(0xffffffff),
       }),
       targetMethod: z.enum(gen3Methods),
-      leadCycleSpeed: z.number().int().min(0).max(900),
       requiresWhiteFlute: z.boolean(),
       safariPokeblock: pokeblockSchema,
     })
@@ -75,8 +75,18 @@ const TargetSetupAtomSchema = z.object({
 
 const targetSetupAtom = atomWithPersistence(
   "emerald_wild_targetSetup",
-  TargetSetupAtomSchema,
+  targetSetupAtomSchema,
   { targetSetup: null },
+);
+
+const leadCycleSpeedAtomSchema = z.object({
+  leadCycleSpeed: z.number().int().min(0).max(900).nullable(),
+});
+
+const leadCycleSpeedAtom = atomWithPersistence(
+  "emerald_wild_leadCycleSpeed",
+  leadCycleSpeedAtomSchema,
+  { leadCycleSpeed: null },
 );
 
 const battleVideoInfoAtom = atomWithPersistence(
@@ -99,6 +109,7 @@ const battleVideoInfoAtom = atomWithPersistence(
 );
 
 export const useTargetSetup = () => useAtom(targetSetupAtom);
+export const useLeadCycleSpeed = () => useAtom(leadCycleSpeedAtom);
 export const useBattleVideoInfo = () => useAtom(battleVideoInfoAtom);
 
 // Step 1: Vanilla Wild3SearcherFindTarget
@@ -106,6 +117,7 @@ export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
   const [targetSetup, setTargetSetup] = useTargetSetup();
   const { hydrated } = useHydrate(targetSetup);
 
+  const [, setLeadCycleSpeed] = useLeadCycleSpeed();
   const [, setBattleVideoInfo] = useBattleVideoInfo();
 
   if (!hydrated) {
@@ -118,6 +130,11 @@ export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
         targetSetup,
       }),
     );
+    setLeadCycleSpeed(
+      hydrationLock({
+        leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+      }),
+    );
     setBattleVideoInfo(
       hydrationLock({
         battleVideoInfo: null,
@@ -125,7 +142,25 @@ export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
     );
   };
 
-  return <Wild3SearcherFindTarget setTargetSetup={handleSetTargetSetup} />;
+  const handleSetLeadCycleSpeed = (leadCycleSpeed: number) => {
+    setLeadCycleSpeed(
+      hydrationLock({
+        leadCycleSpeed,
+      }),
+    );
+    setBattleVideoInfo(
+      hydrationLock({
+        battleVideoInfo: null,
+      }),
+    );
+  };
+
+  return (
+    <Wild3SearcherFindTarget
+      setTargetSetup={handleSetTargetSetup}
+      setLeadCycleSpeed={handleSetLeadCycleSpeed}
+    />
+  );
 };
 
 /** Step 2: Painting + Battle Video
@@ -191,14 +226,21 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
   const [targetSetupLock, setTargetSetup] = useTargetSetup();
   const targetSetupHydrate = useHydrate(targetSetupLock);
 
-  const [battleVideoAdvAfterPainting, setBattleVideoInfo] =
-    useBattleVideoInfo();
-  const battleVideoHydrate = useHydrate(battleVideoAdvAfterPainting);
+  const [leadCycleSpeedLock, setLeadCycleSpeed] = useLeadCycleSpeed();
+  const leadCycleSpeedHydrate = useHydrate(leadCycleSpeedLock);
 
-  if (!targetSetupHydrate.hydrated || !battleVideoHydrate.hydrated) {
+  const [battleVideoInfoLock, setBattleVideoInfo] = useBattleVideoInfo();
+  const battleVideoHydrate = useHydrate(battleVideoInfoLock);
+
+  if (
+    !targetSetupHydrate.hydrated ||
+    !leadCycleSpeedHydrate.hydrated ||
+    !battleVideoHydrate.hydrated
+  ) {
     return <Skeleton />;
   }
   const { targetSetup } = targetSetupHydrate.client;
+  const { leadCycleSpeed } = leadCycleSpeedHydrate.client;
   const { battleVideoInfo } = battleVideoHydrate.client;
 
   // To simplify the code, Wild3Calib is not adapted to support battle video info without target setup.
@@ -230,6 +272,11 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
         targetSetup: null,
       }),
     );
+    setLeadCycleSpeed(
+      hydrationLock({
+        leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+      }),
+    );
     setBattleVideoInfo(
       hydrationLock({
         battleVideoInfo: null,
@@ -240,6 +287,7 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
   return (
     <Wild3Calib
       targetSetup={targetSetup}
+      leadCycleSpeed={leadCycleSpeed}
       battleVideoInfo={battleVideoInfoWithFallback}
       clearAll={clearAll}
       displayInstructions

@@ -27,7 +27,6 @@ import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { formatHex } from "~/utils/formatHex";
 import { Gen3Method } from "~/rngTools";
 
-import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
 import Instructions_calib_wrong_method from "./instructions_calib_wrong_method.mdx";
@@ -40,6 +39,7 @@ import {
   SLOWEST_LEAD_CYCLE_SPEED,
 } from "./wild3LeadCycleSpeedInput";
 import { match } from "ts-pattern";
+import { Wild3TargetSetupAndLeadInput } from "./wild3TargetSetupAndLeadInput";
 
 type CalibOffset = {
   offset: number; // between pressing A and reaching SweetScent function.
@@ -149,28 +149,13 @@ export const Wild3Calib = ({
   }, [targetSetup]);
 
   const targetSetupInputForm = () => (
-    <Flex vertical gap={10}>
-      {displayInstructions && <Instructions_calib_skip_setup />}
-      <Wild3TargetSetupInput setTargetSetup={setTargetSetup} />
-      {targetSetupResult != null && targetSetup != null && (
-        <Flex vertical gap={20} mt={20}>
-          <FormFieldTable
-            fields={[
-              {
-                label: "Target Pokémon",
-                input: targetSetupResult,
-              },
-            ]}
-          />
-          <Wild3LeadCycleSpeedSelector
-            targetSetup={targetSetup}
-            permitEnablingDebugOptions={false}
-            setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
-            leadCycleSpeed={finalLeadCycleSpeed}
-          />
-        </Flex>
-      )}
-    </Flex>
+    <Wild3TargetSetupAndLeadInput
+      setTargetSetup={setTargetSetup}
+      setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
+      leadCycleSpeed={finalLeadCycleSpeed}
+      displayInstructions={false}
+      permitEnablingDebugOptions={false}
+    />
   );
 
   const leadCycleSpeedToText = (spd: number) => {

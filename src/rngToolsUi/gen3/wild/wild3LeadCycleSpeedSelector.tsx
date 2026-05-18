@@ -128,7 +128,12 @@ export const Wild3LeadCycleSpeedSelector = ({
 
   const fields: Field[] =
     targetSetup.lead === "Egg"
-      ? []
+      ? [
+          {
+            label: "",
+            input: "Egg lead can't be calibrated.",
+          },
+        ]
       : [
           {
             label: "Lead Cycle Speed",

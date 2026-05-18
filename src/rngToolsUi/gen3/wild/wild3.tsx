@@ -1,9 +1,9 @@
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
-import { TargetSetup } from "./wild3CalibTargetSetupInput";
+import { TargetSetup } from "./wild3TargetSetupInput";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
 import { EmeraldPaintingReseeding } from "../paintingReseeding/paintingReseeding";
-import { Wild3SearcherFindTarget } from "./wild3FindTarget";
+import { Wild3TargetSetupSearcher } from "./wild3TargetSetupSearcher";
 import { hydrationLock } from "~/utils/hydration";
 import z from "zod";
 import { Flex } from "~/components/flex";
@@ -20,7 +20,7 @@ import {
 } from "./utils";
 import { gen3Methods } from "~/types";
 import { pokeblockSchema } from "~/types/pokeblock";
-import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 
 /*
 Possible user flows (documentation for testing): 
@@ -53,6 +53,40 @@ Possible user flows (documentation for testing):
       Route 116, Sweet Scent, Ordinary Lead, Custom speed 100, advs 2,582 | ~19,887, wild1 (Abra, Lvl 7, Male, Synchronize, Modest, HP 22, ATK 8, DEF 9, SPA 23, SPD 14, SPE 19)
 */
 
+/*
+ ===Components overview ===
+
+Utilities:
+  - Wild3TargetSetupInput
+      display: fields to manually indicate setup
+      output = TargetSetup
+  - Wild3LeadCycleSpeedSelector
+      input = target setup
+      display likelihood by lead cycle speed
+      output = lead cycle speed
+  - EmeraldPaintingReseeding 
+      input = target advance
+      output = battle video
+  - Wild3CalibCaughtMon
+      input = target setup
+      displays fields to specify caught pokemon
+      output = hit advance
+       
+All-in-one Wild webtool:
+  Wild3: Root for steps 1,2,3
+
+  Step 1: Wild3TargetSetupSearcher
+      display: fields to search for target pokemon
+      output = TargetSetup + LeadCycleSpeed
+      equivalent to Wild3TargetSetupInput + Wild3LeadCycleSpeedSelector
+
+  Step 2: EmeraldPaintingReseeding
+
+  Step 3: Wild3Calib
+    display: Wild3CalibCaughtMon + Wild3LeadCycleSpeedSelector
+    
+*/
+
 const targetSetupAtomSchema = z.object({
   targetSetup: z
     .object({
@@ -80,13 +114,13 @@ const targetSetupAtom = atomWithPersistence(
 );
 
 const leadCycleSpeedAtomSchema = z.object({
-  leadCycleSpeed: z.number().int().min(0).max(900).nullable(),
+  leadCycleSpeed: z.number().int().min(0).max(900),
 });
 
 const leadCycleSpeedAtom = atomWithPersistence(
   "emerald_wild_leadCycleSpeed",
   leadCycleSpeedAtomSchema,
-  { leadCycleSpeed: null },
+  { leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED },
 );
 
 const battleVideoInfoAtom = atomWithPersistence(
@@ -112,8 +146,8 @@ export const useTargetSetup = () => useAtom(targetSetupAtom);
 export const useLeadCycleSpeed = () => useAtom(leadCycleSpeedAtom);
 export const useBattleVideoInfo = () => useAtom(battleVideoInfoAtom);
 
-// Step 1: Vanilla Wild3SearcherFindTarget
-export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
+// Step 1: Vanilla Wild3TargetSetupSearcher
+export const Wild3TargetSetupSearcher_WithSetTargetSetup = () => {
   const [targetSetup, setTargetSetup] = useTargetSetup();
   const { hydrated } = useHydrate(targetSetup);
 
@@ -156,7 +190,7 @@ export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
   };
 
   return (
-    <Wild3SearcherFindTarget
+    <Wild3TargetSetupSearcher
       setTargetSetup={handleSetTargetSetup}
       setLeadCycleSpeed={handleSetLeadCycleSpeed}
     />

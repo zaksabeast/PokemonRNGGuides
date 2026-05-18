@@ -8,10 +8,7 @@ import {
   NumberInput,
 } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
-import {
-  TargetSetup,
-  Wild3CalibTargetSetupInput,
-} from "./wild3CalibTargetSetupInput";
+import { TargetSetup, Wild3TargetSetupInput } from "./wild3TargetSetupInput";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon.component";
 import {
   Gen3Console,
@@ -34,14 +31,14 @@ import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import Instructions_calib_with_battle_video from "./instructions_calib_with_battle_video.mdx";
 import Instructions_calib_without_battle_video from "./instructions_calib_without_battle_video.mdx";
 import Instructions_calib_wrong_method from "./instructions_calib_wrong_method.mdx";
-import { Wild3MethodDistribution } from "./wild3MethodDistribution";
+import { Wild3LeadCycleSpeedSelector } from "./wild3LeadCycleSpeedSelector";
 import { Wild3Action } from "../../../../rng_tools/pkg/rng_tools";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
 import {
   AVERAGE_LEAD_CYCLE_SPEED,
   FASTEST_LEAD_CYCLE_SPEED,
   SLOWEST_LEAD_CYCLE_SPEED,
-} from "./leadCycleSpeedSelector";
+} from "./wild3LeadCycleSpeedInput";
 import { match } from "ts-pattern";
 
 type CalibOffset = {
@@ -108,19 +105,26 @@ export const Wild3Calib = ({
   const [targetSetupResult, setTargetSetupResult] =
     React.useState<React.ReactNode>(null);
 
+  const [overwriteLeadCycleSpeed, setOverwriteLeadCycleSpeed] = React.useState<
+    number | null
+  >(null);
+
+  const finalLeadCycleSpeed =
+    overwriteLeadCycleSpeed ?? leadCycleSpeedProp ?? AVERAGE_LEAD_CYCLE_SPEED;
+
   React.useEffect(() => {
     if (targetSetup == null) {
       setTargetSetupHasEncounter(false);
       return setTargetSetupResult(null);
     }
 
-    calculateTargetSetupResult(targetSetup).then(
+    calculateTargetSetupResult(targetSetup, finalLeadCycleSpeed).then(
       ({ content, hasEncounter }) => {
         setTargetSetupResult(content);
         setTargetSetupHasEncounter(hasEncounter);
       },
     );
-  }, [targetSetup]);
+  }, [finalLeadCycleSpeed, targetSetup]);
 
   const [battleVideoInfo, setBattleVideoInfo] =
     React.useState<BattleVideoInfo | null>(battleVideoInfoProp ?? null);
@@ -137,10 +141,6 @@ export const Wild3Calib = ({
   );
   const [hasHitTargetAdv, setHasHitTargetAdv] = React.useState(false);
 
-  const [overwriteLeadCycleSpeed, setOverwriteLeadCycleSpeed] = React.useState<
-    number | null
-  >(null);
-
   React.useEffect(() => {
     setOverwriteLeadCycleSpeed(null);
   }, [targetSetupProp]);
@@ -152,7 +152,7 @@ export const Wild3Calib = ({
   const targetSetupInputForm = () => (
     <Flex vertical gap={10}>
       {displayInstructions && <Instructions_calib_skip_setup />}
-      <Wild3CalibTargetSetupInput setTargetSetup={setTargetSetup} />
+      <Wild3TargetSetupInput setTargetSetup={setTargetSetup} />
       {targetSetupResult != null && (
         <FormFieldTable
           fields={[
@@ -400,9 +400,6 @@ export const Wild3Calib = ({
   const usingBattleVideo =
     (battleVideoInfo?.battleVideoAdvAfterPainting ?? 0) > 0;
 
-  const finalLeadCycleSpeed =
-    overwriteLeadCycleSpeed ?? leadCycleSpeedProp ?? AVERAGE_LEAD_CYCLE_SPEED;
-
   return (
     <Flex gap={32} vertical>
       {targetSetupProp == null ? inputForms() : infoFromPrevSteps()}
@@ -430,7 +427,7 @@ export const Wild3Calib = ({
           {!hasHitTargetAdv && targetSetup != null && (
             <>
               <Instructions_calib_wrong_method />
-              <Wild3MethodDistribution
+              <Wild3LeadCycleSpeedSelector
                 targetSetup={targetSetup}
                 permitEnablingDebugOptions
                 setLeadCycleSpeed={setOverwriteLeadCycleSpeed}

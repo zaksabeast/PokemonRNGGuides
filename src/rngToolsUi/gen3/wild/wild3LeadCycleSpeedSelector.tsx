@@ -16,10 +16,10 @@ import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { Tooltip } from "antd";
 import {
   AVERAGE_LEAD_CYCLE_SPEED,
-  LeadCycleSpeedSelector,
-} from "./leadCycleSpeedSelector";
+  Wild3LeadCycleSpeedInput,
+} from "./wild3LeadCycleSpeedInput";
 import { leadCycleSpeedTooltip } from "./wild3Labels";
-import { TargetSetup } from "./wild3CalibTargetSetupInput";
+import { TargetSetup } from "./wild3TargetSetupInput";
 import {
   setupToDistributions,
   UiResult,
@@ -117,7 +117,7 @@ const getSubmitButtonLabel = (targetSetup: TargetSetup) => {
   return `Generate all possible Pokémon encounters at advances ${advs}`;
 };
 
-export const Wild3MethodDistribution = ({
+export const Wild3LeadCycleSpeedSelector = ({
   targetSetup,
   permitEnablingDebugOptions,
   setLeadCycleSpeed: setLeadCycleSpeedProp,
@@ -155,7 +155,7 @@ export const Wild3MethodDistribution = ({
             label: "Lead Cycle Speed",
             ...leadCycleSpeedTooltip(),
             input: (
-              <LeadCycleSpeedSelector
+              <Wild3LeadCycleSpeedInput
                 idealLeadCycleSpeed={
                   distributions?.idealLeadCycleSpd ?? AVERAGE_LEAD_CYCLE_SPEED
                 }

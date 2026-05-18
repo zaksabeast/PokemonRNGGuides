@@ -5,8 +5,8 @@ import {
   Wild3GeneratorOptions,
   Wild3GeneratorResult,
 } from "~/rngTools";
-import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
-import { TargetSetup } from "./wild3CalibTargetSetupInput";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
+import { TargetSetup } from "./wild3TargetSetupInput";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
@@ -20,14 +20,6 @@ import { nature_from_pid } from "~/types";
 import { formatProbability } from "~/utils/formatProbability";
 import { formatHex } from "~/utils/formatHex";
 import { Flex } from "~/components";
-
-const getLeadCycleSpeed = (values: TargetSetup) => {
-  if (values.lead === "Egg") {
-    return 0;
-  }
-
-  return values.leadCycleSpeed;
-};
 
 const getProbabilityInfo = async (
   res: Wild3GeneratorResult,
@@ -101,9 +93,10 @@ const getAbilityDisplayStr = async (species: Species, pid: number) => {
   return "";
 };
 
-export const calculateTargetSetupResult = async (targetSetup: TargetSetup) => {
-  const lead_cycle_speed = getLeadCycleSpeed(targetSetup);
-
+export const calculateTargetSetupResult = async (
+  targetSetup: TargetSetup,
+  lead_cycle_speed: number,
+) => {
   const opts: Wild3GeneratorOptions = {
     tid: 0,
     sid: 0,

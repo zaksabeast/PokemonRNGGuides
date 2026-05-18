@@ -42,7 +42,7 @@ import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 import { GBA_FPS } from "~/utils/consts";
-import { TargetSetup } from "./wild3CalibTargetSetupInput";
+import { TargetSetup } from "./wild3TargetSetupInput";
 import { Pokeblock, wild3SafariPokeblockSearchOpt } from "~/types/pokeblock";
 
 /*
@@ -271,7 +271,7 @@ type Props = {
   setLeadCycleSpeed: (leadCycleSpeed: number) => void;
 };
 
-export const Wild3SearcherFindTarget = ({
+export const Wild3TargetSetupSearcher = ({
   setTargetSetup,
   setLeadCycleSpeed,
 }: Props) => {

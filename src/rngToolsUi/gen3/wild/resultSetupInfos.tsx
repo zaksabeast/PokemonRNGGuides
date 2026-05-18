@@ -18,10 +18,10 @@ import { Tooltip } from "antd";
 import { formatLeadName, formatMassOutbreakStateName } from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
-import { PidPathResult, ResultSetupInfo } from "./wild3FindTarget";
-import { Wild3MethodDistribution } from "./wild3MethodDistribution";
+import { PidPathResult, ResultSetupInfo } from "./wild3TargetSetupSearcher";
+import { Wild3LeadCycleSpeedSelector } from "./wild3LeadCycleSpeedSelector";
 import { GBA_FPS } from "~/utils/consts";
-import { TargetSetup } from "./wild3CalibTargetSetupInput";
+import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
 
 const getMethodLikelihoodColumValue = (
@@ -482,7 +482,7 @@ export const Wild3ResultSetupInfos = ({
             />
           )}
           {(rngManipulatedLeadPid || displayBreakdown) && (
-            <Wild3MethodDistribution
+            <Wild3LeadCycleSpeedSelector
               targetSetup={selectedTargetSetup}
               permitEnablingDebugOptions={false}
               setLeadCycleSpeed={setLeadCycleSpeedBoth}

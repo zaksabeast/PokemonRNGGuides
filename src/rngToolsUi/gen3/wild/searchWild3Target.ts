@@ -12,7 +12,7 @@ import { gen3PkmFilterFieldsToRustInput } from "~/components/gen3PkmFilter";
 import { gen3Leads, formatActionName, formatMapName } from "./utils";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
-import type { FormState, PidPathResult } from "./wild3FindTarget.tsx";
+import type { FormState, PidPathResult } from "./wild3TargetSetupSearcher.tsx";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 

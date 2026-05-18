@@ -1,10 +1,7 @@
 import React from "react";
-import { Wild3MethodDistribution } from "./wild3MethodDistribution";
-import {
-  TargetSetup,
-  Wild3CalibTargetSetupInput,
-} from "./wild3CalibTargetSetupInput";
-import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
+import { Wild3LeadCycleSpeedSelector } from "./wild3LeadCycleSpeedSelector";
+import { TargetSetup, Wild3TargetSetupInput } from "./wild3TargetSetupInput";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 
 type Props = {
   permitEnablingDebugOptions: boolean;
@@ -22,10 +19,10 @@ export const Wild3MethodDistributionStandalone = ({
 
   return (
     <>
-      <Wild3CalibTargetSetupInput setTargetSetup={setTargetSetup} />
+      <Wild3TargetSetupInput setTargetSetup={setTargetSetup} />
 
       {targetSetup != null && (
-        <Wild3MethodDistribution
+        <Wild3LeadCycleSpeedSelector
           targetSetup={targetSetup}
           permitEnablingDebugOptions={permitEnablingDebugOptions}
           leadCycleSpeed={leadCycleSpeed}

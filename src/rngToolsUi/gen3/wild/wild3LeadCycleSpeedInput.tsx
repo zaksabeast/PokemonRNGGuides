@@ -42,7 +42,7 @@ const calculateLeadCycleSpeed = async (
     .exhaustive();
 };
 
-export const LeadCycleSpeedSelector = ({
+export const Wild3LeadCycleSpeedInput = ({
   idealLeadCycleSpeed,
   leadCycleSpeed,
   setLeadCycleSpeed,

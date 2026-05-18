@@ -270,7 +270,7 @@ const getFields = ({
   return fields;
 };
 
-export const Wild3CalibTargetSetupInputFields = ({
+export const Wild3TargetSetupInputFields = ({
   setTargetSetup,
 }: {
   setTargetSetup: (targetSetup: TargetSetup | null) => void;
@@ -334,7 +334,7 @@ export const Wild3CalibTargetSetupInputFields = ({
   return <FormFieldTable fields={fields} />;
 };
 
-export const Wild3CalibTargetSetupInput = ({ setTargetSetup }: Props) => {
+export const Wild3TargetSetupInput = ({ setTargetSetup }: Props) => {
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
     const { content } = await calculateTargetSetupResult(targetSetup);
@@ -352,7 +352,7 @@ export const Wild3CalibTargetSetupInput = ({ setTargetSetup }: Props) => {
       rowKey="uid"
       submitButtonLabel="Calculate Target"
     >
-      <Wild3CalibTargetSetupInputFields setTargetSetup={setTargetSetup} />
+      <Wild3TargetSetupInputFields setTargetSetup={setTargetSetup} />
     </RngToolForm>
   );
 };

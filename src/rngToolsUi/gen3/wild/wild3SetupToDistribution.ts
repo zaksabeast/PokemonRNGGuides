@@ -8,7 +8,7 @@ import {
   Wild3SearcherResultMon,
 } from "~/rngTools";
 import { getPossibleValuesForMap } from "./dataUtils";
-import { TargetSetup } from "./wild3CalibTargetSetupInput";
+import { TargetSetup } from "./wild3TargetSetupInput";
 import {
   getPkmFilterInitialValues,
   pkmFilterFieldsToRustInput,
@@ -20,7 +20,7 @@ import {
 import { emeraldWildGameData } from "./wild3CalibCaughtMon";
 import { FlattenIvs } from "~/rngToolsUi/shared/ivColumns";
 import { lcrng_distance } from "~/utils/lcrng";
-import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 
 export type UiResult = FlattenIvs<
   Wild3SearcherResultMon & {

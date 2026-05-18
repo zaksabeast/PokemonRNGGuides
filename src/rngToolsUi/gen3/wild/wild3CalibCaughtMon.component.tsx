@@ -19,7 +19,7 @@ import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { natureOptions } from "~/components/pkmFilter";
 import { getStatFields } from "~/rngToolsUi/shared/statFields";
 import { Gen3Method, Nature, rngTools, Species } from "~/rngTools";
-import type { TargetSetup } from "./wild3CalibTargetSetupInput";
+import type { TargetSetup } from "./wild3TargetSetupInput";
 import { useWatch } from "react-hook-form";
 import { getStatRange } from "~/types/statRange";
 import uniq from "lodash-es/uniq";

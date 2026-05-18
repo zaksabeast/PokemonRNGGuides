@@ -25,7 +25,7 @@ import {
   Wild3SearcherResultMon,
 } from "~/rngTools";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
-import type { TargetSetup } from "./wild3CalibTargetSetupInput";
+import type { TargetSetup } from "./wild3TargetSetupInput";
 import { isFishingAction, wild3Actions } from "./utils";
 import { getIvRangeFromStats } from "~/types/statRange";
 import {

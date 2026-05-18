@@ -208,3 +208,119 @@ pub fn find_swarm_advances(opts: SwarmFinderOpts) -> Vec<SwarmEncounter> {
         })
         .collect()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::assert_list_eq;
+    use SwarmRoute::*;
+
+    #[test]
+    fn hgss() {
+        let opts = SwarmOpts {
+            seed: 0xabcd,
+            min_advances: 10,
+            max_advances: 20,
+        };
+        let results = generate_hgss_swarm(&opts);
+        let expected = [
+            Route1, Route34, Route13, MtMortar, Route1, Route12, DarkCave, VioletCity, Route47,
+            Route9, MtMortar,
+        ]
+        .iter()
+        .enumerate()
+        .map(|(i, &route)| SwarmEncounter {
+            advance: opts.min_advances + i,
+            route,
+        })
+        .collect::<Vec<SwarmEncounter>>();
+        assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn dppt() {
+        let opts = SwarmOpts {
+            seed: 0xabcd,
+            min_advances: 10,
+            max_advances: 20,
+        };
+        let results = generate_dppt_swarm(&opts);
+        let expected = [
+            Route218, Route221, Route214, Route228, Route225, Route228, Route225, Route217,
+            Route203, Route216, Route213,
+        ]
+        .iter()
+        .enumerate()
+        .map(|(i, &route)| SwarmEncounter {
+            advance: opts.min_advances + i,
+            route,
+        })
+        .collect::<Vec<SwarmEncounter>>();
+        assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn find_swarm_advances_unfiltered_dppt() {
+        let opts = SwarmFinderOpts {
+            seed: 0xabcd,
+            min_advances: 10,
+            max_advances: 20,
+            wanted_route: None,
+            game: SwarmGame::DPPT,
+        };
+        let results = find_swarm_advances(opts);
+        let expected = [
+            Route218, Route221, Route214, Route228, Route225, Route228, Route225, Route217,
+            Route203, Route216, Route213,
+        ]
+        .iter()
+        .enumerate()
+        .map(|(i, &route)| SwarmEncounter {
+            advance: opts.min_advances + i,
+            route,
+        })
+        .collect::<Vec<SwarmEncounter>>();
+        assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn find_swarm_advances_unfiltered_hgss() {
+        let opts = SwarmFinderOpts {
+            seed: 0xabcd,
+            min_advances: 10,
+            max_advances: 20,
+            wanted_route: None,
+            game: SwarmGame::HGSS,
+        };
+        let results = find_swarm_advances(opts);
+        let expected = [
+            Route1, Route34, Route13, MtMortar, Route1, Route12, DarkCave, VioletCity, Route47,
+            Route9, MtMortar,
+        ]
+        .iter()
+        .enumerate()
+        .map(|(i, &route)| SwarmEncounter {
+            advance: opts.min_advances + i,
+            route,
+        })
+        .collect::<Vec<SwarmEncounter>>();
+        assert_list_eq!(results, expected);
+    }
+
+    #[test]
+    fn find_swarm_advances_filtered() {
+        let opts = SwarmFinderOpts {
+            seed: 0xabcd,
+            min_advances: 10,
+            max_advances: 20,
+            wanted_route: Some(Route1),
+            game: SwarmGame::HGSS,
+        };
+        let results = find_swarm_advances(opts);
+        let expected = [
+            SwarmEncounter { advance: 10, route: Route1 },
+            SwarmEncounter { advance: 14, route: Route1 },
+        ];
+        assert_list_eq!(results, expected);
+    }
+}

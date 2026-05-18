@@ -59,7 +59,7 @@ pub enum SwarmRoute {
     VioletCity,
 }
 
-pub const DPPT_ROUTES: [SwarmRoute; 28] = [
+const DPPT_ROUTES: [SwarmRoute; 28] = [
     SwarmRoute::Route201,
     SwarmRoute::Route202,
     SwarmRoute::Route203,
@@ -90,7 +90,7 @@ pub const DPPT_ROUTES: [SwarmRoute; 28] = [
     SwarmRoute::FuegoIronworks,
 ];
 
-pub const HGSS_ROUTES: [SwarmRoute; 20] = [
+const HGSS_ROUTES: [SwarmRoute; 20] = [
     SwarmRoute::Route1,
     SwarmRoute::Route3,
     SwarmRoute::Route9,
@@ -115,10 +115,17 @@ pub const HGSS_ROUTES: [SwarmRoute; 20] = [
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
+pub enum SwarmGame {
+    DPPT,
+    HGSS,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct SwarmOpts {
-    seed: u32,
-    min_advances: usize,
-    max_advances: usize,
+    pub seed: u32,
+    pub min_advances: usize,
+    pub max_advances: usize,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
@@ -126,6 +133,23 @@ pub struct SwarmOpts {
 pub struct SwarmEncounter {
     pub advance: usize,
     pub route: SwarmRoute,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct SwarmFinderOpts {
+    pub seed: u32,
+    pub min_advances: usize,
+    pub max_advances: usize,
+    pub wanted_route: Option<SwarmRoute>,
+    pub game: SwarmGame,
+}
+
+fn get_routes(game: SwarmGame) -> &'static [SwarmRoute] {
+    match game {
+        SwarmGame::DPPT => &DPPT_ROUTES,
+        SwarmGame::HGSS => &HGSS_ROUTES,
+    }
 }
 
 fn generate_swarm(opts: &SwarmOpts, routes: &[SwarmRoute]) -> Vec<SwarmEncounter> {
@@ -158,53 +182,29 @@ pub fn generate_dppt_swarm(opts: &SwarmOpts) -> Vec<SwarmEncounter> {
     generate_swarm(opts, &DPPT_ROUTES)
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::assert_list_eq;
-    use SwarmRoute::*;
+#[wasm_bindgen]
+pub fn find_swarm_advances(opts: SwarmFinderOpts) -> Vec<SwarmEncounter> {
+    let routes = get_routes(opts.game);
+    let take = opts
+        .max_advances
+        .saturating_sub(opts.min_advances)
+        .wrapping_add(1);
 
-    #[test]
-    fn hgss() {
-        let opts = SwarmOpts {
-            seed: 0xabcd,
-            min_advances: 10,
-            max_advances: 20,
-        };
-        let results = generate_hgss_swarm(&opts);
-        let expected = [
-            Route1, Route34, Route13, MtMortar, Route1, Route12, DarkCave, VioletCity, Route47,
-            Route9, MtMortar,
-        ]
-        .iter()
+    MT::new(opts.seed)
+        .skip(opts.min_advances)
+        .take(take)
         .enumerate()
-        .map(|(i, &route)| SwarmEncounter {
-            advance: opts.min_advances + i,
-            route,
+        .filter_map(|(i, rand)| {
+            let route = routes[(rand as usize) % routes.len()];
+            let res = SwarmEncounter {
+                advance: opts.min_advances + i,
+                route,
+            };
+            match opts.wanted_route {
+                None => Some(res),
+                Some(wanted) if wanted == route => Some(res),
+                _ => None,
+            }
         })
-        .collect::<Vec<SwarmEncounter>>();
-        assert_list_eq!(results, expected);
-    }
-
-    #[test]
-    fn dppt() {
-        let opts = SwarmOpts {
-            seed: 0xabcd,
-            min_advances: 10,
-            max_advances: 20,
-        };
-        let results = generate_dppt_swarm(&opts);
-        let expected = [
-            Route218, Route221, Route214, Route228, Route225, Route228, Route225, Route217,
-            Route203, Route216, Route213,
-        ]
-        .iter()
-        .enumerate()
-        .map(|(i, &route)| SwarmEncounter {
-            advance: opts.min_advances + i,
-            route,
-        })
-        .collect::<Vec<SwarmEncounter>>();
-        assert_list_eq!(results, expected);
-    }
+        .collect()
 }

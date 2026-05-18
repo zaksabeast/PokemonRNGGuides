@@ -84,7 +84,6 @@ type Props = AllOrNone<{
   displayInstructions?: boolean;
 }>;
 
-//NO_PROD add prop for leadCycleSpeed from step 1
 export const Wild3Calib = ({
   targetSetup: targetSetupProp,
   leadCycleSpeed: leadCycleSpeedProp,
@@ -153,15 +152,23 @@ export const Wild3Calib = ({
     <Flex vertical gap={10}>
       {displayInstructions && <Instructions_calib_skip_setup />}
       <Wild3TargetSetupInput setTargetSetup={setTargetSetup} />
-      {targetSetupResult != null && (
-        <FormFieldTable
-          fields={[
-            {
-              label: "Target Pokémon",
-              input: targetSetupResult,
-            },
-          ]}
-        />
+      {targetSetupResult != null && targetSetup != null && (
+        <Flex vertical gap={20} mt={20}>
+          <FormFieldTable
+            fields={[
+              {
+                label: "Target Pokémon",
+                input: targetSetupResult,
+              },
+            ]}
+          />
+          <Wild3LeadCycleSpeedSelector
+            targetSetup={targetSetup}
+            permitEnablingDebugOptions={false}
+            setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
+            leadCycleSpeed={finalLeadCycleSpeed}
+          />
+        </Flex>
       )}
     </Flex>
   );
@@ -357,7 +364,7 @@ export const Wild3Calib = ({
       },
       {
         label: "Lead Cycle Speed",
-        input: leadCycleSpeedToText(leadCycleSpeedProp),
+        input: leadCycleSpeedToText(leadCycleSpeedProp), //NO_PROD strikethourgh
         show:
           targetSetupProp.lead !== "Egg" && overwriteLeadCycleSpeed === null,
       },
@@ -406,13 +413,13 @@ export const Wild3Calib = ({
 
       {canDoCalib && targetSetup != null && targetSetupHasEncounter && (
         <>
-          <FormFieldTable fields={calibFields} />
           {displayInstructions &&
             (usingBattleVideo ? (
               <Instructions_calib_with_battle_video />
             ) : (
               <Instructions_calib_without_battle_video />
             ))}
+          <FormFieldTable fields={calibFields} />
           <MultiTimer
             milliseconds={milliseconds}
             labels={labels}
@@ -424,7 +431,7 @@ export const Wild3Calib = ({
             setLatestHitAdv={setLatestHitAdv}
             leadCycleSpeed={finalLeadCycleSpeed}
           />
-          {!hasHitTargetAdv && targetSetup != null && (
+          {hasHitTargetAdv && targetSetup != null && (
             <>
               <Instructions_calib_wrong_method />
               <Wild3LeadCycleSpeedSelector

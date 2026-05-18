@@ -24,9 +24,9 @@ import { Flex } from "~/components";
 const getProbabilityInfo = async (
   res: Wild3GeneratorResult,
   action: Wild3Action,
-  lead_cycle_speed: number,
+  lead_cycle_speed: number | null,
 ) => {
-  if (res.cycle_range == null) {
+  if (lead_cycle_speed == null || res.cycle_range == null) {
     return null;
   }
 
@@ -95,7 +95,7 @@ const getAbilityDisplayStr = async (species: Species, pid: number) => {
 
 export const calculateTargetSetupResult = async (
   targetSetup: TargetSetup,
-  lead_cycle_speed: number,
+  lead_cycle_speed: number | null,
 ) => {
   const opts: Wild3GeneratorOptions = {
     tid: 0,

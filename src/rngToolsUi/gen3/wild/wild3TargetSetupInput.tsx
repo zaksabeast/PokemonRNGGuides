@@ -337,7 +337,7 @@ export const Wild3TargetSetupInputFields = ({
 export const Wild3TargetSetupInput = ({ setTargetSetup }: Props) => {
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
-    const { content } = await calculateTargetSetupResult(targetSetup);
+    const { content } = await calculateTargetSetupResult(targetSetup, null);
     setTargetSetup(content == null ? null : targetSetup);
   };
 

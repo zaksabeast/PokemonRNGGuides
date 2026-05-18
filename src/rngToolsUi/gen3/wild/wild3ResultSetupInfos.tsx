@@ -1,13 +1,5 @@
 import { Wild3SearcherCycleData, Gen3Method } from "~/rngTools";
-import {
-  ResultColumn,
-  ResultTable,
-  Icon,
-  Link,
-  Flex,
-  FormFieldTable,
-  Switch,
-} from "~/components";
+import { ResultColumn, ResultTable, Icon, Link, Flex } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
@@ -19,7 +11,6 @@ import { formatLeadName, formatMassOutbreakStateName } from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
 import { PidPathResult, ResultSetupInfo } from "./wild3TargetSetupSearcher";
-import { Wild3LeadCycleSpeedSelector } from "./wild3LeadCycleSpeedSelector";
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
@@ -369,7 +360,6 @@ type Props = {
   selectedPidPathResult: PidPathResult | null;
   rngManipulatedLeadPid: boolean;
   setTargetSetup: (targetSetup: TargetSetup) => void;
-  setLeadCycleSpeed: (leadCycleSpeed: number) => void;
 };
 
 const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
@@ -394,7 +384,6 @@ export const Wild3ResultSetupInfos = ({
   setTargetSetup,
   selectedPidPathResult,
   rngManipulatedLeadPid,
-  setLeadCycleSpeed: setLeadCycleSpeedProp,
 }: Props) => {
   const showMassOutbreak =
     selectedPidPathResult != null &&
@@ -421,76 +410,23 @@ export const Wild3ResultSetupInfos = ({
     usesPainting,
   });
 
-  const [displayBreakdown, setDisplayBreakdown] = React.useState(false);
-
-  const [selectedResultSetupInfo, setSelectedResultSetupInfo] =
-    React.useState<ResultSetupInfo | null>(null);
-
-  React.useEffect(() => {
-    setSelectedResultSetupInfo(null);
-  }, [selectedPidPathResult, setSelectedResultSetupInfo]);
-
-  const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(0);
-
   if (selectedPidPathResult == null) {
     return null;
   }
 
   const onClickResultRow = (setupInfo: ResultSetupInfo) => {
-    setSelectedResultSetupInfo(setupInfo);
-
-    const targetSetup = setupInfoToTargetSetup(setupInfo);
-    setTargetSetup(targetSetup);
-  };
-
-  const selectedTargetSetup =
-    selectedResultSetupInfo == null
-      ? null
-      : setupInfoToTargetSetup(selectedResultSetupInfo);
-
-  const setLeadCycleSpeedBoth = (spd: number) => {
-    setLeadCycleSpeed(spd);
-    setLeadCycleSpeedProp(spd);
+    setTargetSetup(setupInfoToTargetSetup(setupInfo));
   };
 
   return (
-    <>
-      <ResultTable<ResultSetupInfo>
-        columns={resultSetupInfoColumns}
-        rowKey="uid"
-        dataSource={selectedPidPathResult.resultSetupInfos}
-        rowSelection={{
-          type: "radio",
-          onSelect: onClickResultRow,
-        }}
-      />
-      {selectedTargetSetup != null && (
-        <Flex vertical>
-          {!rngManipulatedLeadPid && (
-            <FormFieldTable
-              fields={[
-                {
-                  label: "Display lead cycle speed calibration?",
-                  input: (
-                    <Switch
-                      onChange={setDisplayBreakdown}
-                      value={displayBreakdown}
-                    />
-                  ),
-                },
-              ]}
-            />
-          )}
-          {(rngManipulatedLeadPid || displayBreakdown) && (
-            <Wild3LeadCycleSpeedSelector
-              targetSetup={selectedTargetSetup}
-              permitEnablingDebugOptions={false}
-              setLeadCycleSpeed={setLeadCycleSpeedBoth}
-              leadCycleSpeed={leadCycleSpeed}
-            />
-          )}
-        </Flex>
-      )}
-    </>
+    <ResultTable<ResultSetupInfo>
+      columns={resultSetupInfoColumns}
+      rowKey="uid"
+      dataSource={selectedPidPathResult.resultSetupInfos}
+      rowSelection={{
+        type: "radio",
+        onSelect: onClickResultRow,
+      }}
+    />
   );
 };

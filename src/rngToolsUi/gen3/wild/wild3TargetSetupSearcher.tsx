@@ -1,11 +1,13 @@
 import { Wild3PaintingAdvsAndDur, Wild3SearcherResultMon } from "~/rngTools";
 import {
   Flex,
+  FormFieldTable,
   Icon,
   Link,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
+  Switch,
 } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
@@ -37,13 +39,14 @@ import { formatHex } from "~/utils/formatHex";
 import { TargetMon } from "./wild3TargetMon.component";
 import { searchWild3Target } from "./searchWild3Target";
 import { SetupFilter } from "./wild3SetupFilter.component";
-import { Wild3ResultSetupInfos } from "./resultSetupInfos";
+import { Wild3ResultSetupInfos } from "./wild3ResultSetupInfos";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Pokeblock, wild3SafariPokeblockSearchOpt } from "~/types/pokeblock";
+import { Wild3LeadCycleSpeedSelector } from "./wild3LeadCycleSpeedSelector";
 
 /*
 Possible UI improvements:
@@ -272,8 +275,8 @@ type Props = {
 };
 
 export const Wild3TargetSetupSearcher = ({
-  setTargetSetup,
-  setLeadCycleSpeed,
+  setTargetSetup: setTargetSetupProp,
+  setLeadCycleSpeed: setLeadCycleSpeedProp,
 }: Props) => {
   const [pidPathResults, setPidPathResults] = React.useState<PidPathResult[]>(
     [],
@@ -283,6 +286,10 @@ export const Wild3TargetSetupSearcher = ({
 
   const [rngManipulatedLeadPid, setRngManipulatedLeadPid] =
     React.useState<boolean>(false);
+
+  const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
+    null,
+  );
 
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const pidPathResults = await searchWild3Target(values);
@@ -301,6 +308,19 @@ export const Wild3TargetSetupSearcher = ({
   const initialValues = getInitialValues();
 
   const pidPathColumns = getPidPathColumns();
+
+  const [displayBreakdown, setDisplayBreakdown] = React.useState(false);
+  const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(0);
+
+  const setTargetSetupBoth = (targetSetup: TargetSetup) => {
+    setTargetSetup(targetSetup);
+    setTargetSetupProp?.(targetSetup);
+  };
+
+  const setLeadCycleSpeedBoth = (spd: number) => {
+    setLeadCycleSpeed(spd);
+    setLeadCycleSpeedProp?.(spd);
+  };
 
   return (
     <>
@@ -322,9 +342,36 @@ export const Wild3TargetSetupSearcher = ({
       <Wild3ResultSetupInfos
         selectedPidPathResult={selectedPidPathResult}
         rngManipulatedLeadPid={rngManipulatedLeadPid}
-        setTargetSetup={setTargetSetup}
-        setLeadCycleSpeed={setLeadCycleSpeed}
+        setTargetSetup={setTargetSetupBoth}
       />
+
+      {targetSetup != null && (
+        <Flex vertical>
+          {!rngManipulatedLeadPid && (
+            <FormFieldTable
+              fields={[
+                {
+                  label: "Display lead cycle speed calibration?",
+                  input: (
+                    <Switch
+                      onChange={setDisplayBreakdown}
+                      value={displayBreakdown}
+                    />
+                  ),
+                },
+              ]}
+            />
+          )}
+          {(rngManipulatedLeadPid || displayBreakdown) && (
+            <Wild3LeadCycleSpeedSelector
+              targetSetup={targetSetup}
+              permitEnablingDebugOptions={false}
+              setLeadCycleSpeed={setLeadCycleSpeedBoth}
+              leadCycleSpeed={leadCycleSpeed}
+            />
+          )}
+        </Flex>
+      )}
     </>
   );
 };

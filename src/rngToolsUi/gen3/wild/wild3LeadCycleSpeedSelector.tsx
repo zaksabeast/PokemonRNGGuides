@@ -1,18 +1,17 @@
 import {
   Field,
   ResultColumn,
-  RngToolForm,
   Icon,
   Typography,
+  ResultTable,
+  FormFieldTable,
 } from "~/components";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
 
 import { ivColumns } from "~/rngToolsUi/shared/ivColumns";
-import { Translations } from "~/translations";
 
 import { Wild3CycleAtMoments } from "./wild3CycleAtMoments";
-import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { Tooltip } from "antd";
 import {
   AVERAGE_LEAD_CYCLE_SPEED,
@@ -38,12 +37,7 @@ export type Props = {
   leadCycleSpeed: number | null;
 };
 
-type FormState = {};
-
-const getColumns = (
-  _t: Translations,
-  targetSetup: TargetSetup,
-): ResultColumn<UiResult>[] => {
+const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
   const columns: ResultColumn<UiResult>[] = [
     {
       title: "",
@@ -106,17 +100,6 @@ const getColumns = (
   return columns;
 };
 
-const initialValues = {};
-
-const getSubmitButtonLabel = (targetSetup: TargetSetup) => {
-  const { targetPaintingAdvs } = targetSetup;
-  const advs =
-    targetPaintingAdvs.before !== 0
-      ? `${formatLargeInteger(targetPaintingAdvs.before)} | ${formatLargeInteger(targetPaintingAdvs.after)}`
-      : formatLargeInteger(targetPaintingAdvs.after);
-  return `Generate all possible Pokémon encounters at advances ${advs}`;
-};
-
 export const Wild3LeadCycleSpeedSelector = ({
   targetSetup,
   permitEnablingDebugOptions,
@@ -143,10 +126,6 @@ export const Wild3LeadCycleSpeedSelector = ({
     updateResults();
   }, [leadCycleSpeed, updateResults]);
 
-  const getColumnsProps = (t: Translations) => {
-    return getColumns(t, targetSetup);
-  };
-
   const fields: Field[] =
     targetSetup.lead === "Egg"
       ? []
@@ -168,15 +147,12 @@ export const Wild3LeadCycleSpeedSelector = ({
 
   return (
     <>
-      <RngToolForm<FormState, UiResult>
-        getColumns={getColumnsProps}
-        results={distributions?.uiResults ?? []}
-        initialValues={initialValues}
-        onSubmit={updateResults}
-        submitTrackerId="wild3_method_distribution"
+      {fields.length > 0 && <FormFieldTable fields={fields} />}
+
+      <ResultTable<UiResult>
+        columns={getColumns(targetSetup)}
         rowKey="uid"
-        submitButtonLabel={getSubmitButtonLabel(targetSetup)}
-        fields={fields}
+        dataSource={distributions?.uiResults ?? []}
       />
 
       {distributions != null &&

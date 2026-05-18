@@ -51,6 +51,19 @@ Possible user flows (documentation for testing):
  - Case 10) Skip Step 1. Step 2: Painting. Can create and update battle video. Step 3: Must provide target and battle video info.
  - Case 11) Skip Step 1 & 2. Step 3: Must provide target and battle video info.
       Route 116, Sweet Scent, Ordinary Lead, Custom speed 100, advs 2,582 | ~19,887, wild1 (Abra, Lvl 7, Male, Synchronize, Modest, HP 22, ATK 8, DEF 9, SPA 23, SPD 14, SPE 19)
+ - Case 12) Calibrate lead cycle speed with default value from step 1
+      Step1: Abra, no filter, adv 1005, Wild4, vanilla lead. (Abra, Lvl 7, Male, InnerFocus, Lonely, HP 21, ATK 8, DEF 7, SPA 20, SPD 14, SPE 17)
+        Don't select a particular lead cycle speed.
+      Step2: Skip.
+      Step3: Expected: Displayed "Lead cycle speed" is Average. Likelihood is ~50.8%.
+             Wild2 target adv: Abra, Lvl 7, Male, InnerFocus, Lonely, HP 21, ATK 8, DEF 8, SPA 20, SPD 14, SPE 17
+             Change lead cycle speed for ideal.
+ - Case 13) Calibrate lead with specified lead cycle speed from step 1 
+      Same as case 12, but select the ideal lead cycle speed in step 1.
+      In step 3: the Lead cycle speed displayed is ~603. Likelihood is ~96.6%.
+ - Case 14) Skip step 1 & 2.
+      Same as case 12, but select the ideal lead cycle speed in step 1.
+      In step 3: the Lead cycle speed displayed is ~603. Likelihood is ~96.6%.
 */
 
 /*
@@ -75,15 +88,16 @@ Utilities:
 All-in-one Wild webtool:
   Wild3: Root for steps 1,2,3
 
-  Step 1: Wild3TargetSetupSearcher
+  Step-1: Wild3TargetSetupSearcher
       display: fields to search for target pokemon
       output = TargetSetup + LeadCycleSpeed
       equivalent to Wild3TargetSetupInput + Wild3LeadCycleSpeedSelector
 
-  Step 2: EmeraldPaintingReseeding
+  Step-2: EmeraldPaintingReseeding
 
-  Step 3: Wild3Calib
+  Step-3: Wild3Calib
     display: Wild3CalibCaughtMon + Wild3LeadCycleSpeedSelector
+             if target setup was skipped, displays Wild3TargetSetupInput
     
 */
 

@@ -5,6 +5,8 @@ import {
   Typography,
   ResultTable,
   FormFieldTable,
+  Flex,
+  Switch,
 } from "~/components";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
@@ -93,6 +95,47 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
   ];
 
   return columns;
+};
+
+export const Wild3LeadCycleSpeedSelectorWithBtn = ({
+  targetSetup,
+  permitEnablingDebugOptions,
+  setLeadCycleSpeed,
+  leadCycleSpeed,
+  displayLeadCycleSpdButton,
+}: Props & {
+  displayLeadCycleSpdButton: boolean;
+}) => {
+  const [displayLeadCycleSpeed, setDisplayLeadCycleSpeed] =
+    React.useState<boolean>(!displayLeadCycleSpdButton);
+
+  return (
+    <Flex vertical gap={20}>
+      {!displayLeadCycleSpeed && (
+        <FormFieldTable
+          fields={[
+            {
+              label: "Display lead cycle speed calibration?",
+              input: (
+                <Switch
+                  onChange={setDisplayLeadCycleSpeed}
+                  value={displayLeadCycleSpeed}
+                />
+              ),
+            },
+          ]}
+        />
+      )}
+      {displayLeadCycleSpeed && (
+        <Wild3LeadCycleSpeedSelector
+          targetSetup={targetSetup}
+          permitEnablingDebugOptions={permitEnablingDebugOptions}
+          setLeadCycleSpeed={setLeadCycleSpeed}
+          leadCycleSpeed={leadCycleSpeed}
+        />
+      )}
+    </Flex>
+  );
 };
 
 export const Wild3LeadCycleSpeedSelector = ({

@@ -1,9 +1,9 @@
-import { Flex, FormFieldTable, Switch } from "~/components";
+import { Flex, FormFieldTable } from "~/components";
 
 import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import { TargetSetup, Wild3TargetSetupInput } from "./wild3TargetSetupInput";
 import React from "react";
-import { Wild3LeadCycleSpeedSelector } from "./wild3LeadCycleSpeedSelector";
+import { Wild3LeadCycleSpeedSelectorWithBtn } from "./wild3LeadCycleSpeedSelector";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 
 type Props = {
@@ -57,9 +57,6 @@ export const Wild3TargetSetupAndLeadInput = ({
     setLeadCycleSpeedProp(spd);
   };
 
-  const [displayLeadCycleSpeed, setDisplayLeadCycleSpeed] =
-    React.useState<boolean>(!displayLeadCycleSpdButton);
-
   return (
     <Flex vertical gap={10}>
       {displayInstructions && <Instructions_calib_skip_setup />}
@@ -74,30 +71,13 @@ export const Wild3TargetSetupAndLeadInput = ({
               },
             ]}
           />
-
-          {!displayLeadCycleSpeed && (
-            <FormFieldTable
-              fields={[
-                {
-                  label: "Display lead cycle speed calibration?",
-                  input: (
-                    <Switch
-                      onChange={setDisplayLeadCycleSpeed}
-                      value={displayLeadCycleSpeed}
-                    />
-                  ),
-                },
-              ]}
-            />
-          )}
-          {displayLeadCycleSpeed && (
-            <Wild3LeadCycleSpeedSelector
-              targetSetup={targetSetup}
-              permitEnablingDebugOptions={permitEnablingDebugOptions}
-              setLeadCycleSpeed={setLeadCycleSpeedBoth}
-              leadCycleSpeed={leadCycleSpeed}
-            />
-          )}
+          <Wild3LeadCycleSpeedSelectorWithBtn
+            targetSetup={targetSetup}
+            permitEnablingDebugOptions={permitEnablingDebugOptions}
+            setLeadCycleSpeed={setLeadCycleSpeedBoth}
+            leadCycleSpeed={leadCycleSpeed}
+            displayLeadCycleSpdButton={displayLeadCycleSpdButton}
+          />
         </Flex>
       )}
     </Flex>

@@ -8,7 +8,7 @@ import {
   NumberInput,
 } from "~/components";
 import { FormFieldTable } from "~/components/formFieldTable";
-import { TargetSetup, Wild3TargetSetupInput } from "./wild3TargetSetupInput";
+import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3CalibCaughtMon } from "./wild3CalibCaughtMon.component";
 import {
   Gen3Console,

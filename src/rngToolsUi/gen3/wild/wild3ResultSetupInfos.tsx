@@ -357,7 +357,7 @@ const getResultSetupInfoColumns = ({
 };
 
 type Props = {
-  selectedPidPathResult: PidPathResult | null;
+  selectedPidPathResult: PidPathResult;
   rngManipulatedLeadPid: boolean;
   setTargetSetup: (targetSetup: TargetSetup) => void;
 };
@@ -385,21 +385,19 @@ export const Wild3ResultSetupInfos = ({
   selectedPidPathResult,
   rngManipulatedLeadPid,
 }: Props) => {
-  const showMassOutbreak =
-    selectedPidPathResult != null &&
-    selectedPidPathResult.resultSetupInfos.some(
-      (setup) => setup.mass_outbreak_state !== "Inactive",
-    );
+  const showMassOutbreak = selectedPidPathResult.resultSetupInfos.some(
+    (setup) => setup.mass_outbreak_state !== "Inactive",
+  );
   const showRequiresWhiteFlute =
-    selectedPidPathResult?.resultSetupInfos.some(
+    selectedPidPathResult.resultSetupInfos.some(
       (setup) => setup.action === "RockSmash",
     ) ?? false;
   const showRequiredPokeblock =
-    selectedPidPathResult?.resultSetupInfos.some(
+    selectedPidPathResult.resultSetupInfos.some(
       (setup) => setup.requiredPokeblock != null,
     ) ?? false;
   const usesPainting =
-    selectedPidPathResult?.resultSetupInfos.some(
+    selectedPidPathResult.resultSetupInfos.some(
       (res) => res.advs.frame_before_painting !== 0,
     ) ?? false;
   const resultSetupInfoColumns = getResultSetupInfoColumns({
@@ -409,10 +407,6 @@ export const Wild3ResultSetupInfos = ({
     showRequiresWhiteFlute,
     usesPainting,
   });
-
-  if (selectedPidPathResult == null) {
-    return null;
-  }
 
   const onClickResultRow = (setupInfo: ResultSetupInfo) => {
     setTargetSetup(setupInfoToTargetSetup(setupInfo));

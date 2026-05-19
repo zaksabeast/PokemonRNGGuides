@@ -1,13 +1,11 @@
 import { Wild3PaintingAdvsAndDur, Wild3SearcherResultMon } from "~/rngTools";
 import {
   Flex,
-  FormFieldTable,
   Icon,
   Link,
   ResultColumn,
   RngToolForm,
   RngToolSubmit,
-  Switch,
 } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
@@ -46,7 +44,7 @@ const emeraldWildGameData = getWild3EmeraldGameData();
 import { GBA_FPS } from "~/utils/consts";
 import { TargetSetup } from "./wild3TargetSetupInput";
 import { Pokeblock, wild3SafariPokeblockSearchOpt } from "~/types/pokeblock";
-import { Wild3LeadCycleSpeedSelector } from "./wild3LeadCycleSpeedSelector";
+import { Wild3LeadCycleSpeedSelectorWithBtn } from "./wild3LeadCycleSpeedSelector";
 
 /*
 Possible UI improvements:
@@ -309,7 +307,6 @@ export const Wild3TargetSetupSearcher = ({
 
   const pidPathColumns = getPidPathColumns();
 
-  const [displayBreakdown, setDisplayBreakdown] = React.useState(false);
   const [leadCycleSpeed, setLeadCycleSpeed] = React.useState<number | null>(0);
 
   const setTargetSetupBoth = (targetSetup: TargetSetup) => {
@@ -338,38 +335,23 @@ export const Wild3TargetSetupSearcher = ({
         <br />
         <SetupFilter />
       </RngToolForm>
-      <Wild3ResultSetupInfos
-        selectedPidPathResult={selectedPidPathResult}
-        rngManipulatedLeadPid={rngManipulatedLeadPid}
-        setTargetSetup={setTargetSetupBoth}
-      />
-      //NO_PROD combine
+
+      {selectedPidPathResult != null && (
+        <Wild3ResultSetupInfos
+          selectedPidPathResult={selectedPidPathResult}
+          rngManipulatedLeadPid={rngManipulatedLeadPid}
+          setTargetSetup={setTargetSetupBoth}
+        />
+      )}
+
       {targetSetup != null && (
-        <Flex vertical>
-          {!rngManipulatedLeadPid && (
-            <FormFieldTable
-              fields={[
-                {
-                  label: "Display lead cycle speed calibration?",
-                  input: (
-                    <Switch
-                      onChange={setDisplayBreakdown}
-                      value={displayBreakdown}
-                    />
-                  ),
-                },
-              ]}
-            />
-          )}
-          {(rngManipulatedLeadPid || displayBreakdown) && (
-            <Wild3LeadCycleSpeedSelector
-              targetSetup={targetSetup}
-              permitEnablingDebugOptions={false}
-              setLeadCycleSpeed={setLeadCycleSpeedBoth}
-              leadCycleSpeed={leadCycleSpeed}
-            />
-          )}
-        </Flex>
+        <Wild3LeadCycleSpeedSelectorWithBtn
+          targetSetup={targetSetup}
+          permitEnablingDebugOptions={false}
+          setLeadCycleSpeed={setLeadCycleSpeedBoth}
+          leadCycleSpeed={leadCycleSpeed}
+          displayLeadCycleSpdButton={!rngManipulatedLeadPid}
+        />
       )}
     </>
   );

@@ -174,17 +174,21 @@ const tools = {
     () => import("~/rngToolsUi/gen3/battleVideo/battleVideo"),
     (mod) => mod.BattleVideo,
   ),
-  Wild3SearcherFindTarget: lazyLoad(
-    () => import("~/rngToolsUi/gen3/wild/wild3FindTarget"),
-    (mod) => mod.Wild3SearcherFindTarget,
+  Wild3TargetSetupSearcher: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3TargetSetupSearcher"),
+    (mod) => mod.Wild3TargetSetupSearcher,
   ),
   Wild3Calib: lazyLoad(
     () => import("~/rngToolsUi/gen3/wild/wild3Calib"),
     (mod) => mod.Wild3Calib,
   ),
-  Wild3MethodDistribution: lazyLoad(
-    () => import("~/rngToolsUi/gen3/wild/wild3MethodDistribution"),
-    (mod) => mod.Wild3MethodDistribution,
+  Wild3LeadCycleSpeedSelector: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3LeadCycleSpeedSelector"),
+    (mod) => mod.Wild3LeadCycleSpeedSelector,
+  ),
+  Wild3TargetSetupAndLeadInputStandalone: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3TargetSetupAndLeadInput"),
+    (mod) => mod.Wild3TargetSetupAndLeadInputStandalone,
   ),
   Gen3PidSpeedCalculator: lazyLoad(
     () => import("~/rngToolsUi/gen3/pidSpeedCalculator"),
@@ -206,9 +210,9 @@ const tools = {
     () => import("~/rngToolsUi/gen3/wild/wild3"),
     (mod) => mod.Wild3Calib_WithTargetSetupAndBattleVideo,
   ),
-  Wild3SearcherFindTarget_WithSetTargetSetup: lazyLoad(
+  Wild3TargetSetupSearcher_WithSetTargetSetup: lazyLoad(
     () => import("~/rngToolsUi/gen3/wild/wild3"),
-    (mod) => mod.Wild3SearcherFindTarget_WithSetTargetSetup,
+    (mod) => mod.Wild3TargetSetupSearcher_WithSetTargetSetup,
   ),
   Gen3TidSidGenerator: lazyLoad(
     () => import("~/rngToolsUi/gen3/tidsid"),

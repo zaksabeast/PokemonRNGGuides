@@ -176,8 +176,8 @@
     "lastUpdated": "2026-04-11"
   },
   "/de-retail-emerald-wild/": {
-    "hash": "7c8616377ac5a89341ed2978526be7eda6a1588529041164c4ad0d887a9a345a",
-    "lastUpdated": "2026-05-10"
+    "hash": "64b982f5d45640a44d6f8bc5bef92638da78b11fcef7f36c742bf0185c1346d9",
+    "lastUpdated": "2026-05-18"
   },
   "/de-rs-gen3-sid/": {
     "hash": "35471371d80a156d0a37f527967d6a318c35347fab1df9095e0012f081b9ac21",
@@ -312,12 +312,12 @@
     "lastUpdated": null
   },
   "/emerald-wild-method-likelihood-calculator/": {
-    "hash": "e3519af7b4dd17b61001b188409bb43f9bdefe26dc9825292678151d3e26cdbb",
-    "lastUpdated": "2026-03-15"
+    "hash": "0aeb9ee8320cda0cf68424e2717348d40fb8bc8dccda41cccc568547781a9d87",
+    "lastUpdated": "2026-05-18"
   },
   "/emerald-wild/": {
-    "hash": "7c8616377ac5a89341ed2978526be7eda6a1588529041164c4ad0d887a9a345a",
-    "lastUpdated": "2026-05-10"
+    "hash": "64b982f5d45640a44d6f8bc5bef92638da78b11fcef7f36c742bf0185c1346d9",
+    "lastUpdated": "2026-05-18"
   },
   "/emerald/": {
     "hash": "20e33e273353be8c1ff953db589d1ee2f0c9e2ef7ad27dad170c8418fe04070c",
@@ -704,8 +704,8 @@
     "lastUpdated": "2026-04-10"
   },
   "/it-retail-emerald-wild/": {
-    "hash": "7c8616377ac5a89341ed2978526be7eda6a1588529041164c4ad0d887a9a345a",
-    "lastUpdated": "2026-05-10"
+    "hash": "64b982f5d45640a44d6f8bc5bef92638da78b11fcef7f36c742bf0185c1346d9",
+    "lastUpdated": "2026-05-18"
   },
   "/it-retail-hgss-starter/": {
     "hash": "ecf16f1bcaac54f98e5119973698a50457e696df038974c2717587ac4361ec04",
@@ -840,8 +840,8 @@
     "lastUpdated": "2026-05-16"
   },
   "/retail-emerald-wild/": {
-    "hash": "7c8616377ac5a89341ed2978526be7eda6a1588529041164c4ad0d887a9a345a",
-    "lastUpdated": "2026-05-10"
+    "hash": "64b982f5d45640a44d6f8bc5bef92638da78b11fcef7f36c742bf0185c1346d9",
+    "lastUpdated": "2026-05-18"
   },
   "/retail-hgss-starter/": {
     "hash": "cac914cd39781d2a8e3ede66c76318af5462a81abfcd94516fc6b464b6582fec",
@@ -1416,8 +1416,8 @@
     "lastUpdated": "2026-05-02"
   },
   "/zh-retail-emerald-wild/": {
-    "hash": "7c8616377ac5a89341ed2978526be7eda6a1588529041164c4ad0d887a9a345a",
-    "lastUpdated": "2026-05-10"
+    "hash": "64b982f5d45640a44d6f8bc5bef92638da78b11fcef7f36c742bf0185c1346d9",
+    "lastUpdated": "2026-05-18"
   },
   "/zh-retail-hgss-starter/": {
     "hash": "28849cdcf4d32498b9d24a2e0d22c821673b3a264bd28e5d895033ac6a862779",

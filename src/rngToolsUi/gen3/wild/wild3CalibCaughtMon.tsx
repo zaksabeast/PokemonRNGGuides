@@ -25,7 +25,7 @@ import {
   Wild3SearcherResultMon,
 } from "~/rngTools";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
-import type { TargetSetup } from "./wild3CalibTargetSetupInput";
+import type { TargetSetup } from "./wild3TargetSetupInput";
 import { isFishingAction, wild3Actions } from "./utils";
 import { getIvRangeFromStats } from "~/types/statRange";
 import {
@@ -97,6 +97,7 @@ let nextUid = 0;
 export const createWild3SearcherOptions = async (
   values: FormState,
   targetSetup: TargetSetup,
+  leadCycleSpeed: number,
 ) => {
   const initial_seed = targetSetup.targetPaintingAdvs.before;
 
@@ -169,7 +170,7 @@ export const createWild3SearcherOptions = async (
     generate_even_if_impossible: values.generate_even_if_impossible,
     using_white_flute: targetSetup.requiresWhiteFlute,
     painting_opts: null,
-    lead_cycle_speed: targetSetup.leadCycleSpeed,
+    lead_cycle_speed: leadCycleSpeed,
     considered_safari_pokeblocks:
       targetSetup.safariPokeblock == null
         ? "None"

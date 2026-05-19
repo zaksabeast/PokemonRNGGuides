@@ -9,7 +9,7 @@ use crate::{
         CycleAndModCount, CycleAndModRange, CycleCounter, CycleRange, Gen3Lead, Gen3Method,
         Gen3PkmFilter, Moment, Wild3Action, Wild3EncounterGameData, Wild3EncounterIndex,
         Wild3FeebasState, Wild3MapGameData, Wild3MassOutbreakState, Wild3RoamerState,
-        passes_pid_filter, wild::lcrng_distance,
+        passes_pid_filter,passes_ivs_filter, wild::lcrng_distance,
     },
     gen3_tsv, is_max_size,
     rng::{Rng, lcrng::Pokerng},
@@ -715,11 +715,6 @@ fn passes_pid_filter_internal(
     )
 }
 
-fn passes_ivs_filter(opts: &Wild3GeneratorOptions, ivs: &Ivs) -> bool {
-    Ivs::filter(ivs, &opts.filter.min_ivs, &opts.filter.max_ivs)
-        && opts.filter.pass_filter_hidden_power(ivs)
-}
-
 fn create_if_passes_filter(
     opts: &Wild3GeneratorOptions,
     pid: u32,
@@ -729,7 +724,7 @@ fn create_if_passes_filter(
     lvl: u8,
     cycle_range: CycleAndModRange,
 ) -> Option<Wild3GeneratorResult> {
-    if !passes_ivs_filter(opts, &ivs) {
+    if !passes_ivs_filter(opts.filter, &ivs) {
         return None;
     }
 

@@ -5,7 +5,7 @@ use super::*;
 use crate::{
     GenderRatio,
     gen3::{
-        SpeciesData, find_pid_paths_reverse_pid,
+        SpeciesData, find_pid_paths_reverse_pid_cycle_speed,
         searcher_painter::Wild3PaintingAdvFinder,
         wild::{
             lcrng_distance,
@@ -44,7 +44,7 @@ Finding PID paths:
     - ByStepIv2: Filter by iv2 first
     - ByStepPid: Filter by PID first
     - ReverseIv: Reverse search from the wanted IVs
-    - ReversePid: Reverse search from the wanted PID
+    - ReversePidCycleSpeed: Reverse search from the wanted PID
 */
 
 /*
@@ -180,8 +180,8 @@ pub fn search_wild3_reverse(opts: &Wild3SearcherOptions) -> Vec<Vec<Wild3Searche
             PidPathStrategy::ReverseIv => {
                 extend_pid_paths_to_results(opts, find_pid_paths_reverse_iv::<true>(&find_opts))
             }
-            PidPathStrategy::ReversePid => {
-                extend_pid_paths_to_results(opts, find_pid_paths_reverse_pid::<true>(&find_opts))
+            PidPathStrategy::ReversePidCycleSpeed => {
+                extend_pid_paths_to_results(opts, find_pid_paths_reverse_pid_cycle_speed::<true>(&find_opts))
             }
         }
     } else {
@@ -198,8 +198,8 @@ pub fn search_wild3_reverse(opts: &Wild3SearcherOptions) -> Vec<Vec<Wild3Searche
             PidPathStrategy::ReverseIv => {
                 extend_pid_paths_to_results(opts, find_pid_paths_reverse_iv::<false>(&find_opts))
             }
-            PidPathStrategy::ReversePid => {
-                extend_pid_paths_to_results(opts, find_pid_paths_reverse_pid::<false>(&find_opts))
+            PidPathStrategy::ReversePidCycleSpeed => {
+                extend_pid_paths_to_results(opts, find_pid_paths_reverse_pid_cycle_speed::<false>(&find_opts))
             }
         }
     }

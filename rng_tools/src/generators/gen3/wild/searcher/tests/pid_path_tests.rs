@@ -164,7 +164,7 @@ fn test_find_pid_paths_reverse_pid() {
     };
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_pid::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_pid_cycle_speed::<true>(&opts)),
         strs_to_string(&[
             "Seed: 091D0909, Adv: 13106503, Method: Wild3, PID: 00000013, Ivs: 15/2/18/19/21/1",
             "Seed: FC39FC71, Adv: 301677967, Method: Wild3, PID: 00000001, Ivs: 12/19/11/9/29/4",
@@ -267,7 +267,7 @@ fn test_find_pid_paths_reverse_pid() {
     opts.gen3_filter.pid_speed.min_cycle_count = SLOWEST_MODULO_CYCLE_24;
     opts.gen3_filter.pid_speed.max_cycle_count = SLOWEST_MODULO_CYCLE_24;
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_pid::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_pid_cycle_speed::<true>(&opts)),
         strs_to_string(&[
             "Seed: FCD6F078, Adv: 293090680, Method: Wild3, PID: 59999999, Ivs: 18/0/20/4/9/19",
             "Seed: 14855885, Adv: 386636595, Method: Wild1, PID: 5999999D, Ivs: 11/21/30/20/27/19",

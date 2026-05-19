@@ -5,65 +5,46 @@ use serde::{Deserialize, Serialize};
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
-#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
-#[tsify(into_wasm_abi, from_wasm_abi)]
-pub struct Static3GeneratorResult {
-    pub advance: usize,
-    pub pid: u32,
-    pub ivs: Ivs,
-    pub ability: AbilityType,
-    pub gender: Gender,
-    pub nature: Nature,
-    pub shiny: bool,
-}
-
-impl PkmState for Static3GeneratorResult {
-    fn shiny(&self) -> bool {
-        self.shiny
-    }
-
-    fn nature(&self) -> Nature {
-        self.nature
-    }
-
-    fn ivs(&self) -> &Ivs {
-        &self.ivs
-    }
-
-    fn ability(&self) -> AbilityType {
-        self.ability
-    }
-
-    fn gender(&self) -> Gender {
-        self.gender
-    }
-
-    fn pid(&self) -> u32 {
-        self.pid
-    }
+enum Gen3StaticMethod {
+    Static1,
+    Static4,
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Static3GeneratorOptions {
-    pub offset: usize,
-    pub initial_advances: usize,
-    pub max_advances: usize,
-    pub seed: u32,
-    pub species: Species,
     pub bugged_roamer: bool,
-    pub method4: bool,
+    pub method: Gen3StaticMethod,
     pub tid: u16,
     pub sid: u16,
     pub filter: PkmFilter,
+    pub gen3_filter: Gen3PkmFilter,
+    pub encounter_gender_ratio:GenderRatio,
 }
 
-fn generate_gen3_static_state(
+#[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
+pub struct Static3GeneratorResult {
+    pub pid: u32,
+    pub ivs: Ivs,
+}
+
+
+fn generate_gen3_static(
     mut rng: Pokerng,
     opts: &Static3GeneratorOptions,
-    advance: usize,
-) -> Static3GeneratorResult {
+) -> Option<Static3GeneratorResult> {
     let pid = (rng.rand::<u16>() as u32) | ((rng.rand::<u16>() as u32) << 16);
+
+    if !passes_pid_filter(
+        &opts.filter,
+        &opts.gen3_filter,
+        Some(encounter_gender_ratio),
+        pid,
+        gen3_tsv(opts.tid, opts.sid),
+    ) {
+        return None;
+    }
 
     let iv1 = if opts.bugged_roamer {
         rng.rand::<u16>() & 0xFF
@@ -80,35 +61,17 @@ fn generate_gen3_static_state(
     };
 
     let ivs = Ivs::new_g3(iv1, iv2);
+    if !passes_ivs_filter(opts.filter, &ivs){
+        return None;
+    }
 
     Static3GeneratorResult {
-        advance,
         pid,
         ivs,
-        ability: AbilityType::from((pid & 1) as u8),
-        gender: opts.species.gender_from_pid(pid),
-        nature: Nature::from_pid(pid),
-        shiny: gen3_shiny(pid, opts.tid, opts.sid),
     }
 }
 
-#[wasm_bindgen]
-pub fn gen3_static_generator_states(opts: &Static3GeneratorOptions) -> Vec<Static3GeneratorResult> {
-    StateIterator::new(Pokerng::new(opts.seed))
-        .skip(opts.offset)
-        .enumerate()
-        .skip(opts.initial_advances)
-        .take(opts.max_advances.saturating_add(1))
-        .filter_map(|(advance, rng)| {
-            let state = generate_gen3_static_state(rng, opts, advance);
-            if opts.filter.pass_filter(&state) {
-                Some(state)
-            } else {
-                None
-            }
-        })
-        .collect()
-}
+
 
 #[cfg(test)]
 mod test {

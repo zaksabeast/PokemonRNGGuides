@@ -9,93 +9,147 @@ use wasm_bindgen::prelude::*;
 #[derive(Debug, Clone, Copy, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Static3SearcherResult {
-    pub seed: u32,
     pub pid: u32,
     pub ivs: Ivs,
+    pub method4: bool,
+
+    // derived from pid
     pub ability: AbilityType,
     pub gender: Gender,
     pub nature: Nature,
     pub shiny: bool,
+
+    // derived from ivs
+    pub hidden_power: HiddenPower,
+
+    // from generator options
+    /** advance is distance from initial_seed to seed. initial_seed is 0 if searcher finds painting seed */
+    pub advance: usize,
+    pub seed: u32,
 }
 
-impl PkmState for Static3SearcherResult {
-    fn shiny(&self) -> bool {
-        self.shiny
-    }
 
-    fn nature(&self) -> Nature {
-        self.nature
-    }
-
-    fn ivs(&self) -> &Ivs {
-        &self.ivs
-    }
-
-    fn ability(&self) -> AbilityType {
-        self.ability
-    }
-
-    fn gender(&self) -> Gender {
-        self.gender
-    }
-
-    fn pid(&self) -> u32 {
-        self.pid
+impl Static3SearcherResult {
+    pub fn new(
+        gen_res: &Static3GeneratorResult,
+        gen_opts: &Static3GeneratorOptions,
+        seed: u32,
+        advance: usize,
+    ) -> Static3SearcherResultMon {
+        Static3SearcherResultMon {
+            pid: gen_res.pid,
+            ivs: gen_res.ivs,
+            method4: false,
+            species: gen_opts.species,
+            shiny: gen3_shiny(gen_res.pid, gen_opts.tid, gen_opts.sid),
+            nature: Nature::from_pid(gen_res.pid),
+            ability: AbilityType::from_gen3_pid(gen_res.pid),
+            gender: gen_opts.gender_ratio
+                .gender_from_pid(gen_res.pid),
+            hidden_power: HiddenPower::from_ivs(&gen_res.ivs),
+            advance,
+            seed,
+        }
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Tsify, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Static3SearcherOptions {
+    pub initial_seed: u32,
     pub tid: u16,
     pub sid: u16,
-    pub method4: bool,
-    pub bugged_roamer: bool,
-    pub species: Species,
+    pub initial_advances: usize,
+    pub max_advances: usize,
+    pub max_result_count: usize,
     pub filter: PkmFilter,
+    pub gen3_filter: Gen3PkmFilter,
+    pub painting_opts: Option<Wild3PaintingOpts>,
+    pub species:Species,
 }
 
 #[wasm_bindgen]
-pub fn gen3_static_searcher_states(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
-    iv_iter(opts.filter.min_ivs, opts.filter.max_ivs)
-        .flat_map(|ivs| search_gen3_static(ivs, opts))
-        .collect()
-}
+pub fn search_static3_naive(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResultMon> {
+    let base_rng = Pokerng::with_jump(opts.initial_seed, opts.initial_advances);
 
-fn search_gen3_static(mut ivs: Ivs, opts: &Static3SearcherOptions) -> Vec<Static3SearcherResult> {
-    let seeds = recover_poke_rng_iv(&ivs, opts.method4);
+    let gen_opts = Static3GeneratorOptions {
+        bugged_roamer: false,
+        method: Gen3StaticMethod::Static1,
+        tid: opts.tid,
+        sid: opts.sid,
+        filter: *opts.filter,
+        gen3_filter: *opts.gen3_filter,
+        encounter_gender_ratio:opts.species.gender_ratio()
+    };
 
-    if opts.bugged_roamer {
-        ivs = Ivs {
-            hp: ivs.hp,
-            atk: ivs.atk & 7,
-            ..Default::default()
-        };
-    }
+    StateIterator::new(base_rng)
+        .enumerate()
+        .skip(opts.initial_advances)
+        .take(opts.max_advances.saturating_add(1))
+        .filter_map(|(advance, rng)| {
+            generate_gen3_static(rng, opts).map|(|gen_res|{
 
-    seeds
-        .into_iter()
-        .filter_map(|seed| {
-            let mut rng = Pokerng::new(seed).rev();
-            let pid = ((rng.rand::<u16>() as u32) << 16) | (rng.rand::<u16>() as u32);
-            let nature = Nature::from_pid(pid);
-            let state = Static3SearcherResult {
-                seed: rng.rand::<u32>(),
-                pid,
-                ivs,
-                ability: AbilityType::from((pid & 1) as u8),
-                gender: opts.species.gender_from_pid(pid),
-                nature,
-                shiny: gen3_shiny(pid, opts.tid, opts.sid),
-            };
-            if opts.filter.pass_filter_no_ivs(&state) {
-                Some(state)
-            } else {
-                None
-            }
+                Static3SearcherResultMon::new(
+                    gen_res,
+                    &gen_opts,
+                    rng.seed(),
+                    advance,
+                )
+            })
         })
+        .take(opts.max_result_count)
         .collect()
 }
+
+
+#[wasm_bindgen]
+pub fn search_static3(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResultMon> {
+    search_static3_naive(opts)
+    //search_static3_reverse(opts)
+}
+
+
+
+fn extend_pid_paths_to_results<I>(
+    opts: &Static3SearcherOptions,
+    iter: I,
+) -> Vec<Static3SearcherResultMon>
+where
+    I: Iterator<Item = PidPath>,
+{
+}
+
+#[wasm_bindgen]
+pub fn search_static3_reverse(opts: &Static3SearcherOptions) -> Vec<Static3SearcherResultMon> {
+    let find_opts = new_find_pid_paths_options(opts);
+
+    let pid_paths:Vec<PidPath> = match determine_best_pid_path_strategy(&find_opts) {
+        PidPathStrategy::ByStepIv1 => {
+            find_pid_paths_by_step_iv1::<true>(&find_opts).collect()
+        }
+        PidPathStrategy::ByStepIv2 => {
+            find_pid_paths_by_step_iv2::<true>(&find_opts).collect()
+        }
+        PidPathStrategy::ByStepPid => {
+            find_pid_paths_by_step_pid::<true>(&find_opts).collect()
+        }
+        PidPathStrategy::ReverseIv => {
+            find_pid_paths_reverse_iv::<true>(&find_opts).collect()
+        }
+        PidPathStrategy::ReversePidCycleSpeed => {
+            find_pid_paths_reverse_pid_cycle_speed::<true>(&find_opts).collect()
+        }
+    };
+
+
+}
+
+
+
+
+
+
+
 
 #[cfg(test)]
 mod test {

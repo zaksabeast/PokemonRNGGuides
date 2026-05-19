@@ -1,0 +1,39 @@
+Functional plan:
+
+ACE
+    useful code for rng.
+    give access to battle frontier to create battle video.
+    OR respawn gift
+
+Find target
+    species
+    ivs
+
+setup:
+    tid/sid
+    radio: map, or string if 1
+    have access to battle frontier
+    painting: only if battle frontier reachable
+    min adv
+    ...
+
+battle video/painting (if possible)
+
+calibration.
+
+---------------------------
+
+Coding plan:
+
+- Create static generator
+- Create naive searcher.
+- Create reverse searcher.
+- Adapt UI
+
+
+
+
+
+
+
+

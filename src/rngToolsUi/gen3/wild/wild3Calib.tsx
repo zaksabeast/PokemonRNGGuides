@@ -153,7 +153,7 @@ export const Wild3Calib = ({
       setTargetSetup={setTargetSetup}
       setLeadCycleSpeed={setOverwriteLeadCycleSpeed}
       leadCycleSpeed={finalLeadCycleSpeed}
-      displayInstructions={false}
+      displayInstructions={displayInstructions}
       permitEnablingDebugOptions={false}
       displayLeadCycleSpdButton
     />
@@ -350,7 +350,7 @@ export const Wild3Calib = ({
       },
       {
         label: "Lead Cycle Speed",
-        input: leadCycleSpeedToText(leadCycleSpeedProp), //NO_PROD strikethourgh
+        input: leadCycleSpeedToText(leadCycleSpeedProp),
         show:
           targetSetupProp.lead !== "Egg" && overwriteLeadCycleSpeed === null,
       },

@@ -3293,7 +3293,7 @@ export const guides = {
       addedOn: null,
       translation: null,
       layout: "guide",
-      lastUpdated: "2026-05-18",
+      lastUpdated: "2026-05-19",
       type: "baseGuide",
       canonical: "/emerald-wild-method-likelihood-calculator/",
       file: "guides/Gen 3/Emerald/Method Likelihood Calculator.mdx",

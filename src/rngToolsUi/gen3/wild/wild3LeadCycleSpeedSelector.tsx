@@ -27,6 +27,11 @@ import {
   Wild3Distributions,
 } from "./wild3SetupToDistribution";
 
+/*
+Wild3LeadCycleSpeedSelector is used to set/calibrate leadCycleSpeed.
+It is like Wild3LeadCycleSpeedInput, but displays the impact of lead cycle speed (method distribution).  
+*/
+
 export type Props = {
   targetSetup: TargetSetup;
   permitEnablingDebugOptions: boolean;
@@ -95,47 +100,6 @@ const getColumns = (targetSetup: TargetSetup): ResultColumn<UiResult>[] => {
   ];
 
   return columns;
-};
-
-export const Wild3LeadCycleSpeedSelectorWithBtn = ({
-  targetSetup,
-  permitEnablingDebugOptions,
-  setLeadCycleSpeed,
-  leadCycleSpeed,
-  displayLeadCycleSpdButton,
-}: Props & {
-  displayLeadCycleSpdButton: boolean;
-}) => {
-  const [displayLeadCycleSpeed, setDisplayLeadCycleSpeed] =
-    React.useState<boolean>(!displayLeadCycleSpdButton);
-
-  return (
-    <Flex vertical gap={20}>
-      {!displayLeadCycleSpeed && (
-        <FormFieldTable
-          fields={[
-            {
-              label: "Display lead cycle speed calibration?",
-              input: (
-                <Switch
-                  onChange={setDisplayLeadCycleSpeed}
-                  value={displayLeadCycleSpeed}
-                />
-              ),
-            },
-          ]}
-        />
-      )}
-      {displayLeadCycleSpeed && (
-        <Wild3LeadCycleSpeedSelector
-          targetSetup={targetSetup}
-          permitEnablingDebugOptions={permitEnablingDebugOptions}
-          setLeadCycleSpeed={setLeadCycleSpeed}
-          leadCycleSpeed={leadCycleSpeed}
-        />
-      )}
-    </Flex>
-  );
 };
 
 export const Wild3LeadCycleSpeedSelector = ({
@@ -214,5 +178,46 @@ export const Wild3LeadCycleSpeedSelector = ({
         />
       )}
     </>
+  );
+};
+
+export const Wild3LeadCycleSpeedSelectorWithBtn = ({
+  targetSetup,
+  permitEnablingDebugOptions,
+  setLeadCycleSpeed,
+  leadCycleSpeed,
+  displayLeadCycleSpdButton,
+}: Props & {
+  displayLeadCycleSpdButton: boolean;
+}) => {
+  const [displayLeadCycleSpeed, setDisplayLeadCycleSpeed] =
+    React.useState<boolean>(!displayLeadCycleSpdButton);
+
+  return (
+    <Flex vertical gap={20}>
+      {!displayLeadCycleSpeed && (
+        <FormFieldTable
+          fields={[
+            {
+              label: "Display lead cycle speed calibration?",
+              input: (
+                <Switch
+                  onChange={setDisplayLeadCycleSpeed}
+                  value={displayLeadCycleSpeed}
+                />
+              ),
+            },
+          ]}
+        />
+      )}
+      {displayLeadCycleSpeed && (
+        <Wild3LeadCycleSpeedSelector
+          targetSetup={targetSetup}
+          permitEnablingDebugOptions={permitEnablingDebugOptions}
+          setLeadCycleSpeed={setLeadCycleSpeed}
+          leadCycleSpeed={leadCycleSpeed}
+        />
+      )}
+    </Flex>
   );
 };

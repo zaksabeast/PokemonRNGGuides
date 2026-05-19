@@ -93,7 +93,7 @@ All-in-one Wild webtool:
   Step-1: Wild3TargetSetupSearcher
       display: fields to search for target pokemon
       output = TargetSetup + LeadCycleSpeed
-      equivalent to Wild3TargetSetupInput + Wild3LeadCycleSpeedSelector
+      equivalent to Wild3TargetSetupAndLeadInput
 
   Step-2: EmeraldPaintingReseeding
 

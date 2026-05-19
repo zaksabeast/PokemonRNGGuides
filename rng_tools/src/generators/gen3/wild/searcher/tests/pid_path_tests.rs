@@ -2,6 +2,7 @@ use super::*;
 use crate::{
     AbilityType, Gender, Ivs, Nature, PkmFilter,
     gen3::{FASTEST_MODULO_CYCLE_24, Gen3Method, Gen3PidSpeedFilter, SLOWEST_MODULO_CYCLE_24},
+    gen3_psv,
 };
 
 mod utils;
@@ -313,4 +314,27 @@ fn test_find_pid_paths_reverse_pid() {
             "Seed: DDAACB85, Adv: 3622933043, Method: Wild3, PID: 59999999, Ivs: 29/0/4/22/31/23"
         ])
     );
+}
+
+/** returns all 524_288 possible PIDs that are shiny for the given tsv. Credits to lincoln */
+pub fn get_iterator_shiny_pid(tsv: u16) -> impl Iterator<Item = u32> {
+    let full_tsv: u32 = (tsv as u32) << 3;
+
+    (0..0x80000u32).map(move |partial| partial ^ ((partial ^ full_tsv) << 16))
+}
+
+//cargo test --release test_get_iterator_shiny_pid
+#[test]
+fn test_get_iterator_shiny_pid() {
+    let mut naive: Vec<u32> = vec![];
+    let tsv: u16 = 1234;
+    for pid in 0..=0xFFFFFFFFu32 {
+        if gen3_psv(pid) == tsv {
+            naive.push(pid);
+        }
+    }
+
+    let opt_list = get_iterator_shiny_pid2(tsv).sorted().collect_vec();
+
+    assert_eq!(naive, opt_list);
 }

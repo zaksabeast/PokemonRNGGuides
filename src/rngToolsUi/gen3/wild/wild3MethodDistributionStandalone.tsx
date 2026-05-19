@@ -15,6 +15,7 @@ export const Wild3MethodDistributionStandalone = ({
       setLeadCycleSpeed={() => {}}
       displayInstructions={false}
       permitEnablingDebugOptions={permitEnablingDebugOptions}
+      displayLeadCycleSpdButton={false}
     />
   );
 };

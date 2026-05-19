@@ -25,11 +25,6 @@ import {
   Wild3Distributions,
 } from "./wild3SetupToDistribution";
 
-/*
-Input: TargetSetup
-Output: leadCycleSpeed
-*/
-
 export type Props = {
   targetSetup: TargetSetup;
   permitEnablingDebugOptions: boolean;

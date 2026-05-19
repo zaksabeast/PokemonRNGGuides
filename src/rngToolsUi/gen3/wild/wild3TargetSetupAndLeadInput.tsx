@@ -1,4 +1,4 @@
-import { Flex, FormFieldTable } from "~/components";
+import { Flex, FormFieldTable, Switch } from "~/components";
 
 import Instructions_calib_skip_setup from "./instructions_calib_skip_setup.mdx";
 import { TargetSetup, Wild3TargetSetupInput } from "./wild3TargetSetupInput";
@@ -12,6 +12,7 @@ type Props = {
   leadCycleSpeed: number;
   displayInstructions: boolean;
   permitEnablingDebugOptions: boolean;
+  displayLeadCycleSpdButton: boolean;
 };
 
 export const Wild3TargetSetupAndLeadInput = ({
@@ -20,6 +21,7 @@ export const Wild3TargetSetupAndLeadInput = ({
   leadCycleSpeed: leadCycleSpeedProp,
   displayInstructions,
   permitEnablingDebugOptions,
+  displayLeadCycleSpdButton,
 }: Props) => {
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     null,
@@ -55,6 +57,9 @@ export const Wild3TargetSetupAndLeadInput = ({
     setLeadCycleSpeedProp(spd);
   };
 
+  const [displayLeadCycleSpeed, setDisplayLeadCycleSpeed] =
+    React.useState<boolean>(!displayLeadCycleSpdButton);
+
   return (
     <Flex vertical gap={10}>
       {displayInstructions && <Instructions_calib_skip_setup />}
@@ -69,12 +74,30 @@ export const Wild3TargetSetupAndLeadInput = ({
               },
             ]}
           />
-          <Wild3LeadCycleSpeedSelector
-            targetSetup={targetSetup}
-            permitEnablingDebugOptions={permitEnablingDebugOptions}
-            setLeadCycleSpeed={setLeadCycleSpeedBoth}
-            leadCycleSpeed={leadCycleSpeed}
-          />
+
+          {!displayLeadCycleSpeed && (
+            <FormFieldTable
+              fields={[
+                {
+                  label: "Display lead cycle speed calibration?",
+                  input: (
+                    <Switch
+                      onChange={setDisplayLeadCycleSpeed}
+                      value={displayLeadCycleSpeed}
+                    />
+                  ),
+                },
+              ]}
+            />
+          )}
+          {displayLeadCycleSpeed && (
+            <Wild3LeadCycleSpeedSelector
+              targetSetup={targetSetup}
+              permitEnablingDebugOptions={permitEnablingDebugOptions}
+              setLeadCycleSpeed={setLeadCycleSpeedBoth}
+              leadCycleSpeed={leadCycleSpeed}
+            />
+          )}
         </Flex>
       )}
     </Flex>

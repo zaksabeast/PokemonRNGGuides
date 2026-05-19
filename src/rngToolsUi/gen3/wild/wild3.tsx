@@ -77,6 +77,8 @@ Utilities:
       input = target setup
       display likelihood by lead cycle speed
       output = lead cycle speed
+  - Wild3TargetSetupAndLeadInput
+      Wild3TargetSetupInput + Wild3LeadCycleSpeedSelector
   - EmeraldPaintingReseeding 
       input = target advance
       output = battle video

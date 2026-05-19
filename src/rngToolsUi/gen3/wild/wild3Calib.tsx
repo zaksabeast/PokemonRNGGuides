@@ -155,6 +155,7 @@ export const Wild3Calib = ({
       leadCycleSpeed={finalLeadCycleSpeed}
       displayInstructions={false}
       permitEnablingDebugOptions={false}
+      displayLeadCycleSpdButton
     />
   );
 

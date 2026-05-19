@@ -338,13 +338,12 @@ export const Wild3TargetSetupSearcher = ({
         <br />
         <SetupFilter />
       </RngToolForm>
-
       <Wild3ResultSetupInfos
         selectedPidPathResult={selectedPidPathResult}
         rngManipulatedLeadPid={rngManipulatedLeadPid}
         setTargetSetup={setTargetSetupBoth}
       />
-
+      //NO_PROD combine
       {targetSetup != null && (
         <Flex vertical>
           {!rngManipulatedLeadPid && (

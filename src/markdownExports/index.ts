@@ -186,9 +186,9 @@ const tools = {
     () => import("~/rngToolsUi/gen3/wild/wild3LeadCycleSpeedSelector"),
     (mod) => mod.Wild3LeadCycleSpeedSelector,
   ),
-  Wild3MethodDistributionStandalone: lazyLoad(
-    () => import("~/rngToolsUi/gen3/wild/wild3MethodDistributionStandalone"),
-    (mod) => mod.Wild3MethodDistributionStandalone,
+  Wild3TargetSetupAndLeadInputStandalone: lazyLoad(
+    () => import("~/rngToolsUi/gen3/wild/wild3TargetSetupAndLeadInput"),
+    (mod) => mod.Wild3TargetSetupAndLeadInputStandalone,
   ),
   Gen3PidSpeedCalculator: lazyLoad(
     () => import("~/rngToolsUi/gen3/pidSpeedCalculator"),

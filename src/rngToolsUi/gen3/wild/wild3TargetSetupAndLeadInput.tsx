@@ -5,6 +5,7 @@ import { TargetSetup, Wild3TargetSetupInput } from "./wild3TargetSetupInput";
 import React from "react";
 import { Wild3LeadCycleSpeedSelectorWithBtn } from "./wild3LeadCycleSpeedSelector";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 
 type Props = {
   setTargetSetup: (targetSetup: TargetSetup) => void;
@@ -81,5 +82,22 @@ export const Wild3TargetSetupAndLeadInput = ({
         </Flex>
       )}
     </Flex>
+  );
+};
+
+export const Wild3TargetSetupAndLeadInputStandalone = ({
+  permitEnablingDebugOptions,
+}: {
+  permitEnablingDebugOptions: boolean;
+}) => {
+  return (
+    <Wild3TargetSetupAndLeadInput
+      setTargetSetup={() => {}}
+      leadCycleSpeed={AVERAGE_LEAD_CYCLE_SPEED}
+      setLeadCycleSpeed={() => {}}
+      displayInstructions={false}
+      permitEnablingDebugOptions={permitEnablingDebugOptions}
+      displayLeadCycleSpdButton={false}
+    />
   );
 };

@@ -118,15 +118,11 @@ export const Wild3LeadCycleSpeedSelector = ({
     setLeadCycleSpeed(leadCycleSpeedProp ?? null);
   }, [leadCycleSpeedProp]);
 
-  const updateResults = React.useCallback(async () => {
+  React.useEffect(() => {
     setupToDistributions(targetSetup, leadCycleSpeed ?? 0).then(
       setDistributions,
     );
   }, [leadCycleSpeed, targetSetup]);
-
-  React.useEffect(() => {
-    updateResults();
-  }, [leadCycleSpeed, updateResults]);
 
   const fields: Field[] =
     targetSetup.lead === "Egg"
@@ -186,12 +182,12 @@ export const Wild3LeadCycleSpeedSelectorWithBtn = ({
   permitEnablingDebugOptions,
   setLeadCycleSpeed,
   leadCycleSpeed,
-  displayLeadCycleSpdButton,
+  initialDisplayLeadCycleSpdButton,
 }: Props & {
-  displayLeadCycleSpdButton: boolean;
+  initialDisplayLeadCycleSpdButton: boolean;
 }) => {
   const [displayLeadCycleSpeed, setDisplayLeadCycleSpeed] =
-    React.useState<boolean>(!displayLeadCycleSpdButton);
+    React.useState<boolean>(!initialDisplayLeadCycleSpdButton);
 
   return (
     <Flex vertical gap={20}>

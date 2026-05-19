@@ -21,6 +21,7 @@ import { emeraldWildGameData } from "./wild3CalibCaughtMon";
 import { FlattenIvs } from "~/rngToolsUi/shared/ivColumns";
 import { lcrng_distance } from "~/utils/lcrng";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
+import sortBy from "lodash-es/sortBy";
 
 export type UiResult = FlattenIvs<
   Wild3SearcherResultMon & {
@@ -48,21 +49,10 @@ const convertSearcherResultToUIResult = (
 const convertSearcherResultsToUIResults = (
   results: Wild3MethodDistributionResult[],
 ) => {
-  return results
-    .map((res) => convertSearcherResultToUIResult(res))
-    .sort((lhs, rhs) => {
-      const startDiff =
-        (lhs.pre_sweet_scent_cycle_ranges[0]?.start ?? -1) -
-        (rhs.pre_sweet_scent_cycle_ranges[0]?.start ?? -1);
-
-      if (startDiff !== 0) {
-        return startDiff;
-      }
-      return (
-        (lhs.pre_sweet_scent_cycle_ranges[0]?.len ?? 0) -
-        (rhs.pre_sweet_scent_cycle_ranges[0]?.len ?? 0)
-      );
-    });
+  return sortBy(results.map(convertSearcherResultToUIResult), [
+    (el) => el.pre_sweet_scent_cycle_ranges[0]?.start ?? -1,
+    (el) => el.pre_sweet_scent_cycle_ranges[0]?.len ?? 0,
+  ]);
 };
 
 export type Wild3Distributions = {

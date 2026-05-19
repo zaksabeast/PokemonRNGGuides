@@ -8,12 +8,12 @@ import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 
 type Props = {
-  setTargetSetup: (targetSetup: TargetSetup) => void;
-  setLeadCycleSpeed: (spd: number) => void;
+  setTargetSetup?: (targetSetup: TargetSetup) => void;
+  setLeadCycleSpeed?: (spd: number) => void;
   leadCycleSpeed: number;
   displayInstructions: boolean;
   permitEnablingDebugOptions: boolean;
-  displayLeadCycleSpdButton: boolean;
+  initialDisplayLeadCycleSpdButton: boolean;
 };
 
 export const Wild3TargetSetupAndLeadInput = ({
@@ -22,7 +22,7 @@ export const Wild3TargetSetupAndLeadInput = ({
   leadCycleSpeed: leadCycleSpeedProp,
   displayInstructions,
   permitEnablingDebugOptions,
-  displayLeadCycleSpdButton,
+  initialDisplayLeadCycleSpdButton,
 }: Props) => {
   const [targetSetup, setTargetSetup] = React.useState<TargetSetup | null>(
     null,
@@ -55,7 +55,7 @@ export const Wild3TargetSetupAndLeadInput = ({
 
   const setLeadCycleSpeedBoth = (spd: number) => {
     setLeadCycleSpeed(spd);
-    setLeadCycleSpeedProp(spd);
+    setLeadCycleSpeedProp?.(spd);
   };
 
   return (
@@ -77,7 +77,7 @@ export const Wild3TargetSetupAndLeadInput = ({
             permitEnablingDebugOptions={permitEnablingDebugOptions}
             setLeadCycleSpeed={setLeadCycleSpeedBoth}
             leadCycleSpeed={leadCycleSpeed}
-            displayLeadCycleSpdButton={displayLeadCycleSpdButton}
+            initialDisplayLeadCycleSpdButton={initialDisplayLeadCycleSpdButton}
           />
         </Flex>
       )}
@@ -92,12 +92,10 @@ export const Wild3TargetSetupAndLeadInputStandalone = ({
 }) => {
   return (
     <Wild3TargetSetupAndLeadInput
-      setTargetSetup={() => {}}
       leadCycleSpeed={AVERAGE_LEAD_CYCLE_SPEED}
-      setLeadCycleSpeed={() => {}}
       displayInstructions={false}
       permitEnablingDebugOptions={permitEnablingDebugOptions}
-      displayLeadCycleSpdButton={false}
+      initialDisplayLeadCycleSpdButton={false}
     />
   );
 };

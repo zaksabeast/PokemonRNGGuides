@@ -350,7 +350,7 @@ export const Wild3TargetSetupSearcher = ({
           permitEnablingDebugOptions={false}
           setLeadCycleSpeed={setLeadCycleSpeedBoth}
           leadCycleSpeed={leadCycleSpeed}
-          displayLeadCycleSpdButton={!rngManipulatedLeadPid}
+          initialDisplayLeadCycleSpdButton={!rngManipulatedLeadPid}
         />
       )}
     </>

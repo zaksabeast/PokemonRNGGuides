@@ -64,6 +64,9 @@ Possible user flows (documentation for testing):
  - Case 14) Skip step 1 & 2.
       Same as case 12, but select the ideal lead cycle speed in step 1.
       In step 3: the Lead cycle speed displayed is ~603. Likelihood is ~96.6%.
+ - Case 15) Skip step 1 & 2.
+      Same as case 12, but select the egg lead setup (target method wild1) in step 1.
+      Lead cycle speed is unchangeable.
 */
 
 /*

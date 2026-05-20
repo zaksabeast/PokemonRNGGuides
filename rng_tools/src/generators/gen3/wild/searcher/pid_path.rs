@@ -298,11 +298,13 @@ pub(super) fn get_limited_valid_pids_for_cycle_speed_filter(
     }
 }
 
-pub fn extend_iv_path_to_pid_paths<const METHOD3: bool>(
+pub fn extend_iv_path_to_pid_paths<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     iv_path: IvPath,
 ) -> ArrayVec<PidPath, 3> {
+    //NO_PROD consider METHODS
     let mut pid_paths: ArrayVec<PidPath, 3> = Default::default();
+    //NO_PROD filter
     if let Some(no_vblank_pid_path) = extend_iv_path_to_pid_path_no_vblank(opts, iv_path) {
         pid_paths.push(no_vblank_pid_path);
     }
@@ -317,10 +319,6 @@ pub fn extend_iv_path_to_pid_paths<const METHOD3: bool>(
         }
     }
 
-    // To improve performance for the common case, we previously assumed that consider_all_methods_124 was true. We need to filter here.
-    if !opts.consider_all_methods_124 {
-        pid_paths.retain(|pid_path| opts.methods.contains(&pid_path.method()));
-    }
     pid_paths
 }
 

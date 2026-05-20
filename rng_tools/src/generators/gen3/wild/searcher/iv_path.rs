@@ -72,14 +72,15 @@ pub fn reverse_find_iv_paths_from_ivs(
                 iv_arc: IvFromStartArc::WithoutVBlank,
             }),
     );
-    iv_paths.extend(
+    /*iv_paths.extend(
         reverse_find_iv1_seeds_from_ivs_values_with_vblank(hp, atk, def, spa, spd, spe)
             .iter()
             .map(|seed| IvPath {
                 seed: *seed,
                 iv_arc: IvFromStartArc::WithVBlank,
             }),
-    );
+    );*/
+    //NO_PROD
     iv_paths
 }
 
@@ -251,12 +252,13 @@ pub fn find_iv_paths_from_iv1_seed(
             iv_arc: IvFromStartArc::WithoutVBlank,
         });
     }
-    if wild4_good {
+    /*if wild4_good {
         iv_paths.push(IvPath {
             seed: rng.seed(),
             iv_arc: IvFromStartArc::WithVBlank,
         });
-    }
+    }*/
+    //NO_PROD
     Some(iv_paths)
 }
 
@@ -282,12 +284,13 @@ pub fn find_iv_paths_from_iv2_seed(
     }
 
     let mut iv_paths: ArrayVec<IvPath, 2> = Default::default();
-    if wild4_good {
+    /*if wild4_good {
         iv_paths.push(IvPath {
             seed: rng.seed(),
             iv_arc: IvFromStartArc::WithVBlank,
         });
-    }
+    }*/
+ //NO_PROD
     if wild1235_good {
         rng.rand::<u16>();
         iv_paths.push(IvPath {

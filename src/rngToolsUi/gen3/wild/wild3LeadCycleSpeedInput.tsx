@@ -1,5 +1,4 @@
 import { rngTools } from "~/rngTools";
-import { useFormContext } from "~/hooks/form";
 import { FormFieldTable, NumberInput, RadioGroup } from "~/components";
 import { match } from "ts-pattern";
 import React from "react";
@@ -23,6 +22,7 @@ const leadSpeedTypes = [
   "Custom",
 ] as const satisfies readonly LeadSpeedType[];
 
+export const FASTEST_LEAD_CYCLE_SPEED = 18;
 export const AVERAGE_LEAD_CYCLE_SPEED = 775;
 export const SLOWEST_LEAD_CYCLE_SPEED = 900;
 
@@ -33,7 +33,7 @@ const calculateLeadCycleSpeed = async (
   idealLeadCycleSpeed: number | null,
 ) => {
   return match(leadSpeedType)
-    .with("Fastest", () => 18)
+    .with("Fastest", () => FASTEST_LEAD_CYCLE_SPEED)
     .with("Slowest", () => SLOWEST_LEAD_CYCLE_SPEED)
     .with("Average", () => AVERAGE_LEAD_CYCLE_SPEED)
     .with("Custom", () => leadCycleSpeedCustom)
@@ -42,19 +42,20 @@ const calculateLeadCycleSpeed = async (
     .exhaustive();
 };
 
-export const LeadCycleSpeedSelector = ({
+export const Wild3LeadCycleSpeedInput = ({
   idealLeadCycleSpeed,
+  leadCycleSpeed,
+  setLeadCycleSpeed,
 }: {
   idealLeadCycleSpeed: number | null;
+  leadCycleSpeed: number;
+  setLeadCycleSpeed?: (leadCycleSpeed: number) => void;
 }) => {
-  const { setFieldValue } = useFormContext<{
-    leadCycleSpeed: number;
-  }>();
   const [leadSpeedType, setLeadSpeedType] =
     React.useState<LeadSpeedType>("Average");
   const [leadCycleSpeedCustom, setLeadCycleSpeedCustom] = React.useState<
     number | null
-  >(AVERAGE_LEAD_CYCLE_SPEED);
+  >(leadCycleSpeed);
   const [leadPID, setLeadPID] = React.useState<number | null>(0);
 
   const [computedLeadCycleSpeed, setComputedLeadCycleSpeed] =
@@ -68,7 +69,7 @@ export const LeadCycleSpeedSelector = ({
       idealLeadCycleSpeed,
     ).then((val) => {
       setComputedLeadCycleSpeed(val);
-      setFieldValue("leadCycleSpeed", val);
+      setLeadCycleSpeed?.(val);
     });
   }, [
     idealLeadCycleSpeed,
@@ -76,7 +77,7 @@ export const LeadCycleSpeedSelector = ({
     leadPID,
     leadSpeedType,
     setComputedLeadCycleSpeed,
-    setFieldValue,
+    setLeadCycleSpeed,
   ]);
 
   const fields = [

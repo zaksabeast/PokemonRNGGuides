@@ -1,9 +1,9 @@
 import { atomWithPersistence, useAtom } from "~/state/localStorage";
-import { TargetSetup } from "./wild3CalibTargetSetupInput";
+import { TargetSetup } from "./wild3TargetSetupInput";
 import { useHydrate } from "~/hooks/useHydrate";
 import { Skeleton } from "antd";
 import { EmeraldPaintingReseeding } from "../paintingReseeding/paintingReseeding";
-import { Wild3SearcherFindTarget } from "./wild3FindTarget";
+import { Wild3TargetSetupSearcher } from "./wild3TargetSetupSearcher";
 import { hydrationLock } from "~/utils/hydration";
 import z from "zod";
 import { Flex } from "~/components/flex";
@@ -20,6 +20,7 @@ import {
 } from "./utils";
 import { gen3Methods } from "~/types";
 import { pokeblockSchema } from "~/types/pokeblock";
+import { AVERAGE_LEAD_CYCLE_SPEED } from "./wild3LeadCycleSpeedInput";
 
 /*
 Possible user flows (documentation for testing): 
@@ -50,9 +51,62 @@ Possible user flows (documentation for testing):
  - Case 10) Skip Step 1. Step 2: Painting. Can create and update battle video. Step 3: Must provide target and battle video info.
  - Case 11) Skip Step 1 & 2. Step 3: Must provide target and battle video info.
       Route 116, Sweet Scent, Ordinary Lead, Custom speed 100, advs 2,582 | ~19,887, wild1 (Abra, Lvl 7, Male, Synchronize, Modest, HP 22, ATK 8, DEF 9, SPA 23, SPD 14, SPE 19)
+ - Case 12) Calibrate lead cycle speed with default value from step 1
+      Step1: Abra, no filter, adv 1005, Wild4, vanilla lead. (Abra, Lvl 7, Male, InnerFocus, Lonely, HP 21, ATK 8, DEF 7, SPA 20, SPD 14, SPE 17)
+        Don't select a particular lead cycle speed.
+      Step2: Skip.
+      Step3: Expected: Displayed "Lead cycle speed" is Average. Likelihood is ~50.8%.
+             Wild2 target adv: Abra, Lvl 7, Male, InnerFocus, Lonely, HP 21, ATK 8, DEF 8, SPA 20, SPD 14, SPE 17
+             Change lead cycle speed for ideal.
+ - Case 13) Calibrate lead with specified lead cycle speed from step 1 
+      Same as case 12, but select the ideal lead cycle speed in step 1.
+      In step 3: the Lead cycle speed displayed is ~603. Likelihood is ~96.6%.
+ - Case 14) Skip step 1 & 2.
+      Same as case 12, but select the ideal lead cycle speed in step 1.
+      In step 3: the Lead cycle speed displayed is ~603. Likelihood is ~96.6%.
+ - Case 15) Skip step 1 & 2.
+      Same as case 12, but select the egg lead setup (target method wild1) in step 1.
+      Lead cycle speed is unchangeable.
 */
 
-const TargetSetupAtomSchema = z.object({
+/*
+ ===Components overview ===
+
+Utilities:
+  - Wild3TargetSetupInput
+      display: fields to manually indicate setup
+      output = TargetSetup
+  - Wild3LeadCycleSpeedSelector
+      input = target setup
+      display likelihood by lead cycle speed
+      output = lead cycle speed
+  - Wild3TargetSetupAndLeadInput
+      Wild3TargetSetupInput + Wild3LeadCycleSpeedSelector
+  - EmeraldPaintingReseeding 
+      input = target advance
+      output = battle video
+  - Wild3CalibCaughtMon
+      input = target setup
+      displays fields to specify caught pokemon
+      output = hit advance
+       
+All-in-one Wild webtool:
+  Wild3: Root for steps 1,2,3
+
+  Step-1: Wild3TargetSetupSearcher
+      display: fields to search for target pokemon
+      output = TargetSetup + LeadCycleSpeed
+      equivalent to Wild3TargetSetupAndLeadInput
+
+  Step-2: EmeraldPaintingReseeding
+
+  Step-3: Wild3Calib
+    display: Wild3CalibCaughtMon + Wild3LeadCycleSpeedSelector
+             if target setup was skipped, displays Wild3TargetSetupInput
+    
+*/
+
+const targetSetupAtomSchema = z.object({
   targetSetup: z
     .object({
       map: z.string(),
@@ -66,8 +120,6 @@ const TargetSetupAtomSchema = z.object({
         after: z.number().int().min(0).max(0xffffffff),
       }),
       targetMethod: z.enum(gen3Methods),
-      usingAverageLeadCycleSpeed: z.boolean(),
-      leadCycleSpeed: z.number().int().min(0).max(900),
       requiresWhiteFlute: z.boolean(),
       safariPokeblock: pokeblockSchema,
     })
@@ -76,8 +128,18 @@ const TargetSetupAtomSchema = z.object({
 
 const targetSetupAtom = atomWithPersistence(
   "emerald_wild_targetSetup",
-  TargetSetupAtomSchema,
+  targetSetupAtomSchema,
   { targetSetup: null },
+);
+
+const leadCycleSpeedAtomSchema = z.object({
+  leadCycleSpeed: z.number().int().min(0).max(900),
+});
+
+const leadCycleSpeedAtom = atomWithPersistence(
+  "emerald_wild_leadCycleSpeed",
+  leadCycleSpeedAtomSchema,
+  { leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED },
 );
 
 const battleVideoInfoAtom = atomWithPersistence(
@@ -100,14 +162,15 @@ const battleVideoInfoAtom = atomWithPersistence(
 );
 
 export const useTargetSetup = () => useAtom(targetSetupAtom);
+export const useLeadCycleSpeed = () => useAtom(leadCycleSpeedAtom);
 export const useBattleVideoInfo = () => useAtom(battleVideoInfoAtom);
 
-// Step 1: Vanilla Wild3SearcherFindTarget
-export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
-  const [step, setStep] = useCurrentStep();
+// Step 1: Vanilla Wild3TargetSetupSearcher
+export const Wild3TargetSetupSearcher_WithSetTargetSetup = () => {
   const [targetSetup, setTargetSetup] = useTargetSetup();
   const { hydrated } = useHydrate(targetSetup);
 
+  const [, setLeadCycleSpeed] = useLeadCycleSpeed();
   const [, setBattleVideoInfo] = useBattleVideoInfo();
 
   if (!hydrated) {
@@ -120,15 +183,37 @@ export const Wild3SearcherFindTarget_WithSetTargetSetup = () => {
         targetSetup,
       }),
     );
+    setLeadCycleSpeed(
+      hydrationLock({
+        leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+      }),
+    );
     setBattleVideoInfo(
       hydrationLock({
         battleVideoInfo: null,
       }),
     );
-    setStep(step + 1);
   };
 
-  return <Wild3SearcherFindTarget setTargetSetup={handleSetTargetSetup} />;
+  const handleSetLeadCycleSpeed = (leadCycleSpeed: number) => {
+    setLeadCycleSpeed(
+      hydrationLock({
+        leadCycleSpeed,
+      }),
+    );
+    setBattleVideoInfo(
+      hydrationLock({
+        battleVideoInfo: null,
+      }),
+    );
+  };
+
+  return (
+    <Wild3TargetSetupSearcher
+      setTargetSetup={handleSetTargetSetup}
+      setLeadCycleSpeed={handleSetLeadCycleSpeed}
+    />
+  );
 };
 
 /** Step 2: Painting + Battle Video
@@ -194,14 +279,21 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
   const [targetSetupLock, setTargetSetup] = useTargetSetup();
   const targetSetupHydrate = useHydrate(targetSetupLock);
 
-  const [battleVideoAdvAfterPainting, setBattleVideoInfo] =
-    useBattleVideoInfo();
-  const battleVideoHydrate = useHydrate(battleVideoAdvAfterPainting);
+  const [leadCycleSpeedLock, setLeadCycleSpeed] = useLeadCycleSpeed();
+  const leadCycleSpeedHydrate = useHydrate(leadCycleSpeedLock);
 
-  if (!targetSetupHydrate.hydrated || !battleVideoHydrate.hydrated) {
+  const [battleVideoInfoLock, setBattleVideoInfo] = useBattleVideoInfo();
+  const battleVideoHydrate = useHydrate(battleVideoInfoLock);
+
+  if (
+    !targetSetupHydrate.hydrated ||
+    !leadCycleSpeedHydrate.hydrated ||
+    !battleVideoHydrate.hydrated
+  ) {
     return <Skeleton />;
   }
   const { targetSetup } = targetSetupHydrate.client;
+  const { leadCycleSpeed } = leadCycleSpeedHydrate.client;
   const { battleVideoInfo } = battleVideoHydrate.client;
 
   // To simplify the code, Wild3Calib is not adapted to support battle video info without target setup.
@@ -233,6 +325,11 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
         targetSetup: null,
       }),
     );
+    setLeadCycleSpeed(
+      hydrationLock({
+        leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
+      }),
+    );
     setBattleVideoInfo(
       hydrationLock({
         battleVideoInfo: null,
@@ -243,6 +340,7 @@ export const Wild3Calib_WithTargetSetupAndBattleVideo = () => {
   return (
     <Wild3Calib
       targetSetup={targetSetup}
+      leadCycleSpeed={leadCycleSpeed}
       battleVideoInfo={battleVideoInfoWithFallback}
       clearAll={clearAll}
       displayInstructions

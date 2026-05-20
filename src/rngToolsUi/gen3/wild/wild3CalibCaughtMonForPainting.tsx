@@ -6,7 +6,7 @@ import { Button } from "~/components/button";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { createAllStats0 } from "~/types";
 import { Nature, rngTools, Species } from "~/rngTools";
-import type { TargetSetup } from "./wild3CalibTargetSetupInput";
+import type { TargetSetup } from "./wild3TargetSetupInput";
 import clamp from "lodash-es/clamp";
 import { Tooltip } from "antd";
 import { getGen3IvRating } from "../ivRater";
@@ -45,8 +45,6 @@ const createTargetSetupAtVictoryRoad = (targetPaintingAdvs: {
     lead: "Egg",
     targetPaintingAdvs,
     targetMethod: "Wild1", // Unused
-    usingAverageLeadCycleSpeed: false,
-    leadCycleSpeed: 0,
     requiresWhiteFlute: false, // Unused
     safariPokeblock: null,
   };
@@ -57,7 +55,12 @@ const PAINTING_CONFIDENCE_RANGE = 600; // We assume the player hits its target a
 let nextUid = 0;
 
 const searchCaughtMon = async (values: FormState, targetSetup: TargetSetup) => {
-  const opts = await createWild3SearcherOptions(values, targetSetup);
+  const leadCycleSpeed = 0; // Egg lead.
+  const opts = await createWild3SearcherOptions(
+    values,
+    targetSetup,
+    leadCycleSpeed,
+  );
 
   if (opts == null) {
     return [];

@@ -6,6 +6,7 @@ import {
   Wild3MassOutbreakState,
   Gen3Lead,
 } from "~/rngTools";
+import { lcrng_distance } from "~/utils/lcrng";
 import {
   Field,
   FormikNumberInput,
@@ -37,17 +38,11 @@ import {
 import { useWatch } from "react-hook-form";
 import { getWild3EmeraldGameData } from "./data/wild3GameData";
 import { getPossibleValuesForMap } from "./dataUtils";
-import {
-  AVERAGE_LEAD_CYCLE_SPEED,
-  LeadCycleSpeedSelector,
-} from "./leadCycleSpeedSelector";
 import { calculateTargetSetupResult } from "./calculateTargetSetupResult";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
-import {
-  leadCycleSpeedTooltip,
-  usingPaintingReseedingLabel as usingPaintingReseedingLabel,
-} from "./wild3Labels";
+import { usingPaintingReseedingLabel } from "./wild3Labels";
 import { Pokeblock, pokeblockSchema } from "~/types/pokeblock";
+import { formatLargeInteger } from "~/utils/formatLargeInteger";
 
 const emeraldWildGameData = getWild3EmeraldGameData();
 
@@ -72,9 +67,6 @@ const Validator = z.object({
   targetMethod: z.enum(supportedGen3Methods),
   targetAdvance: z.number().int().min(0).max(0xffffffff),
   requiresWhiteFlute: z.boolean(),
-
-  usingAverageLeadCycleSpeed: z.boolean(),
-  leadCycleSpeed: z.number().int().min(0).max(900),
   safariPokeblock: pokeblockSchema,
 });
 
@@ -91,8 +83,6 @@ export type TargetSetup = {
   lead: Gen3Lead;
   targetPaintingAdvs: { before: number; after: number };
   targetMethod: Gen3Method;
-  usingAverageLeadCycleSpeed: boolean;
-  leadCycleSpeed: number;
   requiresWhiteFlute: boolean;
   safariPokeblock: Pokeblock | null;
 };
@@ -113,8 +103,6 @@ const getInitialValues = (): FormState => {
     targetAdvance: 1000,
     targetMethod: "Wild1",
     requiresWhiteFlute: false,
-    usingAverageLeadCycleSpeed: true,
-    leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
     safariPokeblock: null,
   };
 };
@@ -136,8 +124,6 @@ const convertFormStateValuesToTargetSetup = (
       after: values.targetAdvance,
     },
     targetMethod: values.targetMethod,
-    usingAverageLeadCycleSpeed: values.usingAverageLeadCycleSpeed,
-    leadCycleSpeed: values.leadCycleSpeed,
     requiresWhiteFlute:
       values.action === "RockSmash" && values.requiresWhiteFlute,
     safariPokeblock: values.safariPokeblock,
@@ -148,14 +134,12 @@ const getFields = ({
   mapId,
   action,
   usingPaintingReseeding,
-  leadIdx,
-  usingAverageLeadCycleSpeed,
+  equivalentInitialAdvs,
 }: {
   mapId: string;
   action: Wild3Action;
   usingPaintingReseeding: boolean;
-  leadIdx: number;
-  usingAverageLeadCycleSpeed: boolean;
+  equivalentInitialAdvs: number;
 }): Field[] => {
   const {
     actions,
@@ -212,18 +196,6 @@ const getFields = ({
       ),
     },
     {
-      label: "Using lead with average cycle speed PID?",
-      ...leadCycleSpeedTooltip(),
-      input: <FormikSwitch<FormState> name="usingAverageLeadCycleSpeed" />,
-      show: gen3Leads[leadIdx] !== "Egg",
-    },
-    {
-      label: "Lead Cycle Speed",
-      input: <LeadCycleSpeedSelector idealLeadCycleSpeed={null} />,
-      show: gen3Leads[leadIdx] !== "Egg" && !usingAverageLeadCycleSpeed,
-      indent: 1,
-    },
-    {
       ...usingPaintingReseedingLabel(),
       input: <FormikSwitch<FormState> name="usingPaintingReseeding" />,
     },
@@ -251,6 +223,18 @@ const getFields = ({
       input: (
         <FormikNumberInput<FormState> name="targetAdvance" numType="decimal" />
       ),
+    },
+    {
+      label: "",
+      key: "Equivalent to Advances",
+      show: usingPaintingReseeding,
+      input: (
+        <>
+          Equivalent to Advances = {formatLargeInteger(equivalentInitialAdvs)}{" "}
+          without painting reseeding
+        </>
+      ),
+      indent: 1,
     },
     {
       label: "Feebas state",
@@ -286,10 +270,18 @@ const getFields = ({
   return fields;
 };
 
-export const Wild3CalibTargetSetupInputFields = () => {
+export const Wild3TargetSetupInputFields = ({
+  setTargetSetup,
+}: {
+  setTargetSetup: (targetSetup: TargetSetup | null) => void;
+}) => {
   const { setFieldValue } = useFormContext<FormState>();
   const map = useWatch<FormState, "map">({ name: "map" });
   const action = useWatch<FormState, "action">({ name: "action" });
+  const leadIdx = useWatch<FormState, "leadIdx">({ name: "leadIdx" });
+  const targetMethod = useWatch<FormState, "targetMethod">({
+    name: "targetMethod",
+  });
   const feebasState = useWatch<FormState, "feebasState">({
     name: "feebasState",
   });
@@ -302,55 +294,50 @@ export const Wild3CalibTargetSetupInputFields = () => {
   const usingPaintingReseeding = useWatch<FormState, "usingPaintingReseeding">({
     name: "usingPaintingReseeding",
   });
-  const leadIdx = useWatch<FormState, "leadIdx">({
-    name: "leadIdx",
-  });
-  const usingAverageLeadCycleSpeed = useWatch<
+  const targetFrameBeforePainting = useWatch<
     FormState,
-    "usingAverageLeadCycleSpeed"
-  >({ name: "usingAverageLeadCycleSpeed" });
+    "targetFrameBeforePainting"
+  >({
+    name: "targetFrameBeforePainting",
+  });
+  const targetAdvance = useWatch<FormState, "targetAdvance">({
+    name: "targetAdvance",
+  });
+
+  const equivalentInitialAdvs =
+    lcrng_distance(0, targetFrameBeforePainting) + targetAdvance;
 
   const fields = getFields({
     mapId: map,
     action,
     usingPaintingReseeding,
-    leadIdx,
-    usingAverageLeadCycleSpeed,
+    equivalentInitialAdvs,
   });
 
   React.useEffect(() => {
-    const { actions, feebas_states, mass_outbreak_states, roamer_states } =
-      getPossibleValuesForMap(map, action);
-    if (actions.length > 0 && actions.includes(action) === false) {
-      setFieldValue("action", actions[0]);
-    }
-    if (
-      feebas_states.length > 0 &&
-      feebas_states.includes(feebasState) === false
-    ) {
-      setFieldValue("feebasState", feebas_states[0]);
-    }
-    if (
-      mass_outbreak_states.length > 0 &&
-      mass_outbreak_states.includes(massOutbreakState) === false
-    ) {
-      setFieldValue("massOutbreakState", mass_outbreak_states[0]);
-    }
-    if (
-      roamer_states.length > 0 &&
-      roamer_states.includes(roamerState) === false
-    ) {
-      setFieldValue("roamerState", roamer_states[0]);
-    }
-  }, [map, action, feebasState, massOutbreakState, roamerState, setFieldValue]);
+    setTargetSetup(null);
+  }, [
+    map,
+    action,
+    feebasState,
+    massOutbreakState,
+    roamerState,
+    setFieldValue,
+    setTargetSetup,
+    leadIdx,
+    targetMethod,
+    targetAdvance,
+    targetFrameBeforePainting,
+    usingPaintingReseeding,
+  ]);
 
   return <FormFieldTable fields={fields} />;
 };
 
-export const Wild3CalibTargetSetupInput = ({ setTargetSetup }: Props) => {
+export const Wild3TargetSetupInput = ({ setTargetSetup }: Props) => {
   const onSubmit: RngToolSubmit<FormState> = async (values) => {
     const targetSetup = convertFormStateValuesToTargetSetup(values);
-    const { content } = await calculateTargetSetupResult(targetSetup);
+    const { content } = await calculateTargetSetupResult(targetSetup, null);
     setTargetSetup(content == null ? null : targetSetup);
   };
 
@@ -365,7 +352,7 @@ export const Wild3CalibTargetSetupInput = ({ setTargetSetup }: Props) => {
       rowKey="uid"
       submitButtonLabel="Calculate Target"
     >
-      <Wild3CalibTargetSetupInputFields />
+      <Wild3TargetSetupInputFields setTargetSetup={setTargetSetup} />
     </RngToolForm>
   );
 };

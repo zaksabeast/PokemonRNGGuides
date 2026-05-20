@@ -1,12 +1,5 @@
 import { Wild3SearcherCycleData, Gen3Method } from "~/rngTools";
-import {
-  ResultColumn,
-  ResultTable,
-  Icon,
-  Link,
-  Button,
-  Flex,
-} from "~/components";
+import { ResultColumn, ResultTable, Icon, Link, Flex } from "~/components";
 import { formatLargeInteger } from "~/utils/formatLargeInteger";
 import { formatProbability } from "~/utils/formatProbability";
 import React from "react";
@@ -17,14 +10,9 @@ import { Tooltip } from "antd";
 import { formatLeadName, formatMassOutbreakStateName } from "./utils";
 import { formatDuration } from "~/utils/formatDuration";
 import { formatHex } from "~/utils/formatHex";
-import { PidPathResult, ResultSetupInfo } from "./wild3FindTarget";
-import {
-  Props as DistributionProps,
-  Wild3MethodDistribution,
-} from "./wild3MethodDistribution";
+import { PidPathResult, ResultSetupInfo } from "./wild3TargetSetupSearcher";
 import { GBA_FPS } from "~/utils/consts";
-import { TargetSetup } from "./wild3CalibTargetSetupInput";
-import { AVERAGE_LEAD_CYCLE_SPEED } from "./leadCycleSpeedSelector";
+import { TargetSetup } from "./wild3TargetSetupInput";
 import { Wild3PokeblockDescription } from "~/components/wild3Pokeblock";
 
 const getMethodLikelihoodColumValue = (
@@ -51,14 +39,12 @@ const getResultSetupInfoColumns = ({
   showRequiredPokeblock,
   showRequiresWhiteFlute,
   usesPainting,
-  onBreakdownClick,
 }: {
   rngManipulatedLeadPid: boolean;
   showMassOutbreak: boolean;
   showRequiredPokeblock: boolean;
   showRequiresWhiteFlute: boolean;
   usesPainting: boolean;
-  onBreakdownClick: (record: ResultSetupInfo) => void;
 }): ResultColumn<ResultSetupInfo>[] => {
   const columns: ResultColumn<ResultSetupInfo>[] = [];
   if (!usesPainting) {
@@ -176,27 +162,6 @@ const getResultSetupInfoColumns = ({
     },
   );
 
-  const breakdownBtn = (
-    btnContent: {
-      content: React.ReactNode;
-      tooltip: string;
-    },
-    values: ResultSetupInfo,
-  ) => (
-    <Tooltip title={btnContent.tooltip}>
-      <Button
-        type="text"
-        color="PrimaryText"
-        trackerId="wild3_likelihood_breakdown"
-        onClick={() => {
-          onBreakdownClick(values);
-        }}
-      >
-        {btnContent.content}
-      </Button>
-    </Tooltip>
-  );
-
   const tooltipHelper = (btnContent: {
     content: React.ReactNode;
     tooltip: string;
@@ -252,18 +217,15 @@ const getResultSetupInfoColumns = ({
           text === "100%" && values.lead === "Egg" && values.method === "Wild1";
         const title = `Method ${values.method}${isVeryReliableSetup ? " (Very reliable setup)" : ""}`;
 
-        return breakdownBtn(
-          {
-            content: (
-              <Flex align="center" gap={4}>
-                {text}
-                {isVeryReliableSetup && <Icon name="Star" />}
-              </Flex>
-            ),
-            tooltip: title,
-          },
-          values,
-        );
+        return tooltipHelper({
+          content: (
+            <Flex align="center" gap={4}>
+              {text}
+              {isVeryReliableSetup && <Icon name="Star" />}
+            </Flex>
+          ),
+          tooltip: title,
+        });
       },
     });
   }
@@ -325,12 +287,11 @@ const getResultSetupInfoColumns = ({
               if (cycle_data_by_lead === undefined) {
                 return "";
               }
-              return breakdownBtn(
+              return tooltipHelper(
                 getMethodLikelihoodColumValue(
                   cycle_data_by_lead.ideal_lead,
                   values.method,
                 ),
-                values,
               );
             },
           },
@@ -395,36 +356,8 @@ const getResultSetupInfoColumns = ({
   return columns;
 };
 
-const resultSetupInfoToDistributionFixedData = (
-  setup: ResultSetupInfo,
-  rngManipulatedLeadPid: boolean,
-): DistributionProps["fixedData"] => {
-  const idealLeadCycleSpeed =
-    setup.cycle_data_by_lead?.ideal_lead.lead_pid_cycle_count ?? 0;
-
-  return {
-    map: setup.mapId,
-    action: setup.action,
-    advance: setup.advance,
-    tid: 0,
-    sid: 0,
-    lead: setup.lead,
-    roamerState: setup.roamer_state,
-    feebasState: setup.feebas_state,
-    massOutbreakState: setup.mass_outbreak_state,
-    initial_seed: setup.initial_seed,
-    painting_advs: setup.advs.frame_before_painting === 0 ? null : setup.advs,
-    wantedMethod: setup.method,
-    wantedPID: setup.pid,
-    idealLeadCycleSpeed,
-    usingIdealLeadCycleSpeed: rngManipulatedLeadPid,
-    usingWhiteFlute: setup.requiresWhiteFlute,
-    safariPokeblock: setup.used_safari_pokeblock ?? null,
-  };
-};
-
 type Props = {
-  selectedPidPathResult: PidPathResult | null;
+  selectedPidPathResult: PidPathResult;
   rngManipulatedLeadPid: boolean;
   setTargetSetup: (targetSetup: TargetSetup) => void;
 };
@@ -444,10 +377,6 @@ const setupInfoToTargetSetup = (setupInfo: ResultSetupInfo): TargetSetup => {
     lead: setupInfo.lead,
     requiresWhiteFlute: setupInfo.requiresWhiteFlute,
     safariPokeblock: setupInfo.used_safari_pokeblock ?? null,
-
-    // unused
-    usingAverageLeadCycleSpeed: true,
-    leadCycleSpeed: AVERAGE_LEAD_CYCLE_SPEED,
   };
 };
 
@@ -456,21 +385,19 @@ export const Wild3ResultSetupInfos = ({
   selectedPidPathResult,
   rngManipulatedLeadPid,
 }: Props) => {
-  const showMassOutbreak =
-    selectedPidPathResult != null &&
-    selectedPidPathResult.resultSetupInfos.some(
-      (setup) => setup.mass_outbreak_state !== "Inactive",
-    );
+  const showMassOutbreak = selectedPidPathResult.resultSetupInfos.some(
+    (setup) => setup.mass_outbreak_state !== "Inactive",
+  );
   const showRequiresWhiteFlute =
-    selectedPidPathResult?.resultSetupInfos.some(
+    selectedPidPathResult.resultSetupInfos.some(
       (setup) => setup.action === "RockSmash",
     ) ?? false;
   const showRequiredPokeblock =
-    selectedPidPathResult?.resultSetupInfos.some(
+    selectedPidPathResult.resultSetupInfos.some(
       (setup) => setup.requiredPokeblock != null,
     ) ?? false;
   const usesPainting =
-    selectedPidPathResult?.resultSetupInfos.some(
+    selectedPidPathResult.resultSetupInfos.some(
       (res) => res.advs.frame_before_painting !== 0,
     ) ?? false;
   const resultSetupInfoColumns = getResultSetupInfoColumns({
@@ -479,49 +406,21 @@ export const Wild3ResultSetupInfos = ({
     showRequiredPokeblock,
     showRequiresWhiteFlute,
     usesPainting,
-    onBreakdownClick: (record) => {
-      setDistributionFixedData(
-        resultSetupInfoToDistributionFixedData(record, rngManipulatedLeadPid),
-      );
-    },
   });
 
-  const [distributionFixedData, setDistributionFixedData] = React.useState<
-    DistributionProps["fixedData"] | null
-  >(null);
-
-  React.useEffect(() => {
-    setDistributionFixedData(null);
-  }, [selectedPidPathResult]);
-
-  if (selectedPidPathResult == null) {
-    return null;
-  }
-
-  const onClickResultRow =
-    setTargetSetup == null
-      ? undefined
-      : (setupInfo: ResultSetupInfo) => {
-          setTargetSetup(setupInfoToTargetSetup(setupInfo));
-        };
+  const onClickResultRow = (setupInfo: ResultSetupInfo) => {
+    setTargetSetup(setupInfoToTargetSetup(setupInfo));
+  };
 
   return (
-    <>
-      <ResultTable<ResultSetupInfo>
-        columns={resultSetupInfoColumns}
-        rowKey="uid"
-        dataSource={selectedPidPathResult.resultSetupInfos}
-        rowSelection={{
-          type: "radio",
-          onSelect: onClickResultRow,
-        }}
-      />
-      {distributionFixedData != null && (
-        <Wild3MethodDistribution
-          fixedData={distributionFixedData}
-          permitEnablingDebugOptions={false}
-        />
-      )}
-    </>
+    <ResultTable<ResultSetupInfo>
+      columns={resultSetupInfoColumns}
+      rowKey="uid"
+      dataSource={selectedPidPathResult.resultSetupInfos}
+      rowSelection={{
+        type: "radio",
+        onSelect: onClickResultRow,
+      }}
+    />
   );
 };

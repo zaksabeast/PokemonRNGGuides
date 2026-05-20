@@ -46,6 +46,7 @@ pub struct FindPidPathsOptions {
     pub initial_advances: usize,
     pub max_advances: usize,
     pub painting_adv_finder: Option<Wild3PaintingAdvFinder>,
+    pub forced_search_strategy: Option<PidPathStrategy>,
 }
 
 impl Default for FindPidPathsOptions {
@@ -68,6 +69,7 @@ impl Default for FindPidPathsOptions {
             initial_advances: Default::default(),
             max_advances: Default::default(),
             painting_adv_finder: None,
+            forced_search_strategy: None,
         }
     }
 }
@@ -167,6 +169,7 @@ impl std::fmt::Display for PidPath {
     }
 }
 
+#[derive(PartialEq, Debug, Clone, Copy)]
 pub enum PidPathStrategy {
     ReverseIv,
     ReversePidCycleSpeed,
@@ -186,6 +189,10 @@ Reverse:
     Cons: To guarantee results with lowest advance, all possible IVs must be explored. With a loose filter, it can be impossible to explore them all.
 */
 pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathStrategy {
+    if let Some(forced_search_strategy) = opts.forced_search_strategy {
+        return forced_search_strategy;
+    }
+
     if get_limited_valid_pids_for_cycle_speed_filter(&opts.gen3_filter.pid_speed).is_some() {
         return PidPathStrategy::ReversePidCycleSpeed;
     }

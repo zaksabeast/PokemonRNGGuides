@@ -5,7 +5,6 @@ use crate::{
         FASTEST_MODULO_CYCLE_24, Gen3Method, Gen3PidSpeedFilter, SLOWEST_MODULO_CYCLE_24,
         find_pid_paths_reverse_iv, find_pid_paths_reverse_pid_cycle_speed,
     },
-    gen3_psv,
 };
 
 mod utils;

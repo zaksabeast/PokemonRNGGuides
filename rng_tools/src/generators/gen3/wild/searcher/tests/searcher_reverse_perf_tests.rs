@@ -123,3 +123,45 @@ fn test_search_reverse_perf_vanilla() {
         .collect_vec();
     assert_eq!(result, expected_results);
 }
+
+#[test]
+fn test_search_perf_find_pid_paths_reverse_iv() {
+    if cfg!(debug_assertions) {
+        return;
+    }
+
+    let opts = FindPidPathsOptions {
+        filter: PkmFilter {
+            shiny: true,
+            min_ivs: Ivs::new(0, 0, 0, 0, 0, 0),
+            max_ivs: Ivs::new(15, 15, 15, 15, 15, 15), // ~16M
+            ..Default::default()
+        },
+        tsv: 1234,
+        forced_search_strategy: Some(PidPathStrategy::ReverseIv),
+        ..Default::default()
+    };
+
+    assert_eq!(find_pid_paths_reverse_iv::<true>(&opts).count(), 33634);
+}
+
+#[test]
+fn test_search_perf_find_pid_paths_reverse_pid_shiny() {
+    if cfg!(debug_assertions) {
+        return;
+    }
+
+    let opts = FindPidPathsOptions {
+        filter: PkmFilter {
+            shiny: true,
+            min_ivs: Ivs::new(0, 0, 0, 0, 0, 0),
+            max_ivs: Ivs::new(15, 15, 15, 15, 15, 15), // ~16M
+            ..Default::default()
+        },
+        tsv: 1234,
+        forced_search_strategy: Some(PidPathStrategy::ReversePidShiny),
+        ..Default::default()
+    };
+
+    assert_eq!(find_pid_paths_reverse_iv::<true>(&opts).count(), 33634);
+}

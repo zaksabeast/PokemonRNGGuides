@@ -204,6 +204,7 @@ fn new_find_pid_paths_options(opts: &Wild3SearcherOptions) -> FindPidPathsOption
         max_result_count: opts.max_result_count,
         max_advances: opts.max_advances,
         painting_adv_finder: opts.painting_opts.as_ref().map(Wild3PaintingAdvFinder::new),
+        forced_search_strategy: None,
     }
 }
 

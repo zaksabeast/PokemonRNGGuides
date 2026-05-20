@@ -216,6 +216,7 @@ pub fn reverse_find_pid_low_paths_from_pids<const METHOD3: bool>(
     pids.flat_map(reverse_find_pid_low_paths_from_pid::<METHOD3>)
 }
 
+/** pid has already been validated that it respects the filter */
 pub fn reverse_find_pid_low_paths_from_pid<const METHOD3: bool>(
     pid: u32,
 ) -> ArrayVec<PidLowPath, 6> {

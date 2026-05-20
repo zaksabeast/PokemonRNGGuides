@@ -22,7 +22,7 @@ import {
   leadsLabels,
 } from "./utils";
 import { useWatch } from "react-hook-form";
-import { FormState } from "./wild3FindTarget";
+import { FormState } from "./wild3TargetSetupSearcher";
 import { getPossibleValuesForSpecies } from "./wild3TargetMon";
 import { FormikEmeraldFrameBeforePaintingInput } from "~/components/emeraldFrameBeforePainting";
 import {

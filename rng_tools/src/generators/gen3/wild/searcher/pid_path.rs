@@ -37,9 +37,6 @@ pub struct FindPidPathsOptions {
     pub filter: PkmFilter,
     pub gen3_filter: Gen3PkmFilter,
     pub encounter_gender_ratio: GenderRatio,
-    pub methods: Vec<Gen3Method>,
-    // explicit bool to improve performance, to avoid calling methods.contains() in the common case
-    pub consider_all_methods_124: bool,
     pub tsv: u16,
     pub initial_seed: u32,
     pub max_result_count: usize,
@@ -60,9 +57,7 @@ impl Default for FindPidPathsOptions {
                 Gen3Method::Wild2,
                 Gen3Method::Wild3,
                 Gen3Method::Wild4,
-                Gen3Method::Wild5,
             ],
-            consider_all_methods_124: true,
             tsv: Default::default(),
             initial_seed: Default::default(),
             max_result_count: 1,
@@ -169,76 +164,17 @@ impl std::fmt::Display for PidPath {
     }
 }
 
-#[derive(PartialEq, Debug, Clone, Copy)]
-pub enum PidPathStrategy {
-    ReverseIv,
-    ReversePidCycleSpeed,
-    ReversePidShiny,
-    ByStepIv1,
-    ByStepIv2,
-    ByStepPid,
-}
-
-/** To improve performance, we want to apply the most restrictive criterias of the filter first.
-
-ByStep:
-    Pros: Returns results with lowest advance first.
-    Cons: If filter is very restrictive, the performance is bad.
-Reverse:
-    Pros: Fastest
-    Cons: To guarantee results with lowest advance, all possible IVs must be explored. With a loose filter, it can be impossible to explore them all.
-*/
-pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathStrategy {
-    if let Some(forced_search_strategy) = opts.forced_search_strategy {
-        return forced_search_strategy;
-    }
-
-    if get_limited_valid_pids_for_cycle_speed_filter(&opts.gen3_filter.pid_speed).is_some() {
-        return PidPathStrategy::ReversePidCycleSpeed;
-    }
-
-    let iv_restrict = get_iv_filter_restrictiveness(&opts.filter);
-    let pid_restrict = get_pid_filter_restrictiveness(
-        &opts.filter,
-        &opts.gen3_filter,
-        Some(opts.encounter_gender_ratio),
-    );
-
-    let iv_possibility_count = iv_restrict * 4294967296.0f64;
-    let pid_possibility_count = pid_restrict * 4294967296.0f64;
-
-    if pid_possibility_count < iv_possibility_count && opts.filter.shiny {
-        // ReversePid only supports shiny. Shiny only has ~500K possibilities.
-        return PidPathStrategy::ReversePidShiny;
-    }
-
-    // With Reverse strategy, we must sort the possibilities to return those with lowest advance first.
-    // If the count is too large, the execution time becomes too long.
-    if iv_possibility_count < 1_000_000.0 {
-        return PidPathStrategy::ReverseIv;
-    }
-
-    if pid_restrict < iv_restrict {
-        return PidPathStrategy::ByStepPid;
-    }
-
-    let iv1_restrict = get_iv1_filter_restrictiveness(&opts.filter);
-    let iv2_restrict = get_iv2_filter_restrictiveness(&opts.filter);
-
-    if iv1_restrict < iv2_restrict {
-        PidPathStrategy::ByStepIv1
-    } else {
-        PidPathStrategy::ByStepIv2
-    }
-}
-
 pub(super) fn sort_pid_paths(
     pid_paths: impl Iterator<Item = PidPath>,
     opts: &FindPidPathsOptions,
-) -> Vec<PidPath> {
-    pid_paths
-        .sorted_by(|pid_path1, pid_path2| compare_paths(opts, pid_path1, pid_path2))
-        .collect::<Vec<_>>()
+) -> impl Iterator<Item = PidPath> {
+    let take_count = std::cmp::max(500, opts.max_result_count.saturating_mul(50));
+    // PidPath respects the Pokémon filter. However, we don't know yet if a setup exists that will trigger
+    // that particular encounter.
+    // At worst, the odds are ~1%. For safety, we keep at least 500.
+
+    pid_paths.
+        .k_smallest_by_key(|pid_path| get_path_score(opts, pid_path), take_count)
 }
 
 fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
@@ -254,16 +190,6 @@ fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
                 .wait_dur
         }
     }
-}
-
-fn compare_paths(opts: &FindPidPathsOptions, pid_path1: &PidPath, pid_path2: &PidPath) -> Ordering {
-    let dist1 = get_path_score(opts, pid_path1);
-
-    let dist2 = get_path_score(opts, pid_path2);
-
-    dist1
-        .cmp(&dist2)
-        .then_with(|| (pid_path1.method() as u8).cmp(&(pid_path2.method() as u8)))
 }
 
 fn is_subset(
@@ -302,19 +228,31 @@ pub fn extend_iv_path_to_pid_paths<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     iv_path: IvPath,
 ) -> ArrayVec<PidPath, 3> {
-    //NO_PROD consider METHODS
     let mut pid_paths: ArrayVec<PidPath, 3> = Default::default();
-    //NO_PROD filter
-    if let Some(no_vblank_pid_path) = extend_iv_path_to_pid_path_no_vblank(opts, iv_path) {
-        pid_paths.push(no_vblank_pid_path);
-    }
-    if iv_path.iv_arc == IvFromStartArc::WithoutVBlank {
-        if let Some(wild2_pid_path) = extend_iv_path_to_pid_path_wild2(opts, iv_path) {
-            pid_paths.push(wild2_pid_path);
-        }
-        if METHOD3 {
-            if let Some(wild3_pid_path) = extend_iv_path_to_pid_path_wild3(opts, iv_path) {
-                pid_paths.push(wild3_pid_path);
+
+    match iv_path.iv_arc {
+        IvFromStartArc::WithoutVBlank => {
+            if is_considered_method(METHODS, &[1]) {
+                if let Some(no_vblank_pid_path) = extend_iv_path_to_pid_path_no_vblank(opts, iv_path) {
+                    pid_paths.push(no_vblank_pid_path);
+                }
+            }
+            if is_considered_method(METHODS, &[2]) {
+                if let Some(wild2_pid_path) = extend_iv_path_to_pid_path_wild2(opts, iv_path) {
+                    pid_paths.push(wild2_pid_path);
+                }
+            }
+            if is_considered_method(METHODS, &[3]) {
+                if let Some(wild3_pid_path) = extend_iv_path_to_pid_path_wild3(opts, iv_path) {
+                    pid_paths.push(wild3_pid_path);
+                }
+            }
+        },
+        IvFromStartArc::WithVBLank => {
+            if is_considered_method(METHODS, &[4]) {
+                if let Some(no_vblank_pid_path) = extend_iv_path_to_pid_path_no_vblank(opts, iv_path) {
+                    pid_paths.push(no_vblank_pid_path);
+                }
             }
         }
     }

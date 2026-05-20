@@ -74,7 +74,7 @@ pub const fn is_considered_method(opts_methods: u8, methods_to_check: &[u8]) -> 
 pub fn find_pid_low_paths_from_pid_low_seed<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     mut rng: Pokerng,
-) -> Option<Vec<PidLowPath>> {
+) -> Option<ArrayVec<PidLowPath, 2>> {
     let has_methods_124 = is_considered_method(METHODS, &[1, 2, 4]);
     let has_method_3 = is_considered_method(METHODS, &[3]);
     let pid_low = rng.rand::<u16>() as u32;
@@ -119,7 +119,7 @@ pub fn find_pid_low_paths_from_pid_low_seed<const METHODS: u8>(
         rng.prev_rand();
     }
 
-    let mut pid_low_paths = vec![];
+    let mut pid_low_paths:ArrayVec<PidLowPath, 2> = Default::default();
     if wild124_good {
         pid_low_paths.push(PidLowPath {
             seed: rng.seed(),
@@ -140,22 +140,26 @@ pub fn extend_pid_low_path_to_pid_paths(
     pid_low_path: &PidLowPath,
 ) -> ArrayVec<PidPath, 3> {
     let mut pid_paths: ArrayVec<PidPath, 3> = Default::default();
-    if let Some(wild13_pid_path) = extend_pid_low_path_to_pid_path_wild13(opts, pid_low_path) {
-        pid_paths.push(wild13_pid_path);
-    }
-    if pid_low_path.pid_low_to_iv_arc == PidLowToIvArc::WithoutVBlank {
-        if let Some(wild2_pid_path) = extend_pid_low_path_to_pid_path_wild2(opts, pid_low_path) {
-            pid_paths.push(wild2_pid_path);
-        }
-        if let Some(wild4_pid_path) = extend_pid_low_path_to_pid_path_wild4(opts, pid_low_path) {
-            pid_paths.push(wild4_pid_path);
+
+    if is_considered_method(METHODS, &[3]) {
+        if let Some(wild13_pid_path) = extend_pid_low_path_to_pid_path_wild13(opts, pid_low_path) {
+            pid_paths.push(wild13_pid_path);
         }
     }
 
-    // To improve performance for the common case, we assume that consider_all_methods_124 is true. Later, we will filter unwanted methods.
-    if !opts.consider_all_methods_124 {
-        pid_paths.retain(|pid_path| opts.methods.contains(&pid_path.method()));
+    if pid_low_path.pid_low_to_iv_arc == PidLowToIvArc::WithoutVBlank {
+        if is_considered_method(METHODS, &[2]) {
+            if let Some(wild2_pid_path) = extend_pid_low_path_to_pid_path_wild2(opts, pid_low_path) {
+                pid_paths.push(wild2_pid_path);
+            }
+        }
+        if is_considered_method(METHODS, &[4]) {
+            if let Some(wild4_pid_path) = extend_pid_low_path_to_pid_path_wild4(opts, pid_low_path) {
+                pid_paths.push(wild4_pid_path);
+            }
+        }
     }
+
     pid_paths
 }
 
@@ -166,10 +170,6 @@ fn extend_pid_low_path_to_pid_path_wild13(
     let mut rng = pid_low_path.seed_after_pid_high();
 
     let ivs = Ivs::new_g3(rng.rand::<u16>(), rng.rand::<u16>());
-
-    if pid_low_path.seed == 0x6B61F77C {
-        println!("pid_low_path={:?}, wild13 ivs={:?}", pid_low_path, ivs);
-    }
 
     if ivs.filter(&opts.filter.min_ivs, &opts.filter.max_ivs) {
         let arc_type = match pid_low_path.pid_low_to_iv_arc {

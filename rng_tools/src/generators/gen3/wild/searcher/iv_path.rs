@@ -27,7 +27,7 @@ pub enum IvFromStartArc {
     WithoutVBlank,
 }
 
-pub fn reverse_find_iv_paths_from_min_max_ivs(
+pub fn reverse_find_iv_paths_from_min_max_ivs<const METHODS:u8>(
     min_ivs: Ivs,
     max_ivs: Ivs,
     hidden_power_filter: Option<&HiddenPowerFilter>,
@@ -41,7 +41,7 @@ pub fn reverse_find_iv_paths_from_min_max_ivs(
         min_ivs.spe..=max_ivs.spe
     )
     .flat_map(|(hp, atk, def, spa, spd, spe)| {
-        reverse_find_iv_paths_from_ivs(hp, atk, def, spa, spd, spe)
+        reverse_find_iv_paths_from_ivs::<METHODS>(hp, atk, def, spa, spd, spe)
     });
 
     if let Some(hidden_power_filter) = hidden_power_filter {
@@ -55,33 +55,43 @@ pub fn reverse_find_iv_paths_from_min_max_ivs(
     iv_paths_it.collect_vec()
 }
 
-pub fn reverse_find_iv_paths_from_ivs(
+pub fn reverse_find_iv_paths_from_ivs<const METHODS:u8>(
     hp: u8,
     atk: u8,
     def: u8,
     spa: u8,
     spd: u8,
     spe: u8,
-) -> Vec<IvPath> {
-    let mut iv_paths = vec![];
-    iv_paths.extend(
+) -> Vec<IvPath> { //NO_PROD remove vec test perf before/after
+    let mut iv_paths = std::iter::empty::<IvPath>();
+
+    let to_chained_1 = if is_considered_method(METHODS, &[1, 2, 3]){
         reverse_find_iv1_seeds_from_ivs_values_no_vblank(hp, atk, def, spa, spd, spe)
             .iter()
             .map(|seed| IvPath {
                 seed: *seed,
                 iv_arc: IvFromStartArc::WithoutVBlank,
-            }),
-    );
-    iv_paths.extend(
-        reverse_find_iv1_seeds_from_ivs_values_with_vblank(hp, atk, def, spa, spd, spe)
-            .iter()
-            .map(|seed| IvPath {
-                seed: *seed,
-                iv_arc: IvFromStartArc::WithVBlank,
-            }),
-    );
+            })
+    } else {
+
+        );
+    }
+
+    if is_considered_method(METHODS, &[4]){
+        iv_paths.extend(
+            reverse_find_iv1_seeds_from_ivs_values_with_vblank(hp, atk, def, spa, spd, spe)
+                .iter()
+                .map(|seed| IvPath {
+                    seed: *seed,
+                    iv_arc: IvFromStartArc::WithVBlank,
+                }),
+        );
+    }
+
     iv_paths
 }
+
+//NO_PROD combine both functions like for PID
 
 /// Input: IVs
 /// Output: Seeds (right before iv1) that result in the IVs, assuming no vblank between iv1 and iv2.
@@ -220,7 +230,10 @@ fn passes_iv2_filter(min_ivs: &Ivs, max_ivs: &Ivs, iv2: u16) -> bool {
     true
 }
 
-pub fn find_iv_paths_from_iv1_seed(
+//NO_PROD const fn rng jump(CONSTANT)
+
+// Used by ByStep only
+pub fn find_iv_paths_from_iv1_seed<const METHODS:u8>(
     opts: &FindPidPathsOptions,
     rng: &mut Pokerng,
 ) -> Option<ArrayVec<IvPath, 2>> {
@@ -229,14 +242,16 @@ pub fn find_iv_paths_from_iv1_seed(
         return None;
     }
 
-    let iv2_wild1235 = rng.rand::<u16>();
+    let iv2_wild123 = rng.rand::<u16>();
     let iv2_wild4 = rng.rand::<u16>();
 
-    let wild1235_good = passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild1235);
+    let wild123_good = is_considered_method(METHODS, &[1,2,3]) &&
+        passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild123);
 
-    let wild4_good = passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild4);
+    let wild4_good = is_considered_method(METHODS, &[4]) &&
+        passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild4);
 
-    if !wild1235_good && !wild4_good {
+    if !wild123_good && !wild4_good {
         return None;
     }
 
@@ -245,7 +260,7 @@ pub fn find_iv_paths_from_iv1_seed(
     rng.prev_rand(); //revert to initial state
 
     let mut iv_paths: ArrayVec<IvPath, 2> = Default::default();
-    if wild1235_good {
+    if wild123_good {
         iv_paths.push(IvPath {
             seed: rng.seed(),
             iv_arc: IvFromStartArc::WithoutVBlank,
@@ -260,7 +275,8 @@ pub fn find_iv_paths_from_iv1_seed(
     Some(iv_paths)
 }
 
-pub fn find_iv_paths_from_iv2_seed(
+// Used by ByStep only
+pub fn find_iv_paths_from_iv2_seed<const METHODS:u8>(
     opts: &FindPidPathsOptions,
     rng: &mut Pokerng,
 ) -> Option<ArrayVec<IvPath, 2>> {
@@ -270,14 +286,16 @@ pub fn find_iv_paths_from_iv2_seed(
     }
 
     rng.prev_rand(); //revert state
-    let iv1_wild1235 = rng.prev_rand();
+    let iv1_wild123 = rng.prev_rand();
     let iv1_wild4 = rng.prev_rand();
 
-    // To improve performance for the common case, we assume that consider_all_methods_124 is true. Later, we will filter unwanted methods.
-    let wild1235_good = passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild1235);
+    let wild123_good = is_considered_method(METHODS, &[1,2,3]) &&
+        passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild123);
 
-    let wild4_good = passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild4);
-    if !wild1235_good && !wild4_good {
+    let wild4_good = is_considered_method(METHODS, &[4]) &
+        passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild4);
+
+    if !wild123_good && !wild4_good {
         return None;
     }
 
@@ -288,7 +306,7 @@ pub fn find_iv_paths_from_iv2_seed(
             iv_arc: IvFromStartArc::WithVBlank,
         });
     }
-    if wild1235_good {
+    if wild123_good {
         rng.rand::<u16>();
         iv_paths.push(IvPath {
             seed: rng.seed(),

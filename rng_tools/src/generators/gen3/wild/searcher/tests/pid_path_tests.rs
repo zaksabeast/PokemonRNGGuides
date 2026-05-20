@@ -19,7 +19,7 @@ fn test_extend_iv_path_to_pid_paths() {
         seed: 0,
         iv_arc: IvFromStartArc::WithoutVBlank,
     };
-    let results = extend_iv_path_to_pid_paths::<true>(&opts, iv_path);
+    let results = extend_iv_path_to_pid_paths::<0b1111>(&opts, iv_path);
     assert_eq!(
         results,
         ArrayVec::<PidPath, 3>::from([
@@ -43,7 +43,7 @@ fn test_find_pid_paths_filter_iv() {
 
     // The results for Wild1,Wild4 can be validated from the Static Searcher in Pokefinder.
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_iv::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_iv::<0b1111>(&opts)),
         strs_to_string(&[
             "Seed: 35CC77B9, Adv: 176562487, Method: Wild2, PID: EF72C69F, Ivs: 31/31/31/31/31/31",
             "Seed: 35CC77B9, Adv: 176562487, Method: Wild3, PID: 7942C69F, Ivs: 31/31/31/31/31/31",
@@ -85,7 +85,7 @@ fn test_find_pid_paths_filter_nature() {
 
     // The results can be validated from the Static Searcher in Pokefinder.
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_iv::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_iv::<0b1111>(&opts)),
         strs_to_string(&[
             "Seed: 9CB75889, Adv: 421027527, Method: Wild1, PID: 54A6DA00, Ivs: 28/31/31/31/31/31",
             "Seed: F2FC2E75, Adv: 2715152483, Method: Wild4, PID: 56E9EF05, Ivs: 28/31/31/31/31/31",
@@ -108,7 +108,7 @@ fn test_find_pid_paths_filter_gender() {
 
     // The results can be validated from the Static Searcher in Pokefinder.
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_iv::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_iv::<0b1111>(&opts)),
         strs_to_string(&[
             "Seed: 016846DF, Adv: 424209469, Method: Wild1, PID: 0F03CE78, Ivs: 26/0/0/0/0/0",
         ])
@@ -133,7 +133,7 @@ fn test_find_pid_paths_filter_restrictive() {
         "Seed: 081A6F6E, Adv: 3737251206, Method: Wild1, PID: 02FA9E49, Ivs: 12/29/23/10/14/13";
 
     // Sub-test 1
-    let pid_paths = extend_iv_path_to_pid_paths::<true>(
+    let pid_paths = extend_iv_path_to_pid_paths::<0b1111>(
         &opts,
         IvPath {
             seed: 49961864,
@@ -147,7 +147,7 @@ fn test_find_pid_paths_filter_restrictive() {
     // Sub-test 2
     // The results can be validated from the Static Searcher in Pokefinder.
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_iv::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_iv::<0b1111>(&opts)),
         vec![String::from(expected_res_str)]
     );
 }
@@ -167,7 +167,7 @@ fn test_find_pid_paths_reverse_pid() {
     };
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_pid_cycle_speed::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_pid_cycle_speed::<0b1111>(&opts)),
         strs_to_string(&[
             "Seed: 091D0909, Adv: 13106503, Method: Wild3, PID: 00000013, Ivs: 15/2/18/19/21/1",
             "Seed: FC39FC71, Adv: 301677967, Method: Wild3, PID: 00000001, Ivs: 12/19/11/9/29/4",
@@ -270,7 +270,7 @@ fn test_find_pid_paths_reverse_pid() {
     opts.gen3_filter.pid_speed.min_cycle_count = SLOWEST_MODULO_CYCLE_24;
     opts.gen3_filter.pid_speed.max_cycle_count = SLOWEST_MODULO_CYCLE_24;
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_pid_cycle_speed::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_pid_cycle_speed::<0b1111>(&opts)),
         strs_to_string(&[
             "Seed: FCD6F078, Adv: 293090680, Method: Wild3, PID: 59999999, Ivs: 18/0/20/4/9/19",
             "Seed: 14855885, Adv: 386636595, Method: Wild1, PID: 5999999D, Ivs: 11/21/30/20/27/19",

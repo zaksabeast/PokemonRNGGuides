@@ -135,7 +135,7 @@ impl CycleAtMoment {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct CycleCounter {
     pub cycle: CycleAndModCount,
-    pub cycle_at_moments: Vec<CycleAndModAtMoment>,
+    pub cycle_at_moments: Vec<CycleAndModAtMoment>, //NO_PROD no alloc
 }
 
 impl CycleCounter {

@@ -7,6 +7,8 @@ use crate::{
     rng::{Rng, lcrng::Pokerng},
 };
 
+use super::pid_low_path::is_considered_method;
+
 /** seed used to generated iv1 (state right before iv1) */
 #[derive(Default, Debug, PartialEq, Clone, Copy)]
 pub struct IvPath {
@@ -27,7 +29,7 @@ pub enum IvFromStartArc {
     WithoutVBlank,
 }
 
-pub fn reverse_find_iv_paths_from_min_max_ivs<const METHODS:u8>(
+pub fn reverse_find_iv_paths_from_min_max_ivs<const METHODS: u8>(
     min_ivs: Ivs,
     max_ivs: Ivs,
     hidden_power_filter: Option<&HiddenPowerFilter>,
@@ -55,29 +57,28 @@ pub fn reverse_find_iv_paths_from_min_max_ivs<const METHODS:u8>(
     iv_paths_it.collect_vec()
 }
 
-pub fn reverse_find_iv_paths_from_ivs<const METHODS:u8>(
+pub fn reverse_find_iv_paths_from_ivs<const METHODS: u8>(
     hp: u8,
     atk: u8,
     def: u8,
     spa: u8,
     spd: u8,
     spe: u8,
-) -> Vec<IvPath> { //NO_PROD remove vec test perf before/after
-    let mut iv_paths = std::iter::empty::<IvPath>();
+) -> Vec<IvPath> {
+    let mut iv_paths = Vec::new();
 
-    let to_chained_1 = if is_considered_method(METHODS, &[1, 2, 3]){
-        reverse_find_iv1_seeds_from_ivs_values_no_vblank(hp, atk, def, spa, spd, spe)
+    if is_considered_method(METHODS, &[1, 2, 3]) {
+        iv_paths.extend(
+            reverse_find_iv1_seeds_from_ivs_values_no_vblank(hp, atk, def, spa, spd, spe)
             .iter()
             .map(|seed| IvPath {
                 seed: *seed,
                 iv_arc: IvFromStartArc::WithoutVBlank,
-            })
-    } else {
-
+            }),
         );
     }
 
-    if is_considered_method(METHODS, &[4]){
+    if is_considered_method(METHODS, &[4]) {
         iv_paths.extend(
             reverse_find_iv1_seeds_from_ivs_values_with_vblank(hp, atk, def, spa, spd, spe)
                 .iter()

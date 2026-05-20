@@ -39,17 +39,17 @@ fn test_search_perf_find_pid_paths_by_step() {
     ]);
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_iv1::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_iv1::<0b1111>(&opts)),
         expected_results
     );
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_iv2::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_iv2::<0b1111>(&opts)),
         expected_results
     );
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_pid::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_pid::<0b1111>(&opts)),
         expected_results
     );
 }
@@ -144,7 +144,7 @@ fn test_search_perf_find_pid_paths_reverse_iv() {
     };
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_reverse_iv::<false>(&opts)),
+        pid_paths_to_string(find_pid_paths_reverse_iv::<0b1>(&opts)),
         vec![""]
     );
 }
@@ -168,5 +168,5 @@ fn test_search_perf_find_pid_paths_reverse_pid_shiny() {
         ..Default::default()
     };
 
-    assert_eq!(find_pid_paths_reverse_iv::<false>(&opts).count(), 33634);
+    assert_eq!(find_pid_paths_reverse_iv::<0b1>(&opts).count(), 33634);
 }

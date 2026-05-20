@@ -89,9 +89,9 @@ PidLowPath (doesn't know Iv arc)
     WithVBLank
 */
 
-fn extend_pid_paths_to_results<I>(
+fn extend_pid_paths_to_results(
     opts: &Wild3SearcherOptions,
-    iter: impl Iterator<Item = u32>,
+    iter: impl Iterator<Item = PidPath>,
 ) -> Vec<Vec<Wild3SearcherResultMon>> {
     let encounter_species_data = get_encounter_species_data(opts);
     let encounter_gender_ratio = encounter_species_data

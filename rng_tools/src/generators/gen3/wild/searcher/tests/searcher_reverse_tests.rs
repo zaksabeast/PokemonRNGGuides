@@ -36,17 +36,17 @@ fn test_search_find_pid_paths_by_step_filter() {
     ]);
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_iv1::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_iv1::<0b1111>(&opts)),
         expected_results
     );
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_iv2::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_iv2::<0b1111>(&opts)),
         expected_results
     );
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_pid::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_pid::<0b1111>(&opts)),
         expected_results
     );
 }
@@ -60,7 +60,7 @@ fn test_search_find_pid_paths_by_step_no_filter() {
     };
 
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_iv1::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_iv1::<0b1111>(&opts)),
         strs_to_string(&[
             "Seed: C1223018, Adv: 193925912, Method: Wild2, PID: 50A2F0C6, Ivs: 1/27/26/0/30/6",
             "Seed: C1223018, Adv: 193925912, Method: Wild3, PID: 76A6F0C6, Ivs: 1/27/26/0/30/6",
@@ -75,7 +75,7 @@ fn test_search_find_pid_paths_by_step_no_filter() {
 
     opts.initial_advances += 1;
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_iv2::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_iv2::<0b1111>(&opts)),
         strs_to_string(&[
             "Seed: C1223018, Adv: 193925912, Method: Wild2, PID: 50A2F0C6, Ivs: 1/27/26/0/30/6",
             "Seed: C1223018, Adv: 193925912, Method: Wild3, PID: 76A6F0C6, Ivs: 1/27/26/0/30/6",
@@ -90,7 +90,7 @@ fn test_search_find_pid_paths_by_step_no_filter() {
 
     opts.initial_advances -= 3;
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_pid::<true>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_pid::<0b1111>(&opts)),
         strs_to_string(&[
             "Seed: F0C62AAB, Adv: 193925913, Method: Wild1, PID: 76A650A2, Ivs: 1/27/26/0/30/6",
             "Seed: F0C62AAB, Adv: 193925913, Method: Wild2, PID: 76A650A2, Ivs: 6/0/30/0/30/5",
@@ -109,13 +109,12 @@ fn test_search_find_pid_paths_by_step_filter_method() {
     let mut opts = FindPidPathsOptions {
         initial_advances: 193925915,
         max_advances: 1,
-        methods: vec![Gen3Method::Wild1]
+        methods: vec![Gen3Method::Wild1],
         ..Default::default()
     };
 
-    const WILD1_ONLY:u8 = 0b1;
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_iv1::<WILD1_ONLY>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_iv1::<0b1>(&opts)),
         strs_to_string(&[
             "Seed: F0C62AAB, Adv: 193925913, Method: Wild1, PID: 76A650A2, Ivs: 1/27/26/0/30/6",
             "Seed: 50A2A542, Adv: 193925914, Method: Wild1, PID: 6B6176A6, Ivs: 6/0/30/0/30/5",
@@ -124,7 +123,7 @@ fn test_search_find_pid_paths_by_step_filter_method() {
 
     opts.initial_advances += 1;
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_iv2::<WILD1_ONLY>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_iv2::<0b1>(&opts)),
         strs_to_string(&[
             "Seed: F0C62AAB, Adv: 193925913, Method: Wild1, PID: 76A650A2, Ivs: 1/27/26/0/30/6",
             "Seed: 50A2A542, Adv: 193925914, Method: Wild1, PID: 6B6176A6, Ivs: 6/0/30/0/30/5"
@@ -133,7 +132,7 @@ fn test_search_find_pid_paths_by_step_filter_method() {
 
     opts.initial_advances -= 3;
     assert_eq!(
-        pid_paths_to_string(find_pid_paths_by_step_pid::<WILD1_ONLY>(&opts)),
+        pid_paths_to_string(find_pid_paths_by_step_pid::<0b1>(&opts)),
         strs_to_string(&[
             "Seed: F0C62AAB, Adv: 193925913, Method: Wild1, PID: 76A650A2, Ivs: 1/27/26/0/30/6",
             "Seed: 50A2A542, Adv: 193925914, Method: Wild1, PID: 6B6176A6, Ivs: 6/0/30/0/30/5",

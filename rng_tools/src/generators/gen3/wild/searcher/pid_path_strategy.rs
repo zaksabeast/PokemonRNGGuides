@@ -1,8 +1,8 @@
-use itertools::Itertools;
-
 use crate::{
     gen3::{
-        FASTEST_DIVIDENDS_MOD_24, passes_pid_filter_internal,
+        FASTEST_DIVIDENDS_MOD_24, get_iv_filter_restrictiveness,
+        get_iv1_filter_restrictiveness, get_iv2_filter_restrictiveness,
+        get_pid_filter_restrictiveness, passes_pid_filter_internal,
         wild::searcher::{
             FindPidPathsOptions, PidPath, extend_iv_path_to_pid_paths,
             extend_pid_low_path_to_pid_paths, find_iv_paths_from_iv1_seed,
@@ -86,13 +86,13 @@ pub fn find_pid_paths_reverse_iv<const METHODS: u8>(
     opts: &FindPidPathsOptions,
 ) -> impl Iterator<Item = PidPath> {
     sort_pid_paths(
-        reverse_find_iv_paths_from_min_max_ivs(
+        reverse_find_iv_paths_from_min_max_ivs::<METHODS>(
             opts.filter.min_ivs,
             opts.filter.max_ivs,
             Some(&opts.filter.hidden_power),
         )
-        .iter()
-        .flat_map(|iv_path| extend_iv_path_to_pid_paths::<METHODS>(opts, *iv_path)),
+        .into_iter()
+        .flat_map(|iv_path| extend_iv_path_to_pid_paths::<METHODS>(opts, iv_path)),
         opts,
     )
 }
@@ -106,7 +106,7 @@ fn find_pid_paths_reverse_pid<const METHODS: u8>(
         .filter(|&pid| passes_pid_filter_internal(opts, pid));
 
     let it = reverse_find_pid_low_paths_from_pids::<METHODS>(wanted_pids)
-        .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths(opts, &pid_low_path));
+        .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths::<METHODS>(opts, &pid_low_path));
     sort_pid_paths(it, opts)
 }
 
@@ -144,7 +144,7 @@ pub fn find_pid_paths_by_step_iv1<const METHODS: u8>(
     let base_rng = Pokerng::with_jump(opts.initial_seed, opts.initial_advances);
     StateIterator::new(base_rng)
         .take(opts.max_advances.saturating_add(1)) // missing +1 but overflows in wasm
-        .filter_map(|mut rng| find_iv_paths_from_iv1_seed(opts, &mut rng))
+        .filter_map(|mut rng| find_iv_paths_from_iv1_seed::<METHODS>(opts, &mut rng))
         .flatten()
         .flat_map(|iv_path| extend_iv_path_to_pid_paths::<METHODS>(opts, iv_path))
 }
@@ -157,7 +157,7 @@ pub fn find_pid_paths_by_step_iv2<const METHODS: u8>(
     let base_rng = Pokerng::with_jump(opts.initial_seed, opts.initial_advances);
     StateIterator::new(base_rng)
         .take(opts.max_advances.saturating_add(1)) // missing +1 but overflows in wasm
-        .filter_map(|mut rng| find_iv_paths_from_iv2_seed(opts, &mut rng))
+        .filter_map(|mut rng| find_iv_paths_from_iv2_seed::<METHODS>(opts, &mut rng))
         .flatten()
         .flat_map(|iv_path| extend_iv_path_to_pid_paths::<METHODS>(opts, iv_path))
 }
@@ -172,5 +172,5 @@ pub fn find_pid_paths_by_step_pid<const METHODS: u8>(
         .take(opts.max_advances.saturating_add(1)) // missing +1 but overflows in wasm
         .filter_map(|rng| find_pid_low_paths_from_pid_low_seed::<METHODS>(opts, rng))
         .flatten()
-        .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths(opts, &pid_low_path))
+        .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths::<METHODS>(opts, &pid_low_path))
 }

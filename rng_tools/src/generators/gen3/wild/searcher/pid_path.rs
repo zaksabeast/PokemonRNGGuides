@@ -1,5 +1,3 @@
-use std::cmp::Ordering;
-
 use arrayvec::ArrayVec;
 use itertools::Itertools;
 
@@ -8,8 +6,7 @@ use crate::{
     gen3::{
         FASTEST_DIVIDENDS_MOD_24, FASTEST_DIVIDENDS_MOD_24_RANGE, Gen3Method, Gen3PidSpeedFilter,
         Gen3PkmFilter, SLOWEST_DIVIDENDS_MOD_24, SLOWEST_DIVIDENDS_MOD_24_RANGE,
-        calculate_pid_speed, get_iv_filter_restrictiveness, get_iv1_filter_restrictiveness,
-        get_iv2_filter_restrictiveness, get_pid_filter_restrictiveness, passes_pid_filter,
+        calculate_pid_speed, passes_pid_filter,
         searcher_painter::Wild3PaintingAdvFinder,
         wild::{
             lcrng_distance,
@@ -18,6 +15,8 @@ use crate::{
     },
     rng::{Rng, lcrng::Pokerng},
 };
+
+use super::{pid_low_path::is_considered_method, pid_path_strategy::PidPathStrategy};
 
 /**
  * PidPath represents the RNG call sequence for PID + IV generation, which represent the full Pokémon (minus its species and level).
@@ -37,6 +36,7 @@ pub struct FindPidPathsOptions {
     pub filter: PkmFilter,
     pub gen3_filter: Gen3PkmFilter,
     pub encounter_gender_ratio: GenderRatio,
+    pub methods: Vec<Gen3Method>,
     pub tsv: u16,
     pub initial_seed: u32,
     pub max_result_count: usize,
@@ -173,8 +173,7 @@ pub(super) fn sort_pid_paths(
     // that particular encounter.
     // At worst, the odds are ~1%. For safety, we keep at least 500.
 
-    pid_paths.
-        .k_smallest_by_key(|pid_path| get_path_score(opts, pid_path), take_count)
+    pid_paths.k_smallest_by_key(take_count, |pid_path| get_path_score(opts, pid_path))
 }
 
 fn get_path_score(opts: &FindPidPathsOptions, pid_path: &PidPath) -> u32 {
@@ -233,7 +232,9 @@ pub fn extend_iv_path_to_pid_paths<const METHODS: u8>(
     match iv_path.iv_arc {
         IvFromStartArc::WithoutVBlank => {
             if is_considered_method(METHODS, &[1]) {
-                if let Some(no_vblank_pid_path) = extend_iv_path_to_pid_path_no_vblank(opts, iv_path) {
+                if let Some(no_vblank_pid_path) =
+                    extend_iv_path_to_pid_path_no_vblank(opts, iv_path)
+                {
                     pid_paths.push(no_vblank_pid_path);
                 }
             }
@@ -247,10 +248,12 @@ pub fn extend_iv_path_to_pid_paths<const METHODS: u8>(
                     pid_paths.push(wild3_pid_path);
                 }
             }
-        },
-        IvFromStartArc::WithVBLank => {
+        }
+        IvFromStartArc::WithVBlank => {
             if is_considered_method(METHODS, &[4]) {
-                if let Some(no_vblank_pid_path) = extend_iv_path_to_pid_path_no_vblank(opts, iv_path) {
+                if let Some(no_vblank_pid_path) =
+                    extend_iv_path_to_pid_path_no_vblank(opts, iv_path)
+                {
                     pid_paths.push(no_vblank_pid_path);
                 }
             }

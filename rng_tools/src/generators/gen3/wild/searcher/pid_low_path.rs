@@ -119,7 +119,7 @@ pub fn find_pid_low_paths_from_pid_low_seed<const METHODS: u8>(
         rng.prev_rand();
     }
 
-    let mut pid_low_paths:ArrayVec<PidLowPath, 2> = Default::default();
+    let mut pid_low_paths: ArrayVec<PidLowPath, 2> = Default::default();
     if wild124_good {
         pid_low_paths.push(PidLowPath {
             seed: rng.seed(),
@@ -135,13 +135,13 @@ pub fn find_pid_low_paths_from_pid_low_seed<const METHODS: u8>(
     Some(pid_low_paths)
 }
 
-pub fn extend_pid_low_path_to_pid_paths(
+pub fn extend_pid_low_path_to_pid_paths<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     pid_low_path: &PidLowPath,
 ) -> ArrayVec<PidPath, 3> {
     let mut pid_paths: ArrayVec<PidPath, 3> = Default::default();
 
-    if is_considered_method(METHODS, &[3]) {
+    if is_considered_method(METHODS, &[1, 3]) {
         if let Some(wild13_pid_path) = extend_pid_low_path_to_pid_path_wild13(opts, pid_low_path) {
             pid_paths.push(wild13_pid_path);
         }
@@ -149,12 +149,14 @@ pub fn extend_pid_low_path_to_pid_paths(
 
     if pid_low_path.pid_low_to_iv_arc == PidLowToIvArc::WithoutVBlank {
         if is_considered_method(METHODS, &[2]) {
-            if let Some(wild2_pid_path) = extend_pid_low_path_to_pid_path_wild2(opts, pid_low_path) {
+            if let Some(wild2_pid_path) = extend_pid_low_path_to_pid_path_wild2(opts, pid_low_path)
+            {
                 pid_paths.push(wild2_pid_path);
             }
         }
         if is_considered_method(METHODS, &[4]) {
-            if let Some(wild4_pid_path) = extend_pid_low_path_to_pid_path_wild4(opts, pid_low_path) {
+            if let Some(wild4_pid_path) = extend_pid_low_path_to_pid_path_wild4(opts, pid_low_path)
+            {
                 pid_paths.push(wild4_pid_path);
             }
         }
@@ -237,7 +239,7 @@ fn reverse_find_pid_low_paths_from_pid_using_reverse_ivs<const METHODS: u8>(
     // but not the first bit of PID. This means the IV logic returns correct values and incorrect values.
     // However, it's easy to filter them afterwards. The performance is not important.
     let ivs = Ivs::new_g3((pid & 0xFFFF) as u16, (pid >> 16) as u16);
-    reverse_find_iv_paths_from_ivs(ivs.hp, ivs.atk, ivs.def, ivs.spa, ivs.spd, ivs.spe)
+    reverse_find_iv_paths_from_ivs::<METHODS>(ivs.hp, ivs.atk, ivs.def, ivs.spa, ivs.spd, ivs.spe)
         .iter()
         .map(PidLowPath::from_iv_path)
         .filter(|pid_low_path| pid_low_path.pid() == pid)

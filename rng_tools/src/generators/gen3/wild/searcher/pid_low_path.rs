@@ -6,10 +6,7 @@ use crate::{
         IvPath,
         wild::{
             passes_pid_filter,
-            searcher::{
-                FindPidPathsOptions, IvFromStartArc, PidPath, PidToIvArc,
-                reverse_find_iv_paths_from_ivs,
-            },
+            searcher::{FindPidPathsOptions, IvFromStartArc, PidPath, PidToIvArc},
         },
     },
     rng::{Rng, lcrng::Pokerng},
@@ -213,20 +210,61 @@ fn extend_pid_low_path_to_pid_path_wild4(
     }
 }
 
-pub fn reverse_find_pid_low_paths_from_pids(pids: &[u32]) -> Vec<PidLowPath> {
-    pids.iter()
-        .flat_map(|pid| reverse_find_pid_low_paths_from_pid(*pid))
-        .collect()
+pub fn reverse_find_pid_low_paths_from_pids<const METHOD3: bool>(
+    pids: impl Iterator<Item = u32>,
+) -> impl Iterator<Item = PidLowPath> {
+    pids.flat_map(reverse_find_pid_low_paths_from_pid::<METHOD3>)
 }
 
-pub fn reverse_find_pid_low_paths_from_pid(pid: u32) -> Vec<PidLowPath> {
-    // We reuse the existing reverse IV logic for PID. It's not ideal because the first bit of IV is ignored
-    // but not the first bit of PID. This means the IV logic returns correct values and incorrect values.
-    // However, it's easy to filter them afterwards. The performance is not important.
-    let ivs = Ivs::new_g3((pid & 0xFFFF) as u16, (pid >> 16) as u16);
-    reverse_find_iv_paths_from_ivs(ivs.hp, ivs.atk, ivs.def, ivs.spa, ivs.spd, ivs.spe)
-        .iter()
-        .map(PidLowPath::from_iv_path)
-        .filter(|pid_low_path| pid_low_path.pid() == pid)
-        .collect::<Vec<_>>()
+pub fn reverse_find_pid_low_paths_from_pid<const METHOD3: bool>(
+    pid: u32,
+) -> ArrayVec<PidLowPath, 6> {
+    let mut pid_low_paths = ArrayVec::new();
+
+    reverse_find_pid_low_paths_with_arc::<0x41c64e6d, 0x6073, 0x67d3, 0xd3e, 0x4034>(
+        pid,
+        PidLowToIvArc::WithoutVBlank,
+        &mut pid_low_paths,
+    );
+
+    if METHOD3 {
+        reverse_find_pid_low_paths_with_arc::<0xc2a29a69, 0xe97e7b6a, 0x3a89, 0x2e4c, 0x5831>(
+            pid,
+            PidLowToIvArc::WithVBlank,
+            &mut pid_low_paths,
+        );
+    }
+
+    pid_low_paths
+}
+
+fn reverse_find_pid_low_paths_with_arc<
+    const MULT: u32,
+    const ADD: u32,
+    const MOD: u32,
+    const PAT: u32,
+    const INC: u32,
+>(
+    pid: u32,
+    pid_low_to_iv_arc: PidLowToIvArc,
+    pid_low_paths: &mut ArrayVec<PidLowPath, 6>,
+) {
+    let first = pid << 16;
+    let second = pid & 0xffff0000;
+
+    let diff = (second.wrapping_sub(first.wrapping_mul(MULT).wrapping_add(ADD)) >> 16) as u32;
+    let start =
+        (((diff.wrapping_mul(MOD).wrapping_add(INC) >> 16).wrapping_mul(PAT)) % MOD) as usize;
+
+    for low in (start..0x10000).step_by(MOD as usize) {
+        let seed_after_pid_low = first | low as u32;
+        if seed_after_pid_low.wrapping_mul(MULT).wrapping_add(ADD) & 0xffff0000 == second {
+            let mut rng = Pokerng::new(seed_after_pid_low);
+            rng.prev_rand();
+            pid_low_paths.push(PidLowPath {
+                seed: rng.seed(),
+                pid_low_to_iv_arc,
+            });
+        }
+    }
 }

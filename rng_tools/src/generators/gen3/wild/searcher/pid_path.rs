@@ -174,20 +174,27 @@ impl std::fmt::Display for PidPath {
 
 pub enum PidPathStrategy {
     ReverseIv,
-    ReversePid,
+    ReversePidCycleSpeed,
+    ReversePidShiny,
     ByStepIv1,
     ByStepIv2,
     ByStepPid,
 }
 
-/** To improve performance, we want to apply the most restrictive criterias of the filter first. */
+/** To improve performance, we want to apply the most restrictive criterias of the filter first.
+
+ByStep:
+    Pros: Returns results with lowest advance first.
+    Cons: If filter is very restrictive, the performance is bad.
+Reverse:
+    Pros: Fastest
+    Cons: To guarantee results with lowest advance, all possible IVs must be explored. With a loose filter, it can be impossible to explore them all.
+*/
 pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathStrategy {
-    if get_limited_valid_pids(&opts.gen3_filter.pid_speed).is_some() {
-        return PidPathStrategy::ReversePid;
+    if get_limited_valid_pids_for_cycle_speed_filter(&opts.gen3_filter.pid_speed).is_some() {
+        return PidPathStrategy::ReversePidCycleSpeed;
     }
 
-    let iv1_restrict = get_iv1_filter_restrictiveness(&opts.filter);
-    let iv2_restrict = get_iv2_filter_restrictiveness(&opts.filter);
     let iv_restrict = get_iv_filter_restrictiveness(&opts.filter);
     let pid_restrict = get_pid_filter_restrictiveness(
         &opts.filter,
@@ -195,13 +202,26 @@ pub fn determine_best_pid_path_strategy(opts: &FindPidPathsOptions) -> PidPathSt
         Some(opts.encounter_gender_ratio),
     );
 
+    let iv_possibility_count = iv_restrict * 4294967296.0f64;
+    let pid_possibility_count = pid_restrict * 4294967296.0f64;
+
+    if pid_possibility_count < iv_possibility_count && opts.filter.shiny {
+        // ReversePid only supports shiny. Shiny only has ~500K possibilities.
+        return PidPathStrategy::ReversePidShiny;
+    }
+
+    // With Reverse strategy, we must sort the possibilities to return those with lowest advance first.
+    // If the count is too large, the execution time becomes too long.
+    if iv_possibility_count < 1_000_000.0 {
+        return PidPathStrategy::ReverseIv;
+    }
+
     if pid_restrict < iv_restrict {
         return PidPathStrategy::ByStepPid;
     }
 
-    if iv_restrict < 1f64 / 65_000_f64 {
-        return PidPathStrategy::ReverseIv;
-    }
+    let iv1_restrict = get_iv1_filter_restrictiveness(&opts.filter);
+    let iv2_restrict = get_iv2_filter_restrictiveness(&opts.filter);
 
     if iv1_restrict < iv2_restrict {
         PidPathStrategy::ByStepIv1
@@ -259,7 +279,9 @@ fn is_subset(
     range.contains(subset.start()) && range.contains(subset.end())
 }
 
-fn get_limited_valid_pids(pid_speed_filter: &Gen3PidSpeedFilter) -> Option<Vec<u32>> {
+fn get_limited_valid_pids_for_cycle_speed_filter(
+    pid_speed_filter: &Gen3PidSpeedFilter,
+) -> Option<Vec<u32>> {
     match pid_speed_filter.cycle_count_range() {
         None => None,
         Some(wanted_range) => {
@@ -285,15 +307,32 @@ fn get_limited_valid_pids(pid_speed_filter: &Gen3PidSpeedFilter) -> Option<Vec<u
 // For all possible valid PIDs, reverse-find the seeds that can generate them.
 // Very quick when they are few valid PIDs
 // Limitation: Only supports when the filter is nearly the fastest or slowest PID modulo 24
-pub fn find_pid_paths_reverse_pid<const METHOD3: bool>(
+pub fn find_pid_paths_reverse_pid_cycle_speed<const METHOD3: bool>(
     opts: &FindPidPathsOptions,
 ) -> impl Iterator<Item = PidPath> {
-    let wanted_pids = get_limited_valid_pids(&opts.gen3_filter.pid_speed)
+    let wanted_pids = get_limited_valid_pids_for_cycle_speed_filter(&opts.gen3_filter.pid_speed)
         .unwrap_or(FASTEST_DIVIDENDS_MOD_24.to_vec());
 
-    reverse_find_pid_low_paths_from_pids(&wanted_pids)
-        .iter()
-        .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths(opts, pid_low_path))
+    reverse_find_pid_low_paths_from_pids::<METHOD3>(wanted_pids.into_iter())
+        .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths(opts, &pid_low_path))
+        .sorted_by(|pid_path1, pid_path2| compare_paths(opts, pid_path1, pid_path2))
+        .collect::<Vec<_>>()
+        .into_iter()
+}
+
+// For all possible valid PIDs, reverse-find the seeds that can generate them.
+// Very quick when they are few valid PIDs
+// Limitation: Only supports shiny filter
+pub fn find_pid_paths_reverse_pid_shiny<const METHOD3: bool>(
+    opts: &FindPidPathsOptions,
+) -> impl Iterator<Item = PidPath> {
+    let full_tsv: u32 = (opts.tsv as u32) << 3;
+
+    let wanted_pids_iter =
+        (0..0x80000u32).map(move |partial| partial ^ ((partial ^ full_tsv) << 16));
+
+    reverse_find_pid_low_paths_from_pids::<METHOD3>(wanted_pids_iter)
+        .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths(opts, &pid_low_path))
         .sorted_by(|pid_path1, pid_path2| compare_paths(opts, pid_path1, pid_path2))
         .collect::<Vec<_>>()
         .into_iter()

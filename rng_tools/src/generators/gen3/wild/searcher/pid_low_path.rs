@@ -3,7 +3,7 @@ use arrayvec::ArrayVec;
 use crate::{
     Ivs,
     gen3::{
-        IvPath,
+        IvPath, reverse_find_iv_paths_from_ivs,
         wild::{
             passes_pid_filter,
             searcher::{FindPidPathsOptions, IvFromStartArc, PidPath, PidToIvArc},
@@ -210,6 +210,20 @@ fn extend_pid_low_path_to_pid_path_wild4(
     }
 }
 
+pub fn reverse_find_pid_low_paths_from_pid_NO_PROD<const METHOD3: bool>(
+    pid: u32,
+) -> Vec<PidLowPath> {
+    // We reuse the existing reverse IV logic for PID. It's not ideal because the first bit of IV is ignored
+    // but not the first bit of PID. This means the IV logic returns correct values and incorrect values.
+    // However, it's easy to filter them afterwards. The performance is not important.
+    let ivs = Ivs::new_g3((pid & 0xFFFF) as u16, (pid >> 16) as u16);
+    reverse_find_iv_paths_from_ivs(ivs.hp, ivs.atk, ivs.def, ivs.spa, ivs.spd, ivs.spe)
+        .iter()
+        .map(PidLowPath::from_iv_path)
+        .filter(|pid_low_path| pid_low_path.pid() == pid)
+        .collect::<Vec<_>>()
+}
+
 pub fn reverse_find_pid_low_paths_from_pids<const METHOD3: bool>(
     pids: impl Iterator<Item = u32>,
 ) -> impl Iterator<Item = PidLowPath> {
@@ -253,12 +267,18 @@ fn reverse_find_pid_low_paths_with_arc<
     let first = pid << 16;
     let second = pid & 0xffff0000;
 
-    let diff = (second.wrapping_sub(first.wrapping_mul(MULT).wrapping_add(ADD)) >> 16) as u32;
-    let start =
-        (((diff.wrapping_mul(MOD).wrapping_add(INC) >> 16).wrapping_mul(PAT)) % MOD) as usize;
+    let additional_add = if pid_low_to_iv_arc == PidLowToIvArc::WithoutVBlank {
+        0
+    } else {
+        ADD
+    };
+
+    let diff =
+        (second.wrapping_sub(first.wrapping_mul(MULT).wrapping_add(additional_add)) >> 16) as u32;
+    let start = (((diff.wrapping_mul(MOD).wrapping_add(INC) >> 16).wrapping_mul(PAT)) % MOD) as u32;
 
     for low in (start..0x10000).step_by(MOD as usize) {
-        let seed_after_pid_low = first | low as u32;
+        let seed_after_pid_low = first | low;
         if seed_after_pid_low.wrapping_mul(MULT).wrapping_add(ADD) & 0xffff0000 == second {
             let mut rng = Pokerng::new(seed_after_pid_low);
             rng.prev_rand();

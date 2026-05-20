@@ -57,6 +57,7 @@ pub fn find_pid_paths_reverse_pid_cycle_speed<const METHOD3: bool>(
     let wanted_pids = get_limited_valid_pids_for_cycle_speed_filter(&opts.gen3_filter.pid_speed)
         .unwrap_or(FASTEST_DIVIDENDS_MOD_24.to_vec());
 
+    // let wanted_pids = vec![6]; //NO_PROD
     find_pid_paths_reverse_pid::<METHOD3>(opts, wanted_pids).into_iter()
 }
 

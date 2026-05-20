@@ -140,6 +140,7 @@ fn test_search_perf_find_pid_paths_reverse_iv() {
         methods: vec![Gen3Method::Wild1],
         tsv: 1234,
         forced_search_strategy: Some(PidPathStrategy::ReverseIv),
+        consider_all_methods_124: false,
         ..Default::default()
     };
 
@@ -154,7 +155,7 @@ fn test_search_perf_find_pid_paths_reverse_pid_shiny() {
     if cfg!(debug_assertions) {
         return;
     }
-    //NO_PROD investigate why pokefinder only has 8k results, and rust has 16k.
+
     let opts = FindPidPathsOptions {
         filter: PkmFilter {
             shiny: true,
@@ -165,6 +166,7 @@ fn test_search_perf_find_pid_paths_reverse_pid_shiny() {
         methods: vec![Gen3Method::Wild1],
         tsv: 1234,
         forced_search_strategy: Some(PidPathStrategy::ReversePidShiny),
+        consider_all_methods_124: false,
         ..Default::default()
     };
 

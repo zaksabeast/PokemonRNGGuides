@@ -57,7 +57,6 @@ pub fn find_pid_paths_reverse_pid_cycle_speed<const METHOD3: bool>(
     let wanted_pids = get_limited_valid_pids_for_cycle_speed_filter(&opts.gen3_filter.pid_speed)
         .unwrap_or(FASTEST_DIVIDENDS_MOD_24.to_vec());
 
-    // let wanted_pids = vec![6]; //NO_PROD
     find_pid_paths_reverse_pid::<METHOD3>(opts, wanted_pids).into_iter()
 }
 
@@ -110,7 +109,13 @@ pub fn find_pid_paths_by_step_pid<const METHOD3: bool>(
     let base_rng = Pokerng::with_jump(opts.initial_seed, opts.initial_advances);
     StateIterator::new(base_rng)
         .take(opts.max_advances.saturating_add(1)) // missing +1 but overflows in wasm
-        .filter_map(|rng| find_pid_low_paths_from_pid_low_seed::<METHOD3>(opts, rng))
+        .filter_map(|rng| {
+            if METHOD3 {
+                find_pid_low_paths_from_pid_low_seed::<0b1111>(opts, rng)
+            } else {
+                find_pid_low_paths_from_pid_low_seed::<0b1011>(opts, rng)
+            }
+        })
         .flatten()
         .flat_map(|pid_low_path| extend_pid_low_path_to_pid_paths(opts, &pid_low_path))
 }

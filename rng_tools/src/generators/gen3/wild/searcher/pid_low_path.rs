@@ -58,24 +58,40 @@ pub enum PidLowToIvArc {
     WithoutVBlank,
 }
 
-pub fn find_pid_low_paths_from_pid_low_seed<const METHOD3: bool>(
+const fn has_method(opts_methods: u8, methods_to_check: &[u8]) -> bool {
+    let mut i = 0;
+    while i < methods_to_check.len() {
+        let method = methods_to_check[i];
+        if method >= 1 && method <= 4 && (opts_methods & (1 << (method - 1))) != 0 {
+            return true;
+        }
+        i += 1;
+    }
+
+    false
+}
+
+pub fn find_pid_low_paths_from_pid_low_seed<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     mut rng: Pokerng,
 ) -> Option<Vec<PidLowPath>> {
+    let has_methods_124 = has_method(METHODS, &[1, 2, 4]);
+    let has_method_3 = has_method(METHODS, &[3]);
     let pid_low = rng.rand::<u16>() as u32;
 
     let pid_high_wild1245 = pid_low + ((rng.rand::<u16>() as u32) << 16);
 
-    let wild1245_good = passes_pid_filter(
-        &opts.filter,
-        &opts.gen3_filter,
-        Some(opts.encounter_gender_ratio),
-        pid_high_wild1245,
-        opts.tsv,
-    );
+    let wild1245_good = has_methods_124
+        && passes_pid_filter(
+            &opts.filter,
+            &opts.gen3_filter,
+            Some(opts.encounter_gender_ratio),
+            pid_high_wild1245,
+            opts.tsv,
+        );
 
     let wild3_good = {
-        if METHOD3 {
+        if has_method_3 {
             let pid_high_wild3 = pid_low + ((rng.rand::<u16>() as u32) << 16);
             passes_pid_filter(
                 &opts.filter,
@@ -96,7 +112,7 @@ pub fn find_pid_low_paths_from_pid_low_seed<const METHOD3: bool>(
     // revert state
     rng.prev_rand();
     rng.prev_rand();
-    if METHOD3 {
+    if has_method_3 {
         rng.prev_rand();
     }
 
@@ -210,7 +226,8 @@ fn extend_pid_low_path_to_pid_path_wild4(
     }
 }
 
-pub fn reverse_find_pid_low_paths_from_pid_NO_PROD<const METHOD3: bool>(
+#[allow(dead_code)] //NO_PROD
+fn reverse_find_pid_low_paths_from_pid_using_reverse_ivs<const METHOD3: bool>(
     pid: u32,
 ) -> Vec<PidLowPath> {
     // We reuse the existing reverse IV logic for PID. It's not ideal because the first bit of IV is ignored

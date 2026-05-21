@@ -84,6 +84,15 @@ PidLowPath (doesn't know Iv arc)
     WithVBLank
 */
 
+pub const METHOD_1: u8 = 0b0001;
+pub const METHOD_2: u8 = 0b0010;
+pub const METHOD_3: u8 = 0b0100;
+pub const METHOD_4: u8 = 0b1000;
+
+pub const fn is_considered_method(opts_methods: u8, methods_to_check: u8) -> bool {
+    opts_methods & methods_to_check != 0
+}
+
 fn extend_pid_paths_to_results(
     opts: &Wild3SearcherOptions,
     iter: impl Iterator<Item = PidPath>,

@@ -58,19 +58,6 @@ pub enum PidLowToIvArc {
     WithoutVBlank,
 }
 
-pub const fn is_considered_method(opts_methods: u8, methods_to_check: &[u8]) -> bool {
-    let mut i = 0;
-    while i < methods_to_check.len() {
-        let method = methods_to_check[i];
-        if method >= 1 && method <= 4 && (opts_methods & (1 << (method - 1))) != 0 {
-            return true;
-        }
-        i += 1;
-    }
-
-    false
-}
-
 pub fn find_pid_low_paths_from_pid_low_seed<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     mut rng: Pokerng,

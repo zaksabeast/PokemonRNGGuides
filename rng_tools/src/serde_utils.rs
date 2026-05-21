@@ -1,8 +1,8 @@
 pub mod arrayvec {
     use arrayvec::ArrayVec;
     use serde::{
-        de::{Error, SeqAccess, Visitor},
         Deserialize, Deserializer, Serialize, Serializer,
+        de::{Error, SeqAccess, Visitor},
     };
     use std::{fmt, marker::PhantomData};
 

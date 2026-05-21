@@ -1,16 +1,24 @@
 use std::collections::HashSet;
 
+use arrayvec::ArrayVec;
+
 use super::*;
 
 #[test]
 fn test_find_iv1_seeds_from_ivs_with_vblank() {
-    let results = reverse_find_iv1_seeds_from_ivs_values_with_vblank(29, 31, 31, 31, 31, 31)
+    let mut iv_paths = ArrayVec::new();
+    reverse_find_iv1_seeds_from_ivs_values_with_vblank(29, 31, 31, 31, 31, 31, &mut iv_paths);
+    let results = iv_paths
         .into_iter()
+        .map(|iv_path| iv_path.seed)
         .collect::<HashSet<_>>();
     assert_eq!(results, HashSet::<u32>::from([3082667636, 935183988]));
 
-    let results = reverse_find_iv1_seeds_from_ivs_values_with_vblank(31, 31, 31, 31, 31, 1)
+    let mut iv_paths = ArrayVec::new();
+    reverse_find_iv1_seeds_from_ivs_values_with_vblank(31, 31, 31, 31, 31, 1, &mut iv_paths);
+    let results = iv_paths
         .into_iter()
+        .map(|iv_path| iv_path.seed)
         .collect::<HashSet<_>>();
     assert_eq!(
         results,
@@ -20,8 +28,11 @@ fn test_find_iv1_seeds_from_ivs_with_vblank() {
 
 #[test]
 fn test_find_iv1_seeds_from_ivs_no_vblank() {
-    let results = reverse_find_iv1_seeds_from_ivs_values_no_vblank(29, 31, 31, 31, 31, 31)
+    let mut iv_paths = ArrayVec::new();
+    reverse_find_iv1_seeds_from_ivs_values_no_vblank(29, 31, 31, 31, 31, 31, &mut iv_paths);
+    let results = iv_paths
         .into_iter()
+        .map(|iv_path| iv_path.seed)
         .collect::<HashSet<_>>();
     assert_eq!(
         results,
@@ -30,8 +41,11 @@ fn test_find_iv1_seeds_from_ivs_no_vblank() {
         ])
     );
 
-    let results = reverse_find_iv1_seeds_from_ivs_values_no_vblank(31, 31, 31, 31, 31, 1)
+    let mut iv_paths = ArrayVec::new();
+    reverse_find_iv1_seeds_from_ivs_values_no_vblank(31, 31, 31, 31, 31, 1, &mut iv_paths);
+    let results = iv_paths
         .into_iter()
+        .map(|iv_path| iv_path.seed)
         .collect::<HashSet<_>>();
     assert_eq!(results, HashSet::<u32>::from([1650773405, 3798257053]));
 }

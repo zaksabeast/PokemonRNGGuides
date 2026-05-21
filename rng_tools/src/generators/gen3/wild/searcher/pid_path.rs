@@ -16,7 +16,12 @@ use crate::{
     rng::{Rng, lcrng::Pokerng},
 };
 
-use super::{pid_low_path::is_considered_method, pid_path_strategy::PidPathStrategy};
+use super::{
+    pid_path_strategy::PidPathStrategy,
+    searcher_main::searcher_reverse::{
+        METHOD_1, METHOD_2, METHOD_3, METHOD_4, is_considered_method,
+    },
+};
 
 /**
  * PidPath represents the RNG call sequence for PID + IV generation, which represent the full Pokémon (minus its species and level).
@@ -231,26 +236,26 @@ pub fn extend_iv_path_to_pid_paths<const METHODS: u8>(
 
     match iv_path.iv_arc {
         IvFromStartArc::WithoutVBlank => {
-            if is_considered_method(METHODS, &[1]) {
+            if is_considered_method(METHODS, METHOD_1) {
                 if let Some(no_vblank_pid_path) =
                     extend_iv_path_to_pid_path_no_vblank(opts, iv_path)
                 {
                     pid_paths.push(no_vblank_pid_path);
                 }
             }
-            if is_considered_method(METHODS, &[2]) {
+            if is_considered_method(METHODS, METHOD_2) {
                 if let Some(wild2_pid_path) = extend_iv_path_to_pid_path_wild2(opts, iv_path) {
                     pid_paths.push(wild2_pid_path);
                 }
             }
-            if is_considered_method(METHODS, &[3]) {
+            if is_considered_method(METHODS, METHOD_3) {
                 if let Some(wild3_pid_path) = extend_iv_path_to_pid_path_wild3(opts, iv_path) {
                     pid_paths.push(wild3_pid_path);
                 }
             }
         }
         IvFromStartArc::WithVBlank => {
-            if is_considered_method(METHODS, &[4]) {
+            if is_considered_method(METHODS, METHOD_4) {
                 if let Some(no_vblank_pid_path) =
                     extend_iv_path_to_pid_path_no_vblank(opts, iv_path)
                 {

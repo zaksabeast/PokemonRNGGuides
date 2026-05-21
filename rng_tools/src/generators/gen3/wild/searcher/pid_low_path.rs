@@ -12,6 +12,10 @@ use crate::{
     rng::{Rng, lcrng::Pokerng},
 };
 
+use super::searcher_main::searcher_reverse::{
+    METHOD_1, METHOD_2, METHOD_3, METHOD_4, is_considered_method,
+};
+
 #[derive(Default, PartialEq, Debug, Clone, Copy)]
 /** vblanks for ivs are not yet determined */
 pub struct PidLowPath {
@@ -62,8 +66,8 @@ pub fn find_pid_low_paths_from_pid_low_seed<const METHODS: u8>(
     opts: &FindPidPathsOptions,
     mut rng: Pokerng,
 ) -> Option<ArrayVec<PidLowPath, 2>> {
-    let has_methods_124 = is_considered_method(METHODS, &[1, 2, 4]);
-    let has_method_3 = is_considered_method(METHODS, &[3]);
+    let has_methods_124 = is_considered_method(METHODS, METHOD_1 | METHOD_2 | METHOD_4);
+    let has_method_3 = is_considered_method(METHODS, METHOD_3);
     let pid_low = rng.rand::<u16>() as u32;
 
     let wild124_good = if has_methods_124 {
@@ -128,20 +132,20 @@ pub fn extend_pid_low_path_to_pid_paths<const METHODS: u8>(
 ) -> ArrayVec<PidPath, 3> {
     let mut pid_paths: ArrayVec<PidPath, 3> = Default::default();
 
-    if is_considered_method(METHODS, &[1, 3]) {
+    if is_considered_method(METHODS, METHOD_1 | METHOD_3) {
         if let Some(wild13_pid_path) = extend_pid_low_path_to_pid_path_wild13(opts, pid_low_path) {
             pid_paths.push(wild13_pid_path);
         }
     }
 
     if pid_low_path.pid_low_to_iv_arc == PidLowToIvArc::WithoutVBlank {
-        if is_considered_method(METHODS, &[2]) {
+        if is_considered_method(METHODS, METHOD_2) {
             if let Some(wild2_pid_path) = extend_pid_low_path_to_pid_path_wild2(opts, pid_low_path)
             {
                 pid_paths.push(wild2_pid_path);
             }
         }
-        if is_considered_method(METHODS, &[4]) {
+        if is_considered_method(METHODS, METHOD_4) {
             if let Some(wild4_pid_path) = extend_pid_low_path_to_pid_path_wild4(opts, pid_low_path)
             {
                 pid_paths.push(wild4_pid_path);
@@ -228,7 +232,7 @@ pub fn reverse_find_pid_low_paths_from_pids<const METHODS: u8>(
 pub fn reverse_find_pid_low_paths_from_pid<const METHODS: u8>(pid: u32) -> ArrayVec<PidLowPath, 6> {
     let mut pid_low_paths = ArrayVec::new();
 
-    if is_considered_method(METHODS, &[1, 2, 4]) {
+    if is_considered_method(METHODS, METHOD_1 | METHOD_2 | METHOD_4) {
         reverse_find_pid_low_paths_with_arc::<0x41c64e6d, 0x6073, 0x67d3, 0xd3e, 0x4034>(
             pid,
             PidLowToIvArc::WithoutVBlank,
@@ -236,7 +240,7 @@ pub fn reverse_find_pid_low_paths_from_pid<const METHODS: u8>(pid: u32) -> Array
         );
     }
 
-    if is_considered_method(METHODS, &[3]) {
+    if is_considered_method(METHODS, METHOD_3) {
         reverse_find_pid_low_paths_with_arc::<0xc2a29a69, 0xe97e7b6a, 0x3a89, 0x2e4c, 0x5831>(
             pid,
             PidLowToIvArc::WithVBlank,

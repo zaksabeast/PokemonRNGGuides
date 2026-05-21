@@ -7,7 +7,9 @@ use crate::{
     rng::{Rng, lcrng::Pokerng},
 };
 
-use super::pid_low_path::is_considered_method;
+use super::searcher_main::searcher_reverse::{
+    METHOD_1, METHOD_2, METHOD_3, METHOD_4, is_considered_method,
+};
 
 /** seed used to generated iv1 (state right before iv1) */
 #[derive(Default, Debug, PartialEq, Clone, Copy)]
@@ -59,7 +61,7 @@ pub fn reverse_find_iv_paths_from_ivs<const METHODS: u8>(
 ) -> ArrayVec<IvPath, 12> {
     let mut iv_paths: ArrayVec<IvPath, 12> = Default::default();
 
-    if is_considered_method(METHODS, &[1, 2, 3]) {
+    if is_considered_method(METHODS, METHOD_1 | METHOD_2 | METHOD_3) {
         reverse_find_iv1_seeds_from_ivs_values_no_vblank(
             hp,
             atk,
@@ -71,7 +73,7 @@ pub fn reverse_find_iv_paths_from_ivs<const METHODS: u8>(
         );
     }
 
-    if is_considered_method(METHODS, &[4]) {
+    if is_considered_method(METHODS, METHOD_4) {
         reverse_find_iv1_seeds_from_ivs_values_with_vblank(
             hp,
             atk,
@@ -227,10 +229,10 @@ pub fn find_iv_paths_from_iv1_seed<const METHODS: u8>(
     let iv2_wild123 = rng.rand::<u16>();
     let iv2_wild4 = rng.rand::<u16>();
 
-    let wild123_good = is_considered_method(METHODS, &[1, 2, 3])
+    let wild123_good = is_considered_method(METHODS, METHOD_1 | METHOD_2 | METHOD_3)
         && passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild123);
 
-    let wild4_good = is_considered_method(METHODS, &[4])
+    let wild4_good = is_considered_method(METHODS, METHOD_4)
         && passes_iv2_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv2_wild4);
 
     if !wild123_good && !wild4_good {
@@ -271,10 +273,10 @@ pub fn find_iv_paths_from_iv2_seed<const METHODS: u8>(
     let iv1_wild123 = rng.prev_rand();
     let iv1_wild4 = rng.prev_rand();
 
-    let wild123_good = is_considered_method(METHODS, &[1, 2, 3])
+    let wild123_good = is_considered_method(METHODS, METHOD_1 | METHOD_2 | METHOD_3)
         && passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild123);
 
-    let wild4_good = is_considered_method(METHODS, &[4])
+    let wild4_good = is_considered_method(METHODS, METHOD_4)
         & passes_iv1_filter(&opts.filter.min_ivs, &opts.filter.max_ivs, iv1_wild4);
 
     if !wild123_good && !wild4_good {

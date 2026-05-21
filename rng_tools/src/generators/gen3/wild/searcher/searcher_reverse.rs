@@ -261,9 +261,10 @@ pub fn search_wild3_reverse_with_methods<const METHODS: u8>(
             opts,
             find_pid_paths_reverse_pid_cycle_speed::<METHODS>(&find_opts),
         ),
-        PidPathStrategy::ReversePidShiny => {
-            extend_pid_paths_to_results(opts, find_pid_paths_reverse_pid_shiny::<METHODS>(&find_opts))
-        }
+        PidPathStrategy::ReversePidShiny => extend_pid_paths_to_results(
+            opts,
+            find_pid_paths_reverse_pid_shiny::<METHODS>(&find_opts),
+        ),
     }
 }
 

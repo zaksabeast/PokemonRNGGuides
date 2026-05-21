@@ -280,9 +280,8 @@ fn reverse_find_pid_low_paths_with_arc<
         ADD
     };
 
-    let diff =
-        (second.wrapping_sub(first.wrapping_mul(MULT).wrapping_add(additional_add)) >> 16) as u32;
-    let start = (((diff.wrapping_mul(MOD).wrapping_add(INC) >> 16).wrapping_mul(PAT)) % MOD) as u32;
+    let diff = second.wrapping_sub(first.wrapping_mul(MULT).wrapping_add(additional_add)) >> 16;
+    let start = ((diff.wrapping_mul(MOD).wrapping_add(INC) >> 16).wrapping_mul(PAT)) % MOD;
 
     for low in (start..0x10000).step_by(MOD as usize) {
         let seed_after_pid_low = first | low;

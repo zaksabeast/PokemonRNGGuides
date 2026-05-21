@@ -34,7 +34,7 @@ pub fn reverse_find_iv_paths_from_min_max_ivs<const METHODS: u8>(
     max_ivs: Ivs,
     hidden_power_filter: &HiddenPowerFilter,
 ) -> impl Iterator<Item = IvPath> {
-    let iv_paths_it = iproduct!(
+    iproduct!(
         min_ivs.hp..=max_ivs.hp,
         min_ivs.atk..=max_ivs.atk,
         min_ivs.def..=max_ivs.def,
@@ -46,9 +46,7 @@ pub fn reverse_find_iv_paths_from_min_max_ivs<const METHODS: u8>(
         reverse_find_iv_paths_from_ivs::<METHODS>(hp, atk, def, spa, spd, spe)
             .into_iter()
             .filter(|iv_path| hidden_power_filter.pass_filter(&iv_path.ivs()))
-    });
-
-    iv_paths_it
+    })
 }
 
 pub fn reverse_find_iv_paths_from_ivs<const METHODS: u8>(

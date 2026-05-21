@@ -958,7 +958,7 @@ export const guides = {
       section: "rng_technique",
       guideVariants: ["retail"],
       guideKey: "false-Chatot Pitch Finder",
-      isNew: true,
+      isNew: false,
       title:
         "Pokémon Gen 4 Chatot RNG Tool | RNG Advance Finder for DPPt & HGSS",
       navDrawerTitle: "Chatot Pitch Finder",
@@ -11118,7 +11118,7 @@ export const guides = {
       section: "supporting_info",
       guideVariants: null,
       guideKey: "false-Interactive Sinnoh Map",
-      isNew: true,
+      isNew: false,
       title: "Interactive Sinnoh Map",
       navDrawerTitle: "Interactive Sinnoh Map",
       description:
